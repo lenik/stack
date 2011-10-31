@@ -2,14 +2,14 @@ package com.bee32.plover.orm.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.inject.ActivatorBean;
+import com.bee32.plover.site.scope.PerSite;
 
 /**
  * No-lazy: eagerly load samples.
  */
-@Lazy
+@PerSite
 public class SamplesLoaderActivator
         extends ActivatorBean {
 

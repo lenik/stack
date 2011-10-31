@@ -9,6 +9,9 @@ import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonLogin;
 
+/**
+ * 将登录用户对应的 Person 转换为 DTO 并记录到 session 中。
+ */
 public class DetailedLoginAdapter
         extends LoginAdapter {
 

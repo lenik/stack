@@ -6,7 +6,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.context.annotation.Lazy;
 import org.springframework.web.servlet.View;
 
 import com.bee32.plover.inject.ComponentTemplate;
@@ -19,10 +18,11 @@ import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.plover.servlet.mvc.CompositeController;
 import com.bee32.plover.servlet.mvc.IActionHandler;
+import com.bee32.plover.site.scope.PerSite;
 
 @ComponentTemplate
 //@Controller
-@Lazy
+@PerSite
 public abstract class EntityController<E extends Entity<K>, K extends Serializable, Dto extends EntityDto<E, K>>
         extends CompositeController
         implements IEntityMarshalContext {

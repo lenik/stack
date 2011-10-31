@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.bee32.plover.arch.util.ClassUtil;
@@ -20,10 +19,11 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityDao;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.util.IEntityMarshalContext;
+import com.bee32.plover.site.scope.PerSite;
 
-@Service
-@Lazy
 // @Transactional(readOnly = true)
+@Service
+@PerSite
 public class CommonDataManager
         implements IEntityMarshalContext, ApplicationContextAware {
 

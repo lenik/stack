@@ -1,11 +1,10 @@
 package com.bee32.plover.orm.dao;
 
-import org.springframework.context.annotation.Lazy;
-
 import com.bee32.plover.inject.ComponentTemplate;
+import com.bee32.plover.site.scope.PerSite;
 
 @ComponentTemplate
-@Lazy
+@PerSite
 public abstract class GenericDao
         extends HibernateDaoSupport {
 

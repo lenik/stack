@@ -16,16 +16,12 @@ import org.quartz.TriggerKey;
 import org.quartz.impl.triggers.SimpleTriggerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.arch.DataService;
 import com.bee32.plover.scheduler.util.Triggers;
 import com.bee32.sem.world.monetary.impl.DiscreteFxrProvider;
 
-@Service
-@Scope("prototype")
 public class FxrCommitJob
         extends DataService
         implements Job {

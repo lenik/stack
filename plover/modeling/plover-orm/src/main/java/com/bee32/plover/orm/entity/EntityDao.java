@@ -18,7 +18,6 @@ import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
@@ -32,13 +31,14 @@ import com.bee32.plover.criteria.hibernate.SumProjection;
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.orm.dao.HibernateDaoSupportUtil;
 import com.bee32.plover.orm.dao.HibernateTemplate;
+import com.bee32.plover.site.scope.PerSite;
 
 /**
  * &#64;Wireable is not inheritable, so you should add Configuration annotation in all concrete
  * Module classes, to enable Spring usage.
  */
 @ComponentTemplate
-@Lazy
+@PerSite
 public abstract class EntityDao<E extends Entity<? extends K>, K extends Serializable>
         extends EntityRepository<E, K>
         implements IEntityAccessService<E, K> {

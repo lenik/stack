@@ -21,7 +21,7 @@ public class WiredDaoTestCaseTest
         extends WiredDaoTestCase {
 
     @Inject
-    DaoService service;
+    CatService service;
 
     @Test
     public void testCreateReload() {
@@ -31,7 +31,7 @@ public class WiredDaoTestCaseTest
 
     @Service
     @Lazy
-    static class DaoService
+    static class CatService
             extends Assert {
 
         @Inject

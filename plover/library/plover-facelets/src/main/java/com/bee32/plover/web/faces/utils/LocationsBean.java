@@ -17,9 +17,9 @@ import com.bee32.plover.rtx.location.Location;
 /**
  * e.g., #{location.WEB_APP}
  */
-@Lazy
 @Component
 @Named("location")
+@Lazy
 public class LocationsBean
         extends YesMap {
 

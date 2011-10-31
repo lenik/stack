@@ -16,7 +16,6 @@ import javax.validation.ValidatorFactory;
 
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
@@ -25,7 +24,6 @@ import com.bee32.plover.web.faces.utils.FacesContextSupport;
 import com.bee32.plover.web.faces.utils.FacesUILogger;
 
 @ComponentTemplate
-@Lazy
 @PerView
 public abstract class ViewBean
         extends FacesContextSupport

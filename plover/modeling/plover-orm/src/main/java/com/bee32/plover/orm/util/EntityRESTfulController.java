@@ -18,6 +18,7 @@ import com.bee32.plover.orm.entity.EntityRepository;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.restful.IRESTfulRequest;
 import com.bee32.plover.restful.IRESTfulResponse;
+import com.bee32.plover.site.scope.PerSite;
 
 /**
  * ERController 中实际执行动作的是 CDM，
@@ -29,6 +30,7 @@ import com.bee32.plover.restful.IRESTfulResponse;
  * 同时需要注意的是，ER 并非毫无用处，这里 populate 还是需要 ER 的具体实现支持。
  */
 @Controller
+@PerSite
 @Lazy
 public class EntityRESTfulController<E extends Entity<K>, K extends Serializable> {
 

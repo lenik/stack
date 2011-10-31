@@ -6,5 +6,4 @@ public class PeopleService
         extends DataService
         implements IPeopleService {
 
-
 }

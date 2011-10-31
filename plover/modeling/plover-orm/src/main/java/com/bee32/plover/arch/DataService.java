@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.inject.Inject;
 
-import org.springframework.context.annotation.Lazy;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.inject.ComponentTemplate;
@@ -13,10 +12,11 @@ import com.bee32.plover.orm.dao.MemdbDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.util.IEntityMarshalContext;
+import com.bee32.plover.site.scope.PerSite;
 
 @Transactional(readOnly = true)
 @ComponentTemplate
-@Lazy
+@PerSite
 public abstract class DataService
         extends Component
         implements IEntityMarshalContext {

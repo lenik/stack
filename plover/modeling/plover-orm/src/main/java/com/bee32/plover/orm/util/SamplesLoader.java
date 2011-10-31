@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import com.bee32.plover.arch.util.PriorityComparator;
@@ -31,9 +30,10 @@ import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
+import com.bee32.plover.site.scope.PerSite;
 
 @Component
-@Lazy
+@PerSite
 public class SamplesLoader
         implements ApplicationContextAware, ITypeAbbrAware {
 

@@ -2,12 +2,10 @@ package com.bee32.plover.web.faces.test;
 
 import java.io.Serializable;
 
-import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
-@Lazy
 @Scope("session")
 public class LongViewBean
         implements Serializable {

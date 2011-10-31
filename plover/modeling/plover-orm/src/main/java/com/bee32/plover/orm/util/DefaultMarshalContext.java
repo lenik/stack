@@ -5,7 +5,6 @@ import java.io.Serializable;
 import javax.inject.Inject;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import com.bee32.plover.inject.GlobalAppCtx;
@@ -14,9 +13,10 @@ import com.bee32.plover.orm.dao.MemdbDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
+import com.bee32.plover.site.scope.PerSite;
 
 @Component
-@Lazy
+@PerSite
 public class DefaultMarshalContext
         implements IEntityMarshalContext {
 

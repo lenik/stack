@@ -3,15 +3,10 @@ package com.bee32.sem.chance.entity;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
-
 import com.bee32.plover.arch.DataService;
 import com.bee32.plover.ox1.color.MomentIntervalCriteria;
 import com.bee32.sem.calendar.ICalendarSource;
 
-@Component
-@Lazy
 public class ChanceCalendarSource
         extends DataService
         implements ICalendarSource {
