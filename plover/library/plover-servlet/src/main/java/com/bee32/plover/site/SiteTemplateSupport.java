@@ -13,8 +13,8 @@ public class SiteTemplateSupport
 
     protected String classDoc;
     protected TextMap args;
-    protected SiteManager siteManager;
-    protected SiteInstance siteInstance;
+    protected SiteManager manager;
+    protected SiteInstance site;
 
     public SiteTemplateSupport() {
         this(new HashMap<String, Object>());
@@ -36,19 +36,11 @@ public class SiteTemplateSupport
     }
 
     protected void parse(TextMap args) {
-        siteManager = SiteManager.getInstance();
+        manager = SiteManager.getInstance();
 
         String siteName = (String) args.get("site");
         if (siteName != null)
-            siteInstance = siteManager.getSite(siteName);
-    }
-
-    public SiteManager getSiteManager() {
-        return siteManager;
-    }
-
-    public SiteInstance getSiteInstance() {
-        return siteInstance;
+            site = manager.getSite(siteName);
     }
 
 }

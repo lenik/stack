@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.plover.servlet.util.ThreadHttpContext;
+
 public class SiteManagerServlet
         extends HttpServlet {
 
@@ -53,18 +55,19 @@ public class SiteManagerServlet
     static {
         pages = new PageMap();
         pages.add(Index.class);
+        pages.add(CurrentSite.class);
         pages.add(Config.class);
         pages.add(Create.class);
         pages.add(Delete.class);
         pages.add(Reload.class);
-        pages.add(Data.class);
-        pages.add(Cache.class);
-        pages.add(Status.class);
+        pages.add(DataMaintainance.class);
+        pages.add(CacheManager.class);
+        pages.add(Monitor.class);
         pages.add(HelpDoc.class);
     }
 
-    @Doc("所有应用")
-    static class Index
+    @Doc("所有站点")
+    public static class Index
             extends SiteTemplate {
 
         public Index(Map<String, ?> _args) {
@@ -82,7 +85,7 @@ public class SiteManagerServlet
                 div().style("background: #eef; margin-left: 1em; border-bottom: solid 1px #888;");
                 {
                     h3();
-                    text("应用：" + label);
+                    text("站点：" + label);
                     a().href("config?site=" + name).text("配置").end();
                     a().href("reload?site=" + name).text("更新").end();
                     end();
@@ -110,7 +113,41 @@ public class SiteManagerServlet
 
     }
 
-    @Doc("配置应用")
+    @Doc("当前站点")
+    public static class CurrentSite
+            extends SiteTemplate {
+
+        public CurrentSite(Map<String, ?> args) {
+            super(args);
+        }
+
+        @Override
+        protected void _content()
+                throws Exception {
+            SiteInstance site;
+            if (this.site == null)
+                site = ThreadHttpContext.getSiteInstance();
+            else
+                site = this.site;
+
+            fieldset();
+            if (site == null) {
+                legend().text("站点不可用").end();
+                p().text("当前站点尚未配置。").end();
+            } else {
+                legend().text("站点：" + site.getLabel()).end();
+                p().text(site.getDescription()).end();
+            }
+            end();
+
+            if (site == null)
+                return;
+
+        }
+
+    }
+
+    @Doc("配置站点")
     static class Config
             extends SiteTemplate {
 
@@ -121,11 +158,11 @@ public class SiteManagerServlet
         @Override
         protected void _content()
                 throws Exception {
-            SiteInstance site = getSiteInstance();
             boolean createSite = site == null;
             if (createSite)
                 site = new SiteInstance();
 
+            String name = args.getNString("site");
             boolean save = args.getString("save") != null;
 
             if (save) {
@@ -140,8 +177,10 @@ public class SiteManagerServlet
                 String _samples = args.getString("samples");
                 SamplesSelection samples = SamplesSelection.valueOf(_samples);
 
+                if (label == null)
+                    label = name;
                 if (dbName == null)
-                    dbName = site + "_db";
+                    dbName = name + "_db";
 
                 Set<String> aliasSet = new LinkedHashSet<String>();
                 for (String alias : aliases.split(",")) {
@@ -149,10 +188,8 @@ public class SiteManagerServlet
                     aliasSet.add(alias);
                 }
 
-                if (createSite) {
-                    String siteName = args.getString("site");
-                    site = siteManager.loadSite(siteName);
-                }
+                if (createSite)
+                    site = manager.loadSite(name);
 
                 site.setLabel(label);
                 site.setDescription(description);
@@ -167,14 +204,14 @@ public class SiteManagerServlet
                 site.saveConfig();
 
                 if (createSite)
-                    siteManager.addSite(site);
+                    manager.addSite(site);
 
                 p().text("保存成功。[" + System.identityHashCode(this) + "]").end();
             }
 
             simpleForm("#", //
-                    (createSite && !save) ? "site" : "-site", "应用代码:应用的唯一代码，用于系统内部标识应用", site.getName(), //
-                    "label", "标题:应用的显示名称，一般是企业名称", site.getLabel(), //
+                    (createSite && !save) ? "site" : "-site", "站点代码:站点的唯一代码，用于系统内部标识站点", name, //
+                    "label", "标题:站点的显示名称，一般是企业名称", site.getLabel(), //
                     "description", "描述:应用的描述信息，如企业的全称", site.getDescription(), //
                     "aliases", "网络绑定:多个网络名称绑定，用逗号分隔", StringArray.join(", ", site.getAliases()), //
                     "dbhost", "数据服务器:数据库服务器的主机名称", site.getDbHost(), //
@@ -188,7 +225,7 @@ public class SiteManagerServlet
             if (!createSite) {
                 fieldset().legend().text("删除该应用配置").end();
                 simpleForm("delete:删除", //
-                        ".site", "应用代码:应用的唯一代码，用于系统内部标识应用", site.getName(), //
+                        ".site", "站点代码:站点的唯一代码，用于系统内部标识应用", site.getName(), //
                         "!removeData", "同时删除所有数据:危险：默认只删除配置文件，删除所有数据将无法恢复！", false //
                 );
                 end();
@@ -197,8 +234,8 @@ public class SiteManagerServlet
         }
     }
 
-    @Doc("新建应用")
-    static class Create
+    @Doc("新建站点")
+    public static class Create
             extends Config {
 
         public Create(Map<String, ?> args) {
@@ -207,7 +244,7 @@ public class SiteManagerServlet
 
     }
 
-    @Doc("删除应用")
+    @Doc("删除站点")
     static class Delete
             extends SiteTemplate {
 
@@ -222,19 +259,19 @@ public class SiteManagerServlet
             String confirmed = args.getString("confirmed");
 
             if ("1".equals(confirmed)) {
-                if (siteInstance == null) {
-                    a().href("index").text("应用不存在或已经被删除，点击返回列表").end();
+                if (site == null) {
+                    a().href("index").text("站点不存在或已经被删除，点击返回列表").end();
                 } else {
-                    siteManager.deleteSite(siteInstance);
-                    a().href("index").text("应用已删除，点击返回列表").end();
+                    manager.deleteSite(site);
+                    a().href("index").text("站点已删除，点击返回列表").end();
                 }
             } else {
                 fieldset().legend().text("确认删除").end();
 
                 form().action("#");
-                input().type("hidden").name("site").value(siteInstance.getName()).end();
+                input().type("hidden").name("site").value(site.getName()).end();
 
-                p().text("您确定要删除站点 " + siteInstance.getLabel() + " 吗？").end();
+                p().text("您确定要删除站点 " + site.getLabel() + " 吗？").end();
                 input().type("hidden").name("confirmed").value("1").end();
 
                 if ("1".equals(removeData)) {
@@ -247,7 +284,7 @@ public class SiteManagerServlet
         }
     }
 
-    @Doc("更新应用配置")
+    @Doc("更新站点配置")
     static class Reload
             extends SiteTemplate {
 
@@ -260,47 +297,47 @@ public class SiteManagerServlet
                 throws Exception {
             p().text("重新读取配置文件……").end();
 
-            siteInstance.reloadConfig();
+            site.reloadConfig();
 
             p().text("更新完成。").end();
 
-            a().href("index").text("返回应用列表").end();
+            a().href("index").text("返回站点列表").end();
         }
 
     }
 
     @Doc("数据备份")
-    static class Data
+    public static class DataMaintainance
             extends SiteTemplate {
 
-        public Data(Map<String, ?> _args) {
+        public DataMaintainance(Map<String, ?> _args) {
             super(_args);
         }
 
     }
 
     @Doc("缓存管理")
-    static class Cache
+    public static class CacheManager
             extends SiteTemplate {
 
-        public Cache(Map<String, ?> _args) {
+        public CacheManager(Map<String, ?> _args) {
             super(_args);
         }
 
     }
 
-    @Doc("运行状态")
-    static class Status
+    @Doc("站点监控")
+    public static class Monitor
             extends SiteTemplate {
 
-        public Status(Map<String, ?> _args) {
+        public Monitor(Map<String, ?> _args) {
             super(_args);
         }
 
     }
 
     @Doc("帮助信息")
-    static class HelpDoc
+    public static class HelpDoc
             extends SiteTemplate {
 
         public HelpDoc(Map<String, ?> args) {
@@ -310,8 +347,8 @@ public class SiteManagerServlet
         @Override
         protected void _content()
                 throws Exception {
-            h3().text("智恒应用站点管理程序。").end();
-            p().text("本程序用于创建、配置、监控一台服务器上运行的所有应用。").end();
+            h3().text("智恒站点管理程序。").end();
+            p().text("本程序用于创建、配置、监控一台服务器上运行的所有站点。").end();
         }
 
     }
