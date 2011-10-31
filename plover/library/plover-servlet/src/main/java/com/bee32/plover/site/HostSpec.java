@@ -9,7 +9,7 @@ public final class HostSpec
 
     private static final long serialVersionUID = 1L;
 
-    static final int DEFAULT_PORT = 80;
+    // static final int DEFAULT_PORT = 80;
 
     private String hostName;
     private Integer port;
@@ -25,7 +25,7 @@ public final class HostSpec
         Integer port = null;
         if (colon == -1) {
             hostName = spec;
-            port = DEFAULT_PORT;
+            port = null; // DEFAULT_PORT;
         } else {
             hostName = spec.substring(0, colon);
             String _port = spec.substring(colon + 1);
@@ -59,8 +59,6 @@ public final class HostSpec
 
     @Override
     public String toString() {
-        if (port == DEFAULT_PORT)
-            return hostName;
         if (port == null)
             return hostName + ":*";
         return hostName + ":" + port;
