@@ -16,6 +16,8 @@ import com.bee32.plover.scheduler.util.Jobs;
 import com.bee32.plover.scheduler.util.Triggers;
 
 /**
+ * 本 Quartz 作业（配置项）用于触发 {@link FxrCommitJob}。
+ *
  * FXR Updater Job:
  *
  * For each fxr source: fxr

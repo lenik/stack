@@ -14,7 +14,6 @@ import javax.free.JavaioFile;
 import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.arch.util.ClassUtil;
-import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.inject.ServiceTemplate;
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.inject.cref.ScanServiceContext;
@@ -23,10 +22,10 @@ import com.bee32.plover.xutil.m2.MavenPath;
 /**
  * Usage:
  * <ol>
- * <li>Put {@link ComponentTemplate} annotation to something like AbstractFooService.
+ * <li>Put {@link ServiceTemplate} annotation to something like AbstractFooService.
  * <li>Create FooCollector > ServiceCollector
  * <li>Run FooCollector test case.
- * <li>Remove {@link ComponentTemplate}.
+ * <li>Remove {@link ServiceTemplate}.
  * </ol>
  */
 @ServiceTemplate
