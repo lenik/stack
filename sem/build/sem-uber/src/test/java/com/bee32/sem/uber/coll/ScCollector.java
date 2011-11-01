@@ -6,7 +6,10 @@ import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.inject.NotAComponent;
 import com.bee32.plover.test.ServiceCollector;
 
-@NotAComponent
+/**
+ * Collect service collectors.
+ */
+/* Here exclude this collector, to avoid dead loop. */@NotAComponent
 public class ScCollector
         extends ServiceCollector<ServiceCollector<?>> {
 
