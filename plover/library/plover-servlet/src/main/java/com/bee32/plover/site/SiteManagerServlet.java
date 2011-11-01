@@ -189,7 +189,7 @@ public class SiteManagerServlet
                 }
 
                 if (createSite)
-                    site = manager.loadSite(name);
+                    site = manager.loadSiteConfig(name);
 
                 site.setLabel(label);
                 site.setDescription(description);
@@ -204,7 +204,7 @@ public class SiteManagerServlet
                 site.saveConfig();
 
                 if (createSite)
-                    manager.addSite(site);
+                    manager.loadSite(site);
 
                 p().text("保存成功。[" + System.identityHashCode(this) + "]").end();
             }
