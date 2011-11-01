@@ -3,3 +3,4 @@ com.bee32.plover.servlet.test.BuiltinWac
 com.bee32.plover.servlet.test.ServletTestWac
 com.bee32.plover.servlet.test.ServletTestCaseWac
 com.bee32.plover.servlet.test.FallbackWac
+com.bee32.plover.site.SiteManagerWac
