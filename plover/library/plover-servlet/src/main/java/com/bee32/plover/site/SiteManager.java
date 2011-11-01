@@ -5,14 +5,18 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import javax.free.IllegalUsageException;
 import javax.free.SystemProperties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.bee32.plover.arch.util.OrderComparator;
 
 public class SiteManager {
 
@@ -50,13 +54,13 @@ public class SiteManager {
         SiteInstance site = getSite(nameOrAlias);
         if (site == null) {
             String siteName = nameOrAlias;
-            site = loadSite(siteName);
-            addSite(site);
+            site = loadSiteConfig(siteName);
+            loadSite(site);
         }
         return site;
     }
 
-    public void addSite(SiteInstance site) {
+    public void loadSite(SiteInstance site) {
         String siteName = site.getName();
 
         // "Transactional"
@@ -88,12 +92,16 @@ public class SiteManager {
         }
 
         siteMap.put(siteName, site);
+
+        for (ISiteLifecycleListener listener : listeners) {
+            listener.loadSite(site);
+        }
     }
 
     /**
-     * Create or load existing site.
+     * Create or load existing site from site config.
      */
-    public SiteInstance loadSite(String siteName)
+    public SiteInstance loadSiteConfig(String siteName)
             throws LoadSiteException {
         File configFile = new File(SITE_HOME, siteName + SiteInstance.CONFIG_EXTENSION);
         SiteInstance site;
@@ -105,7 +113,7 @@ public class SiteManager {
         return site;
     }
 
-    protected SiteInstance removeSite(String name) {
+    protected final SiteInstance removeSite(String name) {
         SiteInstance site = siteMap.get(name);
         if (site != null)
             removeSite(site);
@@ -113,6 +121,11 @@ public class SiteManager {
     }
 
     protected void removeSite(SiteInstance site) {
+        // Keep from remove if any exception.
+        for (ISiteLifecycleListener listener : listeners) {
+            listener.removeSite(site);
+        }
+
         String name = site.getName();
         Set<String> aliases = site.getAliases();
         for (String alias : aliases) {
@@ -128,6 +141,10 @@ public class SiteManager {
     protected void deleteSite(SiteInstance site) {
         removeSite(site);
         site.configFile.delete();
+
+        for (ISiteLifecycleListener listener : listeners) {
+            listener.destroySite(site);
+        }
     }
 
     public void scanAndLoadSites(File siteHome) {
@@ -158,10 +175,16 @@ public class SiteManager {
     }
 
     private static final SiteManager instance;
+    static final Set<ISiteLifecycleListener> listeners;
 
     static {
         instance = new SiteManager();
         instance.scanAndLoadSites(SITE_HOME);
+
+        listeners = new TreeSet<ISiteLifecycleListener>(OrderComparator.INSTANCE);
+        for (ISiteLifecycleListener listener : ServiceLoader.load(ISiteLifecycleListener.class)) {
+            listeners.add(listener);
+        }
     }
 
     public static SiteManager getInstance() {
