@@ -38,7 +38,7 @@ public abstract class EntityViewBean
         return entity;
     }
 
-    protected <E extends Entity<K>, K extends Serializable> //
+    protected static <E extends Entity<K>, K extends Serializable> //
     E reloadEntity(E entity) {
         Class<? extends E> entityType = (Class<? extends E>) entity.getClass();
         K id = entity.getId();
@@ -48,12 +48,12 @@ public abstract class EntityViewBean
         return reloaded;
     }
 
-    protected <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
+    protected static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
     D reload(D dto) {
         return reload(dto, dto.getSelection());
     }
 
-    protected <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
+    protected static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
     D reload(D dto, int selection) {
         Class<? extends D> dtoType = (Class<? extends D>) dto.getClass();
         Class<? extends E> entityType = dto.getEntityType();

@@ -17,6 +17,11 @@ import com.bee32.plover.orm.entity.Entity;
  */
 public abstract class DTOs {
 
+    public static <E extends Entity<K>, D extends EntityDto<E, K>, K extends Serializable> //
+    Class<? extends E> getEntityType(D dto) {
+        return dto.getEntityType();
+    }
+
     static class Dummy
             extends EntityDto<Entity<Serializable>, Serializable> {
 

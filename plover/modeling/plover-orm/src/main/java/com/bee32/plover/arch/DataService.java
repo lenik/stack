@@ -11,6 +11,8 @@ import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.dao.MemdbDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IEntityAccessService;
+import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IEntityMarshalContext;
 import com.bee32.plover.site.scope.PerSite;
 
@@ -42,6 +44,23 @@ public abstract class DataService
     IEntityAccessService<_E, _K> asFor(Class<? extends _E> entityType) {
         IEntityAccessService<_E, _K> service = dataManager.asFor(entityType);
         return service;
+    }
+
+    protected <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
+    D reload(D dto) {
+        return reload(dto, dto.getSelection());
+    }
+
+    protected <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
+    D reload(D dto, int selection) {
+        Class<? extends D> dtoType = (Class<? extends D>) dto.getClass();
+        Class<? extends E> entityType = DTOs.getEntityType(dto);
+        K id = dto.getId();
+
+        E reloaded = asFor(entityType).getOrFail(id);
+
+        D remarshalled = DTOs.marshal(dtoType, selection, reloaded);
+        return remarshalled;
     }
 
 }
