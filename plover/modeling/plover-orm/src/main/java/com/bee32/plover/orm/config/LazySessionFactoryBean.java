@@ -7,6 +7,10 @@ import org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBea
 
 import com.bee32.plover.thirdparty.hibernate.util.LazyInitSessionFactory;
 
+/**
+ * Choose to use AnnotationSessionFactoryBean to enable JPA annotations instead of .hbm.xml config
+ * files.
+ */
 public abstract class LazySessionFactoryBean
         extends AnnotationSessionFactoryBean {
 
