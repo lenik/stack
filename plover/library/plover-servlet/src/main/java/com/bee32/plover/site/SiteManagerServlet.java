@@ -169,13 +169,13 @@ public class SiteManagerServlet
                 String label = args.getNString("label");
                 String description = args.getNString("description");
                 String aliases = args.getString("aliases");
-                String dbHost = args.getNString("dbhost");
-                int dbPort = args.getInt("dbport");
+                String _dialect = args.getString("dialect");
+                String url = args.getNString("url");
+                String dbName = args.getNString("dbname");
                 String dbUser = args.getNString("dbuser");
                 String dbPass = args.getNString("dbpass");
-                String dbName = args.getNString("dbname");
+                String _autoddl = args.getString("autoddl");
                 String _samples = args.getString("samples");
-                SamplesSelection samples = SamplesSelection.valueOf(_samples);
 
                 if (label == null)
                     label = name;
@@ -188,17 +188,24 @@ public class SiteManagerServlet
                     aliasSet.add(alias);
                 }
 
+                DBDialect dialect = DBDialect.valueOf(_dialect);
+                DBAutoDDL autoddl = DBAutoDDL.valueOf(_autoddl);
+                SamplesSelection samples = SamplesSelection.valueOf(_samples);
+                if (url == null)
+                    url = dialect.getUrlFormat();
+
                 if (createSite)
                     site = manager.loadSiteConfig(name);
 
                 site.setLabel(label);
                 site.setDescription(description);
                 site.setAliases(aliasSet);
-                site.setDbHost(dbHost);
-                site.setDbPort(dbPort);
+                site.setDbDialect(dialect);
+                site.setDbUrlFormat(url);
+                site.setDbName(dbName);
                 site.setDbUser(dbUser);
                 site.setDbPass(dbPass);
-                site.setDbName(dbName);
+                site.setAutoDDL(autoddl);
                 site.setSamples(samples);
 
                 site.saveConfig();
@@ -214,11 +221,12 @@ public class SiteManagerServlet
                     "label", "标题:站点的显示名称，一般是企业名称", site.getLabel(), //
                     "description", "描述:应用的描述信息，如企业的全称", site.getDescription(), //
                     "aliases", "网络绑定:多个网络名称绑定，用逗号分隔", StringArray.join(", ", site.getAliases()), //
-                    "dbhost", "数据服务器:数据库服务器的主机名称", site.getDbHost(), //
-                    "dbport", "数据库端口:数据库服务器的端口号", site.getDbPort(), //
+                    "dialect", "数据库类型:数据库的厂商类型", site.getDbDialect(), //
+                    "url", "连接地址:数据库的JDBC连接地址（%s用于替换数据库名）", site.getDbUrlFormat(), //
                     "dbname", "数据库名称:数据库的名称", site.getDbName(), //
                     "dbuser", "数据库用户名:数据库的登录用户", site.getDbUser(), //
                     "dbpass", "数据库密码:数据库的登录密码", site.getDbPass(), //
+                    "autoddl", "DDL模式:数据库自动创建DDL的模式", site.getAutoDDL(), //
                     "samples", "样本加载:选择加载哪些样本", site.getSamples() //
             );
 

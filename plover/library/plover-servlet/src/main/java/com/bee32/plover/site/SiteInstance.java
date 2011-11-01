@@ -26,17 +26,13 @@ public class SiteInstance {
     public static final String LABEL_KEY = "label";
     public static final String DESCRIPTION_KEY = "description";
 
-    public static final String DB_HOST_KEY = "db.host";
-    public static final String DB_PORT_KEY = "db.port";
+    public static final String DB_DIALECT_KEY = "db.dialect";
+    public static final String DB_URL_FORMAT_KEY = "db.url";
     public static final String DB_NAME_KEY = "db.name";
     public static final String DB_USER_KEY = "db.user";
     public static final String DB_PASS_KEY = "db.pass";
+    public static final String AUTODDL_KEY = "autoddl";
     public static final String SAMPLES_KEY = "samples";
-
-    static final String DEFAULT_DB_HOST = "localhost";
-    static final int DEFAULT_DB_PORT = 1063;
-    static final String DEFAULT_DB_USER = "semsadmin";
-    static final String DEFAULT_DB_PASS = "MxDkUWl1";
 
     File configFile;
     FormatProperties properties;
@@ -47,19 +43,21 @@ public class SiteInstance {
     public SiteInstance() {
         configFile = null;
         properties = new FormatProperties();
-        setProperty(DB_HOST_KEY, DEFAULT_DB_HOST);
-        setIntProperty(DB_PORT_KEY, DEFAULT_DB_PORT);
-        setProperty(DB_USER_KEY, DEFAULT_DB_USER);
-        setProperty(DB_PASS_KEY, DEFAULT_DB_PASS);
+
+        setDbDialect(DBDialect.PostgreSQL);
+        setProperty(DB_USER_KEY, "semsadmin");
+        setProperty(DB_PASS_KEY, "MxDkUWl1");
+        setAutoDDL(DBAutoDDL.Update);
+        setSamples(SamplesSelection.STANDARD);
     }
 
     public SiteInstance(File file)
             throws IOException, ParseException {
+        this();
+
         if (file == null)
             throw new NullPointerException("file");
-
         configFile = file;
-        properties = new FormatProperties();
 
         String name = file.getName();
         if (name.endsWith(CONFIG_EXTENSION))
@@ -239,21 +237,25 @@ public class SiteInstance {
         setProperty(ALIASES_KEY, _aliases);
     }
 
-    public String getDbHost() {
-        String dbHost = getProperty(DB_HOST_KEY);
-        return dbHost;
+    public DBDialect getDbDialect() {
+        String _dialect = getProperty(DB_DIALECT_KEY);
+        DBDialect dialect = DBDialect.valueOf(_dialect);
+        return dialect;
     }
 
-    public void setDbHost(String dbHost) {
-        setProperty(DB_HOST_KEY, dbHost);
+    public void setDbDialect(DBDialect dialect) {
+        String _dialect = dialect.name();
+        setProperty(DB_DIALECT_KEY, _dialect);
+        setProperty(DB_URL_FORMAT_KEY, dialect.getUrlFormat());
     }
 
-    public int getDbPort() {
-        return getIntProperty(DB_PORT_KEY, DEFAULT_DB_PORT);
+    public String getDbUrlFormat() {
+        String format = getProperty(DB_URL_FORMAT_KEY);
+        return format;
     }
 
-    public void setDbPort(int dbPort) {
-        setIntProperty(DB_PORT_KEY, dbPort);
+    public void setDbUrlFormat(String urlFormat) {
+        setProperty(DB_URL_FORMAT_KEY, urlFormat);
     }
 
     public String getDbName() {
@@ -263,6 +265,13 @@ public class SiteInstance {
 
     public void setDbName(String dbName) {
         setProperty(DB_NAME_KEY, dbName);
+    }
+
+    public String getDbUrl() {
+        String urlFormat = getDbUrlFormat();
+        String dbName = getDbName();
+        String url = String.format(urlFormat, dbName);
+        return url;
     }
 
     public String getDbUser() {
@@ -283,20 +292,27 @@ public class SiteInstance {
         setProperty(DB_PASS_KEY, dbPass);
     }
 
+    public DBAutoDDL getAutoDDL() {
+        String _autoddl = getProperty(AUTODDL_KEY);
+        DBAutoDDL autoddl = DBAutoDDL.valueOf(_autoddl);
+        return autoddl;
+    }
+
+    public void setAutoDDL(DBAutoDDL autoddl) {
+        String _autoddl = autoddl.name();
+        setProperty(AUTODDL_KEY, _autoddl);
+    }
+
     public SamplesSelection getSamples() {
         String property = getProperty(SAMPLES_KEY);
-        SamplesSelection samples = null;
-        if (property != null) {
-            property = property.trim();
-            if (!property.isEmpty())
-                samples = SamplesSelection.valueOf(property);
-        } else
-            samples = SamplesSelection.STANDARD;
+        SamplesSelection samples = SamplesSelection.valueOf(property);
         return samples;
     }
 
     public void setSamples(SamplesSelection samples) {
-        String property = samples == null ? "" : samples.name();
+        if (samples == null)
+            throw new NullPointerException("samples");
+        String property = samples.name();
         setProperty(SAMPLES_KEY, property);
     }
 

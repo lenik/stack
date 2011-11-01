@@ -30,6 +30,14 @@ public class SiteManager {
         SITE_HOME.mkdirs();
     }
 
+    static final Set<ISiteLifecycleListener> listeners;
+    static {
+        listeners = new TreeSet<ISiteLifecycleListener>(OrderComparator.INSTANCE);
+        for (ISiteLifecycleListener listener : ServiceLoader.load(ISiteLifecycleListener.class)) {
+            listeners.add(listener);
+        }
+    }
+
     Map<String, SiteInstance> siteMap = new TreeMap<String, SiteInstance>();
     Map<String, String> wildHostAliasMap = new HashMap<String, String>();
     Map<String, String> hostAliasMap = new HashMap<String, String>();
@@ -175,16 +183,9 @@ public class SiteManager {
     }
 
     private static final SiteManager instance;
-    static final Set<ISiteLifecycleListener> listeners;
-
     static {
         instance = new SiteManager();
         instance.scanAndLoadSites(SITE_HOME);
-
-        listeners = new TreeSet<ISiteLifecycleListener>(OrderComparator.INSTANCE);
-        for (ISiteLifecycleListener listener : ServiceLoader.load(ISiteLifecycleListener.class)) {
-            listeners.add(listener);
-        }
     }
 
     public static SiteManager getInstance() {
