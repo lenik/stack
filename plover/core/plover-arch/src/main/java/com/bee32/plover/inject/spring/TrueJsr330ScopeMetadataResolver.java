@@ -13,6 +13,7 @@ import org.springframework.context.annotation.AnnotationScopeMetadataResolver;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopeMetadata;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.core.type.AnnotationMetadata;
 
 import com.bee32.plover.arch.util.ClassUtil;
 
@@ -26,7 +27,7 @@ public class TrueJsr330ScopeMetadataResolver
 
     public TrueJsr330ScopeMetadataResolver() {
         super();
-        this.defaultProxyMode = ScopedProxyMode.NO;
+        this.defaultProxyMode = ScopedProxyMode.DEFAULT;
     }
 
     public TrueJsr330ScopeMetadataResolver(ScopedProxyMode defaultProxyMode) {
@@ -40,28 +41,42 @@ public class TrueJsr330ScopeMetadataResolver
             return super.resolveScopeMetadata(definition);
 
         AnnotatedBeanDefinition annDef = (AnnotatedBeanDefinition) definition;
+        AnnotationMetadata metadata = annDef.getMetadata();
 
         String scopeName = null;
-        ScopedProxyMode proxyMode = null;
+        ScopedProxyMode proxyMode_ann = null;
+        ScopedProxyMode proxyMode_bean = null;
+
+        String beanClassName = annDef.getBeanClassName();
+        // Set breakpoint here for specific bean classes.
 
         // OPT - Check if duplicated scope annotation.
-        for (String annotationType : annDef.getMetadata().getAnnotationTypes()) {
+        for (String annotationType : metadata.getAnnotationTypes()) {
             if (springScopeAnn.equals(annotationType)) {
-                Map<String, Object> attributes = annDef.getMetadata().getAnnotationAttributes(annotationType);
+                Map<String, Object> attributes = metadata.getAnnotationAttributes(annotationType);
                 scopeName = (String) attributes.get("value");
-                proxyMode = (ScopedProxyMode) attributes.get("proxyMode");
+                proxyMode_ann = (ScopedProxyMode) attributes.get("proxyMode");
+                // Spring @Scope 可以决定一切。
                 break;
             }
+
+            // JSR-330 Scope 选项
             Class<? extends Annotation> scopeAnnotationClass = resolveScopeAnnotation(annotationType);
             if (scopeAnnotationClass != null) {
                 scopeName = getScopeName(scopeAnnotationClass);
-                break;
+                proxyMode_ann = getProxyMode(scopeAnnotationClass);
+                continue;
+            }
+
+            // 类上的 ScopeProxy 重定义。
+            if (ScopeProxy.class.getName().equals(annotationType)) {
+                proxyMode_bean = (ScopedProxyMode) metadata.getAnnotationAttributes(annotationType).get("value");
+                continue;
             }
         }
 
         if (scopeName == null) {
             // Try resolve scope by JRE.
-            String beanClassName = annDef.getBeanClassName();
             Class<?> beanClass;
             try {
                 beanClass = ClassUtil.forName(beanClassName);
@@ -69,21 +84,25 @@ public class TrueJsr330ScopeMetadataResolver
                 throw new IllegalUsageException(e.getMessage(), e);
             }
 
-            ScopeMetadata metadata = getScopeMetadata(beanClass);
-            if (metadata != null)
-                return metadata;
+            ScopeMetadata scopeMetadata = getScopeMetadata(beanClass);
+            if (scopeMetadata != null)
+                return scopeMetadata;
         }
 
         if (scopeName == null)
             scopeName = DEFAULT_SCOPE_NAME;
 
-        if (proxyMode == null || proxyMode == ScopedProxyMode.DEFAULT)
-            proxyMode = this.defaultProxyMode;
+        ScopedProxyMode proxyMode = proxyMode_bean;
+        if (proxyMode == null || proxyMode == ScopedProxyMode.DEFAULT) {
+            proxyMode = proxyMode_ann;
+            if (proxyMode == null || proxyMode == ScopedProxyMode.DEFAULT)
+                proxyMode = defaultProxyMode;
+        }
 
-        ScopeMetadata metadata = new ScopeMetadata();
-        metadata.setScopeName(scopeName);
-        metadata.setScopedProxyMode(proxyMode);
-        return metadata;
+        ScopeMetadata scopeMetadata = new ScopeMetadata();
+        scopeMetadata.setScopeName(scopeName);
+        scopeMetadata.setScopedProxyMode(proxyMode);
+        return scopeMetadata;
     }
 
     public ScopeMetadata getScopeMetadata(Class<?> beanClass) {
@@ -98,9 +117,9 @@ public class TrueJsr330ScopeMetadataResolver
                     metadata.setScopeName(scopeName);
 
                     ScopedProxyMode proxyMode = defaultProxyMode;
-                    ScopeProxy scopeProxy = beanClass.getAnnotation(ScopeProxy.class);
-                    if (scopeProxy != null)
-                        proxyMode = scopeProxy.value();
+                    ScopeProxy _scopeProxy = beanClass.getAnnotation(ScopeProxy.class);
+                    if (_scopeProxy != null)
+                        proxyMode = _scopeProxy.value();
 
                     metadata.setScopedProxyMode(proxyMode);
 
@@ -135,6 +154,7 @@ public class TrueJsr330ScopeMetadataResolver
     }
 
     private static Map<Class<? extends Annotation>, String> scopeNameMap = new HashMap<Class<? extends Annotation>, String>();
+    private static Map<Class<? extends Annotation>, ScopedProxyMode> proxyModeMap = new HashMap<Class<? extends Annotation>, ScopedProxyMode>();
 
     public static String getScopeName(Class<? extends Annotation> scopeAnnotationClass) {
         if (scopeAnnotationClass == null)
@@ -170,6 +190,23 @@ public class TrueJsr330ScopeMetadataResolver
         String simpleName = scopeAnnotationClass.getSimpleName();
         String defaultScopeName = Strings.lcfirst(simpleName);
         return defaultScopeName;
+    }
+
+    public static ScopedProxyMode getProxyMode(Class<? extends Annotation> scopeAnnotationClass) {
+        if (scopeAnnotationClass == null)
+            throw new NullPointerException("scopeAnnotationClass");
+
+        ScopedProxyMode proxyMode = proxyModeMap.get(scopeAnnotationClass);
+        if (proxyMode == null) {
+            ScopeProxy _scopeProxy = scopeAnnotationClass.getAnnotation(ScopeProxy.class);
+            if (_scopeProxy != null)
+                proxyMode = _scopeProxy.value();
+            else
+                proxyMode = ScopedProxyMode.DEFAULT;
+            proxyModeMap.put(scopeAnnotationClass, proxyMode);
+        }
+
+        return proxyMode;
     }
 
 }
