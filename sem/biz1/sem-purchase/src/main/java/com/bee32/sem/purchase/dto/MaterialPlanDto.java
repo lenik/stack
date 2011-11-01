@@ -144,4 +144,8 @@ public class MaterialPlanDto
         this.purchaseRequest = purchaseRequest;
     }
 
+    public String getIdAsString() {
+        return getId().toString();
+    }
+
 }

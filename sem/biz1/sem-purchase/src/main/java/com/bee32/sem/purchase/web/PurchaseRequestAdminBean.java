@@ -1,14 +1,12 @@
 package com.bee32.sem.purchase.web;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import com.bee32.plover.criteria.hibernate.Equals;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.criteria.hibernate.Or;
@@ -19,15 +17,13 @@ import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.util.PeopleCriteria;
-import com.bee32.sem.purchase.dto.MakeOrderDto;
-import com.bee32.sem.purchase.dto.MakeOrderItemDto;
-import com.bee32.sem.purchase.dto.MakeTaskDto;
-import com.bee32.sem.purchase.dto.MakeTaskItemDto;
-import com.bee32.sem.purchase.entity.MakeOrder;
-import com.bee32.sem.purchase.entity.MakeTask;
-import com.bee32.sems.bom.dto.PartDto;
-import com.bee32.sems.bom.entity.Part;
-import com.bee32.sems.bom.util.BomCriteria;
+import com.bee32.sem.purchase.dto.MaterialPlanDto;
+import com.bee32.sem.purchase.dto.MaterialPlanItemDto;
+import com.bee32.sem.purchase.dto.PurchaseRequestDto;
+import com.bee32.sem.purchase.dto.PurchaseRequestItemDto;
+import com.bee32.sem.purchase.entity.MaterialPlan;
+import com.bee32.sem.purchase.entity.PurchaseRequest;
+import com.bee32.sem.purchase.service.PurchaseService;
 
 public class PurchaseRequestAdminBean extends EntityViewBean {
 
@@ -41,46 +37,42 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
     private int goNumber;
     private int count;
 
-    protected MakeTaskDto makeTask = new MakeTaskDto().create();
+    protected PurchaseRequestDto purchaseRequest = new PurchaseRequestDto().create();
 
-    protected MakeTaskItemDto makeTaskItem = new MakeTaskItemDto().create();
-
-    private String partPattern;
-    private List<PartDto> parts;
-    private PartDto selectedPart;
+    protected PurchaseRequestItemDto purchaseRequestItem = new PurchaseRequestItemDto().create();
 
     private boolean newItemStatus = false;
 
-    protected List<MakeTaskItemDto> itemsNeedToRemoveWhenModify = new ArrayList<MakeTaskItemDto>();
+    protected List<PurchaseRequestItemDto> itemsNeedToRemoveWhenModify = new ArrayList<PurchaseRequestItemDto>();
 
-    private PartyDto customer;
+    private Date limitDateFromForPlan;
+    private Date limitDateToForPlan;
 
-    private Date limitDateFromForOrder;
-    private Date limitDateToForOrder;
+    private List<MaterialPlanDto> plans;
+    private MaterialPlanDto selectedPlan;
 
-    private List<MakeOrderDto> orders;
-    private MakeOrderDto selectedOrder;
+    private Long selectedPlanId;
+    private List<MaterialPlanDto> selectedPlans = new ArrayList<MaterialPlanDto>();
 
-    private String customerPattern;
-    private List<PartyDto> customers;
-    private PartyDto selectedCustomer;
-
+    private String supplierPattern;
+    private List<PartyDto> suppliers;
+    private PartyDto selectedSupplier;
 
     public PurchaseRequestAdminBean() {
         Calendar c = Calendar.getInstance();
         // 取这个月的第一天
         c.set(Calendar.DAY_OF_MONTH, 1);
         limitDateFrom = c.getTime();
-        limitDateFromForOrder = c.getTime();
+        limitDateFromForPlan = c.getTime();
 
         // 最这个月的最后一天
         c.add(Calendar.MONTH, 1);
         c.add(Calendar.DAY_OF_MONTH, -1);
         limitDateTo = c.getTime();
-        limitDateToForOrder = c.getTime();
+        limitDateToForPlan = c.getTime();
 
         goNumber = 1;
-        loadMakeTask(goNumber);
+        loadPurchaseRequest(goNumber);
     }
 
     public Date getLimitDateFrom() {
@@ -117,67 +109,45 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
 
 
     public int getCount() {
-        count = serviceFor(MakeTask.class).count(//
+        count = serviceFor(PurchaseRequest.class).count(//
                 EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo));
         return count;
     }
 
-    public MakeTaskDto getMakeTask() {
-        return makeTask;
+    public PurchaseRequestDto getPurchaseRequest() {
+        return purchaseRequest;
     }
 
-    public void setMakeTask(MakeTaskDto makeTask) {
-        this.makeTask = makeTask;
+    public void setPurchaseRequest(PurchaseRequestDto purchaseRequest) {
+        this.purchaseRequest = purchaseRequest;
     }
 
     public String getCreator() {
-        if (makeTask == null)
+        if (purchaseRequest == null)
             return "";
         else
-            return makeTask.getOwnerDisplayName();
+            return purchaseRequest.getOwnerDisplayName();
     }
 
-    public List<MakeTaskItemDto> getItems() {
-        if (makeTask == null)
+    public List<PurchaseRequestItemDto> getItems() {
+        if (purchaseRequest == null)
             return null;
-        return makeTask.getItems();
+        return purchaseRequest.getItems();
     }
 
-    public MakeTaskItemDto getMakeTaskItem() {
-        return makeTaskItem;
+    public PurchaseRequestItemDto getPurchaseRequestItem() {
+        return purchaseRequestItem;
     }
 
-    public void setMakeTaskItem(MakeTaskItemDto makeTaskItem) {
-        this.makeTaskItem = makeTaskItem;
+    public void setPurchaseRequestItem(PurchaseRequestItemDto purchaseRequestItem) {
+        this.purchaseRequestItem = purchaseRequestItem;
     }
 
     public void setCount(int count) {
         this.count = count;
     }
 
-    public String getPartPattern() {
-        return partPattern;
-    }
 
-    public void setPartPattern(String partPattern) {
-        this.partPattern = partPattern;
-    }
-
-    public List<PartDto> getParts() {
-        return parts;
-    }
-
-    public void setParts(List<PartDto> parts) {
-        this.parts = parts;
-    }
-
-    public PartDto getSelectedPart() {
-        return selectedPart;
-    }
-
-    public void setSelectedPart(PartDto selectedPart) {
-        this.selectedPart = selectedPart;
-    }
 
     public boolean isNewItemStatus() {
         return newItemStatus;
@@ -187,77 +157,84 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
         this.newItemStatus = newItemStatus;
     }
 
-    public PartyDto getCustomer() {
-        return customer;
+    public Date getLimitDateFromForPlan() {
+        return limitDateFromForPlan;
     }
 
-    public void setCustomer(PartyDto customer) {
-        this.customer = customer;
+    public void setLimitDateFromForPlan(Date limitDateFromForPlan) {
+        this.limitDateFromForPlan = limitDateFromForPlan;
     }
 
-    public Date getLimitDateFromForOrder() {
-        return limitDateFromForOrder;
+    public Date getLimitDateToForPlan() {
+        return limitDateToForPlan;
     }
 
-    public void setLimitDateFromForOrder(Date limitDateFromForOrder) {
-        this.limitDateFromForOrder = limitDateFromForOrder;
+    public void setLimitDateToForPlan(Date limitDateToForPlan) {
+        this.limitDateToForPlan = limitDateToForPlan;
     }
 
-    public Date getLimitDateToForOrder() {
-        return limitDateToForOrder;
+    public List<MaterialPlanDto> getPlans() {
+        return plans;
     }
 
-    public void setLimitDateToForOrder(Date limitDateToForOrder) {
-        this.limitDateToForOrder = limitDateToForOrder;
+    public void setPlans(List<MaterialPlanDto> plans) {
+        this.plans = plans;
     }
 
-    public List<MakeOrderDto> getOrders() {
-        return orders;
+    public MaterialPlanDto getSelectedPlan() {
+        return selectedPlan;
     }
 
-    public void setOrders(List<MakeOrderDto> orders) {
-        this.orders = orders;
+    public void setSelectedPlan(MaterialPlanDto selectedPlan) {
+        this.selectedPlan = selectedPlan;
     }
 
-    public MakeOrderDto getSelectedOrder() {
-        return selectedOrder;
-    }
-
-    public void setSelectedOrder(MakeOrderDto selectedOrder) {
-        this.selectedOrder = selectedOrder;
-    }
-
-    public String getCustomerPattern() {
-        return customerPattern;
-    }
-
-    public void setCustomerPattern(String customerPattern) {
-        this.customerPattern = customerPattern;
-    }
-
-    public List<PartyDto> getCustomers() {
-        return customers;
-    }
-
-    public void setCustomers(List<PartyDto> customers) {
-        this.customers = customers;
-    }
-
-    public PartyDto getSelectedCustomer() {
-        return selectedCustomer;
-    }
-
-    public void setSelectedCustomer(PartyDto selectedCustomer) {
-        this.selectedCustomer = selectedCustomer;
-    }
-
-    public List<MakeOrderItemDto> getOrderItems() {
-        if(selectedOrder != null) {
-            return selectedOrder.getItems();
+    public List<MaterialPlanItemDto> getPlanItems() {
+        if(selectedPlan != null) {
+            return selectedPlan.getItems();
         }
         return null;
     }
 
+    public Long getSelectedPlanId() {
+        return selectedPlanId;
+    }
+
+    public void setSelectedPlanId(Long selectedPlanId) {
+        this.selectedPlanId = selectedPlanId;
+    }
+
+    public List<MaterialPlanDto> getSelectedPlans() {
+        return selectedPlans;
+    }
+
+    public void setSelectedPlans(List<MaterialPlanDto> selectedPlans) {
+        this.selectedPlans = selectedPlans;
+    }
+
+    public String getSupplierPattern() {
+        return supplierPattern;
+    }
+
+    public void setSupplierPattern(String supplierPattern) {
+        this.supplierPattern = supplierPattern;
+    }
+
+    public List<PartyDto> getSuppliers() {
+        return suppliers;
+    }
+
+    public void setSuppliers(List<PartyDto> suppliers) {
+        this.suppliers = suppliers;
+    }
+
+    public PartyDto getSelectedSupplier() {
+        return selectedSupplier;
+    }
+
+    public void setSelectedSupplier(PartyDto selectedSupplier) {
+        this.selectedSupplier = selectedSupplier;
+    }
 
 
 
@@ -266,10 +243,10 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
 
 
     public void limit() {
-        loadMakeTask(goNumber);
+        loadPurchaseRequest(goNumber);
     }
 
-    private void loadMakeTask(int position) {
+    private void loadPurchaseRequest(int position) {
         //刷新总记录数
         getCount();
 
@@ -284,25 +261,28 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
             position = count;
         }
 
-        makeTask = new MakeTaskDto().create();    //如果限定条件内没有找到makeTask,则创建一个
+        purchaseRequest = new PurchaseRequestDto().create();    //如果限定条件内没有找到purchaseRequest,则创建一个
 
-        MakeTask firstTask = serviceFor(MakeTask.class).getFirst( //
+        PurchaseRequest firstRequest = serviceFor(PurchaseRequest.class).getFirst( //
                 new Offset(position - 1), //
                 EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
                 Order.asc("id"));
 
-        if (firstTask != null)
-            makeTask = DTOs.marshal(MakeTaskDto.class, MakeTaskDto.ITEMS, firstTask);
+        if (firstRequest != null) {
+            purchaseRequest = DTOs.marshal(PurchaseRequestDto.class, PurchaseRequestDto.ITEMS | PurchaseRequestDto.PLANS, firstRequest);
+            selectedPlans = purchaseRequest.getPlans();
+        }
 
     }
 
     public void new_() {
-        makeTask = new MakeTaskDto().create();
+        purchaseRequest = new PurchaseRequestDto().create();
+        selectedPlans = new ArrayList<MaterialPlanDto>();
         editable = true;
     }
 
     public void modify() {
-        if(makeTask.getId() == null) {
+        if(purchaseRequest.getId() == null) {
             uiLogger.warn("当前没有对应的单据");
             return;
         }
@@ -312,59 +292,72 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
         editable = true;
     }
 
+    @Transactional
     public void save() {
-        if(makeTask.getId() == null) {
+        if(purchaseRequest.getId() == null) {
             //新增
             goNumber = count + 1;
         }
 
         try {
-            MakeTask _task = makeTask.unmarshal();
-            for(MakeTaskItemDto item : itemsNeedToRemoveWhenModify) {
-                _task.removeItem(item.unmarshal());
+            PurchaseRequest _request = purchaseRequest.unmarshal();
+            for(PurchaseRequestItemDto item : itemsNeedToRemoveWhenModify) {
+                _request.removeItem(item.unmarshal());
             }
 
-            MakeOrder order = _task.getOrder();
-            order.getTasks().add(_task);
+            serviceFor(PurchaseRequest.class).save(_request);
 
-            Map<Part, BigDecimal> mapQuantityOverloadParts = order.checkIfTaskQuantityFitOrder();
-            Set<Part> setQuantityOverloadParts = mapQuantityOverloadParts.keySet();
-            if(setQuantityOverloadParts.size() > 0){
-                StringBuilder infoBuilder = new StringBuilder();
-                for(Part part : setQuantityOverloadParts) {
-                    infoBuilder.append(part.getTarget().getLabel());
-                    infoBuilder.append("超过");
-                    infoBuilder.append(mapQuantityOverloadParts.get(part));
-                    infoBuilder.append(";");
-                }
-
-                uiLogger.info("对应订单的所有生产任务单数量总和超过订单中的数量!" + infoBuilder.toString());
-            } else {
-                serviceFor(MakeTask.class).save(_task);
-                uiLogger.info("保存成功");
-                loadMakeTask(goNumber);
-                editable = false;
+            for(MaterialPlanDto _p : selectedPlans) {
+                MaterialPlan __p = _p.unmarshal();
+                __p.setPurchaseRequest(_request);
+                serviceFor(MaterialPlan.class).saveOrUpdate(__p);
             }
+
+            uiLogger.info("保存成功");
+            loadPurchaseRequest(goNumber);
+            editable = false;
+
         } catch (Exception e) {
-            uiLogger.warn("保存失败,错误信息:" + e.getMessage());
+            uiLogger.warn("保存失败", e);
+        }
+    }
+
+    @Transactional
+    public void delete() {
+        try {
+            PurchaseRequest _purchaseRequest = purchaseRequest.unmarshal();
+            _purchaseRequest.getPlans().clear();
+
+            for(MaterialPlanDto _p : selectedPlans) {
+                MaterialPlan __p = _p.unmarshal();
+                __p.setPurchaseRequest(null);
+                serviceFor(MaterialPlan.class).saveOrUpdate(__p);
+            }
+
+            serviceFor(PurchaseRequest.class).delete(_purchaseRequest);
+
+            uiLogger.info("删除成功!");
+            loadPurchaseRequest(goNumber);
+        } catch (Exception e) {
+            uiLogger.warn("删除失败", e);
         }
     }
 
     public void cancel() {
-        loadMakeTask(goNumber);
+        loadPurchaseRequest(goNumber);
         editable = false;
     }
 
     public void first() {
         goNumber = 1;
-        loadMakeTask(goNumber);
+        loadPurchaseRequest(goNumber);
     }
 
     public void previous() {
         goNumber--;
         if (goNumber < 1)
             goNumber = 1;
-        loadMakeTask(goNumber);
+        loadPurchaseRequest(goNumber);
     }
 
     public void go() {
@@ -373,7 +366,7 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
         } else if (goNumber > count) {
             goNumber = count;
         }
-        loadMakeTask(goNumber);
+        loadPurchaseRequest(goNumber);
     }
 
     public void next() {
@@ -381,17 +374,17 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
 
         if (goNumber > count)
             goNumber = count;
-        loadMakeTask(goNumber);
+        loadPurchaseRequest(goNumber);
     }
 
     public void last() {
         goNumber = count + 1;
-        loadMakeTask(goNumber);
+        loadPurchaseRequest(goNumber);
     }
 
     public void newItem() {
-        makeTaskItem = new MakeTaskItemDto().create();
-        makeTaskItem.setTask(makeTask);
+        purchaseRequestItem = new PurchaseRequestItemDto().create();
+        purchaseRequestItem.setPurchaseRequest(purchaseRequest);
 
         newItemStatus = true;
     }
@@ -402,78 +395,76 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
 
 
     public void saveItem() {
-        makeTaskItem.setTask(makeTask);
+        purchaseRequestItem.setPurchaseRequest(purchaseRequest);
+        purchaseRequestItem.setPreferredSupplier(selectedSupplier);
         if (newItemStatus) {
-            makeTask.addItem(makeTaskItem);
-        }
-    }
-
-    public void delete() {
-        try {
-            serviceFor(MakeTask.class).delete(makeTask.unmarshal());
-            uiLogger.info("删除成功!");
-            loadMakeTask(goNumber);
-        } catch (Exception e) {
-            uiLogger.warn("删除失败,错误信息:" + e.getMessage());
+            purchaseRequest.addItem(purchaseRequestItem);
         }
     }
 
     public void deleteItem() {
-        makeTask.removeItem(makeTaskItem);
+        purchaseRequest.removeItem(purchaseRequestItem);
 
-        if (makeTaskItem.getId() != null) {
-            itemsNeedToRemoveWhenModify.add(makeTaskItem);
+        if (purchaseRequestItem.getId() != null) {
+            itemsNeedToRemoveWhenModify.add(purchaseRequestItem);
         }
     }
 
-    public void findPart() {
-        if (partPattern != null && !partPattern.isEmpty()) {
+    public void findPlan() {
+        List<MaterialPlan> _plans = serviceFor(MaterialPlan.class).list( //
+                EntityCriteria.createdBetweenEx(limitDateFromForPlan, limitDateToForPlan));
 
-            List<Part> _parts = serviceFor(Part.class).list(BomCriteria.findPartUseMaterialName(partPattern));
+        plans = DTOs.marshalList(MaterialPlanDto.class, _plans);
+    }
 
-            parts = DTOs.mrefList(PartDto.class, _parts);
+    public void addPlan() {
+        boolean alreadyAdded = false;
+        for(MaterialPlanDto p : selectedPlans) {
+            if(p.getId().equals(selectedPlan.getId())) {
+                alreadyAdded = true;
+                break;
+            }
+        }
+        if(!alreadyAdded) {
+            selectedPlans.add(selectedPlan);
         }
     }
 
-    public void choosePart() {
-        makeTaskItem.setPart(selectedPart);
-
-        selectedPart = null;
-    }
-
-    public void findOrder() {
-        List<MakeOrder> _orders = serviceFor(MakeOrder.class).list( //
-                new Equals("customer.id", customer.getId()), //
-                EntityCriteria.createdBetweenEx(limitDateFromForOrder, limitDateToForOrder));
-
-        orders = DTOs.marshalList(MakeOrderDto.class, _orders);
-    }
-
-    public void chooseOrder() {
-        selectedOrder = reload(selectedOrder);
-        List<MakeTaskItemDto> makeTaskItems = selectedOrder.arrangeMakeTask(makeTask);
-        if(makeTaskItems != null) {
-            makeTask.setItems(makeTaskItems);
-            makeTask.setOrder(selectedOrder);
-        } else {
-            uiLogger.error("此定单上的产品的生产任务已经全部安排完成");
+    public void deletePlan() {
+        for(MaterialPlanDto p : selectedPlans) {
+            if(p.getId().equals(selectedPlanId)) {
+                selectedPlans.remove(p);
+                break;
+            }
         }
     }
 
-    public void findCustomer() {
-        if (customerPattern != null && !customerPattern.isEmpty()) {
+    public void choosePlan() {
+        for(MaterialPlanDto _p : selectedPlans) {
+            _p = reload(_p);
+            if(_p.getPurchaseRequest().getId() != null) {
+                uiLogger.info("选中的物料计划已经有对应的采购请求,请重新选择");
+                return;
+            }
+        }
 
-            List<Party> _customers = serviceFor(Party.class).list( //
-                    PeopleCriteria.customers(), //
+        purchaseRequest.setPlans(selectedPlans);
+
+        List<PurchaseRequestItemDto> items //
+            = getBean(PurchaseService.class).calcMaterialRequirement(purchaseRequest, selectedPlans);
+        purchaseRequest.setItems(items);
+    }
+
+    public void findSupplier() {
+        if (supplierPattern != null && !supplierPattern.isEmpty()) {
+
+            List<Party> _suppliers = serviceFor(Party.class).list( //
+                    PeopleCriteria.suppliers(), //
                     new Or( //
-                            new Like("name", "%" + customerPattern + "%"), //
-                            new Like("fullName", "%" + customerPattern + "%")));
+                            new Like("name", "%" + supplierPattern + "%"), //
+                            new Like("fullName", "%" + supplierPattern + "%")));
 
-            customers = DTOs.marshalList(PartyDto.class, _customers);
+            suppliers = DTOs.marshalList(PartyDto.class, _suppliers);
         }
-    }
-
-    public void chooseCustomer() {
-        customer = selectedCustomer;
     }
 }

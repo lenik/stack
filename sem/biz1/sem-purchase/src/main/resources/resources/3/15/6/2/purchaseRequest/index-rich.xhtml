@@ -103,16 +103,16 @@
 				</p:toolbarGroup>
 			</p:toolbar>
 
-			<p:panel header="生产任务单管理">
+			<p:panel header="采购请求管理">
 				<t:panelGrid columns="4">
                     <h:outputText value="标识:" />
                     <t:panelGroup colspan="3">
-                        <h:outputText value="#{purchaseRequestAdminBean.makeTask.id}"/>
+                        <h:outputText value="#{purchaseRequestAdminBean.purchaseRequest.id}"/>
                     </t:panelGroup>
 
                     <h:outputText value="时间:" />
                     <h:outputText
-                        value="#{purchaseRequestAdminBean.makeTask.createdDate}">
+                        value="#{purchaseRequestAdminBean.purchaseRequest.createdDate}">
                         <f:convertDateTime pattern="yyyy-MM-dd"
                             timeZone="Asia/Shanghai" />
                     </h:outputText>
@@ -120,16 +120,23 @@
                     <p:inputText value="#{purchaseRequestAdminBean.creator}"
                         disabled="true" />
 
-                    <h:outputText value="定单:" />
-                    <t:panelGroup>
-                        <p:inputText id="order" value="#{purchaseRequestAdminBean.makeTask.order.id}" readonly="true"/>
-                        <p:commandButton value="..." onclick="orderDialog.show()" disabled="#{!purchaseRequestAdminBean.editable}"/>
+                    <h:outputText value="物料计划" />
+                    <t:panelGroup colspan="3">
+                        <t:panelGrid columns="2">
+                            <p:selectOneListbox id="plans"
+                                style="height:80px; width:200px;">
+                                <f:selectItems
+                                    value="#{purchaseRequestAdminBean.purchaseRequest.plans}"
+                                    var="plan" itemLabel="#{plan.idAsString}"
+                                    itemValue="#{plan.id}" />
+                            </p:selectOneListbox>
+                            <h:panelGrid colums="1">
+                                <p:commandButton value="挑选物料计划"
+                                    disabled="#{!purchaseRequestAdminBean.editable}"
+                                    onclick="planDialog.show();" />
+                            </h:panelGrid>
+                        </t:panelGrid>
                     </t:panelGroup>
-                    <h:outputText value="完工时间:" />
-                    <p:calendar id="deadline" navigator="true"
-                        locale="zh_CN" pattern="yyyy-MM-dd"
-                        value="#{purchaseRequestAdminBean.makeTask.deadline}"
-                        showOn="button" />
                 </t:panelGrid>
 
                 <h:outputText value="明细"/>
@@ -149,14 +156,14 @@
                         <f:facet name="header">
                             <h:outputText value="物料"/>
                         </f:facet>
-                        <h:outputText value="#{item.part.target.label}" />
+                        <h:outputText value="#{item.material.label}" />
                     </p:column>
 
                     <p:column>
                         <f:facet name="header">
                             <h:outputText value="规格型号"/>
                         </f:facet>
-                        <h:outputText value="#{item.part.target.modelSpec}" />
+                        <h:outputText value="#{item.material.modelSpec}" />
                     </p:column>
 
                     <p:column>
@@ -168,9 +175,16 @@
 
                     <p:column>
                         <f:facet name="header">
-                            <h:outputText value="交货日期"/>
+                            <h:outputText value="优选供应商"/>
                         </f:facet>
-                        <h:outputText value="#{item.deadline}" />
+                        <h:outputText value="#{item.preferredSupplier.name}" />
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="附加要求"/>
+                        </f:facet>
+                        <h:outputText value="#{item.additionalRequirement}" />
                     </p:column>
 
 					<p:column>
@@ -181,14 +195,14 @@
 								actionListener="#{purchaseRequestAdminBean.modifyItem}"
 								oncomplete="itemDialog.show()" value="修改">
 								<f:setPropertyActionListener value="#{item}"
-									target="#{purchaseRequestAdminBean.makeTaskItem}" />
+									target="#{purchaseRequestAdminBean.purchaseRequestItem}" />
 							</p:commandLink>
 							<p:spacer width="10" />
 							<p:commandLink
 								disabled="#{!purchaseRequestAdminBean.editable}"
 								oncomplete="deleteItemConfirmDialog.show()" value="删除">
 								<f:setPropertyActionListener value="#{item}"
-									target="#{purchaseRequestAdminBean.makeTaskItem}" />
+									target="#{purchaseRequestAdminBean.purchaseRequestItem}" />
 							</p:commandLink>
 						</t:panelGroup>
 					</p:column>
@@ -199,44 +213,49 @@
 			</p:panel>
 		</h:form>
 
-		<h:form id="itemForm">
-			<p:dialog header="生产任务单项目编辑" widgetVar="itemDialog" modal="true"
-				height="500" width="640">
-				<h:panelGroup id="itemPanel">
-					<t:panelGrid columns="2"
-						columnClasses="detail_col_title,detail_col_value">
+        <h:form id="itemForm">
+            <p:dialog header="物料需求项目编辑" widgetVar="itemDialog" modal="true"
+                height="500" width="640">
+                <t:panelGroup id="itemPanel">
+                    <t:panelGrid columns="2"
+                        columnClasses="detail_col_title,detail_col_value">
 
-						<h:outputLabel value="物料" />
-				        <h:outputText value="#{purchaseRequestAdminBean.makeTaskItem.part.target.label}"/>
+                        <h:outputLabel value="物料" />
+                        <h:outputText value="#{purchaseRequestAdminBean.purchaseRequestItem.material.label}"/>
 
                         <h:outputLabel value="数量" />
-                        <p:inputText value="#{purchaseRequestAdminBean.makeTaskItem.quantity}"/>
+                        <h:outputText value="#{purchaseRequestAdminBean.purchaseRequestItem.quantity}"/>
 
-                        <h:outputText value="完工时间:" />
-                        <p:calendar navigator="true"
-                            locale="zh_CN" pattern="yyyy-MM-dd"
-                            value="#{purchaseRequestAdminBean.makeTaskItem.deadline}"
-                            showOn="button" />
+                        <h:outputLabel value="优选供应商" />
+                        <t:panelGroup>
+                            <p:inputText
+                                id="preferredSupplier"
+                                value="#{purchaseRequestAdminBean.selectedSupplier.name}"
+                                readonly="true"/>
+                            <p:commandButton
+                                value="..." onclick="preferredSupplierDialog.show()"
+                                disabled="#{!purchaseRequestAdminBean.editable}"/>
+                        </t:panelGroup>
 
-                        <h:outputLabel value="备注" />
-                        <p:inputText value="#{purchaseRequestAdminBean.makeTaskItem.description}"/>
+                        <h:outputLabel value="附加要求" />
+                        <p:inputText value="#{purchaseRequestAdminBean.purchaseRequestItem.additionalRequirement}"/>
 
-						<t:panelGroup colspan="2">
-							<t:panelGrid columns="2">
-								<p:commandButton value="保存"
-									actionListener="#{purchaseRequestAdminBean.saveItem}"
-									oncomplete="itemDialog.hide();" async="true"
-									update="mainForm" />
-								<p:commandButton value="取消"
-									oncomplete="itemDialog.hide();" />
-							</t:panelGrid>
-						</t:panelGroup>
+                        <t:panelGroup colspan="2">
+                            <t:panelGrid columns="2">
+                                <p:commandButton value="保存"
+                                    actionListener="#{purchaseRequestAdminBean.saveItem}"
+                                    oncomplete="itemDialog.hide();" async="true"
+                                    update="mainForm" />
+                                <p:commandButton value="取消"
+                                    oncomplete="itemDialog.hide();" />
+                            </t:panelGrid>
+                        </t:panelGroup>
 
-					</t:panelGrid>
-				</h:panelGroup>
+                    </t:panelGrid>
+                </t:panelGroup>
 
-			</p:dialog>
-		</h:form>
+            </p:dialog>
+        </h:form>
 
 
        <h:form id="deleteConfirmForm">
@@ -267,177 +286,112 @@
             </p:confirmDialog>
         </h:form>
 
-        <h:form id="orderForm">
-            <p:dialog header="查找定单" widgetVar="orderDialog"
+        <h:form id="planForm">
+            <p:dialog header="查找物料计划" widgetVar="planDialog"
                 modal="true" height="600" width="800">
-                <h:panelGroup id="orderPanel">
+                <h:panelGroup id="planPanel">
 
                     <h:panelGroup>
-                        <t:panelGrid columns="3">
-                            <h:outputText value="客户"/>
-                            <p:inputText id="customer"
-                                value="#{purchaseRequestAdminBean.customer.name}"
-                                readonly="true" />
-                            <p:commandButton value="..."
-                                onclick="customerDialog.show()"/>
-                        </t:panelGrid>
                         <h:panelGrid columns="6">
                             <h:outputText value="时间段:" />
                             <h:outputText value="从" />
-                            <p:calendar id="limitDateFromForOrder"
+                            <p:calendar id="limitDateFromForPlan"
                                 navigator="true" locale="zh_CN"
                                 pattern="yyyy-MM-dd"
-                                value="#{purchaseRequestAdminBean.limitDateFromForOrder}"
+                                value="#{purchaseRequestAdminBean.limitDateFromForPlan}"
                                 showOn="button"/>
                             <h:outputText value="到" />
-                            <p:calendar id="limitDateToForOrder"
+                            <p:calendar id="limitDateToForPlan"
                                 navigator="true" locale="zh_CN"
                                 pattern="yyyy-MM-dd"
-                                value="#{purchaseRequestAdminBean.limitDateToForOrder}"
+                                value="#{purchaseRequestAdminBean.limitDateToForPlan}"
                                 showOn="button"/>
                             <p:commandButton value="查找"
-                                actionListener="#{purchaseRequestAdminBean.findOrder}"
-                                async="true" update="orders"/>
+                                actionListener="#{purchaseRequestAdminBean.findPlan}"
+                                async="true" update="plans"/>
                         </h:panelGrid>
                     </h:panelGroup>
 
-                    <p:dataTable id="orders" var="order"
-                        value="#{purchaseRequestAdminBean.orders}"
+                    <p:dataTable id="plans" var="plan"
+                        value="#{purchaseRequestAdminBean.plans}"
                         resizableColumns="true"
                         rowIndexVar="rowIndex" scrollable="true"
-                        scrollWidth="750" scrollHeight="350">
+                        scrollWidth="750" scrollHeight="300">
 
                         <p:column headerText="序号" style="width:45px;">
                             <h:outputText value="#{rowIndex + 1}" />
                         </p:column>
 
                         <p:column headerText="标识">
-                            <h:outputText value="#{order.id}" />
-                        </p:column>
-
-                        <p:column headerText="客户">
-                            <h:outputText value="#{order.customer.name}" />
+                            <h:outputText value="#{plan.id}" />
                         </p:column>
 
                         <p:column headerText="创建时间">
-                            <h:outputText value="#{order.createdDate}" />
-                        </p:column>
-
-                        <p:column headerText="交货时间">
-                            <h:outputText value="#{order.deadline}" />
+                            <h:outputText value="#{plan.createdDate}" />
                         </p:column>
 
                         <p:column>
                             <f:facet name="header">操作</f:facet>
                             <t:panelGroup>
                                 <p:commandLink
-                                    oncomplete="orderItemsDialog.show()"
-                                    update="orderItemsForm:orderItems"
+                                    oncomplete="planItemsDialog.show()"
+                                    update="planItemsForm:planItems"
                                     value="明细">
                                     <f:setPropertyActionListener
-                                        value="#{order}"
-                                        target="#{purchaseRequestAdminBean.selectedOrder}" />
+                                        value="#{plan}"
+                                        target="#{purchaseRequestAdminBean.selectedPlan}" />
                                 </p:commandLink>
                                 <p:spacer width="10"/>
                                 <p:commandLink
-                                    oncomplete="orderDialog.hide();"
-                                    update="mainForm:order mainForm:items"
-                                    action="#{purchaseRequestAdminBean.chooseOrder}"
-                                    value="挑选">
+                                    update="planForm:selectedPlans"
+                                    action="#{purchaseRequestAdminBean.addPlan}"
+                                    value="添加">
                                     <f:setPropertyActionListener
-                                        value="#{order}"
-                                        target="#{purchaseRequestAdminBean.selectedOrder}" />
+                                        value="#{plan}"
+                                        target="#{purchaseRequestAdminBean.selectedPlan}" />
                                 </p:commandLink>
                             </t:panelGroup>
                         </p:column>
-
                     </p:dataTable>
+                    <t:panelGrid columns="2">
+                            <p:selectOneListbox id="selectedPlans"
+                                value="#{purchaseRequestAdminBean.selectedPlanId}"
+                                style="height:80px; width:200px;">
+                                <f:selectItems
+                                    value="#{purchaseRequestAdminBean.selectedPlans}"
+                                    var="plan" itemLabel="#{plan.idAsString}"
+                                    itemValue="#{plan.id}" />
+                            </p:selectOneListbox>
+                            <h:panelGrid colums="1">
+                                <p:commandButton value="删除"
+                                    update="planForm:selectedPlans"
+                                    actionListener="#{purchaseRequestAdminBean.deletePlan}"/>
+                            </h:panelGrid>
+                        </t:panelGrid>
 
-                    <p:commandButton value="取消"
-                        oncomplete="orderDialog.hide();" />
 
+                    <t:panelGrid columns="2">
+                        <p:commandButton
+                            actionListener="#{purchaseRequestAdminBean.choosePlan}"
+                            update="mainForm"
+                            value="确定"
+                            oncomplete="planDialog.hide();" />
+                        <p:commandButton value="取消" oncomplete="planDialog.hide();" />
+                    </t:panelGrid>
 
                 </h:panelGroup>
             </p:dialog>
         </h:form>
 
-        <h:form id="customerForm">
-            <p:dialog header="选择客户" widgetVar="customerDialog" modal="true"
-                height="500" width="840">
-                <h:panelGroup>
-
-                    <h:panelGrid columns="3">
-                        <h:outputLabel value="客户名称全部或部份:" />
-                        <p:inputText value="#{purchaseRequestAdminBean.customerPattern}" />
-                        <p:commandButton value="查找"
-                            actionListener="#{purchaseRequestAdminBean.findCustomer}" update="customers"
-                            async="true" />
-                    </h:panelGrid>
-                    <p:dataTable id="customers" var="customer"
-                        value="#{purchaseRequestAdminBean.customers}" resizableColumns="true"
-                        rowIndexVar="rowIndex"
-                        scrollable="true" scrollWidth="600" scrollHeight="350">
-
-                        <p:column headerText="序号">
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column headerText="客户名称">
-                            <h:outputText value="#{customer.name}" />
-                        </p:column>
-
-                        <p:column headerText="标签">
-                            <p:dataList value="#{customer.tags}" var="tag" type="definition">
-                                <f:facet name="description">
-                                    <h:outputText value="#{tag.label}"/>
-                                </f:facet>
-                            </p:dataList>
-                        </p:column>
-
-                        <p:column headerText="成立日期/生日">
-                            <h:outputText value="#{customer.birthday}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"
-                                    timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-
-                        <p:column headerText="税务登记号/证件号">
-                            <h:outputText value="#{customer.sid}" />
-                        </p:column>
-
-                        <p:column headerText="创建日期">
-                            <h:outputText value="#{customer.createdDate}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"
-                                    timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-                        <p:column headerText="动作">
-                            <p:commandLink
-                                oncomplete="customerDialog.hide()"
-                                action="#{purchaseRequestAdminBean.chooseCustomer}"
-                                update="orderForm:customer" value="挑选">
-                                <f:setPropertyActionListener
-                                    value="#{customer}"
-                                    target="#{purchaseRequestAdminBean.selectedCustomer}" />
-                            </p:commandLink>
-                        </p:column>
-                    </p:dataTable>
-                    <p:commandButton value="取消" oncomplete="customerDialog.hide();" />
-                </h:panelGroup>
-            </p:dialog>
-        </h:form>
-
-
-        <h:form id="orderItemsForm">
-            <p:dialog header="订单明细" widgetVar="orderItemsDialog" modal="true"
+        <h:form id="planItemsForm">
+            <p:dialog header="订单明细" widgetVar="planItemsDialog" modal="true"
                 height="480" width="800">
-                <h:panelGroup id="orderItemsPanel">
+                <h:panelGroup id="planItemsPanel">
 
-                    <p:dataTable id="orderItems" var="item"
-                        value="#{purchaseRequestAdminBean.orderItems}"
+                    <p:dataTable id="planItems" var="item"
+                        value="#{purchaseRequestAdminBean.planItems}"
                         resizableColumns="true"
-                        rowIndexVar="rowIndex"
-                        scrollable="true" scrollWidth="750" scrollHeight="350">
+                        rowIndexVar="rowIndex">
 
                         <p:column>
                             <f:facet name="header">
@@ -450,8 +404,7 @@
                             <f:facet name="header">
                                 <h:outputText value="物料" />
                             </f:facet>
-                            <h:outputText
-                                value="#{item.part.target.label}" />
+                            <h:outputText value="#{item.material.label}" />
                         </p:column>
 
                         <p:column>
@@ -459,22 +412,7 @@
                                 <h:outputText value="规格型号" />
                             </f:facet>
                             <h:outputText
-                                value="#{item.part.target.modelSpec}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="单价" />
-                            </f:facet>
-                            <h:outputText value="#{item.price.value}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="币种" />
-                            </f:facet>
-                            <h:outputText
-                                value="#{item.price.currencyText}" />
+                                value="#{item.material.modelSpec}" />
                         </p:column>
 
                         <p:column>
@@ -486,18 +424,18 @@
 
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="外部名称" />
+                                <h:outputText value="优选供应商" />
                             </f:facet>
                             <h:outputText
-                                value="#{item.externalProductName}" />
+                                value="#{item.preferredSupplier.name}" />
                         </p:column>
 
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="外部规格" />
+                                <h:outputText value="附加要求" />
                             </f:facet>
                             <h:outputText
-                                value="#{item.externalSpecification}" />
+                                value="#{item.additionalRequirement}" />
                         </p:column>
 
                     </p:dataTable>
@@ -505,6 +443,64 @@
             </p:dialog>
 
         </h:form>
+
+        <h:form id="preferredSupplierForm">
+            <p:dialog header="选择优选供应商" widgetVar="preferredSupplierDialog" modal="true"
+                height="500" width="840">
+                <h:panelGroup>
+
+                    <h:panelGrid columns="3">
+                        <h:outputLabel value="供应商名称全部或部份:" />
+                        <p:inputText value="#{purchaseRequestAdminBean.supplierPattern}" />
+                        <p:commandButton value="查找"
+                            actionListener="#{purchaseRequestAdminBean.findSupplier}" update="suppliers"
+                            async="true" />
+                    </h:panelGrid>
+                    <p:dataTable id="suppliers" var="supplier"
+                        value="#{purchaseRequestAdminBean.suppliers}" resizableColumns="true"
+                        rowIndexVar="rowIndex"
+                        scrollable="true" scrollWidth="600" scrollHeight="350">
+
+                        <p:column headerText="序号">
+                            <h:outputText value="#{rowIndex + 1}" />
+                        </p:column>
+
+                        <p:column headerText="客户名称">
+                            <h:outputText value="#{supplier.name}" />
+                        </p:column>
+
+                        <p:column headerText="成立日期/生日">
+                            <h:outputText value="#{supplier.birthday}">
+                                <f:convertDateTime pattern="yyyy-MM-dd"
+                                    timeZone="Asia/Shanghai" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="税务登记号/证件号">
+                            <h:outputText value="#{supplier.sid}" />
+                        </p:column>
+
+                        <p:column headerText="创建日期">
+                            <h:outputText value="#{supplier.createdDate}">
+                                <f:convertDateTime pattern="yyyy-MM-dd"
+                                    timeZone="Asia/Shanghai" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="动作">
+                            <p:commandLink
+                                oncomplete="preferredSupplierDialog.hide()"
+                                update="itemForm:preferredSupplier" value="挑选">
+                                <f:setPropertyActionListener
+                                    value="#{supplier}"
+                                    target="#{purchaseRequestAdminBean.selectedSupplier}" />
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                    <p:commandButton value="取消" oncomplete="preferredSupplierDialog.hide();" />
+                </h:panelGroup>
+            </p:dialog>
+        </h:form>
+
 
     </ui:define>
 </ui:composition>
