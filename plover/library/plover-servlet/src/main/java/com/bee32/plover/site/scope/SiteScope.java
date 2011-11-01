@@ -1,6 +1,6 @@
 package com.bee32.plover.site.scope;
 
-import org.springframework.beans.factory.ObjectFactory;
+import java.util.Map;
 
 import com.bee32.plover.inject.scope.AbstractScope;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
@@ -14,35 +14,15 @@ public class SiteScope
     SiteManager siteManager = SiteManager.getInstance();
 
     @Override
-    public Object get(String name, ObjectFactory<?> objectFactory) {
+    protected Map<String, Object> getBeanMap() {
         SiteInstance site;
         try {
             site = ThreadHttpContext.getSiteInstance();
         } catch (LoadSiteException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
-
-        Object obj;
-        if (site.containsAttribute(name)) {
-            obj = site.getAttribute(name);
-        } else {
-            obj = objectFactory.getObject();
-            site.setAttribute(name, obj);
-        }
-        return obj;
-    }
-
-    @Override
-    public Object remove(String name) {
-        SiteInstance site;
-        try {
-            site = ThreadHttpContext.getSiteInstance();
-        } catch (LoadSiteException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
-
-        Object obj = site.removeAttribute(name);
-        return obj;
+        Map<String, Object> attributes = site.getAttributes();
+        return attributes;
     }
 
 }
