@@ -41,16 +41,18 @@ public class ThreadHttpContext
         beanFactory.autowireBean(thisServlet);
     }
 
+    static boolean allowNullRequest = false;
     static boolean autoCreateMode = false;
 
     public static SiteInstance getSiteInstance()
             throws LoadSiteException {
         SiteManager siteManager = SiteManager.getInstance();
 
-        HttpServletRequest request = getRequest();
-        if (request == null)
-            throw new NullPointerException("request");
-        String siteAlias = SiteNaming.getSiteAlias(request);
+        String siteAlias = SiteNaming.DEFAULT;
+
+        HttpServletRequest request = allowNullRequest ? getRequestOpt() : getRequest();
+        if (request != null)
+            siteAlias = SiteNaming.getSiteAlias(request);
 
         SiteInstance siteInstance;
         if (autoCreateMode)
