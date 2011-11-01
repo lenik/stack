@@ -14,7 +14,9 @@ public class PloverScopes
         Map<String, Object> scopes = new HashMap<String, Object>();
 
         // scopes.put("session", new SessionScope());
-        scopes.put("view1", new View1Scope());
+        scopes.put("state", new StateScope());
+        scopes.put("thread", new ThreadScope());
+        scopes.put("tgroup", new ThreadGroupScope());
 
         this.setScopes(scopes);
     }
