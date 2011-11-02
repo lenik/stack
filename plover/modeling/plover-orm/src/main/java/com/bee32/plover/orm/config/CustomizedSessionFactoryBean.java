@@ -21,6 +21,9 @@ import com.bee32.plover.arch.util.OrderComparator;
 import com.bee32.plover.orm.PloverNamingStrategy;
 import com.bee32.plover.orm.unit.PUnitDumper;
 import com.bee32.plover.orm.unit.PersistenceUnit;
+import com.bee32.plover.servlet.util.ThreadHttpContext;
+import com.bee32.plover.site.LoadSiteException;
+import com.bee32.plover.site.SiteInstance;
 import com.bee32.plover.site.scope.PerSite;
 import com.bee32.plover.thirdparty.hibernate.util.HibernateProperties;
 import com.bee32.plover.thirdparty.hibernate.util.MappingResourceUtil;
@@ -41,10 +44,6 @@ public class CustomizedSessionFactoryBean
         }
     }
 
-    public CustomizedSessionFactoryBean(String name) {
-        super(name);
-    }
-
     static boolean usingAnnotation = true;
 
     static PersistenceUnit staticUnit = PersistenceUnit.getDefault();
@@ -58,6 +57,13 @@ public class CustomizedSessionFactoryBean
             throw new NullPointerException("forceUnit");
         CustomizedSessionFactoryBean.staticUnit = forceUnit;
         forceUnit.select();
+    }
+
+    SiteInstance site;
+
+    public CustomizedSessionFactoryBean()
+            throws LoadSiteException {
+        site = ThreadHttpContext.getSiteInstance();
     }
 
     @Override
@@ -115,7 +121,7 @@ public class CustomizedSessionFactoryBean
             String[] allResources = MappingResourceUtil.getMappingResources(staticUnit);
 
             if (logger.isInfoEnabled()) {
-                logger.info("Resource mappings for SFB " + getName());
+                logger.info("Resource mappings for site " + site.getName());
                 for (String resource : allResources)
                     logger.info("Resource for mapping: " + resource);
             }

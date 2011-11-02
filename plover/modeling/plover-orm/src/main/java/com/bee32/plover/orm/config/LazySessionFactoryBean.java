@@ -16,19 +16,6 @@ public abstract class LazySessionFactoryBean
 
     static Logger logger = LoggerFactory.getLogger(LazySessionFactoryBean.class);
 
-    private final String name;
-
-    public LazySessionFactoryBean(String name) {
-        if (name == null)
-            throw new NullPointerException("name");
-
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     protected abstract void lazyConfigure();
 
     @Override
@@ -45,7 +32,7 @@ public abstract class LazySessionFactoryBean
                 LazySessionFactoryBean sfb = LazySessionFactoryBean.this;
 
                 logger.debug("Lazy initialize session-factory: " + this);
-                logger.debug("    SFB = " + sfb.name + "@" + sfb.getClass().getSimpleName());
+                logger.debug("    SFB = " + sfb);
 
                 lazyConfigure();
 
