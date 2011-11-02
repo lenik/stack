@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.junit.Assert;
 
-import com.bee32.plover.orm.config.test.DefaultTestSessionFactoryBean;
+import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.dao.MemdbDataManager;
 import com.bee32.plover.orm.entity.Entity;
@@ -20,7 +20,7 @@ public class QuickDataTestCase
 
     public QuickDataTestCase() {
         PersistenceUnit unit = UsingUtil.getUsingUnit(getClass());
-        DefaultTestSessionFactoryBean.setForceUnit(unit);
+        CustomizedSessionFactoryBean.setForceUnit(unit);
 
         new StandardSamples();
 
