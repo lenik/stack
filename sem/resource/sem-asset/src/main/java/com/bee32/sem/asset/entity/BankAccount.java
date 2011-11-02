@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.NaturalId;
 
@@ -14,7 +15,11 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.sem.world.com.Bank;
 
+/**
+ * 银行账户
+ */
 @Entity
+@SequenceGenerator(name = "idgen", sequenceName = "bank_account_seq", allocationSize = 1)
 public class BankAccount
         extends UIEntityAuto<Integer> {
 
@@ -25,6 +30,9 @@ public class BankAccount
     Bank bank;
     String accountId;
 
+    /**
+     * 银行
+     */
     @NaturalId
     @ManyToOne(optional = false)
     public Bank getBank() {
@@ -37,7 +45,10 @@ public class BankAccount
         this.bank = bank;
     }
 
-    @NaturalId
+    /**
+     * 账户
+     */
+    @NaturalId(mutable = true)
     @Column(length = ACCOUNT_ID_LENGTH, nullable = false)
     public String getAccountId() {
         return accountId;
@@ -64,4 +75,5 @@ public class BankAccount
                 selector(prefix + "bank", bank), //
                 new Equals(prefix + "accountId", accountId));
     }
+
 }

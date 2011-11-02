@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.sem.world.color.TrueColor;
 
+/**
+ * 银行
+ */
 @Entity
 public class Bank
         extends UIEntityAuto<Integer> {
@@ -13,6 +16,9 @@ public class Bank
 
     TrueColor color;
 
+    /**
+     * 显示颜色（未使用）
+     */
     public TrueColor getColor() {
         return color;
     }
