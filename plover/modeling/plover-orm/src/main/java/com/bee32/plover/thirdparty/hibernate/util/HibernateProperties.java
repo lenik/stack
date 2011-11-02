@@ -7,56 +7,56 @@ public interface HibernateProperties {
      *
      * JDBC driver class
      */
-    String connectionDriverClass = "hibernate.connection.driver_class";
+    String connectionDriverClassKey = "hibernate.connection.driver_class";
 
     /**
      * <strong>Hibernate JDBC Properties</strong>
      *
      * JDBC URL
      */
-    String connectionUrl = "hibernate.connection.url";
+    String connectionUrlKey = "hibernate.connection.url";
 
     /**
      * <strong>Hibernate JDBC Properties</strong>
      *
      * database user
      */
-    String connectionUsername = "hibernate.connection.username";
+    String connectionUsernameKey = "hibernate.connection.username";
 
     /**
      * <strong>Hibernate JDBC Properties</strong>
      *
      * database user password
      */
-    String connectionPassword = "hibernate.connection.password";
+    String connectionPasswordKey = "hibernate.connection.password";
 
     /**
      * <strong>Hibernate JDBC Properties</strong>
      *
      * maximum number of pooled connections
      */
-    String connectionPoolSize = "hibernate.connection.pool_size";
+    String connectionPoolSizeKey = "hibernate.connection.pool_size";
 
     /**
      * <strong>Hibernate Datasource Properties</strong>
      *
      * datasource JNDI name
      */
-    String connectionDatasource = "hibernate.connection.datasource";
+    String connectionDatasourceKey = "hibernate.connection.datasource";
 
     /**
      * <strong>Hibernate Datasource Properties</strong>
      *
      * URL of the JNDI provider (optional)
      */
-    String jndiUrl = "hibernate.jndi.url";
+    String jndiUrlKey = "hibernate.jndi.url";
 
     /**
      * <strong>Hibernate Datasource Properties</strong>
      *
      * class of the JNDI InitialContextFactory (optional)
      */
-    String jndiClass = "hibernate.jndi.class";
+    String jndiClassKey = "hibernate.jndi.class";
 
     /**
      * <strong>Hibernate Configuration Properties</strong>
@@ -66,7 +66,7 @@ public interface HibernateProperties {
      *
      * @example full.classname.of.Dialect
      */
-    String dialect = "hibernate.dialect";
+    String dialectKey = "hibernate.dialect";
 
     /**
      * <strong>Hibernate Configuration Properties</strong>
@@ -76,14 +76,14 @@ public interface HibernateProperties {
      *
      * @example true | false
      */
-    String showSql = "hibernate.show_sql";
+    String showSqlKey = "hibernate.show_sql";
 
     /**
      * <strong>Hibernate Configuration Properties</strong>
      *
      * Pretty print the SQL in the log and console. e.g. true | false
      */
-    String formatSql = "hibernate.format_sql";
+    String formatSqlKey = "hibernate.format_sql";
 
     /**
      * <strong>Hibernate Configuration Properties</strong>
@@ -91,14 +91,14 @@ public interface HibernateProperties {
      * Qualify unqualified table names with the given schema/tablespace in generated SQL. e.g.
      * SCHEMA_NAME
      */
-    String defaultSchema = "hibernate.default_schema";
+    String defaultSchemaKey = "hibernate.default_schema";
 
     /**
      * <strong>Hibernate Configuration Properties</strong>
      *
      * Qualifies unqualified table names with the given catalog in generated SQL. e.g. CATALOG_NAME
      */
-    String defaultCatalog = "hibernate.default_catalog";
+    String defaultCatalogKey = "hibernate.default_catalog";
 
     /**
      * <strong>Hibernate Configuration Properties</strong>
@@ -108,7 +108,7 @@ public interface HibernateProperties {
      *
      * @example jndi/composite/name
      */
-    String sessionFactoryName = "hibernate.session_factory_name";
+    String sessionFactoryNameKey = "hibernate.session_factory_name";
 
     /**
      * <strong>Hibernate Configuration Properties</strong>
@@ -118,7 +118,7 @@ public interface HibernateProperties {
      *
      * @example recommended values between 0 and 3
      */
-    String maxFetchDepth = "hibernate.max_fetch_depth";
+    String maxFetchDepthKey = "hibernate.max_fetch_depth";
 
     /**
      * <strong>Hibernate Configuration Properties</strong>
@@ -126,7 +126,7 @@ public interface HibernateProperties {
      * Sets a default size for Hibernate batch fetching of associations. e.g. recommended values 4,
      * 8, 16
      */
-    String defaultBatchFetchSize = "hibernate.default_batch_fetch_size";
+    String defaultBatchFetchSizeKey = "hibernate.default_batch_fetch_size";
 
     /**
      * <strong>Hibernate Configuration Properties</strong>
@@ -134,7 +134,7 @@ public interface HibernateProperties {
      * Sets a default mode for entity representation for all sessions opened from this
      * SessionFactory
      */
-    String defaultEntityMode = "hibernate.default_entity_mode";
+    String defaultEntityModeKey = "hibernate.default_entity_mode";
 
     /**
      * <strong>Hibernate Configuration Properties</strong>
@@ -143,7 +143,7 @@ public interface HibernateProperties {
      * This will result in fewer transaction deadlocks in highly concurrent systems. e.g. true |
      * false
      */
-    String orderUpdates = "hibernate.order_updates";
+    String orderUpdatesKey = "hibernate.order_updates";
 
     /**
      * <strong>Hibernate Configuration Properties</strong>
@@ -151,7 +151,7 @@ public interface HibernateProperties {
      * If enabled, Hibernate will collect statistics useful for performance tuning. e.g. true |
      * false
      */
-    String generateStatistics = "hibernate.generate_statistics";
+    String generateStatisticsKey = "hibernate.generate_statistics";
 
     /**
      * <strong>Hibernate Configuration Properties</strong>
@@ -159,7 +159,7 @@ public interface HibernateProperties {
      * If enabled, generated identifier properties will be reset to default values when objects are
      * deleted. e.g. true | false
      */
-    String useIdentifierRollback = "hibernate.use_identifier_rollback";
+    String useIdentifierRollbackKey = "hibernate.use_identifier_rollback";
 
     /**
      * <strong>Hibernate Configuration Properties</strong>
@@ -169,14 +169,14 @@ public interface HibernateProperties {
      *
      * @example true | false
      */
-    String useSqlComments = "hibernate.use_sql_comments";
+    String useSqlCommentsKey = "hibernate.use_sql_comments";
 
     /**
      * <strong>Hibernate JDBC and Connection Properties</strong>
      *
      * A non-zero value determines the JDBC fetch size (calls Statement.setFetchSize()).
      */
-    String jdbcFetchSize = "hibernate.jdbc.fetch_size";
+    String jdbcFetchSizeKey = "hibernate.jdbc.fetch_size";
 
     /**
      * <strong>Hibernate JDBC and Connection Properties</strong>
@@ -184,7 +184,7 @@ public interface HibernateProperties {
      * A non-zero value enables use of JDBC2 batch updates by Hibernate. e.g. recommended values
      * between 5 and 30
      */
-    String jdbcBatchSize = "hibernate.jdbc.batch_size";
+    String jdbcBatchSizeKey = "hibernate.jdbc.batch_size";
 
     /**
      * <strong>Hibernate JDBC and Connection Properties</strong>
@@ -195,7 +195,7 @@ public interface HibernateProperties {
      *
      * @example true | false
      */
-    String jdbcBatchVersionedData = "hibernate.jdbc.batch_versioned_data";
+    String jdbcBatchVersionedDataKey = "hibernate.jdbc.batch_versioned_data";
 
     /**
      * <strong>Hibernate JDBC and Connection Properties</strong>
@@ -205,7 +205,7 @@ public interface HibernateProperties {
      *
      * @example classname.of.BatcherFactory
      */
-    String jdbcFactoryClass = "hibernate.jdbc.factory_class";
+    String jdbcFactoryClassKey = "hibernate.jdbc.factory_class";
 
     /**
      * <strong>Hibernate JDBC and Connection Properties</strong>
@@ -214,7 +214,7 @@ public interface HibernateProperties {
      * using user-supplied JDBC connections. Hibernate uses connection metadata otherwise. e.g. true
      * | false
      */
-    String jdbcUseScrollableResultset = "hibernate.jdbc.use_scrollable_resultset";
+    String jdbcUseScrollableResultsetKey = "hibernate.jdbc.use_scrollable_resultset";
 
     /**
      * <strong>Hibernate JDBC and Connection Properties</strong>
@@ -224,7 +224,7 @@ public interface HibernateProperties {
      *
      * @example true | false
      */
-    String jdbcUseStreamsForBinary = "hibernate.jdbc.use_streams_for_binary";
+    String jdbcUseStreamsForBinaryKey = "hibernate.jdbc.use_streams_for_binary";
 
     /**
      * <strong>Hibernate JDBC and Connection Properties</strong>
@@ -236,7 +236,7 @@ public interface HibernateProperties {
      *
      * @example true|false
      */
-    String jdbcUseGetGeneratedKeys = "hibernate.jdbc.use_get_generated_keys";
+    String jdbcUseGetGeneratedKeysKey = "hibernate.jdbc.use_get_generated_keys";
 
     /**
      * <strong>Hibernate JDBC and Connection Properties</strong>
@@ -246,7 +246,7 @@ public interface HibernateProperties {
      *
      * @example classname.of.ConnectionProvider
      */
-    String connectionProviderClass = "hibernate.connection.provider_class";
+    String connectionProviderClassKey = "hibernate.connection.provider_class";
 
     /**
      * <strong>Hibernate JDBC and Connection Properties</strong>
@@ -257,14 +257,14 @@ public interface HibernateProperties {
      *
      * @example 1, 2, 4, 8
      */
-    String connectionIsolation = "hibernate.connection.isolation";
+    String connectionIsolationKey = "hibernate.connection.isolation";
 
     /**
      * <strong>Hibernate JDBC and Connection Properties</strong>
      *
      * Enables autocommit for JDBC pooled connections (it is not recommended). e.g. true | false
      */
-    String connectionAutocommit = "hibernate.connection.autocommit";
+    String connectionAutocommitKey = "hibernate.connection.autocommit";
 
     /**
      * <strong>Hibernate JDBC and Connection Properties</strong>
@@ -278,21 +278,21 @@ public interface HibernateProperties {
      *
      * @example auto (default) | on_close | after_transaction | after_statement
      */
-    String connectionReleaseMode = "hibernate.connection.release_mode";
+    String connectionReleaseModeKey = "hibernate.connection.release_mode";
 
     /**
      * <strong>Hibernate JDBC and Connection Properties</strong>
      *
      * Pass the JDBC property <propertyName> to DriverManager.getConnection().
      */
-    String connection_PREFIX = "hibernate.connection.<propertyName>";
+    String connection_PREFIXKey = "hibernate.connection.<propertyName>";
 
     /**
      * <strong>Hibernate JDBC and Connection Properties</strong>
      *
      * Pass the property <propertyName> to the JNDI InitialContextFactory.
      */
-    String jndi_PREFIX = "hibernate.jndi.<propertyName>";
+    String jndi_PREFIXKey = "hibernate.jndi.<propertyName>";
 
     /**
      * <strong>Hibernate Cache Properties</strong>
@@ -301,7 +301,7 @@ public interface HibernateProperties {
      *
      * @example classname.of.CacheProvider
      */
-    String cacheProviderClass = "hibernate.cache.provider_class";
+    String cacheProviderClassKey = "hibernate.cache.provider_class";
 
     /**
      * <strong>Hibernate Cache Properties</strong>
@@ -310,14 +310,14 @@ public interface HibernateProperties {
      * reads. This setting is most useful for clustered caches and, in Hibernate3, is enabled by
      * default for clustered cache implementations. e.g. true|false
      */
-    String cacheUseMinimalPuts = "hibernate.cache.use_minimal_puts";
+    String cacheUseMinimalPutsKey = "hibernate.cache.use_minimal_puts";
 
     /**
      * <strong>Hibernate Cache Properties</strong>
      *
      * Enables the query cache. Individual queries still have to be set cachable. e.g. true|false
      */
-    String cacheUseQueryCache = "hibernate.cache.use_query_cache";
+    String cacheUseQueryCacheKey = "hibernate.cache.use_query_cache";
 
     /**
      * <strong>Hibernate Cache Properties</strong>
@@ -327,7 +327,7 @@ public interface HibernateProperties {
      *
      * @example true|false
      */
-    String cacheUseSecondLevelCache = "hibernate.cache.use_second_level_cache";
+    String cacheUseSecondLevelCacheKey = "hibernate.cache.use_second_level_cache";
 
     /**
      * <strong>Hibernate Cache Properties</strong>
@@ -336,14 +336,14 @@ public interface HibernateProperties {
      *
      * @example classname.of.QueryCache
      */
-    String cacheQueryCacheFactory = "hibernate.cache.query_cache_factory";
+    String cacheQueryCacheFactoryKey = "hibernate.cache.query_cache_factory";
 
     /**
      * <strong>Hibernate Cache Properties</strong>
      *
      * A prefix to use for second-level cache region names. e.g. prefix
      */
-    String cacheRegionPrefix = "hibernate.cache.region_prefix";
+    String cacheRegionPrefixKey = "hibernate.cache.region_prefix";
 
     /**
      * <strong>Hibernate Cache Properties</strong>
@@ -351,7 +351,7 @@ public interface HibernateProperties {
      * Forces Hibernate to store data in the second-level cache in a more human-friendly format.
      * e.g. true|false
      */
-    String cacheUseStructuredEntries = "hibernate.cache.use_structured_entries";
+    String cacheUseStructuredEntriesKey = "hibernate.cache.use_structured_entries";
 
     /**
      * <strong>Hibernate Transaction Properties</strong>
@@ -361,7 +361,7 @@ public interface HibernateProperties {
      *
      * @example classname.of.TransactionFactory
      */
-    String transactionFactoryClass = "hibernate.transaction.factory_class";
+    String transactionFactoryClassKey = "hibernate.transaction.factory_class";
 
     /**
      * <strong>Hibernate Transaction Properties</strong>
@@ -371,7 +371,7 @@ public interface HibernateProperties {
      *
      * @example classname.of.TransactionManagerLookup
      */
-    String transactionManagerLookupClass = "hibernate.transaction.manager_lookup_class";
+    String transactionManagerLookupClassKey = "hibernate.transaction.manager_lookup_class";
 
     /**
      * <strong>Hibernate Transaction Properties</strong>
@@ -382,7 +382,7 @@ public interface HibernateProperties {
      *
      * @example true | false
      */
-    String transactionFlushBeforeCompletion = "hibernate.transaction.flush_before_completion";
+    String transactionFlushBeforeCompletionKey = "hibernate.transaction.flush_before_completion";
 
     /**
      * <strong>Hibernate Transaction Properties</strong>
@@ -393,7 +393,7 @@ public interface HibernateProperties {
      *
      * @example true | false
      */
-    String transactionAutoCloseSession = "hibernate.transaction.auto_close_session";
+    String transactionAutoCloseSessionKey = "hibernate.transaction.auto_close_session";
 
     /**
      * <strong>Miscellaneous Properties</strong>
@@ -403,7 +403,7 @@ public interface HibernateProperties {
      *
      * @example jta | thread | managed | custom.Class
      */
-    String currentSessionContextClass = "hibernate.current_session_context_class";
+    String currentSessionContextClassKey = "hibernate.current_session_context_class";
 
     /**
      * <strong>Miscellaneous Properties</strong>
@@ -411,7 +411,7 @@ public interface HibernateProperties {
      * Chooses the HQL parser implementation. e.g. org.hibernate.hql.ast.ASTQueryTranslatorFactory
      * or org.hibernate.hql.classic.ClassicQueryTranslatorFactory
      */
-    String queryFactoryClass = "hibernate.query.factory_class";
+    String queryFactoryClassKey = "hibernate.query.factory_class";
 
     /**
      * <strong>Miscellaneous Properties</strong>
@@ -419,7 +419,7 @@ public interface HibernateProperties {
      * Is used to map from tokens in Hibernate queries to SQL tokens (tokens might be function or
      * literal names, for example). e.g. hqlLiteral=SQL_LITERAL, hqlFunction=SQLFUNC
      */
-    String querySubstitutions = "hibernate.query.substitutions";
+    String querySubstitutionsKey = "hibernate.query.substitutions";
 
     /**
      * <strong>Miscellaneous Properties</strong>
@@ -430,7 +430,7 @@ public interface HibernateProperties {
      *
      * @example validate | update | create | create-drop
      */
-    String hbm2ddlAuto = "hibernate.hbm2ddl.auto";
+    String hbm2ddlAutoKey = "hibernate.hbm2ddl.auto";
 
     /**
      * <strong>Miscellaneous Properties</strong>
@@ -441,6 +441,6 @@ public interface HibernateProperties {
      *
      * @example true | false
      */
-    String cglibUseReflectionOptimizer = "hibernate.cglib.use_reflection_optimizer";
+    String cglibUseReflectionOptimizerKey = "hibernate.cglib.use_reflection_optimizer";
 
 }
