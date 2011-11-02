@@ -8,14 +8,10 @@ import java.lang.annotation.Retention;
 
 import javax.inject.Scope;
 
-import org.springframework.context.annotation.ScopedProxyMode;
-
 import com.bee32.plover.inject.spring.ScopeName;
-import com.bee32.plover.inject.spring.ScopeProxy;
 
 @Scope
 @ScopeName("thread")
-@ScopeProxy(ScopedProxyMode.INTERFACES)
 @Inherited
 @Retention(RUNTIME)
 @Documented
