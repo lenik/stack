@@ -49,12 +49,12 @@ public abstract class LazySessionFactoryBean
 
                 lazyConfigure();
 
-                return buildSessionFactoryImpl();
+                return _buildSessionFactory();
             }
         };
     }
 
-    private SessionFactory buildSessionFactoryImpl()
+    private SessionFactory _buildSessionFactory()
             throws Exception {
         return super.buildSessionFactory();
     }

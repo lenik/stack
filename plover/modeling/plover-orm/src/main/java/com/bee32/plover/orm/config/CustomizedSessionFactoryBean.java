@@ -4,41 +4,45 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.ServiceLoader;
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.inject.Inject;
+import javax.sql.DataSource;
 
 import org.hibernate.transaction.JDBCTransactionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+import com.bee32.plover.arch.util.OrderComparator;
 import com.bee32.plover.orm.PloverNamingStrategy;
 import com.bee32.plover.orm.unit.PUnitDumper;
 import com.bee32.plover.orm.unit.PersistenceUnit;
+import com.bee32.plover.site.scope.PerSite;
 import com.bee32.plover.thirdparty.hibernate.util.HibernateProperties;
 import com.bee32.plover.thirdparty.hibernate.util.MappingResourceUtil;
 
-public abstract class CustomizedSessionFactoryBean
+@Component
+@PerSite
+public class CustomizedSessionFactoryBean
         extends LazySessionFactoryBean
         implements HibernateProperties {
 
-    static Logger logger = LoggerFactory.getLogger(CustomizedSessionFactoryBean.class);
+    static final Logger logger = LoggerFactory.getLogger(CustomizedSessionFactoryBean.class);
 
-    private Properties overrides;
+    static final Set<IDatabaseConfigurer> configurers;
+    static {
+        configurers = new TreeSet<IDatabaseConfigurer>(OrderComparator.INSTANCE);
+        for (IDatabaseConfigurer sfc : ServiceLoader.load(IDatabaseConfigurer.class)) {
+            configurers.add(sfc);
+        }
+    }
 
     public CustomizedSessionFactoryBean(String name) {
         super(name);
-
-        overrides = new Properties();
-
-        Properties properties = DataConfig.getProperties(name);
-
-        for (Entry<Object, Object> entry : properties.entrySet()) {
-            String key = (String) entry.getKey();
-            Object value = entry.getValue();
-            // if (key.startsWith("hibernate.connection."))
-            // continue;
-            overrides.put(key, value);
-        }
     }
 
     static boolean usingAnnotation = true;
@@ -63,8 +67,13 @@ public abstract class CustomizedSessionFactoryBean
         Properties properties = new Properties();
         populateHibernateProperties(properties);
 
-        // Add overrides
-        properties.putAll(overrides);
+        for (IDatabaseConfigurer sfc : configurers) {
+            try {
+                sfc.configureHibernateProperties(properties);
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage(), e);
+            }
+        }
 
         if (logger.isDebugEnabled()) {
             logger.debug("CSFB Properties: ");
@@ -121,10 +130,10 @@ public abstract class CustomizedSessionFactoryBean
     protected void populateHibernateProperties(Properties properties) {
 
         // Transaction
-        properties.setProperty(transactionFactoryClass, //
+        properties.setProperty(transactionFactoryClassKey, //
                 JDBCTransactionFactory.class.getName());
 
-        properties.setProperty(connectionAutocommit, "false");
+        properties.setProperty(connectionAutocommitKey, "false");
 
         // Mapping
         properties.setProperty("hibernate.globally_quoted_identifiers", "true");
@@ -134,8 +143,14 @@ public abstract class CustomizedSessionFactoryBean
         properties.setProperty("org.hibernate.flushMode", "COMMIT");
 
         // Misc
-        properties.setProperty(currentSessionContextClass, "thread");
+        properties.setProperty(currentSessionContextClassKey, "thread");
 
+    }
+
+    @Inject
+    @Override
+    public void setDataSource(DataSource dataSource) {
+        super.setDataSource(dataSource);
     }
 
 }
