@@ -27,7 +27,7 @@ public class SiteInstance {
     public static final String DESCRIPTION_KEY = "description";
 
     public static final String VERBOSE_KEY = "verbose";
-    public static final String OPTIMIZATION_KEY = "verbose";
+    public static final String OPTIMIZATION_KEY = "optimization";
 
     public static final String DB_DIALECT_KEY = "db.dialect";
     public static final String DB_URL_FORMAT_KEY = "db.url";
