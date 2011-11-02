@@ -41,7 +41,7 @@ public class ThreadHttpContext
         beanFactory.autowireBean(thisServlet);
     }
 
-    static boolean allowNullRequest = false;
+    static boolean allowNullRequest = true;
     static boolean autoCreateMode = false;
 
     public static SiteInstance getSiteInstance()

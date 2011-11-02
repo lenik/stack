@@ -8,7 +8,6 @@ import org.springframework.context.ApplicationContext;
 import com.bee32.icsf.login.LoginManager;
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.orm.dao.CommonDataManager;
-import com.bee32.plover.orm.util.SamplesLoaderActivator;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 import com.bee32.plover.ox1.principal.User;
 import com.bee32.plover.restful.RESTfulConfig;
@@ -49,7 +48,7 @@ public class SEMTestCase
     @Override
     protected void applicationInitialized(ApplicationContext context) {
         this.appctx = context;
-        context.getBeansOfType(SamplesLoaderActivator.class);
+        // context.getBeansOfType(SamplesLoaderActivator.class);
     }
 
     protected String getLoggedInUser() {
