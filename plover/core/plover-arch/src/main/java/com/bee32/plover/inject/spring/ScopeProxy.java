@@ -16,9 +16,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 @Documented
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
-@Target({
-// ElementType.ANNOTATION_TYPE,
-        ElementType.TYPE, ElementType.METHOD /* @Bean */})
+@Target({ ElementType.ANNOTATION_TYPE, ElementType.TYPE, ElementType.METHOD /* @Bean */})
 public @interface ScopeProxy {
 
     /**
