@@ -5,7 +5,7 @@ public enum DBDialect {
     H2(//
             "org.hibernate.dialect.H2Dialect", //
             "org.h2.Driver", //
-            "jdbc:h2://HOME/%s"),
+            "jdbc:h2://H2_HOME/%s;DB_CLOSE_ON_EXIT=FALSE"),
 
     HSQL(//
             "org.hibernate.dialect.HSQLDialect", //
