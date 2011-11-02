@@ -26,11 +26,15 @@ public class SiteInstance {
     public static final String LABEL_KEY = "label";
     public static final String DESCRIPTION_KEY = "description";
 
+    public static final String VERBOSE_KEY = "verbose";
+    public static final String OPTIMIZATION_KEY = "verbose";
+
     public static final String DB_DIALECT_KEY = "db.dialect";
     public static final String DB_URL_FORMAT_KEY = "db.url";
     public static final String DB_NAME_KEY = "db.name";
     public static final String DB_USER_KEY = "db.user";
     public static final String DB_PASS_KEY = "db.pass";
+
     public static final String AUTODDL_KEY = "autoddl";
     public static final String SAMPLES_KEY = "samples";
 
@@ -44,6 +48,8 @@ public class SiteInstance {
         configFile = null;
         properties = new FormatProperties();
 
+        setVerboseLevel(VerboseLevel.SQL);
+        setOptimizationLevel(OptimizationLevel.MEDIUM);
         setDbDialect(DBDialect.PostgreSQL);
         setProperty(DB_USER_KEY, "semsadmin");
         setProperty(DB_PASS_KEY, "MxDkUWl1");
@@ -210,6 +216,28 @@ public class SiteInstance {
 
     public void setDescription(String description) {
         setProperty(DESCRIPTION_KEY, description);
+    }
+
+    public VerboseLevel getVerboseLevel() {
+        String _verbose = getProperty(VERBOSE_KEY);
+        VerboseLevel verbose = VerboseLevel.valueOf(_verbose);
+        return verbose;
+    }
+
+    public void setVerboseLevel(VerboseLevel verbose) {
+        String _verbose = verbose.name();
+        setProperty(VERBOSE_KEY, _verbose);
+    }
+
+    public OptimizationLevel getOptimizationLevel() {
+        String _optimization = getProperty(OPTIMIZATION_KEY);
+        OptimizationLevel optimization = OptimizationLevel.valueOf(_optimization);
+        return optimization;
+    }
+
+    public void setOptimizationLevel(OptimizationLevel optimization) {
+        String _optimization = optimization.name();
+        setProperty(OPTIMIZATION_KEY, _optimization);
     }
 
     public Set<String> getAliases() {

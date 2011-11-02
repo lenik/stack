@@ -168,6 +168,8 @@ public class SiteManagerServlet
             if (save) {
                 String label = args.getNString("label");
                 String description = args.getNString("description");
+                String _verbose = args.getString("verbose");
+                String _optimization = args.getString("opt");
                 String aliases = args.getString("aliases");
                 String _dialect = args.getString("dialect");
                 String url = args.getNString("url");
@@ -188,6 +190,9 @@ public class SiteManagerServlet
                     aliasSet.add(alias);
                 }
 
+                VerboseLevel verbose = VerboseLevel.valueOf(_verbose);
+                OptimizationLevel optimization = OptimizationLevel.valueOf(_optimization);
+
                 DBDialect dialect = DBDialect.valueOf(_dialect);
                 DBAutoDDL autoddl = DBAutoDDL.valueOf(_autoddl);
                 SamplesSelection samples = SamplesSelection.valueOf(_samples);
@@ -199,6 +204,8 @@ public class SiteManagerServlet
 
                 site.setLabel(label);
                 site.setDescription(description);
+                site.setVerboseLevel(verbose);
+                site.setOptimizationLevel(optimization);
                 site.setAliases(aliasSet);
                 site.setDbDialect(dialect);
                 site.setDbUrlFormat(url);
@@ -220,6 +227,8 @@ public class SiteManagerServlet
                     (createSite && !save) ? "site" : "-site", "站点代码:站点的唯一代码，用于系统内部标识站点", name, //
                     "label", "标题:站点的显示名称，一般是企业名称", site.getLabel(), //
                     "description", "描述:应用的描述信息，如企业的全称", site.getDescription(), //
+                    "verbose", "调试级别:输出的调试信息的级别", site.getVerboseLevel(), //
+                    "opt", "优化级别:设置缓存等优化支持的级别", site.getOptimizationLevel(), //
                     "aliases", "网络绑定:多个网络名称绑定，用逗号分隔", StringArray.join(", ", site.getAliases()), //
                     "dialect", "数据库类型:数据库的厂商类型", site.getDbDialect(), //
                     "url", "连接地址:数据库的JDBC连接地址（%s用于替换数据库名）", site.getDbUrlFormat(), //
