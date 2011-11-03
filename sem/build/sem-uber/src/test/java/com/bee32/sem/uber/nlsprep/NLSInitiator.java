@@ -216,6 +216,7 @@ public class NLSInitiator {
 
     public static void main(String[] args)
             throws Exception {
+        System.setProperty("line.separator", "\n");
         for (File classdir : UCLDumper.getLocalClasspaths()) {
             String dos2unix = classdir.getPath().replace('\\', '/');
 
