@@ -222,6 +222,8 @@ public class ClassUtil {
         if (!interesting.isAssignableFrom(clazz))
             throw new IllegalUsageException(clazz + " is-not-a " + interesting);
 
+        clazz = skipProxies(clazz); // OPT: why should proxy be skipped?
+
         TypeVariable<?>[] argv = clazz.getTypeParameters();
 
         return mapTypeArgsRec(clazz, interesting, argv);
@@ -316,7 +318,11 @@ public class ClassUtil {
                 String actualName = actualVar.getName();
                 for (int j = 0; j < declVars.length; j++) {
                     if (declVars[j].getName().equals(actualName)) {
-                        mapped[i] = argv[j];
+                        try {
+                            mapped[i] = argv[j];
+                        } catch (IndexOutOfBoundsException e) {
+                            System.out.println(1);
+                        }
                         continue V;
                     }
                 }
