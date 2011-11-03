@@ -9,6 +9,8 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.servlet.mvc.AbstractController;
 
+import com.bee32.plover.arch.util.ClassUtil;
+
 //@org.springframework.stereotype.Controller
 @Lazy
 public abstract class _CompositeController
@@ -30,9 +32,10 @@ public abstract class _CompositeController
      *            Specify <code>null</code> to get from static field PREFIX.
      */
     protected _CompositeController(String prefix) {
+        Class<?> clazz = ClassUtil.skipProxies(getClass());
         if (prefix == null)
             try {
-                Field prefixField = getClass().getDeclaredField("PREFIX");
+                Field prefixField = clazz.getDeclaredField("PREFIX");
 
                 int modifiers = prefixField.getModifiers();
                 if (!Modifier.isStatic(modifiers))
@@ -40,7 +43,7 @@ public abstract class _CompositeController
 
                 prefix = (String) prefixField.get(null);
             } catch (Exception e) {
-                throw new Error("PREFIX isn't defined in " + getClass());
+                throw new Error("PREFIX isn't defined in " + clazz);
             }
         this._prefix = prefix;
     }

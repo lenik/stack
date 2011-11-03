@@ -64,7 +64,10 @@ public abstract class Repository<K, T>
         if (objectType != null)
             return;
 
-        Type[] repositoryArgs = ClassUtil.getTypeArgs(getClass(), Repository.class);
+        Class<?> repoClass = getClass();
+        // Class<?> repoClass = ClassUtil.skipProxies(getClass());
+
+        Type[] repositoryArgs = ClassUtil.getTypeArgs(repoClass, Repository.class);
         keyType = ClassUtil.bound1(repositoryArgs[0]);
         objectType = ClassUtil.bound1(repositoryArgs[1]);
         if (objectType == null)
