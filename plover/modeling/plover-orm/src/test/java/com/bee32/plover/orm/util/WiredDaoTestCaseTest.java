@@ -29,38 +29,38 @@ public class WiredDaoTestCaseTest
         service.reload();
     }
 
-    @Service
-    @Lazy
-    static class CatService
-            extends Assert {
+}
 
-        @Inject
-        CatDao catDao;
+@Service
+@Lazy
+class CatService
+        extends Assert {
 
-        @Transactional
-        public void create() {
-            Cat tomCat = new Cat("Tom", "black");
-            Cat lucyCat = new Cat("Lucy", "pink");
+    @Inject
+    CatDao catDao;
 
-            Tiger fishTiger = new Tiger("Fish", "yellow");
-            fishTiger.setPower(10);
+    @Transactional
+    public void create() {
+        Cat tomCat = new Cat("Tom", "black");
+        Cat lucyCat = new Cat("Lucy", "pink");
 
-            catDao.save(tomCat);
-            catDao.save(lucyCat);
-            catDao.save(fishTiger);
+        Tiger fishTiger = new Tiger("Fish", "yellow");
+        fishTiger.setPower(10);
+
+        catDao.save(tomCat);
+        catDao.save(lucyCat);
+        catDao.save(fishTiger);
+    }
+
+    @Transactional(readOnly = true)
+    public void reload() {
+        List<? extends Cat> cats = catDao.list();
+
+        for (Cat cat : cats) {
+            System.out.println(cat);
         }
 
-        @Transactional(readOnly = true)
-        public void reload() {
-            List<? extends Cat> cats = catDao.list();
-
-            for (Cat cat : cats) {
-                System.out.println(cat);
-            }
-
-            assertEquals(3, cats.size());
-        }
-
+        assertEquals(3, cats.size());
     }
 
 }
