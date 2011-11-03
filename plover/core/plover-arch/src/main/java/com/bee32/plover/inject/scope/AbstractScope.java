@@ -40,6 +40,7 @@ public abstract class AbstractScope
 
     @Override
     public Object resolveContextualObject(String key) {
+        System.out.println("R ctxobj for key: " + key);
         return null;
     }
 

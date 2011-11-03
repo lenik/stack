@@ -14,4 +14,12 @@ public class StateScope
         return attributes;
     }
 
+    @Override
+    public String getConversationId() {
+        Object state = stateManager.getCurrentState();
+        int stateId = System.identityHashCode(state);
+        String convId = String.valueOf(stateId);
+        return convId;
+    }
+
 }

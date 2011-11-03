@@ -1,13 +1,11 @@
 package com.bee32.plover.inject.scope;
 
-import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.stereotype.Component;
+import javax.inject.Inject;
 
-import com.bee32.plover.inject.spring.ScopeProxy;
+import org.springframework.stereotype.Component;
 
 @Component
 @PerState
-@ScopeProxy(ScopedProxyMode.TARGET_CLASS)
 public class StateHint
         implements IStateHint {
 
@@ -15,6 +13,9 @@ public class StateHint
 
     final StateContext context;
     String hint;
+
+    @Inject
+    IOtherState other;
 
     public StateHint() {
         context = stateManager.getCurrentContext();
@@ -41,6 +42,14 @@ public class StateHint
     @Override
     public String toString() {
         return hint;
+    }
+
+    public IOtherState getOther() {
+        return other;
+    }
+
+    public void setOther(IOtherState other) {
+        this.other = other;
     }
 
 }
