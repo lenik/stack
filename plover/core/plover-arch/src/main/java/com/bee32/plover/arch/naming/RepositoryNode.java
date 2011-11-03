@@ -21,7 +21,7 @@ public abstract class RepositoryNode<K, Tn extends INamed>
     private INamedNode parentLocator;
 
     {
-        ReverseLookupRegistry.getInstance().register(this);
+        // ReverseLookupRegistry.getInstance().register(this);
     }
 
     public RepositoryNode() {
