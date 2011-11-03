@@ -19,7 +19,9 @@ public class DetailedLoginAdapter
     public void logIn(LoginEvent event) {
         User user = event.getUser();
 
-        PersonLogin personLogin = asFor(PersonLogin.class).getFirst(new Equals("user.id", user.getId()));
+        PersonLogin personLogin = null;
+        if (user != null)
+            personLogin = asFor(PersonLogin.class).getFirst(new Equals("user.id", user.getId()));
 
         if (personLogin != null) {
             Person _person = personLogin.getPerson();
