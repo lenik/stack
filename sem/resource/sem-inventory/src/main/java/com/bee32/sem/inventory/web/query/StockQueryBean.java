@@ -155,7 +155,14 @@ public class StockQueryBean extends EntityViewBean {
 
     public List<StockOrderItemDto> getDetails() {
         if (selectedItem != null) {
-            StockQueryOptions opts = new StockQueryOptions(queryDate);
+            Calendar c = Calendar.getInstance();
+            c.setTime(queryDate);
+            c.set(Calendar.HOUR_OF_DAY, 23);
+            c.set(Calendar.MINUTE, 59);
+            c.set(Calendar.SECOND, 59);
+            c.set(Calendar.MILLISECOND, 999);
+
+            StockQueryOptions opts = new StockQueryOptions(c.getTime());
             opts.setWarehouse(selectedWarehouse.unmarshal());
             opts.setCBatch(selectedItem.getCBatch(), false);
             opts.setLocation(selectedItem.getLocation().unmarshal(), false);
