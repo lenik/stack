@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 /**
  * @see ResourceRegistry
  */
-@Lazy
 @Component
+@Lazy
 public class ScannedResourceRegistry
         implements ApplicationContextAware {
 

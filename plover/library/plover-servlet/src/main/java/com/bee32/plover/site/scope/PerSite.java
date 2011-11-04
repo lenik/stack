@@ -8,10 +8,7 @@ import java.lang.annotation.Retention;
 
 import javax.inject.Scope;
 
-import org.springframework.context.annotation.ScopedProxyMode;
-
 import com.bee32.plover.inject.spring.ScopeName;
-import com.bee32.plover.inject.spring.ScopeProxy;
 
 /**
  * 值得注意的一点： per-site 并不能取代 &#64;Lazy。
@@ -20,7 +17,6 @@ import com.bee32.plover.inject.spring.ScopeProxy;
  */
 @Scope
 @ScopeName("site")
-@ScopeProxy(ScopedProxyMode.TARGET_CLASS)
 @Inherited
 @Retention(RUNTIME)
 @Documented

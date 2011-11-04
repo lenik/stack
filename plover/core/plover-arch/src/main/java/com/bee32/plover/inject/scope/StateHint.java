@@ -14,14 +14,15 @@ public class StateHint
     final StateContext context;
     String hint;
 
+// @Autowired
     @Inject
-    IOtherState other;
+    OtherState other;
 
     public StateHint() {
         context = stateManager.getCurrentContext();
     }
 
-    public StateManager getStatemanager() {
+    public StateManager getStateManager() {
         return stateManager;
     }
 
@@ -37,19 +38,12 @@ public class StateHint
     @Override
     public void setHint(String hint) {
         this.hint = hint;
+        other.setOther(hint + "-other");
     }
 
     @Override
     public String toString() {
-        return hint;
-    }
-
-    public IOtherState getOther() {
-        return other;
-    }
-
-    public void setOther(IOtherState other) {
-        this.other = other;
+        return hint + " : " + other.getOther();
     }
 
 }

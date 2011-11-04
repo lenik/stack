@@ -25,4 +25,21 @@ public class SiteScope
         return attributes;
     }
 
+    @Override
+    public String getConversationId() {
+        SiteInstance site;
+        try {
+            site = ThreadHttpContext.getSiteInstance();
+        } catch (LoadSiteException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+        String siteName = site.getName();
+        return siteName;
+    }
+
+    @Override
+    public Object resolveContextualObject(String key) {
+        return super.resolveContextualObject(key);
+    }
+
 }

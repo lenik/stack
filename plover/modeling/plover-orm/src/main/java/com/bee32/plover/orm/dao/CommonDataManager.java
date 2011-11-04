@@ -35,7 +35,7 @@ public class CommonDataManager
     @Inject
     DaoManager daoManager;
 
-    private Class<? extends EasTxWrapper<?, ?>> etwType = null;
+    private Class<? extends EasTxWrapper<?, ?>> etwImplClass = null;
     private int etwOrder = Integer.MAX_VALUE;
 
     @Override
@@ -44,22 +44,22 @@ public class CommonDataManager
 
         for (EasTxWrapper<?, ?> etw : applicationContext.getBeansOfType(EasTxWrapper.class).values()) {
 
-            Class<? extends EasTxWrapper<?, ?>> type //
+            Class<? extends EasTxWrapper<?, ?>> etwClass //
             /*    */= (Class<? extends EasTxWrapper<?, ?>>) ClassUtil.skipProxies(etw.getClass());
 
-            Order _order = type.getAnnotation(Order.class);
+            Order _order = etwClass.getAnnotation(Order.class);
             int order = _order == null ? Integer.MAX_VALUE : _order.value();
 
-            if (order < etwOrder || etwType == null) {
-                etwType = (Class<? extends EasTxWrapper<?, ?>>) type;
+            if (order < etwOrder || etwImplClass == null) {
+                etwImplClass = (Class<? extends EasTxWrapper<?, ?>>) etwClass;
                 etwOrder = order;
             }
         }
 
-        if (etwType == null)
-            throw new IllegalUsageException("No available ETW.");
+        if (etwImplClass == null)
+            throw new IllegalUsageException("No available ETW implementation.");
 
-        logger.debug("Preferred ETW: " + etwType + " (order=" + etwOrder + ")");
+        logger.debug("Preferred ETW Implementation: " + etwImplClass + " (order=" + etwOrder + ")");
     }
 
     @Override
@@ -70,7 +70,7 @@ public class CommonDataManager
         if (dao == null)
             throw new IllegalUsageException("No suitable EntityDao for entity " + entityType);
 
-        EasTxWrapper<E, K> preferredEtw = (EasTxWrapper<E, K>) applicationContext.getBean(etwType);
+        EasTxWrapper<E, K> preferredEtw = (EasTxWrapper<E, K>) applicationContext.getBean(etwImplClass);
 
         // Class<?> etwc = wrapper.getClass();
         // logger.debug("ETW: " + etwc + " (" + System.identityHashCode(etwc) + ")");

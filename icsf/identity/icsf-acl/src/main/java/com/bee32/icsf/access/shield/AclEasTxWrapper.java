@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.bee32.icsf.access.AccessControlException;
@@ -27,10 +26,11 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityResource;
 import com.bee32.plover.orm.entity.EntityResourceNS;
 import com.bee32.plover.ox1.principal.User;
+import com.bee32.plover.site.scope.PerSite;
 
 @Service
 @Primary
-/* @Lazy */@Scope("prototype")
+@PerSite
 @Order(0)
 public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
         extends EasTxWrapperCat<E, K>
@@ -41,7 +41,7 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
     @Inject
     ScannedResourceRegistry registry;
 
-    @Inject
+//    @Inject
     R_ACLService aclService;
 
     IResourceNamespace entityNS;

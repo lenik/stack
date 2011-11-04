@@ -49,8 +49,9 @@ public class TrueJsr330ScopeMetadataResolver
 
         String beanClassName = annDef.getBeanClassName();
         // Set breakpoint here for specific bean classes.
+        ScopeMetadata _sup = null;
         if (beanClassName.contains("LoginBean")) {
-            ScopeMetadata _sup = super.resolveScopeMetadata(definition);
+            _sup = super.resolveScopeMetadata(definition);
             System.out.println(_sup);
         }
 
@@ -199,7 +200,7 @@ public class TrueJsr330ScopeMetadataResolver
         return defaultScopeName;
     }
 
-    public static ScopedProxyMode getScopeProxyMode(Class<? extends Annotation> scopeAnnotationClass) {
+    public ScopedProxyMode getScopeProxyMode(Class<? extends Annotation> scopeAnnotationClass) {
         if (scopeAnnotationClass == null)
             throw new NullPointerException("scopeAnnotationClass");
 
@@ -209,7 +210,7 @@ public class TrueJsr330ScopeMetadataResolver
             if (_scopeProxy != null)
                 proxyMode = _scopeProxy.value();
             else
-                proxyMode = ScopedProxyMode.DEFAULT;
+                proxyMode = defaultProxyMode;
             scopeProxyModeMap.put(scopeAnnotationClass, proxyMode);
         }
 

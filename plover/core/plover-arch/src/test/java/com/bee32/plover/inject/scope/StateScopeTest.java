@@ -2,7 +2,9 @@ package com.bee32.plover.inject.scope;
 
 import javax.inject.Inject;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
 
 import com.bee32.plover.test.WiredTestCase;
 
@@ -14,10 +16,13 @@ public class StateScopeTest
     /**
      * When proxy is used, a void context is useless.
      */
-    // @BeforeClass
+    @BeforeClass
     public static void setupVoidContext() {
         manager.setCurrentState("void");
     }
+
+    @Inject
+    ApplicationContext app;
 
     @Inject
     IStateHint hint;
@@ -34,13 +39,16 @@ public class StateScopeTest
     @Test
     public void testScopeProxy() {
         manager.setCurrentState("a");
-        hint.setHint("a-hint");
+        StateHint a = app.getBean(StateHint.class);
+        a.setHint("a-hint");
 
         manager.setCurrentState("b");
-        hint.setHint("b-hint");
+        StateHint b = app.getBean(StateHint.class);
+        b.setHint("b-hint");
 
         manager.setCurrentState("a");
-        assertEquals("a-hint", hint.getHint());
+        StateHint a2 = app.getBean(StateHint.class);
+        assertEquals("a-hint", a2.getHint());
     }
 
     /**
