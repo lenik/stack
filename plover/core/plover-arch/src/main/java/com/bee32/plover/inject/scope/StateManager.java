@@ -7,11 +7,16 @@ public class StateManager {
 
     Map<Object, StateContext> contextMap;
 
-    Object state = "";
+    Object state;
     StateContext context;
 
     public StateManager() {
+        this("");
+    }
+
+    public StateManager(Object initialState) {
         contextMap = new HashMap<Object, StateContext>();
+        setCurrentState(initialState);
     }
 
     public Object getCurrentState() {
