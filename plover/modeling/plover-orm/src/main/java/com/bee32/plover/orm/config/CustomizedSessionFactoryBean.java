@@ -15,9 +15,11 @@ import javax.sql.DataSource;
 import org.hibernate.transaction.JDBCTransactionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 import com.bee32.plover.arch.util.OrderComparator;
+import com.bee32.plover.inject.spring.ScopeProxy;
 import com.bee32.plover.orm.PloverNamingStrategy;
 import com.bee32.plover.orm.unit.PUnitDumper;
 import com.bee32.plover.orm.unit.PersistenceUnit;
@@ -30,6 +32,7 @@ import com.bee32.plover.thirdparty.hibernate.util.MappingResourceUtil;
 
 @Component
 @PerSite
+@ScopeProxy(ScopedProxyMode.INTERFACES)
 public class CustomizedSessionFactoryBean
         extends LazySessionFactoryBean
         implements HibernateProperties {
@@ -39,8 +42,8 @@ public class CustomizedSessionFactoryBean
     static final Set<IDatabaseConfigurer> configurers;
     static {
         configurers = new TreeSet<IDatabaseConfigurer>(OrderComparator.INSTANCE);
-        for (IDatabaseConfigurer sfc : ServiceLoader.load(IDatabaseConfigurer.class)) {
-            configurers.add(sfc);
+        for (IDatabaseConfigurer dc : ServiceLoader.load(IDatabaseConfigurer.class)) {
+            configurers.add(dc);
         }
     }
 
