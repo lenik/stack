@@ -28,7 +28,7 @@ public class FxrCommitQjc
     static Logger logger = LoggerFactory.getLogger(FxrCommitQjc.class);
 
     // (ms) delay 100 seconds to avoid spin locks at bootstrap.
-    static final int INITIAL_DELAY = 100000;
+    static final int INITIAL_DELAY = 10000_000;
 
     @Override
     public void load(SchedulerFactory schedulerFactory)
@@ -36,6 +36,7 @@ public class FxrCommitQjc
 
         Scheduler sched = schedulerFactory.getScheduler();
 
+        // Declare a commit job for each fxr-source.
         for (IFxrSource fxrSource : ServiceLoader.load(IFxrSource.class)) {
             String jobName = "FXR:" + fxrSource.getClass().getName();
 
