@@ -1,7 +1,7 @@
 package com.bee32.plover.ox1.principal;
 
+import java.util.ArrayList;
 import java.util.List;
-
 
 public class RoleDto
         extends AbstractPrincipalDto<Role> {
@@ -34,15 +34,23 @@ public class RoleDto
 
         if (selection.contains(EXT))
             inheritedRole = mref(RoleDto.class, _selection, source.getInheritedRole());
+        else
+            inheritedRole = new RoleDto(); // XXX?
 
         if (selection.contains(ROLES))
             derivedRoles = marshalList(RoleDto.class, _selection, source.getDerivedRoles());
+        else
+            derivedRoles = new ArrayList<RoleDto>();
 
         if (selection.contains(USERS))
             responsibleUsers = marshalList(UserDto.class, _selection, source.getResponsibleUsers());
+        else
+            responsibleUsers = new ArrayList<UserDto>();
 
         if (selection.contains(GROUPS))
             responsibleGroups = marshalList(GroupDto.class, _selection, source.getResponsibleGroups());
+        else
+            responsibleGroups = new ArrayList<GroupDto>();
     }
 
     @Override

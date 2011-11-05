@@ -1,7 +1,7 @@
 package com.bee32.plover.ox1.principal;
 
+import java.util.ArrayList;
 import java.util.List;
-
 
 public class GroupDto
         extends AbstractPrincipalDto<Group> {
@@ -44,12 +44,18 @@ public class GroupDto
 
         if (selection.contains(GROUPS))
             derivedGroups = marshalList(GroupDto.class, _selection, source.getDerivedGroups());
+        else
+            derivedGroups = new ArrayList<GroupDto>();
 
         if (selection.contains(ROLES))
             assignedRoles = marshalList(RoleDto.class, _selection, source.getAssignedRoles());
+        else
+            assignedRoles = new ArrayList<RoleDto>();
 
         if (selection.contains(USERS))
             memberUsers = marshalList(UserDto.class, _selection, source.getMemberUsers());
+        else
+            memberUsers = new ArrayList<UserDto>();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.bee32.plover.ox1.principal;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDto
@@ -38,9 +39,13 @@ public class UserDto
 
         if (selection.contains(GROUPS))
             assignedGroups = marshalList(GroupDto.class, _selection, source.getAssignedGroups());
+        else
+            assignedGroups = new ArrayList<GroupDto>();
 
         if (selection.contains(ROLES))
             assignedRoles = marshalList(RoleDto.class, _selection, source.getAssignedRoles());
+        else
+            assignedRoles = new ArrayList<RoleDto>();
     }
 
     @Override
