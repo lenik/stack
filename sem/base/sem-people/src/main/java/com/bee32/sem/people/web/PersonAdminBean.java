@@ -10,6 +10,8 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
 
+import com.bee32.plover.criteria.hibernate.Like;
+import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.misc.EntityCriteria;
@@ -37,6 +39,7 @@ public class PersonAdminBean
 
     private PersonRoleDto selectedRole;
 
+
     @PostConstruct
     public void init() {
         EntityDataModelOptions<Person, PersonDto> options = new EntityDataModelOptions<Person, PersonDto>(//
@@ -51,6 +54,17 @@ public class PersonAdminBean
 
     void refreshPersonCount() {
         int count = serviceFor(Person.class).count(EntityCriteria.ownedByCurrentUser());
+        persons.setRowCount(count);
+    }
+
+    void refreshPersonCount(String namePattern) {
+        int count = serviceFor(Person.class).count( //
+                EntityCriteria.ownedByCurrentUser(),//
+                new Or(
+                        new Like("name", "%" + namePattern + "%"), //
+                        new Like("fullName", "%" + namePattern + "%") //
+                        ) //
+                );
         persons.setRowCount(count);
     }
 
@@ -135,6 +149,9 @@ public class PersonAdminBean
         return roles;
     }
 
+
+
+
     public void doNew() {
         person = new PersonDto().create();
 
@@ -213,5 +230,19 @@ public class PersonAdminBean
     }
 
     public void onRowUnselectRole(UnselectEvent event) {
+    }
+
+    @Override
+    public void find() {
+        EntityDataModelOptions<Person, PersonDto> options = new EntityDataModelOptions<Person, PersonDto>(//
+                Person.class, PersonDto.class, 0, //
+                new Or(
+                        new Like("name", "%" + namePattern + "%"), //
+                        new Like("fullName", "%" + namePattern + "%") //
+                        ), //
+                Order.desc("id"), EntityCriteria.ownedByCurrentUser());
+        persons = UIHelper.<Person, PersonDto> buildLazyDataModel(options);
+
+        refreshPersonCount(namePattern);
     }
 }

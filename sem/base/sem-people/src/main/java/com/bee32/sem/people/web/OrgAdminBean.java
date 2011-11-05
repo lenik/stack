@@ -14,6 +14,8 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.TreeNode;
 
 import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.Like;
+import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.tree.TreeCriteria;
@@ -75,6 +77,17 @@ public class OrgAdminBean
 
     void refreshOrgCount() {
         int count = serviceFor(Org.class).count(EntityCriteria.ownedByCurrentUser());
+        orgs.setRowCount(count);
+    }
+
+    void refreshPersonCount(String namePattern) {
+        int count = serviceFor(Org.class).count( //
+                EntityCriteria.ownedByCurrentUser(),//
+                new Or(
+                        new Like("name", "%" + namePattern + "%"), //
+                        new Like("fullName", "%" + namePattern + "%") //
+                        ) //
+                );
         orgs.setRowCount(count);
     }
 
@@ -507,6 +520,20 @@ public class OrgAdminBean
         selectedOrgUnit.setContact(orgUnitContact);
         serviceFor(OrgUnit.class).saveOrUpdate(selectedOrgUnit.unmarshal());
         uiLogger.info("保存部门联系方式成功");
+    }
+
+    @Override
+    public void find() {
+        EntityDataModelOptions<Org, OrgDto> options = new EntityDataModelOptions<Org, OrgDto>(//
+                Org.class, OrgDto.class, 0, //
+                new Or(
+                        new Like("name", "%" + namePattern + "%"), //
+                        new Like("fullName", "%" + namePattern + "%") //
+                        ), //
+                Order.desc("id"), EntityCriteria.ownedByCurrentUser());
+        orgs = UIHelper.<Org, OrgDto> buildLazyDataModel(options);
+
+        refreshPersonCount(namePattern);
     }
 
 }

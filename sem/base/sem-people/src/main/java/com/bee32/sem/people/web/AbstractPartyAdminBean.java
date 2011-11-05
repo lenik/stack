@@ -35,9 +35,13 @@ public abstract class AbstractPartyAdminBean
     List<String> selectedTagsToAdd;
     String selectedTagId;
 
+    String namePattern;
+
     protected abstract AbstractPartyDto<? extends Party> getParty();
 
     protected abstract void setParty(AbstractPartyDto<? extends Party> party);
+
+    public abstract void find();
 
     public boolean isContactSelected() {
         if (selectedContact != null)
@@ -107,6 +111,14 @@ public abstract class AbstractPartyAdminBean
         }
 
         return contacts;
+    }
+
+    public String getNamePattern() {
+        return namePattern;
+    }
+
+    public void setNamePattern(String namePattern) {
+        this.namePattern = namePattern;
     }
 
     void _newContact() {
