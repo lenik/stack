@@ -18,26 +18,33 @@ import com.bee32.plover.ox1.tree.TreeEntityAuto;
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "asset_subject_seq", allocationSize = 1)
-public class AssetSubject
-        extends TreeEntityAuto<Integer, AssetSubject> {
+public class AccountTitle
+        extends TreeEntityAuto<Integer, AccountTitle> {
 
     private static final long serialVersionUID = 1L;
 
     public static final int NAME_LENGTH = 4;
+    public static final int CODE_LENGTH = 10;
+    public static final int TITLE_LENGTH = 30;
 
-    public AssetSubject() {
+    String code;
+    String title;
+    boolean debitSign;
+    boolean creditSign;
+
+    public AccountTitle() {
         super();
     }
 
-    public AssetSubject(String name) {
+    public AccountTitle(String name) {
         super(name);
     }
 
-    public AssetSubject(AssetSubject parent) {
+    public AccountTitle(AccountTitle parent) {
         super(parent, null);
     }
 
-    public AssetSubject(AssetSubject parent, String name) {
+    public AccountTitle(AccountTitle parent, String name) {
         super(parent, name);
     }
 
@@ -49,6 +56,47 @@ public class AssetSubject
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Column(length = CODE_LENGTH, unique=true)
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    @Column(length = TITLE_LENGTH)
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    /**
+     * 借方符号
+     */
+    public boolean isDebitSign() {
+        return debitSign;
+    }
+
+    public void setDebitSign(boolean debitSign) {
+        this.debitSign = debitSign;
+    }
+
+    /**
+     * 贷方符号
+     * @return
+     */
+    public boolean isCreditSign() {
+        return creditSign;
+    }
+
+    public void setCreditSign(boolean creditSign) {
+        this.creditSign = creditSign;
     }
 
     @Override
