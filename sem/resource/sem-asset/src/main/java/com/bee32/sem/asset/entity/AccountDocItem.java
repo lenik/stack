@@ -38,8 +38,10 @@ public class AccountDocItem
 
     AccountSide accountSide;
 
+    AccountDoc accountDoc;
+
     /**
-     * 科目
+     * 借方或贷方的一级科目
      */
     @ManyToOne(optional = false)
     public AccountTitle getAccountTitle() {
@@ -52,6 +54,9 @@ public class AccountDocItem
         this.accountTitle = accountTitle;
     }
 
+    /**
+     * 借方或贷方对应的二级科目为客户或供应商
+     */
     @ManyToOne
     public Party getOrg() {
         return org;
@@ -61,6 +66,9 @@ public class AccountDocItem
         this.org = org;
     }
 
+    /**
+     * 借方或贷方对应的二级科目为个人
+     */
     @ManyToOne
     public Party getPerson() {
         return person;
@@ -99,5 +107,12 @@ public class AccountDocItem
         this.accountSide = accountSide;
     }
 
+    @ManyToOne(optional = false)
+    public AccountDoc getAccountDoc() {
+        return accountDoc;
+    }
 
+    public void setAccountDoc(AccountDoc accountDoc) {
+        this.accountDoc = accountDoc;
+    }
 }
