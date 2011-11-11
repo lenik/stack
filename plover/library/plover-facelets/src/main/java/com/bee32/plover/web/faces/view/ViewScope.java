@@ -20,6 +20,8 @@ public class ViewScope
     @Override
     public Object get(String name, ObjectFactory<?> objectFactory) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
+        if (facesContext == null)
+            return null;
         UIViewRoot viewRoot = facesContext.getViewRoot();
         Map<String, Object> viewMap = viewRoot.getViewMap();
         return viewMap;
