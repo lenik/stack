@@ -72,7 +72,7 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
 
     @Override
     protected void require(int bits) {
-        if (!enabled)
+        if (!enabled || aclService  == null)
             return;
 
         Permission requiredPermission = new Permission(bits);
