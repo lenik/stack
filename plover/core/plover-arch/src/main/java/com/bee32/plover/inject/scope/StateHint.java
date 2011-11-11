@@ -2,10 +2,6 @@ package com.bee32.plover.inject.scope;
 
 import javax.inject.Inject;
 
-import org.springframework.stereotype.Component;
-
-@Component
-@PerState
 public class StateHint
         implements IStateHint {
 
@@ -38,12 +34,16 @@ public class StateHint
     @Override
     public void setHint(String hint) {
         this.hint = hint;
-        other.setOther(hint + "-other");
+        if (other != null)
+            other.setOther(hint + "-other");
     }
 
     @Override
     public String toString() {
-        return hint + " : " + other.getOther();
+        String s = hint;
+        if (other != null)
+            s += " : " + other.getOther();
+        return s;
     }
 
 }
