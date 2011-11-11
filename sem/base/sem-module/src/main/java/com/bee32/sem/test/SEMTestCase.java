@@ -57,6 +57,7 @@ public class SEMTestCase
 
     @Override
     public void initSession(HttpSession session) {
+
         String userName = getLoggedInUser();
 
         if (userName != null) {
