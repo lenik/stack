@@ -45,19 +45,18 @@ public class AccountItem
      * 借方或贷方的一级科目
      */
     @ManyToOne(optional = false)
-    public AccountSubject getAccountTitle() {
+    public AccountSubject getSubject() {
         return subject;
     }
 
-    public void setAccountTitle(AccountSubject subject) {
+    public void setSubject(AccountSubject subject) {
         if (subject == null)
             throw new NullPointerException("subject");
         this.subject = subject;
     }
 
     /**
-     * 借方或贷方对应的二级科目为客户或供应商
-     * 借方或贷方对应的二级科目为个人
+     * 借方或贷方对应的二级科目为客户或供应商或个人
      */
     @ManyToOne
     public Party getParty() {

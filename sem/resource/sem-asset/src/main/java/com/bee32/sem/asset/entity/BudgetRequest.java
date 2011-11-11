@@ -5,7 +5,6 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
@@ -48,14 +47,14 @@ public class BudgetRequest extends TxEntity {
 		return value;
 	}
 
-	public void setMoney(MCValue money) {
-        if (money == null)
-            throw new NullPointerException("money");
-        this.value = money;
+	public void setValue(MCValue value) {
+        if (value == null)
+            throw new NullPointerException("value");
+        this.value = value;
 	}
 
-    public final void setMoney(double money) {
-        setMoney(new MCValue(CurrencyConfig.getNative(), money));
+    public final void setValue(double value) {
+        setValue(new MCValue(CurrencyConfig.getNative(), value));
     }
 
     @ManyToOne
@@ -66,6 +65,4 @@ public class BudgetRequest extends TxEntity {
 	public void setAccount(Account account) {
 		this.account = account;
 	}
-
-
 }
