@@ -1,5 +1,12 @@
 package com.bee32.sem.asset.entity;
 
-public class Purchase {
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("PURC")
+public class Purchase extends Trade {
+
+	private static final long serialVersionUID = 1L;
 
 }

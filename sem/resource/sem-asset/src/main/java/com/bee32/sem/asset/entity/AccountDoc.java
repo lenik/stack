@@ -6,12 +6,18 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.transaction.Transaction;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.sem.base.tx.TxEntity;
 
+/**
+ * 会计凭证
+ * @author jack
+ *
+ */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "account_doc_seq", allocationSize = 1)
 public class AccountDoc
@@ -23,6 +29,8 @@ public class AccountDoc
 
     List<AccountDocItem> items;
     String summary;
+
+    Transaction transaction;
 
     /**
      * 会计凭证上的条目列表
@@ -48,4 +56,15 @@ public class AccountDoc
     public void setSummary(String summary) {
         this.summary = summary;
     }
+
+    @OneToMany(mappedBy = "accountDoc")
+	public Transaction getTransaction() {
+		return transaction;
+	}
+
+	public void setTransaction(Transaction transaction) {
+		this.transaction = transaction;
+	}
+
+
 }
