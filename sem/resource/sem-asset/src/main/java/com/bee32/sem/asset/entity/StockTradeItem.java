@@ -21,8 +21,8 @@ import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "trade_item_seq", allocationSize = 1)
-public class TradeItem
+@SequenceGenerator(name = "idgen", sequenceName = "stock_trade_item_seq", allocationSize = 1)
+public class StockTradeItem
 	extends TxEntity
 	implements DecimalConfig {
 
@@ -38,7 +38,7 @@ public class TradeItem
     BigDecimal nativePrice;
     BigDecimal nativeTotal;
 
-	Trade trade;
+	StockTrade trade;
 
     /**
      * 单据内部的序号
@@ -157,11 +157,11 @@ public class TradeItem
 
 
 	@ManyToOne
-	public Trade getTrade() {
+	public StockTrade getTrade() {
 		return trade;
 	}
 
-	public void setTrade(Trade trade) {
+	public void setTrade(StockTrade trade) {
 		this.trade = trade;
 	}
 

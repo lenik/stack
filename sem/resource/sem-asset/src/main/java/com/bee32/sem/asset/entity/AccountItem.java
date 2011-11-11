@@ -24,8 +24,8 @@ import com.bee32.sem.world.monetary.MCValue;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 4)
 @DiscriminatorValue("-")
-@SequenceGenerator(name = "idgen", sequenceName = "asset_record_seq", allocationSize = 1)
-public class AccountDocItem
+@SequenceGenerator(name = "idgen", sequenceName = "account_item_seq", allocationSize = 1)
+public class AccountItem
         extends TxEntity {
 
     private static final long serialVersionUID = 1L;
@@ -33,52 +33,39 @@ public class AccountDocItem
     public static final int TITLE_LENGTH = 30;
     public static final int TEXT_LENGTH = 3000;
 
-    AccountTitle accountTitle;
-    Party org;
-    Party person;
+    AccountSubject subject;
+    Party party;
 
     MCValue value = new MCValue();
 
-    AccountSide accountSide;
-
-    AccountDoc accountDoc;
+    AccountSide side;
+    Account account;
 
     /**
      * 借方或贷方的一级科目
      */
     @ManyToOne(optional = false)
-    public AccountTitle getAccountTitle() {
-        return accountTitle;
+    public AccountSubject getAccountTitle() {
+        return subject;
     }
 
-    public void setAccountTitle(AccountTitle accountTitle) {
-        if (accountTitle == null)
-            throw new NullPointerException("account title");
-        this.accountTitle = accountTitle;
+    public void setAccountTitle(AccountSubject subject) {
+        if (subject == null)
+            throw new NullPointerException("subject");
+        this.subject = subject;
     }
 
     /**
      * 借方或贷方对应的二级科目为客户或供应商
-     */
-    @ManyToOne
-    public Party getOrg() {
-        return org;
-    }
-
-    public void setOrg(Party org) {
-        this.org = org;
-    }
-
-    /**
      * 借方或贷方对应的二级科目为个人
      */
     @ManyToOne
-    public Party getPerson() {
-        return person;
+    public Party getParty() {
+        return party;
     }
 
-    public void setPerson(Party person) {
-        this.person = person;
+    public void setParty(Party party) {
+        this.party = party;
     }
 
     /**
@@ -102,20 +89,20 @@ public class AccountDocItem
     /**
      * 说明本条目属于凭证上的借方还是贷方
      */
-    public AccountSide getAccountSide() {
-        return accountSide;
+    public AccountSide getSide() {
+        return side;
     }
 
-    public void setAccountSide(AccountSide accountSide) {
-        this.accountSide = accountSide;
+    public void setSide(AccountSide side) {
+        this.side = side;
     }
 
     @ManyToOne(optional = false)
-    public AccountDoc getAccountDoc() {
-        return accountDoc;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setAccountDoc(AccountDoc accountDoc) {
-        this.accountDoc = accountDoc;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }

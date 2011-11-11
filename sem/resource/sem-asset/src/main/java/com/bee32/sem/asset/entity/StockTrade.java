@@ -11,19 +11,19 @@ import org.hibernate.annotations.CascadeType;
 
 @Entity
 @DiscriminatorValue("TRAD")
-public class Trade extends AccountDocItem {
+public class StockTrade extends AccountItem {
 
 	private static final long serialVersionUID = 1L;
 
-	List<TradeItem> items;
+	List<StockTradeItem> items;
 
 	@OneToMany(mappedBy = "trade", orphanRemoval = true)
 	@Cascade(CascadeType.ALL)
-	public List<TradeItem> getItems() {
+	public List<StockTradeItem> getItems() {
 		return items;
 	}
 
-	public void setItems(List<TradeItem> items) {
+	public void setItems(List<StockTradeItem> items) {
 		this.items = items;
 	}
 }

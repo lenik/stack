@@ -18,8 +18,8 @@ import com.bee32.plover.ox1.tree.TreeEntityAuto;
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "asset_subject_seq", allocationSize = 1)
-public class AccountTitle
-        extends TreeEntityAuto<Integer, AccountTitle> {
+public class AccountSubject
+        extends TreeEntityAuto<Integer, AccountSubject> {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,24 +27,22 @@ public class AccountTitle
     public static final int CODE_LENGTH = 10;
     public static final int TITLE_LENGTH = 30;
 
-    String code;
-    String title;
     boolean debitSign;
     boolean creditSign;
 
-    public AccountTitle() {
+    public AccountSubject() {
         super();
     }
 
-    public AccountTitle(String name) {
+    public AccountSubject(String name) {
         super(name);
     }
 
-    public AccountTitle(AccountTitle parent) {
+    public AccountSubject(AccountSubject parent) {
         super(parent, null);
     }
 
-    public AccountTitle(AccountTitle parent, String name) {
+    public AccountSubject(AccountSubject parent, String name) {
         super(parent, name);
     }
 
@@ -58,27 +56,10 @@ public class AccountTitle
         this.name = name;
     }
 
-    @Column(length = CODE_LENGTH, unique=true)
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    @Column(length = TITLE_LENGTH)
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     /**
      * 借方符号
      */
+    @Column(nullable = false)
     public boolean isDebitSign() {
         return debitSign;
     }
@@ -91,6 +72,7 @@ public class AccountTitle
      * 贷方符号
      * @return
      */
+    @Column(nullable = false)
     public boolean isCreditSign() {
         return creditSign;
     }

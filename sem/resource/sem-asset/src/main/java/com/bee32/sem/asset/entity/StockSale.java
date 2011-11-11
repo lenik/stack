@@ -4,8 +4,8 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("PURC")
-public class Purchase extends Trade {
+@DiscriminatorValue("SALE")
+public class StockSale extends StockTrade {
 
 	private static final long serialVersionUID = 1L;
 

@@ -14,30 +14,21 @@ import com.bee32.sem.base.tx.TxEntity;
 import com.bee32.sem.world.monetary.MCValue;
 
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "transaction_seq", allocationSize = 1)
-public class Trasaction extends TxEntity {
+@SequenceGenerator(name = "idgen", sequenceName = "budget_request_seq", allocationSize = 1)
+public class BudgetRequest extends TxEntity {
 
 	private static final long serialVersionUID = 1L;
 
-    public static final int SUMMARY_LENGTH = 50;
+	public static final int TEXT_LENGTH = 10000;
 
-	String summary;
 	String text;
+	MCValue  value = new MCValue();
+	Account account;
 
-	MCValue  money = new MCValue();
-
-	AccountDoc accountDoc;
-
-	@Column(length = SUMMARY_LENGTH)
-    public String getSummary() {
-		return summary;
-	}
-
-	public void setSummary(String summary) {
-		this.summary = summary;
-	}
-
-	@Lob
+	/**
+	 * 业务详细说明
+	 */
+	@Column(length = TEXT_LENGTH)
 	public String getText() {
 		return text;
 	}
@@ -46,18 +37,21 @@ public class Trasaction extends TxEntity {
 		this.text = text;
 	}
 
+	/**
+	 * 金额
+	 */
 	@Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "currencyCode", column = @Column(name = "money_cc")), //
-            @AttributeOverride(name = "value", column = @Column(name = "money")) })
-	public MCValue getMoney() {
-		return money;
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "value_cc")), //
+            @AttributeOverride(name = "value", column = @Column(name = "value")) })
+	public MCValue getValue() {
+		return value;
 	}
 
 	public void setMoney(MCValue money) {
         if (money == null)
             throw new NullPointerException("money");
-        this.money = money;
+        this.value = money;
 	}
 
     public final void setMoney(double money) {
@@ -65,12 +59,12 @@ public class Trasaction extends TxEntity {
     }
 
     @ManyToOne
-	public AccountDoc getAccountDoc() {
-		return accountDoc;
+	public Account getAccount() {
+		return account;
 	}
 
-	public void setAccountDoc(AccountDoc accountDoc) {
-		this.accountDoc = accountDoc;
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 
 
