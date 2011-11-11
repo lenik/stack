@@ -33,6 +33,8 @@ public class AccountItem
     public static final int TITLE_LENGTH = 30;
     public static final int TEXT_LENGTH = 3000;
 
+    int index;
+
     AccountSubject subject;
     Party party;
 
@@ -40,6 +42,18 @@ public class AccountItem
 
     AccountSide side;
     Account account;
+
+    /**
+     * 单据内部的序号
+     */
+    @Column(nullable = false)
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
 
     /**
      * 借方或贷方的一级科目

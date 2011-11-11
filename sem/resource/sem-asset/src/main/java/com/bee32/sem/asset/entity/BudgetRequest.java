@@ -21,7 +21,7 @@ public class BudgetRequest extends TxEntity {
 	public static final int TEXT_LENGTH = 10000;
 
 	String text;
-	MCValue  value = new MCValue();
+	MCValue value = new MCValue();
 	Account account;
 
 	/**

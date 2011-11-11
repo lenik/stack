@@ -46,6 +46,9 @@ public class AccountSubject
         super(parent, name);
     }
 
+    /**
+     * 科目代码
+     */
     @NaturalId(mutable = true)
     @Column(length = NAME_LENGTH)
     public String getName() {
