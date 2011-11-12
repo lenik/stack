@@ -20,18 +20,17 @@ import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.tree.TreeCriteria;
 import com.bee32.sem.misc.EntityCriteria;
-import com.bee32.sem.people.dto.AbstractPartyDto;
 import com.bee32.sem.people.dto.ContactCategoryDto;
 import com.bee32.sem.people.dto.ContactDto;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.OrgTypeDto;
 import com.bee32.sem.people.dto.OrgUnitDto;
+import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.dto.PersonRoleDto;
 import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.entity.OrgType;
 import com.bee32.sem.people.entity.OrgUnit;
-import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonRole;
 import com.bee32.sem.people.util.PeopleCriteria;
@@ -65,7 +64,7 @@ public class OrgAdminBean
 
     public OrgAdminBean() {
         EntityDataModelOptions<Org, OrgDto> options = new EntityDataModelOptions<Org, OrgDto>(//
-                Org.class, OrgDto.class, AbstractPartyDto.CONTACTS, //
+                Org.class, OrgDto.class, PartyDto.CONTACTS, //
                 Order.desc("id"), EntityCriteria.ownedByCurrentUser());
         orgs = UIHelper.buildLazyDataModel(options);
 
@@ -83,21 +82,20 @@ public class OrgAdminBean
     void refreshPersonCount(String namePattern) {
         int count = serviceFor(Org.class).count( //
                 EntityCriteria.ownedByCurrentUser(),//
-                new Or(
-                        new Like("name", "%" + namePattern + "%"), //
+                new Or(new Like("name", "%" + namePattern + "%"), //
                         new Like("fullName", "%" + namePattern + "%") //
-                        ) //
+                ) //
                 );
         orgs.setRowCount(count);
     }
 
     @Override
-    protected AbstractPartyDto<? extends Party> getParty() {
+    protected OrgDto getParty() {
         return org;
     }
 
     @Override
-    protected void setParty(AbstractPartyDto<? extends Party> party) {
+    protected void setParty(PartyDto party) {
         this.org = (OrgDto) party;
     }
 
@@ -333,7 +331,7 @@ public class OrgAdminBean
 
     public void doSave() {
         try {
-            serviceFor(Org.class).saveOrUpdate(org.unmarshal());
+            serviceFor(Org.class).saveOrUpdate((Org) org.unmarshal());
             refreshOrgCount();
 
             setActiveTab(TAB_INDEX);
@@ -392,7 +390,7 @@ public class OrgAdminBean
 
         try {
             org.getRoles().remove(selectedRole);
-            serviceFor(Org.class).saveOrUpdate(org.unmarshal());
+            serviceFor(Org.class).saveOrUpdate((Org) org.unmarshal());
             selectedRole = null;
 
         } catch (Exception e) {
@@ -408,7 +406,7 @@ public class OrgAdminBean
 
         try {
             org.getRoles().add(role);
-            Org _org = org.unmarshal();
+            Org _org = (Org) org.unmarshal();
             serviceFor(Org.class).saveOrUpdate(_org);
             org = DTOs.marshal(OrgDto.class, _org);
 
@@ -437,7 +435,7 @@ public class OrgAdminBean
     }
 
     public void choosePerson() {
-        if(selectedPerson != null) {
+        if (selectedPerson != null) {
             role.setPerson(selectedPerson);
         }
     }
@@ -479,12 +477,12 @@ public class OrgAdminBean
     }
 
     public void doSelectParentOrgUnit() {
-        if(orgUnit != null) {
-            //在增加或修改部门时
+        if (orgUnit != null) {
+            // 在增加或修改部门时
             orgUnit.setParent((OrgUnitDto) selectedParentOrgUnitNode.getData());
         }
-        if(role != null) {
-            //在新建role时（即orgUnit和Person的关系时）
+        if (role != null) {
+            // 在新建role时（即orgUnit和Person的关系时）
             role.setOrgUnit((OrgUnitDto) selectedParentOrgUnitNode.getData());
         }
 
@@ -526,10 +524,9 @@ public class OrgAdminBean
     public void find() {
         EntityDataModelOptions<Org, OrgDto> options = new EntityDataModelOptions<Org, OrgDto>(//
                 Org.class, OrgDto.class, 0, //
-                new Or(
-                        new Like("name", "%" + namePattern + "%"), //
+                new Or(new Like("name", "%" + namePattern + "%"), //
                         new Like("fullName", "%" + namePattern + "%") //
-                        ), //
+                ), //
                 Order.desc("id"), EntityCriteria.ownedByCurrentUser());
         orgs = UIHelper.<Org, OrgDto> buildLazyDataModel(options);
 

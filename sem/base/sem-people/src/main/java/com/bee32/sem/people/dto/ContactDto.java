@@ -8,14 +8,13 @@ import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.xp.EntityExtDto;
 import com.bee32.sem.people.entity.Contact;
 import com.bee32.sem.people.entity.ContactXP;
-import com.bee32.sem.people.entity.Party;
 
 public class ContactDto
         extends EntityExtDto<Contact, Integer, ContactXP> {
 
     private static final long serialVersionUID = 1L;
 
-    AbstractPartyDto<? extends Party> party;
+    PartyDto party;
     ContactCategoryDto category;
     String address;
     String postCode;
@@ -72,11 +71,11 @@ public class ContactDto
             throws ParseException {
     }
 
-    public AbstractPartyDto<? extends Party> getParty() {
+    public PartyDto getParty() {
         return party;
     }
 
-    public void setParty(AbstractPartyDto<? extends Party> party) {
+    public void setParty(PartyDto party) {
         this.party = party;
     }
 

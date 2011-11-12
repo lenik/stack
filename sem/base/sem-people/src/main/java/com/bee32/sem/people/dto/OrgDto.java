@@ -10,10 +10,11 @@ import javax.validation.constraints.Min;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.principal.GroupDto;
 import com.bee32.sem.people.entity.Org;
+import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.PersonRole;
 
 public class OrgDto
-        extends AbstractPartyDto<Org> {
+        extends PartyDto {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,8 +33,10 @@ public class OrgDto
     }
 
     @Override
-    protected void _marshal(Org source) {
-        super._marshal(source);
+    protected void _marshal(Party _source) {
+        super._marshal(_source);
+
+        Org source = (Org) _source;
 
         type = marshal(OrgTypeDto.class, source.getType(), true);
         size = source.getSize();
@@ -50,8 +53,10 @@ public class OrgDto
     }
 
     @Override
-    protected void _unmarshalTo(Org target) {
-        super._unmarshalTo(target);
+    protected void _unmarshalTo(Party _target) {
+        super._unmarshalTo(_target);
+
+        Org target = (Org) _target;
 
         merge(target, "type", type);
         target.setSize(size);

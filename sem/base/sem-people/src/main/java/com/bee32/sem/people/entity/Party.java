@@ -71,7 +71,6 @@ public abstract class Party
     String bank;
     String bankAccount;
 
-
     String memo;
 
     Set<PartyTagname> tags = new HashSet<PartyTagname>();
@@ -199,11 +198,17 @@ public abstract class Party
         this.interests = interests;
     }
 
+    /**
+     * 银行名称
+     */
     @Column(length = BANK_LENGTH)
     public String getBank() {
         return bank;
     }
 
+    /**
+     * 银行帐号
+     */
     public void setBank(String bank) {
         this.bank = bank;
     }

@@ -5,11 +5,12 @@ import java.util.Set;
 
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.sem.people.Gender;
+import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonRole;
 
 public class PersonDto
-        extends AbstractPartyDto<Person> {
+        extends PartyDto {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,8 +29,10 @@ public class PersonDto
     }
 
     @Override
-    protected void _marshal(Person source) {
-        super._marshal(source);
+    protected void _marshal(Party _source) {
+        super._marshal(_source);
+
+        Person source = (Person) _source;
 
         sex = source.getSex() == null ? null : source.getSex().getValue();
 
@@ -49,8 +52,10 @@ public class PersonDto
     }
 
     @Override
-    protected void _unmarshalTo(Person target) {
-        super._unmarshalTo(target);
+    protected void _unmarshalTo(Party _target) {
+        super._unmarshalTo(_target);
+
+        Person target = (Person) _target;
 
         target.setSex(Gender.valueOf(sex));
 

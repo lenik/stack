@@ -279,7 +279,7 @@ public class UserAdminBean
             serviceFor(PersonLogin.class).deleteAll(new Equals("user.id", user.getId()));
             PersonLogin personLogin = new PersonLogin();
             personLogin.setUser(user.unmarshal());
-            personLogin.setPerson(selectedPerson.unmarshal());
+            personLogin.setPerson((Person) selectedPerson.unmarshal());
 
             serviceFor(PersonLogin.class).save(personLogin);
         }

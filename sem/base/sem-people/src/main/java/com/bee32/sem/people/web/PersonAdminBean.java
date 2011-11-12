@@ -16,11 +16,10 @@ import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.Gender;
-import com.bee32.sem.people.dto.AbstractPartyDto;
+import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.dto.PartySidTypeDto;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.dto.PersonRoleDto;
-import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.PartySidType;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
@@ -38,7 +37,6 @@ public class PersonAdminBean
     private PersonDto person;
 
     private PersonRoleDto selectedRole;
-
 
     @PostConstruct
     public void init() {
@@ -60,21 +58,20 @@ public class PersonAdminBean
     void refreshPersonCount(String namePattern) {
         int count = serviceFor(Person.class).count( //
                 EntityCriteria.ownedByCurrentUser(),//
-                new Or(
-                        new Like("name", "%" + namePattern + "%"), //
+                new Or(new Like("name", "%" + namePattern + "%"), //
                         new Like("fullName", "%" + namePattern + "%") //
-                        ) //
+                ) //
                 );
         persons.setRowCount(count);
     }
 
     @Override
-    protected AbstractPartyDto<? extends Party> getParty() {
+    protected PersonDto getParty() {
         return person;
     }
 
     @Override
-    protected void setParty(AbstractPartyDto<? extends Party> party) {
+    protected void setParty(PartyDto party) {
         this.person = (PersonDto) party;
     }
 
@@ -149,9 +146,6 @@ public class PersonAdminBean
         return roles;
     }
 
-
-
-
     public void doNew() {
         person = new PersonDto().create();
 
@@ -193,7 +187,8 @@ public class PersonAdminBean
 
     public void doSave() {
         try {
-            serviceFor(Person.class).saveOrUpdate(person.unmarshal());
+            Person _person = (Person) person.unmarshal();
+            serviceFor(Person.class).saveOrUpdate(_person);
             refreshPersonCount();
 
             setActiveTab(TAB_INDEX);
@@ -236,10 +231,9 @@ public class PersonAdminBean
     public void find() {
         EntityDataModelOptions<Person, PersonDto> options = new EntityDataModelOptions<Person, PersonDto>(//
                 Person.class, PersonDto.class, 0, //
-                new Or(
-                        new Like("name", "%" + namePattern + "%"), //
+                new Or(new Like("name", "%" + namePattern + "%"), //
                         new Like("fullName", "%" + namePattern + "%") //
-                        ), //
+                ), //
                 Order.desc("id"), EntityCriteria.ownedByCurrentUser());
         persons = UIHelper.<Person, PersonDto> buildLazyDataModel(options);
 

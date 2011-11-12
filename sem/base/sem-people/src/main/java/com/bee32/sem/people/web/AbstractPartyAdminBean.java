@@ -10,9 +10,9 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.sem.people.dto.AbstractPartyDto;
 import com.bee32.sem.people.dto.ContactCategoryDto;
 import com.bee32.sem.people.dto.ContactDto;
+import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.dto.PartyTagnameDto;
 import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.Party;
@@ -37,9 +37,9 @@ public abstract class AbstractPartyAdminBean
 
     String namePattern;
 
-    protected abstract AbstractPartyDto<? extends Party> getParty();
+    protected abstract PartyDto getParty();
 
-    protected abstract void setParty(AbstractPartyDto<? extends Party> party);
+    protected abstract void setParty(PartyDto party);
 
     public abstract void find();
 
@@ -104,7 +104,7 @@ public abstract class AbstractPartyAdminBean
     public List<ContactDto> getContacts() {
         List<ContactDto> contacts = new ArrayList<ContactDto>();
 
-        AbstractPartyDto<? extends Party> party = getParty();
+        PartyDto party = getParty();
 
         if (party != null && party.getId() != null) {
             contacts = party.getContacts();
@@ -138,7 +138,7 @@ public abstract class AbstractPartyAdminBean
     }
 
     public void doDeleteContact() {
-        AbstractPartyDto<? extends Party> party = getParty();
+        PartyDto party = getParty();
 
         if (selectedContact == null) {
             uiLogger.error("提示:请选择需要删除的联系方式!");
@@ -158,7 +158,7 @@ public abstract class AbstractPartyAdminBean
     }
 
     public void doSaveContact() {
-        AbstractPartyDto<? extends Party> party = getParty();
+        PartyDto party = getParty();
 
         if (party == null || party.getId() == null) {
             uiLogger.error("提示:请选择所操作的联系方式对应的客户/供应商!");
@@ -205,7 +205,7 @@ public abstract class AbstractPartyAdminBean
     }
 
     public void addTags() {
-        AbstractPartyDto<? extends Party> party = getParty();
+        PartyDto party = getParty();
 
         if (party == null) {
             uiLogger.error("提示:请选择所操作的联系方式对应的客户/供应商!");
@@ -226,7 +226,7 @@ public abstract class AbstractPartyAdminBean
     }
 
     public void deleteTag() {
-        AbstractPartyDto<? extends Party> party = getParty();
+        PartyDto party = getParty();
 
         if (party == null) {
             uiLogger.error("提示:请选择所操作的联系方式对应的客户/供应商!");
