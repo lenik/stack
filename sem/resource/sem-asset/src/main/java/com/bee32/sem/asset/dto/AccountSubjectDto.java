@@ -7,8 +7,8 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.tree.TreeEntityDto;
 import com.bee32.sem.asset.entity.AccountSubject;
 
-public class AccountSubjectDto extends
-        TreeEntityDto<AccountSubject, Integer, AccountSubjectDto> {
+public class AccountSubjectDto
+        extends TreeEntityDto<AccountSubject, Integer, AccountSubjectDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,7 +34,8 @@ public class AccountSubjectDto extends
     }
 
     @Override
-    protected void _parse(TextMap map) throws ParseException {
+    protected void _parse(TextMap map)
+            throws ParseException {
         throw new NotImplementedException();
 
     }
@@ -62,4 +63,5 @@ public class AccountSubjectDto extends
     public void setCreditSign(boolean creditSign) {
         this.creditSign = creditSign;
     }
+
 }

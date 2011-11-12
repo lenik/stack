@@ -23,14 +23,14 @@ import com.bee32.sem.world.monetary.MCValue;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "stock_trade_item_seq", allocationSize = 1)
 public class StockTradeItem
-	extends TxEntity
-	implements DecimalConfig {
+        extends TxEntity
+        implements DecimalConfig {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     int index;
 
-	Material material;
+    Material material;
 
     BigDecimal quantity = new BigDecimal(0);
     MCValue price = new MCValue();
@@ -38,43 +38,43 @@ public class StockTradeItem
     BigDecimal nativePrice;
     BigDecimal nativeTotal;
 
-	StockTrade trade;
+    StockTrade trade;
 
     /**
      * 单据内部的序号
      */
     @Column(nullable = false)
-	public int getIndex() {
-		return index;
-	}
+    public int getIndex() {
+        return index;
+    }
 
-	public void setIndex(int index) {
-		this.index = index;
-	}
+    public void setIndex(int index) {
+        this.index = index;
+    }
 
     /**
      * 物料
      */
     @ManyToOne(optional = false)
-	public Material getMaterial() {
-		return material;
-	}
+    public Material getMaterial() {
+        return material;
+    }
 
-	public void setMaterial(Material material) {
-		this.material = material;
-	}
+    public void setMaterial(Material material) {
+        this.material = material;
+    }
 
-	@Column(scale = QTY_ITEM_SCALE, precision = QTY_ITEM_PRECISION, nullable = false)
-	public BigDecimal getQuantity() {
-		return quantity;
-	}
+    @Column(scale = QTY_ITEM_SCALE, precision = QTY_ITEM_PRECISION, nullable = false)
+    public BigDecimal getQuantity() {
+        return quantity;
+    }
 
-	public void setQuantity(BigDecimal quantity) {
+    public void setQuantity(BigDecimal quantity) {
         if (quantity == null)
             throw new NullPointerException("quantity");
         this.quantity = quantity;
         invalidateTotal();
-	}
+    }
 
     public void setQuantity(long quantity) {
         setQuantity(new BigDecimal(quantity));
@@ -84,22 +84,21 @@ public class StockTradeItem
         setQuantity(new BigDecimal(quantity));
     }
 
-
     @Embedded
     @AttributeOverrides({
             // { price_c, price }
             @AttributeOverride(name = "currencyCode", column = @Column(name = "price_cc")), //
             @AttributeOverride(name = "value", column = @Column(name = "price")) })
-	public MCValue getPrice() {
-		return price;
-	}
+    public MCValue getPrice() {
+        return price;
+    }
 
-	public void setPrice(MCValue price) {
+    public void setPrice(MCValue price) {
         if (price == null)
             throw new NullPointerException("price");
         this.price = price;
         invalidateTotal();
-	}
+    }
 
     public final void setPrice(double price) {
         setPrice(new MCValue(CurrencyConfig.getNative(), price));
@@ -155,16 +154,14 @@ public class StockTradeItem
         this.nativeTotal = nativeTotal;
     }
 
+    @ManyToOne
+    public StockTrade getTrade() {
+        return trade;
+    }
 
-	@ManyToOne
-	public StockTrade getTrade() {
-		return trade;
-	}
-
-	public void setTrade(StockTrade trade) {
-		this.trade = trade;
-	}
-
+    public void setTrade(StockTrade trade) {
+        this.trade = trade;
+    }
 
     @Transient
     protected Date getFxrDate() {

@@ -5,12 +5,13 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.asset.AccountSide;
-import com.bee32.sem.asset.entity.AccountItem;
+import com.bee32.sem.asset.entity.AccountTicketItem;
 import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.world.monetary.MCValue;
 
-public class AccountItemDto extends TxEntityDto<AccountItem> {
+public class AccountTicketItemDto
+        extends TxEntityDto<AccountTicketItem> {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,10 +23,10 @@ public class AccountItemDto extends TxEntityDto<AccountItem> {
     MCValue value = new MCValue();
 
     AccountSide side;
-    AccountDto account;
+    AccountTicketDto ticket;
 
     @Override
-    protected void _marshal(AccountItem source) {
+    protected void _marshal(AccountTicketItem source) {
         index = source.getIndex();
 
         subject = mref(AccountSubjectDto.class, source.getSubject());
@@ -34,11 +35,11 @@ public class AccountItemDto extends TxEntityDto<AccountItem> {
         value = source.getValue();
 
         side = source.getSide();
-        account = mref(AccountDto.class, source.getAccount());
+        ticket = mref(AccountTicketDto.class, source.getTicket());
     }
 
     @Override
-    protected void _unmarshalTo(AccountItem target) {
+    protected void _unmarshalTo(AccountTicketItem target) {
         target.setIndex(index);
 
         merge(target, "subject", subject);
@@ -47,11 +48,12 @@ public class AccountItemDto extends TxEntityDto<AccountItem> {
         target.setValue(value);
 
         target.setSide(side);
-        merge(target, "account", account);
+        merge(target, "ticket", ticket);
     }
 
     @Override
-    protected void _parse(TextMap map) throws ParseException {
+    protected void _parse(TextMap map)
+            throws ParseException {
         throw new NotImplementedException();
     }
 
@@ -95,11 +97,11 @@ public class AccountItemDto extends TxEntityDto<AccountItem> {
         this.side = side;
     }
 
-    public AccountDto getAccount() {
-        return account;
+    public AccountTicketDto getTicket() {
+        return ticket;
     }
 
-    public void setAccount(AccountDto account) {
-        this.account = account;
+    public void setTicket(AccountTicketDto ticket) {
+        this.ticket = ticket;
     }
 }

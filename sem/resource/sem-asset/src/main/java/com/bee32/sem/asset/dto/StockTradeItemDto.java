@@ -8,15 +8,14 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.arch.util.dto.BaseDto;
-import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.asset.entity.StockTradeItem;
 import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 
-public class StockTradeItemDto extends TxEntityDto<StockTradeItem> {
+public class StockTradeItemDto
+        extends TxEntityDto<StockTradeItem> {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,11 +31,9 @@ public class StockTradeItemDto extends TxEntityDto<StockTradeItem> {
 
     StockTradeDto trade;
 
-
     protected Date getFxrDate() {
         return getCreatedDate();
     }
-
 
     @Override
     protected void _marshal(StockTradeItem source) {
@@ -59,7 +56,8 @@ public class StockTradeItemDto extends TxEntityDto<StockTradeItem> {
     }
 
     @Override
-    protected void _parse(TextMap map) throws ParseException {
+    protected void _parse(TextMap map)
+            throws ParseException {
         throw new NotImplementedException();
 
     }
@@ -152,7 +150,6 @@ public class StockTradeItemDto extends TxEntityDto<StockTradeItem> {
         return nativeTotal;
     }
 
-
     public StockTradeDto getTrade() {
         return trade;
     }
@@ -160,6 +157,5 @@ public class StockTradeItemDto extends TxEntityDto<StockTradeItem> {
     public void setTrade(StockTradeDto trade) {
         this.trade = trade;
     }
-
 
 }

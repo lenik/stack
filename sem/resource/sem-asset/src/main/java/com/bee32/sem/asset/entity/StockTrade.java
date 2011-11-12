@@ -1,5 +1,6 @@
 package com.bee32.sem.asset.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.DiscriminatorValue;
@@ -11,19 +12,21 @@ import org.hibernate.annotations.CascadeType;
 
 @Entity
 @DiscriminatorValue("TRAD")
-public class StockTrade extends AccountItem {
+public class StockTrade
+        extends AccountTicketItem {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	List<StockTradeItem> items;
+    List<StockTradeItem> items = new ArrayList<StockTradeItem>();
 
-	@OneToMany(mappedBy = "trade", orphanRemoval = true)
-	@Cascade(CascadeType.ALL)
-	public List<StockTradeItem> getItems() {
-		return items;
-	}
+    @OneToMany(mappedBy = "trade", orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
+    public List<StockTradeItem> getItems() {
+        return items;
+    }
 
-	public void setItems(List<StockTradeItem> items) {
-		this.items = items;
-	}
+    public void setItems(List<StockTradeItem> items) {
+        this.items = items;
+    }
+
 }

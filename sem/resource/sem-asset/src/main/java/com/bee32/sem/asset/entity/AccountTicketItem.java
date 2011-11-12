@@ -24,8 +24,8 @@ import com.bee32.sem.world.monetary.MCValue;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 4)
 @DiscriminatorValue("-")
-@SequenceGenerator(name = "idgen", sequenceName = "account_item_seq", allocationSize = 1)
-public class AccountItem
+@SequenceGenerator(name = "idgen", sequenceName = "account_ticket_item_seq", allocationSize = 1)
+public class AccountTicketItem
         extends TxEntity {
 
     private static final long serialVersionUID = 1L;
@@ -41,7 +41,7 @@ public class AccountItem
     MCValue value = new MCValue();
 
     AccountSide side;
-    Account account;
+    AccountTicket ticket;
 
     /**
      * 单据内部的序号
@@ -111,11 +111,12 @@ public class AccountItem
     }
 
     @ManyToOne(optional = false)
-    public Account getAccount() {
-        return account;
+    public AccountTicket getTicket() {
+        return ticket;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setTicket(AccountTicket ticket) {
+        this.ticket = ticket;
     }
+
 }

@@ -7,10 +7,11 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.sem.asset.entity.AccountItem;
+import com.bee32.sem.asset.entity.AccountTicketItem;
 import com.bee32.sem.asset.entity.StockTrade;
 
-public class StockTradeDto extends AccountItemDto {
+public class StockTradeDto
+        extends AccountTicketItemDto {
 
     private static final long serialVersionUID = 1L;
 
@@ -19,7 +20,7 @@ public class StockTradeDto extends AccountItemDto {
     List<StockTradeItemDto> items;
 
     @Override
-    protected void _marshal(AccountItem source) {
+    protected void _marshal(AccountTicketItem source) {
         super._marshal(source);
         StockTrade _source = (StockTrade) source;
 
@@ -27,11 +28,10 @@ public class StockTradeDto extends AccountItemDto {
             items = mrefList(StockTradeItemDto.class, _source.getItems());
         else
             items = new ArrayList<StockTradeItemDto>();
-
     }
 
     @Override
-    protected void _unmarshalTo(AccountItem target) {
+    protected void _unmarshalTo(AccountTicketItem target) {
         super._unmarshalTo(target);
 
         StockTrade _target = (StockTrade) target;
@@ -41,7 +41,8 @@ public class StockTradeDto extends AccountItemDto {
     }
 
     @Override
-    protected void _parse(TextMap map) throws ParseException {
+    protected void _parse(TextMap map)
+            throws ParseException {
         throw new NotImplementedException();
     }
 
@@ -79,13 +80,11 @@ public class StockTradeDto extends AccountItemDto {
         // Renum [index, ..)
         for (int i = index; i < items.size(); i++)
             items.get(i).setIndex(i);
-
     }
 
     public synchronized void reindex() {
         for (int index = items.size() - 1; index >= 0; index--)
             items.get(index).setIndex(index);
     }
-
 
 }

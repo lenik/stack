@@ -7,30 +7,31 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.sem.asset.entity.Account;
+import com.bee32.sem.asset.entity.AccountTicket;
 import com.bee32.sem.base.tx.TxEntityDto;
 
-public class AccountDto extends TxEntityDto<Account> {
+public class AccountTicketDto
+        extends TxEntityDto<AccountTicket> {
 
     private static final long serialVersionUID = 1L;
 
     public static final int ITEMS = 1;
 
-    List<AccountItemDto> items;
+    List<AccountTicketItemDto> items;
     BudgetRequestDto request;
 
     @Override
-    protected void _marshal(Account source) {
+    protected void _marshal(AccountTicket source) {
         if (selection.contains(ITEMS))
-            items = mrefList(AccountItemDto.class, source.getItems());
+            items = mrefList(AccountTicketItemDto.class, source.getItems());
         else
-            items = new ArrayList<AccountItemDto>();
+            items = new ArrayList<AccountTicketItemDto>();
 
         request = mref(BudgetRequestDto.class, source.getRequest());
     }
 
     @Override
-    protected void _unmarshalTo(Account target) {
+    protected void _unmarshalTo(AccountTicket target) {
         if (selection.contains(ITEMS))
             mergeList(target, "items", items);
 
@@ -39,22 +40,22 @@ public class AccountDto extends TxEntityDto<Account> {
     }
 
     @Override
-    protected void _parse(TextMap map) throws ParseException {
+    protected void _parse(TextMap map)
+            throws ParseException {
         throw new NotImplementedException();
     }
 
-    public List<AccountItemDto> getItems() {
+    public List<AccountTicketItemDto> getItems() {
         return items;
     }
 
-    public void setItems(List<AccountItemDto> items) {
+    public void setItems(List<AccountTicketItemDto> items) {
         if (items == null)
             throw new NullPointerException("items");
         this.items = items;
     }
 
-
-    public synchronized void addItem(AccountItemDto item) {
+    public synchronized void addItem(AccountTicketItemDto item) {
         if (item == null)
             throw new NullPointerException("item");
 
@@ -64,7 +65,7 @@ public class AccountDto extends TxEntityDto<Account> {
         items.add(item);
     }
 
-    public synchronized void removeItem(AccountItemDto item) {
+    public synchronized void removeItem(AccountTicketItemDto item) {
         if (item == null)
             throw new NullPointerException("item");
 
@@ -85,7 +86,6 @@ public class AccountDto extends TxEntityDto<Account> {
             items.get(index).setIndex(index);
     }
 
-
     public BudgetRequestDto getRequest() {
         return request;
     }
@@ -93,6 +93,5 @@ public class AccountDto extends TxEntityDto<Account> {
     public void setRequest(BudgetRequestDto request) {
         this.request = request;
     }
-
 
 }

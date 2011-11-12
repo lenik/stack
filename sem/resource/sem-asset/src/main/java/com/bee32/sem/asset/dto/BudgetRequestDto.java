@@ -8,30 +8,32 @@ import com.bee32.sem.asset.entity.BudgetRequest;
 import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.world.monetary.MCValue;
 
-public class BudgetRequestDto extends TxEntityDto<BudgetRequest> {
+public class BudgetRequestDto
+        extends TxEntityDto<BudgetRequest> {
 
     private static final long serialVersionUID = 1L;
 
     String text;
     MCValue value;
-    AccountDto account;
+    AccountTicketDto ticket;
 
     @Override
     protected void _marshal(BudgetRequest source) {
         text = source.getText();
         value = source.getValue();
-        account = mref(AccountDto.class, source.getAccount());
+        ticket = mref(AccountTicketDto.class, source.getTicket());
     }
 
     @Override
     protected void _unmarshalTo(BudgetRequest target) {
         target.setText(text);
         target.setValue(value);
-        merge(target, "account", account);
+        merge(target, "account", ticket);
     }
 
     @Override
-    protected void _parse(TextMap map) throws ParseException {
+    protected void _parse(TextMap map)
+            throws ParseException {
         throw new NotImplementedException();
     }
 
@@ -51,11 +53,12 @@ public class BudgetRequestDto extends TxEntityDto<BudgetRequest> {
         this.value = value;
     }
 
-    public AccountDto getAccount() {
-        return account;
+    public AccountTicketDto getTicket() {
+        return ticket;
     }
 
-    public void setAccount(AccountDto account) {
-        this.account = account;
+    public void setTicket(AccountTicketDto ticket) {
+        this.ticket = ticket;
     }
+
 }

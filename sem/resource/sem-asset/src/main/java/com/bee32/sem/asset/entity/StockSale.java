@@ -5,8 +5,9 @@ import javax.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("SALE")
-public class StockSale extends StockTrade {
+public class StockSale
+        extends StockTrade {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
 }
