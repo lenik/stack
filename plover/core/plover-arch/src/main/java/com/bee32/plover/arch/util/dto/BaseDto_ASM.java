@@ -69,7 +69,7 @@ abstract class BaseDto_ASM<S, C>
     }
 
     @Override
-    public synchronized final <D extends BaseDto<S, C>> D marshal(IMarshalSession session, S source) {
+    public synchronized final <D extends BaseDto<? super S, C>> D marshal(IMarshalSession session, S source) {
         enter(session);
         try {
             return marshalImpl(source);
@@ -109,7 +109,7 @@ abstract class BaseDto_ASM<S, C>
         }
     }
 
-    abstract <D extends BaseDto<S, C>> D marshalImpl(S source);
+    abstract <D extends BaseDto<? super S, C>> D marshalImpl(S source);
 
     abstract S mergeImpl(S target);
 

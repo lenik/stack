@@ -123,7 +123,7 @@ abstract class BaseDto_Skel<S, C>
      * Marshal skeleton implementation.
      */
     @Override
-    final <D extends BaseDto<S, C>> D marshalImpl(S source) {
+    final <D extends BaseDto<? super S, C>> D marshalImpl(S source) {
         @SuppressWarnings("unchecked")
         D _this = (D) this;
 

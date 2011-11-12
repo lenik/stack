@@ -27,12 +27,12 @@ public abstract class BaseDto_AS2<S, C>
         return marshal(dtoClass, -1, source, null);
     }
 
-    public <_S, _D extends BaseDto<_S, _C>, _C> _D marshal(Class<_D> dtoClass, int selection, _S source,
+    public <_S, _D extends BaseDto<? super _S, _C>, _C> _D marshal(Class<_D> dtoClass, int selection, _S source,
             boolean refButFilled) {
         return marshal(dtoClass, selection, source, (Boolean) refButFilled);
     }
 
-    public <_S, _D extends BaseDto<_S, _C>, _C> _D marshal(Class<_D> dtoClass, _S source, boolean refButFilled) {
+    public <_S, _D extends BaseDto<? super _S, _C>, _C> _D marshal(Class<_D> dtoClass, _S source, boolean refButFilled) {
         return marshal(dtoClass, -1, source, (Boolean) refButFilled);
     }
 
@@ -42,11 +42,11 @@ public abstract class BaseDto_AS2<S, C>
      * mref with a selection is too inefficient, you should avoid of using it.
      */
     // @Deprecated
-    public <_S, _D extends BaseDto<_S, _C>, _C> _D mref(Class<_D> dtoClass, int selection, _S source) {
+    public <_S, _D extends BaseDto<? super _S, _C>, _C> _D mref(Class<_D> dtoClass, int selection, _S source) {
         return marshal(dtoClass, selection, source, true);
     }
 
-    public <_S, _D extends BaseDto<_S, _C>, _C> _D mref(Class<_D> dtoClass, _S source) {
+    public <_S, _D extends BaseDto<? super _S, _C>, _C> _D mref(Class<_D> dtoClass, _S source) {
         return marshal(dtoClass, 0, source, true);
     }
 

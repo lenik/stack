@@ -20,7 +20,7 @@ public interface IDataTransferObject<S, C>
      * @return The marshalled object. it may be this, or flyweight, or <code>null</code> if the
      *         specified <code>source</code> object is <code>null</code>.
      */
-    <D extends BaseDto<S, C>> D marshal(IMarshalSession session, S source);
+    <D extends BaseDto<? super S, C>> D marshal(IMarshalSession session, S source);
 
     /**
      * Turn this into a referenced-DTO.
