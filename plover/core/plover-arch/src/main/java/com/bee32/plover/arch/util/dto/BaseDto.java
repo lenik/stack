@@ -2,7 +2,8 @@ package com.bee32.plover.arch.util.dto;
 
 import java.io.Serializable;
 
-import com.bee32.plover.arch.util.ClassUtil;
+import javax.free.IllegalUsageError;
+
 import com.bee32.plover.arch.util.Flags32;
 
 public abstract class BaseDto<S, C>
@@ -22,7 +23,23 @@ public abstract class BaseDto<S, C>
 
     public BaseDto(int selection) {
         this.selection.bits = selection;
-        initSourceType(ClassUtil.<S> infer1(getClass(), BaseDto.class, 0));
+
+        // initSourceType(ClassUtil.<S> infer1(getClass(), BaseDto.class, 0));
+        String dtoFqcn = getClass().getName();
+        String entityFqcn;
+
+        if (dtoFqcn.endsWith("Dto") || dtoFqcn.endsWith("DTO"))
+            entityFqcn = dtoFqcn.substring(0, dtoFqcn.length() - 3);
+        else
+            entityFqcn = dtoFqcn;
+
+        entityFqcn = entityFqcn.replace(".dto.", ".entity.");
+
+        try {
+            sourceType = (Class<? extends S>) Class.forName(entityFqcn);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalUsageError(e.getMessage(), e);
+        }
     }
 
     /**
