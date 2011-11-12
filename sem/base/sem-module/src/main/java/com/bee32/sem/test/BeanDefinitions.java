@@ -62,6 +62,10 @@ public class BeanDefinitions {
             String[] aliases = registry.getAliases(name);
             BeanDefinition definition = registry.getBeanDefinition(name);
             String beanClass = definition.getBeanClassName();
+            int role = definition.getRole();
+
+            if (!verbose && role != BeanDefinition.ROLE_APPLICATION)
+                continue;
 
             out.print("bean: " + name);
             if (aliases.length != 0)
@@ -82,23 +86,22 @@ public class BeanDefinitions {
                 Object source = definition.getSource();
                 if (source != null)
                     out.println("source: " + source);
-            }
 
-            int role = definition.getRole();
-            String roleName = null;
-            switch (role) {
-            case BeanDefinition.ROLE_APPLICATION:
-                roleName = "application";
-                break;
-            case BeanDefinition.ROLE_INFRASTRUCTURE:
-                roleName = "infrastructure";
-                break;
-            case BeanDefinition.ROLE_SUPPORT:
-                roleName = "support";
-                break;
+                String roleName = null;
+                switch (role) {
+                case BeanDefinition.ROLE_APPLICATION:
+                    roleName = "application";
+                    break;
+                case BeanDefinition.ROLE_INFRASTRUCTURE:
+                    roleName = "infrastructure";
+                    break;
+                case BeanDefinition.ROLE_SUPPORT:
+                    roleName = "support";
+                    break;
+                }
+                if (roleName != null)
+                    out.println("role: " + roleName);
             }
-            if (roleName != null)
-                out.println("role: " + roleName);
 
             String scope = definition.getScope();
             if (!Strings.isEmpty(scope))
