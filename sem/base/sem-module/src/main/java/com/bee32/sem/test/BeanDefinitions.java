@@ -7,6 +7,7 @@ import javax.free.StringArray;
 
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.PropertyValue;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ApplicationContext;
@@ -23,31 +24,65 @@ public class BeanDefinitions {
     }
 
     public static void dump(IIndentedOut out, ApplicationContext appctx) {
-        if (!(appctx instanceof BeanDefinitionRegistry))
+        out.println("application-context: " + appctx.getDisplayName());
+        out.enter();
+        try {
+            BeanDefinitionRegistry registry = null;
+
+            if (appctx instanceof BeanDefinitionRegistry)
+                registry = (BeanDefinitionRegistry) appctx;
+            else {
+                AutowireCapableBeanFactory beanFactory = appctx.getAutowireCapableBeanFactory();
+                if (beanFactory instanceof BeanDefinitionRegistry)
+                    registry = (BeanDefinitionRegistry) beanFactory;
+            }
+
+            if (registry != null) {
+                dump(out, registry);
+            } else {
+                out.println("Not a bean definition registry.");
+            }
+        } finally {
+            out.leave();
+        }
+
+        ApplicationContext parent = appctx.getParent();
+        if (parent == null)
             return;
-        BeanDefinitionRegistry registry = (BeanDefinitionRegistry) appctx;
-        dump(out, registry);
+
+        out.println();
+        out.print("parent-");
+        dump(out, parent);
     }
+
+    static boolean verbose = false;
 
     public static void dump(IIndentedOut out, BeanDefinitionRegistry registry) {
         for (String name : registry.getBeanDefinitionNames()) {
             String[] aliases = registry.getAliases(name);
             BeanDefinition definition = registry.getBeanDefinition(name);
+            String beanClass = definition.getBeanClassName();
 
-            out.println("bean: " + name + " (aliases: " + StringArray.join(", ", aliases) + ")");
+            out.print("bean: " + name);
+            if (aliases.length != 0)
+                out.print(" (aliases: " + StringArray.join(", ", aliases) + ")");
+            out.print(": " + beanClass);
+            out.println();
             out.enter();
-
-            Object source = definition.getSource();
-            if (source != null)
-                out.println("source: " + source);
 
             String description = definition.getDescription();
             if (!Strings.isEmpty(description))
                 out.println("description: " + description);
 
-            String resourceDescription = definition.getResourceDescription();
-            if (!Strings.isEmpty(resourceDescription))
-                out.println("resource-description: " + resourceDescription);
+            if (verbose) {
+                String resourceDescription = definition.getResourceDescription();
+                if (!Strings.isEmpty(resourceDescription))
+                    out.println("resource-description: " + resourceDescription);
+
+                Object source = definition.getSource();
+                if (source != null)
+                    out.println("source: " + source);
+            }
 
             int role = definition.getRole();
             String roleName = null;
@@ -66,7 +101,7 @@ public class BeanDefinitions {
                 out.println("role: " + roleName);
 
             String scope = definition.getScope();
-            if (scope != null)
+            if (!Strings.isEmpty(scope))
                 out.println("scope: " + scope);
 
             String parentName = definition.getParentName();
@@ -81,10 +116,8 @@ public class BeanDefinitions {
                     out.println("factory-method: " + factoryMethodName);
             }
 
-            out.println("bean-class: " + definition.getBeanClassName());
-
             String[] depends = definition.getDependsOn();
-            if (depends.length != 0)
+            if (depends != null && depends.length != 0)
                 out.println("depends: " + StringArray.join(", ", depends));
 
             for (String attributeName : definition.attributeNames()) {
