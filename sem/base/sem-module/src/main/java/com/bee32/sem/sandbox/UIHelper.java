@@ -64,7 +64,7 @@ public class UIHelper
         return items;
     }
 
-    public static <E extends CEntity<?>, D extends CEntityDto<E, ?>> //
+    public static <E extends CEntity<?>, D extends CEntityDto<? super E, ?>> //
     ZLazyDataModel<E, D> buildLazyDataModel(EntityDataModelOptions<E, D> options) {
         return new ZLazyDataModel<E, D>(options);
     }

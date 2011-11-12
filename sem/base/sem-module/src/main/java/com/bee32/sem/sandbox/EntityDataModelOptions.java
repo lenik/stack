@@ -11,7 +11,7 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.c.CEntityDto;
 
-public class EntityDataModelOptions<E extends CEntity<?>, D extends CEntityDto<E, ?>> {
+public class EntityDataModelOptions<E extends CEntity<?>, D extends CEntityDto<? super E, ?>> {
 
     final Class<?> creator = Caller.getCallerClass(1);
     final Class<E> entityClass;

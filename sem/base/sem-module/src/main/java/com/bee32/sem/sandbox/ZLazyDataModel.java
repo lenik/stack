@@ -15,7 +15,7 @@ import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.c.CEntityDto;
 import com.bee32.plover.web.faces.utils.FacesContextSupport;
 
-public class ZLazyDataModel<E extends CEntity<?>, D extends CEntityDto<E, ?>>
+public class ZLazyDataModel<E extends CEntity<?>, D extends CEntityDto<? super E, ?>>
         extends LazyDataModel<D>
         implements Selectable<D> {
 
@@ -44,7 +44,7 @@ public class ZLazyDataModel<E extends CEntity<?>, D extends CEntityDto<E, ?>>
 
         Limit limit = new Limit(first, pageSize);
         Order order = null;
-        if(sortField != null) {
+        if (sortField != null) {
             switch (sortOrder) {
             case ASCENDING:
                 order = Order.asc(sortField);

@@ -19,21 +19,16 @@ public abstract class BaseDto_AS2<S, C>
 
     // marshal*
 
-    public <_S, _D extends BaseDto<_S, _C>, _C> _D marshal(Class<_D> dtoClass, int selection, _S source) {
+    public <_S, _D extends BaseDto<? super _S, _C>, _C> _D marshal(Class<_D> dtoClass, int selection, _S source) {
         return marshal(dtoClass, selection, source, null);
     }
 
-    public <_S, _D extends BaseDto<_S, _C>, _C> _D marshal(Class<_D> dtoClass, _S source) {
+    public <_S, _D extends BaseDto<? super _S, _C>, _C> _D marshal(Class<_D> dtoClass, _S source) {
         return marshal(dtoClass, -1, source, null);
     }
 
-    public <_S, _D extends BaseDto<? super _S, _C>, _C> _D marshal(Class<_D> dtoClass, int selection, _S source,
-            boolean refButFilled) {
-        return marshal(dtoClass, selection, source, (Boolean) refButFilled);
-    }
-
-    public <_S, _D extends BaseDto<? super _S, _C>, _C> _D marshal(Class<_D> dtoClass, _S source, boolean refButFilled) {
-        return marshal(dtoClass, -1, source, (Boolean) refButFilled);
+    public <_S, _D extends BaseDto<? super _S, _C>, _C> _D marshal(Class<_D> dtoClass, _S source, Boolean refButFilled) {
+        return marshal(dtoClass, -1, source, refButFilled);
     }
 
     // mref(...) = marshal(..., true)
@@ -52,66 +47,56 @@ public abstract class BaseDto_AS2<S, C>
 
     // marshal/mref List*
 
-    public <_S, _D extends BaseDto<_S, _C>, _C> List<_D> marshalList(//
+    public <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> marshalList(//
             Class<_D> dtoClass, int selection, Iterable<? extends _S> sources) {
         return _marshalList(dtoClass, selection, sources, null);
     }
 
-    public <_S, _D extends BaseDto<_S, _C>, _C> List<_D> marshalList(//
+    public <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> marshalList(//
             Class<_D> dtoClass, Iterable<? extends _S> sources) {
         return _marshalList(dtoClass, -1, sources, null);
     }
 
-    public <_S, _D extends BaseDto<_S, _C>, _C> List<_D> mrefList(//
+    public <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> mrefList(//
             Class<_D> dtoClass, int selection, Iterable<? extends _S> sources) {
         return _marshalList(dtoClass, selection, sources, true);
     }
 
-    public <_S, _D extends BaseDto<_S, _C>, _C> List<_D> mrefList(//
+    public <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> mrefList(//
             Class<_D> dtoClass, Iterable<? extends _S> sources) {
         return _marshalList(dtoClass, -1, sources, true);
     }
 
     // marshalSet
 
-    public <_S, _D extends BaseDto<_S, _C>, _C> Set<_D> marshalSet(//
+    public <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet(//
             Class<_D> dtoClass, int selection, Iterable<? extends _S> sources) {
         return marshalSet(dtoClass, selection, sources, null);
     }
 
-    public <_S, _D extends BaseDto<_S, _C>, _C> Set<_D> marshalSet(//
+    public <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet(//
             Class<_D> dtoClass, Iterable<? extends _S> sources) {
         return marshalSet(dtoClass, -1, sources, null);
     }
 
-    public <_S, _D extends BaseDto<_S, _C>, _C> Set<_D> marshalSet(//
-            Class<_D> dtoClass, int selection, Iterable<? extends _S> sources, boolean refButFilled) {
-        return marshalSet(dtoClass, selection, sources, (Boolean) refButFilled);
-    }
-
-    public <_S, _D extends BaseDto<_S, _C>, _C> Set<_D> marshalSet(//
-            Class<_D> dtoClass, Iterable<? extends _S> sources, boolean refButFilled) {
+    public <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet(//
+            Class<_D> dtoClass, Iterable<? extends _S> sources, Boolean refButFilled) {
         return marshalSet(dtoClass, -1, sources, (Boolean) refButFilled);
     }
 
-    public <_S, _D extends BaseDto<_S, _C>, _C> Set<_D> marshalTreeSet(//
+    public <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalTreeSet(//
             Class<_D> dtoClass, int selection, Iterable<? extends _S> sources) {
         return marshalTreeSet(dtoClass, selection, sources, null);
     }
 
-    public <_S, _D extends BaseDto<_S, _C>, _C> Set<_D> marshalTreeSet(//
+    public <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalTreeSet(//
             Class<_D> dtoClass, Iterable<? extends _S> sources) {
         return marshalTreeSet(dtoClass, -1, sources, null);
     }
 
-    public <_S, _D extends BaseDto<_S, _C>, _C> Set<_D> marshalTreeSet(//
-            Class<_D> dtoClass, int selection, Iterable<? extends _S> sources, boolean refButFilled) {
-        return marshalTreeSet(dtoClass, selection, sources, (Boolean) refButFilled);
-    }
-
-    public <_S, _D extends BaseDto<_S, _C>, _C> Set<_D> marshalTreeSet(//
-            Class<_D> dtoClass, Iterable<? extends _S> sources, boolean refButFilled) {
-        return marshalTreeSet(dtoClass, -1, sources, (Boolean) refButFilled);
+    public <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalTreeSet(//
+            Class<_D> dtoClass, Iterable<? extends _S> sources, Boolean refButFilled) {
+        return marshalTreeSet(dtoClass, -1, sources, refButFilled);
     }
 
     // _unmarshalCollection*

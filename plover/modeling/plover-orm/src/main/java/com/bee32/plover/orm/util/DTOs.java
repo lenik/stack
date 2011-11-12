@@ -44,25 +44,20 @@ public abstract class DTOs {
 
     }
 
-    public static <_S, _D extends BaseDto<_S, _C>, _C> _D marshal(Class<_D> dtoClass, int selection, _S source) {
-        return new Dummy().marshal(dtoClass, selection, source);
-    }
-
-    public static <_S, _D extends BaseDto<_S, _C>, _C> _D marshal(Class<_D> dtoClass, int selection, _S source,
+    public static <_S, _D extends BaseDto<? super _S, _C>, _C> _D _marshal(Class<_D> dtoClass, int selection, _S source,
             Boolean refButFilled) {
         return new Dummy().marshal(dtoClass, selection, source, refButFilled);
     }
 
-    public static <_S, _D extends BaseDto<_S, _C>, _C> _D marshal(Class<_D> dtoClass, _S source) {
+    public static <_S, _D extends BaseDto<? super _S, _C>, _C> _D marshal(Class<_D> dtoClass, int selection, _S source) {
+        return new Dummy().marshal(dtoClass, selection, source);
+    }
+
+    public static <_S, _D extends BaseDto<? super _S, _C>, _C> _D marshal(Class<_D> dtoClass, _S source) {
         return new Dummy().marshal(dtoClass, source);
     }
 
-    public static <_S, _D extends BaseDto<_S, _C>, _C> _D marshal(Class<_D> dtoClass, int selection, _S source,
-            boolean refButFilled) {
-        return new Dummy().marshal(dtoClass, selection, source, refButFilled);
-    }
-
-    public static <_S, _D extends BaseDto<_S, _C>, _C> _D marshal(Class<_D> dtoClass, _S source, boolean refButFilled) {
+    public static <_S, _D extends BaseDto<? super _S, _C>, _C> _D marshal(Class<_D> dtoClass, _S source, Boolean refButFilled) {
         return new Dummy().marshal(dtoClass, source, refButFilled);
     }
 
@@ -80,42 +75,42 @@ public abstract class DTOs {
         return new Dummy()._marshalList(dtoClass, selection, sources, refButFilled);
     }
 
-    public static <_S, _D extends BaseDto<_S, _C>, _C> List<_D> marshalList(Class<_D> dtoClass, int selection,
+    public static <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> marshalList(Class<_D> dtoClass, int selection,
             Iterable<? extends _S> sources) {
         return new Dummy().marshalList(dtoClass, selection, sources);
     }
 
-    public static <_S, _D extends BaseDto<_S, _C>, _C> List<_D> marshalList(Class<_D> dtoClass,
+    public static <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> marshalList(Class<_D> dtoClass,
             Iterable<? extends _S> sources) {
         return new Dummy().marshalList(dtoClass, sources);
     }
 
-    public static <_S, _D extends BaseDto<_S, _C>, _C> List<_D> mrefList(Class<_D> dtoClass, int selection,
+    public static <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> mrefList(Class<_D> dtoClass, int selection,
             Iterable<? extends _S> sources) {
         return new Dummy().mrefList(dtoClass, selection, sources);
     }
 
-    public static <_S, _D extends BaseDto<_S, _C>, _C> List<_D> mrefList(Class<_D> dtoClass,
+    public static <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> mrefList(Class<_D> dtoClass,
             Iterable<? extends _S> sources) {
         return new Dummy().mrefList(dtoClass, sources);
     }
 
-    public static <_S, _D extends BaseDto<_S, _C>, _C> Set<_D> marshalSet(Class<_D> dtoClass, int selection,
+    public static <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet(Class<_D> dtoClass, int selection,
             Iterable<? extends _S> sources, Boolean refButFilled) {
         return new Dummy().marshalSet(dtoClass, selection, sources, refButFilled);
     }
 
-    public static <_S, _D extends BaseDto<_S, _C>, _C> Set<_D> marshalSet(Class<_D> dtoClass, int selection,
+    public static <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet(Class<_D> dtoClass, int selection,
             Iterable<? extends _S> sources) {
         return new Dummy().marshalSet(dtoClass, selection, sources);
     }
 
-    public static <_S, _D extends BaseDto<_S, _C>, _C> Set<_D> marshalSet(Class<_D> dtoClass,
+    public static <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet(Class<_D> dtoClass,
             Iterable<? extends _S> sources) {
         return new Dummy().marshalSet(dtoClass, sources);
     }
 
-    public static <_S, _D extends BaseDto<_S, _C>, _C> Set<_D> marshalSet(Class<_D> dtoClass, int selection,
+    public static <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet(Class<_D> dtoClass, int selection,
             Iterable<? extends _S> sources, boolean refButFilled) {
         return new Dummy().marshalSet(dtoClass, selection, sources, refButFilled);
     }
