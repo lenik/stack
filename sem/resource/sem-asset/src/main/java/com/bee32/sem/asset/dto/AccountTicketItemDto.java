@@ -4,7 +4,6 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.sem.asset.AccountSide;
 import com.bee32.sem.asset.entity.AccountTicketItem;
 import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.people.dto.PartyDto;
@@ -22,7 +21,7 @@ public class AccountTicketItemDto
 
     MCValue value = new MCValue();
 
-    AccountSide side;
+    boolean debitSide;
     AccountTicketDto ticket;
 
     @Override
@@ -34,7 +33,7 @@ public class AccountTicketItemDto
 
         value = source.getValue();
 
-        side = source.getSide();
+        debitSide = source.isDebitSide();
         ticket = mref(AccountTicketDto.class, source.getTicket());
     }
 
@@ -47,7 +46,7 @@ public class AccountTicketItemDto
 
         target.setValue(value);
 
-        target.setSide(side);
+        target.setDebitSide(debitSide);
         merge(target, "ticket", ticket);
     }
 
@@ -89,12 +88,19 @@ public class AccountTicketItemDto
         this.value = value;
     }
 
-    public AccountSide getSide() {
-        return side;
+    public boolean isDebitSide() {
+        return debitSide;
     }
 
-    public void setSide(AccountSide side) {
-        this.side = side;
+    public void setDebitSide(boolean debitSide) {
+        this.debitSide = debitSide;
+    }
+
+    public String getSideName() {
+        if (debitSide)
+            return "借方";
+        else
+            return "贷方";
     }
 
     public AccountTicketDto getTicket() {

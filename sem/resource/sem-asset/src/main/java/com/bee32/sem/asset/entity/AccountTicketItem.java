@@ -12,7 +12,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-import com.bee32.sem.asset.AccountSide;
 import com.bee32.sem.base.tx.TxEntity;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.world.monetary.MCValue;
@@ -40,7 +39,7 @@ public class AccountTicketItem
 
     MCValue value = new MCValue();
 
-    AccountSide side;
+    boolean debitSide;
     AccountTicket ticket;
 
     /**
@@ -100,14 +99,17 @@ public class AccountTicketItem
     }
 
     /**
-     * 说明本条目属于凭证上的借方还是贷方
+     * 说明本条目属于凭证上的借方还是贷方。
+     *
+     * @return <code>true</code> 表示借方，<code>false</code> 表示贷方。
      */
-    public AccountSide getSide() {
-        return side;
+    @Column(nullable = false)
+    public boolean isDebitSide() {
+        return debitSide;
     }
 
-    public void setSide(AccountSide side) {
-        this.side = side;
+    public void setDebitSide(boolean debitSide) {
+        this.debitSide = debitSide;
     }
 
     @ManyToOne(optional = false)
