@@ -22,7 +22,7 @@ public class AccountDto extends TxEntityDto<Account> {
     @Override
     protected void _marshal(Account source) {
         if (selection.contains(ITEMS))
-            items = marshalList(AccountItemDto.class, source.getItems());
+            items = mrefList(AccountItemDto.class, source.getItems());
         else
             items = new ArrayList<AccountItemDto>();
 

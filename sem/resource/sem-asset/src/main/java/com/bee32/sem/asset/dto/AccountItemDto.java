@@ -47,8 +47,7 @@ public class AccountItemDto extends TxEntityDto<AccountItem> {
         target.setValue(value);
 
         target.setSide(side);
-        target.setAccount(account);
-
+        merge(target, "account", account);
     }
 
     @Override

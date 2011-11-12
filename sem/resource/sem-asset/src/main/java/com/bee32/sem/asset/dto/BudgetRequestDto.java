@@ -20,7 +20,7 @@ public class BudgetRequestDto extends TxEntityDto<BudgetRequest> {
     protected void _marshal(BudgetRequest source) {
         text = source.getText();
         value = source.getValue();
-        mref(AccountDto.class, account);
+        account = mref(AccountDto.class, source.getAccount());
     }
 
     @Override
