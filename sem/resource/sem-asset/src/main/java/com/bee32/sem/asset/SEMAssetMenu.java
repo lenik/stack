@@ -12,7 +12,7 @@ public class SEMAssetMenu
 
     public static MenuNode ASSET = menu(SEMFrameMenu.BIZ1, "asset");
 
-    static MenuNode accountTitleAdmin = entry(ASSET, 1, "accountTitleAdmin", ASSET_.join("accountTitle/"));
+    static MenuNode accountTitleAdmin = entry(ASSET, 1, "accountSubjectAdmin", ASSET_.join("accountSubject/"));
 
     @Override
     protected void preamble() {

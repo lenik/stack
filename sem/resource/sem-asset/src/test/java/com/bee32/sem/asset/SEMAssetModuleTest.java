@@ -7,7 +7,7 @@ import com.bee32.plover.orm.unit.Using;
 import com.bee32.sem.test.SEMTestCase;
 
 @Using(SEMAssetUnit.class)
-public class SEMPurchaseModuleTest
+public class SEMAssetModuleTest
         extends SEMTestCase {
 
     @Override
@@ -27,7 +27,7 @@ public class SEMPurchaseModuleTest
 
     public static void main(String[] args)
             throws IOException {
-        new SEMPurchaseModuleTest().browseAndWait(SEMAssetModule.PREFIX + "/accountTitle/");
+        new SEMAssetModuleTest().browseAndWait(SEMAssetModule.PREFIX + "/accountSubject/");
     }
 
     static {

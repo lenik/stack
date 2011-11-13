@@ -5,7 +5,6 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 import com.bee32.plover.util.i18n.CurrencyConfig;
@@ -57,7 +56,6 @@ public class BudgetRequest
         setValue(new MCValue(CurrencyConfig.getNative(), value));
     }
 
-    @ManyToOne
     public AccountTicket getTicket() {
         return ticket;
     }

@@ -30,7 +30,7 @@ public class AccountTicket
     /**
      * 会计凭证上的条目列表
      */
-    @OneToMany(mappedBy = "account", orphanRemoval = true)
+    @OneToMany(mappedBy = "ticket", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<AccountTicketItem> getItems() {
         return items;
@@ -40,7 +40,6 @@ public class AccountTicket
         this.items = items;
     }
 
-    @OneToMany(mappedBy = "account")
     public BudgetRequest getRequest() {
         return request;
     }
