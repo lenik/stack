@@ -19,7 +19,7 @@
 
 		<h:form id="mainForm">
             <p:contextMenu for="accountSubjectTable">
-                <p:menuitem value="修改" update=""
+                <p:menuitem value="修改" update="editForm:editPanel"
                     oncomplete="editDialog.show()"
                     actionListener="#{accountSubjectAdminBean.modifyAccountSubject}" />
                 <p:menuitem value="删除"
@@ -59,28 +59,38 @@
 
                         <h:outputLabel value="上级科目" />
                         <h:panelGrid columns="2">
-                            <p:inputText value="#{accountSubjectAdminBean.accountSubject.parent.label}" disabled="true"/>
+                            <p:inputText id="parentAccountSubject" value="#{accountSubjectAdminBean.accountSubject.parent.label}" disabled="true"/>
                             <p:commandButton value="..." oncomplete="chooseParentSubjectDialog.show();"/>
                         </h:panelGrid>
 
                         <h:outputLabel value="编号" />
-                        <p:inputText id="name" value="#{accountSubjectAdminBean.accountSubject.name}" disabled="#{not accountSubjectAdminBean.editNewStatus}"/>
+                        <p:inputText id="name"
+                            value="#{accountSubjectAdminBean.accountSubject.name}"
+                            disabled="#{not accountSubjectAdminBean.editNewStatus}" />
 
                         <h:outputLabel value="科目名称" />
-                        <p:inputText id="label" value="#{accountSubjectAdminBean.accountSubject.label}"/>
+                        <p:inputText id="label"
+                            value="#{accountSubjectAdminBean.accountSubject.label}"
+                            disabled="#{not accountSubjectAdminBean.editNewStatus}" />
 
                         <h:outputLabel value="借方符号" />
-                        <p:selectBooleanCheckbox id="debitSign" value="#{accountSubjectAdminBean.accountSubject.debitSign}"/>
+                        <p:selectOneMenu id="debitSign" value="#{accountSubjectAdminBean.accountSubject.debitSign}">
+                            <f:selectItem itemLabel="正" itemValue="true" />
+                            <f:selectItem itemLabel="负" itemValue="false" />
+                        </p:selectOneMenu>
 
                         <h:outputLabel value="贷方符号" />
-                        <p:selectBooleanCheckbox id="creditSign" value="#{accountSubjectAdminBean.accountSubject.creditSign}"/>
+                        <p:selectOneMenu id="creditSign" value="#{accountSubjectAdminBean.accountSubject.creditSign}">
+                            <f:selectItem itemLabel="正" itemValue="true" />
+                            <f:selectItem itemLabel="负" itemValue="false" />
+                        </p:selectOneMenu>
 
 
                         <t:panelGroup colspan="2">
                             <t:panelGrid columns="2">
                                 <p:commandButton value="保存"
                                     actionListener="#{accountSubjectAdminBean.save}"
-                                    update="mainForm chooseParentSubjectForm:chooseParentSubjectPanel"
+                                    update="mainForm chooseParentSubjectForm:chooseSubjectParentTree"
                                     oncomplete="editDialog.hide();" />
                                 <p:commandButton value="取消" oncomplete="editDialog.hide();" />
                             </t:panelGrid>
@@ -94,7 +104,7 @@
             <p:confirmDialog message="确定要删除吗?" width="200"
                     header="删除角色确认" severity="alert" widgetVar="deleteConfirmDialog" modal="true">
 
-                <p:commandButton value="确定" update="mainForm chooseParentSubjectForm:chooseParentSubjectPanel" actionListener="#{accountSubjectAdminBean.delete}" oncomplete="deleteConfirmDialog.hide()"/>
+                <p:commandButton value="确定" update="mainForm chooseParentSubjectForm:chooseSubjectParentTree" actionListener="#{accountSubjectAdminBean.delete}" oncomplete="deleteConfirmDialog.hide()"/>
                 <p:commandButton value="取消" onclick="deleteConfirmDialog.hide()" type="button" />
 
             </p:confirmDialog>
@@ -103,24 +113,35 @@
         <h:form id="chooseParentSubjectForm">
             <p:dialog header="选择上级科目" widgetVar="chooseParentSubjectDialog"
                 modal="true" height="500" width="640">
-                <h:panelGroup id="chooseSubjectParentPanel">
+                <p:panel id="chooseSubjectParentPanel">
 
-                    <p:tree value="#{accountSubjectAdminBean.root}" var="accountSubject"
-                        selectionMode="single" selection="#{accountSubjectAdminBean.selectedParentSubjectNode}">
-                        <p:treeNode>
+                    <p:treeTable id="chooseSubjectParentTree"
+                        value="#{accountSubjectAdminBean.root}"
+                        var="accountSubject" selectionMode="single"
+                        selection="#{accountSubjectAdminBean.selectedParentSubjectNode}"
+                        scrollable="true"
+                        scrollHeight="380" scrollWidth="500">
+
+                        <p:column>
+                            <f:facet name="header">编号</f:facet>
+                            <h:outputText value="#{accountSubject.name}" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">科目名称</f:facet>
                             <h:outputText value="#{accountSubject.label}" />
-                        </p:treeNode>
-                    </p:tree>
+                        </p:column>
+                    </p:treeTable>
+
 
                     <h:panelGrid columns="2">
                         <p:commandButton value="确定"
-                            actionListener="#{accountSubjectAdminBean.selectParentSubject}" update="editForm:editPanel"
+                            actionListener="#{accountSubjectAdminBean.selectParentSubject}" update="editForm:parentAccountSubject"
                             oncomplete="chooseParentSubjectDialog.hide();" />
                         <p:commandButton value="取消"
                             oncomplete="chooseParentSubjectDialog.hide();" />
                     </h:panelGrid>
 
-                </h:panelGroup>
+                </p:panel>
             </p:dialog>
         </h:form>
 
