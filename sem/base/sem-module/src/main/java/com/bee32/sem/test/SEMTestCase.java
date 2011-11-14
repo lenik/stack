@@ -58,7 +58,7 @@ public class SEMTestCase
     @Override
     public void initSession(HttpSession session) {
 
-        BeanDefinitions.dump(appctx);
+        BeanDefinitions.dump(appctx, true);
 
         String userName = getLoggedInUser();
 

@@ -1,7 +1,9 @@
 package com.bee32.sem.test;
 
+import javax.free.ICharOut;
 import javax.free.IIndentedOut;
 import javax.free.IndentedOutImpl;
+import javax.free.PrintOutImpl;
 import javax.free.Stdio;
 import javax.free.StringArray;
 
@@ -15,15 +17,11 @@ import org.zkoss.lang.Strings;
 
 public class BeanDefinitions {
 
-    public static void dump(ApplicationContext appctx) {
-        dump(new IndentedOutImpl(Stdio.cout), appctx);
+    public static void dump(ApplicationContext appctx, boolean csv) {
+        dump(new IndentedOutImpl(Stdio.cout), appctx, csv);
     }
 
-    public static void dump(BeanDefinitionRegistry registry) {
-        dump(new IndentedOutImpl(Stdio.cout), registry);
-    }
-
-    public static void dump(IIndentedOut out, ApplicationContext appctx) {
+    public static void dump(IIndentedOut out, ApplicationContext appctx, boolean csv) {
         out.println("application-context: " + appctx.getDisplayName());
         out.enter();
         try {
@@ -38,7 +36,10 @@ public class BeanDefinitions {
             }
 
             if (registry != null) {
-                dump(out, registry);
+                if (csv)
+                    dumpCsv(out, registry);
+                else
+                    dump(out, registry);
             } else {
                 out.println("Not a bean definition registry.");
             }
@@ -52,7 +53,7 @@ public class BeanDefinitions {
 
         out.println();
         out.print("parent-");
-        dump(out, parent);
+        dump(out, parent, csv);
     }
 
     static boolean verbose = false;
@@ -138,6 +139,113 @@ public class BeanDefinitions {
 
             out.leave();
         }
+    }
+
+    static class CsvOut
+            extends PrintOutImpl {
+
+        int columnIndex = 0;
+
+        public CsvOut(ICharOut charOut) {
+            super(charOut);
+        }
+
+        public void field(Object value) {
+            if (columnIndex++ != 0)
+                print(", ");
+            if (value == null)
+                print("");
+            else
+                print(value); // escape..
+        }
+
+        @Override
+        public void println() {
+            super.println();
+            columnIndex = 0;
+        }
+
+    }
+
+    public static void dumpCsv(BeanDefinitionRegistry registry) {
+        dumpCsv(Stdio.cout, registry);
+    }
+
+    public static void dumpCsv(ICharOut _out, BeanDefinitionRegistry registry) {
+        CsvOut out = new CsvOut(_out);
+
+        out.field("name");
+        out.field("aliases");
+        out.field("bean-class");
+        out.field("description");
+        out.field("resource-description");
+        out.field("source");
+        out.field("role");
+        out.field("parent-name");
+        out.field("factory-bean");
+        out.field("factory-method");
+        out.field("depends");
+        out.field("attributes");
+        out.field("properties");
+
+        for (String name : registry.getBeanDefinitionNames()) {
+            String[] aliases = registry.getAliases(name);
+            BeanDefinition definition = registry.getBeanDefinition(name);
+            String beanClass = definition.getBeanClassName();
+            int role = definition.getRole();
+
+            out.field(name);
+            out.field(StringArray.join(", ", aliases));
+            out.field(beanClass);
+
+            out.field(definition.getDescription());
+            out.field(definition.getResourceDescription());
+
+            out.field(definition.getSource());
+
+            String roleName = null;
+            switch (role) {
+            case BeanDefinition.ROLE_APPLICATION:
+                roleName = "application";
+                break;
+            case BeanDefinition.ROLE_INFRASTRUCTURE:
+                roleName = "infrastructure";
+                break;
+            case BeanDefinition.ROLE_SUPPORT:
+                roleName = "support";
+                break;
+            }
+            out.field(roleName);
+
+            out.field(definition.getScope());
+            out.field(definition.getParentName());
+
+            out.field(definition.getFactoryBeanName());
+            out.field(definition.getFactoryMethodName());
+
+            String[] depends = definition.getDependsOn();
+            if (depends == null)
+                out.field(null);
+            else
+                out.field(StringArray.join(", ", depends));
+
+            if (verbose) {
+                for (String attributeName : definition.attributeNames()) {
+                    Object attributeValue = definition.getAttribute(attributeName);
+                    out.println("attribute " + attributeName + ": " + attributeValue);
+                }
+
+                // BeanDefinition orig = definition.getOriginatingBeanDefinition();
+                MutablePropertyValues propertyValues = definition.getPropertyValues();
+                for (PropertyValue property : propertyValues.getPropertyValueList()) {
+                    String propertyName = property.getName();
+                    Object propertyValue = property.getValue();
+                    out.println("property " + propertyName + ": " + propertyValue);
+                }
+            }
+
+            out.println();
+        } // for bean
     }
 
 }
