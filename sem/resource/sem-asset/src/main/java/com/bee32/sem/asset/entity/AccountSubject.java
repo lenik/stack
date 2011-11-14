@@ -2,6 +2,7 @@ package com.bee32.sem.asset.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
@@ -18,14 +19,13 @@ import com.bee32.plover.ox1.tree.TreeEntityAuto;
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "asset_subject_seq", allocationSize = 1)
+@AttributeOverride(name = "label", column = @Column(unique = true))
 public class AccountSubject
         extends TreeEntityAuto<Integer, AccountSubject> {
 
     private static final long serialVersionUID = 1L;
 
-    public static final int NAME_LENGTH = 4;
-    public static final int CODE_LENGTH = 10;
-    public static final int TITLE_LENGTH = 30;
+    public static final int NAME_LENGTH = 10;
 
     boolean debitSign;
     boolean creditSign;
@@ -50,7 +50,7 @@ public class AccountSubject
      * 科目代码
      */
     @NaturalId(mutable = true)
-    @Column(length = NAME_LENGTH)
+    @Column(length = NAME_LENGTH, unique = true)
     public String getName() {
         return name;
     }

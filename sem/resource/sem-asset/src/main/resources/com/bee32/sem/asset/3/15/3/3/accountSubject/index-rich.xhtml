@@ -106,7 +106,7 @@
                 <h:panelGroup id="chooseSubjectParentPanel">
 
                     <p:tree value="#{accountSubjectAdminBean.root}" var="accountSubject"
-                        selectionMode="single" selection="#{roleAdminBean.selectedParentSubjectNode}">
+                        selectionMode="single" selection="#{accountSubjectAdminBean.selectedParentSubjectNode}">
                         <p:treeNode>
                             <h:outputText value="#{accountSubject.label}" />
                         </p:treeNode>

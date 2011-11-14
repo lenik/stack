@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
@@ -45,6 +46,8 @@ public class AccountSubjectAdminBean extends EntityViewBean {
     }
 
     public AccountSubjectDto getAccountSubject() {
+        if (accountSubject == null)
+            _newAccountSubject();
         return accountSubject;
     }
 
@@ -89,14 +92,64 @@ public class AccountSubjectAdminBean extends EntityViewBean {
     }
 
 
+    public void _newAccountSubject() {
+        accountSubject = new AccountSubjectDto().create();
+    }
+
+    public void newAccountSubject() {
+        editNewStatus = true;
+        _newAccountSubject();
+
+    }
+
+
     public void chooseAccountSubject() {
         accountSubject = reload((AccountSubjectDto) selectedNode.getData());
     }
 
     public void modifyAccountSubject() {
+        if (accountSubject.getEntityFlags().isLocked()) {
+            uiLogger.info("保留科目，不能修改!");
+            return;
+        }
+
         chooseAccountSubject();
         editNewStatus = false;
     }
 
+    public void save() {
+        AccountSubject s = accountSubject.unmarshal();
+        try {
+            serviceFor(AccountSubject.class).saveOrUpdate(s);
+            loadAccountSubjectTree();
+            uiLogger.info("保存成功。");
+        } catch (Exception e) {
+            uiLogger.error("保存失败.", e);
+        }
+    }
+
+    public void delete() {
+        if(accountSubject.getChildren().size() > 0) {
+            uiLogger.info("本科目下有子科目，不能删除!");
+            return;
+        }
+
+        if (accountSubject.getEntityFlags().isLocked()) {
+            uiLogger.info("保留科目，不能删除!");
+            return;
+        }
+
+        try {
+            serviceFor(AccountSubject.class).delete(accountSubject.unmarshal());
+            loadAccountSubjectTree();
+            uiLogger.info("删除成功!");
+        } catch (DataIntegrityViolationException e) {
+            uiLogger.error("删除失败.", e);
+        }
+    }
+
+    public void selectParentSubject() {
+        accountSubject.setParent((AccountSubjectDto) selectedParentSubjectNode.getData());
+    }
 
 }
