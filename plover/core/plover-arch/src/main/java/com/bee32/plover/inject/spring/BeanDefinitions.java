@@ -1,4 +1,6 @@
-package com.bee32.sem.test;
+package com.bee32.plover.inject.spring;
+
+import java.io.IOException;
 
 import javax.free.ICharOut;
 import javax.free.IIndentedOut;
@@ -13,15 +15,16 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ApplicationContext;
-import org.zkoss.lang.Strings;
 
 public class BeanDefinitions {
 
-    public static void dump(ApplicationContext appctx, boolean csv) {
-        dump(new IndentedOutImpl(Stdio.cout), appctx, csv);
+    static boolean verbose = false;
+
+    public static void dumpTree(ApplicationContext appctx) {
+        dumpTree(new IndentedOutImpl(Stdio.cout), appctx);
     }
 
-    public static void dump(IIndentedOut out, ApplicationContext appctx, boolean csv) {
+    public static void dumpTree(IIndentedOut out, ApplicationContext appctx) {
         out.println("application-context: " + appctx.getDisplayName());
         out.enter();
         try {
@@ -36,10 +39,7 @@ public class BeanDefinitions {
             }
 
             if (registry != null) {
-                if (csv)
-                    dumpCsv(out, registry);
-                else
-                    dump(out, registry);
+                dumpTree(out, registry);
             } else {
                 out.println("Not a bean definition registry.");
             }
@@ -53,12 +53,10 @@ public class BeanDefinitions {
 
         out.println();
         out.print("parent-");
-        dump(out, parent, csv);
+        dumpTree(out, parent);
     }
 
-    static boolean verbose = false;
-
-    public static void dump(IIndentedOut out, BeanDefinitionRegistry registry) {
+    public static void dumpTree(IIndentedOut out, BeanDefinitionRegistry registry) {
         for (String name : registry.getBeanDefinitionNames()) {
             String[] aliases = registry.getAliases(name);
             BeanDefinition definition = registry.getBeanDefinition(name);
@@ -76,12 +74,12 @@ public class BeanDefinitions {
             out.enter();
 
             String description = definition.getDescription();
-            if (!Strings.isEmpty(description))
+            if (description != null && !description.isEmpty())
                 out.println("description: " + description);
 
             if (verbose) {
                 String resourceDescription = definition.getResourceDescription();
-                if (!Strings.isEmpty(resourceDescription))
+                if (resourceDescription != null && !resourceDescription.isEmpty())
                     out.println("resource-description: " + resourceDescription);
 
                 Object source = definition.getSource();
@@ -105,7 +103,7 @@ public class BeanDefinitions {
             }
 
             String scope = definition.getScope();
-            if (!Strings.isEmpty(scope))
+            if (scope != null && !scope.isEmpty())
                 out.println("scope: " + scope);
 
             String parentName = definition.getParentName();
@@ -167,13 +165,43 @@ public class BeanDefinitions {
 
     }
 
-    public static void dumpCsv(BeanDefinitionRegistry registry) {
-        dumpCsv(Stdio.cout, registry);
+    public static void dumpCsv(ApplicationContext appctx) {
+        try {
+            dumpCsv(Stdio.cout, appctx);
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
 
-    public static void dumpCsv(ICharOut _out, BeanDefinitionRegistry registry) {
+    public static void dumpCsv(ICharOut out, ApplicationContext appctx)
+            throws IOException {
+        BeanDefinitionRegistry registry = null;
+
+        if (appctx instanceof BeanDefinitionRegistry)
+            registry = (BeanDefinitionRegistry) appctx;
+        else {
+            AutowireCapableBeanFactory beanFactory = appctx.getAutowireCapableBeanFactory();
+            if (beanFactory instanceof BeanDefinitionRegistry)
+                registry = (BeanDefinitionRegistry) beanFactory;
+        }
+
+        if (registry != null) {
+            dumpCsv(out, appctx.getDisplayName(), registry);
+        } else {
+            out.write("Not a bean definition registry.\n");
+        }
+
+        ApplicationContext parent = appctx.getParent();
+        if (parent == null)
+            return;
+
+        dumpCsv(out, parent);
+    }
+
+    public static void dumpCsv(ICharOut _out, String appctx, BeanDefinitionRegistry registry) {
         CsvOut out = new CsvOut(_out);
 
+        out.field("appctx");
         out.field("name");
         out.field("aliases");
         out.field("bean-class");
@@ -181,12 +209,14 @@ public class BeanDefinitions {
         out.field("resource-description");
         out.field("source");
         out.field("role");
+        out.field("scope");
         out.field("parent-name");
         out.field("factory-bean");
         out.field("factory-method");
         out.field("depends");
         out.field("attributes");
         out.field("properties");
+        out.println();
 
         for (String name : registry.getBeanDefinitionNames()) {
             String[] aliases = registry.getAliases(name);
@@ -194,6 +224,7 @@ public class BeanDefinitions {
             String beanClass = definition.getBeanClassName();
             int role = definition.getRole();
 
+            out.field(appctx);
             out.field(name);
             out.field(StringArray.join(", ", aliases));
             out.field(beanClass);
