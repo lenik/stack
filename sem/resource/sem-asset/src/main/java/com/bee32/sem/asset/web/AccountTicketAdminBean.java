@@ -384,18 +384,18 @@ public class AccountTicketAdminBean extends EntityViewBean {
     }
 
     public void findBudgetRequest() {
-        if (partPattern != null && !partPattern.isEmpty()) {
-
-            List<Part> _parts = serviceFor(Part.class).list(BomCriteria.findPartUseMaterialName(partPattern));
-
-            parts = DTOs.mrefList(PartDto.class, _parts);
-        }
+//        if (partPattern != null && !partPattern.isEmpty()) {
+//
+//            List<Part> _parts = serviceFor(Part.class).list(BomCriteria.findPartUseMaterialName(partPattern));
+//
+//            parts = DTOs.mrefList(PartDto.class, _parts);
+//        }
     }
 
     public void chooseBudget() {
-        makeOrderItem.setPart(selectedPart);
-
-        selectedPart = null;
+//        makeOrderItem.setPart(selectedPart);
+//
+//        selectedPart = null;
     }
 
     public void findParty() {
@@ -416,11 +416,11 @@ public class AccountTicketAdminBean extends EntityViewBean {
     }
 
     public void findAccountSubject() {
-        List<AccountSubject> _subjects = serviceFor(AccountSubject.class).list(//
-                Order.desc("createdDate"), //
-                nceCriteria.subjectLike(chancePattern));
-
-        subjects = DTOs.mrefList(AccountSubjectDto.class, 0, _subjects);
+//        List<AccountSubject> _subjects = serviceFor(AccountSubject.class).list(//
+//                Order.desc("createdDate"), //
+//                nceCriteria.subjectLike(chancePattern));
+//
+//        subjects = DTOs.mrefList(AccountSubjectDto.class, 0, _subjects);
     }
 
     public void chooseAccountSubject() {
