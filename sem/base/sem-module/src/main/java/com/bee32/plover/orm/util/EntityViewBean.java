@@ -2,6 +2,9 @@ package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IEntityAccessService;
@@ -12,6 +15,15 @@ public abstract class EntityViewBean
         implements IEntityMarshalContext {
 
     private static final long serialVersionUID = 1L;
+
+    static Logger logger = LoggerFactory.getLogger(EntityViewBean.class);
+
+    public EntityViewBean() {
+        if (logger.isTraceEnabled()) {
+            Class<?> viewBeanType = getClass();
+            logger.trace("Entity view bean created: " + viewBeanType);
+        }
+    }
 
     static CommonDataManager getDataManager() {
         CommonDataManager dataManager = getBean(CommonDataManager.class);

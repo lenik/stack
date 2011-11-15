@@ -3,7 +3,6 @@ package com.bee32.sem.people.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
 
 import org.primefaces.event.SelectEvent;
@@ -38,8 +37,7 @@ public class PersonAdminBean
 
     private PersonRoleDto selectedRole;
 
-    @PostConstruct
-    public void init() {
+    public PersonAdminBean() {
         EntityDataModelOptions<Person, PersonDto> options = new EntityDataModelOptions<Person, PersonDto>(//
                 Person.class, PersonDto.class, 0, //
                 Order.desc("id"), EntityCriteria.ownedByCurrentUser());
