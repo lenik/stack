@@ -1,30 +1,19 @@
 package com.bee32.sem.asset.web;
 
-import java.math.BigDecimal;
 import java.util.Calendar;
-import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
 
-import org.apache.commons.httpclient.methods.multipart.Part;
-
-import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Offset;
-import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
-import com.bee32.plover.util.i18n.CurrencyConfig;
 import com.bee32.sem.asset.dto.BudgetRequestDto;
 import com.bee32.sem.asset.entity.BudgetRequest;
 import com.bee32.sem.misc.EntityCriteria;
-import com.bee32.sem.people.dto.PartyDto;
-import com.bee32.sem.people.entity.Party;
-import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.world.monetary.CurrencyUtil;
-import com.bee32.sem.world.monetary.MCValue;
 
 public class BudgetRequestAdminBean extends EntityViewBean {
 
@@ -38,11 +27,7 @@ public class BudgetRequestAdminBean extends EntityViewBean {
     private int goNumber;
     private int count;
 
-    protected BudgetRequestDto budgetRequest = new BudgetRequestDto().create();
-
-
-    private BigDecimal value = new BigDecimal(0);
-    private Currency valueCurrency = CurrencyConfig.getNative();
+    private BudgetRequestDto budgetRequest = new BudgetRequestDto().create();
 
     private boolean newItemStatus = false;
 
@@ -115,22 +100,6 @@ public class BudgetRequestAdminBean extends EntityViewBean {
             return budgetRequest.getOwnerDisplayName();
     }
 
-    public BigDecimal getValue() {
-        return value;
-    }
-
-    public void setValue(BigDecimal value) {
-        this.value = value;
-    }
-
-    public Currency getValueCurrency() {
-        return valueCurrency;
-    }
-
-    public void setValueCurrency(Currency valueCurrency) {
-        this.valueCurrency = valueCurrency;
-    }
-
     public List<SelectItem> getCurrencies() {
         return CurrencyUtil.selectItems();
     }
@@ -178,7 +147,8 @@ public class BudgetRequestAdminBean extends EntityViewBean {
         BudgetRequest firstRequest = serviceFor(BudgetRequest.class).getFirst( //
                 new Offset(position - 1), //
                 EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
-                Order.asc("id"));
+                Order.asc("id"),
+                EntityCriteria.ownedByCurrentUser());
 
         if (firstRequest != null)
             budgetRequest = DTOs.marshal(BudgetRequestDto.class, firstRequest);
@@ -208,7 +178,7 @@ public class BudgetRequestAdminBean extends EntityViewBean {
         try {
             BudgetRequest _request = budgetRequest.unmarshal();
 
-            serviceFor(BudgetRequest.class).save(_request);
+            serviceFor(BudgetRequest.class).saveOrUpdate(_request);
             uiLogger.info("保存成功");
             loadBudgetRequest(goNumber);
             editable = false;
@@ -218,7 +188,7 @@ public class BudgetRequestAdminBean extends EntityViewBean {
     }
 
     public void cancel() {
-        loadMakeOrder(goNumber);
+        loadBudgetRequest(goNumber);
         editable = false;
     }
 
@@ -226,14 +196,14 @@ public class BudgetRequestAdminBean extends EntityViewBean {
 
     public void first() {
         goNumber = 1;
-        loadMakeOrder(goNumber);
+        loadBudgetRequest(goNumber);
     }
 
     public void previous() {
         goNumber--;
         if (goNumber < 1)
             goNumber = 1;
-        loadMakeOrder(goNumber);
+        loadBudgetRequest(goNumber);
     }
 
     public void go() {
@@ -242,7 +212,7 @@ public class BudgetRequestAdminBean extends EntityViewBean {
         } else if (goNumber > count) {
             goNumber = count;
         }
-        loadMakeOrder(goNumber);
+        loadBudgetRequest(goNumber);
     }
 
     public void next() {
@@ -250,19 +220,16 @@ public class BudgetRequestAdminBean extends EntityViewBean {
 
         if (goNumber > count)
             goNumber = count;
-        loadMakeOrder(goNumber);
+        loadBudgetRequest(goNumber);
     }
 
     public void last() {
         goNumber = count + 1;
-        loadMakeOrder(goNumber);
+        loadBudgetRequest(goNumber);
     }
 
     public void newItem() {
-        makeOrderItem = new MakeOrderItemDto().create();
-        makeOrderItem.setOrder(makeOrder);
-        makeOrderItemPrice = new BigDecimal(0);
-        makeOrderItemPriceCurrency = CurrencyConfig.getNative();
+        budgetRequest = new BudgetRequestDto().create();
 
         newItemStatus = true;
     }
@@ -272,74 +239,13 @@ public class BudgetRequestAdminBean extends EntityViewBean {
     }
 
 
-    public void saveItem() {
-        makeOrderItem.setOrder(makeOrder);
-        MCValue newPrice = new MCValue(makeOrderItemPriceCurrency, makeOrderItemPrice);
-        makeOrderItem.setPrice(newPrice);
-        if (newItemStatus) {
-            makeOrder.addItem(makeOrderItem);
-        }
-    }
-
     public void delete() {
         try {
-            serviceFor(MakeOrder.class).delete(makeOrder.unmarshal());
+            serviceFor(BudgetRequest.class).delete(budgetRequest.unmarshal());
             uiLogger.info("删除成功!");
-            loadMakeOrder(goNumber);
+            loadBudgetRequest(goNumber);
         } catch (Exception e) {
-            uiLogger.warn("删除失败,错误信息:" + e.getMessage());
+            uiLogger.warn("删除失败.", e);
         }
-    }
-
-    public void deleteItem() {
-        makeOrder.removeItem(makeOrderItem);
-
-        if (makeOrderItem.getId() != null) {
-            itemsNeedToRemoveWhenModify.add(makeOrderItem);
-        }
-    }
-
-    public void findPart() {
-        if (partPattern != null && !partPattern.isEmpty()) {
-
-            List<Part> _parts = serviceFor(Part.class).list(BomCriteria.findPartUseMaterialName(partPattern));
-
-            parts = DTOs.mrefList(PartDto.class, _parts);
-        }
-    }
-
-    public void choosePart() {
-        makeOrderItem.setPart(selectedPart);
-
-        selectedPart = null;
-    }
-
-    public void findCustomer() {
-        if (customerPattern != null && !customerPattern.isEmpty()) {
-
-            List<Party> _customers = serviceFor(Party.class).list( //
-                    PeopleCriteria.customers(), //
-                    new Or( //
-                            new Like("name", "%" + customerPattern + "%"), //
-                            new Like("fullName", "%" + customerPattern + "%")));
-
-            customers = DTOs.marshalList(PartyDto.class, _customers);
-        }
-    }
-
-    public void chooseCustomer() {
-        makeOrder.setCustomer(selectedCustomer);
-    }
-
-    public void findChance() {
-        List<Chance> _chances = serviceFor(Chance.class).list(//
-                Order.desc("createdDate"), //
-                ChanceCriteria.subjectLike(chancePattern));
-
-        chances = DTOs.mrefList(ChanceDto.class, 0, _chances);
-    }
-
-    public void chooseChance() {
-        makeOrder.setChance(selectedChance);
     }
 }
