@@ -5,23 +5,25 @@ import java.util.Map;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 
-import org.springframework.beans.factory.ObjectFactory;
-
 import com.bee32.plover.inject.scope.AbstractScope;
 
 public class ViewScope
         extends AbstractScope {
 
-    @Override
-    protected Map<String, Object> getBeanMap() {
-        return null;
+    static boolean allowNullFacesContext = false;
+
+    static FacesContext getFacesContext() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        if (facesContext == null) {
+            if (!allowNullFacesContext)
+                throw new IllegalStateException("No faces context");
+        }
+        return facesContext;
     }
 
     @Override
-    public Object get(String name, ObjectFactory<?> objectFactory) {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        if (facesContext == null)
-            return null;
+    protected Map<String, Object> getBeanMap() {
+        FacesContext facesContext = getFacesContext();
         UIViewRoot viewRoot = facesContext.getViewRoot();
         Map<String, Object> viewMap = viewRoot.getViewMap();
         return viewMap;
