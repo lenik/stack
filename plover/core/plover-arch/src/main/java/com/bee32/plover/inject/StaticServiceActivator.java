@@ -5,13 +5,13 @@ import java.util.ServiceLoader;
 import org.springframework.context.ApplicationContext;
 
 // @Eagar
-public class StaticServiceActivatorBean
-        extends ActivatorBean {
+public class StaticServiceActivator
+        extends InitializingService {
 
     static boolean staticServiceActivated;
 
     @Override
-    public void activate() {
+    public void initialize() {
         activateStaticService(appctx);
     }
 

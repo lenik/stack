@@ -10,6 +10,11 @@ import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.arch.util.PriorityComparator;
 
+/**
+ * The static singleton application.
+ *
+ * It's the topmost application, rather then something like virtual application (or virtual site).
+ */
 public class Application {
 
     static Logger logger = LoggerFactory.getLogger(Application.class);

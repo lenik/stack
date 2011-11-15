@@ -3,7 +3,7 @@ package com.bee32.plover.orm.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.plover.inject.ActivatorBean;
+import com.bee32.plover.inject.InitializingService;
 import com.bee32.plover.site.scope.PerSite;
 
 /**
@@ -11,7 +11,7 @@ import com.bee32.plover.site.scope.PerSite;
  */
 @PerSite
 public class SamplesLoaderActivator
-        extends ActivatorBean {
+        extends InitializingService {
 
     static Logger logger = LoggerFactory.getLogger(SamplesLoaderActivator.class);
 
@@ -35,7 +35,7 @@ public class SamplesLoaderActivator
     }
 
     @Override
-    public void activate() {
+    public void initialize() {
         logger.info("Activate samples loader");
 
         if (loadNormalSamples) {
