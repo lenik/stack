@@ -19,8 +19,8 @@ import com.bee32.plover.ox1.principal.Principal;
 public class R_ACLDao
         extends GenericDao {
 
-    // @Inject
-    // R_ACEDao aceDao;
+    //@Inject
+    //private R_ACEDao aceDao;
 
     public R_ACL loadACL(Resource resource) {
         if (resource == null)

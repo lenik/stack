@@ -41,7 +41,7 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
     @Inject
     ScannedResourceRegistry registry;
 
-//    @Inject
+    @Inject
     R_ACLService aclService;
 
     IResourceNamespace entityNS;
@@ -72,7 +72,7 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
 
     @Override
     protected void require(int bits) {
-        if (!enabled || aclService  == null)
+        if (!enabled || aclService == null)
             return;
 
         Permission requiredPermission = new Permission(bits);
