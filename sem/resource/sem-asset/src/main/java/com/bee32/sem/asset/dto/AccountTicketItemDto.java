@@ -1,9 +1,13 @@
 package com.bee32.sem.asset.dto;
 
+import java.math.BigDecimal;
+import java.util.Currency;
+
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.util.i18n.CurrencyConfig;
 import com.bee32.sem.asset.entity.AccountTicketItem;
 import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.people.dto.PartyDto;
@@ -86,6 +90,25 @@ public class AccountTicketItemDto
 
     public void setValue(MCValue value) {
         this.value = value;
+    }
+
+    public BigDecimal getValueDigit() {
+        return value.getValue();
+    }
+
+    public void setValueDigit(BigDecimal valueDigit) {
+        value = new MCValue(value.getCurrency(), valueDigit);
+    }
+
+    public String getValueCurrency() {
+        if (value.getCurrency() == null)
+            return CurrencyConfig.getNative().getCurrencyCode();
+        else
+            return value.getCurrency().getCurrencyCode();
+    }
+
+    public void setValueCurrency(String currencyCode) {
+        value = new MCValue(Currency.getInstance(currencyCode), value.getValue());
     }
 
     public boolean isDebitSide() {

@@ -37,7 +37,40 @@ public class AccountTicket
     }
 
     public void setItems(List<AccountTicketItem> items) {
+        if (items == null)
+            throw new NullPointerException("items");
         this.items = items;
+    }
+
+    public synchronized void addItem(AccountTicketItem item) {
+        if (item == null)
+            throw new NullPointerException("item");
+
+        if (item.getIndex() == -1)
+            item.setIndex(items.size());
+
+        items.add(item);
+    }
+
+    public synchronized void removeItem(AccountTicketItem item) {
+        if (item == null)
+            throw new NullPointerException("item");
+
+        int index = items.indexOf(item);
+        if (index == -1)
+            return /* false */;
+
+        items.remove(index);
+        item.detach();
+
+        // Renum [index, ..)
+        for (int i = index; i < items.size(); i++)
+            items.get(i).setIndex(i);
+    }
+
+    public synchronized void reindex() {
+        for (int index = items.size() - 1; index >= 0; index--)
+            items.get(index).setIndex(index);
     }
 
     public BudgetRequest getRequest() {
