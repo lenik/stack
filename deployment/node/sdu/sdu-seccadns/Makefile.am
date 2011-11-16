@@ -1,6 +1,6 @@
 include libauto/coolauto.am
 
-do_subst2 = $(do_subst) \
+do_subst += \
 	-e 's,[@]bindconfdir[@],$(bindconfdir),g' \
 	-e 's,[@]seccadbdir[@],$(seccadbdir),g'
 
@@ -11,6 +11,7 @@ sitesdir	= ${sysconfdir}/apache2/sites-available
 dist_seccadb_DATA = \
 	named.conf \
 	bee32.db \
+	bee32-fw.db \
 	rad.db \
 	bia.db
 
@@ -27,8 +28,3 @@ setup_SCRIPTS = \
 EXTRA_DIST = post-install.sh.in pre-remove.sh.in
 CLEANFILES = post-install.sh    pre-remove.sh
 
-post-install.sh: post-install.sh.in Makefile
-	$(do_subst2) <$(srcdir)/post-install.sh.in >$@
-
-pre-remove.sh: pre-remove.sh.in Makefile
-	$(do_subst2) <$(srcdir)/pre-remove.sh.in >$@

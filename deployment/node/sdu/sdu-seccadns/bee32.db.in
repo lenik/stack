@@ -1,0 +1,531 @@
+$TTL            1H
+
+; The SOA resource record indicates that this DNS name server is the best
+; source of information for the data within this DNS domain.
+
+@               IN      SOA     (
+                                    dns.bee32.com.   ; db creator host
+                                    admin.bee32.com. ; contact e-mail
+                                    4       ; serial
+                                    1H      ; sync refresh interval
+                                    10M     ; sync retry interval
+                                    12H     ; sync expire
+                                    1H      ; minimum TTL
+                                )
+                        NS      ns3.bodz.net.
+
+@                       MX 10   ASPMX.L.GOOGLE.COM.
+                        MX 20   ALT1.ASPMX.L.GOOGLE.COM.
+                        MX 20   ALT2.ASPMX.L.GOOGLE.COM.
+                        MX 30   ASPMX2.GOOGLEMAIL.COM.
+
+                        TXT     "t=spf1 A MX include:authsmtp.com ~all"
+
+main                    CNAME   pub-zjhn-13-z.vicp.net.
+dns                     CNAME   main            ; 域名控制器
+
+app-x                   CNAME   main            ; 应用辅助结点
+app-2                   CNAME   main            ; 应用结点-2
+*.2                     CNAME   app-2           ; 应用结点-2映射
+
+;;1.1                   CNAME   *.1             ; 【应用】三元机电
+;;2.1                   CNAME   *.1             ; 【应用】秀之莎
+
+dev                     CNAME   main            ; 重要开发数据
+s-dev                   CNAME   dev             ; 次要开发数据
+aut-dev                 CNAME   main            ; 构建辅助
+
+backup                  CNAME   app-x           ; 备份
+ghs                     CNAME   app-x           ; 反墙装置
+mail                    CNAME   ghs             ; 邮件支持
+rproxy                  CNAME   app-x           ; 反向代理支持
+xmpp                    CNAME   app-x           ; XMPP IM 支持
+
+node                    CNAME   main            ; 结点管理与元信息查询
+econ                    CNAME   node            ;
+webmin                  CNAME   node            ; Web 远程系统监控
+
+sql                     CNAME   node            ; SQL数据管理
+pg                      CNAME   sql             ; PostgreSQL 数据库管理
+my                      CNAME   sql             ; MySQL 数据库管理
+
+blog                    CNAME   s-dev           ; 开发者日志
+*.blog                  CNAME   blog
+
+cdn                     CNAME   main            ; 内容分发网络
+*.cdn                   CNAME   cdn             ; 静态资源
+
+ci                      CNAME   aut-dev         ; 连续集成系统
+forum                   CNAME   s-dev           ; 工程论坛
+git                     CNAME   dev             ; Git仓库/版本控制
+list                    CNAME   s-dev           ; 邮件列表
+m2                      CNAME   aut-dev         ; M2仓库/模快依赖项
+repo                    CNAME   s-dev           ; SDU仓库/预编译部署单元
+svn                     CNAME   dev             ; SVN仓库/版本控制
+track                   CNAME   s-dev           ; Trac 项目管理支持
+q                       CNAME   s-dev           ; 一般问题跟踪系统
+bugs                    CNAME   q               ; 缺陷跟踪系统
+www                     CNAME   main            ; SECCA 工程开发网
+
+sdu                     CNAME   c617.dyndns.org.
+
+; ..0: Intranet
+; ..1: Private Region: ZJ-HN
+; ..2: Private Region: Control Center
+$INCLUDE @seccadbdir@/bee32-fw.db
+
+1.0                     A       192.168.1.1
+2.0                     A       192.168.1.2
+3.0                     A       192.168.1.3
+4.0                     A       192.168.1.4
+5.0                     A       192.168.1.5
+6.0                     A       192.168.1.6
+7.0                     A       192.168.1.7
+8.0                     A       192.168.1.8
+9.0                     A       192.168.1.9
+10.0                    A       192.168.1.10
+11.0                    A       192.168.1.11
+12.0                    A       192.168.1.12
+13.0                    A       192.168.1.13
+14.0                    A       192.168.1.14
+15.0                    A       192.168.1.15
+16.0                    A       192.168.1.16
+17.0                    A       192.168.1.17
+18.0                    A       192.168.1.18
+19.0                    A       192.168.1.19
+20.0                    A       192.168.1.20
+21.0                    A       192.168.1.21
+22.0                    A       192.168.1.22
+23.0                    A       192.168.1.23
+24.0                    A       192.168.1.24
+25.0                    A       192.168.1.25
+26.0                    A       192.168.1.26
+27.0                    A       192.168.1.27
+28.0                    A       192.168.1.28
+29.0                    A       192.168.1.29
+30.0                    A       192.168.1.30
+31.0                    A       192.168.1.31
+32.0                    A       192.168.1.32
+33.0                    A       192.168.1.33
+34.0                    A       192.168.1.34
+35.0                    A       192.168.1.35
+36.0                    A       192.168.1.36
+37.0                    A       192.168.1.37
+38.0                    A       192.168.1.38
+39.0                    A       192.168.1.39
+40.0                    A       192.168.1.40
+41.0                    A       192.168.1.41
+42.0                    A       192.168.1.42
+43.0                    A       192.168.1.43
+44.0                    A       192.168.1.44
+45.0                    A       192.168.1.45
+46.0                    A       192.168.1.46
+47.0                    A       192.168.1.47
+48.0                    A       192.168.1.48
+49.0                    A       192.168.1.49
+50.0                    A       192.168.1.50
+51.0                    A       192.168.1.51
+52.0                    A       192.168.1.52
+53.0                    A       192.168.1.53
+54.0                    A       192.168.1.54
+55.0                    A       192.168.1.55
+56.0                    A       192.168.1.56
+57.0                    A       192.168.1.57
+58.0                    A       192.168.1.58
+59.0                    A       192.168.1.59
+60.0                    A       192.168.1.60
+61.0                    A       192.168.1.61
+62.0                    A       192.168.1.62
+63.0                    A       192.168.1.63
+64.0                    A       192.168.1.64
+65.0                    A       192.168.1.65
+66.0                    A       192.168.1.66
+67.0                    A       192.168.1.67
+68.0                    A       192.168.1.68
+69.0                    A       192.168.1.69
+70.0                    A       192.168.1.70
+71.0                    A       192.168.1.71
+72.0                    A       192.168.1.72
+73.0                    A       192.168.1.73
+74.0                    A       192.168.1.74
+75.0                    A       192.168.1.75
+76.0                    A       192.168.1.76
+77.0                    A       192.168.1.77
+78.0                    A       192.168.1.78
+79.0                    A       192.168.1.79
+80.0                    A       192.168.1.80
+81.0                    A       192.168.1.81
+82.0                    A       192.168.1.82
+83.0                    A       192.168.1.83
+84.0                    A       192.168.1.84
+85.0                    A       192.168.1.85
+86.0                    A       192.168.1.86
+87.0                    A       192.168.1.87
+88.0                    A       192.168.1.88
+89.0                    A       192.168.1.89
+90.0                    A       192.168.1.90
+91.0                    A       192.168.1.91
+92.0                    A       192.168.1.92
+93.0                    A       192.168.1.93
+94.0                    A       192.168.1.94
+95.0                    A       192.168.1.95
+96.0                    A       192.168.1.96
+97.0                    A       192.168.1.97
+98.0                    A       192.168.1.98
+99.0                    A       192.168.1.99
+100.0                   A       192.168.1.100
+101.0                   A       192.168.1.101
+102.0                   A       192.168.1.102
+103.0                   A       192.168.1.103
+104.0                   A       192.168.1.104
+105.0                   A       192.168.1.105
+106.0                   A       192.168.1.106
+107.0                   A       192.168.1.107
+108.0                   A       192.168.1.108
+109.0                   A       192.168.1.109
+110.0                   A       192.168.1.110
+111.0                   A       192.168.1.111
+112.0                   A       192.168.1.112
+113.0                   A       192.168.1.113
+114.0                   A       192.168.1.114
+115.0                   A       192.168.1.115
+116.0                   A       192.168.1.116
+117.0                   A       192.168.1.117
+118.0                   A       192.168.1.118
+119.0                   A       192.168.1.119
+120.0                   A       192.168.1.120
+121.0                   A       192.168.1.121
+122.0                   A       192.168.1.122
+123.0                   A       192.168.1.123
+124.0                   A       192.168.1.124
+125.0                   A       192.168.1.125
+126.0                   A       192.168.1.126
+127.0                   A       192.168.1.127
+128.0                   A       192.168.1.128
+129.0                   A       192.168.1.129
+130.0                   A       192.168.1.130
+131.0                   A       192.168.1.131
+132.0                   A       192.168.1.132
+133.0                   A       192.168.1.133
+134.0                   A       192.168.1.134
+135.0                   A       192.168.1.135
+136.0                   A       192.168.1.136
+137.0                   A       192.168.1.137
+138.0                   A       192.168.1.138
+139.0                   A       192.168.1.139
+140.0                   A       192.168.1.140
+141.0                   A       192.168.1.141
+142.0                   A       192.168.1.142
+143.0                   A       192.168.1.143
+144.0                   A       192.168.1.144
+145.0                   A       192.168.1.145
+146.0                   A       192.168.1.146
+147.0                   A       192.168.1.147
+148.0                   A       192.168.1.148
+149.0                   A       192.168.1.149
+150.0                   A       192.168.1.150
+151.0                   A       192.168.1.151
+152.0                   A       192.168.1.152
+153.0                   A       192.168.1.153
+154.0                   A       192.168.1.154
+155.0                   A       192.168.1.155
+156.0                   A       192.168.1.156
+157.0                   A       192.168.1.157
+158.0                   A       192.168.1.158
+159.0                   A       192.168.1.159
+160.0                   A       192.168.1.160
+161.0                   A       192.168.1.161
+162.0                   A       192.168.1.162
+163.0                   A       192.168.1.163
+164.0                   A       192.168.1.164
+165.0                   A       192.168.1.165
+166.0                   A       192.168.1.166
+167.0                   A       192.168.1.167
+168.0                   A       192.168.1.168
+169.0                   A       192.168.1.169
+170.0                   A       192.168.1.170
+171.0                   A       192.168.1.171
+172.0                   A       192.168.1.172
+173.0                   A       192.168.1.173
+174.0                   A       192.168.1.174
+175.0                   A       192.168.1.175
+176.0                   A       192.168.1.176
+177.0                   A       192.168.1.177
+178.0                   A       192.168.1.178
+179.0                   A       192.168.1.179
+180.0                   A       192.168.1.180
+181.0                   A       192.168.1.181
+182.0                   A       192.168.1.182
+183.0                   A       192.168.1.183
+184.0                   A       192.168.1.184
+185.0                   A       192.168.1.185
+186.0                   A       192.168.1.186
+187.0                   A       192.168.1.187
+188.0                   A       192.168.1.188
+189.0                   A       192.168.1.189
+190.0                   A       192.168.1.190
+191.0                   A       192.168.1.191
+192.0                   A       192.168.1.192
+193.0                   A       192.168.1.193
+194.0                   A       192.168.1.194
+195.0                   A       192.168.1.195
+196.0                   A       192.168.1.196
+197.0                   A       192.168.1.197
+198.0                   A       192.168.1.198
+199.0                   A       192.168.1.199
+200.0                   A       192.168.1.200
+201.0                   A       192.168.1.201
+202.0                   A       192.168.1.202
+203.0                   A       192.168.1.203
+204.0                   A       192.168.1.204
+205.0                   A       192.168.1.205
+206.0                   A       192.168.1.206
+207.0                   A       192.168.1.207
+208.0                   A       192.168.1.208
+209.0                   A       192.168.1.209
+210.0                   A       192.168.1.210
+211.0                   A       192.168.1.211
+212.0                   A       192.168.1.212
+213.0                   A       192.168.1.213
+214.0                   A       192.168.1.214
+215.0                   A       192.168.1.215
+216.0                   A       192.168.1.216
+217.0                   A       192.168.1.217
+218.0                   A       192.168.1.218
+219.0                   A       192.168.1.219
+220.0                   A       192.168.1.220
+221.0                   A       192.168.1.221
+222.0                   A       192.168.1.222
+223.0                   A       192.168.1.223
+224.0                   A       192.168.1.224
+225.0                   A       192.168.1.225
+226.0                   A       192.168.1.226
+227.0                   A       192.168.1.227
+228.0                   A       192.168.1.228
+229.0                   A       192.168.1.229
+230.0                   A       192.168.1.230
+231.0                   A       192.168.1.231
+232.0                   A       192.168.1.232
+233.0                   A       192.168.1.233
+234.0                   A       192.168.1.234
+235.0                   A       192.168.1.235
+236.0                   A       192.168.1.236
+237.0                   A       192.168.1.237
+238.0                   A       192.168.1.238
+239.0                   A       192.168.1.239
+240.0                   A       192.168.1.240
+241.0                   A       192.168.1.241
+242.0                   A       192.168.1.242
+243.0                   A       192.168.1.243
+244.0                   A       192.168.1.244
+245.0                   A       192.168.1.245
+246.0                   A       192.168.1.246
+247.0                   A       192.168.1.247
+248.0                   A       192.168.1.248
+249.0                   A       192.168.1.249
+250.0                   A       192.168.1.250
+251.0                   A       192.168.1.251
+252.0                   A       192.168.1.252
+253.0                   A       192.168.1.253
+254.0                   A       192.168.1.254
+255.0                   A       192.168.1.255
+
+1.1                     CNAME   pub-zjhn-1-z.vicp.net.
+2.1                     CNAME   pub-zjhn-2-z.vicp.net.
+3.1                     CNAME   pub-zjhn-3-z.vicp.net.
+4.1                     CNAME   pub-zjhn-4-z.vicp.net.
+5.1                     CNAME   pub-zjhn-5-z.vicp.net.
+6.1                     CNAME   pub-zjhn-6-z.vicp.net.
+7.1                     CNAME   pub-zjhn-7-z.vicp.net.
+8.1                     CNAME   pub-zjhn-8-z.vicp.net.
+9.1                     CNAME   pub-zjhn-9-z.vicp.net.
+10.1                    CNAME   pub-zjhn-10-z.vicp.net.
+11.1                    CNAME   pub-zjhn-11-z.vicp.net.
+12.1                    CNAME   pub-zjhn-12-z.vicp.net.
+13.1                    CNAME   pub-zjhn-13-z.vicp.net.
+14.1                    CNAME   pub-zjhn-14-z.vicp.net.
+15.1                    CNAME   pub-zjhn-15-z.vicp.net.
+16.1                    CNAME   pub-zjhn-16-z.vicp.net.
+17.1                    CNAME   pub-zjhn-17-z.vicp.net.
+18.1                    CNAME   pub-zjhn-18-z.vicp.net.
+19.1                    CNAME   pub-zjhn-19-z.vicp.net.
+20.1                    CNAME   pub-zjhn-20-z.vicp.net.
+21.1                    CNAME   pub-zjhn-21-z.vicp.net.
+22.1                    CNAME   pub-zjhn-22-z.vicp.net.
+23.1                    CNAME   pub-zjhn-23-z.vicp.net.
+24.1                    CNAME   pub-zjhn-24-z.vicp.net.
+25.1                    CNAME   pub-zjhn-25-z.vicp.net.
+26.1                    CNAME   pub-zjhn-26-z.vicp.net.
+27.1                    CNAME   pub-zjhn-27-z.vicp.net.
+28.1                    CNAME   pub-zjhn-28-z.vicp.net.
+29.1                    CNAME   pub-zjhn-29-z.vicp.net.
+30.1                    CNAME   pub-zjhn-30-z.vicp.net.
+31.1                    CNAME   pub-zjhn-31-z.vicp.net.
+32.1                    CNAME   pub-zjhn-32-z.vicp.net.
+33.1                    CNAME   pub-zjhn-33-z.vicp.net.
+34.1                    CNAME   pub-zjhn-34-z.vicp.net.
+35.1                    CNAME   pub-zjhn-35-z.vicp.net.
+36.1                    CNAME   pub-zjhn-36-z.vicp.net.
+37.1                    CNAME   pub-zjhn-37-z.vicp.net.
+38.1                    CNAME   pub-zjhn-38-z.vicp.net.
+39.1                    CNAME   pub-zjhn-39-z.vicp.net.
+40.1                    CNAME   pub-zjhn-40-z.vicp.net.
+41.1                    CNAME   pub-zjhn-41-z.vicp.net.
+42.1                    CNAME   pub-zjhn-42-z.vicp.net.
+43.1                    CNAME   pub-zjhn-43-z.vicp.net.
+44.1                    CNAME   pub-zjhn-44-z.vicp.net.
+45.1                    CNAME   pub-zjhn-45-z.vicp.net.
+46.1                    CNAME   pub-zjhn-46-z.vicp.net.
+47.1                    CNAME   pub-zjhn-47-z.vicp.net.
+48.1                    CNAME   pub-zjhn-48-z.vicp.net.
+49.1                    CNAME   pub-zjhn-49-z.vicp.net.
+50.1                    CNAME   pub-zjhn-50-z.vicp.net.
+51.1                    CNAME   pub-zjhn-51-z.vicp.net.
+52.1                    CNAME   pub-zjhn-52-z.vicp.net.
+53.1                    CNAME   pub-zjhn-53-z.vicp.net.
+54.1                    CNAME   pub-zjhn-54-z.vicp.net.
+55.1                    CNAME   pub-zjhn-55-z.vicp.net.
+56.1                    CNAME   pub-zjhn-56-z.vicp.net.
+57.1                    CNAME   pub-zjhn-57-z.vicp.net.
+58.1                    CNAME   pub-zjhn-58-z.vicp.net.
+59.1                    CNAME   pub-zjhn-59-z.vicp.net.
+60.1                    CNAME   pub-zjhn-60-z.vicp.net.
+61.1                    CNAME   pub-zjhn-61-z.vicp.net.
+62.1                    CNAME   pub-zjhn-62-z.vicp.net.
+63.1                    CNAME   pub-zjhn-63-z.vicp.net.
+64.1                    CNAME   pub-zjhn-64-z.vicp.net.
+65.1                    CNAME   pub-zjhn-65-z.vicp.net.
+66.1                    CNAME   pub-zjhn-66-z.vicp.net.
+67.1                    CNAME   pub-zjhn-67-z.vicp.net.
+68.1                    CNAME   pub-zjhn-68-z.vicp.net.
+69.1                    CNAME   pub-zjhn-69-z.vicp.net.
+70.1                    CNAME   pub-zjhn-70-z.vicp.net.
+71.1                    CNAME   pub-zjhn-71-z.vicp.net.
+72.1                    CNAME   pub-zjhn-72-z.vicp.net.
+73.1                    CNAME   pub-zjhn-73-z.vicp.net.
+74.1                    CNAME   pub-zjhn-74-z.vicp.net.
+75.1                    CNAME   pub-zjhn-75-z.vicp.net.
+76.1                    CNAME   pub-zjhn-76-z.vicp.net.
+77.1                    CNAME   pub-zjhn-77-z.vicp.net.
+78.1                    CNAME   pub-zjhn-78-z.vicp.net.
+79.1                    CNAME   pub-zjhn-79-z.vicp.net.
+80.1                    CNAME   pub-zjhn-80-z.vicp.net.
+81.1                    CNAME   pub-zjhn-81-z.vicp.net.
+82.1                    CNAME   pub-zjhn-82-z.vicp.net.
+83.1                    CNAME   pub-zjhn-83-z.vicp.net.
+84.1                    CNAME   pub-zjhn-84-z.vicp.net.
+85.1                    CNAME   pub-zjhn-85-z.vicp.net.
+86.1                    CNAME   pub-zjhn-86-z.vicp.net.
+87.1                    CNAME   pub-zjhn-87-z.vicp.net.
+88.1                    CNAME   pub-zjhn-88-z.vicp.net.
+89.1                    CNAME   pub-zjhn-89-z.vicp.net.
+90.1                    CNAME   pub-zjhn-90-z.vicp.net.
+91.1                    CNAME   pub-zjhn-91-z.vicp.net.
+92.1                    CNAME   pub-zjhn-92-z.vicp.net.
+93.1                    CNAME   pub-zjhn-93-z.vicp.net.
+94.1                    CNAME   pub-zjhn-94-z.vicp.net.
+95.1                    CNAME   pub-zjhn-95-z.vicp.net.
+96.1                    CNAME   pub-zjhn-96-z.vicp.net.
+97.1                    CNAME   pub-zjhn-97-z.vicp.net.
+98.1                    CNAME   pub-zjhn-98-z.vicp.net.
+99.1                    CNAME   pub-zjhn-99-z.vicp.net.
+
+1.2                     CNAME   pub-center-1-z.vicp.net.
+2.2                     CNAME   pub-center-2-z.vicp.net.
+3.2                     CNAME   pub-center-3-z.vicp.net.
+4.2                     CNAME   pub-center-4-z.vicp.net.
+5.2                     CNAME   pub-center-5-z.vicp.net.
+6.2                     CNAME   pub-center-6-z.vicp.net.
+7.2                     CNAME   pub-center-7-z.vicp.net.
+8.2                     CNAME   pub-center-8-z.vicp.net.
+9.2                     CNAME   pub-center-9-z.vicp.net.
+10.2                    CNAME   pub-center-10-z.vicp.net.
+11.2                    CNAME   pub-center-11-z.vicp.net.
+12.2                    CNAME   pub-center-12-z.vicp.net.
+13.2                    CNAME   pub-center-13-z.vicp.net.
+14.2                    CNAME   pub-center-14-z.vicp.net.
+15.2                    CNAME   pub-center-15-z.vicp.net.
+16.2                    CNAME   pub-center-16-z.vicp.net.
+17.2                    CNAME   pub-center-17-z.vicp.net.
+18.2                    CNAME   pub-center-18-z.vicp.net.
+19.2                    CNAME   pub-center-19-z.vicp.net.
+20.2                    CNAME   pub-center-20-z.vicp.net.
+21.2                    CNAME   pub-center-21-z.vicp.net.
+22.2                    CNAME   pub-center-22-z.vicp.net.
+23.2                    CNAME   pub-center-23-z.vicp.net.
+24.2                    CNAME   pub-center-24-z.vicp.net.
+25.2                    CNAME   pub-center-25-z.vicp.net.
+26.2                    CNAME   pub-center-26-z.vicp.net.
+27.2                    CNAME   pub-center-27-z.vicp.net.
+28.2                    CNAME   pub-center-28-z.vicp.net.
+29.2                    CNAME   pub-center-29-z.vicp.net.
+30.2                    CNAME   pub-center-30-z.vicp.net.
+31.2                    CNAME   pub-center-31-z.vicp.net.
+32.2                    CNAME   pub-center-32-z.vicp.net.
+33.2                    CNAME   pub-center-33-z.vicp.net.
+34.2                    CNAME   pub-center-34-z.vicp.net.
+35.2                    CNAME   pub-center-35-z.vicp.net.
+36.2                    CNAME   pub-center-36-z.vicp.net.
+37.2                    CNAME   pub-center-37-z.vicp.net.
+38.2                    CNAME   pub-center-38-z.vicp.net.
+39.2                    CNAME   pub-center-39-z.vicp.net.
+40.2                    CNAME   pub-center-40-z.vicp.net.
+41.2                    CNAME   pub-center-41-z.vicp.net.
+42.2                    CNAME   pub-center-42-z.vicp.net.
+43.2                    CNAME   pub-center-43-z.vicp.net.
+44.2                    CNAME   pub-center-44-z.vicp.net.
+45.2                    CNAME   pub-center-45-z.vicp.net.
+46.2                    CNAME   pub-center-46-z.vicp.net.
+47.2                    CNAME   pub-center-47-z.vicp.net.
+48.2                    CNAME   pub-center-48-z.vicp.net.
+49.2                    CNAME   pub-center-49-z.vicp.net.
+50.2                    CNAME   pub-center-50-z.vicp.net.
+51.2                    CNAME   pub-center-51-z.vicp.net.
+52.2                    CNAME   pub-center-52-z.vicp.net.
+53.2                    CNAME   pub-center-53-z.vicp.net.
+54.2                    CNAME   pub-center-54-z.vicp.net.
+55.2                    CNAME   pub-center-55-z.vicp.net.
+56.2                    CNAME   pub-center-56-z.vicp.net.
+57.2                    CNAME   pub-center-57-z.vicp.net.
+58.2                    CNAME   pub-center-58-z.vicp.net.
+59.2                    CNAME   pub-center-59-z.vicp.net.
+60.2                    CNAME   pub-center-60-z.vicp.net.
+61.2                    CNAME   pub-center-61-z.vicp.net.
+62.2                    CNAME   pub-center-62-z.vicp.net.
+63.2                    CNAME   pub-center-63-z.vicp.net.
+64.2                    CNAME   pub-center-64-z.vicp.net.
+65.2                    CNAME   pub-center-65-z.vicp.net.
+66.2                    CNAME   pub-center-66-z.vicp.net.
+67.2                    CNAME   pub-center-67-z.vicp.net.
+68.2                    CNAME   pub-center-68-z.vicp.net.
+69.2                    CNAME   pub-center-69-z.vicp.net.
+70.2                    CNAME   pub-center-70-z.vicp.net.
+71.2                    CNAME   pub-center-71-z.vicp.net.
+72.2                    CNAME   pub-center-72-z.vicp.net.
+73.2                    CNAME   pub-center-73-z.vicp.net.
+74.2                    CNAME   pub-center-74-z.vicp.net.
+75.2                    CNAME   pub-center-75-z.vicp.net.
+76.2                    CNAME   pub-center-76-z.vicp.net.
+77.2                    CNAME   pub-center-77-z.vicp.net.
+78.2                    CNAME   pub-center-78-z.vicp.net.
+79.2                    CNAME   pub-center-79-z.vicp.net.
+80.2                    CNAME   pub-center-80-z.vicp.net.
+81.2                    CNAME   pub-center-81-z.vicp.net.
+82.2                    CNAME   pub-center-82-z.vicp.net.
+83.2                    CNAME   pub-center-83-z.vicp.net.
+84.2                    CNAME   pub-center-84-z.vicp.net.
+85.2                    CNAME   pub-center-85-z.vicp.net.
+86.2                    CNAME   pub-center-86-z.vicp.net.
+87.2                    CNAME   pub-center-87-z.vicp.net.
+88.2                    CNAME   pub-center-88-z.vicp.net.
+89.2                    CNAME   pub-center-89-z.vicp.net.
+90.2                    CNAME   pub-center-90-z.vicp.net.
+91.2                    CNAME   pub-center-91-z.vicp.net.
+92.2                    CNAME   pub-center-92-z.vicp.net.
+93.2                    CNAME   pub-center-93-z.vicp.net.
+94.2                    CNAME   pub-center-94-z.vicp.net.
+95.2                    CNAME   pub-center-95-z.vicp.net.
+96.2                    CNAME   pub-center-96-z.vicp.net.
+97.2                    CNAME   pub-center-97-z.vicp.net.
+98.2                    CNAME   pub-center-98-z.vicp.net.
+99.2                    CNAME   pub-center-99-z.vicp.net.
