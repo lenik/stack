@@ -7,24 +7,26 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
-import org.apache.commons.httpclient.methods.multipart.Part;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
+import com.bee32.plover.ox1.principal.User;
 import com.bee32.sem.asset.dto.AccountSubjectDto;
 import com.bee32.sem.asset.dto.AccountTicketDto;
 import com.bee32.sem.asset.dto.AccountTicketItemDto;
 import com.bee32.sem.asset.dto.BudgetRequestDto;
 import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.asset.entity.AccountTicket;
+import com.bee32.sem.asset.entity.BudgetRequest;
 import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
-import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.world.monetary.CurrencyUtil;
 
 public class AccountTicketAdminBean extends EntityViewBean {
@@ -43,6 +45,7 @@ public class AccountTicketAdminBean extends EntityViewBean {
 
     protected AccountTicketItemDto accountTicketItem = new AccountTicketItemDto().create();
 
+    private int budgetRequestCreatorId;
     private String budgetRequestPattern;
     private List<BudgetRequestDto> budgetRequests;
     private BudgetRequestDto selectedBudgetRequest;
@@ -51,7 +54,8 @@ public class AccountTicketAdminBean extends EntityViewBean {
     private List<PartyDto> parties;
     private PartyDto selectedParty;
 
-    private String accountSubjectPattern;
+    private String accountSubjectCodePattern;
+    private String accountSubjectNamePattern;
     private List<AccountSubjectDto> accountSubjects;
     private AccountSubjectDto selectedAccountSubject;
 
@@ -150,6 +154,32 @@ public class AccountTicketAdminBean extends EntityViewBean {
         this.count = count;
     }
 
+
+    public List<SelectItem> getUsers() {
+        List<SelectItem> result = new ArrayList<SelectItem>();
+
+        List<User> allUser = serviceFor(User.class).list();
+        for(User u : allUser) {
+            SelectItem userItem = new SelectItem();
+
+            userItem.setValue(u.getId());
+            userItem.setLabel(u.getDisplayName());
+
+            result.add(userItem);
+        }
+
+        return result;
+    }
+
+
+    public int getBudgetRequestCreatorId() {
+        return budgetRequestCreatorId;
+    }
+
+    public void setBudgetRequestCreatorId(int budgetRequestCreatorId) {
+        this.budgetRequestCreatorId = budgetRequestCreatorId;
+    }
+
     public String getBudgetRequestPattern() {
         return budgetRequestPattern;
     }
@@ -198,12 +228,20 @@ public class AccountTicketAdminBean extends EntityViewBean {
         this.selectedParty = selectedParty;
     }
 
-    public String getAccountSubjectPattern() {
-        return accountSubjectPattern;
+    public String getAccountSubjectCodePattern() {
+        return accountSubjectCodePattern;
     }
 
-    public void setAccountSubjectPattern(String accountSubjectPattern) {
-        this.accountSubjectPattern = accountSubjectPattern;
+    public void setAccountSubjectCodePattern(String accountSubjectCodePattern) {
+        this.accountSubjectCodePattern = accountSubjectCodePattern;
+    }
+
+    public String getAccountSubjectNamePattern() {
+        return accountSubjectNamePattern;
+    }
+
+    public void setAccountSubjectNamePattern(String accountSubjectNamePattern) {
+        this.accountSubjectNamePattern = accountSubjectNamePattern;
     }
 
     public List<AccountSubjectDto> getAccountSubjects() {
@@ -284,19 +322,31 @@ public class AccountTicketAdminBean extends EntityViewBean {
         editable = true;
     }
 
+    @Transactional
     public void save() {
         if(accountTicket.getId() == null) {
             //新增
             goNumber = count + 1;
         }
 
+        for(AccountTicketItemDto i : accountTicket.getItems()) {
+            //TODO :检查借贷是否相等
+
+        }
+
+
         try {
+            if (accountTicket.getRequest() != null) {
+                //如果选择了对应的资金流业务，则更新业务单中的ticket
+                serviceFor(BudgetRequest.class).saveOrUpdate(accountTicket.getRequest().unmarshal());
+            }
+
             AccountTicket _ticket = accountTicket.unmarshal();
             for(AccountTicketItemDto item : itemsNeedToRemoveWhenModify) {
                 _ticket.removeItem(item.unmarshal());
             }
 
-            serviceFor(AccountTicket.class).save(_ticket);
+            serviceFor(AccountTicket.class).saveOrUpdate(_ticket);
             uiLogger.info("保存成功");
             loadAccountTicket(goNumber);
             editable = false;
@@ -384,25 +434,25 @@ public class AccountTicketAdminBean extends EntityViewBean {
     }
 
     public void findBudgetRequest() {
-//        if (partPattern != null && !partPattern.isEmpty()) {
-//
-//            List<Part> _parts = serviceFor(Part.class).list(BomCriteria.findPartUseMaterialName(partPattern));
-//
-//            parts = DTOs.mrefList(PartDto.class, _parts);
-//        }
+        //TODO : 加入业务单是否已经审核的条件检查
+
+        List<BudgetRequest> requests = serviceFor(BudgetRequest.class).list(
+                new Equals("owner.id", budgetRequestCreatorId),
+                new Like("description", "%" + budgetRequestPattern + "%"));
+
+        budgetRequests = DTOs.marshalList(BudgetRequestDto.class, requests);
     }
 
-    public void chooseBudget() {
-//        makeOrderItem.setPart(selectedPart);
-//
-//        selectedPart = null;
+    public void chooseBudgetRequest() {
+        accountTicket.setRequest(selectedBudgetRequest);
+
+        selectedBudgetRequest = null;
     }
 
     public void findParty() {
         if (partyPattern != null && !partyPattern.isEmpty()) {
 
             List<Party> _parties = serviceFor(Party.class).list( //
-                    PeopleCriteria.customers(), //
                     new Or( //
                             new Like("name", "%" + partyPattern + "%"), //
                             new Like("fullName", "%" + partyPattern + "%")));
@@ -416,11 +466,12 @@ public class AccountTicketAdminBean extends EntityViewBean {
     }
 
     public void findAccountSubject() {
-//        List<AccountSubject> _subjects = serviceFor(AccountSubject.class).list(//
-//                Order.desc("createdDate"), //
-//                nceCriteria.subjectLike(chancePattern));
-//
-//        subjects = DTOs.mrefList(AccountSubjectDto.class, 0, _subjects);
+        //在实体中,name代表科目代码，label代表科目名称
+        List<AccountSubject> _subjects = serviceFor(AccountSubject.class).list(//
+                new Like("name", "%" + accountSubjectCodePattern + "%"),
+                new Like("label", "%" + accountSubjectNamePattern + "%"));
+
+        accountSubjects = DTOs.mrefList(AccountSubjectDto.class, 0, _subjects);
     }
 
     public void chooseAccountSubject() {

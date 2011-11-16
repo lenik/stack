@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.Cascade;
@@ -73,6 +74,7 @@ public class AccountTicket
             items.get(index).setIndex(index);
     }
 
+    @OneToOne(mappedBy = "ticket")
     public BudgetRequest getRequest() {
         return request;
     }

@@ -84,4 +84,8 @@ public class BudgetRequestDto
         this.ticket = ticket;
     }
 
+    public String getCreator() {
+        return this.getOwnerDisplayName();
+    }
+
 }

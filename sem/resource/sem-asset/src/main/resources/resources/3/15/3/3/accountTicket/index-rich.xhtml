@@ -107,18 +107,26 @@
 				<t:panelGrid columns="4">
                     <h:outputText value="标识:" />
                     <t:panelGroup colspan="3">
-                        <h:outputText value="#{accountTicketAdminBean.makeOrder.id}"/>
+                        <h:outputText value="#{accountTicketAdminBean.accountTicket.id}"/>
                     </t:panelGroup>
 
                     <h:outputText value="时间:" />
                     <h:outputText
-                        value="#{accountTicketAdminBean.makeOrder.createdDate}">
+                        value="#{accountTicketAdminBean.accountTicket.createdDate}">
                         <f:convertDateTime pattern="yyyy-MM-dd"
                             timeZone="Asia/Shanghai" />
                     </h:outputText>
                     <h:outputText value="制单人:" />
                     <p:inputText value="#{accountTicketAdminBean.creator}"
                         disabled="true" />
+
+                    <t:panelGroup colspan="2">
+                        <h:outputText value="资金流业务单:" />
+                    </t:panelGroup>
+                    <t:panelGroup colspan="2">
+                        <p:inputText id="budgetRequest" value="#{accountTicketAdminBean.accountTicket.request.description}" readonly="true"/>
+                        <p:commandButton value="..." onclick="budgetRequestDialog.show();" disabled="#{!accountTicketAdminBean.editable}"/>
+                    </t:panelGroup>
 
                 </t:panelGrid>
 
@@ -155,7 +163,14 @@
                     </p:column>
 
                     <p:column headerText="借贷方向">
-                        <h:outputText value="#{item.}" />
+                        <p:selectOneMenu
+                            value="#{item.debitSide}" disabled="#{true}"
+                            style="width:200px;">
+                            <f:selectItem itemValue="true"
+                                itemLabel="借方" />
+                            <f:selectItem itemValue="false"
+                                itemLabel="贷方" />
+                        </p:selectOneMenu>
                     </p:column>
 
                     <p:column headerText="币种">
@@ -176,65 +191,61 @@
 								actionListener="#{accountTicketAdminBean.modifyItem}"
 								oncomplete="itemDialog.show()" value="修改">
 								<f:setPropertyActionListener value="#{item}"
-									target="#{accountTicketAdminBean.makeOrderItem}" />
-                                <f:setPropertyActionListener value="#{item.priceValue}"
-                                    target="#{accountTicketAdminBean.makeOrderItemPrice}" />
-                                <f:setPropertyActionListener value="#{item.priceCurrencyCode}"
-                                    target="#{accountTicketAdminBean.makeOrderItemPriceCurrency}" />
+									target="#{accountTicketAdminBean.accountTicketItem}" />
 							</p:commandLink>
 							<p:spacer width="10" />
 							<p:commandLink
 								disabled="#{!accountTicketAdminBean.editable}"
 								oncomplete="deleteItemConfirmDialog.show()" value="删除">
 								<f:setPropertyActionListener value="#{item}"
-									target="#{accountTicketAdminBean.makeOrderItem}" />
+									target="#{accountTicketAdminBean.accountTicketItem}" />
 							</p:commandLink>
 						</t:panelGroup>
 					</p:column>
-
 				</p:dataTable>
-
-
 			</p:panel>
 		</h:form>
 
 		<h:form id="itemForm">
-			<p:dialog header="定单项目编辑" widgetVar="itemDialog" modal="true"
+			<p:dialog header="凭证项目编辑" widgetVar="itemDialog" modal="true"
 				height="500" width="640">
 				<h:panelGroup id="itemPanel">
 					<t:panelGrid columns="4"
 						columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
 
-                                    摘要
-                                    会计科目
-                                    二级科目
-                                    借贷方向
-                                    金额
+                        <h:outputLabel value="摘要" />
+                        <t:panelGroup colspan="3">
+                            <p:inputText value="#{accountTicketAdminBean.accountTicketItem.description}" />
+                        </t:panelGroup>
+
+                        <h:outputLabel value="会计科目" />
+                        <t:panelGroup colspan="3">
+                            <p:inputText id="accountSubject" value="#{accountTicketAdminBean.accountTicketItem.subject.label}" readonly="true"/>
+                            <p:commandButton value="..." onclick="accountSubjectDialog.show();"/>
+                        </t:panelGroup>
+
+                        <h:outputLabel value="二级科目" />
+                        <t:panelGroup colspan="3">
+                            <p:inputText id="party" value="#{accountTicketAdminBean.accountTicketItem.party.name}" readonly="true"/>
+                            <p:commandButton value="..." onclick="partyDialog.show();"/>
+                        </t:panelGroup>
+
+                        <h:outputLabel value="借贷方向" />
+                        <t:panelGroup colspan="3">
+                            <p:selectOneMenu value="#{accountTicketAdminBean.accountTicketItem.debitSide}" style="width:200px;">
+                                <f:selectItem itemValue="true" itemLabel="借方" />
+                                <f:selectItem itemValue="false" itemLabel="贷方" />
+                            </p:selectOneMenu>
+                        </t:panelGroup>
 
 
-						<h:outputLabel value="物料" />
-						<t:panelGroup colspan="3">
-							<p:inputText value="#{accountTicketAdminBean.makeOrderItem.part.target.label}" readonly="true"/>
-							<p:commandButton value="..." onclick="partDialog.show();"/>
-						</t:panelGroup>
-
-                        <h:outputLabel value="单价" />
-                        <p:inputText value="#{accountTicketAdminBean.makeOrderItemPrice}" />
+                        <h:outputLabel value="金额" />
+                        <p:inputText value="#{accountTicketAdminBean.accountTicketItem.valueDigit}" />
                         <h:outputLabel value="币种" />
-                        <p:selectOneMenu value="#{accountTicketAdminBean.makeOrderItemPriceCurrency}" style="width:200px;">
+                        <p:selectOneMenu value="#{accountTicketAdminBean.accountTicketItem.valueCurrency}" style="width:200px;">
                             <f:selectItem itemValue="" itemLabel="--选择币种--" />
                             <f:selectItems value="#{accountTicketAdminBean.currencies}" />
                         </p:selectOneMenu>
-
-                        <h:outputLabel value="数量" />
-                        <t:panelGroup colspan="3">
-                            <p:inputText value="#{accountTicketAdminBean.makeOrderItem.quantity}"/>
-                        </t:panelGroup>
-
-                        <h:outputLabel value="外部名称" />
-                        <p:inputText value="#{accountTicketAdminBean.makeOrderItem.externalProductName}" />
-                        <h:outputLabel value="外部规格型号" />
-                        <p:inputText value="#{accountTicketAdminBean.makeOrderItem.externalSpecification}" />
 
 						<h:panelGroup />
 						<t:panelGroup colspan="2">
@@ -255,22 +266,27 @@
 			</p:dialog>
 		</h:form>
 
-		<h:form id="partForm">
-			<p:dialog header="选择产品" widgetVar="partDialog" modal="true"
+		<h:form id="budgetRequestForm">
+			<p:dialog header="选择资金流业务单" widgetVar="budgetRequestDialog" modal="true"
 				height="480" width="640">
 				<h:panelGroup>
 
-					<h:panelGrid columns="3">
-						<h:outputLabel value="产品名称全部或部份:" />
-						<p:inputText value="#{accountTicketAdminBean.partPattern}" />
+					<h:panelGrid columns="5">
+                        <h:outputLabel value="经办人:" />
+                        <p:selectOneMenu value="#{accountTicketAdminBean.budgetRequestCreatorId}" style="width:200px;">
+                            <f:selectItem itemValue="" itemLabel="--选择经办人--" />
+                            <f:selectItems value="#{accountTicketAdminBean.users}" />
+                        </p:selectOneMenu>
+						<h:outputLabel value="摘要名称全部或部份:" />
+						<p:inputText value="#{accountTicketAdminBean.budgetRequestPattern}" />
 						<p:commandButton value="查找"
-							actionListener="#{accountTicketAdminBean.findPart}" update="parts"
+							actionListener="#{accountTicketAdminBean.findBudgetRequest}" update="budgetRequests"
 							async="true" />
 					</h:panelGrid>
-					<p:dataTable id="parts" var="part"
-						value="#{accountTicketAdminBean.parts}" resizableColumns="true"
-						selection="#{accountTicketAdminBean.selectedPart}" selectionMode="single"
-                        rowKey="#{part.id}"
+					<p:dataTable id="budgetRequests" var="budgetRequest"
+						value="#{accountTicketAdminBean.budgetRequests}" resizableColumns="true"
+						selection="#{accountTicketAdminBean.selectedBudgetRequest}" selectionMode="single"
+                        rowKey="#{budgetRequest.id}"
 						rowIndexVar="rowIndex"
                         scrollable="true" scrollWidth="600" scrollHeight="350">
 
@@ -281,33 +297,28 @@
 							<h:outputText value="#{rowIndex + 1}" />
 						</p:column>
 
-						<p:column headerText="物料名称">
-							<h:outputText value="#{part.target.label}" />
+						<p:column headerText="经办人">
+							<h:outputText value="#{budgetRequest.creator}" />
 						</p:column>
 
-						<p:column headerText="序列号">
-							<h:outputText value="#{part.target.serial}" />
+						<p:column headerText="摘要">
+							<h:outputText value="#{budgetRequest.description}" />
 						</p:column>
 
-						<p:column headerText="条形码">
-							<h:outputText value="#{part.target.barCode}" />
+						<p:column headerText="货币类型">
+							<h:outputText value="#{budgetRequest.valueCurrency}" />
 						</p:column>
 
-						<p:column headerText="主单位">
-							<h:outputText value="#{part.target.unit.name}" />
+						<p:column headerText="金额">
+							<h:outputText value="#{budgetRequest.valueDigit}" />
 						</p:column>
-
-                        <p:column headerText="规格型号">
-                            <h:outputText value="#{part.target.modelSpec}" />
-                        </p:column>
-
 					</p:dataTable>
 					<h:panelGrid columns="2">
 						<p:commandButton value="确定"
-							actionListener="#{accountTicketAdminBean.choosePart}"
-							oncomplete="partDialog.hide();" update="itemForm:itemPanel"
+							actionListener="#{accountTicketAdminBean.chooseBudgetRequest}"
+							oncomplete="budgetRequestDialog.hide();" update="mainForm:budgetRequest"
 							async="true" />
-						<p:commandButton value="取消" oncomplete="partDialog.hide();" />
+						<p:commandButton value="取消" oncomplete="budgetRequestDialog.hide();" />
 					</h:panelGrid>
 				</h:panelGroup>
 			</p:dialog>
@@ -342,20 +353,22 @@
             </p:confirmDialog>
         </h:form>
 
-        <h:form id="customerForm">
-            <p:dialog header="选择客户" widgetVar="customerDialog" modal="true"
+        <h:form id="accountSubjectForm">
+            <p:dialog header="选择科目" widgetVar="accountSubjectDialog" modal="true"
                 height="500" width="840">
                 <h:panelGroup>
 
                     <h:panelGrid columns="3">
-                        <h:outputLabel value="客户名称全部或部份:" />
-                        <p:inputText value="#{accountTicketAdminBean.customerPattern}" />
+                        <h:outputLabel value="科目代码的全部或部份:" />
+                        <p:inputText value="#{accountTicketAdminBean.accountSubjectCodePattern}" />
+                        <h:outputLabel value="科目名称全部或部份:" />
+                        <p:inputText value="#{accountTicketAdminBean.accountSubjectNamePattern}" />
                         <p:commandButton value="查找"
-                            actionListener="#{accountTicketAdminBean.findCustomer}" update="customers"
+                            actionListener="#{accountTicketAdminBean.findAccountSubject}" update="accountSubjects"
                             async="true" />
                     </h:panelGrid>
-                    <p:dataTable id="customers" var="customer"
-                        value="#{accountTicketAdminBean.customers}" resizableColumns="true"
+                    <p:dataTable id="accountSubjects" var="accountSubject"
+                        value="#{accountTicketAdminBean.accountSubjects}" resizableColumns="true"
                         rowIndexVar="rowIndex"
                         scrollable="true" scrollWidth="600" scrollHeight="350">
 
@@ -363,12 +376,58 @@
                             <h:outputText value="#{rowIndex + 1}" />
                         </p:column>
 
-                        <p:column headerText="客户名称">
-                            <h:outputText value="#{customer.name}" />
+                        <p:column headerText="科目编码">
+                            <h:outputText value="#{accountSubject.name}" />
+                        </p:column>
+
+                        <p:column headerText="科目名称">
+                            <h:outputText value="#{accountSubject.label}" />
+                        </p:column>
+
+                        <p:column headerText="动作">
+                            <p:commandLink
+                                oncomplete="accountSubjectDialog.hide()"
+                                action="#{accountTicketAdminBean.chooseAccountSubject}"
+                                update="itemForm:accountSubject" value="挑选">
+                                <f:setPropertyActionListener
+                                    value="#{accountSubject}"
+                                    target="#{accountTicketAdminBean.selectedAccountSubject}" />
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                    <p:commandButton value="取消" oncomplete="accountSubjectDialog.hide()" />
+                </h:panelGroup>
+            </p:dialog>
+        </h:form>
+
+
+        <h:form id="partyForm">
+            <p:dialog header="选择客户" widgetVar="partyDialog" modal="true"
+                height="500" width="840">
+                <h:panelGroup>
+
+                    <h:panelGrid columns="3">
+                        <h:outputLabel value="名称全部或部份:" />
+                        <p:inputText value="#{accountTicketAdminBean.partyPattern}" />
+                        <p:commandButton value="查找"
+                            actionListener="#{accountTicketAdminBean.findParty}" update="parties"
+                            async="true" />
+                    </h:panelGrid>
+                    <p:dataTable id="parties" var="party"
+                        value="#{accountTicketAdminBean.parties}" resizableColumns="true"
+                        rowIndexVar="rowIndex"
+                        scrollable="true" scrollWidth="600" scrollHeight="350">
+
+                        <p:column headerText="序号">
+                            <h:outputText value="#{rowIndex + 1}" />
+                        </p:column>
+
+                        <p:column headerText="名称">
+                            <h:outputText value="#{party.name}" />
                         </p:column>
 
                         <p:column headerText="标签">
-                            <p:dataList value="#{customer.tags}" var="tag" type="definition">
+                            <p:dataList value="#{party.tags}" var="tag" type="definition">
                                 <f:facet name="description">
                                     <h:outputText value="#{tag.label}"/>
                                 </f:facet>
@@ -376,76 +435,34 @@
                         </p:column>
 
                         <p:column headerText="成立日期/生日">
-                            <h:outputText value="#{customer.birthday}">
+                            <h:outputText value="#{party.birthday}">
                                 <f:convertDateTime pattern="yyyy-MM-dd"
                                     timeZone="Asia/Shanghai" />
                             </h:outputText>
                         </p:column>
 
                         <p:column headerText="税务登记号/证件号">
-                            <h:outputText value="#{customer.sid}" />
+                            <h:outputText value="#{party.sid}" />
                         </p:column>
 
                         <p:column headerText="创建日期">
-                            <h:outputText value="#{customer.createdDate}">
+                            <h:outputText value="#{party.createdDate}">
                                 <f:convertDateTime pattern="yyyy-MM-dd"
                                     timeZone="Asia/Shanghai" />
                             </h:outputText>
                         </p:column>
                         <p:column headerText="动作">
                             <p:commandLink
-                                oncomplete="customerDialog.hide()"
-                                action="#{accountTicketAdminBean.chooseCustomer}"
-                                update="mainForm:customer" value="挑选">
+                                oncomplete="partyDialog.hide()"
+                                action="#{accountTicketAdminBean.chooseParty}"
+                                update="itemForm:party" value="挑选">
                                 <f:setPropertyActionListener
-                                    value="#{customer}"
-                                    target="#{accountTicketAdminBean.selectedCustomer}" />
+                                    value="#{party}"
+                                    target="#{accountTicketAdminBean.selectedParty}" />
                             </p:commandLink>
                         </p:column>
                     </p:dataTable>
-                    <p:commandButton value="取消" oncomplete="customerDialog.hide();" />
-                </h:panelGroup>
-            </p:dialog>
-        </h:form>
-
-
-        <h:form id="chanceForm">
-            <p:dialog header="挑选机会" widgetVar="chanceDialog" modal="true" height="500" width="840">
-                <h:panelGroup>
-
-                    <h:panelGrid columns="2">
-                        <p:inputText value="#{accountTicketAdminBean.chancePattern}" />
-
-                        <p:commandButton value="查找" actionListener="#{accountTicketAdminBean.findChance}"
-                            update="chanceForm:chances" async="true" />
-                    </h:panelGrid>
-                    <p:dataTable id="chances" var="chance" value="#{accountTicketAdminBean.chances}" resizableColumns="true"
-                        selection="#{accountTicketAdminBean.selectedChance}" selectionMode="single"
-                        rowKey="#{chance.id}" rowIndexVar="rowIndex"
-                        scrollable="true" scrollWidth="600" scrollHeight="350">
-
-                        <p:column headerText="序号" style="width:45px;">
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column headerText="机会主题">
-                            <h:outputText value="#{chance.subject}" />
-                        </p:column>
-
-                        <p:column headerText="客户">
-                            <h:outputText value="#{chance.partiesHint}" />
-                        </p:column>
-
-                        <p:column headerText="来源" style="width:100px;">
-                            <h:outputText value="#{chance.source.label}" />
-                        </p:column>
-
-                    </p:dataTable>
-                    <h:panelGrid columns="2">
-                        <p:commandButton value="确定" actionListener="#{accountTicketAdminBean.chooseChance}"
-                            oncomplete="chanceDialog.hide();" update="mainForm:chance" async="true" />
-                        <p:commandButton value="取消" oncomplete="chanceDialog.hide();" />
-                    </h:panelGrid>
+                    <p:commandButton value="取消" oncomplete="partyDialog.hide();" />
                 </h:panelGroup>
             </p:dialog>
         </h:form>

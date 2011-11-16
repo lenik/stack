@@ -14,9 +14,9 @@ public class SEMAssetMenu
 
     static MenuNode accountTitleAdmin = entry(ASSET, 1, "accountSubjectAdmin", ASSET_.join("accountSubject/"));
     static MenuNode budgetRequestAdmin = entry(ASSET, 1, "budgetRequestAdmin", ASSET_.join("budgetRequest/"));
+    static MenuNode accountTicketAdmin = entry(ASSET, 1, "accountTicketAdmin", ASSET_.join("accountTicket/"));
 
     @Override
     protected void preamble() {
     }
-
 }
