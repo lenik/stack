@@ -15,7 +15,12 @@ import javax.free.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SiteInstance {
+import com.bee32.plover.rtx.location.ILocationConstants;
+import com.bee32.plover.rtx.location.Location;
+import com.bee32.plover.rtx.location.Locations;
+
+public class SiteInstance
+        implements ILocationConstants {
 
     static Logger logger = LoggerFactory.getLogger(SiteInstance.class);
 
@@ -25,6 +30,7 @@ public class SiteInstance {
     public static final String ALIASES_KEY = "aliases";
     public static final String LABEL_KEY = "label";
     public static final String DESCRIPTION_KEY = "description";
+    public static final String LOGO_KEY = "logo";
 
     public static final String VERBOSE_KEY = "verbose";
     public static final String OPTIMIZATION_KEY = "optimization";
@@ -37,6 +43,8 @@ public class SiteInstance {
 
     public static final String AUTODDL_KEY = "autoddl";
     public static final String SAMPLES_KEY = "samples";
+
+    public static final Location DEFAULT_LOGO_LOCATION = SYMBOLS.join("logo-full.png");
 
     File configFile;
     FormatProperties properties;
@@ -55,6 +63,7 @@ public class SiteInstance {
         setProperty(DB_PASS_KEY, "MxDkUWl1");
         setAutoDDL(DBAutoDDL.Update);
         setSamples(SamplesSelection.STANDARD);
+        setLogoLocation(DEFAULT_LOGO_LOCATION);
     }
 
     public SiteInstance(File file)
@@ -216,6 +225,31 @@ public class SiteInstance {
 
     public void setDescription(String description) {
         setProperty(DESCRIPTION_KEY, description);
+    }
+
+    public String getLogo() {
+        return getProperty(LOGO_KEY);
+    }
+
+    public void setLogo(String logo) {
+        if (logo == null || logo.isEmpty()) {
+            setLogoLocation(DEFAULT_LOGO_LOCATION);
+            return;
+        }
+        if (!logo.contains("::"))
+            logo = "URL::" + logo;
+        setProperty(LOGO_KEY, logo);
+    }
+
+    public Location getLogoLocation() {
+        String _logo = getProperty(LOGO_KEY);
+        Location logo = Locations.parse(_logo);
+        return logo;
+    }
+
+    public void setLogoLocation(Location logo) {
+        String _logo = Locations.qualify(logo);
+        setProperty(LOGO_KEY, _logo);
     }
 
     public VerboseLevel getVerboseLevel() {

@@ -143,3 +143,13 @@
 .tcf input[readonly] {
     background: buttonface;
 }
+
+.icon {
+    max-width: 100px;
+    max-height: 50px;
+}
+
+.icon-big {
+    max-width: 200px;
+    max-height: 300px;
+}

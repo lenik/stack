@@ -8,7 +8,11 @@ import java.util.Map.Entry;
 import javax.free.ClassResource;
 import javax.free.Doc;
 import javax.free.URLResource;
+import javax.servlet.http.HttpServletRequest;
 
+import com.bee32.plover.rtx.location.Location;
+import com.bee32.plover.rtx.location.Locations;
+import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.googlecode.jatl.Html;
 
 public class SiteTemplate
@@ -80,7 +84,10 @@ public class SiteTemplate
         return siteCss;
     }
 
+    protected final HttpServletRequest request;
+
     {
+        request = ThreadHttpContext.getRequest();
         html();
         head();
         {
@@ -194,6 +201,21 @@ public class SiteTemplate
                     String sval = value == null ? "" : value.toString();
                     input.value(sval);
 
+                } else if (value instanceof Location) {
+                    Location location = (Location) value;
+                    String _location = Locations.qualify(location);
+                    String href = location.resolveAbsolute(request);
+                    span();
+                    {
+                        input = input().name(name).type("text");
+                        String sval = value == null ? "" : _location;
+                        input.value(sval);
+                        end();
+
+                        if (href != null)
+                            img().classAttr("icon").src(href).end();
+                    }
+
                 } else if (value instanceof Boolean) {
                     input = input().name(name).type("checkbox").value("1");
                     Boolean bval = (Boolean) value;
@@ -247,6 +269,23 @@ public class SiteTemplate
         th().classAttr("key").text(name).end();
         td().classAttr("value").text(_value).end();
         end();
+    }
+
+    protected void simpleRowImage(String name, Location image, Location href) {
+        HttpServletRequest request = ThreadHttpContext.getRequest();
+        String _image = image.resolveAbsolute(request);
+
+        tr();
+        th().classAttr("key").text(name).end();
+        td().classAttr("value");
+        if (href != null) {
+            String _href = href.resolveAbsolute(request);
+            a().href(_href);
+        }
+        img().classAttr("icon").src(_image).end();
+        if (href != null)
+            end();
+        end(2);
     }
 
     protected void simpleRow(String name, Object value, String comment) {

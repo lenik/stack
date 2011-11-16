@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 
 public class SiteManagerServlet
@@ -81,6 +82,7 @@ public class SiteManagerServlet
                 String name = site.getName();
                 String label = site.getLabel();
                 String description = site.getDescription();
+                Location logo = site.getLogoLocation();
 
                 div().style("background: #eef; margin-left: 1em; border-bottom: solid 1px #888;");
                 {
@@ -96,6 +98,8 @@ public class SiteManagerServlet
                         simpleRow("代码：", name);
                         if (description != null)
                             simpleRow("描述：", description);
+                        if (logo != null)
+                            simpleRowImage("徽标：", logo, null);
                         tr().th().classAttr("key").text("域名绑定：").end().td().classAttr("value");
                         {
                             ol().style("margin: 0; padding: 0; list-style-type: none;");
@@ -130,19 +134,24 @@ public class SiteManagerServlet
             else
                 site = this.site;
 
-            fieldset();
+            fieldset().style("text-align: center;");
             if (site == null) {
                 legend().text("站点不可用").end();
                 p().text("当前站点尚未配置。").end();
             } else {
                 legend().text("站点：" + site.getLabel()).end();
-                p().text(site.getDescription()).end();
+
+                String _img = site.getLogoLocation().resolveAbsolute(request);
+                img().classAttr("icon-big").src(_img).end();
+
+                p().style("font-size: 200%").text(site.getDescription()).end();
             }
             end();
 
             if (site == null)
                 return;
 
+            // Detail config goes here...
         }
 
     }
@@ -168,6 +177,7 @@ public class SiteManagerServlet
             if (save) {
                 String label = args.getNString("label");
                 String description = args.getNString("description");
+                String _logo = args.getNString("logo");
                 String _verbose = args.getString("verbose");
                 String _optimization = args.getString("opt");
                 String aliases = args.getString("aliases");
@@ -204,6 +214,7 @@ public class SiteManagerServlet
 
                 site.setLabel(label);
                 site.setDescription(description);
+                site.setLogo(_logo);
                 site.setVerboseLevel(verbose);
                 site.setOptimizationLevel(optimization);
                 site.setAliases(aliasSet);
@@ -227,6 +238,7 @@ public class SiteManagerServlet
                     (createSite && !save) ? "site" : "-site", "站点代码:站点的唯一代码，用于系统内部标识站点", name, //
                     "label", "标题:站点的显示名称，一般是企业名称", site.getLabel(), //
                     "description", "描述:应用的描述信息，如企业的全称", site.getDescription(), //
+                    "logo", "徽标:站点的图标，如公司徽标", site.getLogoLocation(), //
                     "verbose", "调试级别:输出的调试信息的级别", site.getVerboseLevel(), //
                     "opt", "优化级别:设置缓存等优化支持的级别", site.getOptimizationLevel(), //
                     "aliases", "网络绑定:多个网络名称绑定，用逗号分隔", StringArray.join(", ", site.getAliases()), //
