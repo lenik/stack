@@ -5,7 +5,7 @@
     xmlns:sem="http://bee32.com/sem/functions" xmlns:p="http://primefaces.prime.com.tr/ui"
     xmlns:t="http://myfaces.apache.org/tomahawk" template="/template/primefaces.xhtml">
 
-    <ui:define name="title">机会行动日程管理</ui:define>
+    <ui:define name="title">日志管理</ui:define>
 
     <ui:define name="content">
         <h:form id="confirm">
@@ -25,7 +25,7 @@
 
         <h:form id="chanceActionForm">
 
-            <p:panel header="机会行动日志">
+            <p:panel header="日志">
 
                 <p:toolbar id="productToolbar">
                     <p:toolbarGroup align="left">
@@ -61,7 +61,7 @@
                 </p:toolbar>
 
                 <p:tabView id="mainTab" activeIndex="#{chanceActionBean.activeTab}">
-                    <p:tab id="actionList" title="机会行动列表" disabled="#{true}">
+                    <p:tab id="actionList" title="日志列表" disabled="#{true}">
                         <p:dataTable id="actions" var="action" value="#{chanceActionBean.actions}" paginator="true"
                             rows="#{viewConfig.pageSize}" lazy="true"
                             paginatorTemplate="#{viewConfig.paginatorTemplate}"
@@ -120,7 +120,7 @@
                                 value="#{chanceActionBean.action.endTime}" showOn="button"
                                 disabled="#{chanceActionBean.editable}" />
 
-                            <h:outputLabel for="actionStyle" value="机会行动类型:" />
+                            <h:outputLabel for="actionStyle" value="日志类型:" />
                             <p:selectOneMenu id="actionStyle" value="#{chanceActionBean.action.plan}"
                                 style="width:100px;" disabled="#{chanceActionBean.editable}">
                                 <f:selectItem itemLabel="计划" itemValue="#{true}" />

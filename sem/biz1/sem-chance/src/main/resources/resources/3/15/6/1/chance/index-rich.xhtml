@@ -171,7 +171,7 @@
                             </t:panelGrid>
                         </p:fieldset>
 
-                        <p:fieldset id="actionHistoryField" legend="机会行动历史记录" toggleable="true" toggleSpeed="300">
+                        <p:fieldset id="actionHistoryField" legend="日志历史记录" toggleable="true" toggleSpeed="300">
                             <p:toolbar id="actionToolbar">
                                 <p:toolbarGroup align="left" disabled="#{chanceBean.state == 'VIEW'}">
                                     <p:commandButton id="relateActionButton" value="增加关联"
@@ -370,7 +370,7 @@
                 </h:panelGroup>
             </p:dialog>
 
-            <p:dialog header="选择机会行动记录" widgetVar="chooseChanceActionDialog" modal="true" height="500" width="640">
+            <p:dialog header="选择日志记录" widgetVar="chooseChanceActionDialog" modal="true" height="500" width="640">
                 <h:panelGroup>
 
                     <h:panelGrid columns="4">
@@ -435,7 +435,7 @@
                             <p:calendar id="endTime" pattern="yyyy-MM-dd HH:mm" navigator="#{true}"
                                 value="#{_a.endTime}" showOn="button" disabled="#{true}" />
 
-                            <h:outputText value="机会行动类型:" />
+                            <h:outputText value="日志类型:" />
                             <p:selectOneMenu id="actionStyle" value="#{_a.plan}" style="width:100px;" disabled="#{true}">
                                 <f:selectItem itemLabel="计划" itemValue="#{true}" />
                                 <f:selectItem itemLabel="日志" itemValue="#{false}" />

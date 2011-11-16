@@ -372,9 +372,9 @@ public class ChanceActionBean
             findComponentEx(BUTTON_RESET).setEnabled(false);
             findComponentEx(BUTTON_SAVEACTION).setEnabled(false);
 
-            uiLogger.info("保存销售机会行动记录成功!");
+            uiLogger.info("保存日志成功!");
         } catch (Exception e) {
-            uiLogger.error("保存行动记录失败", e);
+            uiLogger.error("保存日志失败", e);
         }
     }
 
