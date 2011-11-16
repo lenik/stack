@@ -48,15 +48,6 @@ public class PredefinedContextLocation
         return (PredefinedContextLocation) super.join(location);
     }
 
-    public PredefinedContextLocation merge() {
-        try {
-            URL newRoot = new URL(root, base);
-            return new PredefinedContextLocation(name + " | " + base, newRoot, null);
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(e.getMessage(), e);
-        }
-    }
-
     @Override
     protected StringBuffer getContext(HttpServletRequest request) {
         return null;
