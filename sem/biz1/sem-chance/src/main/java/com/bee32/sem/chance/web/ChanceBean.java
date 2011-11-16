@@ -22,7 +22,7 @@ import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.chance.dto.ChancePartyDto;
 import com.bee32.sem.chance.dto.ChanceQuotationDto;
 import com.bee32.sem.chance.dto.ChanceQuotationItemDto;
-import com.bee32.sem.chance.dto.ChanceSourceDto;
+import com.bee32.sem.chance.dto.ChanceSourceTypeDto;
 import com.bee32.sem.chance.dto.ChanceStageDto;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
@@ -263,7 +263,7 @@ public class ChanceBean
 
     public List<SelectItem> getSource() {
         List<ChanceSourceType> sourceTypeList = serviceFor(ChanceSourceType.class).list();
-        List<ChanceSourceDto> chanceSourceDtoList = DTOs.mrefList(ChanceSourceDto.class, sourceTypeList);
+        List<ChanceSourceTypeDto> chanceSourceDtoList = DTOs.mrefList(ChanceSourceTypeDto.class, sourceTypeList);
         return UIHelper.selectItemsFromDict(chanceSourceDtoList);
     }
 
@@ -435,9 +435,9 @@ public class ChanceBean
         chanceCopy.setCategory(ccd);
 
         String sourceId = chanceCopy.getSource().getId();
-        ChanceSourceDto csd = null;
+        ChanceSourceTypeDto csd = null;
         if (!sourceId.isEmpty())
-            csd = new ChanceSourceDto().ref(sourceId);
+            csd = new ChanceSourceTypeDto().ref(sourceId);
         chanceCopy.setSource(csd);
 
         ChanceStageDto tempStage = null;

@@ -25,7 +25,7 @@ public class ChanceDto
     String content;
     String date;
 
-    ChanceSourceDto source;
+    ChanceSourceTypeDto source;
 
     List<ChancePartyDto> parties;
     List<ChanceActionDto> actions;
@@ -51,7 +51,7 @@ public class ChanceDto
 
         date = DateToRange.fullFormat.format(source.getCreatedDate()).substring(0, 16);
         category = mref(ChanceCategoryDto.class, source.getCategory());
-        this.source = mref(ChanceSourceDto.class, source.getSource());
+        this.source = mref(ChanceSourceTypeDto.class, source.getSource());
         subject = source.getSubject();
         content = source.getContent();
 
@@ -112,11 +112,11 @@ public class ChanceDto
         this.category = category;
     }
 
-    public ChanceSourceDto getSource() {
+    public ChanceSourceTypeDto getSource() {
         return source;
     }
 
-    public void setSource(ChanceSourceDto source) {
+    public void setSource(ChanceSourceTypeDto source) {
         this.source = source;
     }
 
