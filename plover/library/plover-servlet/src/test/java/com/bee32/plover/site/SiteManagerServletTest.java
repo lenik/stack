@@ -17,5 +17,4 @@ public class SiteManagerServletTest
             throws IOException {
         new SiteManagerServletTest().browseAndWait(PloverServletModule.PREFIX + "/index");
     }
-
 }
