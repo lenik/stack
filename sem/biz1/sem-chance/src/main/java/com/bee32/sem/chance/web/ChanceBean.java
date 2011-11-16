@@ -96,7 +96,7 @@ public class ChanceBean
     }
 
     public void viewActionDetail() {
-        if (!actions.isSelected()) {
+        if (chanceCopy.getSelectedAction() == null) {
             uiLogger.error("提示:", "请选择行动记录");
             return;
         }

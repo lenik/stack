@@ -184,13 +184,15 @@
                                     <p:commandButton id="viewActionDetailButton" value="详细"
                                         actionListener="#{chanceBean.viewActionDetail}"
                                         update=":dialogForm:actionDetail" oncomplete="actionDetailDialog.show();"
-                                        disabled="#{!((chanceBean.state == 'EDIT' or chanceBean.state=='VIEW') and _c.selectedAction != null)}" />
+                                        disabled="#{_c.selectedAction == null}" />
                                 </p:toolbarGroup>
                             </p:toolbar>
                             <p:dataTable id="actionHistories" var="action" value="#{_c.actions}"
                                 selection="#{_c.selectedAction}" selectionMode="single" rowKey="#{action.id}"
                                 rowIndexVar="rowIndex">
+
                                 <p:ajax event="rowSelect" update=":chanceForm:mainTab:actionToolbar" />
+
                                 <p:column headerText="序号" style="width:45px;">
                                     <h:outputText value="#{rowIndex + 1}" />
                                 </p:column>
@@ -461,7 +463,7 @@
 
                             <h:outputText value="内容描述:" />
                             <t:panelGroup colspan="3">
-                                <p:inputTextarea id="description" value="#{_a.description}"
+                                <p:inputTextarea id="description" value="#{_a.moreInfo}"
                                     style="width:400px;height:50px;" readonly="#{true}" />
                             </t:panelGroup>
 
