@@ -21,7 +21,7 @@ $TTL            1H
 
                         TXT     "t=spf1 A MX include:authsmtp.com ~all"
 
-main                    CNAME   pub-zjhn-13-z.vicp.net.
+main                    CNAME   pub-center-13-z.vicp.net.
 dns                     CNAME   main            ; 域名控制器
 
 app-x                   CNAME   main            ; 应用辅助结点
