@@ -5,7 +5,11 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.IdentityHashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
+import javax.free.Nullables;
 import javax.servlet.http.HttpServletRequest;
 
 public abstract class Location
@@ -17,10 +21,11 @@ public abstract class Location
     protected final String base;
     protected final boolean directory;
 
+    static Map<String, Location> contextNames = new TreeMap<String, Location>();
+    static Map<Location, String> reverseMap = new IdentityHashMap<Location, String>();
+
     Location(String name) {
-        this.name = name;
-        this.base = null;
-        this.directory = false;
+        this(name, null);
     }
 
     public Location(String name, String base) {
@@ -34,6 +39,15 @@ public abstract class Location
                 base = base.substring(0, base.length() - 1);
         }
         this.base = base;
+
+        if (name != null) {
+            if (!contextNames.containsKey(name)) {
+                // Only register the first occurence (i.e., the "root" location)
+                // throw new IllegalUsageException("Location name is already defined: " + name);
+                contextNames.put(name, this);
+                reverseMap.put(this, name);
+            }
+        }
     }
 
     public String getName() {
@@ -112,6 +126,9 @@ public abstract class Location
         if (spec == null || spec.isEmpty())
             return buffer.toString();
 
+        if (spec.contains("://"))
+            return spec;
+
         if (spec.startsWith("/"))
             buffer.append(spec);
         else {
@@ -132,11 +149,11 @@ public abstract class Location
 
     protected StringBuffer getContext(HttpServletRequest request) {
         StringBuffer buffer = new StringBuffer();
-        getContext(buffer, request);
+        fillContext(buffer, request);
         return buffer;
     }
 
-    protected abstract void getContext(StringBuffer sb, HttpServletRequest request);
+    protected abstract void fillContext(StringBuffer sb, HttpServletRequest request);
 
     /**
      * Get the base URL of this context.
@@ -158,7 +175,7 @@ public abstract class Location
         sb.append('/');
         int jointPos = sb.length();
 
-        getContext(sb, request);
+        fillContext(sb, request);
         if (sb.length() > jointPos) {
             // FIX: http://foo:80/ + / => http://foo/80/
             boolean twice = sb.charAt(jointPos) == '/';
@@ -213,8 +230,42 @@ public abstract class Location
     }
 
     @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += name.hashCode();
+        if (base != null)
+            hash = hash * 17 + base.hashCode();
+        if (directory)
+            hash += 17;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Class<?> thisClass = getClass();
+        if (!thisClass.isInstance(obj))
+            return false;
+
+        Location o = (Location) obj;
+        if (!name.equals(o.name))
+            return false;
+
+        if (directory != o.directory)
+            return false;
+
+        if (!Nullables.equals(base, o.base))
+            return false;
+
+        return true;
+    }
+
+    @Override
     public String toString() {
         return "Context<" + name + ">" + " :: " + base;
+    }
+
+    public String getQualified() {
+        return name + "::" + base;
     }
 
 }

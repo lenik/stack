@@ -8,9 +8,9 @@ public interface ILocationConstants {
 
     Location JAVASCRIPT = new JavascriptContextLocation(null);
 
-    Location REQUEST = new RequestContextLocation(null);
+    Location REQUEST = new RequestContextLocation("Request", null);
 
-    Location URL = REQUEST;
+    Location URL = new RequestContextLocation("URL", null);
 
     Location WEB_APP = new ServletContextLocation("/");
 
@@ -48,7 +48,7 @@ class JavascriptContextLocation
     }
 
     @Override
-    protected void getContext(StringBuffer sb, HttpServletRequest request) {
+    protected void fillContext(StringBuffer sb, HttpServletRequest request) {
         throw new IllegalUsageException("Do not convert javascript-location to URL or URI.");
     }
 
@@ -66,13 +66,13 @@ class RequestContextLocation
 
     private static final long serialVersionUID = 1L;
 
-    public RequestContextLocation(String base) {
-        super("Request", base);
+    public RequestContextLocation(String name, String base) {
+        super(name, base);
     }
 
     @Override
     protected Location create(String base) {
-        return new RequestContextLocation(base);
+        return new RequestContextLocation(name, base);
     }
 
     /**
@@ -80,7 +80,7 @@ class RequestContextLocation
      */
     @Deprecated
     @Override
-    protected void getContext(StringBuffer sb, HttpServletRequest request) {
+    protected void fillContext(StringBuffer sb, HttpServletRequest request) {
         StringBuffer contextURL = getContextURL(request);
         String context;
 
@@ -136,7 +136,7 @@ class ServletContextLocation
     }
 
     @Override
-    protected void getContext(StringBuffer sb, HttpServletRequest request) {
+    protected void fillContext(StringBuffer sb, HttpServletRequest request) {
         ServletContext servletContext = request.getSession().getServletContext();
 
         // context-path == /* or ""

@@ -1,24 +1,16 @@
 package com.bee32.plover.rtx.location;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ServiceLoader;
 
 public class Locations
         implements ILocationConstants {
 
-    static final Map<String, Location> locations;
-    static {
-        locations = new HashMap<String, Location>();
-
-        for (ILocationProvider locationProvider : ServiceLoader.load(ILocationProvider.class)) {
-            Map<String, Location> each = locationProvider.getLocations();
-            locations.putAll(each);
-        }
-    }
-
+    /**
+     * Get the "root location" by location context name.
+     *
+     * @return <code>null</code> if the context is not defined.
+     */
     public static Location getLocationContext(String name) {
-        return locations.get(name);
+        return Location.contextNames.get(name);
     }
 
     public static Location join(String contextName, String relativePath) {
@@ -43,6 +35,11 @@ public class Locations
 
         // throw new IllegalUsageException("Unqualified location: " + qualifiedLocation);
         return WEB_APP.join(location);
+    }
+
+    public static String qualify(Location location) {
+        String qualified = location.getQualified();
+        return qualified;
     }
 
 }

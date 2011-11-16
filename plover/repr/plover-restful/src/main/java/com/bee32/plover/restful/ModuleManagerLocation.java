@@ -25,7 +25,7 @@ public class ModuleManagerLocation
     }
 
     @Override
-    protected void getContext(StringBuffer sb, HttpServletRequest request) {
+    protected void fillContext(StringBuffer sb, HttpServletRequest request) {
         ServletContext servletContext = request.getSession().getServletContext();
 
         // context-path == /* or ""

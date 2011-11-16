@@ -54,7 +54,7 @@ public class PredefinedContextLocation
     }
 
     @Override
-    protected void getContext(StringBuffer sb, HttpServletRequest request) {
+    protected void fillContext(StringBuffer sb, HttpServletRequest request) {
         throw new UnexpectedException("Not Used");
     }
 
