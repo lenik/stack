@@ -76,6 +76,32 @@ public class AccountTicketItemDto
         this.subject = subject;
     }
 
+    public boolean isNegative() {
+        if (subject == null) {
+            throw new NullPointerException("subject");
+        }
+
+        if (debitSide) {
+            //当前凭证条目为借方
+            if (subject.debitSign) {
+                //当前科目为借方时为正数(增加)
+                return false;
+            } else {
+                //当前科目为借方 时为负数(减少)
+                return true;
+            }
+        } else {
+            //当前凭证条目为贷方
+            if (subject.creditSign) {
+                //当前科目为贷方时为正数(增加)
+                return false;
+            } else {
+                //当前科目为贷方时为负数(减少)
+                return true;
+            }
+        }
+    }
+
     public PartyDto getParty() {
         return party;
     }
@@ -85,19 +111,41 @@ public class AccountTicketItemDto
     }
 
     public MCValue getValue() {
-        return value;
+        if (isNegative()) {
+            return new MCValue(value.getCurrency(), value.getValue().negate());
+        } else {
+            return value;
+        }
     }
 
     public void setValue(MCValue value) {
-        this.value = value;
+        if (value == null) {
+            throw new NullPointerException("value");
+        }
+        if (isNegative()) {
+            this.value = new MCValue(value.getCurrency(), value.getValue().negate());
+        } else {
+            this.value = value;
+        }
     }
 
     public BigDecimal getValueDigit() {
-        return value.getValue();
+        if (isNegative()) {
+            return value.getValue().negate();
+        } else {
+            return value.getValue();
+        }
     }
 
     public void setValueDigit(BigDecimal valueDigit) {
-        value = new MCValue(value.getCurrency(), valueDigit);
+        if (value == null) {
+            throw new NullPointerException("valueDigit");
+        }
+        if (isNegative()) {
+            this.value = new MCValue(value.getCurrency(), valueDigit.negate());
+        } else {
+            this.value = new MCValue(value.getCurrency(), valueDigit);
+        }
     }
 
     public String getValueCurrency() {

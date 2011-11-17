@@ -24,6 +24,7 @@ import com.bee32.sem.asset.dto.BudgetRequestDto;
 import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.asset.entity.AccountTicket;
 import com.bee32.sem.asset.entity.BudgetRequest;
+import com.bee32.sem.asset.util.AssetCriteria;
 import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
@@ -329,19 +330,13 @@ public class AccountTicketAdminBean extends EntityViewBean {
             goNumber = count + 1;
         }
 
-        for(AccountTicketItemDto i : accountTicket.getItems()) {
-            //TODO :检查借贷是否相等
-
-        }
-
-
         try {
-            if (accountTicket.getRequest() != null) {
-                //如果选择了对应的资金流业务，则更新业务单中的ticket
-                serviceFor(BudgetRequest.class).saveOrUpdate(accountTicket.getRequest().unmarshal());
+            AccountTicket _ticket = accountTicket.unmarshal();
+            if(!_ticket.isDebitCreditEqual()) {
+                uiLogger.warn("借贷不相等");
+                return;
             }
 
-            AccountTicket _ticket = accountTicket.unmarshal();
             for(AccountTicketItemDto item : itemsNeedToRemoveWhenModify) {
                 _ticket.removeItem(item.unmarshal());
             }
@@ -438,7 +433,8 @@ public class AccountTicketAdminBean extends EntityViewBean {
 
         List<BudgetRequest> requests = serviceFor(BudgetRequest.class).list(
                 new Equals("owner.id", budgetRequestCreatorId),
-                new Like("description", "%" + budgetRequestPattern + "%"));
+                new Like("description", "%" + budgetRequestPattern + "%"),
+                AssetCriteria.haveNoCorrespondingTicket());
 
         budgetRequests = DTOs.marshalList(BudgetRequestDto.class, requests);
     }

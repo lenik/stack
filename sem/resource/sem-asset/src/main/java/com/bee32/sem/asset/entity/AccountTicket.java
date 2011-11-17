@@ -1,5 +1,6 @@
 package com.bee32.sem.asset.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,11 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.sem.base.tx.TxEntity;
+import com.bee32.sem.world.monetary.FxrQueryException;
 
 /**
  * 会计凭证
@@ -74,13 +77,36 @@ public class AccountTicket
             items.get(index).setIndex(index);
     }
 
-    @OneToOne(mappedBy = "ticket")
+    @OneToOne
     public BudgetRequest getRequest() {
         return request;
     }
 
     public void setRequest(BudgetRequest request) {
         this.request = request;
+    }
+
+    /**
+     * 判断借贷是否相等
+     * @throws FxrQueryException
+     */
+    @Transient
+    public boolean isDebitCreditEqual() throws FxrQueryException {
+        BigDecimal debitTotal = new BigDecimal(0);
+        BigDecimal creditTotal = new BigDecimal(0);
+        for(AccountTicketItem i : items) {
+            if(i.isDebitSide()) {
+                debitTotal = debitTotal.add(i.getValue().getNativeValue(getCreatedDate()).abs());
+            } else {
+                creditTotal = creditTotal.add(i.getValue().getNativeValue(getCreatedDate()).abs());
+            }
+        }
+
+        if(debitTotal.compareTo(creditTotal) != 0) {
+            return false;
+        }
+
+        return true;
     }
 
 }

@@ -278,11 +278,12 @@
                             <f:selectItems value="#{accountTicketAdminBean.users}" />
                         </p:selectOneMenu>
 						<h:outputLabel value="摘要名称全部或部份:" />
-						<p:inputText value="#{accountTicketAdminBean.budgetRequestPattern}" />
-						<p:commandButton value="查找"
-							actionListener="#{accountTicketAdminBean.findBudgetRequest}" update="budgetRequests"
-							async="true" />
-					</h:panelGrid>
+                        <p:inputText
+                            value="#{accountTicketAdminBean.budgetRequestPattern}" />
+                        <p:commandButton value="查找"
+                            actionListener="#{accountTicketAdminBean.findBudgetRequest}"
+                            update="budgetRequests" async="true" />
+                    </h:panelGrid>
 					<p:dataTable id="budgetRequests" var="budgetRequest"
 						value="#{accountTicketAdminBean.budgetRequests}" resizableColumns="true"
 						selection="#{accountTicketAdminBean.selectedBudgetRequest}" selectionMode="single"
@@ -358,7 +359,7 @@
                 height="500" width="840">
                 <h:panelGroup>
 
-                    <h:panelGrid columns="3">
+                    <h:panelGrid columns="5">
                         <h:outputLabel value="科目代码的全部或部份:" />
                         <p:inputText value="#{accountTicketAdminBean.accountSubjectCodePattern}" />
                         <h:outputLabel value="科目名称全部或部份:" />
