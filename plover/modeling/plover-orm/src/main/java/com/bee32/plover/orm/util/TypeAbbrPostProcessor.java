@@ -3,11 +3,12 @@ package com.bee32.plover.orm.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.plover.orm.unit.IPersistenceUnitPostProcessor;
+import com.bee32.plover.orm.unit.AbstractPersistenceUnitPostProcessor;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 
 public class TypeAbbrPostProcessor
-        implements IPersistenceUnitPostProcessor, ITypeAbbrAware {
+        extends AbstractPersistenceUnitPostProcessor
+        implements ITypeAbbrAware {
 
     static Logger logger = LoggerFactory.getLogger(TypeAbbrPostProcessor.class);
 

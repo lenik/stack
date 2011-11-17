@@ -5,13 +5,13 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.plover.orm.unit.IPersistenceUnitPostProcessor;
+import com.bee32.plover.orm.unit.AbstractPersistenceUnitPostProcessor;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.VerifyPolicyManager;
 
 public class VerifiableIntroPostProcessor
-        implements IPersistenceUnitPostProcessor {
+        extends AbstractPersistenceUnitPostProcessor {
 
     static Logger logger = LoggerFactory.getLogger(VerifiableIntroPostProcessor.class);
 
