@@ -1,0 +1,13 @@
+com.bee32.plover.ox1.userMode.UserCategoryItem
+com.bee32.plover.ox1.userMode.UserCategory
+com.bee32.plover.ox1.principal.UserOption
+com.bee32.plover.ox1.principal.UserEmail
+com.bee32.plover.ox1.principal.Group
+com.bee32.plover.ox1.principal.User
+com.bee32.plover.ox1.principal.UserPreference
+com.bee32.plover.ox1.principal.Role
+com.bee32.plover.ox1.xp.XPool40
+com.bee32.plover.ox1.xp.XPoolModel
+com.bee32.plover.ox1.meta.EntityColumn
+com.bee32.plover.ox1.meta.EntityInfo
+com.bee32.plover.ox1.typePref.TypePrefEntity

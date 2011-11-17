@@ -1,0 +1,14 @@
+com.bee32.sem.people.entity.PartyTagname
+com.bee32.sem.people.entity.PersonLogin
+com.bee32.sem.people.entity.PartySidType
+com.bee32.sem.people.entity.OrgType
+com.bee32.sem.people.entity.PartyXP
+com.bee32.sem.people.entity.PersonRole
+com.bee32.sem.people.entity.OrgUnit
+com.bee32.sem.people.entity.PartyRecordCategory
+com.bee32.sem.people.entity.Person
+com.bee32.sem.people.entity.Org
+com.bee32.sem.people.entity.ContactCategory
+com.bee32.sem.people.entity.Contact
+com.bee32.sem.people.entity.PartyRecord
+com.bee32.sem.people.entity.ContactXP

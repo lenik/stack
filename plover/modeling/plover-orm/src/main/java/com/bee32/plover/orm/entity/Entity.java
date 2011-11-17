@@ -23,12 +23,14 @@ import com.bee32.plover.criteria.hibernate.CriteriaComposite;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.IsNull;
+import com.bee32.plover.inject.ServiceTemplate;
 import com.bee32.plover.orm.util.EntityFormatter;
 import com.bee32.plover.orm.util.ErrorResult;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.IMultiFormat;
 import com.bee32.plover.util.PrettyPrintStream;
 
+@ServiceTemplate
 @MappedSuperclass
 public abstract class Entity<K extends Serializable>
         extends EntityBase<K>

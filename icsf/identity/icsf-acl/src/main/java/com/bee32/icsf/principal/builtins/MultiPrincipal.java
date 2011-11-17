@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.bee32.plover.inject.NotAComponent;
 import com.bee32.plover.ox1.principal.IPrincipal;
 import com.bee32.plover.ox1.principal.IPrincipalVisitor;
 import com.bee32.plover.ox1.principal.Principal;
 
+@NotAComponent
 public class MultiPrincipal
         extends Principal
         implements Serializable {
