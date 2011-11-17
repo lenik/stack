@@ -131,16 +131,16 @@ public abstract class PersistenceUnit
     @Override
     protected abstract void preamble();
 
-    static final PersistenceUnit defaultUnit = new SimplePUnit("DEFAULT");
-
-    public static PersistenceUnit getDefault() {
-        return defaultUnit;
-    }
-
     public void beginLoadSamples(SamplePackage samplePackage) {
     }
 
     public void endLoadSamples(SamplePackage samplePackage) {
+    }
+
+    static final PersistenceUnit defaultUnit = new SimplePUnit("DEFAULT");
+
+    public static PersistenceUnit getDefault() {
+        return defaultUnit;
     }
 
 }
