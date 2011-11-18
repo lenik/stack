@@ -69,6 +69,19 @@ public class CustomizedSessionFactoryBean
         site = ThreadHttpContext.getSiteInstance();
     }
 
+//    /**
+//     * Override: Preferred to return {@link SessionFactoryImplementor} rather then
+//     * {@link SessionFactory}.
+//     */
+//    @Override
+//    public Class<? extends SessionFactory> getObjectType() {
+//        SessionFactory object = getObject();
+//        if (object == null)
+//            return SessionFactoryImplementor.class;
+//        else
+//            return object.getClass();
+//    }
+
     @Override
     protected void lazyConfigure() {
 
