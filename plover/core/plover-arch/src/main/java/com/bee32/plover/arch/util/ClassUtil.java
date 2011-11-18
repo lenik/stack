@@ -5,6 +5,7 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -76,8 +77,13 @@ public class ClassUtil {
         // return nls.getLabel();
 
         String base = clazz.getName().replace('.', '/');
-        ResourceBundle rb = ResourceBundleUTF8.getBundle(base);
-        String displayName = rb.getString("label");
+        String displayName = null;
+        try {
+            ResourceBundle rb = ResourceBundleUTF8.getBundle(base);
+            displayName = rb.getString("label");
+        } catch (MissingResourceException e) {
+            logger.error("Failed to get display name of " + clazz, e);
+        }
         if (displayName == null || displayName.isEmpty())
             displayName = clazz.getSimpleName();
         return displayName;
