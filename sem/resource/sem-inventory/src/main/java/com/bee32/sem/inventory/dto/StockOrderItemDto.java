@@ -75,7 +75,6 @@ public class StockOrderItemDto
         if (tryBest) {
             Class<? extends StockOrder> parentClass = _parent == null ? StockOrder.class : _parent.getClass();
 
-            @SuppressWarnings("unchecked")
             Class<? extends StockOrderDto> parentDtoType = (Class<? extends StockOrderDto>) EntityUtil
                     .getDtoType(parentClass);
 

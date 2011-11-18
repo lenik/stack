@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.free.IllegalUsageException;
 import javax.free.Strings;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.AnnotationScopeMetadataResolver;
@@ -19,6 +21,8 @@ import com.bee32.plover.arch.util.ClassUtil;
 
 public class TrueJsr330ScopeMetadataResolver
         extends AnnotationScopeMetadataResolver {
+
+    static Logger logger = LoggerFactory.getLogger(TrueJsr330ScopeMetadataResolver.class);
 
     public static String DEFAULT_SCOPE_NAME = null; // "singleton";
     static String springScopeAnn = Scope.class.getName();
@@ -52,7 +56,7 @@ public class TrueJsr330ScopeMetadataResolver
         ScopeMetadata _sup = null;
         if (beanClassName.contains("LoginBean")) {
             _sup = super.resolveScopeMetadata(definition);
-            System.out.println(_sup);
+            logger.info("" + _sup);
         }
 
         // OPT - Check if duplicated scope annotation.
