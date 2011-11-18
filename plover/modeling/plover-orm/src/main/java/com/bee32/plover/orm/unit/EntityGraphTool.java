@@ -1,24 +1,34 @@
 package com.bee32.plover.orm.unit;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.inject.Inject;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.type.CollectionType;
 import org.hibernate.type.ManyToOneType;
 import org.hibernate.type.Type;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
+import com.bee32.plover.orm.dao.CommonDataManager;
+import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.util.SamplesLoaderActivator;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 
 @Component
 @Lazy
 public class EntityGraphTool {
+
+    static Logger logger = LoggerFactory.getLogger(EntityGraphTool.class);
 
     /**
      * This will inject the default (site) session factory, however, it's just enough.
@@ -31,6 +41,15 @@ public class EntityGraphTool {
      */
     @Inject
     SessionFactory sessionFactory;
+
+    @Inject
+    CommonDataManager dataManager;
+
+    /**
+     * Samples are required, otherwise the id isn't set.
+     */
+    @Inject
+    SamplesLoaderActivator activator;
 
     PersistenceUnit unit;
     Map<Class<?>, EntityGraph> entityGraphMap;
@@ -64,8 +83,10 @@ public class EntityGraphTool {
         if (built)
             return;
 
-        Set<Class<?>> entityTypes = unit.getClasses();
-        for (Class<?> entityType : entityTypes) {
+        for (Class<?> clazz : unit.getClasses()) {
+            @SuppressWarnings("unchecked")
+            Class<? extends Entity<?>> entityType = (Class<? extends Entity<?>>) clazz;
+
             ClassMetadata metadata = sessionFactory.getClassMetadata(entityType);
             String entityName = metadata.getEntityName();
 
@@ -74,26 +95,76 @@ public class EntityGraphTool {
             assert columns.length == types.length;
 
             for (int i = 0; i < columns.length; i++) {
-                String column = columns[i];
-                Type type = types[i];
-                if (!type.isAssociationType())
+                String columnName = columns[i];
+                Type columnType = types[i];
+                if (!columnType.isAssociationType())
                     continue;
 
-                boolean manyToOne = type instanceof ManyToOneType;
-
-                Class<?> targetType = type.getReturnedClass();
-                System.out.println(entityName + ":" + column + " => " + targetType);
-
+                Class<?> targetType = columnType.getReturnedClass();
                 EntityGraph targetGraph = _getOrCreateEntityGraph(targetType);
-                targetGraph.manyToOne(//
-                        entityName, // user table name
-                        entityType, // user table class
-                        column // user column
-                        );
+
+                if (columnType instanceof ManyToOneType) {
+                    targetGraph.manyToOne(//
+                            entityType, // user table class
+                            columnName, // user column name
+                            columnType // user column type
+                            );
+                } else if (columnType instanceof CollectionType) {
+                    @SuppressWarnings("unused")
+                    CollectionType collType = (CollectionType) columnType;
+                    // collType.getAssociatedEntityName(factory)
+                    logger.debug(entityName + ":" + columnName + " => " + targetType);
+                }
             }
         }
 
         built = true;
+    }
+
+    @Override
+    public String toString() {
+        buildGraphs(sessionFactory);
+        StringBuilder sb = new StringBuilder(entityGraphMap.size() * 512);
+        for (EntityGraph graph : entityGraphMap.values()) {
+            sb.append(graph);
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Find all entities by which the specified entity is referenced.
+     *
+     * @param entity
+     *            The key entity to find.
+     * @return {@link EntityXrefMap} the referred entities are grouped by entity type.
+     * @throws NullPointerException
+     *             if given <code>entity</code> is <code>null</code>.
+     */
+    public EntityXrefMap getReferences(Entity<?> entity)
+            throws DataAccessException {
+        if (entity == null)
+            throw new NullPointerException("entity");
+
+        EntityXrefMap xrefMap = new EntityXrefMap();
+
+        // search parent type?..
+        Class<? extends Entity<?>> entityClass = (Class<? extends Entity<?>>) entity.getClass();
+        EntityGraph graph = getEntityGraph(entityClass);
+
+        for (EntityXrefMetadata xrefMetadata : graph.getXrefs()) {
+            Class<? extends Entity<?>> targetType = xrefMetadata.getEntityType();
+            String fkProperty = xrefMetadata.getPropertyName();
+
+            Equals fkSelector = new Equals(fkProperty, entity);
+            List<Entity<?>> list = dataManager.asFor(targetType).list(fkSelector);
+
+            EntityPartialRefs refList = new EntityPartialRefs(xrefMetadata, list);
+
+            xrefMap.put(xrefMetadata, refList);
+        }
+
+        return xrefMap;
     }
 
 }
