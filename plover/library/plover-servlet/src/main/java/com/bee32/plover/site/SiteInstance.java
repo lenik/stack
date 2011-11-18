@@ -11,6 +11,7 @@ import java.util.StringTokenizer;
 import javax.free.IFile;
 import javax.free.JavaioFile;
 import javax.free.ParseException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import com.bee32.plover.rtx.location.ILocationConstants;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.rtx.location.Locations;
+import com.bee32.plover.servlet.util.ThreadServletContext;
 
 public class SiteInstance
         implements ILocationConstants {
@@ -250,6 +252,13 @@ public class SiteInstance
     public void setLogoLocation(Location logo) {
         String _logo = Locations.qualify(logo);
         setProperty(LOGO_KEY, _logo);
+    }
+
+    public String getLogoHref() {
+        HttpServletRequest request = ThreadServletContext.getRequest();
+        Location location = getLogoLocation();
+        String href = location.resolveAbsolute(request);
+        return href;
     }
 
     public VerboseLevel getVerboseLevel() {
