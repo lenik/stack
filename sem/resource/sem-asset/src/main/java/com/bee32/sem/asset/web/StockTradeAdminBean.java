@@ -1,5 +1,6 @@
 package com.bee32.sem.asset.web;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -19,17 +20,20 @@ import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
+import com.bee32.plover.util.i18n.CurrencyConfig;
 import com.bee32.sem.asset.dto.StockTradeDto;
 import com.bee32.sem.asset.dto.StockTradeItemDto;
 import com.bee32.sem.asset.entity.StockPurchase;
 import com.bee32.sem.asset.entity.StockSale;
 import com.bee32.sem.asset.entity.StockTrade;
+import com.bee32.sem.asset.entity.StockTradeItem;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.world.monetary.CurrencyUtil;
+import com.bee32.sem.world.monetary.MCValue;
 
 public class StockTradeAdminBean extends EntityViewBean {
 
@@ -101,7 +105,7 @@ public class StockTradeAdminBean extends EntityViewBean {
         stockTradeDtoClass = EntityUtil.getDtoType(stockTradeClass);
 
         try {
-            stockTrade = (StockTradeDto)stockTradeDtoClass.newInstance();
+            stockTrade = ((StockTradeDto)stockTradeDtoClass.newInstance()).create();
         } catch (Exception e) {
             throw new UnexpectedException(e);
         }
@@ -323,7 +327,7 @@ public class StockTradeAdminBean extends EntityViewBean {
 
 
         try {
-            stockTrade = (StockTradeDto)stockTradeDtoClass.newInstance();
+            stockTrade = ((StockTradeDto)stockTradeDtoClass.newInstance()).create();
         } catch (Exception e) {
             throw new UnexpectedException(e);
         }
@@ -344,7 +348,7 @@ public class StockTradeAdminBean extends EntityViewBean {
 
     public void new_() {
         try {
-            stockTrade = (StockTradeDto)stockTradeDtoClass.newInstance();
+            stockTrade = ((StockTradeDto)stockTradeDtoClass.newInstance()).create();
         } catch (Exception e) {
             throw new UnexpectedException(e);
         }
@@ -388,12 +392,20 @@ public class StockTradeAdminBean extends EntityViewBean {
                 _trade.removeItem(item.unmarshal());
             }
 
+            //更新_trade中的金额
+            BigDecimal total = new BigDecimal(0);
+            for(StockTradeItem item : _trade.getItems()) {
+                total = total.add(item.getNativeTotal());
+            }
+
+            _trade.setValue(new MCValue(CurrencyConfig.getNative(), total));
+
             serviceFor(stockTradeClass).save(_trade);
             uiLogger.info("保存成功");
             loadStockTrade(goNumber);
             editable = false;
         } catch (Exception e) {
-            uiLogger.warn("保存失败.", e);
+            uiLogger.warn("保存失败", e);
         }
     }
 

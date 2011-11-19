@@ -117,18 +117,18 @@
 
                     <h:outputLabel value="摘要" />
                     <t:panelGroup colspan="3">
-                        <p:inputText value="#{stockTradeAdminBean.stockTrade.description}" />
+                        <p:inputText value="#{stockTradeAdminBean.stockTrade.description}" disabled="#{!stockTradeAdminBean.editable}" />
                     </t:panelGroup>
 
                     <h:outputLabel value="会计科目" />
                     <t:panelGroup colspan="3">
-                        <p:outputText id="accountSubject" value="#{stockTradeAdminBean.stockTrade.subject.label}"/>
+                        <h:outputText id="accountSubject" value="#{stockTradeAdminBean.stockTrade.subject.label}"/>
                     </t:panelGroup>
 
                     <h:outputLabel value="公司" />
                     <t:panelGroup colspan="3">
                         <p:inputText id="party" value="#{stockTradeAdminBean.stockTrade.party.name}" readonly="true"/>
-                        <p:commandButton value="..." onclick="partyDialog.show();"/>
+                        <p:commandButton value="..." onclick="orgDialog.show();" disabled="#{!stockTradeAdminBean.editable}" />
                     </t:panelGroup>
 
                     <h:outputLabel value="借贷方向" />
@@ -449,7 +449,7 @@
                             <p:commandLink
                                 oncomplete="orgDialog.hide()"
                                 action="#{stockTradeAdminBean.chooseOrg}"
-                                update="mainForm:org" value="挑选">
+                                update="mainForm:party" value="挑选">
                                 <f:setPropertyActionListener
                                     value="#{org}"
                                     target="#{stockTradeAdminBean.selectedOrg}" />

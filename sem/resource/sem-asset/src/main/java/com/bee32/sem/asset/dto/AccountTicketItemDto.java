@@ -138,7 +138,7 @@ public class AccountTicketItemDto
     }
 
     public void setValueDigit(BigDecimal valueDigit) {
-        if (value == null) {
+        if (valueDigit == null) {
             throw new NullPointerException("valueDigit");
         }
         if (isNegative()) {
@@ -180,5 +180,9 @@ public class AccountTicketItemDto
 
     public void setTicket(AccountTicketDto ticket) {
         this.ticket = ticket;
+    }
+
+    public String getCreator() {
+        return getOwner().getDisplayName();
     }
 }
