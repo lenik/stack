@@ -1,23 +1,17 @@
 package com.bee32.sem.asset.web;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
 import javax.free.UnexpectedException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.criteria.hibernate.Or;
@@ -31,26 +25,11 @@ import com.bee32.sem.asset.entity.StockPurchase;
 import com.bee32.sem.asset.entity.StockSale;
 import com.bee32.sem.asset.entity.StockTrade;
 import com.bee32.sem.inventory.dto.MaterialDto;
-import com.bee32.sem.inventory.dto.StockOrderDto;
-import com.bee32.sem.inventory.dto.StockOrderItemDto;
-import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.Material;
-import com.bee32.sem.inventory.entity.StockItemList;
-import com.bee32.sem.inventory.entity.StockOrder;
-import com.bee32.sem.inventory.entity.StockWarehouse;
-import com.bee32.sem.inventory.service.IStockQuery;
-import com.bee32.sem.inventory.service.StockQueryOptions;
-import com.bee32.sem.inventory.util.StockCriteria;
 import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dto.OrgDto;
-import com.bee32.sem.people.dto.OrgUnitDto;
-import com.bee32.sem.people.dto.PartyDto;
-import com.bee32.sem.people.entity.OrgUnit;
-import com.bee32.sem.people.entity.Party;
-import com.bee32.sem.people.util.PeopleCriteria;
+import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.world.monetary.CurrencyUtil;
-import com.bee32.sem.world.monetary.MCValue;
-import com.bee32.sem.world.thing.UnitDto;
 
 public class StockTradeAdminBean extends EntityViewBean {
 
@@ -71,9 +50,9 @@ public class StockTradeAdminBean extends EntityViewBean {
     private List<MaterialDto> materials;
     private MaterialDto selectedMaterial;
 
-    private String partyPattern;
-    private List<PartyDto> parties;
-    private PartyDto selectedParty;
+    private String orgPattern;
+    private List<OrgDto> orgs;
+    private OrgDto selectedOrg;
 
     protected List<StockTradeItemDto> itemsNeedToRemoveWhenModify = new ArrayList<StockTradeItemDto>();
 
@@ -206,28 +185,28 @@ public class StockTradeAdminBean extends EntityViewBean {
         this.newItemStatus = newItemStatus;
     }
 
-    public String getPartyPattern() {
-        return partyPattern;
+    public String getOrgPattern() {
+        return orgPattern;
     }
 
-    public void setPartyPattern(String partyPattern) {
-        this.partyPattern = partyPattern;
+   public void setOrgPattern(String orgPattern) {
+        this.orgPattern = orgPattern;
     }
 
-    public List<PartyDto> getParties() {
-        return parties;
+    public List<OrgDto> getOrgs() {
+        return orgs;
     }
 
-    public void setParties(List<PartyDto> parties) {
-        this.parties = parties;
+    public void setOrgs(List<OrgDto> orgs) {
+        this.orgs = orgs;
     }
 
-    public PartyDto getSelectedParty() {
-        return selectedParty;
+    public OrgDto getSelectedOrg() {
+        return selectedOrg;
     }
 
-    public void setSelectedParty(PartyDto selectedParty) {
-        this.selectedParty = selectedParty;
+    public void setSelectedOrg(OrgDto selectedOrg) {
+        this.selectedOrg = selectedOrg;
     }
 
     public String getPageTitle() {
@@ -263,6 +242,13 @@ public class StockTradeAdminBean extends EntityViewBean {
                 EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo));
         return count;
     }
+
+
+
+
+
+
+
 
     public void newItem() {
         tradeItem = new StockTradeItemDto().create();
@@ -305,28 +291,20 @@ public class StockTradeAdminBean extends EntityViewBean {
         }
     }
 
-    public void findParty() {
-        if (partyPattern != null && !partyPattern.isEmpty()) {
+    public void findOrg() {
+        if (orgPattern != null && !orgPattern.isEmpty()) {
 
-            List<Party> _parties = serviceFor(Party.class).list(
-                    new Or(new Like("name", "%" + partyPattern + "%"), new Like("fullName", "%" + partyPattern + "%")));
+            List<Org> _orgs = serviceFor(Org.class).list( //
+                    new Or(new Like("name", "%" + orgPattern + "%"),
+                            new Like("fullName", "%" + orgPattern + "%")));
 
-            parties = DTOs.marshalList(PartyDto.class, _parties);
+            orgs = DTOs.marshalList(OrgDto.class, _orgs);
         }
     }
 
-    public void chooseParty() {
-        stockTrade.setParty(selectedParty);
+    public void chooseOrg() {
+        stockTrade.setParty(selectedOrg);
     }
-
-
-
-
-
-
-
-
-
 
     private void loadStockTrade(int position) {
         //刷新总记录数
