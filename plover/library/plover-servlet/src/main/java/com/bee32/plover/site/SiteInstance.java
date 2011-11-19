@@ -195,6 +195,11 @@ public class SiteInstance
         }
     }
 
+    public String getLoggingPrefix() {
+        String prefix = "[" + getName() + " - " + getLabel() + "] ";
+        return prefix;
+    }
+
     public String getName() {
         return getProperty(NAME_KEY);
     }
