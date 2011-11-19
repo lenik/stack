@@ -9,7 +9,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import com.bee32.plover.orm.unit.Using;
-import com.bee32.plover.orm.util.SamplesLoaderActivator;
 import com.bee32.plover.orm.util.WiredDaoFeat;
 import com.bee32.plover.test.ICoordinator;
 import com.bee32.sem.inventory.SEMInventorySamples;
@@ -24,9 +23,6 @@ public class StockQueryFeat
 
     @Inject
     IStockQuery stockQuery;
-
-    @Inject
-    SamplesLoaderActivator samplesLoaderActivator;
 
     void list()
             throws FxrQueryException {

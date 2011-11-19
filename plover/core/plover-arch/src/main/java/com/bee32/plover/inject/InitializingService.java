@@ -17,8 +17,10 @@ public abstract class InitializingService
     static Logger logger = LoggerFactory.getLogger(InitializingService.class);
 
     protected ApplicationContext appctx;
+    private boolean inited;
 
     public InitializingService() {
+        // logger.info("Initializing service ctor: " + this);
     }
 
     @Override
@@ -32,8 +34,17 @@ public abstract class InitializingService
         }
     }
 
-    public void initialize()
+    public final synchronized void initialize()
             throws Exception {
+        if (inited)
+            return;
+        _initialize();
+        inited = true;
+    }
+
+    protected void _initialize()
+            throws Exception {
+
     }
 
     public void uninitialize()

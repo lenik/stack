@@ -8,10 +8,15 @@ import javax.free.IFile;
 import javax.free.JavaioFile;
 import javax.free.TempFile;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.bee32.plover.inject.InitializingService;
 
 public class BeanDefinitionDumper
         extends InitializingService {
+
+    static Logger logger = LoggerFactory.getLogger(BeanDefinitionDumper.class);
 
     final IFile csvFile;
 
@@ -22,8 +27,9 @@ public class BeanDefinitionDumper
     }
 
     @Override
-    public void initialize()
+    protected void _initialize()
             throws IOException {
+        logger.info("Dump bean definitions to " + csvFile);
         ICharOut cout = csvFile.toTarget().newCharOut();
         BeanDefinitions.dumpCsv(cout, appctx);
     }

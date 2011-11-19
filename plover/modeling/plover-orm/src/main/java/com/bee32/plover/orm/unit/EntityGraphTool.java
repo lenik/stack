@@ -21,7 +21,6 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.util.SamplesLoaderActivator;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 
 @Component
@@ -44,12 +43,6 @@ public class EntityGraphTool {
 
     @Inject
     CommonDataManager dataManager;
-
-    /**
-     * Samples are required, otherwise the id isn't set.
-     */
-    @Inject
-    SamplesLoaderActivator activator;
 
     PersistenceUnit unit;
     Map<Class<?>, EntityGraph> entityGraphMap;

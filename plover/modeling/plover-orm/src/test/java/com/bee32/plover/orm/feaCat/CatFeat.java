@@ -4,14 +4,11 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.Using;
@@ -23,9 +20,6 @@ public class CatFeat
         extends WiredDaoFeat<CatFeat> {
 
     static Logger logger = LoggerFactory.getLogger(CatFeat.class);
-
-    @Inject
-    CommonDataManager dataManager;
 
     <E extends Entity<? extends K>, K extends Serializable> //
     IEntityAccessService<E, K> asFor(Class<E> entityType) {

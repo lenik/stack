@@ -6,13 +6,10 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
-import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.orm.util.SamplesLoader;
 import com.bee32.plover.orm.util.WiredDaoFeat;
 import com.bee32.plover.test.ICoordinator;
 import com.bee32.sem.inventory.SEMInventorySamples;
@@ -31,24 +28,9 @@ public class StockTakingFeat
         extends WiredDaoFeat<StockTakingFeat> {
 
     @Inject
-    SamplesLoader samplesLoader;
-    static boolean loaded;
-
-    @Inject
-    CommonDataManager dataManager;
-
-    @Inject
     IStockQuery stockQuery;
 
     private long stockTakingId;
-
-    @Transactional
-    public void loadSamples() {
-        if (loaded)
-            return;
-        samplesLoader.loadNormalSamples();
-        loaded = true;
-    }
 
     @Transactional
     public void create() {
@@ -100,7 +82,6 @@ public class StockTakingFeat
             @Override
             public void main(StockTakingFeat feat)
                     throws Exception {
-                feat.loadSamples();
                 feat.create();
                 feat.dump();
             }

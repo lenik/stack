@@ -19,6 +19,7 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityDao;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.util.IEntityMarshalContext;
+import com.bee32.plover.site.SiteInstance;
 import com.bee32.plover.site.scope.PerSite;
 
 // @Transactional(readOnly = true)
@@ -30,6 +31,9 @@ public class CommonDataManager
     static Logger logger = LoggerFactory.getLogger(CommonDataManager.class);
 
     @Inject
+    SiteInstance site;
+
+    @Inject
     ApplicationContext applicationContext;
 
     @Inject
@@ -38,11 +42,17 @@ public class CommonDataManager
     private Class<? extends EasTxWrapper<?, ?>> etwImplClass = null;
     private int etwOrder = Integer.MAX_VALUE;
 
+    /**
+     * All necessary properties have already injected before set appctx.
+     */
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext)
+    public void setApplicationContext(ApplicationContext appctx)
             throws BeansException {
 
-        for (EasTxWrapper<?, ?> etw : applicationContext.getBeansOfType(EasTxWrapper.class).values()) {
+        String prefix = site.getLoggingPrefix();
+        logger.info(prefix + "Initialize data manager");
+
+        for (EasTxWrapper<?, ?> etw : appctx.getBeansOfType(EasTxWrapper.class).values()) {
 
             Class<? extends EasTxWrapper<?, ?>> etwClass //
             /*    */= (Class<? extends EasTxWrapper<?, ?>>) ClassUtil.skipProxies(etw.getClass());
@@ -59,7 +69,7 @@ public class CommonDataManager
         if (etwImplClass == null)
             throw new IllegalUsageException("No available ETW implementation.");
 
-        logger.debug("Preferred ETW Implementation: " + etwImplClass + " (order=" + etwOrder + ")");
+        logger.debug(prefix + "Preferred ETW Implementation: " + etwImplClass + " (order=" + etwOrder + ")");
     }
 
     @Override

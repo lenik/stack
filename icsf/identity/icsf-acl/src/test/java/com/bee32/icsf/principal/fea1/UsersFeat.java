@@ -18,7 +18,6 @@ import com.bee32.plover.orm.dao.MemdbDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.Using;
-import com.bee32.plover.orm.util.SamplesLoader;
 import com.bee32.plover.orm.util.WiredDaoFeat;
 import com.bee32.plover.ox1.principal.AbstractPrincipalDao;
 import com.bee32.plover.ox1.principal.Group;
@@ -34,12 +33,6 @@ public class UsersFeat
         extends WiredDaoFeat<UsersFeat> {
 
     static Logger logger = LoggerFactory.getLogger(UsersFeat.class);
-
-    /**
-     * To inject the sample beans.
-     */
-    @Inject
-    SamplesLoader samplesLoader;
 
     @Inject
     UserDao userDao;
@@ -64,8 +57,6 @@ public class UsersFeat
 
     @Transactional
     public void listSamples() {
-        samplesLoader.loadNormalSamples();
-
         for (User user : userDao.list())
             System.out.println("Sample User: " + user);
 

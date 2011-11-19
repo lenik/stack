@@ -11,19 +11,12 @@ import com.bee32.icsf.access.alt.R_ACE;
 import com.bee32.icsf.access.alt.R_ACEDao;
 import com.bee32.icsf.access.alt.R_ACLDao;
 import com.bee32.plover.orm.unit.Using;
-import com.bee32.plover.orm.util.SamplesLoader;
 import com.bee32.plover.orm.util.WiredDaoFeat;
 import com.bee32.plover.test.ICoordinator;
 
 @Using(IcsfIdentityUnit.class)
 public class R_ACLFeat
         extends WiredDaoFeat<R_ACLFeat> {
-
-    /**
-     * To inject the sample beans.
-     */
-    @Inject
-    SamplesLoader samplesLoader;
 
     @Inject
     R_ACLDao aclDao;
@@ -33,8 +26,6 @@ public class R_ACLFeat
 
     @Transactional
     public void listSamples() {
-        samplesLoader.loadNormalSamples();
-
         for (R_ACE ace : aceDao.list()) {
             System.out.println(ace);
         }
