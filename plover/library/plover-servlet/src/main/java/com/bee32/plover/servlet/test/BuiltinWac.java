@@ -1,5 +1,6 @@
 package com.bee32.plover.servlet.test;
 
+import com.bee32.plover.servlet.peripheral.PloverHslMultiplexerRequestListenerAdapter;
 import com.bee32.plover.servlet.peripheral.PloverSclMultiplexer;
 import com.bee32.plover.servlet.peripheral.PloverSrlMultiplexer;
 import com.bee32.plover.servlet.rabbits.Favicon;
@@ -27,6 +28,13 @@ public class BuiltinWac
          * use filter to get the reponse object.
          */
         stl.addFilter(ThreadServletResponseListener.class, "/*", 0);
+
+        /*
+         * Jetty-6.1.x doesn't support http session listener, so we adapter it using
+         * request-listener.
+         */
+        // stl.addEventListener(new PloverHslMultiplexer());
+        stl.addEventListener(new PloverHslMultiplexerRequestListenerAdapter());
     }
 
     @Override
