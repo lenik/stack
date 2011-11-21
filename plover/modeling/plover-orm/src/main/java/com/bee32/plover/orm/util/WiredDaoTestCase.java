@@ -34,7 +34,7 @@ public abstract class WiredDaoTestCase
         super.applicationInitialized(applicationContext);
 
         SamplesLoader samplesLoader = applicationContext.getBean(SamplesLoader.class);
-        samplesLoader.loadNormalSamples();
+        samplesLoader.loadSamples(DiamondPackage.NORMAL);
     }
 
 }

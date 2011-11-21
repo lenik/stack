@@ -22,6 +22,11 @@ public abstract class AbstractSll
     }
 
     @Override
+    public void destroySite(SiteInstance site) {
+        logger.debug("Site destroyed: " + site);
+    }
+
+    @Override
     public void loadSite(SiteInstance site) {
         logger.debug("Site inited: " + site);
     }
@@ -32,8 +37,13 @@ public abstract class AbstractSll
     }
 
     @Override
-    public void destroySite(SiteInstance site) {
-        logger.debug("Site destroyed: " + site);
+    public void startSite(SiteInstance site) {
+        logger.debug("Site started: " + site);
+    }
+
+    @Override
+    public void stopSite(SiteInstance site) {
+        logger.debug("Site stopped: " + site);
     }
 
 }

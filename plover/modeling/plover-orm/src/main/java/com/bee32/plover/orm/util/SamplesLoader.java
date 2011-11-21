@@ -10,16 +10,17 @@ import javax.free.IdentityHashSet;
 import javax.inject.Inject;
 
 import org.apache.commons.collections15.Closure;
-import org.apache.commons.collections15.functors.NOPClosure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 import com.bee32.plover.arch.util.PriorityComparator;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.inject.spring.ScopeProxy;
 import com.bee32.plover.orm.builtin.IPloverConfManager;
 import com.bee32.plover.orm.builtin.StaticPloverConfManager;
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
@@ -34,8 +35,9 @@ import com.bee32.plover.site.scope.PerSite;
 
 @Component
 @PerSite
+@ScopeProxy(ScopedProxyMode.INTERFACES)
 public class SamplesLoader
-        implements ApplicationContextAware, ITypeAbbrAware {
+        implements ISamplesLoader, ApplicationContextAware, ITypeAbbrAware {
 
     static Logger logger = LoggerFactory.getLogger(SamplesLoader.class);
 
@@ -68,15 +70,15 @@ public class SamplesLoader
         ImportSamplesUtil.applyImports(applicationContext);
     }
 
-    private static Closure<SampleContribution> NO_PROGRESS;
-    static {
-        NO_PROGRESS = NOPClosure.getInstance();
-    }
-
     int loadIndex = 0;
 
-    public synchronized void loadSamples(final SamplePackage rootPackage, final Closure<SampleContribution> progress) {
+    @Override
+    public void loadSamples(SamplePackage rootPackage) {
+        loadSamples(rootPackage, null);
+    }
 
+    @Override
+    public synchronized void loadSamples(final SamplePackage rootPackage, final Closure<SampleContribution> progress) {
         logger.debug("Normal samples structure: ");
         SampleDumper.dump(DiamondPackage.NORMAL);
 
@@ -313,14 +315,6 @@ public class SamplesLoader
         } // !sideZ.empty
 
         pack.endLoad();
-    }
-
-    public void loadNormalSamples() {
-        loadSamples(DiamondPackage.NORMAL, NO_PROGRESS);
-    }
-
-    public void loadWorseSamples() {
-        loadSamples(DiamondPackage.WORSE, NO_PROGRESS);
     }
 
 }
