@@ -3,13 +3,14 @@ package com.bee32.plover.servlet.test;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
+
+import com.bee32.plover.servlet.peripheral.AbstractHsl;
 
 /**
  * @see C_Wac
  */
 public abstract class C_SessionListener
-        implements HttpSessionListener {
+        extends AbstractHsl {
 
     @Override
     public final void sessionCreated(HttpSessionEvent se) {
