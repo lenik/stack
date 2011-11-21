@@ -140,12 +140,16 @@ public class StockTradeItem
      */
     @Redundant
     @Column(precision = MONEY_TOTAL_PRECISION, scale = MONEY_TOTAL_SCALE)
-    public BigDecimal getNativeTotal()
-            throws FxrQueryException {
+    public BigDecimal getNativeTotal() {
         if (nativeTotal == null) {
-            BigDecimal price = getNativePrice();
-            if (price != null)
-                nativeTotal = price.multiply(quantity);
+            BigDecimal _price;
+            try {
+                _price = getNativePrice();
+            } catch (FxrQueryException e) {
+                _price = this.price.getValue();
+            }
+            if (_price != null)
+                nativeTotal = _price.multiply(quantity);
         }
         return nativeTotal;
     }

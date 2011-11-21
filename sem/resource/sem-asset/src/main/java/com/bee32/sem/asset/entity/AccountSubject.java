@@ -192,7 +192,7 @@ public class AccountSubject
     public static final AccountSubject s2101 = new AccountSubject("2101","交易性金融负债",true,false);
     public static final AccountSubject s2111 = new AccountSubject("2111","卖出回购金融资产款",true,false);
     public static final AccountSubject s2201 = new AccountSubject("2201","应付票据",true,false);
-    public static final AccountSubject s2202 = new AccountSubject("2202","应付账款",true,false);
+    public static final AccountSubject s2202 = new AccountSubject("2202","应付账款",false,true);
     public static final AccountSubject s2205 = new AccountSubject("2205","预收账款",true,false);
     public static final AccountSubject s2211 = new AccountSubject("2211","应付职工薪酬",true,false);
     public static final AccountSubject s2221 = new AccountSubject("2221","应交税费",true,false);

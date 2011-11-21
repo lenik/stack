@@ -84,19 +84,19 @@ public class AccountTicketItemDto
         if (debitSide) {
             //当前凭证条目为借方
             if (subject.debitSign) {
-                //当前科目为借方时为正数(增加)
+                //当前科目为"借方时为正数(增加)"
                 return false;
             } else {
-                //当前科目为借方 时为负数(减少)
+                //当前科目为"借方时为负数(减少)"
                 return true;
             }
         } else {
             //当前凭证条目为贷方
             if (subject.creditSign) {
-                //当前科目为贷方时为正数(增加)
+                //当前科目为"贷方时为正数(增加)"
                 return false;
             } else {
-                //当前科目为贷方时为负数(减少)
+                //当前科目为"贷方时为负数(减少)"
                 return true;
             }
         }

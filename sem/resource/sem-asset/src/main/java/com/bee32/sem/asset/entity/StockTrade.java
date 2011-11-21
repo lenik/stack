@@ -1,5 +1,6 @@
 package com.bee32.sem.asset.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.plover.util.i18n.CurrencyConfig;
+import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 
 @Entity
@@ -40,8 +42,6 @@ public class StockTrade
             item.setIndex(items.size());
 
         items.add(item);
-        BigDecimal total = this.value.getn
-        value = new MCValue(CurrencyConfig.getNative(), total);
     }
 
     public synchronized void removeItem(StockTradeItem item) {

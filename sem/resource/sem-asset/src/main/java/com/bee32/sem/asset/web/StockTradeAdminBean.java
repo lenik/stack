@@ -26,7 +26,6 @@ import com.bee32.sem.asset.dto.StockTradeItemDto;
 import com.bee32.sem.asset.entity.StockPurchase;
 import com.bee32.sem.asset.entity.StockSale;
 import com.bee32.sem.asset.entity.StockTrade;
-import com.bee32.sem.asset.entity.StockTradeItem;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.misc.EntityCriteria;
@@ -387,18 +386,20 @@ public class StockTradeAdminBean extends EntityViewBean {
         }
 
         try {
-            StockTrade _trade = (StockTrade)stockTrade.unmarshal();
+
             for(StockTradeItemDto item : itemsNeedToRemoveWhenModify) {
-                _trade.removeItem(item.unmarshal());
+                stockTrade.removeItem(item);
             }
 
             //更新_trade中的金额
             BigDecimal total = new BigDecimal(0);
-            for(StockTradeItem item : _trade.getItems()) {
+            for(StockTradeItemDto item : stockTrade.getItems()) {
                 total = total.add(item.getNativeTotal());
             }
 
-            _trade.setValue(new MCValue(CurrencyConfig.getNative(), total));
+            stockTrade.setValue(new MCValue(CurrencyConfig.getNative(), total));
+
+            StockTrade _trade = (StockTrade)stockTrade.unmarshal();
 
             serviceFor(stockTradeClass).save(_trade);
             uiLogger.info("保存成功");
