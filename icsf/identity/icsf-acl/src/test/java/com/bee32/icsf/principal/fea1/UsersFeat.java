@@ -78,6 +78,7 @@ public class UsersFeat
             principalDao.delete(p);
     }
 
+    @SuppressWarnings("deprecation")
     @Transactional
     public void run1() {
         // g1.setOwner(u1);
