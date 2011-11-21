@@ -44,8 +44,7 @@ public class ThreadHttpContext
     public static boolean allowNullRequest = true;
     public static boolean autoCreateMode = false;
 
-    public static SiteInstance getSiteInstance()
-            throws LoadSiteException {
+    public static SiteInstance getSiteInstance() {
         SiteManager siteManager = SiteManager.getInstance();
 
         String siteAlias = SiteNaming.DEFAULT;
@@ -55,10 +54,15 @@ public class ThreadHttpContext
             siteAlias = SiteNaming.getSiteAlias(request);
 
         SiteInstance siteInstance;
-        if (autoCreateMode)
-            siteInstance = siteManager.getOrCreateSite(siteAlias);
-        else
+        if (autoCreateMode) {
+            try {
+                siteInstance = siteManager.getOrCreateSite(siteAlias);
+            } catch (LoadSiteException e) {
+                throw new RuntimeException(e.getMessage(), e);
+            }
+        } else {
             siteInstance = siteManager.getSite(siteAlias);
+        }
 
         return siteInstance;
     }
