@@ -14,17 +14,17 @@ public abstract class C_SessionListener
 
     @Override
     public final void sessionCreated(HttpSessionEvent se) {
-        ServletTestCase application = ServletTestCase.getLastInstance();
         HttpSession session = se.getSession();
         ServletContext servletContext = session.getServletContext();
+        ServletTestCase application = ServletTestCase.getInstanceFromContext(servletContext);
         sessionCreated(se, application);
     }
 
     @Override
     public void sessionDestroyed(HttpSessionEvent se) {
-        ServletTestCase application = ServletTestCase.getLastInstance();
         HttpSession session = se.getSession();
         ServletContext servletContext = session.getServletContext();
+        ServletTestCase application = ServletTestCase.getInstanceFromContext(servletContext);
         sessionDestroyed(se, application);
     }
 
