@@ -79,7 +79,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
     @Override
     protected IEntityMarshalContext getDefaultContext() {
-        IEntityMarshalContext marshalContext = DefaultMarshalContext.INSTANCE;
+        IEntityMarshalContext marshalContext = DefaultMarshalContext.getInstance();
         return marshalContext;
     }
 

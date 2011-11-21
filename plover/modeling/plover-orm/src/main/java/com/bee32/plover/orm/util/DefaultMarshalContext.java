@@ -36,17 +36,19 @@ public class DefaultMarshalContext
         return service;
     }
 
-    public static final IEntityMarshalContext INSTANCE;
-    static {
+    public static IEntityMarshalContext getInstance() {
+        IEntityMarshalContext emc = null;
         ApplicationContext applicationContext = ThreadHttpContext.getApplicationContext();
 
         if (applicationContext == null)
             applicationContext = GlobalAppCtx.getApplicationContext();
 
         if (applicationContext != null)
-            INSTANCE = applicationContext.getBean(DefaultMarshalContext.class);
+            emc = applicationContext.getBean(DefaultMarshalContext.class);
         else
-            INSTANCE = new DefaultMarshalContext();
+            emc = new DefaultMarshalContext();
+
+        return emc;
     }
 
 }
