@@ -5,12 +5,12 @@ import javax.free.IllegalUsageException;
 import com.bee32.plover.inject.spring.ImportUtil;
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
-import com.bee32.plover.servlet.test.OuterWac;
+import com.bee32.plover.servlet.test.C_Wac;
 import com.bee32.plover.servlet.test.ServletTestLibrary;
 import com.bee32.plover.servlet.test.WiredServletTestCase;
 
-public class UsingWac
-        extends OuterWac<WiredServletTestCase> {
+public class C_ConfigPUnitWac
+        extends C_Wac<WiredServletTestCase> {
 
     @Override
     public int getOrder() {

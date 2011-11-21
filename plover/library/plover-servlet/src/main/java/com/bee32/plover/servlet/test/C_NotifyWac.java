@@ -2,8 +2,8 @@ package com.bee32.plover.servlet.test;
 
 import com.bee32.plover.servlet.test.ServletTestCase.LocalSTL;
 
-public class ServletTestCaseWac
-        extends OuterWac<ServletTestCase> {
+public class C_NotifyWac
+        extends C_Wac<ServletTestCase> {
 
     @Override
     public int getOrder() {

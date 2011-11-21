@@ -10,8 +10,8 @@ import com.bee32.plover.servlet.context.ServletContextUtil;
 import com.bee32.plover.servlet.mvc.MVCConfig;
 import com.bee32.plover.servlet.rabbits.RabbitServletContext;
 
-public class SpringWac
-        extends OuterWac<WiredServletTestCase> {
+public class C_SpringWac
+        extends C_Wac<WiredServletTestCase> {
 
     @Override
     public int getOrder() {

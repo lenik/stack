@@ -3,13 +3,13 @@ package com.bee32.plover.servlet.test;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.servlet.test.ServletTestCase.LocalSTL;
 
-public abstract class OuterWac<T extends ServletTestCase>
+public abstract class C_Wac<T extends ServletTestCase>
         extends AbstractWac {
 
     final Class<T> outerDeclType;
 
-    public OuterWac() {
-        outerDeclType = ClassUtil.infer1(getClass(), OuterWac.class, 0);
+    public C_Wac() {
+        outerDeclType = ClassUtil.infer1(getClass(), C_Wac.class, 0);
     }
 
     T getOuter(ServletTestLibrary stl) {

@@ -9,14 +9,14 @@ import org.mortbay.jetty.servlet.ServletHolder;
 import org.primefaces.webapp.filter.FileUploadFilter;
 
 import com.bee32.plover.servlet.rabbits.RabbitServletContext;
-import com.bee32.plover.servlet.test.OuterWac;
+import com.bee32.plover.servlet.test.C_Wac;
 import com.bee32.plover.servlet.test.ServletTestLibrary;
 import com.bee32.plover.web.faces.ClassResourceResolver;
 import com.bee32.plover.web.faces.FaceletsConfig;
 import com.bee32.plover.web.faces.FacesConstants;
 
-public class FaceletsWac
-        extends OuterWac<FaceletsTestCase>
+public class C_FaceletsWac
+        extends C_Wac<FaceletsTestCase>
         implements FacesConstants {
 
     @Override

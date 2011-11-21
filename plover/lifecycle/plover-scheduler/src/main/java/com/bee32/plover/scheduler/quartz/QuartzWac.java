@@ -1,12 +1,11 @@
 package com.bee32.plover.scheduler.quartz;
 
 import com.bee32.plover.scheduler.stat.QuartzMonitorServlet;
-import com.bee32.plover.servlet.test.OuterWac;
+import com.bee32.plover.servlet.test.AbstractWac;
 import com.bee32.plover.servlet.test.ServletTestLibrary;
-import com.bee32.plover.servlet.test.WiredServletTestCase;
 
 public class QuartzWac
-        extends OuterWac<WiredServletTestCase> {
+        extends AbstractWac {
 
     @Override
     public int getOrder() {
@@ -14,12 +13,12 @@ public class QuartzWac
     }
 
     @Override
-    public void configureContext(ServletTestLibrary stl, WiredServletTestCase outer) {
+    public void configureContext(ServletTestLibrary stl) {
         /** @see InitQuartzAndQjcListener */
     }
 
     @Override
-    public void configureServlets(ServletTestLibrary stl, WiredServletTestCase outer) {
+    public void configureServlets(ServletTestLibrary stl) {
         // ServletHolder holder =
         stl.addServlet(QuartzMonitorServlet.class, "/quartz/*");
         // holder.setInitParameter(QuartzConfig.SCHED_SC_KEY_NAME, QuartzConfig.SCHED_SC_KEY);
