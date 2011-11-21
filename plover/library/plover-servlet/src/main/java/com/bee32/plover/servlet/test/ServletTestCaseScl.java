@@ -18,24 +18,23 @@ public class ServletTestCaseScl
      * How to know myself?
      *
      * @see RabbitServer#getInstanceFromContext(ServletContext)
-     * @see OuterWac
+     * @see C_Wac
      */
-    ServletTestCase stc;
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         logger.info("Test servlet context is initialized.");
         ServletContext servletContext = sce.getServletContext();
-        ServletTestCase stc = ServletTestCase.getInstanceFromContext(servletContext);
-        stc.servletContext = servletContext;
+        ServletTestCase application = ServletTestCase.getInstanceFromContext(servletContext);
+        application.servletContext = servletContext;
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         logger.info("Test servlet context is destroyed.");
         ServletContext servletContext = sce.getServletContext();
-        ServletTestCase stc = ServletTestCase.getInstanceFromContext(servletContext);
-        stc.servletContext = null;
+        ServletTestCase application = ServletTestCase.getInstanceFromContext(servletContext);
+        application.servletContext = null;
     }
 
 }

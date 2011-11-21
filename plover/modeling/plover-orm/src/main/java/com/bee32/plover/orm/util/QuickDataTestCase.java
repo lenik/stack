@@ -24,8 +24,8 @@ public class QuickDataTestCase
 
         new StandardSamples();
 
-        SamplesLoader loader = new SamplesLoader();
-        loader.loadNormalSamples();
+        SamplesLoader samplesLoader = new SamplesLoader();
+        samplesLoader.loadSamples(DiamondPackage.NORMAL);
     }
 
     @Override

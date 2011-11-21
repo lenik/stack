@@ -9,6 +9,7 @@ import com.bee32.plover.disp.DispatchException;
 import com.bee32.plover.disp.Dispatcher;
 import com.bee32.plover.disp.util.DispatchUtil;
 import com.bee32.plover.orm.unit.Using;
+import com.bee32.plover.orm.util.DiamondPackage;
 import com.bee32.plover.orm.util.SamplesLoader;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 import com.bee32.plover.pub.oid.OidUtil;
@@ -36,7 +37,7 @@ public class BookStoreTest
 
     @Before
     public void loadSamples() {
-        samplesLoader.loadNormalSamples();
+        samplesLoader.loadSamples(DiamondPackage.NORMAL);
     }
 
     @Test

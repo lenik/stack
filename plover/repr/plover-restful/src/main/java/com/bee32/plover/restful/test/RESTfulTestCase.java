@@ -10,6 +10,7 @@ import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.unit.UsingUtil;
+import com.bee32.plover.orm.util.DiamondPackage;
 import com.bee32.plover.orm.util.SamplesLoader;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 import com.bee32.plover.pub.oid.OidUtil;
@@ -32,7 +33,7 @@ public abstract class RESTfulTestCase
     @Override
     protected void applicationInitialized(ApplicationContext applicationContext) {
         SamplesLoader samplesLoader = applicationContext.getBean(SamplesLoader.class);
-        samplesLoader.loadNormalSamples();
+        samplesLoader.loadSamples(DiamondPackage.NORMAL);
     }
 
     @Override
