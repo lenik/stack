@@ -7,10 +7,14 @@ public interface ISiteLifecycleListener
 
     void createSite(SiteInstance site);
 
+    void destroySite(SiteInstance site);
+
     void loadSite(SiteInstance site);
 
     void removeSite(SiteInstance site);
 
-    void destroySite(SiteInstance site);
+    void startSite(SiteInstance site);
+
+    void stopSite(SiteInstance site);
 
 }

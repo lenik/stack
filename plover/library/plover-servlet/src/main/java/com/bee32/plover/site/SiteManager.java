@@ -5,18 +5,14 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 import javax.free.IllegalUsageException;
 import javax.free.SystemProperties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.bee32.plover.arch.util.OrderComparator;
 
 public class SiteManager {
 
@@ -28,14 +24,6 @@ public class SiteManager {
         File home = new File(userHome);
         SITE_HOME = new File(home, ".bee32/sites");
         SITE_HOME.mkdirs();
-    }
-
-    static final Set<ISiteLifecycleListener> listeners;
-    static {
-        listeners = new TreeSet<ISiteLifecycleListener>(OrderComparator.INSTANCE);
-        for (ISiteLifecycleListener listener : ServiceLoader.load(ISiteLifecycleListener.class)) {
-            listeners.add(listener);
-        }
     }
 
     Map<String, SiteInstance> siteMap = new TreeMap<String, SiteInstance>();
@@ -101,9 +89,7 @@ public class SiteManager {
 
         siteMap.put(siteName, site);
 
-        for (ISiteLifecycleListener listener : listeners) {
-            listener.loadSite(site);
-        }
+        SiteLifecycleDispatcher.loadSite(site);
     }
 
     /**
@@ -129,9 +115,11 @@ public class SiteManager {
     }
 
     protected void removeSite(SiteInstance site) {
-        // Keep from remove if any exception.
-        for (ISiteLifecycleListener listener : listeners) {
-            listener.removeSite(site);
+        try {
+            SiteLifecycleDispatcher.removeSite(site);
+        } catch (Exception e) {
+            // TODO Keep from remove if any exception.
+            throw e;
         }
 
         String name = site.getName();
@@ -149,10 +137,7 @@ public class SiteManager {
     protected void deleteSite(SiteInstance site) {
         removeSite(site);
         site.configFile.delete();
-
-        for (ISiteLifecycleListener listener : listeners) {
-            listener.destroySite(site);
-        }
+        SiteLifecycleDispatcher.destroySite(site);
     }
 
     public void scanAndLoadSites(File siteHome) {

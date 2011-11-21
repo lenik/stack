@@ -51,8 +51,8 @@ public class SiteInstance
     File configFile;
     FormatProperties properties;
     boolean dirty;
-
     Map<String, Object> attributes = new HashMap<String, Object>();
+    boolean started;
 
     public SiteInstance() {
         configFile = null;
@@ -390,6 +390,24 @@ public class SiteInstance
             throw new NullPointerException("samples");
         String property = samples.name();
         setProperty(SAMPLES_KEY, property);
+    }
+
+    public boolean isStarted() {
+        return started;
+    }
+
+    public synchronized void start() {
+        if (!started) {
+            SiteLifecycleDispatcher.startSite(this);
+            started = true;
+        }
+    }
+
+    public synchronized void stop() {
+        if (started) {
+            SiteLifecycleDispatcher.stopSite(this);
+            started = false;
+        }
     }
 
     @Override
