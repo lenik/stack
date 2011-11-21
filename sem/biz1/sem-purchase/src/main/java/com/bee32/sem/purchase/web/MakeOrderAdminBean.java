@@ -329,7 +329,7 @@ public class MakeOrderAdminBean extends EntityViewBean {
             loadMakeOrder(goNumber);
             editable = false;
         } catch (Exception e) {
-            uiLogger.warn("保存失败,错误信息:" + e.getMessage());
+            uiLogger.warn("保存失败", e);
         }
     }
 
@@ -439,7 +439,7 @@ public class MakeOrderAdminBean extends EntityViewBean {
                             new Like("name", "%" + customerPattern + "%"), //
                             new Like("fullName", "%" + customerPattern + "%")));
 
-            customers = DTOs.marshalList(PartyDto.class, _customers);
+            customers = DTOs.mrefList(PartyDto.class, _customers);
         }
     }
 

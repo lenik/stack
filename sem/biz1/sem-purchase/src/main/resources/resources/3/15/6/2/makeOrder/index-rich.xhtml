@@ -202,6 +202,13 @@
                         <h:outputText value="#{item.externalSpecification}" />
                     </p:column>
 
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="交货时间"/>
+                        </f:facet>
+                        <h:outputText value="#{item.deadline}" />
+                    </p:column>
+
 					<p:column>
 						<f:facet name="header">操作</f:facet>
 						<t:panelGroup>
