@@ -121,15 +121,10 @@
                         disabled="true" />
 
                     <h:outputText value="客户:" />
-                    <t:panelGroup>
+                    <t:panelGroup colspan="3">
                         <p:inputText id="customer" value="#{makeOrderAdminBean.makeOrder.customer.name}" readonly="true"/>
                         <p:commandButton value="..." onclick="customerDialog.show()" disabled="#{!makeOrderAdminBean.editable}"/>
                     </t:panelGroup>
-                    <h:outputText value="交货时间:" />
-                    <p:calendar id="deadline" navigator="true"
-                        locale="zh_CN" pattern="yyyy-MM-dd"
-                        value="#{makeOrderAdminBean.makeOrder.deadline}"
-                        showOn="button" />
 
                     <h:outputText value="对应机会:" />
                     <t:panelGroup colspan="3">
@@ -267,6 +262,14 @@
                         <p:inputText value="#{makeOrderAdminBean.makeOrderItem.externalProductName}" />
                         <h:outputLabel value="外部规格型号" />
                         <p:inputText value="#{makeOrderAdminBean.makeOrderItem.externalSpecification}" />
+
+                        <h:outputText value="交货时间:" />
+                        <t:panelGroup colspan="3">
+                            <p:calendar id="deadline" navigator="true"
+                            locale="zh_CN" pattern="yyyy-MM-dd"
+                            value="#{makeOrderAdminBean.makeOrderItem.deadline}"
+                            showOn="button" />
+                        </t:panelGroup>
 
 						<h:panelGroup />
 						<t:panelGroup colspan="2">

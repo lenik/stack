@@ -2,6 +2,7 @@ package com.bee32.sem.purchase.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -10,6 +11,8 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.NaturalId;
@@ -42,6 +45,7 @@ public class MakeOrderItem
     MakeOrder order;
     int index;
     Part part;
+    Date deadline;
     BigDecimal quantity = new BigDecimal(1);
     MCValue price = new MCValue();
 
@@ -85,6 +89,15 @@ public class MakeOrderItem
         if (part == null)
             throw new NullPointerException("part");
         this.part = part;
+    }
+
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(Date deadline) {
+        this.deadline = deadline;
     }
 
     /**

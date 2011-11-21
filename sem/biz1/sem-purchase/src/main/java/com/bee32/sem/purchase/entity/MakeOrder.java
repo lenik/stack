@@ -2,7 +2,6 @@ package com.bee32.sem.purchase.entity;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,8 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
@@ -44,7 +41,6 @@ public class MakeOrder
     public static final int STATUS_LENGTH = 30;
 
     Party customer;
-    Date deadline;
     String status;
     Chance chance;
 
@@ -64,15 +60,6 @@ public class MakeOrder
         if (customer == null)
             throw new NullPointerException("customer");
         this.customer = customer;
-    }
-
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date getDeadline() {
-        return deadline;
-    }
-
-    public void setDeadline(Date deadline) {
-        this.deadline = deadline;
     }
 
     @Column(length = STATUS_LENGTH)

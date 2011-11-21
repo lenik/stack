@@ -3,6 +3,7 @@ package com.bee32.sem.purchase.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Currency;
+import java.util.Date;
 
 import javax.free.ParseException;
 
@@ -22,6 +23,7 @@ public class MakeOrderItemDto
     MakeOrderDto order;
     int index;
     PartDto part;
+    Date deadline;
     BigDecimal quantity = new BigDecimal(1);
     MCValue price;
 
@@ -36,6 +38,7 @@ public class MakeOrderItemDto
         order = mref(MakeOrderDto.class, source.getOrder());
         index = source.getIndex();
         part = mref(PartDto.class, source.getPart());
+        deadline = source.getDeadline();
         quantity = source.getQuantity();
         price = source.getPrice();
         externalProductName = source.getExternalProductName();
@@ -47,6 +50,7 @@ public class MakeOrderItemDto
         merge(target, "order", order);
         target.setIndex(index);
         merge(target, "part", part);
+        target.setDeadline(deadline);
         target.setQuantity(quantity);
         target.setPrice(price);
         target.setExternalProductName(externalProductName);
@@ -84,6 +88,14 @@ public class MakeOrderItemDto
         if (part == null)
             throw new NullPointerException("part");
         this.part = part;
+    }
+
+    public Date getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(Date deadline) {
+        this.deadline = deadline;
     }
 
     public BigDecimal getQuantity() {

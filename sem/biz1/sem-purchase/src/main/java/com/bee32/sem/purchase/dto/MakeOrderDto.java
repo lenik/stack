@@ -2,7 +2,6 @@ package com.bee32.sem.purchase.dto;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.free.NotImplementedException;
@@ -31,7 +30,6 @@ public class MakeOrderDto
     public static final int TASKS = 2;
 
     PartyDto customer;
-    Date deadline;
     String status;
     ChanceDto chance;
 
@@ -47,7 +45,6 @@ public class MakeOrderDto
     @Override
     protected void _marshal(MakeOrder source) {
         customer = mref(PartyDto.class, source.getCustomer());
-        deadline = source.getDeadline();
         status = source.getStatus();
         chance = mref(ChanceDto.class, source.getChance());
 
@@ -68,7 +65,6 @@ public class MakeOrderDto
     @Override
     protected void _unmarshalTo(MakeOrder target) {
         merge(target, "customer", customer);
-        target.setDeadline(deadline);
         target.setStatus(status);
         merge(target, "chance", chance);
 
@@ -93,14 +89,6 @@ public class MakeOrderDto
         if (customer == null)
             throw new NullPointerException("customer");
         this.customer = customer;
-    }
-
-    public Date getDeadline() {
-        return deadline;
-    }
-
-    public void setDeadline(Date deadline) {
-        this.deadline = deadline;
     }
 
     public String getStatus() {
