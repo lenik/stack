@@ -39,8 +39,8 @@ public class StockTradeAdminBean extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
-    private Class stockTradeClass;
-    private Class stockTradeDtoClass;
+    private Class<? extends StockTrade> stockTradeClass;
+    private Class<? extends StockTradeDto> stockTradeDtoClass;
 
     protected boolean editable = false;
 
@@ -102,7 +102,7 @@ public class StockTradeAdminBean extends EntityViewBean {
             uiLogger.warn("非正常方式进入库存业务功能!", e);
         }
 
-        stockTradeDtoClass = EntityUtil.getDtoType(stockTradeClass);
+        stockTradeDtoClass = (Class<? extends StockTradeDto>) EntityUtil.getDtoType(stockTradeClass);
 
         try {
             stockTrade = ((StockTradeDto)stockTradeDtoClass.newInstance()).create();
