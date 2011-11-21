@@ -6,7 +6,7 @@ import java.util.Random;
 
 import javax.free.Strings;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionEvent;
 
 import org.mortbay.jetty.testing.HttpTester;
 import org.slf4j.Logger;
@@ -17,8 +17,7 @@ import com.bee32.plover.servlet.rabbits.RabbitServer;
 import com.bee32.plover.test.AssembledTestCase;
 
 public abstract class ServletTestCase
-        extends AssembledTestCase<ServletTestCase>
-        implements ISessionMonitor {
+        extends AssembledTestCase<ServletTestCase> {
 
     public static final boolean searchClassLocalResources = true;
 
@@ -140,8 +139,7 @@ public abstract class ServletTestCase
         return stl.httpPost(uri, content, map);
     }
 
-    @Override
-    public void initSession(HttpSession session) {
+    public void initSession(HttpSessionEvent event) {
     }
 
     public void mainLoop()

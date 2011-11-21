@@ -10,7 +10,7 @@ public class ServletTestWac
 
     @Override
     public void configureServlets(ServletTestLibrary stl) {
-        stl.addFilter(SessionMonitorFilter.class, "/*", 0);
+        stl.addEventListener(new C_InitSessionListener());
     }
 
 }

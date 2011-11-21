@@ -1,6 +1,6 @@
 package com.bee32.sem.test;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionEvent;
 
 import org.mortbay.resource.Resource;
 import org.springframework.context.ApplicationContext;
@@ -56,7 +56,7 @@ public class SEMTestCase
     }
 
     @Override
-    public void initSession(HttpSession session) {
+    public void initSession(HttpSessionEvent event) {
         String userName = getLoggedInUser();
 
         if (userName != null) {
