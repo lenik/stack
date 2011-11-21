@@ -16,6 +16,7 @@ public class StockTradeDto
     private static final long serialVersionUID = 1L;
 
     public static final int ITEMS = 1;
+    public static final int ITEMS_FOR_UPDATE = ITEMS | 2;
 
     List<StockTradeItemDto> items;
 
@@ -24,8 +25,12 @@ public class StockTradeDto
         super._marshal(source);
         StockTrade _source = (StockTrade) source;
 
-        if (selection.contains(ITEMS))
-            items = mrefList(StockTradeItemDto.class, _source.getItems());
+        if (selection.contains(ITEMS)) {
+            if (selection.contains(ITEMS_FOR_UPDATE))
+                items = marshalList(StockTradeItemDto.class, _source.getItems());
+            else
+                items = mrefList(StockTradeItemDto.class, _source.getItems());
+        }
         else
             items = new ArrayList<StockTradeItemDto>();
     }
@@ -36,8 +41,9 @@ public class StockTradeDto
 
         StockTrade _target = (StockTrade) target;
 
-        if (selection.contains(ITEMS))
+        if (selection.contains(ITEMS)) {
             mergeList(_target, "items", items);
+        }
     }
 
     @Override

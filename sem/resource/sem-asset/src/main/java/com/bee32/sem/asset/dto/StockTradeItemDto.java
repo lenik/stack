@@ -40,6 +40,7 @@ public class StockTradeItemDto
         index = source.getIndex();
 
         material = mref(MaterialDto.class, source.getMaterial());
+        quantity = source.getQuantity();
         price = source.getPrice();
 
         trade = mref(StockTradeDto.class, source.getTrade());
@@ -50,6 +51,7 @@ public class StockTradeItemDto
         target.setIndex(index);
 
         merge(target, "material", material);
+        target.setQuantity(quantity);
         target.setPrice(price);
 
         merge(target, "trade", trade);

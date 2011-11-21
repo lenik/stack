@@ -10,6 +10,9 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.plover.util.i18n.CurrencyConfig;
+import com.bee32.sem.world.monetary.MCValue;
+
 @Entity
 @DiscriminatorValue("TRAD")
 public class StockTrade
@@ -37,6 +40,8 @@ public class StockTrade
             item.setIndex(items.size());
 
         items.add(item);
+        BigDecimal total = this.value.getn
+        value = new MCValue(CurrencyConfig.getNative(), total);
     }
 
     public synchronized void removeItem(StockTradeItem item) {

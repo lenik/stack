@@ -338,7 +338,7 @@ public class StockTradeAdminBean extends EntityViewBean {
                 Order.asc("id"));
 
         if (firstTrade != null)
-            stockTrade = DTOs.marshal(stockTradeDtoClass, firstTrade);
+            stockTrade = DTOs.marshal(stockTradeDtoClass, StockTradeDto.ITEMS_FOR_UPDATE, firstTrade);
 
     }
 

@@ -112,7 +112,7 @@ public class AccountTicketItem
         this.debitSide = debitSide;
     }
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     public AccountTicket getTicket() {
         return ticket;
     }
