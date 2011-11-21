@@ -5,6 +5,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * @see ThreadServletRequestListener
+ * @see ThreadServletResponseListener
+ */
 public class ThreadServletContext {
 
     static final ThreadLocal<HttpServletRequest> threadLocalRequests = new ThreadLocal<HttpServletRequest>();
