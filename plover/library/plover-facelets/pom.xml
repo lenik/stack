@@ -52,7 +52,7 @@
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
-            <version>3.0.M3</version>
+            <version>3.0.M4</version>
         </dependency>
         <dependency>
             <groupId>org.primefaces</groupId>
