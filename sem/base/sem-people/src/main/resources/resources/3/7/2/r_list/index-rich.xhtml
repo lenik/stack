@@ -23,22 +23,6 @@
 
 	<ui:define name="content">
 
-		<h:outputStylesheet>
-            .align_top {
-                vertical-align:top;
-            }
-
-            .col_left {
-                width: 350px;
-            }
-
-            .table_inner_line {
-                border: solid 1px #ccc;
-                text-align: center;
-            }
-        </h:outputStylesheet>
-
-
 		<h:form id="permissionForm">
 
 			<p:panel header="权限管理">
@@ -55,7 +39,7 @@
 				</p:toolbar>
 
 
-				<t:panelGrid columns="2" rowClasses="align_top" columnClasses="col_left">
+				<t:panelGrid columns="2" rowClasses="alignTop" columnClasses="col_left">
                     <p:panel header="权限主体列表">
 					<p:tabView activeIndex="#{permissionAdminBean.activeTab}" style="width:100%;">
 

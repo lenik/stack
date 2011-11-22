@@ -17,25 +17,6 @@
 
     <ui:define name="content">
 
-        <h:outputStylesheet>
-            .detail_col_title {
-                width:80px;
-                text-align: right;
-            }
-
-            .detail_col_value {
-            }
-
-            .align_top {
-                vertical-align:top;
-            }
-
-            .col_left {
-                width: 350px;
-            }
-        </h:outputStylesheet>
-
-
 		<h:form id="mainForm">
 
             <h:panelGrid columns="6">
@@ -138,7 +119,7 @@
 
                     <h:outputText value="业务详细:" />
                     <t:panelGroup colspan="3">
-                        <p:editor
+                        <p:inputTextarea style="width:400px;height:300px;"
                             value="#{budgetRequestAdminBean.budgetRequest.text}"
                             disabled="#{!budgetRequestAdminBean.editable}" />
                     </t:panelGroup>
