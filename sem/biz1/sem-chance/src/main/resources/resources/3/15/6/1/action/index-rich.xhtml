@@ -31,22 +31,22 @@
                     <p:toolbarGroup align="left">
                         <p:commandButton id="newActionButton" value="新增" actionListener="#{chanceActionBean.createForm}"
                             update="chanceActionForm" async="false" />
-                        <p:divider />
+                        <p:separator />
                         <p:commandButton id="editActionButton" value="编辑" actionListener="#{chanceActionBean.editForm}"
                             update="chanceActionForm" />
                         <p:commandButton id="deleteActionButton" value="删除" actionListener="#{chanceActionBean.drop}"
                             update="mainTab:actions, productToolbar" />
-                        <p:divider />
+                        <p:separator />
                         <p:commandButton id="saveActionButton" value="保存"
                             actionListener="#{chanceActionBean.saveAction}" update="chanceActionForm"
                             disabled="true" />
-                        <p:divider />
+                        <p:separator />
                         <p:commandButton id="resetButton" value="取消" actionListener="#{chanceActionBean.cancel}"
                             update="productToolbar, mainTab" disabled="true" />
-                        <p:divider />
+                        <p:separator />
                         <p:commandButton id="viewActionButton" value="详细"
                             actionListener="#{chanceActionBean.doDetailForm}" update="chanceActionForm" disabled="true" />
-                        <p:divider />
+                        <p:separator />
 
                         <h:outputLabel for="btime" value="时间段:" />
                         <p:calendar id="btime" pattern="yyyy-MM-dd HH:mm" navigator="#{true}"

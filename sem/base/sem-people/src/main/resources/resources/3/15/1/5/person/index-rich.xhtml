@@ -26,18 +26,18 @@
                                 disabled="#{personAdminBean.editable}" update="personForm" async="true" />
                             <p:commandButton value="删除" actionListener="#{personAdminBean.doDelete}"
                                 disabled="#{personAdminBean.editable}" update="personForm" async="true" />
-                            <p:divider />
+                            <p:separator />
                             <p:commandButton id="save-validated" value="保存" actionListener="#{personAdminBean.doSave}"
                                 disabled="#{!personAdminBean.editable}" update="personForm" async="true" />
                             <p:commandButton value="取消" actionListener="#{personAdminBean.doCancel}"
                                 disabled="#{personAdminBean.person == null}" update="personForm" async="true" />
-                            <p:divider />
+                            <p:separator />
                             <!-- <p:commandButton value="审核" disabled="#{personAdminBean.editable or (not personAdminBean.personSelected)}"
                                 onclick="verifyDlg.show();" /> -->
                             <p:commandButton value="详细" actionListener="#{personAdminBean.doDetail}"
                                 disabled="#{personAdminBean.editable or (not personAdminBean.personSelected)}" update="personForm"
                                 async="true" />
-                            <p:divider />
+                            <p:separator />
                             <p:commandButton value="查找"
                                 disabled="#{personAdminBean.editable}" onclick="findDialog.show()" />
                             <h:outputText value="查找结束回到查看全部请刷新页面"/>
@@ -204,7 +204,7 @@
                                         <p:commandButton value="删除" actionListener="#{personAdminBean.doDeleteContact}"
                                             disabled="#{not personAdminBean.contactSelected}" update="personForm:personTab:contacts"
                                             async="true" />
-                                        <p:divider />
+                                        <p:separator />
                                     </p:toolbarGroup>
                                 </p:toolbar>
                                 <p:dataTable id="contacts" var="contact" value="#{personAdminBean.contacts}"

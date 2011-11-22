@@ -52,13 +52,13 @@
 					<p:commandButton value="修改"
 						actionListener="#{initAdminBean.modify}"
 						disabled="#{initAdminBean.editable}" update="mainForm" async="true" />
-					<p:divider />
+					<p:separator />
 					<p:commandButton value="保存" actionListener="#{initAdminBean.save}"
 						disabled="#{!initAdminBean.editable}" update="mainForm" async="true" />
 					<p:commandButton value="取消"
 						actionListener="#{initAdminBean.cancel}"
 						disabled="#{!initAdminBean.editable}" update="mainForm" async="true" />
-					<p:divider />
+					<p:separator />
 					<p:commandButton value="审核"
 						disabled="#{initAdminBean.editable}"
 						onclick="verifyDlg.show();" />

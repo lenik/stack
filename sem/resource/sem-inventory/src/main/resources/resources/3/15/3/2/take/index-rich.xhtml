@@ -84,17 +84,17 @@
 					<p:commandButton value="删除"
 						onclick="deleteConfirmDialog.show();"
 						disabled="#{takeAdminBean.editable}" update="mainForm" async="true" />
-					<p:divider />
+					<p:separator />
 					<p:commandButton value="保存" actionListener="#{takeAdminBean.save}"
 						disabled="#{!takeAdminBean.editable}" update="mainForm" async="true" />
 					<p:commandButton value="取消"
 						actionListener="#{takeAdminBean.cancel}"
 						disabled="#{!takeAdminBean.editable}" update="mainForm" async="true" />
-					<p:divider />
+					<p:separator />
 					<p:commandButton value="审核"
 						disabled="#{takeAdminBean.editable}"
 						onclick="verifyDlg.show();" />
-					<p:divider />
+					<p:separator />
 					<p:commandButton value="第一条"
 						actionListener="#{takeAdminBean.first}"
 						disabled="#{takeAdminBean.editable}" update="mainForm"

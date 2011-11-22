@@ -109,10 +109,10 @@ public class StockCriteria
     }
 
     @LeftHand(StockOrderItem.class)
-    public static ICriteriaElement inOutDetail(Date beginDate, Material material, StockQueryOptions options) {
+    public static ICriteriaElement inOutDetail(Date beginDate, Long materialId, StockQueryOptions options) {
         return compose(alias("parent", "parent"),
                 lessOrEquals("parent.beginTime", options.getTimestamp()), //
-                _equals("material.id", material.getId()), //
+                _equals("material.id", materialId), //
                 _equals("CBatch", options.getCBatch()), //
                 _equals("location", options.getLocation()), //
                 _equals("warehouse", options.getWarehouse()));

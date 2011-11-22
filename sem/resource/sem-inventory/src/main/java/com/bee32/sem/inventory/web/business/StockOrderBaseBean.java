@@ -34,6 +34,7 @@ import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.world.monetary.CurrencyUtil;
 import com.bee32.sem.world.monetary.MCValue;
+import com.bee32.sem.world.thing.UnitConvDto;
 import com.bee32.sem.world.thing.UnitDto;
 
 public abstract class StockOrderBaseBean
@@ -270,8 +271,11 @@ public abstract class StockOrderBaseBean
         }
 
         List<UnitDto> unitDtoList = new ArrayList<UnitDto>();
-        for(UnitDto u : orderItem.getMaterial().getUnitConv().getScaleMap().keySet()) {
-            unitDtoList.add(u);
+        UnitConvDto conv = orderItem.getMaterial().getUnitConv();
+        if (conv.getScaleMap() != null) {
+            for (UnitDto u : conv.getScaleMap().keySet()) {
+                unitDtoList.add(u);
+            }
         }
 
         return UIHelper.selectItemsFromDict2(unitDtoList);

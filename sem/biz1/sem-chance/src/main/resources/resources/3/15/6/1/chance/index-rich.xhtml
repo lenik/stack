@@ -26,28 +26,28 @@
                     <p:toolbarGroup align="left">
                         <p:commandButton id="chanceNewButton" value="新增" actionListener="#{chanceBean.createForm}"
                             update="chanceForm" async="true" disabled="#{!(chanceBean.state == 'INDEX')}" />
-                        <p:divider />
+                        <p:separator />
                         <p:commandButton id="chanceEditButton" value="编辑" actionListener="#{chanceBean.editForm}"
                             update="chanceForm:toolbar, chanceForm:mainTab" async="true"
                             disabled="#{!(chanceBean.state == 'INDEX')}" />
 
                         <p:commandButton id="chanceDeleteButton" value="删除" actionListener="#{chanceBean.drop}"
                             update="chanceForm" disabled="#{chanceBean.state != 'INDEX'}" />
-                        <p:divider />
+                        <p:separator />
 
                         <p:commandButton id="chanceAddButton" value="保存" actionListener="#{chanceBean.saveChance}"
                             update="chanceForm:toolbar, chanceForm:mainTab" async="true"
                             disabled="#{!(chanceBean.state == 'EDIT' or chanceBean.state == 'CREATE')}" />
-                        <p:divider />
+                        <p:separator />
 
                         <p:commandButton id="chanceResetButton" value="取消" actionListener="#{chanceBean.cancel}"
                             update="chanceForm" async="true" disabled="#{!(chanceBean.state != 'INDEX')}" />
-                        <p:divider />
+                        <p:separator />
 
                         <p:commandButton id="chanceDetailButton" value="详细" actionListener="#{chanceBean.detailForm}"
                             update="chanceForm:mainTab, chanceForm:toolbar"
                             disabled="#{!(chanceBean.state == 'INDEX' and chanceBean.chances.selected)}" />
-                        <p:divider />
+                        <p:separator />
 
                         <h:outputText value="机会标题:" />
                         <p:inputText id="subjectPattern" value="#{chanceBean.subjectPattern}" />

@@ -167,9 +167,11 @@ public class StockQueryBean extends EntityViewBean {
             opts.setCBatch(selectedItem.getCBatch(), false);
             opts.setLocation(selectedItem.getLocation().unmarshal(), false);
 
-            List<StockOrderItem> details = serviceFor(StockOrderItem.class)
-                    .list(StockCriteria.inOutDetail(queryDate, selectedItem
-                            .getMaterial().unmarshal(), opts));
+            List<StockOrderItem> details = serviceFor(StockOrderItem.class).list( //
+                    StockCriteria.inOutDetail( //
+                            queryDate, //
+                            selectedItem.getMaterial().getId(), //
+                            opts));
 
             return DTOs.marshalList(StockOrderItemDto.class, details);
         }

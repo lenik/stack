@@ -57,7 +57,7 @@
                             actionListener="#{orgAdminBean.doDelete}"
                             disabled="#{orgAdminBean.editable}"
                             update="orgForm" async="true" />
-                        <p:divider />
+                        <p:separator />
                         <p:commandButton value="保存"
                             actionListener="#{orgAdminBean.doSave}"
                             disabled="#{!orgAdminBean.editable}"
@@ -66,7 +66,7 @@
                             actionListener="#{orgAdminBean.doCancel}"
                             disabled="#{!orgAdminBean.editable}"
                             update="orgForm" async="true" />
-                        <p:divider />
+                        <p:separator />
                         <!--
                         <p:commandButton value="审核"
                             disabled="#{orgAdminBean.editable or (not orgAdminBean.orgSelected)}"
@@ -75,7 +75,7 @@
                             actionListener="#{orgAdminBean.doDetail}"
                             disabled="#{orgAdminBean.editable or (not orgAdminBean.orgSelected)}"
                             update="orgForm chooseParentOrgUnitForm:chooseParentOrgUnitPanel" async="true" />
-                        <p:divider />
+                        <p:separator />
                         <p:commandButton value="查找"
                             disabled="#{orgAdminBean.editable}" onclick="findDialog.show()" />
                         <h:outputText value="查找结束回到查看全部请刷新页面"/>
@@ -273,7 +273,7 @@
                                         disabled="#{not orgAdminBean.contactSelected}"
                                         update="orgForm:orgTab:contacts"
                                         async="true" />
-                                    <p:divider />
+                                    <p:separator />
                                 </p:toolbarGroup>
                             </p:toolbar>
                             <p:dataTable id="contacts" var="contact"
@@ -371,7 +371,7 @@
 													actionListener="#{orgAdminBean.doDeleteOrgUnit}"
 													disabled="#{not orgAdminBean.orgUnitSelected}"
 													update="orgForm:orgTab:orgUnitTreeGrid chooseParentOrgUnitForm:chooseParentOrgUnitPanel" async="true" />
-												<p:divider />
+												<p:separator />
 											</p:toolbarGroup>
 										</p:toolbar>
 
@@ -468,7 +468,7 @@
 													actionListener="#{orgAdminBean.doDeleteRole}"
 													disabled="#{not orgAdminBean.roleSelected}"
 													update="orgForm:orgTab:roles" async="true" />
-												<p:divider />
+												<p:separator />
 											</p:toolbarGroup>
 										</p:toolbar>
 										<p:dataTable id="roles" var="role"

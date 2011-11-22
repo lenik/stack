@@ -87,17 +87,17 @@
 					<p:commandButton value="删除"
 						onclick="deleteConfirmDialog.show();"
 						disabled="#{outsourcingOutAdminBean.editable}" update="mainForm" async="true" />
-					<p:divider />
+					<p:separator />
 					<p:commandButton value="保存" actionListener="#{outsourcingOutAdminBean.save}"
 						disabled="#{!outsourcingOutAdminBean.editable}" update="mainForm" async="true" />
 					<p:commandButton value="取消"
 						actionListener="#{outsourcingOutAdminBean.cancel}"
 						disabled="#{!outsourcingOutAdminBean.editable}" update="mainForm" async="true" />
-					<p:divider />
+					<p:separator />
 					<p:commandButton value="审核"
 						disabled="#{outsourcingOutAdminBean.editable}"
 						onclick="verifyDlg.show();" />
-					<p:divider />
+					<p:separator />
 					<p:commandButton value="第一条"
 						actionListener="#{outsourcingOutAdminBean.first}"
 						disabled="#{outsourcingOutAdminBean.editable}" update="mainForm"

@@ -163,7 +163,10 @@ public class GroupAdminBean extends PrincipalAdminBean {
         }
 
 		try {
-			serviceFor(Group.class).delete(group.unmarshal());
+		    Group _group = group.unmarshal();
+		    _group.getParent().removeChild(_group);
+		    _group.setParent(null);
+			serviceFor(Group.class).delete(_group);
 			loadGroupTree();
 			uiLogger.info("删除成功!");
 		} catch (DataIntegrityViolationException e) {

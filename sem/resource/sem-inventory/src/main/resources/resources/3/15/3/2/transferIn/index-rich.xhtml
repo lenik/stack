@@ -77,11 +77,11 @@
 					<p:commandButton value="删除"
 						onclick="deleteConfirmDialog.show();"
 						disabled="#{transferInAdminBean.editable}" update="mainForm" async="true" />
-					<p:divider />
+					<p:separator />
 					<p:commandButton value="审核"
 						disabled="#{transferInAdminBean.editable}"
 						onclick="verifyDlg.show();" />
-					<p:divider />
+					<p:separator />
 					<p:commandButton value="第一条"
 						actionListener="#{transferInAdminBean.first}"
 						disabled="#{transferInAdminBean.editable}" update="mainForm"
@@ -262,7 +262,7 @@
                             actionListener="#{transferInAdminBean.transferInStart}"
                             disabled="#{transferInAdminBean.transferring}"
                             update="mainForm" async="true"/>
-                        <p:divider />
+                        <p:separator />
                         <p:commandButton value="完成拨入"
                             actionListener="#{transferInAdminBean.transferInDone}"
                             disabled="#{!transferInAdminBean.transferring}"
@@ -271,7 +271,7 @@
                             actionListener="#{transferInAdminBean.cancelTransferIn}"
                             disabled="#{!transferInAdminBean.transferring}"
                             update="mainForm" async="true"/>
-                        <p:divider />
+                        <p:separator />
                         <p:commandButton value="第一条"
                             actionListener="#{transferInAdminBean.firstOut}"
                             disabled="#{transferInAdminBean.transferring}"

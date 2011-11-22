@@ -166,7 +166,10 @@ public class RoleAdminBean extends PrincipalAdminBean {
         }
 
 		try {
-			serviceFor(Role.class).delete(role.unmarshal());
+		    Role _role = role.unmarshal();
+		    _role.getParent().removeChild(_role);
+		    _role.setParent(null);
+			serviceFor(Role.class).delete(_role);
 			loadRoleTree();
 			uiLogger.info("删除成功!");
 		} catch (DataIntegrityViolationException e) {

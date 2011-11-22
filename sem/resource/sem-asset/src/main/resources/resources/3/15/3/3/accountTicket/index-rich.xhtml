@@ -66,17 +66,17 @@
 					<p:commandButton value="删除"
 						onclick="deleteConfirmDialog.show();"
 						disabled="#{accountTicketAdminBean.editable}" update="mainForm" async="true" />
-					<p:divider />
+					<p:separator />
 					<p:commandButton value="保存" actionListener="#{accountTicketAdminBean.save}"
 						disabled="#{!accountTicketAdminBean.editable}" update="mainForm" async="true" />
 					<p:commandButton value="取消"
 						actionListener="#{accountTicketAdminBean.cancel}"
 						disabled="#{!accountTicketAdminBean.editable}" update="mainForm" async="true" />
-					<p:divider />
+					<p:separator />
 					<p:commandButton value="审核"
 						disabled="#{accountTicketAdminBean.editable}"
 						onclick="verifyDlg.show();" />
-					<p:divider />
+					<p:separator />
 					<p:commandButton value="第一条"
 						actionListener="#{accountTicketAdminBean.first}"
 						disabled="#{accountTicketAdminBean.editable}" update="mainForm"

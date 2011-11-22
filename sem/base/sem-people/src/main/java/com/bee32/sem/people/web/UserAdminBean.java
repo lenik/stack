@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 
 import org.primefaces.model.TreeNode;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.icsf.login.UserPassword;
 import com.bee32.plover.criteria.hibernate.Equals;
@@ -221,6 +222,7 @@ public class UserAdminBean
         }
     }
 
+    @Transactional
     public void doDelete() {
         try {
             serviceFor(UserPassword.class).deleteAll(new Equals("user.id", user.getId()));

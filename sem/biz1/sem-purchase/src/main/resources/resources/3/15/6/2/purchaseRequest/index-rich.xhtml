@@ -66,17 +66,17 @@
 					<p:commandButton value="删除"
 						onclick="deleteConfirmDialog.show();"
 						disabled="#{purchaseRequestAdminBean.editable}" update="mainForm" async="true" />
-					<p:divider />
+					<p:separator />
 					<p:commandButton value="保存" actionListener="#{purchaseRequestAdminBean.save}"
 						disabled="#{!purchaseRequestAdminBean.editable}" update="mainForm" async="true" />
 					<p:commandButton value="取消"
 						actionListener="#{purchaseRequestAdminBean.cancel}"
 						disabled="#{!purchaseRequestAdminBean.editable}" update="mainForm" async="true" />
-					<p:divider />
+					<p:separator />
 					<p:commandButton value="审核"
 						disabled="#{purchaseRequestAdminBean.editable}"
 						onclick="verifyDlg.show();" />
-					<p:divider />
+					<p:separator />
 					<p:commandButton value="第一条"
 						actionListener="#{purchaseRequestAdminBean.first}"
 						disabled="#{purchaseRequestAdminBean.editable}" update="mainForm"

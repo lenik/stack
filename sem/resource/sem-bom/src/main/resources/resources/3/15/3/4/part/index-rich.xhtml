@@ -47,7 +47,7 @@
                             actionListener="#{bomAdminBean.newPart}"
                             disabled="#{bomAdminBean.editable}"
                             update="bomForm" async="true" />
-                        <p:divider />
+                        <p:separator />
                         <p:commandButton value="保存"
                             actionListener="#{bomAdminBean.savePart}"
                             disabled="#{!bomAdminBean.editable}"
@@ -56,7 +56,7 @@
                             actionListener="#{bomAdminBean.listParts}"
                             disabled="#{!bomAdminBean.editable}"
                             update="bomForm" async="true" />
-                        <p:divider />
+                        <p:separator />
                         <p:commandButton value="刷新"
                             actionListener="#{bomAdminBean.refreshPart}"
                             disabled="#{bomAdminBean.editable}"
@@ -266,7 +266,7 @@
                                             actionListener="#{bomAdminBean.newItem}"
                                             disabled="#{bomAdminBean.editableComp}"
                                             update="bomForm" async="true" />
-                                        <p:divider />
+                                        <p:separator />
                                         <p:commandButton value="保存"
                                             actionListener="#{bomAdminBean.saveItem}"
                                             disabled="#{!bomAdminBean.editableComp}"
@@ -275,7 +275,7 @@
                                             actionListener="#{bomAdminBean.listItems}"
                                             disabled="#{!bomAdminBean.editableComp}"
                                             update="bomForm" async="true" />
-                                        <p:divider />
+                                        <p:separator />
                                         <p:commandButton value="刷新"
                                             actionListener="#{bomAdminBean.refreshItem}"
                                             disabled="#{bomAdminBean.editableComp}"
