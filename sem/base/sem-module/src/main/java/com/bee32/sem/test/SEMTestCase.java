@@ -66,7 +66,7 @@ public class SEMTestCase
             CommonDataManager dataManager = appctx.getBean(CommonDataManager.class);
             User user = dataManager.asFor(User.class).getByName(userName);
 
-            LoginManager loginManager = appctx.getBean(LoginManager.class);
+            LoginManager loginManager = LoginManager.getInstance();
             loginManager.logIn(user);
         }
     }

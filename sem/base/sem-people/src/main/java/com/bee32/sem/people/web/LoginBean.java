@@ -74,7 +74,7 @@ public class LoginBean
             return;
         }
 
-        LoginManager loginManager = getBean(LoginManager.class);
+        LoginManager loginManager = LoginManager.getInstance();
         try {
             loginManager.logIn(user);
         } catch (Exception e) {

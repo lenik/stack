@@ -2,7 +2,6 @@ package com.bee32.sem.people.web;
 
 import java.io.IOException;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,8 +9,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.login.LoginManager;
+import com.bee32.icsf.login.SessionUser;
 import com.bee32.plover.ajax.SuccessOrFailMessage;
 import com.bee32.plover.ox1.principal.User;
 
@@ -20,8 +19,7 @@ import com.bee32.plover.ox1.principal.User;
 @RequestMapping("/logout.do")
 public class LogoutController {
 
-    @Inject
-    LoginManager loginManager;
+    LoginManager loginManager = LoginManager.getInstance();
 
     @RequestMapping("/logout.do")
     public void logout(HttpServletRequest req, HttpServletResponse res)
