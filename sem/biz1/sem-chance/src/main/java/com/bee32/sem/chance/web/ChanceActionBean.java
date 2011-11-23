@@ -11,7 +11,7 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
 
-import com.bee32.icsf.login.LoginInfo;
+import com.bee32.icsf.login.SessionUser;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.color.MomentIntervalCriteria;
@@ -347,7 +347,7 @@ public class ChanceActionBean
         ChanceActionStyleDto style = new ChanceActionStyleDto().ref(styleId);
         action.setStyle(style);
 
-        UserDto actor = new UserDto().ref(LoginInfo.getInstance().getUser().getId());
+        UserDto actor = new UserDto().ref(SessionUser.getInstance().getUser().getId());
         action.setActor(actor);
 
         try {

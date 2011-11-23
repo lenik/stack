@@ -19,7 +19,7 @@ import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.alt.R_Authority;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ResourceRegistry;
-import com.bee32.icsf.login.LoginInfo;
+import com.bee32.icsf.login.SessionUser;
 import com.bee32.plover.javascript.JavascriptChunk;
 import com.bee32.plover.ox1.principal.User;
 import com.bee32.plover.ox1.principal.UserDao;
@@ -64,7 +64,7 @@ public class AccessCheckAdvice
         if (apResource == null)
             return;
 
-        User currentUser = LoginInfo.getInstance().getInternalUserOpt();
+        User currentUser = SessionUser.getInstance().getInternalUserOpt();
 
         String errMessage = null;
         if (currentUser == null) {

@@ -93,7 +93,7 @@
         <div style="clear: both; border-top: solid 1px #808080; border-bottom: solid 1px #eeeeee; background: #eeeeee;">
             <div style=" padding: 0.5em;">
                 ■ 当前用户：
-                <ui:repeat var="node" value="#{loginPersonInfo.chain}">
+                <ui:repeat var="node" value="#{sessionPerson.chain}">
                     <span style="display">#{node}</span>
                 </ui:repeat>
                 （<a id="aQuit" name="aQuit" href="#">安全退出</a>）

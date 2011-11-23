@@ -10,7 +10,7 @@ import javax.faces.model.SelectItem;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.component.tabview.TabView;
 
-import com.bee32.icsf.login.LoginInfo;
+import com.bee32.icsf.login.SessionUser;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.principal.User;
@@ -24,7 +24,7 @@ import com.bee32.sem.mail.entity.MailDelivery;
 import com.bee32.sem.mail.entity.MailFolder;
 import com.bee32.sem.mail.entity.MailOrientation;
 import com.bee32.sem.people.dto.PersonDto;
-import com.bee32.sem.people.util.LoginPersonInfo;
+import com.bee32.sem.people.util.SessionPerson;
 
 public class MailManageBean
         extends MailManageVdx {
@@ -119,10 +119,10 @@ public class MailManageBean
     public void gotoWritebox() {
         draft = new MailDto().create();
 
-        UserDto currentUser = new UserDto().ref(LoginInfo.getInstance().getUser());
+        UserDto currentUser = new UserDto().ref(SessionUser.getInstance().getUser());
         draft.setFromUser(currentUser);
 
-        PersonDto personOpt = LoginPersonInfo.getInstance().getPersonOpt();
+        PersonDto personOpt = SessionPerson.getInstance().getPersonOpt();
         if (personOpt != null) {
             String personName = personOpt.getDisplayName();
             draft.setFrom(personName);
@@ -176,7 +176,7 @@ public class MailManageBean
         }
         List<UserDto> recipientUsers = draft.getRecipientUsers();
         for (UserDto userDto : recipientUsers) {
-            User currentUser = LoginInfo.getInstance().getInternalUser();
+            User currentUser = SessionUser.getInstance().getInternalUser();
             mail.setFromUser(currentUser);
             MailDelivery recieveDelivery = new MailDelivery(mail, MailOrientation.RECIPIENT);
             recieveDelivery.setFolder(MailFolder.INBOX);

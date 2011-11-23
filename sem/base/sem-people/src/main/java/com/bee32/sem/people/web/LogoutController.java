@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.bee32.icsf.login.LoginInfo;
+import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.login.LoginManager;
 import com.bee32.plover.ajax.SuccessOrFailMessage;
 import com.bee32.plover.ox1.principal.User;
@@ -32,7 +32,7 @@ public class LogoutController {
             @Override
             protected String eval()
                     throws Exception {
-                User userOpt = LoginInfo.getInstance().getInternalUserOpt();
+                User userOpt = SessionUser.getInstance().getInternalUserOpt();
 
                 try {
                     loginManager.logOut(userOpt);

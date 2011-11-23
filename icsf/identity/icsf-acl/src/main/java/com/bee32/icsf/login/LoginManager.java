@@ -1,8 +1,8 @@
 package com.bee32.icsf.login;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ServiceLoader;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import com.bee32.plover.arch.service.ServicePrototypeLoader;
 import com.bee32.plover.ox1.principal.User;
 
 @Service
@@ -31,17 +30,9 @@ public class LoginManager
     @Override
     public void setApplicationContext(ApplicationContext appctx)
             throws BeansException {
-        try {
-            for (Class<? extends ILoginListener> listenerClass : ServicePrototypeLoader.load(ILoginListener.class)) {
-                for (ILoginListener listener : appctx.getBeansOfType(listenerClass).values()) {
-                    logger.debug("Register login-listener: " + listener);
-                    listeners.add(listener);
-                }
-            }
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        } catch (IOException e) {
-            throw new RuntimeException(e.getMessage(), e);
+        for (ILoginListener listener : ServiceLoader.load(ILoginListener.class)) {
+            logger.debug("Register login-listener: " + listener);
+            listeners.add(listener);
         }
     }
 

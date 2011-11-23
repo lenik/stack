@@ -21,7 +21,7 @@ import com.bee32.icsf.access.alt.R_ACLService;
 import com.bee32.icsf.access.resource.IResourceNamespace;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ScannedResourceRegistry;
-import com.bee32.icsf.login.LoginInfo;
+import com.bee32.icsf.login.SessionUser;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityResource;
 import com.bee32.plover.orm.entity.EntityResourceNS;
@@ -77,7 +77,7 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
 
         Permission requiredPermission = new Permission(bits);
 
-        User currentUser = LoginInfo.getInstance().getInternalUserOpt();
+        User currentUser = SessionUser.getInstance().getInternalUserOpt();
         if (currentUser == null)
             // currentUser = User.ANONYMOUS;
             return;

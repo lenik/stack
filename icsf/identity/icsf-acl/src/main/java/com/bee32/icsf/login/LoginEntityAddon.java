@@ -18,7 +18,7 @@ public class LoginEntityAddon
     static Logger logger = LoggerFactory.getLogger(LoginEntityAddon.class);
 
     public static User getContextUser() {
-        User user = LoginInfo.getInstance().getInternalUserOpt();
+        User user = SessionUser.getInstance().getInternalUserOpt();
         if (user != null)
             return user;
         else

@@ -6,8 +6,8 @@ import com.bee32.plover.ox1.principal.UserDto;
 /**
  * 将登录事件转换为 DTO 并记录到 session 中。
  */
-public class InitSessionLoginAdapter
-        extends LoginAdapter {
+public class SessionUserLoginListener
+        extends AbstractLoginListener {
 
     @Override
     public void logIn(LoginEvent event) {
@@ -15,15 +15,15 @@ public class InitSessionLoginAdapter
                 UserDto.GROUPS | UserDto.ROLES, //
                 event.getUser());
 
-        LoginInfo loginInfo = LoginInfo.getInstance();
-        loginInfo.setInternalUser(event.user);
-        loginInfo.setUser(user);
+        SessionUser sessionUser = SessionUser.getInstance();
+        sessionUser.setInternalUser(event.user);
+        sessionUser.setUser(user);
     }
 
     @Override
     public void logOut(LoginEvent event) {
-        LoginInfo loginInfo = LoginInfo.getInstance();
-        loginInfo.destroy();
+        SessionUser sessionUser = SessionUser.getInstance();
+        sessionUser.destroy();
     }
 
 }

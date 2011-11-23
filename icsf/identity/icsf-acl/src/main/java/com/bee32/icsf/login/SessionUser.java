@@ -16,22 +16,22 @@ import com.bee32.plover.ox1.principal.User;
 import com.bee32.plover.ox1.principal.UserDto;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 
-public class LoginInfo
+public class SessionUser
         implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     public static final String SESSION_KEY = "login";
 
-    static Logger logger = Logger.getLogger(LoginInfo.class);
+    static Logger logger = Logger.getLogger(SessionUser.class);
 
     User internalUser;
     UserDto user;
 
-    public LoginInfo() {
+    public SessionUser() {
     }
 
-    public static LoginInfo getInstance() {
+    public static SessionUser getInstance() {
         HttpSession session = ThreadHttpContext.getSessionOpt();
 
         if (session == null)
@@ -40,13 +40,13 @@ public class LoginInfo
         return getInstance(session);
     }
 
-    public static synchronized LoginInfo getInstance(HttpSession session) {
+    public static synchronized SessionUser getInstance(HttpSession session) {
         if (session == null)
             throw new NullPointerException("session");
 
-        LoginInfo loginInfo = (LoginInfo) session.getAttribute(SESSION_KEY);
+        SessionUser loginInfo = (SessionUser) session.getAttribute(SESSION_KEY);
         if (loginInfo == null) {
-            loginInfo = new LoginInfo();
+            loginInfo = new SessionUser();
             session.setAttribute(SESSION_KEY, loginInfo);
         }
 

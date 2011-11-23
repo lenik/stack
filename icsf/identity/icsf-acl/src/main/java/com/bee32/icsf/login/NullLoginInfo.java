@@ -4,7 +4,7 @@ import com.bee32.plover.ox1.principal.User;
 import com.bee32.plover.ox1.principal.UserDto;
 
 public class NullLoginInfo
-        extends LoginInfo {
+        extends SessionUser {
 
     private static final long serialVersionUID = 1L;
 

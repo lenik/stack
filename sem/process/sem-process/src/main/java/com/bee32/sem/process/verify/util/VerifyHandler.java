@@ -5,7 +5,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 
-import com.bee32.icsf.login.LoginInfo;
+import com.bee32.icsf.login.SessionUser;
 import com.bee32.plover.ajax.SuccessOrFailMessage;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.web.EntityHandler;
@@ -37,7 +37,7 @@ public class VerifyHandler<E extends VerifiableEntity<K, C>, //
 
         final String _id = req.getParameter("id");
 
-        final User __currentUser = LoginInfo.getInstance().getInternalUser();
+        final User __currentUser = SessionUser.getInstance().getInternalUser();
 
         SuccessOrFailMessage sof = new SuccessOrFailMessage("审核完成。") {
 

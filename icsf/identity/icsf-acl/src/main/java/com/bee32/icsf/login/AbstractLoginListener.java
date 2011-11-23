@@ -1,11 +1,9 @@
 package com.bee32.icsf.login;
 
-import com.bee32.plover.arch.DataService;
 import com.bee32.plover.inject.ServiceTemplate;
 
-@ServiceTemplate(prototype = true)
-public abstract class LoginAdapter
-        extends DataService
+@ServiceTemplate
+public abstract class AbstractLoginListener
         implements ILoginListener {
 
     @Override

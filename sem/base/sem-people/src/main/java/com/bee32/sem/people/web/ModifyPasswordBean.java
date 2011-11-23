@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.bee32.icsf.login.LoginCriteria;
-import com.bee32.icsf.login.LoginInfo;
+import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.login.UserPassword;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.ox1.principal.User;
@@ -57,7 +57,7 @@ public class ModifyPasswordBean
             return;
         }
 
-        User u = LoginInfo.getInstance().getInternalUser();
+        User u = SessionUser.getInstance().getInternalUser();
         List<UserPassword> plist = serviceFor(UserPassword.class).list(LoginCriteria.forUser(u));
         if (plist.isEmpty()) {
             uiLogger.warn("密码不存在");

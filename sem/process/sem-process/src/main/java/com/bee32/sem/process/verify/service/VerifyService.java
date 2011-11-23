@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bee32.icsf.login.LoginInfo;
+import com.bee32.icsf.login.SessionUser;
 import com.bee32.plover.arch.DataService;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.util.DTOs;
@@ -148,7 +148,7 @@ public class VerifyService
         if (entity == null)
             throw new NullPointerException("entity");
 
-        User __currentUser = LoginInfo.getInstance().getInternalUser();
+        User __currentUser = SessionUser.getInstance().getInternalUser();
 
         // XXX
         // userService.get(0, __currentUser.getId());
