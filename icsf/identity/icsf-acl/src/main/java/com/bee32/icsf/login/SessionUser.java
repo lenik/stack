@@ -35,7 +35,7 @@ public class SessionUser
         HttpSession session = ThreadHttpContext.getSessionOpt();
 
         if (session == null)
-            return NullLoginInfo.INSTANCE;
+            return NullSessionUser.INSTANCE;
 
         return getInstance(session);
     }

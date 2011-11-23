@@ -80,7 +80,7 @@ public class SessionPerson
         HttpSession session = ThreadHttpContext.getSessionOpt();
 
         if (session == null)
-            return NullLoginPersonInfo.INSTANCE;
+            return NullSessionPerson.INSTANCE;
 
         return getInstance(session);
     }

@@ -1,29 +1,32 @@
 package com.bee32.sem.people.util;
 
-import org.springframework.beans.factory.FactoryBean;
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
+import com.bee32.icsf.login.LoginException;
 import com.bee32.plover.inject.scope.PerSession;
+import com.bee32.sem.people.dto.PersonDto;
 
 @Component("sessionPerson")
 @PerSession
-public class SessionPersonFactoryBean
-        implements FactoryBean<SessionPerson> {
+public class SessionPersonFactoryBean {
 
-    @Override
-    public SessionPerson getObject()
-            throws Exception {
-        return SessionPerson.getInstance();
+    public PersonDto getPersonOpt() {
+        return SessionPerson.getInstance().getPersonOpt();
     }
 
-    @Override
-    public Class<?> getObjectType() {
-        return SessionPerson.class;
+    public final PersonDto getPerson()
+            throws LoginException {
+        return SessionPerson.getInstance().getPerson();
     }
 
-    @Override
-    public boolean isSingleton() {
-        return false;
+    public void setPerson(PersonDto person) {
+        SessionPerson.getInstance().setPerson(person);
+    }
+
+    public List<String> getChain() {
+        return SessionPerson.getInstance().getChain();
     }
 
 }

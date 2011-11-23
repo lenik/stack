@@ -3,7 +3,7 @@ package com.bee32.icsf.login;
 import com.bee32.plover.ox1.principal.User;
 import com.bee32.plover.ox1.principal.UserDto;
 
-public class NullLoginInfo
+public class NullSessionUser
         extends SessionUser {
 
     private static final long serialVersionUID = 1L;
@@ -18,6 +18,6 @@ public class NullLoginInfo
         return null;
     }
 
-    public static final NullLoginInfo INSTANCE = new NullLoginInfo();
+    public static final NullSessionUser INSTANCE = new NullSessionUser();
 
 }
