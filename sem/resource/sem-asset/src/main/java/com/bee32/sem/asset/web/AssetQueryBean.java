@@ -12,7 +12,7 @@ import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
 
-public class StockQueryBean extends EntityViewBean {
+public class AssetQueryBean extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,7 +29,7 @@ public class StockQueryBean extends EntityViewBean {
     private List<AccountSubjectDto> accountSubjects;
     private AccountSubjectDto selectedAccountSubject;
 
-    public StockQueryBean() {
+    public AssetQueryBean() {
         toDate = new Date();
     }
 

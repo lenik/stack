@@ -22,7 +22,7 @@
                 <h:outputText value="一级科目"/>
                 <t:panelGrid columns="2">
                     <p:inputText id="accountSubject"
-                        value="#{stockQueryBean.subject.label}"
+                        value="#{assetQueryBean.subject.label}"
                         readonly="true" />
                     <p:commandButton value="..."
                         onclick="accountSubjectDialog.show();" />
@@ -30,7 +30,7 @@
                 <h:outputText value="二级科目(客户/供应商/个人)"/>
                 <t:panelGrid columns="2">
                     <p:inputText id="party"
-                        value="#{stockQueryBean.party.name}"
+                        value="#{assetQueryBean.party.name}"
                         readonly="true" />
                     <p:commandButton value="..."
                         onclick="partyDialog.show();" disabled="" />
@@ -39,7 +39,7 @@
                 <h:outputText value="截止时间"/>
                 <p:calendar navigator="true"
                     locale="zh_CN" pattern="yyyy-MM-dd"
-                    value="#{stockQueryBean.toDate}" showOn="button" />
+                    value="#{assetQueryBean.toDate}" showOn="button" />
                 <t:panelGroup/>
                 <t:panelGroup/>
             </t:panelGrid>
@@ -75,15 +75,15 @@
 
                     <h:panelGrid columns="5">
                         <h:outputLabel value="科目代码的全部或部份:" />
-                        <p:inputText value="#{stockQueryBean.accountSubjectCodePattern}" />
+                        <p:inputText value="#{assetQueryBean.accountSubjectCodePattern}" />
                         <h:outputLabel value="科目名称全部或部份:" />
-                        <p:inputText value="#{stockQueryBean.accountSubjectNamePattern}" />
+                        <p:inputText value="#{assetQueryBean.accountSubjectNamePattern}" />
                         <p:commandButton value="查找"
-                            actionListener="#{stockQueryBean.findAccountSubject}" update="accountSubjects"
+                            actionListener="#{assetQueryBean.findAccountSubject}" update="accountSubjects"
                             async="true" />
                     </h:panelGrid>
                     <p:dataTable id="accountSubjects" var="accountSubject"
-                        value="#{stockQueryBean.accountSubjects}" resizableColumns="true"
+                        value="#{assetQueryBean.accountSubjects}" resizableColumns="true"
                         rowIndexVar="rowIndex"
                         scrollable="true" scrollWidth="600" scrollHeight="350">
 
@@ -102,11 +102,11 @@
                         <p:column headerText="动作">
                             <p:commandLink
                                 oncomplete="accountSubjectDialog.hide()"
-                                action="#{stockQueryBean.chooseAccountSubject}"
+                                action="#{assetQueryBean.chooseAccountSubject}"
                                 update="mainForm:accountSubject" value="挑选">
                                 <f:setPropertyActionListener
                                     value="#{accountSubject}"
-                                    target="#{stockQueryBean.selectedAccountSubject}" />
+                                    target="#{assetQueryBean.selectedAccountSubject}" />
                             </p:commandLink>
                         </p:column>
                     </p:dataTable>
@@ -123,13 +123,13 @@
 
                     <h:panelGrid columns="3">
                         <h:outputLabel value="名称全部或部份:" />
-                        <p:inputText value="#{stockQueryBean.partyPattern}" />
+                        <p:inputText value="#{assetQueryBean.partyPattern}" />
                         <p:commandButton value="查找"
-                            actionListener="#{stockQueryBean.findParty}" update="parties"
+                            actionListener="#{assetQueryBean.findParty}" update="parties"
                             async="true" />
                     </h:panelGrid>
                     <p:dataTable id="parties" var="party"
-                        value="#{stockQueryBean.parties}" resizableColumns="true"
+                        value="#{assetQueryBean.parties}" resizableColumns="true"
                         rowIndexVar="rowIndex"
                         scrollable="true" scrollWidth="600" scrollHeight="350">
 
@@ -169,11 +169,11 @@
                         <p:column headerText="动作">
                             <p:commandLink
                                 oncomplete="partyDialog.hide()"
-                                action="#{stockQueryBean.chooseParty}"
+                                action="#{assetQueryBean.chooseParty}"
                                 update="mainForm:party" value="挑选">
                                 <f:setPropertyActionListener
                                     value="#{party}"
-                                    target="#{stockQueryBean.selectedParty}" />
+                                    target="#{assetQueryBean.selectedParty}" />
                             </p:commandLink>
                         </p:column>
                     </p:dataTable>
