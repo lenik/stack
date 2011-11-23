@@ -88,7 +88,7 @@
 				<t:panelGrid columns="4">
                     <h:outputText value="标识:" />
                     <t:panelGroup colspan="3">
-                        <h:outputText value="#{makeOrderAdminBean.makeOrder.id}"/>
+                        <h:outputText value="#{makeOrderAdminBean.makeOrder.id}" style="font-weight:bold;font-size:large"/>
                     </t:panelGroup>
 
                     <h:outputText value="时间:" />
@@ -111,6 +111,14 @@
                     <t:panelGroup colspan="3">
                         <p:inputText id="chance" value="#{makeOrderAdminBean.makeOrder.chance.subject}" readonly="true"/>
                         <p:commandButton value="..." onclick="chanceDialog.show()" disabled="#{!makeOrderAdminBean.editable}"/>
+                    </t:panelGroup>
+
+                    <h:outputText value="附加要求:" />
+                    <t:panelGroup colspan="3">
+                        <p:inputTextarea
+                            style="width:400px;height:50px;"
+                            value="#{makeOrderAdminBean.makeOrder.description}"
+                            disabled="#{!makeOrderAdminBean.editable}" />
                     </t:panelGroup>
 
                 </t:panelGrid>

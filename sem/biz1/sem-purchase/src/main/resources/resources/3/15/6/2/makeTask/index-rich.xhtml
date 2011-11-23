@@ -88,7 +88,7 @@
 				<t:panelGrid columns="4">
                     <h:outputText value="标识:" />
                     <t:panelGroup colspan="3">
-                        <h:outputText value="#{makeTaskAdminBean.makeTask.id}"/>
+                        <h:outputText value="#{makeTaskAdminBean.makeTask.id}" style="font-weight:bold;font-size:large"/>
                     </t:panelGroup>
 
                     <h:outputText value="时间:" />
@@ -106,11 +106,8 @@
                         <p:inputText id="order" value="#{makeTaskAdminBean.makeTask.order.id}" readonly="true"/>
                         <p:commandButton value="..." onclick="orderDialog.show()" disabled="#{!makeTaskAdminBean.editable}"/>
                     </t:panelGroup>
-                    <h:outputText value="完工时间:" />
-                    <p:calendar id="deadline" navigator="true"
-                        locale="zh_CN" pattern="yyyy-MM-dd"
-                        value="#{makeTaskAdminBean.makeTask.deadline}"
-                        showOn="button" />
+                    <t:panelGroup/>
+                    <t:panelGroup/>
                 </t:panelGrid>
 
                 <h:outputText value="明细"/>
@@ -149,7 +146,7 @@
 
                     <p:column>
                         <f:facet name="header">
-                            <h:outputText value="交货日期"/>
+                            <h:outputText value="完工时间"/>
                         </f:facet>
                         <h:outputText value="#{item.deadline}" />
                     </p:column>
@@ -302,10 +299,6 @@
 
                         <p:column headerText="创建时间">
                             <h:outputText value="#{order.createdDate}" />
-                        </p:column>
-
-                        <p:column headerText="交货时间">
-                            <h:outputText value="#{order.deadline}" />
                         </p:column>
 
                         <p:column>

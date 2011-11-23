@@ -42,6 +42,9 @@ public class MakeTask
         this.order = order;
     }
 
+    /**
+     * 完工时间(暂时不用)
+     */
     @Temporal(TemporalType.TIMESTAMP)
     public Date getDeadline() {
         return deadline;
