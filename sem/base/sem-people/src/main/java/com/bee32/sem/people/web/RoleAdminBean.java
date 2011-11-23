@@ -5,7 +5,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.primefaces.model.TreeNode;
-import org.springframework.dao.DataIntegrityViolationException;
 
 import com.bee32.plover.ox1.principal.Group;
 import com.bee32.plover.ox1.principal.GroupDto;
@@ -155,7 +154,7 @@ public class RoleAdminBean extends PrincipalAdminBean {
             loadRoleTree();
             uiLogger.info("保存成功。");
         } catch (Exception e) {
-            uiLogger.error("保存失败.错误消息:" + e.getMessage());
+            uiLogger.error("保存失败.", e);
         }
     }
 
@@ -167,13 +166,15 @@ public class RoleAdminBean extends PrincipalAdminBean {
 
 		try {
 		    Role _role = role.unmarshal();
-		    _role.getParent().removeChild(_role);
-		    _role.setParent(null);
+            if (_role.getParent() != null) {
+                _role.getParent().removeChild(_role);
+                _role.setParent(null);
+            }
 			serviceFor(Role.class).delete(_role);
 			loadRoleTree();
 			uiLogger.info("删除成功!");
-		} catch (DataIntegrityViolationException e) {
-			uiLogger.error("删除失败,违反约束归则,可能你需要删除的角色在其它地方被使用到!");
+		} catch (Exception e) {
+			uiLogger.error("删除失败.", e);
 		}
     }
 

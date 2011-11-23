@@ -6,7 +6,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.primefaces.model.TreeNode;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.icsf.login.UserPassword;
@@ -218,7 +217,7 @@ public class UserAdminBean
 
             uiLogger.info("保存成功。");
         } catch (Exception e) {
-            uiLogger.error("保存失败.错误消息:" + e.getMessage());
+            uiLogger.error("保存失败.", e);
         }
     }
 
@@ -229,8 +228,8 @@ public class UserAdminBean
 
             serviceFor(User.class).delete(user.unmarshal());
             uiLogger.info("删除成功!");
-        } catch (DataIntegrityViolationException e) {
-            uiLogger.error("删除失败,违反约束归则,可能你需要删除的用户在其它地方被使用到!");
+        } catch (Exception e) {
+            uiLogger.error("删除失败.", e);
         }
     }
 
