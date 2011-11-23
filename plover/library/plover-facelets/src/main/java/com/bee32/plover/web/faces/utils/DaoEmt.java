@@ -25,6 +25,8 @@ public class DaoEmt
 
     @Override
     public int handle(String message) {
+        if (message == null)
+            return SKIP;
         if (message.contains("org.hibernate."))
             return REPLACE;
         else
