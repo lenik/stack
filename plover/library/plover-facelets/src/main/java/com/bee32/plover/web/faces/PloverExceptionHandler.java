@@ -16,6 +16,7 @@ import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.ExceptionQueuedEventContext;
 import javax.free.IllegalUsageException;
 import javax.free.TypeHierMap;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,8 +77,15 @@ public class PloverExceptionHandler
                         throw new NullPointerException("resultView");
 
                     ExternalContext extContext = facesContext.getExternalContext();
+
                     String href = extContext.getRequestContextPath() + resultView;
                     String url = extContext.encodeActionURL(href);
+
+                    HttpServletResponse resp = (HttpServletResponse) extContext.getResponse();
+                    boolean committed = resp.isCommitted();
+                    if (committed)
+                        throw new IllegalStateException("Already committed, can't redirect to " + url);
+
                     try {
                         extContext.redirect(url);
                     } catch (IOException e) {
