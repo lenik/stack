@@ -6,6 +6,7 @@ import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.ox1.tree.TreeCriteria;
@@ -74,7 +75,10 @@ public class AccountSubjectAdminBean extends EntityViewBean {
     protected void loadAccountSubjectTree() {
         root = new DefaultTreeNode("root", null);
 
-        List<AccountSubject> subjects = serviceFor(AccountSubject.class).list(TreeCriteria.root());
+        List<AccountSubject> subjects =
+                serviceFor(AccountSubject.class).list(
+                        TreeCriteria.root(),
+                        Order.asc("name"));
         List<AccountSubjectDto> subjectDtos = DTOs.mrefList(AccountSubjectDto.class, -1, subjects);
 
         for (AccountSubjectDto subjectDto : subjectDtos) {
@@ -118,7 +122,14 @@ public class AccountSubjectAdminBean extends EntityViewBean {
     }
 
     public void save() {
+        if (accountSubject.getParent() == null
+                || accountSubject.getParent().getId() == null) {
+            uiLogger.error("新增科目的上级科目不能为空!");
+            return;
+        }
+
         AccountSubject s = accountSubject.unmarshal();
+
         try {
             serviceFor(AccountSubject.class).saveOrUpdate(s);
             loadAccountSubjectTree();
@@ -149,7 +160,11 @@ public class AccountSubjectAdminBean extends EntityViewBean {
     }
 
     public void selectParentSubject() {
-        accountSubject.setParent((AccountSubjectDto) selectedParentSubjectNode.getData());
+        AccountSubjectDto parentSubject = (AccountSubjectDto) selectedParentSubjectNode.getData();
+
+        accountSubject.setParent(parentSubject);
+        accountSubject.setDebitSign(parentSubject.isDebitSign());
+        accountSubject.setCreditSign(parentSubject.isCreditSign());
     }
 
 }

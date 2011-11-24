@@ -59,8 +59,11 @@
 
                         <h:outputLabel value="上级科目" />
                         <h:panelGrid columns="2">
-                            <p:inputText id="parentAccountSubject" value="#{accountSubjectAdminBean.accountSubject.parent.label}" disabled="true"/>
-                            <p:commandButton value="..." oncomplete="chooseParentSubjectDialog.show();"/>
+                            <t:panelGrid columns="3">
+                                <h:outputText id="parentAccountSubjectCode" value="#{accountSubjectAdminBean.accountSubject.parent.name}"/>
+                                <p:inputText id="parentAccountSubject" value="#{accountSubjectAdminBean.accountSubject.parent.label}" disabled="true"/>
+                                <p:commandButton value="..." oncomplete="chooseParentSubjectDialog.show();"/>
+                            </t:panelGrid>
                         </h:panelGrid>
 
                         <h:outputLabel value="编号" />
@@ -73,6 +76,7 @@
                             value="#{accountSubjectAdminBean.accountSubject.label}"
                             disabled="#{not accountSubjectAdminBean.editNewStatus}" />
 
+                        <!--
                         <h:outputLabel value="借方符号" />
                         <p:selectOneMenu id="debitSign" value="#{accountSubjectAdminBean.accountSubject.debitSign}">
                             <f:selectItem itemLabel="正" itemValue="true" />
@@ -84,7 +88,7 @@
                             <f:selectItem itemLabel="正" itemValue="true" />
                             <f:selectItem itemLabel="负" itemValue="false" />
                         </p:selectOneMenu>
-
+                        -->
 
                         <t:panelGroup colspan="2">
                             <t:panelGrid columns="2">
@@ -135,7 +139,8 @@
 
                     <h:panelGrid columns="2">
                         <p:commandButton value="确定"
-                            actionListener="#{accountSubjectAdminBean.selectParentSubject}" update="editForm:parentAccountSubject"
+                            actionListener="#{accountSubjectAdminBean.selectParentSubject}"
+                            update="editForm:parentAccountSubject editForm:parentAccountSubjectCode"
                             oncomplete="chooseParentSubjectDialog.hide();" />
                         <p:commandButton value="取消"
                             oncomplete="chooseParentSubjectDialog.hide();" />
