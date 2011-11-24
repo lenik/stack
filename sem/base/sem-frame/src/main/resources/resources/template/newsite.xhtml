@@ -63,6 +63,12 @@
         </div>
     </div>
 
+    <ui:insert name="login">
+        <div style="display: none">
+            <sem:login />
+        </div>
+    </ui:insert>
+
     <div>
         <ui:insert name="menu">
             <f:verbatim>#{mainMenu.superfishHtml}</f:verbatim>
@@ -80,12 +86,6 @@
     </ui:insert>
 
     <ui:insert name="pageHeader" />
-
-    <ui:insert name="login">
-        <div style="display: none">
-            <sem:login />
-        </div>
-    </ui:insert>
 
     <ui:insert name="content">正在构建中……</ui:insert>
 
