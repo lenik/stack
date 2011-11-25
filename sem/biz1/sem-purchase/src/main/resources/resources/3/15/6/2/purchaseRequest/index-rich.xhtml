@@ -185,6 +185,12 @@
 								<f:setPropertyActionListener value="#{item}"
 									target="#{purchaseRequestAdminBean.purchaseRequestItem}" />
 							</p:commandLink>
+
+                            <p:commandLink
+                                oncomplete="inquiryDialog.show()" value="询价">
+                                <f:setPropertyActionListener value="#{item}"
+                                    target="#{purchaseRequestAdminBean.purchaseRequestItem}" />
+                            </p:commandLink>
 						</t:panelGroup>
 					</p:column>
 
@@ -308,7 +314,10 @@
                         </p:column>
 
                         <p:column headerText="创建时间">
-                            <h:outputText value="#{plan.createdDate}" />
+                            <h:outputText value="#{plan.createdDate}">
+                                <f:convertDateTime pattern="yyyy-MM-dd"
+                                    timeZone="Asia/Shanghai" />
+                            </h:outputText>
                         </p:column>
 
                         <p:column>
@@ -365,7 +374,7 @@
         </h:form>
 
         <h:form id="planItemsForm">
-            <p:dialog header="订单明细" widgetVar="planItemsDialog" modal="true"
+            <p:dialog header="物料计划明细" widgetVar="planItemsDialog" modal="true"
                 height="480" width="800">
                 <h:panelGroup id="planItemsPanel">
 

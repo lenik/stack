@@ -195,7 +195,10 @@
                         <f:facet name="header">
                             <h:outputText value="交货时间"/>
                         </f:facet>
-                        <h:outputText value="#{item.deadline}" />
+                        <h:outputText value="#{item.deadline}">
+                            <f:convertDateTime pattern="yyyy-MM-dd"
+                                timeZone="Asia/Shanghai" />
+                        </h:outputText>
                     </p:column>
 
 					<p:column>

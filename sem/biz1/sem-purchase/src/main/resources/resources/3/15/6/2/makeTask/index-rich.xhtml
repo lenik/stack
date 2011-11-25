@@ -148,7 +148,10 @@
                         <f:facet name="header">
                             <h:outputText value="完工时间"/>
                         </f:facet>
-                        <h:outputText value="#{item.deadline}" />
+                        <h:outputText value="#{item.deadline}">
+                            <f:convertDateTime pattern="yyyy-MM-dd"
+                                timeZone="Asia/Shanghai" />
+                        </h:outputText>
                     </p:column>
 
 					<p:column>
@@ -298,7 +301,10 @@
                         </p:column>
 
                         <p:column headerText="创建时间">
-                            <h:outputText value="#{order.createdDate}" />
+                            <h:outputText value="#{order.createdDate}">
+                                <f:convertDateTime pattern="yyyy-MM-dd"
+                                    timeZone="Asia/Shanghai" />
+                            </h:outputText>
                         </p:column>
 
                         <p:column>

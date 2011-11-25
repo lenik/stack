@@ -272,7 +272,12 @@
                                         <h:outputText value="有效期" />
                                     </f:facet>
                                     <h:outputText
-                                        value="#{item.expirationDate}" />
+                                        value="#{item.expirationDate}">
+                                        <f:convertDateTime
+                                            pattern="yyyy-MM-dd"
+                                            timeZone="Asia/Shanghai" />
+                                    </h:outputText>
+
                                 </p:column>
 
                                 <p:column>
@@ -438,11 +443,17 @@
                         </p:column>
 
                         <p:column headerText="创建时间">
-                            <h:outputText value="#{task.createdDate}" />
+                            <h:outputText value="#{task.createdDate}">
+                                <f:convertDateTime pattern="yyyy-MM-dd"
+                                    timeZone="Asia/Shanghai" />
+                            </h:outputText>
                         </p:column>
 
                         <p:column headerText="交货时间">
-                            <h:outputText value="#{task.deadline}" />
+                            <h:outputText value="#{task.deadline}">
+                                <f:convertDateTime pattern="yyyy-MM-dd"
+                                    timeZone="Asia/Shanghai" />
+                            </h:outputText>
                         </p:column>
 
                         <p:column headerText="对应定单标识">
@@ -526,8 +537,10 @@
                             <f:facet name="header">
                                 <h:outputText value="交货日期" />
                             </f:facet>
-                            <h:outputText
-                                value="#{item.deadline}" />
+                            <h:outputText value="#{item.deadline}">
+                                <f:convertDateTime pattern="yyyy-MM-dd"
+                                    timeZone="Asia/Shanghai" />
+                            </h:outputText>
                         </p:column>
 
                     </p:dataTable>
@@ -617,7 +630,11 @@
                         <h:outputLabel value="批号" />
                         <h:outputText value="#{materialPlanAdminBean.orderItem.batch}" />
                         <h:outputLabel value="有效期" />
-                        <h:outputText value="#{materialPlanAdminBean.orderItem.expirationDate}"/>
+                        <h:outputText
+                            value="#{materialPlanAdminBean.orderItem.expirationDate}">
+                            <f:convertDateTime pattern="yyyy-MM-dd"
+                                timeZone="Asia/Shanghai" />
+                        </h:outputText>
 
                         <h:outputLabel value="库位" />
                         <p:inputText value="#{materialPlanAdminBean.orderItem.location.nodeText}"/>
@@ -767,7 +784,11 @@
                         </p:column>
 
                         <p:column headerText="有效期">
-                            <h:outputText value="#{item.item.expirationDate}" />
+                            <h:outputText
+                                value="#{item.item.expirationDate}">
+                                <f:convertDateTime pattern="yyyy-MM-dd"
+                                    timeZone="Asia/Shanghai" />
+                            </h:outputText>
                         </p:column>
 
                         <p:column headerText="库位">
