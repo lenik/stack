@@ -6,7 +6,9 @@ import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.IsNull;
 import com.bee32.plover.criteria.hibernate.LeftHand;
+import com.bee32.sem.asset.entity.AccountTicketItem;
 import com.bee32.sem.asset.entity.BudgetRequest;
+import com.bee32.sem.asset.service.AssetQueryOptions;
 
 public class AssetCriteria
         extends CriteriaSpec {
@@ -16,4 +18,20 @@ public class AssetCriteria
         return compose(alias("ticket", "ticket", CriteriaSpecification.LEFT_JOIN), //
                 new IsNull("ticket.id"));
     }
+
+    @LeftHand(AccountTicketItem.class)
+    public static ICriteriaElement select(AssetQueryOptions options) {
+        return compose(//
+                // alias("ticket", "ticket", CriteriaSpecification.LEFT_JOIN), //
+                // VERIFIED?
+                lessOrEquals("endTime", options.getTimestamp()), //
+
+                // LIKE "01%"
+                // _equals("subject", options.getSubject()), //
+                alias("subject", "subject", CriteriaSpecification.LEFT_JOIN), //
+                _like("subject.name", options.getSubject().getName() + "%"), //
+
+                _equals("party", options.getParty()));
+    }
+
 }
