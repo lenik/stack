@@ -22,6 +22,7 @@ public class PurchaseRequestItemDto
     int index;
     MaterialDto material;
     BigDecimal quantity = new BigDecimal(0);
+    BigDecimal planQuantity = new BigDecimal(0);
 
     PartyDto preferredSupplier;
     String additionalRequirement;
@@ -33,6 +34,7 @@ public class PurchaseRequestItemDto
         index = source.getIndex();
         material = mref(MaterialDto.class, source.getMaterial());
         quantity = source.getQuantity();
+        planQuantity = source.getPlanQuantity();
 
         preferredSupplier = mref(PartyDto.class, source.getPreferredSupplier());
         additionalRequirement = source.getAdditionalRequirement();
@@ -44,6 +46,7 @@ public class PurchaseRequestItemDto
         target.setIndex(index);
         merge(target, "material", material);
         target.setQuantity(quantity);
+        target.setPlanQuantity(planQuantity);
 
         merge(target, "preferredSupplier", preferredSupplier);
 
@@ -86,6 +89,14 @@ public class PurchaseRequestItemDto
 
     public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
+    }
+
+    public BigDecimal getPlanQuantity() {
+        return planQuantity;
+    }
+
+    public void setPlanQuantity(BigDecimal planQuantity) {
+        this.planQuantity = planQuantity;
     }
 
     public PartyDto getPreferredSupplier() {

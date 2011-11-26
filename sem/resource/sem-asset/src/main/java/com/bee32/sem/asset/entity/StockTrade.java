@@ -1,6 +1,5 @@
 package com.bee32.sem.asset.entity;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,10 +9,6 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-
-import com.bee32.plover.util.i18n.CurrencyConfig;
-import com.bee32.sem.world.monetary.FxrQueryException;
-import com.bee32.sem.world.monetary.MCValue;
 
 @Entity
 @DiscriminatorValue("TRAD")

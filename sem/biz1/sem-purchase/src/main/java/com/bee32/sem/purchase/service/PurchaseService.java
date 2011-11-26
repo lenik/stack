@@ -123,6 +123,7 @@ public class PurchaseService extends DataService {
                requestItem.setMaterial(m);
                requestItem.setPurchaseRequest(purchaseRequest);
                requestItem.setQuantity(requestQuantity);
+               requestItem.setPlanQuantity(requestQuantity);    //从物料计划计算采购请求量时，把计划采购量首先设置为和计算量相同
 
                requestItems.add(requestItem);
            }

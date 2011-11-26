@@ -149,9 +149,16 @@
 
                     <p:column>
                         <f:facet name="header">
-                            <h:outputText value="数量"/>
+                            <h:outputText value="请求数量"/>
                         </f:facet>
                         <h:outputText value="#{item.quantity}" />
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="计划数量"/>
+                        </f:facet>
+                        <h:outputText value="#{item.planQuantity}" />
                     </p:column>
 
                     <p:column>
@@ -178,6 +185,7 @@
 								<f:setPropertyActionListener value="#{item}"
 									target="#{purchaseRequestAdminBean.purchaseRequestItem}" />
 							</p:commandLink>
+                            <!--
 							<p:spacer width="10" />
 							<p:commandLink
 								disabled="#{!purchaseRequestAdminBean.editable}"
@@ -185,7 +193,8 @@
 								<f:setPropertyActionListener value="#{item}"
 									target="#{purchaseRequestAdminBean.purchaseRequestItem}" />
 							</p:commandLink>
-
+                           -->
+                            <p:spacer width="10" />
                             <p:commandLink
                                 oncomplete="inquiryDialog.show()" value="询价">
                                 <f:setPropertyActionListener value="#{item}"
@@ -210,8 +219,11 @@
                         <h:outputLabel value="物料" />
                         <h:outputText value="#{purchaseRequestAdminBean.purchaseRequestItem.material.label}"/>
 
-                        <h:outputLabel value="数量" />
+                        <h:outputLabel value="请求数量" />
                         <h:outputText value="#{purchaseRequestAdminBean.purchaseRequestItem.quantity}"/>
+
+                        <h:outputLabel value="计划数量" />
+                        <p:inputText value="#{purchaseRequestAdminBean.purchaseRequestItem.planQuantity}"/>
 
                         <h:outputLabel value="优选供应商" />
                         <t:panelGroup>

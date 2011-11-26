@@ -2,10 +2,12 @@ package com.bee32.sem.purchase.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.NaturalId;
@@ -35,9 +37,12 @@ public class PurchaseRequestItem
     int index;
     Material material;
     BigDecimal quantity = new BigDecimal(0);
+    BigDecimal planQuantity = new BigDecimal(0);
 
     Party preferredSupplier;
     String additionalRequirement;
+
+    List<Inquiry> inquiries;
 
     @NaturalId
     @ManyToOne(optional = false)
@@ -72,7 +77,7 @@ public class PurchaseRequestItem
     }
 
     /**
-     * 数量
+     * 从物料需求计算过来的数量(请求数量)
      *
      * <p>
      * 精度限制：小数点后4位数字。如果需要超出该精度，应考虑为对应物品采用不同的单位。
@@ -96,6 +101,20 @@ public class PurchaseRequestItem
         if (quantity == null)
             throw new NullPointerException("quantity");
         this.quantity = quantity;
+    }
+
+    /**
+     * 实际计划采购的数量(计划数量)
+     */
+    @Column(scale = QTY_ITEM_SCALE, precision = QTY_ITEM_PRECISION, nullable = false)
+    public BigDecimal getPlanQuantity() {
+        return planQuantity;
+    }
+
+    public void setPlanQuantity(BigDecimal planQuantity) {
+        if (planQuantity == null)
+            throw new NullPointerException("planQuantity");
+        this.planQuantity = planQuantity;
     }
 
     @ManyToOne
@@ -142,5 +161,18 @@ public class PurchaseRequestItem
         super.detach();
         purchaseRequest = null;
         return this;
+    }
+
+
+    /**
+     * 采购项目对应的询价
+     */
+    @OneToMany(mappedBy = "purchaseReqeustItem")
+    public List<Inquiry> getInquiries() {
+        return inquiries;
+    }
+
+    public void setInquiries(List<Inquiry> inquiries) {
+        this.inquiries = inquiries;
     }
 }
