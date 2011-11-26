@@ -10,8 +10,8 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Index;
 
 import com.bee32.plover.arch.util.DummyId;
-import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.color.Blue;
 
 /**
@@ -94,7 +94,7 @@ public abstract class NameDict
     }
 
     @Override
-    protected CriteriaElement selector(String prefix) {
+    protected ICriteriaElement selector(String prefix) {
         if (name == null)
             throw new NullPointerException("name");
         return new Equals(prefix + "name", name);
