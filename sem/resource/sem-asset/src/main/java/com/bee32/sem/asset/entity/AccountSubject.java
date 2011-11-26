@@ -1,31 +1,28 @@
 package com.bee32.sem.asset.entity;
 
-import java.io.Serializable;
-
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 
-import org.hibernate.annotations.NaturalId;
-
-import com.bee32.plover.arch.util.DummyId;
-import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.ox1.tree.TreeEntityAuto;
+import com.bee32.plover.ox1.dict.ShortNameDict;
 
 /**
  * 科目
  */
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "asset_subject_seq", allocationSize = 1)
+@SequenceGenerator(name = "idgen", sequenceName = "account_subject_seq", allocationSize = 1)
 @AttributeOverride(name = "label", column = @Column(unique = true))
 public class AccountSubject
-        extends TreeEntityAuto<Integer, AccountSubject> {
+        extends ShortNameDict {
 
     private static final long serialVersionUID = 1L;
 
     public static final int NAME_LENGTH = 10;
+
+    public static final int DEBIT = 1;
+    public static final int CREDIT = 2;
+    public static final int BOTH = DEBIT | CREDIT;
 
     boolean debitSign;
     boolean creditSign;
@@ -34,36 +31,18 @@ public class AccountSubject
         super();
     }
 
-    public AccountSubject(String name) {
-        super(name);
+    public AccountSubject(String name, String label) {
+        super(name, label);
     }
 
-    public AccountSubject(AccountSubject parent) {
-        super(parent, null);
+    public AccountSubject(String name, String label, String description) {
+        super(name, label, description);
     }
 
-    public AccountSubject(AccountSubject parent, String name) {
-        super(parent, name);
-    }
-
-    public AccountSubject(String name, String label, boolean debitSign, boolean creditSign) {
-        this.name = name;
-        this.label = label;
-        this.debitSign = debitSign;
-        this.creditSign = creditSign;
-    }
-
-    /**
-     * 科目代码
-     */
-    @NaturalId(mutable = true)
-    @Column(length = NAME_LENGTH, unique = true)
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public AccountSubject(String name, String label, int flags) {
+        super(name, label);
+        this.debitSign = (flags & DEBIT) != 0;
+        this.creditSign = (flags & CREDIT) != 0;
     }
 
     /**
@@ -80,7 +59,6 @@ public class AccountSubject
 
     /**
      * 贷方符号
-     * @return
      */
     @Column(nullable = false)
     public boolean isCreditSign() {
@@ -91,20 +69,9 @@ public class AccountSubject
         this.creditSign = creditSign;
     }
 
-    @Override
-    protected Serializable naturalId() {
-        if (name == null)
-            return new DummyId(this);
-        return name;
+    private static AccountSubject _(String name, String label, int flags) {
+        return new AccountSubject(name, label, flags);
     }
-
-    @Override
-    protected ICriteriaElement selector(String prefix) {
-        if (name == null)
-            throw new NullPointerException("name");
-        return new Equals(prefix + "name", name);
-    }
-
 
     //资产类
     public static final AccountSubject s1001 = new AccountSubject("1001","现金",true,false);
