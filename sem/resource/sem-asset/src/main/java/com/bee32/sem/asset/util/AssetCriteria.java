@@ -28,10 +28,9 @@ public class AssetCriteria
 
                 // LIKE "01%"
                 // _equals("subject", options.getSubject()), //
-                alias("subject", "subject", CriteriaSpecification.LEFT_JOIN), //
-                _like("subject.name", options.getSubject().getName() + "%"), //
+                _in("subject", options.getSubjects()), //
 
-                _equals("party", options.getParty()));
+                _in("party", options.getParties()));
     }
 
 }
