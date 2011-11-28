@@ -8,7 +8,16 @@ import javax.free.TreeNode;
 public class PoNode
         implements TreeNode<PoNode> {
 
+    boolean virtual;
     List<PoNode> children = new ArrayList<PoNode>();
+
+    public boolean isVirtual() {
+        return virtual;
+    }
+
+    public void setVirtual(boolean virtual) {
+        this.virtual = virtual;
+    }
 
     @Override
     public List<? extends PoNode> getChildren() {
