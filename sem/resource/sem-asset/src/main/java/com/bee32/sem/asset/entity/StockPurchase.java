@@ -11,7 +11,7 @@ public class StockPurchase
     private static final long serialVersionUID = 1L;
 
     public StockPurchase() {
-        this.subject = AccountSubject.s2202;    //采购入账单默认科目为应付账款
+        this.subject = AccountSubject.s2121;    //采购入账单默认科目为应付账款
         this.debitSide = false;
     }
 

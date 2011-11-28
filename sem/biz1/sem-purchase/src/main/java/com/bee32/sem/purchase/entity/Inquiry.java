@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -16,7 +17,6 @@ import com.bee32.sem.world.monetary.MCValue;
 
 /**
  * 采购询价
- *
  */
 public class Inquiry extends TxEntity implements DecimalConfig {
 
@@ -37,6 +37,8 @@ public class Inquiry extends TxEntity implements DecimalConfig {
     String other;
 
     PurchaseRequestItem purcheaseReqeustItem;
+
+    PurchaseAdvice purchaseAdvice;
 
     /**
      * 供应商
@@ -138,6 +140,15 @@ public class Inquiry extends TxEntity implements DecimalConfig {
 
     public void setPurcheaseReqeustItem(PurchaseRequestItem purcheaseReqeustItem) {
         this.purcheaseReqeustItem = purcheaseReqeustItem;
+    }
+
+    @OneToOne(mappedBy = "preferredInquiry")
+    public PurchaseAdvice getPurchaseAdvice() {
+        return purchaseAdvice;
+    }
+
+    public void setPurchaseAdvice(PurchaseAdvice purchaseAdvice) {
+        this.purchaseAdvice = purchaseAdvice;
     }
 
 }

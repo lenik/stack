@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.NaturalId;
@@ -20,7 +21,7 @@ import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.people.entity.Party;
 
 /**
- * 物料计划明细项目
+ * 采购请求明细项目
  *
  */
 @Entity
@@ -43,6 +44,8 @@ public class PurchaseRequestItem
     String additionalRequirement;
 
     List<Inquiry> inquiries;
+
+    PurchaseAdvice purchaseAdvice;
 
     @NaturalId
     @ManyToOne(optional = false)
@@ -175,4 +178,18 @@ public class PurchaseRequestItem
     public void setInquiries(List<Inquiry> inquiries) {
         this.inquiries = inquiries;
     }
+
+    /**
+     * 采购建议
+     */
+    @OneToOne
+    public PurchaseAdvice getPurchaseAdvice() {
+        return purchaseAdvice;
+    }
+
+    public void setPurchaseAdvice(PurchaseAdvice purchaseAdvice) {
+        this.purchaseAdvice = purchaseAdvice;
+    }
+
+
 }
