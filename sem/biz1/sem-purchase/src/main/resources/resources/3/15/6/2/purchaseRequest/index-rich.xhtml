@@ -503,6 +503,31 @@
             </p:dialog>
         </h:form>
 
+        <h:form id="inquiryForm">
+            <p:dialog header="询价和建议"
+                widgetVar="inquiryDialog" modal="true"
+                height="500" width="840">
+
+                <p:panel header="询价">
+                    <p:commandButton value="新增" />
+                    <p:dataTable>
+                    </p:dataTable>
+                </p:panel>
+
+                <p:panel header="建议">
+                    <t:panelGrid columns="2">
+                        <h:outputText value="选择:" />
+                        <p:inputText />
+
+                        <h:outputText value="理由:" />
+                        <p:inputText />
+                    </t:panelGrid>
+                </p:panel>
+
+                <p:commandButton value="关闭" onclick="inquiryDialog.hide()"/>
+
+            </p:dialog>
+        </h:form>
 
     </ui:define>
 </ui:composition>

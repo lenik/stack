@@ -1,7 +1,9 @@
 package com.bee32.sem.purchase.entity;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 
 import com.bee32.sem.base.tx.TxEntity;
 
@@ -9,6 +11,8 @@ import com.bee32.sem.base.tx.TxEntity;
  * 采购建议
  *
  */
+@Entity
+@SequenceGenerator(name = "idgen", sequenceName = "purchase_advice_seq", allocationSize = 1)
 public class PurchaseAdvice extends TxEntity {
 
     private static final long serialVersionUID = 1L;

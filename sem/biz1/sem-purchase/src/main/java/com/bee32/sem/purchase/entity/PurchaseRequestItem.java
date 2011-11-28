@@ -170,7 +170,7 @@ public class PurchaseRequestItem
     /**
      * 采购项目对应的询价
      */
-    @OneToMany(mappedBy = "purchaseReqeustItem")
+    @OneToMany(mappedBy = "purcheaseReqeustItem")
     public List<Inquiry> getInquiries() {
         return inquiries;
     }

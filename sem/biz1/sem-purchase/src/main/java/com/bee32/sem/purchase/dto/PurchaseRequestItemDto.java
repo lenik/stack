@@ -2,6 +2,8 @@ package com.bee32.sem.purchase.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
@@ -18,6 +20,8 @@ public class PurchaseRequestItemDto
 
     private static final long serialVersionUID = 1L;
 
+    public static final int INQUIRIES = 1;
+
     PurchaseRequestDto purchaseRequest;
     int index;
     MaterialDto material;
@@ -26,6 +30,10 @@ public class PurchaseRequestItemDto
 
     PartyDto preferredSupplier;
     String additionalRequirement;
+
+    List<InquiryDto> inquiries;
+
+    PurchaseAdviceDto purchaseAdvice;
 
 
     @Override
@@ -38,6 +46,13 @@ public class PurchaseRequestItemDto
 
         preferredSupplier = mref(PartyDto.class, source.getPreferredSupplier());
         additionalRequirement = source.getAdditionalRequirement();
+
+        if (selection.contains(INQUIRIES))
+            inquiries = marshalList(InquiryDto.class, source.getInquiries());
+        else
+            inquiries = new ArrayList<InquiryDto>();
+
+        purchaseAdvice = mref(PurchaseAdviceDto.class, source.getPurchaseAdvice());
     }
 
     @Override
@@ -51,6 +66,11 @@ public class PurchaseRequestItemDto
         merge(target, "preferredSupplier", preferredSupplier);
 
         target.setAdditionalRequirement(additionalRequirement);
+
+        if (selection.contains(INQUIRIES))
+            mergeList(target, "inquiries", inquiries );
+
+        merge(target, "purchaseAdvice", purchaseAdvice);
     }
 
     @Override
@@ -113,6 +133,22 @@ public class PurchaseRequestItemDto
 
     public void setAdditionalRequirement(String additionalRequirement) {
         this.additionalRequirement = additionalRequirement;
+    }
+
+    public List<InquiryDto> getInquiries() {
+        return inquiries;
+    }
+
+    public void setInquiries(List<InquiryDto> inquiries) {
+        this.inquiries = inquiries;
+    }
+
+    public PurchaseAdviceDto getPurchaseAdvice() {
+        return purchaseAdvice;
+    }
+
+    public void setPurchaseAdvice(PurchaseAdviceDto purchaseAdvice) {
+        this.purchaseAdvice = purchaseAdvice;
     }
 
     @Override

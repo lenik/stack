@@ -3,8 +3,10 @@ package com.bee32.sem.purchase.entity;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -18,6 +20,8 @@ import com.bee32.sem.world.monetary.MCValue;
 /**
  * 采购询价
  */
+@Entity
+@SequenceGenerator(name = "idgen", sequenceName = "inquiry_seq", allocationSize = 1)
 public class Inquiry extends TxEntity implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
