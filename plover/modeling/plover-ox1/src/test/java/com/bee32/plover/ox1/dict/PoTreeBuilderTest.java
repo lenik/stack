@@ -10,11 +10,11 @@ public class PoTreeBuilderTest
 
     PrefixTreeBuilder buildAlphaTree() {
         PrefixTreeBuilder builder = new PrefixTreeBuilder();
-        builder.collect("01");
-        builder.collect("0102");
-        builder.collect("0103");
-        builder.collect("0211");
-        builder.collect("0215");
+        builder.learn("01");
+        builder.learn("0102");
+        builder.learn("0103");
+        builder.learn("0211");
+        builder.learn("0215");
         return builder;
     }
 

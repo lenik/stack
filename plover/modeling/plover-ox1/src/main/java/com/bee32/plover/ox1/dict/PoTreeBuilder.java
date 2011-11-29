@@ -27,12 +27,12 @@ public class PoTreeBuilder<T, K> {
         this.preorder = preorder;
     }
 
-    public void collect(Collection<? extends T> collection) {
+    public void learn(Collection<? extends T> collection) {
         for (T obj : collection)
-            collect(obj);
+            learn(obj);
     }
 
-    public synchronized PoNode collect(T obj) {
+    public synchronized PoNode learn(T obj) {
         K key = mapper.getKey(obj);
         PoNode node = nodes.get(key);
         if (node == null) {
@@ -92,6 +92,18 @@ public class PoTreeBuilder<T, K> {
 
     public void expand() {
         throw new NotImplementedException();
+    }
+
+    public Collection<PoNode> getRoots() {
+        return roots;
+    }
+
+    public synchronized PoNode getRoot() {
+        if (roots.isEmpty())
+            throw new IllegalStateException("No root node in the tree.");
+        if (roots.size() > 1)
+            throw new IllegalStateException("Too many root nodes in the tree!");
+        return roots.iterator().next();
     }
 
     public PoNode getNode(K key) {
