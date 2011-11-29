@@ -92,6 +92,8 @@ public class InquiryDto
     }
 
     public BigDecimal getPriceDigit() {
+        if (price == null)
+            return new BigDecimal(0);
         return price.getValue();
     }
 
@@ -100,6 +102,9 @@ public class InquiryDto
     }
 
     public String getPriceCurrency() {
+        if (price == null)
+            return CurrencyConfig.getNative().getCurrencyCode();
+
         if (price.getCurrency() == null)
             return CurrencyConfig.getNative().getCurrencyCode();
         else

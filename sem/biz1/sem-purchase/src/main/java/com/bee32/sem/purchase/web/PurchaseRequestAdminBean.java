@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.faces.model.SelectItem;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.Like;
@@ -17,13 +19,16 @@ import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.util.PeopleCriteria;
+import com.bee32.sem.purchase.dto.InquiryDto;
 import com.bee32.sem.purchase.dto.MaterialPlanDto;
 import com.bee32.sem.purchase.dto.MaterialPlanItemDto;
+import com.bee32.sem.purchase.dto.PurchaseAdviceDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestItemDto;
 import com.bee32.sem.purchase.entity.MaterialPlan;
 import com.bee32.sem.purchase.entity.PurchaseRequest;
 import com.bee32.sem.purchase.service.PurchaseService;
+import com.bee32.sem.world.monetary.CurrencyUtil;
 
 public class PurchaseRequestAdminBean extends EntityViewBean {
 
@@ -58,6 +63,11 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
     private List<PartyDto> suppliers;
     private PartyDto selectedSupplier;
 
+
+    int inquiryDetailStatus;
+    InquiryDto selectedInquiry;
+    PurchaseAdviceDto purchaseAdvice;
+
     public PurchaseRequestAdminBean() {
         Calendar c = Calendar.getInstance();
         // 取这个月的第一天
@@ -73,6 +83,10 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
 
         goNumber = 1;
         loadPurchaseRequest(goNumber);
+    }
+
+    public List<SelectItem> getCurrencies() {
+        return CurrencyUtil.selectItems();
     }
 
     public Date getLimitDateFrom() {
@@ -146,8 +160,6 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
     public void setCount(int count) {
         this.count = count;
     }
-
-
 
     public boolean isNewItemStatus() {
         return newItemStatus;
@@ -236,6 +248,41 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
         this.selectedSupplier = selectedSupplier;
     }
 
+    public int getInquiryDetailStatus() {
+        return inquiryDetailStatus;
+    }
+
+    public void setInquiryDetailStatus(int inquiryDetailStatus) {
+        this.inquiryDetailStatus = inquiryDetailStatus;
+    }
+
+    public List<InquiryDto> getInquiries() {
+        if (purchaseRequestItem != null)
+            return purchaseRequestItem.getInquiries();
+        return null;
+    }
+
+    public InquiryDto getSelectedInquiry() {
+        if(selectedInquiry == null)
+            selectedInquiry = new InquiryDto().create();
+        return selectedInquiry;
+    }
+
+    public void setSelectedInquiry(InquiryDto selectedInquiry) {
+        this.selectedInquiry = selectedInquiry;
+    }
+
+    public PurchaseAdviceDto getPurchaseAdvice() {
+        if (purchaseAdvice == null)
+            purchaseAdvice = new PurchaseAdviceDto().create();
+        if (purchaseAdvice.getPreferredInquiry() == null)
+            purchaseAdvice.setPreferredInquiry(new InquiryDto().create());
+        return purchaseAdvice;
+    }
+
+    public void setPurchaseAdvice(PurchaseAdviceDto purchaseAdvice) {
+        this.purchaseAdvice = purchaseAdvice;
+    }
 
 
 
@@ -466,5 +513,35 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
 
             suppliers = DTOs.marshalList(PartyDto.class, _suppliers);
         }
+    }
+
+
+
+
+    public void loadInquiry() {
+        purchaseAdvice = purchaseRequestItem.getPurchaseAdvice();
+        if (purchaseAdvice == null)
+            purchaseAdvice = new PurchaseAdviceDto().create();
+    }
+
+    public void newInquiry() {
+        inquiryDetailStatus = 1;
+        selectedInquiry = new InquiryDto().create();
+    }
+
+    public void acceptInquiry() {
+
+    }
+
+    public void savePurchaseAdvice() {
+
+    }
+
+    public void saveInquiry() {
+
+    }
+
+    public void deleteInquiry() {
+
     }
 }
