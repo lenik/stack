@@ -9,7 +9,7 @@ public class CodeTreeBuilder
         extends PoTreeBuilder<Entity<String>, String> {
 
     public CodeTreeBuilder() {
-        super(NameMapper.INSTANCE, StartswithPreorder.getInstance());
+        super(DictCodeMapper.INSTANCE, StartswithPreorder.getInstance());
     }
 
     @Override
