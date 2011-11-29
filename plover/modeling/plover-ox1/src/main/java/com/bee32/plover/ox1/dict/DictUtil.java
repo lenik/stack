@@ -17,7 +17,7 @@ public class DictUtil {
     }
 
     public synchronized static <E extends DictEntity<? extends K>, K extends Serializable> //
-    Collection<? extends DictEntity<? extends K>> getPredefinedInstances(Class<E> type) {
+    Collection<? extends E> getPredefinedInstances(Class<? extends E> type) {
         List<E> instances = (List<E>) clPredefinedInstances.get(type);
         if (instances != null)
             return instances;

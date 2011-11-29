@@ -8,19 +8,42 @@ import javax.free.TreeNode;
 public class PoNode
         implements TreeNode<PoNode> {
 
-    boolean virtual;
+    PoNode parent;
     List<PoNode> children = new ArrayList<PoNode>();
+    Object key;
+    Object data;
 
-    public boolean isVirtual() {
-        return virtual;
+    public PoNode() {
     }
 
-    public void setVirtual(boolean virtual) {
-        this.virtual = virtual;
+    public synchronized void attach(PoNode parent) {
+        detach();
+
+        this.parent = parent;
+        if (parent != null)
+            parent.addChild(this);
+    }
+
+    public synchronized void detach() {
+        if (parent != null)
+            parent.removeChild(this);
+        parent = null;
+    }
+
+    public boolean isVirtual() {
+        return data == null;
+    }
+
+    public PoNode getParent() {
+        return parent;
+    }
+
+    public void setParent(PoNode parent) {
+        this.parent = parent;
     }
 
     @Override
-    public List<? extends PoNode> getChildren() {
+    public List<PoNode> getChildren() {
         return children;
     }
 
@@ -30,6 +53,27 @@ public class PoNode
 
     public void removeChild(PoNode child) {
         children.remove(child);
+    }
+
+    public Object getKey() {
+        return key;
+    }
+
+    public void setKey(Object key) {
+        this.key = key;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + key + ": " + data + ")";
     }
 
 }
