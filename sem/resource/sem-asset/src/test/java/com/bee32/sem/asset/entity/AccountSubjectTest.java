@@ -12,10 +12,10 @@ public class AccountSubjectTest
 
     public static void main(String[] args) {
         Collection<? extends AccountSubject> subjects = DictUtil.getPredefinedInstances(AccountSubject.class);
-        subjects.contains(AccountSubject.s1011);
+        subjects.contains(AccountSubject.s1002);
 
         CodeTreeBuilder ctb = new CodeTreeBuilder();
-        ctb.collect(subjects);
+        ctb.learn(subjects);
         ctb.reduce();
 
         System.out.println(ctb.dump());

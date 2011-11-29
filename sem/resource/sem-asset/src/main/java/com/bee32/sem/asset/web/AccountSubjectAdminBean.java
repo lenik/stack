@@ -9,11 +9,13 @@ import org.springframework.dao.DataIntegrityViolationException;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
-import com.bee32.plover.ox1.tree.TreeCriteria;
+import com.bee32.plover.ox1.dict.DtoCodeTreeBuilder;
+import com.bee32.plover.ox1.dict.PoNode;
 import com.bee32.sem.asset.dto.AccountSubjectDto;
 import com.bee32.sem.asset.entity.AccountSubject;
 
-public class AccountSubjectAdminBean extends EntityViewBean {
+public class AccountSubjectAdminBean
+        extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -24,7 +26,6 @@ public class AccountSubjectAdminBean extends EntityViewBean {
     private AccountSubjectDto accountSubject;
     private TreeNode selectedNode;
     private TreeNode selectedParentSubjectNode;
-
 
     public AccountSubjectAdminBean() {
         loadAccountSubjectTree();
@@ -75,26 +76,25 @@ public class AccountSubjectAdminBean extends EntityViewBean {
     protected void loadAccountSubjectTree() {
         root = new DefaultTreeNode("root", null);
 
-        List<AccountSubject> subjects =
-                serviceFor(AccountSubject.class).list(
-                        TreeCriteria.root(),
-                        Order.asc("name"));
+        List<AccountSubject> subjects = serviceFor(AccountSubject.class).list(Order.asc("name"));
         List<AccountSubjectDto> subjectDtos = DTOs.mrefList(AccountSubjectDto.class, -1, subjects);
 
-        for (AccountSubjectDto subjectDto : subjectDtos) {
-            loadAccountSubjectRecursive(subjectDto, root);
-        }
+        // 将 subject dto 列表转换为前缀树
+        DtoCodeTreeBuilder ctb = new DtoCodeTreeBuilder();
+        ctb.learn(subjectDtos);
+        ctb.reduce(); // 清除临时构建的中间结点
+
+        PoNode modelRoot = ctb.getRoot();
+        loadAccountSubjectRecursive(modelRoot, root);
     }
 
-    private void loadAccountSubjectRecursive(AccountSubjectDto subjectDto, TreeNode parentTreeNode) {
-        TreeNode subjectNode = new DefaultTreeNode(subjectDto, parentTreeNode);
-
-        List<AccountSubjectDto> subSubjects = subjectDto.getChildren();
-        for (AccountSubjectDto subSubject : subSubjects) {
-            loadAccountSubjectRecursive(subSubject, subjectNode);
+    private void loadAccountSubjectRecursive(PoNode modelNode, TreeNode guiParent) {
+        AccountSubjectDto subjectDto = (AccountSubjectDto) modelNode.getData();
+        TreeNode guiNode = new DefaultTreeNode(subjectDto, guiParent);
+        for (PoNode child : modelNode.getChildren()) {
+            loadAccountSubjectRecursive(child, guiNode);
         }
     }
-
 
     public void _newAccountSubject() {
         accountSubject = new AccountSubjectDto().create();
@@ -105,7 +105,6 @@ public class AccountSubjectAdminBean extends EntityViewBean {
         _newAccountSubject();
 
     }
-
 
     public void chooseAccountSubject() {
         accountSubject = reload((AccountSubjectDto) selectedNode.getData());
@@ -122,12 +121,6 @@ public class AccountSubjectAdminBean extends EntityViewBean {
     }
 
     public void save() {
-        if (accountSubject.getParent() == null
-                || accountSubject.getParent().getId() == null) {
-            uiLogger.error("新增科目的上级科目不能为空!");
-            return;
-        }
-
         AccountSubject s = accountSubject.unmarshal();
 
         try {
@@ -140,11 +133,6 @@ public class AccountSubjectAdminBean extends EntityViewBean {
     }
 
     public void delete() {
-        if(accountSubject.getChildren().size() > 0) {
-            uiLogger.info("本科目下有子科目，不能删除!");
-            return;
-        }
-
         if (accountSubject.getEntityFlags().isLocked()) {
             uiLogger.info("保留科目，不能删除!");
             return;
@@ -161,8 +149,6 @@ public class AccountSubjectAdminBean extends EntityViewBean {
 
     public void selectParentSubject() {
         AccountSubjectDto parentSubject = (AccountSubjectDto) selectedParentSubjectNode.getData();
-
-        accountSubject.setParent(parentSubject);
         accountSubject.setDebitSign(parentSubject.isDebitSign());
         accountSubject.setCreditSign(parentSubject.isCreditSign());
     }
