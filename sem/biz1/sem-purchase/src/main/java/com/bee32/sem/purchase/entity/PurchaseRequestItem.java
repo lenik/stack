@@ -170,7 +170,7 @@ public class PurchaseRequestItem
     /**
      * 采购项目对应的询价
      */
-    @OneToMany(mappedBy = "purcheaseReqeustItem")
+    @OneToMany(mappedBy = "purchaseRequestItem")
     public List<Inquiry> getInquiries() {
         return inquiries;
     }
@@ -178,6 +178,27 @@ public class PurchaseRequestItem
     public void setInquiries(List<Inquiry> inquiries) {
         this.inquiries = inquiries;
     }
+
+
+    public synchronized void addInquiry(Inquiry inquiry) {
+        if (inquiry == null)
+            throw new NullPointerException("inquiry");
+
+        inquiries.add(inquiry);
+    }
+
+    public synchronized void removeInquiry(Inquiry inquiry) {
+        if (inquiry == null)
+            throw new NullPointerException("inquiry");
+
+        int index = inquiries.indexOf(inquiry);
+        if (index == -1)
+            return /* false */;
+
+        inquiries.remove(index);
+        inquiry.detach();
+    }
+
 
     /**
      * 采购建议

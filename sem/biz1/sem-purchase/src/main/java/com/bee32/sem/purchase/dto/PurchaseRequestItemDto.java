@@ -143,6 +143,28 @@ public class PurchaseRequestItemDto
         this.inquiries = inquiries;
     }
 
+
+    public synchronized void addInquiry(InquiryDto inquiry) {
+        if (inquiry == null)
+            throw new NullPointerException("inquiry");
+
+        inquiries.add(inquiry);
+    }
+
+    public synchronized void removeInquiry(InquiryDto inquiry) {
+        if (inquiry == null)
+            throw new NullPointerException("inquiry");
+
+        int index = inquiries.indexOf(inquiry);
+        if (index == -1)
+            return /* false */;
+
+        inquiries.remove(index);
+        // inquiry.detach();
+    }
+
+
+
     public PurchaseAdviceDto getPurchaseAdvice() {
         return purchaseAdvice;
     }

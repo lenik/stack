@@ -196,6 +196,7 @@
                            -->
                             <p:spacer width="10" />
                             <p:commandLink
+                                disabled="#{purchaseRequestAdminBean.editable}"
                                 oncomplete="inquiryDialog.show()"
                                 action="#{purchaseRequestAdminBean.loadInquiry}"
                                 update="inquiryForm:inquiryPanel"
@@ -492,7 +493,9 @@
                         <p:column headerText="动作">
                             <p:commandLink
                                 oncomplete="preferredSupplierDialog.hide()"
-                                update="itemForm:preferredSupplier" value="挑选">
+                                update="itemForm:preferredSupplier inquiryDetailForm:supplier"
+                                action="#{purchaseRequestAdminBean.chooseSupplier}"
+                                value="挑选">
                                 <f:setPropertyActionListener
                                     value="#{supplier}"
                                     target="#{purchaseRequestAdminBean.selectedSupplier}" />
@@ -507,12 +510,14 @@
         <h:form id="inquiryForm">
             <p:dialog header="询价和建议"
                 widgetVar="inquiryDialog" modal="true"
-                height="500" width="800">
+                height="550" width="800">
 
                 <p:panel id="inquiryPanel">
 
                     <p:panel header="询价">
                         <p:commandButton value="新增"
+                            oncomplete="inquiryDetailDialog.show()"
+                            update="inquiryDetailForm:inquiryDetailPanel"
                             actionListener="#{purchaseRequestAdminBean.newInquiry}" />
 
                         <p:dataTable id="inquiries" var="inquiry"
@@ -541,12 +546,7 @@
                             </p:column>
 
                             <p:column headerText="交货时间">
-                                <h:outputText
-                                    value="#{inquiry.deliveryDate}">
-                                    <f:convertDateTime
-                                        pattern="yyyy-MM-dd"
-                                        timeZone="Asia/Shanghai" />
-                                </h:outputText>
+                                <h:outputText value="#{inquiry.deliveryDate}" />
                             </p:column>
 
                             <p:column>
@@ -627,76 +627,76 @@
             <p:dialog header="询价详细" widgetVar="inquiryDetailDialog" modal="true"
                 height="500" width="640">
 
-                <t:panelGrid columns="2"
-                    columnClasses="detail_col_title,detail_col_value">
+                <p:panel id="inquiryDetailPanel">
+                    <t:panelGrid columns="2"
+                        columnClasses="detail_col_title,detail_col_value">
 
-                    <h:outputLabel value="供应商" />
-                    <t:panelGroup>
-                        <p:inputText id="supplier"
-                            value="#{purchaseRequestAdminBean.selectedInquiry.party.name}"
-                            readonly="true" />
-                        <p:commandButton value="..."
-                            onclick="preferredSupplierDialog.show()"
-                            disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}" />
-                    </t:panelGroup>
+                        <h:outputLabel value="供应商" />
+                        <t:panelGroup>
+                            <p:inputText id="supplier"
+                                value="#{purchaseRequestAdminBean.selectedInquiry.party.name}"
+                                readonly="true" />
+                            <p:commandButton value="..."
+                                onclick="preferredSupplierDialog.show()"
+                                disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}" />
+                        </t:panelGroup>
 
-                    <h:outputLabel value="价格" />
-                    <t:panelGrid columns="3">
-                        <p:inputText
-                            value="#{purchaseRequestAdminBean.selectedInquiry.priceDigit}"
-                            disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}" />
-                        <h:outputLabel value="币种" />
-                        <p:selectOneMenu
-                            value="#{purchaseRequestAdminBean.selectedInquiry.priceCurrency}"
-                            disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}"
-                            style="width:200px;">
-                            <f:selectItem itemValue=""
-                                itemLabel="--选择币种--" />
-                            <f:selectItems
-                                value="#{purchaseRequestAdminBean.currencies}" />
-                        </p:selectOneMenu>
-                    </t:panelGrid>
-
-                    <h:outputText value="交货时间" />
-                    <p:calendar id="deliveryDate" navigator="true"
-                        locale="zh_CN" pattern="yyyy-MM-dd"
-                        value="#{purchaseRequestAdminBean.selectedInquiry.deliveryDate}"
-                        disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}"
-                        showOn="button" />
-
-                    <h:outputLabel value="质量状况" />
-                    <p:inputText
-                        value="#{purchaseRequestAdminBean.selectedInquiry.quality}"
-                        disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}" />
-
-                    <h:outputLabel value="付款方式" />
-                    <p:inputText
-                        value="#{purchaseRequestAdminBean.selectedInquiry.paymentTerm}"
-                        disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}" />
-
-                    <h:outputLabel value="售后服务" />
-                    <p:inputText
-                        value="#{purchaseRequestAdminBean.selectedInquiry.afterService}"
-                        disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}" />
-
-                    <h:outputLabel value="其他" />
-                    <p:inputText
-                        value="#{purchaseRequestAdminBean.selectedInquiry.other}"
-                        disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}" />
-
-                    <t:panelGroup colspan="2">
-                        <t:panelGrid columns="2">
-                            <p:commandButton value="保存"
-                                actionListener="#{purchaseRequestAdminBean.saveInquiry}"
-                                oncomplete="inquiryDetailDialog.hide()"
+                        <h:outputLabel value="价格" />
+                        <t:panelGrid columns="3">
+                            <p:inputText
+                                value="#{purchaseRequestAdminBean.selectedInquiry.priceDigit}"
+                                disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}" />
+                            <h:outputLabel value="币种" />
+                            <p:selectOneMenu
+                                value="#{purchaseRequestAdminBean.selectedInquiry.priceCurrency}"
                                 disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}"
-                                async="true" update="inquiryForm:inquiryPanel:inquiries" />
-                            <p:commandButton value="取消"
-                                oncomplete="inquiryDetailDialog.hide()" />
+                                style="width:200px;">
+                                <f:selectItem itemValue=""
+                                    itemLabel="--选择币种--" />
+                                <f:selectItems
+                                    value="#{purchaseRequestAdminBean.currencies}" />
+                            </p:selectOneMenu>
                         </t:panelGrid>
-                    </t:panelGroup>
-                </t:panelGrid>
 
+                        <h:outputText value="交货时间" />
+                        <p:inputText
+                            value="#{purchaseRequestAdminBean.selectedInquiry.deliveryDate}"
+                            disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}" />
+
+                        <h:outputLabel value="质量状况" />
+                        <p:inputText
+                            value="#{purchaseRequestAdminBean.selectedInquiry.quality}"
+                            disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}" />
+
+                        <h:outputLabel value="付款方式" />
+                        <p:inputText
+                            value="#{purchaseRequestAdminBean.selectedInquiry.paymentTerm}"
+                            disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}" />
+
+                        <h:outputLabel value="售后服务" />
+                        <p:inputText
+                            value="#{purchaseRequestAdminBean.selectedInquiry.afterService}"
+                            disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}" />
+
+                        <h:outputLabel value="其他" />
+                        <p:inputText
+                            value="#{purchaseRequestAdminBean.selectedInquiry.other}"
+                            disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}" />
+
+                        <t:panelGroup colspan="2">
+                            <t:panelGrid columns="2">
+                                <p:commandButton value="保存"
+                                    actionListener="#{purchaseRequestAdminBean.saveInquiry}"
+                                    oncomplete="inquiryDetailDialog.hide()"
+                                    disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}"
+                                    async="true"
+                                    update="inquiryForm:inquiries" />
+                                <p:commandButton value="取消"
+                                    oncomplete="inquiryDetailDialog.hide()" />
+                            </t:panelGrid>
+                        </t:panelGroup>
+                    </t:panelGrid>
+                </p:panel>
             </p:dialog>
         </h:form>
 
@@ -705,7 +705,7 @@
                 severity="alert" widgetVar="deleteInquiryConfirmDialog" modal="true">
 
                 <p:commandButton value="确定"
-                    update="inquiryForm:inquiryPanel:inquiries"
+                    update="inquiryForm:inquiries"
                     actionListener="#{purchaseRequestAdminBean.deleteInquiry}"
                     oncomplete="deleteInquiryConfirmDialog.hide()" />
                 <p:commandButton value="取消" onclick="deleteInquiryConfirmDialog.hide()"

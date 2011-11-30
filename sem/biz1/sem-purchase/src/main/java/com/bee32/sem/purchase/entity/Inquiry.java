@@ -1,14 +1,10 @@
 package com.bee32.sem.purchase.entity;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.NaturalId;
 
@@ -26,7 +22,7 @@ public class Inquiry extends TxEntity implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
-
+    public static final int DELIVERY_DATE_LENGTH = 50;
     public static final int QUALITY_LENGTH = 500;
     public static final int PAYMENT_TERM_LENGTH = 500;
     public static final int AFTER_SERVICE_LENGTH = 500;
@@ -34,13 +30,13 @@ public class Inquiry extends TxEntity implements DecimalConfig {
 
     Party party;
     MCValue price;
-    Date deliveryDate;
+    String deliveryDate;
     String quality;
     String paymentTerm;
     String afterService;
     String other;
 
-    PurchaseRequestItem purcheaseReqeustItem;
+    PurchaseRequestItem purchaseRequestItem;
 
     PurchaseAdvice purchaseAdvice;
 
@@ -70,14 +66,14 @@ public class Inquiry extends TxEntity implements DecimalConfig {
     }
 
     /**
-     * 交货时间
+     * 交货时间，类型为String,  举例： 50天，2周  etc.
      */
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date getDeliveryDate() {
+    @Column(length = DELIVERY_DATE_LENGTH)
+    public String getDeliveryDate() {
         return deliveryDate;
     }
 
-    public void setDeliveryDate(Date deliveryDate) {
+    public void setDeliveryDate(String deliveryDate) {
         this.deliveryDate = deliveryDate;
     }
 
@@ -138,12 +134,12 @@ public class Inquiry extends TxEntity implements DecimalConfig {
      */
     @ManyToOne
     @NaturalId
-    public PurchaseRequestItem getPurcheaseReqeustItem() {
-        return purcheaseReqeustItem;
+    public void setPurchaseRequestItem(PurchaseRequestItem purchaseRequestItem) {
+        this.purchaseRequestItem = purchaseRequestItem;
     }
 
-    public void setPurcheaseReqeustItem(PurchaseRequestItem purcheaseReqeustItem) {
-        this.purcheaseReqeustItem = purcheaseReqeustItem;
+    public void setPurchaseAdvice(PurchaseAdvice purchaseAdvice) {
+        this.purchaseAdvice = purchaseAdvice;
     }
 
     @OneToOne(mappedBy = "preferredInquiry")
@@ -151,8 +147,7 @@ public class Inquiry extends TxEntity implements DecimalConfig {
         return purchaseAdvice;
     }
 
-    public void setPurchaseAdvice(PurchaseAdvice purchaseAdvice) {
-        this.purchaseAdvice = purchaseAdvice;
+    public PurchaseRequestItem getPurchaseRequestItem() {
+        return purchaseRequestItem;
     }
-
 }

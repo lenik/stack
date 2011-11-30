@@ -25,6 +25,7 @@ import com.bee32.sem.purchase.dto.MaterialPlanItemDto;
 import com.bee32.sem.purchase.dto.PurchaseAdviceDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestItemDto;
+import com.bee32.sem.purchase.entity.Inquiry;
 import com.bee32.sem.purchase.entity.MaterialPlan;
 import com.bee32.sem.purchase.entity.PurchaseRequest;
 import com.bee32.sem.purchase.service.PurchaseService;
@@ -64,7 +65,7 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
     private PartyDto selectedSupplier;
 
 
-    int inquiryDetailStatus;
+    int inquiryDetailStatus;    //1-新增;2-修改;3-查看
     InquiryDto selectedInquiry;
     PurchaseAdviceDto purchaseAdvice;
 
@@ -275,8 +276,10 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
     public PurchaseAdviceDto getPurchaseAdvice() {
         if (purchaseAdvice == null)
             purchaseAdvice = new PurchaseAdviceDto().create();
-        if (purchaseAdvice.getPreferredInquiry() == null)
-            purchaseAdvice.setPreferredInquiry(new InquiryDto().create());
+        if (purchaseAdvice.getPreferredInquiry() == null) {
+            InquiryDto tmpInquiry = new InquiryDto().create();
+            purchaseAdvice.setPreferredInquiry(tmpInquiry);
+        }
         return purchaseAdvice;
     }
 
@@ -518,6 +521,11 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
 
 
 
+
+    public void chooseSupplier() {
+        selectedInquiry.setParty(selectedSupplier);
+    }
+
     public void loadInquiry() {
         purchaseAdvice = purchaseRequestItem.getPurchaseAdvice();
         if (purchaseAdvice == null)
@@ -538,7 +546,12 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
     }
 
     public void saveInquiry() {
+        if (inquiryDetailStatus == 1) {
+            purchaseRequestItem.addInquiry(selectedInquiry);
+            selectedInquiry.setPurchaseRequestItem(purchaseRequestItem);
+        }
 
+        serviceFor(Inquiry.class).saveOrUpdate(selectedInquiry.unmarshal());
     }
 
     public void deleteInquiry() {

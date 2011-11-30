@@ -3,7 +3,6 @@ package com.bee32.sem.purchase.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Currency;
-import java.util.Date;
 
 import javax.free.ParseException;
 
@@ -27,13 +26,13 @@ public class InquiryDto
 
     PartyDto party;
     MCValue price;
-    Date deliveryDate;
+    String deliveryDate;
     String quality;
     String paymentTerm;
     String afterService;
     String other;
 
-    PurchaseRequestItemDto purchaseReqeustItem;
+    PurchaseRequestItemDto purchaseRequestItem;
 
     PurchaseAdviceDto purchaseAdvice;
 
@@ -47,8 +46,8 @@ public class InquiryDto
         afterService = source.getAfterService();
         other = source.getOther();
 
-        purchaseReqeustItem = mref(PurchaseRequestItemDto.class,
-                source.getPurcheaseReqeustItem());
+        purchaseRequestItem = mref(PurchaseRequestItemDto.class,
+                source.getPurchaseRequestItem());
 
         purchaseAdvice = mref(PurchaseAdviceDto.class,
                 source.getPurchaseAdvice());
@@ -65,7 +64,7 @@ public class InquiryDto
         target.setAfterService(afterService);
         target.setOther(other);
 
-        merge(target, "purchaseReqeustItem", purchaseReqeustItem);
+        merge(target, "purchaseRequestItem", purchaseRequestItem);
 
         merge(target, "purchaseAdvice", purchaseAdvice);
     }
@@ -97,8 +96,12 @@ public class InquiryDto
         return price.getValue();
     }
 
-    public void setPirceDigit(BigDecimal priceDigit) {
-        price = new MCValue(price.getCurrency(), priceDigit);
+    public void setPriceDigit(BigDecimal priceDigit) {
+        Currency c = CurrencyConfig.getNative();
+        if (price != null)
+            c = price.getCurrency();
+
+        price = new MCValue(c, priceDigit);
     }
 
     public String getPriceCurrency() {
@@ -115,12 +118,11 @@ public class InquiryDto
         price = new MCValue(Currency.getInstance(currencyCode), price.getValue());
     }
 
-
-    public Date getDeliveryDate() {
+    public String getDeliveryDate() {
         return deliveryDate;
     }
 
-    public void setDeliveryDate(Date deliveryDate) {
+    public void setDeliveryDate(String deliveryDate) {
         this.deliveryDate = deliveryDate;
     }
 
@@ -156,12 +158,12 @@ public class InquiryDto
         this.other = other;
     }
 
-    public PurchaseRequestItemDto getPurchaseReqeustItem() {
-        return purchaseReqeustItem;
+    public PurchaseRequestItemDto getPurchaseRequestItem() {
+        return purchaseRequestItem;
     }
 
-    public void setPurchaseReqeustItem(PurchaseRequestItemDto purchaseReqeustItem) {
-        this.purchaseReqeustItem = purchaseReqeustItem;
+    public void setPurchaseRequestItem(PurchaseRequestItemDto purchaseRequestItem) {
+        this.purchaseRequestItem = purchaseRequestItem;
     }
 
     public PurchaseAdviceDto getPurchaseAdvice() {
@@ -176,6 +178,6 @@ public class InquiryDto
     protected Serializable naturalId() {
         return new IdComposite(//
                 naturalId(party), //
-                naturalId(purchaseReqeustItem));
+                naturalId(purchaseRequestItem));
     }
 }
