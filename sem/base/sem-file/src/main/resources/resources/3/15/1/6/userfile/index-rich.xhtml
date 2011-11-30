@@ -12,7 +12,7 @@
 
         <h:form id="main">
 
-            <t:panelGrid columns="2" columnClasses="ftd, ftd">
+            <t:panelGrid columns="2" columnClasses="alignTop, alignTop">
                 <t:div>
                     <p:commandButton value="标签管理"
                         onclick="tagAdminDialog.show();" />
@@ -54,8 +54,7 @@
                         rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}"
                         lazy="true">
                         <p:column>
-                            <a
-                                href="#{location.WEB_APP}/3/15/1/6/file/view.do?id=#{item.id}">
+                            <a href="#{location.WEB_APP}/3/15/1/6/file/view.do?id=#{item.id}">
                                 <h:graphicImage
                                     value="/3/15/1/6/file/view.do?id=#{item.id}"
                                     width="36" height="36" /> </a>
