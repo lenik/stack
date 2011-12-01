@@ -135,7 +135,7 @@ public class AssetQueryBean extends EntityViewBean {
     public void findAccountSubject() {
         //在实体中,name代表科目代码，label代表科目名称
         List<AccountSubject> _subjects = serviceFor(AccountSubject.class).list(//
-                new Like("name", "%" + accountSubjectCodePattern + "%"),
+                new Like("id", "%" + accountSubjectCodePattern + "%"),
                 new Like("label", "%" + accountSubjectNamePattern + "%"));
 
         accountSubjects = DTOs.mrefList(AccountSubjectDto.class, 0, _subjects);

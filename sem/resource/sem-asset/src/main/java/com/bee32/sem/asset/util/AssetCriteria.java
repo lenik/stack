@@ -1,11 +1,13 @@
 package com.bee32.sem.asset.util;
 
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.MatchMode;
 
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.IsNull;
 import com.bee32.plover.criteria.hibernate.LeftHand;
+import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.asset.entity.AccountTicketItem;
 import com.bee32.sem.asset.entity.BudgetRequest;
 import com.bee32.sem.asset.service.AssetQueryOptions;
@@ -31,6 +33,13 @@ public class AssetCriteria
                 _in("subject", options.getSubjects()), //
 
                 _in("party", options.getParties()));
+    }
+
+    @LeftHand(AccountSubject.class)
+    public static ICriteriaElement subjectLike(String code, String label) {
+        return compose(//
+                like("id", code, MatchMode.ANYWHERE), //
+                like("label", label, MatchMode.ANYWHERE));
     }
 
 }

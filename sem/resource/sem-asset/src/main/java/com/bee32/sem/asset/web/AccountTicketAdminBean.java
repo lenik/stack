@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Offset;
-import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
@@ -28,9 +27,11 @@ import com.bee32.sem.asset.util.AssetCriteria;
 import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.world.monetary.CurrencyUtil;
 
-public class AccountTicketAdminBean extends EntityViewBean {
+public class AccountTicketAdminBean
+        extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -111,7 +112,6 @@ public class AccountTicketAdminBean extends EntityViewBean {
         this.goNumber = goNumber;
     }
 
-
     public int getCount() {
         count = serviceFor(AccountTicket.class).count(//
                 EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo));
@@ -155,12 +155,11 @@ public class AccountTicketAdminBean extends EntityViewBean {
         this.count = count;
     }
 
-
     public List<SelectItem> getUsers() {
         List<SelectItem> result = new ArrayList<SelectItem>();
 
         List<User> allUser = serviceFor(User.class).list();
-        for(User u : allUser) {
+        for (User u : allUser) {
             SelectItem userItem = new SelectItem();
 
             userItem.setValue(u.getId());
@@ -171,7 +170,6 @@ public class AccountTicketAdminBean extends EntityViewBean {
 
         return result;
     }
-
 
     public int getBudgetRequestCreatorId() {
         return budgetRequestCreatorId;
@@ -269,31 +267,24 @@ public class AccountTicketAdminBean extends EntityViewBean {
         this.newItemStatus = newItemStatus;
     }
 
-
-
-
-
-
-
     public void limit() {
         loadAccountTicket(goNumber);
     }
 
     private void loadAccountTicket(int position) {
-        //刷新总记录数
+        // 刷新总记录数
         getCount();
 
         goNumber = position;
 
-        if(position < 1) {
+        if (position < 1) {
             goNumber = 1;
             position = 1;
         }
-        if(goNumber > count) {
+        if (goNumber > count) {
             goNumber = count;
             position = count;
         }
-
 
         accountTicket = new AccountTicketDto().create();
 
@@ -313,7 +304,7 @@ public class AccountTicketAdminBean extends EntityViewBean {
     }
 
     public void modify() {
-        if(accountTicket.getId() == null) {
+        if (accountTicket.getId() == null) {
             uiLogger.warn("当前没有对应的凭证");
             return;
         }
@@ -325,19 +316,19 @@ public class AccountTicketAdminBean extends EntityViewBean {
 
     @Transactional
     public void save() {
-        if(accountTicket.getId() == null) {
-            //新增
+        if (accountTicket.getId() == null) {
+            // 新增
             goNumber = count + 1;
         }
 
         try {
             AccountTicket _ticket = accountTicket.unmarshal();
-            if(!_ticket.isDebitCreditEqual()) {
+            if (!_ticket.isDebitCreditEqual()) {
                 uiLogger.warn("借贷不相等");
                 return;
             }
 
-            for(AccountTicketItemDto item : itemsNeedToRemoveWhenModify) {
+            for (AccountTicketItemDto item : itemsNeedToRemoveWhenModify) {
                 _ticket.removeItem(item.unmarshal());
             }
 
@@ -354,8 +345,6 @@ public class AccountTicketAdminBean extends EntityViewBean {
         loadAccountTicket(goNumber);
         editable = false;
     }
-
-
 
     public void first() {
         goNumber = 1;
@@ -402,7 +391,6 @@ public class AccountTicketAdminBean extends EntityViewBean {
         newItemStatus = false;
     }
 
-
     public void saveItem() {
         accountTicketItem.setTicket(accountTicket);
         if (newItemStatus) {
@@ -429,12 +417,11 @@ public class AccountTicketAdminBean extends EntityViewBean {
     }
 
     public void findBudgetRequest() {
-        //TODO : 加入业务单是否已经审核的条件检查
+        // TODO : 加入业务单是否已经审核的条件检查
 
         List<BudgetRequest> requests = serviceFor(BudgetRequest.class).list(
                 new Equals("owner.id", budgetRequestCreatorId),
-                new Like("description", "%" + budgetRequestPattern + "%"),
-                AssetCriteria.haveNoCorrespondingTicket());
+                new Like("description", "%" + budgetRequestPattern + "%"), AssetCriteria.haveNoCorrespondingTicket());
 
         budgetRequests = DTOs.marshalList(BudgetRequestDto.class, requests);
     }
@@ -447,12 +434,7 @@ public class AccountTicketAdminBean extends EntityViewBean {
 
     public void findParty() {
         if (partyPattern != null && !partyPattern.isEmpty()) {
-
-            List<Party> _parties = serviceFor(Party.class).list( //
-                    new Or( //
-                            new Like("name", "%" + partyPattern + "%"), //
-                            new Like("fullName", "%" + partyPattern + "%")));
-
+            List<Party> _parties = serviceFor(Party.class).list(PeopleCriteria.namedLike(partyPattern));
             parties = DTOs.marshalList(PartyDto.class, _parties);
         }
     }
@@ -462,10 +444,9 @@ public class AccountTicketAdminBean extends EntityViewBean {
     }
 
     public void findAccountSubject() {
-        //在实体中,name代表科目代码，label代表科目名称
+        // 在实体中,name代表科目代码，label代表科目名称
         List<AccountSubject> _subjects = serviceFor(AccountSubject.class).list(//
-                new Like("name", "%" + accountSubjectCodePattern + "%"),
-                new Like("label", "%" + accountSubjectNamePattern + "%"));
+                AssetCriteria.subjectLike(accountSubjectCodePattern, accountSubjectNamePattern));
 
         accountSubjects = DTOs.mrefList(AccountSubjectDto.class, 0, _subjects);
     }
@@ -473,4 +454,5 @@ public class AccountTicketAdminBean extends EntityViewBean {
     public void chooseAccountSubject() {
         accountTicketItem.setSubject(selectedAccountSubject);
     }
+
 }

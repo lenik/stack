@@ -9,10 +9,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
-import com.bee32.plover.ox1.dict.DtoCodeTreeBuilder;
-import com.bee32.plover.ox1.dict.PoNode;
 import com.bee32.sem.asset.dto.AccountSubjectDto;
 import com.bee32.sem.asset.entity.AccountSubject;
+import com.bee32.sem.sandbox.UIHelper;
 
 public class AccountSubjectAdminBean
         extends EntityViewBean {
@@ -76,24 +75,11 @@ public class AccountSubjectAdminBean
     protected void loadAccountSubjectTree() {
         root = new DefaultTreeNode("root", null);
 
-        List<AccountSubject> subjects = serviceFor(AccountSubject.class).list(Order.asc("name"));
+        List<AccountSubject> subjects = serviceFor(AccountSubject.class).list(Order.asc("id"));
         List<AccountSubjectDto> subjectDtos = DTOs.mrefList(AccountSubjectDto.class, -1, subjects);
 
         // 将 subject dto 列表转换为前缀树
-        DtoCodeTreeBuilder ctb = new DtoCodeTreeBuilder();
-        ctb.learn(subjectDtos);
-        ctb.reduce(); // 清除临时构建的中间结点
-
-        PoNode modelRoot = ctb.getRoot();
-        loadAccountSubjectRecursive(modelRoot, root);
-    }
-
-    private void loadAccountSubjectRecursive(PoNode modelNode, TreeNode guiParent) {
-        AccountSubjectDto subjectDto = (AccountSubjectDto) modelNode.getData();
-        TreeNode guiNode = new DefaultTreeNode(subjectDto, guiParent);
-        for (PoNode child : modelNode.getChildren()) {
-            loadAccountSubjectRecursive(child, guiNode);
-        }
+        root = UIHelper.buildDtoCodeTree(subjectDtos);
     }
 
     public void _newAccountSubject() {
@@ -103,7 +89,6 @@ public class AccountSubjectAdminBean
     public void newAccountSubject() {
         editNewStatus = true;
         _newAccountSubject();
-
     }
 
     public void chooseAccountSubject() {

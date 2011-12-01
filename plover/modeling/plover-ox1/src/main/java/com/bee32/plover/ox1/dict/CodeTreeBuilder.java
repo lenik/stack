@@ -13,11 +13,11 @@ public class CodeTreeBuilder
     }
 
     @Override
-    protected String formatEntry(PoNode node) {
+    protected String formatEntry(PoNode<Entity<String>> node) {
         String key = (String) node.getKey();
         if (node.isVirtual())
             return key + " (virtual)";
-        Entity<String> entity = (Entity<String>) node.getData();
+        Entity<String> entity = node.getData();
         return key + ": " + entity.toString(FormatStyle.SIMPLE);
     }
 

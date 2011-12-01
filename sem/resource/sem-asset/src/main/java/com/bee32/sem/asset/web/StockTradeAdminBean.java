@@ -6,16 +6,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.free.UnexpectedException;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Offset;
-import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.util.DTOs;
@@ -28,13 +24,16 @@ import com.bee32.sem.asset.entity.StockSale;
 import com.bee32.sem.asset.entity.StockTrade;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.inventory.util.MaterialCriteria;
 import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.entity.Org;
+import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.world.monetary.CurrencyUtil;
 import com.bee32.sem.world.monetary.MCValue;
 
-public class StockTradeAdminBean extends EntityViewBean {
+public class StockTradeAdminBean
+        extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -64,7 +63,6 @@ public class StockTradeAdminBean extends EntityViewBean {
     private Date limitDateFrom;
     private Date limitDateTo;
 
-
     private int goNumber;
     private int count;
 
@@ -81,11 +79,8 @@ public class StockTradeAdminBean extends EntityViewBean {
 
         goNumber = 1;
 
-
         try {
-            HttpServletRequest req = (HttpServletRequest) FacesContext
-                    .getCurrentInstance().getExternalContext().getRequest();
-            String s = req.getParameter("type").toString();
+            String s = getRequest().getParameter("type").toString();
             if (s.equals("SALE")) {
                 pageTitle = "销售入账单管理";
                 stockTradeClass = StockSale.class;
@@ -104,15 +99,13 @@ public class StockTradeAdminBean extends EntityViewBean {
         stockTradeDtoClass = (Class<? extends StockTradeDto>) EntityUtil.getDtoType(stockTradeClass);
 
         try {
-            stockTrade = ((StockTradeDto)stockTradeDtoClass.newInstance()).create();
+            stockTrade = ((StockTradeDto) stockTradeDtoClass.newInstance()).create();
         } catch (Exception e) {
             throw new UnexpectedException(e);
         }
 
         loadStockTrade(goNumber);
     }
-
-
 
     public boolean isEditable() {
         return editable;
@@ -150,7 +143,6 @@ public class StockTradeAdminBean extends EntityViewBean {
     public void setTradeItem(StockTradeItemDto tradeItem) {
         this.tradeItem = tradeItem;
     }
-
 
     public List<SelectItem> getCurrencies() {
         return CurrencyUtil.selectItems();
@@ -192,7 +184,7 @@ public class StockTradeAdminBean extends EntityViewBean {
         return orgPattern;
     }
 
-   public void setOrgPattern(String orgPattern) {
+    public void setOrgPattern(String orgPattern) {
         this.orgPattern = orgPattern;
     }
 
@@ -246,13 +238,6 @@ public class StockTradeAdminBean extends EntityViewBean {
         return count;
     }
 
-
-
-
-
-
-
-
     public void newItem() {
         tradeItem = new StockTradeItemDto().create();
         tradeItem.setTrade(stockTrade);
@@ -274,9 +259,7 @@ public class StockTradeAdminBean extends EntityViewBean {
 
     public void findMaterial() {
         if (materialPattern != null && !materialPattern.isEmpty()) {
-
-            List<Material> _materials = serviceFor(Material.class).list(new Like("label", "%" + materialPattern + "%"));
-
+            List<Material> _materials = serviceFor(Material.class).list(MaterialCriteria.labelLike(materialPattern));
             materials = DTOs.mrefList(MaterialDto.class, _materials);
         }
     }
@@ -297,9 +280,7 @@ public class StockTradeAdminBean extends EntityViewBean {
     public void findOrg() {
         if (orgPattern != null && !orgPattern.isEmpty()) {
 
-            List<Org> _orgs = serviceFor(Org.class).list( //
-                    new Or(new Like("name", "%" + orgPattern + "%"),
-                            new Like("fullName", "%" + orgPattern + "%")));
+            List<Org> _orgs = serviceFor(Org.class).list(PeopleCriteria.namedLike(orgPattern));
 
             orgs = DTOs.marshalList(OrgDto.class, _orgs);
         }
@@ -310,23 +291,22 @@ public class StockTradeAdminBean extends EntityViewBean {
     }
 
     private void loadStockTrade(int position) {
-        //刷新总记录数
+        // 刷新总记录数
         getCount();
 
         goNumber = position;
 
-        if(position < 1) {
+        if (position < 1) {
             goNumber = 1;
             position = 1;
         }
-        if(goNumber > count) {
+        if (goNumber > count) {
             goNumber = count;
             position = count;
         }
 
-
         try {
-            stockTrade = ((StockTradeDto)stockTradeDtoClass.newInstance()).create();
+            stockTrade = ((StockTradeDto) stockTradeDtoClass.newInstance()).create();
         } catch (Exception e) {
             throw new UnexpectedException(e);
         }
@@ -347,7 +327,7 @@ public class StockTradeAdminBean extends EntityViewBean {
 
     public void new_() {
         try {
-            stockTrade = ((StockTradeDto)stockTradeDtoClass.newInstance()).create();
+            stockTrade = ((StockTradeDto) stockTradeDtoClass.newInstance()).create();
         } catch (Exception e) {
             throw new UnexpectedException(e);
         }
@@ -356,7 +336,7 @@ public class StockTradeAdminBean extends EntityViewBean {
     }
 
     public void modify() {
-        if(stockTrade.getId() == null) {
+        if (stockTrade.getId() == null) {
             uiLogger.warn("当前没有对应的单据");
             return;
         }
@@ -375,31 +355,30 @@ public class StockTradeAdminBean extends EntityViewBean {
             uiLogger.warn("删除失败.", e);
         }
 
-
     }
 
     @Transactional
     public void save() {
-        if(stockTrade.getId() == null) {
-            //新增
+        if (stockTrade.getId() == null) {
+            // 新增
             goNumber = count + 1;
         }
 
         try {
 
-            for(StockTradeItemDto item : itemsNeedToRemoveWhenModify) {
+            for (StockTradeItemDto item : itemsNeedToRemoveWhenModify) {
                 stockTrade.removeItem(item);
             }
 
-            //更新_trade中的金额
+            // 更新_trade中的金额
             BigDecimal total = new BigDecimal(0);
-            for(StockTradeItemDto item : stockTrade.getItems()) {
+            for (StockTradeItemDto item : stockTrade.getItems()) {
                 total = total.add(item.getNativeTotal());
             }
 
             stockTrade.setValue(new MCValue(CurrencyConfig.getNative(), total));
 
-            StockTrade _trade = (StockTrade)stockTrade.unmarshal();
+            StockTrade _trade = (StockTrade) stockTrade.unmarshal();
 
             serviceFor(stockTradeClass).save(_trade);
             uiLogger.info("保存成功");
@@ -449,4 +428,5 @@ public class StockTradeAdminBean extends EntityViewBean {
         goNumber = count + 1;
         loadStockTrade(goNumber);
     }
+
 }

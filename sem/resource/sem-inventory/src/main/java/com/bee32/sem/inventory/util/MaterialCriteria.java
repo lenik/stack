@@ -1,5 +1,6 @@
 package com.bee32.sem.inventory.util;
 
+import org.hibernate.criterion.MatchMode;
 import org.zkoss.lang.Strings;
 
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
@@ -12,10 +13,10 @@ public class MaterialCriteria
         return equals("category.id", categoryId);
     }
 
-    public static CriteriaElement labelLike(String name) {
-        if (Strings.isEmpty(name))
+    public static CriteriaElement labelLike(String label) {
+        if (Strings.isEmpty(label))
             return null;
-        return like("label", "%" + name + "%");
+        return like("label", label, MatchMode.ANYWHERE);
     }
 
 }

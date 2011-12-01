@@ -12,11 +12,11 @@ public class DtoCodeTreeBuilder
     }
 
     @Override
-    protected String formatEntry(PoNode node) {
+    protected String formatEntry(PoNode<NameDictDto<?>> node) {
         String key = (String) node.getKey();
         if (node.isVirtual())
             return key + " (virtual)";
-        NameDictDto<?> dto = (NameDictDto<?>) node.getData();
+        NameDictDto<?> dto = node.getData();
         return key + ": " + dto.toString(FormatStyle.SIMPLE);
     }
 

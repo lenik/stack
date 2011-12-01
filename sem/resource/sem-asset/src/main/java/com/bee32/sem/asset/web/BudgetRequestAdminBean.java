@@ -15,7 +15,8 @@ import com.bee32.sem.asset.entity.BudgetRequest;
 import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.world.monetary.CurrencyUtil;
 
-public class BudgetRequestAdminBean extends EntityViewBean {
+public class BudgetRequestAdminBean
+        extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -78,7 +79,6 @@ public class BudgetRequestAdminBean extends EntityViewBean {
         this.goNumber = goNumber;
     }
 
-
     public int getCount() {
         count = serviceFor(BudgetRequest.class).count(//
                 EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo));
@@ -116,43 +116,35 @@ public class BudgetRequestAdminBean extends EntityViewBean {
         this.newItemStatus = newItemStatus;
     }
 
-
-
-
-
-
-
     public void limit() {
         loadBudgetRequest(goNumber);
     }
 
     private void loadBudgetRequest(int position) {
-        //刷新总记录数
+        // 刷新总记录数
         getCount();
 
         goNumber = position;
 
-        if(position < 1) {
+        if (position < 1) {
             goNumber = 1;
             position = 1;
         }
-        if(goNumber > count) {
+        if (goNumber > count) {
             goNumber = count;
             position = count;
         }
-
 
         budgetRequest = new BudgetRequestDto().create();
 
         BudgetRequest firstRequest = serviceFor(BudgetRequest.class).getFirst( //
                 new Offset(position - 1), //
                 EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
-                Order.asc("id"),
+                Order.asc("id"), //
                 EntityCriteria.ownedByCurrentUser());
 
         if (firstRequest != null)
             budgetRequest = DTOs.marshal(BudgetRequestDto.class, firstRequest);
-
     }
 
     public void new_() {
@@ -161,7 +153,7 @@ public class BudgetRequestAdminBean extends EntityViewBean {
     }
 
     public void modify() {
-        if(budgetRequest.getId() == null) {
+        if (budgetRequest.getId() == null) {
             uiLogger.warn("当前没有对应的单据");
             return;
         }
@@ -170,8 +162,8 @@ public class BudgetRequestAdminBean extends EntityViewBean {
     }
 
     public void save() {
-        if(budgetRequest.getId() == null) {
-            //新增
+        if (budgetRequest.getId() == null) {
+            // 新增
             goNumber = count + 1;
         }
 
@@ -191,8 +183,6 @@ public class BudgetRequestAdminBean extends EntityViewBean {
         loadBudgetRequest(goNumber);
         editable = false;
     }
-
-
 
     public void first() {
         goNumber = 1;
@@ -230,14 +220,12 @@ public class BudgetRequestAdminBean extends EntityViewBean {
 
     public void newItem() {
         budgetRequest = new BudgetRequestDto().create();
-
         newItemStatus = true;
     }
 
     public void modifyItem() {
         newItemStatus = false;
     }
-
 
     public void delete() {
         try {
@@ -248,4 +236,5 @@ public class BudgetRequestAdminBean extends EntityViewBean {
             uiLogger.warn("删除失败.", e);
         }
     }
+
 }
