@@ -27,7 +27,9 @@ import com.bee32.sem.purchase.dto.PurchaseRequestDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestItemDto;
 import com.bee32.sem.purchase.entity.Inquiry;
 import com.bee32.sem.purchase.entity.MaterialPlan;
+import com.bee32.sem.purchase.entity.PurchaseAdvice;
 import com.bee32.sem.purchase.entity.PurchaseRequest;
+import com.bee32.sem.purchase.entity.PurchaseRequestItem;
 import com.bee32.sem.purchase.service.PurchaseService;
 import com.bee32.sem.world.monetary.CurrencyUtil;
 
@@ -64,10 +66,13 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
     private List<PartyDto> suppliers;
     private PartyDto selectedSupplier;
 
-
-    int inquiryDetailStatus;    //1-新增;2-修改;3-查看
+    Integer inquiryDetailStatus;    //1-新增;2-修改;3-查看
     InquiryDto selectedInquiry;
     PurchaseAdviceDto purchaseAdvice;
+
+    public final int INQUIRY_DETAIL_STATUS_NEW = 1;
+    public final int INQUIRY_DETAIL_STATUS_MODIFY = 2;
+    public final int INQUIRY_DETAIL_STATUS_VIEW = 3;
 
     public PurchaseRequestAdminBean() {
         Calendar c = Calendar.getInstance();
@@ -85,6 +90,21 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
         goNumber = 1;
         loadPurchaseRequest(goNumber);
     }
+
+
+    public int getINQUIRY_DETAIL_STATUS_NEW() {
+        return INQUIRY_DETAIL_STATUS_NEW;
+    }
+
+    public int getINQUIRY_DETAIL_STATUS_MODIFY() {
+        return INQUIRY_DETAIL_STATUS_MODIFY;
+    }
+
+    public int getINQUIRY_DETAIL_STATUS_VIEW() {
+        return INQUIRY_DETAIL_STATUS_VIEW;
+    }
+
+
 
     public List<SelectItem> getCurrencies() {
         return CurrencyUtil.selectItems();
@@ -249,11 +269,11 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
         this.selectedSupplier = selectedSupplier;
     }
 
-    public int getInquiryDetailStatus() {
+    public Integer getInquiryDetailStatus() {
         return inquiryDetailStatus;
     }
 
-    public void setInquiryDetailStatus(int inquiryDetailStatus) {
+    public void setInquiryDetailStatus(Integer inquiryDetailStatus) {
         this.inquiryDetailStatus = inquiryDetailStatus;
     }
 
@@ -264,7 +284,7 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
     }
 
     public InquiryDto getSelectedInquiry() {
-        if(selectedInquiry == null)
+        if(selectedInquiry == null || selectedInquiry.getId() == null)
             selectedInquiry = new InquiryDto().create();
         return selectedInquiry;
     }
@@ -274,9 +294,9 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
     }
 
     public PurchaseAdviceDto getPurchaseAdvice() {
-        if (purchaseAdvice == null)
+        if (purchaseAdvice == null || purchaseAdvice.getId() == null)
             purchaseAdvice = new PurchaseAdviceDto().create();
-        if (purchaseAdvice.getPreferredInquiry() == null) {
+        if (purchaseAdvice.getPreferredInquiry() == null || purchaseAdvice.getPreferredInquiry().getId() == null) {
             InquiryDto tmpInquiry = new InquiryDto().create();
             purchaseAdvice.setPreferredInquiry(tmpInquiry);
         }
@@ -528,33 +548,79 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
 
     public void loadInquiry() {
         purchaseAdvice = purchaseRequestItem.getPurchaseAdvice();
-        if (purchaseAdvice == null)
-            purchaseAdvice = new PurchaseAdviceDto().create();
+        if (purchaseAdvice == null || purchaseAdvice.getId() == null) {
+           purchaseAdvice = new PurchaseAdviceDto().create();
+        } else {
+            purchaseAdvice = reload(purchaseAdvice);
+        }
     }
 
     public void newInquiry() {
-        inquiryDetailStatus = 1;
+        inquiryDetailStatus = INQUIRY_DETAIL_STATUS_NEW;
         selectedInquiry = new InquiryDto().create();
     }
 
-    public void acceptInquiry() {
-
-    }
-
-    public void savePurchaseAdvice() {
-
-    }
-
     public void saveInquiry() {
-        if (inquiryDetailStatus == 1) {
+        if (inquiryDetailStatus == INQUIRY_DETAIL_STATUS_NEW) {
             purchaseRequestItem.addInquiry(selectedInquiry);
             selectedInquiry.setPurchaseRequestItem(purchaseRequestItem);
         }
 
-        serviceFor(Inquiry.class).saveOrUpdate(selectedInquiry.unmarshal());
+        try {
+            serviceFor(Inquiry.class).saveOrUpdate(selectedInquiry.unmarshal());
+            uiLogger.info("保存成功.");
+        } catch (Exception e) {
+            uiLogger.error("保存失败.", e);
+        }
     }
 
     public void deleteInquiry() {
+        purchaseRequestItem.removeInquiry(selectedInquiry);
+        selectedInquiry.setPurchaseRequestItem(null);
+        try {
+            serviceFor(Inquiry.class).deleteById(selectedInquiry.getId());
+            uiLogger.info("删除成功.");
+        } catch (Exception e) {
+            uiLogger.error("删除失败.", e);
+        }
+    }
 
+    @Transactional
+    public void acceptInquiry() {
+        try {
+            PurchaseAdvice _purchaseAdvice = purchaseAdvice.unmarshal();
+            PurchaseRequestItem _purchaseRequestItem = purchaseRequestItem.unmarshal();
+
+            _purchaseAdvice.setPreferredInquiry(selectedInquiry.unmarshal());
+            _purchaseAdvice.setPurchaseRequestItem(_purchaseRequestItem);
+            serviceFor(PurchaseAdvice.class).saveOrUpdate(_purchaseAdvice);
+            purchaseAdvice = DTOs.marshal(PurchaseAdviceDto.class, _purchaseAdvice);
+
+            _purchaseRequestItem.setPurchaseAdvice(_purchaseAdvice);
+            serviceFor(PurchaseRequestItem.class).saveOrUpdate(_purchaseRequestItem);
+
+
+            uiLogger.info("采纳成功.");
+        } catch (Exception e) {
+            uiLogger.error("采纳失败.", e);
+        }
+    }
+
+    public void savePurchaseAdvice() {
+        if (purchaseAdvice == null || purchaseAdvice.getId() == null) {
+            uiLogger.warn("请先采纳一个供应商的保价");
+            return;
+        }
+
+        try {
+            serviceFor(PurchaseAdvice.class).saveOrUpdate(purchaseAdvice.unmarshal());
+            uiLogger.info("保存成功.");
+        } catch (Exception e) {
+            uiLogger.error("保存失败.", e);
+        }
+    }
+
+    public void verifyPurchaseAdvice() {
+        //TODO add verify code
     }
 }

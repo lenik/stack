@@ -560,7 +560,7 @@
                                             value="#{inquiry}"
                                             target="#{purchaseRequestAdminBean.selectedInquiry}" />
                                         <f:setPropertyActionListener
-                                            value="#{2}"
+                                            value="#{purchaseRequestAdminBean.INQUIRY_DETAIL_STATUS_MODIFY}"
                                             target="#{purchaseRequestAdminBean.inquiryDetailStatus}" />
                                     </p:commandLink>
                                     <p:spacer width="10" />
@@ -580,12 +580,12 @@
                                             value="#{inquiry}"
                                             target="#{purchaseRequestAdminBean.selectedInquiry}" />
                                         <f:setPropertyActionListener
-                                            value="#{3}"
+                                            value="#{purchaseRequestAdminBean.INQUIRY_DETAIL_STATUS_VIEW}"
                                             target="#{purchaseRequestAdminBean.inquiryDetailStatus}" />
                                     </p:commandLink>
                                     <p:spacer width="10" />
                                     <p:commandLink
-                                        update="inquiryDetailForm:inquiryDetailPanel"
+                                        update="inquiryForm:purchaseAdvicePanel"
                                         action="#{purchaseRequestAdminBean.acceptInquiry}"
                                         value="采纳">
                                         <f:setPropertyActionListener
@@ -599,20 +599,23 @@
 
                     </p:panel>
 
-                    <p:panel header="建议">
+                    <p:panel id="purchaseAdvicePanel" header="建议">
                         <t:panelGrid columns="2">
                             <h:outputText value="选择:" />
                             <p:inputText
-                                value="#{purchaseRequestAdminBean.purchaseAdvice.preferredInquiry.party.name}" />
+                                value="#{purchaseRequestAdminBean.purchaseAdvice.preferredInquiry.party.name}" readonly="true"/>
 
                             <h:outputText value="理由:" />
-                            <p:inputText
+                            <p:inputText style="width:600px;"
                                 value="#{purchaseRequestAdminBean.purchaseAdvice.reason}" />
 
-                            <t:panelGroup colspan="2">
-                                <p:commandButton value="保存"
-                                    actionListener="#{purchaseRequestAdminBean.savePurchaseAdvice}" />
-                            </t:panelGroup>
+
+                            <p:commandButton value="保存"
+                                actionListener="#{purchaseRequestAdminBean.savePurchaseAdvice}" />
+                            <p:commandButton value="审核"
+                                actionListener="#{purchaseRequestAdminBean.verifyPurchaseAdvice}" />
+
+
                         </t:panelGrid>
                     </p:panel>
 
@@ -627,7 +630,7 @@
             <p:dialog header="询价详细" widgetVar="inquiryDetailDialog" modal="true"
                 height="500" width="640">
 
-                <p:panel id="inquiryDetailPanel">
+                <t:panelGroup id="inquiryDetailPanel">
                     <t:panelGrid columns="2"
                         columnClasses="detail_col_title,detail_col_value">
 
@@ -659,27 +662,27 @@
                         </t:panelGrid>
 
                         <h:outputText value="交货时间" />
-                        <p:inputText
+                        <p:inputText style="width:500px;"
                             value="#{purchaseRequestAdminBean.selectedInquiry.deliveryDate}"
                             disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}" />
 
                         <h:outputLabel value="质量状况" />
-                        <p:inputText
+                        <p:inputText style="width:500px;"
                             value="#{purchaseRequestAdminBean.selectedInquiry.quality}"
                             disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}" />
 
                         <h:outputLabel value="付款方式" />
-                        <p:inputText
+                        <p:inputText style="width:500px;"
                             value="#{purchaseRequestAdminBean.selectedInquiry.paymentTerm}"
                             disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}" />
 
                         <h:outputLabel value="售后服务" />
-                        <p:inputText
+                        <p:inputText style="width:500px;"
                             value="#{purchaseRequestAdminBean.selectedInquiry.afterService}"
                             disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}" />
 
                         <h:outputLabel value="其他" />
-                        <p:inputText
+                        <p:inputText style="width:500px;"
                             value="#{purchaseRequestAdminBean.selectedInquiry.other}"
                             disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}" />
 
@@ -696,7 +699,7 @@
                             </t:panelGrid>
                         </t:panelGroup>
                     </t:panelGrid>
-                </p:panel>
+                </t:panelGroup>
             </p:dialog>
         </h:form>
 

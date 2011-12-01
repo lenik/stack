@@ -127,13 +127,15 @@ public class Inquiry extends TxEntity implements DecimalConfig {
         this.other = other;
     }
 
-
-
     /**
      * 需要询价的采购项目
      */
     @ManyToOne
     @NaturalId
+    public PurchaseRequestItem getPurchaseRequestItem() {
+        return purchaseRequestItem;
+    }
+
     public void setPurchaseRequestItem(PurchaseRequestItem purchaseRequestItem) {
         this.purchaseRequestItem = purchaseRequestItem;
     }
@@ -145,9 +147,5 @@ public class Inquiry extends TxEntity implements DecimalConfig {
     @OneToOne(mappedBy = "preferredInquiry")
     public PurchaseAdvice getPurchaseAdvice() {
         return purchaseAdvice;
-    }
-
-    public PurchaseRequestItem getPurchaseRequestItem() {
-        return purchaseRequestItem;
     }
 }
