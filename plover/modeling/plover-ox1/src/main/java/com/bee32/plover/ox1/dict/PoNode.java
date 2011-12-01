@@ -3,20 +3,21 @@ package com.bee32.plover.ox1.dict;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.free.PrefetchedIterator;
 import javax.free.TreeNode;
 
-public class PoNode
-        implements TreeNode<PoNode> {
+public class PoNode<T>
+        implements TreeNode<PoNode<T>> {
 
-    PoNode parent;
-    List<PoNode> children = new ArrayList<PoNode>();
+    PoNode<T> parent;
+    List<PoNode<T>> children = new ArrayList<PoNode<T>>();
     Object key;
-    Object data;
+    T data;
 
     public PoNode() {
     }
 
-    public synchronized void attach(PoNode parent) {
+    public synchronized void attach(PoNode<T> parent) {
         detach();
 
         this.parent = parent;
@@ -34,25 +35,53 @@ public class PoNode
         return data == null;
     }
 
-    public PoNode getParent() {
+    public PoNode<T> getParent() {
         return parent;
     }
 
-    public void setParent(PoNode parent) {
+    public void setParent(PoNode<T> parent) {
         this.parent = parent;
     }
 
     @Override
-    public List<PoNode> getChildren() {
+    public List<PoNode<T>> getChildren() {
         return children;
     }
 
-    public void addChild(PoNode child) {
+    public void addChild(PoNode<T> child) {
         children.add(child);
     }
 
-    public void removeChild(PoNode child) {
+    public void removeChild(PoNode<T> child) {
         children.remove(child);
+    }
+
+    class ChainIterator
+            extends PrefetchedIterator<PoNode<T>> {
+
+        PoNode<T> node = PoNode.this;
+
+        @Override
+        protected PoNode<T> fetch() {
+            if (node != null) {
+                PoNode<T> fetched = node;
+                node = node.getParent();
+                return fetched;
+            }
+            return end();
+        }
+
+    }
+
+    public Iterable<PoNode<T>> chain() {
+        return new Iterable<PoNode<T>>() {
+
+            @Override
+            public ChainIterator iterator() {
+                return new ChainIterator();
+            }
+
+        };
     }
 
     public Object getKey() {
@@ -63,11 +92,11 @@ public class PoNode
         this.key = key;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 
