@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.free.FilePath;
+import javax.free.SystemProperties;
 
 public class MavenPath {
 
@@ -43,15 +44,26 @@ public class MavenPath {
     }
 
     public static File getSiblingResource(File dir) {
-        String resdir = dir.getPath();
-
+        String path = dir.getPath();
+        path = normalizePathString(path);
         // src/main/java => src/main/resources
         // target/classes => src/main/resources
         // target/test-classes => src/test/resources
-        resdir = resdir.replaceFirst("/src/main/java", "/src/main/resources");
-        resdir = resdir.replaceFirst("/target/classes", "/src/main/resources");
-        resdir = resdir.replaceFirst("/target/test-classes", "/src/test/resources");
-        return new File(resdir);
+        path = path.replaceFirst("/src/main/java", "/src/main/resources");
+        path = path.replaceFirst("/target/classes", "/src/main/resources");
+        path = path.replaceFirst("/target/test-classes", "/src/test/resources");
+        return new File(path);
+    }
+
+    static final String SLASH = SystemProperties.getFileSeparator();
+
+    static String normalizePathString(String path) {
+        if (path == null)
+            return null;
+        // if (SystemProperties.getOsName().equals("win32"))
+        path = path.replace("\\", SLASH);
+        // Mac? path = path.replace(":", SLASH);
+        return path;
     }
 
     public static File getResourceDir(Class<?> clazz) {

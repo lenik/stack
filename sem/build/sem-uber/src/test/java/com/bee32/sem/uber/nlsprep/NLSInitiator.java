@@ -217,11 +217,10 @@ public class NLSInitiator {
     public static void main(String[] args)
             throws Exception {
         System.setProperty("line.separator", "\n");
-        for (File classdir : UCLDumper.getLocalClasspaths()) {
-            String dos2unix = classdir.getPath().replace('\\', '/');
 
+        for (File classdir : UCLDumper.getLocalClasspaths()) {
             if (classdir.isDirectory()) {
-                File resdir = new File(getSiblingResource(dos2unix));
+                File resdir = MavenPath.getSiblingResource(classdir);
 
                 System.out.println("Scan " + classdir);
 
@@ -248,16 +247,6 @@ public class NLSInitiator {
                 }
             }
         }
-    }
-
-    public static String getSiblingResource(String resdir) {
-        // src/main/java => src/main/resources
-        // target/classes => src/main/resources
-        // target/test-classes => src/test/resources
-        resdir = resdir.replaceFirst("/src/main/java", "/src/main/resources");
-        resdir = resdir.replaceFirst("/target/classes", "/src/main/resources");
-        resdir = resdir.replaceFirst("/target/test-classes", "/src/test/resources");
-        return resdir;
     }
 
 }
