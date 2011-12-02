@@ -105,10 +105,6 @@
 
 			<p:panel header="#{takeAdminBean.subject.displayName}">
 				<t:panelGrid columns="4">
-                    <t:panelGroup colspan="4">
-                        <p:commandButton value="从采购计划取数" />
-                    </t:panelGroup>
-
 					<h:outputText value="时间" />
                     <h:outputText value="#{takeAdminBean.stockOrder.createdDate}">
                         <f:convertDateTime pattern="yyyy-MM-dd"
@@ -718,8 +714,6 @@
                 </h:panelGroup>
             </p:dialog>
         </h:form>
-
-
 
         <h:outputScript>
             document.title = $("#mainForm\\:pageTitle").val();

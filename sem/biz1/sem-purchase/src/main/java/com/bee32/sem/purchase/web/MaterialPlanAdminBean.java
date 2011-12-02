@@ -403,7 +403,9 @@ public class MaterialPlanAdminBean extends EntityViewBean {
             }
 
             MakeTask task = _plan.getTask();
-            task.getPlans().add(_plan);
+            if (!task.getPlans().contains(_plan)) {
+                task.getPlans().add(_plan);
+            }
 
             serviceFor(MaterialPlan.class).save(_plan);
             uiLogger.info("保存成功");

@@ -325,7 +325,9 @@ public class MakeTaskAdminBean extends EntityViewBean {
             }
 
             MakeOrder order = _task.getOrder();
-            order.getTasks().add(_task);
+            if (!order.getTasks().contains(_task)) {
+                order.getTasks().add(_task);
+            }
 
             Map<Part, BigDecimal> mapQuantityOverloadParts = order.checkIfTaskQuantityFitOrder();
             Set<Part> setQuantityOverloadParts = mapQuantityOverloadParts.keySet();
