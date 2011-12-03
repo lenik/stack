@@ -6,8 +6,10 @@ import java.util.List;
 
 import com.bee32.plover.criteria.hibernate.GroupPropertyProjection;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.criteria.hibernate.ProjectionList;
 import com.bee32.plover.criteria.hibernate.SumProjection;
+import com.bee32.sem.asset.entity.AccountSnapshot;
 import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.asset.entity.AccountTicket;
 import com.bee32.sem.asset.entity.AccountTicketItem;
@@ -19,6 +21,10 @@ public class AssetQuery
 
     @Override
     public AccountTicket getSummary(ICriteriaElement selection, AssetQueryOptions options) {
+
+        asFor(AccountSnapshot.class).list(
+                Order.desc("beginTime"));
+
         // TODO getLatestPack.. then, non-virtual
         // TODO or, >date, non-packing, non-virtual
 
