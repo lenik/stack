@@ -2,11 +2,15 @@ include libauto/coolauto.am
 
 do_subst += \
 	-e 's,[@]bindconfdir[@],$(bindconfdir),g' \
-	-e 's,[@]seccadbdir[@],$(seccadbdir),g'
+	-e 's,[@]seccadbdir[@],$(seccadbdir),g' \
+	-e 's/[@]ZONEOPTS[@]/allow-update { key bee32-key; };/g'
 
 bindconfdir = ${sysconfdir}/bind
 seccadbdir  = ${bindconfdir}/secca
 sitesdir	= ${sysconfdir}/apache2/sites-available
+
+dist_bindconf_DATA = \
+	bee32.key
 
 dist_seccadb_DATA = \
 	named.conf \
@@ -26,5 +30,5 @@ setup_SCRIPTS = \
 	substs-host
 
 EXTRA_DIST = post-install.sh.in pre-remove.sh.in
-CLEANFILES = post-install.sh    pre-remove.sh
+CLEANFILES = post-install.sh    pre-remove.sh    named.conf
 

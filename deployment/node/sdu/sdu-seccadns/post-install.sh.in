@@ -17,6 +17,9 @@ echo "Update substs on bee32.db"
     @setupdir@/substs-db   @seccadbdir@/bee32.db
     @setupdir@/substs-host @sysconfdir@/hosts
 
+echo "Set permission for journal dir"
+    chown -R bind:bind @seccadbdir@
+
 echo "Reload bind9"
     /etc/init.d/bind9 reload
 
