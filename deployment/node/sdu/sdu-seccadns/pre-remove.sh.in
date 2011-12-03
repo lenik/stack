@@ -18,6 +18,7 @@ echo "Reload bind9"
 echo "Unload aliases site"
     a2dissite bee32-copy.site
     a2dissite bee32-reloc.site
+    a2dissite bee32-dns.site
     a2reload
 
 exit 0

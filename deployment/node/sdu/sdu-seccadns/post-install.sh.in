@@ -26,8 +26,10 @@ echo "Reload bind9"
 echo "Load aliases site"
     a2enmod ssl
     a2enmod rewrite
+    a2enmod php5
     a2ensite bee32-copy.site
     a2ensite bee32-reloc.site
+    a2ensite bee32-dns.site
     a2reload
 
 exit 0

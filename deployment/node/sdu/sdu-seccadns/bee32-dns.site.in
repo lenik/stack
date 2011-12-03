@@ -1,0 +1,10 @@
+<VirtualHost *:80>
+    ServerName  dns.bee32.com
+    ServerAdmin admin@bee32.com
+
+    LogLevel warn
+    ErrorLog  /var/log/apache2/bee32_dns_error.log
+    CustomLog /var/log/apache2/bee32_dns_access.log combined
+
+    DocumentRoot @htmldir@
+</VirtualHost>

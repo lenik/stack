@@ -3,11 +3,13 @@ include libauto/coolauto.am
 do_subst += \
 	-e 's,[@]bindconfdir[@],$(bindconfdir),g' \
 	-e 's,[@]seccadbdir[@],$(seccadbdir),g' \
+	-e 's,[@]htmldir[@],$(htmldir),g' \
 	-e 's/[@]ZONEOPTS[@]/allow-update { key bee32-key; };/g'
 
 bindconfdir = ${sysconfdir}/bind
 seccadbdir  = ${bindconfdir}/secca
 sitesdir	= ${sysconfdir}/apache2/sites-available
+htmldir 	= ${pkgdatadir}/html
 
 dist_bindconf_DATA = \
 	bee32.key
@@ -21,7 +23,11 @@ dist_seccadb_DATA = \
 
 dist_sites_DATA = \
 	bee32-copy.site \
-	bee32-reloc.site
+	bee32-reloc.site \
+	bee32-dns.site
+
+dist_html_DATA = \
+	dns-update.php
 
 setup_SCRIPTS = \
 	post-install.sh \
