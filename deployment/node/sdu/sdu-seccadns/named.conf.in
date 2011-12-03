@@ -1,4 +1,6 @@
 
+include "@seccadbdir@/bee32.key";
+
 zone "bee32.com"            { type master; file "secca/bee32.db"; @ZONEOPTS@ };
 zone "bee64.com"            { type master; file "secca/bee32.db"; @ZONEOPTS@ };
 

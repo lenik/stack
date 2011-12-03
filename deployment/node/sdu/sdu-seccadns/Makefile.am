@@ -1,40 +1,42 @@
 include libauto/coolauto.am
 
 do_subst += \
-	-e 's,[@]bindconfdir[@],$(bindconfdir),g' \
-	-e 's,[@]seccadbdir[@],$(seccadbdir),g' \
-	-e 's,[@]htmldir[@],$(htmldir),g' \
-	-e 's/[@]ZONEOPTS[@]/allow-update { key bee32-key; };/g'
+    -e 's,[@]bindconfdir[@],$(bindconfdir),g' \
+    -e 's,[@]seccadbdir[@],$(seccadbdir),g' \
+    -e 's,[@]htmldir[@],$(htmldir),g' \
+    -e 's/[@]ZONEOPTS[@]/allow-update { key bee32-key; };/g'
 
 bindconfdir = ${sysconfdir}/bind
 seccadbdir  = ${bindconfdir}/secca
-sitesdir	= ${sysconfdir}/apache2/sites-available
-htmldir 	= ${pkgdatadir}/html
-
-dist_bindconf_DATA = \
-	bee32.key
+sitesdir    = ${sysconfdir}/apache2/sites-available
+htmldir     = ${pkgdatadir}/html
 
 dist_seccadb_DATA = \
-	named.conf \
-	bee32.db \
-	bee32-fw.db \
-	rad.db \
-	bia.db
+    named.conf \
+    bee32.key \
+    bee32.db \
+    bee32-fw.db \
+    rad.db \
+    bia.db
 
 dist_sites_DATA = \
-	bee32-copy.site \
-	bee32-reloc.site \
-	bee32-dns.site
+    bee32-copy.site \
+    bee32-reloc.site \
+    bee32-dns.site
 
 dist_html_DATA = \
-	dns-update.php
+    dns-update.php
 
 setup_SCRIPTS = \
-	post-install.sh \
-	pre-remove.sh \
-	substs-db \
-	substs-host
+    post-install.sh \
+    pre-remove.sh \
+    substs-db \
+    substs-host
 
 EXTRA_DIST = post-install.sh.in pre-remove.sh.in
-CLEANFILES = post-install.sh    pre-remove.sh    named.conf
+CLEANFILES = post-install.sh    pre-remove.sh \
+    named.conf \
+    bee32.db \
+    bee32-dns.site \
+    dns-update.php
 
