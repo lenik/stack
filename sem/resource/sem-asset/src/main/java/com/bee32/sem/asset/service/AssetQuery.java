@@ -2,17 +2,21 @@ package com.bee32.sem.asset.service;
 
 import java.math.BigDecimal;
 import java.util.Currency;
+import java.util.Date;
 import java.util.List;
 
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.GroupPropertyProjection;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.criteria.hibernate.Order;
+import com.bee32.plover.criteria.hibernate.LessThan;
 import com.bee32.plover.criteria.hibernate.ProjectionList;
 import com.bee32.plover.criteria.hibernate.SumProjection;
 import com.bee32.sem.asset.entity.AccountSnapshot;
+import com.bee32.sem.asset.entity.AccountSnapshotItem;
 import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.asset.entity.AccountTicket;
 import com.bee32.sem.asset.entity.AccountTicketItem;
+import com.bee32.sem.asset.util.AssetCriteria;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.world.monetary.MCValue;
 
@@ -22,15 +26,23 @@ public class AssetQuery
     @Override
     public AccountTicket getSummary(ICriteriaElement selection, AssetQueryOptions options) {
 
-        asFor(AccountSnapshot.class).list(
-                Order.desc("beginTime"));
+        AccountSnapshot latestSnapshot = asFor(AccountSnapshot.class).getFirst(//
+                AssetCriteria.latestSnapshotBefore(options.getTimestamp()));
 
-        // TODO getLatestPack.. then, non-virtual
-        // TODO or, >date, non-packing, non-virtual
+        ICriteriaElement dateCriterion = null;
+        if (latestSnapshot != null) {
+            Date snapshotDate = latestSnapshot.getEndTime();
+            dateCriterion = new LessThan("beginTime", snapshotDate);
+
+            for (AccountSnapshotItem item : asFor(AccountSnapshotItem.class).list(//
+                    new Equals("snapshot", latestSnapshot))) {
+                // Merge the initial.
+            }
+        }
 
         ProjectionList projection = new ProjectionList(//
                 new GroupPropertyProjection("value.currency"), //
-                new SumProjection("value"), //
+                new SumProjection("value.value"), //
                 options.getSubjectProjection(), //
                 options.getPartyProjection() //
         );
@@ -63,5 +75,4 @@ public class AssetQuery
 
         return all;
     }
-
 }

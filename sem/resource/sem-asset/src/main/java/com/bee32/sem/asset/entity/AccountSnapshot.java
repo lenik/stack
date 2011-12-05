@@ -9,7 +9,7 @@ import javax.persistence.SequenceGenerator;
 import com.bee32.sem.base.tx.TxEntity;
 
 /**
- * {@link #getBeginTime() begin-time} is used as the snapshot time.
+ * {@link #getEndTime() end-time} is used as the snapshot time.
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "account_snapshot_seq", allocationSize = 1)

@@ -19,10 +19,11 @@ public class AssetCriteria
         extends CriteriaSpec {
 
     @LeftHand(AccountSnapshot.class)
-    public static ICriteriaElement floorSnapshot(Date date) {
+    public static ICriteriaElement latestSnapshotBefore(Date date) {
         return compose(//
-                lessThan("beginTime", date), //
-                descOrder("beginTime"));
+                limit(0, 1), //
+                lessThan("endTime", date), //
+                descOrder("endTime"));
     }
 
     @LeftHand(BudgetRequest.class)
