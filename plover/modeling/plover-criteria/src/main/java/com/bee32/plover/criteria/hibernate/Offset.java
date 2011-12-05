@@ -10,6 +10,12 @@ public class Offset
 
     final int offset;
 
+    /**
+     * Set the first result to be retrieved.
+     *
+     * @param offset
+     *            the first result to retrieve, numbered from <tt>0</tt>
+     */
     public Offset(int offset) {
         this.offset = offset;
     }

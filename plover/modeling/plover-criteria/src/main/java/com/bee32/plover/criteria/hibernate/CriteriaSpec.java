@@ -28,6 +28,14 @@ public abstract class CriteriaSpec {
         return new CriteriaComposite(elements);
     }
 
+    protected static ICriteriaElement limit(int limit) {
+        return limit(0, limit);
+    }
+
+    protected static ICriteriaElement limit(int offset, int limit) {
+        return new Limit(offset, limit);
+    }
+
     protected static CriteriaElement alias(String associationPath, String alias) {
         return new Alias(associationPath, alias);
     }

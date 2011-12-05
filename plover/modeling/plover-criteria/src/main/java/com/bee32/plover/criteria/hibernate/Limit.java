@@ -10,6 +10,14 @@ public class Limit
 
     final int limit;
 
+    /**
+     * Set the first result to be retrieved, and set a fetch size for the underlying JDBC query.
+     *
+     * @param offset
+     *            the first result to retrieve, numbered from <tt>0</tt>
+     * @param fetchSize
+     *            the fetch size
+     */
     public Limit(int offset, int limit) {
         super(offset);
         this.limit = limit;
