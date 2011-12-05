@@ -207,7 +207,19 @@
                             </p:commandLink>
 						</t:panelGroup>
 					</p:column>
-				</p:dataTable>
+
+                    <p:column headerText="入库仓库">
+                        <p:selectOneMenu id="stockWarehouseId"
+                            style="width:200px;">
+                            <f:selectItem itemValue=""
+                                itemLabel="--选择仓库--" />
+                            <f:selectItems
+                                value="#{purchaseRequestAdminBean.stockWarehouses}" />
+                        </p:selectOneMenu>
+                    </p:column>
+                </p:dataTable>
+                <p:separator style="width:100%;" />
+                <p:commandButton value="生成采购入库单" actionListener="#{purchaseRequestAdminBean.genTakeInStockOrder}"/>
 			</p:panel>
 		</h:form>
 

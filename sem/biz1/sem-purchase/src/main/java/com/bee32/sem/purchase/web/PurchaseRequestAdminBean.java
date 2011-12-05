@@ -15,6 +15,8 @@ import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
+import com.bee32.sem.inventory.dto.StockWarehouseDto;
+import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
@@ -104,7 +106,20 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
         return INQUIRY_DETAIL_STATUS_VIEW;
     }
 
+    public List<SelectItem> getStockWarehouses() {
+        List<StockWarehouse> stockWarehouses = serviceFor(StockWarehouse.class).list();
+        List<StockWarehouseDto> stockWarehouseDtos = DTOs.mrefList(StockWarehouseDto.class, stockWarehouses);
 
+        List<SelectItem> items = new ArrayList<SelectItem>();
+
+        for (StockWarehouseDto stockWarehouseDto : stockWarehouseDtos) {
+            String label = stockWarehouseDto.getName();
+            SelectItem item = new SelectItem(stockWarehouseDto.getId(), label);
+            items.add(item);
+        }
+
+        return items;
+    }
 
     public List<SelectItem> getCurrencies() {
         return CurrencyUtil.selectItems();
@@ -622,5 +637,9 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
 
     public void verifyPurchaseAdvice() {
         //TODO add verify code
+    }
+
+    public void genTakeInStockOrder() {
+
     }
 }
