@@ -24,6 +24,8 @@ public class PurchaseRequest
     List<MaterialPlan> plans;
     List<PurchaseRequestItem> items;
 
+    List<OrderHolder> orderHolders;
+
     @OneToMany(mappedBy = "purchaseRequest")
     public List<MaterialPlan> getPlans() {
         return plans;
@@ -76,5 +78,35 @@ public class PurchaseRequest
             items.get(index).setIndex(index);
     }
 
+
+    @OneToMany(mappedBy = "purchaseRequest", orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
+    public List<OrderHolder> getOrderHolders() {
+        return orderHolders;
+    }
+
+    public void setOrderHolders(List<OrderHolder> orderHolders) {
+        this.orderHolders = orderHolders;
+    }
+
+
+    public synchronized void addOrderHolder(OrderHolder orderHolder) {
+        if (orderHolder == null)
+            throw new NullPointerException("orderHolder");
+
+        orderHolders.add(orderHolder);
+    }
+
+    public synchronized void removeOrderHolder(OrderHolder orderHolder) {
+        if (orderHolder == null)
+            throw new NullPointerException("orderHolder");
+
+        int index = orderHolders.indexOf(orderHolder);
+        if (index == -1)
+            return /* false */;
+
+        orderHolders.remove(index);
+        orderHolder.detach();
+    }
 
 }

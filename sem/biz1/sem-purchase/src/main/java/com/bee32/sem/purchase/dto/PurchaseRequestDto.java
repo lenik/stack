@@ -21,6 +21,8 @@ public class PurchaseRequestDto
     List<PurchaseRequestItemDto> items;
     List<MaterialPlanDto> plans;
 
+    List<OrderHolderDto> orderHolders;
+
     @Override
     protected void _marshal(PurchaseRequest source) {
         if (selection.contains(ITEMS))
@@ -32,6 +34,8 @@ public class PurchaseRequestDto
             plans = marshalList(MaterialPlanDto.class, source.getPlans());
         else
             plans = new ArrayList<MaterialPlanDto>();
+
+        orderHolders = marshalList(OrderHolderDto.class, source.getOrderHolders());
     }
 
     @Override
@@ -41,6 +45,8 @@ public class PurchaseRequestDto
 
         if (selection.contains(PLANS))
             mergeList(target, "plans", plans);
+
+        mergeList(target, "orderHolders", orderHolders);
     }
 
     @Override
@@ -99,6 +105,30 @@ public class PurchaseRequestDto
         this.plans = plans;
     }
 
+    public List<OrderHolderDto> getOrderHolders() {
+        return orderHolders;
+    }
 
+    public void setOrderHolders(List<OrderHolderDto> orderHolders) {
+        this.orderHolders = orderHolders;
+    }
 
+    public synchronized void addOrderHolder(OrderHolderDto orderHolder) {
+        if (orderHolder == null)
+            throw new NullPointerException("orderHolder");
+
+        orderHolders.add(orderHolder);
+    }
+
+    public synchronized void removeOrderHolder(OrderHolderDto orderHolder) {
+        if (orderHolder == null)
+            throw new NullPointerException("orderHolder");
+
+        int index = orderHolders.indexOf(orderHolder);
+        if (index == -1)
+            return /* false */;
+
+        orderHolders.remove(index);
+        // orderHolder.detach();
+    }
 }
