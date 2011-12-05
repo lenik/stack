@@ -1,7 +1,9 @@
 package com.bee32.plover.ox1.dict;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.free.PrefetchedIterator;
 import javax.free.TreeNode;
@@ -13,6 +15,8 @@ public class PoNode<T>
     List<PoNode<T>> children = new ArrayList<PoNode<T>>();
     Object key;
     T data;
+    Object userData;
+    Map<String, Object> attributeMap;
 
     public PoNode() {
     }
@@ -98,6 +102,28 @@ public class PoNode<T>
 
     public void setData(T data) {
         this.data = data;
+    }
+
+    public Object getUserData() {
+        return userData;
+    }
+
+    public void setUserData(Object userData) {
+        this.userData = userData;
+    }
+
+    public synchronized Map<String, Object> getAttributeMap() {
+        if (attributeMap == null)
+            attributeMap = new HashMap<String, Object>();
+        return attributeMap;
+    }
+
+    public Object getAttribute(String key) {
+        return getAttributeMap().get(key);
+    }
+
+    public void setAttribute(String key, Object value) {
+        getAttributeMap().put(key, value);
     }
 
     @Override
