@@ -1,7 +1,5 @@
 package com.bee32.sem.asset.service;
 
-import com.bee32.sem.asset.entity.AccountTicket;
-
 public interface IAssetQuery {
 
     /**
@@ -9,9 +7,9 @@ public interface IAssetQuery {
      *
      * @param options
      *            查询选项。
-     * @return 对应科目的余量。
+     * @return 以对应科目为根结点的余量树。
      * @see AssetQueryOptions
      */
-    AccountTicket getSummary(AssetQueryOptions options);
+    SumNode getSummary(AssetQueryOptions options);
 
 }

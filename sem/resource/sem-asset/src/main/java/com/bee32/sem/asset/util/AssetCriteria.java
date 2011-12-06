@@ -33,10 +33,11 @@ public class AssetCriteria
     }
 
     @LeftHand(AccountTicketItem.class)
-    public static ICriteriaElement select(AssetQueryOptions options) {
+    public static ICriteriaElement select(AssetQueryOptions options, Date optBaseTime) {
         return compose(//
                 // alias("ticket", "ticket", CriteriaSpecification.LEFT_JOIN), //
                 // VERIFIED?
+                _greaterThan("endTime", optBaseTime), //
                 lessOrEquals("endTime", options.getTimestamp()), //
 
                 // LIKE "01%"
