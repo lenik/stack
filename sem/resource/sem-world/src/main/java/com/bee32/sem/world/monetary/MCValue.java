@@ -49,6 +49,22 @@ public class MCValue
         value = mcv.value;
     }
 
+    public MCValue(int value) {
+        this(CurrencyConfig.getNative(), value);
+    }
+
+    public MCValue(long value) {
+        this(CurrencyConfig.getNative(), value);
+    }
+
+    public MCValue(double value) {
+        this(CurrencyConfig.getNative(), value);
+    }
+
+    public MCValue(BigDecimal value) {
+        this(CurrencyConfig.getNative(), value);
+    }
+
     public MCValue(Currency currency, int value) {
         this(currency, new BigDecimal(value, DecimalConfig.MONEY_ITEM_CONTEXT));
     }
