@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.free.IFormatter;
 import javax.free.IPreorder;
 import javax.free.IPrintOut;
 import javax.free.NotImplementedException;
@@ -19,6 +20,10 @@ public class PoTreeBuilder<T, K> {
     private Map<K, PoNode<T>> nodes;
     private final IKeyMapper<T, K> mapper;
     private final IPreorder<K> preorder;
+    private IFormatter<PoNode<?>> formatter = PoNode.KeyFormatter.INSTANCE;
+
+    @SuppressWarnings("unchecked")
+    private Class<? extends PoNode<? extends T>> nodeClass = (Class<? extends PoNode<? extends T>>) PoNode.class;
 
     public PoTreeBuilder(IKeyMapper<T, K> mapper, IPreorder<K> preorder) {
         this.roots = new HashSet<PoNode<T>>();
@@ -38,7 +43,7 @@ public class PoTreeBuilder<T, K> {
         if (node == null) {
             K parentKey = preorder.getPreceding(key);
             PoNode<T> parentNode = getOrCreateVirtualNode(parentKey);
-            node = new PoNode<T>();
+            node = createNode();
             node.attach(parentNode);
             nodes.put(key, node);
         }
@@ -98,16 +103,16 @@ public class PoTreeBuilder<T, K> {
         return roots;
     }
 
-    public synchronized PoNode<T> getRoot() {
+    public synchronized <N extends PoNode<? extends T>> N getRoot() {
         if (roots.isEmpty())
             throw new IllegalStateException("No root node in the tree.");
         if (roots.size() > 1)
             throw new IllegalStateException("Too many root nodes in the tree!");
-        return roots.iterator().next();
+        return (N) roots.iterator().next();
     }
 
-    public PoNode<T> getNode(K key) {
-        return nodes.get(key);
+    public <N extends PoNode<? extends T>> N getNode(K key) {
+        return (N) nodes.get(key);
     }
 
     protected synchronized PoNode<T> getOrCreateVirtualNode(K key) {
@@ -116,7 +121,7 @@ public class PoTreeBuilder<T, K> {
 
         PoNode<T> node = nodes.get(key);
         if (node == null) {
-            node = new PoNode<T>();
+            node = createNode();
             node.setKey(key);
             nodes.put(key, node);
 
@@ -130,6 +135,32 @@ public class PoTreeBuilder<T, K> {
         return node;
     }
 
+    public Class<? extends PoNode<? extends T>> getNodeClass() {
+        return nodeClass;
+    }
+
+    public void setNodeClass(Class<? extends PoNode<? extends T>> nodeClass) {
+        this.nodeClass = nodeClass;
+    }
+
+    protected PoNode<T> createNode() {
+        PoNode<T> node;
+        try {
+            node = (PoNode<T>) nodeClass.newInstance();
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+        return node;
+    }
+
+    public IFormatter<PoNode<?>> getFormatter() {
+        return formatter;
+    }
+
+    public void setFormatter(IFormatter<PoNode<?>> formatter) {
+        this.formatter = formatter;
+    }
+
     public String dump() {
         PrettyPrintStream buf = new PrettyPrintStream();
         dump(buf);
@@ -139,26 +170,25 @@ public class PoTreeBuilder<T, K> {
     public void dump(IPrintOut out) {
         for (PoNode<T> root : roots) {
             out.println("Root " + root.getKey());
-            _dump(out, root, "");
+            dump(out, root, formatter);
         }
     }
 
-    void _dump(IPrintOut out, PoNode<T> node, String prefix) {
-        List<PoNode<T>> children = node.getChildren();
+    public static void dump(IPrintOut out, PoNode<?> node, IFormatter<PoNode<?>> formatter) {
+        _dump(out, node, formatter, "");
+    }
+
+    static void _dump(IPrintOut out, PoNode<?> node, IFormatter<PoNode<?>> formatter, String prefix) {
+        List<? extends PoNode<?>> children = node.getChildren();
         for (int i = 0; i < children.size(); i++) {
-            PoNode<T> child = children.get(i);
+            PoNode<?> child = children.get(i);
             boolean end = i == children.size() - 1;
 
-            out.println(prefix + (end ? " `- " : " |- ") + formatEntry(child));
+            String str = formatter.format(child);
+            out.println(prefix + (end ? " `- " : " |- ") + str);
 
-            _dump(out, child, prefix + (end ? "    " : " |  "));
+            _dump(out, child, formatter, prefix + (end ? "    " : " |  "));
         }
-    }
-
-    protected String formatEntry(PoNode<T> node) {
-        K key = (K) node.getKey();
-        // Object obj= node.getData();
-        return String.valueOf(key);
     }
 
 }
