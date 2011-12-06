@@ -2,6 +2,8 @@ package com.bee32.sem.asset;
 
 import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
+import com.bee32.sem.asset.entity.AccountSnapshot;
+import com.bee32.sem.asset.entity.AccountSnapshotItem;
 import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.asset.entity.AccountTicket;
 import com.bee32.sem.asset.entity.AccountTicketItem;
@@ -23,6 +25,8 @@ public class SEMAssetUnit
         add(AccountSubject.class);
         add(AccountTicket.class);
         add(AccountTicketItem.class);
+        add(AccountSnapshot.class);
+        add(AccountSnapshotItem.class);
         add(BudgetRequest.class);
         add(StockPurchase.class);
         add(StockSale.class);
