@@ -32,7 +32,10 @@ import com.bee32.sem.purchase.entity.MaterialPlan;
 import com.bee32.sem.purchase.entity.PurchaseAdvice;
 import com.bee32.sem.purchase.entity.PurchaseRequest;
 import com.bee32.sem.purchase.entity.PurchaseRequestItem;
+import com.bee32.sem.purchase.service.AdviceHaveNotVerifiedException;
+import com.bee32.sem.purchase.service.NoPurchaseAdviceException;
 import com.bee32.sem.purchase.service.PurchaseService;
+import com.bee32.sem.purchase.service.TakeInStockOrderAlreadyGeneratedException;
 import com.bee32.sem.world.monetary.CurrencyUtil;
 
 public class PurchaseRequestAdminBean extends EntityViewBean {
@@ -75,6 +78,8 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
     public final int INQUIRY_DETAIL_STATUS_NEW = 1;
     public final int INQUIRY_DETAIL_STATUS_MODIFY = 2;
     public final int INQUIRY_DETAIL_STATUS_VIEW = 3;
+
+    List<Long> warehouseIds;
 
     public PurchaseRequestAdminBean() {
         Calendar c = Calendar.getInstance();
@@ -321,6 +326,22 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
     public void setPurchaseAdvice(PurchaseAdviceDto purchaseAdvice) {
         this.purchaseAdvice = purchaseAdvice;
     }
+
+    public List<Long> getWarehouseIds() {
+        warehouseIds = new ArrayList<Long>();
+        for(int i = 0; i < purchaseRequest.getItems().size(); i++) {
+            warehouseIds.add(-1L);
+        }
+        return warehouseIds;
+    }
+
+    public void setWarehouseIds(List<Long> warehouseIds) {
+        this.warehouseIds = warehouseIds;
+    }
+
+
+
+
 
 
 
@@ -640,6 +661,17 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
     }
 
     public void genTakeInStockOrder() {
+        for(PurchaseRequestItemDto item : purchaseRequest.getItems()) {
+            if (item.getWarehouseId() == null) {
+                uiLogger.error("所有采购请求的明细都必须选择对应的入库仓库!");
+                return;
+            }
+        }
 
+        try {
+            getBean(PurchaseService.class).genTakeInStockOrder(purchaseRequest);
+        } catch (Exception e) {
+            uiLogger.error("错误", e);
+        }
     }
 }

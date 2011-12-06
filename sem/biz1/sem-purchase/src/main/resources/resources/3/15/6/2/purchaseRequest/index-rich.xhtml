@@ -210,6 +210,7 @@
 
                     <p:column headerText="入库仓库">
                         <p:selectOneMenu id="stockWarehouseId"
+                            value="#{item.warehouseId}"
                             style="width:200px;">
                             <f:selectItem itemValue=""
                                 itemLabel="--选择仓库--" />
@@ -219,7 +220,10 @@
                     </p:column>
                 </p:dataTable>
                 <p:separator style="width:100%;" />
-                <p:commandButton value="生成采购入库单" actionListener="#{purchaseRequestAdminBean.genTakeInStockOrder}"/>
+                <p:commandButton
+                    value="生成采购入库单"
+                    disabled="#{purchaseRequestAdminBean.editable}"
+                    actionListener="#{purchaseRequestAdminBean.genTakeInStockOrder}"/>
 			</p:panel>
 		</h:form>
 
