@@ -3,10 +3,10 @@ package com.bee32.plover.orm;
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.unit.UsingUtil;
-import com.bee32.plover.test.FeaturePlayerSupport;
+import com.bee32.plover.test.AbstractFps;
 
-public class PloverORMFeaturePlayerSupport
-        extends FeaturePlayerSupport {
+public class AllowUsingFps
+        extends AbstractFps {
 
     @Override
     public void setup(Class<?> playerClass) {
