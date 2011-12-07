@@ -55,7 +55,7 @@ public class AssetQuery
 
         ICriteriaElement selection = AssetCriteria.select(options, snapshotDate);
         ProjectionList projection = new ProjectionList(//
-                new GroupPropertyProjection("value.currency"), //
+                new GroupPropertyProjection("value.currencyCode"), //
                 new SumProjection("value.value"), //
                 options.getSubjectProjection(), //
                 options.getPartyProjection() //
@@ -65,7 +65,8 @@ public class AssetQuery
 
         for (Object[] line : list) {
             int _column = 0;
-            Currency _value_cc = (Currency) line[_column++];
+            String _value_cc = (String) line[_column++];
+            Currency _currency = Currency.getInstance(_value_cc);
             BigDecimal _value = (BigDecimal) line[_column++];
             AccountSubject _subject = null;
             Party _party = null;
@@ -78,7 +79,7 @@ public class AssetQuery
             AccountTicketItem item = new AccountTicketItem();
             item.setSubject(_subject);
             item.setParty(_party);
-            item.setValue(new MCValue(_value_cc, _value));
+            item.setValue(new MCValue(_currency, _value));
 
             SumNode node = ctb.getNode(_subject.getId());
             node.receive(item);

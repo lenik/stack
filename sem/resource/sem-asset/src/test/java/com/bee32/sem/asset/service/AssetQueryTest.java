@@ -1,6 +1,8 @@
 package com.bee32.sem.asset.service;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.free.Stdio;
@@ -26,6 +28,16 @@ public class AssetQueryTest
     @Inject
     IAssetQuery query;
 
+    static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    static Date parseDate(String str) {
+        try {
+            return dateFormat.parse(str);
+        } catch (ParseException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
     @Transactional
     void prepare() {
         AccountTicket ticket1 = new AccountTicket();
@@ -37,6 +49,7 @@ public class AssetQueryTest
         item1.setSubject(AccountSubject.s100901);
         item1.setParty(SEMPeopleSamples.bugatti);
         item1.setValue(new MCValue(200));
+        item1.setEndTime(parseDate("2011-12-1"));
 
         AccountTicketItem item2 = new AccountTicketItem();
         item2.setTicket(ticket1);
@@ -44,6 +57,7 @@ public class AssetQueryTest
         item2.setSubject(AccountSubject.s110110);
         item2.setParty(SEMPeopleSamples.bentley);
         item2.setValue(new MCValue(300));
+        item1.setEndTime(parseDate("2011-12-2"));
 
         AccountTicketItem item3 = new AccountTicketItem();
         item3.setTicket(ticket1);
@@ -51,10 +65,11 @@ public class AssetQueryTest
         item3.setSubject(AccountSubject.s1102);
         item3.setParty(SEMPeopleSamples.bugatti);
         item3.setValue(new MCValue(50));
+        item1.setEndTime(parseDate("2011-12-3"));
 
-        dataManager.asFor(AccountTicket.class).saveOrUpdateAll(//
+        dataManager.asFor(AccountTicket.class).saveOrUpdateAllByNaturalId(//
                 ticket1);
-        dataManager.asFor(AccountTicketItem.class).saveOrUpdateAll(//
+        dataManager.asFor(AccountTicketItem.class).saveOrUpdateAllByNaturalId(//
                 item1, item2, item3);
     }
 
