@@ -86,6 +86,12 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
 
     @Transactional(readOnly = true)
     @Override
+    public boolean containsKey(Object key) {
+        return getDao().containsKey(key);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public boolean contains(Object entity) {
         return getDao().contains(entity);
     }
@@ -111,12 +117,6 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
         dao.update(entity);
 
         autoFlush();
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public void refresh(E entity) {
-        getDao().refresh(entity);
     }
 
     @Transactional(readOnly = false)
@@ -145,12 +145,6 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
         autoBulkFlush();
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public boolean containsKey(Object key) {
-        return getDao().containsKey(key);
-    }
-
     @Transactional(readOnly = false)
     @Override
     public void saveAll(Collection<? extends E> entities) {
@@ -165,6 +159,50 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
     public void saveOrUpdateAll(E... entities) {
         saveOrUpdateAll(Arrays.asList(entities));
         autoBulkFlush();
+    }
+
+    @Transactional(readOnly = false)
+    @Override
+    public void saveByNaturalId(E entity) {
+        checkSave();
+        getDao().saveByNaturalId(entity);
+    }
+
+    @Transactional(readOnly = false)
+    @Override
+    public void saveOrUpdateByNaturalId(E entity) {
+        ICriteriaElement selector = entity.getSelector();
+        E first = getDao().getFirst(selector);
+        if (first == null)
+            checkSave();
+        else
+            checkUpdate();
+        getDao().evict(first);
+        getDao().saveOrUpdateByNaturalId(entity);
+    }
+
+    @Transactional(readOnly = false)
+    @SuppressWarnings("unchecked")
+    @Override
+    public void saveOrUpdateAllByNaturalId(E... entities) {
+        saveOrUpdateAllByNaturalId(Arrays.asList(entities));
+    }
+
+    @Transactional(readOnly = false)
+    @Override
+    public void saveOrUpdateAllByNaturalId(Collection<? extends E> entities) {
+        checkSave();
+
+        for (E entity : entities)
+            saveOrUpdateByNaturalId(entity);
+
+        autoBulkFlush();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public void refresh(E entity) {
+        getDao().refresh(entity);
     }
 
     @Transactional(readOnly = true)

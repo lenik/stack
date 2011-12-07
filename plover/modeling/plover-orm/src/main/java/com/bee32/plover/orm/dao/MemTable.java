@@ -376,6 +376,16 @@ public class MemTable
     }
 
     @Override
+    public void saveByNaturalId(Entity<?> entity) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void saveOrUpdateByNaturalId(Entity<?> entity) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void refresh(Entity<?> entity) {
         MemTable spec = access(entity);
         if (spec != this) {

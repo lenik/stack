@@ -48,6 +48,16 @@ public class EmptyEntityRepository<E extends Entity<K>, K extends Serializable>
     }
 
     @Override
+    public void saveByNaturalId(E entity) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void saveOrUpdateByNaturalId(E entity) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void refresh(E entity) {
     }
 

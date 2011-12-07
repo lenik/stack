@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class MapEntityRepository<E extends IEntity<K>, K extends Serializable>
+public class MapEntityRepository<E extends Entity<K>, K extends Serializable>
         extends EntityRepository<E, K>
         implements Serializable {
 
@@ -70,6 +70,16 @@ public class MapEntityRepository<E extends IEntity<K>, K extends Serializable>
     public void update(E entity) {
         K key = getKey(entity);
         getMap().put(key, entity);
+    }
+
+    @Override
+    public void saveByNaturalId(E entity) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void saveOrUpdateByNaturalId(E entity) {
+        throw new UnsupportedOperationException();
     }
 
     public void refresh(E entity) {

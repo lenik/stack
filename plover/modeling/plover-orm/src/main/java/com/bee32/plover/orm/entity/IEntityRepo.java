@@ -45,6 +45,15 @@ public interface IEntityRepo<E extends IEntity<? extends K>, K extends Serializa
     @Override
     void saveOrUpdateAll(Collection<? extends E> entities);
 
+    void saveByNaturalId(E entity);
+
+    void saveOrUpdateByNaturalId(E entity);
+
+    @SuppressWarnings("unchecked")
+    void saveOrUpdateAllByNaturalId(E... entities);
+
+    void saveOrUpdateAllByNaturalId(Collection<? extends E> entities);
+
     @Override
     boolean delete(Object entity);
 

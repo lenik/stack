@@ -2,6 +2,7 @@ package com.bee32.plover.orm.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -86,5 +87,17 @@ public abstract class EntityRepository<E extends IEntity<? extends K>, K extends
 
     @Override
     public abstract void refresh(E entity);
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public final void saveOrUpdateAllByNaturalId(E... entities) {
+        saveOrUpdateAllByNaturalId(Arrays.asList(entities));
+    }
+
+    @Override
+    public final void saveOrUpdateAllByNaturalId(Collection<? extends E> entities) {
+        for (E entity : entities)
+            saveOrUpdate(entity);
+    }
 
 }

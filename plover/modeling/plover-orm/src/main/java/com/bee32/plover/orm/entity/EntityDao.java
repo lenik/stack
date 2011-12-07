@@ -19,6 +19,7 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
 import com.bee32.plover.criteria.hibernate.AvgProjection;
@@ -165,6 +166,10 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
         return entity;
     }
 
+    /**
+     * @throws DataAccessException
+     *             in case of Hibernate errors.
+     */
     @Override
     public K save(E entity) {
         preSave(entity);
@@ -184,7 +189,13 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
             preSave(entity);
 
         // Need transactional wrapper.
-        getHibernateTemplate().saveOrUpdateAll(entities);
+        {
+            HibernateTemplate template = getHibernateTemplate();
+            // for (E entity : entities)
+            // template.save(entity);
+
+            template.saveOrUpdateAll(entities);
+        }
     }
 
     @Override
@@ -197,6 +208,32 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
 
         // Need transactional wrapper.
         getHibernateTemplate().saveOrUpdateAll(entities);
+    }
+
+    /**
+     * @throws DataAccessException
+     *             If entity with the same natural id was existed, or other hibernate errors.
+     */
+    @Override
+    public void saveByNaturalId(E entity) {
+        ICriteriaElement selector = entity.getSelector();
+        E first = getFirst(selector);
+        if (first != null)
+            throw new DataIntegrityViolationException("Already existed: natural id = " + entity.getNaturalId());
+        getHibernateTemplate().save(entity);
+    }
+
+    @Override
+    public void saveOrUpdateByNaturalId(E entity) {
+        ICriteriaElement selector = entity.getSelector();
+        E first = getFirst(selector);
+        if (first != null) {
+            @SuppressWarnings("unchecked")
+            Entity<Serializable> _entity = (Entity<Serializable>) entity;
+            EntityAccessor.setId(_entity, first.getId());
+            evict(first);
+        }
+        getHibernateTemplate().saveOrUpdate(entity);
     }
 
     @Override
