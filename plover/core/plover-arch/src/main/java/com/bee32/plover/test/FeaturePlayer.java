@@ -3,15 +3,16 @@ package com.bee32.plover.test;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashSet;
 import java.util.ServiceLoader;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.junit.Assert;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 
 import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.arch.util.OrderComparator;
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.inject.cref.ScanTestxContext;
@@ -27,7 +28,7 @@ public abstract class FeaturePlayer<T extends FeaturePlayer<T>>
     static Set<IFeaturePlayerSupport> supports;
 
     static {
-        supports = new HashSet<IFeaturePlayerSupport>();
+        supports = new TreeSet<IFeaturePlayerSupport>(OrderComparator.INSTANCE);
         for (IFeaturePlayerSupport support : ServiceLoader.load(IFeaturePlayerSupport.class)) {
             supports.add(support);
         }
@@ -41,6 +42,11 @@ public abstract class FeaturePlayer<T extends FeaturePlayer<T>>
     private void fireTeardown(Class<?> playerClass) {
         for (IFeaturePlayerSupport support : supports)
             support.teardown(playerClass);
+    }
+
+    private void fireInit(ApplicationContext appctx) {
+        for (IFeaturePlayerSupport support : supports)
+            support.init(appctx);
     }
 
     private void fireBegin(Object player) {
@@ -65,8 +71,10 @@ public abstract class FeaturePlayer<T extends FeaturePlayer<T>>
 
         fireSetup(playerClass);
 
-        ApplicationContext applicationContext = ApplicationContextBuilder.buildSelfHostedContext(playerClass);
-        AutowireCapableBeanFactory beanFactory = applicationContext.getAutowireCapableBeanFactory();
+        ApplicationContext appctx = ApplicationContextBuilder.buildSelfHostedContext(playerClass);
+        AutowireCapableBeanFactory beanFactory = appctx.getAutowireCapableBeanFactory();
+
+        fireInit(appctx);
 
         while (true) {
             try {
