@@ -115,7 +115,10 @@ public class InquiryDto
     }
 
     public void setPriceCurrency(String currencyCode) {
-        price = new MCValue(Currency.getInstance(currencyCode), price.getValue());
+        if (price == null)
+            price = new MCValue(Currency.getInstance(currencyCode), 0);
+        else
+            price = new MCValue(Currency.getInstance(currencyCode), price.getValue());
     }
 
     public String getDeliveryDate() {

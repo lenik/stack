@@ -180,7 +180,7 @@
 						<t:panelGroup>
 							<p:commandLink update="itemForm:itemPanel"
 								disabled="#{!purchaseRequestAdminBean.editable}"
-								actionListener="#{purchaseRequestAdminBean.modifyItem}"
+								action="#{purchaseRequestAdminBean.modifyItem}"
 								oncomplete="itemDialog.show()" value="修改">
 								<f:setPropertyActionListener value="#{item}"
 									target="#{purchaseRequestAdminBean.purchaseRequestItem}" />
@@ -529,7 +529,7 @@
                 height="550" width="800">
 
                 <p:panel id="inquiryPanel">
-
+                    <h:outputText value="询价物料:#{purchaseRequestAdminBean.purchaseRequestItem.material.label}"/>
                     <p:panel header="询价">
                         <p:commandButton value="新增"
                             oncomplete="inquiryDetailDialog.show()"

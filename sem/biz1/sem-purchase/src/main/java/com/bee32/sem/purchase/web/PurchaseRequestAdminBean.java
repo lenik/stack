@@ -32,10 +32,7 @@ import com.bee32.sem.purchase.entity.MaterialPlan;
 import com.bee32.sem.purchase.entity.PurchaseAdvice;
 import com.bee32.sem.purchase.entity.PurchaseRequest;
 import com.bee32.sem.purchase.entity.PurchaseRequestItem;
-import com.bee32.sem.purchase.service.AdviceHaveNotVerifiedException;
-import com.bee32.sem.purchase.service.NoPurchaseAdviceException;
 import com.bee32.sem.purchase.service.PurchaseService;
-import com.bee32.sem.purchase.service.TakeInStockOrderAlreadyGeneratedException;
 import com.bee32.sem.world.monetary.CurrencyUtil;
 
 public class PurchaseRequestAdminBean extends EntityViewBean {
@@ -304,7 +301,7 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
     }
 
     public InquiryDto getSelectedInquiry() {
-        if(selectedInquiry == null || selectedInquiry.getId() == null)
+        if(selectedInquiry == null)
             selectedInquiry = new InquiryDto().create();
         return selectedInquiry;
     }
@@ -496,6 +493,7 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
     }
 
     public void modifyItem() {
+        selectedSupplier = purchaseRequestItem.getPreferredSupplier();
         newItemStatus = false;
     }
 
@@ -672,6 +670,7 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
             getBean(PurchaseService.class).genTakeInStockOrder(purchaseRequest);
         } catch (Exception e) {
             uiLogger.error("错误", e);
+            return;
         }
     }
 }

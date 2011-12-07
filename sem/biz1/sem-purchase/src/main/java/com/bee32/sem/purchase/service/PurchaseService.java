@@ -150,7 +150,8 @@ public class PurchaseService extends DataService {
      */
     @Transactional
     public void genTakeInStockOrder(PurchaseRequestDto purchaseRequest)
-            throws NoPurchaseAdviceException, AdviceHaveNotVerifiedException, TakeInStockOrderAlreadyGeneratedException {
+            throws NoPurchaseAdviceException, AdviceHaveNotVerifiedException,
+            TakeInStockOrderAlreadyGeneratedException {
 
         //检测purchaseReqeust是否已经生成过采购入库单
         if (purchaseRequest.getOrderHolders() != null && purchaseRequest.getOrderHolders().size() > 0) {
@@ -160,7 +161,7 @@ public class PurchaseService extends DataService {
         //检测有没有询价和审核采购建议
         for(PurchaseRequestItemDto item : purchaseRequest.getItems()) {
             PurchaseAdviceDto advice = item.getPurchaseAdvice();
-            if(advice == null) {
+            if(advice == null || advice.getId() == null) {
                 throw new NoPurchaseAdviceException();
             }
 
