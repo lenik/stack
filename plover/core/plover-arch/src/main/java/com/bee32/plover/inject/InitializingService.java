@@ -7,6 +7,9 @@ import org.springframework.beans.factory.access.BootstrapException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+/**
+ * Eagerly initialized services.
+ */
 @ComponentTemplate
 public abstract class InitializingService
         implements

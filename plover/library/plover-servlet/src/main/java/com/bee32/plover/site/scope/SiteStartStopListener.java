@@ -11,8 +11,10 @@ import com.bee32.plover.site.SiteManager;
 
 /**
  * IMPORTANT:
- *
- * This listener must be fired after {@link ThreadServletRequestListener}.
+ * <ul>
+ * <li>This listener must be fired after {@link ThreadServletRequestListener}.
+ * <li>For standalone (scope-wired) test, it should start the default site by hand.
+ * </ul>
  */
 public class SiteStartStopListener
         extends AbstractSrl {
