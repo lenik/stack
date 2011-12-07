@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.bee32.plover.inject.GlobalAppCtx;
 import com.bee32.plover.site.LoadSiteException;
 import com.bee32.plover.site.SiteInstance;
 import com.bee32.plover.site.SiteManager;
@@ -33,7 +34,13 @@ public class ThreadHttpContext
     }
 
     public static ApplicationContext requireApplicationContext() {
-        return requireWebApplicationContext();
+        WebApplicationContext wappctx = getWebApplicationContext();
+        if (wappctx != null)
+            return wappctx;
+        ApplicationContext gappctx = GlobalAppCtx.getApplicationContext();
+        if (gappctx != null)
+            return gappctx;
+        throw new IllegalStateException("Neither web-appctx nor global-appctx is existed.");
     }
 
     public static void autowireThisServlet(HttpServlet thisServlet) {
