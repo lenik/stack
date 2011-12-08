@@ -548,7 +548,7 @@
 
                             <p:column headerText="供应商">
                                 <h:outputText
-                                    value="#{inquiry.party.name}" />
+                                    value="#{inquiry.org.name}" />
                             </p:column>
 
                             <p:column headerText="单价">
@@ -619,17 +619,23 @@
                         <t:panelGrid columns="2">
                             <h:outputText value="选择:" />
                             <p:inputText
-                                value="#{purchaseRequestAdminBean.purchaseAdvice.preferredInquiry.party.name}" readonly="true"/>
+                                value="#{purchaseRequestAdminBean.purchaseAdvice.preferredInquiry.org.name}" readonly="true"/>
 
                             <h:outputText value="理由:" />
                             <p:inputText style="width:600px;"
                                 value="#{purchaseRequestAdminBean.purchaseAdvice.reason}" />
 
 
-                            <p:commandButton value="保存"
-                                actionListener="#{purchaseRequestAdminBean.savePurchaseAdvice}" />
-                            <p:commandButton value="审核"
-                                actionListener="#{purchaseRequestAdminBean.verifyPurchaseAdvice}" />
+                            <t:panelGroup>
+                                <p:commandButton value="保存"
+                                    actionListener="#{purchaseRequestAdminBean.savePurchaseAdvice}" />
+                                <p:commandButton value="审核"
+                                    actionListener="#{purchaseRequestAdminBean.verifyPurchaseAdvice}" />
+                            </t:panelGroup>
+                            <p:commandButton value="删除建议"
+                                update="inquiryForm:purchaseAdvicePanel"
+                                actionListener="#{purchaseRequestAdminBean.deletePurchaseAdvice}" />
+
 
 
                         </t:panelGrid>
@@ -653,7 +659,7 @@
                         <h:outputLabel value="供应商" />
                         <t:panelGroup>
                             <p:inputText id="supplier"
-                                value="#{purchaseRequestAdminBean.selectedInquiry.party.name}"
+                                value="#{purchaseRequestAdminBean.selectedInquiry.org.name}"
                                 readonly="true" />
                             <p:commandButton value="..."
                                 onclick="preferredSupplierDialog.show()"

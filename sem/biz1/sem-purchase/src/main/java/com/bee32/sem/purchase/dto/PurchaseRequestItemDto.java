@@ -35,7 +35,7 @@ public class PurchaseRequestItemDto
 
     PurchaseAdviceDto purchaseAdvice;
 
-    Long warehouseId;   //公用于接收界面上传入的仓库id
+    Integer warehouseId;   //公用于接收界面上传入的仓库id
 
 
     @Override
@@ -176,11 +176,11 @@ public class PurchaseRequestItemDto
     }
 
 
-    public Long getWarehouseId() {
+    public Integer getWarehouseId() {
         return warehouseId;
     }
 
-    public void setWarehouseId(Long warehouseId) {
+    public void setWarehouseId(Integer warehouseId) {
         this.warehouseId = warehouseId;
     }
 

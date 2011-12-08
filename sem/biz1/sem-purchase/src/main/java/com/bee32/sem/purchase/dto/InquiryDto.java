@@ -13,7 +13,7 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.util.i18n.CurrencyConfig;
 import com.bee32.sem.base.tx.TxEntityDto;
-import com.bee32.sem.people.dto.PartyDto;
+import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.purchase.entity.Inquiry;
 import com.bee32.sem.world.monetary.MCValue;
 
@@ -24,7 +24,7 @@ public class InquiryDto
     private static final long serialVersionUID = 1L;
 
 
-    PartyDto party;
+    OrgDto org;
     MCValue price;
     String deliveryDate;
     String quality;
@@ -38,7 +38,7 @@ public class InquiryDto
 
     @Override
     protected void _marshal(Inquiry source) {
-        party = mref(PartyDto.class, source.getParty());
+        org = mref(OrgDto.class, source.getOrg());
         price = source.getPrice();
         deliveryDate = source.getDeliveryDate();
         quality = source.getQuality();
@@ -56,7 +56,7 @@ public class InquiryDto
 
     @Override
     protected void _unmarshalTo(Inquiry target) {
-        merge(target, "party", party);
+        merge(target, "org", org);
         target.setPrice(price);
         target.setDeliveryDate(deliveryDate);
         target.setQuality(quality);
@@ -74,12 +74,12 @@ public class InquiryDto
         throw new NotImplementedException();
     }
 
-    public PartyDto getParty() {
-        return party;
+    public OrgDto getOrg() {
+        return org;
     }
 
-    public void setParty(PartyDto party) {
-        this.party = party;
+    public void setOrg(OrgDto org) {
+        this.org = org;
     }
 
     public MCValue getPrice() {
@@ -180,7 +180,7 @@ public class InquiryDto
     @Override
     protected Serializable naturalId() {
         return new IdComposite(//
-                naturalId(party), //
+                naturalId(org), //
                 naturalId(purchaseRequestItem));
     }
 }

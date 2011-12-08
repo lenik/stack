@@ -22,9 +22,9 @@ import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockItemList;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
+import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.inventory.service.IStockQuery;
 import com.bee32.sem.inventory.service.StockQueryOptions;
-import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.purchase.dto.MaterialPlanDto;
 import com.bee32.sem.purchase.dto.MaterialPlanItemDto;
 import com.bee32.sem.purchase.dto.OrderHolderDto;
@@ -153,6 +153,15 @@ public class PurchaseService extends DataService {
             throws NoPurchaseAdviceException, AdviceHaveNotVerifiedException,
             TakeInStockOrderAlreadyGeneratedException {
 
+        //先用map保存用户输入的warehouseId，因为后面的reload(purchaseRequest)会导致这些warehouseIds丢失
+        Map<Long, Integer> warehouseIdsWithItemId = new HashMap<Long, Integer>();
+        List<PurchaseRequestItemDto> itemListWithWarehouseIds = purchaseRequest.getItems();
+        for(PurchaseRequestItemDto itemWithWarehouseId : itemListWithWarehouseIds) {
+            warehouseIdsWithItemId.put(itemWithWarehouseId.getId(), itemWithWarehouseId.getWarehouseId());
+        }
+
+        purchaseRequest = reload(purchaseRequest);
+
         //检测purchaseReqeust是否已经生成过采购入库单
         if (purchaseRequest.getOrderHolders() != null && purchaseRequest.getOrderHolders().size() > 0) {
             throw new TakeInStockOrderAlreadyGeneratedException();
@@ -180,7 +189,7 @@ public class PurchaseService extends DataService {
             StringBuilder builder = new StringBuilder();
             builder.append(item.getWarehouseId());
             builder.append("&");
-            builder.append(item.getPurchaseAdvice().getPreferredInquiry().getParty().getId());
+            builder.append(item.getPurchaseAdvice().getPreferredInquiry().getOrg().getId());
 
             if (!splitMap.keySet().contains(builder.toString())) {
                 List<PurchaseRequestItemDto> newItemList = new ArrayList<PurchaseRequestItemDto>();
@@ -199,13 +208,14 @@ public class PurchaseService extends DataService {
             StockOrderDto stockOrder = new StockOrderDto().create();
             stockOrder.setSubject(StockOrderSubject.TAKE_IN);
             stockOrder.setLabel("从采购请求生成的入库单");
-            stockOrder.setOrg((OrgDto) itemList.get(0).getPurchaseAdvice().getPreferredInquiry().getParty());
+            stockOrder.setOrg(itemList.get(0).getPurchaseAdvice().getPreferredInquiry().getOrg());
 
             for(PurchaseRequestItemDto item : itemList) {
                 StockOrderItemDto stockOrderItem = new StockOrderItemDto().create();
 
+                stockOrderItem.setParent(stockOrder);
                 stockOrderItem.setMaterial(item.getMaterial());
-                stockOrderItem.setQuantity(item.getQuantity());
+                stockOrderItem.setQuantity(item.getPlanQuantity());
                 stockOrderItem.setPrice(item.getPurchaseAdvice().getPreferredInquiry().getPrice());
                 stockOrderItem.setDescription("由采购请求生成的入库明细项目");
 
@@ -213,6 +223,8 @@ public class PurchaseService extends DataService {
 
                 //保存以上StockOrder*
                 StockOrder _stockOrder = stockOrder.unmarshal();
+                StockWarehouse warehouse = asFor(StockWarehouse.class).get(warehouseIdsWithItemId.get(item.getId()));
+                _stockOrder.setWarehouse(warehouse);
                 asFor(StockOrder.class).saveOrUpdate(_stockOrder);
 
                 //填充并保存OrderHolder,以在PurchaseRequest和StockOrder之间建立关联

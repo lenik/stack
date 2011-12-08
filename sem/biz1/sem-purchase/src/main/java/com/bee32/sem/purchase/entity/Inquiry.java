@@ -10,7 +10,7 @@ import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.base.tx.TxEntity;
-import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.world.monetary.MCValue;
 
 /**
@@ -28,7 +28,7 @@ public class Inquiry extends TxEntity implements DecimalConfig {
     public static final int AFTER_SERVICE_LENGTH = 500;
     public static final int OTHER_LENGTH = 500;
 
-    Party party;
+    Org org;
     MCValue price;
     String deliveryDate;
     String quality;
@@ -45,12 +45,12 @@ public class Inquiry extends TxEntity implements DecimalConfig {
      */
     @ManyToOne
     @NaturalId
-    public Party getParty() {
-        return party;
+    public Org getOrg() {
+        return org;
     }
 
-    public void setParty(Party party) {
-        this.party = party;
+    public void setOrg(Org org) {
+        this.org = org;
     }
 
     /**

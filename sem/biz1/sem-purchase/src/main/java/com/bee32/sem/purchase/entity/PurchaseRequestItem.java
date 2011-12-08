@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -203,7 +204,7 @@ public class PurchaseRequestItem
     /**
      * 采购建议
      */
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     public PurchaseAdvice getPurchaseAdvice() {
         return purchaseAdvice;
     }

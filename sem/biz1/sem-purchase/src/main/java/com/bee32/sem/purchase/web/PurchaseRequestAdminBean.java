@@ -18,8 +18,8 @@ import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.misc.EntityCriteria;
-import com.bee32.sem.people.dto.PartyDto;
-import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.people.dto.OrgDto;
+import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.purchase.dto.InquiryDto;
 import com.bee32.sem.purchase.dto.MaterialPlanDto;
@@ -65,8 +65,8 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
     private List<MaterialPlanDto> selectedPlans = new ArrayList<MaterialPlanDto>();
 
     private String supplierPattern;
-    private List<PartyDto> suppliers;
-    private PartyDto selectedSupplier;
+    private List<OrgDto> suppliers;
+    private OrgDto selectedSupplier;
 
     Integer inquiryDetailStatus;    //1-新增;2-修改;3-查看
     InquiryDto selectedInquiry;
@@ -270,19 +270,19 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
         this.supplierPattern = supplierPattern;
     }
 
-    public List<PartyDto> getSuppliers() {
+    public List<OrgDto> getSuppliers() {
         return suppliers;
     }
 
-    public void setSuppliers(List<PartyDto> suppliers) {
+    public void setSuppliers(List<OrgDto> suppliers) {
         this.suppliers = suppliers;
     }
 
-    public PartyDto getSelectedSupplier() {
+    public OrgDto getSelectedSupplier() {
         return selectedSupplier;
     }
 
-    public void setSelectedSupplier(PartyDto selectedSupplier) {
+    public void setSelectedSupplier(OrgDto selectedSupplier) {
         this.selectedSupplier = selectedSupplier;
     }
 
@@ -493,7 +493,7 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
     }
 
     public void modifyItem() {
-        selectedSupplier = purchaseRequestItem.getPreferredSupplier();
+        selectedSupplier = (OrgDto)purchaseRequestItem.getPreferredSupplier();
         newItemStatus = false;
     }
 
@@ -562,13 +562,13 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
     public void findSupplier() {
         if (supplierPattern != null && !supplierPattern.isEmpty()) {
 
-            List<Party> _suppliers = serviceFor(Party.class).list( //
+            List<Org> _suppliers = serviceFor(Org.class).list( //
                     PeopleCriteria.suppliers(), //
                     new Or( //
                             new Like("name", "%" + supplierPattern + "%"), //
                             new Like("fullName", "%" + supplierPattern + "%")));
 
-            suppliers = DTOs.marshalList(PartyDto.class, _suppliers);
+            suppliers = DTOs.marshalList(OrgDto.class, _suppliers);
         }
     }
 
@@ -577,10 +577,11 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
 
 
     public void chooseSupplier() {
-        selectedInquiry.setParty(selectedSupplier);
+        selectedInquiry.setOrg(selectedSupplier);
     }
 
     public void loadInquiry() {
+        purchaseRequestItem = reload(purchaseRequestItem);
         purchaseAdvice = purchaseRequestItem.getPurchaseAdvice();
         if (purchaseAdvice == null || purchaseAdvice.getId() == null) {
            purchaseAdvice = new PurchaseAdviceDto().create();
@@ -595,13 +596,13 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
     }
 
     public void saveInquiry() {
-        if (inquiryDetailStatus == INQUIRY_DETAIL_STATUS_NEW) {
-            purchaseRequestItem.addInquiry(selectedInquiry);
-            selectedInquiry.setPurchaseRequestItem(purchaseRequestItem);
-        }
-
         try {
-            serviceFor(Inquiry.class).saveOrUpdate(selectedInquiry.unmarshal());
+            selectedInquiry.setPurchaseRequestItem(purchaseRequestItem);
+            Inquiry _inquiry = selectedInquiry.unmarshal();
+            serviceFor(Inquiry.class).saveOrUpdate(_inquiry);
+            if (inquiryDetailStatus == INQUIRY_DETAIL_STATUS_NEW) {
+                purchaseRequestItem.addInquiry(DTOs.marshal(InquiryDto.class, _inquiry));
+            }
             uiLogger.info("保存成功.");
         } catch (Exception e) {
             uiLogger.error("保存失败.", e);
@@ -609,10 +610,9 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
     }
 
     public void deleteInquiry() {
-        purchaseRequestItem.removeInquiry(selectedInquiry);
-        selectedInquiry.setPurchaseRequestItem(null);
         try {
             serviceFor(Inquiry.class).deleteById(selectedInquiry.getId());
+            purchaseRequestItem = reload(purchaseRequestItem);
             uiLogger.info("删除成功.");
         } catch (Exception e) {
             uiLogger.error("删除失败.", e);
@@ -632,7 +632,6 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
 
             _purchaseRequestItem.setPurchaseAdvice(_purchaseAdvice);
             serviceFor(PurchaseRequestItem.class).saveOrUpdate(_purchaseRequestItem);
-
 
             uiLogger.info("采纳成功.");
         } catch (Exception e) {
@@ -654,6 +653,28 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
         }
     }
 
+    public void deletePurchaseAdvice() {
+        if (purchaseAdvice == null || purchaseAdvice.getId() == null) {
+            return;
+        }
+
+        //TODO 如果已经审核，则不能删除
+//        if (purchaseAdvice.isVerified()) {
+//            uiLogger.warn("采购建议已经审核，不能删除!");
+//            return;
+//        }
+
+        try {
+            PurchaseAdvice _purchaseAdvice = purchaseAdvice.unmarshal();
+            _purchaseAdvice.getPurchaseRequestItem().setPurchaseAdvice(null);
+            serviceFor(PurchaseAdvice.class).delete(_purchaseAdvice);
+            purchaseAdvice = new PurchaseAdviceDto().create();
+            uiLogger.info("删除成功.");
+        } catch (Exception e) {
+            uiLogger.error("删除失败.", e);
+        }
+    }
+
     public void verifyPurchaseAdvice() {
         //TODO add verify code
     }
@@ -668,6 +689,7 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
 
         try {
             getBean(PurchaseService.class).genTakeInStockOrder(purchaseRequest);
+            uiLogger.info("生成成功");
         } catch (Exception e) {
             uiLogger.error("错误", e);
             return;
