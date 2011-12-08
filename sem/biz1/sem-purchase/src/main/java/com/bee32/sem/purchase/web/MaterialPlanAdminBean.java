@@ -651,9 +651,9 @@ public class MaterialPlanAdminBean extends EntityViewBean {
         c.set(Calendar.MILLISECOND, 999);
 
         StockQueryOptions opts = new StockQueryOptions(c.getTime());
-        opts.setCBatch(null, false);
-        opts.setLocation(null, false);
-        opts.setWarehouse(null, false);
+        opts.setCBatch(null, true);
+        opts.setLocation(null, true);
+        opts.setWarehouse(null, true);
 
         IStockQuery q = getBean(IStockQuery.class);
         StockItemList list = q.getActualSummary(ms, opts);

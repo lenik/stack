@@ -164,8 +164,8 @@ public class StockQueryBean extends EntityViewBean {
 
             StockQueryOptions opts = new StockQueryOptions(c.getTime());
             opts.setWarehouse(selectedWarehouse.unmarshal());
-            opts.setCBatch(selectedItem.getCBatch(), false);
-            opts.setLocation(selectedItem.getLocation().unmarshal(), false);
+            opts.setCBatch(selectedItem.getCBatch(), true);
+            opts.setLocation(selectedItem.getLocation().unmarshal(), true);
 
             List<StockOrderItem> details = serviceFor(StockOrderItem.class).list( //
                     StockCriteria.inOutDetail( //
@@ -254,8 +254,8 @@ public class StockQueryBean extends EntityViewBean {
 
         StockQueryOptions opts = new StockQueryOptions(c.getTime());
         opts.setWarehouse(w);
-        opts.setCBatch(null, false);
-        opts.setLocation(null, false);
+        opts.setCBatch(null, true);
+        opts.setLocation(null, true);
 
         IStockQuery q = getBean(IStockQuery.class);
         StockItemList list = q.getActualSummary(ms, opts);

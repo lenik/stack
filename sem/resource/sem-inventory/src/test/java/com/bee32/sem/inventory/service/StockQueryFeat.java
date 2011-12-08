@@ -32,7 +32,7 @@ public class StockQueryFeat
                 SEMInventorySamples.cskdp);
 
         StockQueryOptions sqopts = new StockQueryOptions(new Date());
-        sqopts.setCBatch(null, false);
+        sqopts.setCBatch(null, true);
         StockItemList actual = stockQuery.getActualSummary(materials, sqopts);
         StockItemList virtual = stockQuery.getVirtualSummary(materials, sqopts);
 

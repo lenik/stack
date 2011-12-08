@@ -37,9 +37,9 @@ public class StockTakingFeat
         Date now = new Date();
 
         StockQueryOptions options = new StockQueryOptions(now);
-        options.setWarehouse(SEMInventorySamples.rawWarehouse, false);
-        options.setCBatch(null, false);
-        options.setLocation(null, false);
+        options.setWarehouse(SEMInventorySamples.rawWarehouse, true);
+        options.setCBatch(null, true);
+        options.setLocation(null, true);
 
         StockOrder actualSummary = stockQuery.getActualSummary(null, options);
         StockOrderDto expectedOrderDto = DTOs.marshal(StockOrderDto.class, -1, actualSummary);

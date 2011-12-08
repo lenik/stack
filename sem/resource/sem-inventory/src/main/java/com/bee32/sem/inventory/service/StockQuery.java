@@ -72,15 +72,15 @@ public class StockQuery
             StockWarehouse _warehouse = null;
             StockWarehouse _parentWarehouse = null;
 
-            if (!options.isCBatchMerged()) {
+            if (options.isCBatchVisible()) {
                 _cBatch = (String) line[_column++];
                 _price = (MCValue) line[_column++];
                 _expire = (Date) line[_column++];
             }
-            if (!options.isLocationMerged()) {
+            if (options.isLocationVisible()) {
                 _location = (StockLocation) line[_column++];
             }
-            if (!options.isWarehouseMerged()) {
+            if (options.isWarehouseVisible()) {
                 _warehouse = (StockWarehouse) line[_column++];
                 _parentWarehouse = (StockWarehouse) line[_column++];
 
