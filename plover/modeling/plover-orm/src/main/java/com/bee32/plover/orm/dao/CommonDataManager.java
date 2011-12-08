@@ -11,11 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 
 import com.bee32.plover.arch.util.ClassUtil;
-import com.bee32.plover.inject.spring.ScopeProxy;
 import com.bee32.plover.orm.entity.EasTxWrapper;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityDao;
@@ -27,7 +25,6 @@ import com.bee32.plover.site.scope.PerSite;
 // @Transactional(readOnly = true)
 @Service
 @PerSite
-@ScopeProxy(ScopedProxyMode.TARGET_CLASS)
 public class CommonDataManager
         implements IEntityMarshalContext, ApplicationContextAware {
 

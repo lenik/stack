@@ -4,11 +4,9 @@ import java.io.Serializable;
 
 import javax.inject.Inject;
 
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.inject.ComponentTemplate;
-import com.bee32.plover.inject.spring.ScopeProxy;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.dao.MemdbDataManager;
 import com.bee32.plover.orm.entity.Entity;
@@ -21,7 +19,6 @@ import com.bee32.plover.site.scope.PerSite;
 @Transactional(readOnly = true)
 @ComponentTemplate
 @PerSite
-@ScopeProxy(ScopedProxyMode.TARGET_CLASS)
 public abstract class DataService
         extends Component
         implements IEntityMarshalContext {
