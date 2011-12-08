@@ -11,6 +11,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import com.bee32.sem.base.tx.TxEntity;
 import com.bee32.sem.people.entity.Party;
@@ -41,6 +42,8 @@ public class AccountTicketItem
 
     boolean debitSide;
     AccountTicket ticket;
+
+    AccountSnapshotItem snapshotItemRef;
 
     /**
      * 单据内部的序号
@@ -119,6 +122,23 @@ public class AccountTicketItem
 
     public void setTicket(AccountTicket ticket) {
         this.ticket = ticket;
+    }
+
+    @Transient
+    public boolean isTransient() {
+        return snapshotItemRef != null;
+    }
+
+    @Override
+    public void populate(Object source) {
+        super.populate(source);
+        if (source instanceof AccountSnapshotItem) {
+            AccountSnapshotItem si = (AccountSnapshotItem) source;
+            setSubject(si.getSubject());
+            setParty(si.getParty());
+            setValue(si.getValue());
+            snapshotItemRef = si;
+        }
     }
 
 }

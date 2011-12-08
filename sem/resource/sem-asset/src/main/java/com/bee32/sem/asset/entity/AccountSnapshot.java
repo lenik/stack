@@ -31,4 +31,14 @@ public class AccountSnapshot
         this.items = items;
     }
 
+    public void addItem(AccountSnapshotItem item) {
+        if (item == null)
+            throw new NullPointerException("item");
+        items.add(item);
+    }
+
+    public void removeItem(AccountSnapshotItem item) {
+        items.remove(item);
+    }
+
 }
