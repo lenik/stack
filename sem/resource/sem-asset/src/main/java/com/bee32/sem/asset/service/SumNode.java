@@ -6,11 +6,13 @@ import java.util.List;
 
 import javax.free.IFormatter;
 import javax.free.INegotiation;
+import javax.free.IllegalUsageException;
 import javax.free.NegotiationException;
 
 import com.bee32.plover.ox1.dict.PoNode;
 import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.asset.entity.AccountTicketItem;
+import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.world.monetary.MCValue;
 
 public class SumNode
@@ -21,7 +23,7 @@ public class SumNode
 
     @Override
     public SumNode getParent() {
-        return (SumNode) this;
+        return (SumNode) super.getParent();
     }
 
     public List<AccountTicketItem> getItems() {
@@ -57,15 +59,20 @@ public class SumNode
 
     void add(BigDecimal value) {
         total = total.add(value);
-        if (getParent() != null)
-            getParent().add(value);
+        SumNode parent = getParent();
+        if (parent == this)
+            throw new IllegalUsageException("Dead-loop: " + this);
+        if (parent != null)
+            parent.add(value);
     }
 
     @Override
     public boolean isVirtual() {
         if (super.isVirtual())
             return true;
-        if (items.isEmpty())
+        if (!items.isEmpty())
+            return false;
+        if (getChildren().isEmpty())
             return true;
         return false;
     }

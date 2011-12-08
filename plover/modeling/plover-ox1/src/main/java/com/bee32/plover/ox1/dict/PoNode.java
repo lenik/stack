@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.free.IFormatter;
 import javax.free.INegotiation;
+import javax.free.IllegalUsageException;
 import javax.free.NegotiationException;
 import javax.free.PrefetchedIterator;
 import javax.free.TreeNode;
@@ -46,6 +47,8 @@ public class PoNode<T>
     }
 
     public void setParent(PoNode<T> parent) {
+        if (parent == this)
+            throw new IllegalUsageException("Bad parent to form dead-loop: " + parent);
         this.parent = parent;
     }
 
