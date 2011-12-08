@@ -43,9 +43,6 @@ public class AssetQuery
 
                 AccountTicketItem converted = new AccountTicketItem();
                 converted.populate(item);
-                converted.setSubject(item.getSubject());
-                converted.setParty(item.getParty());
-                converted.setValue(item.getValue());
 
                 String subjectId = item.getSubject().getId();
                 SumNode node = ctb.getNode(subjectId);
@@ -71,9 +68,9 @@ public class AssetQuery
             AccountSubject _subject = null;
             Party _party = null;
 
-            if (!options.isSubjectMerged())
+            if (options.isSubjectVisible()) // assert true.
                 _subject = (AccountSubject) line[_column++];
-            if (!options.isPartyMerged())
+            if (options.isPartyVisible())
                 _party = (Party) line[_column++];
 
             AccountTicketItem item = new AccountTicketItem();

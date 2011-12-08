@@ -19,8 +19,8 @@ public final class AssetQueryOptions
     List<AccountSubject> subjects;
     List<Party> parties;
 
-    boolean subjectMerged;
-    boolean partyMerged;
+    boolean subjectVisible = true;
+    boolean partyVisible;
 
     public AssetQueryOptions(Date timestamp) {
         this(timestamp, null, null);
@@ -47,22 +47,17 @@ public final class AssetQueryOptions
     }
 
     public void setSubjects(List<AccountSubject> subjects) {
-        setSubjects(subjects, subjects == null);
-    }
-
-    public void setSubjects(List<AccountSubject> subjects, boolean merged) {
         this.subjects = subjects;
-        this.subjectMerged = subjects == null && merged;
     }
 
-    public boolean isSubjectMerged() {
-        return subjectMerged;
+    public boolean isSubjectVisible() {
+        return subjectVisible;
     }
 
     public boolean addSubject(AccountSubject subject) {
         if (subjects == null) {
             subjects = new ArrayList<AccountSubject>();
-            subjectMerged = false;
+            subjectVisible = true;
         }
         if (subjects.contains(subject))
             return false;
@@ -82,22 +77,22 @@ public final class AssetQueryOptions
     }
 
     public void setParties(List<Party> parties) {
-        setParties(parties, parties == null);
+        setParties(parties, parties != null);
     }
 
-    public void setParties(List<Party> parties, boolean merged) {
+    public void setParties(List<Party> parties, boolean visible) {
         this.parties = parties;
-        this.partyMerged = parties == null && merged;
+        this.partyVisible = parties != null || visible;
     }
 
-    public boolean isPartyMerged() {
-        return partyMerged;
+    public boolean isPartyVisible() {
+        return partyVisible;
     }
 
     public boolean addParty(Party party) {
         if (parties == null) {
             parties = new ArrayList<Party>();
-            partyMerged = false;
+            partyVisible = true;
         }
         if (parties.contains(party))
             return false;
@@ -113,17 +108,17 @@ public final class AssetQueryOptions
     }
 
     public GroupPropertyProjection getSubjectProjection() {
-        if (subjectMerged)
-            return null;
-        else
+        if (subjectVisible)
             return new GroupPropertyProjection("subject");
+        else
+            return null;
     }
 
     public GroupPropertyProjection getPartyProjection() {
-        if (partyMerged)
-            return null;
-        else
+        if (partyVisible)
             return new GroupPropertyProjection("party");
+        else
+            return null;
     }
 
 }
