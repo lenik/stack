@@ -12,7 +12,6 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.criteria.hibernate.ProjectionList;
 import com.bee32.plover.criteria.hibernate.SumProjection;
-import com.bee32.plover.ox1.dict.CodeTreeBuilder;
 import com.bee32.sem.asset.entity.AccountSnapshot;
 import com.bee32.sem.asset.entity.AccountSnapshotItem;
 import com.bee32.sem.asset.entity.AccountSubject;
@@ -26,11 +25,10 @@ public class AssetQuery
         implements IAssetQuery {
 
     @Override
-    public SumNode getSummary(AssetQueryOptions options) {
+    public SumTree getSummary(AssetQueryOptions options) {
         List<AccountSubject> subjects = asFor(AccountSubject.class).list(Order.asc("id"));
-        CodeTreeBuilder ctb = new CodeTreeBuilder();
-        ctb.setNodeClass(SumNode.class);
-        ctb.learn(subjects);
+        SumTree tree = new SumTree();
+        tree.learn(subjects);
 
         AccountSnapshot latestSnapshot = asFor(AccountSnapshot.class).getFirst(//
                 AssetCriteria.latestSnapshotBefore(options.getTimestamp()));
@@ -45,7 +43,7 @@ public class AssetQuery
                 converted.populate(item);
 
                 String subjectId = item.getSubject().getId();
-                SumNode node = ctb.getNode(subjectId);
+                SumNode node = tree.getNode(subjectId);
                 node.receive(converted);
             }
         }
@@ -78,14 +76,12 @@ public class AssetQuery
             item.setParty(_party);
             item.setValue(new MCValue(_currency, _value));
 
-            SumNode node = ctb.getNode(_subject.getId());
+            SumNode node = tree.getNode(_subject.getId());
             node.receive(item);
         }
 
-        ctb.reduce();
-        // SumNode root = ctb.getNode(options.getSubjects());
-        SumNode root = ctb.getRoot();
-        return root;
+        tree.reduce();
+        return tree;
     }
 
 }

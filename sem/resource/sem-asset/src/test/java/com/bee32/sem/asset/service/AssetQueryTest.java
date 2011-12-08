@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.WiredDaoFeat;
-import com.bee32.plover.ox1.dict.PoTreeBuilder;
 import com.bee32.plover.test.ICoordinator;
 import com.bee32.sem.asset.SEMAssetUnit;
 import com.bee32.sem.asset.entity.AccountSnapshot;
@@ -94,8 +93,8 @@ public class AssetQueryTest
     void query() {
         AssetQueryOptions options = new AssetQueryOptions(new Date());
         options.setParties(null, true);
-        SumNode root = query.getSummary(options);
-        PoTreeBuilder.dump(Stdio.cout, root, SumNode.SumNodeFormatter.INSTANCE);
+        SumTree tree = query.getSummary(options);
+        tree.dump(Stdio.cout);
     }
 
     public static void main(String[] args)
