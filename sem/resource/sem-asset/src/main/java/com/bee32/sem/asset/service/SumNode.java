@@ -98,7 +98,19 @@ public class SumNode
                 sb.append(" (virtual)");
 
             sb.append(": " + total);
-            sb.append(", " + items.size() + " items");
+            // sb.append(", " + items.size() + " items");
+            sb.append(" { ");
+            for (AccountTicketItem item : items) {
+                if (item.isTransient())
+                    sb.append("#");
+                sb.append(item.getSubject().getLabel());
+                sb.append(":");
+                Party party = item.getParty();
+                sb.append(party == null ? "*" : party.getName());
+                sb.append("+" + item.getValue());
+                sb.append(", ");
+            }
+            sb.append(" }");
             return sb.toString();
         }
 
