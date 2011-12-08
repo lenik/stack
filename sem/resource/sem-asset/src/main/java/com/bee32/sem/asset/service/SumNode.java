@@ -13,6 +13,7 @@ import com.bee32.plover.ox1.dict.PoNode;
 import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.asset.entity.AccountTicketItem;
 import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 
 public class SumNode
@@ -54,7 +55,13 @@ public class SumNode
         addItem(item);
 
         MCValue mcv = item.getValue();
-        add(mcv.getValue());
+        BigDecimal nativeValue;
+        try {
+            nativeValue = mcv.getNativeValue(item.getBeginTime());
+        } catch (FxrQueryException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+        add(nativeValue);
     }
 
     void add(BigDecimal value) {
