@@ -26,6 +26,8 @@ public class AccountSubjectAdminBean
     private TreeNode selectedNode;
     private TreeNode selectedParentSubjectNode;
 
+    private AccountSubjectDto parentSubject;
+
     public AccountSubjectAdminBean() {
         loadAccountSubjectTree();
     }
@@ -72,8 +74,23 @@ public class AccountSubjectAdminBean
         this.selectedParentSubjectNode = selectedParentSubjectNode;
     }
 
+    public AccountSubjectDto getParentSubject() {
+        return parentSubject;
+    }
+
+    public void setParentSubject(AccountSubjectDto parentSubject) {
+        this.parentSubject = parentSubject;
+    }
+
+
+
+
+
+
     protected void loadAccountSubjectTree() {
         root = new DefaultTreeNode("root", null);
+
+
 
         List<AccountSubject> subjects = serviceFor(AccountSubject.class).list(Order.asc("id"));
         List<AccountSubjectDto> subjectDtos = DTOs.mrefList(AccountSubjectDto.class, -1, subjects);
@@ -89,6 +106,7 @@ public class AccountSubjectAdminBean
     public void newAccountSubject() {
         editNewStatus = true;
         _newAccountSubject();
+        parentSubject = new AccountSubjectDto().create();
     }
 
     public void chooseAccountSubject() {
@@ -103,6 +121,7 @@ public class AccountSubjectAdminBean
 
         chooseAccountSubject();
         editNewStatus = false;
+        parentSubject = new AccountSubjectDto().create();
     }
 
     public void save() {
@@ -133,7 +152,8 @@ public class AccountSubjectAdminBean
     }
 
     public void selectParentSubject() {
-        AccountSubjectDto parentSubject = (AccountSubjectDto) selectedParentSubjectNode.getData();
+        parentSubject = (AccountSubjectDto) selectedParentSubjectNode.getData();
+        accountSubject.setName(parentSubject.getName());
         accountSubject.setDebitSign(parentSubject.isDebitSign());
         accountSubject.setCreditSign(parentSubject.isCreditSign());
     }
