@@ -12,14 +12,15 @@ public class SEMAssetMenu
 
     public static MenuNode ASSET = menu(SEMFrameMenu.BIZ1, "asset");
 
-    static MenuNode accountTitleAdmin = entry(ASSET, 1, "accountSubjectAdmin", ASSET_.join("accountSubject/"));
-    static MenuNode budgetRequestAdmin = entry(ASSET, 1, "budgetRequestAdmin", ASSET_.join("budgetRequest/"));
-    static MenuNode accountTicketAdmin = entry(ASSET, 1, "accountTicketAdmin", ASSET_.join("accountTicket/"));
+    static MenuNode accountInit = entry(ASSET, 1, "accountInit", ASSET_.join("accountInit/"));
+    static MenuNode accountTitleAdmin = entry(ASSET, 2, "accountSubjectAdmin", ASSET_.join("accountSubject/"));
+    static MenuNode budgetRequestAdmin = entry(ASSET, 3, "budgetRequestAdmin", ASSET_.join("budgetRequest/"));
+    static MenuNode accountTicketAdmin = entry(ASSET, 4, "accountTicketAdmin", ASSET_.join("accountTicket/"));
 
-    static MenuNode stockSaleAdmin = entry(ASSET, 1, "stockSaleAdmin", ASSET_.join("stockTrade/?type=SALE"));
-    static MenuNode stockPurchaseAdmin = entry(ASSET, 1, "stockPurchaseAdmin", ASSET_.join("stockTrade/?type=PURCHASE"));
+    static MenuNode stockSaleAdmin = entry(ASSET, 5, "stockSaleAdmin", ASSET_.join("stockTrade/?type=SALE"));
+    static MenuNode stockPurchaseAdmin = entry(ASSET, 6, "stockPurchaseAdmin", ASSET_.join("stockTrade/?type=PURCHASE"));
 
-    static MenuNode assetQuery = entry(ASSET, 1, "assetQuery", ASSET_.join("assetQuery/"));
+    static MenuNode assetQuery = entry(ASSET, 7, "assetQuery", ASSET_.join("assetQuery/"));
 
 
 
