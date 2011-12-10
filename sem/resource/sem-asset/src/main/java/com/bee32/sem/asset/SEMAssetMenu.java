@@ -12,8 +12,9 @@ public class SEMAssetMenu
 
     public static MenuNode ASSET = menu(SEMFrameMenu.BIZ1, "asset");
 
-    static MenuNode accountInit = entry(ASSET, 1, "accountInit", ASSET_.join("accountInit/"));
-    static MenuNode accountTitleAdmin = entry(ASSET, 2, "accountSubjectAdmin", ASSET_.join("accountSubject/"));
+    static MenuNode accountTitleAdmin = entry(ASSET, 1, "accountSubjectAdmin", ASSET_.join("accountSubject/"));
+
+    static MenuNode accountInit = entry(ASSET, 2, "accountInit", ASSET_.join("accountInit/"));
     static MenuNode budgetRequestAdmin = entry(ASSET, 3, "budgetRequestAdmin", ASSET_.join("budgetRequest/"));
     static MenuNode accountTicketAdmin = entry(ASSET, 4, "accountTicketAdmin", ASSET_.join("accountTicket/"));
 

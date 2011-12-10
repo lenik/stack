@@ -8,6 +8,7 @@ import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.asset.entity.AccountTicket;
 import com.bee32.sem.asset.entity.AccountTicketItem;
 import com.bee32.sem.asset.entity.BudgetRequest;
+import com.bee32.sem.asset.entity.InitAccountTicketItem;
 import com.bee32.sem.asset.entity.StockPurchase;
 import com.bee32.sem.asset.entity.StockSale;
 import com.bee32.sem.asset.entity.StockTrade;
@@ -32,6 +33,6 @@ public class SEMAssetUnit
         add(StockSale.class);
         add(StockTrade.class);
         add(StockTradeItem.class);
+        add(InitAccountTicketItem.class);
     }
-
 }
