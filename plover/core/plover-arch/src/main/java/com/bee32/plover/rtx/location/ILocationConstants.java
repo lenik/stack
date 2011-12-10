@@ -49,7 +49,9 @@ class JavascriptContextLocation
 
     @Override
     protected void fillContext(StringBuffer sb, HttpServletRequest request) {
-        throw new IllegalUsageException("Do not convert javascript-location to URL or URI.");
+        sb.setLength(0);
+        sb.append("javascript:");
+        sb.append(base);
     }
 
     @Override
