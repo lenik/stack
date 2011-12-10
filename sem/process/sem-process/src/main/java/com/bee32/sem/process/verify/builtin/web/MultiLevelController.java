@@ -15,13 +15,13 @@ import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.builtin.MultiLevelPolicy;
 import com.bee32.sem.process.verify.builtin.dao.LevelDao;
 import com.bee32.sem.process.verify.builtin.dao.VerifyPolicyDao;
-import com.bee32.sem.process.verify.builtin.dto.LevelDto;
 import com.bee32.sem.process.verify.builtin.dto.MultiLevelDto;
+import com.bee32.sem.process.verify.builtin.dto.MultiLevelPolicyDto;
 import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 
 @RequestMapping(MultiLevelController.PREFIX + "/*")
 public class MultiLevelController
-        extends BasicEntityController<MultiLevelPolicy, Integer, MultiLevelDto> {
+        extends BasicEntityController<MultiLevelPolicy, Integer, MultiLevelPolicyDto> {
 
     public static final String PREFIX = SEMProcessModule.PREFIX + "/level";
 
@@ -32,13 +32,13 @@ public class MultiLevelController
     VerifyPolicyDao verifyPolicyDao;
 
     @Override
-    protected void fillDataRow(DataTableDxo tab, MultiLevelDto multiLevel) {
+    protected void fillDataRow(DataTableDxo tab, MultiLevelPolicyDto multiLevel) {
         tab.push(multiLevel.getLabel());
         tab.push(multiLevel.getDescription());
 
         int max = 3;
         StringBuilder limits = null;
-        for (LevelDto range : multiLevel.getLevels()) {
+        for (MultiLevelDto range : multiLevel.getLevels()) {
             if (max <= 0) {
                 limits.append(", etc.");
                 break;

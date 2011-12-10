@@ -10,7 +10,7 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.web.EntityHelper;
 import com.bee32.sem.process.verify.builtin.PassToNextPolicy;
 
-public class PassToNextDto
+public class PassToNextPolicyDto
         extends AbstractVerifyPolicyDto<PassToNextPolicy> {
 
     private static final long serialVersionUID = 1L;
@@ -19,11 +19,11 @@ public class PassToNextDto
 
     List<PassStepDto> sequences;
 
-    public PassToNextDto() {
+    public PassToNextPolicyDto() {
         super();
     }
 
-    public PassToNextDto(int selection) {
+    public PassToNextPolicyDto(int selection) {
         super(selection);
     }
 

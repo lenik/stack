@@ -11,7 +11,7 @@ import com.bee32.plover.orm.web.EntityHelper;
 import com.bee32.plover.ox1.principal.PrincipalDto;
 import com.bee32.sem.process.verify.builtin.AllowListPolicy;
 
-public class AllowListDto
+public class AllowListPolicyDto
         extends AbstractVerifyPolicyDto<AllowListPolicy> {
 
     private static final long serialVersionUID = 1L;
@@ -20,11 +20,11 @@ public class AllowListDto
 
     List<PrincipalDto> responsibles;
 
-    public AllowListDto() {
+    public AllowListPolicyDto() {
         super();
     }
 
-    public AllowListDto(int selection) {
+    public AllowListPolicyDto(int selection) {
         super(selection);
     }
 

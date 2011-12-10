@@ -10,11 +10,11 @@ import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.builtin.PassToNextPolicy;
 import com.bee32.sem.process.verify.builtin.dao.PassStepDao;
 import com.bee32.sem.process.verify.builtin.dto.PassStepDto;
-import com.bee32.sem.process.verify.builtin.dto.PassToNextDto;
+import com.bee32.sem.process.verify.builtin.dto.PassToNextPolicyDto;
 
 @RequestMapping(PassToNextController.PREFIX + "/*")
 public class PassToNextController
-        extends BasicEntityController<PassToNextPolicy, Integer, PassToNextDto> {
+        extends BasicEntityController<PassToNextPolicy, Integer, PassToNextPolicyDto> {
 
     public static final String PREFIX = SEMProcessModule.PREFIX + "/p2next";
 
@@ -22,7 +22,7 @@ public class PassToNextController
     PassStepDao seqDao;
 
     @Override
-    protected void fillDataRow(DataTableDxo tab, PassToNextDto dto) {
+    protected void fillDataRow(DataTableDxo tab, PassToNextPolicyDto dto) {
         tab.push(dto.getLabel());
         tab.push(dto.getDescription());
 

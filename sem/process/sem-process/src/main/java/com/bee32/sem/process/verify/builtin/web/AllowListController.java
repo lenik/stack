@@ -16,11 +16,11 @@ import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.builtin.AllowListPolicy;
-import com.bee32.sem.process.verify.builtin.dto.AllowListDto;
+import com.bee32.sem.process.verify.builtin.dto.AllowListPolicyDto;
 
 @RequestMapping(AllowListController.PREFIX + "/*")
 public class AllowListController
-        extends BasicEntityController<AllowListPolicy, Integer, AllowListDto> {
+        extends BasicEntityController<AllowListPolicy, Integer, AllowListPolicyDto> {
 
     public static final String PREFIX = SEMProcessModule.PREFIX + "/list";
 
@@ -28,7 +28,7 @@ public class AllowListController
     UserDao userDao;
 
     @Override
-    protected void fillDataRow(DataTableDxo tab, AllowListDto item) {
+    protected void fillDataRow(DataTableDxo tab, AllowListPolicyDto item) {
         tab.push(item.getLabel());
         tab.push(item.getDescription());
 

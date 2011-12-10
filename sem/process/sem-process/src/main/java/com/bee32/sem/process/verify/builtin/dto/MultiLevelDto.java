@@ -1,97 +1,66 @@
 package com.bee32.sem.process.verify.builtin.dto;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import javax.free.AbstractNonNullComparator;
 import javax.free.ParseException;
-import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.web.EntityHelper;
-import com.bee32.sem.process.verify.builtin.MultiLevelPolicy;
+import com.bee32.plover.ox1.c.CEntityDto;
+import com.bee32.sem.process.verify.builtin.MultiLevel;
 
 public class MultiLevelDto
-        extends AbstractVerifyPolicyDto<MultiLevelPolicy> {
+        extends CEntityDto<MultiLevel, Integer> {
 
     private static final long serialVersionUID = 1L;
 
-    public static final int LEVELS = 1;
-
-    List<LevelDto> levels;
+    private MultiLevelPolicyDto multiLevel;
+    private long limit;
+    private VerifyPolicyDto targetPolicy;
 
     public MultiLevelDto() {
         super();
     }
 
-    public MultiLevelDto(int selection) {
-        super(selection);
+    @Override
+    protected void _marshal(MultiLevel source) {
+        multiLevel = new MultiLevelPolicyDto().ref(source.getMultiLevel());
+        limit = source.getLimit();
+        targetPolicy = mref(VerifyPolicyDto.class, source.getTargetPolicy());
     }
 
     @Override
-    protected void _marshal(MultiLevelPolicy source) {
-        if (selection.contains(LEVELS))
-            setLevels(marshalList(LevelDto.class, source.getLevels()));
+    protected void _unmarshalTo(MultiLevel target) {
+        target.setLimit(limit);
+
+        merge(target, "multiLevel", multiLevel);
+        merge(target, "targetPolicy", targetPolicy);
     }
 
     @Override
-    protected void _unmarshalTo(MultiLevelPolicy target) {
-        if (selection.contains(LEVELS))
-            mergeList(target, "levels", levels);
+    protected void _parse(TextMap map)
+            throws ParseException {
     }
 
-    @Override
-    public void _parse(TextMap map)
-            throws ParseException, TypeConvertException {
-
-        if (selection.contains(LEVELS)) {
-            levels = new ArrayList<LevelDto>();
-            String[] levelStrs = map.getStringArray("levels");
-            if (levelStrs != null)
-                for (String levelStr : levelStrs) {
-                    int comma = levelStr.indexOf(',');
-                    String _limit = levelStr.substring(0, comma);
-                    String _policyId = levelStr.substring(comma + 1);
-
-                    long limit = Long.parseLong(_limit);
-                    int policyId = Integer.parseInt(_policyId);
-                    VerifyPolicyDto policyRef = new VerifyPolicyDto().ref(policyId);
-
-                    LevelDto level = new LevelDto().create();
-                    level.setMultiLevel(new MultiLevelDto().ref(this));
-                    level.setLimit(limit);
-                    level.setTargetPolicy(policyRef);
-
-                    levels.add(level);
-                }
-        }
+    public MultiLevelPolicyDto getMultiLevel() {
+        return multiLevel;
     }
 
-    /**
-     * @see MultiLevelPolicy#getLevels()
-     */
-    boolean resort = false;
-
-    public List<LevelDto> getLevels() {
-        return levels;
+    public void setMultiLevel(MultiLevelPolicyDto multiLevel) {
+        this.multiLevel = multiLevel;
     }
 
-    public void setLevels(List<LevelDto> levels) {
-        if (resort && levels != null)
-            Collections.sort(levels, new AbstractNonNullComparator<LevelDto>() {
-                @Override
-                public int compareNonNull(LevelDto a, LevelDto b) {
-                    Long al = a.getLimit();
-                    Long bl = b.getLimit();
-                    return al.compareTo(bl);
-                }
-            });
-        this.levels = levels;
+    public long getLimit() {
+        return limit;
     }
 
-    static {
-        EntityHelper.getInstance(MultiLevelPolicy.class).setSelection(LEVELS);
+    public void setLimit(long limit) {
+        this.limit = limit;
+    }
+
+    public VerifyPolicyDto getTargetPolicy() {
+        return targetPolicy;
+    }
+
+    public void setTargetPolicy(VerifyPolicyDto targetPolicy) {
+        this.targetPolicy = targetPolicy;
     }
 
 }
