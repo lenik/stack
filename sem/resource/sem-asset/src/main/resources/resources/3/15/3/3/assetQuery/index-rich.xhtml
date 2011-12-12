@@ -36,34 +36,38 @@
                         onclick="partyDialog.show();" disabled="" />
                 </t:panelGrid>
 
+
+                <h:outputText value="开始时间"/>
+                <p:calendar navigator="true"
+                    locale="zh_CN" pattern="yyyy-MM-dd"
+                    value="#{assetQueryBean.fromDate}" showOn="button" />
                 <h:outputText value="截止时间"/>
                 <p:calendar navigator="true"
                     locale="zh_CN" pattern="yyyy-MM-dd"
                     value="#{assetQueryBean.toDate}" showOn="button" />
-                <t:panelGroup/>
-                <t:panelGroup/>
+
+                <t:panelGroup colspan="4">
+                    <p:commandButton
+                        update="mainForm:items mainForm:result"
+                        value="查询"
+                        actionListener="#{assetQueryBean.query}"/>
+                </t:panelGroup>
             </t:panelGrid>
 
-            <p:dataTable rowIndexVar="rowIndex">
+            <p:treeTable id="result"
+                value="#{assetQueryBean.root}"
+                var="item"
+                selectionMode="single"
+                rowIndexVar="rowIndex">
+
                 <p:column headerText="序号">
                     <h:outputText value="#{rowIndex + 1}" />
                 </p:column>
-                <p:column headerText="一级科目">
-                    <h:outputText value=""/>
+
+                <p:column headerText="">
                 </p:column>
-                <p:column headerText="二级科目">
-                    <h:outputText value=""/>
-                </p:column>
-                <p:column headerText="摘要">
-                    <h:outputText value=""/>
-                </p:column>
-                <p:column headerText="金额">
-                    <h:outputText value=""/>
-                </p:column>
-                <p:column headerText="币种">
-                    <h:outputText value=""/>
-                </p:column>
-            </p:dataTable>
+
+            </p:treeTable>
         </h:form>
 
 
