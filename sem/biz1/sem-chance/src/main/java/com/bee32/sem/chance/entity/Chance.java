@@ -38,6 +38,7 @@ public class Chance
     public static final int SERIAL_LENGTH = 30;
     public static final int SUBJECT_LENGTH = 100;
     public static final int CONTENT_LENGTH = 500;
+    public static final int ADDRESS_LENGTH = 200;
 
     String serial;
 
@@ -50,6 +51,8 @@ public class Chance
     List<ChanceAction> actions = new ArrayList<ChanceAction>();
 
     ChanceStage stage = ChanceStage.INIT;
+
+    String address;
 
     @NaturalId
     @Column(length = SERIAL_LENGTH)
@@ -175,6 +178,18 @@ public class Chance
      */
     public void setStage(ChanceStage stage) {
         this.stage = stage;
+    }
+
+    /**
+     * 机会地址
+     *     项目型机会一般这个地址和客户公司地址是不同的
+     */
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     /**

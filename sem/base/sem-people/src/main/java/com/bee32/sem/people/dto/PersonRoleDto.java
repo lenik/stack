@@ -15,6 +15,8 @@ public class PersonRoleDto
 
     public static final int ORG_UNIT_FULL = 1;
 
+    public static final int PERSON_CONTACTS = 2;
+
     PersonDto person;
     OrgDto org;
     OrgUnitDto orgUnit;
@@ -33,7 +35,10 @@ public class PersonRoleDto
 
     @Override
     protected void _marshal(PersonRole source) {
-        person = mref(PersonDto.class, source.getPerson());
+        int x = 0;
+        if (selection.contains(PERSON_CONTACTS)) x |= PersonDto.CONTACTS;
+        person = mref(PersonDto.class, x, source.getPerson());
+
         org = mref(OrgDto.class, source.getOrg());
         altOrgUnit = source.getAltOrgUnit();
 

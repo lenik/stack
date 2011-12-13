@@ -117,7 +117,7 @@
                                 <f:facet name="header">
                                     <h:outputText value="联系电话" />
                                 </f:facet>
-                                <h:outputText value="#{org.defaultTel}" />
+                                <h:outputText value="#{org.contactsString}" />
                             </p:column>
 
                             <p:column>
@@ -281,7 +281,7 @@
 
                                 <p:column>
                                     <f:facet name="header">
-                                        <h:outputText value="地址" />
+                                        <h:outputText value="分类" />
                                     </f:facet>
                                     <h:outputText value="#{contact.category.label}" />
                                 </p:column>
@@ -338,7 +338,7 @@
                         </p:panel>
 
 						<p:panel header="相关人员" toggleable="true">
-							<h:panelGrid id="orgUnitTreeGrid" columns="2"  rowClasses="align_top">
+							<h:panelGrid id="orgUnitTreeGrid" columns="2" rowClasses="alignTop">
 
 								<t:panelGroup>
 									<p:panel header="部门">
@@ -507,6 +507,12 @@
 												</f:facet>
 												<h:outputText value="#{role.person.sexText}" />
 											</p:column>
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="联系电话" />
+                                                </f:facet>
+                                                <h:outputText value="#{role.person.contactsString}" />
+                                            </p:column>
 											<p:column>
 												<f:facet name="header">
 													<h:outputText value="生日" />
@@ -515,26 +521,6 @@
 													<f:convertDateTime pattern="yyyy-MM-dd"
 														timeZone="Asia/Shanghai" />
 												</h:outputText>
-											</p:column>
-											<p:column>
-												<f:facet name="header">
-													<h:outputText value="证件类型" />
-												</f:facet>
-												<h:outputText value="#{role.person.sidType.label}" />
-											</p:column>
-
-											<p:column>
-												<f:facet name="header">
-													<h:outputText value="证件号码" />
-												</f:facet>
-												<h:outputText value="#{role.person.sid}" />
-											</p:column>
-
-											<p:column>
-												<f:facet name="header">
-													<h:outputText value="户籍" />
-												</f:facet>
-												<h:outputText value="#{role.person.censusRegister}" />
 											</p:column>
 										</p:dataTable>
 									</p:panel>

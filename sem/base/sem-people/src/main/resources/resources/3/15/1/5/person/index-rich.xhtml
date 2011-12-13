@@ -72,6 +72,13 @@
 
                                 <p:column>
                                     <f:facet name="header">
+                                        <h:outputText value="联系电话" />
+                                    </f:facet>
+                                    <h:outputText value="#{person.contactsString}" />
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
                                         <h:outputText value="生日" />
                                     </f:facet>
                                     <h:outputText value="#{person.birthday}">

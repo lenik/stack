@@ -16,6 +16,7 @@ import com.bee32.plover.ox1.principal.UserDto;
 import com.bee32.plover.ox1.xp.EntityExtDto;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.PartyXP;
+import com.bee32.sem.people.util.PeopleUtil;
 
 public class PartyDto
         extends EntityExtDto<Party, Integer, PartyXP> {
@@ -287,12 +288,8 @@ public class PartyDto
         this.contacts = contacts;
     }
 
-    public String getDefaultTel() {
-        if (contacts == null)
-            return "";
-        if (contacts.size() <= 0)
-            return "";
-        return contacts.get(0).getTel();
+    public String getContactsString() {
+        return PeopleUtil.getCombinedContacts(contacts);
     }
 
     @Override

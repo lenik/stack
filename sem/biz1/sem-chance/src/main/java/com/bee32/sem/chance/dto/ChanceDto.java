@@ -32,6 +32,8 @@ public class ChanceDto
 
     ChanceStageDto stage;
 
+    String address;
+
     // View-Related
 
     ChancePartyDto selectedParty;
@@ -62,6 +64,7 @@ public class ChanceDto
             actions = mrefList(ChanceActionDto.class, source.getActions());
 
         stage = mref(ChanceStageDto.class, source.getStage());
+        address = source.getAddress();
     }
 
     @Override
@@ -77,6 +80,8 @@ public class ChanceDto
             mergeList(target, "parties", parties);
         if (selection.contains(ACTIONS))
             mergeList(target, "actions", actions);
+
+        target.setAddress(address);
     }
 
     @Override
@@ -203,6 +208,14 @@ public class ChanceDto
 
     public void setStage(ChanceStageDto stage) {
         this.stage = stage;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public ChancePartyDto getSelectedParty() {

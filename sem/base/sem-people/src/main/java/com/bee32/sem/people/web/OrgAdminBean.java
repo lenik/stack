@@ -172,7 +172,7 @@ public class OrgAdminBean
                 List<PersonRole> personRoles = serviceFor(PersonRole.class).list(
                         new Equals("orgUnit.id", selectedOrgUnit.getId()));
 
-                roles = DTOs.marshalList(PersonRoleDto.class, personRoles);
+                roles = DTOs.marshalList(PersonRoleDto.class, PersonRoleDto.PERSON_CONTACTS, personRoles);
             } else {
                 // 没有点选部门，出现公司所有的人员
                 if (org.getRoles() != null) {

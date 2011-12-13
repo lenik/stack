@@ -95,6 +95,10 @@
                             <p:column headerText="机会阶段" style="width:100px;">
                                 <h:outputText value="#{chance.stage.label}" />
                             </p:column>
+
+                            <p:column headerText="所有人" style="width:100px;">
+                                <h:outputText value="#{chance.owner.displayName}" />
+                            </p:column>
                         </p:dataTable>
                     </p:tab>
                     <p:tab id="chance" title="销售机会明细" disabled="false">
@@ -153,6 +157,12 @@
                                         <p:commandButton value="..." onclick="chooseChancePartyDialog.show()"
                                             title="选择客户" disabled="#{chanceBean.state == 'VIEW'}" />
                                     </t:panelGrid>
+                                </t:panelGroup>
+
+                                <h:outputText value="机会地址:" />
+                                <t:panelGroup colspan="3">
+                                    <p:inputText id="address" value="#{_c.address}" style="width:100%;"
+                                        readonly="#{chanceBean.state == 'VIEW'}" />
                                 </t:panelGroup>
 
                                 <h:outputText for="content" value="机会内容:" />

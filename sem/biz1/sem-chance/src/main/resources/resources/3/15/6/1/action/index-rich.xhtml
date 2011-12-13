@@ -104,6 +104,9 @@
                             <p:column headerText="机会阶段">
                                 <h:outputText value="#{action.stage.label}" />
                             </p:column>
+                            <p:column headerText="所有人" style="width:100px;">
+                                <h:outputText value="#{action.owner.displayName}" />
+                            </p:column>
                         </p:dataTable>
 
                     </p:tab>
