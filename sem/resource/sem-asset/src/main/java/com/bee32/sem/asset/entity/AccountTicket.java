@@ -2,6 +2,7 @@ package com.bee32.sem.asset.entity;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -30,6 +31,20 @@ public class AccountTicket
 
     List<AccountTicketItem> items = new ArrayList<AccountTicketItem>();
     BudgetRequest request;
+
+    public AccountTicket() {
+        setDate(new Date());
+    }
+
+    @Transient
+    public Date getDate() {
+        return getBeginTime();
+    }
+
+    public void setDate(Date date) {
+        setBeginTime(date);
+        setEndTime(date);
+    }
 
     /**
      * 会计凭证上的条目列表

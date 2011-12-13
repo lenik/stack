@@ -20,7 +20,12 @@
         <h:form id="mainForm">
             <t:panelGrid columns="4">
                 <h:outputText value="一级科目"/>
-                <t:panelGrid columns="2">
+                <t:panelGrid columns="4">
+                    <t:panelGrid columns="2">
+                        <p:selectBooleanCheckbox value="#{assetQueryBean.all}"/>
+                        <h:outputText value="全部" />
+                    </t:panelGrid>
+                    <h:outputText value="/" />
                     <p:inputText id="accountSubject"
                         value="#{assetQueryBean.subject.label}"
                         readonly="true" />
@@ -36,35 +41,48 @@
                         onclick="partyDialog.show();" disabled="" />
                 </t:panelGrid>
 
-
-                <h:outputText value="开始时间"/>
-                <p:calendar navigator="true"
-                    locale="zh_CN" pattern="yyyy-MM-dd"
-                    value="#{assetQueryBean.fromDate}" showOn="button" />
                 <h:outputText value="截止时间"/>
                 <p:calendar navigator="true"
                     locale="zh_CN" pattern="yyyy-MM-dd"
                     value="#{assetQueryBean.toDate}" showOn="button" />
+                <t:panelGroup />
+                <t:panelGroup />
 
                 <t:panelGroup colspan="4">
                     <p:commandButton
-                        update="mainForm:items mainForm:result"
+                        update="mainForm:result"
                         value="查询"
                         actionListener="#{assetQueryBean.query}"/>
                 </t:panelGroup>
             </t:panelGrid>
 
-            <p:treeTable id="result"
-                value="#{assetQueryBean.root}"
-                var="item"
-                selectionMode="single"
-                rowIndexVar="rowIndex">
-
-                <p:column headerText="序号">
-                    <h:outputText value="#{rowIndex + 1}" />
+            <p:treeTable id="result" value="#{assetQueryBean.root}" var="item">
+                <p:column headerText="会计科目">
+                    <h:outputText value="#{item.subject.label}" />
                 </p:column>
 
-                <p:column headerText="">
+                <p:column headerText="二级科目">
+                    <h:outputText value="#{item.party.displayName}" />
+                </p:column>
+
+                <p:column headerText="借贷方向">
+                    <p:selectOneMenu value="#{item.debitSide}"
+                        disabled="#{true}" style="width:200px;">
+                        <f:selectItem itemValue="true" itemLabel="借方" />
+                        <f:selectItem itemValue="false" itemLabel="贷方" />
+                    </p:selectOneMenu>
+                </p:column>
+
+                <p:column headerText="币种">
+                    <h:outputText value="#{item.valueCurrency}" />
+                </p:column>
+
+                <p:column headerText="金额">
+                    <h:outputText value="#{item.valueDigit}" />
+                </p:column>
+
+                <p:column headerText="摘要">
+                    <h:outputText value="#{item.description}" />
                 </p:column>
 
             </p:treeTable>

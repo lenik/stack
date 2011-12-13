@@ -73,6 +73,8 @@ public class AssetQuery
 
             AccountTicketItem item = new AccountTicketItem();
             item.setSubject(_subject);
+            item.setDebitSide(_subject.isDebitSign());
+
             item.setParty(_party);
             item.setValue(new MCValue(_currency, _value));
 

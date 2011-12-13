@@ -1,5 +1,7 @@
 package com.bee32.sem.asset.entity;
 
+import java.util.Date;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -44,6 +46,20 @@ public class AccountTicketItem
     AccountTicket ticket;
 
     AccountSnapshotItem snapshotItemRef;
+
+    public AccountTicketItem() {
+        setDate(new Date());
+    }
+
+    @Transient
+    public Date getDate() {
+        return getBeginTime();
+    }
+
+    public void setDate(Date date) {
+        setBeginTime(date);
+        setEndTime(date);
+    }
 
     /**
      * 单据内部的序号

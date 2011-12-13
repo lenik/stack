@@ -1,6 +1,7 @@
 package com.bee32.sem.asset.web;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
+import com.bee32.plover.ox1.dict.PoNode;
 import com.bee32.sem.asset.dto.AccountSubjectDto;
 import com.bee32.sem.asset.dto.AccountTicketItemDto;
 import com.bee32.sem.asset.entity.AccountSubject;
@@ -21,11 +23,13 @@ import com.bee32.sem.asset.service.SumNode;
 import com.bee32.sem.asset.service.SumTree;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.world.monetary.MCValue;
 
 public class AssetQueryBean extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
+    boolean all;
     AccountSubjectDto subject;
     PartyDto party;
     Date fromDate;
@@ -43,8 +47,17 @@ public class AssetQueryBean extends EntityViewBean {
     private TreeNode root;
 
     public AssetQueryBean() {
+        all = false;
         fromDate = new Date();
         toDate = new Date();
+    }
+
+    public boolean isAll() {
+        return all;
+    }
+
+    public void setAll(boolean all) {
+        this.all = all;
     }
 
     public AccountSubjectDto getSubject() {
@@ -173,15 +186,22 @@ public class AssetQueryBean extends EntityViewBean {
     }
 
     public void query() {
-        if (subject == null) {
-            uiLogger.warn("没有选择科目.");
-            return;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(toDate);
+        cal.set(Calendar.HOUR_OF_DAY, 23);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        cal.set(Calendar.MILLISECOND, 999);
+
+        AssetQueryOptions options = new AssetQueryOptions(cal.getTime());
+        if (!all) {
+            if (subject == null) {
+                uiLogger.warn("没有选择科目.");
+                return;
+            }
+            options.addSubject(subject.unmarshal());
         }
-
-
-        AssetQueryOptions options = new AssetQueryOptions(toDate);
-        options.addSubject(subject.unmarshal());
-        if (party != null) {
+        if (party != null && party.getId() != null) {
             options.addParty(party.unmarshal());
         }
         options.setParties(null, true);
@@ -195,21 +215,29 @@ public class AssetQueryBean extends EntityViewBean {
     }
 
     void loadSumNodeRecursive(SumNode sumNode, TreeNode parentNode) {
-        BigDecimal total = sumNode.getTotal();
-        AccountTicketItem _item = new AccountTicketItem();
-        _item.setSubject(sumNode.getData());
+        for(PoNode<?> poNode : sumNode.getChildren()) {
+            SumNode node = (SumNode)poNode;
 
+            BigDecimal total = node.getTotal();
+            AccountTicketItem _item = new AccountTicketItem();
+            _item.setSubject(node.getData());
+            _item.setDebitSide(node.getData().isDebitSign());
+            _item.setValue(new MCValue(total));
 
-        List<AccountTicketItem> items = sumNode.getItems();
+            TreeNode totalNode = new DefaultTreeNode(
+                    _item.getSubject().getId(),
+                    DTOs.marshal(AccountTicketItemDto.class, _item),
+                    parentNode);
 
-        for(SumNode node : sumNode.getChildren()) {
+            List<AccountTicketItem> items = node.getItems();
+            for(AccountTicketItem subItem : items) {
+                new DefaultTreeNode(
+                        subItem.getSubject().getId(),
+                        DTOs.marshal(AccountTicketItemDto.class, subItem),
+                        totalNode);
+            }
 
+            loadSumNodeRecursive(node, totalNode);
         }
-
-
-
-
     }
-
-
 }
