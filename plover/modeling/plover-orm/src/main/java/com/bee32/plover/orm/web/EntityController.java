@@ -21,9 +21,9 @@ import com.bee32.plover.servlet.mvc.IActionHandler;
 import com.bee32.plover.site.scope.PerSite;
 
 @ComponentTemplate
-//@Controller
+// @Controller
 @PerSite
-public abstract class EntityController<E extends Entity<K>, K extends Serializable, Dto extends EntityDto<E, K>>
+public abstract class EntityController<E extends Entity<K>, K extends Serializable, Dto extends EntityDto<? super E, K>>
         extends CompositeController
         implements IEntityMarshalContext {
 

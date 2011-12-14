@@ -21,7 +21,7 @@ import com.bee32.plover.orm.web.util.SearchModel;
 import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 
-public abstract class BasicEntityController<E extends Entity<K>, K extends Serializable, Dto extends EntityDto<E, K>>
+public abstract class BasicEntityController<E extends Entity<K>, K extends Serializable, Dto extends EntityDto<? super E, K>>
         extends EntityController<E, K, Dto> {
 
     static Logger logger = LoggerFactory.getLogger(BasicEntityController.class);
