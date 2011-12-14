@@ -1,3 +1,3 @@
-com.bee32.sem.process.verify.builtin.AllowList
-com.bee32.sem.process.verify.builtin.MultiLevel
-com.bee32.sem.process.verify.builtin.PassToNext
+com.bee32.sem.process.verify.builtin.MultiLevelPolicy
+com.bee32.sem.process.verify.builtin.AllowListPolicy
+com.bee32.sem.process.verify.builtin.PassToNextPolicy

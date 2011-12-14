@@ -10,10 +10,11 @@ import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.web.EntityHelper;
+import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.builtin.MultiLevelPolicy;
 
 public class MultiLevelPolicyDto
-        extends AbstractVerifyPolicyDto<MultiLevelPolicy> {
+        extends VerifyPolicyDto {
 
     private static final long serialVersionUID = 1L;
 
@@ -30,13 +31,15 @@ public class MultiLevelPolicyDto
     }
 
     @Override
-    protected void _marshal(MultiLevelPolicy source) {
+    protected void _marshal(VerifyPolicy _source) {
+        MultiLevelPolicy source = (MultiLevelPolicy) _source;
         if (selection.contains(LEVELS))
             setLevels(marshalList(MultiLevelDto.class, source.getLevels()));
     }
 
     @Override
-    protected void _unmarshalTo(MultiLevelPolicy target) {
+    protected void _unmarshalTo(VerifyPolicy _target) {
+        MultiLevelPolicy target = (MultiLevelPolicy) _target;
         if (selection.contains(LEVELS))
             mergeList(target, "levels", levels);
     }

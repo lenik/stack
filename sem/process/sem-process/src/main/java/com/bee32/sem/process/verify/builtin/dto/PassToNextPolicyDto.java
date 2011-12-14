@@ -8,10 +8,11 @@ import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.web.EntityHelper;
+import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.builtin.PassToNextPolicy;
 
 public class PassToNextPolicyDto
-        extends AbstractVerifyPolicyDto<PassToNextPolicy> {
+        extends VerifyPolicyDto {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,13 +37,15 @@ public class PassToNextPolicyDto
     }
 
     @Override
-    protected void _marshal(PassToNextPolicy source) {
+    protected void _marshal(VerifyPolicy _source) {
+        PassToNextPolicy source = (PassToNextPolicy) _source;
         if (selection.contains(SEQUENCES))
             sequences = marshalList(PassStepDto.class, source.getSequences());
     }
 
     @Override
-    protected void _unmarshalTo(PassToNextPolicy target) {
+    protected void _unmarshalTo(VerifyPolicy _target) {
+        PassToNextPolicy target = (PassToNextPolicy) _target;
         if (selection.contains(SEQUENCES))
             mergeList(target, "sequences", sequences);
     }

@@ -9,8 +9,10 @@ import javax.persistence.InheritanceType;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
+import com.bee32.plover.inject.ServiceTemplate;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 
+@ServiceTemplate(prototype = true)
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 4)
