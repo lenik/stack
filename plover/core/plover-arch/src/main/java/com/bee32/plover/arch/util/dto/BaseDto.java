@@ -2,7 +2,7 @@ package com.bee32.plover.arch.util.dto;
 
 import java.io.Serializable;
 
-import javax.free.IllegalUsageError;
+import javax.free.IllegalUsageException;
 
 import com.bee32.plover.arch.util.Flags32;
 
@@ -27,19 +27,27 @@ public abstract class BaseDto<S, C>
         // initSourceType(ClassUtil.<S> infer1(getClass(), BaseDto.class, 0));
         String dtoFqcn = getClass().getName();
         String entityFqcn;
+        String entityFqcn2;
 
         if (dtoFqcn.endsWith("Dto") || dtoFqcn.endsWith("DTO"))
             entityFqcn = dtoFqcn.substring(0, dtoFqcn.length() - 3);
         else
             entityFqcn = dtoFqcn;
 
-        entityFqcn = entityFqcn.replace(".dto.", ".entity.");
+        entityFqcn2 = entityFqcn.replace(".dto.", ".entity.");
+        entityFqcn = entityFqcn.replace(".dto.", ".");
 
+        Class<? extends S> entityType;
         try {
-            sourceType = (Class<? extends S>) Class.forName(entityFqcn);
+            entityType = (Class<? extends S>) Class.forName(entityFqcn2);
         } catch (ClassNotFoundException e) {
-            throw new IllegalUsageError(e.getMessage(), e);
+            try {
+                entityType = (Class<? extends S>) Class.forName(entityFqcn);
+            } catch (ClassNotFoundException e1) {
+                throw new IllegalUsageException("Bad DTO name: " + dtoFqcn, e1);
+            }
         }
+        initSourceType(entityType);
     }
 
     /**
