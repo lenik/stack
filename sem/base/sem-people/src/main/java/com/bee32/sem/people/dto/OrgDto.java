@@ -1,6 +1,8 @@
 package com.bee32.sem.people.dto;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.free.ParseException;
@@ -105,6 +107,13 @@ public class OrgDto
 
     public void setForWhichGroup(GroupDto forWhichGroup) {
         this.forWhichGroup = forWhichGroup;
+    }
+
+    public List<PersonRoleDto> getRoleList() {
+        List<PersonRoleDto> roleList = new ArrayList<PersonRoleDto>();
+
+        roleList.addAll(roles);
+        return roleList;
     }
 
 }
