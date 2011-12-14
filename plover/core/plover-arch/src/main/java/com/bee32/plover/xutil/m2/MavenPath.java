@@ -16,6 +16,7 @@ public class MavenPath {
         // foo/target/classes/ => foo/src/main/java/
         // foo/target/test-classes/ => foo/src/test/java/
         String path = classFile.getPath();
+        path = normalizePathString(path);
         path = path.replace("/target/classes/", "/src/main/java/");
         path = path.replace("/target/test-classes/", "/src/test/java/");
 
@@ -55,13 +56,13 @@ public class MavenPath {
         return new File(path);
     }
 
-    static final String SLASH = SystemProperties.getFileSeparator();
+    static final String fileSeparator = SystemProperties.getFileSeparator();
 
     static String normalizePathString(String path) {
         if (path == null)
             return null;
         // if (SystemProperties.getOsName().equals("win32"))
-        path = path.replace("\\", SLASH);
+        path = path.replace(fileSeparator, "/");
         // Mac? path = path.replace(":", SLASH);
         return path;
     }
