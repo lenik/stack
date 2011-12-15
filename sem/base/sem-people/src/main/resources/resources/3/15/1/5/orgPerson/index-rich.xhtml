@@ -20,14 +20,16 @@
 
     <ui:define name="title">公司/人员管理</ui:define>
 
-
     <ui:define name="content">
 
         <h:form id="mainForm">
 
             <p:toolbar id="orgToolbar">
                 <p:toolbarGroup align="left">
-                    <p:commandButton value="新增"
+                    <p:commandButton
+                        update="editForm:editPanel"
+                        actionListener="#{orgPersonAdminBean.add}"
+                        value="新增"
                         onclick="editDialog.show()"
                         async="true" />
                 </p:toolbarGroup>
@@ -204,7 +206,11 @@
                         </t:panelGrid>
                     </t:panelGroup>
 
-                    <p:commandButton value="保存"/>
+                    <p:commandButton
+                        update="mainForm:orgs"
+                        value="保存"
+                        actionListener="#{orgPersonAdminBean.save}"
+                        oncomplete="editDialog.hide()"/>
                     <p:commandButton value="取消" onclick="editDialog.hide()"/>
                     <t:panelGroup/>
                     <t:panelGroup/>

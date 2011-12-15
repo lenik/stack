@@ -6,17 +6,22 @@ import java.util.List;
 import javax.faces.model.SelectItem;
 
 import org.primefaces.model.LazyDataModel;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.Gender;
+import com.bee32.sem.people.dto.ContactDto;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.dto.PartyTagnameDto;
+import com.bee32.sem.people.dto.PersonDto;
+import com.bee32.sem.people.dto.PersonRoleDto;
 import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.entity.PartyTagname;
+import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
 
@@ -37,8 +42,8 @@ public class OrgPersonAdminBean extends EntityViewBean {
     String[] tels = new String[5];
     String[] cellphones = new String[5];
 
-    boolean[] orgContacts = new boolean[5];
-    boolean[] personContacts = new boolean[5];
+    Boolean[] orgContacts = new Boolean[5];
+    Boolean[] personContacts = new Boolean[5];
 
 
 
@@ -50,6 +55,11 @@ public class OrgPersonAdminBean extends EntityViewBean {
         orgs = UIHelper.buildLazyDataModel(options);
 
         refreshOrgCount();
+
+        for (int i=0; i<5; i++) {
+            orgContacts[i] = new Boolean(false);
+            personContacts[i] = new Boolean(false);
+        }
     }
 
     void refreshOrgCount() {
@@ -133,19 +143,19 @@ public class OrgPersonAdminBean extends EntityViewBean {
         this.cellphones = cellphones;
     }
 
-    public boolean[] getOrgContacts() {
+    public Boolean[] getOrgContacts() {
         return orgContacts;
     }
 
-    public void setOrgContacts(boolean[] orgContacts) {
+    public void setOrgContacts(Boolean[] orgContacts) {
         this.orgContacts = orgContacts;
     }
 
-    public boolean[] getPersonContacts() {
+    public Boolean[] getPersonContacts() {
         return personContacts;
     }
 
-    public void setPersonContacts(boolean[] personContacts) {
+    public void setPersonContacts(Boolean[] personContacts) {
         this.personContacts = personContacts;
     }
 
@@ -162,5 +172,110 @@ public class OrgPersonAdminBean extends EntityViewBean {
         return genders;
     }
 
+
+    public void add() {
+        orgName = "";
+        //selectedTags = null;
+        orgAddress = "";
+        personName = "";
+        //sex;
+        personMemo = null;
+
+        for (int i=0; i<5; i++) {
+            tels[i] = "";
+            cellphones[i] = "";
+
+            orgContacts[i] = false;
+            personContacts[i] = false;
+        }
+    }
+
+    @Transactional
+    public void save() {
+        if (orgName == null || orgName.trim().length() <= 0) {
+            uiLogger.error("没有输入公司名称!");
+            return;
+        }
+
+        if (selectedTags == null || selectedTags.size() <= 0) {
+            uiLogger.error("没有为公司选择标签!");
+            return;
+        }
+
+        if (personName == null || personName.trim().length() <= 0) {
+            uiLogger.error("没有相关人员姓名!");
+            return;
+        }
+
+        //检测是否有输入联系方式
+        boolean haveContact = false;
+        for(int i=0; i<5; i++) {
+            if (orgContacts[i]) {
+                haveContact = true;
+                break;
+            }
+
+            if (personContacts[i]) {
+                haveContact = true;
+                break;
+            }
+        }
+        if (!haveContact) {
+            uiLogger.error("联系方式没有输入!");
+            return;
+        }
+
+        OrgDto org = new OrgDto().create();
+        PersonDto person = new PersonDto().create();
+
+        org.setName(orgName);
+        person.setName(personName);
+        for (String tagId : selectedTags) {
+            PartyTagname tag = loadEntity(PartyTagname.class, tagId);
+            PartyTagnameDto t = DTOs.mref(PartyTagnameDto.class, tag);
+
+            if (!org.getTags().contains(t)) {
+                org.getTags().add(t);
+            }
+
+            if (!person.getTags().contains(t)) {
+                person.getTags().add(t);
+            }
+        }
+        person.setSex(sex);
+        person.setMemo(personMemo);
+
+        for (int i=0; i<5; i++) {
+            if (orgContacts[i] || personContacts[i]) {
+                ContactDto contact = new ContactDto().create();
+
+                contact.setTel(tels[i]);
+                contact.setMobile(cellphones[i]);
+
+                contact.setAddress(orgAddress);
+
+
+                if (orgContacts[i]) {
+                    org.getContacts().add(contact);
+                }
+
+                if (personContacts[i]) {
+                    person.getContacts().add(contact);
+                }
+            }
+        }
+
+        PersonRoleDto role = new PersonRoleDto().create();
+        role.setOrg(org);
+        role.setPerson(person);
+
+        org.getRoles().add(role);
+        person.getRoles().add(role);
+
+        Org _org = (Org)org.unmarshal();
+        serviceFor(Org.class).saveOrUpdate(_org);
+        Person _person = (Person)person.unmarshal();
+        serviceFor(Person.class).saveOrUpdate(_person);
+    }
 
 }
