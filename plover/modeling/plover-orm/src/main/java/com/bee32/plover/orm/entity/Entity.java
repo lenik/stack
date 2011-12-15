@@ -1,9 +1,12 @@
 package com.bee32.plover.orm.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
+import javax.free.Pred0;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
@@ -482,12 +485,45 @@ public abstract class Entity<K extends Serializable>
     static final int lockMask = EntityFlags.LOCKED //
             | EntityFlags.USER_LOCK;
 
+    private List<Pred0> lockPredicates;
+
     @Transient
     @Override
     protected boolean isLocked() {
         EntityFlags ef = EntityAccessor.getFlags(this);
         int x = ef.bits & lockMask;
-        return x != 0;
+        if (x != 0)
+            return true;
+
+        if (lockPredicates != null) {
+            for (Pred0 lockPredicate : lockPredicates) {
+                Boolean _locked = lockPredicate.eval();
+                if (_locked == Boolean.TRUE)
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    boolean addLockPredicate(Pred0 lockPredicate) {
+        if (lockPredicates == null) {
+            synchronized (this) {
+                if (lockPredicates == null) {
+                    lockPredicates = new ArrayList<Pred0>();
+                }
+            }
+        }
+        if (lockPredicates.contains(lockPredicate))
+            return false;
+        else
+            return lockPredicates.add(lockPredicate);
+    }
+
+    boolean removeLockPredicate(Pred0 lockPredicate) {
+        if (lockPredicates != null)
+            return lockPredicates.remove(lockPredicate);
+        else
+            return false;
     }
 
 }
