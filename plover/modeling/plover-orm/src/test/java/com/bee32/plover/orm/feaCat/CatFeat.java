@@ -1,6 +1,5 @@
 package com.bee32.plover.orm.feaCat;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -20,12 +19,6 @@ public class CatFeat
         extends WiredDaoFeat<CatFeat> {
 
     static Logger logger = LoggerFactory.getLogger(CatFeat.class);
-
-    <E extends Entity<? extends K>, K extends Serializable> //
-    IEntityAccessService<E, K> asFor(Class<E> entityType) {
-        IEntityAccessService<E, K> service = dataManager.asFor(entityType);
-        return service;
-    }
 
     @Transactional(readOnly = false)
     public void doFill() {

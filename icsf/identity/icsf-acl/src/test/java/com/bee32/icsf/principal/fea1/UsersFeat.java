@@ -1,7 +1,6 @@
 package com.bee32.icsf.principal.fea1;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +14,6 @@ import com.bee32.icsf.IcsfIdentityUnit;
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.dao.MemdbDataManager;
-import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.WiredDaoFeat;
 import com.bee32.plover.ox1.principal.AbstractPrincipalDao;
@@ -48,12 +45,6 @@ public class UsersFeat
 
     @Inject
     CommonDataManager dataManager = MemdbDataManager.getInstance();
-
-    <E extends Entity<K>, K extends Serializable> //
-    IEntityAccessService<E, K> asFor(Class<E> entityType) {
-        IEntityAccessService<E, K> service = dataManager.asFor(entityType);
-        return service;
-    }
 
     @Transactional
     public void listSamples() {
