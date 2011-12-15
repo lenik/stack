@@ -8,10 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.WiredDaoFeat;
+import com.bee32.plover.site.scope.SiteNaming;
 import com.bee32.plover.test.ICoordinator;
 
 @Using(AnimalUnit.class)
@@ -63,6 +62,9 @@ public class CatFeat
 
     public static void main(String[] args)
             throws Exception {
+
+        SiteNaming.setDefaultSiteName("cat");
+
         new CatFeat().mainLoop(new ICoordinator<CatFeat>() {
             @Override
             public void main(CatFeat feat)
