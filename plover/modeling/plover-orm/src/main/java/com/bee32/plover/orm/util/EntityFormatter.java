@@ -23,6 +23,7 @@ public class EntityFormatter
     protected void formatId(FormatStyle format, Entity<?> val) {
         String name = val.getName();
 
+        // "NAME@TYPE:ID.VER"
         if (format.isIdentityIncluded()) {
             String typeName = val.getClass().getSimpleName();
             if (!typeName.equals(name))
