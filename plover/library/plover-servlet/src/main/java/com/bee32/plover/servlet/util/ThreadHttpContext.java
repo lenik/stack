@@ -54,7 +54,7 @@ public class ThreadHttpContext
     public static SiteInstance getSiteInstance() {
         SiteManager siteManager = SiteManager.getInstance();
 
-        String siteAlias = SiteNaming.DEFAULT;
+        String siteAlias = SiteNaming.getDefaultSiteName();
 
         HttpServletRequest request = allowNullRequest ? getRequestOpt() : getRequest();
         if (request != null)
