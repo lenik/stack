@@ -14,7 +14,7 @@ import javax.persistence.ManyToMany;
 import com.bee32.plover.orm.util.Alias;
 import com.bee32.plover.ox1.principal.Principal;
 import com.bee32.plover.ox1.principal.User;
-import com.bee32.sem.process.verify.IAllowedByContext;
+import com.bee32.sem.process.verify.ISingleVerifier;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.VerifyResult;
@@ -45,7 +45,7 @@ public class AllowListPolicy
     }
 
     public AllowListPolicy(Collection<? extends Principal> responsibles) {
-        super(IAllowedByContext.class);
+        super(ISingleVerifier.class);
         if (responsibles == null)
             throw new NullPointerException("responsibles");
         this.responsibles = new HashSet<Principal>(responsibles);
@@ -88,7 +88,7 @@ public class AllowListPolicy
 
     @Override
     public VerifyResult validate(IVerifyContext context) {
-        IAllowedByContext allowedBy = requireContext(IAllowedByContext.class, context);
+        ISingleVerifier allowedBy = requireContext(ISingleVerifier.class, context);
         User user = allowedBy.getVerifier();
 
         if (user == null)
@@ -102,12 +102,12 @@ public class AllowListPolicy
 
     @Override
     public VerifyResult evaluate(IVerifyContext context) {
-        IAllowedByContext allowedBy = requireContext(IAllowedByContext.class, context);
+        ISingleVerifier allowedBy = requireContext(ISingleVerifier.class, context);
 
         if (allowedBy.getVerifier() == null)
             return UNKNOWN;
 
-        if (!allowedBy.isAllowed())
+        if (!allowedBy.isAccepted())
             return VerifyResult.rejected(allowedBy.getVerifier(), allowedBy.getRejectedReason());
 
         return VERIFIED;

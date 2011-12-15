@@ -4,14 +4,14 @@ import com.bee32.plover.ox1.principal.User;
 
 public class AllowedByContext
         extends VerifyContext
-        implements IAllowedByContext {
+        implements ISingleVerifier {
 
     private boolean allowed;
     private User user;
     private String message;
 
     @Override
-    public boolean isAllowed() {
+    public boolean isAccepted() {
         return allowed;
     }
 

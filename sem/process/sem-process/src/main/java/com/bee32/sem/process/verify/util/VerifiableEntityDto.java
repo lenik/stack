@@ -9,7 +9,7 @@ import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyState;
 import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 
-public abstract class VerifiableEntityDto<E extends VerifiableEntity<K, ? extends IVerifyContext>, K extends Number>
+public abstract class VerifiableEntityDto<E extends AbstractVerifyContext<K, ? extends IVerifyContext>, K extends Number>
         extends CEntityDto<E, K> {
 
     private static final long serialVersionUID = 1L;

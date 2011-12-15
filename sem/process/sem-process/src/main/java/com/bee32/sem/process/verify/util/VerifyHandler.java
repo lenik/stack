@@ -16,7 +16,7 @@ import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.service.VerifyService;
 
-public class VerifyHandler<E extends VerifiableEntity<K, C>, //
+public class VerifyHandler<E extends AbstractVerifyContext<K, C>, //
 /*        */K extends Number, C extends IVerifyContext, Dto extends VerifiableEntityDto<E, K>>
         extends EntityHandler<E, K> {
 

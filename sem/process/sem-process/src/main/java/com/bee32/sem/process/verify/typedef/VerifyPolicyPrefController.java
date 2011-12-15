@@ -26,7 +26,7 @@ import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.VerifyPolicyManager;
 import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 import com.bee32.sem.process.verify.service.VerifyService;
-import com.bee32.sem.process.verify.util.VerifiableEntity;
+import com.bee32.sem.process.verify.util.AbstractVerifyContext;
 
 @RequestMapping(VerifyPolicyPrefController.PREFIX + "/*")
 public class VerifyPolicyPrefController
@@ -112,8 +112,8 @@ public class VerifyPolicyPrefController
     protected void saveForm(VerifyPolicyPref pref, VerifyPolicyPrefDto prefDto) {
         super.saveForm(pref, prefDto);
 
-        Class<? extends VerifiableEntity<? extends Number, IVerifyContext>> userEntityType;
-        userEntityType = (Class<? extends VerifiableEntity<? extends Number, IVerifyContext>>) pref.getType();
+        Class<? extends AbstractVerifyContext<? extends Number, IVerifyContext>> userEntityType;
+        userEntityType = (Class<? extends AbstractVerifyContext<? extends Number, IVerifyContext>>) pref.getType();
 
         assert IVerifyContext.class.isAssignableFrom(userEntityType);
 
@@ -126,7 +126,7 @@ public class VerifyPolicyPrefController
     /**
      * Update all dependencies.
      */
-    <E extends VerifiableEntity<? extends Number, C>, C extends IVerifyContext> //
+    <E extends AbstractVerifyContext<? extends Number, C>, C extends IVerifyContext> //
     void refresh(Class<? extends E> userEntityType) {
 
         String typeName = ClassUtil.getDisplayName(userEntityType);

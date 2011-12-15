@@ -19,7 +19,7 @@ import org.hibernate.annotations.CascadeType;
 import com.bee32.plover.orm.util.Alias;
 import com.bee32.plover.ox1.principal.Principal;
 import com.bee32.plover.ox1.principal.User;
-import com.bee32.sem.process.verify.IAllowedByContext;
+import com.bee32.sem.process.verify.ISingleVerifier;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.VerifyResult;
@@ -164,7 +164,7 @@ public class MultiLevelPolicy
                 Collection<? extends Principal> subset = subML.getResponsiblesWithinLimit(limit);
                 allDeclared.addAll(subset);
 
-            } else if (subPolicy.isUsefulFor(IAllowedByContext.class)) {
+            } else if (subPolicy.isUsefulFor(ISingleVerifier.class)) {
                 allDeclared.addAll(subPolicy.getDeclaredResponsibles(hintContext));
             }
 
@@ -193,7 +193,7 @@ public class MultiLevelPolicy
         if (context.getVerifier() == null)
             return UNKNOWN;
 
-        if (!context.isAllowed())
+        if (!context.isAccepted())
             return VerifyResult.rejected(context.getVerifier(), context.getRejectedReason());
 
         return VERIFIED;

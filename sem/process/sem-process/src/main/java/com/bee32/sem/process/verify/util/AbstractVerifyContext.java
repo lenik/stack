@@ -4,7 +4,9 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
+import javax.free.Pred0;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
@@ -14,38 +16,49 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.ox1.c.CEntityAuto;
+import overlay.Overlay;
+
+import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.EntityAccessor;
+import com.bee32.plover.util.FormatStyle;
+import com.bee32.plover.util.GeneralFormatter;
+import com.bee32.plover.util.IMultiFormat;
+import com.bee32.plover.util.PrettyPrintStream;
 import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.entity.Task;
-import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyState;
 
 @MappedSuperclass
-public abstract class VerifiableEntity<K extends Serializable, C extends IVerifyContext>
-        extends CEntityAuto<K>
-        implements IVerifiable<C>, IVerifyContext {
+public abstract class AbstractVerifyContext<C extends IVerifyContext>
+        implements Serializable, IVerifyContext, IMultiFormat {
 
     private static final long serialVersionUID = 1L;
+
+    protected final Entity<?> entity;
 
     EventState verifyState = VerifyState.UNKNOWN;
     String verifyError;
     Date verifyEvalDate;
     Task verifyTask;
 
-    public VerifiableEntity() {
-        super();
+    private class VLockPred
+            extends Pred0 {
+
+        @Override
+        public boolean test() {
+            if (VerifyState.VERIFIED.equals(verifyState))
+                return true;
+            return false;
+        }
+
     }
 
-    public VerifiableEntity(String name) {
-        super(name);
-    }
-
-    @Transient
-    @SuppressWarnings("unchecked")
-    @Override
-    public C getVerifyContext() {
-        return (C) this;
+    public AbstractVerifyContext(Entity<?> entity) {
+        if (entity == null)
+            throw new NullPointerException("entity");
+        this.entity = entity;
+        EntityAccessor.addLockPredicate(entity, new VLockPred());
     }
 
     @Column(name = "verifyState", nullable = false)
@@ -103,10 +116,26 @@ public abstract class VerifiableEntity<K extends Serializable, C extends IVerify
     }
 
     @Override
-    protected boolean isLocked() {
-        if (VerifyState.VERIFIED.equals(verifyState))
-            return true;
-        return super.isLocked();
+    public final String toString() {
+        return toString(FormatStyle.DEFAULT);
+    }
+
+    @Override
+    public final String toString(FormatStyle format) {
+        PrettyPrintStream out = new PrettyPrintStream();
+        toString(out, format);
+        return out.toString();
+    }
+
+    @Override
+    public void toString(PrettyPrintStream out, FormatStyle format) {
+        toString(out, format, null, 0);
+    }
+
+    @Overlay
+    public void toString(PrettyPrintStream out, FormatStyle format, Set<Object> occurred, int depth) {
+        GeneralFormatter formatter = new GeneralFormatter(out, occurred);
+        formatter.format(this, format, depth);
     }
 
 }

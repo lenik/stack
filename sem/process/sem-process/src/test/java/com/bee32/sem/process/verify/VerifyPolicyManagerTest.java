@@ -12,7 +12,7 @@ import com.bee32.sem.process.verify.builtin.AllowListPolicy;
 import com.bee32.sem.process.verify.builtin.IMultiLevelContext;
 import com.bee32.sem.process.verify.builtin.MultiLevelPolicy;
 import com.bee32.sem.process.verify.builtin.PassToNextPolicy;
-import com.bee32.sem.process.verify.util.AllowedBySupport;
+import com.bee32.sem.process.verify.util.SingleVerifierSupport;
 
 public class VerifyPolicyManagerTest
         extends Assert {
@@ -40,7 +40,7 @@ public class VerifyPolicyManagerTest
     @Entity
     @SequenceGenerator(name = "idgen", sequenceName = "vpm_simple_bean_seq", allocationSize = 1)
     static class SimpleBean
-            extends AllowedBySupport<Long, IMultiLevelContext>
+            extends SingleVerifierSupport<Long, IMultiLevelContext>
             implements IMultiLevelContext {
 
         private static final long serialVersionUID = 1L;

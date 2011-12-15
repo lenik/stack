@@ -5,7 +5,7 @@ import com.bee32.plover.ox1.principal.User;
 /**
  * Used by single man verify policies.
  */
-public interface IAllowedByContext
+public interface ISingleVerifier
         extends IVerifyContext {
 
     /**
@@ -18,7 +18,7 @@ public interface IAllowedByContext
     /**
      * 返回 <code>true</code> 表示允许，<code>false</code> 表示被拒绝。
      */
-    boolean isAllowed();
+    Boolean isAccepted();
 
     /**
      * 获取被拒绝的原因。

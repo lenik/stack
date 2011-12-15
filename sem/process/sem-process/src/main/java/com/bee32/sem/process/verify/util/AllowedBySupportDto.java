@@ -7,9 +7,9 @@ import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.principal.UserDto;
-import com.bee32.sem.process.verify.IAllowedByContext;
+import com.bee32.sem.process.verify.ISingleVerifier;
 
-public abstract class AllowedBySupportDto<E extends AllowedBySupport<K, ? extends IAllowedByContext>, K extends Number>
+public abstract class AllowedBySupportDto<E extends SingleVerifierSupport<K, ? extends ISingleVerifier>, K extends Number>
         extends VerifiableEntityDto<E, K> {
 
     private static final long serialVersionUID = 1L;
@@ -33,7 +33,7 @@ public abstract class AllowedBySupportDto<E extends AllowedBySupport<K, ? extend
 
         verifier = mref(UserDto.class, source.getVerifier());
         verifiedDate = source.getVerifiedDate();
-        allowed = source.isAllowed();
+        allowed = source.isAccepted();
         rejectedReason = source.getRejectedReason();
     }
 
