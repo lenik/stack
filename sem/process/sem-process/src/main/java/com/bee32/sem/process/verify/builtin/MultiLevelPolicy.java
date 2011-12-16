@@ -36,7 +36,7 @@ public class MultiLevelPolicy
     private LevelMap levelMap;
 
     public MultiLevelPolicy() {
-        super(IMultiLevelContext.class);
+        super(ISingleVerifierWithNumber.class);
     }
 
     /**
@@ -128,8 +128,8 @@ public class MultiLevelPolicy
         long longValue = 0;
 
         if (_context != null) {
-            IMultiLevelContext context = requireContext(IMultiLevelContext.class, _context);
-            longValue = context.getLongValue();
+            ISingleVerifierWithNumber context = requireContext(ISingleVerifierWithNumber.class, _context);
+            longValue = context.getJudgeNumber();
         }
 
         return getResponsiblesWithinLimit(longValue);
@@ -176,9 +176,9 @@ public class MultiLevelPolicy
 
     @Override
     public VerifyResult validate(IVerifyContext _context) {
-        IMultiLevelContext context = requireContext(IMultiLevelContext.class, _context);
+        ISingleVerifierWithNumber context = requireContext(ISingleVerifierWithNumber.class, _context);
 
-        User user = context.getVerifier();
+        User user = context.getVerifier1();
 
         if (!user.impliesOneOf(getDeclaredResponsibles(context)))
             return VerifyResult.invalid(user);
@@ -188,13 +188,13 @@ public class MultiLevelPolicy
 
     @Override
     public VerifyResult evaluate(IVerifyContext _context) {
-        IMultiLevelContext context = requireContext(IMultiLevelContext.class, _context);
+        ISingleVerifierWithNumber context = requireContext(ISingleVerifierWithNumber.class, _context);
 
-        if (context.getVerifier() == null)
+        if (context.getVerifier1() == null)
             return UNKNOWN;
 
-        if (!context.isAccepted())
-            return VerifyResult.rejected(context.getVerifier(), context.getRejectedReason());
+        if (!context.isAccepted1())
+            return VerifyResult.rejected(context.getVerifier1(), context.getRejectedReason1());
 
         return VERIFIED;
     }

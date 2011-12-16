@@ -3,23 +3,31 @@ package com.bee32.sem.process.verify.builtin;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bee32.plover.ox1.principal.User;
-import com.bee32.sem.process.verify.VerifyContext;
-import com.bee32.sem.process.verify.VerifyEvent;
+import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 
+import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.ox1.principal.User;
+import com.bee32.sem.process.verify.VerifyEvent;
+import com.bee32.sem.process.verify.util.AbstractVerifyContext;
+
+@Embeddable
 public class PassEvents
-        extends VerifyContext
+        extends AbstractVerifyContext
         implements IPassEvents {
+
+    private static final long serialVersionUID = 1L;
 
     private PassToNextPolicy policy;
     private List<VerifyEvent> events;
     private int position;
 
-    public PassEvents(PassToNextPolicy policy) {
-        this(policy, 0, new ArrayList<VerifyEvent>());
+    public PassEvents(Entity<?> entity, PassToNextPolicy policy) {
+        this(entity, policy, 0, new ArrayList<VerifyEvent>());
     }
 
-    public PassEvents(PassToNextPolicy policy, int position, List<VerifyEvent> events) {
+    public PassEvents(Entity<?> entity, PassToNextPolicy policy, int position, List<VerifyEvent> events) {
+        super(entity);
         if (policy == null)
             throw new NullPointerException("policy");
         if (events == null)
@@ -81,8 +89,8 @@ public class PassEvents
         events.remove(index);
     }
 
-    @Override
-    public String toString() {
+    @Transient
+    public String getGraph() {
         StringBuilder sb = new StringBuilder();
 
         int index = 0;

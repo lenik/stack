@@ -11,11 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bee32.icsf.login.SessionUser;
 import com.bee32.plover.arch.DataService;
 import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.principal.Principal;
 import com.bee32.plover.ox1.principal.User;
 import com.bee32.sem.event.entity.EventPriority;
 import com.bee32.sem.event.entity.Task;
+import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.IVerifyPolicy;
 import com.bee32.sem.process.verify.VerifyException;
@@ -25,7 +27,7 @@ import com.bee32.sem.process.verify.VerifyState;
 import com.bee32.sem.process.verify.builtin.dao.VerifyPolicyDao;
 import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 import com.bee32.sem.process.verify.util.AbstractVerifyContext;
-import com.bee32.sem.process.verify.util.VerifiableEntityAccessor;
+import com.bee32.sem.process.verify.util.VerifyContextAccessor;
 
 public class VerifyService
         extends DataService
@@ -43,8 +45,9 @@ public class VerifyService
     }
 
     @Transactional(readOnly = true)
-    public VerifyPolicyDto getVerifyPolicy(IVerifyContext entity) {
-        VerifyPolicy verifyPolicy = policyDao.getVerifyPolicy(entity);
+    public VerifyPolicyDto getVerifyPolicy(IVerifiable<?> entity) {
+        IVerifyContext verifyContext = entity.getVerifyContext();
+        VerifyPolicy verifyPolicy = policyDao.getVerifyPolicy(verifyContext);
         VerifyPolicyDto policyDto = DTOs.marshal(VerifyPolicyDto.class, verifyPolicy);
         return policyDto;
     }
@@ -58,7 +61,7 @@ public class VerifyService
 
     @Transactional(readOnly = true)
     @Override
-    public Set<Principal> getDeclaredResponsibles(IVerifyContext contextEntity) {
+    public Set<Principal> getDeclaredResponsibles(IVerifiable<?> entity) {
         VerifyPolicy verifyPolicy = policyDao.getVerifyPolicy(contextEntity);
 
         if (verifyPolicy == null)
@@ -144,7 +147,8 @@ public class VerifyService
      * @return 详细的审核结果。
      */
     @Transactional
-    public <C extends IVerifyContext> VerifyResult verifyEntity(AbstractVerifyContext<? extends Number, C> entity) {
+    public <E extends Entity<?> & IVerifiable<C>, C extends IVerifyContext> //
+    VerifyResult verifyEntity(E entity) {
         if (entity == null)
             throw new NullPointerException("entity");
 
@@ -153,20 +157,21 @@ public class VerifyService
         // XXX
         // userService.get(0, __currentUser.getId());
 
-        C context = entity.getVerifyContext();
+        C _context = entity.getVerifyContext();
 
         // Do verification.
-        VerifyResult result = verify(context);
+        VerifyResult result = verify(_context);
 
-        VerifiableEntityAccessor.setVerifyState(entity, result.getState());
-        VerifiableEntityAccessor.setVerifyError(entity, result.getMessage());
-        VerifiableEntityAccessor.setVerifyEvalDate(entity, new Date());
+        AbstractVerifyContext context = (AbstractVerifyContext) _context;
+        VerifyContextAccessor.setVerifyState(context, result.getState());
+        VerifyContextAccessor.setVerifyError(context, result.getMessage());
+        VerifyContextAccessor.setVerifyEvalDate(context, new Date());
 
-        Task verifyTask = entity.getVerifyTask();
+        Task verifyTask = context.getVerifyTask();
         {
             if (verifyTask == null) {
                 verifyTask = new Task();
-                entity.setVerifyTask(verifyTask);
+                context.setVerifyTask(verifyTask);
             }
 
             verifyTask.setSourceClass(VerifyPolicy.class);

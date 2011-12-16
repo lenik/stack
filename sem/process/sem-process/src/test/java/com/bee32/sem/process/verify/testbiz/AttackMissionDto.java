@@ -4,23 +4,27 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.sem.process.verify.util.AllowedBySupportDto;
+import com.bee32.plover.ox1.color.UIEntityDto;
+import com.bee32.sem.process.verify.util.SingleVerifierSupportDto;
 
 public class AttackMissionDto
-        extends AllowedBySupportDto<AttackMission, Integer> {
+        extends UIEntityDto<AttackMission, Integer> {
 
     private static final long serialVersionUID = 1L;
 
     private String target;
+    private SingleVerifierSupportDto verifyContext;
 
     @Override
     protected void _marshal(AttackMission source) {
         target = source.getTarget();
+        verifyContext = marshal(SingleVerifierSupportDto.class, source.getVerifyContext());
     }
 
     @Override
     protected void _unmarshalTo(AttackMission target) {
         target.setTarget(this.target);
+        merge(target, "verifyContext", verifyContext);
     }
 
     @Override
@@ -35,6 +39,14 @@ public class AttackMissionDto
 
     public void setTarget(String target) {
         this.target = target;
+    }
+
+    public SingleVerifierSupportDto getVerifyContext() {
+        return verifyContext;
+    }
+
+    public void setVerifyContext(SingleVerifierSupportDto verifyContext) {
+        this.verifyContext = verifyContext;
     }
 
 }

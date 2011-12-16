@@ -2,15 +2,14 @@ package com.bee32.sem.process.verify.util;
 
 import java.util.Date;
 
-import com.bee32.plover.ox1.c.CEntityDto;
+import com.bee32.plover.orm.util.PartialDto;
 import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.dto.TaskDto;
-import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyState;
 import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 
-public abstract class VerifiableEntityDto<E extends AbstractVerifyContext<K, ? extends IVerifyContext>, K extends Number>
-        extends CEntityDto<E, K> {
+public abstract class VerifyContextDto<T extends AbstractVerifyContext>
+        extends PartialDto<T> {
 
     private static final long serialVersionUID = 1L;
 
@@ -21,16 +20,16 @@ public abstract class VerifiableEntityDto<E extends AbstractVerifyContext<K, ? e
 
     private VerifyPolicyDto verifyPolicy;
 
-    public VerifiableEntityDto() {
+    public VerifyContextDto() {
         super();
     }
 
-    public VerifiableEntityDto(int selection) {
+    public VerifyContextDto(int selection) {
         super(selection);
     }
 
     @Override
-    protected void __marshal(E source) {
+    protected void __marshal(T source) {
         super.__marshal(source);
 
         verifyState = source.getVerifyState();
@@ -41,7 +40,7 @@ public abstract class VerifiableEntityDto<E extends AbstractVerifyContext<K, ? e
     }
 
     @Override
-    protected void __unmarshalTo(E target) {
+    protected void __unmarshalTo(T target) {
         super.__unmarshalTo(target);
 
         // target.setVerifyState(verifyState);

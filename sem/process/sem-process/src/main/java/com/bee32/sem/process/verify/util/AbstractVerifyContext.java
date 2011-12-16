@@ -30,7 +30,7 @@ import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyState;
 
 @MappedSuperclass
-public abstract class AbstractVerifyContext<C extends IVerifyContext>
+public abstract class AbstractVerifyContext
         implements Serializable, IVerifyContext, IMultiFormat {
 
     private static final long serialVersionUID = 1L;

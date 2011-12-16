@@ -8,11 +8,13 @@ import javax.persistence.SequenceGenerator;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.sem.process.verify.builtin.AllowListPolicy;
-import com.bee32.sem.process.verify.builtin.IMultiLevelContext;
+import com.bee32.sem.process.verify.builtin.IJudgeNumber;
+import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;
 import com.bee32.sem.process.verify.builtin.MultiLevelPolicy;
 import com.bee32.sem.process.verify.builtin.PassToNextPolicy;
-import com.bee32.sem.process.verify.util.SingleVerifierSupport;
+import com.bee32.sem.process.verify.util.SingleVerifierWithNumberSupport;
 
 public class VerifyPolicyManagerTest
         extends Assert {
@@ -40,10 +42,11 @@ public class VerifyPolicyManagerTest
     @Entity
     @SequenceGenerator(name = "idgen", sequenceName = "vpm_simple_bean_seq", allocationSize = 1)
     static class SimpleBean
-            extends SingleVerifierSupport<Long, IMultiLevelContext>
-            implements IMultiLevelContext {
+            extends UIEntityAuto<Long>
+            implements IVerifiable<ISingleVerifierWithNumber>, IJudgeNumber {
 
         private static final long serialVersionUID = 1L;
+        private SingleVerifierWithNumberSupport context = new SingleVerifierWithNumberSupport(this);
 
         long longValue;
 
@@ -52,13 +55,18 @@ public class VerifyPolicyManagerTest
         }
 
         @Override
-        public String getValueDescription() {
+        public String getNumberDescription() {
             return "金额";
         }
 
         @Override
-        public long getLongValue() {
+        public Number getJudgeNumber() {
             return longValue;
+        }
+
+        @Override
+        public ISingleVerifierWithNumber getVerifyContext() {
+            return context;
         }
 
     }

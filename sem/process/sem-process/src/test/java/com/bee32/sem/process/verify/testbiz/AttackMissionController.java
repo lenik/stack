@@ -10,6 +10,8 @@ import com.bee32.plover.ox1.principal.User;
 import com.bee32.sem.event.entity.Task;
 import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.ISingleVerifier;
+import com.bee32.sem.process.verify.util.SingleVerifierSupport;
+import com.bee32.sem.process.verify.util.SingleVerifierSupportDto;
 import com.bee32.sem.process.verify.util.VerifiableEntityController;
 
 @RequestMapping(AttackMissionController.PREFIX + "*")
@@ -22,12 +24,13 @@ public class AttackMissionController
     protected void fillDataRow(DataTableDxo tab, AttackMissionDto dto) {
         tab.push(dto.getTarget());
 
-        tab.push(dto.getVerifier().getDisplayName());
-        tab.push(dto.getVerifiedDate());
-        tab.push(dto.getRejectedReason());
+        SingleVerifierSupportDto sv = dto.getVerifyContext();
+        tab.push(sv.getVerifier1().getDisplayName());
+        tab.push(sv.getVerifiedDate1());
+        tab.push(sv.getRejectedReason1());
 
-        tab.push(dto.getVerifyState().getDisplayName());
-        tab.push(dto.getVerifiedDate());
+        tab.push(sv.getVerifyState().getDisplayName());
+        tab.push(sv.getVerifiedDate1());
     }
 
     @Override
@@ -35,17 +38,18 @@ public class AttackMissionController
         boolean allowed = request.getBoolean("allowed");
         String rejectedReason = request.getString("rejectedReason");
 
-        entity.setVerifier(currentUser);
-        entity.setAllowed(allowed);
-        entity.setRejectedReason(rejectedReason);
-        entity.setVerifiedDate(new Date());
+        SingleVerifierSupport sv = entity.getVerifyContext();
+        sv.setVerifier1(currentUser);
+        sv.setAccepted1(allowed);
+        sv.setRejectedReason1(rejectedReason);
+        sv.setVerifiedDate1(new Date());
 
         return null;
     }
 
     @Override
     public void doPostVerify(AttackMission entity, User currentUser, TextMap request) {
-        Task task = entity.getVerifyTask();
+        Task task = entity.getVerifyContext().getVerifyTask();
 
         String editLocation = AttackMissionController.PREFIX + "editForm?id=" + entity.getId();
         task.setSeeAlsos(editLocation);

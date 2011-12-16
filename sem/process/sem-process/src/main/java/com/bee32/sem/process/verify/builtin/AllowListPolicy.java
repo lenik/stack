@@ -88,8 +88,8 @@ public class AllowListPolicy
 
     @Override
     public VerifyResult validate(IVerifyContext context) {
-        ISingleVerifier allowedBy = requireContext(ISingleVerifier.class, context);
-        User user = allowedBy.getVerifier();
+        ISingleVerifier sv = requireContext(ISingleVerifier.class, context);
+        User user = sv.getVerifier1();
 
         if (user == null)
             return UNKNOWN;
@@ -102,13 +102,13 @@ public class AllowListPolicy
 
     @Override
     public VerifyResult evaluate(IVerifyContext context) {
-        ISingleVerifier allowedBy = requireContext(ISingleVerifier.class, context);
+        ISingleVerifier sv = requireContext(ISingleVerifier.class, context);
 
-        if (allowedBy.getVerifier() == null)
+        if (sv.getVerifier1() == null)
             return UNKNOWN;
 
-        if (!allowedBy.isAccepted())
-            return VerifyResult.rejected(allowedBy.getVerifier(), allowedBy.getRejectedReason());
+        if (!sv.isAccepted1())
+            return VerifyResult.rejected(sv.getVerifier1(), sv.getRejectedReason1());
 
         return VERIFIED;
     }

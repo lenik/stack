@@ -19,10 +19,10 @@ public class AttackMission
     private static final long serialVersionUID = 1L;
 
     private String target;
-    private SingleVerifierSupport<ISingleVerifier> singleVerifierSupport;
+    private SingleVerifierSupport singleVerifierSupport;
 
     public AttackMission() {
-        singleVerifierSupport = new SingleVerifierSupport<ISingleVerifier>(this);
+        singleVerifierSupport = new SingleVerifierSupport(this);
     }
 
     public String getTarget() {
@@ -34,7 +34,7 @@ public class AttackMission
     }
 
     @Override
-    public ISingleVerifier getVerifyContext() {
+    public SingleVerifierSupport getVerifyContext() {
         return singleVerifierSupport;
     }
 

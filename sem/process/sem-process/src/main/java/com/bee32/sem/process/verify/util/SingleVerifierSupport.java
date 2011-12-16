@@ -3,9 +3,9 @@ package com.bee32.sem.process.verify.util;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -19,9 +19,9 @@ import com.bee32.sem.process.verify.ISingleVerifier;
  * @param C
  *            The verify context class. You must implement the context in the same object.
  */
-@MappedSuperclass
-public abstract class SingleVerifierSupport<C extends ISingleVerifier>
-        extends AbstractVerifyContext<C>
+@Embeddable
+public class SingleVerifierSupport
+        extends AbstractVerifyContext
         implements ISingleVerifier {
 
     private static final long serialVersionUID = 1L;
@@ -45,6 +45,17 @@ public abstract class SingleVerifierSupport<C extends ISingleVerifier>
         this.verifier1 = verifier;
     }
 
+    @Temporal(TemporalType.TIMESTAMP)
+    // @Column(name = "tv")
+    @Override
+    public Date getVerifiedDate1() {
+        return verifiedDate1;
+    }
+
+    public void setVerifiedDate1(Date verifiedDate1) {
+        this.verifiedDate1 = verifiedDate1;
+    }
+
     @Override
     public Boolean isAccepted1() {
         return accepted1;
@@ -60,18 +71,8 @@ public abstract class SingleVerifierSupport<C extends ISingleVerifier>
         return rejectedReason1;
     }
 
-    public void setRejectedReason(String rejectedReason) {
-        this.rejectedReason = rejectedReason;
-    }
-
-    @Temporal(TemporalType.TIMESTAMP)
-    // @Column(name = "tv")
-    public Date getVerifiedDate1() {
-        return verifiedDate1;
-    }
-
-    public void setVerifiedDate(Date verifiedDate1) {
-        this.verifiedDate1 = verifiedDate1;
+    public void setRejectedReason1(String rejectedReason1) {
+        this.rejectedReason1 = rejectedReason1;
     }
 
 }

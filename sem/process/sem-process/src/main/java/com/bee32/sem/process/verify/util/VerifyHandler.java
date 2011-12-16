@@ -8,16 +8,19 @@ import javax.servlet.ServletException;
 import com.bee32.icsf.login.SessionUser;
 import com.bee32.plover.ajax.SuccessOrFailMessage;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.web.EntityHandler;
 import com.bee32.plover.ox1.principal.Principal;
 import com.bee32.plover.ox1.principal.User;
 import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
+import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.service.VerifyService;
 
-public class VerifyHandler<E extends AbstractVerifyContext<K, C>, //
-/*        */K extends Number, C extends IVerifyContext, Dto extends VerifiableEntityDto<E, K>>
+public class VerifyHandler<E extends Entity<K> & IVerifiable<C>, //
+/*        */K extends Number, C extends IVerifyContext, Dto extends EntityDto<E, K>>
         extends EntityHandler<E, K> {
 
     @Inject
