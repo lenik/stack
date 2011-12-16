@@ -127,83 +127,20 @@
                     </t:panelGroup>
 
                     <t:panelGroup colspan="4">
-                        <t:panelGrid columns="6">
-                            <h:outputText value="电话1" />
-                            <p:inputText value="#{orgPersonAdminBean.tels[0]}"/>
-                            <h:outputText value="手机1" />
-                            <p:inputText value="#{orgPersonAdminBean.cellphones[0]}"/>
-                            <t:panelGrid columns="2">
-                                <p:selectBooleanCheckbox
-                                    value="#{orgPersonAdminBean.orgContacts[0]}" />
-                                <h:outputText value="公司" />
-                            </t:panelGrid>
-                            <t:panelGrid columns="2">
-                                <p:selectBooleanCheckbox
-                                    value="#{orgPersonAdminBean.personContacts[0]}" />
-                                <h:outputText value="人员" />
-                            </t:panelGrid>
-
-                            <h:outputText value="电话2" />
-                            <p:inputText value="#{orgPersonAdminBean.tels[1]}"/>
-                            <h:outputText value="手机2" />
-                            <p:inputText value="#{orgPersonAdminBean.cellphones[1]}"/>
-                            <t:panelGrid columns="2">
-                                <p:selectBooleanCheckbox
-                                    value="#{orgPersonAdminBean.orgContacts[1]}" />
-                                <h:outputText value="公司" />
-                            </t:panelGrid>
-                            <t:panelGrid columns="2">
-                                <p:selectBooleanCheckbox
-                                    value="#{orgPersonAdminBean.personContacts[1]}" />
-                                <h:outputText value="人员" />
-                            </t:panelGrid>
-
-                            <h:outputText value="电话3" />
-                            <p:inputText value="#{orgPersonAdminBean.tels[2]}"/>
-                            <h:outputText value="手机3" />
-                            <p:inputText value="#{orgPersonAdminBean.cellphones[2]}"/>
-                            <t:panelGrid columns="2">
-                                <p:selectBooleanCheckbox
-                                    value="#{orgPersonAdminBean.orgContacts[2]}" />
-                                <h:outputText value="公司" />
-                            </t:panelGrid>
-                            <t:panelGrid columns="2">
-                                <p:selectBooleanCheckbox
-                                    value="#{orgPersonAdminBean.personContacts[2]}" />
-                                <h:outputText value="人员" />
-                            </t:panelGrid>
-
-                            <h:outputText value="电话4" />
-                            <p:inputText value="#{orgPersonAdminBean.tels[3]}"/>
-                            <h:outputText value="手机4" />
-                            <p:inputText value="#{orgPersonAdminBean.cellphones[3]}"/>
-                            <t:panelGrid columns="2">
-                                <p:selectBooleanCheckbox
-                                    value="#{orgPersonAdminBean.orgContacts[3]}" />
-                                <h:outputText value="公司" />
-                            </t:panelGrid>
-                            <t:panelGrid columns="2">
-                                <p:selectBooleanCheckbox
-                                    value="#{orgPersonAdminBean.personContacts[3]}" />
-                                <h:outputText value="人员" />
-                            </t:panelGrid>
-
-                            <h:outputText value="电话5" />
-                            <p:inputText value="#{orgPersonAdminBean.tels[4]}"/>
-                            <h:outputText value="手机5" />
-                            <p:inputText value="#{orgPersonAdminBean.cellphones[4]}"/>
-                            <t:panelGrid columns="2">
-                                <p:selectBooleanCheckbox
-                                    value="#{orgPersonAdminBean.orgContacts[4]}" />
-                                <h:outputText value="公司" />
-                            </t:panelGrid>
-                            <t:panelGrid columns="2">
-                                <p:selectBooleanCheckbox
-                                    value="#{orgPersonAdminBean.personContacts[4]}" />
-                                <h:outputText value="人员" />
-                            </t:panelGrid>
-
-                        </t:panelGrid>
+                        <p:dataTable var="contact" value="#{orgPersonAdminBean.contactHolders}">
+                            <p:column headerText="电话">
+                                <p:inputText value="#{contact.tel}"/>
+                            </p:column>
+                            <p:column headerText="手机">
+                                <p:inputText value="#{contact.cellphone}"/>
+                            </p:column>
+                            <p:column headerText="公司">
+                                <p:selectBooleanCheckbox value="#{contact.org}"/>
+                            </p:column>
+                            <p:column headerText="人员">
+                                <p:selectBooleanCheckbox value="#{contact.person}"/>
+                            </p:column>
+                        </p:dataTable>
                     </t:panelGroup>
 
                     <p:commandButton

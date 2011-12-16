@@ -18,16 +18,19 @@ import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.dto.PartyTagnameDto;
 import com.bee32.sem.people.dto.PersonDto;
-import com.bee32.sem.people.dto.PersonRoleDto;
 import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.entity.PartyTagname;
 import com.bee32.sem.people.entity.Person;
+import com.bee32.sem.people.entity.PersonRole;
+import com.bee32.sem.people.util.ContactHolder;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
 
 public class OrgPersonAdminBean extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
+
+    private static final int CONTACTS = 5;
 
     private LazyDataModel<OrgDto> orgs;
     private OrgDto selectedOrg;
@@ -39,13 +42,7 @@ public class OrgPersonAdminBean extends EntityViewBean {
     char sex;
     String personMemo;
 
-    String[] tels = new String[5];
-    String[] cellphones = new String[5];
-
-    Boolean[] orgContacts = new Boolean[5];
-    Boolean[] personContacts = new Boolean[5];
-
-
+    List<ContactHolder> contactHolders = new ArrayList<ContactHolder>();
 
 
     public OrgPersonAdminBean() {
@@ -56,9 +53,8 @@ public class OrgPersonAdminBean extends EntityViewBean {
 
         refreshOrgCount();
 
-        for (int i=0; i<5; i++) {
-            orgContacts[i] = new Boolean(false);
-            personContacts[i] = new Boolean(false);
+        for (int i=0; i<CONTACTS; i++) {
+            contactHolders.add(new ContactHolder());
         }
     }
 
@@ -127,36 +123,12 @@ public class OrgPersonAdminBean extends EntityViewBean {
         this.personMemo = personMemo;
     }
 
-    public String[] getTels() {
-        return tels;
+    public List<ContactHolder> getContactHolders() {
+        return contactHolders;
     }
 
-    public void setTels(String[] tels) {
-        this.tels = tels;
-    }
-
-    public String[] getCellphones() {
-        return cellphones;
-    }
-
-    public void setCellphones(String[] cellphones) {
-        this.cellphones = cellphones;
-    }
-
-    public Boolean[] getOrgContacts() {
-        return orgContacts;
-    }
-
-    public void setOrgContacts(Boolean[] orgContacts) {
-        this.orgContacts = orgContacts;
-    }
-
-    public Boolean[] getPersonContacts() {
-        return personContacts;
-    }
-
-    public void setPersonContacts(Boolean[] personContacts) {
-        this.personContacts = personContacts;
+    public void setContactHolders(List<ContactHolder> contactHolders) {
+        this.contactHolders = contactHolders;
     }
 
     public List<SelectItem> getTags() {
@@ -181,12 +153,11 @@ public class OrgPersonAdminBean extends EntityViewBean {
         //sex;
         personMemo = null;
 
-        for (int i=0; i<5; i++) {
-            tels[i] = "";
-            cellphones[i] = "";
-
-            orgContacts[i] = false;
-            personContacts[i] = false;
+        for (int i=0; i<CONTACTS; i++) {
+            contactHolders.get(i).setTel("");
+            contactHolders.get(i).setCellphone("");
+            contactHolders.get(i).setOrg(false);
+            contactHolders.get(i).setPerson(false);
         }
     }
 
@@ -209,13 +180,13 @@ public class OrgPersonAdminBean extends EntityViewBean {
 
         //检测是否有输入联系方式
         boolean haveContact = false;
-        for(int i=0; i<5; i++) {
-            if (orgContacts[i]) {
+        for(int i=0; i<CONTACTS; i++) {
+            if (contactHolders.get(i).isOrg()) {
                 haveContact = true;
                 break;
             }
 
-            if (personContacts[i]) {
+            if (contactHolders.get(i).isPerson()) {
                 haveContact = true;
                 break;
             }
@@ -245,37 +216,74 @@ public class OrgPersonAdminBean extends EntityViewBean {
         person.setSex(sex);
         person.setMemo(personMemo);
 
-        for (int i=0; i<5; i++) {
-            if (orgContacts[i] || personContacts[i]) {
+        for (int i=0; i<CONTACTS; i++) {
+
+            if (contactHolders.get(i).isOrg()) {
                 ContactDto contact = new ContactDto().create();
 
-                contact.setTel(tels[i]);
-                contact.setMobile(cellphones[i]);
-
-                contact.setAddress(orgAddress);
-
-
-                if (orgContacts[i]) {
-                    org.getContacts().add(contact);
+                if (contactHolders.get(i).getTel() != null
+                        && contactHolders.get(i).getTel().trim().length() > 0) {
+                    contact.setTel(contactHolders.get(i).getTel());
                 }
 
-                if (personContacts[i]) {
-                    person.getContacts().add(contact);
+                if (contactHolders.get(i).getCellphone() != null
+                        && contactHolders.get(i).getCellphone().trim().length() > 0) {
+                    contact.setMobile(contactHolders.get(i).getCellphone());
                 }
+
+                if (orgAddress != null
+                        && orgAddress.length() > 0) {
+                    contact.setAddress(orgAddress);
+                }
+                contact.setParty(org);
+
+                org.getContacts().add(contact);
+
+            }
+
+            if (contactHolders.get(i).isPerson()) {
+                ContactDto contact = new ContactDto().create();
+
+                if (contactHolders.get(i).getTel() != null
+                        && contactHolders.get(i).getTel().trim().length() > 0) {
+                    contact.setTel(contactHolders.get(i).getTel());
+                }
+
+                if (contactHolders.get(i).getCellphone() != null
+                        && contactHolders.get(i).getCellphone().trim().length() > 0) {
+                    contact.setMobile(contactHolders.get(i).getCellphone());
+                }
+
+                if (orgAddress != null
+                        && orgAddress.length() > 0) {
+                    contact.setAddress(orgAddress);
+                }
+                contact.setParty(person);
+
+                person.getContacts().add(contact);
             }
         }
 
-        PersonRoleDto role = new PersonRoleDto().create();
-        role.setOrg(org);
-        role.setPerson(person);
+        try {
+            Person _person = (Person) person.unmarshal();
+            serviceFor(Person.class).saveOrUpdate(_person);
 
-        org.getRoles().add(role);
-        person.getRoles().add(role);
+            Org _org = (Org) org.unmarshal();
+            serviceFor(Org.class).saveOrUpdate(_org);
 
-        Org _org = (Org)org.unmarshal();
-        serviceFor(Org.class).saveOrUpdate(_org);
-        Person _person = (Person)person.unmarshal();
-        serviceFor(Person.class).saveOrUpdate(_person);
+            PersonRole _role = new PersonRole();
+            _role.setOrg(_org);
+            _role.setPerson(_person);
+
+            serviceFor(PersonRole.class).saveOrUpdate(_role);
+            serviceFor(Org.class).evict(_org);
+
+            refreshOrgCount();
+
+            uiLogger.info("保存成功.");
+        } catch (Exception e) {
+            uiLogger.error("保存失败!", e);
+        }
     }
 
 }

@@ -16,18 +16,21 @@ public class PeopleUtil {
             if (builder.length() > 0
                     && (contact.getTel() != null && contact.getTel().length() > 0))
                 builder.append(",");
-            builder.append(contact.getTel());
+            if (contact.getTel() != null && contact.getTel().length() > 0)
+                builder.append(contact.getTel());
 
             if (builder.length() > 0
                     && (contact.getMobile() != null && contact.getMobile().length() > 0))
                 builder.append(",");
-            builder.append(contact.getMobile());
+            if (contact.getMobile() != null && contact.getMobile().length() > 0)
+                builder.append(contact.getMobile());
 
 
             if (builder.length() > 0
                     && (contact.getFax() != null && contact.getFax().length() > 0))
                 builder.append(",");
-            builder.append(contact.getFax());
+            if (contact.getFax() != null && contact.getFax().length() > 0)
+                builder.append(contact.getFax());
         }
         return builder.toString();
     }
