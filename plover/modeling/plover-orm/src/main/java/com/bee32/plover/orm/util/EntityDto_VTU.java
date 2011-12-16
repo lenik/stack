@@ -4,17 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bee32.plover.arch.util.dto.BaseDto;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.entity.IEntity;
-import com.bee32.plover.util.FormatStyle;
-import com.bee32.plover.util.IMultiFormat;
-import com.bee32.plover.util.PrettyPrintStream;
 
 public abstract class EntityDto_VTU<E extends Entity<K>, K extends Serializable>
-        extends BaseDto<E, IEntityMarshalContext>
-        implements IMultiFormat {
+        extends BaseDto_EMC<E> {
 
     private static final long serialVersionUID = 1L;
 
@@ -83,23 +78,6 @@ public abstract class EntityDto_VTU<E extends Entity<K>, K extends Serializable>
                 idList.add(id(entity));
 
         return idList;
-    }
-
-    @Override
-    public String toString() {
-        return toString(FormatStyle.DEFAULT);
-    }
-
-    @Override
-    public String toString(FormatStyle format) {
-        PrettyPrintStream buf = new PrettyPrintStream();
-        toString(buf, format);
-        return buf.toString();
-    }
-
-    @Override
-    public void toString(PrettyPrintStream out, FormatStyle format) {
-        toString(out, format, null, 0);
     }
 
 }

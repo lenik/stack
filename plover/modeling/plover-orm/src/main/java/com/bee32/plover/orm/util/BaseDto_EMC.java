@@ -13,20 +13,25 @@ import java.util.Set;
 import javax.free.IllegalUsageException;
 import javax.free.NotImplementedException;
 
+import com.bee32.plover.arch.util.dto.BaseDto;
 import com.bee32.plover.arch.util.dto.BeanPropertyAccessor;
 import com.bee32.plover.arch.util.dto.IPropertyAccessor;
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.util.FormatStyle;
+import com.bee32.plover.util.IMultiFormat;
+import com.bee32.plover.util.PrettyPrintStream;
 
-public abstract class EntityDto_SM1<E extends Entity<K>, K extends Serializable>
-        extends EntityDto_VTU<E, K> {
+public abstract class BaseDto_EMC<S>
+        extends BaseDto<S, IEntityMarshalContext>
+        implements IMultiFormat {
 
     private static final long serialVersionUID = 1L;
 
-    public EntityDto_SM1() {
+    public BaseDto_EMC() {
         super();
     }
 
-    public EntityDto_SM1(int selection) {
+    public BaseDto_EMC(int selection) {
         super(selection);
     }
 
@@ -61,8 +66,8 @@ public abstract class EntityDto_SM1<E extends Entity<K>, K extends Serializable>
      *
      * deref
      */
-    <Coll extends Collection<_E>, D extends EntityDto<_E, _K>, _E extends Entity<_K>, _K extends Serializable> //
-    /*    */Coll mergeCollection(Coll collection, Iterable<? extends D> dtoList) {
+    <Coll extends Collection<_E>, _D extends EntityDto<_E, _K>, _E extends Entity<_K>, _K extends Serializable> //
+    /*    */Coll mergeCollection(Coll collection, Iterable<? extends _D> dtoList) {
 
         if (collection == null)
             throw new NullPointerException("collection");
@@ -87,7 +92,7 @@ public abstract class EntityDto_SM1<E extends Entity<K>, K extends Serializable>
             if (each != null)
                 contentMap.put(each, each);
 
-        for (D dto : dtoList) {
+        for (_D dto : dtoList) {
             if (dto == null) // DTO == null means ignore.
                 continue;
 
@@ -247,6 +252,23 @@ public abstract class EntityDto_SM1<E extends Entity<K>, K extends Serializable>
         }
 
         mergeSet(target, property, dtoList);
+    }
+
+    @Override
+    public String toString() {
+        return toString(FormatStyle.DEFAULT);
+    }
+
+    @Override
+    public String toString(FormatStyle format) {
+        PrettyPrintStream buf = new PrettyPrintStream();
+        toString(buf, format);
+        return buf.toString();
+    }
+
+    @Override
+    public void toString(PrettyPrintStream out, FormatStyle format) {
+        toString(out, format, null, 0);
     }
 
 }

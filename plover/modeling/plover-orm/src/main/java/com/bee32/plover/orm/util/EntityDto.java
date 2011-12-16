@@ -24,7 +24,7 @@ import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
 
 public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
-        extends EntityDto_SM1<E, K> {
+        extends EntityDto_VTU<E, K> {
 
     private static final long serialVersionUID = 1L;
 
