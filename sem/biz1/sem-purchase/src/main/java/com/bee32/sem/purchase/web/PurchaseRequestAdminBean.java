@@ -76,8 +76,6 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
     public final int INQUIRY_DETAIL_STATUS_MODIFY = 2;
     public final int INQUIRY_DETAIL_STATUS_VIEW = 3;
 
-    List<Long> warehouseIds;
-
     public PurchaseRequestAdminBean() {
         Calendar c = Calendar.getInstance();
         // 取这个月的第一天
@@ -322,18 +320,6 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
 
     public void setPurchaseAdvice(PurchaseAdviceDto purchaseAdvice) {
         this.purchaseAdvice = purchaseAdvice;
-    }
-
-    public List<Long> getWarehouseIds() {
-        warehouseIds = new ArrayList<Long>();
-        for(int i = 0; i < purchaseRequest.getItems().size(); i++) {
-            warehouseIds.add(-1L);
-        }
-        return warehouseIds;
-    }
-
-    public void setWarehouseIds(List<Long> warehouseIds) {
-        this.warehouseIds = warehouseIds;
     }
 
 
