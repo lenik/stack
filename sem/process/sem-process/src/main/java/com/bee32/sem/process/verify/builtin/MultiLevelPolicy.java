@@ -19,6 +19,7 @@ import org.hibernate.annotations.CascadeType;
 import com.bee32.plover.orm.util.Alias;
 import com.bee32.plover.ox1.principal.Principal;
 import com.bee32.plover.ox1.principal.User;
+import com.bee32.sem.process.verify.ForVerifyContext;
 import com.bee32.sem.process.verify.ISingleVerifier;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
@@ -27,6 +28,7 @@ import com.bee32.sem.process.verify.VerifyResult;
 @Entity
 @DiscriminatorValue("ML")
 @Alias("level")
+@ForVerifyContext(ISingleVerifierWithNumber.class)
 public class MultiLevelPolicy
         extends VerifyPolicy {
 
@@ -34,10 +36,6 @@ public class MultiLevelPolicy
 
     private List<MultiLevel> levels;
     private LevelMap levelMap;
-
-    public MultiLevelPolicy() {
-        super(ISingleVerifierWithNumber.class);
-    }
 
     /**
      * @return Non-null range set.
@@ -125,21 +123,19 @@ public class MultiLevelPolicy
 
     @Override
     public Set<Principal> getDeclaredResponsibles(IVerifyContext _context) {
-        Number number = 0;
+        ISingleVerifierWithNumber svn = null;
 
-        if (_context != null) {
-            ISingleVerifierWithNumber svn = requireContext(ISingleVerifierWithNumber.class, _context);
-            number = svn.getJudgeNumber();
-        }
+        if (_context != null)
+            svn = checkedCast(ISingleVerifierWithNumber.class, _context);
 
-        long lval = number.longValue(); // XXX truncated here.
-        return getResponsiblesWithinLimit(lval);
+        return getDeclaredResponsibles(svn);
     }
 
-    public Set<Principal> getResponsiblesWithinLimit(long limit) {
-        MultiLevelContext hintContext = new MultiLevelContext();
-        hintContext.setValueDescription("hint");
-        hintContext.setLongValue(limit);
+    Set<Principal> getDeclaredResponsibles(ISingleVerifierWithNumber context) {
+        if (context == null)
+            throw new NullPointerException("Context of " + ISingleVerifierWithNumber.class + " is required.");
+
+        long limit = context.getJudgeNumber().longValue();
 
         Set<Principal> allDeclared = new HashSet<Principal>();
         if (levelMap == null)
@@ -162,11 +158,12 @@ public class MultiLevelPolicy
 
             if (subPolicy instanceof MultiLevelPolicy) {
                 MultiLevelPolicy subML = (MultiLevelPolicy) subPolicy;
-                Collection<? extends Principal> subset = subML.getResponsiblesWithinLimit(limit);
+                Collection<? extends Principal> subset = subML.getDeclaredResponsibles(context);
                 allDeclared.addAll(subset);
 
-            } else if (subPolicy.isUsefulFor(ISingleVerifier.class)) {
-                allDeclared.addAll(subPolicy.getDeclaredResponsibles(hintContext));
+            } else if (subPolicy.getMetadata().isUsefulFor(ISingleVerifier.class)) {
+                Set<Principal> dr = subPolicy.getDeclaredResponsibles(context);
+                allDeclared.addAll(dr);
             }
 
             ceil = levelMap.higherKey(ceil);
@@ -177,7 +174,7 @@ public class MultiLevelPolicy
 
     @Override
     public VerifyResult validate(IVerifyContext _context) {
-        ISingleVerifierWithNumber context = requireContext(ISingleVerifierWithNumber.class, _context);
+        ISingleVerifierWithNumber context = checkedCast(ISingleVerifierWithNumber.class, _context);
 
         User user = context.getVerifier1();
 
@@ -189,7 +186,7 @@ public class MultiLevelPolicy
 
     @Override
     public VerifyResult evaluate(IVerifyContext _context) {
-        ISingleVerifierWithNumber context = requireContext(ISingleVerifierWithNumber.class, _context);
+        ISingleVerifierWithNumber context = checkedCast(ISingleVerifierWithNumber.class, _context);
 
         if (context.getVerifier1() == null)
             return UNKNOWN;

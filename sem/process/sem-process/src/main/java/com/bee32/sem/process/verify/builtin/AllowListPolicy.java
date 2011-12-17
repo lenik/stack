@@ -14,6 +14,7 @@ import javax.persistence.ManyToMany;
 import com.bee32.plover.orm.util.Alias;
 import com.bee32.plover.ox1.principal.Principal;
 import com.bee32.plover.ox1.principal.User;
+import com.bee32.sem.process.verify.ForVerifyContext;
 import com.bee32.sem.process.verify.ISingleVerifier;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
@@ -25,6 +26,7 @@ import com.bee32.sem.process.verify.VerifyResult;
 @Entity
 @DiscriminatorValue("LS")
 @Alias("list")
+@ForVerifyContext(ISingleVerifier.class)
 public class AllowListPolicy
         extends VerifyPolicy {
 
@@ -45,7 +47,6 @@ public class AllowListPolicy
     }
 
     public AllowListPolicy(Collection<? extends Principal> responsibles) {
-        super(ISingleVerifier.class);
         if (responsibles == null)
             throw new NullPointerException("responsibles");
         this.responsibles = new HashSet<Principal>(responsibles);
@@ -88,7 +89,7 @@ public class AllowListPolicy
 
     @Override
     public VerifyResult validate(IVerifyContext context) {
-        ISingleVerifier sv = requireContext(ISingleVerifier.class, context);
+        ISingleVerifier sv = checkedCast(ISingleVerifier.class, context);
         User user = sv.getVerifier1();
 
         if (user == null)
@@ -102,7 +103,7 @@ public class AllowListPolicy
 
     @Override
     public VerifyResult evaluate(IVerifyContext context) {
-        ISingleVerifier sv = requireContext(ISingleVerifier.class, context);
+        ISingleVerifier sv = checkedCast(ISingleVerifier.class, context);
 
         if (sv.getVerifier1() == null)
             return UNKNOWN;

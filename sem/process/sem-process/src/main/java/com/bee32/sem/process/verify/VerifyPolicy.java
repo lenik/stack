@@ -1,6 +1,5 @@
 package com.bee32.sem.process.verify;
 
-import javax.free.IllegalUsageException;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -27,34 +26,27 @@ public abstract class VerifyPolicy
     protected static final VerifyResult UNKNOWN = new VerifyResult(VerifyState.UNKNOWN, null);
     protected static final VerifyResult VERIFIED = new VerifyResult(VerifyState.VERIFIED, null);
 
-    private final Class<? extends IVerifyContext> contextClass;
+    private final VerifyPolicyMetadata metadata;
 
-    public VerifyPolicy(Class<? extends IVerifyContext> contextClass) {
-        if (contextClass == null)
-            throw new NullPointerException("contextClass");
-        this.contextClass = contextClass;
+    public VerifyPolicy() {
+        metadata = VerifyPolicyManager.getMetadata(getClass());
     }
 
     @Transient
-    @Override
-    public Class<? extends IVerifyContext> getRequiredContextClass() {
-        return contextClass;
+    public VerifyPolicyMetadata getMetadata() {
+        return metadata;
     }
 
-    protected <C extends IVerifyContext> C requireContext(Class<C> contextClass, IVerifyContext context) {
-        if (contextClass == null)
-            throw new NullPointerException("contextClass");
-
-        if (contextClass.equals(this.contextClass))
-            throw new IllegalUsageException("Require a different context from the defined one: " + contextClass);
-
-        return contextClass.cast(context);
-    }
-
-    public boolean isUsefulFor(Class<? extends IVerifyContext> providedContext) {
-        if (providedContext == null)
-            throw new NullPointerException("providedContext");
-        return contextClass.isAssignableFrom(providedContext);
+    protected <C extends IVerifyContext> C checkedCast(Class<C> requiredContextClass, IVerifyContext context) {
+        if (requiredContextClass == null)
+            throw new NullPointerException("requiredContextClass");
+        /**
+         * <pre>
+         * if (requiredContextClass.equals(metadata.getContextClass()))
+         *     throw new IllegalUsageException(&quot;Require a different context from the defined one: &quot; + requiredContextClass);
+         * </pre>
+         */
+        return requiredContextClass.cast(context);
     }
 
     @Override

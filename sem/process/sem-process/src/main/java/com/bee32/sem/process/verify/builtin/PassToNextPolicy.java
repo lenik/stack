@@ -19,6 +19,7 @@ import com.bee32.plover.orm.util.Alias;
 import com.bee32.plover.ox1.principal.IPrincipal;
 import com.bee32.plover.ox1.principal.Principal;
 import com.bee32.plover.ox1.principal.User;
+import com.bee32.sem.process.verify.ForVerifyContext;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyEvent;
 import com.bee32.sem.process.verify.VerifyPolicy;
@@ -30,6 +31,7 @@ import com.bee32.sem.process.verify.VerifyResult;
 @Entity
 @DiscriminatorValue("NXT")
 @Alias("p2next")
+@ForVerifyContext(IPassEvents.class)
 public class PassToNextPolicy
         extends VerifyPolicy {
 
@@ -44,7 +46,6 @@ public class PassToNextPolicy
     }
 
     public PassToNextPolicy(List<PassStep> sequence) {
-        super(IPassEvents.class);
         if (sequence == null)
             throw new NullPointerException("sequence");
         this.sequences = sequence;
@@ -69,7 +70,7 @@ public class PassToNextPolicy
         int position = 0;
 
         if (context != null) {
-            IPassEvents passEvents = requireContext(IPassEvents.class, context);
+            IPassEvents passEvents = checkedCast(IPassEvents.class, context);
             position = passEvents.getPosition();
         }
 
@@ -81,7 +82,7 @@ public class PassToNextPolicy
 
     @Override
     public VerifyResult evaluate(IVerifyContext context) {
-        IPassEvents passEvents = requireContext(IPassEvents.class, context);
+        IPassEvents passEvents = checkedCast(IPassEvents.class, context);
 
         // 分析审核数据
         int stepIndex = 0; // 审核步骤
