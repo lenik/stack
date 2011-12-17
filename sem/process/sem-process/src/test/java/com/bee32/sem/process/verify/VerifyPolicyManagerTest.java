@@ -22,9 +22,7 @@ public class VerifyPolicyManagerTest
 
     @Test
     public void testListAll() {
-        Collection<Class<? extends VerifyPolicy>> all //
-        = VerifyPolicyManager.list();
-
+        Collection<Class<? extends IVerifyPolicy>> all = VerifyPolicyManager.list();
         assertTrue(all.contains(AllowListPolicy.class));
         assertTrue(all.contains(MultiLevelPolicy.class));
         assertTrue(all.contains(PassToNextPolicy.class));
@@ -32,9 +30,7 @@ public class VerifyPolicyManagerTest
 
     @Test
     public void testMatch() {
-        Collection<Class<? extends VerifyPolicy>> all //
-        = VerifyPolicyManager.forBean(SimpleBean.class);
-
+        Collection<Class<? extends IVerifyPolicy>> all = VerifyPolicyManager.forBean(SimpleBean.class);
         assertTrue(all.contains(AllowListPolicy.class));
         assertTrue(all.contains(MultiLevelPolicy.class));
         assertFalse(all.contains(PassToNextPolicy.class));
