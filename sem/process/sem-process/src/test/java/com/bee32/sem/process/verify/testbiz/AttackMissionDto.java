@@ -5,10 +5,12 @@ import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
+import com.bee32.sem.process.verify.builtin.dto.IVerifiableDto;
 import com.bee32.sem.process.verify.util.SingleVerifierSupportDto;
 
 public class AttackMissionDto
-        extends UIEntityDto<AttackMission, Integer> {
+        extends UIEntityDto<AttackMission, Integer>
+        implements IVerifiableDto {
 
     private static final long serialVersionUID = 1L;
 
@@ -41,6 +43,7 @@ public class AttackMissionDto
         this.target = target;
     }
 
+    @Override
     public SingleVerifierSupportDto getVerifyContext() {
         return verifyContext;
     }
