@@ -6,6 +6,7 @@ import java.util.List;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
+import com.bee32.plover.arch.util.BeanOfCollection;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.web.EntityHelper;
 import com.bee32.plover.ox1.principal.PrincipalDto;
@@ -68,18 +69,8 @@ public class AllowListPolicyDto
         this.responsibles = responsibles;
     }
 
-    public List<Integer> getResponsibleIds() {
-        List<Integer> ids = new ArrayList<Integer>();
-        for (PrincipalDto r : responsibles)
-            ids.add(r.getId());
-        return ids;
-    }
-
-    public List<String> getResponsibleNames() {
-        List<String> ids = new ArrayList<String>();
-        for (PrincipalDto r : responsibles)
-            ids.add(r.getDisplayName());
-        return ids;
+    public Object getResponsibleTr() {
+        return BeanOfCollection.transform(PrincipalDto.class, responsibles);
     }
 
     static {
