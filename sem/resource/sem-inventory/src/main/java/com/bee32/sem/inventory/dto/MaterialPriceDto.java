@@ -72,7 +72,7 @@ public class MaterialPriceDto
     /**
      * Set price in native currency.
      */
-    public final void setPrice(double price) { // FIXME
+    public final void setPrice(double price) {
         setPrice(new MCValue(CurrencyConfig.getNative(), price));
     }
 
@@ -80,7 +80,7 @@ public class MaterialPriceDto
         return price.getValue().doubleValue();
     }
 
-    public void setViewPrice(double viewPrice) { // FIXME
+    public void setViewPrice(double viewPrice) {
         price = price.value(viewPrice);
     }
 
