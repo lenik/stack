@@ -11,11 +11,6 @@ import com.bee32.plover.ox1.principal.Principal;
  */
 public interface IVerifyPolicy {
 
-    /**
-     * 获取必要的上下文类型。
-     */
-    Class<? extends IVerifyContext> getRequiredContextClass();
-
     VerifyResult verify(IVerifyContext context);
 
     /**
