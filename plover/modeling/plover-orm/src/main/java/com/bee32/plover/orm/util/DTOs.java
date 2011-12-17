@@ -100,7 +100,7 @@ public abstract class DTOs {
         return new DummyDto().marshalSet(dtoClass, sources, refButFilled);
     }
 
-    public static <_S, __s, _C> void merge(_S target, IPropertyAccessor<_S, __s> property, BaseDto<__s, _C> propertyDto) {
+    public static <_S, __s, _C> void merge(_S target, IPropertyAccessor<__s> property, BaseDto<__s, _C> propertyDto) {
         new DummyDto().merge(target, property, propertyDto);
     }
 
@@ -109,7 +109,7 @@ public abstract class DTOs {
     }
 
     public static <_E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> void mergeList(
-            _E target, IPropertyAccessor<_E, List<_e>> property, Iterable<? extends _d> dtoList) {
+            _E target, IPropertyAccessor<List<_e>> property, Iterable<? extends _d> dtoList) {
         new DummyDto().mergeList(target, property, dtoList);
     }
 
@@ -119,7 +119,7 @@ public abstract class DTOs {
     }
 
     public static <_E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> void mergeSet(
-            _E target, IPropertyAccessor<_E, Set<_e>> property, Iterable<? extends _d> dtoList) {
+            _E target, IPropertyAccessor<Set<_e>> property, Iterable<? extends _d> dtoList) {
         new DummyDto().mergeSet(target, property, dtoList);
     }
 

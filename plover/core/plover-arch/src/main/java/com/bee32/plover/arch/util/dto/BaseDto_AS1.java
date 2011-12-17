@@ -148,15 +148,15 @@ public abstract class BaseDto_AS1<S, C>
      *      merge("property")
      * </pre>
      */
-    public <_S, __s, _C> void merge(//
-            _S target, IPropertyAccessor<_S, __s> property, BaseDto<__s, _C> propertyDto) {
+    public <target_t, property_t, _C> void merge(//
+            target_t target, IPropertyAccessor<property_t> property, BaseDto<property_t, _C> propertyDto) {
 
         // DTO == null means ignore.
         if (propertyDto == null)
             return;
 
-        __s _old = property.get(target);
-        __s _new;
+        property_t _old = property.get(target);
+        property_t _new;
 
         _new = propertyDto.merge(getSession(), _old);
 

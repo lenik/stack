@@ -1,11 +1,11 @@
 package com.bee32.plover.arch.util.dto;
 
-public interface IPropertyAccessor<S, T> {
+public interface IPropertyAccessor<T> {
 
     Class<? extends T> getType();
 
-    T get(S obj);
+    T get(Object obj);
 
-    void set(S obj, T value);
+    void set(Object obj, T value);
 
 }

@@ -6,8 +6,8 @@ package com.bee32.plover.arch.util.dto;
  * @param T
  *            Type of the property.
  */
-public abstract class PropertyAccessor<S, T>
-        implements IPropertyAccessor<S, T> {
+public abstract class PropertyAccessor<T>
+        implements IPropertyAccessor<T> {
 
     private final Class<T> propertyType;
 

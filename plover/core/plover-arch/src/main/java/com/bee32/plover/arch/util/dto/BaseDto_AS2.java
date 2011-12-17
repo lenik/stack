@@ -1,13 +1,11 @@
 package com.bee32.plover.arch.util.dto;
 
-import java.beans.IntrospectionException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.free.IllegalUsageException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.dao.DataAccessException;
@@ -188,21 +186,17 @@ public abstract class BaseDto_AS2<S, C>
      *             If data access exception happened with calls into the
      *             {@link IEntityMarshalContext}.
      */
-    public <_S, __s, _C> void merge(_S target, String propertyName, BaseDto<__s, _C> propertyDto) {
+    public <target_t, property_t, ctx_t> void merge(target_t target, String propertyName,
+            BaseDto<property_t, ctx_t> propertyDto) {
 
         // DTO == null means ignore.
         if (propertyDto == null)
             return;
 
-        Class<_S> targetType = (Class<_S>) target.getClass();
+        Class<target_t> targetType = (Class<target_t>) target.getClass();
 
-        IPropertyAccessor<_S, __s> property;
-        try {
-            property = BeanPropertyAccessor.access(targetType, propertyName);
-        } catch (IntrospectionException e) {
-            // XXX Error message?
-            throw new IllegalUsageException(e.getMessage(), e);
-        }
+        IPropertyAccessor<property_t> property;
+        property = BeanPropertyAccessor.access(targetType, propertyName);
 
         merge(target, property, propertyDto);
     }

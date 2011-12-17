@@ -1,6 +1,5 @@
 package com.bee32.plover.orm.util;
 
-import java.beans.IntrospectionException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.free.IllegalUsageException;
 import javax.free.NotImplementedException;
 
 import com.bee32.plover.arch.util.dto.BaseDto;
@@ -197,7 +195,7 @@ public abstract class BaseDto_EMC<S>
      */
 
     public <_E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> //
-    /*    */void mergeList(_E target, IPropertyAccessor<_E, List<_e>> property, Iterable<? extends _d> dtoList) {
+    /*    */void mergeList(_E target, IPropertyAccessor<List<_e>> property, Iterable<? extends _d> dtoList) {
 
         List<_e> list = property.get(target);
 
@@ -214,19 +212,14 @@ public abstract class BaseDto_EMC<S>
 
         Class<_E> targetType = (Class<_E>) target.getClass();
 
-        IPropertyAccessor<_E, List<_e>> property;
-        try {
-            property = BeanPropertyAccessor.access(targetType, propertyName);
-        } catch (IntrospectionException e) {
-            // XXX Error message?
-            throw new IllegalUsageException(e.getMessage(), e);
-        }
+        IPropertyAccessor<List<_e>> property;
+        property = BeanPropertyAccessor.access(targetType, propertyName);
 
         mergeList(target, property, dtoList);
     }
 
     public <_E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> //
-    /*    */void mergeSet(_E target, IPropertyAccessor<_E, Set<_e>> property, Iterable<? extends _d> dtoList) {
+    /*    */void mergeSet(_E target, IPropertyAccessor<Set<_e>> property, Iterable<? extends _d> dtoList) {
 
         Set<_e> set = property.get(target);
 
@@ -243,13 +236,8 @@ public abstract class BaseDto_EMC<S>
 
         Class<_E> targetType = (Class<_E>) target.getClass();
 
-        IPropertyAccessor<_E, Set<_e>> property;
-        try {
-            property = BeanPropertyAccessor.access(targetType, propertyName);
-        } catch (IntrospectionException e) {
-            // XXX Error message?
-            throw new IllegalUsageException(e.getMessage(), e);
-        }
+        IPropertyAccessor<Set<_e>> property;
+        property = BeanPropertyAccessor.access(targetType, propertyName);
 
         mergeSet(target, property, dtoList);
     }

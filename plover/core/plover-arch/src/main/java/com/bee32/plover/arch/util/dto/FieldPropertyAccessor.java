@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import javax.free.IllegalUsageException;
 
 public class FieldPropertyAccessor
-        implements IPropertyAccessor<Object, Object> {
+        implements IPropertyAccessor<Object> {
 
     final Field field;
 

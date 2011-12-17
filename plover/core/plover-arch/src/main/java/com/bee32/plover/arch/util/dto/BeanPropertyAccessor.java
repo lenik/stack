@@ -8,9 +8,10 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import javax.free.ClassLocal;
+import javax.free.IllegalUsageException;
 
 public class BeanPropertyAccessor
-        implements IPropertyAccessor<Object, Object> {
+        implements IPropertyAccessor<Object> {
 
     final Class<?> type;
     final Method getter;
@@ -76,13 +77,18 @@ public class BeanPropertyAccessor
         return propertyMap;
     }
 
-    public static synchronized <S, T> IPropertyAccessor<S, T> access(//
-            Class<? extends S> beanClass, String propertyName)
-            throws IntrospectionException {
+    public static synchronized <bean_t, property_t> IPropertyAccessor<property_t> access(//
+            Class<? extends bean_t> beanClass, String propertyName) {
 
-        PropertyMap propertyMap = parse(beanClass);
+        PropertyMap propertyMap;
+        try {
+            propertyMap = parse(beanClass);
+        } catch (IntrospectionException e) {
+            throw new IllegalUsageException(String.format("Bad property name: %s  for type %s", //
+                    propertyName, beanClass.getName()), e);
+        }
 
-        return (IPropertyAccessor<S, T>) propertyMap.get(propertyName);
+        return (IPropertyAccessor<property_t>) propertyMap.get(propertyName);
     }
 
 }
