@@ -12,6 +12,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.orm.web.EntityHandler;
@@ -21,6 +22,7 @@ import com.bee32.plover.orm.web.util.DataTableDxo;
 import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.sem.process.SEMProcessModule;
+import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.VerifyPolicyManager;
@@ -112,8 +114,8 @@ public class VerifyPolicyPrefController
     protected void saveForm(VerifyPolicyPref pref, VerifyPolicyPrefDto prefDto) {
         super.saveForm(pref, prefDto);
 
-        Class<? extends AbstractVerifyContext<? extends Number, IVerifyContext>> userEntityType;
-        userEntityType = (Class<? extends AbstractVerifyContext<? extends Number, IVerifyContext>>) pref.getType();
+        Class<? extends AbstractVerifyContext> userEntityType;
+        userEntityType = (Class<? extends AbstractVerifyContext>) pref.getType();
 
         assert IVerifyContext.class.isAssignableFrom(userEntityType);
 
@@ -126,8 +128,8 @@ public class VerifyPolicyPrefController
     /**
      * Update all dependencies.
      */
-    <E extends AbstractVerifyContext<? extends Number, C>, C extends IVerifyContext> //
-    void refresh(Class<? extends E> userEntityType) {
+    <E extends Entity<?> & IVerifiable<? extends IVerifyContext>> //
+    void refresh(Class<E> userEntityType) {
 
         String typeName = ClassUtil.getDisplayName(userEntityType);
 

@@ -45,9 +45,8 @@ public class VerifyService
     }
 
     @Transactional(readOnly = true)
-    public VerifyPolicyDto getVerifyPolicy(IVerifiable<?> entity) {
-        IVerifyContext verifyContext = entity.getVerifyContext();
-        VerifyPolicy verifyPolicy = policyDao.getVerifyPolicy(verifyContext);
+    public <E extends Entity<?> & IVerifiable<?>> VerifyPolicyDto getVerifyPolicy(E entity) {
+        VerifyPolicy verifyPolicy = policyDao.getVerifyPolicy(entity);
         VerifyPolicyDto policyDto = DTOs.marshal(VerifyPolicyDto.class, verifyPolicy);
         return policyDto;
     }
@@ -55,19 +54,19 @@ public class VerifyService
     // --o IVerifyPolicy.
 
     @Override
-    public Class<IVerifyContext> getRequiredContext() {
+    public Class<? extends IVerifyContext> getRequiredContextClass() {
         return IVerifyContext.class;
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Set<Principal> getDeclaredResponsibles(IVerifiable<?> entity) {
-        VerifyPolicy verifyPolicy = policyDao.getVerifyPolicy(contextEntity);
+    public Set<Principal> getDeclaredResponsibles(IVerifyContext context) {
+        VerifyPolicy verifyPolicy = policyDao.getPreferredVerifyPolicy(context.getClass());
 
         if (verifyPolicy == null)
             return new HashSet<Principal>();
 
-        return verifyPolicy.getDeclaredResponsibles(contextEntity);
+        return verifyPolicy.getDeclaredResponsibles(context);
     }
 
     /**
@@ -85,7 +84,7 @@ public class VerifyService
     @Transactional(readOnly = true)
     @Override
     public boolean isVerified(IVerifyContext context) {
-        VerifyPolicy verifyPolicy = policyDao.getVerifyPolicy(context);
+        VerifyPolicy verifyPolicy = policyDao.getPreferredVerifyPolicy(context.getClass());
         if (verifyPolicy == null)
             return false;
         return verifyPolicy.isVerified(context);
@@ -106,7 +105,7 @@ public class VerifyService
     @Override
     public void assertVerified(IVerifyContext context)
             throws VerifyException {
-        VerifyPolicy verifyPolicy = policyDao.requireVerifyPolicy(context);
+        VerifyPolicy verifyPolicy = policyDao.requirePreferredVerifyPolicy(context.getClass());
         verifyPolicy.assertVerified(context);
     }
 
@@ -126,7 +125,7 @@ public class VerifyService
         if (context == null)
             throw new NullPointerException("context");
 
-        VerifyPolicy verifyPolicy = policyDao.getVerifyPolicy(context);
+        VerifyPolicy verifyPolicy = policyDao.getPreferredVerifyPolicy(context.getClass());
 
         VerifyResult result;
         if (verifyPolicy == null)
@@ -193,13 +192,13 @@ public class VerifyService
             verifyTask.setBeginTime(new Date()); //
 
             if (state.isClosed())
-                verifyTask.setEndTime(entity.getVerifyEvalDate());
+                verifyTask.setEndTime(context.getVerifyEvalDate());
             else
                 verifyTask.setEndTime(null);
 
             verifyTask.setRef(entity);
 
-            Set<Principal> responsibles = new HashSet<Principal>(getDeclaredResponsibles(entity));
+            Set<Principal> responsibles = new HashSet<Principal>(getDeclaredResponsibles(context));
             verifyTask.setObservers(responsibles);
         }
 

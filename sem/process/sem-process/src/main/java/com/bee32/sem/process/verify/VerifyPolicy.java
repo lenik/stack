@@ -37,7 +37,7 @@ public abstract class VerifyPolicy
 
     @Transient
     @Override
-    public Class<? extends IVerifyContext> getRequiredContext() {
+    public Class<? extends IVerifyContext> getRequiredContextClass() {
         return contextClass;
     }
 

@@ -14,7 +14,7 @@ public interface IVerifyPolicy {
     /**
      * 获取必要的上下文类型。
      */
-    Class<? extends IVerifyContext> getRequiredContext();
+    Class<? extends IVerifyContext> getRequiredContextClass();
 
     VerifyResult verify(IVerifyContext context);
 

@@ -125,14 +125,15 @@ public class MultiLevelPolicy
 
     @Override
     public Set<Principal> getDeclaredResponsibles(IVerifyContext _context) {
-        long longValue = 0;
+        Number number = 0;
 
         if (_context != null) {
-            ISingleVerifierWithNumber context = requireContext(ISingleVerifierWithNumber.class, _context);
-            longValue = context.getJudgeNumber();
+            ISingleVerifierWithNumber svn = requireContext(ISingleVerifierWithNumber.class, _context);
+            number = svn.getJudgeNumber();
         }
 
-        return getResponsiblesWithinLimit(longValue);
+        long lval = number.longValue(); // XXX truncated here.
+        return getResponsiblesWithinLimit(lval);
     }
 
     public Set<Principal> getResponsiblesWithinLimit(long limit) {
