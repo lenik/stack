@@ -1,16 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
     xmlns:c="http://java.sun.com/jsp/jstl/core">
-
 <ui:composition template="/template/entity/form.xhtml">
     <ui:define name="table">
         <table width="100%" bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5">
             <tr>
                 <td align="right">实体类型：</td>
                 <td>
-                    <input name="name" type="text" size="30" maxlength="100" value="${it.label}"
+                    <input name="name" type="text" size="30" maxlength="100" value="${it.displayName}"
                         readonly="readonly" />
                 </td>
             </tr>
@@ -33,7 +30,7 @@
             </tr>
         </table>
 
-        <p>保存该配置项将对 ${it.label} 的所有记录的审核状态重新求值，这可能需要一些时间。 在求值的过程中可能会锁定一部分功能。 如果 ${it.label}
+        <p>保存该配置项将对 ${it.displayName} 的所有记录的审核状态重新求值，这可能需要一些时间。 在求值的过程中可能会锁定一部分功能。 如果 ${it.displayName}
             含有大量数据的话，建议您在业务比较空闲的时候执行该操作。</p>
 
     </ui:define>
