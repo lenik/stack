@@ -1,45 +1,48 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
 <ui:composition template="/template/entity/content.xhtml">
 
     <ui:define name="content.1">
+        <c:set var="vctx" value="${it.verifyContext}" />
+
         <fieldset style="margin: 2em 4em; padding: 1em; width: 30em">
             <legend>审核资料</legend>
 
             <table cellpadding="0" cellspacing="0" border="0" class="display">
                 <tr>
                     <td>审核人:</td>
-                    <td>${it.verifier.label}</td>
+                    <td>${vctx.verifier1.displayName}</td>
                 </tr>
                 <tr>
                     <td>审核时间:</td>
-                    <td>${it.verifiedDate}</td>
+                    <td>${vctx.verifiedDate1}</td>
                 </tr>
                 <tr>
                     <td>允许/拒绝:</td>
-                    <td>${it.allowed}</td>
+                    <td>${vctx.accepted1}</td>
                 </tr>
                 <tr>
                     <td>拒绝原因:</td>
-                    <td>${it.rejectedReason}</td>
+                    <td>${vctx.rejectedReason1}</td>
                 </tr>
                 <tr>
                     <td>选定的审核策略:</td>
-                    <td>『${it.verifyPolicy.label}』 ${it.verifyPolicy.description}</td>
+                    <td>『${vctx.verifyPolicy.label}』 ${vctx.verifyPolicy.description}</td>
                 </tr>
                 <tr>
                     <td>上一次审核运算结果:</td>
-                    <td>${it.verifyState.label}</td>
+                    <td>${vctx.verifyState.label}</td>
                 </tr>
                 <tr>
                     <td>上一次审核运算错误消息:</td>
-                    <td>${it.verifyError}</td>
+                    <td>${vctx.verifyError}</td>
                 </tr>
                 <tr>
                     <td>上一次审核运算时间:</td>
-                    <td>${it.verifyEvalDate}</td>
+                    <td>${vctx.verifyEvalDate}</td>
                 </tr>
             </table>
 
