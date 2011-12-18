@@ -6,7 +6,7 @@ import com.bee32.sem.event.SEMEventModule;
 import com.bee32.sem.event.dto.EventDto;
 import com.bee32.sem.event.entity.Event;
 
-@RequestMapping(EventController.PREFIX + "**")
+@RequestMapping(EventController.PREFIX + "/*")
 public class EventController
         extends AbstractEventController<Event, EventDto> {
 
