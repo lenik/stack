@@ -5,9 +5,9 @@ import java.util.Date;
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.plover.orm.util.SampleContribution;
+import com.bee32.sem.process.verify.builtin.SingleVerifierSupport;
+import com.bee32.sem.process.verify.preference.VerifyPolicyPref;
 import com.bee32.sem.process.verify.testbiz.AttackMission;
-import com.bee32.sem.process.verify.typedef.VerifyPolicyPref;
-import com.bee32.sem.process.verify.util.SingleVerifierSupport;
 
 @ImportSamples(SEMVerifyPolicySamples.class)
 public class SEMProcessTestSamples

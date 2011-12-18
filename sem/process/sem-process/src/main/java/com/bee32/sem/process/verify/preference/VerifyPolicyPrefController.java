@@ -1,4 +1,4 @@
-package com.bee32.sem.process.verify.typedef;
+package com.bee32.sem.process.verify.preference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,22 +16,21 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.orm.web.EntityHandler;
-import com.bee32.plover.orm.web.EntityHelper;
 import com.bee32.plover.orm.web.basic.BasicEntityController;
 import com.bee32.plover.orm.web.util.DataTableDxo;
 import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.IVerifiable;
-import com.bee32.sem.process.verify.IVerifyContext;
+import com.bee32.sem.process.verify.IVerifyPolicy;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.VerifyPolicyManager;
-import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
+import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 import com.bee32.sem.process.verify.service.VerifyService;
-import com.bee32.sem.process.verify.util.AbstractVerifyContext;
 
 @RequestMapping(VerifyPolicyPrefController.PREFIX + "/*")
 public class VerifyPolicyPrefController
+        // > TypePrefController ?
         extends BasicEntityController<VerifyPolicyPref, String, VerifyPolicyPrefDto>
         implements ITypeAbbrAware {
 
@@ -83,16 +82,25 @@ public class VerifyPolicyPrefController
 
     @Override
     protected void fillFormExtra(ActionRequest req, ActionResult result) {
-        // TODO req.getAttribute(EntityHandler.ENTITY_HELPER_ATTRIBUTE);
-        EntityHelper<?, ?> eh = null; // XXX req.getHandler().getEntityHelper();
-
-        Class<?> verifiableType = null; // XXX result.entity.getType();
+        String typeId = req.getParameter("id");
+        Class<?> verifiableType;
+        try {
+            verifiableType = ABBR.expand(typeId);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+        assert IVerifiable.class.isAssignableFrom(verifiableType);
 
         List<VerifyPolicyDto> candidates = new ArrayList<VerifyPolicyDto>();
+        for (Class<? extends IVerifyPolicy> candidatePolicyType : VerifyPolicyManager.getCandidates(verifiableType)) {
+            // Include only entities in the candidate list
+            if (!VerifyPolicy.class.isAssignableFrom(candidatePolicyType))
+                continue;
 
-        for (Class<? extends VerifyPolicy> candidatePolicyType : VerifyPolicyManager.getCandidates(verifiableType)) {
+            @SuppressWarnings("unchecked")
+            Class<? extends VerifyPolicy> persistedType = (Class<? extends VerifyPolicy>) candidatePolicyType;
 
-            List<? extends VerifyPolicy> candidatePolicies = dataManager.asFor(candidatePolicyType).list();
+            List<? extends VerifyPolicy> candidatePolicies = dataManager.asFor(persistedType).list();
 
             for (VerifyPolicyDto candidate : DTOs.marshalList(VerifyPolicyDto.class, candidatePolicies))
                 candidates.add(candidate);
@@ -114,10 +122,10 @@ public class VerifyPolicyPrefController
     protected void saveForm(VerifyPolicyPref pref, VerifyPolicyPrefDto prefDto) {
         super.saveForm(pref, prefDto);
 
-        Class<? extends AbstractVerifyContext> userEntityType;
-        userEntityType = (Class<? extends AbstractVerifyContext>) pref.getType();
+        Class<? extends Entity<?>> userEntityType;
+        userEntityType = (Class<? extends Entity<?>>) pref.getType();
 
-        assert IVerifyContext.class.isAssignableFrom(userEntityType);
+        assert IVerifiable.class.isAssignableFrom(userEntityType);
 
         VerifyPolicy preferredPolicy = pref.getPreferredPolicy();
         assert preferredPolicy != null;
@@ -128,17 +136,19 @@ public class VerifyPolicyPrefController
     /**
      * Update all dependencies.
      */
-    <E extends Entity<?> & IVerifiable<? extends IVerifyContext>> //
-    void refresh(Class<E> userEntityType) {
+    void refresh(Class<? extends Entity<?>> userEntityType) {
+        // Refresh on non-verifiable entities do nothing.
+        if (!IVerifiable.class.isAssignableFrom(userEntityType))
+            // logger.warn?
+            return;
 
         String typeName = ClassUtil.getDisplayName(userEntityType);
 
-        for (E userEntity : asFor(userEntityType).list()) {
+        for (Entity<?> userEntity : asFor(userEntityType).list()) {
             if (logger.isDebugEnabled())
                 logger.debug("Refresh/verify " + typeName + " [" + userEntity.getId() + "]");
 
             verifyService.verifyEntity(userEntity);
-
             // should save userEntity?
         }
     }

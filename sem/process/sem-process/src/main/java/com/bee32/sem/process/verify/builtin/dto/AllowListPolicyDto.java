@@ -12,6 +12,7 @@ import com.bee32.plover.orm.web.EntityHelper;
 import com.bee32.plover.ox1.principal.PrincipalDto;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.builtin.AllowListPolicy;
+import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 
 public class AllowListPolicyDto
         extends VerifyPolicyDto {

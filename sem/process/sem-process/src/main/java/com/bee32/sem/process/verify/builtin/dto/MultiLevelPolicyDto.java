@@ -12,6 +12,7 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.web.EntityHelper;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.builtin.MultiLevelPolicy;
+import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 
 public class MultiLevelPolicyDto
         extends VerifyPolicyDto {
@@ -62,7 +63,7 @@ public class MultiLevelPolicyDto
                     VerifyPolicyDto policyRef = new VerifyPolicyDto().ref(policyId);
 
                     MultiLevelDto level = new MultiLevelDto().create();
-                    level.setMultiLevel(new MultiLevelPolicyDto().ref(this));
+                    level.setMultiLevel(this);
                     level.setLimit(limit);
                     level.setTargetPolicy(policyRef);
 

@@ -1,8 +1,9 @@
-package com.bee32.sem.process.verify;
+package com.bee32.sem.process.verify.builtin;
 
 import java.util.Date;
 
 import com.bee32.plover.ox1.principal.User;
+import com.bee32.sem.process.verify.IVerifyContext;
 
 /**
  * Used by single man verify policies.
@@ -25,9 +26,9 @@ public interface ISingleVerifier
     Date getVerifiedDate1();
 
     /**
-     * 返回 <code>true</code> 表示允许，<code>false</code> 表示被拒绝。如果尚未审核则返回 <code>null</code>。
+     * 返回 <code>true</code> 表示允许，<code>false</code> 表示被拒绝。如果尚未审核则返回 <code>false</code>。
      */
-    Boolean isAccepted1();
+    boolean isAccepted1();
 
     /**
      * 获取被拒绝的原因。

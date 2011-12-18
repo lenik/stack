@@ -1,4 +1,4 @@
-package com.bee32.sem.process.verify.util;
+package com.bee32.sem.process.verify.builtin.dto;
 
 import java.util.Date;
 
@@ -7,6 +7,8 @@ import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.principal.UserDto;
+import com.bee32.sem.process.verify.builtin.SingleVerifierSupport;
+import com.bee32.sem.process.verify.dto.VerifyContextDto;
 
 public class SingleVerifierSupportDto
         extends VerifyContextDto<SingleVerifierSupport> {

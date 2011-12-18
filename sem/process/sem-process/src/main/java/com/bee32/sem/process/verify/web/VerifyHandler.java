@@ -1,4 +1,4 @@
-package com.bee32.sem.process.verify.util;
+package com.bee32.sem.process.verify.web;
 
 import java.util.Set;
 
@@ -39,8 +39,7 @@ public class VerifyHandler<E extends Entity<K> & IVerifiable<C>, //
             throws Exception {
 
         final String _id = req.getParameter("id");
-
-        final User __currentUser = SessionUser.getInstance().getInternalUser();
+        final User currentUser = SessionUser.getInstance().getInternalUser();
 
         SuccessOrFailMessage sof = new SuccessOrFailMessage("审核完成。") {
 
@@ -48,19 +47,16 @@ public class VerifyHandler<E extends Entity<K> & IVerifiable<C>, //
             protected String eval()
                     throws ServletException {
 
-                if (__currentUser == null)
+                if (currentUser == null)
                     return "您尚未登陆。";
 
-                User currentUser = asFor(User.class).get(__currentUser.getId());
-
                 K id = eh.parseRequiredId(_id);
-
                 E entity = asFor(eh.getEntityType()).get(id);
-
                 if (entity == null)
                     return "审核的目标对象不存在，这可能是因为有人在您审核的同时删除了该对象。";
 
-                Set<Principal> responsibles = verifyService.getDeclaredResponsibles(entity);
+                C context = entity.getVerifyContext();
+                Set<Principal> responsibles = verifyService.getDeclaredResponsibles(context);
 
                 if (!currentUser.impliesOneOf(responsibles))
                     return "您不在责任人列表中，无权执行审核功能。";

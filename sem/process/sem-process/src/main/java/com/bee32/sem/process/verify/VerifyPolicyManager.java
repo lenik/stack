@@ -70,9 +70,9 @@ public class VerifyPolicyManager {
     }
 
     public static synchronized void addVerifiableType(Class<?> entityClass) {
-        Class<? extends IVerifyContext> contextClass = ClassUtil.infer1(entityClass, IVerifiable.class, 0);
+        Class<? extends IVerifyContext> entityContextClass = ClassUtil.infer1(entityClass, IVerifiable.class, 0);
 
-        Collection<Class<? extends IVerifyPolicy>> candidates = forContext(contextClass);
+        Collection<Class<? extends IVerifyPolicy>> candidates = forContext(entityContextClass);
 
         candidateMap.put(entityClass, candidates);
     }
@@ -85,7 +85,10 @@ public class VerifyPolicyManager {
     }
 
     public static Collection<Class<? extends IVerifyPolicy>> getCandidates(Class<?> verifiableType) {
-        return candidateMap.get(verifiableType);
+        if (!candidateMap.containsKey(verifiableType))
+            throw new IllegalUsageException("Verify-Policy is not suitable for this type: " + verifiableType);
+        else
+            return candidateMap.get(verifiableType);
     }
 
 }

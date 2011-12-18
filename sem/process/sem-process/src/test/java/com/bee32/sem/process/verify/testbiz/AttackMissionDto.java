@@ -5,8 +5,8 @@ import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
-import com.bee32.sem.process.verify.builtin.dto.IVerifiableDto;
-import com.bee32.sem.process.verify.util.SingleVerifierSupportDto;
+import com.bee32.sem.process.verify.builtin.dto.SingleVerifierSupportDto;
+import com.bee32.sem.process.verify.dto.IVerifiableDto;
 
 public class AttackMissionDto
         extends UIEntityDto<AttackMission, Integer>

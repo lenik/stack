@@ -1,4 +1,4 @@
-package com.bee32.sem.process.verify.util;
+package com.bee32.sem.process.verify.web;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.entity.Entity;

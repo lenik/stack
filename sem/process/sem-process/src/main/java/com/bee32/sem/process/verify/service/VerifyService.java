@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.free.IllegalUsageException;
 import javax.inject.Inject;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -17,17 +18,17 @@ import com.bee32.plover.ox1.principal.Principal;
 import com.bee32.plover.ox1.principal.User;
 import com.bee32.sem.event.entity.EventPriority;
 import com.bee32.sem.event.entity.Task;
+import com.bee32.sem.process.verify.AbstractVerifyContext;
 import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.IVerifyPolicy;
+import com.bee32.sem.process.verify.VerifyContextAccessor;
 import com.bee32.sem.process.verify.VerifyException;
 import com.bee32.sem.process.verify.VerifyPolicy;
+import com.bee32.sem.process.verify.VerifyPolicyDao;
 import com.bee32.sem.process.verify.VerifyResult;
 import com.bee32.sem.process.verify.VerifyState;
-import com.bee32.sem.process.verify.builtin.dao.VerifyPolicyDao;
-import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
-import com.bee32.sem.process.verify.util.AbstractVerifyContext;
-import com.bee32.sem.process.verify.util.VerifyContextAccessor;
+import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 
 public class VerifyService
         extends DataService
@@ -52,11 +53,6 @@ public class VerifyService
     }
 
     // --o IVerifyPolicy.
-
-    @Override
-    public Class<? extends IVerifyContext> getRequiredContextClass() {
-        return IVerifyContext.class;
-    }
 
     @Transactional(readOnly = true)
     @Override
@@ -146,17 +142,18 @@ public class VerifyService
      * @return 详细的审核结果。
      */
     @Transactional
-    public <E extends Entity<?> & IVerifiable<C>, C extends IVerifyContext> //
-    VerifyResult verifyEntity(E entity) {
+    public VerifyResult verifyEntity(Entity<?> entity) {
         if (entity == null)
             throw new NullPointerException("entity");
 
-        User __currentUser = SessionUser.getInstance().getInternalUser();
+        if (!(entity instanceof IVerifiable))
+            throw new IllegalUsageException("Not a verifiable entity: " + entity.getClass());
 
-        // XXX
-        // userService.get(0, __currentUser.getId());
+        IVerifiable<?> verifiable = (IVerifiable<?>) entity;
 
-        C _context = entity.getVerifyContext();
+        User currentUser = SessionUser.getInstance().getInternalUser();
+
+        IVerifyContext _context = verifiable.getVerifyContext();
 
         // Do verification.
         VerifyResult result = verify(_context);

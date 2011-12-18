@@ -1,12 +1,12 @@
-package com.bee32.sem.process.verify.util;
+package com.bee32.sem.process.verify.dto;
 
 import java.util.Date;
 
 import com.bee32.plover.orm.util.PartialDto;
 import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.dto.TaskDto;
+import com.bee32.sem.process.verify.AbstractVerifyContext;
 import com.bee32.sem.process.verify.VerifyState;
-import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 
 public abstract class VerifyContextDto<T extends AbstractVerifyContext>
         extends PartialDto<T> {

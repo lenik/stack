@@ -5,6 +5,7 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.c.CEntityDto;
 import com.bee32.sem.process.verify.builtin.MultiLevel;
+import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 
 public class MultiLevelDto
         extends CEntityDto<MultiLevel, Integer> {

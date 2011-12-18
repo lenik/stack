@@ -1,4 +1,4 @@
-package com.bee32.sem.process.verify.typedef;
+package com.bee32.sem.process.verify.preference;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

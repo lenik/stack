@@ -8,7 +8,7 @@ import com.bee32.sem.process.verify.builtin.MultiLevel;
 import com.bee32.sem.process.verify.builtin.MultiLevelPolicy;
 import com.bee32.sem.process.verify.builtin.PassStep;
 import com.bee32.sem.process.verify.builtin.PassToNextPolicy;
-import com.bee32.sem.process.verify.typedef.VerifyPolicyPref;
+import com.bee32.sem.process.verify.preference.VerifyPolicyPref;
 
 @ImportUnit(SEMEventUnit.class)
 public class SEMProcessUnit

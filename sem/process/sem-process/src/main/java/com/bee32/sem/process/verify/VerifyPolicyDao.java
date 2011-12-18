@@ -1,17 +1,17 @@
-package com.bee32.sem.process.verify.builtin.dao;
+package com.bee32.sem.process.verify;
+
+import javax.inject.Inject;
 
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityDao;
-import com.bee32.sem.process.verify.IVerifiable;
-import com.bee32.sem.process.verify.VerifyPolicy;
+import com.bee32.sem.process.verify.preference.VerifyPolicyPref;
+import com.bee32.sem.process.verify.preference.VerifyPolicyPrefDao;
 import com.bee32.sem.process.verify.service.NoVerifyPolicyException;
-import com.bee32.sem.process.verify.typedef.VerifyPolicyPref;
-import com.bee32.sem.process.verify.typedef.VerifyPolicyPrefDao;
 
 public class VerifyPolicyDao
         extends EntityDao<VerifyPolicy, Integer> {
 
-// @Inject
+    @Inject
     VerifyPolicyPrefDao prefDao;
 
     /**

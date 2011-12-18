@@ -1,8 +1,7 @@
-package com.bee32.sem.process.verify.util;
+package com.bee32.sem.process.verify;
 
 import java.util.Date;
 
-import com.bee32.sem.process.verify.VerifyState;
 
 public class VerifyContextAccessor {
 

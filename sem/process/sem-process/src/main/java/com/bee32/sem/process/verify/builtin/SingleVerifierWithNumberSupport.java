@@ -1,12 +1,10 @@
-package com.bee32.sem.process.verify.util;
+package com.bee32.sem.process.verify.builtin;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 
 import com.bee32.plover.arch.util.dto.IPropertyAccessor;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.sem.process.verify.builtin.IJudgeNumber;
-import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;
 
 @Embeddable
 public class SingleVerifierWithNumberSupport

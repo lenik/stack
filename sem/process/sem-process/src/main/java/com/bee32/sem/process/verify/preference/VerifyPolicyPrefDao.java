@@ -1,4 +1,4 @@
-package com.bee32.sem.process.verify.typedef;
+package com.bee32.sem.process.verify.preference;
 
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.ox1.typePref.TypePrefDao;

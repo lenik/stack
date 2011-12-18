@@ -9,16 +9,16 @@ import com.bee32.plover.orm.web.util.DataTableDxo;
 import com.bee32.plover.ox1.principal.User;
 import com.bee32.sem.event.entity.Task;
 import com.bee32.sem.process.SEMProcessModule;
-import com.bee32.sem.process.verify.ISingleVerifier;
-import com.bee32.sem.process.verify.util.SingleVerifierSupport;
-import com.bee32.sem.process.verify.util.SingleVerifierSupportDto;
-import com.bee32.sem.process.verify.util.VerifiableEntityController;
+import com.bee32.sem.process.verify.builtin.ISingleVerifier;
+import com.bee32.sem.process.verify.builtin.SingleVerifierSupport;
+import com.bee32.sem.process.verify.builtin.dto.SingleVerifierSupportDto;
+import com.bee32.sem.process.verify.web.VerifiableEntityController;
 
 @RequestMapping(AttackMissionController.PREFIX + "*")
 public class AttackMissionController
         extends VerifiableEntityController<AttackMission, Integer, ISingleVerifier, AttackMissionDto> {
 
-    public static final String PREFIX = SEMProcessModule.PREFIX + "attack/";
+    public static final String PREFIX = SEMProcessModule.PREFIX_ + "attack/";
 
     @Override
     protected void fillDataRow(DataTableDxo tab, AttackMissionDto dto) {

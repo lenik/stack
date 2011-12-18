@@ -15,7 +15,7 @@ import com.bee32.sem.process.verify.builtin.AllowListPolicy;
 import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;
 import com.bee32.sem.process.verify.builtin.MultiLevelPolicy;
 import com.bee32.sem.process.verify.builtin.PassToNextPolicy;
-import com.bee32.sem.process.verify.util.SingleVerifierWithNumberSupport;
+import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
 
 public class VerifyPolicyManagerTest
         extends Assert {

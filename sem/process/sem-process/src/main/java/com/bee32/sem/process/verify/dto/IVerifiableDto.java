@@ -1,7 +1,6 @@
-package com.bee32.sem.process.verify.builtin.dto;
+package com.bee32.sem.process.verify.dto;
 
 import com.bee32.sem.process.verify.IVerifiable;
-import com.bee32.sem.process.verify.util.VerifyContextDto;
 
 /**
  * @see IVerifiable

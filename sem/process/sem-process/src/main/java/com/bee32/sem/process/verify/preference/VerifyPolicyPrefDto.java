@@ -1,4 +1,4 @@
-package com.bee32.sem.process.verify.typedef;
+package com.bee32.sem.process.verify.preference;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,7 +12,7 @@ import com.bee32.plover.ox1.principal.Principal;
 import com.bee32.plover.ox1.principal.PrincipalDto;
 import com.bee32.plover.ox1.typePref.TypePrefDto;
 import com.bee32.sem.process.verify.VerifyPolicy;
-import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
+import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 
 public class VerifyPolicyPrefDto
         extends TypePrefDto<VerifyPolicyPref> {

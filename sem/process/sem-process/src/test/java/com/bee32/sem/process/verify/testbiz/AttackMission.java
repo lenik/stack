@@ -2,12 +2,13 @@ package com.bee32.sem.process.verify.testbiz;
 
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import com.bee32.plover.ox1.color.Pink;
 import com.bee32.plover.ox1.color.UIEntityAuto;
-import com.bee32.sem.process.verify.ISingleVerifier;
 import com.bee32.sem.process.verify.IVerifiable;
-import com.bee32.sem.process.verify.util.SingleVerifierSupport;
+import com.bee32.sem.process.verify.builtin.ISingleVerifier;
+import com.bee32.sem.process.verify.builtin.SingleVerifierSupport;
 
 @Entity
 @Pink
@@ -33,6 +34,7 @@ public class AttackMission
         this.target = target;
     }
 
+    @Transient
     @Override
     public SingleVerifierSupport getVerifyContext() {
         return singleVerifierSupport;

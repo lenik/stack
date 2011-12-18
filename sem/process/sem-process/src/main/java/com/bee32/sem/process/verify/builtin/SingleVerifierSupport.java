@@ -1,4 +1,4 @@
-package com.bee32.sem.process.verify.util;
+package com.bee32.sem.process.verify.builtin;
 
 import java.util.Date;
 
@@ -11,7 +11,7 @@ import javax.persistence.TemporalType;
 
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.ox1.principal.User;
-import com.bee32.sem.process.verify.ISingleVerifier;
+import com.bee32.sem.process.verify.AbstractVerifyContext;
 
 /**
  * Verifiable entity support class
@@ -28,7 +28,7 @@ public class SingleVerifierSupport
 
     private User verifier1;
     private Date verifiedDate1;
-    private Boolean accepted1;
+    private boolean accepted1;
     private String rejectedReason1;
 
     public SingleVerifierSupport(Entity<?> entity) {
@@ -57,7 +57,7 @@ public class SingleVerifierSupport
     }
 
     @Override
-    public Boolean isAccepted1() {
+    public boolean isAccepted1() {
         return accepted1;
     }
 

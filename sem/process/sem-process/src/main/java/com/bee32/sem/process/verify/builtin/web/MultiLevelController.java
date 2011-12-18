@@ -12,12 +12,12 @@ import com.bee32.plover.orm.web.util.DataTableDxo;
 import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.sem.process.SEMProcessModule;
+import com.bee32.sem.process.verify.VerifyPolicyDao;
 import com.bee32.sem.process.verify.builtin.MultiLevelPolicy;
 import com.bee32.sem.process.verify.builtin.dao.LevelDao;
-import com.bee32.sem.process.verify.builtin.dao.VerifyPolicyDao;
 import com.bee32.sem.process.verify.builtin.dto.MultiLevelDto;
 import com.bee32.sem.process.verify.builtin.dto.MultiLevelPolicyDto;
-import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
+import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 
 @RequestMapping(MultiLevelController.PREFIX + "/*")
 public class MultiLevelController

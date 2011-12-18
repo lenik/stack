@@ -1,4 +1,4 @@
-package com.bee32.sem.process.verify.util;
+package com.bee32.sem.process.verify.web;
 
 import javax.inject.Inject;
 
@@ -7,11 +7,12 @@ import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.web.basic.BasicEntityController;
 import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.IVerifyContext;
-import com.bee32.sem.process.verify.builtin.dto.IVerifiableDto;
-import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
+import com.bee32.sem.process.verify.dto.IVerifiableDto;
+import com.bee32.sem.process.verify.dto.VerifyContextDto;
+import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 import com.bee32.sem.process.verify.service.VerifyService;
 
-public abstract class VerifiableEntityController<E extends Entity<K> & IVerifiable<?>, //
+public abstract class VerifiableEntityController<E extends Entity<K> & IVerifiable<C>, //
 /*        */K extends Number, C extends IVerifyContext, Dto extends EntityDto<? super E, K> & IVerifiableDto>
         extends BasicEntityController<E, K, Dto>
         implements IVerifyHandlerHook<E> {
@@ -23,7 +24,8 @@ public abstract class VerifiableEntityController<E extends Entity<K> & IVerifiab
     protected void loadForm(E entity, Dto dto) {
         super.loadForm(entity, dto);
         VerifyPolicyDto verifyPolicy = verifyService.getVerifyPolicy(entity);
-        dto.setVerifyPolicy(verifyPolicy);
+        VerifyContextDto<?> context = dto.getVerifyContext();
+        context.setVerifyPolicy(verifyPolicy);
     }
 
     @Override

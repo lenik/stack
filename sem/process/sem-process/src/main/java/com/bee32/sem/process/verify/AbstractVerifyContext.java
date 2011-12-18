@@ -1,4 +1,4 @@
-package com.bee32.sem.process.verify.util;
+package com.bee32.sem.process.verify;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
 
@@ -26,8 +26,6 @@ import com.bee32.plover.util.IMultiFormat;
 import com.bee32.plover.util.PrettyPrintStream;
 import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.entity.Task;
-import com.bee32.sem.process.verify.IVerifyContext;
-import com.bee32.sem.process.verify.VerifyState;
 
 @MappedSuperclass
 public abstract class AbstractVerifyContext
