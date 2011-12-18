@@ -20,7 +20,7 @@
             <tr>
                 <td align="right">责任人 :</td>
                 <td>
-                    <h:selectManyListbox id="r_users" value="#{it.responsibleIds}" size="10">
+                    <h:selectManyListbox id="r_users" value="#{it.responsibleTr.ids}" size="10">
                         <c:forEach var="user" items="${users}">
                             <f:selectItem itemValue="${user.id}" itemLabel="${user.displayName}" />
                         </c:forEach>
