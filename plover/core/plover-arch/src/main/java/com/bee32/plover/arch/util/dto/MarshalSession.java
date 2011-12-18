@@ -74,7 +74,8 @@ public class MarshalSession
     @Override
     public void addUnmarshalled(BaseDto_Skel<?, ?> dto, Object source) {
         checkTyped(dto);
-        getUnmarshalledMap().put(dto, source);
+        Map<Object, Object> map = getUnmarshalledMap();
+        map.put(dto, source);
     }
 
 }

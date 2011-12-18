@@ -218,7 +218,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         throw new NotImplementedException();
     }
 
-    protected void setName() {
+    protected void setName(String name) {
         throw new NotImplementedException();
     }
 

@@ -6,13 +6,10 @@ import java.lang.reflect.Modifier;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.BeansException;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.web.servlet.mvc.AbstractController;
 
 import com.bee32.plover.arch.util.ClassUtil;
 
-//@org.springframework.stereotype.Controller
-@Lazy
 public abstract class _CompositeController
         extends AbstractController {
 
