@@ -74,7 +74,11 @@ public abstract class ServiceCollector<T>
         System.out.println("    Service: " + serviceType);
 
         ServiceTemplate st = serviceType.getAnnotation(ServiceTemplate.class);
-        assert st != null;
+        if (st == null) {
+            System.out.println("        (skipped)");
+            return;
+        }
+
         boolean isPrototype = st.prototype();
 
         File resdir = MavenPath.getResourceDir(serviceType);
