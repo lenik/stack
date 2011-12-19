@@ -11,7 +11,7 @@ import com.bee32.sem.hr.util.ScoreLevelMap;
  * 员工技能字典类
  */
 @Entity
-public class SkillCategory
+public class PersonSkillCategory
         extends NameDict {
 
     private static final long serialVersionUID = 1L;
@@ -24,15 +24,15 @@ public class SkillCategory
 
     private ScoreLevelMap levelMap;
 
-    public SkillCategory() {
+    public PersonSkillCategory() {
         super();
     }
 
-    public SkillCategory(String name, String label) {
+    public PersonSkillCategory(String name, String label) {
         super(name, label);
     }
 
-    public SkillCategory(String name, String label, String description) {
+    public PersonSkillCategory(String name, String label, String description) {
         super(name, label, description);
     }
 

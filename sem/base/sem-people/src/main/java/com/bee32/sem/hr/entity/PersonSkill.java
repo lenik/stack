@@ -29,23 +29,23 @@ public class PersonSkill
 
     private static final long serialVersionUID = 1L;
 
-    SkillCategory category;
+    PersonSkillCategory category;
     int score;
     Date date;
 
     @ManyToOne
-    public SkillCategory getCategory() {
+    public PersonSkillCategory getCategory() {
         return category;
     }
 
-    public void setCategory(SkillCategory category) {
+    public void setCategory(PersonSkillCategory category) {
         this.category = category;
     }
 
     /**
      * 量化的技能评分
      *
-     * @see SkillCategory#getLevelMap()
+     * @see PersonSkillCategory#getLevelMap()
      */
     @Column(nullable = false)
     public int getScore() {
