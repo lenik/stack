@@ -31,7 +31,7 @@ public class PersonRecordCategory
     // public static PartyRecordCategory CUSTODY = new PartyRecordCategory("CSTO", "行政拘留");
     // public static PartyRecordCategory JAIL = new PartyRecordCategory("JAIL", "监禁");
 
-    public static PersonRecordCategory RESUME = new PersonRecordCategory("RSM", "个人简历");
+    public static PersonRecordCategory INTRO = new PersonRecordCategory("INTR", "个人简历");
     public static PersonRecordCategory REWARDS = new PersonRecordCategory("R/P", "奖惩情况");
     public static PersonRecordCategory EDUCATION = new PersonRecordCategory("EDU", "教育经历");
     public static PersonRecordCategory EMPLOYMENT = new PersonRecordCategory("EMP", "工作经验");
