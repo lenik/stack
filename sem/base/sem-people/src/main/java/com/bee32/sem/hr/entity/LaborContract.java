@@ -7,6 +7,7 @@ import com.bee32.sem.misc.Contract;
 
 /**
  * 劳动合同
+ * @author jack
  *
  * @author jack
  */
@@ -17,4 +18,14 @@ public class LaborContract
 
     private static final long serialVersionUID = 1L;
 
+    Employee employee;
+
+    @ManyToOne
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
 }
