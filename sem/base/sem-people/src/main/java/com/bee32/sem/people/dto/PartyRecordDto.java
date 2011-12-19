@@ -8,10 +8,10 @@ import javax.validation.constraints.NotNull;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.MomentIntervalDto;
-import com.bee32.sem.people.entity.PartyRecord;
+import com.bee32.sem.hr.entity.PersonRecord;
 
 public class PartyRecordDto
-        extends MomentIntervalDto<PartyRecord> {
+        extends MomentIntervalDto<PersonRecord> {
 
     private static final long serialVersionUID = 1L;
 
@@ -25,14 +25,14 @@ public class PartyRecordDto
     }
 
     @Override
-    protected void _marshal(PartyRecord source) {
+    protected void _marshal(PersonRecord source) {
         party = marshal(PartyDto.class, source.getParty());
         category = marshal(PartyRecordCategoryDto.class, source.getCategory());
         text = source.getText();
     }
 
     @Override
-    protected void _unmarshalTo(PartyRecord target) {
+    protected void _unmarshalTo(PersonRecord target) {
         target.setText(text);
         merge(target, "category", category);
         merge(target, "party", party);
@@ -77,7 +77,7 @@ public class PartyRecordDto
         this.party = party;
     }
 
-    @NLength(min = 5, max = PartyRecord.TEXT_LENGTH)
+    @NLength(min = 5, max = PersonRecord.TEXT_LENGTH)
     public String getText() {
         return text;
     }

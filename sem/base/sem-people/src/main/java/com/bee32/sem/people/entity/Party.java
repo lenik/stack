@@ -75,7 +75,6 @@ public abstract class Party
 
     Set<PartyTagname> tags = new HashSet<PartyTagname>();
     List<Contact> contacts = new ArrayList<Contact>();
-    List<PartyRecord> records = new ArrayList<PartyRecord>();
 
     protected Party() {
     }
@@ -256,16 +255,6 @@ public abstract class Party
         if (contacts == null)
             throw new NullPointerException("contacts");
         this.contacts = contacts;
-    }
-
-    @OneToMany(mappedBy = "party", orphanRemoval = true)
-    @Cascade(CascadeType.ALL)
-    public List<PartyRecord> getRecords() {
-        return records;
-    }
-
-    public void setRecords(List<PartyRecord> records) {
-        this.records = records;
     }
 
     @Override

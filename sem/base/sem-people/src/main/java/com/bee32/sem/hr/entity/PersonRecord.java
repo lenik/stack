@@ -1,4 +1,4 @@
-package com.bee32.sem.people.entity;
+package com.bee32.sem.hr.entity;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -7,29 +7,30 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 import com.bee32.plover.ox1.color.MomentInterval;
+import com.bee32.sem.people.entity.Party;
 
 /**
  * 人或组织的社会档案记录.
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "party_record_seq", allocationSize = 1)
-public class PartyRecord
+public class PersonRecord
         extends MomentInterval {
 
     private static final long serialVersionUID = 1L;
 
     public static final int TEXT_LENGTH = 10000;
 
-    PartyRecordCategory category = PartyRecordCategory.INFO;
+    PersonRecordCategory category = PersonRecordCategory.INFO;
     Party party;
     String text = "";
 
     @ManyToOne(optional = false)
-    public PartyRecordCategory getCategory() {
+    public PersonRecordCategory getCategory() {
         return category;
     }
 
-    public void setCategory(PartyRecordCategory category) {
+    public void setCategory(PersonRecordCategory category) {
         if (category == null)
             throw new NullPointerException("category");
         this.category = category;

@@ -24,7 +24,7 @@ public class PartyDto
     private static final long serialVersionUID = 1L;
 
     public static final int CONTACTS = 1;
-    public static final int RECORDS = 2;
+    // public static final int RECORDS = 2;
     public static final int ROLES = 4;
     public static final int ROLES_CHAIN = 8 | ROLES;
 
@@ -47,7 +47,6 @@ public class PartyDto
 
     List<PartyTagnameDto> tags;
     List<ContactDto> contacts;
-    List<PartyRecordDto> records;
 
     public PartyDto() {
         super();
@@ -83,9 +82,6 @@ public class PartyDto
 
         if (selection.contains(CONTACTS))
             contacts = mrefList(ContactDto.class, source.getContacts());
-
-        if (selection.contains(RECORDS))
-            records = mrefList(PartyRecordDto.class, source.getRecords());
     }
 
     @Override
@@ -115,9 +111,6 @@ public class PartyDto
 
         if (selection.contains(CONTACTS))
             mergeList(target, "contacts", contacts);
-
-        if (selection.contains(RECORDS))
-            mergeList(target, "records", records);
     }
 
     @Override
@@ -270,14 +263,6 @@ public class PartyDto
 
     public void setTags(List<PartyTagnameDto> tags) {
         this.tags = tags;
-    }
-
-    public List<PartyRecordDto> getRecords() {
-        return records;
-    }
-
-    public void setRecords(List<PartyRecordDto> records) {
-        this.records = records;
     }
 
     public List<ContactDto> getContacts() {

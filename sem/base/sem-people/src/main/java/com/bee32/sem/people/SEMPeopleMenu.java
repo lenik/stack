@@ -6,9 +6,9 @@ import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.frame.builtins.SEMFrameMenu;
 import com.bee32.sem.frame.menu.MenuContribution;
 import com.bee32.sem.frame.menu.MenuNode;
+import com.bee32.sem.hr.entity.PersonRecordCategory;
 import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.OrgType;
-import com.bee32.sem.people.entity.PartyRecordCategory;
 import com.bee32.sem.people.entity.PartySidType;
 import com.bee32.sem.people.entity.PartyTagname;
 
@@ -31,7 +31,7 @@ public class SEMPeopleMenu
     static MenuNode orgType = entry(SETTINGS, "orgType", getDictIndex(OrgType.class));
     static MenuNode contactCategory = entry(SETTINGS, "contactCategory", getDictIndex(ContactCategory.class));
     static MenuNode partyRecordCategory = entry(SETTINGS, "partyRecordCategory",
-            getDictIndex(PartyRecordCategory.class));
+            getDictIndex(PersonRecordCategory.class));
 
     static MenuNode permissionAdmin = entry(SEMFrameMenu.BASE, 10, "permissionAdmin",
             ACCESS_.join("r_list/index-rich.jsf"));
