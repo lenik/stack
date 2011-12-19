@@ -1,5 +1,6 @@
 package com.bee32.sem.hr.entity;
 
+import javax.free.DecodeException;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
@@ -46,7 +47,8 @@ public class PersonSkillCategory
         return levelMap.encode();
     }
 
-    public void setLevelsData(String levelsData) {
+    public void setLevelsData(String levelsData)
+            throws DecodeException {
         if (levelsData == null)
             throw new NullPointerException("levelsData");
         levelMap = ScoreLevelMap.decode(levelsData);
