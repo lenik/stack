@@ -61,7 +61,7 @@ public class MultiLevelPolicy
 
     public MultiLevel getLevel(long limit) {
         if (levelMap != null)
-            return levelMap.get(limit);
+            return levelMap.getTarget(limit);
 
         if (levels != null) {
             for (MultiLevel level : levels)
