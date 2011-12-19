@@ -2,12 +2,13 @@ package com.bee32.sem.hr.entity;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 import com.bee32.sem.misc.Contract;
+import com.bee32.sem.people.entity.Person;
 
 /**
  * 劳动合同
- * @author jack
  *
  * @author jack
  */
@@ -18,14 +19,25 @@ public class LaborContract
 
     private static final long serialVersionUID = 1L;
 
-    Employee employee;
+    Person employee;
+    PersonResume employeeInfo;
 
     @ManyToOne
-    public Employee getEmployee() {
+    public Person getEmployee() {
         return employee;
     }
 
-    public void setEmployee(Employee employee) {
+    public void setEmployee(Person employee) {
         this.employee = employee;
     }
+
+    @ManyToOne
+    public PersonResume getEmployeeInfo() {
+        return employeeInfo;
+    }
+
+    public void setEmployeeInfo(PersonResume employeeInfo) {
+        this.employeeInfo = employeeInfo;
+    }
+
 }

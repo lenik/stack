@@ -1,6 +1,5 @@
 package com.bee32.sem.hr.entity;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -15,10 +14,10 @@ public class PersonResume
     private static final long serialVersionUID = 1L;
 
     Person person;
+
     List<PersonRecord> records;
     List<PersonSkill> skills;
 
-    Date employedDate;
-    Date resignedDate;
+    PersonEducationType education;
 
 }
