@@ -21,7 +21,6 @@ import com.bee32.sem.event.entity.Task;
 import com.bee32.sem.process.verify.AbstractVerifyContext;
 import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.IVerifyContext;
-import com.bee32.sem.process.verify.IVerifyPolicy;
 import com.bee32.sem.process.verify.VerifyContextAccessor;
 import com.bee32.sem.process.verify.VerifyException;
 import com.bee32.sem.process.verify.VerifyPolicy;
@@ -32,12 +31,13 @@ import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 
 public class VerifyService
         extends DataService
-        implements IVerifyPolicy {
+        implements IVerifyService {
 
     @Inject
     VerifyPolicyDao policyDao;
 
     @Transactional(readOnly = true)
+    @Override
     public VerifyPolicyDto getPreferredVerifyPolicy(Class<? extends IVerifyContext> entityClass) {
         VerifyPolicy preferredVerifyPolicy = policyDao.getPreferredVerifyPolicy(entityClass);
         VerifyPolicyDto policyDto = DTOs.marshal(VerifyPolicyDto.class, preferredVerifyPolicy);
@@ -46,6 +46,7 @@ public class VerifyService
     }
 
     @Transactional(readOnly = true)
+    @Override
     public <E extends Entity<?> & IVerifiable<?>> VerifyPolicyDto getVerifyPolicy(E entity) {
         VerifyPolicy verifyPolicy = policyDao.getVerifyPolicy(entity);
         VerifyPolicyDto policyDto = DTOs.marshal(VerifyPolicyDto.class, verifyPolicy);
@@ -65,18 +66,6 @@ public class VerifyService
         return verifyPolicy.getDeclaredResponsibles(context);
     }
 
-    /**
-     * 表上的 {@link AbstractVerifyContext#isVerified() verified} 是缓存的值，仅用于检索用途。
-     * <p>
-     * 当需要在业务过程中判断对象是否已审核时，需要调用本方法重新计算审核结果。
-     *
-     * 本方法不会更新缓存，如果你需要更新缓存请调用 {@link #verify(AbstractVerifyContext)} 方法。
-     *
-     * @param context
-     *            要计算审核状态的实体对象。
-     * @return <code>true</code> 表示成功审核，否则
-     * @see #verify(AbstractVerifyContext)
-     */
     @Transactional(readOnly = true)
     @Override
     public boolean isVerified(IVerifyContext context) {
@@ -86,17 +75,6 @@ public class VerifyService
         return verifyPolicy.isVerified(context);
     }
 
-    /**
-     * 重新计算审核状态，除非审核成功否则抛出异常。
-     *
-     * 本方法不会更新缓存，如果你需要更新缓存请调用 {@link #verify(AbstractVerifyContext)} 方法。
-     *
-     * @param context
-     *            要计算审核状态的实体对象。
-     * @throws VerifyException
-     *             当审核不成功时。
-     * @see #verify(AbstractVerifyContext)
-     */
     @Transactional(readOnly = true)
     @Override
     public void assertVerified(IVerifyContext context)
@@ -105,16 +83,6 @@ public class VerifyService
         verifyPolicy.assertVerified(context);
     }
 
-    /**
-     * 重新计算审核状态，并返回详细的审核结果。
-     *
-     * 本方法不会更新缓存，如果你需要更新缓存请调用 {@link #verify(AbstractVerifyContext)} 方法。
-     *
-     * @param context
-     *            要计算审核状态的实体对象。
-     * @return {@link VerifyResult} 详细的审核结果。
-     * @see #verify(AbstractVerifyContext)
-     */
     @Transactional(readOnly = true)
     @Override
     public VerifyResult verify(IVerifyContext context) {
@@ -132,15 +100,6 @@ public class VerifyService
         return result;
     }
 
-    /**
-     * 重新计算审核状态并更新缓存，产生审核请求事件或更新事件状态，以及发送审核通知函给相关责任人。
-     *
-     * 您需要自己计算
-     *
-     * @param entity
-     *            被计算并更新审核状态的实体，非 <code>null</code>。
-     * @return 详细的审核结果。
-     */
     @Transactional
     public VerifyResult verifyEntity(Entity<?> entity) {
         if (entity == null)
