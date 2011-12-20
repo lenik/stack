@@ -11,9 +11,9 @@ import org.junit.Test;
 import com.bee32.plover.arch.util.dto.BeanPropertyAccessor;
 import com.bee32.plover.arch.util.dto.IPropertyAccessor;
 import com.bee32.plover.ox1.color.UIEntityAuto;
-import com.bee32.sem.process.verify.builtin.AllowListPolicy;
+import com.bee32.sem.process.verify.builtin.SingleVerifierPolicy;
 import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;
-import com.bee32.sem.process.verify.builtin.MultiLevelPolicy;
+import com.bee32.sem.process.verify.builtin.SingleVerifierRankedPolicy;
 import com.bee32.sem.process.verify.builtin.PassToNextPolicy;
 import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
 
@@ -23,16 +23,16 @@ public class VerifyPolicyManagerTest
     @Test
     public void testListAll() {
         Collection<Class<? extends IVerifyPolicy>> all = VerifyPolicyManager.list();
-        assertTrue(all.contains(AllowListPolicy.class));
-        assertTrue(all.contains(MultiLevelPolicy.class));
+        assertTrue(all.contains(SingleVerifierPolicy.class));
+        assertTrue(all.contains(SingleVerifierRankedPolicy.class));
         assertTrue(all.contains(PassToNextPolicy.class));
     }
 
     @Test
     public void testMatch() {
         Collection<Class<? extends IVerifyPolicy>> all = VerifyPolicyManager.forBean(SimpleBean.class);
-        assertTrue(all.contains(AllowListPolicy.class));
-        assertTrue(all.contains(MultiLevelPolicy.class));
+        assertTrue(all.contains(SingleVerifierPolicy.class));
+        assertTrue(all.contains(SingleVerifierRankedPolicy.class));
         assertFalse(all.contains(PassToNextPolicy.class));
     }
 

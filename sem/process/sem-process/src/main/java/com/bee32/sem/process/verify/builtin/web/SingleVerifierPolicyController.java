@@ -15,20 +15,20 @@ import com.bee32.plover.ox1.principal.UserDto;
 import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.sem.process.SEMProcessModule;
-import com.bee32.sem.process.verify.builtin.AllowListPolicy;
-import com.bee32.sem.process.verify.builtin.dto.AllowListPolicyDto;
+import com.bee32.sem.process.verify.builtin.SingleVerifierPolicy;
+import com.bee32.sem.process.verify.builtin.dto.SingleVerifierPolicyDto;
 
-@RequestMapping(AllowListController.PREFIX + "/*")
-public class AllowListController
-        extends BasicEntityController<AllowListPolicy, Integer, AllowListPolicyDto> {
+@RequestMapping(SingleVerifierPolicyController.PREFIX + "/*")
+public class SingleVerifierPolicyController
+        extends BasicEntityController<SingleVerifierPolicy, Integer, SingleVerifierPolicyDto> {
 
-    public static final String PREFIX = SEMProcessModule.PREFIX + "/list";
+    public static final String PREFIX = SEMProcessModule.PREFIX + "/v1";
 
     @Inject
     UserDao userDao;
 
     @Override
-    protected void fillDataRow(DataTableDxo tab, AllowListPolicyDto item) {
+    protected void fillDataRow(DataTableDxo tab, SingleVerifierPolicyDto item) {
         tab.push(item.getLabel());
         tab.push(item.getDescription());
 

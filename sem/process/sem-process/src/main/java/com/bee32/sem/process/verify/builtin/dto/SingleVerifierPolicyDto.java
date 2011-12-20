@@ -11,10 +11,10 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.web.EntityHelper;
 import com.bee32.plover.ox1.principal.PrincipalDto;
 import com.bee32.sem.process.verify.VerifyPolicy;
-import com.bee32.sem.process.verify.builtin.AllowListPolicy;
+import com.bee32.sem.process.verify.builtin.SingleVerifierPolicy;
 import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 
-public class AllowListPolicyDto
+public class SingleVerifierPolicyDto
         extends VerifyPolicyDto {
 
     private static final long serialVersionUID = 1L;
@@ -23,24 +23,24 @@ public class AllowListPolicyDto
 
     List<PrincipalDto> responsibles;
 
-    public AllowListPolicyDto() {
+    public SingleVerifierPolicyDto() {
         super();
     }
 
-    public AllowListPolicyDto(int selection) {
+    public SingleVerifierPolicyDto(int selection) {
         super(selection);
     }
 
     @Override
     protected void _marshal(VerifyPolicy _source) {
-        AllowListPolicy source = (AllowListPolicy) _source;
+        SingleVerifierPolicy source = (SingleVerifierPolicy) _source;
         if (selection.contains(RESPONSIBLES))
             responsibles = marshalList(PrincipalDto.class, 0, source.getResponsibles());
     }
 
     @Override
     protected void _unmarshalTo(VerifyPolicy _target) {
-        AllowListPolicy target = (AllowListPolicy) _target;
+        SingleVerifierPolicy target = (SingleVerifierPolicy) _target;
         if (selection.contains(RESPONSIBLES))
             mergeSet(target, "responsibles", responsibles);
     }
@@ -75,7 +75,7 @@ public class AllowListPolicyDto
     }
 
     static {
-        EntityHelper.getInstance(AllowListPolicy.class).setSelection(RESPONSIBLES);
+        EntityHelper.getInstance(SingleVerifierPolicy.class).setSelection(RESPONSIBLES);
     }
 
 }

@@ -28,12 +28,12 @@ import com.bee32.sem.process.verify.VerifyResult;
 @DiscriminatorValue("ML")
 @Alias("level")
 @ForVerifyContext(ISingleVerifierWithNumber.class)
-public class MultiLevelPolicy
+public class SingleVerifierRankedPolicy
         extends VerifyPolicy {
 
     private static final long serialVersionUID = 1L;
 
-    private List<MultiLevel> levels;
+    private List<SingleVerifierLevel> levels;
     private LevelMap levelMap;
 
     /**
@@ -42,10 +42,10 @@ public class MultiLevelPolicy
     @OneToMany(mappedBy = "multiLevel", orphanRemoval = true)
     @OrderBy("limit_ asc")
     @Cascade({ CascadeType.ALL })
-    public synchronized List<MultiLevel> getLevels() {
+    public synchronized List<SingleVerifierLevel> getLevels() {
         if (levels == null) {
             if (levelMap == null) {
-                levels = new ArrayList<MultiLevel>();
+                levels = new ArrayList<SingleVerifierLevel>();
             } else {
                 levels = convertToLevels(levelMap);
                 levelMap = null;
@@ -54,17 +54,17 @@ public class MultiLevelPolicy
         return levels;
     }
 
-    public synchronized void setLevels(List<MultiLevel> levels) {
+    public synchronized void setLevels(List<SingleVerifierLevel> levels) {
         this.levels = levels;
         this.levelMap = null;
     }
 
-    public MultiLevel getLevel(long limit) {
+    public SingleVerifierLevel getLevel(long limit) {
         if (levelMap != null)
             return levelMap.getTarget(limit);
 
         if (levels != null) {
-            for (MultiLevel level : levels)
+            for (SingleVerifierLevel level : levels)
                 if (level.getLimit() == limit)
                     return level;
         }
@@ -92,18 +92,18 @@ public class MultiLevelPolicy
         this.levels = null;
     }
 
-    static LevelMap convertToRangeMap(Collection<MultiLevel> levels) {
+    static LevelMap convertToRangeMap(Collection<SingleVerifierLevel> levels) {
         LevelMap map = new LevelMap();
         if (levels != null)
-            for (MultiLevel range : levels) {
+            for (SingleVerifierLevel range : levels) {
                 long limit = range.getLimit();
                 map.put(limit, range);
             }
         return map;
     }
 
-    static List<MultiLevel> convertToLevels(LevelMap map) {
-        List<MultiLevel> levels = new ArrayList<MultiLevel>();
+    static List<SingleVerifierLevel> convertToLevels(LevelMap map) {
+        List<SingleVerifierLevel> levels = new ArrayList<SingleVerifierLevel>();
         levels.addAll(map.values());
         return levels;
     }
@@ -112,7 +112,7 @@ public class MultiLevelPolicy
         if (verifyPolicy == null)
             throw new NullPointerException("verifyPolicy for " + getName());
 
-        MultiLevel range = new MultiLevel(this, limit, verifyPolicy);
+        SingleVerifierLevel range = new SingleVerifierLevel(this, limit, verifyPolicy);
         getLevelMap().put(limit, range);
     }
 
@@ -147,7 +147,7 @@ public class MultiLevelPolicy
 
         while (ceil != null) {
 
-            MultiLevel level = levelMap.get(ceil);
+            SingleVerifierLevel level = levelMap.get(ceil);
 
             VerifyPolicy subPolicy = level.getTargetPolicy();
 
@@ -155,8 +155,8 @@ public class MultiLevelPolicy
             if (!markSet.add(subPolicy))
                 continue;
 
-            if (subPolicy instanceof MultiLevelPolicy) {
-                MultiLevelPolicy subML = (MultiLevelPolicy) subPolicy;
+            if (subPolicy instanceof SingleVerifierRankedPolicy) {
+                SingleVerifierRankedPolicy subML = (SingleVerifierRankedPolicy) subPolicy;
                 Collection<? extends Principal> subset = subML.getDeclaredResponsibles(context);
                 allDeclared.addAll(subset);
 

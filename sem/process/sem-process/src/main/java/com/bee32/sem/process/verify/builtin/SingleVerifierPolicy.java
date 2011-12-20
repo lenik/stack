@@ -23,29 +23,29 @@ import com.bee32.sem.process.verify.VerifyResult;
  * 由任一管理员审核策略。
  */
 @Entity
-@DiscriminatorValue("LS")
+@DiscriminatorValue("V1")
 @Alias("list")
 @ForVerifyContext(ISingleVerifier.class)
-public class AllowListPolicy
+public class SingleVerifierPolicy
         extends VerifyPolicy {
 
     private static final long serialVersionUID = 1L;
 
     private Set<Principal> responsibles;
 
-    public AllowListPolicy() {
+    public SingleVerifierPolicy() {
         this(new Principal[0]);
     }
 
-    public AllowListPolicy(Principal singleManager) {
+    public SingleVerifierPolicy(Principal singleManager) {
         this(new Principal[] { singleManager });
     }
 
-    public AllowListPolicy(Principal... responsibles) {
+    public SingleVerifierPolicy(Principal... responsibles) {
         this(Arrays.asList(responsibles));
     }
 
-    public AllowListPolicy(Collection<? extends Principal> responsibles) {
+    public SingleVerifierPolicy(Collection<? extends Principal> responsibles) {
         if (responsibles == null)
             throw new NullPointerException("responsibles");
         this.responsibles = new HashSet<Principal>(responsibles);

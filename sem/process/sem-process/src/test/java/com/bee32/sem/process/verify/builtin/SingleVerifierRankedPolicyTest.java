@@ -2,8 +2,6 @@ package com.bee32.sem.process.verify.builtin;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -11,23 +9,19 @@ import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 import com.bee32.sem.process.SEMProcessUnit;
 import com.bee32.sem.process.SEMVerifyPolicySamples;
-import com.bee32.sem.process.verify.builtin.dao.MultiLevelDao;
 
 @Ignore
 @Using(SEMProcessUnit.class)
-public class MultiLevelPolicyTest
+public class SingleVerifierRankedPolicyTest
         extends WiredDaoTestCase {
-
-    @Inject
-    MultiLevelDao dao;
 
     @Test
     public void testLimitOrder() {
         Integer id = SEMVerifyPolicySamples.macLevel.getId();
-        MultiLevelPolicy mlevel = dao.get(id);
-        List<MultiLevel> ranges = mlevel.getLevels();
+        SingleVerifierRankedPolicy mlevel = asFor(SingleVerifierRankedPolicy.class).get(id);
+        List<SingleVerifierLevel> ranges = mlevel.getLevels();
         long limit1 = ranges.get(0).getLimit();
-        MultiLevel limit2 = ranges.get(1);
+        SingleVerifierLevel limit2 = ranges.get(1);
         assertEquals(1000, limit1);
         assertEquals(10000, limit2);
     }

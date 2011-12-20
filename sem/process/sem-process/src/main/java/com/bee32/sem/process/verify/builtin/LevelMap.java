@@ -8,15 +8,15 @@ import javax.free.LongComparator;
 import com.bee32.plover.collections.map.RangeToMap;
 
 public class LevelMap
-        extends RangeToMap<Long, MultiLevel> {
+        extends RangeToMap<Long, SingleVerifierLevel> {
 
     private static final long serialVersionUID = 1L;
 
-    public LevelMap(Map<? extends Long, ? extends MultiLevel> map) {
+    public LevelMap(Map<? extends Long, ? extends SingleVerifierLevel> map) {
         super(LongComparator.INSTANCE, map);
     }
 
-    public LevelMap(TreeMap<Long, MultiLevel> treeMap) {
+    public LevelMap(TreeMap<Long, SingleVerifierLevel> treeMap) {
         super(LongComparator.INSTANCE, treeMap);
     }
 

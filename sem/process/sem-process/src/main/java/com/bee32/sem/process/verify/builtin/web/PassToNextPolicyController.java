@@ -1,25 +1,19 @@
 package com.bee32.sem.process.verify.builtin.web;
 
-import javax.inject.Inject;
-
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bee32.plover.orm.web.basic.BasicEntityController;
 import com.bee32.plover.orm.web.util.DataTableDxo;
 import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.builtin.PassToNextPolicy;
-import com.bee32.sem.process.verify.builtin.dao.PassStepDao;
 import com.bee32.sem.process.verify.builtin.dto.PassStepDto;
 import com.bee32.sem.process.verify.builtin.dto.PassToNextPolicyDto;
 
-@RequestMapping(PassToNextController.PREFIX + "/*")
-public class PassToNextController
+@RequestMapping(PassToNextPolicyController.PREFIX + "/*")
+public class PassToNextPolicyController
         extends BasicEntityController<PassToNextPolicy, Integer, PassToNextPolicyDto> {
 
     public static final String PREFIX = SEMProcessModule.PREFIX + "/p2next";
-
-    @Inject
-    PassStepDao seqDao;
 
     @Override
     protected void fillDataRow(DataTableDxo tab, PassToNextPolicyDto dto) {

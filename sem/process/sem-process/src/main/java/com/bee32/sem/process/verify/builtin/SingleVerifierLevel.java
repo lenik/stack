@@ -17,21 +17,21 @@ import com.bee32.sem.process.verify.VerifyPolicy;
 
 @Entity
 @Blue
-@SequenceGenerator(name = "idgen", sequenceName = "multi_level_seq", allocationSize = 1)
-public class MultiLevel
+@SequenceGenerator(name = "idgen", sequenceName = "single_verifier_level_seq", allocationSize = 1)
+public class SingleVerifierLevel
         extends CEntityAuto<Integer>
         implements IRangeMapEntry<Long, VerifyPolicy> {
 
     private static final long serialVersionUID = 1L;
 
-    private MultiLevelPolicy policy;
+    private SingleVerifierRankedPolicy policy;
     private long limit;
     private VerifyPolicy targetPolicy;
 
-    public MultiLevel() {
+    public SingleVerifierLevel() {
     }
 
-    public MultiLevel(MultiLevelPolicy multiLevel, long limit, VerifyPolicy verifyPolicy) {
+    public SingleVerifierLevel(SingleVerifierRankedPolicy multiLevel, long limit, VerifyPolicy verifyPolicy) {
         if (multiLevel == null)
             throw new NullPointerException("multiLevel");
         if (verifyPolicy == null)
@@ -44,11 +44,11 @@ public class MultiLevel
 
     // @NaturalId
     @ManyToOne(optional = false)
-    public MultiLevelPolicy getMultiLevel() {
+    public SingleVerifierRankedPolicy getMultiLevel() {
         return policy;
     }
 
-    public void setMultiLevel(MultiLevelPolicy multiLevel) {
+    public void setMultiLevel(SingleVerifierRankedPolicy multiLevel) {
         this.policy = multiLevel;
     }
 

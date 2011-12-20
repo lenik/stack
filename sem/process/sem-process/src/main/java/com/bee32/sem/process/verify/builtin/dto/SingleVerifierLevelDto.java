@@ -4,31 +4,31 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.c.CEntityDto;
-import com.bee32.sem.process.verify.builtin.MultiLevel;
+import com.bee32.sem.process.verify.builtin.SingleVerifierLevel;
 import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 
-public class MultiLevelDto
-        extends CEntityDto<MultiLevel, Integer> {
+public class SingleVerifierLevelDto
+        extends CEntityDto<SingleVerifierLevel, Integer> {
 
     private static final long serialVersionUID = 1L;
 
-    private MultiLevelPolicyDto multiLevel;
+    private SingleVerifierRankedPolicyDto multiLevel;
     private long limit;
     private VerifyPolicyDto targetPolicy;
 
-    public MultiLevelDto() {
+    public SingleVerifierLevelDto() {
         super();
     }
 
     @Override
-    protected void _marshal(MultiLevel source) {
-        multiLevel = new MultiLevelPolicyDto().ref(source.getMultiLevel());
+    protected void _marshal(SingleVerifierLevel source) {
+        multiLevel = new SingleVerifierRankedPolicyDto().ref(source.getMultiLevel());
         limit = source.getLimit();
         targetPolicy = mref(VerifyPolicyDto.class, source.getTargetPolicy());
     }
 
     @Override
-    protected void _unmarshalTo(MultiLevel target) {
+    protected void _unmarshalTo(SingleVerifierLevel target) {
         target.setLimit(limit);
 
         merge(target, "multiLevel", multiLevel);
@@ -40,11 +40,11 @@ public class MultiLevelDto
             throws ParseException {
     }
 
-    public MultiLevelPolicyDto getMultiLevel() {
+    public SingleVerifierRankedPolicyDto getMultiLevel() {
         return multiLevel;
     }
 
-    public void setMultiLevel(MultiLevelPolicyDto multiLevel) {
+    public void setMultiLevel(SingleVerifierRankedPolicyDto multiLevel) {
         this.multiLevel = multiLevel;
     }
 

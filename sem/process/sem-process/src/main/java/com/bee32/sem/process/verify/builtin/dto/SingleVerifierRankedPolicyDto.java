@@ -11,36 +11,36 @@ import javax.free.TypeConvertException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.web.EntityHelper;
 import com.bee32.sem.process.verify.VerifyPolicy;
-import com.bee32.sem.process.verify.builtin.MultiLevelPolicy;
+import com.bee32.sem.process.verify.builtin.SingleVerifierRankedPolicy;
 import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 
-public class MultiLevelPolicyDto
+public class SingleVerifierRankedPolicyDto
         extends VerifyPolicyDto {
 
     private static final long serialVersionUID = 1L;
 
     public static final int LEVELS = 1;
 
-    List<MultiLevelDto> levels;
+    List<SingleVerifierLevelDto> levels;
 
-    public MultiLevelPolicyDto() {
+    public SingleVerifierRankedPolicyDto() {
         super();
     }
 
-    public MultiLevelPolicyDto(int selection) {
+    public SingleVerifierRankedPolicyDto(int selection) {
         super(selection);
     }
 
     @Override
     protected void _marshal(VerifyPolicy _source) {
-        MultiLevelPolicy source = (MultiLevelPolicy) _source;
+        SingleVerifierRankedPolicy source = (SingleVerifierRankedPolicy) _source;
         if (selection.contains(LEVELS))
-            setLevels(marshalList(MultiLevelDto.class, source.getLevels()));
+            setLevels(marshalList(SingleVerifierLevelDto.class, source.getLevels()));
     }
 
     @Override
     protected void _unmarshalTo(VerifyPolicy _target) {
-        MultiLevelPolicy target = (MultiLevelPolicy) _target;
+        SingleVerifierRankedPolicy target = (SingleVerifierRankedPolicy) _target;
         if (selection.contains(LEVELS))
             mergeList(target, "levels", levels);
     }
@@ -50,7 +50,7 @@ public class MultiLevelPolicyDto
             throws ParseException, TypeConvertException {
 
         if (selection.contains(LEVELS)) {
-            levels = new ArrayList<MultiLevelDto>();
+            levels = new ArrayList<SingleVerifierLevelDto>();
             String[] levelStrs = map.getStringArray("levels");
             if (levelStrs != null)
                 for (String levelStr : levelStrs) {
@@ -62,7 +62,7 @@ public class MultiLevelPolicyDto
                     int policyId = Integer.parseInt(_policyId);
                     VerifyPolicyDto policyRef = new VerifyPolicyDto().ref(policyId);
 
-                    MultiLevelDto level = new MultiLevelDto().create();
+                    SingleVerifierLevelDto level = new SingleVerifierLevelDto().create();
                     level.setMultiLevel(this);
                     level.setLimit(limit);
                     level.setTargetPolicy(policyRef);
@@ -73,19 +73,19 @@ public class MultiLevelPolicyDto
     }
 
     /**
-     * @see MultiLevelPolicy#getLevels()
+     * @see SingleVerifierRankedPolicy#getLevels()
      */
     boolean resort = false;
 
-    public List<MultiLevelDto> getLevels() {
+    public List<SingleVerifierLevelDto> getLevels() {
         return levels;
     }
 
-    public void setLevels(List<MultiLevelDto> levels) {
+    public void setLevels(List<SingleVerifierLevelDto> levels) {
         if (resort && levels != null)
-            Collections.sort(levels, new AbstractNonNullComparator<MultiLevelDto>() {
+            Collections.sort(levels, new AbstractNonNullComparator<SingleVerifierLevelDto>() {
                 @Override
-                public int compareNonNull(MultiLevelDto a, MultiLevelDto b) {
+                public int compareNonNull(SingleVerifierLevelDto a, SingleVerifierLevelDto b) {
                     Long al = a.getLimit();
                     Long bl = b.getLimit();
                     return al.compareTo(bl);
@@ -95,7 +95,7 @@ public class MultiLevelPolicyDto
     }
 
     static {
-        EntityHelper.getInstance(MultiLevelPolicy.class).setSelection(LEVELS);
+        EntityHelper.getInstance(SingleVerifierRankedPolicy.class).setSelection(LEVELS);
     }
 
 }
