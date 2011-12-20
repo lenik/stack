@@ -1,5 +1,7 @@
 package com.bee32.plover.orm.util;
 
+import java.io.Serializable;
+
 import javax.inject.Inject;
 
 import org.springframework.context.ApplicationContext;
@@ -9,6 +11,8 @@ import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.context.TestDataConfig;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.dao.MemdbDataManager;
+import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.unit.UsingUtil;
 import com.bee32.plover.test.WiredTestCase;
@@ -35,6 +39,11 @@ public abstract class WiredDaoTestCase
 
         SamplesLoader samplesLoader = applicationContext.getBean(SamplesLoader.class);
         samplesLoader.loadSamples(DiamondPackage.NORMAL);
+    }
+
+    protected <E extends Entity<? extends K>, K extends Serializable> //
+    IEntityAccessService<E, K> asFor(Class<? extends E> entityType) {
+        return dataManager.asFor(entityType);
     }
 
 }
