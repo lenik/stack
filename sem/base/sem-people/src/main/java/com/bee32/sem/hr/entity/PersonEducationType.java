@@ -14,8 +14,12 @@ public class PersonEducationType
 
     private static final long serialVersionUID = 1L;
 
+    public PersonEducationType() {
+        super();
+    }
+
     public PersonEducationType(String name, String label) {
-        super(name, label, "");
+        super(name, label);
     }
 
     public PersonEducationType(String name, String label, String desc) {
