@@ -18,6 +18,7 @@ import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
+import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.inventory.util.StockCriteria;
 import com.bee32.sem.misc.EntityCriteria;
 
@@ -51,8 +52,22 @@ public class TakeAdminBean extends StockOrderBaseBean {
             String s = req.getParameter("subject").toString();
             subject = StockOrderSubject.valueOf(s);
 
+            String strId = req.getParameter("id");
+            if (strId != null) {
+                //说明有传入StockOrder的id,需要直接跳到相应的StockOrder
+                StockOrder directOrder = serviceFor(StockOrder.class).get(Long.parseLong(strId));
+                StockWarehouse w = directOrder.getWarehouse();
+                selectedWarehouse = DTOs.marshal(StockWarehouseDto.class, w);
+                limitDateFrom = w.getCreatedDate();
+                limitDateTo = w.getCreatedDate();
+                if (directOrder.getSubject() != subject) {
+                    throw new SubjectNotSameException();
+                }
+                stockOrder = DTOs.marshal(StockOrderDto.class, directOrder);
+            }
+
         } catch (Exception e) {
-            uiLogger.warn("非正常方式进入库存业务功能!");
+            uiLogger.warn("发生错误.", e);
         }
     }
 
