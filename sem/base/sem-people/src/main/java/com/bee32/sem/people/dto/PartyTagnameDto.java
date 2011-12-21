@@ -8,4 +8,12 @@ public class PartyTagnameDto
 
     private static final long serialVersionUID = 1L;
 
+    public PartyTagnameDto() {
+        super();
+    }
+
+    public PartyTagnameDto(int selection) {
+        super(selection);
+    }
+
 }
