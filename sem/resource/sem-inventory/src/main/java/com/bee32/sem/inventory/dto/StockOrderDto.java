@@ -1,10 +1,13 @@
 package com.bee32.sem.inventory.dto;
 
 import com.bee32.sem.inventory.entity.StockOrder;
+import com.bee32.sem.inventory.process.dto.StockOrderVerifySupportDto;
 
 public class StockOrderDto extends AbstractStockOrderDto<StockOrder> {
 
     private static final long serialVersionUID = 1L;
+
+    StockOrderVerifySupportDto stockOrderVerifySupport;
 
     public StockOrderDto() {
         super();
@@ -20,4 +23,15 @@ public class StockOrderDto extends AbstractStockOrderDto<StockOrder> {
         return this;
     }
 
+    @Override
+    protected void _marshal(StockOrder source) {
+        super._marshal(source);
+        stockOrderVerifySupport = marshal(StockOrderVerifySupportDto.class, source.getVerifyContext());
+    }
+
+    @Override
+    protected void _unmarshalTo(StockOrder target) {
+        super._unmarshalTo(target);
+        merge(target, "verifyContext", stockOrderVerifySupport);
+    }
 }

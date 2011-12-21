@@ -3,6 +3,7 @@ package com.bee32.sem.inventory.entity;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -15,10 +16,13 @@ import org.hibernate.annotations.Index;
 
 import com.bee32.plover.arch.util.dto.BeanPropertyAccessor;
 import com.bee32.plover.arch.util.dto.IPropertyAccessor;
+import com.bee32.sem.inventory.process.IStockOrderVerifyContext;
+import com.bee32.sem.inventory.process.StockOrderVerifySupport;
 import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
 import com.bee32.sem.inventory.tx.entity.StockTransfer;
 import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.entity.OrgUnit;
+import com.bee32.sem.process.verify.IVerifiable;
 
 /**
  * 库存通用订单
@@ -29,9 +33,12 @@ import com.bee32.sem.people.entity.OrgUnit;
 @DiscriminatorValue("-")
 @SequenceGenerator(name = "idgen", sequenceName = "stock_order_seq", allocationSize = 1)
 public class StockOrder
-        extends StockItemList {
+        extends StockItemList
+        implements IVerifiable<IStockOrderVerifyContext> {
 
     private static final long serialVersionUID = 1L;
+
+    StockOrderVerifySupport stockOrderVerifySupport = new StockOrderVerifySupport(this);
 
     StockPeriod base;
     StockPeriod spec;
@@ -262,6 +269,12 @@ public class StockOrder
     public static final IPropertyAccessor<StockOrderSubject> SUBJECT_PROPERTY;
     static {
         SUBJECT_PROPERTY = BeanPropertyAccessor.access(StockOrder.class, "subject");
+    }
+
+    @Embedded
+    @Override
+    public StockOrderVerifySupport getVerifyContext() {
+        return stockOrderVerifySupport;
     }
 
 }
