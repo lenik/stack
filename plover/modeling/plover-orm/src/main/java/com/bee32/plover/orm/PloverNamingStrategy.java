@@ -12,10 +12,15 @@ public class PloverNamingStrategy
 
     static Logger logger = LoggerFactory.getLogger(PloverNamingStrategy.class);
 
+    static boolean byCallerMethod = true;
+
     public String escapeName(String name) {
-        StackTraceElement[] st = Thread.currentThread().getStackTrace();
-        String method = st[2].getMethodName();
-//        logger.debug(method + ": " + name);
+        String method = null;
+        if (byCallerMethod) {
+            StackTraceElement[] st = Thread.currentThread().getStackTrace();
+            method = st[2].getMethodName();
+            logger.debug(method + ": " + name);
+        }
         name = name.replace("`", "");
         return "`" + name + "`";
     }
