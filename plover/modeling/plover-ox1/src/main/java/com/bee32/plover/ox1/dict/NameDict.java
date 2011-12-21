@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.DefaultValue;
 import org.hibernate.annotations.Index;
 
 import com.bee32.plover.arch.util.DummyId;
@@ -77,6 +78,7 @@ public abstract class NameDict
     }
 
     @Column(nullable = false)
+    @DefaultValue("0")
     // @Index(name = "##_rank")
     public float getRank() {
         return rank;
