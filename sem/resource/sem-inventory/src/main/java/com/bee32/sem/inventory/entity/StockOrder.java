@@ -13,6 +13,8 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Index;
 
+import com.bee32.plover.arch.util.dto.BeanPropertyAccessor;
+import com.bee32.plover.arch.util.dto.IPropertyAccessor;
 import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
 import com.bee32.sem.inventory.tx.entity.StockTransfer;
 import com.bee32.sem.people.entity.Org;
@@ -255,6 +257,11 @@ public class StockOrder
                 peerItem.setState(StockItemState.PENDING);
         }
         return peer;
+    }
+
+    public static final IPropertyAccessor<StockOrderSubject> SUBJECT_PROPERTY;
+    static {
+        SUBJECT_PROPERTY = BeanPropertyAccessor.access(StockOrder.class, "subject");
     }
 
 }
