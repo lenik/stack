@@ -15,7 +15,7 @@ public class PersonResume
 
     Person person;
 
-    List<PersonRecord> records;
+    List<PartyRecord> records;
     List<PersonSkill> skills;
 
     PersonEducationType education;

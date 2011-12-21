@@ -14,23 +14,23 @@ import com.bee32.sem.people.entity.Party;
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "party_record_seq", allocationSize = 1)
-public class PersonRecord
+public class PartyRecord
         extends MomentInterval {
 
     private static final long serialVersionUID = 1L;
 
     public static final int TEXT_LENGTH = 10000;
 
-    PersonRecordCategory category = PersonRecordCategory.INFO;
+    PartyRecordCategory category = PartyRecordCategory.INFO;
     Party party;
     String text = "";
 
     @ManyToOne(optional = false)
-    public PersonRecordCategory getCategory() {
+    public PartyRecordCategory getCategory() {
         return category;
     }
 
-    public void setCategory(PersonRecordCategory category) {
+    public void setCategory(PartyRecordCategory category) {
         if (category == null)
             throw new NullPointerException("category");
         this.category = category;
