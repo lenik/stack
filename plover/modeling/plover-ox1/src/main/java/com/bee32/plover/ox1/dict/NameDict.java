@@ -27,6 +27,7 @@ public abstract class NameDict
     public static final int ID_LENGTH = 20;
 
     protected int order;
+    protected float rank;
 
     public NameDict() {
     }
@@ -73,6 +74,16 @@ public abstract class NameDict
 
     public void setOrder(int order) {
         this.order = order;
+    }
+
+    @Column(nullable = false)
+    // @Index(name = "##_rank")
+    public float getRank() {
+        return rank;
+    }
+
+    public void setRank(float rank) {
+        this.rank = rank;
     }
 
     @Transient

@@ -10,6 +10,9 @@ public abstract class NameDictDto<E extends NameDict>
 
     private static final long serialVersionUID = 1L;
 
+    int order;
+    float rank;
+
     public NameDictDto() {
         super();
     }
@@ -21,11 +24,15 @@ public abstract class NameDictDto<E extends NameDict>
     @Override
     protected void __marshal(E source) {
         super.__marshal(source);
+        order = source.getOrder();
+        rank = source.getRank();
     }
 
     @Override
     protected void __unmarshalTo(E target) {
         super.__unmarshalTo(target);
+        target.setOrder(order);
+        target.setRank(rank);
     }
 
     @Override
@@ -35,6 +42,8 @@ public abstract class NameDictDto<E extends NameDict>
 
         // name will always overwrite the id here.
         setName(map.getString("name"));
+        setOrder(map.getInt("order"));
+        setRank(map.getFloat("rank"));
     }
 
     public String getName() {
@@ -64,5 +73,21 @@ public abstract class NameDictDto<E extends NameDict>
     //
     // protected Boolean naturalEquals(EntityDto<E, String> other);
     // protected Integer naturalHashCode();
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    public float getRank() {
+        return rank;
+    }
+
+    public void setRank(float rank) {
+        this.rank = rank;
+    }
 
 }
