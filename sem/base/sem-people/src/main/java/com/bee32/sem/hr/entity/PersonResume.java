@@ -1,5 +1,6 @@
 package com.bee32.sem.hr.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -16,10 +17,8 @@ public class PersonResume
     private static final long serialVersionUID = 1L;
 
     Person person;
-
-    List<PersonSkill> skills;
-
-    PersonEducationType education;
+    List<PersonSkill> skills = new ArrayList<PersonSkill>();
+    PersonEducationType education = PersonEducationType.L2;
 
     @Transient
     List<PartyRecord> getRecords() {
