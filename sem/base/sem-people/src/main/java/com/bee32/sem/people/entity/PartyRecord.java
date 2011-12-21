@@ -1,4 +1,4 @@
-package com.bee32.sem.hr.entity;
+package com.bee32.sem.people.entity;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -7,7 +7,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 import com.bee32.plover.ox1.color.MomentInterval;
-import com.bee32.sem.people.entity.Party;
 
 /**
  * 人或组织的社会档案记录.

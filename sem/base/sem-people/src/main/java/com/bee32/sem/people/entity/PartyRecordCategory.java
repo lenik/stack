@@ -1,4 +1,4 @@
-package com.bee32.sem.hr.entity;
+package com.bee32.sem.people.entity;
 
 import javax.persistence.Entity;
 

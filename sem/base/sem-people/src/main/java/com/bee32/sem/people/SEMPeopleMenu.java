@@ -6,9 +6,9 @@ import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.frame.builtins.SEMFrameMenu;
 import com.bee32.sem.frame.menu.MenuContribution;
 import com.bee32.sem.frame.menu.MenuNode;
-import com.bee32.sem.hr.entity.PartyRecordCategory;
 import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.OrgType;
+import com.bee32.sem.people.entity.PartyRecordCategory;
 import com.bee32.sem.people.entity.PartySidType;
 import com.bee32.sem.people.entity.PartyTagname;
 

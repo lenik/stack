@@ -2,8 +2,6 @@ package com.bee32.sem.people;
 
 import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
-import com.bee32.sem.hr.entity.PartyRecord;
-import com.bee32.sem.hr.entity.PartyRecordCategory;
 import com.bee32.sem.module.SEMBaseUnit;
 import com.bee32.sem.people.entity.Contact;
 import com.bee32.sem.people.entity.ContactCategory;
@@ -11,6 +9,8 @@ import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.entity.OrgType;
 import com.bee32.sem.people.entity.OrgUnit;
 import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.people.entity.PartyRecord;
+import com.bee32.sem.people.entity.PartyRecordCategory;
 import com.bee32.sem.people.entity.PartySidType;
 import com.bee32.sem.people.entity.PartyTagname;
 import com.bee32.sem.people.entity.PartyXP;

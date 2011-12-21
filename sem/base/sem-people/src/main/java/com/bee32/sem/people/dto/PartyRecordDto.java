@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.MomentIntervalDto;
-import com.bee32.sem.hr.entity.PartyRecord;
+import com.bee32.sem.people.entity.PartyRecord;
 
 public class PartyRecordDto
         extends MomentIntervalDto<PartyRecord> {

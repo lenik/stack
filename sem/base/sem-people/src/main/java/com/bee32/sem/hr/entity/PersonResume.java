@@ -3,8 +3,10 @@ package com.bee32.sem.hr.entity;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 import com.bee32.plover.ox1.color.UIEntityAuto;
+import com.bee32.sem.people.entity.PartyRecord;
 import com.bee32.sem.people.entity.Person;
 
 @Entity
@@ -15,9 +17,13 @@ public class PersonResume
 
     Person person;
 
-    List<PartyRecord> records;
     List<PersonSkill> skills;
 
     PersonEducationType education;
+
+    @Transient
+    List<PartyRecord> getRecords() {
+        return person.getRecords();
+    }
 
 }
