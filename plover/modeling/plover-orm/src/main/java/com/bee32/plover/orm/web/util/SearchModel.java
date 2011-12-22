@@ -47,11 +47,11 @@ public class SearchModel
     }
 
     public boolean isDummy() {
-        if (firstResult == 0 && maxResults < 0)
-            return true;
-        if (elements.isEmpty())
-            return true;
-        return false;
+        if (firstResult != 0 || maxResults != 0)
+            return false;
+        if (!elements.isEmpty())
+            return false;
+        return true;
     }
 
     public CriteriaComposite compose() {
