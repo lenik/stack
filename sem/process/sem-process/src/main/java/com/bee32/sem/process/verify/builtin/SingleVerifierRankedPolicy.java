@@ -39,7 +39,7 @@ public class SingleVerifierRankedPolicy
     /**
      * @return Non-null range set.
      */
-    @OneToMany(mappedBy = "multiLevel", orphanRemoval = true)
+    @OneToMany(mappedBy = "policy", orphanRemoval = true)
     @OrderBy("limit_ asc")
     @Cascade({ CascadeType.ALL })
     public synchronized List<SingleVerifierLevel> getLevels() {

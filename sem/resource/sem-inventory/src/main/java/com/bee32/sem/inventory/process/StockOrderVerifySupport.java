@@ -17,8 +17,17 @@ public class StockOrderVerifySupport
 
     IStockSubjectAware stockSubjectAware;
 
-    public <E extends Entity<?>> StockOrderVerifySupport(E entity) {
-        super(entity, StockOrder.NATIVE_TOTAL_PROPERTY, "金额");
+    public StockOrderVerifySupport() {
+        super();
+    }
+
+    public StockOrderVerifySupport(Entity<?> entity) {
+        super(entity);
+    }
+
+    @Override
+    public void bind(Entity<?> entity) {
+        super.bind(entity, StockOrder.NATIVE_TOTAL_PROPERTY, "金额");
         stockSubjectAware = new StockSubjectInProperty(entity, StockOrder.SUBJECT_PROPERTY);
     }
 

@@ -44,12 +44,14 @@ public class SingleVerifierLevel
 
     // @NaturalId
     @ManyToOne(optional = false)
-    public SingleVerifierRankedPolicy getMultiLevel() {
+    public SingleVerifierRankedPolicy getPolicy() {
         return policy;
     }
 
-    public void setMultiLevel(SingleVerifierRankedPolicy multiLevel) {
-        this.policy = multiLevel;
+    public void setPolicy(SingleVerifierRankedPolicy policy) {
+        if (policy == null)
+            throw new NullPointerException("policy");
+        this.policy = policy;
     }
 
     /**

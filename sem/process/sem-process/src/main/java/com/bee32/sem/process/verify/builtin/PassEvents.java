@@ -6,7 +6,6 @@ import java.util.List;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 
-import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.ox1.principal.User;
 import com.bee32.sem.process.verify.AbstractVerifyContext;
 import com.bee32.sem.process.verify.VerifyEvent;
@@ -22,12 +21,14 @@ public class PassEvents
     private List<VerifyEvent> events;
     private int position;
 
-    public PassEvents(Entity<?> entity, PassToNextPolicy policy) {
-        this(entity, policy, 0, new ArrayList<VerifyEvent>());
+    public PassEvents() {
     }
 
-    public PassEvents(Entity<?> entity, PassToNextPolicy policy, int position, List<VerifyEvent> events) {
-        super(entity);
+    public PassEvents(PassToNextPolicy policy) {
+        this(policy, 0, new ArrayList<VerifyEvent>());
+    }
+
+    public PassEvents(PassToNextPolicy policy, int position, List<VerifyEvent> events) {
         if (policy == null)
             throw new NullPointerException("policy");
         if (events == null)

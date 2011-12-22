@@ -6,8 +6,11 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.DefaultValue;
 
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.ox1.principal.User;
@@ -19,6 +22,7 @@ import com.bee32.sem.process.verify.AbstractVerifyContext;
  * @param C
  *            The verify context class. You must implement the context in the same object.
  */
+@MappedSuperclass
 @Embeddable
 public class SingleVerifierSupport
         extends AbstractVerifyContext
@@ -30,6 +34,10 @@ public class SingleVerifierSupport
     private Date verifiedDate1;
     private boolean accepted1;
     private String rejectedReason1;
+
+    public SingleVerifierSupport() {
+        super();
+    }
 
     public SingleVerifierSupport(Entity<?> entity) {
         super(entity);
@@ -56,6 +64,8 @@ public class SingleVerifierSupport
         this.verifiedDate1 = verifiedDate1;
     }
 
+    @Column(nullable = false)
+    @DefaultValue("false")
     @Override
     public boolean isAccepted1() {
         return accepted1;

@@ -60,7 +60,7 @@ public class SingleVerifierPolicy
     }
 
     @ManyToMany
-    @JoinTable(name = "AllowList", //
+    @JoinTable(name = "SingleVerifyPolicy", //
     /*        */joinColumns = @JoinColumn(name = "allowList"), //
     /*        */inverseJoinColumns = @JoinColumn(name = "responsible"))
     public Set<Principal> getResponsibles() {
