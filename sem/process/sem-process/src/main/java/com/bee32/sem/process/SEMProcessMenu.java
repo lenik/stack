@@ -15,8 +15,8 @@ public class SEMProcessMenu
 
     static MenuNode PREFERENCE = entry(CORE, "preference", PROCESS_.join("pref/index.do"));
 
-    static MenuNode LIST = entry(VERIFY_POLICY, 1, "list", PROCESS_.join("list/index.do"));
-    static MenuNode LEVEL = entry(VERIFY_POLICY, 2, "level", PROCESS_.join("level/index.do"));
+    static MenuNode LIST = entry(VERIFY_POLICY, 1, "list", PROCESS_.join("v1/index.do"));
+    static MenuNode LEVEL = entry(VERIFY_POLICY, 2, "level", PROCESS_.join("v1x/index.do"));
 
     // static MenuNode p2next = entry(verifyPolicy, 3, "p2next", PROCESS.join("p2next/index.do"));
 
