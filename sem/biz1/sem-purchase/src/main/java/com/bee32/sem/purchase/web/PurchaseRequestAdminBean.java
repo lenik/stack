@@ -645,7 +645,7 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
         }
 
         //TODO 如果已经审核，则不能删除
-//        if (purchaseAdvice.isVerified()) {
+        // if (purchaseAdvice.getVerifyContext().getVerifyState().isFinalized())
 //            uiLogger.warn("采购建议已经审核，不能删除!");
 //            return;
 //        }

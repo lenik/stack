@@ -18,16 +18,16 @@ public class VerifyState
     static final Map<String, VerifyState> nameMap = new HashMap<String, VerifyState>();
     static final Map<Integer, VerifyState> valueMap = new HashMap<Integer, VerifyState>();
 
-    private final boolean closed;
+    private final boolean finalized;
     private final int eventFlags;
 
     private final String displayName;
     private final String description;
 
-    public VerifyState(int id, String name, boolean closed, int eventFlags) {
+    public VerifyState(int id, String name, boolean finalized, int eventFlags) {
         super(id, name);
 
-        this.closed = closed;
+        this.finalized = finalized;
         this.eventFlags = eventFlags;
 
         displayName = _nls(name + ".label", name);
@@ -60,8 +60,8 @@ public class VerifyState
         return verifyState;
     }
 
-    public boolean isClosed() {
-        return closed;
+    public boolean isFinalized() {
+        return finalized;
     }
 
     public int getEventFlags() {
@@ -78,8 +78,8 @@ public class VerifyState
 
     static final int VERIFY_STATE = __class__(SEL_TASK, EventStateClass.ESC_PROCESS);
 
-    static VerifyState _(int index, String name, boolean closed, int eventFlags) {
-        return new VerifyState(VERIFY_STATE + index, name, closed, eventFlags);
+    static VerifyState _(int index, String name, boolean finalized, int eventFlags) {
+        return new VerifyState(VERIFY_STATE + index, name, finalized, eventFlags);
     }
 
     public static final VerifyState NOT_APPLICABLE = _(0, "NOT_APPLICABLE", false, EventFlags.WARNING);
