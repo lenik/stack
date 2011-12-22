@@ -1,6 +1,5 @@
-package com.bee32.sem.inventory.process.dto;
+package com.bee32.sem.inventory.process;
 
-import com.bee32.sem.inventory.process.IStockSubjectAware;
 import com.bee32.sem.process.verify.builtin.SingleVerifierSupport;
 import com.bee32.sem.process.verify.builtin.dto.SingleVerifierWithNumberSupportDto;
 

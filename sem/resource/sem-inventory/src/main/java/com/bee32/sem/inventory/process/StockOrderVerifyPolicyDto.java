@@ -1,9 +1,8 @@
-package com.bee32.sem.inventory.process.dto;
+package com.bee32.sem.inventory.process;
 
 import java.util.Collections;
 import java.util.Map;
 
-import com.bee32.sem.inventory.process.StockOrderVerifyPolicy;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 
