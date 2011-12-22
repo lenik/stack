@@ -12,7 +12,7 @@ public class SingleVerifierLevelDto
 
     private static final long serialVersionUID = 1L;
 
-    private SingleVerifierRankedPolicyDto multiLevel;
+    private SingleVerifierRankedPolicyDto policy;
     private long limit;
     private VerifyPolicyDto targetPolicy;
 
@@ -22,7 +22,7 @@ public class SingleVerifierLevelDto
 
     @Override
     protected void _marshal(SingleVerifierLevel source) {
-        multiLevel = new SingleVerifierRankedPolicyDto().ref(source.getMultiLevel());
+        policy = mref(SingleVerifierRankedPolicyDto.class, source.getPolicy());
         limit = source.getLimit();
         targetPolicy = mref(VerifyPolicyDto.class, source.getTargetPolicy());
     }
@@ -30,8 +30,7 @@ public class SingleVerifierLevelDto
     @Override
     protected void _unmarshalTo(SingleVerifierLevel target) {
         target.setLimit(limit);
-
-        merge(target, "multiLevel", multiLevel);
+        merge(target, "policy", policy);
         merge(target, "targetPolicy", targetPolicy);
     }
 
@@ -40,12 +39,12 @@ public class SingleVerifierLevelDto
             throws ParseException {
     }
 
-    public SingleVerifierRankedPolicyDto getMultiLevel() {
-        return multiLevel;
+    public SingleVerifierRankedPolicyDto getPolicy() {
+        return policy;
     }
 
-    public void setMultiLevel(SingleVerifierRankedPolicyDto multiLevel) {
-        this.multiLevel = multiLevel;
+    public void setPolicy(SingleVerifierRankedPolicyDto policy) {
+        this.policy = policy;
     }
 
     public long getLimit() {

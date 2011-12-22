@@ -63,7 +63,7 @@ public class SingleVerifierRankedPolicyDto
                     VerifyPolicyDto policyRef = new VerifyPolicyDto().ref(policyId);
 
                     SingleVerifierLevelDto level = new SingleVerifierLevelDto().create();
-                    level.setMultiLevel(this);
+                    level.setPolicy(this);
                     level.setLimit(limit);
                     level.setTargetPolicy(policyRef);
 
