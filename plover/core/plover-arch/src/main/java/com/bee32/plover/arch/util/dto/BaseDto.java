@@ -217,4 +217,20 @@ public abstract class BaseDto<S, C>
         return System.identityHashCode(this);
     }
 
+    @Override
+    protected S mergeDeref(S given) {
+        if (given == null) {
+            // create a new instance.
+            S source;
+            try {
+                source = sourceType.newInstance();
+            } catch (ReflectiveOperationException e) {
+                throw new MarshalException("Failed to create a new " + sourceType, e);
+            }
+            return source;
+        } else {
+            return given;
+        }
+    }
+
 }

@@ -47,11 +47,6 @@ public abstract class PartialDto<T extends Serializable>
     }
 
     @Override
-    protected T mergeDeref(T given) {
-        return given;
-    }
-
-    @Override
     public void toString(PrettyPrintStream out, FormatStyle format, Set<Object> occurred, int depth) {
         GeneralFormatter formatter = new GeneralFormatter(out, occurred);
         formatter.format(this, format, depth);
