@@ -1,7 +1,7 @@
 package com.bee32.sem.inventory.dto;
 
 import com.bee32.sem.inventory.entity.StockOrder;
-import com.bee32.sem.inventory.process.dto.StockOrderVerifySupportDto;
+import com.bee32.sem.inventory.process.StockOrderVerifySupportDto;
 
 public class StockOrderDto extends AbstractStockOrderDto<StockOrder> {
 

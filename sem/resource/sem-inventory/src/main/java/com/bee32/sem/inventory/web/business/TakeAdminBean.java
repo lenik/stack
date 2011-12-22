@@ -22,7 +22,7 @@ import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
-import com.bee32.sem.inventory.process.dto.StockOrderVerifySupportDto;
+import com.bee32.sem.inventory.process.StockOrderVerifySupportDto;
 import com.bee32.sem.inventory.util.StockCriteria;
 import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.process.verify.service.IVerifyService;
