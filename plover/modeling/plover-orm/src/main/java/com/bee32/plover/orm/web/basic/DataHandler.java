@@ -84,13 +84,16 @@ public class DataHandler<E extends Entity<K>, K extends Serializable>
         SearchModel searchModel = new SearchModel(eh.getEntityType());
 
         listing.fillSearchModel(searchModel, textMap);
+        Class<? extends Entity<?>> searchType = searchModel.getEntityClass();
 
-        if (searchModel.isDummy())
-            return (List<? extends E>) asFor(eh.getEntityType()).list();
-
-        CriteriaComposite composite = searchModel.compose();
-
-        return asFor(eh.getEntityType()).list(composite);
+        List<? extends E> list;
+        if (searchModel.isDummy()) {
+            list = (List<? extends E>) asFor(searchType).list();
+        } else {
+            CriteriaComposite composite = searchModel.compose();
+            list = (List<? extends E>) asFor(searchType).list(composite);
+        }
+        return list;
     }
 
 }
