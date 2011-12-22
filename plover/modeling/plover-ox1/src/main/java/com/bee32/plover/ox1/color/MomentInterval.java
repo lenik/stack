@@ -2,8 +2,6 @@ package com.bee32.plover.ox1.color;
 
 import java.util.Date;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -42,10 +40,8 @@ public abstract class MomentInterval
         endTime = o.endTime;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Basic(optional = false)
-    @Column(nullable = false)
     @Index(name = "##_beginTime")
+    @Temporal(TemporalType.TIMESTAMP)
     public Date getBeginTime() {
         return beginTime;
     }
@@ -54,8 +50,8 @@ public abstract class MomentInterval
         this.beginTime = beginTime;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Index(name = "##_endTime")
+    @Temporal(TemporalType.TIMESTAMP)
     public Date getEndTime() {
         return endTime;
     }
