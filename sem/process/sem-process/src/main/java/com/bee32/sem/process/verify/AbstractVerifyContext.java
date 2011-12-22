@@ -15,6 +15,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.DefaultValue;
 
 import overlay.Overlay;
 
@@ -25,7 +26,7 @@ import com.bee32.plover.util.GeneralFormatter;
 import com.bee32.plover.util.IMultiFormat;
 import com.bee32.plover.util.PrettyPrintStream;
 import com.bee32.sem.event.EventState;
-import com.bee32.sem.event.entity.Task;
+import com.bee32.sem.event.entity.Event;
 
 @MappedSuperclass
 public abstract class AbstractVerifyContext
@@ -33,12 +34,19 @@ public abstract class AbstractVerifyContext
 
     private static final long serialVersionUID = 1L;
 
-    protected final Entity<?> entity;
+    protected Entity<?> entity;
 
     EventState verifyState = VerifyState.UNKNOWN;
     String verifyError;
     Date verifyEvalDate;
-    Task verifyTask;
+    Event verifyEvent;
+
+    public AbstractVerifyContext() {
+    }
+
+    public AbstractVerifyContext(Entity<?> entity) {
+        bind(entity);
+    }
 
     private class VLockPred
             extends Pred0 {
@@ -52,7 +60,7 @@ public abstract class AbstractVerifyContext
 
     }
 
-    public AbstractVerifyContext(Entity<?> entity) {
+    public void bind(Entity<?> entity) {
         if (entity == null)
             throw new NullPointerException("entity");
         this.entity = entity;
@@ -60,6 +68,7 @@ public abstract class AbstractVerifyContext
     }
 
     @Column(name = "verifyState", nullable = false)
+    @DefaultValue("1")
     int getVerifyState_() {
         return verifyState.getValue();
     }
@@ -90,6 +99,7 @@ public abstract class AbstractVerifyContext
 
     @Transient
     @Column(nullable = false)
+    @DefaultValue("false")
     public boolean isVerified() {
         return VerifyState.VERIFIED.equals(verifyState);
     }
@@ -105,12 +115,12 @@ public abstract class AbstractVerifyContext
 
     @OneToOne(orphanRemoval = true)
     @Cascade({ CascadeType.ALL })
-    public Task getVerifyTask() {
-        return verifyTask;
+    public Event getVerifyEvent() {
+        return verifyEvent;
     }
 
-    public void setVerifyTask(Task verifyTask) {
-        this.verifyTask = verifyTask;
+    public void setVerifyEvent(Event verifyEvent) {
+        this.verifyEvent = verifyEvent;
     }
 
     @Override

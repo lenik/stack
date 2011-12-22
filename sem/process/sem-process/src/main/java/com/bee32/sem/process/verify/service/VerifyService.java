@@ -16,8 +16,8 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.principal.Principal;
 import com.bee32.plover.ox1.principal.User;
+import com.bee32.sem.event.entity.Event;
 import com.bee32.sem.event.entity.EventPriority;
-import com.bee32.sem.event.entity.Task;
 import com.bee32.sem.process.verify.AbstractVerifyContext;
 import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.IVerifyContext;
@@ -122,40 +122,40 @@ public class VerifyService
         VerifyContextAccessor.setVerifyError(context, result.getMessage());
         VerifyContextAccessor.setVerifyEvalDate(context, new Date());
 
-        Task verifyTask = context.getVerifyTask();
+        Event verifyEvent = context.getVerifyEvent();
         {
-            if (verifyTask == null) {
-                verifyTask = new Task();
-                context.setVerifyTask(verifyTask);
+            if (verifyEvent == null) {
+                verifyEvent = new Event();
+                context.setVerifyEvent(verifyEvent);
             }
 
-            verifyTask.setSourceClass(VerifyPolicy.class);
-            verifyTask.setPriority(EventPriority.HIGH);
+            verifyEvent.setSourceClass(VerifyPolicy.class);
+            verifyEvent.setPriority(EventPriority.HIGH);
 
             VerifyState state = result.getState();
-            verifyTask.setClosed(state.isClosed());
-            verifyTask.setState(state);
+            verifyEvent.setClosed(state.isFinalized());
+            verifyEvent.setState(state);
 
-            verifyTask.setActor(null); // session current user.
+            verifyEvent.setActor(null); // session current user.
 
             String entityName = ClassUtil.getDisplayName(entity.getClass()) + " [" + entity.getId() + "]";
 
             String subject = "【作业跟踪】【审核】" + entityName;
             String message = "（无可用内容）";
 
-            verifyTask.setSubject(subject);
-            verifyTask.setMessage(message);
-            verifyTask.setBeginTime(new Date()); //
+            verifyEvent.setSubject(subject);
+            verifyEvent.setMessage(message);
+            verifyEvent.setBeginTime(new Date()); //
 
-            if (state.isClosed())
-                verifyTask.setEndTime(context.getVerifyEvalDate());
+            if (state.isFinalized())
+                verifyEvent.setEndTime(context.getVerifyEvalDate());
             else
-                verifyTask.setEndTime(null);
+                verifyEvent.setEndTime(null);
 
-            verifyTask.setRef(entity);
+            verifyEvent.setRef(entity);
 
             Set<Principal> responsibles = new HashSet<Principal>(getDeclaredResponsibles(context));
-            verifyTask.setObservers(responsibles);
+            verifyEvent.setObservers(responsibles);
         }
 
         return result;

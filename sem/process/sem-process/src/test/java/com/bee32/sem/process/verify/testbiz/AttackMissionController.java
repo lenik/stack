@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.web.util.DataTableDxo;
 import com.bee32.plover.ox1.principal.User;
-import com.bee32.sem.event.entity.Task;
+import com.bee32.sem.event.entity.Event;
 import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.builtin.ISingleVerifier;
 import com.bee32.sem.process.verify.builtin.SingleVerifierSupport;
@@ -49,10 +49,10 @@ public class AttackMissionController
 
     @Override
     public void doPostVerify(AttackMission entity, User currentUser, TextMap request) {
-        Task task = entity.getVerifyContext().getVerifyTask();
+        Event event = entity.getVerifyContext().getVerifyEvent();
 
         String editLocation = AttackMissionController.PREFIX + "editForm?id=" + entity.getId();
-        task.setSeeAlsos(editLocation);
+        event.setSeeAlsos(editLocation);
     }
 
 }

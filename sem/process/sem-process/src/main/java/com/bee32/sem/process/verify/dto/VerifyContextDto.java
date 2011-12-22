@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.bee32.plover.orm.util.PartialDto;
 import com.bee32.sem.event.EventState;
-import com.bee32.sem.event.dto.TaskDto;
+import com.bee32.sem.event.dto.EventDto;
 import com.bee32.sem.process.verify.AbstractVerifyContext;
 import com.bee32.sem.process.verify.VerifyState;
 
@@ -13,10 +13,12 @@ public abstract class VerifyContextDto<T extends AbstractVerifyContext>
 
     private static final long serialVersionUID = 1L;
 
+    public static final int VERIFY_EVENT = 1;
+
     private EventState verifyState;
     private String verifyError;
     private Date verifyEvalDate;
-    private TaskDto verifyTask;
+    private EventDto verifyEvent;
 
     private VerifyPolicyDto verifyPolicy;
 
@@ -36,7 +38,8 @@ public abstract class VerifyContextDto<T extends AbstractVerifyContext>
         verifyError = source.getVerifyError();
         verifyEvalDate = source.getVerifyEvalDate();
 
-        verifyTask = new TaskDto().ref(source.getVerifyTask());
+        if (selection.contains(VERIFY_EVENT))
+            verifyEvent = mref(EventDto.class, source.getVerifyEvent());
     }
 
     @Override
@@ -47,7 +50,7 @@ public abstract class VerifyContextDto<T extends AbstractVerifyContext>
         // target.setVerifyError(verifyError);
         // target.setVerifyEvalDate(verifyEvalDate);
 
-        merge(target, "verifyTask", verifyTask);
+        merge(target, "verifyTask", verifyEvent);
     }
 
     public EventState getVerifyState() {
