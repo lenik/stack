@@ -43,4 +43,14 @@ public class ProjectionList
     // return elements.add(projection, alias);
     // }
 
+    @Override
+    public void format(StringBuilder out) {
+        out.append("(projection-list");
+        for (ProjectionElement element : elements) {
+            out.append(" ");
+            element.format(out);
+        }
+        out.append(")");
+    }
+
 }

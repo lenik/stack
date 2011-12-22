@@ -43,4 +43,11 @@ public class IdEquals
         return Nullables.equals(id, value);
     }
 
+    @Override
+    public void format(StringBuilder out) {
+        out.append("(id-equals ");
+        out.append(value);
+        out.append(")");
+    }
+
 }

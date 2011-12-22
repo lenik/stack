@@ -15,4 +15,6 @@ public interface ICriteriaElement
 
     boolean filter(Object obj, EvaluationContext context);
 
+    void format(StringBuilder out);
+
 }

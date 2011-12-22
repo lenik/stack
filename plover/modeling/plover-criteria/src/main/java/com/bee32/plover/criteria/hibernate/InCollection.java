@@ -27,4 +27,14 @@ public class InCollection
         return values.contains(val);
     }
 
+    @Override
+    protected String getOperator() {
+        return "IN";
+    }
+
+    @Override
+    protected void formatValue(StringBuilder out) {
+        FormatUtil.formatValue(out, values);
+    }
+
 }

@@ -13,4 +13,9 @@ public class RowCountProjection
         return Projections.rowCount();
     }
 
+    @Override
+    public void format(StringBuilder out) {
+        out.append("(row-count)");
+    }
+
 }

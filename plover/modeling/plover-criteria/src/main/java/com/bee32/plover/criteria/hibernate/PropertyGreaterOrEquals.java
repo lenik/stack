@@ -23,4 +23,9 @@ public class PropertyGreaterOrEquals
         return cmp >= 0;
     }
 
+    @Override
+    protected String getOperator() {
+        return ">=";
+    }
+
 }

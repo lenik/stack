@@ -35,4 +35,14 @@ public class Equals
         return Nullables.equals(var, value);
     }
 
+    @Override
+    protected String getOperator() {
+        return "==";
+    }
+
+    @Override
+    protected void formatValue(StringBuilder out) {
+        out.append(quoteValue(value));
+    }
+
 }

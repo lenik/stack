@@ -28,4 +28,14 @@ public class PropertyProjection
             return Projections.property(propertyName);
     }
 
+    @Override
+    public void format(StringBuilder out) {
+        if (group)
+            out.append("(group-property-projection ");
+        else
+            out.append("(property-projection ");
+        out.append(propertyName);
+        out.append(")");
+    }
+
 }

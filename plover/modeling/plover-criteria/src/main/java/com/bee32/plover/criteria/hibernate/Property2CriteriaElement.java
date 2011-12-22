@@ -45,4 +45,16 @@ abstract class Property2CriteriaElement
         throw new UnexpectedException();
     }
 
+    protected abstract String getOperator();
+
+    public void format(StringBuilder out) {
+        out.append("(property ");
+        out.append(propertyName);
+        out.append(" ");
+        out.append(getOperator());
+        out.append(" ");
+        out.append(otherPropertyName);
+        out.append(")");
+    }
+
 }

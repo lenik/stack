@@ -24,4 +24,9 @@ public class PropertyEquals
         return Nullables.equals(lhs, rhs);
     }
 
+    @Override
+    protected String getOperator() {
+        return "==";
+    }
+
 }

@@ -50,4 +50,13 @@ public class And
         return true;
     }
 
+    @Override
+    public void format(StringBuilder out) {
+        out.append("(and ");
+        lhs.format(out);
+        out.append(" ");
+        rhs.format(out);
+        out.append(")");
+    }
+
 }

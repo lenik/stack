@@ -1,5 +1,7 @@
 package com.bee32.plover.criteria.hibernate;
 
+import java.util.Arrays;
+
 import javax.free.Nullables;
 
 import org.hibernate.criterion.Criterion;
@@ -29,6 +31,16 @@ public class InArray
                 return true;
         }
         return false;
+    }
+
+    @Override
+    protected String getOperator() {
+        return "IN";
+    }
+
+    @Override
+    protected void formatValue(StringBuilder out) {
+        FormatUtil.formatValue(out, Arrays.asList(values));
     }
 
 }

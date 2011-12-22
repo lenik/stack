@@ -29,4 +29,14 @@ public class IsEmpty
         throw new IllegalArgumentException("is-not-empty testing on non-collection type " + val.getClass());
     }
 
+    @Override
+    protected String getOperator() {
+        return "IS";
+    }
+
+    @Override
+    protected void formatValue(StringBuilder out) {
+        out.append("EMPTY");
+    }
+
 }

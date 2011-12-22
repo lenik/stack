@@ -23,4 +23,9 @@ public class PropertyLessThan
         return cmp < 0;
     }
 
+    @Override
+    protected String getOperator() {
+        return "<";
+    }
+
 }

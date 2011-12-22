@@ -19,4 +19,11 @@ public class AvgProjection
         return Projections.avg(propertyName);
     }
 
+    @Override
+    public void format(StringBuilder out) {
+        out.append("(avg ");
+        out.append(propertyName);
+        out.append(")");
+    }
+
 }

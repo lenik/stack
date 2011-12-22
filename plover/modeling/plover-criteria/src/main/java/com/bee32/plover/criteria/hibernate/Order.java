@@ -20,6 +20,13 @@ public class Order
         criteria.addOrder(order);
     }
 
+    @Override
+    public void format(StringBuilder out) {
+        out.append("(order ");
+        out.append(order.toString()); // "property asc|desc"
+        out.append(")");
+    }
+
     /**
      * Ascending order
      *

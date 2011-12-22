@@ -33,4 +33,20 @@ public class SQLProjection
             return Projections.sqlGroupProjection(sql, groupBy, columnAliases, types);
     }
 
+    @Override
+    public void format(StringBuilder out) {
+        String quoted = "\"" + sql + "\"";
+        out.append("(sql-projection ");
+        out.append(quoted);
+        if (columnAliases != null && columnAliases.length != 0) {
+            out.append(" (column-alias ");
+            for (String columnAlias : columnAliases) {
+                out.append(" ");
+                out.append(columnAlias);
+            }
+            out.append(")");
+        }
+        out.append(")");
+    }
+
 }

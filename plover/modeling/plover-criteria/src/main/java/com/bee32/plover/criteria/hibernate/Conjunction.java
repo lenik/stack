@@ -54,4 +54,14 @@ public class Conjunction
         return true;
     }
 
+    @Override
+    public void format(StringBuilder out) {
+        out.append("(conj");
+        for (ICriteriaElement element : elements) {
+            out.append(" ");
+            element.format(out);
+        }
+        out.append(")");
+    }
+
 }

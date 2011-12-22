@@ -94,4 +94,14 @@ public class CriteriaComposite
         return true;
     }
 
+    @Override
+    public void format(StringBuilder out) {
+        out.append("(comp");
+        for (ICriteriaElement element : elements) {
+            out.append(" ");
+            element.format(out);
+        }
+        out.append(")");
+    }
+
 }

@@ -34,4 +34,11 @@ public class Not
         return !expression.filter(obj, context);
     }
 
+    @Override
+    public void format(StringBuilder out) {
+        out.append("(not ");
+        expression.format(out);
+        out.append(")");
+    }
+
 }

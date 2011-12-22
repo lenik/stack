@@ -35,4 +35,16 @@ public class SqlRestriction
         throw new UnsupportedOperationException("filter by sql criterion isn't supported");
     }
 
+    @Override
+    public void format(StringBuilder out) {
+        String quoted = "\"" + sql + "\"";
+        out.append("(sql-restriction ");
+        out.append(quoted);
+        for (Object value : values) {
+            out.append(" ");
+            out.append(value);
+        }
+        out.append(")");
+    }
+
 }

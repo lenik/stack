@@ -36,4 +36,16 @@ public class Between
         return true;
     }
 
+    @Override
+    protected String getOperator() {
+        return "BETWEEN";
+    }
+
+    @Override
+    protected void formatValue(StringBuilder out) {
+        out.append(lo);
+        out.append(" AND ");
+        out.append(hi);
+    }
+
 }

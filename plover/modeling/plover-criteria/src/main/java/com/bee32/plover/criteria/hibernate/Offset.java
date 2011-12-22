@@ -33,4 +33,11 @@ public class Offset
         return true;
     }
 
+    @Override
+    public void format(StringBuilder out) {
+        out.append("(offset ");
+        out.append(offset);
+        out.append(")");
+    }
+
 }

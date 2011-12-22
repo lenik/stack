@@ -49,4 +49,14 @@ public class Disjunction
         return false;
     }
 
+    @Override
+    public void format(StringBuilder out) {
+        out.append("(disj");
+        for (ICriteriaElement element : elements) {
+            out.append(" ");
+            element.format(out);
+        }
+        out.append(")");
+    }
+
 }

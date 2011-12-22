@@ -19,4 +19,11 @@ public class MaxProjection
         return Projections.max(propertyName);
     }
 
+    @Override
+    public void format(StringBuilder out) {
+        out.append("(max ");
+        out.append(propertyName);
+        out.append(")");
+    }
+
 }

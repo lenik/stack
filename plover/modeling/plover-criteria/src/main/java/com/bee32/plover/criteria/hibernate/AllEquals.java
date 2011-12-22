@@ -57,4 +57,18 @@ public class AllEquals
         throw new UnexpectedException();
     }
 
+    @Override
+    public void format(StringBuilder out) {
+        out.append("(all-equals");
+        for (Entry<?, ?> entry : propertyNameValues.entrySet()) {
+            Object name = entry.getKey();
+            Object value = entry.getValue();
+            out.append(" ");
+            out.append(name);
+            out.append("=");
+            out.append(value);
+        }
+        out.append(")");
+    }
+
 }

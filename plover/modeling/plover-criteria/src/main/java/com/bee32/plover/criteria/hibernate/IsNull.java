@@ -22,4 +22,14 @@ public class IsNull
         return val == null;
     }
 
+    @Override
+    protected String getOperator() {
+        return "IS";
+    }
+
+    @Override
+    protected void formatValue(StringBuilder out) {
+        out.append("NULL");
+    }
+
 }

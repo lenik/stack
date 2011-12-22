@@ -22,4 +22,11 @@ public class Distinct
         return Projections.distinct(projection);
     }
 
+    @Override
+    public void format(StringBuilder out) {
+        out.append("(distinct ");
+        element.format(out);
+        out.append(")");
+    }
+
 }

@@ -22,4 +22,13 @@ public class AliasedProjection
         return Projections.alias(projection, alias);
     }
 
+    @Override
+    public void format(StringBuilder out) {
+        out.append("(aliased ");
+        out.append(alias);
+        out.append(" ");
+        projectionElement.format(out);
+        out.append(")");
+    }
+
 }

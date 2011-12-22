@@ -36,4 +36,13 @@ public class Limit
         return true;
     }
 
+    @Override
+    public void format(StringBuilder out) {
+        out.append("(offset ");
+        out.append(offset);
+        out.append(" limit ");
+        out.append(limit);
+        out.append(")");
+    }
+
 }

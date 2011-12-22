@@ -8,11 +8,8 @@ public class SizeNotEquals
 
     private static final long serialVersionUID = 1L;
 
-    final int size;
-
     public SizeNotEquals(String propertyName, int size) {
-        super(propertyName);
-        this.size = size;
+        super(propertyName, size);
     }
 
     @Override
@@ -25,4 +22,8 @@ public class SizeNotEquals
         return sizeVar != size;
     }
 
+    @Override
+    protected String getOperator() {
+        return "!=";
+    }
 }

@@ -8,11 +8,8 @@ public class SizeEquals
 
     private static final long serialVersionUID = 1L;
 
-    final int size;
-
     public SizeEquals(String propertyName, int size) {
-        super(propertyName);
-        this.size = size;
+        super(propertyName, size);
     }
 
     @Override
@@ -23,6 +20,11 @@ public class SizeEquals
     @Override
     protected boolean filterSize(int sizeVar) {
         return sizeVar == size;
+    }
+
+    @Override
+    protected String getOperator() {
+        return "==";
     }
 
 }

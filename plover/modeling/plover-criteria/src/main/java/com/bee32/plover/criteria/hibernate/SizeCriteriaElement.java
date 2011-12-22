@@ -7,8 +7,11 @@ abstract class SizeCriteriaElement
 
     private static final long serialVersionUID = 1L;
 
-    public SizeCriteriaElement(String propertyName) {
+    protected final int size;
+
+    public SizeCriteriaElement(String propertyName, int size) {
         super(propertyName);
+        this.size = size;
     }
 
     @Override
@@ -22,5 +25,24 @@ abstract class SizeCriteriaElement
     }
 
     protected abstract boolean filterSize(int sizeVar);
+
+    @Override
+    protected abstract String getOperator();
+
+    @Override
+    public final void format(StringBuilder out) {
+        out.append("(test-size ");
+        out.append(propertyName);
+        out.append(" ");
+        out.append(getOperator());
+        out.append(" ");
+        formatValue(out);
+        out.append(")");
+    }
+
+    @Override
+    protected void formatValue(StringBuilder out) {
+        out.append(size);
+    }
 
 }

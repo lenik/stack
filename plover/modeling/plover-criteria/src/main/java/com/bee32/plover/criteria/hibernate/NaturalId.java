@@ -48,4 +48,18 @@ public class NaturalId
         throw new NotImplementedException();
     }
 
+    @Override
+    public void format(StringBuilder out) {
+        out.append("(natural-id");
+        for (Pair<String, Object> pair : pairs) {
+            String property = pair.getKey();
+            Object value = pair.getValue();
+            out.append(" ");
+            out.append(property);
+            out.append("=");
+            out.append(value);
+        }
+        out.append(")");
+    }
+
 }

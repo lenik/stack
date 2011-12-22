@@ -28,4 +28,14 @@ public class CountProjection
             return Projections.count(propertyName);
     }
 
+    @Override
+    public void format(StringBuilder out) {
+        if (distinct)
+            out.append("(count-distinct ");
+        else
+            out.append("(count ");
+        out.append(propertyName);
+        out.append(")");
+    }
+
 }

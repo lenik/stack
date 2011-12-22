@@ -120,4 +120,28 @@ public class Like
         }
     }
 
+    @Override
+    protected String getOperator() {
+        return "LIKE";
+    }
+
+    @Override
+    protected void formatValue(StringBuilder out) {
+        out.append("'");
+
+        if (_mode == END || _mode == ANYWHERE)
+            out.append("%");
+
+        String patternEscaped = pattern;
+        patternEscaped = patternEscaped.replace("\\", "\\\\");
+        patternEscaped = patternEscaped.replace("\"", "\\\"");
+        patternEscaped = patternEscaped.replace("\'", "\\\'");
+        out.append(patternEscaped);
+
+        if (_mode == START || _mode == ANYWHERE)
+            out.append("%");
+
+        out.append("'");
+    }
+
 }

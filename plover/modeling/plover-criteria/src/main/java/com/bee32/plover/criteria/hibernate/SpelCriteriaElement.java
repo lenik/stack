@@ -6,6 +6,11 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
+/**
+ * Spring Expression
+ *
+ * TODO What to do with spel...?
+ */
 abstract class SpelCriteriaElement
         extends CriteriaElement {
 

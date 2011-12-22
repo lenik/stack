@@ -30,4 +30,14 @@ public class LessThan
         return cmp < 0;
     }
 
+    @Override
+    protected String getOperator() {
+        return "<";
+    }
+
+    @Override
+    protected void formatValue(StringBuilder out) {
+        out.append(quoteValue(value));
+    }
+
 }

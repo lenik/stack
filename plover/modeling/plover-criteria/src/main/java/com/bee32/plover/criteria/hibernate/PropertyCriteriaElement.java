@@ -20,4 +20,32 @@ abstract class PropertyCriteriaElement
         return compile(propertyName);
     }
 
+    protected abstract String getOperator();
+
+    protected abstract void formatValue(StringBuilder out);
+
+    @Override
+    public void format(StringBuilder out) {
+        out.append("(test ");
+        out.append(propertyName);
+        out.append(" ");
+        out.append(getOperator());
+        out.append(" ");
+        formatValue(out);
+        out.append(")");
+    }
+
+    protected String quoteValue(Object val) {
+        if (val == null)
+            return "NULL";
+        if (val instanceof String) {
+            String str = (String) val;
+            str = str.replace("\\", "\\\\");
+            str = str.replace("\'", "\\\'");
+            str = str.replace("\"", "\\\"");
+            return "'" + str + "'";
+        }
+        return val.toString();
+    }
+
 }

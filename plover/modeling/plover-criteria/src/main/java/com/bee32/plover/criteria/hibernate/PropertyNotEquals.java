@@ -24,4 +24,9 @@ public class PropertyNotEquals
         return !Nullables.equals(lhs, rhs);
     }
 
+    @Override
+    protected String getOperator() {
+        return "!=";
+    }
+
 }

@@ -13,4 +13,9 @@ public class IdentifierProjection
         return Projections.id();
     }
 
+    @Override
+    public void format(StringBuilder out) {
+        out.append("(id)");
+    }
+
 }

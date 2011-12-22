@@ -19,4 +19,11 @@ public class MinProjection
         return Projections.min(propertyName);
     }
 
+    @Override
+    public void format(StringBuilder out) {
+        out.append("(min ");
+        out.append(propertyName);
+        out.append(")");
+    }
+
 }

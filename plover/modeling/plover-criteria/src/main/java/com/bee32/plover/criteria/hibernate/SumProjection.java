@@ -19,4 +19,11 @@ public class SumProjection
         return Projections.sum(propertyName);
     }
 
+    @Override
+    public void format(StringBuilder out) {
+        out.append("sum(");
+        out.append(propertyName);
+        out.append(")");
+    }
+
 }

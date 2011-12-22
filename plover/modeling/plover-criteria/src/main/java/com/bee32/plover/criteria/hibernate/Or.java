@@ -46,4 +46,13 @@ public class Or
         return false;
     }
 
+    @Override
+    public void format(StringBuilder out) {
+        out.append("(or ");
+        lhs.format(out);
+        out.append(" ");
+        rhs.format(out);
+        out.append(")");
+    }
+
 }

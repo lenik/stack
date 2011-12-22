@@ -57,11 +57,17 @@ public abstract class CriteriaSpec {
     }
 
     protected static CriteriaElement equals(String propertyName, Object value) {
-        return new Equals(propertyName, value);
+        if (value == null)
+            return new IsNull(propertyName);
+        else
+            return new Equals(propertyName, value);
     }
 
     protected static CriteriaElement notEquals(String propertyName, Object value) {
-        return new NotEquals(propertyName, value);
+        if (value == null)
+            return new IsNotNull(propertyName);
+        else
+            return new NotEquals(propertyName, value);
     }
 
     protected static CriteriaElement _idEquals(Object value) {
@@ -82,32 +88,44 @@ public abstract class CriteriaSpec {
         return notEquals(propertyName, value);
     }
 
-    protected static CriteriaElement like(String propertyName, String value) {
-        return new Like(propertyName, value);
+    protected static CriteriaElement like(String propertyName, String pattern) {
+        if (pattern == null)
+            return new IsNull(propertyName);
+        else
+            return new Like(propertyName, pattern);
     }
 
-    protected static CriteriaElement like(String propertyName, String value, MatchMode matchMode) {
-        return new Like(propertyName, value, matchMode);
+    protected static CriteriaElement like(String propertyName, String pattern, MatchMode matchMode) {
+        if (pattern == null)
+            return new IsNull(propertyName);
+        else
+            return new Like(propertyName, pattern, matchMode);
     }
 
-    protected static CriteriaElement likeIgnoreCase(String propertyName, String value) {
-        return new Like(true, propertyName, value);
+    protected static CriteriaElement likeIgnoreCase(String propertyName, String pattern) {
+        if (pattern == null)
+            return new IsNull(propertyName);
+        else
+            return new Like(true, propertyName, pattern);
     }
 
-    protected static CriteriaElement likeIgnoreCase(String propertyName, String value, MatchMode matchMode) {
-        return new Like(true, propertyName, value, matchMode);
+    protected static CriteriaElement likeIgnoreCase(String propertyName, String pattern, MatchMode matchMode) {
+        if (pattern == null)
+            return new IsNull(propertyName);
+        else
+            return new Like(true, propertyName, pattern, matchMode);
     }
 
-    protected static CriteriaElement _like(String propertyName, String value) {
-        if (value == null)
+    protected static CriteriaElement _like(String propertyName, String pattern) {
+        if (pattern == null)
             return null;
-        return like(propertyName, value);
+        return like(propertyName, pattern);
     }
 
-    protected static CriteriaElement _likeIgnoreCase(String propertyName, String value) {
-        if (value == null)
+    protected static CriteriaElement _likeIgnoreCase(String propertyName, String pattern) {
+        if (pattern == null)
             return null;
-        return likeIgnoreCase(propertyName, value);
+        return likeIgnoreCase(propertyName, pattern);
     }
 
     protected static CriteriaElement greaterThan(String propertyName, Object value) {

@@ -7,9 +7,9 @@ public abstract class CriteriaElement
 
     private static final long serialVersionUID = 1L;
 
-//    @Override
-//    public void apply(Criteria criteria) {
-//    }
+    // @Override
+    // public void apply(Criteria criteria) {
+    // }
 
     @Override
     public final Criterion getCriterion() {
@@ -20,6 +20,13 @@ public abstract class CriteriaElement
 
     public final boolean filter(Object obj) {
         return filter(obj, null);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder buffer = new StringBuilder();
+        format(buffer);
+        return buffer.toString();
     }
 
 }
