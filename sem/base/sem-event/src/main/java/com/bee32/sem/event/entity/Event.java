@@ -2,7 +2,6 @@ package com.bee32.sem.event.entity;
 
 import static javax.persistence.InheritanceType.SINGLE_TABLE;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,15 +16,13 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Index;
 
 import com.bee32.plover.orm.entity.IEntity;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
-import com.bee32.plover.ox1.c.CEntityAuto;
+import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.plover.ox1.color.Pink;
 import com.bee32.plover.ox1.principal.Principal;
 import com.bee32.plover.ox1.principal.User;
@@ -39,7 +36,7 @@ import com.bee32.sem.event.EventState;
 @DiscriminatorValue("EVT")
 @SequenceGenerator(name = "idgen", sequenceName = "event_seq", allocationSize = 1)
 public class Event
-        extends CEntityAuto<Long>
+        extends MomentInterval
         implements IEvent, ITypeAbbrAware {
 
     private static final long serialVersionUID = 1L;
@@ -59,8 +56,6 @@ public class Event
 
     private String subject;
     private String message;
-    private Date beginTime = new Date();
-    private Date endTime;
 
     private Class<?> refClass;
     private long refId;
@@ -139,7 +134,7 @@ public class Event
         flags.bits = bits;
     }
 
-    @Index(name = "closed")
+    @Index(name = "##_closed")
     @Column(nullable = false)
     @Override
     public boolean isClosed() {
@@ -150,7 +145,7 @@ public class Event
         this.closed = closed;
     }
 
-    @Index(name = "state")
+    @Index(name = "##_state")
     @Column(nullable = false)
     @Override
     public int getState() {
@@ -175,7 +170,7 @@ public class Event
         this.status = status;
     }
 
-    @Index(name = "actor")
+    @Index(name = "##_actor")
     @ManyToOne(fetch = FetchType.LAZY)
     @Override
     public User getActor() {
@@ -186,7 +181,7 @@ public class Event
         this.actor = actor;
     }
 
-    @Index(name = "subject")
+    @Index(name = "##_subject")
     @Column(length = 100)
     @Override
     public String getSubject() {
@@ -207,27 +202,6 @@ public class Event
         this.message = message;
     }
 
-    @Index(name = "event_beginTime")
-    @Temporal(TemporalType.TIMESTAMP)
-    @Override
-    public Date getBeginTime() {
-        return beginTime;
-    }
-
-    public void setBeginTime(Date beginTime) {
-        this.beginTime = beginTime;
-    }
-
-    @Index(name = "event_endTime")
-    @Temporal(TemporalType.TIMESTAMP)
-    @Override
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
 
     @Column(length = ABBR_LEN)
     String getRefType() {
