@@ -74,8 +74,8 @@
 						disabled="#{!takeAdminBean.editable}" update="mainForm" async="true" />
 					<p:separator />
 					<p:commandButton value="审核"
-						disabled="#{takeAdminBean.editable}"
-						onclick="verifyDlg.show();" />
+						disabled="#{(takeAdminBean.editable || (!takeAdminBean.canVerify)) || (takeAdminBean.verified)}"
+						onclick="verifyDialog.show();" />
 					<p:separator />
 					<p:commandButton value="第一条"
 						actionListener="#{takeAdminBean.first}"
@@ -132,7 +132,7 @@
 					<h:outputText value="制单人" />
                     <p:inputText value="#{takeAdminBean.creator}" disabled="true"/>
                     <h:outputText value="单据状态" />
-                    <p:inputText value="" disabled="true"/>
+                    <p:inputText value="#{takeAdminBean.verifyStatus}" disabled="true"/>
 				</t:panelGrid>
 
                 <t:panelGrid columns="2">
@@ -714,6 +714,34 @@
                 </h:panelGroup>
             </p:dialog>
         </h:form>
+
+        <h:form id="verifyForm">
+            <p:dialog header="审核" widgetVar="verifyDialog"
+                modal="true" height="400" width="640">
+
+
+                <t:panelGrid id="verifyPanel" columns="2">
+                    <h:outputText value="审核意见"/>
+                    <p:inputTextarea
+                        value="#{takeAdminBean.rejectedReason}"
+                        style="width:300px;height:100px;"
+                        effectDuration="400" />
+
+                    <p:commandButton
+                        update="mainForm"
+                        value="通过"
+                        actionListener="#{takeAdminBean.approve}"
+                        oncomplete="verifyDialog.hide()"/>
+                    <p:commandButton
+                        update="mainForm"
+                        value="拒绝"
+                        actionListener="#{takeAdminBean.reject}"
+                        oncomplete="verifyDialog.hide()"/>
+                </t:panelGrid>
+
+            </p:dialog>
+        </h:form>
+
 
         <h:outputScript>
             document.title = $("#mainForm\\:pageTitle").val();

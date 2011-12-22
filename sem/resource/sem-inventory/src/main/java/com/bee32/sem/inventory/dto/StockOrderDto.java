@@ -34,4 +34,13 @@ public class StockOrderDto extends AbstractStockOrderDto<StockOrder> {
         super._unmarshalTo(target);
         merge(target, "verifyContext", stockOrderVerifySupport);
     }
+
+    public StockOrderVerifySupportDto getVerifyContext() {
+        return stockOrderVerifySupport;
+    }
+
+    public void setVerifyContext(
+            StockOrderVerifySupportDto stockOrderVerifySupport) {
+        this.stockOrderVerifySupport = stockOrderVerifySupport;
+    }
 }

@@ -9,18 +9,23 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bee32.icsf.login.SessionUser;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.ox1.principal.User;
+import com.bee32.plover.ox1.principal.UserDto;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
+import com.bee32.sem.inventory.process.dto.StockOrderVerifySupportDto;
 import com.bee32.sem.inventory.util.StockCriteria;
 import com.bee32.sem.misc.EntityCriteria;
+import com.bee32.sem.process.verify.service.IVerifyService;
 
 public class TakeAdminBean extends StockOrderBaseBean {
 
@@ -32,6 +37,8 @@ public class TakeAdminBean extends StockOrderBaseBean {
 
     private int goNumber;
     private int count;
+
+    String rejectedReason;
 
     public TakeAdminBean() {
         Calendar c = Calendar.getInstance();
@@ -71,6 +78,10 @@ public class TakeAdminBean extends StockOrderBaseBean {
         }
     }
 
+    public boolean isCanVerify() {
+        //TODO replace code to return currentUser.canVerify();
+        return true;
+    }
 
     public Date getLimitDateFrom() {
         return limitDateFrom;
@@ -103,6 +114,41 @@ public class TakeAdminBean extends StockOrderBaseBean {
                 new Equals("warehouse.id", selectedWarehouse.getId()));
         return count;
     }
+
+    public String getRejectedReason() {
+        return rejectedReason;
+    }
+
+    public void setRejectedReason(String rejectedReason) {
+        this.rejectedReason = rejectedReason;
+    }
+
+    public Boolean getVerified() {
+        if (stockOrder == null || stockOrder.getId() == null) {
+            return null;
+        }
+
+        IVerifyService verifyService = getBean(IVerifyService.class);
+
+        StockOrder _order = stockOrder.unmarshal();
+        return verifyService.isVerified(_order.getVerifyContext());
+
+    }
+
+    public String getVerifyStatus() {
+        Boolean verified = getVerified();
+
+        if (verified == null) {
+            return "";
+        } else {
+            if (verified) {
+                return "审核己通过";
+            }
+        }
+
+        return "未审核或审核未通过";
+    }
+
 
 
 
@@ -253,5 +299,53 @@ public class TakeAdminBean extends StockOrderBaseBean {
     @Override
     public StockWarehouseDto getSelectedWarehouse_() {
         return selectedWarehouse;
+    }
+
+
+
+    public void approve() {
+        if (stockOrder == null || stockOrder.getId() == null) {
+            uiLogger.error("当前没有单据!");
+            return;
+        }
+
+        try {
+            User currentUser = SessionUser.getInstance().getInternalUser();
+
+            StockOrderVerifySupportDto context = stockOrder.getVerifyContext();
+            context.setVerifier1(DTOs.marshal(UserDto.class, currentUser));
+            context.setVerifiedDate1(new Date());
+            context.setAccepted1(true);
+            context.setRejectedReason1(rejectedReason);
+
+            IVerifyService verifyService = getBean(IVerifyService.class);
+            verifyService.verifyEntity(stockOrder.unmarshal());
+            uiLogger.info("审核成功!");
+        } catch (Exception e) {
+            uiLogger.error("审核错误.", e);
+        }
+    }
+
+    public void reject() {
+        if (stockOrder == null || stockOrder.getId() == null) {
+            uiLogger.error("当前没有单据!");
+            return;
+        }
+
+        try {
+            User currentUser = SessionUser.getInstance().getInternalUser();
+
+            StockOrderVerifySupportDto context = stockOrder.getVerifyContext();
+            context.setVerifier1(DTOs.marshal(UserDto.class, currentUser));
+            context.setVerifiedDate1(new Date());
+            context.setAccepted1(false);
+            context.setRejectedReason1(rejectedReason);
+
+            IVerifyService verifyService = getBean(IVerifyService.class);
+            verifyService.verifyEntity(stockOrder.unmarshal());
+            uiLogger.warn("拒绝成功!");
+        } catch (Exception e) {
+            uiLogger.error("审核错误.", e);
+        }
     }
 }

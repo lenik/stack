@@ -277,4 +277,10 @@ public class StockOrder
         return stockOrderVerifySupport;
     }
 
+    public void setVerifyContext(StockOrderVerifySupport stockOrderVerifySupport) {
+        if (stockOrderVerifySupport == null)
+            stockOrderVerifySupport = new StockOrderVerifySupport(this);
+        this.stockOrderVerifySupport = stockOrderVerifySupport;
+    }
+
 }
