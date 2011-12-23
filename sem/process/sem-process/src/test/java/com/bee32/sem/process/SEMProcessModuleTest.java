@@ -22,7 +22,6 @@ public class SEMProcessModuleTest
 
     public static void main(String[] args)
             throws IOException {
-
         new SEMProcessModuleTest().browseAndWait(//
                 // SEMProcessModule.class//
                 // AllowListController.PREFIX + "index.do"//
