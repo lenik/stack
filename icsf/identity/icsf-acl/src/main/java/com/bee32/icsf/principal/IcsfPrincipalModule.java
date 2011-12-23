@@ -16,6 +16,9 @@ public class IcsfPrincipalModule
 
     @Override
     protected void preamble() {
+        // no pages for -principal yet.
+        // declareEntityPages(entityType, shortName)
+
         export(UserDao.class, "user");
         export(GroupDao.class, "group");
         export(RoleDao.class, "role");

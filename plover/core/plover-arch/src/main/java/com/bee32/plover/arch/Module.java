@@ -32,7 +32,6 @@ public abstract class Module
         implements IModule, INamed, InitializingBean {
 
     private TreeMapNode<Object> nodeImpl = new TreeMapNode<Object>(Object.class);
-
     private Credit credit = Credit.dummy;
 
     @Inject
