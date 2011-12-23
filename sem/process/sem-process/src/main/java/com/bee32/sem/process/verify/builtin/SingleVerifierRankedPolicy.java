@@ -16,7 +16,6 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.orm.util.Alias;
 import com.bee32.plover.ox1.principal.Principal;
 import com.bee32.plover.ox1.principal.User;
 import com.bee32.sem.process.verify.ForVerifyContext;
@@ -26,7 +25,6 @@ import com.bee32.sem.process.verify.VerifyResult;
 
 @Entity
 @DiscriminatorValue("ML")
-@Alias("level")
 @ForVerifyContext(ISingleVerifierWithNumber.class)
 public class SingleVerifierRankedPolicy
         extends VerifyPolicy {

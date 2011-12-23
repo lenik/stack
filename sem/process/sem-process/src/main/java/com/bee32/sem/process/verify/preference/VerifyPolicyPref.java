@@ -4,12 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-import com.bee32.plover.orm.util.Alias;
 import com.bee32.plover.ox1.typePref.TypePrefEntity;
 import com.bee32.sem.process.verify.VerifyPolicy;
 
 @Entity
-@Alias("pref")
 public class VerifyPolicyPref
         extends TypePrefEntity {
 

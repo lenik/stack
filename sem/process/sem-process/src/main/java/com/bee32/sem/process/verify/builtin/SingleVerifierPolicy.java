@@ -11,7 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-import com.bee32.plover.orm.util.Alias;
 import com.bee32.plover.ox1.principal.Principal;
 import com.bee32.plover.ox1.principal.User;
 import com.bee32.sem.process.verify.ForVerifyContext;
@@ -24,7 +23,6 @@ import com.bee32.sem.process.verify.VerifyResult;
  */
 @Entity
 @DiscriminatorValue("V1")
-@Alias("list")
 @ForVerifyContext(ISingleVerifier.class)
 public class SingleVerifierPolicy
         extends VerifyPolicy {

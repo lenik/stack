@@ -15,7 +15,6 @@ import org.hibernate.annotations.CascadeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.plover.orm.util.Alias;
 import com.bee32.plover.ox1.principal.IPrincipal;
 import com.bee32.plover.ox1.principal.Principal;
 import com.bee32.plover.ox1.principal.User;
@@ -30,7 +29,6 @@ import com.bee32.sem.process.verify.VerifyResult;
  */
 @Entity
 @DiscriminatorValue("NXT")
-@Alias("p2next")
 @ForVerifyContext(IPassEvents.class)
 public class PassToNextPolicy
         extends VerifyPolicy {
