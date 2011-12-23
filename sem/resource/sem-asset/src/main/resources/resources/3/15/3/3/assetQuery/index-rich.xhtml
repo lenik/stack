@@ -65,14 +65,6 @@
                     <h:outputText value="#{item.party.displayName}" />
                 </p:column>
 
-                <p:column headerText="借贷方向">
-                    <p:selectOneMenu value="#{item.debitSide}"
-                        disabled="#{true}" style="width:200px;">
-                        <f:selectItem itemValue="true" itemLabel="借方" />
-                        <f:selectItem itemValue="false" itemLabel="贷方" />
-                    </p:selectOneMenu>
-                </p:column>
-
                 <p:column headerText="币种">
                     <h:outputText value="#{item.valueCurrency}" />
                 </p:column>

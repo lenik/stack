@@ -41,6 +41,7 @@ public class OrgPersonAdminBean
     String orgAddress;
     String personName;
     char sex;
+    String personRole;
     String personMemo;
 
     List<ContactHolder> contactHolders = new ArrayList<ContactHolder>();
@@ -113,6 +114,14 @@ public class OrgPersonAdminBean
 
     public void setSex(char sex) {
         this.sex = sex;
+    }
+
+    public String getPersonRole() {
+        return personRole;
+    }
+
+    public void setPersonRole(String personRole) {
+        this.personRole = personRole;
     }
 
     public String getPersonMemo() {
@@ -269,6 +278,7 @@ public class OrgPersonAdminBean
             PersonRole _role = new PersonRole();
             _role.setOrg(_org);
             _role.setPerson(_person);
+            _role.setRole(personRole);
 
             serviceFor(PersonRole.class).saveOrUpdate(_role);
             serviceFor(Org.class).evict(_org);

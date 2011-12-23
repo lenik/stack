@@ -77,6 +77,10 @@
                             <h:outputText value="#{role.person.displayName}" />
                         </p:column>
 
+                        <p:column headerText="职务">
+                            <h:outputText value="#{role.role}" />
+                        </p:column>
+
                         <p:column headerText="性别">
                             <h:outputText value="#{role.person.sexText}" />
                         </p:column>
@@ -120,6 +124,11 @@
                         <f:selectItems
                             value="#{orgPersonAdminBean.genders}" />
                     </p:selectOneMenu>
+
+                    <h:outputText value="职务" />
+                    <t:panelGroup colspan="3">
+                        <p:inputText value="#{orgPersonAdminBean.personRole}" style="width:200px;"/>
+                    </t:panelGroup>
 
                     <h:outputText value="相关人员备注" />
                     <t:panelGroup colspan="3">
