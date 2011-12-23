@@ -50,7 +50,7 @@ public abstract class VerifyContextDto<T extends AbstractVerifyContext>
         // target.setVerifyError(verifyError);
         // target.setVerifyEvalDate(verifyEvalDate);
 
-        merge(target, "verifyTask", verifyEvent);
+        merge(target, "verifyEvent", verifyEvent);
     }
 
     public EventState getVerifyState() {

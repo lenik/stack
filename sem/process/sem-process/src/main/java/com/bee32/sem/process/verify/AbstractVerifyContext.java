@@ -68,13 +68,16 @@ public abstract class AbstractVerifyContext
     }
 
     @Column(name = "verifyState", nullable = false)
-    @DefaultValue("1")
+    @DefaultValue("-1")
     int getVerifyState_() {
         return verifyState.getValue();
     }
 
     void setVerifyState_(int stateValue) {
-        verifyState = VerifyState.valueOf(stateValue);
+        if (stateValue == -1)
+            verifyState = VerifyState.UNKNOWN;
+        else
+            verifyState = VerifyState.valueOf(stateValue);
     }
 
     @Transient
