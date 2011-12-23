@@ -9,6 +9,9 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityRepository;
 import com.bee32.plover.orm.entity.GenericEntityDao;
 import com.bee32.plover.orm.entity.IEntityRepo;
+import com.bee32.plover.restful.resource.IObjectPageDirectory;
+import com.bee32.plover.restful.resource.PageDirectory;
+import com.bee32.plover.rtx.location.Location;
 
 public abstract class ERModule
         extends Module {
@@ -21,6 +24,11 @@ public abstract class ERModule
         super(name);
     }
 
+    protected void declareEntityPages(Class<? extends Entity<?>> entityType, String shortName) {
+        ModuleEntityPageDirectory pageDir = new ModuleEntityPageDirectory(this, entityType, shortName + "/");
+        PageDirectory.register(entityType, pageDir);
+    }
+
     protected <ER extends EntityRepository<?, ?>> //
     void export(Class<ER> erClass) {
         // declare the restful token
@@ -28,11 +36,19 @@ public abstract class ERModule
 
         // Type[] pv = ClassUtil.getOriginPV(erClass);
         Class<?> entityType = repo.getEntityType();
-        Alias aliasAnn = entityType.getAnnotation(Alias.class);
-        if (aliasAnn == null)
-            throw new IllegalUsageException("No @Alias defined on " + entityType);
+        IObjectPageDirectory pageDir = PageDirectory.getPageDirectory(entityType);
+        Location baseLocation = pageDir.getBaseLocation();
+        if (baseLocation == null)
+            throw new IllegalUsageException("Base location isn't defined for " + entityType);
 
-        export(erClass, aliasAnn.value());
+        String baseName = baseLocation.getBase();
+        int lastSlash = baseName.lastIndexOf('/');
+        if (lastSlash != -1)
+            baseName = baseName.substring(lastSlash + 1);
+
+        // Well, this base name maybe not very accuracy.
+        // but, since the restful isn't in use yet, just let it go...
+        export(erClass, baseName);
     }
 
     protected <ER extends EntityRepository<?, ?>> //
@@ -44,7 +60,6 @@ public abstract class ERModule
 
     protected <E extends Entity<K>, K extends Serializable> //
     void export(IEntityRepo<E, K> entityRepository, String location) {
-
         // declare the restful token
         declare(location, entityRepository);
     }
