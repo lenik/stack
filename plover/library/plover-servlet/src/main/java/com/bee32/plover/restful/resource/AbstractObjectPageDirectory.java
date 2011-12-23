@@ -10,10 +10,12 @@ public abstract class AbstractObjectPageDirectory
     public AbstractObjectPageDirectory() {
     }
 
+    @Override
     public Location getPageForView(String viewName) {
         return getPageForView(viewName, Collections.<String, Object> emptyMap());
     }
 
+    @Override
     public Location getPageForOperation(String operationName) {
         return getPageForOperation(operationName, Collections.<String, Object> emptyMap());
     }

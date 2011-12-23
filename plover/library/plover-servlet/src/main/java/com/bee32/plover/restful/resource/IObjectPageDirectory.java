@@ -27,9 +27,23 @@ public interface IObjectPageDirectory {
      * Get the preferred page for the specific view for the object.
      *
      * @see StandardViews
+     */
+    Location getPageForView(String viewName);
+
+    /**
+     * Get the preferred page for the specific view for the object.
+     *
+     * @see StandardViews
      * @see StandardViews#FORMAT_PARAM
      */
     Location getPageForView(String viewName, Map<String, ?> parameters);
+
+    /**
+     * Get the preferred page for the specific operation to the object.
+     *
+     * @see StandardOperations
+     */
+    Location getPageForOperation(String operationName);
 
     /**
      * Get the preferred page for the specific operation to the object.
