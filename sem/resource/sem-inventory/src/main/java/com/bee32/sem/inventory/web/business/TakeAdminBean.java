@@ -209,12 +209,24 @@ public class TakeAdminBean extends StockOrderBaseBean {
             return;
         }
 
+        Boolean verified = getVerified();
+        if (verified != null && verified) {
+            uiLogger.error("单据已经审核，不能修改!");
+            return;
+        }
+
         itemsNeedToRemoveWhenModify.clear();
 
         editable = true;
     }
 
     public void delete() {
+        Boolean verified = getVerified();
+        if (verified != null && verified) {
+            uiLogger.error("单据已经审核，不能删除!");
+            return;
+        }
+
         try {
             serviceFor(StockOrder.class).delete(stockOrder.unmarshal());
             uiLogger.info("删除成功!");
