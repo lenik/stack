@@ -24,9 +24,13 @@ public abstract class ERModule
         super(name);
     }
 
-    protected void declareEntityPages(Class<? extends Entity<?>> entityType, String shortName) {
-        ModuleEntityPageDirectory pageDir = new ModuleEntityPageDirectory(this, entityType, shortName + "/");
+    protected void declareEntityPages(Module module, Class<? extends Entity<?>> entityType, String shortName) {
+        ModuleEntityPageDirectory pageDir = new ModuleEntityPageDirectory(module, shortName + "/");
         PageDirectory.register(entityType, pageDir);
+    }
+
+    protected final void declareEntityPages(Class<? extends Entity<?>> entityType, String shortName) {
+        declareEntityPages(this, entityType, shortName);
     }
 
     protected <ER extends EntityRepository<?, ?>> //
