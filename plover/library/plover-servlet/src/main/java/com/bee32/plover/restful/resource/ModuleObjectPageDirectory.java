@@ -35,7 +35,7 @@ public class ModuleObjectPageDirectory
     }
 
     protected Location expand(String localPage) {
-        Location location = moduleLocation.join(localPage);
+        Location location = getBaseLocation().join(localPage);
         return location;
     }
 
@@ -92,6 +92,8 @@ public class ModuleObjectPageDirectory
     }
 
     protected String formatHref(String path, Map<String, ?> parameters) {
+        if (path == null)
+            return null;
         if (parameters == null)
             return path;
         StringBuilder buf = new StringBuilder(path.length() + parameters.size() * 32);

@@ -7,16 +7,13 @@ import com.bee32.plover.rtx.location.Location;
 public abstract class AbstractObjectPageDirectory
         implements IObjectPageDirectory {
 
-    public AbstractObjectPageDirectory() {
-    }
-
     @Override
-    public Location getPageForView(String viewName) {
+    public final Location getPageForView(String viewName) {
         return getPageForView(viewName, Collections.<String, Object> emptyMap());
     }
 
     @Override
-    public Location getPageForOperation(String operationName) {
+    public final Location getPageForOperation(String operationName) {
         return getPageForOperation(operationName, Collections.<String, Object> emptyMap());
     }
 
