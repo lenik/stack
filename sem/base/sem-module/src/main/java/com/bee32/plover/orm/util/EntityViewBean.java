@@ -2,16 +2,22 @@ package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
 
+import javax.free.IllegalUsageException;
+import javax.servlet.ServletException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IEntityAccessService;
-import com.bee32.plover.web.faces.view.ViewBean;
+import com.bee32.plover.orm.web.EntityHelper;
+import com.bee32.plover.restful.resource.StandardViews;
+import com.bee32.plover.web.faces.view.GenericViewBean;
 
 public abstract class EntityViewBean
-        extends ViewBean
+        extends GenericViewBean
         implements IEntityMarshalContext {
 
     private static final long serialVersionUID = 1L;
@@ -75,6 +81,69 @@ public abstract class EntityViewBean
 
         D remarshalled = DTOs.marshal(dtoType, selection, reloaded);
         return remarshalled;
+    }
+
+    @Override
+    protected Class<? extends Entity<?>> getMajorType() {
+        Class<?> majorType = super.getMajorType();
+        if (!Entity.class.isAssignableFrom(majorType))
+            throw new IllegalUsageException("The major type should be Entity for entity view bean: " + majorType);
+
+        @SuppressWarnings("unchecked")
+        Class<? extends Entity<?>> entityType = (Class<? extends Entity<?>>) majorType;
+
+        return entityType;
+    }
+
+    /**
+     * Get and parse the request entity id.
+     *
+     * @return <code>null</code> If id parameter is not specified in the rqeuest.
+     */
+    protected Serializable getRequestId() {
+        Class<? extends Entity<?>> entityType = getMajorType();
+
+        String requestId = getRequest().getParameter(StandardViews.ID_PARAM);
+        if (requestId == null)
+            return null;
+
+        EntityHelper<? extends Entity<?>, ?> eh = EntityHelper.getInstance(entityType);
+        Serializable id;
+        try {
+            id = eh.parseId(requestId);
+            return id;
+        } catch (ServletException e) {
+            throw new IllegalArgumentException("Bad id: " + requestId, e);
+        }
+    }
+
+    /**
+     * Get the actual entity for the request.
+     *
+     * @param mustExist
+     *            Whether the entity have to be existed.
+     * @return While <code>mustExist</code> is <code>false</code>, returns <code>null</code> if not
+     *         found. Otherwise non-<code>null</code> values.
+     * @throws IllegalArgumentException
+     *             If request id is not specified, or could not parsed.
+     * @throws org.springframework.orm.ObjectRetrievalFailureException
+     *             if not found but <code>mustExist</code> was specified to <code>true</code>.
+     * @throws org.springframework.dao.DataAccessException
+     *             in case of Hibernate errors
+     */
+    protected Entity<?> getRequestEntity(boolean mustExist) {
+        Serializable id = getRequestId();
+        if (id == null)
+            throw new IllegalArgumentException(String.format("Id for %s is not specified.", //
+                    ClassUtil.getDisplayName(getMajorType())));
+
+        Class<? extends Entity<?>> entityType = getMajorType();
+        Entity<?> entity;
+        if (mustExist)
+            entity = asFor(entityType).getOrFail(id);
+        else
+            entity = asFor(entityType).get(id);
+        return entity;
     }
 
 }
