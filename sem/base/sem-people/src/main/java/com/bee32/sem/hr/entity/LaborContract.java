@@ -17,4 +17,6 @@ public class LaborContract
 
     private static final long serialVersionUID = 1L;
 
+    EmployeeInfo employeeInfo;
+
 }

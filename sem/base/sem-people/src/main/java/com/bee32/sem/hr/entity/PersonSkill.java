@@ -29,6 +29,8 @@ public class PersonSkill
 
     private static final long serialVersionUID = 1L;
 
+    EmployeeInfo employeeInfo;
+
     PersonSkillCategory category;
     int score;
     Date date;

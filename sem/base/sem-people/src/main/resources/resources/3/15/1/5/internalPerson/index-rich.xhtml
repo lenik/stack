@@ -120,6 +120,26 @@
                     <h:outputText value="#{person.owner.displayName}" />
                 </p:column>
 
+                <p:column>
+                    <f:facet name="header">操作</f:facet>
+                    <t:panelGroup>
+                        <p:commandLink
+                            oncomplete="extraInfoDialog.show()"
+                            update="extraInfoForm:extraInfoPanel" value="附加信息">
+                            <f:setPropertyActionListener value="#{person}"
+                                target="#{internalPersonAdminBean.selectedPerson}" />
+                        </p:commandLink>
+                        <p:spacer width="10" />
+                        <p:commandLink oncomplete="taskDialog.hide();"
+                            update="mainForm:task mainForm:planDetail:items"
+                            action="#{materialPlanAdminBean.chooseTask}"
+                            value="挑选">
+                            <f:setPropertyActionListener value="#{task}"
+                                target="#{materialPlanAdminBean.selectedTask}" />
+                        </p:commandLink>
+                    </t:panelGroup>
+                </p:column>
+
             </p:dataTable>
         </h:form>
 
