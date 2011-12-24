@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.bee32.plover.orm.entity.EntityAuto;
@@ -116,6 +120,7 @@ public class EmployeeInfo extends EntityAuto<Long> {
      * 雇佣日期
      * @return
      */
+    @Temporal(TemporalType.TIMESTAMP)
     public Date getEmployedDate() {
         return employedDate;
     }
@@ -128,6 +133,7 @@ public class EmployeeInfo extends EntityAuto<Long> {
      * 辞职时间
      * @return
      */
+    @Temporal(TemporalType.TIMESTAMP)
     public Date getResignedDate() {
         return resignedDate;
     }
@@ -140,6 +146,7 @@ public class EmployeeInfo extends EntityAuto<Long> {
      * 劳动合同(多个)
      * @return
      */
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employeeInfo")
     public List<LaborContract> getLaborContracts() {
         return laborContracts;
     }
@@ -152,6 +159,7 @@ public class EmployeeInfo extends EntityAuto<Long> {
      * 专业技能(多个)
      * @return
      */
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employeeInfo")
     public List<PersonSkill> getSkills() {
         return skills;
     }
