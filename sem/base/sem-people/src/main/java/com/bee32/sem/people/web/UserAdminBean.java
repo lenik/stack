@@ -17,6 +17,7 @@ import com.bee32.plover.ox1.principal.Principal;
 import com.bee32.plover.ox1.principal.RoleDto;
 import com.bee32.plover.ox1.principal.User;
 import com.bee32.plover.ox1.principal.UserDto;
+import com.bee32.plover.ox1.principal.web.PrincipalAdminBean;
 import com.bee32.sem.people.dto.ContactDto;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.entity.Person;

@@ -1,4 +1,4 @@
-package com.bee32.sem.people.web;
+package com.bee32.icsf.access.web;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;

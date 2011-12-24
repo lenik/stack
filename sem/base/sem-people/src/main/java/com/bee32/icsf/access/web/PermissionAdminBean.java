@@ -1,4 +1,4 @@
-package com.bee32.sem.people.web;
+package com.bee32.icsf.access.web;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -111,7 +111,6 @@ public class PermissionAdminBean
         this.activeTab = activeTab;
     }
 
-
     public List<SelectItem> getPermissionStatus() {
         List<SelectItem> items = new ArrayList<SelectItem>();
         SelectItem item = new SelectItem();
@@ -131,9 +130,6 @@ public class PermissionAdminBean
 
         return items;
     }
-
-
-
 
     private void loadEntries(AbstractPrincipalDto<? extends Principal> principalDto) {
         ScannedResourceRegistry srr = getBean(ScannedResourceRegistry.class);

@@ -26,11 +26,12 @@ import com.bee32.sem.people.util.ContactHolder;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
 
-public class OrgPersonAdminBean extends EntityViewBean {
+public class OrgPersonAdminBean
+        extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
-    private static final int CONTACTS = 5;
+    private static final int CONTACT_INITSIZE = 5;
 
     private LazyDataModel<OrgDto> orgs;
     private OrgDto selectedOrg;
@@ -44,7 +45,6 @@ public class OrgPersonAdminBean extends EntityViewBean {
 
     List<ContactHolder> contactHolders = new ArrayList<ContactHolder>();
 
-
     public OrgPersonAdminBean() {
         EntityDataModelOptions<Org, OrgDto> options = new EntityDataModelOptions<Org, OrgDto>(//
                 Org.class, OrgDto.class, PartyDto.CONTACTS | PartyDto.ROLES, //
@@ -53,7 +53,7 @@ public class OrgPersonAdminBean extends EntityViewBean {
 
         refreshOrgCount();
 
-        for (int i=0; i<CONTACTS; i++) {
+        for (int i = 0; i < CONTACT_INITSIZE; i++) {
             contactHolders.add(new ContactHolder());
         }
     }
@@ -144,16 +144,15 @@ public class OrgPersonAdminBean extends EntityViewBean {
         return genders;
     }
 
-
     public void add() {
         orgName = "";
-        //selectedTags = null;
+        // selectedTags = null;
         orgAddress = "";
         personName = "";
-        //sex;
+        // sex;
         personMemo = null;
 
-        for (int i=0; i<CONTACTS; i++) {
+        for (int i = 0; i < CONTACT_INITSIZE; i++) {
             contactHolders.get(i).setTel("");
             contactHolders.get(i).setCellphone("");
             contactHolders.get(i).setOrg(false);
@@ -178,9 +177,9 @@ public class OrgPersonAdminBean extends EntityViewBean {
             return;
         }
 
-        //检测是否有输入联系方式
+        // 检测是否有输入联系方式
         boolean haveContact = false;
-        for(int i=0; i<CONTACTS; i++) {
+        for (int i = 0; i < CONTACT_INITSIZE; i++) {
             if (contactHolders.get(i).isOrg()) {
                 haveContact = true;
                 break;
@@ -216,13 +215,12 @@ public class OrgPersonAdminBean extends EntityViewBean {
         person.setSex(sex);
         person.setMemo(personMemo);
 
-        for (int i=0; i<CONTACTS; i++) {
+        for (int i = 0; i < CONTACT_INITSIZE; i++) {
 
             if (contactHolders.get(i).isOrg()) {
                 ContactDto contact = new ContactDto().create();
 
-                if (contactHolders.get(i).getTel() != null
-                        && contactHolders.get(i).getTel().trim().length() > 0) {
+                if (contactHolders.get(i).getTel() != null && contactHolders.get(i).getTel().trim().length() > 0) {
                     contact.setTel(contactHolders.get(i).getTel());
                 }
 
@@ -231,8 +229,7 @@ public class OrgPersonAdminBean extends EntityViewBean {
                     contact.setMobile(contactHolders.get(i).getCellphone());
                 }
 
-                if (orgAddress != null
-                        && orgAddress.length() > 0) {
+                if (orgAddress != null && orgAddress.length() > 0) {
                     contact.setAddress(orgAddress);
                 }
                 contact.setParty(org);
@@ -244,8 +241,7 @@ public class OrgPersonAdminBean extends EntityViewBean {
             if (contactHolders.get(i).isPerson()) {
                 ContactDto contact = new ContactDto().create();
 
-                if (contactHolders.get(i).getTel() != null
-                        && contactHolders.get(i).getTel().trim().length() > 0) {
+                if (contactHolders.get(i).getTel() != null && contactHolders.get(i).getTel().trim().length() > 0) {
                     contact.setTel(contactHolders.get(i).getTel());
                 }
 
@@ -254,8 +250,7 @@ public class OrgPersonAdminBean extends EntityViewBean {
                     contact.setMobile(contactHolders.get(i).getCellphone());
                 }
 
-                if (orgAddress != null
-                        && orgAddress.length() > 0) {
+                if (orgAddress != null && orgAddress.length() > 0) {
                     contact.setAddress(orgAddress);
                 }
                 contact.setParty(person);
