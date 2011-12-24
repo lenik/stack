@@ -15,7 +15,12 @@ public interface StandardViews {
      * @see #ID_PARAM
      * @see #FORMAT_PARAM
      */
-    public static final String CONTENT_FORM = "contentForm";
+    public static final String CONTENT = "content";
+
+    /**
+     * The creating form of the object.
+     */
+    public static final String CREATE_FORM = "createForm";
 
     /**
      * The editing form of the object.
