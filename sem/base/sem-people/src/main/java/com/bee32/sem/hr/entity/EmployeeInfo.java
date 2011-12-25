@@ -1,6 +1,7 @@
 package com.bee32.sem.hr.entity;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -176,6 +177,21 @@ public class EmployeeInfo extends EntityAuto<Long> {
     public int getWorkYears() {
         // if (currentDate > resignedDate) reutrn resignedDate - employedDate
         // else return currentDate - employedDate
+        Date currentDate = new Date();
+        Calendar current = Calendar.getInstance(); current.setTime(currentDate);
+        Calendar resigned = Calendar.getInstance(); resigned.setTime(resignedDate);
+        Calendar employed = Calendar.getInstance(); employed.setTime(employedDate);
+
+        int months = 0;
+
+        if (resignedDate != null && currentDate.after(resignedDate)) {
+
+
+        } else {
+
+        }
+
+
         return 0;
     }
 
