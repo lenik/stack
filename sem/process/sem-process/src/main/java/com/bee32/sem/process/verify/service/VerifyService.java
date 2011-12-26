@@ -18,6 +18,7 @@ import com.bee32.plover.ox1.principal.Principal;
 import com.bee32.plover.ox1.principal.User;
 import com.bee32.sem.event.entity.Event;
 import com.bee32.sem.event.entity.EventPriority;
+import com.bee32.sem.event.entity.EventType;
 import com.bee32.sem.process.verify.AbstractVerifyContext;
 import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.IVerifyContext;
@@ -125,7 +126,7 @@ public class VerifyService
         Event verifyEvent = context.getVerifyEvent();
         {
             if (verifyEvent == null) {
-                verifyEvent = new Event();
+                verifyEvent = new Event(EventType.TASK);
                 context.setVerifyEvent(verifyEvent);
             }
 

@@ -12,7 +12,7 @@ import com.bee32.plover.ox1.principal.Role;
 import com.bee32.sem.event.entity.Event;
 import com.bee32.sem.event.entity.EventCategory;
 import com.bee32.sem.event.entity.EventPriority;
-import com.bee32.sem.event.entity.Task;
+import com.bee32.sem.event.entity.EventType;
 
 @ImportSamples(IcsfPrincipalSamples.class)
 public class SEMEventSamples
@@ -22,7 +22,7 @@ public class SEMEventSamples
     public static final EventCategory special = new EventCategory("special", "特种");
 
     public static List<Event> rains = new ArrayList<Event>();
-    public static Task killAngel;
+    public static Event killAngel;
 
     static Event mkRain(double relativeDay, Double duration, String title) {
         Event rain = new Event();
@@ -53,7 +53,7 @@ public class SEMEventSamples
         rains.add(mkRain(0, null, "今天"));
         rains.add(mkRain(1.5, null, "1.5天之后"));
 
-        killAngel = new Task();
+        killAngel = new Event(EventType.TASK);
         killAngel.setCategory(special);
         killAngel.setSourceClass(SEMEventSamples.class);
         killAngel.setPriority(EventPriority.HIGH);

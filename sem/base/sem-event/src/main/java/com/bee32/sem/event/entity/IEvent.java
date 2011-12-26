@@ -15,6 +15,8 @@ public interface IEvent {
     /**
      * The event category.
      *
+     * For Tasks, it maybe from personal calendar program, or system generated tasks.
+     *
      * @return The event category, maybe <code>null</code> for uncategorified events.
      */
     EventCategory getCategory();
@@ -96,6 +98,8 @@ public interface IEvent {
     /**
      * The start time of the event.
      *
+     * For tasks, this is the scheduled start time.
+     *
      * @return Non-<code>null</code> time.
      */
     Date getBeginTime();
@@ -103,10 +107,17 @@ public interface IEvent {
     /**
      * When the event is ended.
      *
-     * @return The end time, <code>null</code> if the event is happened at a specific time point, or
-     *         the end time is unknown.
+     * For tasks, this is the actual end time.
+     *
+     * @return The end time, same to the begin time if the event is happened at a specific time
+     *         point, or the end time is unknown.
      */
     Date getEndTime();
+
+    /**
+     * For tasks, this is the scheduled end time.
+     */
+    Date getScheduledEndTime();
 
     /**
      * The class of the referenced object.

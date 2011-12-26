@@ -21,9 +21,7 @@ import com.bee32.sem.event.dao.EventStatusDao;
 import com.bee32.sem.event.dto.AbstractEventDto;
 import com.bee32.sem.event.dto.EventPriorityDto;
 import com.bee32.sem.event.dto.EventStatusDto;
-import com.bee32.sem.event.entity.Activity;
 import com.bee32.sem.event.entity.Event;
-import com.bee32.sem.event.entity.Task;
 import com.bee32.sem.event.util.EventCriteria;
 
 public abstract class AbstractEventController<E extends Event, Dto extends AbstractEventDto<E>>
@@ -65,19 +63,9 @@ public abstract class AbstractEventController<E extends Event, Dto extends Abstr
     protected void fillSearchModel(SearchModel model, TextMap request)
             throws ParseException {
 
-        String stereo = request.getString("stereo");
-        if (stereo != null) {
-            Class<? extends Event> eventClass = null;
-            if ("EVT".equals(stereo))
-                eventClass = Event.class;
-            else if ("TSK".equals(stereo))
-                eventClass = Task.class;
-            else if ("ACT".equals(stereo))
-                eventClass = Activity.class;
-
-            if (eventClass != null)
-                model.setEntityClass(eventClass);
-        }
+        String type = request.getString("type");
+        if (type != null)
+            model.add(EventCriteria.typeOf(type));
 
         Boolean closed = request.getNBoolean("closed");
         if (closed != null)

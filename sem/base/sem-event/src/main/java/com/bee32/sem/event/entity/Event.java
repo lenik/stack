@@ -2,6 +2,7 @@ package com.bee32.sem.event.entity;
 
 import static javax.persistence.InheritanceType.SINGLE_TABLE;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,6 +17,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Index;
@@ -41,6 +44,7 @@ public class Event
 
     private static final long serialVersionUID = 1L;
 
+    private char type = EventType.EVENT.getValue();
     private EventCategory category;
     private String sourceAbbr;
     private Class<?> sourceClass;
@@ -57,6 +61,9 @@ public class Event
     private String subject;
     private String message;
 
+    /** for Task only */
+    private Date scheduledEndTime;
+
     private Class<?> refClass;
     private long refId;
     private String refAlt;
@@ -69,8 +76,29 @@ public class Event
         super();
     }
 
-    public Event(String name) {
-        super(name);
+    public Event(EventType type) {
+        super();
+        this.setType(type);
+    }
+
+    @Transient
+    public EventType getType() {
+        return EventType.valueOf(type);
+    }
+
+    public void setType(EventType type) {
+        if (type == null)
+            throw new NullPointerException("type");
+        this.type = type.getValue();
+    }
+
+    @Column(name = "type", nullable = false)
+    char get_type() {
+        return type;
+    }
+
+    public void set_type(char type) {
+        this.type = type;
     }
 
     @ManyToOne
@@ -202,6 +230,16 @@ public class Event
         this.message = message;
     }
 
+    @Index(name = "##_scheduledEndTime")
+    @Temporal(TemporalType.TIMESTAMP)
+    @Override
+    public Date getScheduledEndTime() {
+        return scheduledEndTime;
+    }
+
+    public void setScheduledEndTime(Date scheduledEndTime) {
+        this.scheduledEndTime = scheduledEndTime;
+    }
 
     @Column(length = ABBR_LEN)
     String getRefType() {

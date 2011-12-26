@@ -25,10 +25,10 @@ public class SEMEventMenu
 
     static MenuNode states = entry(ADMIN, 12, "states", getDictIndex(EventStatus.class));
 
-    static MenuNode pendingTasks = entry(EVENT, 10, "pendingTasks", EVENT_.join("index.do?stereo=TSK&closed=false"));
-    static MenuNode completedTasks = entry(EVENT, 11, "completedTasks", EVENT_.join("index.do?stereo=TSK&closed=true"));
+    static MenuNode pendingTasks = entry(EVENT, 10, "pendingTasks", EVENT_.join("index.do?type=t&closed=false"));
+    static MenuNode completedTasks = entry(EVENT, 11, "completedTasks", EVENT_.join("index.do?type=t&closed=true"));
     static MenuNode eventIndex = entry(EVENT, 20, "eventIndex", EVENT_.join("index.do?recent=30"));
-    static MenuNode activityIndex = entry(EVENT, 30, "activityIndex", EVENT_.join("index.do?stereo=ACT&recent=30"));
+    static MenuNode activityIndex = entry(EVENT, 30, "activityIndex", EVENT_.join("index.do?type=a&recent=30"));
 
     @Override
     protected void preamble() {
