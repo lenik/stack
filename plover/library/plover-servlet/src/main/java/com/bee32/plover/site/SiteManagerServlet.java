@@ -2,6 +2,7 @@ package com.bee32.plover.site;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
+import com.bee32.plover.site.scope.SiteNaming;
 
 public class SiteManagerServlet
         extends HttpServlet {
@@ -145,6 +147,24 @@ public class SiteManagerServlet
                 img().classAttr("icon-big").src(_img).end();
 
                 p().style("font-size: 200%").text(site.getDescription()).end();
+            }
+            end();
+
+            String siteAlias = SiteNaming.getSiteAlias(request);
+            fieldset();
+            {
+                legend().text("Site for the request: (alias=" + siteAlias + ")").end();
+                Enumeration<String> headerNames = request.getHeaderNames();
+                table();
+                while (headerNames.hasMoreElements()) {
+                    String headerName = headerNames.nextElement();
+                    String headerValue = request.getHeader(headerName);
+                    tr();
+                    th().text(headerName).end();
+                    td().text(headerValue).end();
+                    end();
+                }
+                end();
             }
             end();
 
