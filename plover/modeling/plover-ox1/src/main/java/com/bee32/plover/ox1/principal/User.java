@@ -6,7 +6,6 @@ import java.util.List;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -66,7 +65,7 @@ public class User
         this.primaryRole = primaryRole;
     }
 
-    @ManyToMany(targetEntity = Group.class, mappedBy = "memberUsers")
+    @ManyToMany(mappedBy = "memberUsers")
     // @Cascade(CascadeType.SAVE_UPDATE)
     @Override
     public List<Group> getAssignedGroups() {
@@ -107,11 +106,7 @@ public class User
         return true;
     }
 
-    @ManyToMany(targetEntity = Role.class)
-    // @Cascade(CascadeType.SAVE_UPDATE)
-    @JoinTable(name = "UserRole", //
-    /*            */joinColumns = @JoinColumn(name = "user"), //
-    /*            */inverseJoinColumns = @JoinColumn(name = "role"))
+    @ManyToMany(mappedBy = "responsibleUsers")
     @Override
     public List<Role> getAssignedRoles() {
         return assignedRoles;

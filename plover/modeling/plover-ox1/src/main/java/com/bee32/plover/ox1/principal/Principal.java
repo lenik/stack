@@ -1,17 +1,24 @@
 package com.bee32.plover.ox1.principal;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.DummyId;
@@ -34,6 +41,8 @@ public abstract class Principal
 
     String name;
     String fullName;
+
+    private List<PrincipalClosure> closures;
 
     public Principal() {
         this.name = null;
@@ -147,6 +156,38 @@ public abstract class Principal
                     return false;
 
         return true;
+    }
+
+    protected void invalidateClosure() {
+        closures = null;
+    }
+
+    @OneToMany(mappedBy = "principal")
+    @Cascade(CascadeType.ALL)
+    public List<PrincipalClosure> getClosure() {
+        if (closures == null) {
+            Set<Principal> responsibles = new HashSet<Principal>();
+            populateResponsibles(responsibles);
+            closures = new ArrayList<PrincipalClosure>();
+            for (Principal responsible : responsibles)
+                closures.add(new PrincipalClosure(this, responsible));
+        }
+        return closures;
+    }
+
+    void setClosure(List<PrincipalClosure> closure) {
+        if (this.closures != closure) {
+            if (this.closures == null)
+                this.closures = closure;
+            else
+                return; // invalidateClosure();
+        }
+    }
+
+    /**
+     * Never add self to the list, to avoid cycles and keep it simple.
+     */
+    protected void populateResponsibles(Set<Principal> responsibles) {
     }
 
     @Override

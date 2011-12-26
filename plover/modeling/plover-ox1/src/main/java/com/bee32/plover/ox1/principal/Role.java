@@ -2,9 +2,12 @@ package com.bee32.plover.ox1.principal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 
@@ -52,8 +55,11 @@ public class Role
         setChildren(children);
     }
 
-    @ManyToMany(mappedBy = "assignedRoles")
+    @ManyToMany
     // @Cascade(CascadeType.SAVE_UPDATE)
+    @JoinTable(name = "RoleUser", //
+    /*            */joinColumns = @JoinColumn(name = "role"), //
+    /*            */inverseJoinColumns = @JoinColumn(name = "user"))
     @Override
     public List<User> getResponsibleUsers() {
         return responsibleUsers;
@@ -62,7 +68,10 @@ public class Role
     public void setResponsibleUsers(List<User> responsibleUsers) {
         if (responsibleUsers == null)
             throw new NullPointerException("responsibleUsers");
-        this.responsibleUsers = responsibleUsers;
+        if (this.responsibleUsers != responsibleUsers) {
+            this.responsibleUsers = responsibleUsers;
+            invalidateClosure();
+        }
     }
 
     @Override
@@ -75,8 +84,8 @@ public class Role
             return false;
 
         responsibleUsers.add(user);
-
         user.addAssignedRole(this);
+        invalidateClosure();
         return true;
     }
 
@@ -89,11 +98,15 @@ public class Role
             return false;
 
         user.removeAssignedRole(this);
+        invalidateClosure();
         return true;
     }
 
-    @ManyToMany(mappedBy = "assignedRoles")
+    @ManyToMany
     // @Cascade(CascadeType.SAVE_UPDATE)
+    @JoinTable(name = "RoleGroup", //
+    /*            */joinColumns = @JoinColumn(name = "role"), //
+    /*            */inverseJoinColumns = @JoinColumn(name = "group"))
     @Override
     public List<Group> getResponsibleGroups() {
         return responsibleGroups;
@@ -102,7 +115,10 @@ public class Role
     public void setResponsibleGroups(List<Group> responsibleGroups) {
         if (responsibleGroups == null)
             throw new NullPointerException("responsibleGroups");
-        this.responsibleGroups = responsibleGroups;
+        if (this.responsibleGroups != responsibleGroups) {
+            this.responsibleGroups = responsibleGroups;
+            invalidateClosure();
+        }
     }
 
     @Override
@@ -116,7 +132,7 @@ public class Role
 
         responsibleGroups.add(group);
         group.addAssignedRole(this);
-
+        invalidateClosure();
         return true;
     }
 
@@ -130,6 +146,7 @@ public class Role
             return false;
 
         group.removeAssignedRole(this);
+        invalidateClosure();
         return true;
     }
 
@@ -153,6 +170,21 @@ public class Role
             if (base != null)
                 visitor.visitImplication(base);
             visitor.endPrincipal(this);
+        }
+    }
+
+    @Override
+    protected void populateResponsibles(Set<Principal> responsibles) {
+        Role inheritedRole = getInheritedRole();
+        if (inheritedRole != null)
+            inheritedRole.populateResponsibles(responsibles);
+
+        for (User user : responsibleUsers)
+            responsibles.add(user);
+
+        for (Group group : responsibleGroups) {
+            responsibles.add(group);
+            group.populateResponsibles(responsibles);
         }
     }
 

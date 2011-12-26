@@ -2,6 +2,7 @@ package com.bee32.plover.ox1.principal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -23,6 +24,7 @@ public class Group
 
     List<Role> assignedRoles = new ArrayList<Role>();;
     List<User> memberUsers = new ArrayList<User>();;
+    List<PrincipalClosure> closures;
 
     public Group() {
     }
@@ -91,7 +93,10 @@ public class Group
     public void setMemberUsers(List<User> memberUsers) {
         if (memberUsers == null)
             throw new NullPointerException("memberUsers");
-        this.memberUsers = memberUsers;
+        if (this.memberUsers != memberUsers) {
+            this.memberUsers = memberUsers;
+            closures = null;
+        }
     }
 
     @Override
@@ -105,6 +110,7 @@ public class Group
 
         memberUsers.add(user);
         user.addAssignedGroup(this);
+        closures = null;
         return true;
     }
 
@@ -117,14 +123,11 @@ public class Group
             return false;
 
         user.removeAssignedGroup(this);
+        closures = null;
         return true;
     }
 
-    @ManyToMany
-    // @Cascade(CascadeType.SAVE_UPDATE)
-    @JoinTable(name = "GroupRole", //
-    /*            */joinColumns = @JoinColumn(name = "group"), //
-    /*            */inverseJoinColumns = @JoinColumn(name = "role"))
+    @ManyToMany(mappedBy = "responsibleGroups")
     @Override
     public List<Role> getAssignedRoles() {
         return assignedRoles;
@@ -175,6 +178,16 @@ public class Group
                 return true;
 
         return false;
+    }
+
+    @Override
+    protected void populateResponsibles(Set<Principal> responsibles) {
+        Group inheritedGroup = getInheritedGroup();
+        if (inheritedGroup != null)
+            inheritedGroup.populateResponsibles(responsibles);
+
+        for (User user : getMemberUsers())
+            responsibles.add(user);
     }
 
     @Override

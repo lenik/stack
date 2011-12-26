@@ -31,10 +31,16 @@ public class SiteNaming {
     }
 
     public static String getSiteAlias(HttpServletRequest request) {
-        String host = request.getServerName(); // "localhost"
-        // String localName = request.getLocalName(); // "127.0.0.1"
-        int port = request.getLocalPort();
-        return host + ":" + port;
+        String host = request.getHeader("X-Forwarded-Host");
+        if (host == null) {
+            host = request.getHeader("Host");
+            if (host == null)
+                host = request.getServerName(); // "localhost"
+        }
+        int colon = host.lastIndexOf(':');
+        if (colon == -1)
+            host += ":80";
+        return host;
     }
 
 }
