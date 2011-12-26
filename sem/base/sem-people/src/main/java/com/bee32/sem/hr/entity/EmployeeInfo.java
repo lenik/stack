@@ -182,17 +182,22 @@ public class EmployeeInfo extends EntityAuto<Long> {
         Calendar resigned = Calendar.getInstance(); resigned.setTime(resignedDate);
         Calendar employed = Calendar.getInstance(); employed.setTime(employedDate);
 
+        //计算方法:
+        //  月数之差=年份相减*12+月份之差
+        //  工龄(年)=月数之差/12
+
         int months = 0;
 
         if (resignedDate != null && currentDate.after(resignedDate)) {
-
+            months = (resigned.get(Calendar.YEAR) - employed.get(Calendar.YEAR)) * 12 //
+                     + ( resigned.get(Calendar.MONTH) - employed.get(Calendar.MONTH));
 
         } else {
-
+            months = (current.get(Calendar.YEAR) - employed.get(Calendar.YEAR)) * 12 //
+                    + ( current.get(Calendar.MONTH) - employed.get(Calendar.MONTH));
         }
 
-
-        return 0;
+        return months / 12;
     }
 
 }
