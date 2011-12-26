@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.bee32.plover.ox1.color.UIEntityAuto;
@@ -35,6 +37,19 @@ public class PersonSkill
     int score;
     Date date;
 
+    @ManyToOne
+    public EmployeeInfo getEmployeeInfo() {
+        return employeeInfo;
+    }
+
+    public void setEmployeeInfo(EmployeeInfo employeeInfo) {
+        this.employeeInfo = employeeInfo;
+    }
+
+    /**
+     * 技能种类
+     * @return
+     */
     @ManyToOne
     public PersonSkillCategory getCategory() {
         return category;
@@ -67,5 +82,20 @@ public class PersonSkill
         String levelName = levelMap.getTarget(score);
         return levelName;
     }
+
+    /**
+     * 技术获得日期
+     * @return
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+
 
 }
