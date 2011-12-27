@@ -2,6 +2,7 @@ package com.bee32.plover.ox1.principal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -215,6 +216,17 @@ public class User
                 return true;
 
         return false;
+    }
+
+    @Override
+    protected void populateImSet(Set<Principal> imSet) {
+        super.populateImSet(imSet);
+
+        for (Group group : getAssignedGroups())
+            group.populateImSet(imSet);
+
+        for (Role role : getAssignedRoles())
+            role.populateImSet(imSet);
     }
 
     @Override

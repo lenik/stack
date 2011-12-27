@@ -70,7 +70,7 @@ public class Role
             throw new NullPointerException("responsibleUsers");
         if (this.responsibleUsers != responsibleUsers) {
             this.responsibleUsers = responsibleUsers;
-            invalidateClosure();
+            invalidateRelations();
         }
     }
 
@@ -85,7 +85,7 @@ public class Role
 
         responsibleUsers.add(user);
         user.addAssignedRole(this);
-        invalidateClosure();
+        invalidateRelations();
         return true;
     }
 
@@ -98,7 +98,7 @@ public class Role
             return false;
 
         user.removeAssignedRole(this);
-        invalidateClosure();
+        invalidateRelations();
         return true;
     }
 
@@ -117,7 +117,7 @@ public class Role
             throw new NullPointerException("responsibleGroups");
         if (this.responsibleGroups != responsibleGroups) {
             this.responsibleGroups = responsibleGroups;
-            invalidateClosure();
+            invalidateRelations();
         }
     }
 
@@ -132,7 +132,7 @@ public class Role
 
         responsibleGroups.add(group);
         group.addAssignedRole(this);
-        invalidateClosure();
+        invalidateRelations();
         return true;
     }
 
@@ -146,7 +146,7 @@ public class Role
             return false;
 
         group.removeAssignedRole(this);
-        invalidateClosure();
+        invalidateRelations();
         return true;
     }
 
@@ -155,12 +155,32 @@ public class Role
         if (super.implies(principal))
             return true;
 
-        IRolePrincipal base = getInheritedRole();
+        Role base = getInheritedRole();
         if (base != null)
             if (base.implies(principal))
                 return true;
 
         return false;
+    }
+
+    @Override
+    protected void populateImSet(Set<Principal> imSet) {
+        super.populateImSet(imSet);
+
+        Role base = getInheritedRole();
+        if (base != null)
+            base.populateImSet(imSet);
+    }
+
+    @Override
+    protected void populateInvSet(Set<Principal> invSet) {
+        super.populateInvSet(invSet);
+
+        for (User user : responsibleUsers)
+            user.populateInvSet(invSet);
+
+        for (Group group : responsibleGroups)
+            group.populateInvSet(invSet);
     }
 
     @Override
@@ -170,21 +190,6 @@ public class Role
             if (base != null)
                 visitor.visitImplication(base);
             visitor.endPrincipal(this);
-        }
-    }
-
-    @Override
-    protected void populateResponsibles(Set<Principal> responsibles) {
-        Role inheritedRole = getInheritedRole();
-        if (inheritedRole != null)
-            inheritedRole.populateResponsibles(responsibles);
-
-        for (User user : responsibleUsers)
-            responsibles.add(user);
-
-        for (Group group : responsibleGroups) {
-            responsibles.add(group);
-            group.populateResponsibles(responsibles);
         }
     }
 

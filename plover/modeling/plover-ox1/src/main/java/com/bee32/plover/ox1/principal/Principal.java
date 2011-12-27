@@ -1,10 +1,8 @@
 package com.bee32.plover.ox1.principal;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -13,12 +11,9 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.DummyId;
@@ -41,8 +36,6 @@ public abstract class Principal
 
     String name;
     String fullName;
-
-    List<PrincipalResponsible> closure;
 
     public Principal() {
         this.name = null;
@@ -107,6 +100,9 @@ public abstract class Principal
         return this;
     }
 
+    protected void invalidateRelations() {
+    }
+
     @Override
     public boolean implies(IPrincipal principal) {
         if (principal == null)
@@ -158,36 +154,26 @@ public abstract class Principal
         return true;
     }
 
-    protected void invalidateClosure() {
-        closure = null;
+    @Transient
+    public final Collection<Principal> getImSet() {
+        Set<Principal> imSet = new HashSet<Principal>();
+        populateImSet(imSet);
+        return imSet;
     }
 
-    @OneToMany(mappedBy = "principal")
-    @Cascade(CascadeType.ALL)
-    public List<PrincipalResponsible> getClosure() {
-        if (closure == null) {
-            Set<Principal> responsibles = new HashSet<Principal>();
-            populateResponsibles(responsibles);
-            closure = new ArrayList<PrincipalResponsible>();
-            for (Principal responsible : responsibles)
-                closure.add(new PrincipalResponsible(this, responsible));
-        }
-        return closure;
+    @Transient
+    public final Collection<Principal> getInvSet() {
+        Set<Principal> invSet = new HashSet<Principal>();
+        populateInvSet(invSet);
+        return invSet;
     }
 
-    void setClosure(List<PrincipalResponsible> closure) {
-        if (this.closure != closure) {
-            if (this.closure == null)
-                this.closure = closure;
-            else
-                return; // invalidateClosure();
-        }
+    protected void populateImSet(Set<Principal> imSet) {
+        imSet.add(this);
     }
 
-    /**
-     * Never add self to the list, to avoid cycles and keep it simple.
-     */
-    protected void populateResponsibles(Set<Principal> responsibles) {
+    protected void populateInvSet(Set<Principal> invSet) {
+        invSet.add(this);
     }
 
     @Override

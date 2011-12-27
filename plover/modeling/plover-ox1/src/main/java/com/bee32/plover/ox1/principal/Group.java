@@ -24,7 +24,6 @@ public class Group
 
     List<Role> assignedRoles = new ArrayList<Role>();;
     List<User> memberUsers = new ArrayList<User>();;
-    List<PrincipalResponsible> closures;
 
     public Group() {
     }
@@ -95,7 +94,7 @@ public class Group
             throw new NullPointerException("memberUsers");
         if (this.memberUsers != memberUsers) {
             this.memberUsers = memberUsers;
-            invalidateClosure();
+            invalidateRelations();
         }
     }
 
@@ -110,7 +109,7 @@ public class Group
 
         memberUsers.add(user);
         user.addAssignedGroup(this);
-        invalidateClosure();
+        invalidateRelations();
         return true;
     }
 
@@ -124,7 +123,7 @@ public class Group
             return false;
 
         user.removeAssignedGroup(this);
-        invalidateClosure();
+        invalidateRelations();
         return true;
     }
 
@@ -182,13 +181,23 @@ public class Group
     }
 
     @Override
-    protected void populateResponsibles(Set<Principal> responsibles) {
-        Group inheritedGroup = getInheritedGroup();
-        if (inheritedGroup != null)
-            inheritedGroup.populateResponsibles(responsibles);
+    protected void populateImSet(Set<Principal> imSet) {
+        super.populateImSet(imSet);
+
+        Group base = getInheritedGroup();
+        if (base != null)
+            base.populateImSet(imSet);
+
+        for (Role role : getAssignedRoles())
+            role.populateImSet(imSet);
+    }
+
+    @Override
+    protected void populateInvSet(Set<Principal> invSet) {
+        super.populateInvSet(invSet);
 
         for (User user : getMemberUsers())
-            responsibles.add(user);
+            invSet.add(user);
     }
 
     @Override

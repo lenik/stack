@@ -1,7 +1,6 @@
 package com.bee32.plover.ox1.principal;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,18 +10,14 @@ import com.bee32.plover.ox1.PloverOx1Unit;
 import com.bee32.plover.test.ICoordinator;
 
 @Using(PloverOx1Unit.class)
-public class PrincipalClosureFeat
-        extends WiredDaoFeat<PrincipalClosureFeat> {
+public class PrincipalImFeat
+        extends WiredDaoFeat<PrincipalImFeat> {
 
     Group g1 = new Group("group1");
     User u1 = new User("user1");
     Role r1 = new Role("role1");
 
     public void clean() {
-        asFor(PrincipalResponsible.class).deleteAll();
-        List<PrincipalResponsible> prList = asFor(PrincipalResponsible.class).list();
-        for (PrincipalResponsible pr : prList)
-            asFor(PrincipalResponsible.class).delete(pr);
         asFor(Principal.class).deleteAll();
     }
 
@@ -49,17 +44,17 @@ public class PrincipalClosureFeat
     }
 
     void _dumpClosure(Principal principal) {
-        System.out.println("Closure of " + principal.getDisplayName());
-        for (PrincipalResponsible pr : principal.getClosure()) {
-            System.out.println("    " + pr.getResponsible().getDisplayName());
+        System.out.println("Inversed im-set for " + principal.getDisplayName());
+        for (Principal inv : principal.getInvSet()) {
+            System.out.println("    " + inv.getDisplayName());
         }
     }
 
     public static void main(String[] args)
             throws IOException {
-        new PrincipalClosureFeat().mainLoop(new ICoordinator<PrincipalClosureFeat>() {
+        new PrincipalImFeat().mainLoop(new ICoordinator<PrincipalImFeat>() {
             @Override
-            public void main(PrincipalClosureFeat feat)
+            public void main(PrincipalImFeat feat)
                     throws Exception {
                 System.out.println("** Clean");
                 feat.clean();
