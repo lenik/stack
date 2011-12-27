@@ -42,7 +42,7 @@ public abstract class Principal
     String name;
     String fullName;
 
-    private List<PrincipalClosure> closures;
+    List<PrincipalResponsible> closure;
 
     public Principal() {
         this.name = null;
@@ -159,26 +159,26 @@ public abstract class Principal
     }
 
     protected void invalidateClosure() {
-        closures = null;
+        closure = null;
     }
 
     @OneToMany(mappedBy = "principal")
     @Cascade(CascadeType.ALL)
-    public List<PrincipalClosure> getClosure() {
-        if (closures == null) {
+    public List<PrincipalResponsible> getClosure() {
+        if (closure == null) {
             Set<Principal> responsibles = new HashSet<Principal>();
             populateResponsibles(responsibles);
-            closures = new ArrayList<PrincipalClosure>();
+            closure = new ArrayList<PrincipalResponsible>();
             for (Principal responsible : responsibles)
-                closures.add(new PrincipalClosure(this, responsible));
+                closure.add(new PrincipalResponsible(this, responsible));
         }
-        return closures;
+        return closure;
     }
 
-    void setClosure(List<PrincipalClosure> closure) {
-        if (this.closures != closure) {
-            if (this.closures == null)
-                this.closures = closure;
+    void setClosure(List<PrincipalResponsible> closure) {
+        if (this.closure != closure) {
+            if (this.closure == null)
+                this.closure = closure;
             else
                 return; // invalidateClosure();
         }

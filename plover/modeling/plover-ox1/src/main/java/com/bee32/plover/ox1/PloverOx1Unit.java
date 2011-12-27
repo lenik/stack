@@ -7,6 +7,7 @@ import com.bee32.plover.ox1.meta.EntityColumn;
 import com.bee32.plover.ox1.meta.EntityInfo;
 import com.bee32.plover.ox1.principal.Group;
 import com.bee32.plover.ox1.principal.Principal;
+import com.bee32.plover.ox1.principal.PrincipalResponsible;
 import com.bee32.plover.ox1.principal.Role;
 import com.bee32.plover.ox1.principal.User;
 import com.bee32.plover.ox1.principal.UserEmail;
@@ -28,6 +29,7 @@ public class PloverOx1Unit
         add(User.class);
         add(Group.class);
         add(Role.class);
+        add(PrincipalResponsible.class);
         add(UserEmail.class);
         add(UserOption.class);
         add(UserPreference.class);

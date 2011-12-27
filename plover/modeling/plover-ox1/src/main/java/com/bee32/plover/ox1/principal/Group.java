@@ -24,7 +24,7 @@ public class Group
 
     List<Role> assignedRoles = new ArrayList<Role>();;
     List<User> memberUsers = new ArrayList<User>();;
-    List<PrincipalClosure> closures;
+    List<PrincipalResponsible> closures;
 
     public Group() {
     }
@@ -95,7 +95,7 @@ public class Group
             throw new NullPointerException("memberUsers");
         if (this.memberUsers != memberUsers) {
             this.memberUsers = memberUsers;
-            closures = null;
+            invalidateClosure();
         }
     }
 
@@ -110,7 +110,7 @@ public class Group
 
         memberUsers.add(user);
         user.addAssignedGroup(this);
-        closures = null;
+        invalidateClosure();
         return true;
     }
 
@@ -119,11 +119,12 @@ public class Group
         if (user == null)
             throw new NullPointerException("user");
 
-        if (!getMemberUsers().remove(user))
+        List<User> memberUsers = getMemberUsers();
+        if (!memberUsers.remove(user))
             return false;
 
         user.removeAssignedGroup(this);
-        closures = null;
+        invalidateClosure();
         return true;
     }
 
@@ -147,7 +148,7 @@ public class Group
             return false;
 
         assignedRoles.add(role);
-        role.removeResponsibleGroup(this);
+        role.addResponsibleGroup(this);
         return true;
     }
 
