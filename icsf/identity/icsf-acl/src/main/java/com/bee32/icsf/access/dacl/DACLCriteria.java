@@ -5,17 +5,17 @@ import com.bee32.plover.criteria.hibernate.Conjunction;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.Disjunction;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.principal.Principal;
 import com.bee32.plover.ox1.principal.PrincipalCriteria;
 
 public class DACLCriteria
         extends CriteriaSpec {
 
-    public static CriteriaElement impliesDACE(Principal principal, Permission permission) {
-        Conjunction conj = conjunction();
-        conj.add(PrincipalCriteria.implies(principal));
-        conj.add(impliesPermission(permission));
-        return conj;
+    public static ICriteriaElement impliesDACE(Principal principal, Permission permission) {
+        return compose( //
+                PrincipalCriteria.impliedBy("principal", principal), //
+                impliesPermission(permission));
     }
 
     public static CriteriaElement impliesPermission(Permission permission) {

@@ -6,11 +6,23 @@ import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 public class PrincipalCriteria
         extends CriteriaSpec {
 
-    public static CriteriaElement implies(Principal principal) {
+    /**
+     * The property equals to the principal, or any in its im-set.
+     */
+    public static CriteriaElement impliedBy(String propertyName, Principal principal) {
+        if (propertyName == null)
+            throw new NullPointerException("propertyName");
         if (principal == null)
-            throw new NullPointerException("principal");
+            return null;
+        return in(propertyName, principal.getImSet());
+    }
 
-        return equals("principal.id", principal.getId());
+    public static CriteriaElement responsibleBy(String propertyName, Principal principal) {
+        if (propertyName == null)
+            throw new NullPointerException("propertyName");
+        if (principal == null)
+            return null;
+        return in(propertyName, principal.getInvSet());
     }
 
 }

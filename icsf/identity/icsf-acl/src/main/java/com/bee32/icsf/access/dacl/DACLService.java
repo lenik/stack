@@ -6,7 +6,7 @@ import java.util.Set;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.plover.arch.DataService;
-import com.bee32.plover.criteria.hibernate.CriteriaElement;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.principal.Principal;
 
 public class DACLService
@@ -23,7 +23,7 @@ public class DACLService
      */
     public Integer[] aclIndex(Principal principal, Permission permission) {
 
-        CriteriaElement criterion = DACLCriteria.impliesDACE(principal, permission);
+        ICriteriaElement criterion = DACLCriteria.impliesDACE(principal, permission);
 
         List<DACE> daceList = asFor(DACE.class).list(criterion);
 
