@@ -11,6 +11,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Formula;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.Equals;
@@ -32,6 +33,8 @@ public class MaterialCategory
     CodeGenerator codeGenerator = CodeGenerator.NONE;
     List<Material> materials = new ArrayList<Material>();
     Classification classification = Classification.OTHER;
+
+    int materialCount;
 
     public MaterialCategory() {
         super();
@@ -154,5 +157,14 @@ public class MaterialCategory
     public void addChild(MaterialCategory child) {
         if(getChildren().contains(child)) return;
         super.addChild(child);
+    }
+
+    @Formula("(select count(*) from material m where m.category=id)")
+    public int getMaterialCount() {
+        return materialCount;
+    }
+
+    public void setMaterialCount(int materialCount) {
+        this.materialCount = materialCount;
     }
 }

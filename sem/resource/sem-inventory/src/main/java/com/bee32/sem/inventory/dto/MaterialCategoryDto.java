@@ -25,6 +25,8 @@ public class MaterialCategoryDto
     private CodeGenerator codeGenerator;
     char classification;
 
+    int materialCount;
+
     @Override
     protected void _marshal(MaterialCategory source) {
         this.name = source.getName();
@@ -33,6 +35,8 @@ public class MaterialCategoryDto
 
         if (selection.contains(MATERIALS))
             this.materials = marshalList(MaterialDto.class, source.getMaterials());
+
+        this.materialCount = source.getMaterialCount();
     }
 
     @Override
@@ -103,5 +107,15 @@ public class MaterialCategoryDto
     public String getClassificationText() {
         return Classification.valueOf(classification).getDisplayName();
     }
+
+    public int getMaterialCount() {
+        return materialCount;
+    }
+
+    public void setMaterialCount(int materialCount) {
+        this.materialCount = materialCount;
+    }
+
+
 
 }

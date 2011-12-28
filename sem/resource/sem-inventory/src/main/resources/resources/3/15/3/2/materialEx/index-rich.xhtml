@@ -13,21 +13,37 @@
         <h:form id="mainForm">
             <t:panelGrid columns="2">
                 <p:treeTable value="#{materialExAdminBean.root}"
-                    var="category">
-                    <p:column headerText="名称">
+                    var="category"
+                    selectionMode="single"
+                    selection="#{materialExAdminBean.selectedMaterialCategoryNode}"
+                    scrollable="true" scrollHeight="480"
+                    scrollWidth="250">
+
+                    <p:ajax event="select" listener="#{materialExAdminBean.onCategorySelect}"
+                        update="mainForm:materials" />
+
+                    <p:column headerText="名称" style="width:150px;">
                         <h:outputText value="#{category.name}" />
                     </p:column>
 
-                    <p:column headerText="">
+                    <p:column headerText="物料数" style="width:50px;">
                         <h:outputText
-                            value="#{ fn:length(category.children) }" />
+                            value="#{category.materialCount}" />
                     </p:column>
                 </p:treeTable>
 
-                <p:dataTable>
+                <p:dataTable
+                    id="materials"
+                    value="#{materialExAdminBean.materials}"
+                    var="material"
+                    scrollable="true" scrollHeight="480"
+                    scrollWidth="600">
+
                     <p:column headerText="名称">
-                        <h:outputText value="名称" />
+                        <h:outputText value="#{material.name}" />
                     </p:column>
+
+
                 </p:dataTable>
             </t:panelGrid>
         </h:form>
