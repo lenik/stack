@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.free.IllegalUsageException;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
@@ -25,7 +26,6 @@ public abstract class AbstractEventDto<E extends Event>
     public static final int OBSERVERS = 1;
 
     private EventCategoryDto category;
-    private String sourceAbbr;
     private Class<?> sourceClass;
 
     private int priority;
@@ -61,7 +61,6 @@ public abstract class AbstractEventDto<E extends Event>
     @Override
     protected void _marshal(E source) {
         category = mref(EventCategoryDto.class, source.getCategory());
-        sourceAbbr = source.getSource();
         sourceClass = source.getSourceClass();
 
         priority = source.getPriority();
@@ -116,7 +115,12 @@ public abstract class AbstractEventDto<E extends Event>
             throws ParseException, TypeConvertException {
 
         category = new EventCategoryDto().ref(map.getString("category"));
-        sourceAbbr = map.getString("source");
+        String sourceAbbr = map.getString("sourceAbbr");
+        try {
+            sourceClass = ABBR.expand(sourceAbbr);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalUsageException(e.getMessage(), e);
+        }
 
         priority = map.getInt("priority");
 
@@ -160,7 +164,15 @@ public abstract class AbstractEventDto<E extends Event>
     }
 
     public String getSource() {
-        return sourceAbbr;
+        return ABBR.abbr(sourceClass);
+    }
+
+    public void setSource(String sourceAbbr) {
+        try {
+            sourceClass = ABBR.expand(sourceAbbr);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalUsageException(e.getMessage(), e);
+        }
     }
 
     public Class<?> getSourceClass() {
@@ -172,13 +184,10 @@ public abstract class AbstractEventDto<E extends Event>
     }
 
     public String getSourceName() {
-        if (sourceClass != null)
-            return ClassUtil.getDisplayName(sourceClass);
-
-        if (sourceAbbr != null)
+        if (sourceClass == null)
             return "(unknown)";
-
-        return null;
+        else
+            return ClassUtil.getDisplayName(sourceClass);
     }
 
     public int getPriority() {
