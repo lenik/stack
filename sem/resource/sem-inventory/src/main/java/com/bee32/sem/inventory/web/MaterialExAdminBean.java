@@ -76,7 +76,7 @@ public class MaterialExAdminBean extends EntityViewBean {
     public void onCategorySelect() {
         MaterialCategoryDto category = (MaterialCategoryDto)selectedMaterialCategoryNode.getData();
 
-        category = reload(category);
+        category = reload(category, MaterialCategoryDto.MATERIALS);
 
         materials = category.getMaterials();
     }
