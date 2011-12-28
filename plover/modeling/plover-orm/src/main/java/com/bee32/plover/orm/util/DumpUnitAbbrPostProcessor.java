@@ -6,18 +6,16 @@ import org.slf4j.LoggerFactory;
 import com.bee32.plover.orm.unit.AbstractPersistenceUnitPostProcessor;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 
-public class TypeAbbrPostProcessor
+public class DumpUnitAbbrPostProcessor
         extends AbstractPersistenceUnitPostProcessor
         implements ITypeAbbrAware {
 
-    static Logger logger = LoggerFactory.getLogger(TypeAbbrPostProcessor.class);
+    static Logger logger = LoggerFactory.getLogger(DumpUnitAbbrPostProcessor.class);
 
     @Override
     public void process(PersistenceUnit unit) {
         for (Class<?> clazz : unit.getClasses()) {
-
-            String abbr = ABBR.register(clazz);
-
+            String abbr = ABBR.abbr(clazz); // Dont register it anymore.
             String simpleName = clazz.getSimpleName();
             if (!simpleName.equals(abbr))
                 logger.debug("      Entity name " + simpleName + " was compressed to " + abbr);

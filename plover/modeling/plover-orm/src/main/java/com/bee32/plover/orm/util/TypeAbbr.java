@@ -1,28 +1,50 @@
 package com.bee32.plover.orm.util;
 
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.free.Pred1;
 
 import org.postgresql.util.Base64;
+
+import com.bee32.plover.arch.util.ClassUtil;
 
 public class TypeAbbr {
 
     private final int length;
-    private Map<String, Class<?>> map = new HashMap<String, Class<?>>();
+    private Map<String, Class<?>> abbr2ClassMap = new HashMap<String, Class<?>>();
+    private Map<String, String> abbr2FqcnMap = new HashMap<String, String>();
 
-    public TypeAbbr(int length) {
+    static boolean dumpAbbrevs = false;
+
+    public TypeAbbr(int length, String... scanPackageNames) {
         if (length < 5)
             throw new IllegalArgumentException("Length should be >= 5.");
         this.length = length;
+
+        for (String scanPackageName : scanPackageNames)
+            try {
+                scanTypeNames(scanPackageName);
+            } catch (IOException e) {
+                throw new Error(e.getMessage(), e);
+            }
+
+        if (dumpAbbrevs) {
+            System.out.println("Type abbrevs: ");
+            for (Entry<String, String> entry : abbr2FqcnMap.entrySet())
+                System.out.println("    " + entry.getKey() + " := " + entry.getValue());
+        }
     }
 
     public String abbr(Class<?> clazz) {
         if (clazz == null)
             return null;
-        else
-            return abbr(clazz.getName());
+        String abbr = abbr(clazz.getName());
+        return abbr;
     }
 
     static final int prefixLen = 4;
@@ -49,15 +71,21 @@ public class TypeAbbr {
     }
 
     public String register(Class<?> clazz) {
-        if (clazz == null)
-            throw new NullPointerException("clazz");
+        String abbr = register(clazz.getCanonicalName());
+        abbr2ClassMap.put(abbr, clazz);
+        return abbr;
+    }
 
-        String abbr = abbr(clazz);
-        Class<?> existing = map.get(abbr);
-        if (existing != null && existing != clazz)
-            throw new IllegalStateException("Abbreviation collision: " + clazz + " and " + existing);
+    public String register(String fqcn) {
+        if (fqcn == null)
+            throw new NullPointerException("fqcn");
 
-        map.put(abbr, clazz);
+        String abbr = abbr(fqcn);
+        String existing = abbr2FqcnMap.get(abbr);
+        if (existing != null && !existing.equals(fqcn))
+            throw new IllegalStateException("Abbreviation collision: " + fqcn + " and " + existing);
+
+        abbr2FqcnMap.put(abbr, fqcn);
         return abbr;
     }
 
@@ -69,7 +97,15 @@ public class TypeAbbr {
         if (abbr.contains("."))
             return Class.forName(abbr);
 
-        return map.get(abbr);
+        Class<?> clazz = abbr2ClassMap.get(abbr);
+        if (clazz == null) {
+            String fqcn = abbr2FqcnMap.get(abbr);
+            if (fqcn != null) {
+                clazz = Class.forName(fqcn);
+                abbr2ClassMap.put(abbr, clazz);
+            }
+        }
+        return clazz;
     }
 
     private static MessageDigest md5;
@@ -87,6 +123,26 @@ public class TypeAbbr {
 
         String base64 = Base64.encodeBytes(digest);
         return base64;
+    }
+
+    class RegisterAbbr
+            extends Pred1<String> {
+
+        @Override
+        public boolean test(String typeName) {
+            if (typeName.endsWith("package-info"))
+                return true; // skip
+            register(typeName);
+            return true;
+        }
+
+    }
+
+    final RegisterAbbr registerAbbrInstance = new RegisterAbbr();
+
+    public void scanTypeNames(String packageName)
+            throws IOException {
+        ClassUtil.scanTypes(packageName, registerAbbrInstance);
     }
 
 }

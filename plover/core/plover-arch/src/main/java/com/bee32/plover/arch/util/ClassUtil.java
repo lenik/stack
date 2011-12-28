@@ -1,15 +1,22 @@
 package com.bee32.plover.arch.util;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.net.URL;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import javax.free.IllegalUsageException;
+import javax.free.Pred1;
 import javax.free.StringPart;
 import javax.free.UnexpectedException;
 
@@ -338,5 +345,70 @@ public class ClassUtil {
         }
         return mapped;
     }
+
+    public static void scanTypes(String packageName, Pred1<String> typeNameCallback)
+            throws IOException {
+        ClassLoader scl = ClassLoader.getSystemClassLoader();
+        String packageDir = packageName.replace('.', '/') + "/";
+        Enumeration<URL> urls = scl.getResources(packageDir);
+        while (urls.hasMoreElements()) {
+            URL url = urls.nextElement();
+            // System.out.println(url);
+            if ("jar".equals(url.getProtocol())) {
+                String path = url.getPath(); // "file:....!/..."
+                int exclm = path.lastIndexOf('!');
+                String jarPath = path.substring(5, exclm); // remove "file:"
+                JarFile jarFile = new JarFile(jarPath);
+                Enumeration<JarEntry> entries = jarFile.entries();
+                while (entries.hasMoreElements()) {
+                    String entry = entries.nextElement().getName();
+                    if (entry.startsWith(packageDir) && entry.endsWith(".class")) {
+                        String fqcn = entry.substring(0, entry.length() - 6).replace('/', '.');
+                        if (!typeNameCallback.test(fqcn))
+                            return;
+                    }
+                }
+            } else if ("file".equals(url.getProtocol())) {
+                String path = url.getPath();
+                File file = new File(path);
+                if (!scanTypes(file, packageName, typeNameCallback))
+                    return;
+            }
+        }
+    }
+
+    static boolean scanTypes(File dir, String packageName, Pred1<String> typeNameCallback) {
+        for (File file : dir.listFiles(ClassOrDirFileFilter.INSTANCE)) {
+            if (file.isDirectory()) {
+                String fqpn = packageName + "." + file.getName();
+                if (!scanTypes(file, fqpn, typeNameCallback))
+                    return false;
+            } else {
+                String fileName = file.getName();
+                String simpleName = fileName.substring(0, fileName.length() - 6); // ".class"
+                String fqcn = packageName + "." + simpleName;
+                if (!typeNameCallback.test(fqcn))
+                    return false;
+            }
+        }
+        return true;
+    }
+
+}
+
+class ClassOrDirFileFilter
+        implements FileFilter {
+
+    @Override
+    public boolean accept(File file) {
+        if (file.isDirectory())
+            return true;
+        String name = file.getName();
+        if (name.endsWith(".class"))
+            return true;
+        return false;
+    }
+
+    public static final ClassOrDirFileFilter INSTANCE = new ClassOrDirFileFilter();
 
 }
