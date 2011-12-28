@@ -1,8 +1,8 @@
 package com.bee32.sem.process.verify.web;
 
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.ox1.principal.User;
 
 public interface IVerifyHandlerHook<E extends Entity<?>> {
 

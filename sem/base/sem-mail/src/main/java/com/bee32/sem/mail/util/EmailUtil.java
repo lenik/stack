@@ -1,6 +1,6 @@
 package com.bee32.sem.mail.util;
 
-import com.bee32.plover.ox1.principal.User;
+import com.bee32.icsf.principal.User;
 
 public class EmailUtil {
 

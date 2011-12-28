@@ -16,11 +16,11 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.UploadedFile;
 import org.zkoss.lang.Strings;
 
+import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
-import com.bee32.plover.ox1.principal.User;
-import com.bee32.plover.ox1.principal.UserDto;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.file.dto.UserFileTagnameDto;
 import com.bee32.sem.file.entity.FileBlob;

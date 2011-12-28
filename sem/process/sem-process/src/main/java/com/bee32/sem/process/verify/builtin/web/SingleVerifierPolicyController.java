@@ -6,12 +6,12 @@ import javax.inject.Inject;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.bee32.icsf.principal.AbstractPrincipalDto;
+import com.bee32.icsf.principal.UserDao;
+import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.web.basic.BasicEntityController;
 import com.bee32.plover.orm.web.util.DataTableDxo;
-import com.bee32.plover.ox1.principal.AbstractPrincipalDto;
-import com.bee32.plover.ox1.principal.UserDao;
-import com.bee32.plover.ox1.principal.UserDto;
 import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.sem.process.SEMProcessModule;

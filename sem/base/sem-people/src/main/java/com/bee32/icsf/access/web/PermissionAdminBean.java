@@ -18,18 +18,18 @@ import com.bee32.icsf.access.alt.R_ACLService;
 import com.bee32.icsf.access.resource.IResourceNamespace;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ScannedResourceRegistry;
+import com.bee32.icsf.principal.AbstractPrincipalDto;
+import com.bee32.icsf.principal.Group;
+import com.bee32.icsf.principal.GroupDto;
+import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.Role;
+import com.bee32.icsf.principal.RoleDto;
+import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
-import com.bee32.plover.ox1.principal.AbstractPrincipalDto;
-import com.bee32.plover.ox1.principal.Group;
-import com.bee32.plover.ox1.principal.GroupDto;
-import com.bee32.plover.ox1.principal.Principal;
-import com.bee32.plover.ox1.principal.Role;
-import com.bee32.plover.ox1.principal.RoleDto;
-import com.bee32.plover.ox1.principal.User;
-import com.bee32.plover.ox1.principal.UserDto;
 
 public class PermissionAdminBean
         extends EntityViewBean {

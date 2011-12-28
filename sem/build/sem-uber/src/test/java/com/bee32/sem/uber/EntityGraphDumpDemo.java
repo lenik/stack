@@ -8,13 +8,13 @@ import javax.inject.Inject;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.unit.EntityGraphTool;
 import com.bee32.plover.orm.unit.EntityPartialRefs;
 import com.bee32.plover.orm.unit.EntityXrefMap;
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.WiredDaoFeat;
-import com.bee32.plover.ox1.principal.User;
 import com.bee32.plover.test.ICoordinator;
 import com.bee32.plover.util.FormatStyle;
 

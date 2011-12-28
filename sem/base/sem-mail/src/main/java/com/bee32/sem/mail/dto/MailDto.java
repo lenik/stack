@@ -6,10 +6,10 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 import javax.validation.constraints.NotNull;
 
+import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.c.CEntityDto;
-import com.bee32.plover.ox1.principal.UserDto;
 import com.bee32.sem.mail.MailPriority;
 import com.bee32.sem.mail.MailType;
 import com.bee32.sem.mail.entity.Mail;

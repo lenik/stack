@@ -11,8 +11,8 @@ import org.apache.log4j.Logger;
 
 import com.bee32.icsf.login.LoginException;
 import com.bee32.icsf.login.SessionUser;
-import com.bee32.plover.ox1.principal.AbstractPrincipalDto;
-import com.bee32.plover.ox1.principal.Principal;
+import com.bee32.icsf.principal.AbstractPrincipalDto;
+import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.sem.people.dto.OrgUnitDto;
 import com.bee32.sem.people.dto.PersonDto;

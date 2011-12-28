@@ -4,10 +4,10 @@ import org.springframework.context.ApplicationContext;
 
 import com.bee32.icsf.login.AbstractLoginListener;
 import com.bee32.icsf.login.LoginEvent;
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.ox1.principal.User;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.entity.Person;

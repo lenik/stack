@@ -7,12 +7,12 @@ import java.util.List;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
+import com.bee32.icsf.principal.PrincipalDto;
+import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.ox1.c.CEntityDto;
-import com.bee32.plover.ox1.principal.PrincipalDto;
-import com.bee32.plover.ox1.principal.UserDto;
 import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.entity.Event;
 

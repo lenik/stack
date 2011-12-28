@@ -12,7 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.Transient;
 
-import com.bee32.plover.ox1.principal.Principal;
+import com.bee32.icsf.principal.Principal;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.process.verify.ForVerifyContext;
 import com.bee32.sem.process.verify.IVerifyContext;

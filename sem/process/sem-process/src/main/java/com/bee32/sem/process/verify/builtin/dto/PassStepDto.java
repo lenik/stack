@@ -3,9 +3,9 @@ package com.bee32.sem.process.verify.builtin.dto;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
+import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.c.CEntityDto;
-import com.bee32.plover.ox1.principal.PrincipalDto;
 import com.bee32.sem.process.verify.builtin.PassStep;
 
 public class PassStepDto

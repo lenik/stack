@@ -6,9 +6,9 @@ import java.util.Date;
 import java.util.List;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
+import com.bee32.icsf.principal.Role;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.plover.orm.util.SampleContribution;
-import com.bee32.plover.ox1.principal.Role;
 import com.bee32.sem.event.entity.Event;
 import com.bee32.sem.event.entity.EventCategory;
 import com.bee32.sem.event.entity.EventPriority;

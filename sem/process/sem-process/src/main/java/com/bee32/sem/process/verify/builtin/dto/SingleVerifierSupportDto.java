@@ -5,8 +5,8 @@ import java.util.Date;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
+import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.ox1.principal.UserDto;
 import com.bee32.sem.process.verify.builtin.SingleVerifierSupport;
 import com.bee32.sem.process.verify.dto.VerifyContextDto;
 

@@ -3,7 +3,7 @@ package com.bee32.sem.process.verify;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.bee32.plover.ox1.principal.User;
+import com.bee32.icsf.principal.User;
 
 public class VerifyEvent
         implements Serializable {

@@ -2,10 +2,10 @@ package com.bee32.sem.mail.web;
 
 import java.util.List;
 
+import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
-import com.bee32.plover.ox1.principal.User;
-import com.bee32.plover.ox1.principal.UserDto;
 
 public class UserDtoClass
         extends EntityViewBean {

@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 import com.bee32.icsf.login.LoginCriteria;
 import com.bee32.icsf.login.LoginManager;
 import com.bee32.icsf.login.UserPassword;
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.EntityViewBean;
-import com.bee32.plover.ox1.principal.User;
 
 public class LoginBean
         extends EntityViewBean {

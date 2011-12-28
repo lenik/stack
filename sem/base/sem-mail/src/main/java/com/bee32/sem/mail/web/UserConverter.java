@@ -7,7 +7,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
 
-import com.bee32.plover.ox1.principal.UserDto;
+import com.bee32.icsf.principal.UserDto;
 
 @FacesConverter("user")
 public class UserConverter

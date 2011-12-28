@@ -6,9 +6,9 @@ import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.NaturalId;
 
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.ox1.c.CEntityAuto;
 import com.bee32.plover.ox1.color.Yellow;
-import com.bee32.plover.ox1.principal.User;
 
 @Entity
 @Yellow

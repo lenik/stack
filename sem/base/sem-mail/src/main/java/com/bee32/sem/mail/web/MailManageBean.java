@@ -11,10 +11,10 @@ import org.primefaces.component.tabview.Tab;
 import org.primefaces.component.tabview.TabView;
 
 import com.bee32.icsf.login.SessionUser;
+import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.ox1.principal.User;
-import com.bee32.plover.ox1.principal.UserDto;
 import com.bee32.sem.mail.MailFlags;
 import com.bee32.sem.mail.dto.MailDeliveryDto;
 import com.bee32.sem.mail.dto.MailDto;

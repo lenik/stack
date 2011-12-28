@@ -6,15 +6,15 @@ import javax.annotation.PostConstruct;
 
 import org.primefaces.model.TreeNode;
 
-import com.bee32.plover.ox1.principal.Group;
-import com.bee32.plover.ox1.principal.GroupDto;
-import com.bee32.plover.ox1.principal.Principal;
-import com.bee32.plover.ox1.principal.PrincipalCheckException;
-import com.bee32.plover.ox1.principal.PrincipalDiag;
-import com.bee32.plover.ox1.principal.Role;
-import com.bee32.plover.ox1.principal.RoleDto;
-import com.bee32.plover.ox1.principal.User;
-import com.bee32.plover.ox1.principal.UserDto;
+import com.bee32.icsf.principal.Group;
+import com.bee32.icsf.principal.GroupDto;
+import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.PrincipalCheckException;
+import com.bee32.icsf.principal.PrincipalDiag;
+import com.bee32.icsf.principal.Role;
+import com.bee32.icsf.principal.RoleDto;
+import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.UserDto;
 
 public class RoleAdminBean extends PrincipalAdminBean {
 

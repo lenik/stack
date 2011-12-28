@@ -5,14 +5,14 @@ import java.util.List;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
+import com.bee32.icsf.principal.Group;
+import com.bee32.icsf.principal.GroupDto;
+import com.bee32.icsf.principal.Role;
+import com.bee32.icsf.principal.RoleDto;
+import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
-import com.bee32.plover.ox1.principal.Group;
-import com.bee32.plover.ox1.principal.GroupDto;
-import com.bee32.plover.ox1.principal.Role;
-import com.bee32.plover.ox1.principal.RoleDto;
-import com.bee32.plover.ox1.principal.User;
-import com.bee32.plover.ox1.principal.UserDto;
 import com.bee32.plover.ox1.tree.TreeCriteria;
 
 public class PrincipalAdminBean

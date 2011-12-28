@@ -23,12 +23,12 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NaturalId;
 
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.c.CEntityAuto;
 import com.bee32.plover.ox1.color.Green;
-import com.bee32.plover.ox1.principal.User;
 import com.bee32.sem.mail.MailPriority;
 import com.bee32.sem.mail.MailType;
 import com.bee32.sem.mail.util.EmailUtil;

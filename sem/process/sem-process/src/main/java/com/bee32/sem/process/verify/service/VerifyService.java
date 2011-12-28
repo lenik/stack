@@ -10,12 +10,12 @@ import javax.inject.Inject;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.icsf.login.SessionUser;
+import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.arch.DataService;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.ox1.principal.Principal;
-import com.bee32.plover.ox1.principal.User;
 import com.bee32.sem.event.entity.Event;
 import com.bee32.sem.event.entity.EventPriority;
 import com.bee32.sem.event.entity.EventType;

@@ -1,11 +1,11 @@
 package com.bee32.sem.chance.util;
 
 import com.bee32.icsf.login.SessionUser;
+import com.bee32.icsf.principal.IUserPrincipal;
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.LeftHand;
-import com.bee32.plover.ox1.principal.IUserPrincipal;
-import com.bee32.plover.ox1.principal.User;
 import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.chance.entity.ChanceAction;
 

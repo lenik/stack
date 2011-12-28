@@ -9,13 +9,13 @@ import javax.faces.model.SelectItem;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
-import com.bee32.plover.ox1.principal.User;
 import com.bee32.sem.asset.dto.AccountSubjectDto;
 import com.bee32.sem.asset.dto.AccountTicketDto;
 import com.bee32.sem.asset.dto.AccountTicketItemDto;

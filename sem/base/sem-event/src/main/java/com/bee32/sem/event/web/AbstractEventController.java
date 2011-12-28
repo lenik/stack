@@ -7,13 +7,13 @@ import javax.free.ParseException;
 import javax.free.Strings;
 import javax.inject.Inject;
 
+import com.bee32.icsf.principal.UserDao;
+import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.web.basic.BasicEntityController;
 import com.bee32.plover.orm.web.util.DataTableDxo;
 import com.bee32.plover.orm.web.util.SearchModel;
-import com.bee32.plover.ox1.principal.UserDao;
-import com.bee32.plover.ox1.principal.UserDto;
 import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.sem.event.dao.EventPriorityDao;

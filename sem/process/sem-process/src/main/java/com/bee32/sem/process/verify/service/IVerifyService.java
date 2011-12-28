@@ -2,8 +2,8 @@ package com.bee32.sem.process.verify.service;
 
 import java.util.Set;
 
+import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.ox1.principal.Principal;
 import com.bee32.sem.process.verify.AbstractVerifyContext;
 import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.IVerifyContext;

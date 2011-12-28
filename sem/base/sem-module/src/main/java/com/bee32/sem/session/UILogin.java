@@ -13,7 +13,7 @@ import javax.faces.context.ResponseWriter;
 
 import com.bee32.icsf.login.LoginException;
 import com.bee32.icsf.login.SessionUser;
-import com.bee32.plover.ox1.principal.User;
+import com.bee32.icsf.principal.User;
 
 /**
  * See also:

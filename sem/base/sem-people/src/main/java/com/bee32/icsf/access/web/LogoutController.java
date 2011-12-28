@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bee32.icsf.login.LoginManager;
 import com.bee32.icsf.login.SessionUser;
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.ajax.SuccessOrFailMessage;
-import com.bee32.plover.ox1.principal.User;
 
 @Controller
 @Lazy

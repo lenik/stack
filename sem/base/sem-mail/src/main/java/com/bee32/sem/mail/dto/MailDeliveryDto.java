@@ -6,8 +6,8 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 import javax.free.UnexpectedException;
 
+import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.ox1.principal.UserDto;
 import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.mail.MailFlags;
 import com.bee32.sem.mail.entity.MailDelivery;

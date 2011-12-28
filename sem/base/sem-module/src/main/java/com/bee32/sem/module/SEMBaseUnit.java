@@ -1,10 +1,10 @@
 package com.bee32.sem.module;
 
-import com.bee32.icsf.IcsfIdentityUnit;
+import com.bee32.icsf.IcsfAccessUnit;
 import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 
-@ImportUnit(IcsfIdentityUnit.class)
+@ImportUnit(IcsfAccessUnit.class)
 public class SEMBaseUnit
         extends PersistenceUnit {
 

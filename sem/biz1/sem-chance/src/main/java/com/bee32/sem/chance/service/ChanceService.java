@@ -7,8 +7,8 @@ import javax.inject.Inject;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bee32.icsf.principal.UserDao;
 import com.bee32.plover.arch.DataService;
-import com.bee32.plover.ox1.principal.UserDao;
 import com.bee32.sem.chance.dao.ChanceActionDao;
 import com.bee32.sem.chance.dao.ChanceDao;
 import com.bee32.sem.chance.entity.Chance;

@@ -7,7 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
-import com.bee32.plover.ox1.principal.Group;
+import com.bee32.icsf.principal.Group;
 import com.bee32.plover.ox1.tree.TreeEntityAuto;
 
 @Entity

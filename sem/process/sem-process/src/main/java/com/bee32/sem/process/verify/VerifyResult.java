@@ -1,7 +1,7 @@
 package com.bee32.sem.process.verify;
 
-import com.bee32.plover.ox1.principal.Principal;
-import com.bee32.plover.ox1.principal.User;
+import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.User;
 
 public class VerifyResult {
 

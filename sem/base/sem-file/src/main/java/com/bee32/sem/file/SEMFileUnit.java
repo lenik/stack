@@ -1,6 +1,6 @@
 package com.bee32.sem.file;
 
-import com.bee32.icsf.IcsfIdentityUnit;
+import com.bee32.icsf.IcsfAccessUnit;
 import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.sem.file.entity.FileAttribute;
@@ -8,7 +8,7 @@ import com.bee32.sem.file.entity.FileBlob;
 import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.file.entity.UserFileTagname;
 
-@ImportUnit({ IcsfIdentityUnit.class })
+@ImportUnit({ IcsfAccessUnit.class })
 public class SEMFileUnit
         extends PersistenceUnit {
 
