@@ -2,12 +2,9 @@ package com.bee32.sem.event.entity;
 
 import javax.persistence.Entity;
 
-import com.bee32.plover.orm.util.TransferBy;
 import com.bee32.plover.ox1.dict.ShortNameDict;
-import com.bee32.sem.event.dto.EventCategoryDto;
 
 @Entity
-@TransferBy(EventCategoryDto.class)
 public class EventCategory
         extends ShortNameDict {
 
