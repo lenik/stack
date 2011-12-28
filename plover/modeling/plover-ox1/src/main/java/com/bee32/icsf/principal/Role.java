@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 @Entity
@@ -18,6 +19,9 @@ public class Role
         implements IRolePrincipal {
 
     private static final long serialVersionUID = 1L;
+
+    List<User> controlUsers = new ArrayList<User>();
+    List<Group> controlGroups = new ArrayList<Group>();
 
     List<User> responsibleUsers = new ArrayList<User>();
     List<Group> responsibleGroups = new ArrayList<Group>();
@@ -53,6 +57,82 @@ public class Role
     public void setDerivedRoles(List<Role> derivedRoles) {
         List<Principal> children = cast(derivedRoles);
         setChildren(children);
+    }
+
+    @OneToMany(mappedBy = "primaryRole")
+    @Override
+    public List<User> getControlUsers() {
+        return controlUsers;
+    }
+
+    public void setControlUsers(List<User> controlUsers) {
+        if (controlUsers == null)
+            throw new NullPointerException("controlUsers");
+        if (this.controlUsers != controlUsers) {
+            this.controlUsers = controlUsers;
+            invalidateRelations();
+        }
+    }
+
+    @Override
+    public boolean addControlUser(User user) {
+        if (user == null)
+            throw new NullPointerException("user");
+
+        List<User> controlUsers = (List<User>) getControlUsers();
+        if (controlUsers.contains(user))
+            return false;
+
+        controlUsers.add(user);
+        invalidateRelations();
+        return true;
+    }
+
+    @Override
+    public boolean removeControlUser(User user) {
+        List<User> controlUsers = (List<User>) getControlUsers();
+        if (!controlUsers.remove(user))
+            return false;
+        invalidateRelations();
+        return true;
+    }
+
+    @OneToMany(mappedBy = "primaryRole")
+    @Override
+    public List<Group> getControlGroups() {
+        return controlGroups;
+    }
+
+    public void setControlGroups(List<Group> controlGroups) {
+        if (controlGroups == null)
+            throw new NullPointerException("controlGroups");
+        if (this.controlGroups != controlGroups) {
+            this.controlGroups = controlGroups;
+            invalidateRelations();
+        }
+    }
+
+    @Override
+    public boolean addControlGroup(Group group) {
+        if (group == null)
+            throw new NullPointerException("group");
+
+        List<Group> controlGroups = (List<Group>) getControlGroups();
+        if (controlGroups.contains(group))
+            return false;
+
+        controlGroups.add(group);
+        invalidateRelations();
+        return true;
+    }
+
+    @Override
+    public boolean removeControlGroup(Group group) {
+        List<Group> controlGroups = (List<Group>) getControlGroups();
+        if (!controlGroups.remove(group))
+            return false;
+        invalidateRelations();
+        return true;
     }
 
     @ManyToMany
@@ -175,6 +255,12 @@ public class Role
     @Override
     protected void populateInvSet(Set<Principal> invSet) {
         super.populateInvSet(invSet);
+
+        for (User user : controlUsers)
+            user.populateInvSet(invSet);
+
+        for (Group group : controlGroups)
+            group.populateInvSet(invSet);
 
         for (User user : responsibleUsers)
             user.populateInvSet(invSet);

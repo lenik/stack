@@ -38,6 +38,12 @@ public interface IGroupPrincipal
 
     boolean removeAssignedRole(Role role);
 
+    List<? extends User> getControlUsers();
+
+    boolean addControlUser(User user);
+
+    boolean removeControlUser(User user);
+
     /**
      * 获取成员用户。
      *

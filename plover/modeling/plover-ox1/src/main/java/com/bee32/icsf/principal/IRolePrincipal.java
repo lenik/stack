@@ -9,9 +9,21 @@ public interface IRolePrincipal
 
     List<? extends IRolePrincipal> getDerivedRoles();
 
+    List<? extends IUserPrincipal> getControlUsers();
+
+    List<? extends IGroupPrincipal> getControlGroups();
+
     List<? extends IUserPrincipal> getResponsibleUsers();
 
     List<? extends IGroupPrincipal> getResponsibleGroups();
+
+    boolean addControlUser(User user);
+
+    boolean removeControlUser(User user);
+
+    boolean addControlGroup(Group group);
+
+    boolean removeControlGroup(Group group);
 
     boolean addResponsibleUser(User user);
 

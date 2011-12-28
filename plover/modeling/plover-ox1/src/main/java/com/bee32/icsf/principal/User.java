@@ -51,8 +51,18 @@ public class User
         return primaryGroup;
     }
 
-    public void setPrimaryGroup(Group primaryGroup) {
-        this.primaryGroup = primaryGroup;
+    public void setPrimaryGroup(Group newPrimaryGroup) {
+        if (OptimConfig.setControlSide) {
+            if (this.primaryGroup == newPrimaryGroup)
+                return;
+
+            if (this.primaryGroup != null)
+                this.primaryGroup.removeControlUser(this);
+
+            if (newPrimaryGroup != null)
+                newPrimaryGroup.addControlUser(this);
+        }
+        this.primaryGroup = newPrimaryGroup;
     }
 
     @ManyToOne(targetEntity = Role.class)
@@ -62,8 +72,18 @@ public class User
         return primaryRole;
     }
 
-    public void setPrimaryRole(Role primaryRole) {
-        this.primaryRole = primaryRole;
+    public void setPrimaryRole(Role newPrimaryRole) {
+        if (OptimConfig.setControlSide) {
+            if (this.primaryRole == newPrimaryRole)
+                return;
+
+            if (this.primaryRole != null)
+                this.primaryRole.removeControlUser(this);
+
+            if (newPrimaryRole != null)
+                newPrimaryRole.addControlUser(this);
+        }
+        this.primaryRole = newPrimaryRole;
     }
 
     @ManyToMany(mappedBy = "memberUsers")
@@ -207,6 +227,16 @@ public class User
         if (super.implies(principal))
             return true;
 
+        Group primaryGroup = getPrimaryGroup();
+        if (primaryGroup != null)
+            if (primaryGroup.implies(principal))
+                return true;
+
+        Role primaryRole = getPrimaryRole();
+        if (primaryRole != null)
+            if (primaryRole.implies(principal))
+                return true;
+
         for (Group group : getAssignedGroups())
             if (group.implies(principal))
                 return true;
@@ -221,6 +251,14 @@ public class User
     @Override
     protected void populateImSet(Set<Principal> imSet) {
         super.populateImSet(imSet);
+
+        Group primaryGroup = getPrimaryGroup();
+        if (primaryGroup != null)
+            primaryGroup.populateImSet(imSet);
+
+        Role primaryRole = getPrimaryRole();
+        if (primaryRole != null)
+            primaryRole.populateImSet(imSet);
 
         for (Group group : getAssignedGroups())
             group.populateImSet(imSet);
@@ -243,6 +281,9 @@ public class User
     @Override
     public User detach() {
         super.detach();
+
+        setPrimaryGroup(null);
+        setPrimaryRole(null);
 
         for (Group group : flyOver(getAssignedGroups()))
             group.removeMemberUser(this);

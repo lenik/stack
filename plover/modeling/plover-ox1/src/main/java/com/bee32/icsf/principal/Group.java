@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 @Entity
@@ -21,9 +22,9 @@ public class Group
     private static final long serialVersionUID = 1L;
 
     Role primaryRole;
-
-    List<Role> assignedRoles = new ArrayList<Role>();;
-    List<User> memberUsers = new ArrayList<User>();;
+    List<Role> assignedRoles = new ArrayList<Role>();
+    List<User> controlUsers = new ArrayList<User>();
+    List<User> memberUsers = new ArrayList<User>();
 
     public Group() {
     }
@@ -74,8 +75,57 @@ public class Group
     }
 
     @Override
-    public void setPrimaryRole(Role primaryRole) {
-        this.primaryRole = (Role) primaryRole;
+    public void setPrimaryRole(Role newPrimaryRole) {
+        if (OptimConfig.setControlSide) {
+            if (this.primaryRole == newPrimaryRole)
+                return;
+
+            if (this.primaryRole != null)
+                this.primaryRole.removeControlGroup(this);
+
+            if (newPrimaryRole != null)
+                newPrimaryRole.addControlGroup(this);
+        }
+        this.primaryRole = newPrimaryRole;
+    }
+
+    @OneToMany(mappedBy = "primaryGroup")
+    @Override
+    public List<User> getControlUsers() {
+        return controlUsers;
+    }
+
+    public void setControlUsers(List<User> controlUsers) {
+        if (controlUsers == null)
+            throw new NullPointerException("controlUsers");
+        this.controlUsers = controlUsers;
+    }
+
+    @Override
+    public boolean addControlUser(User user) {
+        if (user == null)
+            throw new NullPointerException("user");
+
+        List<User> controlUsers = getControlUsers();
+        if (controlUsers.contains(user))
+            return false;
+
+        controlUsers.add(user);
+        invalidateRelations();
+        return true;
+    }
+
+    @Override
+    public boolean removeControlUser(User user) {
+        if (user == null)
+            throw new NullPointerException("user");
+
+        List<User> controlUsers = getControlUsers();
+        if (!controlUsers.remove(user))
+            return false;
+
+        invalidateRelations();
+        return true;
     }
 
     @ManyToMany
@@ -168,7 +218,12 @@ public class Group
         if (super.implies(principal))
             return true;
 
-        IGroupPrincipal base = getInheritedGroup();
+        Role primaryRole = getPrimaryRole();
+        if (primaryRole != null)
+            if (primaryRole.implies(principal))
+                return true;
+
+        Group base = getInheritedGroup();
         if (base != null)
             if (base.implies(principal))
                 return true;
@@ -184,6 +239,10 @@ public class Group
     protected void populateImSet(Set<Principal> imSet) {
         super.populateImSet(imSet);
 
+        Role primaryRole = getPrimaryRole();
+        if (primaryRole != null)
+            primaryRole.populateImSet(imSet);
+
         Group base = getInheritedGroup();
         if (base != null)
             base.populateImSet(imSet);
@@ -195,6 +254,9 @@ public class Group
     @Override
     protected void populateInvSet(Set<Principal> invSet) {
         super.populateInvSet(invSet);
+
+        for (User user : getControlUsers())
+            invSet.add(user);
 
         for (User user : getMemberUsers())
             invSet.add(user);
@@ -215,6 +277,8 @@ public class Group
     @Override
     public Group detach() {
         super.detach();
+
+        setPrimaryRole(null);
 
         for (Role role : flyOver(getAssignedRoles()))
             role.removeResponsibleGroup(this);
