@@ -308,25 +308,37 @@ public class Event
     }
 
     @ManyToMany
-    @JoinTable(name = "EventObserver")
+    @JoinTable(name = "EventObserver",
+    /*            */joinColumns = @JoinColumn(name = "event"), //
+    /*            */inverseJoinColumns = @JoinColumn(name = "observer"))
     @Override
     public Set<Principal> getObservers() {
-        if (observers == null) {
-            synchronized (this) {
-                if (observers == null) {
-                    observers = new HashSet<Principal>();
-                }
-            }
-        }
         return observers;
     }
 
     public void setObservers(Set<Principal> observers) {
+        if (observers == null)
+            throw new NullPointerException("observers");
         this.observers = observers;
     }
 
-    public void setObservers(List<? extends Principal> observers) {
-        this.observers = new HashSet<Principal>(observers);
+    public int addObservers(Principal... observers) {
+        int n = 0;
+        for (Principal observer : observers) {
+            if (addObserver(observer))
+                n++;
+        }
+        return n;
+    }
+
+    public boolean addObserver(Principal observer) {
+        if (observer == null)
+            throw new NullPointerException("observer");
+        return observers.add(observer);
+    }
+
+    public boolean removeObserver(Principal observer) {
+        return observers.remove(observer);
     }
 
 }
