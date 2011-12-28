@@ -1,5 +1,9 @@
 package com.bee32.icsf.principal;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 
@@ -14,7 +18,11 @@ public class PrincipalCriteria
             throw new NullPointerException("propertyName");
         if (principal == null)
             return null;
-        return in(propertyName, principal.getImSet());
+        Collection<Principal> imSet = principal.getImSet();
+        List<Integer> idSet = new ArrayList<Integer>();
+        for (Principal im : imSet)
+            idSet.add(im.getId());
+        return in(propertyName + ".id", idSet);
     }
 
     public static CriteriaElement inInvSet(String propertyName, Principal principal) {
@@ -22,7 +30,11 @@ public class PrincipalCriteria
             throw new NullPointerException("propertyName");
         if (principal == null)
             return null;
-        return in(propertyName, principal.getInvSet());
+        Collection<Principal> invSet = principal.getInvSet();
+        List<Integer> idSet = new ArrayList<Integer>();
+        for (Principal inv : invSet)
+            idSet.add(inv.getId());
+        return in(propertyName + ".id", idSet);
     }
 
 }
