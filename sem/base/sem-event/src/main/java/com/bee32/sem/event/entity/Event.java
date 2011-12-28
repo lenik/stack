@@ -4,15 +4,16 @@ import static javax.persistence.InheritanceType.SINGLE_TABLE;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
+import javax.free.IllegalUsageException;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -46,7 +47,6 @@ public class Event
 
     private char type = EventType.EVENT.getValue();
     private EventCategory category;
-    private String sourceAbbr;
     private Class<?> sourceClass;
 
     private int priority;
@@ -70,14 +70,17 @@ public class Event
 
     private String seeAlsos;
 
-    private Set<Principal> observers;
+    private Set<Principal> observers = new HashSet<Principal>();
 
     public Event() {
-        super();
     }
 
-    public Event(EventType type) {
-        super();
+    public Event(Object source, EventType type) {
+        this(source.getClass(), type);
+    }
+
+    public Event(Class<?> sourceClass, EventType type) {
+        this.setSourceClass(sourceClass);
         this.setType(type);
     }
 
@@ -114,16 +117,20 @@ public class Event
 
     @Column(length = ABBR_LEN, nullable = false)
     @Index(name = "source")
-    public String getSource() {
+    String getSource() {
+        String sourceAbbr = ABBR.abbr(sourceClass);
+        if (sourceAbbr == null)
+            throw new NullPointerException("sourceAbbr");
         return sourceAbbr;
     }
 
     void setSource(String source) {
-        this.sourceAbbr = source;
+        if (source == null)
+            throw new NullPointerException("source");
         try {
             this.sourceClass = ABBR.expand(source);
         } catch (ClassNotFoundException e) {
-            // Just ignore unknown source classes, here.
+            throw new IllegalUsageException(e);
         }
     }
 
@@ -134,8 +141,9 @@ public class Event
     }
 
     public void setSourceClass(Class<?> sourceClass) {
+        if (sourceClass == null)
+            throw new NullPointerException("sourceClass");
         this.sourceClass = sourceClass;
-        this.sourceAbbr = ABBR.abbr(sourceClass);
     }
 
     @Column(nullable = false)

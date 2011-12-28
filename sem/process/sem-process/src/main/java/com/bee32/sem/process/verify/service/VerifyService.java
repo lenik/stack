@@ -126,7 +126,7 @@ public class VerifyService
         Event verifyEvent = context.getVerifyEvent();
         {
             if (verifyEvent == null) {
-                verifyEvent = new Event(EventType.TASK);
+                verifyEvent = new Event(this, EventType.TASK);
                 context.setVerifyEvent(verifyEvent);
             }
 

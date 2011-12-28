@@ -1,7 +1,6 @@
 package com.bee32.sem.event;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -42,7 +41,7 @@ public class SEMEventSamples
         rain.setSubject("在 " + title + " (" + rain.getBeginTime() + ") 时刻有流星雨，请大家出门带上望远镜。");
         rain.setMessage("你以为带上望远镜就能看到土卫3的流行雨吗？少年哟，别做梦了，那是不可能的。");
 
-        rain.setObservers(Arrays.asList(IcsfPrincipalSamples.solaRobots));
+        rain.addObservers(IcsfPrincipalSamples.solaRobots);
         return rain;
     }
 
@@ -53,7 +52,7 @@ public class SEMEventSamples
         rains.add(mkRain(0, null, "今天"));
         rains.add(mkRain(1.5, null, "1.5天之后"));
 
-        killAngel = new Event(EventType.TASK);
+        killAngel = new Event(SEMEventSamples.class, EventType.TASK);
         killAngel.setCategory(special);
         killAngel.setSourceClass(SEMEventSamples.class);
         killAngel.setPriority(EventPriority.HIGH);
@@ -62,9 +61,9 @@ public class SEMEventSamples
         killAngel.setSubject("EVA 奉命去消灭第18使徒");
         killAngel.setMessage("[绝密] 最好能活捉。");
         killAngel.setBeginTime(new Date(System.currentTimeMillis() + 10));
-        killAngel.setObservers(Arrays.asList(//
+        killAngel.addObservers(//
                 IcsfPrincipalSamples.solaRobots, //
-                Role.adminRole));
+                Role.adminRole);
     }
 
     @Override
