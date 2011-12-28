@@ -10,7 +10,7 @@ import com.bee32.plover.test.ServiceCollector;
  * Collect service collectors.
  */
 /* Here exclude this collector, to avoid dead loop. */@NotAComponent
-public class ScCollector
+public class UniversalCollector
         extends ServiceCollector<ServiceCollector<?>> {
 
     @Override
@@ -29,7 +29,7 @@ public class ScCollector
 
     public static void main(String[] args)
             throws IOException {
-        new ScCollector().collect();
+        new UniversalCollector().collect();
     }
 
 }
