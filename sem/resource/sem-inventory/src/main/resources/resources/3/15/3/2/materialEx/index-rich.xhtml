@@ -11,7 +11,25 @@
     <ui:define name="content">
 
         <h:form id="mainForm">
+            <t:panelGrid columns="2">
+                <p:treeTable value="#{materialExAdminBean.root}"
+                    var="category">
+                    <p:column headerText="名称">
+                        <h:outputText value="#{category.name}" />
+                    </p:column>
 
+                    <p:column headerText="">
+                        <h:outputText
+                            value="#{ fn:length(category.children) }" />
+                    </p:column>
+                </p:treeTable>
+
+                <p:dataTable>
+                    <p:column headerText="名称">
+                        <h:outputText value="名称" />
+                    </p:column>
+                </p:dataTable>
+            </t:panelGrid>
         </h:form>
 
     </ui:define>
