@@ -14,7 +14,7 @@ public class InArray
 
     final Object[] values;
 
-    public InArray(String propertyName, Object[] values) {
+    public InArray(String propertyName, Object... values) {
         super(propertyName);
         this.values = values;
     }
