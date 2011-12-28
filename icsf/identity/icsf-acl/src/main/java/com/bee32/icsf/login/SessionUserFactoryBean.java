@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.bee32.icsf.principal.AbstractPrincipalDto;
+import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.inject.scope.PerSession;
-import com.bee32.plover.ox1.principal.AbstractPrincipalDto;
-import com.bee32.plover.ox1.principal.Principal;
-import com.bee32.plover.ox1.principal.User;
-import com.bee32.plover.ox1.principal.UserDto;
 
 @Component("sessionUser")
 @PerSession

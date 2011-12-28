@@ -6,9 +6,9 @@ import java.util.List;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import com.bee32.plover.ox1.principal.Group;
-import com.bee32.plover.ox1.principal.Role;
-import com.bee32.plover.ox1.principal.User;
+import com.bee32.icsf.principal.Group;
+import com.bee32.icsf.principal.Role;
+import com.bee32.icsf.principal.User;
 
 @Entity
 @DiscriminatorValue("R1")

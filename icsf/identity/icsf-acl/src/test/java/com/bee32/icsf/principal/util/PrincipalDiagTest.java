@@ -6,11 +6,11 @@ import java.util.Locale;
 
 import org.junit.Test;
 
+import com.bee32.icsf.principal.Group;
+import com.bee32.icsf.principal.PrincipalCheckException;
+import com.bee32.icsf.principal.PrincipalDiag;
+import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.builtins.MultiPrincipal;
-import com.bee32.plover.ox1.principal.Group;
-import com.bee32.plover.ox1.principal.PrincipalCheckException;
-import com.bee32.plover.ox1.principal.PrincipalDiag;
-import com.bee32.plover.ox1.principal.User;
 
 public class PrincipalDiagTest {
 

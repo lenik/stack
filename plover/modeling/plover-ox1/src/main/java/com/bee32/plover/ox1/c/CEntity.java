@@ -11,8 +11,8 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Index;
 
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.ox1.principal.User;
 import com.bee32.plover.util.zh.ZhUtil;
 
 @MappedSuperclass

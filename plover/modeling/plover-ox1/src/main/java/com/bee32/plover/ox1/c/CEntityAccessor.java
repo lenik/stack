@@ -1,7 +1,7 @@
 package com.bee32.plover.ox1.c;
 
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.EntityAccessor;
-import com.bee32.plover.ox1.principal.User;
 
 public class CEntityAccessor
         extends EntityAccessor {

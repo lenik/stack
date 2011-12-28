@@ -2,7 +2,7 @@ package com.bee32.icsf.login;
 
 import java.util.EventObject;
 
-import com.bee32.plover.ox1.principal.User;
+import com.bee32.icsf.principal.User;
 
 public class LoginEvent
         extends EventObject {

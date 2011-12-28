@@ -9,11 +9,11 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
-import com.bee32.plover.ox1.principal.AbstractPrincipalDto;
-import com.bee32.plover.ox1.principal.GroupDto;
-import com.bee32.plover.ox1.principal.Principal;
-import com.bee32.plover.ox1.principal.User;
-import com.bee32.plover.ox1.principal.UserDto;
+import com.bee32.icsf.principal.AbstractPrincipalDto;
+import com.bee32.icsf.principal.GroupDto;
+import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 
 public class SessionUser

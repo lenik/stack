@@ -3,11 +3,11 @@ package com.bee32.icsf.login;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.AbstractEntityLifecycleAddon;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.c.CEntityAccessor;
-import com.bee32.plover.ox1.principal.User;
 
 /**
  * Inject current logon user to entity.owner.

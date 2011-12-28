@@ -5,9 +5,9 @@ import java.util.Map;
 
 import javax.free.ParseException;
 
+import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.plover.ox1.principal.UserDto;
 
 public abstract class CEntityDto<E extends CEntity<K>, K extends Serializable>
         extends EntityDto<E, K> {

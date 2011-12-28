@@ -15,9 +15,9 @@ import javax.persistence.Transient;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.ox1.c.CEntityAuto;
 import com.bee32.plover.ox1.color.Blue;
-import com.bee32.plover.ox1.principal.User;
 
 @Entity
 @Blue

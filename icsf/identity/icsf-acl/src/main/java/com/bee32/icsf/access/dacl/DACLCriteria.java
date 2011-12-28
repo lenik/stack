@@ -1,20 +1,20 @@
 package com.bee32.icsf.access.dacl;
 
 import com.bee32.icsf.access.Permission;
+import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.PrincipalCriteria;
 import com.bee32.plover.criteria.hibernate.Conjunction;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.Disjunction;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.ox1.principal.Principal;
-import com.bee32.plover.ox1.principal.PrincipalCriteria;
 
 public class DACLCriteria
         extends CriteriaSpec {
 
     public static ICriteriaElement impliesDACE(Principal principal, Permission permission) {
         return compose( //
-                PrincipalCriteria.impliedBy("principal", principal), //
+                PrincipalCriteria.inImSet("principal", principal), //
                 impliesPermission(permission));
     }
 

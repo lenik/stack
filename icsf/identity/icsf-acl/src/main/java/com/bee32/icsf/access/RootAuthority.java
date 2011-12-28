@@ -7,7 +7,7 @@ import com.bee32.icsf.access.acl.EmptyACL;
 import com.bee32.icsf.access.acl.IACL;
 import com.bee32.icsf.access.alt.R_Authority;
 import com.bee32.icsf.access.resource.Resource;
-import com.bee32.plover.ox1.principal.IPrincipal;
+import com.bee32.icsf.principal.IPrincipal;
 
 public class RootAuthority
         extends Authority {

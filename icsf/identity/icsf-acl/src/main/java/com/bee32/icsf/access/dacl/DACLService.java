@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Set;
 
 import com.bee32.icsf.access.Permission;
+import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.arch.DataService;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.ox1.principal.Principal;
 
 public class DACLService
         extends DataService {

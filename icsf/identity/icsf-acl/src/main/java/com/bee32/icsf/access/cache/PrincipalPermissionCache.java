@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.bee32.icsf.access.Permission;
-import com.bee32.icsf.principal.InvalidateEvent;
-import com.bee32.icsf.principal.InvalidateListener;
-import com.bee32.plover.ox1.principal.IPrincipal;
+import com.bee32.icsf.principal.IPrincipal;
+import com.bee32.icsf.util.InvalidateEvent;
+import com.bee32.icsf.util.InvalidateListener;
 
 public class PrincipalPermissionCache
         implements InvalidateListener {

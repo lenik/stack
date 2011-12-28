@@ -4,7 +4,7 @@ import javax.inject.Inject;
 
 import org.junit.Test;
 
-import com.bee32.icsf.IcsfIdentityUnit;
+import com.bee32.icsf.IcsfAccessUnit;
 import com.bee32.icsf.access.acl.IACL;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ScannedResourceRegistry;
@@ -12,7 +12,7 @@ import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 
-@Using(IcsfIdentityUnit.class)
+@Using(IcsfAccessUnit.class)
 @ImportSamples(R_ACLSamples.class)
 public class R_AuthorityTest
         extends WiredDaoTestCase {

@@ -3,7 +3,7 @@ package com.bee32.icsf.principal.util;
 import javax.free.EncodeException;
 import javax.free.XMLs;
 
-import com.bee32.plover.ox1.principal.Group;
+import com.bee32.icsf.principal.Group;
 
 public class PrincipalToXML {
 

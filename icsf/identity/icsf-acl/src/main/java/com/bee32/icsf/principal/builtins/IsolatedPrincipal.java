@@ -2,10 +2,10 @@ package com.bee32.icsf.principal.builtins;
 
 import java.io.Serializable;
 
+import com.bee32.icsf.principal.IPrincipal;
+import com.bee32.icsf.principal.IPrincipalVisitor;
+import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.inject.NotAComponent;
-import com.bee32.plover.ox1.principal.IPrincipal;
-import com.bee32.plover.ox1.principal.IPrincipalVisitor;
-import com.bee32.plover.ox1.principal.Principal;
 
 @NotAComponent
 public class IsolatedPrincipal

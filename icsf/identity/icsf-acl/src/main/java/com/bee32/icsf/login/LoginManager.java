@@ -7,7 +7,7 @@ import java.util.ServiceLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.plover.ox1.principal.User;
+import com.bee32.icsf.principal.User;
 
 public class LoginManager {
 

@@ -3,7 +3,7 @@ package com.bee32.icsf.principal;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import com.bee32.plover.ox1.principal.User;
+import com.bee32.icsf.principal.User;
 
 @Entity
 @DiscriminatorValue("U1")

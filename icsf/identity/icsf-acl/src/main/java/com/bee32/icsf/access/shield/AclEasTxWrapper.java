@@ -22,10 +22,10 @@ import com.bee32.icsf.access.resource.IResourceNamespace;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ScannedResourceRegistry;
 import com.bee32.icsf.login.SessionUser;
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityResource;
 import com.bee32.plover.orm.entity.EntityResourceNS;
-import com.bee32.plover.ox1.principal.User;
 import com.bee32.plover.site.scope.PerSite;
 
 @Service

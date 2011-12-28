@@ -1,7 +1,7 @@
 package com.bee32.icsf.login;
 
-import com.bee32.plover.ox1.principal.User;
-import com.bee32.plover.ox1.principal.UserDto;
+import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.UserDto;
 
 public class NullSessionUser
         extends SessionUser {
