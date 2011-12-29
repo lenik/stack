@@ -59,7 +59,7 @@ public class TypePrefEntity
     }
 
     @Id
-    @Column(length = ABBR_LEN, nullable = false)
+    @Column(name = "type", length = ABBR_LEN, nullable = false)
     protected String getTypeId() {
         return typeId;
     }

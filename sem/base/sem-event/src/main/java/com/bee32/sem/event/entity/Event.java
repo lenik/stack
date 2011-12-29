@@ -105,7 +105,7 @@ public class Event
     }
 
     @ManyToOne
-    @Index(name = "category")
+    @Index(name = "##_category")
     @Override
     public EventCategory getCategory() {
         return category;
@@ -115,20 +115,20 @@ public class Event
         this.category = category;
     }
 
-    @Column(length = ABBR_LEN, nullable = false)
-    @Index(name = "source")
-    String getSource() {
-        String sourceAbbr = ABBR.abbr(sourceClass);
-        if (sourceAbbr == null)
-            throw new NullPointerException("sourceAbbr");
-        return sourceAbbr;
+    @Column(name = "source", length = ABBR_LEN, nullable = false)
+    @Index(name = "##_source")
+    String getSourceClassId() {
+        String abbr = ABBR.abbr(sourceClass);
+        if (abbr == null)
+            throw new IllegalUsageException("Can't abbrev class: " + sourceClass);
+        return abbr;
     }
 
-    void setSource(String source) {
-        if (source == null)
-            throw new NullPointerException("source");
+    void setSourceClassId(String sourceClassId) {
+        if (sourceClassId == null)
+            throw new NullPointerException("sourceClassId");
         try {
-            this.sourceClass = ABBR.expand(source);
+            this.sourceClass = ABBR.expand(sourceClassId);
         } catch (ClassNotFoundException e) {
             throw new IllegalUsageException(e);
         }
@@ -249,14 +249,14 @@ public class Event
         this.scheduledEndTime = scheduledEndTime;
     }
 
-    @Column(length = ABBR_LEN)
-    String getRefType() {
+    @Column(name = "ref", length = ABBR_LEN)
+    String getRefClassId() {
         return ABBR.abbr(refClass);
     }
 
-    void setRefType(String refType)
+    void setRefClassId(String refClassId)
             throws ClassNotFoundException {
-        this.refClass = ABBR.expand(refType);
+        this.refClass = ABBR.expand(refClassId);
     }
 
     @Transient
