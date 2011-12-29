@@ -33,8 +33,9 @@ public class EventCriteria
             return null;
         if (type.length() != 1)
             throw new IllegalArgumentException("Type is not a single char: " + type);
-        // EventType eventType = EventType.valueOf(type.charAt(0));
-        return equals("_type", type);
+        char typeChar = type.charAt(0);
+        // EventType eventType = EventType.valueOf(typeChar);
+        return equals("_type", typeChar);
     }
 
     @LeftHand(Event.class)
