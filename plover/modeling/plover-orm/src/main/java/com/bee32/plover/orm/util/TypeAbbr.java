@@ -3,7 +3,9 @@ package com.bee32.plover.orm.util;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -28,7 +30,7 @@ public class TypeAbbr {
 
         for (String scanPackageName : scanPackageNames)
             try {
-                scanTypeNames(scanPackageName);
+                scanAndRegister(scanPackageName);
             } catch (IOException e) {
                 throw new Error(e.getMessage(), e);
             }
@@ -89,6 +91,10 @@ public class TypeAbbr {
         return abbr;
     }
 
+    public Map<String, String> getAbbrMap() {
+        return Collections.unmodifiableMap(abbr2FqcnMap);
+    }
+
     public Class<?> expand(String abbr)
             throws ClassNotFoundException {
         if (abbr == null)
@@ -140,9 +146,26 @@ public class TypeAbbr {
 
     final RegisterAbbr registerAbbrInstance = new RegisterAbbr();
 
-    public void scanTypeNames(String packageName)
+    public void scanAndRegister(String packageName)
             throws IOException {
         ClassUtil.scanTypes(packageName, registerAbbrInstance);
+    }
+
+    public Map<Class<?>, String[]> loadUsageMap()
+            throws ClassNotFoundException, IOException {
+        Map<Class<?>, String[]> usageMap = new LinkedHashMap<Class<?>, String[]>();
+        EntityUsageCollector collector = new EntityUsageCollector();
+        collector.loadFromResources();
+        EntityUsage abbrUsage = collector.getUsage(ITypeAbbrAware.USAGE_ID);
+        Map<Class<?>, String> entityMap = abbrUsage.getEntityMap();
+        for (Entry<Class<?>, String> entry : entityMap.entrySet()) {
+            Class<?> entityType = entry.getKey();
+            String[] properties = entry.getValue().split(",");
+            for (int i = 0; i < properties.length; i++)
+                properties[i] = properties[i].trim();
+            usageMap.put(entityType, properties);
+        }
+        return usageMap;
     }
 
 }
