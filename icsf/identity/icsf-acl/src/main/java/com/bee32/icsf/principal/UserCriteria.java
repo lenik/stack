@@ -1,8 +1,6 @@
 package com.bee32.icsf.principal;
 
 import com.bee32.icsf.login.SessionUser;
-import com.bee32.icsf.principal.PrincipalCriteria;
-import com.bee32.icsf.principal.User;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 

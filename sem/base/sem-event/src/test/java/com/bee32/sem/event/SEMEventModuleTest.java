@@ -22,4 +22,5 @@ public class SEMEventModuleTest
                 // SEMEventMenu.DICT.join(EventState.class.getName() + "/index.do").getBase() //
                 );
     }
+
 }
