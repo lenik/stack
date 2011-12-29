@@ -64,7 +64,7 @@ public class Event
     /** for Task only */
     private Date scheduledEndTime;
 
-    private Class<?> refClass;
+    private Class<?> refType;
     private long refId;
     private String refAlt;
 
@@ -249,33 +249,33 @@ public class Event
         this.scheduledEndTime = scheduledEndTime;
     }
 
-    @Column(name = "ref", length = ABBR_LEN)
-    String getRefClassId() {
-        return ABBR.abbr(refClass);
+    @Column(name = "refType", length = ABBR_LEN)
+    String getRefTypeId() {
+        return ABBR.abbr(refType);
     }
 
-    void setRefClassId(String refClassId)
+    void setRefTypeId(String refClassId)
             throws ClassNotFoundException {
-        this.refClass = ABBR.expand(refClassId);
+        this.refType = ABBR.expand(refClassId);
     }
 
     @Transient
     @Override
-    public Class<?> getRefClass() {
-        return refClass;
+    public Class<?> getRefType() {
+        return refType;
     }
 
-    public void setRefClass(Class<?> refClass) {
-        this.refClass = refClass;
+    public void setRefType(Class<?> refClass) {
+        this.refType = refClass;
     }
 
     public void setRef(IEntity<?> refEntity) {
         if (refEntity == null) {
-            setRefClass((Class<?>) null);
+            setRefType((Class<?>) null);
             refId = 0L;
             refAlt = null;
         } else {
-            setRefClass(refEntity.getClass());
+            setRefType(refEntity.getClass());
             Object id = refEntity.getId();
             if (id instanceof Number) {
                 refId = ((Number) id).longValue();

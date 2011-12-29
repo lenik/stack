@@ -138,7 +138,7 @@ public class UserFile
         getEntityFlags().setHidden(refType == null);
     }
 
-    @Column(name = "ref", length = ABBR_LEN)
+    @Column(name = "refType", length = ABBR_LEN)
     String getRefTypeId() {
         return ABBR.abbr(refType);
     }

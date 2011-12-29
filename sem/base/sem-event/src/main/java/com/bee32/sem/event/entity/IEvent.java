@@ -122,7 +122,7 @@ public interface IEvent {
     /**
      * The class of the referenced object.
      */
-    Class<?> getRefClass();
+    Class<?> getRefType();
 
     /**
      * Ref id if it can fit into a long integer.
