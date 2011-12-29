@@ -11,8 +11,8 @@ public class UserDto
     GroupDto primaryGroup;
     RoleDto primaryRole;
 
-    List<GroupDto> assignedGroups;
-    List<RoleDto> assignedRoles;
+    List<GroupDto> assignedGroups = new ArrayList<GroupDto>();
+    List<RoleDto> assignedRoles = new ArrayList<RoleDto>();
 
     public UserDto() {
         super();
@@ -38,12 +38,12 @@ public class UserDto
         }
 
         if (selection.contains(GROUPS))
-            assignedGroups = marshalList(GroupDto.class, _selection, source.getAssignedGroups());
+            assignedGroups = mrefList(GroupDto.class, _selection, source.getAssignedGroups());
         else
             assignedGroups = new ArrayList<GroupDto>();
 
         if (selection.contains(ROLES))
-            assignedRoles = marshalList(RoleDto.class, _selection, source.getAssignedRoles());
+            assignedRoles = mrefList(RoleDto.class, _selection, source.getAssignedRoles());
         else
             assignedRoles = new ArrayList<RoleDto>();
     }
@@ -88,6 +88,8 @@ public class UserDto
     }
 
     public void setAssignedGroups(List<GroupDto> assignedGroups) {
+        if (assignedGroups == null)
+            throw new NullPointerException("assignedGroups");
         this.assignedGroups = assignedGroups;
     }
 
@@ -111,6 +113,8 @@ public class UserDto
     }
 
     public void setAssignedRoles(List<RoleDto> assignedRoles) {
+        if (assignedRoles == null)
+            throw new NullPointerException("assignedRoles");
         this.assignedRoles = assignedRoles;
     }
 

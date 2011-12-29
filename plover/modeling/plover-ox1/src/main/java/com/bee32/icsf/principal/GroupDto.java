@@ -11,9 +11,9 @@ public class GroupDto
     GroupDto inheritedGroup;
     RoleDto primaryRole;
 
-    List<GroupDto> derivedGroups;
-    List<RoleDto> assignedRoles;
-    List<UserDto> memberUsers;
+    List<GroupDto> derivedGroups = new ArrayList<GroupDto>();
+    List<RoleDto> assignedRoles = new ArrayList<RoleDto>();
+    List<UserDto> memberUsers = new ArrayList<UserDto>();
 
     public GroupDto() {
         super();
@@ -43,17 +43,17 @@ public class GroupDto
         }
 
         if (selection.contains(GROUPS))
-            derivedGroups = marshalList(GroupDto.class, _selection, source.getDerivedGroups());
+            derivedGroups = mrefList(GroupDto.class, _selection, source.getDerivedGroups());
         else
             derivedGroups = new ArrayList<GroupDto>();
 
         if (selection.contains(ROLES))
-            assignedRoles = marshalList(RoleDto.class, _selection, source.getAssignedRoles());
+            assignedRoles = mrefList(RoleDto.class, _selection, source.getAssignedRoles());
         else
             assignedRoles = new ArrayList<RoleDto>();
 
         if (selection.contains(USERS))
-            memberUsers = marshalList(UserDto.class, _selection, source.getMemberUsers());
+            memberUsers = mrefList(UserDto.class, _selection, source.getMemberUsers());
         else
             memberUsers = new ArrayList<UserDto>();
     }
