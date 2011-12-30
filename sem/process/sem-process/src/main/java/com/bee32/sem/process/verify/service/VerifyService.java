@@ -153,7 +153,7 @@ public class VerifyService
 
             event.setActor(SessionUser.getInstance().getInternalUserOpt());
 
-            String entityName = ClassUtil.getTypeName(entity.getClass()) + " [" + entity.getId() + "]";
+            String entityName = ClassUtil.getParameterizedTypeName(entity) + " [" + entity.getId() + "]";
 
             String subject = "【作业跟踪】【审核】" + entityName;
             String message = "（无可用内容）";

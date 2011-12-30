@@ -182,7 +182,7 @@ public class EntityHelper<E extends Entity<K>, K extends Serializable> {
     }
 
     public String getHint(E entity) {
-        return ClassUtil.getTypeName(entity.getClass()) + " [" + entity.getId() + "]";
+        return ClassUtil.getParameterizedTypeName(entity) + " [" + entity.getId() + "]";
     }
 
     static final Map<Class<?>, EntityHelper<?, ?>> classmap;
