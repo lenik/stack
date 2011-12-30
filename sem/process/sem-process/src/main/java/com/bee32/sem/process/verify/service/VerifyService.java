@@ -123,40 +123,54 @@ public class VerifyService
         VerifyContextAccessor.setVerifyError(context, result.getMessage());
         VerifyContextAccessor.setVerifyEvalDate(context, new Date());
 
-        Event verifyEvent = context.getVerifyEvent();
-        {
-            if (verifyEvent == null) {
-                verifyEvent = new Event(this, EventType.TASK);
-                context.setVerifyEvent(verifyEvent);
-            }
+        Event event = context.getVerifyEvent();
 
-            verifyEvent.setSourceClass(VerifyPolicy.class);
-            verifyEvent.setPriority(EventPriority.HIGH);
+        switch (result.getState().getStage()) {
+        case VerifyState.INIT:
+            event = null;
+            break;
+        case VerifyState.RUNNING:
+            if (event == null)
+                event = new Event(this, EventType.TASK);
+            else
+                event.setType(EventType.TASK);
+            break;
+        case VerifyState.END:
+            if (event == null)
+                event = new Event(this, EventType.EVENT);
+            else
+                event.setType(EventType.EVENT);
+            break;
+        }
+        context.setVerifyEvent(event);
+
+        if (event != null) {
+            event.setPriority(EventPriority.HIGH);
 
             VerifyState state = result.getState();
-            verifyEvent.setClosed(state.isFinalized());
-            verifyEvent.setState(state);
+            event.setClosed(state.isFinalized());
+            event.setState(state);
 
-            verifyEvent.setActor(null); // session current user.
+            event.setActor(SessionUser.getInstance().getInternalUserOpt());
 
             String entityName = ClassUtil.getDisplayName(entity.getClass()) + " [" + entity.getId() + "]";
 
             String subject = "【作业跟踪】【审核】" + entityName;
             String message = "（无可用内容）";
 
-            verifyEvent.setSubject(subject);
-            verifyEvent.setMessage(message);
-            verifyEvent.setBeginTime(new Date()); //
+            event.setSubject(subject);
+            event.setMessage(message);
+            event.setBeginTime(new Date()); //
 
             if (state.isFinalized())
-                verifyEvent.setEndTime(context.getVerifyEvalDate());
+                event.setEndTime(context.getVerifyEvalDate());
             else
-                verifyEvent.setEndTime(null);
+                event.setEndTime(null);
 
-            verifyEvent.setRef(entity);
+            event.setRef(entity);
 
             Set<Principal> responsibles = new HashSet<Principal>(getDeclaredResponsibles(context));
-            verifyEvent.setObservers(responsibles);
+            event.setObservers(responsibles);
         }
 
         return result;

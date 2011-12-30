@@ -15,19 +15,23 @@ public class VerifyState
 
     private static final long serialVersionUID = 1L;
 
+    public static final int INIT = 0;
+    public static final int RUNNING = 1;
+    public static final int END = 2;
+
     static final Map<String, VerifyState> nameMap = new HashMap<String, VerifyState>();
     static final Map<Integer, VerifyState> valueMap = new HashMap<Integer, VerifyState>();
 
-    private final boolean finalized;
+    private final int stage;
     private final int eventFlags;
 
     private final String displayName;
     private final String description;
 
-    public VerifyState(int id, String name, boolean finalized, int eventFlags) {
+    public VerifyState(int id, String name, int stage, int eventFlags) {
         super(id, name);
 
-        this.finalized = finalized;
+        this.stage = stage;
         this.eventFlags = eventFlags;
 
         displayName = _nls(name + ".label", name);
@@ -60,8 +64,12 @@ public class VerifyState
         return verifyState;
     }
 
+    public int getStage() {
+        return stage;
+    }
+
     public boolean isFinalized() {
-        return finalized;
+        return stage == END;
     }
 
     public int getEventFlags() {
@@ -78,15 +86,15 @@ public class VerifyState
 
     static final int VERIFY_STATE = __class__(SEL_TASK, EventStateClass.ESC_PROCESS);
 
-    static VerifyState _(int index, String name, boolean finalized, int eventFlags) {
-        return new VerifyState(VERIFY_STATE + index, name, finalized, eventFlags);
+    static VerifyState _(int index, String name, int stagefinalized, int eventFlags) {
+        return new VerifyState(VERIFY_STATE + index, name, stagefinalized, eventFlags);
     }
 
-    public static final VerifyState NOT_APPLICABLE = _(0, "NOT_APPLICABLE", false, EventFlags.WARNING);
-    public static final VerifyState UNKNOWN = _(1, "UNKNOWN", false, 0);
-    public static final VerifyState VERIFIED = _(2, "VERIFIED", true, EventFlags.NOTICE);
-    public static final VerifyState REJECTED = _(3, "REJECTED", true, EventFlags.NOTICE);
-    public static final VerifyState PENDING = _(4, "PENDING", false, 0);
-    public static final VerifyState INVALID = _(5, "INVALID", false, EventFlags.ERROR);
+    public static final VerifyState NOT_APPLICABLE = _(0, "NOT_APPLICABLE", INIT, EventFlags.WARNING);
+    public static final VerifyState UNKNOWN = _(1, "UNKNOWN", INIT, 0);
+    public static final VerifyState VERIFIED = _(2, "VERIFIED", END, EventFlags.NOTICE);
+    public static final VerifyState REJECTED = _(3, "REJECTED", END, EventFlags.NOTICE);
+    public static final VerifyState PENDING = _(4, "PENDING", RUNNING, 0);
+    public static final VerifyState INVALID = _(5, "INVALID", INIT, EventFlags.ERROR);
 
 }
