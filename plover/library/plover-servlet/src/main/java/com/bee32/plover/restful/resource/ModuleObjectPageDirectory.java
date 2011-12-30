@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.bee32.plover.arch.Module;
+import com.bee32.plover.arch.IModule;
 import com.bee32.plover.pub.oid.OidUtil;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.rtx.location.Locations;
@@ -15,14 +15,14 @@ import com.bee32.plover.rtx.location.Locations;
 public class ModuleObjectPageDirectory
         extends AbstractObjectPageDirectory {
 
-    Module module;
+    IModule module;
     String prefix;
     Location moduleLocation;
 
     Map<String, String> localViewPages = new HashMap<String, String>();
     Map<String, String> localOperationPages = new HashMap<String, String>();
 
-    public ModuleObjectPageDirectory(Module module) {
+    public ModuleObjectPageDirectory(IModule module) {
         if (module == null)
             throw new NullPointerException("module");
         prefix = OidUtil.getOid(module.getClass()).toPath() + "/";

@@ -3,9 +3,13 @@ package com.bee32.sem.inventory.entity;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.bee32.plover.arch.ModuleLoader;
 import com.bee32.plover.arch.generic.AbstractParameterizedType;
+import com.bee32.plover.restful.resource.IObjectPageDirectory;
 import com.bee32.plover.restful.resource.IObjectURLFragmentsProvider;
+import com.bee32.plover.restful.resource.ModuleObjectPageDirectory;
 import com.bee32.plover.restful.resource.ObjectURLFragmentType;
+import com.bee32.sem.inventory.SEMInventoryModule;
 
 public class StockOrderParameterizedType
         extends AbstractParameterizedType
@@ -51,12 +55,28 @@ public class StockOrderParameterizedType
         StockOrder o = (StockOrder) instance;
         StockOrderSubject subject = o.getSubject();
         switch (fragmentType) {
-        case moduleHref:
+        case baseHrefToModule:
             return moduleHrefMap.get(subject);
         case extraParameters:
             return "subject=" + subject.getValue();
         }
         throw new IllegalArgumentException("Bad fragment type: " + fragmentType);
+    }
+
+    class Delegate
+            extends ModuleObjectPageDirectory {
+
+        public Delegate() {
+            super(ModuleLoader.getInstance().getModule(SEMInventoryModule.class));
+        }
+
+    }
+
+    @Override
+    public <T> T getFeature(Object instance, Class<T> featureClass) {
+        if (featureClass.equals(IObjectPageDirectory.class))
+            return delegate;
+        return super.getFeature(instance, featureClass);
     }
 
     public static final StockOrderParameterizedType INSTANCE = new StockOrderParameterizedType();
