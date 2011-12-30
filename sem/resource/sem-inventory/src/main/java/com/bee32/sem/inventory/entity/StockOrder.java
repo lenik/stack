@@ -14,6 +14,8 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Index;
 
+import com.bee32.plover.arch.generic.IParameterized;
+import com.bee32.plover.arch.generic.IParameterizedType;
 import com.bee32.plover.arch.util.dto.BeanPropertyAccessor;
 import com.bee32.plover.arch.util.dto.IPropertyAccessor;
 import com.bee32.sem.inventory.process.IStockOrderVerifyContext;
@@ -34,7 +36,7 @@ import com.bee32.sem.process.verify.IVerifiable;
 @SequenceGenerator(name = "idgen", sequenceName = "stock_order_seq", allocationSize = 1)
 public class StockOrder
         extends StockItemList
-        implements IVerifiable<IStockOrderVerifyContext> {
+        implements IParameterized, IVerifiable<IStockOrderVerifyContext> {
 
     private static final long serialVersionUID = 1L;
 
@@ -66,6 +68,12 @@ public class StockOrder
         if (subject.isPacking())
             this.spec = base;
         this.warehouse = warehouse;
+    }
+
+    @Transient
+    @Override
+    public IParameterizedType getParameterizedType() {
+        return StockOrderParameterizedType.INSTANCE;
     }
 
     @Override
