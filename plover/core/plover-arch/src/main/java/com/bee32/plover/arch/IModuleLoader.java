@@ -10,6 +10,10 @@ public interface IModuleLoader {
 
     Map<String, IModule> getModuleMap();
 
+    IModule getModule(String moduleName);
+
+    IModule getModule(Class<? extends IModule> moduleClass);
+
     void activate();
 
 }

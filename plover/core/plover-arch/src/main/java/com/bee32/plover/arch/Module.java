@@ -2,8 +2,6 @@ package com.bee32.plover.arch;
 
 import java.util.Collection;
 
-import javax.inject.Inject;
-
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
@@ -14,7 +12,7 @@ import com.bee32.plover.arch.naming.INamedNode;
 import com.bee32.plover.arch.naming.TreeMapNode;
 import com.bee32.plover.arch.service.IServiceContribution;
 import com.bee32.plover.arch.service.PloverService;
-import com.bee32.plover.inject.ComponentTemplate;
+import com.bee32.plover.inject.ServiceTemplate;
 
 /**
  * &#64;Configuration is not inheritable, so you should add Configuration annotation in all concrete
@@ -25,7 +23,7 @@ import com.bee32.plover.inject.ComponentTemplate;
  *
  * Lazy component is initialized when getBeanOfType() is invoked.
  */
-@ComponentTemplate
+@ServiceTemplate
 @Lazy
 public abstract class Module
         extends Component
@@ -34,8 +32,7 @@ public abstract class Module
     private TreeMapNode<Object> nodeImpl = new TreeMapNode<Object>(Object.class);
     private Credit credit = Credit.dummy;
 
-    @Inject
-    protected ApplicationContext applicationContext;
+    private ApplicationContext appctx;
 
     public Module() {
         super();
@@ -67,6 +64,19 @@ public abstract class Module
      * <ol>
      */
     protected abstract void preamble();
+
+    protected void preamble2() {
+    }
+
+    protected final <T> T getBean(Class<T> beanType) {
+        return getAppCtx().getBean(beanType);
+    }
+
+    protected final ApplicationContext getAppCtx() {
+        if (appctx == null)
+            throw new IllegalStateException("appctx is only available in preamble2");
+        return appctx;
+    }
 
     protected final void contribute(IServiceContribution<?> contribution) {
         PloverService.contribute(contribution);

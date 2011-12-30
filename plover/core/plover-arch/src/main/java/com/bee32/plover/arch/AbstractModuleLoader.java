@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import javax.free.ClassLocal;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +22,8 @@ public abstract class AbstractModuleLoader
     private boolean activated;
 
     private Collection<IModule> modules;
-    private Map<String, IModule> moduleMap;
+    private Map<String, IModule> moduleNameMap;
+    private Map<Class<?>, IModule> moduleClassMap;
 
     private Collection<IModulePostProcessor> modulePostProcessors;
 
@@ -28,10 +31,12 @@ public abstract class AbstractModuleLoader
     public final synchronized void load() {
         if (!loaded) {
             modules = reload();
-            moduleMap = new TreeMap<String, IModule>();
+            moduleNameMap = new TreeMap<String, IModule>();
+            moduleClassMap = new ClassLocal<IModule>();
             for (IModule module : modules) {
                 String name = module.getName();
-                moduleMap.put(name, module);
+                moduleNameMap.put(name, module);
+                moduleClassMap.put(module.getClass(), module);
             }
             loaded = true;
         }
@@ -71,7 +76,8 @@ public abstract class AbstractModuleLoader
                     logger.info("Remove failed module: " + failedModuleName);
 
                     modules.remove(failedModule);
-                    moduleMap.remove(failedModuleName);
+                    moduleNameMap.remove(failedModuleName);
+                    moduleClassMap.remove(failedModule.getClass());
                 }
             }
 
@@ -88,7 +94,17 @@ public abstract class AbstractModuleLoader
 
     public Map<String, IModule> getModuleMap() {
         load();
-        return moduleMap;
+        return moduleNameMap;
+    }
+
+    @Override
+    public IModule getModule(String moduleName) {
+        return moduleNameMap.get(moduleName);
+    }
+
+    @Override
+    public IModule getModule(Class<? extends IModule> moduleClass) {
+        return moduleClassMap.get(moduleClass);
     }
 
     protected abstract TreeSet<IModulePostProcessor> getPostProcessors();

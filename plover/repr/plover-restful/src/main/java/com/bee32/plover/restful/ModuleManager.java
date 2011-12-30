@@ -2,8 +2,6 @@ package com.bee32.plover.restful;
 
 import javax.free.IllegalUsageError;
 import javax.free.IllegalUsageException;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +19,6 @@ import com.bee32.plover.pub.oid.OidUtil;
 import com.bee32.plover.pub.oid.OidVector;
 
 @Component
-@Singleton
 @Lazy
 public class ModuleManager
         extends OidTree<IModule>
@@ -31,8 +28,7 @@ public class ModuleManager
 
     static Logger logger = LoggerFactory.getLogger(ModuleManager.class);
 
-    @Inject
-    private transient IModuleLoader moduleLoader;
+    private transient IModuleLoader moduleLoader = ServiceModuleLoader.getInstance();
 
     private transient boolean loaded;
 

@@ -1,6 +1,6 @@
 package com.bee32.plover.arch;
 
-public abstract class ModulePostProcessor
+public abstract class AbstractModulePostProcessor
         extends Component
         implements IModulePostProcessor {
 
