@@ -10,6 +10,8 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.inject.ComponentTemplate;
+import com.bee32.plover.restful.resource.StandardOperations;
+import com.bee32.plover.restful.resource.StandardViews;
 import com.bee32.plover.servlet.mvc.ActionHandler;
 import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
@@ -24,16 +26,24 @@ public abstract class IndexRichCompatController
     public static final String INDEX_RICH = "index-rich.jsf";
     public static final String MODE_PARAM = "MODE";
 
+    static ActionHandler indexFor(String mode) {
+        if (mode == null)
+            return new CompatRedirectHandler(INDEX_RICH);
+        else
+            return new CompatRedirectHandler(INDEX_RICH, MODE_PARAM + "=" + mode);
+    }
+
     @Override
     protected void initController()
             throws BeansException {
-        addHandler("index", /*      */new CompatRedirectHandler(INDEX_RICH));
-        addHandler("content", /*    */new CompatRedirectHandler(INDEX_RICH, MODE_PARAM + "=content"));
-        addHandler("createForm", /* */new CompatRedirectHandler(INDEX_RICH, MODE_PARAM + "=createForm"));
-        addHandler("editForm", /*   */new CompatRedirectHandler(INDEX_RICH, MODE_PARAM + "=editForm"));
-        addHandler("create", /*     */new CompatRedirectHandler(INDEX_RICH, MODE_PARAM + "=create"));
-        addHandler("edit", /*       */new CompatRedirectHandler(INDEX_RICH, MODE_PARAM + "=edit"));
-        addHandler("delete", /*     */new CompatRedirectHandler(INDEX_RICH, MODE_PARAM + "=delete"));
+        addHandler("index", /*      */indexFor(null));
+        addHandler("content", /*    */indexFor(StandardViews.CONTENT));
+        addHandler("createForm", /* */indexFor(StandardViews.CREATE_FORM));
+        addHandler("editForm", /*   */indexFor(StandardViews.EDIT_FORM));
+        addHandler("create", /*     */indexFor(StandardOperations.CREATE));
+        // edit.do -> index-rich.jsf?mode=update
+        addHandler("edit", /*       */indexFor(StandardOperations.UPDATE));
+        addHandler("delete", /*     */indexFor(StandardOperations.DELETE));
     }
 
 }
