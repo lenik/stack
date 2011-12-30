@@ -18,6 +18,8 @@ import javax.free.UnexpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.plover.arch.generic.IParameterized;
+import com.bee32.plover.arch.generic.IParameterizedType;
 import com.bee32.plover.arch.util.res.ResourceBundleUTF8;
 import com.bee32.plover.xutil.ClassOrDirFileFilter;
 import com.bee32.plover.xutil.ResourceScanner;
@@ -91,6 +93,16 @@ public class ClassUtil {
         if (displayName == null || displayName.isEmpty())
             displayName = clazz.getSimpleName();
         return displayName;
+    }
+
+    public static String getParameterizedTypeName(Object instance) {
+        if (instance == null)
+            throw new NullPointerException("instance");
+        if (instance instanceof IParameterized) {
+            IParameterizedType type = ((IParameterized) instance).getParameterizedType();
+            return type.getDisplayTypeName(instance);
+        } else
+            return getTypeName(instance.getClass());
     }
 
     public static URL getContextURL(Class<?> clazz) {
