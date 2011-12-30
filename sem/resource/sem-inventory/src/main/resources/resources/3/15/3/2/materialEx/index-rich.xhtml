@@ -11,7 +11,20 @@
     <ui:define name="content">
 
         <h:form id="mainForm">
-            <t:panelGrid columns="2">
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:commandButton value="新增物料"
+                        oncomplete="editDialog.show();"
+                        actionListener="#{materialExAdminBean.newMaterial}"
+                        update="edirForm:editPanel" />
+                    <p:separator />
+                    <p:commandButton value="查找物料" id="preSearchBtn"
+                        actionListener="#{materialViewBean.searchForm}"
+                        update="main" />
+                </p:toolbarGroup>
+            </p:toolbar>
+
+            <t:panelGrid columns="2" columnClasses="alignTop, alignTop">
                 <p:treeTable value="#{materialExAdminBean.root}"
                     var="category"
                     selectionMode="single"
@@ -22,7 +35,7 @@
                     <p:ajax event="select" listener="#{materialExAdminBean.onCategorySelect}"
                         update="mainForm:materials" />
 
-                    <p:column headerText="名称" style="width:150px;">
+                    <p:column headerText="分类名称" style="width:150px;">
                         <h:outputText value="#{category.name}" />
                     </p:column>
 
@@ -36,16 +49,158 @@
                     id="materials"
                     value="#{materialExAdminBean.materials}"
                     var="material"
+                    paginator="true"
+                    rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}"
+                    rows="#{viewConfig.pageSize}"
+                    resizableColumns="true"
                     scrollable="true" scrollHeight="480"
-                    scrollWidth="600">
+                    scrollWidth="700">
 
-                    <p:column headerText="名称">
-                        <h:outputText value="#{material.name}" />
+                    <p:column sortBy="#{material.label}" headerText="物料名称" style="width:100px;">
+                        <h:outputText value="#{material.label}" />
                     </p:column>
 
-
+                    <p:column headerText="规格型号" style="width:80px;">
+                        <h:outputText value="#{material.modelSpec}" />
+                    </p:column>
+                    <p:column headerText="主单位" style="width:40px;">
+                        <h:outputText value="#{material.unit.label}(#{material.unit.name})" />
+                    </p:column>
+                    <p:column headerText="当前基价" style="width:40px;">
+                        <h:outputText value="#{material.currentPrice}" />
+                    </p:column>
+                    <p:column headerText="附件数量" style="width:40px;">
+                        <h:outputText value="#{fn:length(material.attachments)}" />
+                    </p:column>
+                    <p:column headerText="操作" style="width:150px;">
+                        <p:commandLink title="修改" update=""
+                            oncomplete="editDialog.show()">
+                            <f:setPropertyActionListener
+                                value="#{material}"
+                                target="#{materialExAdminBean.material}" />
+                            <p:graphicImage
+                                value="#{location.ICON}/etool16/editor_area.gif" />
+                        </p:commandLink>
+                        <p:commandLink title="价格" update=""
+                            oncomplete="">
+                            <f:setPropertyActionListener
+                                value="#{material}"
+                                target="#{materialExAdminBean.material}" />
+                            <p:graphicImage
+                                value="#{location.ICON}/obj16/prjversions_rep.gif" />
+                        </p:commandLink>
+                        <p:commandLink title="单位换算表" update=""
+                            oncomplete="">
+                            <f:setPropertyActionListener
+                                value="#{material}"
+                                target="#{materialExAdminBean.material}" />
+                            <p:graphicImage
+                                value="#{location.ICON}/elcl16/toggledetailpane_co.gif" />
+                        </p:commandLink>
+                        <p:commandLink title="自定义属性" update=""
+                            oncomplete="">
+                            <f:setPropertyActionListener
+                                value="#{material}"
+                                target="#{materialExAdminBean.material}" />
+                            <p:graphicImage
+                                value="#{location.ICON}/obj16/native_lib_path_attrib.gif" />
+                        </p:commandLink>
+                        <p:commandLink title="推荐库位" update=""
+                            oncomplete="">
+                            <f:setPropertyActionListener
+                                value="#{material}"
+                                target="#{materialExAdminBean.material}" />
+                            <p:graphicImage
+                                value="#{location.ICON}/cview16/filenav_nav.gif" />
+                        </p:commandLink>
+                        <p:commandLink title="仓库相关信息" update=""
+                            oncomplete="">
+                            <f:setPropertyActionListener
+                                value="#{material}"
+                                target="#{materialExAdminBean.material}" />
+                            <p:graphicImage
+                                value="#{location.ICON}/elcl16/all_history_mode.gif" />
+                        </p:commandLink>
+                        <p:commandLink title="附件" update=""
+                            oncomplete="">
+                            <f:setPropertyActionListener
+                                value="#{material}"
+                                target="#{materialExAdminBean.material}" />
+                            <p:graphicImage
+                                value="#{location.ICON}/etool16/annotate.gif" />
+                        </p:commandLink>
+                        <p:commandLink title="删除" update=""
+                            oncomplete="">
+                            <f:setPropertyActionListener
+                                value="#{material}"
+                                target="#{materialExAdminBean.material}" />
+                            <p:graphicImage
+                                value="#{location.ICON}/etool16/delete_edit.gif" />
+                        </p:commandLink>
+                    </p:column>
                 </p:dataTable>
             </t:panelGrid>
+        </h:form>
+
+        <h:form id="editForm">
+            <p:dialog widgetVar="editDialog" height="480" width="640" modal="true">
+                <t:panelGrid id="editPanel" columns="2">
+                    <h:outputText value="物料分类:"/>
+                    <t:panelGrid columns="2">
+                        <p:inputText/>
+                        <p:commandButton value="..."/>
+                    </t:panelGrid>
+
+                    <h:outputText value="物料名称:"/>
+                    <p:inputText style="width:400px;"/>
+
+                    <h:outputText value="主单位:"/>
+                    <t:panelGrid columns="4">
+                        <p:inputText/>
+                        <h:outputText value="单位提示"/>
+                        <p:inputText/>
+                        <h:outputText value="(重量,长度等)"/>
+                    </t:panelGrid>
+
+                    <h:outputText value="条形码:"/>
+                    <p:inputText/>
+
+                    <h:outputText value="规格型号:"/>
+                    <p:inputText style="width:400px;"/>
+
+                    <h:outputText value="备注"/>
+                    <p:inputText style="width:400px;"/>
+
+                    <t:panelGroup colspan="2">
+                        <p:separator style="width:600px;height:5px" />
+                    </t:panelGroup>
+
+                    <t:panelGroup colspan="2">
+                        <h:outputText value="包装运输相关" style="font-weight:bold;"/>
+                    </t:panelGroup>
+
+                    <h:outputText value="毛重(单位:克):"/>
+                    <t:panelGrid columns="3">
+                        <p:inputText style="width:50px;"/>
+                        <h:outputText value="净重(单位:克):"/>
+                        <p:inputText style="width:50px;"/>
+                    </t:panelGrid>
+
+                    <h:outputText value="装箱尺寸"/>
+                    <t:panelGrid columns="7">
+                        <h:outputText value="长"/>
+                        <p:inputText  style="width:40px"/>
+                        <h:outputText value="宽"/>
+                        <p:inputText  style="width:40px"/>
+                        <h:outputText value="高"/>
+                        <p:inputText  style="width:40px"/>
+                        <h:outputText value="(厘米)"/>
+                    </t:panelGrid>
+
+                    <p:commandButton value="保存"/>
+                    <p:commandButton value="关闭"/>
+                </t:panelGrid>
+            </p:dialog>
         </h:form>
 
     </ui:define>

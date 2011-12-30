@@ -1,4 +1,4 @@
-package com.bee32.sem.inventory.web;
+ package com.bee32.sem.inventory.web;
 
 import java.util.List;
 
@@ -21,6 +21,8 @@ public class MaterialExAdminBean extends EntityViewBean {
     TreeNode selectedMaterialCategoryNode;
 
     List<MaterialDto> materials;
+
+    MaterialDto material = new MaterialDto().create();
 
     public MaterialExAdminBean() {
         loadMaterialCategoryTree();
@@ -45,6 +47,15 @@ public class MaterialExAdminBean extends EntityViewBean {
 
     public void setMaterials(List<MaterialDto> materials) {
         this.materials = materials;
+    }
+
+
+    public MaterialDto getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(MaterialDto material) {
+        this.material = material;
     }
 
     private void loadMaterialCategoryTree() {
@@ -79,6 +90,10 @@ public class MaterialExAdminBean extends EntityViewBean {
         category = reload(category, MaterialCategoryDto.MATERIALS);
 
         materials = category.getMaterials();
+    }
+
+    public void newMaterial() {
+        material = new MaterialDto().create();
     }
 
 }
