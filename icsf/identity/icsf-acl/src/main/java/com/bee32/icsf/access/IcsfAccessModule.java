@@ -14,6 +14,10 @@ public class IcsfAccessModule
 
     @Override
     protected void preamble() {
+    }
+
+    @Override
+    protected void preamble2() {
         export(R_ACEDao.class, "entry");
     }
 

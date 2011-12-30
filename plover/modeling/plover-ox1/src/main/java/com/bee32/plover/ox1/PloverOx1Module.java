@@ -20,7 +20,10 @@ public class PloverOx1Module
 
         // no pages for -principal yet.
         // declareEntityPages(entityType, shortName)
+    }
 
+    @Override
+    protected void preamble2() {
         export(UserDao.class, "user");
         export(GroupDao.class, "group");
         export(RoleDao.class, "role");
