@@ -187,7 +187,7 @@ public abstract class AbstractEventDto<E extends Event>
         if (sourceClass == null)
             return "(unknown)";
         else
-            return ClassUtil.getDisplayName(sourceClass);
+            return ClassUtil.getTypeName(sourceClass);
     }
 
     public int getPriority() {

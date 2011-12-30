@@ -177,12 +177,12 @@ public class EntityHelper<E extends Entity<K>, K extends Serializable> {
     }
 
     public String getHint(K id) {
-        String entityTypeName = ClassUtil.getDisplayName(entityType);
+        String entityTypeName = ClassUtil.getTypeName(entityType);
         return entityTypeName + " [" + id + "]";
     }
 
     public String getHint(E entity) {
-        return ClassUtil.getDisplayName(entity.getClass()) + " [" + entity.getId() + "]";
+        return ClassUtil.getTypeName(entity.getClass()) + " [" + entity.getId() + "]";
     }
 
     static final Map<Class<?>, EntityHelper<?, ?>> classmap;

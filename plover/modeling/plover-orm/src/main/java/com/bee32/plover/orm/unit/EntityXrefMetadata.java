@@ -26,11 +26,11 @@ public class EntityXrefMetadata {
             throw new NullPointerException("propertyType");
 
         this.entityType = entityType;
-        this.entityLabel = ClassUtil.getDisplayName(entityType);
+        this.entityLabel = ClassUtil.getTypeName(entityType);
         this.propertyName = propertyName;
         this.propertyType = propertyType;
         this.propertyClass = propertyType.getReturnedClass();
-        this.propertyLabel = ClassUtil.getDisplayName(propertyClass);
+        this.propertyLabel = ClassUtil.getTypeName(propertyClass);
 
         // ManyToOneType manyToOneType = (ManyToOneType) propertyType;
         // manyToOneType.getAssociatedEntityName();

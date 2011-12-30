@@ -16,7 +16,7 @@ public class EntityGraph {
 
     public EntityGraph(PersistenceUnit unit, Class<?> entityType) {
         this.entityType = entityType;
-        this.entityLabel = ClassUtil.getDisplayName(entityType);
+        this.entityLabel = ClassUtil.getTypeName(entityType);
         xrefs = new ArrayList<EntityXrefMetadata>();
     }
 

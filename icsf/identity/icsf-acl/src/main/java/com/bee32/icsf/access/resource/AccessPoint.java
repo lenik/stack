@@ -105,7 +105,7 @@ public final class AccessPoint
     public static void main(String[] args) {
         Locale locale = Locale.forLanguageTag("en");
         Locale.setDefault(locale);
-        String name = ClassUtil.getDisplayName(AccessPoint.class);
+        String name = ClassUtil.getTypeName(AccessPoint.class);
         System.out.println(name);
     }
 

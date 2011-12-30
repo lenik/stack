@@ -142,7 +142,7 @@ public class VerifyPolicyPrefController
             // logger.warn?
             return;
 
-        String typeName = ClassUtil.getDisplayName(userEntityType);
+        String typeName = ClassUtil.getTypeName(userEntityType);
 
         for (Entity<?> userEntity : asFor(userEntityType).list()) {
             if (logger.isDebugEnabled())

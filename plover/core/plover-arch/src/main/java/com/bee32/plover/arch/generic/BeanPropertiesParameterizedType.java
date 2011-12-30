@@ -55,7 +55,7 @@ public class BeanPropertiesParameterizedType
     @Override
     public String getDisplayTypeName(Object instance) {
         Class<? extends Object> staticType = instance.getClass();
-        String staticName = ClassUtil.getDisplayName(staticType);
+        String staticName = ClassUtil.getTypeName(staticType);
 
         Map<String, Object> params = getParameters(instance);
         if (params.isEmpty())

@@ -146,7 +146,7 @@ public class PermissionAdminBean
         rpEntries = new ArrayList<RPEntry>();
         for (IResourceNamespace rn : srr.getNamespaces()) {
             for (Resource res : rn.getResources()) {
-                String resourceType = ClassUtil.getDisplayName(res.getClass());
+                String resourceType = ClassUtil.getTypeName(res.getClass());
                 String permissionQulifier = srr.qualify(res);
                 RPEntry rpEntry = new RPEntry();
                 rpEntry.setResourceType(resourceType);

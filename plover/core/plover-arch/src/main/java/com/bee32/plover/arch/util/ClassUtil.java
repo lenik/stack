@@ -72,7 +72,7 @@ public class ClassUtil {
      *
      * @return The display name.
      */
-    public static String getDisplayName(Class<?> clazz) {
+    public static String getTypeName(Class<?> clazz) {
         if (clazz == null)
             throw new NullPointerException("clazz");
 

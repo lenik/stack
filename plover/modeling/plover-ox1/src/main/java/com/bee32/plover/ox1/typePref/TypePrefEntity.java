@@ -98,7 +98,7 @@ public class TypePrefEntity
         if (type == null)
             return null;
 
-        return ClassUtil.getDisplayName(type);
+        return ClassUtil.getTypeName(type);
     }
 
 }

@@ -35,7 +35,7 @@ public class ContentHandler<E extends Entity<K>, K extends Serializable>
         E entity = asFor(eh.getEntityType()).get(id);
         if (entity == null)
             return Javascripts.alertAndBack("查阅的对象不存在。" //
-                    + ClassUtil.getDisplayName(eh.getEntityType()) + " [" + id + "]" //
+                    + ClassUtil.getTypeName(eh.getEntityType()) + " [" + id + "]" //
             ).dump(result);
 
         Integer dtoSelection = eh.getSelection(SelectionMode.INDEX);

@@ -82,7 +82,7 @@ public class CreateOrEditHandler<E extends Entity<K>, K extends Serializable>
                     return Javascripts.alertAndBack("对象尚未创建，无法保存。" + eh.getHint(id) + "\n\n" //
                             + "这大概是有人在你编辑该对象的同时进行了删除操作引起的。\n" //
                             + "点击确定返回上一页。" //
-                            + ClassUtil.getDisplayName(eh.getEntityType()) + " [" + id + "]" //
+                            + ClassUtil.getTypeName(eh.getEntityType()) + " [" + id + "]" //
                     ).dump(result);
 
                 create = true;

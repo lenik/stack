@@ -78,7 +78,7 @@ public class DaoEmt
             } catch (ClassNotFoundException e) {
                 throw new UnexpectedException(e.getMessage(), e);
             }
-            String typeName = ClassUtil.getDisplayName(type);
+            String typeName = ClassUtil.getTypeName(type);
             return typeName + "的键属性已固化。";
         }
     }

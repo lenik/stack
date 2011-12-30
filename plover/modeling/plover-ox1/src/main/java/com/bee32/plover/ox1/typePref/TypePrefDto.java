@@ -40,7 +40,7 @@ public abstract class TypePrefDto<E extends TypePrefEntity>
     public String getDisplayName() {
         if (type == null)
             return null;
-        return ClassUtil.getDisplayName(type);
+        return ClassUtil.getTypeName(type);
     }
 
     public String getTypeName() {

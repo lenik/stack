@@ -135,7 +135,7 @@ public abstract class EntityViewBean
         Serializable id = getRequestId();
         if (id == null)
             throw new IllegalArgumentException(String.format("Id for %s is not specified.", //
-                    ClassUtil.getDisplayName(getMajorType())));
+                    ClassUtil.getTypeName(getMajorType())));
 
         Class<? extends Entity<?>> entityType = getMajorType();
         Entity<?> entity;

@@ -123,15 +123,15 @@ public class ClassUtilTest
     }
 
     @Test
-    public void testGetDisplayName_Type() {
-        String typeDisplayName = ClassUtil.getDisplayName(ClassUtilTest.class);
+    public void testGetTypeName_Type() {
+        String typeDisplayName = ClassUtil.getTypeName(ClassUtilTest.class);
         assertEquals("Class Util Test", typeDisplayName);
     }
 
     @Test
-    public void testGetDisplayName_LocalType() {
+    public void testGetTypeName_LocalType() {
         // *.ClassUtil$Foo.displayName..
-        String typeDisplayName = ClassUtil.getDisplayName(Foo.class);
+        String typeDisplayName = ClassUtil.getTypeName(Foo.class);
         assertEquals("Wonderful Foo!", typeDisplayName);
     }
 
