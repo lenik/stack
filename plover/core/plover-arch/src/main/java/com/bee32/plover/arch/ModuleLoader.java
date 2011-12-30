@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.ServiceLoader;
 import java.util.TreeSet;
 
-public class ServiceModuleLoader
+public class ModuleLoader
         extends AbstractModuleLoader {
 
     @Override
@@ -33,9 +33,9 @@ public class ServiceModuleLoader
         return modulePostProcessors;
     }
 
-    static final ServiceModuleLoader instance = new ServiceModuleLoader();
+    static final ModuleLoader instance = new ModuleLoader();
 
-    public static ServiceModuleLoader getInstance() {
+    public static ModuleLoader getInstance() {
         return instance;
     }
 

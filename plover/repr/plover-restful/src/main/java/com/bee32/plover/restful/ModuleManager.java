@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.bee32.plover.arch.IModule;
 import com.bee32.plover.arch.IModuleLoader;
-import com.bee32.plover.arch.ServiceModuleLoader;
+import com.bee32.plover.arch.ModuleLoader;
 import com.bee32.plover.arch.naming.LookupChain;
 import com.bee32.plover.arch.naming.ReverseLookupRegistry;
 import com.bee32.plover.pub.oid.OidTree;
@@ -28,7 +28,7 @@ public class ModuleManager
 
     static Logger logger = LoggerFactory.getLogger(ModuleManager.class);
 
-    private transient IModuleLoader moduleLoader = ServiceModuleLoader.getInstance();
+    private transient IModuleLoader moduleLoader = ModuleLoader.getInstance();
 
     private transient boolean loaded;
 
@@ -122,7 +122,7 @@ public class ModuleManager
         if (instance == null) {
             synchronized (ModuleManager.class) {
                 if (instance == null) {
-                    instance = new ModuleManager(ServiceModuleLoader.getInstance());
+                    instance = new ModuleManager(ModuleLoader.getInstance());
                 }
             }
         }
