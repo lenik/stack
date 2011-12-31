@@ -2,6 +2,8 @@
 
 import java.util.List;
 
+import javax.faces.model.SelectItem;
+
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
@@ -11,6 +13,9 @@ import com.bee32.plover.ox1.tree.TreeCriteria;
 import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.MaterialCategory;
+import com.bee32.sem.sandbox.UIHelper;
+import com.bee32.sem.world.thing.Unit;
+import com.bee32.sem.world.thing.UnitDto;
 
 public class MaterialExAdminBean extends EntityViewBean {
 
@@ -94,6 +99,22 @@ public class MaterialExAdminBean extends EntityViewBean {
 
     public void newMaterial() {
         material = new MaterialDto().create();
+    }
+
+    public void saveMaterial() {
+
+    }
+
+    public List<SelectItem> getUnits() {
+        List<Unit> units = serviceFor(Unit.class).list();
+        List<UnitDto> unitDtos = DTOs.marshalList(UnitDto.class, units);
+        return UIHelper.selectItemsFromDict(unitDtos);
+
+    }
+
+    public void chooseMaterialCategory() {
+        MaterialCategoryDto category = (MaterialCategoryDto)selectedMaterialCategoryNode.getData();
+        material.setCategory(category);
     }
 
 }
