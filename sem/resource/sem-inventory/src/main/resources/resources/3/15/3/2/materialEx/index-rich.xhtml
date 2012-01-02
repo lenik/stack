@@ -16,7 +16,7 @@
                     <p:commandButton value="新增物料"
                         oncomplete="editDialog.show();"
                         actionListener="#{materialExAdminBean.newMaterial}"
-                        update="edirForm:editPanel" />
+                        update="editForm:editPanel" />
                     <p:separator />
                     <p:commandButton value="查找物料" id="preSearchBtn"
                         actionListener="#{materialViewBean.searchForm}"
@@ -25,7 +25,9 @@
             </p:toolbar>
 
             <t:panelGrid columns="2" columnClasses="alignTop, alignTop">
-                <p:treeTable value="#{materialExAdminBean.root}"
+                <p:treeTable
+                    id="categoryTree"
+                    value="#{materialExAdminBean.root}"
                     var="category"
                     selectionMode="single"
                     selection="#{materialExAdminBean.selectedMaterialCategoryNode}"
@@ -129,8 +131,7 @@
                             <p:graphicImage
                                 value="#{location.ICON}/etool16/annotate.gif" />
                         </p:commandLink>
-                        <p:commandLink title="删除" update=""
-                            oncomplete="">
+                        <p:commandLink title="删除" onclick="deleteConfirmDialog.show()">
                             <f:setPropertyActionListener
                                 value="#{material}"
                                 target="#{materialExAdminBean.material}" />
@@ -218,6 +219,7 @@
 
                     <p:commandButton
                         actionListener="#{materialExAdminBean.saveMaterial}"
+                        update="mainForm:categoryTree mainForm:materials chooseMaterialCategoryForm:categoryTree"
                         value="保存"
                         oncomplete="editDialog.hide()"/>
                     <p:commandButton value="关闭" onclick="editDialog.hide()"/>
@@ -238,7 +240,9 @@
                 widgetVar="chooseMaterialCategoryDialog" height="480"
                 width="640" modal="true">
 
-                <p:treeTable value="#{materialExAdminBean.root}"
+                <p:treeTable
+                    id="categoryTree"
+                    value="#{materialExAdminBean.root}"
                     var="category"
                     selectionMode="single"
                     selection="#{materialExAdminBean.selectedMaterialCategoryNode}"
@@ -267,6 +271,20 @@
                     <p:commandButton value="关闭" onclick="chooseMaterialCategoryDialog.hide()"/>
                 </t:panelGrid>
             </p:dialog>
+        </h:form>
+
+       <h:form id="deleteConfirmForm">
+            <p:confirmDialog message="确定要删除吗?" width="200" header="删除确认"
+                severity="alert" widgetVar="deleteConfirmDialog" modal="true">
+
+                <p:commandButton value="确定"
+                    update="mainForm:categoryTree mainForm:materials chooseMaterialCategoryForm:categoryTree"
+                    actionListener="#{materialExAdminBean.deleteMaterial}"
+                    oncomplete="deleteConfirmDialog.hide()" />
+                <p:commandButton value="取消" onclick="deleteConfirmDialog.hide()"
+                    type="button" />
+
+            </p:confirmDialog>
         </h:form>
 
     </ui:define>
