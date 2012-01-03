@@ -7,9 +7,10 @@ import java.util.Map.Entry;
 import javax.free.Doc;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.html.HtmlTemplateForForm;
 
 public class SiteTemplateSupport
-        extends HtmlBuilder {
+        extends HtmlTemplateForForm {
 
     protected String classDoc;
     protected TextMap args;
@@ -21,7 +22,8 @@ public class SiteTemplateSupport
     }
 
     public SiteTemplateSupport(Map<String, ?> _args) {
-        args = new TextMap(_args);
+        super();
+        args = TextMap.convert(_args);
         parse(args);
 
         // All params go into binding.
