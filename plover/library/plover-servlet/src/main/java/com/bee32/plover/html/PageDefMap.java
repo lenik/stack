@@ -1,4 +1,4 @@
-package com.bee32.plover.site;
+package com.bee32.plover.html;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -7,20 +7,22 @@ import java.util.Map;
 
 import javax.free.Strings;
 
-public class PageMap {
+import com.bee32.plover.site.IPageGenerator;
+
+public class PageDefMap {
 
     List<IPageGenerator> index;
-    Map<String, IPageGenerator> map;
+    Map<String, IPageGenerator> pageMap;
 
-    public PageMap() {
+    public PageDefMap() {
         index = new ArrayList<IPageGenerator>(); // (OrderComparator.INSTANCE);
-        map = new LinkedHashMap<String, IPageGenerator>();
+        pageMap = new LinkedHashMap<String, IPageGenerator>();
     }
 
     public void add(String name, Class<?> pageClass) {
         InstantiatePageGenerator page = new InstantiatePageGenerator(pageClass);
         index.add(page);
-        map.put(name, page);
+        pageMap.put(name, page);
     }
 
     public void add(Class<?> pageClass) {
@@ -32,12 +34,16 @@ public class PageMap {
     public void add(String name, int order, Object content) {
         IPageGenerator page = new SimplePageGenerator(order, content);
         index.add(page);
-        map.put(name, page);
+        pageMap.put(name, page);
     }
 
     public IPageGenerator getPage(String name) {
-        IPageGenerator page = map.get(name);
+        IPageGenerator page = pageMap.get(name);
         return page;
+    }
+
+    public Map<String, IPageGenerator> getPageMap() {
+        return pageMap;
     }
 
 }

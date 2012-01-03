@@ -1,9 +1,11 @@
-package com.bee32.plover.site;
+package com.bee32.plover.html;
 
 import java.lang.reflect.Constructor;
 import java.util.Map;
 
 import javax.free.Order;
+
+import com.bee32.plover.site.IPageGenerator;
 
 public class InstantiatePageGenerator
         implements IPageGenerator {
@@ -32,6 +34,14 @@ public class InstantiatePageGenerator
     @Override
     public int getOrder() {
         return order;
+    }
+
+    public Class<?> getPageClass() {
+        return pageClass;
+    }
+
+    public Constructor<?> getPageCtor() {
+        return pageCtor;
     }
 
     @Override
