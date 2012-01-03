@@ -197,8 +197,10 @@ public class TextMap
     }
 
     public static TextMap convert(Map<String, ?> map) {
-        TextMap textMap = new TextMap(map);
-        return textMap;
+        if (map instanceof TextMap)
+            return (TextMap) map;
+        else
+            return new TextMap(map);
     }
 
     public static TextMap convert(HttpServletRequest request) {
