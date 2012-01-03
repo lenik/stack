@@ -156,7 +156,8 @@ public class VerifyService
             String entityName = ClassUtil.getParameterizedTypeName(entity) + " [" + entity.getId() + "]";
 
             String subject = "【作业跟踪】【审核】" + entityName;
-            String message = "（无可用内容）";
+
+            String message = "对象预览";
 
             event.setSubject(subject);
             event.setMessage(message);
