@@ -20,7 +20,7 @@ public class ModuleManagerTest
 
     @Test
     public void testChildNames() {
-        ModuleManager mm = ModuleManager.getInstance();
+        ModuleIndex mm = ModuleIndex.getStaticInstance();
         Collection<String> names = mm.getChildNames();
         for (String name : names)
             System.out.println(name);
@@ -28,7 +28,7 @@ public class ModuleManagerTest
 
     @Test
     public void testReverse() {
-        ModuleManager mm = ModuleManager.getInstance();
+        ModuleIndex mm = ModuleIndex.getStaticInstance();
 
         OidVector coreOid = OidUtil.getOid(CoreInfoModule.class);
         String path = coreOid.toPath(); // "3/12/2"

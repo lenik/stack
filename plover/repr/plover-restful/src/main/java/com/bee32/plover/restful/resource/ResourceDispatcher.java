@@ -10,7 +10,7 @@ import com.bee32.plover.disp.util.Arrival;
 import com.bee32.plover.disp.util.IArrival;
 import com.bee32.plover.disp.util.ITokenQueue;
 import com.bee32.plover.restful.DispatchFilter;
-import com.bee32.plover.restful.ModuleManager;
+import com.bee32.plover.restful.ModuleIndex;
 
 public class ResourceDispatcher
         extends AbstractDispatcher {
@@ -38,7 +38,7 @@ public class ResourceDispatcher
      *            Not used actually, because this resource dispatcher manages children resources by
      *            itself.
      * @see DispatchFilter#getRootContext()
-     * @see ModuleManager
+     * @see ModuleIndex
      */
     @Override
     public IArrival dispatch(IArrival arrival, ITokenQueue tokens)

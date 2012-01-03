@@ -13,7 +13,7 @@ import com.bee32.plover.orm.util.DiamondPackage;
 import com.bee32.plover.orm.util.SamplesLoader;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 import com.bee32.plover.pub.oid.OidUtil;
-import com.bee32.plover.restful.ModuleManager;
+import com.bee32.plover.restful.ModuleIndex;
 
 @Using(BookStoreUnit.class)
 public class BookStoreTest
@@ -22,7 +22,7 @@ public class BookStoreTest
     static String bookModuleOid = OidUtil.getOid(BookModule.class).toPath();
 
     @Inject
-    ModuleManager mm;
+    ModuleIndex mm;
 
     @Inject
     SamplesLoader samplesLoader;

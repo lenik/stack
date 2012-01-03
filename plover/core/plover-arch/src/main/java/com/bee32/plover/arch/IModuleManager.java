@@ -2,9 +2,7 @@ package com.bee32.plover.arch;
 
 import java.util.Map;
 
-public interface IModuleLoader {
-
-    void load();
+public interface IModuleManager {
 
     Iterable<IModule> getModules();
 

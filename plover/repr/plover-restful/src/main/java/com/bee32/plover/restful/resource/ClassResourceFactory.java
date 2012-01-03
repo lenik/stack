@@ -4,17 +4,31 @@ import java.net.URL;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * Path: &lt;class-loader&gt;/&lt;resource-name&gt;
+ * <p>
+ * class-loader:
+ * <ul>
+ * <li>scl: system class loader.
+ * <li>ccl: The thread-context class loader.
+ * <li>core: the library class loader (which used to load {@link ClassResourceFactory} class.
+ * </ul>
+ */
 public class ClassResourceFactory
         extends ResourceFactory {
+
+    public static final String SYSTEM_CLASS_LOADER = "scl";
+    public static final String CONTEXT_CLASS_LOADER = "ccl";
+    public static final String LIBRARY_CLASS_LOADER = "lib";
 
     private Map<String, ClassLoader> loaders;
 
     public ClassResourceFactory() {
         loaders = new TreeMap<String, ClassLoader>();
 
-        loaders.put("scl", ClassLoader.getSystemClassLoader());
-        // loaders.put("ccl", Thread.currentThread().getContextClassLoader());
-        loaders.put("core", ClassResourceFactory.class.getClassLoader());
+        loaders.put(SYSTEM_CLASS_LOADER, ClassLoader.getSystemClassLoader());
+        loaders.put(CONTEXT_CLASS_LOADER, Thread.currentThread().getContextClassLoader());
+        loaders.put(LIBRARY_CLASS_LOADER, ClassResourceFactory.class.getClassLoader());
     }
 
     @Override

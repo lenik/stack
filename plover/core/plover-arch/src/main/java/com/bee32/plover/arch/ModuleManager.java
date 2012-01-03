@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.ServiceLoader;
 import java.util.TreeSet;
 
-public class ModuleLoader
-        extends AbstractModuleLoader {
+public class ModuleManager
+        extends AbstractModuleManager {
 
     @Override
-    protected Collection<IModule> reload() {
+    protected Collection<IModule> scanModules() {
         List<IModule> modules = new ArrayList<IModule>();
 
         ServiceLoader<IModule> moduleLoader;
@@ -33,9 +33,9 @@ public class ModuleLoader
         return modulePostProcessors;
     }
 
-    static final ModuleLoader instance = new ModuleLoader();
+    static final ModuleManager instance = new ModuleManager();
 
-    public static ModuleLoader getInstance() {
+    public static ModuleManager getInstance() {
         return instance;
     }
 

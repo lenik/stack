@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import com.bee32.plover.arch.IModule;
-import com.bee32.plover.arch.IModuleLoader;
+import com.bee32.plover.arch.IModuleManager;
 import com.bee32.plover.pub.oid.OidUtil;
 import com.bee32.plover.pub.oid.OidVector;
 import com.bee32.plover.restful.util.IRESTfulController;
@@ -24,7 +24,7 @@ public class ModuleManagerController
         implements IRESTfulController {
 
     @Inject
-    IModuleLoader moduleLoader;
+    IModuleManager moduleLoader;
 
     public void index(IRESTfulRequest req, IRESTfulResponse resp)
             throws IOException {

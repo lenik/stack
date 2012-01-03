@@ -50,7 +50,7 @@ public class RESTfulService {
     ApplicationContext applicationContext;
 
     @Inject
-    ModuleManager moduleManager;
+    ModuleIndex moduleManager;
 
     @Inject
     RESTfulViewManager viewManager;
@@ -180,7 +180,7 @@ public class RESTfulService {
         Object rootObject = root == null ? moduleManager : root;
         if (rootObject == null)
             // throw new IllegalStateException("Root object isn't set");
-            rootObject = ModuleManager.getInstance();
+            rootObject = ModuleIndex.getStaticInstance();
 
         Dispatcher dispatcher = Dispatcher.getInstance();
         IArrival arrival;

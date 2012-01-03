@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import com.bee32.plover.arch.IModule;
-import com.bee32.plover.arch.IModuleLoader;
-import com.bee32.plover.arch.ModuleLoader;
+import com.bee32.plover.arch.IModuleManager;
+import com.bee32.plover.arch.ModuleManager;
 import com.bee32.plover.arch.naming.LookupChain;
 import com.bee32.plover.arch.naming.ReverseLookupRegistry;
 import com.bee32.plover.pub.oid.OidTree;
@@ -20,21 +20,21 @@ import com.bee32.plover.pub.oid.OidVector;
 
 @Component
 @Lazy
-public class ModuleManager
+public class ModuleIndex
         extends OidTree<IModule>
         implements InitializingBean {
 
     private static final long serialVersionUID = 1L;
 
-    static Logger logger = LoggerFactory.getLogger(ModuleManager.class);
+    static Logger logger = LoggerFactory.getLogger(ModuleIndex.class);
 
-    private transient IModuleLoader moduleLoader = ModuleLoader.getInstance();
+    private transient IModuleManager moduleManager = ModuleManager.getInstance();
 
-    private transient boolean loaded;
+    private transient boolean installed;
 
-    static ModuleManager _lastInstance;
+    static ModuleIndex _lastInstance;
 
-    public ModuleManager() {
+    public ModuleIndex() {
         super(IModule.class, null);
 
         // if (_lastInstance != null)
@@ -42,27 +42,26 @@ public class ModuleManager
         // _lastInstance = this;
     }
 
-    public ModuleManager(IModuleLoader moduleLoader) {
+    public ModuleIndex(IModuleManager moduleManager) {
         super(IModule.class, null);
 
-        if (moduleLoader == null)
-            throw new NullPointerException("moduleLoader");
+        if (moduleManager == null)
+            throw new NullPointerException("moduleManager");
 
-        this.moduleLoader = moduleLoader;
+        this.moduleManager = moduleManager;
 
         afterPropertiesSet();
     }
 
     @Override
     public synchronized void afterPropertiesSet() {
-        if (!loaded) {
-            installModules();
-            loaded = true;
-        }
+        installModules();
     }
 
     protected synchronized void installModules() {
-        for (IModule module : moduleLoader.getModules()) {
+        if (installed)
+            return;
+        for (IModule module : moduleManager.getModules()) {
             Class<? extends IModule> moduleClass = module.getClass();
 
             OidVector oid = OidUtil.getOid(moduleClass);
@@ -77,10 +76,11 @@ public class ModuleManager
             // re-attach the module to module manager.
             module.setParent(this);
         }
+        installed = true;
     }
 
     public void activate() {
-        moduleLoader.activate();
+        moduleManager.activate();
     }
 
     /**
@@ -116,13 +116,13 @@ public class ModuleManager
         return location;
     }
 
-    private static ModuleManager instance;
+    private static ModuleIndex instance;
 
-    public static ModuleManager getInstance() {
+    public static ModuleIndex getStaticInstance() {
         if (instance == null) {
-            synchronized (ModuleManager.class) {
+            synchronized (ModuleIndex.class) {
                 if (instance == null) {
-                    instance = new ModuleManager(ModuleLoader.getInstance());
+                    instance = new ModuleIndex(ModuleManager.getInstance());
                 }
             }
         }
