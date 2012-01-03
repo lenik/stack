@@ -1,13 +1,15 @@
 package com.bee32.plover.orm.util;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.bee32.plover.arch.Module;
+import com.bee32.plover.arch.IModule;
+import com.bee32.plover.restful.resource.IObjectURLFragmentsProvider;
 import com.bee32.plover.restful.resource.ModuleObjectPageDirectory;
+import com.bee32.plover.restful.resource.ObjectURLFragmentType;
 import com.bee32.plover.restful.resource.StandardOperations;
 import com.bee32.plover.restful.resource.StandardViews;
-import com.bee32.plover.rtx.location.Location;
 
 public class ModuleEntityPageDirectory
         extends ModuleObjectPageDirectory {
@@ -24,16 +26,20 @@ public class ModuleEntityPageDirectory
         predefinedOperations.put(StandardOperations.DELETE, "delete.do");
     }
 
-    Location entityLocation;
+    String baseHref;
 
-    public ModuleEntityPageDirectory(Module module, String prefix) {
+    public ModuleEntityPageDirectory(IModule module, String baseHref) {
         super(module);
-        entityLocation = super.getBaseLocation().join(prefix);
+        this.baseHref = baseHref;
     }
 
     @Override
-    public Location getBaseLocation() {
-        return entityLocation;
+    protected String getBaseHref() {
+        return baseHref;
+    }
+
+    public void setBaseHref(String baseHref) {
+        this.baseHref = baseHref;
     }
 
     @Override
@@ -41,7 +47,8 @@ public class ModuleEntityPageDirectory
         String override = super.getLocalPageForView(viewName, parameters);
         if (override != null)
             return override;
-        return predefinedViews.get(viewName);
+        String localPage = predefinedViews.get(viewName);
+        return formatHref(localPage, parameters);
     }
 
     @Override
@@ -49,7 +56,63 @@ public class ModuleEntityPageDirectory
         String override = super.getLocalPageForOperation(operationName, parameters);
         if (override != null)
             return override;
-        return predefinedOperations.get(operationName);
+        String localPage = predefinedOperations.get(operationName);
+        return formatHref(localPage, parameters);
+    }
+
+    public static class Completion
+            extends ModuleEntityPageDirectory {
+
+        IObjectURLFragmentsProvider fragmentsProvider;
+        Object instance;
+        Map<String, String> extraParameters;
+
+        public Completion(IModule module, IObjectURLFragmentsProvider fragmentsProvider, Object instance) {
+            super(module, null);
+            if (fragmentsProvider == null)
+                throw new NullPointerException("fragmentsProvider");
+            if (instance == null)
+                throw new NullPointerException("instance");
+            this.fragmentsProvider = fragmentsProvider;
+            this.instance = instance;
+
+            String baseHref = (String) fragmentsProvider.getURLFragment(instance,
+                    ObjectURLFragmentType.baseHrefToModule);
+            setBaseHref(baseHref);
+
+            extraParameters = (Map<String, String>) fragmentsProvider.getURLFragment(instance,
+                    ObjectURLFragmentType.extraParameters);
+        }
+
+        static Map<String, Object> mergeMap(Map<String, ?> map, Map<String, ?> overrides) {
+            Map<String, Object> all = new LinkedHashMap<String, Object>();
+            if (map != null)
+                all.putAll(map);
+            if (overrides != null)
+                all.putAll(overrides);
+            return all;
+        }
+
+        final Map<String, ?> getOverridedParameters(Map<String, ?> parameters) {
+            if (extraParameters != null)
+                parameters = mergeMap(parameters, extraParameters);
+            return parameters;
+        }
+
+        @Override
+        protected String getLocalPageForView(String viewName, Map<String, ?> parameters) {
+            parameters = getOverridedParameters(parameters);
+            String href = super.getLocalPageForView(viewName, parameters);
+            return href;
+        }
+
+        @Override
+        protected String getLocalPageForOperation(String operationName, Map<String, ?> parameters) {
+            parameters = getOverridedParameters(parameters);
+            String href = super.getLocalPageForOperation(operationName, parameters);
+            return href;
+        }
+
     }
 
 }

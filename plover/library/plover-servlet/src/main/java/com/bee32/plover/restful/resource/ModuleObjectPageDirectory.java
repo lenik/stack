@@ -16,7 +16,7 @@ public class ModuleObjectPageDirectory
         extends AbstractObjectPageDirectory {
 
     IModule module;
-    String prefix;
+    String oidPath;
     Location moduleLocation;
 
     Map<String, String> localViewPages = new HashMap<String, String>();
@@ -25,13 +25,21 @@ public class ModuleObjectPageDirectory
     public ModuleObjectPageDirectory(IModule module) {
         if (module == null)
             throw new NullPointerException("module");
-        prefix = OidUtil.getOid(module.getClass()).toPath() + "/";
-        moduleLocation = Locations.WEB_APP.join(prefix);
+        oidPath = OidUtil.getOid(module.getClass()).toPath() + "/";
+        moduleLocation = Locations.WEB_APP.join(oidPath);
     }
 
     @Override
     public Location getBaseLocation() {
-        return moduleLocation;
+        Location location = moduleLocation;
+        String baseHref = getBaseHref();
+        if (baseHref != null)
+            location = location.join(baseHref);
+        return location;
+    }
+
+    protected String getBaseHref() {
+        return null;
     }
 
     protected Location expand(String localPage) {
