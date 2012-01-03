@@ -20,6 +20,12 @@ import com.bee32.plover.rtx.location.ILocationConstants;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.rtx.location.Locations;
 import com.bee32.plover.servlet.util.ThreadServletContext;
+import com.bee32.plover.site.cfg.DBAutoDDL;
+import com.bee32.plover.site.cfg.DBDialect;
+import com.bee32.plover.site.cfg.FormatProperties;
+import com.bee32.plover.site.cfg.OptimizationLevel;
+import com.bee32.plover.site.cfg.SamplesSelection;
+import com.bee32.plover.site.cfg.VerboseLevel;
 
 public class SiteInstance
         implements ILocationConstants {

@@ -5,11 +5,11 @@ import java.util.Properties;
 import org.hibernate.cache.NoCacheProvider;
 
 import com.bee32.plover.servlet.util.ThreadHttpContext;
-import com.bee32.plover.site.DBDialect;
 import com.bee32.plover.site.LoadSiteException;
-import com.bee32.plover.site.OptimizationLevel;
 import com.bee32.plover.site.SiteInstance;
-import com.bee32.plover.site.VerboseLevel;
+import com.bee32.plover.site.cfg.DBDialect;
+import com.bee32.plover.site.cfg.OptimizationLevel;
+import com.bee32.plover.site.cfg.VerboseLevel;
 import com.bee32.plover.thirdparty.hibernate.util.HibernateProperties;
 
 public class SiteDc

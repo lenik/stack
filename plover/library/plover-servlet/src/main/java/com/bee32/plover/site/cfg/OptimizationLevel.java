@@ -1,4 +1,5 @@
-package com.bee32.plover.site;
+package com.bee32.plover.site.cfg;
+
 
 public enum OptimizationLevel
         implements ILabel {

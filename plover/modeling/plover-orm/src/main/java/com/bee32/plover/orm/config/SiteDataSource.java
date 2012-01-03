@@ -6,11 +6,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.bee32.plover.servlet.util.ThreadHttpContext;
-import com.bee32.plover.site.DBDialect;
 import com.bee32.plover.site.LoadSiteException;
-import com.bee32.plover.site.OptimizationLevel;
 import com.bee32.plover.site.SiteInstance;
-import com.bee32.plover.site.VerboseLevel;
+import com.bee32.plover.site.cfg.DBDialect;
+import com.bee32.plover.site.cfg.OptimizationLevel;
+import com.bee32.plover.site.cfg.VerboseLevel;
 import com.bee32.plover.site.scope.PerSite;
 import com.bee32.plover.thirdparty.hibernate.util.HibernateProperties;
 import com.p6spy.engine.common.P6SpyOptions;

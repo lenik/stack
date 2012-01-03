@@ -5,6 +5,8 @@ import javax.free.StringSource;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.bee32.plover.site.cfg.FormatProperties;
+
 public class FormatPropertiesTest
         extends Assert {
 

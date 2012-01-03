@@ -17,8 +17,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.plover.html.PageDefMap;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
+import com.bee32.plover.site.cfg.DBAutoDDL;
+import com.bee32.plover.site.cfg.DBDialect;
+import com.bee32.plover.site.cfg.OptimizationLevel;
+import com.bee32.plover.site.cfg.SamplesSelection;
+import com.bee32.plover.site.cfg.VerboseLevel;
 import com.bee32.plover.site.scope.SiteNaming;
 
 public class SiteManagerServlet
@@ -41,7 +47,7 @@ public class SiteManagerServlet
 
         logger.info("Site-Command: " + cmdname);
 
-        IPageGenerator page = pages.getPage(cmdname);
+        IPageGenerator page = pageDefs.getPage(cmdname);
         if (page == null)
             throw new ServletException("Bad command: " + cmdname);
 
@@ -54,19 +60,19 @@ public class SiteManagerServlet
         out.println(content);
     }
 
-    static PageMap pages;
+    static PageDefMap pageDefs;
     static {
-        pages = new PageMap();
-        pages.add(Index.class);
-        pages.add(CurrentSite.class);
-        pages.add(Config.class);
-        pages.add(Create.class);
-        pages.add(Delete.class);
-        pages.add(Reload.class);
-        pages.add(DataMaintainance.class);
-        pages.add(CacheManager.class);
-        pages.add(Monitor.class);
-        pages.add(HelpDoc.class);
+        pageDefs = new PageDefMap();
+        pageDefs.add(Index.class);
+        pageDefs.add(CurrentSite.class);
+        pageDefs.add(Config.class);
+        pageDefs.add(Create.class);
+        pageDefs.add(Delete.class);
+        pageDefs.add(Reload.class);
+        pageDefs.add(DataMaintainance.class);
+        pageDefs.add(CacheManager.class);
+        pageDefs.add(Monitor.class);
+        pageDefs.add(HelpDoc.class);
     }
 
     @Doc("所有站点")
