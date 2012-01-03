@@ -290,7 +290,7 @@ public class MaterialDto
     public String getCurrentPrice() {
         MaterialPriceDto materialPriceDto = getLatestPrice();
         if (materialPriceDto == null)
-            return "(尚无价格)";
+            return "";
         else
             return materialPriceDto.getPrice().toString();
     }

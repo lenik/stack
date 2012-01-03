@@ -115,7 +115,4 @@ public class MaterialCategoryDto
     public void setMaterialCount(int materialCount) {
         this.materialCount = materialCount;
     }
-
-
-
 }

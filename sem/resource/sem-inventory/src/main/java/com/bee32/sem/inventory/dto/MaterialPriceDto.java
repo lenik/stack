@@ -1,5 +1,7 @@
 package com.bee32.sem.inventory.dto;
 
+import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.Date;
 
 import javax.free.ParseException;
@@ -82,6 +84,37 @@ public class MaterialPriceDto
 
     public void setViewPrice(double viewPrice) {
         price = price.value(viewPrice);
+    }
+
+    public BigDecimal getPriceDigit() {
+        if (price == null)
+            return new BigDecimal(0);
+        return price.getValue();
+    }
+
+    public void setPriceDigit(BigDecimal priceDigit) {
+        Currency c = CurrencyConfig.getNative();
+        if (price != null)
+            c = price.getCurrency();
+
+        price = new MCValue(c, priceDigit);
+    }
+
+    public String getPriceCurrency() {
+        if (price == null)
+            return CurrencyConfig.getNative().getCurrencyCode();
+
+        if (price.getCurrency() == null)
+            return CurrencyConfig.getNative().getCurrencyCode();
+        else
+            return price.getCurrency().getCurrencyCode();
+    }
+
+    public void setPriceCurrency(String currencyCode) {
+        if (price == null)
+            price = new MCValue(Currency.getInstance(currencyCode), 0);
+        else
+            price = new MCValue(Currency.getInstance(currencyCode), price.getValue());
     }
 
 }

@@ -56,7 +56,12 @@
                     rows="#{viewConfig.pageSize}"
                     resizableColumns="true"
                     scrollable="true" scrollHeight="480"
-                    scrollWidth="700">
+                    scrollWidth="700"
+                    rowIndexVar="rowIndex">
+
+                    <p:column headerText="序号" style="width:30px;">
+                        <h:outputText value="#{rowIndex+1}"/>
+                    </p:column>
 
                     <p:column sortBy="#{material.label}" headerText="物料名称" style="width:100px;">
                         <h:outputText value="#{material.label}" />
@@ -75,7 +80,8 @@
                         <h:outputText value="#{fn:length(material.attachments)}" />
                     </p:column>
                     <p:column headerText="操作" style="width:150px;">
-                        <p:commandLink title="修改" update=""
+                        <p:commandLink title="修改"
+                            update="editForm:editPanel"
                             oncomplete="editDialog.show()">
                             <f:setPropertyActionListener
                                 value="#{material}"
@@ -83,8 +89,10 @@
                             <p:graphicImage
                                 value="#{location.ICON}/etool16/editor_area.gif" />
                         </p:commandLink>
-                        <p:commandLink title="价格" update=""
-                            oncomplete="">
+                        <p:commandLink
+                            title="价格"
+                            update="materialPriceForm:prices materialPriceForm:currMaterial"
+                            oncomplete="materialPriceDialog.show()">
                             <f:setPropertyActionListener
                                 value="#{material}"
                                 target="#{materialExAdminBean.material}" />
@@ -286,6 +294,10 @@
 
             </p:confirmDialog>
         </h:form>
+
+        <ui:insert name="materialPrice">
+            <ui:include src="materialPrice.xhtml"/>
+        </ui:insert>
 
     </ui:define>
 </ui:composition>

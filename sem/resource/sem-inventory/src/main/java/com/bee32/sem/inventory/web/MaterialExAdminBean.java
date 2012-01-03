@@ -12,9 +12,12 @@ import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.ox1.tree.TreeCriteria;
 import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
+import com.bee32.sem.inventory.dto.MaterialPriceDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialCategory;
+import com.bee32.sem.inventory.entity.MaterialPrice;
 import com.bee32.sem.sandbox.UIHelper;
+import com.bee32.sem.world.monetary.CurrencyUtil;
 import com.bee32.sem.world.thing.Unit;
 import com.bee32.sem.world.thing.UnitDto;
 
@@ -31,6 +34,8 @@ public class MaterialExAdminBean extends EntityViewBean {
     List<MaterialDto> materials;
 
     MaterialDto material = new MaterialDto().create();
+
+    MaterialPriceDto materialPrice = new MaterialPriceDto().create();
 
     public MaterialExAdminBean() {
         loadMaterialCategoryTree();
@@ -57,13 +62,20 @@ public class MaterialExAdminBean extends EntityViewBean {
         this.materials = materials;
     }
 
-
     public MaterialDto getMaterial() {
         return material;
     }
 
     public void setMaterial(MaterialDto material) {
         this.material = material;
+    }
+
+    public MaterialPriceDto getMaterialPrice() {
+        return materialPrice;
+    }
+
+    public void setMaterialPrice(MaterialPriceDto materialPrice) {
+        this.materialPrice = materialPrice;
     }
 
     private void loadMaterialCategoryTree() {
@@ -88,7 +100,7 @@ public class MaterialExAdminBean extends EntityViewBean {
     private void loadMaterialCategoryRecursive(MaterialCategoryDto materialCategoryDto, TreeNode parentTreeNode, Integer categoryId) {
         TreeNode materialCategoryNode = null;
         if (categoryId != null && categoryId.equals(materialCategoryDto.getId())) {
-            //materialCategoryDto = reload(materialCategoryDto, MaterialCategoryDto.MATERIALS);
+            materialCategoryDto = reload(materialCategoryDto, MaterialCategoryDto.MATERIALS);
             materialCategoryNode = new DefaultTreeNode(materialCategoryDto, parentTreeNode);
             materialCategoryNode.setSelected(true);
             materials = materialCategoryDto.getMaterials();
@@ -132,9 +144,20 @@ public class MaterialExAdminBean extends EntityViewBean {
 
         try {
             Material _m = material.unmarshal();
+            boolean newFlag = false;
+            if (_m.getId() == null) {
+                //new material
+                newFlag = true;
+            }
 
             serviceFor(Material.class).saveOrUpdate(_m);
-            serviceFor(MaterialCategory.class).evict(material.getCategory().unmarshal());
+
+            if (newFlag) {
+                MaterialCategory _category = _m.getCategory();
+                _category.addMaterial(_m);
+                _category.setMaterialCount(_category.getMaterialCount() + 1);
+            }
+
 
             MaterialCategoryDto category = (MaterialCategoryDto)selectedMaterialCategoryNode.getData();
             loadMaterialCategoryTree(category.getId());
@@ -159,8 +182,12 @@ public class MaterialExAdminBean extends EntityViewBean {
 
     public void deleteMaterial() {
         try {
-            serviceFor(Material.class).deleteById(material.getId());
-            serviceFor(MaterialCategory.class).evict(material.getCategory().unmarshal());
+            Material _m = material.unmarshal();
+            MaterialCategory _category = _m.getCategory();
+
+            _category.removeMaterial(_m);
+            _category.setMaterialCount(_category.getMaterialCount() - 1);
+            serviceFor(Material.class).delete(_m);
 
             MaterialCategoryDto category = (MaterialCategoryDto)selectedMaterialCategoryNode.getData();
             loadMaterialCategoryTree(category.getId());
@@ -169,6 +196,36 @@ public class MaterialExAdminBean extends EntityViewBean {
 
         } catch (Exception e) {
             uiLogger.error("删除物料出错!", e);
+        }
+    }
+
+
+    public List<SelectItem> getCurrencies() {
+        return CurrencyUtil.selectItems();
+    }
+
+    public List<MaterialPriceDto> getMaterialPrices() {
+        if (material != null && material.getId() != null) {
+            material = reload(material, MaterialDto.PRICES);
+            return material.getPrices();
+        };
+
+        return null;
+    }
+
+    public void newMaterialPrice() {
+        materialPrice = new MaterialPriceDto().create();
+    }
+
+    public void addMaterialPrice() {
+        try {
+            materialPrice.setMaterial(material);
+            MaterialPrice _price = materialPrice.unmarshal();
+            serviceFor(MaterialPrice.class).saveOrUpdate(_price);
+            serviceFor(Material.class).evict(material.unmarshal());
+            uiLogger.info("保存物料价格成功.");
+        } catch (Exception e) {
+            uiLogger.error("保存物料价格出错!", e);
         }
     }
 }

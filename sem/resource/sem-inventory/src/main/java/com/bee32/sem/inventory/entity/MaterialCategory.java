@@ -109,6 +109,18 @@ public class MaterialCategory
         this.materials = materials;
     }
 
+    public void addMaterial(Material material) {
+        if (!materials.contains(material)) {
+            materials.add(material);
+        }
+    }
+
+    public void removeMaterial(Material material) {
+        if (materials.contains(material)) {
+            materials.remove(material);
+        }
+    }
+
     @Column(name = "classification")
     char get_classification() {
         return classification.getValue();
