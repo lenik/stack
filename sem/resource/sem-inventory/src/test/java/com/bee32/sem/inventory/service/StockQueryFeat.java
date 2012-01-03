@@ -17,6 +17,7 @@ import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockItemList;
 import com.bee32.sem.world.monetary.FxrQueryException;
 
+@SuppressWarnings("unused")
 @Using(SEMInventoryUnit.class)
 public class StockQueryFeat
         extends WiredDaoFeat<StockQueryFeat> {

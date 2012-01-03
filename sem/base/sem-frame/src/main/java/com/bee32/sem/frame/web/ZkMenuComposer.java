@@ -8,18 +8,15 @@ import org.zkoss.zul.Menubar;
 
 import com.bee32.plover.servlet.util.ThreadServletContext;
 import com.bee32.sem.frame.builtins.SEMFrameMenu;
-import com.bee32.sem.frame.menu.MenuLoader;
 import com.bee32.sem.frame.menu.ZkMenuBuilder;
 
 /**
  * @see ZkMenuBuilder
  */
-public class MenuComposer
+public class ZkMenuComposer
         extends GenericForwardComposer {
 
     private static final long serialVersionUID = 1L;
-
-    private MenuLoader menuLoader;
 
     private Menubar menubar;
 

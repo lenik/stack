@@ -11,6 +11,7 @@ import com.bee32.plover.inject.IContainer;
 import com.bee32.plover.servlet.context.ServletContainer;
 import com.bee32.plover.servlet.test.ServletTestLibrary;
 
+@SuppressWarnings("unused")
 public class ServletContainerTest
         extends ServletTestLibrary {
 

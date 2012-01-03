@@ -71,7 +71,7 @@ public class PUnitDumper {
 
             // sort by catalog name
             Set<String> lines = new TreeSet<String>();
-            for (Entry<Class<?>, ClassCatalog> entry : unit.getInvMap().entrySet()) {
+            for (Entry<Class<?>, ClassCatalog> entry : invMap.entrySet()) {
                 String line = entry.getValue() + " : " + entry.getKey();
                 lines.add(line);
             }

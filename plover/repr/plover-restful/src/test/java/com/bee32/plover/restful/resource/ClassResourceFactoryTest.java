@@ -14,20 +14,4 @@ public class ClassResourceFactoryTest
         assertNotNull(res);
     }
 
-    @Test
-    public void testGetThisClassFile()
-            throws ResourceResolveException {
-        ClassResourceFactory crf = new ClassResourceFactory();
-        Class<?> c = ClassResourceFactoryTest.class;
-
-        String contextClass = c.getName().replace('.', '/');
-        String path = c.getSimpleName() + ".class";
-
-        crf.resolve("scl/java/lang/String.class");
-    }
-
-    /**
-     * scl/com/bee32/... com/bee32/...
-     *
-     */
 }
