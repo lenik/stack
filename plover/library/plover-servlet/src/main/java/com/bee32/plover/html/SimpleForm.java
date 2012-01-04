@@ -9,7 +9,7 @@ import com.bee32.plover.site.cfg.ILabel;
 import com.googlecode.jatl.Html;
 
 public class SimpleForm
-        extends HtmlBuilder {
+        extends HtmlSugar {
 
     public SimpleForm() {
         super();

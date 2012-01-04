@@ -8,7 +8,7 @@ import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 
 public class SimpleRowImage
-        extends HtmlBuilder {
+        extends HtmlSugar {
 
     public SimpleRowImage() {
         super();

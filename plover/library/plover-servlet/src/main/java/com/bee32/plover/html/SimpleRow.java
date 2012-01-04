@@ -3,7 +3,7 @@ package com.bee32.plover.html;
 import java.io.Writer;
 
 public class SimpleRow
-        extends HtmlBuilder {
+        extends HtmlSugar {
 
     public SimpleRow() {
         super();
