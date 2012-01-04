@@ -9,6 +9,11 @@ public abstract class AbstractScl
         implements IServletContextListener {
 
     @Override
+    public boolean isIncluded(ServletContextEvent sce) {
+        return true;
+    }
+
+    @Override
     public int getPriority() {
         return 0;
     }

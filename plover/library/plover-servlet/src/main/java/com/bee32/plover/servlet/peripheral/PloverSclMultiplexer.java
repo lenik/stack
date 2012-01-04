@@ -30,6 +30,8 @@ public class PloverSclMultiplexer
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         for (IServletContextListener scl : sclv) {
+            if (!scl.isIncluded(sce))
+                continue;
             logger.debug("SCL-init: " + scl.getClass().getName());
             try {
                 scl.contextInitialized(sce);
@@ -43,6 +45,8 @@ public class PloverSclMultiplexer
     public void contextDestroyed(ServletContextEvent sce) {
         for (int i = sclv.size() - 1; i >= 0; i--) {
             IServletContextListener scl = sclv.get(i);
+            if (!scl.isIncluded(sce))
+                continue;
             logger.debug("SCL-Terminate: " + scl.getClass().getName());
             try {
                 scl.contextDestroyed(sce);
