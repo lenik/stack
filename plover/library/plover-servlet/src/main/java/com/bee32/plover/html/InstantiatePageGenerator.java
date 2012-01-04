@@ -1,5 +1,6 @@
 package com.bee32.plover.html;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.Map;
 
@@ -12,10 +13,10 @@ public class InstantiatePageGenerator
 
     final int order;
 
-    final Class<?> pageClass;
-    final Constructor<?> pageCtor;
+    final Class<? extends AbstractHtmlTemplate> pageClass;
+    final Constructor<? extends AbstractHtmlTemplate> pageCtor;
 
-    public InstantiatePageGenerator(Class<?> pageClass) {
+    public InstantiatePageGenerator(Class<? extends AbstractHtmlTemplate> pageClass) {
         if (pageClass == null)
             throw new NullPointerException("pageClass");
 
@@ -26,6 +27,7 @@ public class InstantiatePageGenerator
 
         try {
             pageCtor = pageClass.getConstructor(Map.class);
+            pageCtor.setAccessible(true);
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -46,13 +48,18 @@ public class InstantiatePageGenerator
 
     @Override
     public String generate(Map<String, ?> args) {
-        Object page;
+        AbstractHtmlTemplate template;
         try {
-            page = pageCtor.newInstance(args);
+            template = pageCtor.newInstance(args);
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
-        return page.toString();
+        try {
+            template.instantiateOnce();
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+        return template.toString();
     }
 
 }

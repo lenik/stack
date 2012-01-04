@@ -13,7 +13,7 @@ import javax.free.URLResource;
 import com.bee32.plover.arch.util.ClassUtil;
 
 public class HtmlTemplate
-        extends HtmlBuilder {
+        extends AbstractHtmlTemplate {
 
     public HtmlTemplate() {
         super();
@@ -23,15 +23,8 @@ public class HtmlTemplate
         super(writer);
     }
 
-    {
-        init();
-        instantiate();
-    }
-
-    protected void init() {
-    }
-
-    public void instantiate() {
+    @Override
+    protected void instantiate() {
         if (isFragment()) {
             _pageContent();
         } else {
