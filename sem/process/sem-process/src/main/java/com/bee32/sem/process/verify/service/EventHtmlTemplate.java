@@ -1,18 +1,27 @@
 package com.bee32.sem.process.verify.service;
 
-import java.io.Writer;
-
 import com.bee32.plover.html.HtmlTemplate;
+import com.bee32.sem.event.entity.Event;
 
 public class EventHtmlTemplate
         extends HtmlTemplate {
 
-    public EventHtmlTemplate() {
-        super();
+    protected final Event event;
+
+    public EventHtmlTemplate(Event event) {
+        if (event == null)
+            throw new NullPointerException("event");
+        this.event = event;
     }
 
-    public EventHtmlTemplate(Writer writer) {
-        super(writer);
+    @Override
+    protected boolean isFragment() {
+        return true;
+    }
+
+    @Override
+    public String getTitle() {
+        return event.getSubject();
     }
 
 }

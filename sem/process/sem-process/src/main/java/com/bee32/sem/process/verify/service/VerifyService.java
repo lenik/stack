@@ -16,6 +16,10 @@ import com.bee32.plover.arch.DataService;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.restful.resource.IObjectPageDirectory;
+import com.bee32.plover.restful.resource.PageDirectory;
+import com.bee32.plover.restful.resource.StandardViews;
+import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.event.entity.Event;
 import com.bee32.sem.event.entity.EventPriority;
 import com.bee32.sem.event.entity.EventType;
@@ -102,7 +106,7 @@ public class VerifyService
     }
 
     @Transactional
-    public VerifyResult verifyEntity(Entity<?> entity) {
+    public VerifyResult verifyEntity(final Entity<?> entity) {
         if (entity == null)
             throw new NullPointerException("entity");
 
@@ -124,8 +128,8 @@ public class VerifyService
         VerifyContextAccessor.setVerifyEvalDate(context, new Date());
 
         Event event = context.getVerifyEvent();
-
-        switch (result.getState().getStage()) {
+        final VerifyState state = result.getState();
+        switch (state.getStage()) {
         case VerifyState.INIT:
             event = null;
             break;
@@ -146,8 +150,6 @@ public class VerifyService
 
         if (event != null) {
             event.setPriority(EventPriority.HIGH);
-
-            VerifyState state = result.getState();
             event.setClosed(state.isFinalized());
             event.setState(state);
 
@@ -156,13 +158,26 @@ public class VerifyService
             String entityName = ClassUtil.getParameterizedTypeName(entity) + " [" + entity.getId() + "]";
 
             String subject = "【作业跟踪】【审核】" + entityName;
-
-            String message = "对象预览";
-
             event.setSubject(subject);
-            event.setMessage(message);
-            event.setBeginTime(new Date()); //
 
+            EventHtmlTemplate template = new EventHtmlTemplate(event) {
+                @Override
+                protected void _pageContent() {
+                    IObjectPageDirectory pageDir = PageDirectory.getPageDirectory(entity);
+                    String viewType = state.isFinalized() ? StandardViews.CONTENT : StandardViews.EDIT_FORM;
+                    Location editLocation = pageDir.getPageForView(viewType);
+                    String editHref = editLocation.resolveAbsolute(getRequest());
+                    p().text("点击下面链接进入相关操作：");
+                    {
+                        String hint = state.isFinalized() ? "查看" : "管理";
+                        a().href(editHref).text(hint).end();
+                    }
+                    end();
+                }
+            };
+            event.setMessage(template.make());
+
+            event.setBeginTime(new Date()); //
             if (state.isFinalized())
                 event.setEndTime(context.getVerifyEvalDate());
             else
