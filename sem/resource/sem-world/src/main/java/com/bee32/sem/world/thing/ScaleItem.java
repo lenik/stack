@@ -10,6 +10,10 @@ public class ScaleItem
     UnitDto unit;
     double scale;
 
+    public ScaleItem() {
+        unit = new UnitDto().create();
+    }
+
     public UnitDto getUnit() {
         return unit;
     }

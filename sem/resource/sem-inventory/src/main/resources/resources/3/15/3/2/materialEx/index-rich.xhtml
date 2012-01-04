@@ -18,9 +18,7 @@
                         actionListener="#{materialExAdminBean.newMaterial}"
                         update="editForm:editPanel" />
                     <p:separator />
-                    <p:commandButton value="查找物料" id="preSearchBtn"
-                        actionListener="#{materialViewBean.searchForm}"
-                        update="main" />
+                    <p:commandButton value="查找物料" update="" />
                 </p:toolbarGroup>
             </p:toolbar>
 
@@ -91,7 +89,7 @@
                         </p:commandLink>
                         <p:commandLink
                             title="价格"
-                            update="materialPriceForm:prices materialPriceForm:currMaterial"
+                            update="materialPriceForm:currMaterial materialPriceForm:prices"
                             oncomplete="materialPriceDialog.show()">
                             <f:setPropertyActionListener
                                 value="#{material}"
@@ -99,8 +97,10 @@
                             <p:graphicImage
                                 value="#{location.ICON}/obj16/prjversions_rep.gif" />
                         </p:commandLink>
-                        <p:commandLink title="单位换算表" update=""
-                            oncomplete="">
+                        <p:commandLink
+                            title="单位换算表"
+                            update="unitConvForm:currMaterial unitConvForm:unit unitConvForm:scaleMap"
+                            oncomplete="unitConvDialog.show()">
                             <f:setPropertyActionListener
                                 value="#{material}"
                                 target="#{materialExAdminBean.material}" />
@@ -297,6 +297,10 @@
 
         <ui:insert name="materialPrice">
             <ui:include src="materialPrice.xhtml"/>
+        </ui:insert>
+
+        <ui:insert name="unitConv">
+            <ui:include src="unitConv.xhtml"/>
         </ui:insert>
 
     </ui:define>

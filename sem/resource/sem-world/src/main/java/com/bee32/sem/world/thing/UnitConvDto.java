@@ -20,8 +20,10 @@ public class UnitConvDto
     public static final int MAP = 1;
 
     UnitDto unit;
-    List<ScaleItem> itemList = new ArrayList<ScaleItem>();
     Map<UnitDto, Double> scaleMap;
+
+    //scaleMap的一个不同形式副本,便于在办面中以el存取
+    List<ScaleItem> itemList = new ArrayList<ScaleItem>();
 
     public UnitConvDto() {
         super();
@@ -42,16 +44,18 @@ public class UnitConvDto
                 double scale = entry.getValue();
                 scaleMap.put(scaleUnit, scale);
             }
+
+
+            for (Entry<Unit, Double> entry : source.getScaleMap().entrySet()) {
+                UnitDto scaleUnit = mref(UnitDto.class, entry.getKey());
+                double scale = entry.getValue();
+                ScaleItem item = new ScaleItem();
+                item.setUnit(scaleUnit);
+                item.setScale(scale);
+                itemList.add(item);
+            }
         }
 
-        for (Entry<Unit, Double> entry : source.getScaleMap().entrySet()) {
-            UnitDto scaleUnit = mref(UnitDto.class, entry.getKey());
-            double scale = entry.getValue();
-            ScaleItem item = new ScaleItem();
-            item.setUnit(scaleUnit);
-            item.setScale(scale);
-            itemList.add(item);
-        }
     }
 
     @Override
@@ -59,22 +63,26 @@ public class UnitConvDto
         merge(target, "unit", unit);
 
         if (selection.contains(MAP)) {
-            Map<Unit, Double> _scaleMap = new HashMap<Unit, Double>();
-            for (Entry<UnitDto, Double> entry : scaleMap.entrySet()) {
-                Unit _unit = entry.getKey().unmarshal(getSession());
-                double scale = entry.getValue();
-                _scaleMap.put(_unit, scale);
+            if(itemList != null && itemList.size() > 0) {
+                //如果
+                Map<Unit, Double> _map = new HashMap<Unit, Double>();
+                for (ScaleItem item : itemList) {
+                    Unit _unit = item.getUnit().unmarshal();
+                    double scale = item.getScale();
+                    _map.put(_unit, scale);
+                }
+                target.setScaleMap(_map);
+            } else {
+                Map<Unit, Double> _scaleMap = new HashMap<Unit, Double>();
+                for (Entry<UnitDto, Double> entry : scaleMap.entrySet()) {
+                    Unit _unit = entry.getKey().unmarshal(getSession());
+                    double scale = entry.getValue();
+                    _scaleMap.put(_unit, scale);
+                }
+                target.setScaleMap(_scaleMap);
             }
-            target.setScaleMap(_scaleMap);
         }
 
-        Map<Unit, Double> _map = new HashMap<Unit, Double>();
-        for (ScaleItem item : itemList) {
-            Unit _unit = item.getUnit().unmarshal();
-            double scale = item.getScale();
-            _map.put(_unit, scale);
-        }
-        target.setScaleMap(_map);
     }
 
     @Override

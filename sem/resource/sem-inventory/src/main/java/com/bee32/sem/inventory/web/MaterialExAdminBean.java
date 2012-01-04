@@ -6,6 +6,7 @@ import javax.faces.model.SelectItem;
 
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
@@ -18,7 +19,10 @@ import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.entity.MaterialPrice;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.world.monetary.CurrencyUtil;
+import com.bee32.sem.world.thing.ScaleItem;
 import com.bee32.sem.world.thing.Unit;
+import com.bee32.sem.world.thing.UnitConv;
+import com.bee32.sem.world.thing.UnitConvDto;
 import com.bee32.sem.world.thing.UnitDto;
 
 public class MaterialExAdminBean extends EntityViewBean {
@@ -36,6 +40,8 @@ public class MaterialExAdminBean extends EntityViewBean {
     MaterialDto material = new MaterialDto().create();
 
     MaterialPriceDto materialPrice = new MaterialPriceDto().create();
+
+    ScaleItem scaleItem = new ScaleItem();
 
     public MaterialExAdminBean() {
         loadMaterialCategoryTree();
@@ -76,6 +82,25 @@ public class MaterialExAdminBean extends EntityViewBean {
 
     public void setMaterialPrice(MaterialPriceDto materialPrice) {
         this.materialPrice = materialPrice;
+    }
+
+    public List<ScaleItem> getScaleList() {
+        if (material != null && material.getId() != null) {
+            if (material.getUnitConv() == null) {
+                return null;
+            } else {
+                return material.getUnitConv().getItemList();
+            }
+        }
+        return null;
+    }
+
+    public ScaleItem getScaleItem() {
+        return scaleItem;
+    }
+
+    public void setScaleItem(ScaleItem scaleItem) {
+        this.scaleItem = scaleItem;
     }
 
     private void loadMaterialCategoryTree() {
@@ -193,7 +218,6 @@ public class MaterialExAdminBean extends EntityViewBean {
             loadMaterialCategoryTree(category.getId());
 
             uiLogger.info("删除物料成功.");
-
         } catch (Exception e) {
             uiLogger.error("删除物料出错!", e);
         }
@@ -227,5 +251,22 @@ public class MaterialExAdminBean extends EntityViewBean {
         } catch (Exception e) {
             uiLogger.error("保存物料价格出错!", e);
         }
+    }
+
+    public void newUnitScale() {
+        scaleItem = new ScaleItem();
+    }
+
+    @Transactional
+    public void addUnitScale() {
+        UnitConvDto unitConv = material.getUnitConv();
+        if (unitConv == null) {
+            unitConv = new UnitConvDto().create();
+            material.setUnitConv(unitConv);
+            serviceFor(Material.class).saveOrUpdate(arg0);
+        }
+
+        unitConv.addScaleItem(scaleItem);
+        serviceFor(UnitConv.class).saveOrUpdate(arg0);
     }
 }
