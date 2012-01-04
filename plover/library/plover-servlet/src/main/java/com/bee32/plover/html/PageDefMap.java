@@ -19,13 +19,13 @@ public class PageDefMap {
         pageMap = new LinkedHashMap<String, IPageGenerator>();
     }
 
-    public void add(String name, Class<?> pageClass) {
+    public void add(String name, Class<? extends AbstractHtmlTemplate> pageClass) {
         InstantiatePageGenerator page = new InstantiatePageGenerator(pageClass);
         index.add(page);
         pageMap.put(name, page);
     }
 
-    public void add(Class<?> pageClass) {
+    public void add(Class<? extends AbstractHtmlTemplate> pageClass) {
         String typeName = pageClass.getSimpleName();
         String name = Strings.lcfirst(typeName);
         add(name, pageClass);
