@@ -1,8 +1,8 @@
 package user.war.entity;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Transient;
 
 import com.bee32.plover.ox1.color.Pink;
 import com.bee32.plover.ox1.color.UIEntityAuto;
@@ -20,11 +20,7 @@ public class AttackMission
     private static final long serialVersionUID = 1L;
 
     private String target;
-    private SingleVerifierSupport singleVerifierSupport;
-
-    public AttackMission() {
-        singleVerifierSupport = new SingleVerifierSupport(this);
-    }
+    private SingleVerifierSupport singleVerifierSupport = new SingleVerifierSupport(this);
 
     public String getTarget() {
         return target;
@@ -34,10 +30,15 @@ public class AttackMission
         this.target = target;
     }
 
-    @Transient
+    @Embedded
     @Override
     public SingleVerifierSupport getVerifyContext() {
         return singleVerifierSupport;
+    }
+
+    void setVerifyContext(SingleVerifierSupport singleVerifierSupport) {
+        singleVerifierSupport.bind(this);
+        this.singleVerifierSupport = singleVerifierSupport;
     }
 
 }
