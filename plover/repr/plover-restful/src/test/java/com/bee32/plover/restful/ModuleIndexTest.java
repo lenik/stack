@@ -15,7 +15,7 @@ import com.bee32.plover.restful.builtin.CoreInfoModule;
  *
  * NOTICE: Enable this test case until dynamic test suites selection is supported.
  */
-public class ModuleManagerTest
+public class ModuleIndexTest
         extends Assert {
 
     @Test

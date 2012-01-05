@@ -2,6 +2,8 @@ package com.bee32.plover.arch;
 
 import java.util.Collection;
 
+import javax.free.IllegalUsageException;
+
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
@@ -29,6 +31,8 @@ public abstract class Module
         extends Component
         implements IModule, INamed, InitializingBean {
 
+    private int stage;
+
     private TreeMapNode<Object> nodeImpl = new TreeMapNode<Object>(Object.class);
     private Credit credit = Credit.dummy;
 
@@ -52,7 +56,26 @@ public abstract class Module
     @Override
     public void afterPropertiesSet()
             throws Exception {
-        preamble();
+        init(INIT2);
+    }
+
+    @Override
+    public void init(int target) {
+        while (target > stage) {
+            switch (stage) {
+            case UNKNOWN:
+                preamble();
+                stage = INIT1;
+                break;
+            case INIT1:
+                preamble2();
+                stage = INIT2;
+                break;
+            case INIT2:
+            default:
+                throw new IllegalUsageException("Bad target stage: " + target);
+            }
+        }
     }
 
     /**
@@ -65,6 +88,9 @@ public abstract class Module
      */
     protected abstract void preamble();
 
+    /**
+     * Invoked after appctx is initialized.
+     */
     protected void preamble2() {
     }
 

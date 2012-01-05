@@ -20,4 +20,10 @@ public interface IModule
      */
     String getCopyright();
 
+    int UNKNOWN = 0;
+    int INIT1 = 1;
+    int INIT2 = 2;
+
+    void init(int targetStage);
+
 }
