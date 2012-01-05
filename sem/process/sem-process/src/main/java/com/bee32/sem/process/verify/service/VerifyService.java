@@ -1,7 +1,9 @@
 package com.bee32.sem.process.verify.service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.free.IllegalUsageException;
@@ -158,8 +160,12 @@ public class VerifyService
                 protected void _pageContent() {
                     IObjectPageDirectory pageDir = PageDirectory.getPageDirectory(entity);
                     String viewType = state.isFinalized() ? StandardViews.CONTENT : StandardViews.EDIT_FORM;
-                    Location editLocation = pageDir.getPageForView(viewType);
+
+                    Map<String, Object> viewParams = new HashMap<String, Object>();
+                    viewParams.put("id", entity.getId());
+                    Location editLocation = pageDir.getPageForView(viewType, viewParams);
                     String editHref = editLocation.resolveAbsolute(getRequest());
+
                     p().text("点击下面链接进入相关操作：");
                     {
                         String hint = state.isFinalized() ? "查看" : "管理";
