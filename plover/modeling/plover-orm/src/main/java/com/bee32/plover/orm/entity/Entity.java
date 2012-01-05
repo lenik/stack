@@ -509,7 +509,7 @@ public abstract class Entity<K extends Serializable>
         if (lockPredicates == null) {
             synchronized (this) {
                 if (lockPredicates == null) {
-                    lockPredicates = new ArrayList<Pred0>();
+                    lockPredicates = new ArrayList<Pred0>(1);
                 }
             }
         }
