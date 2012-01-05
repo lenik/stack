@@ -41,8 +41,11 @@ public abstract class VerifySupportBean
 
     public boolean isVerified() {
         IVerifyService verifyService = getVerifyService();
-        AbstractVerifyContext context = getRequestVerifyContext();
-        boolean verified = verifyService.isVerified(context);
+        Entity<?> entity = getRequestEntity(false);
+        if (!(entity instanceof IVerifiable))
+            return false;
+        IVerifiable<?> verifiable = (IVerifiable<?>) entity;
+        boolean verified = verifyService.isVerified(verifiable);
         return verified;
     }
 

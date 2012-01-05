@@ -24,8 +24,8 @@ public abstract class VerifiableEntityController<E extends Entity<K> & IVerifiab
     protected void loadForm(E entity, Dto dto) {
         super.loadForm(entity, dto);
         VerifyPolicyDto verifyPolicy = verifyService.getVerifyPolicy(entity);
-        VerifyContextDto<?> context = dto.getVerifyContext();
-        context.setVerifyPolicy(verifyPolicy);
+        VerifyContextDto<?> contextDto = dto.getVerifyContext();
+        contextDto.setVerifyPolicy(verifyPolicy);
     }
 
     @Override

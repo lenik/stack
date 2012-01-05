@@ -1,8 +1,8 @@
 package com.bee32.sem.process.verify;
 
+import javax.free.IllegalUsageException;
 import javax.inject.Inject;
 
-import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityDao;
 import com.bee32.sem.process.verify.preference.VerifyPolicyPref;
 import com.bee32.sem.process.verify.preference.VerifyPolicyPrefDao;
@@ -17,41 +17,40 @@ public class VerifyPolicyDao
     /**
      * 根据实体类型，返回预设的审核策略配置项。
      *
-     * @param contextClass
+     * @param clazz
      *            实体类型，非 <code>null</code>。
      * @return 配置的审核策略，如果尚未配置则返回 <code>null</code>。
      */
-    public VerifyPolicy getPreferredVerifyPolicy(Class<?> contextClass) {
-        if (contextClass == null)
-            throw new NullPointerException("entityClass");
+    public VerifyPolicy getPreferredVerifyPolicy(Class<?> clazz) {
+        if (clazz == null)
+            throw new NullPointerException("clazz");
 
-        VerifyPolicyPref pref = prefDao.get(contextClass);
+        VerifyPolicyPref pref = prefDao.get(clazz);
         if (pref == null)
             return null;
 
         VerifyPolicy preferredPolicy = (VerifyPolicy) pref.getPreferredPolicy();
-        assert preferredPolicy != null;
+        if (preferredPolicy == null)
+            throw new IllegalUsageException("preferredPolicy isn't set in: " + pref);
 
         return preferredPolicy;
     }
 
-    public VerifyPolicy requirePreferredVerifyPolicy(Class<?> contextClass)
+    public VerifyPolicy requirePreferredVerifyPolicy(Class<?> clazz)
             throws NoVerifyPolicyException {
-        VerifyPolicy policy = getPreferredVerifyPolicy(contextClass);
+        VerifyPolicy policy = getPreferredVerifyPolicy(clazz);
         if (policy == null)
             throw new NoVerifyPolicyException();
         return policy;
     }
 
-    public <E extends Entity<?> & IVerifiable<?>> VerifyPolicy getVerifyPolicy(E entity) {
+    public VerifyPolicy getVerifyPolicy(IVerifiable<?> entity) {
         if (entity == null)
             throw new NullPointerException("entity");
-        Object context = entity.getVerifyContext();
-        Class<?> contextClass = context.getClass();
-        return getPreferredVerifyPolicy(contextClass);
+        return getPreferredVerifyPolicy(entity.getClass());
     }
 
-    public <E extends Entity<?> & IVerifiable<?>> VerifyPolicy requireVerifyPolicy(E entity)
+    public VerifyPolicy requireVerifyPolicy(IVerifiable<?> entity)
             throws NoVerifyPolicyException {
         VerifyPolicy policy = getVerifyPolicy(entity);
         if (policy == null)

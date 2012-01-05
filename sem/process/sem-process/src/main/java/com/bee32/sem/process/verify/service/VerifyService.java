@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.principal.Principal;
-import com.bee32.icsf.principal.User;
 import com.bee32.plover.arch.DataService;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.entity.Entity;
@@ -25,7 +24,6 @@ import com.bee32.sem.event.entity.EventPriority;
 import com.bee32.sem.event.entity.EventType;
 import com.bee32.sem.process.verify.AbstractVerifyContext;
 import com.bee32.sem.process.verify.IVerifiable;
-import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyContextAccessor;
 import com.bee32.sem.process.verify.VerifyException;
 import com.bee32.sem.process.verify.VerifyPolicy;
@@ -43,7 +41,7 @@ public class VerifyService
 
     @Transactional(readOnly = true)
     @Override
-    public VerifyPolicyDto getPreferredVerifyPolicy(Class<? extends IVerifyContext> entityClass) {
+    public VerifyPolicyDto getPreferredVerifyPolicy(Class<? extends IVerifiable<?>> entityClass) {
         VerifyPolicy preferredVerifyPolicy = policyDao.getPreferredVerifyPolicy(entityClass);
         VerifyPolicyDto policyDto = DTOs.marshal(VerifyPolicyDto.class, preferredVerifyPolicy);
         // return new VerifyPolicyDto(preferredVerifyPolicy);
@@ -52,7 +50,7 @@ public class VerifyService
 
     @Transactional(readOnly = true)
     @Override
-    public <E extends Entity<?> & IVerifiable<?>> VerifyPolicyDto getVerifyPolicy(E entity) {
+    public VerifyPolicyDto getVerifyPolicy(IVerifiable<?> entity) {
         VerifyPolicy verifyPolicy = policyDao.getVerifyPolicy(entity);
         VerifyPolicyDto policyDto = DTOs.marshal(VerifyPolicyDto.class, verifyPolicy);
         return policyDto;
@@ -62,45 +60,45 @@ public class VerifyService
 
     @Transactional(readOnly = true)
     @Override
-    public Set<Principal> getDeclaredResponsibles(IVerifyContext context) {
-        VerifyPolicy verifyPolicy = policyDao.getPreferredVerifyPolicy(context.getClass());
+    public Set<Principal> getDeclaredResponsibles(IVerifiable<?> obj) {
+        VerifyPolicy verifyPolicy = policyDao.getPreferredVerifyPolicy(obj.getClass());
 
         if (verifyPolicy == null)
             return new HashSet<Principal>();
 
-        return verifyPolicy.getDeclaredResponsibles(context);
+        return verifyPolicy.getDeclaredResponsibles(obj.getVerifyContext());
     }
 
     @Transactional(readOnly = true)
     @Override
-    public boolean isVerified(IVerifyContext context) {
-        VerifyPolicy verifyPolicy = policyDao.getPreferredVerifyPolicy(context.getClass());
+    public boolean isVerified(IVerifiable<?> obj) {
+        VerifyPolicy verifyPolicy = policyDao.getPreferredVerifyPolicy(obj.getClass());
         if (verifyPolicy == null)
             return false;
-        return verifyPolicy.isVerified(context);
+        return verifyPolicy.isVerified(obj.getVerifyContext());
     }
 
     @Transactional(readOnly = true)
     @Override
-    public void assertVerified(IVerifyContext context)
+    public void assertVerified(IVerifiable<?> obj)
             throws VerifyException {
-        VerifyPolicy verifyPolicy = policyDao.requirePreferredVerifyPolicy(context.getClass());
-        verifyPolicy.assertVerified(context);
+        VerifyPolicy verifyPolicy = policyDao.requirePreferredVerifyPolicy(obj.getClass());
+        verifyPolicy.assertVerified(obj.getVerifyContext());
     }
 
     @Transactional(readOnly = true)
     @Override
-    public VerifyResult verify(IVerifyContext context) {
-        if (context == null)
+    public VerifyResult verify(IVerifiable<?> obj) {
+        if (obj == null)
             throw new NullPointerException("context");
 
-        VerifyPolicy verifyPolicy = policyDao.getPreferredVerifyPolicy(context.getClass());
+        VerifyPolicy verifyPolicy = policyDao.getPreferredVerifyPolicy(obj.getClass());
 
         VerifyResult result;
         if (verifyPolicy == null)
             result = VerifyResult.n_a("不可用");
         else
-            result = verifyPolicy.verify(context);
+            result = verifyPolicy.verify(obj.getVerifyContext());
 
         return result;
     }
@@ -114,15 +112,10 @@ public class VerifyService
             throw new IllegalUsageException("Not a verifiable entity: " + entity.getClass());
 
         IVerifiable<?> verifiable = (IVerifiable<?>) entity;
-
-        User currentUser = SessionUser.getInstance().getInternalUser();
-
-        IVerifyContext _context = verifiable.getVerifyContext();
-
         // Do verification.
-        VerifyResult result = verify(_context);
+        VerifyResult result = verify(verifiable);
 
-        AbstractVerifyContext context = (AbstractVerifyContext) _context;
+        AbstractVerifyContext context = (AbstractVerifyContext) verifiable.getVerifyContext();
         VerifyContextAccessor.setVerifyState(context, result.getState());
         VerifyContextAccessor.setVerifyError(context, result.getMessage());
         VerifyContextAccessor.setVerifyEvalDate(context, new Date());
@@ -185,7 +178,7 @@ public class VerifyService
 
             event.setRef(entity);
 
-            Set<Principal> responsibles = new HashSet<Principal>(getDeclaredResponsibles(context));
+            Set<Principal> responsibles = new HashSet<Principal>(getDeclaredResponsibles(verifiable));
             event.setObservers(responsibles);
         }
 

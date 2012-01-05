@@ -11,10 +11,10 @@ import org.junit.Test;
 import com.bee32.plover.arch.util.dto.BeanPropertyAccessor;
 import com.bee32.plover.arch.util.dto.IPropertyAccessor;
 import com.bee32.plover.ox1.color.UIEntityAuto;
-import com.bee32.sem.process.verify.builtin.SingleVerifierPolicy;
 import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;
-import com.bee32.sem.process.verify.builtin.SingleVerifierRankedPolicy;
 import com.bee32.sem.process.verify.builtin.PassToNextPolicy;
+import com.bee32.sem.process.verify.builtin.SingleVerifierPolicy;
+import com.bee32.sem.process.verify.builtin.SingleVerifierRankedPolicy;
 import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
 
 public class VerifyPolicyManagerTest
