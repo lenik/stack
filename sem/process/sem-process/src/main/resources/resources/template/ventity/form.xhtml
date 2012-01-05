@@ -1,5 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
     xmlns:c="http://java.sun.com/jsp/jstl/core">
@@ -17,7 +15,7 @@
                 <tr>
                     <td align="right">审核人:</td>
                     <td>
-                        <h:selectOneMenu id="verifierId" value="#{vctx.verifier1.id}">
+                        <h:selectOneMenu id="verifierId1" value="#{vctx.verifier1.id}">
                             <c:forEach var="user" items="${users}">
                                 <f:selectItem itemValue="${user.id}" itemLabel="${user.displayName}" />
                             </c:forEach>
@@ -28,14 +26,14 @@
                 <tr>
                     <td align="right">允许/拒绝:</td>
                     <td>
-                        <h:selectBooleanCheckbox id="allowed" value="${vctx.accepted1}" />
+                        <h:selectBooleanCheckbox id="accepted1" value="${vctx.accepted1}" />
                         允许
                     </td>
                 </tr>
                 <tr>
                     <td align="right">拒绝原因:</td>
                     <td>
-                        <input name="rejectedReason" type="text" size="50" maxlength="200" value="${vctx.rejectedReason1}" />
+                        <input name="rejectedReason1" type="text" size="50" maxlength="200" value="${vctx.rejectedReason1}" />
                     </td>
                 </tr>
             </table>
