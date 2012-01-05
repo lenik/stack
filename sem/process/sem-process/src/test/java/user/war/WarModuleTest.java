@@ -1,13 +1,14 @@
-package com.bee32.sem.process;
+package user.war;
 
 import java.io.IOException;
 
+import user.war.web.AttackMissionController;
+
 import com.bee32.plover.orm.unit.Using;
-import com.bee32.sem.process.verify.testbiz.AttackMissionController;
 import com.bee32.sem.test.SEMTestCase;
 
-@Using(SEMProcessTestUnit.class)
-public class SEMProcessModuleTest
+@Using(WarUnit.class)
+public class WarModuleTest
         extends SEMTestCase {
 
     @Override
@@ -22,7 +23,7 @@ public class SEMProcessModuleTest
 
     public static void main(String[] args)
             throws IOException {
-        new SEMProcessModuleTest().browseAndWait(//
+        new WarModuleTest().browseAndWait(//
                 // SEMProcessModule.class//
                 // AllowListController.PREFIX + "index.do"//
                 // MultiLevelController.PREFIX + "index.do"//

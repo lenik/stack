@@ -1,14 +1,22 @@
-package com.bee32.sem.process.verify.testbiz;
+package user.war.web;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import user.war.WarModule;
+import user.war.dto.AttackMissionDto;
+import user.war.entity.AttackMission;
+
 import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.web.util.DataTableDxo;
+import com.bee32.plover.servlet.mvc.ActionRequest;
+import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.sem.event.entity.Event;
-import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.builtin.ISingleVerifier;
 import com.bee32.sem.process.verify.builtin.SingleVerifierSupport;
 import com.bee32.sem.process.verify.builtin.dto.SingleVerifierSupportDto;
@@ -18,7 +26,7 @@ import com.bee32.sem.process.verify.web.VerifiableEntityController;
 public class AttackMissionController
         extends VerifiableEntityController<AttackMission, Integer, ISingleVerifier, AttackMissionDto> {
 
-    public static final String PREFIX = SEMProcessModule.PREFIX_ + "attack/";
+    public static final String PREFIX = WarModule.PREFIX_ + "attack/";
 
     @Override
     protected void fillDataRow(DataTableDxo tab, AttackMissionDto dto) {
@@ -31,6 +39,12 @@ public class AttackMissionController
 
         tab.push(sv.getVerifyState().getDisplayName());
         tab.push(sv.getVerifiedDate1());
+    }
+
+    @Override
+    protected void fillFormExtra(ActionRequest req, ActionResult result) {
+        List<UserDto> users = DTOs.marshalList(UserDto.class, 0, asFor(User.class).list());
+        result.put("users", users);
     }
 
     @Override

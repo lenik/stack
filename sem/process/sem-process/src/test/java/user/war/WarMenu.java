@@ -1,16 +1,16 @@
-package com.bee32.sem.process.verify.testbiz;
+package user.war;
 
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.frame.builtins.SEMFrameMenu;
 import com.bee32.sem.frame.menu.MenuContribution;
 import com.bee32.sem.frame.menu.MenuNode;
 
-public class AttackMissionMenu
+public class WarMenu
         extends MenuContribution {
 
-    static Location ATTACK = WEB_APP.join(AttackMissionController.PREFIX);
+    static Location BASE = WEB_APP.join(WarModule.PREFIX_);
 
-    static MenuNode attack = entry(SEMFrameMenu.MAIN, "attack", ATTACK.join("index.do"));
+    static MenuNode attack = entry(SEMFrameMenu.MAIN, "attack", BASE.join("attack/index.do"));
 
     @Override
     protected void preamble() {

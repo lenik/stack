@@ -1,4 +1,4 @@
-package com.bee32.sem.process.verify.testbiz;
+package user.war.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;

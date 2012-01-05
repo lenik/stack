@@ -1,7 +1,9 @@
-package com.bee32.sem.process.verify.testbiz;
+package user.war.dto;
 
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
+
+import user.war.entity.AttackMission;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
@@ -15,24 +17,25 @@ public class AttackMissionDto
     private static final long serialVersionUID = 1L;
 
     private String target;
-    private SingleVerifierSupportDto verifyContext;
+    private SingleVerifierSupportDto sv;
 
     @Override
     protected void _marshal(AttackMission source) {
         target = source.getTarget();
-        verifyContext = marshal(SingleVerifierSupportDto.class, source.getVerifyContext());
+        sv = marshal(SingleVerifierSupportDto.class, source.getVerifyContext());
     }
 
     @Override
     protected void _unmarshalTo(AttackMission target) {
         target.setTarget(this.target);
-        merge(target, "verifyContext", verifyContext);
+        merge(target, "verifyContext", sv);
     }
 
     @Override
     protected void _parse(TextMap map)
             throws ParseException, TypeConvertException {
         target = map.getString("target");
+        sv.parse(map);
     }
 
     public String getTarget() {
@@ -45,11 +48,11 @@ public class AttackMissionDto
 
     @Override
     public SingleVerifierSupportDto getVerifyContext() {
-        return verifyContext;
+        return sv;
     }
 
     public void setVerifyContext(SingleVerifierSupportDto verifyContext) {
-        this.verifyContext = verifyContext;
+        this.sv = verifyContext;
     }
 
 }
