@@ -2,11 +2,7 @@ package com.bee32.plover.arch;
 
 import java.util.Collection;
 
-import javax.free.IllegalUsageException;
-
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.arch.credit.Credit;
 import com.bee32.plover.arch.naming.INamed;
@@ -26,16 +22,14 @@ import com.bee32.plover.inject.ServiceTemplate;
  * Lazy component is initialized when getBeanOfType() is invoked.
  */
 @ServiceTemplate
-@Lazy
 public abstract class Module
         extends Component
-        implements IModule, INamed, InitializingBean {
-
-    private int stage;
+        implements IModule, INamed {
 
     private TreeMapNode<Object> nodeImpl = new TreeMapNode<Object>(Object.class);
     private Credit credit = Credit.dummy;
 
+    private boolean loaded;
     private ApplicationContext appctx;
 
     public Module() {
@@ -49,33 +43,15 @@ public abstract class Module
     }
 
     @Override
-    public String refName() {
-        return getName();
-    }
-
-    @Override
-    public void afterPropertiesSet()
-            throws Exception {
-        init(INIT2);
-    }
-
-    @Override
-    public void init(int target) {
-        while (target > stage) {
-            switch (stage) {
-            case UNKNOWN:
-                preamble();
-                stage = INIT1;
-                break;
-            case INIT1:
-                preamble2();
-                stage = INIT2;
-                break;
-            case INIT2:
-            default:
-                throw new IllegalUsageException("Bad target stage: " + target);
-            }
+    public synchronized void load() {
+        if (!loaded) {
+            preamble();
+            loaded = true;
         }
+    }
+
+    @Override
+    public void unload() {
     }
 
     /**
@@ -91,7 +67,7 @@ public abstract class Module
     /**
      * Invoked after appctx is initialized.
      */
-    protected void preamble2() {
+    protected void assemble() {
     }
 
     protected final <T> T getBean(Class<T> beanType) {
@@ -150,6 +126,11 @@ public abstract class Module
     @Override
     public int getPriority() {
         return nodeImpl.getPriority();
+    }
+
+    @Override
+    public String refName() {
+        return getName();
     }
 
     @Override

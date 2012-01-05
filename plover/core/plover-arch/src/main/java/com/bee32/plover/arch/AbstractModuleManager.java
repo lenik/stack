@@ -12,8 +12,10 @@ import javax.free.ClassLocal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.plover.inject.AbstractActivatorService;
+
 public abstract class AbstractModuleManager
-        extends Component
+        extends AbstractActivatorService
         implements IModuleManager {
 
     static Logger logger = LoggerFactory.getLogger(AbstractModuleManager.class);
@@ -43,11 +45,14 @@ public abstract class AbstractModuleManager
 
         List<IModule> failedModules = new ArrayList<IModule>();
 
+        for (IModule module : modules) {
+            module.load();
+        }
+
         if (modulePostProcessors == null)
             modulePostProcessors = getPostProcessors();
 
         for (IModulePostProcessor modulePostProcessor : modulePostProcessors) {
-
             logger.info("Apply module post-processor: " + modulePostProcessor);
 
             for (IModule module : modules) {
@@ -74,6 +79,15 @@ public abstract class AbstractModuleManager
             }
         }
         activated = true;
+    }
+
+    @Override
+    public synchronized void deactivate() {
+        if (activated) {
+            for (IModule module : modules)
+                module.unload();
+            activated = false;
+        }
     }
 
     protected abstract Collection<IModule> scanModules();

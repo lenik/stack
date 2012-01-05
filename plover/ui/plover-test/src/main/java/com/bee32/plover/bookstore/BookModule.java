@@ -13,7 +13,7 @@ public class BookModule
     }
 
     @Override
-    protected void preamble2() {
+    protected void assemble() {
         BookStore bookStore = getBean(BookStore.class);
         // declare("book", bookStore);
         export(bookStore, "book");

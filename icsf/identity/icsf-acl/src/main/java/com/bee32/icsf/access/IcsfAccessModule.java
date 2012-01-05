@@ -17,7 +17,7 @@ public class IcsfAccessModule
     }
 
     @Override
-    protected void preamble2() {
+    protected void assemble() {
         export(R_ACEDao.class, "entry");
     }
 

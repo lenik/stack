@@ -16,10 +16,8 @@ public class ModuleManager
         ServiceLoader<IModule> moduleLoader;
         moduleLoader = ServiceLoader.load(IModule.class);
 
-        for (IModule module : moduleLoader) {
+        for (IModule module : moduleLoader)
             modules.add(module);
-            module.init(IModule.INIT1);
-        }
 
         return modules;
     }

@@ -6,6 +6,10 @@ import com.bee32.plover.arch.naming.INamedNode;
 public interface IModule
         extends IComponent, INamedNode {
 
+    void load();
+
+    void unload();
+
     /**
      * Get the module credit.
      *
@@ -19,11 +23,5 @@ public interface IModule
      * @return <code>null</code> means copy-left.
      */
     String getCopyright();
-
-    int UNKNOWN = 0;
-    int INIT1 = 1;
-    int INIT2 = 2;
-
-    void init(int targetStage);
 
 }

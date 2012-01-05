@@ -23,7 +23,7 @@ public class PloverOx1Module
     }
 
     @Override
-    protected void preamble2() {
+    protected void assemble() {
         export(UserDao.class, "user");
         export(GroupDao.class, "group");
         export(RoleDao.class, "role");

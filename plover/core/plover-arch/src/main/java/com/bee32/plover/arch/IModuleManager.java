@@ -2,7 +2,10 @@ package com.bee32.plover.arch;
 
 import java.util.Map;
 
-public interface IModuleManager {
+import com.bee32.plover.inject.IActivatorService;
+
+public interface IModuleManager
+        extends IActivatorService {
 
     Iterable<IModule> getModules();
 
@@ -11,7 +14,5 @@ public interface IModuleManager {
     IModule getModule(String moduleName);
 
     IModule getModule(Class<? extends IModule> moduleClass);
-
-    void activate();
 
 }
