@@ -65,7 +65,7 @@ public class CreateOrEditHandler<E extends Entity<K>, K extends Serializable>
         }
 
         Integer dtoSelection = eh.getSelection(SelectionMode.CREATE_EDIT);
-        EntityDto<E, K> dto = eh.newDto(dtoSelection);
+        EntityDto<E, K> dto = eh.newDto(dtoSelection).create();
 
         dto.parse(this, req);
 
