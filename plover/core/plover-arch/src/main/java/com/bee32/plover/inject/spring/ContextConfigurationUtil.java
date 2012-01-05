@@ -40,48 +40,56 @@ public class ContextConfigurationUtil {
     }
 
     static void scan(Class<?> clazz, Set<String> allLocations) {
+        boolean scanNextLocations = true;
+        boolean scanNextImports = true;
+
         while (clazz != null) {
-            String[] locations = null;
-            String[] value = null;
-            boolean inheritLocations = false;
+            if (scanNextLocations) {
+                String[] locations = null;
+                String[] value = null;
 
-            ContextConfiguration cc = AnnotationUtil.getDeclaredAnnotation(clazz, ContextConfiguration.class);
-            org.springframework.test.context.ContextConfiguration _cc = AnnotationUtil.getDeclaredAnnotation(clazz,
-                    org.springframework.test.context.ContextConfiguration.class);
+                ContextConfiguration cc = AnnotationUtil.getDeclaredAnnotation(clazz, ContextConfiguration.class);
+                org.springframework.test.context.ContextConfiguration _cc = AnnotationUtil.getDeclaredAnnotation(clazz,
+                        org.springframework.test.context.ContextConfiguration.class);
 
-            if (cc != null && _cc != null)
-                throw new IllegalUsageException("Only one of ContextConfiguration annotation could be used on " + clazz);
+                if (cc != null && _cc != null)
+                    throw new IllegalUsageException("Only one of ContextConfiguration annotation could be used on "
+                            + clazz);
 
-            if (cc != null) {
-                locations = cc.locations();
-                value = cc.value();
-                inheritLocations = cc.inheritLocations();
-            }
-            if (_cc != null) {
-                locations = _cc.locations();
-                value = _cc.value();
-                inheritLocations = _cc.inheritLocations();
-            }
+                if (cc != null) {
+                    locations = cc.locations();
+                    value = cc.value();
+                    scanNextLocations = cc.inheritLocations();
+                }
+                if (_cc != null) {
+                    locations = _cc.locations();
+                    value = _cc.value();
+                    scanNextLocations = _cc.inheritLocations();
+                }
 
-            if (locations != null) {
-                for (String location : locations)
-                    allLocations.add(canonicalizeResourceName(clazz, location));
+                if (locations != null) {
+                    for (String location : locations)
+                        allLocations.add(canonicalizeResourceName(clazz, location));
 
-                for (String location : value)
-                    allLocations.add(canonicalizeResourceName(clazz, location));
-
-                if (!inheritLocations)
-                    break;
-            }
-
-            Import _import = clazz.getAnnotation(Import.class);
-            if (_import != null) {
-                for (Class<?> importClass : _import.value()) {
-                    scan(importClass, allLocations);
+                    for (String location : value)
+                        allLocations.add(canonicalizeResourceName(clazz, location));
                 }
             }
 
-            clazz = clazz.getSuperclass();
+            if (scanNextImports) {
+                Import _import = clazz.getAnnotation(Import.class);
+                if (_import != null) {
+                    for (Class<?> importClass : _import.value()) {
+                        scan(importClass, allLocations);
+                    }
+                    scanNextImports = _import.inherits();
+                }
+            }
+
+            if (scanNextLocations || scanNextImports)
+                clazz = clazz.getSuperclass();
+            else
+                break;
         }
 
     }

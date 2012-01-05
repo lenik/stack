@@ -19,4 +19,6 @@ public @interface Import {
 
     Class<?>[] value();
 
+    boolean inherits() default true;
+
 }

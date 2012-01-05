@@ -30,7 +30,7 @@ import com.bee32.plover.xutil.m2.MavenPath;
  */
 @ServiceTemplate
 @Lazy
-@Import(ScanServiceContext.class)
+@Import(value = ScanServiceContext.class, inherits = false)
 public abstract class ServiceCollector<T>
         extends WiredTestCase {
 
