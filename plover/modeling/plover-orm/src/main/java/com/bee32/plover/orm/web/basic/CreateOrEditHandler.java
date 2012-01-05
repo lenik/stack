@@ -64,6 +64,7 @@ public class CreateOrEditHandler<E extends Entity<K>, K extends Serializable>
             result.put("METHOD", result.V.get("edit"));
         }
 
+        Class<? extends E> entityType = eh.getEntityType();
         Integer dtoSelection = eh.getSelection(SelectionMode.CREATE_EDIT);
         EntityDto<E, K> dto = eh.newDto(dtoSelection).create();
 
@@ -76,13 +77,13 @@ public class CreateOrEditHandler<E extends Entity<K>, K extends Serializable>
             if (id == null)
                 throw new ServletException("id isn't specified");
 
-            entity = asFor(eh.getEntityType()).get(id);
+            entity = asFor(entityType).get(id);
             if (entity == null) {
                 if (!_createOTF)
                     return Javascripts.alertAndBack("对象尚未创建，无法保存。" + eh.getHint(id) + "\n\n" //
                             + "这大概是有人在你编辑该对象的同时进行了删除操作引起的。\n" //
                             + "点击确定返回上一页。" //
-                            + ClassUtil.getTypeName(eh.getEntityType()) + " [" + id + "]" //
+                            + ClassUtil.getParameterizedTypeName(entity) + " [" + id + "]" //
                     ).dump(result);
 
                 create = true;
@@ -107,7 +108,7 @@ public class CreateOrEditHandler<E extends Entity<K>, K extends Serializable>
 
         forming.saveForm(entity, dto);
 
-        asFor(eh.getEntityType()).saveOrUpdate(entity);
+        asFor(entityType).saveOrUpdate(entity);
 
         if (postUpdating != null)
             postUpdating.postUpdate(entity);
