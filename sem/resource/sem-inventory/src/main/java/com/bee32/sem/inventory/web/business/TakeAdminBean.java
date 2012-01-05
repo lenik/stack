@@ -27,13 +27,13 @@ import com.bee32.sem.inventory.util.StockCriteria;
 import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.process.verify.service.IVerifyService;
 
-public class TakeAdminBean extends StockOrderBaseBean {
+public class TakeAdminBean
+        extends StockOrderBaseBean {
 
     private static final long serialVersionUID = 1L;
 
     private Date limitDateFrom;
     private Date limitDateTo;
-
 
     private int goNumber;
     private int count;
@@ -54,14 +54,14 @@ public class TakeAdminBean extends StockOrderBaseBean {
         goNumber = 1;
 
         try {
-            HttpServletRequest req = (HttpServletRequest) FacesContext
-                    .getCurrentInstance().getExternalContext().getRequest();
+            HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext()
+                    .getRequest();
             String s = req.getParameter("subject").toString();
             subject = StockOrderSubject.valueOf(s);
 
             String strId = req.getParameter("id");
             if (strId != null) {
-                //说明有传入StockOrder的id,需要直接跳到相应的StockOrder
+                // 说明有传入StockOrder的id,需要直接跳到相应的StockOrder
                 StockOrder directOrder = serviceFor(StockOrder.class).get(Long.parseLong(strId));
                 StockWarehouse w = directOrder.getWarehouse();
                 selectedWarehouse = DTOs.marshal(StockWarehouseDto.class, w);
@@ -79,7 +79,7 @@ public class TakeAdminBean extends StockOrderBaseBean {
     }
 
     public boolean isCanVerify() {
-        //TODO replace code to return currentUser.canVerify();
+        // TODO replace code to return currentUser.canVerify();
         return true;
     }
 
@@ -131,8 +131,7 @@ public class TakeAdminBean extends StockOrderBaseBean {
         IVerifyService verifyService = getBean(IVerifyService.class);
 
         StockOrder _order = stockOrder.unmarshal();
-        return verifyService.isVerified(_order.getVerifyContext());
-
+        return verifyService.isVerified(_order);
     }
 
     public String getVerifyStatus() {
@@ -149,29 +148,25 @@ public class TakeAdminBean extends StockOrderBaseBean {
         return "未审核或审核未通过";
     }
 
-
-
-
     public void onSwChange(AjaxBehaviorEvent e) {
         loadStockOrder(goNumber);
         loadStockLocationTree();
     }
 
     private void loadStockOrder(int position) {
-        //刷新总记录数
+        // 刷新总记录数
         getCount();
 
         goNumber = position;
 
-        if(position < 1) {
+        if (position < 1) {
             goNumber = 1;
             position = 1;
         }
-        if(goNumber > count) {
+        if (goNumber > count) {
             goNumber = count;
             position = count;
         }
-
 
         stockOrder = new StockOrderDto().create();
         if (selectedWarehouse != null) {
@@ -199,12 +194,12 @@ public class TakeAdminBean extends StockOrderBaseBean {
 
         stockOrder = new StockOrderDto().create();
         stockOrder.setSubject(subject);
-        //stockOrder.setCreatedDate(new Date());
+        // stockOrder.setCreatedDate(new Date());
         editable = true;
     }
 
     public void modify() {
-        if(stockOrder.getId() == null) {
+        if (stockOrder.getId() == null) {
             uiLogger.warn("当前没有对应的单据");
             return;
         }
@@ -235,21 +230,20 @@ public class TakeAdminBean extends StockOrderBaseBean {
             uiLogger.warn("删除失败,错误信息:" + e.getMessage());
         }
 
-
     }
 
     @Transactional
     public void save() {
         stockOrder.setWarehouse(selectedWarehouse);
 
-        if(stockOrder.getId() == null) {
-            //新增
+        if (stockOrder.getId() == null) {
+            // 新增
             goNumber = count + 1;
         }
 
         try {
             StockOrder _order = stockOrder.unmarshal();
-            for(StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
+            for (StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
                 _order.removeItem(item.unmarshal());
             }
 
@@ -307,13 +301,10 @@ public class TakeAdminBean extends StockOrderBaseBean {
         return orderItem;
     }
 
-
     @Override
     public StockWarehouseDto getSelectedWarehouse_() {
         return selectedWarehouse;
     }
-
-
 
     public void approve() {
         if (stockOrder == null || stockOrder.getId() == null) {
@@ -360,4 +351,5 @@ public class TakeAdminBean extends StockOrderBaseBean {
             uiLogger.error("审核错误.", e);
         }
     }
+
 }

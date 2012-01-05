@@ -18,7 +18,7 @@ public class DumpUnitAbbrPostProcessor
             String abbr = ABBR.abbr(clazz); // Dont register it anymore.
             String simpleName = clazz.getSimpleName();
             if (!simpleName.equals(abbr))
-                logger.debug("      Entity name " + simpleName + " was compressed to " + abbr);
+                logger.info("      Entity name " + simpleName + " was compressed to " + abbr);
         }
     }
 
