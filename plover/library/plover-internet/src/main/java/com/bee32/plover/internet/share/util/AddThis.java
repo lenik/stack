@@ -9,7 +9,8 @@ import javax.free.URLResource;
 public class AddThis {
 
     static String widgetHtml;
-    static {
+
+    static void init() { // XXX what to do??.
         URLResource htmlRes = ClassResource.classData(AddThis.class, "html");
         try {
             widgetHtml = htmlRes.forRead().readTextContents();
