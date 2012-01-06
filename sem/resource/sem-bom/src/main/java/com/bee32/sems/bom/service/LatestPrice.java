@@ -11,7 +11,7 @@ public class LatestPrice
 
     private static final long serialVersionUID = 1L;
 
-    public LatestPrice(String value, String name) {
+    public LatestPrice(char value, String name) {
         super(value, name);
     }
 

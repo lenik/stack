@@ -1,11 +1,9 @@
 package com.bee32.plover.ox1.userMode;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 
 import com.bee32.plover.arch.util.EnumAlt;
-import com.bee32.plover.arch.util.NoSuchEnumException;
 
 public class UserDataType
         extends EnumAlt<Character, UserDataType> {
@@ -19,24 +17,20 @@ public class UserDataType
         super(value, name);
     }
 
-    public static Collection<UserDataType> values() {
-        Collection<UserDataType> values = valueMap.values();
-        return Collections.unmodifiableCollection(values);
+    public static UserDataType forName(String name) {
+        return forName(UserDataType.class, name);
     }
 
-    public static UserDataType forName(String altName) {
-        UserDataType dataType = nameMap.get(altName);
-        if (dataType == null)
-            throw new NoSuchEnumException(UserDataType.class, altName);
-        return dataType;
+    public static Collection<UserDataType> values() {
+        return values(UserDataType.class);
+    }
+
+    public static UserDataType valueOf(Character value) {
+        return valueOf(UserDataType.class, value);
     }
 
     public static UserDataType valueOf(char value) {
-        UserDataType dataType = valueMap.get(value);
-        if (dataType == null)
-            throw new NoSuchEnumException(UserDataType.class, value);
-
-        return dataType;
+        return valueOf(new Character(value));
     }
 
     public static final char T_INT = 'I';

@@ -1,11 +1,8 @@
 package com.bee32.sem.event.entity;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
 
 import com.bee32.plover.arch.util.EnumAlt;
-import com.bee32.plover.arch.util.NoSuchEnumException;
 
 public class EventType
         extends EnumAlt<Character, EventType> {
@@ -16,27 +13,20 @@ public class EventType
         super(value, name);
     }
 
-    static final Map<String, EventType> nameMap = getNameMap(EventType.class);
-    static final Map<Character, EventType> valueMap = getValueMap(EventType.class);
+    public static EventType forName(String name) {
+        return forName(EventType.class, name);
+    }
 
     public static Collection<EventType> values() {
-        Collection<EventType> values = valueMap.values();
-        return Collections.unmodifiableCollection(values);
+        return values(EventType.class);
+    }
+
+    public static EventType valueOf(Character value) {
+        return valueOf(EventType.class, value);
     }
 
     public static EventType valueOf(char value) {
-        EventType eventType = valueMap.get(value);
-        if (eventType == null)
-            throw new NoSuchEnumException(EventType.class, value);
-
-        return eventType;
-    }
-
-    public static EventType valueOf(String altName) {
-        EventType eventType = nameMap.get(altName);
-        if (eventType == null)
-            throw new NoSuchEnumException(EventType.class, altName);
-        return eventType;
+        return valueOf(new Character(value));
     }
 
     public static final EventType EVENT = new EventType('e', "event");

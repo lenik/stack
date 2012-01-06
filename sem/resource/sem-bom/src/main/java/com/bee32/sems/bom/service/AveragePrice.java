@@ -12,7 +12,7 @@ public class AveragePrice
 
     private static final long serialVersionUID = 1L;
 
-    public AveragePrice(String value, String name) {
+    public AveragePrice(char value, String name) {
         super(value, name);
     }
 

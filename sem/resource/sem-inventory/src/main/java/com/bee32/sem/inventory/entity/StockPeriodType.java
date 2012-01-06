@@ -1,11 +1,8 @@
 package com.bee32.sem.inventory.entity;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
 
 import com.bee32.plover.arch.util.EnumAlt;
-import com.bee32.plover.arch.util.NoSuchEnumException;
 
 /**
  * 库存快照类型
@@ -15,34 +12,24 @@ public class StockPeriodType
 
     private static final long serialVersionUID = 1L;
 
-    static final Map<String, StockPeriodType> nameMap = getNameMap(StockPeriodType.class);
-    static final Map<Character, StockPeriodType> valueMap = getValueMap(StockPeriodType.class);
-
     StockPeriodType(char value, String name) {
         super(value, name);
     }
 
-    public static StockPeriodType forName(String altName) {
-        StockPeriodType type = nameMap.get(altName);
-        if (type == null)
-            throw new NoSuchEnumException(StockPeriodType.class, altName);
-        return type;
+    public static StockPeriodType forName(String name) {
+        return forName(StockPeriodType.class, name);
     }
 
     public static Collection<StockPeriodType> values() {
-        Collection<StockPeriodType> values = valueMap.values();
-        return Collections.unmodifiableCollection(values);
+        return values(StockPeriodType.class);
     }
 
     public static StockPeriodType valueOf(Character value) {
-        if (value == null)
-            return null;
+        return valueOf(StockPeriodType.class, value);
+    }
 
-        StockPeriodType type = valueMap.get(value);
-        if (type == null)
-            throw new NoSuchEnumException(StockPeriodType.class, value);
-
-        return type;
+    public static StockPeriodType valueOf(char value) {
+        return valueOf(new Character(value));
     }
 
     /** 初始库存 */

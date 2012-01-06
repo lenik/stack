@@ -1,45 +1,28 @@
 package com.bee32.sem.people;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
 
 import com.bee32.plover.arch.util.EnumAlt;
-import com.bee32.plover.arch.util.NoSuchEnumException;
 
 public class Gender
         extends EnumAlt<Character, Gender> {
 
     private static final long serialVersionUID = 1L;
 
-    static final Map<String, Gender> nameMap = getNameMap(Gender.class);
-    static final Map<Character, Gender> valueMap = getValueMap(Gender.class);
-
     private Gender(char val, String name) {
         super(val, name);
     }
 
-    public static Gender forName(String altName) {
-        Gender gender = nameMap.get(altName);
-        if (gender == null)
-            throw new NoSuchEnumException(Gender.class, altName);
-        return gender;
+    public static Gender forName(String name) {
+        return forName(Gender.class, name);
     }
 
     public static Collection<Gender> values() {
-        Collection<Gender> values = valueMap.values();
-        return Collections.unmodifiableCollection(values);
+        return values(Gender.class);
     }
 
     public static Gender valueOf(Character value) {
-        if (value == null)
-            throw new NullPointerException("value");
-
-        Gender gender = valueMap.get(value);
-        if (gender == null)
-            throw new NoSuchEnumException(Gender.class, value);
-
-        return gender;
+        return valueOf(Gender.class, value);
     }
 
     public static Gender valueOf(char value) {

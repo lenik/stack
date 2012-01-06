@@ -1,12 +1,6 @@
 package com.bee32.sem.event;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import javax.free.IllegalUsageException;
 
 import com.bee32.plover.arch.util.EnumAlt;
 
@@ -17,11 +11,6 @@ public abstract class EventState<$ extends EventState<$>>
         extends EnumAlt<Integer, $> {
 
     private static final long serialVersionUID = 1L;
-
-    @SuppressWarnings("unchecked")
-    static Map<String, EventState<?>> nameMap = getNameMap(EventState.class);
-    @SuppressWarnings("unchecked")
-    static Map<Integer, EventState<?>> valueMap = getValueMap(EventState.class);
 
     public static final int CLASS_MASK = 0xff000000;
     public static final int CLASS_SHIFT = 24;
@@ -44,44 +33,23 @@ public abstract class EventState<$ extends EventState<$>>
         return ((classIndex << CLASS_SHIFT) & CLASS_MASK);
     }
 
+    @SuppressWarnings("unchecked")
+    public static EventState<?> forName(String name) {
+        return forName(EventState.class, name);
+    }
+
+    @SuppressWarnings("unchecked")
     public static Collection<? extends EventState<?>> values() {
-        Collection<? extends EventState<?>> values = valueMap.values();
-        return Collections.unmodifiableCollection(values);
+        return values(EventState.class);
     }
 
-    public static EventState<?> forName(String altName) {
-        EventState<?> definedState = nameMap.get(altName);
-        if (definedState != null)
-            return definedState;
-        throw new IllegalUsageException("Invalid state: " + altName);
+    @SuppressWarnings("unchecked")
+    public static EventState<?> valueOf(Integer value) {
+        return valueOf(EventState.class, value);
     }
 
-    public static EventState<?> valueOf(int altId) {
-        EventState<?> definedState = valueMap.get(altId);
-        if (definedState != null)
-            return definedState;
-
-        String idHex = Integer.toHexString(altId);
-        throw new IllegalUsageException("Invalid state: 0x" + idHex);
-    }
-
-    public static List<Integer> list(int mask) {
-        return list(mask, mask);
-    }
-
-    public static List<Integer> list(int mask, int test) {
-        List<Integer> list = new ArrayList<Integer>();
-        for (EventState<?> state : valueMap.values()) {
-            if ((state.value & mask) == test)
-                list.add(state.value);
-        }
-        return list;
-    }
-
-    public static List<Integer> listFor(int classIndex) {
-        int classBits = classIndex << CLASS_SHIFT;
-
-        return list(CLASS_MASK, classBits);
+    public static EventState<?> valueOf(int value) {
+        return valueOf(new Integer(value));
     }
 
 }

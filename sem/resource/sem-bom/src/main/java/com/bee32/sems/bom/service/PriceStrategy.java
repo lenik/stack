@@ -2,49 +2,36 @@ package com.bee32.sems.bom.service;
 
 import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
 
 import com.bee32.plover.arch.util.EnumAlt;
-import com.bee32.plover.arch.util.NoSuchEnumException;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sems.bom.entity.Part;
 import com.bee32.sems.bom.entity.PartItem;
 
 public abstract class PriceStrategy
-        extends EnumAlt<String, PriceStrategy> {
+        extends EnumAlt<Character, PriceStrategy> {
 
     private static final long serialVersionUID = 1L;
 
-    static final Map<String, PriceStrategy> nameMap = getNameMap(PriceStrategy.class);
-    static final Map<String, PriceStrategy> valueMap = getValueMap(PriceStrategy.class);
-
-    public PriceStrategy(String value, String name) {
+    public PriceStrategy(char value, String name) {
         super(value, name);
     }
 
+    public static PriceStrategy forName(String name) {
+        return forName(PriceStrategy.class, name);
+    }
+
     public static Collection<PriceStrategy> values() {
-        Collection<PriceStrategy> values = valueMap.values();
-        return Collections.unmodifiableCollection(values);
+        return values(PriceStrategy.class);
     }
 
-    public static PriceStrategy forName(String altName) {
-        PriceStrategy strategy = nameMap.get(altName);
-        if (strategy == null)
-            throw new NoSuchEnumException(PriceStrategy.class, altName);
-        return strategy;
+    public static PriceStrategy valueOf(Character value) {
+        return valueOf(PriceStrategy.class, value);
     }
 
-    public static PriceStrategy valueOf(String value) {
-        if (value == null)
-            return null;
-
-        PriceStrategy strategy = valueMap.get(value);
-        if (strategy == null)
-            throw new NoSuchEnumException(PriceStrategy.class, value);
-
-        return strategy;
+    public static PriceStrategy valueOf(char value) {
+        return valueOf(new Character(value));
     }
 
     /**
@@ -84,9 +71,9 @@ public abstract class PriceStrategy
             throws MaterialPriceNotFoundException, FxrQueryException;
 
     /** 平均价格策略 */
-    public static AveragePrice AVERAGE = new AveragePrice("AVG", "average");
+    public static AveragePrice AVERAGE = new AveragePrice('m', "average");
 
     /** 最新价格策略 */
-    public static LatestPrice LATEST = new LatestPrice("LTS", "latest");
+    public static LatestPrice LATEST = new LatestPrice('z', "latest");
 
 }

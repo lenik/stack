@@ -1,11 +1,8 @@
 package com.bee32.sem.inventory.entity;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
 
 import com.bee32.plover.arch.util.EnumAlt;
-import com.bee32.plover.arch.util.NoSuchEnumException;
 
 /**
  * 库存项状态。
@@ -14,9 +11,6 @@ public class StockItemState
         extends EnumAlt<Character, StockItemState> {
 
     private static final long serialVersionUID = 1L;
-
-    static final Map<String, StockItemState> nameMap = getNameMap(StockItemState.class);
-    static final Map<Character, StockItemState> valueMap = getValueMap(StockItemState.class);
 
     final boolean abnormal;
 
@@ -33,31 +27,20 @@ public class StockItemState
         return abnormal;
     }
 
-    public static StockItemState forName(String altName) {
-        StockItemState state = nameMap.get(altName);
-        if (state == null)
-            throw new NoSuchEnumException(StockItemState.class, altName);
-        return state;
+    public static StockItemState forName(String name) {
+        return forName(StockItemState.class, name);
     }
 
     public static Collection<StockItemState> values() {
-        Collection<StockItemState> values = valueMap.values();
-        return Collections.unmodifiableCollection(values);
+        return values(StockItemState.class);
+    }
+
+    public static StockItemState valueOf(Character value) {
+        return valueOf(StockItemState.class, value);
     }
 
     public static StockItemState valueOf(char value) {
         return valueOf(new Character(value));
-    }
-
-    public static StockItemState valueOf(Character value) {
-        if (value == null)
-            return null;
-
-        StockItemState state = valueMap.get(value);
-        if (state == null)
-            throw new NoSuchEnumException(StockItemState.class, value);
-
-        return state;
     }
 
     /** 正常 */

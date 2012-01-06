@@ -1,10 +1,6 @@
 package com.bee32.sem.calendar;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-
-import javax.free.IllegalUsageException;
 
 import com.bee32.plover.arch.util.EnumAlt;
 import com.bee32.plover.rtx.location.ILocationConstants;
@@ -16,9 +12,6 @@ public class DiaryVisibility
 
     private static final long serialVersionUID = 1L;
 
-    static final Map<String, DiaryVisibility> nameMap = getNameMap(DiaryVisibility.class);
-    static final Map<Character, DiaryVisibility> valueMap = getValueMap(DiaryVisibility.class);
-
     final Location icon;
 
     private DiaryVisibility(char value, String name, String icon) {
@@ -26,29 +19,25 @@ public class DiaryVisibility
         this.icon = ICON.join(icon);
     }
 
+    @Override
     public Location getIcon() {
         return icon;
     }
 
-    public static Collection<DiaryVisibility> values() {
-        Collection<DiaryVisibility> values = valueMap.values();
-        return Collections.unmodifiableCollection(values);
+    public static DiaryVisibility forName(String name) {
+        return forName(DiaryVisibility.class, name);
     }
 
-    public static DiaryVisibility forName(String name) {
-        DiaryVisibility instance = nameMap.get(name);
-        if (instance != null)
-            return instance;
-        throw new IllegalUsageException(//
-                "Invalid DiaryVisibility name: " + name);
+    public static Collection<DiaryVisibility> values() {
+        return values(DiaryVisibility.class);
+    }
+
+    public static DiaryVisibility valueOf(Character value) {
+        return valueOf(DiaryVisibility.class, value);
     }
 
     public static DiaryVisibility valueOf(char value) {
-        DiaryVisibility instance = valueMap.get(value);
-        if (instance != null)
-            return instance;
-        throw new IllegalUsageException(String.format(//
-                "Invalid DiaryVisibility value: 0x%x" + value));
+        return valueOf(new Character(value));
     }
 
     public static final DiaryVisibility PRIVATE //

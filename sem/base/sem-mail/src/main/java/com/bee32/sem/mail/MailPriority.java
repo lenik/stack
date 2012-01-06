@@ -1,11 +1,9 @@
 package com.bee32.sem.mail;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 
 import com.bee32.plover.arch.util.EnumAlt;
-import com.bee32.plover.arch.util.NoSuchEnumException;
 
 public class MailPriority
         extends EnumAlt<Integer, MailPriority> {
@@ -19,24 +17,20 @@ public class MailPriority
         super(priority, name);
     }
 
-    public static Collection<MailPriority> values() {
-        Collection<MailPriority> values = valueMap.values();
-        return Collections.unmodifiableCollection(values);
+    public static MailPriority forName(String name) {
+        return forName(MailPriority.class, name);
     }
 
-    public static MailPriority forName(String altName) {
-        MailPriority mailPriority = nameMap.get(altName);
-        if (mailPriority == null)
-            throw new NoSuchEnumException(MailPriority.class, altName);
-        return mailPriority;
+    public static Collection<MailPriority> values() {
+        return values(MailPriority.class);
+    }
+
+    public static MailPriority valueOf(Integer value) {
+        return valueOf(MailPriority.class, value);
     }
 
     public static MailPriority valueOf(int value) {
-        MailPriority mailPriority = valueMap.get(value);
-        if (mailPriority == null)
-            throw new NoSuchEnumException(MailPriority.class, value);
-
-        return mailPriority;
+        return valueOf(new Integer(value));
     }
 
     public static final MailPriority URGENT = new MailPriority(10, "urgent");

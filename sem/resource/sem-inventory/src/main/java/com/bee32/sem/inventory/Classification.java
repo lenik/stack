@@ -1,46 +1,28 @@
 package com.bee32.sem.inventory;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.bee32.plover.arch.util.EnumAlt;
-import com.bee32.plover.arch.util.NoSuchEnumException;
 
 public class Classification
         extends EnumAlt<Character, Classification> {
 
     private static final long serialVersionUID = 1L;
 
-    static final Map<String, Classification> nameMap = new HashMap<String, Classification>();
-    static final Map<Character, Classification> valueMap = new HashMap<Character, Classification>();
-
     private Classification(char val, String name) {
         super(val, name);
     }
 
-    public static Classification forName(String altName) {
-        Classification gender = nameMap.get(altName);
-        if (gender == null)
-            throw new NoSuchEnumException(Classification.class, altName);
-        return gender;
+    public static Classification forName(String name) {
+        return forName(Classification.class, name);
     }
 
     public static Collection<Classification> values() {
-        Collection<Classification> values = valueMap.values();
-        return Collections.unmodifiableCollection(values);
+        return values(Classification.class);
     }
 
     public static Classification valueOf(Character value) {
-        if (value == null)
-            throw new NullPointerException("value");
-
-        Classification gender = valueMap.get(value);
-        if (gender == null)
-            throw new NoSuchEnumException(Classification.class, value);
-
-        return gender;
+        return valueOf(Classification.class, value);
     }
 
     public static Classification valueOf(char value) {

@@ -5,11 +5,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.bee32.plover.arch.util.EnumAlt;
-import com.bee32.plover.arch.util.NoSuchEnumException;
 
 public final class StockOrderSubject
         extends EnumAlt<String, StockOrderSubject> {
@@ -25,9 +23,6 @@ public final class StockOrderSubject
     private final boolean virtual;
     private final boolean packing;
     private final boolean special;
-
-    static final Map<String, StockOrderSubject> nameMap = getNameMap(StockOrderSubject.class);
-    static final Map<String, StockOrderSubject> valueMap = getValueMap(StockOrderSubject.class);
 
     static final List<StockOrderSubject> commons = new ArrayList<StockOrderSubject>();
     static final Set<String> packingSet = new HashSet<String>();
@@ -70,11 +65,6 @@ public final class StockOrderSubject
         return packing;
     }
 
-    public static Collection<StockOrderSubject> values() {
-        Collection<StockOrderSubject> values = valueMap.values();
-        return Collections.unmodifiableCollection(values);
-    }
-
     public static List<StockOrderSubject> getCommons() {
         return Collections.unmodifiableList(commons);
     }
@@ -95,30 +85,16 @@ public final class StockOrderSubject
         return Collections.unmodifiableSet(virtualOnlySet);
     }
 
-    /**
-     * @throws NoSuchEnumException
-     *             If the name is undefined.
-     */
-    public static StockOrderSubject forName(String altName) {
-        StockOrderSubject subject = nameMap.get(altName);
-        if (subject == null)
-            throw new NoSuchEnumException(StockOrderSubject.class, altName);
-        return subject;
+    public static StockOrderSubject forName(String name) {
+        return forName(StockOrderSubject.class, name);
     }
 
-    /**
-     * @throws NoSuchEnumException
-     *             If the value is undefined.
-     */
+    public static Collection<StockOrderSubject> values() {
+        return values(StockOrderSubject.class);
+    }
+
     public static StockOrderSubject valueOf(String value) {
-        if (value == null)
-            return null;
-
-        StockOrderSubject subject = valueMap.get(value);
-        if (subject == null)
-            throw new NoSuchEnumException(StockOrderSubject.class, value);
-
-        return subject;
+        return valueOf(StockOrderSubject.class, value);
     }
 
     /** （冗余）结算【物料】，外币已换算 */

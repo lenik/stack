@@ -1,11 +1,9 @@
 package com.bee32.sem.mail;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 
 import com.bee32.plover.arch.util.EnumAlt;
-import com.bee32.plover.arch.util.NoSuchEnumException;
 
 public class MailType
         extends EnumAlt<Integer, MailType> {
@@ -26,24 +24,20 @@ public class MailType
         this.baseType = baseType;
     }
 
-    public static Collection<MailType> values() {
-        Collection<MailType> values = valueMap.values();
-        return Collections.unmodifiableCollection(values);
+    public static MailType forName(String name) {
+        return forName(MailType.class, name);
     }
 
-    public static MailType forName(String altName) {
-        MailType mailType = nameMap.get(altName);
-        if (mailType == null)
-            throw new NoSuchEnumException(MailType.class, altName);
-        return mailType;
+    public static Collection<MailType> values() {
+        return values(MailType.class);
+    }
+
+    public static MailType valueOf(Integer value) {
+        return valueOf(MailType.class, value);
     }
 
     public static MailType valueOf(int value) {
-        MailType mailType = valueMap.get(value);
-        if (mailType == null)
-            throw new NoSuchEnumException(MailType.class, value);
-
-        return mailType;
+        return valueOf(new Integer(value));
     }
 
     public static final MailType __system__ /**/= new MailType(0x00000, "__system__");
