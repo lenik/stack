@@ -1,26 +1,31 @@
 package com.bee32.plover.inject;
 
+import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
 /**
  * Global application context holder.
  *
  * This service should be eargely activated by Spring CDI.
- *
- * @see StaticServiceActivator
  */
+@Component
 public class GlobalAppCtx
-        extends AbstractActivatorService {
+        implements ApplicationContextAware {
 
-    static ApplicationContext _appctx;
+    public static ApplicationContext appctx;
 
     @Override
-    public void activate() {
-        _appctx = appctx;
+    public void setApplicationContext(ApplicationContext applicationContext)
+            throws BeansException {
+        appctx = applicationContext;
     }
 
     public static ApplicationContext getApplicationContext() {
-        return _appctx;
+        if (appctx == null)
+            throw new IllegalStateException("Application context isn't initialized, yet.");
+        return appctx;
     }
 
 }
