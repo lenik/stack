@@ -1,12 +1,15 @@
 package com.bee32.plover.arch.util;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import com.bee32.plover.arch.service.ServicePrototypeLoader;
 import com.bee32.plover.arch.util.res.ResourceBundleUTF8;
+import com.bee32.plover.inject.ServiceTemplate;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.rtx.location.Locations;
 
@@ -17,40 +20,41 @@ import com.bee32.plover.rtx.location.Locations;
  * Code template for eclipse:
  *
  * <pre>
-class ${EnumType}
-        extends EnumAlt<${ValType}, ${EnumType}> {
-
-    private static final long serialVersionUID = 1L;
-
-    static final Map<String, ${EnumType}> nameMap = new HashMap<String, ${EnumType}>();
-    static final Map<${ValType}, ${EnumType}> valueMap = new HashMap<${ValType}, ${EnumType}>();
-
-    public static ${EnumType} forName(String altName) {
-        ${EnumType} ${typeName:localVar} = nameMap.get(altName);
-        if (${typeName:localVar} == null)
-            throw new NoSuchEnumException(${EnumType}.class, altName);
-        return ${typeName:localVar};
-    }
-
-    public static Collection<${EnumType}> values() {
-        Collection<${EnumType}> values = valueMap.values();
-        return Collections.unmodifiableCollection(values);
-    }
-
-    public static ${EnumType} valueOf(${ValType} value) {
-        if (value == null)
-            return null;
-
-        ${EnumType} ${typeName:localVar} = valueMap.get(value);
-        if (${typeName:localVar} == null)
-            throw new NoSuchEnumException(${EnumType}.class, value);
-
-        return ${typeName:localVar};
-    }
-
-}
+ * class ${EnumType}
+ *         extends EnumAlt<${ValType}, ${EnumType}> {
+ *
+ *     private static final long serialVersionUID = 1L;
+ *
+ *     static final Map<String, ${EnumType}> nameMap = new HashMap<String, ${EnumType}>();
+ *     static final Map<${ValType}, ${EnumType}> valueMap = new HashMap<${ValType}, ${EnumType}>();
+ *
+ *     public static ${EnumType} forName(String altName) {
+ *         ${EnumType} ${typeName:localVar} = nameMap.get(altName);
+ *         if (${typeName:localVar} == null)
+ *             throw new NoSuchEnumException(${EnumType}.class, altName);
+ *         return ${typeName:localVar};
+ *     }
+ *
+ *     public static Collection<${EnumType}> values() {
+ *         Collection<${EnumType}> values = valueMap.values();
+ *         return Collections.unmodifiableCollection(values);
+ *     }
+ *
+ *     public static ${EnumType} valueOf(${ValType} value) {
+ *         if (value == null)
+ *             return null;
+ *
+ *         ${EnumType} ${typeName:localVar} = valueMap.get(value);
+ *         if (${typeName:localVar} == null)
+ *             throw new NoSuchEnumException(${EnumType}.class, value);
+ *
+ *         return ${typeName:localVar};
+ *     }
+ *
+ * }
  * </pre>
  */
+@ServiceTemplate
 public abstract class EnumAlt<V extends Serializable, $ extends EnumAlt<V, $>>
         implements Serializable {
 
@@ -77,12 +81,6 @@ public abstract class EnumAlt<V extends Serializable, $ extends EnumAlt<V, $>>
             this.icon = Locations.parse(icon);
         else
             this.icon = null;
-
-        @SuppressWarnings("unchecked")
-        $ _this = ($) this;
-
-        getNameMap().put(name, _this);
-        getValueMap().put(value, _this);
     }
 
     /**
@@ -155,6 +153,21 @@ public abstract class EnumAlt<V extends Serializable, $ extends EnumAlt<V, $>>
             return rb.getString(key);
         else
             return def;
+    }
+
+    static void scanEnumTypes()
+            throws ClassNotFoundException, IOException {
+        for (Class<?> enumType : ServicePrototypeLoader.load(EnumAlt.class)) {
+
+        }
+    }
+
+    static {
+        try {
+            scanEnumTypes();
+        } catch (ClassNotFoundException | IOException e) {
+            throw new Error(e.getMessage(), e);
+        }
     }
 
 }
