@@ -196,14 +196,12 @@ public class Part
         this.priceStrategy = priceStrategy;
     }
 
-    @Column(name = "priceStrategy", length = 3)
-    String get_priceStrategy() {
+    @Column(name = "priceStrategy", nullable = false)
+    char get_priceStrategy() {
         return priceStrategy.getValue();
     }
 
-    void set_priceStrategy(String strategy) {
-        if (strategy == null)
-            throw new NullPointerException("strategy");
+    void set_priceStrategy(char strategy) {
         priceStrategy = PriceStrategy.valueOf(strategy);
     }
 
@@ -282,19 +280,18 @@ public class Part
         return price;
     }
 
-
     public Map<Material, BigDecimal> obtainAllMaterial() {
         Map<Material, BigDecimal> result = new HashMap<Material, BigDecimal>();
-        for(PartItem item : children) {
-            if(item.getClassification() == Classification.RAW) {
+        for (PartItem item : children) {
+            if (item.getClassification() == Classification.RAW) {
                 result.put(item.getMaterial(), item.getQuantity());
             } else {
                 Map<Material, BigDecimal> childMaterials = item.getPart().obtainAllMaterial();
-                if(childMaterials != null) {
-                    for(Material m : childMaterials.keySet()) {
+                if (childMaterials != null) {
+                    for (Material m : childMaterials.keySet()) {
                         BigDecimal q = result.get(m);
 
-                        if(q != null) {
+                        if (q != null) {
                             result.put(m, q.add(childMaterials.get(m)));
                         } else {
                             result.put(m, childMaterials.get(m));
@@ -304,7 +301,8 @@ public class Part
             }
         }
 
-        if(result.size() > 0) return result;
+        if (result.size() > 0)
+            return result;
         return null;
     }
 
