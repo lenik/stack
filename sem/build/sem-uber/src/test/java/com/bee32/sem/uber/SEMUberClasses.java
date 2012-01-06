@@ -20,7 +20,8 @@ public class SEMUberClasses {
 
     public static void main(String[] args)
             throws Exception {
-        System.out.printf("Size: %d/%d\n" + scanner.size2(), scanner.size());
+        System.out.printf("Size: %d/%d\n", scanner.size2(), scanner.size());
+        scanner.dump(Object.class);
     }
 
 }
