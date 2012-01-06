@@ -1,4 +1,4 @@
-package com.bee32.sems.bom.web;
+package com.bee32.sem.bom.web;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -17,6 +17,13 @@ import com.bee32.plover.criteria.hibernate.Not;
 import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.tree.TreeCriteria;
+import com.bee32.sem.bom.dto.PartDto;
+import com.bee32.sem.bom.dto.PartItemDto;
+import com.bee32.sem.bom.entity.Part;
+import com.bee32.sem.bom.entity.PartItem;
+import com.bee32.sem.bom.service.MaterialPriceNotFoundException;
+import com.bee32.sem.bom.service.PartService;
+import com.bee32.sem.bom.util.BomCriteria;
 import com.bee32.sem.frame.ui.SelectionAdapter;
 import com.bee32.sem.frame.ui.SelectionEvent;
 import com.bee32.sem.inventory.Classification;
@@ -29,13 +36,6 @@ import com.bee32.sem.misc.DummyDto;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.world.monetary.FxrQueryException;
-import com.bee32.sems.bom.dto.PartDto;
-import com.bee32.sems.bom.dto.PartItemDto;
-import com.bee32.sems.bom.entity.Part;
-import com.bee32.sems.bom.entity.PartItem;
-import com.bee32.sems.bom.service.MaterialPriceNotFoundException;
-import com.bee32.sems.bom.service.PartService;
-import com.bee32.sems.bom.util.BomCriteria;
 
 public class BomAdminBean
         extends BomAdminVdx {

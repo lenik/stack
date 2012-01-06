@@ -1,4 +1,4 @@
-package com.bee32.sems.bom.entity;
+package com.bee32.sem.bom.entity;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -24,11 +24,11 @@ import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
+import com.bee32.sem.bom.service.MaterialPriceNotFoundException;
+import com.bee32.sem.bom.service.PriceStrategy;
 import com.bee32.sem.inventory.Classification;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.world.monetary.FxrQueryException;
-import com.bee32.sems.bom.service.MaterialPriceNotFoundException;
-import com.bee32.sems.bom.service.PriceStrategy;
 
 /**
  * 部件（包括成品和半成品）

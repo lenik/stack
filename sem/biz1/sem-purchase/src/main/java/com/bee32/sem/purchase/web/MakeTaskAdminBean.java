@@ -15,6 +15,9 @@ import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
+import com.bee32.sem.bom.dto.PartDto;
+import com.bee32.sem.bom.entity.Part;
+import com.bee32.sem.bom.util.BomCriteria;
 import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
@@ -25,9 +28,6 @@ import com.bee32.sem.purchase.dto.MakeTaskDto;
 import com.bee32.sem.purchase.dto.MakeTaskItemDto;
 import com.bee32.sem.purchase.entity.MakeOrder;
 import com.bee32.sem.purchase.entity.MakeTask;
-import com.bee32.sems.bom.dto.PartDto;
-import com.bee32.sems.bom.entity.Part;
-import com.bee32.sems.bom.util.BomCriteria;
 
 public class MakeTaskAdminBean extends EntityViewBean {
 

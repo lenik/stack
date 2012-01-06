@@ -20,12 +20,12 @@ import org.hibernate.annotations.CascadeType;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.base.tx.TxEntity;
+import com.bee32.sem.bom.entity.Part;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.monetary.MCVector;
-import com.bee32.sems.bom.entity.Part;
 
 /**
  * 生产定单

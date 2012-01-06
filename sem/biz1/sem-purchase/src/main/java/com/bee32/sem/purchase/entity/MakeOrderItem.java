@@ -23,9 +23,9 @@ import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.ox1.c.CEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.util.i18n.CurrencyConfig;
+import com.bee32.sem.bom.entity.Part;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
-import com.bee32.sems.bom.entity.Part;
 
 /**
  * 定单明细项目

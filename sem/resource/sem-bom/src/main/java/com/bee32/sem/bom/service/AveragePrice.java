@@ -1,4 +1,4 @@
-package com.bee32.sems.bom.service;
+package com.bee32.sem.bom.service;
 
 import java.math.BigDecimal;
 import java.util.List;

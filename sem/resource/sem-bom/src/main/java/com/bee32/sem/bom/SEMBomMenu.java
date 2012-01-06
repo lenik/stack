@@ -1,4 +1,4 @@
-package com.bee32.sems.bom;
+package com.bee32.sem.bom;
 
 import com.bee32.plover.ox1.dict.CommonDictController;
 import com.bee32.plover.rtx.location.Location;

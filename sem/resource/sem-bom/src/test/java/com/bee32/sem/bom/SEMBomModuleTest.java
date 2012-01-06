@@ -1,9 +1,11 @@
-package com.bee32.sems.bom;
+package com.bee32.sem.bom;
 
 import java.io.IOException;
 import java.util.Locale;
 
 import com.bee32.plover.orm.unit.Using;
+import com.bee32.sem.bom.SEMBomModule;
+import com.bee32.sem.bom.SEMBomUnit;
 import com.bee32.sem.test.SEMTestCase;
 
 @Using(SEMBomUnit.class)

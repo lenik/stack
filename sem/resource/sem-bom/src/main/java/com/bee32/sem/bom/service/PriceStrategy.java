@@ -1,13 +1,13 @@
-package com.bee32.sems.bom.service;
+package com.bee32.sem.bom.service;
 
 import java.math.BigDecimal;
 import java.util.Collection;
 
 import com.bee32.plover.arch.util.EnumAlt;
+import com.bee32.sem.bom.entity.Part;
+import com.bee32.sem.bom.entity.PartItem;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.world.monetary.FxrQueryException;
-import com.bee32.sems.bom.entity.Part;
-import com.bee32.sems.bom.entity.PartItem;
 
 public abstract class PriceStrategy
         extends EnumAlt<Character, PriceStrategy> {

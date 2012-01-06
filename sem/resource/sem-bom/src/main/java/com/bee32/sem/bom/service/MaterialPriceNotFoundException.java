@@ -1,4 +1,4 @@
-package com.bee32.sems.bom.service;
+package com.bee32.sem.bom.service;
 
 import com.bee32.sem.inventory.entity.Material;
 

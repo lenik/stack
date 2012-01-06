@@ -1,4 +1,4 @@
-package com.bee32.sems.bom.entity;
+package com.bee32.sem.bom.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

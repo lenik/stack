@@ -1,4 +1,4 @@
-package com.bee32.sems.bom.dto;
+package com.bee32.sem.bom.dto;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -8,9 +8,9 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
+import com.bee32.sem.bom.entity.PartItem;
 import com.bee32.sem.inventory.Classification;
 import com.bee32.sem.inventory.dto.MaterialDto;
-import com.bee32.sems.bom.entity.PartItem;
 
 public class PartItemDto
         extends UIEntityDto<PartItem, Long> {

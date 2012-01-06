@@ -14,6 +14,7 @@ import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
+import com.bee32.sem.bom.dto.PartDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.entity.Material;
@@ -33,7 +34,6 @@ import com.bee32.sem.purchase.dto.PlanOrderDto;
 import com.bee32.sem.purchase.entity.MakeTask;
 import com.bee32.sem.purchase.entity.MaterialPlan;
 import com.bee32.sem.purchase.util.SelectItemHolder;
-import com.bee32.sems.bom.dto.PartDto;
 
 public class MaterialPlanAdminBean extends EntityViewBean {
 

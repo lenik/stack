@@ -1,4 +1,4 @@
-package com.bee32.sems.bom;
+package com.bee32.sem.bom;
 
 import com.bee32.plover.pub.oid.Oid;
 import com.bee32.sem.SEMOids;

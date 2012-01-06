@@ -1,4 +1,4 @@
-package com.bee32.sems.bom.web;
+package com.bee32.sem.bom.web;
 
 import com.bee32.sem.sandbox.MultiTabEntityVdx;
 

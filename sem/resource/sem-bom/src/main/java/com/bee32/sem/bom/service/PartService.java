@@ -1,4 +1,4 @@
-package com.bee32.sems.bom.service;
+package com.bee32.sem.bom.service;
 
 import java.util.List;
 
@@ -6,9 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.arch.DataService;
 import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.sem.bom.entity.Part;
+import com.bee32.sem.bom.entity.PartItem;
 import com.bee32.sem.inventory.entity.Material;
-import com.bee32.sems.bom.entity.Part;
-import com.bee32.sems.bom.entity.PartItem;
 
 public class PartService
         extends DataService {

@@ -1,4 +1,4 @@
-package com.bee32.sems.bom;
+package com.bee32.sem.bom;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -8,10 +8,10 @@ import javax.free.UnexpectedException;
 
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.plover.orm.util.SampleContribution;
+import com.bee32.sem.bom.entity.Part;
+import com.bee32.sem.bom.entity.PartItem;
 import com.bee32.sem.inventory.SEMInventorySamples;
 import com.bee32.sem.people.SEMPeopleSamples;
-import com.bee32.sems.bom.entity.Part;
-import com.bee32.sems.bom.entity.PartItem;
 
 @ImportSamples({ SEMInventorySamples.class })
 public class SEMBomSamples

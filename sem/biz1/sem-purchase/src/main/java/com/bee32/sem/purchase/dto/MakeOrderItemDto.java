@@ -10,10 +10,10 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.c.CEntityDto;
+import com.bee32.sem.bom.dto.PartDto;
 import com.bee32.sem.purchase.entity.MakeOrderItem;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
-import com.bee32.sems.bom.dto.PartDto;
 
 public class MakeOrderItemDto
         extends CEntityDto<MakeOrderItem, Long> {

@@ -2,6 +2,7 @@ package com.bee32.sem.purchase;
 
 import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
+import com.bee32.sem.bom.SEMBomUnit;
 import com.bee32.sem.chance.SEMChanceUnit;
 import com.bee32.sem.purchase.entity.Inquiry;
 import com.bee32.sem.purchase.entity.MakeOrder;
@@ -15,7 +16,6 @@ import com.bee32.sem.purchase.entity.PlanOrder;
 import com.bee32.sem.purchase.entity.PurchaseAdvice;
 import com.bee32.sem.purchase.entity.PurchaseRequest;
 import com.bee32.sem.purchase.entity.PurchaseRequestItem;
-import com.bee32.sems.bom.SEMBomUnit;
 
 @ImportUnit({ SEMBomUnit.class, SEMChanceUnit.class })
 public class SEMPurchaseUnit
