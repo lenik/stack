@@ -11,10 +11,10 @@ import com.bee32.plover.inject.ServiceTemplate;
 import com.bee32.plover.orm.dao.CommonDataManager;
 
 @ServiceTemplate
-public abstract class AbstractDc
+public abstract class AbstractDatabaseConfigurer
         implements IDatabaseConfigurer {
 
-    static Logger logger = LoggerFactory.getLogger(AbstractDc.class);
+    static Logger logger = LoggerFactory.getLogger(AbstractDatabaseConfigurer.class);
 
     @Override
     public int getOrder() {
