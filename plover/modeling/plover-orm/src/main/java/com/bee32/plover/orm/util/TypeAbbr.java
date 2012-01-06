@@ -13,7 +13,7 @@ import javax.free.Pred1;
 
 import org.postgresql.util.Base64;
 
-import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.xutil.ResourceScanner;
 
 public class TypeAbbr {
 
@@ -148,7 +148,7 @@ public class TypeAbbr {
 
     public void scanAndRegister(String packageName)
             throws IOException {
-        ClassUtil.scanTypes(packageName, registerAbbrInstance);
+        ResourceScanner.scanTypenames(packageName, registerAbbrInstance);
     }
 
     public Map<Class<?>, String[]> loadUsageMap()

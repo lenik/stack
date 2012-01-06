@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import javax.free.Pred1;
+
 public class ResourceScanner {
 
     private ClassLoader classLoader = ClassLoader.getSystemClassLoader();
@@ -84,6 +86,50 @@ public class ResourceScanner {
                 processor.process(childFile, childResourceName);
             }
         }
+    }
+
+    public static void scanTypenames(String packageName, final Pred1<String> typeNameCallback)
+            throws IOException {
+        ResourceScanner scanner = new ResourceScanner(//
+                ClassOrDirFileFilter.INSTANCE);
+        String packageDir = packageName.replace('.', '/');
+        for (String resourceName : scanner.scanResources(packageDir).keySet()) {
+            assert resourceName.endsWith(".class");
+            String rawName = resourceName.substring(0, resourceName.length() - 6);
+            String fqcn = rawName.replace('/', '.');
+            // fqcn = fqcn.replace('$', '.');
+            typeNameCallback.eval(fqcn);
+        }
+    }
+
+    static class TypeResolver
+            extends Pred1<String> {
+
+        final Pred1<Class<?>> target;
+
+        public TypeResolver(Pred1<Class<?>> target) {
+            if (target == null)
+                throw new NullPointerException("target");
+            this.target = target;
+        }
+
+        @Override
+        public boolean test(String fqcn) {
+            Class<?> clazz;
+            try {
+                clazz = Class.forName(fqcn);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e.getMessage(), e);
+            }
+            return target.test(clazz);
+        }
+
+    }
+
+    public static void scanTypes(String packageName, final Pred1<Class<?>> typeCallback)
+            throws IOException {
+        TypeResolver typeResolver = new TypeResolver(typeCallback);
+        scanTypenames(packageName, typeResolver);
     }
 
 }

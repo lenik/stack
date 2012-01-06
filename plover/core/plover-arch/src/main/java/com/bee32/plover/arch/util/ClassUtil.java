@@ -1,6 +1,5 @@
 package com.bee32.plover.arch.util;
 
-import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
@@ -11,7 +10,6 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.free.IllegalUsageException;
-import javax.free.Pred1;
 import javax.free.StringPart;
 import javax.free.UnexpectedException;
 
@@ -21,8 +19,6 @@ import org.slf4j.LoggerFactory;
 import com.bee32.plover.arch.generic.IParameterized;
 import com.bee32.plover.arch.generic.IParameterizedType;
 import com.bee32.plover.arch.util.res.ResourceBundleUTF8;
-import com.bee32.plover.xutil.ClassOrDirFileFilter;
-import com.bee32.plover.xutil.ResourceScanner;
 
 public class ClassUtil {
 
@@ -353,19 +349,6 @@ public class ClassUtil {
             mapped[i] = actual;
         }
         return mapped;
-    }
-
-    public static void scanTypes(String packageName, final Pred1<String> typeNameCallback)
-            throws IOException {
-        ResourceScanner scanner = new ResourceScanner(//
-                ClassOrDirFileFilter.INSTANCE);
-        String packageDir = packageName.replace('.', '/');
-        for (String resourceName : scanner.scanResources(packageDir).keySet()) {
-            assert resourceName.endsWith(".class");
-            String base = resourceName.substring(0, resourceName.length() - 6);
-            String fqcn = base.replace('/', '.');
-            typeNameCallback.eval(fqcn);
-        }
     }
 
 }
