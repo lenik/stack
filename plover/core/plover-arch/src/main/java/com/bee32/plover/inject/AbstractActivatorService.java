@@ -1,8 +1,5 @@
 package com.bee32.plover.inject;
 
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-
 import com.bee32.plover.arch.Component;
 
 /**
@@ -13,12 +10,9 @@ public abstract class AbstractActivatorService
         extends Component
         implements IActivatorService {
 
-    protected ApplicationContext appctx;
-
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext)
-            throws BeansException {
-        this.appctx = applicationContext;
+    public int getOrder() {
+        return 0;
     }
 
     @Override
