@@ -87,7 +87,7 @@ public abstract class ServiceCollector<T> {
 
         ServiceTemplate st = serviceType.getAnnotation(ServiceTemplate.class);
         if (st == null) {
-            System.out.println("        (skipped)");
+            System.out.println("        (No service-template annotation, skipped)");
             return;
         }
 
