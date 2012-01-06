@@ -192,7 +192,7 @@ public class Event
         this._state = stateVal;
     }
 
-    public void setState(EventState state) {
+    public void setState(EventState<?> state) {
         this._state = state == null ? 0 : state.getValue();
     }
 

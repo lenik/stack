@@ -18,13 +18,13 @@ public class EventStatus
 
     private int flagsMask;
     private boolean closed;
-    private EventState state = GenericState.UNKNOWN;
+    private EventState<?> state = GenericState.UNKNOWN;
 
     public EventStatus() {
         super();
     }
 
-    public EventStatus(EventState state, String alias, String description) {
+    public EventStatus(EventState<?> state, String alias, String description) {
         super(state.getValue(), alias, description);
     }
 

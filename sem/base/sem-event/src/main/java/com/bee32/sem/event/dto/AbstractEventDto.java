@@ -236,7 +236,7 @@ public abstract class AbstractEventDto<E extends Event>
             statusText = status.getLabel();
 
         if (statusText == null && stateIndex != 0) {
-            EventState eventState = EventState.valueOf(stateIndex);
+            EventState<?> eventState = EventState.valueOf(stateIndex);
             statusText = eventState.getName();
         }
 

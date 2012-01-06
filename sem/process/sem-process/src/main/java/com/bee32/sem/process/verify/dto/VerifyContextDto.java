@@ -3,7 +3,6 @@ package com.bee32.sem.process.verify.dto;
 import java.util.Date;
 
 import com.bee32.plover.orm.util.PartialDto;
-import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.dto.EventDto;
 import com.bee32.sem.process.verify.AbstractVerifyContext;
 import com.bee32.sem.process.verify.VerifyState;
@@ -15,7 +14,7 @@ public abstract class VerifyContextDto<T extends AbstractVerifyContext>
 
     public static final int VERIFY_EVENT = 1;
 
-    private EventState verifyState;
+    private VerifyState verifyState;
     private String verifyError;
     private Date verifyEvalDate;
     private EventDto verifyEvent;
@@ -53,11 +52,11 @@ public abstract class VerifyContextDto<T extends AbstractVerifyContext>
         merge(target, "verifyEvent", verifyEvent);
     }
 
-    public EventState getVerifyState() {
+    public VerifyState getVerifyState() {
         return verifyState;
     }
 
-    public void setVerifyState(EventState verifyState) {
+    public void setVerifyState(VerifyState verifyState) {
         this.verifyState = verifyState;
     }
 

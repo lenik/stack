@@ -25,7 +25,6 @@ import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.GeneralFormatter;
 import com.bee32.plover.util.IMultiFormat;
 import com.bee32.plover.util.PrettyPrintStream;
-import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.entity.Event;
 
 @MappedSuperclass
@@ -36,7 +35,7 @@ public abstract class AbstractVerifyContext
 
     protected Entity<?> entity;
 
-    EventState verifyState = VerifyState.UNKNOWN;
+    VerifyState verifyState = VerifyState.UNKNOWN;
     String verifyError;
     Date verifyEvalDate;
     Event verifyEvent;
@@ -81,11 +80,11 @@ public abstract class AbstractVerifyContext
     }
 
     @Transient
-    public EventState getVerifyState() {
+    public VerifyState getVerifyState() {
         return verifyState;
     }
 
-    void setVerifyState(EventState verifyState) {
+    void setVerifyState(VerifyState verifyState) {
         if (verifyState == null)
             throw new NullPointerException("verifyState");
         this.verifyState = verifyState;
