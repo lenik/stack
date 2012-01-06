@@ -2,7 +2,6 @@ package com.bee32.sem.mail.entity;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.bee32.plover.arch.util.EnumAlt;
@@ -13,21 +12,11 @@ public class MailOrientation
 
     private static final long serialVersionUID = 1L;
 
-    static final Map<String, MailOrientation> nameMap = new HashMap<String, MailOrientation>();
-    static final Map<Integer, MailOrientation> valueMap = new HashMap<Integer, MailOrientation>();
+    static final Map<String, MailOrientation> nameMap = getNameMap(MailOrientation.class);
+    static final Map<Integer, MailOrientation> valueMap = getValueMap(MailOrientation.class);
 
     public MailOrientation(int value, String name) {
         super(value, name);
-    }
-
-    @Override
-    protected Map<String, MailOrientation> getNameMap() {
-        return nameMap;
-    }
-
-    @Override
-    protected Map<Integer, MailOrientation> getValueMap() {
-        return valueMap;
     }
 
     public static Collection<MailOrientation> values() {

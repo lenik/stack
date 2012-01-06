@@ -2,24 +2,21 @@ package com.bee32.sem.event;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.bee32.plover.arch.util.NoSuchEnumException;
 
 public class GenericState
-        extends EventState {
+        extends EventState<GenericState> {
 
     private static final long serialVersionUID = 1L;
 
-    static final Map<String, GenericState> nameMap = new HashMap<String, GenericState>();
-    static final Map<Integer, GenericState> valueMap = new HashMap<Integer, GenericState>();
+    static final int _CLASS = __class__(EventStateClass.GENERIC);
+    static final Map<String, GenericState> nameMap = getNameMap(GenericState.class);
+    static final Map<Integer, GenericState> valueMap = getValueMap(GenericState.class);
 
-    public GenericState(int id, String name) {
-        super(id, name);
-
-        nameMap.put(name, this);
-        valueMap.put(id, this);
+    public GenericState(int index, String name) {
+        super(_CLASS | index, name);
     }
 
     public static Collection<GenericState> values() {
@@ -27,17 +24,14 @@ public class GenericState
         return Collections.unmodifiableCollection(values);
     }
 
-    public static GenericState forName(String altName) {
-        GenericState genericState = nameMap.get(altName);
+    public static GenericState forName(String name) {
+        GenericState genericState = nameMap.get(name);
         if (genericState == null)
-            throw new NoSuchEnumException(GenericState.class, altName);
+            throw new NoSuchEnumException(GenericState.class, name);
         return genericState;
     }
 
-    public static GenericState valueOf(Integer value) {
-        if (value == null)
-            return null;
-
+    public static GenericState valueOf(int value) {
         GenericState genericState = valueMap.get(value);
         if (genericState == null)
             throw new NoSuchEnumException(GenericState.class, value);
@@ -45,10 +39,8 @@ public class GenericState
         return genericState;
     }
 
-    static final int _CLASS = __class__(SEL_MASK, EventStateClass.ESC_EVENT);
-
     static GenericState _(int index, String name) {
-        return new GenericState(_CLASS + index, name);
+        return new GenericState(index, name);
     }
 
     public static final GenericState UNKNOWN = _(0, "unknown");

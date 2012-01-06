@@ -2,7 +2,6 @@ package com.bee32.sem.inventory.entity;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.bee32.plover.arch.util.EnumAlt;
@@ -16,8 +15,8 @@ public class StockItemState
 
     private static final long serialVersionUID = 1L;
 
-    static final Map<String, StockItemState> nameMap = new HashMap<String, StockItemState>();
-    static final Map<Character, StockItemState> valueMap = new HashMap<Character, StockItemState>();
+    static final Map<String, StockItemState> nameMap = getNameMap(StockItemState.class);
+    static final Map<Character, StockItemState> valueMap = getValueMap(StockItemState.class);
 
     final boolean abnormal;
 
@@ -32,16 +31,6 @@ public class StockItemState
 
     public boolean isAbnormal() {
         return abnormal;
-    }
-
-    @Override
-    protected Map<String, StockItemState> getNameMap() {
-        return nameMap;
-    }
-
-    @Override
-    protected Map<Character, StockItemState> getValueMap() {
-        return valueMap;
     }
 
     public static StockItemState forName(String altName) {

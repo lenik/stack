@@ -2,7 +2,6 @@ package com.bee32.sem.calendar;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.free.IllegalUsageException;
@@ -17,8 +16,8 @@ public class DiaryVisibility
 
     private static final long serialVersionUID = 1L;
 
-    static final Map<String, DiaryVisibility> nameMap = new HashMap<String, DiaryVisibility>();
-    static final Map<Character, DiaryVisibility> valueMap = new HashMap<Character, DiaryVisibility>();
+    static final Map<String, DiaryVisibility> nameMap = getNameMap(DiaryVisibility.class);
+    static final Map<Character, DiaryVisibility> valueMap = getValueMap(DiaryVisibility.class);
 
     final Location icon;
 
@@ -29,16 +28,6 @@ public class DiaryVisibility
 
     public Location getIcon() {
         return icon;
-    }
-
-    @Override
-    protected Map<String, DiaryVisibility> getNameMap() {
-        return nameMap;
-    }
-
-    @Override
-    protected Map<Character, DiaryVisibility> getValueMap() {
-        return valueMap;
     }
 
     public static Collection<DiaryVisibility> values() {

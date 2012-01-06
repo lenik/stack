@@ -2,7 +2,6 @@ package com.bee32.sem.inventory.entity;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.bee32.plover.arch.util.EnumAlt;
@@ -16,21 +15,11 @@ public class StockPeriodType
 
     private static final long serialVersionUID = 1L;
 
-    static final Map<String, StockPeriodType> nameMap = new HashMap<String, StockPeriodType>();
-    static final Map<Character, StockPeriodType> valueMap = new HashMap<Character, StockPeriodType>();
+    static final Map<String, StockPeriodType> nameMap = getNameMap(StockPeriodType.class);
+    static final Map<Character, StockPeriodType> valueMap = getValueMap(StockPeriodType.class);
 
     StockPeriodType(char value, String name) {
         super(value, name);
-    }
-
-    @Override
-    protected Map<String, StockPeriodType> getNameMap() {
-        return nameMap;
-    }
-
-    @Override
-    protected Map<Character, StockPeriodType> getValueMap() {
-        return valueMap;
     }
 
     public static StockPeriodType forName(String altName) {

@@ -3,7 +3,6 @@ package com.bee32.sem.inventory.entity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -27,8 +26,8 @@ public final class StockOrderSubject
     private final boolean packing;
     private final boolean special;
 
-    static final Map<String, StockOrderSubject> nameMap = new HashMap<String, StockOrderSubject>();
-    static final Map<String, StockOrderSubject> valueMap = new HashMap<String, StockOrderSubject>();
+    static final Map<String, StockOrderSubject> nameMap = getNameMap(StockOrderSubject.class);
+    static final Map<String, StockOrderSubject> valueMap = getValueMap(StockOrderSubject.class);
 
     static final List<StockOrderSubject> commons = new ArrayList<StockOrderSubject>();
     static final Set<String> packingSet = new HashSet<String>();
@@ -69,16 +68,6 @@ public final class StockOrderSubject
 
     public boolean isPacking() {
         return packing;
-    }
-
-    @Override
-    protected Map<String, StockOrderSubject> getNameMap() {
-        return nameMap;
-    }
-
-    @Override
-    protected Map<String, StockOrderSubject> getValueMap() {
-        return valueMap;
     }
 
     public static Collection<StockOrderSubject> values() {

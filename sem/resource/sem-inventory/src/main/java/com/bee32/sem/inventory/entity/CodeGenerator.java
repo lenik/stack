@@ -2,7 +2,6 @@ package com.bee32.sem.inventory.entity;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.bee32.plover.arch.util.EnumAlt;
@@ -16,21 +15,11 @@ public class CodeGenerator
 
     private static final long serialVersionUID = 1L;
 
-    static final Map<String, CodeGenerator> nameMap = new HashMap<String, CodeGenerator>();
-    static final Map<Character, CodeGenerator> valueMap = new HashMap<Character, CodeGenerator>();
+    static final Map<String, CodeGenerator> nameMap = getNameMap(CodeGenerator.class);
+    static final Map<Character, CodeGenerator> valueMap = getValueMap(CodeGenerator.class);
 
     public CodeGenerator(char value, String name) {
         super(value, name);
-    }
-
-    @Override
-    protected Map<String, CodeGenerator> getNameMap() {
-        return nameMap;
-    }
-
-    @Override
-    protected Map<Character, CodeGenerator> getValueMap() {
-        return valueMap;
     }
 
     public static CodeGenerator forName(String altName) {

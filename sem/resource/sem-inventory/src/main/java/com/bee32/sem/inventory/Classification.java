@@ -20,16 +20,6 @@ public class Classification
         super(val, name);
     }
 
-    @Override
-    protected Map<String, Classification> getNameMap() {
-        return nameMap;
-    }
-
-    @Override
-    protected Map<Character, Classification> getValueMap() {
-        return valueMap;
-    }
-
     public static Classification forName(String altName) {
         Classification gender = nameMap.get(altName);
         if (gender == null)

@@ -2,7 +2,6 @@ package com.bee32.sem.mail;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.bee32.plover.arch.util.EnumAlt;
@@ -13,21 +12,11 @@ public class MailPriority
 
     private static final long serialVersionUID = 1L;
 
-    static final Map<String, MailPriority> nameMap = new HashMap<String, MailPriority>();
-    static final Map<Integer, MailPriority> valueMap = new HashMap<Integer, MailPriority>();
+    static final Map<String, MailPriority> nameMap = getNameMap(MailPriority.class);
+    static final Map<Integer, MailPriority> valueMap = getValueMap(MailPriority.class);
 
     public MailPriority(int priority, String name) {
         super(priority, name);
-    }
-
-    @Override
-    protected Map<String, MailPriority> getNameMap() {
-        return nameMap;
-    }
-
-    @Override
-    protected Map<Integer, MailPriority> getValueMap() {
-        return valueMap;
     }
 
     public static Collection<MailPriority> values() {

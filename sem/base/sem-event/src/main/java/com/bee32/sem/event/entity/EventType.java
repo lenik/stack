@@ -2,7 +2,6 @@ package com.bee32.sem.event.entity;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.bee32.plover.arch.util.EnumAlt;
@@ -17,18 +16,8 @@ public class EventType
         super(value, name);
     }
 
-    static final Map<String, EventType> nameMap = new HashMap<String, EventType>();
-    static final Map<Character, EventType> valueMap = new HashMap<Character, EventType>();
-
-    @Override
-    protected Map<String, EventType> getNameMap() {
-        return nameMap;
-    }
-
-    @Override
-    protected Map<Character, EventType> getValueMap() {
-        return valueMap;
-    }
+    static final Map<String, EventType> nameMap = getNameMap(EventType.class);
+    static final Map<Character, EventType> valueMap = getValueMap(EventType.class);
 
     public static Collection<EventType> values() {
         Collection<EventType> values = valueMap.values();

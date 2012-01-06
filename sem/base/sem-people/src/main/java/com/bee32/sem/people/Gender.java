@@ -2,7 +2,6 @@ package com.bee32.sem.people;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.bee32.plover.arch.util.EnumAlt;
@@ -13,21 +12,11 @@ public class Gender
 
     private static final long serialVersionUID = 1L;
 
-    static final Map<String, Gender> nameMap = new HashMap<String, Gender>();
-    static final Map<Character, Gender> valueMap = new HashMap<Character, Gender>();
+    static final Map<String, Gender> nameMap = getNameMap(Gender.class);
+    static final Map<Character, Gender> valueMap = getValueMap(Gender.class);
 
     private Gender(char val, String name) {
         super(val, name);
-    }
-
-    @Override
-    protected Map<String, Gender> getNameMap() {
-        return nameMap;
-    }
-
-    @Override
-    protected Map<Character, Gender> getValueMap() {
-        return valueMap;
     }
 
     public static Gender forName(String altName) {

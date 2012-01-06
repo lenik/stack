@@ -3,7 +3,6 @@ package com.bee32.sems.bom.service;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.bee32.plover.arch.util.EnumAlt;
@@ -18,21 +17,11 @@ public abstract class PriceStrategy
 
     private static final long serialVersionUID = 1L;
 
-    static final Map<String, PriceStrategy> nameMap = new HashMap<String, PriceStrategy>();
-    static final Map<String, PriceStrategy> valueMap = new HashMap<String, PriceStrategy>();
+    static final Map<String, PriceStrategy> nameMap = getNameMap(PriceStrategy.class);
+    static final Map<String, PriceStrategy> valueMap = getValueMap(PriceStrategy.class);
 
     public PriceStrategy(String value, String name) {
         super(value, name);
-    }
-
-    @Override
-    protected Map<String, PriceStrategy> getNameMap() {
-        return nameMap;
-    }
-
-    @Override
-    protected Map<String, PriceStrategy> getValueMap() {
-        return valueMap;
     }
 
     public static Collection<PriceStrategy> values() {

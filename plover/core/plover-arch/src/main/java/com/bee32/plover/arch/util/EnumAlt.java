@@ -2,10 +2,16 @@ package com.bee32.plover.arch.util;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+
+import javax.free.ClassLocal;
+import javax.free.IllegalUsageException;
 
 import com.bee32.plover.arch.service.ServicePrototypeLoader;
 import com.bee32.plover.arch.util.res.ResourceBundleUTF8;
@@ -54,7 +60,7 @@ import com.bee32.plover.rtx.location.Locations;
  * }
  * </pre>
  */
-@ServiceTemplate
+@ServiceTemplate(prototype = true)
 public abstract class EnumAlt<V extends Serializable, $ extends EnumAlt<V, $>>
         implements Serializable {
 
@@ -63,6 +69,7 @@ public abstract class EnumAlt<V extends Serializable, $ extends EnumAlt<V, $>>
     protected final V value;
     protected final String name;
     protected final String label;
+    protected final String description;
     protected final Location icon;
 
     public EnumAlt(V value, String name) {
@@ -74,7 +81,8 @@ public abstract class EnumAlt<V extends Serializable, $ extends EnumAlt<V, $>>
         this.name = name;
         this.value = value;
 
-        this.label = _nls(name + ".label", name);
+        label = _nls(name + ".label", name);
+        description = _nls(name + ".description", null);
 
         String icon = _nls(name + ".icon", null);
         if (icon != null)
@@ -88,14 +96,22 @@ public abstract class EnumAlt<V extends Serializable, $ extends EnumAlt<V, $>>
      *
      * @return A non-<code>null</code> map contains all the enum elements.
      */
-    protected abstract Map<String, $> getNameMap();
+    protected final Map<String, $> getNameMap() {
+        @SuppressWarnings("unchecked")
+        Map<String, $> nameMap = (Map<String, $>) getNameMap(getClass());
+        return nameMap;
+    }
 
     /**
      * Get the value map of this enumeration type.
      *
      * @return A non-<code>null</code> map contains all the enum elements.
      */
-    protected abstract Map<V, $> getValueMap();
+    protected final Map<V, $> getValueMap() {
+        @SuppressWarnings("unchecked")
+        Map<V, $> valueMap = (Map<V, $>) getValueMap(getClass());
+        return valueMap;
+    }
 
     public String getName() {
         return name;
@@ -114,6 +130,10 @@ public abstract class EnumAlt<V extends Serializable, $ extends EnumAlt<V, $>>
             return label;
         else
             return name;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public Location getIcon() {
@@ -155,16 +175,83 @@ public abstract class EnumAlt<V extends Serializable, $ extends EnumAlt<V, $>>
             return def;
     }
 
-    static void scanEnumTypes()
+    static <E extends EnumAlt<V, E>, V extends Serializable> //
+    void scanEnumTypes(boolean publicOnly)
             throws ClassNotFoundException, IOException {
         for (Class<?> enumType : ServicePrototypeLoader.load(EnumAlt.class)) {
+            for (Field field : enumType.getDeclaredFields()) {
+                // public static ...
+                int mod = field.getModifiers();
+                if (!Modifier.isStatic(mod))
+                    continue;
+                if (!Modifier.isPublic(mod))
+                    if (publicOnly)
+                        continue;
+                    else
+                        field.setAccessible(true);
 
+                Class<E> declareType = (Class<E>) field.getType();
+                if (!enumType.isAssignableFrom(declareType))
+                    continue;
+
+                E entry;
+                try {
+                    entry = (E) field.get(null);
+                } catch (ReflectiveOperationException e) {
+                    throw new IllegalUsageException(e.getMessage(), e);
+                }
+                // Class<E> actualType = (Class<E>) entry.getClass();
+
+                registerTree(declareType, entry);
+            }
+        }
+    }
+
+    static final ClassLocal<Map<String, ? extends EnumAlt<?, ?>>> clNameMap = new ClassLocal<>();
+    static final ClassLocal<Map<Object, ? extends EnumAlt<?, ?>>> clValueMap = new ClassLocal<>();
+
+    protected static synchronized <E extends EnumAlt<?, E>> //
+    Map<String, E> getNameMap(Class<E> enumType) {
+        Map<String, E> nameMap = (Map<String, E>) clNameMap.get(enumType);
+        if (nameMap == null) {
+            nameMap = new LinkedHashMap<>();
+            clNameMap.put(enumType, nameMap);
+        }
+        return nameMap;
+    }
+
+    protected static synchronized <E extends EnumAlt<V, E>, V extends Serializable> //
+    Map<V, E> getValueMap(Class<E> enumType) {
+        Map<Object, E> _valueMap = (Map<Object, E>) clValueMap.get(enumType);
+        if (_valueMap == null) {
+            _valueMap = new LinkedHashMap<>();
+            clValueMap.put(enumType, _valueMap);
+        }
+        @SuppressWarnings("unchecked")
+        Map<V, E> valueMap = (Map<V, E>) _valueMap;
+        return valueMap;
+    }
+
+    static <E extends EnumAlt<V, E>, V extends Serializable, Eb extends EnumAlt<V, Eb>> //
+    void registerTree(Class<E> enumType, E entry) {
+        Map<String, E> nameMap = getNameMap(enumType);
+        Map<V, E> valueMap = getValueMap(enumType);
+        nameMap.put(entry.getName(), entry);
+        valueMap.put(entry.getValue(), entry);
+
+        Class<?> _superclass = enumType.getSuperclass();
+        if (_superclass != null && EnumAlt.class.isAssignableFrom(_superclass)) {
+            @SuppressWarnings("unchecked")
+            Class<Eb> baseEnumType = (Class<Eb>) _superclass;
+            @SuppressWarnings("unchecked")
+            Eb baseEntry = (Eb) entry;
+            registerTree(baseEnumType, baseEntry);
         }
     }
 
     static {
         try {
-            scanEnumTypes();
+            scanEnumTypes(true);
         } catch (ClassNotFoundException | IOException e) {
             throw new Error(e.getMessage(), e);
         }

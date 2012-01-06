@@ -2,7 +2,6 @@ package com.bee32.sem.mail;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.bee32.plover.arch.util.EnumAlt;
@@ -13,8 +12,8 @@ public class MailType
 
     private static final long serialVersionUID = 1L;
 
-    static final Map<String, MailType> nameMap = new HashMap<String, MailType>();
-    static final Map<Integer, MailType> valueMap = new HashMap<Integer, MailType>();
+    static final Map<String, MailType> nameMap = getNameMap(MailType.class);
+    static final Map<Integer, MailType> valueMap = getValueMap(MailType.class);
 
     MailType baseType;
 
@@ -25,16 +24,6 @@ public class MailType
     public MailType(int value, String name, MailType baseType) {
         super(baseType == null ? value : baseType.value + value, name);
         this.baseType = baseType;
-    }
-
-    @Override
-    protected Map<String, MailType> getNameMap() {
-        return nameMap;
-    }
-
-    @Override
-    protected Map<Integer, MailType> getValueMap() {
-        return valueMap;
     }
 
     public static Collection<MailType> values() {

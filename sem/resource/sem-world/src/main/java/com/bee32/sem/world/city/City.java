@@ -2,7 +2,6 @@ package com.bee32.sem.world.city;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.bee32.plover.arch.util.NoSuchEnumException;
@@ -12,21 +11,11 @@ public class City
 
     private static final long serialVersionUID = 1L;
 
-    static final Map<String, City> nameMap = new HashMap<String, City>();
-    static final Map<String, City> valueMap = new HashMap<String, City>();
+    static final Map<String, City> nameMap = getNameMap(City.class);
+    static final Map<String, City> valueMap = getValueMap(City.class);
 
     public City(String value, String name) {
         super(value, name);
-    }
-
-    @Override
-    protected Map<String, City> getNameMap() {
-        return nameMap;
-    }
-
-    @Override
-    protected Map<String, City> getValueMap() {
-        return valueMap;
     }
 
     public static City forName(String altName) {
