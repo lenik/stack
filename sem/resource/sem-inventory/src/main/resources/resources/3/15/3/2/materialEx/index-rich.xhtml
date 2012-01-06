@@ -127,8 +127,10 @@
                             <p:graphicImage
                                 value="#{location.ICON}/cview16/filenav_nav.gif" />
                         </p:commandLink>
-                        <p:commandLink title="仓库相关信息" update=""
-                            oncomplete="">
+                        <p:commandLink
+                            title="仓库选项"
+                            update="warehouseOptionForm:currMaterial warehouseOptionForm:warehouseOptions"
+                            oncomplete="warehouseOptionDialog.show()">
                             <f:setPropertyActionListener
                                 value="#{material}"
                                 target="#{materialExAdminBean.material}" />
@@ -313,6 +315,10 @@
 
         <ui:insert name="preferredLocation">
             <ui:include src="preferredLocation.xhtml"/>
+        </ui:insert>
+
+        <ui:insert name="warehouseOption">
+            <ui:include src="warehouseOption.xhtml"/>
         </ui:insert>
 
     </ui:define>

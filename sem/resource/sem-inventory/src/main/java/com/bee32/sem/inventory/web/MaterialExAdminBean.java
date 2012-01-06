@@ -16,12 +16,14 @@ import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.MaterialPreferredLocationDto;
 import com.bee32.sem.inventory.dto.MaterialPriceDto;
+import com.bee32.sem.inventory.dto.MaterialWarehouseOptionDto;
 import com.bee32.sem.inventory.dto.StockLocationDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialAttribute;
 import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.entity.MaterialPreferredLocation;
 import com.bee32.sem.inventory.entity.MaterialPrice;
+import com.bee32.sem.inventory.entity.MaterialWarehouseOption;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.world.monetary.CurrencyUtil;
 import com.bee32.sem.world.thing.ScaleItem;
@@ -53,6 +55,8 @@ public class MaterialExAdminBean extends EntityViewBean {
     MaterialPreferredLocationDto preferredLocation = new MaterialPreferredLocationDto().create();
 
     TreeNode selectedPreferredLocation;
+
+    MaterialWarehouseOptionDto warehouseOption = new MaterialWarehouseOptionDto().create();
 
     public MaterialExAdminBean() {
         loadMaterialCategoryTree();
@@ -344,7 +348,7 @@ public class MaterialExAdminBean extends EntityViewBean {
             materialAttr.setMaterial(material);
             MaterialAttribute _attr = materialAttr.unmarshal();
             serviceFor(MaterialAttribute.class).saveOrUpdate(_attr);
-            serviceFor(Material.class).evict(material.unmarshal());
+            serviceFor(Material.class).evict(_attr.getMaterial());
             uiLogger.info("保存物料属性成功.");
         } catch (Exception e) {
             uiLogger.error("保存物料属性出错!", e);
@@ -407,7 +411,7 @@ public class MaterialExAdminBean extends EntityViewBean {
             preferredLocation.setMaterial(material);
             MaterialPreferredLocation _preferredLocation = preferredLocation.unmarshal();
             serviceFor(MaterialPreferredLocation.class).saveOrUpdate(_preferredLocation);
-            serviceFor(Material.class).evict(material.unmarshal());
+            serviceFor(Material.class).evict(_preferredLocation.getMaterial());
             uiLogger.info("保存物料推荐库位成功.");
         } catch (Exception e) {
             uiLogger.error("保存物料推荐库位出错!", e);
@@ -426,4 +430,52 @@ public class MaterialExAdminBean extends EntityViewBean {
             uiLogger.error("删除物料推荐库位出错!", e);
         }
     }
+
+    public MaterialWarehouseOptionDto getWarehouseOption() {
+        return warehouseOption;
+    }
+
+    public void setWarehouseOption(MaterialWarehouseOptionDto warehouseOption) {
+        this.warehouseOption = warehouseOption;
+    }
+
+
+    public void newWarehouseOption() {
+        warehouseOption = new MaterialWarehouseOptionDto().create();
+    }
+
+    public List<MaterialWarehouseOptionDto> getWarehouseOptions() {
+        if (material != null && material.getId() != null) {
+            material = reload(material, MaterialDto.OPTIONS);
+            return material.getOptions();
+        };
+
+        return null;
+    }
+
+    public void addMaterialWarehouseOption() {
+        try {
+            warehouseOption.setMaterial(material);
+            MaterialWarehouseOption _warehouseOption = warehouseOption.unmarshal();
+            serviceFor(MaterialWarehouseOption.class).saveOrUpdate(_warehouseOption);
+            serviceFor(Material.class).evict(_warehouseOption.getMaterial());
+            uiLogger.info("保存物料仓库选项成功.");
+        } catch (Exception e) {
+            uiLogger.error("保存物料仓库选项出错!", e);
+        }
+    }
+
+    public void deleteMaterialWarehouseOption() {
+        try {
+            MaterialWarehouseOption _warehouseOption = warehouseOption.unmarshal();
+            _warehouseOption.getMaterial().getOptions().remove(_warehouseOption);
+
+            serviceFor(MaterialWarehouseOption.class).delete(_warehouseOption);
+            serviceFor(Material.class).evict(_warehouseOption.getMaterial());
+            uiLogger.info("删除物料仓库选项成功.");
+        } catch (Exception e) {
+            uiLogger.error("删除物料仓库选项出错!", e);
+        }
+    }
+
 }
