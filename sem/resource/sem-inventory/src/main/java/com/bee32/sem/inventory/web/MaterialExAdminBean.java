@@ -11,11 +11,16 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.ox1.tree.TreeCriteria;
+import com.bee32.sem.inventory.dto.MaterialAttributeDto;
 import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
+import com.bee32.sem.inventory.dto.MaterialPreferredLocationDto;
 import com.bee32.sem.inventory.dto.MaterialPriceDto;
+import com.bee32.sem.inventory.dto.StockLocationDto;
 import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.inventory.entity.MaterialAttribute;
 import com.bee32.sem.inventory.entity.MaterialCategory;
+import com.bee32.sem.inventory.entity.MaterialPreferredLocation;
 import com.bee32.sem.inventory.entity.MaterialPrice;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.world.monetary.CurrencyUtil;
@@ -42,6 +47,12 @@ public class MaterialExAdminBean extends EntityViewBean {
     MaterialPriceDto materialPrice = new MaterialPriceDto().create();
 
     ScaleItem scaleItem = new ScaleItem();
+
+    MaterialAttributeDto materialAttr = new MaterialAttributeDto().create();
+
+    MaterialPreferredLocationDto preferredLocation = new MaterialPreferredLocationDto().create();
+
+    TreeNode selectedPreferredLocation;
 
     public MaterialExAdminBean() {
         loadMaterialCategoryTree();
@@ -86,10 +97,12 @@ public class MaterialExAdminBean extends EntityViewBean {
 
     public List<ScaleItem> getScaleList() {
         if (material != null && material.getId() != null) {
-            if (material.getUnitConv() == null) {
+            if (material.getUnitConv() == null || material.getUnitConv().getId() == null) {
                 return null;
             } else {
-                return material.getUnitConv().getItemList();
+                UnitConvDto unitConv = material.getUnitConv();
+                unitConv = reload(unitConv);
+                return unitConv.getItemList();
             }
         }
         return null;
@@ -259,14 +272,158 @@ public class MaterialExAdminBean extends EntityViewBean {
 
     @Transactional
     public void addUnitScale() {
-        UnitConvDto unitConv = material.getUnitConv();
-        if (unitConv == null) {
-            unitConv = new UnitConvDto().create();
-            material.setUnitConv(unitConv);
-            serviceFor(Material.class).saveOrUpdate(arg0);
-        }
+        try {
+            UnitConvDto unitConv = material.getUnitConv();
+            UnitConv _unitConv = unitConv.unmarshal();
+            Material _m = material.unmarshal();
 
-        unitConv.addScaleItem(scaleItem);
-        serviceFor(UnitConv.class).saveOrUpdate(arg0);
+            boolean alreadyHaveUnitConv = true;
+            if (_unitConv == null) {
+                _unitConv = new UnitConv();
+                alreadyHaveUnitConv = false;
+            }
+
+            _unitConv.setUnit(_m.getUnit());
+            _unitConv.setLabel(_m.getLabel());
+            _unitConv.getScaleMap().put(scaleItem.getUnit().unmarshal(), scaleItem.getScale());
+            serviceFor(UnitConv.class).saveOrUpdate(_unitConv);
+
+            if (!alreadyHaveUnitConv) {
+                _m.setUnitConv(_unitConv);
+                serviceFor(Material.class).saveOrUpdate(_m);
+            }
+            serviceFor(Material.class).evict(_m);
+            serviceFor(UnitConv.class).evict(_unitConv);
+            uiLogger.info("添加换算关系成功.");
+        } catch (Exception e) {
+            uiLogger.error("添加换算关系出错!", e);
+        }
+    }
+
+    public void deleteUnitScale() {
+        try {
+            Unit unit = scaleItem.getUnit().unmarshal();
+            UnitConvDto unitConv = material.getUnitConv();
+            UnitConv _unitConv = unitConv.unmarshal();
+            _unitConv.getScaleMap().remove(unit);
+
+            serviceFor(UnitConv.class).saveOrUpdate(_unitConv);
+
+            serviceFor(UnitConv.class).evict(_unitConv);
+            uiLogger.info("删除换算关系成功.");
+        } catch (Exception e) {
+            uiLogger.error("删除换算关系出错!", e);
+        }
+    }
+
+    public MaterialAttributeDto getMaterialAttr() {
+        return materialAttr;
+    }
+
+    public void setMaterialAttr(MaterialAttributeDto materialAttr) {
+        this.materialAttr = materialAttr;
+    }
+
+
+
+    public void newMaterialAttribute() {
+        materialAttr = new MaterialAttributeDto().create();
+    }
+
+    public List<MaterialAttributeDto> getMaterialAttributes() {
+        if (material != null && material.getId() != null) {
+            material = reload(material, MaterialDto.ATTRBUTES);
+            return material.getAttributes();
+        };
+
+        return null;
+    }
+
+    public void addMaterialAttribute() {
+        try {
+            materialAttr.setMaterial(material);
+            MaterialAttribute _attr = materialAttr.unmarshal();
+            serviceFor(MaterialAttribute.class).saveOrUpdate(_attr);
+            serviceFor(Material.class).evict(material.unmarshal());
+            uiLogger.info("保存物料属性成功.");
+        } catch (Exception e) {
+            uiLogger.error("保存物料属性出错!", e);
+        }
+    }
+
+    public void deleteMaterialAttribute() {
+        try {
+            MaterialAttribute _attr = materialAttr.unmarshal();
+            _attr.getMaterial().getAttributes().remove(_attr);
+
+            serviceFor(MaterialAttribute.class).delete(_attr);
+            serviceFor(Material.class).evict(_attr.getMaterial());
+            uiLogger.info("删除物料属性成功.");
+        } catch (Exception e) {
+            uiLogger.error("删除物料属性出错!", e);
+        }
+    }
+
+
+
+    public MaterialPreferredLocationDto getPreferredLocation() {
+        return preferredLocation;
+    }
+
+    public void setPreferredLocation(MaterialPreferredLocationDto preferredLocation) {
+        this.preferredLocation = preferredLocation;
+    }
+
+    public TreeNode getSelectedPreferredLocation() {
+        return selectedPreferredLocation;
+    }
+
+    public void setSelectedPreferredLocation(TreeNode selectedPreferredLocation) {
+        this.selectedPreferredLocation = selectedPreferredLocation;
+    }
+
+    public void newPreferredLocation() {
+        preferredLocation = new MaterialPreferredLocationDto().create();
+    }
+
+    public List<MaterialPreferredLocationDto> getPreferredLocations() {
+        if (material != null && material.getId() != null) {
+            material = reload(material, MaterialDto.PREFERRED_LOCATIONS);
+            return material.getPreferredLocations();
+        };
+
+        return null;
+    }
+
+    public void choosePreferredLocation() {
+        StockLocationDto location = (StockLocationDto) selectedPreferredLocation.getData();
+        if(location != null) {
+            preferredLocation.setLocation(location);
+        }
+    }
+
+    public void addPreferredLocation() {
+        try {
+            preferredLocation.setMaterial(material);
+            MaterialPreferredLocation _preferredLocation = preferredLocation.unmarshal();
+            serviceFor(MaterialPreferredLocation.class).saveOrUpdate(_preferredLocation);
+            serviceFor(Material.class).evict(material.unmarshal());
+            uiLogger.info("保存物料推荐库位成功.");
+        } catch (Exception e) {
+            uiLogger.error("保存物料推荐库位出错!", e);
+        }
+    }
+
+    public void deletePreferredLocation() {
+        try {
+            MaterialPreferredLocation _preferredLocation = preferredLocation.unmarshal();
+            _preferredLocation.getMaterial().getPreferredLocations().remove(_preferredLocation);
+
+            serviceFor(MaterialPreferredLocation.class).delete(_preferredLocation);
+            serviceFor(Material.class).evict(_preferredLocation.getMaterial());
+            uiLogger.info("删除物料推荐库位成功.");
+        } catch (Exception e) {
+            uiLogger.error("删除物料推荐库位出错!", e);
+        }
     }
 }

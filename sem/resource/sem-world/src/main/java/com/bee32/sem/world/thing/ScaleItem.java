@@ -11,7 +11,8 @@ public class ScaleItem
     double scale;
 
     public ScaleItem() {
-        unit = new UnitDto().create();
+        if(unit == null)
+            unit = new UnitDto().ref();
     }
 
     public UnitDto getUnit() {
@@ -29,5 +30,16 @@ public class ScaleItem
     public void setScale(double scale) {
         this.scale = scale;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        ScaleItem item = (ScaleItem) obj;
+        if(item.unit.getId().equals(unit.getId()) && item.scale == scale) {
+            return true;
+        }
+
+        return false;
+    }
+
 
 }

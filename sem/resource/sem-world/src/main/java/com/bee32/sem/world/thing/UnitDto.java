@@ -14,7 +14,6 @@ public class UnitDto
 
     @Override
     protected void _marshal(Unit source) {
-        super._marshal(source);
         stdUnit = mref(UnitDto.class, source.getStdUnit());
         if (source.getScale() != null)
             scale = source.getScale();
@@ -22,7 +21,6 @@ public class UnitDto
 
     @Override
     protected void _unmarshalTo(Unit target) {
-        super._unmarshalTo(target);
         merge(target, "stdUnit", stdUnit);
         target.setScale(scale);
     }

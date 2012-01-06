@@ -107,16 +107,20 @@
                             <p:graphicImage
                                 value="#{location.ICON}/elcl16/toggledetailpane_co.gif" />
                         </p:commandLink>
-                        <p:commandLink title="自定义属性" update=""
-                            oncomplete="">
+                        <p:commandLink
+                            title="自定义属性"
+                            update="materialAttributeForm:currMaterial materialAttributeForm:attributes"
+                            oncomplete="materialAttributeDialog.show()">
                             <f:setPropertyActionListener
                                 value="#{material}"
                                 target="#{materialExAdminBean.material}" />
                             <p:graphicImage
                                 value="#{location.ICON}/obj16/native_lib_path_attrib.gif" />
                         </p:commandLink>
-                        <p:commandLink title="推荐库位" update=""
-                            oncomplete="">
+                        <p:commandLink
+                            title="推荐库位"
+                            update="preferredLocationForm:currMaterial preferredLocationForm:preferredLocations"
+                            oncomplete="preferredLocationDialog.show()">
                             <f:setPropertyActionListener
                                 value="#{material}"
                                 target="#{materialExAdminBean.material}" />
@@ -301,6 +305,14 @@
 
         <ui:insert name="unitConv">
             <ui:include src="unitConv.xhtml"/>
+        </ui:insert>
+
+        <ui:insert name="materialAttribute">
+            <ui:include src="materialAttribute.xhtml"/>
+        </ui:insert>
+
+        <ui:insert name="preferredLocation">
+            <ui:include src="preferredLocation.xhtml"/>
         </ui:insert>
 
     </ui:define>

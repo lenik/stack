@@ -64,7 +64,7 @@ public class UnitConvDto
 
         if (selection.contains(MAP)) {
             if(itemList != null && itemList.size() > 0) {
-                //如果
+                //如果有itemList,则itemList优先
                 Map<Unit, Double> _map = new HashMap<Unit, Double>();
                 for (ScaleItem item : itemList) {
                     Unit _unit = item.getUnit().unmarshal();
