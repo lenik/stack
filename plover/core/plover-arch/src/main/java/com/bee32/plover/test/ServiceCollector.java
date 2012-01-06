@@ -2,6 +2,7 @@ package com.bee32.plover.test;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -14,9 +15,11 @@ import javax.free.JavaioFile;
 import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.inject.NotAComponent;
 import com.bee32.plover.inject.ServiceTemplate;
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.inject.cref.ScanServiceContext;
+import com.bee32.plover.xutil.ClassScanner;
 import com.bee32.plover.xutil.m2.MavenPath;
 
 /**
@@ -31,13 +34,19 @@ import com.bee32.plover.xutil.m2.MavenPath;
 @ServiceTemplate
 @Lazy
 @Import(value = ScanServiceContext.class, inherits = false)
-public abstract class ServiceCollector<T>
-        extends WiredTestCase {
+public abstract class ServiceCollector<T> {
 
     protected final Class<T> prototype;
+    protected ClassScanner scanner = new ClassScanner();
 
     public ServiceCollector() {
         prototype = ClassUtil.infer1(getClass(), ServiceCollector.class, 0);
+        try {
+            scanner.scan("com.bee32");
+            scanner.scan("user");
+        } catch (IOException e) {
+            throw new Error(e.getMessage(), e);
+        }
     }
 
     protected void collect()
@@ -101,9 +110,24 @@ public abstract class ServiceCollector<T>
 
     protected Collection<Class<?>> getExtensions(Class<?> base) {
         List<Class<?>> list = new ArrayList<Class<?>>();
-        for (String beanName : application.getBeanNamesForType(base, true, false)) {
-            Class<?> serviceType = application.getType(beanName);
-            list.add(serviceType);
+        // ApplicationContext appctx;
+        // for (String beanName : appctx.getBeanNamesForType(base, true, false)) {
+        // Class<?> serviceType = appctx.getType(beanName);
+        // list.add(serviceType);
+        // }
+        for (Class<?> clazz : scanner.getSubclasses(base)) {
+            int mod = clazz.getModifiers();
+            if (Modifier.isAbstract(mod))
+                continue;
+            if (!Modifier.isPublic(mod))
+                continue;
+            // defined in code-block, or inner class with-in enclosing instance.
+            if (clazz.isAnonymousClass() || clazz.isLocalClass() || clazz.isMemberClass())
+                continue;
+            NotAComponent _nac = clazz.getAnnotation(NotAComponent.class);
+            if (_nac != null)
+                continue;
+            list.add(clazz);
         }
         return list;
     }
