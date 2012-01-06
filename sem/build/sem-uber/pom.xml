@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.bee32.sem</groupId>
@@ -38,56 +39,63 @@
             <artifactId>sem-purchase</artifactId>
             <version>0.3.2-SNAPSHOT</version>
         </dependency>
-        <!-- test scope -->
-        <dependency>
-            <groupId>com.bee32.sem</groupId>
-            <artifactId>sem-process</artifactId>
-            <version>0.3.2-SNAPSHOT</version>
-            <classifier>test</classifier>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.bee32.sem</groupId>
-            <artifactId>sem-asset</artifactId>
-            <version>0.3.2-SNAPSHOT</version>
-            <classifier>test</classifier>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.bee32.sem</groupId>
-            <artifactId>sem-people</artifactId>
-            <version>0.3.2-SNAPSHOT</version>
-            <classifier>test</classifier>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.bee32.sem</groupId>
-            <artifactId>sem-chance</artifactId>
-            <version>0.3.2-SNAPSHOT</version>
-            <classifier>test</classifier>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.bee32.sem</groupId>
-            <artifactId>sem-inventory</artifactId>
-            <version>0.3.2-SNAPSHOT</version>
-            <classifier>test</classifier>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.bee32.sem</groupId>
-            <artifactId>sem-bom</artifactId>
-            <version>0.3.2-SNAPSHOT</version>
-            <classifier>test</classifier>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.bee32.sem</groupId>
-            <artifactId>sem-purchase</artifactId>
-            <version>0.3.2-SNAPSHOT</version>
-            <classifier>test</classifier>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
     <name>SEM :: Build :: Uber</name>
+    <profiles>
+        <profile>
+            <id>test-inherits</id>
+            <!-- <activation><activeByDefault>true</activeByDefault></activation> -->
+            <dependencies>
+                <dependency>
+                    <groupId>com.bee32.sem</groupId>
+                    <artifactId>sem-process</artifactId>
+                    <version>0.3.2-SNAPSHOT</version>
+                    <classifier>test</classifier>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>com.bee32.sem</groupId>
+                    <artifactId>sem-asset</artifactId>
+                    <version>0.3.2-SNAPSHOT</version>
+                    <classifier>test</classifier>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>com.bee32.sem</groupId>
+                    <artifactId>sem-people</artifactId>
+                    <version>0.3.2-SNAPSHOT</version>
+                    <classifier>test</classifier>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>com.bee32.sem</groupId>
+                    <artifactId>sem-chance</artifactId>
+                    <version>0.3.2-SNAPSHOT</version>
+                    <classifier>test</classifier>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>com.bee32.sem</groupId>
+                    <artifactId>sem-inventory</artifactId>
+                    <version>0.3.2-SNAPSHOT</version>
+                    <classifier>test</classifier>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>com.bee32.sem</groupId>
+                    <artifactId>sem-bom</artifactId>
+                    <version>0.3.2-SNAPSHOT</version>
+                    <classifier>test</classifier>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>com.bee32.sem</groupId>
+                    <artifactId>sem-purchase</artifactId>
+                    <version>0.3.2-SNAPSHOT</version>
+                    <classifier>test</classifier>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 </project>
