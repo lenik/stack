@@ -33,9 +33,16 @@ public class ModuleManager
         return modulePostProcessors;
     }
 
-    static final ModuleManager instance = new ModuleManager();
+    static ModuleManager instance;
 
     public static ModuleManager getInstance() {
+        if (instance == null) {
+            synchronized (ModuleManager.class) {
+                if (instance == null) {
+                    instance = new ModuleManager();
+                }
+            }
+        }
         return instance;
     }
 

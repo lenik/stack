@@ -19,39 +19,44 @@ public class PloverSclMultiplexer
     static Logger logger = LoggerFactory.getLogger(PloverSclMultiplexer.class);
 
     static List<IServletContextListener> sclv;
-    static {
-        sclv = new ArrayList<IServletContextListener>();
-        for (IServletContextListener scl : ServiceLoader.load(IServletContextListener.class)) {
-            sclv.add(scl);
+
+    static synchronized List<IServletContextListener> getServletContextListeners() {
+        if (sclv == null) {
+            sclv = new ArrayList<IServletContextListener>();
+            for (IServletContextListener scl : ServiceLoader.load(IServletContextListener.class)) {
+                sclv.add(scl);
+            }
+            Collections.sort(sclv, PriorityComparator.INSTANCE);
         }
-        Collections.sort(sclv, PriorityComparator.INSTANCE);
+        return sclv;
     }
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        for (IServletContextListener scl : sclv) {
-            if (!scl.isIncluded(sce))
+        for (IServletContextListener listener : getServletContextListeners()) {
+            if (!listener.isIncluded(sce))
                 continue;
-            logger.debug("SCL-init: " + scl.getClass().getName());
+            logger.debug("SCL-init: " + listener.getClass().getName());
             try {
-                scl.contextInitialized(sce);
+                listener.contextInitialized(sce);
             } catch (Exception e) {
-                logger.error("SCL-Init error: " + scl.getClass().getName(), e);
+                logger.error("SCL-Init error: " + listener.getClass().getName(), e);
             }
         }
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        for (int i = sclv.size() - 1; i >= 0; i--) {
-            IServletContextListener scl = sclv.get(i);
-            if (!scl.isIncluded(sce))
+        List<IServletContextListener> listeners = getServletContextListeners();
+        for (int i = listeners.size() - 1; i >= 0; i--) {
+            IServletContextListener listener = listeners.get(i);
+            if (!listener.isIncluded(sce))
                 continue;
-            logger.debug("SCL-Terminate: " + scl.getClass().getName());
+            logger.debug("SCL-Terminate: " + listener.getClass().getName());
             try {
-                scl.contextDestroyed(sce);
+                listener.contextDestroyed(sce);
             } catch (Exception e) {
-                logger.error("SCL-Terminate error: " + scl.getClass().getName(), e);
+                logger.error("SCL-Terminate error: " + listener.getClass().getName(), e);
             }
         }
     }
