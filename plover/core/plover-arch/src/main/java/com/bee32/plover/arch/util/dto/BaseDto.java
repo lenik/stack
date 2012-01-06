@@ -26,28 +26,33 @@ public abstract class BaseDto<S, C>
 
         // initSourceType(ClassUtil.<S> infer1(getClass(), BaseDto.class, 0));
         String dtoFqcn = getClass().getName();
+        String siblingFqcn;
+        String parentFqcn;
         String entityFqcn;
-        String entityFqcn2;
 
         if (dtoFqcn.endsWith("Dto") || dtoFqcn.endsWith("DTO"))
-            entityFqcn = dtoFqcn.substring(0, dtoFqcn.length() - 3);
+            siblingFqcn = dtoFqcn.substring(0, dtoFqcn.length() - 3);
         else
-            entityFqcn = dtoFqcn;
+            siblingFqcn = dtoFqcn;
 
-        entityFqcn2 = entityFqcn.replace(".dto.", ".entity.");
-        entityFqcn = entityFqcn.replace(".dto.", ".");
+        entityFqcn = siblingFqcn.replace(".dto.", ".entity.");
+        parentFqcn = siblingFqcn.replace(".dto.", ".");
 
-        Class<? extends S> entityType;
-        try {
-            entityType = (Class<? extends S>) Class.forName(entityFqcn2);
-        } catch (ClassNotFoundException e) {
+        String[] tryFqcns = { siblingFqcn, parentFqcn, entityFqcn };
+
+        Class<? extends S> srcType = null;
+        for (String fqcn : tryFqcns) {
             try {
-                entityType = (Class<? extends S>) Class.forName(entityFqcn);
-            } catch (ClassNotFoundException e1) {
-                throw new IllegalUsageException("Bad DTO name: " + dtoFqcn, e1);
+                srcType = (Class<? extends S>) Class.forName(fqcn);
+            } catch (ClassNotFoundException e) {
+                // try next.
             }
         }
-        initSourceType(entityType);
+        if (srcType == null)
+            throw new IllegalUsageException(String.format(//
+                    "Bad DTO name %s: can't determine source type.",//
+                    dtoFqcn));
+        initSourceType(srcType);
     }
 
     /**
