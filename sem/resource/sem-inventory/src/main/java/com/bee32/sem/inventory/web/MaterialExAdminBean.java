@@ -453,7 +453,7 @@ public class MaterialExAdminBean extends EntityViewBean {
         return null;
     }
 
-    public void addMaterialWarehouseOption() {
+    public void addWarehouseOption() {
         try {
             warehouseOption.setMaterial(material);
             MaterialWarehouseOption _warehouseOption = warehouseOption.unmarshal();
@@ -465,7 +465,7 @@ public class MaterialExAdminBean extends EntityViewBean {
         }
     }
 
-    public void deleteMaterialWarehouseOption() {
+    public void deleteWarehouseOption() {
         try {
             MaterialWarehouseOption _warehouseOption = warehouseOption.unmarshal();
             _warehouseOption.getMaterial().getOptions().remove(_warehouseOption);
