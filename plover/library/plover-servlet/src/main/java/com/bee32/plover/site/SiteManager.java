@@ -167,13 +167,17 @@ public class SiteManager {
             site.saveConfig();
     }
 
-    private static final SiteManager instance;
-    static {
-        instance = new SiteManager();
-        instance.scanAndLoadSites(SITE_HOME);
-    }
+    private static SiteManager instance;
 
     public static SiteManager getInstance() {
+        if (instance == null) {
+            synchronized (SiteManager.class) {
+                if (instance == null) {
+                    instance = new SiteManager();
+                    instance.scanAndLoadSites(SITE_HOME);
+                }
+            }
+        }
         return instance;
     }
 

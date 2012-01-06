@@ -42,9 +42,16 @@ public class LoginManager {
             listener.refresh(event);
     }
 
-    private static LoginManager instance = new LoginManager();
+    private static LoginManager instance;
 
     public static LoginManager getInstance() {
+        if (instance == null) {
+            synchronized (LoginManager.class) {
+                if (instance == null) {
+                    instance = new LoginManager();
+                }
+            }
+        }
         return instance;
     }
 

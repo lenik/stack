@@ -27,10 +27,16 @@ public abstract class FeaturePlayer<T extends FeaturePlayer<T>>
 
     static Set<IFeaturePlayerSupport> supports;
 
-    static {
-        supports = new TreeSet<IFeaturePlayerSupport>(OrderComparator.INSTANCE);
-        for (IFeaturePlayerSupport support : ServiceLoader.load(IFeaturePlayerSupport.class)) {
-            supports.add(support);
+    public FeaturePlayer() {
+        loadFeaturePlayerSupports();
+    }
+
+    static synchronized void loadFeaturePlayerSupports() {
+        if (supports == null) {
+            supports = new TreeSet<IFeaturePlayerSupport>(OrderComparator.INSTANCE);
+            for (IFeaturePlayerSupport support : ServiceLoader.load(IFeaturePlayerSupport.class)) {
+                supports.add(support);
+            }
         }
     }
 
