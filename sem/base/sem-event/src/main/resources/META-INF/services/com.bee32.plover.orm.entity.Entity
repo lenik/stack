@@ -1,4 +1,4 @@
-com.bee32.sem.event.entity.EventPriority
-com.bee32.sem.event.entity.EventCategory
-com.bee32.sem.event.entity.EventStatus
 com.bee32.sem.event.entity.Event
+com.bee32.sem.event.entity.EventCategory
+com.bee32.sem.event.entity.EventPriority
+com.bee32.sem.event.entity.EventStatus

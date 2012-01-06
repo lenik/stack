@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,18 +64,20 @@ public abstract class ServiceCollector<T> {
         wired._collect();
     }
 
-    private Map<File, StringBuilder> files;
+    private Map<File, List<String>> files;
 
     synchronized void _collect()
             throws IOException {
-        files = new HashMap<File, StringBuilder>();
+        files = new HashMap<File, List<String>>();
         scan();
         commit(files);
         files = null;
     }
 
     protected void scan() {
-        for (Class<?> serviceType : getExtensions(prototype)) {
+        List<Class<?>> serviceList = new ArrayList<Class<?>>(getExtensions(prototype));
+        // Collections.sort(serviceList, ClassNameComparator.getInstance());
+        for (Class<?> serviceType : serviceList) {
             publish(prototype, serviceType);
         }
     }
@@ -98,14 +101,13 @@ public abstract class ServiceCollector<T> {
         else
             sfile = new File(resdir, "META-INF/services/" + prototype.getName());
 
-        StringBuilder buf = files.get(sfile);
-        if (buf == null) {
-            buf = new StringBuilder();
-            files.put(sfile, buf);
+        List<String> lines = files.get(sfile);
+        if (lines == null) {
+            lines = new ArrayList<String>();
+            files.put(sfile, lines);
         }
 
-        buf.append(serviceType.getName());
-        buf.append("\n");
+        lines.add(serviceType.getName());
     }
 
     protected Collection<Class<?>> getExtensions(Class<?> base) {
@@ -132,11 +134,19 @@ public abstract class ServiceCollector<T> {
         return list;
     }
 
-    protected void commit(Map<File, StringBuilder> files)
+    protected void commit(Map<File, List<String>> files)
             throws IOException {
-        for (Entry<File, StringBuilder> entry : files.entrySet()) {
+        for (Entry<File, List<String>> entry : files.entrySet()) {
             File _file = entry.getKey();
-            String content = entry.getValue().toString();
+
+            List<String> lines = entry.getValue();
+            Collections.sort(lines);
+            StringBuilder buf = new StringBuilder(lines.size() * 100);
+            for (String line : lines) {
+                buf.append(line);
+                buf.append('\n');
+            }
+            String content = buf.toString();
 
             JavaioFile file = new JavaioFile(_file);
 
@@ -152,7 +162,7 @@ public abstract class ServiceCollector<T> {
             }
 
             System.out.println("Update " + _file);
-            file.forWrite().write(content);
+            file.forWrite().write(content.toString());
         }
     }
 

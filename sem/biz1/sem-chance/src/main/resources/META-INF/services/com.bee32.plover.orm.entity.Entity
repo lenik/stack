@@ -1,10 +1,10 @@
-com.bee32.sem.chance.entity.ChanceStage
-com.bee32.sem.chance.entity.ChanceActionStyle
-com.bee32.sem.chance.entity.ChanceQuotation
-com.bee32.sem.chance.entity.ChanceAction
 com.bee32.sem.chance.entity.Chance
-com.bee32.sem.chance.entity.ChanceSourceType
+com.bee32.sem.chance.entity.ChanceAction
+com.bee32.sem.chance.entity.ChanceActionStyle
 com.bee32.sem.chance.entity.ChanceCategory
-com.bee32.sem.chance.entity.ChanceParty
 com.bee32.sem.chance.entity.ChanceCompetitor
+com.bee32.sem.chance.entity.ChanceParty
+com.bee32.sem.chance.entity.ChanceQuotation
 com.bee32.sem.chance.entity.ChanceQuotationItem
+com.bee32.sem.chance.entity.ChanceSourceType
+com.bee32.sem.chance.entity.ChanceStage

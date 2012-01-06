@@ -1,4 +1,4 @@
 com.bee32.plover.servlet.rabbits.RootContextLoaderScl
-com.bee32.plover.servlet.test.ServletTestCaseScl
 com.bee32.plover.servlet.test.ApplicationScl
+com.bee32.plover.servlet.test.ServletTestCaseScl
 com.bee32.plover.servlet.test.WiredServletTestCaseAppctxScl

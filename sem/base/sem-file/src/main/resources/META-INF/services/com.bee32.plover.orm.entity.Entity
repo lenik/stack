@@ -1,4 +1,4 @@
 com.bee32.sem.file.entity.FileAttribute
+com.bee32.sem.file.entity.FileBlob
 com.bee32.sem.file.entity.UserFile
 com.bee32.sem.file.entity.UserFileTagname
-com.bee32.sem.file.entity.FileBlob
