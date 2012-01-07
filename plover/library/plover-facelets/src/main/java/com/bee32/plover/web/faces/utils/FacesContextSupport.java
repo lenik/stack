@@ -8,7 +8,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.jsf.FacesContextUtils;
 
-public abstract class FacesContextSupport {
+import com.bee32.plover.arch.Component;
+
+public abstract class FacesContextSupport
+        extends Component {
 
     protected static ApplicationContext getApplicationContext() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
