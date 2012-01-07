@@ -115,7 +115,7 @@
                     <h:outputLabel value="公司" />
                     <t:panelGroup colspan="3">
                         <p:inputText id="party" value="#{stockTradeAdminBean.stockTrade.party.name}" readonly="true"/>
-                        <p:commandButton value="..." onclick="orgDialog.show();" disabled="#{!stockTradeAdminBean.editable}" />
+                        <p:commandButton value="..." onclick="partyDialog.show();" disabled="#{!stockTradeAdminBean.editable}" />
                     </t:panelGroup>
 
                     <h:outputLabel value="借贷方向" />
@@ -375,75 +375,69 @@
             </p:confirmDialog>
         </h:form>
 
-        <h:form id="orgForm">
-            <p:dialog header="选择公司" widgetVar="orgDialog" modal="true"
+        <h:form id="partyForm">
+            <p:dialog header="选择对像" widgetVar="partyDialog" modal="true"
                 height="400" width="800">
                 <h:panelGroup>
 
                     <h:panelGrid columns="3">
-                        <h:outputLabel value="公司名称全部或部份:" />
-                        <p:inputText value="#{stockTradeAdminBean.orgPattern}" />
+                        <h:outputLabel value="名称全部或部份:" />
+                        <p:inputText value="#{stockTradeAdminBean.partyPattern}" />
                         <p:commandButton value="查找"
-                            actionListener="#{stockTradeAdminBean.findOrg}" update="orgs"
+                            actionListener="#{stockTradeAdminBean.findParty}" update="parties"
                             async="true" />
                     </h:panelGrid>
-                    <p:dataTable id="orgs" var="org"
-                        value="#{stockTradeAdminBean.orgs}" resizableColumns="true"
+                    <p:dataTable id="parties" var="party"
+                        value="#{stockTradeAdminBean.parties}" resizableColumns="true"
                         rowIndexVar="rowIndex">
 
                         <p:column headerText="序号">
                             <h:outputText value="#{rowIndex + 1}" />
                         </p:column>
 
-                        <p:column headerText="公司名称">
-                            <h:outputText value="#{org.name}" />
+                        <p:column headerText="名称">
+                            <h:outputText value="#{party.name}" />
                         </p:column>
 
                         <p:column headerText="标签">
-                            <p:dataList value="#{org.tags}" var="tag" type="definition">
+                            <p:dataList value="#{party.tags}" var="tag" type="definition">
                                 <f:facet name="description">
                                     <h:outputText value="#{tag.label}"/>
                                 </f:facet>
                             </p:dataList>
                         </p:column>
 
-                        <p:column headerText="成立日期">
-                            <h:outputText value="#{org.birthday}">
+                        <p:column headerText="成立日期/生日">
+                            <h:outputText value="#{party.birthday}">
                                 <f:convertDateTime pattern="yyyy-MM-dd"
                                     timeZone="Asia/Shanghai" />
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="公司类型">
-                            <h:outputText value="#{org.type.label}" />
+
+                        <p:column headerText="证件号">
+                            <h:outputText value="#{party.sid}" />
                         </p:column>
 
-                        <p:column headerText="税务登记号">
-                            <h:outputText value="#{org.sid}" />
-                        </p:column>
-
-                        <p:column headerText="公司规模">
-                            <h:outputText value="#{org.size}" />
-                        </p:column>
 
                         <p:column headerText="创建日期">
-                            <h:outputText value="#{org.createdDate}">
+                            <h:outputText value="#{party.createdDate}">
                                 <f:convertDateTime pattern="yyyy-MM-dd"
                                     timeZone="Asia/Shanghai" />
                             </h:outputText>
                         </p:column>
                         <p:column headerText="动作">
                             <p:commandLink
-                                oncomplete="orgDialog.hide()"
-                                action="#{stockTradeAdminBean.chooseOrg}"
+                                oncomplete="partyDialog.hide()"
+                                action="#{stockTradeAdminBean.chooseParty}"
                                 update="mainForm:party" value="挑选">
                                 <f:setPropertyActionListener
-                                    value="#{org}"
-                                    target="#{stockTradeAdminBean.selectedOrg}" />
+                                    value="#{party}"
+                                    target="#{stockTradeAdminBean.selectedParty}" />
                             </p:commandLink>
                         </p:column>
                     </p:dataTable>
-                    <p:commandButton value="取消" oncomplete="orgDialog.hide();" />
+                    <p:commandButton value="取消" oncomplete="partyDialog.hide();" />
                 </h:panelGroup>
             </p:dialog>
         </h:form>

@@ -228,7 +228,7 @@ public class PersonAdminBean
     @Override
     public void find() {
         EntityDataModelOptions<Person, PersonDto> options = new EntityDataModelOptions<Person, PersonDto>(//
-                Person.class, PersonDto.class, 0, //
+                Person.class, PersonDto.class, PartyDto.CONTACTS, //
                 new Or(new Like("name", "%" + namePattern + "%"), //
                         new Like("fullName", "%" + namePattern + "%") //
                 ), //

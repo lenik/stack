@@ -523,7 +523,7 @@ public class OrgAdminBean
     @Override
     public void find() {
         EntityDataModelOptions<Org, OrgDto> options = new EntityDataModelOptions<Org, OrgDto>(//
-                Org.class, OrgDto.class, 0, //
+                Org.class, OrgDto.class, PartyDto.CONTACTS, //
                 new Or(new Like("name", "%" + namePattern + "%"), //
                         new Like("fullName", "%" + namePattern + "%") //
                 ), //

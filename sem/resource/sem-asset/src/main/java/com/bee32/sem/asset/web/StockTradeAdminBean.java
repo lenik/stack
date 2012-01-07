@@ -29,8 +29,8 @@ import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.util.MaterialCriteria;
 import com.bee32.sem.misc.EntityCriteria;
-import com.bee32.sem.people.dto.OrgDto;
-import com.bee32.sem.people.entity.Org;
+import com.bee32.sem.people.dto.PartyDto;
+import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.world.monetary.CurrencyUtil;
 import com.bee32.sem.world.monetary.MCValue;
@@ -55,9 +55,9 @@ public class StockTradeAdminBean
     private List<MaterialDto> materials;
     private MaterialDto selectedMaterial;
 
-    private String orgPattern;
-    private List<OrgDto> orgs;
-    private OrgDto selectedOrg;
+    private String partyPattern;
+    private List<PartyDto> parties;
+    private PartyDto selectedParty;
 
     protected List<StockTradeItemDto> itemsNeedToRemoveWhenModify = new ArrayList<StockTradeItemDto>();
 
@@ -186,28 +186,28 @@ public class StockTradeAdminBean
         this.newItemStatus = newItemStatus;
     }
 
-    public String getOrgPattern() {
-        return orgPattern;
+    public String getPartyPattern() {
+        return partyPattern;
     }
 
-    public void setOrgPattern(String orgPattern) {
-        this.orgPattern = orgPattern;
+    public void setPartyPattern(String partyPattern) {
+        this.partyPattern = partyPattern;
     }
 
-    public List<OrgDto> getOrgs() {
-        return orgs;
+    public List<PartyDto> getParties() {
+        return parties;
     }
 
-    public void setOrgs(List<OrgDto> orgs) {
-        this.orgs = orgs;
+    public void setParties(List<PartyDto> parties) {
+        this.parties = parties;
     }
 
-    public OrgDto getSelectedOrg() {
-        return selectedOrg;
+    public PartyDto getSelectedParty() {
+        return selectedParty;
     }
 
-    public void setSelectedOrg(OrgDto selectedOrg) {
-        this.selectedOrg = selectedOrg;
+    public void setSelectedParty(PartyDto selectedParty) {
+        this.selectedParty = selectedParty;
     }
 
     public String getPageTitle() {
@@ -283,17 +283,17 @@ public class StockTradeAdminBean
         }
     }
 
-    public void findOrg() {
-        if (orgPattern != null && !orgPattern.isEmpty()) {
+    public void findParty() {
+        if (partyPattern != null && !partyPattern.isEmpty()) {
 
-            List<Org> _orgs = serviceFor(Org.class).list(PeopleCriteria.namedLike(orgPattern));
+            List<Party> _parties = serviceFor(Party.class).list(PeopleCriteria.namedLike(partyPattern));
 
-            orgs = DTOs.marshalList(OrgDto.class, _orgs);
+            parties = DTOs.marshalList(PartyDto.class, _parties);
         }
     }
 
-    public void chooseOrg() {
-        stockTrade.setParty(selectedOrg);
+    public void chooseParty() {
+        stockTrade.setParty(selectedParty);
     }
 
     private void loadStockTrade(int position) {
