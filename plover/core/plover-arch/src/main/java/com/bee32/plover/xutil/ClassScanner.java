@@ -1,41 +1,72 @@
 package com.bee32.plover.xutil;
 
 import java.io.IOException;
+import java.io.PrintStream;
+import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.free.IdentityHashSet;
 import javax.free.Pred1;
 
 import com.bee32.plover.arch.ModuleManager;
 
 public class ClassScanner {
 
+    public static final int SUBCLASSES = 1;
+    public static final int ANNOTATED_CLASSES = 2;
+
     Set<Class<?>> parsedClasses = new HashSet<Class<?>>();
     Set<Class<?>> rootClasses = new HashSet<Class<?>>();
-    Map<Class<?>, Set<Class<?>>> subclassMap = new HashMap<Class<?>, Set<Class<?>>>();
+    Map<Class<?>, Set<Class<?>>> subclassesMap = new HashMap<Class<?>, Set<Class<?>>>();
+    Map<Class<?>, Set<Class<?>>> annotatedClassesMap = new HashMap<Class<?>, Set<Class<?>>>();
 
     public synchronized Set<Class<?>> getSubclasses(Class<?> clazz) {
-        Set<Class<?>> subclasses = subclassMap.get(clazz);
+        Set<Class<?>> subclasses = subclassesMap.get(clazz);
         if (subclasses == null) {
             subclasses = new HashSet<Class<?>>();
-            subclassMap.put(clazz, subclasses);
+            subclassesMap.put(clazz, subclasses);
         }
         return subclasses;
     }
 
-    public Set<Class<?>> getSubclassClosure(Class<?> clazz) {
+    public synchronized Set<Class<?>> getAnnotatedClasses(Class<?> annotationType) {
+        Set<Class<?>> annotatedClasses = annotatedClassesMap.get(annotationType);
+        if (annotatedClasses == null) {
+            annotatedClasses = new HashSet<Class<?>>();
+            annotatedClassesMap.put(annotationType, annotatedClasses);
+        }
+        return annotatedClasses;
+    }
+
+    public Set<Class<?>> getClosure(Class<?> clazz) {
+        return getClosure(clazz, -1);
+    }
+
+    public Set<Class<?>> getClosure(Class<?> clazz, int selection) {
         Set<Class<?>> closure = new HashSet<Class<?>>();
-        _getSubclassClosure(clazz, closure);
+        _getClosure(clazz, closure, selection);
         return closure;
     }
 
-    void _getSubclassClosure(Class<?> clazz, Set<Class<?>> closure) {
+    void _getClosure(Class<?> clazz, Set<Class<?>> closure, int selection) {
         if (closure.add(clazz)) {
-            for (Class<?> subclass : getSubclasses(clazz))
-                _getSubclassClosure(subclass, closure);
+            if ((selection & SUBCLASSES) != 0) {
+                // assert !clazz.isAnnotation();
+                for (Class<?> subclass : getSubclasses(clazz))
+                    _getClosure(subclass, closure, selection);
+            }
+            if ((selection & ANNOTATED_CLASSES) != 0) {
+                // assert clazz.isAnnotation();
+                Set<Class<?>> annotatedClasses = annotatedClassesMap.get(clazz);
+                // It's very possible that clazz is not an annotation at all.
+                if (annotatedClasses != null)
+                    for (Class<?> annotatedClass : getAnnotatedClasses(clazz))
+                        _getClosure(annotatedClass, closure, selection);
+            }
         }
     }
 
@@ -62,7 +93,16 @@ public class ClassScanner {
                 Set<Class<?>> set = getSubclasses(iface);
                 if (set.add(clazz))
                     counter++;
-                counter += _parse(iface);
+                counter += _parse(iface); // iface is also parsed in full-scan.
+            }
+
+            for (Annotation annotation : clazz.getAnnotations()) {
+                Class<? extends Annotation> annotationType = annotation.annotationType();
+                Set<Class<?>> set = getAnnotatedClasses(annotationType);
+                if (set.add(clazz))
+                    counter++;
+                // @A @interface B, and @B class C, then @A class C.
+                // counter += _parse(annotationType); // annotationType is also parsed in full-scan.
             }
         }
         return counter;
@@ -80,31 +120,85 @@ public class ClassScanner {
     }
 
     public int size() {
-        return subclassMap.size();
+        return subclassesMap.size();
     }
 
     public int size2() {
         int total = 0;
-        for (Set<Class<?>> subclasses : subclassMap.values())
+        for (Set<Class<?>> subclasses : subclassesMap.values())
             total += subclasses.size();
         return total;
     }
 
     public void dump() {
-        for (Entry<Class<?>, Set<Class<?>>> entry : subclassMap.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue().size() + " entries");
-        }
+        for (Class<?> root : rootClasses)
+            dump("^", root, "", -1);
     }
 
     public void dump(Class<?> root) {
-        dump(root, "");
+        dump(root, -1);
     }
 
-    void dump(Class<?> clazz, String prefix) {
-        System.out.println(prefix + clazz.getCanonicalName());
-        prefix += "    ";
-        for (Class<?> subclass : getSubclasses(clazz)) {
-            dump(subclass, prefix);
+    public void dump(Class<?> root, int selection) {
+        dump("^", root, "", selection);
+    }
+
+    void dump(String type, Class<?> clazz, String prefix, int selection) {
+        new Dumper(selection).dump(type, prefix, clazz);
+    }
+
+    class Dumper {
+
+        int selection;
+        IdentityHashSet once = new IdentityHashSet();
+        PrintStream out = System.out;
+
+        public Dumper(int selection) {
+            this.selection = selection;
+        }
+
+        void dump(String type, String prefix, Class<?> clazz) {
+            boolean dumped = !once.add(clazz);
+
+            StringBuilder line = new StringBuilder();
+            line.append(prefix);
+            line.append(type);
+            line.append(" ");
+            if (dumped)
+                line.append("[ ");
+            if (clazz.isAnnotation())
+                line.append('@');
+            line.append(clazz.getCanonicalName());
+            if (dumped)
+                line.append(" ...]");
+
+            out.println(line);
+            if (dumped)
+                return;
+
+            prefix += "    ";
+
+            if ((selection & SUBCLASSES) != 0) {
+                Set<Class<?>> subclasses = subclassesMap.get(clazz);
+                if (subclasses != null)
+                    for (Class<?> subclass : subclasses) {
+                        dump("-", prefix, subclass);
+                    }
+            }
+
+            if ((selection & ANNOTATED_CLASSES) != 0) {
+                Set<Class<?>> annotatedClasses = annotatedClassesMap.get(clazz);
+                if (annotatedClasses != null)
+                    for (Class<?> annotatedClass : annotatedClasses)
+                        dump("#", prefix, annotatedClass);
+            }
+        }
+
+    }
+
+    public void dumpStat() {
+        for (Entry<Class<?>, Set<Class<?>>> entry : subclassesMap.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue().size() + " entries");
         }
     }
 

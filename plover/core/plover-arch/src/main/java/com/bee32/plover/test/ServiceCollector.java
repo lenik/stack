@@ -117,7 +117,7 @@ public abstract class ServiceCollector<T> {
         // Class<?> serviceType = appctx.getType(beanName);
         // list.add(serviceType);
         // }
-        for (Class<?> clazz : scanner.getSubclassClosure(base)) {
+        for (Class<?> clazz : scanner.getClosure(base)) {
             int mod = clazz.getModifiers();
             if (Modifier.isAbstract(mod))
                 continue;
