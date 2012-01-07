@@ -29,6 +29,9 @@ public class SingleVerifierPolicy
 
     private static final long serialVersionUID = 1L;
 
+    public static final int VERIFYING_1 = 1;
+    public static final int END = -1;
+
     private Set<Principal> responsibles;
 
     public SingleVerifierPolicy() {
@@ -49,12 +52,24 @@ public class SingleVerifierPolicy
         this.responsibles = new HashSet<Principal>(responsibles);
     }
 
+    @Override
+    public Object getStage(IVerifyContext context) {
+        ISingleVerifier sv = checkedCast(ISingleVerifier.class, context);
+        if (sv.getVerifier1() == null)
+            return VERIFYING_1;
+        else
+            return END;
+    }
+
     /**
      * Allow-List 为静态责任人列别，从不考虑实体类定义的额外名单。 故 context 参数被忽略。
      */
     @Override
-    public Set<Principal> getDeclaredResponsibles(IVerifyContext context) {
-        return getResponsibles();
+    public Set<Principal> getStageResponsibles(Object stage) { //
+        if (stage.equals(VERIFYING_1))
+            return getResponsibles();
+        else
+            return null;
     }
 
     @ManyToMany

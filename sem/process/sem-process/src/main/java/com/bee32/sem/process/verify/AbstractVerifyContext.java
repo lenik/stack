@@ -80,6 +80,7 @@ public abstract class AbstractVerifyContext
     }
 
     @Transient
+    @Override
     public VerifyState getVerifyState() {
         return verifyState;
     }

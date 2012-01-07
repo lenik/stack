@@ -63,13 +63,13 @@ public class VerifyService
 
     @Transactional(readOnly = true)
     @Override
-    public Set<Principal> getDeclaredResponsibles(IVerifiable<?> obj) {
+    public Set<Principal> getResponsibles(IVerifiable<?> obj) {
         VerifyPolicy verifyPolicy = policyDao.getPreferredVerifyPolicy(obj.getClass());
 
         if (verifyPolicy == null)
             return new HashSet<Principal>();
 
-        return verifyPolicy.getDeclaredResponsibles(obj.getVerifyContext());
+        return verifyPolicy.getResponsibles(obj.getVerifyContext());
     }
 
     @Transactional(readOnly = true)
@@ -187,7 +187,7 @@ public class VerifyService
 
             event.setRef(entity);
 
-            Set<Principal> responsibles = new HashSet<Principal>(getDeclaredResponsibles(verifiable));
+            Set<Principal> responsibles = new HashSet<Principal>(getResponsibles(verifiable));
             event.setObservers(responsibles);
         }
 

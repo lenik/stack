@@ -1,5 +1,7 @@
 package com.bee32.sem.process.verify;
 
+import java.util.Set;
+
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -8,6 +10,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
+import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.inject.ServiceTemplate;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 
@@ -95,5 +98,11 @@ public abstract class VerifyPolicy
      * @return {@link #VERIFIED} means verified, otherwise the error message.
      */
     public abstract VerifyResult evaluate(IVerifyContext context);
+
+    @Override
+    public Set<Principal> getResponsibles(IVerifyContext context) {
+        Object stage = getStage(context);
+        return getStageResponsibles(stage);
+    }
 
 }

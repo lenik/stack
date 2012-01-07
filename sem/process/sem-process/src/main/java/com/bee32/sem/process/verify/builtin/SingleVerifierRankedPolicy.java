@@ -2,11 +2,11 @@ package com.bee32.sem.process.verify.builtin;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.free.IdentityHashSet;
+import javax.free.IllegalUsageError;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -119,54 +119,25 @@ public class SingleVerifierRankedPolicy
     }
 
     @Override
-    public Set<Principal> getDeclaredResponsibles(IVerifyContext _context) {
-        ISingleVerifierWithNumber svn = null;
-
-        if (_context != null)
-            svn = checkedCast(ISingleVerifierWithNumber.class, _context);
-
-        return getDeclaredResponsibles(svn);
+    public Object getStage(IVerifyContext context) {
+        ISingleVerifierWithNumber svn = checkedCast(ISingleVerifierWithNumber.class, context);
+        long judgeNumber = svn.getJudgeNumber().longValue();
+        Entry<Long, SingleVerifierLevel> declaredEntry = levelMap.ceilingEntry(judgeNumber);
+        long limit = declaredEntry.getKey();
+        VerifyPolicy targetPolicy = declaredEntry.getValue().getTargetPolicy();
+        Object targetStage = targetPolicy.getStage(context);
+        return new Object[] { limit, targetStage };
     }
 
-    Set<Principal> getDeclaredResponsibles(ISingleVerifierWithNumber context) {
-        if (context == null)
-            throw new NullPointerException("Context of " + ISingleVerifierWithNumber.class + " is required.");
-
-        long limit = context.getJudgeNumber().longValue();
-
-        Set<Principal> allDeclared = new HashSet<Principal>();
-        if (levelMap == null)
-            return null;
-
-        Long ceil = levelMap.ceilingKey(limit);
-
-        IdentityHashSet markSet = new IdentityHashSet();
-        markSet.add(this);
-
-        while (ceil != null) {
-
-            SingleVerifierLevel level = levelMap.get(ceil);
-
-            VerifyPolicy subPolicy = level.getTargetPolicy();
-
-            // Already scanned, skip to avoid cyclic ref.
-            if (!markSet.add(subPolicy))
-                continue;
-
-            if (subPolicy instanceof SingleVerifierRankedPolicy) {
-                SingleVerifierRankedPolicy subML = (SingleVerifierRankedPolicy) subPolicy;
-                Collection<? extends Principal> subset = subML.getDeclaredResponsibles(context);
-                allDeclared.addAll(subset);
-
-            } else if (subPolicy.getMetadata().isUsefulFor(ISingleVerifier.class)) {
-                Set<Principal> dr = subPolicy.getDeclaredResponsibles(context);
-                allDeclared.addAll(dr);
-            }
-
-            ceil = levelMap.higherKey(ceil);
-        }
-
-        return allDeclared;
+    @Override
+    public Set<Principal> getStageResponsibles(Object stage) {
+        Object[] s2 = (Object[]) stage;
+        Long limit = (Long) s2[0];
+        if (limit == null)
+            throw new IllegalUsageError("Bad limit: " + limit);
+        Object targetStage = s2[1];
+        VerifyPolicy targetPolicy = levelMap.get(limit).getTargetPolicy();
+        return targetPolicy.getStageResponsibles(targetStage);
     }
 
     @Override
@@ -175,7 +146,7 @@ public class SingleVerifierRankedPolicy
 
         User user = context.getVerifier1();
 
-        if (!user.impliesOneOf(getDeclaredResponsibles(context)))
+        if (!user.impliesOneOf(getResponsibles(context)))
             return VerifyResult.invalid(user);
 
         return VERIFIED;

@@ -18,7 +18,7 @@ public interface IVerifyService {
 
     // --o IVerifyPolicy.
 
-    Set<Principal> getDeclaredResponsibles(IVerifiable<?> obj);
+    Set<Principal> getResponsibles(IVerifiable<?> obj);
 
     /**
      * 表上的 {@link AbstractVerifyContext#isVerified() verified} 是缓存的值，仅用于检索用途。

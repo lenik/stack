@@ -1,10 +1,10 @@
 package com.bee32.sem.process.verify.builtin;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.free.NotImplementedException;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -60,22 +60,23 @@ public class PassToNextPolicy
         this.sequences = sequences;
     }
 
-    /**
-     * TODO
-     */
     @Override
-    public Set<Principal> getDeclaredResponsibles(IVerifyContext context) {
-        int position = 0;
+    public Object getStage(IVerifyContext context) {
+        IPassEvents passEvents = (IPassEvents) context;
+        return passEvents.getPosition();
+    }
 
-        if (context != null) {
-            IPassEvents passEvents = checkedCast(IPassEvents.class, context);
-            position = passEvents.getPosition();
-        }
+    @Override
+    public Set<Principal> getStageResponsibles(Object stage) {
+        int position = (Integer) stage;
 
         if (sequences == null)
             return null;
 
-        throw new NotImplementedException();
+        PassStep step = sequences.get(position);
+        Set<Principal> responsibles = new HashSet<Principal>();
+        responsibles.add(step.getResponsible());
+        return responsibles;
     }
 
     @Override

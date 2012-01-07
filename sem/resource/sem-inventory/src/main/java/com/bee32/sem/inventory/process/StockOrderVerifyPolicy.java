@@ -13,6 +13,7 @@ import javax.persistence.MapKeyColumn;
 import javax.persistence.Transient;
 
 import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.User;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.process.verify.ForVerifyContext;
 import com.bee32.sem.process.verify.IVerifyContext;
@@ -50,7 +51,15 @@ public class StockOrderVerifyPolicy
     }
 
     @Override
-    public Set<Principal> getDeclaredResponsibles(IVerifyContext context) {
+    public Object getStage(IVerifyContext _context) {
+        IStockOrderVerifyContext context = checkedCast(IStockOrderVerifyContext.class, _context);
+        StockOrderSubject subject = context.getSubject();
+        User verifier1 = context.getVerifier1(); // TODO
+        return null;
+    }
+
+    @Override
+    public Set<Principal> getStageResponsibles(Object stage) {
         throw new NotImplementedException();
     }
 

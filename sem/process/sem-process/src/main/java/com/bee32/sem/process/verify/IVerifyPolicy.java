@@ -45,6 +45,8 @@ public interface IVerifyPolicy {
      */
     boolean isVerified(IVerifyContext context);
 
+    Object getStage(IVerifyContext context);
+
     /**
      * 获取显示声明的责任人。
      *
@@ -52,6 +54,8 @@ public interface IVerifyPolicy {
      *            上下文，<code>null</code> 适用于无具体的上下文。
      * @return 非 <code>null </code>的显示声明的责任人集合。
      */
-    Set<Principal> getDeclaredResponsibles(IVerifyContext context);
+    Set<Principal> getStageResponsibles(Object stage);
+
+    Set<Principal> getResponsibles(IVerifyContext context);
 
 }
