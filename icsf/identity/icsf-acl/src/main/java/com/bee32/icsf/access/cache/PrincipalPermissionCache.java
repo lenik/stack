@@ -5,16 +5,17 @@ import java.util.Map;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.principal.IPrincipal;
-import com.bee32.icsf.util.InvalidateEvent;
-import com.bee32.icsf.util.InvalidateListener;
+import com.bee32.icsf.principal.IPrincipalChangeListener;
+import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.PrincipalChangeEvent;
 
 public class PrincipalPermissionCache
-        implements InvalidateListener {
+        implements IPrincipalChangeListener {
 
-    private Map<IPrincipal, Permission> cache;
+    private Map<IPrincipal, Permission> principalPermissionMap;
 
     public PrincipalPermissionCache() {
-        cache = new HashMap<IPrincipal, Permission>();
+        principalPermissionMap = new HashMap<IPrincipal, Permission>();
     }
 
     public boolean hasPermission(IPrincipal principal, Permission permission) {
@@ -22,9 +23,9 @@ public class PrincipalPermissionCache
     }
 
     @Override
-    public void invalidate(InvalidateEvent event) {
-        Object key = event.getKey();
-        cache.remove(key);
+    public void principalChanged(PrincipalChangeEvent event) {
+        Principal principal = event.getPrincipal();
+        principalPermissionMap.remove(principal);
     }
 
 }
