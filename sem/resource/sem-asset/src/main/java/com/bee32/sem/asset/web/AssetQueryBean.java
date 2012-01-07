@@ -194,6 +194,7 @@ public class AssetQueryBean extends EntityViewBean {
         cal.set(Calendar.MILLISECOND, 999);
 
         AssetQueryOptions options = new AssetQueryOptions(cal.getTime());
+        options.setRecursive(true);
         if (!all) {
             if (subject == null) {
                 uiLogger.warn("没有选择科目.");

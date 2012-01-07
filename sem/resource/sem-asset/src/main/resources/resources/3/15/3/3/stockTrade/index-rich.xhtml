@@ -42,7 +42,7 @@
             <p:toolbar id="toolbar">
 				<p:toolbarGroup align="left">
 					<p:commandButton value="新增" actionListener="#{stockTradeAdminBean.new_}"
-						disabled="#{stockTradeAdminBean.editable}" update="mainForm" async="true" />
+						disabled="#{stockTradeAdminBean.editable}" update="mainForm accountSubjectForm:accountSubjects" async="true" />
 					<p:commandButton value="修改"
 						actionListener="#{stockTradeAdminBean.modify}"
 						disabled="#{stockTradeAdminBean.editable}" update="mainForm" async="true" />
@@ -103,7 +103,13 @@
 
                     <h:outputLabel value="会计科目" />
                     <t:panelGroup colspan="3">
-                        <h:outputText id="accountSubject" value="#{stockTradeAdminBean.stockTrade.subject.label}"/>
+                        <t:panelGrid columns="2">
+                            <p:inputText
+                                id="accountSubject"
+                                value="#{stockTradeAdminBean.stockTrade.subject.label}"
+                                readonly="true"/>
+                            <p:commandButton value="..." onclick="accountSubjectDialog.show();"  disabled="#{!stockTradeAdminBean.editable}" />
+                        </t:panelGrid>
                     </t:panelGroup>
 
                     <h:outputLabel value="公司" />
@@ -442,6 +448,43 @@
             </p:dialog>
         </h:form>
 
+
+        <h:form id="accountSubjectForm">
+            <p:dialog header="选择科目" widgetVar="accountSubjectDialog" modal="true"
+                height="500" width="840">
+                <h:panelGroup>
+                    <p:dataTable id="accountSubjects" var="accountSubject"
+                        value="#{stockTradeAdminBean.accountSubjects}" resizableColumns="true"
+                        rowIndexVar="rowIndex"
+                        scrollable="true" scrollWidth="600" scrollHeight="350">
+
+                        <p:column headerText="序号">
+                            <h:outputText value="#{rowIndex + 1}" />
+                        </p:column>
+
+                        <p:column headerText="科目编码">
+                            <h:outputText value="#{accountSubject.name}" />
+                        </p:column>
+
+                        <p:column headerText="科目名称">
+                            <h:outputText value="#{accountSubject.label}" />
+                        </p:column>
+
+                        <p:column headerText="动作">
+                            <p:commandLink
+                                oncomplete="accountSubjectDialog.hide()"
+                                action="#{stockTradeAdminBean.chooseAccountSubject}"
+                                update="mainForm:accountSubject" value="挑选">
+                                <f:setPropertyActionListener
+                                    value="#{accountSubject}"
+                                    target="#{stockTradeAdminBean.selectedAccountSubject}" />
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                    <p:commandButton value="取消" oncomplete="accountSubjectDialog.hide()" />
+                </h:panelGroup>
+            </p:dialog>
+        </h:form>
 
 
         <h:outputScript>

@@ -1,11 +1,14 @@
 package com.bee32.sem.asset.util;
 
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.MatchMode;
 
+import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
+import com.bee32.plover.criteria.hibernate.Disjunction;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.IsNull;
 import com.bee32.plover.criteria.hibernate.LeftHand;
@@ -34,15 +37,27 @@ public class AssetCriteria
 
     @LeftHand(AccountTicketItem.class)
     public static ICriteriaElement select(AssetQueryOptions options, Date optBaseTime) {
+        List<AccountSubject> subjects = options.getSubjects();
+        ICriteriaElement subjectSelection = null;
+        if (options.isRecursive()) {
+            if (subjects != null) {
+                Disjunction disj = disjunction();
+                for (AccountSubject subject : subjects) {
+                    CriteriaElement like = _like("subject.id", subject.getId() + "%");
+                    disj.add(like);
+                }
+                subjectSelection = disj;
+            }
+        } else {
+            subjectSelection = _in("subject", subjects);
+        }
         return compose(//
                 // alias("ticket", "ticket", CriteriaSpecification.LEFT_JOIN), //
                 // VERIFIED?
                 _greaterThan("endTime", optBaseTime), //
                 lessOrEquals("endTime", options.getTimestamp()), //
 
-                // LIKE "01%"
-                // _equals("subject", options.getSubject()), //
-                _in("subject", options.getSubjects()), //
+                subjectSelection, //
 
                 _in("party", options.getParties()));
     }

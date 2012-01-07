@@ -17,6 +17,7 @@ public final class AssetQueryOptions
     Date timestamp = new Date();
 
     List<AccountSubject> subjects;
+    boolean recursive;
     List<Party> parties;
 
     boolean subjectVisible = true;
@@ -48,6 +49,14 @@ public final class AssetQueryOptions
 
     public void setSubjects(List<AccountSubject> subjects) {
         this.subjects = subjects;
+    }
+
+    public boolean isRecursive() {
+        return recursive;
+    }
+
+    public void setRecursive(boolean recursive) {
+        this.recursive = recursive;
     }
 
     public boolean isSubjectVisible() {

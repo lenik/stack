@@ -11,14 +11,17 @@ import javax.free.UnexpectedException;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.util.i18n.CurrencyConfig;
+import com.bee32.sem.asset.dto.AccountSubjectDto;
 import com.bee32.sem.asset.dto.StockTradeDto;
 import com.bee32.sem.asset.dto.StockTradeItemDto;
+import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.asset.entity.StockPurchase;
 import com.bee32.sem.asset.entity.StockSale;
 import com.bee32.sem.asset.entity.StockTrade;
@@ -66,6 +69,9 @@ public class StockTradeAdminBean
     private int goNumber;
     private int count;
 
+    private AccountSubjectDto selectedAccountSubject;
+
+    @SuppressWarnings("unchecked")
     public StockTradeAdminBean() {
         Calendar c = Calendar.getInstance();
         // 取这个月的第一天
@@ -260,7 +266,7 @@ public class StockTradeAdminBean
     public void findMaterial() {
         if (materialPattern != null && !materialPattern.isEmpty()) {
             List<Material> _materials = serviceFor(Material.class).list(MaterialCriteria.labelLike(materialPattern));
-            materials = DTOs.mrefList(MaterialDto.class, _materials);
+            materials = DTOs.mrefList(MaterialDto.class, 0, _materials);
         }
     }
 
@@ -427,6 +433,26 @@ public class StockTradeAdminBean
     public void last() {
         goNumber = count + 1;
         loadStockTrade(goNumber);
+    }
+
+    public AccountSubjectDto getSelectedAccountSubject() {
+        return selectedAccountSubject;
+    }
+
+    public void setSelectedAccountSubject(AccountSubjectDto selectedAccountSubject) {
+        this.selectedAccountSubject = selectedAccountSubject;
+    }
+
+    public List<AccountSubjectDto> getAccountSubjects() {
+        //在实体中,name代表科目代码，label代表科目名称
+        List<AccountSubject> _subjects = serviceFor(AccountSubject.class).list(//
+                new Like("id", "%" + stockTrade.getSubject().getName() + "%"));
+
+        return DTOs.mrefList(AccountSubjectDto.class, 0, _subjects);
+    }
+
+    public void chooseAccountSubject() {
+        stockTrade.setSubject(selectedAccountSubject);
     }
 
 }

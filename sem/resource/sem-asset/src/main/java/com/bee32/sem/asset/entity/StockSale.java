@@ -15,4 +15,12 @@ public class StockSale
         this.debitSide = true;
     }
 
+    @Override
+    public void setSubject(AccountSubject subject) {
+        if(!subject.getName().substring(0, 4).equals(AccountSubject.s1131.getName())) {
+            throw new SubjectForStockSaleWrongException();
+        }
+        super.setSubject(subject);
+    }
+
 }
