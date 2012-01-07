@@ -14,6 +14,7 @@ import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.criteria.hibernate.Order;
+import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.mail.MailFlags;
 import com.bee32.sem.mail.dto.MailDeliveryDto;
@@ -26,6 +27,7 @@ import com.bee32.sem.mail.entity.MailOrientation;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.util.SessionPerson;
 
+@ForEntity(Mail.class)
 public class MailManageBean
         extends MailManageVdx {
 

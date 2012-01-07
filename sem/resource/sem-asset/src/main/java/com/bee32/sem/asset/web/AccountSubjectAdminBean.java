@@ -7,12 +7,14 @@ import org.primefaces.model.TreeNode;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.bee32.plover.criteria.hibernate.Order;
+import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.asset.dto.AccountSubjectDto;
 import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.sandbox.UIHelper;
 
+@ForEntity(AccountSubject.class)
 public class AccountSubjectAdminBean
         extends EntityViewBean {
 
@@ -82,15 +84,8 @@ public class AccountSubjectAdminBean
         this.parentSubject = parentSubject;
     }
 
-
-
-
-
-
     protected void loadAccountSubjectTree() {
         root = new DefaultTreeNode("root", null);
-
-
 
         List<AccountSubject> subjects = serviceFor(AccountSubject.class).list(Order.asc("id"));
         List<AccountSubjectDto> subjectDtos = DTOs.mrefList(AccountSubjectDto.class, -1, subjects);

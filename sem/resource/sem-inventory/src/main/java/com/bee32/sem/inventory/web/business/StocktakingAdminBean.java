@@ -14,6 +14,7 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.criteria.hibernate.Order;
+import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.inventory.dto.MaterialDto;
@@ -24,21 +25,20 @@ import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
+import com.bee32.sem.inventory.tx.entity.StockTaking;
 import com.bee32.sem.inventory.util.StockCriteria;
 import com.bee32.sem.misc.EntityCriteria;
 
+@ForEntity(StockTaking.class)
 public class StocktakingAdminBean extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
     protected StockOrderSubject subject = null;
-
     protected StockWarehouseDto selectedWarehouse = new StockWarehouseDto().ref();
-
-    protected boolean editable = false;
-
     protected StockOrderDto stockOrder = new StockOrderDto().create().ref();
 
+    protected boolean editable = false;
 
     private Date limitDateFrom;
     private Date limitDateTo;

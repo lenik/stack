@@ -11,6 +11,7 @@ import javax.faces.model.SelectItem;
 import org.zkoss.lang.Strings;
 
 import com.bee32.plover.criteria.hibernate.Order;
+import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.color.MomentIntervalCriteria;
 import com.bee32.plover.ox1.tree.TreeCriteria;
@@ -50,6 +51,7 @@ import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.sandbox.ZLazyDataModel;
 import com.bee32.sem.world.monetary.MCValue;
 
+@ForEntity(Chance.class)
 public class ChanceBean
         extends ChanceBeanVdx {
 

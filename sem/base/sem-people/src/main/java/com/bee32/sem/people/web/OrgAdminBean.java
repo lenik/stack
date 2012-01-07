@@ -17,6 +17,7 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.criteria.hibernate.Order;
+import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.tree.TreeCriteria;
 import com.bee32.sem.misc.EntityCriteria;
@@ -37,6 +38,7 @@ import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
 
+@ForEntity(Org.class)
 public class OrgAdminBean
         extends AbstractPartyAdminBean {
 

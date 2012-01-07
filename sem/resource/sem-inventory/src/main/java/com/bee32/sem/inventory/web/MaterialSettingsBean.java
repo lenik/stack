@@ -11,6 +11,8 @@ import org.primefaces.event.FlowEvent;
 import org.zkoss.lang.Strings;
 
 import com.bee32.plover.criteria.hibernate.Order;
+import com.bee32.plover.orm.annotation.ForEntities;
+import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.tree.TreeCriteria;
 import com.bee32.plover.util.i18n.CurrencyConfig;
@@ -35,6 +37,11 @@ import com.bee32.sem.world.thing.UnitConvDto;
 import com.bee32.sem.world.thing.UnitCriteria;
 import com.bee32.sem.world.thing.UnitDto;
 
+@ForEntities({
+//
+        @ForEntity(MaterialCategory.class), //
+        @ForEntity(Unit.class), //
+        @ForEntity(UnitConv.class), })
 public class MaterialSettingsBean
         extends MultiTabEntityVdx {
 
@@ -84,7 +91,8 @@ public class MaterialSettingsBean
     }
 
     public void initMainTree() {
-        List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(TreeCriteria.root(), //
+        List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(//
+                TreeCriteria.root(), //
                 Order.asc("name"));
         List<MaterialCategoryDto> rootCategoryDtos = DTOs.mrefList(MaterialCategoryDto.class,
                 ~MaterialCategoryDto.MATERIALS, rootCategories);
@@ -94,7 +102,8 @@ public class MaterialSettingsBean
     }
 
     public void initSelectCategoryTree() {
-        List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(TreeCriteria.root());
+        List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(//
+                TreeCriteria.root());
         List<MaterialCategoryDto> rootCategoryDtos = DTOs.mrefList(MaterialCategoryDto.class,
                 ~MaterialCategoryDto.MATERIALS, rootCategories);
         materialCategorySelectTree = new MaterialCategoryTreeModel(rootCategoryDtos);
@@ -125,7 +134,8 @@ public class MaterialSettingsBean
             @Override
             public void itemSelected(SelectionEvent event) {
                 MaterialCategoryDto cad = (MaterialCategoryDto) event.getSelection();
-                List<Material> materials = serviceFor(Material.class).list(MaterialCriteria.categoryOf(cad.getId()));
+                List<Material> materials = serviceFor(Material.class).list(//
+                        MaterialCriteria.categoryOf(cad.getId()));
                 materialList = DTOs.marshalList(MaterialDto.class, MaterialDto.PRICES, materials);
             }
 
@@ -206,7 +216,8 @@ public class MaterialSettingsBean
         String stuId = activeUnit.getStdUnit().getId();
         UnitDto stdUnit = null;
         if (!Strings.isEmpty(stuId))
-            stdUnit = DTOs.marshal(UnitDto.class, serviceFor(Unit.class).getOrFail(activeUnit.getStdUnit().getId()));
+            stdUnit = DTOs.marshal(UnitDto.class, serviceFor(Unit.class).getOrFail(//
+                    activeUnit.getStdUnit().getId()));
 
         try {
             activeUnit.setStdUnit(stdUnit);
@@ -225,7 +236,7 @@ public class MaterialSettingsBean
             Unit unitl = serviceFor(Unit.class).getOrFail(unitId);
             serviceFor(Unit.class).delete(unitl);
             unitList.remove(selectedUnit);
-// initUnitList();
+            // initUnitList();
             uiLogger.info("删除单位成功");
         } catch (Exception e) {
             uiLogger.error("删除单位失败", e);

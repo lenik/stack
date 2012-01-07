@@ -28,9 +28,11 @@ import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 
+@ForEntity(R_ACE.class)
 public class PermissionAdminBean
         extends EntityViewBean {
 

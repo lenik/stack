@@ -9,6 +9,7 @@ import javax.free.UnexpectedException;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
+import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.people.dto.ContactCategoryDto;
 import com.bee32.sem.people.dto.ContactDto;
@@ -21,6 +22,7 @@ import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.sandbox.MultiTabEntityVdx;
 import com.bee32.sem.sandbox.UIHelper;
 
+@ForEntity(Party.class)
 public abstract class AbstractPartyAdminBean
         extends MultiTabEntityVdx {
 

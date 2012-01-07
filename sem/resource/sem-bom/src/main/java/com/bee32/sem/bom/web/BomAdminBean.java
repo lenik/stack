@@ -15,6 +15,7 @@ import com.bee32.plover.criteria.hibernate.InCollection;
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Not;
 import com.bee32.plover.criteria.hibernate.Or;
+import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.tree.TreeCriteria;
 import com.bee32.sem.bom.dto.PartDto;
@@ -37,6 +38,7 @@ import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.world.monetary.FxrQueryException;
 
+@ForEntity(Part.class)
 public class BomAdminBean
         extends BomAdminVdx {
 

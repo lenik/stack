@@ -15,6 +15,8 @@ import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.criteria.hibernate.Order;
+import com.bee32.plover.orm.annotation.ForEntity;
+import com.bee32.plover.orm.annotation.TypeParameter;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
@@ -27,6 +29,7 @@ import com.bee32.sem.inventory.util.StockCriteria;
 import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.process.verify.service.IVerifyService;
 
+@ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = { "TK_I", "TK_O" }))
 public class TakeAdminBean
         extends StockOrderBaseBean {
 

@@ -14,6 +14,7 @@ import javax.faces.model.SelectItem;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Or;
+import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.util.i18n.CurrencyConfig;
 import com.bee32.sem.inventory.dto.MaterialDto;
@@ -22,6 +23,7 @@ import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockItemList;
+import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.inventory.service.IStockQuery;
@@ -37,6 +39,7 @@ import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.thing.UnitConvDto;
 import com.bee32.sem.world.thing.UnitDto;
 
+@ForEntity(StockOrder.class)
 public abstract class StockOrderBaseBean
         extends LocationAboutBean {
 

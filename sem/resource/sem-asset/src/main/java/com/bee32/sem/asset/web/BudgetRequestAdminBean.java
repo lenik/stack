@@ -8,6 +8,7 @@ import javax.faces.model.SelectItem;
 
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.criteria.hibernate.Order;
+import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.asset.dto.BudgetRequestDto;
@@ -15,6 +16,7 @@ import com.bee32.sem.asset.entity.BudgetRequest;
 import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.world.monetary.CurrencyUtil;
 
+@ForEntity(BudgetRequest.class)
 public class BudgetRequestAdminBean
         extends EntityViewBean {
 

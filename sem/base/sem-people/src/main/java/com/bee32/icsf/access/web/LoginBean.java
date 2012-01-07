@@ -16,6 +16,7 @@ import com.bee32.icsf.login.UserPassword;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.EntityViewBean;
 
+// @ForEntity(value = UserPassword.class)
 public class LoginBean
         extends EntityViewBean {
 

@@ -13,6 +13,7 @@ import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.criteria.hibernate.Order;
+import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
@@ -35,6 +36,7 @@ import com.bee32.sem.purchase.entity.PurchaseRequestItem;
 import com.bee32.sem.purchase.service.PurchaseService;
 import com.bee32.sem.world.monetary.CurrencyUtil;
 
+@ForEntity(PurchaseRequest.class)
 public class PurchaseRequestAdminBean extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;

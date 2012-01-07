@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Order;
+import com.bee32.plover.orm.annotation.ForEntity;
+import com.bee32.plover.orm.annotation.TypeParameter;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
@@ -16,6 +18,7 @@ import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.util.StockCriteria;
 
+@ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = "INIT"))
 public class InitAdminBean extends StockOrderBaseBean {
 
     private static final long serialVersionUID = 1L;
@@ -35,8 +38,8 @@ public class InitAdminBean extends StockOrderBaseBean {
         stockOrder.setSubject(subject);
         if (selectedWarehouse != null) {
             List<StockOrder> oneList = serviceFor(StockOrder.class).list(
-                    StockCriteria.subjectOf(getSubject()),
-                    new Equals("warehouse.id", selectedWarehouse.getId()),
+                    StockCriteria.subjectOf(getSubject()), //
+                    new Equals("warehouse.id", selectedWarehouse.getId()), //
                     Order.desc("id"));
 
             if (oneList.size() > 0) {

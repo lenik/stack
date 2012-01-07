@@ -7,6 +7,7 @@ import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
 import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.ox1.tree.TreeCriteria;
@@ -16,14 +17,15 @@ import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.StockLocation;
 
-public abstract class LocationAboutBean extends EntityViewBean {
+@ForEntity(StockLocation.class)
+public abstract class LocationAboutBean
+        extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
     private TreeNode locationRoot;
     private TreeNode selectedStockLocationNode;
     private StockLocationDto selectedPreferredStockLocation;
-
 
     public TreeNode getLocationRoot() {
         if (locationRoot == null) {
@@ -44,7 +46,8 @@ public abstract class LocationAboutBean extends EntityViewBean {
         List<StockLocationDto> stockLocations = new ArrayList<StockLocationDto>();
 
         if (getOrderItem_() != null && getOrderItem_().getMaterial() != null) {
-            List<MaterialPreferredLocationDto> preferredLocations = getOrderItem_().getMaterial().getPreferredLocations();
+            List<MaterialPreferredLocationDto> preferredLocations = getOrderItem_().getMaterial()
+                    .getPreferredLocations();
             if (preferredLocations != null) {
                 for (MaterialPreferredLocationDto preferredLocation : preferredLocations) {
                     stockLocations.add(preferredLocation.getLocation());
@@ -62,7 +65,6 @@ public abstract class LocationAboutBean extends EntityViewBean {
     public void setSelectedPreferredStockLocation(StockLocationDto selectedPreferredStockLocation) {
         this.selectedPreferredStockLocation = selectedPreferredStockLocation;
     }
-
 
     protected void loadStockLocationTree() {
         if (getSelectedWarehouse_() != null) {
@@ -101,6 +103,7 @@ public abstract class LocationAboutBean extends EntityViewBean {
     }
 
     public abstract StockOrderItemDto getOrderItem_();
+
     public abstract StockWarehouseDto getSelectedWarehouse_();
 
 }

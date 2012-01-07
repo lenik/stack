@@ -9,6 +9,8 @@ import org.primefaces.model.LazyDataModel;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.Order;
+import com.bee32.plover.orm.annotation.ForEntities;
+import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.misc.EntityCriteria;
@@ -19,6 +21,7 @@ import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.dto.PartyTagnameDto;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.entity.Org;
+import com.bee32.sem.people.entity.OrgUnit;
 import com.bee32.sem.people.entity.PartyTagname;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonRole;
@@ -26,6 +29,10 @@ import com.bee32.sem.people.util.ContactHolder;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
 
+@ForEntities({
+    //
+    @ForEntity(OrgUnit.class), //
+    @ForEntity(Org.class) })
 public class OrgPersonAdminBean
         extends EntityViewBean {
 

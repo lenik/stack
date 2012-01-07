@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.criteria.hibernate.Order;
+import com.bee32.plover.orm.annotation.ForEntity;
+import com.bee32.plover.orm.annotation.TypeParameter;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
@@ -25,6 +27,7 @@ import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.util.PeopleCriteria;
 
+@ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = "XFRO"))
 public class TransferOutAdminBean extends StockOrderBaseBean {
 
     private static final long serialVersionUID = 1L;

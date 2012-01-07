@@ -3,6 +3,7 @@ package com.bee32.sem.people.web.hr;
 import org.primefaces.model.LazyDataModel;
 
 import com.bee32.plover.criteria.hibernate.Order;
+import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dto.PersonDto;
@@ -11,7 +12,9 @@ import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
 
-public class InternalPersonAdminBean extends EntityViewBean {
+@ForEntity(Person.class)
+public class InternalPersonAdminBean
+        extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,8 +23,8 @@ public class InternalPersonAdminBean extends EntityViewBean {
     public InternalPersonAdminBean() {
         EntityDataModelOptions<Person, PersonDto> options = new EntityDataModelOptions<Person, PersonDto>(//
                 Person.class, PersonDto.class, 0, //
-                Order.desc("id"),
-                EntityCriteria.ownedByCurrentUser(),
+                Order.desc("id"), //
+                EntityCriteria.ownedByCurrentUser(), //
                 PeopleCriteria.internal());
         persons = UIHelper.buildLazyDataModel(options);
 
@@ -30,8 +33,7 @@ public class InternalPersonAdminBean extends EntityViewBean {
     }
 
     void refreshPersonCount() {
-        int count = serviceFor(Person.class).count(
-                EntityCriteria.ownedByCurrentUser(), PeopleCriteria.internal());
+        int count = serviceFor(Person.class).count(EntityCriteria.ownedByCurrentUser(), PeopleCriteria.internal());
         persons.setRowCount(count);
     }
 
@@ -42,4 +44,5 @@ public class InternalPersonAdminBean extends EntityViewBean {
     public void setPersons(LazyDataModel<PersonDto> persons) {
         this.persons = persons;
     }
+
 }

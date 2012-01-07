@@ -2,6 +2,7 @@ package com.bee32.sem.inventory.web.settings;
 
 import java.util.List;
 
+import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
@@ -10,6 +11,7 @@ import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.util.PeopleCriteria;
 
+@ForEntity(StockWarehouse.class)
 public class StockWarehouseAdminBean
         extends EntityViewBean {
 

@@ -11,6 +11,7 @@ import org.primefaces.model.TreeNode;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.ox1.tree.TreeCriteria;
@@ -22,6 +23,7 @@ import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.world.thing.Unit;
 import com.bee32.sem.world.thing.UnitDto;
 
+@ForEntity(StockLocation.class)
 public class StockLocationAdminBean
         extends EntityViewBean {
 

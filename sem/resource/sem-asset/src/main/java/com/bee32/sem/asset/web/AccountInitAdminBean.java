@@ -7,6 +7,7 @@ import javax.faces.model.SelectItem;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Not;
+import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.asset.dto.AccountSubjectDto;
@@ -19,7 +20,9 @@ import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.world.monetary.CurrencyUtil;
 
-public class AccountInitAdminBean extends EntityViewBean {
+@ForEntity(InitAccountTicketItem.class)
+public class AccountInitAdminBean
+        extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -107,11 +110,6 @@ public class AccountInitAdminBean extends EntityViewBean {
         this.selectedParty = selectedParty;
     }
 
-
-
-
-
-
     public void newItem() {
         accountTicketItem = new InitAccountTicketItemDto().create();
         accountTicketItem.setDescription("初始化");
@@ -123,7 +121,7 @@ public class AccountInitAdminBean extends EntityViewBean {
 
     public void deleteItem() {
         try {
-            InitAccountTicketItem _item = (InitAccountTicketItem)accountTicketItem.unmarshal();
+            InitAccountTicketItem _item = (InitAccountTicketItem) accountTicketItem.unmarshal();
             serviceFor(InitAccountTicketItem.class).delete(_item);
             uiLogger.info("删除成功.");
         } catch (Exception e) {
@@ -133,7 +131,7 @@ public class AccountInitAdminBean extends EntityViewBean {
 
     public void saveItem() {
         try {
-            InitAccountTicketItem _item = (InitAccountTicketItem)accountTicketItem.unmarshal();
+            InitAccountTicketItem _item = (InitAccountTicketItem) accountTicketItem.unmarshal();
             serviceFor(InitAccountTicketItem.class).saveOrUpdate(_item);
             uiLogger.info("保存成功.");
         } catch (Exception e) {
@@ -150,12 +148,11 @@ public class AccountInitAdminBean extends EntityViewBean {
     }
 
     public void chooseAccountSubject() {
-        //TODO 检测是否末级科目
+        // TODO 检测是否末级科目
         String name = selectedAccountSubject.getName();
-        int subAccountSubjectCount =  serviceFor(AccountSubject.class).count(
-                new Like("id", "%" + name + "%"),
+        int subAccountSubjectCount = serviceFor(AccountSubject.class).count(new Like("id", "%" + name + "%"),
                 new Not(new Equals("id", name)));
-        if(subAccountSubjectCount > 0) {
+        if (subAccountSubjectCount > 0) {
             uiLogger.error("所选择科目不是末级科目!");
             return;
         }

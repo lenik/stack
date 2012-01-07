@@ -14,6 +14,7 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.criteria.hibernate.Order;
+import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.asset.dto.AccountSubjectDto;
@@ -30,6 +31,7 @@ import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.world.monetary.CurrencyUtil;
 
+@ForEntity(AccountTicket.class)
 public class AccountTicketAdminBean
         extends EntityViewBean {
 

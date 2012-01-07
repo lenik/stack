@@ -12,6 +12,7 @@ import org.primefaces.model.LazyDataModel;
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.criteria.hibernate.Order;
+import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.Gender;
@@ -24,6 +25,7 @@ import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
 
+@ForEntity(Person.class)
 public class PersonAdminBean
         extends AbstractPartyAdminBean {
 

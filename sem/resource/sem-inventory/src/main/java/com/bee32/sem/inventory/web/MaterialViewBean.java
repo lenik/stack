@@ -19,6 +19,7 @@ import org.primefaces.model.UploadedFile;
 import org.zkoss.lang.Strings;
 
 import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.tree.TreeCriteria;
 import com.bee32.plover.util.i18n.CurrencyConfig;
@@ -52,6 +53,7 @@ import com.bee32.sem.world.thing.UnitConvDto;
 import com.bee32.sem.world.thing.UnitCriteria;
 import com.bee32.sem.world.thing.UnitDto;
 
+@ForEntity(Material.class)
 public class MaterialViewBean
         extends MaterialVdx {
 
@@ -253,8 +255,7 @@ public class MaterialViewBean
     public void newUnitConv() {
         RequestContext context = RequestContext.getCurrentInstance();
         activeUnitConv = new UnitConvDto().create();
-        if (activeMaterial.getUnit() == null
-                || activeMaterial.getUnit().getId() == null
+        if (activeMaterial.getUnit() == null || activeMaterial.getUnit().getId() == null
                 || activeMaterial.getUnit().getId().equals("")) {
 
             context.addCallbackParam("mainUnitSelected", false);
@@ -262,7 +263,7 @@ public class MaterialViewBean
             uiLogger.warn("请先选择物料主单位!");
             return;
         }
-        if(activeMaterial.getUnitConv() != null && activeMaterial.getUnitConv().getId() != null) {
+        if (activeMaterial.getUnitConv() != null && activeMaterial.getUnitConv().getId() != null) {
             activeUnitConv = reload(activeMaterial.getUnitConv());
         } else {
             activeUnitConv.setUnit(reload(activeMaterial.getUnit()));

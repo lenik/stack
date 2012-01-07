@@ -15,6 +15,7 @@ import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.criteria.hibernate.Order;
+import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.color.MomentIntervalCriteria;
 import com.bee32.sem.chance.dto.ChanceActionDto;
@@ -34,6 +35,7 @@ import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.MultiTabEntityVdx;
 import com.bee32.sem.sandbox.UIHelper;
 
+@ForEntity(ChanceAction.class)
 public class ChanceActionBean
         extends MultiTabEntityVdx {
 

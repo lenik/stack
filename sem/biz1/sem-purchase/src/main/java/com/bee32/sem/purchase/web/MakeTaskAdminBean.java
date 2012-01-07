@@ -13,6 +13,7 @@ import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.criteria.hibernate.Order;
+import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.bom.dto.PartDto;
@@ -29,6 +30,7 @@ import com.bee32.sem.purchase.dto.MakeTaskItemDto;
 import com.bee32.sem.purchase.entity.MakeOrder;
 import com.bee32.sem.purchase.entity.MakeTask;
 
+@ForEntity(MakeTask.class)
 public class MakeTaskAdminBean extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
