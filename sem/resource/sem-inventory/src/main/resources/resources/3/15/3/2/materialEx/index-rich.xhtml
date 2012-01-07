@@ -18,7 +18,7 @@
                         actionListener="#{materialExAdminBean.newMaterial}"
                         update="editForm:editPanel" />
                     <p:separator />
-                    <p:commandButton value="查找物料" update="" />
+                    <p:commandButton value="查找物料" oncomplete="findMaterialDialog.show()" />
                 </p:toolbarGroup>
             </p:toolbar>
 
@@ -326,6 +326,23 @@
         <ui:insert name="userFile">
             <ui:include src="userFile.xhtml"/>
         </ui:insert>
+
+        <h:form id="findMaterialForm">
+            <p:dialog header="查找物料" widgetVar="findMaterialDialog"
+                height="480" width="640" modal="true">
+
+                <t:panelGrid columns="2">
+                    <h:outputText value="物料名称部份或全部:"/>
+                    <p:inputText value="#{materialExAdminBean.materialPattern}" />
+                </t:panelGrid>
+
+                <p:commandButton
+                    value="查找"
+                    update="mainForm:materials"
+                    actionListener="#{materialExAdminBean.findMaterial}"
+                    oncomplete="findMaterialDialog.hide()"/>
+            </p:dialog>
+        </h:form>
 
     </ui:define>
 </ui:composition>

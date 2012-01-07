@@ -32,7 +32,7 @@ public class SEMInventoryModuleTest
     public static void main(String[] args)
             throws IOException {
         new SEMInventoryModuleTest().browseAndWait(//
-                SEMInventoryModule.PREFIX + "/material/index-rich.jsf");
+                SEMInventoryModule.PREFIX + "/materialEx/");
     }
 
 }

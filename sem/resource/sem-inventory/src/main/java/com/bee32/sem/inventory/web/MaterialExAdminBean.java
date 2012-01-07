@@ -32,6 +32,7 @@ import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.entity.MaterialPreferredLocation;
 import com.bee32.sem.inventory.entity.MaterialPrice;
 import com.bee32.sem.inventory.entity.MaterialWarehouseOption;
+import com.bee32.sem.inventory.util.MaterialCriteria;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.world.monetary.CurrencyUtil;
 import com.bee32.sem.world.thing.ScaleItem;
@@ -67,6 +68,8 @@ public class MaterialExAdminBean extends EntityViewBean {
     MaterialWarehouseOptionDto warehouseOption = new MaterialWarehouseOptionDto().create();
 
     UserFileDto userFile = new UserFileDto().create();
+
+    String materialPattern;
 
     public MaterialExAdminBean() {
         loadMaterialCategoryTree();
@@ -574,6 +577,21 @@ public class MaterialExAdminBean extends EntityViewBean {
             uiLogger.info("删除物料附件:" + userFile.getName() + "成功.");
         } catch (Exception e) {
             uiLogger.error("删除物料附件失败!", e);
+        }
+    }
+
+    public String getMaterialPattern() {
+        return materialPattern;
+    }
+
+    public void setMaterialPattern(String materialPattern) {
+        this.materialPattern = materialPattern;
+    }
+
+    public void findMaterial() {
+        if (!materialPattern.isEmpty() && materialPattern != null) {
+            List<Material> _materials = serviceFor(Material.class).list(MaterialCriteria.labelLike(materialPattern));
+            materials = DTOs.mrefList(MaterialDto.class, _materials);
         }
     }
 }
