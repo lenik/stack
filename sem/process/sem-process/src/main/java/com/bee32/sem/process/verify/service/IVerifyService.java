@@ -7,18 +7,19 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.sem.process.verify.AbstractVerifyContext;
 import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.VerifyException;
+import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.VerifyResult;
 import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 
 public interface IVerifyService {
 
-    VerifyPolicyDto getPreferredVerifyPolicy(Class<? extends IVerifiable<?>> clazz);
+    VerifyPolicy getPreferredVerifyPolicy(Class<? extends IVerifiable<?>> clazz);
 
-    VerifyPolicyDto getVerifyPolicy(IVerifiable<?> obj);
+    VerifyPolicyDto getPreferredVerifyPolicyDto(Class<? extends IVerifiable<?>> clazz);
 
-    // --o IVerifyPolicy.
+    VerifyPolicy getVerifyPolicy(IVerifiable<?> obj);
 
-    Set<Principal> getResponsibles(IVerifiable<?> obj);
+    VerifyPolicyDto getVerifyPolicyDto(IVerifiable<?> obj);
 
     /**
      * 表上的 {@link AbstractVerifyContext#isVerified() verified} 是缓存的值，仅用于检索用途。
@@ -70,5 +71,9 @@ public interface IVerifyService {
      * @return 详细的审核结果。
      */
     VerifyResult verifyEntity(Entity<?> entity);
+
+    Set<Principal> getResponsibles(IVerifiable<?> obj);
+
+    boolean isResponsible(Principal principal, IVerifiable<?> obj);
 
 }

@@ -9,8 +9,21 @@
         <fieldset style="margin: 1em 4em; padding: 1em; width: 40em">
             <legend>强制审核</legend>
             <cite>本框仅供内部开发使用，在实际运行中不应出现。</cite>
-
             <table>
+                <tr>
+                    <td align="right">审核阶段:</td>
+                    <td>
+                        #{stage}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td align="right">责任人判断:</td>
+                    <td>
+                        #{responsibleTest}
+                    </td>
+                </tr>
+
                 <!--  Run as current user? -->
                 <tr>
                     <td align="right">审核人:</td>

@@ -2,6 +2,7 @@ package com.bee32.sem.process.verify.builtin;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Transient;
 
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
@@ -31,6 +33,7 @@ public class SingleVerifierPolicy
 
     public static final int VERIFYING_1 = 1;
     public static final int END = -1;
+    static final Set<Integer> predefinedStages = setOf(VERIFYING_1, END);
 
     private Set<Principal> responsibles;
 
@@ -52,6 +55,12 @@ public class SingleVerifierPolicy
         this.responsibles = new HashSet<Principal>(responsibles);
     }
 
+    @Transient
+    @Override
+    public Set<?> getPredefinedStages() {
+        return predefinedStages;
+    }
+
     @Override
     public Object getStage(IVerifyContext context) {
         ISingleVerifier sv = checkedCast(ISingleVerifier.class, context);
@@ -69,7 +78,7 @@ public class SingleVerifierPolicy
         if (stage.equals(VERIFYING_1))
             return getResponsibles();
         else
-            return null;
+            return Collections.emptySet();
     }
 
     @ManyToMany

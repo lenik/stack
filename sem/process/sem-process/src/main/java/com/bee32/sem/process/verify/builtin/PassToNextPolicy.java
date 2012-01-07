@@ -9,6 +9,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -60,8 +61,18 @@ public class PassToNextPolicy
         this.sequences = sequences;
     }
 
+    @Transient
     @Override
-    public Object getStage(IVerifyContext context) {
+    public Set<?> getPredefinedStages() {
+        Set<Integer> positions = new HashSet<Integer>();
+        int n = sequences.size();
+        for (int position = 0; position <= n; position++)
+            positions.add(position);
+        return positions;
+    }
+
+    @Override
+    public Integer getStage(IVerifyContext context) {
         IPassEvents passEvents = (IPassEvents) context;
         return passEvents.getPosition();
     }

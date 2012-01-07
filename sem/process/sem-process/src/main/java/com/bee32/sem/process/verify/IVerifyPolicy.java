@@ -11,6 +11,8 @@ import com.bee32.icsf.principal.Principal;
  */
 public interface IVerifyPolicy {
 
+    VerifyPolicyMetadata getMetadata();
+
     VerifyResult verify(IVerifyContext context);
 
     /**
@@ -45,17 +47,39 @@ public interface IVerifyPolicy {
      */
     boolean isVerified(IVerifyContext context);
 
+    Set<?> getPredefinedStages();
+
+    /**
+     * 获取审核上下文的阶段。
+     *
+     * @return 非 <code>null</code> 的阶段键值。
+     */
     Object getStage(IVerifyContext context);
 
     /**
-     * 获取显示声明的责任人。
+     * 获取阶段上声明的责任人。
      *
-     * @param context
-     *            上下文，<code>null</code> 适用于无具体的上下文。
+     * @param stage
+     *            阶段键值。
      * @return 非 <code>null </code>的显示声明的责任人集合。
      */
     Set<Principal> getStageResponsibles(Object stage);
 
+    /**
+     * 获取审核上下文在当前阶段的责任人。
+     *
+     * 相当于 {@link #getStageResponsibles(Object) getStageResponsibles}(
+     * {@link #getStage(IVerifyContext) getStage()}).
+     */
     Set<Principal> getResponsibles(IVerifyContext context);
+
+    /**
+     * 相当于 AND(getStageResponsibles(stage).contains(for each implied principal).
+     *
+     * 但可以高度优化。
+     *
+     * @return <code>true</code> 如果 principal 是指定阶段的责任人之一。
+     */
+    boolean isResponsible(Principal principal, Object stage);
 
 }

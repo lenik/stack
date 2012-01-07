@@ -2,6 +2,7 @@ package com.bee32.sem.process.verify.builtin;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -22,6 +23,7 @@ import com.bee32.sem.process.verify.ForVerifyContext;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.VerifyResult;
+import com.bee32.sem.process.verify.util.Tuple;
 
 @Entity
 @DiscriminatorValue("ML")
@@ -119,28 +121,6 @@ public class SingleVerifierRankedPolicy
     }
 
     @Override
-    public Object getStage(IVerifyContext context) {
-        ISingleVerifierWithNumber svn = checkedCast(ISingleVerifierWithNumber.class, context);
-        long judgeNumber = svn.getJudgeNumber().longValue();
-        Entry<Long, SingleVerifierLevel> declaredEntry = levelMap.ceilingEntry(judgeNumber);
-        long limit = declaredEntry.getKey();
-        VerifyPolicy targetPolicy = declaredEntry.getValue().getTargetPolicy();
-        Object targetStage = targetPolicy.getStage(context);
-        return new Object[] { limit, targetStage };
-    }
-
-    @Override
-    public Set<Principal> getStageResponsibles(Object stage) {
-        Object[] s2 = (Object[]) stage;
-        Long limit = (Long) s2[0];
-        if (limit == null)
-            throw new IllegalUsageError("Bad limit: " + limit);
-        Object targetStage = s2[1];
-        VerifyPolicy targetPolicy = levelMap.get(limit).getTargetPolicy();
-        return targetPolicy.getStageResponsibles(targetStage);
-    }
-
-    @Override
     public VerifyResult validate(IVerifyContext _context) {
         ISingleVerifierWithNumber context = checkedCast(ISingleVerifierWithNumber.class, _context);
 
@@ -163,6 +143,43 @@ public class SingleVerifierRankedPolicy
             return VerifyResult.rejected(context.getVerifier1(), context.getRejectedReason1());
 
         return VERIFIED;
+    }
+
+    @Transient
+    @Override
+    public Set<?> getPredefinedStages() {
+        Set<Object> predefinedStages = new HashSet<Object>();
+        for (Entry<Long, SingleVerifierLevel> entry : levelMap.entrySet()) {
+            Long limit = entry.getKey();
+            VerifyPolicy targetPolicy = entry.getValue().getTargetPolicy();
+            for (Object targetStage : targetPolicy.getPredefinedStages()) {
+                Tuple predefinedStage = new Tuple(limit, targetStage);
+                predefinedStages.add(predefinedStage);
+            }
+        }
+        return predefinedStages;
+    }
+
+    @Override
+    public Tuple getStage(IVerifyContext context) {
+        ISingleVerifierWithNumber svn = checkedCast(ISingleVerifierWithNumber.class, context);
+        long judgeNumber = svn.getJudgeNumber().longValue();
+        Entry<Long, SingleVerifierLevel> declaredEntry = levelMap.ceilingEntry(judgeNumber);
+        long limit = declaredEntry.getKey();
+        VerifyPolicy targetPolicy = declaredEntry.getValue().getTargetPolicy();
+        Object targetStage = targetPolicy.getStage(context);
+        return new Tuple(limit, targetStage);
+    }
+
+    @Override
+    public Set<Principal> getStageResponsibles(Object stage) {
+        Tuple tuple = (Tuple) stage;
+        Long limit = tuple.getFactor(0);
+        if (limit == null)
+            throw new IllegalUsageError("Bad limit: " + limit);
+        Object targetStage = tuple.getFactor(1);
+        VerifyPolicy targetPolicy = levelMap.get(limit).getTargetPolicy();
+        return targetPolicy.getStageResponsibles(targetStage);
     }
 
 }

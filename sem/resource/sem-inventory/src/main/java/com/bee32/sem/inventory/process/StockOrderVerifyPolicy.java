@@ -1,10 +1,11 @@
 package com.bee32.sem.inventory.process;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.free.NotImplementedException;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinTable;
@@ -13,12 +14,12 @@ import javax.persistence.MapKeyColumn;
 import javax.persistence.Transient;
 
 import com.bee32.icsf.principal.Principal;
-import com.bee32.icsf.principal.User;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.process.verify.ForVerifyContext;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.VerifyResult;
+import com.bee32.sem.process.verify.util.Tuple;
 
 /**
  * 库存单据审核策略
@@ -50,17 +51,38 @@ public class StockOrderVerifyPolicy
         return subjectPolicyMap.get(subject);
     }
 
+    @Transient
     @Override
-    public Object getStage(IVerifyContext _context) {
+    public Set<?> getPredefinedStages() {
+        Set<Object> predefinedStages = new HashSet<Object>();
+        for (Entry<String, VerifyPolicy> entry : subjectPolicyMap.entrySet()) {
+            String subjectValue = entry.getKey();
+            VerifyPolicy targetPolicy = entry.getValue();
+            for (Object targetStage : targetPolicy.getPredefinedStages()) {
+                Tuple predefinedStage = new Tuple(subjectValue, targetStage);
+                predefinedStages.add(predefinedStage);
+            }
+        }
+        return predefinedStages;
+    }
+
+    @Override
+    public Tuple getStage(IVerifyContext _context) {
         IStockOrderVerifyContext context = checkedCast(IStockOrderVerifyContext.class, _context);
         StockOrderSubject subject = context.getSubject();
-        User verifier1 = context.getVerifier1(); // TODO
-        return null;
+        VerifyPolicy subjectPolicy = subjectPolicyMap.get(subject);
+        Object subjectStage = subjectPolicy.getStage(context);
+        return new Tuple(subject.getValue(), subjectStage);
     }
 
     @Override
     public Set<Principal> getStageResponsibles(Object stage) {
-        throw new NotImplementedException();
+        Tuple tuple = (Tuple) stage;
+        String subjectValue = tuple.getFactor(0);
+        StockOrderSubject subject = StockOrderSubject.valueOf(subjectValue);
+        VerifyPolicy subjectPolicy = subjectPolicyMap.get(subject);
+        Object subjectStage = tuple.getFactor(1);
+        return subjectPolicy.getStageResponsibles(subjectStage);
     }
 
     @Override

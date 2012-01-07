@@ -44,8 +44,15 @@ public class VerifyService
 
     @Transactional(readOnly = true)
     @Override
-    public VerifyPolicyDto getPreferredVerifyPolicy(Class<? extends IVerifiable<?>> entityClass) {
+    public VerifyPolicy getPreferredVerifyPolicy(Class<? extends IVerifiable<?>> entityClass) {
         VerifyPolicy preferredVerifyPolicy = policyDao.getPreferredVerifyPolicy(entityClass);
+        return preferredVerifyPolicy;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public VerifyPolicyDto getPreferredVerifyPolicyDto(Class<? extends IVerifiable<?>> entityClass) {
+        VerifyPolicy preferredVerifyPolicy = getPreferredVerifyPolicy(entityClass);
         VerifyPolicyDto policyDto = DTOs.marshal(VerifyPolicyDto.class, preferredVerifyPolicy);
         // return new VerifyPolicyDto(preferredVerifyPolicy);
         return policyDto;
@@ -53,24 +60,20 @@ public class VerifyService
 
     @Transactional(readOnly = true)
     @Override
-    public VerifyPolicyDto getVerifyPolicy(IVerifiable<?> entity) {
+    public VerifyPolicy getVerifyPolicy(IVerifiable<?> entity) {
         VerifyPolicy verifyPolicy = policyDao.getVerifyPolicy(entity);
+        return verifyPolicy;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public VerifyPolicyDto getVerifyPolicyDto(IVerifiable<?> entity) {
+        VerifyPolicy verifyPolicy = getVerifyPolicy(entity);
         VerifyPolicyDto policyDto = DTOs.marshal(VerifyPolicyDto.class, verifyPolicy);
         return policyDto;
     }
 
     // --o IVerifyPolicy.
-
-    @Transactional(readOnly = true)
-    @Override
-    public Set<Principal> getResponsibles(IVerifiable<?> obj) {
-        VerifyPolicy verifyPolicy = policyDao.getPreferredVerifyPolicy(obj.getClass());
-
-        if (verifyPolicy == null)
-            return new HashSet<Principal>();
-
-        return verifyPolicy.getResponsibles(obj.getVerifyContext());
-    }
 
     @Transactional(readOnly = true)
     @Override
@@ -192,6 +195,27 @@ public class VerifyService
         }
 
         return result;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Set<Principal> getResponsibles(IVerifiable<?> obj) {
+        VerifyPolicy verifyPolicy = policyDao.getPreferredVerifyPolicy(obj.getClass());
+
+        if (verifyPolicy == null)
+            return new HashSet<Principal>();
+
+        return verifyPolicy.getResponsibles(obj.getVerifyContext());
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public boolean isResponsible(Principal principal, IVerifiable<?> obj) {
+        VerifyPolicy verifyPolicy = policyDao.getPreferredVerifyPolicy(obj.getClass());
+        if (verifyPolicy == null)
+            return false;
+        Object stage = verifyPolicy.getStage(obj.getVerifyContext());
+        return verifyPolicy.isResponsible(principal, stage);
     }
 
 }

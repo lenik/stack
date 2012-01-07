@@ -10,7 +10,7 @@ import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.dto.IVerifiableDto;
 import com.bee32.sem.process.verify.dto.VerifyContextDto;
 import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
-import com.bee32.sem.process.verify.service.VerifyService;
+import com.bee32.sem.process.verify.service.IVerifyService;
 
 public abstract class VerifiableEntityController<E extends Entity<K> & IVerifiable<C>, //
 /*        */K extends Number, C extends IVerifyContext, Dto extends EntityDto<? super E, K> & IVerifiableDto>
@@ -18,13 +18,13 @@ public abstract class VerifiableEntityController<E extends Entity<K> & IVerifiab
         implements IVerifyHandlerHook<E> {
 
     @Inject
-    protected VerifyService verifyService;
+    protected IVerifyService verifyService;
 
     @Override
-    protected void loadForm(E entity, Dto dto) {
-        super.loadForm(entity, dto);
-        VerifyPolicyDto verifyPolicy = verifyService.getVerifyPolicy(entity);
-        VerifyContextDto<?> contextDto = dto.getVerifyContext();
+    protected void loadForm(E entity, Dto entityDto) {
+        super.loadForm(entity, entityDto);
+        VerifyPolicyDto verifyPolicy = verifyService.getVerifyPolicyDto(entity);
+        VerifyContextDto<?> contextDto = entityDto.getVerifyContext();
         contextDto.setVerifyPolicy(verifyPolicy);
     }
 

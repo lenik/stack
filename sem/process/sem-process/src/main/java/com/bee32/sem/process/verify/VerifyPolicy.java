@@ -1,5 +1,8 @@
 package com.bee32.sem.process.verify;
 
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.DiscriminatorColumn;
@@ -10,46 +13,39 @@ import javax.persistence.InheritanceType;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
+import com.bee32.icsf.principal.IPrincipalChangeListener;
 import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.PrincipalAware;
+import com.bee32.icsf.principal.PrincipalChangeEvent;
 import com.bee32.plover.inject.ServiceTemplate;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 
 @ServiceTemplate(prototype = true)
-@Entity
+@Entity(name = "VerifyPolicy")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 4)
 @DiscriminatorValue("-")
 @SequenceGenerator(name = "idgen", sequenceName = "verify_policy_seq", allocationSize = 1)
 public abstract class VerifyPolicy
         extends UIEntityAuto<Integer>
-        implements IVerifyPolicy {
+        implements IVerifyPolicy, IPrincipalChangeListener {
 
     private static final long serialVersionUID = 1L;
 
-    protected static final VerifyResult UNKNOWN = new VerifyResult(VerifyState.UNKNOWN, null);
-    protected static final VerifyResult VERIFIED = new VerifyResult(VerifyState.VERIFIED, null);
+    protected static final VerifyResult UNKNOWN = new VerifyResult(VerifyEvalState.UNKNOWN, null);
+    protected static final VerifyResult VERIFIED = new VerifyResult(VerifyEvalState.VERIFIED, null);
 
     private final VerifyPolicyMetadata metadata;
+    private Map<Principal, Map<Object, Boolean>> principalResponsibleStagesMap;
 
     public VerifyPolicy() {
         metadata = VerifyPolicyManager.getMetadata(getClass());
     }
 
     @Transient
+    @Override
     public VerifyPolicyMetadata getMetadata() {
         return metadata;
-    }
-
-    protected <C extends IVerifyContext> C checkedCast(Class<C> requiredContextClass, IVerifyContext context) {
-        if (requiredContextClass == null)
-            throw new NullPointerException("requiredContextClass");
-        /**
-         * <pre>
-         * if (requiredContextClass.equals(metadata.getContextClass()))
-         *     throw new IllegalUsageException(&quot;Require a different context from the defined one: &quot; + requiredContextClass);
-         * </pre>
-         */
-        return requiredContextClass.cast(context);
     }
 
     @Override
@@ -103,6 +99,82 @@ public abstract class VerifyPolicy
     public Set<Principal> getResponsibles(IVerifyContext context) {
         Object stage = getStage(context);
         return getStageResponsibles(stage);
+    }
+
+    @Override
+    protected void finalize() {
+        if (principalResponsibleStagesMap != null)
+            PrincipalAware.getInstance().removePrincipalChangeListener(this);
+    }
+
+    protected Map<Object, Boolean> getResponsibleStagesMap(Principal principal) {
+        if (principalResponsibleStagesMap == null) {
+            synchronized (this) {
+                if (principalResponsibleStagesMap == null) {
+                    principalResponsibleStagesMap = new HashMap<Principal, Map<Object, Boolean>>();
+                    PrincipalAware.getInstance().addPrincipalChangeListener(this);
+                }
+            }
+        }
+        Map<Object, Boolean> responsibleStagesMap = principalResponsibleStagesMap.get(principal);
+        if (responsibleStagesMap == null) {
+            synchronized (principalResponsibleStagesMap) {
+                if (responsibleStagesMap == null) {
+                    responsibleStagesMap = new HashMap<Object, Boolean>();
+                    principalResponsibleStagesMap.put(principal, responsibleStagesMap);
+                }
+            }
+        }
+        return responsibleStagesMap;
+    }
+
+    @Override
+    public boolean isResponsible(Principal principal, Object stage) {
+        Map<Object, Boolean> responsibleStages = getResponsibleStagesMap(principal);
+        Boolean responsible = responsibleStages.get(stage);
+        if (responsible == null) {
+            synchronized (responsibleStages) {
+                if (responsible == null) {
+                    for (Principal im : principal.getImSet())
+                        if (getStageResponsibles(stage).contains(im)) {
+                            responsible = true;
+                            break;
+                        }
+                    if (responsible == null)
+                        responsible = false;
+                    responsibleStages.put(stage, responsible);
+                }
+            }
+        }
+        return responsible;
+    }
+
+    @Override
+    public void principalChanged(PrincipalChangeEvent event) {
+        if (principalResponsibleStagesMap != null) {
+            Principal principal = event.getPrincipal();
+            principalResponsibleStagesMap.remove(principal);
+        }
+    }
+
+    protected static <C extends IVerifyContext> C checkedCast(Class<C> requiredContextClass, IVerifyContext context) {
+        if (requiredContextClass == null)
+            throw new NullPointerException("requiredContextClass");
+        /**
+         * <pre>
+         * if (requiredContextClass.equals(metadata.getContextClass()))
+         *     throw new IllegalUsageException(&quot;Require a different context from the defined one: &quot; + requiredContextClass);
+         * </pre>
+         */
+        return requiredContextClass.cast(context);
+    }
+
+    @SafeVarargs
+    protected static <T> Set<T> setOf(T... args) {
+        Set<T> set = new LinkedHashSet<T>();
+        for (T arg : args)
+            set.add(arg);
+        return set;
     }
 
 }

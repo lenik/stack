@@ -47,6 +47,15 @@ public class AttackMissionController
     protected void fillFormExtra(ActionRequest req, ActionResult result) {
         List<UserDto> users = DTOs.marshalList(UserDto.class, 0, asFor(User.class).list());
         result.put("users", users);
+
+        AttackMission entity = (AttackMission) result.getModelMap().get("entity");
+        User user = SessionUser.getInstance().getInternalUser();
+        boolean responsible = verifyService.isResponsible(user, entity);
+        result.put("responsibleTest", responsible);
+
+        VerifyPolicy policy = verifyService.getPreferredVerifyPolicy(AttackMission.class);
+        Object stage = policy.getStage(entity.getVerifyContext());
+        result.put("stage", stage);
     }
 
     @Override
