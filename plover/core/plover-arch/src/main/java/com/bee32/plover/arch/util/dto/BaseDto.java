@@ -223,7 +223,7 @@ public abstract class BaseDto<S, C>
     }
 
     @Override
-    protected S mergeDeref(S given) {
+    protected Object mergeDeref(S given) {
         if (given == null) {
             // create a new instance.
             S source;

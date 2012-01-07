@@ -196,7 +196,8 @@ abstract class BaseDto_Skel<S, C>
         if (isNullRef())
             return null;
 
-        S deref = mergeDeref(target);
+        @SuppressWarnings("unchecked")
+        S deref = (S) mergeDeref(target);
 
         if (target == null || /* TODO Check this later */target == deref) {
             IMarshalSession session = getSession();
@@ -229,8 +230,9 @@ abstract class BaseDto_Skel<S, C>
      *
      * @param given
      *            It's most common to see <code>null</code> or an id-matching entity.
+     * @return Object instead of S to avoid compile problem. (This is just a work-around)
      */
-    protected abstract S mergeDeref(S given);
+    protected abstract Object mergeDeref(S given);
 
     /**
      * Write some internal properties from this object into the specified source bean.
