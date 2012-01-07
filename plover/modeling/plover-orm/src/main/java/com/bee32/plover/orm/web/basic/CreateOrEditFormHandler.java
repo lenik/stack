@@ -77,7 +77,7 @@ public class CreateOrEditFormHandler<E extends Entity<K>, K extends Serializable
             dto = eh.newDto(dtoSelection);
 
             // Entity-initializors, so as to populate the transient properties.
-            forming.loadForm(newEntity, dto);
+            forming.createForm(newEntity, dto);
 
             entity = newEntity;
         }
