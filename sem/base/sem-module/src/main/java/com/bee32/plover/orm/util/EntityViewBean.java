@@ -100,14 +100,15 @@ public abstract class EntityViewBean
      *
      * @return <code>null</code> If id parameter is not specified in the rqeuest.
      */
-    protected Serializable getRequestId() {
-        Class<? extends Entity<?>> entityType = getMajorType();
+    protected <E extends Entity<K>, K extends Serializable> Serializable getRequestId() {
+        @SuppressWarnings("unchecked")
+        Class<E> entityType = (Class<E>) getMajorType();
 
         String requestId = getRequest().getParameter(StandardViews.ID_PARAM);
         if (requestId == null)
             return null;
 
-        EntityHelper<? extends Entity<?>, ?> eh = EntityHelper.getInstance(entityType);
+        EntityHelper<E, K> eh = EntityHelper.getInstance(entityType);
         Serializable id;
         try {
             id = eh.parseId(requestId);
