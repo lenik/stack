@@ -91,35 +91,6 @@ public class MaterialExAdminBean extends EntityViewBean {
         this.material = material;
     }
 
-    public MaterialPriceDto getMaterialPrice() {
-        return materialPrice;
-    }
-
-    public void setMaterialPrice(MaterialPriceDto materialPrice) {
-        this.materialPrice = materialPrice;
-    }
-
-    public List<ScaleItem> getScaleList() {
-        if (material != null && material.getId() != null) {
-            if (material.getUnitConv() == null || material.getUnitConv().getId() == null) {
-                return null;
-            } else {
-                UnitConvDto unitConv = material.getUnitConv();
-                unitConv = reload(unitConv);
-                return unitConv.getItemList();
-            }
-        }
-        return null;
-    }
-
-    public ScaleItem getScaleItem() {
-        return scaleItem;
-    }
-
-    public void setScaleItem(ScaleItem scaleItem) {
-        this.scaleItem = scaleItem;
-    }
-
     private void loadMaterialCategoryTree() {
         loadMaterialCategoryTree(null);
     }
@@ -254,6 +225,15 @@ public class MaterialExAdminBean extends EntityViewBean {
         return null;
     }
 
+
+    public MaterialPriceDto getMaterialPrice() {
+        return materialPrice;
+    }
+
+    public void setMaterialPrice(MaterialPriceDto materialPrice) {
+        this.materialPrice = materialPrice;
+    }
+
     public void newMaterialPrice() {
         materialPrice = new MaterialPriceDto().create();
     }
@@ -268,6 +248,27 @@ public class MaterialExAdminBean extends EntityViewBean {
         } catch (Exception e) {
             uiLogger.error("保存物料价格出错!", e);
         }
+    }
+
+    public ScaleItem getScaleItem() {
+        return scaleItem;
+    }
+
+    public void setScaleItem(ScaleItem scaleItem) {
+        this.scaleItem = scaleItem;
+    }
+
+    public List<ScaleItem> getScaleList() {
+        if (material != null && material.getId() != null) {
+            UnitConvDto unitConv = material.getUnitConv();
+            if (unitConv == null || unitConv.getId() == null) {
+                return null;
+            } else {
+                unitConv = reload(unitConv, UnitConvDto.MAP);
+                return unitConv.getItemList();
+            }
+        }
+        return null;
     }
 
     public void newUnitScale() {
@@ -295,8 +296,8 @@ public class MaterialExAdminBean extends EntityViewBean {
             if (!alreadyHaveUnitConv) {
                 _m.setUnitConv(_unitConv);
                 serviceFor(Material.class).saveOrUpdate(_m);
+                serviceFor(Material.class).evict(_m);
             }
-            serviceFor(Material.class).evict(_m);
             serviceFor(UnitConv.class).evict(_unitConv);
             uiLogger.info("添加换算关系成功.");
         } catch (Exception e) {

@@ -126,5 +126,4 @@ public class UnitConvDto
             throw new NullPointerException("scaleMap");
         this.scaleMap = scaleMap;
     }
-
 }

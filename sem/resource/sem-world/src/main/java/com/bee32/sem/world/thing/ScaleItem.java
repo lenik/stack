@@ -2,6 +2,10 @@ package com.bee32.sem.world.thing;
 
 import java.io.Serializable;
 
+/**
+ * 为方便单位转换表与视图绑定而建立的类
+ *
+ */
 public class ScaleItem
         implements Serializable {
 
@@ -30,16 +34,5 @@ public class ScaleItem
     public void setScale(double scale) {
         this.scale = scale;
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        ScaleItem item = (ScaleItem) obj;
-        if(item.unit.getId().equals(unit.getId()) && item.scale == scale) {
-            return true;
-        }
-
-        return false;
-    }
-
 
 }
