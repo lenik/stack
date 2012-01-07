@@ -17,7 +17,7 @@ public class ModuleObjectPageDirectoryTest
         PloverServletModule module = new PloverServletModule();
         ModuleObjectPageDirectory pageDir = new ModuleObjectPageDirectory(module);
         pageDir.addLocalPageForView("greeting", "hey/abc");
-        Location loc = pageDir.getPageForView("greeting");
+        Location loc = pageDir.getPagesForView("greeting").get(0);
         // System.out.println(loc);
         assertEquals("/3/12/2/10/hey/abc", loc.getBase());
     }
@@ -30,7 +30,7 @@ public class ModuleObjectPageDirectoryTest
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("id", 123);
         params.put("name", "彩蝶");
-        Location loc = pageDir.getPageForView("greeting", params);
+        Location loc = pageDir.getPagesForView("greeting", params).get(0);
         // System.out.println(loc);
         assertEquals("/3/12/2/10/hey/abc?id=123&name=%E5%BD%A9%E8%9D%B6", loc.getBase());
     }

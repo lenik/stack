@@ -1,7 +1,9 @@
 package com.bee32.plover.orm.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.bee32.plover.arch.IModule;
@@ -43,21 +45,29 @@ public class ModuleEntityPageDirectory
     }
 
     @Override
-    protected String getLocalPageForView(String viewName, Map<String, ?> parameters) {
-        String override = super.getLocalPageForView(viewName, parameters);
-        if (override != null)
-            return override;
-        String localPage = predefinedViews.get(viewName);
-        return formatHref(localPage, parameters);
+    protected List<String> getLocalPagesForView(String viewName, Map<String, ?> parameters) {
+        List<String> pages = super.getLocalPagesForView(viewName, parameters);
+        if (!pages.isEmpty())
+            return pages;
+        String predefined = predefinedViews.get(viewName);
+        if (predefined != null) {
+            pages = new ArrayList<String>(pages); // make a copy.
+            pages.add(predefined);
+        }
+        return formatHref(pages, parameters);
     }
 
     @Override
-    protected String getLocalPageForOperation(String operationName, Map<String, ?> parameters) {
-        String override = super.getLocalPageForOperation(operationName, parameters);
-        if (override != null)
-            return override;
-        String localPage = predefinedOperations.get(operationName);
-        return formatHref(localPage, parameters);
+    protected List<String> getLocalPagesForOperation(String operationName, Map<String, ?> parameters) {
+        List<String> pages = super.getLocalPagesForOperation(operationName, parameters);
+        if (!pages.isEmpty())
+            return pages;
+        String predefined = predefinedOperations.get(operationName);
+        if (predefined != null) {
+            pages = new ArrayList<String>(pages); // make a copy.
+            pages.add(predefined);
+        }
+        return formatHref(pages, parameters);
     }
 
     public static class Completion
@@ -100,17 +110,17 @@ public class ModuleEntityPageDirectory
         }
 
         @Override
-        protected String getLocalPageForView(String viewName, Map<String, ?> parameters) {
+        protected List<String> getLocalPagesForView(String viewName, Map<String, ?> parameters) {
             parameters = getOverridedParameters(parameters);
-            String href = super.getLocalPageForView(viewName, parameters);
-            return href;
+            List<String> pages = super.getLocalPagesForView(viewName, parameters);
+            return pages;
         }
 
         @Override
-        protected String getLocalPageForOperation(String operationName, Map<String, ?> parameters) {
+        protected List<String> getLocalPagesForOperation(String operationName, Map<String, ?> parameters) {
             parameters = getOverridedParameters(parameters);
-            String href = super.getLocalPageForOperation(operationName, parameters);
-            return href;
+            List<String> pages = super.getLocalPagesForOperation(operationName, parameters);
+            return pages;
         }
 
     }

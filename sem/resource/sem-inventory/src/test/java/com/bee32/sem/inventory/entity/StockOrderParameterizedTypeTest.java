@@ -15,7 +15,7 @@ public class StockOrderParameterizedTypeTest {
     public void testGetCreateFormLocation() {
         StockOrder order1 = new StockOrder(null, StockOrderSubject.OSP_IN);
         IObjectPageDirectory pageDir = PageDirectory.getPageDirectory(order1);
-        Location location = pageDir.getPageForView(StandardViews.CREATE_FORM);
+        Location location = pageDir.getPagesForView(StandardViews.CREATE_FORM).get(0);
         // System.out.println(location.getBase());
         assertEquals("/3/15/3/2/outsourcingIn/createForm.do?subject=OSPI", location.getBase());
     }

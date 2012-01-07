@@ -20,7 +20,7 @@ public class SEMProcessMenuTest
     @Test
     public void testGetListPage() {
         IObjectPageDirectory pageDir = PageDirectory.getPageDirectory(VerifyPolicyPref.class);
-        Location listLoc = pageDir.getPageForView(StandardViews.LIST);
+        Location listLoc = pageDir.getPagesForView(StandardViews.LIST).get(0);
         String listBase = listLoc.getBase();
         // System.out.println(listLoc);
         assertEquals("/3/15/2/1/pref/index-rich.jsf", listBase);

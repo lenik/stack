@@ -3,6 +3,7 @@ package com.bee32.sem.process.verify.service;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -161,17 +162,19 @@ public class VerifyService
                     IObjectPageDirectory pageDir = PageDirectory.getPageDirectory(entity);
                     String viewType = state.isFinalized() ? StandardViews.CONTENT : StandardViews.EDIT_FORM;
 
-                    Map<String, Object> viewParams = new HashMap<String, Object>();
-                    viewParams.put("id", entity.getId());
-                    Location editLocation = pageDir.getPageForView(viewType, viewParams);
-                    String editHref = editLocation.resolveAbsolute(getRequest());
-
                     p().text("点击下面链接进入相关操作：");
+                    ul();
                     {
-                        String hint = state.isFinalized() ? "查看" : "管理";
-                        a().href(editHref).text(hint).end();
+                        Map<String, Object> viewParams = new HashMap<String, Object>();
+                        viewParams.put("id", entity.getId());
+                        List<Location> locations = pageDir.getPagesForView(viewType, viewParams);
+                        for (Location location : locations) {
+                            String href = location.resolveAbsolute(getRequest());
+                            String hint = state.isFinalized() ? "查看" : "管理";
+                            a().href(href).text(hint + ": " + href).end();
+                        }
                     }
-                    end();
+                    end(2);
                 }
             };
             event.setMessage(template.make());

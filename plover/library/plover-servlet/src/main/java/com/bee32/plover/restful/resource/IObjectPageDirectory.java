@@ -1,7 +1,8 @@
 package com.bee32.plover.restful.resource;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.bee32.plover.rtx.location.Location;
 
@@ -12,9 +13,9 @@ import com.bee32.plover.rtx.location.Location;
  */
 public interface IObjectPageDirectory {
 
-    Collection<String> getPagesForView();
+    Set<String> getViewNames();
 
-    Collection<String> getPagesForOperation();
+    Set<String> getOperationNames();
 
     /**
      * Get the base location (or, the prefix).
@@ -28,7 +29,7 @@ public interface IObjectPageDirectory {
      *
      * @see StandardViews
      */
-    Location getPageForView(String viewName);
+    List<Location> getPagesForView(String viewName);
 
     /**
      * Get the preferred page for the specific view for the object.
@@ -36,20 +37,20 @@ public interface IObjectPageDirectory {
      * @see StandardViews
      * @see StandardViews#FORMAT_PARAM
      */
-    Location getPageForView(String viewName, Map<String, ?> parameters);
+    List<Location> getPagesForView(String viewName, Map<String, ?> parameters);
 
     /**
      * Get the preferred page for the specific operation to the object.
      *
      * @see StandardOperations
      */
-    Location getPageForOperation(String operationName);
+    List<Location> getPagesForOperation(String operationName);
 
     /**
      * Get the preferred page for the specific operation to the object.
      *
      * @see StandardOperations
      */
-    Location getPageForOperation(String operationName, Map<String, ?> parameters);
+    List<Location> getPagesForOperation(String operationName, Map<String, ?> parameters);
 
 }
