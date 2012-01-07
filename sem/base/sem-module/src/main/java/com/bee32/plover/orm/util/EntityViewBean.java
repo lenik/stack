@@ -1,6 +1,8 @@
 package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.free.IllegalUsageException;
 import javax.servlet.ServletException;
@@ -145,6 +147,11 @@ public abstract class EntityViewBean
         else
             entity = asFor(entityType).get(id);
         return entity;
+    }
+
+    public List<?> getSelection() {
+        List<?> list = new ArrayList<Object>();
+        return list;
     }
 
 }
