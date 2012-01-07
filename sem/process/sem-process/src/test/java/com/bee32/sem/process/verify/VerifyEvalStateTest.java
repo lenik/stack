@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import com.bee32.sem.event.EventState;
 
-public class VerifyStateTest
+public class VerifyEvalStateTest
         extends Assert {
 
     static {
@@ -16,12 +16,12 @@ public class VerifyStateTest
 
     @Test
     public void testNls() {
-        assertEquals("Invalid", VerifyState.INVALID.getDisplayName());
+        assertEquals("Invalid", VerifyEvalState.INVALID.getDisplayName());
     }
 
     @Test
     public void testEnumInherits() {
-        VerifyState verifyState = VerifyState.PENDING;
+        VerifyEvalState verifyState = VerifyEvalState.PENDING;
         EventState<?> eventState = EventState.valueOf(verifyState.getValue());
         assertEquals(eventState, verifyState);
     }

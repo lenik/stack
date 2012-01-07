@@ -9,6 +9,7 @@ import user.war.WarModule;
 import user.war.dto.AttackMissionDto;
 import user.war.entity.AttackMission;
 
+import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.TextMap;
@@ -17,6 +18,7 @@ import com.bee32.plover.orm.web.util.DataTableDxo;
 import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.sem.event.entity.Event;
+import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.builtin.ISingleVerifier;
 import com.bee32.sem.process.verify.builtin.SingleVerifierSupport;
 import com.bee32.sem.process.verify.builtin.dto.SingleVerifierSupportDto;
@@ -37,7 +39,7 @@ public class AttackMissionController
         tab.push(sv.getVerifiedDate1());
         tab.push(sv.getRejectedReason1());
 
-        tab.push(sv.getVerifyState().getDisplayName());
+        tab.push(sv.getVerifyEvalState().getDisplayName());
         tab.push(sv.getVerifiedDate1());
     }
 

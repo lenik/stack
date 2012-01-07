@@ -28,11 +28,11 @@ import com.bee32.sem.event.entity.EventType;
 import com.bee32.sem.process.verify.AbstractVerifyContext;
 import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.VerifyContextAccessor;
+import com.bee32.sem.process.verify.VerifyEvalState;
 import com.bee32.sem.process.verify.VerifyException;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.VerifyPolicyDao;
 import com.bee32.sem.process.verify.VerifyResult;
-import com.bee32.sem.process.verify.VerifyState;
 import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 
 public class VerifyService
@@ -124,18 +124,18 @@ public class VerifyService
         VerifyContextAccessor.setVerifyEvalDate(context, new Date());
 
         Event event = context.getVerifyEvent();
-        final VerifyState state = result.getState();
-        switch (state.getStage()) {
-        case VerifyState.INIT:
+        final VerifyEvalState state = result.getState();
+        switch (state.getType()) {
+        case VerifyEvalState.INIT:
             event = null;
             break;
-        case VerifyState.RUNNING:
+        case VerifyEvalState.RUNNING:
             if (event == null)
                 event = new Event(this, EventType.TASK);
             else
                 event.setType(EventType.TASK);
             break;
-        case VerifyState.END:
+        case VerifyEvalState.END:
             if (event == null)
                 event = new Event(this, EventType.EVENT);
             else

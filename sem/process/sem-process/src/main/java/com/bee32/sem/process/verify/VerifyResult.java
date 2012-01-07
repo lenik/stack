@@ -5,15 +5,15 @@ import com.bee32.icsf.principal.User;
 
 public class VerifyResult {
 
-    private final VerifyState state;
+    private final VerifyEvalState state;
     private final String message;
 
-    public VerifyResult(VerifyState state, String message) {
+    public VerifyResult(VerifyEvalState state, String message) {
         this.state = state;
         this.message = message;
     }
 
-    public VerifyState getState() {
+    public VerifyEvalState getState() {
         return state;
     }
 
@@ -22,7 +22,7 @@ public class VerifyResult {
     }
 
     public boolean isVerified() {
-        return state == VerifyState.VERIFIED;
+        return state == VerifyEvalState.VERIFIED;
     }
 
     @Override
@@ -31,20 +31,20 @@ public class VerifyResult {
     }
 
     public static VerifyResult n_a(String message) {
-        return new VerifyResult(VerifyState.NOT_APPLICABLE, message);
+        return new VerifyResult(VerifyEvalState.NOT_APPLICABLE, message);
     }
 
     public static VerifyResult pending(String message) {
-        return new VerifyResult(VerifyState.PENDING, message);
+        return new VerifyResult(VerifyEvalState.PENDING, message);
     }
 
     public static VerifyResult invalid(User user) {
-        return new VerifyResult(VerifyState.INVALID, "无效的审核人：" + user.getDisplayName());
+        return new VerifyResult(VerifyEvalState.INVALID, "无效的审核人：" + user.getDisplayName());
     }
 
     public static VerifyResult rejected(Principal principal, String message) {
         message = "审核被 " + principal.getDisplayName() + " 拒绝：" + message;
-        return new VerifyResult(VerifyState.REJECTED, message);
+        return new VerifyResult(VerifyEvalState.REJECTED, message);
     }
 
 }

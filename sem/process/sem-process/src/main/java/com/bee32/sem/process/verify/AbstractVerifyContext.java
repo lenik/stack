@@ -35,7 +35,7 @@ public abstract class AbstractVerifyContext
 
     protected Entity<?> entity;
 
-    VerifyState verifyState = VerifyState.UNKNOWN;
+    VerifyEvalState verifyEvalState = VerifyEvalState.UNKNOWN;
     String verifyError;
     Date verifyEvalDate;
     Event verifyEvent;
@@ -52,7 +52,7 @@ public abstract class AbstractVerifyContext
 
         @Override
         public boolean test() {
-            if (VerifyState.VERIFIED.equals(verifyState))
+            if (VerifyEvalState.VERIFIED.equals(verifyEvalState))
                 return true;
             return false;
         }
@@ -66,29 +66,29 @@ public abstract class AbstractVerifyContext
         EntityAccessor.addLockPredicate(entity, new VLockPred());
     }
 
-    @Column(name = "verifyState", nullable = false)
+    @Column(name = "verifyEvalState", nullable = false)
     @DefaultValue("-1")
-    int getVerifyState_() {
-        return verifyState.getValue();
+    int get_verifyEvalState() {
+        return verifyEvalState.getValue();
     }
 
-    void setVerifyState_(int stateValue) {
+    void set_verifyEvalState(int stateValue) {
         if (stateValue == -1)
-            verifyState = VerifyState.UNKNOWN;
+            verifyEvalState = VerifyEvalState.UNKNOWN;
         else
-            verifyState = VerifyState.valueOf(stateValue);
+            verifyEvalState = VerifyEvalState.valueOf(stateValue);
     }
 
     @Transient
     @Override
-    public VerifyState getVerifyState() {
-        return verifyState;
+    public VerifyEvalState getVerifyEvalState() {
+        return verifyEvalState;
     }
 
-    void setVerifyState(VerifyState verifyState) {
-        if (verifyState == null)
-            throw new NullPointerException("verifyState");
-        this.verifyState = verifyState;
+    void setVerifyEvalState(VerifyEvalState verifyEvalState) {
+        if (verifyEvalState == null)
+            throw new NullPointerException("verifyEvalState");
+        this.verifyEvalState = verifyEvalState;
     }
 
     @Temporal(TIMESTAMP)
@@ -104,7 +104,7 @@ public abstract class AbstractVerifyContext
     @Column(nullable = false)
     @DefaultValue("false")
     public boolean isVerified() {
-        return VerifyState.VERIFIED.equals(verifyState);
+        return VerifyEvalState.VERIFIED.equals(verifyEvalState);
     }
 
     @Column(length = 100)

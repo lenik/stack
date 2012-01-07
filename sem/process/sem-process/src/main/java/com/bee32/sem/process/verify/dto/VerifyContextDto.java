@@ -5,7 +5,7 @@ import java.util.Date;
 import com.bee32.plover.orm.util.PartialDto;
 import com.bee32.sem.event.dto.EventDto;
 import com.bee32.sem.process.verify.AbstractVerifyContext;
-import com.bee32.sem.process.verify.VerifyState;
+import com.bee32.sem.process.verify.VerifyEvalState;
 
 public abstract class VerifyContextDto<T extends AbstractVerifyContext>
         extends PartialDto<T> {
@@ -14,7 +14,7 @@ public abstract class VerifyContextDto<T extends AbstractVerifyContext>
 
     public static final int VERIFY_EVENT = 1;
 
-    private VerifyState verifyState;
+    private VerifyEvalState verifyEvalState;
     private String verifyError;
     private Date verifyEvalDate;
     private EventDto verifyEvent;
@@ -33,7 +33,7 @@ public abstract class VerifyContextDto<T extends AbstractVerifyContext>
     protected void __marshal(T source) {
         super.__marshal(source);
 
-        verifyState = source.getVerifyState();
+        verifyEvalState = source.getVerifyEvalState();
         verifyError = source.getVerifyError();
         verifyEvalDate = source.getVerifyEvalDate();
 
@@ -52,16 +52,16 @@ public abstract class VerifyContextDto<T extends AbstractVerifyContext>
         merge(target, "verifyEvent", verifyEvent);
     }
 
-    public VerifyState getVerifyState() {
-        return verifyState;
+    public VerifyEvalState getVerifyEvalState() {
+        return verifyEvalState;
     }
 
-    public void setVerifyState(VerifyState verifyState) {
-        this.verifyState = verifyState;
+    public void setVerifyEvalState(VerifyEvalState verifyEvalState) {
+        this.verifyEvalState = verifyEvalState;
     }
 
     public boolean isVerified() {
-        return VerifyState.VERIFIED.equals(verifyState);
+        return VerifyEvalState.VERIFIED.equals(verifyEvalState);
     }
 
     public String getVerifyError() {
