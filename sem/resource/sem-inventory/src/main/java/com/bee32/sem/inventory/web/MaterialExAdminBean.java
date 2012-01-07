@@ -1,16 +1,24 @@
  package com.bee32.sem.inventory.web;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
+import javax.free.TempFile;
 
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
+import org.primefaces.model.UploadedFile;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.ox1.tree.TreeCriteria;
+import com.bee32.sem.file.dto.UserFileDto;
+import com.bee32.sem.file.entity.FileBlob;
+import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.inventory.dto.MaterialAttributeDto;
 import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
@@ -57,6 +65,8 @@ public class MaterialExAdminBean extends EntityViewBean {
     TreeNode selectedPreferredLocation;
 
     MaterialWarehouseOptionDto warehouseOption = new MaterialWarehouseOptionDto().create();
+
+    UserFileDto userFile = new UserFileDto().create();
 
     public MaterialExAdminBean() {
         loadMaterialCategoryTree();
@@ -479,4 +489,91 @@ public class MaterialExAdminBean extends EntityViewBean {
         }
     }
 
+
+
+
+
+    public UserFileDto getUserFile() {
+        return userFile;
+    }
+
+    public void setUserFile(UserFileDto userFile) {
+        this.userFile = userFile;
+    }
+
+    public List<UserFileDto> getUserFiles() {
+        if (material != null && material.getId() != null) {
+            material = reload(material, MaterialDto.ATTACHMENTS);
+            return material.getAttachments();
+        };
+
+        return null;
+    }
+
+    @Transactional
+    public void handleFileUpload(FileUploadEvent event) {
+        String fileName = event.getFile().getFileName();
+        UploadedFile upFile = event.getFile();
+
+        File tempFile;
+        try {
+            tempFile = TempFile.createTempFile();
+            FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
+            fileOutputStream.write(upFile.getContents());
+            fileOutputStream.close();
+        } catch (Exception e) {
+            uiLogger.error("传送失败:" + fileName, e);
+            return;
+        }
+
+        try {
+            UserFile userFile = new UserFile();
+            userFile.setPath(upFile.getFileName());
+
+
+            FileBlob fileBlob = FileBlob.commit(tempFile, true);
+
+            userFile.setFileBlob(fileBlob);
+            userFile.setLabel("未命名物料附件");
+
+            serviceFor(FileBlob.class).saveOrUpdate(fileBlob);
+            serviceFor(UserFile.class).save(userFile);
+
+            Material _m = material.unmarshal();
+            _m.getAttachments().add(userFile);
+            serviceFor(Material.class).saveOrUpdate(_m);
+
+            uiLogger.info("物料附件上传成功." + fileName);
+        } catch (Exception e) {
+            uiLogger.error("远程文件保存失败:" + fileName, e);
+            return;
+        }
+    }
+
+    public void updateUserFile() {
+        UserFile file = userFile.unmarshal();
+
+        String fileName = userFile.getPrefixName() + userFile.getExtensionName();
+        file.setName(fileName);
+        try {
+            serviceFor(UserFile.class).saveOrUpdate(file);
+            uiLogger.info("编辑附件" + userFile.getName() + "成功.");
+        } catch (Exception e) {
+            uiLogger.error("编辑附件失败!", e);
+        }
+    }
+
+    @Transactional
+    public void deleteUserFile() {
+        try {
+            UserFile _f = userFile.unmarshal();
+            Material _m = material.unmarshal();
+            _m.getAttachments().remove(_f);
+            serviceFor(UserFile.class).deleteById(userFile.getId());
+            serviceFor(Material.class).saveOrUpdate(_m);
+            uiLogger.info("删除物料附件:" + userFile.getName() + "成功.");
+        } catch (Exception e) {
+            uiLogger.error("删除物料附件失败!", e);
+        }
+    }
 }

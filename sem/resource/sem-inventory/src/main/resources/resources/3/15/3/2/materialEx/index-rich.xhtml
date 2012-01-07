@@ -137,8 +137,10 @@
                             <p:graphicImage
                                 value="#{location.ICON}/elcl16/all_history_mode.gif" />
                         </p:commandLink>
-                        <p:commandLink title="附件" update=""
-                            oncomplete="">
+                        <p:commandLink
+                            title="附件"
+                            update="userFileForm:currMaterial userFileForm:userFiles"
+                            oncomplete="userFileDialog.show()">
                             <f:setPropertyActionListener
                                 value="#{material}"
                                 target="#{materialExAdminBean.material}" />
@@ -319,6 +321,10 @@
 
         <ui:insert name="warehouseOption">
             <ui:include src="warehouseOption.xhtml"/>
+        </ui:insert>
+
+        <ui:insert name="userFile">
+            <ui:include src="userFile.xhtml"/>
         </ui:insert>
 
     </ui:define>
