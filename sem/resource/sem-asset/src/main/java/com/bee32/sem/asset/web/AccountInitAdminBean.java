@@ -78,6 +78,11 @@ public class AccountInitAdminBean
         this.accountSubjects = accountSubjects;
     }
 
+    @Override
+    public List<?> getSelection() {
+        return listOfNonNulls(selectedAccountSubject);
+    }
+
     public AccountSubjectDto getSelectedAccountSubject() {
         return selectedAccountSubject;
     }

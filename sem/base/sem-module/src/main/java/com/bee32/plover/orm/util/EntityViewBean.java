@@ -2,6 +2,8 @@ package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.free.IllegalUsageException;
@@ -150,8 +152,21 @@ public abstract class EntityViewBean
     }
 
     public List<?> getSelection() {
-        List<?> list = new ArrayList<Object>();
-        return list;
+        return Collections.emptyList();
+    }
+
+    @SafeVarargs
+    protected static <T> List<T> listOf(T... selection) {
+        return Arrays.asList(selection);
+    }
+
+    @SafeVarargs
+    protected static <T> List<T> listOfNonNulls(T... selection) {
+        List<T> list = new ArrayList<T>(selection.length);
+        for (T item : selection)
+            if (item != null)
+                list.add(item);
+        return Collections.unmodifiableList(list);
     }
 
 }

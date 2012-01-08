@@ -80,6 +80,11 @@ public class MaterialViewBean
 
     List<UnitConvDto> unitConvDtoList;
 
+    @Override
+    public List<?> getSelection() {
+        return listOfNonNulls(activeMaterial);
+    }
+
     public void doSelectedUnit() {
         String unitId = activeMaterial.getUnit().getId();
         if (!unitId.endsWith("new") && !Strings.isEmpty(unitId)) {

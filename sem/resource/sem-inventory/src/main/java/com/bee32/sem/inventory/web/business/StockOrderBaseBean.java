@@ -13,7 +13,6 @@ import javax.faces.model.SelectItem;
 
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Like;
-import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.util.i18n.CurrencyConfig;
@@ -46,9 +45,7 @@ public abstract class StockOrderBaseBean
     private static final long serialVersionUID = 1L;
 
     protected StockOrderSubject subject = null;
-
     protected StockWarehouseDto selectedWarehouse = new StockWarehouseDto().ref();
-
     protected boolean editable = false;
 
     protected StockOrderDto stockOrder = new StockOrderDto().create().ref();
@@ -75,11 +72,9 @@ public abstract class StockOrderBaseBean
 
     protected List<StockOrderItemDto> itemsNeedToRemoveWhenModify = new ArrayList<StockOrderItemDto>();
 
-
     private String materialUnitId;
     private BigDecimal materialQuantity;
     private BigDecimal materialPrice;
-
 
     public StockWarehouseDto getSelectedWarehouse() {
         return selectedWarehouse;
@@ -122,6 +117,11 @@ public abstract class StockOrderBaseBean
 
     public void setStockOrder(StockOrderDto stockOrder) {
         this.stockOrder = stockOrder;
+    }
+
+    @Override
+    public List<?> getSelection() {
+        return listOfNonNulls(stockOrder);
     }
 
     public String getCreator() {
@@ -265,11 +265,11 @@ public abstract class StockOrderBaseBean
     }
 
     public List<SelectItem> getMaterialUnits() {
-        if(orderItem.getMaterial() == null) {
+        if (orderItem.getMaterial() == null) {
             return new ArrayList<SelectItem>();
         }
 
-        if(orderItem.getMaterial().getUnitConv() == null) {
+        if (orderItem.getMaterial().getUnitConv() == null) {
             return new ArrayList<SelectItem>();
         }
 
@@ -299,8 +299,6 @@ public abstract class StockOrderBaseBean
     public void setMaterialPrice(BigDecimal materialPrice) {
         this.materialPrice = materialPrice;
     }
-
-
 
     public void newItem() {
         orderItem = new StockOrderItemDto().create();
@@ -349,11 +347,8 @@ public abstract class StockOrderBaseBean
 
     public void findOrg() {
         if (orgPattern != null && !orgPattern.isEmpty()) {
-
-            List<Org> _orgs = serviceFor(Org.class).list(
-                    new Or(new Like("name", "%" + orgPattern + "%"), new Like("fullName", "%" + orgPattern + "%")));
-
-            orgs = DTOs.marshalList(OrgDto.class, _orgs);
+            List<Org> _orgs = serviceFor(Org.class).list(PeopleCriteria.namedLike(orgPattern));
+            orgs = DTOs.mrefList(OrgDto.class, _orgs);
         }
     }
 
@@ -375,7 +370,7 @@ public abstract class StockOrderBaseBean
                 _orgUnits = serviceFor(OrgUnit.class).list(PeopleCriteria.internalOrgUnitWithName(orgUnitPattern));
             }
 
-            orgUnits = DTOs.marshalList(OrgUnitDto.class, _orgUnits);
+            orgUnits = DTOs.mrefList(OrgUnitDto.class, _orgUnits);
         }
     }
 
@@ -421,12 +416,12 @@ public abstract class StockOrderBaseBean
     }
 
     public void checkUnitConv() {
-        if(orderItem.getMaterial() == null) {
+        if (orderItem.getMaterial() == null) {
             uiLogger.error("你没有选择物料!");
             return;
         }
 
-        if(orderItem.getMaterial().getUnitConv() == null) {
+        if (orderItem.getMaterial().getUnitConv() == null) {
             uiLogger.error("你选择的物料没有可转换的单位!");
             return;
         }
@@ -440,15 +435,16 @@ public abstract class StockOrderBaseBean
         Set<UnitDto> scaleSet = scaleMap.keySet();
 
         Double scale = 1D;
-        for(UnitDto u : scaleSet) {
-            if(u.getId().equals(materialUnitId)) {
+        for (UnitDto u : scaleSet) {
+            if (u.getId().equals(materialUnitId)) {
                 scale = scaleMap.get(u);
                 break;
             }
         }
 
-        orderItem.setQuantity(materialQuantity.divide(BigDecimal.valueOf(scale), 3, RoundingMode.HALF_UP));   //主单位数量=换算单位数量/换算率
-        orderItemPrice =  (materialQuantity.multiply(materialPrice)).divide(orderItem.getQuantity(), 3, RoundingMode.HALF_UP);    //主单位单价=换算单位数量*换算单位单价/主单位数量
+        orderItem.setQuantity(materialQuantity.divide(BigDecimal.valueOf(scale), 3, RoundingMode.HALF_UP)); // 主单位数量=换算单位数量/换算率
+        orderItemPrice = (materialQuantity.multiply(materialPrice)).divide(orderItem.getQuantity(), 3,
+                RoundingMode.HALF_UP); // 主单位单价=换算单位数量*换算单位单价/主单位数量
         MCValue price = new MCValue(orderItemPriceCurrency, orderItemPrice);
         orderItem.setPrice(price);
     }
