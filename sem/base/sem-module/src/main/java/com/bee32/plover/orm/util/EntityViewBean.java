@@ -155,6 +155,26 @@ public abstract class EntityViewBean
         return Collections.emptyList();
     }
 
+    public List<?> getSelection(Class<?>... interfaces) {
+        List<?> selection = getSelection();
+        if (interfaces.length == 0)
+            return selection;
+        List<Object> interestings = new ArrayList<Object>();
+        for (Object item : selection) {
+            boolean interesting = true;
+            if (item == null)
+                continue;
+            for (Class<?> iface : interfaces)
+                if (!iface.isInstance(item)) {
+                    interesting = false;
+                    break;
+                }
+            if (interesting)
+                interestings.add(item);
+        }
+        return interestings;
+    }
+
     @SafeVarargs
     protected static <T> List<T> listOf(T... selection) {
         return Arrays.asList(selection);
