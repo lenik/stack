@@ -67,7 +67,7 @@ public abstract class AbstractVerifyContext
     }
 
     @Column(name = "verifyEvalState", nullable = false)
-    @DefaultValue("-1")
+    @DefaultValue("" + 0x02000001 /* 33554433, VerifyEvalState.UNKNOWN */)
     int get_verifyEvalState() {
         return verifyEvalState.getValue();
     }
@@ -117,7 +117,7 @@ public abstract class AbstractVerifyContext
     }
 
     @OneToOne(orphanRemoval = true)
-    @Cascade({ CascadeType.ALL })
+    @Cascade(CascadeType.ALL)
     public Event getVerifyEvent() {
         return verifyEvent;
     }

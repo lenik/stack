@@ -32,4 +32,11 @@ public class VerifyEvalStateTest
             System.out.println(st.getName());
     }
 
+    @Test
+    public void testUnknownValue() {
+        Integer unknownValue = VerifyEvalState.UNKNOWN.getValue();
+        // System.out.println(unknownValue);
+        assertEquals((Integer) 0x02000001, unknownValue);
+    }
+
 }
