@@ -84,7 +84,7 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
 
     }
 
-    Impl impl = new Impl();
+    protected final Impl impl = new Impl();
 
     @Override
     protected void initController()
@@ -101,6 +101,8 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
             public ActionResult _handleRequest(ActionRequest req, ActionResult result)
                     throws Exception {
                 result = super._handleRequest(req, result);
+                if (result == null)
+                    return null; // redirected.
                 fillFormExtra(req, result);
                 return result;
             }
