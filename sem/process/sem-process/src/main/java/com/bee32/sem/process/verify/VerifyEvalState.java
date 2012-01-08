@@ -63,6 +63,6 @@ public class VerifyEvalState
     public static final VerifyEvalState VERIFIED = _(2, "VERIFIED", END, EventFlags.NOTICE);
     public static final VerifyEvalState REJECTED = _(3, "REJECTED", END, EventFlags.NOTICE);
     public static final VerifyEvalState PENDING = _(4, "PENDING", RUNNING, 0);
-    public static final VerifyEvalState INVALID = _(5, "INVALID", INIT, EventFlags.ERROR);
+    public static final VerifyEvalState INVALID = _(5, "INVALID", END, EventFlags.ERROR);
 
 }
