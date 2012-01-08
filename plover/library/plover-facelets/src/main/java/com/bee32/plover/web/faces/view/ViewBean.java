@@ -14,6 +14,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 
@@ -27,7 +28,7 @@ import com.bee32.plover.web.faces.utils.FacesUILogger;
 @PerView
 public abstract class ViewBean
         extends FacesContextSupport
-        implements Serializable {
+        implements Serializable, DisposableBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,21 +36,38 @@ public abstract class ViewBean
 
     public ViewBean() {
         // wire();
+        create();
     }
 
     private void readObject(ObjectInputStream in)
             throws ClassNotFoundException, IOException {
         in.defaultReadObject();
-        uiLogger = new FacesUILogger();
+        create();
+    }
+
+    public ViewMetadata getMetadata() {
+        return getBean(ViewMetadata.class);
     }
 
     /**
      * TODO Is this safe for view-bean?
      */
+    @Deprecated
     protected void wire() {
         ApplicationContext context = ThreadHttpContext.requireApplicationContext();
         AutowireCapableBeanFactory factory = context.getAutowireCapableBeanFactory();
         factory.autowireBean(this);
+    }
+
+    protected void create() {
+        uiLogger = new FacesUILogger();
+        getMetadata().addViewBean(this);
+    }
+
+    @Override
+    public void destroy()
+            throws Exception {
+        getMetadata().removeViewBean(this);
     }
 
     protected UIComponent findComponent(String expr) {
