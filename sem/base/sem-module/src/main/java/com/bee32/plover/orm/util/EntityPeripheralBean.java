@@ -11,9 +11,17 @@ import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.restful.resource.PageDirectory;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
+import com.bee32.plover.web.faces.view.ViewBean;
 
+/**
+ * The context view beans are determined as follows:
+ * <ol>
+ * <li>from view-metadata.viewBeans: find the first entity-viewbean.
+ * <li>by request-URL and page-directory.
+ * </ol>
+ */
 public abstract class EntityPeripheralBean
-        extends FacesContextSupport2
+        extends ViewBean
         implements Serializable {
 
     private static final long serialVersionUID = 1L;

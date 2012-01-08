@@ -9,9 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bee32.icsf.login.SessionUser;
-import com.bee32.icsf.principal.User;
-import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.criteria.hibernate.Order;
@@ -24,10 +21,8 @@ import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
-import com.bee32.sem.inventory.process.StockOrderVerifySupportDto;
 import com.bee32.sem.inventory.util.StockCriteria;
 import com.bee32.sem.misc.EntityCriteria;
-import com.bee32.sem.process.verify.service.IVerifyService;
 
 @ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = { "TK_I", "TK_O" }))
 public class TakeAdminBean
@@ -81,11 +76,6 @@ public class TakeAdminBean
         }
     }
 
-    public boolean isCanVerify() {
-        // TODO replace code to return currentUser.canVerify();
-        return true;
-    }
-
     public Date getLimitDateFrom() {
         return limitDateFrom;
     }
@@ -124,31 +114,6 @@ public class TakeAdminBean
 
     public void setRejectedReason(String rejectedReason) {
         this.rejectedReason = rejectedReason;
-    }
-
-    public Boolean getVerified() {
-        if (stockOrder == null || stockOrder.getId() == null) {
-            return null;
-        }
-
-        IVerifyService verifyService = getBean(IVerifyService.class);
-
-        StockOrder _order = stockOrder.unmarshal();
-        return verifyService.isVerified(_order);
-    }
-
-    public String getVerifyStatus() {
-        Boolean verified = getVerified();
-
-        if (verified == null) {
-            return "";
-        } else {
-            if (verified) {
-                return "审核己通过";
-            }
-        }
-
-        return "未审核或审核未通过";
     }
 
     public void onSwChange(AjaxBehaviorEvent e) {
@@ -207,24 +172,16 @@ public class TakeAdminBean
             return;
         }
 
-        Boolean verified = getVerified();
-        if (verified != null && verified) {
-            uiLogger.error("单据已经审核，不能修改!");
+        if (stockOrder.getEntityFlags().isLocked()) {
+            uiLogger.error("单据已经锁定，不能修改!");
             return;
         }
 
         itemsNeedToRemoveWhenModify.clear();
-
         editable = true;
     }
 
     public void delete() {
-        Boolean verified = getVerified();
-        if (verified != null && verified) {
-            uiLogger.error("单据已经审核，不能删除!");
-            return;
-        }
-
         try {
             serviceFor(StockOrder.class).delete(stockOrder.unmarshal());
             uiLogger.info("删除成功!");
@@ -232,7 +189,6 @@ public class TakeAdminBean
         } catch (Exception e) {
             uiLogger.warn("删除失败,错误信息:" + e.getMessage());
         }
-
     }
 
     @Transactional
@@ -307,52 +263,6 @@ public class TakeAdminBean
     @Override
     public StockWarehouseDto getSelectedWarehouse_() {
         return selectedWarehouse;
-    }
-
-    public void approve() {
-        if (stockOrder == null || stockOrder.getId() == null) {
-            uiLogger.error("当前没有单据!");
-            return;
-        }
-
-        try {
-            User currentUser = SessionUser.getInstance().getInternalUser();
-
-            StockOrderVerifySupportDto context = stockOrder.getVerifyContext();
-            context.setVerifier1(DTOs.marshal(UserDto.class, currentUser));
-            context.setVerifiedDate1(new Date());
-            context.setAccepted1(true);
-            context.setRejectedReason1(rejectedReason);
-
-            IVerifyService verifyService = getBean(IVerifyService.class);
-            verifyService.verifyEntity(stockOrder.unmarshal());
-            uiLogger.info("审核成功!");
-        } catch (Exception e) {
-            uiLogger.error("审核错误.", e);
-        }
-    }
-
-    public void reject() {
-        if (stockOrder == null || stockOrder.getId() == null) {
-            uiLogger.error("当前没有单据!");
-            return;
-        }
-
-        try {
-            User currentUser = SessionUser.getInstance().getInternalUser();
-
-            StockOrderVerifySupportDto context = stockOrder.getVerifyContext();
-            context.setVerifier1(DTOs.marshal(UserDto.class, currentUser));
-            context.setVerifiedDate1(new Date());
-            context.setAccepted1(false);
-            context.setRejectedReason1(rejectedReason);
-
-            IVerifyService verifyService = getBean(IVerifyService.class);
-            verifyService.verifyEntity(stockOrder.unmarshal());
-            uiLogger.warn("拒绝成功!");
-        } catch (Exception e) {
-            uiLogger.error("审核错误.", e);
-        }
     }
 
 }
