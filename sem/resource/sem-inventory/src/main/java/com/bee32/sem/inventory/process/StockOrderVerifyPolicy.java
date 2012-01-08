@@ -46,9 +46,12 @@ public class StockOrderVerifyPolicy
         this.subjectPolicyMap = subjectPolicyMap;
     }
 
-    @Transient
     public VerifyPolicy getSubjectPolicy(StockOrderSubject subject) {
-        return subjectPolicyMap.get(subject);
+        return subjectPolicyMap.get(subject.getValue());
+    }
+
+    public void setSubjectPolicy(StockOrderSubject subject, VerifyPolicy subjectPolicy) {
+        subjectPolicyMap.put(subject.getValue(), subjectPolicy);
     }
 
     @Transient
