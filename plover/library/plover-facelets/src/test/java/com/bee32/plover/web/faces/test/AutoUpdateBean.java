@@ -27,7 +27,7 @@ public class AutoUpdateBean
     }
 
     public String getStatus() {
-        return "Updated: " + message;
+        return "Status: the current message is " + message;
     }
 
     public void update() {
