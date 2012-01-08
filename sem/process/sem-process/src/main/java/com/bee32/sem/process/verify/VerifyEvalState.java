@@ -54,6 +54,42 @@ public class VerifyEvalState
         return valueOf(new Integer(value));
     }
 
+    public VerifyEvalState meet(VerifyEvalState other) {
+        return meet(this, other);
+    }
+
+    public static VerifyEvalState meet(VerifyEvalState... states) {
+        if (states.length == 0)
+            return UNKNOWN;
+        VerifyEvalState min = states[0];
+        for (int i = 1; i < states.length; i++)
+            min = meet(min, states[i]);
+        return min;
+    }
+
+    public static VerifyEvalState meet(VerifyEvalState s1, VerifyEvalState s2) {
+        if (s1 == null)
+            return s2;
+        if (s2 == null)
+            return s1;
+        if (s1 == s2)
+            return s1;
+
+        if (s1 == NOT_APPLICABLE || s2 == NOT_APPLICABLE)
+            return NOT_APPLICABLE;
+
+        if (s1 == INVALID || s2 == INVALID)
+            return INVALID;
+
+        if (s1 == UNKNOWN || s2 == UNKNOWN)
+            return UNKNOWN;
+
+        if (s1 == PENDING || s2 == PENDING)
+            return PENDING;
+
+        return NOT_APPLICABLE;
+    }
+
     static VerifyEvalState _(int index, String name, int stagefinalized, int eventFlags) {
         return new VerifyEvalState(index, name, stagefinalized, eventFlags);
     }
