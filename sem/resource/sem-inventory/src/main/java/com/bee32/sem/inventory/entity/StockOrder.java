@@ -40,8 +40,6 @@ public class StockOrder
 
     private static final long serialVersionUID = 1L;
 
-    StockOrderVerifySupport stockOrderVerifySupport = new StockOrderVerifySupport(this);
-
     StockPeriod base;
     StockPeriod spec;
     StockOrderSubject subject;
@@ -51,6 +49,8 @@ public class StockOrder
     OrgUnit orgUnit;
 
     StockWarehouse warehouse; // Redundant.
+
+    StockOrderVerifySupport stockOrderVerifySupport = new StockOrderVerifySupport(this);
 
     public StockOrder() {
         this.subject = StockOrderSubject.INIT;

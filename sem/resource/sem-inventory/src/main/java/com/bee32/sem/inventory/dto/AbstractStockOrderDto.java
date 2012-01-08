@@ -5,11 +5,14 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
+import com.bee32.sem.inventory.process.StockOrderVerifySupportDto;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.OrgUnitDto;
+import com.bee32.sem.process.verify.dto.IVerifiableDto;
 
 public class AbstractStockOrderDto<E extends StockOrder>
-        extends StockItemListDto<E> {
+        extends StockItemListDto<E>
+        implements IVerifiableDto {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,6 +25,8 @@ public class AbstractStockOrderDto<E extends StockOrder>
     OrgUnitDto orgUnit;
 
     StockWarehouseDto warehouse;
+
+    StockOrderVerifySupportDto stockOrderVerifySupport;
 
     public AbstractStockOrderDto() {
         super();
@@ -61,6 +66,7 @@ public class AbstractStockOrderDto<E extends StockOrder>
         org = mref(OrgDto.class, source.getOrg());
         orgUnit = mref(OrgUnitDto.class, source.getOrgUnit());
         warehouse = mref(StockWarehouseDto.class, source.getWarehouse());
+        stockOrderVerifySupport = marshal(StockOrderVerifySupportDto.class, source.getVerifyContext());
     }
 
     @Override
@@ -72,6 +78,7 @@ public class AbstractStockOrderDto<E extends StockOrder>
         merge(target, "org", org);
         merge(target, "orgUnit", orgUnit);
         merge(target, "warehouse", warehouse);
+        merge(target, "verifyContext", stockOrderVerifySupport);
     }
 
     @Override
@@ -139,6 +146,15 @@ public class AbstractStockOrderDto<E extends StockOrder>
         if (warehouse == null)
             throw new NullPointerException("warehouse");
         this.warehouse = warehouse;
+    }
+
+    @Override
+    public StockOrderVerifySupportDto getVerifyContext() {
+        return stockOrderVerifySupport;
+    }
+
+    public void setVerifyContext(StockOrderVerifySupportDto stockOrderVerifySupport) {
+        this.stockOrderVerifySupport = stockOrderVerifySupport;
     }
 
 }
