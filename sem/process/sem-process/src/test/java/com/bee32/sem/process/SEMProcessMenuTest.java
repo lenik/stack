@@ -23,7 +23,7 @@ public class SEMProcessMenuTest
         Location listLoc = pageDir.getPagesForView(StandardViews.LIST).get(0);
         String listBase = listLoc.getBase();
         // System.out.println(listLoc);
-        assertEquals("/3/15/2/1/pref/index-rich.jsf", listBase);
+        assertEquals("/3/15/2/1/pref/index.do", listBase);
     }
 
     @Test
