@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.bee32.plover.ox1.c.CEntity;
 
 @MappedSuperclass
@@ -77,6 +79,15 @@ public abstract class UIEntity<K extends Serializable>
                 description = null;
         }
         this.description = description;
+    }
+
+    @Override
+    protected void formatEntryText(StringBuilder buf) {
+        buf.append(getId());
+        if (!StringUtils.isEmpty(label)) {
+            buf.append(": ");
+            buf.append(label);
+        }
     }
 
 }

@@ -22,7 +22,7 @@ public class EntityInfo
      * Only used if TYPE = EntityOtf.class
      */
     String nameOtf;
-    String alias;
+    String label;
     String description;
 
     List<EntityColumn> columns;
@@ -37,12 +37,12 @@ public class EntityInfo
     }
 
     @Column(length = 50)
-    public String getAlias() {
-        return alias;
+    public String getLabel() {
+        return label;
     }
 
-    public void setAlias(String alias) {
-        this.alias = alias;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     @Column(length = 200)

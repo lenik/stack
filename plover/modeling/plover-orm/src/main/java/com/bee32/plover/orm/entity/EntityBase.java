@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.bee32.plover.arch.naming.INamed;
+import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.model.Model;
 
 public abstract class EntityBase<K extends Serializable>
@@ -44,6 +45,18 @@ public abstract class EntityBase<K extends Serializable>
             return null;
         else
             return id.toString();
+    }
+
+    public String getEntryText() {
+        StringBuilder buf = new StringBuilder();
+        buf.append(ClassUtil.getParameterizedTypeName(this));
+        buf.append(' ');
+        formatEntryText(buf);
+        return buf.toString();
+    }
+
+    protected void formatEntryText(StringBuilder buf) {
+        buf.append(getId());
     }
 
     /**

@@ -41,4 +41,9 @@ public class AttackMission
         this.singleVerifierSupport = singleVerifierSupport;
     }
 
+    @Override
+    protected void formatEntryText(StringBuilder buf) {
+        buf.append(getId() + ": " + target);
+    }
+
 }

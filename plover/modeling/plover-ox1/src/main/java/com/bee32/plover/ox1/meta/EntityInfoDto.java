@@ -15,7 +15,7 @@ public class EntityInfoDto
     public static final int COLUMNS = 1;
 
     String nameOtf;
-    String alias;
+    String label;
     String description;
 
     List<EntityColumnDto> columns;
@@ -31,7 +31,7 @@ public class EntityInfoDto
     @Override
     protected void _marshal(EntityInfo source) {
         nameOtf = source.getNameOtf();
-        alias = source.getAlias();
+        label = source.getLabel();
         description = source.getDescription();
 
         if (selection.contains(COLUMNS))
@@ -41,7 +41,7 @@ public class EntityInfoDto
     @Override
     protected void _unmarshalTo(EntityInfo target) {
         target.setNameOtf(nameOtf);
-        target.setAlias(alias);
+        target.setLabel(label);
         target.setDescription(description);
 
         if (selection.contains(COLUMNS))
@@ -52,7 +52,7 @@ public class EntityInfoDto
     protected void _parse(TextMap map)
             throws ParseException {
         nameOtf = map.getString("nameOtf");
-        alias = map.getString("alias");
+        label = map.getString("label");
         description = map.getString("description");
     }
 
