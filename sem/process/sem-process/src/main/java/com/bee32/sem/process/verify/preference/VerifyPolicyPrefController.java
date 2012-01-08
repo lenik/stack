@@ -3,7 +3,9 @@ package com.bee32.sem.process.verify.preference;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.free.ParseException;
 import javax.inject.Inject;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -16,7 +18,9 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.orm.web.EntityHandler;
+import com.bee32.plover.orm.web.IEntityListing;
 import com.bee32.plover.orm.web.basic.BasicEntityController;
+import com.bee32.plover.orm.web.basic.DataHandler;
 import com.bee32.plover.orm.web.util.DataTableDxo;
 import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
@@ -52,25 +56,36 @@ public class VerifyPolicyPrefController
         // XXX _createOTF = true;
         addHandler("createForm", EntityHandler.NOT_APPLICABLE);
         addHandler("create", EntityHandler.NOT_APPLICABLE);
+        addHandler("data", new PrefDataHandler(VerifyPolicyPref.class, impl));
     }
 
-// XXX @Override
-    protected List<? extends VerifyPolicyPref> __list(HttpServletRequest req) {
-        List<VerifyPolicyPref> prefs = new ArrayList<VerifyPolicyPref>();
+    static class PrefDataHandler
+            extends DataHandler<VerifyPolicyPref, String> {
 
-        for (Class<?> verifiableType : VerifyPolicyManager.getVerifiableTypes()) {
-            String typeId = ABBR.abbr(verifiableType);
-            // prefDao.get(typeId);
-
-            VerifyPolicyPref pref = asFor(VerifyPolicyPref.class).get(typeId);
-            if (pref == null) {
-                pref = new VerifyPolicyPref();
-                pref.setType(verifiableType);
-            }
-
-            prefs.add(pref);
+        public PrefDataHandler(Class<VerifyPolicyPref> entityType, IEntityListing<VerifyPolicyPref, String> listing) {
+            super(entityType, listing);
         }
-        return prefs;
+
+        @Override
+        protected List<? extends VerifyPolicyPref> __list(HttpServletRequest req)
+                throws ParseException, ServletException {
+            List<VerifyPolicyPref> prefs = new ArrayList<VerifyPolicyPref>();
+
+            for (Class<?> verifiableType : VerifyPolicyManager.getVerifiableTypes()) {
+                String typeId = ABBR.abbr(verifiableType);
+                // prefDao.get(typeId);
+
+                VerifyPolicyPref pref = asFor(VerifyPolicyPref.class).get(typeId);
+                if (pref == null) {
+                    pref = new VerifyPolicyPref();
+                    pref.setType(verifiableType);
+                }
+
+                prefs.add(pref);
+            }
+            return prefs;
+        }
+
     }
 
     @Override
