@@ -25,6 +25,8 @@ public class ViewScope
     protected Map<String, Object> getBeanMap() {
         FacesContext facesContext = getFacesContext();
         UIViewRoot viewRoot = facesContext.getViewRoot();
+        if (viewRoot == null)
+            throw new IllegalStateException("View root isn't available, yet.");
         Map<String, Object> viewMap = viewRoot.getViewMap();
         return viewMap;
     }
