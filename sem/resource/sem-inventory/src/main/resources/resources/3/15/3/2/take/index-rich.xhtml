@@ -1,27 +1,18 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
     xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
     xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core"
     xmlns:sem="http://bee32.com/sem/functions" xmlns:p="http://primefaces.org/ui"
     xmlns:t="http://myfaces.apache.org/tomahawk">
-<!-- InstanceBegin template="/Templates/seccaJsf.dwt.jsp" codeOutsideHTMLIsLocked="false" -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-</head>
-
 <ui:composition template="/template/primefaces.xhtml">
 
     <ui:define name="title"></ui:define>
 
     <ui:define name="content">
 
-
 		<h:form id="mainForm">
 			<h:inputHidden id="pageTitle" readonly="true"
 				value="#{takeAdminBean.subject.displayName}管理" />
-
 
             <h:panelGrid columns="2">
                 <h:outputText value="仓库:" />
@@ -73,8 +64,8 @@
 						actionListener="#{takeAdminBean.cancel}"
 						disabled="#{!takeAdminBean.editable}" update="mainForm" async="true" />
 					<p:separator />
-					<p:commandButton value="审核"
-						disabled="#{(takeAdminBean.editable || (!takeAdminBean.canVerify)) || (takeAdminBean.verified)}"
+					<p:commandButton value="#{verifiableSupportBean.commandLabel}"
+						disabled="#{takeAdminBean.editable || !verifiableSupportBean.commandEnabled }"
 						onclick="verifyDialog.show();" />
 					<p:separator />
 					<p:commandButton value="第一条"
@@ -132,7 +123,7 @@
 					<h:outputText value="制单人" />
                     <p:inputText value="#{takeAdminBean.creator}" disabled="true"/>
                     <h:outputText value="单据状态" />
-                    <p:inputText value="#{takeAdminBean.verifyStatus}" disabled="true"/>
+                    <p:inputText value="#{verifiableSupportBean.mixedVerifyState}" disabled="true"/>
 				</t:panelGrid>
 
                 <t:panelGrid columns="2">
@@ -716,26 +707,24 @@
         </h:form>
 
         <h:form id="verifyForm">
-            <p:dialog header="审核" widgetVar="verifyDialog"
+            <p:dialog header="#{verifiableSupportBean.commandLabel}" widgetVar="verifyDialog"
                 modal="true" height="400" width="640">
-
 
                 <t:panelGrid id="verifyPanel" columns="2">
                     <h:outputText value="审核意见"/>
                     <p:inputTextarea
-                        value="#{takeAdminBean.rejectedReason}"
+                        value="#{singleVerifierSupportBean.rejectedReason1}"
                         style="width:300px;height:100px;"
                         effectDuration="400" />
-
                     <p:commandButton
                         update="mainForm"
                         value="通过"
-                        actionListener="#{takeAdminBean.approve}"
+                        actionListener="#{singleVerifierSupportBean.doApprove}"
                         oncomplete="verifyDialog.hide()"/>
                     <p:commandButton
                         update="mainForm"
                         value="拒绝"
-                        actionListener="#{takeAdminBean.reject}"
+                        actionListener="#{singleVerifierSupportBean.doReject}"
                         oncomplete="verifyDialog.hide()"/>
                 </t:panelGrid>
 
