@@ -10,14 +10,16 @@ import java.util.Set;
 import javax.free.IllegalUsageException;
 import javax.inject.Inject;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.arch.DataService;
-import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.restful.resource.IObjectPageDirectory;
 import com.bee32.plover.restful.resource.PageDirectory;
 import com.bee32.plover.restful.resource.StandardViews;
@@ -117,6 +119,7 @@ public class VerifyService
         if (!(entity instanceof IVerifiable))
             throw new IllegalUsageException("Not a verifiable entity: " + entity.getClass());
 
+        Class<? extends Entity<?>> entityType = (Class<? extends Entity<?>>) entity.getClass();
         IVerifiable<?> verifiable = (IVerifiable<?>) entity;
         // Do verification.
         VerifyResult result = verify(verifiable);
@@ -148,15 +151,20 @@ public class VerifyService
         context.setVerifyEvent(event);
 
         if (event != null) {
+            User op = SessionUser.getInstance().getInternalUserOpt();
+
             event.setPriority(EventPriority.HIGH);
             event.setClosed(state.isFinalized());
             event.setState(state);
+            event.setActor(op);
 
-            event.setActor(SessionUser.getInstance().getInternalUserOpt());
-
-            String entityName = ClassUtil.getParameterizedTypeName(entity) + " [" + entity.getId() + "]";
-
-            String subject = "【作业跟踪】【审核】" + entityName;
+            StringBuilder subjectBuf = new StringBuilder();
+            subjectBuf.append("【作业跟踪】");
+            subjectBuf.append("【" + state.getDisplayName() + "】");
+            subjectBuf.append(entity.getEntryText());
+            if (!StringUtils.isEmpty(context.getVerifyError()))
+                subjectBuf.append(": " + context.getVerifyError());
+            final String subject = subjectBuf.toString();
             event.setSubject(subject);
 
             EventHtmlTemplate template = new EventHtmlTemplate(event) {
@@ -165,6 +173,7 @@ public class VerifyService
                     IObjectPageDirectory pageDir = PageDirectory.getPageDirectory(entity);
                     String viewType = state.isFinalized() ? StandardViews.CONTENT : StandardViews.EDIT_FORM;
 
+                    // h3().text(subject).end();
                     p().text("点击下面链接进入相关操作：");
                     ul();
                     {
@@ -190,10 +199,25 @@ public class VerifyService
 
             event.setRef(entity);
 
-            Set<Principal> responsibles = new HashSet<Principal>(getResponsibles(verifiable));
+            Set<Principal> responsibles = new HashSet<Principal>();
+            if (state.isFinalized()) {
+                responsibles.add(op);
+                if (entity instanceof CEntity<?>) {
+                    CEntity<?> centity = (CEntity<?>) entity;
+                    User owner = centity.getOwner();
+                    if (owner != null)
+                        responsibles.add(owner);
+                }
+            } else
+                responsibles.addAll(getResponsibles(verifiable));
             event.setObservers(responsibles);
+
+            if (state.isFinalized()) {
+                // TODO - send mail to owner?
+            }
         }
 
+        asFor(entityType).update(entity);
         return result;
     }
 
