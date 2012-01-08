@@ -37,6 +37,7 @@ public abstract class ViewBean
     public ViewBean() {
         // wire();
         create();
+        getMetadata().addViewBean(this);
     }
 
     private void readObject(ObjectInputStream in)
@@ -61,7 +62,6 @@ public abstract class ViewBean
 
     protected void create() {
         uiLogger = new FacesUILogger();
-        getMetadata().addViewBean(this);
     }
 
     @Override
