@@ -5,6 +5,9 @@ import java.io.Serializable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.bee32.plover.servlet.util.ThreadHttpContext;
+import com.bee32.plover.site.SiteInstance;
+
 @Component
 @Scope("session")
 public class GuestPreferences
@@ -14,7 +17,15 @@ public class GuestPreferences
 
     public static String DEFAULT_THEME = "bluesky";
 
-    String theme = DEFAULT_THEME;
+    String theme;
+
+    public GuestPreferences() {
+        SiteInstance site = ThreadHttpContext.getSiteInstance();
+        String theme = site.getProperty("theme");
+        if (theme == null)
+            theme = DEFAULT_THEME;
+        this.theme = theme;
+    }
 
     public String getTheme() {
         return theme;
