@@ -18,6 +18,7 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 
+import com.bee32.plover.arch.operation.Operation;
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.web.faces.utils.ComponentHelper;
@@ -87,6 +88,14 @@ public abstract class ViewBean
             return null;
 
         return new ComponentHelper(component);
+    }
+
+    /**
+     * Some JSF tags (from third-party toolkits) require listener method, well, this listener method
+     * just do nothing.
+     */
+    @Operation
+    public void dummy() {
     }
 
     private static ValidatorFactory validatorFactory;
