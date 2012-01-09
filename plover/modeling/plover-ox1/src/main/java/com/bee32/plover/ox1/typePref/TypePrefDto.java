@@ -22,29 +22,50 @@ public abstract class TypePrefDto<E extends TypePrefEntity>
         super(selection);
     }
 
+    @Override
     protected void __marshal(E source) {
         super.__marshal(source);
         type = source.getType(); // Transient.
     }
 
+    @Override
     protected void __unmarshalTo(E target) {
         super.__unmarshalTo(target);
         // Transient.: target.setType(type);
+    }
+
+    public String getTypeId() {
+        return getId();
+    }
+
+    public void setTypeId(String typeId) {
+        setId(typeId);
+        try {
+            type = ABBR.expand(typeId);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalArgumentException(e.getMessage(), e);
+        }
     }
 
     public Class<?> getType() {
         return type;
     }
 
+    public void setType(Class<?> type) {
+        this.type = type;
+        setTypeId(ABBR.abbr(type));
+    }
+
     @Transient
     public String getDisplayName() {
         if (type == null)
-            return null;
-        return ClassUtil.getTypeName(type);
+            return "(n/a)";
+        else
+            return ClassUtil.getTypeName(type);
     }
 
     public String getTypeName() {
-        return type == null ? "" : type.getName();
+        return type == null ? "" : type.getCanonicalName();
     }
 
     public void setTypeName(String typeName)
