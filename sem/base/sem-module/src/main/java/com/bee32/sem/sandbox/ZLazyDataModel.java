@@ -27,6 +27,7 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
     final int dtoSelection;
 
     D selection;
+    List<D> loaded;
 
     public ZLazyDataModel(EntityDataModelOptions<E, D> options) {
         if (options == null)
@@ -39,9 +40,7 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
 
     @Override
     public List<D> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
-
         CommonDataManager dataManager = FacesContextSupport.getBean(CommonDataManager.class);
-
         Limit limit = new Limit(first, pageSize);
         Order order = null;
         if (sortField != null) {
@@ -63,7 +62,11 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
                 dtoSelection, //
                 entities);
 
-        return dtos;
+        int index = 0;
+        for (D dto : dtos)
+            dto.set_index(index++);
+
+        return loaded = dtos;
     }
 
     @Override
@@ -84,6 +87,30 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
     @Override
     public void deselect() {
         selection = null;
+    }
+
+    @Override
+    public Object getRowKey(D object) {
+        Object id = object.getId();
+        if (id instanceof String) {
+            String key = (String) id;
+            key = key.replace("\\", "\\\\");
+            key = key.replace("_", "\\-");
+            return key;
+        }
+        return id;
+    }
+
+    @Override
+    public D getRowData(String rowKey) {
+        rowKey = rowKey.replace("\\-", "_");
+        rowKey = rowKey.replace("\\\\", "\\");
+        for (D item : loaded) {
+            String key = String.valueOf(item.getId());
+            if (key.equals(rowKey))
+                return item;
+        }
+        return null;
     }
 
 }
