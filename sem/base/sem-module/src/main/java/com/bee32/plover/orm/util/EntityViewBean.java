@@ -28,6 +28,8 @@ public abstract class EntityViewBean
 
     static Logger logger = LoggerFactory.getLogger(EntityViewBean.class);
 
+    List<?> selection = new ArrayList<Object>();
+
     public EntityViewBean() {
         if (logger.isTraceEnabled()) {
             Class<?> viewBeanType = getClass();
@@ -152,7 +154,7 @@ public abstract class EntityViewBean
     }
 
     public List<?> getSelection() {
-        return Collections.emptyList();
+        return selection;
     }
 
     public List<?> getSelection(Class<?>... interfaces) {
@@ -173,6 +175,23 @@ public abstract class EntityViewBean
                 interestings.add(item);
         }
         return interestings;
+    }
+
+    public void setSelection(List<?> selection) {
+        if (selection == null)
+            throw new NullPointerException("selection");
+        this.selection = selection;
+    }
+
+    public Object[] getSelectionArray() {
+        return selection.toArray();
+    }
+
+    public void setSelectionArray(Object... selectionArray) {
+        List<Object> list = new ArrayList<Object>(selectionArray.length);
+        for (Object item : selectionArray)
+            list.add(item);
+        selection = list;
     }
 
     @SafeVarargs

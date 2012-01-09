@@ -25,7 +25,7 @@
                             update="editForm" async="true" />
                         <p:separator />
                         <p:commandButton value="详细" actionListener="#{bean.showContentForm}"
-                            disabled="#{bean.editing ||  bean.selected)}" update="editForm" async="true" />
+                            disabled="#{bean.editing || !bean.selected}" update="editForm" async="true" />
                         <p:separator />
                     </p:toolbarGroup>
                 </p:toolbar>
@@ -34,8 +34,8 @@
                     <p:tab id="indexTab" title="策略列表">
                         <p:dataTable id="dataTable" var="entry" value="#{bean.dataModel}" paginator="true"
                             rows="#{viewConfig.pageSize}" lazy="true" paginatorTemplate="#{viewConfig.paginatorTemplate}"
-                            rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}" resizableColumns="true" selection="#{bean.selection}"
-                            selectionMode="multiple" rowKey="#{entry.id}" rowIndexVar="rowIndex">
+                            rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}" resizableColumns="true"
+                            selection="#{bean.selectionArray}" selectionMode="multiple" rowKey="#{entry.id}" rowIndexVar="rowIndex">
 
                             <p:ajax event="rowSelect" listener="#{bean.dummy}" update="editForm:toolbar" />
                             <p:ajax event="rowUnselect" listener="#{bean.dummy}" update="editForm:toolbar" />

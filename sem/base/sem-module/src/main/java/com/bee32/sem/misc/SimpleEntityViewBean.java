@@ -2,7 +2,6 @@ package com.bee32.sem.misc;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -33,7 +32,7 @@ public abstract class SimpleEntityViewBean
     protected Class<? extends EntityDto<?, ?>> dtoClass;
     protected ICriteriaElement[] criteriaElements;
     private LazyDataModel<?> dataModel;
-    private EntityDto<?, ?> activeEntry;
+    // private EntityDto<?, ?> activeEntry;
     private boolean editing;
 
     public <E extends CEntity<?>, D extends CEntityDto<? super E, ?>> //
@@ -65,11 +64,19 @@ public abstract class SimpleEntityViewBean
     }
 
     public EntityDto<?, ?> getActiveEntry() {
+        List<?> selection = getSelection();
+        if (selection.isEmpty())
+            return null;
+        Object first = selection.get(0);
+        EntityDto<?, ?> activeEntry = (EntityDto<?, ?>) first;
         return activeEntry;
     }
 
     public void setActiveEntry(EntityDto<?, ?> activeEntry) {
-        this.activeEntry = activeEntry;
+        List<EntityDto<?, ?>> selection = new ArrayList<EntityDto<?, ?>>();
+        if (activeEntry != null)
+            selection.add(activeEntry);
+        setSelection(selection);
     }
 
     public boolean isEditing() {
@@ -78,23 +85,6 @@ public abstract class SimpleEntityViewBean
 
     public void setEditing(boolean editing) {
         this.editing = editing;
-    }
-
-    @Override
-    public List<?> getSelection() {
-        if (activeEntry == null)
-            return Collections.emptyList();
-        else
-            return listOf(activeEntry);
-    }
-
-    public void setSelection(List<?> list) {
-        if (list == null)
-            list = Collections.emptyList();
-        if (list.isEmpty())
-            activeEntry = null;
-        else
-            activeEntry = (EntityDto<?, ?>) list.get(0);
     }
 
     public boolean isSelected() {
