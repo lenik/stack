@@ -8,10 +8,10 @@ import javax.free.Caller;
 
 import com.bee32.plover.criteria.hibernate.CriteriaComposite;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.ox1.c.CEntity;
-import com.bee32.plover.ox1.c.CEntityDto;
+import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.util.EntityDto;
 
-public class EntityDataModelOptions<E extends CEntity<?>, D extends CEntityDto<? super E, ?>> {
+public class EntityDataModelOptions<E extends Entity<?>, D extends EntityDto<? super E, ?>> {
 
     final Class<?> creator = Caller.getCallerClass(1);
     final Class<E> entityClass;

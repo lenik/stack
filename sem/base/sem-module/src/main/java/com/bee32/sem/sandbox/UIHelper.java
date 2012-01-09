@@ -11,9 +11,9 @@ import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
 import com.bee32.plover.arch.util.EnumAlt;
+import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.FacesContextSupport2;
-import com.bee32.plover.ox1.c.CEntity;
-import com.bee32.plover.ox1.c.CEntityDto;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.plover.ox1.dict.CodeTreeBuilder;
@@ -73,7 +73,7 @@ public class UIHelper
         return items;
     }
 
-    public static <E extends CEntity<?>, D extends CEntityDto<? super E, ?>> //
+    public static <E extends Entity<?>, D extends EntityDto<? super E, ?>> //
     ZLazyDataModel<E, D> buildLazyDataModel(EntityDataModelOptions<E, D> options) {
         return new ZLazyDataModel<E, D>(options);
     }

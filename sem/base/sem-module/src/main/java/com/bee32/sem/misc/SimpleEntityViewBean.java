@@ -14,8 +14,6 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityFlags;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.plover.ox1.c.CEntity;
-import com.bee32.plover.ox1.c.CEntityDto;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.MultiTabEntityVdx;
 import com.bee32.sem.sandbox.UIHelper;
@@ -35,7 +33,7 @@ public abstract class SimpleEntityViewBean
 
     private boolean editing;
 
-    public <E extends CEntity<?>, D extends CEntityDto<? super E, ?>> //
+    public <E extends Entity<?>, D extends EntityDto<? super E, ?>> //
     /*    */SimpleEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int selection,
             ICriteriaElement... criteriaElements) {
         this.entityClass = entityClass;
