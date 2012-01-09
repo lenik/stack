@@ -24,7 +24,7 @@ import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.inventory.util.StockCriteria;
 import com.bee32.sem.misc.EntityCriteria;
 
-@ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = { "TK_I", "TK_O" }))
+@ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = { "TK_I", "TK_O", "TKFI", "TKFO" }))
 public class TakeAdminBean
         extends StockOrderBaseBean {
 
