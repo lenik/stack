@@ -15,9 +15,9 @@
                         <p:commandButton value="新增" actionListener="#{bean.showCreateForm}" disabled="#{bean.editing}"
                             update="editForm" async="true" />
                         <p:commandButton value="修改" actionListener="#{bean.showEditForm}"
-                            disabled="#{bean.editing || bean.selection.empty}" update="editForm" async="true" />
+                            disabled="#{bean.editing || !bean.selected}" update="editForm" async="true" />
                         <p:commandButton value="删除" actionListener="#{bean.deleteSelection}"
-                            disabled="#{bean.editing || bean.selection.empty}" update="editForm" async="true" />
+                            disabled="#{bean.editing || !bean.selected}" update="editForm" async="true" />
                         <p:separator />
                         <p:commandButton id="save-validated" value="保存" actionListener="#{bean.save}"
                             disabled="#{!bean.editing}" update="editForm" async="true" />
@@ -25,7 +25,7 @@
                             update="editForm" async="true" />
                         <p:separator />
                         <p:commandButton value="详细" actionListener="#{bean.showContentForm}"
-                            disabled="#{bean.editing ||  bean.selection.empty)}" update="editForm" async="true" />
+                            disabled="#{bean.editing ||  bean.selected)}" update="editForm" async="true" />
                         <p:separator />
                     </p:toolbarGroup>
                 </p:toolbar>
@@ -80,7 +80,7 @@
                         </p:dataTable>
                     </p:tab>
 
-                    <p:tab title="策略内容" rendered="#{not bean.selection.empty}">
+                    <p:tab title="策略内容" rendered="#{bean.selected}">
                         <c:set var="selection" value="#{bean.selection[0]}" />
                         <p:panel header="策略内含物">
                             <h:inputHidden id="id" value="#{selection.id}" />

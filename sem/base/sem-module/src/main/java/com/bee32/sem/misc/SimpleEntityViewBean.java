@@ -97,6 +97,10 @@ public abstract class SimpleEntityViewBean
             activeEntry = (EntityDto<?, ?>) list.get(0);
     }
 
+    public boolean isSelected() {
+        return !getSelection().isEmpty();
+    }
+
     @Operation
     public void showIndex() {
         setActiveTab(TAB_INDEX);
