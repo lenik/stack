@@ -223,16 +223,15 @@ public abstract class EntityViewBean
         this.activeObjects = activeObjects;
     }
 
-    public EntityDto<?, ?> getActiveObject() {
+    public <T> T getActiveObject() {
         List<?> objects = getActiveObjects();
         if (objects.isEmpty())
             return null;
-        Object first = objects.get(0);
-        EntityDto<?, ?> firstDto = (EntityDto<?, ?>) first;
-        return firstDto;
+        T first = (T) objects.get(0);
+        return first;
     }
 
-    public void setActiveObject(EntityDto<?, ?> activeObject) {
+    public void setActiveObject(Object activeObject) {
         List<?> nonNulls = listOfNonNulls(activeObject);
         setActiveObjects(nonNulls);
     }
