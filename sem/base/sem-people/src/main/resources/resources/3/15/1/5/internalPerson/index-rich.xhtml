@@ -123,20 +123,52 @@
                 <p:column>
                     <f:facet name="header">操作</f:facet>
                     <t:panelGroup>
-                        <p:commandLink
-                            oncomplete="extraInfoDialog.show()"
-                            update="extraInfoForm:extraInfoPanel" value="附加信息">
-                            <f:setPropertyActionListener value="#{person}"
+                        <p:commandLink title="修改"
+                            update="editForm:editPanel"
+                            oncomplete="editDialog.show()">
+                            <f:setPropertyActionListener
+                                value="#{person}"
                                 target="#{internalPersonAdminBean.selectedPerson}" />
+                            <p:graphicImage
+                                value="#{location.ICON}/etool16/editor_area.gif" />
                         </p:commandLink>
-                        <p:spacer width="10" />
-                        <p:commandLink oncomplete="taskDialog.hide();"
-                            update="mainForm:task mainForm:planDetail:items"
-                            action="#{materialPlanAdminBean.chooseTask}"
-                            value="挑选">
-                            <f:setPropertyActionListener value="#{task}"
-                                target="#{materialPlanAdminBean.selectedTask}" />
+                        <p:commandLink title="人事信息"
+                            update="editForm:editPanel"
+                            oncomplete="editDialog.show()">
+                            <f:setPropertyActionListener
+                                value="#{person}"
+                                target="#{internalPersonAdminBean.selectedPerson}" />
+                            <p:graphicImage
+                                value="#{location.ICON}/view16/help_view.gif" />
                         </p:commandLink>
+                        <p:commandLink title="专业技能"
+                            update="editForm:editPanel"
+                            oncomplete="editDialog.show()">
+                            <f:setPropertyActionListener
+                                value="#{person}"
+                                target="#{internalPersonAdminBean.selectedPerson}" />
+                            <p:graphicImage
+                                value="#{location.ICON}/obj16/native_lib_path_attrib.gif" />
+                        </p:commandLink>
+                        <p:commandLink title="履历"
+                            update="editForm:editPanel"
+                            oncomplete="editDialog.show()">
+                            <f:setPropertyActionListener
+                                value="#{person}"
+                                target="#{internalPersonAdminBean.selectedPerson}" />
+                            <p:graphicImage
+                                value="#{location.ICON}/elcl16/export_log.gif" />
+                        </p:commandLink>
+                        <p:commandLink title="劳动合同"
+                            update="editForm:editPanel"
+                            oncomplete="editDialog.show()">
+                            <f:setPropertyActionListener
+                                value="#{person}"
+                                target="#{internalPersonAdminBean.selectedPerson}" />
+                            <p:graphicImage
+                                value="#{location.ICON}/elcl16/cpyqual_menu.gif" />
+                        </p:commandLink>
+
                     </t:panelGroup>
                 </p:column>
 
