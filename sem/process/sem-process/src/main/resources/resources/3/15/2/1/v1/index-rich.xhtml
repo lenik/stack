@@ -14,17 +14,17 @@
                     <p:toolbarGroup align="left">
                         <p:commandButton value="新增" actionListener="#{bean.showCreateForm}" disabled="#{bean.editing}"
                             update="toolbar, :main:tabView" async="true" />
-                        <p:commandButton value="修改" actionListener="#{bean.showEditForm}" disabled="#{bean.editing || !bean.selected}"
+                        <p:commandButton value="修改" actionListener="#{bean.showEditForm}" disabled="#{!bean.selected || bean.editing }"
                             update="toolbar, :main:tabView" async="true" />
-                        <p:commandButton value="删除" actionListener="#{bean.deleteSelection}" disabled="#{bean.editing || !bean.selected}"
+                        <p:commandButton value="删除" actionListener="#{bean.deleteSelection}" disabled="#{!bean.selected || bean.editing }"
                             update="toolbar, :main:tabView" async="true" />
                         <p:separator />
                         <p:commandButton id="save-validated" value="保存" actionListener="#{bean.save}"
                             disabled="#{!bean.editing}" update="toolbar, :main:tabView" async="true" />
-                        <p:commandButton value="取消" actionListener="#{bean.showIndex}" disabled="#{!bean.editing}"
+                        <p:commandButton value="取消" actionListener="#{bean.showIndex}" disabled="#{!bean.actived}"
                             update="toolbar, :main:tabView" async="true" />
                         <p:separator />
-                        <p:commandButton value="详细" actionListener="#{bean.showContentForm}" disabled="#{bean.editing || !bean.selected}"
+                        <p:commandButton value="详细" actionListener="#{bean.showContentForm}" disabled="#{!bean.selected ||  bean.actived }"
                             update="toolbar, :main:tabView" async="true" />
                         <p:separator />
                     </p:toolbarGroup>
@@ -87,10 +87,13 @@
                             <h:inputHidden id="id" value="#{obj.id}" />
                             <t:panelGrid columns="4"
                                 columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+
                                 <h:outputLabel for="label" value="名称" />
                                 <p:inputText id="label" value="#{obj.label}" />
+
                                 <h:outputLabel for="description" value="描述" />
                                 <p:inputText id="description" value="#{obj.description}" />
+
                             </t:panelGrid>
                         </p:panel>
                     </p:tab>
