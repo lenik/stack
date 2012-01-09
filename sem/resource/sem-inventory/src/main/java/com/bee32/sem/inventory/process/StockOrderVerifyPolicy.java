@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -24,8 +25,9 @@ import com.bee32.sem.process.verify.util.Tuple;
 /**
  * 库存单据审核策略
  */
-@ForVerifyContext(IStockOrderVerifyContext.class)
 @Entity
+@DiscriminatorValue("STO")
+@ForVerifyContext(IStockOrderVerifyContext.class)
 public class StockOrderVerifyPolicy
         extends VerifyPolicy {
 

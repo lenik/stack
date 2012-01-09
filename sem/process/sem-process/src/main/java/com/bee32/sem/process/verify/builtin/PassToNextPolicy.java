@@ -29,7 +29,7 @@ import com.bee32.sem.process.verify.VerifyResult;
  * 依序审核策略
  */
 @Entity
-@DiscriminatorValue("NXT")
+@DiscriminatorValue("P2N")
 @ForVerifyContext(IPassEvents.class)
 public class PassToNextPolicy
         extends VerifyPolicy {

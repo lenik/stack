@@ -26,7 +26,7 @@ import com.bee32.sem.process.verify.VerifyResult;
 import com.bee32.sem.process.verify.util.Tuple;
 
 @Entity
-@DiscriminatorValue("ML")
+@DiscriminatorValue("V1X")
 @ForVerifyContext(ISingleVerifierWithNumber.class)
 public class SingleVerifierRankedPolicy
         extends VerifyPolicy {
