@@ -13,10 +13,10 @@ public class SEMProcessMenu
     public static MenuNode CORE = menu(SEMFrameMenu.PROCESS, "process");
     public static MenuNode VERIFY_POLICY = menu(CORE, "verifyPolicy");
 
-    static MenuNode PREFERENCE = entry(CORE, "preference", PROCESS_.join("pref/index.do"));
+    static MenuNode PREFERENCE = entry(CORE, "preference", PROCESS_.join("pref/index-rich.jsf"));
 
     static MenuNode LIST = entry(VERIFY_POLICY, 1, "list", PROCESS_.join("v1/index-rich.jsf"));
-    static MenuNode LEVEL = entry(VERIFY_POLICY, 2, "level", PROCESS_.join("v1x/index.do"));
+    static MenuNode LEVEL = entry(VERIFY_POLICY, 2, "level", PROCESS_.join("v1x/index-rich.jsf"));
 
     // static MenuNode p2next = entry(verifyPolicy, 3, "p2next", PROCESS.join("p2next/index.do"));
 
