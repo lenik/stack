@@ -210,9 +210,8 @@ public class PersonAdminBean
             uiLogger.error("请选择需要查看详细信息的联系人!");
             return;
         }
-
-        setActiveTab(TAB_FORM);
         person = reload(selectedPerson, -1);
+        setActiveTab(TAB_FORM);
     }
 
     public void onRowSelect(SelectEvent event) {

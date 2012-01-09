@@ -2,6 +2,7 @@ package com.bee32.sem.inventory;
 
 import com.bee32.plover.pub.oid.Oid;
 import com.bee32.sem.SEMOids;
+import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.module.EnterpriseModule;
 
@@ -15,6 +16,8 @@ public class SEMInventoryModule
     @Override
     protected void preamble() {
         declareEntityPages(StockOrder.class, "stockOrder");
+        declareEntityPages(Material.class, "material");
+        // declareEntityPages(Material.class, "materialEx");
     }
 
 }

@@ -13,6 +13,7 @@ public class PageDirectory {
     static PrefixMap<Class<?>> basePathReverseMap = new PrefixMap<Class<?>>();
 
     public static void register(Class<?> clazz, IObjectPageDirectory pageDir) {
+        // TODO - merge page dirs for the same class?
         classMap.put(clazz, pageDir);
         Location baseLocation = pageDir.getBaseLocation();
         String basePath = baseLocation.getBase() + "/";
