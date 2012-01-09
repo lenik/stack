@@ -28,6 +28,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
     private static final long serialVersionUID = 1L;
 
+    int _index;
     protected K id;
     Integer version;
 
@@ -141,6 +142,14 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         createdDateSet = o.createdDateSet;
         lastModifiedSet = o.lastModifiedSet;
         entityFlags = o.entityFlags;
+    }
+
+    public int get_index() {
+        return _index;
+    }
+
+    public void set_index(int _index) {
+        this._index = _index;
     }
 
     /**
