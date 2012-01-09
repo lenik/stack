@@ -29,6 +29,7 @@ public abstract class EntityViewBean
     static Logger logger = LoggerFactory.getLogger(EntityViewBean.class);
 
     List<?> selection = new ArrayList<Object>();
+    List<?> activeObjects = new ArrayList<Object>();
 
     public EntityViewBean() {
         if (logger.isTraceEnabled()) {
@@ -178,9 +179,23 @@ public abstract class EntityViewBean
     }
 
     public void setSelection(List<?> selection) {
-        if (selection == null)
-            throw new NullPointerException("selection");
+        selection = new ArrayList<Object>();
         this.selection = selection;
+    }
+
+    public Object getSingleSelection() {
+        List<?> selection = getSelection();
+        if (selection.isEmpty())
+            return null;
+        else
+            return selection.get(0);
+    }
+
+    public void setSingleSelection(Object singleSelection) {
+        List<Object> list = new ArrayList<Object>();
+        if (singleSelection != null)
+            list.add(singleSelection);
+        setSelection(list);
     }
 
     public Object[] getSelectionArray() {
@@ -192,6 +207,38 @@ public abstract class EntityViewBean
         for (Object item : selectionArray)
             list.add(item);
         selection = list;
+    }
+
+    public boolean isSelected() {
+        return !getSelection().isEmpty();
+    }
+
+    public List<?> getActiveObjects() {
+        return activeObjects;
+    }
+
+    public void setActiveObjects(List<?> activeObjects) {
+        if (activeObjects == null)
+            activeObjects = Collections.emptyList();
+        this.activeObjects = activeObjects;
+    }
+
+    public EntityDto<?, ?> getActiveObject() {
+        List<?> objects = getActiveObjects();
+        if (objects.isEmpty())
+            return null;
+        Object first = objects.get(0);
+        EntityDto<?, ?> firstDto = (EntityDto<?, ?>) first;
+        return firstDto;
+    }
+
+    public void setActiveObject(EntityDto<?, ?> activeObject) {
+        List<?> nonNulls = listOfNonNulls(activeObject);
+        setActiveObjects(nonNulls);
+    }
+
+    public boolean isActived() {
+        return !getActiveObjects().isEmpty();
     }
 
     @SafeVarargs

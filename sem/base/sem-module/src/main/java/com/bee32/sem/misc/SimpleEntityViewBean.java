@@ -32,7 +32,7 @@ public abstract class SimpleEntityViewBean
     protected Class<? extends EntityDto<?, ?>> dtoClass;
     protected ICriteriaElement[] criteriaElements;
     private LazyDataModel<?> dataModel;
-    // private EntityDto<?, ?> activeEntry;
+
     private boolean editing;
 
     public <E extends CEntity<?>, D extends CEntityDto<? super E, ?>> //
@@ -44,6 +44,7 @@ public abstract class SimpleEntityViewBean
         EntityDataModelOptions<E, D> options = new EntityDataModelOptions<E, D>(//
                 entityClass, dtoClass, selection, getCriteriaElements());
         this.dataModel = UIHelper.buildLazyDataModel(options);
+        refreshCount();
     }
 
     protected void refreshCount() {
@@ -63,22 +64,6 @@ public abstract class SimpleEntityViewBean
         this.criteriaElements = criteriaElements;
     }
 
-    public EntityDto<?, ?> getActiveEntry() {
-        List<?> selection = getSelection();
-        if (selection.isEmpty())
-            return null;
-        Object first = selection.get(0);
-        EntityDto<?, ?> activeEntry = (EntityDto<?, ?>) first;
-        return activeEntry;
-    }
-
-    public void setActiveEntry(EntityDto<?, ?> activeEntry) {
-        List<EntityDto<?, ?>> selection = new ArrayList<EntityDto<?, ?>>();
-        if (activeEntry != null)
-            selection.add(activeEntry);
-        setSelection(selection);
-    }
-
     public boolean isEditing() {
         return editing;
     }
@@ -87,15 +72,22 @@ public abstract class SimpleEntityViewBean
         this.editing = editing;
     }
 
-    public boolean isSelected() {
-        return !getSelection().isEmpty();
-    }
-
     @Operation
     public void showIndex() {
         setActiveTab(TAB_INDEX);
         setEditing(false);
-        setActiveEntry(null);
+        setActiveObject(null);
+    }
+
+    @Operation
+    public void showContentForm() {
+        if (getSelection().isEmpty()) {
+            uiLogger.error("没有选定对象!");
+            return;
+        }
+        setActiveTab(TAB_FORM);
+        setEditing(false);
+        openSelectedDtos(-1);
     }
 
     @Operation
@@ -109,7 +101,7 @@ public abstract class SimpleEntityViewBean
             return;
         }
         setActiveTab(TAB_FORM);
-        setActiveEntry(entityDto);
+        setActiveObject(entityDto);
         setEditing(true);
     }
 
@@ -121,30 +113,19 @@ public abstract class SimpleEntityViewBean
         }
         setActiveTab(TAB_FORM);
         setEditing(true);
-        reloadDtosInSelection(-1);
-    }
-
-    @Operation
-    public void showContentForm() {
-        if (getSelection().isEmpty()) {
-            uiLogger.error("没有选定对象!");
-            return;
-        }
-        setActiveTab(TAB_FORM);
-        setEditing(false);
-        reloadDtosInSelection(-1);
+        openSelectedDtos(-1);
     }
 
     @Operation
     public void save() {
-        if (getSelection().isEmpty()) {
+        if (getActiveObjects().isEmpty()) {
             uiLogger.error("没有需要保存的对象!");
             return;
         }
 
         Collection<? extends Entity<?>> entities;
         try {
-            entities = unmarshalSelection(false);
+            entities = unmarshalDtos(getActiveObjects(), false);
         } catch (NullPointerException e) {
             uiLogger.error("有些需要保存的对象已失效，请刷新页面重试。", e);
             return;
@@ -173,7 +154,7 @@ public abstract class SimpleEntityViewBean
 
         Collection<? extends Entity<?>> entities;
         try {
-            entities = unmarshalSelection(true);
+            entities = unmarshalDtos(getSelection(), true);
         } catch (Exception e) {
             uiLogger.error("反编列失败", e);
             return;
@@ -209,25 +190,25 @@ public abstract class SimpleEntityViewBean
         refreshCount();
     }
 
-    protected void reloadDtosInSelection(int dtoSelection) {
+    void openSelectedDtos(int reloadDtoSel) {
         List<Object> reloadedList = new ArrayList<Object>();
         for (Object selection : getSelection()) {
             Object reloaded;
             if (selection instanceof EntityDto<?, ?>) {
                 EntityDto<?, ?> dto = (EntityDto<?, ?>) selection;
-                reloaded = reload(dto, dtoSelection);
+                reloaded = reload(dto, reloadDtoSel);
             } else
                 reloaded = selection;
             reloadedList.add(reloaded);
         }
-        setSelection(reloadedList);
+        setActiveObjects(reloadedList);
     }
 
-    protected Collection<? extends Entity<?>> unmarshalSelection(boolean nullable) {
+    Collection<? extends Entity<?>> unmarshalDtos(Collection<?> objects, boolean nullable) {
         Set<Entity<?>> entities = new HashSet<Entity<?>>();
-        for (Object selection : getSelection()) {
-            if (dtoClass.isInstance(selection)) {
-                EntityDto<?, ?> entityDto = (EntityDto<?, ?>) selection;
+        for (Object object : objects) {
+            if (dtoClass.isInstance(object)) {
+                EntityDto<?, ?> entityDto = (EntityDto<?, ?>) object;
                 Entity<?> entity = entityDto.unmarshal(this);
                 if (entity == null) {
                     if (!nullable)
