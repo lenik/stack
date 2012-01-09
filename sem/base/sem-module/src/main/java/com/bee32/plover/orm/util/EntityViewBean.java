@@ -206,7 +206,7 @@ public abstract class EntityViewBean
         List<Object> list = new ArrayList<Object>(selectionArray.length);
         for (Object item : selectionArray)
             list.add(item);
-        selection = list;
+        setSelection(list);
     }
 
     public boolean isSelected() {

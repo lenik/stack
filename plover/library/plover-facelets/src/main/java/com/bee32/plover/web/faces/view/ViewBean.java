@@ -96,6 +96,7 @@ public abstract class ViewBean
      */
     @Operation
     public void dummy() {
+        // System.out.println("Dummy");
     }
 
     private static ValidatorFactory validatorFactory;

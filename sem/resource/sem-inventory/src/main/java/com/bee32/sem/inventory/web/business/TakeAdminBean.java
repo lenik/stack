@@ -36,8 +36,6 @@ public class TakeAdminBean
     private int goNumber;
     private int count;
 
-    String rejectedReason;
-
     public TakeAdminBean() {
         Calendar c = Calendar.getInstance();
         // 取这个月的第一天
@@ -106,14 +104,6 @@ public class TakeAdminBean
                 StockCriteria.subjectOf(getSubject()), //
                 new Equals("warehouse.id", selectedWarehouse.getId()));
         return count;
-    }
-
-    public String getRejectedReason() {
-        return rejectedReason;
-    }
-
-    public void setRejectedReason(String rejectedReason) {
-        this.rejectedReason = rejectedReason;
     }
 
     public void onSwChange(AjaxBehaviorEvent e) {

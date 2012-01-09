@@ -1,7 +1,9 @@
 package com.bee32.sem.inventory.process;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
@@ -23,7 +25,10 @@ public class StockOrderVerifyPolicyDto
 
         if (selection.contains(SUBJECT_POLICY_MAP)) {
             Map<String, VerifyPolicy> map = source.getSubjectPolicyMap();
-            // mref map...
+            subjectPolicyMap = new LinkedHashMap<String, VerifyPolicyDto>();
+            for (Entry<String, VerifyPolicy> entry : map.entrySet()) {
+
+            }
         } else {
             subjectPolicyMap = Collections.emptyMap();
         }

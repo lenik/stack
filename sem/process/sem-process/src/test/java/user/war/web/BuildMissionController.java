@@ -55,8 +55,10 @@ public class BuildMissionController
         result.put("responsibleTest", responsible);
 
         VerifyPolicy policy = verifyService.getPreferredVerifyPolicy(BuildMission.class);
-        Object stage = policy.getStage(entity.getVerifyContext());
-        result.put("stage", stage);
+        if (policy != null) {
+            Object stage = policy.getStage(entity.getVerifyContext());
+            result.put("stage", stage);
+        }
     }
 
     @Override
