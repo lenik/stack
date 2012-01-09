@@ -212,7 +212,7 @@ public class UserAdminBean
         try {
             serviceFor(User.class).saveOrUpdate(u);
 
-            serviceFor(UserPassword.class).deleteAll(new Equals("user.id", user.getId()));
+            serviceFor(UserPassword.class).findAndDelete(new Equals("user.id", user.getId()));
             UserPassword pass = new UserPassword(u, password);
             serviceFor(UserPassword.class).save(pass);
             password = "";
@@ -227,7 +227,7 @@ public class UserAdminBean
     @Transactional
     public void doDelete() {
         try {
-            serviceFor(UserPassword.class).deleteAll(new Equals("user.id", user.getId()));
+            serviceFor(UserPassword.class).findAndDelete(new Equals("user.id", user.getId()));
 
             serviceFor(User.class).delete(user.unmarshal());
             uiLogger.info("删除成功!");
@@ -280,7 +280,7 @@ public class UserAdminBean
 
     public void choosePerson() {
         if (user != null && user.getId() != null) {
-            serviceFor(PersonLogin.class).deleteAll(new Equals("user.id", user.getId()));
+            serviceFor(PersonLogin.class).findAndDelete(new Equals("user.id", user.getId()));
             PersonLogin personLogin = new PersonLogin();
             personLogin.setUser(user.unmarshal());
             personLogin.setPerson((Person) selectedPerson.unmarshal());

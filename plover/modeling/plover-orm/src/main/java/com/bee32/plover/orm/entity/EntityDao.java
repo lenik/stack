@@ -281,6 +281,21 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
+    public int deleteAll(Collection<?> entities) {
+        HibernateTemplate template = getHibernateTemplate();
+        // String hql = "delete from " + entityType.getSimpleName();
+        // template.bulkUpdate(hql);
+        for (Object obj : entities) {
+            @SuppressWarnings("unchecked")
+            E entity = (E) obj;
+            preDelete(entity);
+        }
+
+        template.deleteAll(entities);
+        return -1;
+    }
+
+    @Override
     public int count() {
         return count((ICriteriaElement[]) null);
     }
@@ -325,6 +340,12 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
 
         getHibernateTemplate().delete(entity, lockMode);
         return true;
+    }
+
+    @Override
+    public int deleteAll(Collection<?> entities, LockMode lockMode)
+            throws DataAccessException {
+        return deleteAll(entities);
     }
 
     @Override
@@ -501,7 +522,7 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public int deleteAll(ICriteriaElement... criteriaElements) {
+    public int findAndDelete(ICriteriaElement... criteriaElements) {
         HibernateTemplate template = getHibernateTemplate();
 
         Criteria criteria = createCriteria(criteriaElements);

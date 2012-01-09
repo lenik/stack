@@ -85,6 +85,6 @@ public interface IEntityAccessService<E extends Entity<? extends K>, K extends S
      *            Restrictions to the selection. (AND).
      * @return Number of entities actually deleted. This is an approx number however.
      */
-    int deleteAll(ICriteriaElement... criteriaElements);
+    int findAndDelete(ICriteriaElement... criteriaElements);
 
 }

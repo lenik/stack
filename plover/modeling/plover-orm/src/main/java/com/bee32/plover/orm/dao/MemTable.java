@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -177,6 +178,12 @@ public class MemTable
         return delete(entity);
     }
 
+    @Override
+    public int deleteAll(Collection<?> entities, LockMode lockMode)
+            throws DataAccessException {
+        return deleteAll(entities);
+    }
+
     @Deprecated
     @Override
     public synchronized Entity<?> merge(Entity<?> entity)
@@ -269,7 +276,7 @@ public class MemTable
     }
 
     @Override
-    public int deleteAll(ICriteriaElement... criteriaElements) {
+    public int findAndDelete(ICriteriaElement... criteriaElements) {
         List<Entity<?>> list = list(criteriaElements);
         int count = 0;
         for (Entity<?> entity : list) {

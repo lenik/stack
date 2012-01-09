@@ -57,4 +57,7 @@ public interface IEntityRepo<E extends IEntity<? extends K>, K extends Serializa
     @Override
     boolean delete(Object entity);
 
+    @Override
+    int deleteAll(Collection<?> entities);
+
 }

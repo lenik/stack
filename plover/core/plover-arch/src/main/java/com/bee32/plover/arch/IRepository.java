@@ -161,6 +161,13 @@ public interface IRepository<K, T>
      */
     void deleteAll();
 
+    /**
+     * Delete all objects in the given collection.
+     *
+     * @return Count of objects actually deleted. -1 if unknown.
+     */
+    int deleteAll(Collection<?> objects);
+
     int count();
 
 }

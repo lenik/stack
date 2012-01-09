@@ -207,7 +207,7 @@ public class TransferOutAdminBean extends StockOrderBaseBean {
     @Transactional
     public void delete() {
         try {
-            serviceFor(StockTransfer.class).deleteAll(
+            serviceFor(StockTransfer.class).findAndDelete(
                     new Equals("source.id", stockOrder.getId()));
             // serviceFor(StockOrder.class).deleteById(stockOrder.getId());
             uiLogger.info("删除成功!");

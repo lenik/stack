@@ -240,7 +240,7 @@ public class PermissionAdminBean
 
         Principal principal = principalDto.unmarshal();
 
-        serviceFor(R_ACE.class).deleteAll(new Equals("principal", principal));
+        serviceFor(R_ACE.class).findAndDelete(new Equals("principal", principal));
 
         ScannedResourceRegistry srr = getBean(ScannedResourceRegistry.class);
 

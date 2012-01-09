@@ -343,6 +343,15 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
         return status;
     }
 
+    @Override
+    public int deleteAll(Collection<?> entities, LockMode lockMode)
+            throws DataAccessException {
+        checkDelete();
+        int num = getDao().deleteAll(entities, lockMode);
+        autoBulkFlush();
+        return num;
+    }
+
     @Transactional(readOnly = false)
     @Override
     public E merge(E entity)
@@ -393,9 +402,9 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
 
     @Transactional(readOnly = false)
     @Override
-    public int deleteAll(ICriteriaElement... criteria) {
+    public int findAndDelete(ICriteriaElement... criteria) {
         checkDelete();
-        int count = getDao().deleteAll(criteria);
+        int count = getDao().findAndDelete(criteria);
         autoBulkFlush();
         return count;
     }
@@ -417,6 +426,14 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
         checkDelete();
         getDao().deleteAll();
         autoBulkFlush();
+    }
+
+    @Override
+    public int deleteAll(Collection<?> entities) {
+        checkDelete();
+        int num = getDao().deleteAll(entities);
+        autoBulkFlush();
+        return num;
     }
 
     @Transactional(readOnly = true)

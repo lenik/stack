@@ -141,6 +141,15 @@ public abstract class Repository<K, T>
     }
 
     @Override
+    public int deleteAll(Collection<?> objects) {
+        int counter = 0;
+        for (Object obj : objects)
+            if (delete(obj))
+                counter++;
+        return counter;
+    }
+
+    @Override
     public T populate(IStruct struct)
             throws BuildException {
         T instance;

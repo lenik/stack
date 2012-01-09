@@ -169,7 +169,7 @@ public class OutsourcingOutAdminBean extends StockOrderBaseBean {
 
     public void delete() {
         try {
-            serviceFor(StockOutsourcing.class).deleteAll(
+            serviceFor(StockOutsourcing.class).findAndDelete(
                     new Equals("output.id", stockOrder.getId()));
             // serviceFor(StockOrder.class).delete(stockOrder.unmarshal());
             uiLogger.info("删除成功!");

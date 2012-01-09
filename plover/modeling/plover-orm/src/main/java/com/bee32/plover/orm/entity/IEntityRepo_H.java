@@ -1,6 +1,7 @@
 package com.bee32.plover.orm.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import org.hibernate.LockMode;
 import org.hibernate.ReplicationMode;
@@ -64,6 +65,9 @@ public interface IEntityRepo_H<E extends IEntity<? extends K>, K extends Seriali
             throws DataAccessException;
 
     boolean delete(Object entity, LockMode lockMode)
+            throws DataAccessException;
+
+    int deleteAll(Collection<?> entities, LockMode lockMode)
             throws DataAccessException;
 
     /**

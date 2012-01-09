@@ -29,7 +29,7 @@ public class CatFeat
         ICriteriaElement selector = lucy.getSelector();
 
         System.out.println("Pre-clean");
-        int count = asFor(Tiger.class).deleteAll(selector);
+        int count = asFor(Tiger.class).findAndDelete(selector);
         System.out.println("    Deleted: " + count);
 
         System.out.println("Save lucy");
