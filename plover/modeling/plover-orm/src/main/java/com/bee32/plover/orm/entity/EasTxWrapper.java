@@ -428,6 +428,7 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
         autoBulkFlush();
     }
 
+    @Transactional(readOnly = false)
     @Override
     public int deleteAll(Collection<?> entities) {
         checkDelete();
