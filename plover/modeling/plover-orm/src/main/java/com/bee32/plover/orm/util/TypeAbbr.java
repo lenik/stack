@@ -45,7 +45,7 @@ public class TypeAbbr {
     public String abbr(Class<?> clazz) {
         if (clazz == null)
             return null;
-        String abbr = abbr(clazz.getName());
+        String abbr = abbr(clazz.getCanonicalName());
         return abbr;
     }
 
