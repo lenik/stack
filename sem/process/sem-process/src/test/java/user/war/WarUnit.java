@@ -1,6 +1,7 @@
 package user.war;
 
 import user.war.entity.AttackMission;
+import user.war.entity.BuildMission;
 
 import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
@@ -13,6 +14,7 @@ public class WarUnit
     @Override
     protected void preamble() {
         add(AttackMission.class);
+        add(BuildMission.class);
     }
 
 }

@@ -1,0 +1,19 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" template="/template/ventity/form.xhtml">
+    <ui:define name="table">
+        <table width="100%" bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5">
+            <tr>
+                <td align="right">建筑目标:</td>
+                <td>
+                    <input name="target" type="text" size="50" maxlength="200" value="${it.target}" />
+                </td>
+            </tr>
+            <tr>
+                <td align="right">建筑费用:</td>
+                <td>
+                    <input name="target" type="text" size="50" maxlength="200" value="${it.money}" />
+                </td>
+            </tr>
+        </table>
+    </ui:define>
+</ui:composition>

@@ -1,6 +1,7 @@
 package user.war;
 
 import user.war.entity.AttackMission;
+import user.war.entity.BuildMission;
 
 import com.bee32.plover.pub.oid.Oid;
 import com.bee32.sem.SEMOids;
@@ -16,6 +17,7 @@ public class WarModule
     @Override
     protected void preamble() {
         declareEntityPages(AttackMission.class, "attack");
+        declareEntityPages(BuildMission.class, "build");
     }
 
 }

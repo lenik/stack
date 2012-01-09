@@ -3,6 +3,7 @@ package user.war;
 import java.util.Date;
 
 import user.war.entity.AttackMission;
+import user.war.entity.BuildMission;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.plover.orm.util.ImportSamples;
@@ -19,7 +20,7 @@ public class WarSamples
 
     public static AttackMission bombAmerica;
     public static AttackMission killSimpsons;
-    public static AttackMission rescueMao;
+    public static BuildMission rescueMao;
 
     static {
         attackPref = new VerifyPolicyPref();
@@ -38,8 +39,8 @@ public class WarSamples
         killSimpons_SV.setRejectedReason1("无差别拒绝");
         killSimpons_SV.setVerifiedDate1(new Date());
 
-        rescueMao = new AttackMission();
-        rescueMao.setTarget("联手灭绝师太打倒五毛党。");
+        rescueMao = new BuildMission();
+        rescueMao.setTarget("拯救毛主席。");
         SingleVerifierSupport rescueMao_SV = rescueMao.getVerifyContext();
         rescueMao_SV.setAccepted1(true);
         rescueMao_SV.setVerifier1(IcsfPrincipalSamples.kate);
