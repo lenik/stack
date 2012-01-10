@@ -3,6 +3,7 @@ package com.bee32.plover.test;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -22,6 +23,7 @@ import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.inject.cref.ScanServiceContext;
 import com.bee32.plover.xutil.ClassScanner;
 import com.bee32.plover.xutil.m2.MavenPath;
+import com.bee32.plover.xutil.m2.TestClassLoader;
 
 /**
  * Usage:
@@ -41,6 +43,9 @@ public abstract class ServiceCollector<T> {
     protected ClassScanner scanner = new ClassScanner();
 
     public ServiceCollector() {
+        URLClassLoader scl = (URLClassLoader) ClassLoader.getSystemClassLoader();
+        scanner.setClassLoader(TestClassLoader.createMavenTestClassLoader(scl));
+
         prototype = ClassUtil.infer1(getClass(), ServiceCollector.class, 0);
         try {
             scanner.scan("com.bee32");
