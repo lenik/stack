@@ -12,6 +12,7 @@ import javax.free.Nullables;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
+import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.arch.util.dto.BaseDto;
 import com.bee32.plover.arch.util.dto.MarshalType;
@@ -27,6 +28,8 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         extends EntityDto_VTU<E, K> {
 
     private static final long serialVersionUID = 1L;
+
+    String typeName;
 
     int _index;
     protected K id;
@@ -150,6 +153,10 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
     public void set_index(int _index) {
         this._index = _index;
+    }
+
+    public String getTypeName() {
+        return typeName;
     }
 
     /**
@@ -282,6 +289,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      */
     @Override
     protected void __marshal(E source) {
+        typeName = ClassUtil.getParameterizedTypeName(source);
         id = source.getId();
         version = source.getVersion();
         createdDate = source.getCreatedDate();
