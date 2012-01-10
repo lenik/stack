@@ -123,7 +123,8 @@ public abstract class EntityViewBean
     }
 
     public void setSelection(List<?> selection) {
-        selection = new ArrayList<Object>();
+        if (selection == null)
+            selection = new ArrayList<Object>();
         this.selection = selection;
     }
 
@@ -165,6 +166,15 @@ public abstract class EntityViewBean
         if (activeObjects == null)
             activeObjects = Collections.emptyList();
         this.activeObjects = activeObjects;
+    }
+
+    public <T> T getActiveObject(boolean selectionRequired) {
+        T activeObject = getActiveObject();
+        if (!selectionRequired && activeObject == null) {
+            uiLogger.error("请先选择对象。");
+            return null;
+        }
+        return activeObject;
     }
 
     public <T> T getActiveObject() {
