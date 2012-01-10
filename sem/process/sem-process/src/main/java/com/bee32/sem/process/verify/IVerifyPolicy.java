@@ -11,6 +11,9 @@ import com.bee32.icsf.principal.Principal;
  */
 public interface IVerifyPolicy {
 
+    VerifyResult UNKNOWN = new VerifyResult(VerifyEvalState.UNKNOWN, null);
+    VerifyResult VERIFIED = new VerifyResult(VerifyEvalState.VERIFIED, null);
+
     VerifyPolicyMetadata getMetadata();
 
     VerifyResult verify(IVerifyContext context);

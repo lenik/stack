@@ -32,9 +32,6 @@ public abstract class VerifyPolicy
 
     private static final long serialVersionUID = 1L;
 
-    protected static final VerifyResult UNKNOWN = new VerifyResult(VerifyEvalState.UNKNOWN, null);
-    protected static final VerifyResult VERIFIED = new VerifyResult(VerifyEvalState.VERIFIED, null);
-
     private final VerifyPolicyMetadata metadata;
     private Map<Principal, Map<Object, Boolean>> principalResponsibleStagesMap;
 

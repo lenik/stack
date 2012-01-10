@@ -66,6 +66,16 @@ public abstract class AbstractVerifyContext
         EntityAccessor.addLockPredicate(entity, new VLockPred());
     }
 
+    /**
+     * 清楚审核数据，以便重新审核
+     */
+    public void clear() {
+        verifyEvalState = VerifyEvalState.UNKNOWN;
+        verifyError = null;
+        verifyEvalDate = null;
+        verifyEvent = null;
+    }
+
     @Column(name = "verifyEvalState", nullable = false)
     @DefaultValue("" + 0x02000001 /* 33554433, VerifyEvalState.UNKNOWN */)
     int get_verifyEvalState() {
