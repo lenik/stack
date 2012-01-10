@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.free.FilePath;
 
+import com.bee32.plover.xutil.m2.UCLDumper;
+
 public class ClassFiles {
 
     public static List<String> findClasses(File start) {
@@ -35,6 +37,11 @@ public class ClassFiles {
 
     public static List<Class<?>> forNames(List<String> fqcns, boolean skipLocals)
             throws ClassNotFoundException {
+        return forNames(fqcns, skipLocals, ClassLoader.getSystemClassLoader());
+    }
+
+    public static List<Class<?>> forNames(List<String> fqcns, boolean skipLocals, ClassLoader loader)
+            throws ClassNotFoundException {
 
         List<Class<?>> types = new ArrayList<Class<?>>(fqcns.size());
 
@@ -42,7 +49,7 @@ public class ClassFiles {
             if (skipLocals && fqcn.contains("$"))
                 continue;
 
-            Class<?> type = Class.forName(fqcn, false, ClassLoader.getSystemClassLoader());
+            Class<?> type = Class.forName(fqcn, false, loader);
 
             types.add(type);
         }
@@ -51,6 +58,7 @@ public class ClassFiles {
 
     public static void main(String[] args)
             throws ClassNotFoundException {
+
         for (File start : UCLDumper.getLocalClasspaths())
             if (start.isDirectory()) {
                 System.out.println("Scan " + start);
