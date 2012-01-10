@@ -6,27 +6,21 @@
     <ui:define name="title">单一审核人策略</ui:define>
 
     <ui:define name="content">
+
         <c:set var="bean" value="#{singleVerifierPolicyBean}" />
 
+        <ui:include src="/3/7/1/ChoosePrincipalDialog.xhtml">
+            <ui:param name="var" value="addResponsibleDialog" />
+            <ui:param name="listener" value="#{bean.addResponsibleDialogListener}" />
+            <ui:param name="update" value="editForm:responsibleTable" />
+        </ui:include>
+
         <h:form id="mainForm">
-            <p:toolbar id="toolbar">
-                <p:toolbarGroup align="left">
-                    <p:commandButton value="新增"
-                        actionListener="#{bean.newPolicy}"
-                        onclick="editDialog.show()"
-                        update="editForm:editPanel"/>
-                </p:toolbarGroup>
-            </p:toolbar>
 
-
-            <p:dataTable id="policies" var="entry"
-                value="#{bean.dataModel}" paginator="true"
-                rows="#{viewConfig.pageSize}" lazy="true"
-                paginatorTemplate="#{viewConfig.paginatorTemplate}"
-                rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}"
-                resizableColumns="true"
-                rowIndexVar="rowIndex">
-
+            <p:dataTable id="dataTable" var="entry" value="#{bean.dataModel}" selection="#{bean.singleSelection}"
+                selectionMode="single" paginator="true" rows="#{viewConfig.pageSize}" lazy="true"
+                paginatorTemplate="#{viewConfig.paginatorTemplate}" rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}"
+                resizableColumns="true" rowIndexVar="rowIndex">
 
                 <f:facet name="header">单一审核人策略</f:facet>
 
@@ -44,199 +38,87 @@
 
                 <p:column headerText="创建日期">
                     <h:outputText value="#{entry.createdDate}">
-                        <f:convertDateTime pattern="yyyy-MM-dd"
-                            timeZone="Asia/Shanghai" />
+                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                     </h:outputText>
                 </p:column>
 
                 <p:column headerText="所有人">
                     <h:outputText value="#{entry.owner.displayName}" />
                 </p:column>
-
-                <p:column headerText="操作" style="width:100px;">
-                    <p:commandLink title="责任对象"
-                        update="responsibleForm:currPolicy responsibleForm:allowList"
-                        oncomplete="responsibleDialog.show()">
-                        <f:setPropertyActionListener value="#{entry}"
-                            target="#{bean.policy}" />
-                        <p:graphicImage
-                            value="#{location.ICON}/elcl16/type_mode.gif" />
-                    </p:commandLink>
-                    <p:commandLink title="修改"
-                        update="editForm:editPanel"
-                        action="#{bean.reloadPolicy}"
-                        oncomplete="editDialog.show()">
-                        <f:setPropertyActionListener value="#{entry}"
-                            target="#{bean.policy}" />
-                        <p:graphicImage
-                            value="#{location.ICON}/etool16/editor_area.gif" />
-                    </p:commandLink>
-                    <p:commandLink title="删除" oncomplete="deletePolicyConfirmDialog.show()">
-                        <f:setPropertyActionListener value="#{entry}"
-                            target="#{bean.policy}" />
-                        <p:graphicImage
-                            value="#{location.ICON}/etool16/delete_edit.gif" />
-                    </p:commandLink>
-                </p:column>
-
             </p:dataTable>
 
-        </h:form>
+            <p:toolbar>
+                <p:toolbarGroup align="right">
+                    <p:commandButton value="新增" action="#{bean.showCreateForm}" oncomplete="editDialog.show()"
+                        update="editForm" />
+                    <p:commandButton value="修改" action="#{bean.showEditForm}" oncomplete="editDialog.show()"
+                        update="editForm" />
+                    <p:commandButton value="删除" oncomplete="deleteConfirmDialog.show()" />
+                </p:toolbarGroup>
+            </p:toolbar>
 
+        </h:form>
 
         <h:form id="editForm">
-            <p:dialog header="新增/编辑策略" widgetVar="editDialog"
-                height="480" width="640" modal="true">
+            <c:set var="obj" value="#{bean.activeObject}" />
+            <p:dialog header="新增/编辑策略" widgetVar="editDialog" modal="true">
+                <div style="max-height: 30em; margin: 1em">
+                    <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
 
-                <t:panelGrid id="editPanel" columns="2"
-                    columnClasses="detail_col_title,detail_col_value">
+                        <h:outputText value="名称" />
+                        <p:inputText value="#{obj.label}" />
 
-                    <h:outputText value="名称" />
-                    <p:inputText value="#{bean.policy.label}" />
+                        <h:outputText value="描述" />
+                        <p:inputText value="#{obj.description}" />
 
-                    <h:outputText value="描述" />
-                    <p:inputText value="#{bean.policy.description}" />
+                    </t:panelGrid>
 
-                    <p:commandButton
-                        update="mainForm:policies"
-                        value="保存"
-                        actionListener="#{bean.savePolicy}"
-                        oncomplete="editDialog.hide()"/>
-                    <p:commandButton value="取消" onclick="editDialog.hide()"/>
-                </t:panelGrid>
+                    <p:fieldset legend="责任人列表" toggleable="false">
+                        <p:dataTable id="responsibleTable" value="#{obj.responsibles}" var="responsible"
+                            resizableColumns="true" rowIndexVar="rowIndex">
+                            <f:facet name="header">策略包含的责任对象</f:facet>
+                            <p:column headerText="序号" style="width: 4em;">
+                                <h:outputText value="#{rowIndex+1}" />
+                            </p:column>
+
+                            <p:column headerText="名称" style="width: 10em;">
+                                <h:outputText value="#{responsible.name}" />
+                            </p:column>
+
+                            <p:column headerText="类型" style="width: 5em;">
+                                <h:outputText value="#{responsible.typeName}" />
+                            </p:column>
+
+                            <p:column headerText="操作" style="width: 3em;">
+                                <p:commandLink title="删除" action="#{bean.removeResponsible}" update="editForm:responsibleTable">
+                                    <f:setPropertyActionListener value="#{responsible}"
+                                        target="#{bean.selectedResponsible}" />
+                                    <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton value="增加责任对象" update="responsibleTable" onclick="addResponsibleDialog.show()" />
+                    </p:fieldset>
+
+                    <div align="right">
+                        <p:commandButton update="mainForm:dataTable" value="保存" actionListener="#{bean.save}"
+                            oncomplete="editDialog.hide()" />
+                        <p:commandButton value="取消" onclick="editDialog.hide()" />
+                    </div>
+                </div>
             </p:dialog>
         </h:form>
 
-
-        <h:form id="deletePolicyConfirmForm">
-            <p:confirmDialog message="确定要删除吗?" width="200" header="删除确认"
-                severity="alert"
-                widgetVar="deletePolicyConfirmDialog"
+        <h:form id="deleteConfirmForm">
+            <p:confirmDialog header="删除确认" message="确定要删除吗?" severity="alert" widgetVar="deleteConfirmDialog"
                 modal="true">
-
-                <p:commandButton value="确定"
-                    update="mainForm:policies"
-                    actionListener="#{bean.deletePolicy}"
-                    oncomplete="deletePolicyConfirmDialog.hide()" />
-                <p:commandButton value="取消"
-                    onclick="deletePolicyConfirmDialog.hide()"
-                    type="button" />
-
+                <div style="margin: 2em">
+                    <p:commandButton value="确定" update="mainForm:dataTable" actionListener="#{bean.deleteSelection}"
+                        oncomplete="deleteConfirmDialog.hide()" />
+                    <p:commandButton value="取消" onclick="deleteConfirmDialog.hide()" type="button" />
+                </div>
             </p:confirmDialog>
         </h:form>
 
-
-
-        <h:form id="responsibleForm">
-            <p:dialog header="新增/编辑策略" widgetVar="responsibleDialog"
-                height="480" width="640" modal="true">
-
-                <h:outputText id="currPolicy"
-                    value="当前策略:#{bean.policy.label}"
-                    style="font-weight:bold;" />
-
-                <p:separator style="width:600px;height:2px" />
-
-                <p:commandButton value="增加责任对象"
-                    update="addResponsibleForm:addResponsiblePanel"
-                    onclick="addResponsibleDialog.show()" />
-
-                <p:dataTable id="allowList"
-                    value="#{bean.allowList}" var="allow"
-                    resizableColumns="true" scrollable="true"
-                    scrollHeight="350" scrollWidth="400"
-                    rowIndexVar="rowIndex">
-
-                    <f:facet name="header">策略包含的责任对象</f:facet>
-
-                    <p:column headerText="序号" style="width:30px;">
-                        <h:outputText value="#{rowIndex+1}" />
-                    </p:column>
-
-                    <p:column headerText="名称" style="width:100px;">
-                        <h:outputText value="#{allow.name}" />
-                    </p:column>
-
-                    <p:column headerText="类型" style="width:80px;">
-                        <h:outputText value="#{allow.typeName}" />
-                    </p:column>
-
-                    <p:column headerText="操作" style="width:100px;">
-                        <p:commandLink title="删除"
-                            oncomplete="deleteResponsibleConfirmDialog.show()">
-                            <f:setPropertyActionListener
-                                value="#{allow}" target="#{bean.selectedResponsible}" />
-                            <p:graphicImage
-                                value="#{location.ICON}/etool16/delete_edit.gif" />
-                        </p:commandLink>
-                    </p:column>
-
-                </p:dataTable>
-
-            </p:dialog>
-        </h:form>
-
-        <h:form id="addResponsibleForm">
-            <p:dialog header="选择责任对象" widgetVar="addResponsibleDialog" modal="true"
-                height="480" width="640">
-                <h:panelGroup>
-
-                    <h:panelGrid columns="3">
-                        <h:outputLabel value="名称全部或部份:" />
-                        <p:inputText value="#{bean.responsiblePattern}" />
-                        <p:commandButton value="查找"
-                            actionListener="#{bean.findResponsible}" update="responsibles"
-                            async="true" />
-                    </h:panelGrid>
-                    <p:dataTable id="responsibles" var="responsible"
-                        value="#{bean.responsibles}" resizableColumns="true"
-                        scrollable="true" scrollHeight="380"
-                        scrollWidth="500"
-                        rowIndexVar="rowIndex">
-
-                        <p:column headerText="序号" style="width:30px;">
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column headerText="名称" style="width:100px;">
-                            <h:outputText value="#{responsible.name}" />
-                        </p:column>
-
-                        <p:column headerText="类型" style="width:80px;">
-                            <h:outputText value="#{responsible.typeName}" />
-                        </p:column>
-
-                        <p:column headerText="动作" style="width:100px;">
-                            <p:commandLink
-                                oncomplete="addResponsibleDialog.hide()"
-                                action="#{bean.addResponsible}"
-                                update="responsibleForm:allowList" value="增加">
-                                <f:setPropertyActionListener
-                                    value="#{responsible}"
-                                    target="#{bean.selectedResponsible}" />
-                            </p:commandLink>
-                        </p:column>
-                    </p:dataTable>
-                    <p:commandButton value="关闭" oncomplete="addResponsibleDialog.hide();" />
-                </h:panelGroup>
-            </p:dialog>
-        </h:form>
-
-        <h:form id="deleteResponsibleConfirmForm">
-            <p:confirmDialog message="确定要删除吗?" width="200" header="删除确认"
-                severity="alert"
-                widgetVar="deleteResponsibleConfirmDialog"
-                modal="true">
-
-                <p:commandButton value="确定"
-                    update="responsibleForm:allowList"
-                    actionListener="#{bean.deleteResponsible}"
-                    oncomplete="deleteResponsibleConfirmDialog.hide()" />
-                <p:commandButton value="取消"
-                    onclick="deleteResponsibleConfirmDialog.hide()"
-                    type="button" />
-
-            </p:confirmDialog>
-        </h:form>
     </ui:define>
 </ui:composition>

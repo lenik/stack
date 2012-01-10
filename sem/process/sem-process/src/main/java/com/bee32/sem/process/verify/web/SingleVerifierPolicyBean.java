@@ -2,10 +2,10 @@ package com.bee32.sem.process.verify.web;
 
 import java.util.List;
 
-import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.sem.misc.SimpleEntityViewBean;
+import com.bee32.sem.people.web.ChoosePrincipalDialogListener;
 import com.bee32.sem.process.verify.builtin.SingleVerifierPolicy;
 import com.bee32.sem.process.verify.builtin.dto.SingleVerifierPolicyDto;
 
@@ -15,81 +15,38 @@ public class SingleVerifierPolicyBean
 
     private static final long serialVersionUID = 1L;
 
-    SingleVerifierPolicyDto policy = new SingleVerifierPolicyDto().create();
+    PrincipalDto selectedResponsible;
 
     public SingleVerifierPolicyBean() {
         super(SingleVerifierPolicy.class, SingleVerifierPolicyDto.class, 0);
     }
 
-    public SingleVerifierPolicyDto getPolicy() {
-        return policy;
+    public Object getAddResponsibleDialogListener() {
+        return new ChoosePrincipalDialogListener() {
+            @Override
+            protected void select(List<?> selection) {
+                for (Object item : selection)
+                    addResponsible((PrincipalDto) item);
+            }
+        };
     }
 
-    public void setPolicy(SingleVerifierPolicyDto policy) {
-        this.policy = policy;
+    public void addResponsible(PrincipalDto principal) {
+        SingleVerifierPolicyDto policy = getActiveObject();
+        policy.getResponsibles().add(principal);
     }
 
-    public void newPolicy() {
-        policy = new SingleVerifierPolicyDto().create();
+    public void removeResponsible() {
+        SingleVerifierPolicyDto policy = getActiveObject();
+        policy.getResponsibles().remove(selectedResponsible);
     }
 
-    public void reloadPolicy() {
-        policy = reload(policy);
+    public PrincipalDto getSelectedResponsible() {
+        return selectedResponsible;
     }
 
-    public void savePolicy() {
-        try {
-            SingleVerifierPolicy _policy = (SingleVerifierPolicy) policy.unmarshal();
-            serviceFor(SingleVerifierPolicy.class).saveOrUpdate(_policy);
-
-            uiLogger.info("保存成功.");
-        } catch (Exception e) {
-            uiLogger.error("保存错误!", e);
-        }
+    public void setSelectedResponsible(PrincipalDto selectedResponsible) {
+        this.selectedResponsible = selectedResponsible;
     }
 
-    public void deletePolicy() {
-        try {
-            serviceFor(SingleVerifierPolicy.class).deleteById(policy.getId());
-
-            uiLogger.info("删除成功.");
-        } catch (Exception e) {
-            uiLogger.error("删除错误!", e);
-        }
-    }
-
-    public List<PrincipalDto> getAllowList() {
-        if (policy != null && policy.getId() != null) {
-            policy = reload(policy, SingleVerifierPolicyDto.RESPONSIBLES);
-            return policy.getResponsibles();
-        }
-
-        return null;
-    }
-
-    public void addResponsible() {
-        try {
-            SingleVerifierPolicy _policy = (SingleVerifierPolicy) policy.unmarshal();
-            Principal _p = selectedResponsible.unmarshal();
-            _policy.addResponsible(_p);
-            serviceFor(SingleVerifierPolicy.class).saveOrUpdate(_policy);
-
-            uiLogger.info("保存成功.");
-        } catch (Exception e) {
-            uiLogger.error("保存错误!", e);
-        }
-    }
-
-    public void deleteResponsible() {
-        try {
-            SingleVerifierPolicy _policy = (SingleVerifierPolicy) policy.unmarshal();
-            Principal _p = selectedResponsible.unmarshal();
-            _policy.removeResponsible(_p);
-            serviceFor(SingleVerifierPolicy.class).saveOrUpdate(_policy);
-
-            uiLogger.info("删除成功.");
-        } catch (Exception e) {
-            uiLogger.error("删除错误!", e);
-        }
-    }
 }

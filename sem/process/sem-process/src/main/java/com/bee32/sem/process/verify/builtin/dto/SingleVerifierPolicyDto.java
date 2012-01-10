@@ -35,7 +35,7 @@ public class SingleVerifierPolicyDto
     protected void _marshal(VerifyPolicy _source) {
         SingleVerifierPolicy source = (SingleVerifierPolicy) _source;
         if (selection.contains(RESPONSIBLES))
-            responsibles = marshalList(PrincipalDto.class, 0, source.getResponsibles());
+            responsibles = mrefList(PrincipalDto.class, 0, source.getResponsibles());
     }
 
     @Override

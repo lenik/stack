@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:p="http://primefaces.org/ui"
+    template="/template/primefaces.xhtml">
+    <ui:define name="title">Choose principal dialog test</ui:define>
+    <ui:define name="content">
+        <h:form id="mainForm">
+            <c:set var="bean" value="#{choosePrincipalDialogTestBean}" />
+
+            <h3>List of principals:</h3>
+
+            <h:selectOneListbox id="list" value="#{bean.selection}">
+                <f:selectItems value="#{bean.principals}" var="item" itemValue="${item.id}" itemLabel="${item.displayName}" />
+            </h:selectOneListbox>
+
+            <p:commandButton value="Add" onclick="choosePrincipalDialog.show()" async="true" />
+        </h:form>
+
+        <ui:include src="/3/7/1/ChoosePrincipalDialog.xhtml">
+            <ui:param name="listener" value="#{bean.choosePrincipalDialogListener}" />
+            <ui:param name="update" value=":mainForm" />
+        </ui:include>
+
+    </ui:define>
+</ui:composition>
