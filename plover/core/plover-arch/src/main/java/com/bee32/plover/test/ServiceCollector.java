@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -147,8 +148,9 @@ public abstract class ServiceCollector<T> {
 
             List<String> lines = entry.getValue();
             Collections.sort(lines);
+
             StringBuilder buf = new StringBuilder(lines.size() * 100);
-            for (String line : lines) {
+            for (String line : new LinkedHashSet<String>(lines)) {
                 buf.append(line);
                 buf.append('\n');
             }
