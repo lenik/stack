@@ -128,4 +128,9 @@ public class Cat
         this.addr = addr;
     }
 
+    @Override
+    public String getEntryText() {
+        return "A " + getColor() + " " + getName();
+    }
+
 }

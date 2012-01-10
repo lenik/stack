@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.WiredDaoFeat;
 import com.bee32.plover.site.scope.SiteNaming;
@@ -26,26 +25,9 @@ public class CatFeat
         lucy.setBirthday(new Date());
         lucy.setAddr(new CaveAddr("ZJ", "11 X Rd."));
 
-        ICriteriaElement selector = lucy.getSelector();
-
-        System.out.println("Pre-clean");
-        int count = asFor(Tiger.class).findAndDelete(selector);
-        System.out.println("    Deleted: " + count);
-
         System.out.println("Save lucy");
         asFor(Tiger.class).save(lucy);
 
-        System.out.println("Evict lucy");
-        asFor(Tiger.class).evict(lucy);
-
-        System.out.println("Get first");
-        Tiger reload = asFor(Tiger.class).getFirst(selector);
-        Date birthday = reload.getBirthday();
-        System.out.println(birthday);
-
-        long time = birthday.getTime();
-        Date d2 = new Date(time);
-        System.out.println(d2);
         System.out.println("---------------- FILL END ----------------");
     }
 
