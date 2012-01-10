@@ -29,8 +29,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
     private static final long serialVersionUID = 1L;
 
-    Class<?> actualSourceType;
-
+    Object source;
     int _index;
     protected K id;
     Integer version;
@@ -227,12 +226,10 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     public String getTypeName() {
-        Class<?> clazz;
-        if (actualSourceType != null)
-            clazz = actualSourceType;
+        if (source != null)
+            return ClassUtil.getParameterizedTypeName(source);
         else
-            clazz = sourceType;
-        return ClassUtil.getParameterizedTypeName(clazz);
+            return ClassUtil.getTypeName(sourceType);
     }
 
     protected String getName() {
@@ -294,7 +291,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      */
     @Override
     protected void __marshal(E source) {
-        actualSourceType = ClassUtil.skipProxies(source.getClass());
+        this.source = source;
         id = source.getId();
         version = source.getVersion();
         createdDate = source.getCreatedDate();
