@@ -27,11 +27,18 @@ public class ClassUtil {
     static boolean useContextClassLoader = false;
 
     static Class<?> cglibFactoryClass;
+    static Class<?> javaassistProxyObjectClass;
+
     static {
         try {
             cglibFactoryClass = Class.forName("net.sf.cglib.proxy.Factory");
         } catch (ClassNotFoundException e) {
             cglibFactoryClass = null;
+        }
+        try {
+            javaassistProxyObjectClass = Class.forName("javassist.util.proxy.ProxyObject");
+        } catch (ClassNotFoundException e) {
+            javaassistProxyObjectClass = null;
         }
     }
 
@@ -57,6 +64,10 @@ public class ClassUtil {
         // return getContextURL(clazz.getSuperclass());
         if (cglibFactoryClass != null)
             if (cglibFactoryClass.isAssignableFrom(clazz))
+                return skipProxies(clazz.getSuperclass());
+
+        if (javaassistProxyObjectClass != null)
+            if (javaassistProxyObjectClass.isAssignableFrom(clazz))
                 return skipProxies(clazz.getSuperclass());
 
         return clazz;
