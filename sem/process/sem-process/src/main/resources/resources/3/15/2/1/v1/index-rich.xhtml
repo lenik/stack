@@ -157,6 +157,10 @@
                         <h:outputText value="#{allow.name}" />
                     </p:column>
 
+                    <p:column headerText="类型" style="width:80px;">
+                        <h:outputText value="#{allow.typeName}" />
+                    </p:column>
+
                     <p:column headerText="操作" style="width:100px;">
                         <p:commandLink title="删除"
                             oncomplete="deleteResponsibleConfirmDialog.show()">
@@ -199,6 +203,7 @@
                         </p:column>
 
                         <p:column headerText="类型" style="width:80px;">
+                            <h:outputText value="#{responsible.typeName}" />
                         </p:column>
 
                         <p:column headerText="动作" style="width:100px;">
