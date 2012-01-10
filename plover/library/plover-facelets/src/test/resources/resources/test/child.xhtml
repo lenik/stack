@@ -1,0 +1,14 @@
+<h:panelGroup xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:h="http://java.sun.com/jsf/html">
+    <div style="border: solid 1px red">
+        Child page:
+
+        param=#{param}
+
+        <c:set var="param" value="new" />
+        <c:set var="a" value="by child" />
+
+        a=#{a}
+
+    </div>
+</h:panelGroup>
