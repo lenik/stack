@@ -1,10 +1,11 @@
 package com.bee32.plover.orm.config;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.ServiceLoader;
 import java.util.Set;
@@ -13,6 +14,9 @@ import java.util.TreeSet;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 
+import org.hibernate.HibernateException;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.event.EventListeners;
 import org.hibernate.transaction.JDBCTransactionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +27,7 @@ import com.bee32.plover.arch.util.OrderComparator;
 import com.bee32.plover.inject.spring.ScopeProxy;
 import com.bee32.plover.orm.PloverNamingStrategy;
 import com.bee32.plover.orm.access.EntityProcessors;
+import com.bee32.plover.orm.access.HibernateEvents;
 import com.bee32.plover.orm.unit.PUnitDumper;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
@@ -105,9 +110,6 @@ public class CustomizedSessionFactoryBean
         String hibernateDialect = (String) properties.get("hibernate.dialect");
         this.setNamingStrategy(PloverNamingStrategy.getInstance(hibernateDialect));
 
-        Map<String, Object> eventListeners = EntityProcessors.getInstance().getEventListeners();
-        this.setEventListeners(eventListeners);
-
         // Merge mapping resources
 
         if (logger.isDebugEnabled()) {
@@ -158,6 +160,27 @@ public class CustomizedSessionFactoryBean
         // Misc
         properties.setProperty(currentSessionContextClassKey, "thread");
 
+    }
+
+    @Override
+    protected void postProcessConfiguration(Configuration config)
+            throws HibernateException {
+        EventListeners eventListeners = config.getEventListeners();
+        for (Entry<String, Object> entry : EntityProcessors.getInstance().getEventListeners().entrySet()) {
+            String eventName = entry.getKey();
+            List<?> listeners = (List<?>) entry.getValue();
+
+            Class<?> eventType = HibernateEvents.getEventType(eventName);
+            Object[] oldListeners = HibernateEvents.getEventListeners(eventListeners, eventName);
+
+            Object[] join = (Object[]) Array.newInstance(eventType, listeners.size() + oldListeners.length);
+            System.arraycopy(oldListeners, 0, join, listeners.size(), oldListeners.length);
+            int index = 0; // oldListeners.length;
+            for (Object listener : listeners)
+                join[index++] = listener;
+
+            HibernateEvents.setEventListeners(eventListeners, eventName, join);
+        }
     }
 
     @Inject
