@@ -14,6 +14,7 @@ import java.io.Reader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -30,6 +31,8 @@ import javax.free.SystemProperties;
 import com.bee32.plover.arch.util.EnumAlt;
 import com.bee32.plover.orm.util.EntityFormatter;
 import com.bee32.plover.xutil.m2.MavenPath;
+import com.bee32.plover.xutil.m2.TestClassLoader;
+import com.bee32.plover.xutil.m2.UCLDumper;
 import com.bee32.sem.frame.menu.MenuContribution;
 import com.bee32.sem.frame.menu.MenuEntry;
 
@@ -218,35 +221,40 @@ public class NLSInitiator {
             throws Exception {
         System.setProperty("line.separator", "\n");
 
-        for (File classdir : UCLDumper.getLocalClasspaths()) {
-            if (classdir.isDirectory()) {
-                File resdir = MavenPath.getSiblingResource(classdir);
+        URLClassLoader mainLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
+        URLClassLoader testLoader = TestClassLoader.createMavenTestClassLoader(mainLoader);
+        URLClassLoader[] loaders = { mainLoader, testLoader };
 
-                System.out.println("Scan " + classdir);
+        for (URLClassLoader loader : loaders)
+            for (File classdir : UCLDumper.getLocalClasspaths(loader)) {
+                if (classdir.isDirectory()) {
+                    File resdir = MavenPath.getSiblingResource(classdir);
 
-                List<String> fqcns = ClassFiles.findClasses(classdir);
-                List<Class<?>> types = ClassFiles.forNames(fqcns, true);
+                    System.out.println("Scan " + classdir);
 
-                for (Class<?> type : types) {
-                    if (type.isInterface())
-                        continue;
+                    List<String> fqcns = ClassFiles.findClasses(classdir);
+                    List<Class<?>> types = ClassFiles.forNames(fqcns, true, testLoader);
 
-                    int modifiers = type.getModifiers();
-                    if (Modifier.isAbstract(modifiers))
-                        continue;
+                    for (Class<?> type : types) {
+                        if (type.isInterface())
+                            continue;
 
-                    Map<String, String> map = getNLSMap(type);
+                        int modifiers = type.getModifiers();
+                        if (Modifier.isAbstract(modifiers))
+                            continue;
 
-                    String fileName = type.getName().replace(".", SystemProperties.getFileSeparator());
+                        Map<String, String> map = getNLSMap(type);
 
-                    File file = new File(resdir, fileName + ".properties");
-                    dumpNLS(map, file);
+                        String fileName = type.getName().replace(".", SystemProperties.getFileSeparator());
 
-                    file = new File(resdir, fileName + "_zh_CN.properties");
-                    dumpNLS(map, file);
+                        File file = new File(resdir, fileName + ".properties");
+                        dumpNLS(map, file);
+
+                        file = new File(resdir, fileName + "_zh_CN.properties");
+                        dumpNLS(map, file);
+                    }
                 }
             }
-        }
     }
 
 }
