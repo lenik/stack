@@ -23,19 +23,17 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
 
     final Class<E> entityClass;
     final Class<D> dtoClass;
-    final ICriteriaElement composition;
-    final int dtoSelection;
 
+    EntityDataModelOptions<E, D> options;
     D selection;
     List<D> loaded;
 
     public ZLazyDataModel(EntityDataModelOptions<E, D> options) {
         if (options == null)
             throw new NullPointerException("options");
+        this.options = options;
         entityClass = options.getEntityClass();
         dtoClass = options.getDtoClass();
-        composition = options.compose();
-        dtoSelection = options.getSelection();
     }
 
     @Override
@@ -55,8 +53,11 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
                 break;
             }
         }
-        List<E> entities = dataManager.asFor(entityClass).list(limit, composition, order);
 
+        ICriteriaElement criteria = options.compose();
+        List<E> entities = dataManager.asFor(entityClass).list(limit, criteria, order);
+
+        int dtoSelection = options.getSelection();
         List<D> dtos = DTOs.mrefList(//
                 dtoClass, //
                 dtoSelection, //
