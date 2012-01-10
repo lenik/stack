@@ -8,6 +8,8 @@ public class ViewConfig
     private static final long serialVersionUID = 1L;
 
     int pageSize = 50;
+    int dialogPageSize = 10;
+
     final String pageSizeTemplate = "10, 50, 100, 200, 1000";
     final String paginatorTemplate = "" //
             + "{CurrentPageReport}"//
@@ -20,6 +22,8 @@ public class ViewConfig
 
     final String allowTypes = "/(\\.|\\/)(gif|jpe?g|png|docx?|xlsx?|pdf|zip|rar)$/";
 
+    String defaultUpdateTarget = ":mainForm";
+
     public ViewConfig() {
     }
 
@@ -29,6 +33,14 @@ public class ViewConfig
 
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
+    }
+
+    public int getDialogPageSize() {
+        return dialogPageSize;
+    }
+
+    public void setDialogPageSize(int dialogPageSize) {
+        this.dialogPageSize = dialogPageSize;
     }
 
     public String getPageSizeTemplate() {
@@ -41,6 +53,14 @@ public class ViewConfig
 
     public String getAllowTypes() {
         return allowTypes;
+    }
+
+    public String getDefaultUpdateTarget() {
+        return defaultUpdateTarget;
+    }
+
+    public void setDefaultUpdateTarget(String defaultUpdateTarget) {
+        this.defaultUpdateTarget = defaultUpdateTarget;
     }
 
 }
