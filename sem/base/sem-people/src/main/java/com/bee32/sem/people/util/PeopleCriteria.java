@@ -15,6 +15,11 @@ public class PeopleCriteria
 
     @LeftHand(Party.class)
     public static CriteriaElement namedLike(String keyword) {
+        return namedLike(keyword, false);
+    }
+
+    @LeftHand(Party.class)
+    public static CriteriaElement namedLike(String keyword, boolean ignoreCase) {
         if (keyword == null || keyword.isEmpty())
             return null;
         else
