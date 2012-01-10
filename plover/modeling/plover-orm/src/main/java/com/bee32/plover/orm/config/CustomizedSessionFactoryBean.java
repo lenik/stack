@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.ServiceLoader;
 import java.util.Set;
@@ -69,22 +70,8 @@ public class CustomizedSessionFactoryBean
         site = ThreadHttpContext.getSiteInstance();
     }
 
-//    /**
-//     * Override: Preferred to return {@link SessionFactoryImplementor} rather then
-//     * {@link SessionFactory}.
-//     */
-//    @Override
-//    public Class<? extends SessionFactory> getObjectType() {
-//        SessionFactory object = getObject();
-//        if (object == null)
-//            return SessionFactoryImplementor.class;
-//        else
-//            return object.getClass();
-//    }
-
     @Override
     protected void lazyConfigure() {
-
         // Prepare hibernate overrides
         Properties properties = new Properties();
         populateHibernateProperties(properties);
@@ -116,6 +103,9 @@ public class CustomizedSessionFactoryBean
         // Naming strategy (used to escape the name)
         String hibernateDialect = (String) properties.get("hibernate.dialect");
         this.setNamingStrategy(PloverNamingStrategy.getInstance(hibernateDialect));
+
+        Map<String, Object> eventListeners = EntityProcessors.getInstance().getEventListeners();
+        this.setEventListeners(eventListeners);
 
         // Merge mapping resources
 

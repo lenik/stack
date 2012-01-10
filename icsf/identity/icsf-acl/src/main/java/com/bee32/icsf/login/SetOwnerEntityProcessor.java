@@ -1,22 +1,33 @@
 package com.bee32.icsf.login;
 
+import java.util.Collection;
+
+import org.hibernate.HibernateException;
+import org.hibernate.event.SaveOrUpdateEvent;
+import org.hibernate.event.SaveOrUpdateEventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.entity.AbstractEntityLifecycleAddon;
-import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.util.ErrorResult;
+import com.bee32.plover.orm.config.AbstractEntityProcessor;
 import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.c.CEntityAccessor;
 
 /**
  * Inject current logon user to entity.owner.
  */
-public class LoginEntityAddon
-        extends AbstractEntityLifecycleAddon {
+public class SetOwnerEntityProcessor
+        extends AbstractEntityProcessor
+        implements SaveOrUpdateEventListener {
 
-    static Logger logger = LoggerFactory.getLogger(LoginEntityAddon.class);
+    private static final long serialVersionUID = 1L;
+
+    static Logger logger = LoggerFactory.getLogger(SetOwnerEntityProcessor.class);
+
+    @Override
+    public Collection<?> getEventListeners() {
+        return listOf(this);
+    }
 
     public static User getContextUser() {
         User user = SessionUser.getInstance().getInternalUserOpt();
@@ -27,14 +38,13 @@ public class LoginEntityAddon
     }
 
     @Override
-    public ErrorResult entityCreate(Entity<?> entity) {
-        super.entityCreate(entity);
-
+    public void onSaveOrUpdate(SaveOrUpdateEvent event)
+            throws HibernateException {
+        Object entity = event.getEntity();
         if (entity instanceof CEntity<?>) {
             CEntity<?> c = (CEntity<?>) entity;
             injectOwner(c);
         }
-        return ErrorResult.SUCCESS;
     }
 
     void injectOwner(CEntity<?> entity) {

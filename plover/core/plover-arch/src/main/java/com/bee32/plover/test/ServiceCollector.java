@@ -44,7 +44,8 @@ public abstract class ServiceCollector<T> {
 
     public ServiceCollector() {
         URLClassLoader scl = (URLClassLoader) ClassLoader.getSystemClassLoader();
-        scanner.setClassLoader(TestClassLoader.createMavenTestClassLoader(scl));
+        URLClassLoader tcl = TestClassLoader.createMavenTestClassLoader(scl);
+        scanner.setClassLoader(tcl);
 
         prototype = ClassUtil.infer1(getClass(), ServiceCollector.class, 0);
         try {

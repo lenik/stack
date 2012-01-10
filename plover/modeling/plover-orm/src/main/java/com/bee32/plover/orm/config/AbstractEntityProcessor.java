@@ -1,0 +1,33 @@
+package com.bee32.plover.orm.config;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import com.bee32.plover.inject.ServiceTemplate;
+
+@ServiceTemplate
+public abstract class AbstractEntityProcessor
+        implements IEntityProcessor {
+
+    @Override
+    public int getPriority() {
+        return 0;
+    }
+
+    @SafeVarargs
+    protected static <T> List<T> listOf(T... selection) {
+        return Arrays.asList(selection);
+    }
+
+    @SafeVarargs
+    protected static <T> List<T> listOfNonNulls(T... selection) {
+        List<T> list = new ArrayList<T>(selection.length);
+        for (T item : selection)
+            if (item != null)
+                list.add(item);
+        return Collections.unmodifiableList(list);
+    }
+
+}

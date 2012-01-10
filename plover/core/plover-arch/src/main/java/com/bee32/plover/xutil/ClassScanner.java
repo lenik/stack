@@ -113,7 +113,7 @@ public class ClassScanner
         return counter;
     }
 
-    static class TypeResolver
+    class TypeResolver
             extends Pred1<String> {
 
         final Pred1<Class<?>> target;
@@ -128,7 +128,7 @@ public class ClassScanner
         public boolean test(String fqcn) {
             Class<?> clazz;
             try {
-                clazz = Class.forName(fqcn);
+                clazz = Class.forName(fqcn, false, getClassLoader());
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e.getMessage(), e);
             }

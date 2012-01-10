@@ -57,12 +57,12 @@ public abstract class Entity<K extends Serializable>
 
     public Entity() {
         super(null);
-        prePersist();
+        //prePersist();
     }
 
     public Entity(String name) {
         super(name);
-        prePersist();
+        //prePersist();
     }
 
     @Override
