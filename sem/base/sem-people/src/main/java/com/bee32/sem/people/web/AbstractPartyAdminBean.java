@@ -9,8 +9,11 @@ import javax.free.UnexpectedException;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.annotation.ForEntity;
+import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.people.dto.ContactCategoryDto;
 import com.bee32.sem.people.dto.ContactDto;
 import com.bee32.sem.people.dto.PartyDto;
@@ -38,6 +41,12 @@ public abstract class AbstractPartyAdminBean
     String selectedTagId;
 
     String namePattern;
+
+    public <E extends Entity<?>, D extends EntityDto<? super E, ?>> //
+    AbstractPartyAdminBean(Class<E> entityClass,
+            Class<D> dtoClass, int selection, ICriteriaElement... criteriaElements) {
+        super(entityClass, dtoClass, selection, criteriaElements);
+    }
 
     protected abstract PartyDto getParty();
 

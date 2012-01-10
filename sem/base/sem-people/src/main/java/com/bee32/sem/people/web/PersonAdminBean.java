@@ -40,6 +40,8 @@ public class PersonAdminBean
     private PersonRoleDto selectedRole;
 
     public PersonAdminBean() {
+        super(Person.class, PersonDto.class, PartyDto.CONTACTS);
+
         EntityDataModelOptions<Person, PersonDto> options = new EntityDataModelOptions<Person, PersonDto>(//
                 Person.class, PersonDto.class, PartyDto.CONTACTS, //
                 Order.desc("id"), EntityCriteria.ownedByCurrentUser());

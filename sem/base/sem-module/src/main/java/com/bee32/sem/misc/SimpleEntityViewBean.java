@@ -14,24 +14,20 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityFlags;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.util.EntityViewBean;
+import com.bee32.plover.restful.resource.StandardViews;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
-import com.bee32.sem.sandbox.MultiTabEntityVdx;
 import com.bee32.sem.sandbox.UIHelper;
 
 public abstract class SimpleEntityViewBean
-        extends MultiTabEntityVdx {
+        extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
-
-    protected int TAB_INDEX = 0;
-    protected int TAB_FORM = 1;
 
     protected Class<? extends Entity<?>> entityClass;
     protected Class<? extends EntityDto<?, ?>> dtoClass;
     protected ICriteriaElement[] criteriaElements;
     private LazyDataModel<?> dataModel;
-
-    private boolean editing;
 
     public <E extends Entity<?>, D extends EntityDto<? super E, ?>> //
     /*    */SimpleEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int selection,
@@ -62,30 +58,23 @@ public abstract class SimpleEntityViewBean
         this.criteriaElements = criteriaElements;
     }
 
-    public boolean isEditing() {
-        return editing;
-    }
-
-    public void setEditing(boolean editing) {
-        this.editing = editing;
+    protected void showView(String viewName) {
     }
 
     @Operation
     public void showIndex() {
-        setActiveTab(TAB_INDEX);
-        setEditing(false);
         setActiveObject(null);
+        showView(StandardViews.LIST);
     }
 
     @Operation
-    public void showContentForm() {
+    public void showContent() {
         if (getSelection().isEmpty()) {
             uiLogger.error("没有选定对象!");
             return;
         }
-        setActiveTab(TAB_FORM);
-        setEditing(false);
         openSelectedDtos(-1);
+        showView(StandardViews.CONTENT);
     }
 
     @Operation
@@ -98,9 +87,8 @@ public abstract class SimpleEntityViewBean
             uiLogger.error("无法创建对象", e);
             return;
         }
-        setActiveTab(TAB_FORM);
         setActiveObject(entityDto);
-        setEditing(true);
+        showView(StandardViews.CREATE_FORM);
     }
 
     @Operation
@@ -109,9 +97,8 @@ public abstract class SimpleEntityViewBean
             uiLogger.error("没有选定对象!");
             return;
         }
-        setActiveTab(TAB_FORM);
-        setEditing(true);
         openSelectedDtos(-1);
+        showView(StandardViews.EDIT_FORM);
     }
 
     @Operation

@@ -1,14 +1,13 @@
 package com.bee32.sem.chance.web;
 
+import com.bee32.sem.chance.dto.ChanceDto;
+import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.sandbox.MultiTabEntityVdx;
 
 public abstract class ChanceBeanVdx
         extends MultiTabEntityVdx {
 
     private static final long serialVersionUID = 1L;
-
-    public static final int TAB_INDEX = 0;
-    public static final int TAB_FORM = 1;
 
     static enum State {
         INDEX, //
@@ -28,6 +27,10 @@ public abstract class ChanceBeanVdx
     boolean roleRendered;
 
     boolean isSearching;
+
+    public ChanceBeanVdx() {
+        super(Chance.class, ChanceDto.class, 0);
+    }
 
     public boolean isSearching() {
         return isSearching;

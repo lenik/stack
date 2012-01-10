@@ -14,6 +14,7 @@ import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntities;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.ox1.tree.TreeCriteria;
 import com.bee32.plover.util.i18n.CurrencyConfig;
 import com.bee32.sem.frame.ui.SelectionAdapter;
@@ -27,7 +28,6 @@ import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.entity.MaterialPrice;
 import com.bee32.sem.inventory.util.MaterialCriteria;
 import com.bee32.sem.inventory.web.dialogs.MaterialCategoryTreeModel;
-import com.bee32.sem.sandbox.MultiTabEntityVdx;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.thing.ScaleItem;
@@ -43,7 +43,7 @@ import com.bee32.sem.world.thing.UnitDto;
         @ForEntity(Unit.class), //
         @ForEntity(UnitConv.class), })
 public class MaterialSettingsBean
-        extends MultiTabEntityVdx {
+        extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
     static final String BUTTON_CATEGORY_EDIT = "main:editCategory";

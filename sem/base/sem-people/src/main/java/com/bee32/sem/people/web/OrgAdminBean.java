@@ -65,6 +65,8 @@ public class OrgAdminBean
     private TreeNode selectedParentOrgUnitNode;
 
     public OrgAdminBean() {
+        super(Org.class, OrgDto.class, PartyDto.CONTACTS);
+
         EntityDataModelOptions<Org, OrgDto> options = new EntityDataModelOptions<Org, OrgDto>(//
                 Org.class, OrgDto.class, PartyDto.CONTACTS, //
                 Order.desc("id"), EntityCriteria.ownedByCurrentUser());

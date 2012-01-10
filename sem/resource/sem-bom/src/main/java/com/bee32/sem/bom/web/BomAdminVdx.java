@@ -1,5 +1,7 @@
 package com.bee32.sem.bom.web;
 
+import com.bee32.sem.bom.dto.PartDto;
+import com.bee32.sem.bom.entity.Part;
 import com.bee32.sem.sandbox.MultiTabEntityVdx;
 
 public abstract class BomAdminVdx
@@ -14,6 +16,10 @@ public abstract class BomAdminVdx
     boolean editableComp;
 
     int currTabComp = 0;
+
+    public BomAdminVdx() {
+        super(Part.class, PartDto.class, 0);
+    }
 
     public boolean isEditable() {
         return editable;

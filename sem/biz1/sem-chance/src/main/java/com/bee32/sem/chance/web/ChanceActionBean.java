@@ -41,9 +41,6 @@ public class ChanceActionBean
 
     private static final long serialVersionUID = 1L;
 
-    static final int TAB_INDEX = 0;
-    static final int TAB_FORM = 1;
-
     static final String BUTTON_NEWACTION = "chanceActionForm:newActionButton";
     static final String BUTTON_EDITACTION = "chanceActionForm:editActionButton";
     static final String BUTTON_DELETEACTION = "chanceActionForm:deleteActionButton";
@@ -92,6 +89,10 @@ public class ChanceActionBean
     private PartyDto[] selectedCustomers;
     private PartyDto selectedCustomer;
     private UserDto[] choosedPartners;
+
+    public ChanceActionBean() {
+        super(ChanceAction.class, ChanceActionDto.class, ChanceActionDto.PARTIES | ChanceActionDto.PARTNERS);
+    }
 
     @PostConstruct
     public void init() {
