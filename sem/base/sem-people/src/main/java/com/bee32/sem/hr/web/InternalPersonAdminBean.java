@@ -1,4 +1,4 @@
-package com.bee32.sem.people.web.hr;
+package com.bee32.sem.hr.web;
 
 import org.primefaces.model.LazyDataModel;
 
