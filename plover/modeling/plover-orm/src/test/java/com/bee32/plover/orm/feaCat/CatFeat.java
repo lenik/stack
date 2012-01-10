@@ -25,9 +25,9 @@ public class CatFeat
         System.out.println("---------------- FILL BEGIN ----------------");
 
         System.out.println("Clean up");
-        asFor(Tiger.class).deleteAll();
+        // asFor(Tiger.class).deleteAll();
 
-        Tiger lucy = new Tiger("Lucy 6", "black");
+        Tiger lucy = new Tiger("Lucy 8", "black");
         lucy.setBirthday(new Date());
         lucy.setAddr(new CaveAddr("ZJ", "11 X Rd."));
 
@@ -36,9 +36,17 @@ public class CatFeat
 
         EntityFlags flags = EntityAccessor.getFlags(lucy);
         flags.setLocked(true);
-
-        System.out.println("Save/update lucy");
+        System.out.println("Lock lucy");
         asFor(Tiger.class).saveOrUpdate(lucy);
+
+        flags = EntityAccessor.getFlags(lucy);
+        boolean locked = flags.isLocked();
+        //flags.setUnlockReq(true);
+        System.out.println("Unlock lucy");
+        asFor(Tiger.class).saveOrUpdate(lucy);
+
+        flags = EntityAccessor.getFlags(lucy);
+        locked = flags.isLocked();
 
         System.out.println("Delete specific");
         asFor(Tiger.class).delete(lucy);
