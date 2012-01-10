@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bee32.plover.orm.entity.EntityAccessor;
+import com.bee32.plover.orm.entity.EntityFlags;
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.WiredDaoFeat;
 import com.bee32.plover.site.scope.SiteNaming;
@@ -21,12 +23,25 @@ public class CatFeat
     @Transactional(readOnly = false)
     public void doFill() {
         System.out.println("---------------- FILL BEGIN ----------------");
-        Tiger lucy = new Tiger("Lucy", "black");
+
+        System.out.println("Clean up");
+        asFor(Tiger.class).deleteAll();
+
+        Tiger lucy = new Tiger("Lucy 6", "black");
         lucy.setBirthday(new Date());
         lucy.setAddr(new CaveAddr("ZJ", "11 X Rd."));
 
         System.out.println("Save lucy");
         asFor(Tiger.class).save(lucy);
+
+        EntityFlags flags = EntityAccessor.getFlags(lucy);
+        flags.setLocked(true);
+
+        System.out.println("Save/update lucy");
+        asFor(Tiger.class).saveOrUpdate(lucy);
+
+        System.out.println("Delete specific");
+        asFor(Tiger.class).delete(lucy);
 
         System.out.println("---------------- FILL END ----------------");
     }
