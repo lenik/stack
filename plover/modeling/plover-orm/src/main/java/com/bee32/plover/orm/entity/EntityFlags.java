@@ -12,7 +12,8 @@ public class EntityFlags
     public static final int DELETED = 1 << 1; // LTS
     public static final int HIDDEN = 1 << 2; // LTS
     public static final int LOCKED = 1 << 3; // LTS
-    public static final int USER_LOCK = 1 << 4; // LTS
+    public static final int UNLOCK_REQ = 1 << 4; // LTS
+    public static final int USER_LOCK = 1 << 5; // LTS
 
     // Private Area [8..15]
     public static final int EXTRA = 1 << 8;
@@ -73,6 +74,14 @@ public class EntityFlags
 
     public void setLocked(boolean locked) {
         set(LOCKED, locked);
+    }
+
+    public boolean isUnlockReq() {
+        return test(UNLOCK_REQ);
+    }
+
+    public void setUnlockReq(boolean unlockReq) {
+        set(UNLOCK_REQ, unlockReq);
     }
 
     public boolean isUserLock() {
