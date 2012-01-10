@@ -14,7 +14,8 @@ import javax.free.Pred1;
 
 import com.bee32.plover.arch.ModuleManager;
 
-public class ClassScanner {
+public class ClassScanner
+        extends ResourceScanner {
 
     public static final int SUBCLASSES = 1;
     public static final int ANNOTATED_CLASSES = 2;
@@ -23,6 +24,10 @@ public class ClassScanner {
     Set<Class<?>> rootClasses = new HashSet<Class<?>>();
     Map<Class<?>, Set<Class<?>>> subclassesMap = new HashMap<Class<?>, Set<Class<?>>>();
     Map<Class<?>, Set<Class<?>>> annotatedClassesMap = new HashMap<Class<?>, Set<Class<?>>>();
+
+    public ClassScanner() {
+        super(ClassOrDirFileFilter.INSTANCE);
+    }
 
     public synchronized Set<Class<?>> getSubclasses(Class<?> clazz) {
         Set<Class<?>> subclasses = subclassesMap.get(clazz);
@@ -108,9 +113,39 @@ public class ClassScanner {
         return counter;
     }
 
+    static class TypeResolver
+            extends Pred1<String> {
+
+        final Pred1<Class<?>> target;
+
+        public TypeResolver(Pred1<Class<?>> target) {
+            if (target == null)
+                throw new NullPointerException("target");
+            this.target = target;
+        }
+
+        @Override
+        public boolean test(String fqcn) {
+            Class<?> clazz;
+            try {
+                clazz = Class.forName(fqcn);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e.getMessage(), e);
+            }
+            return target.test(clazz);
+        }
+
+    }
+
+    public void scanTypes(String packageName, final Pred1<Class<?>> typeCallback)
+            throws IOException {
+        TypeResolver typeResolver = new TypeResolver(typeCallback);
+        scanTypenames(packageName, typeResolver);
+    }
+
     public void scan(String packageName)
             throws IOException {
-        ResourceScanner.scanTypes(packageName, new Pred1<Class<?>>() {
+        scanTypes(packageName, new Pred1<Class<?>>() {
             @Override
             public boolean test(Class<?> clazz) {
                 int adds = _parse(clazz);
@@ -201,5 +236,7 @@ public class ClassScanner {
             System.out.println(entry.getKey() + ": " + entry.getValue().size() + " entries");
         }
     }
+
+    public static ClassScanner SCL = new ClassScanner();
 
 }
