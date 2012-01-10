@@ -73,6 +73,7 @@ public class ClassUtil {
     public static String getTypeName(Class<?> clazz) {
         if (clazz == null)
             throw new NullPointerException("clazz");
+        clazz = ClassUtil.skipProxies(clazz);
 
         // XXX ResourceBundleNLS not work.
         // ClassNLS nls = ClassNLS.getNLS(clazz);

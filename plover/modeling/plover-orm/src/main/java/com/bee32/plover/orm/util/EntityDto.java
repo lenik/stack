@@ -29,7 +29,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
     private static final long serialVersionUID = 1L;
 
-    String typeName;
+    Class<?> actualSourceType;
 
     int _index;
     protected K id;
@@ -61,7 +61,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         try {
             newInstance = entityType.newInstance();
         } catch (Exception e) {
-            throw new RuntimeException("Failed to instantiate " + sourceType, e);
+            throw new RuntimeException("Failed to instantiate " + entityType, e);
         }
 
         // Instead of:
@@ -155,10 +155,6 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         this._index = _index;
     }
 
-    public String getTypeName() {
-        return typeName;
-    }
-
     /**
      * Get ID.
      *
@@ -230,6 +226,15 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         return EntityUtil.parseId(getKeyType(), idString);
     }
 
+    public String getTypeName() {
+        Class<?> clazz;
+        if (actualSourceType != null)
+            clazz = actualSourceType;
+        else
+            clazz = sourceType;
+        return ClassUtil.getParameterizedTypeName(clazz);
+    }
+
     protected String getName() {
         throw new NotImplementedException();
     }
@@ -289,7 +294,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      */
     @Override
     protected void __marshal(E source) {
-        typeName = ClassUtil.getParameterizedTypeName(source);
+        actualSourceType = ClassUtil.skipProxies(source.getClass());
         id = source.getId();
         version = source.getVersion();
         createdDate = source.getCreatedDate();
@@ -509,7 +514,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             try {
                 newEntity = entityType.newInstance();
             } catch (ReflectiveOperationException e) {
-                throw new IllegalUsageException("Failed to instantiate source bean " + sourceType.getName(), e);
+                throw new IllegalUsageException("Failed to instantiate source bean " + entityType.getName(), e);
             }
             return newEntity;
         } // switch
