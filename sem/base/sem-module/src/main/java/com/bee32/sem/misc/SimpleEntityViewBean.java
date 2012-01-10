@@ -26,23 +26,32 @@ public abstract class SimpleEntityViewBean
 
     protected Class<? extends Entity<?>> entityClass;
     protected Class<? extends EntityDto<?, ?>> dtoClass;
-    protected ICriteriaElement[] criteriaElements;
-    private LazyDataModel<?> dataModel;
+
+    EntityDataModelOptions<?, ?> options;
+    LazyDataModel<?> dataModel;
 
     public <E extends Entity<?>, D extends EntityDto<? super E, ?>> //
     /*    */SimpleEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int selection,
             ICriteriaElement... criteriaElements) {
         this.entityClass = entityClass;
         this.dtoClass = dtoClass;
-        this.criteriaElements = criteriaElements;
+
+        List<ICriteriaElement> criteriaList = new ArrayList<ICriteriaElement>(criteriaElements.length);
+        for (ICriteriaElement element : criteriaElements)
+            criteriaList.add(element);
         EntityDataModelOptions<E, D> options = new EntityDataModelOptions<E, D>(//
-                entityClass, dtoClass, selection, getCriteriaElements());
+                entityClass, dtoClass, selection, criteriaList);
+
         this.dataModel = UIHelper.buildLazyDataModel(options);
+        this.options = options;
+
         refreshCount();
     }
 
     protected void refreshCount() {
-        int count = serviceFor(entityClass).count(getCriteriaElements());
+        List<ICriteriaElement> list = getCriteriaElements();
+        ICriteriaElement[] criteria = list.toArray(new ICriteriaElement[0]);
+        int count = serviceFor(entityClass).count(criteria);
         dataModel.setRowCount(count);
     }
 
@@ -50,12 +59,16 @@ public abstract class SimpleEntityViewBean
         return dataModel;
     }
 
-    protected ICriteriaElement[] getCriteriaElements() {
-        return criteriaElements;
+    protected final List<ICriteriaElement> getCriteriaElements() {
+        return options.getCriteriaElements();
     }
 
-    protected void setCriteriaElements(ICriteriaElement... criteriaElements) {
-        this.criteriaElements = criteriaElements;
+    protected final void setCriteriaElements(ICriteriaElement... criteriaElements) {
+        options.setCriteriaElements(criteriaElements);
+    }
+
+    protected final void setCriteriaElements(List<ICriteriaElement> criteriaElements) {
+        options.setCriteriaElements(criteriaElements);
     }
 
     protected void showView(String viewName) {
