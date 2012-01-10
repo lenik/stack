@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.config;
+package com.bee32.plover.orm.access;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,19 +35,19 @@ import org.hibernate.event.SaveOrUpdateEventListener;
 public class HibernateEvents {
 
     static Map<String, Class<?>> eventTypes = new HashMap<String, Class<?>>();
-    static Map<Class<?>, String> eventNames = new HashMap<Class<?>, String>();
+
+    // static Map<Class<?>, String> eventNames = new HashMap<Class<?>, String>();
 
     public static void declare(String name, Class<?> type) {
+        Class<?> oldType = eventTypes.get(name);
+        if (oldType != null)
+            throw new IllegalArgumentException("Event name duplicated: " + name + ": " + oldType + " -> " + type);
         eventTypes.put(name, type);
-        eventNames.put(type, name);
+        // eventNames.put(type, name);
     }
 
     public static Class<?> getEventType(String eventName) {
         return eventTypes.get(eventName);
-    }
-
-    public static String getEventName(Class<?> eventType) {
-        return eventNames.get(eventType);
     }
 
     static {

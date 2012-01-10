@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.config;
+package com.bee32.plover.orm.access;
 
 import java.util.Collection;
 import java.util.Date;
@@ -17,20 +17,23 @@ public class TimestampEntityProcessor
     private static final long serialVersionUID = 1L;
 
     @Override
-    public Collection<?> getEventListeners() {
-        return listOf(this);
+    public Collection<String> getInterestingEvents() {
+        return listOf("save-update");
     }
 
     @Override
     public void onSaveOrUpdate(SaveOrUpdateEvent event)
             throws HibernateException {
-        Object entity = event.getEntity();
         EntityEntry entry = event.getEntry();
-        if (entity instanceof Entity<?>) {
-            Entity<?> en = (Entity<?>) entity;
-            en.setLastModified(new Date());
-
+        if (entry != null) {
             Object loadedValue = entry.getLoadedValue("lastModified");
+            System.out.println("Loaded-value: " + loadedValue);
+        }
+
+        Object obj = event.getObject();
+        if (obj instanceof Entity<?>) {
+            Entity<?> en = (Entity<?>) obj;
+            en.setLastModified(new Date());
         }
     }
 

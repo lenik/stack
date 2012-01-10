@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 import com.bee32.plover.arch.util.OrderComparator;
 import com.bee32.plover.inject.spring.ScopeProxy;
 import com.bee32.plover.orm.PloverNamingStrategy;
+import com.bee32.plover.orm.access.EntityProcessors;
 import com.bee32.plover.orm.unit.PUnitDumper;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.servlet.util.ThreadHttpContext;

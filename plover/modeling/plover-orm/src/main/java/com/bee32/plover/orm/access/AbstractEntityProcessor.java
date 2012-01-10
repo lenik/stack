@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.config;
+package com.bee32.plover.orm.access;
 
 import java.util.ArrayList;
 import java.util.Arrays;

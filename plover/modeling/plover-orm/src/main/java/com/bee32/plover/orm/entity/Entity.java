@@ -9,18 +9,11 @@ import java.util.Set;
 import javax.free.Pred0;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.PostPersist;
-import javax.persistence.PostRemove;
-import javax.persistence.PostUpdate;
-import javax.persistence.PrePersist;
-import javax.persistence.PreRemove;
-import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Index;
-import org.springframework.dao.DataIntegrityViolationException;
 
 import overlay.Overlay;
 
@@ -35,7 +28,6 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.IsNull;
 import com.bee32.plover.inject.ServiceTemplate;
 import com.bee32.plover.orm.util.EntityFormatter;
-import com.bee32.plover.orm.util.ErrorResult;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.IMultiFormat;
 import com.bee32.plover.util.PrettyPrintStream;
@@ -57,12 +49,12 @@ public abstract class Entity<K extends Serializable>
 
     public Entity() {
         super(null);
-        //prePersist();
+        // prePersist();
     }
 
     public Entity(String name) {
         super(name);
-        //prePersist();
+        // prePersist();
     }
 
     @Override
@@ -412,51 +404,6 @@ public abstract class Entity<K extends Serializable>
             return null;
 
         return thatClass.cast(thatLike);
-    }
-
-    static EntityLifecycleAddons addons = EntityLifecycleAddons.getInstance();
-
-    @PrePersist
-    void prePersist() {
-        ErrorResult result = addons.entityCreate(this);
-        if (result != null && result.isFailed())
-            throw new DataIntegrityViolationException(result.getMessage());
-    }
-
-    @PreUpdate
-    void validate() {
-        ErrorResult result = addons.entityValidate(this);
-        if (result != null && result.isFailed())
-            throw new DataIntegrityViolationException(result.getMessage());
-    }
-
-    @PreUpdate
-    void preUpdate2() {
-        if (isLocked())
-            throw new DataIntegrityViolationException("Entity is locked: " + getEntryText());
-        ErrorResult result = addons.entityCheckModify(this);
-        if (result != null && result.isFailed())
-            throw new DataIntegrityViolationException(result.getMessage());
-    }
-
-    @PreRemove
-    void preRemove() {
-        if (isLocked())
-            throw new DataIntegrityViolationException("Entity is locked:" + getEntryText());
-        ErrorResult result = addons.entityCheckDelete(this);
-        if (result != null && result.isFailed())
-            throw new DataIntegrityViolationException(result.getMessage());
-    }
-
-    @PostPersist
-    @PostUpdate
-    void postUpdate() {
-        addons.entityUpdated(this);
-    }
-
-    @PostRemove
-    void entityDeleted() {
-        addons.entityDeleted(this);
     }
 
     static final int lockMask = EntityFlags.LOCKED //

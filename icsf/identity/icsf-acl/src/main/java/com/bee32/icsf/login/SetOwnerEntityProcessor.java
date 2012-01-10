@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.config.AbstractEntityProcessor;
+import com.bee32.plover.orm.access.AbstractEntityProcessor;
 import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.c.CEntityAccessor;
 
@@ -25,8 +25,8 @@ public class SetOwnerEntityProcessor
     static Logger logger = LoggerFactory.getLogger(SetOwnerEntityProcessor.class);
 
     @Override
-    public Collection<?> getEventListeners() {
-        return listOf(this);
+    public Collection<String> getInterestingEvents() {
+        return listOf("save-update");
     }
 
     public static User getContextUser() {
@@ -40,9 +40,9 @@ public class SetOwnerEntityProcessor
     @Override
     public void onSaveOrUpdate(SaveOrUpdateEvent event)
             throws HibernateException {
-        Object entity = event.getEntity();
-        if (entity instanceof CEntity<?>) {
-            CEntity<?> c = (CEntity<?>) entity;
+        Object obj = event.getObject();
+        if (obj instanceof CEntity<?>) {
+            CEntity<?> c = (CEntity<?>) obj;
             injectOwner(c);
         }
     }
