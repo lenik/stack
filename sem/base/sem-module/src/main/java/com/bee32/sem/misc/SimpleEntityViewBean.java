@@ -6,8 +6,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.free.IllegalUsageException;
+
 import org.primefaces.model.LazyDataModel;
 
+import com.bee32.icsf.login.SessionUser;
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.arch.operation.Operation;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.entity.Entity;
@@ -15,6 +19,7 @@ import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityFlags;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.EntityViewBean;
+import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.restful.resource.StandardViews;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
@@ -24,11 +29,30 @@ public abstract class SimpleEntityViewBean
 
     private static final long serialVersionUID = 1L;
 
+    /** Delete entities with user lock */
+    protected static final int DELETE_FORCE = 1;
+    /** Detach the entity before deletion */
+    protected static final int DELETE_DETACH = 2;
+
+    /** Force to update entities with user lock */
+    protected static final int SAVE_FORCE = 1;
+    /** Save entities with user lock on */
+    protected static final int SAVE_LOCKED = 2;
+    /** Save entities with user lock off. */
+    protected static final int SAVE_UNLOCKED = 4;
+    /** Save entities with user lock off. */
+    protected static final int SAVE_FORCE_UNLOCKED = SAVE_FORCE | SAVE_UNLOCKED;
+    /** Change the entities' owner to current user before save */
+    protected static final int SAVE_CHOWN = 8;
+
     protected Class<? extends Entity<?>> entityClass;
     protected Class<? extends EntityDto<?, ?>> dtoClass;
 
     EntityDataModelOptions<?, ?> options;
     LazyDataModel<?> dataModel;
+
+    protected int saveFlags = 0;
+    protected int deleteFlags = 0;
 
     public <E extends Entity<?>, D extends EntityDto<? super E, ?>> //
     /*    */SimpleEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int selection,
@@ -71,6 +95,18 @@ public abstract class SimpleEntityViewBean
         options.setCriteriaElements(criteriaElements);
     }
 
+    /**
+     * Show (or switch to) the real view.
+     *
+     * You need to override this method to set extra view states.
+     *
+     * @param viewName
+     *            Standard view name.
+     * @see StandardViews#LIST
+     * @see StandardViews#CONTENT
+     * @see StandardViews#CREATE_FORM
+     * @see StandardViews#EDIT_FORM
+     */
     protected void showView(String viewName) {
     }
 
@@ -116,6 +152,12 @@ public abstract class SimpleEntityViewBean
 
     @Operation
     public void save() {
+        save(saveFlags);
+    }
+
+    protected void save(int saveFlags) {
+        checkSaveFlags(saveFlags);
+
         if (getActiveObjects().isEmpty()) {
             uiLogger.error("没有需要保存的对象!");
             return;
@@ -132,6 +174,36 @@ public abstract class SimpleEntityViewBean
             return;
         }
 
+        User me = SessionUser.getInstance().getInternalUserOpt();
+        List<Entity<?>> lockedList = new ArrayList<Entity<?>>();
+        for (Entity<?> entity : entities) {
+            EntityFlags flags = EntityAccessor.getFlags(entity);
+
+            if ((saveFlags & SAVE_FORCE) != 0) {
+                if (flags.isUserLock())
+                    flags.setUserLock(false);
+            }
+
+            boolean locked = EntityAccessor.isLocked(entity);
+            if (locked) {
+                lockedList.add(entity);
+                continue;
+            }
+
+            if ((saveFlags & SAVE_LOCKED) != 0)
+                flags.setUserLock(true);
+
+            if ((saveFlags & SAVE_UNLOCKED) != 0)
+                flags.setUserLock(false);
+
+            if ((saveFlags & SAVE_CHOWN) != 0 && me != null) {
+                if (entity instanceof CEntity<?>) {
+                    CEntity<?> ce = (CEntity<?>) entity;
+                    ce.setOwner(me);
+                }
+            }
+        }
+
         try {
             serviceFor(entityClass).saveOrUpdateAll(entities);
         } catch (Exception e) {
@@ -145,6 +217,12 @@ public abstract class SimpleEntityViewBean
 
     @Operation
     public void deleteSelection() {
+        deleteSelection(deleteFlags);
+    }
+
+    protected void deleteSelection(int deleteFlags) {
+        checkDeleteFlags(deleteFlags);
+
         if (getSelection().isEmpty()) {
             uiLogger.error("没有选定对象!");
             return;
@@ -160,11 +238,34 @@ public abstract class SimpleEntityViewBean
 
         List<Entity<?>> lockedList = new ArrayList<Entity<?>>();
         for (Entity<?> entity : entities) {
-            EntityFlags flags = EntityAccessor.getFlags(entity);
-            if (flags.isLocked() || flags.isUserLock())
+            boolean needUpdateBeforeDelete = false;
+
+            // force to delete locked
+            if ((deleteFlags & DELETE_FORCE) != 0) {
+                EntityFlags flags = EntityAccessor.getFlags(entity);
+                if (flags.isUserLock()) {
+                    flags.setUserLock(false);
+                    // save & reload it before delete..?
+                    needUpdateBeforeDelete = true;
+                }
+            }
+
+            if ((deleteFlags & DELETE_DETACH) != 0) {
+                entity.detach();
+                needUpdateBeforeDelete = true; // optim: only detach changes something..?
+            }
+
+            if (needUpdateBeforeDelete) {
+                serviceFor(entityClass).update(entity);
+            }
+
+            boolean locked = EntityAccessor.isLocked(entity);
+            if (locked) {
                 lockedList.add(entity);
-            // entity.detach();
+                continue;
+            }
         }
+
         if (!lockedList.isEmpty()) {
             StringBuilder buf = new StringBuilder();
             buf.append("以下对象被锁定：\n");
@@ -218,6 +319,15 @@ public abstract class SimpleEntityViewBean
             }
         }
         return entities;
+    }
+
+    static void checkSaveFlags(int saveFlags) {
+        int forceLockedMask = SAVE_FORCE | SAVE_LOCKED;
+        if ((saveFlags & forceLockedMask) == forceLockedMask)
+            throw new IllegalUsageException("SAVE_FORCE and SAVE_LOCKED are exclusive.");
+    }
+
+    static void checkDeleteFlags(int deleteFlags) {
     }
 
 }
