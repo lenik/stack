@@ -71,6 +71,12 @@ public class EntityAccessor {
         entity.nextOfMicroLoop = nextOfMicroLoop;
     }
 
+    public static boolean isLocked(Entity<?> entity) {
+        if (entity == null)
+            throw new NullPointerException("entity");
+        return entity.isLocked();
+    }
+
     public static boolean isLockedByOther(Entity<?> entity) {
         if (entity == null)
             throw new NullPointerException("entity");
