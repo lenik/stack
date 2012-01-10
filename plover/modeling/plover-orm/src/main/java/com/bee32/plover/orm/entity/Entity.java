@@ -9,11 +9,18 @@ import java.util.Set;
 import javax.free.Pred0;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PostPersist;
+import javax.persistence.PostRemove;
+import javax.persistence.PostUpdate;
+import javax.persistence.PrePersist;
+import javax.persistence.PreRemove;
+import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Index;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import overlay.Overlay;
 
@@ -37,7 +44,7 @@ import com.bee32.plover.util.PrettyPrintStream;
 @MappedSuperclass
 public abstract class Entity<K extends Serializable>
         extends EntityBase<K>
-        implements IMultiFormat, IEntityLifecycle {
+        implements IMultiFormat {
 
     private static final long serialVersionUID = 1L;
 
@@ -50,12 +57,12 @@ public abstract class Entity<K extends Serializable>
 
     public Entity() {
         super(null);
-        entityCreate();
+        prePersist();
     }
 
     public Entity(String name) {
         super(name);
-        entityCreate();
+        prePersist();
     }
 
     @Override
@@ -409,76 +416,46 @@ public abstract class Entity<K extends Serializable>
 
     static EntityLifecycleAddons addons = EntityLifecycleAddons.getInstance();
 
-    @Override
-    public void entityCreate() {
-        addons.entityCreate(this);
+    @PrePersist
+    void prePersist() {
+        ErrorResult result = addons.entityCreate(this);
+        if (result != null && result.isFailed())
+            throw new DataIntegrityViolationException(result.getMessage());
     }
 
-    /**
-     * Validate this entity.
-     * <p>
-     * Entity can only be saved or updated if it's validated.
-     * <p>
-     * When override this method, you should `return super.validate()` at the end.
-     *
-     * @return <code>null</code> if validated, or non-<code>null</code> error result contains the
-     *         error message.
-     */
-    @Override
-    public ErrorResult entityValidate() {
-        return addons.entityValidate(this);
+    @PreUpdate
+    void validate() {
+        ErrorResult result = addons.entityValidate(this);
+        if (result != null && result.isFailed())
+            throw new DataIntegrityViolationException(result.getMessage());
     }
 
-    /**
-     * Test if this entity is allowed to be modified.
-     * <p>
-     * When override this method, you must
-     *
-     * <pre>
-     * return super.{@link #entityCheckModify()};
-     * </pre>
-     *
-     * at the end.
-     *
-     * @return Non-<code>null</code> error result to prevent this entity from being modified.
-     */
-    @Override
-    public ErrorResult entityCheckModify() {
+    @PreUpdate
+    void preUpdate2() {
         if (isLocked())
-            return ErrorResult.error("Entity is locked");
-        return addons.entityCheckModify(this);
+            throw new DataIntegrityViolationException("Entity is locked: " + getEntryText());
+        ErrorResult result = addons.entityCheckModify(this);
+        if (result != null && result.isFailed())
+            throw new DataIntegrityViolationException(result.getMessage());
     }
 
-    /**
-     * Test if this entity is allowed to be modified.
-     * <p>
-     * When override this method, you must
-     *
-     * <pre>
-     * return super.{@link #entityCheckDelete()};
-     * </pre>
-     *
-     * at the end.
-     *
-     * @return Non-<code>null</code> error result to prevent this entity from being deleted.
-     */
-    @Override
-    public ErrorResult entityCheckDelete() {
+    @PreRemove
+    void preRemove() {
         if (isLocked())
-            return ErrorResult.error("Entity is locked");
-        return addons.entityCheckDelete(this);
+            throw new DataIntegrityViolationException("Entity is locked:" + getEntryText());
+        ErrorResult result = addons.entityCheckDelete(this);
+        if (result != null && result.isFailed())
+            throw new DataIntegrityViolationException(result.getMessage());
     }
 
-    @Override
-    public void entityUpdated() {
+    @PostPersist
+    @PostUpdate
+    void postUpdate() {
         addons.entityUpdated(this);
     }
 
-    /**
-     * Called after the entity is removed from the database.
-     */
-    @Override
-    public void entityDeleted() {
+    @PostRemove
+    void entityDeleted() {
         addons.entityDeleted(this);
     }
 

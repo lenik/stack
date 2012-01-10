@@ -7,6 +7,13 @@ import java.util.List;
 import javax.free.NotImplementedException;
 import javax.free.UnexpectedException;
 import javax.inject.Inject;
+import javax.persistence.PostLoad;
+import javax.persistence.PostPersist;
+import javax.persistence.PostRemove;
+import javax.persistence.PostUpdate;
+import javax.persistence.PrePersist;
+import javax.persistence.PreRemove;
+import javax.persistence.PreUpdate;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -40,6 +47,7 @@ import com.bee32.plover.site.scope.PerSite;
  */
 @ComponentTemplate
 @PerSite
+@SuppressWarnings("deprecation")
 public abstract class EntityDao<E extends Entity<? extends K>, K extends Serializable>
         extends EntityRepository<E, K>
         implements IEntityAccessService<E, K> {
@@ -547,7 +555,10 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
      * Post loading.
      *
      * Please be aware of lazy-init entity.
+     *
+     * @see PostLoad
      */
+    @Deprecated
     protected void postLoad(E entity) {
     }
 
@@ -557,13 +568,23 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
 
     /**
      * Inject redundant attributes to the entity before save
+     *
+     * @see PrePersist
+     * @see PreUpdate
+     * @see PostPersist
+     * @see PostUpdate
      */
+    @Deprecated
     protected void preSave(E entity) {
     }
 
     /**
      * Update references (like depth) before delete.
+     *
+     * @see PreRemove
+     * @see PostRemove
      */
+    @Deprecated
     protected void preDelete(E entity) {
     }
 

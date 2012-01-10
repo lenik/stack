@@ -13,9 +13,16 @@ public class EntityLifecycleAddons
     }
 
     @Override
-    public void entityCreate(Entity<?> entity) {
-        for (IEntityLifecycleAddon addon : addonLoader)
-            addon.entityCreate(entity);
+    public ErrorResult entityCreate(Entity<?> entity) {
+        ErrorResult lastResult = null;
+        for (IEntityLifecycleAddon addon : addonLoader) {
+            ErrorResult errorResult = addon.entityCreate(entity);
+            if (errorResult != null && errorResult.isFailed())
+                return errorResult;
+            else
+                lastResult = errorResult;
+        }
+        return lastResult;
     }
 
     @Override

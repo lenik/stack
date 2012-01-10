@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.AbstractEntityLifecycleAddon;
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.util.ErrorResult;
 import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.c.CEntityAccessor;
 
@@ -26,13 +27,14 @@ public class LoginEntityAddon
     }
 
     @Override
-    public void entityCreate(Entity<?> entity) {
+    public ErrorResult entityCreate(Entity<?> entity) {
         super.entityCreate(entity);
 
         if (entity instanceof CEntity<?>) {
             CEntity<?> c = (CEntity<?>) entity;
             injectOwner(c);
         }
+        return ErrorResult.SUCCESS;
     }
 
     void injectOwner(CEntity<?> entity) {
