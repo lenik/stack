@@ -1,2 +1,2 @@
-com.bee32.plover.orm.access.LockerEntityProcessor
+com.bee32.plover.orm.access.LockingEntityProcessor
 com.bee32.plover.orm.access.TimestampEntityProcessor

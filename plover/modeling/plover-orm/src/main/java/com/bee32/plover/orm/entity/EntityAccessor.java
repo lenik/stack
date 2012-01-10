@@ -71,6 +71,12 @@ public class EntityAccessor {
         entity.nextOfMicroLoop = nextOfMicroLoop;
     }
 
+    public static boolean isLockedByOther(Entity<?> entity) {
+        if (entity == null)
+            throw new NullPointerException("entity");
+        return entity.isLockedByOther();
+    }
+
     public static boolean addLockPredicate(Entity<?> entity, Pred0 lockPredicate) {
         if (entity == null)
             throw new NullPointerException("entity");

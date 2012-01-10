@@ -418,7 +418,11 @@ public abstract class Entity<K extends Serializable>
         int x = ef.bits & lockMask;
         if (x != 0)
             return true;
+        return isLockedByOther();
+    }
 
+    @Transient
+    protected boolean isLockedByOther() {
         if (lockPredicates != null) {
             for (Pred0 lockPredicate : lockPredicates) {
                 Boolean _locked = lockPredicate.eval();
