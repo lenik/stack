@@ -27,7 +27,7 @@ public class VerifyPolicyManager {
         try {
             for (Class<? extends IVerifyPolicy> policyClass : ServicePrototypeLoader.load(IVerifyPolicy.class)) {
                 // Ignore non-entity policy types.F
-                if (IVerifyPolicy.class.isAssignableFrom(policyClass)) {
+                if (VerifyPolicy.class.isAssignableFrom(policyClass)) {
                     VerifyPolicyMetadata metadata = new VerifyPolicyMetadata(policyClass);
                     policyMetadataMap.put(policyClass, metadata);
                 }

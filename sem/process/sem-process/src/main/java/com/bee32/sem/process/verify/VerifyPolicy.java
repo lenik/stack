@@ -32,17 +32,15 @@ public abstract class VerifyPolicy
 
     private static final long serialVersionUID = 1L;
 
-    private final VerifyPolicyMetadata metadata;
     private Map<Principal, Map<Object, Boolean>> principalResponsibleStagesMap;
 
     public VerifyPolicy() {
-        metadata = VerifyPolicyManager.getMetadata(getClass());
     }
 
     @Transient
     @Override
     public VerifyPolicyMetadata getMetadata() {
-        return metadata;
+        return VerifyPolicyManager.getMetadata(getClass());
     }
 
     @Override
