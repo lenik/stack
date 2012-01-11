@@ -71,11 +71,11 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
     }
 
     @Override
-    protected void require(int bits) {
+    protected void require(int permissionBits) {
         if (!enabled || aclService == null)
             return;
 
-        Permission requiredPermission = new Permission(bits);
+        Permission requiredPermission = new Permission(permissionBits);
 
         User currentUser = SessionUser.getInstance().getInternalUserOpt();
         if (currentUser == null)

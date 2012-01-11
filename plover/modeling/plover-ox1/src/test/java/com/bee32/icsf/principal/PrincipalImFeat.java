@@ -4,10 +4,6 @@ import java.io.IOException;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bee32.icsf.principal.Group;
-import com.bee32.icsf.principal.Principal;
-import com.bee32.icsf.principal.Role;
-import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.WiredDaoFeat;
 import com.bee32.plover.ox1.PloverOx1Unit;

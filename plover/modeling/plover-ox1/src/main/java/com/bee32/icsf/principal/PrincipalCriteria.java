@@ -22,7 +22,9 @@ public class PrincipalCriteria
         List<Integer> idSet = new ArrayList<Integer>();
         for (Principal im : imSet)
             idSet.add(im.getId());
-        return in(propertyName + ".id", idSet);
+        return or(//
+                isNull(propertyName), //
+                in(propertyName + ".id", idSet));
     }
 
     public static CriteriaElement inInvSet(String propertyName, Principal principal) {

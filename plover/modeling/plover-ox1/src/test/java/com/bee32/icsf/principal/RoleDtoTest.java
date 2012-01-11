@@ -3,8 +3,6 @@ package com.bee32.icsf.principal;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.bee32.icsf.principal.RoleDto;
-
 public class RoleDtoTest
         extends Assert {
 

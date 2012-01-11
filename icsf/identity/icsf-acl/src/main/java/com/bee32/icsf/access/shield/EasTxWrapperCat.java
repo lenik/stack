@@ -43,6 +43,6 @@ public abstract class EasTxWrapperCat<E extends Entity<? extends K>, K extends S
         require(Permission.DELETE);
     }
 
-    protected abstract void require(int bits);
+    protected abstract void require(int permissionBits);
 
 }
