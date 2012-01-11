@@ -10,8 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.orm.dao.CommonDataManager;
-import com.bee32.sem.misc.EntityCriteria;
-import com.bee32.sem.misc.LocalDateUtil;
+import com.bee32.plover.ox1.util.CommonCriteria;
+import com.bee32.plover.util.date.LocalDateUtil;
 import com.bee32.sem.world.math.InterpolatedMap;
 
 public class FxrMap

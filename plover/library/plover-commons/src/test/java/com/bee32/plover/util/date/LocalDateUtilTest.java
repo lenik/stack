@@ -1,4 +1,4 @@
-package com.bee32.sem.misc;
+package com.bee32.plover.util.date;
 
 import java.util.Date;
 
