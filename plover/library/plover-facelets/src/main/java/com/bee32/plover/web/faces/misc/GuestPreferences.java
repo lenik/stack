@@ -15,7 +15,7 @@ public class GuestPreferences
 
     private static final long serialVersionUID = 1L;
 
-    public static String DEFAULT_THEME = "bluesky";
+    public static String DEFAULT_THEME = "redmond";
 
     String theme;
 
