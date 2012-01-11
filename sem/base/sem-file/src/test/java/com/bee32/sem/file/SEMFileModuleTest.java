@@ -21,7 +21,7 @@ public class SEMFileModuleTest
 
     @Override
     protected int getRefreshPeriod() {
-        return 10;
+        return 1;
     }
 
     @Override
