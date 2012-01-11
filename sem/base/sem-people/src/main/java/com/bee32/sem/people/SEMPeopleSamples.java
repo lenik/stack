@@ -11,10 +11,10 @@ import javax.free.Dates;
 import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.icsf.principal.User;
+import com.bee32.plover.collections.Varargs;
 import com.bee32.plover.orm.util.IEntityMarshalContext;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.plover.orm.util.SampleContribution;
-import com.bee32.sem.misc.Sets;
 import com.bee32.sem.people.entity.Contact;
 import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.Org;
@@ -126,7 +126,6 @@ public class SEMPeopleSamples
         tags.add(PartyTagname.OTHER);
         moonOrg.setTags(tags);
 
-
         abcOrg.setFullName("ABC 有限责任公司");
         abcOrg.setType(OrgType.LTD_CORP);
         abcOrg.setSize(20);
@@ -138,7 +137,7 @@ public class SEMPeopleSamples
         Calendar one77Birthday = Calendar.getInstance();
         one77Birthday.set(1909, 1, 1);
         bugatti.setBirthday(one77Birthday.getTime());
-        bugatti.setTags(Sets.newSet(PartyTagname.CUSTOMER));
+        bugatti.setTags(Varargs.toSet(PartyTagname.CUSTOMER));
 
         bentley.setFullName("Walter Owen Bentley");
         bentley.setNickName("Arnage");
@@ -146,7 +145,7 @@ public class SEMPeopleSamples
         Calendar bentleyBirthday = Calendar.getInstance();
         bentleyBirthday.set(1919, 7, 1);
         bentley.setBirthday(bentleyBirthday.getTime());
-        bentley.setTags(Sets.newSet(PartyTagname.SUPPLIER, PartyTagname.INTERNAL));
+        bentley.setTags(Varargs.toSet(PartyTagname.SUPPLIER, PartyTagname.INTERNAL));
 
         weiXiaoBao.setBirthday(bentleyBirthday.getTime());
         weiXiaoBao.setCensusRegister("北京市");
@@ -156,7 +155,7 @@ public class SEMPeopleSamples
         weiXiaoBao.setSex(Gender.MALE);
         weiXiaoBao.setSid("11010116541220517");
         weiXiaoBao.setSidType(PartySidType.IDENTITYCARD);
-        weiXiaoBao.setTags(Sets.newSet(PartyTagname.CUSTOMER, PartyTagname.INTERNAL));
+        weiXiaoBao.setTags(Varargs.toSet(PartyTagname.CUSTOMER, PartyTagname.INTERNAL));
 
         Contact weiXiaoBaoHome = new Contact();
         weiXiaoBaoHome.setParty(weiXiaoBao);
@@ -187,7 +186,7 @@ public class SEMPeopleSamples
         salesTitle.setAltOrgUnit("销售部");
         salesTitle.setRole("销售经理");
         salesTitle.setDescription("The ripest fruit falls first.");
-        bentley.setRoles(Sets.newSet(salesTitle));
+        bentley.setRoles(Varargs.toSet(salesTitle));
 
         PersonRole productSale = new PersonRole();
         productSale.setPerson(bugatti);
@@ -195,7 +194,7 @@ public class SEMPeopleSamples
         productSale.setAltOrgUnit("销售部");
         productSale.setRole("产品导购");
         productSale.setDescription("People are beginning to notice you.  Try dressing before you leave the house.");
-        bugatti.setRoles(Sets.newSet(productSale));
+        bugatti.setRoles(Varargs.toSet(productSale));
     }
 
     @Override
