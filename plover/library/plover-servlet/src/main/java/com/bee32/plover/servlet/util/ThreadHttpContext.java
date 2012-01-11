@@ -63,7 +63,7 @@ public class ThreadHttpContext
         SiteInstance siteInstance;
         if (autoCreateMode) {
             try {
-                siteInstance = siteManager.getOrCreateSite(siteAlias);
+                siteInstance = siteManager.getOrLoadSite(siteAlias);
             } catch (LoadSiteException e) {
                 throw new RuntimeException(e.getMessage(), e);
             }

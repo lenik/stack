@@ -13,7 +13,7 @@ public class SiteManagerTest
             System.out.println(site.getName());
         }
 
-        SiteInstance newsite = manager.getOrCreateSite("new");
+        SiteInstance newsite = manager.getOrLoadSite("new");
         newsite.setProperty("hello", "world");
 
         manager.saveAllConfigs();

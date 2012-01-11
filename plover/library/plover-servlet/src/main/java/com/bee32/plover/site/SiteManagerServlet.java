@@ -236,8 +236,13 @@ public class SiteManagerServlet
                 if (url == null)
                     url = dialect.getUrlFormat();
 
+                ul();
                 if (createSite)
                     site = manager.loadSiteConfig(name);
+                else {
+                    li().text("断开站点……").end();
+                    manager.removeSite(site);
+                }
 
                 site.setLabel(label);
                 site.setDescription(description);
@@ -254,12 +259,17 @@ public class SiteManagerServlet
                 site.setAutoDDL(autoddl);
                 site.setSamples(samples);
 
+                li().text("保存站点配置文件……").end();
                 site.saveConfig();
 
                 if (createSite)
-                    manager.loadSite(site);
+                    li().text("配置站点……").end();
+                else
+                    li().text("重新配置站点……").end();
+                manager.addSite(site);
 
-                p().text("保存成功。[" + System.identityHashCode(this) + "]").end();
+                li().text("配置成功。[" + System.identityHashCode(this) + "]").end();
+                end();
             }
 
             simpleForm("#", //
@@ -320,7 +330,12 @@ public class SiteManagerServlet
                 if (site == null) {
                     a().href("index").text("站点不存在或已经被删除，点击返回列表").end();
                 } else {
+                    p().text("断开站点……").end();
+                    manager.removeSite(site);
+
+                    p().text("销毁站点……").end();
                     manager.deleteSite(site);
+
                     a().href("index").text("站点已删除，点击返回列表").end();
                 }
             } else {
@@ -353,13 +368,19 @@ public class SiteManagerServlet
         @Override
         protected void _content()
                 throws Exception {
-            p().text("重新读取配置文件……").end();
 
+            ul();
+            li().text("断开站点……").end();
+            manager.removeSite(site);
+
+            li().text("重新读取配置文件……").end();
             site.reloadConfig();
 
-            p().text("更新完成。").end();
+            li().text("重新配置站点……").end();
+            manager.addSite(site);
 
-            a().href("index").text("返回站点列表").end();
+            li().text("更新完成。").a().href("index").text("返回站点列表").end(2);
+            end();
         }
 
     }

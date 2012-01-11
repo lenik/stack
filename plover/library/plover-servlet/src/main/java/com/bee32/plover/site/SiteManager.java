@@ -45,21 +45,36 @@ public class SiteManager {
         return siteMap.get(name);
     }
 
-    public synchronized SiteInstance getOrCreateSite(String nameOrAlias)
+    public synchronized SiteInstance getOrLoadSite(String nameOrAlias)
             throws LoadSiteException {
         SiteInstance site = getSite(nameOrAlias);
         if (site == null) {
             String siteName = nameOrAlias;
             site = loadSiteConfig(siteName);
-            loadSite(site);
+            addSite(site);
         }
         return site;
     }
 
-    public void loadSite(SiteInstance site) {
+    /**
+     * Create or load existing site from site config.
+     */
+    public SiteInstance loadSiteConfig(String siteName)
+            throws LoadSiteException {
+        File configFile = new File(SITE_HOME, siteName + SiteInstance.CONFIG_EXTENSION);
+        SiteInstance site;
+        try {
+            site = new SiteInstance(configFile);
+        } catch (Exception e) {
+            throw new LoadSiteException("Failed to load site config " + configFile, e);
+        }
+        return site;
+    }
+
+    public void addSite(SiteInstance site) {
         String siteName = site.getName();
 
-        // "Transactional"
+        // "Transactional: Check for colliision.
         {
             if (siteMap.containsKey(siteName))
                 throw new IllegalUsageException("Site is already existed: " + siteName);
@@ -89,22 +104,7 @@ public class SiteManager {
 
         siteMap.put(siteName, site);
 
-        SiteLifecycleDispatcher.loadSite(site);
-    }
-
-    /**
-     * Create or load existing site from site config.
-     */
-    public SiteInstance loadSiteConfig(String siteName)
-            throws LoadSiteException {
-        File configFile = new File(SITE_HOME, siteName + SiteInstance.CONFIG_EXTENSION);
-        SiteInstance site;
-        try {
-            site = new SiteInstance(configFile);
-        } catch (Exception e) {
-            throw new LoadSiteException("Failed to load site config " + configFile, e);
-        }
-        return site;
+        SiteLifecycleDispatcher.addSite(site);
     }
 
     protected final SiteInstance removeSite(String name) {
@@ -115,6 +115,10 @@ public class SiteManager {
     }
 
     protected void removeSite(SiteInstance site) {
+        String name = site.getName();
+        if (!siteMap.containsKey(name))
+            return;
+
         try {
             SiteLifecycleDispatcher.removeSite(site);
         } catch (Exception e) {
@@ -122,7 +126,6 @@ public class SiteManager {
             throw e;
         }
 
-        String name = site.getName();
         Set<String> aliases = site.getAliases();
         for (String alias : aliases) {
             HostSpec hostSpec = HostSpec.parse(alias);
@@ -150,7 +153,7 @@ public class SiteManager {
 
             String siteName = fileName.substring(0, fileName.length() - SiteInstance.CONFIG_EXTENSION.length());
             try {
-                SiteInstance site = getOrCreateSite(siteName);
+                SiteInstance site = getOrLoadSite(siteName);
                 logger.info("Loaded site: " + site);
             } catch (LoadSiteException e) {
                 logger.error("Failed to load site: " + _file, e);

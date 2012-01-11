@@ -27,7 +27,7 @@ public abstract class AbstractSll
     }
 
     @Override
-    public void loadSite(SiteInstance site) {
+    public void addSite(SiteInstance site) {
         logger.debug("Site inited: " + site);
     }
 

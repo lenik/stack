@@ -39,9 +39,9 @@ public class SiteLifecycleDispatcher {
             listener.destroySite(site);
     }
 
-    public static void loadSite(SiteInstance site) {
+    public static void addSite(SiteInstance site) {
         for (ISiteLifecycleListener listener : listeners)
-            listener.loadSite(site);
+            listener.addSite(site);
     }
 
     public static void removeSite(SiteInstance site) {
