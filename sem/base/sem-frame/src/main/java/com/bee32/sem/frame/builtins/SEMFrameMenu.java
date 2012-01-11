@@ -1,14 +1,13 @@
 package com.bee32.sem.frame.builtins;
 
 import java.io.Serializable;
-import java.util.Map.Entry;
 
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
+import com.bee32.plover.site.cfg.PrimefacesTheme;
 import com.bee32.plover.web.faces.misc.GuestPreferences;
-import com.bee32.plover.web.faces.misc.ThemeData;
 import com.bee32.plover.web.faces.utils.FacesContextSupport;
 import com.bee32.sem.frame.action.Action;
 import com.bee32.sem.frame.menu.MenuContribution;
@@ -35,12 +34,11 @@ public class SEMFrameMenu
 
     @Override
     protected void preamble() {
-        for (Entry<String, String> ent : ThemeData.getThemes().entrySet()) {
-            String label = ent.getKey();
-            String name = ent.getValue();
+        for (PrimefacesTheme theme : PrimefacesTheme.values()) {
+            String label = theme.getLabel();
             MenuNode node = entry(THEME, label, null);
             Action action = new Action();
-            action.setActionListener(new ThemeSwitcherActionListener(name));
+            action.setActionListener(new ThemeSwitcherActionListener(theme));
             node.setAction(action);
         }
     }
@@ -52,22 +50,22 @@ class ThemeSwitcherActionListener
 
     private static final long serialVersionUID = 1L;
 
-    String themeName;
+    PrimefacesTheme theme;
 
     public ThemeSwitcherActionListener() {
     }
 
-    public ThemeSwitcherActionListener(String themeName) {
-        if (themeName == null)
-            throw new NullPointerException("themeName");
-        this.themeName = themeName;
+    public ThemeSwitcherActionListener(PrimefacesTheme theme) {
+        if (theme == null)
+            throw new NullPointerException("theme");
+        this.theme = theme;
     }
 
     @Override
     public void processAction(ActionEvent actionEvent)
             throws AbortProcessingException {
         GuestPreferences pref = FacesContextSupport.getBean(GuestPreferences.class);
-        pref.setTheme(themeName);
+        pref.setTheme(theme);
     }
 
 }

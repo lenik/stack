@@ -204,6 +204,7 @@ public class SiteManagerServlet
                 String label = args.getNString("label");
                 String description = args.getNString("description");
                 String _logo = args.getNString("logo");
+                String _theme = args.getNString("theme");
                 String _verbose = args.getString("verbose");
                 String _optimization = args.getString("opt");
                 String aliases = args.getString("aliases");
@@ -241,6 +242,7 @@ public class SiteManagerServlet
                 site.setLabel(label);
                 site.setDescription(description);
                 site.setLogo(_logo);
+                site.setTheme(_theme);
                 site.setVerboseLevel(verbose);
                 site.setOptimizationLevel(optimization);
                 site.setAliases(aliasSet);
@@ -265,6 +267,7 @@ public class SiteManagerServlet
                     "label", "标题:站点的显示名称，一般是企业名称", site.getLabel(), //
                     "description", "描述:应用的描述信息，如企业的全称", site.getDescription(), //
                     "logo", "徽标:站点的图标，如公司徽标", site.getLogoLocation(), //
+                    "theme", "风格:站点的首选风格", site.getTheme(), //
                     "verbose", "调试级别:输出的调试信息的级别", site.getVerboseLevel(), //
                     "opt", "优化级别:设置缓存等优化支持的级别", site.getOptimizationLevel(), //
                     "aliases", "网络绑定:多个网络名称绑定，用逗号分隔", StringArray.join(", ", site.getAliases()), //

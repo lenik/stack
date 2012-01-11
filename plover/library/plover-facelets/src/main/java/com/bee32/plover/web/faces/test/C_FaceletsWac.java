@@ -68,7 +68,7 @@ public class C_FaceletsWac
 
         // Primefaces configuration
         stl.addFilter(FileUploadFilter.class, "*." + FaceletsConfig.extension, 0);
-        context.addInitParam("primefaces.THEME", "#{guestPreferences.theme}");
+        context.addInitParam("primefaces.THEME", "#{guestPreferences.theme.id}");
     }
 
 }

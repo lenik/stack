@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.site.SiteInstance;
+import com.bee32.plover.site.cfg.PrimefacesTheme;
 
 @Component
 @Scope("session")
@@ -15,24 +16,27 @@ public class GuestPreferences
 
     private static final long serialVersionUID = 1L;
 
-    public static String DEFAULT_THEME = "redmond";
+    public static PrimefacesTheme defaultTheme = PrimefacesTheme.redmond;
 
-    String theme;
+    PrimefacesTheme viewTheme;
 
     public GuestPreferences() {
+    }
+
+    public PrimefacesTheme getTheme() {
+        if (viewTheme != null)
+            return viewTheme;
+
         SiteInstance site = ThreadHttpContext.getSiteInstance();
-        String theme = site.getProperty("theme");
-        if (theme == null)
-            theme = DEFAULT_THEME;
-        this.theme = theme;
+        PrimefacesTheme theme = site.getTheme();
+        if (theme != null)
+            return theme;
+
+        return defaultTheme;
     }
 
-    public String getTheme() {
-        return theme;
-    }
-
-    public void setTheme(String theme) {
-        this.theme = theme;
+    public void setTheme(PrimefacesTheme theme) {
+        viewTheme = theme;
     }
 
 }

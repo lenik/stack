@@ -24,6 +24,7 @@ import com.bee32.plover.site.cfg.DBAutoDDL;
 import com.bee32.plover.site.cfg.DBDialect;
 import com.bee32.plover.site.cfg.FormatProperties;
 import com.bee32.plover.site.cfg.OptimizationLevel;
+import com.bee32.plover.site.cfg.PrimefacesTheme;
 import com.bee32.plover.site.cfg.SamplesSelection;
 import com.bee32.plover.site.cfg.VerboseLevel;
 
@@ -39,6 +40,7 @@ public class SiteInstance
     public static final String LABEL_KEY = "label";
     public static final String DESCRIPTION_KEY = "description";
     public static final String LOGO_KEY = "logo";
+    public static final String THEME_KEY = "theme";
 
     public static final String VERBOSE_KEY = "verbose";
     public static final String OPTIMIZATION_KEY = "optimization";
@@ -270,6 +272,28 @@ public class SiteInstance
         Location location = getLogoLocation();
         String href = location.resolveAbsolute(request);
         return href;
+    }
+
+    public PrimefacesTheme getTheme() {
+        String _theme = getProperty(THEME_KEY);
+        if (_theme == null)
+            return null;
+        else
+            return PrimefacesTheme.valueOf(_theme);
+    }
+
+    public void setTheme(PrimefacesTheme theme) {
+        String _theme = theme == null ? null : theme.name();
+        setProperty(THEME_KEY, _theme);
+    }
+
+    public void setTheme(String themeName) {
+        PrimefacesTheme theme;
+        if (themeName == null || themeName.isEmpty())
+            theme = null;
+        else
+            theme = PrimefacesTheme.valueOf(themeName);
+        setTheme(theme);
     }
 
     public VerboseLevel getVerboseLevel() {

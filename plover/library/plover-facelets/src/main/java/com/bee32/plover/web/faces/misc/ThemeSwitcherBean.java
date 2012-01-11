@@ -4,6 +4,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import com.bee32.plover.site.cfg.PrimefacesTheme;
+import com.bee32.plover.site.cfg.PrimefacesThemes;
 import com.bee32.plover.web.faces.view.PerView;
 import com.bee32.plover.web.faces.view.ViewBean;
 
@@ -16,50 +18,51 @@ public class ThemeSwitcherBean
     @Inject
     GuestPreferences preferences;
 
-    String theme;
+    String themeName;
 
-    public Map<String, String> getThemes() {
-        return ThemeData.getThemes();
+    public Map<String, PrimefacesTheme> getThemes() {
+        return PrimefacesThemes.getMap();
     }
 
-    public String getTheme() {
-        return theme;
+    public String getThemeName() {
+        return themeName;
     }
 
-    public void setTheme(String theme) {
-        this.theme = theme;
+    public void setThemeName(String themeName) {
+        this.themeName = themeName;
     }
 
     public void saveTheme() {
+        PrimefacesTheme theme = PrimefacesTheme.valueOf(themeName);
         preferences.setTheme(theme);
     }
 
     public void switchToRedmond() {
-        preferences.setTheme("redmond");
+        preferences.setTheme(PrimefacesTheme.redmond);
     }
 
     public void switchToHumanity() {
-        preferences.setTheme("humanity");
+        preferences.setTheme(PrimefacesTheme.humanity);
     }
 
     public void switchToBlackTie() {
-        preferences.setTheme("black-tie");
+        preferences.setTheme(PrimefacesTheme.blackTie);
     }
 
     public void switchToBluesky() {
-        preferences.setTheme("bluesky");
+        preferences.setTheme(PrimefacesTheme.bluesky);
     }
 
     public void switchToEggplant() {
-        preferences.setTheme("eggplant");
+        preferences.setTheme(PrimefacesTheme.eggplant);
     }
 
     public void switchToGlassX() {
-        preferences.setTheme("glass-x");
+        preferences.setTheme(PrimefacesTheme.glassX);
     }
 
     public void switchToSwankyPurse() {
-        preferences.setTheme("swanky-purse");
+        preferences.setTheme(PrimefacesTheme.swankyPurse);
     }
 
 }
