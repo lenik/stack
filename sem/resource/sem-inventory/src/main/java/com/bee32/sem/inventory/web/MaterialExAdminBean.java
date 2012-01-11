@@ -555,9 +555,6 @@ public class MaterialExAdminBean extends EntityViewBean {
 
     public void updateUserFile() {
         UserFile file = userFile.unmarshal();
-
-        String fileName = userFile.getPrefixName() + userFile.getExtensionName();
-        file.setName(fileName);
         try {
             serviceFor(UserFile.class).saveOrUpdate(file);
             uiLogger.info("编辑附件" + userFile.getName() + "成功.");

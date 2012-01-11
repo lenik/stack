@@ -71,7 +71,6 @@ public class StockTradeAdminBean
 
     private AccountSubjectDto selectedAccountSubject;
 
-    @SuppressWarnings("unchecked")
     public StockTradeAdminBean() {
         Calendar c = Calendar.getInstance();
         // 取这个月的第一天
