@@ -13,6 +13,12 @@
             <artifactId>sem-module</artifactId>
             <version>0.3.2-SNAPSHOT</version>
         </dependency>
+        <!-- need for choose-principal-dialog. -->
+        <dependency>
+            <groupId>com.bee32.sem</groupId>
+            <artifactId>sem-people</artifactId>
+            <version>0.3.2-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <name>SEM :: Base :: File</name>
 </project>
