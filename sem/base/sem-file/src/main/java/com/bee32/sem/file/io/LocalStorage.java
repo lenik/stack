@@ -44,11 +44,14 @@ public class LocalStorage
 
         StringBuffer mbase = new StringBuffer();
 
-        mbase.append(hash.substring(0, 3));
+        // mbase.append(hash.substring(0, 3));
+        // mbase.append(SystemProperties.getFileSeparator());
+        // mbase.append(hash.substring(3, 6));
+        // mbase.append(SystemProperties.getFileSeparator());
+        // mbase.append(hash.substring(6));
+        mbase.append(hash.substring(0, 2));
         mbase.append(SystemProperties.getFileSeparator());
-        mbase.append(hash.substring(3, 6));
-        mbase.append(SystemProperties.getFileSeparator());
-        mbase.append(hash.substring(6));
+        mbase.append(hash.substring(2));
 
         File file = new File(contextFile, mbase.toString());
         return new JavaioFile(file);
