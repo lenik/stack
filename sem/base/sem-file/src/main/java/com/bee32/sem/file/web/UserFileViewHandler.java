@@ -31,7 +31,7 @@ public class UserFileViewHandler
             throw new ServletException("User file with id=" + id + " isn't existed.");
 
         FileBlob blob = userFile.getFileBlob();
-        String filename = userFile.getDownloadName();
+        String filename = userFile.getName();
         String description = userFile.getLabel();
 
         req.setAttribute(HttpBlobDumper.ATTR_BLOB, blob);

@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.free.IFile;
@@ -225,53 +226,83 @@ public class FileBlob
         this.refCount = refCount;
     }
 
+    /** Verify if the file with same digest was already committed */
+    static boolean verifyRecommit = false;
+
     /**
      * Commit a temporary file to form a FileBlob.
      *
-     * @param localFile
-     *            Local file to commit.
-     * @param deleteAfterCommitted
-     *            Delete the original local file after succeeded to commit.
+     * @param _incomingFile
+     *            Temporary file at local fs to commit.
+     * @param removable
+     *            May move or delete the original local file after succeeded to commit.
      * @throws IOException
      */
-    public static FileBlob commit(File localFile, boolean deleteAfterCommitted)
+    public static FileBlob commit(File _incomingFile, boolean removable)
             throws IOException {
+        IFile incomingFile = new JavaioFile(_incomingFile);
+        long incomingLength = incomingFile.length();
+        IStreamInputSource source = incomingFile.toSource();
         FileBlob fileBlob = new FileBlob();
 
-        IFile temporaryFile = new JavaioFile(localFile);
-        fileBlob.setTemporaryFile(temporaryFile);
-        String digest = fileBlob.getOrComputeDigest();
-        fileBlob.setTemporaryFile(null);
-
-        // Forecast file to be committed.
-        IFile file = fileBlob.resolve();
-        // file.setCreateParentsMode(true);
-        new File(file.getParentFile().getPath().toString()).mkdirs();
-
-        // Prepare streaming.
-        IStreamInputSource source = temporaryFile.toSource();
-        IStreamOutputTarget target = file.toTarget();
-
-        logger.debug("Committing " + digest + ": " + localFile + " -> " + file.getParentFile());
-
-        int headerMin = HEADER_SIZE;
-        if (localFile.length() <= HEADER_SIZE)
-            headerMin = (int) localFile.length();
-
-        // Always create the file even if it's very small.
-        target.forWrite().writeBytes(source);
-
-        byte[] header = source.forRead().readBytes(headerMin);
-        fileBlob.setHeader(header);
-
-        fileBlob.setLength(temporaryFile.length());
-
-        if (!deleteAfterCommitted) {
-            logger.debug("Delete the committed file: " + localFile);
-            localFile.delete();
+        String digest;
+        {
+            fileBlob.setTemporaryFile(incomingFile);
+            digest = fileBlob.getOrComputeDigest();
+            fileBlob.setTemporaryFile(null);
         }
 
+        IFile uniFile = fileBlob.resolve(); // Maybe CDN resource in future.
+        if (uniFile.exists() == Boolean.TRUE) {
+            if (verifyRecommit) {
+                byte[] tmp = incomingFile.forRead().readBinaryContents();
+                byte[] uni = uniFile.forRead().readBinaryContents();
+                if (!Arrays.equals(tmp, uni))
+                    throw new IllegalStateException("Maybe digest collision?");
+            }
+        } else {
+            logger.debug("Committing " + digest + ": " + incomingFile + " -> " + uniFile.getParentFile());
+
+            // file.setCreateParentsMode(true);
+            new File(uniFile.getParentFile().getPath().toString()).mkdirs();
+
+            boolean needFullCopy = true;
+            if (removable //
+                    // && (incomingFile instanceof JavaioFile) //
+                    && (uniFile instanceof JavaioFile)) {
+                JavaioFile uniFileLocal = (JavaioFile) uniFile;
+                String localPath = uniFileLocal.getPath().getLocalPath();
+                File localFile = new File(localPath);
+                if (_incomingFile.renameTo(localFile))
+                    needFullCopy = false;
+            }
+            if (needFullCopy) {
+                IStreamOutputTarget uniTarget = uniFile.toTarget();
+                // Always create the file even if it's very small.
+                uniTarget.forWrite().writeBytes(source);
+            }
+        }
+
+        if (uniFile.length() != incomingLength)
+            throw new IllegalStateException(String.format(
+                    "File with same digest was already there but with different length: exist=%d, incoming=%d",
+                    uniFile.length(), incomingLength));
+
+        fileBlob.setLength(uniFile.length());
+        fileBlob.setHeader(readHeader(uniFile));
+
+        if (removable && incomingFile.exists() == Boolean.TRUE) {
+            logger.debug("Delete the committed file: " + incomingFile);
+            incomingFile.delete();
+        }
         return fileBlob;
+    }
+
+    static byte[] readHeader(IFile file)
+            throws IOException {
+        int headerMin = (int) Math.min(HEADER_SIZE, file.length());
+        byte[] header = file.forRead().readBytes(headerMin);
+        return header;
     }
 
 }

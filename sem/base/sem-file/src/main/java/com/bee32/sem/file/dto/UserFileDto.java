@@ -1,6 +1,7 @@
 package com.bee32.sem.file.dto;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.free.ParseException;
@@ -26,7 +27,8 @@ public class UserFileDto
     FileBlobDto fileBlob;
     String dir;
     FileName fileName;
-
+    Date fileDate;
+    Date expiredDate;
     List<UserFileTagnameDto> tags;
 
     public UserFileDto() {
@@ -42,7 +44,8 @@ public class UserFileDto
         fileBlob = mref(FileBlobDto.class, source.getFileBlob());
         setDir(source.getDir());
         setName(source.getName());
-
+        fileDate = source.getFileDate();
+        expiredDate = source.getExpiredDate();
         if (selection.contains(TAGS))
             tags = mrefList(UserFileTagnameDto.class, 0, source.getTags());
     }
@@ -52,7 +55,8 @@ public class UserFileDto
         merge(target, "fileBlob", fileBlob);
         target.setDir(dir);
         target.setName(fileName.toString());
-
+        target.setFileDate(fileDate);
+        target.setExpiredDate(expiredDate);
         if (selection.contains(TAGS))
             mergeSet(target, "tags", tags);
     }
@@ -63,6 +67,8 @@ public class UserFileDto
         fileBlob = new FileBlobDto().ref(map.getString("fileBlob"));
         setDir(map.getString("dir"));
         setName(map.getString("name"));
+        fileDate = map.getDate("fileDate");
+        expiredDate = map.getDate("expiredDate");
 
         if (selection.contains(TAGS)) {
             String[] _tags = map.getStringArray("tags");
@@ -84,6 +90,13 @@ public class UserFileDto
         if (fileBlob == null)
             throw new NullPointerException("fileBlob");
         this.fileBlob = fileBlob;
+    }
+
+    public String getLabelOrName() {
+        if (label != null && !label.isEmpty())
+            return label;
+        else
+            return getName();
     }
 
     public String getDir() {
@@ -132,7 +145,21 @@ public class UserFileDto
         setName(name);
     }
 
-    public String getHref() {
+    public String getViewHref() {
+        return getHref("view");
+    }
+
+    public String getDownloadHref() {
+        return getHref("download");
+    }
+
+    public String getHref(String mode) {
+        Location location = WEB_APP.join(UserFileController.PREFIX + "/" + mode + ".do?id=" + id);
+        String href = location.resolveAbsolute(ThreadHttpContext.getRequest());
+        return href;
+    }
+
+    public String getImageHref() {
         Location iconLoc;
 
         String contentType = "file";
@@ -152,8 +179,20 @@ public class UserFileDto
         return href;
     }
 
-    public String getImageHref() {
-        return getHref();
+    public Date getFileDate() {
+        return fileDate;
+    }
+
+    public void setFileDate(Date fileDate) {
+        this.fileDate = fileDate;
+    }
+
+    public Date getExpiredDate() {
+        return expiredDate;
+    }
+
+    public void setExpiredDate(Date expiredDate) {
+        this.expiredDate = expiredDate;
     }
 
     public synchronized List<UserFileTagnameDto> getTags() {

@@ -31,7 +31,7 @@ public class SEMFileModuleTest
 
     public static void main(String[] args)
             throws IOException {
-        new SEMFileModuleTest().browseAndWait(SEMFileModule.PREFIX + "/userfile/");
+        new SEMFileModuleTest().browseAndWait(SEMFileModule.PREFIX + "/file/");
     }
 
     static {

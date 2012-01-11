@@ -1,5 +1,6 @@
 package com.bee32.sem.file.entity;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,6 +12,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.bee32.plover.orm.util.ITypeAbbrAware;
@@ -39,7 +42,8 @@ public class UserFile
 
     String dir = "";
     String name = "";
-
+    Date fileDate;
+    Date expiredDate;
     Set<UserFileTagname> tags = new HashSet<UserFileTagname>();
 
     Class<?> refType;
@@ -102,9 +106,22 @@ public class UserFile
         }
     }
 
-    @Transient
-    public String getDownloadName() {
-        return name;
+    @Temporal(TemporalType.DATE)
+    public Date getFileDate() {
+        return fileDate;
+    }
+
+    public void setFileDate(Date fileDate) {
+        this.fileDate = fileDate;
+    }
+
+    @Temporal(TemporalType.DATE)
+    public Date getExpiredDate() {
+        return expiredDate;
+    }
+
+    public void setExpiredDate(Date expiredDate) {
+        this.expiredDate = expiredDate;
     }
 
     /**
