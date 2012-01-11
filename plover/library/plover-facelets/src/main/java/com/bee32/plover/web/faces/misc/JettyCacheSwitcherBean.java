@@ -1,10 +1,10 @@
-package com.bee32.sem.file.web;
+package com.bee32.plover.web.faces.misc;
 
 import org.mortbay.resource.Resource;
 
 import com.bee32.plover.web.faces.view.ViewBean;
 
-public class SwitcherBean
+public class JettyCacheSwitcherBean
         extends ViewBean {
 
     private static final long serialVersionUID = 1L;
