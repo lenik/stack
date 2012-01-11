@@ -13,6 +13,7 @@ import org.primefaces.model.LazyDataModel;
 import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.arch.operation.Operation;
+import com.bee32.plover.collections.Varargs;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
@@ -21,6 +22,7 @@ import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.restful.resource.StandardViews;
+import com.bee32.sem.sandbox.AbstractCriteriaHolder;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
 
@@ -47,6 +49,7 @@ public abstract class SimpleEntityViewBean
 
     protected Class<? extends Entity<?>> entityClass;
     protected Class<? extends EntityDto<?, ?>> dtoClass;
+    protected List<ICriteriaElement> criteriaElements;
 
     EntityDataModelOptions<?, ?> options;
     LazyDataModel<?> dataModel;
@@ -59,36 +62,34 @@ public abstract class SimpleEntityViewBean
             ICriteriaElement... criteriaElements) {
         this.entityClass = entityClass;
         this.dtoClass = dtoClass;
-
-        List<ICriteriaElement> criteriaList = new ArrayList<ICriteriaElement>(criteriaElements.length);
-        for (ICriteriaElement element : criteriaElements)
-            criteriaList.add(element);
-        EntityDataModelOptions<E, D> options = new EntityDataModelOptions<E, D>(//
-                entityClass, dtoClass, selection, criteriaList);
-
+        this.criteriaElements = Varargs.toList(criteriaElements);
+        this.options = new EntityDataModelOptions<E, D>(//
+                entityClass, dtoClass, selection, new _CriteriaHolder());
         this.dataModel = UIHelper.buildLazyDataModel(options);
-        this.options = options;
-
-        refreshCount();
     }
 
-    protected void refreshCount() {
-        List<ICriteriaElement> list = getCriteriaElements();
-        ICriteriaElement[] criteria = list.toArray(new ICriteriaElement[0]);
-        int count = serviceFor(entityClass).count(criteria);
-        dataModel.setRowCount(count);
+    private class _CriteriaHolder
+            extends AbstractCriteriaHolder {
+
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        protected List<? extends ICriteriaElement> getCriteriaElements() {
+            return SimpleEntityViewBean.this.getCriteriaElements();
+        }
+
     }
 
     public LazyDataModel<?> getDataModel() {
         return dataModel;
     }
 
-    protected final List<ICriteriaElement> getCriteriaElements() {
-        return options.getCriteriaElements();
+    protected List<? extends ICriteriaElement> getCriteriaElements() {
+        return criteriaElements;
     }
 
-    protected final void setCriteriaElements(ICriteriaElement... criteriaElements) {
-        options.setCriteriaElements(criteriaElements);
+    protected void setCriteriaElements(ICriteriaElement... criteriaElements) {
+        this.criteriaElements = Varargs.toList(criteriaElements);
     }
 
     protected final void setCriteriaElements(List<ICriteriaElement> criteriaElements) {
@@ -286,8 +287,6 @@ public abstract class SimpleEntityViewBean
             uiLogger.error("删除失败", e);
             return;
         }
-
-        refreshCount();
     }
 
     void openSelectedDtos(int reloadDtoSel) {

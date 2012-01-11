@@ -1,10 +1,14 @@
 package com.bee32.sem.people.web;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.PrincipalDto;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.plover.web.faces.controls2.IDialogCallback;
 import com.bee32.sem.misc.SimpleEntityViewBean;
@@ -24,9 +28,10 @@ public class ChoosePrincipalDialogBean
         super(Principal.class, PrincipalDto.class, 0);
     }
 
-    public void search() {
-        setCriteriaElements(CommonCriteria.namedLike(pattern));
-        refreshCount();
+    @Override
+    protected List<? extends ICriteriaElement> getCriteriaElements() {
+        return Arrays.asList(//
+                CommonCriteria.namedLike(pattern));
     }
 
     @Override

@@ -20,12 +20,16 @@ public class EntityDataModelOptions<E extends Entity<?>, D extends EntityDto<? s
     final Class<?> creator = Caller.getCallerClass(1);
     final Class<E> entityClass;
     final Class<D> dtoClass;
-    int selection;
-
-    List<ICriteriaElement> criteriaElements = Collections.emptyList();
+    private int selection;
+    private List<ICriteriaElement> criteriaElements = Collections.emptyList();
 
     public EntityDataModelOptions(Class<E> entityClass, Class<D> dtoClass) {
         this(entityClass, dtoClass, 0, Collections.<ICriteriaElement> emptyList());
+    }
+
+    public EntityDataModelOptions(Class<E> entityClass, Class<D> dtoClass, int selection,
+            ICriteriaHolder _criteriaHolder) {
+        this(entityClass, dtoClass, 0, new CriteriaHolderExpansion(_criteriaHolder));
     }
 
     public EntityDataModelOptions(Class<E> entityClass, Class<D> dtoClass, int selection,
@@ -84,6 +88,7 @@ public class EntityDataModelOptions<E extends Entity<?>, D extends EntityDto<? s
     }
 
     public ICriteriaElement compose() {
+        List<ICriteriaElement> criteriaElements = getCriteriaElements();
         if (criteriaElements.isEmpty())
             return null;
         else if (criteriaElements.size() == 1)

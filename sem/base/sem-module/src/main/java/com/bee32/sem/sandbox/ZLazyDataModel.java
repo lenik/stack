@@ -36,9 +36,14 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
         dtoClass = options.getDtoClass();
     }
 
+    protected CommonDataManager getDataManager() {
+        return FacesContextSupport.getBean(CommonDataManager.class);
+    }
+
     @Override
     public List<D> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
-        CommonDataManager dataManager = FacesContextSupport.getBean(CommonDataManager.class);
+        CommonDataManager dataManager = getDataManager();
+
         Limit limit = new Limit(first, pageSize);
         Order order = null;
         if (sortField != null) {
@@ -68,6 +73,14 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
             dto.set_index(index++);
 
         return loaded = dtos;
+    }
+
+    @Override
+    public int getRowCount() {
+        CommonDataManager dataManager = getDataManager();
+        ICriteriaElement criteria = options.compose();
+        int count = dataManager.asFor(entityClass).count(criteria);
+        return count;
     }
 
     @Override
