@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -109,7 +110,7 @@ public class UserFile
     /**
      * 用户为文件添加的标签。
      */
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "UserFileTags", //
     /*            */joinColumns = @JoinColumn(name = "userFile"), //
     /*            */inverseJoinColumns = @JoinColumn(name = "tag"))

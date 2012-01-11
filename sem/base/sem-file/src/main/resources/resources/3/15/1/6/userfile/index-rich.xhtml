@@ -1,230 +1,135 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core"
-    xmlns:sem="http://bee32.com/sem/functions" xmlns:p="http://primefaces.org/ui"
-    xmlns:t="http://myfaces.apache.org/tomahawk">
-<ui:composition template="/template/primefaces.xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core" xmlns:sem="http://bee32.com/sem/functions"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk">
+    <ui:composition template="/template/primefaces.xhtml">
 
-    <ui:define name="title">userFileAdmin</ui:define>
+        <ui:define name="title">用户文件管理</ui:define>
 
-    <ui:define name="content">
+        <ui:define name="content">
 
-        <h:form id="main">
+            <c:set var="bean" value="#{userFileBean}" />
 
-            <t:panelGrid columns="2" columnClasses="alignTop, alignTop">
-                <t:div>
-                    <p:commandButton value="标签管理"
-                        onclick="tagAdminDialog.show();" />
+            <ui:include src="/3/7/1/ChoosePrincipalDialog.xhtml">
+                <ui:param name="var" value="chooseUserDialog" />
+                <ui:param name="listener" value="#{bean.chooseUserDialogListener}" />
+                <ui:param name="update" value="editForm:tagTable" />
+            </ui:include>
 
-                    <p:selectManyCheckbox id="tagIds"
-                        value="#{userFileAdmin.selectedTags}"
-                        layout="pageDirection">
-                        <f:selectItems
-                            value="#{userFileAdmin.userFileTags}" />
-                        <f:selectItem itemLabel="附件" itemValue="-200" />
-                        <p:ajax update="fileList"
-                            listener="#{userFileAdmin.refreshList}" />
-                    </p:selectManyCheckbox>
-                </t:div>
+            <ui:include src="/3/15/1/6/ChooseUserFileTagDialog.xhtml">
+                <ui:param name="var" value="chooseTagDialog" />
+                <ui:param name="listener" value="#{bean.chooseTagDialogListener}" />
+                <ui:param name="update" value="editForm:tagTable" />
+            </ui:include>
 
-                <t:panelGroup>
-                    <t:panelGrid columns="4">
-                        <h:outputText value="所有者" />
-                        <p:selectOneMenu
-                            value="#{userFileAdmin.selectedUserId}">
-                            <f:selectItem itemLabel="(不限)" itemValue="0" />
-                            <f:selectItems
-                                value="#{userFileAdmin.usersWithFile}" />
-                            <p:ajax update="fileList"
-                                listener="#{userFileAdmin.refreshList}" />
-                        </p:selectOneMenu>
-                        <p:inputText
-                            value="#{userFileAdmin.filePattern}" />
-                        <p:commandButton value="查找"
-                            actionListener="#{userFileAdmin.refreshList}"
-                            update="fileList" />
-                    </t:panelGrid>
+            <h:form id="mainForm">
 
-                    <p:dataTable id="fileList"
-                        value="#{userFileAdmin.userFiles}" var="item"
-                        paginator="true"
-                        paginatorTemplate="#{viewConfig.paginatorTemplate}"
-                        rows="#{viewConfig.pageSize}"
-                        rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}"
-                        lazy="true">
-                        <p:column>
-                            <a href="#{location.WEB_APP}/3/15/1/6/file/view.do?id=#{item.id}">
-                                <h:graphicImage
-                                    value="/3/15/1/6/file/view.do?id=#{item.id}"
-                                    width="36" height="36" /> </a>
-                        </p:column>
+                <p:dataTable id="dataTable" var="entry" value="#{bean.dataModel}" selection="#{bean.singleSelection}"
+                    selectionMode="single" paginator="true" rows="#{viewConfig.pageSize}" lazy="true"
+                    paginatorTemplate="#{viewConfig.paginatorTemplate}" rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}"
+                    resizableColumns="true" rowIndexVar="rowIndex">
 
-                        <p:column headerText="附件名称">
-                            <h:outputText value="#{item.name}" />
-                        </p:column>
+                    <p:column headerText="序号">
+                        <h:outputText value="#{rowIndex + 1}" />
+                    </p:column>
 
-                        <p:column headerText="文件标题">
-                            <h:outputText value="#{item.label}" />
-                        </p:column>
-                        <p:column headerText="附件标签">
-                            <h:outputText value="#{item.formatTags}" />
-                        </p:column>
-                        <p:column headerText="所属人员">
-                            <h:outputText
-                                value="#{item.owner.displayName}" />
-                        </p:column>
-                        <p:column headerText="备注">
-                            <h:outputText
-                                value="#{item.description}" />
-                        </p:column>
+                    <p:column headerText="文件名">
+                        <h:outputText value="#{entry.name}" title="标签：#{entry.tagsString}" />
+                    </p:column>
 
-                        <p:column headerText="操作">
-                            <p:commandLink title="编辑"
-                                oncomplete="fileDialog.show();"
-                                update="dialogForm:fileDialogPanel"
-                                process="@this">
-                                <f:setPropertyActionListener
-                                    value="#{item}"
-                                    target="#{userFileAdmin.activeFile}" />
-                                <p:graphicImage
-                                    value="#{location.ICON}/etool16/editor_area.gif" />
-                            </p:commandLink>
+                    <p:column headerText="标题">
+                        <h:outputText value="#{entry.label}" />
+                    </p:column>
 
-                            <p:commandLink title="删除"
-                                oncomplete="confirmation.show()"
-                                process="@this">
-                                <f:setPropertyActionListener
-                                    value="#{item}"
-                                    target="#{userFileAdmin.activeFile}" />
-                                <p:graphicImage
-                                    value="#{location.ICON}/etool16/delete_edit.gif" />
-                            </p:commandLink>
+                    <p:column headerText="所有人">
+                        <h:outputText value="#{entry.owner.displayName}" />
+                    </p:column>
 
-                            <a
-                                href="#{location.WEB_APP}/3/15/1/6/file/download.do?id=#{item.id}"
-                                title="下载"> <p:graphicImage
-                                    value="#{location.ICON}/etool16/group_by_file.gif" />
-                            </a>
+                    <p:column headerText="更新时间">
+                        <h:outputText value="#{entry.lastModified}">
+                            <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                        </h:outputText>
+                    </p:column>
 
-                        </p:column>
-                    </p:dataTable>
-                </t:panelGroup>
-            </t:panelGrid>
-        </h:form>
+                    <p:column headerText="描述信息">
+                        <h:outputText value="#{entry.description}" />
+                    </p:column>
+                </p:dataTable>
 
-        <h:form id="updateForm">
-            <t:panelGrid columns="1" columnClasses="ftd,std">
-                    <p:fileUpload
-                        fileUploadListener="#{userFileAdmin.handleFileUpload}"
-                        mode="advanced" update=":main:fileList"
-                        multiple="true"
-                        allowTypes="${viewConfig.allowTypes}"
-                        label="选择文件" />
-            </t:panelGrid>
-        </h:form>
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:commandButton value="上传" action="#{bean.showCreateForm}" oncomplete="editDialog.show()"
+                            update="editForm" />
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="修改" action="#{bean.showEditForm}" oncomplete="editDialog.show()"
+                            update="editForm" />
+                        <p:commandButton value="删除" oncomplete="deleteConfirmDialog.show()" />
+                    </p:toolbarGroup>
+                </p:toolbar>
+            </h:form>
 
-        <h:form id="dialogForm">
-            <p:confirmDialog message="您确定要删除此附件吗?" showEffect="bounce" hideEffect="explode" header="注意" severity="alert"
-                widgetVar="confirmation">
+            <h:form id="editForm">
+                <c:set var="obj" value="#{bean.activeObject}" />
+                <p:dialog header="文件属性设置" widgetVar="editDialog" modal="true">
+                    <div style="max-height: 30em; margin: 1em">
+                        <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
 
-                <p:commandButton value="删除" actionListener="#{userFileAdmin.removeFile}"
-                    oncomplete="confirmation.hide();" update="main:fileList" />
-                <p:commandButton value="取消" onclick="confirmation.hide();" />
+                            <h:outputText value="文件名" />
+                            <p:inputText value="#{obj.name}" />
 
-            </p:confirmDialog>
+                            <h:outputText value="标题" />
+                            <p:inputText value="#{obj.label}" />
 
-            <p:confirmDialog message="确定要删除此标签吗?" header="提示" severity="alert" widgetVar="deleteTagConfirmation"
-                modal="true">
+                            <h:outputText value="描述信息" />
+                            <p:inputText value="#{obj.description}" />
 
-                <p:commandButton value="删除" actionListener="#{userFileAdmin.deleteTag}"
-                    oncomplete="deleteTagConfirmation.hide();" update="dialogForm:tagAdmin,main:tagIds" />
-                <p:commandButton value="取消" onclick="deleteTagConfirmation.hide()" />
-            </p:confirmDialog>
-
-            <p:dialog widgetVar="tagAdminDialog" height="400" width="600" header="标签管理" modal="true">
-                <t:panelGrid columns="2" columnClasses="ftd,std" style="width:100%;" id="tagAdmin">
-                    <p:selectOneListbox value="#{userFileAdmin.activeTag.id}">
-                        <f:selectItems value="#{userFileAdmin.userFileTags}" />
-                    </p:selectOneListbox>
-                    <t:panelGroup>
-                        <p:commandButton value="新标签" actionListener="#{userFileAdmin.createNewTag}"
-                            oncomplete="newTagDialog.show();" update="dialogForm:newTag,main:tagIds" />
-                        <br />
-                        <p:commandButton value="删除标签" onclick="deleteTagConfirmation.show();" />
-                        <br />
-
-                    </t:panelGroup>
-                </t:panelGrid>
-            </p:dialog>
-
-            <p:dialog widgetVar="newTagDialog" height="300" width="400" header="新建标签" modal="true">
-                <t:panelGrid columns="2" id="newTag">
-                    <h:outputText value="标签名称:" />
-                    <p:inputText value="#{userFileAdmin.newTag.name}" />
-                </t:panelGrid>
-                <p:commandButton value="保存" actionListener="#{userFileAdmin.saveOrUpdateTag}"
-                    oncomplete="newTagDialog.hide()" update="dialogForm:tagAdmin,main:tagIds" />
-                <p:commandButton value="取消" onclick="newTagDialog.hide();" />
-            </p:dialog>
-
-            <p:dialog widgetVar="selectTagsDialog" width="300" height="400" header="选择标签" modal="true">
-                <p:selectManyMenu value="#{userFileAdmin.selectedTagsToAdd}" style="width:100px;height:300px;">
-                    <f:selectItems value="#{userFileAdmin.userFileTags}" />
-                </p:selectManyMenu>
-                <p:commandButton value="确定" actionListener="#{userFileAdmin.doSelectTags}"
-                    oncomplete="selectTagsDialog.hide();" update="dialogForm:fileDialogPanel" />
-                <p:commandButton value="取消" onclick="selectTagsDialog.hide();" />
-            </p:dialog>
-
-            <p:dialog id="fileDialog" widgetVar="fileDialog" width="600" height="650" header="编辑附件" modal="true">
-                <h:panelGroup id="fileDialogPanel">
-                    <t:panelGrid columns="2">
-
-                        <t:panelGroup colspan="2">
-                            <div align="center">
-                                <img src="#{userFileAdmin.activeFile.imageHref}" border="1" />
-                            </div>
-                        </t:panelGroup>
-
-                        <h:outputText value="文件名:" />
-                        <t:panelGroup>
-                            <p:inputText value="#{userFileAdmin.activeFile.prefixName}" style="width:270px;" />
-                            <h:outputText value="#{userFileAdmin.activeFile.extensionName}" />
-                        </t:panelGroup>
-
-                        <h:outputText value="文件标题:" />
-                        <p:inputText value="#{userFileAdmin.activeFile.label}" style="width:270px;" />
-
-                        <h:outputText value="文件描述:" />
-                        <p:inputTextarea value="#{userFileAdmin.activeFile.description}"
-                            style="width:270px;height:50px;" />
-
-                        <h:outputText value="选择标签:" />
-                        <t:panelGrid columns="2">
-                            <p:selectOneListbox value="#{userFileAdmin.activeTagId}" style="width:100px;height:100px;">
-                                <f:selectItems value="#{userFileAdmin.activeFile.tagItems}" />
-                            </p:selectOneListbox>
-
-                            <t:panelGroup>
-                                <p:commandButton value="选择标签" onclick="selectTagsDialog.show();" />
-                                <p:commandButton value="删除标签" actionListener="#{userFileAdmin.removeActiveTag}"
-                                    update="dialogForm:fileDialogPanel" />
-                            </t:panelGroup>
                         </t:panelGrid>
 
-                        <p:commandButton value="确定"
-                            actionListener="#{userFileAdmin.editUserFile}"
-                            oncomplete="fileDialog.hide();"
-                            update="main:fileList" />
-                        <p:commandButton value="取消"
-                            onclick="fileDialog.hide();" />
+                        <p:fieldset legend="标签" toggleable="false">
+                            <p:dataTable id="tagTable" value="#{obj.tags}" var="tag" resizableColumns="true"
+                                rowIndexVar="rowIndex">
+                                <f:facet name="header">文件关联的标签集</f:facet>
+                                <p:column headerText="序号" style="width: 4em;">
+                                    <h:outputText value="#{rowIndex+1}" />
+                                </p:column>
 
-                    </t:panelGrid>
-                </h:panelGroup>
-            </p:dialog>
-        </h:form>
+                                <p:column headerText="名称" style="width: 10em;">
+                                    <h:outputText value="#{tag.name}" />
+                                </p:column>
 
-    </ui:define>
-</ui:composition>
+                                <p:column headerText="操作" style="width: 3em;">
+                                    <p:commandLink title="删除" action="#{bean.removeTag}" update="editForm:tagTable">
+                                        <f:setPropertyActionListener value="#{tag}"
+                                            target="#{bean.selectedTag}" />
+                                        <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
+                                    </p:commandLink>
+                                </p:column>
+                            </p:dataTable>
+                            <p:commandButton value="添加标签" update="tagTable" onclick="chooseTagDialog.show()" />
+                        </p:fieldset>
+
+                        <div align="right">
+                            <p:commandButton update="mainForm:dataTable" value="保存" actionListener="#{bean.save}"
+                                oncomplete="editDialog.hide()" />
+                            <p:commandButton value="取消" onclick="editDialog.hide()" />
+                        </div>
+                    </div>
+                </p:dialog>
+            </h:form>
+
+            <h:form id="deleteConfirmForm">
+                <p:confirmDialog header="删除确认" message="确定要删除吗?" severity="alert" widgetVar="deleteConfirmDialog"
+                    modal="true">
+                    <div style="margin: 2em">
+                        <p:commandButton value="确定" update="mainForm:dataTable" actionListener="#{bean.deleteSelection}"
+                            oncomplete="deleteConfirmDialog.hide()" />
+                        <p:commandButton value="取消" onclick="deleteConfirmDialog.hide()" type="button" />
+                    </div>
+                </p:confirmDialog>
+            </h:form>
+
+        </ui:define>
+
+    </ui:composition>
 </html>

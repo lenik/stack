@@ -1,13 +1,8 @@
 package com.bee32.sem.file.dto;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import javax.faces.model.SelectItem;
-import javax.free.FilePath;
 import javax.free.ParseException;
 import javax.persistence.Transient;
 
@@ -27,16 +22,12 @@ public class UserFileDto
     private static final long serialVersionUID = 1L;
 
     public static final int TAGS = 1;
+
     FileBlobDto fileBlob;
-
     String dir;
-    String name;
-    String prefixName;
-    String extensionName;
+    FileName fileName;
 
-    Set<UserFileTagnameDto> tags;
-    List<UserFileTagnameDto> tagList;
-    List<SelectItem> tagItems = new ArrayList<SelectItem>();
+    List<UserFileTagnameDto> tags;
 
     public UserFileDto() {
         super();
@@ -49,30 +40,18 @@ public class UserFileDto
     @Override
     protected void _marshal(UserFile source) {
         fileBlob = mref(FileBlobDto.class, source.getFileBlob());
-        dir = source.getDir();
-        name = source.getName();
-        if (name.contains(".")) {
-            int index = name.lastIndexOf(".");
-            prefixName = name.substring(0, index);
-            extensionName = name.substring(index);
-        } else {
-            prefixName = name;
-            extensionName = "";
-        }
+        setDir(source.getDir());
+        setName(source.getName());
 
-        if (selection.contains(TAGS)) {
-            tags = marshalSet(UserFileTagnameDto.class, 0, source.getTags(), true);
-            for (UserFileTagnameDto tag : tags) {
-                tagItems.add(new SelectItem(tag.getId(), tag.getName()));
-            }
-        }
+        if (selection.contains(TAGS))
+            tags = mrefList(UserFileTagnameDto.class, 0, source.getTags());
     }
 
     @Override
     protected void _unmarshalTo(UserFile target) {
         merge(target, "fileBlob", fileBlob);
         target.setDir(dir);
-        target.setName(name);
+        target.setName(fileName.toString());
 
         if (selection.contains(TAGS))
             mergeSet(target, "tags", tags);
@@ -82,28 +61,19 @@ public class UserFileDto
     protected void _parse(TextMap map)
             throws ParseException {
         fileBlob = new FileBlobDto().ref(map.getString("fileBlob"));
-        dir = map.getString("dir");
-        name = map.getString("name");
+        setDir(map.getString("dir"));
+        setName(map.getString("name"));
 
         if (selection.contains(TAGS)) {
             String[] _tags = map.getStringArray("tags");
-            tags = new HashSet<UserFileTagnameDto>();
+            tags = new ArrayList<UserFileTagnameDto>();
             for (int i = 0; i < _tags.length; i++) {
                 String _tag = _tags[i];
                 long _tagL = Long.parseLong(_tag);
                 UserFileTagnameDto tag = new UserFileTagnameDto().ref(_tagL);
                 tags.add(tag);
             }
-            tagList = new ArrayList<UserFileTagnameDto>(tags);
         }
-    }
-
-    public void addTagItems(Collection<SelectItem> items) {
-        tagItems.addAll(items);
-    }
-
-    public void removeTagItem(int index) {
-        tagItems.remove(index);
     }
 
     public FileBlobDto getFileBlob() {
@@ -126,19 +96,23 @@ public class UserFileDto
         this.dir = dir;
     }
 
+    public FileName getFileName() {
+        return fileName;
+    }
+
     public String getName() {
-        return name;
+        return fileName.toString();
     }
 
     public void setName(String name) {
         if (name == null)
             throw new NullPointerException("name");
-        this.name = name;
+        this.fileName = FileName.parse(name);
     }
 
     @Transient
     public String getPath() {
-        return dir + "/" + name;
+        return dir + "/" + fileName;
     }
 
     public void setPath(String path) {
@@ -147,6 +121,7 @@ public class UserFileDto
         path = path.trim();
         path = path.replace('\\', '/');
         int slash = path.lastIndexOf('/');
+        String name;
         if (slash == -1) {
             dir = "";
             name = path;
@@ -154,32 +129,7 @@ public class UserFileDto
             dir = path.substring(0, slash);
             name = path.substring(slash + 1);
         }
-    }
-
-    public String getPrefixName() {
-        return prefixName;
-    }
-
-    public String getExtensionName() {
-        return extensionName;
-    }
-
-    public void setPrefixName(String prefixName) {
-        this.prefixName = prefixName;
-    }
-
-    public void setExtensionName(String extensionName) {
-        this.extensionName = extensionName;
-    }
-
-    public Set<UserFileTagnameDto> getTags() {
-        return tags;
-    }
-
-    public void setTags(Set<UserFileTagnameDto> tags) {
-        if (tags == null)
-            throw new NullPointerException("tags");
-        this.tags = tags;
+        setName(name);
     }
 
     public String getHref() {
@@ -187,7 +137,7 @@ public class UserFileDto
 
         String contentType = "file";
 
-        String extension = FilePath.getExtension(name, false);
+        String extension = fileName.getExtensionNoDot();
         Mime mime = Mime.getInstanceByExtension(extension);
         if (mime != null)
             contentType = mime.getContentType();
@@ -206,15 +156,22 @@ public class UserFileDto
         return getHref();
     }
 
-    public void setImageHref(String imageHref) {
+    public synchronized List<UserFileTagnameDto> getTags() {
+        return tags;
     }
 
-    public String getFormatTags() {
+    public synchronized void setTags(List<UserFileTagnameDto> tags) {
+        if (tags == null)
+            throw new NullPointerException("tags");
+        this.tags = tags;
+    }
+
+    public String getTagsString() {
         if (!selection.contains(TAGS))
             return "(N/A)";
 
         if (tags.isEmpty())
-            return "没有标签";
+            return "(没有标签)";
 
         StringBuilder sb = null;
         for (UserFileTagnameDto tag : tags) {
@@ -225,22 +182,6 @@ public class UserFileDto
             sb.append(tag.getName());
         }
         return sb.toString();
-    }
-
-    public List<UserFileTagnameDto> getTagList() {
-        return tagList;
-    }
-
-    public void setTagList(List<UserFileTagnameDto> tagList) {
-        this.tagList = tagList;
-    }
-
-    public List<SelectItem> getTagItems() {
-        return tagItems;
-    }
-
-    public void setTagItems(List<SelectItem> tagItems) {
-        this.tagItems = tagItems;
     }
 
 }

@@ -1,0 +1,51 @@
+<h:panelGroup xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:p="http://primefaces.org/ui">
+
+    <c:set var="_bean" value="${chooseUserFileTagDialogBean}" />
+    <c:set var="_var" value="${var != null ? var : 'chooseUserFileTagDialog'}" />
+    <c:set var="_caption" value="${caption != null ? caption : _bean.caption}" />
+    <c:set var="_multiple" value="${multiple != null ? multiple : false}" />
+    <c:set var="_listener" value="${listener != null ? listener : _bean}" />
+    <c:set var="_update" value="${update != null ? update : viewConfig.defaultUpdateTarget}" />
+
+    <p:dialog header="${_caption}" widgetVar="${_var}" modal="true">
+        <div style="max-height: 40em; margin: 1em">
+            <h:form>
+                <h:panelGrid columns="3" columnClasses="">
+                    <h:outputLabel for="pattern" value="标签名称: " />
+                    <p:inputText id="pattern" value="${_bean.pattern}" />
+                    <p:commandButton value="查找" actionListener="${_bean.search}" update="dataTable"
+                        async="true" />
+                </h:panelGrid>
+
+                <p:dataTable id="dataTable" var="entry" value="${_bean.dataModel}" selection="${_bean.singleSelection}"
+                    selectionMode="single" paginator="true" rows="10" lazy="true" paginatorTemplate="${viewConfig.paginatorTemplate}"
+                    rowsPerPageTemplate="${viewConfig.pageSizeTemplate}" resizableColumns="true" rowIndexVar="rowIndex">
+
+                    <p:column headerText="序号">
+                        <h:outputText value="${rowIndex + 1}" />
+                    </p:column>
+
+                    <p:column headerText="标签">
+                        <h:outputText value="${entry.name}" />
+                    </p:column>
+
+                    <p:column headerText="描述">
+                        <h:outputText value="${entry.description}" />
+                    </p:column>
+
+                    <p:column headerText="所有人">
+                        <h:outputText value="${entry.owner.displayName}" />
+                    </p:column>
+                </p:dataTable>
+
+                <div align="right">
+                    <p:commandButton oncomplete="${_var}.hide()" action="${_listener.submit}" update="${_update}"
+                        value="确定" async="true" />
+                    <p:commandButton value="关闭" oncomplete="${_var}.hide();" />
+                </div>
+            </h:form>
+        </div>
+    </p:dialog>
+
+</h:panelGroup>
