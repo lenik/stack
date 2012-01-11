@@ -21,16 +21,6 @@ public class SingleVerifierPolicyBean
         super(SingleVerifierPolicy.class, SingleVerifierPolicyDto.class, 0);
     }
 
-    public Object getAddResponsibleDialogListener() {
-        return new ChoosePrincipalDialogListener() {
-            @Override
-            protected void select(List<?> selection) {
-                for (Object item : selection)
-                    addResponsible((PrincipalDto) item);
-            }
-        };
-    }
-
     public void addResponsible(PrincipalDto principal) {
         SingleVerifierPolicyDto policy = getActiveObject();
         policy.getResponsibles().add(principal);
@@ -47,6 +37,16 @@ public class SingleVerifierPolicyBean
 
     public void setSelectedResponsible(PrincipalDto selectedResponsible) {
         this.selectedResponsible = selectedResponsible;
+    }
+
+    public Object getAddResponsibleAdapter() {
+        return new ChoosePrincipalDialogListener() {
+            @Override
+            protected void process(List<?> selection) {
+                for (Object item : selection)
+                    addResponsible((PrincipalDto) item);
+            }
+        };
     }
 
 }
