@@ -31,13 +31,13 @@ public class SingleVerifierLevel
     public SingleVerifierLevel() {
     }
 
-    public SingleVerifierLevel(SingleVerifierRankedPolicy multiLevel, long limit, VerifyPolicy verifyPolicy) {
-        if (multiLevel == null)
-            throw new NullPointerException("multiLevel");
+    public SingleVerifierLevel(SingleVerifierRankedPolicy policy, long limit, VerifyPolicy verifyPolicy) {
+        if (policy == null)
+            throw new NullPointerException("policy");
         if (verifyPolicy == null)
             throw new NullPointerException("verifyPolicy");
 
-        this.policy = multiLevel;
+        this.policy = policy;
         this.limit = limit;
         this.targetPolicy = verifyPolicy;
     }
