@@ -1,22 +1,13 @@
 package com.bee32.sem.file.web;
 
-import java.util.List;
-
-import com.bee32.plover.web.faces.controls2.AbstractChooseDialogListener;
+import com.bee32.plover.web.faces.controls2.AbstractSelectionAdapter;
+import com.bee32.sem.people.web.ChoosePrincipalDialogBean;
 
 public abstract class ChooseUserFileTagDialogListener
-        extends AbstractChooseDialogListener {
+        extends AbstractSelectionAdapter {
 
-    ChooseUserFileTagDialogBean dialogBean;
-
-    @Override
-    public void submit() {
-        dialogBean = getBean(ChooseUserFileTagDialogBean.class);
-        List<?> selection = dialogBean.getSelection();
-        setSelection(selection);
-        select(selection);
+    public ChooseUserFileTagDialogListener() {
+        super(ChoosePrincipalDialogBean.class);
     }
-
-    protected abstract void select(List<?> selection);
 
 }

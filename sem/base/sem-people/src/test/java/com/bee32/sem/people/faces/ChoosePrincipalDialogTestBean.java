@@ -30,7 +30,7 @@ public class ChoosePrincipalDialogTestBean
     public ChoosePrincipalDialogListener getChoosePrincipalDialogListener() {
         return new ChoosePrincipalDialogListener() {
             @Override
-            public void select(List<?> selection) {
+            public void process(List<?> selection) {
                 for (Object item : selection) {
                     PrincipalDto principal = (PrincipalDto) item;
                     principals.add(principal);

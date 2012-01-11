@@ -1,22 +1,12 @@
 package com.bee32.sem.people.web;
 
-import java.util.List;
-
-import com.bee32.plover.web.faces.controls2.AbstractChooseDialogListener;
+import com.bee32.plover.web.faces.controls2.AbstractSelectionAdapter;
 
 public abstract class ChoosePrincipalDialogListener
-        extends AbstractChooseDialogListener {
+        extends AbstractSelectionAdapter {
 
-    ChoosePrincipalDialogBean dialogBean;
-
-    @Override
-    public void submit() {
-        dialogBean = getBean(ChoosePrincipalDialogBean.class);
-        List<?> selection = dialogBean.getSelection();
-        setSelection(selection);
-        select(selection);
+    public ChoosePrincipalDialogListener() {
+        super(ChoosePrincipalDialogBean.class);
     }
-
-    protected abstract void select(List<?> selection);
 
 }
