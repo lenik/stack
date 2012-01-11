@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.bee32.plover</groupId>
@@ -55,11 +56,6 @@
             <version>1.1</version>
         </dependency>
         <dependency>
-            <groupId>net.sourceforge.collections</groupId>
-            <artifactId>collections-generic</artifactId>
-            <version>4.01</version>
-        </dependency>
-        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
         </dependency>
@@ -72,6 +68,11 @@
             <artifactId>jakarta-regexp</artifactId>
             <version>1.4</version>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.bee32.plover</groupId>
+            <artifactId>plover-collections</artifactId>
+            <version>0.2.101</version>
         </dependency>
     </dependencies>
     <name>Plover :: Core :: Arch</name>
