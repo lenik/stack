@@ -9,7 +9,7 @@
     <c:set var="_update" value="${update != null ? update : viewConfig.defaultUpdateTarget}" />
 
     <p:dialog header="${_caption}" widgetVar="${_var}" modal="true">
-        <div style="max-height: 30em; margin: 1em">
+        <div style="max-height: 40em; margin: 1em">
             <h:form>
                 <h:panelGrid columns="3" columnClasses="">
                     <h:outputLabel for="pattern" value="名称全部或部份:" />
@@ -22,16 +22,20 @@
                     selectionMode="single" paginator="true" rows="10" lazy="true" paginatorTemplate="${viewConfig.paginatorTemplate}"
                     rowsPerPageTemplate="${viewConfig.pageSizeTemplate}" resizableColumns="true" rowIndexVar="rowIndex">
 
-                    <p:column headerText="序号" style="width:30px;">
+                    <p:column headerText="序号">
                         <h:outputText value="${rowIndex + 1}" />
                     </p:column>
 
-                    <p:column headerText="类型" style="width:80px;">
+                    <p:column headerText="类型">
                         <h:outputText value="${entry.typeName}" />
                     </p:column>
 
-                    <p:column headerText="名称" style="width:100px;">
+                    <p:column headerText="名称">
                         <h:outputText value="${entry.name}" />
+                    </p:column>
+
+                    <p:column headerText="全名">
+                        <h:outputText value="${entry.fullName}" />
                     </p:column>
                 </p:dataTable>
 
