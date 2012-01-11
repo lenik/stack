@@ -13,12 +13,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.arch.util.ISelection;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.web.EntityHelper;
 import com.bee32.plover.restful.resource.StandardViews;
 
 public abstract class EntityViewBean
-        extends DataViewBean {
+        extends DataViewBean
+        implements ISelection {
 
     private static final long serialVersionUID = 1L;
 
@@ -98,6 +100,7 @@ public abstract class EntityViewBean
         return entity;
     }
 
+    @Override
     public List<?> getSelection() {
         return selection;
     }

@@ -49,13 +49,12 @@ public abstract class SimpleEntityViewBean
 
     protected Class<? extends Entity<?>> entityClass;
     protected Class<? extends EntityDto<?, ?>> dtoClass;
+    protected int saveFlags = 0;
+    protected int deleteFlags = 0;
     protected List<ICriteriaElement> criteriaElements;
 
     EntityDataModelOptions<?, ?> options;
     LazyDataModel<?> dataModel;
-
-    protected int saveFlags = 0;
-    protected int deleteFlags = 0;
 
     public <E extends Entity<?>, D extends EntityDto<? super E, ?>> //
     /*    */SimpleEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int selection,
