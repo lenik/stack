@@ -13,6 +13,7 @@ import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
+import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
@@ -26,7 +27,6 @@ import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.inventory.service.IStockQuery;
 import com.bee32.sem.inventory.service.StockQueryOptions;
 import com.bee32.sem.inventory.util.StockCriteria;
-import com.bee32.sem.misc.EntityCriteria;
 
 @ForEntity(StockInventory.class)
 public class StockQueryBean extends EntityViewBean {
@@ -281,7 +281,7 @@ public class StockQueryBean extends EntityViewBean {
             Date limitDateTo = c.getTime();
 
             List<StockOrder> orders = serviceFor(StockOrder.class).list( //
-                    EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+                    CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
                     StockCriteria.subjectOf(subject), //
                     new Equals("warehouse.id", detailItem.getParent().getWarehouse().getId()), //
                     Order.asc("id"));

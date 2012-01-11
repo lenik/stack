@@ -17,6 +17,7 @@ import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
+import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.sem.asset.dto.AccountSubjectDto;
 import com.bee32.sem.asset.dto.AccountTicketDto;
 import com.bee32.sem.asset.dto.AccountTicketItemDto;
@@ -25,7 +26,6 @@ import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.asset.entity.AccountTicket;
 import com.bee32.sem.asset.entity.BudgetRequest;
 import com.bee32.sem.asset.util.AssetCriteria;
-import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.util.PeopleCriteria;
@@ -116,7 +116,7 @@ public class AccountTicketAdminBean
 
     public int getCount() {
         count = serviceFor(AccountTicket.class).count(//
-                EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo));
+                CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo));
         return count;
     }
 
@@ -292,7 +292,7 @@ public class AccountTicketAdminBean
 
         AccountTicket firstTicket = serviceFor(AccountTicket.class).getFirst( //
                 new Offset(position - 1), //
-                EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+                CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
                 Order.asc("id"));
 
         if (firstTicket != null)

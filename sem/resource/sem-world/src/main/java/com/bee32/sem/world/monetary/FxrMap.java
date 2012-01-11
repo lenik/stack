@@ -62,7 +62,7 @@ public class FxrMap
         // logger.debug("Load " + s1 + " .. " + s2);
 
         List<FxrRecord> records = dataManager.asFor(FxrRecord.class).list(//
-                EntityCriteria.betweenEx("date", from, to), //
+                CommonCriteria.betweenEx("date", from, to), //
                 MonetaryCriteria.unitCurrencyOf(unit));
 
         for (FxrRecord record : records) {

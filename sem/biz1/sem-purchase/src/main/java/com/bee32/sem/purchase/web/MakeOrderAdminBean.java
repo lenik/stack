@@ -16,6 +16,7 @@ import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
+import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.plover.util.i18n.CurrencyConfig;
 import com.bee32.sem.bom.dto.PartDto;
 import com.bee32.sem.bom.entity.Part;
@@ -23,7 +24,6 @@ import com.bee32.sem.bom.util.BomCriteria;
 import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.util.ChanceCriteria;
-import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.util.PeopleCriteria;
@@ -119,7 +119,7 @@ public class MakeOrderAdminBean extends EntityViewBean {
 
     public int getCount() {
         count = serviceFor(MakeOrder.class).count(//
-                EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo));
+                CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo));
         return count;
     }
 
@@ -290,7 +290,7 @@ public class MakeOrderAdminBean extends EntityViewBean {
 
         MakeOrder firstOrder = serviceFor(MakeOrder.class).getFirst( //
                 new Offset(position - 1), //
-                EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+                CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
                 Order.asc("id"));
 
         if (firstOrder != null)

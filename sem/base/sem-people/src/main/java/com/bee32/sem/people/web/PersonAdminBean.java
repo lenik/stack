@@ -9,12 +9,9 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
 
-import com.bee32.plover.criteria.hibernate.Like;
-import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.Gender;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.dto.PartySidTypeDto;
@@ -22,6 +19,7 @@ import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.dto.PersonRoleDto;
 import com.bee32.sem.people.entity.PartySidType;
 import com.bee32.sem.people.entity.Person;
+import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
 
@@ -44,7 +42,7 @@ public class PersonAdminBean
 
         EntityDataModelOptions<Person, PersonDto> options = new EntityDataModelOptions<Person, PersonDto>(//
                 Person.class, PersonDto.class, PartyDto.CONTACTS, //
-                Order.desc("id"), EntityCriteria.ownedByCurrentUser());
+                Order.desc("id"));
         persons = UIHelper.<Person, PersonDto> buildLazyDataModel(options);
 
         refreshPersonCount();
@@ -53,17 +51,13 @@ public class PersonAdminBean
     }
 
     void refreshPersonCount() {
-        int count = serviceFor(Person.class).count(EntityCriteria.ownedByCurrentUser());
+        int count = serviceFor(Person.class).count();
         persons.setRowCount(count);
     }
 
     void refreshPersonCount(String namePattern) {
         int count = serviceFor(Person.class).count( //
-                EntityCriteria.ownedByCurrentUser(),//
-                new Or(new Like("name", "%" + namePattern + "%"), //
-                        new Like("fullName", "%" + namePattern + "%") //
-                ) //
-                );
+                PeopleCriteria.namedLike(namePattern));
         persons.setRowCount(count);
     }
 
@@ -232,12 +226,11 @@ public class PersonAdminBean
     public void find() {
         EntityDataModelOptions<Person, PersonDto> options = new EntityDataModelOptions<Person, PersonDto>(//
                 Person.class, PersonDto.class, PartyDto.CONTACTS, //
-                new Or(new Like("name", "%" + namePattern + "%"), //
-                        new Like("fullName", "%" + namePattern + "%") //
-                ), //
-                Order.desc("id"), EntityCriteria.ownedByCurrentUser());
+                PeopleCriteria.namedLike(namePattern), //
+                Order.desc("id"));
         persons = UIHelper.<Person, PersonDto> buildLazyDataModel(options);
 
         refreshPersonCount(namePattern);
     }
+
 }

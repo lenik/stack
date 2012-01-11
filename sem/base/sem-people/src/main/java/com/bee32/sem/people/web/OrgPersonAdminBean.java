@@ -13,7 +13,6 @@ import com.bee32.plover.orm.annotation.ForEntities;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
-import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.Gender;
 import com.bee32.sem.people.dto.ContactDto;
 import com.bee32.sem.people.dto.OrgDto;
@@ -56,7 +55,7 @@ public class OrgPersonAdminBean
     public OrgPersonAdminBean() {
         EntityDataModelOptions<Org, OrgDto> options = new EntityDataModelOptions<Org, OrgDto>(//
                 Org.class, OrgDto.class, PartyDto.CONTACTS | PartyDto.ROLES, //
-                Order.desc("id"), EntityCriteria.ownedByCurrentUser());
+                Order.desc("id"));
         orgs = UIHelper.buildLazyDataModel(options);
 
         refreshOrgCount();
@@ -67,7 +66,7 @@ public class OrgPersonAdminBean
     }
 
     void refreshOrgCount() {
-        int count = serviceFor(Org.class).count(EntityCriteria.ownedByCurrentUser());
+        int count = serviceFor(Org.class).count();
         orgs.setRowCount(count);
     }
 

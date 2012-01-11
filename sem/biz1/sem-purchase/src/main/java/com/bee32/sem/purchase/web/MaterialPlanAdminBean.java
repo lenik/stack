@@ -15,6 +15,7 @@ import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
+import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.sem.bom.dto.PartDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
@@ -23,7 +24,6 @@ import com.bee32.sem.inventory.entity.StockItemList;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.service.IStockQuery;
 import com.bee32.sem.inventory.service.StockQueryOptions;
-import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.util.PeopleCriteria;
@@ -143,7 +143,7 @@ public class MaterialPlanAdminBean extends EntityViewBean {
 
     public int getCount() {
         count = serviceFor(MaterialPlan.class).count(//
-                EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo));
+                CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo));
         return count;
     }
 
@@ -368,7 +368,7 @@ public class MaterialPlanAdminBean extends EntityViewBean {
 
         MaterialPlan firstPlan = serviceFor(MaterialPlan.class).getFirst( //
                 new Offset(position - 1), //
-                EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+                CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
                 Order.asc("id"));
 
         if (firstPlan != null)
@@ -514,7 +514,7 @@ public class MaterialPlanAdminBean extends EntityViewBean {
 
     public void findTask() {
         List<MakeTask> _tasks = serviceFor(MakeTask.class).list( //
-                EntityCriteria.createdBetweenEx(limitDateFromForTask, limitDateToForTask));
+                CommonCriteria.createdBetweenEx(limitDateFromForTask, limitDateToForTask));
 
         tasks = DTOs.marshalList(MakeTaskDto.class, _tasks);
     }

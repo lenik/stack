@@ -11,9 +11,9 @@ import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
+import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.sem.asset.dto.BudgetRequestDto;
 import com.bee32.sem.asset.entity.BudgetRequest;
-import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.world.monetary.CurrencyUtil;
 
 @ForEntity(BudgetRequest.class)
@@ -83,7 +83,7 @@ public class BudgetRequestAdminBean
 
     public int getCount() {
         count = serviceFor(BudgetRequest.class).count(//
-                EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo));
+                CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo));
         return count;
     }
 
@@ -141,9 +141,9 @@ public class BudgetRequestAdminBean
 
         BudgetRequest firstRequest = serviceFor(BudgetRequest.class).getFirst( //
                 new Offset(position - 1), //
-                EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
-                Order.asc("id"), //
-                EntityCriteria.ownedByCurrentUser());
+                CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+                Order.asc("id")//
+                );
 
         if (firstRequest != null)
             budgetRequest = DTOs.marshal(BudgetRequestDto.class, firstRequest);

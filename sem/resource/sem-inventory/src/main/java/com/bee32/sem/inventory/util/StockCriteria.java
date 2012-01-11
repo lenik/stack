@@ -12,6 +12,7 @@ import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.LeftHand;
+import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
@@ -19,7 +20,6 @@ import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockPeriod;
 import com.bee32.sem.inventory.service.StockQueryOptions;
 import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
-import com.bee32.sem.misc.EntityCriteria;
 
 public class StockCriteria
         extends CriteriaSpec {
@@ -69,7 +69,7 @@ public class StockCriteria
         return compose(alias("output", "out"), //
                 isNull("input"), //
                 equals("out._subject", StockOrderSubject.OSP_OUT.getValue()), //
-                EntityCriteria.betweenEx("out.createdDate", from, to));
+                CommonCriteria.betweenEx("out.createdDate", from, to));
     }
 
     /**

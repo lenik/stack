@@ -27,7 +27,6 @@ import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.entity.ChanceActionStyle;
 import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.chance.util.ChanceCriteria;
-import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.util.PeopleCriteria;
@@ -144,7 +143,7 @@ public class ChanceActionBean
 
     public void findChances() {
         List<Chance> _chances = serviceFor(Chance.class).list(//
-                Order.desc("createdDate"), EntityCriteria.ownedByCurrentUser(), //
+                Order.desc("createdDate"), //
                 ChanceCriteria.subjectLike(chancePattern));
 
         chances = DTOs.mrefList(ChanceDto.class, 0, _chances);
@@ -157,7 +156,6 @@ public class ChanceActionBean
 
     public void findCustomer() {
         List<Party> parties = serviceFor(Party.class).list(//
-                EntityCriteria.ownedByCurrentUser(), //
                 PeopleCriteria.namedLike(customerPattern));
 
         customers = DTOs.mrefList(PartyDto.class, PartyDto.CONTACTS, parties);

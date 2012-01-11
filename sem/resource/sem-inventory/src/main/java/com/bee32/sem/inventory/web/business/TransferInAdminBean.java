@@ -15,6 +15,7 @@ import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.annotation.TypeParameter;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
@@ -23,7 +24,6 @@ import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.tx.dto.StockTransferDto;
 import com.bee32.sem.inventory.tx.entity.StockTransfer;
 import com.bee32.sem.inventory.util.StockCriteria;
-import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.util.PeopleCriteria;
@@ -131,7 +131,7 @@ public class TransferInAdminBean
 
     public int getCount() {
         count = serviceFor(StockOrder.class).count(//
-                EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+                CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
                 StockCriteria.subjectOf(getSubject()), //
                 new Equals("warehouse.id", selectedWarehouse.getId()));
         return count;
@@ -254,7 +254,7 @@ public class TransferInAdminBean
         if (selectedWarehouse != null) {
             StockOrder firstOrder = serviceFor(StockOrder.class).getFirst( //
                     new Offset(position - 1), //
-                    EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+                    CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
                     StockCriteria.subjectOf(getSubject()), //
                     new Equals("warehouse.id", selectedWarehouse.getId()),
                     Order.asc("id"));

@@ -4,7 +4,6 @@ import org.primefaces.model.LazyDataModel;
 
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.EntityViewBean;
-import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.util.PeopleCriteria;
@@ -23,7 +22,6 @@ public class InternalPersonAdminBean extends EntityViewBean {
         EntityDataModelOptions<Person, PersonDto> options = new EntityDataModelOptions<Person, PersonDto>(//
                 Person.class, PersonDto.class, 0, //
                 Order.desc("id"),
-                EntityCriteria.ownedByCurrentUser(),
                 PeopleCriteria.internal());
         persons = UIHelper.buildLazyDataModel(options);
 
@@ -33,7 +31,7 @@ public class InternalPersonAdminBean extends EntityViewBean {
 
     void refreshPersonCount() {
         int count = serviceFor(Person.class).count(
-                EntityCriteria.ownedByCurrentUser(), PeopleCriteria.internal());
+                PeopleCriteria.internal());
         persons.setRowCount(count);
     }
 

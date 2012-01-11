@@ -13,7 +13,6 @@ import com.bee32.sem.chance.dao.ChanceActionDao;
 import com.bee32.sem.chance.dao.ChanceDao;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
-import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dao.PartyDao;
 import com.bee32.sem.people.entity.Party;
 
@@ -35,7 +34,7 @@ public class ChanceService
 
     @Transactional(readOnly = false)
     public boolean doDetachActionChance(Chance chance) {
-        List<ChanceAction> actions = asFor(ChanceAction.class).list(EntityCriteria.ownedByCurrentUser());
+        List<ChanceAction> actions = asFor(ChanceAction.class).list();
 
         // XXX - ???
         List<ChanceAction> tempList = new ArrayList<ChanceAction>();

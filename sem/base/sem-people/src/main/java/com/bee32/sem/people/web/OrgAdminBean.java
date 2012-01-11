@@ -14,13 +14,10 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.TreeNode;
 
 import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.criteria.hibernate.Like;
-import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.tree.TreeCriteria;
-import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dto.ContactCategoryDto;
 import com.bee32.sem.people.dto.ContactDto;
 import com.bee32.sem.people.dto.OrgDto;
@@ -69,7 +66,7 @@ public class OrgAdminBean
 
         EntityDataModelOptions<Org, OrgDto> options = new EntityDataModelOptions<Org, OrgDto>(//
                 Org.class, OrgDto.class, PartyDto.CONTACTS, //
-                Order.desc("id"), EntityCriteria.ownedByCurrentUser());
+                Order.desc("id"));
         orgs = UIHelper.buildLazyDataModel(options);
 
         refreshOrgCount();
@@ -79,17 +76,13 @@ public class OrgAdminBean
     }
 
     void refreshOrgCount() {
-        int count = serviceFor(Org.class).count(EntityCriteria.ownedByCurrentUser());
+        int count = serviceFor(Org.class).count();
         orgs.setRowCount(count);
     }
 
     void refreshPersonCount(String namePattern) {
         int count = serviceFor(Org.class).count( //
-                EntityCriteria.ownedByCurrentUser(),//
-                new Or(new Like("name", "%" + namePattern + "%"), //
-                        new Like("fullName", "%" + namePattern + "%") //
-                ) //
-                );
+                PeopleCriteria.namedLike(namePattern));
         orgs.setRowCount(count);
     }
 
@@ -432,7 +425,6 @@ public class OrgAdminBean
         if (personPattern != null && !personPattern.isEmpty()) {
 
             List<Person> _persons = serviceFor(Person.class).list(//
-                    EntityCriteria.ownedByCurrentUser(), //
                     PeopleCriteria.namedLike(personPattern));
             persons = DTOs.mrefList(PersonDto.class, _persons);
         }
@@ -528,10 +520,8 @@ public class OrgAdminBean
     public void find() {
         EntityDataModelOptions<Org, OrgDto> options = new EntityDataModelOptions<Org, OrgDto>(//
                 Org.class, OrgDto.class, PartyDto.CONTACTS, //
-                new Or(new Like("name", "%" + namePattern + "%"), //
-                        new Like("fullName", "%" + namePattern + "%") //
-                ), //
-                Order.desc("id"), EntityCriteria.ownedByCurrentUser());
+                PeopleCriteria.namedLike(namePattern), //
+                Order.desc("id"));
         orgs = UIHelper.<Org, OrgDto> buildLazyDataModel(options);
 
         refreshPersonCount(namePattern);

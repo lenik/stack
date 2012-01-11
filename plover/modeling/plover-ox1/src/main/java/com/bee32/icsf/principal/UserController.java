@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bee32.icsf.principal.User;
 import com.bee32.plover.restful.IRESTfulRequest;
 import com.bee32.plover.restful.IRESTfulResponse;
 import com.bee32.plover.restful.util.TemplateController;

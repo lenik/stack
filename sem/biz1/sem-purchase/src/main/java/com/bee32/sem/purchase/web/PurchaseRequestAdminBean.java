@@ -16,9 +16,9 @@ import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
+import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.StockWarehouse;
-import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.util.PeopleCriteria;
@@ -162,7 +162,7 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
 
     public int getCount() {
         count = serviceFor(PurchaseRequest.class).count(//
-                EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo));
+                CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo));
         return count;
     }
 
@@ -356,7 +356,7 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
 
         PurchaseRequest firstRequest = serviceFor(PurchaseRequest.class).getFirst( //
                 new Offset(position - 1), //
-                EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+                CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
                 Order.asc("id"));
 
         if (firstRequest != null) {
@@ -504,7 +504,7 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
 
     public void findPlan() {
         List<MaterialPlan> _plans = serviceFor(MaterialPlan.class).list( //
-                EntityCriteria.createdBetweenEx(limitDateFromForPlan, limitDateToForPlan));
+                CommonCriteria.createdBetweenEx(limitDateFromForPlan, limitDateToForPlan));
 
         plans = DTOs.marshalList(MaterialPlanDto.class, _plans);
     }

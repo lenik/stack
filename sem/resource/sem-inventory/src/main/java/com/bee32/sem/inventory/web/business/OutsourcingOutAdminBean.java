@@ -13,6 +13,7 @@ import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.annotation.TypeParameter;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
@@ -21,7 +22,6 @@ import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.tx.dto.StockOutsourcingDto;
 import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
 import com.bee32.sem.inventory.util.StockCriteria;
-import com.bee32.sem.misc.EntityCriteria;
 
 @ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = "OSPO"))
 public class OutsourcingOutAdminBean extends StockOrderBaseBean {
@@ -80,7 +80,7 @@ public class OutsourcingOutAdminBean extends StockOrderBaseBean {
 
     public int getCount() {
         count = serviceFor(StockOrder.class).count(//
-                EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+                CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
                 StockCriteria.subjectOf(getSubject()), //
                 new Equals("warehouse.id", selectedWarehouse.getId()));
         return count;
@@ -122,7 +122,7 @@ public class OutsourcingOutAdminBean extends StockOrderBaseBean {
         if (selectedWarehouse != null) {
             StockOrder firstOrder = serviceFor(StockOrder.class).getFirst( //
                     new Offset(position - 1), //
-                    EntityCriteria.createdBetweenEx(limitDateFrom,limitDateTo), //
+                    CommonCriteria.createdBetweenEx(limitDateFrom,limitDateTo), //
                     StockCriteria.subjectOf(getSubject()), //
                     new Equals("warehouse.id", selectedWarehouse.getId()), //
                     Order.asc("id"));

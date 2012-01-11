@@ -41,7 +41,6 @@ import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.util.MaterialCriteria;
 import com.bee32.sem.inventory.web.dialogs.MaterialCategoryTreeModel;
-import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.util.PeopleCriteria;
@@ -232,7 +231,6 @@ public class ChanceBean
                     Chance.class, ChanceDto.class);
             edmo.setSelection(-1);
             edmo.setCriteriaElements(Order.desc("createdDate"),//
-                    EntityCriteria.ownedByCurrentUser(),//
                     ChanceCriteria.nameLike(subjectPattern));
             chances = UIHelper.buildLazyDataModel(edmo);
         } else {
@@ -240,8 +238,7 @@ public class ChanceBean
                     Chance.class, ChanceDto.class);
             edmo.setSelection(-1);
             edmo.setCriteriaElements(//
-                    Order.desc("createdDate"), //
-                    EntityCriteria.ownedByCurrentUser());
+            Order.desc("createdDate"));
             chances = UIHelper.buildLazyDataModel(edmo);
         }
         refreshChanceCount(isSearching);
@@ -252,7 +249,6 @@ public class ChanceBean
 
     void refreshChanceCount(boolean forSearch) {
         int count = serviceFor(Chance.class).count(//
-                EntityCriteria.ownedByCurrentUser(),//
                 forSearch ? ChanceCriteria.subjectLike(subjectPattern) : null);
         chances.setRowCount(count);
     }
@@ -279,10 +275,9 @@ public class ChanceBean
         List<Party> _parties;
         if (!partyPattern.isEmpty())
             _parties = serviceFor(Party.class).list(//
-                    EntityCriteria.ownedByCurrentUser(), //
                     PeopleCriteria.namedLike(partyPattern));
         else
-            _parties = serviceFor(Party.class).list(EntityCriteria.ownedByCurrentUser());
+            _parties = serviceFor(Party.class).list();
         parties = UIHelper.selectable(DTOs.mrefList(PartyDto.class, PartyDto.CONTACTS, _parties));
     }
 
