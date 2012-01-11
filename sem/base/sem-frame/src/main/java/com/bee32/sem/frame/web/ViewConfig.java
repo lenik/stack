@@ -10,8 +10,8 @@ public class ViewConfig
     int pageSize = 50;
     int dialogPageSize = 10;
 
-    final String pageSizeTemplate = "10, 50, 100, 200, 1000";
-    final String paginatorTemplate = "" //
+    String pageSizeTemplate = "10, 50, 100, 200, 1000";
+    String paginatorTemplate = "" //
             + "{CurrentPageReport}"//
             + " {FirstPageLink}" //
             + " {PreviousPageLink}" //
@@ -20,7 +20,8 @@ public class ViewConfig
             + " {LastPageLink}" //
             + " {RowsPerPageDropdown}";
 
-    final String allowTypes = "/(\\.|\\/)(gif|jpe?g|png|docx?|xlsx?|pdf|zip|rar)$/";
+    String allowTypes = "/(\\.|\\/)(gif|jpe?g|png|docx?|xlsx?|pdf|zip|rar)$/";
+    long maxFileSize = 10_000_000;
 
     String defaultUpdateTarget = ":mainForm";
 
@@ -47,12 +48,32 @@ public class ViewConfig
         return pageSizeTemplate;
     }
 
+    public void setPageSizeTemplate(String pageSizeTemplate) {
+        this.pageSizeTemplate = pageSizeTemplate;
+    }
+
     public String getPaginatorTemplate() {
         return paginatorTemplate;
     }
 
+    public void setPaginatorTemplate(String paginatorTemplate) {
+        this.paginatorTemplate = paginatorTemplate;
+    }
+
     public String getAllowTypes() {
         return allowTypes;
+    }
+
+    public void setAllowTypes(String allowTypes) {
+        this.allowTypes = allowTypes;
+    }
+
+    public long getMaxFileSize() {
+        return maxFileSize;
+    }
+
+    public void setMaxFileSize(long maxFileSize) {
+        this.maxFileSize = maxFileSize;
     }
 
     public String getDefaultUpdateTarget() {
