@@ -47,8 +47,8 @@ public class LockingEntityProcessor
 
         Object[] oldState = event.getOldState();
         Object[] newState = event.getState();
-        int oldEf = (int) oldState[efIndex];
-        int newEf = (int) newState[efIndex];
+        int oldEf = oldState == null ? 0 : (int) oldState[efIndex];
+        int newEf = newState == null ? 0 : (int) newState[efIndex];
         EntityFlags oldFlags = new EntityFlags(oldEf);
         EntityFlags newFlags = new EntityFlags(newEf);
 
