@@ -30,8 +30,13 @@ public class IsEmpty
     }
 
     @Override
-    protected String getOperator() {
+    public String getOperator() {
         return "IS";
+    }
+
+    @Override
+    public String getOperatorName() {
+        return "是";
     }
 
     @Override

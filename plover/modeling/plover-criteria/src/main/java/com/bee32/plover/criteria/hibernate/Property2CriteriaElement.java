@@ -5,7 +5,7 @@ import javax.free.UnexpectedException;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
 
-abstract class Property2CriteriaElement
+public abstract class Property2CriteriaElement
         extends SpelCriteriaElement {
 
     private static final long serialVersionUID = 1L;

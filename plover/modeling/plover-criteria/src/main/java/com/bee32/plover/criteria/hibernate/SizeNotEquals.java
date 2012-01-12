@@ -23,7 +23,13 @@ public class SizeNotEquals
     }
 
     @Override
-    protected String getOperator() {
+    public String getOperator() {
         return "!=";
     }
+
+    @Override
+    public String getOperatorName() {
+        return "不等于";
+    }
+
 }

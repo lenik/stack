@@ -2,7 +2,7 @@ package com.bee32.plover.criteria.hibernate;
 
 import java.util.Collection;
 
-abstract class SizeCriteriaElement
+public abstract class SizeCriteriaElement
         extends PropertyCriteriaElement {
 
     private static final long serialVersionUID = 1L;
@@ -27,7 +27,7 @@ abstract class SizeCriteriaElement
     protected abstract boolean filterSize(int sizeVar);
 
     @Override
-    protected abstract String getOperator();
+    public abstract String getOperator();
 
     @Override
     public final void format(StringBuilder out) {

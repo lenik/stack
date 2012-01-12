@@ -121,8 +121,32 @@ public class Like
     }
 
     @Override
-    protected String getOperator() {
+    public String getOperator() {
         return "LIKE";
+    }
+
+    @Override
+    public String getOperatorName() {
+        StringBuilder sb = new StringBuilder(30);
+        switch (_mode) {
+        case START:
+            sb.append("开头为");
+            break;
+        case END:
+            sb.append("结尾为");
+            break;
+        case EXACT:
+            sb.append("匹配");
+            break;
+        case ANYWHERE:
+            sb.append("含有");
+            break;
+        default:
+            throw new UnexpectedException();
+        }
+        if (ignoreCase)
+            sb.append(" （不区分大小写）");
+        return sb.toString();
     }
 
     @Override

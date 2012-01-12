@@ -23,8 +23,13 @@ public class SizeLessThan
     }
 
     @Override
-    protected String getOperator() {
+    public String getOperator() {
         return "<";
+    }
+
+    @Override
+    public String getOperatorName() {
+        return "小于";
     }
 
 }

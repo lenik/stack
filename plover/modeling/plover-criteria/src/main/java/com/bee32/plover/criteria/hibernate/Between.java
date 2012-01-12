@@ -37,8 +37,13 @@ public class Between
     }
 
     @Override
-    protected String getOperator() {
+    public String getOperator() {
         return "BETWEEN";
+    }
+
+    @Override
+    public String getOperatorName() {
+        return "间于";
     }
 
     @Override

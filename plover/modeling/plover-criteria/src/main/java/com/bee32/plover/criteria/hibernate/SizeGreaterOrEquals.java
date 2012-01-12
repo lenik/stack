@@ -23,8 +23,13 @@ public class SizeGreaterOrEquals
     }
 
     @Override
-    protected String getOperator() {
+    public String getOperator() {
         return ">=";
+    }
+
+    @Override
+    public String getOperatorName() {
+        return "大于等于";
     }
 
 }

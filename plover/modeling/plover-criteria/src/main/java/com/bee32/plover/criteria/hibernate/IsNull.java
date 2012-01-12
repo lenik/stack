@@ -23,8 +23,13 @@ public class IsNull
     }
 
     @Override
-    protected String getOperator() {
+    public String getOperator() {
         return "IS";
+    }
+
+    @Override
+    public String getOperatorName() {
+        return "为";
     }
 
     @Override

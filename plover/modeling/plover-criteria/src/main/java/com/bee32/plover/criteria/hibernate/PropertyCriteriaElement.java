@@ -2,7 +2,7 @@ package com.bee32.plover.criteria.hibernate;
 
 import org.springframework.expression.Expression;
 
-abstract class PropertyCriteriaElement
+public abstract class PropertyCriteriaElement
         extends SpelCriteriaElement {
 
     private static final long serialVersionUID = 1L;
@@ -20,7 +20,9 @@ abstract class PropertyCriteriaElement
         return compile(propertyName);
     }
 
-    protected abstract String getOperator();
+    public abstract String getOperator();
+
+    public abstract String getOperatorName();
 
     protected abstract void formatValue(StringBuilder out);
 

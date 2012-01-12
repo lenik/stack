@@ -30,13 +30,18 @@ public class IsNotEmpty
     }
 
     @Override
-    protected String getOperator() {
-        return "IS";
+    public String getOperator() {
+        return "IS-NOT";
+    }
+
+    @Override
+    public String getOperatorName() {
+        return "不是";
     }
 
     @Override
     protected void formatValue(StringBuilder out) {
-        out.append("NOT EMPTY");
+        out.append("EMPTY");
     }
 
 }

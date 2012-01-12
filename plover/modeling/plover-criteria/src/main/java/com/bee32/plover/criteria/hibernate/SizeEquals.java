@@ -23,8 +23,13 @@ public class SizeEquals
     }
 
     @Override
-    protected String getOperator() {
+    public String getOperator() {
         return "==";
+    }
+
+    @Override
+    public String getOperatorName() {
+        return "等于";
     }
 
 }

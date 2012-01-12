@@ -31,8 +31,13 @@ public class LessOrEquals
     }
 
     @Override
-    protected String getOperator() {
+    public String getOperator() {
         return "<=";
+    }
+
+    @Override
+    public String getOperatorName() {
+        return "小于等于";
     }
 
     @Override

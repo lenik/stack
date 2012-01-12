@@ -36,8 +36,13 @@ public class Equals
     }
 
     @Override
-    protected String getOperator() {
+    public String getOperator() {
         return "==";
+    }
+
+    @Override
+    public String getOperatorName() {
+        return "等于";
     }
 
     @Override

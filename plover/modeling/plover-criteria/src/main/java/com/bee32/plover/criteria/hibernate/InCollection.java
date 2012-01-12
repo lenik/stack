@@ -28,8 +28,13 @@ public class InCollection
     }
 
     @Override
-    protected String getOperator() {
+    public String getOperator() {
         return "IN";
+    }
+
+    @Override
+    public String getOperatorName() {
+        return "属于集合";
     }
 
     @Override
