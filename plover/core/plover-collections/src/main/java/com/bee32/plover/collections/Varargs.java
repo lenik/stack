@@ -13,6 +13,11 @@ import java.util.TreeSet;
 public class Varargs {
 
     @SafeVarargs
+    public static <T> T[] array(T... array) {
+        return array;
+    }
+
+    @SafeVarargs
     public static <T> List<T> toList(T... array) {
         List<T> list = new ArrayList<T>(array.length);
         for (T element : array)
