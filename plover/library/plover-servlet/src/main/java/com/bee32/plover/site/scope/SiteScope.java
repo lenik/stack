@@ -15,6 +15,8 @@ public class SiteScope
     @Override
     protected Map<String, Object> getBeanMap() {
         SiteInstance site = ThreadHttpContext.getSiteInstance();
+        if (site == null)
+            throw new IllegalStateException("No site instance for the http request.");
         Map<String, Object> attributes = site.getAttributes();
         return attributes;
     }

@@ -35,7 +35,6 @@ public class SiteInstance
 
     public static final String CONFIG_EXTENSION = ".sif";
 
-    public static final String NAME_KEY = "name";
     public static final String ALIASES_KEY = "aliases";
     public static final String LABEL_KEY = "label";
     public static final String DESCRIPTION_KEY = "description";
@@ -56,6 +55,7 @@ public class SiteInstance
 
     public static final Location DEFAULT_LOGO_LOCATION = SYMBOLS.join("logo-full.png");
 
+    String name;
     File configFile;
     FormatProperties properties;
     boolean dirty;
@@ -87,7 +87,7 @@ public class SiteInstance
         String name = file.getName();
         if (name.endsWith(CONFIG_EXTENSION))
             name = name.substring(0, name.length() - CONFIG_EXTENSION.length());
-        properties.setProperty("name", name);
+        this.name = name;
 
         loadConfig();
     }
@@ -99,6 +99,26 @@ public class SiteInstance
             throw new NullPointerException("configFile");
         this.properties = properties;
         this.configFile = configFile;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        if (name == null)
+            throw new NullPointerException("name");
+        this.name = name;
+
+        // Set default db name to site_db.
+        String dbName = getDbName();
+        if (dbName == null) {
+            String siteName = getName();
+            if (siteName != null) {
+                dbName = siteName + "_db";
+                setDbName(dbName);
+            }
+        }
     }
 
     public String getProperty(String key) {
@@ -206,24 +226,6 @@ public class SiteInstance
     public String getLoggingPrefix() {
         String prefix = "[" + getName() + " - " + getLabel() + "] ";
         return prefix;
-    }
-
-    public String getName() {
-        return getProperty(NAME_KEY);
-    }
-
-    public void setName(String name) {
-        setProperty(NAME_KEY, name);
-
-        // Set default db name to site_db.
-        String dbName = getDbName();
-        if (dbName == null) {
-            String siteName = getName();
-            if (siteName != null) {
-                dbName = siteName + "_db";
-                setDbName(dbName);
-            }
-        }
     }
 
     public String getLabel() {
