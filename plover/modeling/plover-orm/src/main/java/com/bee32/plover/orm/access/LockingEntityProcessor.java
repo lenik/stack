@@ -87,7 +87,7 @@ public class LockingEntityProcessor
     static String getEntityStr(Object obj) {
         if (obj instanceof Entity<?>) {
             Entity<?> entity = (Entity<?>) obj;
-            return entity.getEntryText();
+            return entity.getEntryLabel();
         } else
             return String.valueOf(obj);
     }

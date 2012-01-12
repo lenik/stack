@@ -37,7 +37,7 @@ public class EntityIntegrityException
             sb.append(": ");
             if (obj instanceof Entity<?>) {
                 Entity<?> entity = (Entity<?>) obj;
-                sb.append(entity.getEntryText());
+                sb.append(entity.getEntryLabel());
             } else {
                 sb.append(obj);
             }

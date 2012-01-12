@@ -11,7 +11,7 @@ public class PrimefacesThemeTest
     @Test
     public void testNlsLabel() {
         Locale.setDefault(Locale.ROOT);
-        String label = PrimefacesTheme.bluesky.getLabel();
+        String label = PrimefacesTheme.bluesky.getEntryLabel();
         assertEquals("Blue Sky", label);
     }
 

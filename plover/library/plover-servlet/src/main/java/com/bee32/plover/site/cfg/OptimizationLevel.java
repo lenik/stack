@@ -1,8 +1,9 @@
 package com.bee32.plover.site.cfg;
 
+import com.bee32.plover.arch.util.ILabelledEntry;
 
 public enum OptimizationLevel
-        implements ILabel {
+        implements ILabelledEntry {
 
     // 调试模式
     NONE("无优化：低效、主要用于排错"),
@@ -25,7 +26,7 @@ public enum OptimizationLevel
     }
 
     @Override
-    public String getLabel() {
+    public String getEntryLabel() {
         return label;
     }
 

@@ -1,8 +1,9 @@
 package com.bee32.plover.site.cfg;
 
+import com.bee32.plover.arch.util.ILabelledEntry;
 
 public enum SamplesSelection
-        implements ILabel {
+        implements ILabelledEntry {
 
     NONE("无（全定制系统，不建议使用）"),
 
@@ -21,7 +22,7 @@ public enum SamplesSelection
     }
 
     @Override
-    public String getLabel() {
+    public String getEntryLabel() {
         return label;
     }
 

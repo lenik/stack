@@ -1,7 +1,9 @@
 package com.bee32.plover.site.cfg;
 
+import com.bee32.plover.arch.util.ILabelledEntry;
+
 public enum DBAutoDDL
-        implements ILabel {
+        implements ILabelledEntry {
 
     Create("create", "仅自动创建"),
 
@@ -26,7 +28,7 @@ public enum DBAutoDDL
     }
 
     @Override
-    public String getLabel() {
+    public String getEntryLabel() {
         return label;
     }
 

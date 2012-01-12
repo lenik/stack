@@ -3,10 +3,11 @@ package com.bee32.plover.site.cfg;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import com.bee32.plover.arch.util.ILabelledEntry;
 import com.bee32.plover.arch.util.res.ResourceBundleUTF8;
 
 public enum PrimefacesTheme
-        implements ILabel {
+        implements ILabelledEntry {
 
     redmond("redmond"),
 
@@ -54,12 +55,12 @@ public enum PrimefacesTheme
     }
 
     @Override
-    public String getLabel() {
+    public String getEntryLabel() {
         return rb.getString(name() + ".label");
     }
 
     public String getDisplayName() {
-        String label = getLabel();
+        String label = getEntryLabel();
         if (label == null || label.isEmpty())
             return name();
         else

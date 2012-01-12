@@ -130,7 +130,7 @@ public class Cat
 
     @Transient
     @Override
-    public String getEntryText() {
+    public String getEntryLabel() {
         return "A " + getColor() + " " + getName();
     }
 

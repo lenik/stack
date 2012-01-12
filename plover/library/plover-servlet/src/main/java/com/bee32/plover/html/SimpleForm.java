@@ -2,10 +2,10 @@ package com.bee32.plover.html;
 
 import java.io.Writer;
 
+import com.bee32.plover.arch.util.ILabelledEntry;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.rtx.location.Locations;
 import com.bee32.plover.site.EnumUtil;
-import com.bee32.plover.site.cfg.ILabel;
 import com.googlecode.jatl.Html;
 
 public class SimpleForm
@@ -110,7 +110,7 @@ public class SimpleForm
 
                 } else if (value instanceof Enum<?>) {
                     Class<? extends Enum<?>> enumClass = (Class<? extends Enum<?>>) value.getClass();
-                    boolean hasLabel = ILabel.class.isAssignableFrom(enumClass);
+                    boolean hasLabel = ILabelledEntry.class.isAssignableFrom(enumClass);
 
                     Enum<?>[] candidates = EnumUtil.values(enumClass);
 
@@ -121,7 +121,7 @@ public class SimpleForm
                         if (selected)
                             option.selected("selected");
                         if (hasLabel) {
-                            String candidateLabel = ((ILabel) candidate).getLabel();
+                            String candidateLabel = ((ILabelledEntry) candidate).getEntryLabel();
                             option.text(candidateLabel);
                         } else {
                             option.text(candidate.name());

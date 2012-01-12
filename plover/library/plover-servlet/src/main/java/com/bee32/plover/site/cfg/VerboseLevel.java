@@ -1,8 +1,9 @@
 package com.bee32.plover.site.cfg;
 
+import com.bee32.plover.arch.util.ILabelledEntry;
 
 public enum VerboseLevel
-        implements ILabel {
+        implements ILabelledEntry {
 
     QUIET("安静"),
 
@@ -21,7 +22,7 @@ public enum VerboseLevel
     }
 
     @Override
-    public String getLabel() {
+    public String getEntryLabel() {
         return label;
     }
 

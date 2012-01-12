@@ -166,7 +166,7 @@ public class VerifyService
             StringBuilder subjectBuf = new StringBuilder();
             subjectBuf.append("【作业跟踪】");
             subjectBuf.append("【" + state.getDisplayName() + "】");
-            subjectBuf.append(entity.getEntryText());
+            subjectBuf.append(entity.getEntryLabel());
             if (!StringUtils.isEmpty(context.getVerifyError()))
                 subjectBuf.append(": " + context.getVerifyError());
             final String subject = subjectBuf.toString();

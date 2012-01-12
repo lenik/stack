@@ -8,11 +8,12 @@ import java.util.Set;
 
 import com.bee32.plover.arch.naming.INamed;
 import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.arch.util.ILabelledEntry;
 import com.bee32.plover.model.Model;
 
 public abstract class EntityBase<K extends Serializable>
         extends Model
-        implements IEntity<K>, INamed, IPopulatable {
+        implements IEntity<K>, INamed, ILabelledEntry, IPopulatable {
 
     private static final long serialVersionUID = 1L;
 
@@ -47,7 +48,8 @@ public abstract class EntityBase<K extends Serializable>
             return id.toString();
     }
 
-    public String getEntryText() {
+    @Override
+    public String getEntryLabel() {
         StringBuilder buf = new StringBuilder();
         buf.append(ClassUtil.getParameterizedTypeName(this));
         buf.append(' ');

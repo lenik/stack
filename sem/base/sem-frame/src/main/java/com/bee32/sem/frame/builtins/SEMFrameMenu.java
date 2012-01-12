@@ -35,7 +35,7 @@ public class SEMFrameMenu
     @Override
     protected void preamble() {
         for (PrimefacesTheme theme : PrimefacesTheme.values()) {
-            String label = theme.getLabel();
+            String label = theme.getEntryLabel();
             MenuNode node = entry(THEME, label, null);
             Action action = new Action();
             action.setActionListener(new ThemeSwitcherActionListener(theme));

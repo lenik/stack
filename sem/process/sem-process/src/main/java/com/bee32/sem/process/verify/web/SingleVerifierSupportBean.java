@@ -59,7 +59,7 @@ public class SingleVerifierSupportBean
                 else
                     uiLogger.info("审核 " + entity.getEntryText() + " 无法完成，具体原因未知。");
             } catch (Exception e) {
-                uiLogger.error("审核 " + entity.getEntryText() + " 失败", e);
+                uiLogger.error("审核 " + entity.getEntryLabel() + " 失败", e);
             }
         }
     }
