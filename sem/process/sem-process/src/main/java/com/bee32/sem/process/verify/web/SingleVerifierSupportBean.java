@@ -18,29 +18,49 @@ public class SingleVerifierSupportBean
 
     private static final long serialVersionUID = 1L;
 
-    @Override
-    public SingleVerifierSupportDto getVerifyContext1() {
+    private PrincipalDto verifier1Template;
+    private boolean accepted1Template;
+    private String rejectedReason1Template;
+
+    public SingleVerifierSupportBean() {
+        User currentUser = SessionUser.getInstance().getInternalUser();
+        verifier1Template = new PrincipalDto().ref(currentUser);
+    }
+
+    public SingleVerifierSupportDto getVerifyContextTemplate() {
         return (SingleVerifierSupportDto) super.getVerifyContext1();
     }
 
     @SuppressWarnings("unchecked")
     @Operation
     public void reverify() {
-        UserDto verifier1 = SessionUser.getInstance().getUser();
+        VerifiableSupportBean verifiableSupportBean = getBean(VerifiableSupportBean.class);
+        if (!verifiableSupportBean.isCurrentUserResponsible()) {
+            uiLogger.error("您不是该对象的审核责任人。");
+            return;
+        }
+
         Date verifyDate1 = new Date();
 
         for (IVerifiableDto verifiable : getVerifiables()) {
-            SingleVerifierSupportDto context = (SingleVerifierSupportDto) verifiable.getVerifyContext();
-            context.setVerifier1(verifier1);
-            context.setVerifiedDate1(verifyDate1);
-
             EntityDto<?, ?> entityDto = (EntityDto<?, ?>) verifiable;
-            Entity<?> entity = entityDto.unmarshal();
+
+            EntityDto<?, ?> reloaded = reload(entityDto);
+            verifiable = (IVerifiableDto) reloaded;
+
+            SingleVerifierSupportDto context = (SingleVerifierSupportDto) verifiable.getVerifyContext();
+            context.setVerifier1(verifier1Template);
+            context.setVerifiedDate1(verifyDate1);
+            context.setAccepted1(accepted1Template);
+            context.setRejectedReason1(rejectedReason1Template);
+
+            Entity<?> entity = reloaded.unmarshal();
+            String entityLabel = entity.getEntryLabel();
 
             try {
                 serviceFor(Entity.class).update(entity);
             } catch (Exception e) {
-                uiLogger.error("更新 " + entity.getEntryText() + " 的审核资料失败", e);
+                uiLogger.error("更新 " + entityLabel + " 的审核资料失败", e);
                 continue;
             }
 
@@ -48,17 +68,17 @@ public class SingleVerifierSupportBean
                 VerifyResult result = getVerifyService().verifyEntity(entity);
                 VerifyEvalState evalState = result.getState();
                 if (evalState == VerifyEvalState.VERIFIED)
-                    uiLogger.info("审核 " + entity.getEntryText() + " 成功!");
+                    uiLogger.info("审核 " + entityLabel + " 成功!");
                 else if (evalState == VerifyEvalState.REJECTED)
-                    uiLogger.info("拒绝 " + entity.getEntryText() + " 成功!");
+                    uiLogger.info("拒绝 " + entityLabel + " 成功!");
                 else if (evalState == VerifyEvalState.NOT_APPLICABLE)
-                    uiLogger.info("审核不可用，请配置 " + entity.getEntryText() + " 的审核策略。");
+                    uiLogger.info("审核不可用，请配置 " + entityLabel + " 的审核策略。");
                 else if (evalState == VerifyEvalState.INVALID)
-                    uiLogger.info("审核 " + entity.getEntryText() + " 无效。可能是您不具有所需的权限。");
+                    uiLogger.info("审核 " + entityLabel + " 无效。可能是您不具有所需的权限。");
                 else if (evalState == VerifyEvalState.PENDING)
-                    uiLogger.info("审核 " + entity.getEntryText() + " 进入挂起状态。");
+                    uiLogger.info("审核 " + entityLabel + " 进入挂起状态。");
                 else
-                    uiLogger.info("审核 " + entity.getEntryText() + " 无法完成，具体原因未知。");
+                    uiLogger.info("审核 " + entityLabel + " 无法完成，具体原因未知。");
             } catch (Exception e) {
                 uiLogger.error("审核 " + entity.getEntryLabel() + " 失败", e);
             }
@@ -67,22 +87,38 @@ public class SingleVerifierSupportBean
 
     @Operation
     public void approve() {
-        for (IVerifiableDto verifiable : getVerifiables()) {
-            SingleVerifierSupportDto context = (SingleVerifierSupportDto) verifiable.getVerifyContext();
-            context.setAccepted1(true);
-        }
-        // rejectedReason1 = null;
+        accepted1Template = true;
         reverify();
     }
 
     @Operation
     public void reject() {
-        for (IVerifiableDto verifiable : getVerifiables()) {
-            SingleVerifierSupportDto context = (SingleVerifierSupportDto) verifiable.getVerifyContext();
-            context.setAccepted1(false);
-            // context.setRejectedReason1(rejectedReason1);
-        }
+        accepted1Template = false;
         reverify();
+    }
+
+    public PrincipalDto getVerifier1Template() {
+        return verifier1Template;
+    }
+
+    public void setVerifier1Template(PrincipalDto verifier1Template) {
+        this.verifier1Template = verifier1Template;
+    }
+
+    public boolean isAccepted1Template() {
+        return accepted1Template;
+    }
+
+    public void setAccepted1Template(boolean accepted1Template) {
+        this.accepted1Template = accepted1Template;
+    }
+
+    public String getRejectedReason1Template() {
+        return rejectedReason1Template;
+    }
+
+    public void setRejectedReason1Template(String rejectedReason1Template) {
+        this.rejectedReason1Template = rejectedReason1Template;
     }
 
 }

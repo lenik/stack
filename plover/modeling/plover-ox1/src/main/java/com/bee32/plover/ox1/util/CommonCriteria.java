@@ -47,11 +47,11 @@ public class CommonCriteria
             return like("name", pattern, MatchMode.ANYWHERE);
     }
 
-    public static CriteriaElement labeledWith(String string) {
-        return labeledWith(string, false);
+    public static CriteriaElement labelledWith(String string) {
+        return labelledWith(string, false);
     }
 
-    public static CriteriaElement labeledWith(String string, boolean ignoreCase) {
+    public static CriteriaElement labelledWith(String string, boolean ignoreCase) {
         if (string == null || string.isEmpty())
             return null;
         if (ignoreCase)

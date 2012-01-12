@@ -20,7 +20,7 @@ public class AttackMission
     private static final long serialVersionUID = 1L;
 
     private String target;
-    private SingleVerifierSupport singleVerifierSupport = new SingleVerifierSupport(this);
+    private SingleVerifierSupport singleVerifierSupport = new SingleVerifierSupport();
 
     public String getTarget() {
         return target;
@@ -37,7 +37,6 @@ public class AttackMission
     }
 
     void setVerifyContext(SingleVerifierSupport singleVerifierSupport) {
-        singleVerifierSupport.bind(this);
         this.singleVerifierSupport = singleVerifierSupport;
     }
 

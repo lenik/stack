@@ -25,6 +25,7 @@ public final class StockOrderSubject
     private final boolean special;
 
     static final List<StockOrderSubject> commons = new ArrayList<StockOrderSubject>();
+    static final List<StockOrderSubject> virtuals = new ArrayList<StockOrderSubject>();
     static final Set<String> packingSet = new HashSet<String>();
     static final Set<String> virtualSet = new HashSet<String>();
     static final Set<String> virtualOnlySet = new HashSet<String>();
@@ -41,10 +42,12 @@ public final class StockOrderSubject
         if (!_special) {
             commons.add(this);
             commonSet.add(value);
-            virtualOnlySet.add(value);
+            virtuals.add(this);
+            virtualSet.add(value);
         }
 
         if (virtual) {
+            virtuals.add(this);
             virtualSet.add(value);
             virtualOnlySet.add(value);
         }
@@ -75,6 +78,10 @@ public final class StockOrderSubject
 
     public static Set<String> getPackingSet() {
         return Collections.unmodifiableSet(packingSet);
+    }
+
+    public static List<StockOrderSubject> getVirtuals() {
+        return virtuals;
     }
 
     public static Set<String> getVirtualSet() {

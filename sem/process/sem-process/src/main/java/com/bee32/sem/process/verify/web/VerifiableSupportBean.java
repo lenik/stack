@@ -3,7 +3,13 @@ package com.bee32.sem.process.verify.web;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.bee32.icsf.login.SessionUser;
+import com.bee32.icsf.principal.User;
+import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.VerifyEvalState;
+import com.bee32.sem.process.verify.dto.IVerifiableDto;
+import com.bee32.sem.process.verify.service.IVerifyService;
 
 public class VerifiableSupportBean
         extends VerifyContextSupportBean {
@@ -41,9 +47,24 @@ public class VerifiableSupportBean
     public boolean isCommandEnabled() {
         VerifyEvalState state = getMixedVerifyState();
         Boolean enabled = commandEnabledMap.get(state);
-        if (enabled = false)
-            enabled = true;
-        return enabled;
+        return enabled == Boolean.TRUE;
+    }
+
+    public boolean isContextResponsible() {
+        if (getVerifiables().isEmpty())
+            return false;
+
+        IVerifyService service = getBean(IVerifyService.class);
+        User me = SessionUser.getInstance().getInternalUser();
+
+        for (IVerifiableDto verifiableDto : getVerifiables()) {
+            EntityDto<?, ?> entityDto = (EntityDto<?, ?>) verifiableDto;
+            IVerifiable<?> verifiable = (IVerifiable<?>) entityDto.unmarshal(this);
+            boolean responsible = service.isResponsible(me, verifiable);
+            if (!responsible)
+                return false;
+        }
+        return true;
     }
 
 }

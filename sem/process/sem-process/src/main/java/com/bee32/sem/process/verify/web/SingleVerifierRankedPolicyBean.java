@@ -16,24 +16,19 @@ public class SingleVerifierRankedPolicyBean
 
     private static final long serialVersionUID = 1L;
 
+    SingleVerifierLevelDto selectedLevel;
     SingleVerifierLevelDto level;
 
     public SingleVerifierRankedPolicyBean() {
         super(SingleVerifierRankedPolicy.class, SingleVerifierRankedPolicyDto.class, 0);
     }
 
-    public Object getChooseVerifyPolicyDialogListener() {
-        return new ChooseVerifyPolicyDialogListener() {
-            @Override
-            protected void select(List<?> selection) {
-                for (Object item : selection)
-                    setVerifyPolicy((VerifyPolicyDto) item);
-            }
-        };
+    public SingleVerifierLevelDto getSelectedLevel() {
+        return selectedLevel;
     }
 
-    public void setVerifyPolicy(VerifyPolicyDto policy) {
-        level.setTargetPolicy(policy);
+    public void setSelectedLevel(SingleVerifierLevelDto selectedLevel) {
+        this.selectedLevel = selectedLevel;
     }
 
     public SingleVerifierLevelDto getLevel() {
@@ -44,6 +39,10 @@ public class SingleVerifierRankedPolicyBean
         this.level = level;
     }
 
+    public void newLevel() {
+        level = new SingleVerifierLevelDto();
+    }
+
     public void addLevel() {
         SingleVerifierRankedPolicyDto policy = getActiveObject();
         level.setPolicy(policy);
@@ -52,11 +51,19 @@ public class SingleVerifierRankedPolicyBean
 
     public void removeLevel() {
         SingleVerifierRankedPolicyDto policy = getActiveObject();
-        policy.getLevels().remove(level);
+        policy.getLevels().remove(selectedLevel);
     }
 
-    public void newLevel() {
-        level = new SingleVerifierLevelDto().create();
+    // Dialog adapters...
+
+    public Object getSetVerifyPolicyAdapter() {
+        return new ChooseVerifyPolicyDialogListener() {
+            @Override
+            protected void selected(List<?> selection) {
+                for (Object item : selection)
+                    level.setTargetPolicy((VerifyPolicyDto) item);
+            }
+        };
     }
 
 }

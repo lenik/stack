@@ -9,52 +9,59 @@
     <c:set var="_update" value="${update != null ? update : viewConfig.defaultUpdateTarget}" />
 
     <p:dialog header="选择审核策略" widgetVar="${_var}" modal="true">
-        <div style="max-height: 40em; margin: 1em">
-            <h:form id="${_formName}">
+        <h:form id="${_formName}" style="max-height: 40em; margin: 1em">
+
+            <p:fieldset legend="高级搜索" toggleable="true" collapsed="true">
                 <h:panelGrid columns="3" columnClasses="">
-                    <h:outputLabel for="pattern" value="名称全部或部份:" />
-                    <p:inputText id="pattern" value="${_bean.pattern}" />
-                    <p:commandButton value="查找" actionListener="${_bean.search}" update="dataTable"
+                    <h:outputLabel for="pattern" value="名称:" />
+                    <p:inputText id="pattern" value="${_bean.labelPattern}" />
+                    <p:commandButton value="添加" actionListener="${_bean.addLabelRestriction}" update="searchFragments, dataTable"
                         async="true" />
                 </h:panelGrid>
+            </p:fieldset>
 
-                <p:dataTable id="dataTable" var="entry" value="${_bean.dataModel}" selection="${_bean.singleSelection}"
-                    selectionMode="single" paginator="true" rows="10" lazy="true" paginatorTemplate="${viewConfig.paginatorTemplate}"
-                    rowsPerPageTemplate="${viewConfig.pageSizeTemplate}" resizableColumns="true"
-                    scrollable="true"
-                    scrollHeight="350" scrollWidth="400"
-                    rowIndexVar="rowIndex">
+            <h:panelGroup id="searchFragments" style="display: block; padding: .2em 0em;">
+                <ui:repeat id="repeat" var="fragment" value="${_bean.searchFragments}">
+                    <c:set var="form" value="${component.parent.parent.parent.clientId}" />
+                    <p:commandButton value="${fragment.entryLabel}" async="true" actionListener="${fragment.detach}"
+                        update="${form}:searchFragments, ${form}:dataTable" />
+                </ui:repeat>
+            </h:panelGroup>
 
-                    <p:column headerText="序号" style="width:1.5em;">
-                        <h:outputText value="${rowIndex + 1}" />
-                    </p:column>
+            <p:dataTable id="dataTable" var="entry" value="${_bean.dataModel}" selection="${_bean.singleSelection}"
+                selectionMode="single" paginator="true" rows="10" lazy="true" paginatorTemplate="${viewConfig.paginatorTemplate}"
+                rowsPerPageTemplate="${viewConfig.pageSizeTemplate}" resizableColumns="true" scrollable="true"
+                scrollHeight="350" scrollWidth="400" rowIndexVar="rowIndex">
 
-                    <p:column headerText="名称">
-                        <h:outputText value="#{entry.label}" />
-                    </p:column>
+                <p:column headerText="序号" style="width:1.5em;">
+                    <h:outputText value="${rowIndex + 1}" />
+                </p:column>
 
-                    <p:column headerText="描述">
-                        <h:outputText value="#{entry.description}" />
-                    </p:column>
+                <p:column headerText="名称">
+                    <h:outputText value="#{entry.label}" />
+                </p:column>
 
-                    <p:column headerText="创建日期">
-                        <h:outputText value="#{entry.createdDate}">
-                            <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-                        </h:outputText>
-                    </p:column>
+                <p:column headerText="描述">
+                    <h:outputText value="#{entry.description}" />
+                </p:column>
 
-                    <p:column headerText="所有人">
-                        <h:outputText value="#{entry.owner.displayName}" />
-                    </p:column>
-                </p:dataTable>
+                <p:column headerText="创建日期">
+                    <h:outputText value="#{entry.createdDate}">
+                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                    </h:outputText>
+                </p:column>
 
-                <div align="right">
-                    <p:commandButton oncomplete="${_var}.hide()" actionListener="${_listener.submit}" update="${_update}"
-                        value="确定" async="true" />
-                    <p:commandButton value="关闭" oncomplete="${_var}.hide();" />
-                </div>
-            </h:form>
-        </div>
+                <p:column headerText="所有人">
+                    <h:outputText value="#{entry.owner.displayName}" />
+                </p:column>
+            </p:dataTable>
+
+            <div align="right">
+                <p:commandButton oncomplete="${_var}.hide()" actionListener="${_listener.selected}"
+                    update="${_update}" value="确定" async="true" />
+                <p:commandButton value="关闭" oncomplete="${_var}.hide();" />
+            </div>
+        </h:form>
     </p:dialog>
 
 </h:panelGroup>

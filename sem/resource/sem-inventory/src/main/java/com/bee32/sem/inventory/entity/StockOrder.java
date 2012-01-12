@@ -47,7 +47,6 @@ public class StockOrder
 
     Org org;
     OrgUnit orgUnit;
-
     StockWarehouse warehouse; // Redundant.
 
     StockOrderVerifySupport stockOrderVerifySupport = new StockOrderVerifySupport(this);

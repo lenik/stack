@@ -8,17 +8,17 @@
     <c:set var="_listener" value="${listener != null ? listener : _bean}" />
     <c:set var="_update" value="${update != null ? update : viewConfig.defaultUpdateTarget}" />
 
-    <p:dialog header="审核信息" widgetVar="${_var}" modal="true">
+    <p:dialog header="审核信息2" widgetVar="${_var}" modal="true">
         <h:form id="verifyForm" style="margin: 1em; max-height: 40em; ">
             <t:panelGrid columns="2">
                 <h:outputText value="审核身份：" />
-                <h:panelGroup>
-                    <h:outputText value="${sessionUser.user.displayName}" />
-                </h:panelGroup>
+                <p:selectOneMenu id="verifyAs" value="#{_bean.verifier1Template.id}">
+                    <f:selectItems value="${sessionUser.internalUser.imSet}" var="p" itemValue="${p.id}"
+                        itemLabel="${p.displayName}" />
+                </p:selectOneMenu>
 
-                <h:outputText value="拒绝附加信息：" />
-                <p:inputTextarea value="${_context.rejectedReason1}" style="width:300px;height:100px;"
-                    effectDuration="400" />
+                <h:outputText value="拒绝的附加信息：" />
+                <p:inputTextarea value="${_bean.rejectedReason1Template}" cols="40" rows="6" autoResize="false" />
             </t:panelGrid>
 
             <div align="right">

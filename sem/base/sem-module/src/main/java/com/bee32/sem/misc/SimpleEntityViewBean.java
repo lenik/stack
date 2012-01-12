@@ -226,7 +226,7 @@ public abstract class SimpleEntityViewBean
                     flags.setUserLock(false);
             }
 
-            boolean locked = EntityAccessor.isLocked(entity);
+            boolean locked = EntityAccessor.isAnyLocked(entity);
             if (locked) {
                 lockedList.add(entity);
                 continue;
@@ -248,7 +248,7 @@ public abstract class SimpleEntityViewBean
 
         try {
             serviceFor(entityClass).saveOrUpdateAll(entities);
-            refreshCount();
+            // refreshCount();
         } catch (Exception e) {
             uiLogger.error("保存失败", e);
             return;
@@ -302,7 +302,7 @@ public abstract class SimpleEntityViewBean
                 serviceFor(entityClass).update(entity);
             }
 
-            boolean locked = EntityAccessor.isLocked(entity);
+            boolean locked = EntityAccessor.isAnyLocked(entity);
             if (locked) {
                 lockedList.add(entity);
                 continue;

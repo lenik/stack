@@ -20,29 +20,24 @@ public class SingleVerifierWithNumberSupport
     private transient IJudgeNumber judgeNumberImpl;
 
     public SingleVerifierWithNumberSupport() {
-        super();
     }
 
     public SingleVerifierWithNumberSupport(Entity<?> entity) {
-        super(entity);
+        bind(entity);
     }
 
     public <E extends Entity<?>> SingleVerifierWithNumberSupport(E entity,
             IPropertyAccessor<? extends Number> property, String description) {
-        super();
         bind(entity, property, description);
     }
 
-    @Override
     public void bind(Entity<?> entity) {
-        super.bind(entity);
         if (!(entity instanceof IJudgeNumber))
             throw new IllegalUsageException(getClass() + " must be bound to " + IJudgeNumber.class);
         this.judgeNumberImpl = (IJudgeNumber) entity;
     }
 
     public <E extends Entity<?>> void bind(E entity, IPropertyAccessor<? extends Number> property, String description) {
-        super.bind(entity);
         judgeNumberImpl = new JudgeNumberInProperty(entity, property, description);
     }
 

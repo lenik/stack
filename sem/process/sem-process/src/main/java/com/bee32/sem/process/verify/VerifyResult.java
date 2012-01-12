@@ -1,7 +1,6 @@
 package com.bee32.sem.process.verify;
 
 import com.bee32.icsf.principal.Principal;
-import com.bee32.icsf.principal.User;
 
 public class VerifyResult {
 
@@ -38,7 +37,7 @@ public class VerifyResult {
         return new VerifyResult(VerifyEvalState.PENDING, message);
     }
 
-    public static VerifyResult invalid(User user) {
+    public static VerifyResult invalid(Principal user) {
         return new VerifyResult(VerifyEvalState.INVALID, "无效的审核人：" + user.getDisplayName());
     }
 
