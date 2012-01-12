@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.bee32.plover.restful.resource.PageDirectory;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
-import com.bee32.plover.web.faces.view.ViewBean;
 
 /**
  * The context view beans are determined as follows:
@@ -18,7 +17,7 @@ import com.bee32.plover.web.faces.view.ViewBean;
  * </ol>
  */
 public abstract class EntityPeripheralBean
-        extends ViewBean
+        extends DataViewBean
         implements Serializable {
 
     private static final long serialVersionUID = 1L;
