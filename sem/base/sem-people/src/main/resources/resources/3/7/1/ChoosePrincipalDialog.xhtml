@@ -15,7 +15,7 @@
                 <h:panelGrid columns="3" columnClasses="">
                     <h:outputLabel for="pattern" value="名称:" />
                     <p:inputText id="pattern" value="${_bean.namePattern}" />
-                    <p:commandButton value="添加" actionListener="${_bean.addNamePatternFragment}" update="searchFragments, dataTable"
+                    <p:commandButton value="添加" actionListener="${_bean.addNameRestriction}" update="searchFragments, dataTable"
                         async="true" />
                 </h:panelGrid>
             </p:fieldset>

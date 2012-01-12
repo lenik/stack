@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.plover.orm.annotation.ForEntity;
+import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.file.dto.UserFileTagnameDto;
 import com.bee32.sem.file.entity.FileBlob;
@@ -68,11 +70,14 @@ public class UserFileBean
         this.namePattern = namePattern;
     }
 
-    public void addNamedLikeRestriction() {
+    public void addNameRestriction() {
         addSearchFragment("名称含有 " + namePattern, UserFileCriteria.namedLike(namePattern));
     }
 
     public void addOwnerRestriction(PrincipalDto owner) {
+        Principal _owner = owner.unmarshal(this);
+        addSearchFragment("为 " + owner.getDisplayName() + " 所有", //
+                CommonCriteria.ownedBy(_owner));
     }
 
     public void addTag(UserFileTagnameDto tag) {

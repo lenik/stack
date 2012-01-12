@@ -17,19 +17,14 @@ public class ChooseVerifyPolicyDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChooseVerifyPolicyDialogBean.class);
 
-    String pattern;
+    String labelPattern;
 
     public ChooseVerifyPolicyDialogBean() {
         super(VerifyPolicy.class, VerifyPolicyDto.class, 0);
     }
 
-    public void search() {
-        setCriteriaElements(CommonCriteria.namedLike(pattern));
-        refreshCount();
-    }
-
     @Override
-    public void submit() {
+    public void selected() {
         logger.debug("Selected: " + getSelection());
     }
 
@@ -40,12 +35,16 @@ public class ChooseVerifyPolicyDialogBean
 
     // Properties
 
-    public String getPattern() {
-        return pattern;
+    public String getLabelPattern() {
+        return labelPattern;
     }
 
-    public void setPattern(String pattern) {
-        this.pattern = pattern;
+    public void setLabelPattern(String labelPattern) {
+        this.labelPattern = labelPattern;
+    }
+
+    public void addLabelRestriction() {
+        addSearchFragment("名称含有 " + labelPattern, CommonCriteria.labelledWith(labelPattern));
     }
 
 }

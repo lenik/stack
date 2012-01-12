@@ -53,7 +53,7 @@ public class ChoosePrincipalDialogBean
         this.namePattern = namePattern;
     }
 
-    public void addNamePatternFragment() {
+    public void addNameRestriction() {
         addSearchFragment("名称含有 " + namePattern, CommonCriteria.namedLike(namePattern));
     }
 
