@@ -48,7 +48,10 @@ public abstract class AbstractVerifyContext
     }
 
     private class VLockPred
-            extends Pred0 {
+            extends Pred0
+            implements Serializable {
+
+        private static final long serialVersionUID = 1L;
 
         @Override
         public boolean test() {
