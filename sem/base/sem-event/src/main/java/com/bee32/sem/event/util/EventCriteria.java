@@ -2,6 +2,8 @@ package com.bee32.sem.event.util;
 
 import java.util.Date;
 
+import org.hibernate.criterion.CriteriaSpecification;
+
 import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.principal.PrincipalCriteria;
 import com.bee32.icsf.principal.User;
@@ -17,7 +19,7 @@ public class EventCriteria
     @LeftHand(Event.class)
     public static ICriteriaElement observedBy(User user) {
         return compose(//
-                alias("observers", "observer"), //
+                alias("observers", "observer", CriteriaSpecification.LEFT_JOIN), //
                 PrincipalCriteria.inImSet("observer", user));
     }
 

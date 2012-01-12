@@ -23,7 +23,7 @@ public class PrincipalCriteria
         for (Principal im : imSet)
             idSet.add(im.getId());
         return or(//
-                isNull(propertyName), //
+                isNull(propertyName + ".id"), //
                 in(propertyName + ".id", idSet));
     }
 

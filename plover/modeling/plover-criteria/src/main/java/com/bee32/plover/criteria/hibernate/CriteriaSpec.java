@@ -3,6 +3,7 @@ package com.bee32.plover.criteria.hibernate;
 import java.util.Collection;
 import java.util.Map;
 
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.type.Type;
 
@@ -40,6 +41,11 @@ public abstract class CriteriaSpec {
         return new Alias(associationPath, alias);
     }
 
+    /**
+     * @see CriteriaSpecification#INNER_JOIN
+     * @see CriteriaSpecification#FULL_JOIN
+     * @see CriteriaSpecification#LEFT_JOIN
+     */
     protected static CriteriaElement alias(String associationPath, String alias, int joinType) {
         return new Alias(associationPath, alias, joinType);
     }
