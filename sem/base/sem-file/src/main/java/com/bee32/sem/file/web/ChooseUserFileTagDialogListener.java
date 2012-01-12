@@ -1,9 +1,9 @@
 package com.bee32.sem.file.web;
 
-import com.bee32.plover.web.faces.controls2.AbstractSelectionAdapter;
+import com.bee32.plover.web.faces.controls2.AbstractSelectionListener;
 
 public abstract class ChooseUserFileTagDialogListener
-        extends AbstractSelectionAdapter {
+        extends AbstractSelectionListener {
 
     public ChooseUserFileTagDialogListener() {
         super(ChooseUserFileTagDialogBean.class);

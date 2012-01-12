@@ -42,7 +42,7 @@ public class SingleVerifierPolicyBean
     public Object getAddResponsibleAdapter() {
         return new ChoosePrincipalDialogListener() {
             @Override
-            protected void process(List<?> selection) {
+            protected void selected(List<?> selection) {
                 for (Object item : selection)
                     addResponsible((PrincipalDto) item);
             }

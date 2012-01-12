@@ -108,7 +108,7 @@ public class UserFileBean
     public Object getAddOwnerRestrictionAdapter() {
         return new ChoosePrincipalDialogListener() {
             @Override
-            protected void process(List<?> selection) {
+            protected void selected(List<?> selection) {
                 for (Object item : selection)
                     addOwnerRestriction((PrincipalDto) item);
             }
@@ -118,7 +118,7 @@ public class UserFileBean
     public Object getAddTagAdapter() {
         return new ChooseUserFileTagDialogListener() {
             @Override
-            protected void process(List<?> selection) {
+            protected void selected(List<?> selection) {
                 for (Object item : selection)
                     addTag((UserFileTagnameDto) item);
             }

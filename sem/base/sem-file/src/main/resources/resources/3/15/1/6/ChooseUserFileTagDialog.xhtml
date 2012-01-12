@@ -9,36 +9,34 @@
     <c:set var="_update" value="${update != null ? update : viewConfig.defaultUpdateTarget}" />
 
     <p:dialog header="${_caption}" widgetVar="${_var}" modal="true">
-        <div style="max-height: 40em; margin: 1em">
-            <h:form>
-                <p:dataTable id="dataTable" var="entry" value="${_bean.dataModel}" selection="${_bean.singleSelection}"
-                    selectionMode="single" paginator="true" rows="10" lazy="true" paginatorTemplate="${viewConfig.paginatorTemplate}"
-                    rowsPerPageTemplate="${viewConfig.pageSizeTemplate}" resizableColumns="true" rowIndexVar="rowIndex">
+        <h:form style="max-height: 40em; margin: 1em">
+            <p:dataTable id="dataTable" var="entry" value="${_bean.dataModel}" selection="${_bean.singleSelection}"
+                selectionMode="single" paginator="true" rows="10" lazy="true" paginatorTemplate="${viewConfig.paginatorTemplate}"
+                rowsPerPageTemplate="${viewConfig.pageSizeTemplate}" resizableColumns="true" rowIndexVar="rowIndex">
 
-                    <p:column headerText="序号">
-                        <h:outputText value="${rowIndex + 1}" />
-                    </p:column>
+                <p:column headerText="序号">
+                    <h:outputText value="${rowIndex + 1}" />
+                </p:column>
 
-                    <p:column headerText="标签">
-                        <h:outputText value="${entry.name}" />
-                    </p:column>
+                <p:column headerText="标签">
+                    <h:outputText value="${entry.name}" />
+                </p:column>
 
-                    <p:column headerText="描述">
-                        <h:outputText value="${entry.description}" />
-                    </p:column>
+                <p:column headerText="描述">
+                    <h:outputText value="${entry.description}" />
+                </p:column>
 
-                    <p:column headerText="所有人">
-                        <h:outputText value="${entry.owner.displayName}" />
-                    </p:column>
-                </p:dataTable>
+                <p:column headerText="所有人">
+                    <h:outputText value="${entry.owner.displayName}" />
+                </p:column>
+            </p:dataTable>
 
-                <div align="right">
-                    <p:commandButton value="确定" action="${_listener.submit}" update="${_update}" async="true"
-                        oncomplete="${_var}.hide()" />
-                    <p:commandButton value="关闭" onclick="${_var}.hide();" />
-                </div>
-            </h:form>
-        </div>
+            <div align="right">
+                <p:commandButton value="确定" action="${_listener.selected}" update="${_update}" async="true"
+                    oncomplete="${_var}.hide()" />
+                <p:commandButton value="关闭" onclick="${_var}.hide();" />
+            </div>
+        </h:form>
     </p:dialog>
 
 </h:panelGroup>

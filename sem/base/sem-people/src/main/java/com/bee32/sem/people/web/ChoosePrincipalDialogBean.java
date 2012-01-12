@@ -26,7 +26,7 @@ public class ChoosePrincipalDialogBean
     }
 
     @Override
-    public void submit() {
+    public void selected() {
         logger.debug("Selected: " + getSelection());
     }
 

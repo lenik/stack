@@ -1,22 +1,12 @@
 package com.bee32.sem.process.verify.web;
 
-import java.util.List;
-
-import com.bee32.plover.web.faces.controls2.AbstractChooseDialogListener;
+import com.bee32.plover.web.faces.controls2.AbstractSelectionListener;
 
 public abstract class ChooseVerifyPolicyDialogListener
-        extends AbstractChooseDialogListener {
+        extends AbstractSelectionListener {
 
-    ChooseVerifyPolicyDialogBean dialogBean;
-
-    @Override
-    public void submit() {
-        dialogBean = getBean(ChooseVerifyPolicyDialogBean.class);
-        List<?> selection = dialogBean.getSelection();
-        setSelection(selection);
-        select(selection);
+    public ChooseVerifyPolicyDialogListener() {
+        super(ChooseVerifyPolicyDialogBean.class);
     }
-
-    protected abstract void select(List<?> selection);
 
 }

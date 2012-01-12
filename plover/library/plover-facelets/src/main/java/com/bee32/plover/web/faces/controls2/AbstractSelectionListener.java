@@ -8,7 +8,7 @@ import com.bee32.plover.arch.operation.Operation;
 import com.bee32.plover.arch.util.ISelection;
 import com.bee32.plover.web.faces.utils.FacesContextSupport;
 
-public abstract class AbstractSelectionAdapter
+public abstract class AbstractSelectionListener
         extends FacesContextSupport
         implements IDialogCallback {
 
@@ -34,11 +34,11 @@ public abstract class AbstractSelectionAdapter
     final ISelection selectionSource;
     boolean cancelled;
 
-    public AbstractSelectionAdapter(Class<? extends ISelection> selectionSourceBeanType) {
+    public AbstractSelectionListener(Class<? extends ISelection> selectionSourceBeanType) {
         this(new SelectionWrapper(selectionSourceBeanType));
     }
 
-    public AbstractSelectionAdapter(ISelection selectionSource) {
+    public AbstractSelectionListener(ISelection selectionSource) {
         if (selectionSource == null)
             throw new NullPointerException("selectionSource");
         this.selectionSource = selectionSource;
@@ -46,12 +46,12 @@ public abstract class AbstractSelectionAdapter
 
     @Operation
     @Override
-    public void submit() {
+    public void selected() {
         List<?> selection = getSelection();
-        process(selection);
+        selected(selection);
     }
 
-    protected abstract void process(List<?> selection);
+    protected abstract void selected(List<?> selection);
 
     @Operation
     @Override

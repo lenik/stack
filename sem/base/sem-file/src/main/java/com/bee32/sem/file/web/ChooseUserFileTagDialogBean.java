@@ -25,7 +25,7 @@ public class ChooseUserFileTagDialogBean
     }
 
     @Override
-    public void submit() {
+    public void selected() {
         logger.debug("Selected: " + getSelection());
     }
 
