@@ -18,11 +18,11 @@ public abstract class VerifyContextSupportBean
         return getBean(IVerifyService.class);
     }
 
-    protected List<? extends IVerifiableDto> getVerifiables() {
+    public List<? extends IVerifiableDto> getVerifiables() {
         return (List<? extends IVerifiableDto>) getSelection(IVerifiableDto.class, EntityDto.class);
     }
 
-    protected IVerifiableDto getVerifiableDto1() {
+    public IVerifiableDto getVerifiable1() {
         List<? extends IVerifiableDto> verifiables = getVerifiables();
         if (verifiables.isEmpty())
             return null;
@@ -30,8 +30,8 @@ public abstract class VerifyContextSupportBean
         return first;
     }
 
-    protected VerifyContextDto<?> getVerifyContextDto1() {
-        IVerifiableDto first = getVerifiableDto1();
+    public VerifyContextDto<?> getVerifyContext1() {
+        IVerifiableDto first = getVerifiable1();
         if (first == null)
             return null;
         VerifyContextDto<?> verifyContext = first.getVerifyContext();
@@ -46,6 +46,12 @@ public abstract class VerifyContextSupportBean
             statev[index++] = verifiable.getVerifyContext().getVerifyEvalState();
         VerifyEvalState state = VerifyEvalState.meet(statev);
         return state;
+    }
+
+    public boolean isCurrentUserResponsible() {
+        VerifyEvalState state = getMixedVerifyState();
+
+        return true;
     }
 
 }
