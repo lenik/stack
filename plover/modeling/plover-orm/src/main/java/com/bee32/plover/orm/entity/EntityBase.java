@@ -76,7 +76,7 @@ public abstract class EntityBase<K extends Serializable>
      *
      * @return <code>true</code> if this entity is locked.
      */
-    protected boolean isLocked() {
+    public boolean isLocked() {
         return false;
     }
 

@@ -9,6 +9,12 @@ public class FieldPropertyAccessor
 
     final Field field;
 
+    public FieldPropertyAccessor(Field field) {
+        if (field == null)
+            throw new NullPointerException("field");
+        this.field = field;
+    }
+
     public FieldPropertyAccessor(Class<?> clazz, String fieldName) {
         if (clazz == null)
             throw new NullPointerException("clazz");

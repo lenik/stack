@@ -3,8 +3,6 @@ package com.bee32.plover.orm.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.free.Pred0;
-
 public class EntityAccessor {
 
     public static <K extends Serializable> void setId(Entity<K> entity, K id) {
@@ -77,22 +75,10 @@ public class EntityAccessor {
         return entity.isLocked();
     }
 
-    public static boolean isLockedByOther(Entity<?> entity) {
+    public static boolean isAnyLocked(Entity<?> entity) {
         if (entity == null)
             throw new NullPointerException("entity");
-        return entity.isLockedByOther();
-    }
-
-    public static boolean addLockPredicate(Entity<?> entity, Pred0 lockPredicate) {
-        if (entity == null)
-            throw new NullPointerException("entity");
-        return entity.addLockPredicate(lockPredicate);
-    }
-
-    public static boolean removeLockPredicate(Entity<?> entity, Pred0 lockPredicate) {
-        if (entity == null)
-            throw new NullPointerException("entity");
-        return entity.removeLockPredicate(lockPredicate);
+        return entity.isAnyLocked();
     }
 
 }

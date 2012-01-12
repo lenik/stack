@@ -6,7 +6,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
-import javax.free.Pred0;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
@@ -19,8 +18,8 @@ import org.hibernate.annotations.DefaultValue;
 
 import overlay.Overlay;
 
+import com.bee32.plover.arch.util.ILockable;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.GeneralFormatter;
 import com.bee32.plover.util.IMultiFormat;
@@ -29,45 +28,16 @@ import com.bee32.sem.event.entity.Event;
 
 @MappedSuperclass
 public abstract class AbstractVerifyContext
-        implements Serializable, IVerifyContext, IMultiFormat {
+        implements Serializable, IVerifyContext, IMultiFormat, ILockable {
 
     private static final long serialVersionUID = 1L;
 
-    protected Entity<?> entity;
+    protected transient Entity<?> entity;
 
     VerifyEvalState verifyEvalState = VerifyEvalState.UNKNOWN;
     String verifyError;
     Date verifyEvalDate;
     Event verifyEvent;
-
-    public AbstractVerifyContext() {
-    }
-
-    public AbstractVerifyContext(Entity<?> entity) {
-        bind(entity);
-    }
-
-    private class VLockPred
-            extends Pred0
-            implements Serializable {
-
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public boolean test() {
-            if (VerifyEvalState.VERIFIED.equals(verifyEvalState))
-                return true;
-            return false;
-        }
-
-    }
-
-    public void bind(Entity<?> entity) {
-        if (entity == null)
-            throw new NullPointerException("entity");
-        this.entity = entity;
-        EntityAccessor.addLockPredicate(entity, new VLockPred());
-    }
 
     /**
      * 清楚审核数据，以便重新审核
@@ -137,6 +107,12 @@ public abstract class AbstractVerifyContext
 
     public void setVerifyEvent(Event verifyEvent) {
         this.verifyEvent = verifyEvent;
+    }
+
+    @Transient
+    @Override
+    public boolean isLocked() {
+        return verifyEvalState == VerifyEvalState.VERIFIED;
     }
 
     @Override

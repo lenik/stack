@@ -1,12 +1,9 @@
 package com.bee32.plover.orm.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
-import javax.free.Pred0;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
@@ -19,6 +16,7 @@ import overlay.Overlay;
 
 import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.util.IdComposite;
+import com.bee32.plover.arch.util.ReflectLocks;
 import com.bee32.plover.criteria.hibernate.Alias;
 import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.Conjunction;
@@ -406,52 +404,18 @@ public abstract class Entity<K extends Serializable>
         return thatClass.cast(thatLike);
     }
 
-    static final int lockMask = EntityFlags.LOCKED //
-            | EntityFlags.USER_LOCK;
-
-    private List<Pred0> lockPredicates;
+    @Transient
+    public boolean isLocked() {
+        return ReflectLocks.isLocked(this);
+    }
 
     @Transient
-    @Override
-    protected boolean isLocked() {
+    boolean isAnyLocked() {
         EntityFlags ef = EntityAccessor.getFlags(this);
-        int x = ef.bits & lockMask;
-        if (x != 0)
+        int lockFlags = ef.bits & (EntityFlags.USER_LOCK | EntityFlags.LOCKED);
+        if (lockFlags != 0)
             return true;
-        return isLockedByOther();
-    }
-
-    @Transient
-    protected boolean isLockedByOther() {
-        if (lockPredicates != null) {
-            for (Pred0 lockPredicate : lockPredicates) {
-                Boolean _locked = lockPredicate.eval();
-                if (_locked == Boolean.TRUE)
-                    return true;
-            }
-        }
-        return false;
-    }
-
-    boolean addLockPredicate(Pred0 lockPredicate) {
-        if (lockPredicates == null) {
-            synchronized (this) {
-                if (lockPredicates == null) {
-                    lockPredicates = new ArrayList<Pred0>(1);
-                }
-            }
-        }
-        if (lockPredicates.contains(lockPredicate))
-            return false;
-        else
-            return lockPredicates.add(lockPredicate);
-    }
-
-    boolean removeLockPredicate(Pred0 lockPredicate) {
-        if (lockPredicates != null)
-            return lockPredicates.remove(lockPredicate);
-        else
-            return false;
+        return isLocked();
     }
 
 }

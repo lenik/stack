@@ -56,7 +56,7 @@ public class LockingEntityProcessor
         if (entity instanceof Entity<?>) {
             // Refresh entity lock by lock-predicates.
             Entity<?> en = (Entity<?>) entity;
-            if (EntityAccessor.isLockedByOther(en))
+            if (EntityAccessor.isLocked(en))
                 newFlags.setLocked(true);
         }
 
@@ -65,8 +65,9 @@ public class LockingEntityProcessor
             if (newFlags.isUnlockReq()) {
                 newFlags.setLocked(false);
                 newFlags.setUnlockReq(false);
-            } else
+            } else {
                 throw new EntityLockedException("Entity is locked", event.getEntity());
+            }
         }
 
         // the user lock is changable by user.
