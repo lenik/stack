@@ -65,7 +65,7 @@ public class StockOrderVerifyPolicyBean
     }
 
     public void newEntry() {
-        //临时性的创建一个dto,用户在操作界面上操作后会使用用户选择的dto对此进行覆盖
+        // 临时性的创建一个dto,用户在操作界面上操作后会使用用户选择的dto对此进行覆盖
         VerifyPolicyDto policy = new SingleVerifierPolicyDto().create();
         entry = new StockOrderSubjectPolicyEntry(StockOrderSubject.TAKE_IN, policy);
     }
@@ -74,7 +74,7 @@ public class StockOrderVerifyPolicyBean
         List<SelectItem> subjects = new ArrayList<SelectItem>();
 
         Collection<StockOrderSubject> _subjects = StockOrderSubject.values();
-        for(StockOrderSubject _subject : _subjects) {
+        for (StockOrderSubject _subject : _subjects) {
             SelectItem item = new SelectItem();
             item.setValue(_subject.getValue());
             item.setLabel(_subject.getDisplayName());
