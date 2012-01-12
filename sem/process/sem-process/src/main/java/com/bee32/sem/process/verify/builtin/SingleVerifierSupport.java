@@ -12,8 +12,7 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.DefaultValue;
 
-import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.entity.Entity;
+import com.bee32.icsf.principal.Principal;
 import com.bee32.sem.process.verify.AbstractVerifyContext;
 
 /**
@@ -30,7 +29,7 @@ public class SingleVerifierSupport
 
     private static final long serialVersionUID = 1L;
 
-    private User verifier1;
+    private Principal verifier1;
     private Date verifiedDate1;
     private boolean accepted1;
     private String rejectedReason1;
@@ -39,17 +38,13 @@ public class SingleVerifierSupport
         super();
     }
 
-    public SingleVerifierSupport(Entity<?> entity) {
-        super(entity);
-    }
-
     @ManyToOne(fetch = FetchType.LAZY)
     @Override
-    public User getVerifier1() {
+    public Principal getVerifier1() {
         return verifier1;
     }
 
-    public void setVerifier1(User verifier) {
+    public void setVerifier1(Principal verifier) {
         this.verifier1 = verifier;
     }
 

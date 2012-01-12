@@ -5,7 +5,7 @@ import java.util.Date;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
-import com.bee32.icsf.principal.UserDto;
+import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.process.verify.builtin.SingleVerifierSupport;
 import com.bee32.sem.process.verify.dto.VerifyContextDto;
@@ -15,7 +15,7 @@ public class SingleVerifierSupportDto
 
     private static final long serialVersionUID = 1L;
 
-    private UserDto verifier1;
+    private PrincipalDto verifier1;
     private Date verifiedDate1;
     private boolean accepted1;
     private String rejectedReason1;
@@ -30,7 +30,7 @@ public class SingleVerifierSupportDto
 
     @Override
     protected void _marshal(SingleVerifierSupport source) {
-        verifier1 = mref(UserDto.class, source.getVerifier1());
+        verifier1 = mref(PrincipalDto.class, source.getVerifier1());
         verifiedDate1 = source.getVerifiedDate1();
         accepted1 = source.isAccepted1();
         rejectedReason1 = source.getRejectedReason1();
@@ -48,7 +48,7 @@ public class SingleVerifierSupportDto
     @Override
     public void _parse(TextMap map)
             throws ParseException, TypeConvertException {
-        verifier1 = new UserDto(0).parseRef(map.getString("verifierId1"));
+        verifier1 = new PrincipalDto().parseRef(map.getString("verifierId1"));
 
         long _verifiedDate1 = map.getLong("verifiedDate1");
         verifiedDate1 = new Date(_verifiedDate1);
@@ -57,11 +57,11 @@ public class SingleVerifierSupportDto
         rejectedReason1 = map.getString("rejectedReason1");
     }
 
-    public UserDto getVerifier1() {
+    public PrincipalDto getVerifier1() {
         return verifier1;
     }
 
-    public void setVerifier1(UserDto verifier1) {
+    public void setVerifier1(PrincipalDto verifier1) {
         this.verifier1 = verifier1;
     }
 

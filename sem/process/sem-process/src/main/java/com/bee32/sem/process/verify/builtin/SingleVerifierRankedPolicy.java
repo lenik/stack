@@ -18,7 +18,6 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.icsf.principal.Principal;
-import com.bee32.icsf.principal.User;
 import com.bee32.sem.process.verify.ForVerifyContext;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
@@ -124,7 +123,7 @@ public class SingleVerifierRankedPolicy
     public VerifyResult validate(IVerifyContext _context) {
         ISingleVerifierWithNumber context = checkedCast(ISingleVerifierWithNumber.class, _context);
 
-        User user = context.getVerifier1();
+        Principal user = context.getVerifier1();
 
         if (!user.impliesOneOf(getResponsibles(context)))
             return VerifyResult.invalid(user);

@@ -14,7 +14,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 
 import com.bee32.icsf.principal.Principal;
-import com.bee32.icsf.principal.User;
 import com.bee32.sem.process.verify.ForVerifyContext;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
@@ -111,7 +110,7 @@ public class SingleVerifierPolicy
     @Override
     public VerifyResult validate(IVerifyContext context) {
         ISingleVerifier sv = checkedCast(ISingleVerifier.class, context);
-        User user = sv.getVerifier1();
+        Principal user = sv.getVerifier1();
 
         if (user == null)
             return UNKNOWN;

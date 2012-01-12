@@ -2,7 +2,7 @@ package com.bee32.sem.process.verify.builtin;
 
 import java.util.Date;
 
-import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.Principal;
 import com.bee32.sem.process.verify.IVerifyContext;
 
 /**
@@ -16,7 +16,7 @@ public interface ISingleVerifier
      *
      * @return 返回 <code>null</code> 表示尚未审核。
      */
-    User getVerifier1();
+    Principal getVerifier1();
 
     /**
      * 审核的时间。
