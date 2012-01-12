@@ -10,6 +10,7 @@ import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.file.dto.UserFileTagnameDto;
 import com.bee32.sem.file.entity.FileBlob;
 import com.bee32.sem.file.entity.UserFile;
+import com.bee32.sem.file.util.UserFileCriteria;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.people.web.ChoosePrincipalDialogListener;
 
@@ -19,6 +20,7 @@ public class UserFileBean
 
     private static final long serialVersionUID = 1L;
 
+    String namePattern;
     UserFileTagnameDto selectedTag;
 
     public UserFileBean() {
@@ -58,6 +60,18 @@ public class UserFileBean
         uiLogger.info("保存文件成功。");
     }
 
+    public String getNamePattern() {
+        return namePattern;
+    }
+
+    public void setNamePattern(String namePattern) {
+        this.namePattern = namePattern;
+    }
+
+    public void addNamedLikeRestriction() {
+        addSearchFragment("名称含有 " + namePattern, UserFileCriteria.namedLike(namePattern));
+    }
+
     public void addOwnerRestriction(PrincipalDto owner) {
     }
 
@@ -68,7 +82,8 @@ public class UserFileBean
 
     public void removeTag() {
         UserFileDto userFile = getActiveObject();
-        userFile.getTags().remove(selectedTag);
+        List<UserFileTagnameDto> tags = userFile.getTags();
+        tags.remove(selectedTag);
     }
 
     public UserFileTagnameDto getSelectedTag() {

@@ -36,7 +36,10 @@ public class CommonCriteria
     }
 
     public static CriteriaElement namedLike(String pattern, boolean ignoreCase) {
-        if (pattern == null || pattern.isEmpty())
+        if (pattern == null)
+            return null;
+        pattern = pattern.trim();
+        if (pattern.isEmpty())
             return null;
         if (ignoreCase)
             return likeIgnoreCase("name", pattern, MatchMode.ANYWHERE);

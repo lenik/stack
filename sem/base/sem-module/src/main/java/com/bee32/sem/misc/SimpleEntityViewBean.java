@@ -24,6 +24,7 @@ import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.restful.resource.StandardViews;
 import com.bee32.sem.frame.search.ISearchFragmentsHolder;
 import com.bee32.sem.frame.search.SearchFragment;
+import com.bee32.sem.frame.search.SearchFragmentWrapper;
 import com.bee32.sem.sandbox.AbstractCriteriaHolder;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
@@ -116,10 +117,18 @@ public abstract class SimpleEntityViewBean
         this.searchFragments = searchFragments;
     }
 
+    public void addSearchFragment(String entryLabel, ICriteriaElement criteriaElement) {
+        if (criteriaElement == null)
+            return;
+        SearchFragmentWrapper fragment = new SearchFragmentWrapper(criteriaElement, entryLabel);
+        addSearchFragment(fragment);
+    }
+
     @Override
     public void addSearchFragment(SearchFragment fragment) {
         if (fragment == null)
             throw new NullPointerException("fragment");
+        fragment.setHolder(this);
         searchFragments.add(fragment);
     }
 

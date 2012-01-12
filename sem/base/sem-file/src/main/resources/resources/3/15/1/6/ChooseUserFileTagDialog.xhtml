@@ -11,13 +11,6 @@
     <p:dialog header="${_caption}" widgetVar="${_var}" modal="true">
         <div style="max-height: 40em; margin: 1em">
             <h:form>
-                <h:panelGrid columns="3" columnClasses="">
-                    <h:outputLabel for="pattern" value="标签名称: " />
-                    <p:inputText id="pattern" value="${_bean.pattern}" />
-                    <p:commandButton value="查找" actionListener="${_bean.search}" update="dataTable"
-                        async="true" />
-                </h:panelGrid>
-
                 <p:dataTable id="dataTable" var="entry" value="${_bean.dataModel}" selection="${_bean.singleSelection}"
                     selectionMode="single" paginator="true" rows="10" lazy="true" paginatorTemplate="${viewConfig.paginatorTemplate}"
                     rowsPerPageTemplate="${viewConfig.pageSizeTemplate}" resizableColumns="true" rowIndexVar="rowIndex">
@@ -40,9 +33,9 @@
                 </p:dataTable>
 
                 <div align="right">
-                    <p:commandButton oncomplete="${_var}.hide()" action="${_listener.submit}" update="${_update}"
-                        value="确定" async="true" />
-                    <p:commandButton value="关闭" oncomplete="${_var}.hide();" />
+                    <p:commandButton value="确定" action="${_listener.submit}" update="${_update}" async="true"
+                        oncomplete="${_var}.hide()" />
+                    <p:commandButton value="关闭" onclick="${_var}.hide();" />
                 </div>
             </h:form>
         </div>
