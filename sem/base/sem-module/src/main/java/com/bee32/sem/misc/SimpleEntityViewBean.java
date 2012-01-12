@@ -22,12 +22,15 @@ import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.restful.resource.StandardViews;
+import com.bee32.sem.frame.search.ISearchFragmentsHolder;
+import com.bee32.sem.frame.search.SearchFragment;
 import com.bee32.sem.sandbox.AbstractCriteriaHolder;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
 
 public abstract class SimpleEntityViewBean
-        extends EntityViewBean {
+        extends EntityViewBean
+        implements ISearchFragmentsHolder {
 
     private static final long serialVersionUID = 1L;
 
@@ -51,8 +54,9 @@ public abstract class SimpleEntityViewBean
     protected Class<? extends EntityDto<?, ?>> dtoClass;
     protected int saveFlags = 0;
     protected int deleteFlags = 0;
-    protected List<ICriteriaElement> criteriaElements;
 
+    List<ICriteriaElement> baseCriteriaElements;
+    List<SearchFragment> searchFragments = new ArrayList<SearchFragment>();
     EntityDataModelOptions<?, ?> options;
     LazyDataModel<?> dataModel;
 
@@ -61,7 +65,7 @@ public abstract class SimpleEntityViewBean
             ICriteriaElement... criteriaElements) {
         this.entityClass = entityClass;
         this.dtoClass = dtoClass;
-        this.criteriaElements = Varargs.toList(criteriaElements);
+        this.baseCriteriaElements = Varargs.toList(criteriaElements);
         this.options = new EntityDataModelOptions<E, D>(//
                 entityClass, dtoClass, selection, new _CriteriaHolder());
         this.dataModel = UIHelper.buildLazyDataModel(options);
@@ -74,7 +78,7 @@ public abstract class SimpleEntityViewBean
 
         @Override
         protected List<? extends ICriteriaElement> getCriteriaElements() {
-            return SimpleEntityViewBean.this.getCriteriaElements();
+            return SimpleEntityViewBean.this.composeCriteriaElements();
         }
 
     }
@@ -83,16 +87,45 @@ public abstract class SimpleEntityViewBean
         return dataModel;
     }
 
-    protected List<? extends ICriteriaElement> getCriteriaElements() {
-        return criteriaElements;
+    protected List<? extends ICriteriaElement> composeCriteriaElements() {
+        List<ICriteriaElement> join = new ArrayList<ICriteriaElement>(baseCriteriaElements);
+        for (SearchFragment fragment : searchFragments) {
+            ICriteriaElement element = fragment.compose();
+            if (element != null)
+                join.add(element);
+        }
+        return join;
     }
 
-    protected void setCriteriaElements(ICriteriaElement... criteriaElements) {
-        this.criteriaElements = Varargs.toList(criteriaElements);
+    protected final List<ICriteriaElement> getBaseCriteriaElements() {
+        return baseCriteriaElements;
     }
 
-    protected final void setCriteriaElements(List<ICriteriaElement> criteriaElements) {
+    protected final void setBaseCriteriaElements(List<ICriteriaElement> criteriaElements) {
         options.setCriteriaElements(criteriaElements);
+    }
+
+    @Override
+    public List<SearchFragment> getSearchFragments() {
+        return searchFragments;
+    }
+
+    public void setSearchFragments(List<SearchFragment> searchFragments) {
+        if (searchFragments == null)
+            throw new NullPointerException("searchFragments");
+        this.searchFragments = searchFragments;
+    }
+
+    @Override
+    public void addSearchFragment(SearchFragment fragment) {
+        if (fragment == null)
+            throw new NullPointerException("fragment");
+        searchFragments.add(fragment);
+    }
+
+    @Override
+    public void removeSearchFragment(SearchFragment fragment) {
+        searchFragments.remove(fragment);
     }
 
     /**
@@ -271,7 +304,7 @@ public abstract class SimpleEntityViewBean
             StringBuilder buf = new StringBuilder();
             buf.append("以下对象被锁定：\n");
             for (Entity<?> lockedEntity : lockedList) {
-                String entryText = lockedEntity.getEntryText();
+                String entryText = lockedEntity.getEntryLabel();
                 buf.append("    " + entryText + ", \n");
             }
             uiLogger.error("不能删除锁定的对象: " + buf.toString());
