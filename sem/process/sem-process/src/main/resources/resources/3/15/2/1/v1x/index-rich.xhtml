@@ -1,164 +1,114 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
     xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core" xmlns:sem="http://bee32.com/sem/functions"
-    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" template="/template/primefaces.xhtml">
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" template="/template/simple-entity.xhtml">
 
-    <ui:define name="title">分级策略</ui:define>
+    <ui:param name="title" value="分级策略" />
+    <ui:param name="bean" value="#{singleVerifierRankedPolicyBean}" />
+    <ui:param name="numberHint" value="边界值" />
 
-    <ui:define name="content">
-
-        <c:set var="bean" value="#{singleVerifierRankedPolicyBean}" />
-
+    <ui:define name="includes">
         <ui:include src="/3/15/2/1/ChooseVerifyPolicyDialog.xhtml">
-            <ui:param name="listener" value="#{bean.chooseVerifyPolicyDialogListener}" />
+            <ui:param name="listener" value="#{bean.setVerifyPolicyAdapter}" />
             <ui:param name="update" value="addLevelForm:targetPolicy" />
         </ui:include>
+    </ui:define>
 
-        <h:form id="mainForm">
-            <p:toolbar id="toolbar">
-                <p:toolbarGroup>
-                    <p:commandButton value="新增" actionListener="#{bean.showCreateForm}" oncomplete="editDialog.show()"
-                        update="editForm" />
-                    <p:commandButton value="修改" actionListener="#{bean.showEditForm}" oncomplete="editDialog.show()"
-                        update="editForm" />
-                    <p:commandButton value="删除" oncomplete="deleteConfirmDialog.show()"/>
-                </p:toolbarGroup>
-            </p:toolbar>
-            <p:dataTable id="dataTable" var="entry" value="#{bean.dataModel}" selection="#{bean.singleSelection}"
-                selectionMode="single" paginator="true" rows="#{viewConfig.pageSize}" lazy="true"
-                paginatorTemplate="#{viewConfig.paginatorTemplate}" rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}"
-                resizableColumns="true" rowIndexVar="rowIndex">
+    <ui:define name="dataTableColumns">
+        <f:facet name="header">分级策略</f:facet>
 
-                <f:facet name="header">分级策略</f:facet>
+        <p:column headerText="序号">
+            <h:outputText value="#{rowIndex + 1}" />
+        </p:column>
 
-                <p:column headerText="序号">
-                    <h:outputText value="#{rowIndex + 1}" />
-                </p:column>
+        <p:column headerText="名称">
+            <h:outputText value="#{entry.label}" />
+        </p:column>
 
-                <p:column headerText="名称">
-                    <h:outputText value="#{entry.label}" />
-                </p:column>
+        <p:column headerText="描述">
+            <h:outputText value="#{entry.description}" />
+        </p:column>
 
-                <p:column headerText="描述">
-                    <h:outputText value="#{entry.description}" />
-                </p:column>
+        <p:column headerText="创建日期">
+            <h:outputText value="#{entry.createdDate}">
+                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+            </h:outputText>
+        </p:column>
 
-                <p:column headerText="创建日期">
-                    <h:outputText value="#{entry.createdDate}">
-                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-                    </h:outputText>
-                </p:column>
+        <p:column headerText="所有人">
+            <h:outputText value="#{entry.owner.displayName}" />
+        </p:column>
+    </ui:define>
 
-                <p:column headerText="所有人">
-                    <h:outputText value="#{entry.owner.displayName}" />
-                </p:column>
-            </p:dataTable>
-        </h:form>
+    <ui:define name="dialogs">
+        <p:dialog header="新增/编辑策略" widgetVar="editDialog" modal="true">
+            <h:form id="editForm" style="max-height: 30em; margin: 1em">
+                <c:set var="obj" value="#{bean.activeObject}" />
+                <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
 
-        <h:form id="editForm">
-            <c:set var="obj" value="#{bean.activeObject}" />
-            <p:dialog header="新增/编辑策略" widgetVar="editDialog" modal="true">
-                <div style="max-height: 30em; margin: 1em">
-                    <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
+                    <h:outputText value="名称" />
+                    <p:inputText value="#{obj.label}" />
 
-                        <h:outputText value="名称" />
-                        <p:inputText value="#{obj.label}" />
+                    <h:outputText value="描述" />
+                    <p:inputText value="#{obj.description}" size="50" />
 
-                        <h:outputText value="描述" />
-                        <p:inputText value="#{obj.description}" />
+                </t:panelGrid>
 
+                <p:fieldset legend="级别定义" toggleable="false">
+                    <p:dataTable id="levelTable" value="#{obj.levels}" var="level" resizableColumns="true"
+                        rowIndexVar="rowIndex">
+                        <f:facet name="header">各级别对应的策略</f:facet>
+                        <p:column headerText="序号" style="width: 4em;">
+                            <h:outputText value="#{rowIndex+1}" />
+                        </p:column>
+
+                        <p:column headerText="#{numberHint} " style="width: 10em;">
+                            <h:outputText value="#{level.limit}" />
+                        </p:column>
+
+                        <p:column headerText="小于等于该边界值可用的策略">
+                            <h:outputText value="#{level.targetPolicy.label}" title="#{level.targetPolicy.description}" />
+                        </p:column>
+
+                        <p:column headerText="操作" style="width: 3em;">
+                            <p:commandLink title="删除" action="#{bean.removeLevel}" update="editForm:levelTable">
+                                <f:setPropertyActionListener value="#{level}" target="#{bean.selectedLevel}" />
+                                <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                    <p:commandButton value="增加#{numberHint}级别" actionListener="#{bean.newLevel}"
+                        update="addLevelForm:addLevelPanel" onclick="addLevelDialog.show()" />
+                </p:fieldset>
+
+                <div align="right">
+                    <p:commandButton update="mainForm:dataTable" value="保存" actionListener="#{bean.save}"
+                        oncomplete="editDialog.hide()" />
+                    <p:commandButton value="取消" onclick="editDialog.hide()" />
+                </div>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog header="新增#{numberHint}级别" widgetVar="addLevelDialog" modal="true">
+            <h:form id="addLevelForm" style="max-height: 30em; margin: 1em">
+                <t:panelGrid id="addLevelPanel" columns="2" columnClasses="detail_col_title,detail_col_value">
+
+                    <h:outputText value="#{numberHint}" />
+                    <p:inputText value="#{bean.level.limit}" />
+
+                    <h:outputText value="对应策略" />
+                    <t:panelGrid columns="2">
+                        <p:inputText id="targetPolicy" readonly="#{true}" value="#{bean.level.targetPolicy.label}" />
+                        <p:commandButton value="..." update="chooseVerifyPolicyForm:dataTable" onclick="chooseVerifyPolicyDialog.show()" />
                     </t:panelGrid>
+                </t:panelGrid>
 
-                    <p:fieldset legend="策略" toggleable="false">
-                        <p:dataTable id="levelTable" value="#{obj.levels}" var="level"
-                            resizableColumns="true" rowIndexVar="rowIndex">
-                            <f:facet name="header">分级策略包含的策略</f:facet>
-                            <p:column headerText="序号" style="width: 4em;">
-                                <h:outputText value="#{rowIndex+1}" />
-                            </p:column>
-
-                            <p:column headerText="金额" style="width: 10em;">
-                                <h:outputText value="#{level.limit}" />
-                            </p:column>
-
-                            <p:column headerText="名称">
-                                <h:outputText value="#{level.targetPolicy.label}" />
-                            </p:column>
-
-                            <p:column headerText="描述">
-                                <h:outputText value="#{level.targetPolicy.description}" />
-                            </p:column>
-
-                            <p:column headerText="创建日期">
-                                <h:outputText value="#{level.targetPolicy.createdDate}">
-                                    <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-                                </h:outputText>
-                            </p:column>
-
-                            <p:column headerText="操作" style="width: 3em;">
-                                <p:commandLink title="删除" action="#{bean.removeLevel}" update="editForm:levelTable">
-                                    <f:setPropertyActionListener value="#{level}"
-                                        target="#{bean.level}" />
-                                    <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
-                                </p:commandLink>
-                            </p:column>
-                        </p:dataTable>
-                        <p:commandButton
-                            value="增加金额级别"
-                            actionListener="#{bean.newLevel}"
-                            update="addLevelForm:addLevelPanel"
-                            onclick="addLevelDialog.show()" />
-                    </p:fieldset>
-
-                    <div align="right">
-                        <p:commandButton update="mainForm:dataTable" value="保存" actionListener="#{bean.save}"
-                            oncomplete="editDialog.hide()" />
-                        <p:commandButton value="取消" onclick="editDialog.hide()" />
-                    </div>
+                <div align="right">
+                    <p:commandButton update="editForm:levelTable" value="保存" actionListener="#{bean.addLevel}"
+                        oncomplete="addLevelDialog.hide()" />
+                    <p:commandButton value="取消" onclick="addLevelDialog.hide()" />
                 </div>
-            </p:dialog>
-        </h:form>
-
-        <h:form id="deleteConfirmForm">
-            <p:confirmDialog header="删除确认" message="确定要删除吗?" severity="alert" widgetVar="deleteConfirmDialog"
-                modal="true">
-                <div style="margin: 2em">
-                    <p:commandButton value="确定" update="mainForm:dataTable" actionListener="#{bean.deleteSelection}"
-                        oncomplete="deleteConfirmDialog.hide()" />
-                    <p:commandButton value="取消" onclick="deleteConfirmDialog.hide()" type="button" />
-                </div>
-            </p:confirmDialog>
-        </h:form>
-
-        <h:form id="addLevelForm">
-            <p:dialog header="新增金额级别" widgetVar="addLevelDialog" modal="true">
-                <div style="max-height: 30em; margin: 1em">
-                    <t:panelGrid id="addLevelPanel" columns="2" columnClasses="detail_col_title,detail_col_value">
-
-                        <h:outputText value="金额" />
-                        <p:inputText value="#{bean.level.limit}" />
-
-                        <h:outputText value="白名单策略" />
-                        <t:panelGrid columns="2">
-                            <p:inputText
-                                id="targetPolicy"
-                                readonly="#{true}"
-                                value="#{bean.level.targetPolicy.label}" />
-                            <p:commandButton
-				value="..."
-				update="chooseVerifyPolicyForm:dataTable"
-				onclick="chooseVerifyPolicyDialog.show()"/>
-                        </t:panelGrid>
-                    </t:panelGrid>
-
-                    <div align="right">
-                        <p:commandButton update="editForm:levelTable" value="保存" actionListener="#{bean.addLevel}"
-                            oncomplete="addLevelDialog.hide()" />
-                        <p:commandButton value="取消" onclick="addLevelDialog.hide()" />
-                    </div>
-                </div>
-            </p:dialog>
-        </h:form>
+            </h:form>
+        </p:dialog>
 
     </ui:define>
 </ui:composition>

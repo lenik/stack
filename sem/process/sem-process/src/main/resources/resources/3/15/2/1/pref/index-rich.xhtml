@@ -1,64 +1,41 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
     xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core" xmlns:sem="http://bee32.com/sem/functions"
-    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" template="/template/primefaces.xhtml">
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" template="/template/simple-entity.xhtml">
 
-    <ui:define name="title">审核策略配置项1</ui:define>
+    <ui:param name="title" value="审核策略配置项" />
+    <ui:param name="bean" value="#{verifyPolicyPrefBean}" />
 
-    <ui:define name="content">
+    <ui:define name="dataTableColumns">
+        <p:column>
+            <f:facet name="header">
+                <h:outputText value="序号" />
+            </f:facet>
+            <h:outputText value="#{rowIndex + 1}" />
+        </p:column>
 
-        <c:set var="bean" value="#{verifyPolicyPrefBean}" />
+        <p:column>
+            <f:facet name="header">
+                <h:outputText value="实体类型" />
+            </f:facet>
+            <h:outputText value="#{entry.displayName}" />
+        </p:column>
 
-        <h:form id="mainForm">
-            <p:toolbar>
-                <p:toolbarGroup>
-                    <p:commandButton value="新增" actionListener="#{bean.showCreateForm}" oncomplete="editDialog.show()"
-                        update="editForm" />
-                    <p:commandButton value="修改" actionListener="#{bean.showEditForm}" oncomplete="editDialog.show()"
-                        update="editForm" />
-                    <p:commandButton value="删除" onclick="deleteConfirmDialog.show()" />
-                </p:toolbarGroup>
-            </p:toolbar>
+        <p:column>
+            <f:facet name="header">
+                <h:outputText value="启用的审核策略" />
+            </f:facet>
+            <h:outputText value="#{entry.preferredPolicy.label}" />
+        </p:column>
 
-            <p:dataTable id="dataTable" var="entry" value="#{bean.dataModel}" selection="#{bean.singleSelection}"
-                selectionMode="single" paginator="true" rows="#{viewConfig.pageSize}" lazy="true"
-                paginatorTemplate="#{viewConfig.paginatorTemplate}" rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}"
-                resizableColumns="true" rowIndexVar="rowIndex">
+        <p:column>
+            <f:facet name="header">
+                <h:outputText value="备注" />
+            </f:facet>
+            <h:outputText value="#{entry.description}" />
+        </p:column>
+    </ui:define>
 
-                <p:ajax event="rowSelect" listener="#{bean.dummy}" update=":main:toolbar" />
-                <p:ajax event="rowUnselect" listener="#{bean.dummy}" update=":main:toolbar" />
-
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText value="序号" />
-                    </f:facet>
-                    <h:outputText value="#{rowIndex + 1}" />
-                </p:column>
-
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText value="实体类型" />
-                    </f:facet>
-                    <h:outputText value="#{entry.displayName}" />
-                </p:column>
-
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText value="启用的审核策略" />
-                    </f:facet>
-                    <h:outputText value="#{entry.preferredPolicy.label}" />
-                </p:column>
-
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText value="备注" />
-                    </f:facet>
-                    <h:outputText value="#{entry.description}" />
-                </p:column>
-
-            </p:dataTable>
-        </h:form>
-
+    <ui:define name="dialogs">
         <p:dialog header="配置项" widgetVar="editDialog" modal="true">
             <h:form id="editForm" style="max-height: 30em; margin: 1em">
                 <c:set var="obj" value="#{bean.activeObject}" />
@@ -74,11 +51,11 @@
 
                         <h:outputLabel for="description" value="对应的审核策略" />
                         <h:panelGroup>
-                            <p:selectOneMenu id="preferredPolicyId" value="#{obj.preferredPolicy.id}">
+                            <p:selectOneMenu id="candidates" value="#{obj.preferredPolicy.id}">
                                 <f:selectItems value="${bean.candidates}" var="candidate" itemValue="${candidate.id}"
                                     itemLabel="${candidate.label} - ${candidate.description}" />
                             </p:selectOneMenu>
-                            <p:commandButton value="Refresh" update=":main:tabView" actionListener="#{bean.refreshCandidates}"
+                            <p:commandButton value="Refresh" update="candidates" actionListener="#{bean.refreshCandidates}"
                                 async="true" />
                         </h:panelGroup>
 
@@ -94,17 +71,6 @@
                 </h:panelGroup>
             </h:form>
         </p:dialog>
-
-        <h:form id="deleteConfirmForm">
-            <p:confirmDialog header="删除确认" message="确定要删除吗?" severity="alert" widgetVar="deleteConfirmDialog"
-                modal="true">
-                <div style="margin: 2em">
-                    <p:commandButton value="确定" update="mainForm:dataTable" actionListener="#{bean.deleteSelection}"
-                        oncomplete="deleteConfirmDialog.hide()" />
-                    <p:commandButton value="取消" onclick="deleteConfirmDialog.hide()" type="button" />
-                </div>
-            </p:confirmDialog>
-        </h:form>
-
     </ui:define>
+
 </ui:composition>
