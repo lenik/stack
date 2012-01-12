@@ -3,21 +3,19 @@
     xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core" xmlns:sem="http://bee32.com/sem/functions"
     xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" template="/template/primefaces.xhtml">
 
-    <ui:define name="title">白名单策略</ui:define>
+    <ui:define name="title">库存审核策略</ui:define>
 
     <ui:define name="content">
 
-        <c:set var="bean" value="#{singleVerifierPolicyBean}" />
+        <c:set var="bean" value="#{stockOrderVerifyPolicyBean}" />
 
-        <ui:include src="/3/7/1/ChoosePrincipalDialog.xhtml">
-            <ui:param name="var" value="addResponsibleDialog" />
-            <ui:param name="listener" value="#{bean.addResponsibleDialogListener}" />
-            <ui:param name="update" value="editForm:responsibleTable" />
-            <ui:param name="caption" value="选择用户或组" />
+        <ui:include src="/3/15/2/1/v1/chooseVerifyPolicyDialog.xhtml">
+            <ui:param name="listener" value="#{bean.chooseVerifyPolicyDialogListener}" />
+            <ui:param name="update" value="addEntryForm:policy" />
         </ui:include>
 
         <h:form id="mainForm">
-            <p:toolbar>
+            <p:toolbar id="toolbar">
                 <p:toolbarGroup>
                     <p:commandButton value="新增" actionListener="#{bean.showCreateForm}" oncomplete="editDialog.show()"
                         update="editForm" />
@@ -31,7 +29,7 @@
                 paginatorTemplate="#{viewConfig.paginatorTemplate}" rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}"
                 resizableColumns="true" rowIndexVar="rowIndex">
 
-                <f:facet name="header">白名单策略</f:facet>
+                <f:facet name="header">库存审核策略</f:facet>
 
                 <p:column headerText="序号">
                     <h:outputText value="#{rowIndex + 1}" />
@@ -71,31 +69,45 @@
 
                     </t:panelGrid>
 
-                    <p:fieldset legend="责任人列表" toggleable="false">
-                        <p:dataTable id="responsibleTable" value="#{obj.responsibles}" var="responsible"
+                    <p:fieldset legend="策略" toggleable="false">
+                        <p:dataTable id="entryTable" value="#{obj.entries}" var="entry"
                             resizableColumns="true" rowIndexVar="rowIndex">
-                            <f:facet name="header">策略包含的责任对象</f:facet>
+                            <f:facet name="header">库存审核策略包含的策略</f:facet>
                             <p:column headerText="序号" style="width: 4em;">
                                 <h:outputText value="#{rowIndex+1}" />
                             </p:column>
 
-                            <p:column headerText="名称" style="width: 10em;">
-                                <h:outputText value="#{responsible.name}" />
+                            <p:column headerText="库存单据类型" style="width: 10em;">
+                                <h:outputText value="#{entry.subject.displayName}" />
                             </p:column>
 
-                            <p:column headerText="类型" style="width: 5em;">
-                                <h:outputText value="#{responsible.typeName}" />
+                            <p:column headerText="策略名称">
+                                <h:outputText value="#{entry.policy.label}" />
+                            </p:column>
+
+                            <p:column headerText="描述">
+                                <h:outputText value="#{entry.policy.description}" />
+                            </p:column>
+
+                            <p:column headerText="创建日期">
+                                <h:outputText value="#{entry.policy.createdDate}">
+                                    <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                                </h:outputText>
                             </p:column>
 
                             <p:column headerText="操作" style="width: 3em;">
-                                <p:commandLink title="删除" action="#{bean.removeResponsible}" update="editForm:responsibleTable">
-                                    <f:setPropertyActionListener value="#{responsible}"
-                                        target="#{bean.selectedResponsible}" />
+                                <p:commandLink title="删除" action="#{bean.removeEntry}" update="editForm:entryTable">
+                                    <f:setPropertyActionListener value="#{entry}"
+                                        target="#{bean.entry}" />
                                     <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
                                 </p:commandLink>
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton value="增加责任对象" update="responsibleTable" onclick="addResponsibleDialog.show()" />
+                        <p:commandButton
+                            value="增加项目"
+                            actionListener="#{bean.newEntry}"
+                            update="addEntryForm:addEntryPanel"
+                            onclick="addEntryDialog.show()" />
                     </p:fieldset>
 
                     <div align="right">
@@ -116,6 +128,43 @@
                     <p:commandButton value="取消" onclick="deleteConfirmDialog.hide()" type="button" />
                 </div>
             </p:confirmDialog>
+        </h:form>
+
+        <h:form id="addEntryForm">
+            <p:dialog header="新增项目" widgetVar="addEntryDialog" modal="true">
+                <div style="max-height: 30em; margin: 1em">
+                    <t:panelGrid id="addEntryPanel" columns="2" columnClasses="detail_col_title,detail_col_value">
+
+                        <h:outputText value="库存单据类型" />
+                        <t:panelGrid columns="2">
+                            <p:selectOneMenu
+                                value="#{bean.entry.subjectValue}"
+                                style="width:100px;">
+                                <f:selectItems
+                                    value="#{bean.subjects}" />
+                            </p:selectOneMenu>
+                        </t:panelGrid>
+
+                        <h:outputText value="白名单策略" />
+                        <t:panelGrid columns="2">
+                            <p:inputText
+                                id="policy"
+                                readonly="#{true}"
+                                value="#{bean.entry.policy.label}" />
+                            <p:commandButton
+				value="..."
+				update="chooseVerifyPolicyForm:dataTable"
+				onclick="chooseVerifyPolicyDialog.show()"/>
+                        </t:panelGrid>
+                    </t:panelGrid>
+
+                    <div align="right">
+                        <p:commandButton update="editForm:entryTable" value="保存" actionListener="#{bean.addEntry}"
+                            oncomplete="addEntryDialog.hide()" />
+                        <p:commandButton value="取消" onclick="addEntryDialog.hide()" />
+                    </div>
+                </div>
+            </p:dialog>
         </h:form>
 
     </ui:define>

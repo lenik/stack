@@ -7,8 +7,8 @@ import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.process.verify.builtin.SingleVerifierPolicy;
 import com.bee32.sem.process.verify.builtin.SingleVerifierRankedPolicy;
 import com.bee32.sem.process.verify.builtin.dto.SingleVerifierLevelDto;
-import com.bee32.sem.process.verify.builtin.dto.SingleVerifierPolicyDto;
 import com.bee32.sem.process.verify.builtin.dto.SingleVerifierRankedPolicyDto;
+import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 
 @ForEntity(SingleVerifierPolicy.class)
 public class SingleVerifierRankedPolicyBean
@@ -22,17 +22,17 @@ public class SingleVerifierRankedPolicyBean
         super(SingleVerifierRankedPolicy.class, SingleVerifierRankedPolicyDto.class, 0);
     }
 
-    public Object getChooseSingleVerifierPolicyDialogListener() {
-        return new ChooseSingleVerifierPolicyDialogListener() {
+    public Object getChooseVerifyPolicyDialogListener() {
+        return new ChooseVerifyPolicyDialogListener() {
             @Override
             protected void select(List<?> selection) {
                 for (Object item : selection)
-                    setSingleVerifierPolicy((SingleVerifierPolicyDto) item);
+                    setVerifyPolicy((VerifyPolicyDto) item);
             }
         };
     }
 
-    public void setSingleVerifierPolicy(SingleVerifierPolicyDto policy) {
+    public void setVerifyPolicy(VerifyPolicyDto policy) {
         level.setTargetPolicy(policy);
     }
 

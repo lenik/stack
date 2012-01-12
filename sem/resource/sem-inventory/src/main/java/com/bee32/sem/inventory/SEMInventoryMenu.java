@@ -27,6 +27,7 @@ public class SEMInventoryMenu
     public static MenuNode INVENTORY = menu(SEMFrameMenu.RESOURCE, 2, "inventory");
 
     public static MenuNode SETTINGS = menu(INVENTORY, 1, "settings");
+    /*    */static MenuNode verifyPolicy = entry(SETTINGS, 1, "verifyPolicy", _("verifyPolicy/"));
     /*    */static MenuNode stockWarehouse = entry(SETTINGS, 1, "stockWarehouse", _("warehouse/"));
     /*    */static MenuNode stockLocation = entry(SETTINGS, 10, "stockLocation", _("location/"));
 

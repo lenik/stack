@@ -6,21 +6,21 @@ import org.slf4j.LoggerFactory;
 import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.plover.web.faces.controls2.IDialogCallback;
 import com.bee32.sem.misc.SimpleEntityViewBean;
-import com.bee32.sem.process.verify.builtin.SingleVerifierPolicy;
-import com.bee32.sem.process.verify.builtin.dto.SingleVerifierPolicyDto;
+import com.bee32.sem.process.verify.VerifyPolicy;
+import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 
-public class ChooseSingleVerifierPolicyDialogBean
+public class ChooseVerifyPolicyDialogBean
         extends SimpleEntityViewBean
         implements IDialogCallback {
 
     private static final long serialVersionUID = 1L;
 
-    static Logger logger = LoggerFactory.getLogger(ChooseSingleVerifierPolicyDialogBean.class);
+    static Logger logger = LoggerFactory.getLogger(ChooseVerifyPolicyDialogBean.class);
 
     String pattern;
 
-    public ChooseSingleVerifierPolicyDialogBean() {
-        super(SingleVerifierPolicy.class, SingleVerifierPolicyDto.class, 0);
+    public ChooseVerifyPolicyDialogBean() {
+        super(VerifyPolicy.class, VerifyPolicyDto.class, 0);
     }
 
     public void search() {

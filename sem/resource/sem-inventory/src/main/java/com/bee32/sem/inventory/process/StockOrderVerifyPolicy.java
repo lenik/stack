@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinTable;
@@ -35,7 +34,7 @@ public class StockOrderVerifyPolicy
 
     Map<String, VerifyPolicy> subjectPolicyMap = new HashMap<String, VerifyPolicy>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany()
     @JoinTable(name = "StockOrderSubjectPolicy")
     @MapKeyColumn(name = "subject", nullable = false)
     public Map<String, VerifyPolicy> getSubjectPolicyMap() {

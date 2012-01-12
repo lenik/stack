@@ -1,21 +1,22 @@
 package com.bee32.sem.inventory.process;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 
-public class StockOrderVerifyPolicyDto
-        extends VerifyPolicyDto {
+public class StockOrderVerifyPolicyDto extends VerifyPolicyDto {
 
     private static final long serialVersionUID = 1L;
 
     public static final int SUBJECT_POLICY_MAP = 1;
 
-    Map<String, VerifyPolicyDto> subjectPolicyMap;
+    List<StockOrderSubjectPolicyEntry> entries;
 
     @Override
     protected void _marshal(VerifyPolicy _source) {
@@ -25,12 +26,18 @@ public class StockOrderVerifyPolicyDto
 
         if (selection.contains(SUBJECT_POLICY_MAP)) {
             Map<String, VerifyPolicy> map = source.getSubjectPolicyMap();
-            subjectPolicyMap = new LinkedHashMap<String, VerifyPolicyDto>();
-            for (Entry<String, VerifyPolicy> entry : map.entrySet()) {
-
+            entries = new ArrayList<StockOrderSubjectPolicyEntry>();
+            for (Entry<String, VerifyPolicy> _entry : map.entrySet()) {
+                String _subject = _entry.getKey();
+                VerifyPolicy _policy = _entry.getValue();
+                StockOrderSubject subject = StockOrderSubject.valueOf(_subject);
+                VerifyPolicyDto policy = mref(VerifyPolicyDto.class, _policy);
+                StockOrderSubjectPolicyEntry entry = new StockOrderSubjectPolicyEntry(
+                        subject, policy);
+                entries.add(entry);
             }
         } else {
-            subjectPolicyMap = Collections.emptyMap();
+            entries = Collections.emptyList();
         }
     }
 
@@ -41,23 +48,25 @@ public class StockOrderVerifyPolicyDto
         StockOrderVerifyPolicy target = (StockOrderVerifyPolicy) _target;
 
         if (selection.contains(SUBJECT_POLICY_MAP)) {
-            // mergeMap();
+            Map<String, VerifyPolicy> map = target.getSubjectPolicyMap();
+            map.clear();
+            for (StockOrderSubjectPolicyEntry entry : entries) {
+                String _subject = entry.getSubject().getValue();
+                VerifyPolicy _policy = entry.getPolicy().unmarshal();
+                map.put(_subject, _policy);
+            }
         }
     }
 
-    public Map<String, VerifyPolicyDto> getSubjectPolicyMap() {
-        return subjectPolicyMap;
+    public List<StockOrderSubjectPolicyEntry> getEntries() {
+        return entries;
     }
 
-    public VerifyPolicyDto getSubjectPolicy(String stockOrderSubjectName) {
-        VerifyPolicyDto subjectPolicy = subjectPolicyMap.get(stockOrderSubjectName);
-        if (subjectPolicy == null)
-            subjectPolicy = new VerifyPolicyDto().ref();
-        return subjectPolicy;
+    public void addEntry(StockOrderSubjectPolicyEntry entry) {
+        entries.add(entry);
     }
 
-    public void setSubjectPolicy(String stockOrderSubjectName, VerifyPolicyDto subjectPolicy) {
-        subjectPolicyMap.put(stockOrderSubjectName, subjectPolicy);
+    public void removeEntry(StockOrderSubjectPolicyEntry entry) {
+        entries.remove(entry);
     }
-
 }

@@ -206,6 +206,7 @@ public abstract class SimpleEntityViewBean
 
         try {
             serviceFor(entityClass).saveOrUpdateAll(entities);
+            refreshCount();
         } catch (Exception e) {
             uiLogger.error("保存失败", e);
             return;

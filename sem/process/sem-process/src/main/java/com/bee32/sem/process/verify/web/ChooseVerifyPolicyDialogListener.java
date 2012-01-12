@@ -4,14 +4,14 @@ import java.util.List;
 
 import com.bee32.plover.web.faces.controls2.AbstractChooseDialogListener;
 
-public abstract class ChooseSingleVerifierPolicyDialogListener
+public abstract class ChooseVerifyPolicyDialogListener
         extends AbstractChooseDialogListener {
 
-    ChooseSingleVerifierPolicyDialogBean dialogBean;
+    ChooseVerifyPolicyDialogBean dialogBean;
 
     @Override
     public void submit() {
-        dialogBean = getBean(ChooseSingleVerifierPolicyDialogBean.class);
+        dialogBean = getBean(ChooseVerifyPolicyDialogBean.class);
         List<?> selection = dialogBean.getSelection();
         setSelection(selection);
         select(selection);

@@ -9,9 +9,9 @@
 
         <c:set var="bean" value="#{singleVerifierRankedPolicyBean}" />
 
-        <ui:include src="/3/15/2/1/v1/chooseSingleVerifierPolicyDialog.xhtml">
-            <ui:param name="listener" value="#{bean.chooseSingleVerifierPolicyDialogListener}" />
-            <ui:param name="update" value="addLevelForm:addLevelPanel" />
+        <ui:include src="/3/15/2/1/v1/chooseVerifyPolicyDialog.xhtml">
+            <ui:param name="listener" value="#{bean.chooseVerifyPolicyDialogListener}" />
+            <ui:param name="update" value="addLevelForm:targetPolicy" />
         </ui:include>
 
         <h:form id="mainForm">
@@ -29,7 +29,7 @@
                 paginatorTemplate="#{viewConfig.paginatorTemplate}" rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}"
                 resizableColumns="true" rowIndexVar="rowIndex">
 
-                <f:facet name="header">单一审核人策略</f:facet>
+                <f:facet name="header">分级策略</f:facet>
 
                 <p:column headerText="序号">
                     <h:outputText value="#{rowIndex + 1}" />
@@ -69,10 +69,10 @@
 
                     </t:panelGrid>
 
-                    <p:fieldset legend="白名单策略" toggleable="false">
+                    <p:fieldset legend="策略" toggleable="false">
                         <p:dataTable id="levelTable" value="#{obj.levels}" var="level"
                             resizableColumns="true" rowIndexVar="rowIndex">
-                            <f:facet name="header">分级策略包含的白名单策略</f:facet>
+                            <f:facet name="header">分级策略包含的策略</f:facet>
                             <p:column headerText="序号" style="width: 4em;">
                                 <h:outputText value="#{rowIndex+1}" />
                             </p:column>
@@ -144,7 +144,10 @@
                                 id="targetPolicy"
                                 readonly="#{true}"
                                 value="#{bean.level.targetPolicy.label}" />
-                            <p:commandButton value="..." onclick="chooseSingleVerifierPolicyDialog.show()"/>
+                            <p:commandButton
+				value="..."
+				update="chooseVerifyPolicyForm:dataTable"
+				onclick="chooseVerifyPolicyDialog.show()"/>
                         </t:panelGrid>
                     </t:panelGrid>
 
