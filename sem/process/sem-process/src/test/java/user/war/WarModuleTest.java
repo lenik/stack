@@ -2,8 +2,6 @@ package user.war;
 
 import java.io.IOException;
 
-import user.war.web.AttackMissionController;
-
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.sem.test.SEMTestCase;
 
@@ -28,8 +26,7 @@ public class WarModuleTest
                 // AllowListController.PREFIX + "index.do"//
                 // MultiLevelController.PREFIX + "index.do"//
                 // VerifyPolicyPrefController.PREFIX + "index.do"//
-                AttackMissionController.PREFIX + "index.do" //
-                );
+                WarModule.PREFIX + "/attack/index-rich.jsf");
     }
 
 }

@@ -1,0 +1,97 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core" xmlns:sem="http://bee32.com/sem/functions"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" template="/template/primefaces.xhtml">
+
+    <ui:define name="title">Attack Mission</ui:define>
+
+    <ui:define name="content">
+
+        <c:set var="bean" value="#{attackMissionBean}" />
+
+        <ui:include src="/3/15/2/1/SingleVerifierSupportDialog.xhtml" />
+
+        <h:form id="mainForm">
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:commandButton value="新增" actionListener="#{bean.showCreateForm}" oncomplete="editDialog.show()"
+                        update="editForm" />
+                    <p:commandButton value="修改" actionListener="#{bean.showEditForm}" oncomplete="editDialog.show()"
+                        update="editForm" />
+                    <p:commandButton value="删除" onclick="deleteConfirmDialog.show()" />
+                    <p:commandButton value="审核" onclick="singleVerifierSupportDialog.show()" disabled="false"
+                        async="true" />
+                </p:toolbarGroup>
+            </p:toolbar>
+            <p:dataTable id="dataTable" var="entry" value="#{bean.dataModel}" selection="#{bean.singleSelection}"
+                selectionMode="single" paginator="true" rows="#{viewConfig.pageSize}" lazy="true"
+                paginatorTemplate="#{viewConfig.paginatorTemplate}" rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}"
+                resizableColumns="true" rowIndexVar="rowIndex">
+
+                <f:facet name="header">Attack Missions</f:facet>
+
+                <p:column headerText="序号">
+                    <h:outputText value="#{rowIndex + 1}" />
+                </p:column>
+
+                <p:column headerText="Target">
+                    <h:outputText value="#{entry.target}" />
+                </p:column>
+
+                <p:column headerText="State">
+                    <h:outputText value="#{entry.verifyContext.verifyEvalState}" />
+                </p:column>
+
+                <p:column headerText="Verifier">
+                    <h:outputText value="#{entry.verifyContext.verifier1}" />
+                </p:column>
+
+                <p:column headerText="Verified Date">
+                    <h:outputText value="#{entry.verifyContext.verifiedDate1}" />
+                </p:column>
+
+                <p:column headerText="Accepted">
+                    <h:outputText value="#{entry.verifyContext.accepted1}" />
+                </p:column>
+
+                <p:column headerText="Rejected Reason">
+                    <h:outputText value="#{entry.verifyContext.rejectedReason1}" />
+                </p:column>
+
+                <p:column headerText="所有人">
+                    <h:outputText value="#{entry.owner.displayName}" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+        <h:form id="editForm">
+            <c:set var="obj" value="#{bean.activeObject}" />
+            <p:dialog header="Mission Profile" widgetVar="editDialog" modal="true">
+                <div style="max-height: 30em; margin: 1em">
+                    <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
+                        <h:outputText value="Target" />
+                        <p:inputText value="#{obj.target}" />
+                    </t:panelGrid>
+
+                    <div align="right">
+                        <p:commandButton update="mainForm:dataTable" value="保存" actionListener="#{bean.save}"
+                            oncomplete="editDialog.hide()" />
+                        <p:commandButton value="取消" onclick="editDialog.hide()" />
+                    </div>
+                </div>
+            </p:dialog>
+        </h:form>
+
+        <h:form id="deleteConfirmForm">
+            <p:confirmDialog header="删除确认" message="确定要删除吗?" severity="alert" widgetVar="deleteConfirmDialog"
+                modal="true">
+                <div style="margin: 2em">
+                    <p:commandButton value="确定" update="mainForm:dataTable" actionListener="#{bean.deleteSelection}"
+                        oncomplete="deleteConfirmDialog.hide()" />
+                    <p:commandButton value="取消" onclick="deleteConfirmDialog.hide()" type="button" />
+                </div>
+            </p:confirmDialog>
+        </h:form>
+
+    </ui:define>
+</ui:composition>
