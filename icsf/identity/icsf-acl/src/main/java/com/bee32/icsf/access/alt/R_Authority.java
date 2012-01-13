@@ -12,7 +12,7 @@ import com.bee32.icsf.access.acl.IACL;
 import com.bee32.icsf.access.acl.legacy.Authority;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ResourcePermission;
-import com.bee32.icsf.principal.IPrincipal;
+import com.bee32.icsf.principal.Principal;
 
 @Lazy
 @Service
@@ -31,7 +31,7 @@ public class R_Authority
      * @return Non-<code>null</code> permission.
      */
     @Override
-    public Permission getPermission(Resource resource, IPrincipal principal) {
+    public Permission getPermission(Resource resource, Principal principal) {
         Permission permission = aclDao.getPermission(resource, principal);
 
         if (permission == null)
@@ -41,7 +41,7 @@ public class R_Authority
     }
 
     @Override
-    public Collection<ResourcePermission> getResourcePermissions(IPrincipal principal) {
+    public Collection<ResourcePermission> getResourcePermissions(Principal principal) {
         return aclDao.getResourcePermissions(principal);
     }
 

@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.bee32.icsf.access.Permission;
-import com.bee32.icsf.principal.IPrincipal;
+import com.bee32.icsf.principal.Principal;
 
 public interface IACL {
 
@@ -32,18 +32,18 @@ public interface IACL {
      *
      * 这个集合并不表明所含的主体具有对应权限，而仅仅表明本 ACL 对列出的主体集有影响力。
      *
-     * @return 非 <code>null</code> {@link IPrincipal} 集合。
+     * @return 非 <code>null</code> {@link Principal} 集合。
      */
-    Set<? extends IPrincipal> getDeclaredPrincipals();
+    Set<? extends Principal> getDeclaredPrincipals();
 
     /**
      * 本 ACL 的有效主体集（包括继承项）。
      *
      * 这个集合并不表明所含的主体具有对应权限，而仅仅表明本 ACL 对列出的主体集有影响力。
      *
-     * @return 非 <code>null</code> {@link IPrincipal} 集合。
+     * @return 非 <code>null</code> {@link Principal} 集合。
      */
-    Set<? extends IPrincipal> getPrincipals();
+    Set<? extends Principal> getPrincipals();
 
     /**
      * Test if given principal is declared in this ACL.
@@ -52,7 +52,7 @@ public interface IACL {
      *            Non-<code>null</code> principal.
      * @return <code>null</code> If principal isn't declared in the local acl.
      */
-    Permission getDeclaredPermission(IPrincipal principal);
+    Permission getDeclaredPermission(Principal principal);
 
     /**
      * 选取指定主体相关的 ACL 子集。
@@ -62,7 +62,7 @@ public interface IACL {
      * @return <code>null</code> if the specified <code>principal</code> isn't listed in this ACL,
      *         nor in the inherited ACLs.
      */
-    Permission getPermission(IPrincipal principal);
+    Permission getPermission(Principal principal);
 
     /**
      * Find principals with the required permission.
@@ -72,7 +72,7 @@ public interface IACL {
      * @return Non-<code>null</code> principal collection who has the given permission to the
      *         resource described by this ACL.
      */
-    Collection<? extends IPrincipal> findPrincipals(Permission requiredPermission);
+    Collection<? extends Principal> findPrincipals(Permission requiredPermission);
 
     /**
      * Find principals with the required permission.
@@ -82,7 +82,7 @@ public interface IACL {
      * @return Non-<code>null</code> principal collection who has the given permission to the
      *         resource described by this ACL.
      */
-    Collection<? extends IPrincipal> findPrincipals(String requiredMode);
+    Collection<? extends Principal> findPrincipals(String requiredMode);
 
     /**
      * 获取本 ACL （局部）定义的权限条目数。
@@ -94,7 +94,7 @@ public interface IACL {
      *
      * @return 非 <code>null</code> 的 {@link Entry} 集合。。
      */
-    Collection<? extends Entry<? extends IPrincipal, Permission>> getEntries();
+    Collection<? extends Entry<? extends Principal, Permission>> getEntries();
 
     /**
      * 添加一个局部权限条目。
@@ -102,17 +102,7 @@ public interface IACL {
      * @throws UnsupportedOperationException
      *             如果本 ACL 是只读的。
      */
-    void add(Entry<? extends IPrincipal, Permission> entry);
-
-    /**
-     * 添加一个局部权限条目。
-     *
-     * 如果在局部 ACL 中已经定义了 principal 的权限，那么这两个权限条目将合并为一个。
-     *
-     * @throws UnsupportedOperationException
-     *             如果本 ACL 是只读的。
-     */
-    Permission add(IPrincipal principal, Permission permission);
+    void add(Entry<? extends Principal, Permission> entry);
 
     /**
      * 添加一个局部权限条目。
@@ -122,7 +112,17 @@ public interface IACL {
      * @throws UnsupportedOperationException
      *             如果本 ACL 是只读的。
      */
-    Permission add(IPrincipal principal, String mode);
+    Permission add(Principal principal, Permission permission);
+
+    /**
+     * 添加一个局部权限条目。
+     *
+     * 如果在局部 ACL 中已经定义了 principal 的权限，那么这两个权限条目将合并为一个。
+     *
+     * @throws UnsupportedOperationException
+     *             如果本 ACL 是只读的。
+     */
+    Permission add(Principal principal, String mode);
 
     /**
      * 删除一个局部权限条目。
@@ -132,7 +132,7 @@ public interface IACL {
      * @throws UnsupportedOperationException
      *             如果本 ACL 是只读的。
      */
-    boolean remove(Entry<? extends IPrincipal, Permission> entry);
+    boolean remove(Entry<? extends Principal, Permission> entry);
 
     /**
      * 从局部 ACL 中删除含有指定 principal 的权限条目。
@@ -141,6 +141,6 @@ public interface IACL {
      * @throws NullPointerException
      *             如果 <code>principal</code> 为 <code>null</code>.
      */
-    boolean remove(IPrincipal principal);
+    boolean remove(Principal principal);
 
 }

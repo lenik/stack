@@ -8,13 +8,13 @@ import java.util.Set;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.acl.IACL;
-import com.bee32.icsf.principal.IPrincipal;
+import com.bee32.icsf.principal.Principal;
 
 public class ACL
         extends AbstractACL {
 
     private final IACL parent;
-    private final Map<IPrincipal, Permission> map;
+    private final Map<Principal, Permission> map;
 
     public ACL() {
         this((IACL) null);
@@ -22,10 +22,10 @@ public class ACL
 
     public ACL(IACL parent) {
         this.parent = parent;
-        this.map = new HashMap<IPrincipal, Permission>();
+        this.map = new HashMap<Principal, Permission>();
     }
 
-    public ACL(Map<IPrincipal, Permission> map) {
+    public ACL(Map<Principal, Permission> map) {
         if (map == null)
             throw new NullPointerException("map");
         this.parent = null;
@@ -38,17 +38,17 @@ public class ACL
     }
 
     @Override
-    public Set<? extends IPrincipal> getDeclaredPrincipals() {
+    public Set<? extends Principal> getDeclaredPrincipals() {
         return map.keySet();
     }
 
     @Override
-    public Permission getDeclaredPermission(IPrincipal principal) {
+    public Permission getDeclaredPermission(Principal principal) {
         return map.get(principal);
     }
 
     @Override
-    public Collection<? extends Entry<? extends IPrincipal, Permission>> getEntries() {
+    public Collection<? extends Entry<? extends Principal, Permission>> getEntries() {
         return map.entrySet();
     }
 
@@ -58,14 +58,14 @@ public class ACL
     }
 
     @Override
-    public void add(Entry<? extends IPrincipal, Permission> entry) {
+    public void add(Entry<? extends Principal, Permission> entry) {
         if (entry == null)
             throw new NullPointerException("entry");
         map.put(entry.getKey(), entry.getValue());
     }
 
     @Override
-    public Permission add(IPrincipal principal, Permission permission) {
+    public Permission add(Principal principal, Permission permission) {
         Permission existing = map.get(principal);
         if (existing == null) {
             map.put(principal, permission);
@@ -77,11 +77,11 @@ public class ACL
     }
 
     @Override
-    public boolean remove(Entry<? extends IPrincipal, Permission> entry) {
+    public boolean remove(Entry<? extends Principal, Permission> entry) {
         if (entry == null)
             return false;
 
-        IPrincipal principal = entry.getKey();
+        Principal principal = entry.getKey();
         Permission existing = map.get(principal);
         if (existing != null) {
             if (existing.equals(entry.getValue())) {
@@ -93,7 +93,7 @@ public class ACL
     }
 
     @Override
-    public boolean remove(IPrincipal principal) {
+    public boolean remove(Principal principal) {
         Permission existing = map.remove(principal);
         return existing != null;
     }

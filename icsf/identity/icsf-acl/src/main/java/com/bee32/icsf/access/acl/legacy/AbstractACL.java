@@ -9,7 +9,7 @@ import java.util.Set;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.acl.IACL;
-import com.bee32.icsf.principal.IPrincipal;
+import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.arch.Component;
 
 public abstract class AbstractACL
@@ -30,15 +30,15 @@ public abstract class AbstractACL
         if (inheritedACL == null)
             return this;
 
-        Map<IPrincipal, Permission> all = new HashMap<IPrincipal, Permission>();
+        Map<Principal, Permission> all = new HashMap<Principal, Permission>();
         merge(all, this);
 
         return new ACL(all);
     }
 
-    static void merge(Map<IPrincipal, Permission> all, IACL acl) {
-        for (Entry<? extends IPrincipal, Permission> entry : acl.getEntries()) {
-            IPrincipal principal = entry.getKey();
+    static void merge(Map<Principal, Permission> all, IACL acl) {
+        for (Entry<? extends Principal, Permission> entry : acl.getEntries()) {
+            Principal principal = entry.getKey();
             Permission permission = entry.getValue();
 
             Permission existing = all.get(principal);
@@ -57,8 +57,8 @@ public abstract class AbstractACL
     }
 
     @Override
-    public final Set<? extends IPrincipal> getPrincipals() {
-        Set<IPrincipal> all = new HashSet<IPrincipal>();
+    public final Set<? extends Principal> getPrincipals() {
+        Set<Principal> all = new HashSet<Principal>();
         IACL acl = this;
         while (acl != null) {
             all.addAll(acl.getDeclaredPrincipals());
@@ -68,11 +68,11 @@ public abstract class AbstractACL
     }
 
     @Override
-    public Permission getPermission(IPrincipal principal) {
+    public Permission getPermission(Principal principal) {
         Permission permission = new Permission(0);
 
-        for (Entry<? extends IPrincipal, Permission> entry : getEntries()) {
-            IPrincipal declaredPrincipal = entry.getKey();
+        for (Entry<? extends Principal, Permission> entry : getEntries()) {
+            Principal declaredPrincipal = entry.getKey();
             Permission declaredPermission = entry.getValue();
             if (principal.implies(declaredPrincipal))
                 permission.merge(declaredPermission);
@@ -82,34 +82,34 @@ public abstract class AbstractACL
     }
 
     @Override
-    public Collection<? extends IPrincipal> findPrincipals(Permission requiredPermission) {
-        Set<IPrincipal> principals = new HashSet<IPrincipal>();
-        for (Entry<? extends IPrincipal, Permission> entry : getEntries()) {
+    public Collection<? extends Principal> findPrincipals(Permission requiredPermission) {
+        Set<Principal> principals = new HashSet<Principal>();
+        for (Entry<? extends Principal, Permission> entry : getEntries()) {
             Permission declaredPermission = entry.getValue();
             if (declaredPermission.implies(requiredPermission))
                 principals.add(entry.getKey());
         }
-        Collection<? extends IPrincipal> inherited = getInheritedACL().findPrincipals(requiredPermission);
+        Collection<? extends Principal> inherited = getInheritedACL().findPrincipals(requiredPermission);
         principals.addAll(inherited);
         return principals;
     }
 
     @Override
-    public Collection<? extends IPrincipal> findPrincipals(String requiredMode) {
+    public Collection<? extends Principal> findPrincipals(String requiredMode) {
         return findPrincipals(new Permission(requiredMode));
     }
 
     @Override
-    public Permission add(IPrincipal principal, String mode) {
+    public Permission add(Principal principal, String mode) {
         Permission permission = new Permission(mode);
         return add(principal, permission);
     }
 
     @Override
-    public boolean remove(Entry<? extends IPrincipal, Permission> entry) {
+    public boolean remove(Entry<? extends Principal, Permission> entry) {
         if (entry == null)
             throw new NullPointerException("entry");
-        IPrincipal principal = entry.getKey();
+        Principal principal = entry.getKey();
         return remove(principal);
     }
 
@@ -118,8 +118,8 @@ public abstract class AbstractACL
         StringBuilder sb = new StringBuilder();
         sb.append("ACL(" + getName() + ")");
 
-        for (Entry<? extends IPrincipal, Permission> entry : getEntries()) {
-            IPrincipal principal = entry.getKey();
+        for (Entry<? extends Principal, Permission> entry : getEntries()) {
+            Principal principal = entry.getKey();
             Permission permission = entry.getValue();
             sb.append("\n    " + principal.getName() + " +" + permission);
         }

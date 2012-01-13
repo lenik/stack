@@ -8,7 +8,7 @@ import java.util.Set;
 import javax.free.ReadOnlyException;
 
 import com.bee32.icsf.access.Permission;
-import com.bee32.icsf.principal.IPrincipal;
+import com.bee32.icsf.principal.Principal;
 
 public class EmptyACL
         implements IACL {
@@ -27,32 +27,32 @@ public class EmptyACL
     }
 
     @Override
-    public Set<? extends IPrincipal> getDeclaredPrincipals() {
+    public Set<? extends Principal> getDeclaredPrincipals() {
         return Collections.emptySet();
     }
 
     @Override
-    public Set<? extends IPrincipal> getPrincipals() {
+    public Set<? extends Principal> getPrincipals() {
         return Collections.emptySet();
     }
 
     @Override
-    public Collection<? extends IPrincipal> findPrincipals(Permission requiredPermission) {
+    public Collection<? extends Principal> findPrincipals(Permission requiredPermission) {
         return Collections.emptySet();
     }
 
     @Override
-    public Collection<? extends IPrincipal> findPrincipals(String requiredMode) {
+    public Collection<? extends Principal> findPrincipals(String requiredMode) {
         return Collections.emptySet();
     }
 
     @Override
-    public Permission getDeclaredPermission(IPrincipal principal) {
+    public Permission getDeclaredPermission(Principal principal) {
         return null;
     }
 
     @Override
-    public Permission getPermission(IPrincipal principal) {
+    public Permission getPermission(Principal principal) {
         return null;
     }
 
@@ -62,32 +62,32 @@ public class EmptyACL
     }
 
     @Override
-    public Collection<? extends Entry<? extends IPrincipal, Permission>> getEntries() {
+    public Collection<? extends Entry<? extends Principal, Permission>> getEntries() {
         return Collections.emptyList();
     }
 
     @Override
-    public Permission add(IPrincipal principal, Permission permission) {
+    public Permission add(Principal principal, Permission permission) {
         throw new ReadOnlyException();
     }
 
     @Override
-    public Permission add(IPrincipal principal, String mode) {
+    public Permission add(Principal principal, String mode) {
         throw new ReadOnlyException();
     }
 
     @Override
-    public void add(Entry<? extends IPrincipal, Permission> entry) {
+    public void add(Entry<? extends Principal, Permission> entry) {
         throw new ReadOnlyException();
     }
 
     @Override
-    public boolean remove(Entry<? extends IPrincipal, Permission> entry) {
+    public boolean remove(Entry<? extends Principal, Permission> entry) {
         throw new ReadOnlyException();
     }
 
     @Override
-    public boolean remove(IPrincipal principal) {
+    public boolean remove(Principal principal) {
         throw new ReadOnlyException();
     }
 

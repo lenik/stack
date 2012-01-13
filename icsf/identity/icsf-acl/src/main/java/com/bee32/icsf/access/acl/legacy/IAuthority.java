@@ -6,7 +6,7 @@ import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.acl.IACL;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ResourcePermission;
-import com.bee32.icsf.principal.IPrincipal;
+import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.arch.IComponent;
 
 public interface IAuthority
@@ -25,7 +25,7 @@ public interface IAuthority
      * @throws NullPointerException
      *             If <code>principal</code> is <code>null</code>.
      */
-    Permission getPermission(Resource resource, IPrincipal principal);
+    Permission getPermission(Resource resource, Principal principal);
 
     /**
      * Get resources declared for the principal.
@@ -36,7 +36,7 @@ public interface IAuthority
      * @throws NullPointerException
      *             If <code>principal</code> is <code>null</code>.
      */
-    Collection<ResourcePermission> getResourcePermissions(IPrincipal principal);
+    Collection<ResourcePermission> getResourcePermissions(Principal principal);
 
     IAuthority ROOT = RootAuthority.getInstance();
 

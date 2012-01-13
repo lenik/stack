@@ -8,7 +8,7 @@ import com.bee32.icsf.access.acl.IACL;
 import com.bee32.icsf.access.alt.R_Authority;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ResourcePermission;
-import com.bee32.icsf.principal.IPrincipal;
+import com.bee32.icsf.principal.Principal;
 
 public class RootAuthority
         extends Authority {
@@ -34,7 +34,7 @@ public class RootAuthority
     }
 
     @Override
-    public Collection<ResourcePermission> getResourcePermissions(IPrincipal principal) {
+    public Collection<ResourcePermission> getResourcePermissions(Principal principal) {
         return Collections.emptySet();
     }
 
