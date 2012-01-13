@@ -12,11 +12,11 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
 import com.bee32.icsf.access.Permission;
-import com.bee32.icsf.access.ResourcePermission;
 import com.bee32.icsf.access.alt.R_ACE;
 import com.bee32.icsf.access.alt.R_ACLService;
 import com.bee32.icsf.access.resource.IResourceNamespace;
 import com.bee32.icsf.access.resource.Resource;
+import com.bee32.icsf.access.resource.ResourcePermission;
 import com.bee32.icsf.access.resource.ScannedResourceRegistry;
 import com.bee32.icsf.principal.AbstractPrincipalDto;
 import com.bee32.icsf.principal.Group;

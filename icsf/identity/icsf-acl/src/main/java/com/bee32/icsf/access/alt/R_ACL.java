@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import javax.free.IllegalUsageException;
 
-import com.bee32.icsf.access.acl.ACL;
+import com.bee32.icsf.access.acl.legacy.ACL;
 import com.bee32.icsf.access.resource.Resource;
 
 public class R_ACL

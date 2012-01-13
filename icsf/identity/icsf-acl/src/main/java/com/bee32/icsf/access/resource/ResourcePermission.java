@@ -1,6 +1,6 @@
-package com.bee32.icsf.access;
+package com.bee32.icsf.access.resource;
 
-import com.bee32.icsf.access.resource.Resource;
+import com.bee32.icsf.access.Permission;
 
 public class ResourcePermission {
 

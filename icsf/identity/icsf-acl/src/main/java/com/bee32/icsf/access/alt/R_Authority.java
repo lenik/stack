@@ -7,11 +7,11 @@ import javax.inject.Inject;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import com.bee32.icsf.access.Authority;
 import com.bee32.icsf.access.Permission;
-import com.bee32.icsf.access.ResourcePermission;
 import com.bee32.icsf.access.acl.IACL;
+import com.bee32.icsf.access.acl.legacy.Authority;
 import com.bee32.icsf.access.resource.Resource;
+import com.bee32.icsf.access.resource.ResourcePermission;
 import com.bee32.icsf.principal.IPrincipal;
 
 @Lazy

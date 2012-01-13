@@ -7,9 +7,9 @@ import javax.inject.Inject;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.icsf.access.Permission;
-import com.bee32.icsf.access.ResourcePermission;
 import com.bee32.icsf.access.annotation.AccessCheck;
 import com.bee32.icsf.access.resource.Resource;
+import com.bee32.icsf.access.resource.ResourcePermission;
 import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.plover.arch.DataService;
 

@@ -1,9 +1,11 @@
-package com.bee32.icsf.access;
+package com.bee32.icsf.access.acl.legacy;
 
 import java.util.Collection;
 
+import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.acl.IACL;
 import com.bee32.icsf.access.resource.Resource;
+import com.bee32.icsf.access.resource.ResourcePermission;
 import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.plover.arch.IComponent;
 

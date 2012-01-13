@@ -1,4 +1,4 @@
-package com.bee32.icsf.access.acl;
+package com.bee32.icsf.access.acl.legacy;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.bee32.icsf.access.Permission;
+import com.bee32.icsf.access.acl.IACL;
 import com.bee32.icsf.principal.IPrincipal;
 
 public class ACL

@@ -9,8 +9,8 @@ import java.util.Map.Entry;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import com.bee32.icsf.access.Permission;
-import com.bee32.icsf.access.ResourcePermission;
 import com.bee32.icsf.access.resource.Resource;
+import com.bee32.icsf.access.resource.ResourcePermission;
 import com.bee32.icsf.access.resource.ResourceRegistry;
 import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.icsf.principal.Principal;

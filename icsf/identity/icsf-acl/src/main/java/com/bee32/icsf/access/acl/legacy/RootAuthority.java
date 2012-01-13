@@ -1,4 +1,4 @@
-package com.bee32.icsf.access;
+package com.bee32.icsf.access.acl.legacy;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -7,6 +7,7 @@ import com.bee32.icsf.access.acl.EmptyACL;
 import com.bee32.icsf.access.acl.IACL;
 import com.bee32.icsf.access.alt.R_Authority;
 import com.bee32.icsf.access.resource.Resource;
+import com.bee32.icsf.access.resource.ResourcePermission;
 import com.bee32.icsf.principal.IPrincipal;
 
 public class RootAuthority
