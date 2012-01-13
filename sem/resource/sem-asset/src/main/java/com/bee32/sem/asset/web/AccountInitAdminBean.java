@@ -80,7 +80,7 @@ public class AccountInitAdminBean
 
     @Override
     public List<?> getSelection() {
-        return listOfNonNulls(selectedAccountSubject);
+        return getItems();
     }
 
     public AccountSubjectDto getSelectedAccountSubject() {
@@ -176,4 +176,8 @@ public class AccountInitAdminBean
     public void chooseParty() {
         accountTicketItem.setParty(selectedParty);
     }
+
+
+
+
 }

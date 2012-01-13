@@ -17,6 +17,11 @@ import javax.persistence.Transient;
 
 import com.bee32.sem.base.tx.TxEntity;
 import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.process.verify.IVerifiable;
+import com.bee32.sem.process.verify.builtin.IJudgeNumber;
+import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;
+import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
+import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 
 /**
@@ -28,12 +33,15 @@ import com.bee32.sem.world.monetary.MCValue;
 @DiscriminatorValue("-")
 @SequenceGenerator(name = "idgen", sequenceName = "account_ticket_item_seq", allocationSize = 1)
 public class AccountTicketItem
-        extends TxEntity {
+        extends TxEntity
+        implements IVerifiable<ISingleVerifierWithNumber>, IJudgeNumber {
 
     private static final long serialVersionUID = 1L;
 
     public static final int TITLE_LENGTH = 30;
     public static final int TEXT_LENGTH = 3000;
+
+    SingleVerifierWithNumberSupport singleVerifierWithNumberSupport = new SingleVerifierWithNumberSupport(this);
 
     int index;
 
@@ -157,4 +165,30 @@ public class AccountTicketItem
         }
     }
 
+    public void setVerifyContext(SingleVerifierWithNumberSupport singleVerifierWithNumberSupport) {
+        this.singleVerifierWithNumberSupport = singleVerifierWithNumberSupport;
+        singleVerifierWithNumberSupport.bind(this);
+    }
+
+    @Embedded
+    @Override
+    public SingleVerifierWithNumberSupport getVerifyContext() {
+        return singleVerifierWithNumberSupport;
+    }
+
+    @Transient
+    @Override
+    public String getNumberDescription() {
+        return "金额";
+    }
+
+    @Transient
+    @Override
+    public Number getJudgeNumber() {
+        try {
+            return value.getNativeValue(getDate());
+        } catch (FxrQueryException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

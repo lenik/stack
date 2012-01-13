@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -15,6 +16,10 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.sem.base.tx.TxEntity;
+import com.bee32.sem.process.verify.IVerifiable;
+import com.bee32.sem.process.verify.builtin.IJudgeNumber;
+import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;
+import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
 import com.bee32.sem.world.monetary.FxrQueryException;
 
 /**
@@ -25,9 +30,12 @@ import com.bee32.sem.world.monetary.FxrQueryException;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "account_ticket_seq", allocationSize = 1)
 public class AccountTicket
-        extends TxEntity {
+        extends TxEntity
+        implements IVerifiable<ISingleVerifierWithNumber>, IJudgeNumber {
 
     private static final long serialVersionUID = 1L;
+
+    SingleVerifierWithNumberSupport singleVerifierWithNumberSupport = new SingleVerifierWithNumberSupport(this);
 
     List<AccountTicketItem> items = new ArrayList<AccountTicketItem>();
     BudgetRequest request;
@@ -124,4 +132,35 @@ public class AccountTicket
         return true;
     }
 
+    public void setVerifyContext(SingleVerifierWithNumberSupport singleVerifierWithNumberSupport) {
+        this.singleVerifierWithNumberSupport = singleVerifierWithNumberSupport;
+        singleVerifierWithNumberSupport.bind(this);
+    }
+
+    @Embedded
+    @Override
+    public SingleVerifierWithNumberSupport getVerifyContext() {
+        return singleVerifierWithNumberSupport;
+    }
+
+    @Transient
+    @Override
+    public String getNumberDescription() {
+        return "金额";
+    }
+
+    @Transient
+    @Override
+    public Number getJudgeNumber() {
+        try {
+            BigDecimal total = new BigDecimal(0);
+            for(AccountTicketItem item:items) {
+                total = total.add(item.value.getNativeValue(item.getDate()));
+            }
+
+            return total;
+        } catch (FxrQueryException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

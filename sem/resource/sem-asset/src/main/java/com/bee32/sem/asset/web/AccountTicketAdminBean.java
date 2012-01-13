@@ -457,4 +457,10 @@ public class AccountTicketAdminBean
         accountTicketItem.setSubject(selectedAccountSubject);
     }
 
+    @Override
+    public List<?> getSelection() {
+        return listOfNonNulls(accountTicket);
+    }
+
+
 }

@@ -16,6 +16,7 @@
     <ui:define name="title">委外出库管理</ui:define>
 
     <ui:define name="content">
+        <ui:include src="/3/15/2/1/SingleVerifierSupportDialog.xhtml" />
 
 		<h:form id="mainForm">
 			<h:inputHidden id="pageTitle" readonly="true"
@@ -75,9 +76,9 @@
 						actionListener="#{outsourcingOutAdminBean.cancel}"
 						disabled="#{!outsourcingOutAdminBean.editable}" update="mainForm" async="true" />
 					<p:separator />
-					<p:commandButton value="审核"
-						disabled="#{outsourcingOutAdminBean.editable}"
-						onclick="verifyDlg.show();" />
+                    <ui:include src="/3/15/2/1/SingleVerifierSupportButton.xhtml">
+                        <ui:param name="disabled" value="#{outsourcingOutAdminBean.editable}" />
+                    </ui:include>
 					<p:separator />
 					<p:commandButton value="第一条"
 						actionListener="#{outsourcingOutAdminBean.first}"
@@ -136,7 +137,7 @@
 					<h:outputText value="制单人" />
                     <p:inputText value="#{outsourcingOutAdminBean.creator}" disabled="true"/>
                     <h:outputText value="单据状态" />
-                    <p:inputText value="" disabled="true"/>
+                    <p:inputText value="#{outsourcingOutAdminBean.stockOrder.verifyContext.verifyEvalState}" disabled="true"/>
 				</t:panelGrid>
 
                 <t:panelGrid columns="2">

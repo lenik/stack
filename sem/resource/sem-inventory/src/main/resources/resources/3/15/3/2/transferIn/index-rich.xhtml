@@ -16,7 +16,7 @@
     <ui:define name="title">调拨-调入管理</ui:define>
 
     <ui:define name="content">
-
+        <ui:include src="/3/15/2/1/SingleVerifierSupportDialog.xhtml" />
 
 		<h:form id="mainForm">
             <h:panelGrid columns="2">
@@ -60,9 +60,9 @@
 						onclick="deleteConfirmDialog.show();"
 						disabled="#{transferInAdminBean.editable}" update="mainForm" async="true" />
 					<p:separator />
-					<p:commandButton value="审核"
-						disabled="#{transferInAdminBean.editable}"
-						onclick="verifyDlg.show();" />
+                    <ui:include src="/3/15/2/1/SingleVerifierSupportButton.xhtml">
+                        <ui:param name="disabled" value="#{transferInAdminBean.editable}" />
+                    </ui:include>
 					<p:separator />
 					<p:commandButton value="第一条"
 						actionListener="#{transferInAdminBean.first}"
@@ -134,7 +134,7 @@
 					<h:outputText value="制单人" />
                     <p:inputText value="#{transferInAdminBean.creator}" disabled="true"/>
                     <h:outputText value="单据状态" />
-                    <p:inputText value="" disabled="true"/>
+                    <p:inputText value="#{transferInAdminBean.stockOrder.verifyContext.verifyEvalState}" disabled="true"/>
 				</t:panelGrid>
 
                 <h:outputText value="明细"/>

@@ -9,71 +9,69 @@
     <ui:define name="title">资产初始化</ui:define>
 
     <ui:define name="content">
+        <ui:include src="/3/15/2/1/SingleVerifierSupportDialog.xhtml" />
 
 		<h:form id="mainForm">
-            <p:commandButton
-                update="itemForm:itemPanel"
-                value="新增" onclick="itemDialog.show()"
-                actionListener="#{accountInitAdminBean.newItem}"/>
+            <t:panelGrid columns="2">
+                <p:commandButton update="itemForm:itemPanel" value="新增"
+                    onclick="itemDialog.show()"
+                    actionListener="#{accountInitAdminBean.newItem}" />
+                <ui:include
+                    src="/3/15/2/1/SingleVerifierSupportButton.xhtml" />
+            </t:panelGrid>
 
             <p:dataTable id="init" var="item"
-                    value="#{accountInitAdminBean.items}" resizableColumns="true"
-                    rowIndexVar="rowIndex">
+                value="#{accountInitAdminBean.items}"
+                resizableColumns="true" rowIndexVar="rowIndex">
 
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="序号" />
-                        </f:facet>
-                        <h:outputText value="#{rowIndex + 1}" />
-                    </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="序号" />
+                    </f:facet>
+                    <h:outputText value="#{rowIndex + 1}" />
+                </p:column>
 
-                    <p:column headerText="会计科目">
-                        <h:outputText value="#{item.subject.label}" />
-                    </p:column>
+                <p:column headerText="会计科目">
+                    <h:outputText value="#{item.subject.label}" />
+                </p:column>
 
-                    <p:column headerText="二级科目">
-                        <h:outputText value="#{item.party.displayName}" />
-                    </p:column>
+                <p:column headerText="二级科目">
+                    <h:outputText value="#{item.party.displayName}" />
+                </p:column>
 
-                    <p:column headerText="借贷方向">
-                        <p:selectOneMenu
-                            value="#{item.debitSide}" disabled="#{true}"
-                            style="width:200px;">
-                            <f:selectItem itemValue="true"
-                                itemLabel="借方" />
-                            <f:selectItem itemValue="false"
-                                itemLabel="贷方" />
-                        </p:selectOneMenu>
-                    </p:column>
+                <p:column headerText="币种">
+                    <h:outputText value="#{item.valueCurrency}" />
+                </p:column>
 
-                    <p:column headerText="币种">
-                        <h:outputText value="#{item.valueCurrency}" />
-                    </p:column>
+                <p:column headerText="金额">
+                    <h:outputText value="#{item.valueDigit}" />
+                </p:column>
 
-                    <p:column headerText="金额">
-                        <h:outputText value="#{item.valueDigit}" />
-                    </p:column>
+                <p:column headerText="状态">
+                    <h:outputText
+                        value="#{item.verifyContext.verifyEvalState}" />
+                </p:column>
 
-                    <p:column>
-                        <f:facet name="header">操作</f:facet>
-                        <t:panelGroup>
-                            <p:commandLink
-                                update="itemForm:itemPanel"
-                                actionListener="#{accountInitAdminBean.modifyItem}"
-                                oncomplete="itemDialog.show()" value="修改">
-                                <f:setPropertyActionListener value="#{item}"
-                                    target="#{accountInitAdminBean.accountTicketItem}" />
-                            </p:commandLink>
-                            <p:spacer width="10" />
-                            <p:commandLink
-                                oncomplete="deleteItemConfirmDialog.show()" value="删除">
-                                <f:setPropertyActionListener value="#{item}"
-                                    target="#{accountInitAdminBean.accountTicketItem}" />
-                            </p:commandLink>
-                        </t:panelGroup>
-                    </p:column>
-                </p:dataTable>
-		</h:form>
+                <p:column>
+                    <f:facet name="header">操作</f:facet>
+                    <t:panelGroup>
+                        <p:commandLink update="itemForm:itemPanel"
+                            actionListener="#{accountInitAdminBean.modifyItem}"
+                            oncomplete="itemDialog.show()" value="修改">
+                            <f:setPropertyActionListener value="#{item}"
+                                target="#{accountInitAdminBean.accountTicketItem}" />
+                        </p:commandLink>
+                        <p:spacer width="10" />
+                        <p:commandLink
+                            oncomplete="deleteItemConfirmDialog.show()"
+                            value="删除">
+                            <f:setPropertyActionListener value="#{item}"
+                                target="#{accountInitAdminBean.accountTicketItem}" />
+                        </p:commandLink>
+                    </t:panelGroup>
+                </p:column>
+            </p:dataTable>
+        </h:form>
 
         <h:form id="itemForm">
             <p:dialog header="凭证项目编辑" widgetVar="itemDialog" modal="true"

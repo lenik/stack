@@ -16,7 +16,7 @@
     <ui:define name="title">库存盘点</ui:define>
 
     <ui:define name="content">
-
+        <ui:include src="/3/15/2/1/SingleVerifierSupportDialog.xhtml" />
 
 		<h:form id="mainForm">
             <h:panelGrid columns="2">
@@ -86,9 +86,9 @@
 						actionListener="#{stocktakingAdminBean.cancel}"
 						disabled="#{!stocktakingAdminBean.editable}" update="mainForm" async="true" />
 					<p:separator />
-					<p:commandButton value="审核"
-						disabled="#{stocktakingAdminBean.editable}"
-						onclick="verifyDlg.show();" />
+                    <ui:include src="/3/15/2/1/SingleVerifierSupportButton.xhtml">
+                        <ui:param name="disabled" value="#{stocktakingAdminBean.editable}" />
+                    </ui:include>
 					<p:separator />
 					<p:commandButton value="第一条"
 						actionListener="#{stocktakingAdminBean.first}"
@@ -172,7 +172,7 @@
 					<h:outputText value="制单人" />
                     <p:inputText value="#{stocktakingAdminBean.creator}" disabled="true"/>
                     <h:outputText value="单据状态" />
-                    <p:inputText value="" disabled="true"/>
+                    <p:inputText value="#{stocktakingAdminBean.stockOrder.verifyContext.verifyEvalState}" disabled="true"/>
 				</t:panelGrid>
 
                 <h:outputText value="明细"/>

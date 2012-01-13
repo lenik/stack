@@ -11,12 +11,17 @@ import com.bee32.plover.util.i18n.CurrencyConfig;
 import com.bee32.sem.asset.entity.AccountTicketItem;
 import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.people.dto.PartyDto;
+import com.bee32.sem.process.verify.builtin.dto.SingleVerifierWithNumberSupportDto;
+import com.bee32.sem.process.verify.dto.IVerifiableDto;
 import com.bee32.sem.world.monetary.MCValue;
 
 public class AccountTicketItemDto
-        extends TxEntityDto<AccountTicketItem> {
+        extends TxEntityDto<AccountTicketItem>
+        implements IVerifiableDto {
 
     private static final long serialVersionUID = 1L;
+
+    SingleVerifierWithNumberSupportDto singleVerifierWithNumberSupport;
 
     int index;
 
@@ -39,6 +44,7 @@ public class AccountTicketItemDto
 
         debitSide = source.isDebitSide();
         ticket = mref(AccountTicketDto.class, source.getTicket());
+        singleVerifierWithNumberSupport = marshal(SingleVerifierWithNumberSupportDto.class, source.getVerifyContext());
     }
 
     @Override
@@ -52,6 +58,7 @@ public class AccountTicketItemDto
 
         target.setDebitSide(debitSide);
         merge(target, "ticket", ticket);
+        merge(target, "verifyContext", singleVerifierWithNumberSupport);
     }
 
     @Override
@@ -185,4 +192,14 @@ public class AccountTicketItemDto
     public String getCreator() {
         return getOwner().getDisplayName();
     }
+
+    @Override
+    public SingleVerifierWithNumberSupportDto getVerifyContext() {
+        return singleVerifierWithNumberSupport;
+    }
+
+    public void setVerifyContext(SingleVerifierWithNumberSupportDto singleVerifierWithNumberSupport) {
+        this.singleVerifierWithNumberSupport = singleVerifierWithNumberSupport;
+    }
+
 }
