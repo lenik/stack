@@ -23,7 +23,10 @@ public class BuildMission
 
     private long money;
     private String target;
-    private SingleVerifierWithNumberSupport support = new SingleVerifierWithNumberSupport(this);
+
+    public BuildMission() {
+        setVerifyContext(new SingleVerifierWithNumberSupport());
+    }
 
     public long getMoney() {
         return money;
@@ -41,15 +44,17 @@ public class BuildMission
         this.target = target;
     }
 
+    SingleVerifierWithNumberSupport verifyContext;
+
     @Embedded
     @Override
     public SingleVerifierWithNumberSupport getVerifyContext() {
-        return support;
+        return verifyContext;
     }
 
-    void setVerifyContext(SingleVerifierWithNumberSupport support) {
-        support.bind(this);
-        this.support = support;
+    void setVerifyContext(SingleVerifierWithNumberSupport verifyContext) {
+        this.verifyContext = verifyContext;
+        verifyContext.bind(this);
     }
 
     @Transient

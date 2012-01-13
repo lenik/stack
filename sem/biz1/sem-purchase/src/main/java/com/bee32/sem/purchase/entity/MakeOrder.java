@@ -18,6 +18,8 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.plover.arch.util.dto.BeanPropertyAccessor;
+import com.bee32.plover.arch.util.dto.IPropertyAccessor;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.base.tx.TxEntity;
@@ -25,7 +27,6 @@ import com.bee32.sem.bom.entity.Part;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.process.verify.IVerifiable;
-import com.bee32.sem.process.verify.builtin.IJudgeNumber;
 import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;
 import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
 import com.bee32.sem.world.monetary.FxrQueryException;
@@ -37,14 +38,11 @@ import com.bee32.sem.world.monetary.MCVector;
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "make_order_seq", allocationSize = 1)
-public class MakeOrder extends TxEntity
-    implements DecimalConfig,
-               IVerifiable<ISingleVerifierWithNumber>,
-               IJudgeNumber {
+public class MakeOrder
+        extends TxEntity
+        implements DecimalConfig, IVerifiable<ISingleVerifierWithNumber> {
 
     private static final long serialVersionUID = 1L;
-
-    SingleVerifierWithNumberSupport singleVerifierWithNumberSupport = new SingleVerifierWithNumberSupport(this);
 
     public static final int STATUS_LENGTH = 30;
 
@@ -53,11 +51,14 @@ public class MakeOrder extends TxEntity
     Chance chance;
 
     List<MakeOrderItem> items = new ArrayList<MakeOrderItem>();
+    MCVector total;
+    BigDecimal nativeTotal; // Redundant.
 
     List<MakeTask> tasks = new ArrayList<MakeTask>();
 
-    MCVector total;
-    BigDecimal nativeTotal; // Redundant.
+    public MakeOrder() {
+        setVerifyContext(new SingleVerifierWithNumberSupport());
+    }
 
     @ManyToOne(optional = false)
     public Party getCustomer() {
@@ -204,10 +205,10 @@ public class MakeOrder extends TxEntity
     private Map<Part, BigDecimal> taskItemListToMap() {
         Map<Part, BigDecimal> taskQuantityMap = new HashMap<Part, BigDecimal>();
 
-        for(MakeTask task : tasks) {
-            for(MakeTaskItem taskItem : task.getItems()) {
+        for (MakeTask task : tasks) {
+            for (MakeTaskItem taskItem : task.getItems()) {
                 BigDecimal taskQuantityInMap = taskQuantityMap.get(taskItem.part);
-                if(taskQuantityInMap == null) {
+                if (taskQuantityInMap == null) {
                     taskQuantityMap.put(taskItem.part, taskItem.getQuantity());
                 } else {
                     taskQuantityInMap = taskItem.getQuantity().add(taskQuantityInMap);
@@ -219,25 +220,25 @@ public class MakeOrder extends TxEntity
         return taskQuantityMap;
     }
 
-    //找寻还没有按排生产任务的产品列表
+    // 找寻还没有按排生产任务的产品列表
     @Transient
     public List<MakeOrderItem> getNoCorrespondingTaskItems() {
         Map<Part, BigDecimal> taskQuantityMap = taskItemListToMap();
 
         List<MakeOrderItem> result = new ArrayList<MakeOrderItem>();
-        for(MakeOrderItem orderItem : items) {
+        for (MakeOrderItem orderItem : items) {
             BigDecimal taskQuantityInMap = taskQuantityMap.get(orderItem.getPart());
 
-            if(taskQuantityInMap == null) {
-                //没有对应的生产任务
+            if (taskQuantityInMap == null) {
+                // 没有对应的生产任务
                 result.add(orderItem);
             } else {
-                //找到对应的生产任务
+                // 找到对应的生产任务
                 BigDecimal haveNotArrangeTaskCount = //
-                        orderItem.getQuantity().subtract(taskQuantityInMap);
+                orderItem.getQuantity().subtract(taskQuantityInMap);
 
-                if(haveNotArrangeTaskCount.longValue() > 0) {
-                    //生产任务的数量小订单的数量
+                if (haveNotArrangeTaskCount.longValue() > 0) {
+                    // 生产任务的数量小订单的数量
                     MakeOrderItem haveNotArrangeTaskOrderItem = new MakeOrderItem();
                     haveNotArrangeTaskOrderItem.setOrder(this);
                     haveNotArrangeTaskOrderItem.setPart(orderItem.getPart());
@@ -250,62 +251,47 @@ public class MakeOrder extends TxEntity
             }
         }
 
-        if(result.size() > 0) return result;
+        if (result.size() > 0)
+            return result;
         return null;
 
     }
 
-    //检查所有对应生产任务单的数量总合是否超过订单的数量
+    // 检查所有对应生产任务单的数量总合是否超过订单的数量
     public Map<Part, BigDecimal> checkIfTaskQuantityFitOrder() {
         Map<Part, BigDecimal> result = new HashMap<Part, BigDecimal>();
 
         Map<Part, BigDecimal> taskQuantityMap = taskItemListToMap();
-        for(MakeOrderItem orderItem : items) {
+        for (MakeOrderItem orderItem : items) {
             BigDecimal taskQuantity = taskQuantityMap.get(orderItem.getPart());
 
-            if(taskQuantity != null) {
+            if (taskQuantity != null) {
                 int i = taskQuantity.compareTo(orderItem.getQuantity());
-                if(i > 0) {
-                    //生产任务中的数量大于订单中的数量
+                if (i > 0) {
+                    // 生产任务中的数量大于订单中的数量
                     result.put( //
                             orderItem.getPart(), //
                             taskQuantity.subtract(orderItem.getQuantity()));
                 }
             }
         }
-
         return result;
     }
 
-    public void setVerifyContext(SingleVerifierWithNumberSupport singleVerifierWithNumberSupport) {
-        this.singleVerifierWithNumberSupport = singleVerifierWithNumberSupport;
-        singleVerifierWithNumberSupport.bind(this);
-    }
+    public static final IPropertyAccessor<BigDecimal> nativeTotalProperty = BeanPropertyAccessor.access(//
+            MakeOrder.class, "nativeTotal");
+
+    SingleVerifierWithNumberSupport verifyContext;
 
     @Embedded
     @Override
     public SingleVerifierWithNumberSupport getVerifyContext() {
-        return singleVerifierWithNumberSupport;
+        return verifyContext;
     }
 
-    @Transient
-    @Override
-    public String getNumberDescription() {
-        return "金额";
+    public void setVerifyContext(SingleVerifierWithNumberSupport verifyContext) {
+        this.verifyContext = verifyContext;
+        verifyContext.bind(this, nativeTotalProperty, "金额");
     }
 
-    @Transient
-    @Override
-    public Number getJudgeNumber() {
-        try {
-            BigDecimal total = new BigDecimal(0);
-            for(MakeOrderItem item:items) {
-                total = total.add(item.getNativeTotal());
-            }
-
-            return total;
-        } catch (FxrQueryException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

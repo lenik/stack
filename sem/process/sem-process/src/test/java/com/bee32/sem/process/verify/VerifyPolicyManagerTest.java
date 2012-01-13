@@ -2,13 +2,13 @@ package com.bee32.sem.process.verify;
 
 import java.util.Collection;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.bee32.plover.arch.util.dto.BeanPropertyAccessor;
 import com.bee32.plover.arch.util.dto.IPropertyAccessor;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;
@@ -44,22 +44,29 @@ public class VerifyPolicyManagerTest
 
         private static final long serialVersionUID = 1L;
 
-        static final IPropertyAccessor<Long> valueProperty = BeanPropertyAccessor.access(SimpleBean.class, "value");
-        private SingleVerifierWithNumberSupport context = new SingleVerifierWithNumberSupport(this, valueProperty, "金额");
+        SingleVerifierWithNumberSupport verifyContext;
 
-        long longValue;
+        long longValue = 100;
 
         public SimpleBean() {
-            longValue = 1000;
+            setVerifyContext(new SingleVerifierWithNumberSupport());
         }
 
         public long getValue() {
             return longValue;
         }
 
+        static final IPropertyAccessor<Long> valueProperty = _property_(SimpleBean.class, "value");
+
+        @Embedded
         @Override
         public ISingleVerifierWithNumber getVerifyContext() {
-            return context;
+            return verifyContext;
+        }
+
+        public void setVerifyContext(SingleVerifierWithNumberSupport verifyContext) {
+            this.verifyContext = verifyContext;
+            verifyContext.bind(this, valueProperty, "金额");
         }
 
     }

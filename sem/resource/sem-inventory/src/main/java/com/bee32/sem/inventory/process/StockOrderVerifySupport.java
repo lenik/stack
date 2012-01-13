@@ -21,14 +21,10 @@ public class StockOrderVerifySupport
         super();
     }
 
-    public StockOrderVerifySupport(Entity<?> entity) {
-        super(entity);
-    }
-
     @Override
     public void bind(Entity<?> entity) {
-        super.bind(entity, StockOrder.NATIVE_TOTAL_PROPERTY, "金额");
-        stockSubjectAware = new StockSubjectInProperty(entity, StockOrder.SUBJECT_PROPERTY);
+        super.bind(entity, StockOrder.nativeTotalProperty, "金额");
+        stockSubjectAware = new StockSubjectInProperty(entity, StockOrder.subjectProperty);
     }
 
     @Override

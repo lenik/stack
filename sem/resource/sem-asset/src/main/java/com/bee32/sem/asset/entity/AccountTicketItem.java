@@ -1,5 +1,6 @@
 package com.bee32.sem.asset.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.AttributeOverride;
@@ -15,10 +16,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
+import com.bee32.plover.arch.util.dto.IPropertyAccessor;
+import com.bee32.plover.orm.cache.Redundant;
+import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.base.tx.TxEntity;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.process.verify.IVerifiable;
-import com.bee32.sem.process.verify.builtin.IJudgeNumber;
 import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;
 import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
 import com.bee32.sem.world.monetary.FxrQueryException;
@@ -34,29 +37,38 @@ import com.bee32.sem.world.monetary.MCValue;
 @SequenceGenerator(name = "idgen", sequenceName = "account_ticket_item_seq", allocationSize = 1)
 public class AccountTicketItem
         extends TxEntity
-        implements IVerifiable<ISingleVerifierWithNumber>, IJudgeNumber {
+        implements IVerifiable<ISingleVerifierWithNumber>, DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
     public static final int TITLE_LENGTH = 30;
     public static final int TEXT_LENGTH = 3000;
 
-    SingleVerifierWithNumberSupport singleVerifierWithNumberSupport = new SingleVerifierWithNumberSupport(this);
-
+    AccountTicket ticket;
     int index;
-
     AccountSubject subject;
     Party party;
-
-    MCValue value = new MCValue();
-
     boolean debitSide;
-    AccountTicket ticket;
+    MCValue value = new MCValue();
+    BigDecimal nativeValue;
 
     AccountSnapshotItem snapshotItemRef;
 
     public AccountTicketItem() {
+        setVerifyContext(new SingleVerifierWithNumberSupport());
         setDate(new Date());
+    }
+
+    @Override
+    public void populate(Object source) {
+        super.populate(source);
+        if (source instanceof AccountSnapshotItem) {
+            AccountSnapshotItem si = (AccountSnapshotItem) source;
+            setSubject(si.getSubject());
+            setParty(si.getParty());
+            setValue(si.getValue());
+            snapshotItemRef = si;
+        }
     }
 
     @Transient
@@ -67,6 +79,15 @@ public class AccountTicketItem
     public void setDate(Date date) {
         setBeginTime(date);
         setEndTime(date);
+    }
+
+    @ManyToOne
+    public AccountTicket getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(AccountTicket ticket) {
+        this.ticket = ticket;
     }
 
     /**
@@ -108,6 +129,20 @@ public class AccountTicketItem
     }
 
     /**
+     * 说明本条目属于凭证上的借方还是贷方。
+     *
+     * @return <code>true</code> 表示借方，<code>false</code> 表示贷方。
+     */
+    @Column(nullable = false)
+    public boolean isDebitSide() {
+        return debitSide;
+    }
+
+    public void setDebitSide(boolean debitSide) {
+        this.debitSide = debitSide;
+    }
+
+    /**
      * 金额
      */
     @Embedded
@@ -123,29 +158,28 @@ public class AccountTicketItem
         if (value == null)
             throw new NullPointerException("value");
         this.value = value;
+        this.nativeValue = null;
     }
 
     /**
-     * 说明本条目属于凭证上的借方还是贷方。
+     * 【冗余】本地货币表示的价格。
      *
-     * @return <code>true</code> 表示借方，<code>false</code> 表示贷方。
+     * @return 本地货币表示的价格，非 <code>null</code>。
+     * @throws FxrQueryException
+     *             外汇查询异常。
      */
-    @Column(nullable = false)
-    public boolean isDebitSide() {
-        return debitSide;
+    @Redundant
+    @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE)
+    public synchronized BigDecimal getNativeValue()
+            throws FxrQueryException {
+        if (nativeValue == null) {
+            nativeValue = value.getNativeValue(getDate());
+        }
+        return nativeValue;
     }
 
-    public void setDebitSide(boolean debitSide) {
-        this.debitSide = debitSide;
-    }
-
-    @ManyToOne
-    public AccountTicket getTicket() {
-        return ticket;
-    }
-
-    public void setTicket(AccountTicket ticket) {
-        this.ticket = ticket;
+    void setNativeValue(BigDecimal nativeValue) {
+        this.nativeValue = nativeValue;
     }
 
     @Transient
@@ -153,42 +187,20 @@ public class AccountTicketItem
         return snapshotItemRef != null;
     }
 
-    @Override
-    public void populate(Object source) {
-        super.populate(source);
-        if (source instanceof AccountSnapshotItem) {
-            AccountSnapshotItem si = (AccountSnapshotItem) source;
-            setSubject(si.getSubject());
-            setParty(si.getParty());
-            setValue(si.getValue());
-            snapshotItemRef = si;
-        }
-    }
+    public static final IPropertyAccessor<BigDecimal> nativeValueProperty = _property_(//
+            AccountTicketItem.class, "nativeValue");
 
-    public void setVerifyContext(SingleVerifierWithNumberSupport singleVerifierWithNumberSupport) {
-        this.singleVerifierWithNumberSupport = singleVerifierWithNumberSupport;
-        singleVerifierWithNumberSupport.bind(this);
-    }
+    SingleVerifierWithNumberSupport verifyContext;
 
     @Embedded
     @Override
     public SingleVerifierWithNumberSupport getVerifyContext() {
-        return singleVerifierWithNumberSupport;
+        return verifyContext;
     }
 
-    @Transient
-    @Override
-    public String getNumberDescription() {
-        return "金额";
+    public void setVerifyContext(SingleVerifierWithNumberSupport singleVerifierWithNumberSupport) {
+        this.verifyContext = singleVerifierWithNumberSupport;
+        singleVerifierWithNumberSupport.bind(this, nativeValueProperty, "金额");
     }
 
-    @Transient
-    @Override
-    public Number getJudgeNumber() {
-        try {
-            return value.getNativeValue(getDate());
-        } catch (FxrQueryException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

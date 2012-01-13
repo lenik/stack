@@ -15,8 +15,6 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.arch.util.dto.BeanPropertyAccessor;
-import com.bee32.plover.arch.util.dto.IPropertyAccessor;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.util.PrettyPrintStream;
@@ -200,11 +198,6 @@ public abstract class AbstractOrder<Item extends AbstractOrderItem>
         PrettyPrintStream buf = new PrettyPrintStream();
         dump(buf);
         return buf.toString();
-    }
-
-    public static final IPropertyAccessor<BigDecimal> NATIVE_TOTAL_PROPERTY;
-    static {
-        NATIVE_TOTAL_PROPERTY = BeanPropertyAccessor.access(AbstractOrder.class, "nativeTotal");
     }
 
 }

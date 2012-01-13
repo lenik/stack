@@ -1,6 +1,7 @@
 package com.bee32.sem.purchase.entity;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Embedded;
@@ -12,9 +13,9 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.plover.arch.util.dto.IPropertyAccessor;
 import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.sem.process.verify.IVerifiable;
-import com.bee32.sem.process.verify.builtin.IJudgeNumber;
 import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;
 import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
 
@@ -25,18 +26,17 @@ import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
 @SequenceGenerator(name = "idgen", sequenceName = "purchase_request_seq", allocationSize = 1)
 public class PurchaseRequest
         extends MomentInterval
-        implements
-            IVerifiable<ISingleVerifierWithNumber>,
-            IJudgeNumber {
+        implements IVerifiable<ISingleVerifierWithNumber> {
 
     private static final long serialVersionUID = 1L;
 
-    SingleVerifierWithNumberSupport singleVerifierWithNumberSupport = new SingleVerifierWithNumberSupport(this);
+    List<MaterialPlan> plans = new ArrayList<MaterialPlan>();
+    List<PurchaseRequestItem> items = new ArrayList<PurchaseRequestItem>();
+    List<OrderHolder> orderHolders = new ArrayList<OrderHolder>();
 
-    List<MaterialPlan> plans;
-    List<PurchaseRequestItem> items;
-
-    List<OrderHolder> orderHolders;
+    public PurchaseRequest() {
+        setVerifyContext(new SingleVerifierWithNumberSupport());
+    }
 
     @OneToMany(mappedBy = "purchaseRequest")
     public List<MaterialPlan> getPlans() {
@@ -54,7 +54,7 @@ public class PurchaseRequest
     }
 
     public void setItems(List<PurchaseRequestItem> items) {
-        if(items == null)
+        if (items == null)
             throw new NullPointerException("items");
         this.items = items;
     }
@@ -90,6 +90,14 @@ public class PurchaseRequest
             items.get(index).setIndex(index);
     }
 
+    @Transient
+    public BigDecimal getTotalPlanQuantity() {
+        BigDecimal totalPlanQuantity = new BigDecimal(0);
+        for (PurchaseRequestItem item : items) {
+            totalPlanQuantity = totalPlanQuantity.add(item.getPlanQuantity());
+        }
+        return totalPlanQuantity;
+    }
 
     @OneToMany(mappedBy = "purchaseRequest", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
@@ -100,7 +108,6 @@ public class PurchaseRequest
     public void setOrderHolders(List<OrderHolder> orderHolders) {
         this.orderHolders = orderHolders;
     }
-
 
     public synchronized void addOrderHolder(OrderHolder orderHolder) {
         if (orderHolder == null)
@@ -121,32 +128,20 @@ public class PurchaseRequest
         orderHolder.detach();
     }
 
-    public void setVerifyContext(SingleVerifierWithNumberSupport singleVerifierWithNumberSupport) {
-        this.singleVerifierWithNumberSupport = singleVerifierWithNumberSupport;
-        singleVerifierWithNumberSupport.bind(this);
-    }
+    public static final IPropertyAccessor<BigDecimal> totalPlanQuantityProperty = _property_(//
+            PurchaseRequest.class, "totalPlanQuantity");
+
+    SingleVerifierWithNumberSupport verifyContext;
 
     @Embedded
     @Override
     public SingleVerifierWithNumberSupport getVerifyContext() {
-        return singleVerifierWithNumberSupport;
+        return verifyContext;
     }
 
-    @Transient
-    @Override
-    public String getNumberDescription() {
-        return "金额";
-    }
-
-    @Transient
-    @Override
-    public Number getJudgeNumber() {
-        BigDecimal totalPlanQuantity = new BigDecimal(0);
-        for (PurchaseRequestItem item : items) {
-            totalPlanQuantity = totalPlanQuantity.add(item.getPlanQuantity());
-        }
-
-        return totalPlanQuantity;
+    public void setVerifyContext(SingleVerifierWithNumberSupport verifyContext) {
+        this.verifyContext = verifyContext;
+        verifyContext.bind(this, totalPlanQuantityProperty, "金额");
     }
 
 }

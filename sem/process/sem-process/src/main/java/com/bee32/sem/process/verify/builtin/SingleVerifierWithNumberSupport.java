@@ -22,10 +22,6 @@ public class SingleVerifierWithNumberSupport
     public SingleVerifierWithNumberSupport() {
     }
 
-    public SingleVerifierWithNumberSupport(Entity<?> entity) {
-        bind(entity);
-    }
-
     public <E extends Entity<?>> SingleVerifierWithNumberSupport(E entity,
             IPropertyAccessor<? extends Number> property, String description) {
         bind(entity, property, description);

@@ -1,5 +1,7 @@
 package com.bee32.sem.inventory.entity;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
@@ -16,7 +18,6 @@ import org.hibernate.annotations.Index;
 
 import com.bee32.plover.arch.generic.IParameterized;
 import com.bee32.plover.arch.generic.IParameterizedType;
-import com.bee32.plover.arch.util.dto.BeanPropertyAccessor;
 import com.bee32.plover.arch.util.dto.IPropertyAccessor;
 import com.bee32.sem.inventory.process.IStockOrderVerifyContext;
 import com.bee32.sem.inventory.process.StockOrderVerifySupport;
@@ -25,6 +26,7 @@ import com.bee32.sem.inventory.tx.entity.StockTransfer;
 import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.entity.OrgUnit;
 import com.bee32.sem.process.verify.IVerifiable;
+import com.bee32.sem.world.thing.AbstractOrder;
 
 /**
  * 库存通用订单
@@ -49,10 +51,9 @@ public class StockOrder
     OrgUnit orgUnit;
     StockWarehouse warehouse; // Redundant.
 
-    StockOrderVerifySupport stockOrderVerifySupport = new StockOrderVerifySupport(this);
-
     public StockOrder() {
         this.subject = StockOrderSubject.INIT;
+        setVerifyContext(new StockOrderVerifySupport());
     }
 
     public StockOrder(StockPeriod base, StockOrderSubject subject) {
@@ -273,19 +274,20 @@ public class StockOrder
         return peer;
     }
 
-    public static final IPropertyAccessor<StockOrderSubject> SUBJECT_PROPERTY;
-    static {
-        SUBJECT_PROPERTY = BeanPropertyAccessor.access(StockOrder.class, "subject");
-    }
+    public static final IPropertyAccessor<StockOrderSubject> subjectProperty = _property_(StockOrder.class, "subject");
+    public static final IPropertyAccessor<BigDecimal> nativeTotalProperty = _property_(//
+            AbstractOrder.class, "nativeTotal");
+
+    StockOrderVerifySupport verifyContext;
 
     @Embedded
     @Override
     public StockOrderVerifySupport getVerifyContext() {
-        return stockOrderVerifySupport;
+        return verifyContext;
     }
 
     public void setVerifyContext(StockOrderVerifySupport stockOrderVerifySupport) {
-        this.stockOrderVerifySupport = stockOrderVerifySupport;
+        this.verifyContext = stockOrderVerifySupport;
         stockOrderVerifySupport.bind(this);
     }
 
