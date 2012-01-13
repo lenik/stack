@@ -21,7 +21,6 @@ import overlay.Overlay;
 import com.bee32.plover.arch.util.ILockable;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.util.FormatStyle;
-import com.bee32.plover.util.GeneralFormatter;
 import com.bee32.plover.util.IMultiFormat;
 import com.bee32.plover.util.PrettyPrintStream;
 import com.bee32.sem.event.entity.Event;
@@ -134,7 +133,7 @@ public abstract class AbstractVerifyContext
 
     @Overlay
     public void toString(PrettyPrintStream out, FormatStyle format, Set<Object> occurred, int depth) {
-        GeneralFormatter formatter = new GeneralFormatter(out, occurred);
+        VerifyContextFormatter formatter = new VerifyContextFormatter(out, occurred);
         formatter.format(this, format, depth);
     }
 
