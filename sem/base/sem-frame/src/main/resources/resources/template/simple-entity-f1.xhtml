@@ -4,16 +4,21 @@
     xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" template="/template/primefaces.xhtml">
 
     <ui:define name="title">#{title}</ui:define>
+    <ui:param name="_toolbar" value="#{toolbar != null ? toolbar : viewConfig.toolbarPlacement}" />
 
     <ui:define name="content">
-
         <ui:insert name="includes" />
 
         <ui:insert name="mainForm">
             <h:form id="mainForm">
-                <ui:insert name="toolbar" />
+
+                <c:if test="${fn:contains(_toolbar, 't')}">
+                    <ui:insert name="toolbar" />
+                </c:if>
+
                 <ui:insert name="searchPanel" />
                 <ui:insert name="searchFragmentsPanel" />
+
                 <ui:insert name="dataTable">
                     <p:dataTable id="dataTable" var="entry" value="${bean.dataModel}" selection="${bean.singleSelection}"
                         selectionMode="single" paginator="true" rows="${viewConfig.pageSize}" lazy="true"
@@ -25,6 +30,10 @@
 
                         <ui:insert name="dataTableColumns" />
                     </p:dataTable>
+
+                    <c:if test="${fn:contains(_toolbar, 'b')}">
+                        <ui:insert name="toolbar" />
+                    </c:if>
                 </ui:insert>
             </h:form>
 

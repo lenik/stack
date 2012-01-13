@@ -96,4 +96,12 @@ public class ViewConfig
         this.defaultUpdateTarget = defaultUpdateTarget;
     }
 
+    public String getToolbarPlacement() {
+        SiteInstance site = ThreadHttpContext.getSiteInstance();
+        String toolbarPlacement = site.getProperty("frame.toolbar");
+        if (toolbarPlacement == null)
+            toolbarPlacement = "b";
+        return toolbarPlacement;
+    }
+
 }
