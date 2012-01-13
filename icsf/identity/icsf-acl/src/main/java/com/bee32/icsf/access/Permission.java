@@ -360,4 +360,15 @@ public final class Permission
         return true;
     }
 
+    public long toLong() {
+        long longValue = ((denyBits & 0xFFFFFFFFL) << 32) | (allowBits & 0xFFFFFFFFL);
+        return longValue;
+    }
+
+    public static Permission fromLong(long longValue) {
+        int hi_deny = (int) (longValue >> 32);
+        int lo_allow = (int) (longValue);
+        return new Permission(lo_allow, hi_deny);
+    }
+
 }
