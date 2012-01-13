@@ -2,7 +2,7 @@ package com.bee32.plover.collections;
 
 import java.util.Arrays;
 
-public class TestSort {
+public class SortFeat {
 
     public static void main(String[] args) {
 
