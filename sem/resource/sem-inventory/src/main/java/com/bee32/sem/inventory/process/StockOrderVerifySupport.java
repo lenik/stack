@@ -31,6 +31,15 @@ public class StockOrderVerifySupport
         stockSubjectAware = new StockSubjectInProperty(entity, StockOrder.SUBJECT_PROPERTY);
     }
 
+    @Override
+    public void populate(Object source) {
+        super.populate(source);
+        if (source instanceof StockOrderVerifySupport) {
+            StockOrderVerifySupport o = (StockOrderVerifySupport) source;
+            this.stockSubjectAware = o.stockSubjectAware;
+        }
+    }
+
     @Transient
     @Override
     public StockOrderSubject getSubject() {

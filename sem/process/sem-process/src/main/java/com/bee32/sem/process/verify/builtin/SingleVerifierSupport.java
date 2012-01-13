@@ -38,6 +38,18 @@ public class SingleVerifierSupport
         super();
     }
 
+    @Override
+    public void populate(Object source) {
+        super.populate(source);
+        if (source instanceof SingleVerifierSupport) {
+            SingleVerifierSupport o = (SingleVerifierSupport) source;
+            this.verifier1 = o.verifier1;
+            this.verifiedDate1 = o.verifiedDate1;
+            this.accepted1 = o.accepted1;
+            this.rejectedReason1 = o.rejectedReason1;
+        }
+    }
+
     @ManyToOne(fetch = FetchType.LAZY)
     @Override
     public Principal getVerifier1() {

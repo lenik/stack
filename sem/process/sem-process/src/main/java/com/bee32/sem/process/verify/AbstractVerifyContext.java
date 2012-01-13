@@ -20,6 +20,7 @@ import overlay.Overlay;
 
 import com.bee32.plover.arch.util.ILockable;
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.IPopulatable;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.IMultiFormat;
 import com.bee32.plover.util.PrettyPrintStream;
@@ -27,7 +28,7 @@ import com.bee32.sem.event.entity.Event;
 
 @MappedSuperclass
 public abstract class AbstractVerifyContext
-        implements Serializable, IVerifyContext, IMultiFormat, ILockable {
+        implements Serializable, IVerifyContext, IMultiFormat, ILockable, IPopulatable {
 
     private static final long serialVersionUID = 1L;
 
@@ -46,6 +47,17 @@ public abstract class AbstractVerifyContext
         verifyError = null;
         verifyEvalDate = null;
         verifyEvent = null;
+    }
+
+    @Override
+    public void populate(Object source) {
+        if (source instanceof AbstractVerifyContext) {
+            AbstractVerifyContext o = (AbstractVerifyContext) source;
+            this.verifyEvalState = o.verifyEvalState;
+            this.verifyError = o.verifyError;
+            this.verifyEvalDate = o.verifyEvalDate;
+            this.verifyEvent = o.verifyEvent;
+        }
     }
 
     @Column(name = "verifyEvalState", nullable = false)

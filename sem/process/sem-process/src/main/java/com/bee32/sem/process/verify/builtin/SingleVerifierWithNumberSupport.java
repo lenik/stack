@@ -41,6 +41,15 @@ public class SingleVerifierWithNumberSupport
         judgeNumberImpl = new JudgeNumberInProperty(entity, property, description);
     }
 
+    @Override
+    public void populate(Object source) {
+        super.populate(source);
+        if (source instanceof SingleVerifierWithNumberSupport) {
+            SingleVerifierWithNumberSupport o = (SingleVerifierWithNumberSupport) source;
+            this.judgeNumberImpl = o.judgeNumberImpl;
+        }
+    }
+
     @Transient
     @Override
     public String getNumberDescription() {

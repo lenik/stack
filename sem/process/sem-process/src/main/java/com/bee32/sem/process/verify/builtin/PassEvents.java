@@ -38,6 +38,17 @@ public class PassEvents
         this.events = events;
     }
 
+    @Override
+    public void populate(Object source) {
+        super.populate(source);
+        if (source instanceof PassEvents) {
+            PassEvents o = (PassEvents) source;
+            this.policy = o.policy;
+            this.position = o.position;
+            this.events = o.events;
+        }
+    }
+
     public PassToNextPolicy getPolicy() {
         return policy;
     }
