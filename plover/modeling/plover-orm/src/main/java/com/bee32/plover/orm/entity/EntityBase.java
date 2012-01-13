@@ -1,5 +1,7 @@
 package com.bee32.plover.orm.entity;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,11 +28,13 @@ public abstract class EntityBase<K extends Serializable>
 
     public EntityBase() {
         super();
+        createTransients();
     }
 
     public EntityBase(String name) {
         super(name);
         this.name = name;
+        createTransients();
     }
 
     String _internalName() {
@@ -39,6 +43,15 @@ public abstract class EntityBase<K extends Serializable>
 
     void _internalName(String name) {
         this.name = name;
+    }
+
+    private void readObject(ObjectInputStream in)
+            throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        createTransients();
+    }
+
+    protected void createTransients() {
     }
 
     @Override

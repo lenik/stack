@@ -1,5 +1,7 @@
 package com.bee32.plover.orm.util;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.lang.reflect.Modifier;
 import java.util.Date;
@@ -43,10 +45,21 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
     public EntityDto() {
         super();
+        createTransients();
     }
 
     public EntityDto(int selection) {
         super(selection);
+        createTransients();
+    }
+
+    protected void createTransients() {
+    }
+
+    private void readObject(ObjectInputStream in)
+            throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        createTransients();
     }
 
     public <$ extends EntityDto<E, K>> $ create() {
