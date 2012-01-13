@@ -11,6 +11,7 @@
 
         <ui:insert name="mainForm">
             <h:form id="mainForm">
+                <ui:insert name="toolbar" />
                 <ui:insert name="searchPanel" />
                 <ui:insert name="searchFragmentsPanel" />
                 <ui:insert name="dataTable">
@@ -25,7 +26,6 @@
                         <ui:insert name="dataTableColumns" />
                     </p:dataTable>
                 </ui:insert>
-                <ui:insert name="toolbar" />
             </h:form>
 
             <ui:insert name="toolbarDialogs" />
