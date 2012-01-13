@@ -11,8 +11,8 @@ import com.bee32.plover.orm.entity._AutoId;
 
 @MappedSuperclass
 @_AutoId
-public abstract class TreeEntityAuto<K extends Serializable, $ extends TreeEntityAuto<K, $>>
-        extends TreeEntity<K, $> {
+public abstract class TreeEntityAuto<K extends Serializable, self_t extends TreeEntityAuto<K, self_t>>
+        extends TreeEntity<K, self_t> {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,7 +26,11 @@ public abstract class TreeEntityAuto<K extends Serializable, $ extends TreeEntit
         super(name);
     }
 
-    public TreeEntityAuto($ parent, String name) {
+    public TreeEntityAuto(self_t parent) {
+        super(parent);
+    }
+
+    public TreeEntityAuto(self_t parent, String name) {
         super(parent, name);
     }
 

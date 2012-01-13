@@ -37,13 +37,13 @@ import com.bee32.plover.ox1.color.UIEntitySpec;
  *
  */
 @MappedSuperclass
-public abstract class TreeEntity<K extends Serializable, T extends TreeEntity<K, T>>
+public abstract class TreeEntity<K extends Serializable, self_t extends TreeEntity<K, self_t>>
         extends UIEntitySpec<K> {
 
     private static final long serialVersionUID = 1L;
 
-    T parent;
-    List<T> children = new ArrayList<T>();
+    self_t parent;
+    List<self_t> children = new ArrayList<self_t>();
 
     public TreeEntity() {
         super();
@@ -53,23 +53,29 @@ public abstract class TreeEntity<K extends Serializable, T extends TreeEntity<K,
         super(name);
     }
 
-    public TreeEntity(T parent, String name) {
+    public TreeEntity(self_t parent) {
+        super();
+        if (parent != null)
+            parent.addChild(self());
+    }
+
+    public TreeEntity(self_t parent, String name) {
         super(name);
         if (parent != null)
             parent.addChild(self());
     }
 
     @SuppressWarnings("unchecked")
-    protected final T self() {
-        return (T) this;
+    protected final self_t self() {
+        return (self_t) this;
     }
 
     @ManyToOne
-    public T getParent() {
+    public self_t getParent() {
         return parent;
     }
 
-    public void setParent(T parent) {
+    public void setParent(self_t parent) {
         if (parent != null)
             checkNode(false, parent);
         this.parent = parent;
@@ -80,17 +86,17 @@ public abstract class TreeEntity<K extends Serializable, T extends TreeEntity<K,
      */
     @OneToMany(mappedBy = "parent")
     @Cascade(CascadeType.ALL)
-    public List<T> getChildren() {
+    public List<self_t> getChildren() {
         return children;
     }
 
-    public void setChildren(List<T> children) {
+    public void setChildren(List<self_t> children) {
         if (children == null)
             throw new NullPointerException("children");
         this.children = children;
     }
 
-    public void addChild(T child) {
+    public void addChild(self_t child) {
         if (child == null)
             throw new NullPointerException("child");
 
@@ -100,7 +106,7 @@ public abstract class TreeEntity<K extends Serializable, T extends TreeEntity<K,
         children.add(child);
     }
 
-    public boolean removeChild(T child) {
+    public boolean removeChild(self_t child) {
         if (child == null)
             throw new NullPointerException("child");
 
@@ -115,7 +121,7 @@ public abstract class TreeEntity<K extends Serializable, T extends TreeEntity<K,
         return parent != null;
     }
 
-    int indexOf(T child) {
+    int indexOf(self_t child) {
         return children.indexOf(child);
     }
 
@@ -123,7 +129,7 @@ public abstract class TreeEntity<K extends Serializable, T extends TreeEntity<K,
     public int getIndex() {
         if (parent == null)
             return 0;
-        T self = self();
+        self_t self = self();
         return parent.indexOf(self);
     }
 
@@ -136,7 +142,7 @@ public abstract class TreeEntity<K extends Serializable, T extends TreeEntity<K,
     public int getDepth() {
         int safeDepth = getSafeDepth();
         int depth = 0;
-        T node = self();
+        self_t node = self();
         while (node != null) {
             node = node.getParent();
             depth++;
@@ -175,9 +181,9 @@ public abstract class TreeEntity<K extends Serializable, T extends TreeEntity<K,
     }
 
     @Transient
-    public List<T> getChain() {
-        List<T> chain = new ArrayList<T>();
-        T node = self();
+    public List<self_t> getChain() {
+        List<self_t> chain = new ArrayList<self_t>();
+        self_t node = self();
         while (node != null) {
             chain.add(node);
             node = node.parent;
@@ -198,7 +204,7 @@ public abstract class TreeEntity<K extends Serializable, T extends TreeEntity<K,
         else
             buf.append(" -` "); // _`-_
 
-        T node = parent;
+        self_t node = parent;
         while (node != null) {
             if (!node.isLast())
                 buf.append("  | "); // _|__
@@ -235,7 +241,7 @@ public abstract class TreeEntity<K extends Serializable, T extends TreeEntity<K,
      * @throws IllegalArgumentException
      *             If the node type is illegal.
      */
-    protected void checkNode(boolean isChild, T node) {
+    protected void checkNode(boolean isChild, self_t node) {
         Class<?> selfType = getClass();
         Class<?> nodeType = node.getClass();
         if (!selfType.equals(nodeType))
@@ -251,10 +257,10 @@ public abstract class TreeEntity<K extends Serializable, T extends TreeEntity<K,
     public boolean checkLoopFast(int order) {
         if (order < 1)
             throw new IllegalArgumentException("Order should be positive integer: " + order);
-        T node = self();
+        self_t node = self();
         for (int i = 0; i < order; i++) {
 
-            T _node = node.getParent();
+            self_t _node = node.getParent();
             node = _node;
 
             if (node == null)
@@ -279,7 +285,7 @@ public abstract class TreeEntity<K extends Serializable, T extends TreeEntity<K,
         out.write(getNodeLabel());
         out.write('\n');
 
-        for (T child : children)
+        for (self_t child : children)
             child.dump(out);
     }
 
@@ -295,7 +301,7 @@ public abstract class TreeEntity<K extends Serializable, T extends TreeEntity<K,
     protected ICriteriaElement selector(String prefix) {
         ICriteriaElement localSelector = localSelector(prefix);
 
-        T parent = getParent();
+        self_t parent = getParent();
         if (parent == null)
             return new And(//
                     new IsNull(prefix + "parent"), //

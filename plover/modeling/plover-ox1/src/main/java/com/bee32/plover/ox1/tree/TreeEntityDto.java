@@ -15,7 +15,7 @@ import javax.persistence.Transient;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
 
-public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serializable, T extends TreeEntityDto<E, K, T>>
+public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serializable, self_t extends TreeEntityDto<E, K, self_t>>
         extends UIEntityDto<E, K> {
 
     private static final long serialVersionUID = 1L;
@@ -23,8 +23,8 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
     public static final int PARENT = 0x00010000;
     public static final int CHILDREN = 0x00020000;
 
-    T parent;
-    List<T> children;
+    self_t parent;
+    List<self_t> children;
 
     public TreeEntityDto() {
         super();
@@ -40,7 +40,7 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
         super.__marshal(source);
 
         if (selection.contains(PARENT))
-            parent = (T) mref(getClass(), selection.bits, source.getParent());
+            parent = (self_t) mref(getClass(), selection.bits, source.getParent());
 
         if (selection.contains(CHILDREN))
             children = mrefList(getClass(), selection.bits, source.getChildren());
@@ -68,55 +68,55 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
             parent = createAnother().ref(parentId);
 
         if (selection.contains(CHILDREN)) {
-            children = new ArrayList<T>();
+            children = new ArrayList<self_t>();
             for (TextMap childMap : map.shift("child")) {
                 String _childId = childMap.getString("id");
                 K childId = parseId(_childId);
-                T child = createAnother().ref(childId);
+                self_t child = createAnother().ref(childId);
                 children.add(child);
             }
         }
     }
 
     @SuppressWarnings("unchecked")
-    protected final T self() {
-        return (T) this;
+    protected final self_t self() {
+        return (self_t) this;
     }
 
-    protected T createAnother() {
+    protected self_t createAnother() {
         try {
-            return (T) getClass().newInstance();
+            return (self_t) getClass().newInstance();
         } catch (Exception e) {
             throw new RuntimeException("Failed to instantiate another DTO: " + e.getMessage(), e);
         }
     }
 
-    public T getParent() {
+    public self_t getParent() {
         return parent;
     }
 
-    public void setParent(T parent) {
+    public void setParent(self_t parent) {
         this.parent = parent;
     }
 
-    public List<T> getChildren() {
+    public List<self_t> getChildren() {
         return children;
     }
 
-    public void setChildren(List<T> children) {
+    public void setChildren(List<self_t> children) {
         if (children == null)
             throw new NullPointerException("children");
         this.children = children;
     }
 
-    public int indexOf(T child) {
+    public int indexOf(self_t child) {
         return children.indexOf(child);
     }
 
     public int getIndex() {
         if (parent == null)
             return 0;
-        T self = self();
+        self_t self = self();
         return parent.indexOf(self);
     }
 
@@ -126,7 +126,7 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
 
     public int getDepth() {
         int depth = 0;
-        T node = self();
+        self_t node = self();
         while (node != null) {
             node = node.getParent();
             depth++;
@@ -147,9 +147,9 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
     }
 
     @Transient
-    public List<T> getChain() {
-        List<T> chain = new ArrayList<T>();
-        T node = self();
+    public List<self_t> getChain() {
+        List<self_t> chain = new ArrayList<self_t>();
+        self_t node = self();
         while (node != null) {
             chain.add(node);
             node = node.parent;
@@ -169,7 +169,7 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
         else
             buf.append(" -` "); // _`-_
 
-        T node = parent;
+        self_t node = parent;
         while (node != null) {
             if (!node.isLast())
                 buf.append("  | "); // _|__
@@ -201,7 +201,7 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
         out.write(getNodeLabel());
         out.write('\n');
 
-        for (T child : children)
+        for (self_t child : children)
             child.dump(out);
     }
 
