@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" template="/template/simple-entity.xhtml">
+
+    <ui:param name="title" value="访问控制列表（ACL）" />
+    <ui:param name="bean" value="#{ACLBean}" />
+
+    <ui:define name="includes">
+        <ui:include src="/3/7/2/EditACLDialog.xhtml">
+            <ui:param name="listener" value="#{bean.saveAdapter}" />
+        </ui:include>
+        <ui:include src="/3/7/2/ChooseACLDialog.xhtml">
+            <ui:param name="listener" value="#{bean.setEntryInheritedACLAdapter}" />
+            <ui:param name="update" value=":editEntryForm:inheritedACL" />
+        </ui:include>
+        <ui:include src="/3/7/1/ChoosePrincipalDialog.xhtml">
+            <ui:param name="listener" value="#{bean.setEntryPrincipalAdapter}" />
+            <ui:param name="update" value=":editEntryForm:principal" />
+        </ui:include>
+    </ui:define>
+
+    <ui:define name="dataTableColumns">
+        <f:facet name="header">访问控制列表</f:facet>
+
+        <p:column headerText="序号">
+            <h:outputText value="#{rowIndex + 1}" />
+        </p:column>
+
+        <p:column headerText="名称">
+            <h:outputText value="#{entry.label}" />
+        </p:column>
+
+        <p:column headerText="继承的ACL">
+            <h:outputText value="#{entry.inheritedACL.label}" />
+        </p:column>
+
+        <p:column headerText="描述">
+            <h:outputText value="#{entry.description}" />
+        </p:column>
+
+        <p:column headerText="更新日期">
+            <h:outputText value="#{entry.lastModified}">
+                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+            </h:outputText>
+        </p:column>
+
+        <p:column headerText="所有人">
+            <h:outputText value="#{entry.owner.displayName}" />
+        </p:column>
+    </ui:define>
+
+</ui:composition>
