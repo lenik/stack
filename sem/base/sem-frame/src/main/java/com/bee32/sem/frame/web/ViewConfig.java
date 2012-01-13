@@ -1,11 +1,19 @@
 package com.bee32.sem.frame.web;
 
+import com.bee32.plover.servlet.util.ThreadHttpContext;
+import com.bee32.plover.site.SiteInstance;
+import com.bee32.plover.web.faces.utils.ILocationConstants;
+import com.bee32.plover.web.faces.utils.LocationVmap;
 import com.bee32.plover.web.faces.view.ViewBean;
+import com.bee32.sem.frame.SEMFrameModule;
 
 public class ViewConfig
-        extends ViewBean {
+        extends ViewBean
+        implements ILocationConstants {
 
     private static final long serialVersionUID = 1L;
+
+    static LocationVmap homeLocation = WEB_APP.join(SEMFrameModule.PREFIX + "/empty.jsf");
 
     int pageSize = 50;
     int dialogPageSize = 10;
@@ -26,6 +34,10 @@ public class ViewConfig
     String defaultUpdateTarget = ":mainForm";
 
     public ViewConfig() {
+    }
+
+    public LocationVmap getHomeLocation() {
+        return homeLocation;
     }
 
     public int getPageSize() {

@@ -15,7 +15,7 @@ public class LoginFeh
 
     @Override
     public ExceptionHandleResult handle(FaceletExceptionContext context, Throwable exception) {
-        return redirect("/login.jsf");
+        return redirect("/3/7/1/login.jsf");
     }
 
 }

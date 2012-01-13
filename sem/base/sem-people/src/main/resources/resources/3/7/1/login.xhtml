@@ -10,7 +10,6 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:t="http://myfaces.apache.org/tomahawk"
       >
-
 <h:head id="head" volatile="__tips, __status">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>登录</title>
@@ -31,7 +30,7 @@
             if (args.validationFailed || !args.loggedIn) {
 
             } else {
-                window.location.href = "index.jsf";
+                window.location.href = "#{location.WEB_APP}/";
             }
         }
     </script>
