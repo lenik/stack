@@ -310,13 +310,17 @@ public abstract class SimpleEntityViewBean
         }
 
         if (!lockedList.isEmpty()) {
-            StringBuilder buf = new StringBuilder();
-            buf.append("以下对象被锁定：\n");
+            StringBuilder buf = null;
             for (Entity<?> lockedEntity : lockedList) {
+                if (buf == null)
+                    buf = new StringBuilder("以下对象被锁定：\n");
+                else
+                    buf.append(", \n");
                 String entryText = lockedEntity.getEntryLabel();
-                buf.append("    " + entryText + ", \n");
+                buf.append("    " + entryText);
             }
             uiLogger.error("不能删除锁定的对象: " + buf.toString());
+            setSelection(null);
             return;
         }
 
