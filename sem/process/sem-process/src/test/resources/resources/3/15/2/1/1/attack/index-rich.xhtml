@@ -10,8 +10,7 @@
     </ui:define>
 
     <ui:define name="toolbarPeripherals">
-        <p:commandButton value="#{verifiableSupportBean.commandLabel}" onclick="singleVerifierSupportDialog.show()"
-            disabled="#{not verifiableSupportBean.commandEnabled}" async="true" />
+        <ui:include src="/3/15/2/1/SingleVerifierSupportButton.xhtml" />
     </ui:define>
 
     <ui:define name="dataTableColumns">

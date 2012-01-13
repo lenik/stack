@@ -1,0 +1,10 @@
+<h:panelGroup xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:p="http://primefaces.org/ui">
+
+    <c:set var="_formId" value="${formId != null ? formId : 'singleVerifierSupportForm'}" />
+
+    <p:commandButton value="${verifiableSupportBean.commandLabel}" actionListener="${singleVerifierSupportBean.loadTemplateFromSelection}"
+        update="${_formId}" oncomplete="singleVerifierSupportDialog.show()" disabled="${not verifiableSupportBean.commandEnabled}"
+        async="true" />
+
+</h:panelGroup>

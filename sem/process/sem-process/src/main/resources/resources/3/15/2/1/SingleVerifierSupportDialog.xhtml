@@ -3,13 +3,13 @@
     xmlns:t="http://myfaces.apache.org/tomahawk">
 
     <c:set var="_bean" value="${singleVerifierSupportBean}" />
-    <c:set var="_context" value="${_bean.verifyContext1}" />
     <c:set var="_var" value="${var != null ? var : 'singleVerifierSupportDialog'}" />
+    <c:set var="_formId" value="${formId != null ? formId : 'singleVerifierSupportForm'}" />
     <c:set var="_listener" value="${listener != null ? listener : _bean}" />
     <c:set var="_update" value="${update != null ? update : viewConfig.defaultUpdateTarget}" />
 
-    <p:dialog header="审核信息2" widgetVar="${_var}" modal="true">
-        <h:form id="verifyForm" style="margin: 1em; max-height: 40em; ">
+    <p:dialog header="审核信息" widgetVar="${_var}" modal="true">
+        <h:form id="${_formId}" style="margin: 1em; max-height: 40em; ">
             <t:panelGrid columns="2">
                 <h:outputText value="审核身份：" />
                 <p:selectOneMenu id="verifyAs" value="#{_bean.verifier1Template.id}">

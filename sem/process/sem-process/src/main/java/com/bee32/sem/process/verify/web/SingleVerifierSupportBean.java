@@ -27,10 +27,6 @@ public class SingleVerifierSupportBean
         verifier1Template = new PrincipalDto().ref(currentUser);
     }
 
-    public SingleVerifierSupportDto getVerifyContextTemplate() {
-        return (SingleVerifierSupportDto) super.getVerifyContext1();
-    }
-
     @SuppressWarnings("unchecked")
     @Operation
     public void reverify() {
@@ -95,6 +91,19 @@ public class SingleVerifierSupportBean
     public void reject() {
         accepted1Template = false;
         reverify();
+    }
+
+    public SingleVerifierSupportDto getVerifyContextTemplate() {
+        return (SingleVerifierSupportDto) super.getVerifyContext1();
+    }
+
+    public void loadTemplateFromSelection() {
+        SingleVerifierSupportDto template = getVerifyContextTemplate();
+        if (template == null) {
+            rejectedReason1Template = "";
+        } else {
+            rejectedReason1Template = template.getRejectedReason1();
+        }
     }
 
     public PrincipalDto getVerifier1Template() {
