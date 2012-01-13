@@ -9,6 +9,8 @@ import java.util.Set;
 import com.bee32.plover.arch.naming.INamed;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.ILabelledEntry;
+import com.bee32.plover.arch.util.dto.BeanPropertyAccessor;
+import com.bee32.plover.arch.util.dto.IPropertyAccessor;
 import com.bee32.plover.model.Model;
 
 public abstract class EntityBase<K extends Serializable>
@@ -108,6 +110,11 @@ public abstract class EntityBase<K extends Serializable>
 
     protected static <T> Iterable<T> flyOver(Collection<? extends T> it) {
         return new ArrayList<T>(it);
+    }
+
+    protected static <bean_t, property_t> IPropertyAccessor<property_t> _property_(Class<bean_t> beanClass,
+            String propertyName) {
+        return BeanPropertyAccessor.access(beanClass, propertyName);
     }
 
 }
