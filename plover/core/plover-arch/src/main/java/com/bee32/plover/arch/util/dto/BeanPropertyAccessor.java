@@ -4,23 +4,54 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import javax.free.ClassLocal;
 import javax.free.IllegalUsageException;
+import javax.free.ReadOnlyException;
+import javax.free.UnexpectedException;
 
 public class BeanPropertyAccessor
-        implements IPropertyAccessor<Object> {
+        implements IPropertyAccessor<Object>, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
+    final Class<?> beanClass;
     final Class<?> type;
-    final Method getter;
-    final Method setter;
+    final String getterMethodName;
+    final String setterMethodName;
+    final Class<?>[] getterMethodSign;
+    final Class<?>[] setterMethodSign;
 
-    public BeanPropertyAccessor(PropertyDescriptor property) {
-        type = property.getPropertyType();
-        getter = property.getReadMethod();
-        setter = property.getWriteMethod();
+    transient Method getter;
+    transient Method setter;
+
+    public BeanPropertyAccessor(Class<?> beanClass, PropertyDescriptor property) {
+        if (beanClass == null)
+            throw new NullPointerException("beanClass");
+        if (property == null)
+            throw new NullPointerException("property");
+
+        this.beanClass = beanClass;
+        this.type = property.getPropertyType();
+
+        Method getter = property.getReadMethod();
+        Method setter = property.getWriteMethod();
+
+        this.getter = getter;
+        this.setter = setter;
+
+        getterMethodName = getter.getName();
+        getterMethodSign = getter.getParameterTypes();
+        if (setter == null) {
+            setterMethodName = null;
+            setterMethodSign = null;
+        } else {
+            this.setterMethodName = setter.getName();
+            this.setterMethodSign = setter.getParameterTypes();
+        }
     }
 
     @Override
@@ -28,10 +59,43 @@ public class BeanPropertyAccessor
         return type;
     }
 
+    public Method getGetter() {
+        if (getter == null) {
+            synchronized (this) {
+                if (getter == null) {
+                    try {
+                        getter = beanClass.getMethod(getterMethodName, getterMethodSign);
+                    } catch (ReflectiveOperationException e) {
+                        throw new UnexpectedException(e.getMessage(), e);
+                    }
+                }
+            }
+        }
+        return getter;
+    }
+
+    public Method getSetter() {
+        if (setterMethodName == null)
+            throw new ReadOnlyException("Property is read-only: " + setterMethodName);
+
+        if (setter == null) {
+            synchronized (this) {
+                if (setter == null) {
+                    try {
+                        setter = beanClass.getMethod(setterMethodName, setterMethodSign);
+                    } catch (ReflectiveOperationException e) {
+                        throw new UnexpectedException(e.getMessage(), e);
+                    }
+                }
+            }
+        }
+        return setter;
+    }
+
     @Override
     public Object get(Object obj) {
         try {
-            return getter.invoke(obj);
+            return getGetter().invoke(obj);
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -40,7 +104,7 @@ public class BeanPropertyAccessor
     @Override
     public void set(Object obj, Object value) {
         try {
-            setter.invoke(obj, value);
+            getSetter().invoke(obj, value);
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -68,7 +132,7 @@ public class BeanPropertyAccessor
 
             BeanInfo beanInfo = Introspector.getBeanInfo(beanClass);
             for (PropertyDescriptor property : beanInfo.getPropertyDescriptors()) {
-                BeanPropertyAccessor propertyAccessor = new BeanPropertyAccessor(property);
+                BeanPropertyAccessor propertyAccessor = new BeanPropertyAccessor(beanClass, property);
                 propertyMap.put(property.getName(), propertyAccessor);
             }
 

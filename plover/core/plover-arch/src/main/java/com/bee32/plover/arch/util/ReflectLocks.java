@@ -50,7 +50,7 @@ public class ReflectLocks {
 
                 @SuppressWarnings("unchecked")
                 IPropertyAccessor<? extends ILockable> lockableProperty //
-                = (IPropertyAccessor<? extends ILockable>) new FieldPropertyAccessor(field);
+                = (IPropertyAccessor<? extends ILockable>) new FieldPropertyAccessor(clazz, field);
 
                 lockableProperties.add(lockableProperty);
             }
