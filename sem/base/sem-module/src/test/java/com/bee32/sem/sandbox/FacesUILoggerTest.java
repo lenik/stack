@@ -118,7 +118,7 @@ public class FacesUILoggerTest
 
     MockedFacesContext facesContext = new MockedFacesContext();
 
-    FacesUILogger logger = new FacesUILogger() {
+    FacesUILogger logger = new FacesUILogger(false) {
         protected FacesContext getFacesContext() {
             return facesContext;
         }

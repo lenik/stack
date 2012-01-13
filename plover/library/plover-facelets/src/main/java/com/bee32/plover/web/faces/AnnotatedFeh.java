@@ -25,7 +25,7 @@ public abstract class AnnotatedFeh
     }
 
     public FacesUILogger getUILogger() {
-        return new FacesUILogger();
+        return new FacesUILogger(false);
     }
 
 }

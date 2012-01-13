@@ -14,45 +14,43 @@ import com.bee32.plover.web.faces.ErrorMessageTranslator;
 public class FacesUILogger
         extends AbstractLogger {
 
+    final boolean html;
+
+    public FacesUILogger(boolean html) {
+        this.html = html;
+    }
+
     protected FacesContext getFacesContext() {
         return FacesContext.getCurrentInstance();
     }
 
     @Override
     public ILogSink get(LogLevel level, int delta) {
-        FacesContext context = getFacesContext();
-
         int priority = level.getPriority() + delta;
         switch (priority) {
         case -4:
         case -3:
-            return new FFatalSink(context);
+            return new FFatalSink();
 
         case -2:
-            return new FErrorSink(context);
+            return new FErrorSink();
 
         case -1:
             // if (jdkLogger.isLoggable(Level.WARNING))
-            return new FWarnSink(context);
+            return new FWarnSink();
 
         case 0:
         case 1:
         case 2:
         case 3: // debug?
         case 4: // trace
-            return new FInfoSink(context);
+            return new FInfoSink();
         }
         return NullLogSink.getInstance();
     }
 
-    static abstract class FSink
+    abstract class FSink
             extends AbstractLogSink {
-
-        final FacesContext context;
-
-        public FSink(FacesContext context) {
-            this.context = context;
-        }
 
         @Override
         public void logMessage(Object obj) {
@@ -74,27 +72,23 @@ public class FacesUILogger
             } else {
                 title = text.substring(0, colon);
                 message = text.substring(colon + 1);
-                if (message.startsWith(";"))
+                if (message.startsWith(";")) // title:;cont-message
                     message = title + message.substring(1);
             }
+            // title = encodeHtml(title);
+            message = encodeHtml(message);
 
             if (e != null) {
                 String err = e.getMessage();
-
                 err = ErrorMessageTranslator.translateMessage(err);
-
-                message += "（错误消息：" + err + "）";
-
-                message = message.replace("\n", "<br>");
-                message = message.replace("&", "&amp;");
-                message = message.replace("<", "&lt;");
-                message = "<div style='color: #ff0033; font-size: small; font-style: italic'>" + message + "</div>";
+                message = "<div style='color: #ff0033; font-size: small; font-style: italic'>" //
+                        + "（错误消息：" + encodeHtml(err) + "）" + message + "</div>";
             }
 
             FacesMessage facesMessage = new FacesMessage(getSeverity(), title, message);
             String clientId = null; // XXX clientId purpose?
 
-            context.addMessage(clientId, facesMessage);
+            getFacesContext().addMessage(clientId, facesMessage);
 
             if (e != null)
                 e.printStackTrace();
@@ -102,14 +96,20 @@ public class FacesUILogger
 
         protected abstract Severity getSeverity();
 
+        String encodeHtml(String s) {
+            if (!html) {
+                s = s.replace("&", "&amp;");
+                s = s.replace("<", "&lt;");
+                s = s.replace(" ", "&nbsp;");
+                s = s.replace("\n", "<br>");
+            }
+            return s;
+        }
+
     }
 
-    static final class FInfoSink
+    final class FInfoSink
             extends FSink {
-
-        public FInfoSink(FacesContext context) {
-            super(context);
-        }
 
         @Override
         protected Severity getSeverity() {
@@ -118,12 +118,8 @@ public class FacesUILogger
 
     }
 
-    static final class FWarnSink
+    final class FWarnSink
             extends FSink {
-
-        public FWarnSink(FacesContext context) {
-            super(context);
-        }
 
         @Override
         protected Severity getSeverity() {
@@ -132,12 +128,8 @@ public class FacesUILogger
 
     }
 
-    static final class FErrorSink
+    final class FErrorSink
             extends FSink {
-
-        public FErrorSink(FacesContext context) {
-            super(context);
-        }
 
         @Override
         protected Severity getSeverity() {
@@ -146,12 +138,8 @@ public class FacesUILogger
 
     }
 
-    static final class FFatalSink
+    final class FFatalSink
             extends FSink {
-
-        public FFatalSink(FacesContext context) {
-            super(context);
-        }
 
         @Override
         protected Severity getSeverity() {

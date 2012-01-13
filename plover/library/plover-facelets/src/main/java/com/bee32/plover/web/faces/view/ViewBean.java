@@ -33,7 +33,8 @@ public abstract class ViewBean
 
     private static final long serialVersionUID = 1L;
 
-    protected transient FacesUILogger uiLogger = new FacesUILogger();
+    protected transient FacesUILogger uiLogger = new FacesUILogger(false);
+    protected transient FacesUILogger uiHtmlLogger = new FacesUILogger(true);
 
     public ViewBean() {
         // wire();
@@ -62,7 +63,8 @@ public abstract class ViewBean
     }
 
     protected void create() {
-        uiLogger = new FacesUILogger();
+        uiLogger = new FacesUILogger(false);
+        uiHtmlLogger = new FacesUILogger(true);
     }
 
     @Override
