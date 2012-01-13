@@ -21,7 +21,7 @@ import java.util.List;
  * implementation.
  */
 public abstract class VerbMap
-        extends YesMap {
+        extends YesMap<Object> {
 
     private final List<Object> parameterStack;
     private Object verb;

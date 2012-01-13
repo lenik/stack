@@ -21,7 +21,7 @@ import com.bee32.plover.rtx.location.Location;
 @Named("location")
 @Lazy
 public class LocationsBean
-        extends YesMap {
+        extends YesMap<LocationVmap> {
 
     static final Map<String, LocationVmap> locations = new HashMap<String, LocationVmap>();
 
@@ -54,7 +54,7 @@ public class LocationsBean
     }
 
     @Override
-    public Object get(Object key) {
+    public LocationVmap get(Object key) {
         return locations.get(key);
     }
 

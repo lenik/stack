@@ -5,8 +5,11 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class YesMap
-        implements Map<String, Object> {
+/**
+ * A non-empty but zero-sized, contains "everything" but iterated nothing pseudo-map.
+ */
+public abstract class YesMap<T>
+        implements Map<String, T> {
 
     @Override
     public int size() {
@@ -29,17 +32,17 @@ public abstract class YesMap
     }
 
     @Override
-    public Object put(String key, Object value) {
+    public T put(String key, T value) {
         return null;
     }
 
     @Override
-    public Object remove(Object key) {
+    public T remove(Object key) {
         return null;
     }
 
     @Override
-    public void putAll(Map<? extends String, ? extends Object> m) {
+    public void putAll(Map<? extends String, ? extends T> m) {
     }
 
     @Override
@@ -52,12 +55,12 @@ public abstract class YesMap
     }
 
     @Override
-    public Collection<Object> values() {
+    public Collection<T> values() {
         return Collections.emptyList();
     }
 
     @Override
-    public Set<java.util.Map.Entry<String, Object>> entrySet() {
+    public Set<java.util.Map.Entry<String, T>> entrySet() {
         return Collections.emptySet();
     }
 

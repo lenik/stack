@@ -42,13 +42,22 @@ public class LocationVmap
         this.mode = mode;
     }
 
+    static LocationVmap create(ILocationContext locationContext, int mode) {
+        return new LocationVmap(locationContext, mode);
+    }
+
     @Override
     protected int getRequiredArguments(Object verb) {
         return 0;
     }
 
-    static LocationVmap create(ILocationContext locationContext, int mode) {
-        return new LocationVmap(locationContext, mode);
+    public LocationVmap join(Object key) {
+        return get(key);
+    }
+
+    @Override
+    public LocationVmap get(Object key) {
+        return (LocationVmap) super.get(key);
     }
 
     @Override
