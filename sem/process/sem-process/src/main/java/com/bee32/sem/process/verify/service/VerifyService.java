@@ -28,9 +28,11 @@ import com.bee32.sem.event.entity.Event;
 import com.bee32.sem.event.entity.EventPriority;
 import com.bee32.sem.event.entity.EventType;
 import com.bee32.sem.process.verify.AbstractVerifyContext;
-import com.bee32.sem.process.verify.IParentVerifyContext;
+import com.bee32.sem.process.verify.DummyVerifyProcessHandler;
 import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.IVerifyPolicy;
+import com.bee32.sem.process.verify.IVerifyProcessAware;
+import com.bee32.sem.process.verify.IVerifyProcessHandler;
 import com.bee32.sem.process.verify.VerifyContextAccessor;
 import com.bee32.sem.process.verify.VerifyEvalState;
 import com.bee32.sem.process.verify.VerifyException;
@@ -123,20 +125,27 @@ public class VerifyService
 
         Class<? extends Entity<?>> entityType = (Class<? extends Entity<?>>) entity.getClass();
         IVerifiable<?> verifiable = (IVerifiable<?>) entity;
-
         AbstractVerifyContext context = (AbstractVerifyContext) verifiable.getVerifyContext();
+
+        IVerifyProcessHandler handler = null;
+        if (verifiable instanceof IVerifyProcessAware)
+            handler = ((IVerifyProcessAware) verifiable).getVerifyProcessHandler();
+        if (handler == null)
+            handler = DummyVerifyProcessHandler.INSTANCE;
+
+        VerifyResult result = handler.getPreVerifiedResult();
+        if (result != null)
+            return result;
         if (VerifyEvalState.VERIFIED.equals(context.getVerifyEvalState()))
             return IVerifyPolicy.VERIFIED;
 
-        // Do verification.
-        VerifyResult result = verify(verifiable);
+        handler.preVerify();
+        result = verify(verifiable);
+        handler.handleVerifyResult(result);
 
         VerifyContextAccessor.setVerifyState(context, result.getState());
         VerifyContextAccessor.setVerifyError(context, result.getMessage());
         VerifyContextAccessor.setVerifyEvalDate(context, new Date());
-
-        if (entity instanceof IParentVerifyContext)
-            ((IParentVerifyContext) entity).distributeVerifyResult(result);
 
         Event event = context.getVerifyEvent();
         final VerifyEvalState state = result.getState();
@@ -226,7 +235,10 @@ public class VerifyService
             }
         }
 
+        handler.preUpdate();
         asFor(entityType).update(entity);
+        handler.postUpdate();
+
         return result;
     }
 
