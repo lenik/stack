@@ -30,10 +30,15 @@ public class LockingEntityProcessor
             return false;
 
         int ef = (int) event.getDeletedState()[efIndex];
-        EntityFlags flags = new EntityFlags(ef);
-        if (flags.isLocked())
-            throw new EntityLockedException("Entity is locked", event.getEntity());
-        if (flags.isUserLock())
+        EntityFlags oldFlags = new EntityFlags(ef);
+        if (oldFlags.isLocked()) {
+            Entity<?> entity = (Entity<?>) event.getEntity();
+            EntityFlags flagsOverride = EntityAccessor.getFlags(entity);
+            if (!flagsOverride.isUnlockReq())
+                throw new EntityLockedException("Entity is locked", event.getEntity());
+        }
+
+        if (oldFlags.isUserLock())
             throw new EntityLockedException("Entity is locked by user", event.getEntity());
 
         return false;
@@ -41,28 +46,28 @@ public class LockingEntityProcessor
 
     @Override
     public boolean onPreUpdate(PreUpdateEvent event) {
+        System.err.println("Pre-Update: " + event.getEntity());
         Integer efIndex = getEfIndex(event.getPersister());
         if (efIndex == null)
             return false;
 
-        Object[] oldState = event.getOldState();
-        Object[] newState = event.getState();
-        int oldEf = oldState == null ? 0 : (int) oldState[efIndex];
-        int newEf = newState == null ? 0 : (int) newState[efIndex];
-        EntityFlags oldFlags = new EntityFlags(oldEf);
-        EntityFlags newFlags = new EntityFlags(newEf);
+        // since "ef" exists, it must be a plover Entity.
+        Entity<?> entity = (Entity<?>) event.getEntity();
 
-        Object entity = event.getEntity();
-        if (entity instanceof Entity<?>) {
-            // Refresh entity lock by lock-predicates.
-            Entity<?> en = (Entity<?>) entity;
-            if (EntityAccessor.isLocked(en))
-                newFlags.setLocked(true);
+        Object[] oldState = event.getOldState();
+        int oldEf = oldState == null ? 0 : (int) oldState[efIndex];
+        EntityFlags oldFlags = new EntityFlags(oldEf);
+        EntityFlags newFlags = EntityAccessor.getFlags(entity);
+
+        // Refresh entity lock by lock-predicates.
+        if (EntityAccessor.isLocked(entity)) {
+            newFlags.setLocked(true);
         }
 
         // the system lock must be unlocked first.
         if (oldFlags.isLocked()) {
             if (newFlags.isUnlockReq()) {
+                // Process unlock-request.
                 newFlags.setLocked(false);
                 newFlags.setUnlockReq(false);
             } else {
@@ -74,7 +79,9 @@ public class LockingEntityProcessor
         if (oldFlags.isUserLock() && newFlags.isUserLock())
             throw new EntityLockedException("Entity is locked by user", event.getEntity());
 
-        newState[efIndex] = newFlags.bits;
+        /**
+         * NOTICE: You should never write to newState[], which would cause twice updates.
+         */
         return false;
     }
 
