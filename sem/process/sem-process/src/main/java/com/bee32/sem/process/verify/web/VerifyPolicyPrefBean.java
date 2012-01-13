@@ -3,8 +3,16 @@ package com.bee32.sem.process.verify.web;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.ox1.typePref.TypeInfo;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.process.verify.IVerifiable;
@@ -14,16 +22,84 @@ import com.bee32.sem.process.verify.VerifyPolicyManager;
 import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 import com.bee32.sem.process.verify.preference.VerifyPolicyPref;
 import com.bee32.sem.process.verify.preference.VerifyPolicyPrefDto;
+import com.bee32.sem.process.verify.service.IVerifyService;
 
 public class VerifyPolicyPrefBean
         extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
-    private List<? extends VerifyPolicyDto> candidates;
+    static Logger logger = LoggerFactory.getLogger(VerifyPolicyPrefBean.class);
+
+    public static final int LAZY = 0;
+    public static final int EAGER = 1;
+    public static final int SKIP = 2;
+    int mode = LAZY;
+
+    List<? extends VerifyPolicyDto> candidates;
 
     public VerifyPolicyPrefBean() {
         super(VerifyPolicyPref.class, VerifyPolicyPrefDto.class, 0);
+    }
+
+    @Override
+    protected void preUpdate(Map<Entity<?>, EntityDto<?, ?>> entityMap)
+            throws Exception {
+
+        if (mode == SKIP)
+            return;
+
+        for (Entry<Entity<?>, EntityDto<?, ?>> entry : entityMap.entrySet()) {
+            Entity<?> entity = entry.getKey();
+            if (!(entity instanceof VerifyPolicyPref))
+                continue;
+
+            VerifyPolicyPref pref = (VerifyPolicyPref) entity;
+            VerifyPolicyPrefDto prefDto = (VerifyPolicyPrefDto) entry.getValue();
+
+            if (!prefDto.isPreferredPolicyChanged())
+                if (mode != EAGER)
+                    continue;
+
+            Class<? extends Entity<?>> userEntityType;
+            userEntityType = (Class<? extends Entity<?>>) pref.getType();
+
+            assert IVerifiable.class.isAssignableFrom(userEntityType);
+
+            VerifyPolicy preferredPolicy = pref.getPreferredPolicy();
+            assert preferredPolicy != null;
+
+            reverifyEntities(userEntityType);
+        }
+    }
+
+    /**
+     * Update all dependencies.
+     */
+    void reverifyEntities(Class<? extends Entity<?>> userEntityType) {
+        // Refresh on non-verifiable entities do nothing.
+        if (!IVerifiable.class.isAssignableFrom(userEntityType))
+            // logger.warn?
+            return;
+
+        String typeName = ClassUtil.getTypeName(userEntityType);
+
+        for (Entity<?> userEntity : asFor(userEntityType).list()) {
+            if (logger.isDebugEnabled())
+                logger.debug("Refresh/verify " + typeName + " [" + userEntity.getId() + "]");
+
+            IVerifyService verifyService = getBean(IVerifyService.class);
+            verifyService.verifyEntity(userEntity);
+            // should save userEntity?
+        }
+    }
+
+    public int getMode() {
+        return mode;
+    }
+
+    public void setMode(int mode) {
+        this.mode = mode;
     }
 
     public void refreshCandidates() {

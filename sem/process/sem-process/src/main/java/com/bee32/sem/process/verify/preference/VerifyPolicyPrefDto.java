@@ -15,6 +15,7 @@ public class VerifyPolicyPrefDto
 
     String description;
     VerifyPolicyDto preferredPolicy;
+    VerifyPolicyDto lastPreferredPolicy;
 
     @Override
     protected void _marshal(VerifyPolicyPref source) {
@@ -22,6 +23,8 @@ public class VerifyPolicyPrefDto
 
         VerifyPolicy _preferredPolicy = source.getPreferredPolicy();
         preferredPolicy = mref(VerifyPolicyDto.class, _preferredPolicy);
+
+        lastPreferredPolicy = new VerifyPolicyDto().ref(preferredPolicy);
     }
 
     @Override
@@ -54,6 +57,12 @@ public class VerifyPolicyPrefDto
 
     public void setPreferredPolicy(VerifyPolicyDto preferredPolicy) {
         this.preferredPolicy = preferredPolicy;
+    }
+
+    public boolean isPreferredPolicyChanged() {
+        Object id = preferredPolicy.getId();
+        Object lastId = lastPreferredPolicy.getId();
+        return !id.equals(lastId);
     }
 
 }

@@ -2,8 +2,9 @@ package com.bee32.sem.misc;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.free.IllegalUsageException;
@@ -205,9 +206,9 @@ public abstract class SimpleEntityViewBean
             return;
         }
 
-        Collection<? extends Entity<?>> entities;
+        Map<Entity<?>, EntityDto<?, ?>> entityMap;
         try {
-            entities = unmarshalDtos(getActiveObjects(), false);
+            entityMap = unmarshalDtos(getActiveObjects(), false);
         } catch (NullPointerException e) {
             uiLogger.error("有些需要保存的对象已失效，请刷新页面重试。", e);
             return;
@@ -218,7 +219,7 @@ public abstract class SimpleEntityViewBean
 
         User me = SessionUser.getInstance().getInternalUserOpt();
         List<Entity<?>> lockedList = new ArrayList<Entity<?>>();
-        for (Entity<?> entity : entities) {
+        for (Entity<?> entity : entityMap.keySet()) {
             EntityFlags flags = EntityAccessor.getFlags(entity);
 
             if ((saveFlags & SAVE_FORCE) != 0) {
@@ -247,6 +248,13 @@ public abstract class SimpleEntityViewBean
         }
 
         try {
+            preUpdate(entityMap);
+        } catch (Exception e) {
+            uiLogger.error("预处理失败", e);
+        }
+
+        Set<Entity<?>> entities = entityMap.keySet();
+        try {
             serviceFor(entityClass).saveOrUpdateAll(entities);
             // refreshCount();
         } catch (Exception e) {
@@ -254,8 +262,22 @@ public abstract class SimpleEntityViewBean
             return;
         }
 
+        try {
+            postUpdate(entityMap);
+        } catch (Exception e) {
+            uiLogger.warn("保存不完全，次要的数据可能不一致，建议您检查相关的数据。", e);
+        }
+
         uiLogger.info("保存成功");
         showIndex();
+    }
+
+    protected void preUpdate(Map<Entity<?>, EntityDto<?, ?>> entityMap)
+            throws Exception {
+    }
+
+    protected void postUpdate(Map<Entity<?>, EntityDto<?, ?>> entityMap)
+            throws Exception {
     }
 
     @Operation
@@ -271,16 +293,16 @@ public abstract class SimpleEntityViewBean
             return;
         }
 
-        Collection<? extends Entity<?>> entities;
+        Map<Entity<?>, EntityDto<?, ?>> entityMap;
         try {
-            entities = unmarshalDtos(getSelection(), true);
+            entityMap = unmarshalDtos(getSelection(), true);
         } catch (Exception e) {
             uiLogger.error("反编列失败", e);
             return;
         }
 
         List<Entity<?>> lockedList = new ArrayList<Entity<?>>();
-        for (Entity<?> entity : entities) {
+        for (Entity<?> entity : entityMap.keySet()) {
             boolean needUpdateBeforeDelete = false;
 
             // force to delete locked
@@ -326,6 +348,7 @@ public abstract class SimpleEntityViewBean
 
         setSelection(null);
 
+        Set<Entity<?>> entities = entityMap.keySet();
         try {
             serviceFor(entityClass).deleteAll(entities);
         } catch (Exception e) {
@@ -348,8 +371,8 @@ public abstract class SimpleEntityViewBean
         setActiveObjects(reloadedList);
     }
 
-    Collection<? extends Entity<?>> unmarshalDtos(Collection<?> objects, boolean nullable) {
-        Set<Entity<?>> entities = new HashSet<Entity<?>>();
+    Map<Entity<?>, EntityDto<?, ?>> unmarshalDtos(Collection<?> objects, boolean nullable) {
+        Map<Entity<?>, EntityDto<?, ?>> resultMap = new LinkedHashMap<Entity<?>, EntityDto<?, ?>>();
         for (Object object : objects) {
             if (dtoClass.isInstance(object)) {
                 EntityDto<?, ?> entityDto = (EntityDto<?, ?>) object;
@@ -360,10 +383,10 @@ public abstract class SimpleEntityViewBean
                     else
                         continue;
                 }
-                entities.add(entity);
+                resultMap.put(entity, entityDto);
             }
         }
-        return entities;
+        return resultMap;
     }
 
     static void checkSaveFlags(int saveFlags) {
