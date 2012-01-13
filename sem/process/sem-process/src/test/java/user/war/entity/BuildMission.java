@@ -44,18 +44,12 @@ public class BuildMission
         this.target = target;
     }
 
-    SingleVerifierWithNumberSupport verifyContext;
-
-    @Embedded
     @Override
-    public SingleVerifierWithNumberSupport getVerifyContext() {
-        return verifyContext;
+    protected void formatEntryText(StringBuilder buf) {
+        buf.append(getId() + ": " + target);
     }
 
-    void setVerifyContext(SingleVerifierWithNumberSupport verifyContext) {
-        this.verifyContext = verifyContext;
-        verifyContext.bind(this);
-    }
+    SingleVerifierWithNumberSupport verifyContext;
 
     @Transient
     @Override
@@ -69,9 +63,15 @@ public class BuildMission
         return getMoney();
     }
 
+    @Embedded
     @Override
-    protected void formatEntryText(StringBuilder buf) {
-        buf.append(getId() + ": " + target);
+    public SingleVerifierWithNumberSupport getVerifyContext() {
+        return verifyContext;
+    }
+
+    void setVerifyContext(SingleVerifierWithNumberSupport verifyContext) {
+        this.verifyContext = verifyContext;
+        verifyContext.bind(this);
     }
 
 }

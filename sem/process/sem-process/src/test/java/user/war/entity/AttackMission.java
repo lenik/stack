@@ -20,7 +20,6 @@ public class AttackMission
     private static final long serialVersionUID = 1L;
 
     private String target;
-    private SingleVerifierSupport verifyContext;
 
     public AttackMission() {
         setVerifyContext(new SingleVerifierSupport());
@@ -34,6 +33,13 @@ public class AttackMission
         this.target = target;
     }
 
+    @Override
+    protected void formatEntryText(StringBuilder buf) {
+        buf.append(getId() + ": " + target);
+    }
+
+    SingleVerifierSupport verifyContext;
+
     @Embedded
     @Override
     public SingleVerifierSupport getVerifyContext() {
@@ -42,11 +48,6 @@ public class AttackMission
 
     void setVerifyContext(SingleVerifierSupport verifyContext) {
         this.verifyContext = verifyContext;
-    }
-
-    @Override
-    protected void formatEntryText(StringBuilder buf) {
-        buf.append(getId() + ": " + target);
     }
 
 }

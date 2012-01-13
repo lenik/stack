@@ -1,0 +1,84 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" template="/template/simple-entity.xhtml">
+
+    <ui:param name="title" value="Build Mission" />
+    <ui:param name="bean" value="#{buildMissionBean}" />
+
+    <ui:define name="includes">
+        <ui:include src="/3/15/2/1/SingleVerifierSupportDialog.xhtml" />
+    </ui:define>
+
+    <ui:define name="toolbarPeripherals">
+        <ui:include src="/3/15/2/1/SingleVerifierSupportButton.xhtml" />
+    </ui:define>
+
+    <ui:define name="dataTableColumns">
+        <f:facet name="header">Build Missions</f:facet>
+
+        <p:column headerText="序号">
+            <h:outputText value="#{rowIndex + 1}" />
+        </p:column>
+
+        <p:column headerText="Money">
+            <h:outputText value="#{entry.money}" />
+        </p:column>
+
+        <p:column headerText="Target">
+            <h:outputText value="#{entry.target}" />
+        </p:column>
+
+        <p:column headerText="Locked">
+            <h:outputText value="#{entry.entityFlags.locked}" />
+        </p:column>
+
+        <p:column headerText="State">
+            <h:outputText value="#{entry.verifyContext.verifyEvalState}" />
+        </p:column>
+
+        <p:column headerText="Verifier">
+            <h:outputText value="#{entry.verifyContext.verifier1}" />
+        </p:column>
+
+        <p:column headerText="Verified Date">
+            <h:outputText value="#{entry.verifyContext.verifiedDate1}" />
+        </p:column>
+
+        <p:column headerText="Accepted">
+            <h:outputText value="#{entry.verifyContext.accepted1}" />
+        </p:column>
+
+        <p:column headerText="Rejected Reason">
+            <h:outputText value="#{entry.verifyContext.rejectedReason1}" />
+        </p:column>
+
+        <p:column headerText="所有人">
+            <h:outputText value="#{entry.owner.displayName}" />
+        </p:column>
+    </ui:define>
+
+    <ui:define name="dialogs">
+        <p:dialog header="Mission Profile" widgetVar="editDialog" modal="true">
+            <h:form id="editForm" style="max-height: 30em; margin: 1em">
+                <c:set var="obj" value="#{bean.activeObject}" />
+
+                <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
+                    <h:outputText value="Money" />
+                    <p:inputText value="#{obj.money}" />
+                </t:panelGrid>
+
+                <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
+                    <h:outputText value="Target" />
+                    <p:inputText value="#{obj.target}" />
+                </t:panelGrid>
+
+                <div align="right">
+                    <p:commandButton update="mainForm:dataTable" value="保存" actionListener="#{bean.save}"
+                        oncomplete="editDialog.hide()" />
+                    <p:commandButton value="取消" onclick="editDialog.hide()" />
+                </div>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>
