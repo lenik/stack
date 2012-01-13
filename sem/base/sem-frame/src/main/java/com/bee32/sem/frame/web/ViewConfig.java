@@ -100,7 +100,7 @@ public class ViewConfig
         SiteInstance site = ThreadHttpContext.getSiteInstance();
         String toolbarPlacement = site.getProperty("frame.toolbar");
         if (toolbarPlacement == null)
-            toolbarPlacement = "b";
+            toolbarPlacement = "t";
         return toolbarPlacement;
     }
 
