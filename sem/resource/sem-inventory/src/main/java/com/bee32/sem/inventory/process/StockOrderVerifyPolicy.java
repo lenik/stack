@@ -34,7 +34,7 @@ public class StockOrderVerifyPolicy
 
     Map<String, VerifyPolicy> subjectPolicyMap = new HashMap<String, VerifyPolicy>();
 
-    @ManyToMany()
+    @ManyToMany
     @JoinTable(name = "StockOrderSubjectPolicy")
     @MapKeyColumn(name = "subject", nullable = false)
     public Map<String, VerifyPolicy> getSubjectPolicyMap() {
