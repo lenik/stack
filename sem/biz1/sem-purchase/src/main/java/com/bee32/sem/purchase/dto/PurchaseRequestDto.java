@@ -8,10 +8,13 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.MomentIntervalDto;
+import com.bee32.sem.process.verify.builtin.dto.SingleVerifierWithNumberSupportDto;
+import com.bee32.sem.process.verify.dto.IVerifiableDto;
 import com.bee32.sem.purchase.entity.PurchaseRequest;
 
 public class PurchaseRequestDto
-        extends MomentIntervalDto<PurchaseRequest> {
+        extends MomentIntervalDto<PurchaseRequest>
+        implements IVerifiableDto {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,6 +25,8 @@ public class PurchaseRequestDto
     List<MaterialPlanDto> plans;
 
     List<OrderHolderDto> orderHolders;
+
+    SingleVerifierWithNumberSupportDto singleVerifierWithNumberSupport;
 
     @Override
     protected void _marshal(PurchaseRequest source) {
@@ -36,6 +41,8 @@ public class PurchaseRequestDto
             plans = new ArrayList<MaterialPlanDto>();
 
         orderHolders = marshalList(OrderHolderDto.class, source.getOrderHolders());
+
+        singleVerifierWithNumberSupport = marshal(SingleVerifierWithNumberSupportDto.class, source.getVerifyContext());
     }
 
     @Override
@@ -47,6 +54,8 @@ public class PurchaseRequestDto
             mergeList(target, "plans", plans);
 
         mergeList(target, "orderHolders", orderHolders);
+
+        merge(target, "verifyContext", singleVerifierWithNumberSupport);
     }
 
     @Override
@@ -130,5 +139,14 @@ public class PurchaseRequestDto
 
         orderHolders.remove(index);
         // orderHolder.detach();
+    }
+
+    @Override
+    public SingleVerifierWithNumberSupportDto getVerifyContext() {
+        return singleVerifierWithNumberSupport;
+    }
+
+    public void setVerifyContext(SingleVerifierWithNumberSupportDto singleVerifierWithNumberSupport) {
+        this.singleVerifierWithNumberSupport = singleVerifierWithNumberSupport;
     }
 }

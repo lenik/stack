@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -23,6 +24,10 @@ import com.bee32.sem.base.tx.TxEntity;
 import com.bee32.sem.bom.entity.Part;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.process.verify.IVerifiable;
+import com.bee32.sem.process.verify.builtin.IJudgeNumber;
+import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;
+import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.monetary.MCVector;
@@ -32,11 +37,14 @@ import com.bee32.sem.world.monetary.MCVector;
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "make_order_seq", allocationSize = 1)
-public class MakeOrder
-        extends TxEntity
-        implements DecimalConfig {
+public class MakeOrder extends TxEntity
+    implements DecimalConfig,
+               IVerifiable<ISingleVerifierWithNumber>,
+               IJudgeNumber {
 
     private static final long serialVersionUID = 1L;
+
+    SingleVerifierWithNumberSupport singleVerifierWithNumberSupport = new SingleVerifierWithNumberSupport(this);
 
     public static final int STATUS_LENGTH = 30;
 
@@ -267,5 +275,37 @@ public class MakeOrder
         }
 
         return result;
+    }
+
+    public void setVerifyContext(SingleVerifierWithNumberSupport singleVerifierWithNumberSupport) {
+        this.singleVerifierWithNumberSupport = singleVerifierWithNumberSupport;
+        singleVerifierWithNumberSupport.bind(this);
+    }
+
+    @Embedded
+    @Override
+    public SingleVerifierWithNumberSupport getVerifyContext() {
+        return singleVerifierWithNumberSupport;
+    }
+
+    @Transient
+    @Override
+    public String getNumberDescription() {
+        return "金额";
+    }
+
+    @Transient
+    @Override
+    public Number getJudgeNumber() {
+        try {
+            BigDecimal total = new BigDecimal(0);
+            for(MakeOrderItem item:items) {
+                total = total.add(item.getNativeTotal());
+            }
+
+            return total;
+        } catch (FxrQueryException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

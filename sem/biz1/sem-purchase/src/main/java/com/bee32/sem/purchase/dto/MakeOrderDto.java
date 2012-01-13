@@ -15,6 +15,8 @@ import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.people.dto.PartyDto;
+import com.bee32.sem.process.verify.builtin.dto.SingleVerifierWithNumberSupportDto;
+import com.bee32.sem.process.verify.dto.IVerifiableDto;
 import com.bee32.sem.purchase.entity.MakeOrder;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
@@ -22,7 +24,7 @@ import com.bee32.sem.world.monetary.MCVector;
 
 public class MakeOrderDto
         extends TxEntityDto<MakeOrder>
-        implements DecimalConfig {
+        implements DecimalConfig, IVerifiableDto {
 
     private static final long serialVersionUID = 1L;
 
@@ -42,6 +44,8 @@ public class MakeOrderDto
 
     List<MakeOrderItemDto> noCorrespondingTaskItems;
 
+    SingleVerifierWithNumberSupportDto singleVerifierWithNumberSupport;
+
     @Override
     protected void _marshal(MakeOrder source) {
         customer = mref(PartyDto.class, source.getCustomer());
@@ -60,6 +64,8 @@ public class MakeOrderDto
 
         noCorrespondingTaskItems = //
                 marshalList(MakeOrderItemDto.class, source.getNoCorrespondingTaskItems());
+
+        singleVerifierWithNumberSupport = marshal(SingleVerifierWithNumberSupportDto.class, source.getVerifyContext());
     }
 
     @Override
@@ -73,6 +79,8 @@ public class MakeOrderDto
 
         if (selection.contains(TASKS))
             mergeList(target, "tasks", tasks);
+
+        merge(target, "verifyContext", singleVerifierWithNumberSupport);
     }
 
     @Override
@@ -228,6 +236,15 @@ public class MakeOrderDto
         }
 
         return null;
+    }
+
+    @Override
+    public SingleVerifierWithNumberSupportDto getVerifyContext() {
+        return singleVerifierWithNumberSupport;
+    }
+
+    public void setVerifyContext(SingleVerifierWithNumberSupportDto singleVerifierWithNumberSupport) {
+        this.singleVerifierWithNumberSupport = singleVerifierWithNumberSupport;
     }
 
 }

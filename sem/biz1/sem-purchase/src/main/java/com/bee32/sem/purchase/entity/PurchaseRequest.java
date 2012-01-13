@@ -1,15 +1,22 @@
 package com.bee32.sem.purchase.entity;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.plover.ox1.color.MomentInterval;
+import com.bee32.sem.process.verify.IVerifiable;
+import com.bee32.sem.process.verify.builtin.IJudgeNumber;
+import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;
+import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
 
 /**
  * 采购请求/采购申请/采购计划
@@ -17,9 +24,14 @@ import com.bee32.plover.ox1.color.MomentInterval;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "purchase_request_seq", allocationSize = 1)
 public class PurchaseRequest
-        extends MomentInterval {
+        extends MomentInterval
+        implements
+            IVerifiable<ISingleVerifierWithNumber>,
+            IJudgeNumber {
 
     private static final long serialVersionUID = 1L;
+
+    SingleVerifierWithNumberSupport singleVerifierWithNumberSupport = new SingleVerifierWithNumberSupport(this);
 
     List<MaterialPlan> plans;
     List<PurchaseRequestItem> items;
@@ -107,6 +119,34 @@ public class PurchaseRequest
 
         orderHolders.remove(index);
         orderHolder.detach();
+    }
+
+    public void setVerifyContext(SingleVerifierWithNumberSupport singleVerifierWithNumberSupport) {
+        this.singleVerifierWithNumberSupport = singleVerifierWithNumberSupport;
+        singleVerifierWithNumberSupport.bind(this);
+    }
+
+    @Embedded
+    @Override
+    public SingleVerifierWithNumberSupport getVerifyContext() {
+        return singleVerifierWithNumberSupport;
+    }
+
+    @Transient
+    @Override
+    public String getNumberDescription() {
+        return "金额";
+    }
+
+    @Transient
+    @Override
+    public Number getJudgeNumber() {
+        BigDecimal totalPlanQuantity = new BigDecimal(0);
+        for (PurchaseRequestItem item : items) {
+            totalPlanQuantity = totalPlanQuantity.add(item.getPlanQuantity());
+        }
+
+        return totalPlanQuantity;
     }
 
 }
