@@ -6,13 +6,10 @@
     xmlns:t="http://myfaces.apache.org/tomahawk">
 <ui:composition template="/template/primefaces.xhtml">
 
-    <ui:define name="includes">
-        <ui:include src="/3/15/2/1/SingleVerifierSupportDialog.xhtml" />
-    </ui:define>
-
     <ui:define name="title"></ui:define>
 
     <ui:define name="content">
+        <ui:include src="/3/15/2/1/SingleVerifierSupportDialog.xhtml" />
 
 		<h:form id="mainForm">
 			<h:inputHidden id="pageTitle" readonly="true"
@@ -68,8 +65,10 @@
 						actionListener="#{takeAdminBean.cancel}"
 						disabled="#{!takeAdminBean.editable}" update="mainForm" async="true" />
 					<p:separator />
-					<ui:include src="/3/15/2/1/SingleVerifierSupportButton.xhtml" />
-					<p:separator />
+                    <ui:include src="/3/15/2/1/SingleVerifierSupportButton.xhtml">
+                        <ui:param name="disabled" value="#{takeAdminBean.editable}" />
+                    </ui:include>
+                    <p:separator />
 					<p:commandButton value="第一条"
 						actionListener="#{takeAdminBean.first}"
 						disabled="#{takeAdminBean.editable}" update="mainForm"

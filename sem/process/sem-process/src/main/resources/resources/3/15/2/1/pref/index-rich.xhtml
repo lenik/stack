@@ -45,19 +45,26 @@
 
                         <h:outputLabel for="typeId" value="实体类型" />
                         <p:selectOneMenu id="typeId" value="#{obj.typeId}">
+
+                            <f:selectItem itemValue="" itemLabel="--选择--"/>
                             <f:selectItems value="#{bean.verifiableTypes}" var="type" itemValue="${type.id}"
                                 itemLabel="${type.displayName}" />
+
+                            <p:ajax
+                                listener="#{bean.refreshCandidates}"
+                                update="candidates"
+                                event="change" />
+
                         </p:selectOneMenu>
 
                         <h:outputLabel for="description" value="对应的审核策略" />
-                        <h:panelGroup>
-                            <p:selectOneMenu id="candidates" value="#{obj.preferredPolicy.id}">
-                                <f:selectItems value="${bean.candidates}" var="candidate" itemValue="${candidate.id}"
-                                    itemLabel="${candidate.label} - ${candidate.description}" />
-                            </p:selectOneMenu>
-                            <p:commandButton value="Refresh" update="candidates" actionListener="#{bean.refreshCandidates}"
-                                async="true" />
-                        </h:panelGroup>
+                        <p:selectOneMenu id="candidates"
+                            value="#{obj.preferredPolicy.id}">
+                            <f:selectItems value="${bean.candidates}"
+                                var="candidate"
+                                itemValue="${candidate.id}"
+                                itemLabel="${candidate.label} - ${candidate.description}" />
+                        </p:selectOneMenu>
 
                         <h:outputLabel for="description" value="备注" />
                         <p:inputText id="description" value="#{obj.description}" />

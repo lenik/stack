@@ -2,9 +2,10 @@
     xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:p="http://primefaces.org/ui">
 
     <c:set var="_formId" value="${formId != null ? formId : 'singleVerifierSupportForm'}" />
+    <c:set var="_disabled" value="${disabled != null ? disabled : false}" />
 
     <p:commandButton value="${verifiableSupportBean.commandLabel}" actionListener="${singleVerifierSupportBean.loadTemplateFromSelection}"
-        update="${_formId}" oncomplete="singleVerifierSupportDialog.show()" disabled="${not verifiableSupportBean.commandEnabled}"
+        update="${_formId}" oncomplete="singleVerifierSupportDialog.show()" disabled="${disabled || not verifiableSupportBean.commandEnabled}"
         async="true" />
 
 </h:panelGroup>
