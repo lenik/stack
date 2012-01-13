@@ -38,19 +38,17 @@ public class SingleVerifierSupportBean
 
         Date verifyDate1 = new Date();
 
-        for (IVerifiableDto verifiable : getVerifiables()) {
-            EntityDto<?, ?> entityDto = (EntityDto<?, ?>) verifiable;
+        for (IVerifiableDto verifiableMref : getVerifiables()) {
+            EntityDto<?, ?> verifiableDto = (EntityDto<?, ?>) verifiableMref;
+            verifiableDto = reload(verifiableDto);
 
-            EntityDto<?, ?> reloaded = reload(entityDto);
-            verifiable = (IVerifiableDto) reloaded;
-
-            SingleVerifierSupportDto context = (SingleVerifierSupportDto) verifiable.getVerifyContext();
+            SingleVerifierSupportDto context = (SingleVerifierSupportDto) verifiableMref.getVerifyContext();
             context.setVerifier1(verifier1Template);
             context.setVerifiedDate1(verifyDate1);
             context.setAccepted1(accepted1Template);
             context.setRejectedReason1(rejectedReason1Template);
 
-            Entity<?> entity = reloaded.unmarshal();
+            Entity<?> entity = verifiableDto.unmarshal(this);
             String entityLabel = entity.getEntryLabel();
 
             try {

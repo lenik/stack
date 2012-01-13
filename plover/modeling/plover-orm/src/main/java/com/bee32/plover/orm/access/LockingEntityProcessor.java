@@ -46,7 +46,6 @@ public class LockingEntityProcessor
 
     @Override
     public boolean onPreUpdate(PreUpdateEvent event) {
-        System.err.println("Pre-Update: " + event.getEntity());
         Integer efIndex = getEfIndex(event.getPersister());
         if (efIndex == null)
             return false;
