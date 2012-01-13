@@ -6,6 +6,10 @@
     xmlns:t="http://myfaces.apache.org/tomahawk">
 <ui:composition template="/template/primefaces.xhtml">
 
+    <ui:define name="includes">
+        <ui:include src="/3/15/2/1/SingleVerifierSupportDialog.xhtml" />
+    </ui:define>
+
     <ui:define name="title"></ui:define>
 
     <ui:define name="content">
@@ -64,9 +68,7 @@
 						actionListener="#{takeAdminBean.cancel}"
 						disabled="#{!takeAdminBean.editable}" update="mainForm" async="true" />
 					<p:separator />
-					<p:commandButton value="#{verifiableSupportBean.commandLabel}"
-						disabled="#{takeAdminBean.editable || !verifiableSupportBean.commandEnabled }"
-						onclick="verifyDialog.show();" />
+					<ui:include src="/3/15/2/1/SingleVerifierSupportButton.xhtml" />
 					<p:separator />
 					<p:commandButton value="第一条"
 						actionListener="#{takeAdminBean.first}"
@@ -705,32 +707,6 @@
                 </h:panelGroup>
             </p:dialog>
         </h:form>
-
-        <h:form id="verifyForm">
-            <p:dialog header="#{verifiableSupportBean.commandLabel}" widgetVar="verifyDialog"
-                modal="true" height="400" width="640">
-
-                <t:panelGrid id="verifyPanel" columns="2">
-                    <h:outputText value="审核意见"/>
-                    <p:inputTextarea
-                        value="#{singleVerifierSupportBean.rejectedReason1}"
-                        style="width:300px;height:100px;"
-                        effectDuration="400" />
-                    <p:commandButton
-                        update="mainForm"
-                        value="通过"
-                        actionListener="#{singleVerifierSupportBean.doApprove}"
-                        oncomplete="verifyDialog.hide()"/>
-                    <p:commandButton
-                        update="mainForm"
-                        value="拒绝"
-                        actionListener="#{singleVerifierSupportBean.doReject}"
-                        oncomplete="verifyDialog.hide()"/>
-                </t:panelGrid>
-
-            </p:dialog>
-        </h:form>
-
 
         <h:outputScript>
             document.title = $("#mainForm\\:pageTitle").val();

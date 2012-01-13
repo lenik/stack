@@ -1,11 +1,15 @@
 package com.bee32.sem.inventory.process;
 
+import java.io.Serializable;
+
 import com.bee32.plover.arch.util.dto.IPropertyAccessor;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 
 public class StockSubjectInProperty
-        implements IStockSubjectAware {
+        implements Serializable,IStockSubjectAware {
+
+    private static final long serialVersionUID = 1L;
 
     final Entity<?> entity;
     final IPropertyAccessor<StockOrderSubject> property;
