@@ -454,4 +454,8 @@ public class StockTradeAdminBean
         stockTrade.setSubject(selectedAccountSubject);
     }
 
+    @Override
+    public List<?> getSelection() {
+        return listOfNonNulls(stockTrade);
+    }
 }
