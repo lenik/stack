@@ -28,6 +28,7 @@ import com.bee32.sem.event.entity.Event;
 import com.bee32.sem.event.entity.EventPriority;
 import com.bee32.sem.event.entity.EventType;
 import com.bee32.sem.process.verify.AbstractVerifyContext;
+import com.bee32.sem.process.verify.IParentVerifyContext;
 import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.IVerifyPolicy;
 import com.bee32.sem.process.verify.VerifyContextAccessor;
@@ -133,6 +134,9 @@ public class VerifyService
         VerifyContextAccessor.setVerifyState(context, result.getState());
         VerifyContextAccessor.setVerifyError(context, result.getMessage());
         VerifyContextAccessor.setVerifyEvalDate(context, new Date());
+
+        if (entity instanceof IParentVerifyContext)
+            ((IParentVerifyContext) entity).distributeVerifyResult(result);
 
         Event event = context.getVerifyEvent();
         final VerifyEvalState state = result.getState();
