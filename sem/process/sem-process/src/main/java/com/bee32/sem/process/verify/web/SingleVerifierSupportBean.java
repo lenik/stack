@@ -1,5 +1,6 @@
 package com.bee32.sem.process.verify.web;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.bee32.icsf.login.SessionUser;
@@ -29,7 +30,8 @@ public class SingleVerifierSupportBean
 
     @SuppressWarnings("unchecked")
     @Operation
-    public void reverify() {
+    public <D extends EntityDto<E, K> & IVerifiableDto, E extends Entity<K>, K extends Serializable> //
+    void reverify() {
         VerifiableSupportBean verifiableSupportBean = getBean(VerifiableSupportBean.class);
         if (!verifiableSupportBean.isCurrentUserResponsible()) {
             uiLogger.error("您不是该对象的审核责任人。");
@@ -38,17 +40,16 @@ public class SingleVerifierSupportBean
 
         Date verifyDate1 = new Date();
 
-        for (IVerifiableDto verifiableMref : getVerifiables()) {
-            EntityDto<?, ?> verifiableDto = (EntityDto<?, ?>) verifiableMref;
-            verifiableDto = reload(verifiableDto);
+        for (IVerifiableDto verifiable : getVerifiables()) {
+            D reloaded = reload((D) verifiable);
 
-            SingleVerifierSupportDto context = (SingleVerifierSupportDto) verifiableMref.getVerifyContext();
+            SingleVerifierSupportDto context = (SingleVerifierSupportDto) reloaded.getVerifyContext();
             context.setVerifier1(verifier1Template);
             context.setVerifiedDate1(verifyDate1);
             context.setAccepted1(accepted1Template);
             context.setRejectedReason1(rejectedReason1Template);
 
-            Entity<?> entity = verifiableDto.unmarshal(this);
+            Entity<?> entity = reloaded.unmarshal(this);
             String entityLabel = entity.getEntryLabel();
 
             try {
