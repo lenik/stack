@@ -189,6 +189,10 @@ public class VerifyService
                 @Override
                 protected void _pageContent() {
                     IObjectPageDirectory pageDir = PageDirectory.getPageDirectory(entity);
+                    if (pageDir == null) {
+                        throw new IllegalUsageException("No page for entity type: " + entity.getClass());
+                    }
+
                     String viewType = state.isFinalized() ? StandardViews.CONTENT : StandardViews.EDIT_FORM;
 
                     // h3().text(subject).end();

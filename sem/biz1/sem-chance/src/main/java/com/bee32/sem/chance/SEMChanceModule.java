@@ -2,6 +2,8 @@ package com.bee32.sem.chance;
 
 import com.bee32.plover.pub.oid.Oid;
 import com.bee32.sem.SEMOids;
+import com.bee32.sem.chance.entity.Chance;
+import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.module.EnterpriseModule;
 
 @Oid({ 3, 15, SEMOids.Biz1, SEMOids.biz1.Chance })
@@ -13,6 +15,7 @@ public class SEMChanceModule
 
     @Override
     protected void preamble() {
+        declareEntityPages(Chance.class, "chance");
+        declareEntityPages(ChanceAction.class, "chanceAction");
     }
-
 }

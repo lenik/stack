@@ -6,6 +6,7 @@ import java.util.Currency;
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
+import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.util.i18n.CurrencyConfig;
 import com.bee32.sem.asset.entity.AccountTicketItem;
@@ -190,7 +191,11 @@ public class AccountTicketItemDto
     }
 
     public String getCreator() {
-        return getOwner().getDisplayName();
+        UserDto owner = getOwner();
+        if (owner == null)
+            return "(n/a)";
+        else
+            return owner.getDisplayName();
     }
 
     @Override

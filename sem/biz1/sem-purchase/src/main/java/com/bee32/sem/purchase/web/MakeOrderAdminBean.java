@@ -422,7 +422,7 @@ public class MakeOrderAdminBean extends EntityViewBean {
 
             List<Part> _parts = serviceFor(Part.class).list(BomCriteria.findPartUseMaterialName(partPattern));
 
-            parts = DTOs.mrefList(PartDto.class, _parts);
+            parts = DTOs.mrefList(PartDto.class, 0, _parts);
         }
     }
 
