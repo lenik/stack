@@ -3,14 +3,24 @@
     xmlns:p="http://primefaces.org/ui">
 
     <cc:interface>
-        <cc:attribute name="dialogBean" default="${choosePrincipalDialogBean}" />
-        <cc:attribute name="selection" required="true" />
+        <!-- basic -->
         <cc:attribute name="var" default="choosePrincipalDialog" />
-        <cc:attribute name="caption" default="${choosePrincipalDialogBean.caption}" />
+        <cc:attribute name="selection" required="true" />
         <cc:attribute name="multiple" type="java.lang.Boolean" default="false" />
         <cc:attribute name="actionListener" targets="form:ok" default="${choosePrincipalDialogBean.selected}" />
         <cc:attribute name="update" />
+
+        <!-- ui overrides -->
+        <cc:attribute name="caption" default="${choosePrincipalDialogBean.caption}" />
         <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
+
+        <!-- internals -->
+        <cc:attribute name="dialogBean" type="java.lang.Object" default="${choosePrincipalDialogBean}" />
+
+        <!-- facets -->
+        <cc:facet name="search" />
+        <cc:facet name="columns" />
+        <cc:facet name="buttons" />
     </cc:interface>
 
     <cc:implementation>
@@ -25,6 +35,7 @@
                         <p:inputText id="pattern" value="${dialogBean.namePattern}" />
                         <p:commandButton value="添加条件" actionListener="${dialogBean.addNameRestriction}"
                             update="@form" />
+                        <cc:renderFacet name="search" />
                     </h:panelGrid>
                 </p:fieldset>
 
@@ -55,9 +66,14 @@
                     <p:column headerText="全名">
                         <h:outputText value="${entry.fullName}" />
                     </p:column>
+
+                    <cc:renderFacet name="columns" />
                 </p:dataTable>
 
+                <cc:insertChildren />
+
                 <div align="right">
+                    <cc:renderFacet name="buttons" />
                     <p:commandButton id="ok" value="确定" oncomplete="${cc.attrs.var}.hide()" update="${cc.attrs.update}"
                         async="true" />
                     <p:commandButton id="cancel" value="关闭" oncomplete="${cc.attrs.var}.hide();" />

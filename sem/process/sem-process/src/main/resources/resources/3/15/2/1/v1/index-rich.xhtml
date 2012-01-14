@@ -7,7 +7,8 @@
     <ui:param name="bean" value="#{singleVerifierPolicyBean}" />
 
     <ui:define name="dialogs">
-        <sem:editSingleVerifierPolicyDialog />
+        <sem:editSingleVerifierPolicyDialog id="editDialog" var="editDialog"
+            value="${bean.activeObject}" actionListener="${singleVerifierPolicyBean.save}" update=":mainForm" />
     </ui:define>
 
     <ui:define name="dataTableColumns">

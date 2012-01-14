@@ -1,7 +1,5 @@
 package com.bee32.sem.process.verify.web;
 
-import java.util.List;
-
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.process.verify.builtin.SingleVerifierPolicy;
@@ -18,6 +16,7 @@ public class SingleVerifierRankedPolicyBean
 
     SingleVerifierLevelDto selectedLevel;
     SingleVerifierLevelDto level;
+    VerifyPolicyDto selectedPolicy;
 
     public SingleVerifierRankedPolicyBean() {
         super(SingleVerifierRankedPolicy.class, SingleVerifierRankedPolicyDto.class, 0);
@@ -54,16 +53,16 @@ public class SingleVerifierRankedPolicyBean
         policy.getLevels().remove(selectedLevel);
     }
 
-    // Dialog adapters...
+    public VerifyPolicyDto getSelectedPolicy() {
+        return selectedPolicy;
+    }
 
-    public Object getSetVerifyPolicyAdapter() {
-        return new ChooseVerifyPolicyDialogListener() {
-            @Override
-            protected void selected(List<?> selection) {
-                for (Object item : selection)
-                    level.setTargetPolicy((VerifyPolicyDto) item);
-            }
-        };
+    public void setSelectedPolicy(VerifyPolicyDto selectedPolicy) {
+        this.selectedPolicy = selectedPolicy;
+    }
+
+    public void setLevelTargetPolicy() {
+        level.setTargetPolicy(selectedPolicy);
     }
 
 }

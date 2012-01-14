@@ -3,26 +3,31 @@
     xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:icsf="http://java.sun.com/jsf/composite/3/7">
 
     <cc:interface>
-        <cc:attribute name="value" default="${singleVerifierPolicyBean.singleSelection}" />
-        <cc:attribute name="var" default="chooseVerifyPolicyDialog" />
+        <!-- basic -->
+        <cc:attribute name="var" default="editSingleVerifierPolicyDialog" />
+        <cc:attribute name="value" type="java.lang.Object" required="true" />
+        <cc:attribute name="actionListener" targets="form:ok" />
         <cc:attribute name="update" />
 
-        <cc:attribute name="dialogBean" default="${singleVerifierPolicyBean}" />
+        <!-- ui overrides -->
         <cc:attribute name="caption" default="白名单策略" />
         <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
 
-        <cc:attribute name="addResponsibleDialogVar" default="addResponsibleDialog" />
+        <!-- internals -->
+        <cc:attribute name="dialogBean" type="java.lang.Object" default="${singleVerifierPolicyBean}" />
     </cc:interface>
 
     <cc:implementation>
+
+        <icsf:choosePrincipalDialog caption="选择用户或组" var="${cc.parent.attrs.var}_cpd"
+            actionListener="${cc.parent.attrs.dialogBean.addResponsible}" selection="${cc.parent.attrs.dialogBean.selectedResponsible}"
+            update="${cc.parent.attrs.clientId}:form:responsibleTable" />
+
         <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
 
-        <icsf:choosePrincipalDialog caption="选择用户或组" var="${cc.attrs.addResponsibleDialogVar}"
-            actionListener="#{dialogBean.addResponsible}" selection="#{dialogBean.selectedResponsible}" update="${cc.attrs.clientId}:form:responsibleTable" />
-
         <p:dialog header="${cc.attrs.caption}" widgetVar="${cc.attrs.var}" modal="true">
+            <c:set var="obj" value="${cc.attrs.value}" />
             <h:form id="form" style="${cc.attrs.style}">
-                <c:set var="obj" value="${cc.attrs.value}" />
 
                 <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
 
@@ -59,7 +64,7 @@
                         </p:column>
                     </p:dataTable>
 
-                    <p:commandButton value="增加责任人" onclick="${cc.attrs.addResponsibleDialogVar}.show()" />
+                    <p:commandButton value="增加责任人" onclick="${cc.attrs.var}_cpd.show()" />
                 </p:fieldset>
 
                 <div align="right">

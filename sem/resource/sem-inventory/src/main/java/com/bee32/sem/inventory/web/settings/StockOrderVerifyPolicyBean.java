@@ -1,7 +1,6 @@
 package com.bee32.sem.inventory.web.settings;
 
 import java.util.Collection;
-import java.util.List;
 
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
@@ -10,7 +9,6 @@ import com.bee32.sem.inventory.process.StockOrderVerifyPolicy;
 import com.bee32.sem.inventory.process.StockOrderVerifyPolicyDto;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
-import com.bee32.sem.process.verify.web.ChooseVerifyPolicyDialogListener;
 
 @ForEntity(StockOrderVerifyPolicy.class)
 public class StockOrderVerifyPolicyBean
@@ -20,6 +18,7 @@ public class StockOrderVerifyPolicyBean
 
     StockOrderSubjectPolicyEntry selectedEntry;
     StockOrderSubjectPolicyEntry entry;
+    VerifyPolicyDto selectedPolicy;
 
     public StockOrderVerifyPolicyBean() {
         super(StockOrderVerifyPolicy.class, StockOrderVerifyPolicyDto.class, 0);
@@ -63,16 +62,16 @@ public class StockOrderVerifyPolicyBean
         return StockOrderSubject.getVirtuals();
     }
 
-    // Dialog adapters..
+    public VerifyPolicyDto getSelectedPolicy() {
+        return selectedPolicy;
+    }
 
-    public Object getSetVerifyPolicyAdapter() {
-        return new ChooseVerifyPolicyDialogListener() {
-            @Override
-            protected void selected(List<?> selection) {
-                for (Object item : selection)
-                    entry.setPolicy((VerifyPolicyDto) item);
-            }
-        };
+    public void setSelectedPolicy(VerifyPolicyDto selectedPolicy) {
+        this.selectedPolicy = selectedPolicy;
+    }
+
+    public void setEntryTargetPolicy() {
+        entry.setPolicy((VerifyPolicyDto) selectedPolicy);
     }
 
 }

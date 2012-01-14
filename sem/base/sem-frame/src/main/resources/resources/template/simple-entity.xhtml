@@ -6,11 +6,11 @@
         <p:toolbar id="toolbar">
             <p:toolbarGroup align="left">
                 <p:commandButton value="新增" actionListener="${bean.showCreateForm}" oncomplete="editDialog.show()"
-                    update=":editForm" />
+                    update=":editDialog:form, :editForm" />
             </p:toolbarGroup>
             <p:toolbarGroup align="right">
                 <p:commandButton value="修改" actionListener="${bean.showEditForm}" oncomplete="editDialog.show()"
-                    disabled="${not bean.selected}" update=":editForm" />
+                    disabled="${not bean.selected}" update=":editDialog:form, :editForm" />
                 <p:commandButton value="删除" onclick="deleteConfirmDialog.show()" disabled="${not bean.selected}" />
                 <ui:insert name="toolbarPeripherals" />
             </p:toolbarGroup>
@@ -38,7 +38,7 @@
             <ui:repeat id="repeat" var="fragment" value="${bean.searchFragments}">
                 <c:set var="form" value="${component.parent.parent.parent.clientId}" />
                 <p:commandButton value="${fragment.entryLabel}" async="true" actionListener="${fragment.detach}"
-                    update="${form}:searchFragments, ${form}:dataTable" />
+                    update="@form" />
             </ui:repeat>
         </h:panelGroup>
     </ui:define>

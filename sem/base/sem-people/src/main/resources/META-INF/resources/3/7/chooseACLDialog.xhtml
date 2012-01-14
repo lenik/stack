@@ -3,20 +3,26 @@
     xmlns:p="http://primefaces.org/ui">
 
     <cc:interface>
-        <cc:attribute name="dialogBean" default="${chooseACLDialogBean}" />
-        <cc:attribute name="selection" required="true" />
+        <!-- basic -->
         <cc:attribute name="var" default="chooseACLDialog" />
-        <cc:attribute name="caption" default="${chooseACLDialogBean.caption}" />
+        <cc:attribute name="selection" required="true" />
         <cc:attribute name="multiple" type="java.lang.Boolean" default="false" />
         <cc:attribute name="actionListener" targets="form:ok" default="${chooseACLDialogBean.selected}" />
         <cc:attribute name="update" />
+
+        <!-- ui overrides -->
+        <cc:attribute name="caption" default="${chooseACLDialogBean.caption}" />
         <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
+
+        <!-- internals -->
+        <cc:attribute name="dialogBean" default="${chooseACLDialogBean}" />
     </cc:interface>
 
     <cc:implementation>
-        <c:set var="dialogBean" value="${choosePrincipalDialogBean}" />
+        <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
+        <c:set var="dialogVar" value="${cc.attrs.var}" />
 
-        <p:dialog header="${cc.attrs.caption}" widgetVar="${cc.attrs.var}" modal="true">
+        <p:dialog header="${cc.attrs.caption}" widgetVar="${dialogVar}" modal="true">
             <h:form id="form" style="${cc.attrs.style}">
                 <p:fieldset legend="搜索" toggleable="true" collapsed="true">
                     <h:panelGrid columns="3" columnClasses="">
@@ -58,9 +64,9 @@
                 </p:dataTable>
 
                 <div align="right">
-                    <p:commandButton id="ok" value="确定" oncomplete="${cc.attrs.var}.hide()" update="${cc.attrs.update}"
+                    <p:commandButton id="ok" value="确定" oncomplete="${dialogVar}.hide()" update="${cc.attrs.update}"
                         async="true" />
-                    <p:commandButton id="cancel" value="关闭" oncomplete="${cc.attrs.var}.hide();" />
+                    <p:commandButton id="cancel" value="关闭" oncomplete="${dialogVar}.hide();" />
                 </div>
             </h:form>
         </p:dialog>
