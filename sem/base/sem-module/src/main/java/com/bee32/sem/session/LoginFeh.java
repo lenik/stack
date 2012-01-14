@@ -9,9 +9,14 @@ import com.bee32.plover.web.faces.ForException;
 /**
  * 将登录失败翻译为重定向。
  */
-@ForException(LoginException.class)
+@ForException(value = LoginException.class, fullStackSearch = true)
 public class LoginFeh
         extends AnnotatedFeh {
+
+    @Override
+    public int getPriority() {
+        return -1000;
+    }
 
     @Override
     public ExceptionHandleResult handle(FaceletExceptionContext context, Throwable exception) {

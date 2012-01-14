@@ -3,9 +3,11 @@ package com.bee32.plover.web.faces;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ServiceLoader;
 import java.util.Set;
+import java.util.TreeMap;
 
 import javax.faces.FacesException;
 import javax.faces.context.ExceptionHandler;
@@ -20,6 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.bee32.plover.arch.util.PriorityComparator;
 
 public class PloverExceptionHandler
         extends ExceptionHandlerWrapper {
@@ -50,19 +54,37 @@ public class PloverExceptionHandler
 
             ExceptionQueuedEventContext eqeContext = event.getContext();
 
+            Map<IFaceletExceptionHandler, Throwable> allHandlers = new TreeMap<>(PriorityComparator.INSTANCE);
+
             Throwable exception = eqeContext.getException();
-            Class<? extends Throwable> exceptionType = exception.getClass();
+            boolean nested = false;
+            while (exception != null) {
+                Class<? extends Throwable> exceptionType = exception.getClass();
 
-            Set<IFaceletExceptionHandler> handlers = handlerMap.floor(exceptionType);
+                Set<IFaceletExceptionHandler> handlers = handlerMap.floor(exceptionType);
+                if (handlers != null) {
+                    for (IFaceletExceptionHandler handler : handlers) {
+                        if (nested)
+                            if (!handler.isFullStackSearch())
+                                continue;
+                        if (allHandlers.containsKey(handler))
+                            continue; // same handler should handle the out-most exception.
+                        allHandlers.put(handler, exception);
+                    }
+                }
 
-            if (handlers == null || handlers.isEmpty())
-                continue;
+                exception = exception.getCause();
+                nested = true;
+            }
 
-            for (IFaceletExceptionHandler handler : handlers) {
+            for (Entry<IFaceletExceptionHandler, Throwable> entry : allHandlers.entrySet()) {
+                IFaceletExceptionHandler handler = entry.getKey();
+                Throwable exceptionInStack = entry.getValue();
+
                 FacesContext facesContext = FacesContext.getCurrentInstance();
                 FaceletExceptionContext fec = new FaceletExceptionContext(facesContext);
 
-                ExceptionHandleResult result = handler.handle(fec, exception);
+                ExceptionHandleResult result = handler.handle(fec, exceptionInStack);
                 switch (result.getType()) {
                 case ExceptionHandleResult.TYPE_SKIP:
                     continue;

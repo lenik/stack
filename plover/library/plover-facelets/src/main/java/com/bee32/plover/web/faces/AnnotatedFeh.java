@@ -12,6 +12,19 @@ import com.bee32.plover.web.faces.utils.FacesUILogger;
 public abstract class AnnotatedFeh
         implements IFaceletExceptionHandler {
 
+    boolean fullStackSearch;
+
+    public AnnotatedFeh() {
+        ForException annotation = getClass().getAnnotation(ForException.class);
+        if (annotation != null)
+            fullStackSearch = annotation.fullStackSearch();
+    }
+
+    @Override
+    public int getPriority() {
+        return 0;
+    }
+
     public ExceptionHandleResult skip() {
         return ExceptionHandleResult.SKIP;
     }
@@ -26,6 +39,11 @@ public abstract class AnnotatedFeh
 
     public FacesUILogger getUILogger() {
         return new FacesUILogger(false);
+    }
+
+    @Override
+    public boolean isFullStackSearch() {
+        return fullStackSearch;
     }
 
 }

@@ -13,4 +13,6 @@ public @interface ForException {
 
     Class<? extends Throwable> value();
 
+    boolean fullStackSearch() default false;
+
 }
