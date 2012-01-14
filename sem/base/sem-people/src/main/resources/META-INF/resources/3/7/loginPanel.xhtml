@@ -1,20 +1,25 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:cc="http://java.sun.com/jsf/composite">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:cc="http://java.sun.com/jsf/composite"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk">
 
-    <cc:interface />
+    <cc:interface>
+        <!-- basic -->
+        <cc:attribute name="xpc" type="java.lang.Boolean" default="false" />
+        <cc:attribute name="style" default="simple" />
+
+        <!-- ui overrides -->
+        <!-- internals -->
+    </cc:interface>
+
     <cc:implementation>
-        <h:panelGrid columns="3">
-            <h:outputLabel for="#{cc.clientId}:userid" value="Userid:" />
-            <h:inputText id="userid" required="true" requiredMessage="Userid is required" />
-            <h:message for="#{cc.clientId}:userid" />
 
-            <h:outputLabel for="#{cc.clientId}:password" value="Password:" />
-            <h:inputSecret id="password" required="true" requiredMessage="Password is required" />
-            <h:message for="#{cc.clientId}:password" />
+        <h:panelGroup id="xpcTrigger" rendered="${cc.attrs.xpc and sessionUser.userOpt == null}">
+            <h:outputText value="${sessionUser.user}" />
+        </h:panelGroup>
 
-            <h:outputText value="On Login, Go To:" rendered="#{! empty cc.facets.loginOutcomeChoiceList}" />
-            <h:commandButton id="loginButton" value="Login" />
-            <h:messages for="#{cc.clientId}" />
+        <h:panelGrid columns="3" rendered="${cc.attrs.style == 'simple'}">
         </h:panelGrid>
+
     </cc:implementation>
 
 </html>
