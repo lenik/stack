@@ -2,15 +2,14 @@ package com.bee32.sem.process.verify.web;
 
 import java.util.List;
 
-import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.plover.orm.util.EntityPeripheralBean;
+import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.process.verify.VerifyEvalState;
 import com.bee32.sem.process.verify.dto.IVerifiableDto;
 import com.bee32.sem.process.verify.dto.VerifyContextDto;
 import com.bee32.sem.process.verify.service.IVerifyService;
 
-public abstract class VerifyContextSupportBean
-        extends EntityPeripheralBean {
+public abstract class AbstractVerifySupportBean
+        extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -19,7 +18,7 @@ public abstract class VerifyContextSupportBean
     }
 
     public List<? extends IVerifiableDto> getVerifiables() {
-        return (List<? extends IVerifiableDto>) getSelection(IVerifiableDto.class, EntityDto.class);
+        return (List<? extends IVerifiableDto>) getSelection();
     }
 
     public IVerifiableDto getVerifiable1() {

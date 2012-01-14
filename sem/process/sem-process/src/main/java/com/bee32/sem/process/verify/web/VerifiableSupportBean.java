@@ -12,7 +12,7 @@ import com.bee32.sem.process.verify.dto.IVerifiableDto;
 import com.bee32.sem.process.verify.service.IVerifyService;
 
 public class VerifiableSupportBean
-        extends VerifyContextSupportBean {
+        extends AbstractVerifySupportBean {
 
     private static final long serialVersionUID = 1L;
 

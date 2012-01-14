@@ -15,7 +15,7 @@ import com.bee32.sem.process.verify.builtin.dto.SingleVerifierSupportDto;
 import com.bee32.sem.process.verify.dto.IVerifiableDto;
 
 public class SingleVerifierSupportBean
-        extends VerifyContextSupportBean {
+        extends AbstractVerifySupportBean {
 
     private static final long serialVersionUID = 1L;
 

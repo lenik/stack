@@ -1,11 +1,33 @@
-<h:panelGroup xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:p="http://primefaces.org/ui">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:cc="http://java.sun.com/jsf/composite"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk">
 
-    <c:set var="_formId" value="${formId != null ? formId : 'singleVerifierSupportForm'}" />
-    <c:set var="_disabled" value="${disabled != null ? disabled : false}" />
+    <cc:interface>
+        <!-- basic -->
+        <cc:attribute name="selection" required="true" />
+        <!-- DIALOG <cc:attribute name="handler" type="java.lang.Object" default="${singleVerifierSupportBean}" /> -->
+        <!-- DIALOG <cc:attribute name="update" /> -->
 
-    <p:commandButton value="${verifiableSupportBean.commandLabel}" actionListener="${singleVerifierSupportBean.loadTemplateFromSelection}"
-        update="${_formId}" oncomplete="singleVerifierSupportDialog.show()" disabled="${disabled || not verifiableSupportBean.commandEnabled}"
-        async="true" />
+        <!-- ui overrides -->
+        <!-- DIALOG <cc:attribute name="caption" default="审核信息" /> -->
+        <cc:attribute name="disabled" default="false" type="java.lang.Boolean" />
+        <cc:attribute name="dialog" default="singleVerifierSupportDialog" />
 
-</h:panelGroup>
+        <!-- internals -->
+        <cc:attribute name="buttonBean" type="java.lang.Object" default="${verifiableSupportBean}" />
+        <cc:attribute name="dialogBean" type="java.lang.Object" default="${singleVerifierSupportBean}" />
+    </cc:interface>
+
+    <cc:implementation>
+        <c:set var="buttonBean" value="${cc.attrs.buttonBean}" />
+        <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
+        <c:set var="dialogVar" value="${cc.attrs.dialog}" />
+        <c:set var="handler" value="${cc.attrs.handler}" />
+
+        <p:commandButton value="${buttonBean.commandLabel}" actionListener="${dialogBean.loadTemplateFromSelection}"
+            oncomplete="${dialogVar}.show()" disabled="${cc.attrs.disabled || not buttonBean.commandEnabled}" async="true">
+            <cc:insertChildren />
+        </p:commandButton>
+
+    </cc:implementation>
+</html>
