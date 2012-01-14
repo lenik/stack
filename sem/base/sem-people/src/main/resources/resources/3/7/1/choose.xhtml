@@ -1,0 +1,23 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core" xmlns:sem="http://bee32.com/sem/functions"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:icsf="http://java.sun.com/jsf/composite/3/7">
+
+    <ui:composition template="/template/primefaces.xhtml">
+        <ui:define name="title">Choose principal test</ui:define>
+        <ui:define name="content">
+
+            <icsf:choosePrincipalDialog var="dialog1" selection="${choosePrincipalDialogBean.singleSelection}"
+                update=":form" />
+            <icsf:choosePrincipalDialog var="dialog2" selection="${choosePrincipalDialogBean.singleSelection}"
+                update=":form" />
+
+            <h:form id="form">
+                <p:commandButton value="Choose Single" onclick="dialog1.show()" />
+                <p:commandButton value="Choose Multiple" onclick="dialog2.show()" />
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+
+</html>

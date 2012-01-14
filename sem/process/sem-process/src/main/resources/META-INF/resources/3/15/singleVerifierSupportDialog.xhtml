@@ -1,0 +1,45 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:cc="http://java.sun.com/jsf/composite"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk">
+
+    <cc:interface>
+        <cc:attribute name="dialogBean" default="${singleVerifierSupportBean}" />
+        <cc:attribute name="selection" required="true" />
+        <cc:attribute name="handler" default="${singleVerifierSupportBean}" />
+        <cc:attribute name="var" default="singleVerifierSupportDialog" />
+        <cc:attribute name="caption" default="审核信息" />
+        <cc:attribute name="update" />
+        <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
+    </cc:interface>
+
+    <cc:implementation>
+        <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
+        <c:set var="handler" value="${cc.attrs.handler}" />
+
+        <p:dialog header="${cc.attrs.caption}" widgetVar="${cc.attrs.var}" modal="true">
+            <h:form id="form" style="${cc.attrs.style}">
+
+                <t:panelGrid columns="2">
+                    <h:outputText value="审核身份：" />
+                    <p:selectOneMenu id="verifyAs" value="#{_bean.verifier1Template.id}">
+                        <f:selectItems value="${sessionUser.internalUser.imSet}" var="p" itemValue="${p.id}"
+                            itemLabel="${p.displayName}" />
+                    </p:selectOneMenu>
+
+                    <h:outputText value="拒绝的附加信息：" />
+                    <p:inputTextarea value="${_bean.rejectedReason1Template}" cols="40" rows="6"
+                        autoResize="false" />
+                </t:panelGrid>
+
+                <div align="right">
+                    <p:commandButton value="通过" oncomplete="${_var}.hide()" actionListener="${handler.approve}"
+                        update="${_update}" async="true" />
+                    <p:commandButton value="拒绝" oncomplete="${_var}.hide()" actionListener="${handler.reject}"
+                        update="${_update}" async="true" />
+                    <p:commandButton value="取消" oncomplete="${_var}.hide();" />
+                </div>
+            </h:form>
+        </p:dialog>
+
+    </cc:implementation>
+</html>

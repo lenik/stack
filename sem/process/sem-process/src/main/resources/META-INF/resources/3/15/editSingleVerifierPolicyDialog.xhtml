@@ -1,0 +1,73 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:cc="http://java.sun.com/jsf/composite"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:icsf="http://java.sun.com/jsf/composite/3/7">
+
+    <cc:interface>
+        <cc:attribute name="value" default="${singleVerifierPolicyBean.singleSelection}" />
+        <cc:attribute name="var" default="chooseVerifyPolicyDialog" />
+        <cc:attribute name="update" />
+
+        <cc:attribute name="dialogBean" default="${singleVerifierPolicyBean}" />
+        <cc:attribute name="caption" default="白名单策略" />
+        <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
+
+        <cc:attribute name="addResponsibleDialogVar" default="addResponsibleDialog" />
+    </cc:interface>
+
+    <cc:implementation>
+        <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
+
+        <icsf:choosePrincipalDialog caption="选择用户或组" var="${cc.attrs.addResponsibleDialogVar}"
+            actionListener="#{dialogBean.addResponsible}" selection="#{dialogBean.selectedResponsible}" update="${cc.attrs.clientId}:form:responsibleTable" />
+
+        <p:dialog header="${cc.attrs.caption}" widgetVar="${cc.attrs.var}" modal="true">
+            <h:form id="form" style="${cc.attrs.style}">
+                <c:set var="obj" value="${cc.attrs.value}" />
+
+                <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
+
+                    <h:outputText value="名称" />
+                    <p:inputText value="${obj.label}" />
+
+                    <h:outputText value="描述" />
+                    <p:inputText value="${obj.description}" size="50" />
+
+                </t:panelGrid>
+
+                <p:fieldset legend="责任人列表" toggleable="false">
+                    <p:dataTable id="responsibleTable" value="${obj.responsibles}" var="responsible"
+                        resizableColumns="true" rowIndexVar="rowIndex">
+                        <f:facet name="header">策略包含的责任对象</f:facet>
+                        <p:column headerText="序号" style="width: 4em;">
+                            <h:outputText value="${rowIndex+1}" />
+                        </p:column>
+
+                        <p:column headerText="名称" style="width: 10em;">
+                            <h:outputText value="${responsible.name}" />
+                        </p:column>
+
+                        <p:column headerText="类型" style="width: 5em;">
+                            <h:outputText value="${responsible.typeName}" />
+                        </p:column>
+
+                        <p:column headerText="操作" style="width: 3em;">
+                            <p:commandLink title="删除" action="${dialogBean.removeResponsible}" update="@form">
+                                <f:setPropertyActionListener value="${responsible}"
+                                    target="${dialogBean.selectedResponsible}" />
+                                <p:graphicImage value="${location.ICON}/etool16/delete_edit.gif" />
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+
+                    <p:commandButton value="增加责任人" onclick="${cc.attrs.addResponsibleDialogVar}.show()" />
+                </p:fieldset>
+
+                <div align="right">
+                    <p:commandButton id="ok" value="保存" update="${cc.attrs.update}" oncomplete="${cc.attrs.var}.hide()" />
+                    <p:commandButton id="cancel" value="取消" onclick="${cc.attrs.var}.hide()" />
+                </div>
+            </h:form>
+        </p:dialog>
+
+    </cc:implementation>
+</html>

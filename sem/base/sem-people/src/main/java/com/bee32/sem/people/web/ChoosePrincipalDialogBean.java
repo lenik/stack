@@ -55,6 +55,7 @@ public class ChoosePrincipalDialogBean
 
     public void addNameRestriction() {
         addSearchFragment("名称含有 " + namePattern, CommonCriteria.namedLike(namePattern));
+        namePattern = null;
     }
 
 }

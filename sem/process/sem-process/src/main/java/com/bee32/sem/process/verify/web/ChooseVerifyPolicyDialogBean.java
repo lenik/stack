@@ -17,6 +17,7 @@ public class ChooseVerifyPolicyDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChooseVerifyPolicyDialogBean.class);
 
+    String caption = "选择审核策略";
     String labelPattern;
 
     public ChooseVerifyPolicyDialogBean() {
@@ -34,6 +35,14 @@ public class ChooseVerifyPolicyDialogBean
     }
 
     // Properties
+
+    public String getCaption() {
+        return caption;
+    }
+
+    public void setCaption(String caption) {
+        this.caption = caption;
+    }
 
     public String getLabelPattern() {
         return labelPattern;

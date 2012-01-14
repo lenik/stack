@@ -147,7 +147,8 @@ public abstract class EntityViewBean
     }
 
     public Object[] getSelectionArray() {
-        return selection.toArray();
+        Object[] array = selection.toArray();
+        return array;
     }
 
     public void setSelectionArray(Object... selectionArray) {
