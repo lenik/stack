@@ -1,13 +1,14 @@
 <h:panelGroup xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
     xmlns:h="http://java.sun.com/jsf/html">
-    <div style="border: solid 1px red">
-        Child page:
+    <fieldset style="border: solid 1px red">
 
-        param=#{param}
+        <legend>#{title}</legend>
+        <pre>
+            child init path = #{path}
 
-        <c:set var="param" value="new" />
+            <ui:param name="path" value="child" />
+            after c:set path = "#{path}"
+        </pre>
 
-        a=#{a}
-
-    </div>
+    </fieldset>
 </h:panelGroup>

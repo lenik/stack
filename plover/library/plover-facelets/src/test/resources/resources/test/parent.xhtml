@@ -4,17 +4,24 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" template="template.xhtml">
     <ui:define name="title">c:set test</ui:define>
     <ui:define name="body">
-        <c:set var="a" value="outer" />
-        <div>
-            begin: a=#{a}
-        </div>
+        <c:set var="path" value="root" />
+        <pre>
+            parent: path=${path}
+        </pre>
 
         <ui:include src="child.xhtml">
-            <ui:param name="param" value="world" />
+            <ui:param name="title" value="path=(default)" />
         </ui:include>
 
-        <div>
-            end: a=#{a}
-        </div>
+        <ui:include src="child.xhtml">
+            <ui:param name="title" value="path=root2" />
+            <ui:param name="path" value="root2" />
+        </ui:include>
+
+        <c:set var="pathcopy" value="#{path}" />
+        <pre>
+            parent: path=${path}
+            parent: pathcopy=${pathcopy}
+        </pre>
     </ui:define>
 </ui:composition>
