@@ -40,7 +40,7 @@ import com.bee32.plover.xutil.m2.TestClassLoader;
 @Import(value = ScanServiceContext.class, inherits = false)
 public abstract class ServiceCollector<T> {
 
-    protected final Class<T> prototype;
+    protected final Class<T> serviceClass;
     protected ClassScanner scanner = new ClassScanner();
 
     public ServiceCollector() {
@@ -48,7 +48,7 @@ public abstract class ServiceCollector<T> {
         URLClassLoader tcl = TestClassLoader.createMavenTestClassLoader(scl);
         scanner.setClassLoader(tcl);
 
-        prototype = ClassUtil.infer1(getClass(), ServiceCollector.class, 0);
+        serviceClass = ClassUtil.infer1(getClass(), ServiceCollector.class, 0);
         try {
             scanner.scan("com.bee32");
             scanner.scan("user");
@@ -82,31 +82,36 @@ public abstract class ServiceCollector<T> {
     }
 
     protected void scan() {
-        List<Class<?>> serviceList = new ArrayList<Class<?>>(getExtensions(prototype));
+        List<Class<?>> serviceList = new ArrayList<Class<?>>(getExtensions(serviceClass, true));
         // Collections.sort(serviceList, ClassNameComparator.getInstance());
-        for (Class<?> serviceType : serviceList) {
-            publish(prototype, serviceType);
+        for (Class<?> serviceImpl : serviceList) {
+            publish(serviceClass, serviceImpl);
         }
     }
 
-    protected void publish(Class<?> prototype, Class<?> serviceType) {
-        System.out.println("    Service: " + serviceType);
+    protected void publish(Class<?> serviceClass, Class<?> serviceImpl) {
+        System.out.println("    Service: " + serviceImpl);
 
-        ServiceTemplate st = serviceType.getAnnotation(ServiceTemplate.class);
-        if (st == null) {
+        ServiceTemplate annotation = serviceImpl.getAnnotation(ServiceTemplate.class);
+        if (annotation == null) {
             System.out.println("        (No service-template annotation, skipped)");
             return;
         }
 
-        boolean isPrototype = st.prototype();
+        int mod = serviceImpl.getModifiers();
+        if (Modifier.isAbstract(mod)) {
+            if (!annotation.prototype())
+                return;
+            // System.out.println("    (Abstract class included for prototype)");
+        }
 
-        File resdir = MavenPath.getResourceDir(serviceType);
+        File resdir = MavenPath.getResourceDir(serviceImpl);
         File sfile;
 
-        if (isPrototype)
-            sfile = new File(resdir, "META-INF/prototypes/" + prototype.getName());
+        if (annotation.prototype())
+            sfile = new File(resdir, "META-INF/prototypes/" + serviceClass.getName());
         else
-            sfile = new File(resdir, "META-INF/services/" + prototype.getName());
+            sfile = new File(resdir, "META-INF/services/" + serviceClass.getName());
 
         List<String> lines = files.get(sfile);
         if (lines == null) {
@@ -114,10 +119,10 @@ public abstract class ServiceCollector<T> {
             files.put(sfile, lines);
         }
 
-        lines.add(serviceType.getName());
+        lines.add(serviceImpl.getName());
     }
 
-    protected Collection<Class<?>> getExtensions(Class<?> base) {
+    protected Collection<Class<?>> getExtensions(Class<?> base, boolean includeAbstract) {
         List<Class<?>> list = new ArrayList<Class<?>>();
         // ApplicationContext appctx;
         // for (String beanName : appctx.getBeanNamesForType(base, true, false)) {
@@ -127,7 +132,8 @@ public abstract class ServiceCollector<T> {
         for (Class<?> clazz : scanner.getClosure(base)) {
             int mod = clazz.getModifiers();
             if (Modifier.isAbstract(mod))
-                continue;
+                if (!includeAbstract)
+                    continue;
             if (!Modifier.isPublic(mod))
                 continue;
             // defined in code-block, or inner class with-in enclosing instance.

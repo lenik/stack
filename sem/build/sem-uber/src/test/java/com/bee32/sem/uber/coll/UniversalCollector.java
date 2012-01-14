@@ -15,13 +15,13 @@ public class UniversalCollector
 
     @Override
     protected void scan() {
-        for (Class<?> collector : getExtensions(prototype)) {
-            Class<?> subproto = ClassUtil.infer1(collector, ServiceCollector.class, 0);
+        for (Class<?> collector : getExtensions(serviceClass, false)) {
+            Class<?> serviceClass2 = ClassUtil.infer1(collector, ServiceCollector.class, 0);
 
-            System.out.println("Prototype: " + subproto);
-            for (Class<?> subservice : getExtensions(subproto)) {
+            System.out.println("Prototype: " + serviceClass2);
+            for (Class<?> serviceClass2Impl : getExtensions(serviceClass2, true)) {
                 // System.out.println("  Sub service: "+subservice);
-                publish(subproto, subservice);
+                publish(serviceClass2, serviceClass2Impl);
             }
             System.out.println();
         }

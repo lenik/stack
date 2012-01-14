@@ -1,6 +1,7 @@
 package com.bee32.plover.arch.service;
 
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.LinkedHashSet;
@@ -11,15 +12,16 @@ import javax.free.URLResource;
 
 public class ServicePrototypeLoader {
 
-    public static <T> Iterable<Class<? extends T>> load(Class<T> serviceBaseType)
+    public static <T> Iterable<Class<? extends T>> load(Class<T> serviceBaseType, boolean includeAbstract)
             throws IOException, ClassNotFoundException {
         // Or using Context class loader?...
         ClassLoader classLoader = serviceBaseType.getClassLoader();
 
-        return load(serviceBaseType, classLoader);
+        return load(serviceBaseType, includeAbstract, classLoader);
     }
 
-    public static <T> Iterable<Class<? extends T>> load(Class<T> serviceBaseType, ClassLoader classLoader)
+    public static <T> Iterable<Class<? extends T>> load(Class<T> serviceBaseType, boolean includeAbstract,
+            ClassLoader classLoader)
             throws IOException, ClassNotFoundException {
         String resourceName = "META-INF/prototypes/" + serviceBaseType.getName();
 
@@ -48,6 +50,10 @@ public class ServicePrototypeLoader {
                 if (!serviceBaseType.isAssignableFrom(serviceClass))
                     throw new IllegalUsageException(String.format("Invalid service class %s for %s.", //
                             className, serviceBaseType.getName()));
+
+                if (Modifier.isAbstract(serviceClass.getModifiers()))
+                    if (!includeAbstract)
+                        continue;
 
                 @SuppressWarnings("unchecked")
                 Class<? extends T> casted = (Class<? extends T>) serviceClass;

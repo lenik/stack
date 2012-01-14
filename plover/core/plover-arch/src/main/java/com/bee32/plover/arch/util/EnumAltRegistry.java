@@ -47,7 +47,7 @@ public class EnumAltRegistry {
     static <E extends EnumAlt<V, E>, V extends Serializable> //
     void scanEnumTypes(boolean publicOnly)
             throws ClassNotFoundException, IOException {
-        for (Class<?> enumType : ServicePrototypeLoader.load(EnumAlt.class)) {
+        for (Class<?> enumType : ServicePrototypeLoader.load(EnumAlt.class, true)) {
             for (Field field : enumType.getDeclaredFields()) {
                 // public static ...
                 int mod = field.getModifiers();
