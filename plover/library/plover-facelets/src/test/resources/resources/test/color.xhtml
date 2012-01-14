@@ -1,0 +1,35 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:testcc="http://java.sun.com/jsf/composite/test" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.w3.org/1999/xhtml http://www.w3.org/2002/08/xhtml/xhtml1-transitional.xsd">
+    <h:head>
+        <title>Using Page</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <h:messages />
+
+            <testcc:inputColor value="#{colorUserBean.color}">
+                <f:facet name="header">
+                    <h:outputText value="Please choose a color" />
+                </f:facet>
+                <f:actionListener for="colorPalette" type="user.ColorActionListener" />
+                <f:valueChangeListener for="colorFields" type="user.ColorValueChangeListener" />
+
+                <h:panelGrid columns="2">
+                    <f:facet name="header">
+                        <h:outputText value="You Selected: " />
+                    </f:facet>
+                    <h:outputLabel value="Red:" />
+                    <h:outputText value="#{colorUserBean.color.red}" />
+                    <h:outputLabel value="Green:" />
+                    <h:outputText value="#{colorUserBean.color.green}" />
+                    <h:outputLabel value="Blue:" />
+                    <h:outputText value="#{colorUserBean.color.blue}" />
+                </h:panelGrid>
+            </testcc:inputColor>
+
+            <br />
+            <h:commandButton value="Submit" />
+        </h:form>
+    </h:body>
+</f:view>

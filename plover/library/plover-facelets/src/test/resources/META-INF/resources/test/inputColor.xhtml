@@ -1,0 +1,66 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:cc="http://java.sun.com/jsf/composite"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/1999/xhtml http://www.w3.org/2002/08/xhtml/xhtml1-transitional.xsd">
+
+    <cc:interface>
+        <cc:attribute name="value" required="true" type="user.Color" />
+        <cc:actionSource name="colorPalette" targets="redSelector greenSelector blueSelector" />
+        <cc:editableValueHolder name="colorFields" targets="redInputText greenInputText blueInputText" />
+        <cc:facet name="header" required="true" />
+    </cc:interface>
+
+    <cc:implementation>
+        <cc:renderFacet name="header" />
+        <f:ajax render="preview kids">
+            <h:panelGrid columns="2">
+                <h:outputLabel value="R:" />
+                <h:inputText id="redInputText" value="#{cc.attrs.value.red}">
+                    <f:validateLongRange minimum="0" maximum="255" />
+                </h:inputText>
+                <h:outputLabel value="G:" />
+                <h:inputText id="greenInputText" value="#{cc.attrs.value.green}">
+                    <f:validateLongRange minimum="0" maximum="255" />
+                </h:inputText>
+                <h:outputLabel value="B:" />
+                <h:inputText id="blueInputText" value="#{cc.attrs.value.blue}">
+                    <f:validateLongRange minimum="0" maximum="255" />
+                </h:inputText>
+            </h:panelGrid>
+        </f:ajax>
+
+        <h:outputText value="Color Preview: " />
+        <c:set value="#{cc.attrs.value.red}" var="red" />
+        <c:set value="#{cc.attrs.value.green}" var="green" />
+        <c:set value="#{cc.attrs.value.blue}" var="blue" />
+        <c:set value="#{red},#{green},#{blue}" var="rgb" />
+        <h:outputText id="preview" value="***"
+            style="border: 1px solid; padding: 1px 10px; background-color: rgb(#{rgb});" />
+        <f:ajax render="redInputText greenInputText blueInputText preview kids">
+            <h:panelGrid border="1" columns="3">
+                <f:facet name="header">
+                    <h:outputText value="Color Palette" />
+                </f:facet>
+                <h:commandLink id="redSelector" value="Red">
+                    <f:setPropertyActionListener target="#{cc.attrs.value.red}" value="255" />
+                    <f:setPropertyActionListener target="#{cc.attrs.value.green}" value="0" />
+                    <f:setPropertyActionListener target="#{cc.attrs.value.blue}" value="0" />
+                </h:commandLink>
+                <h:commandLink id="greenSelector" value="Green">
+                    <f:setPropertyActionListener target="#{cc.attrs.value.red}" value="0" />
+                    <f:setPropertyActionListener target="#{cc.attrs.value.green}" value="255" />
+                    <f:setPropertyActionListener target="#{cc.attrs.value.blue}" value="0" />
+                </h:commandLink>
+                <h:commandLink id="blueSelector" value="Blue">
+                    <f:setPropertyActionListener target="#{cc.attrs.value.red}" value="0" />
+                    <f:setPropertyActionListener target="#{cc.attrs.value.green}" value="0" />
+                    <f:setPropertyActionListener target="#{cc.attrs.value.blue}" value="255" />
+                </h:commandLink>
+            </h:panelGrid>
+        </f:ajax>
+        <br />
+        <h:panelGroup id="kids">
+            <cc:insertChildren />
+        </h:panelGroup>
+    </cc:implementation>
+
+</ui:component>
