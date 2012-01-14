@@ -19,6 +19,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.DefaultValue;
 
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.ox1.color.Green;
@@ -197,6 +198,7 @@ public class Part
     }
 
     @Column(name = "priceStrategy", nullable = false)
+    @DefaultValue("z")
     char get_priceStrategy() {
         return priceStrategy.getValue();
     }

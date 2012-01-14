@@ -6,10 +6,13 @@ import org.apache.commons.lang.NotImplementedException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.base.tx.TxEntityDto;
+import com.bee32.sem.process.verify.builtin.dto.SingleVerifierSupportDto;
+import com.bee32.sem.process.verify.dto.IVerifiableDto;
 import com.bee32.sem.purchase.entity.PurchaseAdvice;
 
 public class PurchaseAdviceDto
-        extends TxEntityDto<PurchaseAdvice> {
+        extends TxEntityDto<PurchaseAdvice>
+        implements IVerifiableDto {
 
     private static final long serialVersionUID = 1L;
 
@@ -18,11 +21,15 @@ public class PurchaseAdviceDto
 
     PurchaseRequestItemDto purchaseRequestItem;
 
+    SingleVerifierSupportDto singleVerifierSupport;
+
     @Override
     protected void _marshal(PurchaseAdvice source) {
         preferredInquiry = mref(InquiryDto.class, source.getPreferredInquiry());
         reason = source.getReason();
         purchaseRequestItem = mref(PurchaseRequestItemDto.class, source.getPurchaseRequestItem());
+
+        singleVerifierSupport = marshal(SingleVerifierSupportDto.class, source.getVerifyContext());
 
     }
 
@@ -32,6 +39,7 @@ public class PurchaseAdviceDto
         target.setReason(reason);
         merge(target, "purchaseRequestItem", purchaseRequestItem);
 
+        merge(target, "verifyContext", singleVerifierSupport);
     }
 
     @Override
@@ -64,4 +72,12 @@ public class PurchaseAdviceDto
         this.purchaseRequestItem = purchaseRequestItem;
     }
 
+    @Override
+    public SingleVerifierSupportDto getVerifyContext() {
+        return singleVerifierSupport;
+    }
+
+    public void setVerifyContext(SingleVerifierSupportDto singleVerifierSupport) {
+        this.singleVerifierSupport = singleVerifierSupport;
+    }
 }

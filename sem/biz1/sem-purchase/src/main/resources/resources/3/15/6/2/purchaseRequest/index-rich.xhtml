@@ -16,6 +16,7 @@
     <ui:define name="title">采购请求管理</ui:define>
 
     <ui:define name="content">
+        <ui:include src="/3/15/2/1/SingleVerifierSupportDialog.xhtml" />
 
 		<h:form id="mainForm">
 
@@ -54,9 +55,9 @@
 						actionListener="#{purchaseRequestAdminBean.cancel}"
 						disabled="#{!purchaseRequestAdminBean.editable}" update="mainForm" async="true" />
 					<p:separator />
-					<p:commandButton value="审核"
-						disabled="#{purchaseRequestAdminBean.editable}"
-						onclick="verifyDlg.show();" />
+                    <ui:include src="/3/15/2/1/SingleVerifierSupportButton.xhtml">
+                        <ui:param name="disabled" value="#{purchaseRequestAdminBean.editable}" />
+                    </ui:include>
 					<p:separator />
 					<p:commandButton value="第一条"
 						actionListener="#{purchaseRequestAdminBean.first}"
@@ -87,9 +88,11 @@
 			<p:panel header="采购请求管理">
 				<t:panelGrid columns="4">
                     <h:outputText value="标识:" />
-                    <t:panelGroup colspan="3">
-                        <h:outputText value="#{purchaseRequestAdminBean.purchaseRequest.id}" style="font-weight:bold;font-size:large"/>
-                    </t:panelGroup>
+                    <h:outputText value="#{purchaseRequestAdminBean.purchaseRequest.id}" style="font-weight:bold;font-size:large"/>
+                    <h:outputText value="状态" />
+                    <p:inputText
+                        value="#{purchaseRequestAdminBean.purchaseRequest.verifyContext.verifyEvalState}"
+                        disabled="true" />
 
                     <h:outputText value="时间:" />
                     <h:outputText
@@ -625,6 +628,10 @@
                             <p:inputText style="width:600px;"
                                 value="#{purchaseRequestAdminBean.purchaseAdvice.reason}" />
 
+                            <h:outputText value="状态" />
+                            <p:inputText
+                                value="#{purchaseRequestAdminBean.purchaseAdvice.verifyContext.verifyEvalState}"
+                                disabled="true" />
 
                             <t:panelGroup>
                                 <p:commandButton value="保存"

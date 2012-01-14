@@ -16,6 +16,7 @@
     <ui:define name="title">定单管理</ui:define>
 
     <ui:define name="content">
+        <ui:include src="/3/15/2/1/SingleVerifierSupportDialog.xhtml" />
 
 		<h:form id="mainForm">
 
@@ -54,9 +55,9 @@
 						actionListener="#{makeOrderAdminBean.cancel}"
 						disabled="#{!makeOrderAdminBean.editable}" update="mainForm" async="true" />
 					<p:separator />
-					<p:commandButton value="审核"
-						disabled="#{makeOrderAdminBean.editable}"
-						onclick="verifyDlg.show();" />
+                    <ui:include src="/3/15/2/1/SingleVerifierSupportButton.xhtml">
+                        <ui:param name="disabled" value="#{makeOrderAdminBean.editable}" />
+                    </ui:include>
 					<p:separator />
 					<p:commandButton value="第一条"
 						actionListener="#{makeOrderAdminBean.first}"
@@ -87,9 +88,13 @@
 			<p:panel header="定单管理">
 				<t:panelGrid columns="4">
                     <h:outputText value="标识:" />
-                    <t:panelGroup colspan="3">
-                        <h:outputText value="#{makeOrderAdminBean.makeOrder.id}" style="font-weight:bold;font-size:large"/>
-                    </t:panelGroup>
+                    <h:outputText
+                        value="#{makeOrderAdminBean.makeOrder.id}"
+                        style="font-weight:bold;font-size:large" />
+                    <h:outputText value="状态" />
+                    <p:inputText
+                        value="#{makeOrderAdminBean.makeOrder.verifyContext.verifyEvalState}"
+                        disabled="true" />
 
                     <h:outputText value="时间:" />
                     <h:outputText
