@@ -1,11 +1,11 @@
 <p:dialog xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:cc="http://java.sun.com/jsf/composite"
     xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
-    xmlns:p="http://primefaces.org/ui" header="${caption}" widgetVar="${var}" modal="true">
+    xmlns:p="http://primefaces.org/ui" header="${caption}" widgetVar="${var}" modal="true" position="middle">
     <h:form id="form" style="${style}">
 
         <p:fieldset legend="搜索" toggleable="true" collapsed="true">
             <ui:insert name="searchPanel">
-                <p:inputText id="pattern" value="${dialogBean.pattern}" />
+                <p:inputText id="pattern" value="${dialogBean.searchPattern}" />
                 <p:commandButton value="限定名称" actionListener="${dialogBean.addNameOrLabelRestriction}"
                     update="@form" />
                 <p:commandButton value="限定描述" actionListener="${dialogBean.addDescription}" update="@form" />

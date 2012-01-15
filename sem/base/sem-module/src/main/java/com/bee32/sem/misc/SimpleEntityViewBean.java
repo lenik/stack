@@ -67,7 +67,7 @@ public abstract class SimpleEntityViewBean
     EntityDataModelOptions<?, ?> options;
     LazyDataModel<?> dataModel;
 
-    protected String pattern;
+    protected String searchPattern;
     protected DateRangeTemplate dateRange = DateRangeTemplate.recentWeek;
     protected Date beginDate;
     protected Date endDate;
@@ -413,34 +413,34 @@ public abstract class SimpleEntityViewBean
     static void checkDeleteFlags(int deleteFlags) {
     }
 
-    public String getPattern() {
-        return pattern;
+    public String getSearchPattern() {
+        return searchPattern;
     }
 
-    public void setPattern(String pattern) {
-        this.pattern = pattern;
+    public void setSearchPattern(String searchPattern) {
+        this.searchPattern = searchPattern;
     }
 
     public void addNameRestriction() {
-        addSearchFragment("名称含有 " + pattern, CommonCriteria.namedLike(pattern));
-        pattern = null;
+        addSearchFragment("名称含有 " + searchPattern, CommonCriteria.namedLike(searchPattern));
+        searchPattern = null;
     }
 
     public void addLabelRestriction() {
-        addSearchFragment("标题含有 " + pattern, CommonCriteria.labelledWith(pattern));
-        pattern = null;
+        addSearchFragment("标题含有 " + searchPattern, CommonCriteria.labelledWith(searchPattern));
+        searchPattern = null;
     }
 
     public void addNameOrLabelRestriction() {
-        addSearchFragment("名称含有 " + pattern, //
+        addSearchFragment("名称含有 " + searchPattern, //
                 // UIEntity doesn't have name: CommonCriteria.namedLike(pattern), //
-                CommonCriteria.labelledWith(pattern));
-        pattern = null;
+                CommonCriteria.labelledWith(searchPattern));
+        searchPattern = null;
     }
 
     public void addDescriptionRestriction() {
-        addSearchFragment("描述含有 " + pattern, CommonCriteria.describedWith(pattern));
-        pattern = null;
+        addSearchFragment("描述含有 " + searchPattern, CommonCriteria.describedWith(searchPattern));
+        searchPattern = null;
     }
 
     public List<DateRangeTemplate> getDateRangeTemplates() {

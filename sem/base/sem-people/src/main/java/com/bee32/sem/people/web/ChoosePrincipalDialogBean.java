@@ -45,14 +45,9 @@ public class ChoosePrincipalDialogBean
     }
 
     @Override
-    public void addNameRestriction() {
-        addSearchFragment("名称含有 " + pattern, PrincipalCriteria.namedLike(pattern));
-        pattern = null;
-    }
-
-    @Override
     public void addNameOrLabelRestriction() {
-        addNameRestriction();
+        addSearchFragment("名称含有 " + searchPattern, PrincipalCriteria.namedLike(searchPattern));
+        searchPattern = null;
     }
 
 }
