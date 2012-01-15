@@ -9,13 +9,14 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import org.apache.commons.collections15.functors.NOPTransformer;
 import org.apache.commons.collections15.map.TransformedMap;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.principal.Principal;
@@ -23,13 +24,13 @@ import com.bee32.icsf.principal.Principal;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 3)
-@SequenceGenerator(name = "idgen", sequenceName = "dacl_seq", allocationSize = 1)
+@SequenceGenerator(name = "idgen", sequenceName = "acl_seq", allocationSize = 1)
 public class ACL
         extends AbstractACL<ACL> {
 
     private static final long serialVersionUID = 1L;
 
-    Map<Principal, ACLEntry> entryMap;
+    Map<Principal, ACLEntry> entryMap = new LinkedHashMap<Principal, ACLEntry>();
 
     public ACL() {
         this(null, new LinkedHashMap<Principal, ACLEntry>());
@@ -57,26 +58,24 @@ public class ACL
         return acl;
     }
 
-    @Override
-    protected void createTransients() {
-        super.createTransients();
-        setEntryMap(entryMap);
-    }
-
-    @ManyToOne
+    @Transient
     @Override
     public ACL getInheritedACL() {
         return getParent();
     }
 
-    @ManyToMany
+    /**
+     * TODO key should not orphan-removed or any cascaded.
+     */
+    @OneToMany(orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
     public Map<Principal, ACLEntry> getEntryMap() {
         return entryMap;
     }
 
     public void setEntryMap(Map<Principal, ACLEntry> entryMap) {
         if (entryMap == null)
-            throw new NullPointerException("aceMap");
+            throw new NullPointerException("entryMap");
         this.entryMap = entryMap;
         this.entryMap = TransformedMap.decorate(entryMap, NOPTransformer.INSTANCE, PermissionTransformer.INSTANCE);
     }
@@ -101,6 +100,7 @@ public class ACL
         return entryMap.size();
     }
 
+    @Transient
     @Override
     public Map<Principal, Permission> getDeclaredEntries() {
         return TransformedMap.decorate(entryMap, NOPTransformer.INSTANCE, EntryPermissionTransformer.INSTANCE);
