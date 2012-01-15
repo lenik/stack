@@ -265,7 +265,7 @@ public class PermissionAdminBean
 
     public void onSelectInvertAdmin() {
         for (RPEntry e : rpEntries) {
-            e.permission.setAdmin(invert(e.permission.getAdmin()));
+            e.permission.setAdmin(invert(e.permission.getAdmin().getTristateBoolean()));
         }
     }
 
@@ -283,7 +283,7 @@ public class PermissionAdminBean
 
     public void onSelectInvertReadable() {
         for (RPEntry e : rpEntries) {
-            e.permission.setReadable(invert(e.permission.getReadable()));
+            e.permission.setReadable(invert(e.permission.getRead().getTristateBoolean()));
         }
     }
 
@@ -301,7 +301,7 @@ public class PermissionAdminBean
 
     public void onSelectInvertWritable() {
         for (RPEntry e : rpEntries) {
-            e.permission.setWritable(invert(e.permission.getWritable()));
+            e.permission.setWritable(invert(e.permission.getWrite().getTristateBoolean()));
         }
     }
 
@@ -319,31 +319,13 @@ public class PermissionAdminBean
 
     public void onSelectInvertExecutable() {
         for (RPEntry e : rpEntries) {
-            e.permission.setExecutable(invert(e.permission.getExecutable()));
+            e.permission.setExecutable(invert(e.permission.getExecute().getTristateBoolean()));
         }
     }
 
     public void onSelectNoneExecutable() {
         for (RPEntry e : rpEntries) {
             e.permission.setExecutable(false);
-        }
-    }
-
-    public void onSelectAllListable() {
-        for (RPEntry e : rpEntries) {
-            e.permission.setListable(true);
-        }
-    }
-
-    public void onSelectInvertListable() {
-        for (RPEntry e : rpEntries) {
-            e.permission.setListable(invert(e.permission.getListable()));
-        }
-    }
-
-    public void onSelectNoneListable() {
-        for (RPEntry e : rpEntries) {
-            e.permission.setListable(false);
         }
     }
 
@@ -355,7 +337,7 @@ public class PermissionAdminBean
 
     public void onSelectInvertCreatable() {
         for (RPEntry e : rpEntries) {
-            e.permission.setCreatable(invert(e.permission.getCreatable()));
+            e.permission.setCreatable(invert(e.permission.getCreate().getTristateBoolean()));
         }
     }
 
@@ -373,7 +355,7 @@ public class PermissionAdminBean
 
     public void onSelectInvertDeletable() {
         for (RPEntry e : rpEntries) {
-            e.permission.setDeletable(invert(e.permission.getDeletable()));
+            e.permission.setDeletable(invert(e.permission.getDelete().getTristateBoolean()));
         }
     }
 

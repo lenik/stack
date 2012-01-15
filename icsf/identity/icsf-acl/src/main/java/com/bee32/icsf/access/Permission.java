@@ -8,22 +8,23 @@ public final class Permission
 
     private static final long serialVersionUID = 1L;
 
-    private int allowBits;
-    private int denyBits;
+    int allowBits;
+    int denyBits;
+
+    public static final char modeSeparator = '/';
 
     public static final int ADMIN = 1 << 31;
-    static final char C_ADMIN = 'S';
-
-    public static final int LIST = 1 << 5;
+    public static final int USER = 1 << 30;
     public static final int CREATE = 1 << 4; // CREATE-USER on user repository
     public static final int DELETE = 1 << 3; // DELETE-USER on user repository
-    static final char C_LIST = 'l';
-    static final char C_CREATE = 'c';
-    static final char C_DELETE = 'd';
-
     public static final int READ = 1 << 2;
     public static final int WRITE = 1 << 1;
     public static final int EXECUTE = 1 << 0;
+
+    static final char C_ADMIN = 'S';
+    static final char C_USER = 'U';
+    static final char C_CREATE = 'c';
+    static final char C_DELETE = 'd';
     static final char C_READ = 'r';
     static final char C_WRITE = 'w';
     static final char C_EXECUTE = 'x';
@@ -41,7 +42,7 @@ public final class Permission
         String allow;
         String deny;
 
-        int excl = mode.indexOf('!');
+        int excl = mode.indexOf(modeSeparator);
         if (excl == -1) {
             allow = mode;
             deny = null;
@@ -81,31 +82,23 @@ public final class Permission
         this.denyBits &= ~bits;
     }
 
-    public void set(Boolean f, int bits) {
-        clear(bits);
-        if (f == null)
-            return;
-        if (f)
-            this.allowBits |= bits;
-        else
-            this.denyBits |= bits;
-    }
-
     public boolean test(int bits) {
         if ((denyBits & bits) != 0)
             return false;
         if ((allowBits & bits) == bits)
             return true;
-        // deny by default.
-        return false;
+        // allow by default.
+        return true;
     }
 
-    public Boolean test3(int bits) {
-        if ((denyBits & bits) != 0)
-            return false;
-        if ((allowBits & bits) == bits)
-            return true;
-        return null;
+    public void set(boolean f, int bits) {
+        if (f) {
+            allowBits |= bits;
+            denyBits &= ~bits;
+        } else {
+            allowBits &= ~bits;
+            denyBits |= bits;
+        }
     }
 
     public void allow(int bits) {
@@ -153,129 +146,111 @@ public final class Permission
      * Merge the given permission to this permission, so this permission will contain all the
      * allowed bits of the given permission.
      *
-     * @param permission
+     * @param o
      *            The permission to merge. Skipped if <code>null</code>.
      */
-    public void merge(Permission permission) {
-        if (permission != null)
-            this.allowBits |= permission.allowBits;
+    public void merge(Permission o) {
+        if (o != null) {
+            this.allowBits |= o.allowBits;
+            this.denyBits |= o.denyBits;
+        }
     }
 
-    public Boolean getAdmin() {
-        return test3(ADMIN);
+    public boolean isAdmin() {
+        return test(ADMIN);
     }
 
-    public void setAdmin(Boolean f) {
-        set(f, ADMIN);
+    public boolean isUser() {
+        return test(USER);
     }
 
-    public Boolean getReadable() {
-        return test3(READ);
-    }
-
-    public Boolean getWritable() {
-        return test3(WRITE);
-    }
-
-    public Boolean getExecutable() {
-        return test3(EXECUTE);
-    }
-
-    public Boolean getListable() {
-        return test3(LIST);
-    }
-
-    public Boolean getCreatable() {
-        return test3(CREATE);
-    }
-
-    public Boolean getDeletable() {
-        return test3(DELETE);
-    }
-
-    public void setReadable(Boolean f) {
-        set(f, READ);
-    }
-
-    public void setWritable(Boolean f) {
-        set(f, WRITE);
-    }
-
-    public void setExecutable(Boolean f) {
-        set(f, EXECUTE);
-    }
-
-    public void setListable(Boolean f) {
-        set(f, LIST);
-    }
-
-    public void setCreatable(Boolean f) {
-        set(f, CREATE);
-    }
-
-    public void setDeletable(Boolean f) {
-        set(f, DELETE);
-    }
-
-    public boolean canRead() {
+    public boolean isReadable() {
         return test(READ);
     }
 
-    public boolean canWrite() {
+    public boolean isWritable() {
         return test(WRITE);
     }
 
-    public boolean canExecute() {
+    public boolean isExecutable() {
         return test(EXECUTE);
     }
 
-    public boolean canList() {
-        return test(LIST);
-    }
-
-    public boolean canCreate() {
+    public boolean isCreatable() {
         return test(CREATE);
     }
 
-    public boolean canDelete() {
+    public boolean isDeletable() {
         return test(DELETE);
     }
 
-    public void canRead(boolean f) {
-        allow(f, READ);
+    public void setAdmin(boolean f) {
+        set(f, ADMIN);
     }
 
-    public void canWrite(boolean f) {
-        allow(f, WRITE);
+    public void setUser(boolean f) {
+        set(f, ADMIN);
     }
 
-    public void canExecute(boolean f) {
-        allow(f, EXECUTE);
+    public void setReadable(boolean f) {
+        set(f, READ);
     }
 
-    public void canList(boolean f) {
-        allow(f, LIST);
+    public void setWritable(boolean f) {
+        set(f, WRITE);
     }
 
-    public void canCreate(boolean f) {
-        allow(f, CREATE);
+    public void setExecutable(boolean f) {
+        set(f, EXECUTE);
     }
 
-    public void canDelete(boolean f) {
-        allow(f, DELETE);
+    public void setCreatable(boolean f) {
+        set(f, CREATE);
+    }
+
+    public void setDeletable(boolean f) {
+        set(f, DELETE);
+    }
+
+    public SinglePermissionBit getAdmin() {
+        return new SinglePermissionBit(this, ADMIN);
+    }
+
+    public SinglePermissionBit getUser() {
+        return new SinglePermissionBit(this, USER);
+    }
+
+    public SinglePermissionBit getRead() {
+        return new SinglePermissionBit(this, READ);
+    }
+
+    public SinglePermissionBit getWrite() {
+        return new SinglePermissionBit(this, WRITE);
+    }
+
+    public SinglePermissionBit getExecute() {
+        return new SinglePermissionBit(this, EXECUTE);
+    }
+
+    public SinglePermissionBit getCreate() {
+        return new SinglePermissionBit(this, CREATE);
+    }
+
+    public SinglePermissionBit getDelete() {
+        return new SinglePermissionBit(this, DELETE);
     }
 
     static final char[] i2c;
     static final int[] c2m;
     static {
         i2c = new char[32];
+        i2c[m2i(ADMIN)] = C_ADMIN;
+        i2c[m2i(USER)] = C_USER;
         i2c[m2i(READ)] = C_READ;
         i2c[m2i(WRITE)] = C_WRITE;
         i2c[m2i(EXECUTE)] = C_EXECUTE;
-        i2c[m2i(LIST)] = C_LIST;
         i2c[m2i(CREATE)] = C_CREATE;
         i2c[m2i(DELETE)] = C_DELETE;
-        i2c[m2i(ADMIN)] = C_ADMIN;
 
         c2m = new int[128];
         Arrays.fill(c2m, -1);
@@ -331,7 +306,7 @@ public final class Permission
         formatBits(sb, allowBits);
 
         if (denyBits != 0) {
-            sb.append('!');
+            sb.append(modeSeparator);
             formatBits(sb, denyBits);
         }
 
