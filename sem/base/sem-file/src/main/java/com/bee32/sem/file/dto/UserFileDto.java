@@ -75,7 +75,7 @@ public class UserFileDto
             tags = new ArrayList<UserFileTagnameDto>();
             for (int i = 0; i < _tags.length; i++) {
                 String _tag = _tags[i];
-                long _tagL = Long.parseLong(_tag);
+                int _tagL = Integer.parseInt(_tag);
                 UserFileTagnameDto tag = new UserFileTagnameDto().ref(_tagL);
                 tags.add(tag);
             }

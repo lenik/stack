@@ -2,18 +2,27 @@ package com.bee32.sem.file.web;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
-import com.bee32.icsf.principal.Principal;
-import com.bee32.icsf.principal.PrincipalDto;
+import org.primefaces.model.tagcloud.DefaultTagCloudItem;
+import org.primefaces.model.tagcloud.DefaultTagCloudModel;
+import org.primefaces.model.tagcloud.TagCloudModel;
+
 import com.bee32.plover.orm.annotation.ForEntity;
-import com.bee32.plover.ox1.util.CommonCriteria;
+import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.file.dto.UserFileTagnameDto;
 import com.bee32.sem.file.entity.FileBlob;
 import com.bee32.sem.file.entity.UserFile;
+import com.bee32.sem.file.entity.UserFileTagname;
+import com.bee32.sem.file.service.IUserFileTagStatService;
+import com.bee32.sem.file.util.UserFileCriteria;
+import com.bee32.sem.frame.search.SearchFragment;
 import com.bee32.sem.misc.SimpleEntityViewBean;
-import com.bee32.sem.people.web.ChoosePrincipalDialogListener;
 
 @ForEntity(UserFile.class)
 public class UserFileBean
@@ -22,6 +31,7 @@ public class UserFileBean
     private static final long serialVersionUID = 1L;
 
     UserFileTagnameDto selectedTag;
+    Map<Integer, String> searchTags = new LinkedHashMap<Integer, String>();
 
     public UserFileBean() {
         super(UserFile.class, UserFileDto.class, UserFileDto.TAGS);
@@ -60,15 +70,43 @@ public class UserFileBean
         uiLogger.info("保存文件成功。");
     }
 
-    public void addOwnerRestriction(PrincipalDto owner) {
-        Principal _owner = owner.unmarshal(this);
-        addSearchFragment("为 " + owner.getDisplayName() + " 所有", //
-                CommonCriteria.ownedBy(_owner));
+    @Override
+    protected void postUpdate(Map<Entity<?>, EntityDto<?, ?>> entityMap)
+            throws Exception {
+        IUserFileTagStatService tagStats = getBean(IUserFileTagStatService.class);
+        for (Entry<Entity<?>, EntityDto<?, ?>> entry : entityMap.entrySet()) {
+            UserFile userFile = (UserFile) entry.getKey();
+            // boolean newAdded = entry.getValue().getId() == null;
+            tagStats.addUsage(userFile.getTags());
+        }
     }
 
-    public void addTag(UserFileTagnameDto tag) {
+    @Override
+    protected void postDelete(Map<Entity<?>, EntityDto<?, ?>> entityMap)
+            throws Exception {
+        IUserFileTagStatService tagStats = getBean(IUserFileTagStatService.class);
+        for (Entry<Entity<?>, EntityDto<?, ?>> entry : entityMap.entrySet()) {
+            UserFile userFile = (UserFile) entry.getKey();
+            // boolean newAdded = entry.getValue().getId() == null;
+            tagStats.removeUsage(userFile.getTags());
+        }
+    }
+
+    public TagCloudModel getTagCloudModel() {
+        TagCloudModel model = new DefaultTagCloudModel();
+        IUserFileTagStatService tagStats = getBean(IUserFileTagStatService.class);
+        for (Entry<UserFileTagname, Long> entry : tagStats.getStats().entrySet()) {
+            UserFileTagname tag = entry.getKey();
+            String tagName = tag.getName();
+            Long usage = entry.getValue();
+            model.addTag(new DefaultTagCloudItem(tagName, "#tagId=" + tag.getId(), usage.intValue()));
+        }
+        return model;
+    }
+
+    public void addTag() {
         UserFileDto userFile = getActiveObject();
-        userFile.getTags().add(tag);
+        userFile.getTags().add(selectedTag);
     }
 
     public void removeTag() {
@@ -85,8 +123,8 @@ public class UserFileBean
         this.selectedTag = selectedTag;
     }
 
-    public Object getCreateUserFileAdapter() {
-        return new UploadFileBlobDialogListener() {
+    public Object getCreateUserFileListener() {
+        return new IncomingFileUploadAdapter() {
             @Override
             protected void process(List<IncomingFile> incomingFiles)
                     throws IOException {
@@ -96,24 +134,35 @@ public class UserFileBean
         };
     }
 
-    public Object getAddOwnerRestrictionAdapter() {
-        return new ChoosePrincipalDialogListener() {
-            @Override
-            protected void selected(List<?> selection) {
-                for (Object item : selection)
-                    addOwnerRestriction((PrincipalDto) item);
-            }
-        };
+    @Override
+    public void addNameOrLabelRestriction() {
+        addSearchFragment("名称含有 " + searchPattern, UserFileCriteria.namedLike(searchPattern));
+        searchPattern = null;
     }
 
-    public Object getAddTagAdapter() {
-        return new ChooseUserFileTagDialogListener() {
-            @Override
-            protected void selected(List<?> selection) {
-                for (Object item : selection)
-                    addTag((UserFileTagnameDto) item);
-            }
-        };
+    public void addTagRestriction() {
+        String tagIdStr = getRequest().getParameter("id");
+        String tagName = getRequest().getParameter("name");
+        if (tagIdStr == null)
+            return;
+        tagIdStr = tagIdStr.trim();
+        if (tagIdStr.isEmpty())
+            return;
+
+        int tagId = Integer.parseInt(tagIdStr);
+        // UserFileTagname tag = asFor(UserFileTagname.class).get(tagId);
+
+        TagsSearchFragment tsf = null;
+        for (SearchFragment sf : getSearchFragments()) {
+            if (sf instanceof TagsSearchFragment)
+                tsf = (TagsSearchFragment) sf;
+        }
+        if (tsf == null) {
+            tsf = new TagsSearchFragment();
+            addSearchFragment(tsf);
+        }
+
+        tsf.map.put(tagId, tagName);
     }
 
 }

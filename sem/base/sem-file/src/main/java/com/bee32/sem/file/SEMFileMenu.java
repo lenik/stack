@@ -12,7 +12,7 @@ public class SEMFileMenu
 
     public static MenuNode FILE = menu(SEMFrameMenu.DATA, "file");
 
-    static MenuNode userFile = entry(FILE, 1, "userFile", FILE_.join("userfile/"));
+    static MenuNode userFile = entry(FILE, 1, "file", FILE_.join("file/"));
 
     @Override
     protected void preamble() {

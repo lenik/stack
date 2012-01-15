@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:cc="http://java.sun.com/jsf/composite"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui">
+
+    <cc:interface>
+        <!-- basic -->
+        <cc:attribute name="var" default="uploadFileBlobDialog" />
+        <cc:attribute name="multiple" type="java.lang.Boolean" default="true" />
+        <cc:attribute name="fileUploadListener" default="${uploadFileBlobDialogBean.handleFileUpload}"
+            method-signature="void f(org.primefaces.event.FileUploadEvent)" />
+        <cc:attribute name="update" />
+
+        <!-- ui overrides -->
+        <cc:attribute name="caption" default="${uploadFileBlobDialogBean.caption}" />
+        <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
+
+        <!-- internals -->
+        <cc:attribute name="dialogBean" type="java.lang.Object" default="${uploadFileBlobDialogBean}" />
+    </cc:interface>
+
+    <cc:implementation>
+        <!-- modal="true" not work here. -->
+        <p:dialog header="${cc.attrs.caption}" widgetVar="${cc.attrs.var}">
+            <h:form id="form" enctype="multipart/form-data" style="${cc.attrs.style}">
+                <p:fileUpload mode="advanced" multiple="${cc.attrs.multiple}" allowTypes="${viewConfig.allowTypes}"
+                    sizeLimit="${viewConfig.maxFileSize}" fileUploadListener="${cc.attrs.fileUploadListener}" update="${cc.attrs.update}" />
+                <div align="right">
+                    <p:commandButton value="关闭" oncomplete="${cc.attrs.var}.hide();" />
+                </div>
+            </h:form>
+        </p:dialog>
+    </cc:implementation>
+</html>

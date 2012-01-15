@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.DummyId;
@@ -19,11 +20,13 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "user_file_tagname_seq", allocationSize = 1)
 public class UserFileTagname
-        extends UIEntityAuto<Long> {
+        extends UIEntityAuto<Integer> {
 
     private static final long serialVersionUID = 1L;
 
     public static final int NAME_LENGTH = 30;
+
+    int refCount;
 
     public UserFileTagname() {
     }
@@ -45,6 +48,15 @@ public class UserFileTagname
         if (name == null)
             throw new NullPointerException("tag");
         this.name = name;
+    }
+
+    @Formula("(select count(*) from user_file_tags x where x.tag=id)")
+    public int getRefCount() {
+        return refCount;
+    }
+
+    public void setRefCount(int refCount) {
+        this.refCount = refCount;
     }
 
     @Override

@@ -23,7 +23,7 @@ public class UserFileCriteria
     }
 
     @LeftHand(UserFile.class)
-    public static ICriteriaElement withAnyTagIn(Collection<Long> tags) {
+    public static ICriteriaElement withAnyTagIn(Collection<Integer> tags) {
         if (tags == null)
             throw new NullPointerException("tags");
         if (tags.isEmpty())

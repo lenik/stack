@@ -10,7 +10,7 @@ import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.file.entity.UserFileTagname;
 
 public class UserFileTagnameDto
-        extends UIEntityDto<UserFileTagname, Long> {
+        extends UIEntityDto<UserFileTagname, Integer> {
 
     private static final long serialVersionUID = 1L;
 
