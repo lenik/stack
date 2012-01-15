@@ -1,12 +1,15 @@
 package com.bee32.sem.misc;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.free.Dates;
 import javax.free.IllegalUsageException;
 
 import org.primefaces.model.LazyDataModel;
@@ -15,6 +18,7 @@ import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.arch.operation.Operation;
 import com.bee32.plover.collections.Varargs;
+import com.bee32.plover.criteria.hibernate.CriteriaComposite;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
@@ -22,6 +26,7 @@ import com.bee32.plover.orm.entity.EntityFlags;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.ox1.c.CEntity;
+import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.plover.restful.resource.StandardViews;
 import com.bee32.sem.frame.search.ISearchFragmentsHolder;
 import com.bee32.sem.frame.search.SearchFragment;
@@ -61,6 +66,11 @@ public abstract class SimpleEntityViewBean
     List<SearchFragment> searchFragments = new ArrayList<SearchFragment>();
     EntityDataModelOptions<?, ?> options;
     LazyDataModel<?> dataModel;
+
+    protected String pattern;
+    protected DateRangeTemplate dateRange = DateRangeTemplate.recentWeek;
+    protected Date beginDate;
+    protected Date endDate;
 
     public <E extends Entity<?>, D extends EntityDto<? super E, ?>> //
     /*    */SimpleEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int selection,
@@ -116,6 +126,11 @@ public abstract class SimpleEntityViewBean
         if (searchFragments == null)
             throw new NullPointerException("searchFragments");
         this.searchFragments = searchFragments;
+    }
+
+    public void addSearchFragment(String entryLabel, ICriteriaElement... criteriaElements) {
+        CriteriaComposite composite = new CriteriaComposite(criteriaElements);
+        addSearchFragment(entryLabel, composite);
     }
 
     public void addSearchFragment(String entryLabel, ICriteriaElement criteriaElement) {
@@ -396,6 +411,104 @@ public abstract class SimpleEntityViewBean
     }
 
     static void checkDeleteFlags(int deleteFlags) {
+    }
+
+    public String getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
+    }
+
+    public void addNameRestriction() {
+        addSearchFragment("名称含有 " + pattern, CommonCriteria.namedLike(pattern));
+        pattern = null;
+    }
+
+    public void addLabelRestriction() {
+        addSearchFragment("标题含有 " + pattern, CommonCriteria.labelledWith(pattern));
+        pattern = null;
+    }
+
+    public void addNameOrLabelRestriction() {
+        addSearchFragment("名称含有 " + pattern, //
+                // UIEntity doesn't have name: CommonCriteria.namedLike(pattern), //
+                CommonCriteria.labelledWith(pattern));
+        pattern = null;
+    }
+
+    public void addDescriptionRestriction() {
+        addSearchFragment("描述含有 " + pattern, CommonCriteria.describedWith(pattern));
+        pattern = null;
+    }
+
+    public List<DateRangeTemplate> getDateRangeTemplates() {
+        return Arrays.asList(DateRangeTemplate.values());
+    }
+
+    public int getDateRangeIndex() {
+        if (dateRange == null)
+            return -1;
+        else
+            return dateRange.ordinal();
+    }
+
+    public void setDateRangeIndex(int dateRangeIndex) {
+        if (dateRangeIndex == -1)
+            dateRange = null;
+        else
+            dateRange = DateRangeTemplate.values()[dateRangeIndex];
+    }
+
+    public Date getBeginDate() {
+        return beginDate;
+    }
+
+    public void setBeginDate(Date beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    protected void addDateSearchFragment(String hint, IDateCriteriaComposer composer) {
+        Date now = new Date();
+        Date begin = dateRange == null ? beginDate : dateRange.getBegin(now);
+        Date end = dateRange == null ? endDate : dateRange.getEnd(now);
+        ICriteriaElement criteriaElement = composer.composeDateCriteria(begin, end);
+        if (criteriaElement != null) {
+            String label;
+            if (dateRange != null)
+                label = hint + dateRange.getLabel();
+            else {
+                StringBuilder sb = new StringBuilder();
+                sb.append(hint);
+                if (begin != null)
+                    sb.append(Dates.YYYY_MM_DD.format(begin) + "之后");
+                if (end != null)
+                    sb.append(Dates.YYYY_MM_DD.format(end) + "之前");
+                label = sb.toString();
+            }
+            addSearchFragment(label, criteriaElement);
+        }
+    }
+
+    public void addCreatedDateRestriction() {
+        addDateSearchFragment("创建于", IDateCriteriaComposer.createdDate);
+    }
+
+    public void addLastModifiedRestriction() {
+        addDateSearchFragment("修改于", IDateCriteriaComposer.lastModified);
+    }
+
+    public void addBeginEndDateRestriction() {
+        addDateSearchFragment("发生于", IDateCriteriaComposer.beginEndDate);
     }
 
 }

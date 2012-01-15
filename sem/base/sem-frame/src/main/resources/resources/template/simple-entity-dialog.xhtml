@@ -1,0 +1,43 @@
+<p:dialog xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:cc="http://java.sun.com/jsf/composite"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" header="${caption}" widgetVar="${var}" modal="true">
+    <h:form id="form" style="${style}">
+
+        <p:fieldset legend="搜索" toggleable="true" collapsed="true">
+            <ui:insert name="searchPanel">
+                <p:inputText id="pattern" value="${dialogBean.pattern}" />
+                <p:commandButton value="限定名称" actionListener="${dialogBean.addNameOrLabelRestriction}"
+                    update="@form" />
+                <p:commandButton value="限定描述" actionListener="${dialogBean.addDescription}" update="@form" />
+                <ui:insert name="searchPanel.1" />
+            </ui:insert>
+        </p:fieldset>
+
+        <h:panelGroup id="searchFragments" style="display: block; padding: .2em 0em;">
+            <ui:repeat id="repeat" var="fragment" value="${dialogBean.searchFragments}">
+                <p:commandButton value="${fragment.entryLabel}" async="true" actionListener="${fragment.detach}"
+                    update="@form" />
+            </ui:repeat>
+        </h:panelGroup>
+
+        <p:dataTable id="dataTable" value="${dialogBean.dataModel}" selection="${selection}"
+            selectionMode="${multiple ? 'multiple' : 'single'}" var="entry" paginator="true" rows="10" lazy="true"
+            paginatorTemplate="${viewConfig.paginatorTemplate}" rowsPerPageTemplate="${viewConfig.pageSizeTemplate}"
+            resizableColumns="true" rowIndexVar="rowIndex">
+            <p:column headerText="序号">
+                <h:outputText value="${rowIndex + 1}" />
+            </p:column>
+            <ui:insert name="columns" />
+        </p:dataTable>
+
+        <ui:insert name="content" />
+
+        <div align="right">
+            <ui:insert name="buttons">
+                <ui:insert name="buttons.extra" />
+                <p:commandButton id="ok" value="确定" oncomplete="${var}.hide()" update="${update}" async="true" />
+                <p:commandButton id="cancel" value="关闭" oncomplete="${var}.hide();" />
+            </ui:insert>
+        </div>
+    </h:form>
+</p:dialog>

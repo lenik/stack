@@ -7,7 +7,6 @@ import org.hibernate.criterion.MatchMode;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.PrincipalCriteria;
 import com.bee32.icsf.principal.Role;
-import com.bee32.plover.criteria.hibernate.Between;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.util.date.LocalDateUtil;
@@ -76,8 +75,43 @@ public class CommonCriteria
     /**
      * Between the expanded date range.
      */
+    public static CriteriaElement between(String property, Date beginTime, Date endTime) {
+        CriteriaElement _begin = _greaterOrEquals(property, beginTime);
+        CriteriaElement _end = _lessThan(property, endTime);
+        if (_begin == null)
+            return _end;
+        if (_end == null)
+            return _begin;
+        return and(_begin, _end);
+    }
+
+    public static CriteriaElement dateBetween(Date beginTime, Date endTime) {
+        return between("date", beginTime, endTime);
+    }
+
+    public static CriteriaElement createdBetween(Date beginTime, Date endTime) {
+        return between("createdDate", beginTime, endTime);
+    }
+
+    public static CriteriaElement lastModifiedBetween(Date beginTime, Date endTime) {
+        return between("lastModified", beginTime, endTime);
+    }
+
+    public static CriteriaElement beginEndDateBetween(Date beginTime, Date endTime) {
+        CriteriaElement _begin = or(isNull("beginTime"), _greaterOrEquals("beginTime", beginTime));
+        CriteriaElement _end = or(isNull("endTime"), _lessThan("endTime", beginTime));
+        if (_begin == null)
+            return _end;
+        if (_end == null)
+            return _begin;
+        return and(_begin, _end);
+    }
+
+    /**
+     * Between the expanded date range.
+     */
     public static CriteriaElement betweenEx(String property, Date beginDate, Date endDate) {
-        return new Between(property, //
+        return between(property, //
                 LocalDateUtil.beginOfTheDay(beginDate), //
                 LocalDateUtil.endOfTheDay(endDate));
     }

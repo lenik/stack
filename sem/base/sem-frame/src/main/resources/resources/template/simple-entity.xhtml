@@ -7,6 +7,7 @@
             <p:toolbarGroup align="left">
                 <p:commandButton value="新增" actionListener="${bean.showCreateForm}" oncomplete="editDialog.show()"
                     update=":editDialog:form, :editForm" />
+                <!-- TODO toggle button in PF-3.1: searchPanel toggler -->
             </p:toolbarGroup>
             <p:toolbarGroup align="right">
                 <p:commandButton value="修改" actionListener="${bean.showEditForm}" oncomplete="editDialog.show()"
@@ -31,14 +32,36 @@
     </ui:define>
 
     <ui:define name='searchPanel'>
+        <p:panel header="按关键字搜索" toggleable="true">
+            <div align="center">
+                <p:inputText id="pattern" value="${bean.pattern}" />
+                <p:commandButton value="限定名称" actionListener="${bean.addNameOrLabelRestriction}" update="@form, :mainForm" />
+                <p:commandButton value="限定描述" actionListener="${bean.addDescriptionRestriction}" update="@form, :mainForm" />
+            </div>
+        </p:panel>
+        <p:panel header="按时间搜索" toggleable="true">
+            <div align="center">
+                时间范围：
+                <p:selectOneMenu id="lastModifiedRange" value="${bean.dateRangeIndex}">
+                    <f:selectItem itemLabel="选择" itemValue="-1" />
+                    <f:selectItems value="${bean.dateRangeTemplates}" var="t" itemLabel="${t.label}"
+                        itemValue="${t.index}" />
+                </p:selectOneMenu>
+                <p:commandButton value="限定创建时间" actionListener="${bean.addCreatedDateRestriction}"
+                    update="@form, :mainForm" />
+                <p:commandButton value="限定更新时间" actionListener="${bean.addLastModifiedRestriction}"
+                    update="@form, :mainForm" />
+            </div>
+        </p:panel>
+        <ui:insert name="searchPanel.1" />
     </ui:define>
 
     <ui:define name="searchFragmentsPanel">
-        <h:panelGroup id="searchFragments" style="display: block; padding: .2em 0em;">
+        <h:panelGroup id="searchFragments" style="display: block; padding: .2em 0em; background: #eee">
             <ui:repeat id="repeat" var="fragment" value="${bean.searchFragments}">
                 <c:set var="form" value="${component.parent.parent.parent.clientId}" />
                 <p:commandButton value="${fragment.entryLabel}" async="true" actionListener="${fragment.detach}"
-                    update="@form" />
+                    update="@form, :mainForm" />
             </ui:repeat>
         </h:panelGroup>
     </ui:define>

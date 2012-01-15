@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 
 import com.bee32.icsf.access.acl.ACL;
 import com.bee32.icsf.access.acl.ACLDto;
-import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.plover.web.faces.controls2.IDialogCallback;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 
@@ -18,7 +17,6 @@ public class ChooseACLDialogBean
     static Logger logger = LoggerFactory.getLogger(ChooseACLDialogBean.class);
 
     String caption = "Please choose an ACL..."; // NLS: 选择用户或组
-    String labelPattern;
 
     public ChooseACLDialogBean() {
         super(ACL.class, ACLDto.class, 0);
@@ -42,18 +40,6 @@ public class ChooseACLDialogBean
 
     public void setCaption(String caption) {
         this.caption = caption;
-    }
-
-    public String getLabelPattern() {
-        return labelPattern;
-    }
-
-    public void setLabelPattern(String labelPattern) {
-        this.labelPattern = labelPattern;
-    }
-
-    public void addLabelRestriction() {
-        addSearchFragment("名称含有 " + labelPattern, CommonCriteria.namedLike(labelPattern));
     }
 
 }

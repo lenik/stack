@@ -4,23 +4,18 @@
 
     <cc:interface>
         <!-- basic -->
-        <cc:attribute name="var" default="choosePrincipalDialog" />
+        <cc:attribute name="var" default="chooseUserFileTagDialog" />
         <cc:attribute name="selection" required="true" />
         <cc:attribute name="multiple" type="java.lang.Boolean" default="false" />
-        <cc:attribute name="actionListener" targets="form:ok" default="${choosePrincipalDialogBean.selected}" />
+        <cc:attribute name="actionListener" targets="form:ok" default="${chooseUserFileTagDialogBean.selected}" />
         <cc:attribute name="update" />
 
         <!-- ui overrides -->
-        <cc:attribute name="caption" default="${choosePrincipalDialogBean.caption}" />
+        <cc:attribute name="caption" default="${chooseUserFileTagDialogBean.caption}" />
         <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
 
         <!-- internals -->
-        <cc:attribute name="dialogBean" type="java.lang.Object" default="${choosePrincipalDialogBean}" />
-
-        <!-- facets -->
-        <cc:facet name="search" />
-        <cc:facet name="columns" />
-        <cc:facet name="buttons" />
+        <cc:attribute name="dialogBean" default="${chooseUserFileTagDialogBean}" />
     </cc:interface>
 
     <cc:implementation>
@@ -35,23 +30,17 @@
             <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
 
             <ui:define name="columns">
-                <p:column headerText="类型">
-                    <h:outputText value="${entry.typeName}" />
-                </p:column>
-
-                <p:column headerText="名称">
+                <p:column headerText="标签">
                     <h:outputText value="${entry.name}" />
                 </p:column>
 
-                <p:column headerText="全名">
-                    <h:outputText value="${entry.fullName}" />
+                <p:column headerText="描述">
+                    <h:outputText value="${entry.description}" />
                 </p:column>
 
-                <cc:renderFacet name="columns" />
-            </ui:define>
-
-            <ui:define name="buttons.extra">
-                <cc:renderFacet name="buttons" />
+                <p:column headerText="所有人">
+                    <h:outputText value="${entry.owner.displayName}" />
+                </p:column>
             </ui:define>
         </ui:decorate>
     </cc:implementation>

@@ -26,6 +26,7 @@
 
         <p:commandButton value="${buttonBean.commandLabel}" actionListener="${dialogBean.loadTemplateFromSelection}"
             oncomplete="${dialogVar}.show()" disabled="${cc.attrs.disabled || not buttonBean.commandEnabled}" async="true">
+            <f:setPropertyActionListener target="${dialogBean.selection}" value="${cc.attrs.selection}" />
             <cc:insertChildren />
         </p:commandButton>
 

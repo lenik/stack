@@ -6,31 +6,15 @@
     <ui:param name="bean" value="#{verifyPolicyPrefBean}" />
 
     <ui:define name="dataTableColumns">
-        <p:column>
-            <f:facet name="header">
-                <h:outputText value="序号" />
-            </f:facet>
-            <h:outputText value="#{rowIndex + 1}" />
-        </p:column>
-
-        <p:column>
-            <f:facet name="header">
-                <h:outputText value="实体类型" />
-            </f:facet>
+        <p:column headerText="实体类型">
             <h:outputText value="#{entry.displayName}" />
         </p:column>
 
-        <p:column>
-            <f:facet name="header">
-                <h:outputText value="启用的审核策略" />
-            </f:facet>
+        <p:column headerText="启用的审核策略">
             <h:outputText value="#{entry.preferredPolicy.label}" />
         </p:column>
 
-        <p:column>
-            <f:facet name="header">
-                <h:outputText value="备注" />
-            </f:facet>
+        <p:column headerText="备注">
             <h:outputText value="#{entry.description}" />
         </p:column>
     </ui:define>

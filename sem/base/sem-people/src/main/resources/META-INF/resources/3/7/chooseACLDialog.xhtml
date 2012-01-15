@@ -19,57 +19,29 @@
     </cc:interface>
 
     <cc:implementation>
-        <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
-        <c:set var="dialogVar" value="${cc.attrs.var}" />
+        <ui:decorate template="/template/simple-entity-dialog.xhtml">
+            <ui:param name="var" value="${cc.attrs.var}" />
+            <ui:param name="selection" value="${cc.attrs.selection}" />
+            <ui:param name="multiple" value="${cc.attrs.multiple}" />
+            <ui:param name="update" value="${cc.attrs.update}" />
+            <ui:param name="var" value="${cc.attrs.var}" />
+            <ui:param name="caption" value="${cc.attrs.caption}" />
+            <ui:param name="style" value="${cc.attrs.style}" />
+            <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
 
-        <p:dialog header="${cc.attrs.caption}" widgetVar="${dialogVar}" modal="true">
-            <h:form id="form" style="${cc.attrs.style}">
-                <p:fieldset legend="搜索" toggleable="true" collapsed="true">
-                    <h:panelGrid columns="3" columnClasses="">
-                        <h:outputLabel for="${cc.clientId}:form:pattern" value="名称:" />
-                        <p:inputText id="pattern" value="${dialogBean.labelPattern}" />
-                        <p:commandButton value="添加条件" actionListener="${dialogBean.addLabelRestriction}"
-                            update="@form" />
-                    </h:panelGrid>
-                </p:fieldset>
+            <ui:define name="columns">
+                <p:column headerText="继承的ACL">
+                    <h:outputText value="${entry.inheritedACL.label}" />
+                </p:column>
 
-                <h:panelGroup id="searchFragments" style="display: block; padding: .2em 0em;">
-                    <ui:repeat id="repeat" var="fragment" value="${dialogBean.searchFragments}">
-                        <p:commandButton value="${fragment.entryLabel}" async="true" actionListener="${fragment.detach}"
-                            update="@form" />
-                    </ui:repeat>
-                </h:panelGroup>
+                <p:column headerText="名称">
+                    <h:outputText value="${entry.label}" />
+                </p:column>
 
-                <p:dataTable id="dataTable" var="entry" value="${dialogBean.dataModel}" selection="${cc.attrs.selection}"
-                    selectionMode="${cc.attrs.multiple ? 'multiple' : 'single'}" paginator="true" rows="10" lazy="true"
-                    paginatorTemplate="${viewConfig.paginatorTemplate}" rowsPerPageTemplate="${viewConfig.pageSizeTemplate}"
-                    resizableColumns="true" rowIndexVar="rowIndex">
-
-                    <p:column headerText="序号">
-                        <h:outputText value="${rowIndex + 1}" />
-                    </p:column>
-
-                    <p:column headerText="继承的ACL">
-                        <h:outputText value="${entry.inheritedACL.label}" />
-                    </p:column>
-
-                    <p:column headerText="名称">
-                        <h:outputText value="${entry.label}" />
-                    </p:column>
-
-                    <p:column headerText="描述">
-                        <h:outputText value="${entry.description}" />
-                    </p:column>
-
-                </p:dataTable>
-
-                <div align="right">
-                    <p:commandButton id="ok" value="确定" oncomplete="${dialogVar}.hide()" update="${cc.attrs.update}"
-                        async="true" />
-                    <p:commandButton id="cancel" value="关闭" oncomplete="${dialogVar}.hide();" />
-                </div>
-            </h:form>
-        </p:dialog>
+                <p:column headerText="描述">
+                    <h:outputText value="${entry.description}" />
+                </p:column>
+            </ui:define>
+        </ui:decorate>
     </cc:implementation>
-
 </html>

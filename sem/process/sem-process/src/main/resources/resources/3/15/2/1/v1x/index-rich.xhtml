@@ -8,18 +8,11 @@
     <ui:param name="numberHint" value="边界值" />
 
     <ui:define name="includes">
-        dd2
         <sem:chooseVerifyPolicyDialog id="chooseVerifyPolicyDialog" selection="#{bean.selectedPolicy}"
             actionListener="#{bean.setLevelTargetPolicy}" update=":addLevelForm:targetPolicy" />
     </ui:define>
 
     <ui:define name="dataTableColumns">
-        <f:facet name="header">分级策略</f:facet>
-
-        <p:column headerText="序号">
-            <h:outputText value="#{rowIndex + 1}" />
-        </p:column>
-
         <p:column headerText="名称">
             <h:outputText value="#{entry.label}" />
         </p:column>

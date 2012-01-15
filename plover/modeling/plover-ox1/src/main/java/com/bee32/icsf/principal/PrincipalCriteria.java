@@ -6,9 +6,24 @@ import java.util.List;
 
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.criteria.hibernate.LeftHand;
+import com.bee32.plover.ox1.util.CommonCriteria;
 
 public class PrincipalCriteria
         extends CriteriaSpec {
+
+    @LeftHand(Principal.class)
+    public static ICriteriaElement namedLike(String pattern) {
+        return namedLike(pattern, false);
+    }
+
+    @LeftHand(Principal.class)
+    public static ICriteriaElement namedLike(String pattern, boolean ignoreCase) {
+        return compose(//
+                CommonCriteria.namedLike(pattern, ignoreCase), //
+                ignoreCase ? likeIgnoreCase("fullName", pattern) : like("fullName", pattern));
+    }
 
     /**
      * The property equals to the principal, or any in its im-set.

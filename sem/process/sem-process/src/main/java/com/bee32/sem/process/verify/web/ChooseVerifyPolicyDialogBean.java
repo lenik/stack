@@ -3,7 +3,6 @@ package com.bee32.sem.process.verify.web;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.plover.web.faces.controls2.IDialogCallback;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.process.verify.VerifyPolicy;
@@ -18,7 +17,6 @@ public class ChooseVerifyPolicyDialogBean
     static Logger logger = LoggerFactory.getLogger(ChooseVerifyPolicyDialogBean.class);
 
     String caption = "选择审核策略";
-    String labelPattern;
 
     public ChooseVerifyPolicyDialogBean() {
         super(VerifyPolicy.class, VerifyPolicyDto.class, 0);
@@ -42,18 +40,6 @@ public class ChooseVerifyPolicyDialogBean
 
     public void setCaption(String caption) {
         this.caption = caption;
-    }
-
-    public String getLabelPattern() {
-        return labelPattern;
-    }
-
-    public void setLabelPattern(String labelPattern) {
-        this.labelPattern = labelPattern;
-    }
-
-    public void addLabelRestriction() {
-        addSearchFragment("名称含有 " + labelPattern, CommonCriteria.labelledWith(labelPattern));
     }
 
 }

@@ -1,24 +1,23 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" template="/template/newsite.xhtml">
 
-    <ui:composition template="/template/newsite.xhtml">
+    <ui:define name="pageTitle" />
 
-        <ui:define name="pageTitle" />
-
-        <ui:define name="pageStatus">
-            <h:form id="__tips">
+    <ui:define name="pageStatus">
+        <h:form id="__tips">
+            <ui:insert name="growl">
                 <p:growl id="growl" showDetail="true" />
-            </h:form>
-            <h:form id="__status">
+            </ui:insert>
+        </h:form>
+        <h:form id="__status">
             ■ 页面辅助调试信息（无）
-            </h:form>
-        </ui:define>
+        </h:form>
+    </ui:define>
 
-        <ui:define name="menu">
-            <h:form id="menuForm">
-                <p:menubar autoSubmenuDisplay="true" model="#{primefacesMenuBean.model}" />
-            </h:form>
-        </ui:define>
+    <ui:define name="menu">
+        <h:form id="menuForm">
+            <p:menubar autoSubmenuDisplay="true" model="#{primefacesMenuBean.model}" />
+        </h:form>
+    </ui:define>
 
-    </ui:composition>
-</html>
+</ui:composition>
