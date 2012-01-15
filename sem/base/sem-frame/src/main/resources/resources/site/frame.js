@@ -26,8 +26,4 @@
         $("ul.sf-menu").superfish();
     });
 
-    $(window).scroll(function() {
-         $('#logoDiv').css('top', $(this).scrollTop() + "px");
-    });
-
 })(jQuery);
