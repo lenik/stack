@@ -211,6 +211,22 @@ public abstract class SimpleEntityViewBean
         showView(StandardViews.EDIT_FORM);
     }
 
+    protected void preUpdate(Map<Entity<?>, EntityDto<?, ?>> entityMap)
+            throws Exception {
+    }
+
+    protected void postUpdate(Map<Entity<?>, EntityDto<?, ?>> entityMap)
+            throws Exception {
+    }
+
+    protected void preDelete(Map<Entity<?>, EntityDto<?, ?>> entityMap)
+            throws Exception {
+    }
+
+    protected void postDelete(Map<Entity<?>, EntityDto<?, ?>> entityMap)
+            throws Exception {
+    }
+
     @Operation
     public void save() {
         save(saveFlags);
@@ -290,14 +306,6 @@ public abstract class SimpleEntityViewBean
         showIndex();
     }
 
-    protected void preUpdate(Map<Entity<?>, EntityDto<?, ?>> entityMap)
-            throws Exception {
-    }
-
-    protected void postUpdate(Map<Entity<?>, EntityDto<?, ?>> entityMap)
-            throws Exception {
-    }
-
     @Operation
     public void deleteSelection() {
         deleteSelection(deleteFlags);
@@ -366,13 +374,29 @@ public abstract class SimpleEntityViewBean
 
         setSelection(null);
 
-        Set<Entity<?>> entities = entityMap.keySet();
         try {
-            serviceFor(entityClass).deleteAll(entities);
+            preDelete(entityMap);
+        } catch (Exception e) {
+            uiLogger.error("预处理失败", e);
+        }
+
+        Set<Entity<?>> entities = entityMap.keySet();
+        int count;
+        try {
+            count = serviceFor(entityClass).deleteAll(entities);
         } catch (Exception e) {
             uiLogger.error("删除失败", e);
             return;
         }
+
+        try {
+            postDelete(entityMap);
+        } catch (Exception e) {
+            uiLogger.warn("保存不完全，次要的数据可能不一致，建议您检查相关的数据。", e);
+        }
+
+        String countHint = count == -1 ? "" : (" [" + count + "]");
+        uiLogger.info("删除成功" + countHint);
     }
 
     void openSelectedDtos(int reloadDtoSel) {
