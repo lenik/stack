@@ -1,0 +1,7 @@
+.entry span {
+    float: left;
+}
+
+.entry+* {
+    clear: left;
+}
