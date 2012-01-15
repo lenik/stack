@@ -1,9 +1,13 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
-    xmlns:c0="http://java.sun.com/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" template="template.xhtml">
-    <ui:define name="title">c:set test</ui:define>
-    <ui:define name="body">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:cc="http://java.sun.com/jsf/composite"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui">
+    <h:head id="head1">
+    </h:head>
+    <h:body>
+        [
+        <h:outputStylesheet library="css" name="test.css" />
+        ]
+
         <c:set var="path" value="root" />
         <pre>
             parent: path=${path}
@@ -23,5 +27,5 @@
             parent: path=${path}
             parent: pathcopy=${pathcopy}
         </pre>
-    </ui:define>
-</ui:composition>
+    </h:body>
+</html>
