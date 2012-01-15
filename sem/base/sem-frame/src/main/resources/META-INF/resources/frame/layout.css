@@ -1,0 +1,30 @@
+.layout-container {
+    display: table;
+    margin: 0 auto;
+    list-style-type: none;
+}
+
+.layout-sections {
+    display: table-row;
+}
+
+.layout-main {
+    display: table-cell;
+    width: auto;
+    padding: .5em;
+}
+
+.layout-side {
+    display: table-cell;
+    width: 9px;
+}
+
+.layout-side {
+    display: table-cell;
+    box-sizing: border-box;
+    width: 15em;
+}
+
+.layout-side-toggler {
+    background: #ccc;
+}
