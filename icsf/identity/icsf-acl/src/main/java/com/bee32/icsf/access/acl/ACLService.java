@@ -1,4 +1,4 @@
-package com.bee32.icsf.access.dacl;
+package com.bee32.icsf.access.acl;
 
 import java.util.HashSet;
 import java.util.List;
@@ -9,7 +9,7 @@ import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.arch.DataService;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 
-public class DACLService
+public class ACLService
         extends DataService {
 
     /**
@@ -23,16 +23,16 @@ public class DACLService
      */
     public Integer[] aclIndex(Principal principal, Permission permission) {
 
-        ICriteriaElement criterion = DACLCriteria.impliesDACE(principal, permission);
+        ICriteriaElement criterion = ACLCriteria.impliesEntry(principal, permission);
 
-        List<DACE> daceList = asFor(DACE.class).list(criterion);
+        List<ACLEntry> entries = asFor(ACLEntry.class).list(criterion);
 
         Set<Integer> set = new HashSet<Integer>();
         set.add(0); // 0 is always shown.
 
-        for (DACE dace : daceList) {
-            DACL dacl = dace.getDacl();
-            set.add(dacl.getId());
+        for (ACLEntry entry : entries) {
+            ACL acl = entry.getACL();
+            set.add(acl.getId());
         }
 
         Integer[] array = set.toArray(new Integer[0]);

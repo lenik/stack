@@ -76,7 +76,7 @@ public class AccessCheckAdvice
 
             // 用户己登录，判断对当前方法有没有公限
             Permission permission = authority.getPermission(apResource, user);
-            if (!permission.canExecute()) {
+            if (!permission.isExecutable()) {
                 // 当前用户即不为admin,并且当前用户对当前facade中的方法没有权限
                 String displayName = apResource.getAppearance().getDisplayName();
                 errMessage = "你没有[" + displayName + "]的权限!";

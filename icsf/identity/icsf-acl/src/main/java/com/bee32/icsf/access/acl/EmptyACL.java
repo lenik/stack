@@ -2,6 +2,7 @@ package com.bee32.icsf.access.acl;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -32,7 +33,7 @@ public class EmptyACL
     }
 
     @Override
-    public Set<? extends Principal> getPrincipals() {
+    public Set<? extends Principal> getEffectivePrincipals() {
         return Collections.emptySet();
     }
 
@@ -52,7 +53,7 @@ public class EmptyACL
     }
 
     @Override
-    public Permission getPermission(Principal principal) {
+    public Permission getEffectivePermission(Principal principal) {
         return null;
     }
 
@@ -62,8 +63,8 @@ public class EmptyACL
     }
 
     @Override
-    public Collection<? extends Entry<? extends Principal, Permission>> getEntries() {
-        return Collections.emptyList();
+    public Map<? extends Principal, Permission> getDeclaredEntries() {
+        return Collections.emptyMap();
     }
 
     @Override

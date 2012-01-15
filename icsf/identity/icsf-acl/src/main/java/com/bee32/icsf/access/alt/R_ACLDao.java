@@ -19,8 +19,8 @@ import com.bee32.plover.orm.dao.GenericDao;
 public class R_ACLDao
         extends GenericDao {
 
-    //@Inject
-    //private R_ACEDao aceDao;
+    // @Inject
+    // private R_ACEDao aceDao;
 
     public R_ACL loadACL(Resource resource) {
         if (resource == null)
@@ -60,7 +60,7 @@ public class R_ACLDao
             existingMap.put(ace.getPrincipal(), ace);
 
         List<R_ACE> newList = new ArrayList<R_ACE>();
-        for (Entry<? extends IPrincipal, Permission> entry : acl.getEntries()) {
+        for (Entry<? extends IPrincipal, Permission> entry : acl.getDeclaredEntries().entrySet()) {
             Principal principal = (Principal) entry.getKey();
             R_ACE existed = existingMap.remove(principal);
             if (existed != null) {

@@ -33,7 +33,7 @@ public class ACLDto
     @Override
     protected void _marshal(ACL source) {
         if (selection.contains(ENTRIES)) {
-            for (Entry<Principal, Permission> _entry : source.getEntries()) {
+            for (Entry<Principal, Permission> _entry : source.getDeclaredEntries().entrySet()) {
                 PrincipalDto principal = mref(PrincipalDto.class, _entry.getKey());
                 Permission permission = _entry.getValue().clone();
                 ACEDto entry = new ACEDto(principal, permission);

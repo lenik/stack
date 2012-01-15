@@ -1,4 +1,4 @@
-package com.bee32.icsf.access.dacl;
+package com.bee32.icsf.access.acl;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.principal.Principal;
@@ -9,10 +9,10 @@ import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.Disjunction;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 
-public class DACLCriteria
+public class ACLCriteria
         extends CriteriaSpec {
 
-    public static ICriteriaElement impliesDACE(Principal principal, Permission permission) {
+    public static ICriteriaElement impliesEntry(Principal principal, Permission permission) {
         return compose( //
                 PrincipalCriteria.inImSet("principal", principal), //
                 impliesPermission(permission));
@@ -27,25 +27,25 @@ public class DACLCriteria
         Disjunction disj = disjunction();
         disj.add(equals("admin", true));
 
-        if (!permission.getAdmin()) {
+        if (!permission.isAdmin()) {
             Conjunction conj = conjunction();
 
-            if (permission.getReadable())
+            if (permission.isUser())
+                conj.add(equals("user", true));
+
+            if (permission.isReadable())
                 conj.add(equals("readable", true));
 
-            if (permission.getWritable())
+            if (permission.isWritable())
                 conj.add(equals("writable", true));
 
-            if (permission.getExecutable())
+            if (permission.isExecutable())
                 conj.add(equals("executable", true));
 
-            if (permission.getListable())
-                conj.add(equals("listable", true));
-
-            if (permission.getCreatable())
+            if (permission.isCreatable())
                 conj.add(equals("creatable", true));
 
-            if (permission.getDeletable())
+            if (permission.isDeletable())
                 conj.add(equals("deletable", true));
 
             disj.add(disj);

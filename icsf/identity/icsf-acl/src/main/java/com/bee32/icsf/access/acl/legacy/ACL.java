@@ -1,6 +1,5 @@
 package com.bee32.icsf.access.acl.legacy;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -48,8 +47,8 @@ public class ACL
     }
 
     @Override
-    public Collection<? extends Entry<? extends Principal, Permission>> getEntries() {
-        return map.entrySet();
+    public Map<? extends Principal, Permission> getDeclaredEntries() {
+        return map;
     }
 
     @Override

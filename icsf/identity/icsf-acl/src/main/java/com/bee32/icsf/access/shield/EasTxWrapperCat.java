@@ -20,7 +20,7 @@ public abstract class EasTxWrapperCat<E extends Entity<? extends K>, K extends S
 
     @Override
     protected void checkList() {
-        require(Permission.LIST);
+        require(Permission.READ);
     }
 
     @Override

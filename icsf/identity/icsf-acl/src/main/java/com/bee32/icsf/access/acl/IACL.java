@@ -1,6 +1,7 @@
 package com.bee32.icsf.access.acl;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -28,6 +29,18 @@ public interface IACL {
     IACL flatten();
 
     /**
+     * 获取本 ACL （局部）定义的权限条目数。
+     */
+    int size();
+
+    /**
+     * 列出本 ACL （局部）定义的所有权限条目。
+     *
+     * @return 非 <code>null</code> 的 {@link Entry} 集合。。
+     */
+    Map<? extends Principal, Permission> getDeclaredEntries();
+
+    /**
      * 本 ACL 的有效主体集（局部）。
      *
      * 这个集合并不表明所含的主体具有对应权限，而仅仅表明本 ACL 对列出的主体集有影响力。
@@ -35,15 +48,6 @@ public interface IACL {
      * @return 非 <code>null</code> {@link Principal} 集合。
      */
     Set<? extends Principal> getDeclaredPrincipals();
-
-    /**
-     * 本 ACL 的有效主体集（包括继承项）。
-     *
-     * 这个集合并不表明所含的主体具有对应权限，而仅仅表明本 ACL 对列出的主体集有影响力。
-     *
-     * @return 非 <code>null</code> {@link Principal} 集合。
-     */
-    Set<? extends Principal> getPrincipals();
 
     /**
      * Test if given principal is declared in this ACL.
@@ -55,14 +59,23 @@ public interface IACL {
     Permission getDeclaredPermission(Principal principal);
 
     /**
-     * 选取指定主体相关的 ACL 子集。
+     * 本 ACL 的有效主体集（包括继承项）。
+     *
+     * 这个集合并不表明所含的主体具有对应权限，而仅仅表明本 ACL 对列出的主体集有影响力。
+     *
+     * @return 非 <code>null</code> {@link Principal} 集合。
+     */
+    Set<? extends Principal> getEffectivePrincipals();
+
+    /**
+     * Get the effective permission.
      *
      * @param principal
      *            The principal whose permission is to be queried.
      * @return <code>null</code> if the specified <code>principal</code> isn't listed in this ACL,
      *         nor in the inherited ACLs.
      */
-    Permission getPermission(Principal principal);
+    Permission getEffectivePermission(Principal principal);
 
     /**
      * Find principals with the required permission.
@@ -83,18 +96,6 @@ public interface IACL {
      *         resource described by this ACL.
      */
     Collection<? extends Principal> findPrincipals(String requiredMode);
-
-    /**
-     * 获取本 ACL （局部）定义的权限条目数。
-     */
-    int size();
-
-    /**
-     * 列出本 ACL （局部）定义的所有权限条目。
-     *
-     * @return 非 <code>null</code> 的 {@link Entry} 集合。。
-     */
-    Collection<? extends Entry<? extends Principal, Permission>> getEntries();
 
     /**
      * 添加一个局部权限条目。

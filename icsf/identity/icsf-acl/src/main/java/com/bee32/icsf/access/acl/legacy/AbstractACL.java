@@ -37,7 +37,7 @@ public abstract class AbstractACL
     }
 
     static void merge(Map<Principal, Permission> all, IACL acl) {
-        for (Entry<? extends Principal, Permission> entry : acl.getEntries()) {
+        for (Entry<? extends Principal, Permission> entry : acl.getDeclaredEntries().entrySet()) {
             Principal principal = entry.getKey();
             Permission permission = entry.getValue();
 
@@ -57,7 +57,7 @@ public abstract class AbstractACL
     }
 
     @Override
-    public final Set<? extends Principal> getPrincipals() {
+    public final Set<? extends Principal> getEffectivePrincipals() {
         Set<Principal> all = new HashSet<Principal>();
         IACL acl = this;
         while (acl != null) {
@@ -68,10 +68,10 @@ public abstract class AbstractACL
     }
 
     @Override
-    public Permission getPermission(Principal principal) {
+    public Permission getEffectivePermission(Principal principal) {
         Permission permission = new Permission(0);
 
-        for (Entry<? extends Principal, Permission> entry : getEntries()) {
+        for (Entry<? extends Principal, Permission> entry : getDeclaredEntries().entrySet()) {
             Principal declaredPrincipal = entry.getKey();
             Permission declaredPermission = entry.getValue();
             if (principal.implies(declaredPrincipal))
@@ -84,7 +84,7 @@ public abstract class AbstractACL
     @Override
     public Collection<? extends Principal> findPrincipals(Permission requiredPermission) {
         Set<Principal> principals = new HashSet<Principal>();
-        for (Entry<? extends Principal, Permission> entry : getEntries()) {
+        for (Entry<? extends Principal, Permission> entry : getDeclaredEntries().entrySet()) {
             Permission declaredPermission = entry.getValue();
             if (declaredPermission.implies(requiredPermission))
                 principals.add(entry.getKey());
@@ -118,7 +118,7 @@ public abstract class AbstractACL
         StringBuilder sb = new StringBuilder();
         sb.append("ACL(" + getName() + ")");
 
-        for (Entry<? extends Principal, Permission> entry : getEntries()) {
+        for (Entry<? extends Principal, Permission> entry : getDeclaredEntries().entrySet()) {
             Principal principal = entry.getKey();
             Permission permission = entry.getValue();
             sb.append("\n    " + principal.getName() + " +" + permission);

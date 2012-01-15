@@ -33,7 +33,7 @@ public abstract class Authority
         IACL acl = getACL(resource);
         if (acl == null)
             return null;
-        return acl.getPermission(principal);
+        return acl.getEffectivePermission(principal);
     }
 
 }
