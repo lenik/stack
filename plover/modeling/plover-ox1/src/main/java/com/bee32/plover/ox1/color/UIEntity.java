@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.Index;
 
 import com.bee32.plover.ox1.c.CEntity;
 
@@ -49,6 +50,7 @@ public abstract class UIEntity<K extends Serializable>
         description = o.description;
     }
 
+    @Index(name = "##_label")
     @Column(length = LABEL_LENGTH)
     @Override
     public String getLabel() {
@@ -65,6 +67,7 @@ public abstract class UIEntity<K extends Serializable>
         this.label = label;
     }
 
+    // @Index(name = "##_description")
     @Column(length = DESCRIPTION_LENGTH)
     @Override
     public String getDescription() {
