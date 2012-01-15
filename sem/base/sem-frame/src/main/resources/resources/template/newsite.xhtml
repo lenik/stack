@@ -11,9 +11,7 @@
         <ui:insert name="title">无标题</ui:insert>
     </title>
 
-    <ui:insert name="styles">
-        <ui:insert name="styles.user" />
-    </ui:insert>
+    <ui:insert name="styles"/>
 
     <ui:remove>
         <!-- ************************************************************ -->
@@ -63,11 +61,13 @@
         </div>
     </div>
 
-    <ui:insert name="login">
-        <icsf:loginPanel xpc="true" style="none" />
-    </ui:insert>
+    <div id="loginPanel">
+        <ui:insert name="login">
+            <icsf:loginPanel xpc="true" style="none" />
+        </ui:insert>
+    </div>
 
-    <div>
+    <div id="menu">
         <ui:insert name="menu">
             <f:verbatim>#{mainMenu.superfishHtml}</f:verbatim>
         </ui:insert>
@@ -83,95 +83,121 @@
         </div>
     </ui:insert>
 
-    <ui:insert name="pageHeader" />
+    <div id="pageHeader">
+        <ui:insert name="pageHeader" />
+    </div>
 
-    <ui:insert name="content">正在构建中……</ui:insert>
+    <div id="content">
+        <ui:insert name="content">正在构建中……</ui:insert>
+    </div>
 
-    <ui:insert name="pageFooter">
-        <div style="clear: both; border-top: solid 1px #808080; border-bottom: solid 1px #eeeeee; background: #eeeeee;">
-            <div style=" padding: 0.5em;">
-                ■ 当前用户：
-                <ui:repeat var="node" value="#{sessionPerson.chain}">
-                    <span style="display">#{node}</span>
-                </ui:repeat>
-                （<a id="aQuit" name="aQuit" href="#">安全退出</a>）
+    <div id="pageFooter">
+        <ui:insert name="pageFooter">
+            <div style="clear: both; border-top: solid 1px #808080; border-bottom: solid 1px #eeeeee; background: #eeeeee;">
+                <div style=" padding: 0.5em;">
+                    ■ 当前用户：
+                    <ui:repeat var="node" value="#{sessionPerson.chain}">
+                        <span style="display">#{node}</span>
+                    </ui:repeat>
+                    （<a id="aQuit" name="aQuit" href="#">安全退出</a>）
+                </div>
+                <div id="pageStatus" style=" padding: 0.5em;">
+                    <ui:insert name="pageStatus" />
+                </div>
             </div>
-            <div style=" padding: 0.5em;">
-                <ui:insert name="pageStatus" />
+            <div style="height: 5px; background: #aaaaaa; border-top: solid 1px #808080" />
+            <div class="invert" style="padding: 0.2em 0.5em">
+                <div style="display: inline">■ 版权所有©2010-2011 海宁市智恒软件有限公司</div>
+                | <a href="${location.WEB_APP}/site/contact.jsf">联系信息</a>
             </div>
-        </div>
-        <div style="height: 5px; background: #aaaaaa; border-top: solid 1px #808080" />
-        <div class="invert" style="padding: 0.2em 0.5em">
-            <div style="display: inline">■ 版权所有©2010-2011 海宁市智恒软件有限公司</div>
-            | <a href="${location.WEB_APP}/site/contact.jsf">联系信息</a>
-        </div>
-    </ui:insert>
-
-    <ui:insert name="scripts.frame">
-        <script language="javascript" src="${location.LIB_JS}/jquery.sha1.js"></script>
-        <script language="javascript" src="${location.LIB_JS}/jquery.ajaxex.js"></script>
-
-        <ui:insert name="scripts.superfish">
-            <link rel="stylesheet" type="text/css" media="screen"
-                href="${location.LIB_3RDPARTY}/superfish-1.4.8/css/superfish.css" />
-
-            <script language="javascript" src="${location.LIB_3RDPARTY}/superfish-1.4.8/js/hoverIntent.js"></script>
-            <script language="javascript" src="${location.LIB_3RDPARTY}/superfish-1.4.8/js/superfish.js"></script>
         </ui:insert>
-    </ui:insert>
+    </div>
 
-    <ui:insert name="scripts.jquery.ui">
-        <c:set var="JQUERY_UI" value="${location.LIB_3RDPARTY}/jquery-ui-1.8.2.custom/development-bundle" />
+    <div id="scriptsFrame">
+        <ui:insert name="scripts.frame">
+            <script language="javascript" src="${location.LIB_JS}/jquery.sha1.js"></script>
+            <script language="javascript" src="${location.LIB_JS}/jquery.ajaxex.js"></script>
 
-        <ui:remove>
-            <!-- ************************************************************ -->
-            <!--         使用下面的 dummy 来强制引入 primefaces 的库脚本。          -->
-            <!-- ************************************************************ -->
-            <link type="text/css" rel="stylesheet" href="${JQUERY_UI}/themes/base/jquery.ui.all.css" />
-            <script language="javascript" src="${JQUERY_UI}/external/jquery.bgiframe-2.1.1.js"></script>
-            <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.core.js"></script>
-            <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.widget.js"></script>
-            <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.mouse.js"></script>
-            <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.button.js"></script>
-            <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.dialog.js"></script>
-            <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.autocomplete.js"></script>
-            <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.datepicker.js"></script>
-        </ui:remove>
-        <h:form id="dummy" style="display: none;">
-            A Dummy Form.
-            <p:dataTable />
-            <p:column />
-            <p:commandLink />
-            <p:commandButton />
-            <p:dialog />
-            <p:fileUpload />
-            <p:tabView rendered="false">
-                <p:tab title="" />
-            </p:tabView>
-            <p:message for="dummy" />
-            <f:ajax event="click" />
-        </h:form>
+            <ui:insert name="scripts.superfish">
+                <link rel="stylesheet" type="text/css" media="screen"
+                    href="${location.LIB_3RDPARTY}/superfish-1.4.8/css/superfish.css" />
 
-        <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.draggable.js"></script>
-        <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.position.js"></script>
-        <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.resizable.js"></script>
-        <script language="javascript" src="${JQUERY_UI}/ui/jquery.effects.core.js"></script>
-        <script language="javascript" src="${JQUERY_UI}/ui/i18n/jquery.ui.datepicker-zh-CN.js"></script>
-
-        <ui:insert name="pre-scripts">
-            <ui:insert name="pre-scripts.1" />
-            <ui:insert name="pre-scripts.user" />
+                <script language="javascript" src="${location.LIB_3RDPARTY}/superfish-1.4.8/js/hoverIntent.js"></script>
+                <script language="javascript" src="${location.LIB_3RDPARTY}/superfish-1.4.8/js/superfish.js"></script>
+            </ui:insert>
         </ui:insert>
+    </div>
 
-        <script language="javascript" src="${location.WEB_APP}/site/frame.js"></script>
+    <div id="scriptsJQueryUI">
+        <ui:insert name="scripts.jquery.ui">
+            <c:set var="JQUERY_UI" value="${location.LIB_3RDPARTY}/jquery-ui-1.8.2.custom/development-bundle" />
 
-        <ui:insert name="scripts.jquery.ui.user" />
-    </ui:insert>
+            <ui:remove>
+                <!-- ************************************************************ -->
+                <!-- 使用下面的 dummy 来强制引入 primefaces 的库脚本。 -->
+                <!-- ************************************************************ -->
+                <link type="text/css" rel="stylesheet" href="${JQUERY_UI}/themes/base/jquery.ui.all.css" />
+                <script language="javascript" src="${JQUERY_UI}/external/jquery.bgiframe-2.1.1.js"></script>
+                <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.core.js"></script>
+                <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.widget.js"></script>
+                <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.mouse.js"></script>
+                <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.button.js"></script>
+                <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.dialog.js"></script>
+                <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.autocomplete.js"></script>
+                <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.datepicker.js"></script>
+            </ui:remove>
+            <h:form id="dummy" style="display: none;">
+                A Dummy Form.
+                <p:dataTable />
+                <p:column />
+                <p:commandLink />
+                <p:commandButton />
+                <p:dialog />
+                <p:fileUpload />
+                <p:tabView rendered="false">
+                    <p:tab title="" />
+                </p:tabView>
+                <p:message for="dummy" />
+                <f:ajax event="click" />
+            </h:form>
 
-    <ui:insert name="scripts">
-        <ui:insert name="scripts.1" />
-        <ui:insert name="scripts.user" />
-    </ui:insert>
+            <div id="scriptsJQueryUIDefault">
+                <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.draggable.js"></script>
+                <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.position.js"></script>
+                <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.resizable.js"></script>
+                <script language="javascript" src="${JQUERY_UI}/ui/jquery.effects.core.js"></script>
+                <script language="javascript" src="${JQUERY_UI}/ui/i18n/jquery.ui.datepicker-zh-CN.js"></script>
+            </div>
+
+            <div id="preScripts">
+                <ui:insert name="pre-scripts">
+                    <div id="preScripts1">
+                        <ui:insert name="pre-scripts.1" />
+                    </div>
+                    <div id="preScriptsUser">
+                        <ui:insert name="pre-scripts.user" />
+                    </div>
+                </ui:insert>
+            </div>
+
+            <script language="javascript" src="${location.WEB_APP}/site/frame.js"></script>
+
+            <div id="scriptsJQueryUser">
+                <ui:insert name="scripts.jquery.ui.user" />
+            </div>
+        </ui:insert>
+    </div>
+
+    <div id="scripts">
+        <ui:insert name="scripts">
+            <div id="scripts1">
+                <ui:insert name="scripts.1" />
+            </div>
+            <div id="scriptsUser">
+                <ui:insert name="scripts.user" />
+            </div>
+        </ui:insert>
+    </div>
 
 </h:body>
 </html>
