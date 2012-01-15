@@ -15,6 +15,8 @@ import javax.free.IllegalUsageException;
 import org.primefaces.model.LazyDataModel;
 
 import com.bee32.icsf.login.SessionUser;
+import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.arch.operation.Operation;
 import com.bee32.plover.collections.Varargs;
@@ -71,6 +73,7 @@ public abstract class SimpleEntityViewBean
     protected DateRangeTemplate dateRange = DateRangeTemplate.recentWeek;
     protected Date beginDate;
     protected Date endDate;
+    protected PrincipalDto searchPrincipal;
 
     public <E extends Entity<?>, D extends EntityDto<? super E, ?>> //
     /*    */SimpleEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int selection,
@@ -509,6 +512,23 @@ public abstract class SimpleEntityViewBean
 
     public void addBeginEndDateRestriction() {
         addDateSearchFragment("发生于", IDateCriteriaComposer.beginEndDate);
+    }
+
+    public PrincipalDto getSearchPrincipal() {
+        return searchPrincipal;
+    }
+
+    public void setSearchPrincipal(PrincipalDto searchPrincipal) {
+        this.searchPrincipal = searchPrincipal;
+    }
+
+    public void addOwnerRestriction() {
+        if (searchPrincipal == null)
+            return;
+        Principal principal = searchPrincipal.unmarshal(this);
+        addSearchFragment("为 " + searchPrincipal.getDisplayName() + " 所有", //
+                CommonCriteria.ownedBy(principal));
+        searchPrincipal = null;
     }
 
 }
