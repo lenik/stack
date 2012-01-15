@@ -39,7 +39,7 @@ import com.bee32.sem.world.thing.UnitConvDto;
 import com.bee32.sem.world.thing.UnitDto;
 
 @ForEntity(StockOrder.class)
-public abstract class StockOrderBaseBean
+public abstract class AbstractStockOrderBean
         extends LocationAboutBean {
 
     private static final long serialVersionUID = 1L;

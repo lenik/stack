@@ -24,7 +24,7 @@ import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
 import com.bee32.sem.inventory.util.StockCriteria;
 
 @ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = "OSPO"))
-public class OutsourcingOutAdminBean extends StockOrderBaseBean {
+public class OutsourcingOutAdminBean extends AbstractStockOrderBean {
 
     private static final long serialVersionUID = 1L;
 

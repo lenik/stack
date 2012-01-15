@@ -30,7 +30,7 @@ import com.bee32.sem.people.util.PeopleCriteria;
 
 @ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = "XFRI"))
 public class TransferInAdminBean
-        extends StockOrderBaseBean {
+        extends AbstractStockOrderBean {
 
     private static final long serialVersionUID = 1L;
 

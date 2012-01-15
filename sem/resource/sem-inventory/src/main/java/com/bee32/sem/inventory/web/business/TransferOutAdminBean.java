@@ -28,7 +28,7 @@ import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.util.PeopleCriteria;
 
 @ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = "XFRO"))
-public class TransferOutAdminBean extends StockOrderBaseBean {
+public class TransferOutAdminBean extends AbstractStockOrderBean {
 
     private static final long serialVersionUID = 1L;
 

@@ -19,7 +19,7 @@ import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.util.StockCriteria;
 
 @ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = "INIT"))
-public class InitAdminBean extends StockOrderBaseBean {
+public class InitAdminBean extends AbstractStockOrderBean {
 
     private static final long serialVersionUID = 1L;
 

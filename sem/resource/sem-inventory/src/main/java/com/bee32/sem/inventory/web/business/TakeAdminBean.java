@@ -26,7 +26,7 @@ import com.bee32.sem.inventory.util.StockCriteria;
 
 @ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = { "TK_I", "TK_O", "TKFI", "TKFO" }))
 public class TakeAdminBean
-        extends StockOrderBaseBean {
+        extends AbstractStockOrderBean {
 
     private static final long serialVersionUID = 1L;
 
