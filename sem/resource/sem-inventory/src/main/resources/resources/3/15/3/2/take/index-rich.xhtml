@@ -66,6 +66,7 @@
 						disabled="#{!takeAdminBean.editable}" update="mainForm" async="true" />
 					<p:separator />
                     <sem:singleVerifierSupportButton
+                        selection="#{takeAdminBean.selection}"
                         disabled="#{takeAdminBean.editable}" />
                     <p:separator />
 					<p:commandButton value="第一条"
