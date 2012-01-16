@@ -6,7 +6,7 @@
         <version>0.3.2-SNAPSHOT</version>
     </parent>
     <artifactId>plover-stateflow</artifactId>
-    <version>0.2.109</version>
+    <version>0.2.110</version>
     <dependencies>
         <dependency>
             <groupId>com.bee32.plover</groupId>
@@ -16,7 +16,7 @@
         <dependency>
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-indexing</artifactId>
-            <version>0.2.109</version>
+            <version>0.2.110</version>
         </dependency>
         <dependency>
             <groupId>com.bee32.plover</groupId>
