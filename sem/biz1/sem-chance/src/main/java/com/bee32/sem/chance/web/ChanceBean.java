@@ -574,6 +574,6 @@ public class ChanceBean
 
     @Override
     public List<?> getSelection() {
-        return listOfNonNulls(chanceCopy);
+        return listOfNonNulls(chances.getSelection());
     }
 }
