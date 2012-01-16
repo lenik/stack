@@ -89,21 +89,21 @@ public class ACLEntry
     @Index(name = "##_admin")
     @Column
     Boolean getAdmin() {
-        return permission.getAdmin().getTristateBoolean();
+        return permission.getOwn().getTristateBoolean();
     }
 
     void setAdmin(Boolean f) {
-        permission.setAdmin(f);
+        permission.getOwn().setTristateBoolean(f);
     }
 
-    @Index(name = "##_user")
+    @Index(name = "##_usable")
     @Column
-    Boolean getUser() {
-        return permission.getUser().getTristateBoolean();
+    Boolean getUsable() {
+        return permission.getUse().getTristateBoolean();
     }
 
-    void setUser(Boolean f) {
-        permission.setUser(f);
+    void setUsable(Boolean f) {
+        permission.getUse().setTristateBoolean(f);
     }
 
     @Index(name = "##_readable")
@@ -113,7 +113,7 @@ public class ACLEntry
     }
 
     void setReadable(Boolean f) {
-        permission.setReadable(f);
+        permission.getRead().setTristateBoolean(f);
     }
 
     @Index(name = "##_writable")
@@ -123,7 +123,7 @@ public class ACLEntry
     }
 
     void setWritable(Boolean f) {
-        permission.setWritable(f);
+        permission.getWrite().setTristateBoolean(f);
     }
 
     @Index(name = "##_executable")
@@ -133,7 +133,7 @@ public class ACLEntry
     }
 
     void setExecutable(Boolean f) {
-        permission.setExecutable(f);
+        permission.getExecute().setTristateBoolean(f);
     }
 
     @Index(name = "##_creatable")
@@ -143,7 +143,7 @@ public class ACLEntry
     }
 
     void setCreatable(Boolean f) {
-        permission.setCreatable(f);
+        permission.getCreate().setTristateBoolean(f);
     }
 
     @Index(name = "##_deletable")
@@ -153,7 +153,7 @@ public class ACLEntry
     }
 
     void setDeletable(Boolean f) {
-        permission.setDeletable(f);
+        permission.getDelete().setTristateBoolean(f);
     }
 
     @Override

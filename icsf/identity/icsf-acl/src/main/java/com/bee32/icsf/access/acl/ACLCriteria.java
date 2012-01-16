@@ -30,8 +30,8 @@ public class ACLCriteria
         if (!permission.isAdmin()) {
             Conjunction conj = conjunction();
 
-            if (permission.isUser())
-                conj.add(equals("user", true));
+            if (permission.isUsable())
+                conj.add(equals("usable", true));
 
             if (permission.isReadable())
                 conj.add(equals("readable", true));

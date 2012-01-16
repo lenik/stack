@@ -265,7 +265,7 @@ public class PermissionAdminBean
 
     public void onSelectInvertAdmin() {
         for (RPEntry e : rpEntries) {
-            e.permission.setAdmin(invert(e.permission.getAdmin().getTristateBoolean()));
+            e.permission.getOwn().invert();
         }
     }
 
@@ -283,7 +283,7 @@ public class PermissionAdminBean
 
     public void onSelectInvertReadable() {
         for (RPEntry e : rpEntries) {
-            e.permission.setReadable(invert(e.permission.getRead().getTristateBoolean()));
+            e.permission.getRead().invert();
         }
     }
 
@@ -301,7 +301,7 @@ public class PermissionAdminBean
 
     public void onSelectInvertWritable() {
         for (RPEntry e : rpEntries) {
-            e.permission.setWritable(invert(e.permission.getWrite().getTristateBoolean()));
+            e.permission.getWrite().invert();
         }
     }
 
@@ -319,7 +319,7 @@ public class PermissionAdminBean
 
     public void onSelectInvertExecutable() {
         for (RPEntry e : rpEntries) {
-            e.permission.setExecutable(invert(e.permission.getExecute().getTristateBoolean()));
+            e.permission.getExecute().invert();
         }
     }
 
@@ -337,7 +337,7 @@ public class PermissionAdminBean
 
     public void onSelectInvertCreatable() {
         for (RPEntry e : rpEntries) {
-            e.permission.setCreatable(invert(e.permission.getCreate().getTristateBoolean()));
+            e.permission.getCreate().invert();
         }
     }
 
@@ -355,7 +355,7 @@ public class PermissionAdminBean
 
     public void onSelectInvertDeletable() {
         for (RPEntry e : rpEntries) {
-            e.permission.setDeletable(invert(e.permission.getDelete().getTristateBoolean()));
+            e.permission.getDelete().invert();
         }
     }
 
@@ -363,12 +363,6 @@ public class PermissionAdminBean
         for (RPEntry e : rpEntries) {
             e.permission.setDeletable(false);
         }
-    }
-
-    static Boolean invert(Boolean val) {
-        if (val == null)
-            return null;
-        return !val;
     }
 
 }

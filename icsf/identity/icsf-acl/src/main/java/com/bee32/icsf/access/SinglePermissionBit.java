@@ -92,6 +92,11 @@ public final class SinglePermissionBit
             perm.allowBits &= ~mask;
     }
 
+    public void invert() {
+        perm.allowBits ^= mask;
+        perm.denyBits ^= mask;
+    }
+
     public SinglePermissionTristate getTristate() {
         if ((perm.denyBits & mask) == mask)
             return SinglePermissionTristate.denied;
@@ -100,7 +105,7 @@ public final class SinglePermissionBit
         return SinglePermissionTristate.inherited;
     }
 
-    public void setTristateBoolean(SinglePermissionTristate tristate) {
+    public void setTristate(SinglePermissionTristate tristate) {
         if (tristate == SinglePermissionTristate.inherited) {
             perm.allowBits &= ~mask;
             perm.denyBits &= ~mask;
@@ -113,17 +118,26 @@ public final class SinglePermissionBit
         }
     }
 
+    public int getTristateIndex() {
+        return getTristate().ordinal();
+    }
+
+    public void setTristateIndex(int tristateIndex) {
+        SinglePermissionTristate tristate = SinglePermissionTristate.values()[tristateIndex];
+        setTristate(tristate);
+    }
+
     public Boolean getTristateBoolean() {
         return getTristate().getBoolean();
     }
 
     public void setTristateBoolean(Boolean tristateBoolean) {
         if (tristateBoolean == Boolean.TRUE)
-            setTristateBoolean(SinglePermissionTristate.allowed);
+            setTristate(SinglePermissionTristate.allowed);
         else if (tristateBoolean == Boolean.FALSE)
-            setTristateBoolean(SinglePermissionTristate.denied);
+            setTristate(SinglePermissionTristate.denied);
         else
-            setTristateBoolean(SinglePermissionTristate.inherited);
+            setTristate(SinglePermissionTristate.inherited);
     }
 
 }

@@ -5,3 +5,18 @@
 .entry+* {
     clear: left;
 }
+
+.attr-table {
+
+}
+
+.attr-name {
+    width: 8em;
+    padding: 0 .5em 0 0;
+    text-align: right;
+    /* font-weight: bold; */
+}
+
+.attr-value {
+
+}

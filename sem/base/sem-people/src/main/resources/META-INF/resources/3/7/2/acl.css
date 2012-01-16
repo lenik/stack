@@ -1,0 +1,18 @@
+.cell-header {
+    text-align: center;
+    /* font-weight: bold; */
+}
+
+.cell-leader {
+    text-align: right;
+    padding: 0 1em 0 0;
+}
+
+.cell-skip {
+    display: none;
+}
+
+.cell-icon {
+    margin: 0 auto;
+    width: 4em;
+}

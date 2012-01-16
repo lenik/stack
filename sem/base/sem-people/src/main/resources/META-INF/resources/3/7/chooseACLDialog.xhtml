@@ -7,7 +7,7 @@
         <cc:attribute name="var" default="chooseACLDialog" />
         <cc:attribute name="selection" required="true" />
         <cc:attribute name="multiple" type="java.lang.Boolean" default="false" />
-        <cc:attribute name="actionListener" targets="form:ok" default="${chooseACLDialogBean.selected}" />
+        <cc:attribute name="actionListener" targets="form:ok" />
         <cc:attribute name="update" />
 
         <!-- ui overrides -->
@@ -30,12 +30,12 @@
             <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
 
             <ui:define name="columns">
-                <p:column headerText="继承的ACL">
-                    <h:outputText value="${entry.inheritedACL.label}" />
-                </p:column>
-
                 <p:column headerText="名称">
                     <h:outputText value="${entry.label}" />
+                </p:column>
+
+                <p:column headerText="继承的策略">
+                    <h:outputText value="${entry.inheritedACL.label}" />
                 </p:column>
 
                 <p:column headerText="描述">

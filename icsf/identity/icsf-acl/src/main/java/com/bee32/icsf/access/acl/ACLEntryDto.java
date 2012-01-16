@@ -79,8 +79,6 @@ public class ACLEntryDto
     }
 
     public void setPrincipal(PrincipalDto principal) {
-        if (principal == null)
-            throw new NullPointerException("principal");
         this.principal = principal;
     }
 

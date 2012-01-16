@@ -10,7 +10,7 @@
         <cc:attribute name="update" />
 
         <!-- ui overrides -->
-        <cc:attribute name="caption" default="ACL 编辑" />
+        <cc:attribute name="caption" default="编辑安全策略" />
         <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
 
         <!-- internals -->
@@ -18,34 +18,39 @@
     </cc:interface>
 
     <cc:implementation>
-        <icsf:chooseACLDialog selection="${cc.parent.attrs.value.inheritedACL}" update="${cc.parent.clientId}:inheritedACL" />
-        <icsf:choosePrincipalDialog caption="${cc.parent.attrs.caption}" var="${cc.parent.attrs.var}_cpd"
-            selection="${cc.parent.attrs.dialogBean.entry.principal}" update="${cc.parent.clientId}:editEntryForm" />
+        <h:outputStylesheet library="/frame" name="table.css" />
+        <h:outputStylesheet library="/3/7/2" name="acl.css" />
+
+        <icsf:chooseACLDialog id="acld" var="${cc.parent.attrs.var}_acld" selection="${cc.parent.attrs.value.inheritedACL}"
+            update=":${cc.parent.clientId}:form:inheritedACL" />
+        <icsf:choosePrincipalDialog id="cpd" var="${cc.parent.attrs.var}_cpd"
+            selection="${cc.parent.attrs.dialogBean.entry.principal}" update=":${cc.parent.clientId}:editEntryForm" />
 
         <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
         <c:set var="dialogVar" value="${cc.attrs.var}" />
 
-        <p:dialog header="${cc.attrs.caption}" widgetVar="${cc.attrs.var}" modal="true">
+        <p:dialog id="main" header="${cc.attrs.caption}" widgetVar="${cc.attrs.var}" modal="true" position="center">
             <c:set var="obj" value="${cc.attrs.value}" />
             <h:form id="form" style="${cc.attrs.style}">
 
-                <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
-                    <h:outputText value="名称" />
+                <h:panelGrid columns="2" styleClass="attr-table" columnClasses="attr-name, attr-value"
+                    cellspacing="0" cellpadding="0">
+                    <h:outputLabel for="label" value="名称" />
                     <p:inputText id="label" value="${obj.label}" />
 
-                    <h:outputText value="继承的ACL" />
-                    <h:panelGroup>
-                        <p:inputText id="inheritedACL" value="${obj.inheritedACL.label}" readonly="true" />
-                        <p:commandButton value="选择" />
+                    <h:outputLabel for="inheritedLabel" value="继承的策略" />
+                    <h:panelGroup id="inheritedACL">
+                        <p:inputText id="inheritedLabel" value="${obj.inheritedACL.label}" readonly="true" />
+                        <p:commandButton id="chooseACL" value="选择" onclick="${cc.attrs.var}_acld.show()" />
                     </h:panelGroup>
 
-                    <h:outputText value="描述" />
-                    <p:inputText id="description" value="${obj.description}" size="50" />
-                </t:panelGrid>
+                    <h:outputLabel for="description" value="描述" />
+                    <p:inputText id="description" value="${obj.description}" size="32" />
+                </h:panelGrid>
 
-                <p:fieldset legend="列表项（ACE）" toggleable="false">
+                <p:fieldset legend="权限控制列表" toggleable="false" rendered="${obj != null}">
                     <p:dataTable id="entryTable" var="entry" value="${obj.selectableEntries}" selection="${dialogBean.selectedEntry}"
-                        selectionMode="single" paginator="true" rows="20" lazy="false" paginatorTemplate="${viewConfig.paginatorTemplate}"
+                        selectionMode="single" paginator="true" rows="20" paginatorTemplate="${viewConfig.paginatorTemplate}"
                         rowsPerPageTemplate="${viewConfig.pageSizeTemplate}" resizableColumns="true" rowIndexVar="rowIndex">
 
                         <p:column headerText="序号" style="width: 4em;">
@@ -61,7 +66,7 @@
                         </p:column>
 
                         <p:column headerText="操作" style="width: 3em;">
-                            <p:commandLink title="删除" action="${dialogBean.removeEntry}" update="@form">
+                            <p:commandLink title="删除" action="${dialogBean.removeEntry}" update=":${cc.clientId}:form:entryTable">
                                 <f:setPropertyActionListener value="${entry}"
                                     target="${dialogBean.selectedEntry}" />
                                 <p:graphicImage value="${location.ICON}/etool16/delete_edit.gif" />
@@ -69,21 +74,21 @@
                         </p:column>
                     </p:dataTable>
 
-                    <p:commandButton value="添加条目" actionListener="${dialogBean.createEntry}" update="${cc.clientId}:editEntryForm"
+                    <p:commandButton value="添加条目" actionListener="${dialogBean.createEntry}" update=":${cc.clientId}:editEntryForm"
                         oncomplete="editEntryDialog.show()" />
-                    <p:commandButton value="编辑条目" actionListener="${dialogBean.editEntry}" update="${cc.clientId}:editEntryForm"
+                    <p:commandButton value="编辑条目" actionListener="${dialogBean.editEntry}" update=":${cc.clientId}:editEntryForm"
                         oncomplete="editEntryDialog.show()" disabled="${dialogBean.entry == null}" />
                 </p:fieldset>
 
                 <div align="right">
-                    <p:commandButton id="save-validated" value="保存" update="${cc.attrs.update}"
-                        oncomplete="${dialogVar}.hideValidated(args)" />
+                    <p:commandButton id="save-validated" value="保存"
+                        update="${cc.attrs.update}, :${cc.clientId}:acld:form" oncomplete="${dialogVar}.hideValidated(args)" />
                     <p:commandButton id="cancel" value="取消" onclick="${dialogVar}.hide()" />
                 </div>
             </h:form>
         </p:dialog>
 
-        <p:dialog id="editEntryDialog" header="编辑 ACL 条目" widgetVar="editEntryDialog" modal="true">
+        <p:dialog id="editEntryDialog" header="编辑 ACL 条目" widgetVar="editEntryDialog" modal="true" position="center">
             <h:form id="editEntryForm" style="max-height: 30em; margin: 1em">
                 <t:panelGrid rendered="${dialogBean.entry != null}" columns="2"
                     columnClasses="detail_col_title,detail_col_value">
@@ -93,15 +98,94 @@
                         <p:inputText id="principal" readonly="true" value="${dialogBean.entry.principal.displayName}" />
                         <p:commandButton id="choosePrincipal" value="..." onclick="${cc.attrs.var}_cpd.show()" />
                     </t:panelGrid>
-
-                    <h:outputText value="权限" />
-                    <t:panelGrid columns="2">
-                    </t:panelGrid>
                 </t:panelGrid>
+
+                <p:fieldset legend="权限" rendered="${dialogBean.entry != null}">
+                    <c:set var="p" value="${dialogBean.entry.permission}" />
+                    <div align="center">
+                        <t:panelGrid columns="5" columnClasses="cell-leader, cell-skip, cell-icon, cell-icon, cell-icon">
+                            <h:panelGroup styleClass="cell-header" />
+                            <h:panelGroup styleClass="cell-header" />
+                            <h:panelGroup styleClass="cell-header" title="默认与继承项相同">继承</h:panelGroup>
+                            <h:panelGroup styleClass="cell-header">允许</h:panelGroup>
+                            <h:panelGroup styleClass="cell-header">拒绝</h:panelGroup>
+
+                            <h:outputText value="管理" />
+                            <p:selectOneRadio id="own" value="${p.own.tristateIndex}" layout="custom">
+                                <f:selectItem itemValue="0" itemLabel="继承" />
+                                <f:selectItem itemValue="1" itemLabel="允许" />
+                                <f:selectItem itemValue="2" itemLabel="拒绝" />
+                            </p:selectOneRadio>
+                            <p:radioButton id="own0" for="own" itemIndex="0" />
+                            <p:radioButton id="own1" for="own" itemIndex="1" />
+                            <p:radioButton id="own2" for="own" itemIndex="2" />
+
+                            <h:outputText value="使用" />
+                            <p:selectOneRadio id="use" value="${p.use.tristateIndex}" layout="custom">
+                                <f:selectItem itemValue="0" itemLabel="继承" />
+                                <f:selectItem itemValue="1" itemLabel="允许" />
+                                <f:selectItem itemValue="2" itemLabel="拒绝" />
+                            </p:selectOneRadio>
+                            <p:radioButton id="use0" for="use" itemIndex="0" />
+                            <p:radioButton id="use1" for="use" itemIndex="1" />
+                            <p:radioButton id="use2" for="use" itemIndex="2" />
+
+                            <h:outputText value="读取" />
+                            <p:selectOneRadio id="read" value="${p.read.tristateIndex}" layout="custom">
+                                <f:selectItem itemValue="0" itemLabel="继承" />
+                                <f:selectItem itemValue="1" itemLabel="允许" />
+                                <f:selectItem itemValue="2" itemLabel="拒绝" />
+                            </p:selectOneRadio>
+                            <p:radioButton id="read0" for="read" itemIndex="0" />
+                            <p:radioButton id="read1" for="read" itemIndex="1" />
+                            <p:radioButton id="read2" for="read" itemIndex="2" />
+
+                            <h:outputText value="写入" />
+                            <p:selectOneRadio id="write" value="${p.write.tristateIndex}" layout="custom">
+                                <f:selectItem itemValue="0" itemLabel="继承" />
+                                <f:selectItem itemValue="1" itemLabel="允许" />
+                                <f:selectItem itemValue="2" itemLabel="拒绝" />
+                            </p:selectOneRadio>
+                            <p:radioButton id="write0" for="write" itemIndex="0" />
+                            <p:radioButton id="write1" for="write" itemIndex="1" />
+                            <p:radioButton id="write2" for="write" itemIndex="2" />
+
+                            <h:outputText value="执行" />
+                            <p:selectOneRadio id="execute" value="${p.execute.tristateIndex}" layout="custom">
+                                <f:selectItem itemValue="0" itemLabel="继承" />
+                                <f:selectItem itemValue="1" itemLabel="允许" />
+                                <f:selectItem itemValue="2" itemLabel="拒绝" />
+                            </p:selectOneRadio>
+                            <p:radioButton id="execute0" for="execute" itemIndex="0" />
+                            <p:radioButton id="execute1" for="execute" itemIndex="1" />
+                            <p:radioButton id="execute2" for="execute" itemIndex="2" />
+
+                            <h:outputText value="创建" />
+                            <p:selectOneRadio id="create" value="${p.create.tristateIndex}" layout="custom">
+                                <f:selectItem itemValue="0" itemLabel="继承" />
+                                <f:selectItem itemValue="1" itemLabel="允许" />
+                                <f:selectItem itemValue="2" itemLabel="拒绝" />
+                            </p:selectOneRadio>
+                            <p:radioButton id="create0" for="create" itemIndex="0" />
+                            <p:radioButton id="create1" for="create" itemIndex="1" />
+                            <p:radioButton id="create2" for="create" itemIndex="2" />
+
+                            <h:outputText value="删除" />
+                            <p:selectOneRadio id="delete" value="${p.delete.tristateIndex}" layout="custom">
+                                <f:selectItem itemValue="0" itemLabel="继承" />
+                                <f:selectItem itemValue="1" itemLabel="允许" />
+                                <f:selectItem itemValue="2" itemLabel="拒绝" />
+                            </p:selectOneRadio>
+                            <p:radioButton id="delete0" for="delete" itemIndex="0" />
+                            <p:radioButton id="delete1" for="delete" itemIndex="1" />
+                            <p:radioButton id="delete2" for="delete" itemIndex="2" />
+                        </t:panelGrid>
+                    </div>
+                </p:fieldset>
 
                 <div align="right">
                     <p:commandButton id="add-validated" value="确定" actionListener="${dialogBean.addEntry}"
-                        update="${cc.clientId}:form:entryTable" oncomplete="editEntryDialog.hideValidated(args)" />
+                        update=":${cc.clientId}:form:entryTable" oncomplete="editEntryDialog.hideValidated(args)" />
                     <p:commandButton id="cancel" value="取消" onclick="editEntryDialog.hide()" />
                 </div>
             </h:form>

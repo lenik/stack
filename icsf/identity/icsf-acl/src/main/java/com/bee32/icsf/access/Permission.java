@@ -13,8 +13,8 @@ public final class Permission
 
     public static final char modeSeparator = '/';
 
-    public static final int ADMIN = 1 << 31;
-    public static final int USER = 1 << 30;
+    public static final int OWN = 1 << 31;
+    public static final int USE = 1 << 30;
     public static final int CREATE = 1 << 4; // CREATE-USER on user repository
     public static final int DELETE = 1 << 3; // DELETE-USER on user repository
     public static final int READ = 1 << 2;
@@ -157,11 +157,11 @@ public final class Permission
     }
 
     public boolean isAdmin() {
-        return test(ADMIN);
+        return test(OWN);
     }
 
-    public boolean isUser() {
-        return test(USER);
+    public boolean isUsable() {
+        return test(USE);
     }
 
     public boolean isReadable() {
@@ -185,11 +185,11 @@ public final class Permission
     }
 
     public void setAdmin(boolean f) {
-        set(f, ADMIN);
+        set(f, OWN);
     }
 
-    public void setUser(boolean f) {
-        set(f, ADMIN);
+    public void setUsable(boolean f) {
+        set(f, USE);
     }
 
     public void setReadable(boolean f) {
@@ -212,12 +212,12 @@ public final class Permission
         set(f, DELETE);
     }
 
-    public SinglePermissionBit getAdmin() {
-        return new SinglePermissionBit(this, ADMIN);
+    public SinglePermissionBit getOwn() {
+        return new SinglePermissionBit(this, OWN);
     }
 
-    public SinglePermissionBit getUser() {
-        return new SinglePermissionBit(this, USER);
+    public SinglePermissionBit getUse() {
+        return new SinglePermissionBit(this, USE);
     }
 
     public SinglePermissionBit getRead() {
@@ -244,8 +244,8 @@ public final class Permission
     static final int[] c2m;
     static {
         i2c = new char[32];
-        i2c[m2i(ADMIN)] = C_ADMIN;
-        i2c[m2i(USER)] = C_USER;
+        i2c[m2i(OWN)] = C_ADMIN;
+        i2c[m2i(USE)] = C_USER;
         i2c[m2i(READ)] = C_READ;
         i2c[m2i(WRITE)] = C_WRITE;
         i2c[m2i(EXECUTE)] = C_EXECUTE;
