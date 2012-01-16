@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.free.Strings;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -20,13 +21,16 @@ import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.plover.ox1.color.Pink;
 import com.bee32.sem.calendar.ICalendarEvent;
 import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.process.verify.IVerifiable;
+import com.bee32.sem.process.verify.builtin.ISingleVerifier;
+import com.bee32.sem.process.verify.builtin.SingleVerifierSupport;
 
 @Entity
 @Pink
 @SequenceGenerator(name = "idgen", sequenceName = "chance_action_seq", allocationSize = 1)
 public class ChanceAction
         extends MomentInterval
-        implements ICalendarEvent, Comparable<ChanceAction> {
+        implements ICalendarEvent, Comparable<ChanceAction>,IVerifiable<ISingleVerifier> {
 
     private static final long serialVersionUID = 1L;
 
@@ -46,6 +50,8 @@ public class ChanceAction
     ChanceStage stage;
 
     public ChanceAction() {
+        setVerifyContext(new SingleVerifierSupport());
+
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR_OF_DAY, 8);
         cal.set(Calendar.MINUTE, 0);
@@ -209,6 +215,18 @@ public class ChanceAction
         int hash2 = System.identityHashCode(o);
         cmp = hash1 - hash2;
         return cmp;
+    }
+
+    SingleVerifierSupport verifyContext;
+
+    @Embedded
+    @Override
+    public SingleVerifierSupport getVerifyContext() {
+        return verifyContext;
+    }
+
+    public void setVerifyContext(SingleVerifierSupport verifyContext) {
+        this.verifyContext = verifyContext;
     }
 
 }

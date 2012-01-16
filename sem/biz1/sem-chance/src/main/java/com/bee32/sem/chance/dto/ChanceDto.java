@@ -9,9 +9,12 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.util.DateToRange;
+import com.bee32.sem.process.verify.builtin.dto.SingleVerifierSupportDto;
+import com.bee32.sem.process.verify.dto.IVerifiableDto;
 
 public class ChanceDto
-        extends UIEntityDto<Chance, Long> {
+        extends UIEntityDto<Chance, Long>
+        implements IVerifiableDto {
 
     private static final long serialVersionUID = 1L;
 
@@ -39,6 +42,8 @@ public class ChanceDto
     ChancePartyDto selectedParty;
     ChanceActionDto selectedAction;
 
+    SingleVerifierSupportDto singleVerifierSupport;
+
     public ChanceDto() {
         super();
     }
@@ -65,6 +70,8 @@ public class ChanceDto
 
         stage = mref(ChanceStageDto.class, source.getStage());
         address = source.getAddress();
+
+        singleVerifierSupport = marshal(SingleVerifierSupportDto.class, source.getVerifyContext());
     }
 
     @Override
@@ -82,6 +89,8 @@ public class ChanceDto
             mergeList(target, "actions", actions);
 
         target.setAddress(address);
+
+        merge(target, "verifyContext", singleVerifierSupport);
     }
 
     @Override
@@ -250,6 +259,15 @@ public class ChanceDto
         if (maxStage != null)
             if (maxOrder > cachedOrder)
                 this.stage = maxStage;
+    }
+
+    @Override
+    public SingleVerifierSupportDto getVerifyContext() {
+        return singleVerifierSupport;
+    }
+
+    public void setVerifyContext(SingleVerifierSupportDto singleVerifierSupport) {
+        this.singleVerifierSupport = singleVerifierSupport;
     }
 
 }
