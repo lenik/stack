@@ -77,6 +77,22 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
 
     @Override
     public int getRowCount() {
+        int count;
+        if (options.isAutoRefreshCount())
+            count = executeCountQuery();
+        else
+            count = super.getRowCount();
+        return count;
+    }
+
+    public void refreshRowCount() {
+        if (!options.autoRefreshCount) {
+            int count = executeCountQuery();
+            setRowCount(count);
+        }
+    }
+
+    protected int executeCountQuery() {
         CommonDataManager dataManager = getDataManager();
         ICriteriaElement criteria = options.compose();
         int count = dataManager.asFor(entityClass).count(criteria);

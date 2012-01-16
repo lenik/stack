@@ -22,6 +22,7 @@ public class EntityDataModelOptions<E extends Entity<?>, D extends EntityDto<? s
     final Class<D> dtoClass;
     private int selection;
     private List<ICriteriaElement> criteriaElements = Collections.emptyList();
+    boolean autoRefreshCount;
 
     public EntityDataModelOptions(Class<E> entityClass, Class<D> dtoClass) {
         this(entityClass, dtoClass, 0, Collections.<ICriteriaElement> emptyList());
@@ -95,6 +96,14 @@ public class EntityDataModelOptions<E extends Entity<?>, D extends EntityDto<? s
             return criteriaElements.get(0);
         else
             return new CriteriaComposite(criteriaElements);
+    }
+
+    public boolean isAutoRefreshCount() {
+        return autoRefreshCount;
+    }
+
+    public void setAutoRefreshCount(boolean autoRefreshCount) {
+        this.autoRefreshCount = autoRefreshCount;
     }
 
 }

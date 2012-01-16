@@ -36,6 +36,7 @@ import com.bee32.sem.frame.search.SearchFragmentWrapper;
 import com.bee32.sem.sandbox.AbstractCriteriaHolder;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
+import com.bee32.sem.sandbox.ZLazyDataModel;
 
 public abstract class SimpleEntityViewBean
         extends EntityViewBean
@@ -47,6 +48,8 @@ public abstract class SimpleEntityViewBean
     protected static final int DELETE_FORCE = 1;
     /** Detach the entity before deletion */
     protected static final int DELETE_DETACH = 2;
+    /** Don't refresh row count */
+    protected static final int DELETE_NO_REFRESH = 128;
 
     /** Force to update entities with user lock */
     protected static final int SAVE_FORCE = 1;
@@ -58,6 +61,8 @@ public abstract class SimpleEntityViewBean
     protected static final int SAVE_FORCE_UNLOCKED = SAVE_FORCE | SAVE_UNLOCKED;
     /** Change the entities' owner to current user before save */
     protected static final int SAVE_CHOWN = 8;
+    /** Don't refresh row count */
+    protected static final int SAVE_NO_REFRESH = 128;
 
     protected Class<? extends Entity<?>> entityClass;
     protected Class<? extends EntityDto<?, ?>> dtoClass;
@@ -67,7 +72,7 @@ public abstract class SimpleEntityViewBean
     List<ICriteriaElement> baseCriteriaElements;
     List<SearchFragment> searchFragments = new ArrayList<SearchFragment>();
     EntityDataModelOptions<?, ?> options;
-    LazyDataModel<?> dataModel;
+    ZLazyDataModel<?, ?> dataModel;
 
     protected String searchPattern;
     protected DateRangeTemplate dateRange = DateRangeTemplate.recentWeek;
@@ -296,6 +301,9 @@ public abstract class SimpleEntityViewBean
             return;
         }
 
+        if ((saveFlags & SAVE_NO_REFRESH) == 0)
+            refreshRowCount();
+
         try {
             postUpdate(entityMap);
         } catch (Exception e) {
@@ -389,6 +397,9 @@ public abstract class SimpleEntityViewBean
             return;
         }
 
+        if ((deleteFlags & DELETE_NO_REFRESH) == 0)
+            refreshRowCount();
+
         try {
             postDelete(entityMap);
         } catch (Exception e) {
@@ -397,6 +408,14 @@ public abstract class SimpleEntityViewBean
 
         String countHint = count == -1 ? "" : (" [" + count + "]");
         uiLogger.info("删除成功" + countHint);
+    }
+
+    protected void refreshRowCount() {
+        try {
+            dataModel.refreshRowCount();
+        } catch (Exception e) {
+            uiLogger.warn("刷新记录时出现异常。", e);
+        }
     }
 
     void openSelectedDtos(int reloadDtoSel) {
