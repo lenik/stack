@@ -13,6 +13,7 @@ import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.tree.TreeEntityDto;
+import com.bee32.plover.web.faces.utils.SelectableList;
 
 public class ACLDto
         extends TreeEntityDto<ACL, Integer, ACLDto> {
@@ -34,6 +35,7 @@ public class ACLDto
     @Override
     protected void _marshal(ACL source) {
         if (selection.contains(ENTRIES)) {
+            entries = new ArrayList<ACLEntryDto>();
             for (Entry<Principal, Permission> _entry : source.getDeclaredEntries().entrySet()) {
                 PrincipalDto principal = mref(PrincipalDto.class, _entry.getKey());
                 Permission permission = _entry.getValue().clone();
@@ -77,6 +79,10 @@ public class ACLDto
 
     public List<ACLEntryDto> getEntries() {
         return entries;
+    }
+
+    public SelectableList<ACLEntryDto> getSelectableEntries() {
+        return SelectableList.decorate(entries);
     }
 
 }
