@@ -27,6 +27,7 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
     EntityDataModelOptions<E, D> options;
     D selection;
     List<D> loaded;
+    Integer lastQueriedCount;
 
     public ZLazyDataModel(EntityDataModelOptions<E, D> options) {
         if (options == null)
@@ -78,25 +79,29 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
     @Override
     public int getRowCount() {
         int count;
-        if (options.isAutoRefreshCount())
+        if (options.isAutoRefreshCount() || lastQueriedCount == null)
             count = executeCountQuery();
-        else
-            count = super.getRowCount();
+        else {
+            count = lastQueriedCount;
+        }
         return count;
     }
 
+    @Override
+    public void setRowCount(int rowCount) {
+        lastQueriedCount = rowCount;
+    }
+
     public void refreshRowCount() {
-        if (!options.autoRefreshCount) {
-            int count = executeCountQuery();
-            setRowCount(count);
-        }
+        if (!options.autoRefreshCount)
+            executeCountQuery();
     }
 
     protected int executeCountQuery() {
         CommonDataManager dataManager = getDataManager();
         ICriteriaElement criteria = options.compose();
-        int count = dataManager.asFor(entityClass).count(criteria);
-        return count;
+        lastQueriedCount = dataManager.asFor(entityClass).count(criteria);
+        return lastQueriedCount;
     }
 
     @Override
