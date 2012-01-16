@@ -517,4 +517,11 @@ public class ChanceActionBean
         this.choosedPartners = choosedPartners;
     }
 
+    @Override
+    public List<?> getSelection() {
+        return listOfNonNulls(selectedAction);
+    }
+
+
+
 }

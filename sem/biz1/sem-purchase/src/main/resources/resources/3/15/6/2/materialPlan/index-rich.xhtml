@@ -48,10 +48,6 @@
 						actionListener="#{materialPlanAdminBean.cancel}"
 						disabled="#{!materialPlanAdminBean.editable}" update="mainForm" async="true" />
 					<p:separator />
-					<p:commandButton value="审核"
-						disabled="#{materialPlanAdminBean.editable}"
-						onclick="verifyDlg.show();" />
-					<p:separator />
 					<p:commandButton value="第一条"
 						actionListener="#{materialPlanAdminBean.first}"
 						disabled="#{materialPlanAdminBean.editable}" update="mainForm"

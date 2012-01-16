@@ -22,6 +22,7 @@ import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.util.PeopleCriteria;
+import com.bee32.sem.process.verify.VerifyEvalState;
 import com.bee32.sem.purchase.dto.InquiryDto;
 import com.bee32.sem.purchase.dto.MaterialPlanDto;
 import com.bee32.sem.purchase.dto.MaterialPlanItemDto;
@@ -506,7 +507,7 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
         List<MaterialPlan> _plans = serviceFor(MaterialPlan.class).list( //
                 CommonCriteria.createdBetweenEx(limitDateFromForPlan, limitDateToForPlan));
 
-        plans = DTOs.marshalList(MaterialPlanDto.class, _plans);
+        plans = DTOs.mrefList(MaterialPlanDto.class, _plans);
     }
 
     public void addPlan() {
@@ -556,7 +557,7 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
                             new Like("name", "%" + supplierPattern + "%"), //
                             new Like("fullName", "%" + supplierPattern + "%")));
 
-            suppliers = DTOs.marshalList(OrgDto.class, _suppliers);
+            suppliers = DTOs.mrefList(OrgDto.class, 0, _suppliers);
         }
     }
 
@@ -585,11 +586,16 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
 
     public void saveInquiry() {
         try {
+            if(!purchaseRequest.getVerifyContext().getVerifyEvalState().equals(VerifyEvalState.VERIFIED)) {
+                uiLogger.error("采购请求还没有审核!");
+                return;
+            }
+
             selectedInquiry.setPurchaseRequestItem(purchaseRequestItem);
             Inquiry _inquiry = selectedInquiry.unmarshal();
             serviceFor(Inquiry.class).saveOrUpdate(_inquiry);
             if (inquiryDetailStatus == INQUIRY_DETAIL_STATUS_NEW) {
-                purchaseRequestItem.addInquiry(DTOs.marshal(InquiryDto.class, _inquiry));
+                purchaseRequestItem.addInquiry(DTOs.marshal(InquiryDto.class, 0, _inquiry));
             }
             uiLogger.info("保存成功.");
         } catch (Exception e) {
@@ -682,5 +688,15 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
             uiLogger.error("错误", e);
             return;
         }
+    }
+
+
+    @Override
+    public List<?> getSelection() {
+        return listOfNonNulls(purchaseRequest);
+    }
+
+    public List<?> getSelectedPurchaseAdvices() {
+        return listOfNonNulls(purchaseAdvice);
     }
 }

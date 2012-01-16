@@ -449,7 +449,7 @@ public class MakeTaskAdminBean extends EntityViewBean {
     public void findOrder() {
         List<MakeOrder> _orders = serviceFor(MakeOrder.class).list( //
                 new Equals("customer.id", customer.getId()), //
-                new Equals("verifyEvalState", VerifyEvalState.VERIFIED.getValue()), //
+                new Equals("verifyContext._verifyEvalState", VerifyEvalState.VERIFIED.getValue()), //
                 CommonCriteria.createdBetweenEx(limitDateFromForOrder, limitDateToForOrder));
 
         orders = DTOs.marshalList(MakeOrderDto.class, _orders);

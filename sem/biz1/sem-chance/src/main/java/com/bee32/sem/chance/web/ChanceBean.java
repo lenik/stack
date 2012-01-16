@@ -572,4 +572,8 @@ public class ChanceBean
         return materialList;
     }
 
+    @Override
+    public List<?> getSelection() {
+        return listOfNonNulls(chanceCopy);
+    }
 }
