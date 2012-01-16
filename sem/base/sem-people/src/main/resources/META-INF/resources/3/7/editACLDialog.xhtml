@@ -15,11 +15,10 @@
 
         <!-- internals -->
         <cc:attribute name="dialogBean" type="java.lang.Object" default="${ACLBean}" />
-        <cc:attribute name="cpd" default="addResponsibleDialog" />
     </cc:interface>
 
     <cc:implementation>
-        <icsf:choosePrincipalDialog caption="${cc.parent.attrs.caption}" var="${cc.parent.attrs.cpd}"
+        <icsf:choosePrincipalDialog caption="${cc.parent.attrs.caption}" var="${cc.parent.attrs.var}_cpd"
             selection="${cc.parent.attrs.dialogBean.entry.principal}" update="${cc.parent.attrs.update}" />
 
         <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
