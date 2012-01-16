@@ -23,26 +23,28 @@
         <ui:insert name="deleteConfirmDialog">
             <p:confirmDialog header="删除确认" message="确定要删除吗?" severity="alert" widgetVar="deleteConfirmDialog"
                 modal="true">
-                <h:form style="margin: 0em 7em 1em">
-                    <p:commandButton value="确定" update=":mainForm:dataTable" actionListener="${bean.deleteSelection}"
+                <h:form id="deleteConfirmDialogForm" style="margin: 0em 7em 1em">
+                    <p:commandButton id="ok" value="确定" update=":mainForm:dataTable" actionListener="${bean.deleteSelection}"
                         oncomplete="deleteConfirmDialog.hide()" />
-                    <p:commandButton value="取消" onclick="deleteConfirmDialog.hide()" type="button" />
+                    <p:commandButton id="cancel" value="取消" onclick="deleteConfirmDialog.hide()" type="button" />
                 </h:form>
             </p:confirmDialog>
         </ui:insert>
     </ui:define>
 
     <ui:define name="sideBarSupport">
-        <icsf:choosePrincipalDialog var="choosePrincipalToSearchDialog" selection="${bean.searchPrincipal}"
-            update=":searchForm" />
+        <icsf:choosePrincipalDialog id="choosePrincipalToSearchDialog" var="choosePrincipalToSearchDialog"
+            selection="${bean.searchPrincipal}" update=":searchForm" />
     </ui:define>
 
     <ui:define name='searchPanel'>
         <p:panel header="按关键字搜索" toggleable="true">
             <div align="center">
                 <p:inputText id="pattern" value="${bean.searchPattern}" />
-                <p:commandButton value="限定名称" actionListener="${bean.addNameOrLabelRestriction}" update="@form, :mainForm" />
-                <p:commandButton value="限定描述" actionListener="${bean.addDescriptionRestriction}" update="@form, :mainForm" />
+                <p:commandButton id="filterNameOrLabel" value="限定名称" actionListener="${bean.addNameOrLabelRestriction}"
+                    update="@form, :mainForm" />
+                <p:commandButton id="filterDescription" value="限定描述" actionListener="${bean.addDescriptionRestriction}"
+                    update="@form, :mainForm" />
             </div>
         </p:panel>
         <p:panel header="按时间搜索" toggleable="true">
@@ -53,17 +55,18 @@
                     <f:selectItems value="${bean.dateRangeTemplates}" var="t" itemLabel="${t.label}"
                         itemValue="${t.index}" />
                 </p:selectOneMenu>
-                <p:commandButton value="限定创建时间" actionListener="${bean.addCreatedDateRestriction}"
+                <p:commandButton id="filterCreatedDate" value="限定创建时间" actionListener="${bean.addCreatedDateRestriction}"
                     update="@form, :mainForm" />
-                <p:commandButton value="限定更新时间" actionListener="${bean.addLastModifiedRestriction}"
+                <p:commandButton id="filterLastModified" value="限定更新时间" actionListener="${bean.addLastModifiedRestriction}"
                     update="@form, :mainForm" />
             </div>
         </p:panel>
         <p:panel header="按相关人搜索" toggleable="true">
             <div align="center">
                 <p:inputText id="principal" readonly="true" value="${bean.searchPrincipal.displayName}" />
-                <p:commandButton value="..." onclick="choosePrincipalToSearchDialog.show()" />
-                <p:commandButton value="限定所有者" actionListener="${bean.addOwnerRestriction}" update="@form, :mainForm" />
+                <p:commandButton id="choosePrincipal" value="..." onclick="choosePrincipalToSearchDialog.show()" />
+                <p:commandButton id="filterOwner" value="限定所有者" actionListener="${bean.addOwnerRestriction}"
+                    update="@form, :mainForm" />
             </div>
         </p:panel>
         <ui:insert name="searchPanel.1" />
@@ -73,10 +76,23 @@
         <h:panelGroup id="searchFragments" style="display: block; padding: .2em 0em; background: #eee">
             <ui:repeat id="repeat" var="fragment" value="${bean.searchFragments}">
                 <c:set var="form" value="${component.parent.parent.parent.clientId}" />
-                <p:commandButton value="${fragment.entryLabel}" async="true" actionListener="${fragment.detach}"
-                    update="@form, :mainForm" />
+                <p:commandButton id="removeButton" value="${fragment.entryLabel}" async="true"
+                    actionListener="${fragment.detach}" update="@form, :mainForm" />
             </ui:repeat>
         </h:panelGroup>
+    </ui:define>
+
+    <ui:define name="dialogs.0">
+        <ui:insert name="editForm">
+            <h:form id="editForm" />
+        </ui:insert>
+        <ui:insert name="editDialogWrapper">
+            <f:subview id="editDialog">
+                <ui:insert name="editDialog">
+                    <h:form id="form" />
+                </ui:insert>
+            </f:subview>
+        </ui:insert>
     </ui:define>
 
 </ui:composition>
