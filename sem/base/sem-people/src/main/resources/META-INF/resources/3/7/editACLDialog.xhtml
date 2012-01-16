@@ -18,8 +18,9 @@
     </cc:interface>
 
     <cc:implementation>
+        <icsf:chooseACLDialog selection="${cc.parent.attrs.value.inheritedACL}" update="${cc.parent.clientId}:inheritedACL" />
         <icsf:choosePrincipalDialog caption="${cc.parent.attrs.caption}" var="${cc.parent.attrs.var}_cpd"
-            selection="${cc.parent.attrs.dialogBean.entry.principal}" update="${cc.parent.attrs.update}" />
+            selection="${cc.parent.attrs.dialogBean.entry.principal}" update="${cc.parent.clientId}:editEntryForm" />
 
         <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
         <c:set var="dialogVar" value="${cc.attrs.var}" />
@@ -30,21 +31,23 @@
 
                 <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
                     <h:outputText value="名称" />
-                    <p:inputText value="${obj.label}" />
+                    <p:inputText id="label" value="${obj.label}" />
 
                     <h:outputText value="继承的ACL" />
                     <h:panelGroup>
-                        <p:inputText value="${obj.inheritedACL.label}" readonly="true" />
+                        <p:inputText id="inheritedACL" value="${obj.inheritedACL.label}" readonly="true" />
                         <p:commandButton value="选择" />
                     </h:panelGroup>
 
                     <h:outputText value="描述" />
-                    <p:inputText value="${obj.description}" size="50" />
+                    <p:inputText id="description" value="${obj.description}" size="50" />
                 </t:panelGrid>
 
                 <p:fieldset legend="列表项（ACE）" toggleable="false">
-                    <p:dataTable id="entryTable" value="${obj.entries}" var="entry" resizableColumns="true"
-                        rowIndexVar="rowIndex">
+                    <p:dataTable id="entryTable" var="entry" value="${obj.selectableEntries}" selection="${dialogBean.selectedEntry}"
+                        selectionMode="single" paginator="true" rows="20" lazy="false" paginatorTemplate="${viewConfig.paginatorTemplate}"
+                        rowsPerPageTemplate="${viewConfig.pageSizeTemplate}" resizableColumns="true" rowIndexVar="rowIndex">
+
                         <p:column headerText="序号" style="width: 4em;">
                             <h:outputText value="${rowIndex+1}" />
                         </p:column>
@@ -66,13 +69,40 @@
                         </p:column>
                     </p:dataTable>
 
-                    <p:commandButton value="添加条目" update="@form" onclick="addEntryDialog.show()" />
+                    <p:commandButton value="添加条目" actionListener="${dialogBean.createEntry}" update="${cc.clientId}:editEntryForm"
+                        oncomplete="editEntryDialog.show()" />
+                    <p:commandButton value="编辑条目" actionListener="${dialogBean.editEntry}" update="${cc.clientId}:editEntryForm"
+                        oncomplete="editEntryDialog.show()" disabled="${dialogBean.entry == null}" />
                 </p:fieldset>
 
                 <div align="right">
                     <p:commandButton id="save-validated" value="保存" update="${cc.attrs.update}"
                         oncomplete="${dialogVar}.hideValidated(args)" />
                     <p:commandButton id="cancel" value="取消" onclick="${dialogVar}.hide()" />
+                </div>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog id="editEntryDialog" header="编辑 ACL 条目" widgetVar="editEntryDialog" modal="true">
+            <h:form id="editEntryForm" style="max-height: 30em; margin: 1em">
+                <t:panelGrid rendered="${dialogBean.entry != null}" columns="2"
+                    columnClasses="detail_col_title,detail_col_value">
+
+                    <h:outputText value="安全主体" />
+                    <t:panelGrid columns="2">
+                        <p:inputText id="principal" readonly="true" value="${dialogBean.entry.principal.displayName}" />
+                        <p:commandButton id="choosePrincipal" value="..." onclick="${cc.attrs.var}_cpd.show()" />
+                    </t:panelGrid>
+
+                    <h:outputText value="权限" />
+                    <t:panelGrid columns="2">
+                    </t:panelGrid>
+                </t:panelGrid>
+
+                <div align="right">
+                    <p:commandButton id="add-validated" value="确定" actionListener="${dialogBean.addEntry}"
+                        update="${cc.clientId}:form:entryTable" oncomplete="editEntryDialog.hideValidated(args)" />
+                    <p:commandButton id="cancel" value="取消" onclick="editEntryDialog.hide()" />
                 </div>
             </h:form>
         </p:dialog>

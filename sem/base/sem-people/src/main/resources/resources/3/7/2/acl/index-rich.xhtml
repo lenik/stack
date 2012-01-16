@@ -30,9 +30,7 @@
         </p:column>
     </ui:define>
 
-    <ui:define name="dialogs">
-        <icsf:chooseACLDialog selection="#{bean.entry.inheritedACL}" update=":editEntryForm:inheritedACL" />
-        <icsf:choosePrincipalDialog selection="#{bean.entry.principal}" update=":editEntryForm:principal" />
+    <ui:define name="editDialogWrapper">
         <icsf:editACLDialog id="editDialog" var="editDialog" value="#{bean.activeObject}"
             actionListener="#{bean.save}" update=":mainForm" />
     </ui:define>

@@ -77,7 +77,6 @@ public class ACL
         if (entryMap == null)
             throw new NullPointerException("entryMap");
         this.entryMap = entryMap;
-        this.entryMap = TransformedMap.decorate(entryMap, NOPTransformer.INSTANCE, PermissionTransformer.INSTANCE);
     }
 
     @Transient

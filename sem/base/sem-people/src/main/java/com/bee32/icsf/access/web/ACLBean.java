@@ -10,22 +10,13 @@ public class ACLBean
 
     private static final long serialVersionUID = 1L;
 
-    ACLEntryDto selectedEntry;
-    ACLEntryDto entry;
-
     public ACLBean() {
         super(ACL.class, ACLDto.class, 0);
     }
 
-    public void addEntry() {
-        ACLDto acl = getActiveObject();
-        acl.getEntries().add(entry);
-    }
+    // editForm
 
-    public void removeEntry() {
-        ACLDto acl = getActiveObject();
-        acl.getEntries().remove(selectedEntry);
-    }
+    ACLEntryDto selectedEntry;
 
     public ACLEntryDto getSelectedEntry() {
         return selectedEntry;
@@ -35,12 +26,36 @@ public class ACLBean
         this.selectedEntry = selectedEntry;
     }
 
+    public void removeEntry() {
+        ACLDto acl = getActiveObject();
+        acl.getEntries().remove(selectedEntry);
+    }
+
+    public void createEntry() {
+        entry = new ACLEntryDto().create();
+    }
+
+    public void editEntry() {
+        if (selectedEntry == null)
+            return;
+        entry = reload(selectedEntry);
+    }
+
+    // editEntryForm
+
+    ACLEntryDto entry;
+
     public ACLEntryDto getEntry() {
         return entry;
     }
 
-    public void setEntry(ACLEntryDto entry) {
-        this.entry = entry;
+    public void addEntry() {
+        if (entry == null)
+            throw new NullPointerException("entry");
+        ACLDto acl = getActiveObject();
+        entry.setACL(acl);
+        acl.getEntries().add(entry);
+        entry = null;
     }
 
 }
