@@ -1,15 +1,15 @@
 <p:dialog xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:cc="http://java.sun.com/jsf/composite"
     xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
-    xmlns:p="http://primefaces.org/ui" id="dialog" header="${caption}" widgetVar="${var}" modal="true" position="middle">
+    xmlns:p="http://primefaces.org/ui" id="dialog" header="${caption}" widgetVar="${var}" modal="true" position="center">
     <h:form id="form" style="${style}">
 
         <p:fieldset id="searchFieldset" legend="搜索" toggleable="true" collapsed="true">
             <ui:insert name="searchPanel">
                 <p:inputText id="pattern" value="${dialogBean.searchPattern}" />
                 <p:commandButton id="filterName" value="限定名称" actionListener="${dialogBean.addNameOrLabelRestriction}"
-                    update="@form" />
+                    update="form" />
                 <p:commandButton id="filterDescription" value="限定描述" actionListener="${dialogBean.addDescription}"
-                    update="@form" />
+                    update="form" />
                 <ui:insert name="searchPanel.1" />
             </ui:insert>
         </p:fieldset>
@@ -17,7 +17,7 @@
         <h:panelGroup id="searchFragments" style="display: block; padding: .2em 0em;">
             <ui:repeat id="repeat" var="fragment" value="${dialogBean.searchFragments}">
                 <p:commandButton id="removeButton" value="${fragment.entryLabel}" async="true"
-                    actionListener="${fragment.detach}" update="@form" />
+                    actionListener="${fragment.detach}" update=":searchForm" />
             </ui:repeat>
         </h:panelGroup>
 
