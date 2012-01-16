@@ -7,8 +7,8 @@
     <ui:param name="bean" value="#{stockOrderVerifyPolicyBean}" />
 
     <ui:define name="includes">
-        <sem:chooseVerifyPolicyDialog id="chooseVerifyPolicyDialog" selection="#{bean.selectedPolicy}"
-            actionListener="#{bean.setEntryTargetPolicy}" update=":addEntryForm:policy" />
+        <sem:chooseVerifyPolicyDialog id="chooseVerifyPolicyDialog" selection="#{bean.entry.targetPolicy}"
+            update=":addEntryForm:policy" />
     </ui:define>
 
     <ui:define name="dataTableColumns">

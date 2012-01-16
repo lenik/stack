@@ -18,7 +18,6 @@ public class StockOrderVerifyPolicyBean
 
     StockOrderSubjectPolicyEntry selectedEntry;
     StockOrderSubjectPolicyEntry entry;
-    VerifyPolicyDto selectedPolicy;
 
     public StockOrderVerifyPolicyBean() {
         super(StockOrderVerifyPolicy.class, StockOrderVerifyPolicyDto.class, 0);
@@ -60,18 +59,6 @@ public class StockOrderVerifyPolicyBean
 
     public Collection<StockOrderSubject> getSubjects() {
         return StockOrderSubject.getVirtuals();
-    }
-
-    public VerifyPolicyDto getSelectedPolicy() {
-        return selectedPolicy;
-    }
-
-    public void setSelectedPolicy(VerifyPolicyDto selectedPolicy) {
-        this.selectedPolicy = selectedPolicy;
-    }
-
-    public void setEntryTargetPolicy() {
-        entry.setPolicy((VerifyPolicyDto) selectedPolicy);
     }
 
 }

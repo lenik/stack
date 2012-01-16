@@ -6,7 +6,6 @@ import com.bee32.sem.process.verify.builtin.SingleVerifierPolicy;
 import com.bee32.sem.process.verify.builtin.SingleVerifierRankedPolicy;
 import com.bee32.sem.process.verify.builtin.dto.SingleVerifierLevelDto;
 import com.bee32.sem.process.verify.builtin.dto.SingleVerifierRankedPolicyDto;
-import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 
 @ForEntity(SingleVerifierPolicy.class)
 public class SingleVerifierRankedPolicyBean
@@ -16,7 +15,6 @@ public class SingleVerifierRankedPolicyBean
 
     SingleVerifierLevelDto selectedLevel;
     SingleVerifierLevelDto level;
-    VerifyPolicyDto selectedPolicy;
 
     public SingleVerifierRankedPolicyBean() {
         super(SingleVerifierRankedPolicy.class, SingleVerifierRankedPolicyDto.class, 0);
@@ -51,18 +49,6 @@ public class SingleVerifierRankedPolicyBean
     public void removeLevel() {
         SingleVerifierRankedPolicyDto policy = getActiveObject();
         policy.getLevels().remove(selectedLevel);
-    }
-
-    public VerifyPolicyDto getSelectedPolicy() {
-        return selectedPolicy;
-    }
-
-    public void setSelectedPolicy(VerifyPolicyDto selectedPolicy) {
-        this.selectedPolicy = selectedPolicy;
-    }
-
-    public void setLevelTargetPolicy() {
-        level.setTargetPolicy(selectedPolicy);
     }
 
 }

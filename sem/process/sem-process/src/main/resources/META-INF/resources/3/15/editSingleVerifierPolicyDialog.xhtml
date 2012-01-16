@@ -30,13 +30,11 @@
             <h:form id="form" style="${cc.attrs.style}">
 
                 <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
-
                     <h:outputText value="名称" />
                     <p:inputText value="${obj.label}" />
 
                     <h:outputText value="描述" />
                     <p:inputText value="${obj.description}" size="50" />
-
                 </t:panelGrid>
 
                 <p:fieldset legend="责任人列表" toggleable="false">
@@ -64,7 +62,7 @@
                         </p:column>
                     </p:dataTable>
 
-                    <p:commandButton value="增加责任人" onclick="${cc.attrs.var}_cpd.show()" />
+                    <p:commandButton value="添加责任人" onclick="${cc.attrs.var}_cpd.show()" />
                 </p:fieldset>
 
                 <div align="right">
