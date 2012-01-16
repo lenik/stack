@@ -3,35 +3,15 @@
     xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:icsf="http://java.sun.com/jsf/composite/3/7"
     xmlns:sem="http://java.sun.com/jsf/composite/3/15" template="/template/simple-entity.xhtml">
 
-    <ui:param name="title" value="访问控制列表（ACL）" />
+    <ui:param name="title" value="安全策略" />
     <ui:param name="bean" value="#{ACLBean}" />
 
-    <ui:define name="includes">
-        <ui:include src="/3/7/2/EditACLDialog.xhtml">
-            <ui:param name="listener" value="#{bean.saveAdapter}" />
-        </ui:include>
-        <ui:include src="/3/7/2/ChooseACLDialog.xhtml">
-            <ui:param name="listener" value="#{bean.setEntryInheritedACLAdapter}" />
-            <ui:param name="update" value=":editEntryForm:inheritedACL" />
-        </ui:include>
-        <ui:include src="/3/7/1/ChoosePrincipalDialog.xhtml">
-            <ui:param name="listener" value="#{bean.setEntryPrincipalAdapter}" />
-            <ui:param name="update" value=":editEntryForm:principal" />
-        </ui:include>
-    </ui:define>
-
     <ui:define name="dataTableColumns">
-        <f:facet name="header">访问控制列表</f:facet>
-
-        <p:column headerText="序号">
-            <h:outputText value="#{rowIndex + 1}" />
-        </p:column>
-
         <p:column headerText="名称">
             <h:outputText value="#{entry.label}" />
         </p:column>
 
-        <p:column headerText="继承的ACL">
+        <p:column headerText="继承的策略">
             <h:outputText value="#{entry.inheritedACL.label}" />
         </p:column>
 
@@ -48,6 +28,13 @@
         <p:column headerText="所有人">
             <h:outputText value="#{entry.owner.displayName}" />
         </p:column>
+    </ui:define>
+
+    <ui:define name="dialogs">
+        <icsf:chooseACLDialog selection="#{bean.entry.inheritedACL}" update=":editEntryForm:inheritedACL" />
+        <icsf:choosePrincipalDialog selection="#{bean.entry.principal}" update=":editEntryForm:principal" />
+        <icsf:editACLDialog id="editDialog" var="editDialog" value="#{bean.activeObject}"
+            actionListener="#{bean.save}" update=":mainForm" />
     </ui:define>
 
 </ui:composition>

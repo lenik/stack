@@ -60,4 +60,34 @@ public class ACLEntryDto
         map.put("permission", permission.getModeString());
     }
 
+    public ACLDto getACL() {
+        return acl;
+    }
+
+    public void setACL(ACLDto acl) {
+        if (acl == null)
+            throw new NullPointerException("acl");
+        this.acl = acl;
+    }
+
+    public PrincipalDto getPrincipal() {
+        return principal;
+    }
+
+    public void setPrincipal(PrincipalDto principal) {
+        if (principal == null)
+            throw new NullPointerException("principal");
+        this.principal = principal;
+    }
+
+    public Permission getPermission() {
+        return permission;
+    }
+
+    public void setPermission(Permission permission) {
+        if (permission == null)
+            throw new NullPointerException("permission");
+        this.permission = permission;
+    }
+
 }

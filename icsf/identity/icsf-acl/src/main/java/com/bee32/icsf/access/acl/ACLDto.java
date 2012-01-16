@@ -2,6 +2,7 @@ package com.bee32.icsf.access.acl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.free.NotImplementedException;
@@ -20,7 +21,7 @@ public class ACLDto
 
     public static final int ENTRIES = 1;
 
-    List<ACEDto> entries;
+    List<ACLEntryDto> entries;
 
     public ACLDto() {
         super();
@@ -36,22 +37,26 @@ public class ACLDto
             for (Entry<Principal, Permission> _entry : source.getDeclaredEntries().entrySet()) {
                 PrincipalDto principal = mref(PrincipalDto.class, _entry.getKey());
                 Permission permission = _entry.getValue().clone();
-                ACEDto entry = new ACEDto(principal, permission);
+                ACLEntryDto entry = new ACLEntryDto();
+                entry.setACL(this);
+                entry.setPrincipal(principal);
+                entry.setPermission(permission);
                 entries.add(entry);
             }
         } else {
-            entries = new ArrayList<ACEDto>();
+            entries = new ArrayList<ACLEntryDto>();
         }
     }
 
     @Override
     protected void _unmarshalTo(ACL target) {
         if (selection.contains(ENTRIES)) {
-            target.getEntryMap().clear();
-            for (ACEDto entry : entries) {
+            Map<Principal, ACLEntry> map = target.getEntryMap();
+            map.clear();
+            for (ACLEntryDto entry : entries) {
                 Principal _principal = entry.getPrincipal().unmarshal(getSession());
-                Permission _permission = entry.getPermission().clone();
-                target.add(_principal, _permission);
+                ACLEntry _entry = entry.unmarshal();
+                map.put(_principal, _entry);
             }
         }
     }
@@ -62,7 +67,15 @@ public class ACLDto
         throw new NotImplementedException();
     }
 
-    public List<ACEDto> getEntries() {
+    public ACLDto getInheritedACL() {
+        return getParent();
+    }
+
+    public void setInheritedACL(ACLDto inheritedDto) {
+        setParent(inheritedDto);
+    }
+
+    public List<ACLEntryDto> getEntries() {
         return entries;
     }
 

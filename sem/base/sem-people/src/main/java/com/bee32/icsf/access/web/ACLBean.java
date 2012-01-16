@@ -1,21 +1,17 @@
 package com.bee32.icsf.access.web;
 
-import java.util.List;
-
-import com.bee32.icsf.access.acl.ACEDto;
 import com.bee32.icsf.access.acl.ACL;
 import com.bee32.icsf.access.acl.ACLDto;
-import com.bee32.icsf.principal.PrincipalDto;
+import com.bee32.icsf.access.acl.ACLEntryDto;
 import com.bee32.sem.misc.SimpleEntityViewBean;
-import com.bee32.sem.people.web.ChoosePrincipalDialogListener;
 
 public class ACLBean
         extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
-    ACEDto selectedEntry;
-    ACEDto entry;
+    ACLEntryDto selectedEntry;
+    ACLEntryDto entry;
 
     public ACLBean() {
         super(ACL.class, ACLDto.class, 0);
@@ -31,32 +27,20 @@ public class ACLBean
         acl.getEntries().remove(selectedEntry);
     }
 
-    public ACEDto getSelectedEntry() {
+    public ACLEntryDto getSelectedEntry() {
         return selectedEntry;
     }
 
-    public void setSelectedEntry(ACEDto selectedEntry) {
+    public void setSelectedEntry(ACLEntryDto selectedEntry) {
         this.selectedEntry = selectedEntry;
     }
 
-    public ACEDto getEntry() {
+    public ACLEntryDto getEntry() {
         return entry;
     }
 
-    public void setEntry(ACEDto entry) {
+    public void setEntry(ACLEntryDto entry) {
         this.entry = entry;
-    }
-
-    public Object getSetEntryPrincipalAdapter() {
-        return new ChoosePrincipalDialogListener() {
-            @Override
-            protected void selected(List<?> selection) {
-                for (Object item : selection) {
-                    entry.setPrincipal((PrincipalDto) item);
-                    break;
-                }
-            }
-        };
     }
 
 }

@@ -5,7 +5,8 @@
     <cc:interface>
         <!-- basic -->
         <cc:attribute name="var" default="editACLDialog" />
-        <cc:attribute name="value" default="${ACLBean.singleSelection}" />
+        <cc:attribute name="value" type="java.lang.Object" required="true" />
+        <cc:attribute name="actionListener" targets="form:ok" />
         <cc:attribute name="update" />
 
         <!-- ui overrides -->
@@ -13,23 +14,22 @@
         <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
 
         <!-- internals -->
-        <cc:attribute name="dialogBean" default="${ACLBean}" />
-        <cc:attribute name="addResponsibleDialogVar" default="addResponsibleDialog" />
+        <cc:attribute name="dialogBean" type="java.lang.Object" default="${ACLBean}" />
+        <cc:attribute name="cpd" default="addResponsibleDialog" />
     </cc:interface>
 
     <cc:implementation>
+        <icsf:choosePrincipalDialog caption="${cc.parent.attrs.caption}" var="${cc.parent.attrs.cpd}"
+            selection="${cc.parent.attrs.dialogBean.entry.principal}" update="${cc.parent.attrs.update}" />
+
         <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
         <c:set var="dialogVar" value="${cc.attrs.var}" />
-
-        <icsf:choosePrincipalDialog caption="选择用户或组" var="${cc.attrs.addResponsibleDialogVar}"
-            actionListener="${dialogBean.addResponsible}" selection="${dialogBean.selectedResponsible}" update="${cc.attrs.clientId}:form" />
 
         <p:dialog header="${cc.attrs.caption}" widgetVar="${cc.attrs.var}" modal="true">
             <c:set var="obj" value="${cc.attrs.value}" />
             <h:form id="form" style="${cc.attrs.style}">
 
                 <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
-
                     <h:outputText value="名称" />
                     <p:inputText value="${obj.label}" />
 
@@ -41,7 +41,6 @@
 
                     <h:outputText value="描述" />
                     <p:inputText value="${obj.description}" size="50" />
-
                 </t:panelGrid>
 
                 <p:fieldset legend="列表项（ACE）" toggleable="false">
@@ -68,7 +67,7 @@
                         </p:column>
                     </p:dataTable>
 
-                    <p:commandButton value="增加责任对象" update="@form" onclick="addEntryDialog.show()" />
+                    <p:commandButton value="添加条目" update="@form" onclick="addEntryDialog.show()" />
                 </p:fieldset>
 
                 <div align="right">

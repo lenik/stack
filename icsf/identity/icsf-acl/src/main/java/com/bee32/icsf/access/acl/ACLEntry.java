@@ -80,79 +80,79 @@ public class ACLEntry
         return permission;
     }
 
-    public void setPermission(Permission allow) {
-        if (allow == null)
-            throw new NullPointerException("allow");
-        this.permission = allow;
+    public void setPermission(Permission permission) {
+        if (permission == null)
+            throw new NullPointerException("permission");
+        this.permission = permission;
     }
 
     @Index(name = "##_admin")
     @Column
-    public Boolean getAdmin() {
+    Boolean getAdmin() {
         return permission.getAdmin().getTristateBoolean();
     }
 
-    public void setAdmin(Boolean f) {
+    void setAdmin(Boolean f) {
         permission.setAdmin(f);
     }
 
     @Index(name = "##_user")
     @Column
-    public Boolean getUser() {
+    Boolean getUser() {
         return permission.getUser().getTristateBoolean();
     }
 
-    public void setUser(Boolean f) {
+    void setUser(Boolean f) {
         permission.setUser(f);
     }
 
     @Index(name = "##_readable")
     @Column
-    public Boolean getReadable() {
+    Boolean getReadable() {
         return permission.getRead().getTristateBoolean();
     }
 
-    public void setReadable(Boolean f) {
+    void setReadable(Boolean f) {
         permission.setReadable(f);
     }
 
     @Index(name = "##_writable")
     @Column
-    public Boolean getWritable() {
+    Boolean getWritable() {
         return permission.getWrite().getTristateBoolean();
     }
 
-    public void setWritable(Boolean f) {
+    void setWritable(Boolean f) {
         permission.setWritable(f);
     }
 
     @Index(name = "##_executable")
     @Column
-    public Boolean getExecutable() {
+    Boolean getExecutable() {
         return permission.getExecute().getTristateBoolean();
     }
 
-    public void setExecutable(Boolean f) {
+    void setExecutable(Boolean f) {
         permission.setExecutable(f);
     }
 
     @Index(name = "##_creatable")
     @Column
-    public Boolean getCreatable() {
+    Boolean getCreatable() {
         return permission.getCreate().getTristateBoolean();
     }
 
-    public void setCreatable(Boolean f) {
+    void setCreatable(Boolean f) {
         permission.setCreatable(f);
     }
 
     @Index(name = "##_deletable")
     @Column
-    public Boolean getDeletable() {
+    Boolean getDeletable() {
         return permission.getDelete().getTristateBoolean();
     }
 
-    public void setDeletable(Boolean f) {
+    void setDeletable(Boolean f) {
         permission.setDeletable(f);
     }
 
