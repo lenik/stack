@@ -6,14 +6,15 @@
     <ui:define name="toolbar">
         <p:toolbar id="toolbar">
             <p:toolbarGroup align="left">
-                <p:commandButton value="新增" actionListener="${bean.showCreateForm}" oncomplete="editDialog.show()"
-                    update=":editDialog:form, :editForm" />
+                <p:commandButton id="createButton" value="新增" actionListener="${bean.showCreateForm}"
+                    oncomplete="editDialog.show()" update=":editDialog:form, :editForm" />
                 <!-- TODO toggle button in PF-3.1: searchPanel toggler -->
             </p:toolbarGroup>
             <p:toolbarGroup align="right">
-                <p:commandButton value="修改" actionListener="${bean.showEditForm}" oncomplete="editDialog.show()"
-                    disabled="${not bean.selected}" update=":editDialog:form, :editForm" />
-                <p:commandButton value="删除" onclick="deleteConfirmDialog.show()" disabled="${not bean.selected}" />
+                <p:commandButton id="editButton" value="修改" actionListener="${bean.showEditForm}"
+                    oncomplete="editDialog.show()" disabled="${not bean.selected}" update=":editDialog:form, :editForm" />
+                <p:commandButton id="deleteButton" value="删除" onclick="deleteConfirmDialog.show()"
+                    disabled="${not bean.selected}" />
                 <ui:insert name="toolbarPeripherals" />
             </p:toolbarGroup>
         </p:toolbar>
@@ -21,11 +22,11 @@
 
     <ui:define name="toolbarDialogs">
         <ui:insert name="deleteConfirmDialog">
-            <p:confirmDialog header="删除确认" message="确定要删除吗?" severity="alert" widgetVar="deleteConfirmDialog"
-                modal="true">
-                <h:form id="deleteConfirmDialogForm" style="margin: 0em 7em 1em">
-                    <p:commandButton id="ok" value="确定" update=":mainForm:dataTable" actionListener="${bean.deleteSelection}"
-                        oncomplete="deleteConfirmDialog.hide()" />
+            <p:confirmDialog id="deleteConfirmDialog" widgetVar="deleteConfirmDialog" header="删除确认"
+                message="确定要删除吗?" severity="alert" modal="true">
+                <h:form id="deleteConfirmForm" style="margin: 0em 7em 1em">
+                    <p:commandButton id="ok" value="确定" update=":mainForm:dataTable, ${mirrorTargets}"
+                        actionListener="${bean.deleteSelection}" oncomplete="deleteConfirmDialog.hide()" />
                     <p:commandButton id="cancel" value="取消" onclick="deleteConfirmDialog.hide()" type="button" />
                 </h:form>
             </p:confirmDialog>
