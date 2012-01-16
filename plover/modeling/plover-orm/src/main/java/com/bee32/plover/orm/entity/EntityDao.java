@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.free.NotImplementedException;
-import javax.free.UnexpectedException;
 import javax.inject.Inject;
 import javax.persistence.PostLoad;
 import javax.persistence.PostPersist;
@@ -511,7 +510,8 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
 
         Object result = criteria.uniqueResult();
         if (result == null)
-            throw new UnexpectedException("Count() returns null");
+            return 0;
+        // throw new UnexpectedException("Count() returns null");
 
         return ((Number) result).intValue();
     }
