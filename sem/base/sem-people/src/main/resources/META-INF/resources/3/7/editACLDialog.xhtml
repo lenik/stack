@@ -6,7 +6,7 @@
         <!-- basic -->
         <cc:attribute name="var" default="editACLDialog" />
         <cc:attribute name="value" type="java.lang.Object" required="true" />
-        <cc:attribute name="actionListener" targets="form:ok" />
+        <cc:attribute name="actionListener" targets="form:save-validated" />
         <cc:attribute name="update" />
 
         <!-- ui overrides -->
@@ -70,7 +70,8 @@
                 </p:fieldset>
 
                 <div align="right">
-                    <p:commandButton id="ok" value="保存" update="${cc.attrs.update}" oncomplete="${dialogVar}.hide()" />
+                    <p:commandButton id="save-validated" value="保存" update="${cc.attrs.update}"
+                        oncomplete="${dialogVar}.hideValidated(args)" />
                     <p:commandButton id="cancel" value="取消" onclick="${dialogVar}.hide()" />
                 </div>
             </h:form>

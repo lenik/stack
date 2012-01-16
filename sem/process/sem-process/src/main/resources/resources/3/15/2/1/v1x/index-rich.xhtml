@@ -74,8 +74,8 @@
                 </p:fieldset>
 
                 <div align="right">
-                    <p:commandButton update="mainForm:dataTable" value="保存" actionListener="#{bean.save}"
-                        oncomplete="editDialog.hide()" />
+                    <p:commandButton id="save-validated" value="保存" actionListener="#{bean.save}"
+                        update="mainForm:dataTable" oncomplete="editDialog.hideValidated(args)" />
                     <p:commandButton value="取消" onclick="editDialog.hide()" />
                 </div>
             </h:form>
@@ -98,9 +98,9 @@
                 </t:panelGrid>
 
                 <div align="right">
-                    <p:commandButton value="保存" actionListener="#{bean.addLevel}" update=":editDialog:form"
-                        oncomplete="addLevelDialog.hide()" />
-                    <p:commandButton value="取消" onclick="addLevelDialog.hide()" />
+                    <p:commandButton id="add-validated" value="确定" actionListener="#{bean.addLevel}"
+                        update=":editDialog:form" oncomplete="addLevelDialog.hideValidated(args)" />
+                    <p:commandButton id="cancel" value="取消" onclick="addLevelDialog.hide()" />
                 </div>
             </h:form>
         </p:dialog>

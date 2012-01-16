@@ -3,11 +3,13 @@ package com.bee32.icsf.access.acl;
 import java.util.Map;
 
 import javax.free.ParseException;
+import javax.validation.constraints.NotNull;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.validation.NotNullId;
 
 public class ACLEntryDto
         extends EntityDto<ACLEntry, Long> {
@@ -60,6 +62,7 @@ public class ACLEntryDto
         map.put("permission", permission.getModeString());
     }
 
+    @NotNullId
     public ACLDto getACL() {
         return acl;
     }
@@ -70,6 +73,7 @@ public class ACLEntryDto
         this.acl = acl;
     }
 
+    @NotNullId
     public PrincipalDto getPrincipal() {
         return principal;
     }
@@ -80,6 +84,7 @@ public class ACLEntryDto
         this.principal = principal;
     }
 
+    @NotNull
     public Permission getPermission() {
         return permission;
     }

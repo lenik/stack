@@ -66,7 +66,8 @@
                 </p:fieldset>
 
                 <div align="right">
-                    <p:commandButton id="ok" value="保存" update="${cc.attrs.update}" oncomplete="${cc.attrs.var}.hide()" />
+                    <p:commandButton id="save-validated" value="保存" update="${cc.attrs.update}"
+                        oncomplete="${cc.attrs.var}.hideValidated(args)" />
                     <p:commandButton id="cancel" value="取消" onclick="${cc.attrs.var}.hide()" />
                 </div>
             </h:form>
