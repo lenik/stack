@@ -105,7 +105,7 @@ public abstract class EntityViewBean
         return selection;
     }
 
-    public List<?> getSelection(Class<?>... interfaces) {
+    public final List<?> getSelection(Class<?>... interfaces) {
         List<?> selection = getSelection();
         if (interfaces.length == 0)
             return selection;
@@ -131,7 +131,7 @@ public abstract class EntityViewBean
         this.selection = selection;
     }
 
-    public Object getSingleSelection() {
+    public final Object getSingleSelection() {
         List<?> selection = getSelection();
         if (selection.isEmpty())
             return null;
@@ -139,26 +139,26 @@ public abstract class EntityViewBean
             return selection.get(0);
     }
 
-    public void setSingleSelection(Object singleSelection) {
+    public final void setSingleSelection(Object singleSelection) {
         List<Object> list = new ArrayList<Object>();
         if (singleSelection != null)
             list.add(singleSelection);
         setSelection(list);
     }
 
-    public Object[] getSelectionArray() {
+    public final Object[] getSelectionArray() {
         Object[] array = selection.toArray();
         return array;
     }
 
-    public void setSelectionArray(Object... selectionArray) {
+    public final void setSelectionArray(Object... selectionArray) {
         List<Object> list = new ArrayList<Object>(selectionArray.length);
         for (Object item : selectionArray)
             list.add(item);
         setSelection(list);
     }
 
-    public boolean isSelected() {
+    public final boolean isSelected() {
         return !getSelection().isEmpty();
     }
 
@@ -172,7 +172,7 @@ public abstract class EntityViewBean
         this.activeObjects = activeObjects;
     }
 
-    public <T> T getActiveObject(boolean selectionRequired) {
+    public final <T> T getActiveObject(boolean selectionRequired) {
         T activeObject = getActiveObject();
         if (!selectionRequired && activeObject == null) {
             uiLogger.error("请先选择对象。");
@@ -181,7 +181,7 @@ public abstract class EntityViewBean
         return activeObject;
     }
 
-    public <T> T getActiveObject() {
+    public final <T> T getActiveObject() {
         List<?> objects = getActiveObjects();
         if (objects.isEmpty())
             return null;
@@ -189,12 +189,12 @@ public abstract class EntityViewBean
         return first;
     }
 
-    public void setActiveObject(Object activeObject) {
+    public final void setActiveObject(Object activeObject) {
         List<?> nonNulls = listOfNonNulls(activeObject);
         setActiveObjects(nonNulls);
     }
 
-    public boolean isActived() {
+    public final boolean isActived() {
         return !getActiveObjects().isEmpty();
     }
 
