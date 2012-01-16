@@ -15,7 +15,7 @@ public class IsNotEmpty
     }
 
     @Override
-    protected Criterion buildCriterion() {
+    protected Criterion buildCriterion(int options) {
         return Restrictions.isNotEmpty(propertyName);
     }
 

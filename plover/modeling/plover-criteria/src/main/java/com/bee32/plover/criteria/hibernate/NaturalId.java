@@ -23,7 +23,7 @@ public class NaturalId
     }
 
     @Override
-    public void apply(Criteria criteria) {
+    public void apply(Criteria criteria, int options) {
     }
 
     public void set(String property, Object value) {
@@ -32,7 +32,7 @@ public class NaturalId
     }
 
     @Override
-    protected Criterion buildCriterion() {
+    protected Criterion buildCriterion(int options) {
         NaturalIdentifier nid = Restrictions.naturalId();
         for (Pair<String, Object> pair : pairs) {
             String property = pair.getKey();

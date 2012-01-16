@@ -24,16 +24,16 @@ public class Conjunction
     }
 
     @Override
-    public void apply(Criteria criteria) {
+    public void apply(Criteria criteria, int options) {
         for (ICriteriaElement e : elements)
-            e.apply(criteria);
+            e.apply(criteria, options);
     }
 
     @Override
-    protected Criterion buildCriterion() {
+    protected Criterion buildCriterion(int options) {
         org.hibernate.criterion.Conjunction conj = Restrictions.conjunction();
         for (ICriteriaElement e : elements) {
-            Criterion criterion = e.getCriterion();
+            Criterion criterion = e.getCriterion(options);
             if (criterion != null)
                 conj.add(criterion);
         }

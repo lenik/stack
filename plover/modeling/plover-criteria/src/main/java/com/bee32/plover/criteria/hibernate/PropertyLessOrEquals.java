@@ -13,7 +13,7 @@ public class PropertyLessOrEquals
     }
 
     @Override
-    protected Criterion buildCriterion() {
+    protected Criterion buildCriterion(int options) {
         return Restrictions.leProperty(propertyName, otherPropertyName);
     }
 

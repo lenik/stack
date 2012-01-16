@@ -13,7 +13,7 @@ public class PropertyGreaterThan
     }
 
     @Override
-    protected Criterion buildCriterion() {
+    protected Criterion buildCriterion(int options) {
         return Restrictions.gtProperty(propertyName, otherPropertyName);
     }
 

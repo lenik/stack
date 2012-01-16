@@ -6,18 +6,20 @@ import org.hibernate.criterion.Projection;
 import org.springframework.expression.EvaluationContext;
 
 public abstract class ProjectionElement
-        implements ICriteriaElement {
+        extends AbstractCriteriaElement {
 
     private static final long serialVersionUID = 1L;
 
     @Override
-    public void apply(Criteria criteria) {
+    public void apply(Criteria criteria, int options) {
+        if ((options & NO_PROJECTION) != 0)
+            return;
         Projection projection = buildProjection();
         criteria.setProjection(projection);
     }
 
     @Override
-    public Criterion getCriterion() {
+    public Criterion getCriterion(int options) {
         return null;
     }
 

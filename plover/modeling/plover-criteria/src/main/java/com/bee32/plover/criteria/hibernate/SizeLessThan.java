@@ -13,7 +13,7 @@ public class SizeLessThan
     }
 
     @Override
-    protected Criterion buildCriterion() {
+    protected Criterion buildCriterion(int options) {
         return Restrictions.sizeLt(propertyName, size);
     }
 

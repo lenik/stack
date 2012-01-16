@@ -19,7 +19,7 @@ abstract class SpelCriteriaElement
     protected static final SpelExpressionParser PARSER = new SpelExpressionParser();
 
     @Override
-    public void apply(Criteria criteria) {
+    public void apply(Criteria criteria, int options) {
     }
 
     @Override

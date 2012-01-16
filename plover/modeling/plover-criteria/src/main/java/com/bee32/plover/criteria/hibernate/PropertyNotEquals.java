@@ -15,7 +15,7 @@ public class PropertyNotEquals
     }
 
     @Override
-    protected Criterion buildCriterion() {
+    protected Criterion buildCriterion(int options) {
         return Restrictions.neProperty(propertyName, otherPropertyName);
     }
 

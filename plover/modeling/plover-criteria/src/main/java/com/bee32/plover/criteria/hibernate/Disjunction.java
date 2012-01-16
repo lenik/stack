@@ -19,16 +19,16 @@ public class Disjunction
     }
 
     @Override
-    public void apply(Criteria criteria) {
+    public void apply(Criteria criteria, int options) {
         for (ICriteriaElement e : elements)
-            e.apply(criteria);
+            e.apply(criteria, options);
     }
 
     @Override
-    protected Criterion buildCriterion() {
+    protected Criterion buildCriterion(int options) {
         org.hibernate.criterion.Disjunction disj = Restrictions.disjunction();
         for (ICriteriaElement e : elements) {
-            Criterion criterion = e.getCriterion();
+            Criterion criterion = e.getCriterion(options);
             if (criterion != null)
                 disj.add(criterion);
         }

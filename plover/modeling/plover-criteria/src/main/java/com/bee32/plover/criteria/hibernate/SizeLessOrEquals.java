@@ -13,7 +13,7 @@ public class SizeLessOrEquals
     }
 
     @Override
-    protected Criterion buildCriterion() {
+    protected Criterion buildCriterion(int options) {
         return Restrictions.sizeLe(propertyName, size);
     }
 

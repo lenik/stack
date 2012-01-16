@@ -13,7 +13,7 @@ public class SizeNotEquals
     }
 
     @Override
-    protected Criterion buildCriterion() {
+    protected Criterion buildCriterion(int options) {
         return Restrictions.sizeNe(propertyName, size);
     }
 

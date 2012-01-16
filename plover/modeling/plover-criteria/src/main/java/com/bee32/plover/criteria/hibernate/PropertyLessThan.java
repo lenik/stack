@@ -13,7 +13,7 @@ public class PropertyLessThan
     }
 
     @Override
-    protected Criterion buildCriterion() {
+    protected Criterion buildCriterion(int options) {
         return Restrictions.ltProperty(propertyName, otherPropertyName);
     }
 

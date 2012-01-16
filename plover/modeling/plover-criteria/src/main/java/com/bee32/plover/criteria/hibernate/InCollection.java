@@ -18,7 +18,7 @@ public class InCollection
     }
 
     @Override
-    protected Criterion buildCriterion() {
+    protected Criterion buildCriterion(int options) {
         return Restrictions.in(propertyName, values);
     }
 

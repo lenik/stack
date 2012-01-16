@@ -18,7 +18,7 @@ public class Between
     }
 
     @Override
-    protected Criterion buildCriterion() {
+    protected Criterion buildCriterion(int options) {
         return Restrictions.between(propertyName, lo, hi);
     }
 

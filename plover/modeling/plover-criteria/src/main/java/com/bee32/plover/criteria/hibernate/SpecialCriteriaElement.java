@@ -4,12 +4,12 @@ import org.hibernate.criterion.Criterion;
 import org.springframework.expression.EvaluationContext;
 
 public abstract class SpecialCriteriaElement
-        implements ICriteriaElement {
+        extends AbstractCriteriaElement {
 
     private static final long serialVersionUID = 1L;
 
     @Override
-    public Criterion getCriterion() {
+    public Criterion getCriterion(int options) {
         return null;
     }
 

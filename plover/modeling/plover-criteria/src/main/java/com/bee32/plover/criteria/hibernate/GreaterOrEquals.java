@@ -16,7 +16,7 @@ public class GreaterOrEquals
     }
 
     @Override
-    protected Criterion buildCriterion() {
+    protected Criterion buildCriterion(int options) {
         return Restrictions.ge(propertyName, value);
     }
 

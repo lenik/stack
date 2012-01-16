@@ -384,15 +384,15 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
 
     // IEntityManager
 
-    final Criteria createCriteria(ICriteriaElement... criteriaElements) {
+    final Criteria createCriteria(int options, ICriteriaElement... criteriaElements) {
         Criteria criteria = getSession().createCriteria(entityType);
         if (criteriaElements != null)
             for (ICriteriaElement elm : criteriaElements) {
                 if (elm == null)
                     continue;
-                elm.apply(criteria);
+                elm.apply(criteria, options);
 
-                Criterion criterion = elm.getCriterion();
+                Criterion criterion = elm.getCriterion(options);
                 if (criterion != null)
                     criteria.add(criterion);
             }
@@ -405,7 +405,7 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
         // Criteria criteria = session.createCriteria(entityType);
         Conjunction conj = Restrictions.conjunction();
         for (ICriteriaElement e : criteriaElements) {
-            Criterion criterion = e.getCriterion();
+            Criterion criterion = e.getCriterion(0);
             if (criterion == null)
                 continue;
             conj.add(criterion);
@@ -416,7 +416,7 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     @Override
     public E getUnique(ICriteriaElement... criteriaElements)
             throws HibernateException {
-        Criteria _criteria = createCriteria(criteriaElements);
+        Criteria _criteria = createCriteria(0, criteriaElements);
         E entity;
         try {
             entity = (E) _criteria.uniqueResult();
@@ -432,7 +432,7 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
 
     @Override
     public E getFirst(ICriteriaElement... criteriaE) {
-        Criteria criteria = createCriteria(criteriaE);
+        Criteria criteria = createCriteria(0, criteriaE);
         criteria.setMaxResults(1);
         List<E> list = criteria.list();
         if (list.isEmpty())
@@ -453,21 +453,21 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
 
     @Override
     public List<E> list(ICriteriaElement... criteriaElements) {
-        Criteria criteria = createCriteria(criteriaElements);
+        Criteria criteria = createCriteria(0, criteriaElements);
         List<E> list = criteria.list();
         return postLoadDecorated(list);
     }
 
     @Override
     public <T> List<T> listMisc(ICriteriaElement... criteriaElements) {
-        Criteria criteria = createCriteria(criteriaElements);
+        Criteria criteria = createCriteria(0, criteriaElements);
         List<T> list = criteria.list();
         return list;
     }
 
     @Override
     public <T> T getMisc(ICriteriaElement... criteriaElements) {
-        Criteria criteria = createCriteria(criteriaElements);
+        Criteria criteria = createCriteria(0, criteriaElements);
         List<T> list = criteria.list();
         if (list.isEmpty())
             return null;
@@ -504,7 +504,9 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
 
     @Override
     public int count(ICriteriaElement... criteriaElements) {
-        Criteria criteria = createCriteria(criteriaElements);
+        Criteria criteria = createCriteria(//
+                ICriteriaElement.OPTIM_COUNT /* | ICriteriaElement.NO_PROJECTION */, //
+                criteriaElements);
         criteria.setProjection(Projections.rowCount());
 
         Object result = criteria.uniqueResult();
@@ -533,7 +535,7 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     public int findAndDelete(ICriteriaElement... criteriaElements) {
         HibernateTemplate template = getHibernateTemplate();
 
-        Criteria criteria = createCriteria(criteriaElements);
+        Criteria criteria = createCriteria(ICriteriaElement.NO_ORDER, criteriaElements);
         List<E> list = criteria.list();
 
         for (E e : list)

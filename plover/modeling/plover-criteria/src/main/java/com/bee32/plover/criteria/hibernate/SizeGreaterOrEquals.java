@@ -13,7 +13,7 @@ public class SizeGreaterOrEquals
     }
 
     @Override
-    protected Criterion buildCriterion() {
+    protected Criterion buildCriterion(int options) {
         return Restrictions.sizeGe(propertyName, size);
     }
 

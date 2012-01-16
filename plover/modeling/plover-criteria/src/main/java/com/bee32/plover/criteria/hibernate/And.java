@@ -23,15 +23,15 @@ public class And
     }
 
     @Override
-    public void apply(Criteria criteria) {
-        lhs.apply(criteria);
-        rhs.apply(criteria);
+    public void apply(Criteria criteria, int options) {
+        lhs.apply(criteria, options);
+        rhs.apply(criteria, options);
     }
 
     @Override
-    protected Criterion buildCriterion() {
-        Criterion l = lhs.getCriterion();
-        Criterion r = rhs.getCriterion();
+    protected Criterion buildCriterion(int options) {
+        Criterion l = lhs.getCriterion(options);
+        Criterion r = rhs.getCriterion(options);
         if (l == null)
             return r;
         if (r == null)

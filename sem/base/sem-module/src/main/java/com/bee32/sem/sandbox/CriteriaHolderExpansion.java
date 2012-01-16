@@ -4,10 +4,11 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.springframework.expression.EvaluationContext;
 
+import com.bee32.plover.criteria.hibernate.AbstractCriteriaElement;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 
 public class CriteriaHolderExpansion
-        implements ICriteriaElement {
+        extends AbstractCriteriaElement {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,17 +21,17 @@ public class CriteriaHolderExpansion
     }
 
     @Override
-    public void apply(Criteria criteria) {
+    public void apply(Criteria criteria, int options) {
         ICriteriaElement element = holder.getCriteriaElement();
         if (element != null)
-            element.apply(criteria);
+            element.apply(criteria, options);
     }
 
     @Override
-    public Criterion getCriterion() {
+    public Criterion getCriterion(int options) {
         ICriteriaElement element = holder.getCriteriaElement();
         if (element != null)
-            return element.getCriterion();
+            return element.getCriterion(options);
         else
             return null;
     }

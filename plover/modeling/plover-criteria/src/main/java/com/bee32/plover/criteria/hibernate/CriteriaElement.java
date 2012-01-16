@@ -3,7 +3,7 @@ package com.bee32.plover.criteria.hibernate;
 import org.hibernate.criterion.Criterion;
 
 public abstract class CriteriaElement
-        implements ICriteriaElement {
+        extends AbstractCriteriaElement {
 
     private static final long serialVersionUID = 1L;
 
@@ -12,11 +12,11 @@ public abstract class CriteriaElement
     // }
 
     @Override
-    public final Criterion getCriterion() {
-        return buildCriterion();
+    public final Criterion getCriterion(int options) {
+        return buildCriterion(options);
     }
 
-    protected abstract Criterion buildCriterion();
+    protected abstract Criterion buildCriterion(int options);
 
     public final boolean filter(Object obj) {
         return filter(obj, null);

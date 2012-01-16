@@ -86,7 +86,7 @@ public class Like
     }
 
     @Override
-    protected Criterion buildCriterion() {
+    protected Criterion buildCriterion(int options) {
         if (matchMode == null)
             return Restrictions.like(propertyName, pattern);
         else

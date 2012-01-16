@@ -24,8 +24,10 @@ public class Limit
     }
 
     @Override
-    public void apply(Criteria criteria) {
-        super.apply(criteria);
+    public void apply(Criteria criteria, int options) {
+        super.apply(criteria, options);
+        if ((options & NO_PAGINATION) != 0)
+            return;
         if (limit > 0)
             criteria.setFetchSize(limit);
     }

@@ -12,7 +12,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.expression.EvaluationContext;
 
 public class CriteriaComposite
-        implements ICriteriaElement {
+        extends AbstractCriteriaElement {
 
     private static final long serialVersionUID = 1L;
 
@@ -43,23 +43,23 @@ public class CriteriaComposite
     }
 
     @Override
-    public void apply(Criteria criteria) {
+    public void apply(Criteria criteria, int options) {
         for (ICriteriaElement element : elements)
-            element.apply(criteria);
+            element.apply(criteria, options);
     }
 
     @Override
-    public Criterion getCriterion() {
+    public Criterion getCriterion(int options) {
         if (elements.isEmpty())
             return null;
 
         if (elements.size() == 1) {
-            return elements.get(0).getCriterion();
+            return elements.get(0).getCriterion(options);
         }
 
         Conjunction conj = Restrictions.conjunction();
         for (ICriteriaElement element : elements) {
-            Criterion criterion = element.getCriterion();
+            Criterion criterion = element.getCriterion(options);
             if (criterion != null)
                 conj.add(criterion);
         }

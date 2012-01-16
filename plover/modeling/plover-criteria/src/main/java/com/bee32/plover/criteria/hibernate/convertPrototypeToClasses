@@ -87,7 +87,7 @@ function main() {
         done
         echo "    }" >>$file
 
-        echo "    @Override protected Criterion buildCriterion() {" >>$file
+        echo "    @Override protected Criterion buildCriterion(int options) {" >>$file
         echo "        return Restrictions.$method($args); " >>$file
         echo "    }" >>$file
         echo >>$file

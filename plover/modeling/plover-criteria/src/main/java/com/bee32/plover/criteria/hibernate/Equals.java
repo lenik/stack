@@ -19,7 +19,7 @@ public class Equals
     }
 
     @Override
-    protected Criterion buildCriterion() {
+    protected Criterion buildCriterion(int options) {
         return Restrictions.eq(propertyName, value);
     }
 

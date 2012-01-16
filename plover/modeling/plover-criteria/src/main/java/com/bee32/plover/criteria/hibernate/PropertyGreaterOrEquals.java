@@ -13,7 +13,7 @@ public class PropertyGreaterOrEquals
     }
 
     @Override
-    protected Criterion buildCriterion() {
+    protected Criterion buildCriterion(int options) {
         return Restrictions.geProperty(propertyName, otherPropertyName);
     }
 

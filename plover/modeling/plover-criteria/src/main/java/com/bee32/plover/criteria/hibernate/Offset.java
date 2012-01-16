@@ -21,7 +21,9 @@ public class Offset
     }
 
     @Override
-    public void apply(Criteria criteria) {
+    public void apply(Criteria criteria, int options) {
+        if ((options & NO_PAGINATION) != 0)
+            return;
         if (offset != -1) {
             criteria.setFirstResult(offset);
         }

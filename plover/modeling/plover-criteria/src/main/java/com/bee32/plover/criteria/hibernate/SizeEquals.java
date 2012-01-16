@@ -13,7 +13,7 @@ public class SizeEquals
     }
 
     @Override
-    protected Criterion buildCriterion() {
+    protected Criterion buildCriterion(int options) {
         return Restrictions.sizeEq(propertyName, size);
     }
 

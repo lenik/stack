@@ -18,7 +18,7 @@ public class NotEquals
     }
 
     @Override
-    protected Criterion buildCriterion() {
+    protected Criterion buildCriterion(int options) {
         return Restrictions.ne(propertyName, value);
     }
 

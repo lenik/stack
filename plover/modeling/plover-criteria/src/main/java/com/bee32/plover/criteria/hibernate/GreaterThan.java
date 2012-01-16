@@ -16,7 +16,7 @@ public class GreaterThan
     }
 
     @Override
-    protected Criterion buildCriterion() {
+    protected Criterion buildCriterion(int options) {
         return Restrictions.gt(propertyName, value);
     }
 

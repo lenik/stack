@@ -17,13 +17,13 @@ public class Not
     }
 
     @Override
-    public void apply(Criteria criteria) {
-        expression.apply(criteria);
+    public void apply(Criteria criteria, int options) {
+        expression.apply(criteria, options);
     }
 
     @Override
-    protected Criterion buildCriterion() {
-        Criterion expr = expression.getCriterion();
+    protected Criterion buildCriterion(int options) {
+        Criterion expr = expression.getCriterion(options);
         if (expr == null)
             return null;
         return Restrictions.not(expr);

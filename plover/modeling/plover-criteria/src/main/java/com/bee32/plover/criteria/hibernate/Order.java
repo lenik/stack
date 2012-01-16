@@ -16,7 +16,9 @@ public class Order
     }
 
     @Override
-    public void apply(Criteria criteria) {
+    public void apply(Criteria criteria, int options) {
+        if ((options & (NO_ORDER | OPTIM_COUNT)) != 0)
+            return;
         criteria.addOrder(order);
     }
 
