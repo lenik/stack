@@ -21,11 +21,10 @@
     <cc:implementation>
         <c:set var="buttonBean" value="${cc.attrs.buttonBean}" />
         <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
-        <c:set var="dialogVar" value="${cc.attrs.dialog}" />
-        <c:set var="handler" value="${cc.attrs.handler}" />
 
-        <p:commandButton value="${buttonBean.commandLabel}" actionListener="${dialogBean.loadTemplateFromSelection}"
-            oncomplete="${dialogVar}.show()" disabled="${cc.attrs.disabled || not buttonBean.commandEnabled}" async="true">
+        <p:commandButton id="button" value="${buttonBean.commandLabel}" actionListener="${dialogBean.loadTemplateFromSelection}"
+            oncomplete="${cc.attrs.dialog}.show()" disabled="${cc.attrs.disabled || not buttonBean.commandEnabled}"
+            async="true">
             <f:setPropertyActionListener target="${dialogBean.selection}" value="${cc.attrs.selection}" />
             <cc:insertChildren />
         </p:commandButton>

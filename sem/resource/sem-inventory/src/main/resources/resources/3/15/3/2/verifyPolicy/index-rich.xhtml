@@ -6,11 +6,6 @@
     <ui:param name="title" value="库存审核策略" />
     <ui:param name="bean" value="#{stockOrderVerifyPolicyBean}" />
 
-    <ui:define name="includes">
-        <sem:chooseVerifyPolicyDialog id="chooseVerifyPolicyDialog" selection="#{bean.entry.targetPolicy}"
-            update=":addEntryForm:policy" />
-    </ui:define>
-
     <ui:define name="dataTableColumns">
         <p:column headerText="名称">
             <h:outputText value="#{entry.label}" />
@@ -19,24 +14,13 @@
         <p:column headerText="描述">
             <h:outputText value="#{entry.description}" />
         </p:column>
-
-        <p:column headerText="创建日期">
-            <h:outputText value="#{entry.createdDate}">
-                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-            </h:outputText>
-        </p:column>
-
-        <p:column headerText="所有人">
-            <h:outputText value="#{entry.owner.displayName}" />
-        </p:column>
     </ui:define>
 
-    <ui:define name="dialogs">
+    <ui:define name="editDialog">
         <p:dialog header="新增/编辑策略" widgetVar="editDialog" modal="true">
-            <h:form id="editForm" style="max-height: 30em; margin: 1em">
+            <h:form id="form" style="max-height: 30em; margin: 1em">
                 <c:set var="obj" value="#{bean.activeObject}" />
-
-                <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
+                <t:panelGrid rendered="${obj != null}" columns="2" columnClasses="detail_col_title,detail_col_value">
                     <h:outputText value="名称" />
                     <p:inputText value="#{obj.label}" />
 
@@ -44,7 +28,7 @@
                     <p:inputText value="#{obj.description}" />
                 </t:panelGrid>
 
-                <p:fieldset legend="策略" toggleable="false">
+                <p:fieldset rendered="${obj != null}" legend="策略" toggleable="false">
                     <p:dataTable id="entryTable" value="#{obj.entries}" var="entry" resizableColumns="true"
                         rowIndexVar="rowIndex">
                         <f:facet name="header">库存审核策略包含的策略</f:facet>
@@ -71,7 +55,7 @@
                         </p:column>
 
                         <p:column headerText="操作" style="width: 3em;">
-                            <p:commandLink title="删除" action="#{bean.removeEntry}" update=":editForm:entryTable">
+                            <p:commandLink title="删除" action="#{bean.removeEntry}" update=":editDialog:form:entryTable">
                                 <f:setPropertyActionListener value="#{entry}" target="#{bean.selectedEntry}" />
                                 <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
                             </p:commandLink>
@@ -82,12 +66,17 @@
                 </p:fieldset>
 
                 <div align="right">
-                    <p:commandButton update=":mainForm:dataTable" value="保存" actionListener="#{bean.save}"
-                        oncomplete="editDialog.hide()" />
-                    <p:commandButton value="取消" onclick="editDialog.hide()" />
+                    <p:commandButton id="save-validated" value="保存" actionListener="#{bean.save}"
+                        update=":mainForm:dataTable" oncomplete="editDialog.hideValidated(args)" />
+                    <p:commandButton id="cancel" value="取消" onclick="editDialog.hide()" />
                 </div>
             </h:form>
         </p:dialog>
+    </ui:define>
+
+    <ui:define name="dialogs">
+        <sem:chooseVerifyPolicyDialog id="chooseVerifyPolicyDialog" selection="#{bean.entry.policy}"
+            update=":addEntryForm:policy" />
 
         <p:dialog header="新增项目" widgetVar="addEntryDialog" modal="true">
             <h:form id="addEntryForm" style="max-height: 30em; margin: 1em">
@@ -108,7 +97,7 @@
                 </t:panelGrid>
 
                 <div align="right">
-                    <p:commandButton update=":editForm:entryTable" value="确定" actionListener="#{bean.addEntry}"
+                    <p:commandButton update=":editDialog:form:entryTable" value="确定" actionListener="#{bean.addEntry}"
                         oncomplete="addEntryDialog.hide()" />
                     <p:commandButton value="取消" onclick="addEntryDialog.hide()" />
                 </div>

@@ -6,12 +6,12 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 import com.bee32.plover.arch.util.ClassUtil;
-import com.bee32.plover.orm.entity.EntitySpec;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
+import com.bee32.plover.ox1.c.CEntitySpec;
 
 @MappedSuperclass
 public class TypePrefEntity
-        extends EntitySpec<String>
+        extends CEntitySpec<String>
         implements ITypeAbbrAware {
 
     private static final long serialVersionUID = 1L;

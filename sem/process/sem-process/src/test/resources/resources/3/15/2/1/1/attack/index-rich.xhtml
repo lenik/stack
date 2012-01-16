@@ -6,17 +6,15 @@
     <ui:param name="title" value="Attack Mission" />
     <ui:param name="bean" value="#{attackMissionBean}" />
 
+    <ui:define name="dialogs">
+        <sem:singleVerifierSupportDialog id="verifyDialog" update=":mainForm" />
+    </ui:define>
+
     <ui:define name="toolbarPeripherals">
-        <sem:singleVerifierSupportButton update=":mainForm" />
+        <sem:singleVerifierSupportButton id="verifyButton" selection="#{bean.selection}" />
     </ui:define>
 
     <ui:define name="dataTableColumns">
-        <f:facet name="header">Attack Missions</f:facet>
-
-        <p:column headerText="序号">
-            <h:outputText value="#{rowIndex + 1}" />
-        </p:column>
-
         <p:column headerText="Target">
             <h:outputText value="#{entry.target}" />
         </p:column>
@@ -44,18 +42,11 @@
         <p:column headerText="Rejected Reason">
             <h:outputText value="#{entry.verifyContext.rejectedReason1}" />
         </p:column>
-
-        <p:column headerText="所有人">
-            <h:outputText value="#{entry.owner.displayName}" />
-        </p:column>
     </ui:define>
 
-    <ui:define name="dialogs">
-
-        <sem:singleVerifierSupportDialog />
-
+    <ui:define name="editDialog">
         <p:dialog header="Mission Profile" widgetVar="editDialog" modal="true">
-            <h:form id="editForm" style="max-height: 30em; margin: 1em">
+            <h:form id="form" style="max-height: 30em; margin: 1em">
                 <c:set var="obj" value="#{bean.activeObject}" />
 
                 <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
@@ -64,9 +55,9 @@
                 </t:panelGrid>
 
                 <div align="right">
-                    <p:commandButton update="mainForm:dataTable" value="保存" actionListener="#{bean.save}"
-                        oncomplete="editDialog.hide()" />
-                    <p:commandButton value="取消" onclick="editDialog.hide()" />
+                    <p:commandButton id="save-validated" value="保存" actionListener="#{bean.save}"
+                        update="mainForm:dataTable" oncomplete="editDialog.hideValidated(args)" />
+                    <p:commandButton id="cancel" value="取消" onclick="editDialog.hide()" />
                 </div>
             </h:form>
         </p:dialog>

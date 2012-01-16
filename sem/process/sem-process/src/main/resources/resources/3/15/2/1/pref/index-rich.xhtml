@@ -25,8 +25,8 @@
                 <c:set var="obj" value="#{bean.activeObject}" />
                 <h:panelGroup rendered="#{obj != null}">
                     <h:inputHidden id="id" value="#{obj.id}" />
-                    <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
 
+                    <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
                         <h:outputLabel for="typeId" value="实体类型" />
                         <p:selectOneMenu id="typeId" value="#{obj.typeId}">
                             <f:selectItem itemValue="" itemLabel="--选择--" />
@@ -50,7 +50,6 @@
                             <f:selectItem itemValue="1" itemLabel="强制：立即更新所有对象" />
                             <f:selectItem itemValue="2" itemLabel="不更新：仅修改配置" />
                         </p:selectOneMenu>
-
                     </t:panelGrid>
 
                     <div align="right">

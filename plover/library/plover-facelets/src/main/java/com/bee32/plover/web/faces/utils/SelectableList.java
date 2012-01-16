@@ -29,7 +29,10 @@ public class SelectableList<T>
     @Override
     public T getRowData(String rowKey) {
         int index = Integer.parseInt(rowKey);
-        return list.get(index);
+        if (index == -1)
+            return null;
+        else
+            return list.get(index);
     }
 
     public static <T> SelectableList<T> decorate(List<T> list) {
