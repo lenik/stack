@@ -32,9 +32,9 @@
         </p:column>
     </ui:define>
 
-    <ui:define name="dialogs">
+    <ui:define name="editDialog">
         <p:dialog header="新增/编辑策略" widgetVar="editDialog" modal="true">
-            <h:form id="editForm" style="max-height: 30em; margin: 1em">
+            <h:form id="form" style="max-height: 30em; margin: 1em">
                 <c:set var="obj" value="#{bean.activeObject}" />
                 <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
 
@@ -80,7 +80,9 @@
                 </div>
             </h:form>
         </p:dialog>
+    </ui:define>
 
+    <ui:define name="dialogs">
         <p:dialog header="新增#{numberHint}级别" widgetVar="addLevelDialog" modal="true">
             <h:form id="addLevelForm" style="max-height: 30em; margin: 1em">
                 <t:panelGrid id="addLevelPanel" columns="2" columnClasses="detail_col_title,detail_col_value">

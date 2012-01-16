@@ -19,9 +19,9 @@
         </p:column>
     </ui:define>
 
-    <ui:define name="dialogs">
+    <ui:define name="editDialog">
         <p:dialog header="配置项" widgetVar="editDialog" modal="true">
-            <h:form id="editForm" style="max-height: 30em; margin: 1em">
+            <h:form id="form" style="max-height: 30em; margin: 1em">
                 <c:set var="obj" value="#{bean.activeObject}" />
                 <h:panelGroup rendered="#{obj != null}">
                     <h:inputHidden id="id" value="#{obj.id}" />

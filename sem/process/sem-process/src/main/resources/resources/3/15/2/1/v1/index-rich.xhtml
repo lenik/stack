@@ -6,17 +6,17 @@
     <ui:param name="title" value="白名单策略" />
     <ui:param name="bean" value="#{singleVerifierPolicyBean}" />
 
-    <ui:define name="dialogs">
+    <ui:define name="editDialogWrapper">
         <sem:editSingleVerifierPolicyDialog id="editDialog" var="editDialog"
             value="${bean.activeObject}" actionListener="${bean.save}" update=":mainForm" />
     </ui:define>
 
     <ui:define name="dataTableColumns">
-        <p:column headerText="名称">
+        <p:column headerText="名称" sortBy="label">
             <h:outputText value="#{entry.label}" />
         </p:column>
 
-        <p:column headerText="描述">
+        <p:column headerText="描述" sortBy="#{entry.description}">
             <h:outputText value="#{entry.description}" />
         </p:column>
 

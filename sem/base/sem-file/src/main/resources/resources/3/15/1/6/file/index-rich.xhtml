@@ -17,7 +17,7 @@
             </p:toolbarGroup>
             <p:toolbarGroup align="right">
                 <p:commandButton value="修改" disabled="${not bean.selected}" actionListener="${bean.showEditForm}"
-                    oncomplete="editDialog.show()" update=":editForm" />
+                    oncomplete="editDialog.show()" update=":editDialog:form" />
                 <p:commandButton value="删除" disabled="${not bean.selected}" onclick="deleteConfirmDialog.show()" />
             </p:toolbarGroup>
         </p:toolbar>
@@ -82,10 +82,12 @@
         <sem:uploadFileDialog var="createUserFileDialog" fileUploadListener="${bean.createUserFileListener.handleFileUpload}"
             update=":mainForm:dataTable" />
         <sem:chooseUserFileTagDialog var="addTagDialog" selection="${bean.selectedTag}"
-            actionListener="${bean.addTag}" update=":editForm" />
+            actionListener="${bean.addTag}" update=":editDialog:form" />
+    </ui:define>
 
+    <ui:define name="editDialog">
         <p:dialog header="文件属性设置" widgetVar="editDialog" modal="true">
-            <h:form id="editForm" style="max-height: 30em; margin: 1em">
+            <h:form id="form" style="max-height: 30em; margin: 1em">
                 <c:set var="obj" value="${bean.activeObject}" />
 
                 <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
