@@ -3,14 +3,12 @@ package com.bee32.sem.process.verify.web;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.plover.web.faces.controls2.IDialogCallback;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 
 public class ChooseVerifyPolicyDialogBean
-        extends SimpleEntityViewBean
-        implements IDialogCallback {
+        extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,16 +18,6 @@ public class ChooseVerifyPolicyDialogBean
 
     public ChooseVerifyPolicyDialogBean() {
         super(VerifyPolicy.class, VerifyPolicyDto.class, 0);
-    }
-
-    @Override
-    public void selected() {
-        logger.debug("Selected: " + getSelection());
-    }
-
-    @Override
-    public void cancel() {
-        logger.debug("Cancelled.");
     }
 
     // Properties

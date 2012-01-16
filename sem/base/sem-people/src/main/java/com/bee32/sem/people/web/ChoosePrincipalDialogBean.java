@@ -6,12 +6,10 @@ import org.slf4j.LoggerFactory;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.PrincipalCriteria;
 import com.bee32.icsf.principal.PrincipalDto;
-import com.bee32.plover.web.faces.controls2.IDialogCallback;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 
 public class ChoosePrincipalDialogBean
-        extends SimpleEntityViewBean
-        implements IDialogCallback {
+        extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,16 +20,6 @@ public class ChoosePrincipalDialogBean
     public ChoosePrincipalDialogBean() {
         super(Principal.class, PrincipalDto.class, 0);
         // addSearchFragment("类型为", User.class);
-    }
-
-    @Override
-    public void selected() {
-        logger.debug("Selected: " + getSelection());
-    }
-
-    @Override
-    public void cancel() {
-        logger.debug("Cancelled.");
     }
 
     // Properties

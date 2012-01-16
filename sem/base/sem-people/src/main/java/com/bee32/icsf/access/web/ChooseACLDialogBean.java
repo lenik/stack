@@ -5,12 +5,10 @@ import org.slf4j.LoggerFactory;
 
 import com.bee32.icsf.access.acl.ACL;
 import com.bee32.icsf.access.acl.ACLDto;
-import com.bee32.plover.web.faces.controls2.IDialogCallback;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 
 public class ChooseACLDialogBean
-        extends SimpleEntityViewBean
-        implements IDialogCallback {
+        extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,16 +18,6 @@ public class ChooseACLDialogBean
 
     public ChooseACLDialogBean() {
         super(ACL.class, ACLDto.class, 0);
-    }
-
-    @Override
-    public void selected() {
-        logger.debug("Selected: " + getSelection());
-    }
-
-    @Override
-    public void cancel() {
-        logger.debug("Cancelled.");
     }
 
     // Properties

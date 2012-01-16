@@ -3,14 +3,12 @@ package com.bee32.sem.file.web;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.plover.web.faces.controls2.IDialogCallback;
 import com.bee32.sem.file.dto.UserFileTagnameDto;
 import com.bee32.sem.file.entity.UserFileTagname;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 
 public class ChooseUserFileTagDialogBean
-        extends SimpleEntityViewBean
-        implements IDialogCallback {
+        extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,16 +18,6 @@ public class ChooseUserFileTagDialogBean
 
     public ChooseUserFileTagDialogBean() {
         super(UserFileTagname.class, UserFileTagnameDto.class, 0);
-    }
-
-    @Override
-    public void selected() {
-        logger.debug("Selected: " + getSelection());
-    }
-
-    @Override
-    public void cancel() {
-        logger.debug("Cancelled.");
     }
 
     // Properties
