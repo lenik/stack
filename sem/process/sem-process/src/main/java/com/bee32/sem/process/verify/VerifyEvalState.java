@@ -20,7 +20,7 @@ public class VerifyEvalState
 
     private final int eventFlags;
 
-    public VerifyEvalState(int index, String name, int stage, int eventFlags) {
+    private VerifyEvalState(int index, String name, int stage, int eventFlags) {
         super(_CLASS | index, name);
         this.type = stage;
         this.eventFlags = eventFlags;
