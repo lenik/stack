@@ -460,4 +460,11 @@ public class MakeOrderAdminBean extends EntityViewBean {
     public void chooseChance() {
         makeOrder.setChance(selectedChance);
     }
+
+    @Override
+    public List<?> getSelection() {
+        return listOfNonNulls(makeOrder);
+    }
+
+
 }
