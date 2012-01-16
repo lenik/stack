@@ -62,7 +62,7 @@ public abstract class BaseDto_AS2<S, C>
 
     public <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> mrefList(//
             Class<_D> dtoClass, Iterable<? extends _S> sources) {
-        return _marshalList(dtoClass, -1, sources, true);
+        return _marshalList(dtoClass, 0, sources, true);
     }
 
     // marshalSet
