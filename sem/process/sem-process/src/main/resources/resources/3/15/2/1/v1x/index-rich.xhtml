@@ -98,7 +98,7 @@
                 </t:panelGrid>
 
                 <div align="right">
-                    <p:commandButton update="editForm:levelTable" value="保存" actionListener="#{bean.addLevel}"
+                    <p:commandButton value="保存" actionListener="#{bean.addLevel}" update=":editDialog:form"
                         oncomplete="addLevelDialog.hide()" />
                     <p:commandButton value="取消" onclick="addLevelDialog.hide()" />
                 </div>
