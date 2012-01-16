@@ -67,7 +67,7 @@ public class PrimefacesMenuBuilder
             MenuItem item = new MenuItem();
 
             item.setValue(label);
-            item.setHelpText(tooltips);
+            // item.setHelpText(tooltips);
 
             IAction action = node.getAction();
             boolean actionUsed = false;

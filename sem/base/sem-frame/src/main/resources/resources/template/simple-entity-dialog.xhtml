@@ -22,7 +22,7 @@
         </h:panelGroup>
 
         <p:dataTable id="dataTable" value="${dialogBean.dataModel}" selection="${selection}"
-            selectionMode="${multiple ? 'multiple' : 'single'}" var="entry" paginator="true" rows="10" lazy="true"
+            selectionMode="${multiple ? 'multiple' : 'single'}" var="entry" paginator="true" rows="10"
             paginatorTemplate="${viewConfig.paginatorTemplate}" rowsPerPageTemplate="${viewConfig.pageSizeTemplate}"
             resizableColumns="true" rowIndexVar="rowIndex">
             <p:column headerText="序号">
