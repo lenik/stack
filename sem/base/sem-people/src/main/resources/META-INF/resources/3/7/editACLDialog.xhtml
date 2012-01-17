@@ -6,7 +6,7 @@
         <!-- basic -->
         <cc:attribute name="var" default="editACLDialog" />
         <cc:attribute name="value" type="java.lang.Object" required="true" />
-        <cc:attribute name="actionListener" targets="form:save-validated" />
+        <cc:attribute name="actionListener" targets="form:save-validated" required="true" />
         <cc:attribute name="update" />
 
         <!-- ui overrides -->
@@ -21,10 +21,11 @@
         <h:outputStylesheet library="/frame" name="table.css" />
         <h:outputStylesheet library="/3/7/2" name="acl.css" />
 
-        <icsf:chooseACLDialog id="acld" var="${cc.parent.attrs.var}_acld" selection="${cc.parent.attrs.value.inheritedACL}"
-            update=":${cc.parent.clientId}:form:inheritedACL" />
+        <icsf:chooseACLDialog id="acld" var="${cc.parent.attrs.var}_acld" selection="${cc.parent.attrs.dialogBean.selectedACL}"
+            actionListener="${cc.parent.attrs.dialogBean.setInheritedACL}" update=":${cc.parent.clientId}:form:inheritedACL" />
         <icsf:choosePrincipalDialog id="cpd" var="${cc.parent.attrs.var}_cpd"
-            selection="${cc.parent.attrs.dialogBean.entry.principal}" update=":${cc.parent.clientId}:editEntryForm" />
+            selection="${cc.parent.attrs.dialogBean.selectedPrincipal}" actionListener="${cc.parent.attrs.dialogBean.setEntryPrincipal}"
+            update=":${cc.parent.clientId}:editEntryForm" />
 
         <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
         <c:set var="dialogVar" value="${cc.attrs.var}" />
@@ -33,7 +34,7 @@
             <c:set var="obj" value="${cc.attrs.value}" />
             <h:form id="form" style="${cc.attrs.style}">
 
-                <h:panelGrid columns="2" styleClass="attr-table" columnClasses="attr-name, attr-value"
+                <h:panelGrid rendered="${obj != null}" columns="2" styleClass="attr-table" columnClasses="attr-name, attr-value"
                     cellspacing="0" cellpadding="0">
                     <h:outputLabel for="label" value="名称" />
                     <p:inputText id="label" value="${obj.label}" />
@@ -48,7 +49,7 @@
                     <p:inputText id="description" value="${obj.description}" size="32" />
                 </h:panelGrid>
 
-                <p:fieldset legend="权限控制列表" toggleable="false" rendered="${obj != null}">
+                <p:fieldset rendered="${obj != null}" legend="权限控制列表" toggleable="false">
                     <p:dataTable id="entryTable" var="entry" value="${obj.selectableEntries}" selection="${dialogBean.selectedEntry}"
                         selectionMode="single" paginator="true" rows="20" paginatorTemplate="${viewConfig.paginatorTemplate}"
                         rowsPerPageTemplate="${viewConfig.pageSizeTemplate}" resizableColumns="true" rowIndexVar="rowIndex">
@@ -77,7 +78,7 @@
                     <p:commandButton value="添加条目" actionListener="${dialogBean.createEntry}" update=":${cc.clientId}:editEntryForm"
                         oncomplete="editEntryDialog.show()" />
                     <p:commandButton value="编辑条目" actionListener="${dialogBean.editEntry}" update=":${cc.clientId}:editEntryForm"
-                        oncomplete="editEntryDialog.show()" disabled="${dialogBean.entry == null}" />
+                        oncomplete="editEntryDialog.show()" disabled="${dialogBean.selectedEntry == null}" />
                 </p:fieldset>
 
                 <div align="right">

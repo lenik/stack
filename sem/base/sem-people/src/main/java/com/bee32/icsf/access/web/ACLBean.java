@@ -1,8 +1,11 @@
 package com.bee32.icsf.access.web;
 
+import java.util.List;
+
 import com.bee32.icsf.access.acl.ACL;
 import com.bee32.icsf.access.acl.ACLDto;
 import com.bee32.icsf.access.acl.ACLEntryDto;
+import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 
 public class ACLBean
@@ -11,7 +14,7 @@ public class ACLBean
     private static final long serialVersionUID = 1L;
 
     public ACLBean() {
-        super(ACL.class, ACLDto.class, 0);
+        super(ACL.class, ACLDto.class, ACLDto.PARENT);
     }
 
     // editForm
@@ -63,9 +66,22 @@ public class ACLBean
     // editEntryForm
 
     ACLEntryDto entry;
+    PrincipalDto selectedPrincipal;
 
     public ACLEntryDto getEntry() {
         return entry;
+    }
+
+    public PrincipalDto getSelectedPrincipal() {
+        return selectedPrincipal;
+    }
+
+    public void setSelectedPrincipal(PrincipalDto selectedPrincipal) {
+        this.selectedPrincipal = selectedPrincipal;
+    }
+
+    public void setEntryPrincipal() {
+        entry.setPrincipal(selectedPrincipal);
     }
 
     public void addEntry() {
@@ -73,7 +89,11 @@ public class ACLBean
             throw new NullPointerException("entry");
         ACLDto acl = getActiveObject();
         entry.setACL(acl);
-        acl.getEntries().add(entry);
+
+        List<ACLEntryDto> entries = acl.getEntries();
+        if (!entries.contains(entry))
+            entries.add(entry);
+
         entry = null;
     }
 

@@ -30,14 +30,14 @@ public class ACLEntryDto
 
     @Override
     protected void _marshal(ACLEntry source) {
-        acl = new ACLDto().ref(source.getACL());
+        acl = mref(ACLDto.class, source.getACL());
         principal = mref(PrincipalDto.class, source.getPrincipal());
         permission = source.getPermission().clone();
     }
 
     @Override
     protected void _unmarshalTo(ACLEntry target) {
-        merge(target, "acl", acl);
+        merge(target, "ACL", acl);
         merge(target, "principal", principal);
         target.setPermission(permission);
     }

@@ -1,6 +1,10 @@
 package com.bee32.icsf.access.acl;
 
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -13,8 +17,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
-import org.apache.commons.collections15.functors.NOPTransformer;
-import org.apache.commons.collections15.map.TransformedMap;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -30,31 +32,31 @@ public class ACL
 
     private static final long serialVersionUID = 1L;
 
-    Map<Principal, ACLEntry> entryMap = new LinkedHashMap<Principal, ACLEntry>();
+    List<ACLEntry> entries = new ArrayList<ACLEntry>();
 
     public ACL() {
-        this(null, new LinkedHashMap<Principal, ACLEntry>());
+        this(null, new ArrayList<ACLEntry>());
     }
 
     public ACL(ACL parent) {
-        this(parent, new LinkedHashMap<Principal, ACLEntry>());
+        this(parent, new ArrayList<ACLEntry>());
     }
 
-    public ACL(ACL parent, Map<Principal, ACLEntry> _entries) {
+    public ACL(ACL parent, List<ACLEntry> entries) {
         super();
-        setEntryMap(_entries);
+        setEntries(entries);
     }
 
     @Override
     protected ACL create(Map<Principal, Permission> entryMap) {
-        Map<Principal, ACLEntry> _entryMap = new LinkedHashMap<Principal, ACLEntry>();
+        List<ACLEntry> entries = new ArrayList<ACLEntry>();
         for (Entry<Principal, Permission> entry : entryMap.entrySet()) {
             Principal principal = entry.getKey();
             Permission permission = entry.getValue();
             ACLEntry aclEntry = new ACLEntry(null, principal, permission);
-            _entryMap.put(principal, aclEntry);
+            entries.add(aclEntry);
         }
-        ACL acl = new ACL(null, _entryMap);
+        ACL acl = new ACL(null, entries);
         return acl;
     }
 
@@ -64,45 +66,75 @@ public class ACL
         return getParent();
     }
 
+    public void setInheritedACL(ACL inheritedACL) {
+        setParent(inheritedACL);
+    }
+
     /**
      * TODO key should not orphan-removed or any cascaded.
      */
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(mappedBy = "ACL", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
-    public Map<Principal, ACLEntry> getEntryMap() {
-        return entryMap;
+    public List<ACLEntry> getEntries() {
+        return entries;
     }
 
-    public void setEntryMap(Map<Principal, ACLEntry> entryMap) {
-        if (entryMap == null)
-            throw new NullPointerException("entryMap");
-        this.entryMap = entryMap;
+    public void setEntries(List<ACLEntry> entries) {
+        if (entries == null)
+            throw new NullPointerException("entries");
+        this.entries = entries;
     }
 
     @Transient
     @Override
     public Set<Principal> getDeclaredPrincipals() {
-        return entryMap.keySet();
+        Set<Principal> declaredPrincipals = new HashSet<Principal>();
+        for (ACLEntry entry : entries)
+            declaredPrincipals.add(entry.getPrincipal());
+        return declaredPrincipals;
     }
 
+    /**
+     * @return The permission reference, you can modify it directly.
+     */
     @Override
     public Permission getDeclaredPermission(Principal principal) {
-        ACLEntry existing = entryMap.get(principal);
-        if (existing == null)
-            return null;
-        else
-            return existing.permission;
+        if (principal == null)
+            throw new NullPointerException("principal");
+        for (ACLEntry entry : entries) {
+            Principal declaredPrincipal = entry.getPrincipal();
+            if (declaredPrincipal.equals(principal))
+                return entry.getPermission();
+        }
+        return null;
     }
 
     @Override
     public int size() {
-        return entryMap.size();
+        return entries.size();
     }
 
     @Transient
     @Override
     public Map<Principal, Permission> getDeclaredEntries() {
-        return TransformedMap.decorate(entryMap, NOPTransformer.INSTANCE, EntryPermissionTransformer.INSTANCE);
+        return compactPermission();
+    }
+
+    public Map<Principal, Permission> compactPermission() {
+        Map<Principal, Permission> unique = new HashMap<Principal, Permission>();
+        Iterator<ACLEntry> iterator = entries.iterator();
+        while (iterator.hasNext()) {
+            ACLEntry entry = iterator.next();
+            Principal principal = entry.getPrincipal();
+            Permission permission = unique.get(principal);
+            if (permission == null)
+                unique.put(principal, permission = entry.getPermission());
+            else {
+                permission.merge(entry.getPermission());
+                iterator.remove();
+            }
+        }
+        return unique;
     }
 
     @Override
@@ -114,23 +146,34 @@ public class ACL
 
     @Override
     public Permission add(Principal principal, final Permission permission) {
-        ACLEntry existing = entryMap.get(principal);
-        if (existing != null) {
-            Permission merged = new Permission(0);
-            merged.merge(existing.permission);
-            merged.merge(permission);
-            existing.permission = merged;
-        } else {
-            ACLEntry entry = new ACLEntry(this, principal, permission);
-            entryMap.put(principal, entry);
+        if (principal == null)
+            throw new NullPointerException("principal");
+        if (permission == null)
+            throw new NullPointerException("permission");
+        Permission result = getDeclaredPermission(principal);
+        if (result == null) {
+            result = new Permission(0);
+            ACLEntry entry = new ACLEntry(this, principal, result);
+            entries.add(entry);
         }
-        return permission;
+        result.merge(permission);
+        return result;
     }
 
     @Override
     public boolean remove(Principal principal) {
-        ACLEntry existing = entryMap.remove(principal);
-        return existing != null;
+        if (principal == null)
+            throw new NullPointerException("principal");
+        Iterator<ACLEntry> iterator = entries.iterator();
+        while (iterator.hasNext()) {
+            ACLEntry entry = iterator.next();
+            Principal declaredPrincipal = entry.getPrincipal();
+            if (declaredPrincipal.equals(principal)) {
+                iterator.remove();
+                return true;
+            }
+        }
+        return false;
     }
 
 }

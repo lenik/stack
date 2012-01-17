@@ -37,6 +37,9 @@ public abstract class AbstractACL<self_t extends AbstractACL<self_t>>
         super(parent, name);
     }
 
+    /**
+     * Used to generate a flatten ACL.
+     */
     protected abstract self_t create(Map<Principal, Permission> map);
 
     @Override
