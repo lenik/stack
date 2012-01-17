@@ -8,8 +8,8 @@
     <ui:param name="numberHint" value="边界值" />
 
     <ui:define name="includes">
-        <sem:chooseVerifyPolicyDialog id="chooseVerifyPolicyDialog" selection="#{bean.level.targetPolicy}"
-            update=":addLevelForm:targetPolicy" />
+        <sem:chooseVerifyPolicyDialog id="chooseVerifyPolicyDialog" selection="#{bean.selectedPolicy}"
+            actionListener="${bean.setTargetPolicy}" update=":addLevelForm:targetPolicy" />
     </ui:define>
 
     <ui:define name="dataTableColumns">
@@ -19,16 +19,6 @@
 
         <p:column headerText="描述">
             <h:outputText value="#{entry.description}" />
-        </p:column>
-
-        <p:column headerText="创建日期">
-            <h:outputText value="#{entry.createdDate}">
-                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-            </h:outputText>
-        </p:column>
-
-        <p:column headerText="所有人">
-            <h:outputText value="#{entry.owner.displayName}" />
         </p:column>
     </ui:define>
 
@@ -69,13 +59,13 @@
                             </p:column>
                         </p:dataTable>
                         <p:commandButton value="增加#{numberHint}级别" actionListener="#{bean.newLevel}"
-                            update="addLevelForm:addLevelPanel" onclick="addLevelDialog.show()" />
+                            update=":addLevelForm:addLevelPanel" onclick="addLevelDialog.show()" />
                     </p:fieldset>
                 </h:panelGroup>
 
                 <div align="right">
                     <p:commandButton id="save-validated" value="保存" actionListener="#{bean.save}"
-                        update="mainForm:dataTable" oncomplete="editDialog.hideValidated(args)" />
+                        update=":mainForm:dataTable" oncomplete="editDialog.hideValidated(args)" />
                     <p:commandButton value="取消" onclick="editDialog.hide()" />
                 </div>
             </h:form>

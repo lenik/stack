@@ -16,7 +16,26 @@ public class ACLBean
 
     // editForm
 
+    ACLDto selectedACL;
     ACLEntryDto selectedEntry;
+
+    public ACLDto getSelectedACL() {
+        return selectedACL;
+    }
+
+    public void setSelectedACL(ACLDto selectedACL) {
+        this.selectedACL = selectedACL;
+    }
+
+    public void setInheritedACL() {
+        ACLDto acl = getActiveObject();
+        acl.setInheritedACL(selectedACL);
+    }
+
+    public void clearInheritedACL() {
+        ACLDto acl = getActiveObject();
+        acl.setInheritedACL(new ACLDto());
+    }
 
     public ACLEntryDto getSelectedEntry() {
         return selectedEntry;

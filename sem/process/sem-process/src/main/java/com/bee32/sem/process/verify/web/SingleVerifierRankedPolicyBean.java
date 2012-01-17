@@ -6,6 +6,7 @@ import com.bee32.sem.process.verify.builtin.SingleVerifierPolicy;
 import com.bee32.sem.process.verify.builtin.SingleVerifierRankedPolicy;
 import com.bee32.sem.process.verify.builtin.dto.SingleVerifierLevelDto;
 import com.bee32.sem.process.verify.builtin.dto.SingleVerifierRankedPolicyDto;
+import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 
 @ForEntity(SingleVerifierPolicy.class)
 public class SingleVerifierRankedPolicyBean
@@ -13,12 +14,13 @@ public class SingleVerifierRankedPolicyBean
 
     private static final long serialVersionUID = 1L;
 
-    SingleVerifierLevelDto selectedLevel;
-    SingleVerifierLevelDto level;
-
     public SingleVerifierRankedPolicyBean() {
         super(SingleVerifierRankedPolicy.class, SingleVerifierRankedPolicyDto.class, 0);
     }
+
+    // For editDialog:form
+
+    SingleVerifierLevelDto selectedLevel;
 
     public SingleVerifierLevelDto getSelectedLevel() {
         return selectedLevel;
@@ -28,27 +30,40 @@ public class SingleVerifierRankedPolicyBean
         this.selectedLevel = selectedLevel;
     }
 
-    public SingleVerifierLevelDto getLevel() {
-        return level;
-    }
-
-    public void setLevel(SingleVerifierLevelDto level) {
-        this.level = level;
+    public void removeLevel() {
+        SingleVerifierRankedPolicyDto policy = getActiveObject();
+        policy.getLevels().remove(selectedLevel);
     }
 
     public void newLevel() {
         level = new SingleVerifierLevelDto();
     }
 
+    // For editLevelForm
+
+    SingleVerifierLevelDto level;
+    VerifyPolicyDto selectedPolicy;
+
+    public SingleVerifierLevelDto getLevel() {
+        return level;
+    }
+
+    public VerifyPolicyDto getSelectedPolicy() {
+        return selectedPolicy;
+    }
+
+    public void setSelectedPolicy(VerifyPolicyDto selectedPolicy) {
+        this.selectedPolicy = selectedPolicy;
+    }
+
+    public void setTargetPolicy() {
+        level.setTargetPolicy(selectedPolicy);
+    }
+
     public void addLevel() {
         SingleVerifierRankedPolicyDto policy = getActiveObject();
         level.setPolicy(policy);
         policy.getLevels().add(level);
-    }
-
-    public void removeLevel() {
-        SingleVerifierRankedPolicyDto policy = getActiveObject();
-        policy.getLevels().remove(selectedLevel);
     }
 
 }

@@ -48,7 +48,9 @@
         <div align="right">
             <ui:insert name="buttons">
                 <ui:insert name="buttons.extra" />
-                <p:commandButton id="ok" value="确定" oncomplete="${var}.hide()" update="${update}" async="true" />
+                <p:commandButton id="ok" value="确定" oncomplete="${var}.hide()" update="${update}">
+                    <ui:insert name="actions" />
+                </p:commandButton>
                 <p:commandButton id="cancel" value="关闭" oncomplete="${var}.hide();" />
             </ui:insert>
         </div>

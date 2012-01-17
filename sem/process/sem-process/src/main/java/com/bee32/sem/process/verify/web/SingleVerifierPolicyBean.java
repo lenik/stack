@@ -18,6 +18,16 @@ public class SingleVerifierPolicyBean
         super(SingleVerifierPolicy.class, SingleVerifierPolicyDto.class, 0);
     }
 
+    public PrincipalDto getSelectedResponsible() {
+        if (selectedResponsible == null)
+            selectedResponsible = new PrincipalDto();
+        return selectedResponsible;
+    }
+
+    public void setSelectedResponsible(PrincipalDto selectedResponsible) {
+        this.selectedResponsible = selectedResponsible;
+    }
+
     public void addResponsible() {
         SingleVerifierPolicyDto policy = getActiveObject();
         policy.getResponsibles().add(selectedResponsible);
@@ -27,14 +37,6 @@ public class SingleVerifierPolicyBean
         SingleVerifierPolicyDto policy = getActiveObject();
         policy.getResponsibles().remove(selectedResponsible);
         selectedResponsible = null;
-    }
-
-    public PrincipalDto getSelectedResponsible() {
-        return selectedResponsible;
-    }
-
-    public void setSelectedResponsible(PrincipalDto selectedResponsible) {
-        this.selectedResponsible = selectedResponsible;
     }
 
 }

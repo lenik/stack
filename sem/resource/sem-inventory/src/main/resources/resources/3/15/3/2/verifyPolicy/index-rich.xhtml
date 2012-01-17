@@ -76,7 +76,7 @@
 
     <ui:define name="dialogs">
         <sem:chooseVerifyPolicyDialog id="chooseVerifyPolicyDialog" selection="#{bean.entry.policy}"
-            update=":addEntryForm:policy" />
+            actionListener="#{bean.setEntryPolicy}" update=":addEntryForm:policy" />
 
         <p:dialog header="新增项目" widgetVar="addEntryDialog" modal="true">
             <h:form id="addEntryForm" style="max-height: 30em; margin: 1em">

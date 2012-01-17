@@ -16,30 +16,13 @@ public class StockOrderVerifyPolicyBean
 
     private static final long serialVersionUID = 1L;
 
-    StockOrderSubjectPolicyEntry selectedEntry;
-    StockOrderSubjectPolicyEntry entry;
-
     public StockOrderVerifyPolicyBean() {
         super(StockOrderVerifyPolicy.class, StockOrderVerifyPolicyDto.class, 0);
     }
 
-    public void newEntry() {
-        VerifyPolicyDto policy = new VerifyPolicyDto().ref();
-        entry = new StockOrderSubjectPolicyEntry(StockOrderSubject.TAKE_IN, policy);
-    }
+    // For editDialog:form
 
-    public void addEntry() {
-        StockOrderVerifyPolicyDto policy = getActiveObject();
-        policy.addEntry(entry);
-        entry = null;
-    }
-
-    public void removeEntry() {
-        StockOrderVerifyPolicyDto policy = getActiveObject();
-        policy.removeEntry(selectedEntry);
-    }
-
-    // Properties
+    StockOrderSubjectPolicyEntry selectedEntry;
 
     public StockOrderSubjectPolicyEntry getSelectedEntry() {
         return selectedEntry;
@@ -49,16 +32,45 @@ public class StockOrderVerifyPolicyBean
         this.selectedEntry = selectedEntry;
     }
 
+    public void removeEntry() {
+        StockOrderVerifyPolicyDto policy = getActiveObject();
+        policy.removeEntry(selectedEntry);
+    }
+
+    public void newEntry() {
+        VerifyPolicyDto policy = new VerifyPolicyDto().ref();
+        entry = new StockOrderSubjectPolicyEntry(StockOrderSubject.TAKE_IN, policy);
+    }
+
+    // For editEntryForm
+
+    StockOrderSubjectPolicyEntry entry;
+    VerifyPolicyDto selectedPolicy;
+
     public StockOrderSubjectPolicyEntry getEntry() {
         return entry;
     }
 
-    public void setEntry(StockOrderSubjectPolicyEntry entry) {
-        this.entry = entry;
-    }
-
     public Collection<StockOrderSubject> getSubjects() {
         return StockOrderSubject.getVirtuals();
+    }
+
+    public VerifyPolicyDto getSelectedPolicy() {
+        return selectedPolicy;
+    }
+
+    public void setSelectedPolicy(VerifyPolicyDto selectedPolicy) {
+        this.selectedPolicy = selectedPolicy;
+    }
+
+    public void setEntryPolicy() {
+        entry.setPolicy(selectedPolicy);
+    }
+
+    public void addEntry() {
+        StockOrderVerifyPolicyDto policy = getActiveObject();
+        policy.addEntry(entry);
+        entry = null;
     }
 
 }
