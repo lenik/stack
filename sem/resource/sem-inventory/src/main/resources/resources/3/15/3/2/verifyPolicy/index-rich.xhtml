@@ -89,17 +89,18 @@
                         </p:selectOneMenu>
                     </t:panelGrid>
 
-                    <h:outputText value="白名单策略" />
+                    <h:outputLabel for="policy" value="白名单策略" />
                     <t:panelGrid columns="2">
                         <p:inputText id="policy" readonly="#{true}" value="#{bean.entry.policy.label}" />
-                        <p:commandButton value="..." update="chooseVerifyPolicyForm:dataTable" onclick="chooseVerifyPolicyDialog.show()" />
+                        <p:commandButton id="choosePolicy" value="..." update=":chooseVerifyPolicyDialog:form"
+                            onclick="chooseVerifyPolicyDialog.show()" />
                     </t:panelGrid>
                 </t:panelGrid>
 
                 <div align="right">
-                    <p:commandButton update=":editDialog:form:entryTable" value="确定" actionListener="#{bean.addEntry}"
-                        oncomplete="addEntryDialog.hide()" />
-                    <p:commandButton value="取消" onclick="addEntryDialog.hide()" />
+                    <p:commandButton id="add-validated" value="确定" actionListener="#{bean.addEntry}"
+                        update=":editDialog:form:entryTable" oncomplete="addEntryDialog.hide()" />
+                    <p:commandButton id="cancel" value="取消" onclick="addEntryDialog.hide()" />
                 </div>
             </h:form>
         </p:dialog>

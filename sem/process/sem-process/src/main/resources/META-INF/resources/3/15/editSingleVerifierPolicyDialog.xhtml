@@ -19,13 +19,13 @@
 
     <cc:implementation>
 
-        <icsf:choosePrincipalDialog caption="选择用户或组" var="${cc.parent.attrs.var}_cpd"
+        <icsf:choosePrincipalDialog id="cpd" caption="选择用户或组" var="${cc.parent.attrs.var}_cpd"
             actionListener="${cc.parent.attrs.dialogBean.addResponsible}" selection="${cc.parent.attrs.dialogBean.selectedResponsible}"
-            update="${cc.parent.clientId}:form" />
+            update=":${cc.parent.clientId}:form" />
 
         <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
 
-        <p:dialog header="${cc.attrs.caption}" widgetVar="${cc.attrs.var}" modal="true" position="center">
+        <p:dialog id="dialog" header="${cc.attrs.caption}" widgetVar="${cc.attrs.var}" modal="true" position="center">
             <c:set var="obj" value="${cc.attrs.value}" />
             <h:form id="form" style="${cc.attrs.style}">
                 <h:panelGroup rendered="${obj!=null}">
@@ -54,7 +54,7 @@
                             </p:column>
 
                             <p:column headerText="操作" style="width: 3em;">
-                                <p:commandLink title="删除" action="${dialogBean.removeResponsible}" update="@form">
+                                <p:commandLink title="删除" action="${dialogBean.removeResponsible}" update=":${cc.clientId}:form">
                                     <f:setPropertyActionListener value="${responsible}"
                                         target="${dialogBean.selectedResponsible}" />
                                     <p:graphicImage value="${location.ICON}/etool16/delete_edit.gif" />

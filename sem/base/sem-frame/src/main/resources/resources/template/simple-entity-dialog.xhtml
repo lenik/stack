@@ -17,7 +17,7 @@
         <h:panelGroup id="searchFragments" style="display: block; padding: .2em 0em;">
             <ui:repeat id="repeat" var="fragment" value="${dialogBean.searchFragments}">
                 <p:commandButton id="removeButton" value="${fragment.entryLabel}" async="true"
-                    actionListener="${fragment.detach}" update=":searchForm" />
+                    actionListener="${fragment.detach}" update=":${component.namingContainer.parent.namingContainer.clientId}" />
             </ui:repeat>
         </h:panelGroup>
 

@@ -54,7 +54,7 @@
 
                     <div align="right">
                         <p:commandButton id="save-validated" value="保存" actionListener="#{bean.save}"
-                            update="mainForm:dataTable" oncomplete="editDialog.hideValidated(args)" />
+                            update=":mainForm:dataTable" oncomplete="editDialog.hideValidated(args)" />
                         <p:commandButton value="取消" onclick="editDialog.hide()" />
                     </div>
                 </h:panelGroup>
