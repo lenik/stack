@@ -9,7 +9,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
-import org.apache.commons.collections15.Transformer;
 import org.hibernate.annotations.Index;
 import org.hibernate.annotations.NaturalId;
 
@@ -18,6 +17,7 @@ import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.entity.EntityAuto;
+import com.google.common.base.Function;
 
 @Entity(name = "acl_entry")
 @SequenceGenerator(name = "idgen", sequenceName = "acl_entry_seq", allocationSize = 1)
@@ -177,10 +177,10 @@ public class ACLEntry
 }
 
 class EntryPermissionTransformer
-        implements Transformer<ACLEntry, Permission> {
+        implements Function<ACLEntry, Permission> {
 
     @Override
-    public Permission transform(ACLEntry input) {
+    public Permission apply(ACLEntry input) {
         if (input == null)
             return null;
         else
