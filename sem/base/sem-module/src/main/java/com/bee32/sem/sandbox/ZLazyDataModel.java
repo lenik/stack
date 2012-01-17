@@ -77,6 +77,18 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
     }
 
     @Override
+    public int getRowIndex() {
+        return super.getRowIndex();
+    }
+
+    @Override
+    public void setRowIndex(int rowIndex) {
+        if (getPageSize() == 0)
+            return; // throw new IllegalStateException("pageSize isn't initialized.");
+        super.setRowIndex(rowIndex);
+    }
+
+    @Override
     public int getRowCount() {
         int count;
         if (options.isAutoRefreshCount() || lastQueriedCount == null)
