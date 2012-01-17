@@ -42,22 +42,22 @@ public class SingleVerifierRankedPolicyBean
     // For editLevelForm
 
     SingleVerifierLevelDto level;
-    VerifyPolicyDto selectedPolicy;
+    VerifyPolicyDto selectedTargetPolicy;
 
     public SingleVerifierLevelDto getLevel() {
         return level;
     }
 
-    public VerifyPolicyDto getSelectedPolicy() {
-        return selectedPolicy;
+    public VerifyPolicyDto getSelectedTargetPolicy() {
+        return selectedTargetPolicy;
     }
 
-    public void setSelectedPolicy(VerifyPolicyDto selectedPolicy) {
-        this.selectedPolicy = selectedPolicy;
+    public void setSelectedTargetPolicy(VerifyPolicyDto selectedTargetPolicy) {
+        this.selectedTargetPolicy = selectedTargetPolicy;
     }
 
-    public void setTargetPolicy() {
-        level.setTargetPolicy(selectedPolicy);
+    public void confirmTargetPolicy() {
+        level.setTargetPolicy(selectedTargetPolicy);
     }
 
     public void addLevel() {

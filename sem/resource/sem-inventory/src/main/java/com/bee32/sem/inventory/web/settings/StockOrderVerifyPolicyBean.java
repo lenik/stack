@@ -45,7 +45,7 @@ public class StockOrderVerifyPolicyBean
     // For editEntryForm
 
     StockOrderSubjectPolicyEntry entry;
-    VerifyPolicyDto selectedPolicy;
+    VerifyPolicyDto selectedEntryPolicy;
 
     public StockOrderSubjectPolicyEntry getEntry() {
         return entry;
@@ -55,16 +55,16 @@ public class StockOrderVerifyPolicyBean
         return StockOrderSubject.getVirtuals();
     }
 
-    public VerifyPolicyDto getSelectedPolicy() {
-        return selectedPolicy;
+    public VerifyPolicyDto getSelectedEntryPolicy() {
+        return selectedEntryPolicy;
     }
 
-    public void setSelectedPolicy(VerifyPolicyDto selectedPolicy) {
-        this.selectedPolicy = selectedPolicy;
+    public void setSelectedEntryPolicy(VerifyPolicyDto selectedEntryPolicy) {
+        this.selectedEntryPolicy = selectedEntryPolicy;
     }
 
-    public void setEntryPolicy() {
-        entry.setPolicy(selectedPolicy);
+    public void confirmEntryPolicy() {
+        entry.setPolicy(selectedEntryPolicy);
     }
 
     public void addEntry() {

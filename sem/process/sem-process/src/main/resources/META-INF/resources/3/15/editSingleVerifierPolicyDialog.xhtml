@@ -4,7 +4,7 @@
 
     <cc:interface>
         <!-- basic -->
-        <cc:attribute name="var" default="editSingleVerifierPolicyDialog" />
+        <cc:attribute name="var" default="editSingleVerifierPolicyDialog" shortDescription="nc(2)" />
         <cc:attribute name="value" type="java.lang.Object" required="true" />
         <cc:attribute name="actionListener" targets="form:save-validated" />
         <cc:attribute name="update" />
@@ -14,14 +14,15 @@
         <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
 
         <!-- internals -->
-        <cc:attribute name="dialogBean" type="java.lang.Object" default="${singleVerifierPolicyBean}" />
+        <cc:attribute name="dialogBean" type="java.lang.Object" default="${singleVerifierPolicyBean}"
+            shortDescription="nc(1)" />
     </cc:interface>
 
     <cc:implementation>
 
-        <icsf:choosePrincipalDialog id="cpd" caption="选择用户或组" var="${cc.parent.attrs.var}_cpd"
-            actionListener="${cc.parent.attrs.dialogBean.addResponsible}" selection="${cc.parent.attrs.dialogBean.selectedResponsible}"
-            update=":${cc.parent.clientId}:form" />
+        <icsf:choosePrincipalDialog id="cpd" caption="选择用户或组"
+            var="${fn:replace(cc.parent.clientId, ':', '_')}_cpd" actionListener="${cc.parent.attrs.dialogBean.addResponsible}"
+            selection="${cc.parent.attrs.dialogBean.selectedResponsible}" update=":${cc.parent.clientId}:form" />
 
         <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
 
@@ -62,7 +63,8 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:commandButton id="addResponsibleButton" value="添加责任人" onclick="${cc.attrs.var}_cpd.show()" />
+                        <p:commandButton id="addResponsibleButton" value="添加责任人"
+                            onclick="${fn:replace(cc.clientId, ':', '_')}_cpd.show()" />
                     </p:fieldset>
                 </h:panelGroup>
 
