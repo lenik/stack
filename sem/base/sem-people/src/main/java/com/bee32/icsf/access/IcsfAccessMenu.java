@@ -11,7 +11,7 @@ public class IcsfAccessMenu
     static Location BASE_ = WEB_APP.join(IcsfAccessModule.PREFIX_);
 
     static MenuNode security = entry(SEMFrameMenu.ATTRIBUTES, 100, "security", //
-            JAVASCRIPT.join("securityDialog.show()"));
+            JAVASCRIPT.join("loadAclAndShow(securityDialog)"));
 
     @Override
     protected void preamble() {

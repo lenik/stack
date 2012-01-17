@@ -9,7 +9,7 @@
     PrimeFaces.widget.Dialog.prototype.show = function() {
         _show.apply(this, arguments);
 
-        var datatable = this.jq.find('  .ui-datatable');
+        var datatable = this.jq.find('.ui-datatable');
         if (datatable.length == 0)
             return;
         datatable = datatable[0];

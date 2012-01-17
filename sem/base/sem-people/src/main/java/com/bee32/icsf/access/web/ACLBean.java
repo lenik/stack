@@ -14,25 +14,25 @@ public class ACLBean
     private static final long serialVersionUID = 1L;
 
     public ACLBean() {
-        super(ACL.class, ACLDto.class, ACLDto.PARENT);
+        super(ACL.class, ACLDto.class, ACLDto.INHERITED_ACL);
     }
 
     // editForm
 
-    ACLDto selectedACL;
+    ACLDto selectedInheritedACL;
     ACLEntryDto selectedEntry;
 
-    public ACLDto getSelectedACL() {
-        return selectedACL;
+    public ACLDto getSelectedInheritedACL() {
+        return selectedInheritedACL;
     }
 
-    public void setSelectedACL(ACLDto selectedACL) {
-        this.selectedACL = selectedACL;
+    public void setSelectedInheritedACL(ACLDto selectedInheritedACL) {
+        this.selectedInheritedACL = selectedInheritedACL;
     }
 
-    public void setInheritedACL() {
+    public void confirmInheritedACL() {
         ACLDto acl = getActiveObject();
-        acl.setInheritedACL(selectedACL);
+        acl.setInheritedACL(selectedInheritedACL);
     }
 
     public void clearInheritedACL() {
@@ -66,22 +66,22 @@ public class ACLBean
     // editEntryForm
 
     ACLEntryDto entry;
-    PrincipalDto selectedPrincipal;
+    PrincipalDto selectedEntryPrincipal;
 
     public ACLEntryDto getEntry() {
         return entry;
     }
 
-    public PrincipalDto getSelectedPrincipal() {
-        return selectedPrincipal;
+    public PrincipalDto getSelectedEntryPrincipal() {
+        return selectedEntryPrincipal;
     }
 
-    public void setSelectedPrincipal(PrincipalDto selectedPrincipal) {
-        this.selectedPrincipal = selectedPrincipal;
+    public void setSelectedEntryPrincipal(PrincipalDto selectedEntryPrincipal) {
+        this.selectedEntryPrincipal = selectedEntryPrincipal;
     }
 
-    public void setEntryPrincipal() {
-        entry.setPrincipal(selectedPrincipal);
+    public void confirmEntryPrincipal() {
+        entry.setPrincipal(selectedEntryPrincipal);
     }
 
     public void addEntry() {

@@ -4,7 +4,7 @@
 
     <cc:interface>
         <!-- basic -->
-        <cc:attribute name="var" default="editACLDialog" />
+        <cc:attribute name="var" default="editACLDialog" shortDescription="nc(0)" />
         <cc:attribute name="value" type="java.lang.Object" required="true" />
         <cc:attribute name="actionListener" targets="form:save-validated" required="true" />
         <cc:attribute name="update" />
@@ -14,21 +14,21 @@
         <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
 
         <!-- internals -->
-        <cc:attribute name="dialogBean" type="java.lang.Object" default="${ACLBean}" />
+        <cc:attribute name="dialogBean" type="java.lang.Object" default="${ACLBean}" shortDescription="nc(1)" />
     </cc:interface>
 
     <cc:implementation>
         <h:outputStylesheet library="/frame" name="table.css" />
         <h:outputStylesheet library="/3/7/2" name="acl.css" />
 
-        <icsf:chooseACLDialog id="acld" var="${cc.parent.attrs.var}_acld" selection="${cc.parent.attrs.dialogBean.selectedACL}"
-            actionListener="${cc.parent.attrs.dialogBean.setInheritedACL}" update=":${cc.parent.clientId}:form:inheritedACL" />
-        <icsf:choosePrincipalDialog id="cpd" var="${cc.parent.attrs.var}_cpd"
-            selection="${cc.parent.attrs.dialogBean.selectedPrincipal}" actionListener="${cc.parent.attrs.dialogBean.setEntryPrincipal}"
+        <icsf:chooseACLDialog id="acld" var="${fn:replace(cc.parent.clientId, ':', '_')}_acld"
+            selection="${cc.parent.attrs.dialogBean.selectedInheritedACL}" actionListener="${cc.parent.attrs.dialogBean.confirmInheritedACL}"
+            update=":${cc.parent.clientId}:form:inheritedACL" />
+        <icsf:choosePrincipalDialog id="cpd" var="${fn:replace(cc.parent.clientId, ':', '_')}_cpd"
+            selection="${cc.parent.attrs.dialogBean.selectedEntryPrincipal}" actionListener="${cc.parent.attrs.dialogBean.confirmEntryPrincipal}"
             update=":${cc.parent.clientId}:editEntryForm" />
 
         <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
-        <c:set var="dialogVar" value="${cc.attrs.var}" />
 
         <p:dialog id="main" header="${cc.attrs.caption}" widgetVar="${cc.attrs.var}" modal="true" position="center">
             <c:set var="obj" value="${cc.attrs.value}" />
@@ -42,7 +42,8 @@
                     <h:outputLabel for="inheritedLabel" value="继承的策略" />
                     <h:panelGroup id="inheritedACL">
                         <p:inputText id="inheritedLabel" value="${obj.inheritedACL.label}" readonly="true" />
-                        <p:commandButton id="chooseACL" value="选择" onclick="${cc.attrs.var}_acld.show()" />
+                        <p:commandButton id="chooseACL" value="选择"
+                            onclick="${fn:replace(cc.clientId, ':', '_')}_acld.show()" />
                     </h:panelGroup>
 
                     <h:outputLabel for="description" value="描述" />
@@ -51,8 +52,11 @@
 
                 <p:fieldset rendered="${obj != null}" legend="权限控制列表" toggleable="false">
                     <p:dataTable id="entryTable" var="entry" value="${obj.selectableEntries}" selection="${dialogBean.selectedEntry}"
-                        selectionMode="single" paginator="true" rows="20" paginatorTemplate="${viewConfig.paginatorTemplate}"
+                        selectionMode="single" paginator="true" rows="10" paginatorTemplate="${viewConfig.paginatorTemplate}"
                         rowsPerPageTemplate="${viewConfig.pageSizeTemplate}" resizableColumns="true" rowIndexVar="rowIndex">
+
+                        <p:ajax event="rowSelect" update=":${cc.clientId}:form:entryCmds" />
+                        <p:ajax event="rowUnselect" update=":${cc.clientId}:form:entryCmds" />
 
                         <p:column headerText="序号" style="width: 4em;">
                             <h:outputText value="${rowIndex+1}" />
@@ -75,29 +79,32 @@
                         </p:column>
                     </p:dataTable>
 
-                    <p:commandButton value="添加条目" actionListener="${dialogBean.createEntry}" update=":${cc.clientId}:editEntryForm"
-                        oncomplete="editEntryDialog.show()" />
-                    <p:commandButton value="编辑条目" actionListener="${dialogBean.editEntry}" update=":${cc.clientId}:editEntryForm"
-                        oncomplete="editEntryDialog.show()" disabled="${dialogBean.selectedEntry == null}" />
+                    <h:panelGroup id="entryCmds">
+                        <p:commandButton id="createEntry" value="添加条目" actionListener="${dialogBean.createEntry}"
+                            update=":${cc.clientId}:editEntryForm" oncomplete="${cc.attrs.var}_ed.show()" />
+                        <p:commandButton id="editEntry" value="编辑条目" actionListener="${dialogBean.editEntry}"
+                            update=":${cc.clientId}:editEntryForm" oncomplete="${cc.attrs.var}_ed.show()" disabled="${dialogBean.selectedEntry == null}" />
+                    </h:panelGroup>
                 </p:fieldset>
 
                 <div align="right">
                     <p:commandButton id="save-validated" value="保存"
-                        update="${cc.attrs.update}, :${cc.clientId}:acld:form" oncomplete="${dialogVar}.hideValidated(args)" />
-                    <p:commandButton id="cancel" value="取消" onclick="${dialogVar}.hide()" />
+                        update="${cc.attrs.update}, :${cc.clientId}:acld:form" oncomplete="${cc.attrs.var}.hideValidated(args)" />
+                    <p:commandButton id="cancel" value="取消" onclick="${cc.attrs.var}.hide()" />
                 </div>
             </h:form>
         </p:dialog>
 
-        <p:dialog id="editEntryDialog" header="编辑 ACL 条目" widgetVar="editEntryDialog" modal="true" position="center">
+        <p:dialog id="editEntryDialog" header="编辑 ACL 条目" widgetVar="${cc.attrs.var}_ed" modal="true" position="center">
             <h:form id="editEntryForm" style="max-height: 30em; margin: 1em">
+
                 <t:panelGrid rendered="${dialogBean.entry != null}" columns="2"
                     columnClasses="detail_col_title,detail_col_value">
-
                     <h:outputText value="安全主体" />
                     <t:panelGrid columns="2">
                         <p:inputText id="principal" readonly="true" value="${dialogBean.entry.principal.displayName}" />
-                        <p:commandButton id="choosePrincipal" value="..." onclick="${cc.attrs.var}_cpd.show()" />
+                        <p:commandButton id="choosePrincipal" value="..."
+                            onclick="${fn:replace(cc.clientId, ':', '_')}_cpd.show()" />
                     </t:panelGrid>
                 </t:panelGrid>
 
@@ -186,8 +193,8 @@
 
                 <div align="right">
                     <p:commandButton id="add-validated" value="确定" actionListener="${dialogBean.addEntry}"
-                        update=":${cc.clientId}:form:entryTable" oncomplete="editEntryDialog.hideValidated(args)" />
-                    <p:commandButton id="cancel" value="取消" onclick="editEntryDialog.hide()" />
+                        update=":${cc.clientId}:form:entryTable" oncomplete="${cc.attrs.var}_ed.hideValidated(args)" />
+                    <p:commandButton id="cancel" value="取消" onclick="${cc.attrs.var}_ed.hide(); return false" />
                 </div>
             </h:form>
         </p:dialog>
