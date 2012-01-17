@@ -8,7 +8,7 @@
                 <p:inputText id="pattern" value="${dialogBean.searchPattern}" />
                 <p:commandButton id="filterName" value="限定名称" actionListener="${dialogBean.addNameOrLabelRestriction}"
                     update="form" />
-                <p:commandButton id="filterDescription" value="限定描述" actionListener="${dialogBean.addDescription}"
+                <p:commandButton id="filterDescription" value="限定描述" actionListener="${dialogBean.addDescriptionRestriction}"
                     update="form" />
                 <ui:insert name="searchPanel.1" />
             </ui:insert>

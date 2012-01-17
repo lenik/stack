@@ -39,7 +39,7 @@
                 <span class="ui-icon ui-icon-circle-triangle-e" onclick="toggleDetailPanel(event)" />
                 <span class="ui-icon ui-icon-circle-triangle-s" onclick="toggleDetailPanel(event)" style="display: none" />
             </div>
-            <t:panelGrid styleClass="detailPanel" columns="2" cellpadding="10" columnClasses="ui-state-default, text"
+            <h:panelGrid styleClass="detailPanel" columns="2" cellpadding="10" columnClasses="ui-state-default, text"
                 style="display: none">
                 <h:outputText value="文件名：" />
                 <h:outputText value="${entry.name}" />
@@ -80,7 +80,7 @@
             <h:form id="form" style="max-height: 30em; margin: 1em">
                 <c:set var="obj" value="${bean.activeObject}" />
 
-                <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
+                <h:panelGrid rendered="${obj != null}" columns="2" columnClasses="detail_col_title,detail_col_value">
                     <h:outputText value="文件名" />
                     <p:inputText value="${obj.name}" />
 
@@ -89,12 +89,11 @@
 
                     <h:outputText value="描述信息" />
                     <p:inputText value="${obj.description}" />
-                </t:panelGrid>
+                </h:panelGrid>
 
-                <p:fieldset legend="标签" toggleable="false">
+                <p:fieldset rendered="${obj != null}" legend="标签" toggleable="false">
                     <p:dataTable id="tagTable" value="${obj.tags}" var="tag" resizableColumns="true"
                         rowIndexVar="rowIndex">
-                        <c:set var="table" value="${component.parent.parent.parent.parent.clientId}:tagTable" />
 
                         <f:facet name="header">文件关联的标签集</f:facet>
                         <p:column headerText="序号" style="width: 4em;">
@@ -106,7 +105,7 @@
                         </p:column>
 
                         <p:column headerText="操作" style="width: 3em;">
-                            <p:commandLink title="${table}删除" action="${bean.removeTag}" update="${table}">
+                            <p:commandLink title="删除" action="${bean.removeTag}" update=":editDialog:form:tagTable">
                                 <f:setPropertyActionListener value="${tag}" target="${bean.selectedTag}" />
                                 <p:graphicImage value="${location.ICON}/etool16/delete_edit.gif" />
                             </p:commandLink>
