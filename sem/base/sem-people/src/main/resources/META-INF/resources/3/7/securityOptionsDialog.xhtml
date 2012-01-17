@@ -1,0 +1,46 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:cc="http://java.sun.com/jsf/composite"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:icsf="http://java.sun.com/jsf/composite/3/7">
+
+    <cc:interface>
+        <!-- basic -->
+        <cc:attribute name="var" default="securityOptionsDialog" />
+        <cc:attribute name="selection" />
+        <cc:attribute name="actionListener" targets="form:ok" />
+        <cc:attribute name="update" />
+
+        <!-- ui overrides -->
+        <cc:attribute name="caption" default="${securityOptionsDialogBean.caption}" />
+        <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
+
+        <!-- internals -->
+        <cc:attribute name="dialogBean" type="java.lang.Object" default="${securityOptionsDialogBean}" />
+    </cc:interface>
+
+    <cc:implementation>
+
+        <icsf:chooseACLDialog id="acld" var="${cc.parent.attrs.var}_acld" selection="${cc.parent.attrs.dialogBean.selectedACL}"
+            actionListener="${cc.parent.attrs.dialogBean.applyACL}" update="${cc.parent.clientId}:form" />
+
+        <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
+        <c:set var="dialogVar" value="${cc.attrs.var}" />
+        <c:set var="handler" value="${cc.attrs.handler}" />
+
+        <p:dialog header="${cc.attrs.caption}" widgetVar="${dialogVar}" modal="true">
+            <h:form id="form" style="${cc.attrs.style}">
+
+                <h:panelGrid columns="3">
+                    <h:outputLabel for="acl" value="选定的安全策略：" />
+                    <p:inputText id="acl" value="${dialogBean.currentACLText}" readonly="true" size="30" />
+                    <p:commandButton id="chooseACL" value="..." onclick="${cc.attrs.var}_acld.show()" />
+                </h:panelGrid>
+
+                <div align="right">
+                    <p:commandButton id="save" value="应用" oncomplete="${var}.hide()" update="${update}" />
+                    <p:commandButton id="cancel" value="取消" oncomplete="${var}.hide();" />
+                </div>
+            </h:form>
+        </p:dialog>
+
+    </cc:implementation>
+</html>
