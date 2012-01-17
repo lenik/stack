@@ -20,6 +20,7 @@ import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockPeriod;
 import com.bee32.sem.inventory.service.StockQueryOptions;
 import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
+import com.bee32.sem.process.verify.util.VerifyCriteria;
 
 public class StockCriteria
         extends CriteriaSpec {
@@ -86,6 +87,7 @@ public class StockCriteria
         return compose(//
                 alias("parent", "parent"), //
                 lessOrEquals("parent.beginTime", options.getTimestamp()), //
+                options.isVerifiedOnly() ? VerifyCriteria.verified("parent") : null, //
                 in("parent._subject", subjects), //
                 materials == null ? null : in("material", materials), // _in
                 _equals("CBatch", options.getCBatch()), //
@@ -110,7 +112,8 @@ public class StockCriteria
 
     @LeftHand(StockOrderItem.class)
     public static ICriteriaElement inOutDetail(Date beginDate, Long materialId, StockQueryOptions options) {
-        return compose(alias("parent", "parent"),
+        return compose(alias("parent", "parent"), //
+                options.isVerifiedOnly() ? VerifyCriteria.verified("parent") : null, //
                 lessOrEquals("parent.beginTime", options.getTimestamp()), //
                 _equals("material.id", materialId), //
                 _equals("CBatch", options.getCBatch()), //

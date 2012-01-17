@@ -93,7 +93,7 @@ public class StockOrderItem
     /**
      * 物料
      */
-    @NaturalId(mutable=true)
+    @NaturalId(mutable = true)
     @ManyToOne(optional = false)
     public Material getMaterial() {
         return material;
@@ -107,7 +107,7 @@ public class StockOrderItem
      * 合成批号（冗余，作为简化自然键结构）
      */
     @Redundant
-    @NaturalId(mutable=true)
+    @NaturalId(mutable = true)
     @Column(length = BatchingConfig.CBATCH_MAXLEN, nullable = false)
     public String getCBatch() {
         return computeCanonicalBatch();

@@ -17,6 +17,7 @@ import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.asset.entity.AccountTicketItem;
 import com.bee32.sem.asset.entity.BudgetRequest;
 import com.bee32.sem.asset.service.AssetQueryOptions;
+import com.bee32.sem.process.verify.util.VerifyCriteria;
 
 public class AssetCriteria
         extends CriteriaSpec {
@@ -53,7 +54,7 @@ public class AssetCriteria
         }
         return compose(//
                 // alias("ticket", "ticket", CriteriaSpecification.LEFT_JOIN), //
-                // VERIFIED?
+                options.isVerifiedOnly() ? VerifyCriteria.verified() : null, //
                 _greaterThan("endTime", optBaseTime), //
                 lessOrEquals("endTime", options.getTimestamp()), //
 

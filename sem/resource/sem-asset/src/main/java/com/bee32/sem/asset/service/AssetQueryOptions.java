@@ -16,6 +16,7 @@ public final class AssetQueryOptions
 
     Date timestamp = new Date();
 
+    boolean verifiedOnly = true;
     List<AccountSubject> subjects;
     boolean recursive;
     List<Party> parties;
@@ -41,6 +42,14 @@ public final class AssetQueryOptions
         if (timestamp == null)
             throw new NullPointerException("timestamp");
         this.timestamp = timestamp;
+    }
+
+    public boolean isVerifiedOnly() {
+        return verifiedOnly;
+    }
+
+    public void setVerifiedOnly(boolean verifiedOnly) {
+        this.verifiedOnly = verifiedOnly;
     }
 
     public List<AccountSubject> getSubjects() {

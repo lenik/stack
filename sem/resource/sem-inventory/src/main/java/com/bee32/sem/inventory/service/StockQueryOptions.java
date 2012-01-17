@@ -13,6 +13,7 @@ public final class StockQueryOptions
     private static final long serialVersionUID = 1L;
 
     Date timestamp = new Date();
+    boolean verifiedOnly;
 
     String cBatch;
     StockLocation location;
@@ -41,6 +42,14 @@ public final class StockQueryOptions
         if (timestamp == null)
             throw new NullPointerException("timestamp");
         this.timestamp = timestamp;
+    }
+
+    public boolean isVerifiedOnly() {
+        return verifiedOnly;
+    }
+
+    public void setVerifiedOnly(boolean verifiedOnly) {
+        this.verifiedOnly = verifiedOnly;
     }
 
     public String getCBatch() {

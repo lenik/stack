@@ -9,9 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Offset;
-import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
@@ -23,7 +21,7 @@ import com.bee32.sem.bom.util.BomCriteria;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.util.PeopleCriteria;
-import com.bee32.sem.process.verify.VerifyEvalState;
+import com.bee32.sem.process.verify.util.VerifyCriteria;
 import com.bee32.sem.purchase.dto.MakeOrderDto;
 import com.bee32.sem.purchase.dto.MakeOrderItemDto;
 import com.bee32.sem.purchase.dto.MakeTaskDto;
@@ -32,7 +30,8 @@ import com.bee32.sem.purchase.entity.MakeOrder;
 import com.bee32.sem.purchase.entity.MakeTask;
 
 @ForEntity(MakeTask.class)
-public class MakeTaskAdminBean extends EntityViewBean {
+public class MakeTaskAdminBean
+        extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -67,7 +66,6 @@ public class MakeTaskAdminBean extends EntityViewBean {
     private String customerPattern;
     private List<PartyDto> customers;
     private PartyDto selectedCustomer;
-
 
     public MakeTaskAdminBean() {
         Calendar c = Calendar.getInstance();
@@ -117,7 +115,6 @@ public class MakeTaskAdminBean extends EntityViewBean {
     public void setGoNumber(int goNumber) {
         this.goNumber = goNumber;
     }
-
 
     public int getCount() {
         count = serviceFor(MakeTask.class).count(//
@@ -255,39 +252,32 @@ public class MakeTaskAdminBean extends EntityViewBean {
     }
 
     public List<MakeOrderItemDto> getOrderItems() {
-        if(selectedOrder != null) {
+        if (selectedOrder != null) {
             return selectedOrder.getItems();
         }
         return null;
     }
-
-
-
-
-
-
-
 
     public void limit() {
         loadMakeTask(goNumber);
     }
 
     private void loadMakeTask(int position) {
-        //刷新总记录数
+        // 刷新总记录数
         getCount();
 
         goNumber = position;
 
-        if(position < 1) {
+        if (position < 1) {
             goNumber = 1;
             position = 1;
         }
-        if(goNumber > count) {
+        if (goNumber > count) {
             goNumber = count;
             position = count;
         }
 
-        makeTask = new MakeTaskDto().create();    //如果限定条件内没有找到makeTask,则创建一个
+        makeTask = new MakeTaskDto().create(); // 如果限定条件内没有找到makeTask,则创建一个
 
         MakeTask firstTask = serviceFor(MakeTask.class).getFirst( //
                 new Offset(position - 1), //
@@ -305,7 +295,7 @@ public class MakeTaskAdminBean extends EntityViewBean {
     }
 
     public void modify() {
-        if(makeTask.getId() == null) {
+        if (makeTask.getId() == null) {
             uiLogger.warn("当前没有对应的单据");
             return;
         }
@@ -316,14 +306,14 @@ public class MakeTaskAdminBean extends EntityViewBean {
     }
 
     public void save() {
-        if(makeTask.getId() == null) {
-            //新增
+        if (makeTask.getId() == null) {
+            // 新增
             goNumber = count + 1;
         }
 
         try {
             MakeTask _task = makeTask.unmarshal();
-            for(MakeTaskItemDto item : itemsNeedToRemoveWhenModify) {
+            for (MakeTaskItemDto item : itemsNeedToRemoveWhenModify) {
                 _task.removeItem(item.unmarshal());
             }
 
@@ -334,9 +324,9 @@ public class MakeTaskAdminBean extends EntityViewBean {
 
             Map<Part, BigDecimal> mapQuantityOverloadParts = order.checkIfTaskQuantityFitOrder();
             Set<Part> setQuantityOverloadParts = mapQuantityOverloadParts.keySet();
-            if(setQuantityOverloadParts.size() > 0){
+            if (setQuantityOverloadParts.size() > 0) {
                 StringBuilder infoBuilder = new StringBuilder();
-                for(Part part : setQuantityOverloadParts) {
+                for (Part part : setQuantityOverloadParts) {
                     infoBuilder.append(part.getTarget().getLabel());
                     infoBuilder.append("超过");
                     infoBuilder.append(mapQuantityOverloadParts.get(part));
@@ -405,7 +395,6 @@ public class MakeTaskAdminBean extends EntityViewBean {
         newItemStatus = false;
     }
 
-
     public void saveItem() {
         makeTaskItem.setTask(makeTask);
         if (newItemStatus) {
@@ -449,7 +438,7 @@ public class MakeTaskAdminBean extends EntityViewBean {
     public void findOrder() {
         List<MakeOrder> _orders = serviceFor(MakeOrder.class).list( //
                 new Equals("customer.id", customer.getId()), //
-                new Equals("verifyContext._verifyEvalState", VerifyEvalState.VERIFIED.getValue()), //
+                VerifyCriteria.verified(), //
                 CommonCriteria.createdBetweenEx(limitDateFromForOrder, limitDateToForOrder));
 
         orders = DTOs.marshalList(MakeOrderDto.class, _orders);
@@ -458,7 +447,7 @@ public class MakeTaskAdminBean extends EntityViewBean {
     public void chooseOrder() {
         selectedOrder = reload(selectedOrder);
         List<MakeTaskItemDto> makeTaskItems = selectedOrder.arrangeMakeTask(makeTask);
-        if(makeTaskItems != null) {
+        if (makeTaskItems != null) {
             makeTask.setItems(makeTaskItems);
             makeTask.setOrder(selectedOrder);
         } else {
@@ -471,9 +460,7 @@ public class MakeTaskAdminBean extends EntityViewBean {
 
             List<Party> _customers = serviceFor(Party.class).list( //
                     PeopleCriteria.customers(), //
-                    new Or( //
-                            new Like("name", "%" + customerPattern + "%"), //
-                            new Like("fullName", "%" + customerPattern + "%")));
+                    PeopleCriteria.namedLike(customerPattern));
 
             customers = DTOs.marshalList(PartyDto.class, _customers);
         }
