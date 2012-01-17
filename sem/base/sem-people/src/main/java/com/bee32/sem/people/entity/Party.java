@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
@@ -49,9 +48,7 @@ public abstract class Party
 
     private static final long serialVersionUID = 1L;
 
-    public static final int NAME_LENGTH = 30;
     public static final int FULLNAME_LENGTH = 50;
-    public static final int NICKNAME_LENGTH = 20;
     public static final int SID_LENGTH = 30;
     public static final int XID_LENGTH = 40;
     public static final int INTERESTS_LENGTH = 200;
@@ -59,9 +56,7 @@ public abstract class Party
     public static final int BANK_ACCOUNT_LENGTH = 50;
     public static final int MEMO_LENGTH = 1000;
 
-    String name;
     String fullName;
-    String nickName;
     PartySidType sidType = PartySidType.IDENTITYCARD;
     String sid;
 
@@ -87,14 +82,15 @@ public abstract class Party
     /**
      * 名称
      */
-    @Basic(optional = false)
-    @Column(length = NAME_LENGTH, nullable = false)
+    @Transient
     public String getName() {
-        return name;
+        return label;
     }
 
     public void setName(String name) {
-        this.name = name;
+        if (name == null)
+            throw new NullPointerException("name");
+        setLabel(name);
     }
 
     /**
@@ -110,24 +106,10 @@ public abstract class Party
     }
 
     /**
-     * 昵称
-     */
-    @Column(length = NICKNAME_LENGTH)
-    public String getNickName() {
-        return nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
-
-    /**
      * 显示名称
      */
     @Transient
     public String getDisplayName() {
-        if (nickName != null && !nickName.isEmpty())
-            return nickName;
         if (fullName != null && !fullName.isEmpty())
             return fullName;
         return name;
@@ -289,9 +271,8 @@ public abstract class Party
 
     @Override
     protected void populateKeywords(Collection<String> keywords) {
-        keywords.add(name);
-        keywords.add(fullName);
-        keywords.add(nickName);
+        keywords.add(getName());
+        keywords.add(getFullName());
     }
 
 }

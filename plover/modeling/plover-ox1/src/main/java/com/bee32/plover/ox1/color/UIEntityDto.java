@@ -64,7 +64,7 @@ public abstract class UIEntityDto<E extends UIEntity<K>, K extends Serializable>
         description = map.getString("description");
     }
 
-    @NLength(max = UIEntity.LABEL_LENGTH)
+    @NLength(min = 1, max = UIEntity.LABEL_LENGTH)
     public String getLabel() {
         return label;
     }

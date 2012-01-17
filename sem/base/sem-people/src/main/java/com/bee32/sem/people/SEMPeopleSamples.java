@@ -131,16 +131,16 @@ public class SEMPeopleSamples
         abcOrg.setSize(20);
         abcOrg.setInterests("互联网搜索");
 
+        bugatti.setName("ONE - 77");
         bugatti.setFullName("Ettore Bugatti ONE - 77");
-        bugatti.setNickName("ONE - 77");
         bugatti.setSid("294741103659387246x");
         Calendar one77Birthday = Calendar.getInstance();
         one77Birthday.set(1909, 1, 1);
         bugatti.setBirthday(one77Birthday.getTime());
         bugatti.setTags(Varargs.toSet(PartyTagname.CUSTOMER));
 
+        bentley.setName("Arnage");
         bentley.setFullName("Walter Owen Bentley");
-        bentley.setNickName("Arnage");
         bentley.setSid("580672610347561394");
         Calendar bentleyBirthday = Calendar.getInstance();
         bentleyBirthday.set(1919, 7, 1);
@@ -149,9 +149,9 @@ public class SEMPeopleSamples
 
         weiXiaoBao.setBirthday(bentleyBirthday.getTime());
         weiXiaoBao.setCensusRegister("北京市");
+        weiXiaoBao.setName("小宝");
         weiXiaoBao.setFullName("韦小宝");
         weiXiaoBao.setInterests("吃饭睡觉玩老婆");
-        weiXiaoBao.setNickName("小宝");
         weiXiaoBao.setSex(Gender.MALE);
         weiXiaoBao.setSid("11010116541220517");
         weiXiaoBao.setSidType(PartySidType.IDENTITYCARD);

@@ -62,7 +62,6 @@ public class PartyDto
     protected void _marshal(Party source) {
         name = source.getName();
         fullName = source.getFullName();
-        nickName = source.getNickName();
 
         sidType = mref(PartySidTypeDto.class, source.getSidType());
         sid = source.getSid();
@@ -92,7 +91,6 @@ public class PartyDto
     protected void _unmarshalTo(Party target) {
         target.setName(name);
         target.setFullName(fullName);
-        target.setNickName(nickName);
 
         target.setSid(sid);
 
@@ -125,13 +123,14 @@ public class PartyDto
             throws ParseException {
     }
 
-    @NLength(min = 2, max = Party.NAME_LENGTH)
     public String getName() {
-        return name;
+        return getLabel();
     }
 
     public void setName(String name) {
-        this.name = name;
+        if (name == null)
+            throw new NullPointerException("name");
+        setLabel(name);
     }
 
     @NLength(max = Party.FULLNAME_LENGTH)
@@ -141,15 +140,6 @@ public class PartyDto
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
-    }
-
-    @NLength(max = Party.NICKNAME_LENGTH)
-    public String getNickName() {
-        return nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
     }
 
     public String getDisplayName() {
