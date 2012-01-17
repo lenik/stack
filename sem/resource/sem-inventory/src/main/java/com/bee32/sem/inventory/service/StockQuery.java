@@ -104,7 +104,7 @@ public class StockQuery
 
             all.addItem(item);
         }
-
         return all;
     }
+
 }

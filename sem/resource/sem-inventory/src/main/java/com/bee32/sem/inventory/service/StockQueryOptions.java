@@ -13,7 +13,7 @@ public final class StockQueryOptions
     private static final long serialVersionUID = 1L;
 
     Date timestamp = new Date();
-    boolean verifiedOnly;
+    boolean verifiedOnly = true;
 
     String cBatch;
     StockLocation location;
