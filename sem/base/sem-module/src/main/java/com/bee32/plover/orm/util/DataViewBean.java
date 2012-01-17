@@ -55,6 +55,10 @@ public abstract class DataViewBean
 
     protected static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
     D reload(D dto, int selection) {
+
+        if (!dto.getMarshalType().isReference())
+            return dto;
+
         Class<? extends D> dtoType = (Class<? extends D>) dto.getClass();
         Class<? extends E> entityType = dto.getEntityType();
         K id = dto.getId();
@@ -64,5 +68,4 @@ public abstract class DataViewBean
         D remarshalled = DTOs.marshal(dtoType, selection, reloaded);
         return remarshalled;
     }
-
 }
