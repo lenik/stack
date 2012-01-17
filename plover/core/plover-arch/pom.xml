@@ -70,7 +70,7 @@
         <dependency>
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-collections</artifactId>
-            <version>0.2.102</version>
+            <version>0.2.103</version>
         </dependency>
     </dependencies>
     <name>Plover :: Core :: Arch</name>
