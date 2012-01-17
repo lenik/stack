@@ -80,9 +80,11 @@ public class FacesUILogger
 
             if (e != null) {
                 String err = e.getMessage();
-                err = ErrorMessageTranslator.translateMessage(err);
-                message = "<div style='color: #ff0033; font-size: small; font-style: italic'>" //
-                        + "（错误消息：" + encodeHtml(err) + "）" + message + "</div>";
+                if (err != null) {
+                    err = ErrorMessageTranslator.translateMessage(err);
+                    message = "<div style='color: #ff0033; font-size: small; font-style: italic'>" //
+                            + "（错误消息：" + encodeHtml(err) + "）" + message + "</div>";
+                }
             }
 
             FacesMessage facesMessage = new FacesMessage(getSeverity(), title, message);
@@ -98,6 +100,8 @@ public class FacesUILogger
 
         String encodeHtml(String s) {
             if (!html) {
+                if (s == null)
+                    return null;
                 s = s.replace("&", "&amp;");
                 s = s.replace("<", "&lt;");
                 s = s.replace(" ", "&nbsp;");
