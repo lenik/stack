@@ -1,0 +1,21 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:cc="http://java.sun.com/jsf/composite"
+    xmlns:test="http://java.sun.com/jsf/composite/test">
+
+    <cc:interface>
+        <cc:attribute name="name" required="true" shortDescription="nc(1)" />
+    </cc:interface>
+
+    <cc:implementation>
+
+        <div>
+            ccChild: cc.clientId="${cc.clientId}"
+        </div>
+        <div>
+            ccChild: cc.parent.clientId="${cc.parent.clientId}"
+        </div>
+
+        <test:ccDump id="ccDump" name="c-${cc.parent.attrs.name}" />
+    </cc:implementation>
+
+</ui:component>

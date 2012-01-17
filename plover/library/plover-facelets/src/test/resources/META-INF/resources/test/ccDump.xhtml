@@ -1,0 +1,30 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:cc="http://java.sun.com/jsf/composite"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/1999/xhtml http://www.w3.org/2002/08/xhtml/xhtml1-transitional.xsd">
+
+    <cc:interface>
+        <cc:attribute name="name" required="true" />
+    </cc:interface>
+
+    <cc:implementation>
+        <div>
+            ccDump: cc.clientId="${cc.clientId}"
+        </div>
+        <div>
+            ccDump: cc.parent.clientId="${cc.parent.clientId}"
+        </div>
+        <div>
+            ccDump: cc.parent.parent.clientId="${cc.parent.parent.clientId}"
+        </div>
+        <div>
+            ccDump: cc.attrs.name="${cc.attrs.name}"
+        </div>
+        <div>
+            ccDump: cc.parent.attrs.name="${cc.parent.attrs.name}"
+        </div>
+        <div>
+            ccDump: cc.parent.parent.attrs.name="${cc.parent.parent.attrs.name}"
+        </div>
+    </cc:implementation>
+
+</ui:component>
