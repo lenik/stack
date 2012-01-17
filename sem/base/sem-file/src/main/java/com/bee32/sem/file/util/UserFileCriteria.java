@@ -2,6 +2,8 @@ package com.bee32.sem.file.util;
 
 import java.util.Collection;
 
+import org.hibernate.criterion.MatchMode;
+
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.LeftHand;
@@ -18,8 +20,8 @@ public class UserFileCriteria
         if (pattern.isEmpty())
             return null;
         return or(//
-                likeIgnoreCase("name", "%" + pattern + "%"), //
-                likeIgnoreCase("label", "%" + pattern + "%"));
+                likeIgnoreCase("name", pattern, MatchMode.ANYWHERE), //
+                likeIgnoreCase("label", pattern, MatchMode.ANYWHERE));
     }
 
     @LeftHand(UserFile.class)
