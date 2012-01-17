@@ -16,21 +16,24 @@ import com.bee32.sem.frame.menu.MenuNode;
 public class SEMFrameMenu
         extends MenuContribution {
 
+    static String VERSION = "SEM-Frame 0.3.2";
+
     public static final MenuNode MAIN = menu("main");
 
-    public static final MenuNode BASE = menu(MAIN, "base");
-    public static final MenuNode DATA = menu(MAIN, "data");
-    public static final MenuNode RESOURCE = menu(MAIN, "resource");
-    public static final MenuNode PROCESS = menu(MAIN, "process");
-    public static final MenuNode SUPPORT = menu(MAIN, "support");
-    public static final MenuNode BIZ1 = menu(MAIN, "biz1");
-    public static final MenuNode VIEW = menu(MAIN, "view");
-    public static final MenuNode HELP = menu(MAIN, "help");
+    public static final MenuNode BASE = menu(MAIN, 10, "base");
+    public static final MenuNode DATA = menu(MAIN, 20, "data");
+    public static final MenuNode RESOURCE = menu(MAIN, 30, "resource");
+    public static final MenuNode PROCESS = menu(MAIN, 40, "process");
+    public static final MenuNode SUPPORT = menu(MAIN, 50, "support");
+    public static final MenuNode BIZ1 = menu(MAIN, 60, "biz1");
+    public static final MenuNode EDIT = menu(MAIN, 70, "edit");
+    public static final MenuNode VIEW = menu(MAIN, 80, "view");
+    public static final MenuNode HELP = menu(MAIN, 90, "help");
 
+    public static final MenuNode ATTRIBUTES = menu(EDIT, "attributes");
     public static final MenuNode THEME = menu(VIEW, "theme");
 
-    static String ABOUT_NAME = "SEM-Frame 0.3.2";
-    static MenuNode ABOUT = entry(HELP, "aboutFrame", JAVASCRIPT.join("alert('" + ABOUT_NAME + "')"));
+    static MenuNode ABOUT = entry(HELP, "aboutFrame", JAVASCRIPT.join("alert('" + VERSION + "')"));
 
     @Override
     protected void preamble() {
