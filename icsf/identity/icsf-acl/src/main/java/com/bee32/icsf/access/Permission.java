@@ -21,8 +21,8 @@ public final class Permission
     public static final int WRITE = 1 << 1;
     public static final int EXECUTE = 1 << 0;
 
-    static final char C_ADMIN = 'S';
-    static final char C_USER = 'U';
+    static final char C_ADMIN = 's';
+    static final char C_USER = 'u';
     static final char C_CREATE = 'c';
     static final char C_DELETE = 'd';
     static final char C_READ = 'r';
