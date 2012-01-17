@@ -248,9 +248,6 @@ public abstract class SimpleEntityViewBean
         Map<Entity<?>, EntityDto<?, ?>> entityMap;
         try {
             entityMap = unmarshalDtos(getActiveObjects(), false);
-        } catch (NullPointerException e) {
-            uiLogger.error("有些需要保存的对象已失效，请刷新页面重试。", e);
-            return;
         } catch (Exception e) {
             uiLogger.error("反编列失败", e);
             return;

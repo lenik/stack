@@ -151,6 +151,9 @@ public abstract class BaseDto_AS1<S, C>
     public <target_t, property_t, _C> void merge(//
             target_t target, IPropertyAccessor<property_t> property, BaseDto<property_t, _C> propertyDto) {
 
+        if (property == null)
+            throw new NullPointerException("property");
+
         // DTO == null means ignore.
         if (propertyDto == null)
             return;
