@@ -28,7 +28,19 @@
             <p:column headerText="序号">
                 <h:outputText value="${rowIndex + 1}" />
             </p:column>
+
             <ui:insert name="columns" />
+
+            <ui:insert name="dataTableColumnsC">
+                <p:column headerText="更新日期">
+                    <h:outputText value="${entry.lastModified}">
+                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="属主">
+                    <h:outputText value="${entry.owner.displayName}" />
+                </p:column>
+            </ui:insert>
         </p:dataTable>
 
         <ui:insert name="content" />

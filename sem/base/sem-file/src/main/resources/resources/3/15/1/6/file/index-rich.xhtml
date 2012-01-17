@@ -33,10 +33,6 @@
             </h:outputText>
         </p:column>
 
-        <p:column headerText="所有人">
-            <h:outputText value="${entry.owner.displayName}" />
-        </p:column>
-
         <p:column headerText="文件">
             <div class="entry">
                 <span>${entry.labelOrName}</span>
@@ -53,13 +49,7 @@
 
                 <h:outputText value="描述信息：" />
                 <h:outputText value="${entry.description}" />
-            </t:panelGrid>
-        </p:column>
-
-        <p:column headerText="更新时间">
-            <h:outputText value="${entry.lastModified}">
-                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-            </h:outputText>
+            </h:panelGrid>
         </p:column>
     </ui:define>
 

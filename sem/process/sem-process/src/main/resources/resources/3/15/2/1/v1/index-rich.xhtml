@@ -19,16 +19,6 @@
         <p:column headerText="描述" sortBy="#{entry.description}">
             <h:outputText value="#{entry.description}" />
         </p:column>
-
-        <p:column headerText="创建日期">
-            <h:outputText value="#{entry.createdDate}">
-                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-            </h:outputText>
-        </p:column>
-
-        <p:column headerText="所有人">
-            <h:outputText value="#{entry.owner.displayName}" />
-        </p:column>
     </ui:define>
 
 </ui:composition>
