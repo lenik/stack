@@ -44,7 +44,7 @@ public class SecurityOptionsDialogBean
         this.activeACL = activeACL;
     }
 
-    public ACLDto loadFirstACL() {
+    public ACLDto loadACL() {
         List<?> selection = getSelection();
         if (selection.isEmpty())
             return null;
@@ -65,7 +65,28 @@ public class SecurityOptionsDialogBean
         return acl;
     }
 
-    public void saveActiveACL() {
+    public void saveACL() {
+        if (activeACL == null) {
+            uiLogger.error("ACL尚未装载。");
+            return;
+        }
+
+        ACL _acl;
+        try {
+            _acl = activeACL.unmarshal(this);
+        } catch (Exception e) {
+            uiLogger.error("反编列失败", e);
+            return;
+        }
+
+        try {
+            asFor(ACL.class).update(_acl);
+        } catch (Exception e) {
+            uiLogger.error("保存 ACL 失败", e);
+            return;
+        }
+
+        uiLogger.info("保存 ACL 成功。");
     }
 
     @SuppressWarnings("unchecked")
