@@ -6,7 +6,7 @@
         <version>0.3.2-SNAPSHOT</version>
     </parent>
     <artifactId>plover-criteria</artifactId>
-    <version>0.2.110</version>
+    <version>0.2.111</version>
     <dependencies>
         <dependency>
             <groupId>org.hibernate</groupId>
