@@ -15,10 +15,10 @@ public class ViewConfig
 
     static LocationVmap homeLocation = WEB_APP.join(SEMFrameModule.PREFIX + "/empty.jsf");
 
-    int pageSize = 50;
+    int pageSize = 20;
     int dialogPageSize = 10;
 
-    String pageSizeTemplate = "10, 50, 100, 200, 1000";
+    String pageSizeTemplate = "10, 20, 50, 100, 200, 500";
     String paginatorTemplate = "" //
             + "{CurrentPageReport}"//
             + " {FirstPageLink}" //

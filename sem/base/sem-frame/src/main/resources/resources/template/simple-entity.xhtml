@@ -78,7 +78,7 @@
             <ui:repeat id="repeat" var="fragment" value="${bean.searchFragments}">
                 <c:set var="form" value="${component.parent.parent.parent.clientId}" />
                 <p:commandButton id="removeButton" value="${fragment.entryLabel}" async="true"
-                    actionListener="${fragment.detach}" update="@form, :mainForm" />
+                    actionListener="${fragment.detach}" update=":searchForm:searchFragments, :mainForm" />
             </ui:repeat>
         </h:panelGroup>
     </ui:define>

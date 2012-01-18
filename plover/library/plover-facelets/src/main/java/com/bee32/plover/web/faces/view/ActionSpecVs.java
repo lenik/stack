@@ -29,6 +29,9 @@ public class ActionSpecVs
     @Override
     public Boolean isValidationEnabled() {
         FacesContext ctx = FacesContext.getCurrentInstance();
+        if (ctx == null)
+            return true; // enabled by system default.
+
         ExternalContext xctx = ctx.getExternalContext();
         HttpServletRequest req = (HttpServletRequest) xctx.getRequest();
 
