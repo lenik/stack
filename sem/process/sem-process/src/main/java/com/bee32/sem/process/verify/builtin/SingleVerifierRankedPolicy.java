@@ -148,7 +148,7 @@ public class SingleVerifierRankedPolicy
     @Override
     public Set<?> getPredefinedStages() {
         Set<Object> predefinedStages = new HashSet<Object>();
-        for (Entry<Long, SingleVerifierLevel> entry : levelMap.entrySet()) {
+        for (Entry<Long, SingleVerifierLevel> entry : getLevelMap().entrySet()) {
             Long limit = entry.getKey();
             VerifyPolicy targetPolicy = entry.getValue().getTargetPolicy();
             for (Object targetStage : targetPolicy.getPredefinedStages()) {
@@ -163,7 +163,7 @@ public class SingleVerifierRankedPolicy
     public Tuple getStage(IVerifyContext context) {
         ISingleVerifierWithNumber svn = checkedCast(ISingleVerifierWithNumber.class, context);
         long judgeNumber = svn.getJudgeNumber().longValue();
-        Entry<Long, SingleVerifierLevel> declaredEntry = levelMap.ceilingEntry(judgeNumber);
+        Entry<Long, SingleVerifierLevel> declaredEntry = getLevelMap().ceilingEntry(judgeNumber);
         long limit = declaredEntry.getKey();
         VerifyPolicy targetPolicy = declaredEntry.getValue().getTargetPolicy();
         Object targetStage = targetPolicy.getStage(context);
@@ -177,7 +177,7 @@ public class SingleVerifierRankedPolicy
         if (limit == null)
             throw new IllegalUsageError("Bad limit: " + limit);
         Object targetStage = tuple.getFactor(1);
-        VerifyPolicy targetPolicy = levelMap.get(limit).getTargetPolicy();
+        VerifyPolicy targetPolicy = getLevelMap().get(limit).getTargetPolicy();
         return targetPolicy.getStageResponsibles(targetStage);
     }
 

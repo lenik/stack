@@ -34,7 +34,7 @@ public class MaterialCategoryDto
         classification = source.getClassification() == null ? null : source.getClassification().getValue();
 
         if (selection.contains(MATERIALS))
-            this.materials = marshalList(MaterialDto.class, source.getMaterials());
+            this.materials = mrefList(MaterialDto.class, -1, source.getMaterials());
 
         this.materialCount = source.getMaterialCount();
     }
@@ -94,7 +94,6 @@ public class MaterialCategoryDto
             throw new NullPointerException("codeGenerator");
         this.codeGenerator = codeGenerator;
     }
-
 
     public char getClassification() {
         return classification;
