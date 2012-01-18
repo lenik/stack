@@ -1,4 +1,4 @@
-(function ($) {
+(function($) {
     $("#aQuit").click(function() {
         $.ajax({
             "dataType" : "json",
