@@ -203,7 +203,7 @@
 								<p:commandButton value="保存"
 									actionListener="#{makeTaskAdminBean.saveItem}"
 									oncomplete="itemDialog.hide();" async="true"
-									update="mainForm" />
+									update=":mainForm" />
 								<p:commandButton value="取消"
 									oncomplete="itemDialog.hide();" />
 							</t:panelGrid>
@@ -221,7 +221,7 @@
                 severity="alert" widgetVar="deleteConfirmDialog" modal="true">
 
                 <p:commandButton value="确定"
-                    update="mainForm"
+                    update=":mainForm"
                     actionListener="#{makeTaskAdminBean.delete}"
                     oncomplete="deleteConfirmDialog.hide()" />
                 <p:commandButton value="取消" onclick="deleteConfirmDialog.hide()"
@@ -235,7 +235,7 @@
                 severity="alert" widgetVar="deleteItemConfirmDialog" modal="true">
 
                 <p:commandButton value="确定"
-                    update="mainForm:items"
+                    update=":mainForm:items"
                     actionListener="#{makeTaskAdminBean.deleteItem}"
                     oncomplete="deleteItemConfirmDialog.hide()" />
                 <p:commandButton value="取消" onclick="deleteItemConfirmDialog.hide()"
@@ -317,7 +317,7 @@
                                 <p:spacer width="10"/>
                                 <p:commandLink
                                     oncomplete="orderDialog.hide();"
-                                    update="mainForm:order mainForm:items"
+                                    update=":mainForm:order, :mainForm:items"
                                     action="#{makeTaskAdminBean.chooseOrder}"
                                     value="挑选">
                                     <f:setPropertyActionListener

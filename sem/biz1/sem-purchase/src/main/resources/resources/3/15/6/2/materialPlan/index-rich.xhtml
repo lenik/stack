@@ -109,7 +109,7 @@
                         disabled="#{!materialPlanAdminBean.editable}"
                         actionListener="#{materialPlanAdminBean.queryStock}"
                         oncomplete="lockStockDialog.show()"
-                        update="lockStockForm:lockStockPanel"/>
+                        update=":lockStockForm:lockStockPanel"/>
                     <t:panelGroup colspan="3"/>
                 </t:panelGrid>
 
@@ -171,7 +171,7 @@
                                 <f:facet name="header">操作</f:facet>
                                 <t:panelGroup>
                                     <p:commandLink
-                                        update="itemForm:itemPanel"
+                                        update=":itemForm:itemPanel"
                                         disabled="#{!materialPlanAdminBean.editable}"
                                         actionListener="#{materialPlanAdminBean.modifyItem}"
                                         oncomplete="itemDialog.show()"
@@ -192,16 +192,16 @@
                                 <p:toolbarGroup align="left">
                                     <p:commandButton value="第一条"
                                         actionListener="#{materialPlanAdminBean.firstPlanOrder}"
-                                        update="mainForm:planDetail:planOrdersPanel" async="true" />
+                                        update=":mainForm:planDetail:planOrdersPanel" async="true" />
                                     <p:commandButton value="上一条"
                                         actionListener="#{materialPlanAdminBean.previousPlanOrder}"
-                                        update="mainForm:planDetail:planOrdersPanel" async="true" />
+                                        update=":mainForm:planDetail:planOrdersPanel" async="true" />
                                     <p:commandButton value="下一条"
                                         actionListener="#{materialPlanAdminBean.nextPlanOrder}"
-                                        update="mainForm:planDetail:planOrdersPanel" async="true" />
+                                        update=":mainForm:planDetail:planOrdersPanel" async="true" />
                                     <p:commandButton value="最末条"
                                         actionListener="#{materialPlanAdminBean.lastPlanOrder}"
-                                        update="mainForm:planDetail:planOrdersPanel" async="true" />
+                                        update=":mainForm:planDetail:planOrdersPanel" async="true" />
                                     <p:inputText
                                         value="#{materialPlanAdminBean.goNumberPlanOrder}"
                                         style="width:30px;" />
@@ -209,7 +209,7 @@
                                         value="/#{materialPlanAdminBean.countPlanOrder}" />
                                     <p:commandButton value="前往"
                                         actionListener="#{materialPlanAdminBean.goPlanOrder}"
-                                        update="mainForm:planDetail:planOrdersPanel" async="true" />
+                                        update=":mainForm:planDetail:planOrdersPanel" async="true" />
                                 </p:toolbarGroup>
                             </p:toolbar>
                             <t:panelGrid columns="2">
@@ -357,7 +357,7 @@
 								<p:commandButton value="保存"
 									actionListener="#{materialPlanAdminBean.saveItem}"
 									oncomplete="itemDialog.hide();" async="true"
-									update="mainForm" />
+									update=":mainForm" />
 								<p:commandButton value="取消"
 									oncomplete="itemDialog.hide();" />
 							</t:panelGrid>
@@ -375,7 +375,7 @@
                 severity="alert" widgetVar="deleteConfirmDialog" modal="true">
 
                 <p:commandButton value="确定"
-                    update="mainForm"
+                    update=":mainForm"
                     actionListener="#{materialPlanAdminBean.delete}"
                     oncomplete="deleteConfirmDialog.hide()" />
                 <p:commandButton value="取消" onclick="deleteConfirmDialog.hide()"
@@ -389,7 +389,7 @@
                 severity="alert" widgetVar="deleteItemConfirmDialog" modal="true">
 
                 <p:commandButton value="确定"
-                    update="mainForm:items"
+                    update=":mainForm:planDetail:items"
                     actionListener="#{materialPlanAdminBean.deleteItem}"
                     oncomplete="deleteItemConfirmDialog.hide()" />
                 <p:commandButton value="取消" onclick="deleteItemConfirmDialog.hide()"
@@ -470,7 +470,7 @@
                                 <p:spacer width="10"/>
                                 <p:commandLink
                                     oncomplete="taskDialog.hide();"
-                                    update="mainForm:task mainForm:planDetail:items"
+                                    update=":mainForm:task mainForm:planDetail:items"
                                     action="#{materialPlanAdminBean.chooseTask}"
                                     value="挑选">
                                     <f:setPropertyActionListener
@@ -595,7 +595,7 @@
                     <h:panelGrid columns="2">
                         <p:commandButton value="确定"
                             actionListener="#{materialPlanAdminBean.chooseMaterial}"
-                            oncomplete="materialDialog.hide();" update="itemForm:itemPanel"
+                            oncomplete="materialDialog.hide();" update=":itemForm:itemPanel"
                             async="true" />
                         <p:commandButton value="取消" oncomplete="materialDialog.hide();" />
                     </h:panelGrid>
@@ -662,7 +662,7 @@
                                 <p:commandButton value="保存"
                                     actionListener="#{materialPlanAdminBean.saveOrderItem}"
                                     oncomplete="orderItemDialog.hide();" async="true"
-                                    update="mainForm:planDetail:orderItems" />
+                                    update=":mainForm:planDetail:orderItems" />
                                 <p:commandButton value="取消"
                                     oncomplete="orderItemDialog.hide();" />
                             </t:panelGrid>
@@ -681,7 +681,7 @@
                 severity="alert" widgetVar="deleteOrderItemConfirmDialog" modal="true">
 
                 <p:commandButton value="确定"
-                    update="mainForm:planDetail:orderItems"
+                    update=":mainForm:planDetail:orderItems"
                     actionListener="#{materialPlanAdminBean.deleteItem}"
                     oncomplete="deleteOrderItemConfirmDialog.hide()" />
                 <p:commandButton value="取消" onclick="deleteOrderItemConfirmDialog.hide()"
@@ -815,7 +815,7 @@
                         <p:commandButton value="确定"
                             actionListener="#{materialPlanAdminBean.lockStock}"
                             oncomplete="lockStockDialog.hide();"
-                            update="mainForm:planDetail:planOrdersPanel" async="true" />
+                            update=":mainForm:planDetail:planOrdersPanel" async="true" />
                         <p:commandButton value="取消"
                             oncomplete="lockStockDialog.hide();" />
                     </h:panelGrid>

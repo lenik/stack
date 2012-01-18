@@ -109,7 +109,7 @@
                     <h:outputText value="明细"/>
 					<p:commandButton value="新增明细" onclick="itemDialog.show();"
 						action="#{accountTicketAdminBean.newItem}"
-						update="itemForm:itemPanel"
+						update=":itemForm:itemPanel"
 						disabled="#{!accountTicketAdminBean.editable}" />
 				</t:panelGrid>
 
@@ -164,7 +164,7 @@
 					<p:column>
 						<f:facet name="header">操作</f:facet>
 						<t:panelGroup>
-							<p:commandLink update="itemForm:itemPanel"
+							<p:commandLink update=":itemForm:itemPanel"
 								disabled="#{!accountTicketAdminBean.editable}"
 								actionListener="#{accountTicketAdminBean.modifyItem}"
 								oncomplete="itemDialog.show()" value="修改">
@@ -231,7 +231,7 @@
 								<p:commandButton value="保存"
 									actionListener="#{accountTicketAdminBean.saveItem}"
 									oncomplete="itemDialog.hide();" async="true"
-									update="mainForm" />
+									update=":mainForm" />
 								<p:commandButton value="取消"
 									oncomplete="itemDialog.hide();" />
 							</t:panelGrid>
@@ -295,7 +295,7 @@
 					<h:panelGrid columns="2">
 						<p:commandButton value="确定"
 							actionListener="#{accountTicketAdminBean.chooseBudgetRequest}"
-							oncomplete="budgetRequestDialog.hide();" update="mainForm:budgetRequest"
+							oncomplete="budgetRequestDialog.hide();" update=":mainForm:budgetRequest"
 							async="true" />
 						<p:commandButton value="取消" oncomplete="budgetRequestDialog.hide();" />
 					</h:panelGrid>
@@ -309,7 +309,7 @@
                 severity="alert" widgetVar="deleteConfirmDialog" modal="true">
 
                 <p:commandButton value="确定"
-                    update="mainForm"
+                    update=":mainForm"
                     actionListener="#{accountTicketAdminBean.delete}"
                     oncomplete="deleteConfirmDialog.hide()" />
                 <p:commandButton value="取消" onclick="deleteConfirmDialog.hide()"
@@ -323,7 +323,7 @@
                 severity="alert" widgetVar="deleteItemConfirmDialog" modal="true">
 
                 <p:commandButton value="确定"
-                    update="mainForm:items"
+                    update=":mainForm:items"
                     actionListener="#{accountTicketAdminBean.deleteItem}"
                     oncomplete="deleteItemConfirmDialog.hide()" />
                 <p:commandButton value="取消" onclick="deleteItemConfirmDialog.hide()"

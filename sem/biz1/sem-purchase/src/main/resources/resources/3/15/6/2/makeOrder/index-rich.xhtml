@@ -365,7 +365,7 @@
                 severity="alert" widgetVar="deleteItemConfirmDialog" modal="true">
 
                 <p:commandButton value="确定"
-                    update="mainForm:items"
+                    update=":mainForm:items"
                     actionListener="#{makeOrderAdminBean.deleteItem}"
                     oncomplete="deleteItemConfirmDialog.hide()" />
                 <p:commandButton value="取消" onclick="deleteItemConfirmDialog.hide()"
@@ -475,7 +475,7 @@
                     </p:dataTable>
                     <h:panelGrid columns="2">
                         <p:commandButton value="确定" actionListener="#{makeOrderAdminBean.chooseChance}"
-                            oncomplete="chanceDialog.hide();" update="mainForm:chance" async="true" />
+                            oncomplete="chanceDialog.hide();" update=":mainForm:chance" async="true" />
                         <p:commandButton value="取消" oncomplete="chanceDialog.hide();" />
                     </h:panelGrid>
                 </h:panelGroup>

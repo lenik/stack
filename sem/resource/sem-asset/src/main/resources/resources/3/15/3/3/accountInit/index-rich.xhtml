@@ -13,7 +13,7 @@
 
 		<h:form id="mainForm">
             <t:panelGrid columns="2">
-                <p:commandButton update="itemForm:itemPanel" value="新增"
+                <p:commandButton update=":itemForm:itemPanel" value="新增"
                     onclick="itemDialog.show()"
                     actionListener="#{accountInitAdminBean.newItem}" />
                 <sem:singleVerifierSupportButton
@@ -55,7 +55,7 @@
                 <p:column>
                     <f:facet name="header">操作</f:facet>
                     <t:panelGroup>
-                        <p:commandLink update="itemForm:itemPanel"
+                        <p:commandLink update=":itemForm:itemPanel"
                             actionListener="#{accountInitAdminBean.modifyItem}"
                             oncomplete="itemDialog.show()" value="修改">
                             <f:setPropertyActionListener value="#{item}"
@@ -115,7 +115,7 @@
                                 <p:commandButton value="保存"
                                     actionListener="#{accountInitAdminBean.saveItem}"
                                     oncomplete="itemDialog.hide();" async="true"
-                                    update="mainForm" />
+                                    update=":mainForm" />
                                 <p:commandButton value="取消"
                                     oncomplete="itemDialog.hide();" />
                             </t:panelGrid>
@@ -133,7 +133,7 @@
                 severity="alert" widgetVar="deleteItemConfirmDialog" modal="true">
 
                 <p:commandButton value="确定"
-                    update="mainForm"
+                    update=":mainForm"
                     actionListener="#{accountInitAdminBean.deleteItem}"
                     oncomplete="deleteItemConfirmDialog.hide()" />
                 <p:commandButton value="取消" onclick="deleteItemConfirmDialog.hide()"
@@ -177,7 +177,7 @@
                             <p:commandLink
                                 oncomplete="accountSubjectDialog.hide()"
                                 action="#{accountInitAdminBean.chooseAccountSubject}"
-                                update="itemForm:itemPanel" value="挑选">
+                                update=":itemForm:itemPanel" value="挑选">
                                 <f:setPropertyActionListener
                                     value="#{accountSubject}"
                                     target="#{accountInitAdminBean.selectedAccountSubject}" />

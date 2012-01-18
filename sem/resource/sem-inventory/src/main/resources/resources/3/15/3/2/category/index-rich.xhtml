@@ -398,7 +398,7 @@
                         </p:selectOneMenu>
 
                         <p:commandButton id="saveCategory-validated" value="确认" actionListener="#{materialSettingsBean.doSaveCategory}"
-                            update=":mainForm:mainTab:mainTree mainForm:mainTab:selectCategoryTree"
+                            update=":mainForm:mainTab:mainTree, :mainForm:mainTab:selectCategoryTree"
                             oncomplete="args.validationFailed || categoryWizardDialog.hide()" />
                         <p:commandButton value="取消" onclick="categoryWizardDialog.hide()" />
                     </t:panelGrid>
