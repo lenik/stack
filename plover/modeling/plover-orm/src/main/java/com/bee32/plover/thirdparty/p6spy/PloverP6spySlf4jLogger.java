@@ -56,7 +56,23 @@ public class PloverP6spySlf4jLogger
             sb.append(category);
         }
 
+        String appfn = null;
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        for (StackTraceElement frame : stackTrace) {
+            String fqcn = frame.getClassName();
+            if (fqcn.startsWith("com.bee32.sem.") || fqcn.startsWith("com.bee32.icsf.")) {
+                int dot = fqcn.lastIndexOf('.');
+                String simple = fqcn.substring(dot + 1);
+                String fn = frame.getMethodName();
+                appfn = simple + "." + fn + ":" + frame.getLineNumber();
+                break;
+            }
+        }
+        if (appfn != null)
+            sb.append("[" + appfn + "]");
+
         sb.append(": ");
+
         sql = sql.replace('\n', ' ').trim();
         sb.append(sql);
 
