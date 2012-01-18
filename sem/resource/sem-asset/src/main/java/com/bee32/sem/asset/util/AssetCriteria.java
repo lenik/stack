@@ -42,7 +42,7 @@ public class AssetCriteria
         ICriteriaElement subjectSelection = null;
         if (options.isRecursive()) {
             if (subjects != null) {
-                Disjunction disj = disjunction();
+                Disjunction disj = disj();
                 for (AccountSubject subject : subjects) {
                     CriteriaElement like = _like("subject.id", subject.getId() + "%");
                     disj.add(like);

@@ -304,12 +304,12 @@ public abstract class CriteriaSpec {
         return new NaturalId();
     }
 
-    protected static Conjunction conjunction() {
-        return new Conjunction();
+    protected static Conjunction conj(ICriteriaElement... elements) {
+        return new Conjunction(elements);
     }
 
-    protected static Disjunction disjunction() {
-        return new Disjunction();
+    protected static Disjunction disj(ICriteriaElement... elements) {
+        return new Disjunction(elements);
     }
 
     protected static CriteriaElement and(CriteriaElement lhs, CriteriaElement rhs) {
@@ -328,6 +328,10 @@ public abstract class CriteriaSpec {
 
     protected static ProjectionList projectionList() {
         return new ProjectionList();
+    }
+
+    protected static ProjectionList proj(ProjectionElement... elements) {
+        return new ProjectionList(elements);
     }
 
     protected static ProjectionElement distinct(ProjectionElement proj) {

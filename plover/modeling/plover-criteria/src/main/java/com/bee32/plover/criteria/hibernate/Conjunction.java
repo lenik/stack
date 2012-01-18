@@ -20,7 +20,8 @@ public class Conjunction
 
     public Conjunction(ICriteriaElement... elements) {
         for (ICriteriaElement e : elements)
-            this.elements.add(e);
+            if (e != null)
+                this.elements.add(e);
     }
 
     @Override

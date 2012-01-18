@@ -18,6 +18,12 @@ public class Disjunction
     public Disjunction() {
     }
 
+    public Disjunction(ICriteriaElement... elements) {
+        for (ICriteriaElement e : elements)
+            if (e != null)
+                this.elements.add(e);
+    }
+
     @Override
     public void apply(Criteria criteria, int options) {
         for (ICriteriaElement e : elements)
