@@ -10,7 +10,8 @@ import com.bee32.plover.arch.DataService;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 
 public class ACLService
-        extends DataService {
+        extends DataService
+        implements IACLService {
 
     /**
      * 查找蕴涵给定 principal -> permission 的 ACL 列表。
@@ -21,22 +22,19 @@ public class ACLService
      *            所要求的权限位。返回的 ACL 中相关的 ACE 必须蕴涵该 permission。
      * @return 返回有效 ACL 的 id 列表。
      */
-    public Integer[] aclIndex(Principal principal, Permission permission) {
+    @Override
+    public Set<Integer> getACLs(Principal principal, Permission permission) {
+        ICriteriaElement criteria = ACLCriteria.implies(principal, permission);
+        List<ACL> acls = asFor(ACL.class).list(criteria);
 
-        ICriteriaElement criterion = ACLCriteria.impliesEntry(principal, permission);
+        Set<Integer> aclIds = new HashSet<Integer>();
+        aclIds.add(0); // 0 is always shown.
 
-        List<ACLEntry> entries = asFor(ACLEntry.class).list(criterion);
-
-        Set<Integer> set = new HashSet<Integer>();
-        set.add(0); // 0 is always shown.
-
-        for (ACLEntry entry : entries) {
-            ACL acl = entry.getACL();
-            set.add(acl.getId());
+        for (ACL acl : acls) {
+            aclIds.add(acl.getId());
         }
 
-        Integer[] array = set.toArray(new Integer[0]);
-        return array;
+        return aclIds;
     }
 
 }

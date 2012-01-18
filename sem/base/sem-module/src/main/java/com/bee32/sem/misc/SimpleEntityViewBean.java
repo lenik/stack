@@ -14,14 +14,18 @@ import javax.free.IllegalUsageException;
 
 import org.primefaces.model.LazyDataModel;
 
+import com.bee32.icsf.access.Permission;
+import com.bee32.icsf.access.acl.ACLCriteria;
 import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.UserCriteria;
 import com.bee32.plover.arch.operation.Operation;
 import com.bee32.plover.collections.Varargs;
 import com.bee32.plover.criteria.hibernate.CriteriaComposite;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityFlags;
@@ -43,6 +47,8 @@ public abstract class SimpleEntityViewBean
         implements ISearchFragmentsHolder {
 
     private static final long serialVersionUID = 1L;
+
+    public static Permission visiblePermission = new Permission(Permission.READ);
 
     /** Delete entities with user lock */
     protected static final int DELETE_FORCE = 1;
@@ -86,6 +92,10 @@ public abstract class SimpleEntityViewBean
         this.entityClass = entityClass;
         this.dtoClass = dtoClass;
         this.baseCriteriaElements = Varargs.toList(criteriaElements);
+        this.baseCriteriaElements.add(new Or(//
+                UserCriteria.ownedByCurrentUser(),//
+                ACLCriteria.aclWithin(getACLs(visiblePermission))));
+
         this.options = new EntityDataModelOptions<E, D>(//
                 entityClass, dtoClass, selection, new _CriteriaHolder());
         this.dataModel = UIHelper.buildLazyDataModel(options);

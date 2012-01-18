@@ -1,7 +1,12 @@
 package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
+import java.util.Set;
 
+import com.bee32.icsf.access.Permission;
+import com.bee32.icsf.access.acl.IACLService;
+import com.bee32.icsf.login.SessionUser;
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IEntityAccessService;
@@ -68,4 +73,12 @@ public abstract class DataViewBean
         D remarshalled = DTOs.marshal(dtoType, selection, reloaded);
         return remarshalled;
     }
+
+    protected Set<Integer> getACLs(Permission minimum) {
+        User currentUser = SessionUser.getInstance().getInternalUser();
+        IACLService aclService = getBean(IACLService.class);
+        Set<Integer> acls = aclService.getACLs(currentUser, minimum);
+        return acls;
+    }
+
 }
