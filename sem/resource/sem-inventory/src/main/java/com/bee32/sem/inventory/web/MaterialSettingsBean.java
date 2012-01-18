@@ -70,7 +70,7 @@ public class MaterialSettingsBean
     String currencyCode;
 
     List<MaterialDto> materialList;
-    MaterialDto activeMaterial;
+    MaterialDto activeMaterial = new MaterialDto().create();
 
     MaterialCategoryTreeModel materialCategorySelectTree;
     MaterialCategoryTreeModel materialCategoryMainTree;
@@ -474,6 +474,8 @@ public class MaterialSettingsBean
     }
 
     public MaterialDto getActiveMaterial() {
+        if(activeMaterial == null)
+            activeMaterial = new MaterialDto().create();
         return activeMaterial;
     }
 

@@ -163,14 +163,13 @@
                             value="#{materialSettingsBean.materialPriceTree.rootNode}"
                             var="node" dynamic="true" selectionMode="single"
                             selection="#{materialSettingsBean.materialPriceTree.selectedNode}"
-                            scrollable="true"
-                            scrollHeight="380" scrollWidth="400">
+                            scrollable="true" scrollHeight="480"
+                            scrollWidth="250">
 
                             <p:ajax event="select" listener="#{materialSettingsBean.materialPriceTree.onNodeSelect}"
                                 update=":mainForm:mainTab:materialList" />
 
-                            <p:column>
-                                <f:facet name="header">分类名称</f:facet>
+                            <p:column headerText="分类名称" style="width:220px">
                                 <h:outputText value="#{node.name}" />
                             </p:column>
                         </p:treeTable>
@@ -221,9 +220,11 @@
             <p:dialog header="materialPrice" widgetVar="priceDialog" height="400" width="600">
                 <t:panelGrid columns="2" id="activePrice">
                     <h:outputText value="物料名称:" />
-                    <h:outputText value="#{materialSettingsBean.activeMaterial.label}" />
+                    <h:outputText
+                        value="#{materialSettingsBean.activeMaterial.label}" />
                     <h:outputText value="批号:" />
-                    <h:outputText value="#{materialSettingsBean.activeMaterial.serial}" />
+                    <h:outputText
+                        value="#{materialSettingsBean.activeMaterial.serial}" />
                 </t:panelGrid>
 
                 <p:separator />
@@ -233,17 +234,24 @@
                     <p:inputText value="#{materialSettingsBean.value}" />
 
                     <h:outputText value="币种:" />
-                    <p:selectOneMenu value="#{materialSettingsBean.currencyCode}" style="width:170px;">
-                        <f:selectItems value="#{materialSettingsBean.currencies}" />
+                    <p:selectOneMenu
+                        value="#{materialSettingsBean.currencyCode}"
+                        style="width:170px;">
+                        <f:selectItems
+                            value="#{materialSettingsBean.currencies}" />
                     </p:selectOneMenu>
 
                 </t:panelGrid>
-                <p:commandButton value="添加" oncomplete="addPriceConfirm.show();" update=":dialogForm:tempConfirm" />
+                <p:commandButton value="添加"
+                    oncomplete="addPriceConfirm.show();"
+                    update=":dialogForm:tempConfirm" />
 
                 <p:separator />
 
                 <h:outputText value="历史价格列表:" />
-                <p:dataTable id="historyPriceList" value="#{materialSettingsBean.activeMaterial.prices}" var="item">
+                <p:dataTable id="historyPriceList"
+                    value="#{materialSettingsBean.activeMaterial.prices}"
+                    var="item">
                     <p:column headerText="日期">
                         <h:outputText value="#{item.date}" />
                     </p:column>
@@ -254,6 +262,7 @@
                         <h:outputText value="#{item.price.currencyCode}" />
                     </p:column>
                 </p:dataTable>
+
                 <p:commandButton value="确定" actionListener="#{materialSettingsBean.updatePrice}"
                     oncomplete="priceDialog.hide();" update=":mainForm:mainTab:materialList" />
                 <p:commandButton value="取消" onclick="priceDialog.hide();" />
