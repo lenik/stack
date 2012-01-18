@@ -14,6 +14,8 @@ import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.web.faces.utils.SelectableList;
+import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.people.dto.ContactCategoryDto;
 import com.bee32.sem.people.dto.ContactDto;
 import com.bee32.sem.people.dto.PartyDto;
@@ -22,17 +24,13 @@ import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.PartyTagname;
 import com.bee32.sem.people.util.PeopleCriteria;
-import com.bee32.sem.sandbox.MultiTabEntityVdx;
 import com.bee32.sem.sandbox.UIHelper;
 
 @ForEntity(Party.class)
 public abstract class AbstractPartyAdminBean
-        extends MultiTabEntityVdx {
+        extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
-
-    protected static final int TAB_INDEX = 0;
-    protected static final int TAB_FORM = 1;
 
     ContactDto selectedContact;
     ContactDto contact;
@@ -40,19 +38,19 @@ public abstract class AbstractPartyAdminBean
     List<String> selectedTagsToAdd;
     String selectedTagId;
 
-    String namePattern;
-
     public <E extends Entity<?>, D extends EntityDto<? super E, ?>> //
     AbstractPartyAdminBean(Class<E> entityClass,
             Class<D> dtoClass, int selection, ICriteriaElement... criteriaElements) {
         super(entityClass, dtoClass, selection, criteriaElements);
     }
 
-    protected abstract PartyDto getParty();
+    protected final PartyDto getParty() {
+        return getActiveObject();
+    }
 
-    protected abstract void setParty(PartyDto party);
-
-    public abstract void find();
+    protected final void setParty(PartyDto party) {
+        setActiveObject(party);
+    }
 
     public boolean isContactSelected() {
         if (selectedContact != null)
@@ -112,7 +110,7 @@ public abstract class AbstractPartyAdminBean
         return UIHelper.selectItemsFromDict(partyTagDtos);
     }
 
-    public List<ContactDto> getContacts() {
+    public SelectableList<ContactDto> getContacts() {
         List<ContactDto> contacts = new ArrayList<ContactDto>();
 
         PartyDto party = getParty();
@@ -121,15 +119,7 @@ public abstract class AbstractPartyAdminBean
             contacts = party.getContacts();
         }
 
-        return contacts;
-    }
-
-    public String getNamePattern() {
-        return namePattern;
-    }
-
-    public void setNamePattern(String namePattern) {
-        this.namePattern = namePattern;
+        return SelectableList.decorate(contacts);
     }
 
     void _newContact() {

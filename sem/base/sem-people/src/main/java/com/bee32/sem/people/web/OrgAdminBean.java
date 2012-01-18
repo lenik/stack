@@ -10,7 +10,6 @@ import org.primefaces.event.NodeUnselectEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.DefaultTreeNode;
-import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.TreeNode;
 
 import com.bee32.plover.criteria.hibernate.Equals;
@@ -32,7 +31,6 @@ import com.bee32.sem.people.entity.OrgUnit;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonRole;
 import com.bee32.sem.people.util.PeopleCriteria;
-import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
 
 @ForEntity(Org.class)
@@ -40,12 +38,6 @@ public class OrgAdminBean
         extends AbstractPartyAdminBean {
 
     private static final long serialVersionUID = 1L;
-
-    private boolean editable;
-
-    private LazyDataModel<OrgDto> orgs;
-    private OrgDto selectedOrg;
-    private OrgDto org;
 
     private PersonRoleDto selectedRole;
     private PersonRoleDto role;
@@ -62,78 +54,8 @@ public class OrgAdminBean
     private TreeNode selectedParentOrgUnitNode;
 
     public OrgAdminBean() {
-        super(Org.class, OrgDto.class, PartyDto.CONTACTS);
-
-        EntityDataModelOptions<Org, OrgDto> options = new EntityDataModelOptions<Org, OrgDto>(//
-                Org.class, OrgDto.class, PartyDto.CONTACTS, //
+        super(Org.class, OrgDto.class, PartyDto.CONTACTS, //
                 Order.desc("id"));
-        orgs = UIHelper.buildLazyDataModel(options);
-
-        refreshOrgCount();
-
-        setActiveTab(TAB_INDEX);
-        editable = false;
-    }
-
-    void refreshOrgCount() {
-        int count = serviceFor(Org.class).count();
-        orgs.setRowCount(count);
-    }
-
-    void refreshPersonCount(String namePattern) {
-        int count = serviceFor(Org.class).count( //
-                PeopleCriteria.namedLike(namePattern));
-        orgs.setRowCount(count);
-    }
-
-    @Override
-    protected OrgDto getParty() {
-        return org;
-    }
-
-    @Override
-    protected void setParty(PartyDto party) {
-        this.org = (OrgDto) party;
-    }
-
-    public boolean isEditable() {
-        return editable;
-    }
-
-    public void setEditable(boolean editable) {
-        this.editable = editable;
-    }
-
-    public LazyDataModel<OrgDto> getOrgs() {
-        return orgs;
-    }
-
-    public void setOrgs(LazyDataModel<OrgDto> orgs) {
-        this.orgs = orgs;
-    }
-
-    public OrgDto getSelectedOrg() {
-        return selectedOrg;
-    }
-
-    public void setSelectedOrg(OrgDto selectedOrg) {
-        this.selectedOrg = selectedOrg;
-    }
-
-    public OrgDto getOrg() {
-        if (org == null)
-            _newOrg();
-        return org;
-    }
-
-    public void setOrg(OrgDto org) {
-        this.org = org;
-    }
-
-    public boolean isOrgSelected() {
-        if (selectedOrg != null)
-            return true;
-        return false;
     }
 
     public List<SelectItem> getOrgTypes() {
@@ -159,6 +81,7 @@ public class OrgAdminBean
     }
 
     public List<PersonRoleDto> getRoles() {
+        OrgDto org = getActiveObject();
         List<PersonRoleDto> roles = new ArrayList<PersonRoleDto>();
 
         if (org != null && org.getId() != null) {
@@ -217,6 +140,7 @@ public class OrgAdminBean
     }
 
     public void loadOrgUnitTree() {
+        OrgDto org = getActiveObject();
         if (org != null && org.getId() != null) {
             orgUnitRootNode = new DefaultTreeNode(org, null);
 
@@ -283,91 +207,13 @@ public class OrgAdminBean
         this.orgUnitContact = orgUnitContact;
     }
 
-    private void _newOrg() {
-        org = new OrgDto().create();
-    }
-
-    public void doNew() {
-        _newOrg();
-
-        setActiveTab(TAB_FORM);
-        editable = true;
-    }
-
-    public void doModify() {
-        if (selectedOrg == null) {
-            uiLogger.error("请选择需要修改的客户/供应商!");
-            return;
-        }
-
-        org = reload(selectedOrg, -1);
-
-        setActiveTab(TAB_FORM);
-        editable = true;
-    }
-
-    public void doDelete() {
-        if (selectedOrg == null) {
-            uiLogger.error("请选择需要删除的客户/供应商!");
-            return;
-        }
-
-        try {
-            Org org = serviceFor(Org.class).getOrFail(selectedOrg.getId());
-            org.getContacts().clear();
-            serviceFor(Org.class).save(org);
-            serviceFor(Org.class).delete(org);
-            refreshOrgCount();
-
-            selectedOrg = null;
-
-        } catch (Exception e) {
-            uiLogger.error("删除客户/供应商失败", e);
-        }
-    }
-
-    public void doSave() {
-        try {
-            serviceFor(Org.class).saveOrUpdate((Org) org.unmarshal());
-            refreshOrgCount();
-
-            setActiveTab(TAB_INDEX);
-            editable = false;
-            uiLogger.info("客户/供应商保存成功");
-        } catch (Exception e) {
-            uiLogger.error("客户/供应商保存失败", e);
-        }
-    }
-
-    public void doCancel() {
-        setActiveTab(TAB_INDEX);
-        editable = false;
-
-        _newOrg();
-    }
-
-    public void doDetail() {
-        if (selectedOrg == null) {
-            uiLogger.error("请选择需要查看详细信息的客户/供应商!");
-            return;
-        }
-
-        setActiveTab(TAB_FORM);
-        org = reload(selectedOrg, -1);
-    }
-
-    public void onRowSelect(SelectEvent event) {
-    }
-
-    public void onRowUnselect(UnselectEvent event) {
-    }
-
     private void _newRole() {
         role = new PersonRoleDto().create();
-        role.setOrg(org);
+        role.setOrg((OrgDto) getActiveObject());
     }
 
     public void doNewRole() {
+        OrgDto org = getActiveObject();
         if (org == null || org.getId() == null) {
             uiLogger.error("请选择需要新增联系方式的客户/供应商!");
             return;
@@ -385,6 +231,7 @@ public class OrgAdminBean
             return;
         }
 
+        OrgDto org = getActiveObject();
         try {
             org.getRoles().remove(selectedRole);
             serviceFor(Org.class).saveOrUpdate((Org) org.unmarshal());
@@ -396,6 +243,7 @@ public class OrgAdminBean
     }
 
     public void doSaveRole() {
+        OrgDto org = getActiveObject();
         if (org == null || org.getId() == null) {
             uiLogger.error("请选择所操作的相关人员对应的客户/供应商!");
             return;
@@ -460,6 +308,7 @@ public class OrgAdminBean
     }
 
     public void doSaveOrgUnit() {
+        OrgDto org = getActiveObject();
         if (org == null || org.getId() == null) {
             uiLogger.error("请选择所操作的部门对应的客户/供应商!");
             return;
@@ -485,6 +334,7 @@ public class OrgAdminBean
     }
 
     public void onOrgUnitNodeSelect(NodeSelectEvent event) {
+        OrgDto org = getActiveObject();
         if (org != null && org.getId() != null) {
             OrgUnitDto selectedOrgUnit = (OrgUnitDto) event.getTreeNode().getData();
             if (!selectedOrgUnit.isNull()) {
@@ -514,17 +364,6 @@ public class OrgAdminBean
         selectedOrgUnit.setContact(orgUnitContact);
         serviceFor(OrgUnit.class).saveOrUpdate(selectedOrgUnit.unmarshal());
         uiLogger.info("保存部门联系方式成功");
-    }
-
-    @Override
-    public void find() {
-        EntityDataModelOptions<Org, OrgDto> options = new EntityDataModelOptions<Org, OrgDto>(//
-                Org.class, OrgDto.class, PartyDto.CONTACTS, //
-                PeopleCriteria.namedLike(namePattern), //
-                Order.desc("id"));
-        orgs = UIHelper.<Org, OrgDto> buildLazyDataModel(options);
-
-        refreshPersonCount(namePattern);
     }
 
 }

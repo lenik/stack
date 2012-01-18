@@ -31,9 +31,7 @@ public class PartyDto
 
     UserDto owner;
 
-    String name;
     String fullName;
-    String nickName;
 
     PartySidTypeDto sidType;
     String sid;
@@ -60,7 +58,6 @@ public class PartyDto
 
     @Override
     protected void _marshal(Party source) {
-        name = source.getName();
         fullName = source.getFullName();
 
         sidType = mref(PartySidTypeDto.class, source.getSidType());
@@ -89,7 +86,6 @@ public class PartyDto
 
     @Override
     protected void _unmarshalTo(Party target) {
-        target.setName(name);
         target.setFullName(fullName);
 
         target.setSid(sid);
@@ -123,13 +119,14 @@ public class PartyDto
             throws ParseException {
     }
 
+    @NLength(min = 1)
     public String getName() {
         return getLabel();
     }
 
     public void setName(String name) {
         if (name == null)
-            throw new NullPointerException("name");
+            name = "";
         setLabel(name);
     }
 
@@ -145,9 +142,7 @@ public class PartyDto
     public String getDisplayName() {
         if (fullName != null && !fullName.isEmpty())
             return fullName;
-        if (nickName != null && !nickName.isEmpty())
-            return nickName;
-        return name;
+        return getName();
     }
 
     public PartySidTypeDto getSidType() {
