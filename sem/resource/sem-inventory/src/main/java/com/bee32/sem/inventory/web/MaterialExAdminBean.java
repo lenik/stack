@@ -3,6 +3,8 @@ package com.bee32.sem.inventory.web;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.faces.model.SelectItem;
 import javax.free.TempFile;
@@ -15,7 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.ox1.tree.TreeCriteria;
+import com.bee32.plover.ox1.tree.TreeEntityDto;
+import com.bee32.plover.ox1.tree.TreeEntityUtils;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.file.entity.FileBlob;
 import com.bee32.sem.file.entity.UserFile;
@@ -48,9 +51,11 @@ public class MaterialExAdminBean
 
     private static final long serialVersionUID = 1L;
 
-    TreeNode root;
+    TreeNode virtualRootNode;
+    Map<Integer, MaterialCategoryDto> materialCategoryIndex;
     TreeNode selectedMaterialCategoryNode;
     TreeNode choosedMaterialCategoryNode;
+
     MaterialPriceDto materialPrice = new MaterialPriceDto().create();
     ScaleItem scaleItem = new ScaleItem();
     MaterialAttributeDto materialAttr = new MaterialAttributeDto().create();
@@ -61,7 +66,6 @@ public class MaterialExAdminBean
 
     public MaterialExAdminBean() {
         super(Material.class, MaterialDto.class, 0);
-        reloadTree();
     }
 
     @Override
@@ -74,7 +78,8 @@ public class MaterialExAdminBean
     }
 
     public TreeNode getRoot() {
-        return root;
+        loadTree();
+        return virtualRootNode;
     }
 
     public TreeNode getSelectedMaterialCategoryNode() {
@@ -94,16 +99,18 @@ public class MaterialExAdminBean
         return selectedCategory.getId();
     }
 
-    void reloadTree() {
-        root = new DefaultTreeNode("categoryRoot", null);
+    synchronized void loadTree() {
+        if (virtualRootNode == null) {
+            List<MaterialCategory> _categories = serviceFor(MaterialCategory.class).list();
+            List<MaterialCategoryDto> categories = DTOs.mrefList(MaterialCategoryDto.class, TreeEntityDto.PARENT,
+                    _categories);
+            materialCategoryIndex = TreeEntityUtils.index(categories);
+            Set<MaterialCategoryDto> roots = TreeEntityUtils.rebuildTree(categories, materialCategoryIndex);
 
-        List<MaterialCategory> topCategories = serviceFor(MaterialCategory.class).list(//
-                TreeCriteria.root());
-        List<MaterialCategoryDto> topCategoryDtos = DTOs.mrefList(MaterialCategoryDto.class,
-                ~MaterialCategoryDto.MATERIALS, topCategories);
-
-        for (MaterialCategoryDto materialCategoryDto : topCategoryDtos)
-            _loadTree(materialCategoryDto, root);
+            virtualRootNode = new DefaultTreeNode("categoryRoot", null);
+            for (MaterialCategoryDto root : roots)
+                _loadTree(root, virtualRootNode);
+        }
     }
 
     private void _loadTree(MaterialCategoryDto materialCategoryDto, TreeNode parentTreeNode) {
@@ -137,32 +144,25 @@ public class MaterialExAdminBean
     @Override
     protected void postUpdate(UnmarshalMap uMap)
             throws Exception {
-        for (Material _m : uMap.<Material> entitySet()) {
-            MaterialDto material = uMap.getSourceDto(_m);
+        for (MaterialDto material : uMap.<MaterialDto> dtos()) {
             if (material.getId() == null) {
-                MaterialCategory _category = _m.getCategory();
-                _category.addMaterial(_m);
-                _category.setMaterialCount(_category.getMaterialCount() + 1);
+                Integer categoryId = material.getCategory().getId();
+                MaterialCategoryDto category = materialCategoryIndex.get(categoryId);
+                if (category != null)
+                    category.setMaterialCount(category.getMaterialCount() + 1);
             }
         }
-        reloadTree();
-    }
-
-    @Override
-    protected boolean preDelete(UnmarshalMap uMap)
-            throws Exception {
-        for (Material _m : uMap.<Material> entitySet()) {
-            MaterialCategory _category = _m.getCategory();
-            _category.removeMaterial(_m);
-            _category.setMaterialCount(_category.getMaterialCount() - 1);
-        }
-        return true;
     }
 
     @Override
     protected void postDelete(UnmarshalMap uMap)
             throws Exception {
-        reloadTree();
+        for (Material _m : uMap.<Material> entitySet()) {
+            Integer categoryId = _m.getCategory().getId();
+            MaterialCategoryDto category = materialCategoryIndex.get(categoryId);
+            if (category != null)
+                category.setMaterialCount(category.getMaterialCount() - 1);
+        }
     }
 
     public List<SelectItem> getUnits() {
