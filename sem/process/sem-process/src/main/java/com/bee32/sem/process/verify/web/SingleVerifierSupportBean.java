@@ -14,7 +14,7 @@ import com.bee32.sem.process.verify.VerifyResult;
 import com.bee32.sem.process.verify.builtin.dto.SingleVerifierSupportDto;
 import com.bee32.sem.process.verify.dto.IVerifiableDto;
 
-public class SingleVerifierSupportBean
+public class SingleVerifierSupportBean<D extends EntityDto<E, K> & IVerifiableDto, E extends Entity<K>, K extends Serializable>
         extends AbstractVerifySupportBean {
 
     private static final long serialVersionUID = 1L;
@@ -30,7 +30,7 @@ public class SingleVerifierSupportBean
 
     @SuppressWarnings("unchecked")
     @Operation
-    public <D extends EntityDto<E, K> & IVerifiableDto, E extends Entity<K>, K extends Serializable> //
+    public//
     void reverify() {
         VerifiableSupportBean verifiableSupportBean = getBean(VerifiableSupportBean.class);
         if (!verifiableSupportBean.isCurrentUserResponsible()) {
