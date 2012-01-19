@@ -40,12 +40,12 @@ public class EnumAltRegistry {
             clValueMap.put(enumType, _valueMap);
         }
         @SuppressWarnings("unchecked")
-        Map<V, E> valueMap = (Map<V, E>) _valueMap;
+        Map<V, E> valueMap = (Map<V, E>) (Object) _valueMap;
         return valueMap;
     }
 
-    static <E extends EnumAlt<V, E>, V extends Serializable> //
-    void scanEnumTypes(boolean publicOnly)
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    static void scanEnumTypes(boolean publicOnly)
             throws ClassNotFoundException, IOException {
         for (Class<?> enumType : ServicePrototypeLoader.load(EnumAlt.class, true)) {
             for (Field field : enumType.getDeclaredFields()) {
@@ -59,25 +59,25 @@ public class EnumAltRegistry {
                     else
                         field.setAccessible(true);
 
-                Class<E> declareType = (Class<E>) field.getType();
+                Class<?> declareType = (Class<?>) field.getType();
                 if (!enumType.isAssignableFrom(declareType))
                     continue;
 
-                E entry;
+                EnumAlt<?, ?> entry;
                 try {
-                    entry = (E) field.get(null);
+                    entry = (EnumAlt<?, ?>) field.get(null);
                 } catch (ReflectiveOperationException e) {
                     throw new IllegalUsageException(e.getMessage(), e);
                 }
                 // Class<E> actualType = (Class<E>) entry.getClass();
 
                 // logger.info("Register enum entry: " + entry.getName() + " of " + declareType);
-                registerTree(declareType, entry);
+                registerTree((Class) declareType, (EnumAlt) entry);
             }
         }
     }
 
-    static <E extends EnumAlt<V, E>, V extends Serializable, Eb extends EnumAlt<V, Eb>> //
+    static <E extends EnumAlt<V, E>, V extends Serializable> //
     void registerTree(Class<E> enumType, E entry) {
         Map<String, E> nameMap = getNameMap(enumType);
         Map<V, E> valueMap = getValueMap(enumType);
@@ -87,10 +87,8 @@ public class EnumAltRegistry {
         Class<?> _superclass = enumType.getSuperclass();
         if (_superclass != null && EnumAlt.class.isAssignableFrom(_superclass)) {
             @SuppressWarnings("unchecked")
-            Class<Eb> baseEnumType = (Class<Eb>) _superclass;
-            @SuppressWarnings("unchecked")
-            Eb baseEntry = (Eb) entry;
-            registerTree(baseEnumType, baseEntry);
+            Class<E> _superclass_xxx = (Class<E>) _superclass;
+            registerTree(_superclass_xxx, entry);
         }
     }
 
