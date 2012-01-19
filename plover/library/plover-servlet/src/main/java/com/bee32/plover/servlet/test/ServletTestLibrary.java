@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.net.BindException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -67,7 +68,15 @@ public class ServletTestLibrary
         // logger.debug("Set connector listen on port " + port);
         // LocalConnector connector = createLocalConnector();
 
-        String connector = createSocketConnector(false);
+        String connector;
+        try {
+            connector = createSocketConnector(false);
+        } catch (BindException e) {
+            System.err.println("Can't bind to port: " + getPort());
+            e.printStackTrace();
+            return;
+        }
+
         int colon = connector.lastIndexOf(':');
         String portString = connector.substring(colon + 1);
         actualPort = Integer.parseInt(portString);
