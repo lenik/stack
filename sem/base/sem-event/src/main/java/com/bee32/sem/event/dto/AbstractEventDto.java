@@ -11,6 +11,7 @@ import javax.free.TypeConvertException;
 import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.arch.util.NoSuchEnumException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.ox1.c.CEntityDto;
@@ -236,8 +237,13 @@ public abstract class AbstractEventDto<E extends Event>
             statusText = status.getLabel();
 
         if (statusText == null && stateIndex != 0) {
-            EventState<?> eventState = EventState.valueOf(stateIndex);
-            statusText = eventState.getName();
+            EventState<?> eventState;
+            try {
+                eventState = EventState.valueOf(stateIndex);
+                statusText = eventState.getName();
+            } catch (NoSuchEnumException e) {
+                statusText = "???";
+            }
         }
 
         if (statusText == null)
