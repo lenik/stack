@@ -69,10 +69,6 @@
                 <f:setPropertyActionListener value="#{entry}" target="#{materialExAdminBean.activeObject}" />
                 <p:graphicImage value="#{location.ICON}/etool16/annotate.gif" />
             </p:commandLink>
-            <p:commandLink styleClass="icon-button" title="删除" onclick="deleteConfirmDialog.show()">
-                <f:setPropertyActionListener value="#{entry}" target="#{materialExAdminBean.activeObject}" />
-                <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
-            </p:commandLink>
         </p:column>
     </ui:define>
 
@@ -146,7 +142,7 @@
                 </t:panelGrid>
                 <div align="right">
                     <p:commandButton id="save-validated" value="保存" actionListener="${bean.save}"
-                        update=":mainForm:dataTable, :chooseMaterialCategoryForm:categoryTree" oncomplete="editDialog.hide()" />
+                        update=":mainForm:dataTable, :chooseMaterialCategoryForm:categoryTree" oncomplete="editDialog.hideValidated()" />
                     <p:commandButton id="cancel" value="取消" onclick="editDialog.hide()" />
                 </div>
             </h:form>
