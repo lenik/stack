@@ -26,5 +26,5 @@
 }
 
 .layout-side-toggler {
-    background: #ccc;
+    cursor: col-resize;
 }

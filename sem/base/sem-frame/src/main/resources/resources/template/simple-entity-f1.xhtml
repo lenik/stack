@@ -30,6 +30,17 @@
         <h:outputStylesheet library="frame" name="layout.css" />
         <table id="layoutTable" cellspacing="0" cellpadding="0" border="0" style="table-layout: fixed; width: 100%">
             <tr>
+                <c:if test="${sideBarWVisible != null}">
+                    <td valign="top" id="sideBarW" style="width: 20em; ${sideBarWVisible == true ? '' : 'display: none'}">
+                        <h:panelGroup id="sidePanelW">
+                            <ui:insert name="sideBarW" />
+                            <ui:insert name="sideBarW.1" />
+                            <ui:insert name="sideBarWSupport" />
+                        </h:panelGroup>
+                    </td>
+                    <td valign="center" id="sideBarWToggler" class="layout-side-toggler ui-state-default" style="width: 9px"
+                        onclick="$('#sideBarW').toggle()" />
+                </c:if>
                 <td valign="top">
                     <ui:insert name="mainForm">
                         <h:form id="mainForm">
@@ -80,17 +91,18 @@
                         </h:form>
                     </ui:insert>
                 </td>
-                <td valign="center" id="layoutSideToggler" class="ui-state-default" style="width: 9px" onclick="$('#sideBar').toggle()"></td>
-                <td valign="top" id="sideBar" style="width: 20em; display: none">
-                    <h:panelGroup id="sidePanel">
-                        <ui:insert name="sideBar">
+                <td valign="center" id="sideBarEToggler" class="layout-side-toggler ui-state-default" style="width: 9px"
+                    onclick="$('#sideBarE').toggle()"></td>
+                <td valign="top" id="sideBarE" style="width: 20em; display: none">
+                    <h:panelGroup id="sidePanelE">
+                        <ui:insert name="sideBarE">
                             <h:form id="searchForm">
                                 <ui:insert name="searchPanel" />
                                 <ui:insert name="searchFragmentsPanel" />
                             </h:form>
-                            <ui:insert name="sideBar.1" />
+                            <ui:insert name="sideBarE.1" />
                         </ui:insert>
-                        <ui:insert name="sideBarSupport" />
+                        <ui:insert name="sideBarESupport" />
                     </h:panelGroup>
                 </td>
             </tr>
