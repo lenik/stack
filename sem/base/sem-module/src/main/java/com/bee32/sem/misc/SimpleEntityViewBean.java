@@ -115,8 +115,9 @@ public abstract class SimpleEntityViewBean
         return dataModel;
     }
 
-    protected List<? extends ICriteriaElement> composeCriteriaElements() {
-        List<ICriteriaElement> join = new ArrayList<ICriteriaElement>(baseCriteriaElements);
+    protected final List<? extends ICriteriaElement> composeCriteriaElements() {
+        List<ICriteriaElement> join = new ArrayList<ICriteriaElement>();
+        composeBaseCriteriaElements(join);
         for (SearchFragment fragment : searchFragments) {
             ICriteriaElement element = fragment.compose();
             if (element != null)
@@ -125,12 +126,8 @@ public abstract class SimpleEntityViewBean
         return join;
     }
 
-    protected final List<ICriteriaElement> getBaseCriteriaElements() {
-        return baseCriteriaElements;
-    }
-
-    protected final void setBaseCriteriaElements(List<ICriteriaElement> criteriaElements) {
-        options.setCriteriaElements(criteriaElements);
+    protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
+        elements.addAll(baseCriteriaElements);
     }
 
     @Override
