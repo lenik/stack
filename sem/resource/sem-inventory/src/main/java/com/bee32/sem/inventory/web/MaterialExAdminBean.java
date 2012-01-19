@@ -1,18 +1,14 @@
 package com.bee32.sem.inventory.web;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.faces.model.SelectItem;
-import javax.free.TempFile;
 
-import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
-import org.primefaces.model.UploadedFile;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
@@ -22,6 +18,8 @@ import com.bee32.plover.ox1.tree.TreeEntityUtils;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.file.entity.FileBlob;
 import com.bee32.sem.file.entity.UserFile;
+import com.bee32.sem.file.web.IncomingFile;
+import com.bee32.sem.file.web.IncomingFileBlobAdapter;
 import com.bee32.sem.inventory.dto.MaterialAttributeDto;
 import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
@@ -470,44 +468,38 @@ public class MaterialExAdminBean
         return null;
     }
 
-    @Transactional
-    public void handleFileUpload(FileUploadEvent event) {
-        String fileName = event.getFile().getFileName();
-        UploadedFile upFile = event.getFile();
+    public Object getAddUserFileListener() {
+        return new IncomingFileBlobAdapter() {
+            @Override
+            protected void process(FileBlob fileBlob, IncomingFile incomingFile)
+                    throws IOException {
+                String fileName = incomingFile.getFileName();
+                try {
+                    asFor(FileBlob.class).saveOrUpdate(fileBlob);
 
-        File tempFile;
-        try {
-            tempFile = TempFile.createTempFile();
-            FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
-            fileOutputStream.write(upFile.getContents());
-            fileOutputStream.close();
-        } catch (Exception e) {
-            uiLogger.error("传送失败:" + fileName, e);
-            return;
-        }
+                    UserFile userFile = new UserFile();
+                    userFile.setPath(fileName);
+                    userFile.setFileBlob(fileBlob);
+                    userFile.setLabel("未命名物料附件");
+                    serviceFor(UserFile.class).save(userFile);
 
-        try {
-            UserFile userFile = new UserFile();
-            userFile.setPath(upFile.getFileName());
+                    MaterialDto material = getActiveObject();
+                    Material _m = material.unmarshal();
+                    _m.getAttachments().add(userFile);
+                    serviceFor(Material.class).saveOrUpdate(_m);
 
-            FileBlob fileBlob = FileBlob.commit(tempFile, true);
+                    uiLogger.info("物料附件上传成功." + fileName);
+                } catch (Exception e) {
+                    uiLogger.error("远程文件保存失败:" + fileName, e);
+                    return;
+                }
+            }
 
-            userFile.setFileBlob(fileBlob);
-            userFile.setLabel("未命名物料附件");
-
-            serviceFor(FileBlob.class).saveOrUpdate(fileBlob);
-            serviceFor(UserFile.class).save(userFile);
-
-            MaterialDto material = getActiveObject();
-            Material _m = material.unmarshal();
-            _m.getAttachments().add(userFile);
-            serviceFor(Material.class).saveOrUpdate(_m);
-
-            uiLogger.info("物料附件上传成功." + fileName);
-        } catch (Exception e) {
-            uiLogger.error("远程文件保存失败:" + fileName, e);
-            return;
-        }
+            @Override
+            protected void reportError(String message, Exception exception) {
+                uiLogger.error(message, exception);
+            }
+        };
     }
 
     public void updateUserFile() {
