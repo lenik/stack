@@ -23,7 +23,7 @@ public class PoTreeBuilder<T, K> {
     private IFormatter<PoNode<?>> formatter = PoNode.KeyFormatter.INSTANCE;
 
     @SuppressWarnings("unchecked")
-    private Class<? extends PoNode<? extends T>> nodeClass = (Class<? extends PoNode<? extends T>>) PoNode.class;
+    private Class<? extends PoNode<? extends T>> nodeClass = (Class<? extends PoNode<? extends T>>) (Object) PoNode.class;
 
     public PoTreeBuilder(IKeyMapper<T, K> mapper, IPreorder<K> preorder) {
         this.roots = new HashSet<PoNode<T>>();
