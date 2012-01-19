@@ -19,7 +19,7 @@ public abstract class WiredDaoFeat<T extends WiredDaoFeat<T>>
     @Inject
     protected CommonDataManager dataManager;
 
-    static {
+    public WiredDaoFeat() {
         SiteNaming.setDefaultSiteName("feat");
     }
 

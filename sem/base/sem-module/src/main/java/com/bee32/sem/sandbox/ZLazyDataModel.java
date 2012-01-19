@@ -73,6 +73,8 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
         for (D dto : dtos)
             dto.set_index(index++);
 
+        // if (dtos.size() < pageSize)
+        // lastQueriedCount = dtos.size();
         return loaded = dtos;
     }
 

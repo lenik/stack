@@ -22,6 +22,7 @@ import com.bee32.plover.ox1.dict.NameDict;
 import com.bee32.plover.ox1.dict.NameDictDto;
 import com.bee32.plover.ox1.dict.PoNode;
 import com.bee32.plover.ox1.dict.PoTreeBuilder;
+import com.bee32.plover.ox1.tree.TreeEntityDto;
 
 public class UIHelper
         extends FacesContextSupport2 {
@@ -115,6 +116,18 @@ public class UIHelper
             _convertTree(child, result);
         }
         return result;
+    }
+
+    public static TreeNode buildTree(TreeEntityDto<?, ?, ?> model, TreeNode parentComponent,
+            TreeEntityDto<?, ?, ?> selection) {
+        TreeNode treeNode = new DefaultTreeNode(model, parentComponent);
+        if (model == selection)
+            treeNode.setSelected(true);
+        for (Object _child : model.getChildren()) {
+            TreeEntityDto<?, ?, ?> child = (TreeEntityDto<?, ?, ?>) _child;
+            buildTree(child, treeNode, selection);
+        }
+        return treeNode;
     }
 
 }
