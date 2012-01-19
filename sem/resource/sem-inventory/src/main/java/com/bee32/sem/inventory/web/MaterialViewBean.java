@@ -22,6 +22,7 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.tree.TreeCriteria;
+import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.plover.util.i18n.CurrencyConfig;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.file.entity.FileBlob;
@@ -137,7 +138,7 @@ public class MaterialViewBean
     public MaterialViewBean() {
         activeMaterial = new MaterialDto().create();
         activeAttr = new MaterialAttributeDto().create();
-// activeAttr.setMaterial(activeMaterial);
+        // activeAttr.setMaterial(activeMaterial);
 
         currencyCode = Currency.getInstance(Locale.getDefault()).getCurrencyCode();
         activeOption = new MaterialWarehouseOptionDto().create();
@@ -427,7 +428,7 @@ public class MaterialViewBean
 
     public void doSearch() {
         if (!materialPattern.isEmpty() && materialPattern != null) {
-            List<Material> _materials = serviceFor(Material.class).list(MaterialCriteria.labelLike(materialPattern));
+            List<Material> _materials = serviceFor(Material.class).list(CommonCriteria.labelledWith(materialPattern));
             materialList = DTOs.mrefList(MaterialDto.class, _materials);
         }
     }

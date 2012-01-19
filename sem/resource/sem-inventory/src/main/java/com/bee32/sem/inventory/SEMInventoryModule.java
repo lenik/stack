@@ -17,7 +17,6 @@ public class SEMInventoryModule
     protected void preamble() {
         declareEntityPages(StockOrder.class, "stockOrder");
         declareEntityPages(Material.class, "material");
-        // declareEntityPages(Material.class, "materialEx");
     }
 
 }

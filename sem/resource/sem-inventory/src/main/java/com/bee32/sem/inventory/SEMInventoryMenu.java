@@ -21,8 +21,7 @@ public class SEMInventoryMenu
 
     public static MenuNode MATERIAL = menu(SEMFrameMenu.RESOURCE, 1, "material");
     /*    */static MenuNode materialCategory = entry(MATERIAL, 1, "materialCategory", _("category/"));
-    /*    static MenuNode materialAdmin = entry(MATERIAL, 2, "materialAdmin", _("material/"));*/
-    /*    */static MenuNode materialExAdmin = entry(MATERIAL, 3, "materialExAdmin", _("materialEx/"));
+    /*    */static MenuNode material = entry(MATERIAL, 3, "material", _("material/"));
 
     public static MenuNode INVENTORY = menu(SEMFrameMenu.RESOURCE, 2, "inventory");
 
