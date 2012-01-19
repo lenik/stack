@@ -11,7 +11,7 @@ public class IcsfIdentityMenu
 
     static Location IDENTITY_ = WEB_APP.join(IcsfPrincipalModule.PREFIX_);
 
-    public static MenuNode identityMenu = menu(SEMFrameMenu.BASE, 1, "identity");
+    public static MenuNode identityMenu = menu(SEMFrameMenu.SYSTEM, 1, "identity");
 
     static MenuNode roleAdmin = entry(identityMenu, 100, "roleAdmin", IDENTITY_.join("role/index-rich.jsf"));
     static MenuNode groupAdmin = entry(identityMenu, 110, "groupAdmin", IDENTITY_.join("group/index-rich.jsf"));

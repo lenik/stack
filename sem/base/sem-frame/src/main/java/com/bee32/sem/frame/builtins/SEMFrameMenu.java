@@ -20,18 +20,21 @@ public class SEMFrameMenu
 
     public static final MenuNode MAIN = menu("main");
 
-    public static final MenuNode BASE = menu(MAIN, 10, "base");
-    public static final MenuNode DATA = menu(MAIN, 20, "data");
-    public static final MenuNode RESOURCE = menu(MAIN, 30, "resource");
-    public static final MenuNode PROCESS = menu(MAIN, 40, "process");
-    public static final MenuNode SUPPORT = menu(MAIN, 50, "support");
-    public static final MenuNode BIZ1 = menu(MAIN, 60, "biz1");
-    public static final MenuNode EDIT = menu(MAIN, 70, "edit");
-    public static final MenuNode VIEW = menu(MAIN, 80, "view");
-    public static final MenuNode HELP = menu(MAIN, 90, "help");
+    public static final MenuNode FILE = menu(MAIN, 10, "file");
+    public static final MenuNode EDIT = menu(MAIN, 20, "edit");
+    public static final MenuNode DATA = menu(MAIN, 30, "data");
+    public static final MenuNode RESOURCES = menu(MAIN, 40, "resources");
+    public static final MenuNode BIZ1 = menu(MAIN, 50, "biz1");
+    public static final MenuNode PROCESS = menu(MAIN, 60, "process");
+    public static final MenuNode OPTIONS = menu(MAIN, 900, "options");
+    public static final MenuNode HELP = menu(MAIN, 1000, "help");
 
-    public static final MenuNode ATTRIBUTES = menu(EDIT, "attributes");
-    public static final MenuNode THEME = menu(VIEW, "theme");
+    public static final MenuNode ATTRIBUTES = menu(EDIT, 100, "attributes");
+
+    public static final MenuNode SYSTEM = menu(OPTIONS, 10, "system");
+    public static final MenuNode SECURITY = menu(SYSTEM, 100, "security");
+    public static final MenuNode PREFERENCES = menu(OPTIONS, 20, "preferences");
+    public static final MenuNode THEME = menu(OPTIONS, 30, "theme");
 
     static MenuNode ABOUT = entry(HELP, "aboutFrame", JAVASCRIPT.join("alert('" + VERSION + "')"));
 
