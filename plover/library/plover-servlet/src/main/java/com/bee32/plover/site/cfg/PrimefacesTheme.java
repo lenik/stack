@@ -37,7 +37,8 @@ public enum PrimefacesTheme
     private PrimefacesTheme(String id, int preference) {
         this.id = id;
         this.preference = preference;
-        PrimefacesThemes.addTheme(name(), this);
+        if (preference == 0)
+            PrimefacesThemes.addTheme(name(), this);
     }
 
     public String getId() {

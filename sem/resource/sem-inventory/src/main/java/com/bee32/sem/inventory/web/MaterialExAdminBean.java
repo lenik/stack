@@ -67,8 +67,10 @@ public class MaterialExAdminBean
     @Override
     protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
         Integer categoryId = getSelectedMaterialCategoryId();
-        if (categoryId != null)
-            elements.add(MaterialCriteria.categoryOf(categoryId));
+        // if (categoryId != null)
+        if (categoryId == null) // select none if no category.
+            categoryId = -1;
+        elements.add(MaterialCriteria.categoryOf(categoryId));
     }
 
     public TreeNode getRoot() {

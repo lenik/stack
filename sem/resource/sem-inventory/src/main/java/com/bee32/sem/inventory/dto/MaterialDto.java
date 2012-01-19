@@ -51,7 +51,7 @@ public class MaterialDto
 
     @Override
     protected void _marshal(Material source) {
-        category = mref(MaterialCategoryDto.class, ~MaterialCategoryDto.MATERIALS, source.getCategory());
+        category = mref(MaterialCategoryDto.class, 0, source.getCategory());
         barCode = source.getBarCode();
         modelSpec = source.getModelSpec();
 
@@ -63,8 +63,6 @@ public class MaterialDto
         packageLength = source.getPackageLength();
         packageWeight = source.getPackageWeight();
         netWeight = source.getNetWeight();
-
-
 
         if (selection.contains(ATTRBUTES))
             attributes = marshalList(MaterialAttributeDto.class, ~MaterialAttributeDto.MATERIAL, source.getAttributes());
