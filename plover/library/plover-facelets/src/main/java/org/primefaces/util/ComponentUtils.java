@@ -38,6 +38,9 @@ import javax.faces.model.SelectItem;
 
 import org.primefaces.component.api.Widget;
 
+import com.bee32.plover.web.faces.primefaces.ClientIdHelper;
+
+@SuppressWarnings("unchecked")
 public class ComponentUtils {
 
     private final static Logger logger = Logger.getLogger(ComponentUtils.class.getName());

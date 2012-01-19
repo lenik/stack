@@ -1,4 +1,4 @@
-package org.primefaces.util;
+package com.bee32.plover.web.faces.primefaces;
 
 import java.io.File;
 import java.net.URISyntaxException;
