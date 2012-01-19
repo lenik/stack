@@ -3,9 +3,11 @@ package com.bee32.sem.sandbox;
 import java.util.List;
 
 import com.bee32.plover.criteria.hibernate.CriteriaComposite;
+import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 
 public abstract class AbstractCriteriaHolder
+        extends CriteriaSpec
         implements ICriteriaHolder {
 
     private static final long serialVersionUID = 1L;

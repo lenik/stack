@@ -28,7 +28,6 @@ import com.bee32.sem.asset.entity.StockSale;
 import com.bee32.sem.asset.entity.StockTrade;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.Material;
-import com.bee32.sem.inventory.util.MaterialCriteria;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.util.PeopleCriteria;
@@ -264,7 +263,7 @@ public class StockTradeAdminBean
 
     public void findMaterial() {
         if (materialPattern != null && !materialPattern.isEmpty()) {
-            List<Material> _materials = serviceFor(Material.class).list(MaterialCriteria.labelLike(materialPattern));
+            List<Material> _materials = serviceFor(Material.class).list(CommonCriteria.labelledWith(materialPattern));
             materials = DTOs.mrefList(MaterialDto.class, 0, _materials);
         }
     }

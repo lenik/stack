@@ -1,22 +1,19 @@
 package com.bee32.sem.inventory.util;
 
-import org.hibernate.criterion.MatchMode;
-import org.zkoss.lang.Strings;
-
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
+import com.bee32.plover.criteria.hibernate.LeftHand;
+import com.bee32.sem.inventory.entity.Material;
 
 public class MaterialCriteria
         extends CriteriaSpec {
 
-    public static CriteriaElement categoryOf(int categoryId) {
-        return equals("category.id", categoryId);
-    }
-
-    public static CriteriaElement labelLike(String label) {
-        if (Strings.isEmpty(label))
+    @LeftHand(Material.class)
+    public static CriteriaElement categoryOf(Integer categoryId) {
+        if (categoryId == null)
             return null;
-        return like("label", label, MatchMode.ANYWHERE);
+        else
+            return equals("category.id", categoryId);
     }
 
 }

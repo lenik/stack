@@ -15,6 +15,7 @@ import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.color.MomentIntervalCriteria;
 import com.bee32.plover.ox1.tree.TreeCriteria;
+import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.plover.util.i18n.CurrencyConfig;
 import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.dto.ChanceActionStyleDto;
@@ -92,7 +93,7 @@ public class ChanceBean
     }
 
     public void findMaterial() {
-        List<Material> _materials = serviceFor(Material.class).list(MaterialCriteria.labelLike(materialPattern));
+        List<Material> _materials = serviceFor(Material.class).list(CommonCriteria.labelledWith(materialPattern));
         materialList = UIHelper.selectable(DTOs.mrefList(MaterialDto.class, 0, _materials));
     }
 

@@ -1,4 +1,4 @@
- package com.bee32.sem.inventory.web;
+package com.bee32.sem.inventory.web;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,8 +13,8 @@ import org.primefaces.model.TreeNode;
 import org.primefaces.model.UploadedFile;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.ox1.tree.TreeCriteria;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.file.entity.FileBlob;
@@ -33,6 +33,8 @@ import com.bee32.sem.inventory.entity.MaterialPreferredLocation;
 import com.bee32.sem.inventory.entity.MaterialPrice;
 import com.bee32.sem.inventory.entity.MaterialWarehouseOption;
 import com.bee32.sem.inventory.util.MaterialCriteria;
+import com.bee32.sem.misc.SimpleEntityViewBean;
+import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.world.monetary.CurrencyUtil;
 import com.bee32.sem.world.thing.ScaleItem;
@@ -41,38 +43,32 @@ import com.bee32.sem.world.thing.UnitConv;
 import com.bee32.sem.world.thing.UnitConvDto;
 import com.bee32.sem.world.thing.UnitDto;
 
-public class MaterialExAdminBean extends EntityViewBean {
+public class MaterialExAdminBean
+        extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
-    static final String TREETABLE_CATEGORY = "mainForm:categoryTree";
-
     TreeNode root;
-
     TreeNode selectedMaterialCategoryNode;
-
-    List<MaterialDto> materials;
-
-    MaterialDto material = new MaterialDto().create();
-
+    TreeNode choosedMaterialCategoryNode;
     MaterialPriceDto materialPrice = new MaterialPriceDto().create();
-
     ScaleItem scaleItem = new ScaleItem();
-
     MaterialAttributeDto materialAttr = new MaterialAttributeDto().create();
-
     MaterialPreferredLocationDto preferredLocation = new MaterialPreferredLocationDto().create();
-
     TreeNode selectedPreferredLocation;
-
     MaterialWarehouseOptionDto warehouseOption = new MaterialWarehouseOptionDto().create();
-
     UserFileDto userFile = new UserFileDto().create();
 
-    String materialPattern;
-
     public MaterialExAdminBean() {
-        loadMaterialCategoryTree();
+        super(Material.class, MaterialDto.class, 0);
+        reloadTree();
+    }
+
+    @Override
+    protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
+        Integer categoryId = getSelectedMaterialCategoryId();
+        if (categoryId != null)
+            elements.add(MaterialCriteria.categoryOf(categoryId));
     }
 
     public TreeNode getRoot() {
@@ -83,161 +79,122 @@ public class MaterialExAdminBean extends EntityViewBean {
         return selectedMaterialCategoryNode;
     }
 
-    public void setSelectedMaterialCategoryNode(
-            TreeNode selectedMaterialCategoryNode) {
-        this.selectedMaterialCategoryNode = selectedMaterialCategoryNode;
+    public void setSelectedMaterialCategoryNode(TreeNode node) {
+        this.selectedMaterialCategoryNode = node;
     }
 
-    public List<MaterialDto> getMaterials() {
-        return materials;
+    Integer getSelectedMaterialCategoryId() {
+        if (selectedMaterialCategoryNode == null)
+            return null;
+        MaterialCategoryDto selectedCategory = (MaterialCategoryDto) selectedMaterialCategoryNode.getData();
+        if (selectedCategory == null) // may be virtual-node?
+            return null;
+        return selectedCategory.getId();
     }
 
-    public void setMaterials(List<MaterialDto> materials) {
-        this.materials = materials;
-    }
-
-    public MaterialDto getMaterial() {
-        return material;
-    }
-
-    public void setMaterial(MaterialDto material) {
-        this.material = material;
-    }
-
-    private void loadMaterialCategoryTree() {
-        loadMaterialCategoryTree(null);
-    }
-
-    private void loadMaterialCategoryTree(Integer categoryId) {
+    void reloadTree() {
         root = new DefaultTreeNode("categoryRoot", null);
 
-        List<MaterialCategory> topCategories = serviceFor(
-                MaterialCategory.class).list(//
+        List<MaterialCategory> topCategories = serviceFor(MaterialCategory.class).list(//
                 TreeCriteria.root());
-        List<MaterialCategoryDto> topCategoryDtos = DTOs.mrefList(
-                MaterialCategoryDto.class, ~MaterialCategoryDto.MATERIALS,
-                topCategories);
+        List<MaterialCategoryDto> topCategoryDtos = DTOs.mrefList(MaterialCategoryDto.class,
+                ~MaterialCategoryDto.MATERIALS, topCategories);
 
-        for (MaterialCategoryDto materialCategoryDto : topCategoryDtos) {
-            loadMaterialCategoryRecursive(materialCategoryDto, root, categoryId);
-        }
+        for (MaterialCategoryDto materialCategoryDto : topCategoryDtos)
+            _loadTree(materialCategoryDto, root);
     }
 
-    private void loadMaterialCategoryRecursive(MaterialCategoryDto materialCategoryDto, TreeNode parentTreeNode, Integer categoryId) {
-        TreeNode materialCategoryNode = null;
-        if (categoryId != null && categoryId.equals(materialCategoryDto.getId())) {
-            materialCategoryDto = reload(materialCategoryDto, MaterialCategoryDto.MATERIALS);
-            materialCategoryNode = new DefaultTreeNode(materialCategoryDto, parentTreeNode);
-            materialCategoryNode.setSelected(true);
-            materials = materialCategoryDto.getMaterials();
-        } else {
-            materialCategoryNode = new DefaultTreeNode(materialCategoryDto, parentTreeNode);
-        }
+    private void _loadTree(MaterialCategoryDto materialCategoryDto, TreeNode parentTreeNode) {
+        TreeNode treeNode = new DefaultTreeNode(materialCategoryDto, parentTreeNode);
 
-        List<MaterialCategoryDto> subMaterialCategories = materialCategoryDto.getChildren();
-        if (subMaterialCategories != null) {
-            for (MaterialCategoryDto subMaterialCategory : subMaterialCategories) {
-                loadMaterialCategoryRecursive(subMaterialCategory, materialCategoryNode, categoryId);
-            }
-        }
+        if (materialCategoryDto.getId().equals(getSelectedMaterialCategoryId()))
+            treeNode.setSelected(true);
+
+        for (MaterialCategoryDto child : materialCategoryDto.getChildren())
+            _loadTree(child, treeNode);
     }
 
-    public void onCategorySelect() {
-        MaterialCategoryDto category = (MaterialCategoryDto)selectedMaterialCategoryNode.getData();
-
-        category = reload(category, MaterialCategoryDto.MATERIALS);
-
-        materials = category.getMaterials();
-    }
-
-    public void newMaterial() {
-        material = new MaterialDto().create();
-    }
-
-    public void saveMaterial() {
-        if (material.getCategory() == null || material.getCategory().getId() == null) {
-            uiLogger.error("物料所属分类不能为空!");
-            return;
-        }
-
-        if (
-                material.getUnit() == null
-                || material.getUnit().getId() == null
-                || material.getUnit().getId().isEmpty()) {
-            uiLogger.error("主单位不能为空!");
-            return;
-        }
-
-        try {
-            Material _m = material.unmarshal();
-            boolean newFlag = false;
-            if (_m.getId() == null) {
-                //new material
-                newFlag = true;
+    @Override
+    protected boolean preUpdate(UnmarshalMap uMap)
+            throws Exception {
+        for (MaterialDto material : uMap.<MaterialDto> dtos()) {
+            if (material.getCategory() == null || material.getCategory().getId() == null) {
+                uiLogger.error("物料所属分类不能为空!");
+                return false;
             }
 
-            serviceFor(Material.class).saveOrUpdate(_m);
+            if (material.getUnit() == null || material.getUnit().getId() == null
+                    || material.getUnit().getId().isEmpty()) {
+                uiLogger.error("主单位不能为空!");
+                return false;
+            }
+        }
+        return true;
+    }
 
-            if (newFlag) {
+    @Override
+    protected void postUpdate(UnmarshalMap uMap)
+            throws Exception {
+        for (Material _m : uMap.<Material> entitySet()) {
+            MaterialDto material = uMap.getSourceDto(_m);
+            if (material.getId() == null) {
                 MaterialCategory _category = _m.getCategory();
                 _category.addMaterial(_m);
                 _category.setMaterialCount(_category.getMaterialCount() + 1);
             }
-
-
-            MaterialCategoryDto category = (MaterialCategoryDto)selectedMaterialCategoryNode.getData();
-            loadMaterialCategoryTree(category.getId());
-
-            uiLogger.info("保存物料成功.");
-        } catch (Exception e) {
-            uiLogger.error("保存物料出错!", e);
         }
+        reloadTree();
+    }
+
+    @Override
+    protected boolean preDelete(UnmarshalMap uMap)
+            throws Exception {
+        for (Material _m : uMap.<Material> entitySet()) {
+            MaterialCategory _category = _m.getCategory();
+            _category.removeMaterial(_m);
+            _category.setMaterialCount(_category.getMaterialCount() - 1);
+        }
+        return true;
+    }
+
+    @Override
+    protected void postDelete(UnmarshalMap uMap)
+            throws Exception {
+        reloadTree();
     }
 
     public List<SelectItem> getUnits() {
         List<Unit> units = serviceFor(Unit.class).list();
         List<UnitDto> unitDtos = DTOs.marshalList(UnitDto.class, units);
         return UIHelper.selectItemsFromDict(unitDtos);
+    }
 
+    public TreeNode getChoosedMaterialCategoryNode() {
+        return choosedMaterialCategoryNode;
+    }
+
+    public void setChoosedMaterialCategoryNode(TreeNode node) {
+        this.choosedMaterialCategoryNode = node;
     }
 
     public void chooseMaterialCategory() {
-        MaterialCategoryDto category = (MaterialCategoryDto)selectedMaterialCategoryNode.getData();
+        MaterialDto material = getActiveObject();
+        MaterialCategoryDto category = (MaterialCategoryDto) choosedMaterialCategoryNode.getData();
         material.setCategory(category);
     }
-
-    public void deleteMaterial() {
-        try {
-            Material _m = material.unmarshal();
-            MaterialCategory _category = _m.getCategory();
-
-            _category.removeMaterial(_m);
-            _category.setMaterialCount(_category.getMaterialCount() - 1);
-            serviceFor(Material.class).delete(_m);
-
-            MaterialCategoryDto category = (MaterialCategoryDto)selectedMaterialCategoryNode.getData();
-            loadMaterialCategoryTree(category.getId());
-
-            uiLogger.info("删除物料成功.");
-        } catch (Exception e) {
-            uiLogger.error("删除物料出错!", e);
-        }
-    }
-
 
     public List<SelectItem> getCurrencies() {
         return CurrencyUtil.selectItems();
     }
 
     public List<MaterialPriceDto> getMaterialPrices() {
+        MaterialDto material = getActiveObject();
         if (material != null && material.getId() != null) {
             material = reload(material, MaterialDto.PRICES);
             return material.getPrices();
-        };
-
+        }
         return null;
     }
-
 
     public MaterialPriceDto getMaterialPrice() {
         return materialPrice;
@@ -252,6 +209,7 @@ public class MaterialExAdminBean extends EntityViewBean {
     }
 
     public void addMaterialPrice() {
+        MaterialDto material = getActiveObject();
         try {
             materialPrice.setMaterial(material);
             MaterialPrice _price = materialPrice.unmarshal();
@@ -272,6 +230,7 @@ public class MaterialExAdminBean extends EntityViewBean {
     }
 
     public List<ScaleItem> getScaleList() {
+        MaterialDto material = getActiveObject();
         if (material != null && material.getId() != null) {
             UnitConvDto unitConv = material.getUnitConv();
             if (unitConv == null || unitConv.getId() == null) {
@@ -290,6 +249,7 @@ public class MaterialExAdminBean extends EntityViewBean {
 
     @Transactional
     public void addUnitScale() {
+        MaterialDto material = getActiveObject();
         try {
             UnitConvDto unitConv = material.getUnitConv();
             UnitConv _unitConv = unitConv.unmarshal();
@@ -319,6 +279,7 @@ public class MaterialExAdminBean extends EntityViewBean {
     }
 
     public void deleteUnitScale() {
+        MaterialDto material = getActiveObject();
         try {
             Unit unit = scaleItem.getUnit().unmarshal();
             UnitConvDto unitConv = material.getUnitConv();
@@ -342,22 +303,21 @@ public class MaterialExAdminBean extends EntityViewBean {
         this.materialAttr = materialAttr;
     }
 
-
-
     public void newMaterialAttribute() {
         materialAttr = new MaterialAttributeDto().create();
     }
 
     public List<MaterialAttributeDto> getMaterialAttributes() {
+        MaterialDto material = getActiveObject();
         if (material != null && material.getId() != null) {
             material = reload(material, MaterialDto.ATTRBUTES);
             return material.getAttributes();
-        };
-
+        }
         return null;
     }
 
     public void addMaterialAttribute() {
+        MaterialDto material = getActiveObject();
         try {
             materialAttr.setMaterial(material);
             MaterialAttribute _attr = materialAttr.unmarshal();
@@ -382,8 +342,6 @@ public class MaterialExAdminBean extends EntityViewBean {
         }
     }
 
-
-
     public MaterialPreferredLocationDto getPreferredLocation() {
         return preferredLocation;
     }
@@ -405,22 +363,23 @@ public class MaterialExAdminBean extends EntityViewBean {
     }
 
     public List<MaterialPreferredLocationDto> getPreferredLocations() {
+        MaterialDto material = getActiveObject();
         if (material != null && material.getId() != null) {
             material = reload(material, MaterialDto.PREFERRED_LOCATIONS);
             return material.getPreferredLocations();
-        };
-
+        }
         return null;
     }
 
     public void choosePreferredLocation() {
         StockLocationDto location = (StockLocationDto) selectedPreferredLocation.getData();
-        if(location != null) {
+        if (location != null) {
             preferredLocation.setLocation(location);
         }
     }
 
     public void addPreferredLocation() {
+        MaterialDto material = getActiveObject();
         try {
             preferredLocation.setMaterial(material);
             MaterialPreferredLocation _preferredLocation = preferredLocation.unmarshal();
@@ -453,21 +412,21 @@ public class MaterialExAdminBean extends EntityViewBean {
         this.warehouseOption = warehouseOption;
     }
 
-
     public void newWarehouseOption() {
         warehouseOption = new MaterialWarehouseOptionDto().create();
     }
 
     public List<MaterialWarehouseOptionDto> getWarehouseOptions() {
+        MaterialDto material = getActiveObject();
         if (material != null && material.getId() != null) {
             material = reload(material, MaterialDto.OPTIONS);
             return material.getOptions();
-        };
-
+        }
         return null;
     }
 
     public void addWarehouseOption() {
+        MaterialDto material = getActiveObject();
         try {
             warehouseOption.setMaterial(material);
             MaterialWarehouseOption _warehouseOption = warehouseOption.unmarshal();
@@ -492,10 +451,6 @@ public class MaterialExAdminBean extends EntityViewBean {
         }
     }
 
-
-
-
-
     public UserFileDto getUserFile() {
         return userFile;
     }
@@ -505,11 +460,11 @@ public class MaterialExAdminBean extends EntityViewBean {
     }
 
     public List<UserFileDto> getUserFiles() {
+        MaterialDto material = getActiveObject();
         if (material != null && material.getId() != null) {
             material = reload(material, MaterialDto.ATTACHMENTS);
             return material.getAttachments();
-        };
-
+        }
         return null;
     }
 
@@ -533,7 +488,6 @@ public class MaterialExAdminBean extends EntityViewBean {
             UserFile userFile = new UserFile();
             userFile.setPath(upFile.getFileName());
 
-
             FileBlob fileBlob = FileBlob.commit(tempFile, true);
 
             userFile.setFileBlob(fileBlob);
@@ -542,6 +496,7 @@ public class MaterialExAdminBean extends EntityViewBean {
             serviceFor(FileBlob.class).saveOrUpdate(fileBlob);
             serviceFor(UserFile.class).save(userFile);
 
+            MaterialDto material = getActiveObject();
             Material _m = material.unmarshal();
             _m.getAttachments().add(userFile);
             serviceFor(Material.class).saveOrUpdate(_m);
@@ -565,6 +520,7 @@ public class MaterialExAdminBean extends EntityViewBean {
 
     @Transactional
     public void deleteUserFile() {
+        MaterialDto material = getActiveObject();
         try {
             UserFile _f = userFile.unmarshal();
             Material _m = material.unmarshal();
@@ -577,18 +533,4 @@ public class MaterialExAdminBean extends EntityViewBean {
         }
     }
 
-    public String getMaterialPattern() {
-        return materialPattern;
-    }
-
-    public void setMaterialPattern(String materialPattern) {
-        this.materialPattern = materialPattern;
-    }
-
-    public void findMaterial() {
-        if (!materialPattern.isEmpty() && materialPattern != null) {
-            List<Material> _materials = serviceFor(Material.class).list(MaterialCriteria.labelLike(materialPattern));
-            materials = DTOs.mrefList(MaterialDto.class, _materials);
-        }
-    }
 }

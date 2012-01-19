@@ -1,55 +1,37 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core"
-    xmlns:sem="http://bee32.com/sem/functions" xmlns:p="http://primefaces.org/ui"
-    xmlns:t="http://myfaces.apache.org/tomahawk">
-
-<ui:composition>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
 
     <h:form id="addUnitForm">
-        <p:dialog header="新增单位" widgetVar="addUnitDialog" height="480"
-            width="640" modal="true">
+        <p:dialog header="新增单位" widgetVar="addUnitDialog" height="480" width="640" modal="true">
 
-            <t:panelGrid columns="3">
+            <h:panelGrid columns="3">
                 <h:outputText value="国际单位代码:" />
-                <t:panelGroup colspan="2">
-                    <p:inputText
-                        value="#{addUnitBean.unit.name}" />
-                </t:panelGroup>
+                <h:panelGroup colspan="2">
+                    <p:inputText value="#{addUnitBean.unit.name}" />
+                </h:panelGroup>
                 <h:outputText value="中文单位名称:" />
-                <t:panelGroup colspan="2">
-                    <p:inputText
-                        value="#{addUnitBean.unit.label}" />
-                </t:panelGroup>
+                <h:panelGroup colspan="2">
+                    <p:inputText value="#{addUnitBean.unit.label}" />
+                </h:panelGroup>
                 <h:outputText value="基本单位:" />
-                <t:panelGroup colspan="2">
-                    <p:selectOneMenu
-                        value="#{addUnitBean.unit.stdUnit.id}"
-                        style="width:100px;">
-                        <f:selectItems
-                            value="#{addUnitBean.standardUnits}" />
+                <h:panelGroup colspan="2">
+                    <p:selectOneMenu value="#{addUnitBean.unit.stdUnit.id}" style="width:100px;">
+                        <f:selectItems value="#{addUnitBean.standardUnits}" />
                         <f:selectItem itemLabel="" itemValue="" />
                     </p:selectOneMenu>
-                </t:panelGroup>
+                </h:panelGroup>
                 <h:outputText value="倍率:" />
-                <t:panelGroup colspan="2">
-                    <p:inputText
-                        value="#{addUnitBean.unit.scale}" />
-                </t:panelGroup>
-                <t:panelGroup colspan="3">
-                    <p:commandButton value="添加"
-                        actionListener="#{addUnitBean.addUnit}"
-                        update="#{updateObj}"
+                <h:panelGroup colspan="2">
+                    <p:inputText value="#{addUnitBean.unit.scale}" />
+                </h:panelGroup>
+                <h:panelGroup colspan="3">
+                    <p:commandButton value="添加" actionListener="#{addUnitBean.addUnit}" update="#{update}"
                         oncomplete="addUnitDialog.hide();" />
-                    <p:commandButton value="关闭"
-                        onclick="addUnitDialog.hide();" />
-                </t:panelGroup>
-            </t:panelGrid>
+                    <p:commandButton value="关闭" onclick="addUnitDialog.hide();" />
+                </h:panelGroup>
+            </h:panelGrid>
 
         </p:dialog>
     </h:form>
 
 </ui:composition>
-
-</html>

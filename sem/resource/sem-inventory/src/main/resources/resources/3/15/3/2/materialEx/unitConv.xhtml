@@ -1,47 +1,29 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core"
-    xmlns:sem="http://bee32.com/sem/functions" xmlns:p="http://primefaces.org/ui"
-    xmlns:t="http://myfaces.apache.org/tomahawk">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+    <ui:param name="obj" value="${materialExAdminBean.activeObject}" />
 
-<ui:composition>
+    <p:dialog header="单位转换表" widgetVar="unitConvDialog" height="480" width="640" modal="true">
+        <h:form id="unitConvForm">
 
-    <h:form id="unitConvForm">
-        <p:dialog header="单位转换表" widgetVar="unitConvDialog" height="480"
-            width="640" modal="true">
-
-            <h:outputText
-                id="currMaterial"
-                value="当前物料:#{materialExAdminBean.material.label}"
-                style="font-weight:bold;"/>
+            <h:outputText rendered="${obj != null}" value="当前物料: #{obj.label}" style="font-weight:bold;" />
 
             <p:separator style="width:600px;height:2px" />
 
-            <h:outputText
-                id="unit"
-                value="当前物料主单位:#{materialExAdminBean.material.unit.name}"
-                style="font-weight:bold;"/>
+            <h:outputText rendered="${obj != null}" value="当前物料主单位: #{obj.unit.name}" style="font-weight:bold;" />
 
             <p:separator style="width:600px;height:2px" />
 
-            <p:commandButton
-                value="增加换算关系"
-                update="addUnitScaleForm:addUnitScalePanel"
-                actionListener="#{materialExAdminBean.newUnitScale}"
-                onclick="addUnitScaleDialog.show()"/>
-            <p:dataTable id="scaleMap"
-                value="#{materialExAdminBean.scaleList}"
-                var="scale" resizableColumns="true" scrollable="true"
-                scrollHeight="350" scrollWidth="400"
-                rowIndexVar="rowIndex">
+            <p:commandButton value="增加换算关系" update=":addUnitScaleForm" actionListener="#{materialExAdminBean.newUnitScale}"
+                onclick="addUnitScaleDialog.show()" />
+            <p:dataTable id="scaleMap" value="#{materialExAdminBean.scaleList}" var="scale"
+                resizableColumns="true" scrollable="true" scrollHeight="350" scrollWidth="400" rowIndexVar="rowIndex">
 
                 <p:column headerText="序号" style="width:30px;">
                     <h:outputText value="#{rowIndex+1}" />
                 </p:column>
 
                 <p:column headerText="目标单位" style="width:100px;">
-                    <h:outputText value="#{scale.unit.name}"/>
+                    <h:outputText value="#{scale.unit.name}" />
                 </p:column>
 
                 <p:column headerText="换算关系" style="width:50px;">
@@ -50,59 +32,43 @@
 
                 <p:column headerText="操作" style="width:100px;">
                     <p:commandLink title="删除" oncomplete="deleteUnitScaleConfirmDialog.show()">
-                        <f:setPropertyActionListener
-                            value="#{scale}"
+                        <f:setPropertyActionListener value="#{scale}"
                             target="#{materialExAdminBean.scaleItem}" />
-                        <p:graphicImage
-                            value="#{location.ICON}/etool16/delete_edit.gif" />
+                        <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
                     </p:commandLink>
                 </p:column>
             </p:dataTable>
 
-        </p:dialog>
-    </h:form>
+        </h:form>
+    </p:dialog>
 
-    <h:form id="addUnitScaleForm">
-        <p:dialog header="新增价格" widgetVar="addUnitScaleDialog"
-            height="480" width="640" modal="true">
+    <p:dialog header="新增价格" widgetVar="addUnitScaleDialog" height="480" width="640" modal="true">
+        <h:form id="addUnitScaleForm">
 
-            <t:panelGrid id="addUnitScalePanel" columns="2">
+            <h:panelGrid id="addUnitScalePanel" columns="2">
                 <h:outputText value="目标单位" />
-                <p:selectOneMenu
-                    value="#{materialExAdminBean.scaleItem.unit.displayId}"
-                    style="width:150px;">
+                <p:selectOneMenu value="#{materialExAdminBean.scaleItem.unit.displayId}" style="width:150px;">
                     <f:selectItem itemValue="" itemLabel="--选择单位--" />
                     <f:selectItems value="#{materialExAdminBean.units}" />
                 </p:selectOneMenu>
 
-                <h:outputText value="换算率"/>
-                <p:inputText
-                    value="#{materialExAdminBean.scaleItem.scale}" />
+                <h:outputText value="换算率" />
+                <p:inputText value="#{materialExAdminBean.scaleItem.scale}" />
 
-                <p:commandButton
-                    actionListener="#{materialExAdminBean.addUnitScale}"
-                    update="unitConvForm:scaleMap"
+                <p:commandButton actionListener="#{materialExAdminBean.addUnitScale}" update=":unitConvForm:scaleMap"
                     value="保存" oncomplete="addUnitScaleDialog.hide()" />
                 <p:commandButton value="关闭" onclick="addUnitScaleDialog.hide()" />
-            </t:panelGrid>
-        </p:dialog>
-    </h:form>
+            </h:panelGrid>
+        </h:form>
+    </p:dialog>
 
-    <h:form id="deleteUnitScaleConfirmForm">
-        <p:confirmDialog message="确定要删除吗?" width="200" header="删除确认"
-            severity="alert" widgetVar="deleteUnitScaleConfirmDialog"
-            modal="true">
-
-            <p:commandButton value="确定"
-                update="unitConvForm:scaleMap"
-                actionListener="#{materialExAdminBean.deleteUnitScale}"
+    <p:confirmDialog message="确定要删除吗?" width="200" header="删除确认" severity="alert" widgetVar="deleteUnitScaleConfirmDialog"
+        modal="true">
+        <h:form id="deleteUnitScaleConfirmForm">
+            <p:commandButton value="确定" update=":unitConvForm:scaleMap" actionListener="#{materialExAdminBean.deleteUnitScale}"
                 oncomplete="deleteUnitScaleConfirmDialog.hide()" />
-            <p:commandButton value="取消"
-                onclick="deleteUnitScaleConfirmDialog.hide()" type="button" />
-
-        </p:confirmDialog>
-    </h:form>
+            <p:commandButton value="取消" onclick="deleteUnitScaleConfirmDialog.hide()" type="button" />
+        </h:form>
+    </p:confirmDialog>
 
 </ui:composition>
-
-</html>

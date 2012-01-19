@@ -1,33 +1,18 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core"
-    xmlns:sem="http://bee32.com/sem/functions" xmlns:p="http://primefaces.org/ui"
-    xmlns:t="http://myfaces.apache.org/tomahawk">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+    <ui:param name="obj" value="${materialExAdminBean.activeObject}" />
 
-<ui:composition>
+    <p:dialog header="物料基准价格" widgetVar="materialPriceDialog" height="480" width="640" modal="true">
+        <h:form id="materialPriceForm">
 
-    <h:form id="materialPriceForm">
-        <p:dialog header="物料基准价格" widgetVar="materialPriceDialog" height="480"
-            width="640" modal="true">
-
-            <h:outputText
-                id="currMaterial"
-                value="当前物料:#{materialExAdminBean.material.label}"
-                style="font-weight:bold;"/>
+            <h:outputText rendered="${obj != null}" value="当前物料: #{obj.label}" style="font-weight:bold;" />
 
             <p:separator style="width:600px;height:2px" />
 
-            <p:commandButton
-                value="增加价格"
-                update="addMaterialPriceForm:addMaterialPricePanel"
-                actionListener="#{materialExAdminBean.newMaterialPrice}"
-                onclick="addMaterialPriceDialog.show()"/>
-            <p:dataTable id="prices"
-                value="#{materialExAdminBean.materialPrices}"
-                var="price" resizableColumns="true" scrollable="true"
-                scrollHeight="400" scrollWidth="400"
-                rowIndexVar="rowIndex">
+            <p:commandButton value="增加价格" update=":addMaterialPriceForm" actionListener="#{materialExAdminBean.newMaterialPrice}"
+                onclick="addMaterialPriceDialog.show()" />
+            <p:dataTable id="prices" value="#{materialExAdminBean.materialPrices}" var="price"
+                resizableColumns="true" scrollable="true" scrollHeight="400" scrollWidth="400" rowIndexVar="rowIndex">
 
                 <p:column headerText="序号" style="width:30px;">
                     <h:outputText value="#{rowIndex+1}" />
@@ -35,8 +20,7 @@
 
                 <p:column headerText="日期" style="width:100px;">
                     <h:outputText value="#{price.date}">
-                        <f:convertDateTime pattern="yyyy-MM-dd"
-                            timeZone="Asia/Shanghai" />
+                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                     </h:outputText>
                 </p:column>
 
@@ -49,35 +33,26 @@
                 </p:column>
             </p:dataTable>
 
-        </p:dialog>
-    </h:form>
+        </h:form>
+    </p:dialog>
 
-    <h:form id="addMaterialPriceForm">
-        <p:dialog header="新增价格" widgetVar="addMaterialPriceDialog"
-            height="480" width="640" modal="true">
+    <p:dialog header="新增价格" widgetVar="addMaterialPriceDialog" height="480" width="640" modal="true">
+        <h:form id="addMaterialPriceForm">
 
-            <t:panelGrid id="addMaterialPricePanel" columns="2">
+            <h:panelGrid id="addMaterialPricePanel" columns="2">
                 <h:outputLabel value="价格" />
-                <p:inputText
-                    value="#{materialExAdminBean.materialPrice.priceDigit}"/>
+                <p:inputText value="#{materialExAdminBean.materialPrice.priceDigit}" />
                 <h:outputLabel value="币种" />
-                <p:selectOneMenu
-                    value="#{materialExAdminBean.materialPrice.priceCurrency}"
-                    style="width:200px;">
+                <p:selectOneMenu value="#{materialExAdminBean.materialPrice.priceCurrency}" style="width:200px;">
                     <f:selectItem itemValue="" itemLabel="--选择币种--" />
-                    <f:selectItems
-                        value="#{materialExAdminBean.currencies}" />
+                    <f:selectItems value="#{materialExAdminBean.currencies}" />
                 </p:selectOneMenu>
 
-                <p:commandButton
-                    actionListener="#{materialExAdminBean.addMaterialPrice}"
-                    update="materialPriceForm:prices mainForm:materials"
+                <p:commandButton actionListener="#{materialExAdminBean.addMaterialPrice}" update=":materialPriceForm:prices, :mainForm:dataTable"
                     value="保存" oncomplete="addMaterialPriceDialog.hide()" />
                 <p:commandButton value="关闭" onclick="addMaterialPriceDialog.hide()" />
-            </t:panelGrid>
-        </p:dialog>
-    </h:form>
+            </h:panelGrid>
+        </h:form>
+    </p:dialog>
 
 </ui:composition>
-
-</html>
