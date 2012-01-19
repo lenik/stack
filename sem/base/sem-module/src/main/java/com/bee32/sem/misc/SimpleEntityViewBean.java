@@ -416,7 +416,7 @@ public abstract class SimpleEntityViewBean
         uiLogger.info("删除成功" + countHint);
     }
 
-    protected void refreshRowCount() {
+    public void refreshRowCount() {
         try {
             dataModel.refreshRowCount();
         } catch (Exception e) {
