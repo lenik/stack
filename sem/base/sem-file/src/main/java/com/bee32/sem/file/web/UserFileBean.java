@@ -1,6 +1,5 @@
 package com.bee32.sem.file.web;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -36,26 +35,8 @@ public class UserFileBean
         super(UserFile.class, UserFileDto.class, UserFileDto.TAGS);
     }
 
-    public void createUserFile(IncomingFile incomingFile) {
-        File localFile;
+    public void createUserFile(FileBlob fileBlob, IncomingFile incomingFile) {
         try {
-            localFile = incomingFile.saveToLocalFile();
-        } catch (IOException e) {
-            uiLogger.error("传输文件失败: " + incomingFile.getFileName(), e);
-            return;
-        }
-
-        FileBlob fileBlob;
-        try {
-            fileBlob = FileBlob.commit(localFile, true);
-        } catch (IOException e) {
-            uiLogger.error("无法将接收的文件保存至存储系统", e);
-            return;
-        }
-
-        // assert fileBlob.getLength() == incomingFile.getSize();
-        try {
-            fileBlob.setContentType(incomingFile.getContentType());
             asFor(FileBlob.class).saveOrUpdate(fileBlob);
 
             UserFile userFile = new UserFile();
@@ -121,12 +102,16 @@ public class UserFileBean
     }
 
     public Object getCreateUserFileListener() {
-        return new IncomingFileUploadAdapter() {
+        return new IncomingFileBlobAdapter() {
             @Override
-            protected void process(List<IncomingFile> incomingFiles)
+            protected void process(FileBlob fileBlob, IncomingFile incomingFile)
                     throws IOException {
-                for (IncomingFile incomingFile : incomingFiles)
-                    createUserFile(incomingFile);
+                createUserFile(fileBlob, incomingFile);
+            }
+
+            @Override
+            protected void reportError(String message, Exception exception) {
+                uiLogger.error(message, exception);
             }
         };
     }
