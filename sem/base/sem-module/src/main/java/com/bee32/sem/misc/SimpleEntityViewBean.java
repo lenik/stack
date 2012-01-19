@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.free.Dates;
@@ -226,19 +224,21 @@ public abstract class SimpleEntityViewBean
         showView(StandardViews.EDIT_FORM);
     }
 
-    protected void preUpdate(Map<Entity<?>, EntityDto<?, ?>> entityMap)
+    protected boolean preUpdate(UnmarshalMap uMap)
+            throws Exception {
+        return true;
+    }
+
+    protected void postUpdate(UnmarshalMap uMap)
             throws Exception {
     }
 
-    protected void postUpdate(Map<Entity<?>, EntityDto<?, ?>> entityMap)
+    protected boolean preDelete(UnmarshalMap uMap)
             throws Exception {
+        return true;
     }
 
-    protected void preDelete(Map<Entity<?>, EntityDto<?, ?>> entityMap)
-            throws Exception {
-    }
-
-    protected void postDelete(Map<Entity<?>, EntityDto<?, ?>> entityMap)
+    protected void postDelete(UnmarshalMap uMap)
             throws Exception {
     }
 
@@ -255,9 +255,9 @@ public abstract class SimpleEntityViewBean
             return;
         }
 
-        Map<Entity<?>, EntityDto<?, ?>> entityMap;
+        UnmarshalMap uMap;
         try {
-            entityMap = unmarshalDtos(getActiveObjects(), false);
+            uMap = unmarshalDtos(getActiveObjects(), false);
         } catch (Exception e) {
             uiLogger.error("反编列失败", e);
             return;
@@ -265,7 +265,7 @@ public abstract class SimpleEntityViewBean
 
         User me = SessionUser.getInstance().getInternalUserOpt();
         List<Entity<?>> lockedList = new ArrayList<Entity<?>>();
-        for (Entity<?> entity : entityMap.keySet()) {
+        for (Entity<?> entity : uMap.keySet()) {
             EntityFlags flags = EntityAccessor.getFlags(entity);
 
             if ((saveFlags & SAVE_FORCE) != 0) {
@@ -294,12 +294,13 @@ public abstract class SimpleEntityViewBean
         }
 
         try {
-            preUpdate(entityMap);
+            if (!preUpdate(uMap))
+                return;
         } catch (Exception e) {
             uiLogger.error("预处理失败", e);
         }
 
-        Set<Entity<?>> entities = entityMap.keySet();
+        Set<Entity<?>> entities = uMap.keySet();
         try {
             serviceFor(entityClass).saveOrUpdateAll(entities);
             // refreshCount();
@@ -312,7 +313,7 @@ public abstract class SimpleEntityViewBean
             refreshRowCount();
 
         try {
-            postUpdate(entityMap);
+            postUpdate(uMap);
         } catch (Exception e) {
             uiLogger.warn("保存不完全，次要的数据可能不一致，建议您检查相关的数据。", e);
         }
@@ -334,16 +335,16 @@ public abstract class SimpleEntityViewBean
             return;
         }
 
-        Map<Entity<?>, EntityDto<?, ?>> entityMap;
+        UnmarshalMap uMap;
         try {
-            entityMap = unmarshalDtos(getSelection(), true);
+            uMap = unmarshalDtos(getSelection(), true);
         } catch (Exception e) {
             uiLogger.error("反编列失败", e);
             return;
         }
 
         List<Entity<?>> lockedList = new ArrayList<Entity<?>>();
-        for (Entity<?> entity : entityMap.keySet()) {
+        for (Entity<?> entity : uMap.keySet()) {
             boolean needUpdateBeforeDelete = false;
 
             // force to delete locked
@@ -390,12 +391,13 @@ public abstract class SimpleEntityViewBean
         setSelection(null);
 
         try {
-            preDelete(entityMap);
+            if (!preDelete(uMap))
+                return;
         } catch (Exception e) {
             uiLogger.error("预处理失败", e);
         }
 
-        Set<Entity<?>> entities = entityMap.keySet();
+        Set<Entity<?>> entities = uMap.keySet();
         int count;
         try {
             count = serviceFor(entityClass).deleteAll(entities);
@@ -408,7 +410,7 @@ public abstract class SimpleEntityViewBean
             refreshRowCount();
 
         try {
-            postDelete(entityMap);
+            postDelete(uMap);
         } catch (Exception e) {
             uiLogger.warn("保存不完全，次要的数据可能不一致，建议您检查相关的数据。", e);
         }
@@ -439,8 +441,8 @@ public abstract class SimpleEntityViewBean
         setActiveObjects(reloadedList);
     }
 
-    Map<Entity<?>, EntityDto<?, ?>> unmarshalDtos(Collection<?> objects, boolean nullable) {
-        Map<Entity<?>, EntityDto<?, ?>> resultMap = new LinkedHashMap<Entity<?>, EntityDto<?, ?>>();
+    UnmarshalMap unmarshalDtos(Collection<?> objects, boolean nullable) {
+        UnmarshalMap resultMap = new UnmarshalMap();
         for (Object object : objects) {
             if (dtoClass.isInstance(object)) {
                 EntityDto<?, ?> entityDto = (EntityDto<?, ?>) object;
