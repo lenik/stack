@@ -18,8 +18,8 @@
     </cc:interface>
 
     <cc:implementation>
-        <h:outputStylesheet library="/frame" name="table.css" />
-        <h:outputStylesheet library="/3/7/2" name="acl.css" />
+        <h:outputStylesheet library="frame" name="table.css" />
+        <h:outputStylesheet library="3/7/2" name="acl.css" />
 
         <icsf:chooseACLDialog id="acld" var="${fn:replace(cc.parent.clientId, ':', '_')}_acld"
             selection="${cc.parent.attrs.dialogBean.selectedInheritedACL}" actionListener="${cc.parent.attrs.dialogBean.confirmInheritedACL}"
