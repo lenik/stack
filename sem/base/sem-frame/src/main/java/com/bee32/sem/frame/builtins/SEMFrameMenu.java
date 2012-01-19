@@ -39,13 +39,14 @@ public class SEMFrameMenu
     static MenuNode print = entry(FILE, 100, "print", JAVASCRIPT.join("alert('under development')"));
     static MenuNode contract = entry(DATA, 50, "contract", JAVASCRIPT.join("alert('under development')"));
 
-    static MenuNode about = entry(HELP, "aboutFrame", JAVASCRIPT.join("alert('" + VERSION + "')"));
+    static MenuNode about = entry(HELP, 1, "aboutFrame", JAVASCRIPT.join("alert('" + VERSION + "')"));
 
     @Override
     protected void preamble() {
+        int index = 0;
         for (PrimefacesTheme theme : PrimefacesTheme.values()) {
             String label = theme.getEntryLabel();
-            MenuNode node = entry(THEME, label, null);
+            MenuNode node = entry(THEME, 100 + index++, label, null);
             Action action = new Action();
             action.setActionListener(new ThemeSwitcherActionListener(theme));
             node.setAction(action);

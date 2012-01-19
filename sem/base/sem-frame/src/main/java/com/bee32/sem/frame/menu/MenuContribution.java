@@ -116,6 +116,7 @@ public abstract class MenuContribution
         return entry(null, order, name, null);
     }
 
+    @Deprecated
     protected static MenuNode menu(MenuNode parent, String name) {
         return menu(parent, 0, name);
     }
@@ -124,6 +125,7 @@ public abstract class MenuContribution
         return entry(parent, order, name, null);
     }
 
+    @Deprecated
     protected static MenuNode section(MenuNode parent, String name) {
         return section(parent, 0, name);
     }
@@ -134,6 +136,7 @@ public abstract class MenuContribution
         return node;
     }
 
+    @Deprecated
     protected static MenuNode entry(MenuNode parent, String name, ILocationContext location) {
         return entry(parent, 0, name, location);
     }

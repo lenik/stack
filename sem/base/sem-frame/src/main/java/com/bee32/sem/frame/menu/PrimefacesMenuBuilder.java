@@ -1,5 +1,9 @@
 package com.bee32.sem.frame.menu;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.event.ActionListener;
 import javax.free.IllegalUsageException;
@@ -93,7 +97,11 @@ public class PrimefacesMenuBuilder
             Submenu submenu = new Submenu();
             submenu.setLabel(label);
             // submenu.setIcon("");
-            for (IMenuNode childNode : node) {
+
+            List<IMenuNode> children = new ArrayList<IMenuNode>(node.getChildren());
+            Collections.sort(children, MenuEntryComparator.INSTANCE);
+
+            for (IMenuNode childNode : children) {
                 UIComponent child = convert(childNode);
                 if (child == null)
                     continue;

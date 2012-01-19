@@ -10,10 +10,10 @@ public class SEMProcessMenu
 
     static Location PROCESS_ = WEB_APP.join(SEMProcessModule.PREFIX + "/");
 
-    public static MenuNode CORE = menu(SEMFrameMenu.PROCESS, "process");
-    public static MenuNode VERIFY_POLICY = menu(CORE, "verifyPolicy");
+    public static MenuNode CORE = menu(SEMFrameMenu.PROCESS, 10, "process");
+    public static MenuNode VERIFY_POLICY = menu(CORE, 10, "verifyPolicy");
 
-    static MenuNode PREFERENCE = entry(CORE, "preference", PROCESS_.join("pref/index-rich.jsf"));
+    static MenuNode PREFERENCE = entry(CORE, 20, "preference", PROCESS_.join("pref/index-rich.jsf"));
 
     static MenuNode LIST = entry(VERIFY_POLICY, 1, "list", PROCESS_.join("v1/index-rich.jsf"));
     static MenuNode LEVEL = entry(VERIFY_POLICY, 2, "level", PROCESS_.join("v1x/index-rich.jsf"));

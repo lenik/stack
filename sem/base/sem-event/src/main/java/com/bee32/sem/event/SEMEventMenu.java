@@ -16,13 +16,12 @@ public class SEMEventMenu
 
     static Location EVENT_ = WEB_APP.join(EventController.PREFIX_);
 
-    public static MenuNode EVENT = menu(SEMFrameMenu.FILE, "event");
-    public static MenuNode ADMIN = menu(EVENT, "eventAdmin"); // MAIN/Admin
+    public static MenuNode EVENT = menu(SEMFrameMenu.FILE, 21, "event");
+    public static MenuNode ADMIN = menu(EVENT, 100, "eventAdmin"); // MAIN/Admin
 
     static MenuNode categories = entry(ADMIN, 10, "categories", getDictIndex(EventCategory.class));
     static MenuNode priorities = entry(ADMIN, 11, "priorities", //
             WEB_APP.join(EventPriorityController.PREFIX).join("index.do"));
-
     static MenuNode states = entry(ADMIN, 12, "states", getDictIndex(EventStatus.class));
 
     static MenuNode pendingTasks = entry(EVENT, 10, "pendingTasks", EVENT_.join("index.do?type=t&closed=false"));

@@ -20,7 +20,7 @@ public class SEMPeopleMenu
     static Location ACCESS_ = WEB_APP.join(IcsfAccessModule.PREFIX_);
 
     public static MenuNode PEOPLE = menu(SEMFrameMenu.DATA, 10, "people");
-    public static MenuNode SETTINGS = menu(PEOPLE, "dict");
+    public static MenuNode SETTINGS = menu(PEOPLE, 0, "dict");
 
     static MenuNode personAdmin = entry(PEOPLE, 10, "personAdmin", PEOPLE_.join("person/index-rich.jsf"));
     static MenuNode orgAdmin = entry(PEOPLE, 20, "orgAdmin", PEOPLE_.join("org/index-rich.jsf"));
@@ -28,11 +28,11 @@ public class SEMPeopleMenu
     static MenuNode internalPersonAdmin = entry(PEOPLE, 30, "internalPersonAdmin",
             PEOPLE_.join("internalPerson/index-rich.jsf"));
 
-    static MenuNode partyTag = entry(SETTINGS, "partyTag", getDictIndex(PartyTagname.class));
-    static MenuNode personSidType = entry(SETTINGS, "personSidType", getDictIndex(PartySidType.class));
-    static MenuNode orgType = entry(SETTINGS, "orgType", getDictIndex(OrgType.class));
-    static MenuNode contactCategory = entry(SETTINGS, "contactCategory", getDictIndex(ContactCategory.class));
-    static MenuNode partyRecordCategory = entry(SETTINGS, "partyRecordCategory",
+    static MenuNode partyTag = entry(SETTINGS, 1, "partyTag", getDictIndex(PartyTagname.class));
+    static MenuNode personSidType = entry(SETTINGS, 2, "personSidType", getDictIndex(PartySidType.class));
+    static MenuNode orgType = entry(SETTINGS, 3, "orgType", getDictIndex(OrgType.class));
+    static MenuNode contactCategory = entry(SETTINGS, 4, "contactCategory", getDictIndex(ContactCategory.class));
+    static MenuNode partyRecordCategory = entry(SETTINGS, 5, "partyRecordCategory",
             getDictIndex(PartyRecordCategory.class));
 
     static MenuNode acl = entry(SEMFrameMenu.SECURITY, 10, "acl", ACCESS_.join("acl/index-rich.jsf"));

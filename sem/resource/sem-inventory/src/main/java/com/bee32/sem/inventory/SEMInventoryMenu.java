@@ -6,6 +6,7 @@ import com.bee32.sem.frame.builtins.SEMFrameMenu;
 import com.bee32.sem.frame.menu.MenuContribution;
 import com.bee32.sem.frame.menu.MenuNode;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
+import com.bee32.sem.process.SEMProcessMenu;
 
 public class SEMInventoryMenu
         extends MenuContribution
@@ -26,7 +27,7 @@ public class SEMInventoryMenu
     public static MenuNode INVENTORY = menu(SEMFrameMenu.RESOURCES, 2, "inventory");
 
     public static MenuNode SETTINGS = menu(INVENTORY, 1, "settings");
-    /*    */static MenuNode verifyPolicy = entry(SETTINGS, 1, "verifyPolicy", _("verifyPolicy/"));
+    /*    */static MenuNode verifyPolicy = entry(SEMProcessMenu.VERIFY_POLICY, 100, "verifyPolicy", _("verifyPolicy/"));
     /*    */static MenuNode stockWarehouse = entry(SETTINGS, 1, "stockWarehouse", _("warehouse/"));
     /*    */static MenuNode stockLocation = entry(SETTINGS, 10, "stockLocation", _("location/"));
 

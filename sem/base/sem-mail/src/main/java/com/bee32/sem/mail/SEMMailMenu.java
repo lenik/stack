@@ -10,8 +10,8 @@ public class SEMMailMenu
 
     static ILocationContext MAIL_ = WEB_APP.join(SEMMailModule.PREFIX + "/");
 
-    public static MenuNode MAIL = menu(SEMFrameMenu.FILE, "mail");
-    public static MenuNode SETTINGS = menu(MAIL, "settings");
+    public static MenuNode MAIL = menu(SEMFrameMenu.FILE, 20, "mail");
+    public static MenuNode SETTINGS = menu(MAIL, 100, "settings");
 
     static MenuNode folder = entry(SETTINGS, 10, "mailbox", MAIL_.join("folder/index.do"));
     static MenuNode filter = entry(SETTINGS, 20, "filter", MAIL_.join("filter/index.do"));

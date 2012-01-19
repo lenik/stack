@@ -15,7 +15,7 @@ public class SEMBomMenu
         return WEB_APP.join(SEMBomModule.PREFIX_).join(path);
     }
 
-    static MenuNode bomadmin = entry(SEMInventoryMenu.MATERIAL, "bomadmin", _("part/"));
+    static MenuNode bomadmin = entry(SEMInventoryMenu.MATERIAL, 30, "bomadmin", _("part/"));
 
     @Override
     protected void preamble() {

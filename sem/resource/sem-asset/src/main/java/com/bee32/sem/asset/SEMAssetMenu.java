@@ -10,7 +10,7 @@ public class SEMAssetMenu
 
     static Location ASSET_ = WEB_APP.join(SEMAssetModule.PREFIX_);
 
-    public static MenuNode ASSET = menu(SEMFrameMenu.BIZ1, "asset");
+    public static MenuNode ASSET = menu(SEMFrameMenu.BIZ1, 30, "asset");
 
     static MenuNode accountSubjectAdmin = entry(ASSET, 1, "accountSubjectAdmin", ASSET_.join("accountSubject/"));
 
@@ -22,8 +22,6 @@ public class SEMAssetMenu
     static MenuNode stockPurchaseAdmin = entry(ASSET, 6, "stockPurchaseAdmin", ASSET_.join("stockTrade/?type=PURCHASE"));
 
     static MenuNode assetQuery = entry(ASSET, 7, "assetQuery", ASSET_.join("assetQuery/"));
-
-
 
     @Override
     protected void preamble() {
