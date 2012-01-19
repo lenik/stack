@@ -39,7 +39,7 @@ public class UCLDumper {
         return list;
     }
 
-    static boolean dumpRaw = false;
+    static boolean dumpRaw = true;
 
     public static void main(String[] args) {
         if (dumpRaw) {

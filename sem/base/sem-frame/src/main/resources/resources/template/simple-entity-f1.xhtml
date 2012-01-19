@@ -18,8 +18,10 @@
     </ui:define>
 
     <ui:define name="scripts.0.simple-entity">
-        <h:outputScript library="/frame" name="ajax-validation.js" target="head" />
-        <h:outputScript library="/frame" name="security-load.js" target="head" />
+        <div id="hint:ajax-validation" />
+        <h:outputScript library="frame" name="ajax-validation.js" target="head" />
+        <div id="hint:security-load" />
+        <h:outputScript library="frame" name="security-load.js" target="head" />
     </ui:define>
 
     <ui:define name="content">
