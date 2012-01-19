@@ -191,8 +191,13 @@ public class NLSInitiator {
 
         OutputStream _out = new FileOutputStream(file, false); // append
         PrintStream out = new PrintStream(_out, true, "utf-8");
-        dumpNLS(map, out);
-        out.close();
+        try {
+            dumpNLS(map, out);
+        } finally {
+            out.close();
+            _out.close();
+            System.gc();
+        }
     }
 
     public static void dumpNLS(Map<String, ?> map, PrintStream out) {
