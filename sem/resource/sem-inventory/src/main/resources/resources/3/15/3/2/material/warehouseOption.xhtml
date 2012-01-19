@@ -1,44 +1,37 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
     <ui:composition>
-        <ui:param name="obj" value="${materialExAdminBean.activeObject}" />
 
-        <p:dialog header="仓库选项" widgetVar="warehouseOptionDialog" height="480" width="640" modal="true">
-            <h:form id="warehouseOptionForm">
+        <sem:materialFragmentDialog header="仓库选项" id="warehouseOptionDialog" widgetVar="warehouseOptionDialog"
+            material="#{materialExAdminBean.activeObject}">
 
-                <h:outputText rendered="${obj != null}" value="当前物料: #{obj.label}" style="font-weight:bold;" />
+            <p:commandButton value="增加仓库选项" update=":addWarehouseOptionForm" actionListener="#{materialExAdminBean.newWarehouseOption}"
+                onclick="addWarehouseOptionDialog.show()" />
 
-                <p:separator style="width:600px;height:2px" />
+            <p:dataTable id="warehouseOptions" value="#{materialExAdminBean.warehouseOptions}" var="warehouseOption"
+                resizableColumns="true" scrollable="true" scrollHeight="350" scrollWidth="400" rowIndexVar="rowIndex">
 
-                <p:commandButton value="增加仓库选项" update=":addWarehouseOptionForm" actionListener="#{materialExAdminBean.newWarehouseOption}"
-                    onclick="addWarehouseOptionDialog.show()" />
+                <p:column headerText="序号" style="width:30px;">
+                    <h:outputText value="#{rowIndex+1}" />
+                </p:column>
 
-                <p:dataTable id="warehouseOptions" value="#{materialExAdminBean.warehouseOptions}" var="warehouseOption"
-                    resizableColumns="true" scrollable="true" scrollHeight="350" scrollWidth="400" rowIndexVar="rowIndex">
+                <p:column headerText="仓库" style="width:100px;">
+                    <h:outputText value="#{warehouseOption.warehouse.name}" />
+                </p:column>
 
-                    <p:column headerText="序号" style="width:30px;">
-                        <h:outputText value="#{rowIndex+1}" />
-                    </p:column>
+                <p:column headerText="循环盘点周期" style="width:50px;">
+                    <h:outputText value="#{warehouseOption.safetyStock}" />
+                </p:column>
 
-                    <p:column headerText="仓库" style="width:100px;">
-                        <h:outputText value="#{warehouseOption.warehouse.name}" />
-                    </p:column>
-
-                    <p:column headerText="循环盘点周期" style="width:50px;">
-                        <h:outputText value="#{warehouseOption.safetyStock}" />
-                    </p:column>
-
-                    <p:column headerText="操作" style="width:100px;">
-                        <p:commandLink title="删除" oncomplete="deleteWarehouseOptionConfirmDialog.show()">
-                            <f:setPropertyActionListener value="#{warehouseOption}"
-                                target="#{materialExAdminBean.warehouseOption}" />
-                            <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
-                        </p:commandLink>
-                    </p:column>
-                </p:dataTable>
-
-            </h:form>
-        </p:dialog>
+                <p:column headerText="操作" style="width:100px;">
+                    <p:commandLink title="删除" oncomplete="deleteWarehouseOptionConfirmDialog.show()">
+                        <f:setPropertyActionListener value="#{warehouseOption}"
+                            target="#{materialExAdminBean.warehouseOption}" />
+                        <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
+                    </p:commandLink>
+                </p:column>
+            </p:dataTable>
+        </sem:materialFragmentDialog>
 
         <p:dialog header="新增仓库选项" widgetVar="addWarehouseOptionDialog" height="480" width="640" modal="true">
             <h:form id="addWarehouseOptionForm">
@@ -56,7 +49,7 @@
                     <h:outputText value="循环盘点周期(天):" />
                     <p:inputText value="#{materialExAdminBean.warehouseOption.stkPeriod}" />
 
-                    <p:commandButton actionListener="#{materialExAdminBean.addWarehouseOption}" update=":warehouseOptionForm"
+                    <p:commandButton actionListener="#{materialExAdminBean.addWarehouseOption}" update=":warehouseOptionDialog:form"
                         value="保存" oncomplete="addWarehouseOptionDialog.hide()" />
                     <p:commandButton value="关闭" onclick="addWarehouseOptionDialog.hide()" />
                 </h:panelGrid>
@@ -67,7 +60,7 @@
             widgetVar="deleteWarehouseOptionConfirmDialog" modal="true">
             <h:form id="deleteWarehouseOptionConfirmForm">
 
-                <p:commandButton value="确定" update=":warehouseOptionForm" actionListener="#{materialExAdminBean.deleteWarehouseOption}"
+                <p:commandButton value="确定" update=":warehouseOptionDialog:form" actionListener="#{materialExAdminBean.deleteWarehouseOption}"
                     oncomplete="deleteWarehouseOptionConfirmDialog.hide()" />
                 <p:commandButton value="取消" onclick="deleteWarehouseOptionConfirmDialog.hide()" type="button" />
 

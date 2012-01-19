@@ -1,42 +1,35 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
-    <ui:param name="obj" value="${materialExAdminBean.activeObject}" />
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
-    <p:dialog header="推荐库位" widgetVar="preferredLocationDialog" height="480" width="640" modal="true">
-        <h:form id="preferredLocationForm">
+    <sem:materialFragmentDialog header="推荐库位" id="preferredLocationDialog" widgetVar="preferredLocationDialog"
+        material="#{materialExAdminBean.activeObject}">
 
-            <h:outputText rendered="${obj != null}" value="当前物料: #{obj.label}" style="font-weight:bold;" />
+        <p:commandButton value="增加推荐库位" update=":addPreferredLocationForm" actionListener="#{materialExAdminBean.newPreferredLocation}"
+            onclick="addPreferredLocationDialog.show()" />
+        <p:dataTable id="preferredLocations" value="#{materialExAdminBean.preferredLocations}" var="preferredLocation"
+            resizableColumns="true" scrollable="true" scrollHeight="350" scrollWidth="400" rowIndexVar="rowIndex">
 
-            <p:separator style="width:600px;height:2px" />
+            <p:column headerText="序号" style="width:30px;">
+                <h:outputText value="#{rowIndex+1}" />
+            </p:column>
 
-            <p:commandButton value="增加推荐库位" update=":addPreferredLocationForm" actionListener="#{materialExAdminBean.newPreferredLocation}"
-                onclick="addPreferredLocationDialog.show()" />
-            <p:dataTable id="preferredLocations" value="#{materialExAdminBean.preferredLocations}" var="preferredLocation"
-                resizableColumns="true" scrollable="true" scrollHeight="350" scrollWidth="400" rowIndexVar="rowIndex">
+            <p:column headerText="库位" style="width:100px;">
+                <h:outputText value="#{preferredLocation.location.nodeText}" />
+            </p:column>
 
-                <p:column headerText="序号" style="width:30px;">
-                    <h:outputText value="#{rowIndex+1}" />
-                </p:column>
+            <p:column headerText="仓库" style="width:50px;">
+                <h:outputText value="#{preferredLocation.location.warehouse.name}" />
+            </p:column>
 
-                <p:column headerText="库位" style="width:100px;">
-                    <h:outputText value="#{preferredLocation.location.nodeText}" />
-                </p:column>
-
-                <p:column headerText="仓库" style="width:50px;">
-                    <h:outputText value="#{preferredLocation.location.warehouse.name}" />
-                </p:column>
-
-                <p:column headerText="操作" style="width:100px;">
-                    <p:commandLink title="删除" oncomplete="deletePreferredLocationConfirmDialog.show()">
-                        <f:setPropertyActionListener value="#{preferredLocation}"
-                            target="#{materialExAdminBean.preferredLocation}" />
-                        <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
-                    </p:commandLink>
-                </p:column>
-            </p:dataTable>
-
-        </h:form>
-    </p:dialog>
+            <p:column headerText="操作" style="width:100px;">
+                <p:commandLink title="删除" oncomplete="deletePreferredLocationConfirmDialog.show()">
+                    <f:setPropertyActionListener value="#{preferredLocation}"
+                        target="#{materialExAdminBean.preferredLocation}" />
+                    <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
+                </p:commandLink>
+            </p:column>
+        </p:dataTable>
+    </sem:materialFragmentDialog>
 
     <p:dialog header="新增推荐库位" widgetVar="addPreferredLocationDialog" height="480" width="640" modal="true">
         <h:form id="addPreferredLocationForm">
@@ -53,7 +46,7 @@
                     <p:commandButton value="..." oncomplete="choosePreferredLocationDialog.show()" />
                 </h:panelGroup>
 
-                <p:commandButton actionListener="#{materialExAdminBean.addPreferredLocation}" update=":preferredLocationForm"
+                <p:commandButton actionListener="#{materialExAdminBean.addPreferredLocation}" update=":preferredLocationDialog:form"
                     value="保存" oncomplete="addPreferredLocationDialog.hide()" />
                 <p:commandButton value="关闭" onclick="addPreferredLocationDialog.hide()" />
             </h:panelGrid>
@@ -63,7 +56,7 @@
     <p:confirmDialog message="确定要删除吗?" width="200" header="删除确认" severity="alert"
         widgetVar="deletePreferredLocationConfirmDialog" modal="true">
         <h:form id="deletePreferredLocationConfirmForm">
-            <p:commandButton value="确定" update=":preferredLocationForm" actionListener="#{materialExAdminBean.deletePreferredLocation}"
+            <p:commandButton value="确定" update=":preferredLocationDialog:form" actionListener="#{materialExAdminBean.deletePreferredLocation}"
                 oncomplete="deletePreferredLocationConfirmDialog.hide()" />
             <p:commandButton value="取消" onclick="deletePreferredLocationConfirmDialog.hide()" type="button" />
         </h:form>

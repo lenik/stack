@@ -1,40 +1,33 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
-    <ui:param name="obj" value="${materialExAdminBean.activeObject}" />
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
-    <p:dialog header="物料基准价格" widgetVar="materialPriceDialog" height="480" width="640" modal="true">
-        <h:form id="materialPriceForm">
+    <sem:materialFragmentDialog header="物料基准价格" id="materialPriceDialog" widgetVar="materialPriceDialog"
+        material="#{materialExAdminBean.activeObject}">
 
-            <h:outputText rendered="${obj != null}" value="当前物料: #{obj.label}" style="font-weight:bold;" />
+        <p:commandButton value="增加价格" update=":addMaterialPriceForm" actionListener="#{materialExAdminBean.newMaterialPrice}"
+            onclick="addMaterialPriceDialog.show()" />
+        <p:dataTable id="prices" value="#{materialExAdminBean.materialPrices}" var="price" resizableColumns="true"
+            scrollable="true" scrollHeight="400" scrollWidth="400" rowIndexVar="rowIndex">
 
-            <p:separator style="width:600px;height:2px" />
+            <p:column headerText="序号" style="width:30px;">
+                <h:outputText value="#{rowIndex+1}" />
+            </p:column>
 
-            <p:commandButton value="增加价格" update=":addMaterialPriceForm" actionListener="#{materialExAdminBean.newMaterialPrice}"
-                onclick="addMaterialPriceDialog.show()" />
-            <p:dataTable id="prices" value="#{materialExAdminBean.materialPrices}" var="price"
-                resizableColumns="true" scrollable="true" scrollHeight="400" scrollWidth="400" rowIndexVar="rowIndex">
+            <p:column headerText="日期" style="width:100px;">
+                <h:outputText value="#{price.date}">
+                    <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                </h:outputText>
+            </p:column>
 
-                <p:column headerText="序号" style="width:30px;">
-                    <h:outputText value="#{rowIndex+1}" />
-                </p:column>
+            <p:column headerText="单价">
+                <h:outputText value="#{price.price.value}" />
+            </p:column>
 
-                <p:column headerText="日期" style="width:100px;">
-                    <h:outputText value="#{price.date}">
-                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-                    </h:outputText>
-                </p:column>
-
-                <p:column headerText="单价">
-                    <h:outputText value="#{price.price.value}" />
-                </p:column>
-
-                <p:column headerText="币种">
-                    <h:outputText value="#{price.price.currencyText}" />
-                </p:column>
-            </p:dataTable>
-
-        </h:form>
-    </p:dialog>
+            <p:column headerText="币种">
+                <h:outputText value="#{price.price.currencyText}" />
+            </p:column>
+        </p:dataTable>
+    </sem:materialFragmentDialog>
 
     <p:dialog header="新增价格" widgetVar="addMaterialPriceDialog" height="480" width="640" modal="true">
         <h:form id="addMaterialPriceForm">
@@ -48,7 +41,7 @@
                     <f:selectItems value="#{materialExAdminBean.currencies}" />
                 </p:selectOneMenu>
 
-                <p:commandButton actionListener="#{materialExAdminBean.addMaterialPrice}" update=":materialPriceForm:prices, :mainForm:dataTable"
+                <p:commandButton actionListener="#{materialExAdminBean.addMaterialPrice}" update=":materialPriceDialog:form:prices, :mainForm:dataTable"
                     value="保存" oncomplete="addMaterialPriceDialog.hide()" />
                 <p:commandButton value="关闭" onclick="addMaterialPriceDialog.hide()" />
             </h:panelGrid>

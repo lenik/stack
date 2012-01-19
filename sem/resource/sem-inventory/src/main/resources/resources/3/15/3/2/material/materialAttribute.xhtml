@@ -1,43 +1,34 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
-    <ui:param name="obj" value="${materialExAdminBean.activeObject}" />
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
-    <p:dialog header="物料自定义属性" widgetVar="materialAttributeDialog" height="480" width="640" modal="true">
-        <h:form id="materialAttributeForm">
+    <sem:materialFragmentDialog header="物料自定义属性" id="materialAttributeDialog" widgetVar="materialAttributeDialog"
+        material="#{materialExAdminBean.activeObject}">
 
-            <h:outputText rendered="${obj != null}" value="当前物料: #{obj.label}" style="font-weight:bold;" />
+        <p:commandButton value="增加自定义属性" update=":addMaterialAttributeForm" actionListener="#{materialExAdminBean.newMaterialAttribute}"
+            onclick="addMaterialAttributeDialog.show()" />
+        <p:dataTable id="attributes" value="#{materialExAdminBean.materialAttributes}" var="attr"
+            resizableColumns="true" scrollable="true" scrollHeight="350" scrollWidth="400" rowIndexVar="rowIndex">
 
-            <p:separator style="width:600px;height:2px" />
+            <p:column headerText="序号" style="width:30px;">
+                <h:outputText value="#{rowIndex+1}" />
+            </p:column>
 
+            <p:column headerText="属性名称" style="width:100px;">
+                <h:outputText value="#{attr.name}" />
+            </p:column>
 
-            <p:commandButton value="增加自定义属性" update=":addMaterialAttributeForm" actionListener="#{materialExAdminBean.newMaterialAttribute}"
-                onclick="addMaterialAttributeDialog.show()" />
-            <p:dataTable id="attributes" value="#{materialExAdminBean.materialAttributes}" var="attr"
-                resizableColumns="true" scrollable="true" scrollHeight="350" scrollWidth="400" rowIndexVar="rowIndex">
+            <p:column headerText="属性值" style="width:50px;">
+                <h:outputText value="#{attr.value}" />
+            </p:column>
 
-                <p:column headerText="序号" style="width:30px;">
-                    <h:outputText value="#{rowIndex+1}" />
-                </p:column>
-
-                <p:column headerText="属性名称" style="width:100px;">
-                    <h:outputText value="#{attr.name}" />
-                </p:column>
-
-                <p:column headerText="属性值" style="width:50px;">
-                    <h:outputText value="#{attr.value}" />
-                </p:column>
-
-                <p:column headerText="操作" style="width:100px;">
-                    <p:commandLink title="删除" oncomplete="deleteMaterialAttributeConfirmDialog.show()">
-                        <f:setPropertyActionListener value="#{attr}"
-                            target="#{materialExAdminBean.materialAttr}" />
-                        <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
-                    </p:commandLink>
-                </p:column>
-            </p:dataTable>
-
-        </h:form>
-    </p:dialog>
+            <p:column headerText="操作" style="width:100px;">
+                <p:commandLink title="删除" oncomplete="deleteMaterialAttributeConfirmDialog.show()">
+                    <f:setPropertyActionListener value="#{attr}" target="#{materialExAdminBean.materialAttr}" />
+                    <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
+                </p:commandLink>
+            </p:column>
+        </p:dataTable>
+    </sem:materialFragmentDialog>
 
     <p:dialog header="新增属性" widgetVar="addMaterialAttributeDialog" height="480" width="640" modal="true">
         <h:form id="addMaterialAttributeForm">
@@ -48,7 +39,7 @@
                 <h:outputText value="属性值" />
                 <p:inputText value="#{materialExAdminBean.materialAttr.value}" />
 
-                <p:commandButton actionListener="#{materialExAdminBean.addMaterialAttribute}" update=":materialAttributeForm:attributes"
+                <p:commandButton actionListener="#{materialExAdminBean.addMaterialAttribute}" update=":materialAttributeDialog:form:attributes"
                     value="保存" oncomplete="addMaterialAttributeDialog.hide()" />
                 <p:commandButton value="关闭" onclick="addMaterialAttributeDialog.hide()" />
             </h:panelGrid>
@@ -59,7 +50,7 @@
         widgetVar="deleteMaterialAttributeConfirmDialog" modal="true">
         <h:form id="deleteMaterialAttributeConfirmForm">
 
-            <p:commandButton value="确定" update=":materialAttributeForm:attributes" actionListener="#{materialExAdminBean.deleteMaterialAttribute}"
+            <p:commandButton value="确定" update=":materialAttributeDialog:form:attributes" actionListener="#{materialExAdminBean.deleteMaterialAttribute}"
                 oncomplete="deleteMaterialAttributeConfirmDialog.hide()" />
             <p:commandButton value="取消" onclick="deleteMaterialAttributeConfirmDialog.hide()" type="button" />
 
