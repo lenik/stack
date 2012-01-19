@@ -32,22 +32,6 @@
         document.WEB_APP = "${location.WEB_APP}";
     </script>
 
-    <style type="text/css">
-        .logoBox {
-            border-left: solid #cccccc 5px;
-            border-right: solid #cccccc 5px;
-            border-top: solid #cccccc 3px;
-            border-bottom: solid #cccccc 3px;
-        }
-        .invert {
-            color: #eeeeee;
-            background: black;
-        }
-        .invert :link, .invert :visited {
-            color: #cccccc;
-        }
-    </style>
-
     <link rel="stylesheet" type="text/css" href="${location.WEB_APP}/site/frame.css" />
 
     <ui:insert name="scripts.head">
@@ -56,10 +40,10 @@
 
 <h:body>
 
-    <div id="logoDiv" style="position: fixed; z-index: 100; bottom: 30px; right: 0px" >
-        <div style="width: 200px" align="center">
+    <div class="logo-container">
+        <div class="logo-frame" align="center">
             <a href="${location.WEB_APP}/site/about.html">
-                <img class="logoBox" src="${site.logoHref}" width="120" alt="LOGO" title="B-32 VER 0.3.18" />
+                <img class="logo-image" src="${site.logoHref}" alt="LOGO" title="B-32 VER 0.3.18" />
             </a>
         </div>
     </div>
@@ -96,7 +80,7 @@
 
     <div id="pageFooter">
         <ui:insert name="pageFooter">
-            <div style="clear: both; border-top: solid 1px #808080; border-bottom: solid 1px #eeeeee; background: #eeeeee;">
+            <div class="site-page-footer">
                 <div style=" padding: 0.5em;">
                     ■ 当前用户：
                     <ui:repeat var="node" value="#{sessionPerson.chain}">
@@ -108,8 +92,8 @@
                     <ui:insert name="pageStatus" />
                 </div>
             </div>
-            <div style="height: 5px; background: #aaaaaa; border-top: solid 1px #808080" />
-            <div class="invert" style="padding: 0.2em 0.5em">
+            <div class="site-page-footer-sep" />
+            <div class="text-invert" style="padding: 0.2em 0.5em">
                 <div style="display: inline">■ 版权所有©2010-2011 海宁市智恒软件有限公司</div>
                 | <a href="${location.WEB_APP}/site/contact.jsf">联系信息</a>
             </div>
