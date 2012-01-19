@@ -12,8 +12,6 @@ import org.primefaces.model.tagcloud.DefaultTagCloudModel;
 import org.primefaces.model.tagcloud.TagCloudModel;
 
 import com.bee32.plover.orm.annotation.ForEntity;
-import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.file.dto.UserFileTagnameDto;
 import com.bee32.sem.file.entity.FileBlob;
@@ -23,6 +21,7 @@ import com.bee32.sem.file.service.IUserFileTagStatService;
 import com.bee32.sem.file.util.UserFileCriteria;
 import com.bee32.sem.frame.search.SearchFragment;
 import com.bee32.sem.misc.SimpleEntityViewBean;
+import com.bee32.sem.misc.UnmarshalMap;
 
 @ForEntity(UserFile.class)
 public class UserFileBean
@@ -71,23 +70,21 @@ public class UserFileBean
     }
 
     @Override
-    protected void postUpdate(Map<Entity<?>, EntityDto<?, ?>> entityMap)
+    protected void postUpdate(UnmarshalMap uMap)
             throws Exception {
         IUserFileTagStatService tagStats = getBean(IUserFileTagStatService.class);
-        for (Entry<Entity<?>, EntityDto<?, ?>> entry : entityMap.entrySet()) {
-            UserFile userFile = (UserFile) entry.getKey();
-            // boolean newAdded = entry.getValue().getId() == null;
+        for (UserFile userFile : uMap.<UserFile> entitySet()) {
+            // boolean newAdded = uMap.get(userFile).getId() == null;
             tagStats.addUsage(userFile.getTags());
         }
     }
 
     @Override
-    protected void postDelete(Map<Entity<?>, EntityDto<?, ?>> entityMap)
+    protected void postDelete(UnmarshalMap uMap)
             throws Exception {
         IUserFileTagStatService tagStats = getBean(IUserFileTagStatService.class);
-        for (Entry<Entity<?>, EntityDto<?, ?>> entry : entityMap.entrySet()) {
-            UserFile userFile = (UserFile) entry.getKey();
-            // boolean newAdded = entry.getValue().getId() == null;
+        for (UserFile userFile : uMap.<UserFile> entitySet()) {
+            // boolean newAdded = uMap.get(userFile).getId() == null;
             tagStats.removeUsage(userFile.getTags());
         }
     }

@@ -3,7 +3,6 @@ package com.bee32.sem.process.verify.web;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import org.slf4j.Logger;
@@ -15,6 +14,7 @@ import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.ox1.typePref.TypeInfo;
 import com.bee32.sem.misc.SimpleEntityViewBean;
+import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.IVerifyPolicy;
 import com.bee32.sem.process.verify.VerifyPolicy;
@@ -99,13 +99,11 @@ public class VerifyPolicyPrefBean
     // Save/Apply
 
     @Override
-    protected void preUpdate(Map<Entity<?>, EntityDto<?, ?>> entityMap)
+    protected boolean preUpdate(UnmarshalMap uMap)
             throws Exception {
-
         if (mode == SKIP)
-            return;
-
-        for (Entry<Entity<?>, EntityDto<?, ?>> entry : entityMap.entrySet()) {
+            return true;
+        for (Entry<Entity<?>, EntityDto<?, ?>> entry : uMap.entrySet()) {
             Entity<?> entity = entry.getKey();
             if (!(entity instanceof VerifyPolicyPref))
                 continue;
@@ -127,6 +125,7 @@ public class VerifyPolicyPrefBean
 
             reverifyEntities(userEntityType);
         }
+        return true;
     }
 
     /**
