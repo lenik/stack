@@ -36,7 +36,10 @@ public class SEMFrameMenu
     public static final MenuNode PREFERENCES = menu(OPTIONS, 20, "preferences");
     public static final MenuNode THEME = menu(OPTIONS, 30, "theme");
 
-    static MenuNode ABOUT = entry(HELP, "aboutFrame", JAVASCRIPT.join("alert('" + VERSION + "')"));
+    static MenuNode print = entry(FILE, 100, "print", JAVASCRIPT.join("alert('under development')"));
+    static MenuNode contract = entry(DATA, 50, "contract", JAVASCRIPT.join("alert('under development')"));
+
+    static MenuNode about = entry(HELP, "aboutFrame", JAVASCRIPT.join("alert('" + VERSION + "')"));
 
     @Override
     protected void preamble() {
