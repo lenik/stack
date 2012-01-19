@@ -115,9 +115,9 @@
                 </p:fieldset>
 
                 <div align="right">
-                    <p:commandButton update=":mainForm:dataTable" value="保存" actionListener="${bean.save}"
-                        oncomplete="editDialog.hide()" />
-                    <p:commandButton value="取消" onclick="editDialog.hide()" />
+                    <p:commandButton id="save-validated" value="保存" actionListener="${bean.save}"
+                        update=":mainForm:dataTable" oncomplete="editDialog.hide()" />
+                    <p:commandButton id="cancel" value="取消" onclick="editDialog.hide()" />
                 </div>
             </h:form>
         </p:dialog>
