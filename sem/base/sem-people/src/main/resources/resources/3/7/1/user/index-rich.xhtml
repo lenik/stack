@@ -282,10 +282,11 @@
 							<h:outputLabel value="全名" />
 							<h:outputText value="#{userAdminBean.person.fullName}" />
 
-							<h:outputLabel value="昵称" />
-							<h:outputText value="#{userAdminBean.person.nickName}" />
+
 							<h:outputLabel value="生日" />
-							<h:outputText value="#{userAdminBean.person.birthday}"/>
+                            <t:panelGroup colspan="3">
+							 <h:outputText value="#{userAdminBean.person.birthday}"/>
+                            </t:panelGroup>
 
 							<h:outputLabel value="证件类型" />
 							<h:outputText value="#{userAdminBean.person.sidType.label}"/>
