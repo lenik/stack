@@ -21,7 +21,7 @@ public class SEMEventMenu
 
     static MenuNode categories = entry(ADMIN, 10, "categories", getDictIndex(EventCategory.class));
     static MenuNode priorities = entry(ADMIN, 11, "priorities", //
-            WEB_APP.join(EventPriorityController.PREFIX).join("index.do"));
+            WEB_APP.join(EventPriorityController.PREFIX_).join("index.do"));
     static MenuNode states = entry(ADMIN, 12, "states", getDictIndex(EventStatus.class));
 
     static MenuNode pendingTasks = entry(EVENT, 10, "pendingTasks", EVENT_.join("index.do?type=t&closed=false"));

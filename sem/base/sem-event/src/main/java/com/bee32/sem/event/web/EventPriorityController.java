@@ -13,6 +13,7 @@ public class EventPriorityController
         extends BasicEntityController<EventPriority, Integer, EventPriorityDto> {
 
     public static final String PREFIX = SEMEventModule.PREFIX + "/priority";
+    public static final String PREFIX_ = PREFIX + "/";
 
     @Override
     protected void fillDataRow(DataTableDxo tab, EventPriorityDto dto) {
