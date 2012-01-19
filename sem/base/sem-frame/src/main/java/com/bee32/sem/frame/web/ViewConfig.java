@@ -31,6 +31,7 @@ public class ViewConfig
     String allowTypes = "/(\\.|\\/)(gif|jpe?g|png|docx?|xlsx?|pdf|zip|rar)$/";
     long maxFileSize = 10_000_000;
 
+    boolean dynamicDialog = true;
     String defaultUpdateTarget = ":mainForm";
 
     public ViewConfig() {
@@ -102,6 +103,14 @@ public class ViewConfig
         if (toolbarPlacement == null)
             toolbarPlacement = "t";
         return toolbarPlacement;
+    }
+
+    public boolean isDynamicDialog() {
+        return dynamicDialog;
+    }
+
+    public void setDynamicDialog(boolean dynamicDialog) {
+        this.dynamicDialog = dynamicDialog;
     }
 
 }

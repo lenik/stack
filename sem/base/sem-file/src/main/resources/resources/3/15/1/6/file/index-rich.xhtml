@@ -69,16 +69,16 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:uploadFileDialog var="createUserFileDialog" fileUploadListener="${bean.createUserFileListener.handleFileUpload}"
-            update=":mainForm:dataTable" />
-        <sem:chooseUserFileTagDialog var="addTagDialog" selection="${bean.selectedTag}"
+        <sem:uploadFileDialog id="createUserFileDialog" var="createUserFileDialog"
+            fileUploadListener="${bean.createUserFileListener.handleFileUpload}" update=":mainForm:dataTable" />
+        <sem:chooseUserFileTagDialog id="addTagDialog" var="addTagDialog" selection="${bean.selectedTag}"
             actionListener="${bean.addTag}" update=":editDialog:form" />
     </ui:define>
 
     <ui:define name="editDialog">
-        <p:dialog header="文件属性设置" widgetVar="editDialog" modal="true">
+        <p:dialog id="editDialog" header="文件属性设置" widgetVar="editDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
+            <c:set var="obj" value="${bean.activeObject}" />
             <h:form id="form" style="max-height: 30em; margin: 1em">
-                <c:set var="obj" value="${bean.activeObject}" />
 
                 <h:panelGrid rendered="${obj != null}" columns="2" columnClasses="detail_col_title,detail_col_value">
                     <h:outputText value="文件名" />

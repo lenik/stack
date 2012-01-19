@@ -4,18 +4,18 @@
 
     <cc:interface>
         <!-- basic -->
-        <cc:attribute name="var" default="uploadFileBlobDialog" />
+        <cc:attribute name="var" default="uploadFileDialog" />
         <cc:attribute name="multiple" type="java.lang.Boolean" default="true" />
-        <cc:attribute name="fileUploadListener" default="${uploadFileBlobDialogBean.handleFileUpload}"
+        <cc:attribute name="fileUploadListener" default="${uploadFileDialogBean.handleFileUpload}"
             method-signature="void f(org.primefaces.event.FileUploadEvent)" />
         <cc:attribute name="update" />
 
         <!-- ui overrides -->
-        <cc:attribute name="caption" default="${uploadFileBlobDialogBean.caption}" />
+        <cc:attribute name="caption" default="${uploadFileDialogBean.caption}" />
         <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
 
         <!-- internals -->
-        <cc:attribute name="dialogBean" type="java.lang.Object" default="${uploadFileBlobDialogBean}" />
+        <cc:attribute name="dialogBean" type="java.lang.Object" default="${uploadFileDialogBean}" />
     </cc:interface>
 
     <cc:implementation>

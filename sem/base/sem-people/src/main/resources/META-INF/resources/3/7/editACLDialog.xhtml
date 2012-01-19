@@ -30,7 +30,8 @@
 
         <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
 
-        <p:dialog id="main" header="${cc.attrs.caption}" widgetVar="${cc.attrs.var}" modal="true" position="center">
+        <p:dialog id="main" header="${cc.attrs.caption}" widgetVar="${cc.attrs.var}" modal="true"
+            dynamic="${viewConfig.dynamicDialog}" position="center">
             <c:set var="obj" value="${cc.attrs.value}" />
             <h:form id="form" style="${cc.attrs.style}">
 
@@ -95,7 +96,8 @@
             </h:form>
         </p:dialog>
 
-        <p:dialog id="editEntryDialog" header="编辑 ACL 条目" widgetVar="${cc.attrs.var}_ed" modal="true" position="center">
+        <p:dialog id="editEntryDialog" header="编辑 ACL 条目" widgetVar="${cc.attrs.var}_ed" modal="true"
+            dynamic="${viewConfig.dynamicDialog}" position="center">
             <h:form id="editEntryForm" style="max-height: 30em; margin: 1em">
 
                 <t:panelGrid rendered="${dialogBean.entry != null}" columns="2"

@@ -26,7 +26,8 @@
 
         <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
 
-        <p:dialog id="dialog" header="${cc.attrs.caption}" widgetVar="${cc.attrs.var}" modal="true">
+        <p:dialog id="dialog" header="${cc.attrs.caption}" widgetVar="${cc.attrs.var}" modal="true"
+            dynamic="${viewConfig.dynamicDialog}">
             <h:form id="form" style="${cc.attrs.style}">
 
                 <p:fieldset legend="对象信息">
