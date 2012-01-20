@@ -25,9 +25,9 @@ public class AlphabetValidator
         if (value == null)
             return true;
 
-        int n = value.length();
-        for (int i = 0; i < n; i++) {
-            char c = value.charAt(n);
+        int len = value.length();
+        for (int i = 0; i < len; i++) {
+            char c = value.charAt(i);
             int cIndex = Arrays.binarySearch(tabIndexed, c);
             if (cIndex < 0)
                 return false;
