@@ -12,12 +12,12 @@ import com.bee32.plover.orm.util.EntityDto;
 
 public class TreeEntityUtils {
 
-    public static <D extends TreeEntityDto<?, K, D>, K extends Serializable> //
-    Set<D> rebuildTree(Collection<? extends D> nodes, Map<K, D> index) {
+    public static <D extends TreeEntityDto<?, ?, D>> //
+    Set<D> rebuildTree(Collection<? extends D> nodes, Map<?, ? extends D> index) {
         Set<D> roots = new LinkedHashSet<D>();
         for (D node : nodes) {
             D _parent = node.getParent();
-            K parentId = _parent == null ? null : _parent.getId();
+            Object parentId = _parent == null ? null : _parent.getId();
             if (parentId == null) {
                 roots.add(node);
             } else {

@@ -29,11 +29,6 @@ public class EntityDataModelOptions<E extends Entity<?>, D extends EntityDto<? s
     }
 
     public EntityDataModelOptions(Class<E> entityClass, Class<D> dtoClass, int selection,
-            ICriteriaHolder _criteriaHolder) {
-        this(entityClass, dtoClass, selection, new CriteriaHolderExpansion(_criteriaHolder));
-    }
-
-    public EntityDataModelOptions(Class<E> entityClass, Class<D> dtoClass, int selection,
             ICriteriaElement... criteriaElements) {
         this(entityClass, dtoClass, selection, Arrays.asList(criteriaElements));
     }

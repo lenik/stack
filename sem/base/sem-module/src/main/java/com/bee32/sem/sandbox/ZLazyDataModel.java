@@ -21,9 +21,6 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
 
     private static final long serialVersionUID = 1L;
 
-    final Class<E> entityClass;
-    final Class<D> dtoClass;
-
     EntityDataModelOptions<E, D> options;
     D selection;
     List<D> loaded;
@@ -33,8 +30,6 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
         if (options == null)
             throw new NullPointerException("options");
         this.options = options;
-        entityClass = options.getEntityClass();
-        dtoClass = options.getDtoClass();
     }
 
     protected CommonDataManager getDataManager() {
@@ -43,8 +38,6 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
 
     @Override
     public List<D> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
-        CommonDataManager dataManager = getDataManager();
-
         Limit limit = new Limit(first, pageSize);
         Order order = null;
         if (sortField != null) {
@@ -61,11 +54,26 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
         }
 
         ICriteriaElement criteria = options.compose();
-        List<E> entities = dataManager.asFor(entityClass).list(limit, criteria, order);
+        List<D> dtos = _listDtos(limit, criteria, order);
+
+        // if (dtos.size() < pageSize)
+        // lastQueriedCount = dtos.size();
+        return loaded = dtos;
+    }
+
+    public List<D> listDtos() {
+        ICriteriaElement criteria = options.compose();
+        return _listDtos(criteria);
+    }
+
+    public List<D> _listDtos(ICriteriaElement... criteriaElements) {
+        CommonDataManager dataManager = getDataManager();
+
+        List<E> entities = dataManager.asFor(options.getEntityClass()).list(criteriaElements);
 
         int dtoSelection = options.getSelection();
         List<D> dtos = DTOs.mrefList(//
-                dtoClass, //
+                options.getDtoClass(), //
                 dtoSelection, //
                 entities);
 
@@ -73,9 +81,7 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
         for (D dto : dtos)
             dto.set_index(index++);
 
-        // if (dtos.size() < pageSize)
-        // lastQueriedCount = dtos.size();
-        return loaded = dtos;
+        return dtos;
     }
 
     @Override
@@ -114,7 +120,7 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
     protected int executeCountQuery() {
         CommonDataManager dataManager = getDataManager();
         ICriteriaElement criteria = options.compose();
-        lastQueriedCount = dataManager.asFor(entityClass).count(criteria);
+        lastQueriedCount = dataManager.asFor(options.getEntityClass()).count(criteria);
         return lastQueriedCount;
     }
 

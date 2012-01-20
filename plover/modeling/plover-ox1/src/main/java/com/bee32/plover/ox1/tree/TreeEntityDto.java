@@ -137,7 +137,11 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
     }
 
     public boolean isRoot() {
-        return parent == null;
+        return parent == null || parent.isNull() || parent.isNullRef();
+    }
+
+    public boolean isLeaf() {
+        return children.isEmpty();
     }
 
     public boolean isFirst() {

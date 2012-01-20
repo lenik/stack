@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
+import javax.free.IllegalUsageException;
 
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -118,16 +119,55 @@ public class UIHelper
         return result;
     }
 
-    public static TreeNode buildTree(TreeEntityDto<?, ?, ?> model, TreeNode parentComponent,
-            TreeEntityDto<?, ?, ?> selection) {
-        TreeNode treeNode = new DefaultTreeNode(model, parentComponent);
-        if (model == selection)
-            treeNode.setSelected(true);
-        for (Object _child : model.getChildren()) {
+    public static TreeNode buildTree(ITreeNodeDecorator decorator, Collection<? extends TreeEntityDto<?, ?, ?>> dtoNodes) {
+        TreeNode rootNode = new DefaultTreeNode();
+        buildTree(decorator, dtoNodes, rootNode);
+        return rootNode;
+    }
+
+    public static void buildTree(ITreeNodeDecorator decorator, Collection<? extends TreeEntityDto<?, ?, ?>> dtoNodes,
+            TreeNode parentNode) {
+        for (TreeEntityDto<?, ?, ?> dtoNode : dtoNodes)
+            _buildTree(decorator, dtoNode, parentNode);
+    }
+
+    static TreeNode _buildTree(ITreeNodeDecorator decorator, TreeEntityDto<?, ?, ?> dtoNode, TreeNode parentNode) {
+        TreeNode treeNode = new DefaultTreeNode(dtoNode, parentNode);
+        if (decorator != null)
+            decorator.decorate(treeNode);
+        for (Object _child : dtoNode.getChildren()) {
             TreeEntityDto<?, ?, ?> child = (TreeEntityDto<?, ?, ?>) _child;
-            buildTree(child, treeNode, selection);
+            _buildTree(decorator, child, treeNode);
         }
         return treeNode;
+    }
+
+    public static void decorateTree(ITreeNodeDecorator decorator, TreeNode node) {
+        if (decorator == null)
+            throw new NullPointerException("decorator");
+        if (node == null)
+            throw new NullPointerException("node");
+        _decorateTree(decorator, node);
+    }
+
+    static void _decorateTree(ITreeNodeDecorator decorator, TreeNode node) {
+        decorator.decorate(node);
+        for (TreeNode child : node.getChildren())
+            _decorateTree(decorator, child);
+    }
+
+    public static void detach(TreeNode node) {
+        if (node == null)
+            throw new NullPointerException("node");
+        TreeNode parent = node.getParent();
+        if (parent == null)
+            throw new IllegalUsageException("You can't detach a root node.");
+        /**
+         * Should node.children merged into parent?
+         */
+        // ...
+        parent.getChildren().remove(node);
+        node.setParent(null);
     }
 
 }

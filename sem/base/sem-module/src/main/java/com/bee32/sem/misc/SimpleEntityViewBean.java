@@ -36,6 +36,7 @@ import com.bee32.sem.frame.search.ISearchFragmentsHolder;
 import com.bee32.sem.frame.search.SearchFragment;
 import com.bee32.sem.frame.search.SearchFragmentWrapper;
 import com.bee32.sem.sandbox.AbstractCriteriaHolder;
+import com.bee32.sem.sandbox.CriteriaHolderExpansion;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.sandbox.ZLazyDataModel;
@@ -65,6 +66,10 @@ public abstract class SimpleEntityViewBean
     protected static final int SAVE_FORCE_UNLOCKED = SAVE_FORCE | SAVE_UNLOCKED;
     /** Change the entities' owner to current user before save */
     protected static final int SAVE_CHOWN = 8;
+    /** Only create, never update */
+    protected static final int SAVE_NOEXIST = 16;
+    /** Only update, never create */
+    protected static final int SAVE_MUSTEXIST = 32;
     /** Don't refresh row count */
     protected static final int SAVE_NO_REFRESH = 128;
 
@@ -72,6 +77,7 @@ public abstract class SimpleEntityViewBean
     protected Class<? extends EntityDto<?, ?>> dtoClass;
     protected int saveFlags = 0;
     protected int deleteFlags = 0;
+    protected String currentView = StandardViews.LIST;
 
     List<ICriteriaElement> baseCriteriaElements;
     List<SearchFragment> searchFragments = new ArrayList<SearchFragment>();
@@ -94,12 +100,35 @@ public abstract class SimpleEntityViewBean
                 UserCriteria.ownedByCurrentUser(),//
                 ACLCriteria.aclWithin(getACLs(visiblePermission))));
 
-        this.options = new EntityDataModelOptions<E, D>(//
-                entityClass, dtoClass, selection, new _CriteriaHolder());
+        this.options = new SevbEdmo<E, D>(//
+                entityClass, dtoClass, selection, new CriteriaHolderExpansion(new SevbCriteriaHolder()));
         this.dataModel = UIHelper.buildLazyDataModel(options);
     }
 
-    private class _CriteriaHolder
+    class SevbEdmo<E extends Entity<?>, D extends EntityDto<? super E, ?>>
+            extends EntityDataModelOptions<E, D> {
+
+        private static final long serialVersionUID = 1L;
+
+        public SevbEdmo(Class<E> entityClass, Class<D> dtoClass, int selection, ICriteriaElement... criteriaElements) {
+            super(entityClass, dtoClass, selection, criteriaElements);
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public Class<E> getEntityClass() {
+            return (Class<E>) SimpleEntityViewBean.this.entityClass;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public Class<D> getDtoClass() {
+            return (Class<D>) SimpleEntityViewBean.this.dtoClass;
+        }
+
+    }
+
+    class SevbCriteriaHolder
             extends AbstractCriteriaHolder {
 
         private static final long serialVersionUID = 1L;
@@ -179,6 +208,15 @@ public abstract class SimpleEntityViewBean
      * @see StandardViews#EDIT_FORM
      */
     protected void showView(String viewName) {
+        currentView = viewName;
+    }
+
+    public String getCurrentView() {
+        return currentView;
+    }
+
+    public boolean isCreating() {
+        return currentView.equals(StandardViews.CREATE_FORM);
     }
 
     @Operation
@@ -201,7 +239,7 @@ public abstract class SimpleEntityViewBean
     public void showCreateForm() {
         EntityDto<?, ?> entityDto;
         try {
-            entityDto = dtoClass.newInstance();
+            entityDto = dtoClass.newInstance(); // Create fmask is always -1.
             entityDto = entityDto.create();
         } catch (Exception e) {
             uiLogger.error("无法创建对象", e);
@@ -217,8 +255,37 @@ public abstract class SimpleEntityViewBean
             uiLogger.error("没有选定对象!");
             return;
         }
-        openSelectedDtos(-1);
+
+        int fmask = -1;
+        String fmaskParam = getRequest().getParameter("fmask");
+        if (fmaskParam != null)
+            fmask = Integer.parseInt(fmaskParam);
+
+        openSelectedDtos(fmask);
         showView(StandardViews.EDIT_FORM);
+    }
+
+    public void showEditFragmentForm() {
+        // default fmask override..
+        showEditForm();
+    }
+
+    protected boolean _preUpdate(UnmarshalMap uMap)
+            throws Exception {
+        return true;
+    }
+
+    protected void _postUpdate(UnmarshalMap uMap)
+            throws Exception {
+    }
+
+    protected boolean _preDelete(UnmarshalMap uMap)
+            throws Exception {
+        return true;
+    }
+
+    protected void _postDelete(UnmarshalMap uMap)
+            throws Exception {
     }
 
     protected boolean preUpdate(UnmarshalMap uMap)
@@ -241,14 +308,24 @@ public abstract class SimpleEntityViewBean
 
     @Operation
     public void save() {
-        save(saveFlags);
+        save(saveFlags, null);
     }
 
-    protected void save(int saveFlags) {
+    protected void save(boolean createOrUpdate) {
+        save(createOrUpdate ? SAVE_NOEXIST : SAVE_MUSTEXIST, null);
+    }
+
+    protected void save(int saveFlags, String hint) {
         checkSaveFlags(saveFlags);
 
+        if (hint == null)
+            if ((saveFlags & SAVE_MUSTEXIST) != 0)
+                hint = "更新";
+            else
+                hint = "保存";
+
         if (getActiveObjects().isEmpty()) {
-            uiLogger.error("没有需要保存的对象!");
+            uiLogger.error("没有需要" + hint + "的对象!");
             return;
         }
 
@@ -291,6 +368,8 @@ public abstract class SimpleEntityViewBean
         }
 
         try {
+            if (!_preUpdate(uMap))
+                return;
             if (!preUpdate(uMap))
                 return;
         } catch (Exception e) {
@@ -299,10 +378,16 @@ public abstract class SimpleEntityViewBean
 
         Set<Entity<?>> entities = uMap.keySet();
         try {
-            serviceFor(entityClass).saveOrUpdateAll(entities);
+            if ((saveFlags & SAVE_MUSTEXIST) != 0)
+                for (Entity<?> entity : entities)
+                    serviceFor(entityClass).update(entity);
+            else if ((saveFlags & SAVE_NOEXIST) != 0)
+                serviceFor(entityClass).saveAll(entities);
+            else
+                serviceFor(entityClass).saveOrUpdateAll(entities);
             // refreshCount();
         } catch (Exception e) {
-            uiLogger.error("保存失败", e);
+            uiLogger.error(hint + "失败", e);
             return;
         }
 
@@ -311,11 +396,12 @@ public abstract class SimpleEntityViewBean
 
         try {
             postUpdate(uMap);
+            _postUpdate(uMap);
         } catch (Exception e) {
-            uiLogger.warn("保存不完全，次要的数据可能不一致，建议您检查相关的数据。", e);
+            uiLogger.warn(hint + "不完全，次要的数据可能不一致，建议您检查相关的数据。", e);
         }
 
-        uiLogger.info("保存成功");
+        uiLogger.info(hint + "成功");
         showIndex();
     }
 
@@ -388,10 +474,12 @@ public abstract class SimpleEntityViewBean
         setSelection(null);
 
         try {
+            if (!_preDelete(uMap))
+                return;
             if (!preDelete(uMap))
                 return;
         } catch (Exception e) {
-            uiLogger.error("预处理失败", e);
+            uiLogger.error("删除的先决条件处理失败", e);
         }
 
         Set<Entity<?>> entities = uMap.keySet();
@@ -408,6 +496,7 @@ public abstract class SimpleEntityViewBean
 
         try {
             postDelete(uMap);
+            _postDelete(uMap);
         } catch (Exception e) {
             uiLogger.warn("保存不完全，次要的数据可能不一致，建议您检查相关的数据。", e);
         }

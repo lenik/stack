@@ -36,6 +36,7 @@ import com.bee32.sem.inventory.entity.MaterialWarehouseOption;
 import com.bee32.sem.inventory.util.MaterialCriteria;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
+import com.bee32.sem.sandbox.ITreeNodeDecorator;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.world.monetary.CurrencyUtil;
 import com.bee32.sem.world.thing.ScaleItem;
@@ -45,7 +46,8 @@ import com.bee32.sem.world.thing.UnitConvDto;
 import com.bee32.sem.world.thing.UnitDto;
 
 public class MaterialExAdminBean
-        extends SimpleEntityViewBean {
+        extends SimpleEntityViewBean
+        implements ITreeNodeDecorator {
 
     private static final long serialVersionUID = 1L;
 
@@ -106,19 +108,18 @@ public class MaterialExAdminBean
             Set<MaterialCategoryDto> roots = TreeEntityUtils.rebuildTree(categories, materialCategoryIndex);
 
             virtualRootNode = new DefaultTreeNode("categoryRoot", null);
-            for (MaterialCategoryDto root : roots)
-                _loadTree(root, virtualRootNode);
+            UIHelper.buildTree(this, roots, virtualRootNode);
         }
     }
 
-    private void _loadTree(MaterialCategoryDto materialCategoryDto, TreeNode parentTreeNode) {
-        TreeNode treeNode = new DefaultTreeNode(materialCategoryDto, parentTreeNode);
-
-        if (materialCategoryDto.getId().equals(getSelectedMaterialCategoryId()))
-            treeNode.setSelected(true);
-
-        for (MaterialCategoryDto child : materialCategoryDto.getChildren())
-            _loadTree(child, treeNode);
+    @Override
+    public void decorate(TreeNode node) {
+        MaterialCategoryDto category = (MaterialCategoryDto) node.getData();
+        if (category != null) {
+            Integer categoryId = category.getId();
+            if (categoryId.equals(getSelectedMaterialCategoryId()))
+                node.setSelected(true);
+        }
     }
 
     @Override
