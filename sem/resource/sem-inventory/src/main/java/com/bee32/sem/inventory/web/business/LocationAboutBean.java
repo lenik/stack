@@ -84,8 +84,7 @@ public abstract class LocationAboutBean
     private void loadStockLocationRecursive(StockLocationDto stockLocationDto, TreeNode parentTreeNode) {
         TreeNode stockLocationNode = new DefaultTreeNode(stockLocationDto, parentTreeNode);
 
-        List<StockLocationDto> subStockLocations = stockLocationDto.getChildren();
-        for (StockLocationDto subStockLocation : subStockLocations) {
+        for (StockLocationDto subStockLocation : stockLocationDto.getChildren()) {
             loadStockLocationRecursive(subStockLocation, stockLocationNode);
         }
     }
