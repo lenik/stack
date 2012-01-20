@@ -13,8 +13,14 @@
                 update=":form" />
 
             <h:form id="form">
-                <p:commandButton value="Choose Single" onclick="dialog1.show()" />
-                <p:commandButton value="Choose Multiple" onclick="dialog2.show()" />
+                <p:commandButton value="Choose Principal" oncomplete="dialog1.show()">
+                    <f:setPropertyActionListener target="${choosePrincipalDialogBean.stereo}"
+                        value="U" />
+                </p:commandButton>
+                <p:commandButton value="Choose Role" oncomplete="dialog1.show()">
+                    <f:setPropertyActionListener target="${choosePrincipalDialogBean.stereo}"
+                        value="R" />
+                </p:commandButton>
             </h:form>
 
         </ui:define>

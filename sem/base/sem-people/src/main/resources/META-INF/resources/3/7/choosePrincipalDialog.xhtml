@@ -5,14 +5,16 @@
     <cc:interface>
         <!-- basic -->
         <cc:attribute name="var" default="choosePrincipalDialog" />
+        <cc:attribute name="stereo" shortDescription="NOT IMPLMENETED" />
         <cc:attribute name="selection" required="true" />
         <cc:attribute name="multiple" type="java.lang.Boolean" default="false" />
-        <cc:attribute name="actionListener" targets="form:ok" required="true" />
+        <cc:attribute name="actionListener" targets="form:ok" />
         <cc:attribute name="update" />
 
         <!-- ui overrides -->
         <cc:attribute name="caption" default="${choosePrincipalDialogBean.caption}" />
         <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
+        <cc:attribute name="mode" default="table" shortDescription="table, list, tree" />
 
         <!-- internals -->
         <cc:attribute name="dialogBean" type="java.lang.Object" default="${choosePrincipalDialogBean}" />
