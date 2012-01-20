@@ -54,7 +54,7 @@ public class GroupAdminBean
         this.selectedInheritedGroup = selectedInheritedGroup;
     }
 
-    public void confirmSelectInheritedGroup() {
+    public void confirmInheritedGroup() {
         GroupDto group = getActiveObject();
         group.setInheritedGroup(selectedInheritedGroup);
     }
