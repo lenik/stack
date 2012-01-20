@@ -10,16 +10,15 @@
 
     <ui:define name="body">
         <h:form id="form">
-            <f:ajax render="actions">
-                <p:commandButton value="Do actions" action="${actionBean.action}" actionListener="${actionBean.actionListener}">
-                    <f:actionListener binding="${actionBean.listener1}" />
-                    <f:setPropertyActionListener target="#{actionBean.var}" value="sample" />
-                    <f:actionListener binding="${actionBean.listener2}" />
-                </p:commandButton>
-                <p:commandButton value="Clear" actionListener="${actionBean.clear}" />
-            </f:ajax>
+            <p:commandButton value="Do actions" action="${actionBean.action}" actionListener="${actionBean.actionListener}"
+                update="logs">
+                <f:actionListener binding="${actionBean.listener1}" />
+                <f:setPropertyActionListener target="#{actionBean.var}" value="sample" />
+                <f:actionListener binding="${actionBean.listener2}" />
+            </p:commandButton>
+            <p:commandButton value="Clear" actionListener="${actionBean.clear}" update="logs" />
         </h:form>
-        <h:panelGroup id="actions">
+        <h:panelGroup id="logs">
             <fieldset>
                 <legend>
                     Actions:

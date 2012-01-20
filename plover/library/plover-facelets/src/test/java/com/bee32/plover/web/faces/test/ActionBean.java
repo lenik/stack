@@ -12,6 +12,15 @@ import org.apache.myfaces.application.ActionListenerImpl;
 
 import com.bee32.plover.web.faces.view.ViewBean;
 
+/**
+ * The result shows the methods are tiggered in following order:
+ * <ol>
+ * <li>@actionListener
+ * <li>f:*-ActionListener (event*)
+ * <li>@action
+ * <li>bean.get*
+ * </ol>
+ */
 public class ActionBean
         extends ViewBean {
 
