@@ -72,8 +72,8 @@ public class MailManageBean
 
     public void initFolderItems() {
         List<MailFolder> mailFolderLiset = serviceFor(MailFolder.class).list(Order.asc("order"));
-        List<MailFolderDto> mailFolderDtoList = DTOs.mrefList(MailFolderDto.class, MailFolderDto.MAILS,
-                mailFolderLiset);
+        List<MailFolderDto> mailFolderDtoList = DTOs
+                .mrefList(MailFolderDto.class, MailFolderDto.MAILS, mailFolderLiset);
         List<SelectItem> folderItems = new ArrayList<SelectItem>();
         for (MailFolderDto folderDto : mailFolderDtoList) {
             String label = folderDto.getLabel();
@@ -182,7 +182,7 @@ public class MailManageBean
             mail.setFromUser(currentUser);
             MailDelivery recieveDelivery = new MailDelivery(mail, MailOrientation.RECIPIENT);
             recieveDelivery.setFolder(MailFolder.INBOX);
-            recieveDelivery.setOwner(userDto.unmarshal());
+            recieveDelivery.setOwner((User) userDto.unmarshal());
             serviceFor(MailDelivery.class).save(recieveDelivery);
         }
 

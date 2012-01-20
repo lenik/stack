@@ -11,8 +11,7 @@ import org.apache.log4j.Logger;
 
 import com.bee32.icsf.login.LoginException;
 import com.bee32.icsf.login.SessionUser;
-import com.bee32.icsf.principal.AbstractPrincipalDto;
-import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.sem.people.dto.OrgUnitDto;
 import com.bee32.sem.people.dto.PersonDto;
@@ -51,7 +50,7 @@ public class SessionPerson
     public List<String> getChain() {
         List<String> chain = new ArrayList<String>();
         if (person == null) {
-            for (AbstractPrincipalDto<? extends Principal> pnode : SessionUser.getInstance().getChain())
+            for (PrincipalDto pnode : SessionUser.getInstance().getChain())
                 chain.add(pnode.getDisplayName());
         } else {
             Set<PersonRoleDto> roles = person.getRoles();

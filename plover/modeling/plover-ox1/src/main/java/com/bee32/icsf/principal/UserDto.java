@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDto
-        extends AbstractPrincipalDto<User> {
+        extends PrincipalDto {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,8 +23,9 @@ public class UserDto
     }
 
     @Override
-    protected void _marshal(User source) {
-        super._marshal(source);
+    protected void _marshal(Principal _source) {
+        super._marshal(_source);
+        User source = (User) _source;
 
         if (depth == 0)
             return;
@@ -49,8 +50,9 @@ public class UserDto
     }
 
     @Override
-    protected void _unmarshalTo(User target) {
-        super._unmarshalTo(target);
+    protected void _unmarshalTo(Principal _target) {
+        super._unmarshalTo(_target);
+        User target = (User) _target;
 
         if (depth == 0)
             return;

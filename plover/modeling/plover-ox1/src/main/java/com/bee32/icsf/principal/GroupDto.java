@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GroupDto
-        extends AbstractPrincipalDto<Group> {
+        extends PrincipalDto {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,8 +28,9 @@ public class GroupDto
     }
 
     @Override
-    protected void _marshal(Group source) {
-        super._marshal(source);
+    protected void _marshal(Principal _source) {
+        super._marshal(_source);
+        Group source = (Group) _source;
 
         if (depth == 0)
             return;
@@ -59,8 +60,9 @@ public class GroupDto
     }
 
     @Override
-    protected void _unmarshalTo(Group target) {
-        super._unmarshalTo(target);
+    protected void _unmarshalTo(Principal _target) {
+        super._unmarshalTo(_target);
+        Group target = (Group) _target;
 
         if (selection.contains(EXT)) {
             merge(target, "inheritedGroup", inheritedGroup);

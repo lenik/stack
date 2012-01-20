@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RoleDto
-        extends AbstractPrincipalDto<Role> {
+        extends PrincipalDto {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,8 +23,9 @@ public class RoleDto
     }
 
     @Override
-    protected void _marshal(Role source) {
-        super._marshal(source);
+    protected void _marshal(Principal _source) {
+        super._marshal(_source);
+        Role source = (Role) _source;
 
         if (depth == 0)
             return;
@@ -54,8 +55,9 @@ public class RoleDto
     }
 
     @Override
-    protected void _unmarshalTo(Role target) {
-        super._unmarshalTo(target);
+    protected void _unmarshalTo(Principal _target) {
+        super._unmarshalTo(_target);
+        Role target = (Role) _target;
 
         if (selection.contains(EXT))
             merge(target, "inheritedRole", inheritedRole);

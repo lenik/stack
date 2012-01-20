@@ -18,10 +18,10 @@ import com.bee32.icsf.access.resource.IResourceNamespace;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ResourcePermission;
 import com.bee32.icsf.access.resource.ScannedResourceRegistry;
-import com.bee32.icsf.principal.AbstractPrincipalDto;
 import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.GroupDto;
 import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.icsf.principal.Role;
 import com.bee32.icsf.principal.RoleDto;
 import com.bee32.icsf.principal.User;
@@ -133,7 +133,7 @@ public class PermissionAdminBean
         return items;
     }
 
-    private void loadEntries(AbstractPrincipalDto<? extends Principal> principalDto) {
+    private void loadEntries(PrincipalDto principalDto) {
         ScannedResourceRegistry srr = getBean(ScannedResourceRegistry.class);
         R_ACLService aclService = getBean(R_ACLService.class);
 
@@ -219,7 +219,7 @@ public class PermissionAdminBean
      * dataManager.save(ace)
      */
     public void doSave() {
-        AbstractPrincipalDto<?> principalDto = null;
+        PrincipalDto principalDto = null;
 
         switch (activeTab) {
         case 0:

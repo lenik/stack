@@ -6,7 +6,7 @@ import javax.inject.Inject;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.bee32.icsf.principal.AbstractPrincipalDto;
+import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.icsf.principal.UserDao;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.orm.util.DTOs;
@@ -34,7 +34,7 @@ public class SingleVerifierPolicyController
 
         int max = 3;
         StringBuilder names = null;
-        for (AbstractPrincipalDto<?> responsible : item.getResponsibles()) {
+        for (PrincipalDto responsible : item.getResponsibles()) {
             if (max <= 0) {
                 names.append(", etc.");
                 break;

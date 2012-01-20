@@ -9,9 +9,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
-import com.bee32.icsf.principal.AbstractPrincipalDto;
 import com.bee32.icsf.principal.GroupDto;
-import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
@@ -101,8 +100,8 @@ public class SessionUser
         session.removeAttribute(SESSION_KEY);
     }
 
-    public List<AbstractPrincipalDto<? extends Principal>> getChain() {
-        List<AbstractPrincipalDto<? extends Principal>> chain = new ArrayList<AbstractPrincipalDto<? extends Principal>>();
+    public List<PrincipalDto> getChain() {
+        List<PrincipalDto> chain = new ArrayList<PrincipalDto>();
         if (user == null) {
             UserDto dummy = new UserDto();
             dummy.setName("(n/a)");

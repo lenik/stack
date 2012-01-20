@@ -4,8 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.bee32.icsf.principal.AbstractPrincipalDto;
-import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.inject.scope.PerSession;
@@ -40,7 +39,7 @@ public class SessionUserFactoryBean {
         SessionUser.getInstance().setUser(user);
     }
 
-    public List<AbstractPrincipalDto<? extends Principal>> getChain() {
+    public List<PrincipalDto> getChain() {
         return SessionUser.getInstance().getChain();
     }
 
