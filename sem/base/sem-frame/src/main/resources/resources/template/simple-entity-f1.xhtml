@@ -44,50 +44,55 @@
                 <td valign="top">
                     <ui:insert name="mainForm">
                         <h:form id="mainForm">
-
                             <c:if test="${fn:contains(_toolbar, 't')}">
                                 <div id="toolbar">
                                     <ui:insert name="toolbar" />
                                 </div>
                             </c:if>
 
-                            <ui:insert name="dataTable">
-                                <p:dataTable id="dataTable" var="entry" value="${bean.dataModel}" selection="${bean.singleSelection}"
-                                    selectionMode="single" paginator="true" rows="${viewConfig.pageSize}"
-                                    paginatorTemplate="${viewConfig.paginatorTemplate}" rowsPerPageTemplate="${viewConfig.pageSizeTemplate}"
-                                    resizableColumns="true" rowIndexVar="rowIndex">
+                            <div id="dataContainer">
+                                <ui:insert name="dataContainer">
+                                    <p:dataTable id="dataTable" var="entry" value="${bean.dataModel}"
+                                        selection="${bean.singleSelection}" selectionMode="single" paginator="true"
+                                        rows="${viewConfig.pageSize}" paginatorTemplate="${viewConfig.paginatorTemplate}"
+                                        rowsPerPageTemplate="${viewConfig.pageSizeTemplate}" resizableColumns="true"
+                                        rowIndexVar="rowIndex">
 
-                                    <p:ajax event="rowSelect" update=":mainForm:toolbar" />
-                                    <p:ajax event="rowUnselect" update=":mainForm:toolbar" />
+                                        <p:ajax event="rowSelect" update=":mainForm:toolbar" />
+                                        <p:ajax event="rowUnselect" update=":mainForm:toolbar" />
 
-                                    <ui:insert name="dataTableHeader">
-                                        <f:facet name="header">${title}</f:facet>
-                                    </ui:insert>
+                                        <ui:insert name="dataTableHeader">
+                                            <f:facet name="header">${title}</f:facet>
+                                        </ui:insert>
 
-                                    <p:column headerText="序号">
-                                        <h:outputText value="#{rowIndex + 1}" />
-                                    </p:column>
-
-                                    <ui:insert name="dataTableColumns" />
-
-                                    <ui:insert name="dataTableColumnsC">
-                                        <p:column headerText="更新日期">
-                                            <h:outputText value="${entry.lastModified}">
-                                                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-                                            </h:outputText>
+                                        <p:column headerText="序号">
+                                            <h:outputText value="#{rowIndex + 1}" />
                                         </p:column>
-                                        <p:column headerText="属主">
-                                            <h:outputText value="${entry.owner.displayName}" />
-                                        </p:column>
-                                    </ui:insert>
-                                </p:dataTable>
 
-                                <c:if test="${fn:contains(_toolbar, 'b')}">
-                                    <div id="toolbar">
-                                        <ui:insert name="toolbar" />
-                                    </div>
-                                </c:if>
-                            </ui:insert>
+                                        <ui:insert name="dataColumns" />
+
+                                        <ui:insert name="dataColumnsC">
+                                            <p:column headerText="更新日期">
+                                                <h:outputText value="${entry.lastModified}">
+                                                    <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column headerText="属主">
+                                                <h:outputText value="${entry.owner.displayName}" />
+                                            </p:column>
+                                        </ui:insert>
+                                    </p:dataTable>
+                                </ui:insert>
+                            </div>
+                            <div id="dataContextMenu">
+                                <ui:insert name="dataContextMenu" />
+                            </div>
+
+                            <c:if test="${fn:contains(_toolbar, 'b')}">
+                                <div id="toolbar">
+                                    <ui:insert name="toolbar" />
+                                </div>
+                            </c:if>
                         </h:form>
                     </ui:insert>
                 </td>
