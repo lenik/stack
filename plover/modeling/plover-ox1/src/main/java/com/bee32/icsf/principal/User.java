@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -86,8 +87,11 @@ public class User
         this.primaryRole = newPrimaryRole;
     }
 
-    @ManyToMany(mappedBy = "memberUsers")
+    @ManyToMany(/* mappedBy = "memberUsers" */)
     // @Cascade(CascadeType.SAVE_UPDATE)
+    @JoinTable(name = "GroupMember", //
+    /*            */joinColumns = @JoinColumn(name = "member"), //
+    /*            */inverseJoinColumns = @JoinColumn(name = "group"))
     @Override
     public List<Group> getAssignedGroups() {
         return assignedGroups;
@@ -127,7 +131,11 @@ public class User
         return true;
     }
 
-    @ManyToMany(mappedBy = "responsibleUsers")
+    @ManyToMany(/* mappedBy = "responsibleUsers" */)
+    // @Cascade(CascadeType.SAVE_UPDATE)
+    @JoinTable(name = "RoleUser", //
+    /*            */joinColumns = @JoinColumn(name = "user"), //
+    /*            */inverseJoinColumns = @JoinColumn(name = "role"))
     @Override
     public List<Role> getAssignedRoles() {
         return assignedRoles;

@@ -177,7 +177,10 @@ public class Group
         return true;
     }
 
-    @ManyToMany(mappedBy = "responsibleGroups")
+    @ManyToMany(/* mappedBy = "responsibleGroups" */)
+    @JoinTable(name = "RoleGroup", //
+    /*            */joinColumns = @JoinColumn(name = "group"), //
+    /*            */inverseJoinColumns = @JoinColumn(name = "role"))
     @Override
     public List<Role> getAssignedRoles() {
         return assignedRoles;
