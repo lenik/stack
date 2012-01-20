@@ -1,15 +1,9 @@
-package com.bee32.sem.people.web;
+package com.bee32.plover.ox1.principal.web;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
-import org.primefaces.model.TreeNode;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.bee32.icsf.login.UserPassword;
-import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.GroupDto;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.RoleDto;
@@ -18,7 +12,9 @@ import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.ox1.principal.web.PrincipalAdminBean;
+import com.bee32.plover.restful.resource.StandardViews;
+import com.bee32.sem.misc.SimpleEntityViewBean;
+import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.people.dto.ContactDto;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.entity.Person;
@@ -27,42 +23,30 @@ import com.bee32.sem.people.util.PeopleCriteria;
 
 @ForEntity(User.class)
 public class UserAdminBean
-        extends PrincipalAdminBean {
+        extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
-
-    private UserDto user;
 
     private String password;
     private String passwordConfirm;
 
     private RoleDto selectedRole;
-    private TreeNode selectedRoleNode;
-
     private GroupDto selectedGroup;
-    private TreeNode selectedGroupNode;
 
     private String personPattern;
     private List<PersonDto> persons;
     private PersonDto selectedPerson;
 
-    public UserDto getUser() {
-        if (user == null) {
-            _newUser();
-        }
-        return user;
-    }
-
-    public void setUser(UserDto user) {
-        this.user = reload(user);
+    public UserAdminBean() {
+        super(User.class, UserDto.class, 0);
     }
 
     /**
      * 密码保存到数据库中为 hash 值，并无长度限制。但出于一般限制需要设置最大长度为 12 （相当于 96 位密钥强度） 。
      */
-//    @NotEmpty
-//    @Size(min = 5, max = 12)
-//    @Alphabet(tab = Alphabet.ALNUM, hint = Alphabet.ALNUM_HINT)
+// @NotEmpty
+// @Size(min = 5, max = 12)
+// @Alphabet(tab = Alphabet.ALNUM, hint = Alphabet.ALNUM_HINT)
     public String getPassword() {
         return password;
     }
@@ -71,9 +55,9 @@ public class UserAdminBean
         this.password = password;
     }
 
-//    @NotEmpty
-//    @Size(min = 5, max = 12)
-//    @Alphabet(tab = Alphabet.ALNUM, hint = Alphabet.ALNUM_HINT)
+// @NotEmpty
+// @Size(min = 5, max = 12)
+// @Alphabet(tab = Alphabet.ALNUM, hint = Alphabet.ALNUM_HINT)
     public String getPasswordConfirm() {
         return passwordConfirm;
     }
@@ -90,14 +74,6 @@ public class UserAdminBean
         this.selectedRole = selectedRole;
     }
 
-    public TreeNode getSelectedRoleNode() {
-        return selectedRoleNode;
-    }
-
-    public void setSelectedRoleNode(TreeNode selectedRoleNode) {
-        this.selectedRoleNode = selectedRoleNode;
-    }
-
     public GroupDto getSelectedGroup() {
         return selectedGroup;
     }
@@ -106,23 +82,18 @@ public class UserAdminBean
         this.selectedGroup = selectedGroup;
     }
 
-    public TreeNode getSelectedGroupNode() {
-        return selectedGroupNode;
-    }
-
-    public void setSelectedGroupNode(TreeNode selectedGroupNode) {
-        this.selectedGroupNode = selectedGroupNode;
-    }
-
     public List<RoleDto> getRoles() {
+        UserDto user = getActiveObject();
         return user.getAssignedRoles();
     }
 
     public List<GroupDto> getGroups() {
+        UserDto user = getActiveObject();
         return user.getAssignedGroups();
     }
 
     public PersonDto getPerson() {
+        UserDto user = getActiveObject();
         PersonDto person = new PersonDto().create();
         if (user != null && user.getId() != null) {
             PersonLogin personLogin = serviceFor(PersonLogin.class).getUnique(//
@@ -131,11 +102,11 @@ public class UserAdminBean
                 person = DTOs.marshal(PersonDto.class, personLogin.getPerson());
             }
         }
-
         return person;
     }
 
     public List<ContactDto> getContacts() {
+        UserDto user = getActiveObject();
         List<ContactDto> contacts = new ArrayList<ContactDto>();
         if (user != null && user.getId() != null) {
             PersonLogin personLogin = serviceFor(PersonLogin.class).getUnique(//
@@ -145,7 +116,6 @@ public class UserAdminBean
                 contacts = person.getContacts();
             }
         }
-
         return contacts;
     }
 
@@ -173,97 +143,71 @@ public class UserAdminBean
         this.selectedPerson = selectedPerson;
     }
 
-    @PostConstruct
-    public void init() {
-        loadRoleTree();
-        loadGroupTree();
-    }
-
-    private void _newUser() {
-        user = new UserDto().create();
-    }
-
-    public void doNewUser() {
-        editNewStatus = true;
-        _newUser();
-    }
-
-    public void doModifyUser() {
-        editNewStatus = false;
-    }
-
-    public void doSave() {
-        if (editNewStatus) {
-            // 新增
-            Principal existing = serviceFor(Principal.class).getByName(user.getName());
-            if (existing != null) {
-                uiLogger.error("保存失败:用户已存在。");
-                return;
+    @Override
+    protected boolean preUpdate(UnmarshalMap uMap)
+            throws Exception {
+        if (currentView.equals(StandardViews.CREATE_FORM))
+            for (UserDto user : uMap.<UserDto> dtos()) {
+                Principal existing = serviceFor(Principal.class).getByName(user.getName());
+                if (existing != null) {
+                    uiLogger.error("保存失败: 用户已存在: " + user.getName());
+                    return false;
+                }
             }
-        }
-
         if (!password.equals(passwordConfirm)) {
             uiLogger.error("密码和密码确认不匹配");
-            return;
+            return false;
         }
-
-        User u = user.unmarshal(this);
-
-        try {
-            serviceFor(User.class).saveOrUpdate(u);
-
-            serviceFor(UserPassword.class).findAndDelete(new Equals("user.id", user.getId()));
-            UserPassword pass = new UserPassword(u, password);
-            serviceFor(UserPassword.class).save(pass);
-            password = "";
-            passwordConfirm = "";
-
-            uiLogger.info("保存成功。");
-        } catch (Exception e) {
-            uiLogger.error("保存失败.", e);
-        }
+        return true;
     }
 
-    @Transactional
-    public void doDelete() {
-        try {
-            serviceFor(UserPassword.class).findAndDelete(new Equals("user.id", user.getId()));
+    @Override
+    protected void postUpdate(UnmarshalMap uMap)
+            throws Exception {
+        for (User user : uMap.<User> entitySet())
+            try {
+                serviceFor(UserPassword.class).findAndDelete(new Equals("user.id", user.getId()));
+                UserPassword pass = new UserPassword(user, password);
+                serviceFor(UserPassword.class).save(pass);
+                password = "";
+                passwordConfirm = "";
+                uiLogger.info("更新密码成功。");
+            } catch (Exception e) {
+                uiLogger.error("更新密码失败。", e);
+            }
+    }
 
-            serviceFor(User.class).delete(user.unmarshal());
-            uiLogger.info("删除成功!");
-        } catch (Exception e) {
-            uiLogger.error("删除失败.", e);
-        }
+    @Override
+    protected boolean preDelete(UnmarshalMap uMap)
+            throws Exception {
+        for (User user : uMap.<User> entitySet())
+            serviceFor(UserPassword.class).findAndDelete(new Equals("user.id", user.getId()));
+        return true;
     }
 
     public void doAddRole() {
-        user = reload(user);
-        user.addAssignedRole((RoleDto) selectedRoleNode.getData());
-        serviceFor(User.class).saveOrUpdate(user.unmarshal());
+        UserDto user = getActiveObject();
+        user.addAssignedRole(selectedRole);
+        save();
     }
 
     public void doRemoveRole() {
+        UserDto user = getActiveObject();
         user = reload(user);
         user.removeAssignedRole(selectedRole);
-        serviceFor(User.class).saveOrUpdate(user.unmarshal());
-        selectedRole = null;
+        save();
     }
 
     public void doAddGroup() {
-        GroupDto group = (GroupDto) selectedGroupNode.getData();
-        group = reload(group);
-        user = reload(user);
-        group.addMemberUser(user);
-        serviceFor(Group.class).saveOrUpdate(group.unmarshal());
-        user.addAssignedGroup((GroupDto) selectedGroupNode.getData());
+        UserDto user = getActiveObject();
+        user.addAssignedGroup(selectedGroup);
+        save();
     }
 
     public void doRemoveGroup() {
-        selectedGroup = reload(selectedGroup);
-        selectedGroup.removeMemberUser(user);
-        serviceFor(Group.class).saveOrUpdate(selectedGroup.unmarshal());
+        UserDto user = getActiveObject();
         user.removeAssignedGroup(selectedGroup);
-        selectedGroup = null;
+        save();
     }
 
     public void findPerson() {
@@ -279,10 +223,11 @@ public class UserAdminBean
     }
 
     public void choosePerson() {
+        UserDto user = getActiveObject();
         if (user != null && user.getId() != null) {
             serviceFor(PersonLogin.class).findAndDelete(new Equals("user.id", user.getId()));
             PersonLogin personLogin = new PersonLogin();
-            personLogin.setUser(user.unmarshal());
+            personLogin.setUser((User) user.unmarshal());
             personLogin.setPerson((Person) selectedPerson.unmarshal());
 
             serviceFor(PersonLogin.class).save(personLogin);

@@ -1,52 +1,61 @@
 package com.bee32.plover.ox1.principal.web;
 
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-
-import org.primefaces.model.TreeNode;
-
 import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.GroupDto;
-import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.PrincipalCheckException;
 import com.bee32.icsf.principal.PrincipalDiag;
 import com.bee32.icsf.principal.RoleDto;
 import com.bee32.icsf.principal.UserDto;
+import com.bee32.plover.restful.resource.StandardViews;
+import com.bee32.sem.misc.SimpleTreeEntityViewBean;
+import com.bee32.sem.misc.UnmarshalMap;
 
-public class GroupAdminBean extends PrincipalAdminBean {
+public class GroupAdminBean
+        extends SimpleTreeEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
+    GroupDto selectedInheritedGroup;
+    RoleDto selectedRole;
+    UserDto selectedUser;
 
-    private GroupDto group;
-    private TreeNode selectedNode;
-    private TreeNode selectedInheritedGroupNode;
+    public GroupAdminBean() {
+        super(Group.class, GroupDto.class, 0);
+    }
 
-    private RoleDto selectedRole;
-    private TreeNode selectedRoleNode;
-
-    private UserDto selectedUser;
-    private UserDto selectedUserToAdd;
-
-
-    public GroupDto getGroup() {
-        if (group == null) {
-            _newGroup();
+    @Override
+    protected boolean preUpdate(UnmarshalMap uMap)
+            throws Exception {
+        for (Group _group : uMap.<Group> entitySet()) {
+            GroupDto group = uMap.getSourceDto(_group);
+            if (currentView.equals(StandardViews.CREATE_FORM)) {
+                Group existing = serviceFor(Group.class).getByName(group.getName());
+                if (existing != null) {
+                    uiLogger.error("保存失败: 组已存在: " + group.getName());
+                    return false;
+                }
+            }
+            try {
+                PrincipalDiag.checkDeadLoop(_group);
+            } catch (PrincipalCheckException e) {
+                uiLogger.error("组结构非法: 组存在循环引用", e);
+                return false;
+            }
         }
-        return group;
+        return true;
     }
 
-    public void setGroup(GroupDto group) {
-        this.group = reload(group);
+    public GroupDto getSelectedInheritedGroup() {
+        return selectedInheritedGroup;
     }
 
-    public TreeNode getSelectedInheritedGroupNode() {
-        return selectedInheritedGroupNode;
+    public void setSelectedInheritedGroup(GroupDto selectedInheritedGroup) {
+        this.selectedInheritedGroup = selectedInheritedGroup;
     }
 
-    public void setSelectedInheritedGroupNode(TreeNode selectedInheritedGroupNode) {
-        this.selectedInheritedGroupNode = selectedInheritedGroupNode;
+    public void confirmSelectInheritedGroup() {
+        GroupDto group = getActiveObject();
+        group.setInheritedGroup(selectedInheritedGroup);
     }
 
     public RoleDto getSelectedRole() {
@@ -57,20 +66,14 @@ public class GroupAdminBean extends PrincipalAdminBean {
         this.selectedRole = selectedRole;
     }
 
-    public TreeNode getSelectedRoleNode() {
-        return selectedRoleNode;
+    public void addRole() {
+        GroupDto group = getActiveObject();
+        group.addAssignedRole(selectedRole);
     }
 
-    public void setSelectedRoleNode(TreeNode selectedRoleNode) {
-        this.selectedRoleNode = selectedRoleNode;
-    }
-
-    public List<RoleDto> getRoles() {
-        return group.getAssignedRoles();
-    }
-
-    public List<UserDto> getUsers() {
-        return group.getMemberUsers();
+    public void removeRole() {
+        GroupDto group = getActiveObject();
+        group.removeAssignedRole(selectedRole);
     }
 
     public UserDto getSelectedUser() {
@@ -81,129 +84,14 @@ public class GroupAdminBean extends PrincipalAdminBean {
         this.selectedUser = selectedUser;
     }
 
-    public UserDto getSelectedUserToAdd() {
-        return selectedUserToAdd;
+    public void addUser() {
+        GroupDto group = getActiveObject();
+        group.addMemberUser(selectedUser);
     }
 
-    public void setSelectedUserToAdd(UserDto selectedUserToAdd) {
-        this.selectedUserToAdd = selectedUserToAdd;
+    public void removeUser() {
+        GroupDto group = getActiveObject();
+        group.addMemberUser(selectedUser);
     }
 
-    public TreeNode getSelectedNode() {
-        return selectedNode;
-    }
-
-    public void setSelectedNode(TreeNode selectedNode) {
-        this.selectedNode = selectedNode;
-    }
-
-
-
-
-
-
-    @PostConstruct
-    public void init() {
-	loadRoleTree();
-	loadGroupTree();
-	}
-
-	private void _newGroup() {
-		group = new GroupDto().create();
-	}
-
-	public void doNewGroup() {
-		editNewStatus = true;
-		_newGroup();
-	}
-
-	public void chooseGroup() {
-	    group = reload((GroupDto) selectedNode.getData());
-	}
-
-	public void doModifyGroup() {
-		chooseGroup();
-	    editNewStatus = false;
-	}
-
-
-    public void doSave() {
-	if(editNewStatus) {
-		//新增
-	        Principal existing = serviceFor(Principal.class).getByName(group.getName());
-	        if (existing != null) {
-	            uiLogger.error("保存失败:组已存在。");
-	            return;
-	        }
-	}
-
-        Group g = group.unmarshal(this);
-
-        try {
-            PrincipalDiag.checkDeadLoop(g);
-        } catch (PrincipalCheckException e) {
-            uiLogger.error("组结构非法:组存在循环引用", e);
-            return;
-        }
-
-        try {
-            serviceFor(Group.class).saveOrUpdate(g);
-            loadGroupTree();
-            uiLogger.info("保存成功。");
-        } catch (Exception e) {
-            uiLogger.error("保存失败.", e);
-        }
-    }
-
-    public void doDelete() {
-        if(group.getDerivedGroups().size() > 0) {
-            uiLogger.info("本组有下属组，请先删除下属组!");
-            return;
-        }
-
-		try {
-		    Group _group = group.unmarshal();
-            if (_group.getParent() != null) {
-                _group.getParent().removeChild(_group);
-                _group.setParent(null);
-            }
-			serviceFor(Group.class).delete(_group);
-			loadGroupTree();
-			uiLogger.info("删除成功!");
-		} catch (Exception e) {
-			uiLogger.error("删除失败.", e);
-		}
-    }
-
-    public void doSelectInheritedGroup() {
-	group.setInheritedGroup((GroupDto)selectedInheritedGroupNode.getData());
-    }
-
-    public void doAddRole() {
-        group = reload(group);
-        group.addAssignedRole((RoleDto) selectedRoleNode.getData());
-        serviceFor(Group.class).saveOrUpdate(group.unmarshal());
-    }
-
-    public void doRemoveRole() {
-        group = reload(group);
-        group.removeAssignedRole(selectedRole);
-        serviceFor(Group.class).saveOrUpdate(group.unmarshal());
-        selectedRole = null;
-    }
-
-
-    public void doAddUser() {
-        selectedUserToAdd = reload(selectedUserToAdd);
-        group.addMemberUser(selectedUserToAdd);
-        serviceFor(Group.class).saveOrUpdate(group.unmarshal());
-    }
-
-    public void doRemoveUser() {
-        selectedUser = reload(selectedUser);
-        selectedUser.removeAssignedGroup(group);
-        group.removeMemberUser(selectedUser);
-        serviceFor(Group.class).saveOrUpdate(group.unmarshal());
-        selectedUser = null;
-    }
 }
