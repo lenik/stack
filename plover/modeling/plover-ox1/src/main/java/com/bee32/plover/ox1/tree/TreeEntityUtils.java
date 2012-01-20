@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,9 +21,7 @@ public class TreeEntityUtils {
                 roots.add(node);
             } else {
                 D parent = index.get(parentId);
-                List<D> siblings = parent.getChildren();
-                if (!siblings.contains(node))
-                    siblings.add(node);
+                parent.addUniqueChild(node);
             }
         }
         return roots;

@@ -8,6 +8,10 @@ public class UserDto
 
     private static final long serialVersionUID = 1L;
 
+    public static final int PRIMARIES = 1;
+    public static final int GROUPS = 2;
+    public static final int ROLES = 4;
+
     GroupDto primaryGroup;
     RoleDto primaryRole;
 
@@ -33,7 +37,7 @@ public class UserDto
         int _depth = depth - 1;
         int _selection = DEPTH_MASK.compose(selection.bits, _depth);
 
-        if (selection.contains(EXT)) {
+        if (selection.contains(PRIMARIES)) {
             primaryGroup = mref(GroupDto.class, _selection, source.getPrimaryGroup());
             primaryRole = mref(RoleDto.class, _selection, source.getPrimaryRole());
         }
@@ -57,7 +61,7 @@ public class UserDto
         if (depth == 0)
             return;
 
-        if (selection.contains(EXT)) {
+        if (selection.contains(PRIMARIES)) {
             merge(target, "primaryGroup", primaryGroup);
             merge(target, "primaryRole", primaryRole);
         }
@@ -77,12 +81,20 @@ public class UserDto
         this.primaryGroup = primaryGroup;
     }
 
+    public void clearPrimaryGroup() {
+        primaryGroup = new GroupDto().ref();
+    }
+
     public RoleDto getPrimaryRole() {
         return primaryRole;
     }
 
     public void setPrimaryRole(RoleDto primaryRole) {
         this.primaryRole = primaryRole;
+    }
+
+    public void clearPrimaryRole() {
+        primaryRole = new RoleDto().ref();
     }
 
     public List<GroupDto> getAssignedGroups() {

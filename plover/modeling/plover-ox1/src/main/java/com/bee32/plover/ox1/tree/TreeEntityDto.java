@@ -23,8 +23,8 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
     public static final int PARENT = 0x00010000;
     public static final int CHILDREN = 0x00020000;
 
-    self_t parent;
-    List<self_t> children;
+    protected self_t parent;
+    protected List<self_t> children;
 
     public TreeEntityDto() {
         super();
@@ -101,14 +101,38 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
         this.parent = parent;
     }
 
-    public List<self_t> getChildren() {
+    public void clearParent() {
+        parent = createAnother().ref();
+    }
+
+    public List<? extends self_t> getChildren() {
         return children;
     }
 
-    public void setChildren(List<self_t> children) {
+    @SuppressWarnings("unchecked")
+    public void setChildren(List<? extends self_t> children) {
         if (children == null)
             throw new NullPointerException("children");
-        this.children = children;
+        this.children = (List<self_t>) children;
+    }
+
+    public boolean containsChild(self_t child) {
+        return children.contains(child);
+    }
+
+    public boolean addUniqueChild(self_t child) {
+        if (child == null)
+            throw new NullPointerException("child");
+
+        if (children.contains(child))
+            return false;
+
+        children.add(child);
+        return true;
+    }
+
+    public boolean removeChild(self_t child) {
+        return children.remove(child);
     }
 
     public int indexOf(self_t child) {

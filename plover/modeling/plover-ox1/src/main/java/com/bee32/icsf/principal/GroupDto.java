@@ -8,10 +8,11 @@ public class GroupDto
 
     private static final long serialVersionUID = 1L;
 
-    GroupDto inheritedGroup;
-    RoleDto primaryRole;
+    public static final int PRIMARIES = 1;
+    public static final int USERS = 2;
+    public static final int ROLES = 4;
 
-    List<GroupDto> derivedGroups = new ArrayList<GroupDto>();
+    RoleDto primaryRole;
     List<RoleDto> assignedRoles = new ArrayList<RoleDto>();
     List<UserDto> memberUsers = new ArrayList<UserDto>();
 
@@ -21,10 +22,6 @@ public class GroupDto
 
     public GroupDto(int selection) {
         super(selection);
-    }
-
-    public GroupDto getInheritedGroup() {
-        return inheritedGroup;
     }
 
     @Override
@@ -38,15 +35,10 @@ public class GroupDto
         int _depth = depth - 1;
         int _selection = DEPTH_MASK.compose(selection.bits, _depth);
 
-        if (selection.contains(EXT)) {
-            inheritedGroup = mref(GroupDto.class, _selection, source.getInheritedGroup());
-            primaryRole = mref(RoleDto.class, _selection, source.getPrimaryRole());
-        }
-
-        if (selection.contains(GROUPS))
-            derivedGroups = mrefList(GroupDto.class, _selection, source.getDerivedGroups());
+        if (selection.contains(PRIMARIES))
+            primaryRole = mref(RoleDto.class, source.getPrimaryRole());
         else
-            derivedGroups = new ArrayList<GroupDto>();
+            primaryRole = new RoleDto();
 
         if (selection.contains(ROLES))
             assignedRoles = mrefList(RoleDto.class, _selection, source.getAssignedRoles());
@@ -64,14 +56,6 @@ public class GroupDto
         super._unmarshalTo(_target);
         Group target = (Group) _target;
 
-        if (selection.contains(EXT)) {
-            merge(target, "inheritedGroup", inheritedGroup);
-            merge(target, "primaryRole", primaryRole);
-        }
-
-        if (selection.contains(GROUPS))
-            mergeList(target, "derivedGroups", derivedGroups);
-
         if (selection.contains(ROLES))
             mergeList(target, "assignedRoles", assignedRoles);
 
@@ -79,8 +63,16 @@ public class GroupDto
             mergeList(target, "memberUsers", memberUsers);
     }
 
+    public GroupDto getInheritedGroup() {
+        return (GroupDto) getParent();
+    }
+
     public void setInheritedGroup(GroupDto inheritedGroup) {
-        this.inheritedGroup = inheritedGroup;
+        setParent(inheritedGroup);
+    }
+
+    public void clearInheritedGroup() {
+        clearParent();
     }
 
     public RoleDto getPrimaryRole() {
@@ -91,27 +83,26 @@ public class GroupDto
         this.primaryRole = primaryRole;
     }
 
-    public List<GroupDto> getDerivedGroups() {
-        return derivedGroups;
+    public void clearPrimaryRole() {
+        primaryRole = new RoleDto().ref();
     }
 
-    public void setDerivedGroups(List<GroupDto> derivedGroups) {
-        this.derivedGroups = derivedGroups;
+    public List<? extends GroupDto> getDerivedGroups() {
+        return (List<? extends GroupDto>) getChildren();
+    }
+
+    public void setDerivedGroups(List<? extends GroupDto> derivedGroups) {
+        setChildren(derivedGroups);
     }
 
     public boolean addDerivedGroup(GroupDto derivedGroup) {
         if (derivedGroup == null)
             throw new NullPointerException("derivedGroup");
-
-        if (derivedGroups.contains(derivedGroup))
-            return false;
-
-        derivedGroups.add(derivedGroup);
-        return true;
+        return addUniqueChild(derivedGroup);
     }
 
     public boolean removeDerivedGroup(GroupDto derivedGroup) {
-        return derivedGroups.remove(derivedGroup);
+        return removeChild(derivedGroup);
     }
 
     public List<RoleDto> getAssignedRoles() {

@@ -15,11 +15,7 @@ public class PrincipalDto
 
     private static final long serialVersionUID = 1L;
 
-    public static final int EXT = 1;
-    public static final int USERS = 2;
-    public static final int ROLES = 4;
-    public static final int GROUPS = 8;
-    public static final int IMPS = 16;
+    public static final int IMPS = 0x1000;
 
     public static final Mask32 DEPTH_MASK = new Mask32(0xff000000);
 
@@ -74,7 +70,7 @@ public class PrincipalDto
         this.name = name;
     }
 
-    @Size(min = 3, max = Principal.FULLNAME_LENGTH)
+    @Size(min = 2, max = Principal.FULLNAME_LENGTH)
     public String getFullName() {
         return fullName;
     }
