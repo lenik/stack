@@ -3,6 +3,7 @@ package com.bee32.plover.ox1.principal.web;
 import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.GroupDto;
 import com.bee32.icsf.principal.PrincipalCheckException;
+import com.bee32.icsf.principal.PrincipalCriteria;
 import com.bee32.icsf.principal.PrincipalDiag;
 import com.bee32.icsf.principal.RoleDto;
 import com.bee32.icsf.principal.UserDto;
@@ -72,8 +73,10 @@ public class GroupAdminBean
     }
 
     public void removeRole() {
-        GroupDto group = getActiveObject();
-        group.removeAssignedRole(selectedRole);
+        if (selectedRole != null) {
+            GroupDto group = getActiveObject();
+            group.removeAssignedRole(selectedRole);
+        }
     }
 
     public UserDto getSelectedUser() {
@@ -90,8 +93,16 @@ public class GroupAdminBean
     }
 
     public void removeUser() {
-        GroupDto group = getActiveObject();
-        group.addMemberUser(selectedUser);
+        if (selectedUser != null) {
+            GroupDto group = getActiveObject();
+            group.removeMemberUser(selectedUser);
+        }
+    }
+
+    @Override
+    public void addNameOrLabelRestriction() {
+        addSearchFragment("名称含有 " + searchPattern, PrincipalCriteria.namedLike(searchPattern));
+        searchPattern = null;
     }
 
 }

@@ -2,6 +2,7 @@ package com.bee32.plover.ox1.principal.web;
 
 import com.bee32.icsf.principal.GroupDto;
 import com.bee32.icsf.principal.PrincipalCheckException;
+import com.bee32.icsf.principal.PrincipalCriteria;
 import com.bee32.icsf.principal.PrincipalDiag;
 import com.bee32.icsf.principal.Role;
 import com.bee32.icsf.principal.RoleDto;
@@ -92,6 +93,12 @@ public class RoleAdminBean
     public void removeUser() {
         RoleDto role = getActiveObject();
         role.removeResponsibleUser(selectedUser);
+    }
+
+    @Override
+    public void addNameOrLabelRestriction() {
+        addSearchFragment("名称含有 " + searchPattern, PrincipalCriteria.namedLike(searchPattern));
+        searchPattern = null;
     }
 
 }

@@ -159,42 +159,6 @@ public abstract class SimpleEntityViewBean
         elements.addAll(baseCriteriaElements);
     }
 
-    @Override
-    public List<SearchFragment> getSearchFragments() {
-        return searchFragments;
-    }
-
-    public void setSearchFragments(List<SearchFragment> searchFragments) {
-        if (searchFragments == null)
-            throw new NullPointerException("searchFragments");
-        this.searchFragments = searchFragments;
-    }
-
-    public void addSearchFragment(String entryLabel, ICriteriaElement... criteriaElements) {
-        CriteriaComposite composite = new CriteriaComposite(criteriaElements);
-        addSearchFragment(entryLabel, composite);
-    }
-
-    public void addSearchFragment(String entryLabel, ICriteriaElement criteriaElement) {
-        if (criteriaElement == null)
-            return;
-        SearchFragmentWrapper fragment = new SearchFragmentWrapper(criteriaElement, entryLabel);
-        addSearchFragment(fragment);
-    }
-
-    @Override
-    public void addSearchFragment(SearchFragment fragment) {
-        if (fragment == null)
-            throw new NullPointerException("fragment");
-        fragment.setHolder(this);
-        searchFragments.add(fragment);
-    }
-
-    @Override
-    public void removeSearchFragment(SearchFragment fragment) {
-        searchFragments.remove(fragment);
-    }
-
     /**
      * Show (or switch to) the real view.
      *
@@ -265,7 +229,7 @@ public abstract class SimpleEntityViewBean
         showView(StandardViews.EDIT_FORM);
     }
 
-    public void showEditFragmentForm() {
+    public void showPartialForm() {
         // default fmask override..
         showEditForm();
     }
@@ -552,6 +516,47 @@ public abstract class SimpleEntityViewBean
     }
 
     static void checkDeleteFlags(int deleteFlags) {
+    }
+
+    @Override
+    public List<SearchFragment> getSearchFragments() {
+        return searchFragments;
+    }
+
+    public void setSearchFragments(List<SearchFragment> searchFragments) {
+        if (searchFragments == null)
+            throw new NullPointerException("searchFragments");
+        this.searchFragments = searchFragments;
+    }
+
+    public void addSearchFragment(String entryLabel, ICriteriaElement... criteriaElements) {
+        CriteriaComposite composite = new CriteriaComposite(criteriaElements);
+        addSearchFragment(entryLabel, composite);
+    }
+
+    public void addSearchFragment(String entryLabel, ICriteriaElement criteriaElement) {
+        if (criteriaElement == null)
+            return;
+        SearchFragmentWrapper fragment = new SearchFragmentWrapper(criteriaElement, entryLabel);
+        addSearchFragment(fragment);
+    }
+
+    @Override
+    public void addSearchFragment(SearchFragment fragment) {
+        if (fragment == null)
+            throw new NullPointerException("fragment");
+        fragment.setHolder(this);
+        searchFragments.add(fragment);
+        searchFragmentsChanged();
+    }
+
+    @Override
+    public void removeSearchFragment(SearchFragment fragment) {
+        if (searchFragments.remove(fragment))
+            searchFragmentsChanged();
+    }
+
+    protected void searchFragmentsChanged() {
     }
 
     public String getSearchPattern() {

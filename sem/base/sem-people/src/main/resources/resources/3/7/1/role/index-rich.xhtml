@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-    xmlns:p="http://primefaces.org/ui" xmlns:icsf="http://java.sun.com/jsf/composite/3/7" xmlns:sem="http://java.sun.com/jsf/composite/3/15"
-    xmlns:t="http://myfaces.apache.org/tomahawk" template="/template/simple-tree-entity.xhtml">
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:p="http://primefaces.org/ui"
+    xmlns:icsf="http://java.sun.com/jsf/composite/3/7" xmlns:sem="http://java.sun.com/jsf/composite/3/15" xmlns:t="http://myfaces.apache.org/tomahawk"
+    template="/template/simple-tree-entity.xhtml">
 
     <ui:param name="title" value="角色管理" />
     <ui:param name="bean" value="#{roleAdminBean}" />
@@ -9,9 +9,11 @@
     <ui:param name="mirrorTargets" value=":chooseInheritedRoleDialog:form" />
 
     <ui:define name="dataContextMenu">
-        <p:contextMenu for="dataTree">
-            <p:menuitem value="蕴含本角色的组" onclick="groupsDialog.show()" />
-            <p:menuitem value="蕴含本角色的用户" onclick="usersDialog.show()" />
+        <p:contextMenu for="treeTable">
+            <p:menuitem value="蕴含本角色的组" actionListener="#{bean.showPartialForm}" oncomplete="groupsDialog.show()"
+                update=":groupsForm" />
+            <p:menuitem value="蕴含本角色的用户" actionListener="#{bean.showPartialForm}" oncomplete="usersDialog.show()"
+                update=":usersForm" />
         </p:contextMenu>
     </ui:define>
 
@@ -28,13 +30,14 @@
         <p:dialog header="新增/修改角色" widgetVar="editDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
             <h:form id="form" style="max-height: 40em; margin: 1em">
                 <h:panelGrid columns="2">
-                    <h:outputLabel for="inheritedRole" value="所属角色" />
-                    <h:panelGrid columns="2">
+                    <h:outputLabel for="inheritedRole" value="继承的角色" />
+                    <h:panelGrid columns="3">
                         <p:inputText value="#{obj.inheritedRole.name}" disabled="true" />
-                        <p:commandButton value="..." onclick="chooseInheritedRoleDialog.show();">
+                        <p:commandButton value="..." oncomplete="chooseInheritedRoleDialog.show();">
                             <f:setPropertyActionListener target="${choosePrincipalDialogBean.stereo}"
                                 value="R" />
                         </p:commandButton>
+                        <p:commandButton value="X" actionListener="#{obj.clearInheritedRole}" update="form" />
                     </h:panelGrid>
 
                     <h:outputLabel for="name" value="名称" />
@@ -46,7 +49,7 @@
                 </h:panelGrid>
                 <div align="right">
                     <p:commandButton id="save-validated" value="保存" actionListener="#{bean.save}"
-                        update=":mainForm ${mirrorTargets}" oncomplete="editDialog.hide();" />
+                        update=":mainForm, ${mirrorTargets}" oncomplete="editDialog.hideValidated(args);" />
                     <p:commandButton id="cancel" value="取消" onclick="editDialog.hide();" />
                 </div>
             </h:form>
@@ -54,21 +57,18 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:choosePrincipalDialog id="chooseInheritedRoleDialog" var="chooseInheritedRoleDialog"
+        <icsf:choosePrincipalDialog id="chooseInheritedRoleDialog" var="chooseInheritedRoleDialog"
             header="选择父角色" stereo="R" selection="${bean.selectedInheritedRole}" actionListener="${bean.confirmInheritedRole}"
             update=":editDialog:form" />
-        <sem:choosePrincipalDialog id="chooseGroupDialog" var="chooseGroupDialog" header="选择祖"
+        <icsf:choosePrincipalDialog id="chooseGroupDialog" var="chooseGroupDialog" header="添加蕴含本角色的祖"
             stereo="G" selection="${bean.selectedGroup}" actionListener="${bean.addGroup}" update=":groupsForm" />
-        <sem:choosePrincipalDialog id="chooseUserDialog" var="chooseUserDialog" header="选择用户"
+        <icsf:choosePrincipalDialog id="chooseUserDialog" var="chooseUserDialog" header="添加蕴含本角色的用户"
             stereo="U" selection="${bean.selectedUser}" actionListener="${bean.addUser}" update=":usersForm" />
 
         <p:dialog header="蕴涵本角色的组" id="groupsDialog" widgetVar="groupsDialog" modal="true"
             dynamic="${viewConfig.dynamicDialog}">
             <h:form id="groupsForm">
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="当前角色:" />
-                    <h:outputText value="#{obj.name}" />
-                </h:panelGrid>
+                <h3>当前角色: #{obj.name}</h3>
                 <h:panelGrid columns="3">
                     <p:dataTable id="table" var="group" value="#{obj.responsibleGroups}" rowIndexVar="rowIndex"
                         selection="#{bean.selectedGroup}" selectionMode="single" rowKey="#{group.id}">
@@ -98,10 +98,7 @@
         <p:dialog header="蕴含本角色的用户" id="usersDialog" widgetVar="usersDialog" modal="true"
             dynamic="${viewConfig.dynamicDialog}">
             <h:form id="usersForm">
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="当前角色:" />
-                    <h:outputText value="#{obj.name}" />
-                </h:panelGrid>
+                <h3>当前角色: #{obj.name}</h3>
                 <h:panelGrid columns="3">
                     <p:dataTable id="table" var="user" value="#{obj.responsibleUsers}" rowIndexVar="rowIndex"
                         selection="#{bean.selectedUser}" selectionMode="single" rowKey="#{user.id}">

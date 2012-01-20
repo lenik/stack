@@ -119,16 +119,24 @@ public class UIHelper
         return result;
     }
 
+    /**
+     * @return The root node created.
+     */
     public static TreeNode buildTree(ITreeNodeDecorator decorator, Collection<? extends TreeEntityDto<?, ?, ?>> dtoNodes) {
         TreeNode rootNode = new DefaultTreeNode();
         buildTree(decorator, dtoNodes, rootNode);
         return rootNode;
     }
 
-    public static void buildTree(ITreeNodeDecorator decorator, Collection<? extends TreeEntityDto<?, ?, ?>> dtoNodes,
-            TreeNode parentNode) {
+    /**
+     * @return The last node created by this method.
+     */
+    public static TreeNode buildTree(ITreeNodeDecorator decorator,
+            Collection<? extends TreeEntityDto<?, ?, ?>> dtoNodes, TreeNode parentNode) {
+        TreeNode last = null;
         for (TreeEntityDto<?, ?, ?> dtoNode : dtoNodes)
-            _buildTree(decorator, dtoNode, parentNode);
+            last = _buildTree(decorator, dtoNode, parentNode);
+        return last;
     }
 
     static TreeNode _buildTree(ITreeNodeDecorator decorator, TreeEntityDto<?, ?, ?> dtoNode, TreeNode parentNode) {

@@ -4,7 +4,8 @@
     xmlns:t="http://myfaces.apache.org/tomahawk" template="/template/simple-entity.xhtml">
 
     <ui:param name="title" value="用户管理" />
-    <ui:param name="bean" value="#{personAdminBean}" />
+    <ui:param name="bean" value="#{userAdminBean}" />
+    <ui:param name="obj" value="#{bean.activeObject}" />
 
     <ui:define name="dataColumns">
         <p:column headerText="名称">
@@ -15,277 +16,205 @@
         </p:column>
 
         <p:column headerText="操作">
-            <t:panelGroup>
-                <p:commandLink value="对应角色" oncomplete="roleDialog.show()" update="roleForm:rolePanel">
-                    <f:setPropertyActionListener value="#{entry}" target="#{userAdminBean.activeObject}" />
-                </p:commandLink>
-                <p:spacer width="10" />
-                <p:commandLink value="对应组" oncomplete="groupDialog.show()" update="groupForm:groupPanel">
-                    <f:setPropertyActionListener value="#{entry}" target="#{userAdminBean.activeObject}" />
-                </p:commandLink>
-                <p:spacer width="10" />
-                <p:commandLink value="对应人员" oncomplete="personDialog.show()" update="personForm:personPanel">
-                    <f:setPropertyActionListener value="#{entry}" target="#{userAdminBean.activeObject}" />
-                </p:commandLink>
-            </t:panelGroup>
+            <p:commandLink value="指派角色" action="#{bean.showPartialForm}" oncomplete="rolesDialog.show()"
+                update=":rolesForm">
+                <f:setPropertyActionListener target="#{bean.singleSelection}" value="#{entry}" />
+            </p:commandLink>
+            <p:spacer width="10" />
+            <p:commandLink value="指派组" action="#{bean.showPartialForm}" oncomplete="groupsDialog.show()"
+                update=":groupsForm">
+                <f:setPropertyActionListener target="#{bean.singleSelection}" value="#{entry}" />
+            </p:commandLink>
+            <p:spacer width="10" />
+            <p:commandLink value="对应人员" action="#{bean.showPartialForm}" oncomplete="personDialog.show()"
+                update=":personForm">
+                <f:setPropertyActionListener target="#{bean.singleSelection}" value="#{entry}" />
+            </p:commandLink>
         </p:column>
     </ui:define>
 
     <ui:define name="editDialog">
         <script language="javascript" src="password.js"></script>
 
-        <p:dialog header="新增/修改用户" widgetVar="editDialog" modal="true" height="500" width="640">
-            <h:form id="form">
-                <p:outputPanel id="editUserPanel">
-                    <h:panelGrid columns="2">
+        <p:dialog header="新增/修改用户" widgetVar="editDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
+            <h:form id="form" style="max-height: 40em; margin: 1em">
+                <h:panelGrid columns="2">
+                    <h:outputLabel for="name" value="名称" />
+                    <p:inputText label="名称" id="name" value="#{obj.name}" disabled="#{not bean.creating}" />
 
-                        <h:outputLabel for="name" value="名称" />
-                        <p:inputText label="名称" id="name" value="#{userAdminBean.user.name}" disabled="#{not userAdminBean.editNewStatus}" />
+                    <h:outputLabel for="fullName" value="全名" />
+                    <p:inputText label="全名" id="fullName" value="#{obj.fullName}" />
 
-                        <h:outputLabel for="fullName" value="全名" />
-                        <p:inputText label="全名" id="fullName" value="#{userAdminBean.user.fullName}" />
+                    <h:outputLabel for="password" value="密码" />
+                    <t:panelGroup>
+                        <input id="passPlain" type="password" onchange="calcDigest();" />
+                        <h:inputHidden id="password" value="#{bean.password}" />
+                    </t:panelGroup>
 
-                        <h:outputLabel for="password" value="密码" />
-                        <t:panelGroup>
-                            <input id="passPlain" type="password" onchange="calcDigest();" />
-                            <h:inputHidden id="password" value="#{userAdminBean.password}" />
-                        </t:panelGroup>
-
-                        <h:outputLabel for="passwordConfirm" value="密码确认" />
-                        <t:panelGroup>
-                            <input id="passPlainConfirm" type="password" onchange="calcDigestConfirm();" />
-                            <h:inputHidden id="passwordConfirm" value="#{userAdminBean.passwordConfirm}" />
-                        </t:panelGroup>
-
-                        <t:panelGroup colspan="2">
-                            <t:panelGrid columns="2">
-                                <p:commandButton value="保存" actionListener="#{userAdminBean.doSave}"
-                                    update=":mainForm" oncomplete="editDialog.hide();" />
-                                <p:commandButton value="取消" oncomplete="editDialog.hide();" />
-                            </t:panelGrid>
-                        </t:panelGroup>
-                    </h:panelGrid>
-                </p:outputPanel>
+                    <h:outputLabel for="passwordConfirm" value="密码确认" />
+                    <t:panelGroup>
+                        <input id="passPlainConfirm" type="password" onchange="calcDigestConfirm();" />
+                        <h:inputHidden id="passwordConfirm" value="#{bean.passwordConfirm}" validator="#{bean.passwordValidator}" />
+                    </t:panelGroup>
+                </h:panelGrid>
+                <div align="right">
+                    <p:commandButton id="save-validated" value="保存" actionListener="#{bean.save}"
+                        update=":mainForm, ${mirrorTargets}" oncomplete="editDialog.hideValidated(args);" />
+                    <p:commandButton id="cancel" value="取消" onclick="editDialog.hide();" />
+                </div>
             </h:form>
         </p:dialog>
     </ui:define>
 
     <ui:define name="dialogs">
-        <p:dialog header="对应角色" widgetVar="roleDialog" modal="true" height="500" width="640">
-            <h:form id="roleForm">
-                <h:panelGroup id="rolePanel">
+        <icsf:choosePrincipalDialog id="chooseGroupDialog" var="chooseGroupDialog" header="添加指派的组"
+            stereo="G" selection="${bean.selectedGroup}" actionListener="${bean.addGroup}" update=":groupsForm" />
+        <icsf:choosePrincipalDialog id="chooseRoleDialog" var="chooseRoleDialog" header="添加指派的角色"
+            stereo="R" selection="${bean.selectedRole}" actionListener="${bean.addRole}" update=":rolesForm" />
+        <sem:choosePartyDialog id="choosePersonDialog" var="choosePersonDialog" header="选择对应的人员"
+            stereo="PER" selection="${bean.selectedPerson}" actionListener="${bean.savePersonLogin}" update=":personForm" />
 
-                    <h:panelGrid columns="2">
-                        <h:outputLabel value="对应组:" />
-                        <h:outputText value="#{userAdminBean.user.name}" />
-                    </h:panelGrid>
-
-                    <h:panelGrid columns="3">
-                        <p:dataTable var="role" value="#{userAdminBean.roles}" rowIndexVar="rowIndex"
-                            selection="#{userAdminBean.selectedRole}" selectionMode="single" rowKey="#{role.id}">
-                            <f:facet name="header">对应角色</f:facet>
-                            <p:column headerText="序号">
-                                <h:outputText value="#{rowIndex + 1}" />
-                            </p:column>
-                            <p:column headerText="名称">
-                                <h:outputText value="#{role.name}" />
-                            </p:column>
-                            <p:column headerText="全名">
-                                <h:outputText value="#{role.fullName}" />
-                            </p:column>
-                        </p:dataTable>
-
-                        <h:panelGroup>
-                            <p:commandButton value="+" actionListener="#{userAdminBean.doAddRole}"
-                                update="rolePanel" />
-                            <p:commandButton value="X" actionListener="#{userAdminBean.doRemoveRole}"
-                                update="rolePanel" />
-                        </h:panelGroup>
-
-                        <p:panel header="所有角色">
-                            <p:tree value="#{userAdminBean.roleRoot}" var="role" selectionMode="single"
-                                selection="#{userAdminBean.selectedRoleNode}">
-                                <p:treeNode>
-                                    <h:outputText value="#{role.name}" />
-                                </p:treeNode>
-                            </p:tree>
-                        </p:panel>
-
-                    </h:panelGrid>
-                    <p:commandButton value="关闭" oncomplete="roleDialog.hide();" />
-                </h:panelGroup>
-            </h:form>
-        </p:dialog>
-
-        <p:dialog header="对应组" widgetVar="groupDialog" modal="true" height="500" width="640">
-            <h:form id="groupForm">
-                <h:panelGroup id="groupPanel">
-
-                    <h:panelGrid columns="2">
-                        <h:outputLabel value="对应用户:" />
-                        <h:outputText value="#{userAdminBean.user.name}" />
-                    </h:panelGrid>
-
-                    <h:panelGrid columns="3">
-                        <p:dataTable var="group" value="#{userAdminBean.groups}" rowIndexVar="rowIndex"
-                            selection="#{userAdminBean.selectedGroup}" selectionMode="single" rowKey="#{group.id}">
-                            <f:facet name="header">对应组</f:facet>
-                            <p:column headerText="序号">
-                                <h:outputText value="#{rowIndex + 1}" />
-                            </p:column>
-                            <p:column headerText="名称">
-                                <h:outputText value="#{group.name}" />
-                            </p:column>
-                            <p:column headerText="全名">
-                                <h:outputText value="#{group.fullName}" />
-                            </p:column>
-                        </p:dataTable>
-
-                        <h:panelGroup>
-                            <p:commandButton value="+" actionListener="#{userAdminBean.doAddGroup}"
-                                update="groupPanel" />
-                            <p:commandButton value="X" actionListener="#{userAdminBean.doRemoveGroup}"
-                                update="groupPanel" />
-                        </h:panelGroup>
-
-                        <p:panel header="所有组">
-                            <p:tree value="#{userAdminBean.groupRoot}" var="group" selectionMode="single"
-                                selection="#{userAdminBean.selectedGroupNode}">
-
-                                <p:treeNode>
-                                    <h:outputText value="#{group.name}" />
-                                </p:treeNode>
-                            </p:tree>
-                        </p:panel>
-                    </h:panelGrid>
-                    <p:commandButton value="关闭" oncomplete="groupDialog.hide();" />
-                </h:panelGroup>
-            </h:form>
-        </p:dialog>
-
-        <p:dialog header="对应人员" widgetVar="personDialog" modal="true" height="500" width="640">
-            <h:form id="personForm">
-                <h:panelGroup id="personPanel">
-
-                    <p:panel header="详细信息" toggleable="true">
-                        <t:panelGrid columns="4" border="1"
-                            columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
-
-                            <h:outputLabel value="姓名" />
-                            <h:outputText value="#{userAdminBean.person.name}" />
-                            <h:outputLabel value="全名" />
-                            <h:outputText value="#{userAdminBean.person.fullName}" />
-
-                            <h:outputLabel value="生日" />
-                            <t:panelGroup colspan="3">
-                                <h:outputText value="#{userAdminBean.person.birthday}" />
-                            </t:panelGroup>
-
-                            <h:outputLabel value="证件类型" />
-                            <h:outputText value="#{userAdminBean.person.sidType.label}" />
-                            <h:outputLabel value="证件号码" />
-                            <h:outputText value="#{userAdminBean.person.sid}" />
-
-                            <h:outputLabel value="性别" />
-                            <h:outputText value="#{userAdminBean.person.sexText}" />
-                            <h:outputLabel value="户籍" />
-                            <h:outputText value="#{userAdminBean.person.censusRegister}" />
-
-                            <h:outputLabel value="兴趣爱好" />
-                            <t:panelGroup colspan="3">
-                                <h:outputText value="#{userAdminBean.person.interests}" />
-                            </t:panelGroup>
-
-                            <h:outputLabel for="personMemo" value="备注" />
-                            <t:panelGroup colspan="3">
-                                <h:outputText value="#{userAdminBean.person.memo}" />
-                            </t:panelGroup>
-                        </t:panelGrid>
-                        <p:commandButton value="选择对应人员" onclick="choosePersonDialog.show();" />
-                    </p:panel>
-
-                    <p:panel header="联系方式" toggleable="true">
-                        <p:dataTable id="contacts" var="contact" value="#{userAdminBean.contacts}"
-                            resizableColumns="true" rowIndexVar="rowIndex">
-                            <p:column headerText="序号">
-                                <h:outputText value="#{rowIndex + 1}" />
-                            </p:column>
-                            <p:column headerText="分类">
-                                <h:outputText value="#{contact.category.label}" />
-                            </p:column>
-                            <p:column headerText="地址">
-                                <h:outputText value="#{contact.address}" />
-                            </p:column>
-                            <p:column headerText="邮编">
-                                <h:outputText value="#{contact.postCode}" />
-                            </p:column>
-                            <p:column headerText="电话">
-                                <h:outputText value="#{contact.tel}" />
-                            </p:column>
-                            <p:column headerText="移动电话">
-                                <h:outputText value="#{contact.mobile}" />
-                            </p:column>
-                            <p:column headerText="传真">
-                                <h:outputText value="#{contact.fax}" />
-                            </p:column>
-                            <p:column headerText="email">
-                                <h:outputText value="#{contact.email}" />
-                            </p:column>
-                            <p:column headerText="网址">
-                                <h:outputText value="#{contact.website}" />
-                            </p:column>
-                            <p:column headerText="QQ">
-                                <h:outputText value="#{contact.qq}" />
-                            </p:column>
-                        </p:dataTable>
-                    </p:panel>
-                </h:panelGroup>
-            </h:form>
-        </p:dialog>
-
-        <p:dialog header="选择联系人" widgetVar="choosePersonDialog" modal="true" height="400" width="640">
-            <h:form id="choosePersonForm">
-                <h:panelGroup>
-                    <h:panelGrid columns="3">
-                        <h:outputLabel value="联系人名字全部或部份:" />
-                        <p:inputText value="#{userAdminBean.personPattern}" />
-                        <p:commandButton value="查找" actionListener="#{userAdminBean.findPerson}" update="persons"
-                            async="true" />
-                    </h:panelGrid>
-                    <p:dataTable id="persons" var="person" value="#{userAdminBean.persons}"
-                        resizableColumns="true" selection="#{userAdminBean.selectedPerson}" selectionMode="single"
-                        rowKey="#{person.id}" rowIndexVar="rowIndex">
+        <p:dialog header="指派的组" id="groupsDialog" widgetVar="groupsDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
+            <h:form id="groupsForm">
+                <h3>当前用户: #{obj.name}</h3>
+                <h:panelGrid columns="3">
+                    <p:dataTable id="table" var="group" value="#{obj.assignedGroups}" rowIndexVar="rowIndex"
+                        selection="#{bean.selectedGroup}" selectionMode="single" rowKey="#{group.id}">
+                        <f:facet name="header">组列表</f:facet>
                         <p:column headerText="序号">
                             <h:outputText value="#{rowIndex + 1}" />
                         </p:column>
-                        <p:column headerText="姓名">
-                            <h:outputText value="#{person.displayName}" />
+                        <p:column headerText="名称">
+                            <h:outputText value="#{group.name}" />
                         </p:column>
-                        <p:column headerText="性别">
-                            <h:outputText value="#{person.sexText}" />
-                        </p:column>
-                        <p:column headerText="生日">
-                            <h:outputText value="#{person.birthday}">
-                                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-                        <p:column headerText="证件类型">
-                            <h:outputText value="#{person.sidType.label}" />
-                        </p:column>
-                        <p:column headerText="证件号码">
-                            <h:outputText value="#{person.sid}" />
-                        </p:column>
-                        <p:column headerText="户籍">
-                            <h:outputText value="#{person.censusRegister}" />
+                        <p:column headerText="全名">
+                            <h:outputText value="#{group.fullName}" />
                         </p:column>
                     </p:dataTable>
-                    <h:panelGrid columns="2">
-                        <p:commandButton value="确定" actionListener="#{userAdminBean.choosePerson}"
-                            oncomplete="choosePersonDialog.hide();" update="personPanel" async="true" />
-                        <p:commandButton value="取消" oncomplete="choosePersonDialog.hide();" />
-                    </h:panelGrid>
-                </h:panelGroup>
+                </h:panelGrid>
+                <div align="right">
+                    <p:commandButton id="add" value="添加" oncomplete="chooseGroupDialog.show()">
+                        <f:setPropertyActionListener target="${choosePrincipalDialogBean.stereo}"
+                            value="G" />
+                    </p:commandButton>
+                    <p:commandButton id="remove" value="移除" actionListener="#{bean.removeGroup}" update="table" />
+                    <p:commandButton id="ok" value="确定" actionListener="#{bean.save}" oncomplete="groupsDialog.hide();" />
+                </div>
             </h:form>
         </p:dialog>
+
+        <p:dialog header="指派的角色" id="rolesDialog" widgetVar="rolesDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
+            <h:form id="rolesForm">
+                <h3>当前用户: #{obj.name}</h3>
+                <h:panelGrid columns="3">
+                    <p:dataTable id="table" var="role" value="#{obj.assignedRoles}" rowIndexVar="rowIndex"
+                        selection="#{bean.selectedRole}" selectionMode="single" rowKey="#{role.id}">
+                        <f:facet name="header">角色列表</f:facet>
+                        <p:column headerText="序号">
+                            <h:outputText value="#{rowIndex + 1}" />
+                        </p:column>
+                        <p:column headerText="名称">
+                            <h:outputText value="#{role.name}" />
+                        </p:column>
+                        <p:column headerText="全名">
+                            <h:outputText value="#{role.fullName}" />
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGrid>
+                <div align="right">
+                    <p:commandButton id="add" value="添加" oncomplete="chooseRoleDialog.show()">
+                        <f:setPropertyActionListener target="${choosePrincipalDialogBean.stereo}"
+                            value="R" />
+                    </p:commandButton>
+                    <p:commandButton id="remove" value="移除" actionListener="#{bean.removeRole}" update="table" />
+                    <p:commandButton id="ok" value="确定" actionListener="#{bean.save}" oncomplete="rolesDialog.hide();" />
+                </div>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog header="对应人员" id="personDialog" widgetVar="personDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
+            <c:set var="person" value="#{bean.person}" />
+            <h:form id="personForm" style="max-height: 40em; margin: 1em">
+                <p:panel header="详细信息" toggleable="true">
+                    <t:panelGrid columns="4" border="1"
+                        columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+
+                        <h:outputLabel value="姓名" />
+                        <h:outputText value="#{person.name}" />
+                        <h:outputLabel value="全名" />
+                        <h:outputText value="#{person.fullName}" />
+
+                        <h:outputLabel value="生日" />
+                        <t:panelGroup colspan="3">
+                            <h:outputText value="#{person.birthday}" />
+                        </t:panelGroup>
+
+                        <h:outputLabel value="证件类型" />
+                        <h:outputText value="#{person.sidType.label}" />
+                        <h:outputLabel value="证件号码" />
+                        <h:outputText value="#{person.sid}" />
+
+                        <h:outputLabel value="性别" />
+                        <h:outputText value="#{person.sexText}" />
+                        <h:outputLabel value="户籍" />
+                        <h:outputText value="#{person.censusRegister}" />
+
+                        <h:outputLabel value="兴趣爱好" />
+                        <t:panelGroup colspan="3">
+                            <h:outputText value="#{person.interests}" />
+                        </t:panelGroup>
+
+                        <h:outputLabel for="personMemo" value="备注" />
+                        <t:panelGroup colspan="3">
+                            <h:outputText value="#{person.memo}" />
+                        </t:panelGroup>
+                    </t:panelGrid>
+                    <p:commandButton value="选择对应人员" update=":choosePersonDialog:form" oncomplete="choosePersonDialog.show();">
+                        <f:setPropertyActionListener target="#{choosePartyDialogBean.stereo}"
+                            value="PER" />
+                    </p:commandButton>
+                </p:panel>
+
+                <p:panel header="联系方式" toggleable="true">
+                    <p:dataTable id="contacts" var="contact" value="#{bean.contacts}" resizableColumns="true"
+                        rowIndexVar="rowIndex">
+                        <p:column headerText="序号">
+                            <h:outputText value="#{rowIndex + 1}" />
+                        </p:column>
+                        <p:column headerText="分类">
+                            <h:outputText value="#{contact.category.label}" />
+                        </p:column>
+                        <p:column headerText="地址">
+                            <h:outputText value="#{contact.address}" />
+                        </p:column>
+                        <p:column headerText="邮编">
+                            <h:outputText value="#{contact.postCode}" />
+                        </p:column>
+                        <p:column headerText="电话">
+                            <h:outputText value="#{contact.tel}" />
+                        </p:column>
+                        <p:column headerText="移动电话">
+                            <h:outputText value="#{contact.mobile}" />
+                        </p:column>
+                        <p:column headerText="传真">
+                            <h:outputText value="#{contact.fax}" />
+                        </p:column>
+                        <p:column headerText="email">
+                            <h:outputText value="#{contact.email}" />
+                        </p:column>
+                        <p:column headerText="网址">
+                            <h:outputText value="#{contact.website}" />
+                        </p:column>
+                        <p:column headerText="QQ">
+                            <h:outputText value="#{contact.qq}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+                <div align="right">
+                    <p:commandButton id="ok" value="确定" onclick="personDialog.hide();" />
+                </div>
+            </h:form>
+        </p:dialog>
+
     </ui:define>
 </ui:composition>
