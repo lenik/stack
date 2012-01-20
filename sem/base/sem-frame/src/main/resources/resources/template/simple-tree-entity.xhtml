@@ -6,6 +6,10 @@
     <ui:define name="dataContainer">
         <p:treeTable id="treeTable" value="#{bean.rootNode}" var="entry" selectionMode="single"
             selection="#{bean.selectedNode}">
+
+            <p:ajax event="select" update=":mainForm:toolbar" />
+            <p:ajax event="unselect" update=":mainForm:toolbar" />
+
             <ui:insert name="dataHeader">
                 <f:facet name="header">${title}</f:facet>
             </ui:insert>

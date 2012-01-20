@@ -8,15 +8,13 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.free.NotImplementedException;
-import javax.free.ReadOnlyException;
 
-import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
-import com.bee32.icsf.principal.GroupDto;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.ox1.tree.TreeEntity;
 import com.bee32.plover.ox1.tree.TreeEntityDto;
 import com.bee32.plover.ox1.tree.TreeEntityUtils;
 import com.bee32.sem.sandbox.ITreeNodeDecorator;
@@ -96,18 +94,36 @@ public abstract class SimpleTreeEntityViewBean
     }
 
     @Override
+    protected void searchFragmentsChanged() {
+        refreshTree();
+        reindexNodes();
+    }
+
+    /**
+     * Moving the tree node around.
+     */
+    @Override
     protected void _postUpdate(UnmarshalMap uMap)
             throws Exception {
         super._postUpdate(uMap);
-        for (TreeEntityDto<?, ?, ?> dto : uMap.<TreeEntityDto<?, ?, ?>> dtos()) {
-            TreeNode node = findNodeById(dto.getId());
-            TreeNode parentNode = null;
-            if (node != null) {
-                parentNode = node.getParent();
-                UIHelper.detach(node);
+        for (TreeEntity<?, ?> entity : uMap.<TreeEntity<?, ?>> entitySet()) {
+            TreeEntityDto<?, ?, ?> dto = uMap.getSourceDto(entity);
+            Serializable id = dto.getId();
+            if (id == null) {
+                id = entity.getId();
+                if (id == null)
+                    throw new NullPointerException("Null id at post-update.");
+                @SuppressWarnings("unchecked")
+                EntityDto<?, Serializable> _dto = (EntityDto<?, Serializable>) dto;
+                _dto.setId(id);
             }
+
+            TreeNode node = findNodeById(id);
+            if (node != null)
+                UIHelper.detach(node);
             // Create any necessary parent nodes like `mkdir -p`.
             // for (TreeNode ancestor: findAncestorNodes(group))
+            TreeNode parentNode = null;
             if (parentNode == null) {
                 TreeEntityDto<?, ?, ?> parent = dto.getParent();
                 if (parent != null)
@@ -115,23 +131,31 @@ public abstract class SimpleTreeEntityViewBean
                 if (parentNode == null)
                     parentNode = rootNode;
             }
-            new DefaultTreeNode(dto, parentNode);
+            // Change the node selection.
+            if (selectedNode != null)
+                selectedNode.setSelected(false);
+            selectedNode = UIHelper.buildTree(null, listOf(dto), parentNode);
+            selectedNode.setSelected(true);
+            if (parentNode != null)
+                parentNode.setExpanded(true);
         }
     }
 
+    /**
+     * Check dependencies before delete.
+     */
     @Override
     protected boolean _preDelete(UnmarshalMap uMap)
             throws Exception {
         if (!super._preDelete(uMap))
             return false;
-        // check for non-leaves.
         for (TreeEntityDto<?, ?, ?> dto : uMap.<TreeEntityDto<?, ?, ?>> dtos()) {
             if (!dto.isLeaf()) {
                 uiLogger.error("请先删除子结点。");
                 return false;
             }
         }
-        // detach
+        // detach the dto, to reduce the dependencies as much as possible.
         for (TreeEntityDto<?, ?, ?> dto : uMap.<TreeEntityDto<?, ?, ?>> dtos()) {
             if (!dto.isRoot()) {
                 TreeEntityDto<?, ?, ?> parent = dto.getParent();
@@ -142,12 +166,15 @@ public abstract class SimpleTreeEntityViewBean
         return true;
     }
 
+    /**
+     * Remove the tree nodes deleted.
+     */
     @Override
     protected void _postDelete(UnmarshalMap uMap)
             throws Exception {
         super._postDelete(uMap);
-        for (GroupDto group : uMap.<GroupDto> dtos()) {
-            TreeNode node = findNodeById(group.getId());
+        for (TreeEntityDto<?, ?, ?> dto : uMap.<TreeEntityDto<?, ?, ?>> dtos()) {
+            TreeNode node = findNodeById(dto.getId());
             if (node != null)
                 UIHelper.detach(node);
         }
@@ -194,7 +221,19 @@ public abstract class SimpleTreeEntityViewBean
 
     @Override
     public void setSelection(List<?> selection) {
-        throw new ReadOnlyException("You can only change the selection by click a node in the Tree.");
+        if (selection == null || selection.isEmpty())
+            selectedNode = null;
+        else
+            for (Object sel : selection) {
+                TreeEntityDto<?, ?, ?> dto = (TreeEntityDto<?, ?, ?>) sel;
+                Object id = dto.getId();
+                if (id != null) {
+                    TreeNode node = getNodeIndex().get(id);
+                    selectedNode = node;
+                } else {
+                    selectedNode = null;
+                }
+            }
     }
 
 }
