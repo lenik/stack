@@ -25,7 +25,7 @@
             <p:confirmDialog id="deleteConfirmDialog" widgetVar="deleteConfirmDialog" header="删除确认"
                 message="确定要删除吗?" severity="alert" modal="true">
                 <h:form id="deleteConfirmForm" style="margin: 0em 7em 1em">
-                    <p:commandButton id="ok" value="确定" update=":mainForm:dataTable, ${mirrorTargets}"
+                    <p:commandButton id="ok" value="确定" update=":mainForm, ${mirrorTargets}"
                         actionListener="${bean.deleteSelection}" oncomplete="deleteConfirmDialog.hide()" />
                     <p:commandButton id="cancel" value="取消" onclick="deleteConfirmDialog.hide()" type="button" />
                 </h:form>
@@ -97,6 +97,9 @@
         <ui:insert name="optionDialogs">
             <icsf:securityOptionsDialog id="securityDialog" var="securityDialog" />
         </ui:insert>
+        <div id="dialogs.1">
+            <ui:define name="dialogs.1" />
+        </div>
     </ui:define>
 
 </ui:composition>
