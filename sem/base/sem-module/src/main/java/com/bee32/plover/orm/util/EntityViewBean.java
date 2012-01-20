@@ -37,8 +37,8 @@ public abstract class EntityViewBean
     }
 
     @Override
-    protected Class<? extends Entity<?>> getMajorType() {
-        Class<?> majorType = super.getMajorType();
+    protected Class<? extends Entity<?>> getMajorTypeOfContextPage() {
+        Class<?> majorType = super.getMajorTypeOfContextPage();
         if (!Entity.class.isAssignableFrom(majorType))
             throw new IllegalUsageException("The major type should be Entity for entity view bean: " + majorType);
 
@@ -53,9 +53,9 @@ public abstract class EntityViewBean
      *
      * @return <code>null</code> If id parameter is not specified in the rqeuest.
      */
-    protected <E extends Entity<K>, K extends Serializable> Serializable getRequestId() {
+    protected <E extends Entity<K>, K extends Serializable> Serializable getRequestIdOfContextPage() {
         @SuppressWarnings("unchecked")
-        Class<E> entityType = (Class<E>) getMajorType();
+        Class<E> entityType = (Class<E>) getMajorTypeOfContextPage();
 
         String requestId = getRequest().getParameter(StandardViews.ID_PARAM);
         if (requestId == null)
@@ -86,12 +86,12 @@ public abstract class EntityViewBean
      *             in case of Hibernate errors
      */
     protected Entity<?> getRequestEntity(boolean mustExist) {
-        Serializable id = getRequestId();
+        Class<? extends Entity<?>> entityType = getMajorTypeOfContextPage();
+        Serializable id = getRequestIdOfContextPage();
         if (id == null)
             throw new IllegalArgumentException(String.format("Id for %s is not specified.", //
-                    ClassUtil.getTypeName(getMajorType())));
+                    ClassUtil.getTypeName(entityType)));
 
-        Class<? extends Entity<?>> entityType = getMajorType();
         Entity<?> entity;
         if (mustExist)
             entity = asFor(entityType).getOrFail(id);

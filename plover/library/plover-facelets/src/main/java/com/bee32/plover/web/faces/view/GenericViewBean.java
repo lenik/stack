@@ -10,7 +10,7 @@ public abstract class GenericViewBean
 
     private static final long serialVersionUID = 1L;
 
-    protected Class<?> getMajorType() {
+    protected Class<?> getMajorTypeOfContextPage() {
         String servletPath = ThreadHttpContext.getRequest().getServletPath();
         Class<?> majorType = PageDirectory.whichClass(servletPath);
         if (majorType == null)
