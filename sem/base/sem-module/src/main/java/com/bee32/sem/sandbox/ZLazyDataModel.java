@@ -1,5 +1,6 @@
 package com.bee32.sem.sandbox;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +22,7 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
 
     private static final long serialVersionUID = 1L;
 
-    EntityDataModelOptions<E, D> options;
+    final EntityDataModelOptions<E, D> options;
     D selection;
     List<D> loaded;
     Integer lastQueriedCount;
@@ -36,6 +37,14 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
         return FacesContextSupport.getBean(CommonDataManager.class);
     }
 
+    public EntityDataModelOptions<E, D> getOptions() {
+        return options;
+    }
+
+    /**
+     * @param first
+     *            0-based row index.
+     */
     @Override
     public List<D> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         Limit limit = new Limit(first, pageSize);
@@ -84,6 +93,32 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
         return dtos;
     }
 
+    /**
+     * Load a single row.
+     *
+     * @param rowIndex
+     *            0-based row index.
+     * @return <code>null</code> if no row available at the specified row index.
+     */
+    public D load(int rowIndex) {
+        return load(rowIndex, null, SortOrder.ASCENDING);
+    }
+
+    /**
+     * Load a single row.
+     *
+     * @param rowIndex
+     *            0-based row index.
+     * @return <code>null</code> if no row available at the specified row index.
+     */
+    public D load(int rowIndex, String sortField, SortOrder sortOrder) {
+        List<D> list = load(rowIndex, 1, sortField, sortOrder, Collections.<String, String> emptyMap());
+        if (list.isEmpty())
+            return null;
+        assert list.size() == 1;
+        return list.get(0);
+    }
+
     @Override
     public int getRowIndex() {
         return super.getRowIndex();
@@ -113,7 +148,7 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
     }
 
     public void refreshRowCount() {
-        if (!options.autoRefreshCount)
+        if (!options.isAutoRefreshCount())
             executeCountQuery();
     }
 
