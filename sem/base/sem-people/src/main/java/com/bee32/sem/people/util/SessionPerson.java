@@ -58,7 +58,7 @@ public class SessionPerson
                 PersonRoleDto firstRole = roles.iterator().next();
                 OrgUnitDto orgUnit = firstRole.getOrgUnit();
                 for (OrgUnitDto node : orgUnit.getChain()) {
-                    String name = node.getName();
+                    String name = node.getLabel();
                     chain.add(name);
                 }
             }

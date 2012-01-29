@@ -14,7 +14,6 @@ public class OrgUnitDto
 
     private static final long serialVersionUID = 1L;
 
-    String name;
     OrgDto org;
     ContactDto contact;
     GroupDto forWhichGroup;
@@ -29,7 +28,6 @@ public class OrgUnitDto
 
     @Override
     protected void _marshal(OrgUnit source) {
-        name = source.getName();
         org = mref(OrgDto.class, source.getOrg());
         contact = mref(ContactDto.class, source.getContact());
         forWhichGroup = mref(GroupDto.class, source.getForWhichGroup());
@@ -37,7 +35,6 @@ public class OrgUnitDto
 
     @Override
     protected void _unmarshalTo(OrgUnit target) {
-        target.setName(name);
         merge(target, "org", org);
         merge(target, "contact", contact);
         merge(target, "forWhichGroup", forWhichGroup);
@@ -46,21 +43,15 @@ public class OrgUnitDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
-        name = map.getString("name");
         org = new OrgDto().ref(map.getNInt("org"));
         contact = new ContactDto().ref(map.getNInt("contact"));
         forWhichGroup = new GroupDto().ref(map.getInt("forWhichGroup"));
     }
 
-    @NLength(min = 2, max = OrgUnit.NAME_LENGTH)
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        if (name == null)
-            throw new NullPointerException("name");
-        this.name = name;
+    @NLength(min = 2, max = OrgUnit.LABEL_LENGTH)
+    @Override
+    public String getLabel() {
+        return super.getLabel();
     }
 
     @NotNull

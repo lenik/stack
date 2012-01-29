@@ -1,7 +1,6 @@
 package com.bee32.sem.people.entity;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -17,10 +16,7 @@ public class OrgUnit
 
     private static final long serialVersionUID = 1L;
 
-    public static final int NAME_LENGTH = 30;
-
     Org org;
-    String name;
     Contact contact;
     Group forWhichGroup;
 
@@ -37,18 +33,6 @@ public class OrgUnit
         if (org == null)
             throw new NullPointerException("org");
         this.org = org;
-    }
-
-    // @NaturalId
-    @Column(length = NAME_LENGTH, nullable = false)
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        if (name == null)
-            throw new NullPointerException("name");
-        this.name = name;
     }
 
     /**
