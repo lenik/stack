@@ -1,135 +1,49 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core"
-    xmlns:sem="http://bee32.com/sem/functions" xmlns:p="http://primefaces.org/ui"
-    xmlns:t="http://myfaces.apache.org/tomahawk">
-<ui:composition template="/template/primefaces.xhtml">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:p="http://primefaces.org/ui"
+    xmlns:t="http://myfaces.apache.org/tomahawk" template="/template/simple-tree-entity.xhtml">
 
-    <ui:define name="title">会计科目管理</ui:define>
+    <ui:param name="title" value="会计科目管理" />
+    <ui:param name="bean" value="#{accountSubjectAdminBean}" />
 
-    <ui:define name="content">
+    <ui:define name="dataColumns">
+        <p:column>
+            <f:facet name="header">编号</f:facet>
+            <h:outputText value="#{entry.name}" />
+        </p:column>
+        <p:column>
+            <f:facet name="header">会计科目名称</f:facet>
+            <h:outputText value="#{entry.label}" />
+        </p:column>
+    </ui:define>
 
-		<h:form id="mainForm">
-            <p:contextMenu for="accountSubjectTable">
-                <p:menuitem value="修改" update="editForm:editPanel"
-                    oncomplete="editDialog.show()"
-                    actionListener="#{accountSubjectAdminBean.modifyAccountSubject}" />
-                <p:menuitem value="删除"
-                    oncomplete="deleteConfirmDialog.show()"
-                    actionListener="#{accountSubjectAdminBean.chooseAccountSubject}" />
-            </p:contextMenu>
+    <ui:define name="editDialog">
+        <p:dialog header="编辑会计科目" widgetVar="editDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
+            <h:form id="form">
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="上级科目" />
+                    <h:panelGroup>
+                        <h:outputText id="parentSubjectCode" value="#{bean.parentSubject.name}" />
+                        <p:inputText id="parentSubject" value="#{bean.parentSubject.label}" disabled="true" />
+                        <p:commandButton value="..." oncomplete="chooseParentSubjectDialog.show();" />
+                    </h:panelGroup>
 
-            <p:commandButton value="新增科目"
-                actionListener="#{accountSubjectAdminBean.newAccountSubject}"
-                onclick="editDialog.show();" async="true"
-                update="editForm:editPanel" />
-            <p:treeTable id="accountSubjectTable"
-                value="#{accountSubjectAdminBean.root}"
-                var="accountSubject"
-                selectionMode="single"
-                selection="#{accountSubjectAdminBean.selectedNode}">
+                    <h:outputLabel value="编号" />
+                    <p:inputText id="name" value="#{obj.name}" />
 
-                <f:facet name="header">
-                    <h:outputText value="右击表格查看更多操作"/>
-                </f:facet>
+                    <h:outputLabel value="科目名称" />
+                    <p:inputText id="label" value="#{obj.label}" />
+                </h:panelGrid>
 
-                <p:column>
-                    <f:facet name="header">编号</f:facet>
-                    <h:outputText value="#{accountSubject.name}" />
-                </p:column>
-                <p:column>
-                    <f:facet name="header">会计科目名称</f:facet>
-                    <h:outputText value="#{accountSubject.label}" />
-                </p:column>
-            </p:treeTable>
-		</h:form>
+                <div align="right">
+                    <p:commandButton id="save-validated" value="保存" actionListener="#{bean.save}"
+                        update=":mainForm, " oncomplete="editDialog.hide();" />
+                    <p:commandButton id="cancel" value="取消" oncomplete="editDialog.hide();" />
+                </div>
+            </h:form>
+        </p:dialog>
+    </ui:define>
 
-        <h:form id="editForm">
-            <p:dialog header="新增/修改会计科目" widgetVar="editDialog" modal="true" height="500" width="640">
-                <p:outputPanel id="editPanel">
-                    <h:panelGrid columns="2">
-                        <h:outputLabel value="上级科目" />
-                        <h:panelGrid columns="2">
-                            <t:panelGrid columns="3">
-                                <h:outputText id="parentSubjectCode" value="#{accountSubjectAdminBean.parentSubject.name}"/>
-                                <p:inputText id="parentSubject" value="#{accountSubjectAdminBean.parentSubject.label}" disabled="true"/>
-                                <p:commandButton
-                                    value="..."
-                                    oncomplete="chooseParentSubjectDialog.show();"
-                                    disabled="#{not accountSubjectAdminBean.editNewStatus}"/>
-                            </t:panelGrid>
-                        </h:panelGrid>
-
-                        <h:outputLabel value="编号" />
-                        <p:inputText id="name"
-                            value="#{accountSubjectAdminBean.accountSubject.name}"
-                            disabled="#{not accountSubjectAdminBean.editNewStatus}" />
-
-                        <h:outputLabel value="科目名称" />
-                        <p:inputText id="label"
-                            value="#{accountSubjectAdminBean.accountSubject.label}"/>
-
-                        <t:panelGroup colspan="2">
-                            <t:panelGrid columns="2">
-                                <p:commandButton value="保存"
-                                    actionListener="#{accountSubjectAdminBean.save}"
-                                    update="mainForm chooseParentSubjectForm:chooseSubjectParentTree"
-                                    oncomplete="editDialog.hide();" />
-                                <p:commandButton value="取消" oncomplete="editDialog.hide();" />
-                            </t:panelGrid>
-                        </t:panelGroup>
-                    </h:panelGrid>
-                </p:outputPanel>
-            </p:dialog>
-        </h:form>
-
-        <h:form id="deleteConfirmForm">
-            <p:confirmDialog message="确定要删除吗?" width="200"
-                    header="删除角色确认" severity="alert" widgetVar="deleteConfirmDialog" modal="true">
-
-                <p:commandButton value="确定" update="mainForm chooseParentSubjectForm:chooseSubjectParentTree" actionListener="#{accountSubjectAdminBean.delete}" oncomplete="deleteConfirmDialog.hide()"/>
-                <p:commandButton value="取消" onclick="deleteConfirmDialog.hide()" type="button" />
-
-            </p:confirmDialog>
-        </h:form>
-
-
-        <h:form id="chooseParentSubjectForm">
-            <p:dialog header="选择上级科目" widgetVar="chooseParentSubjectDialog"
-                modal="true" height="500" width="640">
-                <p:panel id="chooseSubjectParentPanel">
-
-                    <p:treeTable id="chooseSubjectParentTree"
-                        value="#{accountSubjectAdminBean.root}"
-                        var="accountSubject" selectionMode="single"
-                        selection="#{accountSubjectAdminBean.selectedParentSubjectNode}"
-                        scrollable="true"
-                        scrollHeight="380" scrollWidth="500">
-
-                        <p:column>
-                            <f:facet name="header">编号</f:facet>
-                            <h:outputText value="#{accountSubject.name}" />
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">科目名称</f:facet>
-                            <h:outputText value="#{accountSubject.label}" />
-                        </p:column>
-                    </p:treeTable>
-
-
-                    <h:panelGrid columns="2">
-                        <p:commandButton value="确定"
-                            actionListener="#{accountSubjectAdminBean.selectParentSubject}"
-                            update="editForm:parentSubject editForm:parentSubjectCode editForm:name"
-                            oncomplete="chooseParentSubjectDialog.hide();" />
-                        <p:commandButton value="取消"
-                            oncomplete="chooseParentSubjectDialog.hide();" />
-                    </h:panelGrid>
-
-                </p:panel>
-            </p:dialog>
-        </h:form>
-	</ui:define>
+    <ui:define name="dialogs">
+        <sem:chooseAccountSubjectDialog />
+    </ui:define>
 </ui:composition>
-</html>
