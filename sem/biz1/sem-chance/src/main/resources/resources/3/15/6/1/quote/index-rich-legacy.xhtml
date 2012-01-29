@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core"
+    xmlns:sem="http://bee32.com/sem/functions" xmlns:p="http://primefaces.org/ui"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+<!-- InstanceBegin template="/Templates/seccaJsf.dwt.jsp" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<ui:composition template="/template/primefaces.xhtml">
+
+    <ui:define name="title">报价单(做好以后整合到机会)</ui:define>
+
+    <ui:define name="content">
+
+        <h:form id="main">
+            <p:panel>
+                <p:toolbar id="toolbar">
+                    <p:toolbarGroup align="left">
+                        <p:commandButton value="编辑" />
+                        <p:commandButton value="详细" actionListener="#{quotationBean.viewDetail}" update="main:mx"
+                            oncomplete="dlg.show();" />
+                        <p:commandButton value="转成订单" />
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <p:dataTable id="invoiceList" var="item" value="#{quotationBean.quotations}"
+                    selection="#{quotationBean.selectedQuotation}" selectionMode="single"
+                    rowKey="#{item.id}" rowIndexVar="rowIndex">
+
+                    <p:ajax event="rowSelect" listener="#{quotationBean.onRowSelect}" update="main:toolbar" />
+                    <p:ajax event="rowUnselect" listener="#{quotationBean.onRowUnselect}" update="main:toolbar" />
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="序号" />
+                        </f:facet>
+                        <h:outputText value="#{rowIndex + 1}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="标题" />
+                        </f:facet>
+                        <h:outputText value="#{item.subject}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="报价日期" />
+                        </f:facet>
+                        <h:outputText value="#{item.createdDate}" />
+                    </p:column>
+                </p:dataTable>
+
+                <p:dialog header="报价单" widgetVar="dlg" height="400" width="600">
+                    <t:panelGrid columns="2">
+                        <h:outputLabel for="subject" value="标题:" />
+                        <p:inputText id="subject" value="#{quotationBean.quotation.subject}" />
+
+                        <h:outputLabel for="chance" value="机会:" />
+                        <p:inputText id="chance" value="#{quotationBean.quotation.chance.subject}" />
+
+                        <h:outputLabel for="amount" value="总金额:" />
+                        <p:inputText id="amount" value="#{quotationBean.quotation.amount}" />
+
+                        <h:outputLabel for="itemList" value="明细:" />
+                        <t:panelGroup colspan="2">
+
+                            <p:dataTable var="item" value="#{quotationBean.quotation.items}">
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="物料" />
+                                    </f:facet>
+                                    <h:outputText value="#{item.material}" />
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="折扣" />
+                                    </f:facet>
+                                    <h:outputText value="#{item.discount}" />
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="单价" />
+                                    </f:facet>
+                                    <h:outputText value="#{item.price}" />
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="数目" />
+                                    </f:facet>
+                                    <h:outputText value="#{item.number}" />
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="备注" />
+                                    </f:facet>
+                                    <h:outputText value="#{item.remark}" />
+                                </p:column>
+                            </p:dataTable>
+                            <p:commandButton value="..." title="添加明细" onclick="materialDlg.show();" />
+                        </t:panelGroup>
+                        <h:outputLabel for="recommend" value="交付说明:" />
+                        <p:inputTextarea id="recommend" value="#{quotationBean.quotation.recommend}" />
+
+                        <h:outputLabel for="payment" value="付款说明:" />
+                        <p:inputTextarea id="payment" value="#{quotationBean.quotation.payment}" />
+
+                        <h:outputLabel for="remark" value="备注:" />
+                        <p:inputTextarea id="remark" value="#{quotationBean.quotation.remark}" />
+                    </t:panelGrid>
+                </p:dialog>
+            </p:panel>
+
+        </h:form>
+        <h:form id="materialForm">
+            <p:dialog header="选择物料" widgetVar="materialDlg" height="480" width="600">
+                <p:panel id="mp">
+                    <t:panelGrid columns="2">
+                        <p:inputText value="#{priceViewBean.materialPattern}" />
+                        <p:commandButton value="查找" actionListener="#{basePriceBean.findMaterial}" update="matrialForm:mp" />
+
+                        <t:panelGroup colspan="2">
+                            <p:dataTable var="item"
+                                value="#{basePriceBean.material}"
+                                scrollable="true" scrollWidth="600"
+                                scrollHeight="350">
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="物料名称" />
+                                    </f:facet>
+                                    <h:outputText value="#{item}" />
+                                </p:column>
+                            </p:dataTable>
+                        </t:panelGroup>
+                    </t:panelGrid>
+                </p:panel>
+            </p:dialog>
+        </h:form>
+
+    </ui:define>
+</ui:composition>
+</html>

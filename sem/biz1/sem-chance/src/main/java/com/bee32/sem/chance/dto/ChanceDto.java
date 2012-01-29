@@ -37,11 +37,6 @@ public class ChanceDto
 
     String address;
 
-    // View-Related
-
-    ChancePartyDto selectedParty;
-    ChanceActionDto selectedAction;
-
     SingleVerifierSupportDto singleVerifierSupport;
 
     public ChanceDto() {
@@ -225,22 +220,6 @@ public class ChanceDto
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public ChancePartyDto getSelectedParty() {
-        return selectedParty;
-    }
-
-    public void setSelectedParty(ChancePartyDto selectedParty) {
-        this.selectedParty = selectedParty;
-    }
-
-    public ChanceActionDto getSelectedAction() {
-        return selectedAction;
-    }
-
-    public void setSelectedAction(ChanceActionDto selectedAction) {
-        this.selectedAction = selectedAction;
     }
 
     void refreshStage() {
