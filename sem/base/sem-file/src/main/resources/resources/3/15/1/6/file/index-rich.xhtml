@@ -75,52 +75,40 @@
             actionListener="${bean.addTag}" update=":editDialog:form" />
     </ui:define>
 
-    <ui:define name="editDialog">
-        <p:dialog id="editDialog" header="文件属性设置" widgetVar="editDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
-            <c:set var="obj" value="${bean.activeObject}" />
-            <h:form id="form" style="max-height: 30em; margin: 1em">
+    <ui:define name="editDialogContent">
+        <c:set var="obj" value="${bean.activeObject}" />
+        <h:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
+            <h:outputText value="文件名" />
+            <p:inputText value="${obj.name}" />
 
-                <h:panelGrid rendered="${obj != null}" columns="2" columnClasses="detail_col_title,detail_col_value">
-                    <h:outputText value="文件名" />
-                    <p:inputText value="${obj.name}" />
+            <h:outputText value="标题" />
+            <p:inputText value="${obj.label}" />
 
-                    <h:outputText value="标题" />
-                    <p:inputText value="${obj.label}" />
+            <h:outputText value="描述信息" />
+            <p:inputText value="${obj.description}" />
+        </h:panelGrid>
 
-                    <h:outputText value="描述信息" />
-                    <p:inputText value="${obj.description}" />
-                </h:panelGrid>
+        <p:fieldset legend="标签" toggleable="false">
+            <p:dataTable id="tagTable" value="${obj.tags}" var="tag" resizableColumns="true" rowIndexVar="rowIndex">
 
-                <p:fieldset rendered="${obj != null}" legend="标签" toggleable="false">
-                    <p:dataTable id="tagTable" value="${obj.tags}" var="tag" resizableColumns="true"
-                        rowIndexVar="rowIndex">
+                <f:facet name="header">文件关联的标签集</f:facet>
+                <p:column headerText="序号" style="width: 4em;">
+                    <h:outputText value="${rowIndex+1}" />
+                </p:column>
 
-                        <f:facet name="header">文件关联的标签集</f:facet>
-                        <p:column headerText="序号" style="width: 4em;">
-                            <h:outputText value="${rowIndex+1}" />
-                        </p:column>
+                <p:column headerText="名称" style="width: 10em;">
+                    <h:outputText value="${tag.name}" />
+                </p:column>
 
-                        <p:column headerText="名称" style="width: 10em;">
-                            <h:outputText value="${tag.name}" />
-                        </p:column>
-
-                        <p:column headerText="操作" style="width: 3em;">
-                            <p:commandLink title="删除" action="${bean.removeTag}" update=":editDialog:form:tagTable">
-                                <f:setPropertyActionListener value="${tag}" target="${bean.selectedTag}" />
-                                <p:graphicImage value="${location.ICON}/etool16/delete_edit.gif" />
-                            </p:commandLink>
-                        </p:column>
-                    </p:dataTable>
-                    <p:commandButton value="添加标签" update="tagTable" onclick="addTagDialog.show()" />
-                </p:fieldset>
-
-                <div align="right">
-                    <p:commandButton id="save-validated" value="保存" actionListener="${bean.save}"
-                        update=":mainForm:dataTable" oncomplete="editDialog.hide()" />
-                    <p:commandButton id="cancel" value="取消" onclick="editDialog.hide()" />
-                </div>
-            </h:form>
-        </p:dialog>
+                <p:column headerText="操作" style="width: 3em;">
+                    <p:commandLink title="删除" action="${bean.removeTag}" update=":editDialog:form:tagTable">
+                        <f:setPropertyActionListener value="${tag}" target="${bean.selectedTag}" />
+                        <p:graphicImage value="${location.ICON}/etool16/delete_edit.gif" />
+                    </p:commandLink>
+                </p:column>
+            </p:dataTable>
+            <p:commandButton value="添加标签" update="tagTable" onclick="addTagDialog.show()" />
+        </p:fieldset>
     </ui:define>
 
 </ui:composition>

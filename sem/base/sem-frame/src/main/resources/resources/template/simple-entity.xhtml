@@ -90,7 +90,19 @@
         <ui:insert name="editDialogWrapper">
             <f:subview id="editDialog">
                 <ui:insert name="editDialog">
-                    <h:form id="form" />
+                    <p:dialog header="编辑${title}" id="editDialog" widgetVar="editDialog" modal="true"
+                        dynamic="${viewConfig.dynamicDialog}">
+                        <h:form id="form" style="max-height: 30em; margin: 1em">
+                            <h:panelGroup rendered="${bean.activeObject !=null}">
+                                <ui:insert name="editDialogContent">The edit dialog's content is undefined.</ui:insert>
+                            </h:panelGroup>
+                            <div align="right">
+                                <p:commandButton id="save-validated" value="保存" actionListener="#{bean.save}"
+                                    update=":mainForm:dataContainer, ${mirrorTargets}" oncomplete="editDialog.hideValidated(args)" />
+                                <p:commandButton id="cancel" value="取消" onclick="editDialog.hide()" />
+                            </div>
+                        </h:form>
+                    </p:dialog>
                 </ui:insert>
             </f:subview>
         </ui:insert>

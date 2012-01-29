@@ -16,62 +16,52 @@
         </p:column>
     </ui:define>
 
-    <ui:define name="editDialog">
-        <p:dialog header="新增/编辑策略" widgetVar="editDialog" modal="true">
-            <h:form id="form" style="max-height: 30em; margin: 1em">
-                <c:set var="obj" value="#{bean.activeObject}" />
-                <t:panelGrid rendered="${obj != null}" columns="2" columnClasses="detail_col_title,detail_col_value">
-                    <h:outputLabel for="label" value="名称" />
-                    <p:inputText id="label" value="#{obj.label}" />
+    <ui:define name="editDialogContent">
+        <c:set var="obj" value="#{bean.activeObject}" />
+        <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
+            <h:outputLabel for="label" value="名称" />
+            <p:inputText id="label" title="名称" value="#{obj.label}" />
 
-                    <h:outputLabel for="description" value="描述" />
-                    <p:inputText id="description" value="#{obj.description}" />
-                </t:panelGrid>
+            <h:outputLabel for="description" value="描述" />
+            <p:inputText id="description" title="描述" value="#{obj.description}" />
+        </t:panelGrid>
 
-                <p:fieldset rendered="${obj != null}" legend="策略" toggleable="false">
-                    <p:dataTable id="entryTable" value="#{obj.entries}" var="entry" resizableColumns="true"
-                        rowIndexVar="rowIndex">
-                        <f:facet name="header">库存审核策略包含的策略</f:facet>
-                        <p:column headerText="序号" style="width: 4em;">
-                            <h:outputText value="#{rowIndex+1}" />
-                        </p:column>
+        <p:fieldset legend="策略" toggleable="false">
+            <p:dataTable id="entryTable" value="#{obj.entries}" var="entry" resizableColumns="true"
+                rowIndexVar="rowIndex">
+                <f:facet name="header">库存审核策略包含的策略</f:facet>
+                <p:column headerText="序号" style="width: 4em;">
+                    <h:outputText value="#{rowIndex+1}" />
+                </p:column>
 
-                        <p:column headerText="库存单据类型" style="width: 10em;">
-                            <h:outputText value="#{entry.subject.displayName}" />
-                        </p:column>
+                <p:column headerText="库存单据类型" style="width: 10em;">
+                    <h:outputText value="#{entry.subject.displayName}" />
+                </p:column>
 
-                        <p:column headerText="策略名称">
-                            <h:outputText value="#{entry.policy.label}" />
-                        </p:column>
+                <p:column headerText="策略名称">
+                    <h:outputText value="#{entry.policy.label}" />
+                </p:column>
 
-                        <p:column headerText="描述">
-                            <h:outputText value="#{entry.policy.description}" />
-                        </p:column>
+                <p:column headerText="描述">
+                    <h:outputText value="#{entry.policy.description}" />
+                </p:column>
 
-                        <p:column headerText="创建日期">
-                            <h:outputText value="#{entry.policy.createdDate}">
-                                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
+                <p:column headerText="创建日期">
+                    <h:outputText value="#{entry.policy.createdDate}">
+                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                    </h:outputText>
+                </p:column>
 
-                        <p:column headerText="操作" style="width: 3em;">
-                            <p:commandLink title="删除" action="#{bean.removeEntry}" update=":editDialog:form:entryTable">
-                                <f:setPropertyActionListener value="#{entry}" target="#{bean.selectedEntry}" />
-                                <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
-                            </p:commandLink>
-                        </p:column>
-                    </p:dataTable>
-                    <p:commandButton value="增加项目" actionListener="#{bean.newEntry}" update=":addEntryForm"
-                        onclick="addEntryDialog.show()" />
-                </p:fieldset>
-
-                <div align="right">
-                    <p:commandButton id="save-validated" value="保存" actionListener="#{bean.save}"
-                        update=":mainForm:dataTable" oncomplete="editDialog.hideValidated(args)" />
-                    <p:commandButton id="cancel" value="取消" onclick="editDialog.hide()" />
-                </div>
-            </h:form>
-        </p:dialog>
+                <p:column headerText="操作" style="width: 3em;">
+                    <p:commandLink title="删除" action="#{bean.removeEntry}" update=":editDialog:form:entryTable">
+                        <f:setPropertyActionListener value="#{entry}" target="#{bean.selectedEntry}" />
+                        <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
+                    </p:commandLink>
+                </p:column>
+            </p:dataTable>
+            <p:commandButton value="增加项目" actionListener="#{bean.newEntry}" update=":addEntryForm"
+                onclick="addEntryDialog.show()" />
+        </p:fieldset>
     </ui:define>
 
     <ui:define name="dialogs">

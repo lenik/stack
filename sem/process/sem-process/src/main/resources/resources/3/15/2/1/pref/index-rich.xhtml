@@ -19,47 +19,35 @@
         </p:column>
     </ui:define>
 
-    <ui:define name="editDialog">
-        <p:dialog header="配置项" widgetVar="editDialog" modal="true">
-            <h:form id="form" style="max-height: 30em; margin: 1em">
-                <c:set var="obj" value="#{bean.activeObject}" />
-                <h:panelGroup rendered="#{obj != null}">
-                    <h:inputHidden id="id" value="#{obj.id}" />
+    <ui:define name="editDialogContent">
+        <c:set var="obj" value="#{bean.activeObject}" />
+        <h:inputHidden id="id" value="#{obj.id}" />
 
-                    <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
-                        <h:outputLabel for="typeId" value="实体类型" />
-                        <p:selectOneMenu id="typeId" value="#{obj.typeId}">
-                            <f:selectItem itemValue="" itemLabel="--选择--" />
-                            <f:selectItems value="#{bean.verifiableTypes}" var="type" itemValue="${type.id}"
-                                itemLabel="${type.displayName}" />
-                            <p:ajax listener="#{bean.refreshCandidates}" update="candidates" event="change" />
-                        </p:selectOneMenu>
+        <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
+            <h:outputLabel for="typeId" value="实体类型" />
+            <p:selectOneMenu id="typeId" value="#{obj.typeId}">
+                <f:selectItem itemValue="" itemLabel="--选择--" />
+                <f:selectItems value="#{bean.verifiableTypes}" var="type" itemValue="${type.id}"
+                    itemLabel="${type.displayName}" />
+                <p:ajax listener="#{bean.refreshCandidates}" update="candidates" event="change" />
+            </p:selectOneMenu>
 
-                        <h:outputLabel for="description" value="对应的审核策略" />
-                        <p:selectOneMenu id="candidates" value="#{obj.preferredPolicy.id}">
-                            <f:selectItems value="${bean.candidates}" var="candidate" itemValue="${candidate.id}"
-                                itemLabel="${candidate.label} - ${candidate.description}" />
-                        </p:selectOneMenu>
+            <h:outputLabel for="description" value="对应的审核策略" />
+            <p:selectOneMenu id="candidates" value="#{obj.preferredPolicy.id}">
+                <f:selectItems value="${bean.candidates}" var="candidate" itemValue="${candidate.id}"
+                    itemLabel="${candidate.label} - ${candidate.description}" />
+            </p:selectOneMenu>
 
-                        <h:outputLabel for="description" value="备注" />
-                        <p:inputText id="description" value="#{obj.description}" />
+            <h:outputLabel for="description" value="备注" />
+            <p:inputText id="description" value="#{obj.description}" />
 
-                        <h:outputLabel for="mode" value="更新模式" />
-                        <p:selectOneMenu id="mode" value="#{bean.mode}">
-                            <f:selectItem itemValue="0" itemLabel="自动：当配置变化时更新对象" />
-                            <f:selectItem itemValue="1" itemLabel="强制：立即更新所有对象" />
-                            <f:selectItem itemValue="2" itemLabel="不更新：仅修改配置" />
-                        </p:selectOneMenu>
-                    </t:panelGrid>
-
-                    <div align="right">
-                        <p:commandButton id="save-validated" value="保存" actionListener="#{bean.save}"
-                            update=":mainForm:dataTable" oncomplete="editDialog.hideValidated(args)" />
-                        <p:commandButton value="取消" onclick="editDialog.hide()" />
-                    </div>
-                </h:panelGroup>
-            </h:form>
-        </p:dialog>
+            <h:outputLabel for="mode" value="更新模式" />
+            <p:selectOneMenu id="mode" value="#{bean.mode}">
+                <f:selectItem itemValue="0" itemLabel="自动：当配置变化时更新对象" />
+                <f:selectItem itemValue="1" itemLabel="强制：立即更新所有对象" />
+                <f:selectItem itemValue="2" itemLabel="不更新：仅修改配置" />
+            </p:selectOneMenu>
+        </t:panelGrid>
     </ui:define>
 
 </ui:composition>
