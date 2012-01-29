@@ -24,6 +24,7 @@ import com.bee32.plover.ox1.dict.NameDictDto;
 import com.bee32.plover.ox1.dict.PoNode;
 import com.bee32.plover.ox1.dict.PoTreeBuilder;
 import com.bee32.plover.ox1.tree.TreeEntityDto;
+import com.bee32.plover.web.faces.utils.SelectableList;
 
 public class UIHelper
         extends FacesContextSupport2 {
@@ -80,6 +81,10 @@ public class UIHelper
         return new ZLazyDataModel<E, D>(options);
     }
 
+    /**
+     * @see SelectableList
+     */
+    @Deprecated
     public static <T> ListHolder<T> selectable(List<T> list) {
         if (list == null)
             throw new NullPointerException("list");
@@ -87,36 +92,51 @@ public class UIHelper
     }
 
     public static TreeNode buildCodeTree(Collection<? extends NameDict> objs) {
+        DefaultTreeNode virtualRoot = new DefaultTreeNode();
+        buildCodeTree(objs, virtualRoot);
+        return virtualRoot;
+    }
+
+    public static List<TreeNode> buildCodeTree(Collection<? extends NameDict> objs, TreeNode parentNode) {
         CodeTreeBuilder ctb = new CodeTreeBuilder();
         ctb.learn(objs);
-        return _convertTree(ctb);
+        return buildPoTree(ctb, parentNode);
     }
 
     public static TreeNode buildDtoCodeTree(Collection<? extends NameDictDto<?>> dtos) {
+        DefaultTreeNode virtualRoot = new DefaultTreeNode();
+        buildDtoCodeTree(dtos, virtualRoot);
+        return virtualRoot;
+    }
+
+    public static List<TreeNode> buildDtoCodeTree(Collection<? extends NameDictDto<?>> dtos, TreeNode parentNode) {
         DtoCodeTreeBuilder ctb = new DtoCodeTreeBuilder();
         ctb.learn(dtos);
-        return _convertTree(ctb);
+        return buildPoTree(ctb, parentNode);
     }
 
-    static TreeNode _convertTree(PoTreeBuilder<?, ?> ptb) {
+    static List<TreeNode> buildPoTree(PoTreeBuilder<?, ?> ptb, TreeNode parentNode) {
         ptb.reduce();
         PoNode<?> root = ptb.getRoot();
-        DefaultTreeNode guiRoot = new DefaultTreeNode();
-        _convertTree(root, guiRoot);
-        return guiRoot;
+        List<TreeNode> toplevels = new ArrayList<TreeNode>();
+        _convertTree(root, parentNode, toplevels);
+        return toplevels;
     }
 
-    static TreeNode _convertTree(PoNode<?> src, TreeNode guiParent) {
+    static TreeNode _convertTree(PoNode<?> src, TreeNode parentNode, Collection<TreeNode> toplevels) {
         Object data = src.getData();
-        TreeNode result;
+        TreeNode treeNode;
         if (src.isVirtual())
-            result = guiParent;
-        else
-            result = new DefaultTreeNode(data, guiParent);
-        for (PoNode<?> child : src.getChildren()) {
-            _convertTree(child, result);
+            treeNode = parentNode;
+        else {
+            treeNode = new DefaultTreeNode(data, parentNode);
+            toplevels.add(treeNode);
+            toplevels = null;
         }
-        return result;
+        for (PoNode<?> child : src.getChildren()) {
+            _convertTree(child, treeNode, toplevels);
+        }
+        return treeNode;
     }
 
     /**
