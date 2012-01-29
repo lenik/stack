@@ -1,4 +1,4 @@
-package com.bee32.sem.inventory.web;
+package com.bee32.sem.inventory.web.legacy;
 
 import java.io.File;
 import java.io.FileOutputStream;
