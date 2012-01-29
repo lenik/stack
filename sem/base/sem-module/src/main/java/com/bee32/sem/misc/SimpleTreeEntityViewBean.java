@@ -2,7 +2,6 @@ package com.bee32.sem.misc;
 
 import java.io.Serializable;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -13,11 +12,11 @@ import org.primefaces.model.TreeNode;
 
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.ox1.tree.TreeEntity;
 import com.bee32.plover.ox1.tree.TreeEntityDto;
 import com.bee32.plover.ox1.tree.TreeEntityUtils;
-import com.bee32.sem.sandbox.ITreeNodeDecorator;
 import com.bee32.sem.sandbox.UIHelper;
 
 public abstract class SimpleTreeEntityViewBean
@@ -26,40 +25,26 @@ public abstract class SimpleTreeEntityViewBean
     private static final long serialVersionUID = 1L;
 
     transient Map<Serializable, TreeEntityDto<?, ?, ?>> index;
-    transient Map<Serializable, TreeNode> nodeIndex;
+    transient TreeNodeIndexer nodeIndex;
 
     TreeNode rootNode;
     TreeNode selectedNode;
 
-    public <E extends Entity<?>, D extends EntityDto<? super E, ?>> SimpleTreeEntityViewBean(Class<E> entityClass,
-            Class<D> dtoClass, int selection, ICriteriaElement... criteriaElements) {
+    public <E extends Entity<K>, D extends EntityDto<? super E, K>, K extends Serializable> //
+    SimpleTreeEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int selection,
+            ICriteriaElement... criteriaElements) {
         super(entityClass, dtoClass, selection | TreeEntityDto.PARENT, criteriaElements);
-    }
-
-    class NodeIndexer
-            implements ITreeNodeDecorator {
-
-        @Override
-        public void decorate(TreeNode node) {
-            TreeEntityDto<?, ?, ?> dto = (TreeEntityDto<?, ?, ?>) node.getData();
-            if (dto != null) {
-                Serializable id = dto.getId();
-                assert id != null;
-                nodeIndex.put(id, node);
-            }
-        }
-
     }
 
     protected synchronized TreeNode loadTree() {
         List<? extends TreeEntityDto<?, ?, ?>> dtos = (List<? extends TreeEntityDto<?, ?, ?>>) dataModel.listDtos();
-        index = TreeEntityUtils.index(dtos);
+        index = DTOs.index(dtos);
 
         @SuppressWarnings({ "unchecked", "rawtypes" })
         Set<? extends TreeEntityDto<?, ?, ?>> roots = TreeEntityUtils.rebuildTree((List) dtos, (Map) index);
 
-        nodeIndex = new HashMap<Serializable, TreeNode>();
-        return UIHelper.buildTree(new NodeIndexer(), roots);
+        nodeIndex = new TreeNodeIndexer();
+        return UIHelper.buildTree(nodeIndex, roots);
     }
 
     Map<Serializable, TreeEntityDto<?, ?, ?>> getIndex() {
@@ -77,8 +62,8 @@ public abstract class SimpleTreeEntityViewBean
         if (nodeIndex == null) {
             synchronized (this) {
                 if (nodeIndex == null) {
-                    nodeIndex = new HashMap<Serializable, TreeNode>();
-                    UIHelper.decorateTree(new NodeIndexer(), rootNode);
+                    nodeIndex = new TreeNodeIndexer();
+                    nodeIndex.learn(rootNode);
                 }
             }
         }
@@ -118,26 +103,28 @@ public abstract class SimpleTreeEntityViewBean
                 _dto.setId(id);
             }
 
-            TreeNode node = findNodeById(id);
-            if (node != null)
-                UIHelper.detach(node);
-            // Create any necessary parent nodes like `mkdir -p`.
-            // for (TreeNode ancestor: findAncestorNodes(group))
-            TreeNode parentNode = null;
-            if (parentNode == null) {
-                TreeEntityDto<?, ?, ?> parent = dto.getParent();
-                if (parent != null)
-                    parentNode = findNodeById(parent.getId());
-                if (parentNode == null)
-                    parentNode = rootNode;
-            }
-            // Change the node selection.
             if (selectedNode != null)
                 selectedNode.setSelected(false);
-            selectedNode = UIHelper.buildTree(null, listOf(dto), parentNode);
+            TreeNode oldNode = findNodeById(id);
+            if (oldNode != null)
+                UIHelper.detach(oldNode);
+
+            // Create any necessary parent nodes like `mkdir -p`.
+            // for (TreeNode ancestor: findAncestorNodes(group))
+            TreeNode newParentNode = null;
+            if (newParentNode == null) {
+                TreeEntityDto<?, ?, ?> parent = dto.getParent();
+                if (parent != null)
+                    newParentNode = findNodeById(parent.getId());
+                if (newParentNode == null)
+                    newParentNode = rootNode;
+            }
+
+            // Select the new node.
+            selectedNode = UIHelper.buildTree(null, listOf(dto), newParentNode);
             selectedNode.setSelected(true);
-            if (parentNode != null)
-                parentNode.setExpanded(true);
+            if (newParentNode != null)
+                newParentNode.setExpanded(true);
         }
     }
 
