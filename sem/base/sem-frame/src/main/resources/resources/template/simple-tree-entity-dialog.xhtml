@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:p="http://primefaces.org/ui"
+    template="simple-entity-dialog-f1.xhtml">
+
+    <ui:define name="main">
+        <div id="dataContainer">
+            <ui:insert name="dataContainer">
+                <p:treeTable id="treeTable" value="#{dialogBean.rootNode}" var="entry" selectionMode="single"
+                    selection="#{dialogBean.selectedNode}">
+
+                    <ui:insert name="dataHeader" />
+
+                    <ui:insert name="columns" />
+
+                    <ui:insert name="dataColumnsC">
+                        <p:column headerText="更新日期">
+                            <h:outputText value="${entry.lastModified}">
+                                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="属主">
+                            <h:outputText value="${entry.owner.displayName}" />
+                        </p:column>
+                    </ui:insert>
+
+                </p:treeTable>
+            </ui:insert>
+        </div>
+
+        <ui:insert name="main.extra" />
+    </ui:define>
+
+    <ui:define name="buttons.right.0">
+        <p:commandButton id="ok" value="确定" oncomplete="${var}.hide()" update="${update}">
+            <f:setPropertyActionListener target="${selection}"
+                value="${multiple ? dialogBean.selectionArray : dialogBean.singleSelection}" />
+            <ui:insert name="actions" />
+        </p:commandButton>
+        <p:commandButton id="cancel" value="关闭" oncomplete="${var}.hide();" />
+    </ui:define>
+</ui:composition>

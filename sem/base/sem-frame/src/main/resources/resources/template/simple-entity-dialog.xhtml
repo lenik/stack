@@ -1,15 +1,18 @@
-<p:dialog xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
     xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:p="http://primefaces.org/ui"
-    id="dialog" header="${caption}" widgetVar="${var}" modal="true" dynamic="${viewConfig.dynamicDialog}" position="center">
-    <h:form id="form" style="${style}">
+    template="simple-entity-dialog-f1.xhtml">
 
+    <c:set var="_selection"
+        value="${selection != null ? selection : multiple ? dialogBean.selectionArray : dialogBean.singleSelection}" />
+
+    <ui:define name="main">
         <p:fieldset id="searchFieldset" legend="搜索" toggleable="true" collapsed="true">
             <ui:insert name="searchPanel">
                 <p:inputText id="pattern" value="${dialogBean.searchPattern}" />
                 <p:commandButton id="filterName" value="限定名称" actionListener="${dialogBean.addNameOrLabelRestriction}"
-                    update="form" />
+                    update=":@form" />
                 <p:commandButton id="filterDescription" value="限定描述" actionListener="${dialogBean.addDescriptionRestriction}"
-                    update="form" />
+                    update=":@form" />
                 <ui:insert name="searchPanel.1" />
             </ui:insert>
         </p:fieldset>
@@ -17,42 +20,45 @@
         <h:panelGroup id="searchFragments" style="display: block; padding: .2em 0em;">
             <ui:repeat id="repeat" var="fragment" value="${dialogBean.searchFragments}">
                 <p:commandButton id="removeButton" value="${fragment.entryLabel}" async="true"
-                    actionListener="${fragment.detach}" update=":${component.namingContainer.parent.namingContainer.clientId}" />
+                    actionListener="${fragment.detach}" update=":@form" />
             </ui:repeat>
         </h:panelGroup>
 
-        <p:dataTable id="dataTable" value="${dialogBean.dataModel}" selection="${selection}"
-            selectionMode="${multiple ? 'multiple' : 'single'}" var="entry" paginator="true" rows="10"
-            paginatorTemplate="${viewConfig.paginatorTemplate}" rowsPerPageTemplate="${viewConfig.pageSizeTemplate}"
-            resizableColumns="true" rowIndexVar="rowIndex">
-            <p:column headerText="序号">
-                <h:outputText value="${rowIndex + 1}" />
-            </p:column>
+        <div id="dataContainer">
+            <ui:insert name="dataContainer">
+                <p:dataTable id="dataTable" value="${dialogBean.dataModel}" selection="${_selection}"
+                    selectionMode="${multiple ? 'multiple' : 'single'}" var="entry" paginator="true" rows="10"
+                    paginatorTemplate="${viewConfig.paginatorTemplate}" rowsPerPageTemplate="${viewConfig.pageSizeTemplate}"
+                    resizableColumns="true" rowIndexVar="rowIndex">
+                    <p:column headerText="序号">
+                        <h:outputText value="${rowIndex + 1}" />
+                    </p:column>
 
-            <ui:insert name="columns" />
+                    <ui:insert name="columns" />
 
-            <ui:insert name="dataColumnsC">
-                <p:column headerText="更新日期">
-                    <h:outputText value="${entry.lastModified}">
-                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-                    </h:outputText>
-                </p:column>
-                <p:column headerText="属主">
-                    <h:outputText value="${entry.owner.displayName}" />
-                </p:column>
-            </ui:insert>
-        </p:dataTable>
-
-        <ui:insert name="content" />
-
-        <div align="right">
-            <ui:insert name="buttons">
-                <ui:insert name="buttons.extra" />
-                <p:commandButton id="ok" value="确定" oncomplete="${var}.hide()" update="${update}">
-                    <ui:insert name="actions" />
-                </p:commandButton>
-                <p:commandButton id="cancel" value="关闭" oncomplete="${var}.hide();" />
+                    <ui:insert name="dataColumnsC">
+                        <p:column headerText="更新日期">
+                            <h:outputText value="${entry.lastModified}">
+                                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="属主">
+                            <h:outputText value="${entry.owner.displayName}" />
+                        </p:column>
+                    </ui:insert>
+                </p:dataTable>
             </ui:insert>
         </div>
-    </h:form>
-</p:dialog>
+
+        <ui:insert name="main.extra" />
+    </ui:define>
+
+    <ui:define name="buttons.right.0">
+        <p:commandButton id="ok" value="确定" oncomplete="${var}.hide()" update="${update}">
+            <f:setPropertyActionListener target="${target}"
+                value="${multiple ? dialogBean.selectionArray : dialogBean.singleSelection}" />
+            <ui:insert name="actions" />
+        </p:commandButton>
+        <p:commandButton id="cancel" value="关闭" oncomplete="${var}.hide();" />
+    </ui:define>
+</ui:composition>
