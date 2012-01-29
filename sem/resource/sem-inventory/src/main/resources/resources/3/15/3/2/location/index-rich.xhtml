@@ -1,170 +1,64 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core"
-    xmlns:sem="http://bee32.com/sem/functions" xmlns:p="http://primefaces.org/ui"
-    xmlns:t="http://myfaces.apache.org/tomahawk">
-<!-- InstanceBegin template="/Templates/seccaJsf.dwt.jsp" codeOutsideHTMLIsLocked="false" -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-</head>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:sem="http://java.sun.com/jsf/composite/3/15"
+    template="/template/simple-tree-entity.xhtml">
 
-<ui:composition template="/template/primefaces.xhtml">
+    <ui:param name="title" value="库位设置" />
+    <ui:param name="bean" value="#{stockLocationAdminBean}" />
+    <ui:param name="obj" value="#{bean.activeObject}" />
+    <ui:param name="sideBarNVisible" value="true" />
 
-    <ui:define name="title">库位设置</ui:define>
+    <ui:define name="sideBarN">
+        <h:outputText value="仓库:" />
+        <p:selectOneMenu id="stockWarehouseId" value="#{bean.selectedWarehouse.id}">
+            <f:selectItem itemValue="" itemLabel="--选择仓库--" />
+            <f:selectItems value="#{bean.warehouses}" itemVar="item" itemLabel="${item.label}" itemValue="${item.id}" />
+            <p:ajax event="change" listener="#{bean.onSwChange}" update=":mainForm" />
+        </p:selectOneMenu>
+    </ui:define>
 
-    <ui:define name="content">
+    <ui:define name="dataColumns">
+        <p:column headerText="库位">
+            <h:outputText value="#{entry.nodeText}" />
+        </p:column>
+        <p:column headerText="所属仓库">
+            <h:outputText value="#{entry.warehouse.name}" />
+        </p:column>
+    </ui:define>
 
-        <h:form id="mainForm">
+    <ui:define name="editDialogContent">
+        <t:panelGrid columns="2">
+            <h:outputLabel value="所属库位" />
+            <h:panelGrid columns="2">
+                <p:inputText value="#{obj.parent.nodeText}" disabled="true" />
+                <p:commandButton value="..." onclick="chooseStockLocationDialog.show();" />
+            </h:panelGrid>
 
-            <p:contextMenu for="stockLocationTable">
-                <p:menuitem value="修改" update="editStockLocationForm:editStockLocationPanel"
-                    oncomplete="editStockLocationDialog.show()"
-                    actionListener="#{stockLocationAdminBean.doModifyStockLocation}" />
-                <p:menuitem value="删除"
-                    oncomplete="deleteConfirmDialog.show()"
-                    actionListener="#{stockLocationAdminBean.chooseStockLocation}" />
-            </p:contextMenu>
+            <h:outputLabel for="name" value="名称" />
+            <p:inputText id="name" value="#{obj.label}" />
 
-			<h:panelGrid columns="2">
-				<h:outputText value="仓库:" />
-				<p:selectOneMenu id="stockWarehouseId" value="#{stockLocationAdminBean.selectedWarehouse.id}" style="width:200px;">
-					<f:selectItem itemValue="" itemLabel="--选择仓库--" />
-					<f:selectItems value="#{stockLocationAdminBean.stockWarehouses}" />
-					<p:ajax listener="#{stockLocationAdminBean.onSwChange}" update="mainForm chooseParentStockLocationForm:chooseParentStockLocationPanel" event="change"/>
-				</p:selectOneMenu>
-			</h:panelGrid>
+            <h:outputLabel for="address" value="地址" />
+            <p:inputText id="address" value="#{obj.address}" />
 
-			<p:commandButton value="新增库位"
-				actionListener="#{stockLocationAdminBean.doNewStockLocation}"
-				oncomplete="editStockLocationDialog.show();" async="true"
-				update="editStockLocationForm:editStockLocationPanel" />
-			<p:treeTable
-                id="stockLocationTable"
-                value="#{stockLocationAdminBean.root}"
-				var="stockLocation"
-                selectionMode="single"
-                selection="#{stockLocationAdminBean.selectedNode}">
+            <h:outputLabel for="capacity" value="容量" />
+            <p:inputText id="capacity" value="#{obj.capacity}" />
 
-                <f:facet name="header">
-                    <h:outputText value="右击表格查看更多操作"/>
-                </f:facet>
+            <h:outputLabel for="capacityUnit" value="容量单位" />
+            <p:selectOneMenu id="unit" value="#{obj.capacityUnit.id}" style="width:150px;">
+                <f:selectItem itemValue="" itemLabel="--选择单位--" />
+                <f:selectItems value="#{bean.units}" />
+            </p:selectOneMenu>
 
-				<p:column>
-					<f:facet name="header">库位</f:facet>
-					<h:outputText value="#{stockLocation.nodeText}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">所属仓库</f:facet>
-					<h:outputText value="#{stockLocation.warehouse.name}" />
-				</p:column>
-			</p:treeTable>
+            <h:outputText value="容量单位提示" />
+            <p:inputText id="capacityUnitHint" value="#{obj.capacityUnitHint}" />
 
-		</h:form>
+            <h:outputLabel for="rank" value="等级" />
+            <p:inputText id="rank" value="#{obj.rank}" />
+        </t:panelGrid>
+    </ui:define>
 
+    <ui:define name="dialogs">
+        <sem:chooseStockLocationDialog target="#{obj.parent}" />
+    </ui:define>
 
-		<h:form id="editStockLocationForm">
-			<p:dialog header="新增/修改库位" widgetVar="editStockLocationDialog" modal="true"
-				height="500" width="640">
-				<p:outputPanel id="editStockLocationPanel">
-					<t:panelGrid columns="2">
-
-						<h:outputLabel value="所属库位" />
-						<h:panelGrid columns="2">
-							<p:inputText
-								value="#{stockLocationAdminBean.stockLocation.parent.nodeText}"
-								disabled="true" />
-							<p:commandButton value="..."
-								oncomplete="chooseParentStockLocationDialog.show();" />
-						</h:panelGrid>
-
-						<h:outputLabel for="name" value="名称" />
-						<p:inputText id="name"
-							value="#{stockLocationAdminBean.stockLocation.label}" />
-
-						<h:outputLabel for="address" value="地址" />
-						<p:inputText id="address"
-							value="#{stockLocationAdminBean.stockLocation.address}" />
-
-						<h:outputLabel for="capacity" value="容量" />
-						<p:inputText id="capacity"
-							value="#{stockLocationAdminBean.stockLocation.capacity}" />
-
-
-						<h:outputLabel for="capacityUnit" value="容量单位" />
-						<p:selectOneMenu id="unit"
-							value="#{stockLocationAdminBean.stockLocation.capacityUnit.id}"
-							style="width:150px;">
-							<f:selectItem itemValue="" itemLabel="--选择单位--" />
-							<f:selectItems value="#{stockLocationAdminBean.units}" />
-						</p:selectOneMenu>
-
-						<h:outputText value="容量单位提示" />
-						<p:inputText id="capacityUnitHint"
-							value="#{stockLocationAdminBean.stockLocation.capacityUnitHint}" />
-
-						<h:outputLabel for="rank" value="等级" />
-						<p:inputText id="rank"
-							value="#{stockLocationAdminBean.stockLocation.rank}" />
-
-						<t:panelGroup colspan="2">
-							<t:panelGrid columns="2">
-								<p:commandButton value="保存"
-									actionListener="#{stockLocationAdminBean.doSave}"
-									update="mainForm chooseParentStockLocationForm:chooseParentStockLocationPanel"
-									oncomplete="editStockLocationDialog.hide();" />
-								<p:commandButton value="取消"
-									oncomplete="editStockLocationDialog.hide();" />
-							</t:panelGrid>
-						</t:panelGroup>
-					</t:panelGrid>
-				</p:outputPanel>
-			</p:dialog>
-		</h:form>
-
-		<h:form id="deleteConfirmForm">
-			<p:confirmDialog message="确定要删除吗?" width="200" header="删除库位确认"
-				severity="alert" widgetVar="deleteConfirmDialog" modal="true">
-
-				<p:commandButton value="确定"
-					update="mainForm chooseParentStockLocationForm:chooseParentStockLocationPanel"
-					actionListener="#{stockLocationAdminBean.doDelete}"
-					oncomplete="deleteConfirmDialog.hide()" />
-				<p:commandButton value="取消" onclick="deleteConfirmDialog.hide()"
-					type="button" />
-
-			</p:confirmDialog>
-		</h:form>
-
-		<h:form id="chooseParentStockLocationForm">
-			<p:dialog header="选择父库位" widgetVar="chooseParentStockLocationDialog"
-				modal="true" height="500" width="640">
-				<h:panelGroup id="chooseParentStockLocationPanel">
-
-					<p:tree value="#{stockLocationAdminBean.root}" var="stockLocation"
-						selectionMode="single"
-						selection="#{stockLocationAdminBean.selectedParentStockLocationNode}">
-						<p:treeNode>
-							<h:outputText value="#{stockLocation.nodeText}" />
-						</p:treeNode>
-					</p:tree>
-
-					<h:panelGrid columns="2">
-						<p:commandButton value="确定"
-							actionListener="#{stockLocationAdminBean.doSelectParentStockLocation}"
-							update="editStockLocationForm:editStockLocationPanel"
-							oncomplete="chooseParentStockLocationDialog.hide();" />
-						<p:commandButton value="取消"
-							oncomplete="chooseParentStockLocationDialog.hide();" />
-					</h:panelGrid>
-
-				</h:panelGroup>
-			</p:dialog>
-		</h:form>
-
-
-	</ui:define>
 </ui:composition>
-</html>
