@@ -23,7 +23,8 @@
         <p:dialog header="${cc.attrs.caption}" widgetVar="${cc.attrs.var}">
             <h:form id="form" enctype="multipart/form-data" style="${cc.attrs.style}">
                 <p:fileUpload mode="advanced" multiple="${cc.attrs.multiple}" allowTypes="${viewConfig.allowTypes}"
-                    sizeLimit="${viewConfig.maxFileSize}" fileUploadListener="${cc.attrs.fileUploadListener}" update="${cc.attrs.update}" />
+                    sizeLimit="${viewConfig.maxFileSize}" fileUploadListener="${cc.attrs.fileUploadListener}" update="${cc.attrs.update}"
+                    label="选择文件" uploadLabel="上传" cancelLabel="取消" />
                 <div align="right">
                     <p:commandButton value="关闭" oncomplete="${cc.attrs.var}.hide();" />
                 </div>
