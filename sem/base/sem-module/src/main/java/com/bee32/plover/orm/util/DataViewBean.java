@@ -11,12 +11,22 @@ import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.web.faces.view.GenericViewBean;
+import com.bee32.plover.web.faces.view.ViewMetadata;
+import com.bee32.sem.misc.IBeanIntro;
 
 public abstract class DataViewBean
         extends GenericViewBean
-        implements IEntityMarshalContext {
+        implements IEntityMarshalContext, IBeanIntro {
 
     private static final long serialVersionUID = 1L;
+
+    @Override
+    public Object getIntro() {
+        String _name = getName();
+        ViewMetadata metadata = getBean(ViewMetadata.class);
+        metadata.setAttribute(EntityPeripheralBean.CONTEXT_BEAN, this);
+        return _name;
+    }
 
     static CommonDataManager getDataManager() {
         CommonDataManager dataManager = getBean(CommonDataManager.class);

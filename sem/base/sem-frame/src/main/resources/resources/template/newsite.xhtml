@@ -51,11 +51,16 @@
         </div>
     </div>
 
-    <div id="loginPanel">
-        <ui:insert name="login">
-            <icsf:loginPanel xpc="true" style="none" />
-        </ui:insert>
-    </div>
+    <ui:insert name="initializers">
+        <div id="loginPanel">
+            <ui:insert name="login">
+                <icsf:loginPanel xpc="true" style="none" />
+            </ui:insert>
+        </div>
+        <h:panelGroup id="intro" style="display: none" rendered="${bean != null}">
+            ${bean.intro}
+        </h:panelGroup>
+    </ui:insert>
 
     <div id="menu">
         <ui:insert name="menu">

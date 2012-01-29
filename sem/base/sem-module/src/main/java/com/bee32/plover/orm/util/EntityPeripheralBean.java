@@ -1,7 +1,7 @@
 package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +22,8 @@ public abstract class EntityPeripheralBean
 
     private static final long serialVersionUID = 1L;
 
+    public static final String CONTEXT_BEAN = "EntityPeripheralBean.contextBean";
+
     protected EntityViewBeanRegistry getViewBeanRegistry() {
         return getBean(EntityViewBeanRegistry.class);
     }
@@ -39,14 +41,11 @@ public abstract class EntityPeripheralBean
     }
 
     protected List<?> getSelection(Class<?>... interfaces) {
-        List<Object> all = new ArrayList<Object>();
-        List<?> viewBeans = getMetadata().getViewBeans(EntityViewBean.class);
-        for (Object _viewBean : viewBeans) {
-            EntityViewBean viewBean = (EntityViewBean) _viewBean;
-            List<?> selection = viewBean.getSelection(interfaces);
-            all.addAll(selection);
-        }
-        return all;
+        EntityViewBean contextBean = getMetadata().getAttribute(CONTEXT_BEAN);
+        if (contextBean != null)
+            return contextBean.getSelection();
+        else
+            return Collections.emptyList();
     }
 
 }
