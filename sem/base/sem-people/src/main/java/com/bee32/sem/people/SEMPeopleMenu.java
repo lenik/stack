@@ -1,6 +1,5 @@
 package com.bee32.sem.people;
 
-import com.bee32.icsf.access.IcsfAccessModule;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.frame.builtins.SEMFrameMenu;
@@ -17,7 +16,6 @@ public class SEMPeopleMenu
         implements ITypeAbbrAware {
 
     static Location PEOPLE_ = WEB_APP.join(SEMPeopleModule.PREFIX_);
-    static Location ACCESS_ = WEB_APP.join(IcsfAccessModule.PREFIX_);
 
     public static MenuNode PEOPLE = menu(SEMFrameMenu.DATA, 10, "people");
     public static MenuNode SETTINGS = menu(PEOPLE, 0, "dict");
@@ -34,12 +32,6 @@ public class SEMPeopleMenu
     static MenuNode contactCategory = entry(SETTINGS, 4, "contactCategory", getDictIndex(ContactCategory.class));
     static MenuNode partyRecordCategory = entry(SETTINGS, 5, "partyRecordCategory",
             getDictIndex(PartyRecordCategory.class));
-
-    static MenuNode acl = entry(SEMFrameMenu.SECURITY, 10, "acl", ACCESS_.join("acl/index-rich.jsf"));
-    static MenuNode permissionAdmin = entry(SEMFrameMenu.SECURITY, 10, "permissionAdmin",
-            ACCESS_.join("r_list/index-rich.jsf"));
-    static MenuNode modifyPassword = entry(SEMFrameMenu.PREFERENCES, 9, "modifyPassword",
-            WEB_APP.join("modifyPassword.jsf"));
 
     @Override
     protected void preamble() {
