@@ -32,7 +32,7 @@ public class ACLCriteria
     }
 
     @LeftHand(CEntity.class)
-    public static ICriteriaElement aclWithin(Collection<Integer> aclIds) {
+    public static CriteriaElement aclWithin(Collection<Integer> aclIds) {
         if (aclIds == null)
             return null;
         else
@@ -92,7 +92,7 @@ public class ACLCriteria
             return or(adminSpec, conj);
     }
 
-    public static CriteriaElement implies(String property, SinglePermissionBit bit) {
+    public static ICriteriaElement implies(String property, SinglePermissionBit bit) {
         return implies(property, bit, true);
     }
 

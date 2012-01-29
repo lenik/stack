@@ -27,7 +27,7 @@ public class AndFragment
 
     @Override
     public ICriteriaElement compose() {
-        return new And(lhs.compose(), rhs.compose());
+        return And.of(lhs.compose(), rhs.compose());
     }
 
 }

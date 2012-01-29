@@ -303,7 +303,7 @@ public abstract class TreeEntity<K extends Serializable, self_t extends TreeEnti
 
         self_t parent = getParent();
         if (parent == null)
-            return new And(//
+            return And.of(//
                     new IsNull(prefix + "parent"), //
                     localSelector);
 

@@ -24,7 +24,7 @@ public class NotFragment
     @Override
     public ICriteriaElement compose() {
         ICriteriaElement element = fragment.compose();
-        return new Not(element);
+        return Not.of(element);
     }
 
 }

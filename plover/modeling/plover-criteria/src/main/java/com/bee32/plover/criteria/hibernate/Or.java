@@ -13,15 +13,37 @@ public class Or
     final ICriteriaElement lhs;
     final ICriteriaElement rhs;
 
-    public Or(ICriteriaElement lhs, ICriteriaElement rhs) {
+    Or(ICriteriaElement lhs, ICriteriaElement rhs) {
+        if (lhs == null)
+            throw new NullPointerException("lhs");
+        if (rhs == null)
+            throw new NullPointerException("rhs");
         this.lhs = lhs;
         this.rhs = rhs;
     }
 
+    public static ICriteriaElement of(ICriteriaElement lhs, ICriteriaElement rhs) {
+        if (lhs == null)
+            return rhs;
+        if (rhs == null)
+            return lhs;
+        return new Or(lhs, rhs);
+    }
+
+    public static CriteriaElement of(CriteriaElement lhs, CriteriaElement rhs) {
+        if (lhs == null)
+            return rhs;
+        if (rhs == null)
+            return lhs;
+        return new Or(lhs, rhs);
+    }
+
     @Override
     public void apply(Criteria criteria, int options) {
-        lhs.apply(criteria, options);
-        rhs.apply(criteria, options);
+        if (lhs != null)
+            lhs.apply(criteria, options);
+        if (rhs != null)
+            rhs.apply(criteria, options);
     }
 
     @Override

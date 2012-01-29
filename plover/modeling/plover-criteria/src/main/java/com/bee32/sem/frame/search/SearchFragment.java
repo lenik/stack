@@ -5,11 +5,13 @@ import java.io.Serializable;
 import javax.free.IllegalUsageException;
 
 import com.bee32.plover.arch.util.ILabelledEntry;
+import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.IMultiFormat;
 
 public abstract class SearchFragment
+        extends CriteriaSpec
         implements ILabelledEntry, Serializable {
 
     private static final long serialVersionUID = 1L;

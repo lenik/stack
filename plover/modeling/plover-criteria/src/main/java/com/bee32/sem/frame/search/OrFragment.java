@@ -27,7 +27,7 @@ public class OrFragment
 
     @Override
     public ICriteriaElement compose() {
-        return new Or(lhs.compose(), rhs.compose());
+        return Or.of(lhs.compose(), rhs.compose());
     }
 
 }

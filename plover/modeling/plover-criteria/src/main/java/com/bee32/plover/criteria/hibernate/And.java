@@ -13,7 +13,7 @@ public class And
     final ICriteriaElement lhs;
     final ICriteriaElement rhs;
 
-    public And(ICriteriaElement lhs, ICriteriaElement rhs) {
+    And(ICriteriaElement lhs, ICriteriaElement rhs) {
         if (lhs == null)
             throw new NullPointerException("lhs");
         if (rhs == null)
@@ -22,10 +22,28 @@ public class And
         this.rhs = rhs;
     }
 
+    public static ICriteriaElement of(ICriteriaElement lhs, ICriteriaElement rhs) {
+        if (lhs == null)
+            return rhs;
+        if (rhs == null)
+            return lhs;
+        return new And(lhs, rhs);
+    }
+
+    public static CriteriaElement of(CriteriaElement lhs, CriteriaElement rhs) {
+        if (lhs == null)
+            return rhs;
+        if (rhs == null)
+            return lhs;
+        return new And(lhs, rhs);
+    }
+
     @Override
     public void apply(Criteria criteria, int options) {
-        lhs.apply(criteria, options);
-        rhs.apply(criteria, options);
+        if (lhs != null)
+            lhs.apply(criteria, options);
+        if (rhs != null)
+            rhs.apply(criteria, options);
     }
 
     @Override

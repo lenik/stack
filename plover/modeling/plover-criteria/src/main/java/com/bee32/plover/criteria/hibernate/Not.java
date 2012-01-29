@@ -12,13 +12,28 @@ public class Not
 
     final ICriteriaElement expression;
 
-    public Not(ICriteriaElement expression) {
+    Not(ICriteriaElement expression) {
+        if (expression == null)
+            throw new NullPointerException("expression");
         this.expression = expression;
+    }
+
+    public static ICriteriaElement of(ICriteriaElement expression) {
+        if (expression == null)
+            return null;
+        return new Not(expression);
+    }
+
+    public static CriteriaElement of(CriteriaElement expression) {
+        if (expression == null)
+            return null;
+        return new Not(expression);
     }
 
     @Override
     public void apply(Criteria criteria, int options) {
-        expression.apply(criteria, options);
+        if (expression != null)
+            expression.apply(criteria, options);
     }
 
     @Override

@@ -155,8 +155,9 @@ public class AccountInitAdminBean
     public void chooseAccountSubject() {
         // TODO 检测是否末级科目
         String name = selectedAccountSubject.getName();
-        int subAccountSubjectCount = serviceFor(AccountSubject.class).count(new Like("id", "%" + name + "%"),
-                new Not(new Equals("id", name)));
+        int subAccountSubjectCount = serviceFor(AccountSubject.class).count(//
+                new Like("id", "%" + name + "%"), //
+                Not.of(new Equals("id", name)));
         if (subAccountSubjectCount > 0) {
             uiLogger.error("所选择科目不是末级科目!");
             return;
@@ -176,8 +177,5 @@ public class AccountInitAdminBean
     public void chooseParty() {
         accountTicketItem.setParty(selectedParty);
     }
-
-
-
 
 }

@@ -553,7 +553,7 @@ public class PurchaseRequestAdminBean extends EntityViewBean {
 
             List<Org> _suppliers = serviceFor(Org.class).list( //
                     PeopleCriteria.suppliers(), //
-                    new Or( //
+                    Or.of( //
                             new Like("name", "%" + supplierPattern + "%"), //
                             new Like("fullName", "%" + supplierPattern + "%")));
 

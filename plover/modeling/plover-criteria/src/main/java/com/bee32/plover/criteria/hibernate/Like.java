@@ -87,10 +87,17 @@ public class Like
 
     @Override
     protected Criterion buildCriterion(int options) {
-        if (matchMode == null)
-            return Restrictions.like(propertyName, pattern);
-        else
-            return Restrictions.like(propertyName, pattern, matchMode);
+        if (ignoreCase) {
+            if (matchMode == null)
+                return Restrictions.ilike(propertyName, pattern);
+            else
+                return Restrictions.ilike(propertyName, pattern, matchMode);
+        } else {
+            if (matchMode == null)
+                return Restrictions.like(propertyName, pattern);
+            else
+                return Restrictions.like(propertyName, pattern, matchMode);
+        }
     }
 
     @Override

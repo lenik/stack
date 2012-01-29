@@ -160,7 +160,7 @@ public class AssetQueryBean extends EntityViewBean {
         if (partyPattern != null && !partyPattern.isEmpty()) {
 
             List<Party> _parties = serviceFor(Party.class).list( //
-                    new Or( //
+                    Or.of( //
                             new Like("name", "%" + partyPattern + "%"), //
                             new Like("fullName", "%" + partyPattern + "%")));
 

@@ -556,7 +556,7 @@ public class MaterialPlanAdminBean extends EntityViewBean {
 
             List<Party> _suppliers = serviceFor(Party.class).list( //
                     PeopleCriteria.suppliers(), //
-                    new Or( //
+                    Or.of( //
                             new Like("name", "%" + supplierPattern + "%"), //
                             new Like("fullName", "%" + supplierPattern + "%")));
 

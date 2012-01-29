@@ -18,7 +18,6 @@ import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.ReflectLocks;
 import com.bee32.plover.criteria.hibernate.Alias;
-import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.Conjunction;
 import com.bee32.plover.criteria.hibernate.CriteriaComposite;
 import com.bee32.plover.criteria.hibernate.Equals;
@@ -305,9 +304,9 @@ public abstract class Entity<K extends Serializable>
         case 1:
             return selectors[0];
         case 2:
-            return new And(selectors[0], selectors[1]);
+        default:
+            return new Conjunction(selectors);
         }
-        return new Conjunction(selectors);
     }
 
     protected static ICriteriaElement selector(String property, Entity<?> entity) {

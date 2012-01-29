@@ -437,7 +437,7 @@ public class MakeOrderAdminBean extends EntityViewBean {
 
             List<Party> _customers = serviceFor(Party.class).list( //
                     PeopleCriteria.customers(), //
-                    new Or( //
+                    Or.of( //
                             new Like("name", "%" + customerPattern + "%"), //
                             new Like("fullName", "%" + customerPattern + "%")));
 

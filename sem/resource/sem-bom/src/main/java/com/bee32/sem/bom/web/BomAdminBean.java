@@ -74,7 +74,7 @@ public class BomAdminBean
         List<MaterialCategory> rootCategories = //
                 serviceFor(MaterialCategory.class).list( //
                         TreeCriteria.root(), //
-                        new Or( //
+                        Or.of( //
                                 new Equals("_classification", Classification.PRODUCT.getValue()), //
                                 new Equals("_classification", Classification.SEMI.getValue()) //
                         ) //
@@ -402,7 +402,7 @@ public class BomAdminBean
                 //选择成品
                 List<MaterialCategory> productCategories = //
                 serviceFor(MaterialCategory.class).list( //
-                        new Or( //
+                        Or.of( //
                                 new Equals("_classification",
                                         Classification.PRODUCT.getValue()), //
                                 new Equals("_classification",
@@ -423,7 +423,7 @@ public class BomAdminBean
                 //选择非成品(原材料，半成品，其他)
                 List<MaterialCategory> productCategories = //
                 serviceFor(MaterialCategory.class).list( //
-                        new Not( //
+                        Not.of( //
                                 new Equals("_classification",
                                         Classification.PRODUCT.getValue())));
                 List<Integer> ids = new ArrayList<Integer>();

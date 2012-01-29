@@ -313,15 +313,15 @@ public abstract class CriteriaSpec {
     }
 
     protected static CriteriaElement and(CriteriaElement lhs, CriteriaElement rhs) {
-        return new And(lhs, rhs);
+        return And.of(lhs, rhs);
     }
 
     protected static CriteriaElement or(CriteriaElement lhs, CriteriaElement rhs) {
-        return new Or(lhs, rhs);
+        return Or.of(lhs, rhs);
     }
 
     protected static CriteriaElement not(CriteriaElement expression) {
-        return new Not(expression);
+        return Not.of(expression);
     }
 
     // Projections.
