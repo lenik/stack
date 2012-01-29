@@ -6,6 +6,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import com.bee32.plover.web.faces.utils.SelectableList;
+
+/**
+ * @see SelectableList
+ */
+@Deprecated
 public class ListHolder<T>
         implements Selectable<T>, Serializable {
 

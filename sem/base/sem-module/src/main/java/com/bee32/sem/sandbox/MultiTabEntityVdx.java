@@ -1,5 +1,7 @@
 package com.bee32.sem.sandbox;
 
+import java.io.Serializable;
+
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.EntityDto;
@@ -20,7 +22,7 @@ public abstract class MultiTabEntityVdx
     int activeTab;
     boolean editing;
 
-    public <E extends Entity<?>, D extends EntityDto<? super E, ?>> //
+    public <E extends Entity<K>, D extends EntityDto<? super E, K>, K extends Serializable> //
     MultiTabEntityVdx(Class<E> entityClass, Class<D> dtoClass, int selection, ICriteriaElement... criteriaElements) {
         super(entityClass, dtoClass, selection, criteriaElements);
     }
