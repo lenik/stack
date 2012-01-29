@@ -35,7 +35,7 @@
 
     <ui:define name="sideBarESupport">
         <icsf:choosePrincipalDialog id="choosePrincipalToSearchDialog" var="choosePrincipalToSearchDialog"
-            selection="${bean.searchPrincipal}" actionListener="${bean.dummy}" update=":searchForm" />
+            target="${bean.searchPrincipal}" update=":searchForm" />
     </ui:define>
 
     <ui:define name='searchPanel'>

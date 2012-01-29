@@ -19,10 +19,9 @@ public class SecurityOptionsDialogBean
 
     private static final long serialVersionUID = 1L;
 
-    String caption = "安全选项";
-    ACLDto selectedACL; // selected ACL to be bound.
-    ACLDto activeACL;
+    String caption = "安全选项...";
     String selectionDump;
+    ACLDto selectedACL;
 
     public String getCaption() {
         return caption;
@@ -80,24 +79,12 @@ public class SecurityOptionsDialogBean
         this.selectedACL = selectedACL;
     }
 
-    public void confirmACL() {
-        this.activeACL = selectedACL;
-    }
-
     public void clearACL() {
-        this.activeACL = null;
-    }
-
-    public ACLDto getActiveACL() {
-        return activeACL;
-    }
-
-    public void setActiveACL(ACLDto activeACL) {
-        this.activeACL = activeACL;
+        this.selectedACL = null;
     }
 
     public void loadACL() {
-        activeACL = getACLFromFirstSelection();
+        selectedACL = getACLFromFirstSelection();
     }
 
     ACLDto getACLFromFirstSelection() {
@@ -125,22 +112,22 @@ public class SecurityOptionsDialogBean
     }
 
     public void showEditACLForm() {
-        if (activeACL == null) {
+        if (selectedACL == null) {
             uiLogger.error("没有 ACL 可供编辑！");
             return;
         }
-        activeACL = reload(activeACL, -1);
+        selectedACL = reload(selectedACL, -1);
     }
 
     public void saveACL() {
-        if (activeACL == null) {
+        if (selectedACL == null) {
             uiLogger.error("ACL尚未装载。");
             return;
         }
 
         ACL _acl;
         try {
-            _acl = activeACL.unmarshal(this);
+            _acl = selectedACL.unmarshal(this);
         } catch (Exception e) {
             uiLogger.error("反编列失败", e);
             return;
@@ -159,8 +146,8 @@ public class SecurityOptionsDialogBean
     @SuppressWarnings("unchecked")
     public void applyACL() {
         Integer aclId = null;
-        if (activeACL != null)
-            aclId = activeACL.getId();
+        if (selectedACL != null)
+            aclId = selectedACL.getId();
 
         for (Object selection : getSelection()) {
             if (!(selection instanceof CEntityDto<?, ?>))

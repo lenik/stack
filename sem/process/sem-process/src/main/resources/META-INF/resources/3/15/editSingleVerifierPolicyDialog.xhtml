@@ -22,7 +22,7 @@
 
         <icsf:choosePrincipalDialog id="cpd" caption="选择用户或组"
             var="${fn:replace(cc.parent.clientId, ':', '_')}_cpd" actionListener="${cc.parent.attrs.dialogBean.addResponsible}"
-            selection="${cc.parent.attrs.dialogBean.selectedResponsible}" update=":${cc.parent.clientId}:form" />
+            target="${cc.parent.attrs.dialogBean.selectedResponsible}" update=":${cc.parent.clientId}:form" />
 
         <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
 

@@ -5,7 +5,7 @@
     <cc:interface>
         <!-- basic -->
         <cc:attribute name="var" default="securityOptionsDialog" />
-        <cc:attribute name="selection" />
+        <cc:attribute name="selection" type="java.lang.Object" />
         <cc:attribute name="actionListener" targets="form:ok" />
         <cc:attribute name="update" default="@none" />
 
@@ -19,9 +19,9 @@
 
     <cc:implementation>
 
-        <icsf:chooseACLDialog id="acld" var="${cc.parent.attrs.var}_acld" selection="${cc.parent.attrs.dialogBean.selectedACL}"
-            actionListener="${cc.parent.attrs.dialogBean.confirmACL}" update=":${cc.parent.clientId}:form" />
-        <icsf:editACLDialog id="aclEditor" var="${cc.parent.attrs.var}_aclEditor" value="${cc.parent.attrs.dialogBean.activeACL}"
+        <icsf:chooseACLDialog id="acld" var="${cc.parent.attrs.var}_acld" target="${cc.parent.attrs.dialogBean.selectedACL}"
+            update=":${cc.parent.clientId}:form" />
+        <icsf:editACLDialog id="aclEditor" var="${cc.parent.attrs.var}_aclEditor" value="${cc.parent.attrs.dialogBean.selectedACL}"
             actionListener="${cc.parent.attrs.dialogBean.saveACL}" update=":${cc.parent.clientId}:form, :${cc.parent.clientId}:acld:form" />
 
         <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />

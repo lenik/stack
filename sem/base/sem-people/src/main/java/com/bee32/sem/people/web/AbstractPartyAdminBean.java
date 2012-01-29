@@ -1,5 +1,6 @@
 package com.bee32.sem.people.web;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,9 +39,8 @@ public abstract class AbstractPartyAdminBean
     List<String> selectedTagsToAdd;
     String selectedTagId;
 
-    public <E extends Entity<?>, D extends EntityDto<? super E, ?>> //
-    AbstractPartyAdminBean(Class<E> entityClass,
-            Class<D> dtoClass, int selection, ICriteriaElement... criteriaElements) {
+    public <E extends Entity<K>, D extends EntityDto<? super E, K>, K extends Serializable> //
+    AbstractPartyAdminBean(Class<E> entityClass, Class<D> dtoClass, int selection, ICriteriaElement... criteriaElements) {
         super(entityClass, dtoClass, selection, criteriaElements);
     }
 

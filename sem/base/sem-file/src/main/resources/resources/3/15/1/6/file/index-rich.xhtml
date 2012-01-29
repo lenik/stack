@@ -71,7 +71,7 @@
     <ui:define name="dialogs">
         <sem:uploadFileDialog id="createUserFileDialog" var="createUserFileDialog"
             fileUploadListener="${bean.createUserFileListener.handleFileUpload}" update=":mainForm:dataTable" />
-        <sem:chooseUserFileTagDialog id="addTagDialog" var="addTagDialog" selection="${bean.selectedTag}"
+        <sem:chooseUserFileTagDialog id="addTagDialog" var="addTagDialog" target="${bean.selectedTag}"
             actionListener="${bean.addTag}" update=":editDialog:form" />
     </ui:define>
 

@@ -58,12 +58,11 @@
 
     <ui:define name="dialogs">
         <icsf:choosePrincipalDialog id="chooseInheritedRoleDialog" var="chooseInheritedRoleDialog"
-            header="选择父角色" stereo="R" selection="${bean.selectedInheritedRole}" actionListener="${bean.confirmInheritedRole}"
-            update=":editDialog:form" />
+            header="选择父角色" stereo="R" target="${obj.inheritedRole}" update=":editDialog:form" />
         <icsf:choosePrincipalDialog id="chooseGroupDialog" var="chooseGroupDialog" header="添加蕴含本角色的祖"
-            stereo="G" selection="${bean.selectedGroup}" actionListener="${bean.addGroup}" update=":groupsForm" />
+            stereo="G" target="${bean.selectedGroup}" actionListener="${bean.addGroup}" update=":groupsForm" />
         <icsf:choosePrincipalDialog id="chooseUserDialog" var="chooseUserDialog" header="添加蕴含本角色的用户"
-            stereo="U" selection="${bean.selectedUser}" actionListener="${bean.addUser}" update=":usersForm" />
+            stereo="U" target="${bean.selectedUser}" actionListener="${bean.addUser}" update=":usersForm" />
 
         <p:dialog header="蕴涵本角色的组" id="groupsDialog" widgetVar="groupsDialog" modal="true"
             dynamic="${viewConfig.dynamicDialog}">

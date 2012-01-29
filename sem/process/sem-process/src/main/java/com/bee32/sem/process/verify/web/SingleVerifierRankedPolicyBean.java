@@ -6,7 +6,6 @@ import com.bee32.sem.process.verify.builtin.SingleVerifierPolicy;
 import com.bee32.sem.process.verify.builtin.SingleVerifierRankedPolicy;
 import com.bee32.sem.process.verify.builtin.dto.SingleVerifierLevelDto;
 import com.bee32.sem.process.verify.builtin.dto.SingleVerifierRankedPolicyDto;
-import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 
 @ForEntity(SingleVerifierPolicy.class)
 public class SingleVerifierRankedPolicyBean
@@ -42,22 +41,9 @@ public class SingleVerifierRankedPolicyBean
     // For editLevelForm
 
     SingleVerifierLevelDto level;
-    VerifyPolicyDto selectedTargetPolicy;
 
     public SingleVerifierLevelDto getLevel() {
         return level;
-    }
-
-    public VerifyPolicyDto getSelectedTargetPolicy() {
-        return selectedTargetPolicy;
-    }
-
-    public void setSelectedTargetPolicy(VerifyPolicyDto selectedTargetPolicy) {
-        this.selectedTargetPolicy = selectedTargetPolicy;
-    }
-
-    public void confirmTargetPolicy() {
-        level.setTargetPolicy(selectedTargetPolicy);
     }
 
     public void addLevel() {

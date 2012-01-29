@@ -5,9 +5,9 @@
     <cc:interface>
         <!-- basic -->
         <cc:attribute name="var" default="chooseUserFileTagDialog" />
-        <cc:attribute name="selection" required="true" />
+        <cc:attribute name="target" type="java.lang.Object" required="true" />
         <cc:attribute name="multiple" type="java.lang.Boolean" default="false" />
-        <cc:attribute name="actionListener" targets="form:ok" required="true" />
+        <cc:attribute name="actionListener" targets="form:ok" />
         <cc:attribute name="update" />
 
         <!-- ui overrides -->
@@ -21,7 +21,7 @@
     <cc:implementation>
         <ui:decorate template="/template/simple-entity-dialog.xhtml">
             <ui:param name="var" value="${cc.attrs.var}" />
-            <ui:param name="selection" value="${cc.attrs.selection}" />
+            <ui:param name="target" value="${cc.attrs.target}" />
             <ui:param name="multiple" value="${cc.attrs.multiple}" />
             <ui:param name="update" value="${cc.attrs.update}" />
             <ui:param name="var" value="${cc.attrs.var}" />

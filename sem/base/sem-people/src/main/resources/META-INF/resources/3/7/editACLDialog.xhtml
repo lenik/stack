@@ -22,11 +22,9 @@
         <h:outputStylesheet library="3/7/2" name="acl.css" />
 
         <icsf:chooseACLDialog id="acld" var="${fn:replace(cc.parent.clientId, ':', '_')}_acld"
-            selection="${cc.parent.attrs.dialogBean.selectedInheritedACL}" actionListener="${cc.parent.attrs.dialogBean.confirmInheritedACL}"
-            update=":${cc.parent.clientId}:form:inheritedACL" />
+            target="${cc.parent.attrs.dialogBean.activeObject.inheritedACL}" update=":${cc.parent.clientId}:form:inheritedACL" />
         <icsf:choosePrincipalDialog id="cpd" var="${fn:replace(cc.parent.clientId, ':', '_')}_cpd"
-            selection="${cc.parent.attrs.dialogBean.selectedEntryPrincipal}" actionListener="${cc.parent.attrs.dialogBean.confirmEntryPrincipal}"
-            update=":${cc.parent.clientId}:editEntryForm" />
+            target="${cc.parent.attrs.dialogBean.entry.principal}" update=":${cc.parent.clientId}:editEntryForm" />
 
         <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
 

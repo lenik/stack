@@ -16,7 +16,6 @@ public class RoleAdminBean
 
     private static final long serialVersionUID = 1L;
 
-    RoleDto selectedInheritedRole;
     GroupDto selectedGroup;
     UserDto selectedUser;
 
@@ -44,19 +43,6 @@ public class RoleAdminBean
             }
         }
         return true;
-    }
-
-    public RoleDto getSelectedInheritedRole() {
-        return selectedInheritedRole;
-    }
-
-    public void setSelectedInheritedRole(RoleDto selectedInheritedRole) {
-        this.selectedInheritedRole = selectedInheritedRole;
-    }
-
-    public void confirmInheritedRole() {
-        RoleDto role = getActiveObject();
-        role.setInheritedRole(selectedInheritedRole);
     }
 
     public GroupDto getSelectedGroup() {

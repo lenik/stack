@@ -68,11 +68,11 @@
 
     <ui:define name="dialogs">
         <icsf:choosePrincipalDialog id="chooseGroupDialog" var="chooseGroupDialog" header="添加指派的组"
-            stereo="G" selection="${bean.selectedGroup}" actionListener="${bean.addGroup}" update=":groupsForm" />
+            stereo="G" target="${bean.selectedGroup}" actionListener="${bean.addGroup}" update=":groupsForm" />
         <icsf:choosePrincipalDialog id="chooseRoleDialog" var="chooseRoleDialog" header="添加指派的角色"
-            stereo="R" selection="${bean.selectedRole}" actionListener="${bean.addRole}" update=":rolesForm" />
+            stereo="R" target="${bean.selectedRole}" actionListener="${bean.addRole}" update=":rolesForm" />
         <sem:choosePartyDialog id="choosePersonDialog" var="choosePersonDialog" header="选择对应的人员"
-            stereo="PER" selection="${bean.selectedPerson}" actionListener="${bean.savePersonLogin}" update=":personForm" />
+            stereo="PER" target="${bean.selectedPerson}" actionListener="${bean.savePersonLogin}" update=":personForm" />
 
         <p:dialog header="指派的组" id="groupsDialog" widgetVar="groupsDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
             <h:form id="groupsForm">

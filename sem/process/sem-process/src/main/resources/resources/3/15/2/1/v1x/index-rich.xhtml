@@ -8,8 +8,8 @@
     <ui:param name="numberHint" value="边界值" />
 
     <ui:define name="includes">
-        <sem:chooseVerifyPolicyDialog id="chooseVerifyPolicyDialog" selection="#{bean.selectedTargetPolicy}"
-            actionListener="${bean.confirmTargetPolicy}" update=":addLevelForm:targetPolicy" />
+        <sem:chooseVerifyPolicyDialog id="chooseVerifyPolicyDialog" target="#{bean.level.targetPolicy}"
+            update=":addLevelForm:targetPolicy" />
     </ui:define>
 
     <ui:define name="dataColumns">

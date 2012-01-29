@@ -5,7 +5,6 @@ import java.util.List;
 import com.bee32.icsf.access.acl.ACL;
 import com.bee32.icsf.access.acl.ACLDto;
 import com.bee32.icsf.access.acl.ACLEntryDto;
-import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 
 public class ACLBean
@@ -19,21 +18,7 @@ public class ACLBean
 
     // editForm
 
-    ACLDto selectedInheritedACL;
     ACLEntryDto selectedEntry;
-
-    public ACLDto getSelectedInheritedACL() {
-        return selectedInheritedACL;
-    }
-
-    public void setSelectedInheritedACL(ACLDto selectedInheritedACL) {
-        this.selectedInheritedACL = selectedInheritedACL;
-    }
-
-    public void confirmInheritedACL() {
-        ACLDto acl = getActiveObject();
-        acl.setInheritedACL(selectedInheritedACL);
-    }
 
     public void clearInheritedACL() {
         ACLDto acl = getActiveObject();
@@ -66,22 +51,9 @@ public class ACLBean
     // editEntryForm
 
     ACLEntryDto entry;
-    PrincipalDto selectedEntryPrincipal;
 
     public ACLEntryDto getEntry() {
         return entry;
-    }
-
-    public PrincipalDto getSelectedEntryPrincipal() {
-        return selectedEntryPrincipal;
-    }
-
-    public void setSelectedEntryPrincipal(PrincipalDto selectedEntryPrincipal) {
-        this.selectedEntryPrincipal = selectedEntryPrincipal;
-    }
-
-    public void confirmEntryPrincipal() {
-        entry.setPrincipal(selectedEntryPrincipal);
     }
 
     public void addEntry() {
