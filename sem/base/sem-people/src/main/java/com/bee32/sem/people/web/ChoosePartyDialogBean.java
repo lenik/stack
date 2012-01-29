@@ -61,7 +61,7 @@ public class ChoosePartyDialogBean
 
     @Override
     public void addNameOrLabelRestriction() {
-        addSearchFragment("名称含有 " + searchPattern, PeopleCriteria.namedLike(searchPattern));
+        addSearchFragment("名称含有 " + searchPattern, PeopleCriteria.namedLike(searchPattern, true));
         searchPattern = null;
     }
 

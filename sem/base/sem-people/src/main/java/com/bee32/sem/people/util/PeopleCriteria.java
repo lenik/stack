@@ -22,9 +22,13 @@ public class PeopleCriteria
     public static CriteriaElement namedLike(String keyword, boolean ignoreCase) {
         if (keyword == null || keyword.isEmpty())
             return null;
+        else if (ignoreCase)
+            return or(//
+                    likeIgnoreCase("label", keyword, MatchMode.ANYWHERE),//
+                    likeIgnoreCase("fullName", keyword, MatchMode.ANYWHERE));
         else
             return or(//
-                    like("name", keyword, MatchMode.ANYWHERE),//
+                    like("label", keyword, MatchMode.ANYWHERE),//
                     like("fullName", keyword, MatchMode.ANYWHERE));
     }
 
