@@ -1,16 +1,19 @@
 package com.bee32.sem.misc;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.free.ChainUsage;
 import javax.free.Dates;
 import javax.free.IllegalUsageException;
-
-import org.primefaces.model.LazyDataModel;
+import javax.free.OverrideOption;
+import javax.free.ParseException;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.acl.ACLCriteria;
@@ -22,13 +25,15 @@ import com.bee32.icsf.principal.UserCriteria;
 import com.bee32.plover.arch.operation.Operation;
 import com.bee32.plover.collections.Varargs;
 import com.bee32.plover.criteria.hibernate.CriteriaComposite;
+import com.bee32.plover.criteria.hibernate.Disjunction;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.criteria.hibernate.Or;
+import com.bee32.plover.criteria.hibernate.InCollection;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityFlags;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.EntityViewBean;
+import com.bee32.plover.orm.web.EntityHelper;
 import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.plover.restful.resource.StandardViews;
@@ -56,13 +61,13 @@ public abstract class SimpleEntityViewBean
     /** Don't refresh row count */
     protected static final int DELETE_NO_REFRESH = 128;
 
-    /** Force to update entities with user lock */
+    /** Force to update locked entities */
     protected static final int SAVE_FORCE = 1;
     /** Save entities with user lock on */
     protected static final int SAVE_LOCKED = 2;
     /** Save entities with user lock off. */
     protected static final int SAVE_UNLOCKED = 4;
-    /** Save entities with user lock off. */
+    /** Save entities with user lock off, unlock at first if necessary. */
     protected static final int SAVE_FORCE_UNLOCKED = SAVE_FORCE | SAVE_UNLOCKED;
     /** Change the entities' owner to current user before save */
     protected static final int SAVE_CHOWN = 8;
@@ -79,30 +84,45 @@ public abstract class SimpleEntityViewBean
     protected int deleteFlags = 0;
     protected String currentView = StandardViews.LIST;
 
+    protected Set<Serializable> requestWindow = new HashSet<Serializable>();
     List<ICriteriaElement> baseCriteriaElements;
     List<SearchFragment> searchFragments = new ArrayList<SearchFragment>();
-    EntityDataModelOptions<?, ?> options;
+    EntityDataModelOptions<?, ?> dataModelOptions;
     ZLazyDataModel<?, ?> dataModel;
 
     protected String searchPattern;
     protected DateRangeTemplate dateRange = DateRangeTemplate.recentWeek;
     protected Date beginDate;
     protected Date endDate;
-    protected PrincipalDto searchPrincipal;
+    protected PrincipalDto searchPrincipal; // TODO implication opt.
 
-    public <E extends Entity<?>, D extends EntityDto<? super E, ?>> //
+    public <E extends Entity<K>, D extends EntityDto<? super E, K>, K extends Serializable> //
     /*    */SimpleEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int selection,
             ICriteriaElement... criteriaElements) {
         this.entityClass = entityClass;
         this.dtoClass = dtoClass;
         this.baseCriteriaElements = Varargs.toList(criteriaElements);
-        this.baseCriteriaElements.add(new Or(//
+        this.baseCriteriaElements.add(new Disjunction(//
                 UserCriteria.ownedByCurrentUser(),//
                 ACLCriteria.aclWithin(getACLs(visiblePermission))));
 
-        this.options = new SevbEdmo<E, D>(//
+        String requestIdList = getRequest().getParameter("id");
+        if (requestIdList != null) {
+            EntityHelper<E, K> eh = EntityHelper.getInstance(entityClass);
+            for (String _id : requestIdList.split(",")) {
+                _id = _id.trim();
+                try {
+                    K id = eh.parseId(_id);
+                    requestWindow.add(id);
+                } catch (ParseException e) {
+                    throw new IllegalArgumentException(e.getMessage(), e);
+                }
+            }
+        }
+
+        this.dataModelOptions = new SevbEdmo<E, D>(//
                 entityClass, dtoClass, selection, new CriteriaHolderExpansion(new SevbCriteriaHolder()));
-        this.dataModel = UIHelper.buildLazyDataModel(options);
+        this.dataModel = UIHelper.buildLazyDataModel(dataModelOptions);
     }
 
     class SevbEdmo<E extends Entity<?>, D extends EntityDto<? super E, ?>>
@@ -140,13 +160,18 @@ public abstract class SimpleEntityViewBean
 
     }
 
-    public LazyDataModel<?> getDataModel() {
+    public ZLazyDataModel<?, ?> getDataModel() {
         return dataModel;
     }
 
     protected final List<? extends ICriteriaElement> composeCriteriaElements() {
         List<ICriteriaElement> join = new ArrayList<ICriteriaElement>();
-        composeBaseCriteriaElements(join);
+        join.addAll(baseCriteriaElements);
+        if (requestWindow != null && !requestWindow.isEmpty())
+            join.add(new InCollection("id", requestWindow));
+        else
+            composeBaseCriteriaElements(join);
+
         for (SearchFragment fragment : searchFragments) {
             ICriteriaElement element = fragment.compose();
             if (element != null)
@@ -155,8 +180,8 @@ public abstract class SimpleEntityViewBean
         return join;
     }
 
+    @OverrideOption(chain = ChainUsage.PREFERRED)
     protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
-        elements.addAll(baseCriteriaElements);
     }
 
     /**
@@ -220,6 +245,25 @@ public abstract class SimpleEntityViewBean
             return;
         }
 
+        for (Object sel : getSelection()) {
+            EntityDto<?, ?> dto = (EntityDto<?, ?>) sel;
+            EntityFlags ef = dto.getEntityFlags();
+            if (ef.isLocked()) {
+                uiLogger.error("不能编辑锁定的对象【系统锁定】");
+                return;
+            }
+            if (ef.isUserLock()) {
+                uiLogger.error("不能编辑锁定的对象【用户级锁定】");
+                return;
+            }
+            if (ef.isBuitlinData()) {
+                uiLogger.warn("您正在编辑系统预置数据，可能会被系统自动复原。");
+            }
+            if (ef.isTestData()) {
+                uiLogger.warn("您正在编辑测试数据，未来可能会被系统复原。");
+            }
+        }
+
         int fmask = -1;
         String fmaskParam = getRequest().getParameter("fmask");
         if (fmaskParam != null)
@@ -234,6 +278,14 @@ public abstract class SimpleEntityViewBean
         showEditForm();
     }
 
+    /**
+     * Perform pre-condition checking before update.
+     *
+     * You must invoke super._preUpdate at first, and return immediately if super returns false.
+     *
+     * @return <code>false</code> if update should be canceled. The implementation should raise
+     *         error messages if necessary.
+     */
     protected boolean _preUpdate(UnmarshalMap uMap)
             throws Exception {
         return true;
@@ -243,6 +295,14 @@ public abstract class SimpleEntityViewBean
             throws Exception {
     }
 
+    /**
+     * Perform pre-condition checking before delete.
+     *
+     * You must invoke super._preDelete at first, and return immediately if super returns false.
+     *
+     * @return <code>false</code> if delete should be canceled. The implementation should raise
+     *         error messages if necessary.
+     */
     protected boolean _preDelete(UnmarshalMap uMap)
             throws Exception {
         return true;
@@ -252,6 +312,12 @@ public abstract class SimpleEntityViewBean
             throws Exception {
     }
 
+    /**
+     * Perform pre-condition checking before update.
+     *
+     * @return <code>false</code> if update should be canceled. The implementation should raise
+     *         error messages if necessary.
+     */
     protected boolean preUpdate(UnmarshalMap uMap)
             throws Exception {
         return true;
@@ -261,6 +327,12 @@ public abstract class SimpleEntityViewBean
             throws Exception {
     }
 
+    /**
+     * Perform pre-condition checking before delete.
+     *
+     * @return <code>false</code> if delete should be canceled. The implementation should raise
+     *         error messages if necessary.
+     */
     protected boolean preDelete(UnmarshalMap uMap)
             throws Exception {
         return true;
@@ -271,11 +343,11 @@ public abstract class SimpleEntityViewBean
     }
 
     @Operation
-    public void save() {
+    public final void save() {
         save(saveFlags, null);
     }
 
-    protected void save(boolean createOrUpdate) {
+    protected final void save(boolean createOrUpdate) {
         save(createOrUpdate ? SAVE_NOEXIST : SAVE_MUSTEXIST, null);
     }
 
@@ -469,11 +541,13 @@ public abstract class SimpleEntityViewBean
         uiLogger.info("删除成功" + countHint);
     }
 
-    public void refreshRowCount() {
+    public boolean refreshRowCount() {
         try {
             dataModel.refreshRowCount();
+            return true;
         } catch (Exception e) {
             uiLogger.warn("刷新记录时出现异常。", e);
+            return false;
         }
     }
 
