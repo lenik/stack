@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.free.IllegalUsageException;
-import javax.servlet.ServletException;
+import javax.free.ParseException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +66,7 @@ public abstract class EntityViewBean
         try {
             id = eh.parseId(requestId);
             return id;
-        } catch (ServletException e) {
+        } catch (ParseException e) {
             throw new IllegalArgumentException("Bad id: " + requestId, e);
         }
     }

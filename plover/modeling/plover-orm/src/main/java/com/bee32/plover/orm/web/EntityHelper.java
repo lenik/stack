@@ -160,13 +160,9 @@ public class EntityHelper<E extends Entity<K>, K extends Serializable> {
      * @return <code>null</code> If the given id string is <code>null</code>.
      */
     public K parseId(String idString)
-            throws ServletException {
+            throws ParseException {
         K id;
-        try {
-            id = EntityUtil.parseId(keyType, idString);
-        } catch (ParseException e) {
-            throw new ServletException("无效的标识：" + idString, e);
-        }
+        id = EntityUtil.parseId(keyType, idString);
         return id;
     }
 
@@ -174,7 +170,11 @@ public class EntityHelper<E extends Entity<K>, K extends Serializable> {
             throws ServletException {
         if (idString == null)
             throw new ServletException("没有指定标识。");
-        return parseId(idString);
+        try {
+            return parseId(idString);
+        } catch (ParseException e) {
+            throw new ServletException(e.getMessage(), e);
+        }
     }
 
     public String getHint(K id) {
@@ -200,7 +200,6 @@ public class EntityHelper<E extends Entity<K>, K extends Serializable> {
         classmap = new HashMap<Class<?>, EntityHelper<?, ?>>();
     }
 
-    @SuppressWarnings("unchecked")
     public static <E extends Entity<K>, K extends Serializable> //
     EntityHelper<E, K> getInstance(Class<E> entityType) {
         EntityHelper<?, ?> entityHelper = classmap.get(entityType);
@@ -213,7 +212,9 @@ public class EntityHelper<E extends Entity<K>, K extends Serializable> {
                 }
             }
         }
-        return (EntityHelper<E, K>) entityHelper;
+        @SuppressWarnings("unchecked")
+        EntityHelper<E, K> eh = (EntityHelper<E, K>) entityHelper;
+        return eh;
     }
 
 }
