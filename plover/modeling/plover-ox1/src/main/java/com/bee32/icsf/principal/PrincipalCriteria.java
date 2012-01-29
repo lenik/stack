@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.MatchMode;
 
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
@@ -22,8 +23,9 @@ public class PrincipalCriteria
 
     @LeftHand(Principal.class)
     public static ICriteriaElement namedLike(String pattern, boolean ignoreCase) {
+        if (StringUtils.isEmpty(pattern))
+            return null;
         return or(
-                //
                 CommonCriteria.namedLike(pattern, ignoreCase), //
                 ignoreCase ? likeIgnoreCase("fullName", pattern, MatchMode.ANYWHERE) : like("fullName", pattern,
                         MatchMode.ANYWHERE));
