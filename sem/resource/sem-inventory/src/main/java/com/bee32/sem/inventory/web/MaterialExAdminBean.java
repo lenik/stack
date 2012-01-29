@@ -104,7 +104,7 @@ public class MaterialExAdminBean
             List<MaterialCategory> _categories = serviceFor(MaterialCategory.class).list();
             List<MaterialCategoryDto> categories = DTOs.mrefList(MaterialCategoryDto.class, TreeEntityDto.PARENT,
                     _categories);
-            materialCategoryIndex = TreeEntityUtils.index(categories);
+            materialCategoryIndex = DTOs.index(categories);
             Set<MaterialCategoryDto> roots = TreeEntityUtils.rebuildTree(categories, materialCategoryIndex);
 
             virtualRootNode = new DefaultTreeNode("categoryRoot", null);

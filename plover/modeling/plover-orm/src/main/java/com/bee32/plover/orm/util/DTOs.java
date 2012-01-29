@@ -1,7 +1,10 @@
 package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.free.ParseException;
@@ -138,6 +141,16 @@ public abstract class DTOs {
             return true;
 
         return a.equals(b);
+    }
+
+    public static <D extends EntityDto<?, ?>, K extends Serializable> //
+    Map<K, D> index(Collection<? extends D> dtos) {
+        Map<K, D> map = new LinkedHashMap<K, D>();
+        for (D dto : dtos) {
+            K id = (K) dto.getId();
+            map.put(id, dto);
+        }
+        return map;
     }
 
 }
