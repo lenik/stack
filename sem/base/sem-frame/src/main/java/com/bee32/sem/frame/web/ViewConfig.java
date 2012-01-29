@@ -33,6 +33,7 @@ public class ViewConfig
 
     boolean dynamicDialog = true;
     String defaultUpdateTarget = ":mainForm";
+    boolean smallFont = true;
 
     public ViewConfig() {
     }
@@ -111,6 +112,14 @@ public class ViewConfig
 
     public void setDynamicDialog(boolean dynamicDialog) {
         this.dynamicDialog = dynamicDialog;
+    }
+
+    public boolean isSmallFont() {
+        return smallFont;
+    }
+
+    public void setSmallFont(boolean smallFont) {
+        this.smallFont = smallFont;
     }
 
 }

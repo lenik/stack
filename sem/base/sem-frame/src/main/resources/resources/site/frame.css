@@ -1,22 +1,18 @@
 body {
     font-family: Verdana, Arial, sans-serif;
-    font-size: 13px;
 }
 
 label {
     font-family: Verdana, Arial, sans-serif;
-    font-size: 13px;
 }
 
 .ui-widget,.ui-widget input,.ui-widget select,.ui-widget textarea,.ui-widget button {
     font-family: Verdana, Arial, sans-serif;
-    font-size: 13px;
 }
 
 .ui-menubar-item-label,.ui-menubar-item-label-hassubmenu,.ui-menubar-item-label-selected,.ui-menubar-item-label-hassubmenu-selected
     {
     font-family: Verdana, Arial, sans-serif;
-    font-size: 13 px;
 }
 
 .logo-container {
@@ -27,11 +23,12 @@ label {
     position: fixed;
     z-index: 100;
     bottom: 10px;
-    right: 0px;
+    right: 10px;
 }
 
 .logo-frame {
     width: 150px;
+    background: white;
 }
 
 .logo-image {

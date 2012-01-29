@@ -33,6 +33,9 @@
     </script>
 
     <link rel="stylesheet" type="text/css" href="${location.WEB_APP}/site/frame.css" />
+    <c:if test="${viewConfig.smallFont}">
+        <link rel="stylesheet" type="text/css" href="${location.WEB_APP}/site/small-font.css" />
+    </c:if>
 
     <ui:insert name="scripts.head">
     </ui:insert>

@@ -1,0 +1,16 @@
+body {
+    font-size: 13px;
+}
+
+label {
+    font-size: 13px;
+}
+
+.ui-widget,.ui-widget input,.ui-widget select,.ui-widget textarea,.ui-widget button {
+    font-size: 13px;
+}
+
+.ui-menubar-item-label,.ui-menubar-item-label-hassubmenu,.ui-menubar-item-label-selected,.ui-menubar-item-label-hassubmenu-selected
+    {
+    font-size: 13 px;
+}
