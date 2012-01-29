@@ -21,6 +21,7 @@ public class EntityFlags
     public static final int USER_SEL1 = 1 << 10;
     public static final int USER_SEL2 = 1 << 11;
     public static final int USER_SEL3 = 1 << 12;
+    public static final int BUILTIN_DATA = 1 << 14; // LTS
     public static final int TEST_DATA = 1 << 15; // LTS
 
     // Style Area [16..23]
@@ -130,6 +131,14 @@ public class EntityFlags
 
     public void setUserSel3(boolean userSel3) {
         set(USER_SEL3, userSel3);
+    }
+
+    public boolean isBuitlinData() {
+        return test(BUILTIN_DATA);
+    }
+
+    public void setBuiltinData(boolean builtinData) {
+        set(BUILTIN_DATA, builtinData);
     }
 
     public boolean isTestData() {
