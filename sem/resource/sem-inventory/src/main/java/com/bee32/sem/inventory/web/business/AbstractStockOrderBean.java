@@ -16,7 +16,6 @@ import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.util.i18n.CurrencyConfig;
-import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
@@ -27,9 +26,9 @@ import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.inventory.service.IStockQuery;
 import com.bee32.sem.inventory.service.StockQueryOptions;
+import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.OrgUnitDto;
-import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.entity.OrgUnit;
 import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.sandbox.UIHelper;
@@ -40,7 +39,7 @@ import com.bee32.sem.world.thing.UnitDto;
 
 @ForEntity(StockOrder.class)
 public abstract class AbstractStockOrderBean
-        extends LocationAboutBean {
+        extends ScrollEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -56,16 +55,7 @@ public abstract class AbstractStockOrderBean
 
     private boolean newItemStatus = false;
 
-    private String materialPattern;
-    private List<MaterialDto> materials;
-    private MaterialDto selectedMaterial;
-
-    private String orgPattern;
-    private List<OrgDto> orgs;
     private OrgDto selectedOrg;
-
-    private String orgUnitPattern;
-    private List<OrgUnitDto> orgUnits;
     private OrgUnitDto selectedOrgUnit;
 
     private StockOrderItemDto selectedStockQueryItem;
@@ -75,6 +65,14 @@ public abstract class AbstractStockOrderBean
     private String materialUnitId;
     private BigDecimal materialQuantity;
     private BigDecimal materialPrice;
+
+    public AbstractStockOrderBean() {
+        super(StockOrder.class, StockOrderDto.class, 0);
+    }
+
+    public abstract StockOrderItemDto getOrderItem_();
+
+    public abstract StockWarehouseDto getSelectedWarehouse_();
 
     public StockWarehouseDto getSelectedWarehouse() {
         return selectedWarehouse;
@@ -149,30 +147,6 @@ public abstract class AbstractStockOrderBean
         return CurrencyUtil.selectItems();
     }
 
-    public String getMaterialPattern() {
-        return materialPattern;
-    }
-
-    public void setMaterialPattern(String materialPattern) {
-        this.materialPattern = materialPattern;
-    }
-
-    public List<MaterialDto> getMaterials() {
-        return materials;
-    }
-
-    public void setMaterials(List<MaterialDto> materials) {
-        this.materials = materials;
-    }
-
-    public MaterialDto getSelectedMaterial() {
-        return selectedMaterial;
-    }
-
-    public void setSelectedMaterial(MaterialDto selectedMaterial) {
-        this.selectedMaterial = selectedMaterial;
-    }
-
     public BigDecimal getOrderItemPrice() {
         return orderItemPrice;
     }
@@ -200,44 +174,12 @@ public abstract class AbstractStockOrderBean
         this.newItemStatus = newItemStatus;
     }
 
-    public String getOrgPattern() {
-        return orgPattern;
-    }
-
-    public void setOrgPattern(String orgPattern) {
-        this.orgPattern = orgPattern;
-    }
-
-    public List<OrgDto> getOrgs() {
-        return orgs;
-    }
-
-    public void setOrgs(List<OrgDto> orgs) {
-        this.orgs = orgs;
-    }
-
     public OrgDto getSelectedOrg() {
         return selectedOrg;
     }
 
     public void setSelectedOrg(OrgDto selectedOrg) {
         this.selectedOrg = selectedOrg;
-    }
-
-    public String getOrgUnitPattern() {
-        return orgUnitPattern;
-    }
-
-    public void setOrgUnitPattern(String orgUnitPattern) {
-        this.orgUnitPattern = orgUnitPattern;
-    }
-
-    public List<OrgUnitDto> getOrgUnits() {
-        return orgUnits;
-    }
-
-    public void setOrgUnits(List<OrgUnitDto> orgUnits) {
-        this.orgUnits = orgUnits;
     }
 
     public OrgUnitDto getSelectedOrgUnit() {
@@ -321,18 +263,8 @@ public abstract class AbstractStockOrderBean
         }
     }
 
-    public void findMaterial() {
-        if (materialPattern != null && !materialPattern.isEmpty()) {
-
-            List<Material> _materials = serviceFor(Material.class).list(new Like("label", "%" + materialPattern + "%"));
-
-            materials = DTOs.mrefList(MaterialDto.class, _materials);
-        }
-    }
-
     public void chooseMaterial() {
         orderItem.setMaterial(selectedMaterial);
-
         selectedMaterial = null;
     }
 
@@ -342,13 +274,6 @@ public abstract class AbstractStockOrderBean
         orderItem.setPrice(newPrice);
         if (newItemStatus) {
             stockOrder.addItem(orderItem);
-        }
-    }
-
-    public void findOrg() {
-        if (orgPattern != null && !orgPattern.isEmpty()) {
-            List<Org> _orgs = serviceFor(Org.class).list(PeopleCriteria.namedLike(orgPattern));
-            orgs = DTOs.mrefList(OrgDto.class, _orgs);
         }
     }
 

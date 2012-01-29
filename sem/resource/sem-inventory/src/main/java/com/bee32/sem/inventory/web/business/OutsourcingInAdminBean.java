@@ -1,6 +1,5 @@
 package com.bee32.sem.inventory.web.business;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -25,21 +24,14 @@ import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
 import com.bee32.sem.inventory.util.StockCriteria;
 
 @ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = "OSPI"))
-public class OutsourcingInAdminBean extends AbstractStockOrderBean {
+public class OutsourcingInAdminBean
+        extends AbstractStockOrderBean {
 
     private static final long serialVersionUID = 1L;
 
     private StockOutsourcingDto stockOutsourcing = new StockOutsourcingDto().create();
-
-    private Date limitDateFrom;
-    private Date limitDateTo;
-
-
-    private int goNumber;
-    private int count;
-
-    private Date findDateFrom;
-    private Date findDateTo;
+    private Date danglingDateFrom;
+    private Date danglingDateTo;
 
     private List<StockOutsourcingDto> findedOuts;
 
@@ -47,72 +39,24 @@ public class OutsourcingInAdminBean extends AbstractStockOrderBean {
 
     private boolean newStatus = false;
 
-
     public OutsourcingInAdminBean() {
-        Calendar c = Calendar.getInstance();
-        // 取这个月的第一天
-        c.set(Calendar.DAY_OF_MONTH, 1);
-        limitDateFrom = c.getTime();
-        findDateFrom = c.getTime();
-
-        // 最这个月的最后一天
-        c.add(Calendar.MONTH, 1);
-        c.add(Calendar.DAY_OF_MONTH, -1);
-        limitDateTo = c.getTime();
-        findDateTo = c.getTime();
-
-        goNumber = 1;
-
         this.subject = StockOrderSubject.OSP_IN;
     }
 
-
-    public Date getLimitDateFrom() {
-        return limitDateFrom;
-    }
-
-    public void setLimitDateFrom(Date limitDateFrom) {
-        this.limitDateFrom = limitDateFrom;
-    }
-
-    public Date getLimitDateTo() {
-        return limitDateTo;
-    }
-
-    public void setLimitDateTo(Date limitDateTo) {
-        this.limitDateTo = limitDateTo;
-    }
-
-    public int getGoNumber() {
-        return goNumber;
-    }
-
-    public void setGoNumber(int goNumber) {
-        this.goNumber = goNumber;
-    }
-
-    public int getCount() {
-        count = serviceFor(StockOrder.class).count(//
-                CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
-                StockCriteria.subjectOf(getSubject()), //
-                new Equals("warehouse.id", selectedWarehouse.getId()));
-        return count;
-    }
-
     public Date getFindDateFrom() {
-        return findDateFrom;
+        return danglingDateFrom;
     }
 
     public void setFindDateFrom(Date findDateFrom) {
-        this.findDateFrom = findDateFrom;
+        this.danglingDateFrom = findDateFrom;
     }
 
     public Date getFindDateTo() {
-        return findDateTo;
+        return danglingDateTo;
     }
 
     public void setFindDateTo(Date findDateTo) {
-        this.findDateTo = findDateTo;
+        this.danglingDateTo = findDateTo;
     }
 
     public List<StockOutsourcingDto> getFindedOuts() {
@@ -140,7 +84,7 @@ public class OutsourcingInAdminBean extends AbstractStockOrderBean {
     }
 
     public List<StockOrderItemDto> getFindedOutItems() {
-        if(selectedOutsourcing != null)
+        if (selectedOutsourcing != null)
             return selectedOutsourcing.getOutput().getItems();
         return null;
     }
@@ -153,35 +97,11 @@ public class OutsourcingInAdminBean extends AbstractStockOrderBean {
         this.newStatus = newStatus;
     }
 
-
-
-
-
-
-
-
-
     public void onSwChange(AjaxBehaviorEvent e) {
         loadStockOrder(goNumber);
-        loadStockLocationTree();
     }
 
     private void loadStockOrder(int position) {
-        //刷新总记录数
-        getCount();
-
-        goNumber = position;
-
-        if(position < 1) {
-            goNumber = 1;
-            position = 1;
-        }
-        if(goNumber > count) {
-            goNumber = count;
-            position = count;
-        }
-
-
         stockOrder = new StockOrderDto().create();
         stockOutsourcing = new StockOutsourcingDto().create();
         if (selectedWarehouse != null) {
@@ -195,17 +115,13 @@ public class OutsourcingInAdminBean extends AbstractStockOrderBean {
             if (firstOrder != null) {
                 stockOrder = DTOs.marshal(StockOrderDto.class, firstOrder);
 
-                StockOutsourcing o = serviceFor(StockOutsourcing.class)
-                        .getUnique(new Equals("input.id", stockOrder.getId()));
-                if(o != null) {
+                StockOutsourcing o = serviceFor(StockOutsourcing.class).getUnique(
+                        new Equals("input.id", stockOrder.getId()));
+                if (o != null) {
                     stockOutsourcing = DTOs.marshal(StockOutsourcingDto.class, o);
                 }
             }
         }
-    }
-
-    public void limit() {
-        loadStockOrder(goNumber);
     }
 
     public void new_() {
@@ -217,13 +133,13 @@ public class OutsourcingInAdminBean extends AbstractStockOrderBean {
         stockOutsourcing = new StockOutsourcingDto().create();
         stockOrder = new StockOrderDto().create();
         stockOrder.setSubject(subject);
-        //stockOrder.setCreatedDate(new Date());
+        // stockOrder.setCreatedDate(new Date());
         editable = true;
         newStatus = true;
     }
 
     public void modify() {
-        if(stockOrder.getId() == null) {
+        if (stockOrder.getId() == null) {
             uiLogger.warn("当前没有对应的单据");
             return;
         }
@@ -236,8 +152,7 @@ public class OutsourcingInAdminBean extends AbstractStockOrderBean {
 
     @Transactional
     public void delete() {
-        StockOutsourcing o = serviceFor(StockOutsourcing.class).getUnique(
-                new Equals("input.id", stockOrder.getId()));
+        StockOutsourcing o = serviceFor(StockOutsourcing.class).getUnique(new Equals("input.id", stockOrder.getId()));
 
         try {
             if (o != null) {
@@ -255,12 +170,6 @@ public class OutsourcingInAdminBean extends AbstractStockOrderBean {
     @Transactional
     public void save() {
         stockOrder.setWarehouse(selectedWarehouse);
-
-        if(stockOrder.getId() == null) {
-            //新增
-            goNumber = count + 1;
-        }
-
         try {
             stockOutsourcing.setInput(stockOrder);
             StockOutsourcing _stockOutsourcing = stockOutsourcing.unmarshal();
@@ -282,52 +191,10 @@ public class OutsourcingInAdminBean extends AbstractStockOrderBean {
         }
     }
 
-    public void cancel() {
-
-        loadStockOrder(goNumber);
-        editable = false;
-        newStatus = false;
-    }
-
-    public void first() {
-        goNumber = 1;
-        loadStockOrder(goNumber);
-    }
-
-    public void previous() {
-        goNumber--;
-        if (goNumber < 1)
-            goNumber = 1;
-        loadStockOrder(goNumber);
-    }
-
-    public void go() {
-        if (goNumber < 1) {
-            goNumber = 1;
-        } else if (goNumber > count) {
-            goNumber = count;
-        }
-        loadStockOrder(goNumber);
-    }
-
-    public void next() {
-        goNumber++;
-
-        if (goNumber > count)
-            goNumber = count;
-        loadStockOrder(goNumber);
-    }
-
-    public void last() {
-        goNumber = count + 1;
-        loadStockOrder(goNumber);
-    }
-
     @Override
     public StockOrderItemDto getOrderItem_() {
         return orderItem;
     }
-
 
     @Override
     public StockWarehouseDto getSelectedWarehouse_() {
@@ -336,7 +203,7 @@ public class OutsourcingInAdminBean extends AbstractStockOrderBean {
 
     public void findOut() {
         List<StockOutsourcing> os = serviceFor(StockOutsourcing.class).list(
-                StockCriteria.danglingOutsourcing(findDateFrom, findDateTo));
+                StockCriteria.danglingOutsourcing(danglingDateFrom, danglingDateTo));
 
         findedOuts = DTOs.mrefList(StockOutsourcingDto.class, StockOutsourcingDto.ORDER_ITEMS, os);
     }

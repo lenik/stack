@@ -4,97 +4,27 @@
     xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core"
     xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk"
     xmlns:sem="http://java.sun.com/jsf/composite/3/15">
-<ui:composition template="/template/primefaces.xhtml">
+<ui:composition template="/template/scroll-entity.xhtml">
 
-    <ui:define name="title"></ui:define>
+    <ui:param name="bean" value="#{takeAdminBean}" />
+    <ui:param name="title" value="#{bean.subject.displayName}管理" />
+    <ui:param name="sideBarNVisible" value="true" />
+
+    <ui:define name="sideBarN">
+        <h:panelGrid columns="2">
+            <h:outputText value="仓库:" />
+            <p:selectOneMenu id="stockWarehouseId" disabled="#{bean.editable}" value="#{takeAdminBean.selectedWarehouse.id}"
+                style="width:200px;">
+                <f:selectItem itemValue="" itemLabel="--选择仓库--" />
+                <f:selectItems value="#{takeAdminBean.stockWarehouses}" />
+                <p:ajax listener="#{takeAdminBean.onSwChange}" update="mainForm chooseStockLocationForm:chooseStockLocationPanel"
+                    event="change" />
+            </p:selectOneMenu>
+        </h:panelGrid>
+    </ui:define>
 
     <ui:define name="content">
-        <sem:singleVerifierSupportDialog update=":mainForm" />
-
 		<h:form id="mainForm">
-			<h:inputHidden id="pageTitle" readonly="true"
-				value="#{takeAdminBean.subject.displayName}管理" />
-
-            <h:panelGrid columns="2">
-                <h:outputText value="仓库:" />
-                <p:selectOneMenu id="stockWarehouseId"
-                    disabled="#{takeAdminBean.editable}"
-                    value="#{takeAdminBean.selectedWarehouse.id}"
-                    style="width:200px;">
-                    <f:selectItem itemValue="" itemLabel="--选择仓库--" />
-                    <f:selectItems
-                        value="#{takeAdminBean.stockWarehouses}" />
-                    <p:ajax listener="#{takeAdminBean.onSwChange}"
-                        update="mainForm chooseStockLocationForm:chooseStockLocationPanel"
-                        event="change" />
-                </p:selectOneMenu>
-            </h:panelGrid>
-
-            <h:panelGrid columns="6">
-                <h:outputText value="时间段:" />
-                <h:outputText value="从" />
-                <p:calendar id="limitDateFrom" navigator="true"
-                    locale="zh_CN" pattern="yyyy-MM-dd"
-                    value="#{takeAdminBean.limitDateFrom}"
-                    showOn="button" disabled="#{takeAdminBean.editable}" />
-                <h:outputText value="到" />
-                <p:calendar id="limitDateTo" navigator="true"
-                    locale="zh_CN" pattern="yyyy-MM-dd"
-                    value="#{takeAdminBean.limitDateTo}" showOn="button"
-                    disabled="#{takeAdminBean.editable}" />
-                <p:commandButton value="限定"
-                    actionListener="#{takeAdminBean.limit}" async="true"
-                    update="mainForm"
-                    disabled="#{takeAdminBean.editable}" />
-            </h:panelGrid>
-
-            <p:toolbar id="toolbar">
-				<p:toolbarGroup align="left">
-					<p:commandButton value="新增" actionListener="#{takeAdminBean.new_}"
-						disabled="#{takeAdminBean.editable}" update="mainForm" async="true" />
-					<p:commandButton value="修改"
-						actionListener="#{takeAdminBean.modify}"
-						disabled="#{takeAdminBean.editable}" update="mainForm" async="true" />
-					<p:commandButton value="删除"
-						onclick="deleteConfirmDialog.show();"
-						disabled="#{takeAdminBean.editable}" update="mainForm" async="true" />
-					<p:separator />
-					<p:commandButton value="保存" actionListener="#{takeAdminBean.save}"
-						disabled="#{!takeAdminBean.editable}" update="mainForm" async="true" />
-					<p:commandButton value="取消"
-						actionListener="#{takeAdminBean.cancel}"
-						disabled="#{!takeAdminBean.editable}" update="mainForm" async="true" />
-					<p:separator />
-                    <sem:singleVerifierSupportButton
-                        selection="#{takeAdminBean.selection}"
-                        disabled="#{takeAdminBean.editable}" />
-                    <p:separator />
-					<p:commandButton value="第一条"
-						actionListener="#{takeAdminBean.first}"
-						disabled="#{takeAdminBean.editable}" update="mainForm"
-						async="true" />
-					<p:commandButton value="上一条"
-						actionListener="#{takeAdminBean.previous}"
-						disabled="#{takeAdminBean.editable}" update="mainForm"
-						async="true" />
-					<p:commandButton value="下一条"
-						actionListener="#{takeAdminBean.next}"
-						disabled="#{takeAdminBean.editable}" update="mainForm"
-						async="true" />
-					<p:commandButton value="最末条"
-						actionListener="#{takeAdminBean.last}"
-						disabled="#{takeAdminBean.editable}" update="mainForm"
-						async="true" />
-                    <p:inputText value="#{takeAdminBean.goNumber}"
-                        disabled="#{takeAdminBean.editable}" style="width:30px;" />
-                    <h:outputText value="/#{takeAdminBean.count}"/>
-                    <p:commandButton value="前往"
-                        actionListener="#{takeAdminBean.go}"
-                        disabled="#{takeAdminBean.editable}" update="mainForm"
-                        async="true" />
-				</p:toolbarGroup>
-			</p:toolbar>
-
 			<p:panel header="#{takeAdminBean.subject.displayName}">
 				<t:panelGrid columns="4">
 					<h:outputText value="时间" />
@@ -255,6 +185,10 @@
 
 			</p:panel>
 		</h:form>
+    </ui:define>
+
+    <ui:define name="dialogs">
+        <sem:singleVerifierSupportDialog update=":mainForm" />
 
 		<h:form id="itemForm">
 			<p:dialog header="#{takeAdminBean.subject.displayName}项目编辑" widgetVar="itemDialog" modal="true"
@@ -338,141 +272,6 @@
 			</p:dialog>
 		</h:form>
 
-		<h:form id="materialForm">
-			<p:dialog header="选择物料" widgetVar="materialDialog" modal="true"
-				height="480" width="640">
-				<h:panelGroup>
-
-					<h:panelGrid columns="3">
-						<h:outputLabel value="物料名字全部或部份:" />
-						<p:inputText value="#{takeAdminBean.materialPattern}" />
-						<p:commandButton value="查找"
-							actionListener="#{takeAdminBean.findMaterial}" update="materials"
-							async="true" />
-					</h:panelGrid>
-					<p:dataTable id="materials" var="material"
-						value="#{takeAdminBean.materials}" resizableColumns="true"
-						selection="#{takeAdminBean.selectedMaterial}" selectionMode="single"
-                        rowKey="#{material.id}"
-						rowIndexVar="rowIndex"
-                        scrollable="true" scrollWidth="600" scrollHeight="350">
-
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="序号" />
-							</f:facet>
-							<h:outputText value="#{rowIndex + 1}" />
-						</p:column>
-
-						<p:column headerText="物料名称">
-							<h:outputText value="#{material.label}" />
-						</p:column>
-
-						<p:column headerText="序列号">
-							<h:outputText value="#{material.serial}" />
-						</p:column>
-
-						<p:column headerText="条形码">
-							<h:outputText value="#{material.barCode}" />
-						</p:column>
-
-						<p:column headerText="主单位">
-							<h:outputText value="#{material.unit.name}" />
-						</p:column>
-
-                        <p:column headerText="规格型号">
-                            <h:outputText value="#{material.modelSpec}" />
-                        </p:column>
-
-					</p:dataTable>
-					<h:panelGrid columns="2">
-						<p:commandButton value="确定"
-							actionListener="#{takeAdminBean.chooseMaterial}"
-							oncomplete="materialDialog.hide();" update="itemForm:itemPanel"
-							async="true" />
-						<p:commandButton value="取消" oncomplete="materialDialog.hide();" />
-					</h:panelGrid>
-				</h:panelGroup>
-			</p:dialog>
-
-		</h:form>
-
-		<h:form id="chooseStockLocationForm">
-			<p:dialog header="选择库位" widgetVar="chooseStockLocationDialog"
-				modal="true" height="500" width="640">
-				<h:panelGroup id="chooseStockLocationPanel">
-
-					<p:panel header="预设库位" toggleable="true">
-						<p:dataTable id="preferredLocations" var="stockLocation"
-							value="#{takeAdminBean.preferredLocations}" resizableColumns="true"
-							selection="#{takeAdminBean.selectedPreferredStockLocation}"
-							selectionMode="single"
-                            rowKey="#{stockLocation.id}" rowIndexVar="rowIndex">
-
-							<p:column>
-								<f:facet name="header">
-									<h:outputText value="序号" />
-								</f:facet>
-								<h:outputText value="#{rowIndex + 1}" />
-							</p:column>
-
-							<p:column>
-								<f:facet name="header">库位</f:facet>
-								<h:outputText value="#{stockLocation.nodeText}" />
-							</p:column>
-							<p:column>
-								<f:facet name="header">所属仓库</f:facet>
-								<h:outputText value="#{stockLocation.warehouse.name}" />
-							</p:column>
-						</p:dataTable>
-                        <h:panelGrid columns="2">
-                            <p:commandButton value="确定"
-                                actionListener="#{takeAdminBean.doSelectPreferredStockLocation}"
-                                update="itemForm:itemPanel"
-                                oncomplete="chooseStockLocationDialog.hide();" />
-                            <p:commandButton value="取消"
-                                oncomplete="chooseStockLocationDialog.hide();" />
-                        </h:panelGrid>
-					</p:panel>
-					<p:panel header="所有库位" toggleable="true">
-						<p:tree value="#{takeAdminBean.locationRoot}"
-							var="stockLocation" selectionMode="single"
-							selection="#{takeAdminBean.selectedStockLocationNode}">
-							<p:treeNode>
-								<h:outputText value="#{stockLocation.nodeText}" />
-							</p:treeNode>
-						</p:tree>
-
-						<h:panelGrid columns="2">
-							<p:commandButton value="确定"
-								actionListener="#{takeAdminBean.doSelectStockLocation}"
-								update="itemForm:itemPanel"
-								oncomplete="chooseStockLocationDialog.hide();" />
-							<p:commandButton value="取消"
-								oncomplete="chooseStockLocationDialog.hide();" />
-						</h:panelGrid>
-					</p:panel>
-
-
-
-				</h:panelGroup>
-			</p:dialog>
-		</h:form>
-
-        <h:form id="deleteConfirmForm">
-            <p:confirmDialog message="确定要删除吗?" width="200" header="删除确认"
-                severity="alert" widgetVar="deleteConfirmDialog" modal="true">
-
-                <p:commandButton value="确定"
-                    update="mainForm"
-                    actionListener="#{takeAdminBean.delete}"
-                    oncomplete="deleteConfirmDialog.hide()" />
-                <p:commandButton value="取消" onclick="deleteConfirmDialog.hide()"
-                    type="button" />
-
-            </p:confirmDialog>
-        </h:form>
-
         <h:form id="deleteItemConfirmForm">
             <p:confirmDialog message="确定要删除吗?" width="200" header="删除明细条目确认"
                 severity="alert" widgetVar="deleteItemConfirmDialog" modal="true">
@@ -485,123 +284,6 @@
                     type="button" />
 
             </p:confirmDialog>
-        </h:form>
-
-        <h:form id="orgForm">
-            <p:dialog header="选择公司" widgetVar="orgDialog" modal="true"
-                height="400" width="800">
-                <h:panelGroup>
-
-                    <h:panelGrid columns="3">
-                        <h:outputLabel value="公司名称全部或部份:" />
-                        <p:inputText value="#{takeAdminBean.orgPattern}" />
-                        <p:commandButton value="查找"
-                            actionListener="#{takeAdminBean.findOrg}" update="orgs"
-                            async="true" />
-                    </h:panelGrid>
-                    <p:dataTable id="orgs" var="org"
-                        value="#{takeAdminBean.orgs}" resizableColumns="true"
-                        rowIndexVar="rowIndex">
-
-                        <p:column headerText="序号">
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column headerText="客户/供应商名称">
-                            <h:outputText value="#{org.name}" />
-                        </p:column>
-
-                        <p:column headerText="标签">
-                            <p:dataList value="#{org.tags}" var="tag" type="definition">
-                                <f:facet name="description">
-                                    <h:outputText value="#{tag.label}"/>
-                                </f:facet>
-                            </p:dataList>
-                        </p:column>
-
-                        <p:column headerText="成立日期">
-                            <h:outputText value="#{org.birthday}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"
-                                    timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-
-                        <p:column headerText="公司类型">
-                            <h:outputText value="#{org.type.label}" />
-                        </p:column>
-
-                        <p:column headerText="税务登记号">
-                            <h:outputText value="#{org.sid}" />
-                        </p:column>
-
-                        <p:column headerText="公司规模">
-                            <h:outputText value="#{org.size}" />
-                        </p:column>
-
-                        <p:column headerText="创建日期">
-                            <h:outputText value="#{org.createdDate}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"
-                                    timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-                        <p:column headerText="动作">
-                            <p:commandLink
-                                oncomplete="orgDialog.hide()"
-                                action="#{takeAdminBean.chooseOrg}"
-                                update="mainForm:org" value="挑选">
-                                <f:setPropertyActionListener
-                                    value="#{org}"
-                                    target="#{takeAdminBean.selectedOrg}" />
-                            </p:commandLink>
-                        </p:column>
-                    </p:dataTable>
-                    <p:commandButton value="取消" oncomplete="orgDialog.hide();" />
-                </h:panelGroup>
-            </p:dialog>
-        </h:form>
-
-        <h:form id="orgUnitForm">
-            <p:dialog header="选择部门" widgetVar="orgUnitDialog" modal="true"
-                height="400" width="640">
-                <h:panelGroup>
-
-                    <h:panelGrid columns="3">
-                        <h:outputLabel value="部门名称全部或部份:" />
-                        <p:inputText value="#{takeAdminBean.orgUnitPattern}" />
-                        <p:commandButton value="查找"
-                            actionListener="#{takeAdminBean.findOrgUnit}" update="orgUnits"
-                            async="true" />
-                    </h:panelGrid>
-                    <p:dataTable id="orgUnits" var="orgUnit"
-                        value="#{takeAdminBean.orgUnits}" resizableColumns="true"
-                        rowIndexVar="rowIndex">
-
-                        <p:column headerText="序号">
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column headerText="部门名称">
-                            <h:outputText value="#{orgUnit.name}" />
-                        </p:column>
-
-                        <p:column headerText="所属公司">
-                            <h:outputText value="#{orgUnit.org.name}" />
-                        </p:column>
-
-                        <p:column headerText="动作">
-                            <p:commandLink
-                                oncomplete="orgUnitDialog.hide()"
-                                action="#{takeAdminBean.chooseOrgUnit}"
-                                update="mainForm:orgUnit" value="挑选">
-                                <f:setPropertyActionListener
-                                    value="#{orgUnit}"
-                                    target="#{takeAdminBean.selectedOrgUnit}" />
-                            </p:commandLink>
-                        </p:column>
-                    </p:dataTable>
-                    <p:commandButton value="取消" oncomplete="orgUnitDialog.hide();" />
-                </h:panelGroup>
-            </p:dialog>
         </h:form>
 
         <h:form id="stockQueryForm">
@@ -706,10 +388,6 @@
                 </h:panelGroup>
             </p:dialog>
         </h:form>
-
-        <h:outputScript>
-            document.title = $("#mainForm\\:pageTitle").val();
-        </h:outputScript>
 
 	</ui:define>
 </ui:composition>
