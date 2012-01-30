@@ -1,487 +1,114 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core"
-    xmlns:sem="http://bee32.com/sem/functions" xmlns:p="http://primefaces.org/ui"
-    xmlns:t="http://myfaces.apache.org/tomahawk">
-<!-- InstanceBegin template="/Templates/seccaJsf.dwt.jsp" codeOutsideHTMLIsLocked="false" -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-</head>
+<ui:composition template="/template/scroll-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk">
 
-<ui:composition template="/template/primefaces.xhtml">
-
-    <ui:define name="title">生产任务单管理</ui:define>
+    <ui:param name="title" value="生产任务单" />
+    <ui:param name="bean" value="#{maskTaskAdminBean}" />
 
     <ui:define name="content">
+        <p:panel header="生产任务单管理">
+            <t:panelGrid columns="4">
+                <h:outputText value="标识:" />
+                <t:panelGroup colspan="3">
+                    <h:outputText value="#{bean.makeTask.id}" style="font-weight:bold;font-size:large" />
+                </t:panelGroup>
 
-		<h:form id="mainForm">
+                <h:outputText value="时间:" />
+                <h:outputText value="#{bean.makeTask.createdDate}">
+                    <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                </h:outputText>
+                <h:outputText value="制单人:" />
+                <p:inputText value="#{bean.creator}" disabled="true" />
 
-            <h:panelGrid columns="6">
-                <h:outputText value="时间段:" />
-                <h:outputText value="从" />
-                <p:calendar id="limitDateFrom" navigator="true"
-                    locale="zh_CN" pattern="yyyy-MM-dd"
-                    value="#{makeTaskAdminBean.limitDateFrom}"
-                    showOn="button" disabled="#{makeTaskAdminBean.editable}" />
-                <h:outputText value="到" />
-                <p:calendar id="limitDateTo" navigator="true"
-                    locale="zh_CN" pattern="yyyy-MM-dd"
-                    value="#{makeTaskAdminBean.limitDateTo}" showOn="button"
-                    disabled="#{makeTaskAdminBean.editable}" />
-                <p:commandButton value="限定"
-                    actionListener="#{makeTaskAdminBean.limit}" async="true"
-                    update="mainForm"
-                    disabled="#{makeTaskAdminBean.editable}" />
-            </h:panelGrid>
+                <h:outputText value="定单:" />
+                <t:panelGroup>
+                    <p:inputText id="order" value="#{bean.makeTask.order.id}" readonly="true" />
+                    <p:commandButton value="..." onclick="orderDialog.show()" disabled="#{!bean.editable}" />
+                </t:panelGroup>
+                <t:panelGroup />
+                <t:panelGroup />
+            </t:panelGrid>
 
-            <p:toolbar id="toolbar">
-				<p:toolbarGroup align="left">
-					<p:commandButton value="新增" actionListener="#{makeTaskAdminBean.new_}"
-						disabled="#{makeTaskAdminBean.editable}" update="mainForm" async="true" />
-					<p:commandButton value="修改"
-						actionListener="#{makeTaskAdminBean.modify}"
-						disabled="#{makeTaskAdminBean.editable}" update="mainForm" async="true" />
-					<p:commandButton value="删除"
-						onclick="deleteConfirmDialog.show();"
-						disabled="#{makeTaskAdminBean.editable}" update="mainForm" async="true" />
-					<p:separator />
-					<p:commandButton value="保存" actionListener="#{makeTaskAdminBean.save}"
-						disabled="#{!makeTaskAdminBean.editable}" update="mainForm" async="true" />
-					<p:commandButton value="取消"
-						actionListener="#{makeTaskAdminBean.cancel}"
-						disabled="#{!makeTaskAdminBean.editable}" update="mainForm" async="true" />
-					<p:separator />
-					<p:commandButton value="第一条"
-						actionListener="#{makeTaskAdminBean.first}"
-						disabled="#{makeTaskAdminBean.editable}" update="mainForm"
-						async="true" />
-					<p:commandButton value="上一条"
-						actionListener="#{makeTaskAdminBean.previous}"
-						disabled="#{makeTaskAdminBean.editable}" update="mainForm"
-						async="true" />
-					<p:commandButton value="下一条"
-						actionListener="#{makeTaskAdminBean.next}"
-						disabled="#{makeTaskAdminBean.editable}" update="mainForm"
-						async="true" />
-					<p:commandButton value="最末条"
-						actionListener="#{makeTaskAdminBean.last}"
-						disabled="#{makeTaskAdminBean.editable}" update="mainForm"
-						async="true" />
-                    <p:inputText value="#{makeTaskAdminBean.goNumber}"
-                        disabled="#{makeTaskAdminBean.editable}" style="width:30px;" />
-                    <h:outputText value="/#{makeTaskAdminBean.count}"/>
-                    <p:commandButton value="前往"
-                        actionListener="#{makeTaskAdminBean.go}"
-                        disabled="#{makeTaskAdminBean.editable}" update="mainForm"
-                        async="true" />
-				</p:toolbarGroup>
-			</p:toolbar>
+            <h:outputText value="明细" />
 
-			<p:panel header="生产任务单管理">
-				<t:panelGrid columns="4">
-                    <h:outputText value="标识:" />
-                    <t:panelGroup colspan="3">
-                        <h:outputText value="#{makeTaskAdminBean.makeTask.id}" style="font-weight:bold;font-size:large"/>
-                    </t:panelGroup>
+            <p:dataTable id="items" var="item" value="#{bean.items}" resizableColumns="true" rowIndexVar="rowIndex">
 
-                    <h:outputText value="时间:" />
-                    <h:outputText
-                        value="#{makeTaskAdminBean.makeTask.createdDate}">
-                        <f:convertDateTime pattern="yyyy-MM-dd"
-                            timeZone="Asia/Shanghai" />
+                <p:column headerText="序号">
+                    <h:outputText value="#{rowIndex + 1}" />
+                </p:column>
+
+                <p:column headerText="物料">
+                    <h:outputText value="#{item.part.target.label}" />
+                </p:column>
+
+                <p:column headerText="规格型号">
+                    <h:outputText value="#{item.part.target.modelSpec}" />
+                </p:column>
+
+                <p:column headerText="数量">
+                    <h:outputText value="#{item.quantity}" />
+                </p:column>
+
+                <p:column headerText="完工时间">
+                    <h:outputText value="#{item.deadline}">
+                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                     </h:outputText>
-                    <h:outputText value="制单人:" />
-                    <p:inputText value="#{makeTaskAdminBean.creator}"
-                        disabled="true" />
+                </p:column>
 
-                    <h:outputText value="定单:" />
-                    <t:panelGroup>
-                        <p:inputText id="order" value="#{makeTaskAdminBean.makeTask.order.id}" readonly="true"/>
-                        <p:commandButton value="..." onclick="orderDialog.show()" disabled="#{!makeTaskAdminBean.editable}"/>
-                    </t:panelGroup>
-                    <t:panelGroup/>
-                    <t:panelGroup/>
+                <p:column headerText="操作">
+                    <p:commandLink update="itemForm:itemPanel" disabled="#{!bean.editable}"
+                        actionListener="#{bean.modifyItem}" oncomplete="itemDialog.show()" value="修改">
+                        <f:setPropertyActionListener value="#{item}" target="#{bean.makeTaskItem}" />
+                    </p:commandLink>
+                    <p:spacer width="10" />
+                    <p:commandLink disabled="#{!bean.editable}" oncomplete="deleteItemConfirmDialog.show()"
+                        value="删除">
+                        <f:setPropertyActionListener value="#{item}" target="#{bean.makeTaskItem}" />
+                    </p:commandLink>
+                </p:column>
+            </p:dataTable>
+        </p:panel>
+    </ui:define>
+
+    <ui:define name="dialogs">
+
+        <sem:choosePartyDialog caption="选择客户" var="customerDialog" />
+        <sem:chooseMakeOrderDialog />
+
+        <p:dialog header="生产任务单项目编辑" widgetVar="itemDialog" modal="true" height="500" width="640">
+            <h:form id="itemForm">
+                <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
+
+                    <h:outputLabel value="物料" />
+                    <h:outputText value="#{bean.makeTaskItem.part.target.label}" />
+
+                    <h:outputLabel value="数量" />
+                    <p:inputText value="#{bean.makeTaskItem.quantity}" />
+
+                    <h:outputText value="完工时间:" />
+                    <p:calendar navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{bean.makeTaskItem.deadline}"
+                        showOn="button" />
+
+                    <h:outputLabel value="备注" />
+                    <p:inputText value="#{bean.makeTaskItem.description}" />
+
                 </t:panelGrid>
+                <div align="right">
+                    <p:commandButton value="保存" actionListener="#{bean.saveItem}" oncomplete="itemDialog.hide();"
+                        async="true" update=":mainForm" />
+                    <p:commandButton value="取消" oncomplete="itemDialog.hide();" />
+                </div>
+            </h:form>
+        </p:dialog>
 
-                <h:outputText value="明细"/>
-
-				<p:dataTable id="items" var="item"
-					value="#{makeTaskAdminBean.items}" resizableColumns="true"
-					rowIndexVar="rowIndex">
-
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="序号" />
-						</f:facet>
-						<h:outputText value="#{rowIndex + 1}" />
-					</p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="物料"/>
-                        </f:facet>
-                        <h:outputText value="#{item.part.target.label}" />
-                    </p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="规格型号"/>
-                        </f:facet>
-                        <h:outputText value="#{item.part.target.modelSpec}" />
-                    </p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="数量"/>
-                        </f:facet>
-                        <h:outputText value="#{item.quantity}" />
-                    </p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="完工时间"/>
-                        </f:facet>
-                        <h:outputText value="#{item.deadline}">
-                            <f:convertDateTime pattern="yyyy-MM-dd"
-                                timeZone="Asia/Shanghai" />
-                        </h:outputText>
-                    </p:column>
-
-					<p:column>
-						<f:facet name="header">操作</f:facet>
-						<t:panelGroup>
-							<p:commandLink update="itemForm:itemPanel"
-								disabled="#{!makeTaskAdminBean.editable}"
-								actionListener="#{makeTaskAdminBean.modifyItem}"
-								oncomplete="itemDialog.show()" value="修改">
-								<f:setPropertyActionListener value="#{item}"
-									target="#{makeTaskAdminBean.makeTaskItem}" />
-							</p:commandLink>
-							<p:spacer width="10" />
-							<p:commandLink
-								disabled="#{!makeTaskAdminBean.editable}"
-								oncomplete="deleteItemConfirmDialog.show()" value="删除">
-								<f:setPropertyActionListener value="#{item}"
-									target="#{makeTaskAdminBean.makeTaskItem}" />
-							</p:commandLink>
-						</t:panelGroup>
-					</p:column>
-
-				</p:dataTable>
-
-
-			</p:panel>
-		</h:form>
-
-		<h:form id="itemForm">
-			<p:dialog header="生产任务单项目编辑" widgetVar="itemDialog" modal="true"
-				height="500" width="640">
-				<h:panelGroup id="itemPanel">
-					<t:panelGrid columns="2"
-						columnClasses="detail_col_title,detail_col_value">
-
-						<h:outputLabel value="物料" />
-				        <h:outputText value="#{makeTaskAdminBean.makeTaskItem.part.target.label}"/>
-
-                        <h:outputLabel value="数量" />
-                        <p:inputText value="#{makeTaskAdminBean.makeTaskItem.quantity}"/>
-
-                        <h:outputText value="完工时间:" />
-                        <p:calendar navigator="true"
-                            locale="zh_CN" pattern="yyyy-MM-dd"
-                            value="#{makeTaskAdminBean.makeTaskItem.deadline}"
-                            showOn="button" />
-
-                        <h:outputLabel value="备注" />
-                        <p:inputText value="#{makeTaskAdminBean.makeTaskItem.description}"/>
-
-						<t:panelGroup colspan="2">
-							<t:panelGrid columns="2">
-								<p:commandButton value="保存"
-									actionListener="#{makeTaskAdminBean.saveItem}"
-									oncomplete="itemDialog.hide();" async="true"
-									update=":mainForm" />
-								<p:commandButton value="取消"
-									oncomplete="itemDialog.hide();" />
-							</t:panelGrid>
-						</t:panelGroup>
-
-					</t:panelGrid>
-				</h:panelGroup>
-
-			</p:dialog>
-		</h:form>
-
-
-       <h:form id="deleteConfirmForm">
-            <p:confirmDialog message="确定要删除吗?" width="200" header="删除确认"
-                severity="alert" widgetVar="deleteConfirmDialog" modal="true">
-
-                <p:commandButton value="确定"
-                    update=":mainForm"
-                    actionListener="#{makeTaskAdminBean.delete}"
-                    oncomplete="deleteConfirmDialog.hide()" />
-                <p:commandButton value="取消" onclick="deleteConfirmDialog.hide()"
-                    type="button" />
-
-            </p:confirmDialog>
-        </h:form>
-
-        <h:form id="deleteItemConfirmForm">
-            <p:confirmDialog message="确定要删除吗?" width="200" header="删除明细条目确认"
-                severity="alert" widgetVar="deleteItemConfirmDialog" modal="true">
-
-                <p:commandButton value="确定"
-                    update=":mainForm:items"
-                    actionListener="#{makeTaskAdminBean.deleteItem}"
+        <p:confirmDialog message="确定要删除吗?" width="200" header="删除明细条目确认" severity="alert"
+            widgetVar="deleteItemConfirmDialog" modal="true">
+            <h:form id="deleteItemConfirmForm">
+                <p:commandButton value="确定" update=":mainForm:items" actionListener="#{bean.deleteItem}"
                     oncomplete="deleteItemConfirmDialog.hide()" />
-                <p:commandButton value="取消" onclick="deleteItemConfirmDialog.hide()"
-                    type="button" />
-
-            </p:confirmDialog>
-        </h:form>
-
-        <h:form id="orderForm">
-            <p:dialog header="查找定单" widgetVar="orderDialog"
-                modal="true" height="600" width="800">
-                <h:panelGroup id="orderPanel">
-
-                    <h:panelGroup>
-                        <t:panelGrid columns="3">
-                            <h:outputText value="客户"/>
-                            <p:inputText id="customer"
-                                value="#{makeTaskAdminBean.customer.name}"
-                                readonly="true" />
-                            <p:commandButton value="..."
-                                onclick="customerDialog.show()"/>
-                        </t:panelGrid>
-                        <h:panelGrid columns="6">
-                            <h:outputText value="时间段:" />
-                            <h:outputText value="从" />
-                            <p:calendar id="limitDateFromForOrder"
-                                navigator="true" locale="zh_CN"
-                                pattern="yyyy-MM-dd"
-                                value="#{makeTaskAdminBean.limitDateFromForOrder}"
-                                showOn="button"/>
-                            <h:outputText value="到" />
-                            <p:calendar id="limitDateToForOrder"
-                                navigator="true" locale="zh_CN"
-                                pattern="yyyy-MM-dd"
-                                value="#{makeTaskAdminBean.limitDateToForOrder}"
-                                showOn="button"/>
-                            <p:commandButton value="查找"
-                                actionListener="#{makeTaskAdminBean.findOrder}"
-                                async="true" update="orders"/>
-                        </h:panelGrid>
-                    </h:panelGroup>
-
-                    <p:dataTable id="orders" var="order"
-                        value="#{makeTaskAdminBean.orders}"
-                        resizableColumns="true"
-                        rowIndexVar="rowIndex" scrollable="true"
-                        scrollWidth="750" scrollHeight="350">
-
-                        <p:column headerText="序号" style="width:45px;">
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column headerText="标识">
-                            <h:outputText value="#{order.id}" />
-                        </p:column>
-
-                        <p:column headerText="客户">
-                            <h:outputText value="#{order.customer.name}" />
-                        </p:column>
-
-                        <p:column headerText="创建时间">
-                            <h:outputText value="#{order.createdDate}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"
-                                    timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">操作</f:facet>
-                            <t:panelGroup>
-                                <p:commandLink
-                                    oncomplete="orderItemsDialog.show()"
-                                    update="orderItemsForm:orderItems"
-                                    value="明细">
-                                    <f:setPropertyActionListener
-                                        value="#{order}"
-                                        target="#{makeTaskAdminBean.selectedOrder}" />
-                                </p:commandLink>
-                                <p:spacer width="10"/>
-                                <p:commandLink
-                                    oncomplete="orderDialog.hide();"
-                                    update=":mainForm:order, :mainForm:items"
-                                    action="#{makeTaskAdminBean.chooseOrder}"
-                                    value="挑选">
-                                    <f:setPropertyActionListener
-                                        value="#{order}"
-                                        target="#{makeTaskAdminBean.selectedOrder}" />
-                                </p:commandLink>
-                            </t:panelGroup>
-                        </p:column>
-
-                    </p:dataTable>
-
-                    <p:commandButton value="取消"
-                        oncomplete="orderDialog.hide();" />
-
-
-                </h:panelGroup>
-            </p:dialog>
-        </h:form>
-
-        <h:form id="customerForm">
-            <p:dialog header="选择客户" widgetVar="customerDialog" modal="true"
-                height="500" width="840">
-                <h:panelGroup>
-
-                    <h:panelGrid columns="3">
-                        <h:outputLabel value="客户名称全部或部份:" />
-                        <p:inputText value="#{makeTaskAdminBean.customerPattern}" />
-                        <p:commandButton value="查找"
-                            actionListener="#{makeTaskAdminBean.findCustomer}" update="customers"
-                            async="true" />
-                    </h:panelGrid>
-                    <p:dataTable id="customers" var="customer"
-                        value="#{makeTaskAdminBean.customers}" resizableColumns="true"
-                        rowIndexVar="rowIndex"
-                        scrollable="true" scrollWidth="600" scrollHeight="350">
-
-                        <p:column headerText="序号">
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column headerText="客户名称">
-                            <h:outputText value="#{customer.name}" />
-                        </p:column>
-
-                        <p:column headerText="标签">
-                            <p:dataList value="#{customer.tags}" var="tag" type="definition">
-                                <f:facet name="description">
-                                    <h:outputText value="#{tag.label}"/>
-                                </f:facet>
-                            </p:dataList>
-                        </p:column>
-
-                        <p:column headerText="成立日期/生日">
-                            <h:outputText value="#{customer.birthday}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"
-                                    timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-
-                        <p:column headerText="税务登记号/证件号">
-                            <h:outputText value="#{customer.sid}" />
-                        </p:column>
-
-                        <p:column headerText="创建日期">
-                            <h:outputText value="#{customer.createdDate}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"
-                                    timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-                        <p:column headerText="动作">
-                            <p:commandLink
-                                oncomplete="customerDialog.hide()"
-                                action="#{makeTaskAdminBean.chooseCustomer}"
-                                update="orderForm:customer" value="挑选">
-                                <f:setPropertyActionListener
-                                    value="#{customer}"
-                                    target="#{makeTaskAdminBean.selectedCustomer}" />
-                            </p:commandLink>
-                        </p:column>
-                    </p:dataTable>
-                    <p:commandButton value="取消" oncomplete="customerDialog.hide();" />
-                </h:panelGroup>
-            </p:dialog>
-        </h:form>
-
-
-        <h:form id="orderItemsForm">
-            <p:dialog header="订单明细" widgetVar="orderItemsDialog" modal="true"
-                height="480" width="800">
-                <h:panelGroup id="orderItemsPanel">
-
-                    <p:dataTable id="orderItems" var="item"
-                        value="#{makeTaskAdminBean.orderItems}"
-                        resizableColumns="true"
-                        rowIndexVar="rowIndex"
-                        scrollable="true" scrollWidth="750" scrollHeight="350">
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="序号" />
-                            </f:facet>
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="物料" />
-                            </f:facet>
-                            <h:outputText
-                                value="#{item.part.target.label}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="规格型号" />
-                            </f:facet>
-                            <h:outputText
-                                value="#{item.part.target.modelSpec}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="单价" />
-                            </f:facet>
-                            <h:outputText value="#{item.price.value}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="币种" />
-                            </f:facet>
-                            <h:outputText
-                                value="#{item.price.currencyText}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="数量" />
-                            </f:facet>
-                            <h:outputText value="#{item.quantity}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="外部名称" />
-                            </f:facet>
-                            <h:outputText
-                                value="#{item.externalProductName}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="外部规格" />
-                            </f:facet>
-                            <h:outputText
-                                value="#{item.externalSpecification}" />
-                        </p:column>
-
-                    </p:dataTable>
-                </h:panelGroup>
-            </p:dialog>
-
-        </h:form>
+                <p:commandButton value="取消" onclick="deleteItemConfirmDialog.hide()" type="button" />
+            </h:form>
+        </p:confirmDialog>
 
     </ui:define>
 </ui:composition>
-</html>

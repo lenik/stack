@@ -144,6 +144,9 @@ public class MaterialPlanDto
         this.purchaseRequest = purchaseRequest;
     }
 
+    /**
+     * XXX What's this?
+     */
     public String getIdAsString() {
         return getId().toString();
     }

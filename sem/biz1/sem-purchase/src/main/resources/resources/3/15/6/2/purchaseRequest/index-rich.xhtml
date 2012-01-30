@@ -1,608 +1,265 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core"
-    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk"
-    xmlns:sem="http://java.sun.com/jsf/composite/3/15">
-<ui:composition template="/template/primefaces.xhtml">
+<ui:composition template="/template/scroll-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
-    <ui:define name="title">采购请求管理</ui:define>
+    <ui:param name="title" value="采购请求管理" />
+    <ui:param name="bean" value="#{purchaseRequestAdminBean}" />
+    <ui:param name="obj" value="#{bean.activeObject}" />
 
-    <ui:define name="content">
-        <sem:singleVerifierSupportDialog update=":mainForm" />
+    <ui:define name="toolbarPeripherals">
+        <sem:singleVerifierSupportButton selection="#{bean.selection}" disabled="#{bean.editable}" />
+    </ui:define>
 
-		<h:form id="mainForm">
+    <ui:define name="form">
+        <p:panel header="采购请求管理">
+            <t:panelGrid columns="4">
+                <h:outputText value="标识:" />
+                <h:outputText value="#{bean.purchaseRequest.id}" style="font-weight:bold;font-size:large" />
+                <h:outputText value="状态" />
+                <p:inputText value="#{bean.purchaseRequest.verifyContext.verifyEvalState}" disabled="true" />
 
-            <h:panelGrid columns="6">
-                <h:outputText value="时间段:" />
-                <h:outputText value="从" />
-                <p:calendar id="limitDateFrom" navigator="true"
-                    locale="zh_CN" pattern="yyyy-MM-dd"
-                    value="#{purchaseRequestAdminBean.limitDateFrom}"
-                    showOn="button" disabled="#{purchaseRequestAdminBean.editable}" />
-                <h:outputText value="到" />
-                <p:calendar id="limitDateTo" navigator="true"
-                    locale="zh_CN" pattern="yyyy-MM-dd"
-                    value="#{purchaseRequestAdminBean.limitDateTo}" showOn="button"
-                    disabled="#{purchaseRequestAdminBean.editable}" />
-                <p:commandButton value="限定"
-                    actionListener="#{purchaseRequestAdminBean.limit}" async="true"
-                    update="mainForm"
-                    disabled="#{purchaseRequestAdminBean.editable}" />
-            </h:panelGrid>
+                <h:outputText value="时间:" />
+                <h:outputText value="#{bean.purchaseRequest.createdDate}">
+                    <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                </h:outputText>
+                <h:outputText value="制单人:" />
+                <p:inputText value="#{bean.creator}" disabled="true" />
 
-            <p:toolbar id="toolbar">
-				<p:toolbarGroup align="left">
-					<p:commandButton value="新增" actionListener="#{purchaseRequestAdminBean.new_}"
-						disabled="#{purchaseRequestAdminBean.editable}" update="mainForm" async="true" />
-					<p:commandButton value="修改"
-						actionListener="#{purchaseRequestAdminBean.modify}"
-						disabled="#{purchaseRequestAdminBean.editable}" update="mainForm" async="true" />
-					<p:commandButton value="删除"
-						onclick="deleteConfirmDialog.show();"
-						disabled="#{purchaseRequestAdminBean.editable}" update="mainForm" async="true" />
-					<p:separator />
-					<p:commandButton value="保存" actionListener="#{purchaseRequestAdminBean.save}"
-						disabled="#{!purchaseRequestAdminBean.editable}" update="mainForm" async="true" />
-					<p:commandButton value="取消"
-						actionListener="#{purchaseRequestAdminBean.cancel}"
-						disabled="#{!purchaseRequestAdminBean.editable}" update="mainForm" async="true" />
-					<p:separator />
-                    <sem:singleVerifierSupportButton
-                        selection="#{purchaseRequestAdminBean.selection}"
-                        disabled="#{purchaseRequestAdminBean.editable}" />
-					<p:separator />
-					<p:commandButton value="第一条"
-						actionListener="#{purchaseRequestAdminBean.first}"
-						disabled="#{purchaseRequestAdminBean.editable}" update="mainForm"
-						async="true" />
-					<p:commandButton value="上一条"
-						actionListener="#{purchaseRequestAdminBean.previous}"
-						disabled="#{purchaseRequestAdminBean.editable}" update="mainForm"
-						async="true" />
-					<p:commandButton value="下一条"
-						actionListener="#{purchaseRequestAdminBean.next}"
-						disabled="#{purchaseRequestAdminBean.editable}" update="mainForm"
-						async="true" />
-					<p:commandButton value="最末条"
-						actionListener="#{purchaseRequestAdminBean.last}"
-						disabled="#{purchaseRequestAdminBean.editable}" update="mainForm"
-						async="true" />
-                    <p:inputText value="#{purchaseRequestAdminBean.goNumber}"
-                        disabled="#{purchaseRequestAdminBean.editable}" style="width:30px;" />
-                    <h:outputText value="/#{purchaseRequestAdminBean.count}"/>
-                    <p:commandButton value="前往"
-                        actionListener="#{purchaseRequestAdminBean.go}"
-                        disabled="#{purchaseRequestAdminBean.editable}" update="mainForm"
-                        async="true" />
-				</p:toolbarGroup>
-			</p:toolbar>
+                <h:outputText value="物料计划" />
+                <t:panelGroup colspan="3">
+                    <t:panelGrid columns="2">
+                        <p:selectOneListbox id="plans" style="height:80px; width:200px;">
+                            <f:selectItems value="#{bean.purchaseRequest.plans}" var="plan" itemLabel="#{plan.idAsString}"
+                                itemValue="#{plan.id}" />
+                        </p:selectOneListbox>
+                        <h:panelGrid colums="1">
+                            <p:commandButton value="挑选物料计划" disabled="#{!bean.editable}" onclick="planDialog.show();" />
+                        </h:panelGrid>
+                    </t:panelGrid>
+                </t:panelGroup>
+            </t:panelGrid>
 
-			<p:panel header="采购请求管理">
-				<t:panelGrid columns="4">
-                    <h:outputText value="标识:" />
-                    <h:outputText value="#{purchaseRequestAdminBean.purchaseRequest.id}" style="font-weight:bold;font-size:large"/>
-                    <h:outputText value="状态" />
-                    <p:inputText
-                        value="#{purchaseRequestAdminBean.purchaseRequest.verifyContext.verifyEvalState}"
-                        disabled="true" />
+            <h:outputText value="明细" />
 
-                    <h:outputText value="时间:" />
-                    <h:outputText
-                        value="#{purchaseRequestAdminBean.purchaseRequest.createdDate}">
-                        <f:convertDateTime pattern="yyyy-MM-dd"
-                            timeZone="Asia/Shanghai" />
-                    </h:outputText>
-                    <h:outputText value="制单人:" />
-                    <p:inputText value="#{purchaseRequestAdminBean.creator}"
-                        disabled="true" />
+            <p:dataTable id="items" var="item" value="#{bean.items}" resizableColumns="true" rowIndexVar="rowIndex">
 
-                    <h:outputText value="物料计划" />
-                    <t:panelGroup colspan="3">
-                        <t:panelGrid columns="2">
-                            <p:selectOneListbox id="plans"
-                                style="height:80px; width:200px;">
-                                <f:selectItems
-                                    value="#{purchaseRequestAdminBean.purchaseRequest.plans}"
-                                    var="plan" itemLabel="#{plan.idAsString}"
-                                    itemValue="#{plan.id}" />
-                            </p:selectOneListbox>
-                            <h:panelGrid colums="1">
-                                <p:commandButton value="挑选物料计划"
-                                    disabled="#{!purchaseRequestAdminBean.editable}"
-                                    onclick="planDialog.show();" />
-                            </h:panelGrid>
-                        </t:panelGrid>
+                <p:column headerText="序号">
+                    <h:outputText value="#{rowIndex + 1}" />
+                </p:column>
+
+                <p:column headerText="物料">
+                    <h:outputText value="#{item.material.label}" />
+                </p:column>
+
+                <p:column headerText="规格型号">
+                    <h:outputText value="#{item.material.modelSpec}" />
+                </p:column>
+
+                <p:column headerText="请求数量">
+                    <h:outputText value="#{item.quantity}" />
+                </p:column>
+
+                <p:column headerText="计划数量">
+                    <h:outputText value="#{item.planQuantity}" />
+                </p:column>
+
+                <p:column headerText="优选供应商">
+                    <h:outputText value="#{item.preferredSupplier.name}" />
+                </p:column>
+
+                <p:column headerText="附加要求">
+                    <h:outputText value="#{item.additionalRequirement}" />
+                </p:column>
+
+                <p:column headerText="操作">
+                    <t:panelGroup>
+                        <p:commandLink update="itemForm:itemPanel" disabled="#{!bean.editable}" action="#{bean.modifyItem}"
+                            oncomplete="itemDialog.show()" value="修改">
+                            <f:setPropertyActionListener value="#{item}" target="#{bean.purchaseRequestItem}" />
+                        </p:commandLink>
+                        <!-- <p:spacer width="10" /> <p:commandLink disabled="#{!bean.editable}" oncomplete="deleteItemConfirmDialog.show()"
+                            value="删除"> <f:setPropertyActionListener value="#{item}" target="#{bean.purchaseRequestItem}" /> </p:commandLink> -->
+                        <p:spacer width="10" />
+                        <p:commandLink disabled="#{bean.editable}" oncomplete="inquiryDialog.show()"
+                            action="#{bean.loadInquiry}" update="inquiryForm:inquiryPanel" value="询价">
+
+                            <f:setPropertyActionListener value="#{item}" target="#{bean.purchaseRequestItem}" />
+                        </p:commandLink>
                     </t:panelGroup>
-                </t:panelGrid>
+                </p:column>
 
-                <h:outputText value="明细"/>
+                <p:column headerText="入库仓库">
+                    <p:selectOneMenu id="stockWarehouseId" value="#{item.warehouseId}" style="width:200px;">
+                        <f:selectItem itemValue="" itemLabel="--选择仓库--" />
+                        <f:selectItems value="#{bean.stockWarehouses}" />
+                    </p:selectOneMenu>
+                </p:column>
+            </p:dataTable>
+            <p:separator style="width:100%;" />
+            <p:commandButton value="生成采购入库单" disabled="#{bean.editable}" actionListener="#{bean.genTakeInStockOrder}" />
+        </p:panel>
+    </ui:define>
 
-				<p:dataTable id="items" var="item"
-					value="#{purchaseRequestAdminBean.items}" resizableColumns="true"
-					rowIndexVar="rowIndex">
+    <ui:define name="dialogs">
+        <sem:singleVerifierSupportDialog update=":mainForm" />
+        <sem:choosePartyDialog id="preferredSupplierDialog" var="preferredSupplierDialog" caption="选择优选供应商" />
 
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="序号" />
-						</f:facet>
-						<h:outputText value="#{rowIndex + 1}" />
-					</p:column>
+        <p:dialog header="物料需求项目编辑" widgetVar="itemDialog" modal="true" height="500" width="640">
+            <h:form id="itemForm">
+                <t:panelGroup id="itemPanel">
+                    <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
 
-                    <p:column>
+                        <h:outputLabel value="物料" />
+                        <h:outputText value="#{bean.purchaseRequestItem.material.label}" />
+
+                        <h:outputLabel value="请求数量" />
+                        <h:outputText value="#{bean.purchaseRequestItem.quantity}" />
+
+                        <h:outputLabel value="计划数量" />
+                        <p:inputText value="#{bean.purchaseRequestItem.planQuantity}" />
+
+                        <h:outputLabel value="优选供应商" />
+                        <t:panelGroup>
+                            <p:inputText id="preferredSupplier" value="#{bean.selectedSupplier.name}"
+                                readonly="true" />
+                            <p:commandButton value="..." onclick="preferredSupplierDialog.show()"
+                                disabled="#{!bean.editable}" />
+                        </t:panelGroup>
+
+                        <h:outputLabel value="附加要求" />
+                        <p:inputText value="#{bean.purchaseRequestItem.additionalRequirement}" />
+                    </t:panelGrid>
+                </t:panelGroup>
+                <div align="right">
+                    <p:commandButton value="保存" actionListener="#{bean.saveItem}" oncomplete="itemDialog.hide();"
+                        async="true" update="mainForm" />
+                    <p:commandButton value="取消" oncomplete="itemDialog.hide();" />
+                </div>
+            </h:form>
+        </p:dialog>
+
+        <h:form id="deleteItemConfirmForm">
+            <p:confirmDialog message="确定要删除吗?" width="200" header="删除明细条目确认" severity="alert"
+                widgetVar="deleteItemConfirmDialog" modal="true">
+
+                <p:commandButton value="确定" update="mainForm:items" actionListener="#{bean.deleteItem}"
+                    oncomplete="deleteItemConfirmDialog.hide()" />
+                <p:commandButton value="取消" onclick="deleteItemConfirmDialog.hide()" type="button" />
+
+            </p:confirmDialog>
+        </h:form>
+
+        <p:dialog header="物料计划明细" widgetVar="planItemsDialog" modal="true" height="480" width="800">
+            <h:form id="planItemsForm">
+                <p:dataTable id="planItems" var="item" value="#{bean.planItems}" resizableColumns="true"
+                    rowIndexVar="rowIndex">
+
+                    <p:column headerText="">
                         <f:facet name="header">
-                            <h:outputText value="物料"/>
+                            <h:outputText value="序号" />
+                        </f:facet>
+                        <h:outputText value="#{rowIndex + 1}" />
+                    </p:column>
+
+                    <p:column headerText="">
+                        <f:facet name="header">
+                            <h:outputText value="物料" />
                         </f:facet>
                         <h:outputText value="#{item.material.label}" />
                     </p:column>
 
-                    <p:column>
+                    <p:column headerText="">
                         <f:facet name="header">
-                            <h:outputText value="规格型号"/>
+                            <h:outputText value="规格型号" />
                         </f:facet>
                         <h:outputText value="#{item.material.modelSpec}" />
                     </p:column>
 
-                    <p:column>
+                    <p:column headerText="">
                         <f:facet name="header">
-                            <h:outputText value="请求数量"/>
+                            <h:outputText value="数量" />
                         </f:facet>
                         <h:outputText value="#{item.quantity}" />
                     </p:column>
 
-                    <p:column>
+                    <p:column headerText="">
                         <f:facet name="header">
-                            <h:outputText value="计划数量"/>
-                        </f:facet>
-                        <h:outputText value="#{item.planQuantity}" />
-                    </p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="优选供应商"/>
+                            <h:outputText value="优选供应商" />
                         </f:facet>
                         <h:outputText value="#{item.preferredSupplier.name}" />
                     </p:column>
 
-                    <p:column>
+                    <p:column headerText="">
                         <f:facet name="header">
-                            <h:outputText value="附加要求"/>
+                            <h:outputText value="附加要求" />
                         </f:facet>
                         <h:outputText value="#{item.additionalRequirement}" />
                     </p:column>
 
-					<p:column>
-						<f:facet name="header">操作</f:facet>
-						<t:panelGroup>
-							<p:commandLink update="itemForm:itemPanel"
-								disabled="#{!purchaseRequestAdminBean.editable}"
-								action="#{purchaseRequestAdminBean.modifyItem}"
-								oncomplete="itemDialog.show()" value="修改">
-								<f:setPropertyActionListener value="#{item}"
-									target="#{purchaseRequestAdminBean.purchaseRequestItem}" />
-							</p:commandLink>
-                            <!--
-							<p:spacer width="10" />
-							<p:commandLink
-								disabled="#{!purchaseRequestAdminBean.editable}"
-								oncomplete="deleteItemConfirmDialog.show()" value="删除">
-								<f:setPropertyActionListener value="#{item}"
-									target="#{purchaseRequestAdminBean.purchaseRequestItem}" />
-							</p:commandLink>
-                           -->
-                            <p:spacer width="10" />
-                            <p:commandLink
-                                disabled="#{purchaseRequestAdminBean.editable}"
-                                oncomplete="inquiryDialog.show()"
-                                action="#{purchaseRequestAdminBean.loadInquiry}"
-                                update="inquiryForm:inquiryPanel"
-                                value="询价">
-
-                                <f:setPropertyActionListener value="#{item}"
-                                    target="#{purchaseRequestAdminBean.purchaseRequestItem}" />
-                            </p:commandLink>
-						</t:panelGroup>
-					</p:column>
-
-                    <p:column headerText="入库仓库">
-                        <p:selectOneMenu id="stockWarehouseId"
-                            value="#{item.warehouseId}"
-                            style="width:200px;">
-                            <f:selectItem itemValue=""
-                                itemLabel="--选择仓库--" />
-                            <f:selectItems
-                                value="#{purchaseRequestAdminBean.stockWarehouses}" />
-                        </p:selectOneMenu>
-                    </p:column>
                 </p:dataTable>
-                <p:separator style="width:100%;" />
-                <p:commandButton
-                    value="生成采购入库单"
-                    disabled="#{purchaseRequestAdminBean.editable}"
-                    actionListener="#{purchaseRequestAdminBean.genTakeInStockOrder}"/>
-			</p:panel>
-		</h:form>
+            </h:form>
+        </p:dialog>
 
-        <h:form id="itemForm">
-            <p:dialog header="物料需求项目编辑" widgetVar="itemDialog" modal="true"
-                height="500" width="640">
-                <t:panelGroup id="itemPanel">
-                    <t:panelGrid columns="2"
-                        columnClasses="detail_col_title,detail_col_value">
-
-                        <h:outputLabel value="物料" />
-                        <h:outputText value="#{purchaseRequestAdminBean.purchaseRequestItem.material.label}"/>
-
-                        <h:outputLabel value="请求数量" />
-                        <h:outputText value="#{purchaseRequestAdminBean.purchaseRequestItem.quantity}"/>
-
-                        <h:outputLabel value="计划数量" />
-                        <p:inputText value="#{purchaseRequestAdminBean.purchaseRequestItem.planQuantity}"/>
-
-                        <h:outputLabel value="优选供应商" />
-                        <t:panelGroup>
-                            <p:inputText
-                                id="preferredSupplier"
-                                value="#{purchaseRequestAdminBean.selectedSupplier.name}"
-                                readonly="true"/>
-                            <p:commandButton
-                                value="..." onclick="preferredSupplierDialog.show()"
-                                disabled="#{!purchaseRequestAdminBean.editable}"/>
-                        </t:panelGroup>
-
-                        <h:outputLabel value="附加要求" />
-                        <p:inputText value="#{purchaseRequestAdminBean.purchaseRequestItem.additionalRequirement}"/>
-
-                        <t:panelGroup colspan="2">
-                            <t:panelGrid columns="2">
-                                <p:commandButton value="保存"
-                                    actionListener="#{purchaseRequestAdminBean.saveItem}"
-                                    oncomplete="itemDialog.hide();" async="true"
-                                    update="mainForm" />
-                                <p:commandButton value="取消"
-                                    oncomplete="itemDialog.hide();" />
-                            </t:panelGrid>
-                        </t:panelGroup>
-
-                    </t:panelGrid>
-                </t:panelGroup>
-
-            </p:dialog>
-        </h:form>
-
-
-       <h:form id="deleteConfirmForm">
-            <p:confirmDialog message="确定要删除吗?" width="200" header="删除确认"
-                severity="alert" widgetVar="deleteConfirmDialog" modal="true">
-
-                <p:commandButton value="确定"
-                    update="mainForm"
-                    actionListener="#{purchaseRequestAdminBean.delete}"
-                    oncomplete="deleteConfirmDialog.hide()" />
-                <p:commandButton value="取消" onclick="deleteConfirmDialog.hide()"
-                    type="button" />
-
-            </p:confirmDialog>
-        </h:form>
-
-        <h:form id="deleteItemConfirmForm">
-            <p:confirmDialog message="确定要删除吗?" width="200" header="删除明细条目确认"
-                severity="alert" widgetVar="deleteItemConfirmDialog" modal="true">
-
-                <p:commandButton value="确定"
-                    update="mainForm:items"
-                    actionListener="#{purchaseRequestAdminBean.deleteItem}"
-                    oncomplete="deleteItemConfirmDialog.hide()" />
-                <p:commandButton value="取消" onclick="deleteItemConfirmDialog.hide()"
-                    type="button" />
-
-            </p:confirmDialog>
-        </h:form>
-
-        <h:form id="planForm">
-            <p:dialog header="查找物料计划" widgetVar="planDialog"
-                modal="true" height="600" width="800">
-                <h:panelGroup id="planPanel">
-
-                    <h:panelGroup>
-                        <h:panelGrid columns="6">
-                            <h:outputText value="时间段:" />
-                            <h:outputText value="从" />
-                            <p:calendar id="limitDateFromForPlan"
-                                navigator="true" locale="zh_CN"
-                                pattern="yyyy-MM-dd"
-                                value="#{purchaseRequestAdminBean.limitDateFromForPlan}"
-                                showOn="button"/>
-                            <h:outputText value="到" />
-                            <p:calendar id="limitDateToForPlan"
-                                navigator="true" locale="zh_CN"
-                                pattern="yyyy-MM-dd"
-                                value="#{purchaseRequestAdminBean.limitDateToForPlan}"
-                                showOn="button"/>
-                            <p:commandButton value="查找"
-                                actionListener="#{purchaseRequestAdminBean.findPlan}"
-                                async="true" update="plans"/>
-                        </h:panelGrid>
-                    </h:panelGroup>
-
-                    <p:dataTable id="plans" var="plan"
-                        value="#{purchaseRequestAdminBean.plans}"
-                        resizableColumns="true"
-                        rowIndexVar="rowIndex" scrollable="true"
-                        scrollWidth="750" scrollHeight="300">
-
-                        <p:column headerText="序号" style="width:45px;">
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column headerText="标识">
-                            <h:outputText value="#{plan.id}" />
-                        </p:column>
-
-                        <p:column headerText="创建时间">
-                            <h:outputText value="#{plan.createdDate}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"
-                                    timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">操作</f:facet>
-                            <t:panelGroup>
-                                <p:commandLink
-                                    oncomplete="planItemsDialog.show()"
-                                    update="planItemsForm:planItems"
-                                    value="明细">
-                                    <f:setPropertyActionListener
-                                        value="#{plan}"
-                                        target="#{purchaseRequestAdminBean.selectedPlan}" />
-                                </p:commandLink>
-                                <p:spacer width="10"/>
-                                <p:commandLink
-                                    update="planForm:selectedPlans"
-                                    action="#{purchaseRequestAdminBean.addPlan}"
-                                    value="添加">
-                                    <f:setPropertyActionListener
-                                        value="#{plan}"
-                                        target="#{purchaseRequestAdminBean.selectedPlan}" />
-                                </p:commandLink>
-                            </t:panelGroup>
-                        </p:column>
-                    </p:dataTable>
-                    <t:panelGrid columns="2">
-                        <p:selectOneListbox id="selectedPlans"
-                            value="#{purchaseRequestAdminBean.selectedPlanId}"
-                            style="height:80px; width:200px;">
-                            <f:selectItems
-                                value="#{purchaseRequestAdminBean.selectedPlans}"
-                                var="plan" itemLabel="#{plan.idAsString}"
-                                itemValue="#{plan.id}" />
-                        </p:selectOneListbox>
-                        <h:panelGrid colums="1">
-                            <p:commandButton value="删除"
-                                update="planForm:selectedPlans"
-                                actionListener="#{purchaseRequestAdminBean.deletePlan}"/>
-                        </h:panelGrid>
-                    </t:panelGrid>
-
-
-                    <t:panelGrid columns="2">
-                        <p:commandButton
-                            actionListener="#{purchaseRequestAdminBean.choosePlan}"
-                            update="mainForm"
-                            value="确定"
-                            oncomplete="planDialog.hide();" />
-                        <p:commandButton value="取消" oncomplete="planDialog.hide();" />
-                    </t:panelGrid>
-
-                </h:panelGroup>
-            </p:dialog>
-        </h:form>
-
-        <h:form id="planItemsForm">
-            <p:dialog header="物料计划明细" widgetVar="planItemsDialog" modal="true"
-                height="480" width="800">
-                <h:panelGroup id="planItemsPanel">
-
-                    <p:dataTable id="planItems" var="item"
-                        value="#{purchaseRequestAdminBean.planItems}"
-                        resizableColumns="true"
-                        rowIndexVar="rowIndex">
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="序号" />
-                            </f:facet>
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="物料" />
-                            </f:facet>
-                            <h:outputText value="#{item.material.label}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="规格型号" />
-                            </f:facet>
-                            <h:outputText
-                                value="#{item.material.modelSpec}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="数量" />
-                            </f:facet>
-                            <h:outputText value="#{item.quantity}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="优选供应商" />
-                            </f:facet>
-                            <h:outputText
-                                value="#{item.preferredSupplier.name}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="附加要求" />
-                            </f:facet>
-                            <h:outputText
-                                value="#{item.additionalRequirement}" />
-                        </p:column>
-
-                    </p:dataTable>
-                </h:panelGroup>
-            </p:dialog>
-
-        </h:form>
-
-        <h:form id="preferredSupplierForm">
-            <p:dialog header="选择优选供应商" widgetVar="preferredSupplierDialog" modal="true"
-                height="500" width="840">
-                <h:panelGroup>
-
-                    <h:panelGrid columns="3">
-                        <h:outputLabel value="供应商名称全部或部份:" />
-                        <p:inputText value="#{purchaseRequestAdminBean.supplierPattern}" />
-                        <p:commandButton value="查找"
-                            actionListener="#{purchaseRequestAdminBean.findSupplier}" update="suppliers"
-                            async="true" />
-                    </h:panelGrid>
-                    <p:dataTable id="suppliers" var="supplier"
-                        value="#{purchaseRequestAdminBean.suppliers}" resizableColumns="true"
-                        rowIndexVar="rowIndex"
-                        scrollable="true" scrollWidth="600" scrollHeight="350">
-
-                        <p:column headerText="序号">
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column headerText="客户名称">
-                            <h:outputText value="#{supplier.name}" />
-                        </p:column>
-
-                        <p:column headerText="成立日期/生日">
-                            <h:outputText value="#{supplier.birthday}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"
-                                    timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-
-                        <p:column headerText="税务登记号/证件号">
-                            <h:outputText value="#{supplier.sid}" />
-                        </p:column>
-
-                        <p:column headerText="创建日期">
-                            <h:outputText value="#{supplier.createdDate}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"
-                                    timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-                        <p:column headerText="动作">
-                            <p:commandLink
-                                oncomplete="preferredSupplierDialog.hide()"
-                                update="itemForm:preferredSupplier inquiryDetailForm:supplier"
-                                action="#{purchaseRequestAdminBean.chooseSupplier}"
-                                value="挑选">
-                                <f:setPropertyActionListener
-                                    value="#{supplier}"
-                                    target="#{purchaseRequestAdminBean.selectedSupplier}" />
-                            </p:commandLink>
-                        </p:column>
-                    </p:dataTable>
-                    <p:commandButton value="取消" oncomplete="preferredSupplierDialog.hide();" />
-                </h:panelGroup>
-            </p:dialog>
-        </h:form>
-
-        <h:form id="inquiryForm">
-            <p:dialog header="询价和建议"
-                widgetVar="inquiryDialog" modal="true"
-                height="550" width="800">
+        <p:dialog header="询价和建议" widgetVar="inquiryDialog" modal="true" height="550" width="800">
+            <h:form id="inquiryForm">
 
                 <p:panel id="inquiryPanel">
-                    <h:outputText value="询价物料:#{purchaseRequestAdminBean.purchaseRequestItem.material.label}"/>
+                    <h:outputText value="询价物料:#{bean.purchaseRequestItem.material.label}" />
                     <p:panel header="询价">
-                        <p:commandButton value="新增"
-                            oncomplete="inquiryDetailDialog.show()"
-                            update="inquiryDetailForm:inquiryDetailPanel"
-                            actionListener="#{purchaseRequestAdminBean.newInquiry}" />
+                        <p:commandButton value="新增" oncomplete="inquiryDetailDialog.show()" update="inquiryDetailForm:inquiryDetailPanel"
+                            actionListener="#{bean.newInquiry}" />
 
-                        <p:dataTable id="inquiries" var="inquiry"
-                            value="#{purchaseRequestAdminBean.inquiries}"
-                            resizableColumns="true"
-                            rowIndexVar="rowIndex" scrollable="true"
-                            scrollWidth="650" scrollHeight="250">
+                        <p:dataTable id="inquiries" var="inquiry" value="#{bean.inquiries}"
+                            resizableColumns="true" rowIndexVar="rowIndex" scrollable="true" scrollWidth="650"
+                            scrollHeight="250">
 
                             <p:column headerText="序号">
                                 <h:outputText value="#{rowIndex + 1}" />
                             </p:column>
 
                             <p:column headerText="供应商">
-                                <h:outputText
-                                    value="#{inquiry.org.name}" />
+                                <h:outputText value="#{inquiry.org.name}" />
                             </p:column>
 
                             <p:column headerText="单价">
-                                <h:outputText
-                                    value="#{inquiry.price.value}" />
+                                <h:outputText value="#{inquiry.price.value}" />
                             </p:column>
 
                             <p:column headerText="币种">
-                                <h:outputText
-                                    value="#{inquiry.price.currencyText}" />
+                                <h:outputText value="#{inquiry.price.currencyText}" />
                             </p:column>
 
                             <p:column headerText="交货时间">
                                 <h:outputText value="#{inquiry.deliveryDate}" />
                             </p:column>
 
-                            <p:column>
-                                <f:facet name="header">操作</f:facet>
+                            <p:column headerText="操作">
                                 <t:panelGroup>
-                                    <p:commandLink
-                                        oncomplete="inquiryDetailDialog.show()"
-                                        update="inquiryDetailForm:inquiryDetailPanel"
+                                    <p:commandLink oncomplete="inquiryDetailDialog.show()" update="inquiryDetailForm:inquiryDetailPanel"
                                         value="修改">
-                                        <f:setPropertyActionListener
-                                            value="#{inquiry}"
-                                            target="#{purchaseRequestAdminBean.selectedInquiry}" />
-                                        <f:setPropertyActionListener
-                                            value="#{purchaseRequestAdminBean.INQUIRY_DETAIL_STATUS_MODIFY}"
-                                            target="#{purchaseRequestAdminBean.inquiryDetailStatus}" />
+                                        <f:setPropertyActionListener value="#{inquiry}"
+                                            target="#{bean.selectedInquiry}" />
+                                        <f:setPropertyActionListener value="#{bean.INQUIRY_DETAIL_STATUS_MODIFY}"
+                                            target="#{bean.inquiryDetailStatus}" />
                                     </p:commandLink>
                                     <p:spacer width="10" />
-                                    <p:commandLink
-                                        oncomplete="deleteInquiryConfirmDialog.show()"
-                                        value="删除">
-                                        <f:setPropertyActionListener
-                                            value="#{inquiry}"
-                                            target="#{purchaseRequestAdminBean.selectedInquiry}" />
+                                    <p:commandLink oncomplete="deleteInquiryConfirmDialog.show()" value="删除">
+                                        <f:setPropertyActionListener value="#{inquiry}"
+                                            target="#{bean.selectedInquiry}" />
                                     </p:commandLink>
                                     <p:spacer width="10" />
-                                    <p:commandLink
-                                        oncomplete="inquiryDetailDialog.show()"
-                                        update="inquiryDetailForm:inquiryDetailPanel"
+                                    <p:commandLink oncomplete="inquiryDetailDialog.show()" update="inquiryDetailForm:inquiryDetailPanel"
                                         value="详细">
-                                        <f:setPropertyActionListener
-                                            value="#{inquiry}"
-                                            target="#{purchaseRequestAdminBean.selectedInquiry}" />
-                                        <f:setPropertyActionListener
-                                            value="#{purchaseRequestAdminBean.INQUIRY_DETAIL_STATUS_VIEW}"
-                                            target="#{purchaseRequestAdminBean.inquiryDetailStatus}" />
+                                        <f:setPropertyActionListener value="#{inquiry}"
+                                            target="#{bean.selectedInquiry}" />
+                                        <f:setPropertyActionListener value="#{bean.INQUIRY_DETAIL_STATUS_VIEW}"
+                                            target="#{bean.inquiryDetailStatus}" />
                                     </p:commandLink>
                                     <p:spacer width="10" />
-                                    <p:commandLink
-                                        update="inquiryForm:purchaseAdvicePanel"
-                                        action="#{purchaseRequestAdminBean.acceptInquiry}"
+                                    <p:commandLink update="inquiryForm:purchaseAdvicePanel" action="#{bean.acceptInquiry}"
                                         value="采纳">
-                                        <f:setPropertyActionListener
-                                            value="#{inquiry}"
-                                            target="#{purchaseRequestAdminBean.selectedInquiry}" />
+                                        <f:setPropertyActionListener value="#{inquiry}"
+                                            target="#{bean.selectedInquiry}" />
                                     </p:commandLink>
                                 </t:panelGroup>
                             </p:column>
@@ -614,132 +271,93 @@
                     <p:panel id="purchaseAdvicePanel" header="建议">
                         <t:panelGrid columns="2">
                             <h:outputText value="选择:" />
-                            <p:inputText
-                                value="#{purchaseRequestAdminBean.purchaseAdvice.preferredInquiry.org.name}" readonly="true"/>
+                            <p:inputText value="#{bean.purchaseAdvice.preferredInquiry.org.name}" readonly="true" />
 
                             <h:outputText value="理由:" />
-                            <p:inputText style="width:600px;"
-                                value="#{purchaseRequestAdminBean.purchaseAdvice.reason}" />
+                            <p:inputText style="width:600px;" value="#{bean.purchaseAdvice.reason}" />
 
                             <h:outputText value="状态" />
-                            <p:inputText
-                                value="#{purchaseRequestAdminBean.purchaseAdvice.verifyContext.verifyEvalState}"
+                            <p:inputText value="#{bean.purchaseAdvice.verifyContext.verifyEvalState}"
                                 disabled="true" />
 
                             <t:panelGrid columns="2">
-                                <p:commandButton value="保存"
-                                    actionListener="#{purchaseRequestAdminBean.savePurchaseAdvice}" />
-                                <sem:singleVerifierSupportButton
-                                    selection="#{purchaseRequestAdminBean.selectedPurchaseAdvices}" />
+                                <p:commandButton value="保存" actionListener="#{bean.savePurchaseAdvice}" />
+                                <sem:singleVerifierSupportButton selection="#{bean.selectedPurchaseAdvices}" />
                             </t:panelGrid>
-                            <p:commandButton value="删除建议"
-                                update="inquiryForm:purchaseAdvicePanel"
-                                actionListener="#{purchaseRequestAdminBean.deletePurchaseAdvice}" />
-
-
+                            <p:commandButton value="删除建议" update="inquiryForm:purchaseAdvicePanel"
+                                actionListener="#{bean.deletePurchaseAdvice}" />
 
                         </t:panelGrid>
                     </p:panel>
 
-                    <p:commandButton value="关闭"
-                        onclick="inquiryDialog.hide()" />
-
                 </p:panel>
-            </p:dialog>
-        </h:form>
+                <div align="right">
+                    <p:commandButton value="关闭" onclick="inquiryDialog.hide()" />
+                </div>
+            </h:form>
+        </p:dialog>
 
-        <h:form id="inquiryDetailForm">
-            <p:dialog header="询价详细" widgetVar="inquiryDetailDialog" modal="true"
-                height="500" width="640">
+        <p:dialog header="询价详细" widgetVar="inquiryDetailDialog" modal="true" height="500" width="640">
+            <h:form id="inquiryDetailForm">
 
                 <t:panelGroup id="inquiryDetailPanel">
-                    <t:panelGrid columns="2"
-                        columnClasses="detail_col_title,detail_col_value">
+                    <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
 
                         <h:outputLabel value="供应商" />
                         <t:panelGroup>
-                            <p:inputText id="supplier"
-                                value="#{purchaseRequestAdminBean.selectedInquiry.org.name}"
-                                readonly="true" />
-                            <p:commandButton value="..."
-                                onclick="preferredSupplierDialog.show()"
-                                disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}" />
+                            <p:inputText id="supplier" value="#{bean.selectedInquiry.org.name}" readonly="true" />
+                            <p:commandButton value="..." onclick="preferredSupplierDialog.show()"
+                                disabled="#{bean.inquiryDetailStatus == 3}" />
                         </t:panelGroup>
 
                         <h:outputLabel value="价格" />
                         <t:panelGrid columns="3">
-                            <p:inputText
-                                value="#{purchaseRequestAdminBean.selectedInquiry.priceDigit}"
-                                disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}" />
+                            <p:inputText value="#{bean.selectedInquiry.priceDigit}" disabled="#{bean.inquiryDetailStatus == 3}" />
                             <h:outputLabel value="币种" />
-                            <p:selectOneMenu
-                                value="#{purchaseRequestAdminBean.selectedInquiry.priceCurrency}"
-                                disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}"
+                            <p:selectOneMenu value="#{bean.selectedInquiry.priceCurrency}" disabled="#{bean.inquiryDetailStatus == 3}"
                                 style="width:200px;">
-                                <f:selectItem itemValue=""
-                                    itemLabel="--选择币种--" />
-                                <f:selectItems
-                                    value="#{purchaseRequestAdminBean.currencies}" />
+                                <f:selectItem itemValue="" itemLabel="--选择币种--" />
+                                <f:selectItems value="#{bean.currencies}" />
                             </p:selectOneMenu>
                         </t:panelGrid>
 
                         <h:outputText value="交货时间" />
-                        <p:inputText style="width:500px;"
-                            value="#{purchaseRequestAdminBean.selectedInquiry.deliveryDate}"
-                            disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}" />
+                        <p:inputText style="width:500px;" value="#{bean.selectedInquiry.deliveryDate}"
+                            disabled="#{bean.inquiryDetailStatus == 3}" />
 
                         <h:outputLabel value="质量状况" />
-                        <p:inputText style="width:500px;"
-                            value="#{purchaseRequestAdminBean.selectedInquiry.quality}"
-                            disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}" />
+                        <p:inputText style="width:500px;" value="#{bean.selectedInquiry.quality}" disabled="#{bean.inquiryDetailStatus == 3}" />
 
                         <h:outputLabel value="付款方式" />
-                        <p:inputText style="width:500px;"
-                            value="#{purchaseRequestAdminBean.selectedInquiry.paymentTerm}"
-                            disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}" />
+                        <p:inputText style="width:500px;" value="#{bean.selectedInquiry.paymentTerm}"
+                            disabled="#{bean.inquiryDetailStatus == 3}" />
 
                         <h:outputLabel value="售后服务" />
-                        <p:inputText style="width:500px;"
-                            value="#{purchaseRequestAdminBean.selectedInquiry.afterService}"
-                            disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}" />
+                        <p:inputText style="width:500px;" value="#{bean.selectedInquiry.afterService}"
+                            disabled="#{bean.inquiryDetailStatus == 3}" />
 
                         <h:outputLabel value="其他" />
-                        <p:inputText style="width:500px;"
-                            value="#{purchaseRequestAdminBean.selectedInquiry.other}"
-                            disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}" />
-
-                        <t:panelGroup colspan="2">
-                            <t:panelGrid columns="2">
-                                <p:commandButton value="保存"
-                                    actionListener="#{purchaseRequestAdminBean.saveInquiry}"
-                                    oncomplete="inquiryDetailDialog.hide()"
-                                    disabled="#{purchaseRequestAdminBean.inquiryDetailStatus == 3}"
-                                    async="true"
-                                    update="inquiryForm:inquiries" />
-                                <p:commandButton value="取消"
-                                    oncomplete="inquiryDetailDialog.hide()" />
-                            </t:panelGrid>
-                        </t:panelGroup>
+                        <p:inputText style="width:500px;" value="#{bean.selectedInquiry.other}" disabled="#{bean.inquiryDetailStatus == 3}" />
                     </t:panelGrid>
                 </t:panelGroup>
-            </p:dialog>
-        </h:form>
+                <div align="right">
+                    <p:commandButton value="保存" actionListener="#{bean.saveInquiry}" oncomplete="inquiryDetailDialog.hide()"
+                        disabled="#{bean.inquiryDetailStatus == 3}" async="true" update="inquiryForm:inquiries" />
+                    <p:commandButton value="取消" oncomplete="inquiryDetailDialog.hide()" />
+                </div>
+            </h:form>
+        </p:dialog>
 
         <h:form id="deleteInquiryConfirmForm">
-            <p:confirmDialog message="确定要删除吗?" width="200" header="删除询价确认"
-                severity="alert" widgetVar="deleteInquiryConfirmDialog" modal="true">
+            <p:confirmDialog message="确定要删除吗?" width="200" header="删除询价确认" severity="alert"
+                widgetVar="deleteInquiryConfirmDialog" modal="true">
 
-                <p:commandButton value="确定"
-                    update="inquiryForm:inquiries"
-                    actionListener="#{purchaseRequestAdminBean.deleteInquiry}"
+                <p:commandButton value="确定" update="inquiryForm:inquiries" actionListener="#{bean.deleteInquiry}"
                     oncomplete="deleteInquiryConfirmDialog.hide()" />
-                <p:commandButton value="取消" onclick="deleteInquiryConfirmDialog.hide()"
-                    type="button" />
+                <p:commandButton value="取消" onclick="deleteInquiryConfirmDialog.hide()" type="button" />
 
             </p:confirmDialog>
         </h:form>
 
     </ui:define>
 </ui:composition>
-
-</html>
