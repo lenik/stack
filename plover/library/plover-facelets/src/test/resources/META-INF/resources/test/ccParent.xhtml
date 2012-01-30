@@ -4,6 +4,7 @@
 
     <cc:interface>
         <cc:attribute name="name" required="true" shortDescription="nc(2)" />
+        <cc:attribute name="fullName" default="Full ${cc.attrs.name}." />
     </cc:interface>
 
     <cc:implementation>
@@ -11,7 +12,14 @@
             ccParent: cc.clientId="${cc.clientId}"
         </div>
 
-        <test:ccChild id="ccChild" name="-- ${cc.clientId}, ${cc.parent.parent.attrs.name}" />
+        <test:ccChild id="ccChild" name="(parent) ${cc.parent.parent.attrs.name}" />
+
+        <div>
+            name: ${cc.attrs.name}
+            <br />
+            fullName: ${cc.attrs.fullName}
+            <br />
+        </div>
     </cc:implementation>
 
 </ui:component>
