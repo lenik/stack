@@ -6,7 +6,7 @@
     <ui:param name="_selection" value="${multiple ? _selectionHolder.selectionArray : _selectionHolder.singleSelection}" />
 
     <ui:define name="main">
-        <div id="dataContainer">
+        <h:panelGroup id="dataContainer" layout="block">
             <ui:insert name="dataContainer">
                 <p:treeTable id="treeTable" value="#{dialogBean.rootNode}" var="entry" selectionMode="single"
                     selection="#{_selectionHolder.selectedNode}">
@@ -28,16 +28,17 @@
 
                 </p:treeTable>
             </ui:insert>
-        </div>
+        </h:panelGroup>
 
         <ui:insert name="main.extra" />
     </ui:define>
 
     <ui:define name="buttons.right.0">
         <p:commandButton id="ok" value="确定" oncomplete="${var}.hide()" update="${update}">
-            <f:setPropertyActionListener target="${target}" value="${_selection}" />
+            <f:setPropertyActionListener target="${target}"
+                value="${multiple ? dialogBean.selectionArray : dialogBean.singleSelection}" />
             <ui:insert name="actions" />
         </p:commandButton>
-        <p:commandButton id="cancel" value="关闭" oncomplete="${var}.hide();" />
+        <p:commandButton id="cancel" value="关闭" onclick="${var}.hide();" />
     </ui:define>
 </ui:composition>

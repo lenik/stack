@@ -14,6 +14,7 @@
                 <ui:insert name="moreTabs" />
             </p:tabView>
         </c:if>
+
         <c:if test="${not tabbed}">
             <f:subview id="tv">
                 <ui:insert name="main">no content</ui:insert>
@@ -22,7 +23,7 @@
 
         <ui:insert name="paneS" />
 
-        <div id="buttons">
+        <h:panelGroup id="buttons" layout="block">
             <ui:insert name="buttons">
                 <table border="0" width="100%">
                     <tr>
@@ -40,6 +41,6 @@
                     </tr>
                 </table>
             </ui:insert>
-        </div>
+        </h:panelGroup>
     </h:form>
 </p:dialog>

@@ -42,11 +42,11 @@
                 </c:if>
                 <td valign="top">
                     <c:if test="${sideBarNVisible != null}">
-                        <div id="sideBarN">
+                        <h:panelGroup id="sideBarN" layout="block">
                             <ui:insert name="sideBarN" />
                             <ui:insert name="sideBarN.1" />
                             <ui:insert name="sideBarNSupport" />
-                        </div>
+                        </h:panelGroup>
                     </c:if>
                     <ui:insert name="mainForm">
                         <h:form id="mainForm">
@@ -56,7 +56,7 @@
                                 </div>
                             </c:if>
 
-                            <div id="dataContainer">
+                            <h:panelGroup id="dataContainer" layout="block">
                                 <ui:insert name="dataContainer">
                                     <p:dataTable id="dataTable" var="entry" value="${bean.dataModel}"
                                         selection="${bean.singleSelection}" selectionMode="single" paginator="true"
@@ -89,7 +89,7 @@
                                         </ui:insert>
                                     </p:dataTable>
                                 </ui:insert>
-                            </div>
+                            </h:panelGroup>
                             <div id="dataContextMenu">
                                 <ui:insert name="dataContextMenu" />
                             </div>
@@ -102,17 +102,17 @@
                         </h:form>
                     </ui:insert>
                     <c:if test="${sideBarSVisible != null}">
-                        <div id="sideBarS">
+                        <h:panelGroup id="sideBarS" layout="block">
                             <ui:insert name="sideBarS" />
                             <ui:insert name="sideBarS.1" />
                             <ui:insert name="sideBarSSupport" />
-                        </div>
+                        </h:panelGroup>
                     </c:if>
                 </td>
                 <td valign="center" id="sideBarEToggler" class="layout-side-toggler ui-state-default" style="width: 9px"
                     onclick="$('#sideBarE').toggle()"></td>
                 <td valign="top" id="sideBarE" style="width: 20em; display: none">
-                    <h:panelGroup id="sidePanelE">
+                    <h:panelGroup id="sidePanelE" layout="block">
                         <ui:insert name="sideBarE">
                             <h:form id="searchForm">
                                 <ui:insert name="searchPanel" />

@@ -24,14 +24,12 @@
             </ui:repeat>
         </h:panelGroup>
 
-        <div id="dataContainer">
+        <h:panelGroup id="dataContainer" layout="block">
             <ui:insert name="dataContainer">
                 <p:dataTable id="dataTable" value="${dialogBean.dataModel}" selection="${_selection}"
                     selectionMode="${multiple ? 'multiple' : 'single'}" var="entry" paginator="true" rows="10"
                     paginatorTemplate="${viewConfig.paginatorTemplate}" rowsPerPageTemplate="${viewConfig.pageSizeTemplate}"
                     resizableColumns="true" rowIndexVar="rowIndex">
-
-                    <p:ajax event="rowSelect" update=":${component.parent.parent.parent.parent.clientId}" />
 
                     <p:column headerText="序号">
                         <h:outputText value="${rowIndex + 1}" />
@@ -51,16 +49,17 @@
                     </ui:insert>
                 </p:dataTable>
             </ui:insert>
-        </div>
+        </h:panelGroup>
 
         <ui:insert name="main.extra" />
     </ui:define>
 
     <ui:define name="buttons.right.0">
         <p:commandButton id="ok" value="确定" oncomplete="${var}.hide()" update="${update}">
-            <f:setPropertyActionListener target="${target}" value="${_selection}" />
+            <f:setPropertyActionListener target="${target}"
+                value="${multiple ? dialogBean.selectionArray : dialogBean.singleSelection}" />
             <ui:insert name="actions" />
         </p:commandButton>
-        <p:commandButton id="cancel" value="关闭" oncomplete="${var}.hide();" />
+        <p:commandButton id="cancel" value="关闭" onclick="${var}.hide();" />
     </ui:define>
 </ui:composition>

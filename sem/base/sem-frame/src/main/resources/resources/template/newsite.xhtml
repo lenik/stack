@@ -52,11 +52,11 @@
     </div>
 
     <ui:insert name="initializers">
-        <div id="loginPanel">
+        <h:panelGroup id="loginPanel">
             <ui:insert name="login">
                 <icsf:loginPanel xpc="true" style="none" />
             </ui:insert>
-        </div>
+        </h:panelGroup>
         <h:panelGroup id="intro" style="display: none" rendered="${bean != null}">
             ${bean.intro}
         </h:panelGroup>
@@ -70,23 +70,23 @@
     </div>
 
     <ui:insert name="pageTitle">
-        <div id="pageTitle">
+        <h:panelGroup id="pageTitle" layout="block">
             <h2>
                 <ui:insert name="title" />
             </h2>
             <hr />
-        </div>
+        </h:panelGroup>
     </ui:insert>
 
-    <div id="pageHeader">
+    <h:panelGroup id="pageHeader" layout="block">
         <ui:insert name="pageHeader" />
-    </div>
+    </h:panelGroup>
 
-    <div id="content">
+    <h:panelGroup id="content" layout="block">
         <ui:insert name="content">正在构建中……</ui:insert>
-    </div>
+    </h:panelGroup>
 
-    <div id="pageFooter">
+    <h:panelGroup id="pageFooter" layout="block">
         <ui:insert name="pageFooter">
             <div class="site-page-footer">
                 <div style=" padding: 0.5em;">
@@ -106,7 +106,7 @@
                 | <a href="${location.WEB_APP}/site/contact.jsf">联系信息</a>
             </div>
         </ui:insert>
-    </div>
+    </h:panelGroup>
 
     <div id="scriptsFrame">
         <ui:insert name="scripts.frame">
