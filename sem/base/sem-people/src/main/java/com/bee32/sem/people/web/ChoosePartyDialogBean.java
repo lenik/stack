@@ -1,8 +1,13 @@
 package com.bee32.sem.people.web;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.plover.criteria.hibernate.Alias;
+import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.PartyDto;
@@ -21,10 +26,19 @@ public class ChoosePartyDialogBean
 
     String caption = "Please choose a party..."; // NLS: 选择用户或组
     String stereo;
+    Integer tagId;
 
     public ChoosePartyDialogBean() {
         super(Party.class, PartyDto.class, 0);
         // addSearchFragment("类型为", User.class);
+    }
+
+    @Override
+    protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
+        if (tagId != null) {
+            elements.add(new Alias("tags", "tag"));
+            elements.add(new Equals("tag.id", tagId));
+        }
     }
 
     // Properties
@@ -57,6 +71,11 @@ public class ChoosePartyDialogBean
         default:
             throw new IllegalArgumentException("Bad stereo: " + stereo);
         }
+    }
+
+    public void setTagId(Integer tagId) {
+        this.tagId = tagId;
+        refreshRowCount();
     }
 
     @Override

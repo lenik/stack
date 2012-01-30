@@ -2,6 +2,8 @@ package com.bee32.sem.people.web;
 
 import java.util.List;
 
+import javax.free.Nullables;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +44,10 @@ public class ChooseOrgUnitDialogBean
     }
 
     public void setOrgId(Integer orgId) {
-        this.orgId = orgId;
+        if (!Nullables.equals(this.orgId, orgId)) {
+            this.orgId = orgId;
+            refreshTree();
+        }
     }
 
 }
