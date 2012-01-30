@@ -1,5 +1,7 @@
 package com.bee32.sem.chance.util;
 
+import org.hibernate.criterion.MatchMode;
+
 import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.User;
@@ -12,11 +14,13 @@ import com.bee32.sem.chance.entity.ChanceAction;
 public class ChanceCriteria
         extends CriteriaSpec {
 
-    public static CriteriaElement subjectLike(String keyword) {
+    public static CriteriaElement subjectLike(String keyword, boolean ignoreCase) {
         if (keyword == null || keyword.isEmpty())
             return null;
+        if (ignoreCase)
+            return likeIgnoreCase("subject", keyword, MatchMode.ANYWHERE);
         else
-            return like("subject", "%" + keyword + "%");
+            return like("subject", keyword, MatchMode.ANYWHERE);
     }
 
     public static CriteriaElement actedByCurrentUser() {

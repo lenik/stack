@@ -1,16 +1,15 @@
 package com.bee32.sem.chance.web;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.criteria.hibernate.IsNull;
+import com.bee32.sem.chance.dto.ChanceActionDto;
+import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.misc.SimpleEntityViewBean;
-import com.bee32.sem.people.dto.OrgDto;
-import com.bee32.sem.people.dto.PartyDto;
-import com.bee32.sem.people.dto.PersonDto;
-import com.bee32.sem.people.entity.Org;
-import com.bee32.sem.people.entity.Party;
-import com.bee32.sem.people.entity.Person;
-import com.bee32.sem.people.util.PeopleCriteria;
 
 public class ChooseChanceActionDialogBean
         extends SimpleEntityViewBean {
@@ -20,11 +19,16 @@ public class ChooseChanceActionDialogBean
     static Logger logger = LoggerFactory.getLogger(ChooseChanceActionDialogBean.class);
 
     String caption = "Please choose a party..."; // NLS: 选择用户或组
-    String stereo;
+    boolean detachedOnly;
 
     public ChooseChanceActionDialogBean() {
-        super(Party.class, PartyDto.class, 0);
-        // addSearchFragment("类型为", User.class);
+        super(ChanceAction.class, ChanceActionDto.class, 0);
+    }
+
+    @Override
+    protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
+        if (detachedOnly)
+            elements.add(new IsNull("chance.id"));
     }
 
     // Properties
@@ -37,32 +41,12 @@ public class ChooseChanceActionDialogBean
         this.caption = caption;
     }
 
-    public void setStereo(String stereo) {
-        if (stereo == null)
-            stereo = "";
-        switch (stereo) {
-        case "":
-        case "-":
-            entityClass = Party.class;
-            dtoClass = PartyDto.class;
-            break;
-        case "PER":
-            entityClass = Person.class;
-            dtoClass = PersonDto.class;
-            break;
-        case "ORG":
-            entityClass = Org.class;
-            dtoClass = OrgDto.class;
-            break;
-        default:
-            throw new IllegalArgumentException("Bad stereo: " + stereo);
-        }
+    public boolean isDetachedOnly() {
+        return detachedOnly;
     }
 
-    @Override
-    public void addNameOrLabelRestriction() {
-        addSearchFragment("名称含有 " + searchPattern, PeopleCriteria.namedLike(searchPattern));
-        searchPattern = null;
+    public void setDetachedOnly(boolean detachedOnly) {
+        this.detachedOnly = detachedOnly;
     }
 
 }

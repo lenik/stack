@@ -1,0 +1,65 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:cc="http://java.sun.com/jsf/composite"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui">
+
+    <cc:interface>
+        <!-- basic -->
+        <cc:attribute name="var" default="chooseChanceActionDialog" />
+        <cc:attribute name="stereo" shortDescription="NOT IMPLMENETED" />
+        <cc:attribute name="target" type="java.lang.Object" required="true" />
+        <cc:attribute name="multiple" type="java.lang.Boolean" default="false" />
+        <cc:attribute name="actionListener" targets="form:ok" />
+        <cc:attribute name="update" />
+
+        <!-- ui overrides -->
+        <cc:attribute name="caption" default="${chooseChanceActionDialogBean.caption}" />
+        <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
+        <cc:attribute name="mode" default="table" shortDescription="table, list, tree" />
+
+        <!-- internals -->
+        <cc:attribute name="dialogBean" type="java.lang.Object" default="${chooseChanceActionDialogBean}" />
+        <cc:attribute name="selectionHolder" type="java.lang.Object" />
+
+        <!-- facets -->
+        <cc:facet name="search" />
+        <cc:facet name="columns" />
+    </cc:interface>
+
+    <cc:implementation>
+        <ui:decorate template="/template/simple-entity-dialog.xhtml">
+            <ui:param name="var" value="${cc.attrs.var}" />
+            <ui:param name="target" value="${cc.attrs.target}" />
+            <ui:param name="multiple" value="${cc.attrs.multiple}" />
+            <ui:param name="update" value="${cc.attrs.update}" />
+            <ui:param name="var" value="${cc.attrs.var}" />
+            <ui:param name="caption" value="${cc.attrs.caption}" />
+            <ui:param name="style" value="${cc.attrs.style}" />
+            <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
+            <ui:param name="selectionHolder" value="${cc.attrs.selectionHolder}" />
+
+            <ui:define name="columns">
+                <p:column headerText="类型">
+                    <h:outputText value="${entry.plan ? '计划' : '日志'}" />
+                </p:column>
+
+                <p:column headerText="机会">
+                    <h:outputText value="${entry.chance.null ? '-' : entry.chance.subject}" />
+                </p:column>
+
+                <p:column headerText="执行">
+                    <h:outputText value="${entry.actor.displayName}" />
+                </p:column>
+
+                <p:column headerText="洽谈类型">
+                    <h:outputText value="${entry.style.label}" />
+                </p:column>
+
+                <p:column headerText="阶段">
+                    <h:outputText value="${entry.stage.label}" />
+                </p:column>
+
+                <cc:renderFacet name="columns" />
+            </ui:define>
+        </ui:decorate>
+    </cc:implementation>
+</html>
