@@ -11,8 +11,6 @@ import java.util.Set;
 
 import javax.faces.model.SelectItem;
 
-import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.util.i18n.CurrencyConfig;
@@ -29,8 +27,6 @@ import com.bee32.sem.inventory.service.StockQueryOptions;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.OrgUnitDto;
-import com.bee32.sem.people.entity.OrgUnit;
-import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.world.monetary.CurrencyUtil;
 import com.bee32.sem.world.monetary.MCValue;
@@ -264,8 +260,8 @@ public abstract class AbstractStockOrderBean
     }
 
     public void chooseMaterial() {
-        orderItem.setMaterial(selectedMaterial);
-        selectedMaterial = null;
+//        orderItem.setMaterial(selectedMaterial);
+//        selectedMaterial = null;
     }
 
     public void doSaveItem() {
@@ -282,21 +278,21 @@ public abstract class AbstractStockOrderBean
     }
 
     public void findOrgUnit() {
-        if (orgUnitPattern != null && !orgUnitPattern.isEmpty()) {
-
-            List<OrgUnit> _orgUnits = null;
-
-            if (stockOrder.getOrg().getId() != null) {
-                // 如果前面选中了某个公司，则查找该公司中的部门
-                _orgUnits = serviceFor(OrgUnit.class).list(new Like("name", "%" + orgUnitPattern + "%"),
-                        new Equals("org.id", selectedOrg.getId()));
-            } else {
-                // 如果没有选择公司，则表示查找tag为内部的公司中的部门(即为本公司内部的部门)
-                _orgUnits = serviceFor(OrgUnit.class).list(PeopleCriteria.internalOrgUnitWithName(orgUnitPattern));
-            }
-
-            orgUnits = DTOs.mrefList(OrgUnitDto.class, _orgUnits);
-        }
+//        if (orgUnitPattern != null && !orgUnitPattern.isEmpty()) {
+//
+//            List<OrgUnit> _orgUnits = null;
+//
+//            if (stockOrder.getOrg().getId() != null) {
+//                // 如果前面选中了某个公司，则查找该公司中的部门
+//                _orgUnits = serviceFor(OrgUnit.class).list(new Like("name", "%" + orgUnitPattern + "%"),
+//                        new Equals("org.id", selectedOrg.getId()));
+//            } else {
+//                // 如果没有选择公司，则表示查找tag为内部的公司中的部门(即为本公司内部的部门)
+//                _orgUnits = serviceFor(OrgUnit.class).list(PeopleCriteria.internalOrgUnitWithName(orgUnitPattern));
+//            }
+//
+//            orgUnits = DTOs.mrefList(OrgUnitDto.class, _orgUnits);
+//        }
     }
 
     public void chooseOrgUnit() {

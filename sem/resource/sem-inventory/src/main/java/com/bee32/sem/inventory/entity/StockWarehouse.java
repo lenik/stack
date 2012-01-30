@@ -25,8 +25,11 @@ public class StockWarehouse
 
     private static final long serialVersionUID = 1L;
 
+    public static final int NAME_LENGTH = 30;
+    public static final int ADDRESS_LENGTH = 50;
+    public static final int PHONE_LENGTH = 30;
+
     // Contact contact;
-    String name;
     String address;
     String phone;
 
@@ -36,7 +39,7 @@ public class StockWarehouse
      * 仓库名称
      */
     @NaturalId(mutable = true)
-    @Column(length = 50, nullable = false)
+    @Column(length = NAME_LENGTH, nullable = false)
     public String getName() {
         return name;
     }
@@ -52,7 +55,7 @@ public class StockWarehouse
     /**
      * 仓库地址。亦用作库位的地址前缀。
      */
-    @Column(length = 50)
+    @Column(length = ADDRESS_LENGTH)
     public String getAddress() {
         return address;
     }
@@ -64,7 +67,7 @@ public class StockWarehouse
     /**
      * 仓库的联系电话。
      */
-    @Column(length = 30)
+    @Column(length = PHONE_LENGTH)
     public String getPhone() {
         return phone;
     }

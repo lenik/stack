@@ -3,8 +3,6 @@ package com.bee32.sem.inventory.web.business;
 import java.util.Date;
 import java.util.List;
 
-import javax.faces.event.AjaxBehaviorEvent;
-
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.Equals;
@@ -13,7 +11,6 @@ import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.annotation.TypeParameter;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
@@ -97,18 +94,14 @@ public class OutsourcingInAdminBean
         this.newStatus = newStatus;
     }
 
-    public void onSwChange(AjaxBehaviorEvent e) {
-        loadStockOrder(goNumber);
-    }
-
     private void loadStockOrder(int position) {
         stockOrder = new StockOrderDto().create();
         stockOutsourcing = new StockOutsourcingDto().create();
         if (selectedWarehouse != null) {
             StockOrder firstOrder = serviceFor(StockOrder.class).getFirst( //
                     new Offset(position - 1), //
-                    CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
-                    StockCriteria.subjectOf(getSubject()), //
+//                    CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+//                    StockCriteria.subjectOf(getSubject()), //
                     new Equals("warehouse.id", selectedWarehouse.getId()), //
                     Order.asc("id"));
 
@@ -161,14 +154,13 @@ public class OutsourcingInAdminBean
             }
             serviceFor(StockOrder.class).delete(stockOrder.unmarshal());
             uiLogger.info("删除成功!");
-            loadStockOrder(goNumber);
+//            loadStockOrder(goNumber);
         } catch (Exception e) {
             uiLogger.warn("删除失败,错误信息:" + e.getMessage());
         }
     }
 
-    @Transactional
-    public void save() {
+    public void save1() {
         stockOrder.setWarehouse(selectedWarehouse);
         try {
             stockOutsourcing.setInput(stockOrder);
@@ -183,7 +175,7 @@ public class OutsourcingInAdminBean
             serviceFor(StockOutsourcing.class).saveOrUpdate(_stockOutsourcing);
 
             uiLogger.info("保存成功");
-            loadStockOrder(goNumber);
+//            loadStockOrder(goNumber);
             editable = false;
             newStatus = false;
         } catch (Exception e) {

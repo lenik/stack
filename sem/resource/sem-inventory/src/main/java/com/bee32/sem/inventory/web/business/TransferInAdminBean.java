@@ -13,7 +13,6 @@ import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.annotation.TypeParameter;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
@@ -21,7 +20,6 @@ import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.tx.dto.StockTransferDto;
 import com.bee32.sem.inventory.tx.entity.StockTransfer;
-import com.bee32.sem.inventory.util.StockCriteria;
 
 @ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = "XFRI"))
 public class TransferInAdminBean
@@ -154,9 +152,9 @@ public class TransferInAdminBean
         stockTransfer = new StockTransferDto().create();
         if (selectedWarehouse != null) {
             StockOrder firstOrder = serviceFor(StockOrder.class).getFirst( //
-                    new Offset(position - 1), //
-                    CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
-                    StockCriteria.subjectOf(getSubject()), //
+//                    new Offset(position - 1), //
+//                    CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+//                    StockCriteria.subjectOf(getSubject()), //
                     new Equals("warehouse.id", selectedWarehouse.getId()), Order.asc("id"));
 
             if (firstOrder != null) {
@@ -217,7 +215,6 @@ public class TransferInAdminBean
             serviceFor(StockOrder.class).delete(stockOrder.unmarshal());
 
             uiLogger.info("删除成功!");
-            loadStockOrder(goNumber);
         } catch (Exception e) {
             uiLogger.warn("删除失败,错误信息:" + e.getMessage());
         }
@@ -289,8 +286,8 @@ public class TransferInAdminBean
 
             uiLogger.info("拨入成功");
 
-            loadStockOrder(count + 1);
-            loadStockOrderOut(goNumberOut);
+//            loadStockOrder(count + 1);
+//            loadStockOrderOut(goNumberOut);
 
             editable = false;
             transferring = false;
@@ -300,7 +297,7 @@ public class TransferInAdminBean
     }
 
     public void cancelTransferIn() {
-        loadStockOrder(goNumber);
+//        loadStockOrder(goNumber);
         loadStockOrderOut(goNumberOut);
 
         editable = false;
@@ -308,7 +305,7 @@ public class TransferInAdminBean
     }
 
     public void choosePerson() {
-        stockTransfer.setTransferredBy(selectedPerson);
+//        stockTransfer.setTransferredBy(selectedPerson);
     }
 
     public void newItemIn() {

@@ -30,7 +30,7 @@ public class InitAdminBean extends AbstractStockOrderBean {
 
     public void onSwChange(AjaxBehaviorEvent e) {
         loadStockOrder();
-        loadStockLocationTree();
+//        loadStockLocationTree();
     }
 
     private void loadStockOrder() {
@@ -61,9 +61,8 @@ public class InitAdminBean extends AbstractStockOrderBean {
         editable = true;
     }
 
-
     @Transactional
-    public void save() {
+    public void save1() {
         stockOrder.setWarehouse(selectedWarehouse);
 
         try {

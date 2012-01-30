@@ -2,8 +2,6 @@ package com.bee32.sem.inventory.web.business;
 
 import java.util.List;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.annotation.ForEntity;
@@ -23,8 +21,8 @@ public class TakeAdminBean
     private static final long serialVersionUID = 1L;
 
     public TakeAdminBean() {
-        String s = getRequest().getParameter("subject").toString();
-        subject = StockOrderSubject.valueOf(s);
+        String s = getRequest().getParameter("subject");
+        subject = s == null ? null : StockOrderSubject.valueOf(s);
     }
 
     @Override
@@ -69,8 +67,8 @@ public class TakeAdminBean
         editable = true;
     }
 
-    @Transactional
-    public void save() {
+    // @Transactional
+    public void save1() {
         stockOrder.setWarehouse(selectedWarehouse);
 
         try {

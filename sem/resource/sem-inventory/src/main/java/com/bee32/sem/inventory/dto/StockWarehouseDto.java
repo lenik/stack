@@ -2,10 +2,12 @@ package com.bee32.sem.inventory.dto;
 
 import java.io.Serializable;
 
+import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.people.dto.PersonDto;
@@ -39,16 +41,21 @@ public class StockWarehouseDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
+        throw new NotImplementedException();
     }
 
+    @NLength(min = 2, max = StockWarehouse.NAME_LENGTH)
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
+        if (name == null)
+            throw new NullPointerException("name");
         this.name = name;
     }
 
+    @NLength(max = StockWarehouse.ADDRESS_LENGTH)
     public String getAddress() {
         return address;
     }
@@ -57,6 +64,7 @@ public class StockWarehouseDto
         this.address = address;
     }
 
+    @NLength(max = StockWarehouse.PHONE_LENGTH)
     public String getPhone() {
         return phone;
     }

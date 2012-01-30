@@ -2,15 +2,12 @@ package com.bee32.sem.inventory.web.business;
 
 import javax.faces.event.AjaxBehaviorEvent;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.annotation.TypeParameter;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
@@ -18,7 +15,6 @@ import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.tx.dto.StockOutsourcingDto;
 import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
-import com.bee32.sem.inventory.util.StockCriteria;
 
 @ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = "OSPO"))
 public class OutsourcingOutAdminBean
@@ -41,7 +37,7 @@ public class OutsourcingOutAdminBean
     }
 
     public void onSwChange(AjaxBehaviorEvent e) {
-        loadStockOrder(goNumber);
+//        loadStockOrder(goNumber);
     }
 
     private void loadStockOrder(int position) {
@@ -50,8 +46,8 @@ public class OutsourcingOutAdminBean
         if (selectedWarehouse != null) {
             StockOrder firstOrder = serviceFor(StockOrder.class).getFirst( //
                     new Offset(position - 1), //
-                    CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
-                    StockCriteria.subjectOf(getSubject()), //
+//                    CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+//                    StockCriteria.subjectOf(getSubject()), //
                     new Equals("warehouse.id", selectedWarehouse.getId()), //
                     Order.asc("id"));
 
@@ -96,19 +92,18 @@ public class OutsourcingOutAdminBean
             serviceFor(StockOutsourcing.class).findAndDelete(new Equals("output.id", stockOrder.getId()));
             // serviceFor(StockOrder.class).delete(stockOrder.unmarshal());
             uiLogger.info("删除成功!");
-            loadStockOrder(goNumber);
+//            loadStockOrder(goNumber);
         } catch (Exception e) {
             uiLogger.warn("删除失败,错误信息:" + e.getMessage());
         }
     }
 
-    @Transactional
-    public void save() {
+    public void save1() {
         stockOrder.setWarehouse(selectedWarehouse);
 
         if (stockOrder.getId() == null) {
             // 新增
-            goNumber = count + 1;
+//            goNumber = count + 1;
         }
         try {
             stockOutsourcing.setOutput(stockOrder);
@@ -123,7 +118,7 @@ public class OutsourcingOutAdminBean
             serviceFor(StockOutsourcing.class).saveOrUpdate(_stockOutsourcing);
 
             uiLogger.info("保存成功");
-            loadStockOrder(goNumber);
+//            loadStockOrder(goNumber);
             editable = false;
         } catch (Exception e) {
             uiLogger.warn("保存失败,错误信息:" + e.getMessage());
