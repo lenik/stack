@@ -2,15 +2,15 @@
     xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
     <sem:uploadFileDialog id="addUserFileDialog" var="addUserFileDialog" update=":userFileDialog:form:userFiles"
-        fileUploadListener="#{materialExAdminBean.addUserFileListener.handleFileUpload}" />
+        fileUploadListener="#{bean.addUserFileListener.handleFileUpload}" />
 
     <sem:materialFragmentDialog header="物料附件" id="userFileDialog" widgetVar="userFileDialog"
-        material="#{materialExAdminBean.activeObject}">
+        material="#{bean.activeObject}">
 
         <p:commandButton value="上传" onclick="addUserFileDialog.show()" />
 
-        <p:dataTable id="userFiles" value="#{materialExAdminBean.userFiles}" var="userFile"
-            resizableColumns="true" scrollable="true" scrollHeight="350" scrollWidth="400" rowIndexVar="rowIndex">
+        <p:dataTable id="userFiles" value="#{bean.userFiles}" var="userFile" resizableColumns="true"
+            scrollable="true" scrollHeight="350" scrollWidth="400" rowIndexVar="rowIndex">
 
             <p:column headerText="序号" style="width:30px;">
                 <h:outputText value="#{rowIndex+1}" />
@@ -26,11 +26,11 @@
 
             <p:column headerText="操作" style="width:100px;">
                 <p:commandLink title="编辑" update=":editUserFileForm" oncomplete="editUserFileDialog.show()">
-                    <f:setPropertyActionListener value="#{userFile}" target="#{materialExAdminBean.userFile}" />
+                    <f:setPropertyActionListener value="#{userFile}" target="#{bean.userFile}" />
                     <p:graphicImage value="#{location.ICON}/etool16/editor_area.gif" />
                 </p:commandLink>
                 <p:commandLink title="删除" oncomplete="deleteUserFileConfirmDialog.show()">
-                    <f:setPropertyActionListener value="#{userFile}" target="#{materialExAdminBean.userFile}" />
+                    <f:setPropertyActionListener value="#{userFile}" target="#{bean.userFile}" />
                     <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
                 </p:commandLink>
                 <a href="#{location.WEB_APP}/3/15/1/6/file/download.do?id=#{userFile.id}" title="下载">
@@ -47,36 +47,36 @@
 
                 <h:panelGroup colspan="2">
                     <div align="center">
-                        <img src="#{materialExAdminBean.userFile.imageHref}" border="1" />
+                        <img src="#{bean.userFile.imageHref}" border="1" />
                     </div>
                 </h:panelGroup>
 
                 <h:outputText value="附件名:" />
                 <h:panelGroup>
-                    <p:inputText value="#{materialExAdminBean.userFile.name}" style="width:270px;" />
+                    <p:inputText value="#{bean.userFile.name}" style="width:270px;" />
                 </h:panelGroup>
 
                 <h:outputText value="附件标题:" />
-                <p:inputText value="#{materialExAdminBean.userFile.label}" style="width:270px;" />
+                <p:inputText value="#{bean.userFile.label}" style="width:270px;" />
 
                 <h:outputText value="附件描述:" />
-                <p:inputTextarea value="#{materialExAdminBean.userFile.description}" style="width:270px;height:50px;" />
+                <p:inputTextarea value="#{bean.userFile.description}" style="width:270px;height:50px;" />
 
-                <p:commandButton actionListener="#{materialExAdminBean.updateUserFile}" update=":userFileDialog:form"
-                    value="保存" oncomplete="editUserFileDialog.hide()" />
-                <p:commandButton value="关闭" onclick="editUserFileDialog.hide()" />
             </h:panelGrid>
+            <div align="right">
+                <p:commandButton value="保存" actionListener="#{bean.updateUserFile}" update=":userFileDialog:form"
+                    oncomplete="editUserFileDialog.hide()" />
+                <p:commandButton value="关闭" onclick="editUserFileDialog.hide()" />
+            </div>
         </h:form>
     </p:dialog>
 
     <p:confirmDialog message="确定要删除吗?" width="200" header="删除确认" severity="alert" widgetVar="deleteUserFileConfirmDialog"
         modal="true">
         <h:form id="deleteUserFileConfirmForm">
-
-            <p:commandButton value="确定" update=":userFileDialog:form" actionListener="#{materialExAdminBean.deleteUserFile}"
+            <p:commandButton value="确定" update=":userFileDialog:form" actionListener="#{bean.deleteUserFile}"
                 oncomplete="deleteUserFileConfirmDialog.hide()" />
             <p:commandButton value="取消" onclick="deleteUserFileConfirmDialog.hide()" type="button" />
-
         </h:form>
     </p:confirmDialog>
 

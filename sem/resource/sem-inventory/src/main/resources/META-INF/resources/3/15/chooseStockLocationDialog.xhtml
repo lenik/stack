@@ -14,10 +14,10 @@
         <cc:attribute name="caption" default="${chooseStockLocationDialogBean.caption}" />
         <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
         <cc:attribute name="mode" default="table" shortDescription="table, list, tree" />
+        <cc:attribute name="warehouseLocked" default="false" />
 
         <!-- internals -->
         <cc:attribute name="dialogBean" type="java.lang.Object" default="${chooseStockLocationDialogBean}" />
-        <cc:attribute name="selectionHolder" type="java.lang.Object" />
 
         <!-- facets -->
         <cc:facet name="search" />
@@ -26,8 +26,8 @@
     </cc:interface>
 
     <cc:implementation>
-        <ui:decorate template="/template/simple-entity-dialog.xhtml">
-            <ui:param name="mainTabHeader" value="所有库位" />
+        <ui:decorate template="/template/simple-tree-entity-dialog.xhtml">
+            <ui:param name="mainTabTitle" value="所有库位" />
             <ui:param name="var" value="${cc.attrs.var}" />
             <ui:param name="target" value="${cc.attrs.target}" />
             <ui:param name="multiple" value="${cc.attrs.multiple}" />
@@ -36,40 +36,31 @@
             <ui:param name="caption" value="${cc.attrs.caption}" />
             <ui:param name="style" value="${cc.attrs.style}" />
             <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
-            <ui:param name="selectionHolder" value="${cc.attrs.selectionHolder}" />
+            <ui:param name="selectionHolder" value="${dialogBean.fullSelectionHolder}" />
 
             <ui:define name="columns">
-            </ui:define>
-
-            <ui:define name="main">
-                <p:tree value="#{takeAdminBean.locationRoot}" var="stockLocation" selectionMode="single"
-                    selection="#{takeAdminBean.selectedStockLocationNode}">
-                    <p:treeNode>
-                        <h:outputText value="#{stockLocation.nodeText}" />
-                    </p:treeNode>
-                </p:tree>
+                <p:column headerText="库位">
+                    <h:outputText value="${entry.nodeText}" />
+                </p:column>
+                <p:column headerText="所属仓库">
+                    <h:outputText value="${entry.warehouse.name}" />
+                </p:column>
             </ui:define>
 
             <ui:define name="moreTabs">
-                <p:tab id="preferredLocations" header="预设库位">
-                    <p:dataTable id="preferredLocations" var="stockLocation" value="#{takeAdminBean.preferredLocations}"
-                        resizableColumns="true" selection="#{takeAdminBean.selectedPreferredStockLocation}"
-                        selectionMode="single" rowKey="#{stockLocation.id}" rowIndexVar="rowIndex">
-                        <p:column>
-                            <f:facet name="header">库位</f:facet>
-                            <h:outputText value="#{stockLocation.nodeText}" />
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">所属仓库</f:facet>
-                            <h:outputText value="#{stockLocation.warehouse.name}" />
-                        </p:column>
-                    </p:dataTable>
+                <p:tab id="preferredLocationsTab" title="预设库位" disabled="${dialogBean.materialId == null}">
+                    <h:panelGroup rendered="${dialogBean.materialId != null}">
+                        <p:dataTable id="preferredLocations" value="${dialogBean.preferredLocations}" var="entry"
+                            selection="${dialogBean.selectedPreferredLocation}" selectionMode="single" resizableColumns="true">
+                            <p:column headerText="库位">
+                                <h:outputText value="${entry.nodeText}" />
+                            </p:column>
+                            <p:column headerText="所属仓库">
+                                <h:outputText value="${entry.warehouse.name}" />
+                            </p:column>
+                        </p:dataTable>
+                    </h:panelGroup>
                 </p:tab>
-            </ui:define>
-
-            <ui:define name="actions">
-                <f:setPropertyActionListener target="${dialogBean.selectPreferredLocation}"
-                    value="???" />
             </ui:define>
 
         </ui:decorate>

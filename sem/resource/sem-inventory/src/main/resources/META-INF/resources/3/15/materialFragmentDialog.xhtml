@@ -14,6 +14,9 @@
         <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
 
         <!-- internals -->
+
+        <!-- facets -->
+        <cc:facet name="buttons" />
     </cc:interface>
 
     <cc:implementation>
@@ -27,6 +30,12 @@
 
                 <cc:insertChildren />
 
+                <div align="right">
+                    <cc:renderFacet name="buttons" />
+                    <p:commandButton id="save-validated" value="保存" update="${cc.attrs.update}"
+                        oncomplete="${cc.attrs.widgetVar}.hideValidated()" rendered="false" />
+                    <p:commandButton id="cancel" value="关闭" onclick="${cc.attrs.widgetVar}.hide()" />
+                </div>
             </h:form>
         </p:dialog>
 

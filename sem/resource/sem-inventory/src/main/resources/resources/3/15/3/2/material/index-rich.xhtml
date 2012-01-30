@@ -9,10 +9,10 @@
 
     <ui:define name="sideBarW">
         <h:form id="navigatorForm">
-            <p:treeTable id="categoryTree" value="#{materialExAdminBean.root}" var="category" selectionMode="single"
-                selection="#{materialExAdminBean.selectedMaterialCategoryNode}">
+            <p:treeTable id="categoryTree" value="#{bean.root}" var="category" selectionMode="single"
+                selection="#{bean.selectedMaterialCategoryNode}">
 
-                <p:ajax event="select" listener="#{materialExAdminBean.refreshRowCount}" update=":mainForm:dataTable" />
+                <p:ajax event="select" listener="#{bean.refreshRowCount}" update=":mainForm:dataTable" />
 
                 <p:column headerText="分类名称" style="width:150px;">
                     <h:outputText value="#{category.name}" />
@@ -45,31 +45,31 @@
         <p:column headerText="操作" style="width:150px;">
             <p:commandLink styleClass="icon-button" title="价格" update=":materialPriceDialog:form"
                 oncomplete="materialPriceDialog.show()">
-                <f:setPropertyActionListener value="#{entry}" target="#{materialExAdminBean.activeObject}" />
+                <f:setPropertyActionListener value="#{entry}" target="#{bean.activeObject}" />
                 <p:graphicImage value="#{location.ICON}/obj16/prjversions_rep.gif" />
             </p:commandLink>
             <p:commandLink styleClass="icon-button" title="单位换算表" update=":unitConvDialog:form"
                 oncomplete="unitConvDialog.show()">
-                <f:setPropertyActionListener value="#{entry}" target="#{materialExAdminBean.activeObject}" />
+                <f:setPropertyActionListener value="#{entry}" target="#{bean.activeObject}" />
                 <p:graphicImage value="#{location.ICON}/elcl16/toggledetailpane_co.gif" />
             </p:commandLink>
             <p:commandLink styleClass="icon-button" title="自定义属性" update=":materialAttributeDialog:form"
                 oncomplete="materialAttributeDialog.show()">
-                <f:setPropertyActionListener value="#{entry}" target="#{materialExAdminBean.activeObject}" />
+                <f:setPropertyActionListener value="#{entry}" target="#{bean.activeObject}" />
                 <p:graphicImage value="#{location.ICON}/obj16/native_lib_path_attrib.gif" />
             </p:commandLink>
             <p:commandLink styleClass="icon-button" title="推荐库位" update=":preferredLocationDialog:form"
                 oncomplete="preferredLocationDialog.show()">
-                <f:setPropertyActionListener value="#{entry}" target="#{materialExAdminBean.activeObject}" />
+                <f:setPropertyActionListener value="#{entry}" target="#{bean.activeObject}" />
                 <p:graphicImage value="#{location.ICON}/cview16/filenav_nav.gif" />
             </p:commandLink>
             <p:commandLink styleClass="icon-button" title="仓库选项" update=":warehouseOptionDialog:form"
                 oncomplete="warehouseOptionDialog.show()">
-                <f:setPropertyActionListener value="#{entry}" target="#{materialExAdminBean.activeObject}" />
+                <f:setPropertyActionListener value="#{entry}" target="#{bean.activeObject}" />
                 <p:graphicImage value="#{location.ICON}/elcl16/all_history_mode.gif" />
             </p:commandLink>
             <p:commandLink styleClass="icon-button" title="附件" update=":unitConvDialog:form" oncomplete="userFileDialog.show()">
-                <f:setPropertyActionListener value="#{entry}" target="#{materialExAdminBean.activeObject}" />
+                <f:setPropertyActionListener value="#{entry}" target="#{bean.activeObject}" />
                 <p:graphicImage value="#{location.ICON}/etool16/annotate.gif" />
             </p:commandLink>
         </p:column>
@@ -77,7 +77,7 @@
 
     <ui:define name="editDialog">
         <p:dialog id="editDialog" header="新增修改物料" widgetVar="editDialog" height="480" width="640" modal="true">
-            <c:set var="obj" value="#{materialExAdminBean.activeObject}" />
+            <c:set var="obj" value="#{bean.activeObject}" />
             <h:form id="form">
                 <t:panelGrid id="editPanel" columns="2" rendered="${obj != null}">
                     <h:outputText value="物料分类:" />
@@ -94,7 +94,7 @@
                         <t:panelGrid columns="2">
                             <p:selectOneMenu id="materialUnit" value="#{obj.unit.id}" style="width:100px;">
                                 <f:selectItem itemLabel="--选择--" itemValue="" />
-                                <f:selectItems value="#{materialExAdminBean.units}" />
+                                <f:selectItems value="#{bean.units}" />
                             </p:selectOneMenu>
                             <p:commandButton actionListener="#{addUnitBean.newUnit}" value="..."
                                 onclick="addUnitDialog.show()" />
@@ -166,9 +166,8 @@
 
         <p:dialog header="挑选择物料分类" widgetVar="chooseMaterialCategoryDialog" height="480" width="640" modal="true">
             <h:form id="chooseMaterialCategoryForm">
-                <p:treeTable id="categoryTree" value="#{materialExAdminBean.root}" var="category"
-                    selectionMode="single" selection="#{materialExAdminBean.choosedMaterialCategoryNode}" scrollable="true"
-                    scrollHeight="380" scrollWidth="250">
+                <p:treeTable id="categoryTree" value="#{bean.root}" var="category" selectionMode="single"
+                    selection="#{bean.choosedMaterialCategoryNode}" scrollable="true" scrollHeight="380" scrollWidth="250">
 
                     <p:column headerText="分类名称" style="width:150px;">
                         <h:outputText value="#{category.name}" />
@@ -181,7 +180,7 @@
 
                 <t:panelGrid columns="2">
                     <p:commandButton value="确定" update=":editDialog:form:materialCategory"
-                        actionListener="#{materialExAdminBean.chooseMaterialCategory}" oncomplete="chooseMaterialCategoryDialog.hide()" />
+                        actionListener="#{bean.chooseMaterialCategory}" oncomplete="chooseMaterialCategoryDialog.hide()" />
                     <p:commandButton value="关闭" onclick="chooseMaterialCategoryDialog.hide()" />
                 </t:panelGrid>
             </h:form>

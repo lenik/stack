@@ -26,7 +26,6 @@ import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.MaterialPreferredLocationDto;
 import com.bee32.sem.inventory.dto.MaterialPriceDto;
 import com.bee32.sem.inventory.dto.MaterialWarehouseOptionDto;
-import com.bee32.sem.inventory.dto.StockLocationDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialAttribute;
 import com.bee32.sem.inventory.entity.MaterialCategory;
@@ -60,7 +59,6 @@ public class MaterialExAdminBean
     ScaleItem scaleItem = new ScaleItem();
     MaterialAttributeDto materialAttr = new MaterialAttributeDto().create();
     MaterialPreferredLocationDto preferredLocation = new MaterialPreferredLocationDto().create();
-    TreeNode selectedPreferredLocation;
     MaterialWarehouseOptionDto warehouseOption = new MaterialWarehouseOptionDto().create();
     UserFileDto userFile = new UserFileDto().create();
 
@@ -351,14 +349,6 @@ public class MaterialExAdminBean
         this.preferredLocation = preferredLocation;
     }
 
-    public TreeNode getSelectedPreferredLocation() {
-        return selectedPreferredLocation;
-    }
-
-    public void setSelectedPreferredLocation(TreeNode selectedPreferredLocation) {
-        this.selectedPreferredLocation = selectedPreferredLocation;
-    }
-
     public void newPreferredLocation() {
         preferredLocation = new MaterialPreferredLocationDto().create();
     }
@@ -370,13 +360,6 @@ public class MaterialExAdminBean
             return material.getPreferredLocations();
         }
         return null;
-    }
-
-    public void choosePreferredLocation() {
-        StockLocationDto location = (StockLocationDto) selectedPreferredLocation.getData();
-        if (location != null) {
-            preferredLocation.setLocation(location);
-        }
     }
 
     public void addPreferredLocation() {
