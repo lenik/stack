@@ -5,7 +5,7 @@
     <cc:interface>
         <!-- basic -->
         <cc:attribute name="var" default="choosePartyDialog" />
-        <cc:attribute name="selection" type="java.lang.Object" required="true" />
+        <cc:attribute name="target" type="java.lang.Object" required="true" />
         <cc:attribute name="multiple" type="java.lang.Boolean" default="false" />
         <cc:attribute name="actionListener" targets="form:ok" />
         <cc:attribute name="update" />
@@ -17,6 +17,7 @@
 
         <!-- internals -->
         <cc:attribute name="dialogBean" type="java.lang.Object" default="${chooseOrgUnitDialogBean}" />
+        <cc:attribute name="selectionHolder" type="java.lang.Object" />
 
         <!-- facets -->
         <cc:facet name="search" />
@@ -26,13 +27,14 @@
     <cc:implementation>
         <ui:decorate template="/template/simple-tree-entity-dialog.xhtml">
             <ui:param name="var" value="${cc.attrs.var}" />
-            <ui:param name="selection" value="${cc.attrs.selection}" />
+            <ui:param name="target" value="${cc.attrs.target}" />
             <ui:param name="multiple" value="${cc.attrs.multiple}" />
             <ui:param name="update" value="${cc.attrs.update}" />
             <ui:param name="var" value="${cc.attrs.var}" />
             <ui:param name="caption" value="${cc.attrs.caption}" />
             <ui:param name="style" value="${cc.attrs.style}" />
             <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
+            <ui:param name="selectionHolder" value="${cc.attrs.selectionHolder}" />
 
             <ui:define name="columns">
                 <p:column headerText="所属组织机构">

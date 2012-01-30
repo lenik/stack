@@ -16,6 +16,7 @@
 
         <!-- internals -->
         <cc:attribute name="dialogBean" type="java.lang.Object" default="${chooseACLDialogBean}" />
+        <cc:attribute name="selectionHolder" type="java.lang.Object" />
     </cc:interface>
 
     <cc:implementation>
@@ -28,6 +29,7 @@
             <ui:param name="caption" value="${cc.attrs.caption}" />
             <ui:param name="style" value="${cc.attrs.style}" />
             <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
+            <ui:param name="selectionHolder" value="${cc.attrs.selectionHolder}" />
 
             <ui:define name="columns">
                 <p:column headerText="名称">
