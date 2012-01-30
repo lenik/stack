@@ -7,7 +7,7 @@
         <ui:param name="tabbed" value="${mainTabTitle != null}" />
 
         <c:if test="${tabbed}">
-            <p:tabView id="tv">
+            <p:tabView id="tv" activeIndex="${dialogBean.tabIndex}">
                 <p:tab id="main" title="${mainTabTitle}">
                     <ui:insert name="main">no content</ui:insert>
                 </p:tab>

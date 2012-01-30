@@ -17,6 +17,7 @@ import com.bee32.plover.arch.util.ISelection;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.web.EntityHelper;
 import com.bee32.plover.restful.resource.StandardViews;
+import com.bee32.sem.misc.SimpleEntityViewBean;
 
 public abstract class EntityViewBean
         extends DataViewBean
@@ -84,7 +85,10 @@ public abstract class EntityViewBean
      *             if not found but <code>mustExist</code> was specified to <code>true</code>.
      * @throws org.springframework.dao.DataAccessException
      *             in case of Hibernate errors
+     * @deprecated
+     * @see SimpleEntityViewBean#requestWindow
      */
+    @Deprecated
     protected Entity<?> getRequestEntity(boolean mustExist) {
         Class<? extends Entity<?>> entityType = getMajorTypeOfContextPage();
         Serializable id = getRequestIdOfContextPage();

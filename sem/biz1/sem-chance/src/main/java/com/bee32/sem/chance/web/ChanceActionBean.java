@@ -115,7 +115,7 @@ public class ChanceActionBean
 
     void initToolbar() {
         boolean temp = selectedAction == null ? false : true;
-        setActiveTab(TAB_INDEX);
+        setTabIndex(TAB_INDEX);
         findComponentEx(BUTTON_NEWACTION).setEnabled(true);
         findComponentEx(BUTTON_EDITACTION).setEnabled(true);
         findComponentEx(BUTTON_DELETEACTION).setEnabled(true);
@@ -174,7 +174,7 @@ public class ChanceActionBean
     public void createForm() {
         action = new ChanceActionDto().create();
         selectedAction = null;
-        setActiveTab(TAB_FORM);
+        setTabIndex(TAB_FORM);
 
         findComponent(DETAIL_TAB).setRendered(true);
 
@@ -195,7 +195,7 @@ public class ChanceActionBean
         ChanceAction _action = serviceFor(ChanceAction.class).getOrFail(selectedAction.getId());
         action = DTOs.marshal(ChanceActionDto.class, _action);
 
-        setActiveTab(TAB_FORM);
+        setTabIndex(TAB_FORM);
         findComponent(DETAIL_TAB).setRendered(true);
 
         findComponentEx(BUTTON_NEWACTION).setEnabled(false);
@@ -210,7 +210,7 @@ public class ChanceActionBean
 
     public void doDetailForm() {
         action = selectedAction;
-        setActiveTab(TAB_FORM);
+        setTabIndex(TAB_FORM);
         findComponentEx(DETAIL_TAB).setRendered(true);
 
         findComponentEx(BUTTON_NEWACTION).setEnabled(true);
@@ -250,7 +250,7 @@ public class ChanceActionBean
     }
 
     public void cancel() {
-        setActiveTab(TAB_INDEX);
+        setTabIndex(TAB_INDEX);
         //DataTable table = (DataTable) findComponent(DATATABLE_ACTIONS);
         // XXX table.clearSelectedRowIndexes();
         findComponent(DETAIL_TAB).setRendered(false);
@@ -361,7 +361,7 @@ public class ChanceActionBean
             serviceFor(ChanceAction.class).saveOrUpdate(_action);
 
             init();
-            setActiveTab(TAB_INDEX);
+            setTabIndex(TAB_INDEX);
             findComponent(DETAIL_TAB).setRendered(false);
             //DataTable table = (DataTable) findComponent(DATATABLE_ACTIONS);
             // XXX table.clearSelectedRowIndexes();

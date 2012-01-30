@@ -72,12 +72,12 @@ public class BomAdminBean
 
     public void initMaterialCategoryTree() {
         List<MaterialCategory> rootCategories = //
-                serviceFor(MaterialCategory.class).list( //
-                        TreeCriteria.root(), //
-                        Or.of( //
-                                new Equals("_classification", Classification.PRODUCT.getValue()), //
-                                new Equals("_classification", Classification.SEMI.getValue()) //
-                        ) //
+        serviceFor(MaterialCategory.class).list( //
+                TreeCriteria.root(), //
+                Or.of( //
+                new Equals("_classification", Classification.PRODUCT.getValue()), //
+                        new Equals("_classification", Classification.SEMI.getValue()) //
+                ) //
                 );
         List<MaterialCategoryDto> rootCategoryDtos = DTOs.mrefList(MaterialCategoryDto.class,
                 ~MaterialCategoryDto.MATERIALS, rootCategories);
@@ -208,15 +208,8 @@ public class BomAdminBean
         return materialCategoryTree;
     }
 
-
-
-
-
-
-
-
     public void newPart() {
-        setActiveTab(TAB_FORM);
+        setTabIndex(TAB_FORM);
         editable = true;
         part = new PartDto().create();
     }
@@ -250,12 +243,12 @@ public class BomAdminBean
             serviceFor(Part.class).saveOrUpdate(_part);
             getBean(PartService.class).changePartItemFromMaterialToPart(_part);
 
-            if(materialCategoryTree.getSelectedNode() != null) {
+            if (materialCategoryTree.getSelectedNode() != null) {
                 MaterialCategoryDto c = (MaterialCategoryDto) materialCategoryTree.getSelectedNode().getData();
                 refreshPartCount(c.getId());
             }
 
-            setActiveTab(TAB_INDEX);
+            setTabIndex(TAB_INDEX);
             editable = false;
             uiLogger.info("保存产品成功");
         } catch (NullPointerException e) {
@@ -266,7 +259,7 @@ public class BomAdminBean
     }
 
     public void listParts() {
-        setActiveTab(TAB_INDEX);
+        setTabIndex(TAB_INDEX);
         editable = false;
         part = DummyDto.create(PartDto.class);
     }
@@ -277,12 +270,12 @@ public class BomAdminBean
             return;
         }
 
-        setActiveTab(TAB_FORM);
+        setTabIndex(TAB_FORM);
         part = reload(selectedPart, PartDto.CHILDREN);
     }
 
     public void refreshPart() {
-        setActiveTab(TAB_INDEX);
+        setTabIndex(TAB_INDEX);
         selectedPart = null;
         MaterialCategoryDto c = (MaterialCategoryDto) materialCategoryTree.getSelectedNode().getData();
         refreshPartCount(c.getId());
@@ -397,16 +390,13 @@ public class BomAdminBean
             // keyword[i] = keyword[i].trim();
             // }
 
-
-            if(partOrComponent) {
-                //选择成品
+            if (partOrComponent) {
+                // 选择成品
                 List<MaterialCategory> productCategories = //
                 serviceFor(MaterialCategory.class).list( //
                         Or.of( //
-                                new Equals("_classification",
-                                        Classification.PRODUCT.getValue()), //
-                                new Equals("_classification",
-                                        Classification.SEMI.getValue()) //
+                        new Equals("_classification", Classification.PRODUCT.getValue()), //
+                                new Equals("_classification", Classification.SEMI.getValue()) //
                         ));
                 List<Integer> ids = new ArrayList<Integer>();
                 for (MaterialCategory c : productCategories) {
@@ -414,28 +404,25 @@ public class BomAdminBean
                 }
 
                 List<Material> _materials = //
-                        serviceFor(Material.class).list( //
-                                new Like("label", "%" + materialPattern + "%"), //
-                                new InCollection("category.id", ids));
+                serviceFor(Material.class).list( //
+                        new Like("label", "%" + materialPattern + "%"), //
+                        new InCollection("category.id", ids));
 
                 materials = DTOs.marshalList(MaterialDto.class, _materials);
             } else {
-                //选择非成品(原材料，半成品，其他)
+                // 选择非成品(原材料，半成品，其他)
                 List<MaterialCategory> productCategories = //
                 serviceFor(MaterialCategory.class).list( //
-                        Not.of( //
-                                new Equals("_classification",
-                                        Classification.PRODUCT.getValue())));
+                        Not.of(new Equals("_classification", Classification.PRODUCT.getValue())));
                 List<Integer> ids = new ArrayList<Integer>();
                 for (MaterialCategory c : productCategories) {
                     ids.add(c.getId());
                 }
 
-
                 List<Material> _materials = //
-                        serviceFor(Material.class).list( //
-                                new Like("label", "%" + materialPattern + "%"), //
-                                new InCollection("category.id", ids));
+                serviceFor(Material.class).list( //
+                        new Like("label", "%" + materialPattern + "%"), //
+                        new InCollection("category.id", ids));
 
                 materials = DTOs.marshalList(MaterialDto.class, _materials);
             }
@@ -446,10 +433,9 @@ public class BomAdminBean
         if (partOrComponent) {
             // 检查此物料(成品)是否已经有bom存在
 
-            List<Part> partList = serviceFor(Part.class).list(
-                    new Equals("target.id", selectedMaterial.getId()));
+            List<Part> partList = serviceFor(Part.class).list(new Equals("target.id", selectedMaterial.getId()));
 
-            if(partList != null & partList.size() > 0) {
+            if (partList != null & partList.size() > 0) {
                 uiLogger.info("此物料已经存在BOM信息,继续新增的话,此物料将存在多个BOM信息");
                 return;
             }
@@ -457,7 +443,7 @@ public class BomAdminBean
             part.setTarget(selectedMaterial);
         } else {
             List<Part> materialsIsPart = serviceFor(Part.class).list(new Equals("target.id", selectedMaterial.getId()));
-            if(materialsIsPart != null && materialsIsPart.size() > 0) {
+            if (materialsIsPart != null && materialsIsPart.size() > 0) {
                 uiLogger.info("此物料是成品或半成品，已经存在BOM，请用[组件是半成品]标签页进行查找选择!!!");
                 return;
             }
@@ -483,7 +469,6 @@ public class BomAdminBean
             uiLogger.error("没有找到此产品的原材料原价格!", e);
         }
     }
-
 
     public void findPart() {
         if (partPattern != null && !partPattern.isEmpty()) {

@@ -28,7 +28,7 @@ public class GroupAdminBean
             throws Exception {
         for (Group _group : uMap.<Group> entitySet()) {
             GroupDto group = uMap.getSourceDto(_group);
-            if (currentView.equals(StandardViews.CREATE_FORM)) {
+            if (StandardViews.CREATE_FORM.equals(getCurrentView())) {
                 Group existing = serviceFor(Group.class).getByName(group.getName());
                 if (existing != null) {
                     uiLogger.error("保存失败: 组已存在: " + group.getName());

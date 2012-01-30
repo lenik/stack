@@ -87,7 +87,7 @@ public class UserAdminBean
     @Override
     protected boolean preUpdate(UnmarshalMap uMap)
             throws Exception {
-        if (currentView.equals(StandardViews.CREATE_FORM))
+        if (StandardViews.CREATE_FORM.equals(getCurrentView()))
             for (UserDto user : uMap.<UserDto> dtos()) {
                 Principal existing = serviceFor(Principal.class).getByName(user.getName());
                 if (existing != null) {

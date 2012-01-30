@@ -82,7 +82,9 @@ public abstract class SimpleEntityViewBean
     protected Class<? extends EntityDto<?, ?>> dtoClass;
     protected int saveFlags = 0;
     protected int deleteFlags = 0;
-    protected String currentView = StandardViews.LIST;
+
+    String currentView = StandardViews.LIST;
+    int tabIndex;
 
     protected Set<Serializable> requestWindow = new HashSet<Serializable>();
     List<ICriteriaElement> baseCriteriaElements;
@@ -276,6 +278,14 @@ public abstract class SimpleEntityViewBean
     public void showPartialForm() {
         // default fmask override..
         showEditForm();
+    }
+
+    public int getTabIndex() {
+        return tabIndex;
+    }
+
+    public void setTabIndex(int tabIndex) {
+        this.tabIndex = tabIndex;
     }
 
     /**
