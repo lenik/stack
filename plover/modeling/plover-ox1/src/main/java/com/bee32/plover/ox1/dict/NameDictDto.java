@@ -46,6 +46,66 @@ public abstract class NameDictDto<E extends NameDict>
         setRank(map.getFloat("rank"));
     }
 
+    public <D extends NameDictDto<?>> D meetByOrder(D other) {
+        @SuppressWarnings("unchecked")
+        D self = (D) this;
+
+        if (self.isNull())
+            return other;
+        if (other.isNull())
+            return self;
+
+        if (self.getOrder() <= other.getOrder())
+            return self;
+        else
+            return other;
+    }
+
+    public <D extends NameDictDto<?>> D joinByOrder(D other) {
+        @SuppressWarnings("unchecked")
+        D self = (D) this;
+
+        if (self.isNull())
+            return other;
+        if (other.isNull())
+            return self;
+
+        if (self.getOrder() > other.getOrder())
+            return self;
+        else
+            return other;
+    }
+
+    public <D extends NameDictDto<?>> D meetByRank(D other) {
+        @SuppressWarnings("unchecked")
+        D self = (D) this;
+
+        if (self.isNull())
+            return other;
+        if (other.isNull())
+            return self;
+
+        if (self.getRank() <= other.getRank())
+            return self;
+        else
+            return other;
+    }
+
+    public <D extends NameDictDto<?>> D joinByRank(D other) {
+        @SuppressWarnings("unchecked")
+        D self = (D) this;
+
+        if (self.isNull())
+            return other;
+        if (other.isNull())
+            return self;
+
+        if (self.getRank() > other.getRank())
+            return self;
+        else
+            return other;
+    }
+
     public String getName() {
         return getId();
     }
