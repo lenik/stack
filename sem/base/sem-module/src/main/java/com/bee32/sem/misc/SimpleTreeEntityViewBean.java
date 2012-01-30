@@ -63,7 +63,7 @@ public abstract class SimpleTreeEntityViewBean
             synchronized (this) {
                 if (nodeIndex == null) {
                     nodeIndex = new TreeNodeIndexer();
-                    nodeIndex.learn(rootNode);
+                    nodeIndex.learn(getRootNode());
                 }
             }
         }
