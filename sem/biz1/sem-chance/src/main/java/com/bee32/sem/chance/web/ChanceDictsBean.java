@@ -22,16 +22,15 @@ public class ChanceDictsBean
 
     private static final long serialVersionUID = 1L;
 
-    SelectableList<ChanceCategoryDto> categories;
-    SelectableList<ChanceSourceTypeDto> sourceTypes;
-    SelectableList<ChanceActionStyleDto> actionStyles;
-    SelectableList<ChanceStageDto> stages;
+    List<ChanceCategoryDto> categories;
+    List<ChanceSourceTypeDto> sourceTypes;
+    List<ChanceActionStyleDto> actionStyles;
+    List<ChanceStageDto> stages;
 
     <E extends Entity<?>, D extends EntityDto<E, ?>> //
-    SelectableList<D> mrefList(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
+    List<D> mrefList(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
         List<E> entities = asFor(entityClass).list(criteriaElements);
-        List<D> dtos = DTOs.mrefList(dtoClass, entities);
-        SelectableList<D> list = SelectableList.decorate(dtos);
+        List<D> list = DTOs.mrefList(dtoClass, entities);
         return list;
     }
 
@@ -43,7 +42,7 @@ public class ChanceDictsBean
                 }
             }
         }
-        return categories;
+        return SelectableList.decorate(categories);
     }
 
     public SelectableList<ChanceSourceTypeDto> getSourceTypes() {
@@ -54,7 +53,7 @@ public class ChanceDictsBean
                 }
             }
         }
-        return sourceTypes;
+        return SelectableList.decorate(sourceTypes);
     }
 
     public SelectableList<ChanceActionStyleDto> getActionStyles() {
@@ -65,7 +64,7 @@ public class ChanceDictsBean
                 }
             }
         }
-        return actionStyles;
+        return SelectableList.decorate(actionStyles);
     }
 
     public SelectableList<ChanceStageDto> getStages() {
@@ -76,7 +75,7 @@ public class ChanceDictsBean
                 }
             }
         }
-        return stages;
+        return SelectableList.decorate(stages);
     }
 
 }

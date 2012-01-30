@@ -1,8 +1,13 @@
 package com.bee32.sem.chance.web;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.bee32.plover.orm.annotation.ForEntity;
+import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.chance.dto.ChancePartyDto;
+import com.bee32.sem.chance.dto.ChanceStageDto;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.entity.ChanceStage;
@@ -15,68 +20,15 @@ public class ChanceBean
 
     private static final long serialVersionUID = 1L;
 
+    ChanceActionDto selectedAction;
+    Set<ChanceActionDto> attachSet = new HashSet<ChanceActionDto>();
+    Set<ChanceActionDto> detachSet = new HashSet<ChanceActionDto>();
+
+    ChancePartyDto selectedChanceParty;
+    ChancePartyDto chanceParty;
+
     public ChanceBean() {
         super(Chance.class, ChanceDto.class, 0);
-    }
-
-    public void attachActions() {
-        if (!actions.isSelected())
-            return;
-
-        dto.addAction(actions.getSelection());
-
-        Chance _chance = dto.unmarshal();
-        try {
-            for (ChanceAction _action : _chance.getActions()) {
-                if (_action.getChance() == null)
-                    _action.setChance(_chance);
-                if (_action.getStage() == null)
-                    _action.setStage(ChanceStage.INIT);
-            }
-
-            serviceFor(ChanceAction.class).saveOrUpdateAll(_chance.getActions());
-            uiLogger.info("提示", "关联成功");
-        } catch (Exception e) {
-            uiLogger.error("错误提示", "关联失败", e);
-        }
-    }
-
-    public void detachAction() {
-        if (selectedAction ==null) {
-            uiLogger.error("错误提示:", "请选择行动记录!");
-            return;
-        }
-        ChanceAction chanceAction = dto.getSelectedAction().unmarshal();
-        chanceAction.setChance(null);
-        chanceAction.setStage(null);
-        try {
-            serviceFor(ChanceAction.class).save(chanceAction);
-            dto.deleteAction(dto.getSelectedAction());
-            dto.setSelectedAction(null);
-// actions.deselect();
-            uiLogger.info("反关联成功");
-        } catch (Exception e) {
-            uiLogger.error("反关联失败", e);
-        }
-    }
-
-    public void addChanceParty() {
-        if (!parties.isSelected())
-            return;
-        ChancePartyDto chancePartyDto = new ChancePartyDto().create();
-        chancePartyDto.setChance(dto);
-        chancePartyDto.setParty(parties.getSelection());
-        chancePartyDto.setRole("普通客户");
-        dto.addParty(chancePartyDto);
-    }
-
-    public void editCustomerRole() {
-        roleRendered = !roleRendered;
-    }
-
-    public void dropCustomer() {
-        ChancePartyDto selectedParty = dto.getSelectedParty();
-        dto.removeParty(selectedParty);
     }
 
     @Override
@@ -89,6 +41,80 @@ public class ChanceBean
             }
         }
         return true;
+    }
+
+    @Override
+    protected void _postUpdate(UnmarshalMap uMap)
+            throws Exception {
+        Set<ChanceAction> updates = new HashSet<ChanceAction>();
+        for (Chance _chance : uMap.<Chance> entitySet()) {
+            for (ChanceActionDto action : attachSet) {
+                ChanceAction _action = action.unmarshal(this);
+                _action.setChance(_chance);
+                updates.add(_action);
+            }
+            for (ChanceActionDto action : detachSet) {
+                ChanceAction _action = action.unmarshal(this);
+                _action.setChance(null);
+                updates.add(_action);
+            }
+            break;
+        }
+        try {
+            asFor(ChanceAction.class).saveOrUpdateAll(updates);
+        } finally {
+            attachSet.clear();
+            detachSet.clear();
+        }
+    }
+
+    public ChanceActionDto getSelectedAction() {
+        return selectedAction;
+    }
+
+    public void setSelectedAction(ChanceActionDto selectedAction) {
+        this.selectedAction = selectedAction;
+    }
+
+    public void addAction() {
+        ChanceDto chance = getActiveObject();
+        if (selectedAction.getStage() == null) {
+            ChanceStageDto initStage = new ChanceStageDto().ref(ChanceStage.INIT);
+            selectedAction.setStage(initStage);
+        }
+        chance.addAction(selectedAction);
+        attachSet.add(selectedAction);
+        detachSet.remove(selectedAction);
+    }
+
+    public void removeAction() {
+        selectedAction.setStage(null);
+        attachSet.remove(selectedAction);
+        detachSet.add(selectedAction);
+    }
+
+    public void createChanceParty() {
+        ChanceDto chance = getActiveObject();
+        chanceParty = new ChancePartyDto();
+        chanceParty.setChance(chance);
+    }
+
+    public ChancePartyDto getSelectedChanceParty() {
+        return selectedChanceParty;
+    }
+
+    public void setSelectedChanceParty(ChancePartyDto selectedChanceParty) {
+        this.selectedChanceParty = selectedChanceParty;
+    }
+
+    public void addParty() {
+        ChanceDto chance = getActiveObject();
+        chance.addParty(chanceParty);
+    }
+
+    public void removeParty() {
+        ChanceDto chance = getActiveObject();
+        chance.removeParty(selectedChanceParty);
     }
 
 }

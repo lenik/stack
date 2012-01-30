@@ -11,26 +11,14 @@ public class ChanceStageDto
 
     private static final long serialVersionUID = 1L;
 
-    private int order;
-
-    public int getOrder() {
-        return order;
-    }
-
-    public void setOrder(int order) {
-        this.order = order;
-    }
-
     @Override
     protected void _marshal(ChanceStage source) {
         super._marshal(source);
-        this.order = source.getOrder();
     }
 
     @Override
     protected void _unmarshalTo(ChanceStage target) {
         super._unmarshalTo(target);
-        target.setOrder(order);
     }
 
     @Override

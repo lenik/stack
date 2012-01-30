@@ -1,9 +1,11 @@
 package com.bee32.sem.chance.dto;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.free.ParseException;
 import javax.free.Strings;
+import javax.validation.constraints.NotNull;
 
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.TextMap;
@@ -23,17 +25,18 @@ public class ChanceActionDto
     public static final int PARTIES = 1;
     public static final int PARTNERS = 2;
 
-    private boolean plan;
-    private List<PartyDto> parties;
-    private List<UserDto> partners;
+    boolean plan;
+    List<PartyDto> parties;
+    List<UserDto> partners;
 
-    private UserDto actor;
-    private ChanceActionStyleDto style;
+    UserDto actor;
+    ChanceActionStyleDto style;
 
-    private String moreInfo;
-    private String spending;
-    private ChanceDto chance;
-    private ChanceStageDto stage;
+    String moreInfo;
+    String spending;
+    ChanceDto chance;
+    ChanceStageDto stage;
+    ChanceStageDto stage0;
 
     SingleVerifierSupportDto singleVerifierSupport;
 
@@ -61,18 +64,11 @@ public class ChanceActionDto
         this.moreInfo = source.getMoreInfo();
         this.spending = source.getSpending();
 
-        if (source.getChance() == null)
-            this.chance = new ChanceDto().ref();
-        else
-            this.chance = mref(ChanceDto.class, source.getChance());
-
-        if (source.getStage() == null)
-            this.stage = new ChanceStageDto().ref();
-        else
-            this.stage = mref(ChanceStageDto.class, source.getStage());
+        this.chance = mref(ChanceDto.class, source.getChance());
+        this.stage = mref(ChanceStageDto.class, source.getStage());
+        this.stage0 = stage;
 
         singleVerifierSupport = marshal(SingleVerifierSupportDto.class, source.getVerifyContext());
-
 
     }
 
@@ -87,7 +83,7 @@ public class ChanceActionDto
         target.setSpending(spending);
 
         merge(target, "chance", chance);
-        merge(target, "stage", stage);
+        merge(target, "stage", stage.joinByOrder(stage0));
 
         merge(target, "verifyContext", singleVerifierSupport);
     }
@@ -106,6 +102,18 @@ public class ChanceActionDto
             return DateToRange.fullFormat.format(beginTime).substring(0, 10);
     }
 
+    @NotNull
+    @Override
+    public Date getBeginTime() {
+        return super.getBeginTime();
+    }
+
+    @NotNull
+    @Override
+    public Date getEndTime() {
+        return super.getEndTime();
+    }
+
     public String getTimeRange() {
         if (beginTime != null && endTime != null)
             return DateToRange.fullFormat.format(beginTime).substring(10, 16) + " 到 "
@@ -120,10 +128,6 @@ public class ChanceActionDto
 
     public void setPlan(boolean plan) {
         this.plan = plan;
-    }
-
-    public String getActionType() {
-        return plan ? "计划" : "日志";
     }
 
     public List<PartyDto> getParties() {

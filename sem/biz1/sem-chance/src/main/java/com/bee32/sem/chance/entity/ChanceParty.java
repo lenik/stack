@@ -27,6 +27,8 @@ public class ChanceParty
 
     private static final long serialVersionUID = 1L;
 
+    public static final int ROLE_LENGTH = 20;
+
     Chance chance;
     Party party;
     String role;
@@ -44,7 +46,7 @@ public class ChanceParty
         this.chance = chance;
     }
 
-    @NaturalId
+    @NaturalId(mutable = true)
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     public Party getParty() {
@@ -57,7 +59,7 @@ public class ChanceParty
         this.party = party;
     }
 
-    @Column(length = 20, nullable = false)
+    @Column(length = ROLE_LENGTH, nullable = false)
     public String getRole() {
         return role;
     }

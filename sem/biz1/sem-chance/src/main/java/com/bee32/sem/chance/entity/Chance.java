@@ -36,8 +36,7 @@ import com.bee32.sem.process.verify.builtin.SingleVerifierSupport;
 @SequenceGenerator(name = "idgen", sequenceName = "chance_seq", allocationSize = 1)
 public class Chance
         extends UIEntityAuto<Long>
-        implements
-            IVerifiable<ISingleVerifier> {
+        implements IVerifiable<ISingleVerifier> {
 
     private static final long serialVersionUID = 1L;
 
@@ -191,8 +190,7 @@ public class Chance
     }
 
     /**
-     * 机会地址
-     *     项目型机会一般这个地址和客户公司地址是不同的
+     * 机会地址 项目型机会一般这个地址和客户公司地址是不同的
      */
     public String getAddress() {
         return address;
