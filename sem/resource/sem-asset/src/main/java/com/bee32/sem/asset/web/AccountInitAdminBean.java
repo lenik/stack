@@ -14,10 +14,7 @@ import com.bee32.sem.asset.dto.AccountSubjectDto;
 import com.bee32.sem.asset.dto.InitAccountTicketItemDto;
 import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.asset.entity.InitAccountTicketItem;
-import com.bee32.sem.asset.util.AssetCriteria;
 import com.bee32.sem.people.dto.PartyDto;
-import com.bee32.sem.people.entity.Party;
-import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.world.monetary.CurrencyUtil;
 
 @ForEntity(InitAccountTicketItem.class)
@@ -28,14 +25,8 @@ public class AccountInitAdminBean
 
     InitAccountTicketItemDto accountTicketItem = new InitAccountTicketItemDto().create();
 
-    private String accountSubjectCodePattern;
-    private String accountSubjectNamePattern;
-    private List<AccountSubjectDto> accountSubjects;
-    private AccountSubjectDto selectedAccountSubject;
-
-    private String partyPattern;
-    private List<PartyDto> parties;
-    private PartyDto selectedParty;
+    AccountSubjectDto selectedAccountSubject;
+    PartyDto selectedParty;
 
     public List<SelectItem> getCurrencies() {
         return CurrencyUtil.selectItems();
@@ -54,30 +45,6 @@ public class AccountInitAdminBean
         return DTOs.marshalList(InitAccountTicketItemDto.class, _items);
     }
 
-    public String getAccountSubjectCodePattern() {
-        return accountSubjectCodePattern;
-    }
-
-    public void setAccountSubjectCodePattern(String accountSubjectCodePattern) {
-        this.accountSubjectCodePattern = accountSubjectCodePattern;
-    }
-
-    public String getAccountSubjectNamePattern() {
-        return accountSubjectNamePattern;
-    }
-
-    public void setAccountSubjectNamePattern(String accountSubjectNamePattern) {
-        this.accountSubjectNamePattern = accountSubjectNamePattern;
-    }
-
-    public List<AccountSubjectDto> getAccountSubjects() {
-        return accountSubjects;
-    }
-
-    public void setAccountSubjects(List<AccountSubjectDto> accountSubjects) {
-        this.accountSubjects = accountSubjects;
-    }
-
     @Override
     public List<?> getSelection() {
         return getItems();
@@ -89,22 +56,6 @@ public class AccountInitAdminBean
 
     public void setSelectedAccountSubject(AccountSubjectDto selectedAccountSubject) {
         this.selectedAccountSubject = selectedAccountSubject;
-    }
-
-    public String getPartyPattern() {
-        return partyPattern;
-    }
-
-    public void setPartyPattern(String partyPattern) {
-        this.partyPattern = partyPattern;
-    }
-
-    public List<PartyDto> getParties() {
-        return parties;
-    }
-
-    public void setParties(List<PartyDto> parties) {
-        this.parties = parties;
     }
 
     public PartyDto getSelectedParty() {
@@ -146,10 +97,7 @@ public class AccountInitAdminBean
 
     public void findAccountSubject() {
         // 在实体中,name代表科目代码，label代表科目名称
-        List<AccountSubject> _subjects = serviceFor(AccountSubject.class).list(//
-                AssetCriteria.subjectLike(accountSubjectCodePattern, accountSubjectNamePattern));
-
-        accountSubjects = DTOs.mrefList(AccountSubjectDto.class, 0, _subjects);
+// AssetCriteria.subjectLike(accountSubjectCodePattern, accountSubjectNamePattern));
     }
 
     public void chooseAccountSubject() {
@@ -165,13 +113,6 @@ public class AccountInitAdminBean
 
         accountTicketItem.setSubject(selectedAccountSubject);
         accountTicketItem.setDebitSide(selectedAccountSubject.isDebitSign());
-    }
-
-    public void findParty() {
-        if (partyPattern != null && !partyPattern.isEmpty()) {
-            List<Party> _parties = serviceFor(Party.class).list(PeopleCriteria.namedLike(partyPattern));
-            parties = DTOs.marshalList(PartyDto.class, _parties);
-        }
     }
 
     public void chooseParty() {

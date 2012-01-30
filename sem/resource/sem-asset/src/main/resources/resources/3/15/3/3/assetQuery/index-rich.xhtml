@@ -1,58 +1,36 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core"
-    xmlns:sem="http://bee32.com/sem/functions" xmlns:p="http://primefaces.org/ui"
-    xmlns:t="http://myfaces.apache.org/tomahawk">
-<!-- InstanceBegin template="/Templates/seccaJsf.dwt.jsp" codeOutsideHTMLIsLocked="false" -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-</head>
-
-<ui:composition template="/template/primefaces.xhtml">
+<ui:composition template="/template/primefaces.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk">
 
     <ui:define name="title">科目明细查询</ui:define>
 
     <ui:define name="content">
-
         <h:form id="mainForm">
             <t:panelGrid columns="4">
-                <h:outputText value="一级科目"/>
+                <h:outputText value="一级科目" />
                 <t:panelGrid columns="4">
                     <t:panelGrid columns="2">
-                        <p:selectBooleanCheckbox value="#{assetQueryBean.all}"/>
+                        <p:selectBooleanCheckbox value="#{assetQueryBean.all}" />
                         <h:outputText value="全部" />
                     </t:panelGrid>
                     <h:outputText value="/" />
-                    <p:inputText id="accountSubject"
-                        value="#{assetQueryBean.subject.label}"
-                        readonly="true" />
-                    <p:commandButton value="..."
-                        onclick="accountSubjectDialog.show();" />
+                    <p:inputText id="accountSubject" value="#{assetQueryBean.subject.label}" readonly="true" />
+                    <p:commandButton value="..." onclick="accountSubjectDialog.show();" />
                 </t:panelGrid>
-                <h:outputText value="二级科目(客户/供应商/个人)"/>
+                <h:outputText value="二级科目(客户/供应商/个人)" />
                 <t:panelGrid columns="2">
-                    <p:inputText id="party"
-                        value="#{assetQueryBean.party.name}"
-                        readonly="true" />
-                    <p:commandButton value="..."
-                        onclick="partyDialog.show();" disabled="" />
+                    <p:inputText id="party" value="#{assetQueryBean.party.name}" readonly="true" />
+                    <p:commandButton value="..." onclick="partyDialog.show();" disabled="" />
                 </t:panelGrid>
 
-                <h:outputText value="截止时间"/>
-                <p:calendar navigator="true"
-                    locale="zh_CN" pattern="yyyy-MM-dd"
-                    value="#{assetQueryBean.toDate}" showOn="button" />
+                <h:outputText value="截止时间" />
+                <p:calendar navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{assetQueryBean.toDate}"
+                    showOn="button" />
                 <t:panelGroup />
                 <t:panelGroup />
 
                 <t:panelGroup colspan="4">
-                    <p:commandButton
-                        update="mainForm:result"
-                        value="查询"
-                        actionListener="#{assetQueryBean.query}"/>
+                    <p:commandButton update="mainForm:result" value="查询" actionListener="#{assetQueryBean.query}" />
                 </t:panelGroup>
             </t:panelGrid>
 
@@ -80,124 +58,7 @@
             </p:treeTable>
         </h:form>
 
-
-
-        <h:form id="accountSubjectForm">
-            <p:dialog header="选择科目" widgetVar="accountSubjectDialog" modal="true"
-                height="500" width="840">
-                <h:panelGroup>
-
-                    <h:panelGrid columns="5">
-                        <h:outputLabel value="科目代码的全部或部份:" />
-                        <p:inputText value="#{assetQueryBean.accountSubjectCodePattern}" />
-                        <h:outputLabel value="科目名称全部或部份:" />
-                        <p:inputText value="#{assetQueryBean.accountSubjectNamePattern}" />
-                        <p:commandButton value="查找"
-                            actionListener="#{assetQueryBean.findAccountSubject}" update="accountSubjects"
-                            async="true" />
-                    </h:panelGrid>
-                    <p:dataTable id="accountSubjects" var="accountSubject"
-                        value="#{assetQueryBean.accountSubjects}" resizableColumns="true"
-                        rowIndexVar="rowIndex"
-                        scrollable="true" scrollWidth="600" scrollHeight="350">
-
-                        <p:column headerText="序号">
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column headerText="科目编码">
-                            <h:outputText value="#{accountSubject.name}" />
-                        </p:column>
-
-                        <p:column headerText="科目名称">
-                            <h:outputText value="#{accountSubject.label}" />
-                        </p:column>
-
-                        <p:column headerText="动作">
-                            <p:commandLink
-                                oncomplete="accountSubjectDialog.hide()"
-                                action="#{assetQueryBean.chooseAccountSubject}"
-                                update="mainForm:accountSubject" value="挑选">
-                                <f:setPropertyActionListener
-                                    value="#{accountSubject}"
-                                    target="#{assetQueryBean.selectedAccountSubject}" />
-                            </p:commandLink>
-                        </p:column>
-                    </p:dataTable>
-                    <p:commandButton value="取消" oncomplete="accountSubjectDialog.hide()" />
-                </h:panelGroup>
-            </p:dialog>
-        </h:form>
-
-
-        <h:form id="partyForm">
-            <p:dialog header="选择客户" widgetVar="partyDialog" modal="true"
-                height="500" width="840">
-                <h:panelGroup>
-
-                    <h:panelGrid columns="3">
-                        <h:outputLabel value="名称全部或部份:" />
-                        <p:inputText value="#{assetQueryBean.partyPattern}" />
-                        <p:commandButton value="查找"
-                            actionListener="#{assetQueryBean.findParty}" update="parties"
-                            async="true" />
-                    </h:panelGrid>
-                    <p:dataTable id="parties" var="party"
-                        value="#{assetQueryBean.parties}" resizableColumns="true"
-                        rowIndexVar="rowIndex"
-                        scrollable="true" scrollWidth="600" scrollHeight="350">
-
-                        <p:column headerText="序号">
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column headerText="名称">
-                            <h:outputText value="#{party.name}" />
-                        </p:column>
-
-                        <p:column headerText="标签">
-                            <p:dataList value="#{party.tags}" var="tag" type="definition">
-                                <f:facet name="description">
-                                    <h:outputText value="#{tag.label}"/>
-                                </f:facet>
-                            </p:dataList>
-                        </p:column>
-
-                        <p:column headerText="成立日期/生日">
-                            <h:outputText value="#{party.birthday}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"
-                                    timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-
-                        <p:column headerText="税务登记号/证件号">
-                            <h:outputText value="#{party.sid}" />
-                        </p:column>
-
-                        <p:column headerText="创建日期">
-                            <h:outputText value="#{party.createdDate}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"
-                                    timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-                        <p:column headerText="动作">
-                            <p:commandLink
-                                oncomplete="partyDialog.hide()"
-                                action="#{assetQueryBean.chooseParty}"
-                                update="mainForm:party" value="挑选">
-                                <f:setPropertyActionListener
-                                    value="#{party}"
-                                    target="#{assetQueryBean.selectedParty}" />
-                            </p:commandLink>
-                        </p:column>
-                    </p:dataTable>
-                    <p:commandButton value="取消" oncomplete="partyDialog.hide();" />
-                </h:panelGroup>
-            </p:dialog>
-        </h:form>
-
-
-
-	</ui:define>
+        <sem:chooseAccountSubjectDialog />
+        <sem:choosePartyDialog />
+    </ui:define>
 </ui:composition>
-</html>

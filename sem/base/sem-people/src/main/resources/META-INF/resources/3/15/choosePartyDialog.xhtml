@@ -71,6 +71,14 @@
                     <p:column headerText="名称">
                         <h:outputText value="#{entry.displayName}" />
                     </p:column>
+                    <p:column headerText="成立日期/生日">
+                        <h:outputText value="#{entry.birthday}">
+                            <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="税务登记号/证件号">
+                        <h:outputText value="#{entry.sid}" />
+                    </p:column>
                 </c:if>
 
                 <cc:renderFacet name="columns" />

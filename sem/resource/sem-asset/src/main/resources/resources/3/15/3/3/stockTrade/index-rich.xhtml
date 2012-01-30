@@ -1,489 +1,173 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core"
-    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk"
-    xmlns:sem="http://java.sun.com/jsf/composite/3/15">
-<ui:composition template="/template/primefaces.xhtml">
+<ui:composition template="/template/scroll-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
-    <ui:define name="title"></ui:define>
+    <ui:param name="bean" value="#{stockTradeAdminBean}" />
+    <ui:param name="title" value="#{bean.pageTitle}" />
+    <ui:param name="obj" value="#{bean.activeObject}" />
 
-    <ui:define name="content">
-        <sem:singleVerifierSupportDialog update=":mainForm" />
+    <ui:define name="toolbarPeripherals">
+        <sem:singleVerifierSupportButton selection="#{bean.selection}" disabled="#{bean.editable}" />
+    </ui:define>
 
-		<h:form id="mainForm">
-			<h:inputHidden id="pageTitle" readonly="true"
-				value="#{stockTradeAdminBean.pageTitle}" />
+    <ui:define name="form">
+        <p:panel header="#{bean.pageTitle}">
+            <t:panelGrid columns="4">
+                <h:outputText value="时间" />
+                <t:panelGroup colspan="3">
+                    <h:outputText value="#{bean.stockTrade.createdDate}">
+                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                    </h:outputText>
+                </t:panelGroup>
 
-            <h:panelGrid columns="6">
-                <h:outputText value="时间段:" />
-                <h:outputText value="从" />
-                <p:calendar id="limitDateFrom" navigator="true"
-                    locale="zh_CN" pattern="yyyy-MM-dd"
-                    value="#{stockTradeAdminBean.limitDateFrom}"
-                    showOn="button" disabled="#{stockTradeAdminBean.editable}" />
-                <h:outputText value="到" />
-                <p:calendar id="limitDateTo" navigator="true"
-                    locale="zh_CN" pattern="yyyy-MM-dd"
-                    value="#{stockTradeAdminBean.limitDateTo}" showOn="button"
-                    disabled="#{stockTradeAdminBean.editable}" />
-                <p:commandButton value="限定"
-                    actionListener="#{stockTradeAdminBean.limit}" async="true"
-                    update="mainForm"
-                    disabled="#{stockTradeAdminBean.editable}" />
-            </h:panelGrid>
+                <h:outputLabel value="摘要" />
+                <t:panelGroup colspan="3">
+                    <p:inputText value="#{bean.stockTrade.description}" disabled="#{!bean.editable}" />
+                </t:panelGroup>
 
-            <p:toolbar id="toolbar">
-				<p:toolbarGroup align="left">
-					<p:commandButton value="新增" actionListener="#{stockTradeAdminBean.new_}"
-						disabled="#{stockTradeAdminBean.editable}" update="mainForm accountSubjectForm:accountSubjects" async="true" />
-					<p:commandButton value="修改"
-						actionListener="#{stockTradeAdminBean.modify}"
-						disabled="#{stockTradeAdminBean.editable}" update="mainForm" async="true" />
-					<p:commandButton value="删除"
-						onclick="deleteConfirmDialog.show();"
-						disabled="#{stockTradeAdminBean.editable}" update="mainForm" async="true" />
-					<p:separator />
-					<p:commandButton value="保存" actionListener="#{stockTradeAdminBean.save}"
-						disabled="#{!stockTradeAdminBean.editable}" update="mainForm" async="true" />
-					<p:commandButton value="取消"
-						actionListener="#{stockTradeAdminBean.cancel}"
-						disabled="#{!stockTradeAdminBean.editable}" update="mainForm" async="true" />
-					<p:separator />
-                    <sem:singleVerifierSupportButton
-                        selection="#{stockTradeAdminBean.selection}"
-                        disabled="#{stockTradeAdminBean.editable}" />
-					<p:separator />
-					<p:commandButton value="第一条"
-						actionListener="#{stockTradeAdminBean.first}"
-						disabled="#{stockTradeAdminBean.editable}" update="mainForm"
-						async="true" />
-					<p:commandButton value="上一条"
-						actionListener="#{stockTradeAdminBean.previous}"
-						disabled="#{stockTradeAdminBean.editable}" update="mainForm"
-						async="true" />
-					<p:commandButton value="下一条"
-						actionListener="#{stockTradeAdminBean.next}"
-						disabled="#{stockTradeAdminBean.editable}" update="mainForm"
-						async="true" />
-					<p:commandButton value="最末条"
-						actionListener="#{stockTradeAdminBean.last}"
-						disabled="#{stockTradeAdminBean.editable}" update="mainForm"
-						async="true" />
-                    <p:inputText value="#{stockTradeAdminBean.goNumber}"
-                        disabled="#{stockTradeAdminBean.editable}" style="width:30px;" />
-                    <h:outputText value="/#{stockTradeAdminBean.count}"/>
-                    <p:commandButton value="前往"
-                        actionListener="#{stockTradeAdminBean.go}"
-                        disabled="#{stockTradeAdminBean.editable}" update="mainForm"
-                        async="true" />
-				</p:toolbarGroup>
-			</p:toolbar>
+                <h:outputLabel value="会计科目" />
+                <t:panelGroup colspan="3">
+                    <t:panelGrid columns="2">
+                        <p:inputText id="accountSubject" value="#{bean.stockTrade.subject.label}" readonly="true" />
+                        <p:commandButton value="..." onclick="accountSubjectDialog.show();" disabled="#{!bean.editable}" />
+                    </t:panelGrid>
+                </t:panelGroup>
 
-			<p:panel header="#{stockTradeAdminBean.pageTitle}">
-				<t:panelGrid columns="4">
-					<h:outputText value="时间" />
-                    <t:panelGroup colspan="3">
-                        <h:outputText value="#{stockTradeAdminBean.stockTrade.createdDate}">
-                            <f:convertDateTime pattern="yyyy-MM-dd"
-                                timeZone="Asia/Shanghai" />
-                        </h:outputText>
-                    </t:panelGroup>
+                <h:outputLabel value="公司" />
+                <t:panelGroup colspan="3">
+                    <p:inputText id="party" value="#{bean.stockTrade.party.name}" readonly="true" />
+                    <p:commandButton value="..." onclick="partyDialog.show();" disabled="#{!bean.editable}" />
+                </t:panelGroup>
 
-                    <h:outputLabel value="摘要" />
-                    <t:panelGroup colspan="3">
-                        <p:inputText value="#{stockTradeAdminBean.stockTrade.description}" disabled="#{!stockTradeAdminBean.editable}" />
-                    </t:panelGroup>
-
-                    <h:outputLabel value="会计科目" />
-                    <t:panelGroup colspan="3">
-                        <t:panelGrid columns="2">
-                            <p:inputText
-                                id="accountSubject"
-                                value="#{stockTradeAdminBean.stockTrade.subject.label}"
-                                readonly="true"/>
-                            <p:commandButton value="..." onclick="accountSubjectDialog.show();"  disabled="#{!stockTradeAdminBean.editable}" />
-                        </t:panelGrid>
-                    </t:panelGroup>
-
-                    <h:outputLabel value="公司" />
-                    <t:panelGroup colspan="3">
-                        <p:inputText id="party" value="#{stockTradeAdminBean.stockTrade.party.name}" readonly="true"/>
-                        <p:commandButton value="..." onclick="partyDialog.show();" disabled="#{!stockTradeAdminBean.editable}" />
-                    </t:panelGroup>
-
-                    <h:outputLabel value="借贷方向" />
-                    <t:panelGroup colspan="3">
-                        <p:selectOneMenu value="#{stockTradeAdminBean.stockTrade.debitSide}" disabled="true" style="width:200px;">
-                            <f:selectItem itemValue="true" itemLabel="借方" />
-                            <f:selectItem itemValue="false" itemLabel="贷方" />
-                        </p:selectOneMenu>
-                    </t:panelGroup>
-
-                    <h:outputLabel value="金额" />
-                    <p:inputText value="#{stockTradeAdminBean.stockTrade.valueDigit}" disabled="true" />
-                    <h:outputLabel value="币种" />
-                    <p:selectOneMenu value="#{stockTradeAdminBean.stockTrade.valueCurrency}" disabled="true" style="width:200px;">
-                        <f:selectItem itemValue="" itemLabel="--选择币种--" />
-                        <f:selectItems value="#{stockTradeAdminBean.currencies}" />
+                <h:outputLabel value="借贷方向" />
+                <t:panelGroup colspan="3">
+                    <p:selectOneMenu value="#{bean.stockTrade.debitSide}" disabled="true" style="width:200px;">
+                        <f:selectItem itemValue="true" itemLabel="借方" />
+                        <f:selectItem itemValue="false" itemLabel="贷方" />
                     </p:selectOneMenu>
+                </t:panelGroup>
 
-                    <h:outputText value="制单人" />
-                    <p:inputText
-                        value="#{stockTradeAdminBean.stockTrade.creator}"
-                        disabled="true" />
-                    <h:outputText value="状态" />
-                    <p:inputText
-                        value="#{stockTradeAdminBean.stockTrade.verifyContext.verifyEvalState}"
-                        disabled="true" />
+                <h:outputLabel value="金额" />
+                <p:inputText value="#{bean.stockTrade.valueDigit}" disabled="true" />
+                <h:outputLabel value="币种" />
+                <p:selectOneMenu value="#{bean.stockTrade.valueCurrency}" disabled="true" style="width:200px;">
+                    <f:selectItem itemValue="" itemLabel="--选择币种--" />
+                    <f:selectItems value="#{bean.currencies}" />
+                </p:selectOneMenu>
 
-                </t:panelGrid>
+                <h:outputText value="制单人" />
+                <p:inputText value="#{bean.stockTrade.creator}" disabled="true" />
+                <h:outputText value="状态" />
+                <p:inputText value="#{bean.stockTrade.verifyContext.verifyEvalState}" disabled="true" />
 
-                <t:panelGrid columns="2">
-                    <h:outputText value="明细"/>
-					<p:commandButton value="新增明细" onclick="itemDialog.show();"
-						action="#{stockTradeAdminBean.newItem}"
-						update="itemForm:itemPanel"
-						disabled="#{!stockTradeAdminBean.editable}" />
-				</t:panelGrid>
+            </t:panelGrid>
 
-				<p:dataTable id="items" var="item"
-					value="#{stockTradeAdminBean.items}" resizableColumns="true"
-					rowIndexVar="rowIndex">
+            <t:panelGrid columns="2">
+                <h:outputText value="明细" />
+                <p:commandButton value="新增明细" onclick="itemDialog.show();" action="#{bean.newItem}"
+                    update="itemForm:itemPanel" disabled="#{!bean.editable}" />
+            </t:panelGrid>
 
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="序号" />
-						</f:facet>
-						<h:outputText value="#{rowIndex + 1}" />
-					</p:column>
+            <p:dataTable id="items" var="item" value="#{bean.items}" resizableColumns="true" rowIndexVar="rowIndex">
+                <p:column headerText="序号">
+                    <h:outputText value="#{rowIndex + 1}" />
+                </p:column>
 
-                    <p:column sortBy="#{item.material.label}">
-                        <f:facet name="header">
-                            <h:outputText value="物料"/>
-                        </f:facet>
-                        <h:outputText value="#{item.material.label}" />
-                    </p:column>
+                <p:column headerText="物料" sortBy="#{item.material.label}">
+                    <h:outputText value="#{item.material.label}" />
+                </p:column>
 
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="规格型号"/>
-                        </f:facet>
-                        <h:outputText value="#{item.material.modelSpec}" />
-                    </p:column>
+                <p:column headerText="规格型号">
+                    <h:outputText value="#{item.material.modelSpec}" />
+                </p:column>
 
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="单位"/>
-                        </f:facet>
-                        <h:outputText value="#{item.material.unit.name}" />
-                    </p:column>
+                <p:column headerText="单位">
+                    <h:outputText value="#{item.material.unit.name}" />
+                </p:column>
 
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="单价"/>
-                        </f:facet>
-                        <h:outputText value="#{item.price.value}" />
-                    </p:column>
+                <p:column headerText="单价">
+                    <h:outputText value="#{item.price.value}" />
+                </p:column>
 
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="币种"/>
-                        </f:facet>
-                        <h:outputText value="#{item.price.currencyText}" />
-                    </p:column>
+                <p:column headerText="币种">
+                    <h:outputText value="#{item.price.currencyText}" />
+                </p:column>
 
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="数量"/>
-                        </f:facet>
-                        <h:outputText value="#{item.quantity}" />
-                    </p:column>
+                <p:column headerText="数量">
+                    <h:outputText value="#{item.quantity}" />
+                </p:column>
 
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="备注"/>
-                        </f:facet>
-                        <h:outputText value="#{item.description}" />
-                    </p:column>
+                <p:column headerText="备注">
+                    <h:outputText value="#{item.description}" />
+                </p:column>
 
+                <p:column headerText="操作">
+                    <p:commandLink update="itemForm:itemPanel" disabled="#{!bean.editable}"
+                        actionListener="#{bean.modifyItem}" oncomplete="itemDialog.show()" value="修改">
+                        <f:setPropertyActionListener value="#{item}" target="#{bean.tradeItem}" />
+                    </p:commandLink>
+                    <p:spacer width="10" />
+                    <p:commandLink disabled="#{!bean.editable}" oncomplete="deleteItemConfirmDialog.show()"
+                        value="删除">
+                        <f:setPropertyActionListener value="#{item}" target="#{bean.tradeItem}" />
+                    </p:commandLink>
+                </p:column>
 
-					<p:column>
-						<f:facet name="header">操作</f:facet>
-						<t:panelGroup>
+            </p:dataTable>
+        </p:panel>
+    </ui:define>
 
-							<p:commandLink update="itemForm:itemPanel"
-								disabled="#{!stockTradeAdminBean.editable}"
-								actionListener="#{stockTradeAdminBean.modifyItem}"
-								oncomplete="itemDialog.show()" value="修改">
-								<f:setPropertyActionListener value="#{item}"
-									target="#{stockTradeAdminBean.tradeItem}" />
-							</p:commandLink>
-							<p:spacer width="10" />
-							<p:commandLink
-								disabled="#{!stockTradeAdminBean.editable}"
-								oncomplete="deleteItemConfirmDialog.show()" value="删除">
-								<f:setPropertyActionListener value="#{item}"
-									target="#{stockTradeAdminBean.tradeItem}" />
-							</p:commandLink>
-						</t:panelGroup>
-					</p:column>
+    <p:dialog header="项目编辑" widgetVar="itemDialog" modal="true" height="500" width="640">
+        <h:form id="itemForm">
+            <t:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
 
-				</p:dataTable>
+                <h:outputLabel value="物料" />
+                <t:panelGroup colspan="3">
+                    <p:inputText value="#{bean.tradeItem.material.label}" readonly="true" />
+                    <p:commandButton value="..." onclick="materialDialog.show();" />
+                </t:panelGroup>
 
+                <h:outputLabel value="数量" />
+                <t:panelGroup colspan="3">
+                    <p:inputText value="#{bean.tradeItem.quantity}" />
+                    <h:outputText value="#{bean.tradeItem.material.unit.name}" />
+                </t:panelGroup>
 
-			</p:panel>
-		</h:form>
+                <h:outputLabel value="单价" />
+                <p:inputText value="#{bean.tradeItem.priceValue}" />
+                <h:outputLabel value="币种" />
+                <p:selectOneMenu value="#{bean.tradeItem.priceCurrencyCode}" style="width:200px;">
+                    <f:selectItem itemValue="" itemLabel="--选择币种--" />
+                    <f:selectItems value="#{bean.currencies}" />
+                </p:selectOneMenu>
 
-		<h:form id="itemForm">
-			<p:dialog header="项目编辑" widgetVar="itemDialog" modal="true"
-				height="500" width="640">
-				<h:panelGroup id="itemPanel">
-					<t:panelGrid columns="4"
-						columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
-
-						<h:outputLabel value="物料" />
-						<t:panelGroup colspan="3">
-							<p:inputText value="#{stockTradeAdminBean.tradeItem.material.label}" readonly="true"/>
-							<p:commandButton value="..." onclick="materialDialog.show();"/>
-						</t:panelGroup>
-
-
-						<h:outputLabel value="数量" />
-                        <t:panelGroup colspan="3">
-                            <p:inputText value="#{stockTradeAdminBean.tradeItem.quantity}"/>
-                            <h:outputText value="#{stockTradeAdminBean.tradeItem.material.unit.name}"/>
-                        </t:panelGroup>
-
-                        <h:outputLabel value="单价" />
-                        <p:inputText value="#{stockTradeAdminBean.tradeItem.priceValue}" />
-                        <h:outputLabel value="币种" />
-                        <p:selectOneMenu value="#{stockTradeAdminBean.tradeItem.priceCurrencyCode}" style="width:200px;">
-                            <f:selectItem itemValue="" itemLabel="--选择币种--" />
-                            <f:selectItems value="#{stockTradeAdminBean.currencies}" />
-                        </p:selectOneMenu>
-
-                        <h:outputLabel value="备注" />
-                        <t:panelGroup colspan="3">
-                            <p:inputText value="#{stockTradeAdminBean.tradeItem.description}" style="width:400px"/>
-                        </t:panelGroup>
-
-						<h:panelGroup />
-						<t:panelGroup colspan="2">
-							<t:panelGrid columns="2">
-								<p:commandButton value="保存"
-									actionListener="#{stockTradeAdminBean.doSaveItem}"
-									oncomplete="itemDialog.hide();" async="true"
-									update="mainForm" />
-								<p:commandButton value="取消"
-									oncomplete="itemDialog.hide();" />
-							</t:panelGrid>
-						</t:panelGroup>
-						<h:panelGroup />
-
-					</t:panelGrid>
-				</h:panelGroup>
-
-			</p:dialog>
-		</h:form>
-
-		<h:form id="materialForm">
-			<p:dialog header="选择物料" widgetVar="materialDialog" modal="true"
-				height="480" width="640">
-				<h:panelGroup>
-
-					<h:panelGrid columns="3">
-						<h:outputLabel value="物料名字全部或部份:" />
-						<p:inputText value="#{stockTradeAdminBean.materialPattern}" />
-						<p:commandButton value="查找"
-							actionListener="#{stockTradeAdminBean.findMaterial}" update="materials"
-							async="true" />
-					</h:panelGrid>
-					<p:dataTable id="materials" var="material"
-						value="#{stockTradeAdminBean.materials}" resizableColumns="true"
-						selection="#{stockTradeAdminBean.selectedMaterial}" selectionMode="single"
-                        rowKey="#{material.id}"
-						rowIndexVar="rowIndex"
-                        scrollable="true" scrollWidth="600" scrollHeight="350">
-
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="序号" />
-							</f:facet>
-							<h:outputText value="#{rowIndex + 1}" />
-						</p:column>
-
-						<p:column headerText="物料名称">
-							<h:outputText value="#{material.label}" />
-						</p:column>
-
-						<p:column headerText="序列号">
-							<h:outputText value="#{material.serial}" />
-						</p:column>
-
-						<p:column headerText="条形码">
-							<h:outputText value="#{material.barCode}" />
-						</p:column>
-
-						<p:column headerText="主单位">
-							<h:outputText value="#{material.unit.name}" />
-						</p:column>
-
-                        <p:column headerText="规格型号">
-                            <h:outputText value="#{material.modelSpec}" />
-                        </p:column>
-
-					</p:dataTable>
-					<h:panelGrid columns="2">
-						<p:commandButton value="确定"
-							actionListener="#{stockTradeAdminBean.chooseMaterial}"
-							oncomplete="materialDialog.hide();" update="itemForm:itemPanel"
-							async="true" />
-						<p:commandButton value="取消" oncomplete="materialDialog.hide();" />
-					</h:panelGrid>
-				</h:panelGroup>
-			</p:dialog>
-
-		</h:form>
-
-        <h:form id="deleteConfirmForm">
-            <p:confirmDialog message="确定要删除吗?" width="200" header="删除确认"
-                severity="alert" widgetVar="deleteConfirmDialog" modal="true">
-
-                <p:commandButton value="确定"
-                    update="mainForm"
-                    actionListener="#{stockTradeAdminBean.delete}"
-                    oncomplete="deleteConfirmDialog.hide()" />
-                <p:commandButton value="取消" onclick="deleteConfirmDialog.hide()"
-                    type="button" />
-
-            </p:confirmDialog>
+                <h:outputLabel value="备注" />
+                <t:panelGroup colspan="3">
+                    <p:inputText value="#{bean.tradeItem.description}" style="width:400px" />
+                </t:panelGroup>
+            </t:panelGrid>
+            <div align="right">
+                <p:commandButton value="保存" actionListener="#{bean.doSaveItem}" oncomplete="itemDialog.hide();"
+                    async="true" update="mainForm" />
+                <p:commandButton value="取消" oncomplete="itemDialog.hide();" />
+            </div>
         </h:form>
+    </p:dialog>
 
-        <h:form id="deleteItemConfirmForm">
-            <p:confirmDialog message="确定要删除吗?" width="200" header="删除明细条目确认"
-                severity="alert" widgetVar="deleteItemConfirmDialog" modal="true">
+    <ui:define name="dialogs">
+        <sem:singleVerifierSupportDialog update=":mainForm" />
+        <sem:choosePartyDialog caption="选择对像" var="partyDialog" />
+        <sem:chooseAccountSubjectDialog caption="选择科目" var="accountSubjectDialog" />
+        <sem:chooseMaterialDialog id="materialDialog" var="materialDialog" />
 
-                <p:commandButton value="确定"
-                    update="mainForm:items"
-                    actionListener="#{stockTradeAdminBean.deleteItem}"
+        <p:confirmDialog message="确定要删除吗?" width="200" header="删除明细条目确认" severity="alert"
+            widgetVar="deleteItemConfirmDialog" modal="true">
+            <h:form id="deleteItemConfirmForm">
+                <p:commandButton value="确定" update="mainForm:items" actionListener="#{bean.deleteItem}"
                     oncomplete="deleteItemConfirmDialog.hide()" />
-                <p:commandButton value="取消" onclick="deleteItemConfirmDialog.hide()"
-                    type="button" />
+                <p:commandButton value="取消" onclick="deleteItemConfirmDialog.hide()" type="button" />
+            </h:form>
+        </p:confirmDialog>
 
-            </p:confirmDialog>
-        </h:form>
-
-        <h:form id="partyForm">
-            <p:dialog header="选择对像" widgetVar="partyDialog" modal="true"
-                height="400" width="800">
-                <h:panelGroup>
-
-                    <h:panelGrid columns="3">
-                        <h:outputLabel value="名称全部或部份:" />
-                        <p:inputText value="#{stockTradeAdminBean.partyPattern}" />
-                        <p:commandButton value="查找"
-                            actionListener="#{stockTradeAdminBean.findParty}" update="parties"
-                            async="true" />
-                    </h:panelGrid>
-                    <p:dataTable id="parties" var="party"
-                        value="#{stockTradeAdminBean.parties}" resizableColumns="true"
-                        rowIndexVar="rowIndex">
-
-                        <p:column headerText="序号">
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column headerText="名称">
-                            <h:outputText value="#{party.name}" />
-                        </p:column>
-
-                        <p:column headerText="标签">
-                            <p:dataList value="#{party.tags}" var="tag" type="definition">
-                                <f:facet name="description">
-                                    <h:outputText value="#{tag.label}"/>
-                                </f:facet>
-                            </p:dataList>
-                        </p:column>
-
-                        <p:column headerText="成立日期/生日">
-                            <h:outputText value="#{party.birthday}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"
-                                    timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-
-
-                        <p:column headerText="证件号">
-                            <h:outputText value="#{party.sid}" />
-                        </p:column>
-
-
-                        <p:column headerText="创建日期">
-                            <h:outputText value="#{party.createdDate}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"
-                                    timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-                        <p:column headerText="动作">
-                            <p:commandLink
-                                oncomplete="partyDialog.hide()"
-                                action="#{stockTradeAdminBean.chooseParty}"
-                                update="mainForm:party" value="挑选">
-                                <f:setPropertyActionListener
-                                    value="#{party}"
-                                    target="#{stockTradeAdminBean.selectedParty}" />
-                            </p:commandLink>
-                        </p:column>
-                    </p:dataTable>
-                    <p:commandButton value="取消" oncomplete="partyDialog.hide();" />
-                </h:panelGroup>
-            </p:dialog>
-        </h:form>
-
-
-        <h:form id="accountSubjectForm">
-            <p:dialog header="选择科目" widgetVar="accountSubjectDialog" modal="true"
-                height="500" width="840">
-                <h:panelGroup>
-                    <p:dataTable id="accountSubjects" var="accountSubject"
-                        value="#{stockTradeAdminBean.accountSubjects}" resizableColumns="true"
-                        rowIndexVar="rowIndex"
-                        scrollable="true" scrollWidth="600" scrollHeight="350">
-
-                        <p:column headerText="序号">
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column headerText="科目编码">
-                            <h:outputText value="#{accountSubject.name}" />
-                        </p:column>
-
-                        <p:column headerText="科目名称">
-                            <h:outputText value="#{accountSubject.label}" />
-                        </p:column>
-
-                        <p:column headerText="动作">
-                            <p:commandLink
-                                oncomplete="accountSubjectDialog.hide()"
-                                action="#{stockTradeAdminBean.chooseAccountSubject}"
-                                update="mainForm:accountSubject" value="挑选">
-                                <f:setPropertyActionListener
-                                    value="#{accountSubject}"
-                                    target="#{stockTradeAdminBean.selectedAccountSubject}" />
-                            </p:commandLink>
-                        </p:column>
-                    </p:dataTable>
-                    <p:commandButton value="取消" oncomplete="accountSubjectDialog.hide()" />
-                </h:panelGroup>
-            </p:dialog>
-        </h:form>
-
-
-        <h:outputScript>
-            document.title = $("#mainForm\\:pageTitle").val();
-        </h:outputScript>
-
-	</ui:define>
+    </ui:define>
 </ui:composition>
-</html>
