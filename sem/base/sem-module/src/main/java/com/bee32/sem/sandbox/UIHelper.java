@@ -24,7 +24,6 @@ import com.bee32.plover.ox1.dict.NameDictDto;
 import com.bee32.plover.ox1.dict.PoNode;
 import com.bee32.plover.ox1.dict.PoTreeBuilder;
 import com.bee32.plover.ox1.tree.TreeEntityDto;
-import com.bee32.plover.web.faces.utils.SelectableList;
 
 public class UIHelper
         extends FacesContextSupport2 {
@@ -79,16 +78,6 @@ public class UIHelper
     public static <E extends Entity<?>, D extends EntityDto<? super E, ?>> //
     ZLazyDataModel<E, D> buildLazyDataModel(EntityDataModelOptions<E, D> options) {
         return new ZLazyDataModel<E, D>(options);
-    }
-
-    /**
-     * @see SelectableList
-     */
-    @Deprecated
-    public static <T> ListHolder<T> selectable(List<T> list) {
-        if (list == null)
-            throw new NullPointerException("list");
-        return new ListHolder<T>(list);
     }
 
     public static TreeNode buildCodeTree(Collection<? extends NameDict> objs) {

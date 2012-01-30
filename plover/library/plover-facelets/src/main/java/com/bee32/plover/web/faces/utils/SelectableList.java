@@ -1,6 +1,5 @@
 package com.bee32.plover.web.faces.utils;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.model.ListDataModel;
@@ -9,9 +8,7 @@ import org.primefaces.model.SelectableDataModel;
 
 public class SelectableList<T>
         extends ListDataModel<T>
-        implements SelectableDataModel<T>, Serializable {
-
-    private static final long serialVersionUID = 1L;
+        implements SelectableDataModel<T> {
 
     List<T> list;
 
