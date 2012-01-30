@@ -453,9 +453,11 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         if (entity == null) {
             this.setId(null);
             this.setVersion(null);
+            this.setNull(true);
         } else {
             this.setId(entity.getId());
             this.setVersion(entity.getVersion());
+            this.setNull(false);
         }
 
         @SuppressWarnings("unchecked")

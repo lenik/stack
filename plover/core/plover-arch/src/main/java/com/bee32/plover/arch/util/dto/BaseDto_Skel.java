@@ -104,6 +104,7 @@ abstract class BaseDto_Skel<S, C>
         $ self = ($) this;
 
         marshalAs(MarshalType.ID_REF);
+        setNull(isNullRef());
 
         return self;
     }
