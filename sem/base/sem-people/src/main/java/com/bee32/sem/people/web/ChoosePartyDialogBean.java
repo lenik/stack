@@ -24,7 +24,7 @@ public class ChoosePartyDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChoosePartyDialogBean.class);
 
-    String caption = "Please choose a party..."; // NLS: 选择用户或组
+    String header = "Please choose a party..."; // NLS: 选择用户或组
     String stereo;
     Integer tagId;
 
@@ -43,12 +43,12 @@ public class ChoosePartyDialogBean
 
     // Properties
 
-    public String getCaption() {
-        return caption;
+    public String getHeader() {
+        return header;
     }
 
-    public void setCaption(String caption) {
-        this.caption = caption;
+    public void setHeader(String header) {
+        this.header = header;
     }
 
     public void setStereo(String stereo) {

@@ -143,8 +143,8 @@
 
     <ui:define name="dialogs">
         <sem:singleVerifierSupportDialog update=":mainForm" />
-        <sem:choosePartyDialog caption="选择客户" var="customerDialog" />
-        <sem:chooseChanceDialog caption="挑选机会" var="chanceDialog" />
+        <sem:choosePartyDialog header="选择客户" var="customerDialog" />
+        <sem:chooseChanceDialog header="挑选机会" var="chanceDialog" />
 
         <p:dialog header="定单项目编辑" widgetVar="itemDialog" modal="true" height="500" width="640">
             <h:form id="itemForm">

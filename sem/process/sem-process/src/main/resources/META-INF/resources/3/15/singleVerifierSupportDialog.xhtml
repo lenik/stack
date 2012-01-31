@@ -10,7 +10,7 @@
         <cc:attribute name="update" />
 
         <!-- ui overrides -->
-        <cc:attribute name="caption" default="审核信息" />
+        <cc:attribute name="header" default="审核信息" />
         <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
 
         <!-- internals -->
@@ -22,7 +22,7 @@
         <c:set var="dialogVar" value="${cc.attrs.var}" />
         <c:set var="handler" value="${cc.attrs.handler}" />
 
-        <p:dialog header="${cc.attrs.caption}" widgetVar="${dialogVar}" modal="true" dynamic="${viewConfig.dynamicDialog}">
+        <p:dialog header="${cc.attrs.header}" widgetVar="${dialogVar}" modal="true" dynamic="${viewConfig.dynamicDialog}">
             <h:form id="form" style="${cc.attrs.style}">
 
                 <t:panelGrid columns="2">

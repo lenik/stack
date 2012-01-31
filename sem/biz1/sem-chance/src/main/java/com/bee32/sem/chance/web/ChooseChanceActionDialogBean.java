@@ -18,7 +18,7 @@ public class ChooseChanceActionDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChooseChanceActionDialogBean.class);
 
-    String caption = "Please choose a party..."; // NLS: 选择用户或组
+    String header = "Please choose a party..."; // NLS: 选择用户或组
     boolean detachedOnly;
 
     public ChooseChanceActionDialogBean() {
@@ -33,12 +33,12 @@ public class ChooseChanceActionDialogBean
 
     // Properties
 
-    public String getCaption() {
-        return caption;
+    public String getHeader() {
+        return header;
     }
 
-    public void setCaption(String caption) {
-        this.caption = caption;
+    public void setHeader(String header) {
+        this.header = header;
     }
 
     public boolean isDetachedOnly() {

@@ -15,7 +15,7 @@ public class ChooseChanceDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChooseChanceDialogBean.class);
 
-    String caption = "Please choose a party..."; // NLS: 选择用户或组
+    String header = "Please choose a party..."; // NLS: 选择用户或组
 
     public ChooseChanceDialogBean() {
         super(Chance.class, ChanceDto.class, 0);
@@ -23,12 +23,12 @@ public class ChooseChanceDialogBean
 
     // Properties
 
-    public String getCaption() {
-        return caption;
+    public String getHeader() {
+        return header;
     }
 
-    public void setCaption(String caption) {
-        this.caption = caption;
+    public void setHeader(String header) {
+        this.header = header;
     }
 
     @Override

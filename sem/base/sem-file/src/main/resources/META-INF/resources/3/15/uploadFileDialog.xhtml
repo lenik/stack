@@ -11,7 +11,7 @@
         <cc:attribute name="update" />
 
         <!-- ui overrides -->
-        <cc:attribute name="caption" default="${uploadFileDialogBean.caption}" />
+        <cc:attribute name="header" default="${uploadFileDialogBean.header}" />
         <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
 
         <!-- internals -->
@@ -20,7 +20,7 @@
 
     <cc:implementation>
         <!-- modal="true" not work here. -->
-        <p:dialog header="${cc.attrs.caption}" widgetVar="${cc.attrs.var}">
+        <p:dialog header="${cc.attrs.header}" widgetVar="${cc.attrs.var}">
             <h:form id="form" enctype="multipart/form-data" style="${cc.attrs.style}">
                 <p:fileUpload mode="advanced" multiple="${cc.attrs.multiple}" allowTypes="${viewConfig.allowTypes}"
                     sizeLimit="${viewConfig.maxFileSize}" fileUploadListener="${cc.attrs.fileUploadListener}" update="${cc.attrs.update}"

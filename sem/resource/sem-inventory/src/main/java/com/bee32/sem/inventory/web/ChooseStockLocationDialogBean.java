@@ -26,7 +26,7 @@ public class ChooseStockLocationDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChooseStockLocationDialogBean.class);
 
-    String caption = "Please choose a stock location..."; // NLS: 选择用户或组
+    String header = "Please choose a stock location..."; // NLS: 选择用户或组
     Integer warehouseId;
     Long materialId;
     final TreeNodeSelectionHolder fullSelectionHolder = new TreeNodeSelectionHolder();
@@ -45,12 +45,12 @@ public class ChooseStockLocationDialogBean
 
     // Properties
 
-    public String getCaption() {
-        return caption;
+    public String getHeader() {
+        return header;
     }
 
-    public void setCaption(String caption) {
-        this.caption = caption;
+    public void setHeader(String header) {
+        this.header = header;
     }
 
     public Integer getWarehouseId() {

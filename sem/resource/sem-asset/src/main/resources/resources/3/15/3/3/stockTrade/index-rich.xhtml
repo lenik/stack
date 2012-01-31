@@ -156,8 +156,8 @@
 
     <ui:define name="dialogs">
         <sem:singleVerifierSupportDialog update=":mainForm" />
-        <sem:choosePartyDialog caption="选择对像" var="partyDialog" />
-        <sem:chooseAccountSubjectDialog caption="选择科目" var="accountSubjectDialog" />
+        <sem:choosePartyDialog header="选择对像" var="partyDialog" />
+        <sem:chooseAccountSubjectDialog header="选择科目" var="accountSubjectDialog" />
         <sem:chooseMaterialDialog id="materialDialog" var="materialDialog" />
 
         <p:confirmDialog message="确定要删除吗?" width="200" header="删除明细条目确认" severity="alert"

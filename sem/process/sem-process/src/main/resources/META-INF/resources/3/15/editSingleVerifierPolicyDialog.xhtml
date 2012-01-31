@@ -10,7 +10,7 @@
         <cc:attribute name="update" />
 
         <!-- ui overrides -->
-        <cc:attribute name="caption" default="白名单策略" />
+        <cc:attribute name="header" default="白名单策略" />
         <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
 
         <!-- internals -->
@@ -20,13 +20,13 @@
 
     <cc:implementation>
 
-        <icsf:choosePrincipalDialog id="cpd" caption="选择用户或组"
+        <icsf:choosePrincipalDialog id="cpd" header="选择用户或组"
             var="${fn:replace(cc.parent.clientId, ':', '_')}_cpd" actionListener="${cc.parent.attrs.dialogBean.addResponsible}"
             target="${cc.parent.attrs.dialogBean.selectedResponsible}" update=":${cc.parent.clientId}:form" />
 
         <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
 
-        <p:dialog id="dialog" header="${cc.attrs.caption}" widgetVar="${cc.attrs.var}" modal="true" position="center">
+        <p:dialog id="dialog" header="${cc.attrs.header}" widgetVar="${cc.attrs.var}" modal="true" position="center">
             <c:set var="obj" value="${cc.attrs.value}" />
             <h:form id="form" style="${cc.attrs.style}">
                 <h:panelGroup rendered="${obj!=null}">

@@ -10,7 +10,7 @@
         <cc:attribute name="update" default="@none" />
 
         <!-- ui overrides -->
-        <cc:attribute name="caption" default="${securityOptionsDialogBean.caption}" />
+        <cc:attribute name="header" default="${securityOptionsDialogBean.header}" />
         <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
 
         <!-- internals -->
@@ -26,7 +26,7 @@
 
         <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
 
-        <p:dialog id="dialog" header="${cc.attrs.caption}" widgetVar="${cc.attrs.var}" modal="true">
+        <p:dialog id="dialog" header="${cc.attrs.header}" widgetVar="${cc.attrs.var}" modal="true">
             <h:form id="form" style="${cc.attrs.style}">
 
                 <p:fieldset legend="对象信息">

@@ -10,7 +10,7 @@
         <cc:attribute name="update" />
 
         <!-- ui overrides -->
-        <cc:attribute name="caption" default="编辑安全策略" />
+        <cc:attribute name="header" default="编辑安全策略" />
         <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
 
         <!-- internals -->
@@ -28,7 +28,7 @@
 
         <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
 
-        <p:dialog id="main" header="${cc.attrs.caption}" widgetVar="${cc.attrs.var}" modal="true"
+        <p:dialog id="main" header="${cc.attrs.header}" widgetVar="${cc.attrs.var}" modal="true"
             dynamic="${viewConfig.dynamicDialog}" position="center">
             <c:set var="obj" value="${cc.attrs.value}" />
             <h:form id="form" style="${cc.attrs.style}">

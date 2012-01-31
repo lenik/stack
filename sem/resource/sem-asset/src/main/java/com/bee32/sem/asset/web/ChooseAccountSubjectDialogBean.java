@@ -14,7 +14,7 @@ public class ChooseAccountSubjectDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChooseAccountSubjectDialogBean.class);
 
-    String caption = "选择资金科目";
+    String header = "选择资金科目";
 
     public ChooseAccountSubjectDialogBean() {
         super(AccountSubject.class, AccountSubjectDto.class, 0);
@@ -22,12 +22,12 @@ public class ChooseAccountSubjectDialogBean
 
     // Properties
 
-    public String getCaption() {
-        return caption;
+    public String getHeader() {
+        return header;
     }
 
-    public void setCaption(String caption) {
-        this.caption = caption;
+    public void setHeader(String header) {
+        this.header = header;
     }
 
 }

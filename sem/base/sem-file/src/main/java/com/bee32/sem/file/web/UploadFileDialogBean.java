@@ -12,16 +12,16 @@ public class UploadFileDialogBean
 
     static Logger logger = LoggerFactory.getLogger(UploadFileDialogBean.class);
 
-    String caption = "Please select file(s) to upload...";
+    String header = "Please select file(s) to upload...";
 
     // Properties
 
-    public String getCaption() {
-        return caption;
+    public String getHeader() {
+        return header;
     }
 
-    public void setCaption(String caption) {
-        this.caption = caption;
+    public void setHeader(String header) {
+        this.header = header;
     }
 
 }

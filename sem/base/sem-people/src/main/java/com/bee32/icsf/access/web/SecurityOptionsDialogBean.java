@@ -19,16 +19,16 @@ public class SecurityOptionsDialogBean
 
     private static final long serialVersionUID = 1L;
 
-    String caption = "安全选项...";
+    String header = "安全选项...";
     String selectionDump;
     ACLDto selectedACL;
 
-    public String getCaption() {
-        return caption;
+    public String getHeader() {
+        return header;
     }
 
-    public void setCaption(String caption) {
-        this.caption = caption;
+    public void setHeader(String header) {
+        this.header = header;
     }
 
     public void refreshSelection() {

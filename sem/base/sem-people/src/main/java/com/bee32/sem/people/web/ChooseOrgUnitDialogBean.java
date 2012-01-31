@@ -20,7 +20,7 @@ public class ChooseOrgUnitDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChooseOrgUnitDialogBean.class);
 
-    String caption = "Please choose an organization unit..."; // NLS: 选择用户或组
+    String header = "Please choose an organization unit..."; // NLS: 选择用户或组
     Integer orgId;
 
     public ChooseOrgUnitDialogBean() {
@@ -35,12 +35,12 @@ public class ChooseOrgUnitDialogBean
 
     // Properties
 
-    public String getCaption() {
-        return caption;
+    public String getHeader() {
+        return header;
     }
 
-    public void setCaption(String caption) {
-        this.caption = caption;
+    public void setHeader(String header) {
+        this.header = header;
     }
 
     public void setOrgId(Integer orgId) {

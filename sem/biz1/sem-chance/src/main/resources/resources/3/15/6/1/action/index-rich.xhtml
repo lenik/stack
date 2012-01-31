@@ -124,9 +124,9 @@
     <ui:define name="dialogs">
         <sem:singleVerifierSupportDialog update="chanceActionForm" />
         <sem:chooseChanceDialog id="chooseChanceDialog" target="${obj.chance}" update=":editDialog:form" />
-        <sem:choosePartyDialog id="choosePartyDialog" caption="选择客户" target="${bean.selectedParty}"
+        <sem:choosePartyDialog id="choosePartyDialog" header="选择客户" target="${bean.selectedParty}"
             actionListener="${bean.addParty}" update=":editDialog:form" />
-        <sem:choosePrincipalDialog id="choosePartnerDialog" var="choosePartnerDialog" caption="选择工作伙伴"
+        <sem:choosePrincipalDialog id="choosePartnerDialog" var="choosePartnerDialog" header="选择工作伙伴"
             target="${bean.selectedPartner}" actionListener="${bean.addPartner}" update=":editDialog:form" />
     </ui:define>
 

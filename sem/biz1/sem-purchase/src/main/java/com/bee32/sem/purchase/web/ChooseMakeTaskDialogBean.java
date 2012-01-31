@@ -14,7 +14,7 @@ public class ChooseMakeTaskDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChooseMakeTaskDialogBean.class);
 
-    String caption = "选择生产任务";
+    String header = "选择生产任务";
 
     public ChooseMakeTaskDialogBean() {
         super(MakeTask.class, MakeTaskDto.class, 0);
@@ -22,12 +22,12 @@ public class ChooseMakeTaskDialogBean
 
     // Properties
 
-    public String getCaption() {
-        return caption;
+    public String getHeader() {
+        return header;
     }
 
-    public void setCaption(String caption) {
-        this.caption = caption;
+    public void setHeader(String header) {
+        this.header = header;
     }
 
 }

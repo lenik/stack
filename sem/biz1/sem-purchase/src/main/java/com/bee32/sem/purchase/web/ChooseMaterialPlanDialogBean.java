@@ -14,7 +14,7 @@ public class ChooseMaterialPlanDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChooseMaterialPlanDialogBean.class);
 
-    String caption = "选择物料计划";
+    String header = "选择物料计划";
 
     public ChooseMaterialPlanDialogBean() {
         super(MaterialPlan.class, MaterialPlanDto.class, 0);
@@ -22,12 +22,12 @@ public class ChooseMaterialPlanDialogBean
 
     // Properties
 
-    public String getCaption() {
-        return caption;
+    public String getHeader() {
+        return header;
     }
 
-    public void setCaption(String caption) {
-        this.caption = caption;
+    public void setHeader(String header) {
+        this.header = header;
     }
 
 }
