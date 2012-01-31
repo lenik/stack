@@ -20,7 +20,7 @@
                     <ui:insert name="columns" />
 
                     <ui:insert name="dataColumnsC">
-                        <p:column headerText="更新日期">
+                        <p:column headerText="更新日期" style="width: 7em">
                             <h:outputText value="${entry.lastModified}">
                                 <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                             </h:outputText>
@@ -43,49 +43,6 @@
             <ui:insert name="actions" />
         </p:commandButton>
         <p:commandButton id="cancel" value="关闭" onclick="${var}.hide();" />
-    </ui:define>
-
-    <ui:define name="searchPanels.0">
-        <c:set var="dialogForm" value="${component.namingContainer.parent.namingContainer.clientId}:form" />
-        <ui:insert name="searchPanel.keyword">
-            <p:panel header="按关键字搜索" toggleable="true">
-                <div align="center">
-                    <p:inputText id="pattern" value="${dialogBean.searchPattern}" />
-                    <p:commandButton id="filterNameOrLabel" value="限定名称"
-                        actionListener="${dialogBean.addNameOrLabelRestriction}" update="searchForm, :${dialogForm}" />
-                    <p:commandButton id="filterDescription" value="限定描述"
-                        actionListener="${dialogBean.addDescriptionRestriction}" update="searchForm, :${dialogForm}" />
-                    <ui:insert name="searchPanel.keyword.1" />
-                </div>
-            </p:panel>
-        </ui:insert>
-        <ui:insert name="searchPanel.time">
-            <p:panel header="按时间搜索" toggleable="true">
-                <div align="center">
-                    时间范围：
-                    <p:selectOneMenu id="lastModifiedRange" value="${dialogBean.dateRangeIndex}">
-                        <f:selectItem itemLabel="选择" itemValue="-1" />
-                        <f:selectItems value="${dialogBean.dateRangeTemplates}" var="t" itemLabel="${t.label}"
-                            itemValue="${t.index}" />
-                    </p:selectOneMenu>
-                    <p:commandButton id="filterCreatedDate" value="限定创建时间"
-                        actionListener="${dialogBean.addCreatedDateRestriction}" update="searchForm, :${dialogForm}" />
-                    <p:commandButton id="filterLastModified" value="限定更新时间"
-                        actionListener="${dialogBean.addLastModifiedRestriction}" update="searchForm, :${dialogForm}" />
-                    <ui:insert name="searchPanel.time.1" />
-                </div>
-            </p:panel>
-        </ui:insert>
-    </ui:define>
-
-    <ui:define name="searchFragmentsPanel">
-        <c:set var="dialogForm" value="${component.namingContainer.parent.namingContainer.parent.namingContainer.clientId}:form" />
-        <h:panelGroup id="searchFragments" layout="block" style="padding: .2em 0em; background: #eee">
-            <ui:repeat id="repeat" var="fragment" value="${dialogBean.searchFragments}">
-                <p:commandButton id="removeButton" value="${fragment.entryLabel}" async="true"
-                    actionListener="${fragment.detach}" update=":@form, :${dialogForm}" />
-            </ui:repeat>
-        </h:panelGroup>
     </ui:define>
 
 </ui:composition>
