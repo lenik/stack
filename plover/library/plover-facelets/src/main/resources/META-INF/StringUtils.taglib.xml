@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE facelet-taglib PUBLIC
+    "-//Sun Microsystems, Inc.//DTD Facelet Taglib 1.0//EN"
+    "http://java.sun.com/dtd/facelet-taglib_1_0.dtd">
+
+<facelet-taglib>
+
+    <namespace>http://apache.org/commons/lang/StringUtils</namespace>
+
+    <function>
+        <function-name>equals</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>boolean equals(java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>endsWith</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>boolean endsWith(java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>equalsIgnoreCase</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>boolean equalsIgnoreCase(java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>isEmpty</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>boolean isEmpty(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>length</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>int length(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>startsWith</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>boolean startsWith(java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>trim</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String trim(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>reverse</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String reverse(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>isWhitespace</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>boolean isWhitespace(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>clean</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String clean(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>escape</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String escape(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>isAlpha</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>boolean isAlpha(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>isNumeric</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>boolean isNumeric(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>capitalize</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String capitalize(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>right</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String right(java.lang.String, int)</function-signature>
+    </function>
+
+    <function>
+        <function-name>left</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String left(java.lang.String, int)</function-signature>
+    </function>
+
+    <function>
+        <function-name>repeat</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String repeat(java.lang.String, int)</function-signature>
+    </function>
+
+    <function>
+        <function-name>overlayString</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String overlayString(java.lang.String, java.lang.String, int, int)</function-signature>
+    </function>
+
+    <function>
+        <function-name>overlay</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String overlay(java.lang.String, java.lang.String, int, int)</function-signature>
+    </function>
+
+    <function>
+        <function-name>getChomp</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String getChomp(java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>prechomp</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String prechomp(java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>getPrechomp</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String getPrechomp(java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>chop</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String chop(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>chopNewline</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String chopNewline(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>upperCase</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String upperCase(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>lowerCase</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String lowerCase(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>capitalise</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String capitalise(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>uncapitalize</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String uncapitalize(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>uncapitalise</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String uncapitalise(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>swapCase</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String swapCase(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>capitaliseAllWords</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String capitaliseAllWords(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>countMatches</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>int countMatches(java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>isAlphaSpace</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>boolean isAlphaSpace(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>isAlphanumeric</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>boolean isAlphanumeric(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>isAlphanumericSpace</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>boolean isAlphanumericSpace(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>isAsciiPrintable</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>boolean isAsciiPrintable(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>isNumericSpace</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>boolean isNumericSpace(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>defaultIfEmpty</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String defaultIfEmpty(java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>reverseDelimited</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String reverseDelimited(java.lang.String, char)</function-signature>
+    </function>
+
+    <function>
+        <function-name>reverseDelimitedString</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String reverseDelimitedString(java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>difference</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String difference(java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>deleteSpaces</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String deleteSpaces(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>deleteWhitespace</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String deleteWhitespace(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>removeStart</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String removeStart(java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>removeStartIgnoreCase</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String removeStartIgnoreCase(java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>removeEnd</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String removeEnd(java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>removeEndIgnoreCase</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String removeEndIgnoreCase(java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>replaceOnce</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String replaceOnce(java.lang.String, java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>isNotEmpty</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>boolean isNotEmpty(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>isBlank</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>boolean isBlank(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>isNotBlank</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>boolean isNotBlank(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>mid</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String mid(java.lang.String, int, int)</function-signature>
+    </function>
+
+    <function>
+        <function-name>substringBefore</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String substringBefore(java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>substringAfter</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String substringAfter(java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>substringBeforeLast</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String substringBeforeLast(java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>substringAfterLast</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String substringAfterLast(java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>trimToNull</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String trimToNull(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>trimToEmpty</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String trimToEmpty(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>stripToNull</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String stripToNull(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>stripToEmpty</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String stripToEmpty(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>stripStart</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String stripStart(java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>stripEnd</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>java.lang.String stripEnd(java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>ordinalIndexOf</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>int ordinalIndexOf(java.lang.String, java.lang.String, int)</function-signature>
+    </function>
+
+    <function>
+        <function-name>containsIgnoreCase</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>boolean containsIgnoreCase(java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>getLevenshteinDistance</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>int getLevenshteinDistance(java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>startsWithIgnoreCase</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>boolean startsWithIgnoreCase(java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>endsWithIgnoreCase</function-name>
+        <function-class>org.apache.commons.lang.StringUtils</function-class>
+        <function-signature>boolean endsWithIgnoreCase(java.lang.String, java.lang.String)</function-signature>
+    </function>
+
+</facelet-taglib>
