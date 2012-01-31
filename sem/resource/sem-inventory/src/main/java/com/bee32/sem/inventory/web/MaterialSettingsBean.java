@@ -10,15 +10,11 @@ import javax.faces.model.SelectItem;
 import org.primefaces.event.FlowEvent;
 import org.zkoss.lang.Strings;
 
-import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntities;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
-import com.bee32.plover.ox1.tree.TreeCriteria;
 import com.bee32.plover.util.i18n.CurrencyConfig;
-import com.bee32.sem.frame.ui.SelectionAdapter;
-import com.bee32.sem.frame.ui.SelectionEvent;
 import com.bee32.sem.inventory.Classification;
 import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
@@ -26,7 +22,6 @@ import com.bee32.sem.inventory.dto.MaterialPriceDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.entity.MaterialPrice;
-import com.bee32.sem.inventory.util.MaterialCriteria;
 import com.bee32.sem.inventory.web.dialogs.MaterialCategoryTreeModel;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.world.monetary.MCValue;
@@ -72,9 +67,7 @@ public class MaterialSettingsBean
     List<MaterialDto> materialList;
     MaterialDto activeMaterial = new MaterialDto().create();
 
-    MaterialCategoryTreeModel materialCategorySelectTree;
-    MaterialCategoryTreeModel materialCategoryMainTree;
-    MaterialCategoryTreeModel materialPriceTree;
+    MaterialCategoryTreeModel categoryTree;
 
     public MaterialSettingsBean() {
         activeScaleItem = new ScaleItem();
@@ -83,67 +76,13 @@ public class MaterialSettingsBean
 
         currencyCode = Currency.getInstance(Locale.getDefault()).getCurrencyCode();
 
-        initSelectCategoryTree();
-        initMainTree();
         initMaterialPriceTree();
         initUnitList();
         initUnitConvList();
     }
 
-    public void initMainTree() {
-        List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(//
-                TreeCriteria.root(), //
-                Order.asc("name"));
-        List<MaterialCategoryDto> rootCategoryDtos = DTOs.mrefList(MaterialCategoryDto.class,
-                ~MaterialCategoryDto.MATERIALS, rootCategories);
-        materialCategoryMainTree = new MaterialCategoryTreeModel(rootCategoryDtos);
-        materialCategoryMainTree.setSelectedNode(null);
-        // XXX to add listener if necessary
-    }
-
-    public void initSelectCategoryTree() {
-        List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(//
-                TreeCriteria.root());
-        List<MaterialCategoryDto> rootCategoryDtos = DTOs.mrefList(MaterialCategoryDto.class,
-                ~MaterialCategoryDto.MATERIALS, rootCategories);
-        materialCategorySelectTree = new MaterialCategoryTreeModel(rootCategoryDtos);
-        materialCategorySelectTree.addListener(new SelectionAdapter() {
-
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void itemSelected(SelectionEvent event) {
-                MaterialCategoryDto materialCategoryDto = (MaterialCategoryDto) event.getSelection();
-                if (materialCategoryDto != null) {
-                    activeCategory.setParent(materialCategoryDto);
-                }
-            }
-
-        });
-    }
-
     public void initMaterialPriceTree() {
-        List<MaterialCategory> roots = serviceFor(MaterialCategory.class).list(TreeCriteria.root());
-        List<MaterialCategoryDto> rootDtos = DTOs.marshalList(MaterialCategoryDto.class,
-                ~MaterialCategoryDto.MATERIALS, roots);
-        materialPriceTree = new MaterialCategoryTreeModel(rootDtos);
-        materialPriceTree.addListener(new SelectionAdapter() {
-
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void itemSelected(SelectionEvent event) {
-                MaterialCategoryDto cad = (MaterialCategoryDto) event.getSelection();
-                List<Material> materials = serviceFor(Material.class).list(//
-                        MaterialCriteria.categoryOf(cad.getId()));
-                materialList = DTOs.marshalList(MaterialDto.class, MaterialDto.PRICES, materials);
-            }
-
-        });
-    }
-
-    public void refreshCategorySelectTree() {
-        initSelectCategoryTree();
+// materialList = DTOs.marshalList(MaterialDto.class, MaterialDto.PRICES, materials);
     }
 
     public void initUnitConvList() {
@@ -249,11 +188,11 @@ public class MaterialSettingsBean
 
     public void addSubCategory() {
         activeCategory = new MaterialCategoryDto().create();
-        activeCategory.setParent((MaterialCategoryDto) materialCategoryMainTree.getSelectedNode().getData());
+        activeCategory.setParent((MaterialCategoryDto) categoryTree.getSelectedNode().getData());
     }
 
     public void editCategoryForm() {
-        activeCategory = (MaterialCategoryDto) materialCategoryMainTree.getSelectedNode().getData();
+        activeCategory = (MaterialCategoryDto) categoryTree.getSelectedNode().getData();
         activeCategory = reload(activeCategory);
     }
 
@@ -278,8 +217,8 @@ public class MaterialSettingsBean
                 subCategory.getParent().addChild(subCategory);
             }
 
-            initMainTree();
-            initSelectCategoryTree();
+// initMainTree();
+// initSelectCategoryTree();
             uiLogger.info("保存物料分类成功!");
         } catch (Exception e) {
             uiLogger.error("保存物料失败", e);
@@ -287,14 +226,13 @@ public class MaterialSettingsBean
     }
 
     public void destroyCategory() {
-        MaterialCategoryDto materialCategoryDto = (MaterialCategoryDto) materialCategoryMainTree.getSelectedNode()
-                .getData();
+        MaterialCategoryDto materialCategoryDto = (MaterialCategoryDto) categoryTree.getSelectedNode().getData();
         Integer id = materialCategoryDto.getId();
         try {
             MaterialCategory entity = serviceFor(MaterialCategory.class).getOrFail(id);
             serviceFor(MaterialCategory.class).delete(entity);
-            initMainTree();
-            initSelectCategoryTree();
+// initMainTree();
+// initSelectCategoryTree();
             uiLogger.info("删除物料分类成功!");
         } catch (Exception e) {
             uiLogger.error("删除物料分类失败", e);
@@ -409,18 +347,6 @@ public class MaterialSettingsBean
         this.activeUnitConv = reload(selectedUnitConv);
     }
 
-    public MaterialCategoryTreeModel getMaterialCategorySelectTree() {
-        return materialCategorySelectTree;
-    }
-
-    public MaterialCategoryTreeModel getMaterialCategoryMainTree() {
-        return materialCategoryMainTree;
-    }
-
-    public MaterialCategoryTreeModel getMaterialPriceTree() {
-        return materialPriceTree;
-    }
-
     public ScaleItem getActiveScaleItem() {
         return activeScaleItem;
     }
@@ -474,7 +400,7 @@ public class MaterialSettingsBean
     }
 
     public MaterialDto getActiveMaterial() {
-        if(activeMaterial == null)
+        if (activeMaterial == null)
             activeMaterial = new MaterialDto().create();
         return activeMaterial;
     }

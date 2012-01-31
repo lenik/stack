@@ -2,19 +2,14 @@ package com.bee32.sem.inventory.web;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.faces.model.SelectItem;
 
-import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.ox1.tree.TreeEntityDto;
-import com.bee32.plover.ox1.tree.TreeEntityUtils;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.file.entity.FileBlob;
 import com.bee32.sem.file.entity.UserFile;
@@ -28,14 +23,13 @@ import com.bee32.sem.inventory.dto.MaterialPriceDto;
 import com.bee32.sem.inventory.dto.MaterialWarehouseOptionDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialAttribute;
-import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.entity.MaterialPreferredLocation;
 import com.bee32.sem.inventory.entity.MaterialPrice;
 import com.bee32.sem.inventory.entity.MaterialWarehouseOption;
 import com.bee32.sem.inventory.util.MaterialCriteria;
+import com.bee32.sem.inventory.web.dialogs.MaterialCategoryTreeModel;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
-import com.bee32.sem.sandbox.ITreeNodeDecorator;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.world.monetary.CurrencyUtil;
 import com.bee32.sem.world.thing.ScaleItem;
@@ -45,14 +39,11 @@ import com.bee32.sem.world.thing.UnitConvDto;
 import com.bee32.sem.world.thing.UnitDto;
 
 public class MaterialExAdminBean
-        extends SimpleEntityViewBean
-        implements ITreeNodeDecorator {
+        extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
-    TreeNode virtualRootNode;
-    Map<Integer, MaterialCategoryDto> materialCategoryIndex;
-    TreeNode selectedMaterialCategoryNode;
+    MaterialCategoryTreeModel categoryTree = new MaterialCategoryTreeModel();
     TreeNode choosedMaterialCategoryNode;
 
     MaterialPriceDto materialPrice = new MaterialPriceDto().create();
@@ -68,56 +59,11 @@ public class MaterialExAdminBean
 
     @Override
     protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
-        Integer categoryId = getSelectedMaterialCategoryId();
+        Integer categoryId = categoryTree.getSelectedId();
         // if (categoryId != null)
         if (categoryId == null) // select none if no category.
             categoryId = -1;
         elements.add(MaterialCriteria.categoryOf(categoryId));
-    }
-
-    public TreeNode getRoot() {
-        loadTree();
-        return virtualRootNode;
-    }
-
-    public TreeNode getSelectedMaterialCategoryNode() {
-        return selectedMaterialCategoryNode;
-    }
-
-    public void setSelectedMaterialCategoryNode(TreeNode node) {
-        this.selectedMaterialCategoryNode = node;
-    }
-
-    Integer getSelectedMaterialCategoryId() {
-        if (selectedMaterialCategoryNode == null)
-            return null;
-        MaterialCategoryDto selectedCategory = (MaterialCategoryDto) selectedMaterialCategoryNode.getData();
-        if (selectedCategory == null) // may be virtual-node?
-            return null;
-        return selectedCategory.getId();
-    }
-
-    synchronized void loadTree() {
-        if (virtualRootNode == null) {
-            List<MaterialCategory> _categories = serviceFor(MaterialCategory.class).list();
-            List<MaterialCategoryDto> categories = DTOs.mrefList(MaterialCategoryDto.class, TreeEntityDto.PARENT,
-                    _categories);
-            materialCategoryIndex = DTOs.index(categories);
-            Set<MaterialCategoryDto> roots = TreeEntityUtils.rebuildTree(categories, materialCategoryIndex);
-
-            virtualRootNode = new DefaultTreeNode("categoryRoot", null);
-            UIHelper.buildTree(this, roots, virtualRootNode);
-        }
-    }
-
-    @Override
-    public void decorate(TreeNode node) {
-        MaterialCategoryDto category = (MaterialCategoryDto) node.getData();
-        if (category != null) {
-            Integer categoryId = category.getId();
-            if (categoryId.equals(getSelectedMaterialCategoryId()))
-                node.setSelected(true);
-        }
     }
 
     @Override
@@ -128,7 +74,6 @@ public class MaterialExAdminBean
                 uiLogger.error("物料所属分类不能为空!");
                 return false;
             }
-
             if (material.getUnit() == null || material.getUnit().getId() == null
                     || material.getUnit().getId().isEmpty()) {
                 uiLogger.error("主单位不能为空!");
@@ -144,7 +89,7 @@ public class MaterialExAdminBean
         for (MaterialDto material : uMap.<MaterialDto> dtos()) {
             if (material.getId() == null) {
                 Integer categoryId = material.getCategory().getId();
-                MaterialCategoryDto category = materialCategoryIndex.get(categoryId);
+                MaterialCategoryDto category = categoryTree.getIndex().get(categoryId);
                 if (category != null)
                     category.setMaterialCount(category.getMaterialCount() + 1);
             }
@@ -156,7 +101,7 @@ public class MaterialExAdminBean
             throws Exception {
         for (Material _m : uMap.<Material> entitySet()) {
             Integer categoryId = _m.getCategory().getId();
-            MaterialCategoryDto category = materialCategoryIndex.get(categoryId);
+            MaterialCategoryDto category = categoryTree.getIndex().get(categoryId);
             if (category != null)
                 category.setMaterialCount(category.getMaterialCount() - 1);
         }
