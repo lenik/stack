@@ -1,0 +1,21 @@
+<ui:composition template="listView-f1.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="indexDialog">
+        <p:dialog id="indexDialog" header="${header} 列表" widgetVar="${indexDialogVar}">
+            <div style="max-height: 30em; margin: 1em">
+                <ui:insert name="indexForm" />
+            </div>
+        </p:dialog>
+    </ui:define>
+
+    <ui:define name="editDialog">
+        <p:dialog id="editDialog" header="${header} 编辑" widgetVar="${editDialogVar}">
+            <div style="max-height: 30em; margin: 1em">
+                <ui:insert name="editForm" />
+            </div>
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>

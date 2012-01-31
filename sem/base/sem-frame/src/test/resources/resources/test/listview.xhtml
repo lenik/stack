@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition template="/template/primefaces.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+    xmlns:fr="http://java.sun.com/jsf/composite/frame">
+
+    <ui:define name="title">listView test</ui:define>
+    <ui:param name="bean" value="${listViewTestBean}" />
+
+    <ui:define name="initializers" />
+
+    <ui:define name="content">
+        <p:panel header="style = panel">
+            <fr:listView id="lvPanel" style="panel" header="" listModel="${bean.personModel}">
+                <p:column id="nameCol" headerText="姓名">
+                    ${entry.name}
+                </p:column>
+                <p:column id="ageCol" headerText="年龄">
+                    ${entry.age}
+                </p:column>
+                <f:facet name="content">
+                    <p:commandButton id="cb1" value="content" />
+                </f:facet>
+                <f:facet name="indexButtons">
+                    <p:commandButton id="ib1" value="index-button" />
+                </f:facet>
+                <f:facet name="editButtons">
+                    <p:commandButton id="eb1" value="edit-button" />
+                </f:facet>
+            </fr:listView>
+        </p:panel>
+    </ui:define>
+
+</ui:composition>

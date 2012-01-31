@@ -1,0 +1,87 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:cc="http://java.sun.com/jsf/composite"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:su="http://apache.org/commons/lang/StringUtils">
+
+    <cc:interface>
+        <cc:attribute name="style" default="panel" description="panel, dialog, indexPanel, editDialog" />
+        <cc:attribute name="orientation" default="lr" description="lr=left-right, td=top-down" />
+        <cc:attribute name="indexView" default=":${cc.clientId}" />
+        <cc:attribute name="editView" default=":${cc.clientId}" />
+        <cc:attribute name="indexDialogVar" default="${su:substringAfterLast(cc.clientId, ':')}IndexDialog" />
+        <cc:attribute name="editDialogVar" default="${su:substringAfterLast(cc.clientId, ':')}EditDialog" />
+        <cc:attribute name="header" required="true" />
+        <cc:attribute name="listModel" type="java.lang.Object" required="true" />
+        <cc:facet name="columns" required="true" />
+        <cc:facet name="content" required="true" />
+        <cc:facet name="indexButtons" />
+        <cc:facet name="editButtons" />
+    </cc:interface>
+
+    <cc:implementation>
+        <ui:decorate template="/template/listView-f2.xhtml">
+            <ui:param name="style" value="${cc.attrs.style}" />
+            <ui:param name="orientation" value="${cc.attrs.orientation}" />
+            <ui:param name="header" value="${cc.attrs.header}" />
+            <ui:param name="listModel" value="${cc.attrs.listModel}" />
+
+            <ui:define name="indexForm">
+                <h:form id="indexForm">
+                    <h:panelGroup id="dataContainer" layout="block">
+                        <ui:insert name="dataContainer">
+                            <p:dataTable id="dataTable" value="${listModel.selectableList}" selection="${listModel.selection}"
+                                selectionMode="single" var="entry" paginator="true" rows="10"
+                                paginatorTemplate="${viewConfig.paginatorTemplate}" rowsPerPageTemplate="${viewConfig.pageSizeTemplate}"
+                                resizableColumns="true" rowIndexVar="rowIndex">
+
+                                <p:column id="rowIndexCol" headerText="序号">
+                                    ${rowIndex + 1}
+                                </p:column>
+
+                                <cc:renderFacet name="columns" />
+
+                                <cc:insertChildren />
+
+                            </p:dataTable>
+                        </ui:insert>
+                    </h:panelGroup>
+
+                    <table border="0" width="100%">
+                        <tr>
+                            <td align="left">
+                                <p:commandButton id="create" value="添加" actionListener="${listModel.showCreateForm}"
+                                    update="${cc.attrs.editView}:editForm" oncomplete="${style == 'panel' ? '' : (cc.attrs.editDialogVar + '.show();')}" />
+                                <p:commandButton id="remove" value="移除" actionListener="${listModel.removeSelection}"
+                                    update="dataContainer" />
+                            </td>
+                            <td align="right">
+                                <cc:renderFacet name="indexButtons" />
+                                <p:commandButton id="close" value="关闭" onclick="${cc.attrs.indexDialogVar}.hide()"
+                                    rendered="${style == 'dialog'}" />
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="editForm">
+                <h:form id="editForm">
+                    <cc:renderFacet name="content" />
+
+                    <table border="0" width="100%">
+                        <tr>
+                            <td align="left">
+                            </td>
+                            <td align="right">
+                                <cc:renderFacet name="editButtons" />
+                                <p:commandButton id="ok" value="确定" onclick="${cc.attrs.editDialogVar}.hide()"
+                                    rendered="${style == 'dialog' || style == 'editDialog'}" />
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+            </ui:define>
+
+        </ui:decorate>
+    </cc:implementation>
+
+</html>
