@@ -28,7 +28,6 @@ import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
 import javax.faces.component.UISelectItem;
 import javax.faces.component.UISelectItems;
 import javax.faces.component.ValueHolder;
@@ -145,17 +144,7 @@ public class ComponentUtils {
     }
 
     public static UIComponent findParentForm(FacesContext context, UIComponent component) {
-        UIComponent parent = component.getParent();
-
-        while(parent != null) {
-            if(parent instanceof UIForm) {
-                return parent;
-            }
-
-            parent = parent.getParent();
-        }
-
-        return null;
+        return PrimefacesPatches.findParentForm(context, component);
     }
 
     public static void decorateAttribute(UIComponent component, String attribute, String value) {
