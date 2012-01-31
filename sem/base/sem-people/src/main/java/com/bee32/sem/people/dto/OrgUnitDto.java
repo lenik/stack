@@ -54,6 +54,17 @@ public class OrgUnitDto
         return super.getLabel();
     }
 
+    @NLength(min = 2, max = OrgUnit.LABEL_LENGTH)
+    @Override
+    public String getName() {
+        return super.getLabel();
+    }
+
+    @Override
+    protected void setName(String name) {
+        setLabel(name);
+    }
+
     @NotNull
     public OrgDto getOrg() {
         return org;

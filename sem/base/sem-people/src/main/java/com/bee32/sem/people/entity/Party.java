@@ -190,13 +190,13 @@ public abstract class Party
         return bank;
     }
 
-    /**
-     * 银行帐号
-     */
     public void setBank(String bank) {
         this.bank = bank;
     }
 
+    /**
+     * 银行帐号
+     */
     @Column(length = BANK_ACCOUNT_LENGTH)
     public String getBankAccount() {
         return bankAccount;

@@ -3,7 +3,7 @@
     xmlns:p="http://primefaces.org/ui" xmlns:icsf="http://java.sun.com/jsf/composite/3/7" xmlns:sem="http://java.sun.com/jsf/composite/3/15"
     xmlns:t="http://myfaces.apache.org/tomahawk" template="/template/simple-tree-entity.xhtml">
 
-    <ui:param name="title" value="组管理" />
+    <ui:param name="title" value="用户组" />
     <ui:param name="bean" value="#{groupAdminBean}" />
     <ui:param name="obj" value="#{bean.activeObject}" />
     <ui:param name="mirrorTargets" value=":chooseInheritedGroupDialog:form" />
@@ -26,34 +26,25 @@
         </p:column>
     </ui:define>
 
-    <ui:define name="editDialog">
-        <p:dialog header="新增/修改组" widgetVar="editDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
-            <h:form id="form" style="max-height: 40em; margin: 1em">
-                <h:panelGrid columns="2">
-                    <h:outputLabel for="inheritedGroup" value="继承的组" />
-                    <h:panelGrid columns="3">
-                        <p:inputText value="#{obj.inheritedGroup.name}" disabled="true" />
-                        <p:commandButton value="..." oncomplete="chooseInheritedGroupDialog.show();">
-                            <f:setPropertyActionListener target="${choosePrincipalDialogBean.stereo}"
-                                value="G" />
-                        </p:commandButton>
-                        <p:commandButton value="X" actionListener="#{obj.clearInheritedGroup}" update="form" />
-                    </h:panelGrid>
+    <ui:define name="editDialogContent">
+        <h:panelGrid columns="2">
+            <h:outputLabel for="inheritedGroup" value="继承的组" />
+            <h:panelGrid columns="3">
+                <p:inputText value="#{obj.inheritedGroup.name}" disabled="true" />
+                <p:commandButton value="..." oncomplete="chooseInheritedGroupDialog.show();">
+                    <f:setPropertyActionListener target="${choosePrincipalDialogBean.stereo}"
+                        value="G" />
+                </p:commandButton>
+                <p:commandButton value="X" actionListener="#{obj.clearInheritedGroup}" update="form" />
+            </h:panelGrid>
 
-                    <h:outputLabel for="name" value="名称" />
-                    <p:inputText id="name" value="#{obj.name}" disabled="#{not bean.creating}" />
+            <h:outputLabel for="name" value="名称" />
+            <p:inputText id="name" value="#{obj.name}" disabled="#{not bean.creating}" />
 
-                    <h:outputLabel for="fullName" value="全名" />
-                    <p:inputText id="fullName" value="#{obj.fullName}" />
+            <h:outputLabel for="fullName" value="全名" />
+            <p:inputText id="fullName" value="#{obj.fullName}" />
 
-                </h:panelGrid>
-                <div align="right">
-                    <p:commandButton id="save-validated" value="保存" actionListener="#{bean.save}"
-                        update=":mainForm, ${mirrorTargets}" oncomplete="editDialog.hideValidated(args);" />
-                    <p:commandButton id="cancel" value="取消" onclick="editDialog.hide();" />
-                </div>
-            </h:form>
-        </p:dialog>
+        </h:panelGrid>
     </ui:define>
 
     <ui:define name="dialogs">

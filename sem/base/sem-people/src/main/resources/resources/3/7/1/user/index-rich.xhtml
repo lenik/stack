@@ -33,40 +33,31 @@
         </p:column>
     </ui:define>
 
-    <ui:define name="editDialog">
-        <script language="javascript" src="password.js"></script>
+    <ui:define name="editDialogContent">
+        <h:panelGrid columns="2">
+            <h:outputLabel for="name" value="名称" />
+            <p:inputText label="名称" id="name" value="#{obj.name}" disabled="#{not bean.creating}" />
 
-        <p:dialog header="新增/修改用户" widgetVar="editDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
-            <h:form id="form" style="max-height: 40em; margin: 1em">
-                <h:panelGrid columns="2">
-                    <h:outputLabel for="name" value="名称" />
-                    <p:inputText label="名称" id="name" value="#{obj.name}" disabled="#{not bean.creating}" />
+            <h:outputLabel for="fullName" value="全名" />
+            <p:inputText label="全名" id="fullName" value="#{obj.fullName}" />
 
-                    <h:outputLabel for="fullName" value="全名" />
-                    <p:inputText label="全名" id="fullName" value="#{obj.fullName}" />
+            <h:outputLabel for="password" value="密码" />
+            <t:panelGroup>
+                <input id="passPlain" type="password" onchange="calcDigest();" />
+                <h:inputHidden id="password" value="#{bean.password}" />
+            </t:panelGroup>
 
-                    <h:outputLabel for="password" value="密码" />
-                    <t:panelGroup>
-                        <input id="passPlain" type="password" onchange="calcDigest();" />
-                        <h:inputHidden id="password" value="#{bean.password}" />
-                    </t:panelGroup>
-
-                    <h:outputLabel for="passwordConfirm" value="密码确认" />
-                    <t:panelGroup>
-                        <input id="passPlainConfirm" type="password" onchange="calcDigestConfirm();" />
-                        <h:inputHidden id="passwordConfirm" value="#{bean.passwordConfirm}" validator="#{bean.passwordValidator}" />
-                    </t:panelGroup>
-                </h:panelGrid>
-                <div align="right">
-                    <p:commandButton id="save-validated" value="保存" actionListener="#{bean.save}"
-                        update=":mainForm, ${mirrorTargets}" oncomplete="editDialog.hideValidated(args);" />
-                    <p:commandButton id="cancel" value="取消" onclick="editDialog.hide();" />
-                </div>
-            </h:form>
-        </p:dialog>
+            <h:outputLabel for="passwordConfirm" value="密码确认" />
+            <t:panelGroup>
+                <input id="passPlainConfirm" type="password" onchange="calcDigestConfirm();" />
+                <h:inputHidden id="passwordConfirm" value="#{bean.passwordConfirm}" validator="#{bean.passwordValidator}" />
+            </t:panelGroup>
+        </h:panelGrid>
     </ui:define>
 
     <ui:define name="dialogs">
+        <script language="javascript" src="password.js"></script>
+
         <icsf:choosePrincipalDialog id="chooseGroupDialog" var="chooseGroupDialog" header="添加指派的组"
             stereo="G" target="${bean.selectedGroup}" actionListener="${bean.addGroup}" update=":groupsForm" />
         <icsf:choosePrincipalDialog id="chooseRoleDialog" var="chooseRoleDialog" header="添加指派的角色"

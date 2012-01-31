@@ -242,4 +242,12 @@ public abstract class AbstractPartyAdminBean
         }
     }
 
+    @Override
+    public void addNameOrLabelRestriction() {
+        addSearchFragment("名称含有 " + searchPattern, //
+                // UIEntity doesn't have name: CommonCriteria.namedLike(pattern), //
+                PeopleCriteria.namedLike(searchPattern, true));
+        searchPattern = null;
+    }
+
 }

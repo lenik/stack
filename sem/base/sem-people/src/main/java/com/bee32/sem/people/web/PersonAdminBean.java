@@ -5,9 +5,6 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
-import org.primefaces.event.SelectEvent;
-import org.primefaces.event.UnselectEvent;
-
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
@@ -65,12 +62,6 @@ public class PersonAdminBean
         }
 
         return roles;
-    }
-
-    public void onRowSelectRole(SelectEvent event) {
-    }
-
-    public void onRowUnselectRole(UnselectEvent event) {
     }
 
 }

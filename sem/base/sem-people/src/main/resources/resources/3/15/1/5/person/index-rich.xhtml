@@ -5,6 +5,7 @@
 
     <ui:param name="title" value="联系人信息" />
     <ui:param name="bean" value="#{personAdminBean}" />
+    <ui:param name="obj" value="#{bean.activeObject}" />
 
     <ui:define name="dataColumns">
         <p:column headerText="姓名">
@@ -15,7 +16,7 @@
             <h:outputText value="#{entry.sexText}" />
         </p:column>
 
-        <p:column headerText="联系电话">
+        <p:column headerText="联系电话" style="width: 12em">
             <h:outputText value="#{entry.contactsString}" />
         </p:column>
 
@@ -39,7 +40,6 @@
     </ui:define>
 
     <ui:define name="editDialogContent">
-        <c:set var="obj" value="#{bean.activeObject}" />
         <p:tabView id="tv" style="width:100%;">
             <p:tab id="tab1" title="详细信息">
                 <h:inputHidden id="personId" value="#{obj.id}" />
@@ -49,14 +49,13 @@
                     <h:outputLabel for="personTags" value="标签" />
                     <h:panelGroup colspan="3">
                         <h:panelGrid columns="2">
-                            <p:selectOneListbox id="personTags" value="#{personAdminBean.selectedTagId}"
-                                style="height:80px; width:200px;">
+                            <p:selectOneListbox id="personTags" value="#{bean.selectedTagId}" style="height:80px; width:200px;">
                                 <f:selectItems value="#{obj.tags}" var="tag" itemLabel="#{tag.label}"
                                     itemValue="#{tag.id}" />
                             </p:selectOneListbox>
                             <h:panelGrid colums="2">
                                 <p:commandButton value="增加标签" disabled="#{obj == null}" onclick="tagDlg.show();" />
-                                <p:commandButton value="删除标签" disabled="#{obj == null}" actionListener="#{personAdminBean.deleteTag}"
+                                <p:commandButton value="删除标签" disabled="#{obj == null}" actionListener="#{bean.deleteTag}"
                                     update="personTags" />
                             </h:panelGrid>
                         </h:panelGrid>
@@ -76,14 +75,14 @@
                     <h:outputLabel for="personSidType" value="证件类型" />
                     <p:selectOneMenu id="personSidType" value="#{obj.sidType.id}" style="width:150px;">
                         <f:selectItem itemValue="" itemLabel="--选择证件类型--" />
-                        <f:selectItems value="#{personAdminBean.sidTypes}" />
+                        <f:selectItems value="#{bean.sidTypes}" />
                     </p:selectOneMenu>
                     <h:outputLabel for="personSid" value="证件号码" />
                     <p:inputText id="personSid" value="#{obj.sid}" />
 
                     <h:outputLabel for="personSex" value="性别" />
                     <p:selectOneMenu id="personSex" value="#{obj.sex}" style="width:150px;">
-                        <f:selectItems value="#{personAdminBean.genders}" />
+                        <f:selectItems value="#{bean.genders}" />
                     </p:selectOneMenu>
                     <h:outputLabel for="personCensusRegister" value="户籍" />
                     <p:inputText id="personCensusRegister" value="#{obj.censusRegister}" />
@@ -105,23 +104,20 @@
                 <p:toolbar id="contactToolbar">
                     <p:toolbarGroup align="left">
                         <p:commandButton value="新增" disabled="#{obj == null or obj.id == null}"
-                            actionListener="#{personAdminBean.doNewContact}" update=":contactForm:contactHolder" async="true"
+                            actionListener="#{bean.doNewContact}" update=":contactForm:contactHolder" async="true"
                             onclick="contactHolderDlg.show();" />
-                        <p:commandButton value="修改" actionListener="#{personAdminBean.doModifyContact}"
-                            disabled="#{not personAdminBean.contactSelected}" update=":contactForm:contactHolder" async="true"
-                            onclick="contactHolderDlg.show();" />
-                        <p:commandButton value="删除" actionListener="#{personAdminBean.doDeleteContact}"
-                            disabled="#{not personAdminBean.contactSelected}" update=":editDialog:form:tv:contacts"
-                            async="true" />
+                        <p:commandButton value="修改" actionListener="#{bean.doModifyContact}" disabled="#{not bean.contactSelected}"
+                            update=":contactForm:contactHolder" async="true" onclick="contactHolderDlg.show();" />
+                        <p:commandButton value="删除" actionListener="#{bean.doDeleteContact}" disabled="#{not bean.contactSelected}"
+                            update=":editDialog:form:tv:contacts" async="true" />
                         <p:separator />
                     </p:toolbarGroup>
                 </p:toolbar>
-                <p:dataTable id="contacts" var="contact" value="#{personAdminBean.contacts}"
-                    resizableColumns="true" selection="#{personAdminBean.selectedContact}" selectionMode="single"
-                    rowKey="#{contact.id}" rowIndexVar="rowIndex">
+                <p:dataTable id="contacts" var="contact" value="#{bean.contacts}" resizableColumns="true"
+                    selection="#{bean.selectedContact}" selectionMode="single" rowKey="#{contact.id}" rowIndexVar="rowIndex">
 
-                    <p:ajax event="rowSelect" listener="#{personAdminBean.onRowSelectContact}" update=":editDialog:form:tv:contactToolbar" />
-                    <p:ajax event="rowUnselect" listener="#{personAdminBean.onRowUnselectContact}" update=":editDialog:form:tv:contactToolbar" />
+                    <p:ajax event="rowSelect" listener="#{bean.onRowSelectContact}" update=":editDialog:form:tv:contactToolbar" />
+                    <p:ajax event="rowUnselect" listener="#{bean.onRowUnselectContact}" update=":editDialog:form:tv:contactToolbar" />
 
                     <p:column headerText="序号">
                         <h:outputText value="#{rowIndex + 1}" />
@@ -159,15 +155,15 @@
             </p:tab>
 
             <p:tab id="tab3" title="相关客户/供应商">
-                <p:dataTable id="roles" var="role" value="#{personAdminBean.roles}" resizableColumns="true"
-                    selection="#{personAdminBean.selectedRole}" selectionMode="single" rowKey="#{role.id}" rowIndexVar="rowIndex">
+                <p:dataTable id="roles" var="role" value="#{bean.roles}" resizableColumns="true"
+                    selection="#{bean.selectedRole}" selectionMode="single" rowKey="#{role.id}" rowIndexVar="rowIndex">
 
                     <p:column headerText="序号">
                         <h:outputText value="#{rowIndex + 1}" />
                     </p:column>
 
                     <p:column headerText="所在部门">
-                        <h:outputText value="#{role.orgUnit.name}" />
+                        <h:outputText value="#{role.orgUnit.label}" />
                     </p:column>
 
                     <p:column headerText="职务">
@@ -209,12 +205,12 @@
         <p:dialog header="标签添加" widgetVar="tagDlg" modal="true" height="500" width="640">
             <h:form id="tagForm">
                 <h:panelGroup id="tagHolder">
-                    <p:selectManyMenu value="#{personAdminBean.selectedTagsToAdd}" style="height:300px">
-                        <f:selectItems value="#{personAdminBean.tags}" />
+                    <p:selectManyMenu value="#{bean.selectedTagsToAdd}" style="height:300px">
+                        <f:selectItems value="#{bean.tags}" />
                     </p:selectManyMenu>
                 </h:panelGroup>
                 <h:panelGrid columns="2">
-                    <p:commandButton value="添加" actionListener="#{personAdminBean.addTags}" oncomplete="tagDlg.hide();"
+                    <p:commandButton value="添加" actionListener="#{bean.addTags}" oncomplete="tagDlg.hide();"
                         async="true" update=":editDialog:form:tv:personTags" />
                     <p:commandButton value="取消" oncomplete="tagDlg.hide();" />
                 </h:panelGrid>
@@ -224,43 +220,43 @@
         <p:dialog header="联系方式编辑" widgetVar="contactHolderDlg" modal="true" height="500" width="640">
             <h:form id="contactForm">
                 <h:panelGroup id="contactHolder">
-                    <h:inputHidden id="contactId" value="#{personAdminBean.contact.id}" />
+                    <h:inputHidden id="contactId" value="#{bean.contact.id}" />
                     <h:panelGrid columns="4"
                         columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
 
                         <h:outputLabel for="contactCategory" value="分类" />
                         <h:panelGroup colspan="3">
-                            <p:selectOneMenu id="contactCategory" value="#{personAdminBean.contact.category.id}"
+                            <p:selectOneMenu id="contactCategory" value="#{bean.contact.category.id}"
                                 style="width:200px;">
                                 <f:selectItem itemValue="" itemLabel="--选择联系方式分类--" />
-                                <f:selectItems value="#{personAdminBean.contactCategories}" />
+                                <f:selectItems value="#{bean.contactCategories}" />
                             </p:selectOneMenu>
                         </h:panelGroup>
 
                         <h:outputLabel for="contactAddress" value="地址" />
-                        <p:inputText id="contactAddress" value="#{personAdminBean.contact.address}" />
+                        <p:inputText id="contactAddress" value="#{bean.contact.address}" />
                         <h:outputLabel for="contactPostCode" value="邮编" />
-                        <p:inputText id="contactPostCode" value="#{personAdminBean.contact.postCode}" />
+                        <p:inputText id="contactPostCode" value="#{bean.contact.postCode}" />
 
                         <h:outputLabel for="contactTel" value="电话" />
-                        <p:inputText id="contactTel" value="#{personAdminBean.contact.tel}" />
+                        <p:inputText id="contactTel" value="#{bean.contact.tel}" />
                         <h:outputLabel for="contactMobile" value="移动电话" />
-                        <p:inputText id="contactMobile" value="#{personAdminBean.contact.mobile}" />
+                        <p:inputText id="contactMobile" value="#{bean.contact.mobile}" />
 
                         <h:outputLabel for="contactFax" value="传真" />
-                        <p:inputText id="contactFax" value="#{personAdminBean.contact.fax}" />
+                        <p:inputText id="contactFax" value="#{bean.contact.fax}" />
                         <h:outputLabel for="contactEmail" value="email" />
-                        <p:inputText id="contactEmail" value="#{personAdminBean.contact.email}" />
+                        <p:inputText id="contactEmail" value="#{bean.contact.email}" />
 
                         <h:outputLabel for="contactWebsite" value="网址" />
-                        <p:inputText id="contactWebsite" value="#{personAdminBean.contact.website}" />
+                        <p:inputText id="contactWebsite" value="#{bean.contact.website}" />
                         <h:outputLabel for="contactQq" value="qq" />
-                        <p:inputText id="contactQq" value="#{personAdminBean.contact.qq}" />
+                        <p:inputText id="contactQq" value="#{bean.contact.qq}" />
 
                         <h:panelGroup />
                         <h:panelGroup colspan="2">
                             <h:panelGrid columns="2">
-                                <p:commandButton value="保存" actionListener="#{personAdminBean.doSaveContact}"
+                                <p:commandButton value="保存" actionListener="#{bean.doSaveContact}"
                                     oncomplete="contactHolderDlg.hide();" async="true" update=":editDialog:form:tv:contacts" />
                                 <p:commandButton value="取消" oncomplete="contactHolderDlg.hide();" />
                             </h:panelGrid>

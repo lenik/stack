@@ -1,187 +1,66 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:c="http://java.sun.com/jsp/jstl/core"
-      xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-      xmlns:pc="http://bee32.com/plover/core"
-      xmlns:sem="http://bee32.com/sem/functions"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:t="http://myfaces.apache.org/tomahawk"
-      >
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-</head>
+<ui:composition template="/template/simple-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk">
 
-<ui:composition template="/template/primefaces.xhtml">
+    <ui:param name="title" value="内部人员信息" />
+    <ui:param name="bean" value="#{internalPersonAdminBean}" />
+    <ui:param name="obj" value="#{bean.activeObject}" />
 
-    <ui:define name="title">内部人员信息</ui:define>
+    <ui:define name="dataColumns">
+        <p:column headerText="姓名">
+            <h:outputText value="#{person.displayName}" />
+        </p:column>
 
-    <ui:define name="content">
+        <p:column headerText="性别">
+            <h:outputText value="#{person.sexText}" />
+        </p:column>
 
-        <h:form id="mainForm">
+        <p:column headerText="联系电话">
+            <h:outputText value="#{person.contactsString}" />
+        </p:column>
 
-            <p:toolbar id="orgToolbar">
-                <p:toolbarGroup align="left">
-                    <p:commandButton
-                        update="editForm:editPanel"
-                        actionListener="#{internalPersonAdminBean.add}"
-                        value="新增"
-                        onclick="editDialog.show()"
-                        async="true" />
-                </p:toolbarGroup>
-            </p:toolbar>
+        <p:column headerText="生日">
+            <h:outputText value="#{person.birthday}">
+                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+            </h:outputText>
+        </p:column>
 
+        <p:column headerText="证件类型">
+            <h:outputText value="#{person.sidType.label}" />
+        </p:column>
 
-            <p:dataTable id="persons" var="person"
-                value="#{internalPersonAdminBean.persons}" paginator="true"
-                rows="#{viewConfig.pageSize}" lazy="true"
-                paginatorTemplate="#{viewConfig.paginatorTemplate}"
-                rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}"
-                resizableColumns="true"
-                rowIndexVar="rowIndex">
+        <p:column headerText="证件号码">
+            <h:outputText value="#{person.sid}" />
+        </p:column>
 
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText value="序号" />
-                    </f:facet>
-                    <h:outputText value="#{rowIndex + 1}" />
-                </p:column>
+        <p:column headerText="户籍">
+            <h:outputText value="#{person.censusRegister}" />
+        </p:column>
 
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText value="姓名" />
-                    </f:facet>
-                    <h:outputText value="#{person.displayName}" />
-                </p:column>
-
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText value="性别" />
-                    </f:facet>
-                    <h:outputText value="#{person.sexText}" />
-                </p:column>
-
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText value="联系电话" />
-                    </f:facet>
-                    <h:outputText value="#{person.contactsString}" />
-                </p:column>
-
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText value="生日" />
-                    </f:facet>
-                    <h:outputText value="#{person.birthday}">
-                        <f:convertDateTime pattern="yyyy-MM-dd"
-                            timeZone="Asia/Shanghai" />
-                    </h:outputText>
-                </p:column>
-
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText value="证件类型" />
-                    </f:facet>
-                    <h:outputText value="#{person.sidType.label}" />
-                </p:column>
-
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText value="证件号码" />
-                    </f:facet>
-                    <h:outputText value="#{person.sid}" />
-                </p:column>
-
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText value="户籍" />
-                    </f:facet>
-                    <h:outputText value="#{person.censusRegister}" />
-                </p:column>
-
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText value="创建日期" />
-                    </f:facet>
-                    <h:outputText value="#{person.createdDate}">
-                        <f:convertDateTime pattern="yyyy-MM-dd"
-                            timeZone="Asia/Shanghai" />
-                    </h:outputText>
-                </p:column>
-
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText value="所有人" />
-                    </f:facet>
-                    <h:outputText value="#{person.owner.displayName}" />
-                </p:column>
-
-                <p:column>
-                    <f:facet name="header">操作</f:facet>
-                    <t:panelGroup>
-                        <p:commandLink title="修改"
-                            update="editForm:editPanel"
-                            oncomplete="editDialog.show()">
-                            <f:setPropertyActionListener
-                                value="#{person}"
-                                target="#{internalPersonAdminBean.selectedPerson}" />
-                            <p:graphicImage
-                                value="#{location.ICON}/etool16/editor_area.gif" />
-                        </p:commandLink>
-                        <p:commandLink title="人事信息"
-                            update="editForm:editPanel"
-                            oncomplete="editDialog.show()">
-                            <f:setPropertyActionListener
-                                value="#{person}"
-                                target="#{internalPersonAdminBean.selectedPerson}" />
-                            <p:graphicImage
-                                value="#{location.ICON}/view16/help_view.gif" />
-                        </p:commandLink>
-                        <p:commandLink title="专业技能"
-                            update="editForm:editPanel"
-                            oncomplete="editDialog.show()">
-                            <f:setPropertyActionListener
-                                value="#{person}"
-                                target="#{internalPersonAdminBean.selectedPerson}" />
-                            <p:graphicImage
-                                value="#{location.ICON}/obj16/native_lib_path_attrib.gif" />
-                        </p:commandLink>
-                        <p:commandLink title="履历"
-                            update="editForm:editPanel"
-                            oncomplete="editDialog.show()">
-                            <f:setPropertyActionListener
-                                value="#{person}"
-                                target="#{internalPersonAdminBean.selectedPerson}" />
-                            <p:graphicImage
-                                value="#{location.ICON}/elcl16/export_log.gif" />
-                        </p:commandLink>
-                        <p:commandLink title="劳动合同"
-                            update="editForm:editPanel"
-                            oncomplete="editDialog.show()">
-                            <f:setPropertyActionListener
-                                value="#{person}"
-                                target="#{internalPersonAdminBean.selectedPerson}" />
-                            <p:graphicImage
-                                value="#{location.ICON}/elcl16/cpyqual_menu.gif" />
-                        </p:commandLink>
-
-                    </t:panelGroup>
-                </p:column>
-
-            </p:dataTable>
-        </h:form>
-
-        <h:form id="editForm">
-            <p:dialog header="新增" widgetVar="editDialog" modal="true"
-                height="500" width="640">
-
-            </p:dialog>
-        </h:form>
-
+        <p:column headerText="操作">
+            <t:panelGroup>
+                <p:commandLink title="人事信息" update="editForm:editPanel" oncomplete="editDialog.show()">
+                    <f:setPropertyActionListener value="#{person}" target="#{bean.selectedPerson}" />
+                    <p:graphicImage value="#{location.ICON}/view16/help_view.gif" />
+                </p:commandLink>
+                <p:commandLink title="专业技能" update="editForm:editPanel" oncomplete="editDialog.show()">
+                    <f:setPropertyActionListener value="#{person}" target="#{bean.selectedPerson}" />
+                    <p:graphicImage value="#{location.ICON}/obj16/native_lib_path_attrib.gif" />
+                </p:commandLink>
+                <p:commandLink title="履历" update="editForm:editPanel" oncomplete="editDialog.show()">
+                    <f:setPropertyActionListener value="#{person}" target="#{bean.selectedPerson}" />
+                    <p:graphicImage value="#{location.ICON}/elcl16/export_log.gif" />
+                </p:commandLink>
+                <p:commandLink title="劳动合同" update="editForm:editPanel" oncomplete="editDialog.show()">
+                    <f:setPropertyActionListener value="#{person}" target="#{bean.selectedPerson}" />
+                    <p:graphicImage value="#{location.ICON}/elcl16/cpyqual_menu.gif" />
+                </p:commandLink>
+            </t:panelGroup>
+        </p:column>
     </ui:define>
+
+    <ui:define name="editDialogContent">
+        Under development.
+    </ui:define>
+
 </ui:composition>
-</html>
