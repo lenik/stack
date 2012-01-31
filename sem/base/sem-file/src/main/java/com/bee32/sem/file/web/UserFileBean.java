@@ -145,6 +145,7 @@ public class UserFileBean
         }
 
         tsf.map.put(tagId, tagName);
+        searchFragmentsChanged();
     }
 
 }
