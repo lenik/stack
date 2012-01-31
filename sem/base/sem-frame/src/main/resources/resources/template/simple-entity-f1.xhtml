@@ -1,6 +1,6 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-    xmlns:p="http://primefaces.org/ui" template="/template/primefaces.xhtml">
+<ui:composition template="/template/primefaces.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:icsf="http://java.sun.com/jsf/composite/3/7">
 
     <ui:param name="_toolbar" value="${toolbar != null ? toolbar : viewConfig.toolbarPlacement}" />
 
@@ -78,7 +78,7 @@
                                         <ui:insert name="dataColumns" />
 
                                         <ui:insert name="dataColumnsC">
-                                            <p:column headerText="更新日期">
+                                            <p:column headerText="更新日期" style="width: 6.5em">
                                                 <h:outputText value="${entry.lastModified}">
                                                     <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                                                 </h:outputText>
@@ -114,12 +114,18 @@
                 <td valign="top" id="sideBarE" style="width: 20em; display: none">
                     <h:panelGroup id="sidePanelE" layout="block">
                         <ui:insert name="sideBarE">
-                            <h:form id="searchForm">
-                                <ui:insert name="searchPanel" />
-                                <ui:insert name="searchFragmentsPanel" />
-                            </h:form>
+                            <ui:insert name="sideBarE.0">
+                                <h:form id="searchForm">
+                                    <ui:insert name="searchPanels">
+                                        <ui:insert name="searchPanels.0" />
+                                        <ui:insert name="searchPanels.1" />
+                                    </ui:insert>
+                                    <ui:insert name="searchFragmentsPanel" />
+                                </h:form>
+                            </ui:insert>
                             <ui:insert name="sideBarE.1" />
                         </ui:insert>
+                        <ui:insert name="sideBarESupport.0" />
                         <ui:insert name="sideBarESupport" />
                     </h:panelGroup>
                 </td>

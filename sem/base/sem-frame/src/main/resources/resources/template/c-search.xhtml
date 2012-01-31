@@ -1,0 +1,56 @@
+<h:form id="searchForm" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:p="http://primefaces.org/ui">
+    <ui:insert name="searchPanel">
+        <ui:insert name="searchPanel.keyword">
+            <p:panel header="按关键字搜索" toggleable="true">
+                <div align="center">
+                    <p:inputText id="pattern" value="${bean.searchPattern}" />
+                    <p:commandButton id="filterNameOrLabel" value="限定名称" actionListener="${bean.addNameOrLabelRestriction}"
+                        update="@form, :mainForm" />
+                    <p:commandButton id="filterDescription" value="限定描述" actionListener="${bean.addDescriptionRestriction}"
+                        update="@form, :mainForm" />
+                    <ui:insert name="searchPanel.keyword.1" />
+                </div>
+            </p:panel>
+        </ui:insert>
+        <ui:insert name="searchPanel.time">
+            <p:panel header="按时间搜索" toggleable="true">
+                <div align="center">
+                    时间范围：
+                    <p:selectOneMenu id="lastModifiedRange" value="${bean.dateRangeIndex}">
+                        <f:selectItem itemLabel="选择" itemValue="-1" />
+                        <f:selectItems value="${bean.dateRangeTemplates}" var="t" itemLabel="${t.label}"
+                            itemValue="${t.index}" />
+                    </p:selectOneMenu>
+                    <p:commandButton id="filterCreatedDate" value="限定创建时间" actionListener="${bean.addCreatedDateRestriction}"
+                        update="@form, :mainForm" />
+                    <p:commandButton id="filterLastModified" value="限定更新时间" actionListener="${bean.addLastModifiedRestriction}"
+                        update="@form, :mainForm" />
+                    <ui:insert name="searchPanel.time.1" />
+                </div>
+            </p:panel>
+        </ui:insert>
+        <ui:insert name="searchPanel.principal">
+            <p:panel header="按相关人搜索" toggleable="true">
+                <div align="center">
+                    <p:inputText id="principal" readonly="true" value="${bean.searchPrincipal.displayName}" />
+                    <p:commandButton id="choosePrincipal" value="..." onclick="choosePrincipalToSearchDialog.show()" />
+                    <p:commandButton id="filterOwner" value="限定所有者" actionListener="${bean.addOwnerRestriction}"
+                        update="@form, :mainForm" />
+                    <ui:insert name="searchPanel.principal.1" />
+                </div>
+            </p:panel>
+        </ui:insert>
+        <ui:insert name="searchPanel.1" />
+    </ui:insert>
+    <ui:insert name="searchFragmentsPanel">
+        <h:panelGroup id="searchFragments" style="display: block; padding: .2em 0em; background: #eee">
+            <ui:repeat id="repeat" var="fragment" value="${bean.searchFragments}">
+                <c:set var="form" value="${component.parent.parent.parent.clientId}" />
+                <p:commandButton id="removeButton" value="${fragment.entryLabel}" async="true"
+                    actionListener="${fragment.detach}" update=":searchForm:searchFragments, :mainForm" />
+            </ui:repeat>
+        </h:panelGroup>
+    </ui:insert>
+</h:form>

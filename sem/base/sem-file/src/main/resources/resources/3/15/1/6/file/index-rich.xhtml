@@ -53,7 +53,7 @@
         </p:column>
     </ui:define>
 
-    <ui:define name="searchPanel.1">
+    <ui:define name="searchPanels.1">
         <h:outputScript library="3/15" name="searchTag.js" target="head" />
         <p:panel header="按标签搜索" toggleable="true">
             <div id="tagCloud" align="center">
@@ -65,7 +65,7 @@
         <script>
             jQuery('#tagCloud a').click(searchTag);
         </script>
-        <ui:insert name="searchPanel.2" />
+        <ui:insert name="searchPanels.2" />
     </ui:define>
 
     <ui:define name="dialogs">
