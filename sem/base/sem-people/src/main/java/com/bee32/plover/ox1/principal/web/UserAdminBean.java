@@ -91,7 +91,7 @@ public class UserAdminBean
             for (UserDto user : uMap.<UserDto> dtos()) {
                 Principal existing = serviceFor(Principal.class).getByName(user.getName());
                 if (existing != null) {
-                    uiLogger.error("保存失败: 用户已存在: " + user.getName());
+                    uiLogger.error("用户已存在: " + user.getName());
                     return false;
                 }
             }

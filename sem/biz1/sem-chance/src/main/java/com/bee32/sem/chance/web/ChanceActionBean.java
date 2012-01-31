@@ -26,8 +26,7 @@ public class ChanceActionBean
     @Override
     protected boolean preUpdate(UnmarshalMap uMap)
             throws Exception {
-        for (ChanceAction _action : uMap.<ChanceAction> entitySet()) {
-            ChanceActionDto action = uMap.getSourceDto(_action);
+        for (ChanceActionDto action : uMap.<ChanceActionDto> dtos()) {
             ChanceStageDto stage = action.getStage();
             Long chanceId = action.getChance().getId();
             if (chanceId == null && !stage.isNull()) {

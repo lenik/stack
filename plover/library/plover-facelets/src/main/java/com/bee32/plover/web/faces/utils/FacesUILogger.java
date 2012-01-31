@@ -14,6 +14,7 @@ import com.bee32.plover.web.faces.ErrorMessageTranslator;
 public class FacesUILogger
         extends AbstractLogger {
 
+    FacesContext facesContext;
     final boolean html;
 
     public FacesUILogger(boolean html) {
@@ -21,7 +22,25 @@ public class FacesUILogger
     }
 
     protected FacesContext getFacesContext() {
-        return FacesContext.getCurrentInstance();
+        if (facesContext != null)
+            return facesContext;
+        else
+            return FacesContext.getCurrentInstance();
+    }
+
+    public void setFacesContext(FacesContext facesContext) {
+        this.facesContext = facesContext;
+    }
+
+    protected void append(FacesMessage message) {
+        String clientId = null; // XXX clientId purpose?
+
+        FacesContext context = getFacesContext();
+        context.addMessage(clientId, message);
+
+        Severity severity = message.getSeverity();
+        if (severity.compareTo(FacesMessage.SEVERITY_ERROR) >= 0)
+            context.validationFailed();
     }
 
     @Override
@@ -88,9 +107,7 @@ public class FacesUILogger
             }
 
             FacesMessage facesMessage = new FacesMessage(getSeverity(), title, message);
-            String clientId = null; // XXX clientId purpose?
-
-            getFacesContext().addMessage(clientId, facesMessage);
+            append(facesMessage);
 
             if (e != null)
                 e.printStackTrace();

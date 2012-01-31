@@ -27,12 +27,14 @@ public class GroupAdminBean
     protected boolean preUpdate(UnmarshalMap uMap)
             throws Exception {
         for (Group _group : uMap.<Group> entitySet()) {
-            GroupDto group = uMap.getSourceDto(_group);
             if (StandardViews.CREATE_FORM.equals(getCurrentView())) {
-                Group existing = serviceFor(Group.class).getByName(group.getName());
-                if (existing != null) {
-                    uiLogger.error("保存失败: 组已存在: " + group.getName());
-                    return false;
+                String name = _group.getName();
+                if (name != null) {
+                    Group existing = serviceFor(Group.class).getByName(name);
+                    if (existing != null) {
+                        uiLogger.error("组已存在: " + name);
+                        return false;
+                    }
                 }
             }
             try {

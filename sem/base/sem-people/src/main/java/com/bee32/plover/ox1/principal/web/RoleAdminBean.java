@@ -27,11 +27,10 @@ public class RoleAdminBean
     protected boolean preUpdate(UnmarshalMap uMap)
             throws Exception {
         for (Role _role : uMap.<Role> entitySet()) {
-            RoleDto role = uMap.getSourceDto(_role);
             if (StandardViews.CREATE_FORM.equals(getCurrentView())) {
-                Role existing = serviceFor(Role.class).getByName(role.getName());
+                Role existing = serviceFor(Role.class).getByName(_role.getName());
                 if (existing != null) {
-                    uiLogger.error("保存失败: 角色已存在: " + role.getName());
+                    uiLogger.error("角色已存在: " + _role.getName());
                     return false;
                 }
             }

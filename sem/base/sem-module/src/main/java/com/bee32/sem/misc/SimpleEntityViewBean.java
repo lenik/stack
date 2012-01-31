@@ -186,6 +186,14 @@ public abstract class SimpleEntityViewBean
     protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
     }
 
+    public int getTabIndex() {
+        return tabIndex;
+    }
+
+    public void setTabIndex(int tabIndex) {
+        this.tabIndex = tabIndex;
+    }
+
     /**
      * Show (or switch to) the real view.
      *
@@ -206,6 +214,7 @@ public abstract class SimpleEntityViewBean
         return currentView;
     }
 
+    /** XXX xref? */
     public boolean isCreating() {
         return currentView.equals(StandardViews.CREATE_FORM);
     }
@@ -214,16 +223,6 @@ public abstract class SimpleEntityViewBean
     public void showIndex() {
         setActiveObject(null);
         showView(StandardViews.LIST);
-    }
-
-    @Operation
-    public void showContent() {
-        if (getSelection().isEmpty()) {
-            uiLogger.error("没有选定对象!");
-            return;
-        }
-        openSelectedDtos(-1);
-        showView(StandardViews.CONTENT);
     }
 
     @Operation
@@ -266,90 +265,23 @@ public abstract class SimpleEntityViewBean
             }
         }
 
-        int fmask = -1;
-        String fmaskParam = getRequest().getParameter("fmask");
-        if (fmaskParam != null)
-            fmask = Integer.parseInt(fmaskParam);
-
-        openSelectedDtos(fmask);
+        openSelection();
         showView(StandardViews.EDIT_FORM);
+    }
+
+    @Operation
+    public void showContent() {
+        if (getSelection().isEmpty()) {
+            uiLogger.error("没有选定对象!");
+            return;
+        }
+        openSelection();
+        showView(StandardViews.CONTENT);
     }
 
     public void showPartialForm() {
         // default fmask override..
         showEditForm();
-    }
-
-    public int getTabIndex() {
-        return tabIndex;
-    }
-
-    public void setTabIndex(int tabIndex) {
-        this.tabIndex = tabIndex;
-    }
-
-    /**
-     * Perform pre-condition checking before update.
-     *
-     * You must invoke super._preUpdate at first, and return immediately if super returns false.
-     *
-     * @return <code>false</code> if update should be canceled. The implementation should raise
-     *         error messages if necessary.
-     */
-    protected boolean _preUpdate(UnmarshalMap uMap)
-            throws Exception {
-        return true;
-    }
-
-    protected void _postUpdate(UnmarshalMap uMap)
-            throws Exception {
-    }
-
-    /**
-     * Perform pre-condition checking before delete.
-     *
-     * You must invoke super._preDelete at first, and return immediately if super returns false.
-     *
-     * @return <code>false</code> if delete should be canceled. The implementation should raise
-     *         error messages if necessary.
-     */
-    protected boolean _preDelete(UnmarshalMap uMap)
-            throws Exception {
-        return true;
-    }
-
-    protected void _postDelete(UnmarshalMap uMap)
-            throws Exception {
-    }
-
-    /**
-     * Perform pre-condition checking before update.
-     *
-     * @return <code>false</code> if update should be canceled. The implementation should raise
-     *         error messages if necessary.
-     */
-    protected boolean preUpdate(UnmarshalMap uMap)
-            throws Exception {
-        return true;
-    }
-
-    protected void postUpdate(UnmarshalMap uMap)
-            throws Exception {
-    }
-
-    /**
-     * Perform pre-condition checking before delete.
-     *
-     * @return <code>false</code> if delete should be canceled. The implementation should raise
-     *         error messages if necessary.
-     */
-    protected boolean preDelete(UnmarshalMap uMap)
-            throws Exception {
-        return true;
-    }
-
-    protected void postDelete(UnmarshalMap uMap)
-            throws Exception {
     }
 
     @Operation
@@ -551,6 +483,70 @@ public abstract class SimpleEntityViewBean
         uiLogger.info("删除成功" + countHint);
     }
 
+    /**
+     * Perform pre-condition checking before update.
+     *
+     * You must invoke super._preUpdate at first, and return immediately if super returns false.
+     *
+     * @return <code>false</code> if update should be canceled. The implementation should raise
+     *         error messages if necessary.
+     */
+    protected boolean _preUpdate(UnmarshalMap uMap)
+            throws Exception {
+        return true;
+    }
+
+    protected void _postUpdate(UnmarshalMap uMap)
+            throws Exception {
+    }
+
+    /**
+     * Perform pre-condition checking before delete.
+     *
+     * You must invoke super._preDelete at first, and return immediately if super returns false.
+     *
+     * @return <code>false</code> if delete should be canceled. The implementation should raise
+     *         error messages if necessary.
+     */
+    protected boolean _preDelete(UnmarshalMap uMap)
+            throws Exception {
+        return true;
+    }
+
+    protected void _postDelete(UnmarshalMap uMap)
+            throws Exception {
+    }
+
+    /**
+     * Perform pre-condition checking before update.
+     *
+     * @return <code>false</code> if update should be canceled. The implementation should raise
+     *         error messages if necessary.
+     */
+    protected boolean preUpdate(UnmarshalMap uMap)
+            throws Exception {
+        return true;
+    }
+
+    protected void postUpdate(UnmarshalMap uMap)
+            throws Exception {
+    }
+
+    /**
+     * Perform pre-condition checking before delete.
+     *
+     * @return <code>false</code> if delete should be canceled. The implementation should raise
+     *         error messages if necessary.
+     */
+    protected boolean preDelete(UnmarshalMap uMap)
+            throws Exception {
+        return true;
+    }
+
+    protected void postDelete(UnmarshalMap uMap)
+            throws Exception {
+    }
+
     public boolean refreshRowCount() {
         try {
             dataModel.refreshRowCount();
@@ -561,13 +557,21 @@ public abstract class SimpleEntityViewBean
         }
     }
 
-    void openSelectedDtos(int reloadDtoSel) {
+    void openSelection() {
+        int fmask = -1;
+        String fmaskParam = getRequest().getParameter("fmask");
+        if (fmaskParam != null)
+            fmask = Integer.parseInt(fmaskParam);
+        openSelection(fmask);
+    }
+
+    void openSelection(int fmask) {
         List<Object> reloadedList = new ArrayList<Object>();
         for (Object selection : getSelection()) {
             Object reloaded;
             if (selection instanceof EntityDto<?, ?>) {
                 EntityDto<?, ?> dto = (EntityDto<?, ?>) selection;
-                reloaded = reload(dto, reloadDtoSel);
+                reloaded = reload(dto, fmask);
             } else
                 reloaded = selection;
             reloadedList.add(reloaded);
@@ -641,6 +645,7 @@ public abstract class SimpleEntityViewBean
     }
 
     protected void searchFragmentsChanged() {
+        refreshRowCount();
     }
 
     public String getSearchPattern() {

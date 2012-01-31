@@ -166,8 +166,9 @@ public abstract class EntityViewBean
         return !getSelection().isEmpty();
     }
 
-    public List<?> getActiveObjects() {
-        return activeObjects;
+    @SuppressWarnings("unchecked")
+    public <T> List<T> getActiveObjects() {
+        return ((List<T>) activeObjects);
     }
 
     public void setActiveObjects(List<?> activeObjects) {
