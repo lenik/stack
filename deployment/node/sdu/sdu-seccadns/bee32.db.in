@@ -30,6 +30,7 @@ app-2                   CNAME   main            ; 应用结点-2
 
 ;;1.1                   CNAME   *.1             ; 【应用】三元机电
 ;;2.1                   CNAME   *.1             ; 【应用】秀之莎
+demo                    CNAME   1.1             ; 演示
 
 dev                     CNAME   main            ; 重要开发数据
 s-dev                   CNAME   dev             ; 次要开发数据
