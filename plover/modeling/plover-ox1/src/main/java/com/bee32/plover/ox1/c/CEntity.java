@@ -87,7 +87,7 @@ public abstract class CEntity<K extends Serializable>
         KeywordBuilder keywords = new KeywordBuilder();
         populateKeywords(keywords);
         String mixed = keywords.toString();
-        String pinyin = ZhUtil.getPinyinAbbreviation(mixed).trim();
+        String pinyin = ZhUtil.pinyinAbbr(mixed).trim();
 
         String truncated = pinyin;
         if (truncated.length() > KEYWORD_MAXLEN)
