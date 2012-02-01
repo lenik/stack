@@ -5,13 +5,12 @@
 
     <ui:define name="title">listView test</ui:define>
     <ui:param name="bean" value="${listViewTestBean}" />
-    <ui:param name="_obj" value="${bean.personsMBean.activeObject}" />
 
     <ui:define name="initializers" />
 
     <ui:define name="content">
-        <fr:listView id="lvPanel" header="style = panel" style="panel" orientation="td" mbean="${bean.personsMBean}"
-        smooth="true">
+        <fr:listView id="lvPanel" header="style = panel" style="panel" orientation="lr" mbean="${bean.personsMBean}"
+            smooth="true">
             <f:facet name="columns">
                 <p:column id="nameCol" headerText="姓名">
                     ${entry.name}
@@ -29,10 +28,35 @@
 
             <h:panelGrid columns="2">
                 <h:outputLabel for="name" value="姓名" />
-                <p:inputText id="name" value="${_obj.name}" />
+                <p:inputText id="name" value="${item.name}" />
 
                 <h:outputLabel for="name" value="年龄" />
-                <p:spinner id="age" value="${_obj.age}" />
+                <p:spinner id="age" value="${item.age}" />
+
+                <h:outputText value="性别" />
+            </h:panelGrid>
+        </fr:listView>
+
+        <p:separator />
+        <h:form id="vform">
+            <p:commandButton value="Show Index Dialog" onclick="lvDialogIndexDialog.show()" update="" />
+        </h:form>
+
+        <fr:listView id="lvDialog" header="style = dialog" style="dialog" mbean="${bean.personsMBean}">
+            <f:facet name="columns">
+                <p:column id="nameCol" headerText="姓名">
+                    ${entry.name}
+                </p:column>
+                <p:column id="ageCol" headerText="年龄">
+                    ${entry.age}
+                </p:column>
+            </f:facet>
+            <h:panelGrid columns="2">
+                <h:outputLabel for="name" value="姓名" />
+                <p:inputText id="name" value="${item.name}" />
+
+                <h:outputLabel for="name" value="年龄" />
+                <p:spinner id="age" value="${item.age}" />
 
                 <h:outputText value="性别" />
             </h:panelGrid>

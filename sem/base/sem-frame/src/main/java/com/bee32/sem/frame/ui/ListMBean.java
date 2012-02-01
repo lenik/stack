@@ -1,10 +1,17 @@
 package com.bee32.sem.frame.ui;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.List;
 
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.faces.component.UIComponent;
+import javax.free.UnexpectedException;
 
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.SelectEvent;
@@ -23,6 +30,8 @@ public abstract class ListMBean<T>
 
     final Class<T> elementType;
     int selectedIndex;
+    boolean copyMode;
+    int copyIndex;
     T copy;
 
     public ListMBean(Class<T> elementType) {
@@ -82,12 +91,70 @@ public abstract class ListMBean<T>
             List<T> list = getList();
             if (selectedIndex < list.size())
                 list.remove(selectedIndex);
+            if (copyIndex == selectedIndex) {
+                copyIndex = -1;
+                copy = null;
+            }
             selectedIndex = -1;
         }
     }
 
     @Override
-    public T getActiveObject() {
+    public boolean isCopyMode() {
+        return copyMode;
+    }
+
+    @Override
+    public void setCopyMode(boolean copyMode) {
+        this.copyMode = copyMode;
+    }
+
+    static final Method cloneMethod;
+    static {
+        try {
+            cloneMethod = Object.class.getDeclaredMethod("clone");
+            cloneMethod.setAccessible(true);
+        } catch (NoSuchMethodException e) {
+            throw new UnexpectedException(e.getMessage(), e);
+        }
+    }
+
+    protected T copyObject(T value) {
+        if (!copyMode)
+            return value;
+        // System.out.println("Copy: " + value);
+        if (value == null)
+            return null;
+        if (value instanceof Cloneable) {
+            try {
+                return (T) cloneMethod.invoke(value);
+            } catch (ReflectiveOperationException e) {
+                throw new RuntimeException("Failed to clone " + value, e);
+            }
+        }
+        if (value instanceof Serializable) {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            try {
+                new ObjectOutputStream(out).writeObject(value);
+                byte[] data = out.toByteArray();
+                ByteArrayInputStream in = new ByteArrayInputStream(data);
+                return (T) new ObjectInputStream(in).readObject();
+            } catch (IOException e) {
+                throw new RuntimeException(e.getMessage(), e);
+            } catch (ClassNotFoundException e) {
+                throw new UnexpectedException(e.getMessage(), e);
+            }
+        }
+        throw new UnsupportedOperationException("Can't copy object of " + value.getClass());
+    }
+
+    @Override
+    public int getCopyIndex() {
+        return copyIndex;
+    }
+
+    @Override
+    public T getCopy() {
         return copy;
     }
 
@@ -103,22 +170,33 @@ public abstract class ListMBean<T>
     public void rowSelect(SelectEvent event) {
         UIComponent component = event.getComponent();
         DataTable dataTable = findDataTable(component);
-        Object smooth = dataTable.getAttributes().get("smooth");
+        Boolean smooth = (Boolean) dataTable.getAttributes().get("smooth");
+        if (smooth) {
+            showEditForm();
+        }
     }
 
     public void rowUnselect(UnselectEvent event) {
+        UIComponent component = event.getComponent();
+        DataTable dataTable = findDataTable(component);
+        Boolean smooth = (Boolean) dataTable.getAttributes().get("smooth");
+        if (smooth) {
+            showIndexForm();
+        }
     }
 
     @Override
     public void showIndexForm() {
         copy = null;
+        copyIndex = -1;
     }
 
     @Override
     public void showCreateForm() {
+        selectedIndex = -1;
         try {
             copy = elementType.newInstance();
-            addElement(copy);
+            copyIndex = -1;
         } catch (ReflectiveOperationException e) {
             new FacesUILogger(false).error("创建失败", copy);
         }
@@ -126,8 +204,26 @@ public abstract class ListMBean<T>
 
     @Override
     public void showEditForm() {
-        System.out.println("EDIT");
-        copy = getSelection();
+        copy = copyObject(getSelection());
+        copyIndex = getSelectedIndex();
+    }
+
+    public void apply() {
+        if (copy == null)
+            return;
+        List<T> list = getList();
+        if (copyIndex == -1) {
+            copyIndex = list.size();
+            list.add(copyObject(copy));
+        } else {
+            list.set(copyIndex, copyObject(copy));
+        }
+        selectedIndex = copyIndex;
+    }
+
+    public void cancel() {
+        copyIndex = -1;
+        copy = null;
     }
 
     public static <T> ListMBean<T> fromEL(Object root, String property, Class<T> elementType) {

@@ -35,11 +35,11 @@
             <ui:insert name="indexForm" />
         </h:panelGroup>
     </c:if>
-    <c:if test="${layout == 'editDialog'}">
+    <c:if test="${style == 'editDialog'}">
         <ui:insert name="editDialog" />
     </c:if>
 
-    <c:if test="${layout == 'dialog'}">
+    <c:if test="${style == 'dialog'}">
         <ui:insert name="indexDialog" />
         <ui:insert name="editDialog" />
     </c:if>

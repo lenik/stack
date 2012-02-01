@@ -12,7 +12,7 @@ public class SEMFrameModuleTest
 
     @Override
     protected int getRefreshPeriod() {
-        return 5;
+        return 1;
     }
 
     public static void main(String[] args)

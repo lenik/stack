@@ -24,7 +24,13 @@ public interface IListMBean<T> {
 
     void removeSelection();
 
-    T getActiveObject();
+    boolean isCopyMode();
+
+    void setCopyMode(boolean copyMode);
+
+    int getCopyIndex();
+
+    T getCopy();
 
     void showIndexForm();
 

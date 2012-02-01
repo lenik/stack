@@ -1,34 +1,39 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
     xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:cc="http://java.sun.com/jsf/composite"
-    xmlns:pl="http://bee32.com/plover/faces" xmlns:su="http://apache.org/commons/lang/StringUtils" xmlns:p="http://primefaces.org/ui">
+    xmlns:pc="http://bee32.com/plover/core" xmlns:pf="http://bee32.com/plover/faces" xmlns:p="http://primefaces.org/ui">
 
     <cc:interface>
         <cc:attribute name="style" default="panel" description="panel, dialog, indexPanel, editDialog" />
         <cc:attribute name="orientation" default="lr" description="lr=left-right, td=top-down" />
         <cc:attribute name="indexView" default=":${cc.clientId}" />
         <cc:attribute name="editView" default=":${cc.clientId}" />
-        <cc:attribute name="indexDialogVar" default="${su:substringAfterLast(cc.clientId, ':')}IndexDialog" />
-        <cc:attribute name="editDialogVar" default="${su:substringAfterLast(cc.clientId, ':')}EditDialog" />
+        <cc:attribute name="indexDialogVar" default="${pc:lastPart(cc.clientId, ':')}IndexDialog" />
+        <cc:attribute name="editDialogVar" default="${pc:lastPart(cc.clientId, ':')}EditDialog" />
         <cc:attribute name="header" required="true" />
         <cc:attribute name="mbean" type="java.lang.Object" required="true" />
-        <cc:attribute name="smooth" type="java.lang.Boolean" default="false" />
+        <cc:attribute name="smooth" type="java.lang.Boolean" default="true" />
+        <cc:attribute name="copy" type="java.lang.Boolean" default="${cc.attrs.style != 'panel' or not cc.attrs.smooth}" />
         <cc:facet name="columns" required="true" />
         <cc:facet name="indexButtons" />
         <cc:facet name="editButtons" />
     </cc:interface>
 
     <cc:implementation>
+        <h:outputScript library="frame" name="ajax-validation.js" target="head" />
+
         <ui:decorate template="/template/listView-f2.xhtml">
             <ui:param name="style" value="${cc.attrs.style}" />
             <ui:param name="orientation" value="${cc.attrs.orientation}" />
             <ui:param name="header" value="${cc.attrs.header}" />
+            <ui:param name="indexDialogVar" value="${cc.attrs.indexDialogVar}" />
+            <ui:param name="editDialogVar" value="${cc.attrs.editDialogVar}" />
             <ui:param name="mbean" value="${cc.attrs.mbean}" />
+            <ui:param name="smooth" value="${cc.attrs.smooth}" />
 
             <ui:define name="indexForm">
                 <h:form id="indexForm">
                     <h:panelGroup id="dataContainer" layout="block">
                         <ui:insert name="dataContainer">
-                            smooth=${cc.attrs.smooth}
                             <p:dataTable id="dataTable" value="${mbean.selectableList}" selection="${mbean.selection}"
                                 selectionMode="single" var="entry" paginator="true" rows="10"
                                 paginatorTemplate="${viewConfig.paginatorTemplate}" rowsPerPageTemplate="${viewConfig.pageSizeTemplate}"
@@ -36,8 +41,11 @@
 
                                 <f:attribute name="smooth" value="${cc.attrs.smooth}" />
 
-                                <p:ajax event="rowSelect" update="${cc.attrs.editView}:editForm" listener="${mbean.rowSelect}" />
-                                <p:ajax event="rowUnselect" update="${cc.attrs.editView}:editForm" listener="${mbean.rowUnselect}" />
+                                <!-- mbean not work, must be cc.attrs.mbean here. -->
+                                <p:ajax event="rowSelect" listener="${cc.attrs.mbean.rowSelect}"
+                                    update="${cc.attrs.indexView}:indexForm:buttons, ${cc.attrs.editView}:editForm" />
+                                <p:ajax event="rowUnselect" listener="${cc.attrs.mbean.rowUnselect}"
+                                    update="${cc.attrs.indexView}:indexForm:buttons, ${cc.attrs.editView}:editForm" />
 
                                 <p:column id="rowIndexCol" headerText="序号">
                                     ${rowIndex + 1}
@@ -49,41 +57,62 @@
                         </ui:insert>
                     </h:panelGroup>
 
-                    <table border="0" width="100%">
-                        <tr>
-                            <td align="left">
-                                <p:commandButton id="create" value="添加" actionListener="${mbean.showCreateForm}"
-                                    update="${cc.attrs.editView}:editForm" oncomplete="${style == 'panel' ? '' : (cc.attrs.editDialogVar + '.show();')}" />
-                                <p:commandButton id="remove" value="移除" actionListener="${mbean.removeSelection}"
-                                    update="dataContainer" />
-                            </td>
-                            <td align="right">
-                                <cc:insertRawFacet name="indexButtons" />
-                                <p:commandButton id="close" value="关闭" onclick="${cc.attrs.indexDialogVar}.hide()"
-                                    rendered="${style == 'dialog'}" />
-                            </td>
-                        </tr>
-                    </table>
+                    <h:panelGroup id="buttons">
+                        <table border="0" width="100%">
+                            <tr>
+                                <td align="left">
+                                    <p:commandButton id="create" value="添加" actionListener="${mbean.showCreateForm}"
+                                        update="@form, ${cc.attrs.editView}:editForm" oncomplete="${style == 'panel' ? '' : cc.attrs.editDialogVar.concat('.show();')}" />
+                                    <p:commandButton id="remove" value="移除" actionListener="${mbean.removeSelection}"
+                                        update="@form, ${cc.attrs.editView}:editForm" disabled="${mbean.selection == null}" />
+                                </td>
+                                <td align="right">
+                                    <cc:insertRawFacet name="indexButtons" />
+                                    <p:commandButton id="edit" value="修改" disabled="${mbean.selection == null}"
+                                        action="${mbean.showEditForm}" update="${cc.attrs.editView}:editForm"
+                                        oncomplete="${style == 'panel' ? '' : cc.attrs.editDialogVar.concat('.show();')}"
+                                        rendered="${style == 'dialog' or style == 'editDialog' or not cc.attrs.smooth}">
+                                        <f:setPropertyActionListener target="${mbean.copyMode}"
+                                            value="${cc.attrs.copy}" />
+                                    </p:commandButton>
+                                    <p:commandButton id="close" value="关闭"
+                                        onclick="${cc.attrs.indexDialogVar}.hide()" rendered="${style == 'dialog'}" />
+                                </td>
+                            </tr>
+                        </table>
+                    </h:panelGroup>
                 </h:form>
             </ui:define>
 
             <ui:define name="editForm">
+                <ui:param name="item" value="${mbean.copy}" />
                 <h:form id="editForm">
-
-                    <ui:param name="obj" value="${mbean.activeObject}" />
-                    <cc:insertChildren />
-
-                    <table border="0" width="100%">
-                        <tr>
-                            <td align="left">
-                            </td>
-                            <td align="right">
-                                <cc:renderFacet name="editButtons" />
-                                <p:commandButton id="ok" value="确定" onclick="${cc.attrs.editDialogVar}.hide()"
-                                    rendered="${style == 'dialog' || style == 'editDialog'}" />
-                            </td>
-                        </tr>
-                    </table>
+                    <h:panelGroup id="content" layout="block" rendered="${item != null}">
+                        <cc:insertChildren />
+                    </h:panelGroup>
+                    <h:panelGroup id="buttons">
+                        <table border="0" width="100%">
+                            <tr>
+                                <td align="left">
+                                </td>
+                                <td align="right">
+                                    <cc:renderFacet name="editButtons" />
+                                    <p:commandButton id="apply-validated"
+                                        value="${(style == 'dialog' || style == 'editDialog') ? '确定' : smooth ? '应用*' : '应用'}"
+                                        disabled="${mbean.copy == null}" actionListener="${mbean.apply}"
+                                        oncomplete="${style == 'panel' ? '' : cc.attrs.editDialogVar.concat('.hideValidated(args)')}"
+                                        update="${cc.attrs.indexView}:indexForm">
+                                        <f:setPropertyActionListener target="${mbean.copyMode}"
+                                            value="${cc.attrs.copy}" />
+                                    </p:commandButton>
+                                    <p:commandButton id="cancel" value="取消" disabled="${mbean.copy == null}"
+                                        actionListener="${mbean.cancel}" update="editForm" rendered="${style == 'panel' and not smooth}" />
+                                    <p:commandButton id="close" value="关闭" onclick="${cc.attrs.editDialogVar}.hide()"
+                                        rendered="${style == 'dialog' or style == 'editDialog'}" />
+                                </td>
+                            </tr>
+                        </table>
+                    </h:panelGroup>
                 </h:form>
             </ui:define>
 

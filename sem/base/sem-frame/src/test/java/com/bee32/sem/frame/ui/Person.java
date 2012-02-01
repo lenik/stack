@@ -1,5 +1,9 @@
 package com.bee32.sem.frame.ui;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.orm.entity.EntitySpec;
 
 public class Person
@@ -29,6 +33,7 @@ public class Person
         setName(id);
     }
 
+    @NLength(min = 3, max = 20)
     public String getName() {
         return name;
     }
@@ -37,6 +42,8 @@ public class Person
         this.name = name;
     }
 
+    @Min(5)
+    @Max(100)
     public int getAge() {
         return age;
     }
