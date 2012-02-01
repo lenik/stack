@@ -2,8 +2,6 @@ package com.bee32.plover.faces.test;
 
 import java.util.Locale;
 
-import com.bee32.plover.faces.test.FaceletsTestCase;
-
 public class FaceletsTestCaseTest
         extends FaceletsTestCase {
 
@@ -18,7 +16,7 @@ public class FaceletsTestCaseTest
 
     public static void main(String[] args)
             throws Exception {
-        new FaceletsTestCaseTest().browseAndWait("test/color.jsf");
+        new FaceletsTestCaseTest().browseAndWait("test/listview.jsf");
     }
 
 }
