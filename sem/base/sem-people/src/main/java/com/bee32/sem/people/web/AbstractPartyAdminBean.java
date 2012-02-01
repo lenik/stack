@@ -11,11 +11,11 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.faces.utils.SelectableList;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.plover.web.faces.utils.SelectableList;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.people.dto.ContactCategoryDto;
 import com.bee32.sem.people.dto.ContactDto;

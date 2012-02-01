@@ -1,6 +1,6 @@
 package com.bee32.sem.frame.web;
 
-import com.bee32.plover.web.faces.view.ViewBean;
+import com.bee32.plover.faces.view.ViewBean;
 
 public class PrimefacesTestBean
         extends ViewBean {

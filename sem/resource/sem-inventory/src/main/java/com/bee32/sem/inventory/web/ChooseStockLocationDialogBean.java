@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.faces.utils.SelectableList;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.web.faces.utils.SelectableList;
 import com.bee32.sem.inventory.dto.StockLocationDto;
 import com.bee32.sem.inventory.entity.MaterialPreferredLocation;
 import com.bee32.sem.inventory.entity.StockLocation;

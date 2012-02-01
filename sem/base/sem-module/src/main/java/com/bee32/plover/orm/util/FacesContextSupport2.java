@@ -2,10 +2,10 @@ package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
 
+import com.bee32.plover.faces.utils.FacesContextSupport;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IEntityAccessService;
-import com.bee32.plover.web.faces.utils.FacesContextSupport;
 
 public abstract class FacesContextSupport2
         extends FacesContextSupport {

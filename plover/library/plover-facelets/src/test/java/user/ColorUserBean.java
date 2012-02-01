@@ -1,6 +1,6 @@
 package user;
 
-import com.bee32.plover.web.faces.view.ViewBean;
+import com.bee32.plover.faces.view.ViewBean;
 
 public class ColorUserBean
         extends ViewBean {

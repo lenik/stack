@@ -3,7 +3,7 @@ package com.bee32.sem.file.web;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.plover.web.faces.view.ViewBean;
+import com.bee32.plover.faces.view.ViewBean;
 
 public class UploadFileDialogBean
         extends ViewBean {

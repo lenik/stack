@@ -2,9 +2,9 @@ package com.bee32.sem.frame.ui;
 
 import java.util.List;
 
-import com.bee32.plover.web.faces.utils.FacesContextSupport;
-import com.bee32.plover.web.faces.utils.FacesUILogger;
-import com.bee32.plover.web.faces.utils.SelectableList;
+import com.bee32.plover.faces.utils.FacesContextSupport;
+import com.bee32.plover.faces.utils.FacesUILogger;
+import com.bee32.plover.faces.utils.SelectableList;
 
 public class ListModel<T>
         extends FacesContextSupport {

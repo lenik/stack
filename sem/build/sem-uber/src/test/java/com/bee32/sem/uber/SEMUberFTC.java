@@ -3,7 +3,7 @@ package com.bee32.sem.uber;
 import java.io.IOException;
 import java.util.Locale;
 
-import com.bee32.plover.web.faces.test.FaceletsTestCase;
+import com.bee32.plover.faces.test.FaceletsTestCase;
 
 public class SEMUberFTC
         extends FaceletsTestCase {

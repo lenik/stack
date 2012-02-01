@@ -8,7 +8,7 @@ import javax.free.Person;
 import org.apache.myfaces.view.facelets.tag.composite.InsertFacetHandler;
 import org.apache.myfaces.view.facelets.tag.jsf.core.FacetHandler;
 
-import com.bee32.plover.web.faces.view.ViewBean;
+import com.bee32.plover.faces.view.ViewBean;
 
 public class ListViewTestBean
         extends ViewBean {

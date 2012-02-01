@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import com.bee32.plover.web.faces.utils.SelectableList;
+import com.bee32.plover.faces.utils.SelectableList;
 
 /**
  * @see SelectableList

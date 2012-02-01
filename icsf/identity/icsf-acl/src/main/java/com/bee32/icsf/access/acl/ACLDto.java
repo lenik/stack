@@ -7,8 +7,8 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.faces.utils.SelectableList;
 import com.bee32.plover.ox1.tree.TreeEntityDto;
-import com.bee32.plover.web.faces.utils.SelectableList;
 
 public class ACLDto
         extends TreeEntityDto<ACL, Integer, ACLDto> {

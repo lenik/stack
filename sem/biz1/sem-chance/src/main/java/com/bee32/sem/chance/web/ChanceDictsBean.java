@@ -3,11 +3,11 @@ package com.bee32.sem.chance.web;
 import java.util.List;
 
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.faces.utils.SelectableList;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.DataViewBean;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.plover.web.faces.utils.SelectableList;
 import com.bee32.sem.chance.dto.ChanceActionStyleDto;
 import com.bee32.sem.chance.dto.ChanceCategoryDto;
 import com.bee32.sem.chance.dto.ChanceSourceTypeDto;

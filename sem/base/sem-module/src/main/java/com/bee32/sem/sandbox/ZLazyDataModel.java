@@ -10,11 +10,11 @@ import org.primefaces.model.SortOrder;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.Limit;
 import com.bee32.plover.criteria.hibernate.Order;
+import com.bee32.plover.faces.utils.FacesContextSupport;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.plover.web.faces.utils.FacesContextSupport;
 
 public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, ?>>
         extends LazyDataModel<D>

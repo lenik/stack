@@ -15,7 +15,7 @@ import javax.faces.render.RenderKit;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.bee32.plover.web.faces.utils.FacesUILogger;
+import com.bee32.plover.faces.utils.FacesUILogger;
 
 public class FacesUILoggerTest
         extends Assert {

@@ -1,10 +1,10 @@
 package com.bee32.sem.frame.web;
 
+import com.bee32.plover.faces.utils.ILocationConstants;
+import com.bee32.plover.faces.utils.LocationVmap;
+import com.bee32.plover.faces.view.ViewBean;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.site.SiteInstance;
-import com.bee32.plover.web.faces.utils.ILocationConstants;
-import com.bee32.plover.web.faces.utils.LocationVmap;
-import com.bee32.plover.web.faces.view.ViewBean;
 import com.bee32.sem.frame.SEMFrameModule;
 
 public class ViewConfig

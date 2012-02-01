@@ -37,7 +37,7 @@ import javax.faces.model.SelectItem;
 
 import org.primefaces.component.api.Widget;
 
-import com.bee32.plover.web.faces.primefaces.ClientIdHelper;
+import com.bee32.plover.faces.primefaces.ClientIdHelper;
 
 @SuppressWarnings("unchecked")
 public class ComponentUtils {

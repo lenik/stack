@@ -2,7 +2,7 @@ package com.bee32.sem.session;
 
 import com.bee32.icsf.login.LoginException;
 import com.bee32.icsf.login.SessionUser;
-import com.bee32.plover.web.faces.view.ViewBean;
+import com.bee32.plover.faces.view.ViewBean;
 
 public class UILoginBean
         extends ViewBean {

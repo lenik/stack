@@ -8,7 +8,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
-import com.bee32.plover.web.faces.utils.FacesMessageReporter;
+import com.bee32.plover.faces.utils.FacesMessageReporter;
 
 public abstract class FormValidator
         implements Validator {
