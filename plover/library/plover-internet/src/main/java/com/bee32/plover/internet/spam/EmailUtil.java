@@ -10,7 +10,7 @@ public class EmailUtil {
      * @return Obfuscated email. Returns <code>null</code> if <code>email</code> is
      *         <code>null</code>.
      */
-    public static String obfuscate(String email) {
+    public static String safeEmail(String email) {
         return htmlReverse(email);
     }
 

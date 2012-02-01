@@ -13,7 +13,7 @@ public class ZhUtil {
      *            Non-<code>null</code> chinese string.
      * @return Non-<code>null</code> pinyin abbreviation of the given string.
      */
-    public static String getPinyinAbbreviation(String zhString) {
+    public static String pinyinAbbr(String zhString) {
         StringBuilder buf = new StringBuilder(zhString.length());
 
         for (int j = 0; j < zhString.length(); j++) {

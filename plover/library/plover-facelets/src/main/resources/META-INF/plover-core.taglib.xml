@@ -5,30 +5,6 @@
 
 <facelet-taglib>
 
-    <namespace>http://bee32.com/plover/core</namespace>
-
-    <function>
-        <function-name>consts</function-name>
-        <function-class>com.bee32.plover.faces.el.CoreConstants</function-class>
-        <function-signature>com.bee32.plover.faces.el.CoreConstants consts()</function-signature>
-    </function>
-
-    <function>
-        <function-name>version</function-name>
-        <function-class>com.bee32.plover.faces.el.CoreConstants</function-class>
-        <function-signature>String version()</function-signature>
-    </function>
-
-    <function>
-        <function-name>safeEmail</function-name>
-        <function-class>com.bee32.plover.internet.spam.EmailUtil</function-class>
-        <function-signature>String obfuscate(java.lang.String)</function-signature>
-    </function>
-
-    <function>
-        <function-name>pinyinAbbr</function-name>
-        <function-class>com.bee32.plover.util.zh.ZhUtil</function-class>
-        <function-signature>String getPinyinAbbreviation(java.lang.String)</function-signature>
-    </function>
+    <library-class>com.bee32.plover.faces.CoreLibrary</library-class>
 
 </facelet-taglib>
