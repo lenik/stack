@@ -33,7 +33,7 @@ import com.bee32.plover.util.PrettyPrintStream;
 @MappedSuperclass
 public abstract class Entity<K extends Serializable>
         extends EntityBase<K>
-        implements IMultiFormat {
+        implements Cloneable, IMultiFormat {
 
     private static final long serialVersionUID = 1L;
 
@@ -52,6 +52,12 @@ public abstract class Entity<K extends Serializable>
     public Entity(String name) {
         super(name);
         // prePersist();
+    }
+
+    @Overlay
+    public Entity<K> clone()
+            throws CloneNotSupportedException {
+        return (Entity<K>) super.clone();
     }
 
     @Override

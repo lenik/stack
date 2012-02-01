@@ -7,7 +7,8 @@ import javax.free.IllegalUsageException;
 import com.bee32.plover.arch.util.Flags32;
 
 public abstract class BaseDto<S, C>
-        extends BaseDto_AS2<S, C> {
+        extends BaseDto_AS2<S, C>
+        implements Cloneable {
 
     private static final long serialVersionUID = 1L;
 
@@ -53,6 +54,12 @@ public abstract class BaseDto<S, C>
                     "Bad DTO name %s: can't determine source type.",//
                     dtoFqcn));
         initSourceType(srcType);
+    }
+
+    @Override
+    public Object clone()
+            throws CloneNotSupportedException {
+        return super.clone();
     }
 
     /**
