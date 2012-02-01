@@ -3,11 +3,6 @@ package com.bee32.sem.frame.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.free.Person;
-
-import org.apache.myfaces.view.facelets.tag.composite.InsertFacetHandler;
-import org.apache.myfaces.view.facelets.tag.jsf.core.FacetHandler;
-
 import com.bee32.plover.faces.view.ViewBean;
 
 public class ListViewTestBean
@@ -16,6 +11,7 @@ public class ListViewTestBean
     private static final long serialVersionUID = 1L;
 
     List<Person> persons;
+    ListMBean<Person> personsMBean = ListMBean.fromEL(this, "persons", Person.class);
 
     public ListViewTestBean() {
         persons = new ArrayList<>();
@@ -23,12 +19,12 @@ public class ListViewTestBean
         persons.add(new Person("lily", 18, true));
     }
 
-    public ListModel<Person> getPersonModel() {
-        return new ListModel<Person>(persons, Person.class);
+    public List<Person> getPersons() {
+        return persons;
     }
 
-    {
-        InsertFacetHandler ifh;
-        FacetHandler ffh;
+    public ListMBean<Person> getPersonsMBean() {
+        return personsMBean;
     }
+
 }

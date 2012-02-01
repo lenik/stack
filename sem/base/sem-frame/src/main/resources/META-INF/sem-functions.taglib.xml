@@ -10,7 +10,7 @@
     <!-- This is an example function -->
     <function>
         <function-name>version</function-name>
-        <function-class>com.bee32.plover.web.faces.el.CoreConstants</function-class>
+        <function-class>com.bee32.plover.faces.el.CoreConstants</function-class>
         <function-signature>String version()</function-signature>
     </function>
 

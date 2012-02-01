@@ -5,29 +5,39 @@
 
     <ui:define name="title">listView test</ui:define>
     <ui:param name="bean" value="${listViewTestBean}" />
+    <ui:param name="_obj" value="${bean.personsMBean.activeObject}" />
 
     <ui:define name="initializers" />
 
     <ui:define name="content">
-        <p:panel header="style = panel">
-            <fr:listView id="lvPanel" style="panel" header="" listModel="${bean.personModel}">
+        <fr:listView id="lvPanel" header="style = panel" style="panel" orientation="td" mbean="${bean.personsMBean}"
+        smooth="true">
+            <f:facet name="columns">
                 <p:column id="nameCol" headerText="姓名">
                     ${entry.name}
                 </p:column>
                 <p:column id="ageCol" headerText="年龄">
                     ${entry.age}
                 </p:column>
-                <f:facet name="content">
-                    <p:commandButton id="cb1" value="content" />
-                </f:facet>
-                <f:facet name="indexButtons">
-                    <p:commandButton id="ib1" value="index-button" />
-                </f:facet>
-                <f:facet name="editButtons">
-                    <p:commandButton id="eb1" value="edit-button" />
-                </f:facet>
-            </fr:listView>
-        </p:panel>
+            </f:facet>
+            <f:facet name="indexButtons">
+                <p:commandButton id="ib1" value="index-button" />
+            </f:facet>
+            <f:facet name="editButtons">
+                <p:commandButton id="eb1" value="edit-button" />
+            </f:facet>
+
+            <h:panelGrid columns="2">
+                <h:outputLabel for="name" value="姓名" />
+                <p:inputText id="name" value="${_obj.name}" />
+
+                <h:outputLabel for="name" value="年龄" />
+                <p:spinner id="age" value="${_obj.age}" />
+
+                <h:outputText value="性别" />
+            </h:panelGrid>
+
+        </fr:listView>
     </ui:define>
 
 </ui:composition>
