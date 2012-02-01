@@ -4,13 +4,13 @@
     version="2.0">
 
     <factory>
-        <exception-handler-factory>com.bee32.plover.web.faces.PloverExceptionHandlerFactory</exception-handler-factory>
+        <exception-handler-factory>com.bee32.plover.faces.PloverExceptionHandlerFactory</exception-handler-factory>
     </factory>
 
     <lifecycle>
-        <!-- <phase-listener>com.bee32.plover.web.faces.AnotherPhaseListener</phase-listener> -->
-        <phase-listener>com.bee32.plover.web.faces.AutoUpdatePhaseListener</phase-listener>
-        <phase-listener>com.bee32.plover.web.faces.FaceletsDiagnosticPhaseListener</phase-listener>
+        <!-- <phase-listener>com.bee32.plover.faces.AnotherPhaseListener</phase-listener> -->
+        <phase-listener>com.bee32.plover.faces.AutoUpdatePhaseListener</phase-listener>
+        <phase-listener>com.bee32.plover.faces.FaceletsDiagnosticPhaseListener</phase-listener>
     </lifecycle>
 
     <application>
@@ -20,7 +20,7 @@
 
     <component>
         <component-type>plover.logo</component-type>
-        <component-class>com.bee32.plover.web.faces.controls.UILogo</component-class>
+        <component-class>com.bee32.plover.faces.controls.UILogo</component-class>
     </component>
 
 </faces-config>
