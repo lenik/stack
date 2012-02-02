@@ -9,6 +9,14 @@
     <ui:define name="initializers" />
 
     <ui:define name="content">
+
+        <h:form id="f1">
+            aaa
+            <h:form id="f2">
+                aaa
+            </h:form>
+        </h:form>
+
         <fr:listView id="lvPanel" header="style = panel" style="panel" orientation="lr" mbean="${bean.personsMBean}"
             smooth="true">
             <f:facet name="columns">
@@ -17,6 +25,9 @@
                 </p:column>
                 <p:column id="ageCol" headerText="年龄">
                     ${entry.age}
+                </p:column>
+                <p:column headerText="儿女数目">
+                    ${entry.childrenCount}
                 </p:column>
             </f:facet>
             <f:facet name="indexButtons">
@@ -34,7 +45,46 @@
                 <p:spinner id="age" value="${item.age}" />
 
                 <h:outputText value="性别" />
+                <h:panelGroup>
+                    <p:selectBooleanCheckbox id="girl" value="${item.girl}" />
+                    女
+                </h:panelGroup>
             </h:panelGrid>
+
+            <f:facet name="more">
+                <fr:listView header="子女" style="panel" orientation="td" mbean="${bean.childrenMBean}">
+                    <f:facet name="columns">
+                        <p:column id="nameCol" headerText="子女姓名">
+                            ${entry.name}
+                        </p:column>
+                        <p:column id="ageCol" headerText="子女年龄">
+                            ${entry.age}
+                        </p:column>
+                        <p:column headerText="子孙数目">
+                            ${entry.childrenCount}
+                        </p:column>
+                    </f:facet>
+                    <f:facet name="indexButtons">
+                        <p:commandButton id="ib1" value="child-index" />
+                    </f:facet>
+                    <f:facet name="editButtons">
+                        <p:commandButton id="eb1" value="child-edit" />
+                    </f:facet>
+                    <h:panelGrid columns="2">
+                        <h:outputLabel for="name" value="子女姓名" />
+                        <p:inputText id="name" value="${item.name}" />
+
+                        <h:outputLabel for="name" value="子女年龄" />
+                        <p:spinner id="age" value="${item.age}" />
+
+                        <h:outputText value="子女性别" />
+                        <h:panelGroup>
+                            <p:selectBooleanCheckbox id="girl" value="${item.girl}" />
+                            女
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </fr:listView>
+            </f:facet>
         </fr:listView>
 
         <p:separator />

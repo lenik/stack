@@ -29,9 +29,9 @@ public abstract class ListMBean<T>
     private static final long serialVersionUID = 1L;
 
     final Class<T> elementType;
-    int selectedIndex;
+    int selectedIndex = -1;
     boolean copyMode;
-    int copyIndex;
+    int copyIndex = -1;
     T copy;
 
     public ListMBean(Class<T> elementType) {
@@ -72,7 +72,7 @@ public abstract class ListMBean<T>
     public void setSelection(T selection) {
         List<T> list = getList();
         int index = list.indexOf(selection);
-        selectedIndex = index;
+        setSelectedIndex(index);
     }
 
     @Override
@@ -83,6 +83,11 @@ public abstract class ListMBean<T>
     @Override
     public void setSelectedIndex(int selectedIndex) {
         this.selectedIndex = selectedIndex;
+        if (copyMode)
+            if (selectedIndex != copyIndex) {
+                copyIndex = -1;
+                copy = null;
+            }
     }
 
     @Override

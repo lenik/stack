@@ -17,7 +17,7 @@ public class SEMFrameModuleTest
 
     public static void main(String[] args)
             throws IOException {
-        new SEMFrameModuleTest().browseAndWait("test/listview.jsf");
+        new SEMFrameModuleTest().browseAndWait("test/person-lv.jsf");
     }
 
 }

@@ -10,10 +10,12 @@
         <cc:attribute name="indexDialogVar" default="${pc:lastPart(cc.clientId, ':')}IndexDialog" />
         <cc:attribute name="editDialogVar" default="${pc:lastPart(cc.clientId, ':')}EditDialog" />
         <cc:attribute name="header" required="true" />
+        <cc:attribute name="legend" default="${cc.attrs.header}" />
         <cc:attribute name="mbean" type="java.lang.Object" required="true" />
-        <cc:attribute name="smooth" type="java.lang.Boolean" default="true" />
+        <cc:attribute name="smooth" type="java.lang.Boolean" default="false" />
         <cc:attribute name="copy" type="java.lang.Boolean" default="${cc.attrs.style != 'panel' or not cc.attrs.smooth}" />
         <cc:facet name="columns" required="true" />
+        <cc:facet name="more" />
         <cc:facet name="indexButtons" />
         <cc:facet name="editButtons" />
     </cc:interface>
@@ -25,6 +27,7 @@
             <ui:param name="style" value="${cc.attrs.style}" />
             <ui:param name="orientation" value="${cc.attrs.orientation}" />
             <ui:param name="header" value="${cc.attrs.header}" />
+            <ui:param name="legend" value="${cc.attrs.legend}" />
             <ui:param name="indexDialogVar" value="${cc.attrs.indexDialogVar}" />
             <ui:param name="editDialogVar" value="${cc.attrs.editDialogVar}" />
             <ui:param name="mbean" value="${cc.attrs.mbean}" />
@@ -43,9 +46,9 @@
 
                                 <!-- mbean not work, must be cc.attrs.mbean here. -->
                                 <p:ajax event="rowSelect" listener="${cc.attrs.mbean.rowSelect}"
-                                    update="${cc.attrs.indexView}:indexForm:buttons, ${cc.attrs.editView}:editForm" />
+                                    update="${cc.attrs.indexView}:indexForm:buttons, ${cc.attrs.editView}:editForm, ${cc.attrs.editView}:more" />
                                 <p:ajax event="rowUnselect" listener="${cc.attrs.mbean.rowUnselect}"
-                                    update="${cc.attrs.indexView}:indexForm:buttons, ${cc.attrs.editView}:editForm" />
+                                    update="${cc.attrs.indexView}:indexForm:buttons, ${cc.attrs.editView}:editForm, ${cc.attrs.editView}:more" />
 
                                 <p:column id="rowIndexCol" headerText="序号">
                                     ${rowIndex + 1}
@@ -62,14 +65,16 @@
                             <tr>
                                 <td align="left">
                                     <p:commandButton id="create" value="添加" actionListener="${mbean.showCreateForm}"
-                                        update="@form, ${cc.attrs.editView}:editForm" oncomplete="${style == 'panel' ? '' : cc.attrs.editDialogVar.concat('.show();')}" />
+                                        update="@form, ${cc.attrs.editView}:editForm, ${cc.attrs.editView}:more"
+                                        oncomplete="${style == 'panel' ? '' : cc.attrs.editDialogVar.concat('.show();')}" />
                                     <p:commandButton id="remove" value="移除" actionListener="${mbean.removeSelection}"
-                                        update="@form, ${cc.attrs.editView}:editForm" disabled="${mbean.selection == null}" />
+                                        update="@form, ${cc.attrs.editView}:editForm, ${cc.attrs.editView}:more"
+                                        disabled="${mbean.selection == null}" />
                                 </td>
                                 <td align="right">
                                     <cc:insertRawFacet name="indexButtons" />
                                     <p:commandButton id="edit" value="修改" disabled="${mbean.selection == null}"
-                                        action="${mbean.showEditForm}" update="${cc.attrs.editView}:editForm"
+                                        action="${mbean.showEditForm}" update="${cc.attrs.editView}:editForm, ${cc.attrs.editView}:more"
                                         oncomplete="${style == 'panel' ? '' : cc.attrs.editDialogVar.concat('.show();')}"
                                         rendered="${style == 'dialog' or style == 'editDialog' or not cc.attrs.smooth}">
                                         <f:setPropertyActionListener target="${mbean.copyMode}"
@@ -106,7 +111,8 @@
                                             value="${cc.attrs.copy}" />
                                     </p:commandButton>
                                     <p:commandButton id="cancel" value="取消" disabled="${mbean.copy == null}"
-                                        actionListener="${mbean.cancel}" update="editForm" rendered="${style == 'panel' and not smooth}" />
+                                        actionListener="${mbean.cancel}" update="editForm, ${cc.attrs.editView}:more"
+                                        rendered="${style == 'panel' and not smooth}" />
                                     <p:commandButton id="close" value="关闭" onclick="${cc.attrs.editDialogVar}.hide()"
                                         rendered="${style == 'dialog' or style == 'editDialog'}" />
                                 </td>
@@ -114,6 +120,11 @@
                         </table>
                     </h:panelGroup>
                 </h:form>
+                <h:panelGroup id="more" layout="block">
+                    <h:panelGroup id="moreContent" layout="block" rendered="${item != null}">
+                        <cc:insertRawFacet name="more" />
+                    </h:panelGroup>
+                </h:panelGroup>
             </ui:define>
 
         </ui:decorate>
