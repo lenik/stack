@@ -29,8 +29,6 @@ public class ChanceParty
 
     public static final int ROLE_LENGTH = 20;
 
-    public static final int ROLE_LENGTH = 20;
-
     Chance chance;
     Party party;
     String role;

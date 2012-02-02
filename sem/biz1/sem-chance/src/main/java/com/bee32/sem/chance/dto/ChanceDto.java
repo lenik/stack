@@ -7,7 +7,9 @@ import javax.free.ParseException;
 import javax.free.Strings;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.UIEntityDto;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.util.DateToRange;
 import com.bee32.sem.process.verify.builtin.dto.SingleVerifierSupportDto;
@@ -92,6 +94,8 @@ public class ChanceDto
 
         if (selection.contains(PARTIES))
             mergeList(target, "parties", parties);
+        if (selection.contains(QUOTATIONS))
+            mergeList(target, "quotations", quotations);
         if (selection.contains(ACTIONS))
             mergeList(target, "actions", actions);
 
@@ -105,6 +109,7 @@ public class ChanceDto
             throws ParseException {
     }
 
+    @NLength(max = Chance.SERIAL_LENGTH)
     public String getSerial() {
         return serial;
     }
@@ -141,6 +146,7 @@ public class ChanceDto
         this.source = source;
     }
 
+    @NLength(min = 1, max = Chance.SUBJECT_LENGTH)
     public String getSubject() {
         return subject;
     }
@@ -148,15 +154,16 @@ public class ChanceDto
     public void setSubject(String subject) {
         if (subject == null)
             throw new NullPointerException("subject");
-        this.subject = subject;
+        this.subject = TextUtil.normalizeSpace(subject);
     }
 
+    @NLength(min = 1, max = Chance.CONTENT_LENGTH)
     public String getContent() {
         return content;
     }
 
     public void setContent(String content) {
-        this.content = content;
+        this.content = TextUtil.normalizeSpace(content);
     }
 
     public List<ChancePartyDto> getParties() {
@@ -235,12 +242,13 @@ public class ChanceDto
         this.stage = stage;
     }
 
+    @NLength(max = Chance.ADDRESS_LENGTH)
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        this.address = TextUtil.normalizeSpace(address);
     }
 
     void refreshStage() {

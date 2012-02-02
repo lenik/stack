@@ -9,7 +9,8 @@
     <ui:param name="dicts" value="${chanceDictsBean}" />
 
     <ui:define name="toolbarPeripherals">
-        <sem:singleVerifierSupportButton id="verifyButton" selection="${bean.selection}" />
+        <sem:singleVerifierSupportButton id="verifyButton" selection="${bean.selection}"
+            disabled="${not bean.selected}" />
     </ui:define>
 
     <ui:define name="dataColumns">
@@ -52,35 +53,35 @@
         <p:tabView id="tv">
             <p:tab title="机会基本信息">
                 <t:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
-                    <h:outputText value="机会标题:" />
+                    <h:outputLabel for="subject" value="机会标题:" />
                     <t:panelGroup colspan="3">
-                        <p:inputText id="subject" value="${obj.subject}" style="width: 100%;" />
+                        <p:inputText id="subject" label="机会标题" value="${obj.subject}" style="width: 100%;" />
                     </t:panelGroup>
 
-                    <h:outputText value="机会分类:" />
-                    <p:selectOneMenu id="category" value="${obj.category.displayId}" style="width: 10em;">
+                    <h:outputLabel for="category" value="机会分类:" />
+                    <p:selectOneMenu id="category" label="机会分类" value="${obj.category.displayId}" style="width: 10em;">
                         <f:selectItems value="${dicts.categories}" var="it" itemLabel="${it.label}"
                             itemValue="${it.id}" />
                     </p:selectOneMenu>
-                    <h:outputText value="机会来源:" />
-                    <p:selectOneMenu id="source" value="${obj.source.id}" style="width: 10em;">
+                    <h:outputLabel for="source" value="机会来源:" />
+                    <p:selectOneMenu id="source" label="机会来源" value="${obj.source.id}" style="width: 10em;">
                         <f:selectItems value="${dicts.sourceTypes}" var="it" itemLabel="${it.label}"
                             itemValue="${it.id}" />
                     </p:selectOneMenu>
 
-                    <h:outputText value="机会地址:" />
+                    <h:outputLabel for="address" value="机会地址:" />
                     <t:panelGroup colspan="3">
-                        <p:inputText id="address" value="${obj.address}" style="width: 100%;" />
+                        <p:inputText id="address" label="机会地址" value="${obj.address}" style="width: 100%;" />
                     </t:panelGroup>
 
-                    <h:outputText for="content" value="机会内容:" />
+                    <h:outputLabel for="content" value="机会内容:" />
                     <t:panelGroup colspan="3">
-                        <p:inputTextarea id="content" value="${obj.content}" style="width: 100%;height:  6em;" />
+                        <p:inputTextarea id="content" label="机会内容" value="${obj.content}" style="width: 100%;height:  6em;" />
                     </t:panelGroup>
 
-                    <h:outputText for="stage" value="机会阶段:" />
+                    <h:outputLabel for="stage" value="机会阶段:" />
                     <t:panelGroup colspan="3">
-                        <p:selectOneMenu id="stage" value="${obj.stage.displayId}" style="width: 12em;"
+                        <p:selectOneMenu id="stage" label="机会阶段" value="${obj.stage.displayId}" style="width: 12em;"
                             disabled="true">
                             <f:selectItems value="${dicts.stages}" var="it" itemLabel="${it.label}"
                                 itemValue="${it.id}" />
@@ -182,9 +183,11 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:singleVerifierSupportDialog update="editDialog:form" />
+        <sem:singleVerifierSupportDialog id="verifyDialog" update=":editDialog:form" />
         <sem:choosePartyDialog id="choosePartyDialog" header="选择机会客户" stereo="ORG"
             target="${bean.partiesMBean.activeObject.party}" update=":editDialog:form:tv:partiesView:editForm:body" />
+        <sem:chooseMaterialDialog id="chooseMaterialDialog" header="选择产品/物料"
+            target="${bean.quotationItemsMBean.activeObject.material}" update=":quotationsEditView:editForm:tv:quotationItemsView:editForm:body" />
 
         <fr:listView id="quotationsEditView" indexView=":editDialog:form:tv:quotationsIndexView" header="报价"
             style="editDialog" mbean="${bean.quotationsMBean}">
@@ -235,7 +238,10 @@
                         </f:facet>
                         <h:panelGrid columns="2">
                             <h:outputText value="产品/物料" />
-                            <h:outputText id="material" value="${item.material.label}" />
+                            <h:panelGroup>
+                                <p:inputText id="material" value="${item.material.label}" readonly="true" />
+                                <p:commandButton id="chooseMaterial" value="..." onclick="chooseMaterialDialog.show()" />
+                            </h:panelGroup>
 
                             <h:outputText value="基础价格" />
                             <h:outputText value="${item.basePrice}" />

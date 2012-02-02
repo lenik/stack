@@ -1,6 +1,7 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:p="http://primefaces.org/ui"
-    xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:sem="http://java.sun.com/jsf/composite/3/15" template="/template/simple-entity.xhtml">
+<ui:composition template="/template/simple-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:icsf="http://java.sun.com/jsf/composite/3/7"
+    xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
     <ui:param name="title" value="机会跟进日志" />
     <ui:param name="bean" value="${chanceActionBean}" />
@@ -51,13 +52,13 @@
                 showOn="button" />
 
             <h:outputLabel for="actionStyle" value="日志类型:" />
-            <p:selectOneMenu id="actionStyle" value="${obj.plan}" style="width: 3em;">
+            <p:selectOneMenu id="actionStyle" value="${obj.plan}">
                 <f:selectItem itemLabel="计划" itemValue="${true}" />
                 <f:selectItem itemLabel="日志" itemValue="${false}" />
             </p:selectOneMenu>
 
             <h:outputLabel for="style" value="洽谈方式:" />
-            <p:selectOneMenu id="style" value="${obj.style.displayId}" style="width: 10em;">
+            <p:selectOneMenu id="style" value="${obj.style.displayId}">
                 <f:selectItems value="${dicts.actionStyles}" var="it" itemLabel="${it.label}" itemValue="${it.id}" />
             </p:selectOneMenu>
 
@@ -89,18 +90,21 @@
                             </p:commandLink>
                         </p:column>
                     </p:dataList>
-                    <p:commandButton title="挑选工作伙伴" value="..." onclick="choosePartnerDialog.show();" />
+                    <p:commandButton title="挑选工作伙伴" value="..." oncomplete="choosePartnerDialog.show();">
+                        <f:setPropertyActionListener target="${choosePrincipalDialogBean.stereo}"
+                            value="U" />
+                    </p:commandButton>
                 </h:panelGrid>
             </t:panelGroup>
 
             <h:outputLabel for="moreInfo" value="内容描述:" />
             <t:panelGroup colspan="3">
-                <p:inputTextarea id="moreInfo" value="${obj.moreInfo}" style="width: 40em; height: 5em;" />
+                <p:inputTextarea id="moreInfo" value="${obj.moreInfo}" style="width: 30em; height: 5em;" />
             </t:panelGroup>
 
             <h:outputLabel for="spending" value="花费详细:" />
             <t:panelGroup colspan="3">
-                <p:inputTextarea id="spending" value="${obj.spending}" style="width: 40em; height: 5em;" />
+                <p:inputTextarea id="spending" value="${obj.spending}" style="width: 30em; height: 5em;" />
             </t:panelGroup>
 
             <h:outputLabel for="chanceSubject" value="相关机会:" />
@@ -112,9 +116,9 @@
 
             <h:outputLabel for="stage" value="机会阶段:" />
             <t:panelGroup colspan="3">
-                <p:selectOneMenu id="stage" value="${obj.stage.displayId}" style="width: 20em;">
+                <p:selectOneMenu id="stage" value="${obj.stage.displayId}">
                     <f:selectItem itemLabel="--请选择机会阶段--" itemValue="" />
-                    <f:selectItems value="${bean.chanceStages}" />
+                    <f:selectItems value="${dicts.stages}" var="it" itemLabel="${it.label}" itemValue="${it.id}" />
                 </p:selectOneMenu>
             </t:panelGroup>
 
@@ -122,12 +126,13 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:singleVerifierSupportDialog update="chanceActionForm" />
+        <sem:singleVerifierSupportDialog id="verifyDialog" selection="${bean.selection}"
+            update=":mainForm" />
         <sem:chooseChanceDialog id="chooseChanceDialog" target="${obj.chance}" update=":editDialog:form" />
         <sem:choosePartyDialog id="choosePartyDialog" header="选择客户" target="${bean.selectedParty}"
             actionListener="${bean.addParty}" update=":editDialog:form" />
-        <sem:choosePrincipalDialog id="choosePartnerDialog" var="choosePartnerDialog" header="选择工作伙伴"
-            target="${bean.selectedPartner}" actionListener="${bean.addPartner}" update=":editDialog:form" />
+        <icsf:choosePrincipalDialog id="choosePartnerDialog" var="choosePartnerDialog"
+            header="选择工作伙伴" stereo="U" target="${bean.selectedPartner}" actionListener="${bean.addPartner}" update=":editDialog:form" />
     </ui:define>
 
 </ui:composition>
