@@ -22,7 +22,7 @@ public class UnitConvDto
     UnitDto unit;
     Map<UnitDto, Double> scaleMap;
 
-    //scaleMap的一个不同形式副本,便于在办面中以el存取
+    // scaleMap的一个不同形式副本,便于在办面中以el存取
     List<ScaleItem> itemList = new ArrayList<ScaleItem>();
 
     public UnitConvDto() {
@@ -45,7 +45,6 @@ public class UnitConvDto
                 scaleMap.put(scaleUnit, scale);
             }
 
-
             for (Entry<Unit, Double> entry : source.getScaleMap().entrySet()) {
                 UnitDto scaleUnit = mref(UnitDto.class, entry.getKey());
                 double scale = entry.getValue();
@@ -63,8 +62,8 @@ public class UnitConvDto
         merge(target, "unit", unit);
 
         if (selection.contains(MAP)) {
-            if(itemList != null && itemList.size() > 0) {
-                //如果有itemList,则itemList优先
+            if (itemList != null && itemList.size() > 0) {
+                // 如果有itemList,则itemList优先
                 Map<Unit, Double> _map = new HashMap<Unit, Double>();
                 for (ScaleItem item : itemList) {
                     Unit _unit = item.getUnit().unmarshal();
@@ -126,4 +125,17 @@ public class UnitConvDto
             throw new NullPointerException("scaleMap");
         this.scaleMap = scaleMap;
     }
+
+    public Double getScale(UnitDto unit) {
+        return getScale(unit.getId());
+    }
+
+    public Double getScale(String unitId) {
+        for (Entry<UnitDto, Double> entry : scaleMap.entrySet()) {
+            if (entry.getKey().getId() == unitId)
+                return entry.getValue();
+        }
+        return null;
+    }
+
 }
