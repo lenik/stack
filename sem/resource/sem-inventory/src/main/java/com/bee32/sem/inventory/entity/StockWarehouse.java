@@ -25,9 +25,9 @@ public class StockWarehouse
 
     private static final long serialVersionUID = 1L;
 
-    public static final int NAME_LENGTH = 30;
-    public static final int ADDRESS_LENGTH = 50;
-    public static final int PHONE_LENGTH = 30;
+    public static final int NAME_LENGTH = 50;
+    public static final int ADDRESS_LENGTH = 100;
+    public static final int PHONE_LENGTH = 50;
 
     // Contact contact;
     String address;

@@ -19,6 +19,7 @@ public class PersonRole
 
     private static final long serialVersionUID = 1L;
 
+    public static final int ALT_ORG_UNIT_LENGTH = 100;
     public static final int ROLE_LENGTH = 30;
     public static final int ROLE_DETAIL_LENGTH = 50;
     public static final int DESCRIPTION_LENGTH = 200;
@@ -72,7 +73,7 @@ public class PersonRole
      * （过渡）（临时使用的）所在部门名称
      */
     @Deprecated
-    @Column(length = 30)
+    @Column(length = ALT_ORG_UNIT_LENGTH)
     public String getAltOrgUnit() {
         return altOrgUnit;
     }

@@ -30,6 +30,7 @@ public class ChanceCompetitor
 
     private static final long serialVersionUID = 1L;
 
+    public static final int NAME_LENGTH = 100;
     public static final int CAPABILITY_LENGTH = 50;
     public static final int SOLUTION_LENGTH = 200;
     public static final int ADVANTAGE_LENGTH = 200;

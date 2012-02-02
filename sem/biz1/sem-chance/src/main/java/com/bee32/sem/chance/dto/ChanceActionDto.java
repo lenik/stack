@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.free.ParseException;
 import javax.free.Strings;
+import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 
 import com.bee32.icsf.principal.UserDto;
@@ -25,6 +26,9 @@ public class ChanceActionDto
 
     public static final int PARTIES = 1;
     public static final int PARTNERS = 2;
+
+    public static final int MORE_INFO_LENGTH = 300;
+    public static final int SPENDING_LENGTH = 200;
 
     boolean plan;
     List<PartyDto> parties;
@@ -228,6 +232,10 @@ public class ChanceActionDto
         this.style = style;
     }
 
+    /**
+     * 更多信息
+     */
+    @Column(length = MORE_INFO_LENGTH)
     public String getMoreInfo() {
         return moreInfo;
     }
@@ -242,6 +250,10 @@ public class ChanceActionDto
         return Strings.ellipse(getMoreInfo(), 16);
     }
 
+    /**
+     * 花费情况
+     */
+    @Column(length = SPENDING_LENGTH)
     public String getSpending() {
         return spending;
     }

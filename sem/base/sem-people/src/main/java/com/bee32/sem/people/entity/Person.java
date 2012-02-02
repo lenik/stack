@@ -25,6 +25,7 @@ public class Person
 
     private static final long serialVersionUID = 1L;
 
+    public static final int THEME_LENGTH = 100;
     public static final int CENSUS_REGISTER_LENGTH = 15;
 
     Gender sex = Gender.OTHER;
