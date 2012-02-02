@@ -26,23 +26,23 @@
             <h:form id="form" style="${cc.attrs.style}">
 
                 <t:panelGrid columns="2">
-                    <h:outputText value="审核身份：" />
-                    <p:selectOneMenu id="verifyAs" value="${cc.attrs.dialogBean.verifier1Template.id}">
+                    <h:outputLabel for="verifyAs" value="审核身份：" />
+                    <p:selectOneMenu id="verifyAs" title="审核身份" value="${cc.attrs.dialogBean.verifier1Template.id}">
                         <f:selectItems value="${sessionUser.internalUser.imSet}" var="p" itemValue="${p.id}"
                             itemLabel="${p.displayName}" />
                     </p:selectOneMenu>
 
-                    <h:outputText value="拒绝的附加信息：" />
-                    <p:inputTextarea value="${cc.attrs.dialogBean.rejectedReason1Template}" cols="40"
-                        rows="6" autoResize="false" />
+                    <h:outputLabel for="rejectedReason1" value="拒绝的附加信息：" />
+                    <p:inputTextarea id="rejectedReason1" title="拒绝的附加信息"
+                        value="${cc.attrs.dialogBean.rejectedReason1Template}" cols="40" rows="6" autoResize="false" />
                 </t:panelGrid>
 
                 <div align="right">
-                    <p:commandButton value="通过" oncomplete="${dialogVar}.hide()" actionListener="${handler.approve}"
-                        update="${cc.attrs.update}" async="true" />
-                    <p:commandButton value="拒绝" oncomplete="${dialogVar}.hide()" actionListener="${handler.reject}"
-                        update="${cc.attrs.update}" async="true" />
-                    <p:commandButton value="取消" oncomplete="${dialogVar}.hide();" />
+                    <p:commandButton id="pass-validated" value="通过" oncomplete="${dialogVar}.hideValidated(args)"
+                        actionListener="${handler.approve}" update="${cc.attrs.update}" async="true" />
+                    <p:commandButton id="reject-validated" value="拒绝" oncomplete="${dialogVar}.hideValidated(args)"
+                        actionListener="${handler.reject}" update="${cc.attrs.update}" async="true" />
+                    <p:commandButton id="cancel" value="取消" oncomplete="${dialogVar}.hide();" />
                 </div>
             </h:form>
         </p:dialog>

@@ -67,13 +67,13 @@ public class SingleVerifierSupportBean<D extends EntityDto<E, K> & IVerifiableDt
                 else if (evalState == VerifyEvalState.REJECTED)
                     uiLogger.info("拒绝 " + entityLabel + " 成功!");
                 else if (evalState == VerifyEvalState.NOT_APPLICABLE)
-                    uiLogger.info("审核不可用，请配置 " + entityLabel + " 的审核策略。");
+                    uiLogger.error("审核不可用，请配置 " + entityLabel + " 的审核策略。");
                 else if (evalState == VerifyEvalState.INVALID)
-                    uiLogger.info("审核 " + entityLabel + " 无效。可能是您不具有所需的权限。");
+                    uiLogger.error("审核 " + entityLabel + " 无效。可能是您不具有所需的权限。");
                 else if (evalState == VerifyEvalState.PENDING)
-                    uiLogger.info("审核 " + entityLabel + " 进入挂起状态。");
+                    uiLogger.warn("审核 " + entityLabel + " 进入挂起状态。");
                 else
-                    uiLogger.info("审核 " + entityLabel + " 无法完成，具体原因未知。");
+                    uiLogger.error("审核 " + entityLabel + " 无法完成，具体原因未知。");
             } catch (Exception e) {
                 uiLogger.error("审核 " + entityLabel + " 失败", e);
             }
