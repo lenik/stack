@@ -8,7 +8,6 @@ import javax.faces.model.SelectItem;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.Offset;
-import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
@@ -206,15 +205,10 @@ public class AccountTicketAdminBean
 
     public void findBudgetRequest() {
         // TODO : 加入业务单是否已经审核的条件检查
-
-        List<BudgetRequest> requests = serviceFor(BudgetRequest.class).list(
-                    new Or(
-                            new Equals("owner.id", budgetRequestCreatorId),
-                            new Like("description", "%" + budgetRequestPattern + "%")),
-                    AssetCriteria.haveNoCorrespondingTicket()
-                );
-
-        budgetRequests = DTOs.marshalList(BudgetRequestDto.class, requests);
+//                    new Or(
+//                            new Equals("owner.id", budgetRequestCreatorId),
+//                            new Like("description", "%" + budgetRequestPattern + "%")),
+//                    AssetCriteria.haveNoCorrespondingTicket()
     }
 
     public void chooseBudgetRequest() {
