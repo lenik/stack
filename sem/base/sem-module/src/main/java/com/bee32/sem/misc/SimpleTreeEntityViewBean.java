@@ -88,9 +88,9 @@ public abstract class SimpleTreeEntityViewBean
      * Moving the tree node around.
      */
     @Override
-    protected void _postUpdate(UnmarshalMap uMap)
+    protected void __postUpdate(UnmarshalMap uMap)
             throws Exception {
-        super._postUpdate(uMap);
+        super.__postUpdate(uMap);
         for (TreeEntity<?, ?> entity : uMap.<TreeEntity<?, ?>> entitySet()) {
             TreeEntityDto<?, ?, ?> dto = uMap.getSourceDto(entity);
             Serializable id = dto.getId();
@@ -132,9 +132,9 @@ public abstract class SimpleTreeEntityViewBean
      * Check dependencies before delete.
      */
     @Override
-    protected boolean _preDelete(UnmarshalMap uMap)
+    protected boolean __preDelete(UnmarshalMap uMap)
             throws Exception {
-        if (!super._preDelete(uMap))
+        if (!super.__preDelete(uMap))
             return false;
         for (TreeEntityDto<?, ?, ?> dto : uMap.<TreeEntityDto<?, ?, ?>> dtos()) {
             if (!dto.isLeaf()) {
@@ -157,9 +157,9 @@ public abstract class SimpleTreeEntityViewBean
      * Remove the tree nodes deleted.
      */
     @Override
-    protected void _postDelete(UnmarshalMap uMap)
+    protected void __postDelete(UnmarshalMap uMap)
             throws Exception {
-        super._postDelete(uMap);
+        super.__postDelete(uMap);
         for (TreeEntityDto<?, ?, ?> dto : uMap.<TreeEntityDto<?, ?, ?>> dtos()) {
             TreeNode node = findNodeById(dto.getId());
             if (node != null)

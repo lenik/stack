@@ -346,7 +346,7 @@ public abstract class SimpleEntityViewBean
         }
 
         try {
-            if (!_preUpdate(uMap))
+            if (!__preUpdate(uMap))
                 return;
             if (!preUpdate(uMap))
                 return;
@@ -374,7 +374,7 @@ public abstract class SimpleEntityViewBean
 
         try {
             postUpdate(uMap);
-            _postUpdate(uMap);
+            __postUpdate(uMap);
         } catch (Exception e) {
             uiLogger.warn(hint + "不完全，次要的数据可能不一致，建议您检查相关的数据。", e);
         }
@@ -452,7 +452,7 @@ public abstract class SimpleEntityViewBean
         setSelection(null);
 
         try {
-            if (!_preDelete(uMap))
+            if (!__preDelete(uMap))
                 return;
             if (!preDelete(uMap))
                 return;
@@ -474,7 +474,7 @@ public abstract class SimpleEntityViewBean
 
         try {
             postDelete(uMap);
-            _postDelete(uMap);
+            __postDelete(uMap);
         } catch (Exception e) {
             uiLogger.warn("保存不完全，次要的数据可能不一致，建议您检查相关的数据。", e);
         }
@@ -491,12 +491,12 @@ public abstract class SimpleEntityViewBean
      * @return <code>false</code> if update should be canceled. The implementation should raise
      *         error messages if necessary.
      */
-    protected boolean _preUpdate(UnmarshalMap uMap)
+    protected boolean __preUpdate(UnmarshalMap uMap)
             throws Exception {
         return true;
     }
 
-    protected void _postUpdate(UnmarshalMap uMap)
+    protected void __postUpdate(UnmarshalMap uMap)
             throws Exception {
     }
 
@@ -508,12 +508,12 @@ public abstract class SimpleEntityViewBean
      * @return <code>false</code> if delete should be canceled. The implementation should raise
      *         error messages if necessary.
      */
-    protected boolean _preDelete(UnmarshalMap uMap)
+    protected boolean __preDelete(UnmarshalMap uMap)
             throws Exception {
         return true;
     }
 
-    protected void _postDelete(UnmarshalMap uMap)
+    protected void __postDelete(UnmarshalMap uMap)
             throws Exception {
     }
 

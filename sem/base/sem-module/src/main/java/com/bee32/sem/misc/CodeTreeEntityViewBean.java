@@ -85,9 +85,9 @@ public abstract class CodeTreeEntityViewBean
      * Moving the tree node around.
      */
     @Override
-    protected void _postUpdate(UnmarshalMap uMap)
+    protected void __postUpdate(UnmarshalMap uMap)
             throws Exception {
-        super._postUpdate(uMap);
+        super.__postUpdate(uMap);
         for (NameDict entity : uMap.<NameDict> entitySet()) {
             NameDictDto<?> dto = uMap.getSourceDto(entity);
             String id = dto.getId();
@@ -132,9 +132,9 @@ public abstract class CodeTreeEntityViewBean
      * Check dependencies before delete.
      */
     @Override
-    protected boolean _preDelete(UnmarshalMap uMap)
+    protected boolean __preDelete(UnmarshalMap uMap)
             throws Exception {
-        if (!super._preDelete(uMap))
+        if (!super.__preDelete(uMap))
             return false;
         // detach the dto, to reduce the dependencies as much as possible.
         // There is nothing to detach for code-tree.
@@ -145,9 +145,9 @@ public abstract class CodeTreeEntityViewBean
      * Remove the tree nodes deleted.
      */
     @Override
-    protected void _postDelete(UnmarshalMap uMap)
+    protected void __postDelete(UnmarshalMap uMap)
             throws Exception {
-        super._postDelete(uMap);
+        super.__postDelete(uMap);
         for (NameDictDto<?> dto : uMap.<NameDictDto<?>> dtos()) {
             TreeNode node = findNodeById(dto.getId());
             if (node != null)
