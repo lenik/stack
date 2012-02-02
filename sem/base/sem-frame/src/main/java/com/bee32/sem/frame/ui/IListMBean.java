@@ -10,6 +10,8 @@ public interface IListMBean<T> {
 
     SelectableList<T> getSelectableList();
 
+    T createElement();
+
     void addElement(T element);
 
     boolean removeElement(T element);

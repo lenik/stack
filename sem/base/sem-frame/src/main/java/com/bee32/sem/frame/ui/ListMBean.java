@@ -11,12 +11,17 @@ import java.util.List;
 
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.faces.component.UIComponent;
+import javax.free.CreateException;
 import javax.free.UnexpectedException;
 
+import org.apache.commons.collections15.Factory;
+import org.apache.commons.collections15.FunctorException;
+import org.apache.commons.collections15.functors.InstantiateFactory;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
+import com.bee32.plover.arch.util.dto.BaseDto;
 import com.bee32.plover.faces.utils.FacesContextSupport;
 import com.bee32.plover.faces.utils.FacesUILogger;
 import com.bee32.plover.faces.utils.SelectableList;
@@ -28,20 +33,32 @@ public abstract class ListMBean<T>
 
     private static final long serialVersionUID = 1L;
 
-    final Class<T> elementType;
+    final Factory<T> factory;
     int selectedIndex = -1;
     boolean copyMode;
     int copyIndex = -1;
     T copy;
 
+    public ListMBean(Factory<T> factory)
+            throws CreateException {
+        if (factory == null)
+            throw new NullPointerException("factory");
+        this.factory = factory;
+    }
+
     public ListMBean(Class<T> elementType) {
         if (elementType == null)
             throw new NullPointerException("elementType");
-        this.elementType = elementType;
+        this.factory = InstantiateFactory.getInstance(elementType, null, null);
     }
 
     @Override
     public abstract List<T> getList();
+
+    @Override
+    public T createElement() {
+        return null;
+    }
 
     @Override
     public SelectableList<T> getSelectableList() {
@@ -204,9 +221,14 @@ public abstract class ListMBean<T>
     public void showCreateForm() {
         selectedIndex = -1;
         try {
-            copy = elementType.newInstance();
+            copy = factory.create();
             copyIndex = -1;
-        } catch (ReflectiveOperationException e) {
+
+            if (copy instanceof BaseDto<?, ?>) {
+                BaseDto<?, ?> dto = (BaseDto<?, ?>) copy;
+                dto.create();
+            }
+        } catch (FunctorException e) {
             new FacesUILogger(false).error("创建失败", copy);
         }
     }

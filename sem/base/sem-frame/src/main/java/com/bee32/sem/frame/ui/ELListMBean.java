@@ -1,5 +1,6 @@
 package com.bee32.sem.frame.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -42,7 +43,7 @@ public class ELListMBean<T>
                 value = elResolver.getValue(elContext, value, token);
             }
             if (value == null)
-                return null;
+                return new ArrayList<T>();
 
             if (!(value instanceof List<?>))
                 throw new IllegalUsageException("Property doesn't resolve to a List: " + property);
