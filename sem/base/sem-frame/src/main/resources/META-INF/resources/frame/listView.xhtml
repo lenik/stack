@@ -67,10 +67,10 @@
                             <tr>
                                 <td align="left">
                                     <p:commandButton id="create" value="添加" actionListener="${mbean.showCreateForm}"
-                                        update="@form, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
+                                        update=":@form, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
                                         oncomplete="${style == 'panel' ? '' : cc.attrs.editDialogVar.concat('.show();')}" />
                                     <p:commandButton id="remove" value="移除" actionListener="${mbean.removeSelection}"
-                                        update="@form, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
+                                        update=":@form, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
                                         disabled="${mbean.selection == null}" />
                                 </td>
                                 <td align="right">
@@ -93,37 +93,35 @@
 
             <ui:define name="editFormContent">
                 <ui:param name="item" value="${mbean.copy}" />
-                <h:panelGrid columns="1">
-                    <h:panelGroup id="content" layout="block">
-                        <h:panelGroup layout="block" rendered="${item != null}">
-                            <cc:insertChildren />
-                        </h:panelGroup>
+                <h:panelGroup id="content" layout="block">
+                    <h:panelGroup layout="block" rendered="${item != null}">
+                        <cc:insertChildren />
                     </h:panelGroup>
-                    <h:panelGroup id="ebuttons">
-                        <table border="0" width="100%">
-                            <tr>
-                                <td align="left">
-                                </td>
-                                <td align="right">
-                                    <cc:insertRawFacet name="editButtons" />
-                                    <p:commandButton id="apply-validated"
-                                        value="${(style == 'dialog' || style == 'editDialog') ? '确定' : smooth ? '应用*' : '应用'}"
-                                        disabled="${mbean.copy == null}" action="${mbean.apply}"
-                                        oncomplete="${style == 'panel' ? '' : cc.attrs.editDialogVar.concat('.hideValidated(args)')}"
-                                        update="${cc.attrs.indexView}:indexForm:body">
-                                        <f:setPropertyActionListener target="${mbean.copyMode}"
-                                            value="${cc.attrs.copy}" />
-                                    </p:commandButton>
-                                    <p:commandButton id="cancel" value="取消" disabled="${mbean.copy == null}"
-                                        actionListener="${mbean.cancel}" update="editForm, ${cc.attrs.editView}:more"
-                                        rendered="${style == 'panel' and not smooth}" />
-                                    <p:commandButton id="close" value="关闭" onclick="${cc.attrs.editDialogVar}.hide()"
-                                        rendered="${style == 'dialog' or style == 'editDialog'}" />
-                                </td>
-                            </tr>
-                        </table>
-                    </h:panelGroup>
-                </h:panelGrid>
+                </h:panelGroup>
+                <h:panelGroup id="ebuttons">
+                    <table border="0" width="100%">
+                        <tr>
+                            <td align="left">
+                            </td>
+                            <td align="right">
+                                <cc:insertRawFacet name="editButtons" />
+                                <p:commandButton id="apply-validated"
+                                    value="${(style == 'dialog' || style == 'editDialog') ? '确定' : (mbean.copyIndex == -1 ? '添加' : '应用').concat(smooth ? '*' : '')}"
+                                    disabled="${mbean.copy == null}" action="${mbean.apply}"
+                                    oncomplete="${style == 'panel' ? '' : cc.attrs.editDialogVar.concat('.hideValidated(args)')}"
+                                    update="${cc.attrs.indexView}:indexForm:body, apply-validated">
+                                    <f:setPropertyActionListener target="${mbean.copyMode}"
+                                        value="${cc.attrs.copy}" />
+                                </p:commandButton>
+                                <p:commandButton id="cancel" value="取消" disabled="${mbean.copy == null}"
+                                    actionListener="${mbean.cancel}" update="editForm, ${cc.attrs.editView}:more"
+                                    rendered="${style == 'panel' and not smooth}" />
+                                <p:commandButton id="close" value="关闭" onclick="${cc.attrs.editDialogVar}.hide()"
+                                    rendered="${style == 'dialog' or style == 'editDialog'}" />
+                            </td>
+                        </tr>
+                    </table>
+                </h:panelGroup>
             </ui:define>
 
             <ui:define name="editMore">
