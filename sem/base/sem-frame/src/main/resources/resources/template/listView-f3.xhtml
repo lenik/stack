@@ -1,0 +1,33 @@
+<ui:composition template="listView-f2.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk">
+
+    <ui:define name="indexForm">
+        <c:if test="${nested}">
+            <f:subview id="indexForm">
+                <ui:insert name="indexFormBody" />
+            </f:subview>
+        </c:if>
+        <c:if test="${not nested}">
+            <h:form id="indexForm">
+                <ui:insert name="indexFormBody" />
+            </h:form>
+        </c:if>
+        <ui:insert name="indexMore" />
+    </ui:define>
+
+    <ui:define name="editForm">
+        <c:if test="${nested}">
+            <f:subview id="editForm">
+                <ui:insert name="editFormBody" />
+            </f:subview>
+        </c:if>
+        <c:if test="${not nested}">
+            <h:form id="editForm">
+                <ui:insert name="editFormBody" />
+            </h:form>
+        </c:if>
+        <ui:insert name="editMore" />
+    </ui:define>
+
+</ui:composition>

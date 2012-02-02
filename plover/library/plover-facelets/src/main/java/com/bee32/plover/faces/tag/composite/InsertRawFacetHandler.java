@@ -25,7 +25,7 @@ import org.apache.myfaces.view.facelets.tag.composite.InsertFacetHandler;
 public class InsertRawFacetHandler
         extends InsertFacetHandler {
 
-    static final Logger logger = Logger.getLogger(InsertRawFacetHandler.class.getName());
+    static final Logger log = Logger.getLogger(InsertRawFacetHandler.class.getName());
 
     public InsertRawFacetHandler(TagConfig config) {
         super(config);
@@ -39,6 +39,7 @@ public class InsertRawFacetHandler
     @Override
     public void apply(FaceletContext ctx, UIComponent parent)
             throws IOException {
+
         String facetName = _name.getValue(ctx);
 
         AbstractFaceletContext actx = (AbstractFaceletContext) ctx;
