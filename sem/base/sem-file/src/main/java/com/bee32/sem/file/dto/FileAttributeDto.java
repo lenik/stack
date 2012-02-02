@@ -16,7 +16,7 @@ public class FileAttributeDto
 
     private static final long serialVersionUID = 1L;
 
-    FileBlobDto blob;
+    UserFileDto file;
 
     String name;
     int intVal;
@@ -33,7 +33,7 @@ public class FileAttributeDto
 
     @Override
     protected void _marshal(FileAttribute source) {
-        blob = mref(FileBlobDto.class, source.getBlob());
+        file = mref(UserFileDto.class, source.getFile());
         name = source.getName();
         intVal = source.getIntVal();
         floatVal = source.getFloatVal();
@@ -42,7 +42,7 @@ public class FileAttributeDto
 
     @Override
     protected void _unmarshalTo(FileAttribute target) {
-        merge(target, "blob", blob);
+        merge(target, "file", file);
         target.setName(name);
         target.setIntVal(intVal);
         target.setFloatVal(floatVal);
@@ -52,7 +52,7 @@ public class FileAttributeDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
-        blob = new FileBlobDto().ref(map.getString("blob"));
+        file = new UserFileDto().ref(map.getLong("file"));
         name = map.getString("name");
         intVal = map.getInt("intVal");
         floatVal = map.getDouble("floatVal");
@@ -61,17 +61,25 @@ public class FileAttributeDto
 
     @Override
     protected Serializable naturalId() {
-        return new IdComposite(naturalId(blob), name);
+        return new IdComposite(naturalId(file), name);
     }
 
-    public FileBlobDto getBlob() {
-        return blob;
+    @Override
+    public UserFileDto getEnclosingObject() {
+        return getFile();
     }
 
-    public void setBlob(FileBlobDto blob) {
-        if (blob == null)
-            throw new NullPointerException("blob");
-        this.blob = blob;
+    @Override
+    public void setEnclosingObject(UserFileDto enclosingObject) {
+        setFile(enclosingObject);
+    }
+
+    public UserFileDto getFile() {
+        return file;
+    }
+
+    public void setFile(UserFileDto file) {
+        this.file = file;
     }
 
     public String getName() {

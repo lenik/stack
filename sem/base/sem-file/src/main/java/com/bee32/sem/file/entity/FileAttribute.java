@@ -29,7 +29,7 @@ public class FileAttribute
     public static final int NAME_LENGTH = 30;
     public static final int STR_VAL_LENGTH = 120;
 
-    FileBlob blob;
+    UserFile file;
 
     String name;
     int intVal;
@@ -38,12 +38,12 @@ public class FileAttribute
 
     @NaturalId
     @ManyToOne
-    public FileBlob getBlob() {
-        return blob;
+    public UserFile getFile() {
+        return file;
     }
 
-    public void setBlob(FileBlob blob) {
-        this.blob = blob;
+    public void setFile(UserFile file) {
+        this.file = file;
     }
 
     @NaturalId
@@ -87,17 +87,17 @@ public class FileAttribute
 
     @Override
     protected Serializable naturalId() {
-        return new IdComposite(naturalId(blob), name);
+        return new IdComposite(naturalId(file), name);
     }
 
     @Override
     protected ICriteriaElement selector(String prefix) {
-        if (blob == null)
-            throw new NullPointerException("blob");
+        if (file == null)
+            throw new NullPointerException("file");
         if (name == null)
             throw new NullPointerException("key");
         return selectors(//
-                selector(prefix + "blob", blob), //
+                selector(prefix + "file", file), //
                 new Equals(prefix + "name", name));
     }
 
