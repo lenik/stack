@@ -8,6 +8,7 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.chance.entity.ChanceQuotationItem;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.MaterialPriceDto;
+import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.thing.AbstractOrderItemDto;
 
 public class ChanceQuotationItemDto
@@ -71,8 +72,13 @@ public class ChanceQuotationItemDto
         this.discount = discount;
     }
 
-    public MaterialPriceDto getBasePrice() {
-        return material.getLatestPrice();
+    public MCValue getBasePrice() {
+        if (material != null) {
+            MaterialPriceDto latestPrice = material.getLatestPrice();
+            if (latestPrice != null)
+                return latestPrice.getPrice();
+        }
+        return new MCValue();
     }
 
 }

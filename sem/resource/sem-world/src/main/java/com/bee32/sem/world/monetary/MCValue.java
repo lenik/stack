@@ -285,6 +285,8 @@ public class MCValue
 
     public BigDecimal getNativeValue(Date date)
             throws FxrQueryException {
+        if (date == null)
+            return BigDecimal.ZERO; // valueOf(Double.NaN);
 
         IFxrProvider fxrProvider = FxrProviderFactory.getFxrProvider();
 

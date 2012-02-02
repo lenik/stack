@@ -5,6 +5,7 @@
 
     <ui:param name="title" value="销售机会" />
     <ui:param name="bean" value="#{chanceBean}" />
+    <ui:param name="obj" value="#{bean.activeObject}" />
     <ui:param name="dicts" value="#{chanceDictsBean}" />
 
     <ui:define name="toolbarPeripherals">
@@ -28,9 +29,11 @@
             <h:outputText value="#{entry.source.label}" />
         </p:column>
 
-        <p:column headerText="客户">
-            <h:outputText value="#{entry.partiesHint}" />
-        </p:column>
+        <ui:remove>
+            <p:column headerText="客户">
+                <h:outputText value="#{entry.partiesHint}" />
+            </p:column>
+        </ui:remove>
 
         <p:column headerText="机会内容">
             <h:outputText value="#{entry.shortContent}" />
@@ -47,7 +50,7 @@
 
     <ui:define name="editDialogContent">
         <p:tabView id="tv">
-            <p:tab header="机会基本信息">
+            <p:tab title="机会基本信息">
                 <t:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
                     <h:outputText value="机会标题:" />
                     <t:panelGroup colspan="3">
@@ -56,32 +59,12 @@
 
                     <h:outputText value="机会分类:" />
                     <p:selectOneMenu id="category" value="#{obj.category.displayId}" style="width:100px;">
-                        <f:selectItems value="#{bean.category}" />
+                        <f:selectItems value="#{obj.category}" />
                     </p:selectOneMenu>
                     <h:outputText value="机会来源:" />
                     <p:selectOneMenu id="source" value="#{obj.source.displayId}" style="width:100px;">
-                        <f:selectItems value="#{bean.source}" />
+                        <f:selectItems value="#{obj.source}" />
                     </p:selectOneMenu>
-
-                    <h:outputText value="客户:" />
-                    <t:panelGroup colspan="3">
-                        <fr:listView>
-                            <f:facet name="columns">
-                                <p:column headerText="客户">
-                                    <h:outputText value="#{_party.party.displayName}" />
-                                </p:column>
-                                <p:column headerText="角色">
-                                    <h:outputText value="#{_party.role}" />
-                                </p:column>
-                            </f:facet>
-                            <h:panelGrid columns="2">
-                                <h:outputText value="客户:" />
-                                <h:outputText value="#{item.party.displayName}" />
-                                <h:outputLabel for="role" value="角色:" />
-                                <p:inputText id="role" value="#{item.role}" />
-                            </h:panelGrid>
-                        </fr:listView>
-                    </t:panelGroup>
 
                     <h:outputText value="机会地址:" />
                     <t:panelGroup colspan="3">
@@ -97,13 +80,33 @@
                     <t:panelGroup colspan="3">
                         <p:selectOneMenu id="stage" value="#{obj.stage.displayId}" style="width:120px;"
                             disabled="true">
-                            <f:selectItems value="#{bean.stage}" />
+                            <f:selectItems value="#{obj.stage}" />
                         </p:selectOneMenu>
                     </t:panelGroup>
                 </t:panelGrid>
             </p:tab>
 
-            <p:tab header="日志历史记录">
+            <p:tab title="客户">
+                <fr:listView id="partiesView" header="客户" style="panel" orientation="lr" mbean="#{bean.partiesMBean}"
+                    smooth="true" nested="true">
+                    <f:facet name="columns">
+                        <p:column headerText="客户">
+                            <h:outputText value="#{_party.party.displayName}" />
+                        </p:column>
+                        <p:column headerText="角色">
+                            <h:outputText value="#{_party.role}" />
+                        </p:column>
+                    </f:facet>
+                    <h:panelGrid columns="2">
+                        <h:outputText value="客户:" />
+                        <h:outputText value="#{item.party.displayName}" />
+                        <h:outputLabel for="role" value="角色:" />
+                        <p:inputText id="role" value="#{item.role}" />
+                    </h:panelGrid>
+                </fr:listView>
+            </p:tab>
+
+            <p:tab title="行动跟踪">
                 <p:toolbar id="toolbar">
                     <p:toolbarGroup align="left">
                         <p:commandButton id="relateActionButton" value="增加关联" actionListener="#{bean.initActions}"
@@ -114,7 +117,7 @@
                             update=":actionDetailForm" oncomplete="actionDetailDialog.show();" disabled="#{bean.selectedAction == null}" />
                     </p:toolbarGroup>
                 </p:toolbar>
-                <p:dataTable id="actionTable" var="action" value="#{_c.actions}" selection="#{_c.selectedAction}"
+                <p:dataTable id="actionTable" var="action" value="#{obj.actions}" selection="#{bean.selectedAction}"
                     selectionMode="single" rowKey="#{action.id}" rowIndexVar="rowIndex">
 
                     <p:ajax event="rowSelect" update=":editDialog:form:tv:toolbar" />
@@ -132,7 +135,7 @@
                     </p:column>
 
                     <p:column headerText="类型">
-                        <h:outputText value="#{action.actionType}" />
+                        <h:outputText value="#{action.plan ? '计划' : '日志'}" />
                     </p:column>
 
                     <p:column headerText="洽谈类型">
@@ -150,12 +153,12 @@
                 </p:dataTable>
             </p:tab>
 
-            <p:tab header="报价">
-                <fr:listView id="quotationsView" header="报价" style="panel" orientation="td"
-                    mbean="${bean.quotationsMBean}">
+            <p:tab title="报价">
+                <fr:listView id="quotationsIndexView" editView=":quotationsEditView" header="报价" style="indexPanel"
+                    orientation="td" mbean="${bean.quotationsMBean}" nested="true">
                     <f:facet name="columns">
                         <p:column headerText="标题">
-                            <h:outputText value="#{entry.subject}" />
+                            <h:outputText value="#{entry.label}" />
                         </p:column>
                         <p:column headerText="报价日期">
                             <h:outputText value="#{entry.createdDate}" />
@@ -164,9 +167,21 @@
                             <h:outputText value="#{entry.nativeTotal}" />
                         </p:column>
                     </f:facet>
+                </fr:listView>
+            </p:tab>
+        </p:tabView>
+    </ui:define>
+
+    <ui:define name="dialogs">
+        <sem:singleVerifierSupportDialog update="editDialog:form" />
+
+        <fr:listView id="quotationsEditView" indexView=":quotationsIndexView" header="报价" style="editDialog"
+            mbean="${bean.quotationsMBean}">
+            <p:tabView id="tv">
+                <p:tab title="报价说明">
                     <h:panelGrid columns="2">
                         <h:outputLabel for="subject" value="标题:" />
-                        <p:inputText id="subject" value="#{item.subject}" style="width:300px;" />
+                        <p:inputText id="subject" value="#{item.label}" style="width:300px;" />
 
                         <h:outputLabel for="chance" value="机会:" />
                         <p:inputText id="chance" value="#{item.chance.subject}" style="width:300px;"
@@ -178,39 +193,52 @@
                         <h:outputText value="付款说明:" />
                         <p:inputTextarea id="payment" value="#{item.payment}" style="width:300px; height:60px;" />
                     </h:panelGrid>
-                    <f:facet name="more">
-                        <fr:listView id="quotationItemsView" header="报价明细" style="panel" orientation="lr"
-                            mbean="${bean.quotationItemsView}">
-                            <f:facet name="columns">
-                                <p:column headerText="产品" style="width:70px;">
-                                    <h:outputText value="#{entry.material.label}" />
-                                </p:column>
+                </p:tab>
+                <p:tab title="报价明细">
+                    <fr:listView id="quotationItemsView" header="报价明细" style="panel" orientation="td"
+                        mbean="${bean.quotationItemsMBean}" nested="true" indexView=":quotationsEditView:editForm:tv:quotationItemsView"
+                        editView=":quotationsEditView:editForm:tv:quotationItemsView">
+                        <f:facet name="columns">
+                            <p:column headerText="产品" style="width:70px;">
+                                <h:outputText value="#{entry.material.label}" />
+                            </p:column>
 
-                                <p:column headerText="折扣" style="width:80px;">
-                                    <h:outputText value="#{entry.discount}" />
-                                </p:column>
+                            <p:column headerText="折扣" style="width:80px;">
+                                <h:outputText value="#{entry.discount}" />
+                            </p:column>
 
-                                <p:column headerText="基础价格" style="width:80px;">
-                                    <h:outputText value="#{entry.basePrice.price}" />
-                                </p:column>
+                            <p:column headerText="基础价格" style="width:80px;">
+                                <h:outputText value="#{entry.basePrice}" />
+                            </p:column>
 
-                                <p:column headerText="单价" style="width:80px;">
-                                    <h:outputText value="#{entry.price}" />
-                                </p:column>
+                            <p:column headerText="单价" style="width:80px;">
+                                <h:outputText value="#{entry.price}" />
+                            </p:column>
 
-                                <p:column headerText="数目" style="width:50px;">
-                                    <h:outputText value="#{entry.quantity}" />
-                                </p:column>
-                            </f:facet>
-                        </fr:listView>
-                    </f:facet>
-                </fr:listView>
-            </p:tab>
-        </p:tabView>
-    </ui:define>
+                            <p:column headerText="数目" style="width:50px;">
+                                <h:outputText value="#{entry.quantity}" />
+                            </p:column>
+                        </f:facet>
+                        <h:panelGrid columns="2">
+                            <h:outputText value="产品/物料" />
+                            <h:outputText id="material" value="#{item.material.label}" />
 
-    <ui:define name="dialogs">
-        <sem:singleVerifierSupportDialog update="editDialog:form" />
+                            <h:outputText value="基础价格" />
+                            <h:outputText value="#{item.basePrice}" />
+
+                            <h:outputText value="折扣" />
+                            <p:inputText id="discount" value="#{item.discount}" />
+
+                            <h:outputText value="单价" />
+                            <p:inputText id="price" value="#{item.price.value}" />
+
+                            <h:outputText value="数量" />
+                            <p:inputText id="quantity" value="#{item.quantity}" />
+                        </h:panelGrid>
+                    </fr:listView>
+                </p:tab>
+            </p:tabView>
+        </fr:listView>
 
         <p:confirmDialog message="确定要取消此行动记录的关联?" hideEffect="explode" header="注意" severity="alert"
             widgetVar="deleteActionConfirm">
@@ -222,38 +250,39 @@
         </p:confirmDialog>
 
         <p:dialog header="行动记录详细" widgetVar="actionDetailDialog" modal="true">
-            <c:set var="obj" value="#{bean.selectedAction}" />
+            <c:set var="action" value="#{bean.selectedAction}" />
             <h:form id="actionDetailForm">
-                <t:panelGrid rendered="#{obj != null}" columns="4"
+                <t:panelGrid rendered="#{action != null}" columns="4"
                     columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
 
                     <h:outputText value="开始时间:" />
-                    <p:calendar id="beginTime" pattern="yyyy-MM-dd HH:mm" navigator="#{true}" value="#{obj.beginTime}"
+                    <p:calendar id="beginTime" pattern="yyyy-MM-dd HH:mm" navigator="#{true}" value="#{action.beginTime}"
                         showOn="button" disabled="#{true}" />
                     <h:outputText value="结束时间:" />
-                    <p:calendar id="endTime" pattern="yyyy-MM-dd HH:mm" navigator="#{true}" value="#{obj.endTime}"
+                    <p:calendar id="endTime" pattern="yyyy-MM-dd HH:mm" navigator="#{true}" value="#{action.endTime}"
                         showOn="button" disabled="#{true}" />
 
                     <h:outputText value="日志类型:" />
-                    <p:selectOneMenu id="actionStyle" value="#{obj.plan}" style="width:100px;" disabled="#{true}">
+                    <p:selectOneMenu id="actionStyle" value="#{action.plan}" style="width:100px;"
+                        disabled="#{true}">
                         <f:selectItem itemLabel="计划" itemValue="#{true}" />
                         <f:selectItem itemLabel="日志" itemValue="#{false}" />
                     </p:selectOneMenu>
 
                     <h:outputText value="洽谈方式:" />
-                    <p:selectOneMenu id="style" value="#{obj.style.displayId}" style="width: 100px;"
+                    <p:selectOneMenu id="style" value="#{action.style.displayId}" style="width: 100px;"
                         disabled="#{true}">
                         <f:selectItems value="#{bean.chanceActionStyles}" />
                     </p:selectOneMenu>
 
                     <h:outputText value="拜访客户:" />
-                    <p:dataList var="party" value="#{obj.parties}" effectSpeed="fast">
+                    <p:dataList var="party" value="#{action.parties}" effectSpeed="fast">
                         <p:column>
                             <h:outputText value="#{party.displayName}" />
                         </p:column>
                     </p:dataList>
                     <h:outputText value="工作伙伴:" />
-                    <p:dataList id="partners" var="partner" value="#{obj.partners}" effectSpeed="fast">
+                    <p:dataList id="partners" var="partner" value="#{action.partners}" effectSpeed="fast">
                         <p:column>
                             <h:outputText value="#{partner.displayName}" />
                         </p:column>
@@ -261,24 +290,25 @@
 
                     <h:outputText value="内容描述:" />
                     <t:panelGroup colspan="3">
-                        <p:inputTextarea id="description" value="#{obj.moreInfo}" style="width:400px;height:50px;"
+                        <p:inputTextarea id="description" value="#{action.moreInfo}" style="width:400px;height:50px;"
                             readonly="#{true}" />
                     </t:panelGroup>
 
                     <h:outputText value="花费详细:" />
                     <t:panelGroup colspan="3">
-                        <p:inputTextarea id="spending" value="#{obj.spending}" style="width:400px;height:50px;"
+                        <p:inputTextarea id="spending" value="#{action.spending}" style="width:400px;height:50px;"
                             readonly="#{true}" />
                     </t:panelGroup>
 
                     <h:outputText value="机会标题:" />
                     <t:panelGroup colspan="3">
-                        <p:inputText id="chanceSubject" readonly="true" value="#{obj.chance.subject}" style="width:300px" />
+                        <p:inputText id="chanceSubject" readonly="true" value="#{action.chance.subject}"
+                            style="width:300px" />
                     </t:panelGroup>
 
                     <h:outputText value="机会阶段:" />
                     <t:panelGroup colspan="3">
-                        <p:selectOneMenu id="stage" value="#{obj.stage.displayId}" disabled="#{true}"
+                        <p:selectOneMenu id="stage" value="#{action.stage.displayId}" disabled="#{true}"
                             style="width:200px;">
                             <f:selectItem itemLabel="请选择机会阶段" itemValue="" />
                             <f:selectItems value="#{bean.stage}" />
