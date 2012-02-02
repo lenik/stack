@@ -11,10 +11,12 @@
             <h:outputText value="#{entry.name}" />
         </p:column>
 
-        <p:column headerText="成立日期">
-            <h:outputText value="#{entry.birthday}">
-                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-            </h:outputText>
+        <p:column headerText="标签">
+            <p:dataList value="#{entry.tags}" var="tag" type="definition">
+                <f:facet name="description">
+                    <h:outputText value="#{tag.label}" />
+                </f:facet>
+            </p:dataList>
         </p:column>
 
         <p:column headerText="公司类型">

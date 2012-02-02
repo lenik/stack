@@ -124,7 +124,7 @@ public class EmployeeInfo extends EntityAuto<Long> {
     }
 
     /**
-     * 雇佣日期
+     * 入职日期
      * @return
      */
     @Temporal(TemporalType.TIMESTAMP)
@@ -137,7 +137,7 @@ public class EmployeeInfo extends EntityAuto<Long> {
     }
 
     /**
-     * 辞职时间
+     * 离职日期
      * @return
      */
     @Temporal(TemporalType.TIMESTAMP)

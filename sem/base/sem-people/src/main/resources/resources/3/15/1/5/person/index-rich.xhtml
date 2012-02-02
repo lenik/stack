@@ -12,6 +12,14 @@
             <h:outputText value="#{entry.displayName}" />
         </p:column>
 
+        <p:column headerText="标签">
+            <p:dataList value="#{entry.tags}" var="tag" type="definition">
+                <f:facet name="description">
+                    <h:outputText value="#{tag.label}" />
+                </f:facet>
+            </p:dataList>
+        </p:column>
+
         <p:column headerText="性别">
             <h:outputText value="#{entry.sexText}" />
         </p:column>

@@ -39,10 +39,15 @@
 
         <p:column headerText="操作">
             <t:panelGroup>
-                <p:commandLink title="人事信息" update="editForm:editPanel" oncomplete="editDialog.show()">
-                    <f:setPropertyActionListener value="#{person}" target="#{bean.selectedPerson}" />
-                    <p:graphicImage value="#{location.ICON}/view16/help_view.gif" />
-                </p:commandLink>
+                        <p:commandLink title="人事信息"
+                            update=":personnelInfoForm"
+                            oncomplete="personnelInfoDialog.show()">
+                            <f:setPropertyActionListener
+                                value="#{person}"
+                                target="#{internalPersonAdminBean.selectedPerson}" />
+                            <p:graphicImage
+                                value="#{location.ICON}/view16/help_view.gif" />
+                        </p:commandLink>
                 <p:commandLink title="专业技能" update="editForm:editPanel" oncomplete="editDialog.show()">
                     <f:setPropertyActionListener value="#{person}" target="#{bean.selectedPerson}" />
                     <p:graphicImage value="#{location.ICON}/obj16/native_lib_path_attrib.gif" />
@@ -62,5 +67,34 @@
     <ui:define name="editDialogContent">
         Under development.
     </ui:define>
+
+
+        <p:dialog header="人事信息" widgetVar="personnelInfoDialog" modal="true"
+            height="500" width="640">
+
+            <h:form id="personnelInfoForm">
+                <t:panelGrid columns="4">
+                    <h:outputText value="入职日期"/>
+                    <p:inputText/>
+                    <h:outputText value="离职日期"/>
+                    <p:inputText/>
+
+                    <h:outputText value="考勤"/>
+                    <p:inputText/>
+                    <h:outputText value="学历"/>
+                    <p:inputText/>
+
+                    <h:outputText value="职称"/>
+                    <p:inputText/>
+                    <h:outputText value="职位"/>
+                    <p:inputText/>
+
+                    <h:outputText value="工作能力指数"/>
+                    <p:inputText/>
+                    <h:outputText value="月度工作表现"/>
+                    <p:inputText/>
+                </t:panelGrid>
+            </h:form>
+        </p:dialog>
 
 </ui:composition>
