@@ -13,6 +13,7 @@ import com.bee32.icsf.principal.User;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Offset;
+import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
@@ -422,8 +423,11 @@ public class AccountTicketAdminBean
         // TODO : 加入业务单是否已经审核的条件检查
 
         List<BudgetRequest> requests = serviceFor(BudgetRequest.class).list(
-                new Equals("owner.id", budgetRequestCreatorId),
-                new Like("description", "%" + budgetRequestPattern + "%"), AssetCriteria.haveNoCorrespondingTicket());
+                    new Or(
+                            new Equals("owner.id", budgetRequestCreatorId),
+                            new Like("description", "%" + budgetRequestPattern + "%")),
+                    AssetCriteria.haveNoCorrespondingTicket()
+                );
 
         budgetRequests = DTOs.marshalList(BudgetRequestDto.class, requests);
     }
