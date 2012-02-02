@@ -1,5 +1,8 @@
 package com.bee32.sem.frame.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
@@ -15,6 +18,7 @@ public class Person
     String name;
     int age;
     boolean girl;
+    List<Person> children = new ArrayList<Person>();
 
     public Person() {
     }
@@ -59,6 +63,20 @@ public class Person
 
     public void setGirl(boolean girl) {
         this.girl = girl;
+    }
+
+    public List<Person> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Person> children) {
+        if (children == null)
+            throw new NullPointerException("children");
+        this.children = children;
+    }
+
+    public int getChildrenCount() {
+        return children.size();
     }
 
 }
