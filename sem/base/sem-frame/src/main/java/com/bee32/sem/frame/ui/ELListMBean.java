@@ -1,6 +1,7 @@
 package com.bee32.sem.frame.ui;
 
 import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.el.ELContext;
 import javax.el.ELResolver;
@@ -20,16 +21,29 @@ public class ELListMBean<T>
     public ELListMBean(Class<T> elementType, Object root, String property) {
         super(elementType);
         this.root = root;
-        this.property = property;
+        this.property = property; // "${obj." + property + "}";
     }
 
     @Override
     public synchronized List<T> getList() {
         if (list == null) {
             FacesContext facesContext = FacesContext.getCurrentInstance();
+            // ExpressionFactory factory = facesContext.getApplication().getExpressionFactory();
             ELContext elContext = facesContext.getELContext();
+            // ValueExpression expr = factory.createValueExpression(property, List.class);
+            Object value;
+            // value = expr.getValue(elContext);
+
             ELResolver elResolver = elContext.getELResolver();
-            Object value = elResolver.getValue(elContext, root, property);
+            value = root;
+            StringTokenizer tokens = new StringTokenizer(property, ".");
+            while (value != null && tokens.hasMoreTokens()) {
+                String token = tokens.nextToken();
+                value = elResolver.getValue(elContext, value, token);
+            }
+            if (value == null)
+                return null;
+
             if (!(value instanceof List<?>))
                 throw new IllegalUsageException("Property doesn't resolve to a List: " + property);
 
