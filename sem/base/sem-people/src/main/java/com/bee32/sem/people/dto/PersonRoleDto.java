@@ -6,10 +6,12 @@ import javax.validation.constraints.NotNull;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.c.CEntityDto;
+import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.people.entity.PersonRole;
 
 public class PersonRoleDto
-        extends CEntityDto<PersonRole, Integer> {
+        extends CEntityDto<PersonRole, Integer>
+        implements IEnclosedObject<OrgDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -17,8 +19,8 @@ public class PersonRoleDto
 
     public static final int PERSON_CONTACTS = 2;
 
-    PersonDto person;
     OrgDto org;
+    PersonDto person;
     OrgUnitDto orgUnit;
     String altOrgUnit;
     String role;
@@ -36,7 +38,8 @@ public class PersonRoleDto
     @Override
     protected void _marshal(PersonRole source) {
         int x = 0;
-        if (selection.contains(PERSON_CONTACTS)) x |= PersonDto.CONTACTS;
+        if (selection.contains(PERSON_CONTACTS))
+            x |= PersonDto.CONTACTS;
         person = mref(PersonDto.class, x, source.getPerson());
 
         org = mref(OrgDto.class, source.getOrg());
@@ -72,13 +75,14 @@ public class PersonRoleDto
         description = map.getString("description");
     }
 
-    @NotNull
-    public PersonDto getPerson() {
-        return person;
+    @Override
+    public OrgDto getEnclosingObject() {
+        return getOrg();
     }
 
-    public void setPerson(PersonDto person) {
-        this.person = person;
+    @Override
+    public void setEnclosingObject(OrgDto enclosingObject) {
+        setOrg(enclosingObject);
     }
 
     @NotNull
@@ -88,6 +92,15 @@ public class PersonRoleDto
 
     public void setOrg(OrgDto org) {
         this.org = org;
+    }
+
+    @NotNull
+    public PersonDto getPerson() {
+        return person;
+    }
+
+    public void setPerson(PersonDto person) {
+        this.person = person;
     }
 
     public String getAltOrgUnit() {

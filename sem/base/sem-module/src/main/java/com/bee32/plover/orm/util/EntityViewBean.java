@@ -17,11 +17,12 @@ import com.bee32.plover.arch.util.ISelection;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.web.EntityHelper;
 import com.bee32.plover.restful.resource.StandardViews;
+import com.bee32.sem.frame.ui.IEnclosingContext;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 
 public abstract class EntityViewBean
         extends DataViewBean
-        implements ISelection {
+        implements ISelection, IEnclosingContext {
 
     private static final long serialVersionUID = 1L;
 
@@ -164,6 +165,11 @@ public abstract class EntityViewBean
 
     public final boolean isSelected() {
         return !getSelection().isEmpty();
+    }
+
+    @Override
+    public Object getEnclosingObject() {
+        return getActiveObject();
     }
 
     @SuppressWarnings("unchecked")

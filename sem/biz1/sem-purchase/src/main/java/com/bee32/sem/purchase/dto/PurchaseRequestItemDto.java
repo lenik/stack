@@ -11,12 +11,14 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.MomentIntervalDto;
+import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.purchase.entity.PurchaseRequestItem;
 
 public class PurchaseRequestItemDto
-        extends MomentIntervalDto<PurchaseRequestItem> {
+        extends MomentIntervalDto<PurchaseRequestItem>
+        implements IEnclosedObject<PurchaseRequestDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,8 +37,7 @@ public class PurchaseRequestItemDto
 
     PurchaseAdviceDto purchaseAdvice;
 
-    Integer warehouseId;   //公用于接收界面上传入的仓库id
-
+    Integer warehouseId; // 公用于接收界面上传入的仓库id
 
     @Override
     protected void _marshal(PurchaseRequestItem source) {
@@ -70,7 +71,7 @@ public class PurchaseRequestItemDto
         target.setAdditionalRequirement(additionalRequirement);
 
         if (selection.contains(INQUIRIES))
-            mergeList(target, "inquiries", inquiries );
+            mergeList(target, "inquiries", inquiries);
 
         merge(target, "purchaseAdvice", purchaseAdvice);
     }
@@ -79,6 +80,16 @@ public class PurchaseRequestItemDto
     protected void _parse(TextMap map)
             throws ParseException {
         throw new NotImplementedException();
+    }
+
+    @Override
+    public PurchaseRequestDto getEnclosingObject() {
+        return getPurchaseRequest();
+    }
+
+    @Override
+    public void setEnclosingObject(PurchaseRequestDto enclosingObject) {
+        setPurchaseRequest(enclosingObject);
     }
 
     public PurchaseRequestDto getPurchaseRequest() {
@@ -145,7 +156,6 @@ public class PurchaseRequestItemDto
         this.inquiries = inquiries;
     }
 
-
     public synchronized void addInquiry(InquiryDto inquiry) {
         if (inquiry == null)
             throw new NullPointerException("inquiry");
@@ -165,8 +175,6 @@ public class PurchaseRequestItemDto
         // inquiry.detach();
     }
 
-
-
     public PurchaseAdviceDto getPurchaseAdvice() {
         return purchaseAdvice;
     }
@@ -174,7 +182,6 @@ public class PurchaseRequestItemDto
     public void setPurchaseAdvice(PurchaseAdviceDto purchaseAdvice) {
         this.purchaseAdvice = purchaseAdvice;
     }
-
 
     public Integer getWarehouseId() {
         return warehouseId;

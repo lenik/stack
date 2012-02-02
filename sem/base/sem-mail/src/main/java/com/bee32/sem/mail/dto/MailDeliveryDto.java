@@ -9,12 +9,14 @@ import javax.free.UnexpectedException;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.base.tx.TxEntityDto;
+import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.mail.MailFlags;
 import com.bee32.sem.mail.entity.MailDelivery;
 import com.bee32.sem.mail.entity.MailOrientation;
 
 public class MailDeliveryDto
-        extends TxEntityDto<MailDelivery> {
+        extends TxEntityDto<MailDelivery>
+        implements IEnclosedObject<MailFolderDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -55,6 +57,16 @@ public class MailDeliveryDto
         orientation = MailOrientation.valueOf(_orientation);
 
         flags.bits = map.getInt("flags");
+    }
+
+    @Override
+    public MailFolderDto getEnclosingObject() {
+        return getFolder();
+    }
+
+    @Override
+    public void setEnclosingObject(MailFolderDto enclosingObject) {
+        setFolder(enclosingObject);
     }
 
     public MailDto getMail() {

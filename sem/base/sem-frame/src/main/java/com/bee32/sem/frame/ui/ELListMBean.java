@@ -9,6 +9,8 @@ import javax.el.ELResolver;
 import javax.faces.context.FacesContext;
 import javax.free.IllegalUsageException;
 
+import org.apache.commons.collections15.Factory;
+
 public class ELListMBean<T>
         extends ListMBean<T> {
 
@@ -19,8 +21,14 @@ public class ELListMBean<T>
 
     transient List<T> list;
 
+    public ELListMBean(Factory<T> elementFactory, Object root, String property) {
+        super(elementFactory, root);
+        this.root = root;
+        this.property = property; // "${obj." + property + "}";
+    }
+
     public ELListMBean(Class<T> elementType, Object root, String property) {
-        super(elementType);
+        super(elementType, root);
         this.root = root;
         this.property = property; // "${obj." + property + "}";
     }

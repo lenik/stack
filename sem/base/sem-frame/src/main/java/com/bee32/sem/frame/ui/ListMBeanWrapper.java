@@ -9,7 +9,7 @@ public class ListMBeanWrapper<T>
     List<T> list;
 
     ListMBeanWrapper(Class<T> elementType, List<T> list) {
-        super(elementType);
+        super(elementType, null);
         if (list == null)
             throw new NullPointerException("list");
         this.list = list;

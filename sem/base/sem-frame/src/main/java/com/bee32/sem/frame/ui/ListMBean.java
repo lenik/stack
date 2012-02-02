@@ -20,6 +20,8 @@ import org.apache.commons.collections15.functors.InstantiateFactory;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.arch.util.dto.BaseDto;
 import com.bee32.plover.faces.utils.FacesContextSupport;
@@ -29,35 +31,64 @@ import com.bee32.plover.faces.utils.SelectableList;
 @NotThreadSafe
 public abstract class ListMBean<T>
         extends FacesContextSupport
-        implements IListMBean<T>, Serializable {
+        implements IListMBean<T>, IEnclosingContext, Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    static Logger logger = LoggerFactory.getLogger(ListMBean.class);
+
+    final Object context;
     final Factory<T> factory;
     int selectedIndex = -1;
     boolean copyMode;
     int copyIndex = -1;
     T copy;
 
-    public ListMBean(Factory<T> factory)
-            throws CreateException {
+    public ListMBean(Factory<T> factory, Object context) {
         if (factory == null)
             throw new NullPointerException("factory");
         this.factory = factory;
+        this.context = context;
     }
 
-    public ListMBean(Class<T> elementType) {
+    public ListMBean(Class<T> elementType, Object context) {
         if (elementType == null)
             throw new NullPointerException("elementType");
         this.factory = InstantiateFactory.getInstance(elementType, null, null);
+        this.context = context;
     }
 
     @Override
     public abstract List<T> getList();
 
     @Override
-    public T createElement() {
-        return null;
+    public T createElement()
+            throws CreateException {
+        T obj;
+        try {
+            obj = factory.create();
+        } catch (FunctorException e) {
+            throw new CreateException(e.getMessage(), e);
+        }
+
+        if (obj instanceof BaseDto<?, ?>) {
+            BaseDto<?, ?> dto = (BaseDto<?, ?>) obj;
+            dto.create();
+        }
+
+        if (context != null && obj instanceof IEnclosedObject) {
+            @SuppressWarnings("unchecked")
+            IEnclosedObject<Object> enclosed = ((IEnclosedObject<Object>) obj);
+            Object enclosingObject = context;
+            if (context instanceof IEnclosingContext)
+                enclosingObject = ((IEnclosingContext) context).getEnclosingObject();
+            try {
+                enclosed.setEnclosingObject(enclosingObject);
+            } catch (ClassCastException e) {
+                logger.warn("Failed to cast enclosing object.");
+            }
+        }
+        return obj;
     }
 
     @Override
@@ -184,6 +215,11 @@ public abstract class ListMBean<T>
         return getCopy();
     }
 
+    @Override
+    public Object getEnclosingObject() {
+        return getCopy();
+    }
+
     static DataTable findDataTable(UIComponent component) {
         while (component != null) {
             if (component instanceof DataTable)
@@ -221,14 +257,9 @@ public abstract class ListMBean<T>
     public void showCreateForm() {
         selectedIndex = -1;
         try {
-            copy = factory.create();
+            copy = createElement();
             copyIndex = -1;
-
-            if (copy instanceof BaseDto<?, ?>) {
-                BaseDto<?, ?> dto = (BaseDto<?, ?>) copy;
-                dto.create();
-            }
-        } catch (FunctorException e) {
+        } catch (CreateException e) {
             new FacesUILogger(false).error("创建失败", copy);
         }
     }
@@ -257,8 +288,12 @@ public abstract class ListMBean<T>
         copy = null;
     }
 
+    public static <T> ListMBean<T> fromEL(Object root, String property, Factory<T> elementFactory) {
+        return new ELListMBean<T>(elementFactory, root, property);
+    }
+
     public static <T> ListMBean<T> fromEL(Object root, String property, Class<T> elementType) {
-        return new ELListMBean<>(elementType, root, property);
+        return new ELListMBean<T>(elementType, root, property);
     }
 
 }

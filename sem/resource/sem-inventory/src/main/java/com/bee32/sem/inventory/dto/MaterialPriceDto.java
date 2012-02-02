@@ -6,11 +6,13 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
+import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.inventory.entity.MaterialPrice;
 import com.bee32.sem.world.monetary.MutableMCValue;
 
 public class MaterialPriceDto
-        extends UIEntityDto<MaterialPrice, Long> {
+        extends UIEntityDto<MaterialPrice, Long>
+        implements IEnclosedObject<MaterialDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,6 +37,16 @@ public class MaterialPriceDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
+    }
+
+    @Override
+    public MaterialDto getEnclosingObject() {
+        return getMaterial();
+    }
+
+    @Override
+    public void setEnclosingObject(MaterialDto enclosingObject) {
+        setMaterial(enclosingObject);
     }
 
     public MaterialDto getMaterial() {

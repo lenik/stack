@@ -7,11 +7,14 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.xp.EntityExtDto;
 import com.bee32.plover.util.TextUtil;
+import com.bee32.sem.frame.ui.IEnclosedObject;
+import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.people.entity.Contact;
 import com.bee32.sem.people.entity.ContactXP;
 
 public class ContactDto
-        extends EntityExtDto<Contact, Integer, ContactXP> {
+        extends EntityExtDto<Contact, Integer, ContactXP>
+        implements IEnclosedObject<PartyDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -70,6 +73,23 @@ public class ContactDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
+    }
+
+    @Override
+    public PartyDto getEnclosingObject() {
+        return getParty();
+    }
+
+    /**
+     * 如果 contact 用于别处，没有对应的 party，那么 enclosingObject 很可能是其它类型。
+     *
+     * 在这种情况下，注入服务需要判断类型再进行。
+     *
+     * @see ListMBean#createElement()
+     */
+    @Override
+    public void setEnclosingObject(PartyDto enclosingObject) {
+        setParty(enclosingObject);
     }
 
     public PartyDto getParty() {

@@ -7,6 +7,7 @@ import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.asset.entity.AccountTicketItem;
 import com.bee32.sem.base.tx.TxEntityDto;
+import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.process.verify.builtin.dto.SingleVerifierWithNumberSupportDto;
 import com.bee32.sem.process.verify.dto.IVerifiableDto;
@@ -14,7 +15,7 @@ import com.bee32.sem.world.monetary.MutableMCValue;
 
 public class AccountTicketItemDto
         extends TxEntityDto<AccountTicketItem>
-        implements IVerifiableDto {
+        implements IVerifiableDto, IEnclosedObject<AccountTicketDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -68,6 +69,24 @@ public class AccountTicketItemDto
     protected void _parse(TextMap map)
             throws ParseException {
         throw new NotImplementedException();
+    }
+
+    @Override
+    public AccountTicketDto getEnclosingObject() {
+        return getTicket();
+    }
+
+    @Override
+    public void setEnclosingObject(AccountTicketDto enclosingObject) {
+        setTicket(enclosingObject);
+    }
+
+    public AccountTicketDto getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(AccountTicketDto ticket) {
+        this.ticket = ticket;
     }
 
     public int getIndex() {
@@ -143,14 +162,6 @@ public class AccountTicketItemDto
             return "借方";
         else
             return "贷方";
-    }
-
-    public AccountTicketDto getTicket() {
-        return ticket;
-    }
-
-    public void setTicket(AccountTicketDto ticket) {
-        this.ticket = ticket;
     }
 
     public String getCreator() {

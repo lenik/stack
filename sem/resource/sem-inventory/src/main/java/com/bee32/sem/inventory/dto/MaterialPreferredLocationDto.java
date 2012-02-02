@@ -7,10 +7,12 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
+import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.inventory.entity.MaterialPreferredLocation;
 
 public class MaterialPreferredLocationDto
-        extends UIEntityDto<MaterialPreferredLocation, Long> {
+        extends UIEntityDto<MaterialPreferredLocation, Long>
+        implements IEnclosedObject<MaterialDto> {
 
     private static final long serialVersionUID = 1L;
     public static final int MATERIAL = 1;
@@ -41,6 +43,16 @@ public class MaterialPreferredLocationDto
         material = new MaterialDto().ref(map.getNLong("material"));
         location = new StockLocationDto().ref(map.getNInt("location"));
         permanent = map.getBoolean("permanent");
+    }
+
+    @Override
+    public MaterialDto getEnclosingObject() {
+        return getMaterial();
+    }
+
+    @Override
+    public void setEnclosingObject(MaterialDto enclosingObject) {
+        setMaterial(enclosingObject);
     }
 
     public MaterialDto getMaterial() {

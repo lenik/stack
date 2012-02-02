@@ -9,6 +9,7 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.entity.EntityUtil;
+import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.inventory.entity.StockItemState;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
@@ -16,7 +17,8 @@ import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.world.thing.AbstractOrderItemDto;
 
 public class StockOrderItemDto
-        extends AbstractOrderItemDto<StockOrderItem> {
+        extends AbstractOrderItemDto<StockOrderItem>
+        implements IEnclosedObject<AbstractStockOrderDto<? extends StockOrder>> {
 
     private static final long serialVersionUID = 1L;
 
@@ -60,7 +62,7 @@ public class StockOrderItemDto
         AbstractStockOrderDto<? extends StockOrder> parent = getParent();
         if (parent == null || parent.isNull()) {
             return false;
-            //throw new IllegalStateException("Parent isn't set.");
+            // throw new IllegalStateException("Parent isn't set.");
         }
 
         StockOrderSubject subject = parent.getSubject();
@@ -108,6 +110,16 @@ public class StockOrderItemDto
             throws ParseException {
         map.getString("batch");
         map.getString("state");
+    }
+
+    @Override
+    public AbstractStockOrderDto<? extends StockOrder> getEnclosingObject() {
+        return getParent();
+    }
+
+    @Override
+    public void setEnclosingObject(AbstractStockOrderDto<? extends StockOrder> enclosingObject) {
+        setParent(enclosingObject);
     }
 
     public AbstractStockOrderDto<? extends StockOrder> getParent() {

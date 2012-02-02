@@ -5,14 +5,15 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.chance.entity.ChanceCompetitor;
+import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.world.monetary.MutableMCValue;
 
 public class ChanceCompetitorDto
-        extends UIEntityDto<ChanceCompetitor, Integer> {
+        extends UIEntityDto<ChanceCompetitor, Integer>
+        implements IEnclosedObject<ChanceDto> {
 
     private static final long serialVersionUID = 1L;
 
-    private String name;
     private ChanceDto chance;
     private MutableMCValue price;
     private String capability;
@@ -24,7 +25,6 @@ public class ChanceCompetitorDto
 
     @Override
     protected void _marshal(ChanceCompetitor source) {
-        this.name = source.getName();
         this.chance = mref(ChanceDto.class, source.getChance());
         this.price = source.getPrice().toMutable();
         this.capability = source.getCapability();
@@ -37,7 +37,6 @@ public class ChanceCompetitorDto
 
     @Override
     protected void _unmarshalTo(ChanceCompetitor target) {
-        target.setName(name);
         merge(target, "chance", chance);
         target.setPrice(price);
         target.setCapability(capability);
@@ -53,12 +52,14 @@ public class ChanceCompetitorDto
             throws ParseException {
     }
 
-    public String getName() {
-        return name;
+    @Override
+    public ChanceDto getEnclosingObject() {
+        return getChance();
     }
 
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public void setEnclosingObject(ChanceDto enclosingObject) {
+        setChance(enclosingObject);
     }
 
     public ChanceDto getChance() {

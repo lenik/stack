@@ -2,6 +2,8 @@ package com.bee32.sem.frame.ui;
 
 import java.util.List;
 
+import javax.free.CreateException;
+
 import com.bee32.plover.faces.utils.SelectableList;
 
 public interface IListMBean<T> {
@@ -10,7 +12,8 @@ public interface IListMBean<T> {
 
     SelectableList<T> getSelectableList();
 
-    T createElement();
+    T createElement()
+            throws CreateException;
 
     void addElement(T element);
 

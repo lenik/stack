@@ -10,13 +10,15 @@ import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.c.CEntityDto;
 import com.bee32.sem.bom.dto.PartDto;
+import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.purchase.entity.MakeOrderItem;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.monetary.MutableMCValue;
 
 public class MakeOrderItemDto
-        extends CEntityDto<MakeOrderItem, Long> {
+        extends CEntityDto<MakeOrderItem, Long>
+        implements IEnclosedObject<MakeOrderDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -60,6 +62,16 @@ public class MakeOrderItemDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
+    }
+
+    @Override
+    public MakeOrderDto getEnclosingObject() {
+        return getOrder();
+    }
+
+    @Override
+    public void setEnclosingObject(MakeOrderDto enclosingObject) {
+        setOrder(enclosingObject);
     }
 
     public MakeOrderDto getOrder() {

@@ -9,13 +9,15 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.asset.entity.StockTradeItem;
 import com.bee32.sem.base.tx.TxEntityDto;
+import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.monetary.MutableMCValue;
 
 public class StockTradeItemDto
-        extends TxEntityDto<StockTradeItem> {
+        extends TxEntityDto<StockTradeItem>
+        implements IEnclosedObject<StockTradeDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -62,6 +64,24 @@ public class StockTradeItemDto
             throws ParseException {
         throw new NotImplementedException();
 
+    }
+
+    @Override
+    public StockTradeDto getEnclosingObject() {
+        return getTrade();
+    }
+
+    @Override
+    public void setEnclosingObject(StockTradeDto enclosingObject) {
+        setTrade(enclosingObject);
+    }
+
+    public StockTradeDto getTrade() {
+        return trade;
+    }
+
+    public void setTrade(StockTradeDto trade) {
+        this.trade = trade;
     }
 
     public int getIndex() {
@@ -125,14 +145,6 @@ public class StockTradeItemDto
                 nativeTotal = price.multiply(getQuantity());
         }
         return nativeTotal;
-    }
-
-    public StockTradeDto getTrade() {
-        return trade;
-    }
-
-    public void setTrade(StockTradeDto trade) {
-        this.trade = trade;
     }
 
 }

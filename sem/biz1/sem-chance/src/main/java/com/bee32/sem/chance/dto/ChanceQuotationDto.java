@@ -1,14 +1,17 @@
 package com.bee32.sem.chance.dto;
 
+import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.chance.entity.ChanceQuotation;
 import com.bee32.sem.chance.entity.ChanceQuotationItem;
+import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.world.thing.AbstractOrderDto;
 
 public class ChanceQuotationDto
-        extends AbstractOrderDto<ChanceQuotation, ChanceQuotationItem, ChanceQuotationItemDto> {
+        extends AbstractOrderDto<ChanceQuotation, ChanceQuotationItem, ChanceQuotationItemDto>
+        implements IEnclosedObject<ChanceDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,6 +36,17 @@ public class ChanceQuotationDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public ChanceDto getEnclosingObject() {
+        return getChance();
+    }
+
+    @Override
+    public void setEnclosingObject(ChanceDto enclosingObject) {
+        setChance(enclosingObject);
     }
 
     public ChanceDto getChance() {

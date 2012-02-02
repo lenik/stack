@@ -10,10 +10,12 @@ import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.c.CEntityDto;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.chance.entity.ChanceParty;
+import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.people.dto.PartyDto;
 
 public class ChancePartyDto
-        extends CEntityDto<ChanceParty, Long> {
+        extends CEntityDto<ChanceParty, Long>
+        implements IEnclosedObject<ChanceDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -46,6 +48,16 @@ public class ChancePartyDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
+    }
+
+    @Override
+    public ChanceDto getEnclosingObject() {
+        return getChance();
+    }
+
+    @Override
+    public void setEnclosingObject(ChanceDto enclosingObject) {
+        setChance(enclosingObject);
     }
 
     public ChanceDto getChance() {

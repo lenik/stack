@@ -11,10 +11,12 @@ import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.MomentIntervalDto;
 import com.bee32.sem.bom.dto.PartDto;
+import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.purchase.entity.MakeTaskItem;
 
 public class MakeTaskItemDto
-        extends MomentIntervalDto<MakeTaskItem> {
+        extends MomentIntervalDto<MakeTaskItem>
+        implements IEnclosedObject<MakeTaskDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -51,6 +53,16 @@ public class MakeTaskItemDto
     protected void _parse(TextMap map)
             throws ParseException {
         throw new NotImplementedException();
+    }
+
+    @Override
+    public MakeTaskDto getEnclosingObject() {
+        return getTask();
+    }
+
+    @Override
+    public void setEnclosingObject(MakeTaskDto enclosingObject) {
+        setTask(enclosingObject);
     }
 
     public MakeTaskDto getTask() {

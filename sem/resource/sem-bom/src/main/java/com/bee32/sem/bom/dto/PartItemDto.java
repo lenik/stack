@@ -9,11 +9,13 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.bom.entity.PartItem;
+import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.inventory.Classification;
 import com.bee32.sem.inventory.dto.MaterialDto;
 
 public class PartItemDto
-        extends UIEntityDto<PartItem, Long> {
+        extends UIEntityDto<PartItem, Long>
+        implements IEnclosedObject<PartDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -67,6 +69,16 @@ public class PartItemDto
     protected void _parse(TextMap map)
             throws ParseException {
         throw new NotImplementedException();
+    }
+
+    @Override
+    public PartDto getEnclosingObject() {
+        return getParent();
+    }
+
+    @Override
+    public void setEnclosingObject(PartDto enclosingObject) {
+        setParent(enclosingObject);
     }
 
     public PartDto getParent() {

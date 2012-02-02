@@ -6,13 +6,15 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.chance.entity.ChanceQuotationItem;
+import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.MaterialPriceDto;
 import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.thing.AbstractOrderItemDto;
 
 public class ChanceQuotationItemDto
-        extends AbstractOrderItemDto<ChanceQuotationItem> {
+        extends AbstractOrderItemDto<ChanceQuotationItem>
+        implements IEnclosedObject<ChanceQuotationDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -37,6 +39,16 @@ public class ChanceQuotationItemDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
+    }
+
+    @Override
+    public ChanceQuotationDto getEnclosingObject() {
+        return getParent();
+    }
+
+    @Override
+    public void setEnclosingObject(ChanceQuotationDto enclosingObject) {
+        setParent(enclosingObject);
     }
 
     public ChanceQuotationDto getParent() {

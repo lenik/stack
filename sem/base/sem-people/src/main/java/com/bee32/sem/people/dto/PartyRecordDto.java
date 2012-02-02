@@ -8,10 +8,12 @@ import javax.validation.constraints.NotNull;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.MomentIntervalDto;
+import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.people.entity.PartyRecord;
 
 public class PartyRecordDto
-        extends MomentIntervalDto<PartyRecord> {
+        extends MomentIntervalDto<PartyRecord>
+        implements IEnclosedObject<PartyDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -48,6 +50,16 @@ public class PartyRecordDto
         party = new PartyDto(0).ref(partyId);
 
         text = map.getString("text");
+    }
+
+    @Override
+    public PartyDto getEnclosingObject() {
+        return getParty();
+    }
+
+    @Override
+    public void setEnclosingObject(PartyDto enclosingObject) {
+        setParty(enclosingObject);
     }
 
     @NotNull

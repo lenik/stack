@@ -7,10 +7,12 @@ import com.bee32.icsf.principal.GroupDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.tree.TreeEntityDto;
+import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.people.entity.OrgUnit;
 
 public class OrgUnitDto
-        extends TreeEntityDto<OrgUnit, Integer, OrgUnitDto> {
+        extends TreeEntityDto<OrgUnit, Integer, OrgUnitDto>
+        implements IEnclosedObject<OrgDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -48,21 +50,14 @@ public class OrgUnitDto
         forWhichGroup = new GroupDto().ref(map.getInt("forWhichGroup"));
     }
 
-    @NLength(min = 2, max = OrgUnit.LABEL_LENGTH)
     @Override
-    public String getLabel() {
-        return super.getLabel();
-    }
-
-    @NLength(min = 2, max = OrgUnit.LABEL_LENGTH)
-    @Override
-    public String getName() {
-        return super.getLabel();
+    public OrgDto getEnclosingObject() {
+        return getOrg();
     }
 
     @Override
-    protected void setName(String name) {
-        setLabel(name);
+    public void setEnclosingObject(OrgDto enclosingObject) {
+        setOrg(enclosingObject);
     }
 
     @NotNull
@@ -74,6 +69,24 @@ public class OrgUnitDto
         if (org == null)
             throw new NullPointerException("org");
         this.org = org;
+    }
+
+    @NLength(min = 2, max = OrgUnit.LABEL_LENGTH)
+    @Override
+    public String getLabel() {
+        return super.getLabel();
+    }
+
+    @NLength(min = 2, max = OrgUnit.LABEL_LENGTH)
+    @Deprecated
+    @Override
+    public String getName() {
+        return super.getLabel();
+    }
+
+    @Override
+    protected void setName(String name) {
+        setLabel(name);
     }
 
     public ContactDto getContact() {

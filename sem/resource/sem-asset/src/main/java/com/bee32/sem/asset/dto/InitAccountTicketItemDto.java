@@ -11,7 +11,6 @@ public class InitAccountTicketItemDto
 
     private static final long serialVersionUID = 1L;
 
-
     @Override
     protected void _marshal(AccountTicketItem source) {
         super._marshal(source);
@@ -27,4 +26,5 @@ public class InitAccountTicketItemDto
             throws ParseException {
         throw new NotImplementedException();
     }
+
 }

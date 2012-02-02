@@ -12,13 +12,14 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.MomentIntervalDto;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.util.DateToRange;
+import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.process.verify.builtin.dto.SingleVerifierSupportDto;
 import com.bee32.sem.process.verify.dto.IVerifiableDto;
 
 public class ChanceActionDto
         extends MomentIntervalDto<ChanceAction>
-        implements IVerifiableDto {
+        implements IVerifiableDto, IEnclosedObject<ChanceDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -93,6 +94,16 @@ public class ChanceActionDto
             throws ParseException {
         plan = map.getString("plan") == "plan" ? true : false;
         actor = new UserDto().ref(map.getInt("actorId"));
+    }
+
+    @Override
+    public ChanceDto getEnclosingObject() {
+        return getChance();
+    }
+
+    @Override
+    public void setEnclosingObject(ChanceDto enclosingObject) {
+        setChance(enclosingObject);
     }
 
     public String getDate() {
