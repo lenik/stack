@@ -29,7 +29,7 @@ public abstract class DataExchangeObject<T>
     }
 
     @Override
-    public <D extends BaseDto<? extends T, Void>> D ref(T source) {
+    public <D extends BaseDto<?, ?>> D ref(T source) {
         throw new NotImplementedException();
     }
 

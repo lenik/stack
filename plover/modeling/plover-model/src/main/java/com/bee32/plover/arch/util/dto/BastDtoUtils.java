@@ -56,7 +56,7 @@ class DummyDto
     }
 
     @Override
-    public <D extends BaseDto<? extends Dummy, Object>> D ref(Dummy source) {
+    public <D extends BaseDto<?, ?>> D ref(Dummy source) {
         return null;
     }
 

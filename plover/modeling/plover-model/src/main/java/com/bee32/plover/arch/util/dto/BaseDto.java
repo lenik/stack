@@ -1,6 +1,7 @@
 package com.bee32.plover.arch.util.dto;
 
 import java.io.Serializable;
+import java.lang.reflect.Modifier;
 
 import javax.free.IllegalUsageException;
 
@@ -75,6 +76,29 @@ public abstract class BaseDto<S, C>
     protected void initSourceType(Class<? extends S> sourceType) {
         // XXX cast?
         this.sourceType = (Class<S>) sourceType;
+    }
+
+    public <$ extends BaseDto<?, ?>> $ create() {
+        int modifiers = sourceType.getModifiers();
+        if (Modifier.isAbstract(modifiers))
+            throw new IllegalUsageException("You can't create a DTO for abstract entity.");
+
+        S newInstance;
+        try {
+            newInstance = sourceType.newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to instantiate " + sourceType, e);
+        }
+
+        // Instead of:
+        // __marshal(newInstance);
+        // _marshal(newInstance);
+        marshal(newInstance);
+        stereotyped = false;
+
+        @SuppressWarnings("unchecked")
+        $ self = ($) this;
+        return self;
     }
 
     public int getSelection() {

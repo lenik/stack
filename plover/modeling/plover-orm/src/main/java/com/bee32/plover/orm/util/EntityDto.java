@@ -3,7 +3,6 @@ package com.bee32.plover.orm.util;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
-import java.lang.reflect.Modifier;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
@@ -60,31 +59,6 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         createTransients();
-    }
-
-    public <$ extends EntityDto<E, K>> $ create() {
-        Class<? extends E> entityType = getEntityType();
-
-        int modifiers = entityType.getModifiers();
-        if (Modifier.isAbstract(modifiers))
-            throw new IllegalUsageException("You can't create a DTO for abstract entity.");
-
-        E newInstance;
-        try {
-            newInstance = entityType.newInstance();
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to instantiate " + entityType, e);
-        }
-
-        // Instead of:
-        // __marshal(newInstance);
-        // _marshal(newInstance);
-        marshal(newInstance);
-        stereotyped = false;
-
-        @SuppressWarnings("unchecked")
-        $ self = ($) this;
-        return self;
     }
 
     protected IEntityMarshalContext getMarshalContext() {
@@ -445,7 +419,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      * @return This DTO.
      */
     @Override
-    public <$ extends BaseDto<? extends E, IEntityMarshalContext>> $ ref(E entity) {
+    public <$ extends BaseDto<?, ?>> $ ref(E entity) {
         // 1, Ref-by-id by default.
         // 2. Don't set ID_VER_REF here.
         marshalAs(MarshalType.ID_REF);
