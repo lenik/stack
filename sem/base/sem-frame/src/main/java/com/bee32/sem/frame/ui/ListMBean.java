@@ -163,6 +163,10 @@ public abstract class ListMBean<T>
         return copy;
     }
 
+    public T getActiveObject() {
+        return getCopy();
+    }
+
     static DataTable findDataTable(UIComponent component) {
         while (component != null) {
             if (component instanceof DataTable)

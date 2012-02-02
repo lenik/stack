@@ -1,6 +1,7 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:p="http://primefaces.org/ui"
-    xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:sem="http://java.sun.com/jsf/composite/3/15" template="/template/simple-entity.xhtml">
+<ui:composition template="/template/simple-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:fr="http://java.sun.com/jsf/composite/frame"
+    xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
     <ui:param name="title" value="销售机会" />
     <ui:param name="bean" value="#{chanceBean}" />
@@ -64,34 +65,22 @@
 
                     <h:outputText value="客户:" />
                     <t:panelGroup colspan="3">
-                        <t:panelGrid columns="2">
-                            <p:dataTable id="chanceParties" var="_party" value="#{obj.parties}">
-                                <p:column headerText="客户名称" style="width:150px">
+                        <fr:listView>
+                            <f:facet name="columns">
+                                <p:column headerText="客户">
                                     <h:outputText value="#{_party.party.displayName}" />
                                 </p:column>
-
-                                <p:column headerText="角色" style="width:150px">
+                                <p:column headerText="角色">
                                     <h:outputText value="#{_party.role}" />
                                 </p:column>
-
-                                <p:column headerText="操作" style="width:70px">
-                                    <p:commandLink update=":chancePartyEditForm:chancePartyItem" title="编辑"
-                                        oncomplete="chancePartyDialog.show();" style="padding: 4px;">
-                                        <p:graphicImage value="#{location.ICON}/etool16/validate.gif" />
-                                        <f:setPropertyActionListener value="#{_party}"
-                                            target="#{obj.selectedParty}" />
-                                    </p:commandLink>
-                                    <p:commandLink title="删除" oncomplete="chancePartyConfirmation.show();"
-                                        disabled="#{bean.chances.selected}" style="padding: 4px;">
-                                        <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
-                                        <f:setPropertyActionListener value="#{_party}"
-                                            target="#{obj.selectedParty}" />
-                                    </p:commandLink>
-                                </p:column>
-
-                            </p:dataTable>
-                            <p:commandButton value="..." onclick="chooseChancePartyDialog.show()" title="选择客户" />
-                        </t:panelGrid>
+                            </f:facet>
+                            <h:panelGrid columns="2">
+                                <h:outputText value="客户:" />
+                                <h:outputText value="#{item.party.displayName}" />
+                                <h:outputLabel for="role" value="角色:" />
+                                <p:inputText id="role" value="#{item.role}" />
+                            </h:panelGrid>
+                        </fr:listView>
                     </t:panelGroup>
 
                     <h:outputText value="机会地址:" />
@@ -115,20 +104,20 @@
             </p:tab>
 
             <p:tab header="日志历史记录">
-                <p:toolbar id="actionToolbar">
+                <p:toolbar id="toolbar">
                     <p:toolbarGroup align="left">
                         <p:commandButton id="relateActionButton" value="增加关联" actionListener="#{bean.initActions}"
                             update=":dialogForm:actionCopyList" oncomplete="chooseChanceActionDialog.show();" />
                         <p:commandButton id="unrelateActionButton" value="取消关联" onclick="deleteActionConfirm.show();"
                             disabled="#{bean.selectedAction == null}" />
                         <p:commandButton id="viewActionDetailButton" value="详细" actionListener="#{bean.viewActionDetail}"
-                            update=":dialogForm:actionDetail" oncomplete="actionDetailDialog.show();" disabled="#{bean.selectedAction == null}" />
+                            update=":actionDetailForm" oncomplete="actionDetailDialog.show();" disabled="#{bean.selectedAction == null}" />
                     </p:toolbarGroup>
                 </p:toolbar>
-                <p:dataTable id="actionHistories" var="action" value="#{_c.actions}" selection="#{_c.selectedAction}"
+                <p:dataTable id="actionTable" var="action" value="#{_c.actions}" selection="#{_c.selectedAction}"
                     selectionMode="single" rowKey="#{action.id}" rowIndexVar="rowIndex">
 
-                    <p:ajax event="rowSelect" update=":editDialog:form:tv:actionToolbar" />
+                    <p:ajax event="rowSelect" update=":editDialog:form:tv:toolbar" />
 
                     <p:column headerText="序号" style="width:45px;">
                         <h:outputText value="#{rowIndex + 1}" />
@@ -162,37 +151,60 @@
             </p:tab>
 
             <p:tab header="报价">
-                <p:toolbar id="quotationToolbar">
-                    <p:toolbarGroup align="left">
-                        <p:commandButton id="chanceNewQuotationButton" value="添加"
-                            actionListener="#{bean.createQuotationForm}" oncomplete="quotationDialog.show();" update=":quotationForm:quotationGrid" />
-                        <p:commandButton id="chanceEditQuotationButton" value="编辑" actionListener="#{bean.editQuotation}"
-                            oncomplete="quotationDialog.show();" update=":quotationForm:quotationGrid" disabled="#{bean.selectedQuotation == null}" />
-                        <p:commandButton id="chanceDeleteQuotationButton" value="删除"
-                            onclick="quotationConfirmation.show();" disabled="#{bean.selectedQuotation == null}" />
-                        <p:commandButton id="chanceViewQuotationButton" value="详细"
-                            actionListener="#{bean.viewQuotationDetail}" oncomplete="quotationDialog.show();" update=":quotationForm:quotationGrid"
-                            disabled="#{bean.selectedQuotation == null}" />
-                    </p:toolbarGroup>
-                </p:toolbar>
-                <p:dataTable id="quotationList" rowIndexVar="rowIndex" value="#{bean.quotations.list}"
-                    selection="#{bean.quotations.selection}" selectionMode="single" rowKey="#{item.id}" var="item">
+                <fr:listView id="quotationsView" header="报价" style="panel" orientation="td"
+                    mbean="${bean.quotationsMBean}">
+                    <f:facet name="columns">
+                        <p:column headerText="标题">
+                            <h:outputText value="#{entry.subject}" />
+                        </p:column>
+                        <p:column headerText="报价日期">
+                            <h:outputText value="#{entry.createdDate}" />
+                        </p:column>
+                        <p:column headerText="总金额">
+                            <h:outputText value="#{entry.nativeTotal}" />
+                        </p:column>
+                    </f:facet>
+                    <h:panelGrid columns="2">
+                        <h:outputLabel for="subject" value="标题:" />
+                        <p:inputText id="subject" value="#{item.subject}" style="width:300px;" />
 
-                    <p:ajax event="rowSelect" update=":editDialog:form:tv:quotationToolbar" />
+                        <h:outputLabel for="chance" value="机会:" />
+                        <p:inputText id="chance" value="#{item.chance.subject}" style="width:300px;"
+                            readonly="true" />
 
-                    <p:column headerText="序号" style="width:45px;">
-                        <h:outputText value="#{rowIndex + 1}" />
-                    </p:column>
-                    <p:column headerText="标题">
-                        <h:outputText value="#{item.subject}" />
-                    </p:column>
-                    <p:column headerText="报价日期">
-                        <h:outputText value="#{item.createdDate}" />
-                    </p:column>
-                    <p:column headerText="总金额">
-                        <h:outputText value="#{item.nativeTotal}" />
-                    </p:column>
-                </p:dataTable>
+                        <h:outputText value="交付说明:" />
+                        <p:inputTextarea id="recommend" value="#{item.recommend}" style="width:300px; height:60px;" />
+
+                        <h:outputText value="付款说明:" />
+                        <p:inputTextarea id="payment" value="#{item.payment}" style="width:300px; height:60px;" />
+                    </h:panelGrid>
+                    <f:facet name="more">
+                        <fr:listView id="quotationItemsView" header="报价明细" style="panel" orientation="lr"
+                            mbean="${bean.quotationItemsView}">
+                            <f:facet name="columns">
+                                <p:column headerText="产品" style="width:70px;">
+                                    <h:outputText value="#{entry.material.label}" />
+                                </p:column>
+
+                                <p:column headerText="折扣" style="width:80px;">
+                                    <h:outputText value="#{entry.discount}" />
+                                </p:column>
+
+                                <p:column headerText="基础价格" style="width:80px;">
+                                    <h:outputText value="#{entry.basePrice.price}" />
+                                </p:column>
+
+                                <p:column headerText="单价" style="width:80px;">
+                                    <h:outputText value="#{entry.price}" />
+                                </p:column>
+
+                                <p:column headerText="数目" style="width:50px;">
+                                    <h:outputText value="#{entry.quantity}" />
+                                </p:column>
+                            </f:facet>
+                        </fr:listView>
+                    </f:facet>
+                </fr:listView>
             </p:tab>
         </p:tabView>
     </ui:define>
@@ -200,28 +212,18 @@
     <ui:define name="dialogs">
         <sem:singleVerifierSupportDialog update="editDialog:form" />
 
-        <p:confirmDialog message="确定要删除此报价单吗?" showEffect="bounce" hideEffect="explode" header="note"
-            severity="alert" widgetVar="quotationConfirmation">
-            <h:form>
-                <p:commandButton value="删除"
-                    update=":editDialog:form:tv:quotationToolbar, :editDialog:form:tv:quotationList" oncomplete="quotationConfirmation.hide()"
-                    actionListener="#{bean.dropQuotation}" async="true" />
-                <p:commandButton value="取消" onclick="quotationConfirmation.hide()" type="button" />
-            </h:form>
-        </p:confirmDialog>
-
         <p:confirmDialog message="确定要取消此行动记录的关联?" hideEffect="explode" header="注意" severity="alert"
             widgetVar="deleteActionConfirm">
             <h:form>
                 <p:commandButton value="确定" actionListener="#{bean.detachAction}"
-                    update=":editDialog:form:tv:actionHistories, :editDialog:form:tv:actionToolbar" oncomplete="deleteActionConfirm.hide();" />
+                    update=":editDialog:form:tv:actionTable, :editDialog:form:tv:toolbar" oncomplete="deleteActionConfirm.hide();" />
                 <p:commandButton value="取消" onclick="deleteActionConfirm.hide();" />
             </h:form>
         </p:confirmDialog>
 
         <p:dialog header="行动记录详细" widgetVar="actionDetailDialog" modal="true">
             <c:set var="obj" value="#{bean.selectedAction}" />
-            <h:form id="actionDetail">
+            <h:form id="actionDetailForm">
                 <t:panelGrid rendered="#{obj != null}" columns="4"
                     columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
 
@@ -283,25 +285,6 @@
                         </p:selectOneMenu>
                     </t:panelGroup>
                 </t:panelGrid>
-            </h:form>
-        </p:dialog>
-
-        <p:dialog header="编辑客户角色" modal="true" widgetVar="chancePartyDialog" height="300" width="350">
-            <c:set var="_sp" value="#{bean.chanceParty}" />
-            <h:form id="chancePartyEditForm">
-                <t:panelGrid columns="2">
-                    <h:outputText value="客户名称:" />
-                    <h:outputText value="#{_sp.party.displayName}" />
-
-                    <h:outputText value="角色:" />
-                    <p:inputText value="#{_sp.role}" />
-                </t:panelGrid>
-
-                <div align="right">
-                    <p:commandButton id="save-validated" value="确定" oncomplete="chancePartyDialog.hide();"
-                        update=":editDialog:form:tv:chanceParties" />
-                    <p:commandButton id="cancel" value="取消" onclick="chancePartyDialog.hide();" />
-                </div>
             </h:form>
         </p:dialog>
 

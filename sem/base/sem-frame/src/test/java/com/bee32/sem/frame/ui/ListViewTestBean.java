@@ -13,7 +13,7 @@ public class ListViewTestBean
     List<Person> persons;
     List<Person> lilyChildren;
     ListMBean<Person> personsMBean = ListMBean.fromEL(this, "persons", Person.class);
-    ListMBean<Person> childrenMBean = ListMBean.fromEL(this, "personsMBean.copy.children", Person.class);
+    ListMBean<Person> childrenMBean = ListMBean.fromEL(personsMBean, "copy.children", Person.class);
 
     // ListMBean<Person> childrenMBean = ListMBean.fromEL(this, "lilyChildren", Person.class);
 

@@ -12,14 +12,12 @@ public class ChanceQuotationDto
 
     private static final long serialVersionUID = 1L;
 
-    private String subject;
     private ChanceDto chance;
     private String recommend;
     private String payment;
 
     @Override
     protected void _marshal(ChanceQuotation source) {
-        this.subject = source.getSubject();
         this.chance = mref(ChanceDto.class, source.getChance());
         this.recommend = source.getRecommend();
         this.payment = source.getPayment();
@@ -27,7 +25,6 @@ public class ChanceQuotationDto
 
     @Override
     protected void _unmarshalTo(ChanceQuotation target) {
-        target.setSubject(subject);
         merge(target, "chance", chance);
         target.setRecommend(recommend);
         target.setPayment(payment);
@@ -36,14 +33,6 @@ public class ChanceQuotationDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
-    }
-
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
     }
 
     public ChanceDto getChance() {

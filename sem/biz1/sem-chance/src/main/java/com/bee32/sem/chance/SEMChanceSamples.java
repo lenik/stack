@@ -35,7 +35,6 @@ public class SEMChanceSamples
     public static ChanceQuotation quotation = new ChanceQuotation();
 
     static {
-
         Calendar cal = Calendar.getInstance();
         cal.set(2011, 4, 8);
 
@@ -87,7 +86,7 @@ public class SEMChanceSamples
 
         chance.addAction(chanceAction1);
         chance.addAction(chanceAction2);
-// chance.setActions(Arrays.asList(chanceAction1, chanceAction2));
+        // chance.setActions(Arrays.asList(chanceAction1, chanceAction2));
 
         ChanceQuotationItem item1 = new ChanceQuotationItem();
         item1.setParent(quotation);
@@ -96,23 +95,21 @@ public class SEMChanceSamples
         item1.setQuantity(new BigDecimal(3));
         item1.setPrice(SEMInventorySamples.cskdp.getLatestPrice().getPrice());
 
-// ChanceQuotationItem item2 = new ChanceQuotationItem();
-// item2.setQuotation(quotation);
-// item2.setMaterial(SEMInventorySamples.gundam);
-// item2.setDiscount(0.9f);
+        // ChanceQuotationItem item2 = new ChanceQuotationItem();
+        // item2.setQuotation(quotation);
+        // item2.setMaterial(SEMInventorySamples.gundam);
+        // item2.setDiscount(0.9f);
 
-        quotation.setSubject("7月2号报价");
+        quotation.setLabel("7月2号报价");
         quotation.setChance(chance);
         quotation.setRecommend("发顺丰加保价");
         quotation.setPayment("网上转帐");
         quotation.addItem(item1);
-
     }
 
     @Override
     protected void preamble() {
         // add <price>->quotionDetail
-
         add(chance);
         add(party);
         add(party2);

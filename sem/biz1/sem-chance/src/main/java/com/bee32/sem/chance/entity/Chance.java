@@ -198,8 +198,12 @@ public class Chance
         for (ChanceAction action : actions) {
             if (maxStage == null)
                 maxStage = action.getStage();
-            else if (action.getStage().getOrder() >= maxStage.getOrder())
-                maxStage = action.getStage();
+            else {
+                ChanceStage stage = action.getStage();
+                if (stage != null)
+                    if (stage.getOrder() >= maxStage.getOrder())
+                        maxStage = stage;
+            }
         }
         this.stage = maxStage;
     }

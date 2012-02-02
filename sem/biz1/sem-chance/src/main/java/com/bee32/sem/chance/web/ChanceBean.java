@@ -7,10 +7,13 @@ import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.chance.dto.ChancePartyDto;
+import com.bee32.sem.chance.dto.ChanceQuotationDto;
+import com.bee32.sem.chance.dto.ChanceQuotationItemDto;
 import com.bee32.sem.chance.dto.ChanceStageDto;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.entity.ChanceStage;
+import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
 
@@ -24,8 +27,11 @@ public class ChanceBean
     Set<ChanceActionDto> attachSet = new HashSet<ChanceActionDto>();
     Set<ChanceActionDto> detachSet = new HashSet<ChanceActionDto>();
 
-    ChancePartyDto selectedChanceParty;
-    ChancePartyDto chanceParty;
+    ListMBean<ChancePartyDto> partiesMBean = ListMBean.fromEL(this, "activeObject.parties", ChancePartyDto.class);
+    ListMBean<ChanceQuotationDto> quotationsMBean = ListMBean.fromEL(this, "activeObject.quotations",
+            ChanceQuotationDto.class);
+    ListMBean<ChanceQuotationItemDto> quotationItemsMBean = ListMBean.fromEL(quotationsMBean, "activeObject.items",
+            ChanceQuotationItemDto.class);
 
     public ChanceBean() {
         super(Chance.class, ChanceDto.class, 0);
@@ -44,7 +50,7 @@ public class ChanceBean
     }
 
     @Override
-    protected void _postUpdate(UnmarshalMap uMap)
+    protected void postUpdate(UnmarshalMap uMap)
             throws Exception {
         Set<ChanceAction> updates = new HashSet<ChanceAction>();
         for (Chance _chance : uMap.<Chance> entitySet()) {
@@ -93,28 +99,16 @@ public class ChanceBean
         detachSet.add(selectedAction);
     }
 
-    public void createChanceParty() {
-        ChanceDto chance = getActiveObject();
-        chanceParty = new ChancePartyDto();
-        chanceParty.setChance(chance);
+    public ListMBean<ChancePartyDto> getPartiesMBean() {
+        return partiesMBean;
     }
 
-    public ChancePartyDto getSelectedChanceParty() {
-        return selectedChanceParty;
+    public ListMBean<ChanceQuotationDto> getQuotationsMBean() {
+        return quotationsMBean;
     }
 
-    public void setSelectedChanceParty(ChancePartyDto selectedChanceParty) {
-        this.selectedChanceParty = selectedChanceParty;
-    }
-
-    public void addParty() {
-        ChanceDto chance = getActiveObject();
-        chance.addParty(chanceParty);
-    }
-
-    public void removeParty() {
-        ChanceDto chance = getActiveObject();
-        chance.removeParty(selectedChanceParty);
+    public ListMBean<ChanceQuotationItemDto> getQuotationItemsMBean() {
+        return quotationItemsMBean;
     }
 
 }

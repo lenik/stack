@@ -18,12 +18,10 @@ public class ChanceQuotation
 
     private static final long serialVersionUID = 1L;
 
-    public static final int SUBJECT_LENGTH = 50;
     public static final int RECOMMEND_LENGTH = 150;
     public static final int PAYMENT_LENGTH = 150;
 
     Chance chance;
-    String subject;
     String recommend;
     String payment;
 
@@ -40,20 +38,6 @@ public class ChanceQuotation
         if (chance == null)
             throw new NullPointerException("chance");
         this.chance = chance;
-    }
-
-    /**
-     * 主题
-     */
-    @Column(nullable = false, length = SUBJECT_LENGTH)
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        if (subject == null)
-            throw new NullPointerException("subject");
-        this.subject = subject;
     }
 
     /**
