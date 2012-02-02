@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.xp.EntityExtDto;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.people.entity.Contact;
 import com.bee32.sem.people.entity.ContactXP;
 
@@ -94,7 +95,7 @@ public class ContactDto
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        this.address = TextUtil.normalizeSpace(address);
     }
 
     @NLength(max = Contact.POSTCODE_LENGTH)
@@ -103,7 +104,7 @@ public class ContactDto
     }
 
     public void setPostCode(String postCode) {
-        this.postCode = postCode;
+        this.postCode = TextUtil.normalizeSpace(postCode);
     }
 
     @NLength(max = Contact.TEL_MOBILE_FAX_LENGTH)
@@ -112,7 +113,7 @@ public class ContactDto
     }
 
     public void setTel(String tel) {
-        this.tel = tel;
+        this.tel = TextUtil.normalizeSpace(tel);
     }
 
     @NLength(max = Contact.TEL_MOBILE_FAX_LENGTH)
@@ -121,7 +122,7 @@ public class ContactDto
     }
 
     public void setMobile(String mobile) {
-        this.mobile = mobile;
+        this.mobile = TextUtil.normalizeSpace(mobile);
     }
 
     @NLength(max = Contact.TEL_MOBILE_FAX_LENGTH)
@@ -130,7 +131,7 @@ public class ContactDto
     }
 
     public void setFax(String fax) {
-        this.fax = fax;
+        this.fax = TextUtil.normalizeSpace(fax);
     }
 
     @NLength(max = Contact.EMAIL_LENGTH)
@@ -139,7 +140,7 @@ public class ContactDto
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = TextUtil.normalizeSpace(email);
     }
 
     @NLength(max = Contact.WEBSITE_LENGTH)
@@ -148,7 +149,7 @@ public class ContactDto
     }
 
     public void setWebsite(String website) {
-        this.website = website;
+        this.website = TextUtil.normalizeSpace(website);
     }
 
     @NLength(max = Contact.QQ_LENGTH)
@@ -157,7 +158,7 @@ public class ContactDto
     }
 
     public void setQq(String qq) {
-        this.qq = qq;
+        this.qq = TextUtil.normalizeSpace(qq);
     }
 
     // @Override

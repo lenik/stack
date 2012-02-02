@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 import com.bee32.plover.faces.view.PerView;
 import com.bee32.plover.faces.view.ViewBean;
 import com.bee32.plover.model.validation.core.NLength;
+import com.bee32.plover.util.TextUtil;
 
 @PerView
 public class AutoUpdateBean
@@ -23,7 +24,7 @@ public class AutoUpdateBean
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        this.message = TextUtil.normalizeSpace(message);
     }
 
     public String getStatus() {

@@ -8,6 +8,7 @@ import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.c.CEntityDto;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.chance.entity.ChanceParty;
 import com.bee32.sem.people.dto.PartyDto;
 
@@ -69,10 +70,7 @@ public class ChancePartyDto
     }
 
     public void setRole(String role) {
-        if (role == null)
-            throw new NullPointerException("role");
-        role = role.trim();
-        this.role = role;
+        this.role = TextUtil.normalizeSpace(role);
     }
 
     @Override

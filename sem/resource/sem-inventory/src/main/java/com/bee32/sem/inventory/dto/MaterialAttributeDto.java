@@ -58,8 +58,7 @@ public class MaterialAttributeDto
     }
 
     public void setName(String name) {
-        name = TextUtil.normalizeSpace(name);
-        this.name = name;
+        this.name = TextUtil.normalizeSpace(name);
     }
 
     @NLength(max = MaterialAttribute.VALUE_LENGTH)
@@ -68,8 +67,7 @@ public class MaterialAttributeDto
     }
 
     public void setValue(String value) {
-        value = TextUtil.normalizeSpace(value);
-        this.value = value;
+        this.value = TextUtil.normalizeSpace(value);
     }
 
     @Override

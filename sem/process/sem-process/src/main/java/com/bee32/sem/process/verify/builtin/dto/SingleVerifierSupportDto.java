@@ -7,6 +7,8 @@ import javax.free.TypeConvertException;
 
 import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.model.validation.core.NLength;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.process.verify.builtin.SingleVerifierSupport;
 import com.bee32.sem.process.verify.dto.VerifyContextDto;
 
@@ -81,12 +83,13 @@ public class SingleVerifierSupportDto
         this.accepted1 = accepted1;
     }
 
+    @NLength(max = SingleVerifierSupport.REJECTED_REASON_LENGTH)
     public String getRejectedReason1() {
         return rejectedReason1;
     }
 
     public void setRejectedReason1(String rejectedReason1) {
-        this.rejectedReason1 = rejectedReason1;
+        this.rejectedReason1 = TextUtil.normalizeSpace(rejectedReason1);
     }
 
     public String getVerifierName1() {

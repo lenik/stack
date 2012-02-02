@@ -29,6 +29,8 @@ public class SingleVerifierSupport
 
     private static final long serialVersionUID = 1L;
 
+    public static final int REJECTED_REASON_LENGTH = 80;
+
     private Principal verifier1;
     private Date verifiedDate1;
     private boolean accepted1;
@@ -82,7 +84,7 @@ public class SingleVerifierSupport
         this.accepted1 = accepted1;
     }
 
-    @Column(length = 80)
+    @Column(length = REJECTED_REASON_LENGTH)
     @Override
     public String getRejectedReason1() {
         return rejectedReason1;

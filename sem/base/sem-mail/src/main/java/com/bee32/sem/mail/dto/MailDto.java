@@ -10,6 +10,7 @@ import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.c.CEntityDto;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.mail.MailPriority;
 import com.bee32.sem.mail.MailType;
 import com.bee32.sem.mail.entity.Mail;
@@ -171,7 +172,7 @@ public class MailDto
     }
 
     public void setFrom(String from) {
-        this.from = from;
+        this.from = TextUtil.normalizeSpace(from);
     }
 
     @NLength(min = 1, max = Mail.RECIPIENT_LENGTH)
@@ -180,7 +181,7 @@ public class MailDto
     }
 
     public void setRecipient(String recipient) {
-        this.recipient = recipient;
+        this.recipient = TextUtil.normalizeSpace(recipient);
     }
 
     @NLength(max = Mail.REPLY_TO_LENGTH)
@@ -189,7 +190,7 @@ public class MailDto
     }
 
     public void setReplyTo(String replyTo) {
-        this.replyTo = replyTo;
+        this.replyTo = TextUtil.normalizeSpace(replyTo);
     }
 
     public UserDto getFromUser() {
@@ -241,7 +242,7 @@ public class MailDto
     }
 
     public void setCc(String cc) {
-        this.cc = cc;
+        this.cc = TextUtil.normalizeSpace(cc);
     }
 
     @NLength(max = Mail.BCC_LENGTH)
@@ -250,7 +251,7 @@ public class MailDto
     }
 
     public void setBcc(String bcc) {
-        this.bcc = bcc;
+        this.bcc = TextUtil.normalizeSpace(bcc);
     }
 
     @NLength(min = 1, max = Mail.SUBJECT_LENGTH)
@@ -259,7 +260,7 @@ public class MailDto
     }
 
     public void setSubject(String subject) {
-        this.subject = subject;
+        this.subject = TextUtil.normalizeSpace(subject);
     }
 
     @NLength(min = 1, max = Mail.BODY_LENGTH)
@@ -268,7 +269,7 @@ public class MailDto
     }
 
     public void setBody(String body) {
-        this.body = body;
+        this.body = TextUtil.normalizeSpace(body);
     }
 
     public MailDto getReferrer() {
@@ -284,7 +285,7 @@ public class MailDto
     }
 
     public void setRecipients(String recipients) {
-        this.recipients = recipients;
+        this.recipients = TextUtil.normalizeSpace(recipients);
     }
 
     public String assemblerRecipients() {

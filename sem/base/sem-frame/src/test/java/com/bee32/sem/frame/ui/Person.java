@@ -5,6 +5,7 @@ import javax.validation.constraints.Min;
 
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.orm.entity.EntitySpec;
+import com.bee32.plover.util.TextUtil;
 
 public class Person
         extends EntitySpec<String> {
@@ -39,7 +40,7 @@ public class Person
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = TextUtil.normalizeSpace(name);
     }
 
     @Min(5)

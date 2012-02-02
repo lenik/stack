@@ -25,7 +25,7 @@ public class ValidBean
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = TextUtil.normalizeSpace(email);
     }
 
     @NotNull
@@ -47,7 +47,7 @@ public class ValidBean
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = TextUtil.normalizeSpace(password);
     }
 
 }

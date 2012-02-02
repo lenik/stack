@@ -9,6 +9,7 @@ import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.UIEntityDto;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.people.dto.PersonDto;
 
@@ -52,7 +53,7 @@ public class StockWarehouseDto
     public void setName(String name) {
         if (name == null)
             throw new NullPointerException("name");
-        this.name = name;
+        this.name = TextUtil.normalizeSpace(name);
     }
 
     @NLength(max = StockWarehouse.ADDRESS_LENGTH)
@@ -61,7 +62,7 @@ public class StockWarehouseDto
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        this.address = TextUtil.normalizeSpace(address);
     }
 
     @NLength(max = StockWarehouse.PHONE_LENGTH)
@@ -70,7 +71,7 @@ public class StockWarehouseDto
     }
 
     public void setPhone(String phone) {
-        this.phone = phone;
+        this.phone = TextUtil.normalizeSpace(phone);
     }
 
     public PersonDto getManager() {
