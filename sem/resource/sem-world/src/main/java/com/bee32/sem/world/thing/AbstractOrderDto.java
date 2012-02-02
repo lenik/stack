@@ -163,7 +163,7 @@ public abstract class AbstractOrderDto< //
                         double d = itemNativeTotal.doubleValue();
                         double q = item.getQuantity().doubleValue();
                         double itemTotal = d * q;
-                        BigDecimal bit = new BigDecimal(itemTotal);
+                        BigDecimal bit = new BigDecimal(itemTotal, MONEY_TOTAL_CONTEXT);
                         sum = sum.add(bit);
                         // sum = sum.add(itemNativeTotal);
                     }

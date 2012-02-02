@@ -66,18 +66,6 @@ public class ChanceCompetitor
     }
 
     /**
-     * 公司名称
-     */
-    @Column(length = 50, nullable = false)
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
      * 竞争对手报价
      */
     @Embedded

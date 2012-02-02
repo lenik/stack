@@ -23,16 +23,6 @@ public class ChanceBean
 
     private static final long serialVersionUID = 1L;
 
-    ChanceActionDto selectedAction;
-    Set<ChanceActionDto> attachSet = new HashSet<ChanceActionDto>();
-    Set<ChanceActionDto> detachSet = new HashSet<ChanceActionDto>();
-
-    ListMBean<ChancePartyDto> partiesMBean = ListMBean.fromEL(this, "activeObject.parties", ChancePartyDto.class);
-    ListMBean<ChanceQuotationDto> quotationsMBean = ListMBean.fromEL(this, "activeObject.quotations",
-            ChanceQuotationDto.class);
-    ListMBean<ChanceQuotationItemDto> quotationItemsMBean = ListMBean.fromEL(quotationsMBean, "activeObject.items",
-            ChanceQuotationItemDto.class);
-
     public ChanceBean() {
         super(Chance.class, ChanceDto.class, 0);
     }
@@ -74,6 +64,10 @@ public class ChanceBean
         }
     }
 
+    ChanceActionDto selectedAction;
+    Set<ChanceActionDto> attachSet = new HashSet<ChanceActionDto>();
+    Set<ChanceActionDto> detachSet = new HashSet<ChanceActionDto>();
+
     public ChanceActionDto getSelectedAction() {
         return selectedAction;
     }
@@ -98,6 +92,12 @@ public class ChanceBean
         attachSet.remove(selectedAction);
         detachSet.add(selectedAction);
     }
+
+    ListMBean<ChancePartyDto> partiesMBean = ListMBean.fromEL(this, "activeObject.parties", ChancePartyDto.class);
+    ListMBean<ChanceQuotationDto> quotationsMBean = ListMBean.fromEL(this, "activeObject.quotations",
+            ChanceQuotationDto.class);
+    ListMBean<ChanceQuotationItemDto> quotationItemsMBean = ListMBean.fromEL(quotationsMBean, "activeObject.items",
+            ChanceQuotationItemDto.class);
 
     public ListMBean<ChancePartyDto> getPartiesMBean() {
         return partiesMBean;
