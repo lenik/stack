@@ -2,7 +2,6 @@ package com.bee32.sem.chance.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -53,6 +52,7 @@ public class Chance
     String content = "";
 
     List<ChanceParty> parties = new ArrayList<ChanceParty>();
+    List<ChanceQuotation> quotations = new ArrayList<ChanceQuotation>();
     List<ChanceAction> actions = new ArrayList<ChanceAction>();
 
     ChanceStage stage = ChanceStage.INIT;
@@ -139,6 +139,18 @@ public class Chance
         this.parties = parties;
     }
 
+    @OneToMany(mappedBy = "chance", orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
+    public List<ChanceQuotation> getQuotations() {
+        return quotations;
+    }
+
+    public void setQuotations(List<ChanceQuotation> quotations) {
+        if (quotations == null)
+            throw new NullPointerException("quotations");
+        this.quotations = quotations;
+    }
+
     @OneToMany(mappedBy = "chance")
     @OrderBy("beginTime")
     public List<ChanceAction> getActions() {
@@ -151,23 +163,45 @@ public class Chance
         this.actions = actions;
     }
 
+    /**
+     * @return 最近一次行动，如果还没有任何行动返回 <code>null</code>.
+     */
+    @Transient
+    public ChanceAction getLatestAction() {
+        ChanceAction ca = null;
+        if (getActions() != null) {
+            ca = getActions().get(0);
+            for (ChanceAction item : getActions()) {
+                if (ca.getBeginTime().before(item.getBeginTime()))
+                    ca = item;
+            }
+            // int lastIndex = getActions().size() - 1;
+            // ca = getActions().get(lastIndex);
+        }
+        return ca;
+    }
+
     public void addAction(ChanceAction action) {
         if (action == null)
             throw new NullPointerException("action");
-        Collections.sort(actions);
         actions.add(action);
-
-        ChanceStage stage = action.getStage();
-        if (this.stage == null)
-            this.stage = stage;
-        else if (stage != null) {
-            if (stage.getOrder() >= this.stage.getOrder())
-                this.stage = stage;
-        }
+        refreshStage();
     }
 
     public void removeAction(ChanceAction action) {
+        actions.remove(action);
+        refreshStage();
+    }
 
+    void refreshStage() {
+        ChanceStage maxStage = null;
+        for (ChanceAction action : actions) {
+            if (maxStage == null)
+                maxStage = action.getStage();
+            else if (action.getStage().getOrder() >= maxStage.getOrder())
+                maxStage = action.getStage();
+        }
+        this.stage = maxStage;
     }
 
     /**
@@ -190,7 +224,7 @@ public class Chance
     }
 
     /**
-     * 机会地址 项目型机会一般这个地址和客户公司地址是不同的
+     * 机会地址: 项目型机会一般这个地址和客户公司地址是不同的
      */
     public String getAddress() {
         return address;
@@ -198,25 +232,6 @@ public class Chance
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    /**
-     *
-     * @return 最近一次行动，如果还没有任何行动返回 <code>null</code>.
-     */
-    @Transient
-    public ChanceAction getLatestAction() {
-        ChanceAction ca = null;
-        if (getActions() != null) {
-            ca = getActions().get(0);
-            for (ChanceAction item : getActions()) {
-                if (ca.getBeginTime().before(item.getBeginTime()))
-                    ca = item;
-            }
-// int lastIndex = getActions().size() - 1;
-// ca = getActions().get(lastIndex);
-        }
-        return ca;
     }
 
     @Override

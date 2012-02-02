@@ -8,7 +8,6 @@ import com.bee32.icsf.principal.User;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.LeftHand;
-import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.chance.entity.ChanceAction;
 
 public class ChanceCriteria
@@ -33,16 +32,6 @@ public class ChanceCriteria
             return null;
         else
             return equals("actor.id", user.getId());
-    }
-
-    public static CriteriaElement chanceEquals(ChanceDto chance) {
-        return equals("chance.id", chance.getId());
-    }
-
-    public static CriteriaElement nameLike(String namePattern) {
-        if (namePattern == null || namePattern.isEmpty())
-            return null;
-        return like("subject", "%" + namePattern + "%");
     }
 
     @LeftHand(ChanceAction.class)

@@ -30,7 +30,7 @@ public class ChanceQuotation
     /**
      * 对应机会
      */
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     public Chance getChance() {
         return chance;

@@ -72,6 +72,19 @@ public class CommonCriteria
             return like("description", string, MatchMode.ANYWHERE);
     }
 
+    public static CriteriaElement subjectLike(String pattern) {
+        return subjectLike(pattern, false);
+    }
+
+    public static CriteriaElement subjectLike(String pattern, boolean ignoreCase) {
+        if (pattern == null || pattern.isEmpty())
+            return null;
+        if (ignoreCase)
+            return likeIgnoreCase("subject", pattern, MatchMode.ANYWHERE);
+        else
+            return like("subject", pattern, MatchMode.ANYWHERE);
+    }
+
     /**
      * Between the expanded date range.
      */

@@ -1,5 +1,6 @@
 package com.bee32.sem.chance.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.free.ParseException;
@@ -19,7 +20,8 @@ public class ChanceDto
     private static final long serialVersionUID = 1L;
 
     public static final int PARTIES = 1;
-    public static final int ACTIONS = 2;
+    public static final int QUOTATIONS = 2;
+    public static final int ACTIONS = 4;
 
     String serial;
 
@@ -31,6 +33,7 @@ public class ChanceDto
     ChanceSourceTypeDto source;
 
     List<ChancePartyDto> parties;
+    List<ChanceQuotationDto> quotations;
     List<ChanceActionDto> actions;
 
     ChanceStageDto stage;
@@ -58,10 +61,19 @@ public class ChanceDto
         content = source.getContent();
 
         if (selection.contains(PARTIES))
-            parties = marshalList(ChancePartyDto.class, source.getParties());
+            parties = mrefList(ChancePartyDto.class, source.getParties());
+        else
+            parties = new ArrayList<ChancePartyDto>();
+
+        if (selection.contains(QUOTATIONS))
+            quotations = marshalList(ChanceQuotationDto.class, source.getQuotations());
+        else
+            quotations = new ArrayList<ChanceQuotationDto>();
 
         if (selection.contains(ACTIONS))
             actions = mrefList(ChanceActionDto.class, source.getActions());
+        else
+            actions = new ArrayList<ChanceActionDto>();
 
         stage = mref(ChanceStageDto.class, source.getStage());
         address = source.getAddress();
@@ -183,6 +195,14 @@ public class ChanceDto
         return sb.toString();
     }
 
+    public List<ChanceQuotationDto> getQuotations() {
+        return quotations;
+    }
+
+    public void setQuotations(List<ChanceQuotationDto> quotations) {
+        this.quotations = quotations;
+    }
+
     public List<ChanceActionDto> getActions() {
         return actions;
     }
@@ -197,6 +217,7 @@ public class ChanceDto
         if (action == null)
             throw new NullPointerException("action");
         actions.add(action);
+        // TODO Collections.sort(actions); // sort by begin-date.
         refreshStage();
     }
 
