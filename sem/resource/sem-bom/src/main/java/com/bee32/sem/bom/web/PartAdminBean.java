@@ -60,8 +60,7 @@ public class PartAdminBean
         // if (categoryId != null)
         if (categoryId == null) // select none if no category.
             categoryId = -1;
-        elements.add(MaterialCriteria.categoryOf(categoryId));
-        BomCriteria.listPartByCategory(materialCategoryId);
+        elements.add(BomCriteria.listPartByCategory(categoryId));
     }
 
     public void initMaterialCategoryTree() {
