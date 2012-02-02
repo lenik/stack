@@ -16,20 +16,20 @@ public class ChanceQuotationDto
     private static final long serialVersionUID = 1L;
 
     private ChanceDto chance;
-    private String recommend;
+    private String deliverInfo;
     private String payment;
 
     @Override
     protected void _marshal(ChanceQuotation source) {
         this.chance = mref(ChanceDto.class, source.getChance());
-        this.recommend = source.getRecommend();
+        this.deliverInfo = source.getDeliverInfo();
         this.payment = source.getPayment();
     }
 
     @Override
     protected void _unmarshalTo(ChanceQuotation target) {
         merge(target, "chance", chance);
-        target.setRecommend(recommend);
+        target.setDeliverInfo(deliverInfo);
         target.setPayment(payment);
     }
 
@@ -59,12 +59,12 @@ public class ChanceQuotationDto
         this.chance = chance;
     }
 
-    public String getRecommend() {
-        return recommend;
+    public String getDeliverInfo() {
+        return deliverInfo;
     }
 
-    public void setRecommend(String recommend) {
-        this.recommend = recommend;
+    public void setDeliverInfo(String deliverInfo) {
+        this.deliverInfo = deliverInfo;
     }
 
     public String getPayment() {

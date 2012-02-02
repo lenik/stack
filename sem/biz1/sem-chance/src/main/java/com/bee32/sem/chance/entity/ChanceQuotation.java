@@ -18,11 +18,11 @@ public class ChanceQuotation
 
     private static final long serialVersionUID = 1L;
 
-    public static final int RECOMMEND_LENGTH = 150;
+    public static final int DELIVER_INFO_LENGTH = 150;
     public static final int PAYMENT_LENGTH = 150;
 
     Chance chance;
-    String recommend;
+    String deliverInfo;
     String payment;
 
     /**
@@ -43,13 +43,13 @@ public class ChanceQuotation
     /**
      * 交付说明
      */
-    @Column(length = RECOMMEND_LENGTH)
-    public String getRecommend() {
-        return recommend;
+    @Column(length = DELIVER_INFO_LENGTH)
+    public String getDeliverInfo() {
+        return deliverInfo;
     }
 
-    public void setRecommend(String recommend) {
-        this.recommend = recommend;
+    public void setDeliverInfo(String deliverInfo) {
+        this.deliverInfo = deliverInfo;
     }
 
     /**

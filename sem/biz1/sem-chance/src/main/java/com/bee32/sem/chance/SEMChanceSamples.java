@@ -55,7 +55,7 @@ public class SEMChanceSamples
 
         chance.setParties(Arrays.asList(party, party2));
 
-        competitor.setName("第三使徒");
+        competitor.setLabel("第三使徒");
         competitor.setChance(chance);
         competitor.setTactic("在北京、上海、广州三地召开大规模的产品发布会");
         competitor.setComment("柳良的朋友，关系很好");
@@ -102,7 +102,7 @@ public class SEMChanceSamples
 
         quotation.setLabel("7月2号报价");
         quotation.setChance(chance);
-        quotation.setRecommend("发顺丰加保价");
+        quotation.setDeliverInfo("发顺丰加保价");
         quotation.setPayment("网上转帐");
         quotation.addItem(item1);
     }
