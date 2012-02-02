@@ -1,8 +1,6 @@
 package com.bee32.sem.purchase.web;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
@@ -11,7 +9,6 @@ import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.util.i18n.CurrencyConfig;
 import com.bee32.sem.bom.dto.PartDto;
 import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.misc.ScrollEntityViewBean;
@@ -20,7 +17,6 @@ import com.bee32.sem.purchase.dto.MakeOrderDto;
 import com.bee32.sem.purchase.dto.MakeOrderItemDto;
 import com.bee32.sem.purchase.entity.MakeOrder;
 import com.bee32.sem.world.monetary.CurrencyUtil;
-import com.bee32.sem.world.monetary.MCValue;
 
 @ForEntity(MakeOrder.class)
 public class MakeOrderAdminBean
@@ -31,9 +27,6 @@ public class MakeOrderAdminBean
     protected MakeOrderDto makeOrder = new MakeOrderDto().create();
 
     protected MakeOrderItemDto makeOrderItem = new MakeOrderItemDto().create();
-
-    private BigDecimal makeOrderItemPrice = new BigDecimal(0);
-    private Currency makeOrderItemPriceCurrency = CurrencyConfig.getNative();
 
     private PartDto selectedPart;
     private PartyDto selectedCustomer;
@@ -76,28 +69,10 @@ public class MakeOrderAdminBean
         this.makeOrderItem = makeOrderItem;
     }
 
-    public BigDecimal getMakeOrderItemPrice() {
-        return makeOrderItemPrice;
-    }
-
-    public void setMakeOrderItemPrice(BigDecimal makeOrderItemPrice) {
-        this.makeOrderItemPrice = makeOrderItemPrice;
-    }
-
-    public String getMakeOrderItemPriceCurrency() {
-        if (makeOrderItemPriceCurrency == null)
-            return CurrencyConfig.getNative().getCurrencyCode();
-        else
-            return makeOrderItemPriceCurrency.getCurrencyCode();
-    }
-
-    public void setMakeOrderItemPriceCurrency(String currencyCode) {
-        this.makeOrderItemPriceCurrency = Currency.getInstance(currencyCode);
-    }
-
     public List<SelectItem> getCurrencies() {
         return CurrencyUtil.selectItems();
     }
+
     public PartDto getSelectedPart() {
         return selectedPart;
     }
@@ -137,7 +112,7 @@ public class MakeOrderAdminBean
 
         MakeOrder firstOrder = serviceFor(MakeOrder.class).getFirst( //
                 new Offset(position - 1), //
-//                CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+// CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
                 Order.asc("id"));
 
         if (firstOrder != null)
@@ -156,7 +131,7 @@ public class MakeOrderAdminBean
     public void save1() {
         if (makeOrder.getId() == null) {
             // 新增
-//            goNumber = count + 1;
+// goNumber = count + 1;
         }
 
         try {
@@ -167,7 +142,7 @@ public class MakeOrderAdminBean
 
             serviceFor(MakeOrder.class).save(_order);
             uiLogger.info("保存成功");
-//            loadMakeOrder(goNumber);
+// loadMakeOrder(goNumber);
         } catch (Exception e) {
             uiLogger.warn("保存失败", e);
         }
@@ -176,8 +151,6 @@ public class MakeOrderAdminBean
     public void newItem() {
         makeOrderItem = new MakeOrderItemDto().create();
         makeOrderItem.setOrder(makeOrder);
-        makeOrderItemPrice = new BigDecimal(0);
-        makeOrderItemPriceCurrency = CurrencyConfig.getNative();
 
         newItemStatus = true;
     }
@@ -188,8 +161,6 @@ public class MakeOrderAdminBean
 
     public void saveItem() {
         makeOrderItem.setOrder(makeOrder);
-        MCValue newPrice = new MCValue(makeOrderItemPriceCurrency, makeOrderItemPrice);
-        makeOrderItem.setPrice(newPrice);
         if (newItemStatus) {
             makeOrder.addItem(makeOrderItem);
         }
@@ -199,7 +170,7 @@ public class MakeOrderAdminBean
         try {
             serviceFor(MakeOrder.class).delete(makeOrder.unmarshal());
             uiLogger.info("删除成功!");
-//            loadMakeOrder(goNumber);
+// loadMakeOrder(goNumber);
         } catch (Exception e) {
             uiLogger.warn("删除失败,错误信息:" + e.getMessage());
         }
@@ -214,7 +185,7 @@ public class MakeOrderAdminBean
     }
 
     public void findPart() {
-//                    BomCriteria.findPartUseMaterialName(partPattern));
+// BomCriteria.findPartUseMaterialName(partPattern));
     }
 
     public void choosePart() {
@@ -224,7 +195,7 @@ public class MakeOrderAdminBean
     }
 
     public void findCustomer() {
-                    // PeopleCriteria.customers(), //
+        // PeopleCriteria.customers(), //
     }
 
     public void chooseCustomer() {

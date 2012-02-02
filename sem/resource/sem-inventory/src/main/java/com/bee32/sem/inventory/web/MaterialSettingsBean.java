@@ -3,7 +3,6 @@ package com.bee32.sem.inventory.web;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
-import java.util.Locale;
 
 import javax.faces.model.SelectItem;
 
@@ -24,7 +23,7 @@ import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.entity.MaterialPrice;
 import com.bee32.sem.inventory.web.dialogs.MaterialCategoryTreeModel;
 import com.bee32.sem.sandbox.UIHelper;
-import com.bee32.sem.world.monetary.MCValue;
+import com.bee32.sem.world.monetary.MutableMCValue;
 import com.bee32.sem.world.thing.ScaleItem;
 import com.bee32.sem.world.thing.Unit;
 import com.bee32.sem.world.thing.UnitConv;
@@ -61,11 +60,10 @@ public class MaterialSettingsBean
     ScaleItem activeScaleItem;
     ScaleItem selectedScale;
 
-    double value;
-    String currencyCode;
-
     List<MaterialDto> materialList;
     MaterialDto activeMaterial = new MaterialDto().create();
+
+    MutableMCValue mcValue;
 
     MaterialCategoryTreeModel categoryTree;
 
@@ -73,8 +71,6 @@ public class MaterialSettingsBean
         activeScaleItem = new ScaleItem();
         UnitDto unit = new UnitDto().create();
         activeScaleItem.setUnit(unit);
-
-        currencyCode = Currency.getInstance(Locale.getDefault()).getCurrencyCode();
 
         initMaterialPriceTree();
         initUnitList();
@@ -253,14 +249,10 @@ public class MaterialSettingsBean
     }
 
     public void doAddMCValue() {
-        MaterialPriceDto mpd = new MaterialPriceDto().create();
-        mpd.setMaterial(activeMaterial);
-
-        Currency currency = Currency.getInstance(currencyCode);
-        MCValue mcv = new MCValue(currency, value);
-        mpd.setPrice(mcv);
-
-        activeMaterial.addPrice(mpd);
+        MaterialPriceDto materialPrice = new MaterialPriceDto().create();
+        materialPrice.setMaterial(activeMaterial);
+        materialPrice.setPrice(mcValue.clone());
+        activeMaterial.addPrice(materialPrice);
     }
 
     public String onFlowProcess(FlowEvent event) {
@@ -409,20 +401,12 @@ public class MaterialSettingsBean
         this.activeMaterial = activeMaterial;
     }
 
-    public double getValue() {
-        return value;
+    public MutableMCValue getMcValue() {
+        return mcValue;
     }
 
-    public String getCurrencyCode() {
-        return currencyCode;
-    }
-
-    public void setValue(double value) {
-        this.value = value;
-    }
-
-    public void setCurrencyCode(String currencyCode) {
-        this.currencyCode = currencyCode;
+    public void setMcValue(MutableMCValue mcValue) {
+        this.mcValue = mcValue;
     }
 
     public List<SelectItem> getClassifications() {

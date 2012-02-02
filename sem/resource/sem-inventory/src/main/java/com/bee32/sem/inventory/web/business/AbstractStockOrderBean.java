@@ -4,16 +4,13 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Currency;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.faces.model.SelectItem;
 
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.util.i18n.CurrencyConfig;
+import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
@@ -29,13 +26,13 @@ import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.OrgUnitDto;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.world.monetary.CurrencyUtil;
-import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.thing.UnitConvDto;
 import com.bee32.sem.world.thing.UnitDto;
 
 @ForEntity(StockOrder.class)
 public abstract class AbstractStockOrderBean
-        extends ScrollEntityViewBean {
+        extends ScrollEntityViewBean
+        implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
@@ -46,8 +43,6 @@ public abstract class AbstractStockOrderBean
     protected StockOrderDto stockOrder = new StockOrderDto().create().ref();
 
     protected StockOrderItemDto orderItem = new StockOrderItemDto().create().ref();
-    private BigDecimal orderItemPrice = new BigDecimal(0);
-    private Currency orderItemPriceCurrency = CurrencyConfig.getNative();
 
     private boolean newItemStatus = false;
 
@@ -143,25 +138,6 @@ public abstract class AbstractStockOrderBean
         return CurrencyUtil.selectItems();
     }
 
-    public BigDecimal getOrderItemPrice() {
-        return orderItemPrice;
-    }
-
-    public void setOrderItemPrice(BigDecimal orderItemPrice) {
-        this.orderItemPrice = orderItemPrice;
-    }
-
-    public String getOrderItemPriceCurrency() {
-        if (orderItemPriceCurrency == null)
-            return CurrencyConfig.getNative().getCurrencyCode();
-        else
-            return orderItemPriceCurrency.getCurrencyCode();
-    }
-
-    public void setOrderItemPriceCurrency(String currencyCode) {
-        this.orderItemPriceCurrency = Currency.getInstance(currencyCode);
-    }
-
     public boolean isNewItemStatus() {
         return newItemStatus;
     }
@@ -241,9 +217,6 @@ public abstract class AbstractStockOrderBean
     public void newItem() {
         orderItem = new StockOrderItemDto().create();
         orderItem.setParent(stockOrder);
-        orderItemPrice = new BigDecimal(0);
-        orderItemPriceCurrency = CurrencyConfig.getNative();
-
         newItemStatus = true;
     }
 
@@ -260,14 +233,12 @@ public abstract class AbstractStockOrderBean
     }
 
     public void chooseMaterial() {
-//        orderItem.setMaterial(selectedMaterial);
-//        selectedMaterial = null;
+// orderItem.setMaterial(selectedMaterial);
+// selectedMaterial = null;
     }
 
     public void doSaveItem() {
         orderItem.setParent(stockOrder);
-        MCValue newPrice = new MCValue(orderItemPriceCurrency, orderItemPrice);
-        orderItem.setPrice(newPrice);
         if (newItemStatus) {
             stockOrder.addItem(orderItem);
         }
@@ -278,21 +249,22 @@ public abstract class AbstractStockOrderBean
     }
 
     public void findOrgUnit() {
-//        if (orgUnitPattern != null && !orgUnitPattern.isEmpty()) {
+// if (orgUnitPattern != null && !orgUnitPattern.isEmpty()) {
 //
-//            List<OrgUnit> _orgUnits = null;
+// List<OrgUnit> _orgUnits = null;
 //
-//            if (stockOrder.getOrg().getId() != null) {
-//                // 如果前面选中了某个公司，则查找该公司中的部门
-//                _orgUnits = serviceFor(OrgUnit.class).list(new Like("name", "%" + orgUnitPattern + "%"),
-//                        new Equals("org.id", selectedOrg.getId()));
-//            } else {
-//                // 如果没有选择公司，则表示查找tag为内部的公司中的部门(即为本公司内部的部门)
-//                _orgUnits = serviceFor(OrgUnit.class).list(PeopleCriteria.internalOrgUnitWithName(orgUnitPattern));
-//            }
+// if (stockOrder.getOrg().getId() != null) {
+// // 如果前面选中了某个公司，则查找该公司中的部门
+// _orgUnits = serviceFor(OrgUnit.class).list(new Like("name", "%" + orgUnitPattern + "%"),
+// new Equals("org.id", selectedOrg.getId()));
+// } else {
+// // 如果没有选择公司，则表示查找tag为内部的公司中的部门(即为本公司内部的部门)
+// _orgUnits =
+// serviceFor(OrgUnit.class).list(PeopleCriteria.internalOrgUnitWithName(orgUnitPattern));
+// }
 //
-//            orgUnits = DTOs.mrefList(OrgUnitDto.class, _orgUnits);
-//        }
+// orgUnits = DTOs.mrefList(OrgUnitDto.class, _orgUnits);
+// }
     }
 
     public void chooseOrgUnit() {
@@ -332,8 +304,6 @@ public abstract class AbstractStockOrderBean
         orderItem.setBatch(selectedStockQueryItem.getBatch());
         orderItem.setExpirationDate(selectedStockQueryItem.getExpirationDate());
         orderItem.setLocation(selectedStockQueryItem.getLocation());
-        orderItemPrice = selectedStockQueryItem.getPrice().getValue();
-        orderItemPriceCurrency = selectedStockQueryItem.getPrice().getCurrency();
     }
 
     public void checkUnitConv() {
@@ -352,21 +322,16 @@ public abstract class AbstractStockOrderBean
     }
 
     public void doUnitConv() {
-        Map<UnitDto, Double> scaleMap = orderItem.getMaterial().getUnitConv().getScaleMap();
-        Set<UnitDto> scaleSet = scaleMap.keySet();
+        Double scale = orderItem.getMaterial().getUnitConv().getScale(materialUnitId);
 
-        Double scale = 1D;
-        for (UnitDto u : scaleSet) {
-            if (u.getId().equals(materialUnitId)) {
-                scale = scaleMap.get(u);
-                break;
-            }
-        }
-
-        orderItem.setQuantity(materialQuantity.divide(BigDecimal.valueOf(scale), 3, RoundingMode.HALF_UP)); // 主单位数量=换算单位数量/换算率
-        orderItemPrice = (materialQuantity.multiply(materialPrice)).divide(orderItem.getQuantity(), 3,
-                RoundingMode.HALF_UP); // 主单位单价=换算单位数量*换算单位单价/主单位数量
-        MCValue price = new MCValue(orderItemPriceCurrency, orderItemPrice);
-        orderItem.setPrice(price);
+        // 主单位数量=换算单位数量/换算率
+        orderItem.setQuantity(//
+                materialQuantity.divide(BigDecimal.valueOf(scale), QTY_ITEM_SCALE, RoundingMode.HALF_UP));
+        // 主单位单价=换算单位数量*换算单位单价/主单位数量
+        BigDecimal orderItemPrice = materialQuantity//
+                .multiply(materialPrice)//
+                .divide(orderItem.getQuantity(), MONEY_ITEM_SCALE, RoundingMode.HALF_UP);
+        orderItem.getPrice().setValue(orderItemPrice);
     }
+
 }

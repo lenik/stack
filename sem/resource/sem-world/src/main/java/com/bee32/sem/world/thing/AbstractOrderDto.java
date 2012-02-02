@@ -178,7 +178,7 @@ public abstract class AbstractOrderDto< //
         this.nativeTotal = nativeTotal;
     }
 
-    protected void invalidateTotal() {
+    public void invalidateTotal() {
         total = null;
         nativeTotal = null;
     }

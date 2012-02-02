@@ -1,16 +1,12 @@
 package com.bee32.sem.asset.dto;
 
-import java.math.BigDecimal;
-import java.util.Currency;
-
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.util.i18n.CurrencyConfig;
 import com.bee32.sem.asset.entity.BudgetRequest;
 import com.bee32.sem.base.tx.TxEntityDto;
-import com.bee32.sem.world.monetary.MCValue;
+import com.bee32.sem.world.monetary.MutableMCValue;
 
 public class BudgetRequestDto
         extends TxEntityDto<BudgetRequest> {
@@ -18,13 +14,13 @@ public class BudgetRequestDto
     private static final long serialVersionUID = 1L;
 
     String text;
-    MCValue value;
+    MutableMCValue value;
     AccountTicketDto ticket;
 
     @Override
     protected void _marshal(BudgetRequest source) {
         text = source.getText();
-        value = source.getValue();
+        value = source.getValue().toMutable();
         ticket = mref(AccountTicketDto.class, source.getTicket());
     }
 
@@ -49,31 +45,14 @@ public class BudgetRequestDto
         this.text = text;
     }
 
-    public MCValue getValue() {
+    public MutableMCValue getValue() {
         return value;
     }
 
-    public void setValue(MCValue value) {
+    public void setValue(MutableMCValue value) {
+        if (value == null)
+            throw new NullPointerException("value");
         this.value = value;
-    }
-
-    public BigDecimal getValueDigit() {
-        return value.getValue();
-    }
-
-    public void setValueDigit(BigDecimal valueDigit) {
-        value = new MCValue(value.getCurrency(), valueDigit);
-    }
-
-    public String getValueCurrency() {
-        if (value.getCurrency() == null)
-            return CurrencyConfig.getNative().getCurrencyCode();
-        else
-            return value.getCurrency().getCurrencyCode();
-    }
-
-    public void setValueCurrency(String currencyCode) {
-        value = new MCValue(Currency.getInstance(currencyCode), value.getValue());
     }
 
     public AccountTicketDto getTicket() {

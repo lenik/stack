@@ -14,7 +14,6 @@ import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.util.i18n.CurrencyConfig;
 import com.bee32.sem.asset.dto.AccountSubjectDto;
 import com.bee32.sem.asset.dto.StockPurchaseDto;
 import com.bee32.sem.asset.dto.StockSaleDto;
@@ -28,7 +27,6 @@ import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.world.monetary.CurrencyUtil;
-import com.bee32.sem.world.monetary.MCValue;
 
 public class StockTradeAdminBean
         extends ScrollEntityViewBean {
@@ -167,14 +165,14 @@ public class StockTradeAdminBean
         StockTradeDto stockTrade = getActiveObject();
         // 刷新总记录数
         try {
-//            stockTrade = ((StockTradeDto) stockTradeDtoClass.newInstance()).create();
+// stockTrade = ((StockTradeDto) stockTradeDtoClass.newInstance()).create();
         } catch (Exception e) {
             throw new UnexpectedException(e);
         }
 
         StockTrade firstTrade = (StockTrade) serviceFor(entityClass).getFirst( //
                 new Offset(position - 1), //
-//                CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+// CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
                 Order.asc("id"));
 
         if (firstTrade != null)
@@ -197,7 +195,7 @@ public class StockTradeAdminBean
         try {
             serviceFor(entityClass).delete(stockTrade.unmarshal());
             uiLogger.info("删除成功!");
-//            loadStockTrade(goNumber);
+// loadStockTrade(goNumber);
         } catch (Exception e) {
             uiLogger.warn("删除失败.", e);
         }
@@ -209,7 +207,7 @@ public class StockTradeAdminBean
         StockTradeDto stockTrade = getActiveObject();
         if (stockTrade.getId() == null) {
             // 新增
-//            goNumber = count + 1;
+// goNumber = count + 1;
         }
 
         try {
@@ -224,13 +222,13 @@ public class StockTradeAdminBean
                 total = total.add(item.getNativeTotal());
             }
 
-            stockTrade.setValue(new MCValue(CurrencyConfig.getNative(), total));
+            stockTrade.getValue().setValue(total);
 
             StockTrade _trade = (StockTrade) stockTrade.unmarshal();
 
             serviceFor(entityClass).save(_trade);
             uiLogger.info("保存成功");
-//            loadStockTrade(goNumber);
+// loadStockTrade(goNumber);
         } catch (Exception e) {
             uiLogger.warn("保存失败", e);
         }

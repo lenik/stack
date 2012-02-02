@@ -2,7 +2,6 @@ package com.bee32.sem.purchase.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Currency;
 import java.util.Date;
 
 import javax.free.ParseException;
@@ -14,6 +13,7 @@ import com.bee32.sem.bom.dto.PartDto;
 import com.bee32.sem.purchase.entity.MakeOrderItem;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
+import com.bee32.sem.world.monetary.MutableMCValue;
 
 public class MakeOrderItemDto
         extends CEntityDto<MakeOrderItem, Long> {
@@ -25,7 +25,7 @@ public class MakeOrderItemDto
     PartDto part;
     Date deadline;
     BigDecimal quantity = new BigDecimal(1);
-    MCValue price;
+    MutableMCValue price;
 
     BigDecimal nativePrice;
     BigDecimal nativeTotal;
@@ -40,7 +40,7 @@ public class MakeOrderItemDto
         part = mref(PartDto.class, source.getPart());
         deadline = source.getDeadline();
         quantity = source.getQuantity();
-        price = source.getPrice();
+        price = source.getPrice().toMutable();
         externalProductName = source.getExternalProductName();
         externalSpecification = source.getExternalSpecification();
     }
@@ -52,7 +52,7 @@ public class MakeOrderItemDto
         merge(target, "part", part);
         target.setDeadline(deadline);
         target.setQuantity(quantity);
-        target.setPrice(price);
+        target.setPrice(price.toImmutable());
         target.setExternalProductName(externalProductName);
         target.setExternalSpecification(externalSpecification);
     }
@@ -109,41 +109,16 @@ public class MakeOrderItemDto
         nativeTotal = null;
     }
 
-    public MCValue getPrice() {
+    public MutableMCValue getPrice() {
         return price;
     }
 
-    public void setPrice(MCValue price) {
+    public void setPrice(MutableMCValue price) {
         if (price == null)
             throw new NullPointerException("price");
         this.price = price;
         nativePrice = null;
         nativeTotal = null;
-    }
-
-    public Currency getPriceCurrency() {
-        return price.getCurrency();
-    }
-
-    public String getPriceCurrencyCode() {
-        return price.getCurrencyCode();
-    }
-
-    public void setPriceCurrencyCode(String currencyCode) {
-        if (currencyCode == null)
-            throw new NullPointerException("currencyCode");
-        Currency currency = Currency.getInstance(currencyCode);
-        setPrice(new MCValue(currency, price.getValue()));
-    }
-
-    public BigDecimal getPriceValue() {
-        return price.getValue();
-    }
-
-    public void setPriceValue(BigDecimal value) {
-        if (value == null)
-            throw new NullPointerException("value");
-        setPrice(new MCValue(price.getCurrency(), value));
     }
 
     /**

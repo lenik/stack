@@ -1,20 +1,16 @@
 package com.bee32.sem.asset.dto;
 
-import java.math.BigDecimal;
-import java.util.Currency;
-
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.util.i18n.CurrencyConfig;
 import com.bee32.sem.asset.entity.AccountTicketItem;
 import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.process.verify.builtin.dto.SingleVerifierWithNumberSupportDto;
 import com.bee32.sem.process.verify.dto.IVerifiableDto;
-import com.bee32.sem.world.monetary.MCValue;
+import com.bee32.sem.world.monetary.MutableMCValue;
 
 public class AccountTicketItemDto
         extends TxEntityDto<AccountTicketItem>
@@ -29,7 +25,7 @@ public class AccountTicketItemDto
     AccountSubjectDto subject;
     PartyDto party;
 
-    MCValue value = new MCValue();
+    MutableMCValue value;
 
     boolean debitSide;
     AccountTicketDto ticket;
@@ -41,9 +37,12 @@ public class AccountTicketItemDto
         subject = mref(AccountSubjectDto.class, source.getSubject());
         party = mref(PartyDto.class, source.getParty());
 
-        value = source.getValue();
-
         debitSide = source.isDebitSide();
+        if (isNegative())
+            value = source.getValue().negate().toMutable();
+        else
+            value = source.getValue().toMutable();
+
         ticket = mref(AccountTicketDto.class, source.getTicket());
         singleVerifierWithNumberSupport = marshal(SingleVerifierWithNumberSupportDto.class, source.getVerifyContext());
     }
@@ -55,9 +54,12 @@ public class AccountTicketItemDto
         merge(target, "subject", subject);
         merge(target, "party", party);
 
-        target.setValue(value);
-
         target.setDebitSide(debitSide);
+        if (isNegative())
+            target.setValue(value.negate());
+        else
+            target.setValue(value);
+
         merge(target, "ticket", ticket);
         merge(target, "verifyContext", singleVerifierWithNumberSupport);
     }
@@ -90,21 +92,21 @@ public class AccountTicketItemDto
         }
 
         if (debitSide) {
-            //当前凭证条目为借方
+            // 当前凭证条目为借方
             if (subject.debitSign) {
-                //当前科目为"借方时为正数(增加)"
+                // 当前科目为"借方时为正数(增加)"
                 return false;
             } else {
-                //当前科目为"借方时为负数(减少)"
+                // 当前科目为"借方时为负数(减少)"
                 return true;
             }
         } else {
-            //当前凭证条目为贷方
+            // 当前凭证条目为贷方
             if (subject.creditSign) {
-                //当前科目为"贷方时为正数(增加)"
+                // 当前科目为"贷方时为正数(增加)"
                 return false;
             } else {
-                //当前科目为"贷方时为负数(减少)"
+                // 当前科目为"贷方时为负数(减少)"
                 return true;
             }
         }
@@ -118,53 +120,14 @@ public class AccountTicketItemDto
         this.party = party;
     }
 
-    public MCValue getValue() {
-        if (isNegative()) {
-            return new MCValue(value.getCurrency(), value.getValue().negate());
-        } else {
-            return value;
-        }
+    public MutableMCValue getValue() {
+        return value;
     }
 
-    public void setValue(MCValue value) {
-        if (value == null) {
+    public void setValue(MutableMCValue value) {
+        if (value == null)
             throw new NullPointerException("value");
-        }
-        if (isNegative()) {
-            this.value = new MCValue(value.getCurrency(), value.getValue().negate());
-        } else {
-            this.value = value;
-        }
-    }
-
-    public BigDecimal getValueDigit() {
-        if (isNegative()) {
-            return value.getValue().negate();
-        } else {
-            return value.getValue();
-        }
-    }
-
-    public void setValueDigit(BigDecimal valueDigit) {
-        if (valueDigit == null) {
-            throw new NullPointerException("valueDigit");
-        }
-        if (isNegative()) {
-            this.value = new MCValue(value.getCurrency(), valueDigit.negate());
-        } else {
-            this.value = new MCValue(value.getCurrency(), valueDigit);
-        }
-    }
-
-    public String getValueCurrency() {
-        if (value.getCurrency() == null)
-            return CurrencyConfig.getNative().getCurrencyCode();
-        else
-            return value.getCurrency().getCurrencyCode();
-    }
-
-    public void setValueCurrency(String currencyCode) {
-        value = new MCValue(Currency.getInstance(currencyCode), value.getValue());
+        this.value = value;
     }
 
     public boolean isDebitSide() {

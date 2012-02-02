@@ -28,8 +28,8 @@ public class MCValue
 
     private static final long serialVersionUID = 1L;
 
-    private/* final */Currency currency;
-    private/* final */BigDecimal value;
+    /* final */Currency currency;
+    /* final */BigDecimal value;
 
     public MCValue() {
         currency = CurrencyConfig.getNative();
@@ -95,6 +95,14 @@ public class MCValue
         return new MCValue(currency, value);
     }
 
+    public MutableMCValue toMutable() {
+        return new MutableMCValue(currency, value);
+    }
+
+    public MCValue toImmutable() {
+        return this;
+    }
+
     /**
      * Get the currency.
      */
@@ -125,6 +133,8 @@ public class MCValue
 
         // throws IllegalArgumentException if currency code is illegal.
         Currency currency = Currency.getInstance(currencyCode);
+        if (currency == null)
+            throw new IllegalArgumentException("Bad currency code: " + currencyCode);
 
         setCurrency(currency);
     }

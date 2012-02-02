@@ -5,7 +5,7 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.chance.entity.ChanceCompetitor;
-import com.bee32.sem.world.monetary.MCValue;
+import com.bee32.sem.world.monetary.MutableMCValue;
 
 public class ChanceCompetitorDto
         extends UIEntityDto<ChanceCompetitor, Integer> {
@@ -14,7 +14,7 @@ public class ChanceCompetitorDto
 
     private String name;
     private ChanceDto chance;
-    private MCValue price;
+    private MutableMCValue price;
     private String capability;
     private String solution;
     private String advantage;
@@ -26,7 +26,7 @@ public class ChanceCompetitorDto
     protected void _marshal(ChanceCompetitor source) {
         this.name = source.getName();
         this.chance = mref(ChanceDto.class, source.getChance());
-        this.price = source.getPrice();
+        this.price = source.getPrice().toMutable();
         this.capability = source.getCapability();
         this.solution = source.getSolution();
         this.advantage = source.getAdvantage();
@@ -71,11 +71,11 @@ public class ChanceCompetitorDto
         this.chance = chance;
     }
 
-    public MCValue getPrice() {
+    public MutableMCValue getPrice() {
         return price;
     }
 
-    public void setPrice(MCValue price) {
+    public void setPrice(MutableMCValue price) {
         if (price == null)
             throw new NullPointerException("price");
         this.price = price;

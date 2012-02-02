@@ -1,7 +1,6 @@
 package com.bee32.sem.asset.dto;
 
 import java.math.BigDecimal;
-import java.util.Currency;
 import java.util.Date;
 
 import javax.free.NotImplementedException;
@@ -13,6 +12,7 @@ import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
+import com.bee32.sem.world.monetary.MutableMCValue;
 
 public class StockTradeItemDto
         extends TxEntityDto<StockTradeItem> {
@@ -24,7 +24,7 @@ public class StockTradeItemDto
     MaterialDto material;
 
     BigDecimal quantity;
-    MCValue price;
+    MutableMCValue price;
 
     BigDecimal nativePrice;
     BigDecimal nativeTotal;
@@ -41,7 +41,7 @@ public class StockTradeItemDto
 
         material = mref(MaterialDto.class, source.getMaterial());
         quantity = source.getQuantity();
-        price = source.getPrice();
+        price = source.getPrice().toMutable();
 
         trade = mref(StockTradeDto.class, source.getTrade());
     }
@@ -89,41 +89,16 @@ public class StockTradeItemDto
         nativeTotal = null;
     }
 
-    public MCValue getPrice() {
+    public MutableMCValue getPrice() {
         return price;
     }
 
-    public void setPrice(MCValue price) {
+    public void setPrice(MutableMCValue price) {
         if (price == null)
             throw new NullPointerException("price");
         this.price = price;
         nativePrice = null;
         nativeTotal = null;
-    }
-
-    public Currency getPriceCurrency() {
-        return price.getCurrency();
-    }
-
-    public String getPriceCurrencyCode() {
-        return price.getCurrencyCode();
-    }
-
-    public void setPriceCurrencyCode(String currencyCode) {
-        if (currencyCode == null)
-            throw new NullPointerException("currencyCode");
-        Currency currency = Currency.getInstance(currencyCode);
-        setPrice(new MCValue(currency, price.getValue()));
-    }
-
-    public BigDecimal getPriceValue() {
-        return price.getValue();
-    }
-
-    public void setPriceValue(BigDecimal value) {
-        if (value == null)
-            throw new NullPointerException("value");
-        setPrice(new MCValue(price.getCurrency(), value));
     }
 
     /**

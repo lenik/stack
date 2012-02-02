@@ -1,8 +1,6 @@
 package com.bee32.sem.purchase.dto;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Currency;
 
 import javax.free.ParseException;
 
@@ -11,11 +9,10 @@ import org.apache.commons.lang.NotImplementedException;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.config.DecimalConfig;
-import com.bee32.plover.util.i18n.CurrencyConfig;
 import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.purchase.entity.Inquiry;
-import com.bee32.sem.world.monetary.MCValue;
+import com.bee32.sem.world.monetary.MutableMCValue;
 
 public class InquiryDto
         extends TxEntityDto<Inquiry>
@@ -23,9 +20,8 @@ public class InquiryDto
 
     private static final long serialVersionUID = 1L;
 
-
     OrgDto org;
-    MCValue price;
+    MutableMCValue price;
     String deliveryDate;
     String quality;
     String paymentTerm;
@@ -39,18 +35,16 @@ public class InquiryDto
     @Override
     protected void _marshal(Inquiry source) {
         org = mref(OrgDto.class, source.getOrg());
-        price = source.getPrice();
+        price = source.getPrice().toMutable();
         deliveryDate = source.getDeliveryDate();
         quality = source.getQuality();
         paymentTerm = source.getPaymentTerm();
         afterService = source.getAfterService();
         other = source.getOther();
 
-        purchaseRequestItem = mref(PurchaseRequestItemDto.class,
-                source.getPurchaseRequestItem());
+        purchaseRequestItem = mref(PurchaseRequestItemDto.class, source.getPurchaseRequestItem());
 
-        purchaseAdvice = mref(PurchaseAdviceDto.class,
-                source.getPurchaseAdvice());
+        purchaseAdvice = mref(PurchaseAdviceDto.class, source.getPurchaseAdvice());
 
     }
 
@@ -70,7 +64,8 @@ public class InquiryDto
     }
 
     @Override
-    protected void _parse(TextMap map) throws ParseException {
+    protected void _parse(TextMap map)
+            throws ParseException {
         throw new NotImplementedException();
     }
 
@@ -82,43 +77,12 @@ public class InquiryDto
         this.org = org;
     }
 
-    public MCValue getPrice() {
+    public MutableMCValue getPrice() {
         return price;
     }
 
-    public void setPrice(MCValue price) {
+    public void setPrice(MutableMCValue price) {
         this.price = price;
-    }
-
-    public BigDecimal getPriceDigit() {
-        if (price == null)
-            return new BigDecimal(0);
-        return price.getValue();
-    }
-
-    public void setPriceDigit(BigDecimal priceDigit) {
-        Currency c = CurrencyConfig.getNative();
-        if (price != null)
-            c = price.getCurrency();
-
-        price = new MCValue(c, priceDigit);
-    }
-
-    public String getPriceCurrency() {
-        if (price == null)
-            return CurrencyConfig.getNative().getCurrencyCode();
-
-        if (price.getCurrency() == null)
-            return CurrencyConfig.getNative().getCurrencyCode();
-        else
-            return price.getCurrency().getCurrencyCode();
-    }
-
-    public void setPriceCurrency(String currencyCode) {
-        if (price == null)
-            price = new MCValue(Currency.getInstance(currencyCode), 0);
-        else
-            price = new MCValue(Currency.getInstance(currencyCode), price.getValue());
     }
 
     public String getDeliveryDate() {

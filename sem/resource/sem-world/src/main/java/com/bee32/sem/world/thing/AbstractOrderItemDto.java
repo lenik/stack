@@ -10,6 +10,7 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
+import com.bee32.sem.world.monetary.MutableMCValue;
 
 public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
         extends UIEntityDto<E, Long> {
@@ -19,7 +20,7 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
     int index = -1;
 
     BigDecimal quantity;
-    MCValue price;
+    MutableMCValue price;
 
     BigDecimal nativePrice;
     BigDecimal nativeTotal;
@@ -58,16 +59,13 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
     @Override
     protected void __marshal(E source) {
         super.__marshal(source);
-
         quantity = source.getQuantity();
-
-        price = source.getPrice();
+        price = source.getPrice().toMutable();
     }
 
     @Override
     protected void __unmarshalTo(E target) {
         super.__unmarshalTo(target);
-
         target.setQuantity(quantity);
         target.setPrice(price);
     }
@@ -82,7 +80,7 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
         String currencyCode = map.getString("currencyCode");
         Currency currency = Currency.getInstance(currencyCode);
         BigDecimal _price = map.getBigDecimal("price");
-        setPrice(new MCValue(currency, _price));
+        setPrice(new MutableMCValue(currency, _price));
     }
 
     protected abstract Date getFxrDate();
@@ -115,11 +113,11 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
         nativeTotal = null;
     }
 
-    public MCValue getPrice() {
+    public MutableMCValue getPrice() {
         return price;
     }
 
-    public void setPrice(MCValue price) {
+    public void setPrice(MutableMCValue price) {
         if (price == null)
             throw new NullPointerException("price");
         this.price = price;
@@ -129,27 +127,6 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
 
     public Currency getPriceCurrency() {
         return price.getCurrency();
-    }
-
-    public String getPriceCurrencyCode() {
-        return price.getCurrencyCode();
-    }
-
-    public void setPriceCurrencyCode(String currencyCode) {
-        if (currencyCode == null)
-            throw new NullPointerException("currencyCode");
-        Currency currency = Currency.getInstance(currencyCode);
-        setPrice(new MCValue(currency, price.getValue()));
-    }
-
-    public BigDecimal getPriceValue() {
-        return price.getValue();
-    }
-
-    public void setPriceValue(BigDecimal value) {
-        if (value == null)
-            throw new NullPointerException("value");
-        setPrice(new MCValue(price.getCurrency(), value));
     }
 
     /**
