@@ -139,30 +139,30 @@
                         rowIndexVar="rowIndex"
                         scrollable="true" scrollWidth="600" scrollHeight="350">
 
-                        <p:column>
+                        <p:column style="width:30px;">
                             <f:facet name="header">
                                 <h:outputText value="序号" />
                             </f:facet>
                             <h:outputText value="#{rowIndex + 1}" />
                         </p:column>
 
-                        <p:column headerText="物料名称">
+                        <p:column headerText="物料名称" style="width:150px;">
                             <h:outputText value="#{material.label}" />
                         </p:column>
 
-                        <p:column headerText="序列号">
+                        <p:column headerText="序列号" style="width:100px;">
                             <h:outputText value="#{material.serial}" />
                         </p:column>
 
-                        <p:column headerText="条形码">
+                        <p:column headerText="条形码" style="width:100px;">
                             <h:outputText value="#{material.barCode}" />
                         </p:column>
 
-                        <p:column headerText="主单位">
+                        <p:column headerText="主单位" style="width:80px;">
                             <h:outputText value="#{material.unit.name}" />
                         </p:column>
 
-                        <p:column headerText="规格型号">
+                        <p:column headerText="规格型号" style="width:100px;">
                             <h:outputText value="#{material.modelSpec}" />
                         </p:column>
                     </p:dataTable>
@@ -189,55 +189,55 @@
                         rowIndexVar="rowIndex"
                         scrollable="true" scrollWidth="750" scrollHeight="350">
 
-                        <p:column headerText="序号">
+                        <p:column headerText="序号" style="width:30px;">
                             <h:outputText value="#{rowIndex + 1}" />
                         </p:column>
 
-                        <p:column headerText="单据类型">
+                        <p:column headerText="单据类型" style="width:100px;">
                             <h:outputText value="#{item.parent.subject.displayName}" />
                         </p:column>
 
-                        <p:column headerText="物料">
+                        <p:column headerText="物料" style="width:150px;">
                             <h:outputText value="#{item.material.label}" />
                         </p:column>
 
-                        <p:column headerText="规格型号">
+                        <p:column headerText="规格型号" style="width:100px;">
                             <h:outputText
                                 value="#{item.material.modelSpec}" />
                         </p:column>
 
-                        <p:column headerText="发生日期">
+                        <p:column headerText="发生日期" style="width:100px;">
                             <h:outputText
                                 value="#{item.parent.createdDate}" />
                         </p:column>
 
-                        <p:column headerText="批号">
+                        <p:column headerText="批号" style="width:100px;">
                             <h:outputText value="#{item.batch}" />
                         </p:column>
 
-                        <p:column headerText="有效期">
+                        <p:column headerText="有效期" style="width:100px;">
                             <h:outputText value="#{item.expirationDate}" />
                         </p:column>
 
-                        <p:column headerText="库位">
+                        <p:column headerText="库位" style="width:100px;">
                             <h:outputText
                                 value="#{item.location.nodeText}" />
                         </p:column>
 
-                        <p:column headerText="单价">
+                        <p:column headerText="单价" style="width:80px;">
                             <h:outputText value="#{item.price.value}" />
                         </p:column>
 
-                        <p:column headerText="币种">
+                        <p:column headerText="币种" style="width:100px;">
                             <h:outputText
                                 value="#{item.price.currencyText}" />
                         </p:column>
 
-                        <p:column headerText="数量">
+                        <p:column headerText="数量" style="width:80px;">
                             <h:outputText value="#{item.quantity}" />
                         </p:column>
 
-                        <p:column headerText="操作">
+                        <p:column headerText="操作" style="width:100px;">
                             <p:commandLink
                                 oncomplete="positionDialog.show()"
                                 update="positionForm:positionPanel"
