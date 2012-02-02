@@ -1,4 +1,4 @@
-package com.bee32.plover.arch.util.dto;
+package com.bee32.plover.arch.bean;
 
 /**
  * @param S

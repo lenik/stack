@@ -13,7 +13,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.arch.util.dto.IPropertyAccessor;
+import com.bee32.plover.arch.bean.IPropertyAccessor;
 import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;

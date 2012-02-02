@@ -3,7 +3,7 @@ package com.bee32.plover.orm.util;
 import com.bee32.plover.arch.IModule;
 import com.bee32.plover.arch.Module;
 import com.bee32.plover.arch.ModuleManager;
-import com.bee32.plover.arch.generic.AbstractParameterizedType;
+import com.bee32.plover.arch.type.AbstractParameterizedType;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.restful.resource.IObjectPageDirectory;

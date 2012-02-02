@@ -70,8 +70,7 @@ public abstract class UIEntityDto<E extends UIEntity<K>, K extends Serializable>
     }
 
     public void setLabel(String label) {
-        label = TextUtil.normalizeSpace(label);
-        this.label = label;
+        this.label = TextUtil.normalizeSpace(label);
     }
 
     @NLength(max = UIEntity.DESCRIPTION_LENGTH)
@@ -80,7 +79,7 @@ public abstract class UIEntityDto<E extends UIEntity<K>, K extends Serializable>
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.description = TextUtil.normalizeSpace(description);
     }
 
 }

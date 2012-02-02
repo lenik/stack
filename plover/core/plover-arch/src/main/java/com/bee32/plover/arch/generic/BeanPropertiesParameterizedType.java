@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.bee32.plover.arch.type.AbstractParameterizedType;
 import com.bee32.plover.arch.util.ClassUtil;
 
 public class BeanPropertiesParameterizedType

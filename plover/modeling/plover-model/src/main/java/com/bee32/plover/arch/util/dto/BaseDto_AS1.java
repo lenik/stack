@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.bee32.plover.arch.bean.IPropertyAccessor;
+
 /**
  * <pre>
  * LAYER 3 - STATIC HELPER: MARSHAL

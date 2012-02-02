@@ -16,9 +16,9 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Index;
 
+import com.bee32.plover.arch.bean.IPropertyAccessor;
 import com.bee32.plover.arch.generic.IParameterized;
 import com.bee32.plover.arch.generic.IParameterizedType;
-import com.bee32.plover.arch.util.dto.IPropertyAccessor;
 import com.bee32.sem.inventory.process.IStockOrderVerifyContext;
 import com.bee32.sem.inventory.process.StockOrderVerifySupport;
 import com.bee32.sem.inventory.tx.entity.StockOutsourcing;

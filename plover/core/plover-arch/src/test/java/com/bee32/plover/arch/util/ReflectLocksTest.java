@@ -3,6 +3,8 @@ package com.bee32.plover.arch.util;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.bee32.plover.arch.bean.ReflectLocks;
+
 @SuppressWarnings("unused")
 public class ReflectLocksTest
         extends Assert {

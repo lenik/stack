@@ -8,11 +8,11 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.bee32.plover.arch.bean.BeanPropertyAccessor;
+import com.bee32.plover.arch.bean.IPropertyAccessor;
 import com.bee32.plover.arch.naming.INamed;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.ILabelledEntry;
-import com.bee32.plover.arch.util.dto.BeanPropertyAccessor;
-import com.bee32.plover.arch.util.dto.IPropertyAccessor;
 import com.bee32.plover.model.Model;
 
 public abstract class EntityBase<K extends Serializable>

@@ -1,7 +1,9 @@
-package com.bee32.plover.arch.generic;
+package com.bee32.plover.arch.type;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import com.bee32.plover.arch.generic.IParameterizedType;
 
 public abstract class AbstractParameterizedType
         implements IParameterizedType {

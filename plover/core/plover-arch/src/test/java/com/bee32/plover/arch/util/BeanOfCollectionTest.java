@@ -12,6 +12,8 @@ import javax.free.Person;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.bee32.plover.arch.bean.BeanOfCollection;
+
 public class BeanOfCollectionTest
         extends Assert {
 

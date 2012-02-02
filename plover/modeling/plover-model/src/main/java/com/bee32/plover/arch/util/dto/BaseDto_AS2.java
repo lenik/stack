@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.dao.DataAccessException;
 
+import com.bee32.plover.arch.bean.BeanPropertyAccessor;
+import com.bee32.plover.arch.bean.IPropertyAccessor;
+
 public abstract class BaseDto_AS2<S, C>
         extends BaseDto_AS1<S, C> {
 

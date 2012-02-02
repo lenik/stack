@@ -10,9 +10,9 @@ import java.util.Set;
 import javax.free.ParseException;
 import javax.free.UnexpectedException;
 
+import com.bee32.plover.arch.bean.IPropertyAccessor;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.arch.util.dto.BaseDto;
-import com.bee32.plover.arch.util.dto.IPropertyAccessor;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntitySpec;
 

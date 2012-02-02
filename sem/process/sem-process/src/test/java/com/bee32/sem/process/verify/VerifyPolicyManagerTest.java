@@ -9,7 +9,7 @@ import javax.persistence.SequenceGenerator;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.bee32.plover.arch.util.dto.IPropertyAccessor;
+import com.bee32.plover.arch.bean.IPropertyAccessor;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;
 import com.bee32.sem.process.verify.builtin.PassToNextPolicy;

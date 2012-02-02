@@ -15,8 +15,8 @@ import org.hibernate.annotations.Index;
 import overlay.Overlay;
 
 import com.bee32.plover.arch.Component;
+import com.bee32.plover.arch.bean.ReflectLocks;
 import com.bee32.plover.arch.util.IdComposite;
-import com.bee32.plover.arch.util.ReflectLocks;
 import com.bee32.plover.criteria.hibernate.Alias;
 import com.bee32.plover.criteria.hibernate.Conjunction;
 import com.bee32.plover.criteria.hibernate.CriteriaComposite;

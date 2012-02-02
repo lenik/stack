@@ -16,7 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
-import com.bee32.plover.arch.util.dto.IPropertyAccessor;
+import com.bee32.plover.arch.bean.IPropertyAccessor;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.base.tx.TxEntity;

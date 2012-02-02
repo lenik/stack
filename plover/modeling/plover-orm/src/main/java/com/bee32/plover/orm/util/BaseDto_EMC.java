@@ -11,9 +11,9 @@ import java.util.Set;
 
 import javax.free.NotImplementedException;
 
+import com.bee32.plover.arch.bean.BeanPropertyAccessor;
+import com.bee32.plover.arch.bean.IPropertyAccessor;
 import com.bee32.plover.arch.util.dto.BaseDto;
-import com.bee32.plover.arch.util.dto.BeanPropertyAccessor;
-import com.bee32.plover.arch.util.dto.IPropertyAccessor;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.IMultiFormat;

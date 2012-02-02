@@ -5,7 +5,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
-import com.bee32.plover.arch.util.dto.IPropertyAccessor;
+import com.bee32.plover.arch.bean.IPropertyAccessor;
 import com.bee32.plover.orm.entity.Entity;
 
 @MappedSuperclass

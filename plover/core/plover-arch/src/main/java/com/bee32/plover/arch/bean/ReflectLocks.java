@@ -1,4 +1,4 @@
-package com.bee32.plover.arch.util;
+package com.bee32.plover.arch.bean;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -6,8 +6,7 @@ import java.util.List;
 
 import javax.free.ClassLocal;
 
-import com.bee32.plover.arch.util.dto.FieldPropertyAccessor;
-import com.bee32.plover.arch.util.dto.IPropertyAccessor;
+import com.bee32.plover.arch.util.ILockable;
 
 public class ReflectLocks {
 

@@ -1,6 +1,6 @@
 package com.bee32.sem.process.verify.builtin;
 
-import com.bee32.plover.arch.util.dto.IPropertyAccessor;
+import com.bee32.plover.arch.bean.IPropertyAccessor;
 import com.bee32.plover.orm.entity.Entity;
 
 public class JudgeNumberInProperty

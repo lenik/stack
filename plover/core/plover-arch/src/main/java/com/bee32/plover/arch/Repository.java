@@ -8,7 +8,7 @@ import java.util.List;
 import javax.free.IllegalUsageException;
 import javax.servlet.ServletRequest;
 
-import com.bee32.plover.arch.util.BeanPopulater;
+import com.bee32.plover.arch.bean.BeanPopulater;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.IStruct;
 import com.bee32.plover.arch.util.MapStruct;

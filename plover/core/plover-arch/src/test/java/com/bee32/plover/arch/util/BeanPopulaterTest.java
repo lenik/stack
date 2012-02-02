@@ -10,6 +10,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.bee32.plover.arch.BuildException;
+import com.bee32.plover.arch.bean.BeanPopulater;
 
 public class BeanPopulaterTest
         extends Assert {
