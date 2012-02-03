@@ -1,0 +1,22 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:cc="http://java.sun.com/jsf/composite" xmlns:pc="http://bee32.com/plover/core"
+    xmlns:p="http://primefaces.org/ui">
+
+    <cc:interface>
+        <cc:attribute name="value" type="java.lang.Object" required="true" />
+        <cc:attribute name="candidates" type="java.util.Collection" required="true" />
+        <cc:attribute name="var" type="java.lang.String" />
+        <cc:attribute name="itemLabel" />
+        <cc:attribute name="itemValue" type="java.lang.Object" />
+        <cc:facet name="append" />
+    </cc:interface>
+
+    <cc:implementation>
+        <p:selectOneMenu id="select" value="${holder.value}">
+            <cc:insertChildren />
+            <f:selectItems value="${holder.candidates}" />
+            <cc:insertRawFacet name="append" />
+        </p:selectOneMenu>
+    </cc:implementation>
+
+</html>

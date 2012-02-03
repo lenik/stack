@@ -1,9 +1,5 @@
 package com.bee32.plover.faces;
 
-import org.primefaces.component.selectonemenu.SelectOneMenuRenderer;
-
-import com.bee32.plover.faces.component.SelectOneObjectMenu;
-
 public class PloverFacesLibrary
         extends _TagLibrary {
 
@@ -13,8 +9,8 @@ public class PloverFacesLibrary
         super(NAMESPACE);
 
         // addTagHandler("select", SelectHandler);
-        addComponent("select", SelectOneObjectMenu.class.getCanonicalName(),
-                SelectOneMenuRenderer.class.getCanonicalName());
+        // addComponent("select", SelectOneObjectMenu.class.getCanonicalName(),
+        // "org.primefaces.component.SelectOneMenuRenderer");
     }
 
 }

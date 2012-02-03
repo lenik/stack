@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition template="/template/primefaces.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+    xmlns:fr="http://java.sun.com/jsf/composite/frame">
+
+    <ui:define name="title">fr:select test</ui:define>
+    <ui:param name="bean" value="${selectTestBean}" />
+
+    <ui:define name="initializers" />
+
+    <ui:define name="content">
+        <h:panelGroup id="all">
+            <p:fieldset id="c" legend="Current Entry">
+                Current entry key: ${bean.entry.key}
+            </p:fieldset>
+
+            <h:form id="form1">
+                Enter entry key:
+                <p:inputText id="key" value="${bean.echo(bean.entry).key}" />
+                <p:commandButton value="save" update="${update}" />
+            </h:form>
+            <p:separator />
+            <h:form id="form2">
+                <fr:select id="menu" value="${bean.entry.key}">
+                    <f:selectItem itemValue="-" itemLabel="Please choose one" />
+                </fr:select>
+                <p:commandButton value="save" update="${update}" />
+            </h:form>
+        </h:panelGroup>
+    </ui:define>
+
+</ui:composition>
