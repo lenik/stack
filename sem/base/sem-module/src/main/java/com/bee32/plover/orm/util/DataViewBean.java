@@ -1,12 +1,14 @@
 package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.acl.IACLService;
 import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.principal.User;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.faces.view.GenericViewBean;
 import com.bee32.plover.faces.view.ViewMetadata;
 import com.bee32.plover.orm.dao.CommonDataManager;
@@ -89,6 +91,13 @@ public abstract class DataViewBean
         IACLService aclService = getBean(IACLService.class);
         Set<Integer> acls = aclService.getACLs(currentUser, minimum);
         return acls;
+    }
+
+    protected <E extends Entity<?>, D extends EntityDto<E, ?>> //
+    List<D> mrefList(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
+        List<E> entities = asFor(entityClass).list(criteriaElements);
+        List<D> list = DTOs.mrefList(dtoClass, entities);
+        return list;
     }
 
 }
