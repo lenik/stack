@@ -137,7 +137,34 @@
         </div>
 
         <div id="dialogs">
-            <ui:insert name="dialogs.0" />
+            <ui:insert name="dialogs.0">
+                <ui:insert name="editDialogs">
+                    <f:subview id="editDialog">
+                        <c:if test="${plainEditForm}">
+                            <p:panel id="editPanel" header="${title}">
+                                <ui:insert name="editDialogBody" />
+                            </p:panel>
+                        </c:if>
+                        <c:if test="${not plainEditForm}">
+                            <ui:insert name="editDialog">
+                                <p:dialog header="编辑${title}" id="editDialog" widgetVar="editDialog" modal="true"
+                                    dynamic="${viewConfig.dynamicDialog}">
+                                    <div class="${formStyleClass != null ? formStyleClass : 'ui-dialog-form'}">
+                                        <ui:insert name="editDialogBody" />
+                                    </div>
+                                </p:dialog>
+                            </ui:insert>
+                        </c:if>
+                    </f:subview>
+                </ui:insert>
+                <ui:insert name="optionDialogs">
+                    <ui:insert name="optionDialogs.0">
+                        <icsf:securityOptionsDialog id="securityDialog" var="securityDialog" />
+                    </ui:insert>
+                    <ui:insert name="optionDialogs.1" />
+                </ui:insert>
+            </ui:insert>
+            <ui:insert name="dialogs.1" />
             <ui:insert name="dialogs" />
         </div>
     </ui:define>

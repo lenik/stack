@@ -7,16 +7,16 @@
         <p:toolbar id="toolbar">
             <p:toolbarGroup align="left">
                 <p:commandButton id="createButton" value="新建" actionListener="${bean.showCreateForm}"
-                    oncomplete="editDialog.show()" update=":editDialog:form, :editForm" />
+                    oncomplete="${plainEditForm ? '' : 'editDialog.show()'}" update=":editDialog:form" />
                 <p:commandButton id="deleteButton" value="删除" onclick="deleteConfirmDialog.show()"
                     disabled="${not bean.selected}" />
                 <!-- TODO toggle button in PF-3.1: searchPanel toggler -->
             </p:toolbarGroup>
             <p:toolbarGroup align="right">
-                <p:commandButton id="viewButton" value="查看" actionListener="${bean.showContent}"
-                    oncomplete="editDialog.show()" disabled="${not bean.selected}" update=":editDialog:form, :editForm" />
-                <p:commandButton id="editButton" value="修改" actionListener="${bean.showEditForm}"
-                    oncomplete="editDialog.show()" disabled="${not bean.selected}" update=":editDialog:form, :editForm" />
+                <p:commandButton id="viewButton" value="查看" disabled="${not bean.selected}"
+                    actionListener="${bean.showContent}" update=":editDialog:form" oncomplete="${plainEditForm ? '' : 'editDialog.show()'}" />
+                <p:commandButton id="editButton" value="修改" disabled="${not bean.selected}"
+                    actionListener="${bean.showEditForm}" update=":editDialog:form" oncomplete="${plainEditForm ? '' : 'editDialog.show()'}" />
                 <ui:insert name="toolbarPeripherals" />
             </p:toolbarGroup>
         </p:toolbar>
@@ -93,37 +93,19 @@
         </h:panelGroup>
     </ui:define>
 
-    <ui:define name="dialogs.0">
-        <ui:insert name="editForm">
-            <h:form id="editForm" />
-        </ui:insert>
-        <ui:insert name="editDialogWrapper">
-            <f:subview id="editDialog">
-                <ui:insert name="editDialog">
-                    <p:dialog header="编辑${title}" id="editDialog" widgetVar="editDialog" modal="true"
-                        dynamic="${viewConfig.dynamicDialog}">
-                        <h:form id="form" styleClass="${formStyleClass != null ? formStyleClass : 'ui-dialog-form'}">
-                            <h:panelGroup rendered="${bean.activeObject !=null}">
-                                <ui:insert name="editDialogContent">The edit dialog's content is undefined.</ui:insert>
-                            </h:panelGroup>
-                            <div align="right">
-                                <p:commandButton id="save-validated" value="保存"
-                                    disabled="${bean.currentView == 'content'}" actionListener="${bean.save}"
-                                    update=":mainForm:dataContainer, ${mirrorTargets}" oncomplete="editDialog.hideValidated(args)" />
-                                <p:commandButton id="cancel" value="${bean.currentView == 'content'  ? '关闭' : '取消'}"
-                                    onclick="editDialog.hide()" />
-                            </div>
-                        </h:form>
-                    </p:dialog>
-                </ui:insert>
-            </f:subview>
-        </ui:insert>
-        <ui:insert name="optionDialogs">
-            <icsf:securityOptionsDialog id="securityDialog" var="securityDialog" />
-        </ui:insert>
-        <div id="dialogs.1">
-            <ui:define name="dialogs.1" />
-        </div>
+    <ui:define name="editDialogBody">
+        <h:form id="form">
+            <h:panelGroup rendered="${bean.activeObject !=null}">
+                <ui:insert name="editDialogContent">The edit dialog's content is undefined.</ui:insert>
+            </h:panelGroup>
+            <div align="right">
+                <p:commandButton id="save-validated" value="保存" actionListener="${bean.save}"
+                    disabled="${bean.currentView == 'content'}" update=":mainForm:dataContainer, ${mirrorTargets}"
+                    oncomplete="${plainEditForm ? '' : 'editDialog.hideValidated(args)'}" />
+                <p:commandButton id="cancel" value="${bean.currentView == 'content'  ? '关闭' : '取消'}"
+                    onclick="${plainEditForm ? '' : 'editDialog.hide()'}" />
+            </div>
+        </h:form>
     </ui:define>
 
 </ui:composition>
