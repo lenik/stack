@@ -15,6 +15,11 @@ label {
     font-family: Verdana, Arial, sans-serif;
 }
 
+.ui-dialog-form {
+    max-height: 10em;
+    margin: 1em;
+}
+
 .logo-container {
     border-left: solid #cccccc 5px;
     border-right: solid #cccccc 5px;
@@ -96,12 +101,4 @@ label {
 .std {
     vertical-align: top;
     width: 75%;
-}
-
-.material_dialog_label {
-    width: 100px;
-}
-
-.material_dialog_txt {
-
 }

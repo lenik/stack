@@ -46,7 +46,7 @@
 
     <ui:define name="editDialog">
         <p:dialog header="Mission Profile" widgetVar="editDialog" modal="true">
-            <h:form id="form" style="max-height: 30em; margin: 1em">
+            <h:form id="form" styleClass="ui-dialog-form">
                 <c:set var="obj" value="#{bean.activeObject}" />
 
                 <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">

@@ -69,7 +69,7 @@
             update=":addEntryForm:policy" />
 
         <p:dialog header="新增项目" widgetVar="addEntryDialog" modal="true">
-            <h:form id="addEntryForm" style="max-height: 30em; margin: 1em">
+            <h:form id="addEntryForm" styleClass="ui-dialog-form">
                 <t:panelGrid rendered="#{bean.entry != null}" columns="2" columnClasses="detail_col_title,detail_col_value">
                     <h:outputLabel for="subject" value="库存单据类型" />
                     <t:panelGrid columns="2">

@@ -12,7 +12,7 @@
 
         <!-- ui overrides -->
         <cc:attribute name="header" default="${cc.attrs.dialogBean.header}" />
-        <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
+        <cc:attribute name="formStyleClass" default="ui-dialog-form" />
         <cc:attribute name="mode" default="table" shortDescription="table, list, tree" />
 
         <!-- internals -->
@@ -32,7 +32,7 @@
             <ui:param name="update" value="${cc.attrs.update}" />
             <ui:param name="var" value="${cc.attrs.var}" />
             <ui:param name="header" value="${cc.attrs.header}" />
-            <ui:param name="style" value="${cc.attrs.style}" />
+            <ui:param name="formStyleClass" value="${cc.attrs.formStyleClass}" />
             <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
 
             <ui:define name="columns">

@@ -61,7 +61,7 @@
 
     <ui:define name="dialogs">
         <p:dialog header="新增#{numberHint}级别" widgetVar="addLevelDialog" modal="true">
-            <h:form id="addLevelForm" style="max-height: 30em; margin: 1em">
+            <h:form id="addLevelForm" styleClass="ui-dialog-form">
                 <t:panelGrid id="addLevelPanel" columns="2" columnClasses="detail_col_title,detail_col_value">
 
                     <h:outputText value="#{numberHint}" />

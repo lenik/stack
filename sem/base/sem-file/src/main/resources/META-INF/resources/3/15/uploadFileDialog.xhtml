@@ -12,7 +12,7 @@
 
         <!-- ui overrides -->
         <cc:attribute name="header" default="${cc.attrs.dialogBean.header}" />
-        <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
+        <cc:attribute name="formStyleClass" default="ui-dialog-form" />
 
         <!-- internals -->
         <cc:attribute name="dialogBean" type="java.lang.Object" default="${uploadFileDialogBean}" />
@@ -21,7 +21,7 @@
     <cc:implementation>
         <!-- modal="true" not work here. -->
         <p:dialog header="${cc.attrs.header}" widgetVar="${cc.attrs.var}">
-            <h:form id="form" enctype="multipart/form-data" style="${cc.attrs.style}">
+            <h:form id="form" enctype="multipart/form-data" styleClass="${cc.attrs.formStyleClass}">
                 <p:fileUpload mode="advanced" multiple="${cc.attrs.multiple}" allowTypes="${viewConfig.allowTypes}"
                     sizeLimit="${viewConfig.maxFileSize}" fileUploadListener="${cc.attrs.fileUploadListener}" update="${cc.attrs.update}"
                     label="选择文件" uploadLabel="上传" cancelLabel="取消" />

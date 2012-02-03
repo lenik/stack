@@ -11,7 +11,7 @@
 
         <!-- ui overrides -->
         <cc:attribute name="header" default="编辑安全策略" />
-        <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
+        <cc:attribute name="formStyleClass" default="ui-dialog-form" />
 
         <!-- internals -->
         <cc:attribute name="dialogBean" type="java.lang.Object" default="${ACLBean}" shortDescription="nc(1)" />
@@ -31,7 +31,7 @@
         <p:dialog id="main" header="${cc.attrs.header}" widgetVar="${cc.attrs.var}" modal="true"
             dynamic="${viewConfig.dynamicDialog}" position="center">
             <c:set var="obj" value="${cc.attrs.value}" />
-            <h:form id="form" style="${cc.attrs.style}">
+            <h:form id="form" styleClass="${cc.attrs.formStyleClass}">
 
                 <h:panelGrid rendered="${obj != null}" columns="2" styleClass="attr-table" columnClasses="attr-name, attr-value"
                     cellspacing="0" cellpadding="0">
@@ -96,7 +96,7 @@
 
         <p:dialog id="editEntryDialog" header="编辑 ACL 条目" widgetVar="${cc.attrs.var}_ed" modal="true"
             dynamic="${viewConfig.dynamicDialog}" position="center">
-            <h:form id="editEntryForm" style="max-height: 30em; margin: 1em">
+            <h:form id="editEntryForm" styleClass="${cc.attrs.formStyleClass}">
 
                 <t:panelGrid rendered="${dialogBean.entry != null}" columns="2"
                     columnClasses="detail_col_title,detail_col_value">
