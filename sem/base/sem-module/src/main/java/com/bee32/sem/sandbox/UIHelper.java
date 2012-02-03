@@ -39,6 +39,7 @@ public class UIHelper
         return items;
     }
 
+    @Deprecated
     public static List<SelectItem> selectItemsFromDict2(Iterable<? extends NameDictDto<?>> dictEntries) {
         List<SelectItem> items = new ArrayList<SelectItem>();
 
@@ -50,6 +51,7 @@ public class UIHelper
         return items;
     }
 
+    @Deprecated
     public static List<SelectItem> selectItemsFromEnum(Iterable<? extends EnumAlt<?, ?>> enums) {
         List<SelectItem> items = new ArrayList<SelectItem>();
 
