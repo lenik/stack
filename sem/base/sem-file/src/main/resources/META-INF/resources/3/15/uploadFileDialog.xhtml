@@ -6,12 +6,12 @@
         <!-- basic -->
         <cc:attribute name="var" default="uploadFileDialog" />
         <cc:attribute name="multiple" type="java.lang.Boolean" default="true" />
-        <cc:attribute name="fileUploadListener" default="${uploadFileDialogBean.handleFileUpload}"
+        <cc:attribute name="fileUploadListener" default="${cc.attrs.dialogBean.handleFileUpload}"
             method-signature="void f(org.primefaces.event.FileUploadEvent)" />
         <cc:attribute name="update" />
 
         <!-- ui overrides -->
-        <cc:attribute name="header" default="${uploadFileDialogBean.header}" />
+        <cc:attribute name="header" default="${cc.attrs.dialogBean.header}" />
         <cc:attribute name="style" default="max-height: 40em; margin: 1em" />
 
         <!-- internals -->
