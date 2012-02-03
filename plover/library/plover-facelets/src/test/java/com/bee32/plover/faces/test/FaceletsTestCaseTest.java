@@ -16,7 +16,7 @@ public class FaceletsTestCaseTest
 
     public static void main(String[] args)
             throws Exception {
-        new FaceletsTestCaseTest().browseAndWait("test/listview.jsf");
+        new FaceletsTestCaseTest().browseAndWait("play/lvalue.jsf");
     }
 
 }

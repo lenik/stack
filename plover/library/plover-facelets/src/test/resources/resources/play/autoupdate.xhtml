@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:c0="http://java.sun.com/jstl/core"
-    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:p="http://primefaces.org/ui" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    template="template.xhtml">
+<ui:composition template="template.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:c0="http://java.sun.com/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <ui:param name="bean" value="${autoUpdateBean}" />
 
     <ui:define name="title">Auto update (phase-listener) test</ui:define>
 
     <ui:define name="body">
-
         <h:form id="auto" target="aaa">
             <div id="div">Status: ${autoUpdateBean.status}</div>
             <p:growl id="growl" showDetails="true" />
         </h:form>
 
         <h:form id="form1">
-            <h:inputText name="message" value="${autoUpdateBean.message}" />
+            <h:inputText name="message" value="${bean.message}" />
             <h:inputText name="message2" value="${helperBean.anotherMessage}" />
-            <p:commandButton value="Update" actionListener="${autoUpdateBean.update}" />
+            <h:inputText name="message2" value="${bean.anotherMessage}" />
+            <p:commandButton value="Update" actionListener="${bean.update}" />
         </h:form>
-
     </ui:define>
 
 </ui:composition>
