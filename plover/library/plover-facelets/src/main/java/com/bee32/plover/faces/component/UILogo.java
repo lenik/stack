@@ -1,4 +1,4 @@
-package com.bee32.plover.faces.controls;
+package com.bee32.plover.faces.component;
 
 import java.io.IOException;
 

@@ -5,6 +5,6 @@
 
 <facelet-taglib>
 
-    <library-class>com.bee32.plover.faces.tag.PloverFacesTagLibrary</library-class>
+    <library-class>com.bee32.plover.faces.PloverFacesLibrary</library-class>
 
 </facelet-taglib>
