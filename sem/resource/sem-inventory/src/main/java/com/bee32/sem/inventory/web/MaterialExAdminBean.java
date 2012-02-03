@@ -31,7 +31,6 @@ import com.bee32.sem.inventory.web.dialogs.MaterialCategoryTreeModel;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.sandbox.UIHelper;
-import com.bee32.sem.world.monetary.CurrencyUtil;
 import com.bee32.sem.world.thing.ScaleItem;
 import com.bee32.sem.world.thing.Unit;
 import com.bee32.sem.world.thing.UnitConv;
@@ -125,10 +124,6 @@ public class MaterialExAdminBean
         MaterialDto material = getActiveObject();
         MaterialCategoryDto category = (MaterialCategoryDto) choosedMaterialCategoryNode.getData();
         material.setCategory(category);
-    }
-
-    public List<SelectItem> getCurrencies() {
-        return CurrencyUtil.selectItems();
     }
 
     public List<MaterialPriceDto> getMaterialPrices() {

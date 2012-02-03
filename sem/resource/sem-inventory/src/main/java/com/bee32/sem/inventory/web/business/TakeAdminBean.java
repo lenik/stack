@@ -8,7 +8,6 @@ import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.annotation.TypeParameter;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
-import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.util.StockCriteria;
@@ -87,11 +86,6 @@ public class TakeAdminBean
     @Override
     public StockOrderItemDto getOrderItem_() {
         return orderItem;
-    }
-
-    @Override
-    public StockWarehouseDto getSelectedWarehouse_() {
-        return selectedWarehouse;
     }
 
 }
