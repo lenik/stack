@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ui:composition template="/template/primefaces.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
-    xmlns:fr="http://java.sun.com/jsf/composite/frame">
+    xmlns:pl="http://java.sun.com/jsf/composite/plover" xmlns:fr="http://java.sun.com/jsf/composite/frame">
 
     <ui:define name="title">fr:select test</ui:define>
     <ui:param name="bean" value="${selectTestBean}" />
@@ -21,8 +21,8 @@
             </h:form>
             <p:separator />
             <h:form id="form2">
-                <fr:select id="menu" value="${bean.entry.key}">
-                    <f:selectItem itemValue="-" itemLabel="Please choose one" />
+                <fr:select id="menu" items="${bean.entries}" valueExpr="bean.entry">
+                    <f:selectItem itemValue="__NULL__" itemLabel="Please choose one" />
                 </fr:select>
                 <p:commandButton value="save" update="${update}" />
             </h:form>

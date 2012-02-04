@@ -5,13 +5,6 @@
 
 <facelet-taglib>
 
-    <namespace>http://bee32.com/sem/functions</namespace>
-
-    <!-- This is an example function -->
-    <function>
-        <function-name>version</function-name>
-        <function-class>com.bee32.plover.faces.el.CoreConstants</function-class>
-        <function-signature>String version()</function-signature>
-    </function>
+    <library-class>com.bee32.sem.frame.FrameLibrary</library-class>
 
 </facelet-taglib>

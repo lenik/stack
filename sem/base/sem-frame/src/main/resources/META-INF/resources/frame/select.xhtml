@@ -3,18 +3,35 @@
     xmlns:p="http://primefaces.org/ui">
 
     <cc:interface>
-        <cc:attribute name="value" type="java.lang.Object" required="true" />
-        <cc:attribute name="candidates" type="java.util.Collection" required="true" />
+        <cc:attribute name="valueExpr" type="java.lang.String" required="true" />
+        <cc:attribute name="items" type="java.util.List" required="true" />
         <cc:attribute name="var" type="java.lang.String" />
-        <cc:attribute name="itemLabel" />
-        <cc:attribute name="itemValue" type="java.lang.Object" />
+        <cc:attribute name="itemLabelExpr" />
+        <cc:attribute name="itemValueExpr" />
+        <cc:attribute name="nullValue" />
+
+        <cc:attribute name="widgetVar" />
+        <cc:attribute name="var" />
+        <cc:attribute name="height" />
+        <cc:attribute name="label" />
+        <cc:attribute name="style" />
+        <cc:attribute name="styleClass" />
+        <cc:attribute name="tabindex" />
+        <cc:attribute name="readonly" />
+        <cc:attribute name="disabled" />
+
         <cc:facet name="append" />
     </cc:interface>
 
     <cc:implementation>
-        <p:selectOneMenu id="select" value="${holder.value}">
+        <ui:param name="selector"
+            value="${fr:selector(component, cc.attrs.items, cc.attrs.valueExpr,
+                cc.attrs.var, cc.attrs.itemLabelExpr, cc.attrs.itemValueExpr, cc.attrs.nullValue)}" />
+        <p:selectOneMenu id="select" value="${selector.valueId}" widgetVar="${cc.attrs.widgetVar}" var="${cc.attrs.var}"
+            label="${cc.attrs.label}" style="${cc.attrs.style}" styleClass="${cc.attrs.styleClass}" tabindex="${cc.attrs.tabindex}"
+            readonly="${cc.attrs.readonly}" disabled="${cc.attrs.disabled}">
             <cc:insertChildren />
-            <f:selectItems value="${holder.candidates}" />
+            <f:selectItems value="${selector.selectItems}" />
             <cc:insertRawFacet name="append" />
         </p:selectOneMenu>
     </cc:implementation>
