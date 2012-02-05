@@ -59,7 +59,7 @@ public abstract class DataService
 
         E reloaded = asFor(entityType).getOrFail(id);
 
-        D remarshalled = DTOs.marshal(dtoType, selection, reloaded);
+        D remarshalled = DTOs.marshal(dtoType, fmask, reloaded);
         return remarshalled;
     }
 

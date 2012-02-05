@@ -125,7 +125,7 @@ public class SimpleEntityViewBean
         }
 
         this.dataModelOptions = new SevbEdmo<E, D>(//
-                entityClass, dtoClass, selection, new CriteriaHolderExpansion(new SevbCriteriaHolder()));
+                entityClass, dtoClass, fmask, new CriteriaHolderExpansion(new SevbCriteriaHolder()));
         this.dataModel = new SevbLazyDataModel<>(dataModelOptions);
     }
 
@@ -135,7 +135,7 @@ public class SimpleEntityViewBean
         private static final long serialVersionUID = 1L;
 
         public SevbEdmo(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
-            super(entityClass, dtoClass, selection, criteriaElements);
+            super(entityClass, dtoClass, fmask, criteriaElements);
         }
 
         @SuppressWarnings("unchecked")

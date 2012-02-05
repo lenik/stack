@@ -89,14 +89,14 @@ class MarshalKey {
     public MarshalKey(Object source, MarshalType mt, int fmask) {
         this.source = source;
         this.mt = mt;
-        this.selection = selection;
+        this.fmask = fmask;
     }
 
     @Override
     public int hashCode() {
         int hash = mt.hashCode();
         hash += System.identityHashCode(source);
-        hash += selection;
+        hash += fmask;
         return hash;
     }
 
@@ -107,7 +107,7 @@ class MarshalKey {
             return false;
         if (source != o.source)
             return false;
-        if (selection != o.selection)
+        if (fmask != o.fmask)
             return false;
         return true;
     }

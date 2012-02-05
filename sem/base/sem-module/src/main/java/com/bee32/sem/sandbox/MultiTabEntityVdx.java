@@ -21,7 +21,7 @@ public abstract class MultiTabEntityVdx
 
     public <E extends Entity<K>, D extends EntityDto<? super E, K>, K extends Serializable> //
     MultiTabEntityVdx(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
-        super(entityClass, dtoClass, selection, criteriaElements);
+        super(entityClass, dtoClass, fmask, criteriaElements);
     }
 
     public boolean isEditing() {

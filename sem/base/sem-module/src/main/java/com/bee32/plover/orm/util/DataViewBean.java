@@ -82,7 +82,7 @@ public abstract class DataViewBean
 
         E reloaded = serviceFor(entityType).getOrFail(id);
 
-        D remarshalled = DTOs.marshal(dtoType, selection, reloaded);
+        D remarshalled = DTOs.marshal(dtoType, fmask, reloaded);
         return remarshalled;
     }
 

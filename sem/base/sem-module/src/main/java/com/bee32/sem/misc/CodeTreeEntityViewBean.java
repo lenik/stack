@@ -31,7 +31,7 @@ public abstract class CodeTreeEntityViewBean
 
     public <E extends Entity<K>, D extends EntityDto<? super E, K>, K extends Serializable> //
     CodeTreeEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
-        super(entityClass, dtoClass, selection, criteriaElements);
+        super(entityClass, dtoClass, fmask, criteriaElements);
     }
 
     protected synchronized TreeNode loadTree() {

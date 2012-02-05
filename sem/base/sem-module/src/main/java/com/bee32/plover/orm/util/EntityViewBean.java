@@ -30,6 +30,7 @@ public abstract class EntityViewBean
 
     List<?> selection = new ArrayList<Object>();
     List<?> openedObjects = new ArrayList<Object>();
+    boolean opened;
 
     public EntityViewBean() {
         if (logger.isTraceEnabled()) {
@@ -206,7 +207,7 @@ public abstract class EntityViewBean
     }
 
     public final boolean isOpened() {
-        return !getOpenedObjects().isEmpty();
+        return opened && !getOpenedObjects().isEmpty();
     }
 
     @SafeVarargs

@@ -23,7 +23,7 @@ public abstract class BaseDto_AS1<S, C>
     private static final long serialVersionUID = 1L;
 
     /**
-     * Marshal as selection or reference.
+     * Marshal as fmask or reference.
      *
      * @param refButFilled
      *            Non-<code>null</code> to marshal as a reference.
@@ -37,7 +37,7 @@ public abstract class BaseDto_AS1<S, C>
             throw new RuntimeException("Failed to instantiate DTO " + dtoClass.getName(), e);
         }
 
-        dto.setSelection(selection);
+        dto.setSelection(fmask);
 
         boolean isRef = refButFilled != null;
         boolean doMarshal = refButFilled != Boolean.FALSE;
@@ -71,7 +71,7 @@ public abstract class BaseDto_AS1<S, C>
             return dtoList;
 
         for (_S _source : sources) {
-            _D dto = marshal(dtoClass, selection, _source, refButFilled);
+            _D dto = marshal(dtoClass, fmask, _source, refButFilled);
             dtoList.add(dto);
         }
 
@@ -87,7 +87,7 @@ public abstract class BaseDto_AS1<S, C>
             return dtoSet;
 
         for (_S _source : sources) {
-            _D dto = marshal(dtoClass, selection, _source, refButFilled);
+            _D dto = marshal(dtoClass, fmask, _source, refButFilled);
             dtoSet.add(dto);
         }
 
@@ -103,7 +103,7 @@ public abstract class BaseDto_AS1<S, C>
             return dtoSet;
 
         for (_S _source : sources) {
-            _D dto = marshal(dtoClass, selection, _source, refButFilled);
+            _D dto = marshal(dtoClass, fmask, _source, refButFilled);
             dtoSet.add(dto);
         }
 

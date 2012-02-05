@@ -34,7 +34,7 @@ public abstract class SimpleTreeEntityViewBean
     public <E extends Entity<K>, D extends EntityDto<? super E, K>, K extends Serializable> //
     SimpleTreeEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int fmask,
             ICriteriaElement... criteriaElements) {
-        super(entityClass, dtoClass, selection | TreeEntityDto.PARENT, criteriaElements);
+        super(entityClass, dtoClass, fmask | TreeEntityDto.PARENT, criteriaElements);
     }
 
     protected synchronized TreeNode loadTree() {

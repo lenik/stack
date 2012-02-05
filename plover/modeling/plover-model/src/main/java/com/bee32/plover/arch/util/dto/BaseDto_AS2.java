@@ -21,7 +21,7 @@ public abstract class BaseDto_AS2<S, C>
     // marshal*
 
     public <_S, _D extends BaseDto<? super _S, _C>, _C> _D marshal(Class<_D> dtoClass, int fmask, _S source) {
-        return marshal(dtoClass, selection, source, null);
+        return marshal(dtoClass, fmask, source, null);
     }
 
     public <_S, _D extends BaseDto<? super _S, _C>, _C> _D marshal(Class<_D> dtoClass, _S source) {
@@ -35,11 +35,11 @@ public abstract class BaseDto_AS2<S, C>
     // mref(...) = marshal(..., true)
 
     /**
-     * mref with a selection is too inefficient, you should avoid of using it.
+     * mref with a fmask is too inefficient, you should avoid of using it.
      */
     // @Deprecated
     public <_S, _D extends BaseDto<? super _S, _C>, _C> _D mref(Class<_D> dtoClass, int fmask, _S source) {
-        return marshal(dtoClass, selection, source, true);
+        return marshal(dtoClass, fmask, source, true);
     }
 
     public <_S, _D extends BaseDto<? super _S, _C>, _C> _D mref(Class<_D> dtoClass, _S source) {
@@ -50,7 +50,7 @@ public abstract class BaseDto_AS2<S, C>
 
     public <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> marshalList(//
             Class<_D> dtoClass, int fmask, Iterable<? extends _S> sources) {
-        return _marshalList(dtoClass, selection, sources, null);
+        return _marshalList(dtoClass, fmask, sources, null);
     }
 
     public <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> marshalList(//
@@ -60,7 +60,7 @@ public abstract class BaseDto_AS2<S, C>
 
     public <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> mrefList(//
             Class<_D> dtoClass, int fmask, Iterable<? extends _S> sources) {
-        return _marshalList(dtoClass, selection, sources, true);
+        return _marshalList(dtoClass, fmask, sources, true);
     }
 
     public <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> mrefList(//
@@ -72,7 +72,7 @@ public abstract class BaseDto_AS2<S, C>
 
     public <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet(//
             Class<_D> dtoClass, int fmask, Iterable<? extends _S> sources) {
-        return marshalSet(dtoClass, selection, sources, null);
+        return marshalSet(dtoClass, fmask, sources, null);
     }
 
     public <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet(//
@@ -87,7 +87,7 @@ public abstract class BaseDto_AS2<S, C>
 
     public <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalTreeSet(//
             Class<_D> dtoClass, int fmask, Iterable<? extends _S> sources) {
-        return marshalTreeSet(dtoClass, selection, sources, null);
+        return marshalTreeSet(dtoClass, fmask, sources, null);
     }
 
     public <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalTreeSet(//

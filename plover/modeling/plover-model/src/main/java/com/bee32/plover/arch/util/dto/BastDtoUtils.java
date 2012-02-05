@@ -19,7 +19,7 @@ public class BastDtoUtils {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
-        return dummy.marshal(dtoType, selection, source);
+        return dummy.marshal(dtoType, fmask, source);
     }
 
     @SuppressWarnings("unchecked")

@@ -90,10 +90,10 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
     public List<D> _listDtos(ICriteriaElement... criteriaElements) {
         List<E> entities = listImpl(criteriaElements);
 
-        int dtoSelection = options.getSelection();
+        int fmask = options.getFmask();
         List<D> dtos = DTOs.mrefList(//
                 options.getDtoClass(), //
-                dtoSelection, //
+                fmask, //
                 entities);
 
         int index = 0;

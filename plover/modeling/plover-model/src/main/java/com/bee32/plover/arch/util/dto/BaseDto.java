@@ -24,7 +24,7 @@ public abstract class BaseDto<S, C>
     }
 
     public BaseDto(int fmask) {
-        this.selection.bits = selection;
+        this.selection.bits = fmask;
 
         // initSourceType(ClassUtil.<S> infer1(getClass(), BaseDto.class, 0));
         String dtoFqcn = getClass().getName();
@@ -106,7 +106,7 @@ public abstract class BaseDto<S, C>
     }
 
     public void setSelection(int fmask) {
-        this.selection.bits = selection;
+        this.selection.bits = fmask;
     }
 
     /**

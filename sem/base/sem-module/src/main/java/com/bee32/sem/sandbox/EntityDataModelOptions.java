@@ -30,7 +30,7 @@ public class EntityDataModelOptions<E extends Entity<?>, D extends EntityDto<? s
 
     public EntityDataModelOptions(Class<E> entityClass, Class<D> dtoClass, int fmask,
             ICriteriaElement... criteriaElements) {
-        this(entityClass, dtoClass, selection, Arrays.asList(criteriaElements));
+        this(entityClass, dtoClass, fmask, Arrays.asList(criteriaElements));
     }
 
     public EntityDataModelOptions(Class<E> entityClass, Class<D> dtoClass, int fmask,
@@ -49,7 +49,7 @@ public class EntityDataModelOptions<E extends Entity<?>, D extends EntityDto<? s
         this.entityClass = entityClass;
         this.dtoClass = dtoClass;
 
-        this.selection = selection;
+        this.fmask = fmask;
         this.criteriaElements = criteriaElements;
     }
 
@@ -61,12 +61,12 @@ public class EntityDataModelOptions<E extends Entity<?>, D extends EntityDto<? s
         return dtoClass;
     }
 
-    public int getSelection() {
-        return selection;
+    public int getFmask() {
+        return fmask;
     }
 
-    public void setSelection(int fmask) {
-        this.selection = selection;
+    public void setFmask(int fmask) {
+        this.fmask = fmask;
     }
 
     public List<ICriteriaElement> getCriteriaElements() {
