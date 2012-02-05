@@ -22,7 +22,7 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
 
     private static final long serialVersionUID = 1L;
 
-    final EntityDataModelOptions<E, D> options;
+    protected final EntityDataModelOptions<E, D> options;
     D selection;
     List<D> loaded;
     Integer lastQueriedCount;
@@ -39,6 +39,18 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
 
     public EntityDataModelOptions<E, D> getOptions() {
         return options;
+    }
+
+    protected List<E> listImpl(ICriteriaElement... criteriaElements) {
+        CommonDataManager dataManager = getDataManager();
+        List<E> list = dataManager.asFor(options.getEntityClass()).list(criteriaElements);
+        return list;
+    }
+
+    protected int countImpl(ICriteriaElement... criteriaElements) {
+        CommonDataManager dataManager = getDataManager();
+        int count = dataManager.asFor(options.getEntityClass()).count(criteriaElements);
+        return count;
     }
 
     /**
@@ -76,9 +88,7 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
     }
 
     public List<D> _listDtos(ICriteriaElement... criteriaElements) {
-        CommonDataManager dataManager = getDataManager();
-
-        List<E> entities = dataManager.asFor(options.getEntityClass()).list(criteriaElements);
+        List<E> entities = listImpl(criteriaElements);
 
         int dtoSelection = options.getSelection();
         List<D> dtos = DTOs.mrefList(//
@@ -112,10 +122,12 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
      * @return <code>null</code> if no row available at the specified row index.
      */
     public D load(int rowIndex, String sortField, SortOrder sortOrder) {
+        if (rowIndex < 0)
+            throw new IllegalArgumentException("rowIndex can't be negative.");
         List<D> list = load(rowIndex, 1, sortField, sortOrder, Collections.<String, String> emptyMap());
         if (list.isEmpty())
             return null;
-        assert list.size() == 1;
+        // assert list.size() == 1;
         return list.get(0);
     }
 
@@ -153,9 +165,8 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
     }
 
     protected int executeCountQuery() {
-        CommonDataManager dataManager = getDataManager();
         ICriteriaElement criteria = options.compose();
-        lastQueriedCount = dataManager.asFor(options.getEntityClass()).count(criteria);
+        lastQueriedCount = countImpl(criteria);
         return lastQueriedCount;
     }
 

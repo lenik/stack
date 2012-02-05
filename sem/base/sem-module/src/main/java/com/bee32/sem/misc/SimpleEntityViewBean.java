@@ -15,6 +15,8 @@ import javax.free.IllegalUsageException;
 import javax.free.OverrideOption;
 import javax.free.ParseException;
 
+import org.primefaces.model.LazyDataModel;
+
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.acl.ACLCriteria;
 import com.bee32.icsf.login.SessionUser;
@@ -28,6 +30,7 @@ import com.bee32.plover.criteria.hibernate.CriteriaComposite;
 import com.bee32.plover.criteria.hibernate.Disjunction;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.InCollection;
+import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityFlags;
@@ -43,10 +46,9 @@ import com.bee32.sem.frame.search.SearchFragmentWrapper;
 import com.bee32.sem.sandbox.AbstractCriteriaHolder;
 import com.bee32.sem.sandbox.CriteriaHolderExpansion;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
-import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.sandbox.ZLazyDataModel;
 
-public abstract class SimpleEntityViewBean
+public class SimpleEntityViewBean
         extends EntityViewBean
         implements ISearchFragmentsHolder {
 
@@ -90,7 +92,7 @@ public abstract class SimpleEntityViewBean
     List<ICriteriaElement> baseCriteriaElements;
     List<SearchFragment> searchFragments = new ArrayList<SearchFragment>();
     EntityDataModelOptions<?, ?> dataModelOptions;
-    ZLazyDataModel<?, ?> dataModel;
+    LazyDataModel<?> dataModel;
 
     protected String searchPattern;
     protected DateRangeTemplate dateRange = DateRangeTemplate.recentWeek;
@@ -124,7 +126,7 @@ public abstract class SimpleEntityViewBean
 
         this.dataModelOptions = new SevbEdmo<E, D>(//
                 entityClass, dtoClass, selection, new CriteriaHolderExpansion(new SevbCriteriaHolder()));
-        this.dataModel = UIHelper.buildLazyDataModel(dataModelOptions);
+        this.dataModel = new SevbLazyDataModel<>(dataModelOptions);
     }
 
     class SevbEdmo<E extends Entity<?>, D extends EntityDto<? super E, ?>>
@@ -162,7 +164,28 @@ public abstract class SimpleEntityViewBean
 
     }
 
-    public ZLazyDataModel<?, ?> getDataModel() {
+    class SevbLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, ?>>
+            extends ZLazyDataModel<E, D> {
+
+        private static final long serialVersionUID = 1L;
+
+        public SevbLazyDataModel(EntityDataModelOptions<E, D> options) {
+            super(options);
+        }
+
+        @Override
+        protected List<E> listImpl(ICriteriaElement... criteriaElements) {
+            return SimpleEntityViewBean.this.listImpl(options, criteriaElements);
+        }
+
+        @Override
+        protected int countImpl(ICriteriaElement... criteriaElements) {
+            return SimpleEntityViewBean.this.countImpl(options, criteriaElements);
+        }
+
+    }
+
+    public LazyDataModel<?> getDataModel() {
         return dataModel;
     }
 
@@ -184,6 +207,20 @@ public abstract class SimpleEntityViewBean
 
     @OverrideOption(chain = ChainUsage.PREFERRED)
     protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
+    }
+
+    protected <E extends Entity<?>> List<E> listImpl(EntityDataModelOptions<E, ?> options,
+            ICriteriaElement... criteriaElements) {
+        CommonDataManager dataManager = getBean(CommonDataManager.class);
+        List<E> list = dataManager.asFor(options.getEntityClass()).list(criteriaElements);
+        return list;
+    }
+
+    protected <E extends Entity<?>> int countImpl(EntityDataModelOptions<E, ?> options,
+            ICriteriaElement... criteriaElements) {
+        CommonDataManager dataManager = getBean(CommonDataManager.class);
+        int count = dataManager.asFor(options.getEntityClass()).count(criteriaElements);
+        return count;
     }
 
     public int getTabIndex() {
@@ -549,7 +586,8 @@ public abstract class SimpleEntityViewBean
 
     public boolean refreshRowCount() {
         try {
-            dataModel.refreshRowCount();
+            if (dataModel instanceof ZLazyDataModel<?, ?>)
+                ((ZLazyDataModel<?, ?>) dataModel).refreshRowCount();
             return true;
         } catch (Exception e) {
             uiLogger.warn("刷新记录时出现异常。", e);

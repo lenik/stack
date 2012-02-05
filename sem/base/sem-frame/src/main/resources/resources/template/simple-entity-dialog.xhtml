@@ -9,9 +9,9 @@
         <h:panelGroup id="dataContainer" layout="block">
             <ui:insert name="dataContainer">
                 <p:dataTable id="dataTable" value="${dialogBean.dataModel}" selection="${_selection}"
-                    selectionMode="${multiple ? 'multiple' : 'single'}" var="entry" paginator="true" rows="10"
-                    paginatorTemplate="${viewConfig.paginatorTemplate}" rowsPerPageTemplate="${viewConfig.pageSizeTemplate}"
-                    resizableColumns="true" rowIndexVar="rowIndex">
+                    selectionMode="${multiple ? 'multiple' : 'single'}" var="entry" rowIndexVar="rowIndex"
+                    resizableColumns="true" paginator="${paginator != null ? paginator : false}" rows="10"
+                    paginatorTemplate="${viewConfig.paginatorTemplate}" rowsPerPageTemplate="${viewConfig.pageSizeTemplate}">
 
                     <p:column headerText="序号">
                         <h:outputText value="${rowIndex + 1}" />
