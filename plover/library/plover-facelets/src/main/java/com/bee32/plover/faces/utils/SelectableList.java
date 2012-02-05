@@ -31,8 +31,9 @@ public class SelectableList<T>
         int index = Integer.parseInt(rowKey);
         if (index == -1)
             return null;
-        else
-            return list.get(index);
+        if (index >= list.size())
+            return null; // assert false.
+        return list.get(index);
     }
 
     public static <T> SelectableList<T> decorate(List<T> list) {
