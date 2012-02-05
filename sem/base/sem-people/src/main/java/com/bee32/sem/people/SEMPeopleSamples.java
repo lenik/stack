@@ -121,8 +121,8 @@ public class SEMPeopleSamples
         moonOrg.setFullName("海宁市火星探索公司");
         moonOrg.setType(OrgType.MILITARY);
         moonOrg.setSize(1000);
+        moonOrg.setCustomer(true);
         Set<PartyTagname> tags = new HashSet<PartyTagname>();
-        tags.add(PartyTagname.CUSTOMER);
         tags.add(PartyTagname.OTHER);
         moonOrg.setTags(tags);
 
@@ -137,7 +137,7 @@ public class SEMPeopleSamples
         Calendar one77Birthday = Calendar.getInstance();
         one77Birthday.set(1909, 1, 1);
         bugatti.setBirthday(one77Birthday.getTime());
-        bugatti.setTags(Varargs.toSet(PartyTagname.CUSTOMER));
+        moonOrg.setCustomer(true);
 
         bentley.setName("Arnage");
         bentley.setFullName("Walter Owen Bentley");
@@ -145,7 +145,8 @@ public class SEMPeopleSamples
         Calendar bentleyBirthday = Calendar.getInstance();
         bentleyBirthday.set(1919, 7, 1);
         bentley.setBirthday(bentleyBirthday.getTime());
-        bentley.setTags(Varargs.toSet(PartyTagname.SUPPLIER, PartyTagname.INTERNAL));
+        moonOrg.setSupplier(true);
+        moonOrg.setEmployee(true);
 
         weiXiaoBao.setBirthday(bentleyBirthday.getTime());
         weiXiaoBao.setCensusRegister("北京市");
@@ -155,7 +156,8 @@ public class SEMPeopleSamples
         weiXiaoBao.setSex(Gender.MALE);
         weiXiaoBao.setSid("11010116541220517");
         weiXiaoBao.setSidType(PartySidType.IDENTITYCARD);
-        weiXiaoBao.setTags(Varargs.toSet(PartyTagname.CUSTOMER, PartyTagname.INTERNAL));
+        moonOrg.setCustomer(true);
+        moonOrg.setEmployee(true);
 
         Contact weiXiaoBaoHome = new Contact();
         weiXiaoBaoHome.setParty(weiXiaoBao);

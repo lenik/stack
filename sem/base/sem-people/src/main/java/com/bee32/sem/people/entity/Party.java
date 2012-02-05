@@ -26,6 +26,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.DefaultValue;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.DummyId;
@@ -60,6 +61,10 @@ public abstract class Party
     String fullName;
     PartySidType sidType = PartySidType.IDENTITYCARD;
     String sid;
+
+    boolean employee;
+    boolean customer = true;
+    boolean supplier;
 
     Date birthday;
     String interests;
@@ -156,6 +161,36 @@ public abstract class Party
 
     void setXid(String xid) {
         // work on the fly.
+    }
+
+    @DefaultValue("false")
+    @Column(nullable = false)
+    public boolean isEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(boolean employee) {
+        this.employee = employee;
+    }
+
+    @DefaultValue("false")
+    @Column(nullable = false)
+    public boolean isCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(boolean customer) {
+        this.customer = customer;
+    }
+
+    @DefaultValue("false")
+    @Column(nullable = false)
+    public boolean isSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(boolean supplier) {
+        this.supplier = supplier;
     }
 
     /**

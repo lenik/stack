@@ -25,10 +25,11 @@ public class PartyDto
 
     private static final long serialVersionUID = 1L;
 
-    public static final int CONTACTS = 1;
-    public static final int RECORDS = 2;
-    public static final int ROLES = 4;
-    public static final int ROLES_CHAIN = 8 | ROLES;
+    public static final int TAGS = 1;
+    public static final int CONTACTS = 2;
+    public static final int RECORDS = 4;
+    public static final int ROLES = 8;
+    public static final int ROLES_CHAIN = 16 | ROLES;
 
     UserDto owner;
 
@@ -72,7 +73,10 @@ public class PartyDto
 
         memo = source.getMemo();
 
-        tags = mrefList(PartyTagnameDto.class, source.getTags());
+        if (selection.contains(TAGS))
+            tags = mrefList(PartyTagnameDto.class, source.getTags());
+        else
+            tags = Collections.emptyList();
 
         if (selection.contains(CONTACTS))
             contacts = mrefList(ContactDto.class, source.getContacts());
@@ -106,7 +110,8 @@ public class PartyDto
 
         target.setMemo(memo);
 
-        mergeSet(target, "tags", tags);
+        if (selection.contains(TAGS))
+            mergeSet(target, "tags", tags);
 
         if (selection.contains(CONTACTS))
             mergeList(target, "contacts", contacts);

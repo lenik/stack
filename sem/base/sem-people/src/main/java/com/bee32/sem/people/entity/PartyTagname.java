@@ -59,9 +59,6 @@ public class PartyTagname
         this.instances = instances;
     }
 
-    public static final PartyTagname INTERNAL = new PartyTagname("-", "公司内部", true);
-    public static final PartyTagname CUSTOMER = new PartyTagname("CUS", "客户");
-    public static final PartyTagname SUPPLIER = new PartyTagname("SUP", "供应商");
     public static final PartyTagname ENEMY = new PartyTagname("ENY", "竞争对手");
     public static final PartyTagname OTHER = new PartyTagname("OTH", "其他");
 

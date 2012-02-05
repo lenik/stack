@@ -12,6 +12,7 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.sem.misc.SimpleTreeEntityViewBean;
 import com.bee32.sem.people.dto.OrgUnitDto;
 import com.bee32.sem.people.entity.OrgUnit;
+import com.bee32.sem.people.util.PeopleCriteria;
 
 public class ChooseOrgUnitDialogBean
         extends SimpleTreeEntityViewBean {
@@ -30,7 +31,9 @@ public class ChooseOrgUnitDialogBean
     @Override
     protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
         if (orgId != null)
-            elements.add(new Equals("org.id", orgId));
+            elements.add(new Equals("org.id", orgId)); // 如果前面选中了某个公司，则查找该公司中的部门
+        else
+            elements.add(PeopleCriteria.internal()); // 如果没有选择公司，则查找本公司内部
     }
 
     // Properties
