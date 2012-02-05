@@ -6,6 +6,10 @@ label {
     font-family: Verdana, Arial, sans-serif;
 }
 
+.form-editing {
+    background: #eeeeee;
+}
+
 .ui-widget,.ui-widget input,.ui-widget select,.ui-widget textarea,.ui-widget button {
     font-family: Verdana, Arial, sans-serif;
 }

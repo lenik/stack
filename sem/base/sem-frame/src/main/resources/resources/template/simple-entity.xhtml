@@ -3,6 +3,8 @@
     xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" xmlns:p="http://primefaces.org/ui"
     xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:icsf="http://java.sun.com/jsf/composite/3/7" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
+    <ui:param name="_searchUpdates" value="${searchUpdates != null ? searchUpdates : ':mainForm'}" />
+
     <ui:define name="toolbar">
         <p:toolbar id="toolbar">
             <p:toolbarGroup align="left">
@@ -27,7 +29,7 @@
             <p:confirmDialog id="deleteConfirmDialog" widgetVar="deleteConfirmDialog" header="删除确认"
                 message="确定要删除吗?" severity="alert" modal="true">
                 <h:form id="deleteConfirmForm" style="margin: 0em 7em 1em">
-                    <p:commandButton id="ok" value="确定" update=":mainForm, ${mirrorTargets}"
+                    <p:commandButton id="ok" value="确定" update=":mainForm, ${mirrorTargets}, :editDialog:form"
                         actionListener="${bean.deleteSelection}" oncomplete="deleteConfirmDialog.hide()" />
                     <p:commandButton id="cancel" value="取消" onclick="deleteConfirmDialog.hide()" type="button" />
                 </h:form>
@@ -46,9 +48,9 @@
                 <div align="center">
                     <p:inputText id="pattern" value="${bean.searchPattern}" />
                     <p:commandButton id="filterNameOrLabel" value="限定名称" actionListener="${bean.addNameOrLabelRestriction}"
-                        update="@form, :mainForm" />
+                        update="@form, ${_searchUpdates}" />
                     <p:commandButton id="filterDescription" value="限定描述" actionListener="${bean.addDescriptionRestriction}"
-                        update="@form, :mainForm" />
+                        update="@form, ${_searchUpdates}" />
                     <ui:insert name="searchPanel.keyword.1" />
                 </div>
             </p:panel>
@@ -63,9 +65,9 @@
                             itemValue="${t.index}" />
                     </p:selectOneMenu>
                     <p:commandButton id="filterCreatedDate" value="限定创建时间" actionListener="${bean.addCreatedDateRestriction}"
-                        update="@form, :mainForm" />
+                        update="@form, ${_searchUpdates}" />
                     <p:commandButton id="filterLastModified" value="限定更新时间" actionListener="${bean.addLastModifiedRestriction}"
-                        update="@form, :mainForm" />
+                        update="@form, ${_searchUpdates}" />
                     <ui:insert name="searchPanel.time.1" />
                 </div>
             </p:panel>
@@ -76,7 +78,7 @@
                     <p:inputText id="principal" readonly="true" value="${bean.searchPrincipal.displayName}" />
                     <p:commandButton id="choosePrincipal" value="..." onclick="choosePrincipalToSearchDialog.show()" />
                     <p:commandButton id="filterOwner" value="限定所有者" actionListener="${bean.addOwnerRestriction}"
-                        update="@form, :mainForm" />
+                        update="@form, ${_searchUpdates}" />
                     <ui:insert name="searchPanel.principal.1" />
                 </div>
             </p:panel>
@@ -88,25 +90,28 @@
             <ui:repeat id="repeat" var="fragment" value="${bean.searchFragments}">
                 <c:set var="form" value="${component.parent.parent.parent.clientId}" />
                 <p:commandButton id="removeButton" value="${fragment.entryLabel}" async="true"
-                    actionListener="${fragment.detach}" update=":searchForm:searchFragments, :mainForm" />
+                    actionListener="${fragment.detach}" update=":searchForm:searchFragments, ${_searchUpdates}" />
             </ui:repeat>
         </h:panelGroup>
     </ui:define>
 
     <ui:define name="editDialogBody">
-        <h:form id="form">
+        <!-- TODO: fr:disable applied=${not plainEditForm} -->
+        <h:form id="form" styleClass="${(plainEditForm and bean.editing) ? 'form-editing' : ''}">
             <h:panelGroup rendered="${bean.openedObject !=null}">
                 <ui:insert name="editDialogContent">The edit dialog's content is undefined.</ui:insert>
             </h:panelGroup>
-            <c:if test="${not plainEditForm}">
+            <!-- c:if test="${not plainEditForm}" -->
+            <h:panelGroup id="editButtons" rendered="${bean.editing or not plainEditForm}">
                 <div align="right">
                     <p:commandButton id="save-validated" value="保存" actionListener="${bean.save}"
-                        disabled="${bean.currentView == 'content'}" update=":mainForm:dataContainer, ${mirrorTargets}"
+                        disabled="${bean.currentView == 'content'}" update=":mainForm:toolbar, :mainForm:dataContainer, ${mirrorTargets}, :editDialog:form"
                         oncomplete="${plainEditForm ? '' : 'editDialog.hideValidated(args)'}" />
                     <p:commandButton id="cancel" value="${bean.currentView == 'content'  ? '关闭' : '取消'}"
-                        onclick="${plainEditForm ? '' : 'editDialog.hide()'}" />
+                        onclick="${plainEditForm ? '' : 'editDialog.hide()'}" actionListener="${bean.showIndex}"
+                        update="${plainEditForm ? ':mainForm:toolbar, :editDialog:form' : ''}" />
                 </div>
-            </c:if>
+            </h:panelGroup>
         </h:form>
     </ui:define>
 

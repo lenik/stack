@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -253,7 +254,7 @@ public class SimpleEntityViewBean
     public boolean isCreating() {
         if (!currentView.equals(StandardViews.CREATE_FORM))
             return false;
-        if (!getOpenedObjects().isEmpty())
+        if (getOpenedObjects().isEmpty())
             throw new IllegalStateException("No opened objects for creating");
         return true;
     }
@@ -262,14 +263,14 @@ public class SimpleEntityViewBean
         if (!currentView.equals(StandardViews.CREATE_FORM) //
                 && !currentView.equals(StandardViews.EDIT_FORM))
             return false;
-        if (!getOpenedObjects().isEmpty())
+        if (getOpenedObjects().isEmpty())
             throw new IllegalStateException("No opened objects for editing");
         return true;
     }
 
     @Operation
     public void showIndex() {
-        setOpenedObject(null);
+        setOpenedObjects(Collections.emptyList());
         showView(StandardViews.LIST);
     }
 
@@ -424,6 +425,13 @@ public class SimpleEntityViewBean
             return;
         }
 
+        if (isCreating()) // write back generated-id(s).
+            for (Entity<?> entity : entities) {
+                EntityDto<?, Serializable> dto = uMap.getSourceDto(entity);
+                Serializable newId = entity.getId();
+                dto.setId(newId);
+            }
+
         if ((saveFlags & SAVE_NO_REFRESH) == 0)
             refreshRowCount();
 
@@ -439,7 +447,7 @@ public class SimpleEntityViewBean
     }
 
     @Operation
-    public void deleteSelection() {
+    public final void deleteSelection() {
         deleteSelection(deleteFlags);
     }
 

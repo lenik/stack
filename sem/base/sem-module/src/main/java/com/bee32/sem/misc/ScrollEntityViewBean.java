@@ -1,10 +1,13 @@
 package com.bee32.sem.misc;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.restful.resource.StandardViews;
 import com.bee32.sem.sandbox.ZLazyDataModel;
 
 public class ScrollEntityViewBean
@@ -18,6 +21,42 @@ public class ScrollEntityViewBean
     public <E extends Entity<K>, D extends EntityDto<? super E, K>, K extends Serializable> //
     ScrollEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
         super(entityClass, dtoClass, fmask, criteriaElements);
+    }
+
+    @Override
+    protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
+        // TODO - swithcer?
+        elements.add(Order.desc("createdDate"));
+    }
+
+    @Override
+    protected void searchFragmentsChanged() {
+        super.searchFragmentsChanged();
+        showIndex(); // Fix: force to back to index whenever in editing mode.
+        selectRow(rowNumber);
+    }
+
+    @Override
+    public void showIndex() {
+        showView(StandardViews.LIST);
+        // leaving objects opened.
+    }
+
+    @Override
+    protected void deleteSelection(int deleteFlags) {
+        super.deleteSelection(deleteFlags);
+        if ((deleteFlags & DELETE_NO_REFRESH) == 0)
+            selectRow(rowNumber);
+    }
+
+    @Override
+    public boolean refreshRowCount() {
+        if (super.refreshRowCount()) {
+            if (rowNumber == 0)
+                gotoFirst();
+            return true;
+        }
+        return false;
     }
 
     protected void selectRow(int rowNumber) {

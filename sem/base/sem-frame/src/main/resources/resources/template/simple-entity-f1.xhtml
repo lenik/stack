@@ -48,6 +48,7 @@
                             <ui:insert name="sideBarNSupport" />
                         </h:panelGroup>
                     </c:if>
+
                     <ui:insert name="mainForm">
                         <h:form id="mainForm">
                             <c:if test="${fn:contains(_toolbar, 't')}">
@@ -101,6 +102,15 @@
                             </c:if>
                         </h:form>
                     </ui:insert>
+
+                    <c:if test="${plainEditForm}">
+                        <f:subview id="editDialog">
+                            <p:panel id="editPanel" header="${title}">
+                                <ui:insert name="editDialogBody" />
+                            </p:panel>
+                        </f:subview>
+                    </c:if>
+
                     <c:if test="${sideBarSVisible != null}">
                         <h:panelGroup id="sideBarS" layout="block">
                             <ui:insert name="sideBarS" />
@@ -139,13 +149,9 @@
         <div id="dialogs">
             <ui:insert name="dialogs.0">
                 <ui:insert name="editDialogs">
-                    <f:subview id="editDialog">
-                        <c:if test="${plainEditForm}">
-                            <p:panel id="editPanel" header="${title}">
-                                <ui:insert name="editDialogBody" />
-                            </p:panel>
-                        </c:if>
-                        <c:if test="${not plainEditForm}">
+                    <!-- plainEditForm may also be here. -->
+                    <c:if test="${not plainEditForm}">
+                        <f:subview id="editDialog">
                             <ui:insert name="editDialog">
                                 <p:dialog header="编辑${title}" id="editDialog" widgetVar="editDialog" modal="true"
                                     dynamic="${viewConfig.dynamicDialog}">
@@ -154,8 +160,8 @@
                                     </div>
                                 </p:dialog>
                             </ui:insert>
-                        </c:if>
-                    </f:subview>
+                        </f:subview>
+                    </c:if>
                 </ui:insert>
                 <ui:insert name="optionDialogs">
                     <ui:insert name="optionDialogs.0">

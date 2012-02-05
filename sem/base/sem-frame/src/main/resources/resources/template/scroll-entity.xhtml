@@ -3,23 +3,28 @@
     template="/template/simple-entity.xhtml">
 
     <ui:param name="plainEditForm" value="true" />
+    <ui:param name="searchUpdates" value=":mainForm, :editDialog:form" />
 
     <ui:define name="toolbar">
         <p:toolbar id="toolbar">
             <p:toolbarGroup align="left">
+                <ui:insert name="toolbarContexts" />
+            </p:toolbarGroup>
+            <p:toolbarGroup align="left">
                 <p:commandButton id="createButton" value="新建" actionListener="${bean.showCreateForm}"
-                    update="toolbar, :editDialog:form" />
+                    disabled="${bean.editing}" update="toolbar, :editDialog:form" />
                 <p:commandButton id="editButton" value="修改" actionListener="${bean.showEditForm}"
-                    disabled="${not bean.selected}" update="toolbar, :editDialog:form" />
+                    disabled="${bean.editing or not bean.selected}" update="toolbar, :editDialog:form" />
                 <p:commandButton id="deleteButton" value="删除" onclick="deleteConfirmDialog.show()"
-                    disabled="${not bean.selected}" update="toolbar" />
-                <p:separator />
-                <p:commandButton id="save-validated" value="保存" actionListener="${bean.save}"
-                    disabled="${bean.currentView == 'content' or !bean.editing}" update=":mainForm, ${mirrorTargets}" />
-                <p:commandButton id="cancel" value="${bean.currentView == 'content'  ? '返回' : '取消'}"
-                    actionListener="${bean.showIndex}" disabled="${bean.currentView == 'content' or !bean.editing}"
-                    update="toolbar, :editDialog:form" />
-                <p:separator />
+                    disabled="${bean.editing or not bean.selected}" update="toolbar" />
+                <ui:remove>
+                    <!-- 不能跨表单提交！ -->
+                    <p:commandButton id="save-validated" value="保存" actionListener="${bean.save}"
+                        disabled="${bean.currentView == 'content' or !bean.editing}" update=":mainForm, ${mirrorTargets}, :editDialog:form" />
+                    <p:commandButton id="cancel" value="${bean.currentView == 'content'  ? '返回' : '取消'}"
+                        actionListener="${bean.showIndex}" disabled="${bean.currentView == 'content' or !bean.editing}"
+                        update=":mainForm:toolbar, :editDialog:form" />
+                </ui:remove>
                 <ui:insert name="toolbarPeripherals" />
             </p:toolbarGroup>
             <p:toolbarGroup align="right">
@@ -35,7 +40,7 @@
                 <p:inputText id="rowNumber" value="${bean.rowNumberInput}" disabled="${bean.editing}" style="width: 3em;" />
                 <h:outputText value="/${bean.dataModel.rowCount}" />
                 <p:commandButton id="jump" value="前往" actionListener="${bean.gotoInput}" disabled="${bean.editing}"
-                    update="mainForm" />
+                    update="mainForm, :editDialog:form" />
             </p:toolbarGroup>
         </p:toolbar>
     </ui:define>
