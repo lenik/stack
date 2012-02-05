@@ -30,7 +30,6 @@ public abstract class EntityViewBean
 
     List<?> selection = new ArrayList<Object>();
     List<?> openedObjects = new ArrayList<Object>();
-    boolean opened;
 
     public EntityViewBean() {
         if (logger.isTraceEnabled()) {
@@ -206,8 +205,26 @@ public abstract class EntityViewBean
         setOpenedObjects(nonNulls);
     }
 
-    public final boolean isOpened() {
-        return opened && !getOpenedObjects().isEmpty();
+    protected void openSelection() {
+        int fmask = -1;
+        String fmaskParam = getRequest().getParameter("fmask");
+        if (fmaskParam != null)
+            fmask = Integer.parseInt(fmaskParam);
+        openSelection(fmask);
+    }
+
+    protected void openSelection(int fmask) {
+        List<Object> reloadedList = new ArrayList<Object>();
+        for (Object selection : getSelection()) {
+            Object reloaded;
+            if (selection instanceof EntityDto<?, ?>) {
+                EntityDto<?, ?> dto = (EntityDto<?, ?>) selection;
+                reloaded = reload(dto, fmask);
+            } else
+                reloaded = selection;
+            reloadedList.add(reloaded);
+        }
+        setOpenedObjects(reloadedList);
     }
 
     @SafeVarargs

@@ -15,26 +15,26 @@
                     disabled="${not bean.selected}" update="toolbar" />
                 <p:separator />
                 <p:commandButton id="save-validated" value="保存" actionListener="${bean.save}"
-                    disabled="${bean.currentView == 'content' or !bean.opened}" update=":mainForm, ${mirrorTargets}" />
+                    disabled="${bean.currentView == 'content' or !bean.editing}" update=":mainForm, ${mirrorTargets}" />
                 <p:commandButton id="cancel" value="${bean.currentView == 'content'  ? '返回' : '取消'}"
-                    actionListener="${bean.showIndex}" disabled="${bean.currentView == 'content' or !bean.opened}"
+                    actionListener="${bean.showIndex}" disabled="${bean.currentView == 'content' or !bean.editing}"
                     update="toolbar, :editDialog:form" />
                 <p:separator />
                 <ui:insert name="toolbarPeripherals" />
             </p:toolbarGroup>
             <p:toolbarGroup align="right">
                 <p:commandButton id="first" value="第一条" actionListener="${bean.gotoFirst}"
-                    disabled="${bean.first or bean.dataModel.rowCount == 0 or bean.opened}" update="mainForm, :editDialog:form" />
+                    disabled="${bean.first or bean.dataModel.rowCount == 0 or bean.editing}" update="mainForm, :editDialog:form" />
                 <p:commandButton id="previous" value="上一条" actionListener="${bean.gotoPrevious}"
-                    disabled="${bean.first or bean.dataModel.rowCount == 0 or bean.opened}" update="mainForm, :editDialog:form" />
+                    disabled="${bean.first or bean.dataModel.rowCount == 0 or bean.editing}" update="mainForm, :editDialog:form" />
                 <p:commandButton id="next" value="下一条" actionListener="${bean.gotoNext}"
-                    disabled="${bean.last or bean.dataModel.rowCount == 0 or bean.opened}" update="mainForm, :editDialog:form" />
+                    disabled="${bean.last or bean.dataModel.rowCount == 0 or bean.editing}" update="mainForm, :editDialog:form" />
                 <p:commandButton id="last" value="最末条" actionListener="${bean.gotoLast}"
-                    disabled="${bean.last or bean.dataModel.rowCount == 0 or bean.opened}" update="mainForm, :editDialog:form" />
+                    disabled="${bean.last or bean.dataModel.rowCount == 0 or bean.editing}" update="mainForm, :editDialog:form" />
                 <p:separator />
-                <p:inputText id="rowNumber" value="${bean.rowNumberInput}" disabled="${bean.opened}" style="width: 3em;" />
+                <p:inputText id="rowNumber" value="${bean.rowNumberInput}" disabled="${bean.editing}" style="width: 3em;" />
                 <h:outputText value="/${bean.dataModel.rowCount}" />
-                <p:commandButton id="jump" value="前往" actionListener="${bean.gotoInput}" disabled="${bean.opened}"
+                <p:commandButton id="jump" value="前往" actionListener="${bean.gotoInput}" disabled="${bean.editing}"
                     update="mainForm" />
             </p:toolbarGroup>
         </p:toolbar>

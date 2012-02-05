@@ -101,8 +101,7 @@ public class SimpleEntityViewBean
     protected PrincipalDto searchPrincipal; // TODO implication opt.
 
     public <E extends Entity<K>, D extends EntityDto<? super E, K>, K extends Serializable> //
-    /*    */SimpleEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int fmask,
-            ICriteriaElement... criteriaElements) {
+    /*    */SimpleEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
         this.entityClass = entityClass;
         this.dtoClass = dtoClass;
         this.baseCriteriaElements = Varargs.toList(criteriaElements);
@@ -251,9 +250,21 @@ public class SimpleEntityViewBean
         return currentView;
     }
 
-    /** XXX xref? */
     public boolean isCreating() {
-        return currentView.equals(StandardViews.CREATE_FORM);
+        if (!currentView.equals(StandardViews.CREATE_FORM))
+            return false;
+        if (!getOpenedObjects().isEmpty())
+            throw new IllegalStateException("No opened objects for creating");
+        return true;
+    }
+
+    public boolean isEditing() {
+        if (!currentView.equals(StandardViews.CREATE_FORM) //
+                && !currentView.equals(StandardViews.EDIT_FORM))
+            return false;
+        if (!getOpenedObjects().isEmpty())
+            throw new IllegalStateException("No opened objects for editing");
+        return true;
     }
 
     @Operation
@@ -600,32 +611,6 @@ public class SimpleEntityViewBean
             uiLogger.warn("刷新记录时出现异常。", e);
             return false;
         }
-    }
-
-    void openSelection() {
-        int fmask = -1;
-        String fmaskParam = getRequest().getParameter("fmask");
-        if (fmaskParam != null)
-            fmask = Integer.parseInt(fmaskParam);
-        openSelection(fmask);
-    }
-
-    void openSelection(int fmask) {
-        List<Object> reloadedList = new ArrayList<Object>();
-        for (Object selection : getSelection()) {
-            Object reloaded;
-            if (selection instanceof EntityDto<?, ?>) {
-                EntityDto<?, ?> dto = (EntityDto<?, ?>) selection;
-                reloaded = reload(dto, fmask);
-                loadExtras(reloaded, true);
-            } else
-                reloaded = selection;
-            reloadedList.add(reloaded);
-        }
-        setOpenedObjects(reloadedList);
-    }
-
-    protected void loadExtras(Object preopenedObject, boolean editForm) {
     }
 
     UnmarshalMap unmarshalDtos(Collection<?> objects, boolean nullable) {

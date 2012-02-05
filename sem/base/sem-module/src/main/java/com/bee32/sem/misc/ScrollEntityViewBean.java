@@ -34,11 +34,9 @@ public class ScrollEntityViewBean
             dto = dataModel.load(rowIndex);
         }
         setSingleSelection(dto);
-        loadExtras(dto, false);
         this.rowNumber = rowNumber;
         this.rowNumberInput = rowNumber;
-        //
-        setOpenedObject(dto);
+        openSelection(); // fmask override here.
     }
 
     public boolean isFirst() {
