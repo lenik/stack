@@ -6,10 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.bee32.plover.criteria.hibernate.Offset;
-import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
-import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.bom.dto.PartDto;
 import com.bee32.sem.bom.entity.Part;
 import com.bee32.sem.misc.ScrollEntityViewBean;
@@ -121,30 +118,6 @@ public class MakeTaskAdminBean
         return null;
     }
 
-    private void loadMakeTask(int position) {
-        // 刷新总记录数
-
-        makeTask = new MakeTaskDto().create(); // 如果限定条件内没有找到makeTask,则创建一个
-
-        MakeTask firstTask = serviceFor(MakeTask.class).getFirst( //
-                new Offset(position - 1), //
-// CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
-                Order.asc("id"));
-
-        if (firstTask != null)
-            makeTask = DTOs.marshal(MakeTaskDto.class, MakeTaskDto.ITEMS, firstTask);
-
-    }
-
-    public void modify() {
-        if (makeTask.getId() == null) {
-            uiLogger.warn("当前没有对应的单据");
-            return;
-        }
-
-        itemsNeedToRemoveWhenModify.clear();
-    }
-
     public void save1() {
         if (makeTask.getId() == null) {
             // 新增
@@ -153,9 +126,6 @@ public class MakeTaskAdminBean
 
         try {
             MakeTask _task = makeTask.unmarshal();
-            for (MakeTaskItemDto item : itemsNeedToRemoveWhenModify) {
-                _task.removeItem(item.unmarshal());
-            }
 
             MakeOrder order = _task.getOrder();
             if (!order.getTasks().contains(_task)) {
@@ -185,42 +155,6 @@ public class MakeTaskAdminBean
         }
     }
 
-    public void newItem() {
-        makeTaskItem = new MakeTaskItemDto().create();
-        makeTaskItem.setTask(makeTask);
-
-        newItemStatus = true;
-    }
-
-    public void modifyItem() {
-        newItemStatus = false;
-    }
-
-    public void saveItem() {
-        makeTaskItem.setTask(makeTask);
-        if (newItemStatus) {
-            makeTask.addItem(makeTaskItem);
-        }
-    }
-
-    public void delete() {
-        try {
-            serviceFor(MakeTask.class).delete(makeTask.unmarshal());
-            uiLogger.info("删除成功!");
-// loadMakeTask(goNumber);
-        } catch (Exception e) {
-            uiLogger.warn("删除失败,错误信息:" + e.getMessage());
-        }
-    }
-
-    public void deleteItem() {
-        makeTask.removeItem(makeTaskItem);
-
-        if (makeTaskItem.getId() != null) {
-            itemsNeedToRemoveWhenModify.add(makeTaskItem);
-        }
-    }
-
     public void findPart() {
 // BomCriteria.findPartUseMaterialName(partPattern));
     }
@@ -247,11 +181,8 @@ public class MakeTaskAdminBean
         }
     }
 
-    public void findCustomer() {
-// PeopleCriteria.customers(), //
-    }
-
     public void chooseCustomer() {
         customer = selectedCustomer;
     }
+
 }

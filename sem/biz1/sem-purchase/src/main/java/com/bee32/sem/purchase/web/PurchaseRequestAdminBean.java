@@ -1,6 +1,5 @@
 package com.bee32.sem.purchase.web;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -10,7 +9,6 @@ import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.misc.ScrollEntityViewBean;
-import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.process.verify.VerifyEvalState;
 import com.bee32.sem.purchase.dto.InquiryDto;
 import com.bee32.sem.purchase.dto.MaterialPlanDto;
@@ -34,35 +32,13 @@ public class PurchaseRequestAdminBean
     PurchaseRequestDto purchaseRequest = new PurchaseRequestDto().create();
     PurchaseRequestItemDto purchaseRequestItem = new PurchaseRequestItemDto().create();
 
-    boolean newItemStatus = false;
-    List<PurchaseRequestItemDto> itemsNeedToRemoveWhenModify = new ArrayList<PurchaseRequestItemDto>();
-
     MaterialPlanDto selectedPlan;
-    Long selectedPlanId;
-    OrgDto selectedSupplier;
 
-    Integer inquiryDetailStatus; // 1-新增;2-修改;3-查看
     InquiryDto selectedInquiry;
     PurchaseAdviceDto purchaseAdvice;
 
-    public final int INQUIRY_DETAIL_STATUS_NEW = 1;
-    public final int INQUIRY_DETAIL_STATUS_MODIFY = 2;
-    public final int INQUIRY_DETAIL_STATUS_VIEW = 3;
-
     public PurchaseRequestAdminBean() {
         super(PurchaseRequest.class, PurchaseRequestDto.class, 0);
-    }
-
-    public int getINQUIRY_DETAIL_STATUS_NEW() {
-        return INQUIRY_DETAIL_STATUS_NEW;
-    }
-
-    public int getINQUIRY_DETAIL_STATUS_MODIFY() {
-        return INQUIRY_DETAIL_STATUS_MODIFY;
-    }
-
-    public int getINQUIRY_DETAIL_STATUS_VIEW() {
-        return INQUIRY_DETAIL_STATUS_VIEW;
     }
 
     public PurchaseRequestDto getPurchaseRequest() {
@@ -94,14 +70,6 @@ public class PurchaseRequestAdminBean
         this.purchaseRequestItem = purchaseRequestItem;
     }
 
-    public boolean isNewItemStatus() {
-        return newItemStatus;
-    }
-
-    public void setNewItemStatus(boolean newItemStatus) {
-        this.newItemStatus = newItemStatus;
-    }
-
     public MaterialPlanDto getSelectedPlan() {
         return selectedPlan;
     }
@@ -115,30 +83,6 @@ public class PurchaseRequestAdminBean
             return selectedPlan.getItems();
         }
         return null;
-    }
-
-    public Long getSelectedPlanId() {
-        return selectedPlanId;
-    }
-
-    public void setSelectedPlanId(Long selectedPlanId) {
-        this.selectedPlanId = selectedPlanId;
-    }
-
-    public OrgDto getSelectedSupplier() {
-        return selectedSupplier;
-    }
-
-    public void setSelectedSupplier(OrgDto selectedSupplier) {
-        this.selectedSupplier = selectedSupplier;
-    }
-
-    public Integer getInquiryDetailStatus() {
-        return inquiryDetailStatus;
-    }
-
-    public void setInquiryDetailStatus(Integer inquiryDetailStatus) {
-        this.inquiryDetailStatus = inquiryDetailStatus;
     }
 
     public List<InquiryDto> getInquiries() {
@@ -178,7 +122,7 @@ public class PurchaseRequestAdminBean
 
         PurchaseRequest firstRequest = serviceFor(PurchaseRequest.class).getFirst( //
                 new Offset(position - 1), //
-// CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+                // CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
                 Order.asc("id"));
 
         if (firstRequest != null) {
@@ -187,15 +131,6 @@ public class PurchaseRequestAdminBean
             selectedPlans = purchaseRequest.getPlans();
         }
 
-    }
-
-    public void modify() {
-        if (purchaseRequest.getId() == null) {
-            uiLogger.warn("当前没有对应的单据");
-            return;
-        }
-
-        itemsNeedToRemoveWhenModify.clear();
     }
 
     @Transactional
@@ -207,9 +142,6 @@ public class PurchaseRequestAdminBean
 
         try {
             PurchaseRequest _request = purchaseRequest.unmarshal();
-            for (PurchaseRequestItemDto item : itemsNeedToRemoveWhenModify) {
-                _request.removeItem(item.unmarshal());
-            }
 
             serviceFor(PurchaseRequest.class).save(_request);
 
@@ -248,34 +180,6 @@ public class PurchaseRequestAdminBean
         }
     }
 
-    public void newItem() {
-        purchaseRequestItem = new PurchaseRequestItemDto().create();
-        purchaseRequestItem.setPurchaseRequest(purchaseRequest);
-
-        newItemStatus = true;
-    }
-
-    public void modifyItem() {
-        selectedSupplier = (OrgDto) purchaseRequestItem.getPreferredSupplier();
-        newItemStatus = false;
-    }
-
-    public void saveItem() {
-        purchaseRequestItem.setPurchaseRequest(purchaseRequest);
-        purchaseRequestItem.setPreferredSupplier(selectedSupplier);
-        if (newItemStatus) {
-            purchaseRequest.addItem(purchaseRequestItem);
-        }
-    }
-
-    public void deleteItem() {
-        purchaseRequest.removeItem(purchaseRequestItem);
-
-        if (purchaseRequestItem.getId() != null) {
-            itemsNeedToRemoveWhenModify.add(purchaseRequestItem);
-        }
-    }
-
     public void choosePlan() {
         for (MaterialPlanDto _p : selectedPlans) {
             _p = reload(_p);
@@ -296,10 +200,6 @@ public class PurchaseRequestAdminBean
 // PeopleCriteria.suppliers(), //
     }
 
-    public void chooseSupplier() {
-        selectedInquiry.setOrg(selectedSupplier);
-    }
-
     public void loadInquiry() {
         purchaseRequestItem = reload(purchaseRequestItem);
         purchaseAdvice = purchaseRequestItem.getPurchaseAdvice();
@@ -308,11 +208,6 @@ public class PurchaseRequestAdminBean
         } else {
             purchaseAdvice = reload(purchaseAdvice);
         }
-    }
-
-    public void newInquiry() {
-        inquiryDetailStatus = INQUIRY_DETAIL_STATUS_NEW;
-        selectedInquiry = new InquiryDto().create();
     }
 
     public void saveInquiry() {
@@ -385,9 +280,9 @@ public class PurchaseRequestAdminBean
 
         // TODO 如果已经审核，则不能删除
         // if (purchaseAdvice.getVerifyContext().getVerifyState().isFinalized())
-// uiLogger.warn("采购建议已经审核，不能删除!");
-// return;
-// }
+        // uiLogger.warn("采购建议已经审核，不能删除!");
+        // return;
+        // }
 
         try {
             PurchaseAdvice _purchaseAdvice = purchaseAdvice.unmarshal();
@@ -421,12 +316,8 @@ public class PurchaseRequestAdminBean
         }
     }
 
-    @Override
-    public List<?> getSelection() {
-        return listOfNonNulls(purchaseRequest);
-    }
-
     public List<?> getSelectedPurchaseAdvices() {
         return listOfNonNulls(purchaseAdvice);
     }
+
 }

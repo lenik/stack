@@ -1,13 +1,13 @@
-
 <ui:composition template="/template/scroll-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
-    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk">
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:fr="http://java.sun.com/jsf/composite/frame"
+    xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
     <ui:param name="title" value="物料计划管理" />
     <ui:param name="bean" value="#{materialPlanAdminBean}" />
     <ui:param name="obj" value="#{bean.openedObject}" />
 
-    <ui:define name="form??">
+    <ui:define name="editDialogContent">
         <p:panel header="物料计划管理">
             <t:panelGrid columns="4">
                 <h:outputText value="标识:" />
@@ -42,135 +42,37 @@
 
             <p:tabView id="planDetail">
                 <p:tab title="明细">
-                    <p:dataTable id="items" var="item" value="#{bean.items}" resizableColumns="true"
-                        rowIndexVar="rowIndex">
-
-                        <p:column headerText="序号">
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column headerText="物料">
-                            <h:outputText value="#{item.material.label}" />
-                        </p:column>
-
-                        <p:column headerText="规格型号">
-                            <h:outputText value="#{item.material.modelSpec}" />
-                        </p:column>
-
-                        <p:column headerText="数量">
-                            <h:outputText value="#{item.quantity}" />
-                        </p:column>
-
-                        <p:column headerText="优选供应商">
-                            <h:outputText value="#{item.preferredSupplier.name}" />
-                        </p:column>
-
-                        <p:column headerText="附加要求">
-                            <h:outputText value="#{item.additionalRequirement}" />
-                        </p:column>
-
-                        <p:column headerText="操作">
-                            <t:panelGroup>
-                                <p:commandLink update=":itemForm:itemPanel" disabled="#{!bean.editable}"
-                                    actionListener="#{bean.modifyItem}" oncomplete="itemDialog.show()" value="修改">
-                                    <f:setPropertyActionListener value="#{item}"
-                                        target="#{bean.materialPlanItem}" />
-                                </p:commandLink>
-                            </t:panelGroup>
-                        </p:column>
-                    </p:dataTable>
-                </p:tab>
-                <p:tab title="库存锁定">
-                    <t:panelGroup id="planOrdersPanel">
-                        <p:toolbar id="toolbar">
-                            <p:toolbarGroup align="left">
-                                <p:commandButton value="第一条" actionListener="#{bean.firstPlanOrder}"
-                                    update=":mainForm:planDetail:planOrdersPanel" async="true" />
-                                <p:commandButton value="上一条" actionListener="#{bean.previousPlanOrder}"
-                                    update=":mainForm:planDetail:planOrdersPanel" async="true" />
-                                <p:commandButton value="下一条" actionListener="#{bean.nextPlanOrder}"
-                                    update=":mainForm:planDetail:planOrdersPanel" async="true" />
-                                <p:commandButton value="最末条" actionListener="#{bean.lastPlanOrder}"
-                                    update=":mainForm:planDetail:planOrdersPanel" async="true" />
-                                <p:inputText value="#{bean.goNumberPlanOrder}" style="width:30px;" />
-                                <h:outputText value="/#{bean.countPlanOrder}" />
-                                <p:commandButton value="前往" actionListener="#{bean.goPlanOrder}"
-                                    update=":mainForm:planDetail:planOrdersPanel" async="true" />
-                            </p:toolbarGroup>
-                        </p:toolbar>
-                        <t:panelGrid columns="2">
-                            <h:outputText value="时间:" />
-                            <h:outputText value="#{bean.planOrder.createdDate}" />
-
-                            <h:outputText value="仓库:" />
-                            <h:outputText value="#{bean.planOrder.warehouse.name}" />
-                        </t:panelGrid>
-                        <p:dataTable id="orderItems" var="item" value="#{bean.orderItems}" resizableColumns="true"
-                            rowIndexVar="rowIndex">
-
-                            <p:column headerText="">
-                                <f:facet name="header">
-                                    <h:outputText value="序号" />
-                                </f:facet>
-                                <h:outputText value="#{rowIndex + 1}" />
-                            </p:column>
-
-                            <p:column headerText="">
-                                <f:facet name="header">
-                                    <h:outputText value="物料" />
-                                </f:facet>
+                    <fr:listView>
+                        <f:facet name="columns">
+                            <p:column headerText="物料">
                                 <h:outputText value="#{item.material.label}" />
                             </p:column>
-
-                            <p:column headerText="">
-                                <f:facet name="header">
-                                    <h:outputText value="规格型号" />
-                                </f:facet>
+                            <p:column headerText="规格型号">
                                 <h:outputText value="#{item.material.modelSpec}" />
                             </p:column>
-
-                            <p:column headerText="">
-                                <f:facet name="header">
-                                    <h:outputText value="单位" />
-                                </f:facet>
-                                <h:outputText value="#{item.material.unit.name}" />
-                            </p:column>
-
-                            <p:column headerText="">
-                                <f:facet name="header">
-                                    <h:outputText value="批号" />
-                                </f:facet>
-                                <h:outputText value="#{item.batch}" />
-                            </p:column>
-
-                            <p:column headerText="有效期">
-                                <h:outputText value="#{item.expirationDate}">
-                                    <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-                                </h:outputText>
-
-                            </p:column>
-
-                            <p:column headerText="库位">
-                                <h:outputText value="#{item.location.nodeText}" />
-                            </p:column>
-
-                            <p:column headerText="单价">
-                                <h:outputText value="#{item.price.value}" />
-                            </p:column>
-
-                            <p:column headerText="币种">
-                                <h:outputText value="#{item.price.currencyText}" />
-                            </p:column>
-
                             <p:column headerText="数量">
                                 <h:outputText value="#{item.quantity}" />
                             </p:column>
-                            <p:column headerText="备注">
-                                <h:outputText value="#{item.description}" />
+                            <p:column headerText="优选供应商">
+                                <h:outputText value="#{item.preferredSupplier.name}" />
                             </p:column>
-                        </p:dataTable>
-                    </t:panelGroup>
-
+                            <p:column headerText="附加要求">
+                                <h:outputText value="#{item.additionalRequirement}" />
+                            </p:column>
+                        </f:facet>
+                    </fr:listView>
+                </p:tab>
+                <p:tab title="库存锁定">
+                    <t:panelGrid columns="2">
+                        <h:outputText value="时间:" />
+                        <h:outputText value="#{bean.planOrder.createdDate}" />
+                        <h:outputText value="仓库:" />
+                        <h:outputText value="#{bean.planOrder.warehouse.name}" />
+                    </t:panelGrid>
+                    <fr:listView>
+                        <f:facet name="columns">
+                        </f:facet>
+                    </fr:listView>
                 </p:tab>
             </p:tabView>
         </p:panel>
@@ -179,164 +81,67 @@
     <ui:define name="dialogs">
         <sem:chooseMaterialDialog var="materialDialog" />
         <sem:choosePartyDialog header="选择优选供应商" var="preferredSupplierDialog" />
+        <sem:chooseStockItemDialog />
 
-        <p:dialog header="物料需求项目编辑" widgetVar="itemDialog" modal="true" height="500" width="640">
-            <h:form id="itemForm">
-                <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
+        <fr:listView header="物料需求项目编辑">
+            <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
 
-                    <h:outputLabel value="物料" />
-                    <h:outputText value="#{bean.materialPlanItem.material.label}" />
+                <h:outputLabel value="物料" />
+                <h:outputText value="#{bean.materialPlanItem.material.label}" />
 
-                    <h:outputLabel value="数量" />
-                    <h:outputText value="#{bean.materialPlanItem.quantity}" />
+                <h:outputLabel value="数量" />
+                <h:outputText value="#{bean.materialPlanItem.quantity}" />
 
-                    <h:outputLabel value="优选供应商" />
-                    <t:panelGroup>
-                        <p:inputText id="preferredSupplier" value="#{bean.selectedSupplier.name}" readonly="true" />
-                        <p:commandButton value="..." onclick="preferredSupplierDialog.show()" disabled="#{!bean.editable}" />
-                    </t:panelGroup>
+                <h:outputLabel value="优选供应商" />
+                <t:panelGroup>
+                    <p:inputText id="preferredSupplier" value="#{bean.selectedSupplier.name}" readonly="true" />
+                    <p:commandButton value="..." onclick="preferredSupplierDialog.show()" disabled="#{!bean.editable}" />
+                </t:panelGroup>
 
-                    <h:outputLabel value="附加要求" />
-                    <p:inputText value="#{bean.materialPlanItem.additionalRequirement}" />
-                </t:panelGrid>
-                <div align="right">
-                    <p:commandButton value="保存" actionListener="#{bean.saveItem}" oncomplete="itemDialog.hide();"
-                        async="true" update=":mainForm" />
-                    <p:commandButton value="取消" oncomplete="itemDialog.hide();" />
-                </div>
-            </h:form>
-        </p:dialog>
+                <h:outputLabel value="附加要求" />
+                <p:inputText value="#{bean.materialPlanItem.additionalRequirement}" />
+            </t:panelGrid>
+        </fr:listView>
 
-        <h:form id="deleteItemConfirmForm">
-            <p:confirmDialog message="确定要删除吗?" width="200" header="删除明细条目确认" severity="alert"
-                widgetVar="deleteItemConfirmDialog" modal="true">
+        <fr:listView header="项目编辑">
+            <t:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+                <h:outputLabel value="物料" />
+                <h:outputText value="#{bean.orderItem.material.label}" />
 
-                <p:commandButton value="确定" update=":mainForm:planDetail:items" actionListener="#{bean.deleteItem}"
-                    oncomplete="deleteItemConfirmDialog.hide()" />
-                <p:commandButton value="取消" onclick="deleteItemConfirmDialog.hide()" type="button" />
+                <t:panelGroup colspan="2">
+                    <p:commandButton value="查询库存" onclick="stockQueryDialog.show()" update="stockQueryForm:stockQueryPanel" />
+                </t:panelGroup>
+                <t:panelGroup colspan="2" />
 
-            </p:confirmDialog>
-        </h:form>
+                <h:outputLabel value="批号" />
+                <h:outputText value="#{bean.orderItem.batch}" />
+                <h:outputLabel value="有效期" />
+                <h:outputText value="#{bean.orderItem.expirationDate}">
+                    <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                </h:outputText>
 
-        <p:dialog header="项目编辑" widgetVar="orderItemDialog" modal="true" height="500" width="640">
-            <h:form id="orderItemForm">
-                <t:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+                <h:outputLabel value="库位" />
+                <p:inputText value="#{bean.orderItem.location.nodeText}" />
 
-                    <h:outputLabel value="物料" />
-                    <h:outputText value="#{bean.orderItem.material.label}" />
+                <h:outputLabel value="数量" />
+                <t:panelGroup colspan="2">
+                    <p:inputText value="#{bean.orderItem.quantity}" />
+                    <h:outputText value="#{bean.orderItem.material.unit.name}" />
+                </t:panelGroup>
+                <p:commandButton actionListener="#{bean.checkUnitConv}" update="unitConvForm:unitConvPanel"
+                    value="按换算单位输入数量" oncomplete="unitConvDialog.show()" />
 
-                    <t:panelGroup colspan="2">
-                        <p:commandButton value="查询库存" onclick="stockQueryDialog.show()" update="stockQueryForm:stockQueryPanel" />
-                    </t:panelGroup>
-                    <t:panelGroup colspan="2" />
+                <h:outputLabel value="单价" />
+                <h:outputText value="#{bean.orderItem.price.value}" />
+                <h:outputLabel value="币种" />
+                <h:outputText value="#{bean.orderItem.price.currencyText}" />
 
-                    <h:outputLabel value="批号" />
-                    <h:outputText value="#{bean.orderItem.batch}" />
-                    <h:outputLabel value="有效期" />
-                    <h:outputText value="#{bean.orderItem.expirationDate}">
-                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-                    </h:outputText>
-
-                    <h:outputLabel value="库位" />
-                    <p:inputText value="#{bean.orderItem.location.nodeText}" />
-
-                    <h:outputLabel value="数量" />
-                    <t:panelGroup colspan="2">
-                        <p:inputText value="#{bean.orderItem.quantity}" />
-                        <h:outputText value="#{bean.orderItem.material.unit.name}" />
-                    </t:panelGroup>
-                    <p:commandButton actionListener="#{bean.checkUnitConv}" update="unitConvForm:unitConvPanel"
-                        value="按换算单位输入数量" oncomplete="unitConvDialog.show()" />
-
-                    <h:outputLabel value="单价" />
-                    <h:outputText value="#{bean.orderItem.price.value}" />
-                    <h:outputLabel value="币种" />
-                    <h:outputText value="#{bean.orderItem.price.currencyText}" />
-
-                    <h:outputLabel value="备注" />
-                    <t:panelGroup colspan="3">
-                        <p:inputText value="#{bean.orderItem.description}" style="width:400px" />
-                    </t:panelGroup>
-                </t:panelGrid>
-                <div align="right">
-                    <p:commandButton value="保存" actionListener="#{bean.saveOrderItem}" oncomplete="orderItemDialog.hide();"
-                        async="true" update=":mainForm:planDetail:orderItems" />
-                    <p:commandButton value="取消" oncomplete="orderItemDialog.hide();" />
-                </div>
-            </h:form>
-        </p:dialog>
-
-        <h:form id="deleteOrderItemConfirmForm">
-            <p:confirmDialog message="确定要删除吗?" width="200" header="删除明细条目确认" severity="alert"
-                widgetVar="deleteOrderItemConfirmDialog" modal="true">
-
-                <p:commandButton value="确定" update=":mainForm:planDetail:orderItems" actionListener="#{bean.deleteItem}"
-                    oncomplete="deleteOrderItemConfirmDialog.hide()" />
-                <p:commandButton value="取消" onclick="deleteOrderItemConfirmDialog.hide()" type="button" />
-
-            </p:confirmDialog>
-        </h:form>
-
-        <p:dialog header="库存查询" widgetVar="lockStockDialog" modal="true" height="500" width="800">
-            <h:form id="lockStockForm">
-                <p:dataTable id="stockQuery" var="item" value="#{bean.stockQueryItems}" resizableColumns="true"
-                    rowIndexVar="rowIndex" scrollable="true" scrollWidth="750" scrollHeight="430">
-
-                    <p:column headerText="序号">
-                        <h:outputText value="#{rowIndex + 1}" />
-                    </p:column>
-
-                    <p:column headerText="仓库">
-                        <h:outputText value="#{item.item.location.warehouse.name}" />
-                    </p:column>
-
-                    <p:column headerText="物料">
-                        <h:outputText value="#{item.item.material.label}" />
-                    </p:column>
-
-                    <p:column headerText="规格型号">
-                        <h:outputText value="#{item.item.material.modelSpec}" />
-                    </p:column>
-
-                    <p:column headerText="批号">
-                        <h:outputText value="#{item.item.batch}" />
-                    </p:column>
-
-                    <p:column headerText="有效期">
-                        <h:outputText value="#{item.item.expirationDate}">
-                            <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-                        </h:outputText>
-                    </p:column>
-
-                    <p:column headerText="库位">
-                        <h:outputText value="#{item.item.location.nodeText}" />
-                    </p:column>
-
-                    <p:column headerText="单价">
-                        <h:outputText value="#{item.item.price.value}" />
-                    </p:column>
-
-                    <p:column headerText="币种">
-                        <h:outputText value="#{item.item.price.currencyText}" />
-                    </p:column>
-
-                    <p:column headerText="数量">
-                        <h:outputText value="#{item.item.quantity}" />
-                    </p:column>
-                    <p:column headerText="锁定数量">
-                        <p:inputText value="#{item.quantity}" />
-                    </p:column>
-                    <p:column headerText="锁定">
-                        <p:selectBooleanCheckbox value="#{item.checked}" />
-                    </p:column>
-                </p:dataTable>
-                <div align="right">
-                    <p:commandButton value="确定" actionListener="#{bean.lockStock}" oncomplete="lockStockDialog.hide();"
-                        update=":mainForm:planDetail:planOrdersPanel" async="true" />
-                    <p:commandButton value="取消" oncomplete="lockStockDialog.hide();" />
-                </div>
-            </h:form>
-        </p:dialog>
+                <h:outputLabel value="备注" />
+                <t:panelGroup colspan="3">
+                    <p:inputText value="#{bean.orderItem.description}" style="width:400px" />
+                </t:panelGroup>
+            </t:panelGrid>
+        </fr:listView>
     </ui:define>
 
 </ui:composition>

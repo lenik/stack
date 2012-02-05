@@ -37,7 +37,7 @@ public class PartItem
 
     BigDecimal quantity = new BigDecimal(1);
 
-    boolean valid;
+    boolean valid = true;
     Date validDateFrom;
     Date validDateTo;
 
@@ -168,7 +168,7 @@ public class PartItem
 
     @Transient
     public Classification getClassification() {
-        if(part != null)
+        if (part != null)
             return Classification.SEMI;
         else
             return Classification.RAW;

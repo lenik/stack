@@ -97,6 +97,7 @@ public class PartItemDto
 
     public void setPart(PartDto part) {
         this.part = part;
+        this.material = null;
     }
 
     public MaterialDto getMaterial() {
@@ -105,6 +106,7 @@ public class PartItemDto
 
     public void setMaterial(MaterialDto material) {
         this.material = material;
+        this.part = null;
     }
 
     public BigDecimal getQuantity() {

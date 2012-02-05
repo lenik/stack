@@ -1,6 +1,7 @@
 <ui:composition template="/template/scroll-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
-    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk">
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:fr="http://java.sun.com/jsf/composite/frame"
+    xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
     <ui:param name="title" value="生产任务单" />
     <ui:param name="bean" value="#{maskTaskAdminBean}" />
@@ -28,45 +29,22 @@
                 <t:panelGroup />
                 <t:panelGroup />
             </t:panelGrid>
-
-            <h:outputText value="明细" />
-
-            <p:dataTable id="items" var="item" value="#{bean.items}" resizableColumns="true" rowIndexVar="rowIndex">
-
-                <p:column headerText="序号">
-                    <h:outputText value="#{rowIndex + 1}" />
-                </p:column>
-
+            <fr:listView>
                 <p:column headerText="物料">
-                    <h:outputText value="#{item.part.target.label}" />
+                    <h:outputText value="#{entry.part.target.label}" />
                 </p:column>
-
                 <p:column headerText="规格型号">
-                    <h:outputText value="#{item.part.target.modelSpec}" />
+                    <h:outputText value="#{entry.part.target.modelSpec}" />
                 </p:column>
-
                 <p:column headerText="数量">
-                    <h:outputText value="#{item.quantity}" />
+                    <h:outputText value="#{entry.quantity}" />
                 </p:column>
-
                 <p:column headerText="完工时间">
-                    <h:outputText value="#{item.deadline}">
+                    <h:outputText value="#{entry.deadline}">
                         <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                     </h:outputText>
                 </p:column>
-
-                <p:column headerText="操作">
-                    <p:commandLink update="itemForm:itemPanel" disabled="#{!bean.editable}"
-                        actionListener="#{bean.modifyItem}" oncomplete="itemDialog.show()" value="修改">
-                        <f:setPropertyActionListener value="#{item}" target="#{bean.makeTaskItem}" />
-                    </p:commandLink>
-                    <p:spacer width="10" />
-                    <p:commandLink disabled="#{!bean.editable}" oncomplete="deleteItemConfirmDialog.show()"
-                        value="删除">
-                        <f:setPropertyActionListener value="#{item}" target="#{bean.makeTaskItem}" />
-                    </p:commandLink>
-                </p:column>
-            </p:dataTable>
+            </fr:listView>
         </p:panel>
     </ui:define>
 
@@ -75,40 +53,24 @@
         <sem:choosePartyDialog header="选择客户" var="customerDialog" />
         <sem:chooseMakeOrderDialog />
 
-        <p:dialog header="生产任务单项目编辑" widgetVar="itemDialog" modal="true" height="500" width="640">
-            <h:form id="itemForm">
-                <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
+        <fr:listView header="生产任务单项目编辑">
+            <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
 
-                    <h:outputLabel value="物料" />
-                    <h:outputText value="#{bean.makeTaskItem.part.target.label}" />
+                <h:outputLabel value="物料" />
+                <h:outputText value="#{bean.makeTaskItem.part.target.label}" />
 
-                    <h:outputLabel value="数量" />
-                    <p:inputText value="#{bean.makeTaskItem.quantity}" />
+                <h:outputLabel value="数量" />
+                <p:inputText value="#{bean.makeTaskItem.quantity}" />
 
-                    <h:outputText value="完工时间:" />
-                    <p:calendar navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{bean.makeTaskItem.deadline}"
-                        showOn="button" />
+                <h:outputText value="完工时间:" />
+                <p:calendar navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{bean.makeTaskItem.deadline}"
+                    showOn="button" />
 
-                    <h:outputLabel value="备注" />
-                    <p:inputText value="#{bean.makeTaskItem.description}" />
+                <h:outputLabel value="备注" />
+                <p:inputText value="#{bean.makeTaskItem.description}" />
 
-                </t:panelGrid>
-                <div align="right">
-                    <p:commandButton value="保存" actionListener="#{bean.saveItem}" oncomplete="itemDialog.hide();"
-                        async="true" update=":mainForm" />
-                    <p:commandButton value="取消" oncomplete="itemDialog.hide();" />
-                </div>
-            </h:form>
+            </t:panelGrid>
         </p:dialog>
-
-        <p:confirmDialog message="确定要删除吗?" width="200" header="删除明细条目确认" severity="alert"
-            widgetVar="deleteItemConfirmDialog" modal="true">
-            <h:form id="deleteItemConfirmForm">
-                <p:commandButton value="确定" update=":mainForm:items" actionListener="#{bean.deleteItem}"
-                    oncomplete="deleteItemConfirmDialog.hide()" />
-                <p:commandButton value="取消" onclick="deleteItemConfirmDialog.hide()" type="button" />
-            </h:form>
-        </p:confirmDialog>
 
     </ui:define>
 </ui:composition>

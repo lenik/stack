@@ -10,7 +10,7 @@
         <sem:singleVerifierSupportButton selection="#{bean.selection}" disabled="#{bean.editable}" />
     </ui:define>
 
-    <ui:define name="mainForm">
+    <ui:define name="editDialogContent">
         <p:panel header="定单管理">
             <t:panelGrid columns="4">
                 <h:outputText value="标识:" />
@@ -232,13 +232,5 @@
             </h:form>
         </p:dialog>
 
-        <p:confirmDialog message="确定要删除吗?" width="200" header="删除明细条目确认" severity="alert"
-            widgetVar="deleteItemConfirmDialog" modal="true">
-            <h:form id="deleteItemConfirmForm">
-                <p:commandButton value="确定" update=":mainForm:items" actionListener="#{bean.deleteItem}"
-                    oncomplete="deleteItemConfirmDialog.hide()" />
-                <p:commandButton value="取消" onclick="deleteItemConfirmDialog.hide()" type="button" />
-            </h:form>
-        </p:confirmDialog>
     </ui:define>
 </ui:composition>

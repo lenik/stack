@@ -10,7 +10,7 @@
         <sem:singleVerifierSupportButton selection="#{bean.selection}" disabled="#{bean.editable}" />
     </ui:define>
 
-    <ui:define name="form?">
+    <ui:define name="editFormDialog">
         <p:panel header="凭证管理">
             <t:panelGrid columns="4">
                 <h:outputText value="标识:" />
@@ -33,21 +33,9 @@
                         readonly="true" />
                     <p:commandButton value="..." onclick="budgetRequestDialog.show();" disabled="#{!bean.editable}" />
                 </t:panelGroup>
-
             </t:panelGrid>
 
-            <t:panelGrid columns="2">
-                <h:outputText value="明细" />
-                <p:commandButton value="新增明细" onclick="itemDialog.show();" action="#{bean.newItem}"
-                    update=":itemForm:itemPanel" disabled="#{!bean.editable}" />
-            </t:panelGrid>
-
-            <p:dataTable id="items" var="item" value="#{bean.items}" resizableColumns="true" rowIndexVar="rowIndex">
-
-                <p:column headerText="序号">
-                    <h:outputText value="#{rowIndex + 1}" />
-                </p:column>
-
+            <fr:listView>
                 <p:column headerText="摘要">
                     <h:outputText value="#{item.description}" />
                 </p:column>
@@ -78,134 +66,55 @@
                 <p:column headerText="状态">
                     <h:outputText value="#{item.verifyContext.verifyEvalState}" />
                 </p:column>
-
-                <p:column>
-                    <f:facet name="header">操作</f:facet>
-                    <t:panelGroup>
-                        <p:commandLink update=":itemForm:itemPanel" disabled="#{!bean.editable}"
-                            actionListener="#{bean.modifyItem}" oncomplete="itemDialog.show()" value="修改">
-                            <f:setPropertyActionListener value="#{item}" target="#{bean.accountTicketItem}" />
-                        </p:commandLink>
-                        <p:spacer width="10" />
-                        <p:commandLink disabled="#{!bean.editable}" oncomplete="deleteItemConfirmDialog.show()"
-                            value="删除">
-                            <f:setPropertyActionListener value="#{item}" target="#{bean.accountTicketItem}" />
-                        </p:commandLink>
-                    </t:panelGroup>
-                </p:column>
-            </p:dataTable>
+            </fr:listView>
         </p:panel>
     </ui:define>
 
     <ui:define name="dialogs">
         <sem:singleVerifierSupportDialog update=":mainForm" />
 
-        <p:dialog header="凭证项目编辑" widgetVar="itemDialog" modal="true" height="500" width="640">
-            <h:form id="itemForm">
-                <t:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+        <fr:listView header="凭证项目编辑">
+            <t:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
 
-                    <h:outputLabel value="摘要" />
-                    <t:panelGroup colspan="3">
-                        <p:inputText value="#{bean.accountTicketItem.description}" />
-                    </t:panelGroup>
+                <h:outputLabel value="摘要" />
+                <t:panelGroup colspan="3">
+                    <p:inputText value="#{bean.accountTicketItem.description}" />
+                </t:panelGroup>
 
-                    <h:outputLabel value="会计科目" />
-                    <t:panelGroup colspan="3">
-                        <p:inputText id="accountSubject" value="#{bean.accountTicketItem.subject.label}"
-                            readonly="true" />
-                        <p:commandButton value="..." onclick="accountSubjectDialog.show();" />
-                    </t:panelGroup>
+                <h:outputLabel value="会计科目" />
+                <t:panelGroup colspan="3">
+                    <p:inputText id="accountSubject" value="#{bean.accountTicketItem.subject.label}"
+                        readonly="true" />
+                    <p:commandButton value="..." onclick="accountSubjectDialog.show();" />
+                </t:panelGroup>
 
-                    <h:outputLabel value="二级科目" />
-                    <t:panelGroup colspan="3">
-                        <p:inputText id="party" value="#{bean.accountTicketItem.party.name}" readonly="true" />
-                        <p:commandButton value="..." onclick="partyDialog.show();" />
-                    </t:panelGroup>
+                <h:outputLabel value="二级科目" />
+                <t:panelGroup colspan="3">
+                    <p:inputText id="party" value="#{bean.accountTicketItem.party.name}" readonly="true" />
+                    <p:commandButton value="..." onclick="partyDialog.show();" />
+                </t:panelGroup>
 
-                    <h:outputLabel value="借贷方向" />
-                    <t:panelGroup colspan="3">
-                        <p:selectOneMenu value="#{bean.accountTicketItem.debitSide}" style="width:200px;">
-                            <f:selectItem itemValue="true" itemLabel="借方" />
-                            <f:selectItem itemValue="false" itemLabel="贷方" />
-                        </p:selectOneMenu>
-                    </t:panelGroup>
-
-                    <h:outputLabel value="金额" />
-                    <p:inputText value="#{bean.accountTicketItem.valueDigit}" />
-                    <h:outputLabel value="币种" />
-                    <p:selectOneMenu value="#{bean.accountTicketItem.valueCurrency}" style="width:200px;">
-                        <f:selectItem itemValue="" itemLabel="--选择币种--" />
-                        <f:selectItems value="#{bean.currencies}" />
+                <h:outputLabel value="借贷方向" />
+                <t:panelGroup colspan="3">
+                    <p:selectOneMenu value="#{bean.accountTicketItem.debitSide}" style="width:200px;">
+                        <f:selectItem itemValue="true" itemLabel="借方" />
+                        <f:selectItem itemValue="false" itemLabel="贷方" />
                     </p:selectOneMenu>
-                </t:panelGrid>
-                <div align="right">
-                    <p:commandButton value="保存" actionListener="#{bean.saveItem}" oncomplete="itemDialog.hide();"
-                        async="true" update=":mainForm" />
-                    <p:commandButton value="取消" oncomplete="itemDialog.hide();" />
-                </div>
-            </h:form>
-        </p:dialog>
+                </t:panelGroup>
 
-        <p:dialog header="选择资金流业务单" widgetVar="budgetRequestDialog" modal="true" height="480" width="640">
-            <h:form id="budgetRequestForm">
-                <h:panelGrid columns="5">
-                    <h:outputLabel value="经办人:" />
-                    <p:selectOneMenu value="#{bean.budgetRequestCreatorId}" style="width:200px;">
-                        <f:selectItem itemValue="" itemLabel="--选择经办人--" />
-                        <f:selectItems value="#{bean.users}" />
-                    </p:selectOneMenu>
-                    <h:outputLabel value="摘要名称全部或部份:" />
-                    <p:inputText value="#{bean.budgetRequestPattern}" />
-                    <p:commandButton value="查找" actionListener="#{bean.findBudgetRequest}" update="budgetRequests"
-                        async="true" />
-                </h:panelGrid>
-                <p:dataTable id="budgetRequests" var="budgetRequest" value="#{bean.budgetRequests}"
-                    resizableColumns="true" selection="#{bean.selectedBudgetRequest}" selectionMode="single"
-                    rowKey="#{budgetRequest.id}" rowIndexVar="rowIndex" scrollable="true" scrollWidth="600"
-                    scrollHeight="350">
-
-                    <p:column headerText="序号">
-                        <h:outputText value="#{rowIndex + 1}" />
-                    </p:column>
-
-                    <p:column headerText="经办人">
-                        <h:outputText value="#{budgetRequest.creator}" />
-                    </p:column>
-
-                    <p:column headerText="摘要">
-                        <h:outputText value="#{budgetRequest.description}" />
-                    </p:column>
-
-                    <p:column headerText="货币类型">
-                        <h:outputText value="#{budgetRequest.valueCurrency}" />
-                    </p:column>
-
-                    <p:column headerText="金额">
-                        <h:outputText value="#{budgetRequest.valueDigit}" />
-                    </p:column>
-                </p:dataTable>
-
-                <div align="right">
-                    <p:commandButton value="确定" actionListener="#{bean.chooseBudgetRequest}" oncomplete="budgetRequestDialog.hide();"
-                        update=":mainForm:budgetRequest" async="true" />
-                    <p:commandButton value="取消" oncomplete="budgetRequestDialog.hide();" />
-                </div>
-            </h:form>
-        </p:dialog>
-
-        <h:form id="deleteItemConfirmForm">
-            <p:confirmDialog message="确定要删除吗?" width="200" header="删除明细条目确认" severity="alert"
-                widgetVar="deleteItemConfirmDialog" modal="true">
-
-                <p:commandButton value="确定" update=":mainForm:items" actionListener="#{bean.deleteItem}"
-                    oncomplete="deleteItemConfirmDialog.hide()" />
-                <p:commandButton value="取消" onclick="deleteItemConfirmDialog.hide()" type="button" />
-
-            </p:confirmDialog>
-        </h:form>
+                <h:outputLabel value="金额" />
+                <p:inputText value="#{bean.accountTicketItem.valueDigit}" />
+                <h:outputLabel value="币种" />
+                <p:selectOneMenu value="#{bean.accountTicketItem.valueCurrency}" style="width:200px;">
+                    <f:selectItem itemValue="" itemLabel="--选择币种--" />
+                    <f:selectItems value="#{bean.currencies}" />
+                </p:selectOneMenu>
+            </t:panelGrid>
+        </fr:listView>
 
         <sem:chooseAccountSubjectDialog var="accountSubjectDialog" />
         <sem:choosePartyDialog header="选择客户" var="partyDialog" />
+        <sem:chooseBudgetRequestDialog header="选择资金流业务单" />
     </ui:define>
 
 </ui:composition>

@@ -1,9 +1,10 @@
 <ui:composition template="/template/simple-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
-    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk">
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:fr="http://java.sun.com/jsf/composite/frame"
+    xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
     <ui:param name="title" value="BOM" />
-    <ui:param name="bean" value="#{bomAdminBean}" />
+    <ui:param name="bean" value="#{partAdminBean}" />
     <ui:param name="obj" value="#{bean.openedObject}" />
 
     <ui:define name="sideBarW">
@@ -20,30 +21,28 @@
     </ui:define>
 
     <ui:define name="dataColumns">
-        <p:column headerText="物料" sortBy="#{part.material.label}">
-            <h:outputText value="#{part.target.label}" />
+        <p:column headerText="物料" sortBy="#{entry.material.label}">
+            <h:outputText value="#{entry.target.label}" />
         </p:column>
-        <p:column headerText="规格型号" sortBy="#{part.material.modelSpec}">
-            <h:outputText value="#{part.target.modelSpec}" />
+        <p:column headerText="规格型号" sortBy="#{entry.material.modelSpec}">
+            <h:outputText value="#{entry.target.modelSpec}" />
         </p:column>
         <p:column headerText="生效日期">
-            <h:outputText value="#{part.validDateFrom}">
+            <h:outputText value="#{entry.validDateFrom}">
                 <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
             </h:outputText>
         </p:column>
         <p:column headerText="失效日期">
-            <h:outputText value="#{part.validDateTo}">
+            <h:outputText value="#{entry.validDateTo}">
                 <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
             </h:outputText>
         </p:column>
-
         <p:column headerText="类型">
-            <h:outputText value="#{part.xrefCount == 0 ? '产品' : '半成品'}" />
+            <h:outputText value="#{entry.xrefCount == 0 ? '产品' : '半成品'}" />
         </p:column>
-
         <p:column headerText="操作">
             <p:commandLink value="价格" onclick="priceDlg.show();">
-                <f:setPropertyActionListener value="#{part}" target="#{bean.selectedPart}" />
+                <f:setPropertyActionListener target="#{bean.selectedPart}" value="#{entry}" />
             </p:commandLink>
         </p:column>
     </ui:define>
@@ -82,118 +81,50 @@
             </t:panelGrid>
         </p:panel>
 
-        <p:panel id="detailPanel" header="BOM明细" toggleable="true">
-            <p:toolbar>
-                <p:toolbarGroup align="left">
-                    <p:commandButton value="新增" actionListener="#{bean.newItem}" disabled="#{bean.editableComp}"
-                        update="bomForm" async="true" />
-                    <p:separator />
-                    <p:commandButton value="保存" actionListener="#{bean.saveItem}" disabled="#{!bean.editableComp}"
-                        update="bomForm" async="true" />
-                    <p:commandButton value="取消" actionListener="#{bean.listItems}" disabled="#{!bean.editableComp}"
-                        update="bomForm" async="true" />
-                    <p:separator />
-                    <p:commandButton value="刷新" actionListener="#{bean.refreshItem}" disabled="#{bean.editableComp}"
-                        update="bomForm" async="true" />
-                </p:toolbarGroup>
-            </p:toolbar>
+        <fr:listView id="childrenIndexView" header="BOM明细" style="indexPanel" editView=":childrenEditView"
+            mbean="#{mbean.childrenMBean}">
+            <f:facet name="columns">
+                <p:column headerText="物料">
+                    <h:outputText value="#{entry.material.id==null? entry.part.target.label : entry.material.label}" />
+                </p:column>
 
-            <p:tabView id="itemTab" activeIndex="#{bean.currTabComp}">
-                <p:tab id="itemList" title="BOM组件列表">
-                    <p:dataTable id="items" var="comp" value="#{bean.items}" resizableColumns="true"
-                        rowIndexVar="rowIndex">
+                <p:column headerText="规格型号">
+                    <h:outputText value="#{entry.material.id==null? entry.part.target.modelSpec : entry.material.modelSpec}" />
+                </p:column>
 
-                        <p:column headerText="序号">
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
+                <p:column headerText="单位">
+                    <h:outputText value="#{entry.material.id==null? entry.part.target.unit.name : entry.material.unit.name}" />
+                </p:column>
 
-                        <p:column headerText="物料">
-                            <h:outputText value="#{comp.material.id==null? comp.part.target.label : comp.material.label}" />
-                        </p:column>
+                <p:column headerText="数量">
+                    <h:outputText value="#{entry.quantity}" />
+                </p:column>
 
-                        <p:column headerText="规格型号">
-                            <h:outputText
-                                value="#{comp.material.id==null? comp.part.target.modelSpec : comp.material.modelSpec}" />
-                        </p:column>
+                <p:column headerText="是否有效">
+                    <p:selectBooleanCheckbox value="#{entry.valid}" disabled="true" />
+                </p:column>
 
-                        <p:column headerText="单位">
-                            <h:outputText
-                                value="#{comp.material.id==null? comp.part.target.unit.name : comp.material.unit.name}" />
-                        </p:column>
+                <p:column headerText="生效日期">
+                    <h:outputText value="#{entry.validDateFrom}">
+                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                    </h:outputText>
+                </p:column>
 
-                        <p:column headerText="数量">
-                            <h:outputText value="#{comp.quantity}" />
-                        </p:column>
+                <p:column headerText="失效日期">
+                    <h:outputText value="#{entry.validDateTo}">
+                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                    </h:outputText>
+                </p:column>
 
-                        <p:column headerText="是否有效">
-                            <p:selectBooleanCheckbox value="#{comp.valid}" disabled="true" />
-                        </p:column>
+                <p:column headerText="备注">
+                    <h:outputText value="#{entry.description}" />
+                </p:column>
 
-                        <p:column headerText="生效日期">
-                            <h:outputText value="#{comp.validDateFrom}">
-                                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-
-                        <p:column headerText="失效日期">
-                            <h:outputText value="#{comp.validDateTo}">
-                                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-
-                        <p:column headerText="备注">
-                            <h:outputText value="#{comp.description}" />
-                        </p:column>
-
-                        <p:column headerText="类型">
-                            <h:outputText value="#{comp.part.id==null ? '原材料' : '半成品'}" />
-                        </p:column>
-
-                        <p:column headerText="操作">
-                            <p:commandLink value="删除" oncomplete="deleteItemConfirmDialog.show();">
-                                <f:setPropertyActionListener value="#{comp}" target="#{bean.selectedItem}" />
-                            </p:commandLink>
-                            <p:spacer width="10" />
-                            <p:commandLink value="明细" action="#{bean.showItemDetail}" update="bomForm:partTab:itemTab">
-                                <f:setPropertyActionListener value="#{comp}" target="#{bean.selectedItem}" />
-                            </p:commandLink>
-                        </p:column>
-
-                    </p:dataTable>
-                </p:tab>
-                <p:tab id="itemDetail" title="BOM组件详细">
-                    <t:panelGrid columns="4" columnClasses="partColumnTitle,partColumnValue,partColumnTitle,partColumnValue">
-
-                        <h:outputLabel for="materialNameComp" value="物料" />
-                        <t:panelGroup>
-                            <h:outputText id="materialNameComp"
-                                value="#{bean.item.material.id==null? bean.item.part.target.label : bean.item.material.label}" />
-                            <p:commandButton title="挑选组件" value="..." onclick="choosePartItemDlg.show();"
-                                actionListener="#{bean.setMaterialChooseComp}" />
-                        </t:panelGroup>
-                        <h:outputLabel for="compValid" value="是否有效" />
-                        <p:selectBooleanCheckbox id="compValid" value="#{bean.item.valid}" />
-
-                        <h:outputLabel for="compValidDateFrom" value="生效日期" />
-                        <p:calendar id="compValidDateFrom" pattern="yyyy-MM-dd" value="#{bean.item.validDateFrom}"
-                            navigator="true" locale="zh_CN" showOn="button" />
-                        <h:outputLabel for="compValidDateTo" value="失效日期" />
-                        <p:calendar id="compValidDateTo" pattern="yyyy-MM-dd" value="#{bean.item.validDateTo}"
-                            navigator="true" locale="zh_CN" showOn="button" />
-
-                        <h:outputLabel for="compValidDateTo" value="数量" />
-                        <t:panelGroup colspan="3">
-                            <p:inputText id="compQuantity" value="#{bean.item.quantity}" />
-                        </t:panelGroup>
-
-                        <h:outputLabel for="compDesc" value="描述" />
-                        <t:panelGroup colspan="3">
-                            <p:inputTextarea id="compDesc" rows="5" style="width:480px;" value="#{bean.item.description}" />
-                        </t:panelGroup>
-                    </t:panelGrid>
-                </p:tab>
-            </p:tabView>
-        </p:panel>
+                <p:column headerText="类型">
+                    <h:outputText value="#{entry.part.id==null ? '原材料' : '半成品'}" />
+                </p:column>
+            </f:facet>
+        </fr:listView>
     </ui:define>
 
     <ui:define name="dialogs">
@@ -201,33 +132,52 @@
         <sem:chooseMaterialDialog header="选择原材料" var="choosePartItemDlg" />
         <sem:choosePartDialog header="选择半成品" var="choosePartItemDlg" />
 
-        <h:form id="priceForm">
-            <p:dialog header="计算价格" widgetVar="priceDlg" modal="true" height="500" width="640">
+        <p:dialog header="计算价格" widgetVar="priceDlg" modal="true" height="500" width="640">
+            <h:form id="priceForm">
                 <h:panelGrid columns="2">
                     <h:outputLabel value="产品" />
                     <h:outputText id="partName" value="#{bean.selectedPart.material.label}" />
 
-
                     <p:commandButton value="计算" actionListener="#{bean.calcPrice}" update="partPrice" />
                     <p:commandButton value="关闭" oncomplete="priceDlg.hide();" />
-
 
                     <h:outputLabel value="价格" />
                     <h:outputText id="partPrice" value="#{bean.price}" />
                 </h:panelGrid>
-            </p:dialog>
-        </h:form>
+            </h:form>
+        </p:dialog>
 
-        <h:form id="deleteItemConfirmForm">
-            <p:confirmDialog message="确定要删除BOM组件吗?" width="200" header="删除组件确认" severity="alert"
-                widgetVar="deleteItemConfirmDialog" modal="true">
+        <fr:listView id="childrenEditView" header="BOM明细" style="editDialog" indexView=":editDialog:form:childrenIndexView"
+            mbean="#{mbean.childrenMBean}">
+            <t:panelGrid columns="4" columnClasses="partColumnTitle,partColumnValue,partColumnTitle,partColumnValue">
 
-                <p:commandButton value="确定" update="bomForm" actionListener="#{bean.deleteItem}"
-                    oncomplete="deleteItemConfirmDialog.hide()" />
-                <p:commandButton value="取消" onclick="deleteItemConfirmDialog.hide()" type="button" />
+                <h:outputLabel for="materialNameComp" value="物料" />
+                <t:panelGroup>
+                    <h:outputText id="materialNameComp"
+                        value="#{bean.item.material.id==null? bean.item.part.target.label : bean.item.material.label}" />
+                    <p:commandButton title="挑选组件" value="..." onclick="choosePartItemDlg.show();"
+                        actionListener="#{bean.setMaterialChooseComp}" />
+                </t:panelGroup>
+                <h:outputLabel for="compValid" value="是否有效" />
+                <p:selectBooleanCheckbox id="compValid" value="#{bean.item.valid}" />
 
-            </p:confirmDialog>
-        </h:form>
+                <h:outputLabel for="compValidDateFrom" value="生效日期" />
+                <p:calendar id="compValidDateFrom" pattern="yyyy-MM-dd" value="#{bean.item.validDateFrom}"
+                    navigator="true" locale="zh_CN" showOn="button" />
+                <h:outputLabel for="compValidDateTo" value="失效日期" />
+                <p:calendar id="compValidDateTo" pattern="yyyy-MM-dd" value="#{bean.item.validDateTo}"
+                    navigator="true" locale="zh_CN" showOn="button" />
+
+                <h:outputLabel for="compValidDateTo" value="数量" />
+                <t:panelGroup colspan="3">
+                    <p:inputText id="compQuantity" value="#{bean.item.quantity}" />
+                </t:panelGroup>
+
+                <h:outputLabel for="compDesc" value="描述" />
+                <t:panelGroup colspan="3">
+                    <p:inputTextarea id="compDesc" rows="5" style="width:480px;" value="#{bean.item.description}" />
+                </t:panelGroup>
+            </t:panelGrid>
+        </fr:listView>
     </ui:define>
-
 </ui:composition>

@@ -14,7 +14,6 @@ import com.bee32.plover.ox1.tree.TreeCriteria;
 import com.bee32.sem.bom.dto.PartDto;
 import com.bee32.sem.bom.dto.PartItemDto;
 import com.bee32.sem.bom.entity.Part;
-import com.bee32.sem.bom.entity.PartItem;
 import com.bee32.sem.bom.service.MaterialPriceNotFoundException;
 import com.bee32.sem.bom.service.PartService;
 import com.bee32.sem.bom.util.BomCriteria;
@@ -153,56 +152,6 @@ public class PartAdminBean
         refreshPartCount(c.getId());
     }
 
-    public void newItem() {
-        if (part == null || part.getId() == null) {
-            uiLogger.error("请选择相应的产品!");
-            return;
-        }
-        item = new PartItemDto().create();
-        item.setValid(true);
-    }
-
-    public void deleteItem() {
-        if (selectedItem == null) {
-            uiLogger.error("请以单击选择需要删除的BOM组件!");
-            return;
-        }
-
-        try {
-            serviceFor(PartItem.class).deleteById(selectedItem.getId());
-            part.removeChild(selectedItem);
-
-            uiLogger.info("删除BOM组件成功");
-        } catch (Exception e) {
-            uiLogger.error("删除BOM组件失败", e);
-        }
-    }
-
-    public void saveItem() {
-        if (part == null || part.getId() == null) {
-            uiLogger.error("请选择相应的产品!");
-            return;
-        }
-
-        try {
-            PartDto parentRef = new PartDto().ref(part);
-            item.setParent(parentRef);
-
-            PartItem _item = item.unmarshal(this);
-            serviceFor(PartItem.class).saveOrUpdate(_item);
-
-            part = reload(part);
-
-            uiLogger.info("保存BOM组件成功");
-        } catch (Exception e) {
-            uiLogger.error("保存BOM组件失败", e);
-        }
-    }
-
-    public void listItems() {
-        item = DummyDto.create(PartItemDto.class);
-    }
-
     public void showItemDetail() {
         if (selectedItem == null) {
             uiLogger.error("请以单击选择需要查看详细内容的BOM组件!");
@@ -281,17 +230,6 @@ public class PartAdminBean
         } catch (MaterialPriceNotFoundException e) {
             uiLogger.error("没有找到此产品的原材料原价格!", e);
         }
-    }
-
-    public void findPart() {
-// List<Part> _parts =
-// serviceFor(Part.class).list(BomCriteria.findPartUseMaterialName(partPattern));
-    }
-
-    public void choosePart() {
-        item.setMaterial(null);
-        item.setPart(selectedFindedPart);
-        selectedFindedPart = null;
     }
 
 }
