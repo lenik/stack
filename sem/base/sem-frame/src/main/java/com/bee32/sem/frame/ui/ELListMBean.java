@@ -35,6 +35,7 @@ public class ELListMBean<T>
 
     @Override
     public synchronized List<T> getList() {
+        list = null; // TODO optim: when to invalidate the EL list?
         if (list == null) {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             // ExpressionFactory factory = facesContext.getApplication().getExpressionFactory();
