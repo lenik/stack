@@ -264,15 +264,10 @@ public class SimpleEntityViewBean
 
     @Operation
     public void showCreateForm() {
-        EntityDto<?, ?> entityDto;
-        try {
-            entityDto = dtoClass.newInstance(); // Create fmask is always -1.
-            entityDto = entityDto.create();
-        } catch (Exception e) {
-            uiLogger.error("无法创建对象", e);
+        Object newInstance = create();
+        if (newInstance == null)
             return;
-        }
-        setActiveObject(entityDto);
+        setActiveObject(newInstance);
         showView(StandardViews.CREATE_FORM);
     }
 
@@ -319,6 +314,18 @@ public class SimpleEntityViewBean
     public void showPartialForm() {
         // default fmask override..
         showEditForm();
+    }
+
+    protected Object create() {
+        EntityDto<?, ?> entityDto;
+        try {
+            entityDto = dtoClass.newInstance(); // Create fmask is always -1.
+            entityDto = entityDto.create();
+        } catch (Exception e) {
+            uiLogger.error("无法创建对象", e);
+            return null;
+        }
+        return entityDto;
     }
 
     @Operation
@@ -610,11 +617,15 @@ public class SimpleEntityViewBean
             if (selection instanceof EntityDto<?, ?>) {
                 EntityDto<?, ?> dto = (EntityDto<?, ?>) selection;
                 reloaded = reload(dto, fmask);
+                loadExtras(reloaded, true);
             } else
                 reloaded = selection;
             reloadedList.add(reloaded);
         }
         setActiveObjects(reloadedList);
+    }
+
+    protected void loadExtras(Object preactiveObject, boolean editForm) {
     }
 
     UnmarshalMap unmarshalDtos(Collection<?> objects, boolean nullable) {
