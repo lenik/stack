@@ -2,8 +2,6 @@ package com.bee32.sem.asset.web;
 
 import java.util.List;
 
-import javax.faces.model.SelectItem;
-
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Not;
@@ -15,7 +13,6 @@ import com.bee32.sem.asset.dto.InitAccountTicketItemDto;
 import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.asset.entity.InitAccountTicketItem;
 import com.bee32.sem.people.dto.PartyDto;
-import com.bee32.sem.world.monetary.CurrencyUtil;
 
 @ForEntity(InitAccountTicketItem.class)
 public class AccountInitAdminBean
@@ -27,10 +24,6 @@ public class AccountInitAdminBean
 
     AccountSubjectDto selectedAccountSubject;
     PartyDto selectedParty;
-
-    public List<SelectItem> getCurrencies() {
-        return CurrencyUtil.selectItems();
-    }
 
     public InitAccountTicketItemDto getAccountTicketItem() {
         return accountTicketItem;

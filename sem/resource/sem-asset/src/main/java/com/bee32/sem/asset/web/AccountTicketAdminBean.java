@@ -3,8 +3,6 @@ package com.bee32.sem.asset.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.model.SelectItem;
-
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.Offset;
@@ -18,7 +16,6 @@ import com.bee32.sem.asset.dto.BudgetRequestDto;
 import com.bee32.sem.asset.entity.AccountTicket;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.people.dto.PartyDto;
-import com.bee32.sem.world.monetary.CurrencyUtil;
 
 @ForEntity(AccountTicket.class)
 public class AccountTicketAdminBean
@@ -73,10 +70,6 @@ public class AccountTicketAdminBean
         this.accountTicketItem = accountTicketItem;
     }
 
-    public List<SelectItem> getCurrencies() {
-        return CurrencyUtil.selectItems();
-    }
-
     public int getBudgetRequestCreatorId() {
         return budgetRequestCreatorId;
     }
@@ -124,7 +117,7 @@ public class AccountTicketAdminBean
 
         AccountTicket firstTicket = serviceFor(AccountTicket.class).getFirst( //
                 new Offset(position - 1), //
-//                CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+// CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
                 Order.asc("id"));
 
         if (firstTicket != null)
@@ -205,10 +198,10 @@ public class AccountTicketAdminBean
 
     public void findBudgetRequest() {
         // TODO : 加入业务单是否已经审核的条件检查
-//                    new Or(
-//                            new Equals("owner.id", budgetRequestCreatorId),
-//                            new Like("description", "%" + budgetRequestPattern + "%")),
-//                    AssetCriteria.haveNoCorrespondingTicket()
+// new Or(
+// new Equals("owner.id", budgetRequestCreatorId),
+// new Like("description", "%" + budgetRequestPattern + "%")),
+// AssetCriteria.haveNoCorrespondingTicket()
     }
 
     public void chooseBudgetRequest() {

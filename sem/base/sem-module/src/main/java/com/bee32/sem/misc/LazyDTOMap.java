@@ -3,34 +3,25 @@ package com.bee32.sem.misc;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 
+import com.bee32.plover.faces.view.ViewBean;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityDto;
 
-public class LazyDtoMap<D extends EntityDto<? extends Entity<?>, K>, K extends Serializable>
+public class LazyDTOMap<K extends Serializable, D extends EntityDto<? extends Entity<?>, K>>
         extends LinkedHashMap<K, D> {
 
     private static final long serialVersionUID = 1L;
 
-    transient CommonDataManager dataManager;
-
-    final Class<Entity<?>> entityClass;
+    final Class<? extends Entity<?>> entityClass;
     final Class<D> dtoClass;
     final int fmask;
 
-    public LazyDtoMap(Class<Entity<?>> entityClass, Class<D> dtoClass, int fmask) {
+    public LazyDTOMap(Class<? extends Entity<?>> entityClass, Class<D> dtoClass, int fmask) {
         this.entityClass = entityClass;
         this.dtoClass = dtoClass;
         this.fmask = fmask;
-    }
-
-    public CommonDataManager getDataManager() {
-        return dataManager;
-    }
-
-    public void setDataManager(CommonDataManager dataManager) {
-        this.dataManager = dataManager;
     }
 
     @SuppressWarnings("unchecked")
@@ -50,6 +41,7 @@ public class LazyDtoMap<D extends EntityDto<? extends Entity<?>, K>, K extends S
 
     @SuppressWarnings({ "rawtypes" })
     protected D load(Serializable key) {
+        CommonDataManager dataManager = ViewBean.getBean(CommonDataManager.class);
         Entity entity = dataManager.asFor(entityClass).get(key);
         D data = DTOs.mref((Class) dtoClass, fmask, entity);
         return data;

@@ -1,9 +1,5 @@
 package com.bee32.sem.asset.web;
 
-import java.util.List;
-
-import javax.faces.model.SelectItem;
-
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
@@ -11,7 +7,6 @@ import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.asset.dto.BudgetRequestDto;
 import com.bee32.sem.asset.entity.BudgetRequest;
 import com.bee32.sem.misc.ScrollEntityViewBean;
-import com.bee32.sem.world.monetary.CurrencyUtil;
 
 @ForEntity(BudgetRequest.class)
 public class BudgetRequestAdminBean
@@ -40,10 +35,6 @@ public class BudgetRequestAdminBean
             return "";
         else
             return budgetRequest.getOwnerDisplayName();
-    }
-
-    public List<SelectItem> getCurrencies() {
-        return CurrencyUtil.selectItems();
     }
 
     public boolean isNewItemStatus() {

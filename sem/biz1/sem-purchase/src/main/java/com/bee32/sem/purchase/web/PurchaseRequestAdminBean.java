@@ -3,8 +3,6 @@ package com.bee32.sem.purchase.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.model.SelectItem;
-
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.Offset;
@@ -26,7 +24,6 @@ import com.bee32.sem.purchase.entity.PurchaseAdvice;
 import com.bee32.sem.purchase.entity.PurchaseRequest;
 import com.bee32.sem.purchase.entity.PurchaseRequestItem;
 import com.bee32.sem.purchase.service.PurchaseService;
-import com.bee32.sem.world.monetary.CurrencyUtil;
 
 @ForEntity(PurchaseRequest.class)
 public class PurchaseRequestAdminBean
@@ -66,10 +63,6 @@ public class PurchaseRequestAdminBean
 
     public int getINQUIRY_DETAIL_STATUS_VIEW() {
         return INQUIRY_DETAIL_STATUS_VIEW;
-    }
-
-    public List<SelectItem> getCurrencies() {
-        return CurrencyUtil.selectItems();
     }
 
     public PurchaseRequestDto getPurchaseRequest() {
@@ -185,7 +178,7 @@ public class PurchaseRequestAdminBean
 
         PurchaseRequest firstRequest = serviceFor(PurchaseRequest.class).getFirst( //
                 new Offset(position - 1), //
-//                CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+// CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
                 Order.asc("id"));
 
         if (firstRequest != null) {
@@ -209,7 +202,7 @@ public class PurchaseRequestAdminBean
     public void save1() {
         if (purchaseRequest.getId() == null) {
             // 新增
-//            goNumber = count + 1;
+// goNumber = count + 1;
         }
 
         try {
@@ -227,7 +220,7 @@ public class PurchaseRequestAdminBean
             }
 
             uiLogger.info("保存成功");
-//            loadPurchaseRequest(goNumber);
+// loadPurchaseRequest(goNumber);
 
         } catch (Exception e) {
             uiLogger.warn("保存失败", e);
@@ -249,7 +242,7 @@ public class PurchaseRequestAdminBean
             serviceFor(PurchaseRequest.class).delete(_purchaseRequest);
 
             uiLogger.info("删除成功!");
-//            loadPurchaseRequest(goNumber);
+// loadPurchaseRequest(goNumber);
         } catch (Exception e) {
             uiLogger.warn("删除失败", e);
         }

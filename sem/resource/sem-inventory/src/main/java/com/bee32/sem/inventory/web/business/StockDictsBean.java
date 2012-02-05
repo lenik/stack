@@ -1,6 +1,10 @@
 package com.bee32.sem.inventory.web.business;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import javax.faces.model.SelectItem;
 
 import com.bee32.plover.faces.utils.SelectableList;
 import com.bee32.plover.orm.util.DataViewBean;
@@ -10,6 +14,7 @@ import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockWarehouse;
+import com.bee32.sem.misc.LazyDTOMap;
 
 public class StockDictsBean
         extends DataViewBean {
@@ -51,6 +56,26 @@ public class StockDictsBean
             }
         }
         return SelectableList.decorate(locations);
+    }
+
+    /**
+     * TODO - This is a temporary solution for the absence of fr:select.
+     */
+    Map<Integer, StockWarehouseDto> warehouseMap = new LazyDTOMap<Integer, StockWarehouseDto>(StockWarehouse.class,
+            StockWarehouseDto.class, 0);
+
+    public StockWarehouseDto getWarehouse(int id) {
+        return warehouseMap.get(id);
+    }
+
+    public List<SelectItem> getWarehouseSelectItems() {
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        for (StockWarehouseDto warehouse : getWarehouses()) {
+            Integer id = warehouse.getId();
+            String name = warehouse.getName();
+            selectItems.add(new SelectItem(id, name));
+        }
+        return selectItems;
     }
 
 }

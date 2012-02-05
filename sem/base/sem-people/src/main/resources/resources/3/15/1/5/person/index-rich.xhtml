@@ -6,6 +6,7 @@
     <ui:param name="title" value="联系人信息" />
     <ui:param name="bean" value="#{personAdminBean}" />
     <ui:param name="obj" value="#{bean.activeObject}" />
+    <ui:param name="people" value="#{peopleDictsBean}" />
 
     <ui:define name="dataColumns">
         <p:column headerText="姓名">
@@ -214,7 +215,7 @@
             <h:form id="tagForm">
                 <h:panelGroup id="tagHolder">
                     <p:selectManyMenu value="#{bean.selectedTagsToAdd}" style="height:300px">
-                        <f:selectItems value="#{bean.tags}" />
+                        <f:selectItems value="#{people.partyTagSelectItems}" />
                     </p:selectManyMenu>
                 </h:panelGroup>
                 <h:panelGrid columns="2">
@@ -237,7 +238,7 @@
                             <p:selectOneMenu id="contactCategory" value="#{bean.contact.category.id}"
                                 style="width:200px;">
                                 <f:selectItem itemValue="" itemLabel="--选择联系方式分类--" />
-                                <f:selectItems value="#{bean.contactCategories}" />
+                                <f:selectItems value="#{people.contactCategorySelectItems}" />
                             </p:selectOneMenu>
                         </h:panelGroup>
 

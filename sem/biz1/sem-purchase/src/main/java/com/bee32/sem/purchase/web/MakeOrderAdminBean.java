@@ -3,8 +3,6 @@ package com.bee32.sem.purchase.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.model.SelectItem;
-
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
@@ -16,7 +14,6 @@ import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.purchase.dto.MakeOrderDto;
 import com.bee32.sem.purchase.dto.MakeOrderItemDto;
 import com.bee32.sem.purchase.entity.MakeOrder;
-import com.bee32.sem.world.monetary.CurrencyUtil;
 
 @ForEntity(MakeOrder.class)
 public class MakeOrderAdminBean
@@ -67,10 +64,6 @@ public class MakeOrderAdminBean
 
     public void setMakeOrderItem(MakeOrderItemDto makeOrderItem) {
         this.makeOrderItem = makeOrderItem;
-    }
-
-    public List<SelectItem> getCurrencies() {
-        return CurrencyUtil.selectItems();
     }
 
     public PartDto getSelectedPart() {

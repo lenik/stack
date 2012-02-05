@@ -5,6 +5,8 @@
 
     <ui:param name="title" value="客户/供应商管理" />
     <ui:param name="bean" value="#{orgAdminBean}" />
+    <ui:param name="obj" value="#{bean.activeObject}" />
+    <ui:param name="people" value="#{peopleDictsBean}" />
 
     <ui:define name="dataColumns">
         <p:column headerText="客户/供应商名称">
@@ -45,7 +47,6 @@
     </ui:define>
 
     <ui:define name="editDialogContent">
-        <c:set var="obj" value="#{bean.activeObject}" />
         <p:tabView id="tv">
             <p:tab id="tab1" title="详细信息">
                 <h:inputHidden id="orgId" value="#{obj.id}" />
@@ -56,8 +57,7 @@
                     <h:panelGroup colspan="3">
                         <h:panelGrid columns="2">
                             <p:selectOneListbox id="orgTags" value="#{bean.selectedTagId}" style="height:80px; width:200px;">
-                                <f:selectItems value="#{obj.tags}" var="tag" itemLabel="#{tag.label}"
-                                    itemValue="#{tag.id}" />
+                                <f:selectItems value="#{people.partyTagnameSelectItems}" />
                             </p:selectOneListbox>
                             <h:panelGrid colums="1">
                                 <p:commandButton value="增加标签" disabled="#{obj == null}" onclick="tagDlg.show();" />
@@ -200,7 +200,7 @@
                                     <p:selectOneMenu id="orgUnitContactCategory" value="#{bean.orgUnitContact.category.id}"
                                         style="width:200px;">
                                         <f:selectItem itemValue="" itemLabel="--选择联系方式分类--" />
-                                        <f:selectItems value="#{bean.contactCategories}" />
+                                        <f:selectItems value="#{people.contactCategorySelectItems}" />
                                     </p:selectOneMenu>
                                 </h:panelGroup>
 

@@ -5,6 +5,7 @@
     <ui:param name="title" value="公司/人员" />
     <ui:param name="bean" value="#{orgPersonAdminBean}" />
     <ui:param name="obj" value="#{bean.activeObject}" />
+    <ui:param name="people" value="#{peopleDictsBean}" />
 
     <ui:define name="dataColumns">
         <p:column style="width:16px">
@@ -56,7 +57,7 @@
             <p:inputText value="#{bean.orgName}" />
             <h:outputText value="标签" />
             <p:selectManyCheckbox value="#{bean.selectedTags}">
-                <f:selectItems value="#{bean.tags}" />
+                <f:selectItems value="#{people.partyTagnameSelectItems}" />
             </p:selectManyCheckbox>
 
             <h:outputText value="地址" />

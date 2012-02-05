@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.model.SelectItem;
 import javax.free.IllegalUsageException;
 import javax.free.UnexpectedException;
 
@@ -26,7 +25,6 @@ import com.bee32.sem.asset.entity.StockTrade;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.people.dto.PartyDto;
-import com.bee32.sem.world.monetary.CurrencyUtil;
 
 public class StockTradeAdminBean
         extends ScrollEntityViewBean {
@@ -87,10 +85,6 @@ public class StockTradeAdminBean
 
     public void setTradeItem(StockTradeItemDto tradeItem) {
         this.tradeItem = tradeItem;
-    }
-
-    public List<SelectItem> getCurrencies() {
-        return CurrencyUtil.selectItems();
     }
 
     public MaterialDto getSelectedMaterial() {
@@ -174,9 +168,6 @@ public class StockTradeAdminBean
                 new Offset(position - 1), //
 // CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
                 Order.asc("id"));
-
-        if (firstTrade != null)
-            stockTrade = (StockTradeDto) DTOs.marshal(dtoClass, StockTradeDto.ITEMS_FOR_UPDATE, firstTrade);
 
     }
 

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.model.SelectItem;
 import javax.free.UnexpectedException;
 
 import org.primefaces.event.SelectEvent;
@@ -17,15 +16,12 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.misc.SimpleEntityViewBean;
-import com.bee32.sem.people.dto.ContactCategoryDto;
 import com.bee32.sem.people.dto.ContactDto;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.dto.PartyTagnameDto;
-import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.PartyTagname;
 import com.bee32.sem.people.util.PeopleCriteria;
-import com.bee32.sem.sandbox.UIHelper;
 
 @ForEntity(Party.class)
 public abstract class AbstractPartyAdminBean
@@ -90,24 +86,6 @@ public abstract class AbstractPartyAdminBean
 
     public void setSelectedTagId(String selectedTagId) {
         this.selectedTagId = selectedTagId;
-    }
-
-    public List<SelectItem> getContactCategories() {
-        List<ContactCategory> contactCategories = serviceFor(ContactCategory.class).list();
-        List<ContactCategoryDto> contactCategoryDtos = DTOs.marshalList(ContactCategoryDto.class, contactCategories);
-        return UIHelper.selectItemsFromDict(contactCategoryDtos);
-    }
-
-    public List<SelectItem> getTags() {
-        List<PartyTagname> partyTags = serviceFor(PartyTagname.class).list();
-        List<PartyTagnameDto> partyTagDtos = DTOs.marshalList(PartyTagnameDto.class, partyTags);
-        return UIHelper.selectItemsFromDict(partyTagDtos);
-    }
-
-    public List<SelectItem> getOuterTags() {
-        List<PartyTagname> partyTags = serviceFor(PartyTagname.class).list(PeopleCriteria.externalTagname());
-        List<PartyTagnameDto> partyTagDtos = DTOs.marshalList(PartyTagnameDto.class, partyTags);
-        return UIHelper.selectItemsFromDict(partyTagDtos);
     }
 
     public SelectableList<ContactDto> getContacts() {
