@@ -98,13 +98,15 @@
             <h:panelGroup rendered="${bean.activeObject !=null}">
                 <ui:insert name="editDialogContent">The edit dialog's content is undefined.</ui:insert>
             </h:panelGroup>
-            <div align="right">
-                <p:commandButton id="save-validated" value="保存" actionListener="${bean.save}"
-                    disabled="${bean.currentView == 'content'}" update=":mainForm:dataContainer, ${mirrorTargets}"
-                    oncomplete="${plainEditForm ? '' : 'editDialog.hideValidated(args)'}" />
-                <p:commandButton id="cancel" value="${bean.currentView == 'content'  ? '关闭' : '取消'}"
-                    onclick="${plainEditForm ? '' : 'editDialog.hide()'}" />
-            </div>
+            <c:if test="${not plainEditForm}">
+                <div align="right">
+                    <p:commandButton id="save-validated" value="保存" actionListener="${bean.save}"
+                        disabled="${bean.currentView == 'content'}" update=":mainForm:dataContainer, ${mirrorTargets}"
+                        oncomplete="${plainEditForm ? '' : 'editDialog.hideValidated(args)'}" />
+                    <p:commandButton id="cancel" value="${bean.currentView == 'content'  ? '关闭' : '取消'}"
+                        onclick="${plainEditForm ? '' : 'editDialog.hide()'}" />
+                </div>
+            </c:if>
         </h:form>
     </ui:define>
 
