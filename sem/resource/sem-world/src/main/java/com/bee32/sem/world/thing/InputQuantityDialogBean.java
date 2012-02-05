@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.bee32.plover.faces.utils.SelectableList;
 import com.bee32.plover.orm.util.DataViewBean;
@@ -38,12 +39,19 @@ public class InputQuantityDialogBean
         this.header = header;
     }
 
-    public char getMode() {
-        return mode;
+    public String getMode() {
+        return String.valueOf(mode);
     }
 
-    public void setMode(char mode) {
-        this.mode = mode;
+    public void setMode(String mode) {
+        if (mode == null)
+            return; // throw new NullPointerException("mode");
+        if (mode.equals("u"))
+            this.mode = UNIT;
+        else if (mode.equals("v"))
+            this.mode = VIEW;
+        else
+            throw new IllegalArgumentException("Bad mode: " + mode);
     }
 
     public BigDecimal getQuantity() {
@@ -80,8 +88,10 @@ public class InputQuantityDialogBean
 
     public SelectableList<UnitDto> getViewUnits() {
         List<UnitDto> viewUnits = new ArrayList<UnitDto>();
-        if (unitConv != null)
-            viewUnits.addAll(unitConv.getScaleMap().keySet());
+        if (unitConv != null) {
+            Map<UnitDto, Double> scaleMap = unitConv.getScaleMap();
+            viewUnits.addAll(scaleMap.keySet());
+        }
         return SelectableList.decorate(viewUnits);
     }
 
@@ -116,6 +126,8 @@ public class InputQuantityDialogBean
     }
 
     public void setUnitConv(UnitConvDto unitConv) {
+        if (unitConv != null && unitConv.isNull())
+            unitConv = null;
         this.unitConv = unitConv;
     }
 

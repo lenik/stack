@@ -1,0 +1,79 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:cc="http://java.sun.com/jsf/composite"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:p="http://primefaces.org/ui">
+
+    <cc:interface>
+        <!-- basic -->
+        <cc:attribute name="var" default="inputQuantityDialog" />
+        <cc:attribute name="target" type="java.lang.Object" required="true" />
+        <cc:attribute name="actionListener" targets="form:ok" />
+        <cc:attribute name="update" />
+
+        <!-- ui overrides -->
+        <cc:attribute name="header" default="${cc.attrs.dialogBean.header}" />
+        <cc:attribute name="formStyleClass" default="ui-dialog-form" />
+
+        <!-- internals -->
+        <cc:attribute name="dialogBean" type="java.lang.Object" default="${inputQuantityDialogBean}" />
+
+        <!-- facets -->
+        <cc:facet name="buttons" />
+    </cc:interface>
+
+    <cc:implementation>
+        <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
+        <ui:param name="material" value="${cc.attrs.material}" />
+        <ui:param name="thing" value="${thingDictsBean}" />
+
+        <p:dialog header="输入数量" widgetVar="${cc.attrs.var}" modal="true" dynamic="${viewConfig.dynamicDialog}">
+            <h:form id="form" styleClass="ui-dialog-form">
+                <p:selectOneRadio id="mode" value="${dialogBean.mode}" layout="custom">
+                    <f:selectItem itemLabel="按主单位输入数量" itemValue="u" />
+                    <f:selectItem itemLabel="按换算单位输入数量" itemValue="v" />
+                </p:selectOneRadio>
+
+                <h:outputText value="没有指定单位！" rendered="${dialogBean.unitUnit == null}" />
+
+                <p:fieldset legend="主单位" rendered="${dialogBean.unitUnit != null}">
+                    <p:radioButton id="byUnit" for="mode" itemIndex="0" />
+                    <t:panelGrid columns="3">
+                        <h:outputText value="（主）单位:" />
+                        <t:panelGroup colspan="2">
+                            <p:selectOneMenu value="${dialogBean.unitUnit.id}" style="width: 20em;">
+                                <f:selectItems value="${thing.unitSelectItems}" />
+                            </p:selectOneMenu>
+                        </t:panelGroup>
+                        <h:outputText value="数量:" />
+                        <p:inputText value="${dialogBean.unitQuantity}" />
+                        <p:commandButton id="toView" value="向下转换" actionListener="${dialogBean.toViewQuantity}"
+                            update="@form" rendered="${dialogBean.unitConv != null}" />
+                    </t:panelGrid>
+                </p:fieldset>
+                <p:fieldset legend="换算单位" rendered="${dialogBean.unitConv != null}">
+                    <p:radioButton id="byView" for="mode" itemIndex="1" />
+                    <t:panelGrid columns="3">
+                        <h:outputText value="换算单位:" />
+                        <t:panelGroup colspan="2">
+                            <p:selectOneMenu value="${dialogBean.viewUnit.id}" style="width: 20em;">
+                                <f:selectItems value="${dialogBean.viewUnits}" />
+                            </p:selectOneMenu>
+                        </t:panelGroup>
+                        <h:outputText value="数量:" />
+                        <p:inputText id="toUnit" value="${dialogBean.viewQuantity}" />
+                        <p:commandButton value="向上转换" actionListener="${dialogBean.toUnitQuantity}"
+                            update="@form" />
+                    </t:panelGrid>
+                </p:fieldset>
+                <div align="right">
+                    <p:commandButton id="ok-validated" value="确定" oncomplete="${cc.attrs.var}.hideValidated(args)"
+                        update="${cc.attrs.update}">
+                        <f:setPropertyActionListener target="${cc.attrs.target}" value="${dialogBean.quantity}" />
+                        <ui:insert name="actions" />
+                    </p:commandButton>
+                    <p:commandButton id="cancel" value="关闭" onclick="${cc.attrs.var}.hide()" />
+                </div>
+            </h:form>
+        </p:dialog>
+
+    </cc:implementation>
+</html>
