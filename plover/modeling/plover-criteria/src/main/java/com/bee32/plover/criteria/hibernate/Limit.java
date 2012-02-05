@@ -29,7 +29,7 @@ public class Limit
         if ((options & NO_PAGINATION) != 0)
             return;
         if (limit > 0)
-            criteria.setFetchSize(limit);
+            criteria.setMaxResults(limit);
     }
 
     @Override
