@@ -6,9 +6,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
@@ -37,7 +34,6 @@ public class StockTransfer
      * @see StockOrderSubject#XFER_OUT
      */
     @OneToOne(optional = false)
-    @Cascade(CascadeType.ALL)
     @JoinColumn(name = "s1")
     public StockOrder getSource() {
         return source;
@@ -53,7 +49,6 @@ public class StockTransfer
      * @see StockOrderSubject#XFER_IN
      */
     @OneToOne
-    @Cascade(CascadeType.ALL)
     @JoinColumn(name = "s2")
     public StockOrder getDest() {
         return dest;

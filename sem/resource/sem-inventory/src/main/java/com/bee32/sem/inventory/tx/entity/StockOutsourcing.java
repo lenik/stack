@@ -6,9 +6,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.people.entity.Org;
@@ -34,7 +31,6 @@ public class StockOutsourcing
      * 委外出库单
      */
     @OneToOne(optional = false)
-    @Cascade(CascadeType.ALL)
     @JoinColumn(name = "s1")
     public StockOrder getOutput() {
         return output;
@@ -48,7 +44,6 @@ public class StockOutsourcing
      * 委外入库单
      */
     @OneToOne
-    @Cascade(CascadeType.ALL)
     @JoinColumn(name = "s2")
     public StockOrder getInput() {
         return input;
