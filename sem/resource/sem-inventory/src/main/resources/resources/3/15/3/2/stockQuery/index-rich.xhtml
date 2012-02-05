@@ -1,17 +1,6 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core"
-    xmlns:sem="http://bee32.com/sem/functions" xmlns:p="http://primefaces.org/ui"
-    xmlns:t="http://myfaces.apache.org/tomahawk">
-<!-- InstanceBegin template="/Templates/seccaJsf.dwt.jsp" codeOutsideHTMLIsLocked="false" -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-</head>
-
-<ui:composition template="/template/primefaces.xhtml">
+<ui:composition template="/template/primefaces.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk">
 
     <ui:define name="title">库存查询</ui:define>
 
@@ -22,17 +11,14 @@
                 <t:panelGrid columns="3">
                     <t:panelGrid columns="2">
                         <h:outputText value="仓库" />
-                        <p:selectOneMenu id="stockWarehouse"
-                            value="#{stockQueryBean.selectedWarehouse.id}"
+                        <p:selectOneMenu id="stockWarehouse" value="#{stockQueryBean.selectedWarehouse.id}"
                             style="width:200px;">
                             <f:selectItem itemValue="" itemLabel="--选择仓库--" />
                             <f:selectItems value="#{stockQueryBean.stockWarehouses}" />
                         </p:selectOneMenu>
                         <h:outputText value="时间" />
-                        <p:calendar id="limitDateFrom" navigator="true"
-                            locale="zh_CN" pattern="yyyy-MM-dd"
-                            value="#{stockQueryBean.queryDate}"
-                            showOn="button"/>
+                        <p:calendar id="limitDateFrom" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
+                            value="#{stockQueryBean.queryDate}" showOn="button" />
                     </t:panelGrid>
 
                     <p:panel header="物料" toggleable="true" collapsed="true">
@@ -40,33 +26,26 @@
                             <h:outputText value="物料" />
                             <t:panelGrid columns="1">
                                 <t:panelGrid columns="2">
-                                    <p:selectBooleanCheckbox value="#{stockQueryBean.allMaterial}"/>
-                                    <h:outputText value="所有物料"/>
+                                    <p:selectBooleanCheckbox value="#{stockQueryBean.allMaterial}" />
+                                    <h:outputText value="所有物料" />
                                 </t:panelGrid>
-                                <p:selectManyMenu
-                                    id="materialsToQuery"
-                                    value="#{stockQueryBean.selectedMaterialsToQuery}"
+                                <p:selectManyMenu id="materialsToQuery" value="#{stockQueryBean.selectedMaterialsToQuery}"
                                     style="height:200px">
-                                    <f:selectItems value="#{stockQueryBean.materialsToQuery}"/>
+                                    <f:selectItems value="#{stockQueryBean.materialsToQuery}" />
                                 </p:selectManyMenu>
                             </t:panelGrid>
                             <t:panelGrid columns="1">
-                                <p:commandButton value="增加" onclick="materialDialog.show();"/>
-                                <p:commandButton value="删除"
-                                    actionListener="#{stockQueryBean.removeMaterialsToQuery}"
-                                    update="mainForm:materialsToQuery"/>
+                                <p:commandButton value="增加" onclick="materialDialog.show();" />
+                                <p:commandButton value="删除" actionListener="#{stockQueryBean.removeMaterialsToQuery}"
+                                    update="mainForm:materialsToQuery" />
                             </t:panelGrid>
                         </t:panelGrid>
                     </p:panel>
 
-                    <p:commandButton value="查询" update="mainForm:result"
-                        actionListener="#{stockQueryBean.query}" />
+                    <p:commandButton value="查询" update="mainForm:result" actionListener="#{stockQueryBean.query}" />
                 </t:panelGrid>
 
-                <p:dataTable
-                    id="result"
-                    value="#{stockQueryBean.items}" var="item"
-                    resizableColumns="true"
+                <p:dataTable id="result" value="#{stockQueryBean.items}" var="item" resizableColumns="true"
                     rowIndexVar="rowIndex">
 
                     <p:column headerText="序号">
@@ -74,11 +53,11 @@
                     </p:column>
 
                     <p:column headerText="物料">
-                        <h:outputText value="#{item.material.label}"/>
+                        <h:outputText value="#{item.material.label}" />
                     </p:column>
 
                     <p:column headerText="规格型号">
-                        <h:outputText value="#{item.material.modelSpec}"/>
+                        <h:outputText value="#{item.material.modelSpec}" />
                     </p:column>
 
                     <p:column headerText="批号">
@@ -106,9 +85,7 @@
                     </p:column>
 
                     <p:column headerText="操作">
-                        <p:commandLink
-                            oncomplete="detailDialog.show()"
-                            update="detailForm:detailPanel"
+                        <p:commandLink oncomplete="detailDialog.show()" update="detailForm:detailPanel"
                             value="明细">
                             <f:setPropertyActionListener value="#{item}"
                                 target="#{stockQueryBean.selectedItem}" />
@@ -119,75 +96,14 @@
 
         </h:form>
 
-        <h:form id="materialForm">
-            <p:dialog header="选择物料" widgetVar="materialDialog" modal="true"
-                height="480" width="640">
-                <h:panelGroup>
-
-                    <h:panelGrid columns="3">
-                        <h:outputLabel value="物料名字全部或部份:" />
-                        <p:inputText value="#{stockQueryBean.materialPattern}" />
-                        <p:commandButton value="查找"
-                            actionListener="#{stockQueryBean.findMaterial}" update="materials"
-                            async="true" />
-                    </h:panelGrid>
-                    <p:dataTable id="materials" var="material"
-                        value="#{stockQueryBean.materials}"
-                        resizableColumns="true"
-                        selection="#{stockQueryBean.selectedMaterial}"
-                        selectionMode="single" rowKey="#{material.id}"
-                        rowIndexVar="rowIndex"
-                        scrollable="true" scrollWidth="600" scrollHeight="350">
-
-                        <p:column style="width:30px;">
-                            <f:facet name="header">
-                                <h:outputText value="序号" />
-                            </f:facet>
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column headerText="物料名称" style="width:150px;">
-                            <h:outputText value="#{material.label}" />
-                        </p:column>
-
-                        <p:column headerText="序列号" style="width:100px;">
-                            <h:outputText value="#{material.serial}" />
-                        </p:column>
-
-                        <p:column headerText="条形码" style="width:100px;">
-                            <h:outputText value="#{material.barCode}" />
-                        </p:column>
-
-                        <p:column headerText="主单位" style="width:80px;">
-                            <h:outputText value="#{material.unit.name}" />
-                        </p:column>
-
-                        <p:column headerText="规格型号" style="width:100px;">
-                            <h:outputText value="#{material.modelSpec}" />
-                        </p:column>
-                    </p:dataTable>
-                    <h:panelGrid columns="2">
-                        <p:commandButton value="添加"
-                            actionListener="#{stockQueryBean.addMaterial}"
-                            oncomplete="materialDialog.hide()" update="mainForm:materialsToQuery"
-                            async="true" />
-                        <p:commandButton value="取消" oncomplete="materialDialog.hide();" />
-                    </h:panelGrid>
-                </h:panelGroup>
-            </p:dialog>
-
-        </h:form>
+        chooseMaterialDialog
 
         <h:form id="detailForm">
-            <p:dialog header="出入库明细" widgetVar="detailDialog" modal="true"
-                height="480" width="800">
+            <p:dialog header="出入库明细" widgetVar="detailDialog" modal="true" height="480" width="800">
                 <h:panelGroup id="detailPanel">
 
-                    <p:dataTable id="details" var="item"
-                        value="#{stockQueryBean.details}"
-                        resizableColumns="true"
-                        rowIndexVar="rowIndex"
-                        scrollable="true" scrollWidth="750" scrollHeight="350">
+                    <p:dataTable id="details" var="item" value="#{stockQueryBean.details}" resizableColumns="true"
+                        rowIndexVar="rowIndex" scrollable="true" scrollWidth="750" scrollHeight="350">
 
                         <p:column headerText="序号" style="width:30px;">
                             <h:outputText value="#{rowIndex + 1}" />
@@ -202,13 +118,11 @@
                         </p:column>
 
                         <p:column headerText="规格型号" style="width:100px;">
-                            <h:outputText
-                                value="#{item.material.modelSpec}" />
+                            <h:outputText value="#{item.material.modelSpec}" />
                         </p:column>
 
                         <p:column headerText="发生日期" style="width:100px;">
-                            <h:outputText
-                                value="#{item.parent.createdDate}" />
+                            <h:outputText value="#{item.parent.createdDate}" />
                         </p:column>
 
                         <p:column headerText="批号" style="width:100px;">
@@ -220,8 +134,7 @@
                         </p:column>
 
                         <p:column headerText="库位" style="width:100px;">
-                            <h:outputText
-                                value="#{item.location.nodeText}" />
+                            <h:outputText value="#{item.location.nodeText}" />
                         </p:column>
 
                         <p:column headerText="单价" style="width:80px;">
@@ -229,8 +142,7 @@
                         </p:column>
 
                         <p:column headerText="币种" style="width:100px;">
-                            <h:outputText
-                                value="#{item.price.currencyText}" />
+                            <h:outputText value="#{item.price.currencyText}" />
                         </p:column>
 
                         <p:column headerText="数量" style="width:80px;">
@@ -238,13 +150,9 @@
                         </p:column>
 
                         <p:column headerText="操作" style="width:100px;">
-                            <p:commandLink
-                                oncomplete="positionDialog.show()"
-                                update="positionForm:positionPanel"
-                                action="#{stockQueryBean.findOrderSn}"
-                                value="所在位置">
-                                <f:setPropertyActionListener
-                                    value="#{item}"
+                            <p:commandLink oncomplete="positionDialog.show()" update="positionForm:positionPanel"
+                                action="#{stockQueryBean.findOrderSn}" value="所在位置">
+                                <f:setPropertyActionListener value="#{item}"
                                     target="#{stockQueryBean.detailItem}" />
                             </p:commandLink>
                         </p:column>
@@ -256,39 +164,35 @@
         </h:form>
 
         <h:form id="positionForm">
-            <p:dialog header="明细条目所在单据位置" widgetVar="positionDialog"
-                modal="true" height="480" width="640">
+            <p:dialog header="明细条目所在单据位置" widgetVar="positionDialog" modal="true" height="480" width="640">
                 <h:panelGroup id="positionPanel">
                     <t:panelGrid columns="2">
-                        <h:outputText value="单据类型:"/>
-                        <h:outputText value="#{stockQueryBean.detailItem.parent.subject.displayName}"/>
+                        <h:outputText value="单据类型:" />
+                        <h:outputText value="#{stockQueryBean.detailItem.parent.subject.displayName}" />
 
-                        <h:outputText value="物料名称:"/>
-                        <h:outputText value="#{stockQueryBean.detailItem.material.label}"/>
+                        <h:outputText value="物料名称:" />
+                        <h:outputText value="#{stockQueryBean.detailItem.material.label}" />
 
-                        <h:outputText value="规格型号:"/>
-                        <h:outputText value="#{stockQueryBean.detailItem.material.modelSpec}"/>
+                        <h:outputText value="规格型号:" />
+                        <h:outputText value="#{stockQueryBean.detailItem.material.modelSpec}" />
 
-                        <h:outputText value="所在仓库:"/>
-                        <h:outputText value="#{stockQueryBean.detailItem.parent.warehouse.name}"/>
+                        <h:outputText value="所在仓库:" />
+                        <h:outputText value="#{stockQueryBean.detailItem.parent.warehouse.name}" />
 
-                        <h:outputText value="所在年月:"/>
+                        <h:outputText value="所在年月:" />
                         <h:outputText value="#{stockQueryBean.detailItem.parent.createdDate}">
-                            <f:convertDateTime pattern="yyyy-MM"
-                                timeZone="Asia/Shanghai" />
+                            <f:convertDateTime pattern="yyyy-MM" timeZone="Asia/Shanghai" />
                         </h:outputText>
 
-                        <h:outputText value="单据序号:"/>
-                        <h:outputText value="#{stockQueryBean.orderIndex}"/>
+                        <h:outputText value="单据序号:" />
+                        <h:outputText value="#{stockQueryBean.orderIndex}" />
 
-                        <h:outputText value="条目序号:"/>
-                        <h:outputText value="#{stockQueryBean.orderItemIndex}"/>
+                        <h:outputText value="条目序号:" />
+                        <h:outputText value="#{stockQueryBean.orderItemIndex}" />
                     </t:panelGrid>
                 </h:panelGroup>
             </p:dialog>
         </h:form>
 
-
     </ui:define>
 </ui:composition>
-</html>

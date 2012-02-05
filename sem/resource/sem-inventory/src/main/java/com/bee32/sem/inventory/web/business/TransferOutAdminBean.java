@@ -7,12 +7,11 @@ import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.annotation.TypeParameter;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.inventory.dto.StockOrderDto;
-import com.bee32.sem.inventory.dto.StockOrderItemDto;
-import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.tx.dto.StockTransferDto;
 import com.bee32.sem.inventory.tx.entity.StockTransfer;
+import com.bee32.sem.misc.UnmarshalMap;
 
 @ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = "XFRO"))
 public class TransferOutAdminBean
@@ -35,14 +34,14 @@ public class TransferOutAdminBean
     }
 
     private void loadStockOrder(int position) {
-        stockOrder = new StockOrderDto().create();
+        StockOrderDto stockOrder = new StockOrderDto().create();
         stockTransfer = new StockTransferDto().create();
-        if (selectedWarehouse != null) {
+        if (selectedWarehouseId != -1) {
             StockOrder firstOrder = serviceFor(StockOrder.class).getFirst( //
                     new Offset(position - 1), //
-//                    CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
-//                    StockCriteria.subjectOf(getSubject()), //
-//                    new Equals("warehouse.id", selectedWarehouse.getId()), //
+// CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+// StockCriteria.subjectOf(getSubject()), //
+// new Equals("warehouse.id", selectedWarehouse.getId()), //
                     Order.asc("id"));
 
             if (firstOrder != null) {
@@ -57,91 +56,48 @@ public class TransferOutAdminBean
         }
     }
 
-    public void new_() {
-        if (selectedWarehouse.getId() == null) {
-            uiLogger.warn("请选择对应的仓库!");
-            return;
-        }
-
-        stockTransfer = new StockTransferDto().create();
-        stockOrder = new StockOrderDto().create();
-        stockOrder.setSubject(subject);
-        // stockOrder.setCreatedDate(new Date());
-        editable = true;
-    }
-
-    public void modify() {
-        if (stockOrder.getId() == null) {
-            uiLogger.warn("当前没有对应的单据");
-            return;
-        }
-
-        itemsNeedToRemoveWhenModify.clear();
-
-        editable = true;
-    }
-
-    public void delete1() {
-        try {
-            serviceFor(StockTransfer.class).findAndDelete(new Equals("source.id", stockOrder.getId()));
-            // serviceFor(StockOrder.class).deleteById(stockOrder.getId());
-            uiLogger.info("删除成功!");
-        } catch (Exception e) {
-            uiLogger.warn("删除失败,错误信息:" + e.getMessage());
-        }
-    }
-
-    public void save1() {
-        if (selectedWarehouse.getId().equals(stockTransfer.getDestWarehouse().getId())) {
-            uiLogger.warn("调拨源仓库和目标仓库不能相同");
-            return;
-        }
-
-// if(stockOrder.getItems() != null && stockOrder.getItems().size() <= 0) {
-// uiLogger.warn("单据上至少应该有一条明细");
-// return;
-// }
-
-        stockOrder.setWarehouse(selectedWarehouse);
-
-        if (stockOrder.getId() == null) {
-            // 新增
-            // goNumber = count + 1;
-        }
-
-        try {
-            stockTransfer.setSourceWarehouse(selectedWarehouse);
-            stockTransfer.setSource(stockOrder);
-            StockTransfer _stockTransfer = stockTransfer.unmarshal();
-
-            StockOrder _order = _stockTransfer.getSource();
-
-            // 删除需要删除的item
-            for (StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
-                _order.removeItem(item.unmarshal());
+    @Override
+    protected boolean preDelete(UnmarshalMap uMap)
+            throws Exception {
+        for (StockOrderDto stockOrder : uMap.<StockOrderDto> dtos()) {
+            try {
+                serviceFor(StockTransfer.class).findAndDelete(new Equals("source.id", stockOrder.getId()));
+            } catch (Exception e) {
+                uiLogger.error("Can't delete stock-transfer", e);
+                return false;
             }
-
-            // 保存stockTransfer
-            serviceFor(StockTransfer.class).saveOrUpdate(_stockTransfer);
-
-            uiLogger.info("保存成功");
-            editable = false;
-        } catch (Exception e) {
-            uiLogger.warn("保存失败,错误信息:" + e.getMessage());
         }
+        return true;
+    }
+
+    @Override
+    protected boolean preUpdate(UnmarshalMap uMap)
+            throws Exception {
+        if (selectedWarehouseId == stockTransfer.getDestWarehouse().getId()) {
+            uiLogger.error("调拨源仓库和目标仓库不能相同");
+            return false;
+        }
+        for (StockOrderDto stockOrder : uMap.<StockOrderDto> dtos()) {
+            if (stockOrder.getItems() != null && stockOrder.getItems().size() <= 0) {
+                uiLogger.error("单据上至少应该有一条明细");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    protected void postUpdate(UnmarshalMap uMap) {
+        StockOrderDto stockOrder = getActiveObject();
+        stockTransfer.setSourceWarehouse(getSelectedWarehouse());
+        stockTransfer.setSource(stockOrder);
+        StockTransfer _stockTransfer = stockTransfer.unmarshal();
+        StockOrder _order = _stockTransfer.getSource();
+        // save(_stockTransfer);
     }
 
     public void choosePerson() {
-        //stockTransfer.setTransferredBy(selectedPerson);
+        // stockTransfer.setTransferredBy(selectedPerson);
     }
 
-    @Override
-    public StockOrderItemDto getOrderItem_() {
-        return orderItem;
-    }
-
-    @Override
-    public StockWarehouseDto getSelectedWarehouse_() {
-        return selectedWarehouse;
-    }
 }

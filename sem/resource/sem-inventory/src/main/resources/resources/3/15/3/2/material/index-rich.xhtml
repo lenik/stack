@@ -9,7 +9,7 @@
 
     <ui:define name="sideBarW">
         <h:form id="navigatorForm">
-            <p:treeTable id="categoryTree" value="#{bean.root}" var="category" selectionMode="single"
+            <p:treeTable id="categoryTree" value="#{bean.rootNode}" var="category" selectionMode="single"
                 selection="#{bean.selectedMaterialCategoryNode}">
 
                 <p:ajax event="select" listener="#{bean.refreshRowCount}" update=":mainForm:dataTable" />
@@ -166,7 +166,7 @@
 
         <p:dialog header="挑选择物料分类" widgetVar="chooseMaterialCategoryDialog" height="480" width="640" modal="true">
             <h:form id="chooseMaterialCategoryForm">
-                <p:treeTable id="categoryTree" value="#{bean.root}" var="category" selectionMode="single"
+                <p:treeTable id="categoryTree" value="#{bean.rootNode}" var="category" selectionMode="single"
                     selection="#{bean.choosedMaterialCategoryNode}" scrollable="true" scrollHeight="380" scrollWidth="250">
 
                     <p:column headerText="分类名称" style="width:150px;">

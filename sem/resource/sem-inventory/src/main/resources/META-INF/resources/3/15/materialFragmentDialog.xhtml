@@ -33,7 +33,7 @@
                 <div align="right">
                     <cc:renderFacet name="buttons" />
                     <p:commandButton id="save-validated" value="保存" update="${cc.attrs.update}"
-                        oncomplete="${cc.attrs.widgetVar}.hideValidated()" rendered="false" />
+                        oncomplete="${cc.attrs.widgetVar}.hideValidated(args)" rendered="false" />
                     <p:commandButton id="cancel" value="关闭" onclick="${cc.attrs.widgetVar}.hide()" />
                 </div>
             </h:form>

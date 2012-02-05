@@ -8,7 +8,6 @@ import java.util.List;
 import javax.faces.model.SelectItem;
 
 import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
@@ -60,14 +59,6 @@ public class StockQueryBean extends EntityViewBean {
         this.selectedWarehouse = selectedWarehouse;
     }
 
-    public Date getQueryDate() {
-        return queryDate;
-    }
-
-    public void setQueryDate(Date queryDate) {
-        this.queryDate = queryDate;
-    }
-
     public List<StockOrderItemDto> getItems() {
         return items;
     }
@@ -86,21 +77,6 @@ public class StockQueryBean extends EntityViewBean {
 
     public void setDetailItem(StockOrderItemDto detailItem) {
         this.detailItem = detailItem;
-    }
-
-    public List<SelectItem> getStockWarehouses() {
-        List<StockWarehouse> stockWarehouses = serviceFor(StockWarehouse.class).list();
-        List<StockWarehouseDto> stockWarehouseDtos = DTOs.mrefList(StockWarehouseDto.class, stockWarehouses);
-
-        List<SelectItem> items = new ArrayList<SelectItem>();
-
-        for (StockWarehouseDto stockWarehouseDto : stockWarehouseDtos) {
-            String label = stockWarehouseDto.getName();
-            SelectItem item = new SelectItem(stockWarehouseDto.getId(), label);
-            items.add(item);
-        }
-
-        return items;
     }
 
     public List<SelectItem> getMaterialsToQuery() {
@@ -122,22 +98,6 @@ public class StockQueryBean extends EntityViewBean {
     public void setSelectedMaterialsToQuery(
             List<String> selectedMaterialsToQuery) {
         this.selectedMaterialsToQuery = selectedMaterialsToQuery;
-    }
-
-    public String getMaterialPattern() {
-        return materialPattern;
-    }
-
-    public void setMaterialPattern(String materialPattern) {
-        this.materialPattern = materialPattern;
-    }
-
-    public List<MaterialDto> getMaterials() {
-        return materials;
-    }
-
-    public void setMaterials(List<MaterialDto> materials) {
-        this.materials = materials;
     }
 
     public MaterialDto getSelectedMaterial() {
@@ -190,17 +150,6 @@ public class StockQueryBean extends EntityViewBean {
         return orderItemIndex;
     }
 
-
-    public void findMaterial() {
-        if (materialPattern != null && !materialPattern.isEmpty()) {
-
-            List<Material> _materials = serviceFor(Material.class).list(new Like("label", "%" + materialPattern + "%"));
-
-            materials = DTOs.marshalList(MaterialDto.class, _materials);
-        }
-
-        selectedMaterial = null;
-    }
 
     public void addMaterial() {
         for(MaterialDto m : materialsToQuery) {

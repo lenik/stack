@@ -13,11 +13,9 @@ import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.StockOrderDto;
-import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
-import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.inventory.tx.dto.StockTakingDto;
 import com.bee32.sem.inventory.tx.entity.StockTaking;
 import com.bee32.sem.misc.ScrollEntityViewBean;
@@ -31,8 +29,6 @@ public class StocktakingAdminBean
     protected StockOrderSubject subject = null;
     protected StockWarehouseDto selectedWarehouse = new StockWarehouseDto().ref();
     protected StockOrderDto stockOrder = new StockOrderDto().create().ref();
-
-    protected boolean editable = false;
 
     private Date queryDate = new Date();
 
@@ -50,34 +46,6 @@ public class StocktakingAdminBean
 
     public void setSubject(StockOrderSubject subject) {
         this.subject = subject;
-    }
-
-    public List<SelectItem> getStockWarehouses() {
-        List<StockWarehouse> stockWarehouses = serviceFor(StockWarehouse.class).list();
-        List<StockWarehouseDto> stockWarehouseDtos = DTOs.mrefList(StockWarehouseDto.class, stockWarehouses);
-
-        List<SelectItem> items = new ArrayList<SelectItem>();
-
-        for (StockWarehouseDto stockWarehouseDto : stockWarehouseDtos) {
-            String label = stockWarehouseDto.getName();
-            SelectItem item = new SelectItem(stockWarehouseDto.getId(), label);
-            items.add(item);
-        }
-
-        return items;
-    }
-
-    public String getCreator() {
-        if (stockOrder == null)
-            return "";
-        else
-            return stockOrder.getOwnerDisplayName();
-    }
-
-    public List<StockOrderItemDto> getItems() {
-        if (stockOrder == null)
-            return null;
-        return stockOrder.getItems();
     }
 
     public StockWarehouseDto getSelectedWarehouse() {
@@ -129,8 +97,8 @@ public class StocktakingAdminBean
         if (selectedWarehouse != null) {
             StockOrder firstOrder = serviceFor(StockOrder.class).getFirst( //
                     new Offset(position - 1), //
-//                    CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
-//                    StockCriteria.subjectOf(getSubject()), //
+// CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+// StockCriteria.subjectOf(getSubject()), //
                     new Equals("warehouse.id", selectedWarehouse.getId()), //
                     Order.asc("id"));
 
@@ -148,7 +116,7 @@ public class StocktakingAdminBean
         stockOrder = new StockOrderDto().create();
         stockOrder.setSubject(subject);
         // stockOrder.setCreatedDate(new Date());
-        editable = true;
+// editable = true;
     }
 
     public void save1() {
@@ -156,27 +124,27 @@ public class StocktakingAdminBean
 
         if (stockOrder.getId() == null) {
             // 新增
-//            goNumber = count + 1;
+// goNumber = count + 1;
         }
 
         try {
             StockOrder _order = stockOrder.unmarshal();
             serviceFor(StockOrder.class).save(_order);
             uiLogger.info("保存成功");
-//            loadStockOrder(goNumber);
-            editable = false;
+// loadStockOrder(goNumber);
+// editable = false;
         } catch (Exception e) {
             uiLogger.warn("保存失败,错误信息:" + e.getMessage());
         }
     }
 
     public void addMaterial() {
-//        for (MaterialDto m : materialsToQuery) {
-//            if (selectedMaterial.getId().equals(m.getId())) {
-//                return;
-//            }
-//        }
-//        materialsToQuery.add(selectedMaterial);
+// for (MaterialDto m : materialsToQuery) {
+// if (selectedMaterial.getId().equals(m.getId())) {
+// return;
+// }
+// }
+// materialsToQuery.add(selectedMaterial);
     }
 
     private void removeMaterialDtoWithIdFromList(List<MaterialDto> ms, Long id) {
