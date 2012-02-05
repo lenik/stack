@@ -1,5 +1,6 @@
 package com.bee32.plover.faces;
 
+
 public class PloverFacesLibrary
         extends _TagLibrary {
 
@@ -11,6 +12,7 @@ public class PloverFacesLibrary
         // addTagHandler("select", SelectHandler);
         // addComponent("select", SelectOneObjectMenu.class.getCanonicalName(),
         // "org.primefaces.component.SelectOneMenuRenderer");
+        // addTagHandler("disable", DisableHandler.class);
     }
 
 }
