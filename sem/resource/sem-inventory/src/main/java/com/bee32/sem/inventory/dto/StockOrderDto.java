@@ -11,8 +11,8 @@ public class StockOrderDto
         super();
     }
 
-    public StockOrderDto(int selection) {
-        super(selection);
+    public StockOrderDto(int fmask) {
+        super(fmask);
     }
 
     @Override

@@ -27,8 +27,8 @@ public class SingleVerifierRankedPolicyDto
         super();
     }
 
-    public SingleVerifierRankedPolicyDto(int selection) {
-        super(selection);
+    public SingleVerifierRankedPolicyDto(int fmask) {
+        super(fmask);
     }
 
     @Override

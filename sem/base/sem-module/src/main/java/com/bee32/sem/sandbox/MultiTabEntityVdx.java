@@ -20,7 +20,7 @@ public abstract class MultiTabEntityVdx
     protected static final int TAB_FORM = 1;
 
     public <E extends Entity<K>, D extends EntityDto<? super E, K>, K extends Serializable> //
-    MultiTabEntityVdx(Class<E> entityClass, Class<D> dtoClass, int selection, ICriteriaElement... criteriaElements) {
+    MultiTabEntityVdx(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
         super(entityClass, dtoClass, selection, criteriaElements);
     }
 

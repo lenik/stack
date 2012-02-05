@@ -55,8 +55,8 @@ public abstract class AbstractEventDto<E extends Event>
         super();
     }
 
-    public AbstractEventDto(int selection) {
-        super(selection);
+    public AbstractEventDto(int fmask) {
+        super(fmask);
     }
 
     @Override

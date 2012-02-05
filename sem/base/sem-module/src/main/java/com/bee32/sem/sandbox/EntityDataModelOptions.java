@@ -20,7 +20,7 @@ public class EntityDataModelOptions<E extends Entity<?>, D extends EntityDto<? s
     final Class<?> creator = Caller.getCallerClass(1);
     final Class<E> entityClass;
     final Class<D> dtoClass;
-    private int selection;
+    private int fmask;
     private List<ICriteriaElement> criteriaElements = Collections.emptyList();
     boolean autoRefreshCount;
 
@@ -28,12 +28,12 @@ public class EntityDataModelOptions<E extends Entity<?>, D extends EntityDto<? s
         this(entityClass, dtoClass, 0, Collections.<ICriteriaElement> emptyList());
     }
 
-    public EntityDataModelOptions(Class<E> entityClass, Class<D> dtoClass, int selection,
+    public EntityDataModelOptions(Class<E> entityClass, Class<D> dtoClass, int fmask,
             ICriteriaElement... criteriaElements) {
         this(entityClass, dtoClass, selection, Arrays.asList(criteriaElements));
     }
 
-    public EntityDataModelOptions(Class<E> entityClass, Class<D> dtoClass, int selection,
+    public EntityDataModelOptions(Class<E> entityClass, Class<D> dtoClass, int fmask,
             List<ICriteriaElement> criteriaElements) {
 
         if (entityClass == null)
@@ -65,7 +65,7 @@ public class EntityDataModelOptions<E extends Entity<?>, D extends EntityDto<? s
         return selection;
     }
 
-    public void setSelection(int selection) {
+    public void setSelection(int fmask) {
         this.selection = selection;
     }
 

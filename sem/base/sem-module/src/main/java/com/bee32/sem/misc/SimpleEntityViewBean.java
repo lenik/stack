@@ -101,7 +101,7 @@ public class SimpleEntityViewBean
     protected PrincipalDto searchPrincipal; // TODO implication opt.
 
     public <E extends Entity<K>, D extends EntityDto<? super E, K>, K extends Serializable> //
-    /*    */SimpleEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int selection,
+    /*    */SimpleEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int fmask,
             ICriteriaElement... criteriaElements) {
         this.entityClass = entityClass;
         this.dtoClass = dtoClass;
@@ -134,7 +134,7 @@ public class SimpleEntityViewBean
 
         private static final long serialVersionUID = 1L;
 
-        public SevbEdmo(Class<E> entityClass, Class<D> dtoClass, int selection, ICriteriaElement... criteriaElements) {
+        public SevbEdmo(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
             super(entityClass, dtoClass, selection, criteriaElements);
         }
 

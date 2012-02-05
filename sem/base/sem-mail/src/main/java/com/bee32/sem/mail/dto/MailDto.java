@@ -50,8 +50,8 @@ public class MailDto
         super();
     }
 
-    public MailDto(int selection) {
-        super(selection);
+    public MailDto(int fmask) {
+        super(fmask);
     }
 
     @Override

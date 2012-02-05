@@ -36,7 +36,7 @@ public abstract class AbstractPartyAdminBean
     String selectedTagId;
 
     public <E extends Entity<K>, D extends EntityDto<? super E, K>, K extends Serializable> //
-    AbstractPartyAdminBean(Class<E> entityClass, Class<D> dtoClass, int selection, ICriteriaElement... criteriaElements) {
+    AbstractPartyAdminBean(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
         super(entityClass, dtoClass, selection, criteriaElements);
     }
 

@@ -51,13 +51,13 @@ public class ClassScanner
         return getClosure(clazz, -1);
     }
 
-    public Set<Class<?>> getClosure(Class<?> clazz, int selection) {
+    public Set<Class<?>> getClosure(Class<?> clazz, int fmask) {
         Set<Class<?>> closure = new HashSet<Class<?>>();
         _getClosure(clazz, closure, selection);
         return closure;
     }
 
-    void _getClosure(Class<?> clazz, Set<Class<?>> closure, int selection) {
+    void _getClosure(Class<?> clazz, Set<Class<?>> closure, int fmask) {
         if (closure.add(clazz)) {
             if ((selection & SUBCLASSES) != 0) {
                 // assert !clazz.isAnnotation();
@@ -174,21 +174,21 @@ public class ClassScanner
         dump(root, -1);
     }
 
-    public void dump(Class<?> root, int selection) {
+    public void dump(Class<?> root, int fmask) {
         dump("^", root, "", selection);
     }
 
-    void dump(String type, Class<?> clazz, String prefix, int selection) {
+    void dump(String type, Class<?> clazz, String prefix, int fmask) {
         new Dumper(selection).dump(type, prefix, clazz);
     }
 
     class Dumper {
 
-        int selection;
+        int fmask;
         IdentityHashSet once = new IdentityHashSet();
         PrintStream out = System.out;
 
-        public Dumper(int selection) {
+        public Dumper(int fmask) {
             this.selection = selection;
         }
 

@@ -16,7 +16,7 @@ public class ScrollEntityViewBean
     int rowNumberInput;
 
     public <E extends Entity<K>, D extends EntityDto<? super E, K>, K extends Serializable> //
-    ScrollEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int selection, ICriteriaElement... criteriaElements) {
+    ScrollEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
         super(entityClass, dtoClass, selection, criteriaElements);
     }
 

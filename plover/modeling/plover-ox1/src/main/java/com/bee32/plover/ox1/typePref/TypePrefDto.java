@@ -18,8 +18,8 @@ public abstract class TypePrefDto<E extends TypePrefEntity>
         super();
     }
 
-    public TypePrefDto(int selection) {
-        super(selection);
+    public TypePrefDto(int fmask) {
+        super(fmask);
     }
 
     @Override

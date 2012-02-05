@@ -24,8 +24,8 @@ public class ACLDto
         super();
     }
 
-    public ACLDto(int selection) {
-        super(selection);
+    public ACLDto(int fmask) {
+        super(fmask);
     }
 
     @Override

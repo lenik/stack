@@ -29,8 +29,8 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
         super();
     }
 
-    public AbstractOrderItemDto(int selection) {
-        super(selection);
+    public AbstractOrderItemDto(int fmask) {
+        super(fmask);
     }
 
     @Override

@@ -16,8 +16,8 @@ public class PlanOrderDto extends AbstractStockOrderDto<PlanOrder> {
         super();
     }
 
-    public PlanOrderDto(int selection) {
-        super(selection);
+    public PlanOrderDto(int fmask) {
+        super(fmask);
     }
 
     @Override

@@ -22,8 +22,8 @@ public abstract class UIEntityDto<E extends UIEntity<K>, K extends Serializable>
         super();
     }
 
-    public UIEntityDto(int selection) {
-        super(selection);
+    public UIEntityDto(int fmask) {
+        super(fmask);
     }
 
     @Override

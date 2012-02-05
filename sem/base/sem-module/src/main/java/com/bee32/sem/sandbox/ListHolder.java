@@ -23,7 +23,7 @@ public class ListHolder<T>
 
     final List<T> list;
     T selection;
-    int selectionIndex;
+    int fmaskIndex;
 
     public ListHolder(List<T> list) {
         if (list == null)

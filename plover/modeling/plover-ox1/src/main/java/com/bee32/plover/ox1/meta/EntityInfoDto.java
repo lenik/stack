@@ -24,8 +24,8 @@ public class EntityInfoDto
         super();
     }
 
-    public EntityInfoDto(int selection) {
-        super(selection);
+    public EntityInfoDto(int fmask) {
+        super(fmask);
     }
 
     @Override

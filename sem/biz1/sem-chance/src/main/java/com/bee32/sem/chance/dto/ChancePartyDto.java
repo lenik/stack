@@ -27,8 +27,8 @@ public class ChancePartyDto
         super();
     }
 
-    public ChancePartyDto(int selection) {
-        super(selection);
+    public ChancePartyDto(int fmask) {
+        super(fmask);
     }
 
     @Override

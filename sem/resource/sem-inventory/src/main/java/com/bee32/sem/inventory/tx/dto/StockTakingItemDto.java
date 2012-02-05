@@ -16,8 +16,8 @@ public class StockTakingItemDto
         super();
     }
 
-    public StockTakingItemDto(int selection) {
-        super(selection);
+    public StockTakingItemDto(int fmask) {
+        super(fmask);
     }
 
     // public StockTakingItem populate(StockOrderItemDto expectedItem, StockOrderItemDto diffItem) {

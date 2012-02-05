@@ -29,8 +29,8 @@ public abstract class BaseDto_EMC<S>
         super();
     }
 
-    public BaseDto_EMC(int selection) {
-        super(selection);
+    public BaseDto_EMC(int fmask) {
+        super(fmask);
     }
 
     /**

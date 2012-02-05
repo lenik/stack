@@ -48,8 +48,8 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         createTransients();
     }
 
-    public EntityDto(int selection) {
-        super(selection);
+    public EntityDto(int fmask) {
+        super(fmask);
         createTransients();
     }
 

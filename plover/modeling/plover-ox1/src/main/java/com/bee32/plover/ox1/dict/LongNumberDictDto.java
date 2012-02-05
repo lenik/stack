@@ -15,8 +15,8 @@ public abstract class LongNumberDictDto<E extends LongNumberDict>
         super();
     }
 
-    public LongNumberDictDto(int selection) {
-        super(selection);
+    public LongNumberDictDto(int fmask) {
+        super(fmask);
     }
 
     @Override

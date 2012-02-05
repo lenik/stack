@@ -22,8 +22,8 @@ public class PassStepDto
         super();
     }
 
-    public PassStepDto(int selection) {
-        super(selection);
+    public PassStepDto(int fmask) {
+        super(fmask);
     }
 
     public boolean isOptional() {

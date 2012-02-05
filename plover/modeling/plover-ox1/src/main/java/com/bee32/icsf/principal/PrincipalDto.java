@@ -33,8 +33,8 @@ public class PrincipalDto
         super();
     }
 
-    public PrincipalDto(int selection) {
-        super(selection);
+    public PrincipalDto(int fmask) {
+        super(fmask);
     }
 
     @Override

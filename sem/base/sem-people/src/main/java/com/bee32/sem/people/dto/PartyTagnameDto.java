@@ -12,8 +12,8 @@ public class PartyTagnameDto
         super();
     }
 
-    public PartyTagnameDto(int selection) {
-        super(selection);
+    public PartyTagnameDto(int fmask) {
+        super(fmask);
     }
 
 }

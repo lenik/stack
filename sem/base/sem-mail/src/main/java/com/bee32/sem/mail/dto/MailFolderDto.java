@@ -26,8 +26,8 @@ public class MailFolderDto
         super();
     }
 
-    public MailFolderDto(int selection) {
-        super(selection);
+    public MailFolderDto(int fmask) {
+        super(fmask);
     }
 
     @Override

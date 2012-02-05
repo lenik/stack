@@ -24,8 +24,8 @@ public class OrgUnitDto
         super();
     }
 
-    public OrgUnitDto(int selection) {
-        super(selection);
+    public OrgUnitDto(int fmask) {
+        super(fmask);
     }
 
     @Override

@@ -11,8 +11,8 @@ public class EventDto
         super();
     }
 
-    public EventDto(int selection) {
-        super(selection);
+    public EventDto(int fmask) {
+        super(fmask);
     }
 
 }

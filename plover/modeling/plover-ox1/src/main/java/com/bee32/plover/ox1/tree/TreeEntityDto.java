@@ -30,8 +30,8 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
         super();
     }
 
-    public TreeEntityDto(int selection) {
-        super(selection);
+    public TreeEntityDto(int fmask) {
+        super(fmask);
     }
 
     @SuppressWarnings("unchecked")

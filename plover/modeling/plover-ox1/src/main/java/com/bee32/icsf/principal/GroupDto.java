@@ -20,8 +20,8 @@ public class GroupDto
         super();
     }
 
-    public GroupDto(int selection) {
-        super(selection);
+    public GroupDto(int fmask) {
+        super(fmask);
     }
 
     @Override

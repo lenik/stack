@@ -30,7 +30,7 @@ public abstract class CodeTreeEntityViewBean
     TreeNode selectedNode;
 
     public <E extends Entity<K>, D extends EntityDto<? super E, K>, K extends Serializable> //
-    CodeTreeEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int selection, ICriteriaElement... criteriaElements) {
+    CodeTreeEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
         super(entityClass, dtoClass, selection, criteriaElements);
     }
 

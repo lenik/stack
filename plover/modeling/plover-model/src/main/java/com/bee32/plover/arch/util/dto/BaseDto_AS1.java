@@ -29,7 +29,7 @@ public abstract class BaseDto_AS1<S, C>
      *            Non-<code>null</code> to marshal as a reference.
      */
     public <_S, _D extends BaseDto<? super _S, _C>, _C> _D marshal(//
-            Class<_D> dtoClass, int selection, _S source, Boolean refButFilled) {
+            Class<_D> dtoClass, int fmask, _S source, Boolean refButFilled) {
         _D dto;
         try {
             dto = dtoClass.newInstance();
@@ -63,7 +63,7 @@ public abstract class BaseDto_AS1<S, C>
     }
 
     public <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> _marshalList(//
-            Class<_D> dtoClass, int selection, Iterable<? extends _S> sources, Boolean refButFilled) {
+            Class<_D> dtoClass, int fmask, Iterable<? extends _S> sources, Boolean refButFilled) {
 
         List<_D> dtoList = new ArrayList<_D>();
 
@@ -79,7 +79,7 @@ public abstract class BaseDto_AS1<S, C>
     }
 
     public <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet( //
-            Class<_D> dtoClass, int selection, Iterable<? extends _S> sources, Boolean refButFilled) {
+            Class<_D> dtoClass, int fmask, Iterable<? extends _S> sources, Boolean refButFilled) {
 
         Set<_D> dtoSet = new HashSet<_D>();
 
@@ -95,7 +95,7 @@ public abstract class BaseDto_AS1<S, C>
     }
 
     public <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalTreeSet( //
-            Class<_D> dtoClass, int selection, Iterable<? extends _S> sources, Boolean refButFilled) {
+            Class<_D> dtoClass, int fmask, Iterable<? extends _S> sources, Boolean refButFilled) {
 
         Set<_D> dtoSet = new TreeSet<_D>();
 

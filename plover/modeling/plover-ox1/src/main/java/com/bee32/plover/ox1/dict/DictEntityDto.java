@@ -21,8 +21,8 @@ public abstract class DictEntityDto<E extends DictEntity<K>, K extends Serializa
         super();
     }
 
-    public DictEntityDto(int selection) {
-        super(selection);
+    public DictEntityDto(int fmask) {
+        super(fmask);
     }
 
     @Override

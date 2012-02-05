@@ -15,8 +15,8 @@ public abstract class StockJobDto<E extends StockJob>
         super();
     }
 
-    public StockJobDto(int selection) {
-        super(selection);
+    public StockJobDto(int fmask) {
+        super(fmask);
     }
 
 }

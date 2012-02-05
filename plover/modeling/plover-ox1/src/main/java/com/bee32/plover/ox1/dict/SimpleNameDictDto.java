@@ -13,8 +13,8 @@ public abstract class SimpleNameDictDto<E extends NameDict>
         super();
     }
 
-    public SimpleNameDictDto(int selection) {
-        super(selection);
+    public SimpleNameDictDto(int fmask) {
+        super(fmask);
     }
 
     @Override

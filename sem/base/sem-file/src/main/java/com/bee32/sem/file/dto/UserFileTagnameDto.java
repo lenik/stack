@@ -20,8 +20,8 @@ public class UserFileTagnameDto
         super();
     }
 
-    public UserFileTagnameDto(int selection) {
-        super(selection);
+    public UserFileTagnameDto(int fmask) {
+        super(fmask);
     }
 
     @Override

@@ -17,8 +17,8 @@ public abstract class PartialDto<T extends Serializable>
         super();
     }
 
-    public PartialDto(int selection) {
-        super(selection);
+    public PartialDto(int fmask) {
+        super(fmask);
     }
 
     @Override

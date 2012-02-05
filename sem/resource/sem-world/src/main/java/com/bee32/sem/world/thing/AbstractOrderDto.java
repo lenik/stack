@@ -37,8 +37,8 @@ public abstract class AbstractOrderDto< //
         super();
     }
 
-    public AbstractOrderDto(int selection) {
-        super(selection);
+    public AbstractOrderDto(int fmask) {
+        super(fmask);
     }
 
     @Override

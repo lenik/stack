@@ -30,8 +30,8 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
         super();
     }
 
-    public ThingDto(int selection) {
-        super(selection);
+    public ThingDto(int fmask) {
+        super(fmask);
     }
 
     @Override

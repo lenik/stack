@@ -30,8 +30,8 @@ public class OrgDto
         super();
     }
 
-    public OrgDto(int selection) {
-        super(selection);
+    public OrgDto(int fmask) {
+        super(fmask);
     }
 
     @Override

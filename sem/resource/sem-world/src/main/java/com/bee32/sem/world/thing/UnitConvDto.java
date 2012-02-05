@@ -29,8 +29,8 @@ public class UnitConvDto
         super();
     }
 
-    public UnitConvDto(int selection) {
-        super(selection);
+    public UnitConvDto(int fmask) {
+        super(fmask);
     }
 
     @Override

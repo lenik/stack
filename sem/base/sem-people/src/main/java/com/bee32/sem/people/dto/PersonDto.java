@@ -24,8 +24,8 @@ public class PersonDto
         super();
     }
 
-    public PersonDto(int selection) {
-        super(selection);
+    public PersonDto(int fmask) {
+        super(fmask);
     }
 
     @Override

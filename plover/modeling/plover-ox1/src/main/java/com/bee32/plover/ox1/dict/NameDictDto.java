@@ -17,8 +17,8 @@ public abstract class NameDictDto<E extends NameDict>
         super();
     }
 
-    public NameDictDto(int selection) {
-        super(selection);
+    public NameDictDto(int fmask) {
+        super(fmask);
     }
 
     @Override

@@ -11,7 +11,7 @@ public class BastDtoUtils {
 
     static DummyDto dummy = new DummyDto();
 
-    static <S, D extends BaseDto<S, C>, C> D mar(int selection, S source) {
+    static <S, D extends BaseDto<S, C>, C> D mar(int fmask, S source) {
         Class<S> sourceType = (Class<S>) source.getClass();
         Class<D> dtoType;
         try {

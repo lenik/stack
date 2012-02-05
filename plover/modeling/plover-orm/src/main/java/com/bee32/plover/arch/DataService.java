@@ -52,7 +52,7 @@ public abstract class DataService
     }
 
     protected <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
-    D reload(D dto, int selection) {
+    D reload(D dto, int fmask) {
         Class<? extends D> dtoType = (Class<? extends D>) dto.getClass();
         Class<? extends E> entityType = DTOs.getEntityType(dto);
         K id = dto.getId();

@@ -24,8 +24,8 @@ public class ACLEntryDto
         super();
     }
 
-    public ACLEntryDto(int selection) {
-        super(selection);
+    public ACLEntryDto(int fmask) {
+        super(fmask);
     }
 
     @Override

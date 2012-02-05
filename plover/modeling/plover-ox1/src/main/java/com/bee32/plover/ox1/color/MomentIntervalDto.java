@@ -19,8 +19,8 @@ public abstract class MomentIntervalDto<E extends MomentInterval>
         super();
     }
 
-    public MomentIntervalDto(int selection) {
-        super(selection);
+    public MomentIntervalDto(int fmask) {
+        super(fmask);
     }
 
     @Override

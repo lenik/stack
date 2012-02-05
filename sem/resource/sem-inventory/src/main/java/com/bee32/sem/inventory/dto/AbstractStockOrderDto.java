@@ -32,8 +32,8 @@ public class AbstractStockOrderDto<E extends StockOrder>
         super();
     }
 
-    public AbstractStockOrderDto(int selection) {
-        super(selection);
+    public AbstractStockOrderDto(int fmask) {
+        super(fmask);
     }
 
     @Override

@@ -29,8 +29,8 @@ public class StockLocationDto
         super();
     }
 
-    public StockLocationDto(int selection) {
-        super(selection);
+    public StockLocationDto(int fmask) {
+        super(fmask);
     }
 
     @Override

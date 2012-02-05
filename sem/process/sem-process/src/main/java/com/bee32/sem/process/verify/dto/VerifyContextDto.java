@@ -25,8 +25,8 @@ public abstract class VerifyContextDto<T extends AbstractVerifyContext>
         super();
     }
 
-    public VerifyContextDto(int selection) {
-        super(selection);
+    public VerifyContextDto(int fmask) {
+        super(fmask);
     }
 
     @Override

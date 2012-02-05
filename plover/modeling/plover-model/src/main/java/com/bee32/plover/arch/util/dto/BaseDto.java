@@ -23,7 +23,7 @@ public abstract class BaseDto<S, C>
         this(-1);
     }
 
-    public BaseDto(int selection) {
+    public BaseDto(int fmask) {
         this.selection.bits = selection;
 
         // initSourceType(ClassUtil.<S> infer1(getClass(), BaseDto.class, 0));
@@ -105,7 +105,7 @@ public abstract class BaseDto<S, C>
         return selection.bits;
     }
 
-    public void setSelection(int selection) {
+    public void setSelection(int fmask) {
         this.selection.bits = selection;
     }
 

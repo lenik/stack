@@ -25,8 +25,8 @@ public class PassToNextPolicyDto
         super();
     }
 
-    public PassToNextPolicyDto(int selection) {
-        super(selection);
+    public PassToNextPolicyDto(int fmask) {
+        super(fmask);
     }
 
     public List<PassStepDto> getSequences() {

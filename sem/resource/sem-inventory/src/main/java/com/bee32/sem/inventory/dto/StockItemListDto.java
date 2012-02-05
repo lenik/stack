@@ -20,8 +20,8 @@ public abstract class StockItemListDto<E extends StockItemList>
         super();
     }
 
-    public StockItemListDto(int selection) {
-        super(selection);
+    public StockItemListDto(int fmask) {
+        super(fmask);
     }
 
     @Override

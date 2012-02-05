@@ -17,8 +17,8 @@ public class HelloMessageDto
         super();
     }
 
-    public HelloMessageDto(int selection) {
-        super(selection);
+    public HelloMessageDto(int fmask) {
+        super(fmask);
     }
 
     @Override

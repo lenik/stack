@@ -19,8 +19,8 @@ public abstract class EntityDto_VTU<E extends Entity<K>, K extends Serializable>
         super();
     }
 
-    public EntityDto_VTU(int selection) {
-        super(selection);
+    public EntityDto_VTU(int fmask) {
+        super(fmask);
     }
 
     @Override

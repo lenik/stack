@@ -71,7 +71,7 @@ public abstract class DataViewBean
     }
 
     protected static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
-    D reload(D dto, int selection) {
+    D reload(D dto, int fmask) {
 
         if (!dto.getMarshalType().isReference())
             return dto;

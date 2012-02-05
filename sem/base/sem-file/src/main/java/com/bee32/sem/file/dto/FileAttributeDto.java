@@ -27,8 +27,8 @@ public class FileAttributeDto
         super();
     }
 
-    public FileAttributeDto(int selection) {
-        super(selection);
+    public FileAttributeDto(int fmask) {
+        super(fmask);
     }
 
     @Override

@@ -84,9 +84,9 @@ class MarshalKey {
 
     Object source;
     MarshalType mt;
-    int selection;
+    int fmask;
 
-    public MarshalKey(Object source, MarshalType mt, int selection) {
+    public MarshalKey(Object source, MarshalType mt, int fmask) {
         this.source = source;
         this.mt = mt;
         this.selection = selection;

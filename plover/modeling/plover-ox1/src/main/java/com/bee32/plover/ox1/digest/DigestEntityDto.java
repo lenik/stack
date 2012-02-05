@@ -13,8 +13,8 @@ public abstract class DigestEntityDto<E extends DigestEntity>
         super();
     }
 
-    public DigestEntityDto(int selection) {
-        super(selection);
+    public DigestEntityDto(int fmask) {
+        super(fmask);
     }
 
     @Override

@@ -31,8 +31,8 @@ public class PersonRoleDto
         super();
     }
 
-    public PersonRoleDto(int selection) {
-        super(selection);
+    public PersonRoleDto(int fmask) {
+        super(fmask);
     }
 
     @Override

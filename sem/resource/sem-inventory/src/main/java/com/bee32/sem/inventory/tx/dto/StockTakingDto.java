@@ -33,8 +33,8 @@ public class StockTakingDto
         super();
     }
 
-    public StockTakingDto(int selection) {
-        super(selection);
+    public StockTakingDto(int fmask) {
+        super(fmask);
     }
 
     @Override

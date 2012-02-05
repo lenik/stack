@@ -33,8 +33,8 @@ public class StockOrderItemDto
         super();
     }
 
-    public StockOrderItemDto(int selection) {
-        super(selection);
+    public StockOrderItemDto(int fmask) {
+        super(fmask);
     }
 
     @Override

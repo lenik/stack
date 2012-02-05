@@ -28,8 +28,8 @@ public class MailFilterDto
         super();
     }
 
-    public MailFilterDto(int selection) {
-        super(selection);
+    public MailFilterDto(int fmask) {
+        super(fmask);
     }
 
     @Override

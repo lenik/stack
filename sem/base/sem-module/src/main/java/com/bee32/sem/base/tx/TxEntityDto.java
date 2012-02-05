@@ -21,8 +21,8 @@ public abstract class TxEntityDto<E extends TxEntity>
         super();
     }
 
-    public TxEntityDto(int selection) {
-        super(selection);
+    public TxEntityDto(int fmask) {
+        super(fmask);
     }
 
     @Override

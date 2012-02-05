@@ -26,12 +26,12 @@ public abstract class DTOs {
         return dto.getEntityType();
     }
 
-    public static <_S, _D extends BaseDto<? super _S, _C>, _C> _D _marshal(Class<_D> dtoClass, int selection,
+    public static <_S, _D extends BaseDto<? super _S, _C>, _C> _D _marshal(Class<_D> dtoClass, int fmask,
             _S source, Boolean refButFilled) {
         return new DummyEntityDto().marshal(dtoClass, selection, source, refButFilled);
     }
 
-    public static <_S, _D extends BaseDto<? super _S, _C>, _C> _D marshal(Class<_D> dtoClass, int selection, _S source) {
+    public static <_S, _D extends BaseDto<? super _S, _C>, _C> _D marshal(Class<_D> dtoClass, int fmask, _S source) {
         return new DummyEntityDto().marshal(dtoClass, selection, source);
     }
 
@@ -45,7 +45,7 @@ public abstract class DTOs {
     }
 
     // @Deprecated
-    public static <_S, _D extends BaseDto<? super _S, _C>, _C> _D mref(Class<_D> dtoClass, int selection, _S source) {
+    public static <_S, _D extends BaseDto<? super _S, _C>, _C> _D mref(Class<_D> dtoClass, int fmask, _S source) {
         return new DummyEntityDto().mref(dtoClass, selection, source);
     }
 
@@ -53,12 +53,12 @@ public abstract class DTOs {
         return new DummyEntityDto().mref(dtoClass, source);
     }
 
-    public static <_S, _D extends BaseDto<_S, _C>, _C> List<_D> _marshalList(Class<_D> dtoClass, int selection,
+    public static <_S, _D extends BaseDto<_S, _C>, _C> List<_D> _marshalList(Class<_D> dtoClass, int fmask,
             Iterable<? extends _S> sources, Boolean refButFilled) {
         return new DummyEntityDto()._marshalList(dtoClass, selection, sources, refButFilled);
     }
 
-    public static <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> marshalList(Class<_D> dtoClass, int selection,
+    public static <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> marshalList(Class<_D> dtoClass, int fmask,
             Iterable<? extends _S> sources) {
         return new DummyEntityDto().marshalList(dtoClass, selection, sources);
     }
@@ -68,7 +68,7 @@ public abstract class DTOs {
         return new DummyEntityDto().marshalList(dtoClass, sources);
     }
 
-    public static <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> mrefList(Class<_D> dtoClass, int selection,
+    public static <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> mrefList(Class<_D> dtoClass, int fmask,
             Iterable<? extends _S> sources) {
         return new DummyEntityDto().mrefList(dtoClass, selection, sources);
     }
@@ -78,12 +78,12 @@ public abstract class DTOs {
         return new DummyEntityDto().mrefList(dtoClass, sources);
     }
 
-    public static <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet(Class<_D> dtoClass, int selection,
+    public static <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet(Class<_D> dtoClass, int fmask,
             Iterable<? extends _S> sources, Boolean refButFilled) {
         return new DummyEntityDto().marshalSet(dtoClass, selection, sources, refButFilled);
     }
 
-    public static <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet(Class<_D> dtoClass, int selection,
+    public static <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet(Class<_D> dtoClass, int fmask,
             Iterable<? extends _S> sources) {
         return new DummyEntityDto().marshalSet(dtoClass, selection, sources);
     }
@@ -93,7 +93,7 @@ public abstract class DTOs {
         return new DummyEntityDto().marshalSet(dtoClass, sources);
     }
 
-    public static <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet(Class<_D> dtoClass, int selection,
+    public static <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet(Class<_D> dtoClass, int fmask,
             Iterable<? extends _S> sources, boolean refButFilled) {
         return new DummyEntityDto().marshalSet(dtoClass, selection, sources, refButFilled);
     }

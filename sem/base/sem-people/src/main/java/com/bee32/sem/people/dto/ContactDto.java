@@ -35,8 +35,8 @@ public class ContactDto
         super();
     }
 
-    public ContactDto(int selection) {
-        super(selection);
+    public ContactDto(int fmask) {
+        super(fmask);
     }
 
     @Override

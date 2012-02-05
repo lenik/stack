@@ -15,8 +15,8 @@ public class VerifyPolicyDto
         super();
     }
 
-    public VerifyPolicyDto(int selection) {
-        super(selection);
+    public VerifyPolicyDto(int fmask) {
+        super(fmask);
     }
 
     @Override

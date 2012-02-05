@@ -54,8 +54,8 @@ public class PartyDto
         super();
     }
 
-    public PartyDto(int selection) {
-        super(selection);
+    public PartyDto(int fmask) {
+        super(fmask);
     }
 
     @Override

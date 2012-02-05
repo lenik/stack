@@ -25,8 +25,8 @@ public abstract class CEntityDto<E extends CEntity<K>, K extends Serializable>
         super();
     }
 
-    public CEntityDto(int selection) {
-        super(selection);
+    public CEntityDto(int fmask) {
+        super(fmask);
     }
 
     @Override

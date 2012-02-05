@@ -13,8 +13,8 @@ public abstract class EntityExtDto<E extends EntityExt<K, X>, K extends Serializ
         super();
     }
 
-    public EntityExtDto(int selection) {
-        super(selection);
+    public EntityExtDto(int fmask) {
+        super(fmask);
     }
 
 }

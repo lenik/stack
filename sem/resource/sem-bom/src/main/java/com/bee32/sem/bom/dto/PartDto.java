@@ -48,8 +48,8 @@ public class PartDto
         super();
     }
 
-    public PartDto(int selection) {
-        super(selection);
+    public PartDto(int fmask) {
+        super(fmask);
     }
 
     @Override

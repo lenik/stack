@@ -15,8 +15,8 @@ public abstract class NumberDictDto<E extends NumberDict>
         super();
     }
 
-    public NumberDictDto(int selection) {
-        super(selection);
+    public NumberDictDto(int fmask) {
+        super(fmask);
     }
 
     @Override

@@ -49,8 +49,8 @@ public class ChanceActionDto
         super();
     }
 
-    public ChanceActionDto(int selection) {
-        super(selection);
+    public ChanceActionDto(int fmask) {
+        super(fmask);
     }
 
     @Override

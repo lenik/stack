@@ -20,8 +20,8 @@ public class EventStatusDto
         super();
     }
 
-    public EventStatusDto(int selection) {
-        super(selection);
+    public EventStatusDto(int fmask) {
+        super(fmask);
     }
 
     @Override

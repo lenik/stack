@@ -26,8 +26,8 @@ public class SingleVerifierSupportDto
         super();
     }
 
-    public SingleVerifierSupportDto(int selection) {
-        super(selection);
+    public SingleVerifierSupportDto(int fmask) {
+        super(fmask);
     }
 
     @Override

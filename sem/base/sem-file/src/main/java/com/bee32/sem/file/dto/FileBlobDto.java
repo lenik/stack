@@ -18,8 +18,8 @@ public class FileBlobDto
         super();
     }
 
-    public FileBlobDto(int selection) {
-        super(selection);
+    public FileBlobDto(int fmask) {
+        super(fmask);
     }
 
     long length;

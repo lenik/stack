@@ -35,8 +35,8 @@ public class UserFileDto
         super();
     }
 
-    public UserFileDto(int selection) {
-        super(selection);
+    public UserFileDto(int fmask) {
+        super(fmask);
     }
 
     @Override
