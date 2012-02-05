@@ -5,6 +5,7 @@ import java.io.Serializable;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.sem.sandbox.ZLazyDataModel;
 
 public class ScrollEntityViewBean
         extends SimpleEntityViewBean {
@@ -19,57 +20,74 @@ public class ScrollEntityViewBean
         super(entityClass, dtoClass, selection, criteriaElements);
     }
 
-    public void gotoFirst() {
-        if (rowNumber != 1)
-            loadRow(1);
-    }
-
-    public void gotoPrevious() {
-        if (rowNumber > 1)
-            loadRow(rowNumber - 1);
-    }
-
-    public void gotoNext() {
-        if (rowNumber < getDataModel().getRowCount())
-            loadRow(rowNumber + 1);
-    }
-
-    public void gotoLast() {
-        if (rowNumber != getDataModel().getRowCount())
-            loadRow(getDataModel().getRowCount());
-    }
-
-    public void gotoInput() {
-        if (rowNumber != rowNumberInput)
-            loadRow(rowNumberInput);
-    }
-
-    protected void loadRow(int rowNumber) {
+    protected void selectRow(int rowNumber) {
         int rowCount = dataModel.getRowCount();
         if (rowNumber < 1)
             rowNumber = 1;
         if (rowNumber > rowCount)
             rowNumber = rowCount;
 
-        int rowIndex = rowNumber - 1;
-        EntityDto<?, ?> dto = getDataModel().load(rowIndex);
-        if (dto == null)
-            rowNumber = -1;
-        else {
-            loadForm(dto);
+        EntityDto<?, ?> dto = null;
+        if (rowNumber > 0) {
+            int rowIndex = rowNumber - 1;
+            ZLazyDataModel<?, ?> dataModel = (ZLazyDataModel<?, ?>) getDataModel();
+            dto = dataModel.load(rowIndex);
         }
-
+        setSingleSelection(dto);
+        loadExtras(dto, false);
         this.rowNumber = rowNumber;
         this.rowNumberInput = rowNumber;
-    }
-
-    public void cancel() {
-        setActiveObject(null);
-        loadRow(rowNumber);
-    }
-
-    protected void loadForm(EntityDto<?, ?> dto) {
+        //
         setActiveObject(dto);
+    }
+
+    public boolean isFirst() {
+        return rowNumber == 1;
+    }
+
+    public boolean isLast() {
+        return rowNumber == getDataModel().getRowCount();
+    }
+
+    public void gotoFirst() {
+        if (rowNumber != 1)
+            selectRow(1);
+    }
+
+    public void gotoPrevious() {
+        if (rowNumber > 1)
+            selectRow(rowNumber - 1);
+    }
+
+    public void gotoNext() {
+        if (rowNumber < getDataModel().getRowCount())
+            selectRow(rowNumber + 1);
+    }
+
+    public void gotoLast() {
+        if (rowNumber != getDataModel().getRowCount())
+            selectRow(getDataModel().getRowCount());
+    }
+
+    public void gotoInput() {
+        if (rowNumber != rowNumberInput)
+            selectRow(rowNumberInput);
+    }
+
+    public int getRowNumber() {
+        return rowNumber;
+    }
+
+    public void setRowNumber(int rowNumber) {
+        this.rowNumber = rowNumber;
+    }
+
+    public int getRowNumberInput() {
+        return rowNumberInput;
+    }
+
+    public void setRowNumberInput(int rowNumberInput) {
+        this.rowNumberInput = rowNumberInput;
     }
 
 }

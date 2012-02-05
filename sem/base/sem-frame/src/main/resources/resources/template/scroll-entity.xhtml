@@ -7,33 +7,35 @@
     <ui:define name="toolbar">
         <p:toolbar id="toolbar">
             <p:toolbarGroup align="left">
-                <p:commandButton id="createButton" value="新增" actionListener="${bean.showCreateForm}"
-                    oncomplete="editDialog.show()" update=":editDialog:form, :editForm" />
+                <p:commandButton id="createButton" value="新建" actionListener="${bean.showCreateForm}"
+                    update="toolbar, :editDialog:form" />
                 <p:commandButton id="editButton" value="修改" actionListener="${bean.showEditForm}"
-                    oncomplete="editDialog.show()" disabled="${not bean.selected}" update=":editDialog:form, :editForm" />
+                    disabled="${not bean.selected}" update="toolbar, :editDialog:form" />
                 <p:commandButton id="deleteButton" value="删除" onclick="deleteConfirmDialog.show()"
-                    disabled="${not bean.selected}" />
+                    disabled="${not bean.selected}" update="toolbar" />
                 <p:separator />
-                <p:commandButton value="保存" actionListener="${bean.save}" disabled="${!bean.actived}"
-                    update=":mainForm" async="true" />
-                <p:commandButton value="取消" actionListener="${bean.cancel}" disabled="${!bean.actived}"
-                    update=":mainForm" async="true" />
+                <p:commandButton id="save-validated" value="保存" actionListener="${bean.save}"
+                    disabled="${bean.currentView == 'content' or !bean.actived}" update=":mainForm, ${mirrorTargets}" />
+                <p:commandButton id="cancel" value="${bean.currentView == 'content'  ? '返回' : '取消'}"
+                    actionListener="${bean.showIndex}" disabled="${bean.currentView == 'content' or !bean.actived}"
+                    update="toolbar, :editDialog:form" />
                 <p:separator />
                 <ui:insert name="toolbarPeripherals" />
             </p:toolbarGroup>
             <p:toolbarGroup align="right">
-                <p:commandButton value="第一条" actionListener="${bean.gotoFirst}" disabled="${bean.actived}"
-                    update="mainForm" async="true" />
-                <p:commandButton value="上一条" actionListener="${bean.gotoPrevious}" disabled="${bean.actived}"
-                    update="mainForm" async="true" />
-                <p:commandButton value="下一条" actionListener="${bean.gotoNext}" disabled="${bean.actived}"
-                    update="mainForm" async="true" />
-                <p:commandButton value="最末条" actionListener="${bean.gotoLast}" disabled="${bean.actived}"
-                    update="mainForm" async="true" />
-                <p:inputText value="${bean.rowNumberInput}" disabled="${bean.actived}" style="width: 3em;" />
+                <p:commandButton id="first" value="第一条" actionListener="${bean.gotoFirst}"
+                    disabled="${bean.first or bean.dataModel.rowCount == 0 or bean.actived}" update="mainForm, :editDialog:form" />
+                <p:commandButton id="previous" value="上一条" actionListener="${bean.gotoPrevious}"
+                    disabled="${bean.first or bean.dataModel.rowCount == 0 or bean.actived}" update="mainForm, :editDialog:form" />
+                <p:commandButton id="next" value="下一条" actionListener="${bean.gotoNext}"
+                    disabled="${bean.last or bean.dataModel.rowCount == 0 or bean.actived}" update="mainForm, :editDialog:form" />
+                <p:commandButton id="last" value="最末条" actionListener="${bean.gotoLast}"
+                    disabled="${bean.last or bean.dataModel.rowCount == 0 or bean.actived}" update="mainForm, :editDialog:form" />
+                <p:separator />
+                <p:inputText id="rowNumber" value="${bean.rowNumberInput}" disabled="${bean.actived}" style="width: 3em;" />
                 <h:outputText value="/${bean.dataModel.rowCount}" />
-                <p:commandButton value="前往" actionListener="${bean.go}" disabled="${bean.editable}"
-                    update="mainForm" async="true" />
+                <p:commandButton id="jump" value="前往" actionListener="${bean.gotoInput}" disabled="${bean.actived}"
+                    update="mainForm" />
             </p:toolbarGroup>
         </p:toolbar>
     </ui:define>
