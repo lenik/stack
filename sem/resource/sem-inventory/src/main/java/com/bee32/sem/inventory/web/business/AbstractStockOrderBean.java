@@ -130,13 +130,13 @@ public abstract class AbstractStockOrderBean
     }
 
     public void applyStockOrderItem() {
-        StockOrderItemDto orderItem = itemsMBean.getActiveObject();
+        StockOrderItemDto orderItem = itemsMBean.getOpenedObject();
         orderItem.setBatch(selectedStockQueryItem.getBatch());
         orderItem.setExpirationDate(selectedStockQueryItem.getExpirationDate());
         orderItem.setLocation(selectedStockQueryItem.getLocation());
     }
 
-    ListMBean<StockOrderItemDto> itemsMBean = ListMBean.fromEL(this, "activeObject", StockOrderItemDto.class);
+    ListMBean<StockOrderItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject", StockOrderItemDto.class);
 
     public ListMBean<StockOrderItemDto> getItemsMBean() {
         return itemsMBean;

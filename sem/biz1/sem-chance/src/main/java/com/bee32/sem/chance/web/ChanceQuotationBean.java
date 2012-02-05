@@ -44,7 +44,7 @@ public class ChanceQuotationBean
     }
 
     public void addMaterial() {
-        ChanceQuotationDto quotation = getActiveObject();
+        ChanceQuotationDto quotation = getOpenedObject();
         ChanceQuotationItemDto item = new ChanceQuotationItemDto().create();
         item.setParent(quotation);
         item.setMaterial(selectedMaterial);
@@ -53,7 +53,7 @@ public class ChanceQuotationBean
     }
 
     public void editQuotationItem() {
-        ChanceQuotationDto quotation = getActiveObject();
+        ChanceQuotationDto quotation = getOpenedObject();
         quotation.invalidateTotal();
     }
 

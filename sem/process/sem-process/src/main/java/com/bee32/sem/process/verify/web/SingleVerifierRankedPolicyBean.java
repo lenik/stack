@@ -30,7 +30,7 @@ public class SingleVerifierRankedPolicyBean
     }
 
     public void removeLevel() {
-        SingleVerifierRankedPolicyDto policy = getActiveObject();
+        SingleVerifierRankedPolicyDto policy = getOpenedObject();
         policy.getLevels().remove(selectedLevel);
     }
 
@@ -47,7 +47,7 @@ public class SingleVerifierRankedPolicyBean
     }
 
     public void addLevel() {
-        SingleVerifierRankedPolicyDto policy = getActiveObject();
+        SingleVerifierRankedPolicyDto policy = getOpenedObject();
         level.setPolicy(policy);
         policy.getLevels().add(level);
     }

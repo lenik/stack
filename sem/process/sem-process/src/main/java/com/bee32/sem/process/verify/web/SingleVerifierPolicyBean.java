@@ -29,12 +29,12 @@ public class SingleVerifierPolicyBean
     }
 
     public void addResponsible() {
-        SingleVerifierPolicyDto policy = getActiveObject();
+        SingleVerifierPolicyDto policy = getOpenedObject();
         policy.getResponsibles().add(selectedResponsible);
     }
 
     public void removeResponsible() {
-        SingleVerifierPolicyDto policy = getActiveObject();
+        SingleVerifierPolicyDto policy = getOpenedObject();
         policy.getResponsibles().remove(selectedResponsible);
         selectedResponsible = null;
     }

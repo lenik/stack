@@ -8,7 +8,7 @@
     <ui:param name="monetary" value="#{monetaryDictsBean}" />
     <ui:param name="bean" value="#{takeAdminBean}" />
     <ui:param name="title" value="#{bean.subject.displayName}" />
-    <ui:param name="obj" value="#{bean.activeObject}" />
+    <ui:param name="obj" value="#{bean.openedObject}" />
 
     <ui:define name="sideBarN">
         <h:form id="formN">
@@ -103,7 +103,7 @@
 
     <ui:define name="dialogs">
         <sem:singleVerifierSupportDialog id="verifyDialog" update=":mainForm" />
-        <sem:chooseMaterialDialog id="chooseMaterialDialog" target="#{bean.itemsMBean.activeObject.material}" />
+        <sem:chooseMaterialDialog id="chooseMaterialDialog" target="#{bean.itemsMBean.openedObject.material}" />
         <sem:chooseStockItemDialog id="chooseStockItemDialog" target="#{bean.selectedStockQueryItem}"
             actionListener="#{bean.applySelectedStockQueryItem}" />
 

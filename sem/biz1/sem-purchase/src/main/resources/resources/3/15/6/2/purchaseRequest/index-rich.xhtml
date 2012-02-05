@@ -4,7 +4,7 @@
 
     <ui:param name="title" value="采购请求管理" />
     <ui:param name="bean" value="#{purchaseRequestAdminBean}" />
-    <ui:param name="obj" value="#{bean.activeObject}" />
+    <ui:param name="obj" value="#{bean.openedObject}" />
 
     <ui:define name="toolbarPeripherals">
         <sem:singleVerifierSupportButton selection="#{bean.selection}" disabled="#{bean.editable}" />

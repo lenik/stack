@@ -220,7 +220,7 @@ public class TransferInAdminBean
             return;
         }
 
-        StockOrderDto stockOrder = getActiveObject();
+        StockOrderDto stockOrder = getOpenedObject();
         stockOrder = new StockOrderDto().create();
         stockOrder.setSubject(subject);
         stockTransfer.setSourceWarehouse(stockTransferOut.getSourceWarehouse());
@@ -231,7 +231,7 @@ public class TransferInAdminBean
 
     @Transactional
     public void transferInDone() {
-        StockOrderDto stockOrder = getActiveObject();
+        StockOrderDto stockOrder = getOpenedObject();
         // if(stockOrder.getItems() != null && stockOrder.getItems().size() <= 0) {
         // uiLogger.warn("单据上至少应该有一条明细");
         // return;

@@ -77,7 +77,7 @@ public class ChanceBean
     }
 
     public void addAction() {
-        ChanceDto chance = getActiveObject();
+        ChanceDto chance = getOpenedObject();
         if (selectedAction.getStage() == null) {
             ChanceStageDto initStage = new ChanceStageDto().ref(ChanceStage.INIT);
             selectedAction.setStage(initStage);
@@ -93,10 +93,10 @@ public class ChanceBean
         detachSet.add(selectedAction);
     }
 
-    ListMBean<ChancePartyDto> partiesMBean = ListMBean.fromEL(this, "activeObject.parties", ChancePartyDto.class);
-    ListMBean<ChanceQuotationDto> quotationsMBean = ListMBean.fromEL(this, "activeObject.quotations",
+    ListMBean<ChancePartyDto> partiesMBean = ListMBean.fromEL(this, "openedObject.parties", ChancePartyDto.class);
+    ListMBean<ChanceQuotationDto> quotationsMBean = ListMBean.fromEL(this, "openedObject.quotations",
             ChanceQuotationDto.class);
-    ListMBean<ChanceQuotationItemDto> quotationItemsMBean = ListMBean.fromEL(quotationsMBean, "activeObject.items",
+    ListMBean<ChanceQuotationItemDto> quotationItemsMBean = ListMBean.fromEL(quotationsMBean, "openedObject.items",
             ChanceQuotationItemDto.class);
 
     public ListMBean<ChancePartyDto> getPartiesMBean() {

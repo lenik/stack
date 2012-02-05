@@ -258,7 +258,7 @@ public class SimpleEntityViewBean
 
     @Operation
     public void showIndex() {
-        setActiveObject(null);
+        setOpenedObject(null);
         showView(StandardViews.LIST);
     }
 
@@ -267,7 +267,7 @@ public class SimpleEntityViewBean
         Object newInstance = create();
         if (newInstance == null)
             return;
-        setActiveObject(newInstance);
+        setOpenedObject(newInstance);
         showView(StandardViews.CREATE_FORM);
     }
 
@@ -346,14 +346,14 @@ public class SimpleEntityViewBean
             else
                 hint = "保存";
 
-        if (getActiveObjects().isEmpty()) {
+        if (getOpenedObjects().isEmpty()) {
             uiLogger.error("没有需要" + hint + "的对象!");
             return;
         }
 
         UnmarshalMap uMap;
         try {
-            uMap = unmarshalDtos(getActiveObjects(), false);
+            uMap = unmarshalDtos(getOpenedObjects(), false);
         } catch (Exception e) {
             uiLogger.error("反编列失败", e);
             return;
@@ -622,10 +622,10 @@ public class SimpleEntityViewBean
                 reloaded = selection;
             reloadedList.add(reloaded);
         }
-        setActiveObjects(reloadedList);
+        setOpenedObjects(reloadedList);
     }
 
-    protected void loadExtras(Object preactiveObject, boolean editForm) {
+    protected void loadExtras(Object preopenedObject, boolean editForm) {
     }
 
     UnmarshalMap unmarshalDtos(Collection<?> objects, boolean nullable) {

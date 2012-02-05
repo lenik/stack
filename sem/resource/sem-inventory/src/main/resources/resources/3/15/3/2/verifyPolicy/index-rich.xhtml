@@ -17,7 +17,7 @@
     </ui:define>
 
     <ui:define name="editDialogContent">
-        <c:set var="obj" value="#{bean.activeObject}" />
+        <c:set var="obj" value="#{bean.openedObject}" />
         <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
             <h:outputLabel for="label" value="名称" />
             <p:inputText id="label" title="名称" value="#{obj.label}" />

@@ -33,7 +33,7 @@ public class StockOrderVerifyPolicyBean
     }
 
     public void removeEntry() {
-        StockOrderVerifyPolicyDto policy = getActiveObject();
+        StockOrderVerifyPolicyDto policy = getOpenedObject();
         policy.removeEntry(selectedEntry);
     }
 
@@ -55,7 +55,7 @@ public class StockOrderVerifyPolicyBean
     }
 
     public void addEntry() {
-        StockOrderVerifyPolicyDto policy = getActiveObject();
+        StockOrderVerifyPolicyDto policy = getOpenedObject();
         policy.addEntry(entry);
         entry = null;
     }

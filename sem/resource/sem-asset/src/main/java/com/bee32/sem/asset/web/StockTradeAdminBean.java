@@ -65,7 +65,7 @@ public class StockTradeAdminBean
     }
 
     public String getCreator() {
-        StockTradeDto stockTrade = getActiveObject();
+        StockTradeDto stockTrade = getOpenedObject();
         if (stockTrade == null)
             return "";
         else
@@ -73,7 +73,7 @@ public class StockTradeAdminBean
     }
 
     public List<StockTradeItemDto> getItems() {
-        StockTradeDto stockTrade = getActiveObject();
+        StockTradeDto stockTrade = getOpenedObject();
         if (stockTrade == null)
             return null;
         return stockTrade.getItems();
@@ -116,7 +116,7 @@ public class StockTradeAdminBean
     }
 
     public void newItem() {
-        StockTradeDto stockTrade = getActiveObject();
+        StockTradeDto stockTrade = getOpenedObject();
         tradeItem = new StockTradeItemDto().create();
         tradeItem.setTrade(stockTrade);
 
@@ -128,7 +128,7 @@ public class StockTradeAdminBean
     }
 
     public void deleteItem() {
-        StockTradeDto stockTrade = getActiveObject();
+        StockTradeDto stockTrade = getOpenedObject();
         stockTrade.removeItem(tradeItem);
 
         if (tradeItem.getId() != null) {
@@ -143,7 +143,7 @@ public class StockTradeAdminBean
     }
 
     public void doSaveItem() {
-        StockTradeDto stockTrade = getActiveObject();
+        StockTradeDto stockTrade = getOpenedObject();
         tradeItem.setTrade(stockTrade);
         if (newItemStatus) {
             stockTrade.addItem(tradeItem);
@@ -151,12 +151,12 @@ public class StockTradeAdminBean
     }
 
     public void chooseParty() {
-        StockTradeDto stockTrade = getActiveObject();
+        StockTradeDto stockTrade = getOpenedObject();
         stockTrade.setParty(selectedParty);
     }
 
     private void loadStockTrade(int position) {
-        StockTradeDto stockTrade = getActiveObject();
+        StockTradeDto stockTrade = getOpenedObject();
         // 刷新总记录数
         try {
 // stockTrade = ((StockTradeDto) stockTradeDtoClass.newInstance()).create();
@@ -172,7 +172,7 @@ public class StockTradeAdminBean
     }
 
     public void modify() {
-        StockTradeDto stockTrade = getActiveObject();
+        StockTradeDto stockTrade = getOpenedObject();
         if (stockTrade.getId() == null) {
             uiLogger.warn("当前没有对应的单据");
             return;
@@ -182,7 +182,7 @@ public class StockTradeAdminBean
     }
 
     public void delete() {
-        StockTradeDto stockTrade = getActiveObject();
+        StockTradeDto stockTrade = getOpenedObject();
         try {
             serviceFor(entityClass).delete(stockTrade.unmarshal());
             uiLogger.info("删除成功!");
@@ -195,7 +195,7 @@ public class StockTradeAdminBean
 
     @Transactional
     public void save1() {
-        StockTradeDto stockTrade = getActiveObject();
+        StockTradeDto stockTrade = getOpenedObject();
         if (stockTrade.getId() == null) {
             // 新增
 // goNumber = count + 1;
@@ -234,7 +234,7 @@ public class StockTradeAdminBean
     }
 
     public List<AccountSubjectDto> getAccountSubjects() {
-        StockTradeDto stockTrade = getActiveObject();
+        StockTradeDto stockTrade = getOpenedObject();
         // 在实体中,name代表科目代码，label代表科目名称
         List<AccountSubject> _subjects = serviceFor(AccountSubject.class).list(//
                 new Like("id", "%" + stockTrade.getSubject().getName() + "%"));
@@ -243,7 +243,7 @@ public class StockTradeAdminBean
     }
 
     public void chooseAccountSubject() {
-        StockTradeDto stockTrade = getActiveObject();
+        StockTradeDto stockTrade = getOpenedObject();
         stockTrade.setSubject(selectedAccountSubject);
     }
 

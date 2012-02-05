@@ -5,7 +5,7 @@
         update=":addPreferredLocationForm" />
 
     <sem:materialFragmentDialog header="推荐库位" id="preferredLocationDialog" widgetVar="preferredLocationDialog"
-        material="#{bean.activeObject}">
+        material="#{bean.openedObject}">
 
         <p:commandButton value="增加推荐库位" update=":addPreferredLocationForm" actionListener="#{bean.newPreferredLocation}"
             onclick="addPreferredLocationDialog.show()" />

@@ -4,7 +4,7 @@
 
     <ui:param name="title" value="BOM" />
     <ui:param name="bean" value="#{bomAdminBean}" />
-    <ui:param name="obj" value="#{bean.activeObject}" />
+    <ui:param name="obj" value="#{bean.openedObject}" />
 
     <ui:define name="sideBarW">
         <p:treeTable id="categoryTree" value="#{bean.materialCategoryTree.rootNode}" var="node" dynamic="true"

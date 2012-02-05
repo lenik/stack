@@ -57,7 +57,7 @@ public class VerifyPolicyPrefBean
 
     public List<? extends VerifyPolicyDto> getCandidates() {
         if (candidates == null) {
-            VerifyPolicyPrefDto pref = getActiveObject();
+            VerifyPolicyPrefDto pref = getOpenedObject();
             if (pref == null)
                 return Collections.emptyList();
             Class<?> verifiableType = pref.getType();

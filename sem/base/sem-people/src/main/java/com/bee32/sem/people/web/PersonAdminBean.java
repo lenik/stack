@@ -52,7 +52,7 @@ public class PersonAdminBean
     }
 
     public List<PersonRoleDto> getRoles() {
-        PersonDto person = getActiveObject();
+        PersonDto person = getOpenedObject();
         List<PersonRoleDto> roles = new ArrayList<PersonRoleDto>();
 
         if (person != null && person.getId() != null) {

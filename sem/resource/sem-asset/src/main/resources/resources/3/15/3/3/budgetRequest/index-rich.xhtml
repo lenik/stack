@@ -5,7 +5,7 @@
 
     <ui:param name="title" value="资金流业务" />
     <ui:param name="bean" value="#{budgetRequestAdminBean}" />
-    <ui:param name="obj" value="#{bean.activeObject}" />
+    <ui:param name="obj" value="#{bean.openedObject}" />
 
     <ui:define name="toolbarPeripherals">
         <p:commandButton value="审核" disabled="#{bean.editable}" onclick="verifyDlg.show();" />

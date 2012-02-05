@@ -83,12 +83,12 @@ public class UserFileBean
     }
 
     public void addTag() {
-        UserFileDto userFile = getActiveObject();
+        UserFileDto userFile = getOpenedObject();
         userFile.getTags().add(selectedTag);
     }
 
     public void removeTag() {
-        UserFileDto userFile = getActiveObject();
+        UserFileDto userFile = getOpenedObject();
         List<UserFileTagnameDto> tags = userFile.getTags();
         tags.remove(selectedTag);
     }

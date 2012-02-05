@@ -21,7 +21,7 @@ public class ACLBean
     ACLEntryDto selectedEntry;
 
     public void clearInheritedACL() {
-        ACLDto acl = getActiveObject();
+        ACLDto acl = getOpenedObject();
         acl.setInheritedACL(new ACLDto());
     }
 
@@ -34,7 +34,7 @@ public class ACLBean
     }
 
     public void removeEntry() {
-        ACLDto acl = getActiveObject();
+        ACLDto acl = getOpenedObject();
         acl.getEntries().remove(selectedEntry);
     }
 
@@ -59,7 +59,7 @@ public class ACLBean
     public void addEntry() {
         if (entry == null)
             throw new NullPointerException("entry");
-        ACLDto acl = getActiveObject();
+        ACLDto acl = getOpenedObject();
         entry.setACL(acl);
 
         List<ACLEntryDto> entries = acl.getEntries();

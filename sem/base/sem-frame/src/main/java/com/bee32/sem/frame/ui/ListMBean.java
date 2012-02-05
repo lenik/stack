@@ -211,7 +211,7 @@ public abstract class ListMBean<T>
         return copy;
     }
 
-    public T getActiveObject() {
+    public T getOpenedObject() {
         return getCopy();
     }
 

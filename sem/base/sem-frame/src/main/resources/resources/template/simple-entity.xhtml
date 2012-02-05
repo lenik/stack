@@ -95,7 +95,7 @@
 
     <ui:define name="editDialogBody">
         <h:form id="form">
-            <h:panelGroup rendered="${bean.activeObject !=null}">
+            <h:panelGroup rendered="${bean.openedObject !=null}">
                 <ui:insert name="editDialogContent">The edit dialog's content is undefined.</ui:insert>
             </h:panelGroup>
             <c:if test="${not plainEditForm}">

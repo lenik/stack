@@ -2,7 +2,7 @@
     xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
     <sem:materialFragmentDialog header="物料自定义属性" id="materialAttributeDialog" widgetVar="materialAttributeDialog"
-        material="#{bean.activeObject}">
+        material="#{bean.openedObject}">
 
         <p:commandButton value="增加自定义属性" update=":addMaterialAttributeForm" actionListener="#{bean.newMaterialAttribute}"
             onclick="addMaterialAttributeDialog.show()" />

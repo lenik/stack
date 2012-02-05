@@ -134,13 +134,13 @@ public class UserAdminBean
     }
 
     public void addRole() {
-        UserDto user = getActiveObject();
+        UserDto user = getOpenedObject();
         user.addAssignedRole(selectedRole);
     }
 
     public void removeRole() {
         if (selectedRole != null) {
-            UserDto user = getActiveObject();
+            UserDto user = getOpenedObject();
             user.removeAssignedRole(selectedRole);
         }
     }
@@ -154,13 +154,13 @@ public class UserAdminBean
     }
 
     public void addGroup() {
-        UserDto user = getActiveObject();
+        UserDto user = getOpenedObject();
         user.addAssignedGroup(selectedGroup);
     }
 
     public void removeGroup() {
         if (selectedGroup != null) {
-            UserDto user = getActiveObject();
+            UserDto user = getOpenedObject();
             user.removeAssignedGroup(selectedGroup);
         }
     }
@@ -174,7 +174,7 @@ public class UserAdminBean
     }
 
     public void savePersonLogin() {
-        UserDto user = getActiveObject();
+        UserDto user = getOpenedObject();
         if (user != null && user.getId() != null) {
             serviceFor(PersonLogin.class).findAndDelete(new Equals("user.id", user.getId()));
             PersonLogin personLogin = new PersonLogin();
@@ -185,7 +185,7 @@ public class UserAdminBean
     }
 
     public PersonDto getPerson() {
-        UserDto user = getActiveObject();
+        UserDto user = getOpenedObject();
         if (user == null || user.getId() == null)
             return null;
 
@@ -201,7 +201,7 @@ public class UserAdminBean
     }
 
     public List<ContactDto> getContacts() {
-        UserDto user = getActiveObject();
+        UserDto user = getOpenedObject();
         List<ContactDto> contacts = new ArrayList<ContactDto>();
         if (user != null && user.getId() != null) {
             PersonLogin personLogin = serviceFor(PersonLogin.class).getUnique(//

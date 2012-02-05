@@ -29,7 +29,7 @@ public abstract class EntityViewBean
     static Logger logger = LoggerFactory.getLogger(EntityViewBean.class);
 
     List<?> selection = new ArrayList<Object>();
-    List<?> activeObjects = new ArrayList<Object>();
+    List<?> openedObjects = new ArrayList<Object>();
 
     public EntityViewBean() {
         if (logger.isTraceEnabled()) {
@@ -169,44 +169,44 @@ public abstract class EntityViewBean
 
     @Override
     public Object getEnclosingObject() {
-        return getActiveObject();
+        return getOpenedObject();
     }
 
     @SuppressWarnings("unchecked")
-    public <T> List<T> getActiveObjects() {
-        return ((List<T>) activeObjects);
+    public <T> List<T> getOpenedObjects() {
+        return ((List<T>) openedObjects);
     }
 
-    public void setActiveObjects(List<?> activeObjects) {
-        if (activeObjects == null)
-            activeObjects = Collections.emptyList();
-        this.activeObjects = activeObjects;
+    public void setOpenedObjects(List<?> openedObjects) {
+        if (openedObjects == null)
+            openedObjects = Collections.emptyList();
+        this.openedObjects = openedObjects;
     }
 
-    public final <T> T getActiveObject(boolean selectionRequired) {
-        T activeObject = getActiveObject();
-        if (!selectionRequired && activeObject == null) {
+    public final <T> T getOpenedObject(boolean selectionRequired) {
+        T openedObject = getOpenedObject();
+        if (!selectionRequired && openedObject == null) {
             uiLogger.error("请先选择对象。");
             return null;
         }
-        return activeObject;
+        return openedObject;
     }
 
-    public final <T> T getActiveObject() {
-        List<?> objects = getActiveObjects();
+    public final <T> T getOpenedObject() {
+        List<?> objects = getOpenedObjects();
         if (objects.isEmpty())
             return null;
         T first = (T) objects.get(0);
         return first;
     }
 
-    public final void setActiveObject(Object activeObject) {
-        List<?> nonNulls = listOfNonNulls(activeObject);
-        setActiveObjects(nonNulls);
+    public final void setOpenedObject(Object openedObject) {
+        List<?> nonNulls = listOfNonNulls(openedObject);
+        setOpenedObjects(nonNulls);
     }
 
-    public final boolean isActived() {
-        return !getActiveObjects().isEmpty();
+    public final boolean isOpened() {
+        return !getOpenedObjects().isEmpty();
     }
 
     @SafeVarargs

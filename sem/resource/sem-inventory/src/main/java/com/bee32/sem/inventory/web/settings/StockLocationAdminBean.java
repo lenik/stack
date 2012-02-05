@@ -45,7 +45,7 @@ public class StockLocationAdminBean
             uiLogger.warn("请先选择需要添加库位的仓库");
             return;
         }
-        StockLocationDto location = getActiveObject();
+        StockLocationDto location = getOpenedObject();
         location.setWarehouse(selectedWarehouse);
         if (location.getCapacityUnit().getId().isEmpty()) {
             UnitDto nullUnitDto = new UnitDto().ref();

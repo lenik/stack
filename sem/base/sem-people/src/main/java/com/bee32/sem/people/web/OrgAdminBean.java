@@ -81,7 +81,7 @@ public class OrgAdminBean
     }
 
     public List<PersonRoleDto> getRoles() {
-        OrgDto org = getActiveObject();
+        OrgDto org = getOpenedObject();
         List<PersonRoleDto> roles = new ArrayList<PersonRoleDto>();
 
         if (org != null && org.getId() != null) {
@@ -140,7 +140,7 @@ public class OrgAdminBean
     }
 
     public void loadOrgUnitTree() {
-        OrgDto org = getActiveObject();
+        OrgDto org = getOpenedObject();
         if (org != null && org.getId() != null) {
             orgUnitRootNode = new DefaultTreeNode(org, null);
 
@@ -209,11 +209,11 @@ public class OrgAdminBean
 
     private void _newRole() {
         role = new PersonRoleDto().create();
-        role.setOrg((OrgDto) getActiveObject());
+        role.setOrg((OrgDto) getOpenedObject());
     }
 
     public void doNewRole() {
-        OrgDto org = getActiveObject();
+        OrgDto org = getOpenedObject();
         if (org == null || org.getId() == null) {
             uiLogger.error("请选择需要新增联系方式的客户/供应商!");
             return;
@@ -231,7 +231,7 @@ public class OrgAdminBean
             return;
         }
 
-        OrgDto org = getActiveObject();
+        OrgDto org = getOpenedObject();
         try {
             org.getRoles().remove(selectedRole);
             serviceFor(Org.class).saveOrUpdate((Org) org.unmarshal());
@@ -243,7 +243,7 @@ public class OrgAdminBean
     }
 
     public void doSaveRole() {
-        OrgDto org = getActiveObject();
+        OrgDto org = getOpenedObject();
         if (org == null || org.getId() == null) {
             uiLogger.error("请选择所操作的相关人员对应的客户/供应商!");
             return;
@@ -308,7 +308,7 @@ public class OrgAdminBean
     }
 
     public void doSaveOrgUnit() {
-        OrgDto org = getActiveObject();
+        OrgDto org = getOpenedObject();
         if (org == null || org.getId() == null) {
             uiLogger.error("请选择所操作的部门对应的客户/供应商!");
             return;
@@ -334,7 +334,7 @@ public class OrgAdminBean
     }
 
     public void onOrgUnitNodeSelect(NodeSelectEvent event) {
-        OrgDto org = getActiveObject();
+        OrgDto org = getOpenedObject();
         if (org != null && org.getId() != null) {
             OrgUnitDto selectedOrgUnit = (OrgUnitDto) event.getTreeNode().getData();
             if (!selectedOrgUnit.isNull()) {

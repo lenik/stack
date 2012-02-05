@@ -23,7 +23,7 @@ public class AccountSubjectAdminBean
 
     public void setParentSubject(AccountSubjectDto parentSubject) {
         this.parentSubject = parentSubject;
-        AccountSubjectDto subject = getActiveObject();
+        AccountSubjectDto subject = getOpenedObject();
         subject.setName(parentSubject.getName());
         subject.setDebitSign(parentSubject.isDebitSign());
         subject.setCreditSign(parentSubject.isCreditSign());

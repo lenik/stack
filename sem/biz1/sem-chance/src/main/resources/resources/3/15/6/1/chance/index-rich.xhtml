@@ -5,7 +5,7 @@
 
     <ui:param name="title" value="销售机会" />
     <ui:param name="bean" value="${chanceBean}" />
-    <ui:param name="obj" value="${bean.activeObject}" />
+    <ui:param name="obj" value="${bean.openedObject}" />
     <ui:param name="dicts" value="${chanceDictsBean}" />
 
     <ui:define name="toolbarPeripherals">
@@ -185,9 +185,9 @@
     <ui:define name="dialogs">
         <sem:singleVerifierSupportDialog id="verifyDialog" update=":editDialog:form" />
         <sem:choosePartyDialog id="choosePartyDialog" header="选择机会客户" stereo="ORG"
-            target="${bean.partiesMBean.activeObject.party}" update=":editDialog:form:tv:partiesView:editForm:body" />
+            target="${bean.partiesMBean.openedObject.party}" update=":editDialog:form:tv:partiesView:editForm:body" />
         <sem:chooseMaterialDialog id="chooseMaterialDialog" header="选择产品/物料"
-            target="${bean.quotationItemsMBean.activeObject.material}" update=":quotationsEditView:editForm:tv:quotationItemsView:editForm:body" />
+            target="${bean.quotationItemsMBean.openedObject.material}" update=":quotationsEditView:editForm:tv:quotationItemsView:editForm:body" />
 
         <fr:listView id="quotationsEditView" indexView=":editDialog:form:tv:quotationsIndexView" header="报价"
             style="editDialog" mbean="${bean.quotationsMBean}">

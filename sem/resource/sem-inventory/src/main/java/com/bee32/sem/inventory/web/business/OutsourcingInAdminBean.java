@@ -119,7 +119,7 @@ public class OutsourcingInAdminBean
 
     @Transactional
     public void preDelete() {
-        StockOrderDto stockOrder = getActiveObject();
+        StockOrderDto stockOrder = getOpenedObject();
         StockOutsourcing o = serviceFor(StockOutsourcing.class).getUnique(new Equals("input.id", stockOrder.getId()));
 
         try {
@@ -135,7 +135,7 @@ public class OutsourcingInAdminBean
     @Override
     protected boolean preUpdate(UnmarshalMap uMap)
             throws Exception {
-        StockOrderDto stockOrder = getActiveObject();
+        StockOrderDto stockOrder = getOpenedObject();
         try {
             stockOutsourcing.setInput(stockOrder);
             StockOutsourcing _stockOutsourcing = stockOutsourcing.unmarshal();

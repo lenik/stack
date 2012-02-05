@@ -41,11 +41,11 @@ public abstract class AbstractPartyAdminBean
     }
 
     protected final PartyDto getParty() {
-        return getActiveObject();
+        return getOpenedObject();
     }
 
     protected final void setParty(PartyDto party) {
-        setActiveObject(party);
+        setOpenedObject(party);
     }
 
     public boolean isContactSelected() {

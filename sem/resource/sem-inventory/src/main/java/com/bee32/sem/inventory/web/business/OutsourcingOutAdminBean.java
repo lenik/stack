@@ -62,7 +62,7 @@ public class OutsourcingOutAdminBean
     }
 
     public void delete() {
-        StockOrderDto stockOrder = getActiveObject();
+        StockOrderDto stockOrder = getOpenedObject();
         try {
             serviceFor(StockOutsourcing.class).findAndDelete(new Equals("output.id", stockOrder.getId()));
             // serviceFor(StockOrder.class).delete(stockOrder.unmarshal());
@@ -74,7 +74,7 @@ public class OutsourcingOutAdminBean
     }
 
     public void save1() {
-        StockOrderDto stockOrder = getActiveObject();
+        StockOrderDto stockOrder = getOpenedObject();
         if (stockOrder.getId() == null) {
             // 新增
 // goNumber = count + 1;

@@ -88,7 +88,7 @@ public class TransferOutAdminBean
 
     @Override
     protected void postUpdate(UnmarshalMap uMap) {
-        StockOrderDto stockOrder = getActiveObject();
+        StockOrderDto stockOrder = getOpenedObject();
         stockTransfer.setSourceWarehouse(getSelectedWarehouse());
         stockTransfer.setSource(stockOrder);
         StockTransfer _stockTransfer = stockTransfer.unmarshal();

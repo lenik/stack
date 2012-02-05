@@ -3,7 +3,7 @@
     <ui:composition>
 
         <sem:materialFragmentDialog header="仓库选项" id="warehouseOptionDialog" widgetVar="warehouseOptionDialog"
-            material="#{bean.activeObject}">
+            material="#{bean.openedObject}">
 
             <p:commandButton value="增加仓库选项" update=":addWarehouseOptionForm" actionListener="#{bean.newWarehouseOption}"
                 onclick="addWarehouseOptionDialog.show()" />

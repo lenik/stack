@@ -121,13 +121,13 @@ public class MaterialExAdminBean
     }
 
     public void chooseMaterialCategory() {
-        MaterialDto material = getActiveObject();
+        MaterialDto material = getOpenedObject();
         MaterialCategoryDto category = (MaterialCategoryDto) choosedMaterialCategoryNode.getData();
         material.setCategory(category);
     }
 
     public List<MaterialPriceDto> getMaterialPrices() {
-        MaterialDto material = getActiveObject();
+        MaterialDto material = getOpenedObject();
         if (material != null && material.getId() != null) {
             material = reload(material, MaterialDto.PRICES);
             return material.getPrices();
@@ -148,7 +148,7 @@ public class MaterialExAdminBean
     }
 
     public void addMaterialPrice() {
-        MaterialDto material = getActiveObject();
+        MaterialDto material = getOpenedObject();
         try {
             materialPrice.setMaterial(material);
             MaterialPrice _price = materialPrice.unmarshal();
@@ -169,7 +169,7 @@ public class MaterialExAdminBean
     }
 
     public List<ScaleItem> getScaleList() {
-        MaterialDto material = getActiveObject();
+        MaterialDto material = getOpenedObject();
         if (material != null && material.getId() != null) {
             UnitConvDto unitConv = material.getUnitConv();
             if (unitConv == null || unitConv.getId() == null) {
@@ -188,7 +188,7 @@ public class MaterialExAdminBean
 
     @Transactional
     public void addUnitScale() {
-        MaterialDto material = getActiveObject();
+        MaterialDto material = getOpenedObject();
         try {
             UnitConvDto unitConv = material.getUnitConv();
             UnitConv _unitConv = unitConv.unmarshal();
@@ -218,7 +218,7 @@ public class MaterialExAdminBean
     }
 
     public void deleteUnitScale() {
-        MaterialDto material = getActiveObject();
+        MaterialDto material = getOpenedObject();
         try {
             Unit unit = scaleItem.getUnit().unmarshal();
             UnitConvDto unitConv = material.getUnitConv();
@@ -247,7 +247,7 @@ public class MaterialExAdminBean
     }
 
     public List<MaterialAttributeDto> getMaterialAttributes() {
-        MaterialDto material = getActiveObject();
+        MaterialDto material = getOpenedObject();
         if (material != null && material.getId() != null) {
             material = reload(material, MaterialDto.ATTRBUTES);
             return material.getAttributes();
@@ -256,7 +256,7 @@ public class MaterialExAdminBean
     }
 
     public void addMaterialAttribute() {
-        MaterialDto material = getActiveObject();
+        MaterialDto material = getOpenedObject();
         try {
             materialAttr.setMaterial(material);
             MaterialAttribute _attr = materialAttr.unmarshal();
@@ -294,7 +294,7 @@ public class MaterialExAdminBean
     }
 
     public List<MaterialPreferredLocationDto> getPreferredLocations() {
-        MaterialDto material = getActiveObject();
+        MaterialDto material = getOpenedObject();
         if (material != null && material.getId() != null) {
             material = reload(material, MaterialDto.PREFERRED_LOCATIONS);
             return material.getPreferredLocations();
@@ -303,7 +303,7 @@ public class MaterialExAdminBean
     }
 
     public void addPreferredLocation() {
-        MaterialDto material = getActiveObject();
+        MaterialDto material = getOpenedObject();
         try {
             preferredLocation.setMaterial(material);
             MaterialPreferredLocation _preferredLocation = preferredLocation.unmarshal();
@@ -341,7 +341,7 @@ public class MaterialExAdminBean
     }
 
     public List<MaterialWarehouseOptionDto> getWarehouseOptions() {
-        MaterialDto material = getActiveObject();
+        MaterialDto material = getOpenedObject();
         if (material != null && material.getId() != null) {
             material = reload(material, MaterialDto.OPTIONS);
             return material.getOptions();
@@ -350,7 +350,7 @@ public class MaterialExAdminBean
     }
 
     public void addWarehouseOption() {
-        MaterialDto material = getActiveObject();
+        MaterialDto material = getOpenedObject();
         try {
             warehouseOption.setMaterial(material);
             MaterialWarehouseOption _warehouseOption = warehouseOption.unmarshal();
@@ -384,7 +384,7 @@ public class MaterialExAdminBean
     }
 
     public List<UserFileDto> getUserFiles() {
-        MaterialDto material = getActiveObject();
+        MaterialDto material = getOpenedObject();
         if (material != null && material.getId() != null) {
             material = reload(material, MaterialDto.ATTACHMENTS);
             return material.getAttachments();
@@ -407,7 +407,7 @@ public class MaterialExAdminBean
                     userFile.setLabel("未命名物料附件");
                     serviceFor(UserFile.class).save(userFile);
 
-                    MaterialDto material = getActiveObject();
+                    MaterialDto material = getOpenedObject();
                     Material _m = material.unmarshal();
                     _m.getAttachments().add(userFile);
                     serviceFor(Material.class).saveOrUpdate(_m);
@@ -438,7 +438,7 @@ public class MaterialExAdminBean
 
     @Transactional
     public void deleteUserFile() {
-        MaterialDto material = getActiveObject();
+        MaterialDto material = getOpenedObject();
         try {
             UserFile _f = userFile.unmarshal();
             Material _m = material.unmarshal();

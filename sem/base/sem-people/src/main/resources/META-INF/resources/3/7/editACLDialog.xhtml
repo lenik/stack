@@ -22,7 +22,7 @@
         <h:outputStylesheet library="3/7/2" name="acl.css" />
 
         <icsf:chooseACLDialog id="acld" var="${fn:replace(cc.parent.clientId, ':', '_')}_acld"
-            target="${cc.parent.attrs.dialogBean.activeObject.inheritedACL}" update=":${cc.parent.clientId}:form:inheritedACL" />
+            target="${cc.parent.attrs.dialogBean.openedObject.inheritedACL}" update=":${cc.parent.clientId}:form:inheritedACL" />
         <icsf:choosePrincipalDialog id="cpd" var="${fn:replace(cc.parent.clientId, ':', '_')}_cpd"
             target="${cc.parent.attrs.dialogBean.entry.principal}" update=":${cc.parent.clientId}:editEntryForm" />
 

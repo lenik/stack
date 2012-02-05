@@ -53,12 +53,12 @@ public class RoleAdminBean
     }
 
     public void addGroup() {
-        RoleDto role = getActiveObject();
+        RoleDto role = getOpenedObject();
         role.addResponsibleGroup(selectedGroup);
     }
 
     public void removeGroup() {
-        RoleDto role = getActiveObject();
+        RoleDto role = getOpenedObject();
         role.removeResponsibleGroup(selectedGroup);
     }
 
@@ -71,12 +71,12 @@ public class RoleAdminBean
     }
 
     public void addUser() {
-        RoleDto role = getActiveObject();
+        RoleDto role = getOpenedObject();
         role.addResponsibleUser(selectedUser);
     }
 
     public void removeUser() {
-        RoleDto role = getActiveObject();
+        RoleDto role = getOpenedObject();
         role.removeResponsibleUser(selectedUser);
     }
 

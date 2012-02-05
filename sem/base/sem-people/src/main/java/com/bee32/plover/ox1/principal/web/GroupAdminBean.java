@@ -56,13 +56,13 @@ public class GroupAdminBean
     }
 
     public void addRole() {
-        GroupDto group = getActiveObject();
+        GroupDto group = getOpenedObject();
         group.addAssignedRole(selectedRole);
     }
 
     public void removeRole() {
         if (selectedRole != null) {
-            GroupDto group = getActiveObject();
+            GroupDto group = getOpenedObject();
             group.removeAssignedRole(selectedRole);
         }
     }
@@ -76,13 +76,13 @@ public class GroupAdminBean
     }
 
     public void addUser() {
-        GroupDto group = getActiveObject();
+        GroupDto group = getOpenedObject();
         group.addMemberUser(selectedUser);
     }
 
     public void removeUser() {
         if (selectedUser != null) {
-            GroupDto group = getActiveObject();
+            GroupDto group = getOpenedObject();
             group.removeMemberUser(selectedUser);
         }
     }

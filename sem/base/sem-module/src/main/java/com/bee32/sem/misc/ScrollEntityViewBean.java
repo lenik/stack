@@ -38,7 +38,7 @@ public class ScrollEntityViewBean
         this.rowNumber = rowNumber;
         this.rowNumberInput = rowNumber;
         //
-        setActiveObject(dto);
+        setOpenedObject(dto);
     }
 
     public boolean isFirst() {

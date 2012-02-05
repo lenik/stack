@@ -5,7 +5,7 @@
         fileUploadListener="#{bean.addUserFileListener.handleFileUpload}" />
 
     <sem:materialFragmentDialog header="物料附件" id="userFileDialog" widgetVar="userFileDialog"
-        material="#{bean.activeObject}">
+        material="#{bean.openedObject}">
 
         <p:commandButton value="上传" onclick="addUserFileDialog.show()" />
 

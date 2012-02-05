@@ -58,7 +58,7 @@ public class ChanceActionBean
     }
 
     public void addParty() {
-        ChanceActionDto action = getActiveObject();
+        ChanceActionDto action = getOpenedObject();
         action.addParty(selectedParty);
     }
 
@@ -71,7 +71,7 @@ public class ChanceActionBean
     }
 
     public void addPartner() {
-        ChanceActionDto action = getActiveObject();
+        ChanceActionDto action = getOpenedObject();
         action.addPartner(selectedPartner);
     }
 
