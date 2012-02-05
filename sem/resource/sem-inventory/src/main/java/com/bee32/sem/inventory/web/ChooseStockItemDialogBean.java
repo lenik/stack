@@ -2,6 +2,7 @@ package com.bee32.sem.inventory.web;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -41,10 +42,14 @@ public class ChooseStockItemDialogBean
     }
 
     protected StockItemList query() {
-        if (queryOptions == null)
+        if (queryOptions == null) {
+            uiLogger.warn("queryOptions is null");
             return null;
-        if (material == null || material.isNull())
+        }
+        if (material == null || material.isNull()) {
+            uiLogger.warn("material is required for stock query");
             return null;
+        }
 
         CommonDataManager dataManager = getBean(CommonDataManager.class);
         List<Material> materials = new ArrayList<Material>();
@@ -63,6 +68,8 @@ public class ChooseStockItemDialogBean
     protected <E extends Entity<?>> List<E> listImpl(EntityDataModelOptions<E, ?> options,
             ICriteriaElement... criteriaElements) {
         StockItemList list = query();
+        if (list == null)
+            return Collections.emptyList();
         List<E> _list = (List<E>) list.getItems();
         return _list;
     }
@@ -71,6 +78,8 @@ public class ChooseStockItemDialogBean
     protected <E extends Entity<?>> int countImpl(EntityDataModelOptions<E, ?> options,
             ICriteriaElement... criteriaElements) {
         StockItemList list = query();
+        if (list == null)
+            return 0;
         return list.getItems().size();
     }
 

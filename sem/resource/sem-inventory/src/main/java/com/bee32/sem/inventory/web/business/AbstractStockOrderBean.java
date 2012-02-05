@@ -14,7 +14,9 @@ import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
+import com.bee32.sem.inventory.service.StockQueryOptions;
 import com.bee32.sem.inventory.util.StockCriteria;
+import com.bee32.sem.inventory.web.ChooseStockItemDialogBean;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.OrgUnitDto;
@@ -34,6 +36,7 @@ public abstract class AbstractStockOrderBean
 
     OrgDto selectedOrg;
     OrgUnitDto selectedOrgUnit;
+
     StockOrderItemDto selectedStockQueryItem;
 
     public AbstractStockOrderBean() {
@@ -44,6 +47,7 @@ public abstract class AbstractStockOrderBean
 
     @Override
     protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
+        super.composeBaseCriteriaElements(elements);
         if (subject != null)
             elements.add(StockCriteria.subjectOf(subject));
         if (selectedWarehouseId != -1 || true) // get nothing if warehouse isn't selected:
@@ -94,7 +98,7 @@ public abstract class AbstractStockOrderBean
         if (this.selectedWarehouseId != selectedWarehouseId) {
             this.selectedWarehouseId = selectedWarehouseId;
             refreshRowCount();
-            gotoFirst();
+            selectRow(1);
         }
     }
 
@@ -121,6 +125,11 @@ public abstract class AbstractStockOrderBean
         this.selectedOrgUnit = selectedOrgUnit;
     }
 
+    public StockQueryOptions getStockQueryOptions() {
+        StockQueryOptions options = ChooseStockItemDialogBean.buildQueryOptions(selectedWarehouseId);
+        return options;
+    }
+
     public StockOrderItemDto getSelectedStockQueryItem() {
         return selectedStockQueryItem;
     }
@@ -136,7 +145,7 @@ public abstract class AbstractStockOrderBean
         orderItem.setLocation(selectedStockQueryItem.getLocation());
     }
 
-    ListMBean<StockOrderItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject", StockOrderItemDto.class);
+    ListMBean<StockOrderItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items", StockOrderItemDto.class);
 
     public ListMBean<StockOrderItemDto> getItemsMBean() {
         return itemsMBean;

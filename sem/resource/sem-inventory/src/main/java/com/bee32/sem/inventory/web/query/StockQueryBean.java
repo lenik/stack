@@ -37,8 +37,6 @@ public class StockQueryBean extends EntityViewBean {
     private List<MaterialDto> materialsToQuery = new ArrayList<MaterialDto>();
     private List<String> selectedMaterialsToQuery;
 
-    private String materialPattern;
-    private List<MaterialDto> materials;
     private MaterialDto selectedMaterial;
 
     private List<StockOrderItemDto> items;
@@ -77,6 +75,14 @@ public class StockQueryBean extends EntityViewBean {
 
     public void setDetailItem(StockOrderItemDto detailItem) {
         this.detailItem = detailItem;
+    }
+
+    public Date getQueryDate() {
+        return queryDate;
+    }
+
+    public void setQueryDate(Date queryDate) {
+        this.queryDate = queryDate;
     }
 
     public List<SelectItem> getMaterialsToQuery() {

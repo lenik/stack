@@ -6,8 +6,6 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.criteria.hibernate.Offset;
-import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.annotation.TypeParameter;
 import com.bee32.plover.orm.util.DTOs;
@@ -33,8 +31,6 @@ public class OutsourcingInAdminBean
     private List<StockOutsourcingDto> findedOuts;
 
     private StockOutsourcingDto selectedOutsourcing;
-
-    private boolean newStatus = false;
 
     public OutsourcingInAdminBean() {
         this.subject = StockOrderSubject.OSP_IN;
@@ -86,47 +82,16 @@ public class OutsourcingInAdminBean
         return null;
     }
 
-    public boolean isNewStatus() {
-        return newStatus;
-    }
-
-    public void setNewStatus(boolean newStatus) {
-        this.newStatus = newStatus;
-    }
-
-    private void loadStockOrder(int position) {
-        StockOrderDto stockOrder = new StockOrderDto().create();
-        stockOutsourcing = new StockOutsourcingDto().create();
-        if (selectedWarehouseId != -1) {
-            StockOrder firstOrder = serviceFor(StockOrder.class).getFirst( //
-                    new Offset(position - 1), //
-// CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
-// StockCriteria.subjectOf(getSubject()), //
-                    new Equals("warehouse.id", selectedWarehouseId), //
-                    Order.asc("id"));
-
-            if (firstOrder != null) {
-                stockOrder = DTOs.marshal(StockOrderDto.class, firstOrder);
-
-                StockOutsourcing o = serviceFor(StockOutsourcing.class).getUnique(
-                        new Equals("input.id", stockOrder.getId()));
-                if (o != null) {
-                    stockOutsourcing = DTOs.marshal(StockOutsourcingDto.class, o);
-                }
-            }
-        }
-    }
-
     @Transactional
     public void preDelete() {
         StockOrderDto stockOrder = getOpenedObject();
-        StockOutsourcing o = serviceFor(StockOutsourcing.class).getUnique(new Equals("input.id", stockOrder.getId()));
-
+        List<StockOutsourcing> jobs = serviceFor(StockOutsourcing.class).list(
+                new Equals("input.id", stockOrder.getId()));
+        for (StockOutsourcing job : jobs) {
+            job.setInput(null);
+        }
         try {
-            if (o != null) {
-                o.setInput(null);
-                serviceFor(StockOutsourcing.class).saveOrUpdate(o);
-            }
+            serviceFor(StockOutsourcing.class).saveOrUpdateAll(jobs);
         } catch (Exception e) {
             uiLogger.warn("删除失败,错误信息:" + e.getMessage());
         }
@@ -139,17 +104,11 @@ public class OutsourcingInAdminBean
         try {
             stockOutsourcing.setInput(stockOrder);
             StockOutsourcing _stockOutsourcing = stockOutsourcing.unmarshal();
-            StockOrder _order = _stockOutsourcing.getInput();
 
             // 保存stockOutsourcing
             serviceFor(StockOutsourcing.class).saveOrUpdate(_stockOutsourcing);
-
-            uiLogger.info("保存成功");
-// loadStockOrder(goNumber);
-// editable = false;
-            newStatus = false;
         } catch (Exception e) {
-            uiLogger.warn("保存失败,错误信息:" + e.getMessage());
+            uiLogger.error("保存失败,错误信息:" + e.getMessage());
         }
         return true;
     }

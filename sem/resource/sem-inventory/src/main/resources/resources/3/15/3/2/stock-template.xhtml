@@ -1,0 +1,195 @@
+<ui:composition template="/template/scroll-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:fr="http://java.sun.com/jsf/composite/frame"
+    xmlns:sem="http://java.sun.com/jsf/composite/3/15">
+
+    <ui:param name="stock" value="#{stockDictsBean}" />
+    <ui:param name="monetary" value="#{monetaryDictsBean}" />
+    <ui:param name="obj" value="#{bean.openedObject}" />
+    <ui:param name="itemObj" value="#{bean.itemsMBean.openedObject}" />
+
+    <ui:define name="toolbarContexts">
+        <h:panelGrid columns="3">
+            <h:outputLabel for="warehouse" value="仓库:" />
+            <p:selectOneMenu id="warehouse" label="仓库" value="#{bean.selectedWarehouseId}">
+                <f:selectItem itemValue="-1" itemLabel="--选择仓库--" />
+                <f:selectItems value="#{stock.warehouseSelectItems}" />
+                <p:ajax event="change" update=":mainForm, :editDialog:form" />
+            </p:selectOneMenu>
+            <p:separator />
+        </h:panelGrid>
+    </ui:define>
+
+    <ui:define name="editDialogContent">
+        <ui:insert name="edit-pre" />
+        <ui:insert name="edit-main">
+            <t:panelGrid columns="4">
+                <h:outputText value="时间" />
+                <h:outputText value="#{obj.createdDate}">
+                    <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                </h:outputText>
+                <h:outputText value="简要" />
+                <p:inputText value="#{obj.label}" />
+
+                <ui:insert name="edit-pre-fields" />
+
+                <h:outputText value="描述" />
+                <t:panelGroup colspan="3">
+                    <p:inputText value="#{obj.description}" />
+                </t:panelGroup>
+
+                <h:outputText value="对应公司" />
+                <t:panelGroup>
+                    <p:inputText id="org" value="#{obj.org.name}" readonly="true" />
+                    <p:commandButton value="..." oncomplete="chooseOrgDialog.show()">
+                        <f:setPropertyActionListener target="#{choosePartyDialogBean.stereo}"
+                            value="ORG" />
+                    </p:commandButton>
+                </t:panelGroup>
+                <h:outputText value="对应部门" />
+                <t:panelGroup>
+                    <p:inputText id="orgUnit" value="#{obj.orgUnit.name}" readonly="true" />
+                    <p:commandButton value="..." onclick="chooseOrgUnitDialog.show()">
+                        <f:setPropertyActionListener target="#{chooseOrgUnitDialogBean.orgId}"
+                            value="#{obj.org.id}" />
+                    </p:commandButton>
+                </t:panelGroup>
+
+                <h:outputText value="制单人" />
+                <p:inputText value="#{obj.owner.displayName}" disabled="true" />
+                <h:outputText value="单据状态" />
+                <p:inputText value="#{obj.verifyContext.verifyEvalState} #{obj.verifyContext.rejectedReason1}"
+                    disabled="true" />
+            </t:panelGrid>
+        </ui:insert>
+        <ui:insert name="edit-more" />
+
+        <fr:listView id="itemsIndexView" header="明细" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
+            nested="true">
+            <f:facet name="columns">
+                <p:column headerText="物料" sortBy="#{entry.material.label}">
+                    <h:outputText value="#{entry.material.label}" />
+                </p:column>
+
+                <p:column headerText="规格型号">
+                    <h:outputText value="#{entry.material.modelSpec}" />
+                </p:column>
+
+                <p:column headerText="单位">
+                    <h:outputText value="#{entry.material.unit.name}" />
+                </p:column>
+
+                <p:column headerText="批号">
+                    <h:outputText value="#{entry.batch}" />
+                </p:column>
+
+                <p:column headerText="有效期">
+                    <h:outputText value="#{entry.expirationDate}" />
+                </p:column>
+
+                <p:column headerText="库位">
+                    <h:outputText value="#{entry.location.nodeText}" />
+                </p:column>
+
+                <p:column headerText="单价">
+                    <h:outputText value="#{entry.price.value}" />
+                </p:column>
+
+                <p:column headerText="币种">
+                    <h:outputText value="#{entry.price.currencyText}" />
+                </p:column>
+
+                <p:column headerText="数量">
+                    <h:outputText value="#{entry.quantity}" />
+                </p:column>
+
+                <p:column headerText="备注">
+                    <h:outputText value="#{entry.description}" />
+                </p:column>
+            </f:facet>
+        </fr:listView>
+    </ui:define>
+
+    <ui:define name="dialogs">
+        <sem:singleVerifierSupportDialog id="verifyDialog" update=":mainForm" />
+        <sem:choosePartyDialog id="chooseOrgDialog" var="chooseOrgDialog" stereo="ORG" target="#{obj.org}"
+            update=":editDialog:form" />
+        <sem:chooseOrgUnitDialog id="chooseOrgUnitDialog" target="#{obj.orgUnit}" update=":editDialog:form" />
+        <sem:chooseStockLocationDialog id="chooseStockLocationDialog" target="#{itemObj.location}"
+            update=":itemsEditView:editForm" />
+        <sem:chooseMaterialDialog id="chooseMaterialDialog" target="#{itemObj.material}"
+            update=":itemsEditView:editForm" />
+        <sem:inputQuantityDialog id="inputQuantityDialog" target="#{itemObj.quantity}" update=":itemsEditView:editForm" />
+        <c:if test="${not disableStockQuery}">
+            <sem:chooseStockItemDialog id="chooseStockItemDialog" target="#{bean.selectedStockQueryItem}"
+                actionListener="#{bean.applySelectedStockQueryItem}" />
+        </c:if>
+
+        <fr:listView id="itemsEditView" header="明细" style="editDialog" indexView=":editDialog:form:itemsIndexView"
+            mbean="#{bean.itemsMBean}">
+            <t:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+                <h:outputLabel value="物料" />
+                <t:panelGroup colspan="3">
+                    <p:inputText value="#{item.material.label}" readonly="true" />
+                    <p:commandButton value="..." onclick="chooseMaterialDialog.show();" />
+                </t:panelGroup>
+
+                <c:if test="${not disableStockQuery}">
+                    <t:panelGroup colspan="2">
+                        <p:commandButton value="查询库存" oncomplete="chooseStockItemDialog.show()">
+                            <f:setPropertyActionListener target="#{chooseStockItemDialogBean.queryOptions}"
+                                value="#{bean.stockQueryOptions}" />
+                            <f:setPropertyActionListener target="#{chooseStockItemDialogBean.material}"
+                                value="#{item.material}" />
+                        </p:commandButton>
+                    </t:panelGroup>
+                    <t:panelGroup colspan="2" />
+                </c:if>
+
+                <h:outputLabel value="批号" />
+                <p:inputText value="#{item.batch}" />
+                <h:outputLabel value="有效期" />
+                <p:calendar navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{item.expirationDate}"
+                    showOn="button" />
+
+                <h:outputLabel value="库位" />
+                <t:panelGroup colspan="3">
+                    <p:inputText value="#{item.location.nodeText}" readonly="true" />
+                    <p:commandButton value="..." oncomplete="chooseStockLocationDialog.show();">
+                        <f:setPropertyActionListener target="#{chooseStockLocationDialogBean.warehouse}"
+                            value="#{bean.selectedWarehouse}" />
+                        <f:setPropertyActionListener target="#{chooseStockLocationDialogBean.material}"
+                            value="#{item.material}" />
+                    </p:commandButton>
+                </t:panelGroup>
+
+                <h:outputLabel value="数量" />
+                <t:panelGroup colspan="2">
+                    <p:inputText value="#{item.quantity}" />
+                    <h:outputText value="#{item.material.unit.name}" />
+                </t:panelGroup>
+                <p:commandButton id="inputQuantity" value="..." oncomplete="inputQuantityDialog.show()">
+                    <f:setPropertyActionListener target="#{inputQuantityDialogBean.unitUnit}"
+                        value="#{item.material.unit}" />
+                    <f:setPropertyActionListener target="#{inputQuantityDialogBean.unitQuantity}"
+                        value="#{item.quantity}" />
+                    <f:setPropertyActionListener target="#{inputQuantityDialogBean.unitConv}"
+                        value="#{item.material.unitConv}" />
+                </p:commandButton>
+
+                <h:outputLabel value="单价" />
+                <p:inputText value="#{item.price.value}" />
+                <h:outputLabel value="币种" />
+                <p:selectOneMenu value="#{item.price.currencyCode}" style="width: 20em;">
+                    <f:selectItem itemValue="" itemLabel="--选择币种--" />
+                    <f:selectItems value="#{monetary.currencySelectItems}" />
+                </p:selectOneMenu>
+
+                <h:outputLabel value="备注" />
+                <t:panelGroup colspan="3">
+                    <p:inputText value="#{item.description}" style="width: 40em" />
+                </t:panelGroup>
+            </t:panelGrid>
+        </fr:listView>
+    </ui:define>
+</ui:composition>

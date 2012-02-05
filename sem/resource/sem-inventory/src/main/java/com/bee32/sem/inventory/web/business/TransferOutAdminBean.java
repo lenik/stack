@@ -1,8 +1,6 @@
 package com.bee32.sem.inventory.web.business;
 
 import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.criteria.hibernate.Offset;
-import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.annotation.TypeParameter;
 import com.bee32.plover.orm.util.DTOs;
@@ -33,27 +31,28 @@ public class TransferOutAdminBean
         this.stockTransfer = stockTransfer;
     }
 
-    private void loadStockOrder(int position) {
-        StockOrderDto stockOrder = new StockOrderDto().create();
-        stockTransfer = new StockTransferDto().create();
-        if (selectedWarehouseId != -1) {
-            StockOrder firstOrder = serviceFor(StockOrder.class).getFirst( //
-                    new Offset(position - 1), //
-// CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
-// StockCriteria.subjectOf(getSubject()), //
-// new Equals("warehouse.id", selectedWarehouse.getId()), //
-                    Order.asc("id"));
-
-            if (firstOrder != null) {
-                stockOrder = DTOs.marshal(StockOrderDto.class, firstOrder);
-
-                StockTransfer t = serviceFor(StockTransfer.class)
-                        .getUnique(new Equals("source.id", stockOrder.getId()));
-                if (t != null) {
-                    stockTransfer = DTOs.marshal(StockTransferDto.class, -1, t);
-                }
-            }
+    @Override
+    protected void openSelection() {
+        super.openSelection();
+        StockOrderDto stockOrder = getOpenedObject();
+        if (stockOrder == null)
+            stockTransfer = null;
+        else {
+            StockTransfer _transfer = serviceFor(StockTransfer.class).getUnique(
+                    new Equals("source.id", stockOrder.getId()));
+            if (_transfer == null) // unexpected.
+                stockTransfer = new StockTransferDto().create();
+            else
+                stockTransfer = DTOs.marshal(StockTransferDto.class, -1, _transfer);
+            stockTransfer.setSource(stockOrder); // this is an optim.
         }
+    }
+
+    @Override
+    protected StockOrderDto create() {
+        StockOrderDto stockOrder = super.create();
+        stockTransfer = new StockTransferDto().create();
+        return stockOrder;
     }
 
     @Override
@@ -88,16 +87,22 @@ public class TransferOutAdminBean
 
     @Override
     protected void postUpdate(UnmarshalMap uMap) {
-        StockOrderDto stockOrder = getOpenedObject();
-        stockTransfer.setSourceWarehouse(getSelectedWarehouse());
-        stockTransfer.setSource(stockOrder);
-        StockTransfer _stockTransfer = stockTransfer.unmarshal();
-        StockOrder _order = _stockTransfer.getSource();
-        // save(_stockTransfer);
-    }
+        for (StockOrder _stockOrder : uMap.<StockOrder> entitySet()) {
+            StockTransfer _stockTransfer = stockTransfer.unmarshal();
+            _stockTransfer.setSource(_stockOrder);
 
-    public void choosePerson() {
-        // stockTransfer.setTransferredBy(selectedPerson);
+            // 在拨出的同时立即初始化拨入。
+            StockOrder _dest = _stockTransfer.getDest();
+            if (_dest == null) {
+                _dest = new StockOrder();
+                _dest.setSubject(StockOrderSubject.XFER_IN);
+                asFor(StockOrder.class).save(_dest);
+                _stockTransfer.setDest(_dest);
+            }
+
+            asFor(StockTransfer.class).saveOrUpdate(_stockTransfer);
+            break;
+        }
     }
 
 }

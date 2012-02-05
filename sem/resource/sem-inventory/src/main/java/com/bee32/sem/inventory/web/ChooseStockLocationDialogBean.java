@@ -3,7 +3,6 @@ package com.bee32.sem.inventory.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.free.Nullables;
 import javax.free.ReadOnlyException;
 
 import org.slf4j.Logger;
@@ -13,7 +12,9 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.faces.utils.SelectableList;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.StockLocationDto;
+import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.MaterialPreferredLocation;
 import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.misc.SimpleTreeEntityViewBean;
@@ -27,8 +28,8 @@ public class ChooseStockLocationDialogBean
     static Logger logger = LoggerFactory.getLogger(ChooseStockLocationDialogBean.class);
 
     String header = "Please choose a stock location..."; // NLS: 选择用户或组
-    Integer warehouseId;
-    Long materialId;
+    StockWarehouseDto warehouse;
+    MaterialDto material;
     final TreeNodeSelectionHolder fullSelectionHolder = new TreeNodeSelectionHolder();
     List<StockLocationDto> preferredLocations;
     StockLocationDto selectedPreferredLocation;
@@ -39,8 +40,8 @@ public class ChooseStockLocationDialogBean
 
     @Override
     protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
-        if (warehouseId != null)
-            elements.add(new Equals("warehouse.id", warehouseId));
+        if (warehouse != null && !warehouse.isNull())
+            elements.add(new Equals("warehouse.id", warehouse.getId()));
     }
 
     // Properties
@@ -53,23 +54,21 @@ public class ChooseStockLocationDialogBean
         this.header = header;
     }
 
-    public Integer getWarehouseId() {
-        return warehouseId;
+    public StockWarehouseDto getWarehouse() {
+        return warehouse;
     }
 
-    public void setWarehouseId(Integer warehouseId) {
-        this.warehouseId = warehouseId;
+    public void setWarehouse(StockWarehouseDto warehouse) {
+        this.warehouse = warehouse;
     }
 
-    public Long getMaterialId() {
-        return materialId;
+    public MaterialDto getMaterial() {
+        return material;
     }
 
-    public void setMaterialId(Long materialId) {
-        if (!Nullables.equals(this.materialId, materialId)) {
-            this.materialId = materialId;
-            this.preferredLocations = null;
-        }
+    public void setMaterial(MaterialDto material) {
+        this.material = material;
+        preferredLocations = null;
     }
 
     public TreeNodeSelectionHolder getFullSelectionHolder() {
@@ -79,9 +78,9 @@ public class ChooseStockLocationDialogBean
     public synchronized SelectableList<StockLocationDto> getPreferredLocations() {
         if (preferredLocations == null) {
             List<StockLocationDto> list = new ArrayList<StockLocationDto>();
-            if (materialId != null) {
+            if (material != null && !material.isNull()) {
                 for (MaterialPreferredLocation mpl : asFor(MaterialPreferredLocation.class).list(
-                        new Equals("material.id", materialId))) {
+                        new Equals("material.id", material.getId()))) {
                     StockLocation _location = mpl.getLocation();
                     StockLocationDto location = DTOs.mref(StockLocationDto.class, _location);
                     list.add(location);

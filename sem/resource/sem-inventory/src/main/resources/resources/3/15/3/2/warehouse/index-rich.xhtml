@@ -1,239 +1,53 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core"
-    xmlns:sem="http://bee32.com/sem/functions" xmlns:p="http://primefaces.org/ui"
-    xmlns:t="http://myfaces.apache.org/tomahawk">
-<!-- InstanceBegin template="/Templates/seccaJsf.dwt.jsp" codeOutsideHTMLIsLocked="false" -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-</head>
+<ui:composition template="/template/simple-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
-<ui:composition template="/template/primefaces.xhtml">
+    <ui:param name="title" value="仓库" />
+    <ui:param name="bean" value="${stockWarehouseAdminBean}" />
 
-    <ui:define name="title">仓库设置</ui:define>
+    <ui:define name="dataColumns">
+        <p:column headerText="名称">
+            <h:outputText value="#{entry.name}" />
+        </p:column>
 
-    <ui:define name="content">
+        <p:column headerText="地址">
+            <h:outputText value="#{entry.address}" />
+        </p:column>
 
-		<style type="text/css">
-	        .actions td {
-	            border: 0px none !important;
-	            padding: 2px !important;
-	        }
-        </style>
+        <p:column headerText="电话">
+            <h:outputText value="#{entry.phone}" />
+        </p:column>
 
-		<h:form id="mainForm">
-			<p:commandButton update="mainForm:display"
-				oncomplete="stockWarehouseDialog.show()" value="新增" title="Edit">
-                <f:setPropertyActionListener value="#{stockWarehouseAdminBean.nullStockWarehouse}"
-                    target="#{stockWarehouseAdminBean.selectedStockWarehouse}" />
-                <f:setPropertyActionListener value="#{true}"
-                    target="#{stockWarehouseAdminBean.editMode}" />
-			</p:commandButton>
-			<p:dataTable id="stockWarehouses" var="stockWarehouse" value="#{stockWarehouseAdminBean.stockWarehouses}">
+        <p:column headerText="负责人">
+            <h:outputText value="#{entry.manager.name}" />
+        </p:column>
+    </ui:define>
 
-				<p:column headerText="名称">
-					<h:outputText value="#{stockWarehouse.name}" />
-				</p:column>
+    <ui:define name="editDialogContent">
+        <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">
+            <h:outputText value="名称:" />
+            <p:inputText value="#{obj.name}" required="true" label="名称" />
 
-				<p:column headerText="地址">
-					<h:outputText value="#{stockWarehouse.address}" />
-				</p:column>
+            <h:outputText value="地址:" />
+            <p:inputText value="#{obj.address}" label="地址" />
 
-				<p:column headerText="电话">
-					<h:outputText value="#{stockWarehouse.phone}" />
-				</p:column>
+            <h:outputText value="电话:" />
+            <p:inputText value="#{obj.phone}" label="电话" />
 
-				<p:column headerText="负责人">
-					<h:outputText value="#{stockWarehouse.manager.name}" />
-				</p:column>
+            <h:outputText value="负责人:" />
+            <h:panelGroup>
+                <p:inputText value="#{obj.manager.name}" label="负责人" />
+                <p:commandButton value="..." oncomplete="chooseManagerDialog.show();">
+                    <f:setPropertyActionListener target="${choosePartyDialogBean.stereo}"
+                        value="PER" />
+                </p:commandButton>
+            </h:panelGroup>
+        </h:panelGrid>
+    </ui:define>
 
-				<p:column headerText="操作" style="width:120px;">
-					<h:panelGrid columns="3" cellpadding="2" styleClass="actions">
-						<p:commandButton update="mainForm:display"
-							oncomplete="stockWarehouseDialog.show()" image="ui-icon ui-icon-search"
-							title="查看">
-							<f:setPropertyActionListener value="#{stockWarehouse}"
-								target="#{stockWarehouseAdminBean.selectedStockWarehouse}" />
-							<f:setPropertyActionListener value="#{false}"
-								target="#{stockWarehouseAdminBean.editMode}" />
-						</p:commandButton>
-						<p:commandButton update="mainForm:display"
-							oncomplete="stockWarehouseDialog.show()" image="ui-icon ui-icon-pencil"
-							title="修改">
-							<f:setPropertyActionListener value="#{stockWarehouse}"
-								target="#{stockWarehouseAdminBean.selectedStockWarehouse}" />
-							<f:setPropertyActionListener value="#{true}"
-								target="#{stockWarehouseAdminBean.editMode}" />
-						</p:commandButton>
-						<p:commandButton update="mainForm:display"
-							oncomplete="confirmation.show()" image="ui-icon ui-icon-close"
-							title="删除">
-							<f:setPropertyActionListener value="#{stockWarehouse}"
-								target="#{stockWarehouseAdminBean.selectedStockWarehouse}" />
-						</p:commandButton>
-					</h:panelGrid>
-				</p:column>
-			</p:dataTable>
+    <ui:define name="dialogs">
+        <sem:choosePartyDialog id="chooseManagerDialog" var="chooseManagerDialog" stereo="PEO"
+            header="选择负责人..." target="${obj.manager}" update=":editDialog:form" />
+    </ui:define>
 
-			<p:dialog header="仓库详细" widgetVar="stockWarehouseDialog"
-				id="stockWarehouseDlg" width="500" showEffect="fade" hideEffect="explode"
-				modal="true">
-
-				<h:panelGrid id="display" columns="2" cellpadding="4"
-					style="margin:0 auto;">
-
-					<h:outputText value="名称:" />
-					<h:panelGroup>
-						<h:outputText value="#{stockWarehouseAdminBean.selectedStockWarehouse.name}"
-							style="font-weight:bold" rendered="#{!stockWarehouseAdminBean.editMode}" />
-						<p:inputText value="#{stockWarehouseAdminBean.selectedStockWarehouse.name}"
-							rendered="#{stockWarehouseAdminBean.editMode}" required="true" label="名称" />
-					</h:panelGroup>
-
-					<h:outputText value="地址:" />
-					<h:panelGroup>
-						<h:outputText value="#{stockWarehouseAdminBean.selectedStockWarehouse.address}"
-							style="font-weight:bold" rendered="#{!stockWarehouseAdminBean.editMode}" />
-						<p:inputText value="#{stockWarehouseAdminBean.selectedStockWarehouse.address}"
-							rendered="#{stockWarehouseAdminBean.editMode}" label="地址" />
-					</h:panelGroup>
-
-					<h:outputText value="电话:" />
-					<h:panelGroup>
-						<h:outputText value="#{stockWarehouseAdminBean.selectedStockWarehouse.phone}"
-							style="font-weight:bold" rendered="#{!stockWarehouseAdminBean.editMode}" />
-                        <p:inputText value="#{stockWarehouseAdminBean.selectedStockWarehouse.phone}"
-                            rendered="#{stockWarehouseAdminBean.editMode}" label="电话" />
-					</h:panelGroup>
-
-					<h:outputText value="负责人:" />
-					<h:panelGroup>
-						<h:outputText value="#{stockWarehouseAdminBean.selectedStockWarehouse.manager.name}"
-							style="font-weight:bold" rendered="#{!stockWarehouseAdminBean.editMode}" />
-						<h:panelGrid columns="2" rendered="#{stockWarehouseAdminBean.editMode}">
-							<p:inputText
-								value="#{stockWarehouseAdminBean.selectedStockWarehouse.manager.name}"
-								label="负责人" />
-							<p:commandButton value="..." oncomplete="personHolderDlg.show();" />
-						</h:panelGrid>
-					</h:panelGroup>
-
-					<f:facet name="footer">
-						<p:outputPanel rendered="#{stockWarehouseAdminBean.editMode}" layout="block"
-							style="text-align:right">
-							<p:commandButton value="保存" update="mainForm:stockWarehouses mainForm:msgs"
-								actionListener="#{stockWarehouseAdminBean.save}"
-								oncomplete="stockWarehouseDialog.hide()"
-								image="ui-icon ui-icon-check" />
-							<p:commandButton value="取消" onclick="stockWarehouseDialog.hide()"
-								type="button" image="ui-icon ui-icon-close" />
-
-						</p:outputPanel>
-					</f:facet>
-				</h:panelGrid>
-
-			</p:dialog>
-
-			<p:confirmDialog message="确定要删除吗?" width="200"
-				showEffect="explode" hideEffect="explode" header="确认"
-				severity="alert" widgetVar="confirmation" modal="true">
-
-				<p:commandButton value="确定" update="stockWarehouses"
-					actionListener="#{stockWarehouseAdminBean.delete}"
-					oncomplete="confirmation.hide()" />
-				<p:commandButton value="取消" onclick="confirmation.hide()"
-					type="button" />
-
-			</p:confirmDialog>
-
-
-		</h:form>
-
-		<h:form id="personForm">
-			<p:dialog header="选择联系人" widgetVar="personHolderDlg" modal="true"
-				height="400" width="640">
-				<h:panelGroup>
-
-					<h:panelGrid columns="3">
-						<h:outputLabel value="联系人名字全部或部份:" />
-						<p:inputText value="#{stockWarehouseAdminBean.personPattern}" />
-						<p:commandButton value="查找"
-							actionListener="#{stockWarehouseAdminBean.findPerson}" update="persons"
-							async="true" />
-					</h:panelGrid>
-					<p:dataTable id="persons" var="person"
-						value="#{stockWarehouseAdminBean.persons}" resizableColumns="true"
-						selection="#{stockWarehouseAdminBean.selectedPerson}" selectionMode="single"
-                        rowKey="#{person.id}"
-						rowIndexVar="rowIndex">
-
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="序号" />
-							</f:facet>
-							<h:outputText value="#{rowIndex + 1}" />
-						</p:column>
-
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="姓名" />
-							</f:facet>
-							<h:outputText value="#{person.displayName}" />
-						</p:column>
-
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="性别" />
-							</f:facet>
-							<h:outputText value="#{person.sexText}" />
-						</p:column>
-
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="生日" />
-							</f:facet>
-							<h:outputText value="#{person.birthday}">
-								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-							</h:outputText>
-						</p:column>
-
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="证件类型" />
-							</f:facet>
-							<h:outputText value="#{person.sidType.label}" />
-						</p:column>
-
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="证件号码" />
-							</f:facet>
-							<h:outputText value="#{person.sid}" />
-						</p:column>
-
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="户籍" />
-							</f:facet>
-							<h:outputText value="#{person.censusRegister}" />
-						</p:column>
-
-					</p:dataTable>
-					<h:panelGrid columns="2">
-						<p:commandButton value="确定"
-							actionListener="#{stockWarehouseAdminBean.choosePerson}"
-							oncomplete="personHolderDlg.hide();" update="mainForm:display"
-							async="true" />
-						<p:commandButton value="取消" oncomplete="personHolderDlg.hide();" />
-					</h:panelGrid>
-				</h:panelGroup>
-			</p:dialog>
-
-		</h:form>
-
-	</ui:define>
 </ui:composition>
-</html>
