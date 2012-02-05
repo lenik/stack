@@ -26,13 +26,14 @@ public class SEMInventoryModuleTest
 
     @Override
     protected int getRefreshPeriod() {
-        return 10;
+        return 5;
     }
 
     public static void main(String[] args)
             throws IOException {
         new SEMInventoryModuleTest().browseAndWait(//
-                SEMInventoryModule.PREFIX + "/material/");
+                // SEMInventoryModule.PREFIX + "/material/" //
+                SEMInventoryModule.PREFIX + "/take/?subject=TK_O" //
+                );
     }
-
 }
