@@ -26,6 +26,9 @@ public class ChoosePartyDialogBean
 
     String header = "Please choose a party..."; // NLS: 选择用户或组
     String stereo;
+    Boolean employee;
+    Boolean customer;
+    Boolean supplier;
     Integer tagId;
 
     public ChoosePartyDialogBean() {
@@ -35,6 +38,12 @@ public class ChoosePartyDialogBean
 
     @Override
     protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
+        if (employee != null)
+            elements.add(new Equals("employee", employee));
+        if (customer != null)
+            elements.add(new Equals("customer", employee));
+        if (supplier != null)
+            elements.add(new Equals("supplier", employee));
         if (tagId != null) {
             elements.add(new Alias("tags", "tag"));
             elements.add(new Equals("tag.id", tagId));
@@ -71,6 +80,33 @@ public class ChoosePartyDialogBean
         default:
             throw new IllegalArgumentException("Bad stereo: " + stereo);
         }
+    }
+
+    public Boolean getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Boolean employee) {
+        this.employee = employee;
+        refreshRowCount();
+    }
+
+    public Boolean getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Boolean customer) {
+        this.customer = customer;
+        refreshRowCount();
+    }
+
+    public Boolean getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Boolean supplier) {
+        this.supplier = supplier;
+        refreshRowCount();
     }
 
     public void setTagId(Integer tagId) {
