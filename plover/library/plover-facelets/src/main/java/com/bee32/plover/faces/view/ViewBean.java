@@ -38,14 +38,14 @@ public abstract class ViewBean
 
     public ViewBean() {
         // wire();
-        create();
+        createTransients();
         getMetadata().addViewBean(this);
     }
 
     private void readObject(ObjectInputStream in)
             throws ClassNotFoundException, IOException {
         in.defaultReadObject();
-        create();
+        createTransients();
     }
 
     public ViewMetadata getMetadata() {
@@ -62,7 +62,7 @@ public abstract class ViewBean
         factory.autowireBean(this);
     }
 
-    protected void create() {
+    protected void createTransients() {
         uiLogger = new FacesUILogger(false);
         uiHtmlLogger = new FacesUILogger(true);
     }
