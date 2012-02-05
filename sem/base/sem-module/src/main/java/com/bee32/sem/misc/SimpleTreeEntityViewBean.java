@@ -18,6 +18,7 @@ import com.bee32.plover.ox1.tree.TreeEntity;
 import com.bee32.plover.ox1.tree.TreeEntityDto;
 import com.bee32.plover.ox1.tree.TreeEntityUtils;
 import com.bee32.sem.sandbox.UIHelper;
+import com.bee32.sem.sandbox.ZLazyDataModel;
 
 public abstract class SimpleTreeEntityViewBean
         extends SimpleEntityViewBean {
@@ -37,6 +38,7 @@ public abstract class SimpleTreeEntityViewBean
     }
 
     protected synchronized TreeNode loadTree() {
+        ZLazyDataModel<?, ?> dataModel = (ZLazyDataModel<?, ?>) getDataModel();
         List<? extends TreeEntityDto<?, ?, ?>> dtos = (List<? extends TreeEntityDto<?, ?, ?>>) dataModel.listDtos();
         index = DTOs.index(dtos);
 

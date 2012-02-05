@@ -16,6 +16,7 @@ import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.ox1.dict.NameDict;
 import com.bee32.plover.ox1.dict.NameDictDto;
 import com.bee32.sem.sandbox.UIHelper;
+import com.bee32.sem.sandbox.ZLazyDataModel;
 
 public abstract class CodeTreeEntityViewBean
         extends SimpleEntityViewBean {
@@ -34,6 +35,7 @@ public abstract class CodeTreeEntityViewBean
     }
 
     protected synchronized TreeNode loadTree() {
+        ZLazyDataModel<?, ?> dataModel = (ZLazyDataModel<?, ?>) this.dataModel;
         List<? extends NameDictDto<?>> dtos = (List<? extends NameDictDto<?>>) dataModel.listDtos();
 
         TreeNode root = UIHelper.buildDtoCodeTree(dtos);
