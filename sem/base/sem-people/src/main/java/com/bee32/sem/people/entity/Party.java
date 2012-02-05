@@ -32,7 +32,6 @@ import org.hibernate.annotations.NaturalId;
 import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.xp.EntityExt;
 
@@ -88,7 +87,6 @@ public abstract class Party
     /**
      * 名称
      */
-    @NLength(min = 1)
     @Transient
     public String getName() {
         return label;
@@ -308,7 +306,7 @@ public abstract class Party
 
     @Override
     protected void populateKeywords(Collection<String> keywords) {
-        keywords.add(getName());
+        keywords.add(getLabel());
         keywords.add(getFullName());
     }
 

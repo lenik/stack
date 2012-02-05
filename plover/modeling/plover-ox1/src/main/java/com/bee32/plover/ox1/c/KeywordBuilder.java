@@ -19,7 +19,8 @@ public class KeywordBuilder
 
     @Override
     public boolean add(String e) {
-        buffer.append(e);
+        if (e != null && !e.isEmpty())
+            buffer.append(e);
         return true;
     }
 
