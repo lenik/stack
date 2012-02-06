@@ -14,13 +14,13 @@ import com.bee32.sem.file.entity.FileBlob;
 import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.file.web.IncomingFile;
 import com.bee32.sem.file.web.IncomingFileBlobAdapter;
+import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.MaterialAttributeDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.MaterialPreferredLocationDto;
 import com.bee32.sem.inventory.dto.MaterialPriceDto;
 import com.bee32.sem.inventory.dto.MaterialWarehouseOptionDto;
 import com.bee32.sem.inventory.entity.Material;
-import com.bee32.sem.inventory.entity.MaterialAttribute;
 import com.bee32.sem.inventory.entity.MaterialPreferredLocation;
 import com.bee32.sem.inventory.entity.MaterialPrice;
 import com.bee32.sem.inventory.entity.MaterialWarehouseOption;
@@ -40,7 +40,6 @@ public class MaterialExAdminBean
 
     MaterialPriceDto materialPrice = new MaterialPriceDto().create();
     ScaleItem scaleItem = new ScaleItem();
-    MaterialAttributeDto materialAttr = new MaterialAttributeDto().create();
     MaterialPreferredLocationDto preferredLocation = new MaterialPreferredLocationDto().create();
     MaterialWarehouseOptionDto warehouseOption = new MaterialWarehouseOptionDto().create();
     UserFileDto userFile = new UserFileDto().create();
@@ -205,53 +204,6 @@ public class MaterialExAdminBean
             uiLogger.info("删除换算关系成功.");
         } catch (Exception e) {
             uiLogger.error("删除换算关系出错!", e);
-        }
-    }
-
-    public MaterialAttributeDto getMaterialAttr() {
-        return materialAttr;
-    }
-
-    public void setMaterialAttr(MaterialAttributeDto materialAttr) {
-        this.materialAttr = materialAttr;
-    }
-
-    public void newMaterialAttribute() {
-        materialAttr = new MaterialAttributeDto().create();
-    }
-
-    public List<MaterialAttributeDto> getMaterialAttributes() {
-        MaterialDto material = getOpenedObject();
-        if (material != null && material.getId() != null) {
-            material = reload(material, MaterialDto.ATTRBUTES);
-            return material.getAttributes();
-        }
-        return null;
-    }
-
-    public void addMaterialAttribute() {
-        MaterialDto material = getOpenedObject();
-        try {
-            materialAttr.setMaterial(material);
-            MaterialAttribute _attr = materialAttr.unmarshal();
-            serviceFor(MaterialAttribute.class).saveOrUpdate(_attr);
-            serviceFor(Material.class).evict(_attr.getMaterial());
-            uiLogger.info("保存物料属性成功.");
-        } catch (Exception e) {
-            uiLogger.error("保存物料属性出错!", e);
-        }
-    }
-
-    public void deleteMaterialAttribute() {
-        try {
-            MaterialAttribute _attr = materialAttr.unmarshal();
-            _attr.getMaterial().getAttributes().remove(_attr);
-
-            serviceFor(MaterialAttribute.class).delete(_attr);
-            serviceFor(Material.class).evict(_attr.getMaterial());
-            uiLogger.info("删除物料属性成功.");
-        } catch (Exception e) {
-            uiLogger.error("删除物料属性出错!", e);
         }
     }
 
@@ -423,6 +375,13 @@ public class MaterialExAdminBean
         } catch (Exception e) {
             uiLogger.error("删除物料附件失败!", e);
         }
+    }
+
+    ListMBean<MaterialAttributeDto> attributesMBean = ListMBean.fromEL(this, "openedObject.attributes",
+            MaterialAttributeDto.class);
+
+    public ListMBean<MaterialAttributeDto> getAttributesMBean() {
+        return attributesMBean;
     }
 
 }

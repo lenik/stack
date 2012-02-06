@@ -1,16 +1,17 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:icsf="http://java.sun.com/jsf/composite/3/7"
-    xmlns:sem="http://java.sun.com/jsf/composite/3/15" template="/template/simple-entity.xhtml">
+<ui:composition template="/template/simple-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:fr="http://java.sun.com/jsf/composite/frame"
+    xmlns:icsf="http://java.sun.com/jsf/composite/3/7" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
     <ui:param name="title" value="物料管理" />
     <ui:param name="sideBarWVisible" value="true" />
     <ui:param name="bean" value="${materialExAdminBean}" />
+    <ui:param name="obj" value="${bean.openedObject}" />
 
     <ui:define name="sideBarW">
         <h:form id="navigatorForm">
-            <p:treeTable id="categoryTree" value="#{bean.rootNode}" var="category" selectionMode="single"
-                selection="#{bean.selectedMaterialCategoryNode}">
+            <p:treeTable id="categoryTree" value="#{bean.categoryTree.rootNode}" var="category"
+                selectionMode="single" selection="#{bean.categoryTree.selectedNode}">
 
                 <p:ajax event="select" listener="#{bean.refreshRowCount}" update=":mainForm:dataTable" />
 
@@ -53,11 +54,6 @@
                 <f:setPropertyActionListener value="#{entry}" target="#{bean.openedObject}" />
                 <p:graphicImage value="#{location.ICON}/elcl16/toggledetailpane_co.gif" />
             </p:commandLink>
-            <p:commandLink styleClass="icon-button" title="自定义属性" update=":materialAttributeDialog:form"
-                oncomplete="materialAttributeDialog.show()">
-                <f:setPropertyActionListener value="#{entry}" target="#{bean.openedObject}" />
-                <p:graphicImage value="#{location.ICON}/obj16/native_lib_path_attrib.gif" />
-            </p:commandLink>
             <p:commandLink styleClass="icon-button" title="推荐库位" update=":preferredLocationDialog:form"
                 oncomplete="preferredLocationDialog.show()">
                 <f:setPropertyActionListener value="#{entry}" target="#{bean.openedObject}" />
@@ -75,11 +71,10 @@
         </p:column>
     </ui:define>
 
-    <ui:define name="editDialog">
-        <p:dialog id="editDialog" header="新增修改物料" widgetVar="editDialog" height="480" width="640" modal="true">
-            <c:set var="obj" value="#{bean.openedObject}" />
-            <h:form id="form">
-                <t:panelGrid id="editPanel" columns="2" rendered="${obj != null}">
+    <ui:define name="editDialogContent">
+        <p:tabView id="tv">
+            <p:tab title="基本信息">
+                <t:panelGrid columns="2">
                     <h:outputText value="物料分类:" />
                     <t:panelGrid columns="2">
                         <p:inputText id="materialCategory" value="#{obj.category.name}" readonly="true" />
@@ -112,79 +107,60 @@
 
                     <h:outputText value="备注:" />
                     <p:inputText value="#{obj.description}" style="width:400px;" />
-
-                    <t:panelGroup colspan="2">
-                        <p:separator style="width:600px;height:2px" />
-                    </t:panelGroup>
-
-                    <t:panelGroup colspan="2">
-                        <h:outputText value="包装运输相关" style="font-weight:bold;" />
-                    </t:panelGroup>
-
-                    <h:outputText value="毛重(单位:克):" />
-                    <t:panelGrid columns="3">
-                        <p:inputText value="#{obj.packageWeight}" style="width:50px;" />
-                        <h:outputText value="净重(单位:克):" />
-                        <p:inputText value="#{obj.netWeight}" style="width:50px;" />
-                    </t:panelGrid>
-
-                    <h:outputText value="装箱尺寸:" />
-                    <t:panelGrid columns="7">
-                        <h:outputText value="长" />
-                        <p:inputText value="#{obj.packageLength}" style="width:40px" />
-                        <h:outputText value="宽" />
-                        <p:inputText value="#{obj.packageWidth}" style="width:40px" />
-                        <h:outputText value="高" />
-                        <p:inputText value="#{obj.packageHeight}" style="width:40px" />
-                        <h:outputText value="(厘米)" />
-                    </t:panelGrid>
-
-                    <t:panelGroup colspan="2">
-                        <p:separator style="width:600px;height:2px" />
-                    </t:panelGroup>
                 </t:panelGrid>
-                <div align="right">
-                    <p:commandButton id="save-validated" value="保存" actionListener="${bean.save}"
-                        update=":mainForm:dataTable, :chooseMaterialCategoryForm:categoryTree" oncomplete="editDialog.hideValidated()" />
-                    <p:commandButton id="cancel" value="取消" onclick="editDialog.hide()" />
-                </div>
-            </h:form>
-        </p:dialog>
-
+            </p:tab>
+            <p:tab title="公共" disabled="true">
+            </p:tab>
+            <p:tab title="运输" disabled="true">
+                <h:outputText value="毛重(单位:克):" />
+                <t:panelGrid columns="3">
+                    <p:inputText value="#{obj.packageWeight}" style="width:50px;" />
+                    <h:outputText value="净重(单位:克):" />
+                    <p:inputText value="#{obj.netWeight}" style="width:50px;" />
+                </t:panelGrid>
+                <h:outputText value="装箱尺寸:" />
+                <t:panelGrid columns="7">
+                    <h:outputText value="长" />
+                    <p:inputText value="#{obj.packageLength}" style="width:40px" />
+                    <h:outputText value="宽" />
+                    <p:inputText value="#{obj.packageWidth}" style="width:40px" />
+                    <h:outputText value="高" />
+                    <p:inputText value="#{obj.packageHeight}" style="width:40px" />
+                    <h:outputText value="(厘米)" />
+                </t:panelGrid>
+            </p:tab>
+            <p:tab title="自定义属性">
+                <fr:listView id="attributes" header="物料属性" style="panel" orientation="lr"
+                    mbean="#{bean.attributesMBean}" nested="true">
+                    <f:facet name="columns">
+                        <p:column headerText="属性名称">
+                            <h:outputText value="#{entry.name}" />
+                        </p:column>
+                        <p:column headerText="属性值">
+                            <h:outputText value="#{entry.value}" />
+                        </p:column>
+                    </f:facet>
+                    <h:panelGrid columns="2">
+                        <h:outputText value="属性名称" />
+                        <p:inputText value="#{item.name}" />
+                        <h:outputText value="属性值" />
+                        <p:inputText value="#{item.value}" />
+                    </h:panelGrid>
+                </fr:listView>
+            </p:tab>
+        </p:tabView>
     </ui:define>
 
     <ui:define name="dialogs">
+        <sem:chooseMaterialCategoryDialog id="mcdlg" target="#{obj.category}" update="" />
         <ui:include src="addUnit.xhtml">
-            <ui:param name="update" value=":editDialog:form:materialUnit" />
+            <ui:param name="update" value=":editDialog:form:tv:materialUnit" />
         </ui:include>
         <ui:include src="materialPrice.xhtml" />
         <ui:include src="unitConv.xhtml" />
-        <ui:include src="materialAttribute.xhtml" />
         <ui:include src="preferredLocation.xhtml" />
         <ui:include src="warehouseOption.xhtml" />
         <ui:include src="userFile.xhtml" />
-
-        <p:dialog header="挑选择物料分类" widgetVar="chooseMaterialCategoryDialog" height="480" width="640" modal="true">
-            <h:form id="chooseMaterialCategoryForm">
-                <p:treeTable id="categoryTree" value="#{bean.rootNode}" var="category" selectionMode="single"
-                    selection="#{bean.choosedMaterialCategoryNode}" scrollable="true" scrollHeight="380" scrollWidth="250">
-
-                    <p:column headerText="分类名称" style="width:150px;">
-                        <h:outputText value="#{category.name}" />
-                    </p:column>
-
-                    <p:column headerText="物料数" style="width:50px;">
-                        <h:outputText value="#{category.materialCount}" />
-                    </p:column>
-                </p:treeTable>
-
-                <t:panelGrid columns="2">
-                    <p:commandButton value="确定" update=":editDialog:form:materialCategory"
-                        actionListener="#{bean.chooseMaterialCategory}" oncomplete="chooseMaterialCategoryDialog.hide()" />
-                    <p:commandButton value="关闭" onclick="chooseMaterialCategoryDialog.hide()" />
-                </t:panelGrid>
-            </h:form>
-        </p:dialog>
     </ui:define>
 
 </ui:composition>
