@@ -11,6 +11,7 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.Limit;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.faces.utils.FacesContextSupport;
+import com.bee32.plover.faces.utils.FacesUILogger;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
@@ -204,6 +205,10 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
 
     @Override
     public D getRowData(String rowKey) {
+        if (loaded == null) {
+            new FacesUILogger(false).warn("Data not loaded!");
+            return null;
+        }
         rowKey = rowKey.replace("\\-", "_");
         rowKey = rowKey.replace("\\\\", "\\");
         for (D item : loaded) {
