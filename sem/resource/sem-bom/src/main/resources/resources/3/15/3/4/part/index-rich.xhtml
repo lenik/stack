@@ -8,16 +8,21 @@
     <ui:param name="obj" value="#{bean.openedObject}" />
 
     <ui:define name="sideBarW">
-        <p:treeTable id="categoryTree" value="#{bean.materialCategoryTree.rootNode}" var="node" dynamic="true"
-            selectionMode="single" selection="#{bean.materialCategoryTree.selectedNode}" scrollable="true" scrollHeight="480"
-            scrollWidth="300">
+        <h:form id="navigatorForm">
+            <p:treeTable id="categoryTree" value="#{bean.categoryTree.rootNode}" var="category"
+                selectionMode="single" selection="#{bean.categoryTree.selectedNode}">
 
-            <p:ajax event="select" listener="#{bean.materialCategoryTree.onNodeSelect}" update="bomForm:partTab:parts" />
+                <p:ajax event="select" listener="#{bean.refreshRowCount}" update=":mainForm:dataTable" />
 
-            <p:column headerText="分类名称">
-                <h:outputText value="#{node.name}" />
-            </p:column>
-        </p:treeTable>
+                <p:column headerText="分类名称" style="width:150px;">
+                    <h:outputText value="#{category.name}" />
+                </p:column>
+
+                <p:column headerText="物料数" style="width:50px;">
+                    <h:outputText value="#{category.materialCount}" />
+                </p:column>
+            </p:treeTable>
+        </h:form>
     </ui:define>
 
     <ui:define name="dataColumns">
