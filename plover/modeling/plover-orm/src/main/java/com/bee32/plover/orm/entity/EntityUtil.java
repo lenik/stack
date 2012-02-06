@@ -112,7 +112,12 @@ public class EntityUtil {
     }
 
     public static <E extends Entity<? extends K>, K extends Serializable> Class<K> getKeyType(Class<E> entityClass) {
-        return ClassUtil.infer1(entityClass, Entity.class, 0);
+        Class<K> keyType = (Class<K>) KeyTypeMap.getKeyType(entityClass);
+        if (keyType == null) {
+            keyType = ClassUtil.infer1(entityClass, Entity.class, 0);
+            KeyTypeMap.setKeyType(entityClass, keyType);
+        }
+        return keyType;
     }
 
     static KeyTypeEnum getTypeEnum(Class<?> type) {

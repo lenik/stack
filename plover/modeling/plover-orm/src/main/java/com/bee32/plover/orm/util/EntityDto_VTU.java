@@ -4,9 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.entity.IEntity;
+import com.bee32.plover.orm.entity.KeyTypeMap;
 
 public abstract class EntityDto_VTU<E extends Entity<K>, K extends Serializable>
         extends BaseDto_EMC<E> {
@@ -26,7 +27,13 @@ public abstract class EntityDto_VTU<E extends Entity<K>, K extends Serializable>
     @Override
     public void initSourceType(Class<? extends E> entityType) {
         super.initSourceType(entityType);
-        keyType = EntityUtil.getKeyType(entityType);
+
+        Class<K> keyType = (Class<K>) KeyTypeMap.getKeyType(getClass());
+        if (keyType == null) {
+            keyType = ClassUtil.infer1(getClass(), EntityDto.class, 1);
+            KeyTypeMap.setKeyType(getClass(), keyType);
+        }
+        this.keyType = keyType;
     }
 
     protected final Class<? extends E> getEntityType() {
