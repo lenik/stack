@@ -40,9 +40,6 @@ public class MaterialSettingsBean
         extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
-    static final String BUTTON_CATEGORY_EDIT = "main:editCategory";
-    static final String BUTTON_CATEGORY_DELETE = "main:deleteCategory";
-    static final String TREE_MAIN = "main:mainTree";
 
     boolean unitConvEditable;
 // boolean categoryOptionable;
@@ -227,7 +224,7 @@ public class MaterialSettingsBean
         try {
             MaterialCategory entity = serviceFor(MaterialCategory.class).getOrFail(id);
             List<MaterialCategory> children = entity.getChildren();
-            if(children != null && children.size() > 0) {
+            if (children != null && children.size() > 0) {
                 uiLogger.error("此分类有子分类，不能直接删除!");
                 return;
             }

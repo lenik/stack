@@ -2,8 +2,6 @@ package com.bee32.sem.inventory.web;
 
 import java.io.Serializable;
 
-import org.primefaces.model.TreeNode;
-
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.EntityDto;
@@ -18,11 +16,14 @@ public class MaterialCategorySupportBean
     private static final long serialVersionUID = 1L;
 
     protected MaterialCategoryTreeModel categoryTree = new MaterialCategoryTreeModel();
-    TreeNode choosedMaterialCategoryNode;
 
     public <E extends Entity<K>, D extends EntityDto<? super E, K>, K extends Serializable> MaterialCategorySupportBean(
             Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
         super(entityClass, dtoClass, fmask, criteriaElements);
+    }
+
+    public MaterialCategoryTreeModel getCategoryTree() {
+        return categoryTree;
     }
 
     protected void onCreateMaterial(MaterialDto material) {
