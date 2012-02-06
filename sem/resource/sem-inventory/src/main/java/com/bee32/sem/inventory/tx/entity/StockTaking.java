@@ -1,5 +1,6 @@
 package com.bee32.sem.inventory.tx.entity;
 
+import javax.free.NotImplementedException;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -26,8 +27,8 @@ public class StockTaking
     private static final long serialVersionUID = 1L;
 
     StockOrder expected;
-    StockOrder actual;
     StockOrder diff = new StockOrder();
+    transient StockOrder actual;
 
     IStockQuery stockQuery;
 
@@ -94,7 +95,8 @@ public class StockTaking
         StockOrder actual = new StockOrder();
         actual.populate(expected);
         // TODO actual = expected + diff
-        return actual;
+        // return actual;
+        throw new NotImplementedException();
     }
 
 }

@@ -7,9 +7,15 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.annotation.ForEntity;
+import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.MaterialDto;
+import com.bee32.sem.inventory.dto.StockOrderDto;
+import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
+import com.bee32.sem.inventory.tx.dto.StockTakingDto;
+import com.bee32.sem.inventory.tx.dto.StockTakingItemDto;
 import com.bee32.sem.inventory.tx.entity.StockTaking;
 import com.bee32.sem.sandbox.UIHelper;
 
@@ -24,6 +30,8 @@ public class StocktakingAdminBean
     List<MaterialDto> queryMaterials = new ArrayList<MaterialDto>();
     MaterialDto chosenMaterial;
     Long selectedMaterialId;
+
+    StockTakingDto stockTaking;
 
     public StocktakingAdminBean() {
         subject = StockOrderSubject.STKD;
@@ -86,6 +94,34 @@ public class StocktakingAdminBean
             }
         }
         // unexpected: not found
+    }
+
+    @Override
+    public void setOpenedObjects(List<?> openedObjects) {
+        super.setOpenedObjects(openedObjects);
+        stockTaking = null;
+    }
+
+    public StockTakingDto getStockTaking() {
+        if (stockTaking == null) {
+            StockOrderDto diffOrder = getOpenedObject();
+            StockTaking _stockTaking = asFor(StockTaking.class).getUnique(new Equals("diff.id", diffOrder.getId()));
+            stockTaking = new StockTakingDto(-1).marshal(_stockTaking);
+        }
+        return stockTaking;
+    }
+
+    ListMBean<StockTakingItemDto> joinedItemsMBean = ListMBean.fromEL(this, "stockTaking.items",
+            StockTakingItemDto.class);
+
+    @Override
+    public Object getEnclosingObject() {
+        return stockTaking;
+    }
+
+    @Override
+    public ListMBean<StockOrderItemDto> getItemsMBean() {
+        return super.getItemsMBean();
     }
 
 }
