@@ -45,142 +45,129 @@
         <p:column headerText="类型">
             <h:outputText value="#{entry.xrefCount == 0 ? '产品' : '半成品'}" />
         </p:column>
-        <p:column headerText="操作">
-            <p:commandLink value="价格" onclick="priceDlg.show();">
-                <f:setPropertyActionListener target="#{bean.selectedPart}" value="#{entry}" />
-            </p:commandLink>
-        </p:column>
     </ui:define>
 
     <ui:define name="editDialogContent">
-        <p:panel header="BOM信息" toggleable="true">
+        <p:tabView id="tv">
+            <p:tab title="基本信息">
+                <t:panelGrid columns="4" columnClasses="partColumnTitle,partColumnValue,partColumnTitle,partColumnValue">
+                    <h:outputLabel for="materialName" value="物料" />
+                    <t:panelGroup colspan="3">
+                        <h:outputText id="materialName" value="#{obj.target.label}" />
+                        <p:commandButton title="挑选物料" value="..." oncomplete="choosePartMaterialDialog.show();"
+                            actionListener="#{bean.setMaterialChoose}">
+                            <f:setPropertyActionListener target="#{chooseMaterialDialogBean.productLike}"
+                                value="true" />
+                        </p:commandButton>
+                    </t:panelGroup>
 
-            <h:inputHidden id="partId" value="#{bean.part.id}" />
+                    <h:outputLabel for="validDateFrom" value="生效日期" />
+                    <p:calendar id="validDateFrom" pattern="yyyy-MM-dd" value="#{obj.validDateFrom}"
+                        navigator="true" locale="zh_CN" showOn="button" />
+                    <h:outputLabel for="validDateTo" value="失效日期" />
+                    <p:calendar id="validDateTo" pattern="yyyy-MM-dd" value="#{obj.validDateTo}" navigator="true"
+                        locale="zh_CN" showOn="button" />
 
-            <t:panelGrid columns="4" columnClasses="partColumnTitle,partColumnValue,partColumnTitle,partColumnValue">
+                    <h:outputLabel for="wage" value="工资" />
+                    <p:inputText id="wage" value="#{obj.wage}" />
+                    <h:outputLabel for="otherFee" value="其他费用" />
+                    <p:inputText id="otherFee" value="#{obj.otherFee}" />
 
-                <h:outputLabel for="materialName" value="物料" />
-                <t:panelGroup colspan="3">
-                    <h:outputText id="materialName" value="#{bean.part.target.label}" />
-                    <p:commandButton title="挑选物料" value="..." onclick="chooseMaterialDlg.show();"
-                        actionListener="#{bean.setMaterialChoose}" />
-                </t:panelGroup>
+                    <h:outputLabel for="electricityFee" value="电费" />
+                    <p:inputText id="electricityFee" value="#{obj.electricityFee}" />
+                    <h:outputLabel for="equipmentCost" value="设备费" />
+                    <p:inputText id="equipmentCost" value="#{obj.equipmentCost}" />
+                </t:panelGrid>
+            </p:tab>
+            <p:tab title="BOM明细">
+                <fr:listView id="childrenIndexView" header="BOM明细" style="indexPanel" editView=":childrenEditView"
+                    mbean="#{mbean.childrenMBean}" nested="true">
+                    <f:facet name="columns">
+                        <p:column headerText="物料">
+                            <h:outputText value="#{entry.material.id==null? entry.part.target.label : entry.material.label}" />
+                        </p:column>
 
-                <h:outputLabel for="partValidDateFrom" value="生效日期" />
-                <p:calendar id="partValidDateFrom" pattern="yyyy-MM-dd" value="#{bean.part.validDateFrom}"
-                    navigator="true" locale="zh_CN" showOn="button" />
-                <h:outputLabel for="partValidDateTo" value="失效日期" />
-                <p:calendar id="partValidDateTo" pattern="yyyy-MM-dd" value="#{bean.part.validDateTo}"
-                    navigator="true" locale="zh_CN" showOn="button" />
+                        <p:column headerText="规格型号">
+                            <h:outputText
+                                value="#{entry.material.id==null? entry.part.target.modelSpec : entry.material.modelSpec}" />
+                        </p:column>
 
-                <h:outputLabel for="wage" value="工资" />
-                <p:inputText id="wage" value="#{bean.part.wage}" />
-                <h:outputLabel for="otherFee" value="其他费用" />
-                <p:inputText id="otherFee" value="#{bean.part.otherFee}" />
+                        <p:column headerText="单位">
+                            <h:outputText
+                                value="#{entry.material.id==null? entry.part.target.unit.name : entry.material.unit.name}" />
+                        </p:column>
 
-                <h:outputLabel for="electricityFee" value="电费" />
-                <p:inputText id="electricityFee" value="#{bean.part.electricityFee}" />
-                <h:outputLabel for="equipmentCost" value="设备费" />
-                <p:inputText id="equipmentCost" value="#{bean.part.equipmentCost}" />
+                        <p:column headerText="数量">
+                            <h:outputText value="#{entry.quantity}" />
+                        </p:column>
 
-            </t:panelGrid>
-        </p:panel>
+                        <p:column headerText="是否有效">
+                            <p:selectBooleanCheckbox value="#{entry.valid}" disabled="true" />
+                        </p:column>
 
-        <fr:listView id="childrenIndexView" header="BOM明细" style="indexPanel" editView=":childrenEditView"
-            mbean="#{mbean.childrenMBean}">
-            <f:facet name="columns">
-                <p:column headerText="物料">
-                    <h:outputText value="#{entry.material.id==null? entry.part.target.label : entry.material.label}" />
-                </p:column>
+                        <p:column headerText="生效日期">
+                            <h:outputText value="#{entry.validDateFrom}">
+                                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                            </h:outputText>
+                        </p:column>
 
-                <p:column headerText="规格型号">
-                    <h:outputText value="#{entry.material.id==null? entry.part.target.modelSpec : entry.material.modelSpec}" />
-                </p:column>
+                        <p:column headerText="失效日期">
+                            <h:outputText value="#{entry.validDateTo}">
+                                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                            </h:outputText>
+                        </p:column>
 
-                <p:column headerText="单位">
-                    <h:outputText value="#{entry.material.id==null? entry.part.target.unit.name : entry.material.unit.name}" />
-                </p:column>
+                        <p:column headerText="备注">
+                            <h:outputText value="#{entry.description}" />
+                        </p:column>
 
-                <p:column headerText="数量">
-                    <h:outputText value="#{entry.quantity}" />
-                </p:column>
-
-                <p:column headerText="是否有效">
-                    <p:selectBooleanCheckbox value="#{entry.valid}" disabled="true" />
-                </p:column>
-
-                <p:column headerText="生效日期">
-                    <h:outputText value="#{entry.validDateFrom}">
-                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-                    </h:outputText>
-                </p:column>
-
-                <p:column headerText="失效日期">
-                    <h:outputText value="#{entry.validDateTo}">
-                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-                    </h:outputText>
-                </p:column>
-
-                <p:column headerText="备注">
-                    <h:outputText value="#{entry.description}" />
-                </p:column>
-
-                <p:column headerText="类型">
-                    <h:outputText value="#{entry.part.id==null ? '原材料' : '半成品'}" />
-                </p:column>
-            </f:facet>
-        </fr:listView>
+                        <p:column headerText="类型">
+                            <h:outputText value="#{entry.part.id==null ? '原材料' : '半成品'}" />
+                        </p:column>
+                    </f:facet>
+                </fr:listView>
+            </p:tab>
+            <p:tab title="计算价格">
+                <h:outputLabel value="价格: " />
+                <h:outputText id="partPrice" value="#{bean.price}" />
+                <p:commandButton value="计算" actionListener="#{bean.calcPrice}" update="partPrice" />
+            </p:tab>
+        </p:tabView>
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:chooseMaterialDialog header="选择物料" var="chooseMaterialDlg" />
-        <sem:chooseMaterialDialog header="选择原材料" var="choosePartItemDlg" />
-        <sem:choosePartDialog header="选择半成品" var="choosePartItemDlg" />
-
-        <p:dialog header="计算价格" widgetVar="priceDlg" modal="true" height="500" width="640">
-            <h:form id="priceForm">
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="产品" />
-                    <h:outputText id="partName" value="#{bean.selectedPart.material.label}" />
-
-                    <p:commandButton value="计算" actionListener="#{bean.calcPrice}" update="partPrice" />
-                    <p:commandButton value="关闭" oncomplete="priceDlg.hide();" />
-
-                    <h:outputLabel value="价格" />
-                    <h:outputText id="partPrice" value="#{bean.price}" />
-                </h:panelGrid>
-            </h:form>
-        </p:dialog>
+        <sem:chooseMaterialDialog id="matdlg1" header="选择物料" var="choosePartMaterialDialog" />
+        <sem:chooseMaterialDialog id="matdlg2" header="选择原材料" var="chooseItemMaterialDialog" />
+        <sem:choosePartDialog id="partdlg" header="选择半成品" var="choosePartDialog" />
 
         <fr:listView id="childrenEditView" header="BOM明细" style="editDialog" indexView=":editDialog:form:childrenIndexView"
             mbean="#{mbean.childrenMBean}">
             <t:panelGrid columns="4" columnClasses="partColumnTitle,partColumnValue,partColumnTitle,partColumnValue">
 
-                <h:outputLabel for="materialNameComp" value="物料" />
+                <h:outputLabel for="material" value="物料" />
                 <t:panelGroup>
-                    <h:outputText id="materialNameComp"
-                        value="#{bean.item.material.id==null? bean.item.part.target.label : bean.item.material.label}" />
-                    <p:commandButton title="挑选组件" value="..." onclick="choosePartItemDlg.show();"
-                        actionListener="#{bean.setMaterialChooseComp}" />
+                    <h:outputText id="material" value="#{item.material.null ? item.part.target.label : item.material.label}" />
+                    <p:commandButton title="挑选组件" value="..." oncomplete="chooseMaterialDialog.show();">
+                    </p:commandButton>
                 </t:panelGroup>
-                <h:outputLabel for="compValid" value="是否有效" />
-                <p:selectBooleanCheckbox id="compValid" value="#{bean.item.valid}" />
+                <h:outputLabel for="valid" value="是否有效" />
+                <p:selectBooleanCheckbox id="valid" value="#{item.valid}" />
 
-                <h:outputLabel for="compValidDateFrom" value="生效日期" />
-                <p:calendar id="compValidDateFrom" pattern="yyyy-MM-dd" value="#{bean.item.validDateFrom}"
-                    navigator="true" locale="zh_CN" showOn="button" />
-                <h:outputLabel for="compValidDateTo" value="失效日期" />
-                <p:calendar id="compValidDateTo" pattern="yyyy-MM-dd" value="#{bean.item.validDateTo}"
-                    navigator="true" locale="zh_CN" showOn="button" />
+                <h:outputLabel for="validDateFrom" value="生效日期" />
+                <p:calendar id="validDateFrom" pattern="yyyy-MM-dd" value="#{item.validDateFrom}" navigator="true"
+                    locale="zh_CN" showOn="button" />
+                <h:outputLabel for="validDateTo" value="失效日期" />
+                <p:calendar id="validDateTo" pattern="yyyy-MM-dd" value="#{item.validDateTo}" navigator="true"
+                    locale="zh_CN" showOn="button" />
 
-                <h:outputLabel for="compValidDateTo" value="数量" />
+                <h:outputLabel for="quantity" value="数量" />
                 <t:panelGroup colspan="3">
-                    <p:inputText id="compQuantity" value="#{bean.item.quantity}" />
+                    <p:inputText id="quantity" value="#{item.quantity}" />
                 </t:panelGroup>
 
-                <h:outputLabel for="compDesc" value="描述" />
+                <h:outputLabel for="description" value="描述" />
                 <t:panelGroup colspan="3">
-                    <p:inputTextarea id="compDesc" rows="5" style="width:480px;" value="#{bean.item.description}" />
+                    <p:inputTextarea id="description" rows="5" style="width:480px;" value="#{item.description}" />
                 </t:panelGroup>
             </t:panelGrid>
         </fr:listView>

@@ -7,10 +7,12 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.sem.bom.dto.PartDto;
+import com.bee32.sem.bom.dto.PartItemDto;
 import com.bee32.sem.bom.entity.Part;
 import com.bee32.sem.bom.service.MaterialPriceNotFoundException;
 import com.bee32.sem.bom.service.PartService;
 import com.bee32.sem.bom.util.BomCriteria;
+import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.web.MaterialCategorySupportBean;
 import com.bee32.sem.misc.UnmarshalMap;
@@ -61,8 +63,8 @@ public class PartAdminBean
     }
 
     public void confirmMaterial() {
-        PartDto part = getOpenedObject();
         if (productLike) {
+            PartDto part = getOpenedObject();
             // 检查此物料(成品)是否已经有bom存在
             List<Part> partList = serviceFor(Part.class).list(new Equals("target.id", selectedMaterial.getId()));
 
@@ -72,6 +74,7 @@ public class PartAdminBean
             }
             part.setTarget(selectedMaterial);
         } else {
+            PartItemDto item = itemsMBean.getOpenedObject();
             List<Part> materialsIsPart = serviceFor(Part.class).list(new Equals("target.id", selectedMaterial.getId()));
             if (materialsIsPart != null && materialsIsPart.size() > 0) {
                 uiLogger.info("此物料是成品或半成品，已经存在BOM，请用[组件是半成品]标签页进行查找选择!!!");
@@ -97,6 +100,12 @@ public class PartAdminBean
         } catch (MaterialPriceNotFoundException e) {
             uiLogger.error("没有找到此产品的原材料原价格!", e);
         }
+    }
+
+    ListMBean<PartItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.children", PartItemDto.class);
+
+    public ListMBean<PartItemDto> getItemsMBean() {
+        return itemsMBean;
     }
 
 }
