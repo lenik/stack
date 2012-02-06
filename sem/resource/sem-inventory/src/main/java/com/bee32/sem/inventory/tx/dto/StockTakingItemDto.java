@@ -10,7 +10,8 @@ public class StockTakingItemDto
 
     private static final long serialVersionUID = 1L;
 
-    BigDecimal expected;
+    StockOrderItemDto expectedItem;
+    StockOrderItemDto diffItem;
 
     public StockTakingItemDto() {
         super();
@@ -24,31 +25,35 @@ public class StockTakingItemDto
     public StockTakingItemDto(StockOrderItemDto expectedItem, StockOrderItemDto diffItem) {
         this();
 
+        if (expectedItem == null)
+            throw new NullPointerException("expectedItem");
+        if (diffItem == null)
+            throw new NullPointerException("diffItem");
+
         super.populate(expectedItem);
 
-        BigDecimal _expected = expectedItem.getQuantity();
-        BigDecimal _diff = diffItem == null ? BigDecimal.ZERO : diffItem.getQuantity();
-
-        setExpected(_expected);
-        setDiff(_diff);
+        this.expectedItem = expectedItem;
+        this.diffItem = diffItem;
     }
 
     public BigDecimal getExpected() {
-        return expected;
+        return expectedItem.getQuantity();
     }
 
     public void setExpected(BigDecimal expected) {
         if (expected == null)
             throw new NullPointerException("expected");
-        this.expected = expected;
+        expectedItem.setQuantity(expected);
     }
 
     public BigDecimal getDiff() {
-        return super.getQuantity();
+        return diffItem.getQuantity();
     }
 
     public void setDiff(BigDecimal diff) {
-        super.setQuantity(diff);
+        if (diff == null)
+            throw new NullPointerException("diff");
+        diffItem.setQuantity(diff);
     }
 
     @Transient
@@ -64,6 +69,16 @@ public class StockTakingItemDto
         BigDecimal expected = getExpected();
         BigDecimal diff = actual.subtract(expected);
         setDiff(diff);
+    }
+
+    @Override
+    public BigDecimal getQuantity() {
+        return getActual();
+    }
+
+    @Override
+    public void setQuantity(BigDecimal quantity) {
+        setActual(quantity);
     }
 
 }

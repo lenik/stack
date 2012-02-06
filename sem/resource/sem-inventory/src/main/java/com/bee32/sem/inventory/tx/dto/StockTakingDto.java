@@ -23,11 +23,12 @@ public class StockTakingDto
 
     private static final long serialVersionUID = 1L;
 
-    StockOrderDto expectedOrder;
-    StockOrderDto joined; // transient
+    public static final int JOIN = 1;
 
-    Long _expectedOrderId;
-    Long _diffOrderId;
+    StockOrderDto expectedOrder;
+    StockOrderDto diffOrder;
+
+    transient StockOrderDto joined;
 
     public StockTakingDto() {
         super();
@@ -42,31 +43,23 @@ public class StockTakingDto
         if (selection.contains(ORDERS)) {
             int orderSelection = selection.translate(//
                     ITEMS, StockOrderDto.ITEMS);
-            StockOrderDto expectedOrder = marshal(StockOrderDto.class, orderSelection, source.getExpected());
-            StockOrderDto diffOrder = marshal(StockOrderDto.class, orderSelection, source.getDiff());
-
-            _expectedOrderId = expectedOrder.getId();
-            _diffOrderId = diffOrder.getId();
-
-            if (!expectedOrder.isNull())
-                joined = join(expectedOrder, diffOrder);
+            expectedOrder = mref(StockOrderDto.class, orderSelection, source.getExpected());
+            diffOrder = marshal(StockOrderDto.class, orderSelection, source.getDiff());
         }
     }
 
     @Override
     protected void _unmarshalTo(StockTaking target) {
         if (selection.contains(ORDERS)) {
-
-            StockOrderDto[] extracted = extract(getJoined(), //
-                    false, // extract-expects?
-                    true); // extract-diffs?
-
             // Never update: merge the expectedOrder for initialization only.
-            // StockOrderDto expectedOrder = extracted[0];
-            if (expectedOrder != null)
-                merge(target, "expected", expectedOrder);
+            // assert StockOrderDto expectedOrder = extracted[0];
+            merge(target, "expected", expectedOrder);
 
-            StockOrderDto diffOrder = extracted[1];
+            StockOrderDto diffOrder = this.diffOrder;
+            if (selection.contains(JOIN)) {
+                StockOrderDto joined = getJoined();
+                diffOrder = extract(joined, /* extract-expects? */false, /* extract-diffs? */true)[1];
+            }
             merge(target, "diff", diffOrder);
         }
     }
@@ -78,35 +71,46 @@ public class StockTakingDto
     }
 
     /**
-     * 仅当初始化的时候有意义，后面编辑的时候返回 <code>null</code>。
+     * 仅当初始化的时候有意义.
      */
     public StockOrderDto getExpectedOrder() {
         return expectedOrder;
     }
 
-    /**
-     * 初始化帐面数量。
-     *
-     * 只需初始化一次，后面编辑的时候不必再调用本方法。
-     *
-     * @see #getJoined()
-     */
-    public void initialize(StockOrderDto expectedOrder) {
-        if (expectedOrder == null)
-            throw new NullPointerException("expectedOrder");
-        this.expectedOrder = expectedOrder;
-        this.joined = join(expectedOrder, null);
+    public void setExpectedOrder(StockOrderDto expectedOrder) {
+        if (this.expectedOrder != expectedOrder) {
+            this.expectedOrder = expectedOrder;
+            joined = null;
+        }
+    }
+
+    public StockOrderDto getDiffOrder() {
+        return diffOrder;
+    }
+
+    public void setDiffOrder(StockOrderDto diffOrder) {
+        if (this.diffOrder != diffOrder) {
+            this.diffOrder = diffOrder;
+            joined = null;
+        }
     }
 
     /**
      * 获取联合表。
      *
+     * 联合表的 item 有 expected, actual, diff 三个数量。
+     *
      * @throws IllegalStateException
      *             当尚未初始化时。
      */
     public StockOrderDto getJoined() {
-        if (joined == null)
-            throw new IllegalStateException("No joined order: not initialized, yet.");
+        if (joined == null) {
+            synchronized (this) {
+                if (joined == null) {
+                    this.joined = join(expectedOrder, diffOrder);
+                }
+            }
+        }
         return joined;
     }
 

@@ -58,4 +58,28 @@
             actionListener="#{bean.addQueryMaterial}" update=":editDialog:form:materials" />
     </ui:define>
 
+    <ui:define name="item-quantity">
+        <h:outputLabel value="帐面数量" />
+        <p:inputText value="#{item.expected}" readonly="true" />
+
+        <h:outputLabel value="盘点数量" />
+        <t:panelGroup colspan="3">
+            <p:inputText value="#{item.quantity}" />
+            <h:outputText value="#{item.material.unit.name}" />
+            <p:commandButton id="inputQuantity" value="..." oncomplete="inputQuantityDialog.show()">
+                <f:setPropertyActionListener target="#{inputQuantityDialogBean.unitUnit}"
+                    value="#{item.material.unit}" />
+                <f:setPropertyActionListener target="#{inputQuantityDialogBean.unitQuantity}"
+                    value="#{item.quantity}" />
+                <f:setPropertyActionListener target="#{inputQuantityDialogBean.unitConv}"
+                    value="#{item.material.unitConv}" />
+            </p:commandButton>
+        </t:panelGroup>
+
+        <h:outputLabel value="盈亏数量" />
+        <t:panelGroup colspan="3">
+            <p:inputText value="#{item.diff}" readonly="true" />
+        </t:panelGroup>
+    </ui:define>
+
 </ui:composition>

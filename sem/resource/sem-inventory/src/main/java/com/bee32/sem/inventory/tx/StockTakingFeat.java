@@ -3,6 +3,7 @@ package com.bee32.sem.inventory.tx;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -47,10 +48,11 @@ public class StockTakingFeat
         // 准备盘点DTO
         StockTakingDto stockTakingDto = new StockTakingDto(-1).create();
         stockTakingDto.setBeginTime(now);
-        stockTakingDto.initialize(expectedOrderDto);
+        stockTakingDto.setExpectedOrder(expectedOrderDto);
 
         // 输入实际盘点数量
-        StockTakingItemDto item1 = (StockTakingItemDto) stockTakingDto.getJoined().getItems().get(0);
+        List<StockOrderItemDto> joinedItems = stockTakingDto.getJoined().getItems();
+        StockTakingItemDto item1 = (StockTakingItemDto) joinedItems.get(0);
         item1.setActual(new BigDecimal(20));
 
         // 自动拆分保存
