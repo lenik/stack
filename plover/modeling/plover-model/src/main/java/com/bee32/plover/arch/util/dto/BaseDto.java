@@ -15,6 +15,7 @@ public abstract class BaseDto<S, C>
 
     protected Class<? extends S> sourceType;
     protected final Flags32 selection = new Flags32();
+    private boolean newCreated;
 
     /**
      * Full marshal by default.
@@ -89,6 +90,7 @@ public abstract class BaseDto<S, C>
         } catch (Exception e) {
             throw new RuntimeException("Failed to instantiate " + sourceType, e);
         }
+        newCreated = true;
 
         // Instead of:
         // __marshal(newInstance);
@@ -99,6 +101,10 @@ public abstract class BaseDto<S, C>
         @SuppressWarnings("unchecked")
         $ self = ($) this;
         return self;
+    }
+
+    public boolean isNewCreated() {
+        return newCreated;
     }
 
     public int getSelection() {
