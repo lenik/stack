@@ -226,6 +226,11 @@ public class MaterialSettingsBean
         Integer id = materialCategoryDto.getId();
         try {
             MaterialCategory entity = serviceFor(MaterialCategory.class).getOrFail(id);
+            List<MaterialCategory> children = entity.getChildren();
+            if(children != null && children.size() > 0) {
+                uiLogger.error("此分类有子分类，不能直接删除!");
+                return;
+            }
             serviceFor(MaterialCategory.class).delete(entity);
 // initMainTree();
 // initSelectCategoryTree();
