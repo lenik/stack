@@ -96,14 +96,24 @@ public abstract class TreeEntity<K extends Serializable, self_t extends TreeEnti
         this.children = children;
     }
 
-    public void addChild(self_t child) {
+    @Transient
+    protected boolean isUniqueChildren() {
+        return false;
+    }
+
+    public boolean addChild(self_t child) {
         if (child == null)
             throw new NullPointerException("child");
 
         checkNode(true, child);
 
-        child.setParent(self());
+        if (isUniqueChildren())
+            if (children.contains(child))
+                return false;
+
         children.add(child);
+        child.setParent(self());
+        return true;
     }
 
     public boolean removeChild(self_t child) {
@@ -112,8 +122,11 @@ public abstract class TreeEntity<K extends Serializable, self_t extends TreeEnti
 
         checkNode(true, child);
 
+        if (!children.remove(child))
+            return false;
+
         child.setParent(null);
-        return children.remove(child);
+        return true;
     }
 
     @Transient

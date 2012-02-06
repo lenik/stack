@@ -98,7 +98,7 @@ public class GroupDto
     public boolean addDerivedGroup(GroupDto derivedGroup) {
         if (derivedGroup == null)
             throw new NullPointerException("derivedGroup");
-        return addUniqueChild(derivedGroup);
+        return addChild(derivedGroup);
     }
 
     public boolean removeDerivedGroup(GroupDto derivedGroup) {

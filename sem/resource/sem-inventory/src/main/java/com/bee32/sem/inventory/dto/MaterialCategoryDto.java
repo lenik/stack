@@ -20,12 +20,11 @@ public class MaterialCategoryDto
 
     public static final int MATERIALS = 1;
 
-    private String name;
-    private List<MaterialDto> materials;
+    String name;
+    List<MaterialDto> materials;
+    int materialCount;
     private CodeGenerator codeGenerator;
     char classification;
-
-    int materialCount;
 
     @Override
     protected void _marshal(MaterialCategory source) {
@@ -58,6 +57,11 @@ public class MaterialCategoryDto
         codeGenerator = CodeGenerator.valueOf(_cg);
     }
 
+    @Override
+    protected boolean isUniqueChildren() {
+        return true;
+    }
+
     @NotNull
     @NLength(min = 1, max = MaterialCategory.NAME_LENGTH)
     public String getName() {
@@ -79,10 +83,12 @@ public class MaterialCategoryDto
         this.materials = materials;
     }
 
-    public void addMaterial(MaterialDto material) {
-        if (material == null)
-            throw new NullPointerException("material");
-        materials.add(material);
+    public int getMaterialCount() {
+        return materialCount;
+    }
+
+    public void setMaterialCount(int materialCount) {
+        this.materialCount = materialCount;
     }
 
     public CodeGenerator getCodeGenerator() {
@@ -107,11 +113,4 @@ public class MaterialCategoryDto
         return Classification.valueOf(classification).getDisplayName();
     }
 
-    public int getMaterialCount() {
-        return materialCount;
-    }
-
-    public void setMaterialCount(int materialCount) {
-        this.materialCount = materialCount;
-    }
 }

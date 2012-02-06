@@ -49,6 +49,11 @@ public class MaterialCategory
         setParent(parent);
     }
 
+    @Transient
+    protected boolean isUniqueChildren() {
+        return true;
+    }
+
     /**
      * 分类名称
      */
@@ -91,7 +96,7 @@ public class MaterialCategory
             throw new IllegalArgumentException("Code generator is empty.");
 
         char cgVal = _codeGenerator.charAt(0);
-        //String cgParam = _codeGenerator.substring(1);
+        // String cgParam = _codeGenerator.substring(1);
         codeGenerator = CodeGenerator.valueOf(cgVal);
     }
 
@@ -101,6 +106,15 @@ public class MaterialCategory
     @OneToMany(mappedBy = "category")
     public List<Material> getMaterials() {
         return materials;
+    }
+
+    @Formula("(select count(*) from material m where m.category=id)")
+    public int getMaterialCount() {
+        return materialCount;
+    }
+
+    public void setMaterialCount(int materialCount) {
+        this.materialCount = materialCount;
     }
 
     public void setMaterials(List<Material> materials) {
@@ -165,18 +179,4 @@ public class MaterialCategory
         return new Equals(prefix + "name", name);
     }
 
-    @Override
-    public void addChild(MaterialCategory child) {
-        if(getChildren().contains(child)) return;
-        super.addChild(child);
-    }
-
-    @Formula("(select count(*) from material m where m.category=id)")
-    public int getMaterialCount() {
-        return materialCount;
-    }
-
-    public void setMaterialCount(int materialCount) {
-        this.materialCount = materialCount;
-    }
 }

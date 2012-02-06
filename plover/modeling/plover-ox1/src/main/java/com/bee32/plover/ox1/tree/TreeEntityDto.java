@@ -120,19 +120,28 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
         return children.contains(child);
     }
 
-    public boolean addUniqueChild(self_t child) {
+    protected boolean isUniqueChildren() {
+        return false;
+    }
+
+    public boolean addChild(self_t child) {
         if (child == null)
             throw new NullPointerException("child");
 
-        if (children.contains(child))
-            return false;
+        if (isUniqueChildren())
+            if (children.contains(child))
+                return false;
 
         children.add(child);
+        child.setParent(self());
         return true;
     }
 
     public boolean removeChild(self_t child) {
-        return children.remove(child);
+        if (!children.remove(child))
+            return false;
+        child.setParent(null);
+        return true;
     }
 
     public int indexOf(self_t child) {

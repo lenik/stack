@@ -52,6 +52,12 @@ public abstract class Principal
         setFullName(fullName);
     }
 
+    @Transient
+    @Override
+    protected boolean isUniqueChildren() {
+        return true;
+    }
+
     @NaturalId
     @Column(length = NAME_LENGTH, nullable = false)
     @Override

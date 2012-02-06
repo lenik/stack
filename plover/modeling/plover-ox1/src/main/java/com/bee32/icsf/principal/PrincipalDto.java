@@ -38,6 +38,11 @@ public class PrincipalDto
     }
 
     @Override
+    protected boolean isUniqueChildren() {
+        return true;
+    }
+
+    @Override
     protected void _marshal(Principal source) {
         name = source.getName();
         fullName = source.getFullName();

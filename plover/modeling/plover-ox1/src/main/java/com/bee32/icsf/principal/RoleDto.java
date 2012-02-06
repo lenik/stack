@@ -81,7 +81,7 @@ public class RoleDto
     public boolean addDerivedRole(RoleDto derivedRole) {
         if (derivedRole == null)
             throw new NullPointerException("derivedRole");
-        return addUniqueChild(derivedRole);
+        return addChild(derivedRole);
     }
 
     public boolean removeDerivedRole(RoleDto derivedRole) {
