@@ -93,38 +93,37 @@
 
             <ui:define name="editFormContent">
                 <ui:param name="item" value="${mbean.openedObject}" />
-                <h:panelGroup id="content" layout="block">
-                    <h:panelGroup layout="block" rendered="${item == null}">
-                        No opened object.
-                    </h:panelGroup>
-                    <h:panelGroup layout="block" rendered="${item != null}">
-                        <cc:insertChildren />
-                    </h:panelGroup>
+                <h:panelGroup id="noContent" layout="block"
+                    rendered="${item == null and (style == 'dialog' or style == 'editDialog')}">
+                    No opened object.
                 </h:panelGroup>
-                <h:panelGroup id="ebuttons">
-                    <table border="0" width="100%">
-                        <tr>
-                            <td align="left">
-                            </td>
-                            <td align="right">
-                                <cc:insertRawFacet name="editButtons" />
-                                <p:commandButton id="apply-validated"
-                                    value="${(style == 'dialog' || style == 'editDialog') ? '确定' : (mbean.openedIndex == -1 ? '添加' : '应用').concat(smooth ? '*' : '')}"
-                                    title="${(style == 'panel' || style == 'indexPanel') and smooth ? '在快速编辑模式下，当前修改的内容可能已经被自动保存。' : ''}"
-                                    disabled="${mbean.openedObject == null}" action="${mbean.apply}"
-                                    oncomplete="${style == 'panel' ? '' : cc.attrs.editDialogVar.concat('.hideValidated(args)')}"
-                                    update="${cc.attrs.indexView}:indexForm:body, apply-validated">
-                                    <f:setPropertyActionListener target="${mbean.copyMode}"
-                                        value="${cc.attrs.copy}" />
-                                </p:commandButton>
-                                <p:commandButton id="cancel" value="取消" disabled="${mbean.openedObject == null}"
-                                    actionListener="${mbean.cancel}" update="editForm, ${cc.attrs.editView}:more"
-                                    rendered="${style == 'panel' and not smooth}" />
-                                <p:commandButton id="close" value="关闭" onclick="${cc.attrs.editDialogVar}.hide()"
-                                    rendered="${style == 'dialog' or style == 'editDialog'}" />
-                            </td>
-                        </tr>
-                    </table>
+                <h:panelGroup layout="block" rendered="${item != null}">
+                    <cc:insertChildren />
+                    <h:panelGroup id="ebuttons">
+                        <table border="0" width="100%">
+                            <tr>
+                                <td align="left">
+                                </td>
+                                <td align="right">
+                                    <cc:insertRawFacet name="editButtons" />
+                                    <p:commandButton id="apply-validated"
+                                        value="${(style == 'dialog' || style == 'editDialog') ? '确定' : (mbean.openedIndex == -1 ? '添加' : '应用').concat(smooth ? '*' : '')}"
+                                        title="${(style == 'panel' || style == 'indexPanel') and smooth ? '在快速编辑模式下，当前修改的内容可能已经被自动保存。' : ''}"
+                                        disabled="${mbean.openedObject == null}" action="${mbean.apply}"
+                                        oncomplete="${style == 'panel' ? '' : cc.attrs.editDialogVar.concat('.hideValidated(args)')}"
+                                        update="${cc.attrs.indexView}:indexForm:body, apply-validated">
+                                        <f:setPropertyActionListener target="${mbean.copyMode}"
+                                            value="${cc.attrs.copy}" />
+                                    </p:commandButton>
+                                    <p:commandButton id="cancel" value="取消" disabled="${mbean.openedObject == null}"
+                                        actionListener="${mbean.cancel}" update="body, ${cc.attrs.editView}:more"
+                                        rendered="${style == 'panel' and not smooth}" />
+                                    <p:commandButton id="close" value="关闭" onclick="${cc.attrs.editDialogVar}.hide()"
+                                        rendered="${style == 'dialog' or style == 'editDialog'}" />
+                                </td>
+                            </tr>
+                        </table>
+                    </h:panelGroup>
                 </h:panelGroup>
             </ui:define>
 
