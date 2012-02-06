@@ -64,10 +64,14 @@ public class SamplePackage
             throw new NullPointerException("instance");
         switch (getLevel()) {
         case BAD:
+            EntityAccessor.getFlags(instance).setWarn(true);
         case NORMAL:
             EntityAccessor.getFlags(instance).setTestData(true);
+            EntityAccessor.getFlags(instance).setBuiltinData(false);
             break;
         case STANDARD:
+            EntityAccessor.getFlags(instance).setTestData(false);
+            EntityAccessor.getFlags(instance).setBuiltinData(true);
             break;
         }
         instances.add(instance);
