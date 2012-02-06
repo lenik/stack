@@ -6,8 +6,10 @@ import javax.faces.model.SelectItem;
 
 import com.bee32.plover.orm.util.DataViewBean;
 import com.bee32.sem.people.dto.ContactCategoryDto;
+import com.bee32.sem.people.dto.OrgTypeDto;
 import com.bee32.sem.people.dto.PartyTagnameDto;
 import com.bee32.sem.people.entity.ContactCategory;
+import com.bee32.sem.people.entity.OrgType;
 import com.bee32.sem.people.entity.PartyTagname;
 import com.bee32.sem.sandbox.UIHelper;
 
@@ -18,6 +20,7 @@ public class PeopleDictsBean
 
     List<SelectItem> contactCategorySelectItems;
     List<SelectItem> partyTagnameSelectItems;
+    List<SelectItem> orgTypeSelectItems;
 
     public synchronized List<SelectItem> getContactCategorySelectItems() {
         if (contactCategorySelectItems == null) {
@@ -33,6 +36,14 @@ public class PeopleDictsBean
             partyTagnameSelectItems = UIHelper.selectItemsFromDict(list);
         }
         return partyTagnameSelectItems;
+    }
+
+    public synchronized List<SelectItem> getOrgTypeSelectItems() {
+        if (orgTypeSelectItems == null) {
+            List<OrgTypeDto> list = mrefList(OrgType.class, OrgTypeDto.class, 0);
+            orgTypeSelectItems = UIHelper.selectItemsFromDict(list);
+        }
+        return orgTypeSelectItems;
     }
 
 }

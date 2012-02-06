@@ -1,27 +1,19 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-    xmlns:p="http://primefaces.org/ui" xmlns:t1="http://myfaces.apache.org/tomahawk" xmlns:icsf="http://java.sun.com/jsf/composite/3/7"
-    xmlns:sem="http://java.sun.com/jsf/composite/3/15" template="/template/simple-entity.xhtml">
+<ui:composition template="/template/simple-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:icsf="http://java.sun.com/jsf/composite/3/7" xmlns:fr="http://java.sun.com/jsf/composite/frame" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
-    <ui:param name="title" value="客户/供应商管理" />
+    <ui:param name="title" value="企业组织" />
     <ui:param name="bean" value="#{orgAdminBean}" />
     <ui:param name="obj" value="#{bean.openedObject}" />
     <ui:param name="people" value="#{peopleDictsBean}" />
 
     <ui:define name="dataColumns">
-        <p:column headerText="客户/供应商名称">
-            <h:outputText value="#{entry.name}" />
+        <p:column headerText="公司名称">
+            <h:outputText value="#{entry.label}" />
         </p:column>
 
-        <p:column headerText="标签">
-            <p:dataList value="#{entry.tags}" var="tag" type="definition">
-                <f:facet name="description">
-                    <h:outputText value="#{tag.label}" />
-                </f:facet>
-            </p:dataList>
-        </p:column>
-
-        <p:column headerText="公司类型">
+        <p:column headerText="类型">
             <h:outputText value="#{entry.type.label}" />
         </p:column>
 
@@ -49,434 +41,268 @@
     <ui:define name="editDialogContent">
         <p:tabView id="tv">
             <p:tab id="tab1" title="详细信息">
-                <h:inputHidden id="orgId" value="#{obj.id}" />
+                <t:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
 
-                <h:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
-
-                    <h:outputLabel for="orgTags" value="标签" />
-                    <h:panelGroup colspan="3">
-                        <h:panelGrid columns="2">
-                            <p:selectOneListbox id="orgTags" value="#{bean.selectedTagId}" style="height:80px; width:200px;">
+                    <h:outputLabel for="tags" value="标签" />
+                    <t:panelGroup colspan="3">
+                        <t:panelGrid columns="2">
+                            <p:selectOneListbox id="tags" value="#{bean.selectedTagId}" style="height:80px; width:200px;">
                                 <f:selectItems value="#{people.partyTagnameSelectItems}" />
                             </p:selectOneListbox>
-                            <h:panelGrid colums="1">
+                            <t:panelGrid colums="1">
                                 <p:commandButton value="增加标签" disabled="#{obj == null}" onclick="tagDlg.show();" />
                                 <p:commandButton value="删除标签" disabled="#{obj == null}" actionListener="#{bean.deleteTag}"
-                                    update="orgTags" />
-                            </h:panelGrid>
-                        </h:panelGrid>
-                    </h:panelGroup>
+                                    update="tags" />
+                            </t:panelGrid>
+                        </t:panelGrid>
+                    </t:panelGroup>
 
-                    <h:outputLabel for="orgName" value="客户/供应商名称" />
-                    <p:inputText id="orgName" value="#{obj.name}" />
-                    <h:outputLabel for="orgFullName" value="全名" />
-                    <p:inputText id="orgFullName" value="#{obj.fullName}" />
+                    <h:outputLabel for="name" value="公司名称" />
+                    <p:inputText id="name" value="#{obj.label}" />
+                    <h:outputLabel for="fullName" value="全名" />
+                    <p:inputText id="fullName" value="#{obj.fullName}" />
 
-                    <h:outputLabel for="orgBirthday" value="成立日期" />
-                    <p:calendar id="orgBirthday" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{obj.birthday}"
+                    <h:outputLabel for="birthday" value="成立日期" />
+                    <p:calendar id="birthday" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{obj.birthday}"
                         showOn="button" />
-                    <h:outputLabel for="orgType" value="公司类型" />
-                    <p:selectOneMenu id="orgType" value="#{obj.type.id}" style="width:150px;">
+                    <h:outputLabel for="type" value="公司类型" />
+                    <p:selectOneMenu id="type" value="#{obj.type.id}" style="width:150px;">
                         <f:selectItem itemValue="" itemLabel="--选择公司类型--" />
-                        <f:selectItems value="#{bean.orgTypes}" />
+                        <f:selectItems value="#{people.orgTypeSelectItems}" />
                     </p:selectOneMenu>
 
-                    <h:outputLabel for="orgBank" value="银行" />
-                    <p:inputText id="orgBank" value="#{obj.bank}" />
-                    <h:outputLabel for="orgBankAccount" value="帐号" />
-                    <p:inputText id="orgBankAccount" value="#{obj.bankAccount}" />
+                    <h:outputLabel for="bank" value="银行" />
+                    <p:inputText id="bank" value="#{obj.bank}" />
+                    <h:outputLabel for="bankAccount" value="帐号" />
+                    <p:inputText id="bankAccount" value="#{obj.bankAccount}" />
 
-                    <h:outputLabel for="orgSid" value="税务登记号" />
-                    <p:inputText id="orgSid" value="#{obj.sid}" />
-                    <h:outputLabel for="orgSize" value="公司规模" />
-                    <p:inputText id="orgSize" value="#{obj.size}" />
+                    <h:outputLabel for="sid" value="税务登记号" />
+                    <p:inputText id="sid" value="#{obj.sid}" />
+                    <h:outputLabel for="size" value="公司规模" />
+                    <p:inputText id="size" value="#{obj.size}" />
 
-                    <h:outputLabel for="orgInterests" value="主营业务" />
-                    <h:panelGroup colspan="3">
-                        <p:inputText id="orgInterests" value="#{obj.interests}" />
-                    </h:panelGroup>
+                    <h:outputLabel for="interests" value="主营业务" />
+                    <t:panelGroup colspan="3">
+                        <p:inputText id="interests" value="#{obj.interests}" />
+                    </t:panelGroup>
 
-                    <h:outputLabel for="orgMemo" value="备注" />
-                    <h:panelGroup colspan="3">
-                        <p:inputTextarea id="orgMemo" value="#{obj.memo}" style="width:300px;height:100px;"
+                    <h:outputLabel for="memo" value="备注" />
+                    <t:panelGroup colspan="3">
+                        <p:inputTextarea id="memo" value="#{obj.memo}" style="width:300px;height:100px;"
                             effectDuration="400" />
-                    </h:panelGroup>
-                </h:panelGrid>
+                    </t:panelGroup>
+                </t:panelGrid>
             </p:tab>
 
-            <p:tab id="tab2" title="联系方式">
-                <p:toolbar id="contactToolbar">
-                    <p:toolbarGroup align="left">
-                        <p:commandButton value="新增" disabled="#{obj == null or obj.id == null}"
-                            actionListener="#{bean.doNewContact}" update=":contactForm" async="true" onclick="contactHolderDlg.show();" />
-                        <p:commandButton value="修改" actionListener="#{bean.doModifyContact}" disabled="#{not bean.contactSelected}"
-                            update=":contactForm" async="true" onclick="contactHolderDlg.show();" />
-                        <p:commandButton value="删除" actionListener="#{bean.doDeleteContact}" disabled="#{not bean.contactSelected}"
-                            update="contacts" async="true" />
-                        <p:separator />
-                    </p:toolbarGroup>
-                </p:toolbar>
-                <p:dataTable id="contacts" var="contact" value="#{bean.contacts}" resizableColumns="true"
-                    selection="#{bean.selectedContact}" selectionMode="single" rowKey="#{contact.id}" rowIndexVar="rowIndex">
-
-                    <p:ajax event="rowSelect" listener="#{bean.onRowSelectContact}" update=":editDialog:form:tv:contactToolbar" />
-                    <p:ajax event="rowUnselect" listener="#{bean.onRowUnselectContact}" update=":editDialog:form:tv:contactToolbar" />
-
-                    <p:column headerText="分类">
-                        <h:outputText value="#{contact.category.label}" />
-                    </p:column>
-
-                    <p:column headerText="地址">
-                        <h:outputText value="#{contact.address}" />
-                    </p:column>
-                    <p:column headerText="邮编">
-                        <h:outputText value="#{contact.postCode}" />
-                    </p:column>
-                    <p:column headerText="电话">
-                        <h:outputText value="#{contact.tel}" />
-                    </p:column>
-                    <p:column headerText="移动电话">
-                        <h:outputText value="#{contact.mobile}" />
-                    </p:column>
-                    <p:column headerText="传真">
-                        <h:outputText value="#{contact.fax}" />
-                    </p:column>
-                    <p:column headerText="email">
-                        <h:outputText value="#{contact.email}" />
-                    </p:column>
-                    <p:column headerText="网址">
-                        <h:outputText value="#{contact.website}" />
-                    </p:column>
-                    <p:column headerText="QQ">
-                        <h:outputText value="#{contact.qq}" />
-                    </p:column>
-                </p:dataTable>
+            <p:tab id="contactsTab" title="联系方式">
+                <fr:listView id="contactsIndexView" style="indexPanel" header="联系方式" editView=":contactsEditView"
+                    mbean="#{bean.contactsMBean}" nested="true">
+                    <f:facet name="columns">
+                        <p:column headerText="分类">
+                            <h:outputText value="#{entry.category.label}" />
+                        </p:column>
+                        <p:column headerText="地址">
+                            <h:outputText value="#{entry.address}" />
+                        </p:column>
+                        <p:column headerText="邮编">
+                            <h:outputText value="#{entry.postCode}" />
+                        </p:column>
+                        <p:column headerText="电话">
+                            <h:outputText value="#{entry.tel}" />
+                        </p:column>
+                        <p:column headerText="移动电话">
+                            <h:outputText value="#{entry.mobile}" />
+                        </p:column>
+                        <p:column headerText="传真">
+                            <h:outputText value="#{entry.fax}" />
+                        </p:column>
+                        <p:column headerText="email">
+                            <h:outputText value="#{entry.email}" />
+                        </p:column>
+                        <p:column headerText="网址">
+                            <h:outputText value="#{entry.website}" />
+                        </p:column>
+                        <p:column headerText="QQ">
+                            <h:outputText value="#{entry.qq}" />
+                        </p:column>
+                    </f:facet>
+                </fr:listView>
             </p:tab>
 
-            <p:tab id="tab3" title="相关人员">
-                <h:panelGrid id="orgUnitTreeGrid" columns="2" rowClasses="alignTop">
+            <p:tab id="rolesTab" title="公司人员">
+                <fr:listView id="rolesIndexView" header="公司相关人员" style="indexPanel" editView=":rolesEditView"
+                    mbean="#{bean.rolesMBean}" nested="true">
+                    <f:facet name="columns">
+                        <p:column headerText="部门">
+                            <h:outputText value="#{entry.orgUnit.label}" />
+                        </p:column>
+                        <p:column headerText="人员">
+                            <h:outputText value="#{entry.person.displayName}" />
+                        </p:column>
+                        <p:column headerText="职务">
+                            <h:outputText value="#{entry.role}" />
+                        </p:column>
+                        <p:column headerText="负责业务">
+                            <h:outputText value="#{entry.roleDetail}" />
+                        </p:column>
+                        <p:column headerText="备注">
+                            <h:outputText value="#{entry.description}" />
+                        </p:column>
+                    </f:facet>
+                </fr:listView>
+            </p:tab>
 
-                    <p:panel header="部门">
-                        <p:toolbar id="orgUnitToolbar">
-                            <p:toolbarGroup align="left">
-                                <p:commandButton value="新增" disabled="#{obj == null or obj.id == null}"
-                                    actionListener="#{bean.doNewOrgUnit}" update=":orgUnitForm" async="true"
-                                    onclick="orgUnitDialog.show();" />
-                                <p:commandButton value="删除" actionListener="#{bean.doDeleteOrgUnit}"
-                                    disabled="#{not bean.orgUnitSelected}" update="orgUnitTreeGrid, :chooseParentOrgUnitForm:chooseParentOrgUnitPanel"
-                                    async="true" />
-                                <p:separator />
-                            </p:toolbarGroup>
-                        </p:toolbar>
-                        <p:tree value="#{bean.orgUnitRoot}" var="orgUnit" selectionMode="single"
-                            selection="#{bean.selectedOrgUnitNode}">
-
-                            <p:ajax event="select"
-                                update=":editDialog:form:tv:orgUnitToolbar, :editDialog:form:tv:orgUnitContactAndPersonRoles"
-                                listener="#{orgAdminBean.onOrgUnitNodeSelect}" />
-                            <p:ajax event="unselect"
-                                update=":editDialog:form:tv:orgUnitToolbar, :editDialog:form:tv:orgUnitContactAndPersonRoles"
-                                listener="#{orgAdminBean.onOrgUnitNodeUnselect}" />
-
-                            <p:treeNode>
-                                <h:outputText value="#{orgUnit.label}" />
-                            </p:treeNode>
-                        </p:tree>
-                    </p:panel>
-
-                    <h:panelGroup id="orgUnitContactAndPersonRoles">
-
-                        <p:panel header="部门对应联系方式" toggleable="true">
-                            <h:panelGrid columns="2">
-                                <h:outputLabel value="部门名称" />
-                                <h:outputText value="#{bean.selectedOrgUnitNode.data.label}" />
-                            </h:panelGrid>
-
-                            <h:panelGrid columns="4"
-                                columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
-
-                                <h:outputLabel for="orgUnitContactCategory" value="分类" />
-                                <h:panelGroup colspan="3">
-                                    <p:selectOneMenu id="orgUnitContactCategory" value="#{bean.orgUnitContact.category.id}"
-                                        style="width:200px;">
-                                        <f:selectItem itemValue="" itemLabel="--选择联系方式分类--" />
-                                        <f:selectItems value="#{people.contactCategorySelectItems}" />
-                                    </p:selectOneMenu>
-                                </h:panelGroup>
-
-                                <h:outputLabel for="orgUnitContactAddress" value="地址" />
-                                <p:inputText id="orgUnitContactAddress" value="#{bean.orgUnitContact.address}" />
-                                <h:outputLabel for="orgUnitContactPostCode" value="邮编" />
-                                <p:inputText id="orgUnitContactPostCode" value="#{bean.orgUnitContact.postCode}" />
-
-                                <h:outputLabel for="orgUnitContactTel" value="电话" />
-                                <p:inputText id="orgUnitContactTel" value="#{bean.orgUnitContact.tel}" />
-                                <h:outputLabel for="orgUnitContactMobile" value="移动电话" />
-                                <p:inputText id="orgUnitContactMobile" value="#{bean.orgUnitContact.mobile}" />
-
-                                <h:outputLabel for="orgUnitContactFax" value="传真" />
-                                <p:inputText id="orgUnitContactFax" value="#{bean.orgUnitContact.fax}" />
-                                <h:outputLabel for="orgUnitContactEmail" value="email" />
-                                <p:inputText id="orgUnitContactEmail" value="#{bean.orgUnitContact.email}" />
-
-                                <h:outputLabel for="orgUnitContactWebsite" value="网址" />
-                                <p:inputText id="orgUnitContactWebsite" value="#{bean.orgUnitContact.website}" />
-                                <h:outputLabel for="orgUnitContactQq" value="qq" />
-                                <p:inputText id="orgUnitContactQq" value="#{bean.orgUnitContact.qq}" />
-
-                            </h:panelGrid>
-                            <p:commandButton value="保存部门联系方式" actionListener="#{bean.doSaveOrgUnitContact}" />
-                        </p:panel>
-
-                        <p:panel header="部门对应人员" toggleable="true">
-                            <p:toolbar id="roleToolbar">
-                                <p:toolbarGroup align="left">
-                                    <p:commandButton value="新增" disabled="#{obj == null or obj.id == null}"
-                                        actionListener="#{bean.doNewRole}" update=":roleForm" async="true"
-                                        onclick="roleHolderDlg.show();" />
-                                    <p:commandButton value="修改" actionListener="#{bean.doModifyRole}"
-                                        disabled="#{not bean.roleSelected}" update=":roleForm" async="true"
-                                        onclick="roleHolderDlg.show();" />
-                                    <p:commandButton value="删除" actionListener="#{bean.doDeleteRole}"
-                                        disabled="#{not bean.roleSelected}" update="roles" async="true" />
-                                    <p:separator />
-                                </p:toolbarGroup>
-                            </p:toolbar>
-                            <p:dataTable id="roles" var="role" value="#{bean.roles}" resizableColumns="true"
-                                selection="#{bean.selectedRole}" rowKey="#{role.id}" selectionMode="single" rowIndexVar="rowIndex">
-
-                                <p:ajax event="rowSelect" listener="#{bean.onRowSelectRole}" update=":editDialog:form:tv:roleToolbar" />
-                                <p:ajax event="rowUnselect" listener="#{bean.onRowUnselectRole}" update=":editDialog:form:tv:roleToolbar" />
-
-                                <p:column headerText="所在部门">
-                                    <h:outputText value="#{role.orgUnit.label}" />
-                                </p:column>
-
-                                <p:column headerText="职务">
-                                    <h:outputText value="#{role.role}" />
-                                </p:column>
-                                <p:column headerText="负责业务">
-                                    <h:outputText value="#{role.roleDetail}" />
-                                </p:column>
-
-                                <p:column headerText="姓名">
-                                    <h:outputText value="#{role.person.displayName}" />
-                                </p:column>
-
-                                <p:column headerText="性别">
-                                    <h:outputText value="#{role.person.sexText}" />
-                                </p:column>
-                                <p:column headerText="联系电话">
-                                    <h:outputText value="#{role.person.contactsString}" />
-                                </p:column>
-                                <p:column headerText="生日">
-                                    <h:outputText value="#{role.person.birthday}">
-                                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-                                    </h:outputText>
-                                </p:column>
-                            </p:dataTable>
-                        </p:panel>
-                    </h:panelGroup>
-                </h:panelGrid>
+            <p:tab id="orgUnitsTab" title="下属部门">
+                <fr:listView id="orgUnitsIndexView" header="下属组织部门" style="indexPanel" editView=":orgUnitsEditView"
+                    mbean="#{bean.orgUnitsMBean}" nested="true">
+                    <f:facet name="columns">
+                        <p:column headerText="名称">
+                            <h:outputText value="#{entry.label}" />
+                        </p:column>
+                        <p:column headerText="上级部门">
+                            <h:outputText value="#{entry.parent.label}" />
+                        </p:column>
+                        <p:column headerText="联系电话">
+                            <h:outputText value="#{entry.contact.tel}" />
+                        </p:column>
+                        <p:column headerText="手机">
+                            <h:outputText value="#{entry.contact.mobile}" />
+                        </p:column>
+                        <p:column headerText="邮箱">
+                            <h:outputText value="#{entry.contact.email}" />
+                        </p:column>
+                        <p:column headerText="关联的用户组">
+                            <h:outputText value="#{entry.forWhichGroup.displayName}" />
+                        </p:column>
+                    </f:facet>
+                </fr:listView>
             </p:tab>
         </p:tabView>
     </ui:define>
 
     <ui:define name="dialogs">
-        <p:dialog header="联系方式编辑" widgetVar="contactHolderDlg" modal="true" height="500" width="640">
-            <h:form id="contactForm" style="margin: 1em">
-                <h:inputHidden id="contactId" value="#{bean.contact.id}" />
-                <h:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
 
-                    <h:outputLabel for="contactCategory" value="分类" />
-                    <h:panelGroup colspan="3">
-                        <p:selectOneMenu id="contactCategory" value="#{bean.contact.category.id}" style="width:200px;">
-                            <f:selectItem itemValue="" itemLabel="--选择联系方式分类--" />
-                            <f:selectItems value="#{bean.contactCategories}" />
-                        </p:selectOneMenu>
-                    </h:panelGroup>
+        <sem:chooseOrgUnitDialog id="parentOu" var="chooseParentOrgUnitDialog" target="#{bean.orgUnitsMBean.openedObject.parent}"
+            update=":orgUnitsEditView:editForm" />
+        <sem:chooseOrgUnitDialog id="roleOu" var="chooseRoleOrgUnitDialog" target="#{bean.rolesMBean.openedObject.orgUnit}"
+            update=":rolesEditView:editForm" />
+        <sem:choosePartyDialog id="rolePerson" var="chooseRolePersonDialog" target="#{bean.rolesMBean.openedObject.person}"
+            update=":rolesEditView:editForm" stereo="PER" />
 
-                    <h:outputLabel for="contactAddress" value="地址" />
-                    <p:inputText id="contactAddress" value="#{bean.contact.address}" />
-                    <h:outputLabel for="contactPostCode" value="邮编" />
-                    <p:inputText id="contactPostCode" value="#{bean.contact.postCode}" />
+        <fr:listView id="contactsEditView" header="联系方式" style="editDialog" indexView=":editDialog:form:tv:contactsIndexView"
+            mbean="#{bean.contactsMBean}">
+            <h:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+                <h:outputLabel for="category" value="分类" />
+                <h:panelGroup colspan="3">
+                    <p:selectOneMenu id="category" value="#{item.category.id}" style="width:200px;">
+                        <f:selectItem itemValue="" itemLabel="--选择联系方式分类--" />
+                        <f:selectItems value="#{people.contactCategorySelectItems}" />
+                    </p:selectOneMenu>
+                </h:panelGroup>
 
-                    <h:outputLabel for="contactTel" value="电话" />
-                    <p:inputText id="contactTel" value="#{bean.contact.tel}" />
-                    <h:outputLabel for="contactMobile" value="移动电话" />
-                    <p:inputText id="contactMobile" value="#{bean.contact.mobile}" />
+                <h:outputLabel for="address" value="地址" />
+                <p:inputText id="address" value="#{item.address}" />
+                <h:outputLabel for="postCode" value="邮编" />
+                <p:inputText id="postCode" value="#{item.postCode}" />
 
-                    <h:outputLabel for="contactFax" value="传真" />
-                    <p:inputText id="contactFax" value="#{bean.contact.fax}" />
-                    <h:outputLabel for="contactEmail" value="email" />
-                    <p:inputText id="contactEmail" value="#{bean.contact.email}" />
+                <h:outputLabel for="tel" value="电话" />
+                <p:inputText id="tel" value="#{item.tel}" />
+                <h:outputLabel for="mobile" value="移动电话" />
+                <p:inputText id="mobile" value="#{item.mobile}" />
 
-                    <h:outputLabel for="contactWebsite" value="网址" />
-                    <p:inputText id="contactWebsite" value="#{bean.contact.website}" />
-                    <h:outputLabel for="contactQq" value="qq" />
-                    <p:inputText id="contactQq" value="#{bean.contact.qq}" />
+                <h:outputLabel for="fax" value="传真" />
+                <p:inputText id="fax" value="#{item.fax}" />
+                <h:outputLabel for="email" value="email" />
+                <p:inputText id="email" value="#{item.email}" />
+
+                <h:outputLabel for="website" value="网址" />
+                <p:inputText id="website" value="#{item.website}" />
+                <h:outputLabel for="qq" value="qq" />
+                <p:inputText id="qq" value="#{item.qq}" />
+            </h:panelGrid>
+        </fr:listView>
+
+        <fr:listView id="orgUnitsEditView" header="下属部门" style="editDialog" indexView=":editDialog:form:tv:orgUnitsIndexView"
+            mbean="#{bean.orgUnitsMBean}">
+            <p:tabView id="tv">
+                <p:tab title="基本信息">
+                    <h:panelGrid columns="2">
+                        <h:outputLabel for="parentOrgUnit" value="上级部门" />
+                        <h:panelGroup>
+                            <p:inputText id="parentOrgUnit" value="#{item.parent.label}" disabled="true" />
+                            <p:commandButton value="..." oncomplete="chooseParentOrgUnitDialog.show();">
+                                <f:setPropertyActionListener target="#{chooseOrgUnitDialogBean.orgId}"
+                                    value="#{item.org.id}" />
+                            </p:commandButton>
+                        </h:panelGroup>
+                        <h:outputLabel for="name" value="名称" />
+                        <p:inputText id="name" value="#{item.label}" />
+                    </h:panelGrid>
+                </p:tab>
+                <p:tab title="联系方式">
+                    <h:panelGrid columns="4"
+                        columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+                        <h:outputLabel for="contactAddress" value="地址" />
+                        <p:inputText id="contactAddress" value="#{item.contact.address}" />
+                        <h:outputLabel for="contactPostCode" value="邮编" />
+                        <p:inputText id="contactPostCode" value="#{item.contact.postCode}" />
+
+                        <h:outputLabel for="contactTel" value="电话" />
+                        <p:inputText id="contactTel" value="#{item.contact.tel}" />
+                        <h:outputLabel for="contactMobile" value="移动电话" />
+                        <p:inputText id="contactMobile" value="#{item.contact.mobile}" />
+
+                        <h:outputLabel for="contactFax" value="传真" />
+                        <p:inputText id="contactFax" value="#{item.contact.fax}" />
+                        <h:outputLabel for="contactEmail" value="email" />
+                        <p:inputText id="contactEmail" value="#{item.contact.email}" />
+
+                        <h:outputLabel for="contactWebsite" value="网址" />
+                        <p:inputText id="contactWebsite" value="#{item.contact.website}" />
+                        <h:outputLabel for="contactQq" value="qq" />
+                        <p:inputText id="contactQq" value="#{item.contact.qq}" />
+                    </h:panelGrid>
+                </p:tab>
+            </p:tabView>
+        </fr:listView>
+
+        <fr:listView id="rolesEditView" header="公司相关人员" style="editDialog" indexView=":editDialog:form:tv:rolesIndexView"
+            mbean="#{bean.rolesMBean}">
+            <h:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
+                <h:outputLabel for="orgName" value="对应公司" />
+                <h:outputText id="orgName" value="#{item.org.displayName}" />
+
+                <h:outputLabel for="orgUnitName" value="对应部门" />
+                <h:panelGrid columns="2">
+                    <p:inputText id="orgUnitName" value="#{item.orgUnit.label}" disabled="true" />
+                    <p:commandButton value="..." oncomplete="chooseRoleOrgUnitDialog.show();">
+                        <f:setPropertyActionListener target="#{chooseOrgUnitDialogBean.orgId}"
+                            value="#{item.org.id}" />
+                    </p:commandButton>
                 </h:panelGrid>
-                <div align="right">
-                    <p:commandButton value="保存" actionListener="#{bean.doSaveContact}" oncomplete="contactHolderDlg.hide();"
-                        async="true" update=":editDialog:form:tv:contacts" />
-                    <p:commandButton value="取消" oncomplete="contactHolderDlg.hide();" />
-                </div>
-            </h:form>
-        </p:dialog>
+
+                <h:outputLabel for="person" value="对应人员" />
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{item.person.displayName}" />
+                    <p:commandButton id="person" value="..." oncomplete="chooseRolePersonDialog.show();">
+                        <f:setPropertyActionListener target="#{choosePartyDialogBean.stereo}"
+                            value="PER" />
+                    </p:commandButton>
+                </h:panelGrid>
+
+                <h:outputLabel for="role" value="职务" />
+                <p:inputText id="role" value="#{item.role}" />
+
+                <h:outputLabel for="roleDetail" value="负责业务" />
+                <p:inputText id="roleDetail" value="#{item.roleDetail}" />
+
+                <h:outputLabel for="description" value="备注" />
+                <p:inputTextarea id="description" value="#{item.description}" />
+            </h:panelGrid>
+        </fr:listView>
 
         <p:dialog header="标签添加" widgetVar="tagDlg" modal="true">
-            <h:form id="tagForm" style="margin: 1em">
-                <h:panelGroup id="tagHolder">
-                    <p:selectManyMenu value="#{bean.selectedTagsToAdd}" style="height:300px">
-                        <f:selectItems value="#{bean.tags}" />
-                    </p:selectManyMenu>
-                </h:panelGroup>
-                <div align="right">
-                    <p:commandButton value="添加" actionListener="#{bean.addTags}" oncomplete="tagDlg.hide();"
-                        async="true" update=":editDialog:form:tv:orgTags" />
-                    <p:commandButton value="取消" oncomplete="tagDlg.hide();" />
-                </div>
-            </h:form>
-        </p:dialog>
-
-        <p:dialog header="相关人员设置" widgetVar="roleHolderDlg" modal="true">
-            <h:form id="roleForm" style="margin: 1em">
-                <h:panelGroup rendered="#{bean.role != null}">
-                    <h:inputHidden id="roldOrgId" value="#{bean.role.org.id}" />
-                    <h:inputHidden id="roldPersonId" value="#{bean.role.person.id}" />
-                    <h:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
-
-                        <h:outputLabel for="roleOrgName" value="对应公司" />
-                        <h:outputText id="roleOrgName" value="#{bean.role.org.displayName}" />
-
-                        <h:outputLabel for="roleOrgUnitName" value="对应部门" />
-                        <h:panelGrid columns="2">
-                            <p:inputText id="roleOrgUnitName" value="#{bean.role.orgUnit.label}" disabled="true" />
-                            <p:commandButton value="..." oncomplete="chooseParentOrgUnitDialog.show();" />
-                        </h:panelGrid>
-
-                        <h:outputLabel for="rolePersonName" value="对应人员" />
-                        <h:panelGrid columns="2">
-                            <h:outputText id="rolePersonName" value="#{bean.role.person.displayName}" />
-                            <p:commandButton value="..." onclick="personHolderDlg.show();" />
-                        </h:panelGrid>
-
-                        <h:outputLabel for="roleRole" value="职务" />
-                        <p:inputText id="roleRole" value="#{bean.role.role}" />
-
-                        <h:outputLabel for="roleRoleDetail" value="负责业务" />
-                        <p:inputText id="roleRoleDetail" value="#{bean.role.roleDetail}" />
-
-                        <h:outputLabel for="roleDescription" value="备注" />
-                        <p:inputTextarea id="roleDescription" value="#{bean.role.description}" />
-
-                        <h:panelGroup colspan="2">
-                            <h:panelGrid columns="2">
-                            </h:panelGrid>
-                        </h:panelGroup>
-                    </h:panelGrid>
-                </h:panelGroup>
-                <div align="right">
-                    <p:commandButton value="保存" actionListener="#{bean.doSaveRole}" oncomplete="roleHolderDlg.hide();"
-                        async="true" update=":editDialog:form:tv:roles" />
-                    <p:commandButton value="取消" oncomplete="roleHolderDlg.hide();" />
-                </div>
-            </h:form>
-        </p:dialog>
-
-        <p:dialog header="选择联系人" widgetVar="personHolderDlg" modal="true">
-            <h:form id="chooseContactForm" style="margin: 1em">
-                <h:panelGrid columns="3">
-                    <h:outputLabel value="联系人名字全部或部份:" />
-                    <p:inputText value="#{bean.personPattern}" />
-                    <p:commandButton value="查找" actionListener="#{bean.findPerson}" update="persons"
-                        async="true" />
-                </h:panelGrid>
-                <p:dataTable id="persons" var="person" value="#{bean.persons}" resizableColumns="true"
-                    selection="#{bean.selectedPerson}" selectionMode="single" rowKey="#{person.id}" rowIndexVar="rowIndex">
-
-                    <p:column headerText="序号">
-                        <h:outputText value="#{rowIndex + 1}" />
-                    </p:column>
-
-                    <p:column headerText="姓名">
-                        <h:outputText value="#{person.displayName}" />
-                    </p:column>
-
-                    <p:column headerText="性别">
-                        <h:outputText value="#{person.sexText}" />
-                    </p:column>
-
-                    <p:column headerText="生日">
-                        <h:outputText value="#{person.birthday}">
-                            <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-                        </h:outputText>
-                    </p:column>
-
-                    <p:column headerText="证件类型">
-                        <h:outputText value="#{person.sidType.label}" />
-                    </p:column>
-
-                    <p:column headerText="证件号码">
-                        <h:outputText value="#{person.sid}" />
-                    </p:column>
-
-                    <p:column headerText="户籍">
-                        <h:outputText value="#{person.censusRegister}" />
-                    </p:column>
-
-                </p:dataTable>
-                <div align="right">
-                    <p:commandButton value="确定" actionListener="#{bean.choosePerson}" oncomplete="personHolderDlg.hide();"
-                        update=":roleForm" async="true" />
-                    <p:commandButton value="取消" oncomplete="personHolderDlg.hide();" />
-                </div>
-            </h:form>
-        </p:dialog>
-
-        <p:dialog header="新增部门" widgetVar="orgUnitDialog" modal="true">
-            <h:form id="orgUnitForm" style="margin: 1em">
-                <h:panelGrid columns="2" rendered="#{bean.orgUnit != null}">
-
-                    <h:outputLabel for="parentOrgUnit" value="所属部门" />
-                    <h:panelGrid columns="2">
-                        <p:inputText id="parentOrgUnit" value="#{bean.orgUnit.parent.label}" disabled="true" />
-                        <p:commandButton value="..." oncomplete="chooseParentOrgUnitDialog.show();" />
-                    </h:panelGrid>
-
-                    <h:outputLabel for="name" value="名称" />
-                    <p:inputText id="name" value="#{bean.orgUnit.label}" />
-
-                </h:panelGrid>
-                <div align="right">
-                    <p:commandButton value="保存" actionListener="#{bean.doSaveOrgUnit}"
-                        update=":editDialog:form:tv:orgUnitTreeGrid, :chooseParentOrgUnitForm:chooseParentOrgUnitPanel"
-                        oncomplete="orgUnitDialog.hide();" />
-                    <p:commandButton value="取消" oncomplete="orgUnitDialog.hide();" />
-                </div>
-            </h:form>
-        </p:dialog>
-
-        <p:dialog header="选择所属部门" widgetVar="chooseParentOrgUnitDialog" modal="true">
-            <h:form id="chooseParentOrgUnitForm" style="margin: 1em">
-                <h:panelGroup id="chooseParentOrgUnitPanel">
-
-                    <p:tree value="#{bean.orgUnitRoot}" var="orgUnit" selectionMode="single"
-                        selection="#{bean.selectedParentOrgUnitNode}">
-                        <p:treeNode>
-                            <h:outputText value="#{orgUnit.label}" />
-                        </p:treeNode>
-                    </p:tree>
-
-                    <h:panelGrid columns="2">
-                    </h:panelGrid>
-                </h:panelGroup>
-                <div align="right">
-                    <p:commandButton value="确定" actionListener="#{bean.doSelectParentOrgUnit}" update=":orgUnitForm, :roleForm:roleOrgUnitName"
-                        oncomplete="chooseParentOrgUnitDialog.hide();" />
-                    <p:commandButton value="取消" onclick="chooseParentOrgUnitDialog.hide();" />
-                </div>
-            </h:form>
+            正在建设中
         </p:dialog>
 
     </ui:define>

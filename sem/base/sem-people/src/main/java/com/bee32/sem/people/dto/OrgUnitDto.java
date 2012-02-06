@@ -1,5 +1,8 @@
 package com.bee32.sem.people.dto;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.free.ParseException;
 import javax.validation.constraints.NotNull;
 
@@ -16,8 +19,11 @@ public class OrgUnitDto
 
     private static final long serialVersionUID = 1L;
 
+    public static final int ROLES = 1;
+
     OrgDto org;
     ContactDto contact;
+    List<PersonRoleDto> roles;
     GroupDto forWhichGroup;
 
     public OrgUnitDto() {
@@ -32,6 +38,12 @@ public class OrgUnitDto
     protected void _marshal(OrgUnit source) {
         org = mref(OrgDto.class, source.getOrg());
         contact = mref(ContactDto.class, source.getContact());
+
+        if (selection.contains(ROLES))
+            roles = mrefList(PersonRoleDto.class, source.getRoles());
+        else
+            roles = Collections.emptyList();
+
         forWhichGroup = mref(GroupDto.class, source.getForWhichGroup());
     }
 
@@ -39,6 +51,10 @@ public class OrgUnitDto
     protected void _unmarshalTo(OrgUnit target) {
         merge(target, "org", org);
         merge(target, "contact", contact);
+
+        if (selection.contains(ROLES))
+            mergeList(target, "roles", roles);
+
         merge(target, "forWhichGroup", forWhichGroup);
     }
 
@@ -95,6 +111,16 @@ public class OrgUnitDto
 
     public void setContact(ContactDto contact) {
         this.contact = contact;
+    }
+
+    public List<PersonRoleDto> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<PersonRoleDto> roles) {
+        if (roles == null)
+            throw new NullPointerException("roles");
+        this.roles = roles;
     }
 
     public GroupDto getForWhichGroup() {

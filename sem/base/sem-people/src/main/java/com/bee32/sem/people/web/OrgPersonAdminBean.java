@@ -19,11 +19,10 @@ import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.dto.PartyTagnameDto;
 import com.bee32.sem.people.dto.PersonDto;
+import com.bee32.sem.people.dto.PersonRoleDto;
 import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.entity.OrgUnit;
 import com.bee32.sem.people.entity.PartyTagname;
-import com.bee32.sem.people.entity.Person;
-import com.bee32.sem.people.entity.PersonRole;
 import com.bee32.sem.people.util.ContactHolder;
 import com.bee32.sem.sandbox.UIHelper;
 
@@ -183,6 +182,11 @@ public class OrgPersonAdminBean
         OrgDto org = new OrgDto().create();
         PersonDto person = new PersonDto().create();
 
+        PersonRoleDto role = new PersonRoleDto().create();
+        role.setOrg(org);
+        role.setPerson(person);
+        role.setRole(personRole);
+
         org.setName(orgName);
         person.setName(personName);
         for (String tagId : selectedTags) {
@@ -232,23 +236,6 @@ public class OrgPersonAdminBean
             }
         }
         return true;
-    }
-
-    @Override
-    protected void postUpdate(UnmarshalMap uMap)
-            throws Exception {
-        Person _person = (Person) person.unmarshal();
-        serviceFor(Person.class).saveOrUpdate(_person);
-
-        PersonRole _role = new PersonRole();
-        _role.setOrg(_org);
-        _role.setPerson(_person);
-        _role.setRole(personRole);
-
-        serviceFor(PersonRole.class).saveOrUpdate(_role);
-        serviceFor(Org.class).evict(_org);
-
-        refreshOrgCount();
     }
 
 }

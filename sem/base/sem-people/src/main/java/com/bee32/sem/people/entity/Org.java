@@ -1,6 +1,8 @@
 package com.bee32.sem.people.entity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.DiscriminatorValue;
@@ -24,8 +26,7 @@ public class Org
     OrgType type = OrgType.PARTNER;
     int size;
 
-    // List<OrgUnit> orgUnits = new ArrayList<OrgUnit>();
-
+    List<OrgUnit> orgUnits = new ArrayList<OrgUnit>();
     Set<PersonRole> roles = new HashSet<PersonRole>();
 
     Group forWhichGroup;
@@ -62,6 +63,21 @@ public class Org
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    /**
+     * 所有部门（这里是平面结构，不按树排列）
+     */
+    @OneToMany(mappedBy = "org", orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
+    public List<OrgUnit> getOrgUnits() {
+        return orgUnits;
+    }
+
+    public void setOrgUnits(List<OrgUnit> orgUnits) {
+        if (orgUnits == null)
+            throw new NullPointerException("orgUnits");
+        this.orgUnits = orgUnits;
     }
 
     @OneToMany(mappedBy = "org", orphanRemoval = true)

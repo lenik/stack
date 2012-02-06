@@ -1,8 +1,12 @@
 package com.bee32.sem.people.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
@@ -17,8 +21,9 @@ public class OrgUnit
     private static final long serialVersionUID = 1L;
 
     Org org;
-    Contact contact;
+    Contact contact = new Contact();
     Group forWhichGroup;
+    List<PersonRole> roles = new ArrayList<PersonRole>();
 
     /**
      * 属主组织。
@@ -65,6 +70,17 @@ public class OrgUnit
      */
     public void setForWhichGroup(Group forWhichGroup) {
         this.forWhichGroup = forWhichGroup;
+    }
+
+    @OneToMany(mappedBy = "orgUnit")
+    public List<PersonRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<PersonRole> roles) {
+        if (roles == null)
+            throw new NullPointerException("roles");
+        this.roles = roles;
     }
 
 }

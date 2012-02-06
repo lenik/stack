@@ -13,11 +13,11 @@
         </p:column>
 
         <p:column headerText="公司名称">
-            <h:outputText value="#{org.name}" />
+            <h:outputText value="#{entry.label}" />
         </p:column>
 
         <p:column headerText="标签">
-            <p:dataList value="#{org.tags}" var="tag" type="definition">
+            <p:dataList value="#{entry.tags}" var="tag" type="definition">
                 <f:facet name="description">
                     <h:outputText value="#{tag.label}" />
                 </f:facet>
@@ -25,33 +25,23 @@
         </p:column>
 
         <p:column headerText="联系电话">
-            <h:outputText value="#{org.contactsString}" />
+            <h:outputText value="#{entry.contactsString}" />
         </p:column>
 
         <p:rowExpansion>
-            <p:dataTable id="roles" var="role" value="#{org.roleList}" resizableColumns="true">
-
-                <p:column headerText="姓名">
+        <!--  dataTable doesn't render: PF-3.0.1, 3.1.RC1 -->
+            <ui:repeat id="roles" var="role" value="#{entry.rolesList}">
+                <h:panelGrid columns="4">
                     <h:outputText value="#{role.person.displayName}" />
-                </p:column>
-
-                <p:column headerText="职务">
                     <h:outputText value="#{role.role}" />
-                </p:column>
-
-                <p:column headerText="性别">
                     <h:outputText value="#{role.person.sexText}" />
-                </p:column>
-
-                <p:column headerText="联系电话">
                     <h:outputText value="#{role.person.contactsString}" />
-                </p:column>
-
-            </p:dataTable>
+                </h:panelGrid>
+            </ui:repeat>
         </p:rowExpansion>
     </ui:define>
 
-    <ui:define name="editFormContent">
+    <ui:define name="editDialogContent">
         <t:panelGrid id="editPanel" columns="4">
             <h:outputText value="公司名称" />
             <p:inputText value="#{bean.orgName}" />
