@@ -6,7 +6,9 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.file.entity.FileAttribute;
 import com.bee32.sem.frame.ui.IEnclosedObject;
 
@@ -82,6 +84,7 @@ public class FileAttributeDto
         this.file = file;
     }
 
+    @NLength(min = 1, max = FileAttribute.NAME_LENGTH)
     public String getName() {
         return name;
     }
@@ -89,7 +92,7 @@ public class FileAttributeDto
     public void setName(String name) {
         if (name == null)
             throw new NullPointerException("name");
-        this.name = name;
+        this.name = TextUtil.normalizeSpace(name);
     }
 
     public int getIntVal() {
@@ -108,12 +111,13 @@ public class FileAttributeDto
         this.floatVal = floatVal;
     }
 
+    @NLength(max = FileAttribute.STR_VAL_LENGTH)
     public String getStrVal() {
         return strVal;
     }
 
     public void setStrVal(String strVal) {
-        this.strVal = strVal;
+        this.strVal = TextUtil.normalizeSpace(strVal);
     }
 
 }

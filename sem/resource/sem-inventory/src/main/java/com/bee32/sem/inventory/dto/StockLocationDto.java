@@ -5,7 +5,9 @@ import java.math.BigDecimal;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.tree.TreeEntityDto;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.world.thing.UnitDto;
 
@@ -74,12 +76,13 @@ public class StockLocationDto
         this.warehouse = warehouse;
     }
 
+    @NLength(max = StockLocation.ADDRESS_LENGTH)
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        this.address = TextUtil.normalizeSpace(address);
     }
 
     public double getX() {
@@ -122,12 +125,13 @@ public class StockLocationDto
         this.capacityUnit = capacityUnit;
     }
 
+    @NLength(max = StockLocation.CAPACITY_UNIT_HINT_LENGTH)
     public String getCapacityUnitHint() {
         return capacityUnitHint;
     }
 
     public void setCapacityUnitHint(String capacityUnitHint) {
-        this.capacityUnitHint = capacityUnitHint;
+        this.capacityUnitHint = TextUtil.normalizeSpace(capacityUnitHint);
     }
 
     public int getRank() {

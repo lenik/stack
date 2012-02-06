@@ -10,7 +10,9 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.MomentIntervalDto;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.people.dto.PartyDto;
@@ -140,12 +142,13 @@ public class PurchaseRequestItemDto
         this.preferredSupplier = preferredSupplier;
     }
 
+    @NLength(max = PurchaseRequestItem.ADDITIONAL_REQUIREMENT_LENGTH)
     public String getAdditionalRequirement() {
         return additionalRequirement;
     }
 
     public void setAdditionalRequirement(String additionalRequirement) {
-        this.additionalRequirement = additionalRequirement;
+        this.additionalRequirement = TextUtil.normalizeSpace(additionalRequirement);
     }
 
     public List<InquiryDto> getInquiries() {

@@ -115,7 +115,7 @@ public class ChanceDto
     }
 
     public void setSerial(String serial) {
-        this.serial = serial;
+        this.serial = TextUtil.normalizeSpace(serial);
     }
 
     public String getDate() {

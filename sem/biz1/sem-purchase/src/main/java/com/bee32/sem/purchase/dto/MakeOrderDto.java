@@ -10,8 +10,10 @@ import javax.persistence.Column;
 import javax.persistence.Transient;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.ox1.config.DecimalConfig;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.people.dto.PartyDto;
@@ -99,12 +101,13 @@ public class MakeOrderDto
         this.customer = customer;
     }
 
+    @NLength(max = MakeOrder.STATUS_LENGTH)
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        this.status = TextUtil.normalizeSpace(status);
     }
 
     public ChanceDto getChance() {

@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.bee32.plover.model.validation.core.NLength;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.people.Gender;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.Person;
@@ -83,7 +84,7 @@ public class PersonDto
     }
 
     public void setCensusRegister(String censusRegister) {
-        this.censusRegister = censusRegister;
+        this.censusRegister = TextUtil.normalizeSpace(censusRegister);
     }
 
     public Set<PersonRoleDto> getRoles() {

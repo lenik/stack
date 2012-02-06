@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.MomentIntervalDto;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.util.DateToRange;
 import com.bee32.sem.frame.ui.IEnclosedObject;
@@ -241,7 +242,7 @@ public class ChanceActionDto
     }
 
     public void setMoreInfo(String moreInfo) {
-        this.moreInfo = moreInfo;
+        this.moreInfo = TextUtil.normalizeSpace(moreInfo);
     }
 
     public String getSubject() {
@@ -259,7 +260,7 @@ public class ChanceActionDto
     }
 
     public void setSpending(String spending) {
-        this.spending = spending;
+        this.spending = TextUtil.normalizeSpace(spending);
     }
 
     public ChanceDto getChance() {

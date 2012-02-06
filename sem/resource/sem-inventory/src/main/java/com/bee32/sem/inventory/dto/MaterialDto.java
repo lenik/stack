@@ -158,8 +158,7 @@ public class MaterialDto
     }
 
     public void setBarCode(String barCode) {
-        barCode = TextUtil.normalizeSpace(barCode);
-        this.barCode = barCode;
+        this.barCode = TextUtil.normalizeSpace(barCode);
     }
 
     @NLength(max = Material.MODELSPEC_LENGTH)
@@ -168,8 +167,7 @@ public class MaterialDto
     }
 
     public void setModelSpec(String modelSpec) {
-        modelSpec = TextUtil.normalizeSpace(modelSpec);
-        this.modelSpec = modelSpec;
+        this.modelSpec = TextUtil.normalizeSpace(modelSpec);
     }
 
     public int getAlarmAhead() {

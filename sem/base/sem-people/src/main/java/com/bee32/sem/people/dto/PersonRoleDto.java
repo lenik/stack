@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.c.CEntityDto;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.people.entity.PersonRole;
 
@@ -103,12 +104,13 @@ public class PersonRoleDto
         this.person = person;
     }
 
+    @NLength(max = PersonRole.ALT_ORG_UNIT_LENGTH)
     public String getAltOrgUnit() {
         return altOrgUnit;
     }
 
     public void setAltOrgUnit(String altOrgUnit) {
-        this.altOrgUnit = altOrgUnit;
+        this.altOrgUnit = TextUtil.normalizeSpace(altOrgUnit);
     }
 
     @NLength(max = PersonRole.ROLE_LENGTH)
@@ -117,7 +119,7 @@ public class PersonRoleDto
     }
 
     public void setRole(String role) {
-        this.role = role;
+        this.role = TextUtil.normalizeSpace(role);
     }
 
     @NLength(max = PersonRole.ROLE_DETAIL_LENGTH)
@@ -126,7 +128,7 @@ public class PersonRoleDto
     }
 
     public void setRoleDetail(String roleDetail) {
-        this.roleDetail = roleDetail;
+        this.roleDetail = TextUtil.normalizeSpace(roleDetail);
     }
 
     public OrgUnitDto getOrgUnit() {
@@ -143,7 +145,7 @@ public class PersonRoleDto
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.description = TextUtil.normalizeSpace(description);
     }
 
 }

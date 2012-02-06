@@ -3,7 +3,9 @@ package com.bee32.sem.chance.dto;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.UIEntityDto;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.chance.entity.ChanceCompetitor;
 import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.world.monetary.MutableMCValue;
@@ -82,52 +84,58 @@ public class ChanceCompetitorDto
         this.price = price;
     }
 
+    @NLength(max = ChanceCompetitor.CAPABILITY_LENGTH)
     public String getCapability() {
         return capability;
     }
 
     public void setCapability(String capability) {
-        this.capability = capability;
+        this.capability = TextUtil.normalizeSpace(capability);
     }
 
+    @NLength(max = ChanceCompetitor.SOLUTION_LENGTH)
     public String getSolution() {
         return solution;
     }
 
     public void setSolution(String solution) {
-        this.solution = solution;
+        this.solution = TextUtil.normalizeSpace(solution);
     }
 
+    @NLength(max = ChanceCompetitor.ADVANTAGE_LENGTH)
     public String getAdvantage() {
         return advantage;
     }
 
     public void setAdvantage(String advantage) {
-        this.advantage = advantage;
+        this.advantage = TextUtil.normalizeSpace(advantage);
     }
 
+    @NLength(max = ChanceCompetitor.DISVANTAGE_LENGTH)
     public String getDisvantage() {
         return disvantage;
     }
 
     public void setDisvantage(String disvantage) {
-        this.disvantage = disvantage;
+        this.disvantage = TextUtil.normalizeSpace(disvantage);
     }
 
+    @NLength(max = ChanceCompetitor.TACTIC_LENGTH)
     public String getTactic() {
         return tactic;
     }
 
     public void setTactic(String tactic) {
-        this.tactic = tactic;
+        this.tactic = TextUtil.normalizeSpace(tactic);
     }
 
+    @NLength(max = ChanceCompetitor.COMMENT_LENGTH)
     public String getComment() {
         return comment;
     }
 
     public void setComment(String comment) {
-        this.comment = comment;
+        this.comment = TextUtil.normalizeSpace(comment);
     }
 
 }

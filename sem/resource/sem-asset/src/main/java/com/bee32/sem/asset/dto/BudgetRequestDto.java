@@ -4,6 +4,9 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.model.validation.core.NLength;
+import com.bee32.plover.ox1.color.UIEntity;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.asset.entity.BudgetRequest;
 import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.world.monetary.MutableMCValue;
@@ -37,12 +40,13 @@ public class BudgetRequestDto
         throw new NotImplementedException();
     }
 
+    @NLength(max = BudgetRequest.TEXT_LENGTH)
     public String getText() {
         return text;
     }
 
     public void setText(String text) {
-        this.text = text;
+        this.text = TextUtil.normalizeSpace(text);
     }
 
     public MutableMCValue getValue() {

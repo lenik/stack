@@ -9,7 +9,9 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.MomentIntervalDto;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.bom.dto.PartDto;
 import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.purchase.entity.MakeTaskItem;
@@ -111,12 +113,13 @@ public class MakeTaskItemDto
         this.deadline = deadline;
     }
 
+    @NLength(max = MakeTaskItem.STATUS_LENGTH)
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        this.status = TextUtil.normalizeSpace(status);
     }
 
     @Override

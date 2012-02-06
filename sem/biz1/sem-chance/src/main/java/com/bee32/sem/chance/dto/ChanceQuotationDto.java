@@ -4,6 +4,8 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.model.validation.core.NLength;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.chance.entity.ChanceQuotation;
 import com.bee32.sem.chance.entity.ChanceQuotationItem;
 import com.bee32.sem.frame.ui.IEnclosedObject;
@@ -59,20 +61,22 @@ public class ChanceQuotationDto
         this.chance = chance;
     }
 
+    @NLength(max = ChanceQuotation.DELIVER_INFO_LENGTH)
     public String getDeliverInfo() {
         return deliverInfo;
     }
 
     public void setDeliverInfo(String deliverInfo) {
-        this.deliverInfo = deliverInfo;
+        this.deliverInfo = TextUtil.normalizeSpace(deliverInfo);
     }
 
+    @NLength(max = ChanceQuotation.PAYMENT_LENGTH)
     public String getPayment() {
         return payment;
     }
 
     public void setPayment(String payment) {
-        this.payment = payment;
+        this.payment = TextUtil.normalizeSpace(payment);
     }
 
 }

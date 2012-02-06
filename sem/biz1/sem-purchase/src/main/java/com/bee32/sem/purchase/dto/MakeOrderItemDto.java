@@ -8,7 +8,9 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.c.CEntityDto;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.bom.dto.PartDto;
 import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.purchase.entity.MakeOrderItem;
@@ -159,20 +161,23 @@ public class MakeOrderItemDto
         return nativeTotal;
     }
 
+    @NLength(max = MakeOrderItem.EXT_PROD_NAME_LENGTH)
     public String getExternalProductName() {
         return externalProductName;
     }
 
     public void setExternalProductName(String externalProductName) {
-        this.externalProductName = externalProductName;
+        this.externalProductName = TextUtil.normalizeSpace(externalProductName);
     }
 
+    @NLength(max = MakeOrderItem.EXT_SPEC_LENGTH)
     public String getExternalSpecification() {
         return externalSpecification;
     }
 
+
     public void setExternalSpecification(String externalSpecification) {
-        this.externalSpecification = externalSpecification;
+        this.externalSpecification = TextUtil.normalizeSpace(externalSpecification);
     }
 
     @Override

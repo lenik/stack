@@ -5,10 +5,13 @@ import java.io.Serializable;
 import javax.free.ParseException;
 
 import org.apache.commons.lang.NotImplementedException;
+import org.zkoss.idom.Textual;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.config.DecimalConfig;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.purchase.entity.Inquiry;
@@ -85,44 +88,49 @@ public class InquiryDto
         this.price = price;
     }
 
+    @NLength(max = Inquiry.DELIVERY_DATE_LENGTH)
     public String getDeliveryDate() {
         return deliveryDate;
     }
 
     public void setDeliveryDate(String deliveryDate) {
-        this.deliveryDate = deliveryDate;
+        this.deliveryDate = TextUtil.normalizeSpace(deliveryDate);
     }
 
+    @NLength(max = Inquiry.QUALITY_LENGTH)
     public String getQuality() {
         return quality;
     }
 
     public void setQuality(String quality) {
-        this.quality = quality;
+        this.quality = TextUtil.normalizeSpace(quality);
     }
 
+    @NLength(max = Inquiry.PAYMENT_TERM_LENGTH)
     public String getPaymentTerm() {
         return paymentTerm;
     }
 
     public void setPaymentTerm(String paymentTerm) {
-        this.paymentTerm = paymentTerm;
+        this.paymentTerm = TextUtil.normalizeSpace(paymentTerm);
     }
 
+    @NLength(max = Inquiry.AFTER_SERVICE_LENGTH)
     public String getAfterService() {
         return afterService;
     }
 
     public void setAfterService(String afterService) {
-        this.afterService = afterService;
+        this.afterService = TextUtil.normalizeSpace(afterService);
     }
 
+    @NLength(max = Inquiry.OTHER_LENGTH)
     public String getOther() {
         return other;
     }
 
     public void setOther(String other) {
-        this.other = other;
+        this.other = TextUtil.normalizeSpace(other);
     }
 
     public PurchaseRequestItemDto getPurchaseRequestItem() {

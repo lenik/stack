@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.MomentIntervalDto;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.people.entity.PartyRecord;
 
@@ -95,7 +96,7 @@ public class PartyRecordDto
     }
 
     public void setText(String text) {
-        this.text = text;
+        this.text = TextUtil.normalizeSpace(text);
     }
 
 }

@@ -169,7 +169,7 @@ public class PartyDto
     public void setSid(String sid) {
         if (sid != null && sid.isEmpty())
             sid = null;
-        this.sid = sid;
+        this.sid = TextUtil.normalizeSpace(sid);
     }
 
     public String getXid() {
@@ -225,7 +225,7 @@ public class PartyDto
     }
 
     public void setInterests(String interests) {
-        this.interests = interests;
+        this.interests = TextUtil.normalizeSpace(interests);
     }
 
     @NLength(max = Party.BANK_LENGTH)
@@ -234,7 +234,7 @@ public class PartyDto
     }
 
     public void setBank(String bank) {
-        this.bank = bank;
+        this.bank = TextUtil.normalizeSpace(bank);
     }
 
     @NLength(max = Party.BANK_ACCOUNT_LENGTH)
@@ -243,7 +243,7 @@ public class PartyDto
     }
 
     public void setBankAccount(String bankAccount) {
-        this.bankAccount = bankAccount;
+        this.bankAccount = TextUtil.normalizeSpace(bankAccount);
     }
 
     @NLength(max = Party.MEMO_LENGTH)
@@ -252,7 +252,7 @@ public class PartyDto
     }
 
     public void setMemo(String memo) {
-        this.memo = memo;
+        this.memo = TextUtil.normalizeSpace(memo);
     }
 
     public List<PartyTagnameDto> getTags() {

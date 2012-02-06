@@ -8,11 +8,13 @@ import javax.free.ParseException;
 import javax.persistence.Transient;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.plover.rtx.location.ILocationConstants;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.util.Mime;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.file.web.UserFileController;
 
@@ -99,6 +101,7 @@ public class UserFileDto
             return getName();
     }
 
+    @NLength(max = UserFile.DIR_LENGTH)
     public String getDir() {
         return dir;
     }
@@ -106,13 +109,14 @@ public class UserFileDto
     public void setDir(String dir) {
         if (dir == null)
             throw new NullPointerException("dir");
-        this.dir = dir;
+        this.dir = TextUtil.normalizeSpace(dir);
     }
 
     public FileName getFileName() {
         return fileName;
     }
 
+    @NLength(max = UserFile.NAME_LENGTH)
     public String getName() {
         return fileName.toString();
     }

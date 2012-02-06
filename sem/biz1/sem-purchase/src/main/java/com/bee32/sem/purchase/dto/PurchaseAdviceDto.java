@@ -5,6 +5,8 @@ import javax.free.ParseException;
 import org.apache.commons.lang.NotImplementedException;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.model.validation.core.NLength;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.process.verify.builtin.dto.SingleVerifierSupportDto;
 import com.bee32.sem.process.verify.dto.IVerifiableDto;
@@ -55,12 +57,13 @@ public class PurchaseAdviceDto
         this.preferredInquiry = preferredInquiry;
     }
 
+    @NLength(max = PurchaseAdvice.REASON_LENGTH)
     public String getReason() {
         return reason;
     }
 
     public void setReason(String reason) {
-        this.reason = reason;
+        this.reason = TextUtil.normalizeSpace(reason);
     }
 
     public PurchaseRequestItemDto getPurchaseRequestItem() {
