@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
-import org.primefaces.model.TreeNode;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
@@ -16,7 +15,6 @@ import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.file.web.IncomingFile;
 import com.bee32.sem.file.web.IncomingFileBlobAdapter;
 import com.bee32.sem.inventory.dto.MaterialAttributeDto;
-import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.MaterialPreferredLocationDto;
 import com.bee32.sem.inventory.dto.MaterialPriceDto;
@@ -27,8 +25,6 @@ import com.bee32.sem.inventory.entity.MaterialPreferredLocation;
 import com.bee32.sem.inventory.entity.MaterialPrice;
 import com.bee32.sem.inventory.entity.MaterialWarehouseOption;
 import com.bee32.sem.inventory.util.MaterialCriteria;
-import com.bee32.sem.inventory.web.dialogs.MaterialCategoryTreeModel;
-import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.world.thing.ScaleItem;
@@ -38,12 +34,9 @@ import com.bee32.sem.world.thing.UnitConvDto;
 import com.bee32.sem.world.thing.UnitDto;
 
 public class MaterialExAdminBean
-        extends SimpleEntityViewBean {
+        extends MaterialCategorySupportBean {
 
     private static final long serialVersionUID = 1L;
-
-    MaterialCategoryTreeModel categoryTree = new MaterialCategoryTreeModel();
-    TreeNode choosedMaterialCategoryNode;
 
     MaterialPriceDto materialPrice = new MaterialPriceDto().create();
     ScaleItem scaleItem = new ScaleItem();
@@ -58,6 +51,7 @@ public class MaterialExAdminBean
 
     @Override
     protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
+        super.composeBaseCriteriaElements(elements);
         Integer categoryId = categoryTree.getSelectedId();
         // if (categoryId != null)
         if (categoryId == null) // select none if no category.
@@ -86,12 +80,8 @@ public class MaterialExAdminBean
     protected void postUpdate(UnmarshalMap uMap)
             throws Exception {
         for (MaterialDto material : uMap.<MaterialDto> dtos()) {
-            if (material.getId() == null) {
-                Integer categoryId = material.getCategory().getId();
-                MaterialCategoryDto category = categoryTree.getIndex().get(categoryId);
-                if (category != null)
-                    category.setMaterialCount(category.getMaterialCount() + 1);
-            }
+            if (material.isNewCreated())
+                onCreateMaterial(material);
         }
     }
 
@@ -99,10 +89,8 @@ public class MaterialExAdminBean
     protected void postDelete(UnmarshalMap uMap)
             throws Exception {
         for (Material _m : uMap.<Material> entitySet()) {
-            Integer categoryId = _m.getCategory().getId();
-            MaterialCategoryDto category = categoryTree.getIndex().get(categoryId);
-            if (category != null)
-                category.setMaterialCount(category.getMaterialCount() - 1);
+            MaterialDto material = uMap.getSourceDto(_m);
+            onDeleteMaterial(material);
         }
     }
 
@@ -110,20 +98,6 @@ public class MaterialExAdminBean
         List<Unit> units = serviceFor(Unit.class).list();
         List<UnitDto> unitDtos = DTOs.marshalList(UnitDto.class, units);
         return UIHelper.selectItemsFromDict(unitDtos);
-    }
-
-    public TreeNode getChoosedMaterialCategoryNode() {
-        return choosedMaterialCategoryNode;
-    }
-
-    public void setChoosedMaterialCategoryNode(TreeNode node) {
-        this.choosedMaterialCategoryNode = node;
-    }
-
-    public void chooseMaterialCategory() {
-        MaterialDto material = getOpenedObject();
-        MaterialCategoryDto category = (MaterialCategoryDto) choosedMaterialCategoryNode.getData();
-        material.setCategory(category);
     }
 
     public List<MaterialPriceDto> getMaterialPrices() {

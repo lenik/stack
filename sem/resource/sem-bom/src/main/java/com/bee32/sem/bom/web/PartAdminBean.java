@@ -1,7 +1,6 @@
 package com.bee32.sem.bom.web;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.bee32.plover.criteria.hibernate.Equals;
@@ -9,8 +8,6 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.Not;
 import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.orm.annotation.ForEntity;
-import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.ox1.tree.TreeCriteria;
 import com.bee32.sem.bom.dto.PartDto;
 import com.bee32.sem.bom.dto.PartItemDto;
 import com.bee32.sem.bom.entity.Part;
@@ -21,16 +18,15 @@ import com.bee32.sem.inventory.Classification;
 import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.MaterialCategory;
-import com.bee32.sem.inventory.util.MaterialCriteria;
+import com.bee32.sem.inventory.web.MaterialCategorySupportBean;
 import com.bee32.sem.inventory.web.dialogs.MaterialCategoryTreeModel;
 import com.bee32.sem.misc.DummyDto;
-import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.world.monetary.FxrQueryException;
 
 @ForEntity(Part.class)
 public class PartAdminBean
-        extends SimpleEntityViewBean {
+        extends MaterialCategorySupportBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -50,75 +46,16 @@ public class PartAdminBean
 
     public PartAdminBean() {
         super(Part.class, PartDto.class, 0);
-        initMaterialCategoryTree();
     }
 
     @Override
     protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
+        super.composeBaseCriteriaElements(elements);
         Integer categoryId = categoryTree.getSelectedId();
         // if (categoryId != null)
         if (categoryId == null) // select none if no category.
             categoryId = -1;
         elements.add(BomCriteria.listPartByCategory(categoryId));
-    }
-
-    public void initMaterialCategoryTree() {
-        List<MaterialCategory> rootCategories = //
-        serviceFor(MaterialCategory.class).list( //
-                TreeCriteria.root(), //
-                MaterialCriteria.classified(Classification.PRODUCT, Classification.SEMI));
-        List<MaterialCategoryDto> rootCategoryDtos = DTOs.mrefList(MaterialCategoryDto.class,
-                ~MaterialCategoryDto.MATERIALS, rootCategories);
-
-        categoryTree = new MaterialCategoryTreeModel(rootCategoryDtos);
-    }
-
-    public PartItemDto getItem() {
-        return item;
-    }
-
-    public void setPart(PartItemDto item) {
-        this.item = item;
-    }
-
-    public PartItemDto getSelectedItem() {
-        return selectedItem;
-    }
-
-    public void setSelectedItem(PartItemDto selectedItem) {
-        this.selectedItem = selectedItem;
-    }
-
-    public PartDto getSelectedPart() {
-        return selectedPart;
-    }
-
-    public void setSelectedPart(PartDto selectedPart) {
-        this.selectedPart = selectedPart;
-    }
-
-    public MaterialDto getSelectedMaterial() {
-        return selectedMaterial;
-    }
-
-    public void setSelectedMaterial(MaterialDto selectedMaterial) {
-        this.selectedMaterial = selectedMaterial;
-    }
-
-    public PartDto getSelectedFindedPart() {
-        return selectedFindedPart;
-    }
-
-    public void setSelectedFindedPart(PartDto selectedFindedPart) {
-        this.selectedFindedPart = selectedFindedPart;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public MaterialCategoryTreeModel getMaterialCategoryTree() {
-        return categoryTree;
     }
 
     @Override
@@ -150,26 +87,6 @@ public class PartAdminBean
         selectedPart = null;
         MaterialCategoryDto c = (MaterialCategoryDto) categoryTree.getSelectedNode().getData();
         refreshPartCount(c.getId());
-    }
-
-    public void showItemDetail() {
-        if (selectedItem == null) {
-            uiLogger.error("请以单击选择需要查看详细内容的BOM组件!");
-            return;
-        }
-
-        item = selectedItem;
-    }
-
-    public void refreshItem() {
-        selectedItem = null;
-    }
-
-    public List<PartItemDto> getItems() {
-        if (part != null && part.getId() != null)
-            return part.getChildren();
-        else
-            return new ArrayList<PartItemDto>();
     }
 
     public void findMaterial() {

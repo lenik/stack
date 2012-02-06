@@ -48,8 +48,8 @@
             </ui:define>
 
             <ui:define name="moreTabs">
-                <p:tab id="preferredLocationsTab" title="预设库位" disabled="${dialogBean.materialId == null}">
-                    <h:panelGroup rendered="${dialogBean.materialId != null}">
+                <p:tab id="preferredLocationsTab" title="预设库位" disabled="${dialogBean.material == null}">
+                    <h:panelGroup rendered="${dialogBean.material != null}">
                         <p:dataTable id="preferredLocations" value="${dialogBean.preferredLocations}" var="entry"
                             selection="${dialogBean.selectedPreferredLocation}" selectionMode="single" resizableColumns="true">
                             <p:column headerText="库位">
