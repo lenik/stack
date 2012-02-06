@@ -33,9 +33,9 @@ public interface IListMBean<T> {
 
     void setCopyMode(boolean copyMode);
 
-    int getCopyIndex();
+    int getOpenedIndex();
 
-    T getCopy();
+    Object getOpenedObject();
 
     void showIndexForm();
 
