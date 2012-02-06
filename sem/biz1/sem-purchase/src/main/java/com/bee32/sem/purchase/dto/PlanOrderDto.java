@@ -3,10 +3,12 @@ package com.bee32.sem.purchase.dto;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.sem.inventory.dto.AbstractStockOrderDto;
+import com.bee32.sem.inventory.dto.StockOrderDto;
+import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.purchase.entity.PlanOrder;
 
-public class PlanOrderDto extends AbstractStockOrderDto<PlanOrder> {
+public class PlanOrderDto
+        extends StockOrderDto {
 
     private static final long serialVersionUID = 1L;
 
@@ -21,19 +23,22 @@ public class PlanOrderDto extends AbstractStockOrderDto<PlanOrder> {
     }
 
     @Override
-    protected void _marshal(PlanOrder source) {
+    protected void _marshal(StockOrder _source) {
+        super._marshal(_source);
+        PlanOrder source = (PlanOrder) _source;
         plan = mref(MaterialPlanDto.class, source.getPlan());
-        super._marshal(source);
     }
 
     @Override
-    protected void _unmarshalTo(PlanOrder target) {
+    protected void _unmarshalTo(StockOrder _target) {
+        super._unmarshalTo(_target);
+        PlanOrder target = (PlanOrder) _target;
         merge(target, "plan", plan);
-        super._unmarshalTo(target);
     }
 
     @Override
-    protected void _parse(TextMap map) throws ParseException {
+    protected void _parse(TextMap map)
+            throws ParseException {
         super._parse(map);
     }
 

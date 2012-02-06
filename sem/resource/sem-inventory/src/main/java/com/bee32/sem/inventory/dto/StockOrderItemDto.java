@@ -18,11 +18,11 @@ import com.bee32.sem.world.thing.AbstractOrderItemDto;
 
 public class StockOrderItemDto
         extends AbstractOrderItemDto<StockOrderItem>
-        implements IEnclosedObject<AbstractStockOrderDto<? extends StockOrder>> {
+        implements IEnclosedObject<StockOrderDto> {
 
     private static final long serialVersionUID = 1L;
 
-    AbstractStockOrderDto<? extends StockOrder> parent;
+    StockOrderDto parent;
     MaterialDto material;
     String batch;
     Date expirationDate;
@@ -59,7 +59,7 @@ public class StockOrderItemDto
 
     @Override
     protected boolean isNegated() {
-        AbstractStockOrderDto<? extends StockOrder> parent = getParent();
+        StockOrderDto parent = getParent();
         if (parent == null || parent.isNull()) {
             return false;
             // throw new IllegalStateException("Parent isn't set.");
@@ -75,11 +75,9 @@ public class StockOrderItemDto
 
         boolean tryBest = false;
         if (tryBest) {
-            Class<? extends StockOrder> parentClass = _parent == null ? StockOrder.class : _parent.getClass();
-
+            Class<?> parentClass = _parent == null ? StockOrder.class : _parent.getClass();
             Class<? extends StockOrderDto> parentDtoType = (Class<? extends StockOrderDto>) EntityUtil
                     .getDtoType(parentClass);
-
             parent = mref(parentDtoType, _parent);
         } else {
             parent = mref(StockOrderDto.class, _parent);
@@ -113,20 +111,20 @@ public class StockOrderItemDto
     }
 
     @Override
-    public AbstractStockOrderDto<? extends StockOrder> getEnclosingObject() {
+    public StockOrderDto getEnclosingObject() {
         return getParent();
     }
 
     @Override
-    public void setEnclosingObject(AbstractStockOrderDto<? extends StockOrder> enclosingObject) {
+    public void setEnclosingObject(StockOrderDto enclosingObject) {
         setParent(enclosingObject);
     }
 
-    public AbstractStockOrderDto<? extends StockOrder> getParent() {
+    public StockOrderDto getParent() {
         return parent;
     }
 
-    public void setParent(AbstractStockOrderDto<? extends StockOrder> parent) {
+    public void setParent(StockOrderDto parent) {
         if (parent == null)
             throw new NullPointerException("parent");
         this.parent = parent;
