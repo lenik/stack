@@ -20,7 +20,6 @@ import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.inventory.process.StockOrderVerifyPolicy;
 import com.bee32.sem.people.SEMPeopleSamples;
 import com.bee32.sem.process.SEMVerifyPolicySamples;
-import com.bee32.sem.process.verify.preference.VerifyPolicyPref;
 import com.bee32.sem.test.DateSamples;
 import com.bee32.sem.world.SEMWorldSamples;
 import com.bee32.sem.world.thing.Unit;
@@ -29,8 +28,7 @@ import com.bee32.sem.world.thing.Unit;
 public class SEMInventorySamples
         extends SampleContribution {
 
-    public static VerifyPolicyPref verifyPref = new VerifyPolicyPref();
-    public static StockOrderVerifyPolicy verifyPolicy = new StockOrderVerifyPolicy();
+    public static StockOrderVerifyPolicy stockPolicy = new StockOrderVerifyPolicy();
 
     public static StockWarehouse tokyoWarehouse = new StockWarehouse();
     public static StockLocation area1 = new StockLocation();
@@ -57,21 +55,17 @@ public class SEMInventorySamples
     public static StockOrder planOrder1;
 
     static {
-        verifyPref.setType(StockOrder.class);
-        verifyPref.setPreferredPolicy(verifyPolicy);
-        verifyPref.setDescription("用库存审核策略对库存对象审核。");
-
-        verifyPolicy.setLabel("库存审核策略");
-        verifyPolicy.setDescription("测试用的库存审核策略。");
-        verifyPolicy.setSubjectPolicy(StockOrderSubject.PACK_M, SEMVerifyPolicySamples.robotList);
-        verifyPolicy.setSubjectPolicy(StockOrderSubject.PACK_MB, SEMVerifyPolicySamples.robotList);
-        verifyPolicy.setSubjectPolicy(StockOrderSubject.PACK_MBC, SEMVerifyPolicySamples.robotList);
-        verifyPolicy.setSubjectPolicy(StockOrderSubject.PACK_MBL, SEMVerifyPolicySamples.robotList);
-        verifyPolicy.setSubjectPolicy(StockOrderSubject.PACK_MBLC, SEMVerifyPolicySamples.robotList);
-        verifyPolicy.setSubjectPolicy(StockOrderSubject.PACK_MC, SEMVerifyPolicySamples.robotList);
-        verifyPolicy.setSubjectPolicy(StockOrderSubject.INIT, SEMVerifyPolicySamples.robotList);
-        verifyPolicy.setSubjectPolicy(StockOrderSubject.TAKE_IN, SEMVerifyPolicySamples.robotList);
-        verifyPolicy.setSubjectPolicy(StockOrderSubject.TAKE_OUT, SEMVerifyPolicySamples.robotList);
+        stockPolicy.setLabel("库存审核策略");
+        stockPolicy.setDescription("测试用的库存审核策略。");
+        stockPolicy.setSubjectPolicy(StockOrderSubject.PACK_M, SEMVerifyPolicySamples.robotList);
+        stockPolicy.setSubjectPolicy(StockOrderSubject.PACK_MB, SEMVerifyPolicySamples.robotList);
+        stockPolicy.setSubjectPolicy(StockOrderSubject.PACK_MBC, SEMVerifyPolicySamples.robotList);
+        stockPolicy.setSubjectPolicy(StockOrderSubject.PACK_MBL, SEMVerifyPolicySamples.robotList);
+        stockPolicy.setSubjectPolicy(StockOrderSubject.PACK_MBLC, SEMVerifyPolicySamples.robotList);
+        stockPolicy.setSubjectPolicy(StockOrderSubject.PACK_MC, SEMVerifyPolicySamples.robotList);
+        stockPolicy.setSubjectPolicy(StockOrderSubject.INIT, SEMVerifyPolicySamples.robotList);
+        stockPolicy.setSubjectPolicy(StockOrderSubject.TAKE_IN, SEMVerifyPolicySamples.robotList);
+        stockPolicy.setSubjectPolicy(StockOrderSubject.TAKE_OUT, SEMVerifyPolicySamples.robotList);
 
         tokyoWarehouse.setName("TK-01");
         tokyoWarehouse.setLabel("东京一号仓库");
@@ -220,8 +214,7 @@ public class SEMInventorySamples
 
     @Override
     protected void preamble() {
-        add(verifyPolicy);
-        add(verifyPref);
+        add(stockPolicy);
 
         add(tokyoWarehouse);
         addBulk(area1, area2, hokaidou);

@@ -31,6 +31,7 @@ import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
+import com.bee32.plover.site.cfg.DBAutoDDL;
 import com.bee32.plover.site.scope.PerSite;
 
 @Component
@@ -187,13 +188,22 @@ public class SamplesLoader
                     logger.info(message);
                 }
 
+                IEntityAccessService<Entity<?>, ?> eas = asFor(Entity.class);
                 try {
-                    IEntityAccessService<Entity<?>, ?> eas = asFor(Entity.class);
                     eas.saveOrUpdateAll(specList);
-
                     // confManager.setConf(packAVersionKey, "1");
                 } catch (Exception e) {
                     logger.error("Failed to load (A) samples from " + pack, e);
+
+                    DBAutoDDL autoDdl = ThreadHttpContext.getSiteInstance().getAutoDDL();
+                    boolean retry = autoDdl == DBAutoDDL.CreateDrop;
+                    if (retry)
+                        for (Entity<?> spec1 : specList)
+                            try {
+                                eas.saveOrUpdate(spec1);
+                            } catch (Exception e2) {
+                                logger.error(">> Retry one-by-one failed to load (A) sample " + spec1, e);
+                            }
                 }
 
             } else {
