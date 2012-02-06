@@ -12,11 +12,11 @@ import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.StockOrderDto;
-import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.tx.dto.StockTakingDto;
 import com.bee32.sem.inventory.tx.dto.StockTakingItemDto;
 import com.bee32.sem.inventory.tx.entity.StockTaking;
+import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.sandbox.UIHelper;
 
 @ForEntity(StockTaking.class)
@@ -97,6 +97,32 @@ public class StocktakingAdminBean
     }
 
     @Override
+    protected boolean preDelete(UnmarshalMap uMap)
+            throws Exception {
+        if (!super.preDelete(uMap))
+            return false;
+
+        try {
+            for (StockOrderDto diffOrder : uMap.<StockOrderDto> dtos()) {
+                asFor(StockTaking.class).findAndDelete(new Equals("diff.id", diffOrder.getId()));
+            }
+        } catch (Exception e) {
+            uiLogger.error("无法删除盘点作业", e);
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    protected void postUpdate(UnmarshalMap uMap)
+            throws Exception {
+        super.postUpdate(uMap);
+        if (stockTaking != null) {
+
+        }
+    }
+
+    @Override
     public void setOpenedObjects(List<?> openedObjects) {
         super.setOpenedObjects(openedObjects);
         stockTaking = null;
@@ -104,9 +130,13 @@ public class StocktakingAdminBean
 
     public StockTakingDto getStockTaking() {
         if (stockTaking == null) {
+            stockTaking = new StockTakingDto(-1);
             StockOrderDto diffOrder = getOpenedObject();
             StockTaking _stockTaking = asFor(StockTaking.class).getUnique(new Equals("diff.id", diffOrder.getId()));
-            stockTaking = new StockTakingDto(-1).marshal(_stockTaking);
+            if (_stockTaking == null)
+                stockTaking.create();
+            else
+                stockTaking.marshal(_stockTaking);
         }
         return stockTaking;
     }
@@ -115,13 +145,8 @@ public class StocktakingAdminBean
             StockTakingItemDto.class);
 
     @Override
-    public Object getEnclosingObject() {
-        return stockTaking;
-    }
-
-    @Override
-    public ListMBean<StockOrderItemDto> getItemsMBean() {
-        return super.getItemsMBean();
+    public ListMBean<StockTakingItemDto> getItemsMBean() {
+        return joinedItemsMBean;
     }
 
 }

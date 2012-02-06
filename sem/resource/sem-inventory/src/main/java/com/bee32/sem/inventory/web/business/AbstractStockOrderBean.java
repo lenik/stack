@@ -147,7 +147,7 @@ public abstract class AbstractStockOrderBean
 
     ListMBean<StockOrderItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items", StockOrderItemDto.class);
 
-    public ListMBean<StockOrderItemDto> getItemsMBean() {
+    public ListMBean<? extends StockOrderItemDto> getItemsMBean() {
         return itemsMBean;
     }
 

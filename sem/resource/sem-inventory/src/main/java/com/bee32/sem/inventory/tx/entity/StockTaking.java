@@ -48,9 +48,9 @@ public class StockTaking
      * 账面数量
      */
     @Redundant
-    @OneToOne
-    @JoinColumn(name = "s1", nullable = false)
+    @OneToOne(orphanRemoval = true)
     @Cascade(CascadeType.ALL)
+    @JoinColumn(name = "s1", nullable = false)
     public StockOrder getExpected() {
         return expected;
     }
@@ -64,9 +64,9 @@ public class StockTaking
     /**
      * 盈亏数量
      */
-    @OneToOne
-    @JoinColumn(name = "s2", nullable = false)
+    @OneToOne( /* fetch = FetchType.EAGER */)
     @Cascade(CascadeType.ALL)
+    @JoinColumn(name = "s2", nullable = false)
     public StockOrder getDiff() {
         return diff;
     }

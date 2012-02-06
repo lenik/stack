@@ -43,7 +43,7 @@ public class StockTakingDto
         if (selection.contains(ORDERS)) {
             int orderSelection = selection.translate(//
                     ITEMS, StockOrderDto.ITEMS);
-            expectedOrder = mref(StockOrderDto.class, orderSelection, source.getExpected());
+            expectedOrder = marshal(StockOrderDto.class, orderSelection, source.getExpected());
             diffOrder = marshal(StockOrderDto.class, orderSelection, source.getDiff());
         }
     }
@@ -115,13 +115,18 @@ public class StockTakingDto
     }
 
     StockOrderDto join(StockOrderDto expectedOrder, StockOrderDto diffOrder) {
+        if (expectedOrder == null)
+            throw new NullPointerException("expectedOrder");
+        if (diffOrder == null)
+            throw new NullPointerException("diffOrder");
+
         StockOrderDto joinedOrder = new StockOrderDto().populate(expectedOrder);
         joinedOrder.setLabel("【汇总】实有库存盘点清单");
 
         for (StockOrderItemDto expected : expectedOrder.getItems()) {
             StockOrderItemDto matchedDiff = null;
 
-            if (diffOrder != null)
+            if (diffOrder != null) {
                 // search the corresponding diff item in diffOrder.
                 for (StockOrderItemDto diff : diffOrder.getItems()) {
                     if (!DTOs.equals(diff.getMaterial(), expected.getMaterial()))
@@ -133,6 +138,11 @@ public class StockTakingDto
                     matchedDiff = diff;
                     break;
                 }
+                if (matchedDiff == null) {
+                    StockOrderItemDto newDiff = new StockOrderItemDto().create();
+                    diffOrder.addItem(matchedDiff = newDiff);
+                }
+            }
 
             StockTakingItemDto joined = new StockTakingItemDto(expected, matchedDiff);
             joined.setParent(joinedOrder);
