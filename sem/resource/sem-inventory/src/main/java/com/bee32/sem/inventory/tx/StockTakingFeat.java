@@ -20,8 +20,8 @@ import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.service.IStockQuery;
 import com.bee32.sem.inventory.service.StockQueryOptions;
+import com.bee32.sem.inventory.tx.dto.StockItemUnion;
 import com.bee32.sem.inventory.tx.dto.StockTakingDto;
-import com.bee32.sem.inventory.tx.dto.StockTakingItemDto;
 import com.bee32.sem.inventory.tx.entity.StockTaking;
 
 @Using(SEMInventoryUnit.class)
@@ -41,6 +41,7 @@ public class StockTakingFeat
         options.setWarehouse(SEMInventorySamples.rawWarehouse, true);
         options.setCBatch(null, true);
         options.setLocation(null, true);
+        options.setVerifiedOnly(false);
 
         StockOrder actualSummary = stockQuery.getActualSummary(null, options);
         StockOrderDto expectedOrderDto = DTOs.marshal(StockOrderDto.class, -1, actualSummary);
@@ -51,8 +52,8 @@ public class StockTakingFeat
         stockTakingDto.setExpectedOrder(expectedOrderDto);
 
         // 输入实际盘点数量
-        List<StockOrderItemDto> joinedItems = stockTakingDto.getJoined().getItems();
-        StockTakingItemDto item1 = (StockTakingItemDto) joinedItems.get(0);
+        List<StockOrderItemDto> unionItems = stockTakingDto.getUnionOrder().getItems();
+        StockItemUnion item1 = (StockItemUnion) unionItems.get(0);
         item1.setActual(new BigDecimal(20));
 
         // 自动拆分保存
@@ -67,9 +68,9 @@ public class StockTakingFeat
     public void dump() {
         StockTaking stockTaking = dataManager.asFor(StockTaking.class).get(stockTakingId);
         StockTakingDto stockTakingDto = DTOs.marshal(StockTakingDto.class, -1, stockTaking);
-        StockOrderDto joined = stockTakingDto.getJoined();
+        StockOrderDto joined = stockTakingDto.getUnionOrder();
         for (StockOrderItemDto item : joined.getItems()) {
-            StockTakingItemDto joinedItem = (StockTakingItemDto) item;
+            StockItemUnion joinedItem = (StockItemUnion) item;
             System.out.printf("Item %-20s: expected=%6.2f  actual=%6.2f  diff=%6.2f\n", //
                     joinedItem.getMaterial().getLabel(), //
                     joinedItem.getExpected(), //

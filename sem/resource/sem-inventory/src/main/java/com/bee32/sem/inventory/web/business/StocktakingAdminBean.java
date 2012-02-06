@@ -13,8 +13,8 @@ import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
+import com.bee32.sem.inventory.tx.dto.StockItemUnion;
 import com.bee32.sem.inventory.tx.dto.StockTakingDto;
-import com.bee32.sem.inventory.tx.dto.StockTakingItemDto;
 import com.bee32.sem.inventory.tx.entity.StockTaking;
 import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.sandbox.UIHelper;
@@ -101,24 +101,41 @@ public class StocktakingAdminBean
             throws Exception {
         if (!super.preDelete(uMap))
             return false;
-
         try {
             for (StockOrderDto diffOrder : uMap.<StockOrderDto> dtos()) {
                 asFor(StockTaking.class).findAndDelete(new Equals("diff.id", diffOrder.getId()));
             }
         } catch (Exception e) {
-            uiLogger.error("无法删除盘点作业", e);
+            uiLogger.error("无法删除盘点作业对象", e);
             return false;
         }
         return true;
     }
 
+    /**
+     * <pre>
+     * 1. 准备盘点：
+     *      1.1. 将查询的 StockItemList 形成帐面清单 (subject=CACHE)
+     *      1.2. *优化：为了支持清单合并，需要逐个 stockTaking.addExpectedItem(帐面清单)
+     *              而不直接 stockTaking.setExpectedOrder
+     * 2. （内部）通过 unionItemsMBean 将隐含调用 stockTaking.getUnionItems
+     *      2.1. （内部） stockTaking.getUnionItems 将自动为帐面清单形成相同大小的差值清单和综合清单
+     * 3. 页面上的 listView/unionItems 弹出项目编辑对话框，输入盘点数量
+     *      3.1. （内部）unionItems 中改变盘点数量，将自动计算数量差值，并保存到对应的（diffOrder.item）
+     * 4. 用户保存，先保存 diffOrder，然后触发 postUpdate
+     *      4.1. postUpdate 中附带保存 stockTaking，同时由 cascade 保存冗余的 expectedOrder。
+     * 5. 考虑数量为 0 的情况，如果用户不输入数量，则相应的记录不保存：
+     *      5.1. 帐面为 0，盘点为 0：这种情况不需要形成记录，故可以省去
+     *      5.2. 帐面不为 0，盘点为 0：用户需要标记 item.important = true，说明盘点数量为 0 有重要意义
+     *      5.3. unionItem.important 默认为 false 。
+     * </pre>
+     */
     @Override
     protected void postUpdate(UnmarshalMap uMap)
             throws Exception {
         super.postUpdate(uMap);
         if (stockTaking != null) {
-
+            stockTaking.getDiffOrder();
         }
     }
 
@@ -141,12 +158,12 @@ public class StocktakingAdminBean
         return stockTaking;
     }
 
-    ListMBean<StockTakingItemDto> joinedItemsMBean = ListMBean.fromEL(this, "stockTaking.items",
-            StockTakingItemDto.class);
+    ListMBean<StockItemUnion> unionItemsMBean = ListMBean.fromEL(this, "stockTaking.unionOrder.items",
+            StockItemUnion.class);
 
     @Override
-    public ListMBean<StockTakingItemDto> getItemsMBean() {
-        return joinedItemsMBean;
+    public ListMBean<StockItemUnion> getItemsMBean() {
+        return unionItemsMBean;
     }
 
 }

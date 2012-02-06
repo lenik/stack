@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 
-public class StockTakingItemDto
+public class StockItemUnion
         extends StockOrderItemDto {
 
     private static final long serialVersionUID = 1L;
@@ -13,16 +13,16 @@ public class StockTakingItemDto
     StockOrderItemDto expectedItem;
     StockOrderItemDto diffItem;
 
-    public StockTakingItemDto() {
+    public StockItemUnion() {
         super();
     }
 
-    public StockTakingItemDto(int fmask) {
+    public StockItemUnion(int fmask) {
         super(fmask);
     }
 
     // public StockTakingItem populate(StockOrderItemDto expectedItem, StockOrderItemDto diffItem) {
-    public StockTakingItemDto(StockOrderItemDto expectedItem, StockOrderItemDto diffItem) {
+    public StockItemUnion(StockOrderItemDto expectedItem, StockOrderItemDto diffItem) {
         this();
 
         if (expectedItem == null)
@@ -79,6 +79,13 @@ public class StockTakingItemDto
     @Override
     public void setQuantity(BigDecimal quantity) {
         setActual(quantity);
+    }
+
+    @Override
+    public void setImportant(boolean important) {
+        super.setImportant(true);
+        expectedItem.setImportant(important);
+        diffItem.setImportant(true);
     }
 
 }

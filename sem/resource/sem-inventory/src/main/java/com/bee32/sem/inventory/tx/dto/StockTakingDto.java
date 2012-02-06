@@ -12,6 +12,7 @@ import com.bee32.plover.arch.util.dto.MarshalType;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
+import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.tx.StockTakingFeat;
 import com.bee32.sem.inventory.tx.entity.StockTaking;
 
@@ -28,7 +29,7 @@ public class StockTakingDto
     StockOrderDto expectedOrder;
     StockOrderDto diffOrder;
 
-    transient StockOrderDto joined;
+    transient StockOrderDto unionOrder;
 
     public StockTakingDto() {
         super();
@@ -57,8 +58,8 @@ public class StockTakingDto
 
             StockOrderDto diffOrder = this.diffOrder;
             if (selection.contains(JOIN)) {
-                StockOrderDto joined = getJoined();
-                diffOrder = extract(joined, /* extract-expects? */false, /* extract-diffs? */true)[1];
+                StockOrderDto union = getUnionOrder();
+                diffOrder = extract(union, /* extract-expects? */false, /* extract-diffs? */true)[1];
             }
             merge(target, "diff", diffOrder);
         }
@@ -80,7 +81,7 @@ public class StockTakingDto
     public void setExpectedOrder(StockOrderDto expectedOrder) {
         if (this.expectedOrder != expectedOrder) {
             this.expectedOrder = expectedOrder;
-            joined = null;
+            unionOrder = null;
         }
     }
 
@@ -91,7 +92,7 @@ public class StockTakingDto
     public void setDiffOrder(StockOrderDto diffOrder) {
         if (this.diffOrder != diffOrder) {
             this.diffOrder = diffOrder;
-            joined = null;
+            unionOrder = null;
         }
     }
 
@@ -103,28 +104,29 @@ public class StockTakingDto
      * @throws IllegalStateException
      *             当尚未初始化时。
      */
-    public StockOrderDto getJoined() {
-        if (joined == null) {
+    public StockOrderDto getUnionOrder() {
+        if (unionOrder == null) {
             synchronized (this) {
-                if (joined == null) {
-                    this.joined = join(expectedOrder, diffOrder);
+                if (unionOrder == null) {
+                    this.unionOrder = union(expectedOrder, diffOrder);
                 }
             }
         }
-        return joined;
+        return unionOrder;
     }
 
-    StockOrderDto join(StockOrderDto expectedOrder, StockOrderDto diffOrder) {
+    StockOrderDto union(StockOrderDto expectedOrder, StockOrderDto diffOrder) {
         if (expectedOrder == null)
             throw new NullPointerException("expectedOrder");
         if (diffOrder == null)
             throw new NullPointerException("diffOrder");
 
-        StockOrderDto joinedOrder = new StockOrderDto().populate(expectedOrder);
-        joinedOrder.setLabel("【汇总】实有库存盘点清单");
+        StockOrderDto unionOrder = new StockOrderDto().populate(expectedOrder);
+        unionOrder.setSubject(StockOrderSubject.CACHE);
+        unionOrder.setLabel("【汇总】实有库存盘点清单");
 
         for (StockOrderItemDto expected : expectedOrder.getItems()) {
-            StockOrderItemDto matchedDiff = null;
+            StockOrderItemDto foundDiff = null;
 
             if (diffOrder != null) {
                 // search the corresponding diff item in diffOrder.
@@ -135,50 +137,53 @@ public class StockTakingDto
                         continue;
                     if (!DTOs.equals(diff.getLocation(), expected.getLocation()))
                         continue;
-                    matchedDiff = diff;
+                    foundDiff = diff;
                     break;
                 }
-                if (matchedDiff == null) {
+                if (foundDiff == null) {
                     StockOrderItemDto newDiff = new StockOrderItemDto().create();
-                    diffOrder.addItem(matchedDiff = newDiff);
+                    diffOrder.addItem(newDiff);
+                    foundDiff = newDiff;
                 }
             }
 
-            StockTakingItemDto joined = new StockTakingItemDto(expected, matchedDiff);
-            joined.setParent(joinedOrder);
-            joinedOrder.addItem(joined);
+            StockItemUnion unionItem = new StockItemUnion(expected, foundDiff);
+            unionItem.setParent(unionOrder);
+            unionItem.setImportant(false);
+            unionOrder.addItem(unionItem);
         }
-        return joinedOrder;
+        return unionOrder;
     }
 
-    StockOrderDto[] extract(StockOrderDto joinedOrder, boolean extractExpects, boolean extractDiffs) {
-        List<StockOrderItemDto> jv = joinedOrder.getItems();
+    StockOrderDto[] extract(StockOrderDto unionOrder, boolean extractExpects, boolean extractDiffs) {
+        List<StockOrderItemDto> jv = unionOrder.getItems();
 
         StockOrderDto expectedOrder = null;
         StockOrderDto diffOrder = null;
 
         if (extractExpects) {
-            expectedOrder = new StockOrderDto().populate(joinedOrder);
+            expectedOrder = new StockOrderDto().populate(unionOrder);
             expectedOrder.marshalAs(MarshalType.SELECTION); // But should avoid to use it.
         }
         if (extractDiffs) {
-            diffOrder = new StockOrderDto().populate(joinedOrder);
+            diffOrder = new StockOrderDto().populate(unionOrder);
+            diffOrder.setSubject(StockOrderSubject.STKD);
             diffOrder.setLabel("【自动】盘点盈亏差值");
             diffOrder.marshalAs(MarshalType.SELECTION);
         }
 
         for (StockOrderItemDto j : jv) {
-            StockTakingItemDto joinedItem = (StockTakingItemDto) j;
+            StockItemUnion unionItem = (StockItemUnion) j;
 
             if (extractExpects) {
-                StockOrderItemDto expected = new StockOrderItemDto().populate(joinedItem);
-                expected.setQuantity(joinedItem.getExpected());
+                StockOrderItemDto expected = new StockOrderItemDto().populate(unionItem);
+                expected.setQuantity(unionItem.getExpected());
                 expectedOrder.addItem(expected);
             }
             if (extractDiffs) {
-                BigDecimal diffQuantity = joinedItem.getDiff();
+                BigDecimal diffQuantity = unionItem.getDiff();
                 if (!BigDecimal.ZERO.equals(diffQuantity)) { // Ignore diff==0 entries.
-                    StockOrderItemDto diff = new StockOrderItemDto().populate(joinedItem);
+                    StockOrderItemDto diff = new StockOrderItemDto().populate(unionItem);
                     diff.setParent(diffOrder);
                     diff.setQuantity(diffQuantity);
                     diffOrder.addItem(diff);

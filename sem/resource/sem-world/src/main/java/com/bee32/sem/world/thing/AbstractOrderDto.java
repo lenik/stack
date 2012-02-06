@@ -2,6 +2,7 @@ package com.bee32.sem.world.thing;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.free.ParseException;
@@ -71,8 +72,16 @@ public abstract class AbstractOrderDto< //
     @Override
     protected void __unmarshalTo(E target) {
         super.__unmarshalTo(target);
-        if (selection.contains(ITEMS))
+        if (selection.contains(ITEMS)) {
+            // Remove discardable items before merge.
+            Iterator<_dt> iterator = items.iterator();
+            while (iterator.hasNext()) {
+                _dt item = iterator.next();
+                if (item.isDiscardable())
+                    iterator.remove();
+            }
             mergeList(target, "items", items);
+        }
     }
 
     @Override

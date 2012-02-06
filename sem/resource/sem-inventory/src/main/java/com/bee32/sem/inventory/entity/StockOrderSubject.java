@@ -122,6 +122,9 @@ public final class StockOrderSubject
     /** （冗余）结算【物料，合成批号，库位】，外币分列 */
     public static final StockOrderSubject PACK_MBLC /*   */= new StockOrderSubject("PKX3", "packMBLC", PACKING);
 
+    /** （冗余）缓存（如盘点帐面数量） */
+    public static final StockOrderSubject CACHE /* */= new StockOrderSubject("CACH", "cache", SPECIAL);
+
     /** 初始化 */
     public static final StockOrderSubject INIT /*        */= new StockOrderSubject("INIT", "init", 0);
 
@@ -143,7 +146,7 @@ public final class StockOrderSubject
     /** 委外入库 */
     public static final StockOrderSubject OSP_IN /*      */= new StockOrderSubject("OSPI", "ospIn", 0);
 
-    /** 盘盈/盘亏 */
+    /** 盘盈/盘亏 （仅差值） */
     public static final StockOrderSubject STKD /*  */= new StockOrderSubject("STKD", "stkDiff", 0);
 
     /** 物料报损 */

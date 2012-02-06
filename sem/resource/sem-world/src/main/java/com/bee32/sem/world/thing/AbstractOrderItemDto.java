@@ -155,4 +155,18 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
         return nativeTotal;
     }
 
+    boolean important = true; // For quantity = 0
+
+    public boolean isImportant() {
+        return important;
+    }
+
+    public void setImportant(boolean important) {
+        this.important = important;
+    }
+
+    public boolean isDiscardable() {
+        return important == false && BigDecimal.ZERO.equals(quantity);
+    }
+
 }
