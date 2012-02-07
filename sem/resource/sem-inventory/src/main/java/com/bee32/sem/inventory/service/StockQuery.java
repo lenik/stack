@@ -95,6 +95,7 @@ public class StockQuery
             }
 
             StockOrderItem item = new StockOrderItem(all);
+            EntityAccessor.setId(item, (long) index);
             item.setIndex(index++);
             item.setMaterial(_material);
             item.setQuantity(_quantity);
