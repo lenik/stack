@@ -27,8 +27,8 @@ public class ChooseStockOrderDialogBean
     }
 
     @Override
-    protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
-        super.composeBaseCriteriaElements(elements);
+    protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
+        super.composeBaseRestrictions(elements);
         if (subject != null)
             elements.add(StockCriteria.subjectOf(subject));
     }

@@ -30,7 +30,7 @@ public class StockLocationAdminBean
     }
 
     @Override
-    protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
+    protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
         Integer warehouseId = null;
         if (selectedWarehouse != null)
             warehouseId = selectedWarehouse.getId();

@@ -29,7 +29,7 @@ public class ChooseOrgUnitDialogBean
     }
 
     @Override
-    protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
+    protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
         if (orgId != null)
             // 如果前面选中了某个公司，则查找该公司中的部门
             elements.add(new Equals("org.id", orgId));

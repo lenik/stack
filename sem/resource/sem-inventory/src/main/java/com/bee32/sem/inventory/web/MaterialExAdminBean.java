@@ -49,8 +49,8 @@ public class MaterialExAdminBean
     }
 
     @Override
-    protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
-        super.composeBaseCriteriaElements(elements);
+    protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
+        super.composeBaseRestrictions(elements);
         Integer categoryId = categoryTree.getSelectedId();
         // if (categoryId != null)
         if (categoryId == null) // select none if no category.

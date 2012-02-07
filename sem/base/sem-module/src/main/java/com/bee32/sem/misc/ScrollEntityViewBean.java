@@ -24,7 +24,7 @@ public class ScrollEntityViewBean
     }
 
     @Override
-    protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
+    protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
         // TODO - swithcer?
         elements.add(Order.desc("createdDate"));
     }

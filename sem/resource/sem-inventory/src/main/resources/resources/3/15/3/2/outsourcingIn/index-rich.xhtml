@@ -12,8 +12,10 @@
             <t:panelGrid columns="2">
                 <h:outputText id="choosedOut" value="#{bean.stockOutsourcing.output.label}" />
                 <p:commandButton value="..." oncomplete="chooseStockOrderDialog.show()">
-                    <f:setPropertyActionListener target="${chooseStockOrderDialogBean._subject}"
+                    <f:setPropertyActionListener target="#{chooseStockOrderDialogBean._subject}"
                         value="OSPO" />
+                    <f:setPropertyActionListener target="#{chooseStockOrderDialogBean.restriction}"
+                        value="#{bean.danglingRestriction}" />
                 </p:commandButton>
             </t:panelGrid>
         </t:panelGroup>

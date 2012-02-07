@@ -90,8 +90,8 @@ public class SimpleEntityViewBean
     int tabIndex;
 
     protected Set<Serializable> requestWindow = new HashSet<Serializable>();
-    List<ICriteriaElement> baseCriteriaElements;
-    ICriteriaElement userCriteriaElement;
+    List<ICriteriaElement> baseRestriction;
+    ICriteriaElement userRestriction;
     List<SearchFragment> searchFragments = new ArrayList<SearchFragment>();
     EntityDataModelOptions<?, ?> dataModelOptions;
     LazyDataModel<?> dataModel;
@@ -106,8 +106,8 @@ public class SimpleEntityViewBean
     /*    */SimpleEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
         this.entityClass = entityClass;
         this.dtoClass = dtoClass;
-        this.baseCriteriaElements = Varargs.toList(criteriaElements);
-        this.baseCriteriaElements.add(new Disjunction(//
+        this.baseRestriction = Varargs.toList(criteriaElements);
+        this.baseRestriction.add(new Disjunction(//
                 UserCriteria.ownedByCurrentUser(),//
                 ACLCriteria.aclWithin(getACLs(visiblePermission))));
 
@@ -160,7 +160,7 @@ public class SimpleEntityViewBean
 
         @Override
         protected List<? extends ICriteriaElement> getCriteriaElements() {
-            return SimpleEntityViewBean.this.composeCriteriaElements();
+            return SimpleEntityViewBean.this.composeBaseRestrictions();
         }
 
     }
@@ -190,16 +190,16 @@ public class SimpleEntityViewBean
         return dataModel;
     }
 
-    protected final List<? extends ICriteriaElement> composeCriteriaElements() {
+    protected final List<? extends ICriteriaElement> composeBaseRestrictions() {
         List<ICriteriaElement> join = new ArrayList<ICriteriaElement>();
-        join.addAll(baseCriteriaElements);
+        join.addAll(baseRestriction);
         if (requestWindow != null && !requestWindow.isEmpty())
             join.add(new InCollection("id", requestWindow));
         else
-            composeBaseCriteriaElements(join);
+            composeBaseRestrictions(join);
 
-        if (userCriteriaElement != null)
-            join.add(userCriteriaElement);
+        if (userRestriction != null)
+            join.add(userRestriction);
 
         for (SearchFragment fragment : searchFragments) {
             ICriteriaElement element = fragment.compose();
@@ -210,18 +210,18 @@ public class SimpleEntityViewBean
     }
 
     @OverrideOption(chain = ChainUsage.PREFERRED)
-    protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
+    protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
     }
 
     /**
      * User criteria.
      */
-    public ICriteriaElement getCriteria() {
-        return userCriteriaElement;
+    public ICriteriaElement getRestriction() {
+        return userRestriction;
     }
 
-    public void setCriteria(ICriteriaElement criteria) {
-        this.userCriteriaElement = criteria;
+    public void setRestriction(ICriteriaElement restriction) {
+        this.userRestriction = restriction;
     }
 
     protected <E extends Entity<?>> List<E> listImpl(EntityDataModelOptions<E, ?> options,

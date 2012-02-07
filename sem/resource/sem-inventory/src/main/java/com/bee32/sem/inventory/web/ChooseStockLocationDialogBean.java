@@ -39,7 +39,7 @@ public class ChooseStockLocationDialogBean
     }
 
     @Override
-    protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
+    protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
         if (warehouse != null && !warehouse.isNull())
             elements.add(new Equals("warehouse.id", warehouse.getId()));
     }

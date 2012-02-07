@@ -37,7 +37,7 @@ public class ChoosePartyDialogBean
     }
 
     @Override
-    protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
+    protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
         if (employee != null)
             elements.add(new Equals("employee", employee));
         if (customer != null)

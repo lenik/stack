@@ -26,7 +26,7 @@ public class ChooseChanceActionDialogBean
     }
 
     @Override
-    protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
+    protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
         if (detachedOnly)
             elements.add(new IsNull("chance.id"));
     }

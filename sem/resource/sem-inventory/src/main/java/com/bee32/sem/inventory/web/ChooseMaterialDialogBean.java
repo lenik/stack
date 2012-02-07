@@ -38,8 +38,8 @@ public class ChooseMaterialDialogBean
     }
 
     @Override
-    protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
-        super.composeBaseCriteriaElements(elements);
+    protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
+        super.composeBaseRestrictions(elements);
         if (productLike != null) {
             if (productLike)
                 elements.add(new InCollection("_classification", productLikeClasses));

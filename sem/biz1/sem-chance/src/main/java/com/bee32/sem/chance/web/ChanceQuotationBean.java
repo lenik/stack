@@ -26,7 +26,7 @@ public class ChanceQuotationBean
     }
 
     @Override
-    protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
+    protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
         if (chance != null)
             elements.add(new Equals("chance.id", chance.getId()));
     }
