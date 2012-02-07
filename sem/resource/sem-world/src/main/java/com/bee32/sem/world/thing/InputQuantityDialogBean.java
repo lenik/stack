@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.bee32.plover.faces.utils.SelectableList;
 import com.bee32.plover.orm.util.DataViewBean;
 import com.bee32.plover.ox1.config.DecimalConfig;
@@ -15,6 +18,8 @@ public class InputQuantityDialogBean
         implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
+
+    static Logger logger = LoggerFactory.getLogger(InputQuantityDialogBean.class);
 
     String header = "Input quantity in specific unit...";
 
@@ -88,9 +93,13 @@ public class InputQuantityDialogBean
 
     public SelectableList<UnitDto> getViewUnits() {
         List<UnitDto> viewUnits = new ArrayList<UnitDto>();
-        if (unitConv != null) {
+        if (unitConv != null && !unitConv.isNull()) {
             Map<UnitDto, Double> scaleMap = unitConv.getScaleMap();
-            viewUnits.addAll(scaleMap.keySet());
+            if (scaleMap == null) {
+                logger.warn("scaleMap is null: " + unitConv);
+            } else {
+                viewUnits.addAll(scaleMap.keySet());
+            }
         }
         return SelectableList.decorate(viewUnits);
     }
