@@ -15,6 +15,14 @@ public class SqlRestriction
     final Object[] values;
     final Type[] types;
 
+    public SqlRestriction(String sql) {
+        this(sql, new Object[0], new Type[0]);
+    }
+
+    public SqlRestriction(String sql, Object value, Type type) {
+        this(sql, new Object[] { value }, new Type[] { type });
+    }
+
     public SqlRestriction(String sql, Object[] values, Type[] types) {
         this.sql = sql;
         this.values = values;

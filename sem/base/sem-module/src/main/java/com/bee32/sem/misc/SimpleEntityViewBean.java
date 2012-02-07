@@ -91,6 +91,7 @@ public class SimpleEntityViewBean
 
     protected Set<Serializable> requestWindow = new HashSet<Serializable>();
     List<ICriteriaElement> baseCriteriaElements;
+    ICriteriaElement userCriteriaElement;
     List<SearchFragment> searchFragments = new ArrayList<SearchFragment>();
     EntityDataModelOptions<?, ?> dataModelOptions;
     LazyDataModel<?> dataModel;
@@ -197,6 +198,9 @@ public class SimpleEntityViewBean
         else
             composeBaseCriteriaElements(join);
 
+        if (userCriteriaElement != null)
+            join.add(userCriteriaElement);
+
         for (SearchFragment fragment : searchFragments) {
             ICriteriaElement element = fragment.compose();
             if (element != null)
@@ -207,6 +211,17 @@ public class SimpleEntityViewBean
 
     @OverrideOption(chain = ChainUsage.PREFERRED)
     protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
+    }
+
+    /**
+     * User criteria.
+     */
+    public ICriteriaElement getCriteria() {
+        return userCriteriaElement;
+    }
+
+    public void setCriteria(ICriteriaElement criteria) {
+        this.userCriteriaElement = criteria;
     }
 
     protected <E extends Entity<?>> List<E> listImpl(EntityDataModelOptions<E, ?> options,
