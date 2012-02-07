@@ -15,9 +15,11 @@ import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.service.StockQueryOptions;
+import com.bee32.sem.inventory.tx.entity.StockJob;
 import com.bee32.sem.inventory.util.StockCriteria;
 import com.bee32.sem.inventory.web.StockQueryDialogBean;
 import com.bee32.sem.misc.ScrollEntityViewBean;
+import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.OrgUnitDto;
 
@@ -46,12 +48,30 @@ public abstract class AbstractStockOrderBean
     }
 
     @Override
-    protected void composeBaseCriteriaElements(List<ICriteriaElement> elements) {
-        super.composeBaseCriteriaElements(elements);
+    protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
+        super.composeBaseRestrictions(elements);
         if (subject != null)
             elements.add(StockCriteria.subjectOf(subject));
         if (selectedWarehouseId != -1 || true) // get nothing if warehouse isn't selected:
             elements.add(new Equals("warehouse.id", selectedWarehouseId));
+    }
+
+    protected StockJob createStockJob(StockOrder stockOrder) {
+        return null;
+    }
+
+    protected boolean deleteStockJob(StockOrder stockOrder) {
+        return true;
+    }
+
+    @Override
+    protected boolean preDelete(UnmarshalMap uMap)
+            throws Exception {
+        for (StockOrder stockOrder : uMap.<StockOrder> entitySet()) {
+            if (!deleteStockJob(stockOrder))
+                return false;
+        }
+        return true;
     }
 
     @Override

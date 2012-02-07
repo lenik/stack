@@ -56,17 +56,14 @@ public class TransferOutAdminBean
     }
 
     @Override
-    protected boolean preDelete(UnmarshalMap uMap)
-            throws Exception {
-        for (StockOrderDto stockOrder : uMap.<StockOrderDto> dtos()) {
-            try {
-                serviceFor(StockTransfer.class).findAndDelete(new Equals("source.id", stockOrder.getId()));
-            } catch (Exception e) {
-                uiLogger.error("Can't delete stock-transfer", e);
-                return false;
-            }
+    protected boolean deleteStockJob(StockOrder stockOrder) {
+        try {
+            serviceFor(StockTransfer.class).findAndDelete(new Equals("source.id", stockOrder.getId()));
+            return true;
+        } catch (Exception e) {
+            uiLogger.error("无法删除相关的库存调拨作业", e);
+            return false;
         }
-        return true;
     }
 
     @Override
