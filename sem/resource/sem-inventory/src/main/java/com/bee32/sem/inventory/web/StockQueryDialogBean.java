@@ -1,13 +1,11 @@
 package com.bee32.sem.inventory.web;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
-import javax.free.UnexpectedException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,26 +30,27 @@ public class StockQueryDialogBean
 
     static Logger logger = LoggerFactory.getLogger(StockQueryDialogBean.class);
 
+    static final int TAB_OPTIONS = 0;
     static final int TAB_RESULT = 1;
 
     String header = "从当前库存中挑选..."; // NLS
 
     StockQueryOptions queryOptions;
-    boolean autoQuery;
-    boolean queried;
 
     boolean all;
     List<MaterialDto> materials = new ArrayList<MaterialDto>();
     Long selectedMaterialId;
     MaterialDto chosenMaterial;
 
-    StockItemList resultList;
+    boolean autoQuery;
+    StockItemList queryCache = new StockItemList();
+    boolean cacheValid;
 
     // List<StockOrderItem> cached;
 
     public StockQueryDialogBean() {
         super(StockOrderItem.class, StockOrderItemDto.class, 0);
-        setTabIndex(TAB_RESULT); // Results-Tab
+        setTabIndex(TAB_OPTIONS);
         queryOptions = new StockQueryOptions(new Date(), true);
         queryOptions.setWarehouse(null, true);
         queryOptions.setCBatch(null, true);
@@ -64,9 +63,11 @@ public class StockQueryDialogBean
     @Override
     protected <E extends Entity<?>> List<E> listImpl(EntityDataModelOptions<E, ?> options,
             ICriteriaElement... criteriaElements) {
-        StockItemList list = query();
-        if (list == null)
-            return Collections.emptyList();
+        StockItemList list;
+        if (autoQuery)
+            list = cachedQuery();
+        else
+            list = queryCache; // cachedQuery();
         List<E> _list = (List<E>) list.getItems();
         return _list;
     }
@@ -74,19 +75,29 @@ public class StockQueryDialogBean
     @Override
     protected <E extends Entity<?>> int countImpl(EntityDataModelOptions<E, ?> options,
             ICriteriaElement... criteriaElements) {
-        StockItemList list = query();
-        if (list == null)
-            return 0;
+        StockItemList list;
+        if (autoQuery)
+            list = cachedQuery();
+        else
+            list = queryCache; // cachedQuery();
         return list.getItems().size();
     }
 
-    protected synchronized StockItemList query() {
-        if (queried) {
-            resultList = queryImpl();
-            queried = true;
-        }
+    public StockItemList getResultList() {
+        return cachedQuery();
+    }
+
+    public synchronized StockItemList cachedQuery() {
+        if (!cacheValid)
+            query();
+        return queryCache;
+    }
+
+    public synchronized StockItemList query() {
+        queryCache = queryImpl();
+        cacheValid = true;
         setTabIndex(TAB_RESULT);
-        return resultList;
+        return queryCache;
     }
 
     protected synchronized StockItemList queryImpl() {
@@ -103,14 +114,6 @@ public class StockQueryDialogBean
 
         IStockQuery query = getBean(IStockQuery.class);
         StockItemList resultList = query.getActualSummary(materialIds, queryOptions);
-        return resultList;
-    }
-
-    public synchronized StockItemList getResultList() {
-        if (resultList == null)
-            queryImpl();
-        if (resultList == null)
-            throw new UnexpectedException("resultList didn't updated");
         return resultList;
     }
 
@@ -220,6 +223,16 @@ public class StockQueryDialogBean
         options.setCBatch(null, true);
         options.setLocation(null, true);
         return options;
+    }
+
+    Object sink = "shi";
+
+    public Object getSink() {
+        return sink;
+    }
+
+    public void setSink(Object sink) {
+        System.err.println("Sink = " + sink);
     }
 
 }
