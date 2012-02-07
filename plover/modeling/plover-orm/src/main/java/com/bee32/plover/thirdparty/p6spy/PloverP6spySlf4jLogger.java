@@ -45,11 +45,6 @@ public class PloverP6spySlf4jLogger
             time = "Error:" + e.getMessage();
         }
 
-        SiteInstance site = ThreadHttpContext.getSiteInstance();
-        SQLTrackDB trackDB = SQLTrackDB.getInstance(site);
-        SQLRecord sqlRecord = new SQLRecord(connectionId, _time, elapsed, category, prepared, sql);
-        trackDB.addSql(sqlRecord);
-
         // 00:02:14.431 63ms
         sb.append(time);
         sb.append(' ');
@@ -88,6 +83,11 @@ public class PloverP6spySlf4jLogger
 
         String text = sb.toString();
         logText(text);
+
+        SiteInstance site = ThreadHttpContext.getSiteInstance();
+        SQLTrackDB trackDB = SQLTrackDB.getInstance(site);
+        SQLRecord sqlRecord = new SQLRecord(appfn, connectionId, _time, elapsed, category, prepared, sql);
+        trackDB.addSql(sqlRecord);
     }
 
     @Override

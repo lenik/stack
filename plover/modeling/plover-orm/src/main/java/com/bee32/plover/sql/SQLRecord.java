@@ -7,6 +7,7 @@ public class SQLRecord
 
     private static final long serialVersionUID = 1L;
 
+    String source;
     int connectionId;
     long time;
     long elapsed;
@@ -14,13 +15,23 @@ public class SQLRecord
     String prepared;
     String sql;
 
-    public SQLRecord(int connectionId, long time, long elapsed, String category, String prepared, String sql) {
+    public SQLRecord(String source, int connectionId, long time, long elapsed, String category, String prepared,
+            String sql) {
+        this.source = source;
         this.connectionId = connectionId;
         this.time = time;
         this.elapsed = elapsed;
         this.category = category;
         this.prepared = prepared;
         this.sql = sql;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public int getConnectionId() {

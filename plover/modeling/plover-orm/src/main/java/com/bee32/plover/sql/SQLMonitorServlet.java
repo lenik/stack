@@ -7,6 +7,7 @@ import gudusoft.gsqlparser.pp.para.GFmtOptFactory;
 import gudusoft.gsqlparser.pp.stmtformattor.FormattorFactory;
 
 import java.text.DateFormat;
+import java.util.regex.Pattern;
 
 import javax.free.Dates;
 import javax.free.DisplayName;
@@ -23,15 +24,17 @@ public class SQLMonitorServlet
     private static final long serialVersionUID = 1L;
 
     public SQLMonitorServlet() {
-        pages.add(Logs.class);
+        pages.add("index", SQLLogs.class);
+        pages.add("sql", SQLLogs.class);
     }
 
+    static Pattern comments = Pattern.compile("/\\*.*?\\*/\\s*", Pattern.DOTALL);
     static TGSqlParser sqlParser = new TGSqlParser(EDbVendor.dbvpostgresql);
     static GFmtOpt sqlFormat = GFmtOptFactory.newInstance();
 
     @DisplayName("SQL Logs")
     @Doc("Recent SQL Logs")
-    public static class Logs
+    public static class SQLLogs
             extends HtmlTemplate {
 
         DateFormat timeFormat = Dates.HH_MM_SS;
@@ -45,24 +48,30 @@ public class SQLMonitorServlet
             {
                 tr();
                 {
-                    td().text("Connection").end();
-                    td().text("Time").end();
-                    td().text("Elapsed").end();
-                    td().text("Category").end();
+                    td().text("Info").end();
                     td().text("SQL").end();
                     end();
                 }
+                int i = 0;
                 for (SQLRecord record : sqlTrackDB.getRecentSqls()) {
                     tr();
                     {
-                        td().valign("top").text(String.valueOf(record.connectionId)).end();
-                        td().valign("top").text(timeFormat.format(record.time)).end();
-                        td().valign("top").text(record.elapsed + "ms").end();
-                        td().valign("top").text(record.category).end();
+                        td().valign("top");
+                        {
+                            p().text("Source: " + record.source).end();
+                            p().text("Connection-Id: " + record.connectionId).end();
+                            p().text("Time: " + timeFormat.format(record.time)).end();
+                            p().text("Elapsed: " + record.elapsed + "ms").end();
+                            p().text("Category: " + record.category).end();
+                        }
                         // td().text(record.prepared).end();
                         td().valign("top");
                         {
-                            sqlParser.sqltext = record.sql;
+                            if (i++ >= 3) {
+                                text(record.sql);
+                                continue;
+                            }
+                            sqlParser.sqltext = comments.matcher(record.sql).replaceAll("");
                             if (sqlParser.parse() != 0) {
                                 b().text("Failed to parse SQL: " + sqlParser.getErrormessage()).end();
                                 text(record.sql);
