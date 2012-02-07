@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockItemList;
 import com.bee32.sem.inventory.entity.StockOrder;
 
@@ -48,7 +47,7 @@ public interface IStockQuery {
      * @return 对应物料的余量。
      * @see StockQueryOptions
      */
-    StockOrder getActualSummary(List<Material> materials, StockQueryOptions options);
+    StockOrder getActualSummary(List<Long> materialIds, StockQueryOptions options);
 
     /**
      * 获取给定时间的某单一物料的实际库存余量，不考虑批号和库位。
@@ -58,7 +57,7 @@ public interface IStockQuery {
      * @return 对应物料的余量。
      * @see StockQueryOptions
      */
-    BigDecimal getActualQuantity(Material material, StockQueryOptions options);
+    BigDecimal getActualQuantity(long materialId, StockQueryOptions options);
 
     /**
      * 获取给定时间的某单一物料的可用库存余量（或曰逻辑库存余量），不考虑批号和库位。
@@ -68,7 +67,7 @@ public interface IStockQuery {
      * @return 对应物料的余量。
      * @see StockQueryOptions
      */
-    StockOrder getVirtualSummary(List<Material> materials, StockQueryOptions options);
+    StockOrder getVirtualSummary(List<Long> materialIds, StockQueryOptions options);
 
     /**
      * 获取给定时间的某单一物料的可用库存余量（或曰逻辑库存余量），不考虑批号和库位。
@@ -78,7 +77,7 @@ public interface IStockQuery {
      * @return 对应物料的余量。
      * @see StockQueryOptions
      */
-    BigDecimal getVirtualQuantity(Material material, StockQueryOptions options);
+    BigDecimal getVirtualQuantity(long materialId, StockQueryOptions options);
 
     /**
      * 获取给定时间的某单一物料的“锁定”的库存数量（或曰计划数量），不考虑批号和库位。
@@ -88,7 +87,7 @@ public interface IStockQuery {
      * @return 对应物料的数量。
      * @see StockQueryOptions
      */
-    StockOrder getPlanSummary(List<Material> materials, StockQueryOptions options);
+    StockOrder getPlanSummary(List<Long> materialIds, StockQueryOptions options);
 
     /**
      * 获取给定时间的某单一物料的"锁定“的库存数量（或曰计划数量），不考虑批号和库位。
@@ -98,6 +97,6 @@ public interface IStockQuery {
      * @return 对应物料的数量。
      * @see StockQueryOptions
      */
-    BigDecimal getPlanQuantity(Material material, StockQueryOptions options);
+    BigDecimal getPlanQuantity(long materialId, StockQueryOptions options);
 
 }

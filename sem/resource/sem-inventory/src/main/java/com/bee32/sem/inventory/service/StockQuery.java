@@ -10,6 +10,7 @@ import com.bee32.plover.criteria.hibernate.GroupPropertyProjection;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.ProjectionList;
 import com.bee32.plover.criteria.hibernate.SumProjection;
+import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockItemList;
 import com.bee32.sem.inventory.entity.StockLocation;
@@ -56,7 +57,7 @@ public class StockQuery
                 subject = StockOrderSubject.PACK_MBL;
         }
 
-        StockOrder all = new StockOrder(null, subject, options.getWarehouse());
+        StockOrder all = new StockOrder(null, subject, null/* warehouse */);
 
         // XXX How about: batch == null, location != null ?
 

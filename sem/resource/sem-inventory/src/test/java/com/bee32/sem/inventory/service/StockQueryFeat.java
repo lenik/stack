@@ -13,7 +13,6 @@ import com.bee32.plover.orm.util.WiredDaoFeat;
 import com.bee32.plover.test.ICoordinator;
 import com.bee32.sem.inventory.SEMInventorySamples;
 import com.bee32.sem.inventory.SEMInventoryUnit;
-import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockItemList;
 import com.bee32.sem.world.monetary.FxrQueryException;
 
@@ -28,11 +27,11 @@ public class StockQueryFeat
     void list()
             throws FxrQueryException {
         System.out.println("----------- LIST BEGIN -----------");
-        List<Material> materials = Arrays.asList( //
-                SEMInventorySamples.gundam, //
-                SEMInventorySamples.cskdp);
+        List<Long> materials = Arrays.asList( //
+                SEMInventorySamples.gundam.getId(), //
+                SEMInventorySamples.cskdp.getId());
 
-        StockQueryOptions sqopts = new StockQueryOptions(new Date());
+        StockQueryOptions sqopts = new StockQueryOptions(new Date(), false);
         sqopts.setCBatch(null, true);
         StockItemList actual = stockQuery.getActualSummary(materials, sqopts);
         StockItemList virtual = stockQuery.getVirtualSummary(materials, sqopts);
@@ -45,8 +44,8 @@ public class StockQueryFeat
         System.out.println(actualTotal);
         System.out.println(virtualTotal);
 
-        BigDecimal gunAq = stockQuery.getActualQuantity(SEMInventorySamples.gundam, sqopts);
-        BigDecimal gunVq = stockQuery.getVirtualQuantity(SEMInventorySamples.gundam, sqopts);
+        BigDecimal gunAq = stockQuery.getActualQuantity(SEMInventorySamples.gundam.getId(), sqopts);
+        BigDecimal gunVq = stockQuery.getVirtualQuantity(SEMInventorySamples.gundam.getId(), sqopts);
 
         System.out.println("----------- LIST END -----------");
     }

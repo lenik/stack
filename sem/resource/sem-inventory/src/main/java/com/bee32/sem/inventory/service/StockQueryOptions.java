@@ -1,11 +1,10 @@
 package com.bee32.sem.inventory.service;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 import com.bee32.plover.criteria.hibernate.GroupPropertyProjection;
-import com.bee32.sem.inventory.entity.StockLocation;
-import com.bee32.sem.inventory.entity.StockWarehouse;
 
 public final class StockQueryOptions
         implements Serializable {
@@ -13,25 +12,39 @@ public final class StockQueryOptions
     private static final long serialVersionUID = 1L;
 
     Date timestamp = new Date();
+    boolean endOfToday;
     boolean verifiedOnly = true;
 
     String cBatch;
-    StockLocation location;
-    StockWarehouse warehouse;
+    Integer locationId;
+    Integer warehouseId;
 
     boolean cbatchVisible;
     boolean locationVisible;
     boolean warehouseVisible;
 
-    public StockQueryOptions(Date timestamp) {
+    public StockQueryOptions(Date timestamp, boolean endOfToday) {
         this(timestamp, null, null, null);
+        this.endOfToday = endOfToday;
     }
 
-    public StockQueryOptions(Date timestamp, String cbatch, StockLocation location, StockWarehouse warehouse) {
+    public StockQueryOptions(Date timestamp, String cbatch, Integer locationId, Integer warehouseId) {
         setTimestamp(timestamp);
         setCBatch(cbatch);
-        setLocation(location);
-        setWarehouse(warehouse);
+        setLocation(locationId);
+        setWarehouse(warehouseId);
+    }
+
+    public void populate(StockQueryOptions o) {
+        timestamp = o.timestamp;
+        endOfToday = o.endOfToday;
+        verifiedOnly = o.verifiedOnly;
+        cBatch = o.cBatch;
+        locationId = o.locationId;
+        warehouseId = o.warehouseId;
+        cbatchVisible = o.cbatchVisible;
+        locationVisible = o.locationVisible;
+        warehouseVisible = o.warehouseVisible;
     }
 
     public Date getTimestamp() {
@@ -42,6 +55,20 @@ public final class StockQueryOptions
         if (timestamp == null)
             throw new NullPointerException("timestamp");
         this.timestamp = timestamp;
+    }
+
+    public Date getTimestampOpt() {
+        Date timestampOpt = timestamp;
+        if (endOfToday) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(timestampOpt);
+            calendar.set(Calendar.HOUR_OF_DAY, 23);
+            calendar.set(Calendar.MINUTE, 59);
+            calendar.set(Calendar.SECOND, 59);
+            calendar.set(Calendar.MILLISECOND, 999);
+            timestampOpt = calendar.getTime();
+        }
+        return timestampOpt;
     }
 
     public boolean isVerifiedOnly() {
@@ -69,16 +96,16 @@ public final class StockQueryOptions
         return cbatchVisible;
     }
 
-    public StockLocation getLocation() {
-        return location;
+    public Integer getLocation() {
+        return locationId;
     }
 
-    public void setLocation(StockLocation location) {
+    public void setLocation(Integer location) {
         setLocation(location, location == null);
     }
 
-    public void setLocation(StockLocation location, boolean visible) {
-        this.location = location;
+    public void setLocation(Integer location, boolean visible) {
+        this.locationId = location;
         this.locationVisible = location != null || visible;
     }
 
@@ -86,16 +113,16 @@ public final class StockQueryOptions
         return locationVisible;
     }
 
-    public StockWarehouse getWarehouse() {
-        return warehouse;
+    public Integer getWarehouse() {
+        return warehouseId;
     }
 
-    public void setWarehouse(StockWarehouse warehouse) {
+    public void setWarehouse(Integer warehouse) {
         setWarehouse(warehouse, warehouse == null);
     }
 
-    public void setWarehouse(StockWarehouse warehouse, boolean visible) {
-        this.warehouse = warehouse;
+    public void setWarehouse(Integer warehouse, boolean visible) {
+        this.warehouseId = warehouse;
         this.warehouseVisible = warehouse != null || visible;
     }
 

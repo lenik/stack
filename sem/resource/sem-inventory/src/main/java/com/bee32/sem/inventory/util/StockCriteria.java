@@ -13,7 +13,6 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.LeftHand;
 import com.bee32.plover.ox1.util.CommonCriteria;
-import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
@@ -73,6 +72,8 @@ public class StockCriteria
                 CommonCriteria.betweenEx("out.createdDate", from, to));
     }
 
+    static final List<Long> emptyIds = Arrays.asList(-1L);
+
     /**
      * @param subjects
      *            Limit to these subjects.
@@ -80,41 +81,46 @@ public class StockCriteria
      *            Specify <code>null</code> to select all materials.
      */
     @LeftHand(Object.class)
-    public static ICriteriaElement sum(Set<String> subjects, List<Material> materials, StockQueryOptions options) {
+    public static ICriteriaElement sum(Set<String> subjects, List<Long> materialIds, StockQueryOptions options) {
         if (subjects == null)
             throw new NullPointerException("subjects");
+        if (subjects.isEmpty())
+            throw new IllegalArgumentException("No subject specified.");
+
+        if (materialIds != null && materialIds.isEmpty())
+            materialIds = emptyIds;
 
         return compose(//
                 alias("parent", "parent"), //
-                lessOrEquals("parent.beginTime", options.getTimestamp()), //
+                lessOrEquals("parent.beginTime", options.getTimestampOpt()), //
                 options.isVerifiedOnly() ? VerifyCriteria.verified("parent") : null, //
                 in("parent._subject", subjects), //
-                materials == null ? null : in("material", materials), // _in
+                materialIds == null ? null : in("material.id", materialIds), // _in
                 _equals("CBatch", options.getCBatch()), //
                 _equals("location", options.getLocation()), //
                 _equals("warehouse", options.getWarehouse()));
     }
 
-    public static ICriteriaElement sumOfCommons(List<Material> materials, StockQueryOptions options) {
+    public static ICriteriaElement sumOfCommons(List<Long> materialIds, StockQueryOptions options) {
         Set<String> subjects = StockOrderSubject.getCommonSet();
-        return sum(subjects, materials, options);
+        return sum(subjects, materialIds, options);
     }
 
-    public static ICriteriaElement sumOfVirtuals(List<Material> materials, StockQueryOptions options) {
+    public static ICriteriaElement sumOfVirtuals(List<Long> materialIds, StockQueryOptions options) {
         Set<String> subjects = StockOrderSubject.getVirtualSet();
-        return sum(subjects, materials, options);
+        return sum(subjects, materialIds, options);
     }
 
-    public static ICriteriaElement sumOfVirtualOnly(List<Material> materials, StockQueryOptions options) {
+    public static ICriteriaElement sumOfVirtualOnly(List<Long> materialIds, StockQueryOptions options) {
         Set<String> subjects = StockOrderSubject.getVirtualOnlySet();
-        return sum(subjects, materials, options);
+        return sum(subjects, materialIds, options);
     }
 
     @LeftHand(StockOrderItem.class)
     public static ICriteriaElement inOutDetail(Date beginDate, Long materialId, StockQueryOptions options) {
         return compose(alias("parent", "parent"), //
                 options.isVerifiedOnly() ? VerifyCriteria.verified("parent") : null, //
-                lessOrEquals("parent.beginTime", options.getTimestamp()), //
+                lessOrEquals("parent.beginTime", options.getTimestampOpt()), //
                 _equals("material.id", materialId), //
                 _equals("CBatch", options.getCBatch()), //
                 _equals("location", options.getLocation()), //

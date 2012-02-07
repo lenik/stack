@@ -37,8 +37,8 @@ public class StockTakingFeat
     public void create() {
         Date now = new Date();
 
-        StockQueryOptions options = new StockQueryOptions(now);
-        options.setWarehouse(SEMInventorySamples.rawWarehouse, true);
+        StockQueryOptions options = new StockQueryOptions(now, false);
+        options.setWarehouse(SEMInventorySamples.rawWarehouse.getId(), true);
         options.setCBatch(null, true);
         options.setLocation(null, true);
         options.setVerifiedOnly(false);
