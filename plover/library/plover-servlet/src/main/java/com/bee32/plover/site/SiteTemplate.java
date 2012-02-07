@@ -80,7 +80,7 @@ public class SiteTemplate
 
     protected Html _menu() {
         ul();
-        for (Entry<String, IPageGenerator> entry : SiteManagerServlet.pageDefs.getPageMap().entrySet()) {
+        for (Entry<String, IPageGenerator> entry : SiteManagerServlet._pages.getPageMap().entrySet()) {
             IPageGenerator pageGenerator = entry.getValue();
             if (!(pageGenerator instanceof InstantiatePageGenerator))
                 continue;

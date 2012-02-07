@@ -1,7 +1,5 @@
 package com.bee32.plover.site;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -9,10 +7,6 @@ import java.util.Set;
 
 import javax.free.Doc;
 import javax.free.StringArray;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,51 +22,31 @@ import com.bee32.plover.site.cfg.VerboseLevel;
 import com.bee32.plover.site.scope.SiteNaming;
 
 public class SiteManagerServlet
-        extends HttpServlet {
+        extends SimpleServlet {
 
     private static final long serialVersionUID = 1L;
 
     static Logger logger = LoggerFactory.getLogger(SiteManagerServlet.class);
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        String uri = req.getRequestURI(); // no params
-        String cmdname;
-        int lastSlash = uri.lastIndexOf('/');
-        if (lastSlash != -1)
-            cmdname = uri.substring(lastSlash + 1);
-        else
-            cmdname = uri;
+    public static PageDefMap _pages;
 
-        logger.info("Site-Command: " + cmdname);
-
-        IPageGenerator page = pageDefs.getPage(cmdname);
-        if (page == null)
-            throw new ServletException("Bad command: " + cmdname);
-
-        Map<String, ?> _args = req.getParameterMap();
-        String content = page.generate(_args);
-
-        resp.setContentType("text/html; charset=utf-8");
-
-        PrintWriter out = resp.getWriter();
-        out.println(content);
+    public SiteManagerServlet() {
+        _pages = pages;
+        pages.add(Index.class);
+        pages.add(CurrentSite.class);
+        pages.add(Config.class);
+        pages.add(Create.class);
+        pages.add(Delete.class);
+        pages.add(Reload.class);
+        pages.add(DataMaintainance.class);
+        pages.add(CacheManager.class);
+        pages.add(Monitor.class);
+        pages.add(HelpDoc.class);
     }
 
-    static PageDefMap pageDefs;
-    static {
-        pageDefs = new PageDefMap();
-        pageDefs.add(Index.class);
-        pageDefs.add(CurrentSite.class);
-        pageDefs.add(Config.class);
-        pageDefs.add(Create.class);
-        pageDefs.add(Delete.class);
-        pageDefs.add(Reload.class);
-        pageDefs.add(DataMaintainance.class);
-        pageDefs.add(CacheManager.class);
-        pageDefs.add(Monitor.class);
-        pageDefs.add(HelpDoc.class);
+    @Override
+    protected String getPageHint() {
+        return "Site-Command";
     }
 
     @Doc("所有站点")

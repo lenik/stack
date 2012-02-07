@@ -97,7 +97,7 @@ public class HtmlTemplate
     }
 
     public String getCopyright() {
-        return "Copyright";
+        return "";
     }
 
     protected IStreamResource getClassResource(String ext) {

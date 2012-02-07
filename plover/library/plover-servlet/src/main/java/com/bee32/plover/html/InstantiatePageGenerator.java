@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.Map;
 
+import javax.free.IllegalUsageException;
 import javax.free.Order;
 
 import com.bee32.plover.site.IPageGenerator;
@@ -25,12 +26,18 @@ public class InstantiatePageGenerator
 
         this.pageClass = pageClass;
 
+        Constructor<? extends AbstractHtmlTemplate> ctor;
         try {
-            pageCtor = pageClass.getConstructor(Map.class);
-            pageCtor.setAccessible(true);
-        } catch (ReflectiveOperationException e) {
-            throw new RuntimeException(e.getMessage(), e);
+            ctor = pageClass.getConstructor(Map.class);
+        } catch (NoSuchMethodException e) {
+            try {
+                ctor = pageClass.getConstructor();
+            } catch (NoSuchMethodException e2) {
+                throw new IllegalUsageException("No suitable ctor found for " + pageClass, e2);
+            }
         }
+        ctor.setAccessible(true);
+        this.pageCtor = ctor;
     }
 
     @Override
@@ -50,7 +57,10 @@ public class InstantiatePageGenerator
     public String generate(Map<String, ?> args) {
         AbstractHtmlTemplate template;
         try {
-            template = pageCtor.newInstance(args);
+            if (pageCtor.getParameterTypes().length == 0)
+                template = pageCtor.newInstance();
+            else
+                template = pageCtor.newInstance(args);
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
