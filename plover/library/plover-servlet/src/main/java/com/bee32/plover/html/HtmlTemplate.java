@@ -93,7 +93,7 @@ public class HtmlTemplate
     }
 
     public String getTitle() {
-        return ClassUtil.getParameterizedTypeName(this);
+        return ClassUtil.getTypeName(getClass());
     }
 
     public String getCopyright() {

@@ -4,7 +4,9 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -73,6 +75,8 @@ public class ClassUtil {
         return clazz;
     }
 
+    static Map<Class<?>, String> typeNames = new HashMap<>();
+
     /**
      * Get the type display name.
      *
@@ -84,6 +88,11 @@ public class ClassUtil {
     public static String getTypeName(Class<?> clazz) {
         if (clazz == null)
             throw new NullPointerException("clazz");
+
+        String typeName = typeNames.get(clazz);
+        if (typeName != null)
+            return typeName;
+
         clazz = ClassUtil.skipProxies(clazz);
 
         // XXX ResourceBundleNLS not work.
@@ -100,6 +109,7 @@ public class ClassUtil {
         }
         if (displayName == null || displayName.isEmpty())
             displayName = clazz.getSimpleName();
+        typeNames.put(clazz, displayName);
         return displayName;
     }
 
