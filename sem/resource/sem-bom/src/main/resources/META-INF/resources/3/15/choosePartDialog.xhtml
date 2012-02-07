@@ -36,6 +36,30 @@
             <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
 
             <ui:define name="columns">
+                <p:column headerText="物料">
+                    <h:outputText value="#{entry.target.label}" />
+                </p:column>
+                <p:column headerText="创建人">
+                    <h:outputText value="#{entry.owner.name}" />
+                </p:column>
+                <p:column headerText="建立日期">
+                    <h:outputText value="#{entry.createdDate}">
+                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="生效日期">
+                    <h:outputText value="#{entry.validDateFrom}">
+                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="失效日期">
+                    <h:outputText value="#{entry.validDateTo}">
+                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="类型">
+                    <h:outputText value="#{entry.xrefCount == 0 ? '产品' : '半成品'}" />
+                </p:column>
             </ui:define>
         </ui:decorate>
     </cc:implementation>

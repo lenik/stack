@@ -136,9 +136,9 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:chooseMaterialDialog id="matdlg1" header="选择物料" var="choosePartMaterialDialog" />
-        <sem:chooseMaterialDialog id="matdlg2" header="选择原材料" var="chooseItemMaterialDialog" />
-        <sem:choosePartDialog id="partdlg" header="选择半成品" var="choosePartDialog" />
+        <sem:chooseMaterialDialog id="matdlg1" header="选择产品对应的物料" var="choosePartMaterialDialog" />
+        <sem:chooseMaterialDialog id="matdlg" header="选择组件对应的物料" var="chooseItemMaterialDialog" />
+        <sem:choosePartDialog id="partdlg" header="选择组件对应的半成品" var="chooseItemPartDialog" />
 
         <fr:listView id="childrenEditView" header="BOM明细" style="editDialog" indexView=":editDialog:form:childrenIndexView"
             mbean="#{mbean.childrenMBean}">
