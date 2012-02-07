@@ -13,8 +13,10 @@
             <h:outputText value="#{entry.label}" />
         </p:column>
 
-        <p:column headerText="类型">
-            <h:outputText value="#{entry.type.label}" />
+        <p:column headerText="属性">
+            <h:outputText value="*内部" rendered="#{entry.employee}"/>
+            <h:outputText value="*客户" rendered="#{entry.customer}"/>
+            <h:outputText value="*供应商" rendered="#{entry.supplier}"/>
         </p:column>
 
         <p:column headerText="联系电话" style="width: 12em">
@@ -42,25 +44,28 @@
         <p:tabView id="tv">
             <p:tab id="tab1" title="详细信息">
                 <t:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
-
-                    <h:outputLabel for="tags" value="标签" />
-                    <t:panelGroup colspan="3">
-                        <t:panelGrid columns="2">
-                            <p:selectOneListbox id="tags" value="#{bean.selectedTagId}" style="height:80px; width:200px;">
-                                <f:selectItems value="#{people.partyTagnameSelectItems}" />
-                            </p:selectOneListbox>
-                            <t:panelGrid colums="1">
-                                <p:commandButton value="增加标签" disabled="#{obj == null}" onclick="tagDlg.show();" />
-                                <p:commandButton value="删除标签" disabled="#{obj == null}" actionListener="#{bean.deleteTag}"
-                                    update="tags" />
-                            </t:panelGrid>
-                        </t:panelGrid>
-                    </t:panelGroup>
-
                     <h:outputLabel for="name" value="公司名称" />
                     <p:inputText id="name" value="#{obj.label}" />
                     <h:outputLabel for="fullName" value="全名" />
                     <p:inputText id="fullName" value="#{obj.fullName}" />
+
+                    <h:outputText value="属性" />
+                    <t:panelGroup colspan="3">
+                        <t:panelGrid columns="3">
+                            <t:panelGrid columns="2">
+                                <p:selectBooleanCheckbox value="#{obj.employee}" />
+                                <h:outputText value="内部"/>
+                            </t:panelGrid>
+                            <t:panelGrid columns="2">
+                                <p:selectBooleanCheckbox value="#{obj.customer}" />
+                                <h:outputText value="客户"/>
+                            </t:panelGrid>
+                            <t:panelGrid columns="2">
+                                <p:selectBooleanCheckbox value="#{obj.supplier}" />
+                                <h:outputText value="供应商"/>
+                            </t:panelGrid>
+                        </t:panelGrid>
+                    </t:panelGroup>
 
                     <h:outputLabel for="birthday" value="成立日期" />
                     <p:calendar id="birthday" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{obj.birthday}"
@@ -86,9 +91,23 @@
                         <p:inputText id="interests" value="#{obj.interests}" />
                     </t:panelGroup>
 
+                    <h:outputLabel for="tags" value="标签" />
+                    <t:panelGroup colspan="3">
+                        <t:panelGrid columns="2">
+                            <p:selectOneListbox id="tags" value="#{bean.selectedTagId}" style="height:80px; width:200px;">
+                                <f:selectItems value="#{people.partyTagnameSelectItems}" />
+                            </p:selectOneListbox>
+                            <t:panelGrid colums="1">
+                                <p:commandButton value="增加标签" disabled="#{obj == null}" onclick="tagDlg.show();" />
+                                <p:commandButton value="删除标签" disabled="#{obj == null}" actionListener="#{bean.deleteTag}"
+                                    update="tags" />
+                            </t:panelGrid>
+                        </t:panelGrid>
+                    </t:panelGroup>
+
                     <h:outputLabel for="memo" value="备注" />
                     <t:panelGroup colspan="3">
-                        <p:inputTextarea id="memo" value="#{obj.memo}" style="width:300px;height:100px;"
+                        <p:inputTextarea id="memo" value="#{obj.memo}" style="width:300px;height:50px;"
                             effectDuration="400" />
                     </t:panelGroup>
                 </t:panelGrid>

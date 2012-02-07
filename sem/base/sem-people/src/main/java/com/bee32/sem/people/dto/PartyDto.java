@@ -38,6 +38,10 @@ public class PartyDto
     PartySidTypeDto sidType;
     String sid;
 
+    boolean employee;
+    boolean customer = true;
+    boolean supplier;
+
     Date birthday;
     String interests;
 
@@ -64,6 +68,10 @@ public class PartyDto
 
         sidType = mref(PartySidTypeDto.class, source.getSidType());
         sid = source.getSid();
+
+        employee = source.isEmployee();
+        customer = source.isCustomer();
+        supplier = source.isSupplier();
 
         birthday = source.getBirthday();
         interests = source.getInterests();
@@ -101,6 +109,10 @@ public class PartyDto
             sidTypeId = null;
         sidType.setId(sidTypeId);
         merge(target, "sidType", sidType);
+
+        target.setEmployee(employee);
+        target.setCustomer(customer);
+        target.setSupplier(supplier);
 
         target.setBirthday(birthday);
         target.setInterests(interests);
@@ -170,6 +182,30 @@ public class PartyDto
         if (sid != null && sid.isEmpty())
             sid = null;
         this.sid = TextUtil.normalizeSpace(sid);
+    }
+
+    public boolean isEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(boolean employee) {
+        this.employee = employee;
+    }
+
+    public boolean isCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(boolean customer) {
+        this.customer = customer;
+    }
+
+    public boolean isSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(boolean supplier) {
+        this.supplier = supplier;
     }
 
     public String getXid() {
