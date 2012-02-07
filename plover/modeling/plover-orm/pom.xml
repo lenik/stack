@@ -46,6 +46,11 @@
             <version>2.0-bee32-17</version>
         </dependency>
         <dependency>
+            <groupId>gudusoft.gsqlparser</groupId>
+            <artifactId>gsqlparser</artifactId>
+            <version>1.4.0.3</version>
+        </dependency>
+        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>1.3.149</version>
