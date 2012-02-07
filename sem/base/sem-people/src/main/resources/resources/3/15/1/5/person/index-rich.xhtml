@@ -13,12 +13,10 @@
             <h:outputText value="#{entry.displayName}" />
         </p:column>
 
-        <p:column headerText="标签">
-            <p:dataList value="#{entry.tags}" var="tag" type="definition">
-                <f:facet name="description">
-                    <h:outputText value="#{tag.label}" />
-                </f:facet>
-            </p:dataList>
+        <p:column headerText="属性">
+            <h:outputText value="*内部" rendered="#{entry.employee}"/>
+            <h:outputText value="*客户" rendered="#{entry.customer}"/>
+            <h:outputText value="*供应商" rendered="#{entry.supplier}"/>
         </p:column>
 
         <p:column headerText="性别">
@@ -53,27 +51,29 @@
             <p:tab id="tab1" title="详细信息">
                 <h:inputHidden id="personId" value="#{obj.id}" />
 
-                <h:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
-
-                    <h:outputLabel for="personTags" value="标签" />
-                    <h:panelGroup colspan="3">
-                        <h:panelGrid columns="2">
-                            <p:selectOneListbox id="personTags" value="#{bean.selectedTagId}" style="height:80px; width:200px;">
-                                <f:selectItems value="#{obj.tags}" var="tag" itemLabel="#{tag.label}"
-                                    itemValue="#{tag.id}" />
-                            </p:selectOneListbox>
-                            <h:panelGrid colums="2">
-                                <p:commandButton value="增加标签" disabled="#{obj == null}" onclick="tagDlg.show();" />
-                                <p:commandButton value="删除标签" disabled="#{obj == null}" actionListener="#{bean.deleteTag}"
-                                    update="personTags" />
-                            </h:panelGrid>
-                        </h:panelGrid>
-                    </h:panelGroup>
-
+                <t:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
                     <h:outputLabel for="personName" value="姓名" />
                     <p:inputText id="personName" value="#{obj.name}" />
                     <h:outputLabel for="personFullName" value="全名" />
                     <p:inputText id="personFullName" value="#{obj.fullName}" />
+
+                    <h:outputText value="属性" />
+                    <t:panelGroup colspan="3">
+                        <t:panelGrid columns="3">
+                            <t:panelGrid columns="2">
+                                <p:selectBooleanCheckbox value="#{obj.employee}" />
+                                <h:outputText value="内部"/>
+                            </t:panelGrid>
+                            <t:panelGrid columns="2">
+                                <p:selectBooleanCheckbox value="#{obj.customer}" />
+                                <h:outputText value="客户"/>
+                            </t:panelGrid>
+                            <t:panelGrid columns="2">
+                                <p:selectBooleanCheckbox value="#{obj.supplier}" />
+                                <h:outputText value="供应商"/>
+                            </t:panelGrid>
+                        </t:panelGrid>
+                    </t:panelGroup>
 
                     <h:outputLabel for="personBirthday" value="生日" />
                     <t:panelGroup colspan="3">
@@ -97,16 +97,31 @@
                     <p:inputText id="personCensusRegister" value="#{obj.censusRegister}" />
 
                     <h:outputLabel for="personInterests" value="兴趣爱好" />
-                    <h:panelGroup colspan="3">
+                    <t:panelGroup colspan="3">
                         <p:inputText id="personInterests" value="#{obj.interests}" />
-                    </h:panelGroup>
+                    </t:panelGroup>
+
+                    <h:outputLabel for="personTags" value="标签" />
+                    <t:panelGroup colspan="3">
+                        <t:panelGrid columns="2">
+                            <p:selectOneListbox id="personTags" value="#{bean.selectedTagId}" style="height:80px; width:200px;">
+                                <f:selectItems value="#{obj.tags}" var="tag" itemLabel="#{tag.label}"
+                                    itemValue="#{tag.id}" />
+                            </p:selectOneListbox>
+                            <h:panelGrid colums="2">
+                                <p:commandButton value="增加标签" disabled="#{obj == null}" onclick="tagDlg.show();" />
+                                <p:commandButton value="删除标签" disabled="#{obj == null}" actionListener="#{bean.deleteTag}"
+                                    update="personTags" />
+                            </h:panelGrid>
+                        </t:panelGrid>
+                    </t:panelGroup>
 
                     <h:outputLabel for="personMemo" value="备注" />
-                    <h:panelGroup colspan="3">
+                    <t:panelGroup colspan="3">
                         <p:inputTextarea id="personMemo" value="#{obj.memo}" style="width:300px;height:100px;"
                             effectDuration="400" />
-                    </h:panelGroup>
-                </h:panelGrid>
+                    </t:panelGroup>
+                </t:panelGrid>
             </p:tab>
 
             <p:tab id="tab2" title="联系方式">
