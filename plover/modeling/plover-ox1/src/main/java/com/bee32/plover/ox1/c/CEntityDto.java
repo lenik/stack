@@ -5,6 +5,11 @@ import java.util.Map;
 
 import javax.free.ParseException;
 
+import org.hibernate.LazyInitializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
@@ -13,6 +18,8 @@ public abstract class CEntityDto<E extends CEntity<K>, K extends Serializable>
         extends EntityDto<E, K> {
 
     private static final long serialVersionUID = 1L;
+
+    static Logger logger = LoggerFactory.getLogger(CEntityDto.class);
 
     public static final int OWNER_MASK = 3 << 28;
     public static final int OWNER_SKIP = 1 << 28;
@@ -50,8 +57,16 @@ public abstract class CEntityDto<E extends CEntity<K>, K extends Serializable>
         super.__marshal(source);
 
         int ownerSelection = selection.bits & OWNER_MASK;
-        if (ownerSelection != OWNER_SKIP)
-            owner = mref(UserDto.class, 0, source.getOwner());
+        if (ownerSelection != OWNER_SKIP) {
+            User _owner = source.getOwner();
+            try {
+                owner = mref(UserDto.class, 0, _owner);
+            } catch (LazyInitializationException e) {
+                logger.error("Failed to marshal owner, maybe session expired? " + e.getMessage());
+                owner = null;
+                // MarshalType.SKIP;
+            }
+        }
 
         aclId = source.getAclId();
     }

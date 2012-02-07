@@ -12,8 +12,9 @@ public enum MarshalType {
 
     SELECTION(false),
 
-    ANY(false),
+    ANY(true),
 
+    // SKIP(false);
     ;
 
     final boolean reference;
