@@ -29,15 +29,18 @@
                         value="#{bean.queryDate}" showOn="button" />
                     <p:separator />
                     <p:commandButton id="query" value="查询" oncomplete="stockQueryDialog.show()" update="result">
+                        <f:setPropertyActionListener target="${stockQueryDialogBean.tabIndex}"
+                            value="0" />
                         <f:setPropertyActionListener target="${stockQueryDialogBean.queryOptions.timestamp}"
                             value="${bean.queryDate}" />
                         <f:setPropertyActionListener target="${stockQueryDialogBean.queryOptions.warehouse}"
-                            value="${bean.selectedWarehouse}" />
+                            value="${bean.selectedWarehouseId}" />
                     </p:commandButton>
                 </p:toolbarGroup>
             </p:toolbar>
 
-            <p:dataTable id="result" value="#{bean.items}" var="item" resizableColumns="true" rowIndexVar="rowIndex">
+            <p:dataTable id="result" value="#{bean.resultList.items}" var="item" resizableColumns="true"
+                rowIndexVar="rowIndex">
 
                 <p:column headerText="序号">
                     <h:outputText value="#{rowIndex + 1}" />

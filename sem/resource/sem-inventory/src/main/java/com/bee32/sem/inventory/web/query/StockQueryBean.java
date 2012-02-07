@@ -13,9 +13,11 @@ import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.ox1.util.CommonCriteria;
+import com.bee32.sem.inventory.dto.StockItemListDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.StockInventory;
+import com.bee32.sem.inventory.entity.StockItemList;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
@@ -35,8 +37,9 @@ public class StockQueryBean
     Integer selectedWarehouseId = -1;
     Date queryDate = new Date();
 
-    List<StockOrderItemDto> items = new ArrayList<StockOrderItemDto>();
+    StockItemListDto resultList = new StockItemListDto().create();
     StockOrderItemDto selectedItem;
+
     StockOrderItemDto detailItem;
     int orderIndex = -1;
     int orderItemIndex = -1;
@@ -66,12 +69,14 @@ public class StockQueryBean
         this.queryDate = queryDate;
     }
 
-    public void copyResult(List<StockOrderItemDto> items) {
-        this.items = new ArrayList<StockOrderItemDto>(items);
+    public void copyResult(StockItemList resultList) {
+        if (resultList == null)
+            throw new NullPointerException("resultList");
+        this.resultList = new StockItemListDto(-1).marshal(resultList);
     }
 
-    public List<StockOrderItemDto> getItems() {
-        return items;
+    public StockItemListDto getResultList() {
+        return resultList;
     }
 
     public StockOrderItemDto getSelectedItem() {
@@ -82,31 +87,30 @@ public class StockQueryBean
         this.selectedItem = selectedItem;
     }
 
+    public List<StockOrderItemDto> getDetails() {
+        if (selectedItem == null)
+            return new ArrayList<StockOrderItemDto>();
+
+        StockQueryOptions opts = new StockQueryOptions(queryDate, true);
+        opts.setWarehouse(getSelectedWarehouseId());
+        opts.setCBatch(selectedItem.getCBatch(), true);
+        opts.setLocation(selectedItem.getLocation().getId(), true);
+
+        List<StockOrderItem> details = serviceFor(StockOrderItem.class).list( //
+                StockCriteria.inOutDetail( //
+                        queryDate, //
+                        selectedItem.getMaterial().getId(), //
+                        opts));
+
+        return DTOs.marshalList(StockOrderItemDto.class, details);
+    }
+
     public StockOrderItemDto getDetailItem() {
         return detailItem;
     }
 
     public void setDetailItem(StockOrderItemDto detailItem) {
         this.detailItem = detailItem;
-    }
-
-    public List<StockOrderItemDto> getDetails() {
-        if (selectedItem != null) {
-            StockQueryOptions opts = new StockQueryOptions(queryDate, true);
-            opts.setWarehouse(getSelectedWarehouseId());
-            opts.setCBatch(selectedItem.getCBatch(), true);
-            opts.setLocation(selectedItem.getLocation().getId(), true);
-
-            List<StockOrderItem> details = serviceFor(StockOrderItem.class).list( //
-                    StockCriteria.inOutDetail( //
-                            queryDate, //
-                            selectedItem.getMaterial().getId(), //
-                            opts));
-
-            return DTOs.marshalList(StockOrderItemDto.class, details);
-        }
-
-        return new ArrayList<StockOrderItemDto>();
     }
 
     public int getOrderIndex() {

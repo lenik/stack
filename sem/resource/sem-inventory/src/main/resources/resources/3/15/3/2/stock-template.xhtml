@@ -122,7 +122,7 @@
         <sem:inputQuantityDialog id="inputQuantityDialog" target="#{itemObj.quantity}" update=":itemsEditView:editForm:body" />
         <c:if test="${not disableStockQuery}">
             <sem:stockQueryDialog id="stockQueryDialog" target="#{bean.selectedStockQueryItem}"
-                action="#{bean.applySelectedStockQueryItem}" update=":itemsEditView:editForm:body" />
+                actionListener="#{bean.applySelectedStockQueryItem}" update=":itemsEditView:editForm:body" />
         </c:if>
 
         <fr:listView id="itemsEditView" header="明细" style="editDialog" indexView=":editDialog:form:itemsIndexView"

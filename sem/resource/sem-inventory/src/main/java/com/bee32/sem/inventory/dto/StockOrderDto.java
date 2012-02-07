@@ -4,6 +4,7 @@ import javax.free.Nullables;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.sem.inventory.entity.StockItemList;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.process.StockOrderVerifySupportDto;
@@ -12,7 +13,7 @@ import com.bee32.sem.people.dto.OrgUnitDto;
 import com.bee32.sem.process.verify.dto.IVerifiableDto;
 
 public class StockOrderDto
-        extends StockItemListDto<StockOrder>
+        extends StockItemListDto
         implements IVerifiableDto {
 
     private static final long serialVersionUID = 1L;
@@ -58,7 +59,9 @@ public class StockOrderDto
     }
 
     @Override
-    protected void _marshal(StockOrder source) {
+    protected void _marshal(StockItemList _source) {
+        super._marshal(_source);
+        StockOrder source = (StockOrder) _source;
         base = mref(StockPeriodDto.class, source.getBase());
         spec = mref(StockPeriodDto.class, source.getSpec());
         subject = source.getSubject();
@@ -70,7 +73,9 @@ public class StockOrderDto
     }
 
     @Override
-    protected void _unmarshalTo(StockOrder target) {
+    protected void _unmarshalTo(StockItemList _target) {
+        super._unmarshalTo(_target);
+        StockOrder target = (StockOrder) _target;
         merge(target, "base", base);
         merge(target, "spec", spec);
         target.setSubject(subject);
@@ -84,6 +89,7 @@ public class StockOrderDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
+        super._parse(map);
     }
 
     public StockPeriodDto getBase() {

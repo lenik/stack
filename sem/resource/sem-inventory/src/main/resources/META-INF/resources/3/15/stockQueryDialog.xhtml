@@ -5,9 +5,9 @@
     <cc:interface>
         <!-- basic -->
         <cc:attribute name="var" default="stockQueryDialog" />
-        <cc:attribute name="target" type="java.lang.Object" default="${cc.attrs.dialogBean.singleSelection}" />
+        <cc:attribute name="target" type="java.lang.Object" default="${stockQueryDialogBean.singleSelection}" />
         <cc:attribute name="multiple" type="java.lang.Boolean" default="false" />
-        <cc:attribute name="action" targets="form:ok" />
+        <cc:attribute name="actionListener" targets="form:ok" />
         <cc:attribute name="update" />
 
         <!-- ui overrides -->

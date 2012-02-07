@@ -201,7 +201,7 @@ public class PurchaseService
                 stockOrder.addItem(stockOrderItem);
 
                 // 保存以上StockOrder*
-                StockOrder _stockOrder = stockOrder.unmarshal();
+                StockOrder _stockOrder = (StockOrder) stockOrder.unmarshal();
                 StockWarehouse warehouse = asFor(StockWarehouse.class).get(warehouseIdsWithItemId.get(item.getId()));
                 _stockOrder.setWarehouse(warehouse);
                 asFor(StockOrder.class).saveOrUpdate(_stockOrder);

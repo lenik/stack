@@ -13,7 +13,7 @@ public final class StockQueryOptions
 
     Date timestamp = new Date();
     boolean endOfToday;
-    boolean verifiedOnly = true;
+    boolean verifiedOnly = false; // true;
 
     String cBatch;
     Integer locationId;
@@ -23,9 +23,9 @@ public final class StockQueryOptions
     boolean locationVisible;
     boolean warehouseVisible;
 
-    public StockQueryOptions(Date timestamp, boolean endOfToday) {
+    public StockQueryOptions(Date timestamp, boolean endOfDay) {
         this(timestamp, null, null, null);
-        this.endOfToday = endOfToday;
+        this.endOfToday = endOfDay;
     }
 
     public StockQueryOptions(Date timestamp, String cbatch, Integer locationId, Integer warehouseId) {
@@ -73,6 +73,14 @@ public final class StockQueryOptions
 
     public boolean isVerifiedOnly() {
         return verifiedOnly;
+    }
+
+    public boolean isEndOfToday() {
+        return endOfToday;
+    }
+
+    public void setEndOfToday(boolean endOfToday) {
+        this.endOfToday = endOfToday;
     }
 
     public void setVerifiedOnly(boolean verifiedOnly) {

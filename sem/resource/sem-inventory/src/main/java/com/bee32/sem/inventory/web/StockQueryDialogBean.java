@@ -33,7 +33,7 @@ public class StockQueryDialogBean
 
     String header = "从当前库存中挑选..."; // NLS
 
-    StockQueryOptions queryOptions = new StockQueryOptions(new Date(), true);
+    StockQueryOptions queryOptions;
 
     boolean all;
     List<MaterialDto> materials = new ArrayList<MaterialDto>();
@@ -47,6 +47,10 @@ public class StockQueryDialogBean
     public StockQueryDialogBean() {
         super(StockOrderItem.class, StockOrderItemDto.class, 0);
         setTabIndex(1); // Results-Tab
+        queryOptions = new StockQueryOptions(new Date(), true);
+        queryOptions.setWarehouse(null, true);
+        queryOptions.setCBatch(null, true);
+        queryOptions.setLocation(null, true);
     }
 
     /**
@@ -186,7 +190,6 @@ public class StockQueryDialogBean
             return null;
 
         StockQueryOptions options = new StockQueryOptions(new Date(), true);
-        options.setVerifiedOnly(false); // XXX for test.
         options.setWarehouse(warehouseId);
         options.setCBatch(null, true);
         options.setLocation(null, true);

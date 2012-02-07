@@ -97,8 +97,8 @@ public class StockCriteria
                 in("parent._subject", subjects), //
                 materialIds == null ? null : in("material.id", materialIds), // _in
                 _equals("CBatch", options.getCBatch()), //
-                _equals("location", options.getLocation()), //
-                _equals("warehouse", options.getWarehouse()));
+                _equals("location.id", options.getLocation()), //
+                _equals("warehouse.id", options.getWarehouse()));
     }
 
     public static ICriteriaElement sumOfCommons(List<Long> materialIds, StockQueryOptions options) {
@@ -123,7 +123,7 @@ public class StockCriteria
                 lessOrEquals("parent.beginTime", options.getTimestampOpt()), //
                 _equals("material.id", materialId), //
                 _equals("CBatch", options.getCBatch()), //
-                _equals("location", options.getLocation()), //
-                _equals("warehouse", options.getWarehouse()));
+                _equals("location.id", options.getLocation()), //
+                _equals("warehouse.id", options.getWarehouse()));
     }
 }

@@ -99,10 +99,16 @@ public class StockQuery
             item.setIndex(index++);
             item.setMaterial(_material);
             item.setQuantity(_quantity);
-            item.setCBatch(_cBatch);
-            item.setPrice(_price);
-            item.setExpirationDate(_expire);
-            item.setLocation(_location);
+            if (options.isCBatchVisible()) {
+                item.setCBatch(_cBatch);
+                item.setPrice(_price);
+                item.setExpirationDate(_expire);
+            }
+            if (options.isWarehouseVisible())
+                ; // item.setWarehouse();
+            if (options.isWarehouseVisible()) {
+                item.setLocation(_location);
+            }
 
             all.addItem(item);
         }

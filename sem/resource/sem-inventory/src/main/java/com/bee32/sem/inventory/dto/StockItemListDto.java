@@ -9,8 +9,8 @@ import com.bee32.sem.inventory.service.IStockMergeStrategy;
 import com.bee32.sem.inventory.service.SMS_MBLC;
 import com.bee32.sem.world.thing.AbstractOrderDto;
 
-public abstract class StockItemListDto<E extends StockItemList>
-        extends AbstractOrderDto<E, StockOrderItem, StockOrderItemDto> {
+public class StockItemListDto
+        extends AbstractOrderDto<StockItemList, StockOrderItem, StockOrderItemDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -25,36 +25,33 @@ public abstract class StockItemListDto<E extends StockItemList>
     }
 
     @Override
-    public StockItemListDto<E> populate(Object source) {
-        if (source instanceof StockItemListDto<?>) {
-            StockItemListDto<?> o = (StockItemListDto<?>) source;
+    public StockItemListDto populate(Object source) {
+        if (source instanceof StockItemListDto) {
+            StockItemListDto o = (StockItemListDto) source;
             _populate(o);
         } else
             super.populate(source);
         return this;
     }
 
-    protected void _populate(StockItemListDto<?> o) {
+    protected void _populate(StockItemListDto o) {
         super._populate(o);
         mergeStrategy = o.mergeStrategy;
     }
 
     @Override
-    protected void __marshal(E source) {
-        super.__marshal(source);
+    protected void _marshal(StockItemList source) {
         mergeStrategy = source.getMergeStrategy();
     }
 
     @Override
-    protected void __unmarshalTo(E target) {
-        super.__unmarshalTo(target);
+    protected void _unmarshalTo(StockItemList target) {
         // target.setMergeStrategy(mergeStrategy);
     }
 
     @Override
-    protected void __parse(TextMap map)
+    protected void _parse(TextMap map)
             throws ParseException {
-        super.__parse(map);
     }
 
 }
