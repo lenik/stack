@@ -42,13 +42,62 @@
                 <p:column headerText="简要">
                     <h:outputText value="${entry.label}" />
                 </p:column>
-                <p:column headerText="描述">
-                    <h:outputText value="${entry.description}" />
-                </p:column>
                 <p:column headerText="仓库">
                     <h:outputText value="${entry.warehouse.name}" />
                 </p:column>
+                <p:column headerText="描述">
+                    <h:outputText value="${entry.description}" />
+                </p:column>
+            </ui:define>
+            <ui:define name="buttons.left">
+                <p:commandButton id="showDetail" value="明细" actionListener="${dialogBean.showContent}"
+                    update=":${cc.clientId}:detailForm" oncomplete="_stockOrder_detailDialog.show()" />
             </ui:define>
         </ui:decorate>
+
+        <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
+        <p:dialog id="detailDialog" header="单据明细信息" widgetVar="_stockOrder_detailDialog" modal="true"
+            dynamic="${viewConfig.dynamicDialog}">
+            <h:form id="detailForm" styleClass="ui-dialog-form">
+                <h:panelGroup rendered="${dialogBean.openedObject != null}">
+                    <p:dataTable value="${dialogBean.openedObject.items}" var="entry" rowIndexVar="rowIndex"
+                        resizableColumns="true">
+                        <p:column headerText="物料">
+                            <h:outputText value="${entry.material.label}" />
+                        </p:column>
+                        <p:column headerText="规格型号">
+                            <h:outputText value="${entry.material.modelSpec}" />
+                        </p:column>
+                        <p:column headerText="单位">
+                            <h:outputText value="${entry.material.unit.name}" />
+                        </p:column>
+                        <p:column headerText="批号">
+                            <h:outputText value="${entry.batch}" />
+                        </p:column>
+                        <p:column headerText="有效期">
+                            <h:outputText value="${entry.expirationDate}" />
+                        </p:column>
+                        <p:column headerText="库位">
+                            <h:outputText value="${entry.location.nodeText}" />
+                        </p:column>
+                        <p:column headerText="单价">
+                            <h:outputText value="${entry.price.value}" />
+                        </p:column>
+                        <p:column headerText="币种">
+                            <h:outputText value="${entry.price.currencyText}" />
+                        </p:column>
+                        <p:column headerText="数量">
+                            <h:outputText value="${entry.quantity}" />
+                        </p:column>
+                        <p:column headerText="备注">
+                            <h:outputText value="${entry.description}" />
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+                <div align="right">
+                    <p:commandButton id="close" value="关闭" onclick="_stockOrder_detailDialog.hide()" />
+                </div>
+            </h:form>
+        </p:dialog>
     </cc:implementation>
 </html>
