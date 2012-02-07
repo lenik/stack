@@ -36,4 +36,5 @@ public class SEMInventoryModuleTest
                 SEMInventoryModule.PREFIX + "/take/?subject=TK_O" //
                 );
     }
+
 }

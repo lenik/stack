@@ -1,4 +1,9 @@
 
+update party set label=name;
+update org_unit set label=name;
+alter party drop column name;
+alter org_unit drop column name;
+
 update party set employee=true
     where id in (select distinct party from party_tags where tag='ENY');
 

@@ -116,13 +116,13 @@
             update=":editDialog:form" />
         <sem:chooseOrgUnitDialog id="chooseOrgUnitDialog" target="#{obj.orgUnit}" update=":editDialog:form" />
         <sem:chooseStockLocationDialog id="chooseStockLocationDialog" target="#{itemObj.location}"
-            update=":itemsEditView:editForm" />
+            update=":itemsEditView:editForm:body" />
         <sem:chooseMaterialDialog id="chooseMaterialDialog" target="#{itemObj.material}"
-            update=":itemsEditView:editForm" />
-        <sem:inputQuantityDialog id="inputQuantityDialog" target="#{itemObj.quantity}" update=":itemsEditView:editForm" />
+            update=":itemsEditView:editForm:body" />
+        <sem:inputQuantityDialog id="inputQuantityDialog" target="#{itemObj.quantity}" update=":itemsEditView:editForm:body" />
         <c:if test="${not disableStockQuery}">
-            <sem:chooseStockItemDialog id="chooseStockItemDialog" target="#{bean.selectedStockQueryItem}"
-                actionListener="#{bean.applySelectedStockQueryItem}" />
+            <sem:stockQueryDialog id="stockQueryDialog" target="#{bean.selectedStockQueryItem}"
+                action="#{bean.applySelectedStockQueryItem}" update=":itemsEditView:editForm:body" />
         </c:if>
 
         <fr:listView id="itemsEditView" header="明细" style="editDialog" indexView=":editDialog:form:itemsIndexView"
