@@ -80,7 +80,8 @@ public class StockQueryDialogBean
             list = cachedQuery();
         else
             list = queryCache; // cachedQuery();
-        return list.getItems().size();
+        int count = list.getItems().size();
+        return count;
     }
 
     public StockItemList getResultList() {
@@ -96,6 +97,7 @@ public class StockQueryDialogBean
     public synchronized StockItemList query() {
         queryCache = queryImpl();
         cacheValid = true;
+        refreshRowCount();
         setTabIndex(TAB_RESULT);
         return queryCache;
     }

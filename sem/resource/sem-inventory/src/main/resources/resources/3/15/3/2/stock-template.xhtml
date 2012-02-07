@@ -138,7 +138,7 @@
                     <t:panelGroup colspan="2">
                         <p:commandButton value="查询库存" oncomplete="stockQueryDialog.show()">
                             <f:setPropertyActionListener target="#{stockQueryDialogBean.autoQuery}"
-                                value="true" />
+                                value="#{item.material != null}" />
                             <f:setPropertyActionListener target="#{stockQueryDialogBean.queryOptions}"
                                 value="#{bean.stockQueryOptions}" />
                             <f:setPropertyActionListener target="#{stockQueryDialogBean.singleMaterial}"
