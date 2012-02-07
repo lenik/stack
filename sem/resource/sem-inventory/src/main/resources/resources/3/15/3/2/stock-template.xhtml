@@ -40,7 +40,7 @@
 
                 <h:outputText value="对应公司" />
                 <t:panelGroup>
-                    <p:inputText id="org" value="#{obj.org.name}" readonly="true" />
+                    <p:inputText id="org" value="#{obj.org.displayName}" readonly="true" />
                     <p:commandButton value="..." oncomplete="chooseOrgDialog.show()">
                         <f:setPropertyActionListener target="#{choosePartyDialogBean.stereo}"
                             value="ORG" />
@@ -48,8 +48,8 @@
                 </t:panelGroup>
                 <h:outputText value="对应部门" />
                 <t:panelGroup>
-                    <p:inputText id="orgUnit" value="#{obj.orgUnit.name}" readonly="true" />
-                    <p:commandButton value="..." onclick="chooseOrgUnitDialog.show()">
+                    <p:inputText id="orgUnit" value="#{obj.orgUnit.path}" readonly="true" />
+                    <p:commandButton value="..." oncomplete="chooseOrgUnitDialog.show()">
                         <f:setPropertyActionListener target="#{chooseOrgUnitDialogBean.orgId}"
                             value="#{obj.org.id}" />
                     </p:commandButton>

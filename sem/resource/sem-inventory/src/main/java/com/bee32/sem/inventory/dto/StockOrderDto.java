@@ -1,5 +1,6 @@
 package com.bee32.sem.inventory.dto;
 
+import javax.free.Nullables;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
@@ -126,7 +127,10 @@ public class StockOrderDto
     }
 
     public void setOrg(OrgDto org) {
-        this.org = org;
+        if (!Nullables.equals(this.org, org)) {
+            this.org = org;
+            this.orgUnit = new OrgUnitDto().ref();
+        }
     }
 
     public OrgUnitDto getOrgUnit() {
