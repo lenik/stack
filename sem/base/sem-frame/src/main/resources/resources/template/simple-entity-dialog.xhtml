@@ -10,7 +10,7 @@
             <ui:insert name="dataContainer">
                 <p:dataTable id="dataTable" value="${dialogBean.dataModel}" selection="${_selection}"
                     selectionMode="${multiple ? 'multiple' : 'single'}" var="entry" rowIndexVar="rowIndex"
-                    resizableColumns="true" paginator="${paginator != null ? paginator : false}" rows="10"
+                    resizableColumns="true" paginator="${paginator != null ? paginator : true}" rows="10"
                     paginatorTemplate="${viewConfig.paginatorTemplate}" rowsPerPageTemplate="${viewConfig.pageSizeTemplate}">
 
                     <p:column headerText="序号">
