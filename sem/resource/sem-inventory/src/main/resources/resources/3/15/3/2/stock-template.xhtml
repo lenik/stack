@@ -136,10 +136,10 @@
 
                 <c:if test="${not disableStockQuery}">
                     <t:panelGroup colspan="2">
-                        <p:commandButton value="查询库存" oncomplete="chooseStockItemDialog.show()">
-                            <f:setPropertyActionListener target="#{chooseStockItemDialogBean.queryOptions}"
+                        <p:commandButton value="查询库存" oncomplete="stockQueryDialog.show()">
+                            <f:setPropertyActionListener target="#{stockQueryDialogBean.queryOptions}"
                                 value="#{bean.stockQueryOptions}" />
-                            <f:setPropertyActionListener target="#{chooseStockItemDialogBean.material}"
+                            <f:setPropertyActionListener target="#{stockQueryDialogBean.singleMaterial}"
                                 value="#{item.material}" />
                         </p:commandButton>
                     </t:panelGroup>

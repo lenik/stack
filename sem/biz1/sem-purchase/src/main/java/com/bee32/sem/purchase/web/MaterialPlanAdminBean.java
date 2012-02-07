@@ -2,7 +2,7 @@ package com.bee32.sem.purchase.web;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +14,6 @@ import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.bom.dto.PartDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
-import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockItemList;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.service.IStockQuery;
@@ -203,7 +202,7 @@ public class MaterialPlanAdminBean
 
         MaterialPlan firstPlan = serviceFor(MaterialPlan.class).getFirst( //
                 new Offset(position - 1), //
-//                CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+// CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
                 Order.asc("id"));
 
         if (firstPlan != null)
@@ -224,7 +223,7 @@ public class MaterialPlanAdminBean
     public void save1() {
         if (materialPlan.getId() == null) {
             // 新增
-//            goNumber = count + 1;
+// goNumber = count + 1;
         }
 
         try {
@@ -240,7 +239,7 @@ public class MaterialPlanAdminBean
 
             serviceFor(MaterialPlan.class).save(_plan);
             uiLogger.info("保存成功");
-//            loadMaterialPlan(goNumber);
+// loadMaterialPlan(goNumber);
         } catch (Exception e) {
             uiLogger.warn("保存失败,错误信息", e);
         }
@@ -270,7 +269,7 @@ public class MaterialPlanAdminBean
         try {
             serviceFor(MaterialPlan.class).delete(materialPlan.unmarshal());
             uiLogger.info("删除成功!");
-//            loadMaterialPlan(goNumber);
+// loadMaterialPlan(goNumber);
         } catch (Exception e) {
             uiLogger.warn("删除失败,错误信息:" + e.getMessage());
         }
@@ -390,28 +389,21 @@ public class MaterialPlanAdminBean
             stockQueryItems = new ArrayList<SelectItemHolder>();
         }
 
-        List<Material> ms = new ArrayList<Material>();
-        for (MaterialPlanItemDto i : items) {
-            ms.add(i.getMaterial().unmarshal());
-        }
+        List<Long> materialIds = new ArrayList<Long>();
+        for (MaterialPlanItemDto item : items)
+            materialIds.add(item.getMaterial().getId());
 
-        if (ms.size() <= 0) {
+        if (materialIds.size() <= 0) {
             stockQueryItems = new ArrayList<SelectItemHolder>();
         }
 
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.HOUR_OF_DAY, 23);
-        c.set(Calendar.MINUTE, 59);
-        c.set(Calendar.SECOND, 59);
-        c.set(Calendar.MILLISECOND, 999);
-
-        StockQueryOptions opts = new StockQueryOptions(c.getTime());
+        StockQueryOptions opts = new StockQueryOptions(new Date(), true);
         opts.setCBatch(null, true);
         opts.setLocation(null, true);
         opts.setWarehouse(null, true);
 
         IStockQuery q = getBean(IStockQuery.class);
-        StockItemList list = q.getActualSummary(ms, opts);
+        StockItemList list = q.getActualSummary(materialIds, opts);
         List<StockOrderItemDto> queryResult = DTOs.marshalList(StockOrderItemDto.class, list.getItems());
 
         // 把查询结果变成SelectItemHoder的list,以便于绑定primefaces的DataTable组件

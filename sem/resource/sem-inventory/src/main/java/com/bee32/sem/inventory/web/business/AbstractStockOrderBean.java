@@ -16,7 +16,7 @@ import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.service.StockQueryOptions;
 import com.bee32.sem.inventory.util.StockCriteria;
-import com.bee32.sem.inventory.web.ChooseStockItemDialogBean;
+import com.bee32.sem.inventory.web.StockQueryDialogBean;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.OrgUnitDto;
@@ -126,7 +126,7 @@ public abstract class AbstractStockOrderBean
     }
 
     public StockQueryOptions getStockQueryOptions() {
-        StockQueryOptions options = ChooseStockItemDialogBean.buildQueryOptions(selectedWarehouseId);
+        StockQueryOptions options = StockQueryDialogBean.buildQueryOptions(selectedWarehouseId);
         return options;
     }
 
@@ -138,11 +138,17 @@ public abstract class AbstractStockOrderBean
         this.selectedStockQueryItem = selectedStockQueryItem;
     }
 
-    public void applyStockOrderItem() {
+    public void applySelectedStockQueryItem() {
+        if (selectedStockQueryItem == null) {
+            uiLogger.warn("没有选定查询的项目。");
+            return;
+        }
         StockOrderItemDto orderItem = itemsMBean.getOpenedObject();
+        orderItem.setMaterial(selectedStockQueryItem.getMaterial());
         orderItem.setBatch(selectedStockQueryItem.getBatch());
         orderItem.setExpirationDate(selectedStockQueryItem.getExpirationDate());
         orderItem.setLocation(selectedStockQueryItem.getLocation());
+        // itemsMBean.apply();
     }
 
     ListMBean<StockOrderItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items", StockOrderItemDto.class);

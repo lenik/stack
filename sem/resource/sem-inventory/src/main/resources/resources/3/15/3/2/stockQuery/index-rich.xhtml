@@ -4,98 +4,83 @@
 
     <ui:define name="title">库存查询</ui:define>
     <ui:param name="bean" value="#{stockQueryBean}" />
+    <ui:param name="stock" value="#{stockDictsBean}" />
 
     <ui:define name="content">
 
-        <sem:chooseMaterialDialog id="chooseMaterialDialog" target="#{bean.selectedMaterial}"
+        <sem:stockQueryDialog id="queryDialog" actionListener="#{bean.copyResult(stockQueryDialogBean.resultList)}"
             update=":mainForm" />
 
         <h:form id="mainForm">
-            <p:panel header="库存查询">
-                <t:panelGrid columns="3">
-                    <t:panelGrid columns="2">
-                        <h:outputText value="仓库" />
-                        <p:selectOneMenu id="stockWarehouse" value="#{bean.selectedWarehouse.id}" style="width:200px;">
-                            <f:selectItem itemValue="" itemLabel="--选择仓库--" />
-                            <f:selectItems value="#{bean.stockWarehouses}" />
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <h:panelGrid columns="3">
+                        <h:outputLabel for="warehouse" value="仓库：" />
+                        <p:selectOneMenu id="warehouse" label="仓库" value="#{bean.selectedWarehouseId}">
+                            <f:selectItem itemValue="-1" itemLabel="--选择仓库--" />
+                            <f:selectItems value="#{stock.warehouseSelectItems}" />
                         </p:selectOneMenu>
-                        <h:outputText value="时间" />
-                        <p:calendar id="limitDateFrom" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
-                            value="#{bean.queryDate}" showOn="button" />
-                    </t:panelGrid>
+                    </h:panelGrid>
+                </p:toolbarGroup>
+                <p:toolbarGroup>
+                    <p:separator />
+                    <h:outputText value="时间：" />
+                    <p:calendar id="limitDateFrom" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
+                        value="#{bean.queryDate}" showOn="button" />
+                    <p:separator />
+                    <p:commandButton id="query" value="查询" oncomplete="stockQueryDialog.show()" update="result">
+                        <f:setPropertyActionListener target="${stockQueryDialogBean.queryOptions.timestamp}"
+                            value="${bean.queryDate}" />
+                        <f:setPropertyActionListener target="${stockQueryDialogBean.queryOptions.warehouse}"
+                            value="${bean.selectedWarehouse}" />
+                    </p:commandButton>
+                </p:toolbarGroup>
+            </p:toolbar>
 
-                    <p:panel header="物料" toggleable="true" collapsed="true">
-                        <t:panelGrid columns="3">
-                            <h:outputText value="或指定物料" />
-                            <t:panelGrid columns="1">
-                                <t:panelGrid columns="2">
-                                    <p:selectBooleanCheckbox value="#{bean.allMaterial}" />
-                                    <h:outputText value="所有物料" />
-                                </t:panelGrid>
-                                <p:selectManyMenu id="materialsToQuery" value="#{bean.selectedMaterialsToQuery}"
-                                    style="height:200px">
-                                    <f:selectItems value="#{bean.materialsToQuery}" />
-                                </p:selectManyMenu>
-                            </t:panelGrid>
-                            <t:panelGrid columns="1">
-                                <p:commandButton value="增加" onclick="chooseMaterialDialog.show();" />
-                                <p:commandButton value="删除" actionListener="#{bean.removeMaterialsToQuery}"
-                                    update="mainForm:materialsToQuery" />
-                            </t:panelGrid>
-                        </t:panelGrid>
-                    </p:panel>
+            <p:dataTable id="result" value="#{bean.items}" var="item" resizableColumns="true" rowIndexVar="rowIndex">
 
-                    <p:commandButton value="查询" update="mainForm:result" actionListener="#{bean.query}" />
-                </t:panelGrid>
+                <p:column headerText="序号">
+                    <h:outputText value="#{rowIndex + 1}" />
+                </p:column>
 
-                <p:dataTable id="result" value="#{bean.items}" var="item" resizableColumns="true"
-                    rowIndexVar="rowIndex">
+                <p:column headerText="物料">
+                    <h:outputText value="#{item.material.label}" />
+                </p:column>
 
-                    <p:column headerText="序号">
-                        <h:outputText value="#{rowIndex + 1}" />
-                    </p:column>
+                <p:column headerText="规格型号">
+                    <h:outputText value="#{item.material.modelSpec}" />
+                </p:column>
 
-                    <p:column headerText="物料">
-                        <h:outputText value="#{item.material.label}" />
-                    </p:column>
+                <p:column headerText="批号">
+                    <h:outputText value="#{item.batch}" />
+                </p:column>
 
-                    <p:column headerText="规格型号">
-                        <h:outputText value="#{item.material.modelSpec}" />
-                    </p:column>
+                <p:column headerText="有效期">
+                    <h:outputText value="#{item.expirationDate}" />
+                </p:column>
 
-                    <p:column headerText="批号">
-                        <h:outputText value="#{item.batch}" />
-                    </p:column>
+                <p:column headerText="库位">
+                    <h:outputText value="#{item.location.nodeText}" />
+                </p:column>
 
-                    <p:column headerText="有效期">
-                        <h:outputText value="#{item.expirationDate}" />
-                    </p:column>
+                <p:column headerText="单价">
+                    <h:outputText value="#{item.price.value}" />
+                </p:column>
 
-                    <p:column headerText="库位">
-                        <h:outputText value="#{item.location.nodeText}" />
-                    </p:column>
+                <p:column headerText="币种">
+                    <h:outputText value="#{item.price.currencyText}" />
+                </p:column>
 
-                    <p:column headerText="单价">
-                        <h:outputText value="#{item.price.value}" />
-                    </p:column>
+                <p:column headerText="数量">
+                    <h:outputText value="#{item.quantity}" />
+                </p:column>
 
-                    <p:column headerText="币种">
-                        <h:outputText value="#{item.price.currencyText}" />
-                    </p:column>
-
-                    <p:column headerText="数量">
-                        <h:outputText value="#{item.quantity}" />
-                    </p:column>
-
-                    <p:column headerText="操作">
-                        <p:commandLink oncomplete="detailDialog.show()" update="detailForm:detailPanel"
-                            value="明细">
-                            <f:setPropertyActionListener value="#{item}" target="#{bean.selectedItem}" />
-                        </p:commandLink>
-                    </p:column>
-                </p:dataTable>
-            </p:panel>
-
+                <p:column headerText="操作">
+                    <p:commandLink oncomplete="detailDialog.show()" update="detailForm:detailPanel" value="明细">
+                        <f:setPropertyActionListener value="#{item}" target="#{bean.selectedItem}" />
+                    </p:commandLink>
+                </p:column>
+            </p:dataTable>
         </h:form>
 
         <p:dialog header="出入库明细" widgetVar="detailDialog" modal="true" height="480" width="800">
@@ -149,8 +134,8 @@
                     </p:column>
 
                     <p:column headerText="操作" style="width:100px;">
-                        <p:commandLink oncomplete="positionDialog.show()" update="positionForm:positionPanel"
-                            action="#{bean.findOrderSn}" value="所在位置">
+                        <p:commandLink oncomplete="positionDialog.show()" update=":positionForm" action="#{bean.findOrderSn}"
+                            value="所在位置">
                             <f:setPropertyActionListener value="#{item}" target="#{bean.detailItem}" />
                         </p:commandLink>
                     </p:column>
@@ -159,37 +144,33 @@
             </h:form>
         </p:dialog>
 
+        <p:dialog header="明细条目所在单据位置" widgetVar="positionDialog" modal="true" height="480" width="640">
+            <h:form id="positionForm">
+                <t:panelGrid columns="2">
+                    <h:outputText value="单据类型:" />
+                    <h:outputText value="#{bean.detailItem.parent.subject.displayName}" />
 
-        <h:form id="positionForm">
-            <p:dialog header="明细条目所在单据位置" widgetVar="positionDialog" modal="true" height="480" width="640">
-                <h:panelGroup id="positionPanel">
-                    <t:panelGrid columns="2">
-                        <h:outputText value="单据类型:" />
-                        <h:outputText value="#{bean.detailItem.parent.subject.displayName}" />
+                    <h:outputText value="物料名称:" />
+                    <h:outputText value="#{bean.detailItem.material.label}" />
 
-                        <h:outputText value="物料名称:" />
-                        <h:outputText value="#{bean.detailItem.material.label}" />
+                    <h:outputText value="规格型号:" />
+                    <h:outputText value="#{bean.detailItem.material.modelSpec}" />
 
-                        <h:outputText value="规格型号:" />
-                        <h:outputText value="#{bean.detailItem.material.modelSpec}" />
+                    <h:outputText value="所在仓库:" />
+                    <h:outputText value="#{bean.detailItem.parent.warehouse.name}" />
 
-                        <h:outputText value="所在仓库:" />
-                        <h:outputText value="#{bean.detailItem.parent.warehouse.name}" />
+                    <h:outputText value="所在年月:" />
+                    <h:outputText value="#{bean.detailItem.parent.createdDate}">
+                        <f:convertDateTime pattern="yyyy-MM" timeZone="Asia/Shanghai" />
+                    </h:outputText>
 
-                        <h:outputText value="所在年月:" />
-                        <h:outputText value="#{bean.detailItem.parent.createdDate}">
-                            <f:convertDateTime pattern="yyyy-MM" timeZone="Asia/Shanghai" />
-                        </h:outputText>
+                    <h:outputText value="单据序号:" />
+                    <h:outputText value="#{bean.orderIndex}" />
 
-                        <h:outputText value="单据序号:" />
-                        <h:outputText value="#{bean.orderIndex}" />
-
-                        <h:outputText value="条目序号:" />
-                        <h:outputText value="#{bean.orderItemIndex}" />
-                    </t:panelGrid>
-                </h:panelGroup>
-            </p:dialog>
-        </h:form>
-
+                    <h:outputText value="条目序号:" />
+                    <h:outputText value="#{bean.orderItemIndex}" />
+                </t:panelGrid>
+            </h:form>
+        </p:dialog>
     </ui:define>
 </ui:composition>
