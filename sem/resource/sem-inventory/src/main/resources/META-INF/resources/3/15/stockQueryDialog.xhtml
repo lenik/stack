@@ -1,11 +1,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:cc="http://java.sun.com/jsf/composite"
     xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
-    xmlns:p="http://primefaces.org/ui" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
+    xmlns:p="http://primefaces.org/ui" xmlns:pc="http://bee32.com/plover/core" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
     <cc:interface>
         <!-- basic -->
         <cc:attribute name="var" default="stockQueryDialog" />
-        <cc:attribute name="target" type="java.lang.Object" default="${stockQueryDialogBean.singleSelection}" />
+        <cc:attribute name="target" type="java.lang.Object" />
         <cc:attribute name="multiple" type="java.lang.Boolean" default="false" />
         <cc:attribute name="actionListener" targets="form:ok" />
         <cc:attribute name="update" />
@@ -30,6 +30,7 @@
         <ui:decorate template="/template/simple-entity-dialog.xhtml">
             <ui:param name="var" value="${cc.attrs.var}" />
             <ui:param name="target" value="${cc.attrs.target}" />
+            <ui:param name="notarget" value="${not pc:exprExists(cc.attrs).target}" />
             <ui:param name="multiple" value="${cc.attrs.multiple}" />
             <ui:param name="update" value="${cc.attrs.update}" />
             <ui:param name="var" value="${cc.attrs.var}" />

@@ -38,8 +38,10 @@
 
     <ui:define name="buttons.right.0">
         <p:commandButton id="ok" value="确定" oncomplete="${var}.hide()" update="${update}">
-            <f:setPropertyActionListener target="${target}"
-                value="${multiple ? dialogBean.selectionArray : dialogBean.singleSelection}" />
+            <c:if test="${not notarget}">
+                <f:setPropertyActionListener target="${target}"
+                    value="${multiple ? dialogBean.selectionArray : dialogBean.singleSelection}" />
+            </c:if>
             <ui:insert name="actions" />
         </p:commandButton>
         <p:commandButton id="cancel" value="关闭" onclick="${var}.hide();" />
