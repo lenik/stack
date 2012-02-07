@@ -83,6 +83,10 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
         return loaded = dtos;
     }
 
+    public List<D> getAll() {
+        return listDtos();
+    }
+
     public List<D> listDtos() {
         ICriteriaElement criteria = options.compose();
         return _listDtos(criteria);
