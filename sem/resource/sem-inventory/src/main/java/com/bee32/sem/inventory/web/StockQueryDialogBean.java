@@ -37,6 +37,8 @@ public class StockQueryDialogBean
     String header = "从当前库存中挑选..."; // NLS
 
     StockQueryOptions queryOptions;
+    boolean autoQuery;
+    boolean queried;
 
     boolean all;
     List<MaterialDto> materials = new ArrayList<MaterialDto>();
@@ -79,6 +81,15 @@ public class StockQueryDialogBean
     }
 
     protected synchronized StockItemList query() {
+        if (queried) {
+            resultList = queryImpl();
+            queried = true;
+        }
+        setTabIndex(TAB_RESULT);
+        return resultList;
+    }
+
+    protected synchronized StockItemList queryImpl() {
         if (queryOptions == null) {
             uiLogger.warn("queryOptions is null");
             return null;
@@ -91,15 +102,13 @@ public class StockQueryDialogBean
             materialIds = IdUtils.<Long> getDtoIdList(materials);
 
         IStockQuery query = getBean(IStockQuery.class);
-        resultList = query.getActualSummary(materialIds, queryOptions);
-
-        setTabIndex(TAB_RESULT);
+        StockItemList resultList = query.getActualSummary(materialIds, queryOptions);
         return resultList;
     }
 
     public synchronized StockItemList getResultList() {
         if (resultList == null)
-            query();
+            queryImpl();
         if (resultList == null)
             throw new UnexpectedException("resultList didn't updated");
         return resultList;
@@ -120,6 +129,14 @@ public class StockQueryDialogBean
     public void setQueryOptions(StockQueryOptions options) {
         // this.queryOptions = options;
         this.queryOptions.populate(options);
+    }
+
+    public boolean isAutoQuery() {
+        return autoQuery;
+    }
+
+    public void setAutoQuery(boolean autoQuery) {
+        this.autoQuery = autoQuery;
     }
 
     public boolean isAll() {
