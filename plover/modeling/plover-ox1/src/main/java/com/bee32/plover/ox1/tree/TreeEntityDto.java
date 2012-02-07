@@ -12,6 +12,8 @@ import javax.free.Stdio;
 import javax.free.TypeConvertException;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
 
@@ -195,6 +197,20 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
         }
         Collections.reverse(chain);
         return chain;
+    }
+
+    public String getPath() {
+        StringBuilder sb = new StringBuilder();
+
+        self_t node = self();
+        while (node != null && !node.isNull()) {
+            if (sb.length() != 0)
+                sb.append(" / ");
+            sb.append(StringUtils.reverse(node.getLabel()));
+            node = node.getParent();
+        }
+        sb.reverse();
+        return sb.toString();
     }
 
     public String getGraphPrefix() {
