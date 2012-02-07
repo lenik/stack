@@ -6,45 +6,62 @@
     <div style="margin: 1px" onclick="$('#${var}_sideBarE').hide()">
         <h:form id="form" styleClass="${formStyleClass}">
 
-            <ui:insert name="paneN" />
-            <ui:param name="tabbed" value="${mainTabTitle != null}" />
+            <table class="x-layout" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                    <c:if test="${sideBarWVisible != null}">
+                        <td valign="top" id="sideBarW" style="${sideBarWVisible == true ? '' : 'display: none'}">
+                            <h:panelGroup id="sidePanelW">
+                                <ui:insert name="sideBarW" />
+                                <ui:insert name="sideBarW.1" />
+                            </h:panelGroup>
+                        </td>
+                        <td valign="center" class="layout-side-toggler ui-state-default" style="width: 9px" />
+                    </c:if>
 
-            <c:if test="${tabbed}">
-                <p:tabView id="tv" activeIndex="${dialogBean.tabIndex}">
-                    <p:tab id="main" title="${mainTabTitle}">
-                        <ui:insert name="main">no content</ui:insert>
-                    </p:tab>
-                    <ui:insert name="moreTabs" />
-                </p:tabView>
-            </c:if>
+                    <td valign="top">
+                        <ui:insert name="paneN" />
+                        <ui:param name="tabbed" value="${mainTabTitle != null}" />
 
-            <c:if test="${not tabbed}">
-                <f:subview id="tv">
-                    <ui:insert name="main">no content</ui:insert>
-                </f:subview>
-            </c:if>
+                        <c:if test="${tabbed}">
+                            <p:tabView id="tv" activeIndex="${dialogBean.tabIndex}">
+                                <ui:insert name="tabs.0" />
+                                <p:tab id="main" title="${mainTabTitle}">
+                                    <ui:insert name="main">no content</ui:insert>
+                                </p:tab>
+                                <ui:insert name="tabs.1" />
+                            </p:tabView>
+                        </c:if>
 
-            <ui:insert name="paneS" />
+                        <c:if test="${not tabbed}">
+                            <f:subview id="tv">
+                                <ui:insert name="main">no content</ui:insert>
+                            </f:subview>
+                        </c:if>
 
-            <h:panelGroup id="buttons" layout="block">
-                <ui:insert name="buttons">
-                    <table border="0" width="100%">
-                        <tr>
-                            <td align="left">
-                                <ui:insert name="buttons.left.0" />
-                                <ui:insert name="buttons.left" />
-                            </td>
-                            <td align="center">
-                                <ui:insert name="buttons.center" />
-                            </td>
-                            <td align="right">
-                                <ui:insert name="buttons.right" />
-                                <ui:insert name="buttons.right.0" />
-                            </td>
-                        </tr>
-                    </table>
-                </ui:insert>
-            </h:panelGroup>
+                        <ui:insert name="paneS" />
+
+                        <h:panelGroup id="buttons" layout="block">
+                            <ui:insert name="buttons">
+                                <table border="0" width="100%">
+                                    <tr>
+                                        <td align="left">
+                                            <ui:insert name="buttons.left.0" />
+                                            <ui:insert name="buttons.left" />
+                                        </td>
+                                        <td align="center">
+                                            <ui:insert name="buttons.center" />
+                                        </td>
+                                        <td align="right">
+                                            <ui:insert name="buttons.right" />
+                                            <ui:insert name="buttons.right.0" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </ui:insert>
+                        </h:panelGroup>
+                    </td>
+                </tr>
+            </table>
         </h:form>
     </div>
 
