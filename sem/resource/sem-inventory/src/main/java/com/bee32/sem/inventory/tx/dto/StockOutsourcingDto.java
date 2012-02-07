@@ -25,7 +25,6 @@ public class StockOutsourcingDto
             output = mref(StockOrderDto.class, orderSelection, s.getOutput());
             input = mref(StockOrderDto.class, orderSelection, s.getInput());
         }
-
         processedBy = mref(OrgDto.class, s.getProcessedBy());
     }
 
@@ -41,7 +40,6 @@ public class StockOutsourcingDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
-
     }
 
     public StockOrderDto getOutput() {
@@ -67,4 +65,5 @@ public class StockOutsourcingDto
     public void setProcessedBy(OrgDto processedBy) {
         this.processedBy = processedBy;
     }
+
 }

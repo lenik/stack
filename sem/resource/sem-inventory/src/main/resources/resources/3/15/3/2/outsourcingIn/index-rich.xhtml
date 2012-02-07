@@ -12,7 +12,7 @@
             <t:panelGrid columns="2">
                 <h:outputText id="choosedOut" value="#{bean.stockOutsourcing.output.label}" />
                 <p:commandButton value="..." oncomplete="chooseStockOrderDialog.show()">
-                    <f:setPropertyActionListener target="${chooseStockOrderDialog._subject}"
+                    <f:setPropertyActionListener target="${chooseStockOrderDialogBean._subject}"
                         value="OSPO" />
                 </p:commandButton>
             </t:panelGrid>
@@ -21,56 +21,6 @@
 
     <ui:define name="dialogs.1">
         <sem:chooseStockOrderDialog id="chooseStockOrderDialog" target="#{bean.outOrder}" />
-
-        <p:dialog header="查看委外出库单明细" widgetVar="viewOutDialog" modal="true" height="500" width="640">
-            <h:form id="viewOutForm">
-                <p:dataTable value="#{bean.findedOutItems}" var="entry" rowIndexVar="rowIndex"
-                    resizableColumns="true">
-                    <p:column headerText="物料">
-                        <h:outputText value="#{entry.material.label}" />
-                    </p:column>
-
-                    <p:column headerText="规格型号">
-                        <h:outputText value="#{entry.material.modelSpec}" />
-                    </p:column>
-
-                    <p:column headerText="单位">
-                        <h:outputText value="#{entry.material.unit.name}" />
-                    </p:column>
-
-                    <p:column headerText="批号">
-                        <h:outputText value="#{entry.batch}" />
-                    </p:column>
-
-                    <p:column headerText="有效期">
-                        <h:outputText value="#{entry.expirationDate}" />
-                    </p:column>
-
-                    <p:column headerText="库位">
-                        <h:outputText value="#{entry.location.nodeText}" />
-                    </p:column>
-
-                    <p:column headerText="单价">
-                        <h:outputText value="#{entry.price.value}" />
-                    </p:column>
-
-                    <p:column headerText="币种">
-                        <h:outputText value="#{entry.price.currencyText}" />
-                    </p:column>
-
-                    <p:column headerText="数量">
-                        <h:outputText value="#{entry.quantity}" />
-                    </p:column>
-
-                    <p:column headerText="备注">
-                        <h:outputText value="#{entry.description}" />
-                    </p:column>
-                </p:dataTable>
-
-                <t:panelGroup>
-                    <p:commandButton value="关闭" onclick="viewOutDialog.hide();" />
-                </t:panelGroup>
-            </h:form>
-        </p:dialog>
     </ui:define>
+
 </ui:composition>

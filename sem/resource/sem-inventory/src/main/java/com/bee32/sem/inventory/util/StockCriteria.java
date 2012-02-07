@@ -12,13 +12,12 @@ import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.LeftHand;
-import com.bee32.plover.ox1.util.CommonCriteria;
+import com.bee32.plover.criteria.hibernate.SqlRestriction;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockPeriod;
 import com.bee32.sem.inventory.service.StockQueryOptions;
-import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
 import com.bee32.sem.process.verify.util.VerifyCriteria;
 
 public class StockCriteria
@@ -64,12 +63,9 @@ public class StockCriteria
         return null;
     }
 
-    @LeftHand(StockOutsourcing.class)
-    public static ICriteriaElement danglingOutsourcing(Date from, Date to) {
-        return compose(alias("output", "out"), //
-                isNull("input"), //
-                equals("out._subject", StockOrderSubject.OSP_OUT.getValue()), //
-                CommonCriteria.betweenEx("out.createdDate", from, to));
+    @LeftHand(StockOrder.class)
+    public static CriteriaElement danglingOutsourcing() {
+        return new SqlRestriction("id in (select s1 from stock_outsourcing where s2 is null)");
     }
 
     static final List<Long> emptyIds = Arrays.asList(-1L);
