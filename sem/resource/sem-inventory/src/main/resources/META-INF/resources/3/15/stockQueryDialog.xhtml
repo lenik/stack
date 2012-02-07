@@ -40,17 +40,24 @@
 
             <ui:define name="tabs.0">
                 <p:tab title="物料列表">
-                    <p:selectOneListbox id="materials" value="${dialogBean.selectedMaterialId}">
-                        <f:selectItems value="${dialogBean.materialSelectItems}" />
-                    </p:selectOneListbox>
                     <table width="100%">
+                        <tr>
+                            <td align="left">
+                                <p:selectOneListbox id="materials" value="${dialogBean.selectedMaterialId}">
+                                    <f:selectItems value="${dialogBean.materialSelectItems}" />
+                                </p:selectOneListbox>
+                            </td>
+                            <td align="right">
+                                <p:commandButton id="query" value="查询" actionListener="${dialogBean.query}"
+                                    update=":@form" />
+                            </td>
+                        </tr>
                         <tr>
                             <td align="left">
                                 <p:commandButton id="add" value="添加" onclick="_stockQuery_cmd.show()" />
                                 <p:commandButton id="remove" value="移除"
                                     actionListener="${dialogBean.removeSelectedMaterial}" update="materials" />
                             </td>
-                            <td></td>
                             <td align="right">
                                 <p:selectBooleanCheckbox id="all" value="${dialogBean.all}" />
                                 <h:outputText value="所有物料" />
@@ -82,11 +89,6 @@
                 <p:column headerText="数量">
                     <h:outputText value="${entry.quantity}" />
                 </p:column>
-            </ui:define>
-
-            <ui:define name="buttons.left">
-                <p:commandButton id="refresh" value="刷新" actionListener="${dialogBean.refreshRowCount}"
-                    update=":@form" />
             </ui:define>
         </ui:decorate>
     </cc:implementation>

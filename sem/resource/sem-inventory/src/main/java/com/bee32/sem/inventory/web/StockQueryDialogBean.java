@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
+import javax.free.UnexpectedException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,8 @@ public class StockQueryDialogBean
 
     static Logger logger = LoggerFactory.getLogger(StockQueryDialogBean.class);
 
+    static final int TAB_RESULT = 1;
+
     String header = "从当前库存中挑选..."; // NLS
 
     StockQueryOptions queryOptions;
@@ -46,7 +49,7 @@ public class StockQueryDialogBean
 
     public StockQueryDialogBean() {
         super(StockOrderItem.class, StockOrderItemDto.class, 0);
-        setTabIndex(1); // Results-Tab
+        setTabIndex(TAB_RESULT); // Results-Tab
         queryOptions = new StockQueryOptions(new Date(), true);
         queryOptions.setWarehouse(null, true);
         queryOptions.setCBatch(null, true);
@@ -75,7 +78,7 @@ public class StockQueryDialogBean
         return list.getItems().size();
     }
 
-    protected StockItemList query() {
+    protected synchronized StockItemList query() {
         if (queryOptions == null) {
             uiLogger.warn("queryOptions is null");
             return null;
@@ -89,10 +92,16 @@ public class StockQueryDialogBean
 
         IStockQuery query = getBean(IStockQuery.class);
         resultList = query.getActualSummary(materialIds, queryOptions);
+
+        setTabIndex(TAB_RESULT);
         return resultList;
     }
 
-    public StockItemList getResultList() {
+    public synchronized StockItemList getResultList() {
+        if (resultList == null)
+            query();
+        if (resultList == null)
+            throw new UnexpectedException("resultList didn't updated");
         return resultList;
     }
 
