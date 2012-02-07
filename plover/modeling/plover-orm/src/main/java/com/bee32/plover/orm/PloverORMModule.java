@@ -8,10 +8,11 @@ import com.bee32.plover.pub.oid.PloverOids;
 public class PloverORMModule
         extends ERModule {
 
+    public static final String PREFIX = "/3/12/3/4";
+    public static final String PREFIX_ = PREFIX + "/";
+
     @Override
     protected void preamble() {
-        // PloverConf has no view yet.
-        // declareEntityPages(PloverConf.class, "conf");
     }
 
 }

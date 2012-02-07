@@ -6,6 +6,10 @@ import java.text.SimpleDateFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.plover.servlet.util.ThreadHttpContext;
+import com.bee32.plover.site.SiteInstance;
+import com.bee32.plover.sql.SQLRecord;
+import com.bee32.plover.sql.SQLTrackDB;
 import com.bee32.plover.util.i18n.ITimeZoneAware;
 import com.p6spy.engine.logging.appender.FormattedLogger;
 import com.p6spy.engine.logging.appender.P6Logger;
@@ -31,14 +35,20 @@ public class PloverP6spySlf4jLogger
     public void logSQL(int connectionId, String now, long elapsed, String category, String prepared, String sql) {
         StringBuilder sb = new StringBuilder(500);
 
+        long _time = 0;
         String time;
         try {
-            long _now = Long.parseLong(now);
-            time = timeFormat.format(_now - bootTime);
+            _time = Long.parseLong(now);
+            time = timeFormat.format(_time - bootTime);
         } catch (Exception e) {
             e.printStackTrace();
             time = "Error:" + e.getMessage();
         }
+
+        SiteInstance site = ThreadHttpContext.getSiteInstance();
+        SQLTrackDB trackDB = SQLTrackDB.getInstance(site);
+        SQLRecord sqlRecord = new SQLRecord(connectionId, _time, elapsed, category, prepared, sql);
+        trackDB.addSql(sqlRecord);
 
         // 00:02:14.431 63ms
         sb.append(time);
