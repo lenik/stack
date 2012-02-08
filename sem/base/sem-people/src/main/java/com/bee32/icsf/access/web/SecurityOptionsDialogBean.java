@@ -31,10 +31,10 @@ public class SecurityOptionsDialogBean
         this.header = header;
     }
 
-    public void refreshSelection() {
+    public void refreshContextSelection() {
         StringBuilder sb = new StringBuilder();
         int index = 0;
-        for (Object item : getSelection()) {
+        for (Object item : getContextSelection()) {
             String prefix = String.format("[%2d]", ++index);
             sb.append(prefix);
 
@@ -88,7 +88,7 @@ public class SecurityOptionsDialogBean
     }
 
     ACLDto getACLFromFirstSelection() {
-        List<?> selection = getSelection();
+        List<?> selection = getContextSelection();
         if (selection.isEmpty())
             return null;
         Object first = selection.get(0);
@@ -149,7 +149,7 @@ public class SecurityOptionsDialogBean
         if (selectedACL != null)
             aclId = selectedACL.getId();
 
-        for (Object selection : getSelection()) {
+        for (Object selection : getContextSelection()) {
             if (!(selection instanceof CEntityDto<?, ?>))
                 continue;
 

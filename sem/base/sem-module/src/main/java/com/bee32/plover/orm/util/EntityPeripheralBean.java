@@ -36,11 +36,11 @@ public abstract class EntityPeripheralBean
         return whichClass;
     }
 
-    protected List<?> getSelection() {
-        return getSelection(new Class<?>[0]);
+    protected List<?> getContextSelection() {
+        return getContextSelection(new Class<?>[0]);
     }
 
-    protected List<?> getSelection(Class<?>... interfaces) {
+    protected List<?> getContextSelection(Class<?>... interfaces) {
         EntityViewBean contextBean = getMetadata().getAttribute(CONTEXT_BEAN);
         if (contextBean != null)
             return contextBean.getSelection();
