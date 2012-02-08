@@ -13,6 +13,7 @@ import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StocktakingOrderDto;
 import com.bee32.sem.inventory.dto.StocktakingOrderItemDto;
 import com.bee32.sem.inventory.entity.StockOrder;
+import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StocktakingOrder;
 import com.bee32.sem.inventory.tx.entity.StockTaking;
@@ -102,8 +103,11 @@ public class StocktakingAdminBean
 
     public void copyResult(StockOrder result) {
         StocktakingOrderDto order = getOpenedObject();
-        List<StocktakingOrderItemDto> items = order.getItems();
-        // TODO copy...
+
+        for(StockOrderItem item : result.getItems()) {
+            StocktakingOrderItemDto itemDto = new StocktakingOrderItemDto().marshal(item);
+            order.addItem(itemDto);
+        }
     }
 
 }
