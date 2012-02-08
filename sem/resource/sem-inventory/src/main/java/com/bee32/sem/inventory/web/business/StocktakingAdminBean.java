@@ -105,13 +105,13 @@ public class StocktakingAdminBean
     public void copyResult(StockOrder result) {
         StocktakingOrderDto order = getOpenedObject();
 
+        order.getItems().clear();
         for(StockOrderItem item : result.getItems()) {
             StocktakingOrderItemDto itemDto = new StocktakingOrderItemDto().create();
             itemDto.marshal(item);
             itemDto.setExpectedQuantity(item.getQuantity());
             itemDto.setDiffQuantity(BigDecimal.ZERO);
             itemDto.setParent(order);
-
             order.addItem(itemDto);
         }
     }
