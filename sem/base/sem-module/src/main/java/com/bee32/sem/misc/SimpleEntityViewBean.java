@@ -494,6 +494,13 @@ public class SimpleEntityViewBean
             return;
         }
 
+        if (isCreating()) // write back generated-id(s).
+            for (Entity<?> entity : entities) {
+                EntityDto<?, Serializable> dto = uMap.getSourceDto(entity);
+                Serializable newId = entity.getId();
+                dto.setId(newId);
+            }
+
         for (SevbFriend friend : sortedFriends) {
             try {
                 friend.saveOpenedObject(saveFlags);
@@ -502,13 +509,6 @@ public class SimpleEntityViewBean
                 return;
             }
         }
-
-        if (isCreating()) // write back generated-id(s).
-            for (Entity<?> entity : entities) {
-                EntityDto<?, Serializable> dto = uMap.getSourceDto(entity);
-                Serializable newId = entity.getId();
-                dto.setId(newId);
-            }
 
         if ((saveFlags & SAVE_NO_REFRESH) == 0)
             refreshRowCount();
