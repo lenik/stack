@@ -1,6 +1,5 @@
 package com.bee32.plover.orm.util;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -64,7 +63,7 @@ public abstract class BaseDto_EMC<S>
      *
      * deref
      */
-    <Coll extends Collection<_E>, _D extends EntityDto<_E, _K>, _E extends Entity<_K>, _K extends Serializable> //
+    <Coll extends Collection<_E>, _D extends EntityDto<_E, ?>, _E extends Entity<?>> //
     /*    */Coll mergeCollection(Coll collection, Iterable<? extends _D> dtoList) {
 
         if (collection == null)
@@ -78,9 +77,9 @@ public abstract class BaseDto_EMC<S>
         List<_E> removeList = new ArrayList<_E>(collection);
         List<_E> addList = new ArrayList<_E>();
 
-        Map<_K, _E> keyMap = new HashMap<_K, _E>();
+        Map<Object, _E> keyMap = new HashMap<Object, _E>();
         for (_E each : collection) {
-            _K id = each.getId();
+            Object id = each.getId();
             if (id != null)
                 keyMap.put(id, each);
         }
@@ -168,14 +167,14 @@ public abstract class BaseDto_EMC<S>
 
     // 以上。
 
-    public <_D extends EntityDto<_E, _K>, _E extends Entity<_K>, _K extends Serializable> //
+    public <_D extends EntityDto<_E, ?>, _E extends Entity<?>> //
     /*    */List<_E> mergeList(List<_E> list, Iterable<? extends _D> dtoList) {
         if (list == null)
             list = new ArrayList<_E>();
         return mergeCollection(list, dtoList);
     }
 
-    public <_D extends EntityDto<_E, _K>, _E extends Entity<_K>, _K extends Serializable> //
+    public <_D extends EntityDto<_E, ?>, _E extends Entity<?>> //
     /*    */Set<_E> mergeSet(Set<_E> set, Iterable<? extends _D> dtoList) {
         if (set == null)
             set = new HashSet<_E>();
@@ -194,7 +193,7 @@ public abstract class BaseDto_EMC<S>
      * </pre>
      */
 
-    public <_E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> //
+    public <_E extends Entity<?>, _d extends EntityDto<_e, ?>, _e extends Entity<?>> //
     /*    */void mergeList(_E target, IPropertyAccessor<List<_e>> property, Iterable<? extends _d> dtoList) {
 
         List<_e> list = property.get(target);
@@ -207,7 +206,7 @@ public abstract class BaseDto_EMC<S>
         property.set(target, list);
     }
 
-    public <_E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> //
+    public <_E extends Entity<?>, _d extends EntityDto<_e, ?>, _e extends Entity<?>> //
     /*    */void mergeList(_E target, String propertyName, Iterable<? extends _d> dtoList) {
 
         Class<_E> targetType = (Class<_E>) target.getClass();
@@ -218,7 +217,7 @@ public abstract class BaseDto_EMC<S>
         mergeList(target, property, dtoList);
     }
 
-    public <_E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> //
+    public <_E extends Entity<?>, _d extends EntityDto<_e, ?>, _e extends Entity<?>> //
     /*    */void mergeSet(_E target, IPropertyAccessor<Set<_e>> property, Iterable<? extends _d> dtoList) {
 
         Set<_e> set = property.get(target);
@@ -231,7 +230,7 @@ public abstract class BaseDto_EMC<S>
         property.set(target, set);
     }
 
-    public <_E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> //
+    public <_E extends Entity<?>, _d extends EntityDto<_e, ?>, _e extends Entity<?>> //
     /*    */void mergeSet(_E target, String propertyName, Iterable<? extends _d> dtoList) {
 
         Class<_E> targetType = (Class<_E>) target.getClass();
