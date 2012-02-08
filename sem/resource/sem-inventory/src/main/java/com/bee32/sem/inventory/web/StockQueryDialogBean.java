@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.faces.model.SelectItem;
+import javax.free.Nullables;
 
 import org.primefaces.model.SortOrder;
 import org.slf4j.Logger;
@@ -37,14 +38,17 @@ public class StockQueryDialogBean
 
     StockQueryOptions queryOptions;
 
-    boolean all;
+    boolean queryAllMaterials;
     List<MaterialDto> materials = new ArrayList<MaterialDto>();
     Long selectedMaterialId;
     MaterialDto chosenMaterial;
 
     boolean autoQuery;
+
     StockItemList queryCache = new StockItemList();
     boolean cacheValid;
+    List<MaterialDto> cacheForMaterials;
+    boolean cacheForAll;
 
     // List<StockOrderItem> cached;
 
@@ -82,7 +86,7 @@ public class StockQueryDialogBean
         if (autoQuery)
             list = cachedQuery();
         else
-            list = queryCache; // cachedQuery();
+            list = queryCache;
         int count = list.getItems().size();
         return count;
     }
@@ -100,6 +104,8 @@ public class StockQueryDialogBean
     public synchronized StockItemList query() {
         queryCache = queryImpl();
         cacheValid = true;
+        cacheForAll = queryAllMaterials;
+        cacheForMaterials = new ArrayList<MaterialDto>(materials);
         refreshRowCount();
         setTabIndex(TAB_RESULT);
         return queryCache;
@@ -112,10 +118,11 @@ public class StockQueryDialogBean
         }
 
         List<Long> materialIds;
-        if (all)
+        if (queryAllMaterials)
             materialIds = null;
         else
             materialIds = IdUtils.<Long> getDtoIdList(materials);
+        System.err.println("queryImpl for Ids: " + materialIds);
 
         IStockQuery query = getBean(IStockQuery.class);
         StockItemList resultList = query.getActualSummary(materialIds, queryOptions);
@@ -147,12 +154,15 @@ public class StockQueryDialogBean
         this.autoQuery = autoQuery;
     }
 
-    public boolean isAll() {
-        return all;
+    public boolean isQueryAllMaterials() {
+        return queryAllMaterials;
     }
 
-    public void setAll(boolean all) {
-        this.all = all;
+    public void setQueryAllMaterials(boolean queryAllMaterials) {
+        System.err.println("ALL=" + queryAllMaterials);
+        this.queryAllMaterials = queryAllMaterials;
+        if (queryAllMaterials != cacheForAll)
+            cacheValid = false;
     }
 
     public List<MaterialDto> getMaterials() {
@@ -163,19 +173,24 @@ public class StockQueryDialogBean
         if (materials == null)
             throw new NullPointerException("materials");
         this.materials = materials;
+        setQueryAllMaterials(false);
+        if (cacheValid && !Nullables.equals(cacheForMaterials, materials))
+            cacheValid = false;
     }
 
-    public MaterialDto getSingleMaterial() {
+    public final MaterialDto getSingleMaterial() {
         if (materials.isEmpty())
             return null;
         else
             return materials.get(0);
     }
 
-    public void setSingleMaterial(MaterialDto material) {
+    public final void setSingleMaterial(MaterialDto material) {
+        List<MaterialDto> materials = new ArrayList<MaterialDto>();
         materials.clear();
         if (material != null && !material.isNull())
             materials.add(material);
+        setMaterials(materials);
     }
 
     public List<SelectItem> getMaterialSelectItems() {
@@ -228,16 +243,6 @@ public class StockQueryDialogBean
         options.setCBatch(null, true);
         options.setLocation(null, true);
         return options;
-    }
-
-    Object sink = "shi";
-
-    public Object getSink() {
-        return sink;
-    }
-
-    public void setSink(Object sink) {
-        System.err.println("Sink = " + sink);
     }
 
 }
