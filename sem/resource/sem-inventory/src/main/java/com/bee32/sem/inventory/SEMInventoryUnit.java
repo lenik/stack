@@ -21,7 +21,6 @@ import com.bee32.sem.inventory.entity.StocktakingOrder;
 import com.bee32.sem.inventory.entity.StocktakingOrderItem;
 import com.bee32.sem.inventory.process.StockOrderVerifyPolicy;
 import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
-import com.bee32.sem.inventory.tx.entity.StockTaking;
 import com.bee32.sem.inventory.tx.entity.StockTransfer;
 import com.bee32.sem.people.SEMPeopleUnit;
 import com.bee32.sem.process.SEMProcessUnit;
@@ -56,7 +55,6 @@ public class SEMInventoryUnit
         add(StocktakingOrderItem.class);
 
         add(StockTransfer.class);
-        add(StockTaking.class);
         add(StockOutsourcing.class);
     }
 
