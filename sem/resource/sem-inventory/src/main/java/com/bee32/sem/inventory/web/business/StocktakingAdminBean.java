@@ -9,6 +9,7 @@ import javax.faces.model.SelectItem;
 
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.sem.inventory.dto.MaterialDto;
+import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StocktakingOrderDto;
 import com.bee32.sem.inventory.dto.StocktakingOrderItemDto;
 import com.bee32.sem.inventory.entity.StockOrder;
@@ -33,7 +34,11 @@ public class StocktakingAdminBean
         subject = StockOrderSubject.STKD;
         entityClass = StocktakingOrder.class;
         dtoClass = StocktakingOrderDto.class;
-        itemDtoClass = StocktakingOrderItemDto.class;
+    }
+
+    @Override
+    protected Class<? extends StockOrderItemDto> getItemDtoClass() {
+        return StocktakingOrderItemDto.class;
     }
 
     public Date getQueryDate() {

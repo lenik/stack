@@ -14,11 +14,26 @@ public class StocktakingOrderItemDto
 
     BigDecimal expectedQuantity;
 
+    public StocktakingOrderItemDto() {
+        super();
+    }
+
+    public StocktakingOrderItemDto(int fmask) {
+        super(fmask);
+    }
+
     @Override
     protected void _marshal(StockOrderItem _source) {
         super._marshal(_source);
         StocktakingItem source = (StocktakingItem) _source;
         expectedQuantity = source.getExpectedQuantity();
+    }
+
+    @Override
+    protected void _unmarshalTo(StockOrderItem _target) {
+        super._unmarshalTo(_target);
+        StocktakingItem target = (StocktakingItem) _target;
+        target.setExpectedQuantity(expectedQuantity);
     }
 
     public BigDecimal getExpectedQuantity() {

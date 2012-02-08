@@ -5,7 +5,7 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.inventory.entity.AbstractStockItemList;
-import com.bee32.sem.inventory.entity.StockOrder;
+import com.bee32.sem.inventory.entity.AbstractStockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.process.StockOrderVerifySupportDto;
 import com.bee32.sem.people.dto.OrgDto;
@@ -61,7 +61,7 @@ public class StockOrderDto
     @Override
     protected void _marshal(AbstractStockItemList<?> _source) {
         super._marshal(_source);
-        StockOrder source = (StockOrder) _source;
+        AbstractStockOrder<?> source = (AbstractStockOrder<?>) _source;
         base = mref(StockPeriodDto.class, source.getBase());
         spec = mref(StockPeriodDto.class, source.getSpec());
         subject = source.getSubject();
@@ -75,7 +75,7 @@ public class StockOrderDto
     @Override
     protected void _unmarshalTo(AbstractStockItemList<?> _target) {
         super._unmarshalTo(_target);
-        StockOrder target = (StockOrder) _target;
+        AbstractStockOrder<?> target = (AbstractStockOrder<?>) _target;
         merge(target, "base", base);
         merge(target, "spec", spec);
         target.setSubject(subject);

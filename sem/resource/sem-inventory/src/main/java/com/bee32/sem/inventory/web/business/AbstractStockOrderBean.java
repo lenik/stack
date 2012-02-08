@@ -30,8 +30,6 @@ public abstract class AbstractStockOrderBean
 
     private static final long serialVersionUID = 1L;
 
-    Class<? extends StockOrderItemDto> itemDtoClass = StockOrderItemDto.class;
-
     StockOrderSubject subject = null;
     Integer selectedWarehouseId = -1;
 
@@ -49,8 +47,8 @@ public abstract class AbstractStockOrderBean
         subject = s == null ? null : StockOrderSubject.valueOf(s);
     }
 
-    protected Class<? extends StockOrderItemDto> getStockOrderItemDtoClass() {
-        return itemDtoClass;
+    protected Class<? extends StockOrderItemDto> getItemDtoClass() {
+        return StockOrderItemDto.class;
     }
 
     @Override
@@ -178,7 +176,7 @@ public abstract class AbstractStockOrderBean
     }
 
     ListMBean<? extends StockOrderItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items",
-            getStockOrderItemDtoClass());
+            getItemDtoClass());
 
     public ListMBean<? extends StockOrderItemDto> getItemsMBean() {
         return itemsMBean;

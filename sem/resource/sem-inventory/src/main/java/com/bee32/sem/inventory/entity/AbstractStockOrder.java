@@ -30,7 +30,7 @@ import com.bee32.sem.world.thing.AbstractItemList;
 /**
  * 库存通用订单
  */
-@Entity
+@Entity(name = "StockOrder")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 3)
 @SequenceGenerator(name = "idgen", sequenceName = "stock_order_seq", allocationSize = 1)
