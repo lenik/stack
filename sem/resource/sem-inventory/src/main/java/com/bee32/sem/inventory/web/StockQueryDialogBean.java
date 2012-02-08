@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.model.SelectItem;
 
+import org.primefaces.model.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IdUtils;
 import com.bee32.sem.inventory.dto.MaterialDto;
@@ -20,7 +21,6 @@ import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.service.IStockQuery;
 import com.bee32.sem.inventory.service.StockQueryOptions;
 import com.bee32.sem.misc.SimpleEntityViewBean;
-import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
 
 public class StockQueryDialogBean
@@ -57,24 +57,27 @@ public class StockQueryDialogBean
         queryOptions.setLocation(null, true);
     }
 
-    /**
-     * Pagination won't work here.
-     */
     @Override
-    protected <E extends Entity<?>> List<E> listImpl(EntityDataModelOptions<E, ?> options,
-            ICriteriaElement... criteriaElements) {
+    protected <E extends Entity<?>> List<E> loadImpl(SevbLazyDataModel<E, ?> def, int first, int pageSize,
+            String sortField, SortOrder sortOrder, Map<String, String> filters) {
         StockItemList list;
         if (autoQuery)
             list = cachedQuery();
         else
             list = queryCache; // cachedQuery();
+
         List<E> _list = (List<E>) list.getItems();
-        return _list;
+
+        if (first < 0)
+            first = 0;
+        int end = first + pageSize;
+        if (end > _list.size())
+            end = _list.size();
+        return _list.subList(first, end);
     }
 
     @Override
-    protected <E extends Entity<?>> int countImpl(EntityDataModelOptions<E, ?> options,
-            ICriteriaElement... criteriaElements) {
+    protected <E extends Entity<?>> int countImpl(SevbLazyDataModel<E, ?> def) {
         StockItemList list;
         if (autoQuery)
             list = cachedQuery();

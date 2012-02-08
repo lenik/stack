@@ -32,14 +32,13 @@ public abstract class SimpleTreeEntityViewBean
     TreeNode selectedNode;
 
     public <E extends Entity<K>, D extends EntityDto<? super E, K>, K extends Serializable> //
-    SimpleTreeEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int fmask,
-            ICriteriaElement... criteriaElements) {
+    SimpleTreeEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
         super(entityClass, dtoClass, fmask | TreeEntityDto.PARENT, criteriaElements);
     }
 
     protected synchronized TreeNode loadTree() {
         ZLazyDataModel<?, ?> dataModel = (ZLazyDataModel<?, ?>) getDataModel();
-        List<? extends TreeEntityDto<?, ?, ?>> dtos = (List<? extends TreeEntityDto<?, ?, ?>>) dataModel.listDtos();
+        List<? extends TreeEntityDto<?, ?, ?>> dtos = (List<? extends TreeEntityDto<?, ?, ?>>) dataModel.loadAll();
         index = DTOs.index(dtos);
 
         @SuppressWarnings({ "unchecked", "rawtypes" })

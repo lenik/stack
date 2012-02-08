@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.free.ChainUsage;
@@ -17,6 +18,7 @@ import javax.free.OverrideOption;
 import javax.free.ParseException;
 
 import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SortOrder;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.acl.ACLCriteria;
@@ -31,7 +33,6 @@ import com.bee32.plover.criteria.hibernate.CriteriaComposite;
 import com.bee32.plover.criteria.hibernate.Disjunction;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.InCollection;
-import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityFlags;
@@ -165,7 +166,7 @@ public class SimpleEntityViewBean
 
     }
 
-    class SevbLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, ?>>
+    protected class SevbLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, ?>>
             extends ZLazyDataModel<E, D> {
 
         private static final long serialVersionUID = 1L;
@@ -175,13 +176,22 @@ public class SimpleEntityViewBean
         }
 
         @Override
-        protected List<E> listImpl(ICriteriaElement... criteriaElements) {
-            return SimpleEntityViewBean.this.listImpl(options, criteriaElements);
+        protected List<E> loadImpl(int first, int pageSize, String sortField, SortOrder sortOrder,
+                Map<String, String> filters) {
+            return SimpleEntityViewBean.this.loadImpl(this, first, pageSize, sortField, sortOrder, filters);
         }
 
         @Override
-        protected int countImpl(ICriteriaElement... criteriaElements) {
-            return SimpleEntityViewBean.this.countImpl(options, criteriaElements);
+        protected int countImpl() {
+            return SimpleEntityViewBean.this.countImpl(this);
+        }
+
+        List<E> _loadImpl(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+            return super.loadImpl(first, pageSize, sortField, sortOrder, filters);
+        }
+
+        int _countImpl() {
+            return super.countImpl();
         }
 
     }
@@ -224,18 +234,13 @@ public class SimpleEntityViewBean
         this.userRestriction = restriction;
     }
 
-    protected <E extends Entity<?>> List<E> listImpl(EntityDataModelOptions<E, ?> options,
-            ICriteriaElement... criteriaElements) {
-        CommonDataManager dataManager = getBean(CommonDataManager.class);
-        List<E> list = dataManager.asFor(options.getEntityClass()).list(criteriaElements);
-        return list;
+    protected <E extends Entity<?>> List<E> loadImpl(SevbLazyDataModel<E, ?> def, int first, int pageSize,
+            String sortField, SortOrder sortOrder, Map<String, String> filters) {
+        return def._loadImpl(first, pageSize, sortField, sortOrder, filters);
     }
 
-    protected <E extends Entity<?>> int countImpl(EntityDataModelOptions<E, ?> options,
-            ICriteriaElement... criteriaElements) {
-        CommonDataManager dataManager = getBean(CommonDataManager.class);
-        int count = dataManager.asFor(options.getEntityClass()).count(criteriaElements);
-        return count;
+    protected <E extends Entity<?>> int countImpl(SevbLazyDataModel<E, ?> def) {
+        return def._countImpl();
     }
 
     public int getTabIndex() {

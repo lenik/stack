@@ -36,7 +36,7 @@ public abstract class CodeTreeEntityViewBean
 
     protected synchronized TreeNode loadTree() {
         ZLazyDataModel<?, ?> dataModel = (ZLazyDataModel<?, ?>) this.dataModel;
-        List<? extends NameDictDto<?>> dtos = (List<? extends NameDictDto<?>>) dataModel.listDtos();
+        List<? extends NameDictDto<?>> dtos = (List<? extends NameDictDto<?>>) dataModel.loadAll();
 
         TreeNode root = UIHelper.buildDtoCodeTree(dtos);
         index = DTOs.index(dtos);

@@ -25,8 +25,8 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
 
     protected final EntityDataModelOptions<E, D> options;
     D selection;
-    List<D> loaded;
-    Integer lastQueriedCount;
+    List<D> pageCache;
+    Integer countCache;
 
     public ZLazyDataModel(EntityDataModelOptions<E, D> options) {
         if (options == null)
@@ -42,72 +42,6 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
         return options;
     }
 
-    protected List<E> listImpl(ICriteriaElement... criteriaElements) {
-        CommonDataManager dataManager = getDataManager();
-        List<E> list = dataManager.asFor(options.getEntityClass()).list(criteriaElements);
-        return list;
-    }
-
-    protected int countImpl(ICriteriaElement... criteriaElements) {
-        CommonDataManager dataManager = getDataManager();
-        int count = dataManager.asFor(options.getEntityClass()).count(criteriaElements);
-        return count;
-    }
-
-    /**
-     * @param first
-     *            0-based row index.
-     */
-    @Override
-    public List<D> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
-        Limit limit = new Limit(first, pageSize);
-        Order order = null;
-        if (sortField != null) {
-            switch (sortOrder) {
-            case ASCENDING:
-                order = Order.asc(sortField);
-                break;
-            case DESCENDING:
-                order = Order.desc(sortField);
-                break;
-            default:
-                break;
-            }
-        }
-
-        ICriteriaElement criteria = options.compose();
-        List<D> dtos = _listDtos(limit, criteria, order);
-
-        // if (dtos.size() < pageSize)
-        // lastQueriedCount = dtos.size();
-        return loaded = dtos;
-    }
-
-    public List<D> getAll() {
-        return listDtos();
-    }
-
-    public List<D> listDtos() {
-        ICriteriaElement criteria = options.compose();
-        return _listDtos(criteria);
-    }
-
-    public List<D> _listDtos(ICriteriaElement... criteriaElements) {
-        List<E> entities = listImpl(criteriaElements);
-
-        int fmask = options.getFmask();
-        List<D> dtos = DTOs.mrefList(//
-                options.getDtoClass(), //
-                fmask, //
-                entities);
-
-        int index = 0;
-        for (D dto : dtos)
-            dto.set_index(index++);
-
-        return dtos;
-    }
-
     /**
      * Load a single row.
      *
@@ -115,7 +49,7 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
      *            0-based row index.
      * @return <code>null</code> if no row available at the specified row index.
      */
-    public D load(int rowIndex) {
+    public final D load(int rowIndex) {
         return load(rowIndex, null, SortOrder.ASCENDING);
     }
 
@@ -126,7 +60,7 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
      *            0-based row index.
      * @return <code>null</code> if no row available at the specified row index.
      */
-    public D load(int rowIndex, String sortField, SortOrder sortOrder) {
+    public final D load(int rowIndex, String sortField, SortOrder sortOrder) {
         if (rowIndex < 0)
             throw new IllegalArgumentException("rowIndex can't be negative.");
         List<D> list = load(rowIndex, 1, sortField, sortOrder, Collections.<String, String> emptyMap());
@@ -134,6 +68,30 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
             return null;
         // assert list.size() == 1;
         return list.get(0);
+    }
+
+    public List<D> loadAll() {
+        return loadAll(null, SortOrder.ASCENDING);
+    }
+
+    public List<D> loadAll(String sortField, SortOrder sortOrder) {
+        return load(-1, -1, sortField, sortOrder, Collections.<String, String> emptyMap());
+    }
+
+    @Override
+    public List<D> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+        List<E> entities = loadImpl(first, pageSize, sortField, sortOrder, filters);
+
+        int fmask = options.getFmask();
+        List<D> dtos = DTOs.mrefList(options.getDtoClass(), fmask, entities);
+
+        int index = 0;
+        for (D dto : dtos)
+            dto.set_index(index++);
+
+        // if (dtos.size() < pageSize)
+        // countCache = dtos.size();
+        return pageCache = dtos;
     }
 
     @Override
@@ -151,28 +109,31 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
     @Override
     public int getRowCount() {
         int count;
-        if (options.isAutoRefreshCount() || lastQueriedCount == null)
-            count = executeCountQuery();
+        if (options.isAutoRefreshCount() || countCache == null)
+            count = cachedCount();
         else {
-            count = lastQueriedCount;
+            count = countCache;
         }
         return count;
     }
 
     @Override
     public void setRowCount(int rowCount) {
-        lastQueriedCount = rowCount;
+        countCache = rowCount;
     }
 
     public void refreshRowCount() {
         if (!options.isAutoRefreshCount())
-            executeCountQuery();
+            cachedCount();
     }
 
-    protected int executeCountQuery() {
-        ICriteriaElement criteria = options.compose();
-        lastQueriedCount = countImpl(criteria);
-        return lastQueriedCount;
+    protected int cachedCount() {
+        countCache = count();
+        return countCache;
+    }
+
+    protected int count() {
+        return countImpl();
     }
 
     @Override
@@ -209,18 +170,57 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
 
     @Override
     public D getRowData(String rowKey) {
-        if (loaded == null) {
+        if (pageCache == null) {
             new FacesUILogger(false).warn("Data not loaded!");
             return null;
         }
         rowKey = rowKey.replace("\\-", "_");
         rowKey = rowKey.replace("\\\\", "\\");
-        for (D item : loaded) {
+        for (D item : pageCache) {
             String key = String.valueOf(item.getId());
             if (key.equals(rowKey))
                 return item;
         }
         return null;
+    }
+
+    /**
+     * @param first
+     *            0-based row index.
+     */
+    protected List<E> loadImpl(int first, int pageSize, String sortField, SortOrder sortOrder,
+            Map<String, String> filters) {
+        Limit limit;
+        if (first == -1 && pageSize == -1)
+            limit = null;
+        else
+            limit = new Limit(first, pageSize);
+
+        Order order = null;
+        if (sortField != null) {
+            switch (sortOrder) {
+            case ASCENDING:
+                order = Order.asc(sortField);
+                break;
+            case DESCENDING:
+                order = Order.desc(sortField);
+                break;
+            default:
+                break;
+            }
+        }
+
+        ICriteriaElement criteria = options.compose();
+        CommonDataManager dataManager = getDataManager();
+        List<E> entities = dataManager.asFor(options.getEntityClass()).list(limit, criteria, order);
+        return entities;
+    }
+
+    protected int countImpl() {
+        ICriteriaElement criteria = options.compose();
+        CommonDataManager dataManager = getDataManager();
+        int count = dataManager.asFor(options.getEntityClass()).count(criteria);
+        return count;
     }
 
 }
