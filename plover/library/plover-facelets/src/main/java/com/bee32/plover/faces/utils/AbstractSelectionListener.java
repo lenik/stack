@@ -8,7 +8,7 @@ import com.bee32.plover.arch.operation.Operation;
 import com.bee32.plover.arch.util.ISelection;
 
 public abstract class AbstractSelectionListener
-        extends FacesContextSupport
+        extends FacesContextUtils
         implements IDialogCallback {
 
     private static class SelectionWrapper

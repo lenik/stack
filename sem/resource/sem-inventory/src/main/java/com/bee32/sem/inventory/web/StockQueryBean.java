@@ -1,4 +1,4 @@
-package com.bee32.sem.inventory.web.query;
+package com.bee32.sem.inventory.web;
 
 import java.util.ArrayList;
 import java.util.Calendar;

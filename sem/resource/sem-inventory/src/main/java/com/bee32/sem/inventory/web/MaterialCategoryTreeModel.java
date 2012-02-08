@@ -1,4 +1,4 @@
-package com.bee32.sem.inventory.web.dialogs;
+package com.bee32.sem.inventory.web;
 
 import java.io.Serializable;
 import java.util.HashSet;

@@ -53,7 +53,7 @@ public class UserFileBean
     @Override
     protected void postUpdate(UnmarshalMap uMap)
             throws Exception {
-        IUserFileTagStatService tagStats = getBean(IUserFileTagStatService.class);
+        IUserFileTagStatService tagStats = ctx.getBean(IUserFileTagStatService.class);
         for (UserFile userFile : uMap.<UserFile> entitySet()) {
             // boolean newAdded = uMap.get(userFile).getId() == null;
             tagStats.addUsage(userFile.getTags());
@@ -63,7 +63,7 @@ public class UserFileBean
     @Override
     protected void postDelete(UnmarshalMap uMap)
             throws Exception {
-        IUserFileTagStatService tagStats = getBean(IUserFileTagStatService.class);
+        IUserFileTagStatService tagStats = ctx.getBean(IUserFileTagStatService.class);
         for (UserFile userFile : uMap.<UserFile> entitySet()) {
             // boolean newAdded = uMap.get(userFile).getId() == null;
             tagStats.removeUsage(userFile.getTags());
@@ -72,7 +72,7 @@ public class UserFileBean
 
     public TagCloudModel getTagCloudModel() {
         TagCloudModel model = new DefaultTagCloudModel();
-        IUserFileTagStatService tagStats = getBean(IUserFileTagStatService.class);
+        IUserFileTagStatService tagStats = ctx.getBean(IUserFileTagStatService.class);
         for (Entry<UserFileTagname, Long> entry : tagStats.getStats().entrySet()) {
             UserFileTagname tag = entry.getKey();
             String tagName = tag.getName();
@@ -123,8 +123,8 @@ public class UserFileBean
     }
 
     public void addTagRestriction() {
-        String tagIdStr = getRequest().getParameter("id");
-        String tagName = getRequest().getParameter("name");
+        String tagIdStr = ctx.getRequest().getParameter("id");
+        String tagName = ctx.getRequest().getParameter("name");
         if (tagIdStr == null)
             return;
         tagIdStr = tagIdStr.trim();

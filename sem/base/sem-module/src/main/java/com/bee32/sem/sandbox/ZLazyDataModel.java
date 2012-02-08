@@ -10,7 +10,7 @@ import org.primefaces.model.SortOrder;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.Limit;
 import com.bee32.plover.criteria.hibernate.Order;
-import com.bee32.plover.faces.utils.FacesContextSupport;
+import com.bee32.plover.faces.utils.FacesContextUtils;
 import com.bee32.plover.faces.utils.FacesUILogger;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
@@ -35,7 +35,7 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
     }
 
     protected CommonDataManager getDataManager() {
-        return FacesContextSupport.getBean(CommonDataManager.class);
+        return FacesContextUtils.getBean(CommonDataManager.class);
     }
 
     public EntityDataModelOptions<E, D> getOptions() {

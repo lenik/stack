@@ -124,7 +124,7 @@ public class StockQueryDialogBean
             materialIds = IdUtils.<Long> getDtoIdList(materials);
         System.err.println("queryImpl for Ids: " + materialIds);
 
-        IStockQuery query = getBean(IStockQuery.class);
+        IStockQuery query = ctx.getBean(IStockQuery.class);
         StockOrder sumOrder = query.getActualSummary(materialIds, queryOptions);
         return sumOrder;
     }

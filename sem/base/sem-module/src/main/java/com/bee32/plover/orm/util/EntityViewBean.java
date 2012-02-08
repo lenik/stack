@@ -53,7 +53,7 @@ public abstract class EntityViewBean
         @SuppressWarnings("unchecked")
         Class<E> entityType = (Class<E>) getMajorTypeOfContextPage();
 
-        String requestId = getRequest().getParameter(StandardViews.ID_PARAM);
+        String requestId = ctx.getRequest().getParameter(StandardViews.ID_PARAM);
         if (requestId == null)
             return null;
 
@@ -106,7 +106,7 @@ public abstract class EntityViewBean
 
     protected void openSelection() {
         int fmask = -1;
-        String fmaskParam = getRequest().getParameter("fmask");
+        String fmaskParam = ctx.getRequest().getParameter("fmask");
         if (fmaskParam != null)
             fmask = Integer.parseInt(fmaskParam);
         openSelection(fmask);

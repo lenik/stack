@@ -402,7 +402,7 @@ public class MaterialPlanAdminBean
         opts.setLocation(null, true);
         opts.setWarehouse(null, true);
 
-        IStockQuery q = getBean(IStockQuery.class);
+        IStockQuery q = ctx.getBean(IStockQuery.class);
         StockOrder list = q.getActualSummary(materialIds, opts);
         List<StockOrderItemDto> queryResult = DTOs.marshalList(StockOrderItemDto.class, list.getItems());
 

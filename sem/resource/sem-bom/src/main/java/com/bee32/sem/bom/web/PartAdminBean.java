@@ -58,7 +58,7 @@ public class PartAdminBean
     protected void postUpdate(UnmarshalMap uMap)
             throws Exception {
         for (Part _part : uMap.<Part> entitySet()) {
-            getBean(PartService.class).changePartItemFromMaterialToPart(_part);
+            ctx.getBean(PartService.class).changePartItemFromMaterialToPart(_part);
         }
     }
 

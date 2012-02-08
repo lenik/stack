@@ -1,4 +1,4 @@
-package com.bee32.sem.inventory.web.misc;
+package com.bee32.sem.inventory.web;
 
 import java.util.List;
 

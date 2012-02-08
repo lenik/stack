@@ -25,7 +25,8 @@ import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.world.monetary.MCValue;
 
-public class AssetQueryBean extends EntityViewBean {
+public class AssetQueryBean
+        extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -152,16 +153,12 @@ public class AssetQueryBean extends EntityViewBean {
         return root;
     }
 
-
-
-
-
     public void findParty() {
         if (partyPattern != null && !partyPattern.isEmpty()) {
 
             List<Party> _parties = serviceFor(Party.class).list( //
                     Or.of( //
-                            new Like("name", "%" + partyPattern + "%"), //
+                    new Like("name", "%" + partyPattern + "%"), //
                             new Like("fullName", "%" + partyPattern + "%")));
 
             parties = DTOs.mrefList(PartyDto.class, _parties);
@@ -173,8 +170,9 @@ public class AssetQueryBean extends EntityViewBean {
     }
 
     public void findAccountSubject() {
-        //在实体中,name代表科目代码，label代表科目名称
-        List<AccountSubject> _subjects = serviceFor(AccountSubject.class).list(//
+        // 在实体中,name代表科目代码，label代表科目名称
+        List<AccountSubject> _subjects = serviceFor(AccountSubject.class).list(
+                //
                 new Like("id", "%" + accountSubjectCodePattern + "%"),
                 new Like("label", "%" + accountSubjectNamePattern + "%"));
 
@@ -207,7 +205,7 @@ public class AssetQueryBean extends EntityViewBean {
         }
         options.setParties(null, true);
 
-        SumTree tree = getBean(IAssetQuery.class).getSummary(options);
+        SumTree tree = ctx.getBean(IAssetQuery.class).getSummary(options);
 
         SumNode rootNode = tree.getRoot();
         root = new DefaultTreeNode(rootNode.getKey(), null);
@@ -216,8 +214,8 @@ public class AssetQueryBean extends EntityViewBean {
     }
 
     void loadSumNodeRecursive(SumNode sumNode, TreeNode parentNode) {
-        for(PoNode<?> poNode : sumNode.getChildren()) {
-            SumNode node = (SumNode)poNode;
+        for (PoNode<?> poNode : sumNode.getChildren()) {
+            SumNode node = (SumNode) poNode;
 
             BigDecimal total = node.getTotal();
             AccountTicketItem _item = new AccountTicketItem();
@@ -225,16 +223,12 @@ public class AssetQueryBean extends EntityViewBean {
             _item.setDebitSide(node.getData().isDebitSign());
             _item.setValue(new MCValue(total));
 
-            TreeNode totalNode = new DefaultTreeNode(
-                    _item.getSubject().getId(),
-                    DTOs.marshal(AccountTicketItemDto.class, _item),
-                    parentNode);
+            TreeNode totalNode = new DefaultTreeNode(_item.getSubject().getId(), DTOs.marshal(
+                    AccountTicketItemDto.class, _item), parentNode);
 
             List<AccountTicketItem> items = node.getItems();
-            for(AccountTicketItem subItem : items) {
-                new DefaultTreeNode(
-                        subItem.getSubject().getId(),
-                        DTOs.marshal(AccountTicketItemDto.class, subItem),
+            for (AccountTicketItem subItem : items) {
+                new DefaultTreeNode(subItem.getSubject().getId(), DTOs.marshal(AccountTicketItemDto.class, subItem),
                         totalNode);
             }
 

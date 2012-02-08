@@ -134,8 +134,8 @@ public class PermissionAdminBean
     }
 
     private void loadEntries(PrincipalDto principalDto) {
-        ScannedResourceRegistry srr = getBean(ScannedResourceRegistry.class);
-        R_ACLService aclService = getBean(R_ACLService.class);
+        ScannedResourceRegistry srr = ctx.getBean(ScannedResourceRegistry.class);
+        R_ACLService aclService = ctx.getBean(R_ACLService.class);
 
         Map<String, ResourcePermission> havePermissions = new HashMap<String, ResourcePermission>();
         Principal principal = principalDto.unmarshal();
@@ -242,7 +242,7 @@ public class PermissionAdminBean
 
         serviceFor(R_ACE.class).findAndDelete(new Equals("principal", principal));
 
-        ScannedResourceRegistry srr = getBean(ScannedResourceRegistry.class);
+        ScannedResourceRegistry srr = ctx.getBean(ScannedResourceRegistry.class);
 
         Iterator<RPEntry> iterator = rpEntries.iterator();
         while (iterator.hasNext()) {

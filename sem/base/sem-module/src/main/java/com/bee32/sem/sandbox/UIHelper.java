@@ -14,7 +14,6 @@ import org.primefaces.model.TreeNode;
 import com.bee32.plover.arch.util.EnumAlt;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.plover.orm.util.FacesContextSupport2;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.plover.ox1.dict.CodeTreeBuilder;
@@ -25,8 +24,7 @@ import com.bee32.plover.ox1.dict.PoNode;
 import com.bee32.plover.ox1.dict.PoTreeBuilder;
 import com.bee32.plover.ox1.tree.TreeEntityDto;
 
-public class UIHelper
-        extends FacesContextSupport2 {
+public class UIHelper {
 
     public static List<SelectItem> selectItemsFromDict(Iterable<? extends NameDictDto<?>> dictEntries) {
         List<SelectItem> items = new ArrayList<SelectItem>();

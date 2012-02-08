@@ -21,7 +21,6 @@ import com.bee32.sem.inventory.dto.MaterialPriceDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.entity.MaterialPrice;
-import com.bee32.sem.inventory.web.dialogs.MaterialCategoryTreeModel;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.world.monetary.MutableMCValue;
 import com.bee32.sem.world.thing.ScaleItem;

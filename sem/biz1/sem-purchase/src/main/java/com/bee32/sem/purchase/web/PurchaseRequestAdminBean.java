@@ -192,7 +192,7 @@ public class PurchaseRequestAdminBean
         purchaseRequest.setPlans(selectedPlans);
 
         List<PurchaseRequestItemDto> items //
-        = getBean(PurchaseService.class).calcMaterialRequirement(purchaseRequest, selectedPlans);
+        = ctx.getBean(PurchaseService.class).calcMaterialRequirement(purchaseRequest, selectedPlans);
         purchaseRequest.setItems(items);
     }
 
@@ -308,7 +308,7 @@ public class PurchaseRequestAdminBean
         }
 
         try {
-            getBean(PurchaseService.class).genTakeInStockOrder(purchaseRequest);
+            ctx.getBean(PurchaseService.class).genTakeInStockOrder(purchaseRequest);
             uiLogger.info("生成成功");
         } catch (Exception e) {
             uiLogger.error("错误", e);

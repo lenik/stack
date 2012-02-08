@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -24,8 +22,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.bee32.plover.arch.operation.Operation;
 import com.bee32.plover.arch.util.ISelection;
-import com.bee32.plover.faces.utils.ComponentHelper;
-import com.bee32.plover.faces.utils.FacesContextSupport;
+import com.bee32.plover.faces.utils.FacesContextUtils;
 import com.bee32.plover.faces.utils.FacesUILogger;
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
@@ -33,13 +30,16 @@ import com.bee32.plover.servlet.util.ThreadHttpContext;
 @ComponentTemplate
 @PerView
 public abstract class ViewBean
-        extends FacesContextSupport
         implements ISelection, Serializable, DisposableBean {
 
     private static final long serialVersionUID = 1L;
 
     protected transient FacesUILogger uiLogger = new FacesUILogger(false);
     protected transient FacesUILogger uiHtmlLogger = new FacesUILogger(true);
+
+    protected static class ctx
+            extends FacesContextUtils {
+    }
 
     public ViewBean() {
         // wire();
@@ -54,7 +54,7 @@ public abstract class ViewBean
     }
 
     public ViewMetadata getMetadata() {
-        return getBean(ViewMetadata.class);
+        return ctx.getBean(ViewMetadata.class);
     }
 
     /**
@@ -76,25 +76,6 @@ public abstract class ViewBean
     public void destroy()
             throws Exception {
         getMetadata().removeViewBean(this);
-    }
-
-    protected UIComponent findComponent(String expr) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        UIViewRoot viewRoot = context.getViewRoot();
-        UIComponent component = viewRoot.findComponent(expr);
-
-        if (component == null)
-            throw new IllegalArgumentException("Illegal component id expr: " + expr);
-
-        return component;
-    }
-
-    protected ComponentHelper findComponentEx(String expr) {
-        UIComponent component = findComponent(expr);
-        if (component == null)
-            return null;
-
-        return new ComponentHelper(component);
     }
 
     /**

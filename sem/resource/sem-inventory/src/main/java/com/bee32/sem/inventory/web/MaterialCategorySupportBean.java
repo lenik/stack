@@ -7,7 +7,6 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
-import com.bee32.sem.inventory.web.dialogs.MaterialCategoryTreeModel;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 
 public class MaterialCategorySupportBean

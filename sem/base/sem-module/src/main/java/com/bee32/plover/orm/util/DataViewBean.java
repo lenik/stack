@@ -24,14 +24,14 @@ public abstract class DataViewBean
 
     @Override
     public Object getIntro() {
-        String _name = getName();
-        ViewMetadata metadata = getBean(ViewMetadata.class);
+        String _name = getClass().getCanonicalName();
+        ViewMetadata metadata = ctx.getBean(ViewMetadata.class);
         metadata.setAttribute(EntityPeripheralBean.CONTEXT_BEAN, this);
         return _name;
     }
 
     static CommonDataManager getDataManager() {
-        CommonDataManager dataManager = getBean(CommonDataManager.class);
+        CommonDataManager dataManager = ctx.getBean(CommonDataManager.class);
         return dataManager;
     }
 
@@ -88,7 +88,7 @@ public abstract class DataViewBean
 
     protected Set<Integer> getACLs(Permission minimum) {
         User currentUser = SessionUser.getInstance().getInternalUser();
-        IACLService aclService = getBean(IACLService.class);
+        IACLService aclService = ctx.getBean(IACLService.class);
         Set<Integer> acls = aclService.getACLs(currentUser, minimum);
         return acls;
     }

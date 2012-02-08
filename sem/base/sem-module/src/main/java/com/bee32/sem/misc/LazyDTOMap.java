@@ -3,7 +3,7 @@ package com.bee32.sem.misc;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 
-import com.bee32.plover.faces.view.ViewBean;
+import com.bee32.plover.faces.utils.FacesContextUtils;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
@@ -41,7 +41,7 @@ public class LazyDTOMap<K extends Serializable, D extends EntityDto<? extends En
 
     @SuppressWarnings({ "rawtypes" })
     protected D load(Serializable key) {
-        CommonDataManager dataManager = ViewBean.getBean(CommonDataManager.class);
+        CommonDataManager dataManager = FacesContextUtils.getBean(CommonDataManager.class);
         Entity entity = dataManager.asFor(entityClass).get(key);
         D data = DTOs.mref((Class) dtoClass, fmask, entity);
         return data;

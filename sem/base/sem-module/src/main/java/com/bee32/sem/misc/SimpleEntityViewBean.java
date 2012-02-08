@@ -112,7 +112,7 @@ public class SimpleEntityViewBean
                 UserCriteria.ownedByCurrentUser(),//
                 ACLCriteria.aclWithin(getACLs(visiblePermission))));
 
-        String requestIdList = getRequest().getParameter("id");
+        String requestIdList = ctx.getRequest().getParameter("id");
         if (requestIdList != null) {
             EntityHelper<E, K> eh = EntityHelper.getInstance(entityClass);
             for (String _id : requestIdList.split(",")) {

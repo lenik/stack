@@ -21,24 +21,24 @@ public abstract class MailManageVdx
     static final String WRITE_TAB = "mainForm:mainTabView:writeTab";
 
     protected TabView getMainTabView() {
-        return (TabView) findComponent(MAIN_TAB_VIEW);
+        return (TabView) ctx.findComponent(MAIN_TAB_VIEW);
     }
 
     protected Tab getBoxTab() {
-        return (Tab) findComponent(BOX_TAB);
+        return (Tab) ctx.findComponent(BOX_TAB);
     }
 
     protected UIComponent getContentTab() {
-        return findComponent(CONTENT_TAB);
+        return ctx.findComponent(CONTENT_TAB);
     }
 
     protected UIComponent getWriteTab() {
-        return findComponent(WRITE_TAB);
+        return ctx.findComponent(WRITE_TAB);
     }
 
     protected int getActiveBoxIndex(String tabTitle) {
         int index = 0;
-        TabView mainTabView = (TabView) findComponent(MAIN_TAB_VIEW);
+        TabView mainTabView = (TabView) ctx.findComponent(MAIN_TAB_VIEW);
         List<UIComponent> subTabs = mainTabView.getChildren();
         List<Tab> renderedTabs = new ArrayList<Tab>();
         for (UIComponent uicomponent : subTabs) {

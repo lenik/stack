@@ -12,12 +12,9 @@ import java.util.Map;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.stereotype.Component;
 
-import com.bee32.plover.faces.utils.FacesContextSupport;
-
 @Component
 @PerView
 public/* final */class ViewMetadata
-        extends FacesContextSupport
         implements Serializable, DisposableBean {
 
     private static final long serialVersionUID = 1L;

@@ -19,11 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.arch.util.dto.BaseDto;
-import com.bee32.plover.faces.utils.FacesContextSupport;
 
 @NotThreadSafe
 public abstract class CollectionMBean<T>
-        extends FacesContextSupport
         implements IEnclosingContext, Serializable {
 
     private static final long serialVersionUID = 1L;

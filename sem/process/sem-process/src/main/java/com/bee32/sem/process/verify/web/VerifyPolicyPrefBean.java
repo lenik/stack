@@ -143,7 +143,7 @@ public class VerifyPolicyPrefBean
             if (logger.isDebugEnabled())
                 logger.debug("Refresh/verify " + typeName + " [" + userEntity.getId() + "]");
 
-            IVerifyService verifyService = getBean(IVerifyService.class);
+            IVerifyService verifyService = ctx.getBean(IVerifyService.class);
             verifyService.verifyEntity(userEntity);
             // should save userEntity?
         }

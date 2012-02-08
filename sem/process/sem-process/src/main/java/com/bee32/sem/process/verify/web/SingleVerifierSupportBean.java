@@ -32,7 +32,7 @@ public class SingleVerifierSupportBean<D extends EntityDto<E, K> & IVerifiableDt
     @Operation
     public//
     void reverify() {
-        VerifiableSupportBean verifiableSupportBean = getBean(VerifiableSupportBean.class);
+        VerifiableSupportBean verifiableSupportBean = ctx.getBean(VerifiableSupportBean.class);
         if (!verifiableSupportBean.isCurrentUserResponsible()) {
             uiLogger.error("您不是该对象的审核责任人。");
             return;
