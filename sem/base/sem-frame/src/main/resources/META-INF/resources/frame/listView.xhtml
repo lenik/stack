@@ -15,6 +15,7 @@
         <cc:attribute name="mbean" type="java.lang.Object" required="true" />
         <cc:attribute name="smooth" type="java.lang.Boolean" default="false" />
         <cc:attribute name="copy" type="java.lang.Boolean" default="${cc.attrs.style != 'panel' or not cc.attrs.smooth}" />
+        <cc:attribute name="paginator" type="java.lang.Boolean" default="true" />
         <cc:facet name="columns" required="true" />
         <cc:facet name="more" />
         <cc:facet name="indexButtons" />
@@ -40,7 +41,7 @@
                     <h:panelGroup id="dataContainer" layout="block">
                         <ui:insert name="dataContainer">
                             <p:dataTable id="dataTable" value="${mbean.selectableList}" selection="${mbean.selection}"
-                                selectionMode="single" var="entry" paginator="true" rows="10"
+                                selectionMode="single" var="entry" paginator="${cc.attrs.paginator}" rows="10"
                                 paginatorTemplate="${viewConfig.paginatorTemplate}" rowsPerPageTemplate="${viewConfig.pageSizeTemplate}"
                                 resizableColumns="true" rowIndexVar="rowIndex">
 

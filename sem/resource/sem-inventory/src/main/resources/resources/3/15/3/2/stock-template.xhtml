@@ -65,7 +65,7 @@
         <ui:insert name="edit-more" />
 
         <fr:listView id="itemsIndexView" header="明细" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
-            nested="true">
+            nested="true" paginator="${paginator != null ? paginator : true}">
             <f:facet name="columns">
                 <p:column headerText="物料" sortBy="#{entry.material.label}">
                     <h:outputText value="#{entry.material.label}" />
