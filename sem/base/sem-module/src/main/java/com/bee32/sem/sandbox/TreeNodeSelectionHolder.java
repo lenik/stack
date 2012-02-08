@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.primefaces.model.TreeNode;
 
+import com.bee32.plover.arch.util.SelectionHolder;
+
 public class TreeNodeSelectionHolder
         extends SelectionHolder {
 

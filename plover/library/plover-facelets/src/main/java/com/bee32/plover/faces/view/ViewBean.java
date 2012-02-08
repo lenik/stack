@@ -3,10 +3,6 @@ package com.bee32.plover.faces.view;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 import javax.faces.application.FacesMessage;
@@ -21,7 +17,7 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 
 import com.bee32.plover.arch.operation.Operation;
-import com.bee32.plover.arch.util.ISelection;
+import com.bee32.plover.arch.util.SelectionHolder;
 import com.bee32.plover.faces.utils.FacesContextUtils;
 import com.bee32.plover.faces.utils.FacesUILogger;
 import com.bee32.plover.inject.ComponentTemplate;
@@ -30,7 +26,8 @@ import com.bee32.plover.servlet.util.ThreadHttpContext;
 @ComponentTemplate
 @PerView
 public abstract class ViewBean
-        implements ISelection, Serializable, DisposableBean {
+        extends SelectionHolder
+        implements Serializable, DisposableBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -117,84 +114,6 @@ public abstract class ViewBean
         return false;
     }
 
-    // selection/openedObjects
-
-    List<?> selection = new ArrayList<Object>();
-    List<?> openedObjects = new ArrayList<Object>();
-
-    @Override
-    public List<?> getSelection() {
-        return selection;
-    }
-
-    public final List<?> getSelection(Class<?>... interfaces) {
-        List<?> selection = getSelection();
-        if (interfaces.length == 0)
-            return selection;
-        List<Object> interestings = new ArrayList<Object>();
-        for (Object item : selection) {
-            boolean interesting = true;
-            if (item == null)
-                continue;
-            for (Class<?> iface : interfaces)
-                if (!iface.isInstance(item)) {
-                    interesting = false;
-                    break;
-                }
-            if (interesting)
-                interestings.add(item);
-        }
-        return interestings;
-    }
-
-    public void setSelection(List<?> selection) {
-        if (selection == null)
-            selection = new ArrayList<Object>();
-        this.selection = selection;
-    }
-
-    public final Object getSingleSelection() {
-        List<?> selection = getSelection();
-        if (selection.isEmpty())
-            return null;
-        else
-            return selection.get(0);
-    }
-
-    public final void setSingleSelection(Object singleSelection) {
-        List<Object> list = new ArrayList<Object>();
-        if (singleSelection != null)
-            list.add(singleSelection);
-        setSelection(list);
-    }
-
-    public final Object[] getSelectionArray() {
-        Object[] array = selection.toArray();
-        return array;
-    }
-
-    public final void setSelectionArray(Object... selectionArray) {
-        List<Object> list = new ArrayList<Object>(selectionArray.length);
-        for (Object item : selectionArray)
-            list.add(item);
-        setSelection(list);
-    }
-
-    public final boolean isSelected() {
-        return !getSelection().isEmpty();
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> List<T> getOpenedObjects() {
-        return ((List<T>) openedObjects);
-    }
-
-    public void setOpenedObjects(List<?> openedObjects) {
-        if (openedObjects == null)
-            openedObjects = Collections.emptyList();
-        this.openedObjects = openedObjects;
-    }
-
     public final <T> T getOpenedObject(boolean selectionRequired) {
         T openedObject = getOpenedObject();
         if (!selectionRequired && openedObject == null) {
@@ -202,34 +121,6 @@ public abstract class ViewBean
             return null;
         }
         return openedObject;
-    }
-
-    public final <T> T getOpenedObject() {
-        List<?> objects = getOpenedObjects();
-        if (objects.isEmpty())
-            return null;
-        T first = (T) objects.get(0);
-        return first;
-    }
-
-    public final void setOpenedObject(Object openedObject) {
-        List<?> nonNulls = listOfNonNulls(openedObject);
-        setOpenedObjects(nonNulls);
-    }
-
-    // Utils
-    @SafeVarargs
-    protected static <T> List<T> listOf(T... selection) {
-        return Arrays.asList(selection);
-    }
-
-    @SafeVarargs
-    protected static <T> List<T> listOfNonNulls(T... selection) {
-        List<T> list = new ArrayList<T>(selection.length);
-        for (T item : selection)
-            if (item != null)
-                list.add(item);
-        return Collections.unmodifiableList(list);
     }
 
 }
