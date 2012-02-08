@@ -122,7 +122,6 @@ public class StockQueryDialogBean
             materialIds = null;
         else
             materialIds = IdUtils.<Long> getDtoIdList(materials);
-        System.err.println("queryImpl for Ids: " + materialIds);
 
         IStockQuery query = ctx.getBean(IStockQuery.class);
         StockOrder sumOrder = query.getActualSummary(materialIds, queryOptions);
@@ -159,7 +158,6 @@ public class StockQueryDialogBean
     }
 
     public void setQueryAllMaterials(boolean queryAllMaterials) {
-        System.err.println("ALL=" + queryAllMaterials);
         this.queryAllMaterials = queryAllMaterials;
         if (queryAllMaterials != cacheForAll)
             cacheValid = false;

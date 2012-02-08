@@ -50,12 +50,13 @@ public abstract class AbstractStockOrderBean
         subject = s == null ? null : StockOrderSubject.valueOf(s);
         stepping = new StockJobStepping();
         configJobStepping(stepping);
+        addFriend("job", stepping);
     }
 
     protected abstract void configJobStepping(StockJobStepping stepping);
 
-    protected Class<? extends StockOrderItemDto> getItemDtoClass() {
-        return StockOrderItemDto.class;
+    public StockJobStepping getJob() {
+        return stepping;
     }
 
     @Override
@@ -186,6 +187,10 @@ public abstract class AbstractStockOrderBean
 
     public ListMBean<? extends StockOrderItemDto> getItemsMBean() {
         return itemsMBean;
+    }
+
+    protected Class<? extends StockOrderItemDto> getItemDtoClass() {
+        return StockOrderItemDto.class;
     }
 
 }
