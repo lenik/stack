@@ -25,6 +25,7 @@
                         actionListener="${bean.showIndex}" disabled="${bean.currentView == 'content' or !bean.editing}"
                         update=":mainForm:toolbar, :editDialog:form" />
                 </ui:remove>
+                <ui:insert name="toolbar.left" />
                 <ui:insert name="toolbarPeripherals" />
             </p:toolbarGroup>
             <p:toolbarGroup align="right">

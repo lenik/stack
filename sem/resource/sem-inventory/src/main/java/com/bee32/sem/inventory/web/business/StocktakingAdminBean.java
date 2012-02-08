@@ -12,6 +12,8 @@ import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.StockOrderDto;
+import com.bee32.sem.inventory.entity.StockItemList;
+import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.tx.dto.StockItemUnion;
 import com.bee32.sem.inventory.tx.dto.StockTakingDto;
@@ -137,6 +139,8 @@ public class StocktakingAdminBean
         if (stockTaking != null) {
             stockTaking.getDiffOrder();
         }
+
+        //save stocktaing
     }
 
     @Override
@@ -164,6 +168,19 @@ public class StocktakingAdminBean
     @Override
     public ListMBean<StockItemUnion> getItemsMBean() {
         return unionItemsMBean;
+    }
+
+    public void copyResult(StockItemList resultList) {
+        if (resultList == null)
+            throw new NullPointerException("resultList");
+
+        StockTakingDto stockTaking = getStockTaking();
+        StockOrderDto expectedOrder = new StockOrderDto().create();
+
+        for(StockOrderItem item : resultList.getItems()) {
+
+
+        }
     }
 
 }

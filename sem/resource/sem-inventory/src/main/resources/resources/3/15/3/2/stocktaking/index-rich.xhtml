@@ -27,35 +27,25 @@
     </ui:define>
 
     <ui:define name="edit-pre">
-        <p:panel id="materials" header="需要盘点的物料" toggleable="true" collapsed="true">
-            <t:panelGrid columns="5">
-                <t:panelGrid columns="2">
-                    <h:outputText value="盘点帐面数量查询日期" />
-                    <p:calendar id="queryDate" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{bean.queryDate}"
-                        showOn="button" />
-                </t:panelGrid>
-                <h:outputText value="物料" />
-                <t:panelGrid columns="1">
-                    <t:panelGrid columns="2">
-                        <p:selectBooleanCheckbox value="#{bean.queryAllMaterials}" />
-                        <h:outputText value="所有物料" />
-                    </t:panelGrid>
-                    <p:selectOneListbox id="queryMaterials" value="#{bean.selectedMaterialId}" style="height:200px;width:300px">
-                        <f:selectItems value="#{bean.queryMaterialSelectItems}" />
-                    </p:selectOneListbox>
-                </t:panelGrid>
-                <t:panelGrid columns="1">
-                    <p:commandButton value="增加" onclick="addMaterialDialog.show();" />
-                    <p:commandButton value="删除" actionListener="#{bean.removeQueryMaterial}" update="materials" />
-                </t:panelGrid>
-                <p:commandButton value="查询" />
-            </t:panelGrid>
-        </p:panel>
-    </ui:define>
-
-    <ui:define name="dialogs.1">
-        <sem:chooseMaterialDialog id="addMaterialDialog" var="addMaterialDialog" target="#{bean.chosenMaterial}"
-            actionListener="#{bean.addQueryMaterial}" update=":editDialog:form:materials" />
+        <p:separator />
+        <h:outputText value="时间：" />
+        <p:calendar id="limitDateFrom" navigator="true" locale="zh_CN"
+            pattern="yyyy-MM-dd" value="#{bean.queryDate}"
+            showOn="button" />
+        <p:separator />
+        <p:commandButton id="queryButton" value="查询"
+            onclick="stockQueryDialog.show()"
+            disabled="${bean.editing or not bean.selected}"
+            update="toolbar">
+            <f:setPropertyActionListener
+                target="${stockQueryDialogBean.tabIndex}" value="0" />
+            <f:setPropertyActionListener
+                target="${stockQueryDialogBean.queryOptions.timestamp}"
+                value="${bean.queryDate}" />
+            <f:setPropertyActionListener
+                target="${stockQueryDialogBean.queryOptions.warehouse}"
+                value="${bean.selectedWarehouseId}" />
+        </p:commandButton>
     </ui:define>
 
     <ui:define name="item-quantity">
@@ -80,6 +70,13 @@
         <t:panelGroup colspan="3">
             <p:inputText value="#{item.diff}" readonly="true" />
         </t:panelGroup>
+
+    </ui:define>
+
+    <ui:define name="dialogs.1">
+        <sem:stockQueryDialog id="queryDialog"
+            actionListener="#{bean.copyResult(bean.queryResult)}"
+            update=":mainForm" />
     </ui:define>
 
 </ui:composition>
