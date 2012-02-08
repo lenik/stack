@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import javax.persistence.Transient;
 
 import com.bee32.sem.inventory.entity.StockOrderItem;
-import com.bee32.sem.inventory.entity.StocktakingItem;
+import com.bee32.sem.inventory.entity.StocktakingOrderItem;
 
 public class StocktakingOrderItemDto
         extends StockOrderItemDto {
@@ -25,15 +25,19 @@ public class StocktakingOrderItemDto
     @Override
     protected void _marshal(StockOrderItem _source) {
         super._marshal(_source);
-        StocktakingItem source = (StocktakingItem) _source;
-        expectedQuantity = source.getExpectedQuantity();
+        if(_source instanceof StocktakingOrderItem) {
+            StocktakingOrderItem source = (StocktakingOrderItem) _source;
+            expectedQuantity = source.getExpectedQuantity();
+        }
     }
 
     @Override
     protected void _unmarshalTo(StockOrderItem _target) {
         super._unmarshalTo(_target);
-        StocktakingItem target = (StocktakingItem) _target;
-        target.setExpectedQuantity(expectedQuantity);
+        if(_target instanceof StocktakingOrderItem) {
+            StocktakingOrderItem target = (StocktakingOrderItem) _target;
+            target.setExpectedQuantity(expectedQuantity);
+        }
     }
 
     public BigDecimal getExpectedQuantity() {
@@ -66,6 +70,7 @@ public class StocktakingOrderItemDto
     }
 
     public void setActualQuantity(BigDecimal actualQuantity) {
+        this.setImportant(actualQuantity != null);
         BigDecimal expectedQuantity = getExpectedQuantity(); // nullable, but should warn.
         if (expectedQuantity == null)
             throw new IllegalStateException("Expected quantity is unknown yet.");

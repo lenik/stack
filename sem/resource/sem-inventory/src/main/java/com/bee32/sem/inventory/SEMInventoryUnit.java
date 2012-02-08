@@ -17,6 +17,8 @@ import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockPeriod;
 import com.bee32.sem.inventory.entity.StockWarehouse;
+import com.bee32.sem.inventory.entity.StocktakingOrder;
+import com.bee32.sem.inventory.entity.StocktakingOrderItem;
 import com.bee32.sem.inventory.process.StockOrderVerifyPolicy;
 import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
 import com.bee32.sem.inventory.tx.entity.StockTaking;
@@ -50,6 +52,8 @@ public class SEMInventoryUnit
 
         add(StockOrder.class);
         add(StockOrderItem.class);
+        add(StocktakingOrder.class);
+        add(StocktakingOrderItem.class);
 
         add(StockTransfer.class);
         add(StockTaking.class);

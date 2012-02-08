@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("STK")
 public class StocktakingOrder
-        extends AbstractStockOrder<StocktakingItem> {
+        extends AbstractStockOrder<StocktakingOrderItem> {
 
     private static final long serialVersionUID = 1L;
 

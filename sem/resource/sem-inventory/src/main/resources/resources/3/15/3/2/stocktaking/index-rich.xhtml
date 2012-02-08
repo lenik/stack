@@ -27,25 +27,26 @@
     </ui:define>
 
     <ui:define name="edit-pre">
+        <t:panelGrid columns="3">
+            <h:outputText value="时间：" />
+            <p:calendar id="limitDateFrom" navigator="true"
+                locale="zh_CN" pattern="yyyy-MM-dd"
+                value="#{bean.queryDate}" showOn="button" />
+            <p:commandButton id="queryButton" value="查询"
+                oncomplete="stockQueryForStocktakingDialog.show()"
+                disabled="${!bean.editing}"
+                update=":stockQueryDialog:form">
+                <f:setPropertyActionListener
+                    target="${stockQueryDialogBean.tabIndex}" value="0" />
+                <f:setPropertyActionListener
+                    target="${stockQueryDialogBean.queryOptions.timestamp}"
+                    value="${bean.queryDate}" />
+                <f:setPropertyActionListener
+                    target="${stockQueryDialogBean.queryOptions.warehouse}"
+                    value="${bean.selectedWarehouseId}" />
+            </p:commandButton>
+        </t:panelGrid>
         <p:separator />
-        <h:outputText value="时间：" />
-        <p:calendar id="limitDateFrom" navigator="true" locale="zh_CN"
-            pattern="yyyy-MM-dd" value="#{bean.queryDate}"
-            showOn="button" />
-        <p:separator />
-        <p:commandButton id="queryButton" value="查询"
-            onclick="stockQueryDialog.show()"
-            disabled="${bean.editing or not bean.selected}"
-            update="toolbar">
-            <f:setPropertyActionListener
-                target="${stockQueryDialogBean.tabIndex}" value="0" />
-            <f:setPropertyActionListener
-                target="${stockQueryDialogBean.queryOptions.timestamp}"
-                value="${bean.queryDate}" />
-            <f:setPropertyActionListener
-                target="${stockQueryDialogBean.queryOptions.warehouse}"
-                value="${bean.selectedWarehouseId}" />
-        </p:commandButton>
     </ui:define>
 
     <ui:define name="item-quantity">
@@ -73,9 +74,9 @@
     </ui:define>
 
     <ui:define name="dialogs.1">
-        <sem:stockQueryDialog id="queryDialog"
-            actionListener="#{bean.copyResult(bean.queryResult)}"
-            update=":mainForm" />
+        <sem:stockQueryDialog id="queryDialog" var="stockQueryForStocktakingDialog"
+            actionListener="#{bean.copyResult(stockQueryDialogBean.resultList)}"
+            update=":editDialog:form:itemsIndexView:indexForm:body" />
     </ui:define>
 
 </ui:composition>

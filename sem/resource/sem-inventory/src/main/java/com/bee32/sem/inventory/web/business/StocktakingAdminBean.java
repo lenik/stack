@@ -1,5 +1,6 @@
 package com.bee32.sem.inventory.web.business;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -105,7 +106,12 @@ public class StocktakingAdminBean
         StocktakingOrderDto order = getOpenedObject();
 
         for(StockOrderItem item : result.getItems()) {
-            StocktakingOrderItemDto itemDto = new StocktakingOrderItemDto().marshal(item);
+            StocktakingOrderItemDto itemDto = new StocktakingOrderItemDto().create();
+            itemDto.marshal(item);
+            itemDto.setExpectedQuantity(item.getQuantity());
+            itemDto.setDiffQuantity(BigDecimal.ZERO);
+            itemDto.setParent(order);
+
             order.addItem(itemDto);
         }
     }
