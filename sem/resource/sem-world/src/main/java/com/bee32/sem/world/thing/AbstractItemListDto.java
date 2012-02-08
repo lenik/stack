@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.free.ParseException;
 
-import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.util.i18n.ICurrencyAware;
@@ -16,10 +15,10 @@ import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.monetary.MCVector;
 
-public abstract class AbstractOrderDto< //
-/*        */E extends AbstractOrder<_et>, //
-/*        */_et extends AbstractOrderItem, //
-/*        */_dt extends AbstractOrderItemDto<_et>>
+public abstract class AbstractItemListDto< //
+/*        */E extends AbstractItemList<? extends _et>, //
+/*        */_et extends AbstractItem, //
+/*        */_dt extends AbstractItemDto<_et>>
         extends TxEntityDto<E>
         implements ICurrencyAware, DecimalConfig {
 
@@ -27,33 +26,33 @@ public abstract class AbstractOrderDto< //
 
     public static final int ITEMS = 0x10000;
 
-    final Class<_dt> itemDtoClass = ClassUtil.infer1(getClass(), AbstractOrderDto.class, 2);
-
     List<_dt> items;
     MCVector total;
 
     BigDecimal nativeTotal;
 
-    public AbstractOrderDto() {
+    public AbstractItemListDto() {
         super();
     }
 
-    public AbstractOrderDto(int fmask) {
+    public AbstractItemListDto(int fmask) {
         super(fmask);
     }
 
+    protected abstract Class<? extends _dt> getItemDtoClass();
+
     @Override
-    public AbstractOrderDto<E, _et, _dt> populate(Object source) {
-        if (source instanceof AbstractOrderDto<?, ?, ?>) {
+    public AbstractItemListDto<E, _et, _dt> populate(Object source) {
+        if (source instanceof AbstractItemListDto<?, ?, ?>) {
             @SuppressWarnings("unchecked")
-            AbstractOrderDto<?, _et, _dt> o = (AbstractOrderDto<?, _et, _dt>) source;
+            AbstractItemListDto<?, _et, _dt> o = (AbstractItemListDto<?, _et, _dt>) source;
             _populate(o);
         } else
             super.populate(source);
         return this;
     }
 
-    protected void _populate(AbstractOrderDto<?, _et, _dt> o) {
+    protected void _populate(AbstractItemListDto<?, _et, _dt> o) {
         super._populate(o);
         items = new ArrayList<_dt>(); // Never copy (o.items);
         total = o.total;
@@ -64,7 +63,7 @@ public abstract class AbstractOrderDto< //
     protected void __marshal(E source) {
         super.__marshal(source);
         if (selection.contains(ITEMS))
-            items = marshalList(itemDtoClass, source.getItems()); // cascade..
+            items = (List<_dt>) marshalList(getItemDtoClass(), source.getItems()); // cascade..
         else
             items = new ArrayList<_dt>();
     }
@@ -90,8 +89,9 @@ public abstract class AbstractOrderDto< //
         super.__parse(map);
     }
 
-    public List<_dt> getItems() {
-        return items;
+    @SuppressWarnings("unchecked")
+    public <_t extends _dt> List<_t> getItems() {
+        return (List<_t>) (List<?>) items;
     }
 
     public void setItems(List<_dt> items) {

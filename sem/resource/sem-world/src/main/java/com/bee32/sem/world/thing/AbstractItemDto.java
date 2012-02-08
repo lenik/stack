@@ -12,7 +12,7 @@ import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.monetary.MutableMCValue;
 
-public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
+public abstract class AbstractItemDto<E extends AbstractItem>
         extends UIEntityDto<E, Long> {
 
     private static final long serialVersionUID = 1L;
@@ -25,26 +25,26 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
     BigDecimal nativePrice;
     BigDecimal nativeTotal;
 
-    public AbstractOrderItemDto() {
+    public AbstractItemDto() {
         super();
     }
 
-    public AbstractOrderItemDto(int fmask) {
+    public AbstractItemDto(int fmask) {
         super(fmask);
     }
 
     @Override
-    public AbstractOrderItemDto<E> populate(Object source) {
-        if (source instanceof AbstractOrderItemDto) {
+    public AbstractItemDto<E> populate(Object source) {
+        if (source instanceof AbstractItemDto) {
             @SuppressWarnings("unchecked")
-            AbstractOrderItemDto<E> o = (AbstractOrderItemDto<E>) source;
+            AbstractItemDto<E> o = (AbstractItemDto<E>) source;
             _populate(o);
         } else
             super.populate(source);
         return this;
     }
 
-    protected void _populate(AbstractOrderItemDto<E> o) {
+    protected void _populate(AbstractItemDto<E> o) {
         super._populate(o);
         quantity = o.quantity;
         price = o.price.clone();

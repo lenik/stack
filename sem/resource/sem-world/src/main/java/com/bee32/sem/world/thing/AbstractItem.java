@@ -20,7 +20,7 @@ import com.bee32.sem.world.monetary.MCValue;
 
 @MappedSuperclass
 @Blue
-public abstract class AbstractOrderItem
+public abstract class AbstractItem
         extends UIEntityAuto<Long>
         implements DecimalConfig {
 
@@ -34,10 +34,10 @@ public abstract class AbstractOrderItem
     BigDecimal nativePrice;
     BigDecimal nativeTotal;
 
-    public AbstractOrderItem() {
+    public AbstractItem() {
     }
 
-    public AbstractOrderItem(AbstractOrderItem item) {
+    public AbstractItem(AbstractItem item) {
         quantity = item.quantity;
         price = item.price.clone();
         nativePrice = item.nativePrice;

@@ -25,7 +25,7 @@ import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.monetary.MCVector;
 
 @MappedSuperclass
-public abstract class AbstractOrder<Item extends AbstractOrderItem>
+public abstract class AbstractItemList<Item extends AbstractItem>
         extends TxEntity
         implements ICurrencyAware, DecimalConfig, Iterable<Item> {
 
@@ -38,13 +38,13 @@ public abstract class AbstractOrder<Item extends AbstractOrderItem>
 
     @Override
     public void populate(Object source) {
-        if (source instanceof AbstractOrder<?>)
-            _populate((AbstractOrder<?>) source);
+        if (source instanceof AbstractItemList<?>)
+            _populate((AbstractItemList<?>) source);
         else
             super.populate(source);
     }
 
-    protected void _populate(AbstractOrder<?> o) {
+    protected void _populate(AbstractItemList<?> o) {
         super._populate(o);
         items = new ArrayList<Item>(); // Don't copy (List<Item>) o.items;
         total = o.total;

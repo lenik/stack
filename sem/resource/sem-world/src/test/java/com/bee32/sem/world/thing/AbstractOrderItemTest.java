@@ -15,7 +15,7 @@ public class AbstractOrderItemTest
         implements ICurrencyAware {
 
     static class Item
-            extends AbstractOrderItem {
+            extends AbstractItem {
 
         private static final long serialVersionUID = 1L;
 
