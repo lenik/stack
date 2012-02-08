@@ -6,4 +6,13 @@
     <ui:param name="bean" value="#{outsourcingOutAdminBean}" />
     <ui:param name="title" value="#{bean.subject.displayName}" />
 
+    <ui:define name="edit-pre">
+        <p:panel header="委外加工作业信息">
+            <h:panelGrid columns="2">
+                <h:outputText value="描述" />
+                <p:inputText id="jobDescription" value="#{bean.job.openedObject.description}" />
+            </h:panelGrid>
+        </p:panel>
+    </ui:define>
+
 </ui:composition>

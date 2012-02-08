@@ -49,8 +49,8 @@ public abstract class AbstractStockOrderBean
         String s = ctx.getRequest().getParameter("subject");
         subject = s == null ? null : StockOrderSubject.valueOf(s);
         stepping = new StockJobStepping();
-        configJobStepping(stepping);
-        addFriend("job", stepping);
+        if (configJobStepping(stepping))
+            addFriend("job", stepping);
     }
 
     protected abstract boolean configJobStepping(StockJobStepping stepping);

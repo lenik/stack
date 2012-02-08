@@ -83,6 +83,8 @@ public class StockJobStepping
     @Override
     public void deleteSelection(int deleteFlags) {
         StockOrderDto order = (StockOrderDto) getSingleSelection();
+        if (order == null)
+            return;
         long orderId = order.getId();
         try {
             asFor(jobClass).findAndDelete(new Equals(bindingProperty + ".id", orderId));
