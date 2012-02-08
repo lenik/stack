@@ -1,28 +1,71 @@
 package com.bee32.sem.misc;
 
-import java.io.Serializable;
+import java.util.List;
 
-import com.bee32.plover.faces.view.ViewBean;
+import com.bee32.plover.arch.util.IObjectOpenListener;
+import com.bee32.plover.arch.util.IPriority;
+import com.bee32.plover.arch.util.ISelectionChangeListener;
+import com.bee32.plover.orm.util.DataViewBean;
 
 public abstract class SevbFriend
-        extends ViewBean {
+        extends DataViewBean
+        implements IPriority, ISelectionChangeListener, IObjectOpenListener {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * @return friend entry.
-     */
-    public Serializable select(SimpleEntityViewBean sevb, Object mainEntry) {
-        return null;
+    @Override
+    public int getPriority() {
+        return 0;
     }
 
-    public void unselect(SimpleEntityViewBean sevb, Serializable friendEntry) {
+    @Override
+    public void selectionChanged(List<?> selections) {
+        if (selections.isEmpty())
+            unselect();
+        else {
+            Object first = selections.get(0);
+            select(first);
+        }
     }
 
-    public abstract Serializable open(SimpleEntityViewBean sevb, Object mainObject);
+    protected abstract void select(Object mainEntry);
 
-    public abstract void save(SimpleEntityViewBean sevb, Object mainObject, Serializable friendObject);
+    protected void unselect() {
+        setSelection(null);
+    }
 
-    public abstract void delete(SimpleEntityViewBean sevb, Object mainObject, Serializable friendObject);
+    @Override
+    public void objectOpened(List<?> openedObjects) {
+        if (openedObjects.isEmpty())
+            close();
+        else {
+            Object first = openedObjects.get(0);
+            open(first);
+        }
+    }
+
+    protected abstract void open(Object mainOpenedObject);
+
+    protected void close() {
+        setOpenedObject(null);
+    }
+
+    public boolean preUpdate(UnmarshalMap uMap) {
+        return true;
+    }
+
+    public void postUpdate(UnmarshalMap uMap) {
+    }
+
+    public boolean preDelete(UnmarshalMap uMap) {
+        return true;
+    }
+
+    public void postDelete(UnmarshalMap uMap) {
+    }
+
+    public abstract void saveOpenedObject(int saveFlags);
+
+    public abstract void deleteSelection(int deleteFlags);
 
 }

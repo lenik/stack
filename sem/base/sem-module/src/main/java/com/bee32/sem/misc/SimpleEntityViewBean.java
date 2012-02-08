@@ -6,10 +6,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.free.ChainUsage;
 import javax.free.Dates;
@@ -28,6 +30,8 @@ import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.UserCriteria;
 import com.bee32.plover.arch.operation.Operation;
+import com.bee32.plover.arch.util.GetOpenedObjectTransformer;
+import com.bee32.plover.arch.util.PriorityComparator;
 import com.bee32.plover.collections.Varargs;
 import com.bee32.plover.criteria.hibernate.CriteriaComposite;
 import com.bee32.plover.criteria.hibernate.Disjunction;
@@ -200,6 +204,17 @@ public class SimpleEntityViewBean
         return dataModel;
     }
 
+    public boolean refreshRowCount() {
+        if (dataModel instanceof ZLazyDataModel<?, ?>)
+            try {
+                ((ZLazyDataModel<?, ?>) dataModel).refreshRowCount();
+            } catch (Exception e) {
+                uiLogger.warn("刷新记录时出现异常。", e);
+                return false;
+            }
+        return true;
+    }
+
     protected final List<? extends ICriteriaElement> composeBaseRestrictions() {
         List<ICriteriaElement> join = new ArrayList<ICriteriaElement>();
         join.addAll(baseRestriction);
@@ -243,13 +258,33 @@ public class SimpleEntityViewBean
         return def._countImpl();
     }
 
-    public int getTabIndex() {
-        return tabIndex;
+    // ///////////////////////////////////////////////////////////////////////
+
+    final TreeSet<SevbFriend> sortedFriends = new TreeSet<SevbFriend>(PriorityComparator.INSTANCE);
+    final Map<String, SevbFriend> friendMap = new HashMap<String, SevbFriend>();
+
+    public synchronized void addFriend(String name, SevbFriend friend) {
+        if (sortedFriends.contains(friend))
+            throw new IllegalUsageException("friend is existed: " + friend);
+        sortedFriends.add(friend);
+        friendMap.put(name, friend);
+        addSelectionChangeListener(friend);
+        addObjectOpenListener(friend);
     }
 
-    public void setTabIndex(int tabIndex) {
-        this.tabIndex = tabIndex;
+    public synchronized void removeFriend(String name) {
+        SevbFriend friend = friendMap.remove(name);
+        if (friend != null)
+            sortedFriends.remove(friend);
+        removeSelectionChangeListener(friend);
+        removeObjectOpenListener(friend);
     }
+
+    public Map<String, Object> getFriends() {
+        return GetOpenedObjectTransformer.decorate(friendMap);
+    }
+
+    // ///////////////////////////////////////////////////////////////////////
 
     /**
      * Show (or switch to) the real view.
@@ -265,27 +300,6 @@ public class SimpleEntityViewBean
      */
     protected void showView(String viewName) {
         currentView = viewName;
-    }
-
-    public String getCurrentView() {
-        return currentView;
-    }
-
-    public boolean isCreating() {
-        if (!currentView.equals(StandardViews.CREATE_FORM))
-            return false;
-        if (getOpenedObjects().isEmpty())
-            throw new IllegalStateException("No opened objects for creating");
-        return true;
-    }
-
-    public boolean isEditing() {
-        if (!currentView.equals(StandardViews.CREATE_FORM) //
-                && !currentView.equals(StandardViews.EDIT_FORM))
-            return false;
-        if (getOpenedObjects().isEmpty())
-            throw new IllegalStateException("No opened objects for editing");
-        return true;
     }
 
     @Operation
@@ -347,6 +361,37 @@ public class SimpleEntityViewBean
         // default fmask override..
         showEditForm();
     }
+
+    public String getCurrentView() {
+        return currentView;
+    }
+
+    public boolean isCreating() {
+        if (!currentView.equals(StandardViews.CREATE_FORM))
+            return false;
+        if (getOpenedObjects().isEmpty())
+            throw new IllegalStateException("No opened objects for creating");
+        return true;
+    }
+
+    public boolean isEditing() {
+        if (!currentView.equals(StandardViews.CREATE_FORM) //
+                && !currentView.equals(StandardViews.EDIT_FORM))
+            return false;
+        if (getOpenedObjects().isEmpty())
+            throw new IllegalStateException("No opened objects for editing");
+        return true;
+    }
+
+    public int getTabIndex() {
+        return tabIndex;
+    }
+
+    public void setTabIndex(int tabIndex) {
+        this.tabIndex = tabIndex;
+    }
+
+    // ///////////////////////////////////////////////////////////////////////
 
     protected Object create() {
         EntityDto<?, ?> entityDto;
@@ -424,10 +469,14 @@ public class SimpleEntityViewBean
         try {
             if (!__preUpdate(uMap))
                 return;
+            for (SevbFriend friend : sortedFriends)
+                if (!friend.preUpdate(uMap))
+                    return;
             if (!preUpdate(uMap))
                 return;
         } catch (Exception e) {
             uiLogger.error("预处理失败", e);
+            return;
         }
 
         Set<Entity<?>> entities = uMap.keySet();
@@ -445,6 +494,15 @@ public class SimpleEntityViewBean
             return;
         }
 
+        for (SevbFriend friend : sortedFriends) {
+            try {
+                friend.saveOpenedObject(saveFlags);
+            } catch (Exception e) {
+                uiLogger.error(hint + "友元失败" + friend, e);
+                return;
+            }
+        }
+
         if (isCreating()) // write back generated-id(s).
             for (Entity<?> entity : entities) {
                 EntityDto<?, Serializable> dto = uMap.getSourceDto(entity);
@@ -457,9 +515,12 @@ public class SimpleEntityViewBean
 
         try {
             postUpdate(uMap);
+            for (SevbFriend friend : sortedFriends)
+                friend.postUpdate(uMap);
             __postUpdate(uMap);
         } catch (Exception e) {
             uiLogger.warn(hint + "不完全，次要的数据可能不一致，建议您检查相关的数据。", e);
+            return;
         }
 
         uiLogger.info(hint + "成功");
@@ -537,10 +598,14 @@ public class SimpleEntityViewBean
         try {
             if (!__preDelete(uMap))
                 return;
+            for (SevbFriend friend : sortedFriends)
+                if (!friend.preDelete(uMap))
+                    return;
             if (!preDelete(uMap))
                 return;
         } catch (Exception e) {
             uiLogger.error("删除的先决条件处理失败", e);
+            return;
         }
 
         Set<Entity<?>> entities = uMap.keySet();
@@ -552,14 +617,26 @@ public class SimpleEntityViewBean
             return;
         }
 
+        for (SevbFriend friend : sortedFriends) {
+            try {
+                friend.deleteSelection(deleteFlags);
+            } catch (Exception e) {
+                uiLogger.error("友元删除失败:" + friend, e);
+                return;
+            }
+        }
+
         if ((deleteFlags & DELETE_NO_REFRESH) == 0)
             refreshRowCount();
 
         try {
             postDelete(uMap);
+            for (SevbFriend friend : sortedFriends)
+                friend.postDelete(uMap);
             __postDelete(uMap);
         } catch (Exception e) {
             uiLogger.warn("保存不完全，次要的数据可能不一致，建议您检查相关的数据。", e);
+            return;
         }
 
         String countHint = count == -1 ? "" : (" [" + count + "]");
@@ -628,17 +705,6 @@ public class SimpleEntityViewBean
 
     protected void postDelete(UnmarshalMap uMap)
             throws Exception {
-    }
-
-    public boolean refreshRowCount() {
-        try {
-            if (dataModel instanceof ZLazyDataModel<?, ?>)
-                ((ZLazyDataModel<?, ?>) dataModel).refreshRowCount();
-            return true;
-        } catch (Exception e) {
-            uiLogger.warn("刷新记录时出现异常。", e);
-            return false;
-        }
     }
 
     UnmarshalMap unmarshalDtos(Collection<?> objects, boolean nullable) {
