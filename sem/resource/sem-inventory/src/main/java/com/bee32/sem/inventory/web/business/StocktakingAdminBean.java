@@ -9,6 +9,7 @@ import java.util.List;
 import javax.faces.model.SelectItem;
 
 import com.bee32.plover.orm.annotation.ForEntity;
+import com.bee32.plover.orm.annotation.TypeParameter;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StocktakingOrderDto;
@@ -17,10 +18,10 @@ import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StocktakingOrder;
-import com.bee32.sem.inventory.tx.entity.StockTaking;
+import com.bee32.sem.inventory.util.StockJobStepping;
 import com.bee32.sem.sandbox.UIHelper;
 
-@ForEntity(StockTaking.class)
+@ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = "STKD"))
 public class StocktakingAdminBean
         extends AbstractStockOrderBean {
 
@@ -36,6 +37,10 @@ public class StocktakingAdminBean
         subject = StockOrderSubject.STKD;
         entityClass = StocktakingOrder.class;
         dtoClass = StocktakingOrderDto.class;
+    }
+
+    @Override
+    protected void configJobStepping(StockJobStepping stepping) {
     }
 
     @Override

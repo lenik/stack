@@ -4,6 +4,7 @@ import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.annotation.TypeParameter;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
+import com.bee32.sem.inventory.util.StockJobStepping;
 
 @ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = "INIT"))
 public class InitAdminBean
@@ -13,6 +14,10 @@ public class InitAdminBean
 
     public InitAdminBean() {
         subject = StockOrderSubject.INIT;
+    }
+
+    @Override
+    protected void configJobStepping(StockJobStepping stepping) {
     }
 
 }

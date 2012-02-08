@@ -90,8 +90,14 @@ public class PloverNamingStrategy
         return escapeName(name);
     }
 
+    static PloverNamingStrategy defaultInstance = new PloverNamingStrategy();
+
     public static NamingStrategy getInstance(String dialect) {
-        return new PloverNamingStrategy();
+        return defaultInstance;
+    }
+
+    public static PloverNamingStrategy getDefaultInstance() {
+        return defaultInstance;
     }
 
 }

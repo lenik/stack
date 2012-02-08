@@ -9,6 +9,7 @@ import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.tx.dto.StockOutsourcingDto;
 import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
+import com.bee32.sem.inventory.util.StockJobStepping;
 import com.bee32.sem.misc.UnmarshalMap;
 
 @ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = "OSPO"))
@@ -21,6 +22,16 @@ public class OutsourcingOutAdminBean
 
     public OutsourcingOutAdminBean() {
         this.subject = StockOrderSubject.OSP_OUT;
+    }
+
+    @Override
+    protected void configJobStepping(StockJobStepping stepping) {
+        stepping.setJobClass(StockOutsourcing.class);
+        stepping.setJobDtoClass(StockOutsourcingDto.class);
+        stepping.setInitiatorProperty("output");
+        stepping.setInitiatorColumn("s1");
+        stepping.setBindingProperty("output");
+        stepping.setBindingColumn("s1");
     }
 
     public StockOutsourcingDto getStockOutsourcing() {

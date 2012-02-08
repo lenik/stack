@@ -13,6 +13,7 @@ import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.tx.dto.StockTransferDto;
 import com.bee32.sem.inventory.tx.entity.StockTransfer;
+import com.bee32.sem.inventory.util.StockJobStepping;
 import com.bee32.sem.misc.UnmarshalMap;
 
 @ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = "XFRI"))
@@ -32,6 +33,16 @@ public class TransferInAdminBean
     public TransferInAdminBean() {
         subject = StockOrderSubject.XFER_IN;
         transferring = false;
+    }
+
+    @Override
+    protected void configJobStepping(StockJobStepping stepping) {
+        stepping.setJobClass(StockTransfer.class);
+        stepping.setJobDtoClass(StockTransferDto.class);
+        stepping.setInitiatorProperty("source");
+        stepping.setInitiatorColumn("s1");
+        stepping.setBindingProperty("dest");
+        stepping.setBindingColumn("s2");
     }
 
     public StockOrderDto getStockOrderOut() {
@@ -133,22 +144,11 @@ public class TransferInAdminBean
 
             uiLogger.info("拨入成功");
 
-            // loadStockOrder(count + 1);
-            // loadStockOrderOut(goNumberOut);
-
-// editable = false;
             transferring = false;
         } catch (Exception e) {
             uiLogger.warn("拨入失败,错误信息:" + e.getMessage());
         }
     }
 
-    public void newItemIn() {
-        // orderItemIn = new StockOrderItemDto().create();
-        // orderItemIn.setMaterial(orderItemOut.getMaterial());
-        // orderItemIn.setBatch(orderItemOut.getBatch());
-        // orderItemIn.setExpirationDate(orderItemOut.getExpirationDate());
-        // orderItemIn.setPrice(orderItemOut.getPrice());
-    }
 
 }

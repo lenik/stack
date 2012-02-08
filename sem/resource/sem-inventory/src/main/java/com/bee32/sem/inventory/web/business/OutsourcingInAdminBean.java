@@ -12,8 +12,10 @@ import com.bee32.plover.orm.annotation.TypeParameter;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
+import com.bee32.sem.inventory.tx.dto.StockOutsourcingDto;
 import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
 import com.bee32.sem.inventory.util.StockCriteria;
+import com.bee32.sem.inventory.util.StockJobStepping;
 import com.bee32.sem.misc.UnmarshalMap;
 
 @ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = "OSPI"))
@@ -24,6 +26,16 @@ public class OutsourcingInAdminBean
 
     public OutsourcingInAdminBean() {
         this.subject = StockOrderSubject.OSP_IN;
+    }
+
+    @Override
+    protected void configJobStepping(StockJobStepping stepping) {
+        stepping.setJobClass(StockOutsourcing.class);
+        stepping.setJobDtoClass(StockOutsourcingDto.class);
+        stepping.setInitiatorProperty("output");
+        stepping.setInitiatorColumn("s1");
+        stepping.setBindingProperty("input");
+        stepping.setBindingColumn("s2");
     }
 
     @Transactional
@@ -46,11 +58,11 @@ public class OutsourcingInAdminBean
             throws Exception {
         StockOrderDto stockOrder = getOpenedObject();
         try {
-//            stockOutsourcing.setInput(stockOrder);
-//            StockOutsourcing _stockOutsourcing = stockOutsourcing.unmarshal();
+// stockOutsourcing.setInput(stockOrder);
+// StockOutsourcing _stockOutsourcing = stockOutsourcing.unmarshal();
 
             // 保存stockOutsourcing
-//            serviceFor(StockOutsourcing.class).saveOrUpdate(_stockOutsourcing);
+// serviceFor(StockOutsourcing.class).saveOrUpdate(_stockOutsourcing);
         } catch (Exception e) {
             uiLogger.error("保存失败,错误信息:" + e.getMessage());
         }

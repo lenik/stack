@@ -17,6 +17,7 @@ import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.service.StockQueryOptions;
 import com.bee32.sem.inventory.tx.entity.StockJob;
 import com.bee32.sem.inventory.util.StockCriteria;
+import com.bee32.sem.inventory.util.StockJobStepping;
 import com.bee32.sem.inventory.web.StockQueryDialogBean;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
@@ -29,6 +30,8 @@ public abstract class AbstractStockOrderBean
         implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
+
+    StockJobStepping stepping;
 
     StockOrderSubject subject = null;
     Integer selectedWarehouseId = -1;
@@ -45,7 +48,11 @@ public abstract class AbstractStockOrderBean
         super(StockOrder.class, StockOrderDto.class, 0);
         String s = getRequest().getParameter("subject");
         subject = s == null ? null : StockOrderSubject.valueOf(s);
+        stepping = new StockJobStepping();
+        configJobStepping(stepping);
     }
+
+    protected abstract void configJobStepping(StockJobStepping stepping);
 
     protected Class<? extends StockOrderItemDto> getItemDtoClass() {
         return StockOrderItemDto.class;
@@ -175,8 +182,7 @@ public abstract class AbstractStockOrderBean
         // itemsMBean.apply();
     }
 
-    ListMBean<? extends StockOrderItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items",
-            getItemDtoClass());
+    ListMBean<? extends StockOrderItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items", getItemDtoClass());
 
     public ListMBean<? extends StockOrderItemDto> getItemsMBean() {
         return itemsMBean;

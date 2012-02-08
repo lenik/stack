@@ -9,6 +9,7 @@ import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.tx.dto.StockTransferDto;
 import com.bee32.sem.inventory.tx.entity.StockTransfer;
+import com.bee32.sem.inventory.util.StockJobStepping;
 import com.bee32.sem.misc.UnmarshalMap;
 
 @ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = "XFRO"))
@@ -21,6 +22,16 @@ public class TransferOutAdminBean
 
     public TransferOutAdminBean() {
         subject = StockOrderSubject.XFER_OUT;
+    }
+
+    @Override
+    protected void configJobStepping(StockJobStepping stepping) {
+        stepping.setJobClass(StockTransfer.class);
+        stepping.setJobDtoClass(StockTransferDto.class);
+        stepping.setInitiatorProperty("source");
+        stepping.setInitiatorColumn("s1");
+        stepping.setBindingProperty("source");
+        stepping.setBindingColumn("s1");
     }
 
     public StockTransferDto getStockTransfer() {
