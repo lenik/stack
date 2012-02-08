@@ -17,7 +17,8 @@ public class InitAdminBean
     }
 
     @Override
-    protected void configJobStepping(StockJobStepping stepping) {
+    protected boolean configJobStepping(StockJobStepping stepping) {
+        return false;
     }
 
 }

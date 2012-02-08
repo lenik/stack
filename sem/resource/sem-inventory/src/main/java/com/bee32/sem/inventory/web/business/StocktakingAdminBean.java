@@ -40,7 +40,8 @@ public class StocktakingAdminBean
     }
 
     @Override
-    protected void configJobStepping(StockJobStepping stepping) {
+    protected boolean configJobStepping(StockJobStepping stepping) {
+        return false;
     }
 
     @Override
@@ -111,7 +112,7 @@ public class StocktakingAdminBean
         StocktakingOrderDto order = getOpenedObject();
 
         order.getItems().clear();
-        for(StockOrderItem item : result.getItems()) {
+        for (StockOrderItem item : result.getItems()) {
             StocktakingOrderItemDto itemDto = new StocktakingOrderItemDto().create();
             itemDto.marshal(item);
             itemDto.setExpectedQuantity(item.getQuantity());

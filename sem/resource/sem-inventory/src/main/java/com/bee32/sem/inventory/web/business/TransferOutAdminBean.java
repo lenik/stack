@@ -25,13 +25,14 @@ public class TransferOutAdminBean
     }
 
     @Override
-    protected void configJobStepping(StockJobStepping stepping) {
+    protected boolean configJobStepping(StockJobStepping stepping) {
         stepping.setJobClass(StockTransfer.class);
         stepping.setJobDtoClass(StockTransferDto.class);
         stepping.setInitiatorProperty("source");
         stepping.setInitiatorColumn("s1");
         stepping.setBindingProperty("source");
         stepping.setBindingColumn("s1");
+        return true;
     }
 
     public StockTransferDto getStockTransfer() {

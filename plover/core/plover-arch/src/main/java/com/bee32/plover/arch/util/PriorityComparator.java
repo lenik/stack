@@ -1,9 +1,14 @@
 package com.bee32.plover.arch.util;
 
+import java.io.Serializable;
+
 import javax.free.AbstractNonNullComparator;
 
 public class PriorityComparator
-        extends AbstractNonNullComparator<IPriority> {
+        extends AbstractNonNullComparator<IPriority>
+        implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Override
     public int compareNonNull(IPriority o1, IPriority o2) {

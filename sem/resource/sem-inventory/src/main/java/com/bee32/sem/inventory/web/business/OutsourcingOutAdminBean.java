@@ -25,13 +25,14 @@ public class OutsourcingOutAdminBean
     }
 
     @Override
-    protected void configJobStepping(StockJobStepping stepping) {
+    protected boolean configJobStepping(StockJobStepping stepping) {
         stepping.setJobClass(StockOutsourcing.class);
         stepping.setJobDtoClass(StockOutsourcingDto.class);
         stepping.setInitiatorProperty("output");
         stepping.setInitiatorColumn("s1");
         stepping.setBindingProperty("output");
         stepping.setBindingColumn("s1");
+        return true;
     }
 
     public StockOutsourcingDto getStockOutsourcing() {

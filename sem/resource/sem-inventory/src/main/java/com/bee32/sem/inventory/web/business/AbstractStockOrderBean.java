@@ -53,7 +53,7 @@ public abstract class AbstractStockOrderBean
         addFriend("job", stepping);
     }
 
-    protected abstract void configJobStepping(StockJobStepping stepping);
+    protected abstract boolean configJobStepping(StockJobStepping stepping);
 
     public StockJobStepping getJob() {
         return stepping;
