@@ -10,14 +10,15 @@ import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.sem.frame.ui.IEnclosedObject;
+import com.bee32.sem.inventory.entity.AbstractStockOrder;
 import com.bee32.sem.inventory.entity.StockItemState;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
-import com.bee32.sem.world.thing.AbstractOrderItemDto;
+import com.bee32.sem.world.thing.AbstractItemDto;
 
 public class StockOrderItemDto
-        extends AbstractOrderItemDto<StockOrderItem>
+        extends AbstractItemDto<StockOrderItem>
         implements IEnclosedObject<StockOrderDto> {
 
     private static final long serialVersionUID = 1L;
@@ -71,7 +72,7 @@ public class StockOrderItemDto
 
     @Override
     protected void _marshal(StockOrderItem source) {
-        StockOrder _parent = source.getParent();
+        AbstractStockOrder<?> _parent = source.getParent();
 
         boolean tryBest = false;
         if (tryBest) {

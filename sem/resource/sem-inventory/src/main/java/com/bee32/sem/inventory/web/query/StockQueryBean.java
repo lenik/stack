@@ -14,10 +14,10 @@ import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.sem.inventory.dto.StockItemListDto;
+import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.StockInventory;
-import com.bee32.sem.inventory.entity.StockItemList;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
@@ -69,10 +69,10 @@ public class StockQueryBean
         this.queryDate = queryDate;
     }
 
-    public void copyResult(StockItemList resultList) {
-        if (resultList == null)
+    public void copyResult(StockOrder result) {
+        if (result == null)
             throw new NullPointerException("resultList");
-        this.resultList = new StockItemListDto(-1).marshal(resultList);
+        this.resultList = new StockOrderDto(-1).marshal(result);
     }
 
     public StockItemListDto getResultList() {
@@ -164,4 +164,5 @@ public class StockQueryBean
             }
         }
     }
+
 }

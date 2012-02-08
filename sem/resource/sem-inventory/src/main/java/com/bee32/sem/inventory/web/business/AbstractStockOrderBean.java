@@ -30,8 +30,7 @@ public abstract class AbstractStockOrderBean
 
     private static final long serialVersionUID = 1L;
 
-    @Inject
-    protected StockDictsBean dicts;
+    Class<? extends StockOrderItemDto> itemDtoClass = StockOrderItemDto.class;
 
     StockOrderSubject subject = null;
     Integer selectedWarehouseId = -1;
@@ -41,10 +40,17 @@ public abstract class AbstractStockOrderBean
 
     StockOrderItemDto selectedStockQueryItem;
 
+    @Inject
+    protected StockDictsBean dicts;
+
     public AbstractStockOrderBean() {
         super(StockOrder.class, StockOrderDto.class, 0);
         String s = getRequest().getParameter("subject");
         subject = s == null ? null : StockOrderSubject.valueOf(s);
+    }
+
+    protected Class<? extends StockOrderItemDto> getStockOrderItemDtoClass() {
+        return itemDtoClass;
     }
 
     @Override
@@ -171,7 +177,8 @@ public abstract class AbstractStockOrderBean
         // itemsMBean.apply();
     }
 
-    ListMBean<StockOrderItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items", StockOrderItemDto.class);
+    ListMBean<? extends StockOrderItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items",
+            getStockOrderItemDtoClass());
 
     public ListMBean<? extends StockOrderItemDto> getItemsMBean() {
         return itemsMBean;

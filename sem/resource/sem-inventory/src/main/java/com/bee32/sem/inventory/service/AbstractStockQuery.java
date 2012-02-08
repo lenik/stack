@@ -10,7 +10,8 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.sem.inventory.entity.StockItemList;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.util.StockCriteria;
-import com.bee32.sem.world.thing.AbstractOrderItem;
+import com.bee32.sem.world.thing.AbstractItem;
+import com.bee32.sem.world.thing.AbstractItemList;
 
 public abstract class AbstractStockQuery
         extends DataService
@@ -52,7 +53,7 @@ public abstract class AbstractStockQuery
         if (options == null)
             throw new NullPointerException("options");
 
-        StockItemList list = getActualSummary(Arrays.asList(materialId), options);
+        StockOrder list = getActualSummary(Arrays.asList(materialId), options);
         BigDecimal quantity = sumOfQuantity(list);
         return quantity;
     }
@@ -62,7 +63,7 @@ public abstract class AbstractStockQuery
         if (options == null)
             throw new NullPointerException("options");
 
-        StockItemList list = getVirtualSummary(Arrays.asList(materialId), options);
+        StockOrder list = getVirtualSummary(Arrays.asList(materialId), options);
         BigDecimal quantity = sumOfQuantity(list);
         return quantity;
     }
@@ -72,14 +73,14 @@ public abstract class AbstractStockQuery
         if (options == null)
             throw new NullPointerException("options");
 
-        StockItemList list = getPlanSummary(Arrays.asList(materialId), options);
+        StockOrder list = getPlanSummary(Arrays.asList(materialId), options);
         BigDecimal quantity = sumOfQuantity(list);
         return quantity;
     }
 
-    static BigDecimal sumOfQuantity(StockItemList list) {
+    static BigDecimal sumOfQuantity(AbstractItemList<?> list) {
         BigDecimal sum = new BigDecimal(0);
-        for (AbstractOrderItem item : list) {
+        for (AbstractItem item : list) {
             BigDecimal quantity = item.getQuantity();
             sum = sum.add(quantity);
         }

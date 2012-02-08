@@ -13,7 +13,7 @@ import com.bee32.plover.orm.util.WiredDaoFeat;
 import com.bee32.plover.test.ICoordinator;
 import com.bee32.sem.inventory.SEMInventorySamples;
 import com.bee32.sem.inventory.SEMInventoryUnit;
-import com.bee32.sem.inventory.entity.StockItemList;
+import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.world.monetary.FxrQueryException;
 
 @SuppressWarnings("unused")
@@ -33,8 +33,8 @@ public class StockQueryFeat
 
         StockQueryOptions sqopts = new StockQueryOptions(new Date(), false);
         sqopts.setCBatch(null, true);
-        StockItemList actual = stockQuery.getActualSummary(materials, sqopts);
-        StockItemList virtual = stockQuery.getVirtualSummary(materials, sqopts);
+        StockOrder actual = stockQuery.getActualSummary(materials, sqopts);
+        StockOrder virtual = stockQuery.getVirtualSummary(materials, sqopts);
 
         System.out.println(actual.dump());
         System.out.println(virtual.dump());

@@ -23,7 +23,7 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.sem.inventory.config.BatchingConfig;
-import com.bee32.sem.world.thing.AbstractOrderItem;
+import com.bee32.sem.world.thing.AbstractItem;
 
 @BatchSize(size = 100)
 @Entity
@@ -32,11 +32,11 @@ import com.bee32.sem.world.thing.AbstractOrderItem;
 @DiscriminatorValue("-")
 @SequenceGenerator(name = "idgen", sequenceName = "stock_order_item_seq", allocationSize = 1)
 public class StockOrderItem
-        extends AbstractOrderItem {
+        extends AbstractItem {
 
     private static final long serialVersionUID = 1L;
 
-    StockOrder parent;
+    AbstractStockOrder<?> parent;
     Material material;
     String batch;
     Date expirationDate;
@@ -67,11 +67,11 @@ public class StockOrderItem
      */
     @NaturalId
     @ManyToOne(optional = false)
-    public StockOrder getParent() {
+    public AbstractStockOrder<?> getParent() {
         return parent;
     }
 
-    public void setParent(StockOrder parent) {
+    public void setParent(AbstractStockOrder<?> parent) {
         this.parent = parent;
     }
 
