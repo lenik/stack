@@ -4,7 +4,7 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.inventory.dto.StockOrderDto;
-import com.bee32.sem.inventory.entity.StockItemList;
+import com.bee32.sem.inventory.entity.AbstractStockItemList;
 import com.bee32.sem.purchase.entity.PlanOrder;
 
 public class PlanOrderDto
@@ -23,14 +23,14 @@ public class PlanOrderDto
     }
 
     @Override
-    protected void _marshal(StockItemList _source) {
+    protected void _marshal(AbstractStockItemList<?> _source) {
         super._marshal(_source);
         PlanOrder source = (PlanOrder) _source;
         plan = mref(MaterialPlanDto.class, source.getPlan());
     }
 
     @Override
-    protected void _unmarshalTo(StockItemList _target) {
+    protected void _unmarshalTo(AbstractStockItemList<?> _target) {
         super._unmarshalTo(_target);
         PlanOrder target = (PlanOrder) _target;
         merge(target, "plan", plan);

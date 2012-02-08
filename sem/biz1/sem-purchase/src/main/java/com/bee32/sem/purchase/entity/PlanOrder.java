@@ -4,11 +4,13 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-import com.bee32.sem.inventory.entity.StockOrder;
+import com.bee32.sem.inventory.entity.AbstractStockOrder;
+import com.bee32.sem.inventory.entity.StockOrderItem;
 
 @Entity
 @DiscriminatorValue("PLA")
-public class PlanOrder extends StockOrder {
+public class PlanOrder
+        extends AbstractStockOrder<StockOrderItem> {
 
     private static final long serialVersionUID = 1L;
 

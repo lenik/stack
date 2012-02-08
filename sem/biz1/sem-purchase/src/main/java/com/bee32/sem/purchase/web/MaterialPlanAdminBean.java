@@ -14,7 +14,7 @@ import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.bom.dto.PartDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
-import com.bee32.sem.inventory.entity.StockItemList;
+import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.service.IStockQuery;
 import com.bee32.sem.inventory.service.StockQueryOptions;
@@ -403,7 +403,7 @@ public class MaterialPlanAdminBean
         opts.setWarehouse(null, true);
 
         IStockQuery q = getBean(IStockQuery.class);
-        StockItemList list = q.getActualSummary(materialIds, opts);
+        StockOrder list = q.getActualSummary(materialIds, opts);
         List<StockOrderItemDto> queryResult = DTOs.marshalList(StockOrderItemDto.class, list.getItems());
 
         // 把查询结果变成SelectItemHoder的list,以便于绑定primefaces的DataTable组件

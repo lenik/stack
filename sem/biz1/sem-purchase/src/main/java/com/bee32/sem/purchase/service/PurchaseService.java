@@ -20,7 +20,6 @@ import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialWarehouseOption;
-import com.bee32.sem.inventory.entity.StockItemList;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
@@ -96,7 +95,7 @@ public class PurchaseService
             opts.setLocation(null, true);
             opts.setWarehouse(null, true);
 
-            StockItemList list = stockQuery.getActualSummary(Arrays.asList(material.getId()), opts);
+            StockOrder list = stockQuery.getActualSummary(Arrays.asList(material.getId()), opts);
             BigDecimal actualQuantity = new BigDecimal(0);
             for (StockOrderItem item : list.getItems())
                 actualQuantity = actualQuantity.add(item.getQuantity());
