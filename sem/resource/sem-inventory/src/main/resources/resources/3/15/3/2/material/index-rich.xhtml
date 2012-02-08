@@ -7,6 +7,8 @@
     <ui:param name="sideBarWVisible" value="true" />
     <ui:param name="bean" value="${materialExAdminBean}" />
     <ui:param name="obj" value="${bean.openedObject}" />
+    <ui:param name="mirrorTargets" value=":navigatorForm:categoryTree" />
+    <ui:param name="monetary" value="#{monetaryDictsBean}" />
 
     <ui:define name="sideBarW">
         <h:form id="navigatorForm">
@@ -152,7 +154,7 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:chooseMaterialCategoryDialog id="mcdlg" target="#{obj.category}" update="" />
+        <sem:chooseMaterialCategoryDialog id="mcdlg" target="#{obj.category}" update=":editDialog:form:tv:materialCategory" />
         <ui:include src="addUnit.xhtml">
             <ui:param name="update" value=":editDialog:form:tv:materialUnit" />
         </ui:include>

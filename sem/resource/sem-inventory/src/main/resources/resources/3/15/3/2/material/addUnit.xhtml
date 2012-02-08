@@ -1,35 +1,40 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
 
     <h:form id="addUnitForm">
-        <p:dialog header="新增单位" widgetVar="addUnitDialog" height="480" width="640" modal="true">
+        <p:dialog header="新增单位" widgetVar="addUnitDialog" modal="true">
 
-            <h:panelGrid columns="3">
+            <t:panelGrid columns="3">
                 <h:outputText value="国际单位代码:" />
-                <h:panelGroup colspan="2">
+                <t:panelGroup colspan="2">
                     <p:inputText value="#{addUnitBean.unit.name}" />
-                </h:panelGroup>
+                </t:panelGroup>
+
                 <h:outputText value="中文单位名称:" />
-                <h:panelGroup colspan="2">
+                <t:panelGroup colspan="2">
                     <p:inputText value="#{addUnitBean.unit.label}" />
-                </h:panelGroup>
+                </t:panelGroup>
+
                 <h:outputText value="基本单位:" />
-                <h:panelGroup colspan="2">
+                <t:panelGroup colspan="2">
                     <p:selectOneMenu value="#{addUnitBean.unit.stdUnit.id}" style="width:100px;">
                         <f:selectItems value="#{addUnitBean.standardUnits}" />
                         <f:selectItem itemLabel="" itemValue="" />
                     </p:selectOneMenu>
-                </h:panelGroup>
+                </t:panelGroup>
+
                 <h:outputText value="倍率:" />
-                <h:panelGroup colspan="2">
+                <t:panelGroup colspan="2">
                     <p:inputText value="#{addUnitBean.unit.scale}" />
-                </h:panelGroup>
+                </t:panelGroup>
+
                 <h:panelGroup colspan="3">
                     <p:commandButton value="添加" actionListener="#{addUnitBean.addUnit}" update="#{update}"
                         oncomplete="addUnitDialog.hide();" />
                     <p:commandButton value="关闭" onclick="addUnitDialog.hide();" />
                 </h:panelGroup>
-            </h:panelGrid>
+            </t:panelGrid>
 
         </p:dialog>
     </h:form>
