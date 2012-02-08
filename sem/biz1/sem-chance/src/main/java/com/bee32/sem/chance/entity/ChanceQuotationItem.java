@@ -11,7 +11,7 @@ import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.ox1.color.Blue;
 import com.bee32.sem.inventory.entity.Material;
-import com.bee32.sem.world.thing.AbstractOrderItem;
+import com.bee32.sem.world.thing.AbstractItem;
 
 /**
  * 报价单里面的条目
@@ -20,7 +20,7 @@ import com.bee32.sem.world.thing.AbstractOrderItem;
 @Blue
 @SequenceGenerator(name = "idgen", sequenceName = "chance_quotation_item_seq", allocationSize = 1)
 public class ChanceQuotationItem
-        extends AbstractOrderItem {
+        extends AbstractItem {
 
     private static final long serialVersionUID = 1L;
 

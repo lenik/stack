@@ -9,10 +9,10 @@ import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.chance.entity.ChanceQuotation;
 import com.bee32.sem.chance.entity.ChanceQuotationItem;
 import com.bee32.sem.frame.ui.IEnclosedObject;
-import com.bee32.sem.world.thing.AbstractOrderDto;
+import com.bee32.sem.world.thing.AbstractItemListDto;
 
 public class ChanceQuotationDto
-        extends AbstractOrderDto<ChanceQuotation, ChanceQuotationItem, ChanceQuotationItemDto>
+        extends AbstractItemListDto<ChanceQuotation, ChanceQuotationItem, ChanceQuotationItemDto>
         implements IEnclosedObject<ChanceDto> {
 
     private static final long serialVersionUID = 1L;
@@ -20,6 +20,11 @@ public class ChanceQuotationDto
     private ChanceDto chance;
     private String deliverInfo;
     private String payment;
+
+    @Override
+    protected Class<? extends ChanceQuotationItemDto> getItemDtoClass() {
+        return ChanceQuotationItemDto.class;
+    }
 
     @Override
     protected void _marshal(ChanceQuotation source) {

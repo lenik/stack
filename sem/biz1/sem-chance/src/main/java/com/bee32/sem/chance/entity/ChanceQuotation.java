@@ -6,7 +6,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-import com.bee32.sem.world.thing.AbstractOrder;
+import com.bee32.sem.world.thing.AbstractItemList;
 
 /**
  * 报价单
@@ -14,7 +14,7 @@ import com.bee32.sem.world.thing.AbstractOrder;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "chance_quotation_seq", allocationSize = 1)
 public class ChanceQuotation
-        extends AbstractOrder<ChanceQuotationItem> {
+        extends AbstractItemList<ChanceQuotationItem> {
 
     private static final long serialVersionUID = 1L;
 

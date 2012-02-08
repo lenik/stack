@@ -10,10 +10,10 @@ import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.MaterialPriceDto;
 import com.bee32.sem.world.monetary.MCValue;
-import com.bee32.sem.world.thing.AbstractOrderItemDto;
+import com.bee32.sem.world.thing.AbstractItemDto;
 
 public class ChanceQuotationItemDto
-        extends AbstractOrderItemDto<ChanceQuotationItem>
+        extends AbstractItemDto<ChanceQuotationItem>
         implements IEnclosedObject<ChanceQuotationDto> {
 
     private static final long serialVersionUID = 1L;
