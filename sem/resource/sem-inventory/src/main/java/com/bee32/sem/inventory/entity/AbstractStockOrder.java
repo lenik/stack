@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
@@ -33,8 +34,9 @@ import com.bee32.sem.world.thing.AbstractItemList;
 @Entity(name = "StockOrder")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 3)
+@DiscriminatorValue("--")
 @SequenceGenerator(name = "idgen", sequenceName = "stock_order_seq", allocationSize = 1)
-public abstract class AbstractStockOrder<Item extends StockOrderItem>
+public class AbstractStockOrder<Item extends StockOrderItem>
         extends AbstractStockItemList<Item>
         implements IParameterized, IVerifiable<IStockOrderVerifyContext> {
 
