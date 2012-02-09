@@ -73,7 +73,7 @@ public class StockOrderBean_XFER_IN
         destOrder.addItem(destItem);
         destItem.setParent(destOrder);
         // XXX generated tmp id here.
-        destItem.setId(-destOrder.getItems().size() - 1L);
+        destItem.setId(-destOrder.getItems().size() - 1L, true);
         destItem = null;
     }
 

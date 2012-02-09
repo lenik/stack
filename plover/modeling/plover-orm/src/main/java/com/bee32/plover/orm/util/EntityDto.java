@@ -38,6 +38,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
     int _index;
     protected K id;
+    boolean _skipId;
     Integer version;
 
     Date createdDate;
@@ -159,6 +160,11 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      */
     public void setId(K id) {
         this.id = id;
+    }
+
+    public void setId(K id, boolean skipped) {
+        this.id = id;
+        this._skipId = skipped;
     }
 
     @RequiredId
@@ -333,7 +339,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      */
     @Override
     protected void __unmarshalTo(E target) {
-        if (id != null && !isNewCreated()) // XXX EntitySpec should override this.
+        if (id != null && !_skipId) // XXX EntitySpec should override this.
             EntityAccessor.setId(target, id);
 
         if (version != null)
