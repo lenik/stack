@@ -292,7 +292,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      */
     @Override
     protected void __unmarshalTo(E target) {
-        if (id != null)
+        if (id != null && !isNewCreated()) // XXX EntitySpec should override this.
             EntityAccessor.setId(target, id);
 
         if (version != null)
@@ -491,7 +491,13 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             if (givenTarget != null) // ignore thisDto.id
                 return givenTarget;
 
-            if (id != null) {
+            boolean partialMerge;
+            if (isNewCreated())
+                partialMerge = false;
+            else
+                partialMerge = id != null;
+
+            if (partialMerge) {
                 E existing = getMarshalContext().asFor(entityType).get(id);
                 if (existing != null)
                     return existing;
