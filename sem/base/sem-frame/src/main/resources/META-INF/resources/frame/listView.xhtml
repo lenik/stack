@@ -16,6 +16,9 @@
         <cc:attribute name="smooth" type="java.lang.Boolean" default="false" />
         <cc:attribute name="copy" type="java.lang.Boolean" default="${cc.attrs.style != 'panel' or not cc.attrs.smooth}" />
         <cc:attribute name="paginator" type="java.lang.Boolean" default="true" />
+        <cc:attribute name="creatable" type="java.lang.Boolean" default="true" />
+        <cc:attribute name="editable" type="java.lang.Boolean" default="true" />
+        <cc:attribute name="removable" type="java.lang.Boolean" default="true" />
         <cc:facet name="columns" required="true" />
         <cc:facet name="more" />
         <cc:facet name="indexButtons" />
@@ -67,10 +70,12 @@
                         <table border="0" width="100%">
                             <tr>
                                 <td align="left">
-                                    <p:commandButton id="create" value="添加" actionListener="${mbean.showCreateForm}"
+                                    <p:commandButton rendered="${cc.attrs.creatable}" id="create" value="添加"
+                                        actionListener="${mbean.showCreateForm}"
                                         update=":@form, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
                                         oncomplete="${style == 'panel' ? '' : cc.attrs.editDialogVar.concat('.show();')}" />
-                                    <p:commandButton id="remove" value="移除" actionListener="${mbean.removeSelection}"
+                                    <p:commandButton rendered="${cc.attrs.removable}" id="remove" value="移除"
+                                        actionListener="${mbean.removeSelection}"
                                         update=":@form, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
                                         disabled="${mbean.selection == null}" />
                                 </td>
@@ -79,7 +84,7 @@
                                     <p:commandButton id="edit" value="修改" disabled="${mbean.selection == null}"
                                         action="${mbean.showEditForm}" update="${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
                                         oncomplete="${style == 'panel' ? '' : cc.attrs.editDialogVar.concat('.show();')}"
-                                        rendered="${style != 'panel' or not cc.attrs.smooth}">
+                                        rendered="${removable and (style != 'panel' or not cc.attrs.smooth)}">
                                         <f:setPropertyActionListener target="${mbean.copyMode}"
                                             value="${cc.attrs.copy}" />
                                     </p:commandButton>
