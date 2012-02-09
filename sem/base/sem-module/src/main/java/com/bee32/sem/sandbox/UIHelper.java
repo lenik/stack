@@ -119,8 +119,10 @@ public class UIHelper {
             treeNode = parentNode;
         else {
             treeNode = new DefaultTreeNode(data, parentNode);
-            toplevels.add(treeNode);
-            toplevels = null;
+            if (toplevels != null) {
+                toplevels.add(treeNode);
+                toplevels = null;
+            }
         }
         for (PoNode<?> child : src.getChildren()) {
             _convertTree(child, treeNode, toplevels);

@@ -98,10 +98,10 @@
     <ui:define name="editDialogBody">
         <!-- TODO: fr:disable applied=${not plainEditForm} -->
         <h:form id="form" styleClass="${(plainEditForm and bean.editing) ? 'form-editing' : ''}">
-            <h:panelGroup rendered="${bean.openedObject ==null}">
+            <h:panelGroup rendered="${bean.openedObject == null}">
                 No opened object!
             </h:panelGroup>
-            <h:panelGroup rendered="${bean.openedObject !=null}">
+            <h:panelGroup rendered="${bean.openedObject != null}">
                 <ui:insert name="editDialogContent">The edit dialog's content is undefined.</ui:insert>
             </h:panelGroup>
             <!-- c:if test="${not plainEditForm}" -->

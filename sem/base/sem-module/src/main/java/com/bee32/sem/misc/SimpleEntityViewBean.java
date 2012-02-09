@@ -337,10 +337,10 @@ public class SimpleEntityViewBean
                 return;
             }
             if (ef.isBuitlinData()) {
-                uiLogger.warn("您正在编辑系统预置数据，可能会被系统自动复原。");
+                uiLogger.warn("您正在编辑系统预置数据: 更改系统数据可能导致系统无法正常运行，也可能会被系统自动复原。");
             }
             if (ef.isTestData()) {
-                uiLogger.warn("您正在编辑测试数据，未来可能会被系统复原。");
+                uiLogger.warn("您正在编辑测试数据: 测试数据是自动生成的，未来可能会被系统复原。");
             }
         }
 

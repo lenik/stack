@@ -121,10 +121,11 @@ public class DefaultFlushEntityEventListener implements FlushEntityEventListener
                         loadedVal = loaded[prop];
                     }
                     if ( !types[prop].isEqual( current[prop], loadedVal, entityMode ) ) {
+                        String[] names = persister.getPropertyNames();
                         throw new HibernateException(
                                 "immutable natural identifier of an instance of " +
                                 persister.getEntityName() +
-                                " was altered"
+                                " was altered: " + names[prop]
                             );
                     }
                 }

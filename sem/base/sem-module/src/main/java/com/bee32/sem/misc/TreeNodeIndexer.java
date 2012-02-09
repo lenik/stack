@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import org.primefaces.model.TreeNode;
 
-import com.bee32.plover.ox1.tree.TreeEntityDto;
+import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.sandbox.ITreeNodeDecorator;
 import com.bee32.sem.sandbox.UIHelper;
 
@@ -17,7 +17,7 @@ public class TreeNodeIndexer
 
     @Override
     public void decorate(TreeNode node) {
-        TreeEntityDto<?, ?, ?> dto = (TreeEntityDto<?, ?, ?>) node.getData();
+        EntityDto<?, ?> dto = (EntityDto<?, ?>) node.getData();
         if (dto != null) {
             Serializable id = dto.getId();
             assert id != null;
