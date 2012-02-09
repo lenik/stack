@@ -4,23 +4,20 @@
     xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
     <ui:param name="title" value="采购请求管理" />
+    <ui:param name="verifiable" value="true" />
     <ui:param name="bean" value="#{purchaseRequestAdminBean}" />
     <ui:param name="obj" value="#{bean.openedObject}" />
 
-    <ui:define name="toolbarPeripherals">
-        <sem:singleVerifierSupportButton selection="#{bean.selection}" disabled="#{bean.editable}" />
-    </ui:define>
-
     <ui:define name="form">
         <p:panel header="采购请求管理">
-            <t:panelGrid columns="4">
+            <t:panelGrid id="basic" columns="4">
                 <h:outputText value="标识:" />
-                <h:outputText value="#{bean.purchaseRequest.id}" style="font-weight:bold;font-size:large" />
+                <h:outputText value="#{obj.id}" style="font-weight:bold;font-size:large" />
                 <h:outputText value="状态" />
-                <p:inputText value="#{bean.purchaseRequest.verifyContext.verifyEvalState}" disabled="true" />
+                <p:inputText value="#{obj.verifyContext.verifyEvalState}" disabled="true" />
 
                 <h:outputText value="时间:" />
-                <h:outputText value="#{bean.purchaseRequest.createdDate}">
+                <h:outputText value="#{obj.createdDate}">
                     <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                 </h:outputText>
                 <h:outputText value="制单人:" />
@@ -30,7 +27,7 @@
                 <t:panelGroup colspan="3">
                     <t:panelGrid columns="2">
                         <p:selectOneListbox id="plans" style="height:80px; width:200px;">
-                            <f:selectItems value="#{bean.purchaseRequest.plans}" var="plan" itemLabel="#{plan.idAsString}"
+                            <f:selectItems value="#{obj.plans}" var="plan" itemLabel="#{plan.idAsString}"
                                 itemValue="#{plan.id}" />
                         </p:selectOneListbox>
                         <h:panelGrid colums="1">
@@ -88,13 +85,13 @@
                 <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
 
                     <h:outputLabel value="物料" />
-                    <h:outputText value="#{bean.purchaseRequestItem.material.label}" />
+                    <h:outputText value="#{objItem.material.label}" />
 
                     <h:outputLabel value="请求数量" />
-                    <h:outputText value="#{bean.purchaseRequestItem.quantity}" />
+                    <h:outputText value="#{objItem.quantity}" />
 
                     <h:outputLabel value="计划数量" />
-                    <p:inputText value="#{bean.purchaseRequestItem.planQuantity}" />
+                    <p:inputText value="#{objItem.planQuantity}" />
 
                     <h:outputLabel value="优选供应商" />
                     <t:panelGroup>
@@ -103,7 +100,7 @@
                     </t:panelGroup>
 
                     <h:outputLabel value="附加要求" />
-                    <p:inputText value="#{bean.purchaseRequestItem.additionalRequirement}" />
+                    <p:inputText value="#{objItem.additionalRequirement}" />
                 </t:panelGrid>
             </t:panelGroup>
         </fr:listView>
@@ -130,7 +127,7 @@
 
         <p:dialog header="询价和建议" widgetVar="inquiryDialog" modal="true" height="550" width="800">
             <h:form id="inquiryForm">
-                <h:outputText value="询价物料:#{bean.purchaseRequestItem.material.label}" />
+                <h:outputText value="询价物料:#{objItem.material.label}" />
                 <fr:listView header="询价">
                     <f:facet name="columns">
                         <p:column headerText="供应商">

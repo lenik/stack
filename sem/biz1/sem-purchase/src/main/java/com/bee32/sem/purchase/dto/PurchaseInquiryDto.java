@@ -5,7 +5,6 @@ import java.io.Serializable;
 import javax.free.ParseException;
 
 import org.apache.commons.lang.NotImplementedException;
-import org.zkoss.idom.Textual;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
@@ -14,16 +13,17 @@ import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.people.dto.OrgDto;
-import com.bee32.sem.purchase.entity.Inquiry;
+import com.bee32.sem.purchase.entity.PurchaseInquiry;
 import com.bee32.sem.world.monetary.MutableMCValue;
 
-public class InquiryDto
-        extends TxEntityDto<Inquiry>
+public class PurchaseInquiryDto
+        extends TxEntityDto<PurchaseInquiry>
         implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
-    OrgDto org;
+    PurchaseRequestItemDto purchaseRequestItem;
+    OrgDto supplier;
     MutableMCValue price;
     String deliveryDate;
     String quality;
@@ -31,13 +31,12 @@ public class InquiryDto
     String afterService;
     String other;
 
-    PurchaseRequestItemDto purchaseRequestItem;
-
     PurchaseAdviceDto purchaseAdvice;
 
     @Override
-    protected void _marshal(Inquiry source) {
-        org = mref(OrgDto.class, source.getOrg());
+    protected void _marshal(PurchaseInquiry source) {
+        purchaseRequestItem = mref(PurchaseRequestItemDto.class, source.getPurchaseRequestItem());
+        supplier = mref(OrgDto.class, source.getSupplier());
         price = source.getPrice().toMutable();
         deliveryDate = source.getDeliveryDate();
         quality = source.getQuality();
@@ -45,23 +44,19 @@ public class InquiryDto
         afterService = source.getAfterService();
         other = source.getOther();
 
-        purchaseRequestItem = mref(PurchaseRequestItemDto.class, source.getPurchaseRequestItem());
-
         purchaseAdvice = mref(PurchaseAdviceDto.class, source.getPurchaseAdvice());
-
     }
 
     @Override
-    protected void _unmarshalTo(Inquiry target) {
-        merge(target, "org", org);
+    protected void _unmarshalTo(PurchaseInquiry target) {
+        merge(target, "purchaseRequestItem", purchaseRequestItem);
+        merge(target, "supplier", supplier);
         target.setPrice(price);
         target.setDeliveryDate(deliveryDate);
         target.setQuality(quality);
         target.setPaymentTerm(paymentTerm);
         target.setAfterService(afterService);
         target.setOther(other);
-
-        merge(target, "purchaseRequestItem", purchaseRequestItem);
 
         merge(target, "purchaseAdvice", purchaseAdvice);
     }
@@ -72,12 +67,20 @@ public class InquiryDto
         throw new NotImplementedException();
     }
 
-    public OrgDto getOrg() {
-        return org;
+    public PurchaseRequestItemDto getPurchaseRequestItem() {
+        return purchaseRequestItem;
     }
 
-    public void setOrg(OrgDto org) {
-        this.org = org;
+    public void setPurchaseRequestItem(PurchaseRequestItemDto purchaseRequestItem) {
+        this.purchaseRequestItem = purchaseRequestItem;
+    }
+
+    public OrgDto getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(OrgDto supplier) {
+        this.supplier = supplier;
     }
 
     public MutableMCValue getPrice() {
@@ -88,7 +91,7 @@ public class InquiryDto
         this.price = price;
     }
 
-    @NLength(max = Inquiry.DELIVERY_DATE_LENGTH)
+    @NLength(max = PurchaseInquiry.DELIVERY_DATE_LENGTH)
     public String getDeliveryDate() {
         return deliveryDate;
     }
@@ -97,7 +100,7 @@ public class InquiryDto
         this.deliveryDate = TextUtil.normalizeSpace(deliveryDate);
     }
 
-    @NLength(max = Inquiry.QUALITY_LENGTH)
+    @NLength(max = PurchaseInquiry.QUALITY_LENGTH)
     public String getQuality() {
         return quality;
     }
@@ -106,7 +109,7 @@ public class InquiryDto
         this.quality = TextUtil.normalizeSpace(quality);
     }
 
-    @NLength(max = Inquiry.PAYMENT_TERM_LENGTH)
+    @NLength(max = PurchaseInquiry.PAYMENT_TERM_LENGTH)
     public String getPaymentTerm() {
         return paymentTerm;
     }
@@ -115,7 +118,7 @@ public class InquiryDto
         this.paymentTerm = TextUtil.normalizeSpace(paymentTerm);
     }
 
-    @NLength(max = Inquiry.AFTER_SERVICE_LENGTH)
+    @NLength(max = PurchaseInquiry.AFTER_SERVICE_LENGTH)
     public String getAfterService() {
         return afterService;
     }
@@ -124,21 +127,13 @@ public class InquiryDto
         this.afterService = TextUtil.normalizeSpace(afterService);
     }
 
-    @NLength(max = Inquiry.OTHER_LENGTH)
+    @NLength(max = PurchaseInquiry.OTHER_LENGTH)
     public String getOther() {
         return other;
     }
 
     public void setOther(String other) {
         this.other = TextUtil.normalizeSpace(other);
-    }
-
-    public PurchaseRequestItemDto getPurchaseRequestItem() {
-        return purchaseRequestItem;
-    }
-
-    public void setPurchaseRequestItem(PurchaseRequestItemDto purchaseRequestItem) {
-        this.purchaseRequestItem = purchaseRequestItem;
     }
 
     public PurchaseAdviceDto getPurchaseAdvice() {
@@ -152,7 +147,8 @@ public class InquiryDto
     @Override
     protected Serializable naturalId() {
         return new IdComposite(//
-                naturalId(org), //
-                naturalId(purchaseRequestItem));
+                naturalId(purchaseRequestItem), //
+                naturalId(supplier));
     }
+
 }

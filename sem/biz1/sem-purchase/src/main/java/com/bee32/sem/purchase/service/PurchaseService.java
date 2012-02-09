@@ -14,9 +14,8 @@ import javax.inject.Inject;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.arch.DataService;
-import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.sem.inventory.dto.MaterialDto;
-import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialWarehouseOption;
@@ -26,19 +25,21 @@ import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.inventory.service.IStockQuery;
 import com.bee32.sem.inventory.service.StockQueryOptions;
+import com.bee32.sem.people.dto.OrgDto;
+import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.purchase.dto.MaterialPlanDto;
 import com.bee32.sem.purchase.dto.MaterialPlanItemDto;
-import com.bee32.sem.purchase.dto.OrderHolderDto;
 import com.bee32.sem.purchase.dto.PlanOrderDto;
 import com.bee32.sem.purchase.dto.PurchaseAdviceDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestItemDto;
-import com.bee32.sem.purchase.entity.OrderHolder;
+import com.bee32.sem.purchase.entity.PurchaseTakeIn;
 
 public class PurchaseService
         extends DataService {
+
     @Inject
-    private IStockQuery stockQuery;
+    IStockQuery stockQuery;
 
     /**
      * 根据传入的物料计划，结合当前库存和物料的安全库存，计算所需要采购的量
@@ -129,89 +130,86 @@ public class PurchaseService
      * 根据采购请求和所选择的仓库id,自动生成采购入库单
      */
     @Transactional
-    public void genTakeInStockOrder(PurchaseRequestDto purchaseRequest)
+    public void generateTakeInStockOrders(PurchaseRequestDto purchaseRequest)
             throws NoPurchaseAdviceException, AdviceHaveNotVerifiedException, TakeInStockOrderAlreadyGeneratedException {
 
         // 先用map保存用户输入的warehouseId，因为后面的reload(purchaseRequest)会导致这些warehouseIds丢失
-        Map<Long, Integer> warehouseIdsWithItemId = new HashMap<Long, Integer>();
-        List<PurchaseRequestItemDto> itemListWithWarehouseIds = purchaseRequest.getItems();
-        for (PurchaseRequestItemDto itemWithWarehouseId : itemListWithWarehouseIds) {
-            warehouseIdsWithItemId.put(itemWithWarehouseId.getId(), itemWithWarehouseId.getWarehouseId());
+        Map<Long, Integer> itemWarehouseMap = new HashMap<Long, Integer>();
+        for (PurchaseRequestItemDto requestItem : purchaseRequest.getItems()) {
+            itemWarehouseMap.put(requestItem.getId(), requestItem.getWarehouseId());
         }
 
         purchaseRequest = reload(purchaseRequest);
 
         // 检测purchaseReqeust是否已经生成过采购入库单
-        if (purchaseRequest.getOrderHolders() != null && purchaseRequest.getOrderHolders().size() > 0) {
+        if (!purchaseRequest.getTakeIns().isEmpty()) {
             throw new TakeInStockOrderAlreadyGeneratedException();
         }
 
         // 检测有没有询价和审核采购建议
-        for (PurchaseRequestItemDto item : purchaseRequest.getItems()) {
-            PurchaseAdviceDto advice = item.getPurchaseAdvice();
+        for (PurchaseRequestItemDto requestItem : purchaseRequest.getItems()) {
+            PurchaseAdviceDto advice = requestItem.getPurchaseAdvice();
             if (advice == null || advice.getId() == null) {
                 throw new NoPurchaseAdviceException();
             }
 
             // TODO verify check
-// if(!advice.isVerified()) {
-// throw new AdviceHaveNotVerifiedException();
-// }
+            // if(!advice.isVerified()) {
+            // throw new AdviceHaveNotVerifiedException();
+            // }
         }
 
-        Map<String, List<PurchaseRequestItemDto>> splitMap //
-        = new HashMap<String, List<PurchaseRequestItemDto>>();
+        Map<Object, List<PurchaseRequestItemDto>> splitMap //
+        = new HashMap<Object, List<PurchaseRequestItemDto>>();
 
         // 按仓库和供应商区分要生成的采购入库单
         for (PurchaseRequestItemDto item : purchaseRequest.getItems()) {
+            OrgDto preferredSupplier = item.getPurchaseAdvice().getPreferredInquiry().getSupplier();
             // 以warehouseId和对应供应商的id组合成 x&y 的形式
-            StringBuilder builder = new StringBuilder();
-            builder.append(item.getWarehouseId());
-            builder.append("&");
-            builder.append(item.getPurchaseAdvice().getPreferredInquiry().getOrg().getId());
+            IdComposite key = new IdComposite(item.getWarehouseId(), preferredSupplier.getId());
 
-            if (!splitMap.keySet().contains(builder.toString())) {
+            if (!splitMap.containsKey(key)) {
                 List<PurchaseRequestItemDto> newItemList = new ArrayList<PurchaseRequestItemDto>();
-                splitMap.put(builder.toString(), newItemList);
+                splitMap.put(key, newItemList);
             }
 
-            List<PurchaseRequestItemDto> itemList = splitMap.get(builder.toString());
-
+            List<PurchaseRequestItemDto> itemList = splitMap.get(key);
             itemList.add(item);
         }
 
         // 3.按仓库生成subject为takeIn的StockOrder->StockOrderItem*
         for (List<PurchaseRequestItemDto> itemList : splitMap.values()) {
+            OrgDto preferredSupplier = itemList.get(0).getPurchaseAdvice().getPreferredInquiry().getSupplier();
 
-            StockOrderDto stockOrder = new StockOrderDto().create();
-            stockOrder.setSubject(StockOrderSubject.TAKE_IN);
-            stockOrder.setLabel("从采购请求生成的入库单");
-            stockOrder.setOrg(itemList.get(0).getPurchaseAdvice().getPreferredInquiry().getOrg());
+            StockOrder _takeInOrder = new StockOrder();
+            _takeInOrder.setSubject(StockOrderSubject.TAKE_IN);
+            _takeInOrder.setLabel("从采购请求生成的入库单");
+            _takeInOrder.setOrg((Org) preferredSupplier.unmarshal());
 
             for (PurchaseRequestItemDto item : itemList) {
-                StockOrderItemDto stockOrderItem = new StockOrderItemDto().create();
+                StockOrderItem _item = new StockOrderItem();
 
-                stockOrderItem.setParent(stockOrder);
-                stockOrderItem.setMaterial(item.getMaterial());
-                stockOrderItem.setQuantity(item.getPlanQuantity());
-                stockOrderItem.setPrice(item.getPurchaseAdvice().getPreferredInquiry().getPrice());
-                stockOrderItem.setDescription("由采购请求生成的入库明细项目");
+                _item.setParent(_takeInOrder);
+                _item.setMaterial(item.getMaterial().unmarshal());
+                _item.setQuantity(item.getPlanQuantity());
+                _item.setPrice(item.getPurchaseAdvice().getPreferredInquiry().getPrice());
+                _item.setDescription("由采购请求生成的入库明细项目");
 
-                stockOrder.addItem(stockOrderItem);
+                _takeInOrder.addItem(_item);
 
                 // 保存以上StockOrder*
-                StockOrder _stockOrder = (StockOrder) stockOrder.unmarshal();
-                StockWarehouse warehouse = asFor(StockWarehouse.class).get(warehouseIdsWithItemId.get(item.getId()));
-                _stockOrder.setWarehouse(warehouse);
-                asFor(StockOrder.class).saveOrUpdate(_stockOrder);
+                StockWarehouse warehouse = asFor(StockWarehouse.class).lazyLoad(itemWarehouseMap.get(item.getId()));
+                _takeInOrder.setWarehouse(warehouse);
+                asFor(StockOrder.class).saveOrUpdate(_takeInOrder);
 
                 // 填充并保存OrderHolder,以在PurchaseRequest和StockOrder之间建立关联
-                OrderHolderDto orderHolder = new OrderHolderDto().create();
-                orderHolder.setPurchaseRequest(purchaseRequest);
-                orderHolder.setStockOrder(DTOs.marshal(StockOrderDto.class, _stockOrder)); // 重新marshal，以便dto中包含id
+                PurchaseTakeIn _takeIn = new PurchaseTakeIn();
+                _takeIn.setPurchaseRequest(purchaseRequest.unmarshal());
+                _takeIn.setStockOrder(_takeInOrder); // 重新marshal，以便dto中包含id
 
-                asFor(OrderHolder.class).saveOrUpdate(orderHolder.unmarshal());
+                asFor(PurchaseTakeIn.class).saveOrUpdate(_takeIn);
             }
         }
     }
+
 }

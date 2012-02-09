@@ -7,9 +7,9 @@ import org.apache.commons.lang.NotImplementedException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.inventory.dto.StockOrderDto;
-import com.bee32.sem.purchase.entity.OrderHolder;
+import com.bee32.sem.purchase.entity.PurchaseTakeIn;
 
-public class OrderHolderDto extends TxEntityDto<OrderHolder> {
+public class PurchaseTakeInDto extends TxEntityDto<PurchaseTakeIn> {
 
     private static final long serialVersionUID = 1L;
 
@@ -17,13 +17,13 @@ public class OrderHolderDto extends TxEntityDto<OrderHolder> {
     StockOrderDto stockOrder;
 
     @Override
-    protected void _marshal(OrderHolder source) {
+    protected void _marshal(PurchaseTakeIn source) {
         purchaseRequest = mref(PurchaseRequestDto.class, source.getPurchaseRequest());
         stockOrder = mref(StockOrderDto.class, source.getStockOrder());
     }
 
     @Override
-    protected void _unmarshalTo(OrderHolder target) {
+    protected void _unmarshalTo(PurchaseTakeIn target) {
         merge(target, "purchaseRequest", purchaseRequest);
         merge(target, "stockOrder", stockOrder);
     }

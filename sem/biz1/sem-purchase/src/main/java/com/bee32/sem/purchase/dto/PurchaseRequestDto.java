@@ -1,6 +1,6 @@
 package com.bee32.sem.purchase.dto;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.free.NotImplementedException;
@@ -20,11 +20,12 @@ public class PurchaseRequestDto
 
     public static final int ITEMS = 1;
     public static final int PLANS = 2;
+    public static final int TAKE_INS = 4;
 
     List<PurchaseRequestItemDto> items;
     List<MaterialPlanDto> plans;
 
-    List<OrderHolderDto> orderHolders;
+    List<PurchaseTakeInDto> takeIns;
 
     SingleVerifierWithNumberSupportDto singleVerifierWithNumberSupport;
 
@@ -33,14 +34,17 @@ public class PurchaseRequestDto
         if (selection.contains(ITEMS))
             items = marshalList(PurchaseRequestItemDto.class, source.getItems());
         else
-            items = new ArrayList<PurchaseRequestItemDto>();
+            items = Collections.emptyList();
 
         if (selection.contains(PLANS))
             plans = marshalList(MaterialPlanDto.class, source.getPlans());
         else
-            plans = new ArrayList<MaterialPlanDto>();
+            plans = Collections.emptyList();
 
-        orderHolders = marshalList(OrderHolderDto.class, source.getOrderHolders());
+        if (selection.contains(TAKE_INS))
+            takeIns = mrefList(PurchaseTakeInDto.class, source.getTakeIns());
+        else
+            takeIns = Collections.emptyList();
 
         singleVerifierWithNumberSupport = marshal(SingleVerifierWithNumberSupportDto.class, source.getVerifyContext());
     }
@@ -53,7 +57,7 @@ public class PurchaseRequestDto
         if (selection.contains(PLANS))
             mergeList(target, "plans", plans);
 
-        mergeList(target, "orderHolders", orderHolders);
+        mergeList(target, "takeIns", takeIns);
 
         merge(target, "verifyContext", singleVerifierWithNumberSupport);
     }
@@ -105,7 +109,6 @@ public class PurchaseRequestDto
             items.get(index).setIndex(index);
     }
 
-
     public List<MaterialPlanDto> getPlans() {
         return plans;
     }
@@ -114,30 +117,27 @@ public class PurchaseRequestDto
         this.plans = plans;
     }
 
-    public List<OrderHolderDto> getOrderHolders() {
-        return orderHolders;
+    public List<PurchaseTakeInDto> getTakeIns() {
+        return takeIns;
     }
 
-    public void setOrderHolders(List<OrderHolderDto> orderHolders) {
-        this.orderHolders = orderHolders;
+    public void setTakeIns(List<PurchaseTakeInDto> takeIns) {
+        if (takeIns == null)
+            throw new NullPointerException("takeIns");
+        this.takeIns = takeIns;
     }
 
-    public synchronized void addOrderHolder(OrderHolderDto orderHolder) {
-        if (orderHolder == null)
-            throw new NullPointerException("orderHolder");
-
-        orderHolders.add(orderHolder);
+    public synchronized void addTakeIn(PurchaseTakeInDto takeIn) {
+        if (takeIn == null)
+            throw new NullPointerException("takeIn");
+        if (!takeIns.contains(takeIn))
+            takeIns.add(takeIn);
     }
 
-    public synchronized void removeOrderHolder(OrderHolderDto orderHolder) {
-        if (orderHolder == null)
-            throw new NullPointerException("orderHolder");
-
-        int index = orderHolders.indexOf(orderHolder);
-        if (index == -1)
-            return /* false */;
-
-        orderHolders.remove(index);
+    public synchronized void removeTakeIn(PurchaseTakeInDto takeIn) {
+        if (takeIn == null)
+            throw new NullPointerException("takeIn");
+        takeIns.remove(takeIn);
         // orderHolder.detach();
     }
 

@@ -17,8 +17,10 @@ import com.bee32.sem.world.monetary.MCValue;
  * 采购询价
  */
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "inquiry_seq", allocationSize = 1)
-public class Inquiry extends TxEntity implements DecimalConfig {
+@SequenceGenerator(name = "idgen", sequenceName = "purchase_inquiry_seq", allocationSize = 1)
+public class PurchaseInquiry
+        extends TxEntity
+        implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,7 +30,8 @@ public class Inquiry extends TxEntity implements DecimalConfig {
     public static final int AFTER_SERVICE_LENGTH = 500;
     public static final int OTHER_LENGTH = 500;
 
-    Org org;
+    PurchaseRequestItem purchaseRequestItem;
+    Org supplier;
     MCValue price;
     String deliveryDate;
     String quality;
@@ -36,26 +39,38 @@ public class Inquiry extends TxEntity implements DecimalConfig {
     String afterService;
     String other;
 
-    PurchaseRequestItem purchaseRequestItem;
-
     PurchaseAdvice purchaseAdvice;
+
+    /**
+     * 需要询价的采购项目
+     */
+    @ManyToOne(optional = false)
+    @NaturalId
+    public PurchaseRequestItem getPurchaseRequestItem() {
+        return purchaseRequestItem;
+    }
+
+    public void setPurchaseRequestItem(PurchaseRequestItem purchaseRequestItem) {
+        if (purchaseRequestItem == null)
+            throw new NullPointerException("purchaseRequestItem");
+        this.purchaseRequestItem = purchaseRequestItem;
+    }
 
     /**
      * 供应商
      */
     @ManyToOne
     @NaturalId
-    public Org getOrg() {
-        return org;
+    public Org getSupplier() {
+        return supplier;
     }
 
-    public void setOrg(Org org) {
-        this.org = org;
+    public void setSupplier(Org supplier) {
+        this.supplier = supplier;
     }
 
     /**
      * 价格
-     * @return
      */
     public MCValue getPrice() {
         return price;
@@ -66,7 +81,7 @@ public class Inquiry extends TxEntity implements DecimalConfig {
     }
 
     /**
-     * 交货时间，类型为String,  举例： 50天，2周  etc.
+     * 交货时间，类型为String, 举例： 50天，2周 etc.
      */
     @Column(length = DELIVERY_DATE_LENGTH)
     public String getDeliveryDate() {
@@ -79,7 +94,6 @@ public class Inquiry extends TxEntity implements DecimalConfig {
 
     /**
      * 质量
-     * @return
      */
     @Column(length = QUALITY_LENGTH)
     public String getQuality() {
@@ -92,7 +106,6 @@ public class Inquiry extends TxEntity implements DecimalConfig {
 
     /**
      * 付款方式
-     * @return
      */
     @Column(length = PAYMENT_TERM_LENGTH)
     public String getPaymentTerm() {
@@ -127,25 +140,13 @@ public class Inquiry extends TxEntity implements DecimalConfig {
         this.other = other;
     }
 
-    /**
-     * 需要询价的采购项目
-     */
-    @ManyToOne
-    @NaturalId
-    public PurchaseRequestItem getPurchaseRequestItem() {
-        return purchaseRequestItem;
-    }
-
-    public void setPurchaseRequestItem(PurchaseRequestItem purchaseRequestItem) {
-        this.purchaseRequestItem = purchaseRequestItem;
+    @OneToOne(mappedBy = "preferredInquiry")
+    public PurchaseAdvice getPurchaseAdvice() {
+        return purchaseAdvice;
     }
 
     public void setPurchaseAdvice(PurchaseAdvice purchaseAdvice) {
         this.purchaseAdvice = purchaseAdvice;
     }
 
-    @OneToOne(mappedBy = "preferredInquiry")
-    public PurchaseAdvice getPurchaseAdvice() {
-        return purchaseAdvice;
-    }
 }

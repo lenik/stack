@@ -4,19 +4,20 @@
     xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
     <ui:param name="title" value="物料计划管理" />
+    <ui:param name="verifiable" value="true" />
     <ui:param name="bean" value="#{materialPlanAdminBean}" />
     <ui:param name="obj" value="#{bean.openedObject}" />
 
     <ui:define name="editDialogContent">
-        <p:panel header="物料计划管理">
+        <p:panel id="info" header="物料计划管理">
             <t:panelGrid columns="4">
                 <h:outputText value="标识:" />
                 <t:panelGroup colspan="3">
-                    <h:outputText value="#{bean.materialPlan.id}" style="font-weight:bold;font-size:large" />
+                    <h:outputText value="#{obj.id}" style="font-weight:bold;font-size:large" />
                 </t:panelGroup>
 
                 <h:outputText value="时间:" />
-                <h:outputText value="#{bean.materialPlan.createdDate}">
+                <h:outputText value="#{obj.createdDate}">
                     <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                 </h:outputText>
                 <h:outputText value="制单人:" />
@@ -24,18 +25,18 @@
 
                 <h:outputText value="生产任务单" />
                 <t:panelGroup>
-                    <p:inputText id="task" value="#{bean.materialPlan.task.id}" readonly="true" />
-                    <p:commandButton value="..." onclick="taskDialog.show()" disabled="#{!bean.editable}" />
+                    <p:inputText id="task" value="#{obj.task.id}" readonly="true" />
+                    <p:commandButton value="..." onclick="taskDialog.show()" disabled="#{not bean.editing}" />
                 </t:panelGroup>
                 <t:panelGroup />
                 <t:panelGroup />
 
                 <h:outputText value="备注" />
                 <t:panelGroup colspan="3">
-                    <p:inputText value="#{bean.materialPlan.memo}" />
+                    <p:inputText value="#{obj.memo}" />
                 </t:panelGroup>
 
-                <p:commandButton value="锁定库存" disabled="#{!bean.editable}" actionListener="#{bean.queryStock}"
+                <p:commandButton value="锁定库存" disabled="#{not bean.editing}" actionListener="#{bean.queryStock}"
                     oncomplete="lockStockDialog.show()" update=":lockStockForm:lockStockPanel" />
                 <t:panelGroup colspan="3" />
             </t:panelGrid>
@@ -87,19 +88,19 @@
             <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
 
                 <h:outputLabel value="物料" />
-                <h:outputText value="#{bean.materialPlanItem.material.label}" />
+                <h:outputText value="#{item.material.label}" />
 
                 <h:outputLabel value="数量" />
-                <h:outputText value="#{bean.materialPlanItem.quantity}" />
+                <h:outputText value="#{item.quantity}" />
 
                 <h:outputLabel value="优选供应商" />
                 <t:panelGroup>
                     <p:inputText id="preferredSupplier" value="#{bean.selectedSupplier.name}" readonly="true" />
-                    <p:commandButton value="..." onclick="preferredSupplierDialog.show()" disabled="#{!bean.editable}" />
+                    <p:commandButton value="..." onclick="preferredSupplierDialog.show()" disabled="#{not bean.editing}" />
                 </t:panelGroup>
 
                 <h:outputLabel value="附加要求" />
-                <p:inputText value="#{bean.materialPlanItem.additionalRequirement}" />
+                <p:inputText value="#{item.additionalRequirement}" />
             </t:panelGrid>
         </fr:listView>
 

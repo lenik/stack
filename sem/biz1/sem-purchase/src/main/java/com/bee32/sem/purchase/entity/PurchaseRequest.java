@@ -32,7 +32,7 @@ public class PurchaseRequest
 
     List<MaterialPlan> plans = new ArrayList<MaterialPlan>();
     List<PurchaseRequestItem> items = new ArrayList<PurchaseRequestItem>();
-    List<OrderHolder> orderHolders = new ArrayList<OrderHolder>();
+    List<PurchaseTakeIn> takeIns = new ArrayList<PurchaseTakeIn>();
 
     public PurchaseRequest() {
         setVerifyContext(new SingleVerifierWithNumberSupport());
@@ -99,33 +99,16 @@ public class PurchaseRequest
         return totalPlanQuantity;
     }
 
-    @OneToMany(mappedBy = "purchaseRequest", orphanRemoval = true)
+    @OneToMany(orphanRemoval = true)
     @Cascade(CascadeType.ALL)
-    public List<OrderHolder> getOrderHolders() {
-        return orderHolders;
+    public List<PurchaseTakeIn> getTakeIns() {
+        return takeIns;
     }
 
-    public void setOrderHolders(List<OrderHolder> orderHolders) {
-        this.orderHolders = orderHolders;
-    }
-
-    public synchronized void addOrderHolder(OrderHolder orderHolder) {
-        if (orderHolder == null)
-            throw new NullPointerException("orderHolder");
-
-        orderHolders.add(orderHolder);
-    }
-
-    public synchronized void removeOrderHolder(OrderHolder orderHolder) {
-        if (orderHolder == null)
-            throw new NullPointerException("orderHolder");
-
-        int index = orderHolders.indexOf(orderHolder);
-        if (index == -1)
-            return /* false */;
-
-        orderHolders.remove(index);
-        orderHolder.detach();
+    public void setTakeIns(List<PurchaseTakeIn> takeIns) {
+        if (takeIns == null)
+            throw new NullPointerException("takeIns");
+        this.takeIns = takeIns;
     }
 
     public static final IPropertyAccessor<BigDecimal> totalPlanQuantityProperty = _property_(//

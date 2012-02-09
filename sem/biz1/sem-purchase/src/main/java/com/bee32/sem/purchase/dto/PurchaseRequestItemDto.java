@@ -35,8 +35,7 @@ public class PurchaseRequestItemDto
     PartyDto preferredSupplier;
     String additionalRequirement;
 
-    List<InquiryDto> inquiries;
-
+    List<PurchaseInquiryDto> inquiries;
     PurchaseAdviceDto purchaseAdvice;
 
     Integer warehouseId; // 公用于接收界面上传入的仓库id
@@ -53,9 +52,9 @@ public class PurchaseRequestItemDto
         additionalRequirement = source.getAdditionalRequirement();
 
         if (selection.contains(INQUIRIES))
-            inquiries = marshalList(InquiryDto.class, source.getInquiries());
+            inquiries = marshalList(PurchaseInquiryDto.class, source.getInquiries());
         else
-            inquiries = new ArrayList<InquiryDto>();
+            inquiries = new ArrayList<PurchaseInquiryDto>();
 
         purchaseAdvice = mref(PurchaseAdviceDto.class, source.getPurchaseAdvice());
     }
@@ -151,22 +150,22 @@ public class PurchaseRequestItemDto
         this.additionalRequirement = TextUtil.normalizeSpace(additionalRequirement);
     }
 
-    public List<InquiryDto> getInquiries() {
+    public List<PurchaseInquiryDto> getInquiries() {
         return inquiries;
     }
 
-    public void setInquiries(List<InquiryDto> inquiries) {
+    public void setInquiries(List<PurchaseInquiryDto> inquiries) {
         this.inquiries = inquiries;
     }
 
-    public synchronized void addInquiry(InquiryDto inquiry) {
+    public synchronized void addInquiry(PurchaseInquiryDto inquiry) {
         if (inquiry == null)
             throw new NullPointerException("inquiry");
 
         inquiries.add(inquiry);
     }
 
-    public synchronized void removeInquiry(InquiryDto inquiry) {
+    public synchronized void removeInquiry(PurchaseInquiryDto inquiry) {
         if (inquiry == null)
             throw new NullPointerException("inquiry");
 

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -12,6 +11,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
@@ -44,8 +45,7 @@ public class PurchaseRequestItem
     Party preferredSupplier;
     String additionalRequirement;
 
-    List<Inquiry> inquiries;
-
+    List<PurchaseInquiry> inquiries;
     PurchaseAdvice purchaseAdvice;
 
     @NaturalId
@@ -70,7 +70,7 @@ public class PurchaseRequestItem
         this.index = index;
     }
 
-    @NaturalId(mutable=true)
+    @NaturalId(mutable = true)
     @ManyToOne(optional = false)
     public Material getMaterial() {
         return material;
@@ -167,28 +167,27 @@ public class PurchaseRequestItem
         return this;
     }
 
-
     /**
      * 采购项目对应的询价
      */
-    @OneToMany(mappedBy = "purchaseRequestItem")
-    public List<Inquiry> getInquiries() {
+    @OneToMany(mappedBy = "purchaseRequestItem", orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
+    public List<PurchaseInquiry> getInquiries() {
         return inquiries;
     }
 
-    public void setInquiries(List<Inquiry> inquiries) {
+    public void setInquiries(List<PurchaseInquiry> inquiries) {
         this.inquiries = inquiries;
     }
 
-
-    public synchronized void addInquiry(Inquiry inquiry) {
+    public synchronized void addInquiry(PurchaseInquiry inquiry) {
         if (inquiry == null)
             throw new NullPointerException("inquiry");
 
         inquiries.add(inquiry);
     }
 
-    public synchronized void removeInquiry(Inquiry inquiry) {
+    public synchronized void removeInquiry(PurchaseInquiry inquiry) {
         if (inquiry == null)
             throw new NullPointerException("inquiry");
 
@@ -200,11 +199,11 @@ public class PurchaseRequestItem
         inquiry.detach();
     }
 
-
     /**
      * 采购建议
      */
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "purchaseRequestItem", orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
     public PurchaseAdvice getPurchaseAdvice() {
         return purchaseAdvice;
     }
@@ -212,6 +211,5 @@ public class PurchaseRequestItem
     public void setPurchaseAdvice(PurchaseAdvice purchaseAdvice) {
         this.purchaseAdvice = purchaseAdvice;
     }
-
 
 }

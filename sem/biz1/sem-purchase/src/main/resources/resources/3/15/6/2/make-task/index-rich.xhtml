@@ -4,18 +4,19 @@
     xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
     <ui:param name="title" value="生产任务单" />
+    <ui:param name="verifiable" value="true" />
     <ui:param name="bean" value="#{maskTaskAdminBean}" />
 
-    <ui:define name="content">
-        <p:panel header="生产任务单管理">
+    <ui:define name="editDialogContent">
+        <p:panel id="info" header="生产任务单管理">
             <t:panelGrid columns="4">
                 <h:outputText value="标识:" />
                 <t:panelGroup colspan="3">
-                    <h:outputText value="#{bean.makeTask.id}" style="font-weight:bold;font-size:large" />
+                    <h:outputText value="#{obj.id}" style="font-weight:bold;font-size:large" />
                 </t:panelGroup>
 
                 <h:outputText value="时间:" />
-                <h:outputText value="#{bean.makeTask.createdDate}">
+                <h:outputText value="#{obj.createdDate}">
                     <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                 </h:outputText>
                 <h:outputText value="制单人:" />
@@ -23,8 +24,8 @@
 
                 <h:outputText value="定单:" />
                 <t:panelGroup>
-                    <p:inputText id="order" value="#{bean.makeTask.order.id}" readonly="true" />
-                    <p:commandButton value="..." onclick="orderDialog.show()" disabled="#{!bean.editable}" />
+                    <p:inputText id="order" value="#{obj.order.id}" readonly="true" />
+                    <p:commandButton value="..." onclick="chooseMakeOrderDialog.show()" disabled="#{not bean.editing}" />
                 </t:panelGroup>
                 <t:panelGroup />
                 <t:panelGroup />
@@ -50,27 +51,26 @@
 
     <ui:define name="dialogs">
 
-        <sem:choosePartyDialog header="选择客户" var="customerDialog" />
-        <sem:chooseMakeOrderDialog />
+        <sem:choosePartyDialog id="d-customer" header="选择客户" target="#{obj.customer}" update=":editDialog:form:info" />
+        <sem:chooseMakeOrderDialog id="d-makeOrder" target="#{obj.makeOrder}" update=":editDialog:form:info" />
 
         <fr:listView header="生产任务单项目编辑">
             <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
 
                 <h:outputLabel value="物料" />
-                <h:outputText value="#{bean.makeTaskItem.part.target.label}" />
+                <h:outputText value="#{item.part.target.label}" />
 
                 <h:outputLabel value="数量" />
-                <p:inputText value="#{bean.makeTaskItem.quantity}" />
+                <p:inputText value="#{item.quantity}" />
 
                 <h:outputText value="完工时间:" />
-                <p:calendar navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{bean.makeTaskItem.deadline}"
+                <p:calendar navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{item.deadline}"
                     showOn="button" />
 
                 <h:outputLabel value="备注" />
-                <p:inputText value="#{bean.makeTaskItem.description}" />
+                <p:inputText value="#{item.description}" />
 
             </t:panelGrid>
-        </p:dialog>
-
+        </fr:listView>
     </ui:define>
 </ui:composition>

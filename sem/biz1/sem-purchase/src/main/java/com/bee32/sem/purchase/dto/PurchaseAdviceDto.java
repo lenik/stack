@@ -18,42 +18,49 @@ public class PurchaseAdviceDto
 
     private static final long serialVersionUID = 1L;
 
-    InquiryDto preferredInquiry;
-    String reason;
-
     PurchaseRequestItemDto purchaseRequestItem;
+    PurchaseInquiryDto preferredInquiry;
+    String reason;
 
     SingleVerifierSupportDto singleVerifierSupport;
 
     @Override
     protected void _marshal(PurchaseAdvice source) {
-        preferredInquiry = mref(InquiryDto.class, source.getPreferredInquiry());
-        reason = source.getReason();
         purchaseRequestItem = mref(PurchaseRequestItemDto.class, source.getPurchaseRequestItem());
+        preferredInquiry = mref(PurchaseInquiryDto.class, source.getPreferredInquiry());
+        reason = source.getReason();
 
         singleVerifierSupport = marshal(SingleVerifierSupportDto.class, source.getVerifyContext());
-
     }
 
     @Override
     protected void _unmarshalTo(PurchaseAdvice target) {
+        merge(target, "purchaseRequestItem", purchaseRequestItem);
         merge(target, "preferredInquiry", preferredInquiry);
         target.setReason(reason);
-        merge(target, "purchaseRequestItem", purchaseRequestItem);
 
         merge(target, "verifyContext", singleVerifierSupport);
     }
 
     @Override
-    protected void _parse(TextMap map) throws ParseException {
+    protected void _parse(TextMap map)
+            throws ParseException {
         throw new NotImplementedException();
     }
 
-    public InquiryDto getPreferredInquiry() {
+    public PurchaseRequestItemDto getPurchaseRequestItem() {
+        return purchaseRequestItem;
+    }
+
+    public void setPurchaseRequestItem(PurchaseRequestItemDto purchaseRequestItem) {
+        this.purchaseRequestItem = purchaseRequestItem;
+    }
+
+    public PurchaseInquiryDto getPreferredInquiry() {
         return preferredInquiry;
     }
 
-    public void setPreferredInquiry(InquiryDto preferredInquiry) {
+    public void setPreferredInquiry(PurchaseInquiryDto preferredInquiry) {
         this.preferredInquiry = preferredInquiry;
     }
 
@@ -64,15 +71,6 @@ public class PurchaseAdviceDto
 
     public void setReason(String reason) {
         this.reason = TextUtil.normalizeSpace(reason);
-    }
-
-    public PurchaseRequestItemDto getPurchaseRequestItem() {
-        return purchaseRequestItem;
-    }
-
-    public void setPurchaseRequestItem(
-            PurchaseRequestItemDto purchaseRequestItem) {
-        this.purchaseRequestItem = purchaseRequestItem;
     }
 
     @Override
