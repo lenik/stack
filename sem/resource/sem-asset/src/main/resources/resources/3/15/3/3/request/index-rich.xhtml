@@ -1,16 +1,14 @@
-<ui:composition template="/template/primefaces.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+<ui:composition template="/template/scroll-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
     xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk">
 
     <ui:param name="title" value="资金流业务" />
+    <ui:param name="verifiable" value="true" />
+    <ui:param name="monetary" value="#{monetaryDictsBean}" />
     <ui:param name="bean" value="#{budgetRequestAdminBean}" />
     <ui:param name="obj" value="#{bean.openedObject}" />
 
-    <ui:define name="toolbarPeripherals">
-        <p:commandButton value="审核" disabled="#{bean.editable}" onclick="verifyDlg.show();" />
-    </ui:define>
-
-    <ui:define name="form">
+    <ui:define name="editDialogForm">
         <p:panel header="资金流业务管理">
             <t:panelGrid columns="4">
                 <h:outputText value="时间:" />
@@ -18,27 +16,26 @@
                     <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                 </h:outputText>
                 <h:outputText value="经办人:" />
-                <p:inputText value="#{bean.creator}" disabled="true" />
+                <p:inputText value="#{obj.owner.displayName}" disabled="true" />
 
                 <h:outputLabel value="金额:" />
-                <p:inputText value="#{obj.valueDigit}" disabled="#{!bean.editable}" />
+                <p:inputText value="#{obj.value.value}" disabled="#{not bean.editing}" />
                 <h:outputLabel value="币种" />
-                <p:selectOneMenu value="#{obj.valueCurrency}" disabled="#{!bean.editable}" style="width:200px;">
+                <p:selectOneMenu value="#{obj.value.currencyCode}" disabled="#{not bean.editing}" style="width:200px;">
                     <f:selectItem itemValue="" itemLabel="--选择币种--" />
-                    <f:selectItems value="#{bean.currencies}" />
+                    <f:selectItems value="#{monetary.currencySelectItems}" />
                 </p:selectOneMenu>
 
                 <h:outputText value="摘要:" />
                 <t:panelGroup colspan="3">
-                    <p:inputText value="#{obj.description}" disabled="#{!bean.editable}" style="width:400px" />
+                    <p:inputText value="#{obj.description}" disabled="#{not bean.editing}" style="width:400px" />
                 </t:panelGroup>
 
                 <h:outputText value="业务详细:" />
                 <t:panelGroup colspan="3">
-                    <p:inputTextarea style="width:400px;height:300px;" value="#{obj.text}" disabled="#{!bean.editable}" />
+                    <p:inputTextarea style="width:400px;height:300px;" value="#{obj.text}" disabled="#{not bean.editing}" />
                 </t:panelGroup>
             </t:panelGrid>
         </p:panel>
     </ui:define>
-
 </ui:composition>

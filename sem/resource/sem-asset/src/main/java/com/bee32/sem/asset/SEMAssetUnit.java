@@ -2,13 +2,14 @@ package com.bee32.sem.asset;
 
 import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
+import com.bee32.sem.asset.entity.AccountInit;
+import com.bee32.sem.asset.entity.AccountInitItem;
 import com.bee32.sem.asset.entity.AccountSnapshot;
 import com.bee32.sem.asset.entity.AccountSnapshotItem;
 import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.asset.entity.AccountTicket;
 import com.bee32.sem.asset.entity.AccountTicketItem;
 import com.bee32.sem.asset.entity.BudgetRequest;
-import com.bee32.sem.asset.entity.InitAccountTicketItem;
 import com.bee32.sem.asset.entity.StockPurchase;
 import com.bee32.sem.asset.entity.StockSale;
 import com.bee32.sem.asset.entity.StockTrade;
@@ -23,6 +24,8 @@ public class SEMAssetUnit
 
     @Override
     protected void preamble() {
+        add(AccountInit.class);
+        add(AccountInitItem.class);
         add(AccountSubject.class);
         add(AccountTicket.class);
         add(AccountTicketItem.class);
@@ -33,6 +36,5 @@ public class SEMAssetUnit
         add(StockSale.class);
         add(StockTrade.class);
         add(StockTradeItem.class);
-        add(InitAccountTicketItem.class);
     }
 }

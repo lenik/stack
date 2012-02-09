@@ -27,7 +27,7 @@ public class SEMAssetModuleTest
 
     public static void main(String[] args)
             throws IOException {
-        new SEMAssetModuleTest().browseAndWait(SEMAssetModule.PREFIX + "/accountSubject/");
+        new SEMAssetModuleTest().browseAndWait(SEMAssetModule.PREFIX + "/query/");
     }
 
     static {

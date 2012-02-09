@@ -12,16 +12,17 @@ public class SEMAssetMenu
 
     public static MenuNode ASSET = menu(SEMFrameMenu.BIZ1, 30, "asset");
 
-    static MenuNode accountSubjectAdmin = entry(ASSET, 1, "accountSubjectAdmin", ASSET_.join("accountSubject/"));
+    static MenuNode accountSubjectAdmin = entry(ASSET, 1, "accountSubjectAdmin", ASSET_.join("subject/"));
 
-    static MenuNode accountInit = entry(ASSET, 2, "accountInit", ASSET_.join("accountInit/"));
-    static MenuNode budgetRequestAdmin = entry(ASSET, 3, "budgetRequestAdmin", ASSET_.join("budgetRequest/"));
-    static MenuNode accountTicketAdmin = entry(ASSET, 4, "accountTicketAdmin", ASSET_.join("accountTicket/"));
+    static MenuNode accountInit = entry(ASSET, 2, "accountInit", ASSET_.join("init/"));
+    static MenuNode budgetRequestAdmin = entry(ASSET, 3, "budgetRequestAdmin", ASSET_.join("request/"));
+    static MenuNode accountTicketAdmin = entry(ASSET, 4, "accountTicketAdmin", ASSET_.join("ticket/"));
 
-    static MenuNode stockSaleAdmin = entry(ASSET, 5, "stockSaleAdmin", ASSET_.join("stockTrade/?type=SALE"));
-    static MenuNode stockPurchaseAdmin = entry(ASSET, 6, "stockPurchaseAdmin", ASSET_.join("stockTrade/?type=PURCHASE"));
+    static MenuNode stockSaleAdmin = entry(ASSET, 5, "stockSaleAdmin", ASSET_.join("stock-trade/?type=SALE"));
+    static MenuNode stockPurchaseAdmin = entry(ASSET, 6, "stockPurchaseAdmin",
+            ASSET_.join("stock-trade/?type=PURCHASE"));
 
-    static MenuNode assetQuery = entry(ASSET, 7, "assetQuery", ASSET_.join("assetQuery/"));
+    static MenuNode assetQuery = entry(ASSET, 7, "assetQuery", ASSET_.join("query/"));
 
     @Override
     protected void preamble() {

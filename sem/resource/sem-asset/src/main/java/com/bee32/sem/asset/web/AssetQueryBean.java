@@ -8,21 +8,17 @@ import java.util.List;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
-import com.bee32.plover.criteria.hibernate.Like;
-import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.ox1.dict.PoNode;
 import com.bee32.sem.asset.dto.AccountSubjectDto;
 import com.bee32.sem.asset.dto.AccountTicketItemDto;
-import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.asset.entity.AccountTicketItem;
 import com.bee32.sem.asset.service.AssetQueryOptions;
 import com.bee32.sem.asset.service.IAssetQuery;
 import com.bee32.sem.asset.service.SumNode;
 import com.bee32.sem.asset.service.SumTree;
 import com.bee32.sem.people.dto.PartyDto;
-import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.world.monetary.MCValue;
 
 public class AssetQueryBean
@@ -36,16 +32,7 @@ public class AssetQueryBean
     Date fromDate;
     Date toDate;
 
-    private String partyPattern;
-    private List<PartyDto> parties;
-    private PartyDto selectedParty;
-
-    private String accountSubjectCodePattern;
-    private String accountSubjectNamePattern;
-    private List<AccountSubjectDto> accountSubjects;
-    private AccountSubjectDto selectedAccountSubject;
-
-    private TreeNode root;
+    TreeNode root;
 
     public AssetQueryBean() {
         all = false;
@@ -93,94 +80,8 @@ public class AssetQueryBean
         this.toDate = toDate;
     }
 
-    public String getPartyPattern() {
-        return partyPattern;
-    }
-
-    public void setPartyPattern(String partyPattern) {
-        this.partyPattern = partyPattern;
-    }
-
-    public List<PartyDto> getParties() {
-        return parties;
-    }
-
-    public void setParties(List<PartyDto> parties) {
-        this.parties = parties;
-    }
-
-    public PartyDto getSelectedParty() {
-        return selectedParty;
-    }
-
-    public void setSelectedParty(PartyDto selectedParty) {
-        this.selectedParty = selectedParty;
-    }
-
-    public String getAccountSubjectCodePattern() {
-        return accountSubjectCodePattern;
-    }
-
-    public void setAccountSubjectCodePattern(String accountSubjectCodePattern) {
-        this.accountSubjectCodePattern = accountSubjectCodePattern;
-    }
-
-    public String getAccountSubjectNamePattern() {
-        return accountSubjectNamePattern;
-    }
-
-    public void setAccountSubjectNamePattern(String accountSubjectNamePattern) {
-        this.accountSubjectNamePattern = accountSubjectNamePattern;
-    }
-
-    public List<AccountSubjectDto> getAccountSubjects() {
-        return accountSubjects;
-    }
-
-    public void setAccountSubjects(List<AccountSubjectDto> accountSubjects) {
-        this.accountSubjects = accountSubjects;
-    }
-
-    public AccountSubjectDto getSelectedAccountSubject() {
-        return selectedAccountSubject;
-    }
-
-    public void setSelectedAccountSubject(AccountSubjectDto selectedAccountSubject) {
-        this.selectedAccountSubject = selectedAccountSubject;
-    }
-
     public TreeNode getRoot() {
         return root;
-    }
-
-    public void findParty() {
-        if (partyPattern != null && !partyPattern.isEmpty()) {
-
-            List<Party> _parties = serviceFor(Party.class).list( //
-                    Or.of( //
-                    new Like("name", "%" + partyPattern + "%"), //
-                            new Like("fullName", "%" + partyPattern + "%")));
-
-            parties = DTOs.mrefList(PartyDto.class, _parties);
-        }
-    }
-
-    public void chooseParty() {
-        party = selectedParty;
-    }
-
-    public void findAccountSubject() {
-        // 在实体中,name代表科目代码，label代表科目名称
-        List<AccountSubject> _subjects = serviceFor(AccountSubject.class).list(
-                //
-                new Like("id", "%" + accountSubjectCodePattern + "%"),
-                new Like("label", "%" + accountSubjectNamePattern + "%"));
-
-        accountSubjects = DTOs.mrefList(AccountSubjectDto.class, 0, _subjects);
-    }
-
-    public void chooseAccountSubject() {
-        subject = selectedAccountSubject;
     }
 
     public void query() {

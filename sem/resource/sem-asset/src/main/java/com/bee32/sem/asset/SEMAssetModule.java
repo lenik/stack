@@ -2,9 +2,9 @@ package com.bee32.sem.asset;
 
 import com.bee32.plover.pub.oid.Oid;
 import com.bee32.sem.SEMOids;
+import com.bee32.sem.asset.entity.AccountInit;
 import com.bee32.sem.asset.entity.AccountTicket;
-import com.bee32.sem.asset.entity.AccountTicketItem;
-import com.bee32.sem.asset.entity.InitAccountTicketItem;
+import com.bee32.sem.asset.entity.BudgetRequest;
 import com.bee32.sem.asset.entity.StockPurchase;
 import com.bee32.sem.asset.entity.StockSale;
 import com.bee32.sem.asset.entity.StockTrade;
@@ -19,12 +19,12 @@ public class SEMAssetModule
 
     @Override
     protected void preamble() {
-        declareEntityPages(AccountTicket.class, "accountTicket");
-        declareEntityPages(AccountTicketItem.class, "accountTicketItem");
-        declareEntityPages(StockTrade.class, "stockTrade");
-        declareEntityPages(StockSale.class, "stockSale");
-        declareEntityPages(StockPurchase.class, "stockPurchase");
-        declareEntityPages(InitAccountTicketItem.class, "accountInit");
+        declareEntityPages(AccountInit.class, "init");
+        declareEntityPages(AccountTicket.class, "ticket");
+        declareEntityPages(BudgetRequest.class, "request");
+        declareEntityPages(StockTrade.class, "stock-trade");
+        declareEntityPages(StockSale.class, "stock-sale");
+        declareEntityPages(StockPurchase.class, "stock-purchase");
     }
 
 }

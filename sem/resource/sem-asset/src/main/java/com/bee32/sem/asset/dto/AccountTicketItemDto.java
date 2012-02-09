@@ -15,7 +15,7 @@ import com.bee32.sem.world.monetary.MutableMCValue;
 
 public class AccountTicketItemDto
         extends TxEntityDto<AccountTicketItem>
-        implements IVerifiableDto, IEnclosedObject<AccountTicketDto> {
+        implements IVerifiableDto, IEnclosedObject<Object> {
 
     private static final long serialVersionUID = 1L;
 
@@ -77,8 +77,8 @@ public class AccountTicketItemDto
     }
 
     @Override
-    public void setEnclosingObject(AccountTicketDto enclosingObject) {
-        setTicket(enclosingObject);
+    public void setEnclosingObject(Object enclosingObject) {
+        setTicket((AccountTicketDto) enclosingObject);
     }
 
     public AccountTicketDto getTicket() {

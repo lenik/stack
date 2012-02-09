@@ -81,7 +81,7 @@ public class AccountTicketItem
         setEndTime(date);
     }
 
-    @ManyToOne
+    @ManyToOne(optional = true)
     public AccountTicket getTicket() {
         return ticket;
     }
