@@ -735,6 +735,8 @@ public class SimpleEntityViewBean
     static void checkDeleteFlags(int deleteFlags) {
     }
 
+    /* ********************************************************************** */
+
     @Override
     public List<SearchFragment> getSearchFragments() {
         return searchFragments;
@@ -891,5 +893,7 @@ public class SimpleEntityViewBean
                 CommonCriteria.ownedBy(principal));
         searchPrincipal = null;
     }
+
+    /* ********************************************************************** */
 
 }

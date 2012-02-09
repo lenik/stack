@@ -37,7 +37,7 @@
     </ui:define>
 
     <ui:define name="buttons.right.0">
-        <p:commandButton id="ok" value="确定" oncomplete="${var}.hide()" update="${update}">
+        <p:commandButton id="ok-validated" value="确定" oncomplete="${var}.hide()" update="${update}">
             <c:if test="${not notarget}">
                 <f:setPropertyActionListener target="${target}"
                     value="${multiple ? dialogBean.selectionArray : dialogBean.singleSelection}" />
