@@ -22,8 +22,8 @@ public class PermissionTest
     @Test
     public void testFormat() {
         testConversion("r");
-        testConversion("Slcdrwx");
-        testConversion("xwrdclS");
+        testConversion("sucdrwx");
+        testConversion("xwrdcus");
         testConversion("rwrrwxxx");
     }
 
