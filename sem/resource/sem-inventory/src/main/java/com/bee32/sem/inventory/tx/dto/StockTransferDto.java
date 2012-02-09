@@ -1,5 +1,6 @@
 package com.bee32.sem.inventory.tx.dto;
 
+import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
@@ -50,7 +51,7 @@ public class StockTransferDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
-
+        throw new NotImplementedException();
     }
 
     public StockOrderDto getSource() {

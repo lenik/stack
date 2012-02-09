@@ -6,6 +6,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
@@ -21,20 +24,40 @@ public class StockTransfer
 
     private static final long serialVersionUID = 1L;
 
-    StockOrder source;
-    StockOrder dest;
-    Person transferredBy;
-
     StockWarehouse sourceWarehouse;
     StockWarehouse destWarehouse;
+
+    StockOrder source;
+    StockOrder dest;
+
+    Person transferredBy;
+
+    @ManyToOne
+    public StockWarehouse getSourceWarehouse() {
+        return sourceWarehouse;
+    }
+
+    public void setSourceWarehouse(StockWarehouse sourceWarehouse) {
+        this.sourceWarehouse = sourceWarehouse;
+    }
+
+    @ManyToOne
+    public StockWarehouse getDestWarehouse() {
+        return destWarehouse;
+    }
+
+    public void setDestWarehouse(StockWarehouse destWarehouse) {
+        this.destWarehouse = destWarehouse;
+    }
 
     /**
      * 调出单，科目必须为 XFER_OUT.
      *
      * @see StockOrderSubject#XFER_OUT
      */
-    @OneToOne(optional = false)
+    @OneToOne(optional = false/* , orphanRemoval = true */)
     @JoinColumn(name = "s1")
+    // @Cascade(CascadeType.ALL)
     public StockOrder getSource() {
         return source;
     }
@@ -48,8 +71,9 @@ public class StockTransfer
      *
      * @see StockOrderSubject#XFER_IN
      */
-    @OneToOne
+    @OneToOne(orphanRemoval = true)
     @JoinColumn(name = "s2")
+    @Cascade(CascadeType.ALL)
     public StockOrder getDest() {
         return dest;
     }
@@ -68,24 +92,6 @@ public class StockTransfer
 
     public void setTransferredBy(Person transferredBy) {
         this.transferredBy = transferredBy;
-    }
-
-    @ManyToOne
-    public StockWarehouse getSourceWarehouse() {
-        return sourceWarehouse;
-    }
-
-    public void setSourceWarehouse(StockWarehouse sourceWarehouse) {
-        this.sourceWarehouse = sourceWarehouse;
-    }
-
-    @ManyToOne
-    public StockWarehouse getDestWarehouse() {
-        return destWarehouse;
-    }
-
-    public void setDestWarehouse(StockWarehouse destWarehouse) {
-        this.destWarehouse = destWarehouse;
     }
 
 }

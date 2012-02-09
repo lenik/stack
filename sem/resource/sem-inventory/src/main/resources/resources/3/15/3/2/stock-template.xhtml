@@ -20,27 +20,33 @@
         </h:panelGrid>
     </ui:define>
 
+    <ui:define name="toolbarPeripherals">
+        <p:separator />
+        <sem:singleVerifierSupportButton id="verifyButton" selection="#{bean.selection}"
+            disabled="#{bean.editing}" />
+    </ui:define>
+
     <ui:define name="editDialogContent">
         <ui:insert name="edit-pre" />
         <ui:insert name="edit-main">
-            <t:panelGrid columns="4">
+            <t:panelGrid id="orderInfo" columns="4">
                 <h:outputText value="时间" />
                 <h:outputText value="#{obj.createdDate}">
                     <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                 </h:outputText>
                 <h:outputText value="简要" />
-                <p:inputText value="#{obj.label}" />
+                <p:inputText label="简要" value="#{obj.label}" />
 
                 <ui:insert name="edit-pre-fields" />
 
                 <h:outputText value="描述" />
                 <t:panelGroup colspan="3">
-                    <p:inputText value="#{obj.description}" />
+                    <p:inputText label="描述" value="#{obj.description}" />
                 </t:panelGroup>
 
                 <h:outputText value="对应公司" />
                 <t:panelGroup>
-                    <p:inputText id="org" value="#{obj.org.displayName}" readonly="true" />
+                    <p:inputText id="org" label="对应公司" value="#{obj.org.displayName}" readonly="true" />
                     <p:commandButton value="..." oncomplete="chooseOrgDialog.show()">
                         <f:setPropertyActionListener target="#{choosePartyDialogBean.stereo}"
                             value="ORG" />
@@ -48,7 +54,7 @@
                 </t:panelGroup>
                 <h:outputText value="对应部门" />
                 <t:panelGroup>
-                    <p:inputText id="orgUnit" value="#{obj.orgUnit.path}" readonly="true" />
+                    <p:inputText id="orgUnit" label="对应部门" value="#{obj.orgUnit.path}" readonly="true" />
                     <p:commandButton value="..." oncomplete="chooseOrgUnitDialog.show()">
                         <f:setPropertyActionListener target="#{chooseOrgUnitDialogBean.orgId}"
                             value="#{obj.org.id}" />
@@ -65,7 +71,8 @@
         <ui:insert name="edit-more" />
 
         <fr:listView id="itemsIndexView" header="明细" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
-            nested="true" paginator="${paginator != null ? paginator : true}">
+            nested="true" paginator="${paginator != null ? paginator : false}" creatable="${creatable != null ? creatable : true}"
+            editable="${editable != null ? editable : true}" removable="${removable != null ? removable : true}">
             <f:facet name="columns">
                 <p:column headerText="物料" sortBy="#{entry.material.label}">
                     <h:outputText value="#{entry.material.label}" />
@@ -108,6 +115,7 @@
                 </p:column>
             </f:facet>
         </fr:listView>
+        <ui:insert name="edit-post" />
     </ui:define>
 
     <ui:define name="dialogs">

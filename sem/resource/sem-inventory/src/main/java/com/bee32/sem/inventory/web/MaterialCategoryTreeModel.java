@@ -9,6 +9,7 @@ import java.util.Set;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
+import com.bee32.plover.inject.NotAComponent;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.DataViewBean;
 import com.bee32.plover.ox1.tree.TreeEntityDto;
@@ -20,6 +21,7 @@ import com.bee32.sem.inventory.util.MaterialCriteria;
 import com.bee32.sem.sandbox.ITreeNodeDecorator;
 import com.bee32.sem.sandbox.UIHelper;
 
+@NotAComponent
 public class MaterialCategoryTreeModel
         extends DataViewBean
         implements ITreeNodeDecorator, Serializable {

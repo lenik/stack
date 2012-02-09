@@ -3,26 +3,39 @@
     xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:fr="http://java.sun.com/jsf/composite/frame"
     xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
-    <ui:param name="bean" value="#{outsourcingOutAdminBean}" />
+    <ui:param name="bean" value="#{outsourcingInAdminBean}" />
     <ui:param name="title" value="#{bean.subject.displayName}" />
+    <ui:param name="obj" value="#{bean.openedObject}" />
+    <ui:param name="job" value="#{bean.job.openedObject}" />
 
-    <ui:define name="edit-pre-fields">
-        <h:outputText value="对应委外出库单" />
-        <t:panelGroup colspan="3">
-            <t:panelGrid columns="2">
-                <h:outputText id="choosedOut" value="#{bean.stockOutsourcing.output.label}" />
-                <p:commandButton value="..." oncomplete="chooseStockOrderDialog.show()">
-                    <f:setPropertyActionListener target="#{chooseStockOrderDialogBean._subject}"
-                        value="OSPO" />
-                    <f:setPropertyActionListener target="#{chooseStockOrderDialogBean.restriction}"
-                        value="#{bean.danglingRestriction}" />
+    <ui:define name="edit-pre">
+        <p:panel id="job" header="委外加工作业信息">
+            <h:panelGroup rendered="#{job == null}">
+                <p:commandButton value="选择委外加工作业" oncomplete="chooseStockJobDialog.show()">
+                    <f:setPropertyActionListener target="#{chooseStockJobDialogBean.type}"
+                        value="com.bee32.sem.inventory.tx.entity.StockOutsourcing" />
+                    <f:setPropertyActionListener target="#{chooseStockJobDialogBean.restriction}"
+                        value="#{bean.job.jobQueueing}" />
                 </p:commandButton>
-            </t:panelGrid>
-        </t:panelGroup>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{job != null}">
+                <h:panelGrid columns="2">
+                    <h:outputText value="作业简要" />
+                    <p:inputText id="jobLabel" value="#{job.label}" />
+                    <h:outputText value="作业描述" />
+                    <p:inputText id="jobDescription" value="#{job.description}" />
+                    <h:outputText value="对应的委外出库单：" />
+                    <h:panelGroup>
+                        <p:inputText id="jobOutput" value="#{job.output.label}" disabled="true" />
+                    </h:panelGroup>
+                </h:panelGrid>
+            </h:panelGroup>
+        </p:panel>
     </ui:define>
 
     <ui:define name="dialogs.1">
-        <sem:chooseStockOrderDialog id="chooseStockOrderDialog" target="#{bean.outOrder}" />
+        <sem:chooseStockJobDialog id="chooseStockJobDialog" header="选择排队的委外加工作业" target="#{bean.job.reload}"
+            update=":editDialog:form:job" />
     </ui:define>
 
 </ui:composition>

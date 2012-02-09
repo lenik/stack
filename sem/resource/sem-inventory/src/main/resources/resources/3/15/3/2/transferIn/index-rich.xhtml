@@ -1,897 +1,111 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core"
-    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk"
-    xmlns:sem="http://java.sun.com/jsf/composite/3/15">
-<ui:composition template="/template/primefaces.xhtml">
+<ui:composition template="../stock-template.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
-    <ui:define name="title">调拨-调入管理</ui:define>
+    <ui:param name="stock" value="#{stockDictsBean}" />
+    <ui:param name="bean" value="#{transferInAdminBean}" />
+    <ui:param name="title" value="#{bean.subject.displayName}" />
+    <ui:param name="job" value="#{bean.job.openedObject}" />
+    <ui:param name="creatable" value="false" />
+    <ui:param name="editable" value="true" />
 
-    <ui:define name="content">
-        <sem:singleVerifierSupportDialog update=":mainForm" />
+    <ui:define name="edit-pre">
+        <p:panel id="job" header="库存调拨作业信息">
+            <h:panelGroup rendered="#{job == null}">
+                <p:commandButton value="选择库存调拨出库单" oncomplete="chooseStockJobDialog.show()">
+                    <f:setPropertyActionListener target="#{chooseStockJobDialogBean.type}"
+                        value="com.bee32.sem.inventory.tx.entity.StockTransfer" />
+                    <f:setPropertyActionListener target="#{chooseStockJobDialogBean.restriction}"
+                        value="#{bean.job.jobQueueing}" />
+                </p:commandButton>
+            </h:panelGroup>
+            <h:panelGrid columns="2" rendered="#{job != null}">
+                <h:outputText value="作业简要" />
+                <p:inputText id="jobLabel" label="作业简要" value="#{job.label}" />
+                <h:outputText value="作业描述" />
+                <p:inputText id="jobDescription" label="作业描述" value="#{job.description}" />
 
-		<h:form id="mainForm">
-            <h:panelGrid columns="2">
-                <h:outputText value="仓库:" />
-                <p:selectOneMenu id="stockWarehouseId"
-                    disabled="#{transferInAdminBean.editable}"
-                    value="#{transferInAdminBean.selectedWarehouse.id}"
-                    style="width:200px;">
-                    <f:selectItem itemValue="" itemLabel="--选择仓库--" />
-                    <f:selectItems
-                        value="#{transferInAdminBean.stockWarehouses}" />
-                    <p:ajax listener="#{transferInAdminBean.onSwChange}"
-                        update="mainForm chooseStockLocationForm:chooseStockLocationPanel"
-                        event="change" />
+                <h:outputLabel for="destWarehouse" value="目标仓库" />
+                <p:selectOneMenu id="destWarehouse" label="目标仓库" style="width: 20em;"
+                    value="#{job.destWarehouse.idRequiredInt}" disabled="true">
+                    <f:selectItem itemValue="0" itemLabel="--选择仓库--" />
+                    <f:selectItems value="#{stock.warehouseSelectItems}" />
                 </p:selectOneMenu>
+
+                <h:outputLabel for="transferredBy" value="调拨人员" />
+                <h:panelGroup>
+                    <p:inputText id="transferredby" readonly="true" value="#{job.transferredBy.displayName}"
+                        style="width: 20em;" />
+                    <p:commandButton value="..." disabled="true" update=":chooseTransferrerDialog:form"
+                        oncomplete="chooseTransferrerDialog.show()">
+                        <f:setPropertyActionListener target="#{choosePartyDialogBean.stereo}"
+                            value="PER" />
+                    </p:commandButton>
+                </h:panelGroup>
+
+                <h:outputText value="对应的库存调出单：" />
+                <p:inputText id="jobSource" value="#{job.source.label}" disabled="true" />
             </h:panelGrid>
+        </p:panel>
+    </ui:define>
 
-            <h:panelGrid columns="6">
-                <h:outputText value="时间段:" />
-                <h:outputText value="从" />
-                <p:calendar id="limitDateFrom" navigator="true"
-                    locale="zh_CN" pattern="yyyy-MM-dd"
-                    value="#{transferInAdminBean.limitDateFrom}"
-                    showOn="button"
-                    disabled="#{transferInAdminBean.editable}" />
-                <h:outputText value="到" />
-                <p:calendar id="limitDateTo" navigator="true"
-                    locale="zh_CN" pattern="yyyy-MM-dd"
-                    value="#{transferInAdminBean.limitDateTo}"
-                    showOn="button"
-                    disabled="#{transferInAdminBean.editable}" />
-                <p:commandButton value="限定"
-                    actionListener="#{transferInAdminBean.limit}"
-                    async="true" update="mainForm"
-                    disabled="#{transferInAdminBean.editable}" />
-            </h:panelGrid>
+    <ui:define name="edit-post">
+        <sem:stockOrderPanel id="sourceOrderPanel" header="库存调拨出库单" value="#{job.source}">
+            <f:facet name="columns">
+                <p:column headerText="操作">
+                    <p:commandLink id="import" value="拨入" update=":itemForm" actionListener="#{bean.copyItem}"
+                        oncomplete="itemDialog.show()">
+                        <f:setPropertyActionListener target="#{bean.selectedSourceItem}"
+                            value="#{entry}" />
+                    </p:commandLink>
+                </p:column>
+            </f:facet>
+        </sem:stockOrderPanel>
+    </ui:define>
 
-            <p:toolbar id="toolbar">
-				<p:toolbarGroup align="left">
-					<p:commandButton value="删除"
-						onclick="deleteConfirmDialog.show();"
-						disabled="#{transferInAdminBean.editable}" update="mainForm" async="true" />
-					<p:separator />
-                    <sem:singleVerifierSupportButton
-                        selection="#{transferInAdminBean.selection}"
-                        disabled="#{transferInAdminBean.editable}" />
-					<p:separator />
-					<p:commandButton value="第一条"
-						actionListener="#{transferInAdminBean.first}"
-						disabled="#{transferInAdminBean.editable}" update="mainForm"
-						async="true" />
-					<p:commandButton value="上一条"
-						actionListener="#{transferInAdminBean.previous}"
-						disabled="#{transferInAdminBean.editable}" update="mainForm"
-						async="true" />
-					<p:commandButton value="下一条"
-						actionListener="#{transferInAdminBean.next}"
-						disabled="#{transferInAdminBean.editable}" update="mainForm"
-						async="true" />
-					<p:commandButton value="最末条"
-						actionListener="#{transferInAdminBean.last}"
-						disabled="#{transferInAdminBean.editable}" update="mainForm"
-						async="true" />
-                    <p:inputText value="#{transferInAdminBean.goNumber}"
-                        disabled="#{transferInAdminBean.editable}" style="width:30px;" />
-                    <h:outputText value="/#{transferInAdminBean.count}"/>
-                    <p:commandButton value="前往"
-                        actionListener="#{transferInAdminBean.go}"
-                        disabled="#{transferInAdminBean.editable}" update="mainForm"
-                        async="true" />
-				</p:toolbarGroup>
-			</p:toolbar>
+    <ui:define name="dialogs.1">
+        <sem:chooseStockJobDialog id="chooseStockJobDialog" header="选择库存调拨出库单" target="#{bean.job.reload}"
+            update=":editDialog:form" />
+        <sem:choosePartyDialog id="chooseTransferrerDialog" var="chooseTransferrerDialog" stereo="PER"
+            target="#{job.transferredBy}" update=":editDialog:form:job" />
+        <sem:chooseStockLocationDialog id="chooseDestLocationDialog" var="chooseDestLocationDialog"
+            target="#{bean.destItem.location}" update=":itemForm" />
 
-			<p:panel header="#{transferInAdminBean.subject.displayName}" toggleable="true">
+        <p:dialog header="拨入数量分配" widgetVar="itemDialog" modal="true">
+            <h:form id="itemForm">
+                <h:panelGrid columns="2" rendered="#{bean.destItem != null}">
 
-				<t:panelGrid columns="4">
-                    <h:outputLabel value="源仓库"/>
-                    <t:panelGroup colspan="3">
-                        <h:outputText value="#{transferInAdminBean.stockTransfer.sourceWarehouse.name}"/>
-                    </t:panelGroup>
+                    <h:outputText value="物料" />
+                    <h:outputText value="#{bean.destItem.material.label}" />
 
-                    <h:outputLabel value="调拨人员"/>
-                    <t:panelGroup colspan="3">
-                        <h:outputText value="#{transferInAdminBean.stockTransfer.transferredBy.displayName}" />
-                    </t:panelGroup>
+                    <h:outputText value="规格型号" />
+                    <h:outputText value="#{bean.destItem.material.modelSpec}" />
 
-                    <t:panelGroup colspan="4">
-                        <hr />
-                    </t:panelGroup>
+                    <h:outputText value="批号" />
+                    <h:outputText value="#{bean.destItem.batch}" />
 
-                    <h:outputText value="时间" />
-                    <h:outputText value="#{transferInAdminBean.stockOrder.createdDate}">
-                        <f:convertDateTime pattern="yyyy-MM-dd"
-                            timeZone="Asia/Shanghai" />
-                    </h:outputText>
-                    <h:outputText value="标签" />
-					<p:inputText value="#{transferInAdminBean.stockOrder.label}" disabled="#{!transferInAdminBean.editable}"/>
+                    <h:outputText value="调出库位" />
+                    <h:outputText value="#{bean.selectedSourceItem.location.nodeText}" />
 
-					<h:outputText value="描述" />
-					<t:panelGroup colspan="3">
-                        <p:inputText value="#{transferInAdminBean.stockOrder.description}" disabled="#{!transferInAdminBean.editable}"/>
-					</t:panelGroup>
+                    <h:outputText value="调出数量" />
+                    <h:outputText value="#{bean.selectedSourceItem.quantity}" />
 
-                    <h:outputText value="对应公司" />
+                    <h:outputText value="拨入数量" />
+                    <p:inputText value="#{bean.destItem.quantity}" />
+
+                    <h:outputText value="库位" />
                     <t:panelGroup>
-                        <p:inputText id="org" value="#{transferInAdminBean.stockOrder.org.name}" readonly="true"/>
-                        <p:commandButton value="..." onclick="orgDialog.show()" disabled="#{!transferInAdminBean.editable}"/>
+                        <p:inputText id="location" value="#{bean.destItem.location.nodeText}" readonly="true" />
+                        <p:commandButton value="..." onclick="chooseDestLocationDialog.show()" />
                     </t:panelGroup>
-                    <h:outputText value="对应部门" />
-                    <t:panelGroup>
-                        <p:inputText id="orgUnit" value="#{transferInAdminBean.stockOrder.orgUnit.name}" readonly="true"/>
-                        <p:commandButton value="..." onclick="orgUnitDialog.show()" disabled="#{!transferInAdminBean.editable}"/>
-                    </t:panelGroup>
-
-					<h:outputText value="制单人" />
-                    <p:inputText value="#{transferInAdminBean.creator}" disabled="true"/>
-                    <h:outputText value="单据状态" />
-                    <p:inputText value="#{transferInAdminBean.stockOrder.verifyContext.verifyEvalState}" disabled="true"/>
-				</t:panelGrid>
-
-                <h:outputText value="明细"/>
-
-				<p:dataTable id="items" var="item"
-					value="#{transferInAdminBean.items}" resizableColumns="true"
-					rowIndexVar="rowIndex">
-
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="序号" />
-						</f:facet>
-						<h:outputText value="#{rowIndex + 1}" />
-					</p:column>
-
-                    <p:column sortBy="#{item.material.label}">
-                        <f:facet name="header">
-                            <h:outputText value="物料"/>
-                        </f:facet>
-                        <h:outputText value="#{item.material.label}" />
-                    </p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="规格型号"/>
-                        </f:facet>
-                        <h:outputText value="#{item.material.modelSpec}" />
-                    </p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="单位"/>
-                        </f:facet>
-                        <h:outputText value="#{item.material.unit.name}" />
-                    </p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="批号"/>
-                        </f:facet>
-                        <h:outputText value="#{item.batch}" />
-                    </p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="有效期"/>
-                        </f:facet>
-                        <h:outputText value="#{item.expirationDate}" />
-                    </p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="库位"/>
-                        </f:facet>
-                        <h:outputText value="#{item.location.nodeText}" />
-                    </p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="单价"/>
-                        </f:facet>
-                        <h:outputText value="#{item.price.value}" />
-                    </p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="币种"/>
-                        </f:facet>
-                        <h:outputText value="#{item.price.currencyText}" />
-                    </p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="数量"/>
-                        </f:facet>
-                        <h:outputText value="#{item.quantity}" />
-                    </p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="备注"/>
-                        </f:facet>
-                        <h:outputText value="#{item.description}" />
-                    </p:column>
-
-					<p:column>
-						<f:facet name="header">操作</f:facet>
-						<t:panelGroup>
-							<p:commandLink
-								disabled="#{!transferInAdminBean.editable}"
-								oncomplete="deleteItemConfirmDialog.show()" value="删除">
-								<f:setPropertyActionListener value="#{item}"
-									target="#{transferInAdminBean.orderItem}" />
-							</p:commandLink>
-						</t:panelGroup>
-					</p:column>
-
-				</p:dataTable>
-
-
-			</p:panel>
-
-            <p:panel id="transferOuts" header="未拨入的单据" toggleable="true">
-                <p:toolbar id="toolbar1">
-                    <p:toolbarGroup align="left">
-                        <p:commandButton value="开始拨入"
-                            actionListener="#{transferInAdminBean.transferInStart}"
-                            disabled="#{transferInAdminBean.transferring}"
-                            update="mainForm" async="true"/>
-                        <p:separator />
-                        <p:commandButton value="完成拨入"
-                            actionListener="#{transferInAdminBean.transferInDone}"
-                            disabled="#{!transferInAdminBean.transferring}"
-                            update="mainForm" async="true"/>
-                        <p:commandButton value="取消拨入"
-                            actionListener="#{transferInAdminBean.cancelTransferIn}"
-                            disabled="#{!transferInAdminBean.transferring}"
-                            update="mainForm" async="true"/>
-                        <p:separator />
-                        <p:commandButton value="第一条"
-                            actionListener="#{transferInAdminBean.firstOut}"
-                            disabled="#{transferInAdminBean.transferring}"
-                            update="mainForm:transferOuts" async="true" />
-                        <p:commandButton value="上一条"
-                            actionListener="#{transferInAdminBean.previousOut}"
-                            disabled="#{transferInAdminBean.transferring}"
-                            update="mainForm:transferOuts" async="true" />
-                        <p:commandButton value="下一条"
-                            actionListener="#{transferInAdminBean.nextOut}"
-                            disabled="#{transferInAdminBean.transferring}"
-                            update="mainForm:transferOuts" async="true" />
-                        <p:commandButton value="最末条"
-                            actionListener="#{transferInAdminBean.lastOut}"
-                            disabled="#{transferInAdminBean.transferring}"
-                            update="mainForm:transferOuts" async="true" />
-                        <p:inputText
-                            value="#{transferInAdminBean.goNumberOut}"
-                            disabled="#{transferInAdminBean.transferring}"
-                            style="width:30px;" />
-                        <h:outputText
-                            value="/#{transferInAdminBean.countOut}" />
-                        <p:commandButton value="前往"
-                            actionListener="#{transferInAdminBean.goOut}"
-                            disabled="#{transferInAdminBean.transferring}"
-                            update="mainForm:transferOuts" async="true" />
-                    </p:toolbarGroup>
-                </p:toolbar>
-
-                <p:panel>
-
-                    <t:panelGrid columns="4">
-
-                        <h:outputLabel value="调拨人员" />
-                        <t:panelGroup colspan="3">
-                            <h:outputText value="#{transferInAdminBean.stockTransfer.transferredBy.displayName}" />
-                        </t:panelGroup>
-
-                        <t:panelGroup colspan="4">
-                            <hr />
-                        </t:panelGroup>
-
-                        <h:outputText value="时间" />
-                        <h:outputText
-                            value="#{transferInAdminBean.stockOrderOut.createdDate}">
-                            <f:convertDateTime pattern="yyyy-MM-dd"
-                                timeZone="Asia/Shanghai" />
-                        </h:outputText>
-                        <h:outputText value="标签" />
-                        <h:outputText
-                            value="#{transferInAdminBean.stockOrderOut.label}"/>
-
-                        <h:outputText value="描述" />
-                        <t:panelGroup colspan="3">
-                            <h:outputText
-                                value="#{transferInAdminBean.stockOrderOut.description}"/>
-                        </t:panelGroup>
-
-                        <h:outputText value="制单人" />
-                        <h:outputText
-                            value="#{transferInAdminBean.creatorOut}"/>
-                        <h:outputText value="单据状态" />
-                        <p:inputText value="" disabled="true" />
-                    </t:panelGrid>
-
-                    <h:outputText value="明细" />
-
-                    <p:dataTable id="itemsOut" var="item"
-                        value="#{transferInAdminBean.itemsOut}"
-                        resizableColumns="true" rowIndexVar="rowIndex">
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="序号" />
-                            </f:facet>
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column sortBy="#{item.material.label}">
-                            <f:facet name="header">
-                                <h:outputText value="物料" />
-                            </f:facet>
-                            <h:outputText value="#{item.material.label}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="规格型号"/>
-                            </f:facet>
-                            <h:outputText value="#{item.material.modelSpec}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="单位"/>
-                            </f:facet>
-                            <h:outputText value="#{item.material.unit.name}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="批号" />
-                            </f:facet>
-                            <h:outputText value="#{item.batch}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="有效期" />
-                            </f:facet>
-                            <h:outputText value="#{item.expirationDate}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="库位" />
-                            </f:facet>
-                            <h:outputText
-                                value="#{item.location.nodeText}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="单价" />
-                            </f:facet>
-                            <h:outputText value="#{item.price.value}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="币种" />
-                            </f:facet>
-                            <h:outputText
-                                value="#{item.price.currencyText}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="数量" />
-                            </f:facet>
-                            <h:outputText value="#{item.quantity}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="备注"/>
-                            </f:facet>
-                            <h:outputText value="#{item.description}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">操作</f:facet>
-                            <t:panelGroup>
-
-                                <p:commandLink
-                                    update="itemForm:itemPanel"
-                                    disabled="#{!transferInAdminBean.transferring}"
-                                    oncomplete="itemDialog.show()"
-                                    value="拨入">
-                                    <f:setPropertyActionListener
-                                        value="#{item}"
-                                        target="#{transferInAdminBean.orderItemOut}" />
-                                    <f:setPropertyActionListener
-                                        value="#{item.priceValue}"
-                                        target="#{transferInAdminBean.orderItemPrice}" />
-                                    <f:setPropertyActionListener
-                                        value="#{item.priceCurrencyCode}"
-                                        target="#{transferInAdminBean.orderItemPriceCurrency}" />
-                                </p:commandLink>
-                            </t:panelGroup>
-                        </p:column>
-
-                    </p:dataTable>
-
-
-                </p:panel>
-
-
-            </p:panel>
-        </h:form>
-
-
-		<h:form id="itemForm">
-			<p:dialog header="#{transferInAdminBean.subject.displayName}项目编辑" widgetVar="itemDialog" modal="true"
-				height="500" width="640">
-				<p:panel id="itemPanel">
-					<t:panelGrid columns="4"
-						columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
-
-						<h:outputLabel value="物料" />
-						<t:panelGroup colspan="3">
-							<h:outputText value="#{transferInAdminBean.orderItemOut.material.label}"/>
-						</t:panelGroup>
-
-						<h:outputLabel value="批号" />
-						<h:outputText value="#{transferInAdminBean.orderItemOut.batch}" />
-						<h:outputLabel value="有效期" />
-                        <h:outputText value="#{transferInAdminBean.orderItemOut.expirationDate}">
-                            <f:convertDateTime pattern="yyyy-MM-dd"
-                                timeZone="Asia/Shanghai" />
-                        </h:outputText>
-
-                        <h:outputLabel value="库位" />
-						<t:panelGroup colspan="3">
-							<h:outputText
-								value="#{transferInAdminBean.orderItemOut.location.nodeText}" />
-						</t:panelGroup>
-
-                        <h:outputLabel value="数量" />
-                        <t:panelGroup colspan="2">
-                            <p:inputText value="#{transferInAdminBean.orderItem.quantity}"/>
-                            <h:outputText value="#{transferInAdminBean.orderItem.material.unit.name}"/>
-                        </t:panelGroup>
-                        <p:commandButton
-                            actionListener="#{transferInAdminBean.checkUnitConv}"
-                            update="unitConvForm:unitConvPanel"
-                            value="按换算单位输入数量"
-                            oncomplete="unitConvDialog.show()"/>
-
-						<h:outputLabel value="单价" />
-                        <h:outputText value="#{transferInAdminBean.orderItemPrice}" />
-                        <h:outputLabel value="币种" />
-                        <p:selectOneMenu value="#{transferInAdminBean.orderItemPriceCurrency}" disabled="true" style="width:200px;">
-                            <f:selectItem itemValue="" itemLabel="--选择币种--" />
-                            <f:selectItems value="#{transferInAdminBean.currencies}" />
-                        </p:selectOneMenu>
-
-                        <h:outputLabel value="备注" />
-                        <t:panelGroup colspan="3">
-                            <p:inputText value="#{transferInAdminBean.orderItem.description}" style="width:400px"/>
-                        </t:panelGroup>
-
-                        <t:panelGroup colspan="4">
-                            <t:panelGrid columns="4">
-                                <p:commandButton value="新增" action="#{transferInAdminBean.newItemIn}" onclick="itemInDialog.show();" update="itemInForm:itemInPanel" async="true"/>
-                                <p:commandButton value="删除" actionListener="#{transferInAdminBean.deleteItemIn}" update="itemForm:itemPanel" async="true"/>
-                                <t:panelGroup/>
-                                <t:panelGroup/>
-                            </t:panelGrid>
-                        </t:panelGroup>
-
-                        <t:panelGroup colspan="4">
-                            <p:dataTable
-                                value="#{transferInAdminBean.items}"
-                                var="item" rowIndexVar="rowIndex"
-                                selection="#{transferInAdminBean.selectedItemIn}" selectionMode="single"
-                                rowKey="#{item.id}">
-
-                                <p:column headerText="序号">
-                                    <h:outputText
-                                        value="#{rowIndex + 1}" />
-                                </p:column>
-
-                                <p:column headerText="库位">
-                                    <h:outputText value="#{item.location.nodeText}"/>
-                                </p:column>
-
-                                <p:column headerText="数量">
-                                    <h:outputText value="#{item.quantity}"/>
-                                </p:column>
-                            </p:dataTable>
-                        </t:panelGroup>
-
-						<h:panelGroup />
-						<t:panelGroup colspan="2">
-							<t:panelGrid columns="2">
-								<p:commandButton value="保存"
-									oncomplete="itemDialog.hide();" async="true"
-									update="mainForm" />
-								<p:commandButton value="取消"
-									oncomplete="itemDialog.hide();" />
-							</t:panelGrid>
-						</t:panelGroup>
-						<h:panelGroup />
-
-					</t:panelGrid>
-				</p:panel>
-
-			</p:dialog>
-		</h:form>
-
-        <h:form id="deleteConfirmForm">
-            <p:confirmDialog message="确定要删除吗?" width="200" header="删除确认"
-                severity="alert" widgetVar="deleteConfirmDialog" modal="true">
-
-                <p:commandButton value="确定"
-                    update="mainForm"
-                    actionListener="#{transferInAdminBean.delete}"
-                    oncomplete="deleteConfirmDialog.hide()" />
-                <p:commandButton value="取消" onclick="deleteConfirmDialog.hide()"
-                    type="button" />
-
-            </p:confirmDialog>
-        </h:form>
-
-        <h:form id="deleteItemConfirmForm">
-            <p:confirmDialog message="确定要删除吗?" width="200" header="删除明细条目确认"
-                severity="alert" widgetVar="deleteItemConfirmDialog" modal="true">
-
-                <p:commandButton value="确定"
-                    update="mainForm:items"
-                    actionListener="#{transferInAdminBean.deleteItem}"
-                    oncomplete="deleteItemConfirmDialog.hide()" />
-                <p:commandButton value="取消" onclick="deleteItemConfirmDialog.hide()"
-                    type="button" />
-
-            </p:confirmDialog>
-        </h:form>
-
-        <h:form id="personForm">
-            <p:dialog header="选择联系人" widgetVar="personHolderDlg"
-                modal="true" height="400" width="640">
-                <h:panelGroup>
-
-                    <h:panelGrid columns="3">
-                        <h:outputLabel value="联系人名字全部或部份:" />
-                        <p:inputText
-                            value="#{transferInAdminBean.personPattern}" />
-                        <p:commandButton value="查找"
-                            actionListener="#{transferInAdminBean.findPerson}"
-                            update="persons" async="true" />
-                    </h:panelGrid>
-                    <p:dataTable id="persons" var="person"
-                        value="#{transferInAdminBean.persons}"
-                        resizableColumns="true"
-                        selection="#{transferInAdminBean.selectedPerson}"
-                        selectionMode="single"
-                        rowKey="#{person.id}" rowIndexVar="rowIndex">
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="序号" />
-                            </f:facet>
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="姓名" />
-                            </f:facet>
-                            <h:outputText value="#{person.displayName}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="性别" />
-                            </f:facet>
-                            <h:outputText value="#{person.sexText}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="生日" />
-                            </f:facet>
-                            <h:outputText value="#{person.birthday}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"
-                                    timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="证件类型" />
-                            </f:facet>
-                            <h:outputText
-                                value="#{person.sidType.label}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="证件号码" />
-                            </f:facet>
-                            <h:outputText value="#{person.sid}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="户籍" />
-                            </f:facet>
-                            <h:outputText
-                                value="#{person.censusRegister}" />
-                        </p:column>
-
-                    </p:dataTable>
-                    <h:panelGrid columns="2">
-                        <p:commandButton value="确定"
-                            actionListener="#{transferInAdminBean.choosePerson}"
-                            oncomplete="personHolderDlg.hide();"
-                            update="mainForm" async="true" />
-                        <p:commandButton value="取消"
-                            oncomplete="personHolderDlg.hide();" />
-                    </h:panelGrid>
-                </h:panelGroup>
-            </p:dialog>
-        </h:form>
-
-        <h:form id="itemInForm">
-            <p:dialog header="拨入数量分配" widgetVar="itemInDialog"
-                modal="true" height="400" width="640">
-                <p:panel id="itemInPanel">
-                    <h:panelGrid columns="2">
-                        <h:outputText value="数量"/>
-                        <p:inputText value="#{transferInAdminBean.orderItemIn.quantity}"/>
-
-                        <h:outputText value="库位"/>
-                        <t:panelGroup>
-                            <p:inputText
-                                value="#{transferInAdminBean.orderItemIn.location.nodeText}"
-                                readonly="true" />
-                            <p:commandButton value="..."
-                                oncomplete="chooseStockLocationDialog.show();"
-                                actionListener="#{transferInAdminBean.updateLocations}"
-                                update="chooseStockLocationForm:chooseStockLocationPanel" />
-                        </t:panelGroup>
-                    </h:panelGrid>
-
-
-                    <h:panelGrid columns="2">
-                        <p:commandButton value="确定"
-                            actionListener="#{transferInAdminBean.saveItemIn}"
-                            oncomplete="itemInDialog.hide();"
-                            update="itemForm:itemPanel" async="true" />
-                        <p:commandButton value="取消"
-                            oncomplete="itemInDialog.hide();" />
-                    </h:panelGrid>
-                </p:panel>
-            </p:dialog>
-        </h:form>
-
-        <h:form id="chooseStockLocationForm">
-            <p:dialog header="选择库位" widgetVar="chooseStockLocationDialog"
-                modal="true" height="500" width="640">
-                <h:panelGroup id="chooseStockLocationPanel">
-
-                    <p:panel header="预设库位" toggleable="true">
-                        <p:dataTable id="preferredLocations" var="stockLocation"
-                            value="#{transferInAdminBean.preferredLocations}" resizableColumns="true"
-                            selection="#{transferInAdminBean.selectedPreferredStockLocation}"
-                            selectionMode="single"
-                            rowKey="#{stockLocation.id}" rowIndexVar="rowIndex">
-
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="序号" />
-                                </f:facet>
-                                <h:outputText value="#{rowIndex + 1}" />
-                            </p:column>
-
-                            <p:column>
-                                <f:facet name="header">库位</f:facet>
-                                <h:outputText value="#{stockLocation.nodeText}" />
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">所属仓库</f:facet>
-                                <h:outputText value="#{stockLocation.warehouse.name}" />
-                            </p:column>
-                        </p:dataTable>
-                        <h:panelGrid columns="2">
-                            <p:commandButton value="确定"
-                                actionListener="#{transferInAdminBean.doSelectPreferredStockLocation}"
-                                update="itemInForm:itemInPanel"
-                                oncomplete="chooseStockLocationDialog.hide();" />
-                            <p:commandButton value="取消"
-                                oncomplete="chooseStockLocationDialog.hide();" />
-                        </h:panelGrid>
-                    </p:panel>
-                    <p:panel header="所有库位" toggleable="true">
-                        <p:tree value="#{transferInAdminBean.locationRoot}"
-                            var="stockLocation" selectionMode="single"
-                            selection="#{transferInAdminBean.selectedStockLocationNode}">
-                            <p:treeNode>
-                                <h:outputText value="#{stockLocation.nodeText}" />
-                            </p:treeNode>
-                        </p:tree>
-
-                        <h:panelGrid columns="2">
-                            <p:commandButton value="确定"
-                                actionListener="#{transferInAdminBean.doSelectStockLocation}"
-                                update="itemInForm:itemInPanel"
-                                oncomplete="chooseStockLocationDialog.hide();" />
-                            <p:commandButton value="取消"
-                                oncomplete="chooseStockLocationDialog.hide();" />
-                        </h:panelGrid>
-                    </p:panel>
-
-
-
-                </h:panelGroup>
-            </p:dialog>
-        </h:form>
-
-
-        <h:form id="orgForm">
-            <p:dialog header="选择公司" widgetVar="orgDialog" modal="true"
-                height="400" width="800">
-                <h:panelGroup>
-
-                    <h:panelGrid columns="3">
-                        <h:outputLabel value="公司名称全部或部份:" />
-                        <p:inputText value="#{transferInAdminBean.orgPattern}" />
-                        <p:commandButton value="查找"
-                            actionListener="#{transferInAdminBean.findOrg}" update="orgs"
-                            async="true" />
-                    </h:panelGrid>
-                    <p:dataTable id="orgs" var="org"
-                        value="#{transferInAdminBean.orgs}" resizableColumns="true"
-                        rowIndexVar="rowIndex">
-
-                        <p:column headerText="序号">
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column headerText="客户/供应商名称">
-                            <h:outputText value="#{org.name}" />
-                        </p:column>
-
-                        <p:column headerText="标签">
-                            <p:dataList value="#{org.tags}" var="tag" type="definition">
-                                <f:facet name="description">
-                                    <h:outputText value="#{tag.label}"/>
-                                </f:facet>
-                            </p:dataList>
-                        </p:column>
-
-                        <p:column headerText="成立日期">
-                            <h:outputText value="#{org.birthday}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"
-                                    timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-
-                        <p:column headerText="公司类型">
-                            <h:outputText value="#{org.type.label}" />
-                        </p:column>
-
-                        <p:column headerText="税务登记号">
-                            <h:outputText value="#{org.sid}" />
-                        </p:column>
-
-                        <p:column headerText="公司规模">
-                            <h:outputText value="#{org.size}" />
-                        </p:column>
-
-                        <p:column headerText="创建日期">
-                            <h:outputText value="#{org.createdDate}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"
-                                    timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-                        <p:column headerText="动作">
-                            <p:commandLink
-                                oncomplete="orgDialog.hide()"
-                                action="#{transferInAdminBean.chooseOrg}"
-                                update="mainForm:org" value="挑选">
-                                <f:setPropertyActionListener
-                                    value="#{org}"
-                                    target="#{transferInAdminBean.selectedOrg}" />
-                            </p:commandLink>
-                        </p:column>
-                    </p:dataTable>
-                    <p:commandButton value="取消" oncomplete="orgDialog.hide();" />
-                </h:panelGroup>
-            </p:dialog>
-        </h:form>
-
-        <h:form id="orgUnitForm">
-            <p:dialog header="选择部门" widgetVar="orgUnitDialog" modal="true"
-                height="400" width="640">
-                <h:panelGroup>
-
-                    <h:panelGrid columns="3">
-                        <h:outputLabel value="部门名称全部或部份:" />
-                        <p:inputText value="#{transferInAdminBean.orgUnitPattern}" />
-                        <p:commandButton value="查找"
-                            actionListener="#{transferInAdminBean.findOrgUnit}" update="orgUnits"
-                            async="true" />
-                    </h:panelGrid>
-                    <p:dataTable id="orgUnits" var="orgUnit"
-                        value="#{transferInAdminBean.orgUnits}" resizableColumns="true"
-                        rowIndexVar="rowIndex">
-
-                        <p:column headerText="序号">
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column headerText="部门名称">
-                            <h:outputText value="#{orgUnit.name}" />
-                        </p:column>
-
-                        <p:column headerText="所属公司">
-                            <h:outputText value="#{orgUnit.org.name}" />
-                        </p:column>
-
-                        <p:column headerText="动作">
-                            <p:commandLink
-                                oncomplete="orgUnitDialog.hide()"
-                                action="#{transferInAdminBean.chooseOrgUnit}"
-                                update="mainForm:orgUnit" value="挑选">
-                                <f:setPropertyActionListener
-                                    value="#{orgUnit}"
-                                    target="#{transferInAdminBean.selectedOrgUnit}" />
-                            </p:commandLink>
-                        </p:column>
-                    </p:dataTable>
-                    <p:commandButton value="取消" oncomplete="orgUnitDialog.hide();" />
-                </h:panelGroup>
-            </p:dialog>
-        </h:form>
-
-        <h:form id="unitConvForm">
-            <p:dialog header="按换算单位输入数量" widgetVar="unitConvDialog" modal="true"
-                height="400" width="640">
-                <h:panelGroup id="unitConvPanel">
-
-                    <t:panelGrid columns="2">
-                        <h:outputText value="换算单位:"/>
-                        <p:selectOneMenu value="#{transferInAdminBean.materialUnitId}" style="width:200px;">
-                            <f:selectItems value="#{transferInAdminBean.materialUnits}" />
-                        </p:selectOneMenu>
-
-                        <h:outputText value="数量:"/>
-                        <p:inputText value="#{transferInAdminBean.materialQuantity}"/>
-
-                        <h:outputText value="单价:"/>
-                        <p:inputText value="#{transferInAdminBean.materialPrice}"/>
-
-                        <h:outputText value="币种:"/>
-                        <p:selectOneMenu value="#{transferInAdminBean.orderItemPriceCurrency}" style="width:200px;">
-                            <f:selectItem itemValue="" itemLabel="--选择币种--" />
-                            <f:selectItems value="#{transferInAdminBean.currencies}" />
-                        </p:selectOneMenu>
-                    </t:panelGrid>
-
-                    <h:panelGrid columns="2">
-                        <p:commandButton value="确定"
-                            actionListener="#{transferInAdminBean.doUnitConv}"
-                            oncomplete="unitConvDialog.hide();"
-                            update="itemForm:itemPanel" async="true" />
-                        <p:commandButton value="取消"
-                            oncomplete="unitConvDialog.hide();" />
-                    </h:panelGrid>
-                </h:panelGroup>
-            </p:dialog>
-        </h:form>
+                </h:panelGrid>
+                <div align="right">
+                    <p:commandButton id="add" value="确定" actionListener="#{bean.addDestItem}" update=":editDialog:form"
+                        oncomplete="itemDialog.hide();" />
+                    <p:commandButton id="cancel" value="取消" onclick="itemDialog.hide()" />
+                </div>
+            </h:form>
+        </p:dialog>
 
     </ui:define>
 </ui:composition>
-</html>

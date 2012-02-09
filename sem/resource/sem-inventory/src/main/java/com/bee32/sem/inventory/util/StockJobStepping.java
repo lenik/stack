@@ -18,6 +18,7 @@ import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.tx.dto.StockJobDto;
 import com.bee32.sem.inventory.tx.entity.StockJob;
 import com.bee32.sem.misc.SevbFriend;
+import com.bee32.sem.misc.UnmarshalMap;
 
 public class StockJobStepping
         extends SevbFriend
@@ -45,10 +46,10 @@ public class StockJobStepping
 
     @Override
     protected void open(Object mainOpenedObject) {
-        StockOrderDto order = (StockOrderDto) mainOpenedObject;
+        StockOrderDto initiatorOrder = (StockOrderDto) mainOpenedObject;
         StockJobDto<?> job = null;
-        if (!order.isNewCreated()) {
-            long orderId = order.getId();
+        if (!initiatorOrder.isNewCreated()) {
+            long orderId = initiatorOrder.getId();
             try {
                 StockJob _job = asFor(jobClass).getFirst(new Equals(bindingProperty + ".id", orderId));
                 if (_job != null)
@@ -57,11 +58,11 @@ public class StockJobStepping
                 uiLogger.error("无法获取作业对象", e);
             }
         }
-        if (job == null) // Re-Create the missing job.
+        if (job == null && isInitiator()) // Re-Create the missing job for secondary steppings.
             try {
                 job = jobDtoClass.newInstance();
-                IPropertyAccessor<Object> binding = BeanPropertyAccessor.access(jobDtoClass, this.bindingProperty);
-                binding.set(job, mainOpenedObject);
+                job.create();
+                setJobDtoBinding(job, initiatorOrder);
             } catch (ReflectiveOperationException e) {
                 uiLogger.error("无法创建作业对象", e);
                 return;
@@ -70,10 +71,21 @@ public class StockJobStepping
     }
 
     @Override
-    public void saveOpenedObject(int saveFlags) {
+    public boolean preUpdate(UnmarshalMap uMap) {
+        if (getOpenedObject() == null) {
+            uiLogger.error("没有指定对应的作业。");
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void saveOpenedObject(int saveFlags, UnmarshalMap uMapMain) {
         StockJobDto<?> job = getOpenedObject();
         try {
             StockJob _job = job.unmarshal(this);
+            for (StockOrder _order : uMapMain.<StockOrder> entitySet())
+                setJobBinding(_job, _order);
             asFor(jobClass).saveOrUpdate(_job);
         } catch (Exception e) {
             uiLogger.error("无法保存作业对象", e);
@@ -82,18 +94,24 @@ public class StockJobStepping
 
     @Override
     public void deleteSelection(int deleteFlags) {
-        StockOrderDto order = (StockOrderDto) getSingleSelection();
-        if (order == null)
+        StockOrderDto initiatorOrder = (StockOrderDto) getSingleSelection();
+        if (initiatorOrder == null)
             return;
-        long orderId = order.getId();
         try {
-            asFor(jobClass).findAndDelete(new Equals(bindingProperty + ".id", orderId));
+            if (isInitiator()) {
+                asFor(jobClass).findAndDelete(new Equals(bindingProperty + ".id", initiatorOrder.getId()));
+            } else {
+                for (StockJob _job : asFor(jobClass).list(new Equals(bindingProperty + ".id", initiatorOrder.getId()))) {
+                    setJobBinding(_job, null);
+                    asFor(jobClass).update(_job);
+                }
+            }
         } catch (Exception e) {
-            uiLogger.error("无法获取作业对象", e);
+            uiLogger.error("无法清理作业对象", e);
         }
     }
 
-    // ///////////////////////////////////////////////////////////////////////
+    /* ********************************************************************** */
 
     @LeftHand(StockJob.class)
     public CriteriaElement getRelatedJob(long stockOrderId) {
@@ -113,14 +131,14 @@ public class StockJobStepping
      */
     @LeftHand(StockOrder.class)
     public CriteriaElement getOrderQueueing() {
-        if (initiatorColumn.equals(bindingColumn))
+        if (isInitiator())
             throw new IllegalUsageException("排队单据在作业发起阶段时不可用。");
         String jobTable = getJobTableName();
         String sql = "id in (select " + initiatorColumn + " from " + jobTable + " where " + bindingColumn + " is null)";
         return new SqlRestriction(sql);
     }
 
-    // ///////////////////////////////////////////////////////////////////////
+    /* ********************************************************************** */
 
     public Class<? extends StockJob> getJobClass() {
         return jobClass;
@@ -145,6 +163,9 @@ public class StockJobStepping
         this.jobDtoClass = (Class<? extends StockJobDto<StockJob>>) jobDtoClass;
     }
 
+    /**
+     * 库存作业 StockJob 上，对应为发起单据的属性名称。
+     */
     public String getInitiatorProperty() {
         return initiatorProperty;
     }
@@ -153,6 +174,9 @@ public class StockJobStepping
         this.initiatorProperty = initiatorProperty;
     }
 
+    /**
+     * 库存作业 StockJob 上，对应为发起单据的字段名称。
+     */
     public String getInitiatorColumn() {
         return initiatorColumn;
     }
@@ -161,6 +185,9 @@ public class StockJobStepping
         this.initiatorColumn = initiatorColumn;
     }
 
+    /**
+     * 库存作业 StockJob 上，对应为当前步骤的单据的属性名称。
+     */
     public String getBindingProperty() {
         return bindingProperty;
     }
@@ -169,12 +196,29 @@ public class StockJobStepping
         this.bindingProperty = bindingProperty;
     }
 
+    /**
+     * 库存作业 StockJob 上，对应为当前步骤的单据的字段名称。
+     */
     public String getBindingColumn() {
         return bindingColumn;
     }
 
     public void setBindingColumn(String bindingColumn) {
         this.bindingColumn = bindingColumn;
+    }
+
+    public boolean isInitiator() {
+        return initiatorProperty.equals(bindingProperty);
+    }
+
+    protected void setJobBinding(StockJob job, Object value) {
+        IPropertyAccessor<Object> jobBinding = BeanPropertyAccessor.access(jobClass, this.bindingProperty);
+        jobBinding.set(job, value);
+    }
+
+    protected void setJobDtoBinding(StockJobDto<?> jobDto, Object value) {
+        IPropertyAccessor<Object> jobDtoBinding = BeanPropertyAccessor.access(jobDtoClass, this.bindingProperty);
+        jobDtoBinding.set(jobDto, value);
     }
 
 }
