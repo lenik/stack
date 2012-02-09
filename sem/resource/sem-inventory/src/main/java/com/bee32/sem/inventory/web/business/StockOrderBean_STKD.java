@@ -22,7 +22,7 @@ import com.bee32.sem.inventory.util.StockJobStepping;
 import com.bee32.sem.sandbox.UIHelper;
 
 @ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = "STKD"))
-public class StocktakingAdminBean
+public class StockOrderBean_STKD
         extends AbstractStockOrderBean {
 
     private static final long serialVersionUID = 1L;
@@ -33,7 +33,7 @@ public class StocktakingAdminBean
     MaterialDto chosenMaterial;
     Long selectedMaterialId;
 
-    public StocktakingAdminBean() {
+    public StockOrderBean_STKD() {
         subject = StockOrderSubject.STKD;
         entityClass = StocktakingOrder.class;
         dtoClass = StocktakingOrderDto.class;

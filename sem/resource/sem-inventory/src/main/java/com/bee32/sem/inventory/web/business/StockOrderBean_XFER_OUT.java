@@ -13,12 +13,12 @@ import com.bee32.sem.inventory.util.StockJobStepping;
 import com.bee32.sem.misc.UnmarshalMap;
 
 @ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = "XFRO"))
-public class TransferOutAdminBean
+public class StockOrderBean_XFER_OUT
         extends AbstractStockOrderBean {
 
     private static final long serialVersionUID = 1L;
 
-    public TransferOutAdminBean() {
+    public StockOrderBean_XFER_OUT() {
         subject = StockOrderSubject.XFER_OUT;
     }
 

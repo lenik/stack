@@ -9,12 +9,12 @@ import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
 import com.bee32.sem.inventory.util.StockJobStepping;
 
 @ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = "OSPO"))
-public class OutsourcingOutAdminBean
+public class StockOrderBean_OSP_OUT
         extends AbstractStockOrderBean {
 
     private static final long serialVersionUID = 1L;
 
-    public OutsourcingOutAdminBean() {
+    public StockOrderBean_OSP_OUT() {
         this.subject = StockOrderSubject.OSP_OUT;
     }
 

@@ -3,7 +3,8 @@
     xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:fr="http://java.sun.com/jsf/composite/frame"
     xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
-    <ui:param name="bean" value="#{takeAdminBean}" />
-    <ui:param name="title" value="#{bean.subject.displayName}" />
+    <ui:param name="bean" value="#{stockOrderBean_INIT}" />
+    <ui:param name="title" value="库存初始化" />
+    <ui:param name="disableStockQuery" value="true" />
 
 </ui:composition>

@@ -30,16 +30,16 @@ public class StockOrderParameterizedType
 
     static Map<StockOrderSubject, String> subjectHrefMap = new HashMap<StockOrderSubject, String>();
     {
-        subjectHrefMap.put(StockOrderSubject.INIT, "init/");
-        subjectHrefMap.put(StockOrderSubject.TAKE_IN, "take/");
-        subjectHrefMap.put(StockOrderSubject.TAKE_OUT, "take/");
-        subjectHrefMap.put(StockOrderSubject.FACTORY_IN, "take/");
-        subjectHrefMap.put(StockOrderSubject.FACTORY_OUT, "take/");
-        subjectHrefMap.put(StockOrderSubject.STKD, "stocktaking/");
-        subjectHrefMap.put(StockOrderSubject.XFER_IN, "transferIn/");
-        subjectHrefMap.put(StockOrderSubject.XFER_OUT, "transferOut/");
-        subjectHrefMap.put(StockOrderSubject.OSP_IN, "outsourcingIn/");
-        subjectHrefMap.put(StockOrderSubject.OSP_OUT, "outsourcingOut/");
+        subjectHrefMap.put(StockOrderSubject.INIT, "stock/INIT/");
+        subjectHrefMap.put(StockOrderSubject.TAKE_IN, "stock/");
+        subjectHrefMap.put(StockOrderSubject.TAKE_OUT, "stock/");
+        subjectHrefMap.put(StockOrderSubject.FACTORY_IN, "stock/");
+        subjectHrefMap.put(StockOrderSubject.FACTORY_OUT, "stock/");
+        subjectHrefMap.put(StockOrderSubject.STKD, "stock/STKD/");
+        subjectHrefMap.put(StockOrderSubject.XFER_IN, "stock/XFER_IN/");
+        subjectHrefMap.put(StockOrderSubject.XFER_OUT, "stock/XFER_OUT/");
+        subjectHrefMap.put(StockOrderSubject.OSP_IN, "stock/OSP_IN/");
+        subjectHrefMap.put(StockOrderSubject.OSP_OUT, "stock/OSP_OUT/");
     }
 
     @Override

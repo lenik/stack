@@ -15,7 +15,7 @@ public class SEMInventoryModule
 
     @Override
     protected void preamble() {
-        declareEntityPages(StockOrder.class, "stockOrder");
+        declareEntityPages(StockOrder.class, "stock");
         declareEntityPages(Material.class, "material");
     }
 

@@ -13,7 +13,7 @@ import com.bee32.sem.inventory.tx.entity.StockTransfer;
 import com.bee32.sem.inventory.util.StockJobStepping;
 
 @ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = "XFRI"))
-public class TransferInAdminBean
+public class StockOrderBean_XFER_IN
         extends AbstractStockOrderBean {
 
     private static final long serialVersionUID = 1L;
@@ -21,7 +21,7 @@ public class TransferInAdminBean
     StockOrderItemDto selectedSourceItem;
     StockOrderItemDto destItem;
 
-    public TransferInAdminBean() {
+    public StockOrderBean_XFER_IN() {
         subject = StockOrderSubject.XFER_IN;
     }
 
