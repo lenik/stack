@@ -4,6 +4,9 @@ update org_unit set label=name;
 alter party drop column name;
 alter org_unit drop column name;
 
+update r_ace set mode=replace(mode, 'l', '');
+update r_ace set mode=replace(mode, 'S', 's');
+
 update party set employee=true
     where id in (select distinct party from party_tags where tag='ENY');
 

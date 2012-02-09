@@ -42,10 +42,25 @@ public class PermissionAdminBean
     private GroupDto selectedGroup;
     private RoleDto selectedRole;
 
+    List<UserDto> users;
+    List<GroupDto> groups;
+    List<RoleDto> roles;
+
     private List<RPEntry> rpEntries;
     private RPEntry selectedRpEntry;
 
     private int activeTab;
+
+    public PermissionAdminBean() {
+        List<Group> _groups = serviceFor(Group.class).list();
+        groups = DTOs.marshalList(GroupDto.class, _groups);
+
+        List<Role> _roles = serviceFor(Role.class).list();
+        roles = DTOs.marshalList(RoleDto.class, _roles);
+
+        List<User> _users = serviceFor(User.class).list();
+        users = DTOs.marshalList(UserDto.class, _users);
+    }
 
     public UserDto getSelectedUser() {
         return selectedUser;
@@ -72,21 +87,15 @@ public class PermissionAdminBean
     }
 
     public List<UserDto> getUsers() {
-        List<User> users = serviceFor(User.class).list();
-        List<UserDto> userDtos = DTOs.marshalList(UserDto.class, users);
-        return userDtos;
+        return users;
     }
 
     public List<RoleDto> getRoles() {
-        List<Role> roles = serviceFor(Role.class).list();
-        List<RoleDto> roleDtos = DTOs.marshalList(RoleDto.class, roles);
-        return roleDtos;
+        return roles;
     }
 
     public List<GroupDto> getGroups() {
-        List<Group> groups = serviceFor(Group.class).list();
-        List<GroupDto> groupDtos = DTOs.marshalList(GroupDto.class, groups);
-        return groupDtos;
+        return groups;
     }
 
     public List<RPEntry> getRpEntries() {
@@ -116,18 +125,18 @@ public class PermissionAdminBean
     public List<SelectItem> getPermissionStatus() {
         List<SelectItem> items = new ArrayList<SelectItem>();
         SelectItem item = new SelectItem();
-        item.setValue(null);
-        item.setLabel("未知");
+        item.setValue(0);
+        item.setLabel("-");
         items.add(item);
 
         item = new SelectItem();
-        item.setValue(false);
-        item.setLabel("拒绝");
-        items.add(item);
-
-        item = new SelectItem();
-        item.setValue(true);
+        item.setValue(1);
         item.setLabel("允许");
+        items.add(item);
+
+        item = new SelectItem();
+        item.setValue(2);
+        item.setLabel("拒绝");
         items.add(item);
 
         return items;
@@ -164,6 +173,8 @@ public class PermissionAdminBean
                 rpEntries.add(rpEntry);
             }
         }
+
+        uiLogger.info("权限装载完成!");
     }
 
     public void onRowSelectUser(SelectEvent event) {
@@ -261,108 +272,112 @@ public class PermissionAdminBean
         for (RPEntry e : rpEntries) {
             e.permission.setAdmin(true);
         }
-    }
 
-    public void onSelectInvertAdmin() {
-        for (RPEntry e : rpEntries) {
-            e.permission.getOwn().invert();
-        }
+        uiLogger.info("全选完成!");
     }
 
     public void onSelectNoneAdmin() {
         for (RPEntry e : rpEntries) {
             e.permission.setAdmin(false);
         }
+
+        uiLogger.info("取消选择完成!");
+    }
+
+    public void onSelectAllUsable() {
+        for (RPEntry e : rpEntries) {
+            e.permission.setUsable(true);
+        }
+
+        uiLogger.info("全选完成!");
+    }
+
+    public void onSelectNoneUsable() {
+        for (RPEntry e : rpEntries) {
+            e.permission.setUsable(false);
+        }
+
+        uiLogger.info("取消选择完成!");
     }
 
     public void onSelectAllReadable() {
         for (RPEntry e : rpEntries) {
             e.permission.setReadable(true);
         }
-    }
 
-    public void onSelectInvertReadable() {
-        for (RPEntry e : rpEntries) {
-            e.permission.getRead().invert();
-        }
+        uiLogger.info("全选完成!");
     }
 
     public void onSelectNoneReadable() {
         for (RPEntry e : rpEntries) {
             e.permission.setReadable(false);
         }
+
+        uiLogger.info("取消选择完成!");
     }
 
     public void onSelectAllWritable() {
         for (RPEntry e : rpEntries) {
             e.permission.setWritable(true);
         }
-    }
 
-    public void onSelectInvertWritable() {
-        for (RPEntry e : rpEntries) {
-            e.permission.getWrite().invert();
-        }
+        uiLogger.info("全选完成!");
     }
 
     public void onSelectNoneWritable() {
         for (RPEntry e : rpEntries) {
             e.permission.setWritable(false);
         }
+
+        uiLogger.info("取消选择完成!");
     }
 
     public void onSelectAllExecutable() {
         for (RPEntry e : rpEntries) {
             e.permission.setExecutable(true);
         }
-    }
 
-    public void onSelectInvertExecutable() {
-        for (RPEntry e : rpEntries) {
-            e.permission.getExecute().invert();
-        }
+        uiLogger.info("全选完成!");
     }
 
     public void onSelectNoneExecutable() {
         for (RPEntry e : rpEntries) {
             e.permission.setExecutable(false);
         }
+
+        uiLogger.info("取消选择完成!");
     }
 
     public void onSelectAllCreatable() {
         for (RPEntry e : rpEntries) {
             e.permission.setCreatable(true);
         }
-    }
 
-    public void onSelectInvertCreatable() {
-        for (RPEntry e : rpEntries) {
-            e.permission.getCreate().invert();
-        }
+        uiLogger.info("全选完成!");
     }
 
     public void onSelectNoneCreatable() {
         for (RPEntry e : rpEntries) {
             e.permission.setCreatable(false);
         }
+
+        uiLogger.info("取消选择完成!");
     }
 
     public void onSelectAllDeletable() {
         for (RPEntry e : rpEntries) {
             e.permission.setDeletable(true);
         }
-    }
 
-    public void onSelectInvertDeletable() {
-        for (RPEntry e : rpEntries) {
-            e.permission.getDelete().invert();
-        }
+        uiLogger.info("全选完成!");
     }
 
     public void onSelectNoneDeletable() {
         for (RPEntry e : rpEntries) {
             e.permission.setDeletable(false);
         }
+
+        uiLogger.info("取消选择完成!");
     }
 
 }
