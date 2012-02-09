@@ -12,6 +12,9 @@ import javax.free.NotImplementedException;
 import javax.free.Nullables;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.orm.hibernate3.HibernateSystemException;
 
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.TextMap;
@@ -22,6 +25,7 @@ import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.entity.EntityFlags;
 import com.bee32.plover.orm.entity.EntityUtil;
+import com.bee32.plover.orm.validation.RequiredId;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
 
@@ -147,6 +151,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      *
      * @return <code>null</code> If id isn't set. Thus should be skipped.
      */
+    @NotNull
     public K getId() {
         return id;
     }
@@ -159,6 +164,47 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      */
     public void setId(K id) {
         this.id = id;
+    }
+
+    @RequiredId
+    public int getIdRequiredInt() {
+        if (id == null)
+            return 0;
+        else
+            return (Integer) id;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void setIdRequiredInt(int id) {
+        this.id = (K) (Integer) id;
+    }
+
+    @RequiredId
+    public long getIdRequiredLong() {
+        if (id == null)
+            return 0L;
+        else
+            return (Long) id;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void setIdRequiredLong(long id) {
+        this.id = (K) (Long) id;
+    }
+
+    @RequiredId
+    public String getIdRequiredString() {
+        if (id == null)
+            return "";
+        else
+            return (String) id;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void setIdRequiredString(String id) {
+        if (id == null)
+            throw new NullPointerException("id");
+        this.id = (K) id;
     }
 
     /**
@@ -470,7 +516,11 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
                     return givenTarget;
             }
 
-            return loadEntity(entityType, id);
+            try {
+                return loadEntity(entityType, id);
+            } catch (HibernateSystemException e) {
+                throw e;
+            }
 
         case ID_VER_REF:
             if (version == null)
