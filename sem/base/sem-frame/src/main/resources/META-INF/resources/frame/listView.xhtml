@@ -84,7 +84,7 @@
                                     <p:commandButton id="edit" value="修改" disabled="${mbean.selection == null}"
                                         action="${mbean.showEditForm}" update="${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
                                         oncomplete="${style == 'panel' ? '' : cc.attrs.editDialogVar.concat('.show();')}"
-                                        rendered="${removable and (style != 'panel' or not cc.attrs.smooth)}">
+                                        rendered="${cc.attrs.editable and (style != 'panel' or not cc.attrs.smooth)}">
                                         <f:setPropertyActionListener target="${mbean.copyMode}"
                                             value="${cc.attrs.copy}" />
                                     </p:commandButton>
