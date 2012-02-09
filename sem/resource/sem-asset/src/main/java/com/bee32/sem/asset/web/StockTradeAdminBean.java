@@ -1,48 +1,28 @@
 package com.bee32.sem.asset.web;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.free.IllegalUsageException;
-import javax.free.UnexpectedException;
 
-import org.springframework.transaction.annotation.Transactional;
-
-import com.bee32.plover.criteria.hibernate.Like;
-import com.bee32.plover.criteria.hibernate.Offset;
-import com.bee32.plover.criteria.hibernate.Order;
-import com.bee32.plover.orm.util.DTOs;
-import com.bee32.sem.asset.dto.AccountSubjectDto;
 import com.bee32.sem.asset.dto.StockPurchaseDto;
 import com.bee32.sem.asset.dto.StockSaleDto;
 import com.bee32.sem.asset.dto.StockTradeDto;
 import com.bee32.sem.asset.dto.StockTradeItemDto;
-import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.asset.entity.StockPurchase;
 import com.bee32.sem.asset.entity.StockSale;
 import com.bee32.sem.asset.entity.StockTrade;
-import com.bee32.sem.inventory.dto.MaterialDto;
+import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.misc.ScrollEntityViewBean;
-import com.bee32.sem.people.dto.PartyDto;
+import com.bee32.sem.misc.UnmarshalMap;
 
 public class StockTradeAdminBean
         extends ScrollEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
-    protected StockTradeItemDto tradeItem = new StockTradeItemDto().create();
+    String typeName;
 
-    private boolean newItemStatus = false;
-
-    private MaterialDto selectedMaterial;
-    private PartyDto selectedParty;
-
-    protected List<StockTradeItemDto> itemsNeedToRemoveWhenModify = new ArrayList<StockTradeItemDto>();
-
-    private String pageTitle;
-
-    private AccountSubjectDto selectedAccountSubject;
+    ListMBean<StockTradeItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items", StockTradeItemDto.class);
 
     public StockTradeAdminBean() {
         super(StockTrade.class, StockTradeDto.class, 0);
@@ -50,12 +30,12 @@ public class StockTradeAdminBean
         if (type != null)
             switch (type) {
             case "SALE":
-                pageTitle = "销售入账单管理";
+                typeName = "销售入账单";
                 entityClass = StockSale.class;
                 dtoClass = StockSaleDto.class;
                 break;
             case "PURCHASE":
-                pageTitle = "采购入账单管理";
+                typeName = "采购入账单";
                 entityClass = StockPurchase.class;
                 dtoClass = StockPurchaseDto.class;
                 break;
@@ -64,148 +44,16 @@ public class StockTradeAdminBean
             }
     }
 
-    public String getCreator() {
-        StockTradeDto stockTrade = getOpenedObject();
-        if (stockTrade == null)
-            return "";
-        else
-            return stockTrade.getOwnerDisplayName();
+    public String getTypeName() {
+        return typeName;
     }
 
-    public List<StockTradeItemDto> getItems() {
-        StockTradeDto stockTrade = getOpenedObject();
-        if (stockTrade == null)
-            return null;
-        return stockTrade.getItems();
-    }
+    @Override
+    protected boolean preUpdate(UnmarshalMap uMap)
+            throws Exception {
 
-    public StockTradeItemDto getTradeItem() {
-        return tradeItem;
-    }
-
-    public void setTradeItem(StockTradeItemDto tradeItem) {
-        this.tradeItem = tradeItem;
-    }
-
-    public MaterialDto getSelectedMaterial() {
-        return selectedMaterial;
-    }
-
-    public void setSelectedMaterial(MaterialDto selectedMaterial) {
-        this.selectedMaterial = selectedMaterial;
-    }
-
-    public boolean isNewItemStatus() {
-        return newItemStatus;
-    }
-
-    public void setNewItemStatus(boolean newItemStatus) {
-        this.newItemStatus = newItemStatus;
-    }
-
-    public PartyDto getSelectedParty() {
-        return selectedParty;
-    }
-
-    public void setSelectedParty(PartyDto selectedParty) {
-        this.selectedParty = selectedParty;
-    }
-
-    public String getPageTitle() {
-        return pageTitle;
-    }
-
-    public void newItem() {
-        StockTradeDto stockTrade = getOpenedObject();
-        tradeItem = new StockTradeItemDto().create();
-        tradeItem.setTrade(stockTrade);
-
-        newItemStatus = true;
-    }
-
-    public void modifyItem() {
-        newItemStatus = false;
-    }
-
-    public void deleteItem() {
-        StockTradeDto stockTrade = getOpenedObject();
-        stockTrade.removeItem(tradeItem);
-
-        if (tradeItem.getId() != null) {
-            itemsNeedToRemoveWhenModify.add(tradeItem);
-        }
-    }
-
-    public void chooseMaterial() {
-        tradeItem.setMaterial(selectedMaterial);
-
-        selectedMaterial = null;
-    }
-
-    public void doSaveItem() {
-        StockTradeDto stockTrade = getOpenedObject();
-        tradeItem.setTrade(stockTrade);
-        if (newItemStatus) {
-            stockTrade.addItem(tradeItem);
-        }
-    }
-
-    public void chooseParty() {
-        StockTradeDto stockTrade = getOpenedObject();
-        stockTrade.setParty(selectedParty);
-    }
-
-    private void loadStockTrade(int position) {
-        StockTradeDto stockTrade = getOpenedObject();
-        // 刷新总记录数
-        try {
-// stockTrade = ((StockTradeDto) stockTradeDtoClass.newInstance()).create();
-        } catch (Exception e) {
-            throw new UnexpectedException(e);
-        }
-
-        StockTrade firstTrade = (StockTrade) serviceFor(entityClass).getFirst( //
-                new Offset(position - 1), //
-// CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
-                Order.asc("id"));
-
-    }
-
-    public void modify() {
-        StockTradeDto stockTrade = getOpenedObject();
-        if (stockTrade.getId() == null) {
-            uiLogger.warn("当前没有对应的单据");
-            return;
-        }
-
-        itemsNeedToRemoveWhenModify.clear();
-    }
-
-    public void delete() {
-        StockTradeDto stockTrade = getOpenedObject();
-        try {
-            serviceFor(entityClass).delete(stockTrade.unmarshal());
-            uiLogger.info("删除成功!");
-// loadStockTrade(goNumber);
-        } catch (Exception e) {
-            uiLogger.warn("删除失败.", e);
-        }
-
-    }
-
-    @Transactional
-    public void save1() {
-        StockTradeDto stockTrade = getOpenedObject();
-        if (stockTrade.getId() == null) {
-            // 新增
-// goNumber = count + 1;
-        }
-
-        try {
-
-            for (StockTradeItemDto item : itemsNeedToRemoveWhenModify) {
-                stockTrade.removeItem(item);
-            }
+        for (StockTrade _stockTrade : uMap.<StockTrade> entitySet()) {
+            StockTradeDto stockTrade = uMap.getSourceDto(_stockTrade);
 
             // 更新_trade中的金额
             BigDecimal total = new BigDecimal(0);
@@ -214,37 +62,14 @@ public class StockTradeAdminBean
             }
 
             stockTrade.getValue().setValue(total);
-
-            StockTrade _trade = (StockTrade) stockTrade.unmarshal();
-
-            serviceFor(entityClass).save(_trade);
-            uiLogger.info("保存成功");
-// loadStockTrade(goNumber);
-        } catch (Exception e) {
-            uiLogger.warn("保存失败", e);
+            _stockTrade.setValue(stockTrade.getValue().toImmutable());
         }
+
+        return true;
     }
 
-    public AccountSubjectDto getSelectedAccountSubject() {
-        return selectedAccountSubject;
-    }
-
-    public void setSelectedAccountSubject(AccountSubjectDto selectedAccountSubject) {
-        this.selectedAccountSubject = selectedAccountSubject;
-    }
-
-    public List<AccountSubjectDto> getAccountSubjects() {
-        StockTradeDto stockTrade = getOpenedObject();
-        // 在实体中,name代表科目代码，label代表科目名称
-        List<AccountSubject> _subjects = serviceFor(AccountSubject.class).list(//
-                new Like("id", "%" + stockTrade.getSubject().getName() + "%"));
-
-        return DTOs.mrefList(AccountSubjectDto.class, 0, _subjects);
-    }
-
-    public void chooseAccountSubject() {
-        StockTradeDto stockTrade = getOpenedObject();
-        stockTrade.setSubject(selectedAccountSubject);
+    public ListMBean<StockTradeItemDto> getItemsMBean() {
+        return itemsMBean;
     }
 
 }

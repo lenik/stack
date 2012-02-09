@@ -5,7 +5,7 @@
 
     <ui:param name="title" value="资产初始化" />
     <ui:param name="verifiable" value="true" />
-    <ui:param name="bean" value="#{accountInitBean}" />
+    <ui:param name="bean" value="#{accountInitAdminBean}" />
     <ui:param name="obj" value="#{bean.openedObject}" />
     <ui:param name="itemObj" value="#{bean.itemsMBean.openedObject}" />
     <ui:param name="monetary" value="#{monetaryDictsBean}" />
@@ -13,7 +13,7 @@
     <ui:define name="editDialogContent">
 
         <fr:listView id="itemsIndexView" header="资产初始化" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
-            nested="true">
+            nested="true" paginator="false">
             <f:facet name="columns">
                 <p:column headerText="会计科目">
                     <h:outputText value="#{entry.subject.label}" />
@@ -23,12 +23,8 @@
                     <h:outputText value="#{entry.party.displayName}" />
                 </p:column>
 
-                <p:column headerText="币种">
-                    <h:outputText value="#{entry.valueCurrency}" />
-                </p:column>
-
                 <p:column headerText="金额">
-                    <h:outputText value="#{entry.valueDigit}" />
+                    <h:outputText value="#{entry.value}" />
                 </p:column>
 
                 <p:column headerText="状态">
@@ -39,8 +35,10 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:chooseAccountSubjectDialog id="subjectDialog" target="#{itemObj.subject}" />
-        <sem:choosePartyDialog id="customerDialog" header="选择客户" target="#{itemObj.party}" />
+        <sem:chooseAccountSubjectDialog id="subjectDialog" target="#{itemObj.subject}"
+            update=":itemsEditView:editForm:body" />
+        <sem:choosePartyDialog id="customerDialog" header="选择客户" target="#{itemObj.party}"
+            update=":itemsEditView:editForm:body" />
 
         <fr:listView id="itemsEditView" header="凭证项目编辑" style="editDialog" indexView=":editDialog:form:itemsIndexView"
             mbean="#{bean.itemsMBean}">
@@ -53,7 +51,7 @@
 
                 <h:outputLabel value="二级科目" />
                 <h:panelGroup>
-                    <p:inputText id="party" value="#{item.party.name}" readonly="true" />
+                    <p:inputText id="party" value="#{item.party.displayName}" readonly="true" />
                     <p:commandButton value="..." onclick="choosePartyDialog.show();" />
                 </h:panelGroup>
 
@@ -64,13 +62,13 @@
                 </p:selectOneMenu>
 
                 <h:outputLabel for="value" value="金额" />
-                <h:panelGroup>
-                    <p:inputText id="value" label="金额" value="#{item.value.value}" />
-                    <p:selectOneMenu value="#{item.value.currencyCode}" style="width: 200em;">
-                        <f:selectItem itemValue="" itemLabel="--选择币种--" />
-                        <f:selectItems value="#{monetary.currencySelectItems}" />
-                    </p:selectOneMenu>
-                </h:panelGroup>
+                <p:inputText id="value" label="金额" value="#{item.value.value}" />
+
+                <h:outputLabel for="currency" value="币种" />
+                <p:selectOneMenu id="currency" value="#{item.value.currencyCode}" style="width: 20em;">
+                    <f:selectItem itemValue="" itemLabel="--选择币种--" />
+                    <f:selectItems value="#{monetary.currencySelectItems}" />
+                </p:selectOneMenu>
             </h:panelGrid>
         </fr:listView>
     </ui:define>

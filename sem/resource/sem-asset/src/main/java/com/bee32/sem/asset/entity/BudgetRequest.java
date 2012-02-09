@@ -19,7 +19,7 @@ public class BudgetRequest
 
     private static final long serialVersionUID = 1L;
 
-    public static final int TEXT_LENGTH = 10000;
+    public static final int TEXT_LENGTH = 3000;
 
     String text;
     MCValue value = new MCValue();

@@ -4,15 +4,15 @@
     xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
     <ui:param name="bean" value="#{stockTradeAdminBean}" />
-    <ui:param name="title" value="#{bean.pageTitle}" />
+    <ui:param name="title" value="#{bean.typeName} 管理" />
     <ui:param name="verifiable" value="true" />
-    <ui:param name="monetary" value="#{monetaryDictsBean}" />
     <ui:param name="obj" value="#{bean.openedObject}" />
     <ui:param name="itemObj" value="#{bean.itemsMBean.openedObject}" />
+    <ui:param name="monetary" value="#{monetaryDictsBean}" />
 
     <ui:define name="editDialogContent">
-        <p:panel header="#{bean.pageTitle}">
-            <t:panelGrid columns="4">
+        <p:panel header="#{bean.typeName}">
+            <t:panelGrid id="basic" columns="4">
                 <h:outputText value="时间" />
                 <t:panelGroup colspan="3">
                     <h:outputText value="#{obj.createdDate}">
@@ -36,7 +36,7 @@
 
                 <h:outputLabel value="公司" />
                 <t:panelGroup colspan="3">
-                    <p:inputText id="party" value="#{obj.party.name}" readonly="true" />
+                    <p:inputText id="party" value="#{obj.party.displayName}" readonly="true" />
                     <p:commandButton value="..." onclick="choosePartyDialog.show();" disabled="#{not bean.editing}" />
                 </t:panelGroup>
 
@@ -64,27 +64,29 @@
 
             <fr:listView id="itemsIndexView" header="项目" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
                 nested="true">
-                <p:column headerText="物料" sortBy="#{item.material.label}">
-                    <h:outputText value="#{item.material.label}" />
-                </p:column>
-                <p:column headerText="规格型号">
-                    <h:outputText value="#{item.material.modelSpec}" />
-                </p:column>
-                <p:column headerText="单位">
-                    <h:outputText value="#{item.material.unit.name}" />
-                </p:column>
-                <p:column headerText="单价">
-                    <h:outputText value="#{item.price.value}" />
-                </p:column>
-                <p:column headerText="币种">
-                    <h:outputText value="#{item.price.currencyText}" />
-                </p:column>
-                <p:column headerText="数量">
-                    <h:outputText value="#{item.quantity}" />
-                </p:column>
-                <p:column headerText="备注">
-                    <h:outputText value="#{item.description}" />
-                </p:column>
+                <f:facet name="columns">
+                    <p:column headerText="物料">
+                        <h:outputText value="#{entry.material.label}" />
+                    </p:column>
+                    <p:column headerText="规格型号">
+                        <h:outputText value="#{entry.material.modelSpec}" />
+                    </p:column>
+                    <p:column headerText="单位">
+                        <h:outputText value="#{entry.material.unit.name}" />
+                    </p:column>
+                    <p:column headerText="单价">
+                        <h:outputText value="#{entry.price.value}" />
+                    </p:column>
+                    <p:column headerText="币种">
+                        <h:outputText value="#{entry.price.currencyText}" />
+                    </p:column>
+                    <p:column headerText="数量">
+                        <h:outputText value="#{entry.quantity}" />
+                    </p:column>
+                    <p:column headerText="备注">
+                        <h:outputText value="#{entry.description}" />
+                    </p:column>
+                </f:facet>
             </fr:listView>
         </p:panel>
     </ui:define>
@@ -92,7 +94,7 @@
     <ui:define name="dialogs">
         <sem:chooseAccountSubjectDialog id="chooseSubjectDialog" target="#{obj.subject}"
             update=":editDialog:form:subject" />
-        <sem:choosePartyDialog id="choosePartyDialog" target="#{obj.party}" update=":editDialog:form:party" />
+        <sem:choosePartyDialog id="choosePartyDialog" target="#{obj.party}" update=":editDialog:form:basic" />
         <sem:chooseMaterialDialog id="chooseMaterialDialog" target="#{itemObj.material}"
             update=":itemsEditView:editForm:body" />
 

@@ -19,11 +19,11 @@ public class AccountInitDto
 
     List<AccountInitItemDto> items;
 
-    private AccountInitDto() {
+    public AccountInitDto() {
         super();
     }
 
-    private AccountInitDto(int fmask) {
+    public AccountInitDto(int fmask) {
         super(fmask);
     }
 

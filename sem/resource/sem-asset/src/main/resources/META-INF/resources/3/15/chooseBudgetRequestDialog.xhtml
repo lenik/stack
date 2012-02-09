@@ -41,17 +41,11 @@
                 <p:column headerText="经办人">
                     <h:outputText value="#{entry.creator}" />
                 </p:column>
-
                 <p:column headerText="摘要">
                     <h:outputText value="#{entry.description}" />
                 </p:column>
-
-                <p:column headerText="货币类型">
-                    <h:outputText value="#{entry.valueCurrency}" />
-                </p:column>
-
                 <p:column headerText="金额">
-                    <h:outputText value="#{entry.valueDigit}" />
+                    <h:outputText value="#{entry.value}" />
                 </p:column>
                 <cc:renderFacet name="columns" />
             </ui:define>

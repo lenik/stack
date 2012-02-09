@@ -21,18 +21,18 @@ public class AccountTicketItemDto
 
     SingleVerifierWithNumberSupportDto singleVerifierWithNumberSupport;
 
+    AccountTicketDto ticket;
     int index;
 
     AccountSubjectDto subject;
     PartyDto party;
 
-    MutableMCValue value;
-
     boolean debitSide;
-    AccountTicketDto ticket;
+    MutableMCValue value;
 
     @Override
     protected void _marshal(AccountTicketItem source) {
+        ticket = mref(AccountTicketDto.class, source.getTicket());
         index = source.getIndex();
 
         subject = mref(AccountSubjectDto.class, source.getSubject());
@@ -44,12 +44,12 @@ public class AccountTicketItemDto
         else
             value = source.getValue().toMutable();
 
-        ticket = mref(AccountTicketDto.class, source.getTicket());
         singleVerifierWithNumberSupport = marshal(SingleVerifierWithNumberSupportDto.class, source.getVerifyContext());
     }
 
     @Override
     protected void _unmarshalTo(AccountTicketItem target) {
+        merge(target, "ticket", ticket);
         target.setIndex(index);
 
         merge(target, "subject", subject);
@@ -61,7 +61,6 @@ public class AccountTicketItemDto
         else
             target.setValue(value);
 
-        merge(target, "ticket", ticket);
         merge(target, "verifyContext", singleVerifierWithNumberSupport);
     }
 

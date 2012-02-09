@@ -5,68 +5,60 @@
 
     <ui:param name="title" value="凭证" />
     <ui:param name="verifiable" value="true" />
-    <ui:param name="monetary" value="#{monetaryDictsBean}" />
     <ui:param name="bean" value="#{accountTicketAdminBean}" />
     <ui:param name="obj" value="#{bean.openedObject}" />
+    <ui:param name="itemObj" value="#{bean.itemsMBean.openedObject}" />
+    <ui:param name="monetary" value="#{monetaryDictsBean}" />
 
-    <ui:define name="editFormDialog">
-        <p:panel header="凭证管理">
-            <t:panelGrid columns="4">
-                <h:outputText value="标识:" />
-                <h:outputText value="#{obj.id}" />
-                <h:outputText value="状态" />
-                <p:inputText value="#{obj.verifyContext.verifyEvalState}" disabled="true" />
+    <ui:define name="editDialogContent">
+        <t:panelGrid id="basic" columns="4">
+            <h:outputText value="标识:" />
+            <h:outputText value="#{obj.id}" />
+            <h:outputText value="状态" />
+            <p:inputText value="#{obj.verifyContext.verifyEvalState}" disabled="true" />
 
-                <h:outputText value="时间:" />
-                <h:outputText value="#{obj.createdDate}">
-                    <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-                </h:outputText>
-                <h:outputText value="制单人:" />
-                <p:inputText value="#{bean.creator}" disabled="true" />
+            <h:outputText value="时间:" />
+            <h:outputText value="#{obj.createdDate}">
+                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+            </h:outputText>
+            <h:outputText value="制单人:" />
+            <p:inputText value="#{obj.owner.displayName}" disabled="true" />
 
-                <t:panelGroup colspan="2">
-                    <h:outputText value="资金流业务单:" />
-                </t:panelGroup>
-                <t:panelGroup colspan="2">
-                    <p:inputText id="budgetRequest" value="#{obj.request.description}" readonly="true" />
-                    <p:commandButton value="..." onclick="chooseBudgetRequestDialog.show();" disabled="#{!bean.editable}" />
-                </t:panelGroup>
-            </t:panelGrid>
+            <t:panelGroup colspan="2">
+                <h:outputText value="资金流业务单:" />
+            </t:panelGroup>
+            <t:panelGroup colspan="2">
+                <p:inputText id="budgetRequest" value="#{obj.request.description}" readonly="true" />
+                <p:commandButton value="..." onclick="chooseBudgetRequestDialog.show();" disabled="#{not bean.editing}" />
+            </t:panelGroup>
+        </t:panelGrid>
 
-            <fr:listView id="itemsIndexView" header="凭证项目" style="indexPanel" editView=":itemsEditView"
-                mbean="#{bean.itemsMBean}" nested="true">
+        <fr:listView id="itemsIndexView" header="凭证项目" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
+            nested="true">
+            <f:facet name="columns">
                 <p:column headerText="摘要">
-                    <h:outputText value="#{item.description}" />
+                    <h:outputText value="#{entry.description}" />
                 </p:column>
-
                 <p:column headerText="会计科目">
-                    <h:outputText value="#{item.subject.label}" />
+                    <h:outputText value="#{entry.subject.label}" />
                 </p:column>
-
                 <p:column headerText="二级科目">
-                    <h:outputText value="#{item.party.displayName}" />
+                    <h:outputText value="#{entry.party.displayName}" />
                 </p:column>
-
                 <p:column headerText="借贷方向">
-                    <p:selectOneMenu value="#{item.debitSide}" disabled="#{true}" style="width:200px;">
+                    <p:selectOneMenu value="#{entry.debitSide}" disabled="#{true}" style="width:200px;">
                         <f:selectItem itemValue="true" itemLabel="借方" />
                         <f:selectItem itemValue="false" itemLabel="贷方" />
                     </p:selectOneMenu>
                 </p:column>
-
-                <p:column headerText="币种">
-                    <h:outputText value="#{item.valueCurrency}" />
-                </p:column>
-
                 <p:column headerText="金额">
-                    <h:outputText value="#{item.valueDigit}" />
+                    <h:outputText value="#{entry.value}" />
                 </p:column>
-
                 <p:column headerText="状态">
-                    <h:outputText value="#{item.verifyContext.verifyEvalState}" />
+                    <h:outputText value="#{entry.verifyContext.verifyEvalState}" />
                 </p:column>
-            </fr:listView>
-        </p:panel>
+            </f:facet>
+        </fr:listView>
     </ui:define>
 
     <ui:define name="dialogs">
@@ -88,7 +80,7 @@
                 <h:outputLabel value="二级科目" />
                 <t:panelGroup colspan="3">
                     <p:inputText id="party" value="#{item.party.name}" readonly="true" />
-                    <p:commandButton value="..." onclick="chooseCustomerDialog.show();" />
+                    <p:commandButton value="..." onclick="choosePartyDialog.show();" />
                 </t:panelGroup>
 
                 <h:outputLabel value="借贷方向" />
@@ -109,10 +101,11 @@
             </t:panelGrid>
         </fr:listView>
 
-        <sem:chooseAccountSubjectDialog id="subjd" />
-        <sem:choosePartyDialog id="custd" header="选择客户" var="chooseCustomerDialog" update=":itemsEditView:editForm:body" />
-        <sem:chooseBudgetRequestDialog id="requestd" update="" />
+        <sem:chooseBudgetRequestDialog id="d-request" target="#{obj.request}" update=":editDialog:form:basic" />
+        <sem:chooseAccountSubjectDialog id="d-subject" target="#{itemObj.subject}"
+            update=":itemsEditView:editForm:body" />
+        <sem:choosePartyDialog id="d-customer" header="选择客户作为二级科目" target="#{itemObj.party}"
+            update=":itemsEditView:editForm:body" />
     </ui:define>
 
 </ui:composition>
-</html>

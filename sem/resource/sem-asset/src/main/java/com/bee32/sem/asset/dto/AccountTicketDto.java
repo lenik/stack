@@ -28,7 +28,7 @@ public class AccountTicketDto
     @Override
     protected void _marshal(AccountTicket source) {
         if (selection.contains(ITEMS))
-            items = mrefList(AccountTicketItemDto.class, source.getItems());
+            items = marshalList(AccountTicketItemDto.class, source.getItems());
         else
             items = new ArrayList<AccountTicketItemDto>();
 

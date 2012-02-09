@@ -34,4 +34,19 @@ public class AccountInitItemDto
         throw new NotImplementedException();
     }
 
+    @Override
+    public void setEnclosingObject(Object enclosingObject) {
+        setParent((AccountInitDto) enclosingObject);
+    }
+
+    public AccountInitDto getParent() {
+        return parent;
+    }
+
+    public void setParent(AccountInitDto parent) {
+        if (parent == null)
+            throw new NullPointerException("parent");
+        this.parent = parent;
+    }
+
 }

@@ -20,6 +20,10 @@ public class AccountInitAdminBean
         super(AccountInit.class, AccountInitDto.class, 0);
     }
 
+    public ListMBean<AccountInitItemDto> getItemsMBean() {
+        return itemsMBean;
+    }
+
     public void setAccountSubject(AccountSubjectDto subject) {
         // TODO 检查 subject 是否末级科目：在选择对话框中加入 leafOnly 选项。
         AccountInitItemDto item = itemsMBean.getOpenedObject();
