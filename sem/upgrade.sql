@@ -24,3 +24,7 @@ update party set supplier=true
 
 update party set supplier=false
     where id not in (select distinct party from party_tags where tag='SUP');
+
+alter account_ticket_item drop column parent;
+
+alter purchase_inquery rename column org to supplier;
