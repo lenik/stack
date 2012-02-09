@@ -17,7 +17,7 @@ public class SEMAssetModuleTest
 
     @Override
     protected int getRefreshPeriod() {
-        return 10;
+        return 5;
     }
 
     @Override

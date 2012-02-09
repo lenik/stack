@@ -24,8 +24,14 @@ public class DefaultMarshalContext
     CommonDataManager dataManager = MemdbDataManager.getInstance();
 
     @Override
-    public <E extends Entity<K>, K extends Serializable> E loadEntity(Class<E> entityType, K id) {
+    public <E extends Entity<K>, K extends Serializable> E getOrFail(Class<E> entityType, K id) {
         E entity = dataManager.asFor(entityType).getOrFail(id);
+        return entity;
+    }
+
+    @Override
+    public <E extends Entity<K>, K extends Serializable> E getRef(Class<E> entityType, K id) {
+        E entity = dataManager.asFor(entityType).lazyLoad(id);
         return entity;
     }
 

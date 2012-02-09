@@ -42,8 +42,8 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
     Date createdDate;
     Date lastModified;
-    boolean createdDateSet;
-    boolean lastModifiedSet;
+    boolean createdDateDirty;
+    boolean lastModifiedDirty;
 
     EntityFlags entityFlags;
 
@@ -76,11 +76,6 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     protected IEntityMarshalContext getDefaultContext() {
         IEntityMarshalContext marshalContext = DefaultMarshalContext.getInstance();
         return marshalContext;
-    }
-
-    protected <_E extends Entity<_K>, _K extends Serializable> _E loadEntity(Class<_E> entityType, _K id) {
-        _E entity = getMarshalContext().loadEntity(entityType, id);
-        return entity;
     }
 
     /**
@@ -133,8 +128,8 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         version = o.version;
         createdDate = o.createdDate;
         lastModified = o.lastModified;
-        createdDateSet = o.createdDateSet;
-        lastModifiedSet = o.lastModifiedSet;
+        createdDateDirty = o.createdDateDirty;
+        lastModifiedDirty = o.lastModifiedDirty;
         entityFlags = o.entityFlags;
     }
 
@@ -280,7 +275,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
-        this.createdDateSet = true;
+        this.createdDateDirty = true;
     }
 
     public Date getLastModified() {
@@ -289,7 +284,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
     public void setLastModified(Date lastModified) {
         this.lastModified = lastModified;
-        this.lastModifiedSet = true;
+        this.lastModifiedDirty = true;
     }
 
     public EntityFlags getEntityFlags() {
@@ -344,10 +339,10 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         if (version != null)
             EntityAccessor.setVersion(target, version);
 
-        if (createdDateSet)
+        if (createdDateDirty)
             EntityAccessor.setCreatedDate(target, createdDate);
 
-        if (lastModifiedSet)
+        if (lastModifiedDirty)
             EntityAccessor.setLastModified(target, lastModified);
 
         if (entityFlags != null)
@@ -400,10 +395,10 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         if (version != null)
             map.put("version", version);
 
-        if (createdDateSet)
+        if (createdDateDirty)
             map.put("createdDate", createdDate);
 
-        if (lastModifiedSet)
+        if (lastModifiedDirty)
             map.put("lastModified", lastModified);
 
         if (entityFlags != null)
@@ -517,7 +512,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             }
 
             try {
-                return loadEntity(entityType, id);
+                return getMarshalContext().getRef(entityType, id);
             } catch (HibernateSystemException e) {
                 throw e;
             }
@@ -526,7 +521,13 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             if (version == null)
                 throw new IllegalUsageException("ID-VER-REF but version isn't set.");
 
-            E entity = loadEntity(entityType, id);
+            E entity;
+            try {
+                entity = getMarshalContext().getRef(entityType, id);
+            } catch (HibernateSystemException e) {
+                throw e;
+            }
+
             if (!version.equals(entity.getVersion()))
                 throw new IllegalStateException("ID-VER-REF but version of entity has been changed.");
 

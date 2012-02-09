@@ -64,9 +64,15 @@ public abstract class EntityHandler<E extends Entity<K>, K extends Serializable>
      *             in case of Hibernate errors
      */
     @Override
-    public <_E extends Entity<_K>, _K extends Serializable> _E loadEntity(Class<_E> entityType, _K id)
+    public <_E extends Entity<_K>, _K extends Serializable> _E getOrFail(Class<_E> entityType, _K id)
             throws DataAccessException {
         return asFor(entityType).getOrFail(id);
+    }
+
+    @Override
+    public <_E extends Entity<_K>, _K extends Serializable> _E getRef(Class<_E> entityType, _K id)
+            throws DataAccessException {
+        return asFor(entityType).lazyLoad(id);
     }
 
     @Override

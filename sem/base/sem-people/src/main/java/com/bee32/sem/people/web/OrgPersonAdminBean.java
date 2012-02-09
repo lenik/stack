@@ -190,7 +190,7 @@ public class OrgPersonAdminBean
         org.setName(orgName);
         person.setName(personName);
         for (String tagId : selectedTags) {
-            PartyTagname tag = loadEntity(PartyTagname.class, tagId);
+            PartyTagname tag = getOrFail(PartyTagname.class, tagId);
             PartyTagnameDto t = DTOs.mref(PartyTagnameDto.class, tag);
 
             if (!org.getTags().contains(t))

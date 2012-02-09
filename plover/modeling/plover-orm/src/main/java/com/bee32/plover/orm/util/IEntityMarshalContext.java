@@ -14,7 +14,7 @@ public interface IEntityMarshalContext {
      * Load entity with the given id.
      *
      * <p>
-     * Generally, this is implemented using {@link CommonDataManager#fetch(Class, Serializable)}.
+     * Generally, this is implemented using {@link CommonDataManager#getOrFail(Class, Serializable)}.
      *
      * @param entityType
      *            The type of entity to load.
@@ -24,7 +24,9 @@ public interface IEntityMarshalContext {
      * @throws ObjectNotFoundException
      *             If entity with specific id isn't existed.
      */
-    <E extends Entity<K>, K extends Serializable> E loadEntity(Class<E> entityType, K id);
+    <E extends Entity<K>, K extends Serializable> E getOrFail(Class<E> entityType, K id);
+
+    <E extends Entity<K>, K extends Serializable> E getRef(Class<E> entityType, K id);
 
     /**
      * Get (Data-) Access-Service for specific entity type.

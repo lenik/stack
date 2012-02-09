@@ -196,7 +196,7 @@ public abstract class AbstractPartyAdminBean
             party.setTags(tags);
         }
         for (String tagId : selectedTagsToAdd) {
-            PartyTagname tag = loadEntity(PartyTagname.class, tagId);
+            PartyTagname tag = getOrFail(PartyTagname.class, tagId);
             PartyTagnameDto t = DTOs.mref(PartyTagnameDto.class, tag);
 
             if (!party.getTags().contains(t))

@@ -29,8 +29,13 @@ public class QuickDataTestCase
     }
 
     @Override
-    public <E extends Entity<K>, K extends Serializable> E loadEntity(Class<E> entityType, K id) {
+    public <E extends Entity<K>, K extends Serializable> E getOrFail(Class<E> entityType, K id) {
         return asFor(entityType).getOrFail(id);
+    }
+
+    @Override
+    public <E extends Entity<K>, K extends Serializable> E getRef(Class<E> entityType, K id) {
+        return asFor(entityType).lazyLoad(id);
     }
 
     @Override

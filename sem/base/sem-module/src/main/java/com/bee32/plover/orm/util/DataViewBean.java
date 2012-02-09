@@ -49,9 +49,14 @@ public abstract class DataViewBean
     }
 
     @Override
-    public <E extends Entity<K>, K extends Serializable> //
-    E loadEntity(Class<E> entityType, K id) {
+    public <E extends Entity<K>, K extends Serializable> E getOrFail(Class<E> entityType, K id) {
         E entity = serviceFor(entityType).getOrFail(id);
+        return entity;
+    }
+
+    @Override
+    public <E extends Entity<K>, K extends Serializable> E getRef(Class<E> entityType, K id) {
+        E entity = serviceFor(entityType).lazyLoad(id);
         return entity;
     }
 
