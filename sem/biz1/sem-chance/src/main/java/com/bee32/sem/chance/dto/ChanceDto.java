@@ -63,7 +63,7 @@ public class ChanceDto
         content = source.getContent();
 
         if (selection.contains(PARTIES))
-            parties = mrefList(ChancePartyDto.class, source.getParties());
+            parties = marshalList(ChancePartyDto.class, source.getParties());
         else
             parties = new ArrayList<ChancePartyDto>();
 
