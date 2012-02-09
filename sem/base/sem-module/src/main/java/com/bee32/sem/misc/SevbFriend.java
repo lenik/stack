@@ -6,6 +6,7 @@ import com.bee32.plover.arch.util.IObjectOpenListener;
 import com.bee32.plover.arch.util.IPriority;
 import com.bee32.plover.arch.util.ISelectionChangeListener;
 import com.bee32.plover.orm.util.DataViewBean;
+import com.bee32.plover.orm.util.EntityDto;
 
 public abstract class SevbFriend
         extends DataViewBean
@@ -50,6 +51,30 @@ public abstract class SevbFriend
         setOpenedObject(null);
     }
 
+    public boolean isRequired() {
+        return false;
+    }
+
+    /**
+     * 一般用于，在用对话框挑选本友元时，返回的是 DTO-引用，通过 target="#{bean.friend.reload}" 使重新装载 DTO。
+     *
+     * 如果本友元是必选项（ friend.required），传入的 null 将被忽略。
+     */
+    public void setReload(EntityDto<?, ?> dto) {
+        if (dto == null) {
+            if (isRequired()) {
+                // uiLogger.warn("Skipped null selection.");
+                return;
+            } else {
+                close();
+                setOpenedObject(null);
+            }
+        } else {
+            EntityDto<?, ?> reloaded = reload(dto, -1);
+            setOpenedObject(reloaded);
+        }
+    }
+
     public boolean preUpdate(UnmarshalMap uMap) {
         return true;
     }
@@ -64,7 +89,12 @@ public abstract class SevbFriend
     public void postDelete(UnmarshalMap uMap) {
     }
 
-    public abstract void saveOpenedObject(int saveFlags);
+    @Deprecated
+    public boolean isOverrider() {
+        return false;
+    }
+
+    public abstract void saveOpenedObject(int saveFlags, UnmarshalMap _uMap);
 
     public abstract void deleteSelection(int deleteFlags);
 

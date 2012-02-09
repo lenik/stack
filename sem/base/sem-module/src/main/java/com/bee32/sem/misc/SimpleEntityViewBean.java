@@ -113,6 +113,7 @@ public class SimpleEntityViewBean
         this.dtoClass = dtoClass;
         this.baseRestriction = Varargs.toList(criteriaElements);
         this.baseRestriction.add(new Disjunction(//
+                // AnyOwnerUtil.isForAnyOwner(getClass()) ? null :
                 UserCriteria.ownedByCurrentUser(),//
                 ACLCriteria.aclWithin(getACLs(visiblePermission))));
 
@@ -258,7 +259,7 @@ public class SimpleEntityViewBean
         return def._countImpl();
     }
 
-    // ///////////////////////////////////////////////////////////////////////
+    /* ********************************************************************** */
 
     final TreeSet<SevbFriend> sortedFriends = new TreeSet<SevbFriend>(PriorityComparator.INSTANCE);
     final Map<String, SevbFriend> friendMap = new HashMap<String, SevbFriend>();
@@ -284,7 +285,7 @@ public class SimpleEntityViewBean
         return GetOpenedObjectTransformer.decorate(friendMap);
     }
 
-    // ///////////////////////////////////////////////////////////////////////
+    /* ********************************************************************** */
 
     /**
      * Show (or switch to) the real view.
@@ -391,7 +392,7 @@ public class SimpleEntityViewBean
         this.tabIndex = tabIndex;
     }
 
-    // ///////////////////////////////////////////////////////////////////////
+    /* ********************************************************************** */
 
     protected Object create() {
         EntityDto<?, ?> entityDto;
@@ -503,7 +504,7 @@ public class SimpleEntityViewBean
 
         for (SevbFriend friend : sortedFriends) {
             try {
-                friend.saveOpenedObject(saveFlags);
+                friend.saveOpenedObject(saveFlags, uMap);
             } catch (Exception e) {
                 uiLogger.error(hint + "友元失败" + friend, e);
                 return;
