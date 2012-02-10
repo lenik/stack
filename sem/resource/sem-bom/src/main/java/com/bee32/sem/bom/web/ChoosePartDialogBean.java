@@ -46,7 +46,7 @@ public class ChoosePartDialogBean
     public void addNameOrLabelRestriction() {
         addSearchFragment("名称含有 " + searchPattern, Or.of(//
                 CommonCriteria.labelledWith(searchPattern, true), //
-                BomCriteria.partsMaterialLike(searchPattern, true)));
+                BomCriteria.targetLabel(searchPattern, true)));
         searchPattern = null;
     }
 

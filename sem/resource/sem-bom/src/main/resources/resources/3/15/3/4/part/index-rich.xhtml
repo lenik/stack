@@ -3,9 +3,11 @@
     xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:fr="http://java.sun.com/jsf/composite/frame"
     xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
-    <ui:param name="title" value="BOM" />
+    <ui:param name="title" value="BOM 产品组装" />
+    <ui:param name="sideBarWVisible" value="true" />
     <ui:param name="bean" value="#{partAdminBean}" />
     <ui:param name="obj" value="#{bean.openedObject}" />
+    <ui:param name="childObj" value="#{bean.childrenMBean.openedObject}" />
 
     <ui:define name="sideBarW">
         <h:form id="navigatorForm">
@@ -50,12 +52,11 @@
     <ui:define name="editDialogContent">
         <p:tabView id="tv">
             <p:tab title="基本信息">
-                <t:panelGrid columns="4" columnClasses="partColumnTitle,partColumnValue,partColumnTitle,partColumnValue">
-                    <h:outputLabel for="materialName" value="物料" />
+                <t:panelGrid id="basic" columns="4">
+                    <h:outputLabel for="target" value="物料" />
                     <t:panelGroup colspan="3">
-                        <h:outputText id="materialName" value="#{obj.target.label}" />
-                        <p:commandButton title="挑选物料" value="..." oncomplete="choosePartMaterialDialog.show();"
-                            actionListener="#{bean.setMaterialChoose}">
+                        <h:outputText id="target" value="#{obj.target.label}" />
+                        <p:commandButton title="选择生成的物料" value="..." oncomplete="chooseTargetDialog.show();">
                             <f:setPropertyActionListener target="#{chooseMaterialDialogBean.productLike}"
                                 value="true" />
                         </p:commandButton>
@@ -81,73 +82,68 @@
             </p:tab>
             <p:tab title="BOM明细">
                 <fr:listView id="childrenIndexView" header="BOM明细" style="indexPanel" editView=":childrenEditView"
-                    mbean="#{mbean.childrenMBean}" nested="true">
+                    mbean="#{bean.childrenMBean}" nested="true">
                     <f:facet name="columns">
                         <p:column headerText="物料">
-                            <h:outputText value="#{entry.material.id==null? entry.part.target.label : entry.material.label}" />
+                            <h:outputText value="#{entry.anyMaterial.label}" />
                         </p:column>
-
                         <p:column headerText="规格型号">
-                            <h:outputText
-                                value="#{entry.material.id==null? entry.part.target.modelSpec : entry.material.modelSpec}" />
+                            <h:outputText value="#{entry.anyMaterial.modelSpec}" />
                         </p:column>
-
                         <p:column headerText="单位">
-                            <h:outputText
-                                value="#{entry.material.id==null? entry.part.target.unit.name : entry.material.unit.name}" />
+                            <h:outputText value="#{entry.anyMaterial.unit.name}" />
                         </p:column>
-
                         <p:column headerText="数量">
                             <h:outputText value="#{entry.quantity}" />
                         </p:column>
-
                         <p:column headerText="是否有效">
                             <p:selectBooleanCheckbox value="#{entry.valid}" disabled="true" />
                         </p:column>
-
                         <p:column headerText="生效日期">
                             <h:outputText value="#{entry.validDateFrom}">
                                 <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                             </h:outputText>
                         </p:column>
-
                         <p:column headerText="失效日期">
                             <h:outputText value="#{entry.validDateTo}">
                                 <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                             </h:outputText>
                         </p:column>
-
                         <p:column headerText="备注">
                             <h:outputText value="#{entry.description}" />
                         </p:column>
-
                         <p:column headerText="类型">
-                            <h:outputText value="#{entry.part.id==null ? '原材料' : '半成品'}" />
+                            <h:outputText value="#{entry.part.nil ? '原材料' : '半成品'}" />
                         </p:column>
                     </f:facet>
                 </fr:listView>
             </p:tab>
             <p:tab title="计算价格">
                 <h:outputLabel value="价格: " />
-                <h:outputText id="partPrice" value="#{bean.price}" />
+                <h:outputText id="partPrice" value="#{bean.calcPriceResult}" />
                 <p:commandButton value="计算" actionListener="#{bean.calcPrice}" update="partPrice" />
             </p:tab>
         </p:tabView>
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:chooseMaterialDialog id="matdlg1" header="选择产品对应的物料" var="choosePartMaterialDialog" />
-        <sem:chooseMaterialDialog id="matdlg" header="选择组件对应的物料" var="chooseItemMaterialDialog" />
-        <sem:choosePartDialog id="partdlg" header="选择组件对应的半成品" var="chooseItemPartDialog" />
+        <sem:chooseMaterialDialog id="material-d" header="选择产品对应的物料" var="chooseTargetDialog"
+            target="#{obj.target}" update=":editDialog:form:tv:basic" />
+        <sem:choosePartDialog id="itemPart-d" header="选择组件对应的半成品" var="chooseItemPartDialog"
+            target="#{childObj.part}" update=":childrenEditView:editForm:body" />
+        <sem:chooseMaterialDialog id="itemMaterial-d" header="选择组件对应的物料" var="chooseItemMaterialDialog"
+            target="#{childObj.material}" update=":childrenEditView:editForm:body" />
 
-        <fr:listView id="childrenEditView" header="BOM明细" style="editDialog" indexView=":editDialog:form:childrenIndexView"
-            mbean="#{mbean.childrenMBean}">
-            <t:panelGrid columns="4" columnClasses="partColumnTitle,partColumnValue,partColumnTitle,partColumnValue">
-
+        <fr:listView id="childrenEditView" header="BOM明细" style="editDialog" indexView=":editDialog:form:tv:childrenIndexView"
+            mbean="#{bean.childrenMBean}">
+            <t:panelGrid columns="4">
                 <h:outputLabel for="material" value="物料" />
                 <t:panelGroup>
-                    <h:outputText id="material" value="#{item.material.null ? item.part.target.label : item.material.label}" />
-                    <p:commandButton title="挑选组件" value="..." oncomplete="chooseMaterialDialog.show();">
+                    <h:outputText id="material" value="#{item.anyMaterial.label}" />
+                    <p:commandButton id="itemPart" value="选择半成品" oncomplete="chooseItemPartDialog.show()" />
+                    <p:commandButton id="itemMaterial" value="选择原材料" oncomplete="chooseItemMaterialDialog.show()">
+                        <f:setPropertyActionListener target="#{chooseMaterialDialogBean.productLike}"
+                            value="false" />
                     </p:commandButton>
                 </t:panelGroup>
                 <h:outputLabel for="valid" value="是否有效" />
@@ -167,7 +163,7 @@
 
                 <h:outputLabel for="description" value="描述" />
                 <t:panelGroup colspan="3">
-                    <p:inputTextarea id="description" rows="5" style="width:480px;" value="#{item.description}" />
+                    <p:inputTextarea id="description" rows="5" style="width:40em;" value="#{item.description}" />
                 </t:panelGroup>
             </t:panelGrid>
         </fr:listView>

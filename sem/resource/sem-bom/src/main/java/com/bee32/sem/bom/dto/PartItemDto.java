@@ -10,8 +10,8 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.bom.entity.PartItem;
 import com.bee32.sem.frame.ui.IEnclosedObject;
-import com.bee32.sem.inventory.Classification;
 import com.bee32.sem.inventory.dto.MaterialDto;
+import com.bee32.sem.inventory.entity.MaterialType;
 
 public class PartItemDto
         extends UIEntityDto<PartItem, Long>
@@ -32,8 +32,6 @@ public class PartItemDto
     Date validDateFrom;
     Date validDateTo;
 
-    Classification classification;
-
     @Override
     protected void _marshal(PartItem source) {
         if (selection.contains(PARENT))
@@ -47,7 +45,6 @@ public class PartItemDto
         valid = source.isValid();
         validDateFrom = source.getValidDateFrom();
         validDateTo = source.getValidDateTo();
-        classification = source.getClassification();
     }
 
     @Override
@@ -97,7 +94,7 @@ public class PartItemDto
 
     public void setPart(PartDto part) {
         this.part = part;
-        this.material = null;
+        this.material = new MaterialDto().ref();
     }
 
     public MaterialDto getMaterial() {
@@ -106,7 +103,14 @@ public class PartItemDto
 
     public void setMaterial(MaterialDto material) {
         this.material = material;
-        this.part = null;
+        this.part = new PartDto().ref();
+    }
+
+    public MaterialDto getAnyMaterial() {
+        if (part != null && !part.isNull())
+            return part.getTarget();
+        else
+            return material;
     }
 
     public BigDecimal getQuantity() {
@@ -143,7 +147,8 @@ public class PartItemDto
         this.validDateTo = validDateTo;
     }
 
-    public Classification getClassification() {
-        return classification;
+    public MaterialType getType() {
+        return part.isNil() ? MaterialType.RAW : MaterialType.SEMI;
     }
+
 }

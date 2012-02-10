@@ -9,7 +9,6 @@ import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.sem.bom.dto.PartDto;
 import com.bee32.sem.bom.dto.PartItemDto;
 import com.bee32.sem.bom.entity.Part;
-import com.bee32.sem.bom.service.MaterialPriceNotFoundException;
 import com.bee32.sem.bom.service.PartService;
 import com.bee32.sem.bom.util.BomCriteria;
 import com.bee32.sem.frame.ui.ListMBean;
@@ -26,7 +25,7 @@ public class PartAdminBean
 
     boolean productLike;
     MaterialDto selectedMaterial;
-    BigDecimal price;
+    BigDecimal calcPriceResult;
 
     public PartAdminBean() {
         super(Part.class, PartDto.class, 0);
@@ -39,7 +38,7 @@ public class PartAdminBean
         // if (categoryId != null)
         if (categoryId == null) // select none if no category.
             categoryId = -1;
-        elements.add(BomCriteria.listPartByCategory(categoryId));
+        elements.add(BomCriteria.targetCategory(categoryId));
     }
 
     @Override
@@ -74,7 +73,7 @@ public class PartAdminBean
             }
             part.setTarget(selectedMaterial);
         } else {
-            PartItemDto item = itemsMBean.getOpenedObject();
+            PartItemDto item = childrenMBean.getOpenedObject();
             List<Part> materialsIsPart = serviceFor(Part.class).list(new Equals("target.id", selectedMaterial.getId()));
             if (materialsIsPart != null && materialsIsPart.size() > 0) {
                 uiLogger.info("此物料是成品或半成品，已经存在BOM，请用[组件是半成品]标签页进行查找选择!!!");
@@ -94,18 +93,23 @@ public class PartAdminBean
             uiLogger.error("请以单击选择需要计算价格的产品!");
             return;
         }
-        try {
-            Part _part = part.unmarshal(this);
-            price = _part.calcPrice();
-        } catch (MaterialPriceNotFoundException e) {
-            uiLogger.error("没有找到此产品的原材料原价格!", e);
+        Part _part = part.unmarshal(this);
+        BigDecimal price = _part.calcPrice();
+        if (price == null) {
+            uiLogger.error("没有找到此产品的原材料原价格!");
+            return;
         }
+        calcPriceResult = price;
     }
 
-    ListMBean<PartItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.children", PartItemDto.class);
+    public BigDecimal getCalcPriceResult() {
+        return calcPriceResult;
+    }
 
-    public ListMBean<PartItemDto> getItemsMBean() {
-        return itemsMBean;
+    ListMBean<PartItemDto> childrenMBean = ListMBean.fromEL(this, "openedObject.children", PartItemDto.class);
+
+    public ListMBean<PartItemDto> getChildrenMBean() {
+        return childrenMBean;
     }
 
 }

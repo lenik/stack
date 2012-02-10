@@ -19,8 +19,8 @@ import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
-import com.bee32.sem.inventory.Classification;
 import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.inventory.entity.MaterialType;
 
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "part_material_seq", allocationSize = 1)
@@ -167,11 +167,11 @@ public class PartItem
     }
 
     @Transient
-    public Classification getClassification() {
+    public MaterialType getType() {
         if (part != null)
-            return Classification.SEMI;
+            return MaterialType.SEMI;
         else
-            return Classification.RAW;
+            return MaterialType.RAW;
     }
 
 }

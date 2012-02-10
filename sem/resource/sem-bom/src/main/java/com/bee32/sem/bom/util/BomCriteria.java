@@ -13,7 +13,7 @@ public class BomCriteria
         extends CriteriaSpec {
 
     @LeftHand(Part.class)
-    public static ICriteriaElement partsMaterialLike(String pattern, boolean ignoreCase) {
+    public static ICriteriaElement targetLabel(String pattern, boolean ignoreCase) {
         return compose(
                 alias("target", "material"), //
                 ignoreCase ? likeIgnoreCase("material.label", pattern, MatchMode.ANYWHERE) : like("material.label",
@@ -21,13 +21,13 @@ public class BomCriteria
     }
 
     @LeftHand(Part.class)
-    public static ICriteriaElement partsCategoryOf(int materialCategoryId) {
+    public static ICriteriaElement targetCategory(int materialCategoryId) {
         return compose(alias("target", "material"), //
                 new Equals("material.category.id", materialCategoryId));
     }
 
     @LeftHand(Part.class)
-    public static CriteriaElement active() {
+    public static CriteriaElement notObsolete() {
         return isNull("obsolete");
     }
 

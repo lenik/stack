@@ -25,10 +25,9 @@ import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
-import com.bee32.sem.bom.service.MaterialPriceNotFoundException;
 import com.bee32.sem.bom.service.PriceStrategy;
-import com.bee32.sem.inventory.Classification;
 import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.inventory.entity.MaterialType;
 import com.bee32.sem.world.monetary.FxrQueryException;
 
 /**
@@ -46,7 +45,6 @@ public class Part
     Part obsolete;
 
     List<PartItem> children = new ArrayList<PartItem>();
-
     List<PartItem> xrefs = new ArrayList<PartItem>();
     Integer xrefCount;
 
@@ -277,7 +275,7 @@ public class Part
     }
 
     public BigDecimal calcPrice()
-            throws MaterialPriceNotFoundException, FxrQueryException {
+            throws FxrQueryException {
         BigDecimal price = priceStrategy.getPrice(this);
         return price;
     }
@@ -285,7 +283,7 @@ public class Part
     public Map<Material, BigDecimal> obtainAllMaterial() {
         Map<Material, BigDecimal> result = new HashMap<Material, BigDecimal>();
         for (PartItem item : children) {
-            if (item.getClassification() == Classification.RAW) {
+            if (item.getType() == MaterialType.RAW) {
                 result.put(item.getMaterial(), item.getQuantity());
             } else {
                 Map<Material, BigDecimal> childMaterials = item.getPart().obtainAllMaterial();
