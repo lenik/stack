@@ -18,7 +18,6 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.config.BatchConfig;
 import com.bee32.plover.ox1.tree.TreeEntityAuto;
-import com.bee32.sem.inventory.Classification;
 
 @Entity
 @BatchSize(size = BatchConfig.TREE)
@@ -31,8 +30,8 @@ public class MaterialCategory
     public static final int NAME_LENGTH = 40;
 
     CodeGenerator codeGenerator = CodeGenerator.NONE;
+    MaterialType materialType = MaterialType.OTHER;
     List<Material> materials = new ArrayList<Material>();
-    Classification classification = Classification.OTHER;
 
     int materialCount;
 
@@ -135,28 +134,30 @@ public class MaterialCategory
         }
     }
 
-    @Column(name = "classification")
-    char get_classification() {
-        return classification.getValue();
+    @Column(name = "material_type", nullable = false)
+    char get_materialType() {
+        return materialType.getValue();
     }
 
-    void set_classification(char _classification) {
-        classification = Classification.valueOf(_classification);
+    void set_materialType(char _materialType) {
+        materialType = MaterialType.valueOf(_materialType);
     }
 
     /**
      * 类型
      */
     @Transient
-    public Classification getClassification() {
-        return classification;
+    public MaterialType getMaterialType() {
+        return materialType;
     }
 
     /**
      * 类型
      */
-    public void setClassification(Classification classification) {
-        this.classification = classification;
+    public void setMaterialType(MaterialType materialType) {
+        if (materialType == null)
+            throw new NullPointerException("materialType");
+        this.materialType = materialType;
     }
 
     @Override

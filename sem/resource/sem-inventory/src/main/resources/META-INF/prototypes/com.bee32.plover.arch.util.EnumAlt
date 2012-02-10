@@ -1,5 +1,5 @@
-com.bee32.sem.inventory.Classification
 com.bee32.sem.inventory.entity.CodeGenerator
+com.bee32.sem.inventory.entity.MaterialType
 com.bee32.sem.inventory.entity.StockItemState
 com.bee32.sem.inventory.entity.StockOrderSubject
 com.bee32.sem.inventory.entity.StockPeriodType

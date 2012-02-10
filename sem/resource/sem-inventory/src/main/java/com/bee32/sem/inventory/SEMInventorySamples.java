@@ -55,6 +55,7 @@ public class SEMInventorySamples
     public static StockOrder planOrder1;
 
     static {
+        stockPolicy.setName(".stockvp-1");
         stockPolicy.setLabel("库存审核策略");
         stockPolicy.setDescription("测试用的库存审核策略。");
         stockPolicy.setSubjectPolicy(StockOrderSubject.PACK_M, SEMVerifyPolicySamples.robotList);

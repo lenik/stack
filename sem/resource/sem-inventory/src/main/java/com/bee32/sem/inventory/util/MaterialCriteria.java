@@ -8,9 +8,9 @@ import java.util.List;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.LeftHand;
-import com.bee32.sem.inventory.Classification;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialCategory;
+import com.bee32.sem.inventory.entity.MaterialType;
 
 public class MaterialCriteria
         extends CriteriaSpec {
@@ -24,19 +24,38 @@ public class MaterialCriteria
     }
 
     @LeftHand(MaterialCategory.class)
-    public static CriteriaElement classified(Classification... classifications) {
-        return classified(Arrays.asList(classifications));
+    public static CriteriaElement materialType(MaterialType... materialTypes) {
+        return materialType(Arrays.asList(materialTypes));
     }
 
     @LeftHand(MaterialCategory.class)
-    public static CriteriaElement classified(Collection<Classification> classifications) {
-        if (classifications == null || classifications.isEmpty())
+    public static CriteriaElement materialType(Collection<MaterialType> materialTypes) {
+        if (materialTypes == null || materialTypes.isEmpty())
             return null;
-        List<Character> vals = new ArrayList<>(classifications.size());
-        for (Classification c : classifications) {
+        StringBuilder vals = new StringBuilder();
+        for (MaterialType c : materialTypes) {
+            if (vals.length() != 0)
+                vals.append(", ");
+            vals.append("'" + c.getValue() + "'");
+        }
+        return sqlRestriction("{alias}.category in (" + //
+                "select id from material_category where material_type in (" + vals + "))");
+    }
+
+    @LeftHand(MaterialCategory.class)
+    public static CriteriaElement categoryType(MaterialType... materialTypes) {
+        return categoryType(Arrays.asList(materialTypes));
+    }
+
+    @LeftHand(MaterialCategory.class)
+    public static CriteriaElement categoryType(Collection<MaterialType> materialTypes) {
+        if (materialTypes == null || materialTypes.isEmpty())
+            return null;
+        List<Character> vals = new ArrayList<>(materialTypes.size());
+        for (MaterialType c : materialTypes) {
             vals.add(c.getValue());
         }
-        return in("_classification", vals);
+        return in("_materialType", vals);
     }
 
 }

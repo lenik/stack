@@ -12,7 +12,6 @@ import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.LeftHand;
-import com.bee32.plover.criteria.hibernate.SqlRestriction;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
@@ -61,11 +60,6 @@ public class StockCriteria
     @LeftHand(StockOrderItem.class)
     public static Criterion peerOf(StockOrderItem item) {
         return null;
-    }
-
-    @LeftHand(StockOrder.class)
-    public static CriteriaElement danglingOutsourcing() {
-        return new SqlRestriction("id in (select s1 from stock_outsourcing where s2 is null)");
     }
 
     static final List<Long> emptyIds = Arrays.asList(-1L);

@@ -1,5 +1,6 @@
 package com.bee32.sem.inventory.dto;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.free.ParseException;
@@ -9,9 +10,9 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.tree.TreeEntityDto;
 import com.bee32.plover.util.TextUtil;
-import com.bee32.sem.inventory.Classification;
 import com.bee32.sem.inventory.entity.CodeGenerator;
 import com.bee32.sem.inventory.entity.MaterialCategory;
+import com.bee32.sem.inventory.entity.MaterialType;
 
 public class MaterialCategoryDto
         extends TreeEntityDto<MaterialCategory, Integer, MaterialCategoryDto> {
@@ -23,17 +24,19 @@ public class MaterialCategoryDto
     String name;
     List<MaterialDto> materials;
     int materialCount;
-    private CodeGenerator codeGenerator;
-    char classification;
+    CodeGenerator codeGenerator;
+    MaterialType materialType;
 
     @Override
     protected void _marshal(MaterialCategory source) {
         this.name = source.getName();
         this.codeGenerator = source.getCodeGenerator();
-        classification = source.getClassification() == null ? null : source.getClassification().getValue();
+        this.materialType = source.getMaterialType();
 
         if (selection.contains(MATERIALS))
             this.materials = mrefList(MaterialDto.class, -1, source.getMaterials());
+        else
+            this.materials = Collections.emptyList();
 
         this.materialCount = source.getMaterialCount();
     }
@@ -42,7 +45,7 @@ public class MaterialCategoryDto
     protected void _unmarshalTo(MaterialCategory target) {
         target.setName(name);
         target.setCodeGenerator(codeGenerator);
-        target.setClassification(Classification.valueOf(classification));
+        target.setMaterialType(materialType);
 
         if (selection.contains(MATERIALS))
             mergeList(target, "materials", materials);
@@ -55,6 +58,8 @@ public class MaterialCategoryDto
 
         char _cg = map.getChar("codeGenerator");
         codeGenerator = CodeGenerator.valueOf(_cg);
+        char _materialType = map.getChar("materialType");
+        materialType = MaterialType.valueOf(_materialType);
     }
 
     @Override
@@ -101,16 +106,22 @@ public class MaterialCategoryDto
         this.codeGenerator = codeGenerator;
     }
 
-    public char getClassification() {
-        return classification;
+    public MaterialType getMaterialType() {
+        return materialType;
     }
 
-    public void setClassification(char classification) {
-        this.classification = classification;
+    public void setMaterialType(MaterialType materialType) {
+        if (materialType == null)
+            throw new NullPointerException("materialType");
+        this.materialType = materialType;
     }
 
-    public String getClassificationText() {
-        return Classification.valueOf(classification).getDisplayName();
+    public char getMaterialTypeValue() {
+        return materialType.getValue();
+    }
+
+    public void setMaterialTypeValue(char materialTypeValue) {
+        this.materialType = MaterialType.valueOf(materialTypeValue);
     }
 
 }

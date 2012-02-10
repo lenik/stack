@@ -14,9 +14,9 @@ import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.DataViewBean;
 import com.bee32.plover.ox1.tree.TreeEntityDto;
 import com.bee32.plover.ox1.tree.TreeEntityUtils;
-import com.bee32.sem.inventory.Classification;
 import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.entity.MaterialCategory;
+import com.bee32.sem.inventory.entity.MaterialType;
 import com.bee32.sem.inventory.util.MaterialCriteria;
 import com.bee32.sem.sandbox.ITreeNodeDecorator;
 import com.bee32.sem.sandbox.UIHelper;
@@ -28,23 +28,23 @@ public class MaterialCategoryTreeModel
 
     private static final long serialVersionUID = 1L;
 
-    Set<Classification> classifications = new HashSet<Classification>();
+    Set<MaterialType> materialTypes = new HashSet<MaterialType>();
     TreeNode rootNode;
     Map<Integer, MaterialCategoryDto> index;
     TreeNode selectedNode;
 
-    public Set<Classification> getClassifications() {
-        return classifications;
+    public Set<MaterialType> getMaterialTypes() {
+        return materialTypes;
     }
 
-    public void addClassification(Classification classification) {
-        if (classification == null)
-            throw new NullPointerException("classification");
-        classifications.add(classification);
+    public void addMaterialType(MaterialType materialType) {
+        if (materialType == null)
+            throw new NullPointerException("materialType");
+        materialTypes.add(materialType);
     }
 
-    public void removeClassification(Classification classification) {
-        classifications.remove(classification);
+    public void removeMaterialType(MaterialType materialType) {
+        materialTypes.remove(materialType);
     }
 
     public TreeNode getRootNode() {
@@ -72,7 +72,7 @@ public class MaterialCategoryTreeModel
     synchronized void loadTree() {
         if (rootNode == null) {
             List<MaterialCategory> _categories = serviceFor(MaterialCategory.class).list(
-                    MaterialCriteria.classified(classifications));
+                    MaterialCriteria.categoryType(materialTypes));
             List<MaterialCategoryDto> categories = DTOs.mrefList(MaterialCategoryDto.class, TreeEntityDto.PARENT,
                     _categories);
             index = DTOs.index(categories);

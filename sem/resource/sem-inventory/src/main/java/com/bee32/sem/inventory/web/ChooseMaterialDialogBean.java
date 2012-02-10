@@ -8,11 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.criteria.hibernate.InCollection;
-import com.bee32.plover.criteria.hibernate.NotEquals;
-import com.bee32.sem.inventory.Classification;
+import com.bee32.plover.criteria.hibernate.Not;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.inventory.entity.MaterialType;
+import com.bee32.sem.inventory.util.MaterialCriteria;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 
 public class ChooseMaterialDialogBean
@@ -30,11 +30,11 @@ public class ChooseMaterialDialogBean
         super(Material.class, MaterialDto.class, 0);
     }
 
-    static Set<Character> productLikeClasses;
+    static Set<MaterialType> productLikeClasses;
     static {
-        productLikeClasses = new HashSet<Character>();
-        productLikeClasses.add(Classification.PRODUCT.getValue());
-        productLikeClasses.add(Classification.SEMI.getValue());
+        productLikeClasses = new HashSet<MaterialType>();
+        productLikeClasses.add(MaterialType.PRODUCT);
+        productLikeClasses.add(MaterialType.SEMI);
     }
 
     @Override
@@ -42,9 +42,9 @@ public class ChooseMaterialDialogBean
         super.composeBaseRestrictions(elements);
         if (productLike != null) {
             if (productLike)
-                elements.add(new InCollection("_classification", productLikeClasses));
+                elements.add(MaterialCriteria.materialType(productLikeClasses));
             else
-                elements.add(new NotEquals("_classification", Classification.PRODUCT.getValue()));
+                elements.add(Not.of(MaterialCriteria.materialType(MaterialType.PRODUCT)));
         }
     }
 
