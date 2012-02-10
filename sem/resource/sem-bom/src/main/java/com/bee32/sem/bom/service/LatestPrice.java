@@ -15,16 +15,17 @@ public class LatestPrice
         super(value, name);
     }
 
+    /**
+     *
+     */
     @Override
     public BigDecimal getPrice(Material material)
-            throws FxrQueryException, MaterialPriceNotFoundException {
+            throws FxrQueryException {
         MaterialPrice latestPrice = material.getLatestPrice();
-
-        if (latestPrice == null)
-            throw new MaterialPriceNotFoundException(material);
-
-        BigDecimal price = latestPrice.getNativePrice();
-        return price;
+        if (latestPrice != null)
+            return latestPrice.getNativePrice();
+        else
+            return null;
     }
 
 }

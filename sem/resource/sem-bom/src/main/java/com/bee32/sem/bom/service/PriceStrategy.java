@@ -36,9 +36,11 @@ public abstract class PriceStrategy
 
     /**
      * 计算零件的价格
+     *
+     * @return <code>null</code> 如果没有可用的价格数据。
      */
     public BigDecimal getPrice(Part part)
-            throws MaterialPriceNotFoundException, FxrQueryException {
+            throws FxrQueryException {
 
         BigDecimal total = part.getExtraCost();
 
@@ -54,6 +56,8 @@ public abstract class PriceStrategy
                 _total = _total.add(_extra);
             } else if (_material != null) {
                 BigDecimal _raw = getPrice(_material);
+                if (_raw == null)
+                    return null;
                 _total = _total.add(_raw);
             }
 
@@ -68,7 +72,7 @@ public abstract class PriceStrategy
      * 获取物料的价格
      */
     public abstract BigDecimal getPrice(Material material)
-            throws MaterialPriceNotFoundException, FxrQueryException;
+            throws FxrQueryException;
 
     /** 平均价格策略 */
     public static AveragePrice AVERAGE = new AveragePrice('m', "average");

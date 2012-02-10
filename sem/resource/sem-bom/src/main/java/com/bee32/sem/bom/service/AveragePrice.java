@@ -18,21 +18,18 @@ public class AveragePrice
 
     @Override
     public BigDecimal getPrice(Material material)
-            throws FxrQueryException, MaterialPriceNotFoundException {
-        BigDecimal total = new BigDecimal(0);
-        int count = 0;
-
+            throws FxrQueryException {
         List<MaterialPrice> prices = material.getPrices();
+        if (prices.isEmpty())
+            return null;
+
+        BigDecimal total = new BigDecimal(0);
         for (MaterialPrice price : prices) {
             BigDecimal each = price.getNativePrice();
             total = total.add(each);
-            count++;
         }
 
-        if (count == 0)
-            throw new MaterialPriceNotFoundException(material);
-
-        BigDecimal average = total.divide(new BigDecimal(count));
+        BigDecimal average = total.divide(new BigDecimal(prices.size()));
         return average;
     }
 
