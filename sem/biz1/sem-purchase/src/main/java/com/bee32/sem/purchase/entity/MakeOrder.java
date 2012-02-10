@@ -202,80 +202,80 @@ public class MakeOrder
         nativeTotal = null;
     }
 
-    private Map<Part, BigDecimal> taskItemListToMap() {
-        Map<Part, BigDecimal> taskQuantityMap = new HashMap<Part, BigDecimal>();
-
+    /**
+     * Sum of part quantity in each task item.
+     *
+     * @aka taskItemListToMap
+     */
+    @Transient
+    Map<Part, BigDecimal> getArrangedPartSum() {
+        Map<Part, BigDecimal> sumMap = new HashMap<Part, BigDecimal>();
         for (MakeTask task : tasks) {
             for (MakeTaskItem taskItem : task.getItems()) {
-                BigDecimal taskQuantityInMap = taskQuantityMap.get(taskItem.part);
-                if (taskQuantityInMap == null) {
-                    taskQuantityMap.put(taskItem.part, taskItem.getQuantity());
+                BigDecimal sum = sumMap.get(taskItem.part);
+                if (sum == null) {
+                    sumMap.put(taskItem.part, taskItem.getQuantity());
                 } else {
-                    taskQuantityInMap = taskItem.getQuantity().add(taskQuantityInMap);
-                    taskQuantityMap.put(taskItem.part, taskQuantityInMap);
+                    sum = sum.add(taskItem.getQuantity());
+                    sumMap.put(taskItem.part, sum);
                 }
             }
         }
-
-        return taskQuantityMap;
+        return sumMap;
     }
 
-    // 找寻还没有按排生产任务的产品列表
+    /**
+     * 找寻还没有按排生产任务的产品列表
+     *
+     * @return Non-null list of {@link MakeOrderItem}.
+     * @aka getNoCorrespondingTaskItems
+     */
     @Transient
-    public List<MakeOrderItem> getNoCorrespondingTaskItems() {
-        Map<Part, BigDecimal> taskQuantityMap = taskItemListToMap();
-
+    public List<MakeOrderItem> getNotArrangedItems() {
         List<MakeOrderItem> result = new ArrayList<MakeOrderItem>();
+        Map<Part, BigDecimal> sumMap = getArrangedPartSum();
         for (MakeOrderItem orderItem : items) {
-            BigDecimal taskQuantityInMap = taskQuantityMap.get(orderItem.getPart());
-
-            if (taskQuantityInMap == null) {
-                // 没有对应的生产任务
+            BigDecimal sum = sumMap.get(orderItem.getPart());
+            if (sum == null) { // 没有对应的生产任务
                 result.add(orderItem);
-            } else {
-                // 找到对应的生产任务
-                BigDecimal haveNotArrangeTaskCount = //
-                orderItem.getQuantity().subtract(taskQuantityInMap);
-
-                if (haveNotArrangeTaskCount.longValue() > 0) {
-                    // 生产任务的数量小订单的数量
-                    MakeOrderItem haveNotArrangeTaskOrderItem = new MakeOrderItem();
-                    haveNotArrangeTaskOrderItem.setOrder(this);
-                    haveNotArrangeTaskOrderItem.setPart(orderItem.getPart());
-                    haveNotArrangeTaskOrderItem.setQuantity(haveNotArrangeTaskCount);
-                    haveNotArrangeTaskOrderItem.setExternalProductName(orderItem.getExternalProductName());
-                    haveNotArrangeTaskOrderItem.setExternalSpecification(orderItem.getExternalSpecification());
-
-                    result.add(haveNotArrangeTaskOrderItem);
-                }
+                continue;
             }
-        }
-
-        if (result.size() > 0)
-            return result;
-        return null;
-
-    }
-
-    // 检查所有对应生产任务单的数量总合是否超过订单的数量
-    public Map<Part, BigDecimal> checkIfTaskQuantityFitOrder() {
-        Map<Part, BigDecimal> result = new HashMap<Part, BigDecimal>();
-
-        Map<Part, BigDecimal> taskQuantityMap = taskItemListToMap();
-        for (MakeOrderItem orderItem : items) {
-            BigDecimal taskQuantity = taskQuantityMap.get(orderItem.getPart());
-
-            if (taskQuantity != null) {
-                int i = taskQuantity.compareTo(orderItem.getQuantity());
-                if (i > 0) {
-                    // 生产任务中的数量大于订单中的数量
-                    result.put( //
-                            orderItem.getPart(), //
-                            taskQuantity.subtract(orderItem.getQuantity()));
-                }
+            // 找到对应的生产任务
+            BigDecimal remaining = orderItem.getQuantity().subtract(sum);
+            if (remaining.longValue() > 0) {
+                // 生产任务的数量小订单的数量
+                MakeOrderItem remainingItem = new MakeOrderItem();
+                remainingItem.setOrder(this);
+                remainingItem.setPart(orderItem.getPart());
+                remainingItem.setQuantity(remaining);
+                remainingItem.setExternalProductName(orderItem.getExternalProductName());
+                remainingItem.setExternalSpecification(orderItem.getExternalSpecification());
+                result.add(remainingItem);
             }
         }
         return result;
+    }
+
+    /**
+     * 检查所有对应生产任务单的数量总合是否超过订单的数量
+     *
+     * @aka checkIfTaskQuantityFitOrder
+     */
+    @Transient
+    public Map<Part, BigDecimal> getOverloadParts() {
+        Map<Part, BigDecimal> overloadParts = new HashMap<Part, BigDecimal>();
+        Map<Part, BigDecimal> sumMap = getArrangedPartSum();
+        for (MakeOrderItem orderItem : items) {
+            BigDecimal sum = sumMap.get(orderItem.getPart());
+            if (sum != null) {
+                if (sum.compareTo(orderItem.getQuantity()) > 0) {
+                    BigDecimal overloaded = sum.subtract(orderItem.getQuantity());
+                    // 生产任务中的数量大于订单中的数量
+                    overloadParts.put(orderItem.getPart(), overloaded);
+                }
+            }
+        }
+        return overloadParts;
     }
 
     public static final IPropertyAccessor<BigDecimal> nativeTotalProperty = BeanPropertyAccessor.access(//

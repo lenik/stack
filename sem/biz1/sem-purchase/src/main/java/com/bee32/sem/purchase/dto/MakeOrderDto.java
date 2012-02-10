@@ -2,6 +2,7 @@ package com.bee32.sem.purchase.dto;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.free.NotImplementedException;
@@ -32,6 +33,7 @@ public class MakeOrderDto
 
     public static final int ITEMS = 1;
     public static final int TASKS = 2;
+    public static final int NOT_ARRANGED_ITEMS = 4;
 
     PartyDto customer;
     String status;
@@ -44,7 +46,7 @@ public class MakeOrderDto
     MCVector total;
     BigDecimal nativeTotal; // Redundant.
 
-    List<MakeOrderItemDto> noCorrespondingTaskItems;
+    List<MakeOrderItemDto> notArrangedItems;
 
     SingleVerifierWithNumberSupportDto singleVerifierWithNumberSupport;
 
@@ -57,15 +59,17 @@ public class MakeOrderDto
         if (selection.contains(ITEMS))
             items = marshalList(MakeOrderItemDto.class, source.getItems());
         else
-            items = new ArrayList<MakeOrderItemDto>();
+            items = Collections.emptyList();
 
         if (selection.contains(TASKS))
             tasks = marshalList(MakeTaskDto.class, source.getTasks());
         else
-            tasks = new ArrayList<MakeTaskDto>();
+            tasks = Collections.emptyList();
 
-        noCorrespondingTaskItems = //
-                marshalList(MakeOrderItemDto.class, source.getNoCorrespondingTaskItems());
+        if (selection.contains(NOT_ARRANGED_ITEMS))
+            notArrangedItems = marshalList(MakeOrderItemDto.class, source.getNotArrangedItems());
+        else
+            notArrangedItems = Collections.emptyList();
 
         singleVerifierWithNumberSupport = marshal(SingleVerifierWithNumberSupportDto.class, source.getVerifyContext());
     }
@@ -97,7 +101,7 @@ public class MakeOrderDto
 
     public void setCustomer(PartyDto customer) {
         if (customer == null)
-            throw new NullPointerException("customer");
+            return; // throw new NullPointerException("customer");
         this.customer = customer;
     }
 
@@ -221,24 +225,17 @@ public class MakeOrderDto
         nativeTotal = null;
     }
 
-    public List<MakeTaskItemDto> arrangeMakeTask(MakeTaskDto makeTask) {
-        if(noCorrespondingTaskItems.size() > 0) {
-            List<MakeTaskItemDto> taskItems = new ArrayList<MakeTaskItemDto>();
+    public List<MakeTaskItemDto> arrangeMakeTask() {
+        List<MakeTaskItemDto> taskItems = new ArrayList<MakeTaskItemDto>();
 
-            for(MakeOrderItemDto orderItem : noCorrespondingTaskItems) {
-                MakeTaskItemDto taskItem = new MakeTaskItemDto().create();
+        for (MakeOrderItemDto orderItem : notArrangedItems) {
+            MakeTaskItemDto taskItem = new MakeTaskItemDto().create();
+            taskItem.setPart(orderItem.getPart());
+            taskItem.setQuantity(orderItem.quantity);
 
-                taskItem.setTask(makeTask);
-                taskItem.setPart(orderItem.getPart());
-                taskItem.setQuantity(orderItem.quantity);
-
-                taskItems.add(taskItem);
-            }
-
-            return taskItems;
+            taskItems.add(taskItem);
         }
-
-        return null;
+        return taskItems;
     }
 
     @Override

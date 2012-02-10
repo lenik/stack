@@ -87,6 +87,8 @@ public class MakeTaskDto
     public void setItems(List<MakeTaskItemDto> items) {
         if (items == null)
             throw new NullPointerException("items");
+        for (MakeTaskItemDto item : items)
+            item.setTask(this);
         this.items = items;
     }
 
@@ -97,6 +99,7 @@ public class MakeTaskDto
         if (item.getIndex() == -1)
             item.setIndex(items.size());
 
+        item.setTask(this);
         items.add(item);
     }
 
@@ -128,6 +131,8 @@ public class MakeTaskDto
     public void setPlans(List<MaterialPlanDto> plans) {
         if (plans == null)
             throw new NullPointerException("plans");
+        for (MaterialPlanDto plan : plans)
+            plan.setTask(this);
         this.plans = plans;
     }
 

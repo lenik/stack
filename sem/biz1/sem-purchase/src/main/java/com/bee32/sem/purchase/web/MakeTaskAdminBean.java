@@ -1,18 +1,19 @@
 package com.bee32.sem.purchase.web;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.Map.Entry;
 
+import com.bee32.plover.criteria.hibernate.CriteriaElement;
+import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.LeftHand;
 import com.bee32.plover.orm.annotation.ForEntity;
-import com.bee32.sem.bom.dto.PartDto;
 import com.bee32.sem.bom.entity.Part;
 import com.bee32.sem.misc.ScrollEntityViewBean;
+import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.purchase.dto.MakeOrderDto;
-import com.bee32.sem.purchase.dto.MakeOrderItemDto;
 import com.bee32.sem.purchase.dto.MakeTaskDto;
 import com.bee32.sem.purchase.dto.MakeTaskItemDto;
 import com.bee32.sem.purchase.entity.MakeOrder;
@@ -24,165 +25,53 @@ public class MakeTaskAdminBean
 
     private static final long serialVersionUID = 1L;
 
-    protected MakeTaskDto makeTask = new MakeTaskDto().create();
-
-    protected MakeTaskItemDto makeTaskItem = new MakeTaskItemDto().create();
-
-    private PartDto selectedPart;
-
-    private boolean newItemStatus = false;
-
-    protected List<MakeTaskItemDto> itemsNeedToRemoveWhenModify = new ArrayList<MakeTaskItemDto>();
-
-    private PartyDto customer;
-    private MakeOrderDto selectedOrder;
-    private PartyDto selectedCustomer;
-
     public MakeTaskAdminBean() {
         super(MakeTask.class, MakeTaskDto.class, 0);
     }
 
-    public MakeTaskDto getMakeTask() {
-        return makeTask;
-    }
-
-    public void setMakeTask(MakeTaskDto makeTask) {
-        this.makeTask = makeTask;
-    }
-
-    public String getCreator() {
-        if (makeTask == null)
-            return "";
-        else
-            return makeTask.getOwnerDisplayName();
-    }
-
-    public List<MakeTaskItemDto> getItems() {
-        if (makeTask == null)
-            return null;
-        return makeTask.getItems();
-    }
-
-    public MakeTaskItemDto getMakeTaskItem() {
-        return makeTaskItem;
-    }
-
-    public void setMakeTaskItem(MakeTaskItemDto makeTaskItem) {
-        this.makeTaskItem = makeTaskItem;
-    }
-
-    public PartDto getSelectedPart() {
-        return selectedPart;
-    }
-
-    public void setSelectedPart(PartDto selectedPart) {
-        this.selectedPart = selectedPart;
-    }
-
-    public boolean isNewItemStatus() {
-        return newItemStatus;
-    }
-
-    public void setNewItemStatus(boolean newItemStatus) {
-        this.newItemStatus = newItemStatus;
-    }
-
-    public PartyDto getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(PartyDto customer) {
-        this.customer = customer;
-    }
-
-    public MakeOrderDto getSelectedOrder() {
-        return selectedOrder;
-    }
-
-    public void setSelectedOrder(MakeOrderDto selectedOrder) {
-        this.selectedOrder = selectedOrder;
-    }
-
-    public PartyDto getSelectedCustomer() {
-        return selectedCustomer;
-    }
-
-    public void setSelectedCustomer(PartyDto selectedCustomer) {
-        this.selectedCustomer = selectedCustomer;
-    }
-
-    public List<MakeOrderItemDto> getOrderItems() {
-        if (selectedOrder != null) {
-            return selectedOrder.getItems();
-        }
-        return null;
-    }
-
-    public void save1() {
-        if (makeTask.getId() == null) {
-            // 新增
-// goNumber = count + 1;
-        }
-
-        try {
-            MakeTask _task = makeTask.unmarshal();
-
+    @Override
+    protected boolean preUpdate(UnmarshalMap uMap)
+            throws Exception {
+        for (MakeTask _task : uMap.<MakeTask> entitySet()) {
             MakeOrder order = _task.getOrder();
             if (!order.getTasks().contains(_task)) {
                 order.getTasks().add(_task);
             }
-
-            Map<Part, BigDecimal> mapQuantityOverloadParts = order.checkIfTaskQuantityFitOrder();
-            Set<Part> setQuantityOverloadParts = mapQuantityOverloadParts.keySet();
-            if (setQuantityOverloadParts.size() > 0) {
-                StringBuilder infoBuilder = new StringBuilder();
-                for (Part part : setQuantityOverloadParts) {
-                    infoBuilder.append(part.getTarget().getLabel());
-                    infoBuilder.append("超过");
-                    infoBuilder.append(mapQuantityOverloadParts.get(part));
-                    infoBuilder.append(";");
+            Map<Part, BigDecimal> overloadParts = order.getOverloadParts();
+            if (!overloadParts.isEmpty()) {
+                StringBuilder message = new StringBuilder();
+                for (Entry<Part, BigDecimal> entry : overloadParts.entrySet()) {
+                    message.append(entry.getKey().getTarget().getLabel());
+                    message.append(" 超出 ");
+                    message.append(entry.getValue());
+                    message.append("; ");
                 }
-
-                uiLogger.info("对应订单的所有生产任务单数量总和超过订单中的数量!" + infoBuilder.toString());
-            } else {
-                serviceFor(MakeTask.class).save(_task);
-                uiLogger.info("保存成功");
-// loadMakeTask(goNumber);
-// editable = false;
+                uiLogger.error("生产数量超过订单中的数量: " + message);
+                return false;
             }
-        } catch (Exception e) {
-            uiLogger.warn("保存失败,错误信息:" + e.getMessage());
         }
+        return true;
     }
 
-    public void findPart() {
-// BomCriteria.findPartUseMaterialName(partPattern));
-    }
+    PartyDto customer;
 
-    public void choosePart() {
-        makeTaskItem.setPart(selectedPart);
-        selectedPart = null;
-    }
-
-    public void findOrder() {
-// List<MakeOrder> _orders = serviceFor(MakeOrder.class).list( //
-// new Equals("customer.id", customer.getId()), //
-// VerifyCriteria.verified(), //
+    @LeftHand(MakeOrder.class)
+    public CriteriaElement getCustomerRestriction() {
+        return new Equals("customer.id", customer.getId());
     }
 
     public void chooseOrder() {
+        MakeTaskDto makeTask = getOpenedObject();
+        MakeOrderDto selectedOrder = makeTask.getOrder();
         selectedOrder = reload(selectedOrder);
-        List<MakeTaskItemDto> makeTaskItems = selectedOrder.arrangeMakeTask(makeTask);
-        if (makeTaskItems != null) {
-            makeTask.setItems(makeTaskItems);
-            makeTask.setOrder(selectedOrder);
-        } else {
+        List<MakeTaskItemDto> makeTaskItems = selectedOrder.arrangeMakeTask();
+        if (makeTaskItems.isEmpty()) {
             uiLogger.error("此定单上的产品的生产任务已经全部安排完成");
+            return;
         }
-    }
 
-    public void chooseCustomer() {
-        customer = selectedCustomer;
+        makeTask.setItems(makeTaskItems);
+        makeTask.setOrder(selectedOrder);
     }
 
 }

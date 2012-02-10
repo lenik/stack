@@ -19,7 +19,7 @@ public class SEMPurchaseModuleTest
 
     @Override
     protected int getRefreshPeriod() {
-        return 10;
+        return 5;
     }
 
     @Override
@@ -29,7 +29,7 @@ public class SEMPurchaseModuleTest
 
     public static void main(String[] args)
             throws IOException {
-        new SEMPurchaseModuleTest().browseAndWait(SEMPurchaseModule.PREFIX + "/makeOrder/");
+        new SEMPurchaseModuleTest().browseAndWait(SEMPurchaseModule.PREFIX + "/make-order/");
     }
 
     static {

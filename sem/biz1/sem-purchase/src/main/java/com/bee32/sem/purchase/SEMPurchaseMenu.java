@@ -12,10 +12,10 @@ public class SEMPurchaseMenu
 
     public static MenuNode PURCHASE = menu(SEMFrameMenu.BIZ1, 30, "purchase");
 
-    static MenuNode makeOrderAdmin = entry(PURCHASE, 1, "makeOrderAdmin", PURCHASE_.join("makeOrder/"));
-    static MenuNode makeTaskAdmin = entry(PURCHASE, 2, "makeTaskAdmin", PURCHASE_.join("makeTask/"));
-    static MenuNode materialPlanAdmin = entry(PURCHASE, 2, "materialPlanAdmin", PURCHASE_.join("materialPlan/"));
-    static MenuNode purchaseRequest = entry(PURCHASE, 2, "purchaseRequest", PURCHASE_.join("purchaseRequest/"));
+    static MenuNode makeOrderAdmin = entry(PURCHASE, 1, "makeOrderAdmin", PURCHASE_.join("make-order/"));
+    static MenuNode makeTaskAdmin = entry(PURCHASE, 2, "makeTaskAdmin", PURCHASE_.join("make-task/"));
+    static MenuNode materialPlanAdmin = entry(PURCHASE, 2, "materialPlanAdmin", PURCHASE_.join("material-plan/"));
+    static MenuNode purchaseRequest = entry(PURCHASE, 2, "purchaseRequest", PURCHASE_.join("purchase-request/"));
 
     @Override
     protected void preamble() {

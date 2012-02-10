@@ -4,6 +4,7 @@ import com.bee32.plover.pub.oid.Oid;
 import com.bee32.sem.SEMOids;
 import com.bee32.sem.module.EnterpriseModule;
 import com.bee32.sem.purchase.entity.MakeOrder;
+import com.bee32.sem.purchase.entity.MakeTask;
 import com.bee32.sem.purchase.entity.PurchaseAdvice;
 import com.bee32.sem.purchase.entity.PurchaseRequest;
 
@@ -16,9 +17,10 @@ public class SEMPurchaseModule
 
     @Override
     protected void preamble() {
-        declareEntityPages(MakeOrder.class, "makeOrder");
-        declareEntityPages(PurchaseRequest.class, "purchaseRequest");
-        declareEntityPages(PurchaseAdvice.class, "purchaseAdvice");
+        declareEntityPages(MakeOrder.class, "make-order");
+        declareEntityPages(MakeTask.class, "make-task");
+        declareEntityPages(PurchaseRequest.class, "purchase-request");
+        declareEntityPages(PurchaseAdvice.class, "purchase-advice");
     }
 
 }

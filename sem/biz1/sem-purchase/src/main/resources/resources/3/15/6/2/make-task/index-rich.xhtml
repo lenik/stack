@@ -3,34 +3,38 @@
     xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:fr="http://java.sun.com/jsf/composite/frame"
     xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
-    <ui:param name="title" value="生产任务单" />
+    <ui:param name="title" value="生产任务" />
     <ui:param name="verifiable" value="true" />
     <ui:param name="bean" value="#{maskTaskAdminBean}" />
+    <ui:param name="obj" value="#{bean.openedObject}" />
+    <ui:param name="itemObj" value="#{bean.itemsMBean.openedObject}" />
 
     <ui:define name="editDialogContent">
-        <p:panel id="info" header="生产任务单管理">
-            <t:panelGrid columns="4">
-                <h:outputText value="标识:" />
-                <t:panelGroup colspan="3">
-                    <h:outputText value="#{obj.id}" style="font-weight:bold;font-size:large" />
-                </t:panelGroup>
+        <t:panelGrid id="basic" columns="4">
+            <h:outputText value="标识:" />
+            <t:panelGroup colspan="3">
+                <h:outputText value="#{obj.id}" style="font-weight:bold;font-size:large" />
+            </t:panelGroup>
 
-                <h:outputText value="时间:" />
-                <h:outputText value="#{obj.createdDate}">
-                    <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-                </h:outputText>
-                <h:outputText value="制单人:" />
-                <p:inputText value="#{bean.creator}" disabled="true" />
+            <h:outputText value="时间:" />
+            <h:outputText value="#{obj.createdDate}">
+                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+            </h:outputText>
+            <h:outputText value="制单人:" />
+            <p:inputText value="#{obj.owner.displayName}" disabled="true" />
 
-                <h:outputText value="定单:" />
-                <t:panelGroup>
-                    <p:inputText id="order" value="#{obj.order.id}" readonly="true" />
-                    <p:commandButton value="..." onclick="chooseMakeOrderDialog.show()" disabled="#{not bean.editing}" />
-                </t:panelGroup>
-                <t:panelGroup />
-                <t:panelGroup />
-            </t:panelGrid>
-            <fr:listView>
+            <h:outputText value="定单:" />
+            <t:panelGroup>
+                <p:inputText id="order" value="#{obj.order.id}" readonly="true" />
+                <p:commandButton value="..." onclick="chooseMakeOrderDialog.show()" disabled="#{not bean.editing}" />
+            </t:panelGroup>
+            <t:panelGroup />
+            <t:panelGroup />
+        </t:panelGrid>
+
+        <fr:listView id="itemsIndexView" header="生产项目" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
+            nested="true" paginator="false">
+            <f:facet name="columns">
                 <p:column headerText="物料">
                     <h:outputText value="#{entry.part.target.label}" />
                 </p:column>
@@ -45,16 +49,17 @@
                         <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                     </h:outputText>
                 </p:column>
-            </fr:listView>
-        </p:panel>
+            </f:facet>
+        </fr:listView>
     </ui:define>
 
     <ui:define name="dialogs">
 
-        <sem:choosePartyDialog id="d-customer" header="选择客户" target="#{obj.customer}" update=":editDialog:form:info" />
-        <sem:chooseMakeOrderDialog id="d-makeOrder" target="#{obj.makeOrder}" update=":editDialog:form:info" />
+        <sem:choosePartyDialog id="d-customer" header="选择客户" target="#{obj.customer}" update=":editDialog:form:basic" />
+        <sem:chooseMakeOrderDialog id="d-makeOrder" target="#{obj.makeOrder}" update=":editDialog:form:basic" />
 
-        <fr:listView header="生产任务单项目编辑">
+        <fr:listView id="itemsEditView" header="生产项目" style="editDialog" indexView=":editDialog:form:itemsIndexView"
+            mbean="#{bean.itemsMBean}">
             <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
 
                 <h:outputLabel value="物料" />

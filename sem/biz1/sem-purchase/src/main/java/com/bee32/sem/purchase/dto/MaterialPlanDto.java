@@ -1,6 +1,6 @@
 package com.bee32.sem.purchase.dto;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.free.NotImplementedException;
@@ -34,8 +34,10 @@ public class MaterialPlanDto
         task = mref(MakeTaskDto.class, source.getTask());
 
         if (selection.contains(ORDERS)) {
-            //int orderSelection = selection.translate(ITEMS, StockOrderDto.ITEMS);
+            // int orderSelection = selection.translate(ITEMS, StockOrderDto.ITEMS);
             planOrders = mrefList(PlanOrderDto.class, source.getPlanOrders());
+        } else {
+            planOrders = Collections.emptyList();
         }
 
         memo = source.getMemo();
@@ -43,10 +45,12 @@ public class MaterialPlanDto
         if (selection.contains(ITEMS))
             items = marshalList(MaterialPlanItemDto.class, source.getItems());
         else
-            items = new ArrayList<MaterialPlanItemDto>();
+            items = Collections.emptyList();
 
         if (selection.contains(PURCHASE_REQUEST))
             purchaseRequest = mref(PurchaseRequestDto.class, source.getPurchaseRequest());
+        else
+            purchaseRequest = new PurchaseRequestDto();
     }
 
     @Override
