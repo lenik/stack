@@ -85,6 +85,14 @@ abstract class BaseDto_Skel<S, C>
         this._null = _null;
     }
 
+    public final boolean isNil() {
+        return isNull();
+    }
+
+    public final void setNil(boolean _nil) {
+        setNull(_nil);
+    }
+
     /**
      * A reference DTO without a key is a null-ref.
      *
