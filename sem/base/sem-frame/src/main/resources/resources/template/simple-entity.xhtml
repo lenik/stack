@@ -29,7 +29,7 @@
             <p:confirmDialog id="deleteConfirmDialog" widgetVar="deleteConfirmDialog" header="删除确认"
                 message="确定要删除吗?" severity="alert" modal="true">
                 <h:form id="deleteConfirmForm" style="margin: 0em 7em 1em">
-                    <p:commandButton id="ok" value="确定" update=":mainForm, ${mirrorTargets}, :editDialog:form"
+                    <p:commandButton id="ok" value="确定" update=":mainForm, :editDialog:form ${mirrorTargets}"
                         actionListener="${bean.deleteSelection}" oncomplete="deleteConfirmDialog.hide()" />
                     <p:commandButton id="cancel" value="取消" onclick="deleteConfirmDialog.hide()" type="button" />
                 </h:form>
@@ -108,7 +108,7 @@
             <h:panelGroup id="editButtons" rendered="${bean.editing or not plainEditForm}">
                 <div align="right">
                     <p:commandButton id="save-validated" value="保存" actionListener="${bean.save}"
-                        disabled="${bean.currentView == 'content'}" update=":mainForm:toolbar, :mainForm:dataContainer, ${mirrorTargets}, :editDialog:form"
+                        disabled="${bean.currentView == 'content'}" update=":mainForm:toolbar, :mainForm:dataContainer, :editDialog:form ${mirrorTargets}"
                         oncomplete="${plainEditForm ? '' : 'editDialog.hideValidated(args)'}" />
                     <p:commandButton id="cancel" value="${bean.currentView == 'content'  ? '关闭' : '取消'}"
                         onclick="${plainEditForm ? '' : 'editDialog.hide()'}" actionListener="${bean.showIndex}"

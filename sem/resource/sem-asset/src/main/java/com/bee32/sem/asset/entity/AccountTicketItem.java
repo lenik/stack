@@ -81,6 +81,11 @@ public class AccountTicketItem
         setEndTime(date);
     }
 
+    /**
+     * 注： 所属单据这里命名为 ticket 而不是 parent，以便派生类可以有自己的 parent.
+     *
+     * @see AccountInitItem
+     */
     @ManyToOne(optional = true)
     public AccountTicket getTicket() {
         return ticket;

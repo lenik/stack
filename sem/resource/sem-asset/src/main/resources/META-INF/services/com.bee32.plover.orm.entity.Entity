@@ -1,10 +1,11 @@
+com.bee32.sem.asset.entity.AccountInit
+com.bee32.sem.asset.entity.AccountInitItem
 com.bee32.sem.asset.entity.AccountSnapshot
 com.bee32.sem.asset.entity.AccountSnapshotItem
 com.bee32.sem.asset.entity.AccountSubject
 com.bee32.sem.asset.entity.AccountTicket
 com.bee32.sem.asset.entity.AccountTicketItem
 com.bee32.sem.asset.entity.BudgetRequest
-com.bee32.sem.asset.entity.InitAccountTicketItem
 com.bee32.sem.asset.entity.StockPurchase
 com.bee32.sem.asset.entity.StockSale
 com.bee32.sem.asset.entity.StockTrade

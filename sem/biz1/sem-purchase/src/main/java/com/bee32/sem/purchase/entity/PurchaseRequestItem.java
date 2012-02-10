@@ -2,6 +2,7 @@ package com.bee32.sem.purchase.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -45,7 +46,7 @@ public class PurchaseRequestItem
     Party preferredSupplier;
     String additionalRequirement;
 
-    List<PurchaseInquiry> inquiries;
+    List<PurchaseInquiry> inquiries = new ArrayList<PurchaseInquiry>();
     PurchaseAdvice purchaseAdvice;
 
     @NaturalId
