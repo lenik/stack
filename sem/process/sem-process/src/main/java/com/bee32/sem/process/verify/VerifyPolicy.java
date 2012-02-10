@@ -1,10 +1,12 @@
 package com.bee32.sem.process.verify;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -13,10 +15,15 @@ import javax.persistence.InheritanceType;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.NaturalId;
+
 import com.bee32.icsf.principal.IPrincipalChangeListener;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.PrincipalAware;
 import com.bee32.icsf.principal.PrincipalChangeEvent;
+import com.bee32.plover.arch.util.DummyId;
+import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.inject.ServiceTemplate;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 
@@ -32,9 +39,40 @@ public abstract class VerifyPolicy
 
     private static final long serialVersionUID = 1L;
 
+    public static final int NAME_LENGTH = 10;
+
+    String name;
+
+    // transient.
     private Map<Principal, Map<Object, Boolean>> principalResponsibleStagesMap;
 
     public VerifyPolicy() {
+    }
+
+    @NaturalId
+    @Column(length = NAME_LENGTH, nullable = true)
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    protected Serializable naturalId() {
+        if (name == null)
+            return new DummyId(this);
+        else
+            return name;
+    }
+
+    @Override
+    protected ICriteriaElement selector(String prefix) {
+        if (name == null)
+            return null;
+        else
+            return new Equals(prefix + "name", name);
     }
 
     @Transient
