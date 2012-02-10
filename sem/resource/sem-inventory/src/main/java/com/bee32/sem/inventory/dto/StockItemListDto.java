@@ -59,4 +59,9 @@ public class StockItemListDto
             throws ParseException {
     }
 
+    @Override
+    protected void attach(StockOrderItemDto item) {
+        // item.setParent(this);
+    }
+
 }

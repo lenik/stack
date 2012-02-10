@@ -92,6 +92,11 @@ public class StockOrderDto
         super._parse(map);
     }
 
+    @Override
+    protected void attach(StockOrderItemDto item) {
+        item.setParent(this);
+    }
+
     public StockPeriodDto getBase() {
         return base;
     }

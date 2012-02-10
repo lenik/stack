@@ -47,6 +47,11 @@ public class ChanceQuotationDto
     }
 
     @Override
+    protected void attach(ChanceQuotationItemDto item) {
+        item.setParent(this);
+    }
+
+    @Override
     public ChanceDto getEnclosingObject() {
         return getChance();
     }

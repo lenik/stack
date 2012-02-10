@@ -31,11 +31,10 @@ public abstract class AbstractStockOrderBean
 
     private static final long serialVersionUID = 1L;
 
+    protected StockOrderSubject subject;
     StockJobStepping stepping;
 
-    StockOrderSubject subject = null;
     Integer selectedWarehouseId = -1;
-
     OrgDto selectedOrg;
     OrgUnitDto selectedOrgUnit;
 

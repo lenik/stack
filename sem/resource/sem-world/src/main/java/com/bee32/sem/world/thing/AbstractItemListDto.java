@@ -89,6 +89,10 @@ public abstract class AbstractItemListDto< //
         super.__parse(map);
     }
 
+    protected abstract void attach(_dt item);
+
+    // protected abstract void detach(_dt item) ;
+
     @SuppressWarnings("unchecked")
     public <_t extends _dt> List<_t> getItems() {
         return (List<_t>) (List<?>) items;
@@ -97,6 +101,8 @@ public abstract class AbstractItemListDto< //
     public void setItems(List<_dt> items) {
         if (items == null)
             throw new NullPointerException("items");
+        for (_dt item : items)
+            attach(item);
         this.items = items;
     }
 
@@ -107,6 +113,7 @@ public abstract class AbstractItemListDto< //
         if (item.getIndex() == -1)
             item.setIndex(items.size());
 
+        attach(item);
         items.add(item);
         invalidateTotal();
     }
