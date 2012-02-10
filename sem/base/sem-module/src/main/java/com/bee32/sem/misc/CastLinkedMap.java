@@ -1,13 +1,21 @@
 package com.bee32.sem.misc;
 
+import java.io.Serializable;
 import java.util.Collection;
-import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
+import javax.free.ProxyMap;
+
 public class CastLinkedMap<K, V>
-        extends LinkedHashMap<K, V> {
+        extends ProxyMap<K, V>
+        implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    public CastLinkedMap(Map<K, V> proxy) {
+        super(proxy);
+    }
 
     // @Override
     // public <sk extends K> Set<sk> keySet() {
