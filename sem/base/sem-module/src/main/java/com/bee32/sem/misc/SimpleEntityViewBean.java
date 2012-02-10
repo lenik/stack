@@ -97,6 +97,7 @@ public class SimpleEntityViewBean
     protected Set<Serializable> requestWindow = new HashSet<Serializable>();
     List<ICriteriaElement> baseRestriction;
     ICriteriaElement userRestriction;
+    boolean verifiedOnly;
     List<SearchFragment> searchFragments = new ArrayList<SearchFragment>();
     EntityDataModelOptions<?, ?> dataModelOptions;
     LazyDataModel<?> dataModel;
@@ -219,10 +220,14 @@ public class SimpleEntityViewBean
     protected final List<? extends ICriteriaElement> composeBaseRestrictions() {
         List<ICriteriaElement> join = new ArrayList<ICriteriaElement>();
         join.addAll(baseRestriction);
-        if (requestWindow != null && !requestWindow.isEmpty())
+        if (requestWindow != null && !requestWindow.isEmpty()) {
             join.add(new InCollection("id", requestWindow));
-        else
+        } else {
+            if (verifiedOnly) {
+                // TODO
+            }
             composeBaseRestrictions(join);
+        }
 
         if (userRestriction != null)
             join.add(userRestriction);
