@@ -198,7 +198,7 @@ public class Part
     }
 
     @Column(name = "priceStrategy", nullable = false)
-    @DefaultValue("z")
+    @DefaultValue("'z'")
     char get_priceStrategy() {
         return priceStrategy.getValue();
     }
