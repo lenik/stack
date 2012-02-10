@@ -20,18 +20,14 @@ import org.hibernate.annotations.CascadeType;
 
 import com.bee32.plover.arch.bean.BeanPropertyAccessor;
 import com.bee32.plover.arch.bean.IPropertyAccessor;
-import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.ox1.config.DecimalConfig;
-import com.bee32.sem.base.tx.TxEntity;
 import com.bee32.sem.bom.entity.Part;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;
 import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
-import com.bee32.sem.world.monetary.FxrQueryException;
-import com.bee32.sem.world.monetary.MCValue;
-import com.bee32.sem.world.monetary.MCVector;
+import com.bee32.sem.world.thing.AbstractItemList;
 
 /**
  * 生产定单
@@ -39,7 +35,7 @@ import com.bee32.sem.world.monetary.MCVector;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "make_order_seq", allocationSize = 1)
 public class MakeOrder
-        extends TxEntity
+        extends AbstractItemList<MakeOrderItem>
         implements DecimalConfig, IVerifiable<ISingleVerifierWithNumber> {
 
     private static final long serialVersionUID = 1L;
@@ -49,10 +45,6 @@ public class MakeOrder
     Party customer;
     String status;
     Chance chance;
-
-    List<MakeOrderItem> items = new ArrayList<MakeOrderItem>();
-    MCVector total;
-    BigDecimal nativeTotal; // Redundant.
 
     List<MakeTask> tasks = new ArrayList<MakeTask>();
 
@@ -80,52 +72,6 @@ public class MakeOrder
         this.status = status;
     }
 
-    @OneToMany(mappedBy = "order", orphanRemoval = true)
-    @Cascade(CascadeType.ALL)
-    public List<MakeOrderItem> getItems() {
-        return items;
-    }
-
-    public void setItems(List<MakeOrderItem> items) {
-        if (items == null)
-            throw new NullPointerException("items");
-        this.items = items;
-    }
-
-    public synchronized void addItem(MakeOrderItem item) {
-        if (item == null)
-            throw new NullPointerException("item");
-
-        if (item.getIndex() == -1)
-            item.setIndex(items.size());
-
-        items.add(item);
-        invalidateTotal();
-    }
-
-    public synchronized void removeItem(MakeOrderItem item) {
-        if (item == null)
-            throw new NullPointerException("item");
-
-        int index = items.indexOf(item);
-        if (index == -1)
-            return /* false */;
-
-        items.remove(index);
-        item.detach();
-
-        // Renum [index, ..)
-        for (int i = index; i < items.size(); i++)
-            items.get(i).setIndex(i);
-
-        invalidateTotal();
-    }
-
-    public synchronized void reindex() {
-        for (int index = items.size() - 1; index >= 0; index--)
-            items.get(index).setIndex(index);
-    }
-
     @OneToMany(mappedBy = "order")
     @Cascade(CascadeType.ALL)
     public List<MakeTask> getTasks() {
@@ -145,61 +91,6 @@ public class MakeOrder
 
     public void setChance(Chance chance) {
         this.chance = chance;
-    }
-
-    /**
-     * 多币种表示的金额。
-     */
-    @Transient
-    public synchronized MCVector getTotal() {
-        if (total == null) {
-            total = new MCVector();
-            for (MakeOrderItem item : items) {
-                MCValue itemTotal = item.getTotal();
-                total.add(itemTotal);
-            }
-        }
-        return total;
-    }
-
-    /**
-     * 【冗余】获取用本地货币表示的总金额。
-     *
-     * @throws FxrQueryException
-     *             外汇查询异常。
-     */
-    @Redundant
-    @Column(precision = MONEY_TOTAL_PRECISION, scale = MONEY_TOTAL_SCALE)
-    public synchronized BigDecimal getNativeTotal()
-            throws FxrQueryException {
-        if (nativeTotal == null) {
-            synchronized (this) {
-                if (nativeTotal == null) {
-                    BigDecimal sum = new BigDecimal(0L, MONEY_TOTAL_CONTEXT);
-                    for (MakeOrderItem item : items) {
-                        BigDecimal itemNativeTotal = item.getNativePrice();
-                        sum = sum.add(itemNativeTotal);
-                    }
-                    nativeTotal = sum;
-                }
-            }
-        }
-        return nativeTotal;
-    }
-
-    public void setNativeTotal(BigDecimal nativeTotal) {
-        this.nativeTotal = nativeTotal;
-    }
-
-    @Override
-    protected void invalidate() {
-        super.invalidate();
-        invalidateTotal();
-    }
-
-    protected void invalidateTotal() {
-        total = null;
-        nativeTotal = null;
     }
 
     /**
@@ -245,7 +136,7 @@ public class MakeOrder
             if (remaining.longValue() > 0) {
                 // 生产任务的数量小订单的数量
                 MakeOrderItem remainingItem = new MakeOrderItem();
-                remainingItem.setOrder(this);
+                remainingItem.setParent(this);
                 remainingItem.setPart(orderItem.getPart());
                 remainingItem.setQuantity(remaining);
                 remainingItem.setExternalProductName(orderItem.getExternalProductName());
