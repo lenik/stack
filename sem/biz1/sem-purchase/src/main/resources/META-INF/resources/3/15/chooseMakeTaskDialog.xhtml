@@ -53,8 +53,7 @@
                 </p:column>
 
                 <p:column headerText="操作">
-                    <p:commandLink oncomplete="taskItemsDialog.show()" update="taskItemsForm:taskItems"
-                        value="明细">
+                    <p:commandLink value="明细" oncomplete="_ItemsDialog.show()" update=":${cc.clientId}:itemsForm">
                         <f:setPropertyActionListener value="#{entry}" target="#{bean.selectedTask}" />
                     </p:commandLink>
                 </p:column>
@@ -63,33 +62,36 @@
             </ui:define>
         </ui:decorate>
 
-        <p:dialog header="生产任务单明细" widgetVar="taskItemsDialog" modal="true" height="480" width="800">
-            <h:form id="taskItemsForm">
-                <p:dataTable id="taskItems" var="item" value="#{bean.taskItems}" resizableColumns="true"
-                    rowIndexVar="rowIndex" scrollable="true" scrollWidth="750" scrollHeight="350">
+        <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
+        <p:dialog header="生产任务单明细" widgetVar="_ItemsDialog" modal="true" height="480" width="800">
+            <h:form id="itemsForm">
+                <h:panelGroup rendered="#{dialogBean.openedObject != null}">
+                    <p:dataTable id="table" var="entry" value="#{dialogBean.openedObject.items}"
+                        resizableColumns="true" rowIndexVar="rowIndex" scrollable="true" scrollWidth="750" scrollHeight="350">
 
-                    <p:column headerText="序号">
-                        <h:outputText value="#{rowIndex + 1}" />
-                    </p:column>
+                        <p:column headerText="序号">
+                            <h:outputText value="#{rowIndex + 1}" />
+                        </p:column>
 
-                    <p:column headerText="物料">
-                        <h:outputText value="#{item.part.target.label}" />
-                    </p:column>
+                        <p:column headerText="物料">
+                            <h:outputText value="#{entry.part.target.label}" />
+                        </p:column>
 
-                    <p:column headerText="规格型号">
-                        <h:outputText value="#{item.part.target.modelSpec}" />
-                    </p:column>
+                        <p:column headerText="规格型号">
+                            <h:outputText value="#{entry.part.target.modelSpec}" />
+                        </p:column>
 
-                    <p:column headerText="数量">
-                        <h:outputText value="#{item.quantity}" />
-                    </p:column>
+                        <p:column headerText="数量">
+                            <h:outputText value="#{entry.quantity}" />
+                        </p:column>
 
-                    <p:column headerText="交货日期">
-                        <h:outputText value="#{item.deadline}">
-                            <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-                        </h:outputText>
-                    </p:column>
-                </p:dataTable>
+                        <p:column headerText="交货日期">
+                            <h:outputText value="#{entry.deadline}">
+                                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
             </h:form>
         </p:dialog>
 

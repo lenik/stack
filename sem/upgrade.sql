@@ -27,9 +27,9 @@ update party set supplier=false
 
 delete from party_tags where tag in ('CUS', 'SUP', 'ENY');
 
+alter table material_category rename classification to material_type;
 alter table account_ticket_item rename column parent to ticket;
+alter table make_order_item rename column "order" to "parent";
 alter table purchase_inquiry rename column org to supplier;
 alter table purchase_request_item rename purchase_request to parent;
-alter table material_category rename classification to material_type;
-
 

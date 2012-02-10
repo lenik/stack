@@ -10,6 +10,7 @@ import java.util.Map;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.bom.dto.PartDto;
+import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.entity.StockOrder;
@@ -20,7 +21,7 @@ import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.purchase.dto.MakeTaskItemDto;
 import com.bee32.sem.purchase.dto.MaterialPlanDto;
 import com.bee32.sem.purchase.dto.MaterialPlanItemDto;
-import com.bee32.sem.purchase.dto.PlanOrderDto;
+import com.bee32.sem.purchase.dto.StockPlanOrderDto;
 import com.bee32.sem.purchase.entity.MakeTask;
 import com.bee32.sem.purchase.entity.MaterialPlan;
 import com.bee32.sem.purchase.util.SelectItemHolder;
@@ -89,7 +90,7 @@ public class MaterialPlanAdminBean
             orderItems = planOrder.getItems();
 
         } else {
-            planOrder = new PlanOrderDto().create();
+            planOrder = new StockPlanOrderDto().create();
             orderItems = planOrder.getItems();
         }
     }
@@ -157,11 +158,11 @@ public class MaterialPlanAdminBean
     }
 
     public void lockStock() {
-        List<PlanOrderDto> orders = new ArrayList<PlanOrderDto>();
+        List<StockPlanOrderDto> orders = new ArrayList<StockPlanOrderDto>();
         for (SelectItemHolder holder : stockQueryItems) {
             if (holder.isChecked()) {
-                PlanOrderDto order = null;
-                for (PlanOrderDto o : orders) {
+                StockPlanOrderDto order = null;
+                for (StockPlanOrderDto o : orders) {
                     if (o.getWarehouse().getId() == holder.getItem().getLocation().getWarehouse().getId()) {
                         order = o;
                         break;
@@ -169,7 +170,7 @@ public class MaterialPlanAdminBean
                 }
 
                 if (order == null) {
-                    order = new PlanOrderDto().create();
+                    order = new StockPlanOrderDto().create();
                     order.setSubject(StockOrderSubject.PLAN_OUT);
                     order.setPlan(materialPlan);
                     order.setWarehouse(holder.getItem().getLocation().getWarehouse());
@@ -192,6 +193,24 @@ public class MaterialPlanAdminBean
         if (orders.size() > 0) {
             materialPlan.setPlanOrders(orders);
         }
+    }
+
+    ListMBean<MaterialPlanItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items", MaterialPlanItemDto.class);
+    ListMBean<StockPlanOrderDto> planOrdersMBean = ListMBean.fromEL(this, "openedObject.planOrders",
+            StockPlanOrderDto.class);
+    ListMBean<StockOrderItemDto> planOrderItemsMBean = ListMBean.fromEL(planOrdersMBean, "openedObject.items",
+            StockOrderItemDto.class);
+
+    public ListMBean<MaterialPlanItemDto> getItemsMBean() {
+        return itemsMBean;
+    }
+
+    public ListMBean<StockPlanOrderDto> getPlanOrdersMBean() {
+        return planOrdersMBean;
+    }
+
+    public ListMBean<StockOrderItemDto> getPlanOrderItemsMBean() {
+        return planOrderItemsMBean;
     }
 
 }

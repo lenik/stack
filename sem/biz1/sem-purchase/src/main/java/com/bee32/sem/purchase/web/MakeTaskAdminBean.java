@@ -5,15 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.bee32.plover.criteria.hibernate.CriteriaElement;
-import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.criteria.hibernate.LeftHand;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.sem.bom.entity.Part;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
-import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.purchase.dto.MakeOrderDto;
 import com.bee32.sem.purchase.dto.MakeTaskDto;
 import com.bee32.sem.purchase.dto.MakeTaskItemDto;
@@ -56,22 +52,16 @@ public class MakeTaskAdminBean
         return true;
     }
 
-    PartyDto customer;
-
-    @LeftHand(MakeOrder.class)
-    public CriteriaElement getCustomerRestriction() {
-        return new Equals("customer.id", customer.getId());
-    }
-
-    public void setApplyMakeOrder(MakeOrderDto makeOrder) {
+    public void setApplyMakeOrder(MakeOrderDto makeOrderRef) {
         MakeTaskDto makeTask = getOpenedObject();
-        List<MakeTaskItemDto> taskItems = reload(makeOrder).arrangeMakeTask();
+        MakeOrderDto makeOrder = reload(makeOrderRef, MakeOrderDto.NOT_ARRANGED_ITEMS);
+        List<MakeTaskItemDto> taskItems = makeOrder.arrangeMakeTask();
         if (taskItems.isEmpty()) {
             uiLogger.error("此定单上的产品的生产任务已经全部安排完成");
             return;
         }
         makeTask.setItems(taskItems);
-        makeTask.setOrder(makeOrder);
+        makeTask.setOrder(makeOrderRef);
     }
 
     public ListMBean<MakeTaskItemDto> getItemsMBean() {

@@ -39,6 +39,9 @@
 
             <ui:define name="columns">
                 <c:if test="${cc.attrs.stereo == '-'}">
+                    <p:column headerText="类型">
+                        <h:outputText value="#{entry.types}" />
+                    </p:column>
                     <p:column headerText="名称">
                         <h:outputText value="#{entry.displayName}" />
                     </p:column>

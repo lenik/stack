@@ -26,17 +26,14 @@
             <h:outputText value="定单:" />
             <t:panelGroup>
                 <p:inputText id="order" value="#{obj.order.label}" readonly="true" />
-                <p:commandButton value="..." oncomplete="chooseMakeOrderDialog.show()" disabled="#{not bean.editing}">
-                    <f:setPropertyActionListener target="#{chooseMakeOrderDialogBean.restriction}"
-                        value="#{bean.customerRestriction}" />
-                </p:commandButton>
+                <p:commandButton value="..." onclick="chooseMakeOrderDialog.show()" disabled="#{not bean.editing}" />
             </t:panelGroup>
             <t:panelGroup />
             <t:panelGroup />
         </t:panelGrid>
 
         <fr:listView id="itemsIndexView" header="生产项目" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
-            nested="true" paginator="false">
+            nested="true" paginator="false" creatable="false">
             <f:facet name="columns">
                 <p:column headerText="物料">
                     <h:outputText value="#{entry.part.target.label}" />
@@ -52,14 +49,15 @@
                         <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                     </h:outputText>
                 </p:column>
+                <p:column headerText="备注">
+                    <h:outputText value="#{entry.description}" />
+                </p:column>
             </f:facet>
         </fr:listView>
     </ui:define>
 
     <ui:define name="dialogs">
-
-        <sem:choosePartyDialog id="d-customer" header="选择客户" target="#{obj.customer}" update=":editDialog:form:basic" />
-        <sem:chooseMakeOrderDialog id="d-makeOrder" target="#{obj.order}" update=":editDialog:form:basic" />
+        <sem:chooseMakeOrderDialog id="d-makeOrder" target="#{bean.applyMakeOrder}" update=":editDialog:form" />
 
         <fr:listView id="itemsEditView" header="生产项目" style="editDialog" indexView=":editDialog:form:itemsIndexView"
             mbean="#{bean.itemsMBean}">

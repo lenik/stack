@@ -27,7 +27,7 @@ public class MaterialPlan
     public static final int MEMO_LENGTH = 3000;
 
     MakeTask task;
-    List<PlanOrder> planOrders;
+    List<StockPlanOrder> planOrders;
     String memo;
 
     List<MaterialPlanItem> items = new ArrayList<MaterialPlanItem>();
@@ -45,11 +45,13 @@ public class MaterialPlan
 
     @OneToMany(mappedBy = "plan", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
-    public List<PlanOrder> getPlanOrders() {
+    public List<StockPlanOrder> getPlanOrders() {
         return planOrders;
     }
 
-    public void setPlanOrders(List<PlanOrder> planOrders) {
+    public void setPlanOrders(List<StockPlanOrder> planOrders) {
+        if (planOrders == null)
+            throw new NullPointerException("planOrders");
         this.planOrders = planOrders;
     }
 

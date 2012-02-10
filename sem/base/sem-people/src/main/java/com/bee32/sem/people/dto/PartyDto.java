@@ -184,6 +184,17 @@ public class PartyDto
         this.sid = TextUtil.normalizeSpace(sid);
     }
 
+    public String getTypes() {
+        StringBuilder sb = new StringBuilder();
+        if (employee)
+            sb.append("用");
+        if (supplier)
+            sb.append("供");
+        if (customer)
+            sb.append("客");
+        return sb.toString();
+    }
+
     public boolean isEmployee() {
         return employee;
     }

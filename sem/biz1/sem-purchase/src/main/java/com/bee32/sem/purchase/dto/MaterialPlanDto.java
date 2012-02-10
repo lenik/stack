@@ -21,7 +21,7 @@ public class MaterialPlanDto
     public static final int PURCHASE_REQUEST = 2;
 
     MakeTaskDto task;
-    List<PlanOrderDto> planOrders;
+    List<StockPlanOrderDto> planOrders;
 
     String memo;
 
@@ -35,7 +35,7 @@ public class MaterialPlanDto
 
         if (selection.contains(ORDERS)) {
             // int orderSelection = selection.translate(ITEMS, StockOrderDto.ITEMS);
-            planOrders = mrefList(PlanOrderDto.class, source.getPlanOrders());
+            planOrders = mrefList(StockPlanOrderDto.class, source.getPlanOrders());
         } else {
             planOrders = Collections.emptyList();
         }
@@ -85,11 +85,11 @@ public class MaterialPlanDto
         this.task = task;
     }
 
-    public List<PlanOrderDto> getPlanOrders() {
+    public List<StockPlanOrderDto> getPlanOrders() {
         return planOrders;
     }
 
-    public void setPlanOrders(List<PlanOrderDto> planOrders) {
+    public void setPlanOrders(List<StockPlanOrderDto> planOrders) {
         this.planOrders = planOrders;
     }
 

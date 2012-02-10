@@ -61,7 +61,7 @@ public class MaterialPlanItem
         this.index = index;
     }
 
-    @NaturalId(mutable=true)
+    @NaturalId(mutable = true)
     @ManyToOne(optional = false)
     public Material getMaterial() {
         return material;
@@ -143,4 +143,5 @@ public class MaterialPlanItem
         materialPlan = null;
         return this;
     }
+
 }
