@@ -256,9 +256,8 @@ public abstract class TreeEntity<K extends Serializable, self_t extends TreeEnti
      */
     protected void checkNode(boolean isChild, self_t node) {
         Class<?> selfType = getClass();
-        Class<?> nodeType = node.getClass();
-        if (!selfType.equals(nodeType))
-            throw new IllegalArgumentException("Inconsistent node type: tree=" + selfType + ", node=" + nodeType);
+        if (!selfType.isInstance(node))
+            throw new IllegalArgumentException("Inconsistent node type: tree=" + selfType + ", node=" + node.getClass());
     }
 
     /**
