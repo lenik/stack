@@ -1,11 +1,14 @@
 package com.bee32.sem.people.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.criteria.hibernate.Alias;
+import com.bee32.plover.criteria.hibernate.CriteriaElement;
+import com.bee32.plover.criteria.hibernate.Disjunction;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.sem.misc.SimpleEntityViewBean;
@@ -38,12 +41,17 @@ public class ChoosePartyDialogBean
 
     @Override
     protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
-        if (employee != null)
-            elements.add(new Equals("employee", employee));
-        if (customer != null)
-            elements.add(new Equals("customer", employee));
-        if (supplier != null)
-            elements.add(new Equals("supplier", employee));
+        List<CriteriaElement> types = new ArrayList<CriteriaElement>();
+        {
+            if (employee != null)
+                types.add(new Equals("employee", employee));
+            if (customer != null)
+                types.add(new Equals("customer", customer));
+            if (supplier != null)
+                types.add(new Equals("supplier", supplier));
+            if (!types.isEmpty())
+                elements.add(new Disjunction(types.toArray(new CriteriaElement[0])));
+        }
         if (tagId != null) {
             elements.add(new Alias("tags", "tag"));
             elements.add(new Equals("tag.id", tagId));
