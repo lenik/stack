@@ -39,6 +39,8 @@ public class MakeTask
     }
 
     public void setOrder(MakeOrder order) {
+        if (order == null)
+            throw new NullPointerException("order");
         this.order = order;
     }
 
@@ -96,7 +98,6 @@ public class MakeTask
         for (int index = items.size() - 1; index >= 0; index--)
             items.get(index).setIndex(index);
     }
-
 
     @OneToMany(mappedBy = "task")
     @Cascade(CascadeType.ALL)

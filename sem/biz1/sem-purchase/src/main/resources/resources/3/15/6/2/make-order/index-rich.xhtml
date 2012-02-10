@@ -24,6 +24,11 @@
             <h:outputText value="制单人:" />
             <p:inputText value="#{obj.owner.displayName}" disabled="true" />
 
+            <h:outputText value="简要:" />
+            <t:panelGroup colspan="3">
+                <p:inputText id="label" label="简要" value="#{obj.label}" />
+            </t:panelGroup>
+
             <h:outputText value="客户:" />
             <t:panelGroup colspan="3">
                 <p:inputText id="customer" value="#{obj.customer.displayName}" readonly="true" />

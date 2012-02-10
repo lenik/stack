@@ -10,6 +10,7 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.LeftHand;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.sem.bom.entity.Part;
+import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.people.dto.PartyDto;
@@ -24,6 +25,8 @@ public class MakeTaskAdminBean
         extends ScrollEntityViewBean {
 
     private static final long serialVersionUID = 1L;
+
+    ListMBean<MakeTaskItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items", MakeTaskItemDto.class);
 
     public MakeTaskAdminBean() {
         super(MakeTask.class, MakeTaskDto.class, 0);
@@ -60,18 +63,19 @@ public class MakeTaskAdminBean
         return new Equals("customer.id", customer.getId());
     }
 
-    public void chooseOrder() {
+    public void setApplyMakeOrder(MakeOrderDto makeOrder) {
         MakeTaskDto makeTask = getOpenedObject();
-        MakeOrderDto selectedOrder = makeTask.getOrder();
-        selectedOrder = reload(selectedOrder);
-        List<MakeTaskItemDto> makeTaskItems = selectedOrder.arrangeMakeTask();
-        if (makeTaskItems.isEmpty()) {
+        List<MakeTaskItemDto> taskItems = reload(makeOrder).arrangeMakeTask();
+        if (taskItems.isEmpty()) {
             uiLogger.error("此定单上的产品的生产任务已经全部安排完成");
             return;
         }
+        makeTask.setItems(taskItems);
+        makeTask.setOrder(makeOrder);
+    }
 
-        makeTask.setItems(makeTaskItems);
-        makeTask.setOrder(selectedOrder);
+    public ListMBean<MakeTaskItemDto> getItemsMBean() {
+        return itemsMBean;
     }
 
 }

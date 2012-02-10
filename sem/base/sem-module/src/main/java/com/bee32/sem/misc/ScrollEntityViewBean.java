@@ -65,7 +65,10 @@ public class ScrollEntityViewBean
             rowNumber = 1;
         if (rowNumber > rowCount)
             rowNumber = rowCount;
+        _selectRow(rowNumber);
+    }
 
+    void _selectRow(int rowNumber) {
         EntityDto<?, ?> dto = null;
         if (rowNumber > 0) {
             int rowIndex = rowNumber - 1;

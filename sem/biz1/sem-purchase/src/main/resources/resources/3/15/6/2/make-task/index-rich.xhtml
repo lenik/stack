@@ -5,7 +5,7 @@
 
     <ui:param name="title" value="生产任务" />
     <ui:param name="verifiable" value="true" />
-    <ui:param name="bean" value="#{maskTaskAdminBean}" />
+    <ui:param name="bean" value="#{makeTaskAdminBean}" />
     <ui:param name="obj" value="#{bean.openedObject}" />
     <ui:param name="itemObj" value="#{bean.itemsMBean.openedObject}" />
 
@@ -25,8 +25,11 @@
 
             <h:outputText value="定单:" />
             <t:panelGroup>
-                <p:inputText id="order" value="#{obj.order.id}" readonly="true" />
-                <p:commandButton value="..." onclick="chooseMakeOrderDialog.show()" disabled="#{not bean.editing}" />
+                <p:inputText id="order" value="#{obj.order.label}" readonly="true" />
+                <p:commandButton value="..." oncomplete="chooseMakeOrderDialog.show()" disabled="#{not bean.editing}">
+                    <f:setPropertyActionListener target="#{chooseMakeOrderDialogBean.restriction}"
+                        value="#{bean.customerRestriction}" />
+                </p:commandButton>
             </t:panelGroup>
             <t:panelGroup />
             <t:panelGroup />
@@ -56,7 +59,7 @@
     <ui:define name="dialogs">
 
         <sem:choosePartyDialog id="d-customer" header="选择客户" target="#{obj.customer}" update=":editDialog:form:basic" />
-        <sem:chooseMakeOrderDialog id="d-makeOrder" target="#{obj.makeOrder}" update=":editDialog:form:basic" />
+        <sem:chooseMakeOrderDialog id="d-makeOrder" target="#{obj.order}" update=":editDialog:form:basic" />
 
         <fr:listView id="itemsEditView" header="生产项目" style="editDialog" indexView=":editDialog:form:itemsIndexView"
             mbean="#{bean.itemsMBean}">

@@ -49,24 +49,24 @@ public class PurchaseRequestAdminBean
     @Override
     protected void postUpdate(UnmarshalMap uMap)
             throws Exception {
-        for (MaterialPlanDto _p : selectedPlans) {
-            MaterialPlan __p = _p.unmarshal();
-            __p.setPurchaseRequest(_request);
-            serviceFor(MaterialPlan.class).saveOrUpdate(__p);
+        for (PurchaseRequest request : uMap.<PurchaseRequest> entitySet()) {
+            List<MaterialPlan> plans = request.getPlans();
+            for (MaterialPlan plan : plans)
+                plan.setPurchaseRequest(request);
+            serviceFor(MaterialPlan.class).saveOrUpdateAll(plans);
         }
     }
 
     @Override
     protected boolean preDelete(UnmarshalMap uMap)
             throws Exception {
-        PurchaseRequest _purchaseRequest = purchaseRequest.unmarshal();
-        _purchaseRequest.getPlans().clear();
-
-        for (MaterialPlanDto _p : selectedPlans) {
-            MaterialPlan __p = _p.unmarshal();
-            __p.setPurchaseRequest(null);
-            serviceFor(MaterialPlan.class).saveOrUpdate(__p);
+        for (PurchaseRequest request : uMap.<PurchaseRequest> entitySet()) {
+            List<MaterialPlan> plans = request.getPlans();
+            for (MaterialPlan plan : plans)
+                plan.setPurchaseRequest(null);
+            asFor(MaterialPlan.class).saveOrUpdateAll(plans);
         }
+        return true;
     }
 
     public void choosePlan() {

@@ -38,69 +38,66 @@
             <ui:param name="selectionHolder" value="${cc.attrs.selectionHolder}" />
 
             <ui:define name="columns">
-                <p:column headerText="标识">
-                    <h:outputText value="#{entry.id}" />
+                <p:column headerText="简要">
+                    <h:outputText value="#{entry.label}" />
                 </p:column>
-
                 <p:column headerText="客户">
-                    <h:outputText value="#{entry.customer.name}" />
+                    <h:outputText value="#{entry.customer.displayName}" />
                 </p:column>
-
-                <p:column headerText="操作">
-                    <p:commandLink oncomplete="orderItemsDialog.show()" update="orderItemsForm:orderItems"
-                        value="明细">
-                        <f:setPropertyActionListener value="#{entry}" target="#{bean.selectedOrder}" />
-                    </p:commandLink>
-                </p:column>
-
                 <cc:renderFacet name="columns" />
+            </ui:define>
+
+            <ui:define name="buttons.left">
+                <p:commandButton value="查看" update=":${cc.clientId}:itemsForm" oncomplete="chooseMakeOrder_itemsDialog.show()" />
             </ui:define>
 
             <ui:define name="search+">
                 <h:outputText value="客户" />
-                <p:inputText id="customer" value="#{bean.customer.name}" readonly="true" />
+                <p:inputText id="customer" value="#{dialogBean.customer.name}" readonly="true" />
                 <p:commandButton value="..." onclick="customerDialog.show()" />
             </ui:define>
         </ui:decorate>
 
-        <p:dialog header="订单明细" widgetVar="orderItemsDialog" modal="true" height="480" width="800">
-            <h:form id="orderItemsForm">
-                <p:dataTable id="orderItems" var="item" value="#{bean.orderItems}" resizableColumns="true"
-                    rowIndexVar="rowIndex" scrollable="true" scrollWidth="750" scrollHeight="350">
+        <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
+        <p:dialog header="订单明细" widgetVar="chooseMakeOrder_itemsDialog" modal="true">
+            <h:form id="itemsForm" styleClass="ui-dialog-form">
+                <h:panelGroup rendered="#{dialogBean.singleSelection != null}">
+                    <p:dataTable id="table" var="entry" value="#{dialogBean.singleSelection.items}"
+                        resizableColumns="true" rowIndexVar="rowIndex" scrollable="true" scrollWidth="750" scrollHeight="350">
 
-                    <p:column headerText="序号">
-                        <h:outputText value="#{rowIndex + 1}" />
-                    </p:column>
+                        <p:column headerText="序号">
+                            <h:outputText value="#{rowIndex + 1}" />
+                        </p:column>
 
-                    <p:column headerText="物料">
-                        <h:outputText value="#{item.part.target.label}" />
-                    </p:column>
+                        <p:column headerText="物料">
+                            <h:outputText value="#{entry.part.target.label}" />
+                        </p:column>
 
-                    <p:column headerText="规格型号">
-                        <h:outputText value="#{item.part.target.modelSpec}" />
-                    </p:column>
+                        <p:column headerText="规格型号">
+                            <h:outputText value="#{entry.part.target.modelSpec}" />
+                        </p:column>
 
-                    <p:column headerText="单价">
-                        <h:outputText value="#{item.price.value}" />
-                    </p:column>
+                        <p:column headerText="单价">
+                            <h:outputText value="#{entry.price.value}" />
+                        </p:column>
 
-                    <p:column headerText="币种">
-                        <h:outputText value="#{item.price.currencyText}" />
-                    </p:column>
+                        <p:column headerText="币种">
+                            <h:outputText value="#{entry.price.currencyText}" />
+                        </p:column>
 
-                    <p:column headerText="数量">
-                        <h:outputText value="#{item.quantity}" />
-                    </p:column>
+                        <p:column headerText="数量">
+                            <h:outputText value="#{entry.quantity}" />
+                        </p:column>
 
-                    <p:column headerText="外部名称">
-                        <h:outputText value="#{item.externalProductName}" />
-                    </p:column>
+                        <p:column headerText="外部名称">
+                            <h:outputText value="#{entry.externalProductName}" />
+                        </p:column>
 
-                    <p:column headerText="外部规格">
-                        <h:outputText value="#{item.externalSpecification}" />
-                    </p:column>
-
-                </p:dataTable>
+                        <p:column headerText="外部规格">
+                            <h:outputText value="#{entry.externalSpecification}" />
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
             </h:form>
         </p:dialog>
     </cc:implementation>
