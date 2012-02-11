@@ -1,5 +1,7 @@
 package com.bee32.icsf.principal;
 
+import java.util.Set;
+
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.acl.ACLCriteria;
 import com.bee32.icsf.login.SessionUser;
@@ -15,13 +17,13 @@ public class UserCriteria
     }
 
     public static CriteriaElement impliedByCurrentUser(String propertyName) {
-        User currentUser = SessionUser.getInstance().getInternalUser();
-        return PrincipalCriteria.inImSet(propertyName, currentUser);
+        Set<Integer> imSet = SessionUser.getInstance().getImSet();
+        return PrincipalCriteria.inImSet(propertyName, imSet);
     }
 
     public static CriteriaElement responsibleByCurrentUser(String propertyName) {
-        User currentUser = SessionUser.getInstance().getInternalUser();
-        return PrincipalCriteria.inInvSet(propertyName, currentUser);
+        Set<Integer> invSet = SessionUser.getInstance().getInvSet();
+        return PrincipalCriteria.inInvSet(propertyName, invSet);
     }
 
     public static ICriteriaElement distinctACLsForCurrentUserImply(Permission permission) {

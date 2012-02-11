@@ -31,6 +31,13 @@ public class ACLCriteria
                 PrincipalCriteria.inImSet("entry.principal", principal));
     }
 
+    @LeftHand(ACL.class)
+    public static ICriteriaElement acls(Collection<Integer> imSet) {
+        return compose(//
+                alias("entries", "entry"), //
+                PrincipalCriteria.inImSet("entry.principal", imSet));
+    }
+
     @LeftHand(CEntity.class)
     public static CriteriaElement aclWithin(Collection<Integer> aclIds) {
         if (aclIds == null)
@@ -50,6 +57,13 @@ public class ACLCriteria
                 implies(principal, permission));
     }
 
+    @LeftHand(Object[].class)
+    public static ICriteriaElement distinctACLsImply(Collection<Integer> imSet, Permission permission) {
+        return compose(//
+                proj(distinct(property("id"))),//
+                implies(imSet, permission));
+    }
+
     /**
      * @param principal
      *            <code>null</code> for all principals.
@@ -59,6 +73,14 @@ public class ACLCriteria
         return compose( //
                 alias("entries", "entry", CriteriaSpecification.LEFT_JOIN), //
                 PrincipalCriteria.inImSet("entry.principal", principal), //
+                implies("entry.", permission));
+    }
+
+    @LeftHand(ACL.class)
+    public static ICriteriaElement implies(Collection<Integer> imSet, Permission permission) {
+        return compose( //
+                alias("entries", "entry", CriteriaSpecification.LEFT_JOIN), //
+                PrincipalCriteria.inImSet("entry.principal", imSet), //
                 implies("entry.", permission));
     }
 

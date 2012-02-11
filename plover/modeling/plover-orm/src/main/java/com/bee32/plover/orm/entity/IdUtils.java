@@ -28,7 +28,7 @@ public class IdUtils {
         return id;
     }
 
-    public static <K extends Serializable> List<K> getIdList(List<? extends Entity<? extends K>> entities) {
+    public static <K extends Serializable> List<K> getIdList(Iterable<? extends Entity<? extends K>> entities) {
         if (entities == null)
             return null;
         List<K> idList = new ArrayList<K>();
@@ -37,7 +37,7 @@ public class IdUtils {
         return idList;
     }
 
-    public <K extends Serializable> Set<K> getIdSet(Set<? extends Entity<? extends K>> entities) {
+    public static <K extends Serializable> Set<K> getIdSet(Iterable<? extends Entity<? extends K>> entities) {
         if (entities == null)
             return null;
         Set<K> idSet = new LinkedHashSet<K>();
@@ -46,7 +46,7 @@ public class IdUtils {
         return idSet;
     }
 
-    public static <K extends Serializable> List<K> getDtoIdList(List<? extends EntityDto<?, ? extends K>> dtos) {
+    public static <K extends Serializable> List<K> getDtoIdList(Iterable<? extends EntityDto<?, ? extends K>> dtos) {
         if (dtos == null)
             return null;
         List<K> idList = new ArrayList<K>();
@@ -55,7 +55,7 @@ public class IdUtils {
         return idList;
     }
 
-    public <K extends Serializable> Set<K> getDtoIdSet(Set<? extends EntityDto<?, ? extends K>> dtos) {
+    public static <K extends Serializable> Set<K> getDtoIdSet(Iterable<? extends EntityDto<?, ? extends K>> dtos) {
         if (dtos == null)
             return null;
         Set<K> idSet = new LinkedHashSet<K>();

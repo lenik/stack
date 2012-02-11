@@ -40,8 +40,6 @@ public class PrincipalCriteria
      * The property equals to the principal, or any in its im-set.
      */
     public static CriteriaElement inImSet(String propertyName, Principal principal) {
-        if (propertyName == null)
-            throw new NullPointerException("propertyName");
         if (principal == null)
             return null;
         Collection<Principal> imSet;
@@ -54,14 +52,20 @@ public class PrincipalCriteria
         List<Integer> idSet = new ArrayList<Integer>();
         for (Principal im : imSet)
             idSet.add(im.getId());
+        return inImSet(propertyName, idSet);
+    }
+
+    public static CriteriaElement inImSet(String propertyName, Collection<Integer> imSet) {
+        if (propertyName == null)
+            propertyName = "id";
+        else
+            propertyName += ".id";
         return or(//
-                isNull(propertyName + ".id"), //
-                in(propertyName + ".id", idSet));
+                isNull(propertyName), //
+                in(propertyName, imSet));
     }
 
     public static CriteriaElement inInvSet(String propertyName, Principal principal) {
-        if (propertyName == null)
-            throw new NullPointerException("propertyName");
         if (principal == null)
             return null;
         Collection<Principal> invSet;
@@ -74,7 +78,15 @@ public class PrincipalCriteria
         List<Integer> idSet = new ArrayList<Integer>();
         for (Principal inv : invSet)
             idSet.add(inv.getId());
-        return in(propertyName + ".id", idSet);
+        return inInvSet(propertyName, idSet);
+    }
+
+    public static CriteriaElement inInvSet(String propertyName, Collection<Integer> invSet) {
+        if (propertyName == null)
+            propertyName = "id";
+        else
+            propertyName += ".id";
+        return in(propertyName, invSet);
     }
 
 }

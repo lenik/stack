@@ -22,10 +22,6 @@ public class SessionUserFactoryBean {
         return SessionUser.getInstance().getInternalUser();
     }
 
-    public void setInternalUser(User user) {
-        SessionUser.getInstance().setInternalUser(user);
-    }
-
     public UserDto getUserOpt() {
         return SessionUser.getInstance().getUserOpt();
     }

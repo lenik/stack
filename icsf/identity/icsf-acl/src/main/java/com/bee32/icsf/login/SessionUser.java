@@ -3,7 +3,9 @@ package com.bee32.icsf.login;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -13,6 +15,7 @@ import com.bee32.icsf.principal.GroupDto;
 import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.UserDto;
+import com.bee32.plover.orm.util.DefaultDataAssembledContext;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 
 public class SessionUser
@@ -24,8 +27,11 @@ public class SessionUser
 
     static Logger logger = Logger.getLogger(SessionUser.class);
 
-    User internalUser;
     UserDto user;
+
+    User internalUserOverride;
+    Set<Integer> imSet = new HashSet<Integer>();
+    Set<Integer> invSet = new HashSet<Integer>();
 
     public SessionUser() {
     }
@@ -68,14 +74,56 @@ public class SessionUser
         this.user = user;
     }
 
+    protected static class ctx
+            extends DefaultDataAssembledContext {
+    }
+
+    public User getInternalUserOpt() {
+        if (internalUserOverride != null)
+            return internalUserOverride;
+        if (user == null)
+            return null;
+        Integer userId = user.getId();
+        User internalUser = ctx.data.getRef(User.class, userId);
+        return internalUser;
+    }
+
+    public final User getInternalUser()
+            throws LoginException {
+        User user = getInternalUserOpt();
+        if (user == null)
+            throw new LoginException("Not login yet.");
+        return user;
+    }
+
+    public Set<Integer> getImSet() {
+        return imSet;
+    }
+
+    public void setImSet(Set<Integer> imSet) {
+        if (imSet == null)
+            throw new NullPointerException("imSet");
+        this.imSet = imSet;
+    }
+
+    public Set<Integer> getInvSet() {
+        return invSet;
+    }
+
+    public void setInvSet(Set<Integer> invSet) {
+        if (invSet == null)
+            throw new NullPointerException("invSet");
+        this.invSet = invSet;
+    }
+
     public synchronized void runAs(User user, Runnable runnable) {
-        User savedInternalUser = this.internalUser;
+        User savedInternalUser = this.internalUserOverride;
         // UserDto savedUser = this.user;
-        this.internalUser = user;
+        this.internalUserOverride = user;
         try {
             runnable.run();
         } finally {
-            this.internalUser = savedInternalUser;
+            this.internalUserOverride = savedInternalUser;
         }
     }
 
