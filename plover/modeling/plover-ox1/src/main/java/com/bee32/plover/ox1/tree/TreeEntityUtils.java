@@ -17,6 +17,7 @@ public class TreeEntityUtils {
                 roots.add(node);
             } else {
                 D parent = index.get(parentId);
+                if(parent == null) continue;
                 parent.addChild(node);
             }
         }

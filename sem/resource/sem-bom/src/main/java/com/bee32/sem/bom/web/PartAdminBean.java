@@ -13,6 +13,7 @@ import com.bee32.sem.bom.service.PartService;
 import com.bee32.sem.bom.util.BomCriteria;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.MaterialDto;
+import com.bee32.sem.inventory.entity.MaterialType;
 import com.bee32.sem.inventory.web.MaterialCategorySupportBean;
 import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.world.monetary.FxrQueryException;
@@ -29,6 +30,8 @@ public class PartAdminBean
 
     public PartAdminBean() {
         super(Part.class, PartDto.class, 0);
+        this.categoryTree.addMaterialType(MaterialType.PRODUCT);
+        this.categoryTree.addMaterialType(MaterialType.SEMI);
     }
 
     @Override
