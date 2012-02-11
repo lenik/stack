@@ -8,6 +8,8 @@ import com.bee32.sem.inventory.entity.AbstractStockItemList;
 import com.bee32.sem.inventory.entity.AbstractStockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.process.StockOrderVerifySupportDto;
+import com.bee32.sem.inventory.tx.dto.StockJobDto;
+import com.bee32.sem.inventory.tx.entity.StockJob;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.OrgUnitDto;
 import com.bee32.sem.process.verify.dto.IVerifiableDto;
@@ -21,7 +23,7 @@ public class StockOrderDto
     StockPeriodDto base;
     StockPeriodDto spec;
     StockOrderSubject subject;
-    Long jobId;
+    StockJobDto<?> job;
 
     OrgDto org;
     OrgUnitDto orgUnit;
@@ -35,6 +37,11 @@ public class StockOrderDto
 
     public StockOrderDto(int fmask) {
         super(fmask);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected Class<? extends StockJobDto<?>> getStockJobDtoClass() {
+        return (Class<? extends StockJobDto<?>>) StockJobDto.class;
     }
 
     @Override
@@ -52,7 +59,7 @@ public class StockOrderDto
         base = o.base;
         spec = o.spec;
         subject = o.subject;
-        jobId = o.jobId;
+        job = o.job;
         org = o.org;
         orgUnit = o.orgUnit;
         warehouse = o.warehouse;
@@ -61,11 +68,16 @@ public class StockOrderDto
     @Override
     protected void _marshal(AbstractStockItemList<?> _source) {
         super._marshal(_source);
-        AbstractStockOrder<?> source = (AbstractStockOrder<?>) _source;
+        AbstractStockOrder<?, ?> source = (AbstractStockOrder<?, ?>) _source;
         base = mref(StockPeriodDto.class, source.getBase());
         spec = mref(StockPeriodDto.class, source.getSpec());
         subject = source.getSubject();
-        jobId = source.getJobId();
+
+        @SuppressWarnings("unchecked")
+        Class<StockJobDto<StockJob>> stockJobDtoClass = (Class<StockJobDto<StockJob>>) (Object) getStockJobDtoClass();
+        StockJob stockJob = source.getJob();
+        job = mref(stockJobDtoClass, stockJob);
+
         org = mref(OrgDto.class, source.getOrg());
         orgUnit = mref(OrgUnitDto.class, source.getOrgUnit());
         warehouse = mref(StockWarehouseDto.class, source.getWarehouse());
@@ -75,11 +87,11 @@ public class StockOrderDto
     @Override
     protected void _unmarshalTo(AbstractStockItemList<?> _target) {
         super._unmarshalTo(_target);
-        AbstractStockOrder<?> target = (AbstractStockOrder<?>) _target;
+        AbstractStockOrder<?, ?> target = (AbstractStockOrder<?, ?>) _target;
         merge(target, "base", base);
         merge(target, "spec", spec);
         target.setSubject(subject);
-        target.setJobId(jobId);
+        merge(target, "job", job);
         merge(target, "org", org);
         merge(target, "orgUnit", orgUnit);
         merge(target, "warehouse", warehouse);
@@ -125,12 +137,12 @@ public class StockOrderDto
         this.subject = subject;
     }
 
-    public Long getJobId() {
-        return jobId;
+    public StockJobDto<?> getJob() {
+        return job;
     }
 
-    public void setJobId(Long jobId) {
-        this.jobId = jobId;
+    public void setJob(StockJobDto<?> job) {
+        this.job = job;
     }
 
     public OrgDto getOrg() {

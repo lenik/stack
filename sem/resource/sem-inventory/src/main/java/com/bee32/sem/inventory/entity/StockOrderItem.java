@@ -36,7 +36,7 @@ public class StockOrderItem
 
     private static final long serialVersionUID = 1L;
 
-    AbstractStockOrder<?> parent;
+    AbstractStockOrder<?, ?> parent;
     Material material;
     String batch;
     Date expirationDate;
@@ -67,11 +67,11 @@ public class StockOrderItem
      */
     @NaturalId
     @ManyToOne(optional = false)
-    public AbstractStockOrder<?> getParent() {
+    public AbstractStockOrder<?, ?> getParent() {
         return parent;
     }
 
-    public void setParent(AbstractStockOrder<?> parent) {
+    public void setParent(AbstractStockOrder<?, ?> parent) {
         this.parent = parent;
     }
 

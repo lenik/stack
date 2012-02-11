@@ -34,8 +34,8 @@ public class StockPeriod
 
     boolean checkedOut;
 
-    List<AbstractStockOrder<?>> packOrders = new ArrayList<AbstractStockOrder<?>>();
-    List<AbstractStockOrder<?>> orders = new ArrayList<AbstractStockOrder<?>>();
+    List<AbstractStockOrder<?, ?>> packOrders = new ArrayList<AbstractStockOrder<?, ?>>();
+    List<AbstractStockOrder<?, ?>> orders = new ArrayList<AbstractStockOrder<?, ?>>();
 
     public StockPeriod() {
     }
@@ -91,11 +91,11 @@ public class StockPeriod
     @Redundant
     @OneToMany(mappedBy = "spec", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
-    public List<AbstractStockOrder<?>> getPackOrders() {
+    public List<AbstractStockOrder<?, ?>> getPackOrders() {
         return packOrders;
     }
 
-    public void setPackOrders(List<AbstractStockOrder<?>> packOrders) {
+    public void setPackOrders(List<AbstractStockOrder<?, ?>> packOrders) {
         if (packOrders == null)
             throw new NullPointerException("packOrders");
         this.packOrders = packOrders;
@@ -104,11 +104,11 @@ public class StockPeriod
     /**
      * 获取指定小结科目的小结订单
      */
-    public AbstractStockOrder<?> getPackOrder(StockOrderSubject packSubject) {
+    public AbstractStockOrder<?, ?> getPackOrder(StockOrderSubject packSubject) {
         if (packSubject == null)
             throw new NullPointerException("packSubject");
 
-        for (AbstractStockOrder<?> order : packOrders)
+        for (AbstractStockOrder<?, ?> order : packOrders)
             if (order.subject == packSubject)
                 return order;
 
@@ -117,11 +117,11 @@ public class StockPeriod
 
     @OneToMany(mappedBy = "base")
     @OrderBy("createdDate DESC")
-    public List<AbstractStockOrder<?>> getOrders() {
+    public List<AbstractStockOrder<?, ?>> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<AbstractStockOrder<?>> orders) {
+    public void setOrders(List<AbstractStockOrder<?, ?>> orders) {
         if (orders == null)
             throw new NullPointerException("orders");
         this.orders = orders;

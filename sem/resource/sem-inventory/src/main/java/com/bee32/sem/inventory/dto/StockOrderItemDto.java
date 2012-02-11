@@ -72,7 +72,7 @@ public class StockOrderItemDto
 
     @Override
     protected void _marshal(StockOrderItem source) {
-        AbstractStockOrder<?> _parent = source.getParent();
+        AbstractStockOrder<?, ?> _parent = source.getParent();
 
         boolean tryBest = false;
         if (tryBest) {

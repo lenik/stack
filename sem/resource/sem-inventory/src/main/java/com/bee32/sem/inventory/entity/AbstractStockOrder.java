@@ -21,6 +21,7 @@ import com.bee32.plover.arch.generic.IParameterized;
 import com.bee32.plover.arch.generic.IParameterizedType;
 import com.bee32.sem.inventory.process.IStockOrderVerifyContext;
 import com.bee32.sem.inventory.process.StockOrderVerifySupport;
+import com.bee32.sem.inventory.tx.entity.StockJob;
 import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
 import com.bee32.sem.inventory.tx.entity.StockTransfer;
 import com.bee32.sem.people.entity.Org;
@@ -36,7 +37,7 @@ import com.bee32.sem.world.thing.AbstractItemList;
 @DiscriminatorColumn(name = "stereo", length = 3)
 @DiscriminatorValue("--")
 @SequenceGenerator(name = "idgen", sequenceName = "stock_order_seq", allocationSize = 1)
-public class AbstractStockOrder<Item extends StockOrderItem>
+public class AbstractStockOrder<Job extends StockJob, Item extends StockOrderItem>
         extends AbstractStockItemList<Item>
         implements IParameterized, IVerifiable<IStockOrderVerifyContext> {
 
@@ -45,7 +46,7 @@ public class AbstractStockOrder<Item extends StockOrderItem>
     StockPeriod base;
     StockPeriod spec;
     StockOrderSubject subject;
-    Long jobId;
+    Job job;
 
     Org org;
     OrgUnit orgUnit;
@@ -78,18 +79,19 @@ public class AbstractStockOrder<Item extends StockOrderItem>
 
     @Override
     public void populate(Object source) {
-        if (source instanceof StockOrder)
-            _populate((StockOrder) source);
+        if (source instanceof AbstractStockOrder<?, ?>)
+            _populate((AbstractStockOrder<?, ?>) source);
         else
             super.populate(source);
     }
 
-    protected void _populate(StockOrder o) {
+    @SuppressWarnings("unchecked")
+    protected void _populate(AbstractStockOrder<?, ?> o) {
         super._populate(o);
         base = o.base;
         subject = o.subject;
         spec = o.spec;
-        jobId = o.jobId;
+        job = (Job) o.job;
         org = o.org;
         orgUnit = o.orgUnit;
         warehouse = o.warehouse;
@@ -166,9 +168,10 @@ public class AbstractStockOrder<Item extends StockOrderItem>
      *
      * @return 作业ID （根据用途对应具体的作业类型），如果没有对应作业则返回 <code>null</code>。
      */
-    @Index(name = "##_jobId")
-    public Long getJobId() {
-        return jobId;
+    @Index(name = "##_job")
+    @ManyToOne
+    public Job getJob() {
+        return job;
     }
 
     /**
@@ -187,8 +190,8 @@ public class AbstractStockOrder<Item extends StockOrderItem>
      * @param jobId
      *            作业ID （根据用途对应具体的作业类型），如果没有对应作业则设置为 <code>null</code>。
      */
-    public void setJobId(Long jobId) {
-        this.jobId = jobId;
+    public void setJob(Job job) {
+        this.job = job;
     }
 
     /**
@@ -257,13 +260,19 @@ public class AbstractStockOrder<Item extends StockOrderItem>
      * @param copyItems
      *            是否复制所有明细项目。
      */
-    public StockOrder createPeerOrder(StockOrderSubject peerSubject, boolean copyItems) {
-        if (jobId == null)
+    public <E extends AbstractStockOrder<Job, Item>> E createPeerOrder(Class<E> stockOrderType,
+            StockOrderSubject peerSubject, boolean copyItems) {
+        if (job == null)
             throw new IllegalStateException("没有指定上层的库存作业，创建对等单据没有意义。");
-        StockOrder peer = new StockOrder();
+        E peer;
+        try {
+            peer = stockOrderType.newInstance();
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
         peer.base = base;
         peer.spec = spec;
-        peer.jobId = jobId;
+        peer.job = job;
         peer.subject = peerSubject;
         if (copyItems) {
             peer.items.addAll(items);
@@ -274,7 +283,8 @@ public class AbstractStockOrder<Item extends StockOrderItem>
         return peer;
     }
 
-    public static final IPropertyAccessor<StockOrderSubject> subjectProperty = _property_(StockOrder.class, "subject");
+    public static final IPropertyAccessor<StockOrderSubject> subjectProperty = _property_(AbstractStockOrder.class,
+            "subject");
     public static final IPropertyAccessor<BigDecimal> nativeTotalProperty = _property_(//
             AbstractItemList.class, "nativeTotal");
 

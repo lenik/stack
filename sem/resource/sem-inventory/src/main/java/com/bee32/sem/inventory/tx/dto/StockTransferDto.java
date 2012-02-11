@@ -24,7 +24,7 @@ public class StockTransferDto
     @Override
     protected void _marshal(StockTransfer s) {
         if (selection.contains(ORDERS)) {
-            int orderSelection = selection.translate(ITEMS, StockOrderDto.ITEMS);
+            int orderSelection = selection.translate(ORDER_ITEMS, StockOrderDto.ITEMS);
             source = mref(StockOrderDto.class, orderSelection, s.getSource());
             dest = mref(StockOrderDto.class, orderSelection, s.getDest());
         }
