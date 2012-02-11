@@ -21,7 +21,7 @@ public class AccountInit
 
     List<AccountInitItem> items = new ArrayList<AccountInitItem>();
 
-    @OneToMany(mappedBy = "parent", orphanRemoval = true)
+    @OneToMany(mappedBy = "init", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<AccountInitItem> getItems() {
         return items;

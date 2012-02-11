@@ -12,20 +12,20 @@ public class AccountInitItemDto
 
     private static final long serialVersionUID = 1L;
 
-    AccountInitDto parent;
+    AccountInitDto init;
 
     @Override
     protected void _marshal(AccountTicketItem _source) {
         super._marshal(_source);
         AccountInitItem source = (AccountInitItem) _source;
-        parent = mref(AccountInitDto.class, source.getParent());
+        init = mref(AccountInitDto.class, source.getInit());
     }
 
     @Override
     protected void _unmarshalTo(AccountTicketItem _target) {
         super._unmarshalTo(_target);
         AccountInitItem target = (AccountInitItem) _target;
-        merge(target, "parent", parent);
+        merge(target, "init", init);
     }
 
     @Override
@@ -36,17 +36,17 @@ public class AccountInitItemDto
 
     @Override
     public void setEnclosingObject(Object enclosingObject) {
-        setParent((AccountInitDto) enclosingObject);
+        setInit((AccountInitDto) enclosingObject);
     }
 
-    public AccountInitDto getParent() {
-        return parent;
+    public AccountInitDto getInit() {
+        return init;
     }
 
-    public void setParent(AccountInitDto parent) {
-        if (parent == null)
-            throw new NullPointerException("parent");
-        this.parent = parent;
+    public void setInit(AccountInitDto init) {
+        if (init == null)
+            throw new NullPointerException("init");
+        this.init = init;
     }
 
 }

@@ -11,15 +11,17 @@ public class AccountInitItem
 
     private static final long serialVersionUID = 1L;
 
-    AccountInit parent;
+    AccountInit init;
 
     @ManyToOne(optional = false)
-    public AccountInit getParent() {
-        return parent;
+    public AccountInit getInit() {
+        return init;
     }
 
-    public void setParent(AccountInit parent) {
-        this.parent = parent;
+    public void setInit(AccountInit init) {
+        if (init == null)
+            throw new NullPointerException("init");
+        this.init = init;
     }
 
 }
