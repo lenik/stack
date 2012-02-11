@@ -1,14 +1,15 @@
 package com.bee32.sem.purchase.entity;
 
+import java.beans.Transient;
+import java.util.Arrays;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
-import com.bee32.sem.base.tx.TxEntity;
 import com.bee32.sem.inventory.entity.StockOrder;
+import com.bee32.sem.inventory.tx.entity.StockJob;
 
 /**
  * 采购请求对应的采购入库单
@@ -16,12 +17,11 @@ import com.bee32.sem.inventory.entity.StockOrder;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "purchase_take_in_seq", allocationSize = 1)
 public class PurchaseTakeIn
-        extends TxEntity {
+        extends StockJob {
 
     private static final long serialVersionUID = 1L;
 
     PurchaseRequest purchaseRequest;
-    StockOrder stockOrder;
 
     @ManyToOne(optional = false)
     public PurchaseRequest getPurchaseRequest() {
@@ -32,14 +32,17 @@ public class PurchaseTakeIn
         this.purchaseRequest = purchaseRequest;
     }
 
-    @ManyToOne(optional = false)
-    @Cascade(CascadeType.ALL)
+    @Transient
     public StockOrder getStockOrder() {
-        return stockOrder;
+        if (getStockOrders().isEmpty())
+            return null;
+        StockOrder first = (StockOrder) getStockOrders().get(0);
+        return first;
     }
 
     public void setStockOrder(StockOrder stockOrder) {
-        this.stockOrder = stockOrder;
+        List<StockOrder> stockOrders = Arrays.asList(stockOrder);
+        setStockOrders(stockOrders);
     }
 
 }
