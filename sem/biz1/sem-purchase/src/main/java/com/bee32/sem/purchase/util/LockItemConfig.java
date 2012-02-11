@@ -8,8 +8,10 @@ import com.bee32.sem.inventory.dto.StockOrderItemDto;
 /**
  * 物料计划中锁定物料时用来接收用户输入的辅助类
  *
+ * @aka SelectItemHolder
  */
-public class SelectItemHolder implements Serializable {
+public class LockItemConfig
+        implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,4 +42,5 @@ public class SelectItemHolder implements Serializable {
     public void setChecked(boolean checked) {
         this.checked = checked;
     }
+
 }
