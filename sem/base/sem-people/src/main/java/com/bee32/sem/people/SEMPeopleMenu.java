@@ -20,8 +20,7 @@ public class SEMPeopleMenu
     public static MenuNode PEOPLE = menu(SEMFrameMenu.DATA, 10, "people");
     /**/static MenuNode personAdmin = entry(PEOPLE, 10, "personAdmin", PEOPLE_.join("person/index-rich.jsf"));
     /**/static MenuNode orgAdmin = entry(PEOPLE, 20, "orgAdmin", PEOPLE_.join("org/index-rich.jsf"));
-    /**/static MenuNode orgPersonAdmin = entry(PEOPLE, 30, "orgPersonAdmin", PEOPLE_.join("orgPerson/index-rich.jsf"));
-    /**/static MenuNode internalPersonAdmin = entry(PEOPLE, 40, "internalPersonAdmin",
+    /**/static MenuNode internalPersonAdmin = entry(PEOPLE, 30, "internalPersonAdmin",
             PEOPLE_.join("internalPerson/index-rich.jsf"));
 
     /**/public static MenuNode SETTINGS = menu(PEOPLE, 0, "dict");
