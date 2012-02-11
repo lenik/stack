@@ -8,6 +8,7 @@ import com.bee32.sem.inventory.entity.AbstractStockItemList;
 import com.bee32.sem.inventory.entity.AbstractStockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.process.StockOrderVerifySupportDto;
+import com.bee32.sem.inventory.tx.dto.SimpleStockJobDto;
 import com.bee32.sem.inventory.tx.dto.StockJobDto;
 import com.bee32.sem.inventory.tx.entity.StockJob;
 import com.bee32.sem.people.dto.OrgDto;
@@ -39,9 +40,8 @@ public class StockOrderDto
         super(fmask);
     }
 
-    @SuppressWarnings("unchecked")
     protected Class<? extends StockJobDto<?>> getStockJobDtoClass() {
-        return (Class<? extends StockJobDto<?>>) StockJobDto.class;
+        return SimpleStockJobDto.class;
     }
 
     @Override

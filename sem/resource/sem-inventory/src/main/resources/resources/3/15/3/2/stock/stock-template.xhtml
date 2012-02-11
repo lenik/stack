@@ -71,8 +71,8 @@
         <ui:insert name="edit-more" />
 
         <fr:listView id="itemsIndexView" header="明细" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
-            nested="true" paginator="${paginator != null ? paginator : false}" creatable="${creatable != null ? creatable : true}"
-            editable="${editable != null ? editable : true}" removable="${removable != null ? removable : true}">
+            nested="true" paginator="${paginator != null ? paginator : false}" creatable="${itemCreatable != null ? itemCreatable : true}"
+            editable="${itemEditable != null ? itemEditable : true}" removable="${itemRemovable != null ? itemRemovable : true}">
             <f:facet name="columns">
                 <p:column headerText="物料" sortBy="#{entry.material.label}">
                     <h:outputText value="#{entry.material.label}" />
@@ -106,9 +106,11 @@
                     <h:outputText value="#{entry.price.currencyText}" />
                 </p:column>
 
-                <p:column headerText="数量">
-                    <h:outputText value="#{entry.quantity}" />
-                </p:column>
+                <ui:insert name="entry-quantity">
+                    <p:column headerText="数量">
+                        <h:outputText value="#{entry.quantity}" />
+                    </p:column>
+                </ui:insert>
 
                 <p:column headerText="备注">
                     <h:outputText value="#{entry.description}" />

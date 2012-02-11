@@ -22,15 +22,15 @@ public abstract class StockJob
 
     private static final long serialVersionUID = 1L;
 
-    List<AbstractStockOrder<?, ?>> stockOrders = new ArrayList<AbstractStockOrder<?, ?>>();
+    List<? extends AbstractStockOrder<?, ?>> stockOrders = new ArrayList<>();
 
-    @OneToMany(mappedBy = "job", orphanRemoval = true)
+    @OneToMany(mappedBy = "job", targetEntity = AbstractStockOrder.class, orphanRemoval = true)
     @Cascade(CascadeType.ALL)
-    public List<AbstractStockOrder<?, ?>> getStockOrders() {
+    public List<? extends AbstractStockOrder<?, ?>> getStockOrders() {
         return stockOrders;
     }
 
-    public void setStockOrders(List<AbstractStockOrder<?, ?>> stockOrders) {
+    public void setStockOrders(List<? extends AbstractStockOrder<?, ?>> stockOrders) {
         if (stockOrders == null)
             throw new NullPointerException("stockOrders");
         this.stockOrders = stockOrders;

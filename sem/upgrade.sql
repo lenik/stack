@@ -35,3 +35,6 @@ alter table make_order_item rename column "order" to "parent";
 alter table purchase_inquiry rename column org to supplier;
 alter table purchase_request_item rename purchase_request to parent;
 
+update chance_quotation set label=subject;
+alter table chance_quotation drop column subject;
+alter table stock_order drop column job_id;

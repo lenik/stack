@@ -46,7 +46,7 @@ public abstract class AbstractItemDto<E extends AbstractItem>
 
     protected void _populate(AbstractItemDto<E> o) {
         super._populate(o);
-        quantity = o.quantity;
+        setQuantity(o.quantity);
         price = o.price.clone();
         nativePrice = o.nativePrice;
         nativeTotal = o.nativeTotal;
@@ -56,10 +56,15 @@ public abstract class AbstractItemDto<E extends AbstractItem>
         return false;
     }
 
+    protected boolean isQuantityOptional() {
+        return false;
+    }
+
     @Override
     protected void __marshal(E source) {
         super.__marshal(source);
-        quantity = source.getQuantity();
+
+        setQuantity(source.getQuantity());
         price = source.getPrice().toMutable();
     }
 
@@ -97,6 +102,8 @@ public abstract class AbstractItemDto<E extends AbstractItem>
     }
 
     public BigDecimal getQuantity() {
+        if (quantity == null)
+            return null;
         if (isNegated())
             return quantity.negate();
         else
@@ -104,12 +111,13 @@ public abstract class AbstractItemDto<E extends AbstractItem>
     }
 
     public void setQuantity(BigDecimal quantity) {
-        if (quantity == null)
-            throw new NullPointerException("quantity");
-        if (isNegated())
-            this.quantity = quantity.negate();
-        else
-            this.quantity = quantity;
+        if (quantity == null) {
+            if (!isQuantityOptional())
+                throw new NullPointerException("quantity");
+        } else if (isNegated()) {
+            quantity = quantity.negate();
+        }
+        this.quantity = quantity;
         nativeTotal = null;
     }
 
@@ -133,6 +141,8 @@ public abstract class AbstractItemDto<E extends AbstractItem>
      * 总价=单价*数量。
      */
     public MCValue getTotal() {
+        if (getQuantity() == null)
+            return null;
         MCValue total = price.multiply(getQuantity());
         return total;
     }
@@ -148,6 +158,8 @@ public abstract class AbstractItemDto<E extends AbstractItem>
     public BigDecimal getNativeTotal()
             throws FxrQueryException {
         if (nativeTotal == null) {
+            if (getQuantity() == null)
+                return null;
             BigDecimal price = getNativePrice();
             if (price != null)
                 nativeTotal = price.multiply(getQuantity());
@@ -155,18 +167,12 @@ public abstract class AbstractItemDto<E extends AbstractItem>
         return nativeTotal;
     }
 
-    boolean important = true; // For quantity = 0
-
     public boolean isImportant() {
-        return important;
-    }
-
-    public void setImportant(boolean important) {
-        this.important = important;
+        return true;
     }
 
     public boolean isDiscardable() {
-        return important == false && BigDecimal.ZERO.equals(quantity);
+        return !isImportant() && (quantity == null || quantity.equals(BigDecimal.ZERO));
     }
 
 }

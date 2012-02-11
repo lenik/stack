@@ -1,6 +1,5 @@
 package com.bee32.sem.inventory.web.business;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -112,11 +111,13 @@ public class StockOrderBean_STKD
         StocktakingOrderDto order = getOpenedObject();
 
         order.getItems().clear();
+        long index = 0;
         for (StockOrderItem item : result.getItems()) {
             StocktakingOrderItemDto itemDto = new StocktakingOrderItemDto().create();
             itemDto.marshal(item);
+            itemDto.setId(index++, true);
             itemDto.setExpectedQuantity(item.getQuantity());
-            itemDto.setDiffQuantity(BigDecimal.ZERO);
+            itemDto.setDiffQuantity(null);
             itemDto.setParent(order);
             order.addItem(itemDto);
         }

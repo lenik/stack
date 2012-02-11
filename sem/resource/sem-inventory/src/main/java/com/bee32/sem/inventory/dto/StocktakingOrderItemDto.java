@@ -23,9 +23,19 @@ public class StocktakingOrderItemDto
     }
 
     @Override
+    protected boolean isQuantityOptional() {
+        return true;
+    }
+
+    @Override
+    public boolean isImportant() {
+        return getQuantity() != null;
+    }
+
+    @Override
     protected void _marshal(StockOrderItem _source) {
         super._marshal(_source);
-        if(_source instanceof StocktakingOrderItem) {
+        if (_source instanceof StocktakingOrderItem) {
             StocktakingOrderItem source = (StocktakingOrderItem) _source;
             expectedQuantity = source.getExpectedQuantity();
         }
@@ -34,7 +44,7 @@ public class StocktakingOrderItemDto
     @Override
     protected void _unmarshalTo(StockOrderItem _target) {
         super._unmarshalTo(_target);
-        if(_target instanceof StocktakingOrderItem) {
+        if (_target instanceof StocktakingOrderItem) {
             StocktakingOrderItem target = (StocktakingOrderItem) _target;
             target.setExpectedQuantity(expectedQuantity);
         }
@@ -48,7 +58,6 @@ public class StocktakingOrderItemDto
         this.expectedQuantity = expectedQuantity;
     }
 
-    @Transient
     public BigDecimal getDiffQuantity() {
         return getQuantity();
     }
@@ -57,24 +66,32 @@ public class StocktakingOrderItemDto
         setQuantity(diffQuantity);
     }
 
+    // diff = actual - expected
+    // actual = expected + diff
     @Transient
     public BigDecimal getActualQuantity() {
-        // diff = actual - expected
-        // actual = expected + diff
-        BigDecimal expected = getExpectedQuantity(); // nullable, but should warn.
-        BigDecimal diff = getDiffQuantity(); // non-null
-        if (expected == null)
-            return null; // warn
-        BigDecimal actual = expected.add(diff);
-        return actual;
+        BigDecimal diff = getDiffQuantity(); // nullable
+        if (diff == null)
+            return null;
+        else {
+            BigDecimal expected = getExpectedQuantity(); // non-null
+            if (expected == null)
+                return new BigDecimal(-999);
+            BigDecimal actual = expected.add(diff);
+            return actual;
+        }
     }
 
     public void setActualQuantity(BigDecimal actualQuantity) {
-        this.setImportant(actualQuantity != null);
-        BigDecimal expectedQuantity = getExpectedQuantity(); // nullable, but should warn.
-        if (expectedQuantity == null)
-            throw new IllegalStateException("Expected quantity is unknown yet.");
-        BigDecimal diffQuantity = actualQuantity.subtract(expectedQuantity);
+        BigDecimal diffQuantity;
+        if (actualQuantity == null)
+            diffQuantity = null;
+        else {
+            BigDecimal expectedQuantity = getExpectedQuantity(); // nullable, but should warn.
+            if (expectedQuantity == null)
+                throw new IllegalStateException("Expected quantity is unknown yet.");
+            diffQuantity = actualQuantity.subtract(expectedQuantity);
+        }
         setDiffQuantity(diffQuantity);
     }
 

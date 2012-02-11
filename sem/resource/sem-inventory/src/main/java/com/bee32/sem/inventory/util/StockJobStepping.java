@@ -86,7 +86,11 @@ public class StockJobStepping
             StockJob _job = job.unmarshal(this);
             for (StockOrder _order : uMapMain.<StockOrder> entitySet())
                 setJobBinding(_job, _order);
-            asFor(jobClass).saveOrUpdate(_job);
+            if (_job.getId() != null) { // ???
+                asFor(jobClass).update(_job);
+            } else {
+                asFor(jobClass).save(_job);
+            }
         } catch (Exception e) {
             uiLogger.error("无法保存作业对象", e);
         }
