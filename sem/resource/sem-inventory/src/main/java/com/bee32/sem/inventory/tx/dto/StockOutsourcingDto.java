@@ -21,9 +21,12 @@ public class StockOutsourcingDto
     @Override
     protected void _marshal(StockOutsourcing s) {
         if (selection.contains(ORDERS)) {
-            int orderSelection = selection.translate(ITEMS, StockOrderDto.ITEMS);
-            output = mref(StockOrderDto.class, orderSelection, s.getOutput());
-            input = mref(StockOrderDto.class, orderSelection, s.getInput());
+            output = mref(StockOrderDto.class, selection.translate(//
+                    ORDER_ITEMS, StockOrderDto.ITEMS), //
+                    s.getOutput());
+            input = mref(StockOrderDto.class, selection.translate(//
+                    ORDER_ITEMS, StockOrderDto.ITEMS), //
+                    s.getInput());
         }
         processedBy = mref(OrgDto.class, s.getProcessedBy());
     }

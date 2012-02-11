@@ -24,7 +24,7 @@ public abstract class AbstractEventDto<E extends Event>
 
     private static final long serialVersionUID = 1L;
 
-    public static final int OBSERVERS = 1;
+    public static final int OBSERVERS = 0x00010000;
 
     private EventCategoryDto category;
     private Class<?> sourceClass;

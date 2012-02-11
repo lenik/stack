@@ -21,9 +21,7 @@ public abstract class CEntityDto<E extends CEntity<K>, K extends Serializable>
 
     static Logger logger = LoggerFactory.getLogger(CEntityDto.class);
 
-    public static final int OWNER_MASK = 3 << 28;
-    public static final int OWNER_SKIP = 1 << 28;
-    public static final int OWNER_ALWAYS = 2 << 28;
+    public static final int OWNER_SKIP = 0x8000_0000;
 
     UserDto owner;
     Integer aclId;
@@ -56,8 +54,7 @@ public abstract class CEntityDto<E extends CEntity<K>, K extends Serializable>
     protected void __marshal(E source) {
         super.__marshal(source);
 
-        int ownerSelection = selection.bits & OWNER_MASK;
-        if (ownerSelection != OWNER_SKIP) {
+        if (!selection.contains(OWNER_SKIP)) {
             User _owner = source.getOwner();
             try {
                 owner = mref(UserDto.class, 0, _owner);
@@ -75,8 +72,7 @@ public abstract class CEntityDto<E extends CEntity<K>, K extends Serializable>
     protected void __unmarshalTo(E target) {
         super.__unmarshalTo(target);
 
-        int ownerSelection = selection.bits & OWNER_MASK;
-        if (ownerSelection != OWNER_SKIP)
+        if (!selection.contains(OWNER_SKIP))
             merge(target, "owner", owner);
 
         if (aclId != null)

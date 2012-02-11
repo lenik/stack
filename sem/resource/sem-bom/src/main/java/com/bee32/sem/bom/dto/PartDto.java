@@ -2,6 +2,7 @@ package com.bee32.sem.bom.dto;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +25,7 @@ public class PartDto
 
     public static final int CHILDREN = 1;
     public static final int XREFS = 2;
+    public static final int ALL_MATERIAL = 0x01000000 | CHILDREN;
 
     PartDto obsolete;
 
@@ -63,10 +65,22 @@ public class PartDto
         else
             children = new ArrayList<PartItemDto>();
 
+        if (selection.contains(ALL_MATERIAL)) {
+            Map<Material, BigDecimal> _allMaterial = source.obtainAllMaterial();
+            if (_allMaterial != null) {
+                allMaterial = new HashMap<MaterialDto, BigDecimal>();
+                for (Material _m : _allMaterial.keySet()) {
+                    MaterialDto m = DTOs.mref(MaterialDto.class, _m);
+                    allMaterial.put(m, _allMaterial.get(_m));
+                }
+            }
+        } else
+            allMaterial = Collections.emptyMap();
+
         if (selection.contains(XREFS))
             xrefs = marshalList(PartItemDto.class, 0, source.getXrefs());
         else
-            xrefs = new ArrayList<PartItemDto>();
+            xrefs = Collections.emptyList();
 
         xrefCount = source.getXrefCount();
 
@@ -78,17 +92,6 @@ public class PartDto
         otherFee = source.getOtherFee();
         electricityFee = source.getElectricityFee();
         equipmentCost = source.getEquipmentCost();
-
-        if (selection.contains(CHILDREN)) {
-            Map<Material, BigDecimal> _allMaterial = source.obtainAllMaterial();
-            if(_allMaterial != null) {
-                allMaterial = new HashMap<MaterialDto, BigDecimal>();
-                for(Material _m : _allMaterial.keySet()) {
-                    MaterialDto m = DTOs.mref(MaterialDto.class, _m);
-                    allMaterial.put(m, _allMaterial.get(_m));
-                }
-            }
-        }
     }
 
     @Override
@@ -252,4 +255,5 @@ public class PartDto
     public Map<MaterialDto, BigDecimal> getAllMaterial() {
         return allMaterial;
     }
+
 }

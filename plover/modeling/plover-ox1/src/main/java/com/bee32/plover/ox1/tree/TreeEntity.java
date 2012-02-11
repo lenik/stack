@@ -55,12 +55,14 @@ public abstract class TreeEntity<K extends Serializable, self_t extends TreeEnti
 
     public TreeEntity(self_t parent) {
         super();
+        this.parent = parent;
         if (parent != null)
             parent.addChild(self());
     }
 
     public TreeEntity(self_t parent, String name) {
         super(name);
+        this.parent = parent;
         if (parent != null)
             parent.addChild(self());
     }

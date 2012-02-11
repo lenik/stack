@@ -9,7 +9,7 @@ public abstract class StockJobDto<E extends StockJob>
     private static final long serialVersionUID = 1L;
 
     public static final int ORDERS = 0x10000;
-    public static final int ITEMS = ORDERS | 0x20000;
+    public static final int ORDER_ITEMS = ORDERS | 0x20000;
 
     public StockJobDto() {
         super();

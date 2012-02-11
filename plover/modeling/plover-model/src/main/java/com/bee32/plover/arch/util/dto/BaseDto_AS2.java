@@ -14,7 +14,8 @@ import com.bee32.plover.arch.bean.BeanPropertyAccessor;
 import com.bee32.plover.arch.bean.IPropertyAccessor;
 
 public abstract class BaseDto_AS2<S, C>
-        extends BaseDto_AS1<S, C> {
+        extends BaseDto_AS1<S, C>
+        implements Fmask {
 
     private static final long serialVersionUID = 1L;
 
@@ -25,11 +26,11 @@ public abstract class BaseDto_AS2<S, C>
     }
 
     public <_S, _D extends BaseDto<? super _S, _C>, _C> _D marshal(Class<_D> dtoClass, _S source) {
-        return marshal(dtoClass, -1, source, null);
+        return marshal(dtoClass, F_MORE, source, null);
     }
 
     public <_S, _D extends BaseDto<? super _S, _C>, _C> _D marshal(Class<_D> dtoClass, _S source, Boolean refButFilled) {
-        return marshal(dtoClass, -1, source, refButFilled);
+        return marshal(dtoClass, F_MORE, source, refButFilled);
     }
 
     // mref(...) = marshal(..., true)
@@ -55,7 +56,7 @@ public abstract class BaseDto_AS2<S, C>
 
     public <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> marshalList(//
             Class<_D> dtoClass, Iterable<? extends _S> sources) {
-        return _marshalList(dtoClass, -1, sources, null);
+        return _marshalList(dtoClass, F_MORE, sources, null);
     }
 
     public <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> mrefList(//
@@ -77,12 +78,12 @@ public abstract class BaseDto_AS2<S, C>
 
     public <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet(//
             Class<_D> dtoClass, Iterable<? extends _S> sources) {
-        return marshalSet(dtoClass, -1, sources, null);
+        return marshalSet(dtoClass, F_MORE, sources, null);
     }
 
     public <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet(//
             Class<_D> dtoClass, Iterable<? extends _S> sources, Boolean refButFilled) {
-        return marshalSet(dtoClass, -1, sources, (Boolean) refButFilled);
+        return marshalSet(dtoClass, F_MORE, sources, (Boolean) refButFilled);
     }
 
     public <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalTreeSet(//
@@ -92,12 +93,12 @@ public abstract class BaseDto_AS2<S, C>
 
     public <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalTreeSet(//
             Class<_D> dtoClass, Iterable<? extends _S> sources) {
-        return marshalTreeSet(dtoClass, -1, sources, null);
+        return marshalTreeSet(dtoClass, F_MORE, sources, null);
     }
 
     public <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalTreeSet(//
             Class<_D> dtoClass, Iterable<? extends _S> sources, Boolean refButFilled) {
-        return marshalTreeSet(dtoClass, -1, sources, refButFilled);
+        return marshalTreeSet(dtoClass, F_MORE, sources, refButFilled);
     }
 
     // _unmarshalCollection*

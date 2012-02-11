@@ -32,6 +32,7 @@ import com.bee32.icsf.principal.UserCriteria;
 import com.bee32.plover.arch.operation.Operation;
 import com.bee32.plover.arch.util.GetOpenedObjectTransformer;
 import com.bee32.plover.arch.util.PriorityComparator;
+import com.bee32.plover.arch.util.dto.Fmask;
 import com.bee32.plover.collections.Varargs;
 import com.bee32.plover.criteria.hibernate.CriteriaComposite;
 import com.bee32.plover.criteria.hibernate.Disjunction;
@@ -403,6 +404,7 @@ public class SimpleEntityViewBean
         EntityDto<?, ?> entityDto;
         try {
             entityDto = dtoClass.newInstance(); // Create fmask is always -1.
+            entityDto.setSelection(Fmask.F_MORE);
             entityDto = entityDto.create();
         } catch (Exception e) {
             uiLogger.error("无法创建对象", e);

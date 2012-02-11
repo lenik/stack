@@ -168,6 +168,15 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     @RequiredId
+    public final K getIdRequired() {
+        return getId();
+    }
+
+    public final void setIdRequired(K id) {
+        setId(id);
+    }
+
+    @RequiredId
     public int getIdRequiredInt() {
         if (id == null)
             return 0;

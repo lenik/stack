@@ -17,7 +17,7 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
 
     private static final long serialVersionUID = 1L;
 
-    public static final int CONV_MAP = 1;
+    public static final int CONV_MAP = 0x00010000;
 
     String serial;
 

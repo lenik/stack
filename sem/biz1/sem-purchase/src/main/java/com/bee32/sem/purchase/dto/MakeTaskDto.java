@@ -18,6 +18,7 @@ public class MakeTaskDto
 
     public static final int ITEMS = 1;
     public static final int PLANS = 2;
+    // public static final int ITEM_PART_CHILDREN = 0x01000000;
 
     MakeOrderDto order;
 

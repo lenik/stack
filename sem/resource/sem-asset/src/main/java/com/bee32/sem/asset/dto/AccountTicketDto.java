@@ -18,7 +18,7 @@ public class AccountTicketDto
 
     private static final long serialVersionUID = 1L;
 
-    public static final int ITEMS = 1;
+    public static final int ITEMS = 0x10000;
 
     List<AccountTicketItemDto> items;
     BudgetRequestDto request;

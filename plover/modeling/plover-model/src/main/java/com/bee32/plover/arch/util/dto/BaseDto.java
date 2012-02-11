@@ -21,7 +21,7 @@ public abstract class BaseDto<S, C>
      * Full marshal by default.
      */
     public BaseDto() {
-        this(-1);
+        this(F_MORE);
     }
 
     public BaseDto(int fmask) {
