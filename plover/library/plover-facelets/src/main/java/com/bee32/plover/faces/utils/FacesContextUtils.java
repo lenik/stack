@@ -81,4 +81,8 @@ public class FacesContextUtils
         return new ComponentHelper(component);
     }
 
+    public static FacesUILogger getUILogger() {
+        return new FacesUILogger(false);
+    }
+
 }

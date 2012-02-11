@@ -77,7 +77,8 @@ public abstract class DataViewBean
 
     protected static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
     D reload(D dto, int fmask) {
-
+        if (dto == null)
+            throw new NullPointerException("dto");
         if (!dto.getMarshalType().isReference())
             return dto;
 

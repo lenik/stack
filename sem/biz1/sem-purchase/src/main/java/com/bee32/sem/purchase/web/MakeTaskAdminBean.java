@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.sem.bom.entity.Part;
 import com.bee32.sem.frame.ui.ListMBean;
@@ -21,8 +23,6 @@ public class MakeTaskAdminBean
         extends ScrollEntityViewBean {
 
     private static final long serialVersionUID = 1L;
-
-    ListMBean<MakeTaskItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items", MakeTaskItemDto.class);
 
     public MakeTaskAdminBean() {
         super(MakeTask.class, MakeTaskDto.class, 0);
@@ -60,9 +60,13 @@ public class MakeTaskAdminBean
             uiLogger.error("此定单上的产品的生产任务已经全部安排完成");
             return;
         }
-        makeTask.setItems(taskItems);
         makeTask.setOrder(makeOrderRef);
+        makeTask.setItems(taskItems);
+        if (StringUtils.isEmpty(makeTask.getLabel()))
+            makeTask.setLabel(makeOrder.getLabel());
     }
+
+    ListMBean<MakeTaskItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items", MakeTaskItemDto.class);
 
     public ListMBean<MakeTaskItemDto> getItemsMBean() {
         return itemsMBean;

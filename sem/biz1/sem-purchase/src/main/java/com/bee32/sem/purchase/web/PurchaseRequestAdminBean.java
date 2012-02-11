@@ -26,6 +26,9 @@ public class PurchaseRequestAdminBean
 
     private static final long serialVersionUID = 1L;
 
+    List<MaterialPlanDto> selectedPlans;
+    PurchaseInquiryDto selectedInquiry;
+
     PurchaseAdviceDto purchaseAdvice;
 
     public PurchaseRequestAdminBean() {
@@ -70,6 +73,7 @@ public class PurchaseRequestAdminBean
     }
 
     public void choosePlan() {
+        PurchaseRequestDto purchaseRequest = getOpenedObject();
         for (MaterialPlanDto _p : selectedPlans) {
             _p = reload(_p);
             if (_p.getPurchaseRequest().getId() != null) {
@@ -86,8 +90,9 @@ public class PurchaseRequestAdminBean
     }
 
     public void loadInquiry() {
-        purchaseRequestItem = reload(purchaseRequestItem);
-        purchaseAdvice = purchaseRequestItem.getPurchaseAdvice();
+        PurchaseRequestItemDto itemObj = itemsMBean.getOpenedObject();
+        itemObj = reload(itemObj);
+        purchaseAdvice = itemObj.getPurchaseAdvice();
         if (purchaseAdvice == null || purchaseAdvice.getId() == null) {
             purchaseAdvice = new PurchaseAdviceDto().create();
         } else {
@@ -102,9 +107,10 @@ public class PurchaseRequestAdminBean
 
     @Transactional
     public void acceptInquiry() {
+        PurchaseRequestItemDto itemObj = itemsMBean.getOpenedObject();
         try {
             PurchaseAdvice _purchaseAdvice = purchaseAdvice.unmarshal();
-            PurchaseRequestItem _purchaseRequestItem = purchaseRequestItem.unmarshal();
+            PurchaseRequestItem _purchaseRequestItem = itemObj.unmarshal();
 
             _purchaseAdvice.setPreferredInquiry(selectedInquiry.unmarshal());
             _purchaseAdvice.setPurchaseRequestItem(_purchaseRequestItem);

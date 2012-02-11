@@ -27,7 +27,8 @@
 
             <h:outputText value="生产任务单" />
             <t:panelGroup>
-                <p:inputText id="task" value="#{obj.task.id}: #{obj.task.label}" readonly="true" />
+                <h:inputHidden label="生产任务单" value="#{obj.task.idRequired}" />
+                <p:inputText id="task" value="#{obj.task.label}" disabled="true" />
                 <p:commandButton value="..." onclick="chooseMakeTaskDialog.show()" disabled="#{not bean.editing}" />
             </t:panelGroup>
             <t:panelGroup />
@@ -39,39 +40,43 @@
             </t:panelGroup>
         </t:panelGrid>
 
-        <p:tabView id="planDetail">
-            <p:tab title="明细">
-                <fr:listView id="itemsIndexView" header="库存锁定明细" style="indexPanel" editView=":itemsEditView"
+        <p:tabView id="tv">
+            <p:tab title="物料计划明细">
+                <fr:listView id="itemsIndexView" header="物料计划项" style="indexPanel" editView=":itemsEditView"
                     mbean="#{bean.itemsMBean}" nested="true" paginator="false" creatable="false">
                     <f:facet name="columns">
                         <p:column headerText="物料">
-                            <h:outputText value="#{item.material.label}" />
+                            <h:outputText value="#{entry.material.label}" />
                         </p:column>
                         <p:column headerText="规格型号">
-                            <h:outputText value="#{item.material.modelSpec}" />
+                            <h:outputText value="#{entry.material.modelSpec}" />
                         </p:column>
                         <p:column headerText="数量">
-                            <h:outputText value="#{item.quantity}" />
+                            <h:outputText value="#{entry.quantity}" />
                         </p:column>
                         <p:column headerText="优选供应商">
-                            <h:outputText value="#{item.preferredSupplier.name}" />
+                            <h:outputText value="#{entry.preferredSupplier.displayName}" />
                         </p:column>
                         <p:column headerText="附加要求">
-                            <h:outputText value="#{item.additionalRequirement}" />
+                            <h:outputText value="#{entry.additionalRequirement}" />
                         </p:column>
                     </f:facet>
                 </fr:listView>
             </p:tab>
             <p:tab title="库存锁定">
-                <t:panelGrid columns="2">
-                    <h:outputText value="时间:" />
-                    <h:outputText value="#{bean.planOrder.createdDate}" />
-                    <h:outputText value="仓库:" />
-                    <h:outputText value="#{bean.planOrder.warehouse.name}" />
-                </t:panelGrid>
-                <fr:listView id="planOrdersIndexView" header="库存锁定" style="indexPanel" editView=":planOrderItemsEditView"
+                <fr:listView id="planOrdersIndexView" header="库存锁定" style="indexPanel" editView=":planOrdersEditView"
                     mbean="#{bean.planOrdersMBean}" nested="true" paginator="false" creatable="false">
                     <f:facet name="columns">
+                        <p:column headerText="时间">
+                            <h:outputText value="${entry.createdDate}" />
+                        </p:column>
+                        <p:column headerText="仓库">
+                            <h:outputText value="${entry.warehouse.name}" />
+                        </p:column>
+                    </f:facet>
+                    <f:facet name="indexButtons">
+                        <p:commandButton id="import" value="库存导入" actionListener="#{bean.importFromStock}"
+                            update=":editDialog:form:tv:planOrdersIndexView" />
                     </f:facet>
                 </fr:listView>
             </p:tab>
@@ -79,12 +84,13 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:chooseMaterialDialog />
-        <sem:choosePartyDialog header="选择优选供应商" var="chooseSupplierDialog" target="#{itemObj.preferredSupplier}"
+        <sem:chooseMakeTaskDialog id="maskTask-d" target="#{bean.applyMakeTask}" update=":editDialog:form" />
+        <sem:choosePartyDialog id="supplier-d" header="选择首选供应商" var="chooseSupplierDialog" target="#{itemObj.preferredSupplier}"
             update=":itemsEditView:editForm:body" />
-        <sem:stockQueryDialog />
+        <sem:inputQuantityDialog id="inputQuantityDialog" target="#{planOrderItemObj.quantity}"
+            update=":planOrderItemsEditView:editForm:body" />
 
-        <fr:listView id="itemsEditView" header="物料计划项" style="editDialog" indexView=":editDialog:form:itemsIndexView"
+        <fr:listView id="itemsEditView" header="物料计划项" style="editDialog" indexView=":editDialog:form:tv:itemsIndexView"
             mbean="#{bean.itemsMBean}">
             <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
 
@@ -109,14 +115,56 @@
             </t:panelGrid>
         </fr:listView>
 
-        <fr:listView header="库存锁定项">
+        <fr:listView id="planOrdersEditView" header="库存锁定" style="editDialog" indexView=":planOrdersIndexView"
+            mbean="#{bean.planOrdersMBean}">
+            <h:panelGrid columns="2">
+                <h:outputText value="时间:" />
+                <h:outputText value="#{item.createdDate}" />
+                <h:outputText value="仓库:" />
+                <h:outputText value="#{item.warehouse.name}" />
+            </h:panelGrid>
+            <p:separator />
+            <fr:listView id="planOrderItemsIndexView" header="库存锁定项" style="indexPanel" editView=":planOrderItemsEditView"
+                mbean="#{bean.planOrderItemsMBean}" nested="true" creatable="false">
+                <f:facet name="columns">
+                    <p:column headerText="物料">
+                        <h:outputText value="#{item.material.label}" />
+                    </p:column>
+                    <p:column headerText="规格型号">
+                        <h:outputText value="#{item.material.modelSpec}" />
+                    </p:column>
+                    <p:column headerText="单位">
+                        <h:outputText value="#{item.material.unit.name}" />
+                    </p:column>
+                    <p:column headerText="批号">
+                        <h:outputText value="#{item.batch}" />
+                    </p:column>
+                    <p:column headerText="有效期">
+                        <h:outputText value="#{item.expirationDate}">
+                            <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="库位">
+                        <h:outputText value="#{item.location.nodeText}" />
+                    </p:column>
+                    <p:column headerText="单价">
+                        <h:outputText value="#{item.price}" />
+                    </p:column>
+                    <p:column headerText="数量">
+                        <h:outputText value="#{item.quantity}" />
+                    </p:column>
+                    <p:column headerText="备注">
+                        <h:outputText value="#{item.description}" />
+                    </p:column>
+                </f:facet>
+            </fr:listView>
+        </fr:listView>
+
+        <fr:listView id="planOrderItemsEditView" header="库存锁定项" style="editDialog"
+            indexView=":planOrdersEditView:editForm:planOrderItemsIndexView" mbean="#{bean.planOrderItemsMBean}">
             <t:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
                 <h:outputLabel value="物料" />
                 <h:outputText value="#{item.material.label}" />
-
-                <t:panelGroup colspan="2">
-                    <p:commandButton value="查询库存" onclick="stockQueryDialog.show()" update="stockQueryForm:stockQueryPanel" />
-                </t:panelGroup>
                 <t:panelGroup colspan="2" />
 
                 <h:outputLabel value="批号" />
@@ -127,15 +175,25 @@
                 </h:outputText>
 
                 <h:outputLabel value="库位" />
-                <p:inputText value="#{item.location.nodeText}" />
-
-                <h:outputLabel value="数量" />
-                <t:panelGroup colspan="2">
-                    <p:inputText value="#{item.quantity}" />
-                    <h:outputText value="#{item.material.unit.name}" />
+                <t:panelGroup colspan="3">
+                    <p:inputText value="#{item.location.nodeText}" disabled="true" />
                 </t:panelGroup>
-                <p:commandButton actionListener="#{bean.checkUnitConv}" update="unitConvForm:unitConvPanel"
-                    value="按换算单位输入数量" oncomplete="unitConvDialog.show()" />
+
+                <ui:insert name="item-quantity">
+                    <h:outputLabel for="quantity" value="数量" />
+                    <t:panelGroup colspan="3">
+                        <p:inputText id="quantity" label="数量" value="#{item.quantity}" />
+                        <h:outputText value="#{item.material.unit.name}" />
+                        <p:commandButton id="inputQuantity" value="..." oncomplete="inputQuantityDialog.show()">
+                            <f:setPropertyActionListener target="#{inputQuantityDialogBean.unitUnit}"
+                                value="#{item.material.unit}" />
+                            <f:setPropertyActionListener target="#{inputQuantityDialogBean.unitQuantity}"
+                                value="#{item.quantity}" />
+                            <f:setPropertyActionListener target="#{inputQuantityDialogBean.unitConv}"
+                                value="#{item.material.unitConv}" />
+                        </p:commandButton>
+                    </t:panelGroup>
+                </ui:insert>
 
                 <h:outputLabel value="单价" />
                 <h:outputText value="#{item.price.value}" />
@@ -144,7 +202,7 @@
 
                 <h:outputLabel value="备注" />
                 <t:panelGroup colspan="3">
-                    <p:inputText value="#{item.description}" style="width:400px" />
+                    <p:inputText value="#{item.description}" style="width: 30em" />
                 </t:panelGroup>
             </t:panelGrid>
         </fr:listView>

@@ -38,8 +38,8 @@
             <ui:param name="selectionHolder" value="${cc.attrs.selectionHolder}" />
 
             <ui:define name="columns">
-                <p:column headerText="标识">
-                    <h:outputText value="#{entry.id}" />
+                <p:column headerText="简要">
+                    <h:outputText value="#{entry.label}" />
                 </p:column>
 
                 <p:column headerText="交货时间">
@@ -48,17 +48,16 @@
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="对应定单标识">
+                <p:column headerText="对应生产订单">
                     <h:outputText value="#{entry.order.id}" />
                 </p:column>
 
-                <p:column headerText="操作">
-                    <p:commandLink value="明细" oncomplete="_ItemsDialog.show()" update=":${cc.clientId}:itemsForm">
-                        <f:setPropertyActionListener value="#{entry}" target="#{bean.selectedTask}" />
-                    </p:commandLink>
-                </p:column>
-
                 <cc:renderFacet name="columns" />
+            </ui:define>
+
+            <ui:define name="buttons.left">
+                <p:commandButton id="showContent" value="明细" actionListener="${dialogBean.showContent}"
+                    update=":${cc.clientId}:itemsForm" oncomplete="_ItemsDialog.show()" />
             </ui:define>
         </ui:decorate>
 
