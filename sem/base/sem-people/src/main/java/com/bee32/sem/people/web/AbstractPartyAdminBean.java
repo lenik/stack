@@ -127,7 +127,7 @@ public abstract class AbstractPartyAdminBean
         try {
             party.getContacts().remove(selectedContact);
             Party _party = party.unmarshal();
-            serviceFor(Party.class).saveOrUpdate(_party);
+            ctx.data.access(Party.class).saveOrUpdate(_party);
 
             party = reload(party);
             setParty(party);
@@ -164,7 +164,7 @@ public abstract class AbstractPartyAdminBean
             }
 
             Party _party = party.unmarshal();
-            serviceFor(Party.class).saveOrUpdate(_party);
+            ctx.data.access(Party.class).saveOrUpdate(_party);
 
             party = reload(party);
             setParty(party);
@@ -196,7 +196,7 @@ public abstract class AbstractPartyAdminBean
             party.setTags(tags);
         }
         for (String tagId : selectedTagsToAdd) {
-            PartyTagname tag = getOrFail(PartyTagname.class, tagId);
+            PartyTagname tag = ctx.data.getOrFail(PartyTagname.class, tagId);
             PartyTagnameDto t = DTOs.mref(PartyTagnameDto.class, tag);
 
             if (!party.getTags().contains(t))

@@ -54,12 +54,12 @@ public class VerifiableSupportBean
         if (getVerifiables().isEmpty())
             return false;
 
-        IVerifyService service = ctx.getBean(IVerifyService.class);
+        IVerifyService service = ctx.bean.getBean(IVerifyService.class);
         User me = SessionUser.getInstance().getInternalUser();
 
         for (IVerifiableDto verifiableDto : getVerifiables()) {
             EntityDto<?, ?> entityDto = (EntityDto<?, ?>) verifiableDto;
-            IVerifiable<?> verifiable = (IVerifiable<?>) entityDto.unmarshal(this);
+            IVerifiable<?> verifiable = (IVerifiable<?>) entityDto.unmarshal();
             boolean responsible = service.isResponsible(me, verifiable);
             if (!responsible)
                 return false;

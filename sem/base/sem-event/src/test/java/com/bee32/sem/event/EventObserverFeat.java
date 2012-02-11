@@ -24,7 +24,7 @@ public class EventObserverFeat
         extends WiredDaoFeat<EventObserverFeat> {
 
     void cleanUp() {
-        asFor(Event.class).deleteAll();
+        ctx.data.access(Event.class).deleteAll();
     }
 
     Event aa;
@@ -52,11 +52,11 @@ public class EventObserverFeat
         bb.addObserver(IcsfPrincipalSamples.sunCorp); // +tom, +kate, alice
         aa.setBeginTime(parseDate("2011-2-1"));
 
-        asFor(Event.class).saveOrUpdateAll(aa, bb);
+        ctx.data.access(Event.class).saveOrUpdateAll(aa, bb);
     }
 
     void list(User user) {
-        Collection<Event> list = new LinkedHashSet<Event>(asFor(Event.class).list(//
+        Collection<Event> list = new LinkedHashSet<Event>(ctx.data.access(Event.class).list(//
                 EventCriteria.observedBy(user), //
                 Order.asc("beginTime")));
         System.out.println("Event observed by " + user.getDisplayName());

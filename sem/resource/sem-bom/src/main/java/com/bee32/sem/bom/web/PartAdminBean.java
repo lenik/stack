@@ -60,7 +60,7 @@ public class PartAdminBean
     protected void postUpdate(UnmarshalMap uMap)
             throws Exception {
         for (Part _part : uMap.<Part> entitySet()) {
-            ctx.getBean(PartService.class).changePartItemFromMaterialToPart(_part);
+            ctx.bean.getBean(PartService.class).changePartItemFromMaterialToPart(_part);
         }
     }
 
@@ -68,7 +68,7 @@ public class PartAdminBean
         if (productLike) {
             PartDto part = getOpenedObject();
             // 检查此物料(成品)是否已经有bom存在
-            List<Part> partList = serviceFor(Part.class).list(new Equals("target.id", selectedMaterial.getId()));
+            List<Part> partList = ctx.data.access(Part.class).list(new Equals("target.id", selectedMaterial.getId()));
 
             if (partList != null & partList.size() > 0) {
                 uiLogger.info("此物料已经存在BOM信息,继续新增的话,此物料将存在多个BOM信息");
@@ -77,7 +77,7 @@ public class PartAdminBean
             part.setTarget(selectedMaterial);
         } else {
             PartItemDto item = childrenMBean.getOpenedObject();
-            List<Part> materialsIsPart = serviceFor(Part.class).list(new Equals("target.id", selectedMaterial.getId()));
+            List<Part> materialsIsPart = ctx.data.access(Part.class).list(new Equals("target.id", selectedMaterial.getId()));
             if (materialsIsPart != null && materialsIsPart.size() > 0) {
                 uiLogger.info("此物料是成品或半成品，已经存在BOM，请用[组件是半成品]标签页进行查找选择!!!");
                 return;
@@ -96,7 +96,7 @@ public class PartAdminBean
             uiLogger.error("请以单击选择需要计算价格的产品!");
             return;
         }
-        Part _part = part.unmarshal(this);
+        Part _part = part.unmarshal();
         BigDecimal price = _part.calcPrice();
         if (price == null) {
             uiLogger.error("没有找到此产品的原材料原价格!");

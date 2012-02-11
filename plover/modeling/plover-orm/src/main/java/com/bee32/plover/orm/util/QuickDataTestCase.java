@@ -1,22 +1,28 @@
 package com.bee32.plover.orm.util;
 
-import java.io.Serializable;
-
 import org.junit.Assert;
 
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.dao.MemdbDataManager;
-import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.unit.UsingUtil;
 
 public class QuickDataTestCase
-        extends Assert
-        implements IEntityMarshalContext {
+        extends Assert {
 
-    CommonDataManager dataManager = MemdbDataManager.getInstance();
+    protected static class ctx
+            extends DefaultDataAssembledContext {
+
+        public static final AbstractDataPartialContext data = new AbstractDataPartialContext() {
+
+            @Override
+            public CommonDataManager getDataManager() {
+                return MemdbDataManager.getInstance();
+            }
+        };
+
+    }
 
     public QuickDataTestCase() {
         PersistenceUnit unit = UsingUtil.getUsingUnit(getClass());
@@ -26,23 +32,6 @@ public class QuickDataTestCase
 
         SamplesLoader samplesLoader = new SamplesLoader();
         samplesLoader.loadSamples(DiamondPackage.NORMAL);
-    }
-
-    @Override
-    public <E extends Entity<K>, K extends Serializable> E getOrFail(Class<E> entityType, K id) {
-        return asFor(entityType).getOrFail(id);
-    }
-
-    @Override
-    public <E extends Entity<K>, K extends Serializable> E getRef(Class<E> entityType, K id) {
-        return asFor(entityType).lazyLoad(id);
-    }
-
-    @Override
-    public <_E extends Entity<? extends _K>, _K extends Serializable> //
-    IEntityAccessService<_E, _K> asFor(Class<? extends _E> entityType) {
-        IEntityAccessService<_E, _K> service = dataManager.asFor(entityType);
-        return service;
     }
 
 }

@@ -79,13 +79,13 @@ public class AssetQueryTest
         item3.setValue(new MCValue(50));
         item3.setEndTime(parseDate("2011-12-3"));
 
-        dataManager.asFor(AccountSnapshot.class).saveOrUpdateAllByNaturalId(//
+        ctx.data.access(AccountSnapshot.class).saveOrUpdateAllByNaturalId(//
                 snapshot1);
-        dataManager.asFor(AccountSnapshotItem.class).saveOrUpdateAllByNaturalId(//
+        ctx.data.access(AccountSnapshotItem.class).saveOrUpdateAllByNaturalId(//
                 sitem1);
-        dataManager.asFor(AccountTicket.class).saveOrUpdateAllByNaturalId(//
+        ctx.data.access(AccountTicket.class).saveOrUpdateAllByNaturalId(//
                 ticket1);
-        dataManager.asFor(AccountTicketItem.class).saveOrUpdateAllByNaturalId(//
+        ctx.data.access(AccountTicketItem.class).saveOrUpdateAllByNaturalId(//
                 item1, item2, item3);
     }
 

@@ -51,7 +51,7 @@ public class MailManageBean
     }
 
     public void initUserList() {
-        List<User> users = serviceFor(User.class).list();
+        List<User> users = ctx.data.access(User.class).list();
         allUserList = DTOs.marshalList(UserDto.class, users);
     }
 
@@ -60,7 +60,7 @@ public class MailManageBean
             selectedItemId = "1";
         int folderId = Integer.parseInt(selectedItemId);
         if (folderId > 0) {
-            MailFolder folder = serviceFor(MailFolder.class).getOrFail(folderId);
+            MailFolder folder = ctx.data.access(MailFolder.class).getOrFail(folderId);
             MailFolderDto folderDto = DTOs.marshal(MailFolderDto.class, MailFolderDto.MAILS, folder);
             mails = folderDto.getMails();
             Tab tab = (Tab) getBoxTab();
@@ -71,7 +71,7 @@ public class MailManageBean
     }
 
     public void initFolderItems() {
-        List<MailFolder> mailFolderLiset = serviceFor(MailFolder.class).list(Order.asc("order"));
+        List<MailFolder> mailFolderLiset = ctx.data.access(MailFolder.class).list(Order.asc("order"));
         List<MailFolderDto> mailFolderDtoList = DTOs
                 .mrefList(MailFolderDto.class, MailFolderDto.MAILS, mailFolderLiset);
         List<SelectItem> folderItems = new ArrayList<SelectItem>();
@@ -140,7 +140,7 @@ public class MailManageBean
 
     public void getDeliveryContent() {
         long deliveryId = Long.parseLong(selectedDeliveryId);
-        MailDelivery delivery = serviceFor(MailDelivery.class).getOrFail(deliveryId);
+        MailDelivery delivery = ctx.data.access(MailDelivery.class).getOrFail(deliveryId);
         MailDeliveryDto deliveryDto = DTOs.marshal(MailDeliveryDto.class, delivery);
         Tab contentTab = (Tab) getContentTab();
         contentTab.setTitle(deliveryDto.getMail().getSubject());
@@ -170,8 +170,8 @@ public class MailManageBean
         MailDelivery mailDelivery = new MailDelivery(mail, MailOrientation.FROM);
         mailDelivery.setFolder(MailFolder.OUTBOX);
         try {
-            serviceFor(Mail.class).saveOrUpdate(mail);
-            serviceFor(MailDelivery.class).saveOrUpdate(mailDelivery);
+            ctx.data.access(Mail.class).saveOrUpdate(mail);
+            ctx.data.access(MailDelivery.class).saveOrUpdate(mailDelivery);
         } catch (Exception e) {
             mailDelivery.setSendError(e.getMessage());
             uiLogger.error("error occured while sending mail" + e.getMessage(), e);
@@ -183,7 +183,7 @@ public class MailManageBean
             MailDelivery recieveDelivery = new MailDelivery(mail, MailOrientation.RECIPIENT);
             recieveDelivery.setFolder(MailFolder.INBOX);
             recieveDelivery.setOwner((User) userDto.unmarshal());
-            serviceFor(MailDelivery.class).save(recieveDelivery);
+            ctx.data.access(MailDelivery.class).save(recieveDelivery);
         }
 
     }
@@ -193,8 +193,8 @@ public class MailManageBean
         MailDelivery draftDelivery = new MailDelivery(mail, MailOrientation.FROM);
         draftDelivery.setFolder(MailFolder.DRAFT);
         try {
-            serviceFor(Mail.class).saveOrUpdate(mail);
-            serviceFor(MailDelivery.class).saveOrUpdate(draftDelivery);
+            ctx.data.access(Mail.class).saveOrUpdate(mail);
+            ctx.data.access(MailDelivery.class).saveOrUpdate(draftDelivery);
         } catch (Exception e) {
             uiLogger.error("保存草稿错误:" + e.getMessage(), e);
         }

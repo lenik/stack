@@ -21,8 +21,8 @@ import com.bee32.plover.arch.util.TextMap;
  * <li>Context wrappers
  * </ul>
  */
-abstract class BaseDto_Skel<S, C>
-        extends BaseDto_ASM<S, C> {
+abstract class BaseDto_Skel<S>
+        extends BaseDto_ASM<S> {
 
     private static final long serialVersionUID = 1L;
 
@@ -107,7 +107,7 @@ abstract class BaseDto_Skel<S, C>
     public abstract boolean isNullRef();
 
     @Override
-    public <self_t extends BaseDto<?, ?>> self_t ref() {
+    public <self_t extends BaseDto<?>> self_t ref() {
         @SuppressWarnings("unchecked")
         self_t self = (self_t) this;
 
@@ -132,7 +132,7 @@ abstract class BaseDto_Skel<S, C>
      * Marshal skeleton implementation.
      */
     @Override
-    final <D extends BaseDto<? super S, C>> D marshalImpl(S source) {
+    final <D extends BaseDto<? super S>> D marshalImpl(S source) {
         @SuppressWarnings("unchecked")
         D _this = (D) this;
 
@@ -193,7 +193,7 @@ abstract class BaseDto_Skel<S, C>
     protected abstract void _marshal(S source);
 
     // @Override
-    // public abstract <D extends BaseDto<S, C>> D ref(S source);
+    // public abstract <D extends BaseDto<S>> D ref(S source);
 
     @Override
     final S mergeImpl(S target) {

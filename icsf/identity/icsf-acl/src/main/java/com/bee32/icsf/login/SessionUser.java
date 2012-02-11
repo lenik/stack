@@ -52,22 +52,6 @@ public class SessionUser
         return loginInfo;
     }
 
-    public User getInternalUserOpt() {
-        return internalUser;
-    }
-
-    public final User getInternalUser()
-            throws LoginException {
-        User user = getInternalUserOpt();
-        if (user == null)
-            throw new LoginException("Not login yet.");
-        return user;
-    }
-
-    public void setInternalUser(User user) {
-        this.internalUser = user;
-    }
-
     public UserDto getUserOpt() {
         return user;
     }

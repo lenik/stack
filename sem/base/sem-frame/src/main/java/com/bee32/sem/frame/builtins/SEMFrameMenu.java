@@ -7,7 +7,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
 import com.bee32.plover.faces.misc.GuestPreferences;
-import com.bee32.plover.faces.utils.FacesContextUtils;
+import com.bee32.plover.faces.utils.FacesAssembledContext;
 import com.bee32.plover.site.cfg.PrimefacesTheme;
 import com.bee32.sem.frame.action.Action;
 import com.bee32.sem.frame.menu.MenuContribution;
@@ -60,6 +60,10 @@ class ThemeSwitcherActionListener
 
     private static final long serialVersionUID = 1L;
 
+    static class ctx
+            extends FacesAssembledContext {
+    }
+
     PrimefacesTheme theme;
 
     public ThemeSwitcherActionListener() {
@@ -74,7 +78,7 @@ class ThemeSwitcherActionListener
     @Override
     public void processAction(ActionEvent actionEvent)
             throws AbortProcessingException {
-        GuestPreferences pref = FacesContextUtils.getBean(GuestPreferences.class);
+        GuestPreferences pref = ctx.bean.getBean(GuestPreferences.class);
         pref.setTheme(theme);
     }
 

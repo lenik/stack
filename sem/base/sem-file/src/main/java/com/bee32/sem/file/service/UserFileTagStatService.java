@@ -28,7 +28,7 @@ public class UserFileTagStatService
 
     protected Map<UserFileTagname, Long> loadStats() {
         Map<UserFileTagname, Long> stats = new HashMap<UserFileTagname, Long>();
-        List<UserFileTagname> tags = asFor(UserFileTagname.class).list();
+        List<UserFileTagname> tags = ctx.data.access(UserFileTagname.class).list();
         for (UserFileTagname tag : tags) {
             long initial = tag.getRefCount();
             stats.put(tag, initial);

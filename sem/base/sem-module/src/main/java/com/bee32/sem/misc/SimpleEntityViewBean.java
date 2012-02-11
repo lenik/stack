@@ -119,7 +119,7 @@ public class SimpleEntityViewBean
                 UserCriteria.ownedByCurrentUser(),//
                 ACLCriteria.aclWithin(getACLs(visiblePermission))));
 
-        String requestIdList = ctx.getRequest().getParameter("id");
+        String requestIdList = ctx.view.getRequest().getParameter("id");
         if (requestIdList != null) {
             EntityHelper<E, K> eh = EntityHelper.getInstance(entityClass);
             for (String _id : requestIdList.split(",")) {
@@ -491,11 +491,11 @@ public class SimpleEntityViewBean
         try {
             if ((saveFlags & SAVE_MUSTEXIST) != 0)
                 for (Entity<?> entity : entities)
-                    serviceFor(entityClass).update(entity);
+                    ctx.data.access(entityClass).update(entity);
             else if ((saveFlags & SAVE_NOEXIST) != 0)
-                serviceFor(entityClass).saveAll(entities);
+                ctx.data.access(entityClass).saveAll(entities);
             else
-                serviceFor(entityClass).saveOrUpdateAll(entities);
+                ctx.data.access(entityClass).saveOrUpdateAll(entities);
             // refreshCount();
         } catch (Exception e) {
             uiLogger.error(hint + "失败", e);
@@ -576,7 +576,7 @@ public class SimpleEntityViewBean
             }
 
             if (needUpdateBeforeDelete) {
-                serviceFor(entityClass).update(entity);
+                ctx.data.access(entityClass).update(entity);
             }
 
             boolean locked = EntityAccessor.isAnyLocked(entity);
@@ -619,7 +619,7 @@ public class SimpleEntityViewBean
         Set<Entity<?>> entities = uMap.keySet();
         int count;
         try {
-            count = serviceFor(entityClass).deleteAll(entities);
+            count = ctx.data.access(entityClass).deleteAll(entities);
         } catch (Exception e) {
             uiLogger.error("删除失败", e);
             return;
@@ -720,7 +720,7 @@ public class SimpleEntityViewBean
         for (Object object : objects) {
             if (dtoClass.isInstance(object)) {
                 EntityDto<?, ?> entityDto = (EntityDto<?, ?>) object;
-                Entity<?> entity = entityDto.unmarshal(this);
+                Entity<?> entity = entityDto.unmarshal();
                 if (entity == null) {
                     if (!nullable)
                         throw new NullPointerException("DTO unmarshalled to null: " + entityDto);
@@ -895,7 +895,7 @@ public class SimpleEntityViewBean
     public void addOwnerRestriction() {
         if (searchPrincipal == null)
             return;
-        Principal principal = searchPrincipal.unmarshal(this);
+        Principal principal = searchPrincipal.unmarshal();
         addSearchFragment("为 " + searchPrincipal.getDisplayName() + " 所有", //
                 CommonCriteria.ownedBy(principal));
         searchPrincipal = null;

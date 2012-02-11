@@ -123,7 +123,7 @@ public class StockQueryDialogBean
         else
             materialIds = IdUtils.<Long> getDtoIdList(materials);
 
-        IStockQuery query = ctx.getBean(IStockQuery.class);
+        IStockQuery query = ctx.bean.getBean(IStockQuery.class);
         StockOrder sumOrder = query.getActualSummary(materialIds, queryOptions);
         return sumOrder;
     }

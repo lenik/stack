@@ -17,7 +17,6 @@ public abstract class FormValidator
     public void validate(FacesContext context, UIComponent component, Object value)
             throws ValidatorException {
         FacesMessageReporter reporter = new FacesMessageReporter(false);
-        reporter.setFacesContext(context);
         validate(reporter, component);
         List<FacesMessage> messages = reporter.getMessages();
         if (messages != null)

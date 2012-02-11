@@ -30,7 +30,7 @@ public class DeleteHandler<E extends Entity<K>, K extends Serializable>
             return Javascripts.alertAndBack("非法对象标识: " + idString + ": " + e.getMessage()).dump(result);
         }
 
-        E entity = asFor(eh.getEntityType()).getOrFail(id);
+        E entity = ctx.data.access(eh.getEntityType()).getOrFail(id);
         if (entity == null)
             return Javascripts.alertAndBack("对象不存在: " + idString).dump(result);
 
@@ -41,7 +41,7 @@ public class DeleteHandler<E extends Entity<K>, K extends Serializable>
         // return Javascripts.alertAndBack("对象被标记为删除: " + idString).dump(result);
 
         try {
-            asFor(eh.getEntityType()).delete(entity);
+            ctx.data.access(eh.getEntityType()).delete(entity);
         } catch (DataIntegrityViolationException e) {
             return Javascripts.alertAndBack("不能删除正在使用中的对象。" + eh.getHint(id)).dump(result);
         }

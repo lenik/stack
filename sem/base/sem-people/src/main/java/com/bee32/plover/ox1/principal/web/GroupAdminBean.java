@@ -30,7 +30,7 @@ public class GroupAdminBean
             if (StandardViews.CREATE_FORM.equals(getCurrentView())) {
                 String name = _group.getName();
                 if (name != null) {
-                    Group existing = serviceFor(Group.class).getByName(name);
+                    Group existing = ctx.data.access(Group.class).getByName(name);
                     if (existing != null) {
                         uiLogger.error("组已存在: " + name);
                         return false;

@@ -61,7 +61,7 @@ public class RegisterBean extends EntityViewBean {
 			return;
 		}
 
-		User user = serviceFor(User.class).getByName(username);
+		User user = ctx.data.access(User.class).getByName(username);
 		if(user != null) {
 			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "注册错误", "此用户名已经存在");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -71,10 +71,10 @@ public class RegisterBean extends EntityViewBean {
 
 		User newUser = new User(username);
 		newUser.setFullName(fullname);
-		serviceFor(User.class).save(newUser);
+		ctx.data.access(User.class).save(newUser);
 
 		UserPassword pass = new UserPassword(newUser, password);
-		serviceFor(UserPassword.class).save(pass);
+		ctx.data.access(UserPassword.class).save(pass);
 
 
 		username = "";

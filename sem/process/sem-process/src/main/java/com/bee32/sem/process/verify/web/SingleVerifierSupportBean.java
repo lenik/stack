@@ -32,7 +32,7 @@ public class SingleVerifierSupportBean<D extends EntityDto<E, K> & IVerifiableDt
     @Operation
     public//
     void reverify() {
-        VerifiableSupportBean verifiableSupportBean = ctx.getBean(VerifiableSupportBean.class);
+        VerifiableSupportBean verifiableSupportBean = ctx.bean.getBean(VerifiableSupportBean.class);
         if (!verifiableSupportBean.isCurrentUserResponsible()) {
             uiLogger.error("您不是该对象的审核责任人。");
             return;
@@ -49,11 +49,11 @@ public class SingleVerifierSupportBean<D extends EntityDto<E, K> & IVerifiableDt
             context.setAccepted1(accepted1Template);
             context.setRejectedReason1(rejectedReason1Template);
 
-            Entity<?> entity = reloaded.unmarshal(this);
+            Entity<?> entity = reloaded.unmarshal();
             String entityLabel = entity.getEntryLabel();
 
             try {
-                serviceFor(Entity.class).update(entity);
+                ctx.data.access(Entity.class).update(entity);
             } catch (Exception e) {
                 uiLogger.error("更新 " + entityLabel + " 的审核资料失败", e);
                 continue;

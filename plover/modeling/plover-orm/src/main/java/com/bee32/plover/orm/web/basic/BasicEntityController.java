@@ -126,7 +126,7 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
     }
 
     protected void loadEntry(E entity, Dto dto) {
-        dto.marshal(this, entity);
+        dto.marshal(entity);
     }
 
     /**
@@ -146,11 +146,11 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
     }
 
     protected void loadForm(E entity, Dto dto) {
-        dto.marshal(this, entity);
+        dto.marshal(entity);
     }
 
     protected void saveForm(E entity, Dto dto) {
-        dto.unmarshalTo(this, entity);
+        dto.unmarshalTo(entity);
     }
 
     /**

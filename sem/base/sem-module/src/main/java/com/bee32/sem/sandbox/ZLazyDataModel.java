@@ -10,11 +10,10 @@ import org.primefaces.model.SortOrder;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.Limit;
 import com.bee32.plover.criteria.hibernate.Order;
-import com.bee32.plover.faces.utils.FacesContextUtils;
 import com.bee32.plover.faces.utils.FacesUILogger;
-import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.orm.util.DefaultDataAssembledContext;
 import com.bee32.plover.orm.util.EntityDto;
 
 public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, ?>>
@@ -32,10 +31,6 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
         if (options == null)
             throw new NullPointerException("options");
         this.options = options;
-    }
-
-    protected CommonDataManager getDataManager() {
-        return FacesContextUtils.getBean(CommonDataManager.class);
     }
 
     public EntityDataModelOptions<E, D> getOptions() {
@@ -184,6 +179,10 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
         return null;
     }
 
+    protected static class ctx
+            extends DefaultDataAssembledContext {
+    }
+
     /**
      * @param first
      *            0-based row index.
@@ -211,15 +210,13 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
         }
 
         ICriteriaElement criteria = options.compose();
-        CommonDataManager dataManager = getDataManager();
-        List<E> entities = dataManager.asFor(options.getEntityClass()).list(limit, criteria, order);
+        List<E> entities = ctx.data.access(options.getEntityClass()).list(limit, criteria, order);
         return entities;
     }
 
     protected int countImpl() {
         ICriteriaElement criteria = options.compose();
-        CommonDataManager dataManager = getDataManager();
-        int count = dataManager.asFor(options.getEntityClass()).count(criteria);
+        int count = ctx.data.access(options.getEntityClass()).count(criteria);
         return count;
     }
 

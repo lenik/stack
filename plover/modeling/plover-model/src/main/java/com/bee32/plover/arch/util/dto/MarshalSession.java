@@ -9,24 +9,11 @@ import javax.free.IllegalUsageException;
 public class MarshalSession
         implements IMarshalSession {
 
-    final Object context;
-
     // Entity+key => DTO
     Map<Object, Object> marshalledMap;
 
     // DTO => Entity
     Map<Object, Object> unmarshalledMap;
-
-    public MarshalSession(Object context) {
-        this.context = context;
-    }
-
-    @Override
-    public Object getContext() {
-        if (context == null)
-            throw new IllegalStateException("No marshal context.");
-        return context;
-    }
 
     final Map<Object, Object> getMarshalledMap() {
         if (marshalledMap == null) {
@@ -50,7 +37,7 @@ public class MarshalSession
         return unmarshalledMap;
     }
 
-    final void checkTyped(BaseDto_Skel<?, ?> dto) {
+    final void checkTyped(BaseDto_Skel<?> dto) {
         if (!dto.isStereotyped())
             throw new IllegalUsageException("Dto hasn't been stereotyped, yet: " + dto);
     }
@@ -61,18 +48,18 @@ public class MarshalSession
     }
 
     @Override
-    public void addMarshalled(Object marshalKey, BaseDto_Skel<?, ?> dto) {
+    public void addMarshalled(Object marshalKey, BaseDto_Skel<?> dto) {
         checkTyped(dto);
         getMarshalledMap().put(marshalKey, dto);
     }
 
     @Override
-    public <S> S getUnmarshalled(BaseDto_Skel<?, ?> dto) {
+    public <S> S getUnmarshalled(BaseDto_Skel<?> dto) {
         return (S) getUnmarshalledMap().get(dto);
     }
 
     @Override
-    public void addUnmarshalled(BaseDto_Skel<?, ?> dto, Object source) {
+    public void addUnmarshalled(BaseDto_Skel<?> dto, Object source) {
         checkTyped(dto);
         Map<Object, Object> map = getUnmarshalledMap();
         map.put(dto, source);

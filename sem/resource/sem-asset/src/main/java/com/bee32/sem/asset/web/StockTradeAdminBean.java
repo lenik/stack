@@ -26,7 +26,7 @@ public class StockTradeAdminBean
 
     public StockTradeAdminBean() {
         super(StockTrade.class, StockTradeDto.class, 0);
-        String type = ctx.getRequest().getParameter("type");
+        String type = ctx.view.getRequest().getParameter("type");
         if (type != null)
             switch (type) {
             case "SALE":

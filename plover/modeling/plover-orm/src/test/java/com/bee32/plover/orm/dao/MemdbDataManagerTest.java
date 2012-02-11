@@ -16,17 +16,17 @@ public class MemdbDataManagerTest
 
     @Before
     public void buildSamples() {
-        asFor(Cat.class).deleteAll();
+        ctx.data.access(Cat.class).deleteAll();
 
         Cat cat1 = new Cat("Jerry", "red");
         Cat cat2 = new Cat("Jimmy", "red");
 
-        asFor(Cat.class).saveAll(cat1, cat2);
+        ctx.data.access(Cat.class).saveAll(cat1, cat2);
     }
 
     @Test
     public void testSave() {
-        Cat jerry = asFor(Cat.class).getByName("Jerry");
+        Cat jerry = ctx.data.access(Cat.class).getByName("Jerry");
         assertNotNull(jerry);
 
         long id = jerry.getId();
@@ -35,7 +35,7 @@ public class MemdbDataManagerTest
 
     @Test
     public void testList() {
-        List<Cat> cats = asFor(Cat.class).list();
+        List<Cat> cats = ctx.data.access(Cat.class).list();
         assertEquals(2, cats.size());
         System.out.println(cats);
     }

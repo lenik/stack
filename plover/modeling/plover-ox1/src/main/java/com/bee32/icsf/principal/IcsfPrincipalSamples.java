@@ -1,6 +1,5 @@
 package com.bee32.icsf.principal;
 
-import com.bee32.plover.orm.util.IEntityMarshalContext;
 import com.bee32.plover.orm.util.SampleContribution;
 
 /**
@@ -45,10 +44,10 @@ public class IcsfPrincipalSamples
     }
 
     @Override
-    protected void more(IEntityMarshalContext context) {
+    protected void more() {
         solaRobots.setOwner(eva);
         sunCorp.setOwner(tom);
-        context.asFor(Group.class).saveOrUpdateAll(solaRobots, sunCorp);
+        ctx.data.access(Group.class).saveOrUpdateAll(solaRobots, sunCorp);
     }
 
 }

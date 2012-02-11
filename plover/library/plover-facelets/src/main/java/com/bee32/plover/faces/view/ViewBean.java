@@ -19,7 +19,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.bee32.plover.arch.operation.Operation;
 import com.bee32.plover.arch.util.SelectionHolder;
-import com.bee32.plover.faces.utils.FacesContextUtils;
+import com.bee32.plover.faces.utils.FacesAssembledContext;
 import com.bee32.plover.faces.utils.FacesUILogger;
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
@@ -36,7 +36,7 @@ public abstract class ViewBean
     protected transient FacesUILogger uiHtmlLogger = new FacesUILogger(true);
 
     protected static class ctx
-            extends FacesContextUtils {
+            extends FacesAssembledContext {
     }
 
     public ViewBean() {
@@ -52,7 +52,7 @@ public abstract class ViewBean
     }
 
     public ViewMetadata getMetadata() {
-        return ctx.getBean(ViewMetadata.class);
+        return ctx.bean.getBean(ViewMetadata.class);
     }
 
     /**

@@ -26,88 +26,87 @@ public abstract class DTOs {
         return dto.getEntityType();
     }
 
-    public static <_S, _D extends BaseDto<? super _S, _C>, _C> _D _marshal(Class<_D> dtoClass, int fmask, _S source,
+    public static <_S, _D extends BaseDto<? super _S>> _D _marshal(Class<_D> dtoClass, int fmask, _S source,
             Boolean refButFilled) {
         return new DummyEntityDto().marshal(dtoClass, fmask, source, refButFilled);
     }
 
-    public static <_S, _D extends BaseDto<? super _S, _C>, _C> _D marshal(Class<_D> dtoClass, int fmask, _S source) {
+    public static <_S, _D extends BaseDto<? super _S>> _D marshal(Class<_D> dtoClass, int fmask, _S source) {
         return new DummyEntityDto().marshal(dtoClass, fmask, source);
     }
 
-    public static <_S, _D extends BaseDto<? super _S, _C>, _C> _D marshal(Class<_D> dtoClass, _S source) {
+    public static <_S, _D extends BaseDto<? super _S>> _D marshal(Class<_D> dtoClass, _S source) {
         return new DummyEntityDto().marshal(dtoClass, source);
     }
 
-    public static <_S, _D extends BaseDto<? super _S, _C>, _C> _D marshal(Class<_D> dtoClass, _S source,
-            Boolean refButFilled) {
+    public static <_S, _D extends BaseDto<? super _S>> _D marshal(Class<_D> dtoClass, _S source, Boolean refButFilled) {
         return new DummyEntityDto().marshal(dtoClass, source, refButFilled);
     }
 
     // @Deprecated
-    public static <_S, _D extends BaseDto<? super _S, _C>, _C> _D mref(Class<_D> dtoClass, int fmask, _S source) {
+    public static <_S, _D extends BaseDto<? super _S>> _D mref(Class<_D> dtoClass, int fmask, _S source) {
         return new DummyEntityDto().mref(dtoClass, fmask, source);
     }
 
-    public static <_S, _D extends BaseDto<? super _S, _C>, _C> _D mref(Class<_D> dtoClass, _S source) {
+    public static <_S, _D extends BaseDto<? super _S>> _D mref(Class<_D> dtoClass, _S source) {
         return new DummyEntityDto().mref(dtoClass, source);
     }
 
-    public static <_S, _D extends BaseDto<_S, _C>, _C> List<_D> _marshalList(Class<_D> dtoClass, int fmask,
+    public static <_S, _D extends BaseDto<_S>> List<_D> _marshalList(Class<_D> dtoClass, int fmask,
             Iterable<? extends _S> sources, Boolean refButFilled) {
         return new DummyEntityDto()._marshalList(dtoClass, fmask, sources, refButFilled);
     }
 
-    public static <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> marshalList(Class<_D> dtoClass, int fmask,
+    public static <_S, _D extends BaseDto<? super _S>> List<_D> marshalList(Class<_D> dtoClass, int fmask,
             Iterable<? extends _S> sources) {
         return new DummyEntityDto().marshalList(dtoClass, fmask, sources);
     }
 
-    public static <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> marshalList(Class<_D> dtoClass,
+    public static <_S, _D extends BaseDto<? super _S>> List<_D> marshalList(Class<_D> dtoClass,
             Iterable<? extends _S> sources) {
         return new DummyEntityDto().marshalList(dtoClass, sources);
     }
 
-    public static <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> mrefList(Class<_D> dtoClass, int fmask,
+    public static <_S, _D extends BaseDto<? super _S>> List<_D> mrefList(Class<_D> dtoClass, int fmask,
             Iterable<? extends _S> sources) {
         return new DummyEntityDto().mrefList(dtoClass, fmask, sources);
     }
 
-    public static <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> mrefList(Class<_D> dtoClass,
+    public static <_S, _D extends BaseDto<? super _S>> List<_D> mrefList(Class<_D> dtoClass,
             Iterable<? extends _S> sources) {
         return new DummyEntityDto().mrefList(dtoClass, sources);
     }
 
-    public static <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet(Class<_D> dtoClass, int fmask,
+    public static <_S, _D extends BaseDto<? super _S>> Set<_D> marshalSet(Class<_D> dtoClass, int fmask,
             Iterable<? extends _S> sources, Boolean refButFilled) {
         return new DummyEntityDto().marshalSet(dtoClass, fmask, sources, refButFilled);
     }
 
-    public static <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet(Class<_D> dtoClass, int fmask,
+    public static <_S, _D extends BaseDto<? super _S>> Set<_D> marshalSet(Class<_D> dtoClass, int fmask,
             Iterable<? extends _S> sources) {
         return new DummyEntityDto().marshalSet(dtoClass, fmask, sources);
     }
 
-    public static <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet(Class<_D> dtoClass,
+    public static <_S, _D extends BaseDto<? super _S>> Set<_D> marshalSet(Class<_D> dtoClass,
             Iterable<? extends _S> sources) {
         return new DummyEntityDto().marshalSet(dtoClass, sources);
     }
 
-    public static <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet(Class<_D> dtoClass, int fmask,
+    public static <_S, _D extends BaseDto<? super _S>> Set<_D> marshalSet(Class<_D> dtoClass, int fmask,
             Iterable<? extends _S> sources, boolean refButFilled) {
         return new DummyEntityDto().marshalSet(dtoClass, fmask, sources, refButFilled);
     }
 
-    public static <_S, _D extends BaseDto<_S, _C>, _C> Set<_D> marshalSet(Class<_D> dtoClass,
-            Iterable<? extends _S> sources, boolean refButFilled) {
+    public static <_S, _D extends BaseDto<_S>> Set<_D> marshalSet(Class<_D> dtoClass, Iterable<? extends _S> sources,
+            boolean refButFilled) {
         return new DummyEntityDto().marshalSet(dtoClass, sources, refButFilled);
     }
 
-    public static <_S, __s, _C> void merge(_S target, IPropertyAccessor<__s> property, BaseDto<__s, _C> propertyDto) {
+    public static <_S, __s> void merge(_S target, IPropertyAccessor<__s> property, BaseDto<__s> propertyDto) {
         new DummyEntityDto().merge(target, property, propertyDto);
     }
 
-    public static <_S, __s, _C> void merge(_S target, String propertyName, BaseDto<__s, _C> propertyDto) {
+    public static <_S, __s> void merge(_S target, String propertyName, BaseDto<__s> propertyDto) {
         new DummyEntityDto().merge(target, propertyName, propertyDto);
     }
 

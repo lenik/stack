@@ -3,16 +3,11 @@ package com.bee32.plover.orm.web;
 import java.io.Serializable;
 
 import javax.free.IllegalUsageException;
-import javax.inject.Inject;
 import javax.servlet.ServletException;
 
-import org.springframework.dao.DataAccessException;
-
 import com.bee32.plover.ajax.SuccessOrFailMessage;
-import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.entity.IEntityAccessService;
-import com.bee32.plover.orm.util.IEntityMarshalContext;
+import com.bee32.plover.orm.util.DefaultDataAssembledContext;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.servlet.mvc.ActionHandler;
 import com.bee32.plover.servlet.mvc.ActionRequest;
@@ -23,10 +18,11 @@ import com.bee32.plover.servlet.mvc.ActionResult;
  */
 public abstract class EntityHandler<E extends Entity<K>, K extends Serializable>
         extends ActionHandler
-        implements IEntityMarshalContext, ITypeAbbrAware {
+        implements ITypeAbbrAware {
 
-    @Inject
-    protected CommonDataManager dataManager;
+    protected static class ctx
+            extends DefaultDataAssembledContext {
+    }
 
     // EntityType
     protected EntityHelper<E, K> eh;
@@ -48,39 +44,6 @@ public abstract class EntityHandler<E extends Entity<K>, K extends Serializable>
     // public EntityHelper<E, K> getEntityHelper() {
     // return eh;
     // }
-
-    /**
-     * Return the persistent instance of the given entity class with the given identifier, throwing
-     * an exception if not found.
-     *
-     * @param entityClass
-     *            a persistent class
-     * @param id
-     *            the identifier of the persistent instance
-     * @return the persistent instance
-     * @throws org.springframework.orm.ObjectRetrievalFailureException
-     *             if not found
-     * @throws org.springframework.dao.DataAccessException
-     *             in case of Hibernate errors
-     */
-    @Override
-    public <_E extends Entity<_K>, _K extends Serializable> _E getOrFail(Class<_E> entityType, _K id)
-            throws DataAccessException {
-        return asFor(entityType).getOrFail(id);
-    }
-
-    @Override
-    public <_E extends Entity<_K>, _K extends Serializable> _E getRef(Class<_E> entityType, _K id)
-            throws DataAccessException {
-        return asFor(entityType).lazyLoad(id);
-    }
-
-    @Override
-    public <_E extends Entity<? extends _K>, _K extends Serializable> //
-    IEntityAccessService<_E, _K> asFor(Class<? extends _E> entityType) {
-        IEntityAccessService<_E, _K> service = dataManager.asFor(entityType);
-        return service;
-    }
 
     @Override
     public final ActionResult handleRequest(ActionRequest req, ActionResult result)

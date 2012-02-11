@@ -57,7 +57,7 @@ public class StockLocationAdminBean
 
     public synchronized List<StockWarehouseDto> getWarehouses() {
         if (warehouses == null) {
-            List<StockWarehouse> _warehouses = serviceFor(StockWarehouse.class).list();
+            List<StockWarehouse> _warehouses = ctx.data.access(StockWarehouse.class).list();
             warehouses = DTOs.mrefList(StockWarehouseDto.class, _warehouses);
         }
         return warehouses;
@@ -65,7 +65,7 @@ public class StockLocationAdminBean
 
     public synchronized List<UnitDto> getUnits() {
         if (units == null) {
-            List<Unit> _units = serviceFor(Unit.class).list();
+            List<Unit> _units = ctx.data.access(Unit.class).list();
             units = DTOs.mrefList(UnitDto.class, _units);
         }
         return units;

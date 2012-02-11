@@ -14,7 +14,6 @@ import com.bee32.plover.faces.ErrorMessageTranslator;
 public class FacesUILogger
         extends AbstractLogger {
 
-    FacesContext facesContext;
     final boolean html;
 
     public FacesUILogger(boolean html) {
@@ -22,14 +21,7 @@ public class FacesUILogger
     }
 
     protected FacesContext getFacesContext() {
-        if (facesContext != null)
-            return facesContext;
-        else
-            return FacesContext.getCurrentInstance();
-    }
-
-    public void setFacesContext(FacesContext facesContext) {
-        this.facesContext = facesContext;
+        return FacesContext.getCurrentInstance();
     }
 
     protected void append(FacesMessage message) {

@@ -19,10 +19,14 @@ import com.bee32.plover.util.IMultiFormat;
 import com.bee32.plover.util.PrettyPrintStream;
 
 public abstract class BaseDto_EMC<S>
-        extends BaseDto<S, IEntityMarshalContext>
+        extends BaseDto<S>
         implements IMultiFormat {
 
     private static final long serialVersionUID = 1L;
+
+    protected static class ctx
+            extends DefaultDataAssembledContext {
+    }
 
     public BaseDto_EMC() {
         super();

@@ -13,23 +13,23 @@ import org.springframework.dao.DataAccessException;
 import com.bee32.plover.arch.bean.BeanPropertyAccessor;
 import com.bee32.plover.arch.bean.IPropertyAccessor;
 
-public abstract class BaseDto_AS2<S, C>
-        extends BaseDto_AS1<S, C>
+public abstract class BaseDto_AS2<S>
+        extends BaseDto_AS1<S>
         implements Fmask {
 
     private static final long serialVersionUID = 1L;
 
     // marshal*
 
-    public <_S, _D extends BaseDto<? super _S, _C>, _C> _D marshal(Class<_D> dtoClass, int fmask, _S source) {
+    public <_S, _D extends BaseDto<? super _S>> _D marshal(Class<_D> dtoClass, int fmask, _S source) {
         return marshal(dtoClass, fmask, source, null);
     }
 
-    public <_S, _D extends BaseDto<? super _S, _C>, _C> _D marshal(Class<_D> dtoClass, _S source) {
+    public <_S, _D extends BaseDto<? super _S>> _D marshal(Class<_D> dtoClass, _S source) {
         return marshal(dtoClass, F_MORE, source, null);
     }
 
-    public <_S, _D extends BaseDto<? super _S, _C>, _C> _D marshal(Class<_D> dtoClass, _S source, Boolean refButFilled) {
+    public <_S, _D extends BaseDto<? super _S>> _D marshal(Class<_D> dtoClass, _S source, Boolean refButFilled) {
         return marshal(dtoClass, F_MORE, source, refButFilled);
     }
 
@@ -39,76 +39,76 @@ public abstract class BaseDto_AS2<S, C>
      * mref with a fmask is too inefficient, you should avoid of using it.
      */
     // @Deprecated
-    public <_S, _D extends BaseDto<? super _S, _C>, _C> _D mref(Class<_D> dtoClass, int fmask, _S source) {
+    public <_S, _D extends BaseDto<? super _S>> _D mref(Class<_D> dtoClass, int fmask, _S source) {
         return marshal(dtoClass, fmask, source, true);
     }
 
-    public <_S, _D extends BaseDto<? super _S, _C>, _C> _D mref(Class<_D> dtoClass, _S source) {
+    public <_S, _D extends BaseDto<? super _S>> _D mref(Class<_D> dtoClass, _S source) {
         return marshal(dtoClass, 0, source, true);
     }
 
     // marshal/mref List*
 
-    public <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> marshalList(//
+    public <_S, _D extends BaseDto<? super _S>> List<_D> marshalList(//
             Class<_D> dtoClass, int fmask, Iterable<? extends _S> sources) {
         return _marshalList(dtoClass, fmask, sources, null);
     }
 
-    public <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> marshalList(//
+    public <_S, _D extends BaseDto<? super _S>> List<_D> marshalList(//
             Class<_D> dtoClass, Iterable<? extends _S> sources) {
         return _marshalList(dtoClass, F_MORE, sources, null);
     }
 
-    public <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> mrefList(//
+    public <_S, _D extends BaseDto<? super _S>> List<_D> mrefList(//
             Class<_D> dtoClass, int fmask, Iterable<? extends _S> sources) {
         return _marshalList(dtoClass, fmask, sources, true);
     }
 
-    public <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> mrefList(//
+    public <_S, _D extends BaseDto<? super _S>> List<_D> mrefList(//
             Class<_D> dtoClass, Iterable<? extends _S> sources) {
         return _marshalList(dtoClass, 0, sources, true);
     }
 
     // marshalSet
 
-    public <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet(//
+    public <_S, _D extends BaseDto<? super _S>> Set<_D> marshalSet(//
             Class<_D> dtoClass, int fmask, Iterable<? extends _S> sources) {
         return marshalSet(dtoClass, fmask, sources, null);
     }
 
-    public <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet(//
+    public <_S, _D extends BaseDto<? super _S>> Set<_D> marshalSet(//
             Class<_D> dtoClass, Iterable<? extends _S> sources) {
         return marshalSet(dtoClass, F_MORE, sources, null);
     }
 
-    public <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet(//
+    public <_S, _D extends BaseDto<? super _S>> Set<_D> marshalSet(//
             Class<_D> dtoClass, Iterable<? extends _S> sources, Boolean refButFilled) {
         return marshalSet(dtoClass, F_MORE, sources, (Boolean) refButFilled);
     }
 
-    public <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalTreeSet(//
+    public <_S, _D extends BaseDto<? super _S>> Set<_D> marshalTreeSet(//
             Class<_D> dtoClass, int fmask, Iterable<? extends _S> sources) {
         return marshalTreeSet(dtoClass, fmask, sources, null);
     }
 
-    public <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalTreeSet(//
+    public <_S, _D extends BaseDto<? super _S>> Set<_D> marshalTreeSet(//
             Class<_D> dtoClass, Iterable<? extends _S> sources) {
         return marshalTreeSet(dtoClass, F_MORE, sources, null);
     }
 
-    public <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalTreeSet(//
+    public <_S, _D extends BaseDto<? super _S>> Set<_D> marshalTreeSet(//
             Class<_D> dtoClass, Iterable<? extends _S> sources, Boolean refButFilled) {
         return marshalTreeSet(dtoClass, F_MORE, sources, refButFilled);
     }
 
     // _unmarshalCollection*
 
-    public <_S, _D extends BaseDto<_S, _C>, _C> //
+    public <_S, _D extends BaseDto<_S>> //
     /*    */List<_S> _unmarshalList(Iterable<? extends _D> dtoList) {
         return _unmarshalCollection(new ArrayList<_S>(), dtoList);
     }
 
-    public <_S, _D extends BaseDto<_S, _C>, _C> //
+    public <_S, _D extends BaseDto<_S>> //
     /*    */Set<_S> _unmarshalSet(Iterable<? extends _D> dtoList) {
         return _unmarshalCollection(new HashSet<_S>(), dtoList);
     }
@@ -190,8 +190,7 @@ public abstract class BaseDto_AS2<S, C>
      *             If data access exception happened with calls into the
      *             {@link IEntityMarshalContext}.
      */
-    public <target_t, property_t, ctx_t> void merge(target_t target, String propertyName,
-            BaseDto<property_t, ctx_t> propertyDto) {
+    public <target_t, property_t> void merge(target_t target, String propertyName, BaseDto<property_t> propertyDto) {
 
         // DTO == null means ignore.
         if (propertyDto == null)

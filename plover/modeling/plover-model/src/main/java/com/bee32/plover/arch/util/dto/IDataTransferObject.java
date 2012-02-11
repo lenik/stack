@@ -5,7 +5,7 @@ import java.util.Map;
 
 import javax.free.ParseException;
 
-public interface IDataTransferObject<S, C>
+public interface IDataTransferObject<S>
         extends Serializable {
 
     /**
@@ -20,14 +20,14 @@ public interface IDataTransferObject<S, C>
      * @return The marshalled object. it may be this, or flyweight, or <code>null</code> if the
      *         specified <code>source</code> object is <code>null</code>.
      */
-    <D extends BaseDto<? super S, C>> D marshal(IMarshalSession session, S source);
+    <D extends BaseDto<? super S>> D marshal(IMarshalSession session, S source);
 
     /**
      * Turn this into a referenced-DTO.
      */
-    <self_t extends BaseDto<?, ?>> self_t ref();
+    <self_t extends BaseDto<?>> self_t ref();
 
-    <self_t extends BaseDto<?, ?>> self_t ref(S source);
+    <self_t extends BaseDto<?>> self_t ref(S source);
 
     /**
      * Populate the specified target entity bean with properties defined in this object.

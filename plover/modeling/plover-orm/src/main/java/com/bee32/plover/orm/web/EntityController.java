@@ -3,17 +3,14 @@ package com.bee32.plover.orm.web;
 import java.io.Serializable;
 import java.util.Map;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.servlet.View;
 
 import com.bee32.plover.inject.ComponentTemplate;
-import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.entity.IEntityAccessService;
+import com.bee32.plover.orm.util.DefaultDataAssembledContext;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.plover.orm.util.IEntityMarshalContext;
 import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.plover.servlet.mvc.CompositeController;
@@ -24,17 +21,10 @@ import com.bee32.plover.site.scope.PerSite;
 // @Controller
 @PerSite
 public abstract class EntityController<E extends Entity<K>, K extends Serializable, Dto extends EntityDto<? super E, K>>
-        extends CompositeController
-        implements IEntityMarshalContext {
+        extends CompositeController {
 
-    @Inject
-    protected CommonDataManager dataManager;
-
-    @Override
-    public <_E extends Entity<? extends _K>, _K extends Serializable> //
-    IEntityAccessService<_E, _K> asFor(Class<? extends _E> entityType) {
-        IEntityAccessService<_E, _K> service = dataManager.asFor(entityType);
-        return service;
+    protected static class ctx
+            extends DefaultDataAssembledContext {
     }
 
     @Override
@@ -60,16 +50,6 @@ public abstract class EntityController<E extends Entity<K>, K extends Serializab
     @Override
     protected ActionResult newResult(View view, Map<String, ?> model) {
         return new ActionResult(view, model);
-    }
-
-    @Override
-    public <_E extends Entity<_K>, _K extends Serializable> _E getOrFail(Class<_E> entityType, _K id) {
-        return dataManager.asFor(entityType).getOrFail(id);
-    }
-
-    @Override
-    public <_E extends Entity<_K>, _K extends Serializable> _E getRef(Class<_E> entityType, _K id) {
-        return dataManager.asFor(entityType).getOrFail(id);
     }
 
 }

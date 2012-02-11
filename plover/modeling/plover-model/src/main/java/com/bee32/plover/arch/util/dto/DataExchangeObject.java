@@ -9,7 +9,7 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.TextMap;
 
 public abstract class DataExchangeObject<T>
-        extends BaseDto<T, Void> {
+        extends BaseDto<T> {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,7 +29,7 @@ public abstract class DataExchangeObject<T>
     }
 
     @Override
-    public <D extends BaseDto<?, ?>> D ref(T source) {
+    public <self_t extends BaseDto<?>> self_t ref(T source) {
         throw new NotImplementedException();
     }
 
@@ -45,7 +45,7 @@ public abstract class DataExchangeObject<T>
 
     // TODO
     @Override
-    protected boolean idEquals(BaseDto<T, Void> other) {
+    protected boolean idEquals(BaseDto<T> other) {
         return false;
     }
 

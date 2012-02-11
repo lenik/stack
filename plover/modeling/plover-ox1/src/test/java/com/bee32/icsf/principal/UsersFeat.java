@@ -67,11 +67,11 @@ public class UsersFeat
         u1.addAssignedGroup(g1);
         u2.addAssignedGroup(g1);
 
-        asFor(Principal.class).saveAll(g1, u1, u2);
+        ctx.data.access(Principal.class).saveAll(g1, u1, u2);
 
-        u1 = asFor(User.class).merge(u1);
-        u2 = asFor(User.class).merge(u2);
-        g1 = asFor(Group.class).merge(g1);
+        u1 = ctx.data.access(User.class).merge(u1);
+        u2 = ctx.data.access(User.class).merge(u2);
+        g1 = ctx.data.access(Group.class).merge(g1);
 
         // dataManager.flush();
     }
@@ -82,9 +82,9 @@ public class UsersFeat
         User ur1 = null;
         User ur2 = null;
         try {
-            gr1 = asFor(Group.class).getOrFail(g1.getId());
-            ur1 = asFor(User.class).getOrFail(u1.getId());
-            ur2 = asFor(User.class).getOrFail(u2.getId());
+            gr1 = ctx.data.access(Group.class).getOrFail(g1.getId());
+            ur1 = ctx.data.access(User.class).getOrFail(u1.getId());
+            ur2 = ctx.data.access(User.class).getOrFail(u2.getId());
 
             assertTrue(ur1.implies(gr1));
             assertFalse(gr1.implies(ur1));
@@ -94,7 +94,7 @@ public class UsersFeat
             System.out.println(ur2);
 
         } finally {
-            asFor(User.class).delete(ur1.detach());
+            ctx.data.access(User.class).delete(ur1.detach());
         }
     }
 

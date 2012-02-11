@@ -14,13 +14,13 @@ import org.springframework.stereotype.Component;
 public class GlobalAppCtx
         implements ApplicationContextAware {
 
-    public static ApplicationContext appctx;
-
     @Override
     public void setApplicationContext(ApplicationContext applicationContext)
             throws BeansException {
         appctx = applicationContext;
     }
+
+    public static ApplicationContext appctx;
 
     public static ApplicationContext getApplicationContext() {
         if (appctx == null)

@@ -121,7 +121,7 @@ public class OrgPersonAdminBean
     }
 
     public List<SelectItem> getTags() {
-        List<PartyTagname> partyTags = serviceFor(PartyTagname.class).list();
+        List<PartyTagname> partyTags = ctx.data.access(PartyTagname.class).list();
         List<PartyTagnameDto> partyTagDtos = DTOs.marshalList(PartyTagnameDto.class, partyTags);
         return UIHelper.selectItemsFromDict(partyTagDtos);
     }
@@ -190,7 +190,7 @@ public class OrgPersonAdminBean
         org.setName(orgName);
         person.setName(personName);
         for (String tagId : selectedTags) {
-            PartyTagname tag = getOrFail(PartyTagname.class, tagId);
+            PartyTagname tag = ctx.data.getOrFail(PartyTagname.class, tagId);
             PartyTagnameDto t = DTOs.mref(PartyTagnameDto.class, tag);
 
             if (!org.getTags().contains(t))

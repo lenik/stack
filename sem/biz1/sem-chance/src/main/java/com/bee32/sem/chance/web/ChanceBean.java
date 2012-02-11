@@ -45,19 +45,19 @@ public class ChanceBean
         Set<ChanceAction> updates = new HashSet<ChanceAction>();
         for (Chance _chance : uMap.<Chance> entitySet()) {
             for (ChanceActionDto action : attachSet) {
-                ChanceAction _action = action.unmarshal(this);
+                ChanceAction _action = action.unmarshal();
                 _action.setChance(_chance);
                 updates.add(_action);
             }
             for (ChanceActionDto action : detachSet) {
-                ChanceAction _action = action.unmarshal(this);
+                ChanceAction _action = action.unmarshal();
                 _action.setChance(null);
                 updates.add(_action);
             }
             break;
         }
         try {
-            asFor(ChanceAction.class).saveOrUpdateAll(updates);
+            ctx.data.access(ChanceAction.class).saveOrUpdateAll(updates);
         } finally {
             attachSet.clear();
             detachSet.clear();

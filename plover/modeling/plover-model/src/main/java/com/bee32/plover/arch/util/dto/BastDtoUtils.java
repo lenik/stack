@@ -11,7 +11,7 @@ public class BastDtoUtils {
 
     static DummyDto dummy = new DummyDto();
 
-    static <S, D extends BaseDto<S, C>, C> D mar(int fmask, S source) {
+    static <S, D extends BaseDto<S>> D mar(int fmask, S source) {
         Class<S> sourceType = (Class<S>) source.getClass();
         Class<D> dtoType;
         try {
@@ -23,8 +23,8 @@ public class BastDtoUtils {
     }
 
     @SuppressWarnings("unchecked")
-    static <S, D extends BaseDto<S, C>, C> D mar(S source) {
-        return (D) mar(-1, source);
+    static <S, D extends BaseDto<S>> D mar(S source) {
+        return (D) mar(Fmask.F_MORE, source);
     }
 
 }
@@ -33,7 +33,7 @@ class Dummy {
 }
 
 class DummyDto
-        extends BaseDto<Dummy, Object> {
+        extends BaseDto<Dummy> {
 
     private static final long serialVersionUID = 1L;
 
@@ -56,7 +56,7 @@ class DummyDto
     }
 
     @Override
-    public <self_t extends BaseDto<?, ?>> self_t ref(Dummy source) {
+    public <self_t extends BaseDto<?>> self_t ref(Dummy source) {
         return null;
     }
 
@@ -71,7 +71,7 @@ class DummyDto
     }
 
     @Override
-    protected boolean idEquals(BaseDto<Dummy, Object> other) {
+    protected boolean idEquals(BaseDto<Dummy> other) {
         return false;
     }
 

@@ -32,7 +32,7 @@ public class ContentHandler<E extends Entity<K>, K extends Serializable>
         String _id = req.getParameter("id");
         K id = eh.parseRequiredId(_id);
 
-        E entity = asFor(eh.getEntityType()).get(id);
+        E entity = ctx.data.access(eh.getEntityType()).get(id);
         if (entity == null)
             return Javascripts.alertAndBack("查阅的对象不存在。" //
                     + ClassUtil.getTypeName(eh.getEntityType()) + " [" + id + "]" //

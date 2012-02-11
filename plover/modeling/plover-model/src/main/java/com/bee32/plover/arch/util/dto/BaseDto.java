@@ -7,8 +7,8 @@ import javax.free.IllegalUsageException;
 
 import com.bee32.plover.arch.util.Flags32;
 
-public abstract class BaseDto<S, C>
-        extends BaseDto_AS2<S, C>
+public abstract class BaseDto<S>
+        extends BaseDto_AS2<S>
         implements Cloneable {
 
     private static final long serialVersionUID = 1L;
@@ -79,7 +79,7 @@ public abstract class BaseDto<S, C>
         this.sourceType = (Class<S>) sourceType;
     }
 
-    public <$ extends BaseDto<?, ?>> $ create() {
+    public <$ extends BaseDto<?>> $ create() {
         int modifiers = sourceType.getModifiers();
         if (Modifier.isAbstract(modifiers))
             throw new IllegalUsageException("You can't create a DTO for abstract entity.");
@@ -166,7 +166,7 @@ public abstract class BaseDto<S, C>
         // assert thisClass < otherClass;
 
         @SuppressWarnings("unchecked")
-        BaseDto<S, C> other = (BaseDto<S, C>) obj;
+        BaseDto<S> other = (BaseDto<S>) obj;
 
         Serializable nid = getNaturalId();
         if (nid == null)
@@ -235,14 +235,14 @@ public abstract class BaseDto<S, C>
         return null;
     }
 
-    protected static Serializable naturalId(BaseDto<?, ?> o) {
+    protected static Serializable naturalId(BaseDto<?> o) {
         if (o == null)
             return null;
         else
             return o.getNaturalId();
     }
 
-    protected abstract boolean idEquals(BaseDto<S, C> other);
+    protected abstract boolean idEquals(BaseDto<S> other);
 
     protected abstract int idHashCode();
 
@@ -251,7 +251,7 @@ public abstract class BaseDto<S, C>
      *            Non-<code>null</code> entity whose contents instead of the key need to be
      *            compared.
      */
-    protected boolean contentEquals(BaseDto<S, C> other) {
+    protected boolean contentEquals(BaseDto<S> other) {
         return this == other;
     }
 

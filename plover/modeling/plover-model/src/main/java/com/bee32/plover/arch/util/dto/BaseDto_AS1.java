@@ -17,8 +17,8 @@ import com.bee32.plover.arch.bean.IPropertyAccessor;
  *      for both scalar and collections.
  * </pre>
  */
-public abstract class BaseDto_AS1<S, C>
-        extends BaseDto_VTU<S, C> {
+public abstract class BaseDto_AS1<S>
+        extends BaseDto_VTU<S> {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,7 +28,7 @@ public abstract class BaseDto_AS1<S, C>
      * @param refButFilled
      *            Non-<code>null</code> to marshal as a reference.
      */
-    public <_S, _D extends BaseDto<? super _S, _C>, _C> _D marshal(//
+    public <_S, _D extends BaseDto<? super _S>> _D marshal(//
             Class<_D> dtoClass, int fmask, _S source, Boolean refButFilled) {
         _D dto;
         try {
@@ -62,7 +62,7 @@ public abstract class BaseDto_AS1<S, C>
         return dto;
     }
 
-    public <_S, _D extends BaseDto<? super _S, _C>, _C> List<_D> _marshalList(//
+    public <_S, _D extends BaseDto<? super _S>> List<_D> _marshalList(//
             Class<_D> dtoClass, int fmask, Iterable<? extends _S> sources, Boolean refButFilled) {
 
         List<_D> dtoList = new ArrayList<_D>();
@@ -78,7 +78,7 @@ public abstract class BaseDto_AS1<S, C>
         return dtoList;
     }
 
-    public <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalSet( //
+    public <_S, _D extends BaseDto<? super _S>> Set<_D> marshalSet( //
             Class<_D> dtoClass, int fmask, Iterable<? extends _S> sources, Boolean refButFilled) {
 
         Set<_D> dtoSet = new HashSet<_D>();
@@ -94,7 +94,7 @@ public abstract class BaseDto_AS1<S, C>
         return dtoSet;
     }
 
-    public <_S, _D extends BaseDto<? super _S, _C>, _C> Set<_D> marshalTreeSet( //
+    public <_S, _D extends BaseDto<? super _S>> Set<_D> marshalTreeSet( //
             Class<_D> dtoClass, int fmask, Iterable<? extends _S> sources, Boolean refButFilled) {
 
         Set<_D> dtoSet = new TreeSet<_D>();
@@ -121,7 +121,7 @@ public abstract class BaseDto_AS1<S, C>
     /**
      * In the base DTO implementation, no modification / ref is used.
      */
-    public <Coll extends Collection<_S>, _D extends BaseDto<_S, _C>, _S, _C> //
+    public <Coll extends Collection<_S>, _D extends BaseDto<_S>, _S> //
     /*    */Coll _unmarshalCollection(Coll collection, Iterable<? extends _D> dtoList) {
 
         if (collection == null)
@@ -150,8 +150,8 @@ public abstract class BaseDto_AS1<S, C>
      *      merge("property")
      * </pre>
      */
-    public <target_t, property_t, _C> void merge(//
-            target_t target, IPropertyAccessor<property_t> property, BaseDto<property_t, _C> propertyDto) {
+    public <target_t, property_t> void merge(//
+            target_t target, IPropertyAccessor<property_t> property, BaseDto<property_t> propertyDto) {
 
         if (property == null)
             throw new NullPointerException("property");

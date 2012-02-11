@@ -49,14 +49,14 @@ public class ThingDictsBean
 
     @Deprecated
     public List<SelectItem> getStandardUnits() {
-        List<Unit> stdUnitList = serviceFor(Unit.class).list(UnitCriteria.standardUnits);
+        List<Unit> stdUnitList = ctx.data.access(Unit.class).list(UnitCriteria.standardUnits);
         List<UnitDto> stdUnitDtoList = DTOs.marshalList(UnitDto.class, stdUnitList);
         return UIHelper.selectItemsFromDict(stdUnitDtoList);
     }
 
     @Deprecated
     public List<SelectItem> getAllUnits() {
-        List<Unit> unitList = serviceFor(Unit.class).list();
+        List<Unit> unitList = ctx.data.access(Unit.class).list();
         List<UnitDto> unitDtoList = DTOs.marshalList(UnitDto.class, unitList);
         return UIHelper.selectItemsFromDict(unitDtoList);
     }

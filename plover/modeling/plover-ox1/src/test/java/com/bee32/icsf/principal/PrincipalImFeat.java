@@ -18,22 +18,22 @@ public class PrincipalImFeat
     Role r1 = new Role("role1");
 
     public void clean() {
-        asFor(Principal.class).deleteAll();
+        ctx.data.access(Principal.class).deleteAll();
     }
 
     public void create1() {
-        asFor(Principal.class).saveOrUpdateAll(g1, u1, r1);
+        ctx.data.access(Principal.class).saveOrUpdateAll(g1, u1, r1);
     }
 
     public void attach1() {
         r1.addResponsibleGroup(g1);
         g1.addMemberUser(u1);
-        asFor(Principal.class).saveOrUpdateAll(r1, g1);
+        ctx.data.access(Principal.class).saveOrUpdateAll(r1, g1);
     }
 
     public void detachGroup1() {
         g1.removeMemberUser(u1);
-        asFor(Principal.class).saveOrUpdateAll(g1);
+        ctx.data.access(Principal.class).saveOrUpdateAll(g1);
     }
 
     @Transactional(readOnly = true)

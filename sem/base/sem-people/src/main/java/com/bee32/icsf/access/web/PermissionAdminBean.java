@@ -52,13 +52,13 @@ public class PermissionAdminBean
     private int activeTab;
 
     public PermissionAdminBean() {
-        List<Group> _groups = serviceFor(Group.class).list();
+        List<Group> _groups = ctx.data.access(Group.class).list();
         groups = DTOs.marshalList(GroupDto.class, _groups);
 
-        List<Role> _roles = serviceFor(Role.class).list();
+        List<Role> _roles = ctx.data.access(Role.class).list();
         roles = DTOs.marshalList(RoleDto.class, _roles);
 
-        List<User> _users = serviceFor(User.class).list();
+        List<User> _users = ctx.data.access(User.class).list();
         users = DTOs.marshalList(UserDto.class, _users);
     }
 
@@ -143,8 +143,8 @@ public class PermissionAdminBean
     }
 
     private void loadEntries(PrincipalDto principalDto) {
-        ScannedResourceRegistry srr = ctx.getBean(ScannedResourceRegistry.class);
-        R_ACLService aclService = ctx.getBean(R_ACLService.class);
+        ScannedResourceRegistry srr = ctx.bean.getBean(ScannedResourceRegistry.class);
+        R_ACLService aclService = ctx.bean.getBean(R_ACLService.class);
 
         Map<String, ResourcePermission> havePermissions = new HashMap<String, ResourcePermission>();
         Principal principal = principalDto.unmarshal();
@@ -251,9 +251,9 @@ public class PermissionAdminBean
 
         Principal principal = principalDto.unmarshal();
 
-        serviceFor(R_ACE.class).findAndDelete(new Equals("principal", principal));
+        ctx.data.access(R_ACE.class).findAndDelete(new Equals("principal", principal));
 
-        ScannedResourceRegistry srr = ctx.getBean(ScannedResourceRegistry.class);
+        ScannedResourceRegistry srr = ctx.bean.getBean(ScannedResourceRegistry.class);
 
         Iterator<RPEntry> iterator = rpEntries.iterator();
         while (iterator.hasNext()) {
@@ -262,7 +262,7 @@ public class PermissionAdminBean
             Resource resource = srr.query(rpEntry.getQualifiedName());
             R_ACE ace = new R_ACE(resource, principal, rpEntry.permission);
 
-            serviceFor(R_ACE.class).save(ace);
+            ctx.data.access(R_ACE.class).save(ace);
         }
 
         uiLogger.info("权限保存成功!");

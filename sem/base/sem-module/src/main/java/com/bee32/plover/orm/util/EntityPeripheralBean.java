@@ -25,7 +25,7 @@ public abstract class EntityPeripheralBean
     public static final String CONTEXT_BEAN = "EntityPeripheralBean.contextBean";
 
     protected EntityViewBeanRegistry getViewBeanRegistry() {
-        return ctx.getBean(EntityViewBeanRegistry.class);
+        return ctx.bean.getBean(EntityViewBeanRegistry.class);
     }
 
     protected Class<?> getContextTypeFromPageDirectory() {

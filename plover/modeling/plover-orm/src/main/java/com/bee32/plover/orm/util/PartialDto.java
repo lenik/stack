@@ -22,12 +22,12 @@ public abstract class PartialDto<T extends Serializable>
     }
 
     @Override
-    public <D extends BaseDto<?, ?>> D ref(T source) {
+    public <D extends BaseDto<?>> D ref(T source) {
         throw new UnsupportedOperationException("Partial/dto doesn't have a key for reference.");
     }
 
     @Override
-    protected boolean idEquals(BaseDto<T, IEntityMarshalContext> other) {
+    protected boolean idEquals(BaseDto<T> other) {
         return this == other;
     }
 

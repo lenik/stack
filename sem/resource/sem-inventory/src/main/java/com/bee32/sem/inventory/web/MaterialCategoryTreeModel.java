@@ -71,7 +71,7 @@ public class MaterialCategoryTreeModel
 
     synchronized void loadTree() {
         if (rootNode == null) {
-            List<MaterialCategory> _categories = serviceFor(MaterialCategory.class).list(
+            List<MaterialCategory> _categories = ctx.data.access(MaterialCategory.class).list(
                     MaterialCriteria.categoryType(materialTypes));
             List<MaterialCategoryDto> categories = DTOs.mrefList(MaterialCategoryDto.class, TreeEntityDto.PARENT,
                     _categories);

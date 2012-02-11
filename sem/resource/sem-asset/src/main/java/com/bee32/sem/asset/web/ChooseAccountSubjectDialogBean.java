@@ -32,7 +32,7 @@ public class ChooseAccountSubjectDialogBean
 
 //    // TODO 检测是否末级科目
 //    String name = selectedAccountSubject.getName();
-//    int subAccountSubjectCount = serviceFor(AccountSubject.class).count(//
+//    int subAccountSubjectCount = ctx.data.access(AccountSubject.class).count(//
 //            new Like("id", "%" + name + "%"), //
 //    if (subAccountSubjectCount !=1) {
 //        uiLogger.error("所选择科目不是末级科目!");

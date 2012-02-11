@@ -60,7 +60,7 @@ public class ModifyPasswordBean
         }
 
         User u = SessionUser.getInstance().getInternalUser();
-        List<UserPassword> plist = serviceFor(UserPassword.class).list(LoginCriteria.forUser(u));
+        List<UserPassword> plist = ctx.data.access(UserPassword.class).list(LoginCriteria.forUser(u));
         if (plist.isEmpty()) {
             uiLogger.warn("密码不存在");
             return;
@@ -70,7 +70,7 @@ public class ModifyPasswordBean
         if (p1.equals(oldPass)) {
             // 用户输入的旧密码正确
             plist.get(0).setPasswd(newPass);
-            serviceFor(UserPassword.class).saveOrUpdate(plist.get(0));
+            ctx.data.access(UserPassword.class).saveOrUpdate(plist.get(0));
 
             uiLogger.info("修改密码成功");
         } else {

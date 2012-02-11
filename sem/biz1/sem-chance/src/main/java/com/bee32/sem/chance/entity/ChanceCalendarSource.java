@@ -13,7 +13,7 @@ public class ChanceCalendarSource
 
     @Override
     public List<ChanceAction> getEvents(Date begin, Date end) {
-        return asFor(ChanceAction.class).list(MomentIntervalCriteria.timeBetween(begin, end));
+        return ctx.data.access(ChanceAction.class).list(MomentIntervalCriteria.timeBetween(begin, end));
     }
 
 }

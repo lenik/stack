@@ -15,8 +15,8 @@ import javax.free.ParseException;
  *      synchronization between method calls.
  * </pre>
  */
-abstract class BaseDto_ASM<S, C>
-        implements IDataTransferObject<S, C> {
+abstract class BaseDto_ASM<S>
+        implements IDataTransferObject<S> {
 
     private static final long serialVersionUID = 1L;
 
@@ -61,15 +61,15 @@ abstract class BaseDto_ASM<S, C>
         return sessionStack.lastElement();
     }
 
-    IMarshalSession createOrReuseSession(C context) {
+    IMarshalSession createOrReuseSession() {
         if (sessionStack == null || sessionStack.isEmpty())
-            return new MarshalSession(context);
+            return new MarshalSession();
         else
             return sessionStack.lastElement();
     }
 
     @Override
-    public synchronized final <D extends BaseDto<? super S, C>> D marshal(IMarshalSession session, S source) {
+    public synchronized final <D extends BaseDto<? super S>> D marshal(IMarshalSession session, S source) {
         enter(session);
         try {
             return marshalImpl(source);
@@ -109,7 +109,7 @@ abstract class BaseDto_ASM<S, C>
         }
     }
 
-    abstract <D extends BaseDto<? super S, C>> D marshalImpl(S source);
+    abstract <D extends BaseDto<? super S>> D marshalImpl(S source);
 
     abstract S mergeImpl(S target);
 
@@ -120,50 +120,26 @@ abstract class BaseDto_ASM<S, C>
 
     // [A] Context/Session wrapper
 
-    protected C getDefaultContext() {
-        return null;
-    }
-
     protected IMarshalSession getDefaultSession() {
-        C context = getDefaultContext();
-        IMarshalSession session = createOrReuseSession(context);
+        IMarshalSession session = createOrReuseSession();
         return session;
     }
 
-    public final <D extends BaseDto<S, C>> D marshal(C context, S source) {
-        return marshal(createOrReuseSession(context), source);
-    }
-
-    public final S merge(C context, S source) {
-        return merge(createOrReuseSession(context), source);
-    }
-
-    public final void parse(C context, Map<String, ?> map)
-            throws ParseException {
-        parse(createOrReuseSession(context), map);
-    }
-
-    public final void export(C context, Map<String, Object> map) {
-        export(createOrReuseSession(context), map);
-    }
-
-    // [B] TLS-Context/Session wrapper
-
-    public final <D extends BaseDto<S, C>> D marshal(S source) {
-        return marshal(getDefaultContext(), source);
+    public final <D extends BaseDto<S>> D marshal(S source) {
+        return marshal(createOrReuseSession(), source);
     }
 
     public final S merge(S source) {
-        return merge(getDefaultContext(), source);
+        return merge(createOrReuseSession(), source);
     }
 
     public final void parse(Map<String, ?> map)
             throws ParseException {
-        parse(getDefaultContext(), map);
+        parse(createOrReuseSession(), map);
     }
 
     public final void export(Map<String, Object> map) {
-        export(getDefaultContext(), map);
+        export(createOrReuseSession(), map);
     }
 
 }

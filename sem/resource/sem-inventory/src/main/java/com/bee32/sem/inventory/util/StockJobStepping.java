@@ -51,7 +51,7 @@ public class StockJobStepping
         if (!initiatorOrder.isNewCreated()) {
             long orderId = initiatorOrder.getId();
             try {
-                StockJob _job = asFor(jobClass).getFirst(new Equals(bindingProperty + ".id", orderId));
+                StockJob _job = ctx.data.access(jobClass).getFirst(new Equals(bindingProperty + ".id", orderId));
                 if (_job != null)
                     job = DTOs.marshal(jobDtoClass, _job);
             } catch (Exception e) {
@@ -83,13 +83,13 @@ public class StockJobStepping
     public void saveOpenedObject(int saveFlags, UnmarshalMap uMapMain) {
         StockJobDto<?> job = getOpenedObject();
         try {
-            StockJob _job = job.unmarshal(this);
+            StockJob _job = job.unmarshal();
             for (StockOrder _order : uMapMain.<StockOrder> entitySet())
                 setJobBinding(_job, _order);
             if (_job.getId() != null) { // ???
-                asFor(jobClass).update(_job);
+                ctx.data.access(jobClass).update(_job);
             } else {
-                asFor(jobClass).save(_job);
+                ctx.data.access(jobClass).save(_job);
             }
         } catch (Exception e) {
             uiLogger.error("无法保存作业对象", e);
@@ -103,11 +103,11 @@ public class StockJobStepping
             return;
         try {
             if (isInitiator()) {
-                asFor(jobClass).findAndDelete(new Equals(bindingProperty + ".id", initiatorOrder.getId()));
+                ctx.data.access(jobClass).findAndDelete(new Equals(bindingProperty + ".id", initiatorOrder.getId()));
             } else {
-                for (StockJob _job : asFor(jobClass).list(new Equals(bindingProperty + ".id", initiatorOrder.getId()))) {
+                for (StockJob _job : ctx.data.access(jobClass).list(new Equals(bindingProperty + ".id", initiatorOrder.getId()))) {
                     setJobBinding(_job, null);
-                    asFor(jobClass).update(_job);
+                    ctx.data.access(jobClass).update(_job);
                 }
             }
         } catch (Exception e) {

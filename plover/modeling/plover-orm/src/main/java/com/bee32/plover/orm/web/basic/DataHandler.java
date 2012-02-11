@@ -88,10 +88,10 @@ public class DataHandler<E extends Entity<K>, K extends Serializable>
 
         List<? extends E> list;
         if (searchModel.isDummy()) {
-            list = (List<? extends E>) asFor(searchType).list();
+            list = (List<? extends E>) ctx.data.access(searchType).list();
         } else {
             CriteriaComposite composite = searchModel.compose();
-            list = (List<? extends E>) asFor(searchType).list(composite);
+            list = (List<? extends E>) ctx.data.access(searchType).list(composite);
         }
         return list;
     }

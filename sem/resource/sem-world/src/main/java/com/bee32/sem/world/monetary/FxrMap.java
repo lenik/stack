@@ -9,7 +9,7 @@ import java.util.TreeSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.plover.orm.dao.CommonDataManager;
+import com.bee32.plover.orm.util.BootstrapDataAssembledContext;
 import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.plover.util.date.LocalDateUtil;
 import com.bee32.sem.world.math.InterpolatedMap;
@@ -56,12 +56,16 @@ public class FxrMap
         }
     }
 
+    protected static class ctx
+            extends BootstrapDataAssembledContext {
+    }
+
     void load(Date from, Date to) {
         // String s1 = Dates.dateFormat.format(from);
         // String s2 = Dates.dateFormat.format(to);
         // logger.debug("Load " + s1 + " .. " + s2);
 
-        List<FxrRecord> records = dataManager.asFor(FxrRecord.class).list(//
+        List<FxrRecord> records = ctx.data.access(FxrRecord.class).list(//
                 CommonCriteria.betweenEx("date", from, to), //
                 MonetaryCriteria.unitCurrencyOf(unit));
 
@@ -103,14 +107,6 @@ public class FxrMap
 
     public String toString() {
         return "FxrMap<" + unit.getCurrencyCode() + "/" + usage + ">: " + imap.size() + " entries";
-    }
-
-    CommonDataManager dataManager;
-
-    public void setDataManager(CommonDataManager dataManager) {
-        if (dataManager == null)
-            throw new NullPointerException("dataManager");
-        this.dataManager = dataManager;
     }
 
 }

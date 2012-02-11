@@ -48,7 +48,7 @@ public class StockQuery
                 options.getWarehouseProjection(), //
                 options.getParentWarehouseProjection());
 
-        List<Object[]> list = asFor(StockOrderItem.class).listMisc(projection, selection);
+        List<Object[]> list = ctx.data.access(StockOrderItem.class).listMisc(projection, selection);
 
         StockOrderSubject subject = StockOrderSubject.PACK_M;
         if (options.getCBatch() != null) {

@@ -18,7 +18,6 @@ import com.bee32.plover.orm.entity.EasTxWrapper;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityDao;
 import com.bee32.plover.orm.entity.IEntityAccessService;
-import com.bee32.plover.orm.util.IEntityMarshalContext;
 import com.bee32.plover.site.SiteInstance;
 import com.bee32.plover.site.scope.PerSite;
 
@@ -26,7 +25,7 @@ import com.bee32.plover.site.scope.PerSite;
 @Service
 @PerSite
 public class CommonDataManager
-        implements IEntityMarshalContext, ApplicationContextAware {
+        implements ApplicationContextAware {
 
     static Logger logger = LoggerFactory.getLogger(CommonDataManager.class);
 
@@ -72,7 +71,6 @@ public class CommonDataManager
         logger.debug(prefix + "Preferred ETW Implementation: " + etwImplClass + " (order=" + etwOrder + ")");
     }
 
-    @Override
     public <E extends Entity<? extends K>, K extends Serializable> //
     IEntityAccessService<E, K> asFor(Class<? extends E> entityType) {
 
@@ -87,16 +85,6 @@ public class CommonDataManager
         preferredEtw.setDao(dao);
 
         return preferredEtw;
-    }
-
-    @Override
-    public <E extends Entity<K>, K extends Serializable> E getOrFail(Class<E> entityType, K id) {
-        return asFor(entityType).getOrFail(id);
-    }
-
-    @Override
-    public <E extends Entity<K>, K extends Serializable> E getRef(Class<E> entityType, K id) {
-        return asFor(entityType).lazyLoad(id);
     }
 
 }

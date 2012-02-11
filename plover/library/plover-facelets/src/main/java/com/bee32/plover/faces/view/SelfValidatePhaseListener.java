@@ -10,12 +10,16 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.validation.ConstraintViolation;
 
-import com.bee32.plover.faces.utils.FacesContextUtils;
+import com.bee32.plover.faces.utils.FacesAssembledContext;
 
 public class SelfValidatePhaseListener
         implements PhaseListener {
 
     private static final long serialVersionUID = 1L;
+
+    static class ctx
+            extends FacesAssembledContext {
+    }
 
     @Override
     public PhaseId getPhaseId() {
@@ -29,7 +33,7 @@ public class SelfValidatePhaseListener
     @Override
     public void afterPhase(PhaseEvent event) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        ViewMetadata metadata = FacesContextUtils.getBean(ViewMetadata.class);
+        ViewMetadata metadata = ctx.bean.getBean(ViewMetadata.class);
         Collection<?> viewBeans = metadata.getViewBeans();
         boolean failed = false;
         for (Object viewBean : viewBeans) {

@@ -56,8 +56,8 @@ public abstract class CollectionMBean<T>
             throw new CreateException(e.getMessage(), e);
         }
 
-        if (obj instanceof BaseDto<?, ?>) {
-            BaseDto<?, ?> dto = (BaseDto<?, ?>) obj;
+        if (obj instanceof BaseDto<?>) {
+            BaseDto<?> dto = (BaseDto<?>) obj;
             dto.create();
         }
 

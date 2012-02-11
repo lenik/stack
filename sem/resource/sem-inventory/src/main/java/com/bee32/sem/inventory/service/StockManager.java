@@ -42,7 +42,7 @@ public class StockManager
             period.setDescription(description);
             // snapshot.setStarting(starting);
 
-            asFor(StockPeriod.class).save(period);
+            ctx.data.access(StockPeriod.class).save(period);
         }
 
         // 2. Compact the new starting
@@ -54,18 +54,18 @@ public class StockManager
             packOrders.add(packOrder);
         }
 
-        List<StockOrder> orders = asFor(StockOrder.class).list(StockCriteria.basedOn(workingBase));
+        List<StockOrder> orders = ctx.data.access(StockOrder.class).list(StockCriteria.basedOn(workingBase));
         for (StockOrder order : orders) {
             for (StockOrder packOrder : packOrders)
                 packOrder.merge(order);
         }
 
         // period.setPackOrders(packOrders);
-        asFor(StockOrder.class).saveAll(packOrders);
+        ctx.data.access(StockOrder.class).saveAll(packOrders);
 
         // 3. Update the inventory
         inventory.setWorkingBase(period);
-        asFor(StockInventory.class).update(inventory);
+        ctx.data.access(StockInventory.class).update(inventory);
 
         // Done.
         return period;

@@ -32,24 +32,24 @@ public class CatFeat
         lucy.setAddr(new CaveAddr("ZJ", "11 X Rd."));
 
         System.out.println("Save lucy");
-        asFor(Tiger.class).save(lucy);
+        ctx.data.access(Tiger.class).save(lucy);
 
         EntityFlags flags = EntityAccessor.getFlags(lucy);
         flags.setLocked(true);
         System.out.println("Lock lucy");
-        asFor(Tiger.class).saveOrUpdate(lucy);
+        ctx.data.access(Tiger.class).saveOrUpdate(lucy);
 
         flags = EntityAccessor.getFlags(lucy);
         boolean locked = flags.isLocked();
-        //flags.setUnlockReq(true);
+        // flags.setUnlockReq(true);
         System.out.println("Unlock lucy");
-        asFor(Tiger.class).saveOrUpdate(lucy);
+        ctx.data.access(Tiger.class).saveOrUpdate(lucy);
 
         flags = EntityAccessor.getFlags(lucy);
         locked = flags.isLocked();
 
         System.out.println("Delete specific");
-        asFor(Tiger.class).delete(lucy);
+        ctx.data.access(Tiger.class).delete(lucy);
 
         System.out.println("---------------- FILL END ----------------");
     }
@@ -58,7 +58,7 @@ public class CatFeat
     public void doList() {
         System.out.println("---------------- LIST BEGIN ----------------");
         System.out.println("List tigers");
-        List<Tiger> tigers = asFor(Tiger.class).list();
+        List<Tiger> tigers = ctx.data.access(Tiger.class).list();
 
         for (Tiger t : tigers)
             System.out.println("Tiger: " + t);

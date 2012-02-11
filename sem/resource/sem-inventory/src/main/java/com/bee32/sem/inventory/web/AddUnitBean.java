@@ -21,7 +21,7 @@ public class AddUnitBean
     UnitDto unit = new UnitDto().create();
 
     public List<SelectItem> getStandardUnits() {
-        List<Unit> unitList = serviceFor(Unit.class).list(UnitCriteria.standardUnits);
+        List<Unit> unitList = ctx.data.access(Unit.class).list(UnitCriteria.standardUnits);
         List<UnitDto> unitDtoList = DTOs.marshalList(UnitDto.class, unitList);
         return UIHelper.selectItemsFromDict(unitDtoList);
     }
@@ -40,7 +40,7 @@ public class AddUnitBean
 
     public void addUnit() {
         try {
-            serviceFor(Unit.class).saveOrUpdate(unit.unmarshal());
+            ctx.data.access(Unit.class).saveOrUpdate(unit.unmarshal());
             uiLogger.info("保存成功!");
         } catch (Exception e) {
             uiLogger.error("添加单位失败", e);

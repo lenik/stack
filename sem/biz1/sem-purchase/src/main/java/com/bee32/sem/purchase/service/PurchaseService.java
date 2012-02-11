@@ -86,7 +86,7 @@ public class PurchaseService
             BigDecimal needQuantity = need.get(material);
 
             // 取得物料的安全库存
-            Material _m = asFor(Material.class).get(material.getId());
+            Material _m = ctx.data.access(Material.class).get(material.getId());
             BigDecimal safetyQuantity = new BigDecimal(0);
             for (MaterialWarehouseOption option : _m.getOptions())
                 safetyQuantity = safetyQuantity.add(option.getSafetyStock());
@@ -198,16 +198,16 @@ public class PurchaseService
                 _takeInOrder.addItem(_item);
 
                 // 保存以上StockOrder*
-                StockWarehouse warehouse = asFor(StockWarehouse.class).lazyLoad(itemWarehouseMap.get(item.getId()));
+                StockWarehouse warehouse = ctx.data.access(StockWarehouse.class).lazyLoad(itemWarehouseMap.get(item.getId()));
                 _takeInOrder.setWarehouse(warehouse);
-                asFor(StockOrder.class).saveOrUpdate(_takeInOrder);
+                ctx.data.access(StockOrder.class).saveOrUpdate(_takeInOrder);
 
                 // 填充并保存OrderHolder,以在PurchaseRequest和StockOrder之间建立关联
                 PurchaseTakeIn _takeIn = new PurchaseTakeIn();
                 _takeIn.setPurchaseRequest(purchaseRequest.unmarshal());
                 _takeIn.setStockOrder(_takeInOrder); // 重新marshal，以便dto中包含id
 
-                asFor(PurchaseTakeIn.class).saveOrUpdate(_takeIn);
+                ctx.data.access(PurchaseTakeIn.class).saveOrUpdate(_takeIn);
             }
         }
     }

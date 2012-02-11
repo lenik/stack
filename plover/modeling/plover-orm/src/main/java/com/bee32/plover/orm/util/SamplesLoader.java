@@ -319,7 +319,7 @@ public class SamplesLoader
                 }
 
                 // more is only belonged to side Z.
-                pack.more(dataManager);
+                pack.more();
 
             } // loaded?
         } // !sideZ.empty

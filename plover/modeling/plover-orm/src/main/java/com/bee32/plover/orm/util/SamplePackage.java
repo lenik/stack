@@ -17,6 +17,10 @@ public class SamplePackage
         extends Component
         implements IPriority {
 
+    protected static class ctx
+            extends BootstrapDataAssembledContext {
+    }
+
     private final List<Entity<?>> instances = new ArrayList<Entity<?>>();
     private final Set<SamplePackage> dependencies = new LinkedSet<SamplePackage>();
 
@@ -95,7 +99,7 @@ public class SamplePackage
     public void endLoad() {
     }
 
-    protected void more(IEntityMarshalContext context) {
+    protected void more() {
     }
 
 }

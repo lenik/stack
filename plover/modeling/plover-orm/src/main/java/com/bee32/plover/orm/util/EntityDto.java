@@ -67,18 +67,6 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         createTransients();
     }
 
-    protected IEntityMarshalContext getMarshalContext() {
-        Object context = getSession().getContext();
-        IEntityMarshalContext emContext = (IEntityMarshalContext) context;
-        return emContext;
-    }
-
-    @Override
-    protected IEntityMarshalContext getDefaultContext() {
-        IEntityMarshalContext marshalContext = DefaultMarshalContext.getInstance();
-        return marshalContext;
-    }
-
     /**
      * <pre>
      * BASE LAYER: Common Properties
@@ -476,7 +464,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      * @return This DTO.
      */
     @Override
-    public <self_t extends BaseDto<?, ?>> self_t ref(E entity) {
+    public <self_t extends BaseDto<?>> self_t ref(E entity) {
         // 1, Ref-by-id by default.
         // 2. Don't set ID_VER_REF here.
         marshalAs(MarshalType.ID_REF);
@@ -527,7 +515,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             }
 
             try {
-                return getMarshalContext().getRef(entityType, id);
+                return ctx.data.getRef(entityType, id);
             } catch (HibernateSystemException e) {
                 throw e;
             }
@@ -538,7 +526,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
             E entity;
             try {
-                entity = getMarshalContext().getRef(entityType, id);
+                entity = ctx.data.getRef(entityType, id);
             } catch (HibernateSystemException e) {
                 throw e;
             }
@@ -564,7 +552,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
                 partialMerge = id != null;
 
             if (partialMerge) {
-                E existing = getMarshalContext().asFor(entityType).get(id);
+                E existing = ctx.data.access(entityType).get(id);
                 if (existing != null)
                     return existing;
             }
@@ -583,7 +571,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      * @see Entity#idEquals(EntityBase)
      */
     @Override
-    protected final boolean idEquals(BaseDto<E, IEntityMarshalContext> other) {
+    protected final boolean idEquals(BaseDto<E> other) {
         @SuppressWarnings("unchecked")
         EntityDto<E, K> o = (EntityDto<E, K>) other;
         return idEquals(o);

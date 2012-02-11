@@ -103,7 +103,7 @@ public class SecurityOptionsDialogBean
         if (aclId == null)
             return null;
 
-        ACL _acl = asFor(ACL.class).get(aclId);
+        ACL _acl = ctx.data.access(ACL.class).get(aclId);
         if (_acl == null)
             return null;
 
@@ -127,14 +127,14 @@ public class SecurityOptionsDialogBean
 
         ACL _acl;
         try {
-            _acl = selectedACL.unmarshal(this);
+            _acl = selectedACL.unmarshal();
         } catch (Exception e) {
             uiLogger.error("反编列失败", e);
             return;
         }
 
         try {
-            asFor(ACL.class).update(_acl);
+            ctx.data.access(ACL.class).update(_acl);
         } catch (Exception e) {
             uiLogger.error("保存 ACL 失败", e);
             return;
@@ -156,7 +156,7 @@ public class SecurityOptionsDialogBean
             CEntityDto<?, ?> dto = (CEntityDto<?, ?>) selection;
             CEntity<?> _entity;
             try {
-                _entity = dto.unmarshal(this);
+                _entity = dto.unmarshal();
             } catch (Exception e) {
                 uiLogger.error("反编列失败", e);
                 return;
@@ -164,7 +164,7 @@ public class SecurityOptionsDialogBean
             CEntityAccessor.setAclId(_entity, aclId);
 
             try {
-                asFor(Entity.class).update(_entity);
+                ctx.data.access(Entity.class).update(_entity);
             } catch (Exception e) {
                 uiLogger.error("更新对象属性失败", e);
                 return;

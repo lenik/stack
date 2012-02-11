@@ -25,7 +25,7 @@ public class ACLService
     @Override
     public Set<Integer> getACLs(Principal principal, Permission permission) {
         ICriteriaElement criteria = ACLCriteria.implies(principal, permission);
-        List<ACL> acls = asFor(ACL.class).list(criteria);
+        List<ACL> acls = ctx.data.access(ACL.class).list(criteria);
 
         Set<Integer> aclIds = new HashSet<Integer>();
         aclIds.add(0); // 0 is always shown.

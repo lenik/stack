@@ -16,8 +16,8 @@ import com.bee32.plover.arch.util.TextMap;
 /**
  * Variant type utils.
  */
-abstract class BaseDto_VTU<S, C>
-        extends BaseDto_Skel<S, C> {
+abstract class BaseDto_VTU<S>
+        extends BaseDto_Skel<S> {
 
     private static final long serialVersionUID = 1L;
 
@@ -60,11 +60,6 @@ abstract class BaseDto_VTU<S, C>
         merge(session, target);
     }
 
-    public final void unmarshalTo(C context, S target) {
-        checkCanBeUnmarshalledTo();
-        merge(context, target);
-    }
-
     public final void unmarshalTo(S target) {
         checkCanBeUnmarshalledTo();
         merge(target);
@@ -72,10 +67,6 @@ abstract class BaseDto_VTU<S, C>
 
     public final S unmarshal(IMarshalSession session) {
         return merge(session, null);
-    }
-
-    public final S unmarshal(C context) {
-        return merge(context, null);
     }
 
     public final S unmarshal() {
@@ -92,31 +83,21 @@ abstract class BaseDto_VTU<S, C>
         }
     }
 
-    public final void parse(C context, TextMap map)
-            throws ParseException {
-        parse(createOrReuseSession(context), map);
-    }
-
     public final void parse(TextMap map)
             throws ParseException {
-        parse(getDefaultContext(), map);
+        parse(createOrReuseSession(), map);
     }
 
-    public final void parse(C context, HttpServletRequest request)
+    public final void parse(HttpServletRequest request)
             throws ServletException {
         TextMap textMap = TextMap.convert(request);
         try {
-            parse(context, textMap);
+            parse(textMap);
         } catch (TypeConvertException e) {
             throw new ServletException("Parse error: " + e.getMessage(), e);
         } catch (ParseException e) {
             throw new ServletException("Parse error: " + e.getMessage(), e);
         }
-    }
-
-    public final void parse(HttpServletRequest request)
-            throws ServletException {
-        parse(getDefaultContext(), request);
     }
 
     final void parseImpl(Map<String, ?> map)

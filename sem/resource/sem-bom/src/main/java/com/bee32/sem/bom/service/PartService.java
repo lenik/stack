@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.arch.DataService;
 import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.faces.utils.FacesContextUtils;
+import com.bee32.plover.faces.utils.FacesPartialContext;
 import com.bee32.plover.faces.utils.FacesUILogger;
 import com.bee32.sem.bom.entity.Part;
 import com.bee32.sem.bom.entity.PartItem;
@@ -20,7 +20,7 @@ public class PartService
      */
     @Transactional
     public void changePartItemFromMaterialToPart(Part part) {
-        FacesUILogger uiLogger = FacesContextUtils.getUILogger();
+        FacesUILogger uiLogger = FacesPartialContext.getUILogger();
 
         // 保存前查找partItem为原材料的物料和当前part的target是否相同，
         // 如果相同，则把这些partItem中的material设为null,part设为当前part
@@ -31,13 +31,13 @@ public class PartService
             return;
         }
 
-        List<PartItem> items = asFor(PartItem.class).list(new Equals("material.id", material.getId()));
+        List<PartItem> items = ctx.data.access(PartItem.class).list(new Equals("material.id", material.getId()));
 
         if (items != null && items.size() > 0) {
             for (PartItem item : items) {
                 item.setMaterial(null);
                 item.setPart(part);
-                asFor(PartItem.class).saveOrUpdate(item);
+                ctx.data.access(PartItem.class).saveOrUpdate(item);
             }
         }
     }

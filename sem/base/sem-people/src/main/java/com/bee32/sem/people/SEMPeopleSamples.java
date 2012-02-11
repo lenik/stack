@@ -12,7 +12,6 @@ import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.collections.Varargs;
-import com.bee32.plover.orm.util.IEntityMarshalContext;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.plover.orm.util.SampleContribution;
 import com.bee32.sem.people.entity.Contact;
@@ -214,9 +213,9 @@ public class SEMPeopleSamples
     }
 
     @Override
-    protected void more(IEntityMarshalContext context) {
+    protected void more() {
         abcSales.setOwner(tang);
-        context.asFor(Group.class).saveOrUpdate(abcSales);
+        ctx.data.access(Group.class).saveOrUpdate(abcSales);
     }
 
 }

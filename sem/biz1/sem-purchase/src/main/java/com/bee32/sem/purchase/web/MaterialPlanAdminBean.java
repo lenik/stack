@@ -111,7 +111,7 @@ public class MaterialPlanAdminBean
         opts.setLocation(null, true);
         opts.setWarehouse(null, true);
 
-        IStockQuery q = ctx.getBean(IStockQuery.class);
+        IStockQuery q = ctx.bean.getBean(IStockQuery.class);
         StockOrder _sumOrder = q.getActualSummary(materialIds, opts);
         StockOrderDto sumOrder = DTOs.marshal(StockOrderDto.class, StockOrderDto.ITEMS, _sumOrder);
 

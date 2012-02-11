@@ -34,7 +34,7 @@ public class ChanceService
 
     @Transactional(readOnly = false)
     public boolean doDetachActionChance(Chance chance) {
-        List<ChanceAction> actions = asFor(ChanceAction.class).list();
+        List<ChanceAction> actions = ctx.data.access(ChanceAction.class).list();
 
         // XXX - ???
         List<ChanceAction> tempList = new ArrayList<ChanceAction>();

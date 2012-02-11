@@ -14,7 +14,7 @@ public abstract class AbstractVerifySupportBean
     private static final long serialVersionUID = 1L;
 
     protected IVerifyService getVerifyService() {
-        return ctx.getBean(IVerifyService.class);
+        return ctx.bean.getBean(IVerifyService.class);
     }
 
     public List<? extends IVerifiableDto> getVerifiables() {

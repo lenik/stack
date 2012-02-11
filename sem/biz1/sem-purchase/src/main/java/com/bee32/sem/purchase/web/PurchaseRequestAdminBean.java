@@ -56,7 +56,7 @@ public class PurchaseRequestAdminBean
             List<MaterialPlan> plans = request.getPlans();
             for (MaterialPlan plan : plans)
                 plan.setPurchaseRequest(request);
-            serviceFor(MaterialPlan.class).saveOrUpdateAll(plans);
+            ctx.data.access(MaterialPlan.class).saveOrUpdateAll(plans);
         }
     }
 
@@ -67,7 +67,7 @@ public class PurchaseRequestAdminBean
             List<MaterialPlan> plans = request.getPlans();
             for (MaterialPlan plan : plans)
                 plan.setPurchaseRequest(null);
-            asFor(MaterialPlan.class).saveOrUpdateAll(plans);
+            ctx.data.access(MaterialPlan.class).saveOrUpdateAll(plans);
         }
         return true;
     }
@@ -84,7 +84,7 @@ public class PurchaseRequestAdminBean
 
         purchaseRequest.setPlans(selectedPlans);
 
-        PurchaseService purchaseService = ctx.getBean(PurchaseService.class);
+        PurchaseService purchaseService = ctx.bean.getBean(PurchaseService.class);
         List<PurchaseRequestItemDto> items = purchaseService.calcMaterialRequirement(purchaseRequest, selectedPlans);
         purchaseRequest.setItems(items);
     }
@@ -114,11 +114,11 @@ public class PurchaseRequestAdminBean
 
             _purchaseAdvice.setPreferredInquiry(selectedInquiry.unmarshal());
             _purchaseAdvice.setPurchaseRequestItem(_purchaseRequestItem);
-            serviceFor(PurchaseAdvice.class).saveOrUpdate(_purchaseAdvice);
+            ctx.data.access(PurchaseAdvice.class).saveOrUpdate(_purchaseAdvice);
             purchaseAdvice = DTOs.marshal(PurchaseAdviceDto.class, _purchaseAdvice);
 
             _purchaseRequestItem.setPurchaseAdvice(_purchaseAdvice);
-            serviceFor(PurchaseRequestItem.class).saveOrUpdate(_purchaseRequestItem);
+            ctx.data.access(PurchaseRequestItem.class).saveOrUpdate(_purchaseRequestItem);
 
             uiLogger.info("采纳成功.");
         } catch (Exception e) {
@@ -133,7 +133,7 @@ public class PurchaseRequestAdminBean
         }
 
         try {
-            serviceFor(PurchaseAdvice.class).saveOrUpdate(purchaseAdvice.unmarshal());
+            ctx.data.access(PurchaseAdvice.class).saveOrUpdate(purchaseAdvice.unmarshal());
             uiLogger.info("保存成功.");
         } catch (Exception e) {
             uiLogger.error("保存失败.", e);
@@ -154,7 +154,7 @@ public class PurchaseRequestAdminBean
         try {
             PurchaseAdvice _purchaseAdvice = purchaseAdvice.unmarshal();
             _purchaseAdvice.getPurchaseRequestItem().setPurchaseAdvice(null);
-            serviceFor(PurchaseAdvice.class).delete(_purchaseAdvice);
+            ctx.data.access(PurchaseAdvice.class).delete(_purchaseAdvice);
             purchaseAdvice = new PurchaseAdviceDto().create();
             uiLogger.info("删除成功.");
         } catch (Exception e) {
@@ -175,7 +175,7 @@ public class PurchaseRequestAdminBean
             }
         }
 
-        PurchaseService purchaseService = ctx.getBean(PurchaseService.class);
+        PurchaseService purchaseService = ctx.bean.getBean(PurchaseService.class);
         try {
             purchaseService.generateTakeInStockOrders(purchaseRequest);
             uiLogger.info("生成成功");

@@ -79,7 +79,7 @@ public class DiscreteFxrProvider
         if (limit < MIN_LIMIT)
             limit = MIN_LIMIT;
 
-        List<FxrRecord> records = asFor(FxrRecord.class).list(//
+        List<FxrRecord> records = ctx.data.access(FxrRecord.class).list(//
                 Order.desc("date"), //
                 new Limit(0, limit), //
                 FxrCriteria.beforeThan(queryDate, limit));
@@ -126,7 +126,6 @@ public class DiscreteFxrProvider
         IFxrMap fxrMap = fxrMaps.get(key);
         if (fxrMap == null) {
             FxrMap _fxrMap = new FxrMap(unitCurrency, usage);
-            _fxrMap.setDataManager(dataManager); // OPT
             fxrMaps.put(key, fxrMap = _fxrMap);
         }
         return fxrMap;
@@ -144,7 +143,7 @@ public class DiscreteFxrProvider
         }
 
         if (lastUpdatedDate == null) {
-            FxrRecord mostRecentRecord = asFor(FxrRecord.class).getFirst(Order.desc("date"));
+            FxrRecord mostRecentRecord = ctx.data.access(FxrRecord.class).getFirst(Order.desc("date"));
             if (mostRecentRecord == null)
                 lastUpdatedDate = new Date(0); // 1970-1-1
             else
@@ -163,7 +162,7 @@ public class DiscreteFxrProvider
             }
         }
 
-        asFor(FxrRecord.class).saveAll(newRecords);
+        ctx.data.access(FxrRecord.class).saveAll(newRecords);
 
         // Plot on the fly.
         for (FxrUsage _usage : FxrUsage.values()) {

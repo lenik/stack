@@ -68,7 +68,7 @@ public class CreateOrEditHandler<E extends Entity<K>, K extends Serializable>
         Integer dtoSelection = eh.getSelection(SelectionMode.CREATE_EDIT);
         EntityDto<E, K> dto = eh.newDto(dtoSelection).create();
 
-        dto.parse(this, req);
+        dto.parse(req);
 
         E entity = null;
         K id = dto.getId();
@@ -77,7 +77,7 @@ public class CreateOrEditHandler<E extends Entity<K>, K extends Serializable>
             if (id == null)
                 throw new ServletException("id isn't specified");
 
-            entity = asFor(entityType).get(id);
+            entity = ctx.data.access(entityType).get(id);
             if (entity == null) {
                 if (!_createOTF)
                     return Javascripts.alertAndBack("对象尚未创建，无法保存。" + eh.getHint(id) + "\n\n" //
@@ -108,7 +108,7 @@ public class CreateOrEditHandler<E extends Entity<K>, K extends Serializable>
 
         forming.saveForm(entity, dto);
 
-        asFor(entityType).saveOrUpdate(entity);
+        ctx.data.access(entityType).saveOrUpdate(entity);
 
         if (postUpdating != null)
             postUpdating.postUpdate(entity);

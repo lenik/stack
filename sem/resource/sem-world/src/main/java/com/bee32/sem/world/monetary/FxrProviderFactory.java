@@ -7,21 +7,17 @@ import javax.free.UnexpectedException;
 
 import org.springframework.context.ApplicationContext;
 
-import com.bee32.plover.inject.GlobalAppCtx;
-import com.bee32.plover.servlet.util.ThreadHttpContext;
+import com.bee32.plover.orm.util.BootstrapDataAssembledContext;
 import com.bee32.sem.world.monetary.impl.DiscreteFxrProvider;
 import com.bee32.sem.world.monetary.impl.FxrSamplesSource;
 
 public class FxrProviderFactory {
 
-    static IFxrProvider fxrProvider;
-
-    static ApplicationContext getApplicationContext() {
-        ApplicationContext context = ThreadHttpContext.getApplicationContext();
-        if (context == null)
-            context = GlobalAppCtx.getApplicationContext();
-        return context;
+    protected static class ctx
+            extends BootstrapDataAssembledContext {
     }
+
+    static IFxrProvider fxrProvider;
 
     /**
      * 获取外汇查询服务，该服务用于计算本地货币表示的价格和本地货币表示的金额。
@@ -30,12 +26,12 @@ public class FxrProviderFactory {
         if (fxrProvider == null) {
             synchronized (FxrProviderFactory.class) {
                 if (fxrProvider == null) {
-                    ApplicationContext appctx = getApplicationContext();
+                    ApplicationContext appctx = ctx.bean.getAppCtx();
                     if (appctx == null) {
                         fxrProvider = new DiscreteFxrProvider();
                         injectSamples(fxrProvider);
                     } else {
-                        Map<String, IFxrProvider> beans = appctx.getBeansOfType(IFxrProvider.class);
+                        Map<String, IFxrProvider> beans = ctx.bean.getBeansOfType(IFxrProvider.class);
                         if (beans.isEmpty())
                             throw new IllegalStateException("No available FXP Provider.");
                         fxrProvider = beans.values().iterator().next();

@@ -240,7 +240,7 @@ public class VerifyService
         }
 
         handler.preUpdate();
-        asFor(entityType).update(entity);
+        ctx.data.access(entityType).update(entity);
         handler.postUpdate();
 
         return result;

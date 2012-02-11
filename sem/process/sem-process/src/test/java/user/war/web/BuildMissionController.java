@@ -46,7 +46,7 @@ public class BuildMissionController
 
     @Override
     protected void fillFormExtra(ActionRequest req, ActionResult result) {
-        List<UserDto> users = DTOs.marshalList(UserDto.class, 0, asFor(User.class).list());
+        List<UserDto> users = DTOs.marshalList(UserDto.class, 0, ctx.data.access(User.class).list());
         result.put("users", users);
 
         BuildMission entity = (BuildMission) result.getModelMap().get("entity");
