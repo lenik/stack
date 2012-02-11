@@ -39,11 +39,11 @@ public class LazyDTOMap<K extends Serializable, D extends EntityDto<? extends En
         return data;
     }
 
-    @SuppressWarnings({ "rawtypes" })
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     protected D load(Serializable key) {
         CommonDataManager dataManager = FacesContextUtils.getBean(CommonDataManager.class);
         Entity entity = dataManager.asFor(entityClass).get(key);
-        D data = DTOs.mref((Class) dtoClass, fmask, entity);
+        D data = (D) DTOs.mref((Class) dtoClass, fmask, entity);
         return data;
     }
 
