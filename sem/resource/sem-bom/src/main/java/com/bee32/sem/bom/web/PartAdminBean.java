@@ -13,6 +13,7 @@ import com.bee32.sem.bom.service.PartService;
 import com.bee32.sem.bom.util.BomCriteria;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.MaterialDto;
+import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialType;
 import com.bee32.sem.inventory.web.MaterialCategorySupportBean;
 import com.bee32.sem.misc.UnmarshalMap;
@@ -45,11 +46,12 @@ public class PartAdminBean
     }
 
     @Override
-    protected boolean preDelete(UnmarshalMap uMap)
+    protected boolean preUpdate(UnmarshalMap uMap)
             throws Exception {
-        for (PartDto part : uMap.<PartDto> dtos()) {
-            if (part.getXrefCount() != 0) {
-                uiLogger.error("此产品已经包含组件，必须先删除相应组件，才能删除本产品!");
+        for (Part _part : uMap.<Part> entitySet()) {
+            Material material = _part.getTarget();
+            if (material == null) {
+                uiLogger.error("组件没有设置对应的物料");
                 return false;
             }
         }
@@ -62,6 +64,18 @@ public class PartAdminBean
         for (Part _part : uMap.<Part> entitySet()) {
             ctx.bean.getBean(PartService.class).changePartItemFromMaterialToPart(_part);
         }
+    }
+
+    @Override
+    protected boolean preDelete(UnmarshalMap uMap)
+            throws Exception {
+        for (PartDto part : uMap.<PartDto> dtos()) {
+            if (part.getXrefCount() != 0) {
+                uiLogger.error("此产品已经包含组件，必须先删除相应组件，才能删除本产品!");
+                return false;
+            }
+        }
+        return true;
     }
 
     public void confirmMaterial() {
@@ -77,7 +91,8 @@ public class PartAdminBean
             part.setTarget(selectedMaterial);
         } else {
             PartItemDto item = childrenMBean.getOpenedObject();
-            List<Part> materialsIsPart = ctx.data.access(Part.class).list(new Equals("target.id", selectedMaterial.getId()));
+            List<Part> materialsIsPart = ctx.data.access(Part.class).list(
+                    new Equals("target.id", selectedMaterial.getId()));
             if (materialsIsPart != null && materialsIsPart.size() > 0) {
                 uiLogger.info("此物料是成品或半成品，已经存在BOM，请用[组件是半成品]标签页进行查找选择!!!");
                 return;
