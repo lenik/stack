@@ -26,6 +26,8 @@ update party set supplier=false
     where id not in (select distinct party from party_tags where tag='SUP');
 
 delete from party_tags where tag in ('CUS', 'SUP', 'ENY');
+delete from party_tagname where id in ('CUS', 'SUP', 'ENY');
+
 
 alter table material_category rename classification to material_type;
 alter table account_ticket_item rename column parent to ticket;
