@@ -79,7 +79,7 @@
                 </p:column>
 
                 <p:column headerText="操作">
-                    <p:commandLink oncomplete="detailDialog.show()" update="detailForm:detailPanel" value="明细">
+                    <p:commandLink value="明细" update=":detailForm" oncomplete="detailDialog.show()">
                         <f:setPropertyActionListener value="#{item}" target="#{bean.selectedItem}" />
                     </p:commandLink>
                 </p:column>

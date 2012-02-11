@@ -55,7 +55,8 @@
                 <t:panelGrid id="basic" columns="4">
                     <h:outputLabel for="target" value="物料" />
                     <t:panelGroup colspan="3">
-                        <h:outputText id="target" value="#{obj.target.label}" />
+                        <h:inputHidden id="target" label="对应物料" value="#{obj.target.idRequired}" />
+                        <h:outputText value="#{obj.target.label}" />
                         <p:commandButton title="选择生成的物料" value="..." oncomplete="chooseTargetDialog.show();">
                             <f:setPropertyActionListener target="#{chooseMaterialDialogBean.productLike}"
                                 value="true" />

@@ -72,7 +72,8 @@ public class StockQueryBean
     public void copyResult(StockOrder result) {
         if (result == null)
             throw new NullPointerException("resultList");
-        this.resultList = new StockOrderDto(-1).marshal(result);
+        this.resultList = new StockOrderDto().marshal(result);
+        uiLogger.info("查询完成。");
     }
 
     public StockItemListDto getResultList() {

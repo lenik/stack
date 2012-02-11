@@ -1,5 +1,9 @@
 package com.bee32.sem.inventory;
 
+import static com.bee32.sem.inventory.entity.MaterialType.PRODUCT;
+import static com.bee32.sem.inventory.entity.MaterialType.RAW;
+import static com.bee32.sem.inventory.entity.MaterialType.SEMI;
+
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -42,13 +46,13 @@ public class SEMInventorySamples
     public static Material cskdp = new Material();
     public static Material gundam = new Material();
 
-    public static MaterialCategory catCard = new MaterialCategory("魔法卡");
-    public static MaterialCategory cardNature = new MaterialCategory(catCard, "自然卡");
-    public static MaterialCategory cardBeast = new MaterialCategory(catCard, "怪兽卡");
-    public static MaterialCategory cardEmotion = new MaterialCategory(catCard, "心灵卡");
-    public static MaterialCategory emotSad = new MaterialCategory(cardEmotion, "悲痛至死卡");
-    public static MaterialCategory emotLone = new MaterialCategory(cardEmotion, "孤独至死卡");
-    public static MaterialCategory emotBlue = new MaterialCategory(cardEmotion, "绝望至死卡");
+    public static MaterialCategory catCard = new MaterialCategory(PRODUCT, "魔法卡");
+    public static MaterialCategory cardNature = new MaterialCategory(catCard, RAW, "自然卡");
+    public static MaterialCategory cardBeast = new MaterialCategory(catCard, PRODUCT, "怪兽卡");
+    public static MaterialCategory cardEmotion = new MaterialCategory(catCard, SEMI, "心灵卡");
+    public static MaterialCategory emotSad = new MaterialCategory(cardEmotion, SEMI, "悲痛至死卡");
+    public static MaterialCategory emotLone = new MaterialCategory(cardEmotion, SEMI, "孤独至死卡");
+    public static MaterialCategory emotBlue = new MaterialCategory(cardEmotion, SEMI, "绝望至死卡");
 
     public static StockOrder takeInOrder1;
     public static StockOrder takeOutOrder1;
