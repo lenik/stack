@@ -3,9 +3,7 @@ package com.bee32.sem.bom.entity;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -280,30 +278,22 @@ public class Part
         return price;
     }
 
-    public Map<Material, BigDecimal> obtainAllMaterial() {
-        Map<Material, BigDecimal> result = new HashMap<Material, BigDecimal>();
-        for (PartItem item : children) {
-            if (item.getType() == MaterialType.RAW) {
-                result.put(item.getMaterial(), item.getQuantity());
-            } else {
-                Map<Material, BigDecimal> childMaterials = item.getPart().obtainAllMaterial();
-                if (childMaterials != null) {
-                    for (Material m : childMaterials.keySet()) {
-                        BigDecimal q = result.get(m);
+    /**
+     * @aka obtainAllMaterials
+     */
+    @Transient
+    public ConsumptionMap<Material> getMaterialConsumption() {
+        ConsumptionMap<Material> mc = new ConsumptionMap<Material>();
+        collectConsumption(mc, BigDecimal.ONE);
+        return mc;
+    }
 
-                        if (q != null) {
-                            result.put(m, q.add(childMaterials.get(m)));
-                        } else {
-                            result.put(m, childMaterials.get(m));
-                        }
-                    }
-                }
-            }
-        }
-
-        if (result.size() > 0)
-            return result;
-        return null;
+    void collectConsumption(ConsumptionMap<Material> mc, BigDecimal times) {
+        for (PartItem child : children)
+            if (child.getType() == MaterialType.RAW)
+                mc.add(child.getMaterial(), child.getQuantity().multiply(times));
+            else
+                child.getPart().collectConsumption(mc, child.getQuantity());
     }
 
 }

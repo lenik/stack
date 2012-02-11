@@ -4,9 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
@@ -14,6 +13,7 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.color.UIEntityDto;
+import com.bee32.sem.bom.entity.ConsumptionMap;
 import com.bee32.sem.bom.entity.Part;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.Material;
@@ -25,7 +25,7 @@ public class PartDto
 
     public static final int CHILDREN = 1;
     public static final int XREFS = 2;
-    public static final int ALL_MATERIAL = 0x01000000 | CHILDREN;
+    public static final int MATERIAL_CONSUMPTION = 0x01000000 | CHILDREN;
 
     PartDto obsolete;
 
@@ -44,7 +44,7 @@ public class PartDto
     BigDecimal electricityFee;
     BigDecimal equipmentCost;
 
-    Map<MaterialDto, BigDecimal> allMaterial;
+    ConsumptionMap<MaterialDto> materialConsumption;
 
     public PartDto() {
         super();
@@ -65,17 +65,12 @@ public class PartDto
         else
             children = new ArrayList<PartItemDto>();
 
-        if (selection.contains(ALL_MATERIAL)) {
-            Map<Material, BigDecimal> _allMaterial = source.obtainAllMaterial();
-            if (_allMaterial != null) {
-                allMaterial = new HashMap<MaterialDto, BigDecimal>();
-                for (Material _m : _allMaterial.keySet()) {
-                    MaterialDto m = DTOs.mref(MaterialDto.class, _m);
-                    allMaterial.put(m, _allMaterial.get(_m));
-                }
+        materialConsumption = new ConsumptionMap<MaterialDto>();
+        if (selection.contains(MATERIAL_CONSUMPTION))
+            for (Entry<Material, BigDecimal> entry : source.getMaterialConsumption().entrySet()) {
+                MaterialDto material = DTOs.mref(MaterialDto.class, entry.getKey());
+                materialConsumption.put(material, entry.getValue());
             }
-        } else
-            allMaterial = Collections.emptyMap();
 
         if (selection.contains(XREFS))
             xrefs = marshalList(PartItemDto.class, 0, source.getXrefs());
@@ -252,8 +247,8 @@ public class PartDto
         return total;
     }
 
-    public Map<MaterialDto, BigDecimal> getAllMaterial() {
-        return allMaterial;
+    public ConsumptionMap<MaterialDto> getMaterialConsumption() {
+        return materialConsumption;
     }
 
 }
