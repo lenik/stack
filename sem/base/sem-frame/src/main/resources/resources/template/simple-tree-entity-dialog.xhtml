@@ -13,6 +13,10 @@
 
                     <ui:insert name="dataHeader" />
 
+                    <p:column headerText="标识">
+                        <h:outputText value="${entry.id}" />
+                    </p:column>
+
                     <ui:insert name="columns" />
 
                     <ui:insert name="dataColumnsC">

@@ -56,8 +56,8 @@
                                 <p:ajax event="rowUnselect" listener="${cc.attrs.mbean.rowUnselect}"
                                     update="${cc.attrs.indexView}:indexForm:ibuttons, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more" />
 
-                                <p:column id="rowIndexCol" headerText="序号">
-                                    ${rowIndex + 1}
+                                <p:column headerText="序号">
+                                    <h:outputText value="${rowIndex + 1}" />
                                 </p:column>
 
                                 <cc:insertRawFacet name="columns" />

@@ -72,8 +72,8 @@
                                             <f:facet name="header">${title}</f:facet>
                                         </ui:insert>
 
-                                        <p:column headerText="序号">
-                                            <h:outputText value="#{rowIndex + 1}" />
+                                        <p:column headerText="标识">
+                                            <h:outputText value="#{entry.id}" />
                                         </p:column>
 
                                         <ui:insert name="dataColumns" />

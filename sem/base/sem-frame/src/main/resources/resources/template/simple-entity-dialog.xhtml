@@ -13,8 +13,8 @@
                     resizableColumns="true" paginator="${paginator != null ? paginator : true}" rows="10"
                     paginatorTemplate="${viewConfig.paginatorTemplate}" rowsPerPageTemplate="${viewConfig.pageSizeTemplate}">
 
-                    <p:column headerText="序号">
-                        <h:outputText value="${rowIndex + 1}" />
+                    <p:column headerText="标识">
+                        <h:outputText value="${entry.id}" />
                     </p:column>
 
                     <ui:insert name="columns" />
