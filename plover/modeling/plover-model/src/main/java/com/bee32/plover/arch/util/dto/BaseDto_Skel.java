@@ -107,9 +107,9 @@ abstract class BaseDto_Skel<S, C>
     public abstract boolean isNullRef();
 
     @Override
-    public <$ extends BaseDto<?, ?>> $ ref() {
+    public <self_t extends BaseDto<?, ?>> self_t ref() {
         @SuppressWarnings("unchecked")
-        $ self = ($) this;
+        self_t self = (self_t) this;
 
         marshalAs(MarshalType.ID_REF);
         setNull(isNullRef());

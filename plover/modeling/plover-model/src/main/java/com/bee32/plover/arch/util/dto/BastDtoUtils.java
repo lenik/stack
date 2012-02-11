@@ -56,7 +56,7 @@ class DummyDto
     }
 
     @Override
-    public <D extends BaseDto<?, ?>> D ref(Dummy source) {
+    public <self_t extends BaseDto<?, ?>> self_t ref(Dummy source) {
         return null;
     }
 

@@ -476,7 +476,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      * @return This DTO.
      */
     @Override
-    public <$ extends BaseDto<?, ?>> $ ref(E entity) {
+    public <self_t extends BaseDto<?, ?>> self_t ref(E entity) {
         // 1, Ref-by-id by default.
         // 2. Don't set ID_VER_REF here.
         marshalAs(MarshalType.ID_REF);
@@ -492,11 +492,11 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         }
 
         @SuppressWarnings("unchecked")
-        $ self = ($) this;
+        self_t self = (self_t) this;
         return self;
     }
 
-    public <$ extends EntityDto<E, K>> $ ref($ dto) {
+    public <self_t extends EntityDto<E, K>> self_t ref(self_t dto) {
         if (dto == null)
             throw new NullPointerException("dto");
 
@@ -506,7 +506,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         setVersion(dto.getVersion());
 
         @SuppressWarnings("unchecked")
-        $ self = ($) this;
+        self_t self = (self_t) this;
         return self;
     }
 

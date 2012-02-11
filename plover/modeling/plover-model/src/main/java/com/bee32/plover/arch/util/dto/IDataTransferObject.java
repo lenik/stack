@@ -25,9 +25,9 @@ public interface IDataTransferObject<S, C>
     /**
      * Turn this into a referenced-DTO.
      */
-    <D extends BaseDto<?, ?>> D ref();
+    <self_t extends BaseDto<?, ?>> self_t ref();
 
-    <D extends BaseDto<?, ?>> D ref(S source);
+    <self_t extends BaseDto<?, ?>> self_t ref(S source);
 
     /**
      * Populate the specified target entity bean with properties defined in this object.
