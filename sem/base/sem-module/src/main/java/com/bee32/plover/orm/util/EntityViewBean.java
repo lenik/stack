@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.arch.util.dto.Fmask;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.web.EntityHelper;
 import com.bee32.plover.restful.resource.StandardViews;
@@ -105,7 +106,7 @@ public abstract class EntityViewBean
     }
 
     protected void openSelection() {
-        int fmask = -1;
+        int fmask = Fmask.F_MORE;
         String fmaskParam = ctx.getRequest().getParameter("fmask");
         if (fmaskParam != null)
             fmask = Integer.parseInt(fmaskParam);

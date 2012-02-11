@@ -403,7 +403,7 @@ public class SimpleEntityViewBean
     protected Object create() {
         EntityDto<?, ?> entityDto;
         try {
-            entityDto = dtoClass.newInstance(); // Create fmask is always -1.
+            entityDto = dtoClass.newInstance(); // Create fmask is always F_MORE..
             entityDto.setSelection(Fmask.F_MORE);
             entityDto = entityDto.create();
         } catch (Exception e) {

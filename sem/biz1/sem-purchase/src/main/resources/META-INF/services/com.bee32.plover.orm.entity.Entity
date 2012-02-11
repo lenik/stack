@@ -4,9 +4,9 @@ com.bee32.sem.purchase.entity.MakeTask
 com.bee32.sem.purchase.entity.MakeTaskItem
 com.bee32.sem.purchase.entity.MaterialPlan
 com.bee32.sem.purchase.entity.MaterialPlanItem
-com.bee32.sem.purchase.entity.PlanOrder
 com.bee32.sem.purchase.entity.PurchaseAdvice
 com.bee32.sem.purchase.entity.PurchaseInquiry
 com.bee32.sem.purchase.entity.PurchaseRequest
 com.bee32.sem.purchase.entity.PurchaseRequestItem
 com.bee32.sem.purchase.entity.PurchaseTakeIn
+com.bee32.sem.purchase.entity.StockPlanOrder
