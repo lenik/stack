@@ -1,11 +1,15 @@
 package com.bee32.sem.chance.entity;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
+import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.thing.AbstractItemList;
 
 /**
@@ -62,6 +66,26 @@ public class ChanceQuotation
 
     public void setPayment(String payment) {
         this.payment = payment;
+    }
+
+    @Override
+    public void addItem(ChanceQuotationItem item) {
+        super.addItem(item);
+        item.setParent(this);
+    }
+
+    public void addItem(Material material, MCValue price, BigDecimal quantity, float discount) {
+        ChanceQuotationItem item = new ChanceQuotationItem();
+        item.setParent(this);
+        item.setMaterial(material);
+        item.setPrice(price);
+        item.setQuantity(quantity);
+        item.setDiscount(discount);
+        addItem(item);
+    }
+
+    public void addItem(Material material, double price, double quantity, float discount) {
+        addItem(material, new MCValue(price), new BigDecimal(quantity), discount);
     }
 
 }

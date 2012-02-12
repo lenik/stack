@@ -283,6 +283,22 @@ public class AbstractStockOrder<Job extends StockJob, Item extends StockOrderIte
         return peer;
     }
 
+    @Override
+    public void addItem(Item item) {
+        super.addItem(item);
+        item.setParent(this);
+    }
+
+    public void addItem(Material material, String batch, double quantity, Double price) {
+        Item item = (Item) new StockOrderItem(); // XXX
+        item.setMaterial(material);
+        item.setBatch(batch);
+        item.setQuantity(quantity);
+        if (price != null)
+            item.setPrice(price);
+        addItem(item);
+    }
+
     public static final IPropertyAccessor<StockOrderSubject> subjectProperty = _property_(AbstractStockOrder.class,
             "subject");
     public static final IPropertyAccessor<BigDecimal> nativeTotalProperty = _property_(//

@@ -42,6 +42,20 @@ public class StockLocation
     String capacityUnitHint;
     int rank;
 
+    public StockLocation() {
+    }
+
+    public StockLocation(StockWarehouse warehouse, String address) {
+        this.warehouse = warehouse;
+        this.address = address;
+    }
+
+    public StockLocation(StockWarehouse warehouse, String address, StockLocation parent) {
+        super(parent);
+        this.warehouse = warehouse;
+        this.address = address;
+    }
+
     /**
      * 所属仓库
      */

@@ -1,7 +1,6 @@
 package com.bee32.sem.bom.dto;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -63,7 +62,7 @@ public class PartDto
         if (selection.contains(CHILDREN))
             children = marshalList(PartItemDto.class, 0, source.getChildren());
         else
-            children = new ArrayList<PartItemDto>();
+            children = Collections.emptyList();
 
         materialConsumption = new ConsumptionMap<MaterialDto>();
         if (selection.contains(MATERIAL_CONSUMPTION))

@@ -2,6 +2,7 @@ package com.bee32.sem.bom.entity;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class Part
     Material target;
 
     boolean valid = true;
-    Date validDateFrom;
+    Date validDateFrom = new Date();
     Date validDateTo;
 
     PriceStrategy priceStrategy = PriceStrategy.LATEST;
@@ -58,6 +59,14 @@ public class Part
     BigDecimal otherFee = new BigDecimal(0);
     BigDecimal electricityFee = new BigDecimal(0);
     BigDecimal equipmentCost = new BigDecimal(0);
+
+    public Part() {
+        // Default valid duration = 1 year.
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(validDateFrom);
+        cal.add(Calendar.YEAR, 1);
+        validDateTo = cal.getTime();
+    }
 
     /**
      * 上一个版本。
@@ -111,6 +120,27 @@ public class Part
         if (child == null)
             throw new NullPointerException("child");
         return children.remove(child);
+    }
+
+    public void addChild(Object materialOrPart, double quantity) {
+        addChild(materialOrPart, new BigDecimal(quantity));
+    }
+
+    public void addChild(Object materialOrPart, BigDecimal quantity) {
+        PartItem child = new PartItem();
+        child.setParent(this);
+        if (materialOrPart instanceof Material) {
+            child.setPart(null);
+            child.setMaterial((Material) materialOrPart);
+        } else {
+            child.setPart((Part) materialOrPart);
+            child.setMaterial(null);
+        }
+        child.setQuantity(quantity);
+        child.setValidDateFrom(validDateFrom);
+        child.setValidDateTo(validDateTo);
+        child.setValid(valid);
+        addChild(child);
     }
 
     /**

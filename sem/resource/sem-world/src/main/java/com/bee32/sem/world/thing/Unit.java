@@ -23,6 +23,7 @@ public class Unit
 
     public Unit(String name, String label) {
         super(name, label);
+        this.hint = hint;
     }
 
     public Unit(String name, String label, double scale, Unit stdUnit) {

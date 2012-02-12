@@ -26,6 +26,14 @@ public class MaterialPreferredLocation
     StockLocation location;
     boolean permanent;
 
+    public MaterialPreferredLocation() {
+    }
+
+    public MaterialPreferredLocation(Material material, StockLocation location) {
+        this.material = material;
+        this.location = location;
+    }
+
     /**
      * 物料
      */

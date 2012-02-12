@@ -2,6 +2,7 @@ package com.bee32.sem.bom.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -38,8 +39,16 @@ public class PartItem
     BigDecimal quantity = new BigDecimal(1);
 
     boolean valid = true;
-    Date validDateFrom;
+    Date validDateFrom = new Date();
     Date validDateTo;
+
+    public PartItem() {
+        // Default valid duration = 1 year.
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(validDateFrom);
+        cal.add(Calendar.YEAR, 1);
+        validDateTo = cal.getTime();
+    }
 
     /**
      * 所属的部件

@@ -29,6 +29,7 @@ public class MaterialType
         return valueOf(new Character(value));
     }
 
+    // public static final MaterialType ALL= new MaterialType('a', "all");
     public static final MaterialType PRODUCT = new MaterialType('p', "product");
     public static final MaterialType SEMI = new MaterialType('s', "semi");
     public static final MaterialType RAW = new MaterialType('r', "raw");

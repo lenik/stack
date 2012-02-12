@@ -14,7 +14,6 @@ import com.bee32.sem.chance.entity.ChanceCategory;
 import com.bee32.sem.chance.entity.ChanceCompetitor;
 import com.bee32.sem.chance.entity.ChanceParty;
 import com.bee32.sem.chance.entity.ChanceQuotation;
-import com.bee32.sem.chance.entity.ChanceQuotationItem;
 import com.bee32.sem.chance.entity.ChanceSourceType;
 import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.inventory.SEMInventorySamples;
@@ -86,25 +85,14 @@ public class SEMChanceSamples
 
         chance.addAction(chanceAction1);
         chance.addAction(chanceAction2);
-        // chance.setActions(Arrays.asList(chanceAction1, chanceAction2));
-
-        ChanceQuotationItem item1 = new ChanceQuotationItem();
-        item1.setParent(quotation);
-        item1.setMaterial(SEMInventorySamples.m_light_A);
-        item1.setDiscount(1);
-        item1.setQuantity(new BigDecimal(3));
-        item1.setPrice(SEMInventorySamples.m_light_A.getLatestPrice().getPrice());
-
-        // ChanceQuotationItem item2 = new ChanceQuotationItem();
-        // item2.setQuotation(quotation);
-        // item2.setMaterial(SEMInventorySamples.gundam);
-        // item2.setDiscount(0.9f);
 
         quotation.setLabel("7月2号报价");
         quotation.setChance(chance);
         quotation.setDeliverInfo("发顺丰加保价");
         quotation.setPayment("网上转帐");
-        quotation.addItem(item1);
+        quotation.addItem(SEMInventorySamples.m_light_A, //
+                SEMInventorySamples.m_light_A.getLatestPrice().getPrice(), //
+                new BigDecimal(3), 1.0f);
     }
 
     @Override
@@ -119,7 +107,6 @@ public class SEMChanceSamples
 
         // add <price>->quotation and quotationItem
         add(quotation);
-
     }
 
 }
