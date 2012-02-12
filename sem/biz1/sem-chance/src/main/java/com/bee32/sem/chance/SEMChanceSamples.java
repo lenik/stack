@@ -90,10 +90,10 @@ public class SEMChanceSamples
 
         ChanceQuotationItem item1 = new ChanceQuotationItem();
         item1.setParent(quotation);
-        item1.setMaterial(SEMInventorySamples.cskdp);
+        item1.setMaterial(SEMInventorySamples.m_light_A);
         item1.setDiscount(1);
         item1.setQuantity(new BigDecimal(3));
-        item1.setPrice(SEMInventorySamples.cskdp.getLatestPrice().getPrice());
+        item1.setPrice(SEMInventorySamples.m_light_A.getLatestPrice().getPrice());
 
         // ChanceQuotationItem item2 = new ChanceQuotationItem();
         // item2.setQuotation(quotation);
