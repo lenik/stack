@@ -2,6 +2,7 @@ package com.bee32.sem.inventory.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.free.IllegalUsageException;
 import javax.free.ParseException;
@@ -12,7 +13,6 @@ import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.inventory.entity.AbstractStockOrder;
 import com.bee32.sem.inventory.entity.StockItemState;
-import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.world.thing.AbstractItemDto;
@@ -72,11 +72,11 @@ public class StockOrderItemDto
 
     @Override
     protected void _marshal(StockOrderItem source) {
-        AbstractStockOrder<?, ?> _parent = source.getParent();
+        AbstractStockOrder<?> _parent = source.getParent();
 
         boolean tryBest = false;
         if (tryBest) {
-            Class<?> parentClass = _parent == null ? StockOrder.class : _parent.getClass();
+            Class<?> parentClass = _parent == null ? AbstractStockOrder.class : _parent.getClass();
             Class<? extends StockOrderDto> parentDtoType = (Class<? extends StockOrderDto>) EntityUtil
                     .getDtoType(parentClass);
             parent = mref(parentDtoType, _parent);
@@ -144,6 +144,15 @@ public class StockOrderItemDto
         if (material == null)
             throw new NullPointerException("material");
         this.material = material;
+
+        // Auto apply preferred location.
+        if (location == null || location.isNull()) {
+            if (!material.selection.contains(MaterialDto.PREFERRED_LOCATIONS))
+                material = ctx.data.reload(material, MaterialDto.PREFERRED_LOCATIONS);
+            List<MaterialPreferredLocationDto> preferredLocations = material.getPreferredLocations();
+            if (!preferredLocations.isEmpty())
+                this.location = preferredLocations.get(0).getLocation();
+        }
     }
 
     public String getBatch() {

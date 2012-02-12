@@ -10,7 +10,7 @@ import com.bee32.sem.inventory.entity.StockOrderSubject;
 @Entity
 @DiscriminatorValue("PLA")
 public class StockPlanOrder
-        extends AbstractStockOrder<MaterialPlan, StockOrderItem> {
+        extends AbstractStockOrder<StockOrderItem> {
 
     private static final long serialVersionUID = 1L;
 

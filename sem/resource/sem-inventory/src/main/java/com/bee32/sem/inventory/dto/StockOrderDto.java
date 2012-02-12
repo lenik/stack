@@ -8,7 +8,6 @@ import com.bee32.sem.inventory.entity.AbstractStockItemList;
 import com.bee32.sem.inventory.entity.AbstractStockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.process.StockOrderVerifySupportDto;
-import com.bee32.sem.inventory.tx.dto.SimpleStockJobDto;
 import com.bee32.sem.inventory.tx.dto.StockJobDto;
 import com.bee32.sem.inventory.tx.entity.StockJob;
 import com.bee32.sem.people.dto.OrgDto;
@@ -40,8 +39,9 @@ public class StockOrderDto
         super(fmask);
     }
 
+    @SuppressWarnings("unchecked")
     protected Class<? extends StockJobDto<?>> getStockJobDtoClass() {
-        return SimpleStockJobDto.class;
+        return (Class<? extends StockJobDto<?>>) StockJobDto.class;
     }
 
     @Override
@@ -68,7 +68,7 @@ public class StockOrderDto
     @Override
     protected void _marshal(AbstractStockItemList<?> _source) {
         super._marshal(_source);
-        AbstractStockOrder<?, ?> source = (AbstractStockOrder<?, ?>) _source;
+        AbstractStockOrder<?> source = (AbstractStockOrder<?>) _source;
         base = mref(StockPeriodDto.class, source.getBase());
         spec = mref(StockPeriodDto.class, source.getSpec());
         subject = source.getSubject();
@@ -87,7 +87,7 @@ public class StockOrderDto
     @Override
     protected void _unmarshalTo(AbstractStockItemList<?> _target) {
         super._unmarshalTo(_target);
-        AbstractStockOrder<?, ?> target = (AbstractStockOrder<?, ?>) _target;
+        AbstractStockOrder<?> target = (AbstractStockOrder<?>) _target;
         merge(target, "base", base);
         merge(target, "spec", spec);
         target.setSubject(subject);

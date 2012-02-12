@@ -1,6 +1,7 @@
 package com.bee32.sem.inventory.entity;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -37,7 +38,7 @@ import com.bee32.sem.world.thing.AbstractItemList;
 @DiscriminatorColumn(name = "stereo", length = 3)
 @DiscriminatorValue("--")
 @SequenceGenerator(name = "idgen", sequenceName = "stock_order_seq", allocationSize = 1)
-public class AbstractStockOrder<Job extends StockJob, Item extends StockOrderItem>
+public class AbstractStockOrder<Item extends StockOrderItem>
         extends AbstractStockItemList<Item>
         implements IParameterized, IVerifiable<IStockOrderVerifyContext> {
 
@@ -46,7 +47,7 @@ public class AbstractStockOrder<Job extends StockJob, Item extends StockOrderIte
     StockPeriod base;
     StockPeriod spec;
     StockOrderSubject subject;
-    Job job;
+    StockJob job;
 
     Org org;
     OrgUnit orgUnit;
@@ -79,19 +80,19 @@ public class AbstractStockOrder<Job extends StockJob, Item extends StockOrderIte
 
     @Override
     public void populate(Object source) {
-        if (source instanceof AbstractStockOrder<?, ?>)
-            _populate((AbstractStockOrder<?, ?>) source);
+        if (source instanceof AbstractStockOrder<?>)
+            _populate((AbstractStockOrder<?>) source);
         else
             super.populate(source);
     }
 
     @SuppressWarnings("unchecked")
-    protected void _populate(AbstractStockOrder<?, ?> o) {
+    protected void _populate(AbstractStockOrder<?> o) {
         super._populate(o);
         base = o.base;
         subject = o.subject;
         spec = o.spec;
-        job = (Job) o.job;
+        job = o.job;
         org = o.org;
         orgUnit = o.orgUnit;
         warehouse = o.warehouse;
@@ -170,7 +171,7 @@ public class AbstractStockOrder<Job extends StockJob, Item extends StockOrderIte
      */
     @Index(name = "##_job")
     @ManyToOne
-    public Job getJob() {
+    public StockJob getJob() {
         return job;
     }
 
@@ -190,7 +191,7 @@ public class AbstractStockOrder<Job extends StockJob, Item extends StockOrderIte
      * @param jobId
      *            作业ID （根据用途对应具体的作业类型），如果没有对应作业则设置为 <code>null</code>。
      */
-    public void setJob(Job job) {
+    public void setJob(StockJob job) {
         this.job = job;
     }
 
@@ -260,7 +261,7 @@ public class AbstractStockOrder<Job extends StockJob, Item extends StockOrderIte
      * @param copyItems
      *            是否复制所有明细项目。
      */
-    public <E extends AbstractStockOrder<Job, Item>> E createPeerOrder(Class<E> stockOrderType,
+    public <E extends AbstractStockOrder<Item>> E createPeerOrder(Class<E> stockOrderType,
             StockOrderSubject peerSubject, boolean copyItems) {
         if (job == null)
             throw new IllegalStateException("没有指定上层的库存作业，创建对等单据没有意义。");
@@ -296,6 +297,11 @@ public class AbstractStockOrder<Job extends StockJob, Item extends StockOrderIte
         item.setQuantity(quantity);
         if (price != null)
             item.setPrice(price);
+
+        List<MaterialPreferredLocation> preferredLocations = material.getPreferredLocations();
+        if (!preferredLocations.isEmpty())
+            item.setLocation(preferredLocations.get(0).getLocation());
+
         addItem(item);
     }
 

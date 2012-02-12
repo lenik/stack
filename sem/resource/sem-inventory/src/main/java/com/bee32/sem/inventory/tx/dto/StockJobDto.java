@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.free.ParseException;
+
+import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.entity.AbstractStockOrder;
 import com.bee32.sem.inventory.tx.entity.StockJob;
 
-public abstract class StockJobDto<E extends StockJob>
+public class StockJobDto<E extends StockJob>
         extends TxEntityDto<E> {
 
     private static final long serialVersionUID = 1L;
@@ -30,9 +33,10 @@ public abstract class StockJobDto<E extends StockJob>
 
     @Override
     protected void __marshal(E source) {
+        super.__marshal(source);
         if (selection.contains(ORDERS)) {
             stockOrders = new ArrayList<StockOrderDto>();
-            for (AbstractStockOrder<?, ?> _stockOrder : source.getStockOrders()) {
+            for (AbstractStockOrder<?> _stockOrder : source.getStockOrders()) {
                 Class<StockOrderDto> dtoClass = (Class<StockOrderDto>) EntityUtil.getDtoType(_stockOrder.getClass());
                 StockOrderDto stockOrder = marshal(dtoClass, selection.translate(//
                         ORDER_ITEMS, StockOrderDto.ITEMS), //
@@ -45,8 +49,22 @@ public abstract class StockJobDto<E extends StockJob>
 
     @Override
     protected void __unmarshalTo(E target) {
+        super.__unmarshalTo(target);
         if (selection.contains(ORDERS))
             mergeList(target, "stockOrders", stockOrders);
+    }
+
+    @Override
+    protected void _marshal(E source) {
+    }
+
+    @Override
+    protected void _unmarshalTo(E target) {
+    }
+
+    @Override
+    protected void _parse(TextMap map)
+            throws ParseException {
     }
 
     public List<StockOrderDto> getStockOrders() {
