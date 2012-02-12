@@ -8,7 +8,6 @@ import java.util.List;
 import com.bee32.plover.arch.DataService;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.sem.inventory.entity.StockItemList;
-import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.util.StockCriteria;
 import com.bee32.sem.world.thing.AbstractItem;
 import com.bee32.sem.world.thing.AbstractItemList;
@@ -22,49 +21,49 @@ public abstract class AbstractStockQuery
         return getHistoryStockState(new Date());
     }
 
-    public abstract StockOrder getSummary(ICriteriaElement selection, StockQueryOptions options);
+    public abstract StockQueryResult getStock(ICriteriaElement selection, StockQueryOptions options);
 
     @Override
-    public StockOrder getActualSummary(List<Long> materialIds, StockQueryOptions options) {
+    public StockQueryResult getPhysicalStock(List<Long> materialIds, StockQueryOptions options) {
         ICriteriaElement selection = StockCriteria.sumOfCommons(materialIds, options);
-        StockOrder summary = getSummary(selection, options);
-        summary.setLabel("【汇总】实有库存余量清单");
-        return summary;
+        StockQueryResult result = getStock(selection, options);
+        result.setLabel("【汇总】实有库存余量清单");
+        return result;
     }
 
     @Override
-    public StockOrder getVirtualSummary(List<Long> materialIds, StockQueryOptions options) {
+    public StockQueryResult getAvailableStock(List<Long> materialIds, StockQueryOptions options) {
         ICriteriaElement selection = StockCriteria.sumOfVirtuals(materialIds, options);
-        StockOrder summary = getSummary(selection, options);
-        summary.setLabel("【汇总】可用库存余量清单");
-        return summary;
+        StockQueryResult result = getStock(selection, options);
+        result.setLabel("【汇总】可用库存余量清单");
+        return result;
     }
 
     @Override
-    public StockOrder getPlanSummary(List<Long> materialIds, StockQueryOptions options) {
+    public StockQueryResult getPlanSummary(List<Long> materialIds, StockQueryOptions options) {
         ICriteriaElement selection = StockCriteria.sumOfVirtualOnly(materialIds, options);
-        StockOrder summary = getSummary(selection, options);
-        summary.setLabel("【汇总】计划/锁定库存数量清单");
-        return summary;
+        StockQueryResult result = getStock(selection, options);
+        result.setLabel("【汇总】计划/锁定库存数量清单");
+        return result;
     }
 
     @Override
-    public BigDecimal getActualQuantity(long materialId, StockQueryOptions options) {
+    public BigDecimal getPhysicalStock(long materialId, StockQueryOptions options) {
         if (options == null)
             throw new NullPointerException("options");
 
-        StockOrder list = getActualSummary(Arrays.asList(materialId), options);
-        BigDecimal quantity = sumOfQuantity(list);
+        StockQueryResult result = getPhysicalStock(Arrays.asList(materialId), options);
+        BigDecimal quantity = sumOfQuantity(result);
         return quantity;
     }
 
     @Override
-    public BigDecimal getVirtualQuantity(long materialId, StockQueryOptions options) {
+    public BigDecimal getAvailableStock(long materialId, StockQueryOptions options) {
         if (options == null)
             throw new NullPointerException("options");
 
-        StockOrder list = getVirtualSummary(Arrays.asList(materialId), options);
-        BigDecimal quantity = sumOfQuantity(list);
+        StockQueryResult result = getAvailableStock(Arrays.asList(materialId), options);
+        BigDecimal quantity = sumOfQuantity(result);
         return quantity;
     }
 
@@ -73,14 +72,14 @@ public abstract class AbstractStockQuery
         if (options == null)
             throw new NullPointerException("options");
 
-        StockOrder list = getPlanSummary(Arrays.asList(materialId), options);
-        BigDecimal quantity = sumOfQuantity(list);
+        StockQueryResult result = getPlanSummary(Arrays.asList(materialId), options);
+        BigDecimal quantity = sumOfQuantity(result);
         return quantity;
     }
 
-    static BigDecimal sumOfQuantity(AbstractItemList<?> list) {
+    static BigDecimal sumOfQuantity(AbstractItemList<?> result) {
         BigDecimal sum = new BigDecimal(0);
-        for (AbstractItem item : list) {
+        for (AbstractItem item : result) {
             BigDecimal quantity = item.getQuantity();
             sum = sum.add(quantity);
         }

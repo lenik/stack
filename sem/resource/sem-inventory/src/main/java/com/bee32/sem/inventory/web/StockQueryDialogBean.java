@@ -17,10 +17,10 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IdUtils;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
-import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.service.IStockQuery;
 import com.bee32.sem.inventory.service.StockQueryOptions;
+import com.bee32.sem.inventory.service.StockQueryResult;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.sandbox.UIHelper;
 
@@ -45,7 +45,7 @@ public class StockQueryDialogBean
 
     boolean autoQuery;
 
-    StockOrder queryCache = new StockOrder();
+    StockQueryResult queryCache = new StockQueryResult();
     boolean cacheValid;
     List<MaterialDto> cacheForMaterials;
     boolean cacheForAll;
@@ -64,13 +64,13 @@ public class StockQueryDialogBean
     @Override
     protected <E extends Entity<?>> List<E> loadImpl(SevbLazyDataModel<E, ?> def, int first, int pageSize,
             String sortField, SortOrder sortOrder, Map<String, String> filters) {
-        StockOrder sumOrder;
+        StockQueryResult queryResult;
         if (autoQuery)
-            sumOrder = cachedQuery();
+            queryResult = cachedQuery();
         else
-            sumOrder = queryCache; // cachedQuery();
+            queryResult = queryCache; // cachedQuery();
 
-        List<E> list = (List<E>) sumOrder.getItems();
+        List<E> list = (List<E>) queryResult.getItems();
 
         if (first < 0)
             first = 0;
@@ -82,26 +82,26 @@ public class StockQueryDialogBean
 
     @Override
     protected <E extends Entity<?>> int countImpl(SevbLazyDataModel<E, ?> def) {
-        StockOrder list;
+        StockQueryResult queryResult;
         if (autoQuery)
-            list = cachedQuery();
+            queryResult = cachedQuery();
         else
-            list = queryCache;
-        int count = list.getItems().size();
+            queryResult = queryCache;
+        int count = queryResult.getItems().size();
         return count;
     }
 
-    public StockOrder getResultList() {
+    public StockQueryResult getResultList() {
         return cachedQuery();
     }
 
-    public synchronized StockOrder cachedQuery() {
+    public synchronized StockQueryResult cachedQuery() {
         if (!cacheValid)
             query();
         return queryCache;
     }
 
-    public synchronized StockOrder query() {
+    public synchronized StockQueryResult query() {
         queryCache = queryImpl();
         cacheValid = true;
         cacheForAll = queryAllMaterials;
@@ -111,7 +111,7 @@ public class StockQueryDialogBean
         return queryCache;
     }
 
-    protected synchronized StockOrder queryImpl() {
+    protected synchronized StockQueryResult queryImpl() {
         if (queryOptions == null) {
             uiLogger.warn("queryOptions is null");
             return null;
@@ -124,8 +124,8 @@ public class StockQueryDialogBean
             materialIds = IdUtils.<Long> getDtoIdList(materials);
 
         IStockQuery query = ctx.bean.getBean(IStockQuery.class);
-        StockOrder sumOrder = query.getActualSummary(materialIds, queryOptions);
-        return sumOrder;
+        StockQueryResult result = query.getAvailableStock(materialIds, queryOptions);
+        return result;
     }
 
     public String getHeader() {

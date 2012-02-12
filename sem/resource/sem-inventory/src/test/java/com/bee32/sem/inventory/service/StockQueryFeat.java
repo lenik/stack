@@ -13,7 +13,6 @@ import com.bee32.plover.orm.util.WiredDaoFeat;
 import com.bee32.plover.test.ICoordinator;
 import com.bee32.sem.inventory.SEMInventorySamples;
 import com.bee32.sem.inventory.SEMInventoryUnit;
-import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.world.monetary.FxrQueryException;
 
 @SuppressWarnings("unused")
@@ -33,8 +32,8 @@ public class StockQueryFeat
 
         StockQueryOptions sqopts = new StockQueryOptions(new Date(), false);
         sqopts.setCBatch(null, true);
-        StockOrder actual = stockQuery.getActualSummary(materials, sqopts);
-        StockOrder virtual = stockQuery.getVirtualSummary(materials, sqopts);
+        StockQueryResult actual = stockQuery.getPhysicalStock(materials, sqopts);
+        StockQueryResult virtual = stockQuery.getAvailableStock(materials, sqopts);
 
         System.out.println(actual.dump());
         System.out.println(virtual.dump());
@@ -44,8 +43,8 @@ public class StockQueryFeat
         System.out.println(actualTotal);
         System.out.println(virtualTotal);
 
-        BigDecimal gunAq = stockQuery.getActualQuantity(SEMInventorySamples.m_glass1.getId(), sqopts);
-        BigDecimal gunVq = stockQuery.getVirtualQuantity(SEMInventorySamples.m_glass1.getId(), sqopts);
+        BigDecimal gunAq = stockQuery.getPhysicalStock(SEMInventorySamples.m_glass1.getId(), sqopts);
+        BigDecimal gunVq = stockQuery.getAvailableStock(SEMInventorySamples.m_glass1.getId(), sqopts);
 
         System.out.println("----------- LIST END -----------");
     }

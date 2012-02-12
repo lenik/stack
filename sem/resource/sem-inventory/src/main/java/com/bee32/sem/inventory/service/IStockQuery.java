@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.bee32.sem.inventory.entity.StockItemList;
-import com.bee32.sem.inventory.entity.StockOrder;
 
 public interface IStockQuery {
 
@@ -40,44 +39,44 @@ public interface IStockQuery {
     StockItemList getStockChange(Date begin, Date end, boolean fullSpan);
 
     /**
-     * 获取给定时间的某些物料的实际库存余量。
+     * 获取给定时间的某些物料的实际库存余量。（锁定除外）
      *
      * @param options
      *            查询选项。
      * @return 对应物料的余量。
      * @see StockQueryOptions
      */
-    StockOrder getActualSummary(List<Long> materialIds, StockQueryOptions options);
+    StockQueryResult getPhysicalStock(List<Long> materialIds, StockQueryOptions options);
 
     /**
-     * 获取给定时间的某单一物料的实际库存余量，不考虑批号和库位。
+     * 获取给定时间的某单一物料的实际库存余量，不考虑批号和库位。（锁定除外）
      *
      * @param options
      *            查询选项。
      * @return 对应物料的余量。
      * @see StockQueryOptions
      */
-    BigDecimal getActualQuantity(long materialId, StockQueryOptions options);
+    BigDecimal getPhysicalStock(long materialId, StockQueryOptions options);
 
     /**
-     * 获取给定时间的某单一物料的可用库存余量（或曰逻辑库存余量），不考虑批号和库位。
+     * 获取给定时间的某单一物料的可用库存余量（实际余量 减去 锁定的量），不考虑批号和库位。
      *
      * @param options
      *            查询选项。
      * @return 对应物料的余量。
      * @see StockQueryOptions
      */
-    StockOrder getVirtualSummary(List<Long> materialIds, StockQueryOptions options);
+    StockQueryResult getAvailableStock(List<Long> materialIds, StockQueryOptions options);
 
     /**
-     * 获取给定时间的某单一物料的可用库存余量（或曰逻辑库存余量），不考虑批号和库位。
+     * 获取给定时间的某单一物料的可用库存余量（实际余量 减去 锁定的量），不考虑批号和库位。
      *
      * @param options
      *            查询选项。
      * @return 对应物料的余量。
      * @see StockQueryOptions
      */
-    BigDecimal getVirtualQuantity(long materialId, StockQueryOptions options);
+    BigDecimal getAvailableStock(long materialId, StockQueryOptions options);
 
     /**
      * 获取给定时间的某单一物料的“锁定”的库存数量（或曰计划数量），不考虑批号和库位。
@@ -87,7 +86,7 @@ public interface IStockQuery {
      * @return 对应物料的数量。
      * @see StockQueryOptions
      */
-    StockOrder getPlanSummary(List<Long> materialIds, StockQueryOptions options);
+    StockQueryResult getPlanSummary(List<Long> materialIds, StockQueryOptions options);
 
     /**
      * 获取给定时间的某单一物料的"锁定“的库存数量（或曰计划数量），不考虑批号和库位。

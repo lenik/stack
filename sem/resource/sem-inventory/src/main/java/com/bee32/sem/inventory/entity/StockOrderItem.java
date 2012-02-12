@@ -56,7 +56,7 @@ public class StockOrderItem
         state = item.state;
     }
 
-    public StockOrderItem(StockOrder parent) {
+    public StockOrderItem(AbstractStockOrder<?> parent) {
         if (parent == null)
             throw new NullPointerException("parent");
         this.parent = parent;

@@ -13,7 +13,6 @@ import com.bee32.plover.criteria.hibernate.SumProjection;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockItemList;
 import com.bee32.sem.inventory.entity.StockLocation;
-import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
@@ -33,7 +32,7 @@ public class StockQuery
     }
 
     @Override
-    public StockOrder getSummary(ICriteriaElement selection, StockQueryOptions options) {
+    public StockQueryResult getStock(ICriteriaElement selection, StockQueryOptions options) {
         // TODO getLatestPack.. then, non-virtual
         // TODO or, >date, non-packing, non-virtual
 
@@ -56,7 +55,7 @@ public class StockQuery
                 subject = StockOrderSubject.PACK_MBL;
         }
 
-        StockOrder all = new StockOrder(null, subject, null/* warehouse */);
+        StockQueryResult all = new StockQueryResult(null, subject, null/* warehouse */);
 
         // XXX How about: batch == null, location != null ?
 
