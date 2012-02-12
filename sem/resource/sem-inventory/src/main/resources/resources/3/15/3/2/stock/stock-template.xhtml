@@ -95,7 +95,7 @@
                 </p:column>
 
                 <p:column headerText="库位">
-                    <h:outputText value="#{entry.location.nodeText}" />
+                    <h:outputText value="#{entry.location.label}" />
                 </p:column>
 
                 <p:column headerText="单价">
@@ -166,7 +166,7 @@
 
                 <h:outputLabel for="location" value="库位" />
                 <t:panelGroup colspan="3">
-                    <p:inputText id="location" label="库位" value="#{item.location.nodeText}" disabled="true" />
+                    <p:inputText id="location" label="库位" value="#{item.location.label}" disabled="true" />
                     <p:commandButton value="..." oncomplete="chooseStockLocationDialog.show();">
                         <f:setPropertyActionListener target="#{chooseStockLocationDialogBean.warehouse}"
                             value="#{bean.selectedWarehouse}" />

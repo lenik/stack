@@ -17,7 +17,6 @@ public class StockLocationDto
     private static final long serialVersionUID = 1L;
 
     private StockWarehouseDto warehouse;
-    private String address;
     private double x;
     private double y;
     private double z;
@@ -38,7 +37,6 @@ public class StockLocationDto
     @Override
     protected void _marshal(StockLocation source) {
         this.warehouse = mref(StockWarehouseDto.class, source.getWarehouse());
-        this.address = source.getAddress();
         this.x = source.getX();
         this.y = source.getY();
         this.z = source.getZ();
@@ -50,7 +48,6 @@ public class StockLocationDto
 
     @Override
     protected void _unmarshalTo(StockLocation target) {
-        target.setAddress(address);
         target.setX(x);
         target.setY(y);
         target.setZ(z);
@@ -74,15 +71,6 @@ public class StockLocationDto
         if (warehouse == null)
             throw new NullPointerException("warehouse");
         this.warehouse = warehouse;
-    }
-
-    @NLength(max = StockLocation.ADDRESS_LENGTH)
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = TextUtil.normalizeSpace(address);
     }
 
     public double getX() {
@@ -140,17 +128,6 @@ public class StockLocationDto
 
     public void setRank(int rank) {
         this.rank = rank;
-    }
-
-    public String getNodeText() {
-        StringBuilder sb = new StringBuilder();
-        if (getLabel() != null && !getLabel().isEmpty())
-            sb.append(getLabel());
-        if (getLabel() != null && !getLabel().isEmpty() && address != null && !address.isEmpty())
-            sb.append(":");
-        if (address != null && !address.isEmpty())
-            sb.append(address);
-        return sb.toString();
     }
 
 }

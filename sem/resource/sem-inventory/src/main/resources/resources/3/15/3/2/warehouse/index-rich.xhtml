@@ -7,7 +7,7 @@
 
     <ui:define name="dataColumns">
         <p:column headerText="名称">
-            <h:outputText value="#{entry.name}" />
+            <h:outputText value="#{entry.label}" />
         </p:column>
 
         <p:column headerText="地址">
@@ -26,17 +26,17 @@
     <ui:define name="editDialogContent">
         <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">
             <h:outputText value="名称:" />
-            <p:inputText value="#{obj.name}" required="true" label="名称" />
+            <p:inputText label="名称" value="#{obj.label}" />
 
             <h:outputText value="地址:" />
-            <p:inputText value="#{obj.address}" label="地址" />
+            <p:inputText label="地址" value="#{obj.address}" />
 
             <h:outputText value="电话:" />
             <p:inputText value="#{obj.phone}" label="电话" />
 
             <h:outputText value="负责人:" />
             <h:panelGroup>
-                <p:inputText value="#{obj.manager.name}" label="负责人" />
+                <p:inputText value="#{obj.manager.displayName}" label="负责人" />
                 <p:commandButton value="..." oncomplete="chooseManagerDialog.show();">
                     <f:setPropertyActionListener target="${choosePartyDialogBean.stereo}"
                         value="PER" />

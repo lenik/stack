@@ -67,7 +67,8 @@ public class TxEntity
     protected final ICriteriaElement selector(String prefix) {
         if (serial == null)
             return null;
-        return new Equals(prefix + "serial", serial);
+        else
+            return new Equals(prefix + "serial", serial);
     }
 
 }

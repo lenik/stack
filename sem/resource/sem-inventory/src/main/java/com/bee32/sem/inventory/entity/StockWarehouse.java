@@ -25,7 +25,7 @@ public class StockWarehouse
 
     private static final long serialVersionUID = 1L;
 
-    public static final int NAME_LENGTH = 50;
+    public static final int NAME_LENGTH = 20;
     public static final int ADDRESS_LENGTH = 100;
     public static final int PHONE_LENGTH = 50;
 
@@ -38,8 +38,8 @@ public class StockWarehouse
     /**
      * 仓库名称
      */
-    @NaturalId(mutable = true)
-    @Column(length = NAME_LENGTH, nullable = false)
+    @NaturalId
+    @Column(length = NAME_LENGTH)
     public String getName() {
         return name;
     }
@@ -101,8 +101,9 @@ public class StockWarehouse
     @Override
     protected CriteriaElement selector(String prefix) {
         if (name == null)
-            throw new NullPointerException("name");
-        return new Equals(prefix + "name", name);
+            return null;
+        else
+            return new Equals(prefix + "name", name);
     }
 
 }

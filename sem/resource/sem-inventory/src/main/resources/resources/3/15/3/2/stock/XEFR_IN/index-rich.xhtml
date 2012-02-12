@@ -85,7 +85,7 @@
                     <h:outputText value="#{bean.destItem.batch}" />
 
                     <h:outputText value="调出库位" />
-                    <h:outputText value="#{bean.selectedSourceItem.location.nodeText}" />
+                    <h:outputText value="#{bean.selectedSourceItem.location.label}" />
 
                     <h:outputText value="调出数量" />
                     <h:outputText value="#{bean.selectedSourceItem.quantity}" />
@@ -95,7 +95,7 @@
 
                     <h:outputText value="库位" />
                     <t:panelGroup>
-                        <p:inputText id="location" value="#{bean.destItem.location.nodeText}" readonly="true" />
+                        <p:inputText id="location" value="#{bean.destItem.location.label}" readonly="true" />
                         <p:commandButton value="..." onclick="chooseDestLocationDialog.show()" />
                     </t:panelGroup>
                 </h:panelGrid>

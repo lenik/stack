@@ -17,11 +17,11 @@
             </p:column>
 
             <p:column headerText="库位" style="width:100px;">
-                <h:outputText value="#{preferredLocation.location.nodeText}" />
+                <h:outputText value="#{preferredLocation.location.label}" />
             </p:column>
 
             <p:column headerText="仓库" style="width:50px;">
-                <h:outputText value="#{preferredLocation.location.warehouse.name}" />
+                <h:outputText value="#{preferredLocation.location.warehouse.label}" />
             </p:column>
 
             <p:column headerText="操作" style="width:100px;">
@@ -38,7 +38,7 @@
             <h:panelGrid id="addPreferredLocationPanel" columns="2">
                 <h:outputText value="库位" />
                 <h:panelGroup colspan="2">
-                    <p:inputText value="#{bean.preferredLocation.location.nodeText}" readonly="true" />
+                    <p:inputText value="#{bean.preferredLocation.location.label}" readonly="true" />
                     <p:commandButton value="..." oncomplete="choosePreferredLocationDialog.show()" />
                 </h:panelGroup>
             </h:panelGrid>

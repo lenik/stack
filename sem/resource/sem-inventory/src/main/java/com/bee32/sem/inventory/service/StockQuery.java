@@ -106,7 +106,7 @@ public class StockQuery
             }
             if (options.isWarehouseVisible())
                 ; // item.setWarehouse();
-            if (options.isWarehouseVisible()) {
+            if (options.isLocationVisible()) {
                 item.setLocation(_location);
             }
 

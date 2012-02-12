@@ -63,7 +63,7 @@
                 </p:column>
 
                 <p:column headerText="库位">
-                    <h:outputText value="#{item.location.nodeText}" />
+                    <h:outputText value="#{item.location.label}" />
                 </p:column>
 
                 <p:column headerText="单价">
@@ -121,7 +121,7 @@
                     </p:column>
 
                     <p:column headerText="库位" style="width:100px;">
-                        <h:outputText value="#{item.location.nodeText}" />
+                        <h:outputText value="#{item.location.label}" />
                     </p:column>
 
                     <p:column headerText="单价" style="width:80px;">
@@ -160,7 +160,7 @@
                     <h:outputText value="#{bean.detailItem.material.modelSpec}" />
 
                     <h:outputText value="所在仓库:" />
-                    <h:outputText value="#{bean.detailItem.parent.warehouse.name}" />
+                    <h:outputText value="#{bean.detailItem.parent.warehouse.label}" />
 
                     <h:outputText value="所在年月:" />
                     <h:outputText value="#{bean.detailItem.parent.createdDate}">

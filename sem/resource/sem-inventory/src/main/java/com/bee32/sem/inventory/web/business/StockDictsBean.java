@@ -72,7 +72,7 @@ public class StockDictsBean
         List<SelectItem> selectItems = new ArrayList<SelectItem>();
         for (StockWarehouseDto warehouse : getWarehouses()) {
             Integer id = warehouse.getId();
-            String name = warehouse.getName();
+            String name = warehouse.getLabel();
             selectItems.add(new SelectItem(id, name));
         }
         return selectItems;

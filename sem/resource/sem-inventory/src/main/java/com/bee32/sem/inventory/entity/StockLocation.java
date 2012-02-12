@@ -28,11 +28,9 @@ public class StockLocation
 
     private static final long serialVersionUID = 1L;
 
-    public static final int ADDRESS_LENGTH = 30;
     public static final int CAPACITY_UNIT_HINT_LENGTH = 30;
 
     StockWarehouse warehouse;
-    String address;
     double x;
     double y;
     double z;
@@ -45,15 +43,15 @@ public class StockLocation
     public StockLocation() {
     }
 
-    public StockLocation(StockWarehouse warehouse, String address) {
+    public StockLocation(StockWarehouse warehouse, String label) {
         this.warehouse = warehouse;
-        this.address = address;
+        this.label = label;
     }
 
-    public StockLocation(StockWarehouse warehouse, String address, StockLocation parent) {
+    public StockLocation(StockWarehouse warehouse, String label, StockLocation parent) {
         super(parent);
         this.warehouse = warehouse;
-        this.address = address;
+        this.label = label;
     }
 
     /**
@@ -71,21 +69,6 @@ public class StockLocation
         if (warehouse == null)
             throw new NullPointerException("warehouse");
         this.warehouse = warehouse;
-    }
-
-    /**
-     * 局部地址
-     */
-    @Column(length = ADDRESS_LENGTH)
-    public String getAddress() {
-        return address;
-    }
-
-    /**
-     * 局部地址
-     */
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     /**
