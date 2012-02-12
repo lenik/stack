@@ -7,7 +7,7 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.type.FriendTypes;
 import com.bee32.plover.arch.util.TextMap;
 
-public class BastDtoUtils {
+public class BaseDtoUtils {
 
     static DummyDto dummy = new DummyDto();
 

@@ -19,6 +19,7 @@ import org.springframework.orm.hibernate3.HibernateSystemException;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.arch.util.dto.BaseDto;
+import com.bee32.plover.arch.util.dto.BaseDto_Skel;
 import com.bee32.plover.arch.util.dto.MarshalType;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
@@ -37,6 +38,8 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     transient Object _source; // Only used to get parameterized type name.
 
     int _index;
+    Boolean _checked;
+
     protected K id;
     boolean _skipId;
     Integer version;
@@ -95,137 +98,12 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         return self;
     }
 
+    /**
+     * @see BaseDto_Skel#getKey()
+     */
     @Override
     public final Serializable getKey() {
         return getId();
-    }
-
-    public EntityDto<E, K> populate(Object source) {
-        if (source instanceof EntityDto<?, ?>) {
-            EntityDto<?, ?> o = (EntityDto<?, ?>) source;
-            _populate(o);
-        } else
-            throw new UnsupportedOperationException("Populate from unknown source type: " + source);
-        return this;
-    }
-
-    protected void _populate(EntityDto<?, ?> o) {
-        @SuppressWarnings("unchecked")
-        K _o_id = (K) o.id;
-        id = _o_id;
-
-        version = o.version;
-        createdDate = o.createdDate;
-        lastModified = o.lastModified;
-        createdDateDirty = o.createdDateDirty;
-        lastModifiedDirty = o.lastModifiedDirty;
-        entityFlags = o.entityFlags;
-    }
-
-    public int get_index() {
-        return _index;
-    }
-
-    public void set_index(int _index) {
-        this._index = _index;
-    }
-
-    /**
-     * Get ID.
-     *
-     * @return <code>null</code> If id isn't set. Thus should be skipped.
-     */
-    @NotNull
-    public K getId() {
-        return id;
-    }
-
-    /**
-     * Set ID.
-     *
-     * @param id
-     *            Set to <code>null</code> to skip the id property.
-     */
-    public void setId(K id) {
-        this.id = id;
-    }
-
-    public void setId(K id, boolean skipped) {
-        this.id = id;
-        this._skipId = skipped;
-    }
-
-    @RequiredId
-    public final K getIdRequired() {
-        return getId();
-    }
-
-    public final void setIdRequired(K id) {
-        setId(id);
-    }
-
-    @RequiredId
-    public int getIdRequiredInt() {
-        if (id == null)
-            return 0;
-        else
-            return (Integer) id;
-    }
-
-    @SuppressWarnings("unchecked")
-    public void setIdRequiredInt(int id) {
-        this.id = (K) (Integer) id;
-    }
-
-    @RequiredId
-    public long getIdRequiredLong() {
-        if (id == null)
-            return 0L;
-        else
-            return (Long) id;
-    }
-
-    @SuppressWarnings("unchecked")
-    public void setIdRequiredLong(long id) {
-        this.id = (K) (Long) id;
-    }
-
-    @RequiredId
-    public String getIdRequiredString() {
-        if (id == null)
-            return "";
-        else
-            return (String) id;
-    }
-
-    @SuppressWarnings("unchecked")
-    public void setIdRequiredString(String id) {
-        if (id == null)
-            throw new NullPointerException("id");
-        this.id = (K) id;
-    }
-
-    /**
-     * Get corresponding version.
-     *
-     * The version of the entity to which this DTO is marshal/unmarshal against.
-     *
-     * @return <code>null</code> if version isn't used.
-     */
-    public Integer getVersion() {
-        return version;
-    }
-
-    /**
-     * Set the corresponding version.
-     *
-     * The version of the entity to which this DTO is marshal/unmarshal against.
-     *
-     * @param version
-     *            Set to <code>null</code> to skip version.
-     */
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 
     /**
@@ -264,45 +142,26 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             return ClassUtil.getTypeName(sourceType);
     }
 
-    protected String getName() {
-        throw new NotImplementedException();
+    public EntityDto<E, K> populate(Object source) {
+        if (source instanceof EntityDto<?, ?>) {
+            EntityDto<?, ?> o = (EntityDto<?, ?>) source;
+            _populate(o);
+        } else
+            throw new UnsupportedOperationException("Populate from unknown source type: " + source);
+        return this;
     }
 
-    protected void setName(String name) {
-        throw new NotImplementedException();
-    }
+    protected void _populate(EntityDto<?, ?> o) {
+        @SuppressWarnings("unchecked")
+        K _o_id = (K) o.id;
+        id = _o_id;
 
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-        this.createdDateDirty = true;
-    }
-
-    public Date getLastModified() {
-        return lastModified;
-    }
-
-    public void setLastModified(Date lastModified) {
-        this.lastModified = lastModified;
-        this.lastModifiedDirty = true;
-    }
-
-    public EntityFlags getEntityFlags() {
-        if (entityFlags == null) {
-            synchronized (this) {
-                if (entityFlags == null) {
-                    entityFlags = new EntityFlags();
-                }
-            }
-        }
-        return entityFlags;
-    }
-
-    public void setEntityFlags(int entityFlags) {
-        this.entityFlags = new EntityFlags(entityFlags);
+        version = o.version;
+        createdDate = o.createdDate;
+        lastModified = o.lastModified;
+        createdDateDirty = o.createdDateDirty;
+        lastModifiedDirty = o.lastModifiedDirty;
+        entityFlags = o.entityFlags;
     }
 
     /**
@@ -610,6 +469,163 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     public void toString(PrettyPrintStream out, FormatStyle format, Set<Object> occurred, int depth) {
         EntityDtoFormatter formatter = new EntityDtoFormatter(out, occurred);
         formatter.format(this, format, depth);
+    }
+
+    // Properties
+
+    public int get_index() {
+        return _index;
+    }
+
+    public void set_index(int _index) {
+        this._index = _index;
+    }
+
+    public Boolean get_checked() {
+        return _checked;
+    }
+
+    public void set_checked(Boolean checked) {
+        this._checked = checked;
+    }
+
+    /**
+     * Get ID.
+     *
+     * @return <code>null</code> If id isn't set. Thus should be skipped.
+     */
+    @NotNull
+    public K getId() {
+        return id;
+    }
+
+    /**
+     * Set ID.
+     *
+     * @param id
+     *            Set to <code>null</code> to skip the id property.
+     */
+    public void setId(K id) {
+        this.id = id;
+    }
+
+    public void setId(K id, boolean skipped) {
+        this.id = id;
+        this._skipId = skipped;
+    }
+
+    @RequiredId
+    public final K getIdRequired() {
+        return getId();
+    }
+
+    public final void setIdRequired(K id) {
+        setId(id);
+    }
+
+    @RequiredId
+    public int getIdRequiredInt() {
+        if (id == null)
+            return 0;
+        else
+            return (Integer) id;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void setIdRequiredInt(int id) {
+        this.id = (K) (Integer) id;
+    }
+
+    @RequiredId
+    public long getIdRequiredLong() {
+        if (id == null)
+            return 0L;
+        else
+            return (Long) id;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void setIdRequiredLong(long id) {
+        this.id = (K) (Long) id;
+    }
+
+    @RequiredId
+    public String getIdRequiredString() {
+        if (id == null)
+            return "";
+        else
+            return (String) id;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void setIdRequiredString(String id) {
+        if (id == null)
+            throw new NullPointerException("id");
+        this.id = (K) id;
+    }
+
+    /**
+     * Get corresponding version.
+     *
+     * The version of the entity to which this DTO is marshal/unmarshal against.
+     *
+     * @return <code>null</code> if version isn't used.
+     */
+    public Integer getVersion() {
+        return version;
+    }
+
+    /**
+     * Set the corresponding version.
+     *
+     * The version of the entity to which this DTO is marshal/unmarshal against.
+     *
+     * @param version
+     *            Set to <code>null</code> to skip version.
+     */
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    protected String getName() {
+        throw new NotImplementedException();
+    }
+
+    protected void setName(String name) {
+        throw new NotImplementedException();
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+        this.createdDateDirty = true;
+    }
+
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+        this.lastModifiedDirty = true;
+    }
+
+    public EntityFlags getEntityFlags() {
+        if (entityFlags == null) {
+            synchronized (this) {
+                if (entityFlags == null) {
+                    entityFlags = new EntityFlags();
+                }
+            }
+        }
+        return entityFlags;
+    }
+
+    public void setEntityFlags(int entityFlags) {
+        this.entityFlags = new EntityFlags(entityFlags);
     }
 
 }

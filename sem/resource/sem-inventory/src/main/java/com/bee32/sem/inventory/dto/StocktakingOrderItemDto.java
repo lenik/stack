@@ -28,8 +28,8 @@ public class StocktakingOrderItemDto
     }
 
     @Override
-    public boolean isImportant() {
-        return getQuantity() != null;
+    public boolean isDiscardable() {
+        return getQuantity() == null;
     }
 
     @Override

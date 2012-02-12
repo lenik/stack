@@ -21,7 +21,7 @@ import com.bee32.plover.arch.util.TextMap;
  * <li>Context wrappers
  * </ul>
  */
-abstract class BaseDto_Skel<S>
+public abstract class BaseDto_Skel<S>
         extends BaseDto_ASM<S> {
 
     private static final long serialVersionUID = 1L;

@@ -60,6 +60,10 @@ public abstract class AbstractItemDto<E extends AbstractItem>
         return false;
     }
 
+    public boolean isDiscardable() {
+        return get_checked() == Boolean.FALSE;
+    }
+
     @Override
     protected void __marshal(E source) {
         super.__marshal(source);
@@ -165,14 +169,6 @@ public abstract class AbstractItemDto<E extends AbstractItem>
                 nativeTotal = price.multiply(getQuantity());
         }
         return nativeTotal;
-    }
-
-    public boolean isImportant() {
-        return true;
-    }
-
-    public boolean isDiscardable() {
-        return !isImportant() && (quantity == null || quantity.equals(BigDecimal.ZERO));
     }
 
 }
