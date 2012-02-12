@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.free.ParseException;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
@@ -85,6 +87,8 @@ public class MakeOrderItemDto
         this.part = part;
     }
 
+    @Future
+    @NotNull
     public Date getDeadline() {
         return deadline;
     }

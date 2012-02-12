@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.base.tx.TxEntityDto;
@@ -73,6 +75,8 @@ public class MakeTaskDto
         this.order = order;
     }
 
+    @Future
+    @NotNull
     public Date getDeadline() {
         return deadline;
     }

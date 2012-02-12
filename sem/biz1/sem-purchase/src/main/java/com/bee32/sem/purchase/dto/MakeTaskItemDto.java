@@ -6,6 +6,8 @@ import java.util.Date;
 
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
@@ -109,6 +111,8 @@ public class MakeTaskItemDto
         this.quantity = quantity;
     }
 
+    @Future
+    @NotNull
     public Date getDeadline() {
         return deadline;
     }
