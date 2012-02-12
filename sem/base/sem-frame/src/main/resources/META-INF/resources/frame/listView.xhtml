@@ -21,8 +21,10 @@
         <cc:attribute name="removable" type="java.lang.Boolean" default="true" />
         <cc:facet name="columns" required="true" />
         <cc:facet name="more" />
-        <cc:facet name="indexButtons" />
-        <cc:facet name="editButtons" />
+        <cc:facet name="index-buttons" />
+        <cc:facet name="index-buttons.left" />
+        <cc:facet name="index-buttons.right" />
+        <cc:facet name="edit-buttons" />
     </cc:interface>
 
     <cc:implementation>
@@ -59,6 +61,9 @@
                                 <p:column headerText="序号">
                                     <h:outputText value="${rowIndex + 1}" />
                                 </p:column>
+                                <p:column headerText="ID">
+                                    <h:outputText value="${entry.id}" />
+                                </p:column>
 
                                 <cc:insertRawFacet name="columns" />
 
@@ -74,13 +79,12 @@
                                         actionListener="${mbean.showCreateForm}"
                                         update=":@form, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
                                         oncomplete="${style == 'panel' ? '' : cc.attrs.editDialogVar.concat('.show();')}" />
-                                    <p:commandButton rendered="${cc.attrs.removable}" id="remove" value="移除"
-                                        actionListener="${mbean.removeSelection}"
-                                        update=":@form, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
-                                        disabled="${mbean.selection == null}" />
+                                    <cc:insertRawFacet name="index-buttons.left" />
+                                </td>
+                                <td align="center">
+                                    <cc:insertRawFacet name="index-buttons" />
                                 </td>
                                 <td align="right">
-                                    <cc:insertRawFacet name="indexButtons" />
                                     <p:commandButton id="edit" value="修改" disabled="${mbean.selection == null}"
                                         action="${mbean.showEditForm}" update="${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
                                         oncomplete="${style == 'panel' ? '' : cc.attrs.editDialogVar.concat('.show();')}"
@@ -88,6 +92,11 @@
                                         <f:setPropertyActionListener target="${mbean.copyMode}"
                                             value="${cc.attrs.copy}" />
                                     </p:commandButton>
+                                    <p:commandButton rendered="${cc.attrs.removable}" id="remove" value="移除"
+                                        actionListener="${mbean.removeSelection}"
+                                        update=":@form, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
+                                        disabled="${mbean.selection == null}" />
+                                    <cc:insertRawFacet name="index-buttons.right" />
                                     <p:commandButton id="close" value="关闭"
                                         onclick="${cc.attrs.indexDialogVar}.hide()" rendered="${style == 'dialog'}" />
                                 </td>
@@ -109,9 +118,9 @@
                         <table border="0" width="100%">
                             <tr>
                                 <td align="left">
+                                    <cc:insertRawFacet name="edit-buttons" />
                                 </td>
                                 <td align="right">
-                                    <cc:insertRawFacet name="editButtons" />
                                     <p:commandButton id="apply-validated"
                                         value="${(style == 'dialog' || style == 'editDialog') ? '确定' : (mbean.openedIndex == -1 ? '添加' : '应用').concat(smooth ? '*' : '')}"
                                         title="${(style == 'panel' || style == 'indexPanel') and smooth ? '在快速编辑模式下，当前修改的内容可能已经被自动保存。' : ''}"
