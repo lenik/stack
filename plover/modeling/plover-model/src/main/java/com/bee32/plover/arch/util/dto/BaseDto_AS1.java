@@ -37,7 +37,7 @@ public abstract class BaseDto_AS1<S>
             throw new RuntimeException("Failed to instantiate DTO " + dtoClass.getName(), e);
         }
 
-        dto.setSelection(fmask);
+        dto.setFmask(fmask);
 
         boolean isRef = refButFilled != null;
         boolean doMarshal = refButFilled != Boolean.FALSE;

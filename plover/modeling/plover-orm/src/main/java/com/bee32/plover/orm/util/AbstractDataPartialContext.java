@@ -41,7 +41,7 @@ public abstract class AbstractDataPartialContext
 
     public <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
     D reload(D dto) {
-        return reload(dto, dto.getSelection());
+        return reload(dto, dto.getFmask());
     }
 
     public <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //

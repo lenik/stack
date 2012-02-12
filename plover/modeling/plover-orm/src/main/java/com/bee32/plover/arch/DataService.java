@@ -31,7 +31,7 @@ public abstract class DataService
 
     protected <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
     D reload(D dto) {
-        return reload(dto, dto.getSelection());
+        return reload(dto, dto.getFmask());
     }
 
     protected <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //

@@ -14,7 +14,7 @@ public abstract class BaseDto<S>
     private static final long serialVersionUID = 1L;
 
     protected Class<? extends S> sourceType;
-    protected final Flags32 selection = new Flags32();
+    public final Flags32 selection = new Flags32();
     private boolean newCreated;
 
     /**
@@ -107,11 +107,11 @@ public abstract class BaseDto<S>
         return newCreated;
     }
 
-    public int getSelection() {
+    public int getFmask() {
         return selection.bits;
     }
 
-    public void setSelection(int fmask) {
+    public void setFmask(int fmask) {
         this.selection.bits = fmask;
     }
 

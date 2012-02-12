@@ -404,7 +404,7 @@ public class SimpleEntityViewBean
         EntityDto<?, ?> entityDto;
         try {
             entityDto = dtoClass.newInstance(); // Create fmask is always F_MORE..
-            entityDto.setSelection(Fmask.F_MORE);
+            entityDto.setFmask(Fmask.F_MORE);
             entityDto = entityDto.create();
         } catch (Exception e) {
             uiLogger.error("无法创建对象", e);
