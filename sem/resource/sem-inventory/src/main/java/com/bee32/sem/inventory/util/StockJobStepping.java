@@ -105,7 +105,8 @@ public class StockJobStepping
             if (isInitiator()) {
                 ctx.data.access(jobClass).findAndDelete(new Equals(bindingProperty + ".id", initiatorOrder.getId()));
             } else {
-                for (StockJob _job : ctx.data.access(jobClass).list(new Equals(bindingProperty + ".id", initiatorOrder.getId()))) {
+                for (StockJob _job : ctx.data.access(jobClass).list(
+                        new Equals(bindingProperty + ".id", initiatorOrder.getId()))) {
                     setJobBinding(_job, null);
                     ctx.data.access(jobClass).update(_job);
                 }
