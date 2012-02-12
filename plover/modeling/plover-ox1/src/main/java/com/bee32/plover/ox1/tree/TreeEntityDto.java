@@ -47,7 +47,8 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
         if (selection.contains(CHILDREN))
             children = mrefList(getClass(), selection.bits, source.getChildren());
         else
-            children = new ArrayList<self_t>();
+            // TreeBuilder creates children here.
+            children = new ArrayList<self_t>(); // Collections.emptyList();
     }
 
     @Override
@@ -147,11 +148,13 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
     }
 
     public int indexOf(self_t child) {
+        if (child == null)
+            throw new NullPointerException("child");
         return children.indexOf(child);
     }
 
     public int getIndex() {
-        if (parent == null)
+        if (parent == null || parent.isNull())
             return 0;
         self_t self = self();
         return parent.indexOf(self);
@@ -184,6 +187,8 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
     }
 
     public boolean isLast() {
+        if (parent == null || parent.isNull())
+            return false;
         return getIndex() == parent.size() - 1;
     }
 
@@ -256,8 +261,9 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
         out.write(getNodeLabel());
         out.write('\n');
 
-        for (self_t child : children)
-            child.dump(out);
+        if (children != null)
+            for (self_t child : children)
+                child.dump(out);
     }
 
     public void dump()

@@ -76,7 +76,7 @@ public class MaterialCategoryTreeModel
             List<MaterialCategoryDto> categories = DTOs.mrefList(MaterialCategoryDto.class, TreeEntityDto.PARENT,
                     _categories);
             index = DTOs.index(categories);
-            Set<MaterialCategoryDto> roots = TreeEntityUtils.rebuildTree(categories, index);
+            Set<MaterialCategoryDto> roots = TreeEntityUtils.rebuildTree(index);
 
             rootNode = new DefaultTreeNode("categoryRoot", null);
             UIHelper.buildTree(this, roots, rootNode);

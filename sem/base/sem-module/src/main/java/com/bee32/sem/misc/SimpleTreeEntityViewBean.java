@@ -42,7 +42,7 @@ public abstract class SimpleTreeEntityViewBean
         index = DTOs.index(dtos);
 
         @SuppressWarnings({ "unchecked", "rawtypes" })
-        Set<? extends TreeEntityDto<?, ?, ?>> roots = TreeEntityUtils.rebuildTree((List) dtos, (Map) index);
+        Set<? extends TreeEntityDto<?, ?, ?>> roots = TreeEntityUtils.rebuildTree((Map) index);
 
         nodeIndex = new TreeNodeIndexer();
         return UIHelper.buildTree(nodeIndex, roots);
