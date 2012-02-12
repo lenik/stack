@@ -1,12 +1,16 @@
 $TTL 24H
 
-1               CNAME   shaoxing-1.gateway
-2               CNAME   zjhf.gateway
-3               CNAME   center-1.gateway
+1                       CNAME   shaoxing-1.gateway
+2                       CNAME   zjhf.gateway
+3                       CNAME   center-1.gateway
 
-$ORIGIN gateway.bee32.com.
 $TTL 1H
 
-shaoxing-1      A       60.190.203.72
-zjhf            CNAME   bee32.8866.org.
-center-1        CNAME   bee32.8866.org.
+shaoxing-1.gateway      A       60.190.203.72           ; 绍兴IDC机房 服务器-1
+zjhf.gateway            CNAME   bee32.8866.org.         ; 三元风机 厂房私服
+center-1.gateway        CNAME   bee32.8866.org.         ; 软件部服务器
+
+; Forwards
+*.1                     CNAME   1
+*.2                     CNAME   2
+*.3                     CNAME   3

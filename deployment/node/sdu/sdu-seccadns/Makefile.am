@@ -16,10 +16,10 @@ dist_seccadb_DATA = \
     bee32.key \
     bee32.db \
     bee32-lan.db \
-    bee32-fw.db \
     bee32-gw.db \
     rad.db \
-    bia.db
+    bia.db \
+    layout.png
 
 dist_sites_DATA = \
     bee32-copy.site \
@@ -42,3 +42,5 @@ CLEANFILES = post-install.sh    pre-remove.sh \
     bee32-dns.site \
     dns-update.php
 
+layout.png: bee32.db bee32-gw.db
+	${srcdir}/dnsgraph -O "$@" bee32.db bee32-gw.db

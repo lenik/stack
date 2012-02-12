@@ -24,7 +24,8 @@ $TTL            1H
 main                    CNAME   center-1.gateway
 dns                     CNAME   main            ; 域名控制器
 
-demo                    CNAME   1.1             ; 演示
+app-x                   CNAME   main
+demo                    CNAME   1               ; 演示
 
 dev                     CNAME   main            ; 重要开发数据
 s-dev                   CNAME   dev             ; 次要开发数据
@@ -47,7 +48,7 @@ my                      CNAME   sql             ; MySQL 数据库管理
 blog                    CNAME   s-dev           ; 开发者日志
 *.blog                  CNAME   blog
 
-cdn                     CNAME   bee32.8866.org. ; 内容分发网络
+cdn                     CNAME   1               ; 内容分发网络
 *.cdn                   CNAME   cdn             ; 静态资源
 
 ci                      CNAME   aut-dev         ; 连续集成系统
@@ -55,14 +56,12 @@ forum                   CNAME   s-dev           ; 工程论坛
 git                     CNAME   dev             ; Git仓库/版本控制
 list                    CNAME   s-dev           ; 邮件列表
 m2                      CNAME   aut-dev         ; M2仓库/模快依赖项
-repo                    CNAME   s-dev           ; SDU仓库/预编译部署单元
+sdu                     CNAME   s-dev           ; SDU仓库/预编译部署单元
 svn                     CNAME   dev             ; SVN仓库/版本控制
 track                   CNAME   s-dev           ; Trac 项目管理支持
 q                       CNAME   s-dev           ; 一般问题跟踪系统
 bugs                    CNAME   q               ; 缺陷跟踪系统
 www                     CNAME   main            ; SECCA 工程开发网
-
-sdu                     CNAME   c617.dyndns.org.
 
 $INCLUDE @seccadbdir@/bee32-lan.db
 $INCLUDE @seccadbdir@/bee32-fw.db
