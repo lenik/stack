@@ -25,11 +25,11 @@ public abstract class Thing<X extends XPool<?>>
     private static final long serialVersionUID = 1L;
 
     public static final int SERIAL_LENGTH = 32;
-    public static final int UNIT_HINT_LENGTH = 20;
+    public static final int UNIT_HINT_LENGTH = Unit.HINT_LENGTH;
 
     String serial;
 
-    Unit unit;
+    Unit unit = Unit.PIECE;
     String unitHint;
     UnitConv unitConv;
 
@@ -46,6 +46,23 @@ public abstract class Thing<X extends XPool<?>>
         if (serial == null)
             throw new NullPointerException("serial");
         this.serial = serial;
+    }
+
+    @Override
+    public void populate(Object source) {
+        if (source instanceof Thing) {
+            Thing<?> o = (Thing<?>) source;
+            _populate(o);
+        } else
+            super.populate(source);
+    }
+
+    protected void _populate(Thing<?> o) {
+        super._populate(o);
+        serial = o.serial;
+        unit = o.unit;
+        unitHint = o.unitHint;
+        unitConv = o.unitConv;
     }
 
     /**
@@ -85,9 +102,24 @@ public abstract class Thing<X extends XPool<?>>
         this.unit = unit;
     }
 
-    @Column(length = UNIT_HINT_LENGTH, nullable = false)
-    public String getUnitHint() {
+    @Column(name = "unitHint", length = UNIT_HINT_LENGTH)
+    String get_unitHint() { // default -> null.
+        if (unitHint != null)
+            if (unitHint.equals(unit.getHint()))
+                unitHint = null;
         return unitHint;
+    }
+
+    void set_unitHint(String unitHint) {
+        this.unitHint = unitHint;
+    }
+
+    @Transient
+    public String getUnitHint() { // null -> default.
+        if (unitHint == null)
+            return getUnit().getHint();
+        else
+            return unitHint;
     }
 
     public void setUnitHint(String unitHint) {
@@ -109,6 +141,20 @@ public abstract class Thing<X extends XPool<?>>
      */
     public void setUnitConv(UnitConv unitConv) {
         this.unitConv = unitConv;
+    }
+
+    /**
+     * 假如主单位为 米，1米对应 3公斤，则 addUnitConv(KG, 3.0)
+     */
+    public void addUnitConv(Unit convUnit, double scale) {
+        if (unitConv == null) {
+            if (label == null)
+                throw new IllegalStateException("label isn't initialized");
+            if (unit == null)
+                throw new IllegalStateException("unit isn't initialized");
+            unitConv = new UnitConv(getLabel(), unit);
+        }
+        unitConv.setScale(convUnit, scale);
     }
 
     @Override
