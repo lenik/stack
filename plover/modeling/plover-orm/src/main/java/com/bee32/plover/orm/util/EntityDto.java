@@ -490,6 +490,28 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     /**
+     * unchecked by default.
+     */
+    public boolean isChecked0() {
+        return _checked != Boolean.TRUE;
+    }
+
+    public void setChecked0(boolean checked) {
+        _checked = checked;
+    }
+
+    /**
+     * checked by default.
+     */
+    public boolean isChecked1() {
+        return _checked != Boolean.FALSE;
+    }
+
+    public void setChecked1(boolean checked) {
+        _checked = checked;
+    }
+
+    /**
      * Get ID.
      *
      * @return <code>null</code> If id isn't set. Thus should be skipped.
