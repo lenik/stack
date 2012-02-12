@@ -27,6 +27,7 @@ import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.bom.service.PriceStrategy;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialType;
+import com.bee32.sem.inventory.util.ConsumptionMap;
 import com.bee32.sem.world.monetary.FxrQueryException;
 
 /**
@@ -312,16 +313,16 @@ public class Part
      * @aka obtainAllMaterials
      */
     @Transient
-    public ConsumptionMap<Material> getMaterialConsumption() {
-        ConsumptionMap<Material> mc = new ConsumptionMap<Material>();
+    public ConsumptionMap getMaterialConsumption() {
+        ConsumptionMap mc = new ConsumptionMap();
         collectConsumption(mc, BigDecimal.ONE);
         return mc;
     }
 
-    void collectConsumption(ConsumptionMap<Material> mc, BigDecimal times) {
+    void collectConsumption(ConsumptionMap mc, BigDecimal times) {
         for (PartItem child : children)
             if (child.getType() == MaterialType.RAW)
-                mc.add(child.getMaterial(), child.getQuantity().multiply(times));
+                mc.consume(child.getMaterial(), child.getQuantity().multiply(times));
             else
                 child.getPart().collectConsumption(mc, child.getQuantity());
     }

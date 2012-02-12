@@ -12,10 +12,10 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.color.UIEntityDto;
-import com.bee32.sem.bom.entity.ConsumptionMap;
 import com.bee32.sem.bom.entity.Part;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.inventory.util.ConsumptionMap;
 
 public class PartDto
         extends UIEntityDto<Part, Integer> {
@@ -43,7 +43,7 @@ public class PartDto
     BigDecimal electricityFee;
     BigDecimal equipmentCost;
 
-    ConsumptionMap<MaterialDto> materialConsumption;
+    ConsumptionMap materialConsumption;
 
     public PartDto() {
         super();
@@ -64,11 +64,11 @@ public class PartDto
         else
             children = Collections.emptyList();
 
-        materialConsumption = new ConsumptionMap<MaterialDto>();
+        materialConsumption = new ConsumptionMap();
         if (selection.contains(MATERIAL_CONSUMPTION))
-            for (Entry<Material, BigDecimal> entry : source.getMaterialConsumption().entrySet()) {
+            for (Entry<Material, BigDecimal> entry : source.getMaterialConsumption().entityMap().entrySet()) {
                 MaterialDto material = DTOs.mref(MaterialDto.class, entry.getKey());
-                materialConsumption.put(material, entry.getValue());
+                materialConsumption.consume(material, entry.getValue());
             }
 
         if (selection.contains(XREFS))
@@ -246,7 +246,7 @@ public class PartDto
         return total;
     }
 
-    public ConsumptionMap<MaterialDto> getMaterialConsumption() {
+    public ConsumptionMap getMaterialConsumption() {
         return materialConsumption;
     }
 
