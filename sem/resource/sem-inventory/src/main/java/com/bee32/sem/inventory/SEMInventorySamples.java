@@ -244,6 +244,7 @@ public class SEMInventorySamples
                 cupGlue, cupGlue_pp, //
                 cupGlass_AM, //
                 cupHandler, cupHandler_KJ, cupHandler_F1);
+        addBulk(m_gluepp1.getUnitConv());
         addBulk(m_light_A, m_light_B, //
                 m_glass1, //
                 m_glue1, m_gluepp1, //
