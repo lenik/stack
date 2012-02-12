@@ -25,6 +25,16 @@
             <h:outputText value="制单人:" />
             <p:inputText value="#{obj.owner.displayName}" disabled="true" />
 
+            <h:outputText value="简要" />
+            <t:panelGroup colspan="3">
+                <p:inputText value="#{obj.label}" />
+            </t:panelGroup>
+
+            <h:outputText value="描述" />
+            <t:panelGroup colspan="3">
+                <p:inputText value="#{obj.description}" />
+            </t:panelGroup>
+
             <h:outputText value="生产任务单" />
             <t:panelGroup>
                 <h:inputHidden label="生产任务单" value="#{obj.task.idRequired}" />
@@ -33,11 +43,6 @@
             </t:panelGroup>
             <t:panelGroup />
             <t:panelGroup />
-
-            <h:outputText value="备注" />
-            <t:panelGroup colspan="3">
-                <p:inputText value="#{obj.memo}" />
-            </t:panelGroup>
         </t:panelGrid>
 
         <p:tabView id="tv">
@@ -71,12 +76,12 @@
                             <h:outputText value="${entry.createdDate}" />
                         </p:column>
                         <p:column headerText="仓库">
-                            <h:outputText value="${entry.warehouse.name}" />
+                            <h:outputText value="${entry.warehouse.label}" />
                         </p:column>
                     </f:facet>
-                    <f:facet name="indexButtons">
+                    <f:facet name="index-buttons.left">
                         <p:commandButton id="import" value="库存导入" actionListener="#{bean.importFromStock}"
-                            update=":editDialog:form:tv:planOrdersIndexView" />
+                            update=":editDialog:form:tv:planOrdersIndexView:indexForm:body" />
                     </f:facet>
                 </fr:listView>
             </p:tab>
@@ -115,7 +120,7 @@
             </t:panelGrid>
         </fr:listView>
 
-        <fr:listView id="planOrdersEditView" header="库存锁定" style="editDialog" indexView=":planOrdersIndexView"
+        <fr:listView id="planOrdersEditView" header="库存锁定" style="editDialog" indexView=":editDialog:form:tv:planOrdersIndexView"
             mbean="#{bean.planOrdersMBean}">
             <h:panelGrid columns="2">
                 <h:outputText value="时间:" />
@@ -128,33 +133,37 @@
                 mbean="#{bean.planOrderItemsMBean}" nested="true" creatable="false">
                 <f:facet name="columns">
                     <p:column headerText="物料">
-                        <h:outputText value="#{item.material.label}" />
+                        <h:outputText value="#{entry.material.label}" />
                     </p:column>
                     <p:column headerText="规格型号">
-                        <h:outputText value="#{item.material.modelSpec}" />
+                        <h:outputText value="#{entry.material.modelSpec}" />
                     </p:column>
                     <p:column headerText="单位">
-                        <h:outputText value="#{item.material.unit.name}" />
+                        <h:outputText value="#{entry.material.unit.name}" />
                     </p:column>
                     <p:column headerText="批号">
-                        <h:outputText value="#{item.batch}" />
+                        <h:outputText value="#{entry.batch}" />
                     </p:column>
                     <p:column headerText="有效期">
-                        <h:outputText value="#{item.expirationDate}">
+                        <h:outputText value="#{entry.expirationDate}">
                             <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                         </h:outputText>
                     </p:column>
                     <p:column headerText="库位">
-                        <h:outputText value="#{item.location.nodeText}" />
+                        <h:outputText value="#{entry.location.label}" />
                     </p:column>
                     <p:column headerText="单价">
-                        <h:outputText value="#{item.price}" />
+                        <h:outputText value="#{entry.price}" />
                     </p:column>
                     <p:column headerText="数量">
-                        <h:outputText value="#{item.quantity}" />
+                        <h:outputText value="#{entry.quantity}" />
                     </p:column>
                     <p:column headerText="备注">
-                        <h:outputText value="#{item.description}" />
+                        <h:outputText value="#{entry.description}" />
+                    </p:column>
+                    <p:column headerText="锁定">
+                        <p:selectBooleanCheckbox id="checked" value="#{entry.checked1}"
+                            disabled="true" />
                     </p:column>
                 </f:facet>
             </fr:listView>
@@ -163,9 +172,10 @@
         <fr:listView id="planOrderItemsEditView" header="库存锁定项" style="editDialog"
             indexView=":planOrdersEditView:editForm:planOrderItemsIndexView" mbean="#{bean.planOrderItemsMBean}">
             <t:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
-                <h:outputLabel value="物料" />
-                <h:outputText value="#{item.material.label}" />
-                <t:panelGroup colspan="2" />
+                <h:outputLabel for="material" value="物料" />
+                <h:outputText id="material" value="#{item.material.label}" />
+                <h:outputLabel for="checked" value="锁定" />
+                <p:selectBooleanCheckbox id="checked" value="#{item.checked1}" />
 
                 <h:outputLabel value="批号" />
                 <h:outputText value="#{item.batch}" />

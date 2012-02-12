@@ -17,7 +17,6 @@ import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
-import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.service.IStockQuery;
 import com.bee32.sem.inventory.service.StockQueryOptions;
@@ -30,15 +29,12 @@ import com.bee32.sem.purchase.dto.MaterialPlanItemDto;
 import com.bee32.sem.purchase.dto.StockPlanOrderDto;
 import com.bee32.sem.purchase.entity.MakeTask;
 import com.bee32.sem.purchase.entity.MaterialPlan;
-import com.bee32.sem.purchase.util.LockItemConfig;
 
 @ForEntity(MaterialPlan.class)
 public class MaterialPlanAdminBean
         extends ScrollEntityViewBean {
 
     private static final long serialVersionUID = 1L;
-
-    List<LockItemConfig> lockItemConfigs = new ArrayList<LockItemConfig>();
 
     public MaterialPlanAdminBean() {
         super(MaterialPlan.class, MaterialPlanDto.class, 0);
@@ -85,10 +81,10 @@ public class MaterialPlanAdminBean
             long index = 0;
             for (Entry<MaterialDto, BigDecimal> ent : allMaterial.entrySet()) {
                 MaterialPlanItemDto planItem = new MaterialPlanItemDto().create();
+                planItem.setId(-(index++) - 1L, true);
                 planItem.setMaterialPlan(materialPlan);
                 planItem.setMaterial(ent.getKey());
                 planItem.setQuantity(quantity.multiply(ent.getValue())); // 产品数量乘以原物料数量
-                planItem.setId(index++, true);
                 materialPlan.addItem(planItem);
             }
         }
@@ -101,6 +97,7 @@ public class MaterialPlanAdminBean
      */
     public void importFromStock() {
         MaterialPlanDto materialPlan = getOpenedObject();
+        materialPlan.getPlanOrders().clear();
 
         List<Long> materialIds = new ArrayList<Long>();
         for (MaterialPlanItemDto item : materialPlan.getItems())
@@ -110,9 +107,7 @@ public class MaterialPlanAdminBean
         opts.setCBatch(null, true);
         opts.setLocation(null, true);
         opts.setWarehouse(null, true);
-
-        IStockQuery q = ctx.bean.getBean(IStockQuery.class);
-        StockOrder _sumOrder = q.getActualSummary(materialIds, opts);
+        StockOrder _sumOrder = ctx.bean.getBean(IStockQuery.class).getActualSummary(materialIds, opts);
         StockOrderDto sumOrder = DTOs.marshal(StockOrderDto.class, StockOrderDto.ITEMS, _sumOrder);
 
         // 把查询结果变成SelectItemHoder的list,以便于绑定primefaces的DataTable组件
@@ -122,24 +117,17 @@ public class MaterialPlanAdminBean
             needMap.put(planItem.getMaterial(), planItem.getQuantity());
         }
 
-        lockItemConfigs.clear();
         for (StockOrderItemDto sumItem : sumOrder.getItems()) {
             MaterialDto material = sumItem.getMaterial();
             BigDecimal needQuantity = needMap.get(material);
             if (needQuantity.compareTo(BigDecimal.ZERO) <= 0)
                 continue;
 
-            LockItemConfig itemConfig = new LockItemConfig();
-            itemConfig.setItem(sumItem);
-            itemConfig.setChecked(true);
-
-            BigDecimal configQuantity = needQuantity.min(sumItem.getQuantity());
-            itemConfig.setQuantity(configQuantity);
-
-            needQuantity = needQuantity.subtract(configQuantity);
+            BigDecimal plannedQuantity = needQuantity.min(sumItem.getQuantity());
+            needQuantity = needQuantity.subtract(plannedQuantity);
             needMap.put(material, needQuantity);
 
-            lockItemConfigs.add(itemConfig);
+            materialPlan.plan(sumItem, plannedQuantity);
         }
 
         for (Entry<MaterialDto, BigDecimal> entry : needMap.entrySet()) {
@@ -150,46 +138,7 @@ public class MaterialPlanAdminBean
                         + material.getUnit().getLabel());
             }
         }
-        uiLogger.info("库存导入完成");
-    }
-
-    /**
-     * 根据用户的勾选，形成库存锁定（每个仓库对应一个锁定单）。
-     */
-    public void lockStock() {
-        MaterialPlanDto materialPlan = getOpenedObject();
-        Map<StockWarehouseDto, StockPlanOrderDto> planOrders = new HashMap<>();
-
-        for (LockItemConfig itemConfig : lockItemConfigs) {
-            if (!itemConfig.isChecked())
-                continue;
-
-            StockOrderItemDto fromItem = itemConfig.getItem();
-            StockWarehouseDto warehouse = fromItem.getLocation().getWarehouse();
-            StockPlanOrderDto planOrder = planOrders.get(warehouse);
-            if (planOrder == null) {
-                planOrder = new StockPlanOrderDto().create();
-                planOrder.setJob(materialPlan);
-                planOrder.setWarehouse(warehouse);
-                planOrders.put(warehouse, planOrder);
-            }
-
-            StockOrderItemDto toItem = new StockOrderItemDto().create();
-            toItem.populate(itemConfig.getItem()); // 导入
-            toItem.setParent(planOrder);
-            toItem.setQuantity(itemConfig.getQuantity());
-            planOrder.addItem(toItem);
-        }
-
-        if (!planOrders.isEmpty()) {
-            List<StockPlanOrderDto> planOrderList = new ArrayList<StockPlanOrderDto>();
-            planOrderList.addAll(planOrders.values());
-            materialPlan.setPlanOrders(planOrderList);
-        }
-    }
-
-    public List<LockItemConfig> getLockItemConfigs() {
-        return lockItemConfigs;
+        uiLogger.info("库存导入完成。");
     }
 
     ListMBean<MaterialPlanItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items", MaterialPlanItemDto.class);

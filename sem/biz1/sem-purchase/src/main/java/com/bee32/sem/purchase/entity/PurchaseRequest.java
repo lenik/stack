@@ -99,7 +99,7 @@ public class PurchaseRequest
         return totalPlanQuantity;
     }
 
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(mappedBy = "purchaseRequest", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<PurchaseTakeIn> getTakeIns() {
         return takeIns;
