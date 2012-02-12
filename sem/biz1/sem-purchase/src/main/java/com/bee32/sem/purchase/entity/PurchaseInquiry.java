@@ -3,7 +3,6 @@ package com.bee32.sem.purchase.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.NaturalId;
@@ -24,11 +23,11 @@ public class PurchaseInquiry
 
     private static final long serialVersionUID = 1L;
 
-    public static final int DELIVERY_DATE_LENGTH = 50;
-    public static final int QUALITY_LENGTH = 500;
-    public static final int PAYMENT_TERM_LENGTH = 500;
-    public static final int AFTER_SERVICE_LENGTH = 500;
-    public static final int OTHER_LENGTH = 500;
+    public static final int DELIVERY_DATE_LENGTH = 30;
+    public static final int QUALITY_LENGTH = 120;
+    public static final int PAYMENT_TERM_LENGTH = 60;
+    public static final int AFTER_SERVICE_LENGTH = 60;
+    public static final int OTHER_LENGTH = 1000;
 
     PurchaseRequestItem purchaseRequestItem;
     Org supplier;
@@ -38,8 +37,6 @@ public class PurchaseInquiry
     String paymentTerm;
     String afterService;
     String other;
-
-    PurchaseAdvice purchaseAdvice;
 
     /**
      * 需要询价的采购项目
@@ -138,15 +135,6 @@ public class PurchaseInquiry
 
     public void setOther(String other) {
         this.other = other;
-    }
-
-    @OneToOne(mappedBy = "preferredInquiry")
-    public PurchaseAdvice getPurchaseAdvice() {
-        return purchaseAdvice;
-    }
-
-    public void setPurchaseAdvice(PurchaseAdvice purchaseAdvice) {
-        this.purchaseAdvice = purchaseAdvice;
     }
 
 }

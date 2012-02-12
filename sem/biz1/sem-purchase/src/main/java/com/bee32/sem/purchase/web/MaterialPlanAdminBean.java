@@ -3,7 +3,6 @@ package com.bee32.sem.purchase.web;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -17,9 +16,10 @@ import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
-import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.service.IStockQuery;
 import com.bee32.sem.inventory.service.StockQueryOptions;
+import com.bee32.sem.inventory.service.StockQueryResult;
+import com.bee32.sem.inventory.util.ConsumptionMap;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.purchase.dto.MakeTaskDto;
@@ -77,7 +77,7 @@ public class MaterialPlanAdminBean
             PartDto part = reload(taskItem.getPart(), PartDto.MATERIAL_CONSUMPTION);
             BigDecimal quantity = taskItem.getQuantity();
 
-            Map<MaterialDto, BigDecimal> allMaterial = part.getMaterialConsumption();
+            Map<MaterialDto, BigDecimal> allMaterial = part.getMaterialConsumption().dtoMap();
             long index = 0;
             for (Entry<MaterialDto, BigDecimal> ent : allMaterial.entrySet()) {
                 MaterialPlanItemDto planItem = new MaterialPlanItemDto().create();
@@ -107,34 +107,32 @@ public class MaterialPlanAdminBean
         opts.setCBatch(null, true);
         opts.setLocation(null, true);
         opts.setWarehouse(null, true);
-        StockOrder _sumOrder = ctx.bean.getBean(IStockQuery.class).getActualSummary(materialIds, opts);
-        StockOrderDto sumOrder = DTOs.marshal(StockOrderDto.class, StockOrderDto.ITEMS, _sumOrder);
+        StockQueryResult queryResult = ctx.bean.getBean(IStockQuery.class).getAvailableStock(materialIds, opts);
+        StockOrderDto sumOrder = DTOs.marshal(StockOrderDto.class, StockOrderDto.ITEMS, queryResult);
 
         // 把查询结果变成SelectItemHoder的list,以便于绑定primefaces的DataTable组件
         // 把items变成map,便于根据物料查询数量
-        Map<MaterialDto, BigDecimal> needMap = new HashMap<MaterialDto, BigDecimal>();
-        for (MaterialPlanItemDto planItem : materialPlan.getItems()) {
-            needMap.put(planItem.getMaterial(), planItem.getQuantity());
-        }
+        ConsumptionMap cmap = new ConsumptionMap();
+        materialPlan.declareConsumption(cmap);
 
         for (StockOrderItemDto sumItem : sumOrder.getItems()) {
             MaterialDto material = sumItem.getMaterial();
-            BigDecimal needQuantity = needMap.get(material);
+            BigDecimal needQuantity = cmap.getConsumption(material);
             if (needQuantity.compareTo(BigDecimal.ZERO) <= 0)
                 continue;
 
             BigDecimal plannedQuantity = needQuantity.min(sumItem.getQuantity());
             needQuantity = needQuantity.subtract(plannedQuantity);
-            needMap.put(material, needQuantity);
+            cmap.consume(material, needQuantity);
 
-            materialPlan.plan(sumItem, plannedQuantity);
+            materialPlan.plan(sumItem/* 作为拷贝模版 */, plannedQuantity);
         }
 
-        for (Entry<MaterialDto, BigDecimal> entry : needMap.entrySet()) {
+        for (Entry<MaterialDto, BigDecimal> entry : cmap.dtoMap().entrySet()) {
             MaterialDto material = entry.getKey();
             BigDecimal needQuantity = entry.getValue();
             if (needQuantity.compareTo(BigDecimal.ZERO) > 0) {
-                uiLogger.warn("库存中的 " + material.getLabel() + " 数量不足：还需要 " + needQuantity + " "
+                uiLogger.warn("库存中的 " + material.getLabel() + " 数量不足：需要采购 " + needQuantity + " "
                         + material.getUnit().getLabel());
             }
         }

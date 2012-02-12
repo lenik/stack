@@ -125,13 +125,15 @@ public class MakeOrder
     public List<MakeOrderItem> getNotArrangedItems() {
         List<MakeOrderItem> result = new ArrayList<MakeOrderItem>();
         Map<Part, BigDecimal> sumMap = getArrangedPartSum();
+
         for (MakeOrderItem orderItem : items) {
             BigDecimal sum = sumMap.get(orderItem.getPart());
-            if (sum == null) { // 没有对应的生产任务
+            // 尚没有对应的生产任务，生产全部
+            if (sum == null) {
                 result.add(orderItem);
                 continue;
             }
-            // 找到对应的生产任务
+            // 有对应的生产任务，生产剩下的部分
             BigDecimal remaining = orderItem.getQuantity().subtract(sum);
             if (remaining.longValue() > 0) {
                 // 生产任务的数量小订单的数量

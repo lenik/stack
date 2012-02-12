@@ -13,10 +13,13 @@ import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.tx.dto.StockJobDto;
+import com.bee32.sem.inventory.util.ConsumptionMap;
+import com.bee32.sem.inventory.util.IMaterialConsumer;
 import com.bee32.sem.purchase.entity.MaterialPlan;
 
 public class MaterialPlanDto
-        extends StockJobDto<MaterialPlan> {
+        extends StockJobDto<MaterialPlan>
+        implements IMaterialConsumer {
 
     private static final long serialVersionUID = 1L;
 
@@ -39,7 +42,8 @@ public class MaterialPlanDto
         if (selection.contains(PURCHASE_REQUEST))
             purchaseRequest = mref(PurchaseRequestDto.class, source.getPurchaseRequest());
         else
-            purchaseRequest = new PurchaseRequestDto();
+            // XXX: Optim: is purchase request entity fetched here??
+            purchaseRequest = new PurchaseRequestDto().ref(source.getPurchaseRequest());
     }
 
     @Override
@@ -126,6 +130,12 @@ public class MaterialPlanDto
 
     public void setPurchaseRequest(PurchaseRequestDto purchaseRequest) {
         this.purchaseRequest = purchaseRequest;
+    }
+
+    @Override
+    public void declareConsumption(ConsumptionMap consumptionMap) {
+        for (MaterialPlanItemDto item : items)
+            item.declareConsumption(consumptionMap);
     }
 
     public void plan(StockOrderItemDto itemTemplate, BigDecimal quantity) {

@@ -31,8 +31,6 @@ public class PurchaseInquiryDto
     String afterService;
     String other;
 
-    PurchaseAdviceDto purchaseAdvice;
-
     @Override
     protected void _marshal(PurchaseInquiry source) {
         purchaseRequestItem = mref(PurchaseRequestItemDto.class, source.getPurchaseRequestItem());
@@ -43,8 +41,6 @@ public class PurchaseInquiryDto
         paymentTerm = source.getPaymentTerm();
         afterService = source.getAfterService();
         other = source.getOther();
-
-        purchaseAdvice = mref(PurchaseAdviceDto.class, source.getPurchaseAdvice());
     }
 
     @Override
@@ -57,8 +53,6 @@ public class PurchaseInquiryDto
         target.setPaymentTerm(paymentTerm);
         target.setAfterService(afterService);
         target.setOther(other);
-
-        merge(target, "purchaseAdvice", purchaseAdvice);
     }
 
     @Override
@@ -134,14 +128,6 @@ public class PurchaseInquiryDto
 
     public void setOther(String other) {
         this.other = TextUtil.normalizeSpace(other);
-    }
-
-    public PurchaseAdviceDto getPurchaseAdvice() {
-        return purchaseAdvice;
-    }
-
-    public void setPurchaseAdvice(PurchaseAdviceDto purchaseAdvice) {
-        this.purchaseAdvice = purchaseAdvice;
     }
 
     @Override

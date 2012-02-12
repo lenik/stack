@@ -2,12 +2,11 @@ package com.bee32.sem.purchase.service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -15,9 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.arch.DataService;
 import com.bee32.plover.arch.util.IdComposite;
+import com.bee32.plover.criteria.hibernate.InCollection;
+import com.bee32.plover.orm.entity.IdUtils;
 import com.bee32.sem.inventory.dto.MaterialDto;
-import com.bee32.sem.inventory.dto.StockOrderItemDto;
-import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialWarehouseOption;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
@@ -25,14 +24,13 @@ import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.inventory.service.IStockQuery;
 import com.bee32.sem.inventory.service.StockQueryOptions;
+import com.bee32.sem.inventory.service.StockQueryResult;
+import com.bee32.sem.inventory.util.ConsumptionMap;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.purchase.dto.MaterialPlanDto;
-import com.bee32.sem.purchase.dto.MaterialPlanItemDto;
-import com.bee32.sem.purchase.dto.PurchaseAdviceDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestItemDto;
-import com.bee32.sem.purchase.dto.StockPlanOrderDto;
 import com.bee32.sem.purchase.entity.PurchaseTakeIn;
 
 public class PurchaseService
@@ -48,82 +46,49 @@ public class PurchaseService
      */
     public List<PurchaseRequestItemDto> calcMaterialRequirement(PurchaseRequestDto purchaseRequest,
             List<MaterialPlanDto> plans) {
-        Map<MaterialDto, BigDecimal> need = new HashMap<MaterialDto, BigDecimal>();
-        Map<MaterialDto, BigDecimal> alreadyHave = new HashMap<MaterialDto, BigDecimal>();
+        // 计算需求
+        ConsumptionMap cmap = new ConsumptionMap();
+        for (MaterialPlanDto materialPlan : plans)
+            materialPlan.declareConsumption(cmap);
 
-        for (MaterialPlanDto p : plans) {
+        // 用当前库存余量（不考虑锁定）去抵消需求
+        Collection<MaterialDto> materials = cmap.getDtoIndex().values();
+        List<Long> materialIds = IdUtils.getDtoIdList(materials);
+        StockQueryOptions queryOptions = new StockQueryOptions(new Date(), true);
+        StockQueryResult queryResult = stockQuery.getPhysicalStock(materialIds, queryOptions);
+        queryResult.declareSupply(cmap);
 
-            for (MaterialPlanItemDto item : p.getItems()) {
-                BigDecimal needQuantity = need.get(item.getMaterial());
-                if (needQuantity != null) {
-                    need.put(item.getMaterial(), item.getQuantity().add(needQuantity));
-                } else {
-                    need.put(item.getMaterial(), item.getQuantity());
-                }
-            }
+        // 抵消后的数量为采购需求数量，再考虑安全库存：
+        ConsumptionMap safetyMap = new ConsumptionMap();
+        List<MaterialWarehouseOption> _mwopts = ctx.data.access(MaterialWarehouseOption.class).list(
+                new InCollection("material.id", materialIds));
+        for (MaterialWarehouseOption _mwopt : _mwopts)
+            safetyMap.consume(_mwopt.getMaterial(), _mwopt.getSafetyStock());
 
-            List<StockPlanOrderDto> orders = p.getPlanOrders();
-            if (orders != null) {
-                for (StockPlanOrderDto order : orders) {
-                    for (StockOrderItemDto item : order.getItems()) {
-                        BigDecimal alreadyHaveQuantity = alreadyHave.get(item.getMaterial());
-                        if (alreadyHaveQuantity != null) {
-                            alreadyHave.put(item.getMaterial(), item.getQuantity().add(alreadyHaveQuantity));
-                        } else {
-                            alreadyHave.put(item.getMaterial(), item.getQuantity());
-                        }
-                    }
+        // 生成列表
+        List<PurchaseRequestItemDto> requestItems = new ArrayList<>();
+        for (MaterialDto material : materials) {
+            BigDecimal needQuantity = cmap.getConsumption(material);
 
-                }
-            }
-        }
-
-        List<PurchaseRequestItemDto> requestItems = new ArrayList<PurchaseRequestItemDto>();
-
-        Set<MaterialDto> materialSet = need.keySet();
-        for (MaterialDto material : materialSet) {
-            // BigDecimal alreadyHaveQuantity = alreadyHave.get(m);
-            BigDecimal needQuantity = need.get(material);
-
-            // 取得物料的安全库存
-            Material _m = ctx.data.access(Material.class).get(material.getId());
-            BigDecimal safetyQuantity = new BigDecimal(0);
-            for (MaterialWarehouseOption option : _m.getOptions())
-                safetyQuantity = safetyQuantity.add(option.getSafetyStock());
-
-            StockQueryOptions opts = new StockQueryOptions(new Date(), true);
-            opts.setCBatch(null, true);
-            opts.setLocation(null, true);
-            opts.setWarehouse(null, true);
-
-            StockOrder list = stockQuery.getActualSummary(Arrays.asList(material.getId()), opts);
-            BigDecimal actualQuantity = new BigDecimal(0);
-            for (StockOrderItem item : list.getItems())
-                actualQuantity = actualQuantity.add(item.getQuantity());
+            // 采购 至少要满足安全库存
+            BigDecimal safetyStock = safetyMap.getConsumption(material);
+            needQuantity = needQuantity.max(safetyStock);
 
             // 计算需要采购的数量
-            BigDecimal requestQuantity = new BigDecimal(0);
-            if (needQuantity.compareTo(actualQuantity.subtract(safetyQuantity)) <= 0) {
-                // 不用采购
-                requestQuantity = null;
-            } else {
-                requestQuantity = needQuantity.subtract(actualQuantity.subtract(safetyQuantity));
-            }
-
+            BigDecimal requestQuantity = needQuantity;
             if (requestQuantity != null) {
                 PurchaseRequestItemDto requestItem = new PurchaseRequestItemDto().create();
                 requestItem.setMaterial(material);
                 requestItem.setPurchaseRequest(purchaseRequest);
+
+                // 从物料计划计算采购请求量时，把计划采购量首先设置为和计算量相同
                 requestItem.setQuantity(requestQuantity);
-                requestItem.setPlanQuantity(requestQuantity); // 从物料计划计算采购请求量时，把计划采购量首先设置为和计算量相同
+                requestItem.setPlanQuantity(requestQuantity);
 
                 requestItems.add(requestItem);
             }
         }
-
-        if (requestItems.size() > 0)
-            return requestItems;
-        return null;
+        return requestItems;
     }
 
     /**
@@ -148,8 +113,7 @@ public class PurchaseService
 
         // 检测有没有询价和审核采购建议
         for (PurchaseRequestItemDto requestItem : purchaseRequest.getItems()) {
-            PurchaseAdviceDto advice = requestItem.getPurchaseAdvice();
-            if (advice == null || advice.getId() == null) {
+            if (requestItem.getAdvicedInquiry() == null || requestItem.getAdvicedInquiry().getId() == null) {
                 throw new NoPurchaseAdviceException();
             }
 
@@ -164,7 +128,7 @@ public class PurchaseService
 
         // 按仓库和供应商区分要生成的采购入库单
         for (PurchaseRequestItemDto item : purchaseRequest.getItems()) {
-            OrgDto preferredSupplier = item.getPurchaseAdvice().getPreferredInquiry().getSupplier();
+            OrgDto preferredSupplier = item.getAdvicedInquiry().getSupplier();
             // 以warehouseId和对应供应商的id组合成 x&y 的形式
             IdComposite key = new IdComposite(item.getWarehouseId(), preferredSupplier.getId());
 
@@ -179,7 +143,7 @@ public class PurchaseService
 
         // 3.按仓库生成subject为takeIn的StockOrder->StockOrderItem*
         for (List<PurchaseRequestItemDto> itemList : splitMap.values()) {
-            OrgDto preferredSupplier = itemList.get(0).getPurchaseAdvice().getPreferredInquiry().getSupplier();
+            OrgDto preferredSupplier = itemList.get(0).getAdvicedInquiry().getSupplier();
 
             StockOrder _takeInOrder = new StockOrder();
             _takeInOrder.setSubject(StockOrderSubject.TAKE_IN);
@@ -192,13 +156,14 @@ public class PurchaseService
                 _item.setParent(_takeInOrder);
                 _item.setMaterial(item.getMaterial().unmarshal());
                 _item.setQuantity(item.getPlanQuantity());
-                _item.setPrice(item.getPurchaseAdvice().getPreferredInquiry().getPrice());
+                _item.setPrice(item.getAdvicedInquiry().getPrice());
                 _item.setDescription("由采购请求生成的入库明细项目");
 
                 _takeInOrder.addItem(_item);
 
                 // 保存以上StockOrder*
-                StockWarehouse warehouse = ctx.data.access(StockWarehouse.class).lazyLoad(itemWarehouseMap.get(item.getId()));
+                StockWarehouse warehouse = ctx.data.access(StockWarehouse.class).lazyLoad(
+                        itemWarehouseMap.get(item.getId()));
                 _takeInOrder.setWarehouse(warehouse);
                 ctx.data.access(StockOrder.class).saveOrUpdate(_takeInOrder);
 

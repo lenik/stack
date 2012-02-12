@@ -3,6 +3,7 @@ package com.bee32.sem.purchase.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.free.NotImplementedException;
@@ -36,7 +37,8 @@ public class PurchaseRequestItemDto
     String additionalRequirement;
 
     List<PurchaseInquiryDto> inquiries;
-    PurchaseAdviceDto purchaseAdvice;
+    PurchaseInquiryDto advicedInquiry;
+    String advicedReason;
 
     Integer warehouseId; // 公用于接收界面上传入的仓库id
 
@@ -56,7 +58,8 @@ public class PurchaseRequestItemDto
         else
             inquiries = new ArrayList<PurchaseInquiryDto>();
 
-        purchaseAdvice = mref(PurchaseAdviceDto.class, source.getPurchaseAdvice());
+        advicedInquiry = mref(PurchaseInquiryDto.class, source.getAdvicedInquiry());
+        advicedReason = source.getAdvicedReason();
     }
 
     @Override
@@ -73,8 +76,11 @@ public class PurchaseRequestItemDto
 
         if (selection.contains(INQUIRIES))
             mergeList(target, "inquiries", inquiries);
+        else
+            inquiries = Collections.emptyList();
 
-        merge(target, "purchaseAdvice", purchaseAdvice);
+        merge(target, "advicedInquiry", advicedInquiry);
+        target.setAdvicedReason(advicedReason);
     }
 
     @Override
@@ -177,12 +183,21 @@ public class PurchaseRequestItemDto
         // inquiry.detach();
     }
 
-    public PurchaseAdviceDto getPurchaseAdvice() {
-        return purchaseAdvice;
+    public PurchaseInquiryDto getAdvicedInquiry() {
+        return advicedInquiry;
     }
 
-    public void setPurchaseAdvice(PurchaseAdviceDto purchaseAdvice) {
-        this.purchaseAdvice = purchaseAdvice;
+    public void setAdvicedInquiry(PurchaseInquiryDto advicedInquiry) {
+        this.advicedInquiry = advicedInquiry;
+    }
+
+    @NLength(max = PurchaseRequestItem.ADVICED_REASON_LENGTH)
+    public String getAdvicedReason() {
+        return advicedReason;
+    }
+
+    public void setAdvicedReason(String advicedReason) {
+        this.advicedReason = advicedReason;
     }
 
     public Integer getWarehouseId() {
@@ -199,4 +214,5 @@ public class PurchaseRequestItemDto
                 naturalId(purchaseRequest), //
                 naturalId(material));
     }
+
 }

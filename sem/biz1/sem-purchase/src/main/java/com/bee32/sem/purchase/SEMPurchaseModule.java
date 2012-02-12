@@ -5,7 +5,7 @@ import com.bee32.sem.SEMOids;
 import com.bee32.sem.module.EnterpriseModule;
 import com.bee32.sem.purchase.entity.MakeOrder;
 import com.bee32.sem.purchase.entity.MakeTask;
-import com.bee32.sem.purchase.entity.PurchaseAdvice;
+import com.bee32.sem.purchase.entity.MaterialPlan;
 import com.bee32.sem.purchase.entity.PurchaseRequest;
 
 @Oid({ 3, 15, SEMOids.Biz1, SEMOids.biz1.Purchase })
@@ -19,8 +19,8 @@ public class SEMPurchaseModule
     protected void preamble() {
         declareEntityPages(MakeOrder.class, "make-order");
         declareEntityPages(MakeTask.class, "make-task");
+        declareEntityPages(MaterialPlan.class, "material-plan");
         declareEntityPages(PurchaseRequest.class, "purchase-request");
-        declareEntityPages(PurchaseAdvice.class, "purchase-advice");
     }
 
 }

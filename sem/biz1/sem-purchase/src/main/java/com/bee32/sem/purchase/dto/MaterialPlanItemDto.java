@@ -13,12 +13,14 @@ import com.bee32.plover.ox1.color.MomentIntervalDto;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.inventory.dto.MaterialDto;
+import com.bee32.sem.inventory.util.ConsumptionMap;
+import com.bee32.sem.inventory.util.IMaterialConsumer;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.purchase.entity.MaterialPlanItem;
 
 public class MaterialPlanItemDto
         extends MomentIntervalDto<MaterialPlanItem>
-        implements IEnclosedObject<MaterialPlanDto> {
+        implements IEnclosedObject<MaterialPlanDto>, IMaterialConsumer {
 
     private static final long serialVersionUID = 1L;
 
@@ -124,4 +126,10 @@ public class MaterialPlanItemDto
                 naturalId(materialPlan), //
                 naturalId(material));
     }
+
+    @Override
+    public void declareConsumption(ConsumptionMap consumptionMap) {
+        consumptionMap.consume(material, quantity);
+    }
+
 }

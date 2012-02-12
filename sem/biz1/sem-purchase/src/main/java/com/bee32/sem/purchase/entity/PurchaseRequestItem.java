@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -22,6 +23,9 @@ import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.process.verify.IVerifiable;
+import com.bee32.sem.process.verify.builtin.ISingleVerifier;
+import com.bee32.sem.process.verify.builtin.SingleVerifierSupport;
 
 /**
  * 采购请求明细项目
@@ -31,11 +35,12 @@ import com.bee32.sem.people.entity.Party;
 @SequenceGenerator(name = "idgen", sequenceName = "purchase_request_item_seq", allocationSize = 1)
 public class PurchaseRequestItem
         extends MomentInterval
-        implements DecimalConfig {
+        implements IVerifiable<ISingleVerifier>, DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
     public static final int ADDITIONAL_REQUIREMENT_LENGTH = 200;
+    public static final int ADVICED_REASON_LENGTH = 500;
 
     PurchaseRequest purchaseRequest;
     int index;
@@ -47,7 +52,9 @@ public class PurchaseRequestItem
     String additionalRequirement;
 
     List<PurchaseInquiry> inquiries = new ArrayList<PurchaseInquiry>();
-    PurchaseAdvice purchaseAdvice;
+
+    PurchaseInquiry advicedInquiry;
+    String advicedReason;
 
     @NaturalId
     @ManyToOne(optional = false)
@@ -82,20 +89,7 @@ public class PurchaseRequestItem
     }
 
     /**
-     * 从物料需求计算过来的数量(请求数量)
-     *
-     * <p>
-     * 精度限制：小数点后4位数字。如果需要超出该精度，应考虑为对应物品采用不同的单位。
-     * <p>
-     * <fieldset> <legend> 关于数量的单词 Amount/Quantity/Number: </legend>
-     * <ul>
-     * <li>Number of ...: 可数的/整数的
-     * <li>Amount of ...: 不可测量的
-     * <li>Quantity of ...: 可测量的
-     * <ul>
-     * </fieldset>
-     *
-     * @see http://english.stackexchange.com/questions/9439/amount-vs-number
+     * 从物料需求计算复制过来的数量(请求数量)
      */
     @Column(scale = QTY_ITEM_SCALE, precision = QTY_ITEM_PRECISION, nullable = false)
     public BigDecimal getQuantity() {
@@ -143,6 +137,61 @@ public class PurchaseRequestItem
         this.additionalRequirement = additionalRequirement;
     }
 
+    /**
+     * 采购项目对应的询价
+     */
+    @OneToMany(mappedBy = "purchaseRequestItem", orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
+    public List<PurchaseInquiry> getInquiries() {
+        return inquiries;
+    }
+
+    public void setInquiries(List<PurchaseInquiry> inquiries) {
+        this.inquiries = inquiries;
+    }
+
+    public synchronized void addInquiry(PurchaseInquiry inquiry) {
+        if (inquiry == null)
+            throw new NullPointerException("inquiry");
+        inquiries.add(inquiry);
+    }
+
+    public synchronized void removeInquiry(PurchaseInquiry inquiry) {
+        if (inquiry == null)
+            throw new NullPointerException("inquiry");
+
+        int index = inquiries.indexOf(inquiry);
+        if (index == -1)
+            return /* false */;
+
+        inquiries.remove(index);
+        inquiry.detach();
+    }
+
+    /**
+     * 询价建议
+     */
+    @OneToOne
+    public PurchaseInquiry getAdvicedInquiry() {
+        return advicedInquiry;
+    }
+
+    public void setAdvicedInquiry(PurchaseInquiry advicedInquiry) {
+        this.advicedInquiry = advicedInquiry;
+    }
+
+    /**
+     * 询价建议的理由
+     */
+    @Column(length = ADVICED_REASON_LENGTH)
+    public String getAdvicedReason() {
+        return advicedReason;
+    }
+
+    public void setAdvicedReason(String advicedReason) {
+        this.advicedReason = advicedReason;
+    }
+
     @Override
     protected Serializable naturalId() {
         return new IdComposite(//
@@ -168,49 +217,16 @@ public class PurchaseRequestItem
         return this;
     }
 
-    /**
-     * 采购项目对应的询价
-     */
-    @OneToMany(mappedBy = "purchaseRequestItem", orphanRemoval = true)
-    @Cascade(CascadeType.ALL)
-    public List<PurchaseInquiry> getInquiries() {
-        return inquiries;
+    SingleVerifierSupport verifyContext;
+
+    @Embedded
+    @Override
+    public SingleVerifierSupport getVerifyContext() {
+        return verifyContext;
     }
 
-    public void setInquiries(List<PurchaseInquiry> inquiries) {
-        this.inquiries = inquiries;
-    }
-
-    public synchronized void addInquiry(PurchaseInquiry inquiry) {
-        if (inquiry == null)
-            throw new NullPointerException("inquiry");
-
-        inquiries.add(inquiry);
-    }
-
-    public synchronized void removeInquiry(PurchaseInquiry inquiry) {
-        if (inquiry == null)
-            throw new NullPointerException("inquiry");
-
-        int index = inquiries.indexOf(inquiry);
-        if (index == -1)
-            return /* false */;
-
-        inquiries.remove(index);
-        inquiry.detach();
-    }
-
-    /**
-     * 采购建议
-     */
-    @OneToOne(mappedBy = "purchaseRequestItem", orphanRemoval = true)
-    @Cascade(CascadeType.ALL)
-    public PurchaseAdvice getPurchaseAdvice() {
-        return purchaseAdvice;
-    }
-
-    public void setPurchaseAdvice(PurchaseAdvice purchaseAdvice) {
-        this.purchaseAdvice = purchaseAdvice;
+    public void setVerifyContext(SingleVerifierSupport verifyContext) {
+        this.verifyContext = verifyContext;
     }
 
 }

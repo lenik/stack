@@ -1,23 +1,21 @@
 package com.bee32.sem.purchase.web;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.orm.annotation.ForEntity;
-import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.purchase.dto.MaterialPlanDto;
-import com.bee32.sem.purchase.dto.PurchaseAdviceDto;
 import com.bee32.sem.purchase.dto.PurchaseInquiryDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestItemDto;
+import com.bee32.sem.purchase.dto.PurchaseTakeInDto;
 import com.bee32.sem.purchase.entity.MaterialPlan;
-import com.bee32.sem.purchase.entity.PurchaseAdvice;
 import com.bee32.sem.purchase.entity.PurchaseRequest;
-import com.bee32.sem.purchase.entity.PurchaseRequestItem;
 import com.bee32.sem.purchase.service.PurchaseService;
 
 @ForEntity(PurchaseRequest.class)
@@ -26,29 +24,11 @@ public class PurchaseRequestAdminBean
 
     private static final long serialVersionUID = 1L;
 
-    List<MaterialPlanDto> selectedPlans;
-    PurchaseInquiryDto selectedInquiry;
-
-    PurchaseAdviceDto purchaseAdvice;
-
     public PurchaseRequestAdminBean() {
         super(PurchaseRequest.class, PurchaseRequestDto.class, 0);
     }
 
-    public PurchaseAdviceDto getPurchaseAdvice() {
-        if (purchaseAdvice == null || purchaseAdvice.getId() == null)
-            purchaseAdvice = new PurchaseAdviceDto().create();
-        if (purchaseAdvice.getPreferredInquiry() == null || purchaseAdvice.getPreferredInquiry().getId() == null) {
-            PurchaseInquiryDto tmpInquiry = new PurchaseInquiryDto().create();
-            purchaseAdvice.setPreferredInquiry(tmpInquiry);
-        }
-        return purchaseAdvice;
-    }
-
-    public void setPurchaseAdvice(PurchaseAdviceDto purchaseAdvice) {
-        this.purchaseAdvice = purchaseAdvice;
-    }
-
+    /** 更新物料：设置关联 */
     @Override
     protected void postUpdate(UnmarshalMap uMap)
             throws Exception {
@@ -60,6 +40,7 @@ public class PurchaseRequestAdminBean
         }
     }
 
+    /** 更新物料计划：取消关联 */
     @Override
     protected boolean preDelete(UnmarshalMap uMap)
             throws Exception {
@@ -72,94 +53,48 @@ public class PurchaseRequestAdminBean
         return true;
     }
 
-    public void choosePlan() {
-        PurchaseRequestDto purchaseRequest = getOpenedObject();
-        for (MaterialPlanDto _p : selectedPlans) {
-            _p = reload(_p);
-            if (_p.getPurchaseRequest().getId() != null) {
-                uiLogger.info("选中的物料计划已经有对应的采购请求,请重新选择");
-                return;
-            }
+    MaterialPlanDto selectedMaterialPlan;
+
+    public void addMaterialPlan() {
+        if (selectedMaterialPlan == null)
+            return;
+        if (selectedMaterialPlan.getPurchaseRequest().getId() != null) {
+            uiLogger.error("选中的物料计划已经有对应的采购请求，请重新选择");
+            return;
         }
 
-        purchaseRequest.setPlans(selectedPlans);
+        PurchaseRequestDto purchaseRequest = getOpenedObject();
+        purchaseRequest.getPlans().add(selectedMaterialPlan);
 
         PurchaseService purchaseService = ctx.bean.getBean(PurchaseService.class);
-        List<PurchaseRequestItemDto> items = purchaseService.calcMaterialRequirement(purchaseRequest, selectedPlans);
+        List<PurchaseRequestItemDto> items = purchaseService.calcMaterialRequirement(purchaseRequest,
+                Arrays.asList(selectedMaterialPlan));
         purchaseRequest.setItems(items);
+
     }
 
     public void loadInquiry() {
         PurchaseRequestItemDto itemObj = itemsMBean.getOpenedObject();
         itemObj = reload(itemObj);
-        purchaseAdvice = itemObj.getPurchaseAdvice();
-        if (purchaseAdvice == null || purchaseAdvice.getId() == null) {
-            purchaseAdvice = new PurchaseAdviceDto().create();
-        } else {
-            purchaseAdvice = reload(purchaseAdvice);
-        }
     }
-
-    ListMBean<PurchaseRequestItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items",
-            PurchaseRequestItemDto.class);
-    ListMBean<PurchaseInquiryDto> inquiresMBean = ListMBean.fromEL(itemsMBean, "openedObject.inquires",
-            PurchaseInquiryDto.class);
 
     @Transactional
     public void acceptInquiry() {
-        PurchaseRequestItemDto itemObj = itemsMBean.getOpenedObject();
-        try {
-            PurchaseAdvice _purchaseAdvice = purchaseAdvice.unmarshal();
-            PurchaseRequestItem _purchaseRequestItem = itemObj.unmarshal();
-
-            _purchaseAdvice.setPreferredInquiry(selectedInquiry.unmarshal());
-            _purchaseAdvice.setPurchaseRequestItem(_purchaseRequestItem);
-            ctx.data.access(PurchaseAdvice.class).saveOrUpdate(_purchaseAdvice);
-            purchaseAdvice = DTOs.marshal(PurchaseAdviceDto.class, _purchaseAdvice);
-
-            _purchaseRequestItem.setPurchaseAdvice(_purchaseAdvice);
-            ctx.data.access(PurchaseRequestItem.class).saveOrUpdate(_purchaseRequestItem);
-
-            uiLogger.info("采纳成功.");
-        } catch (Exception e) {
-            uiLogger.error("采纳失败.", e);
-        }
+        uiLogger.info("采纳成功.");
+// uiLogger.error("采纳失败.", e);
     }
 
     public void savePurchaseAdvice() {
-        if (purchaseAdvice == null || purchaseAdvice.getId() == null) {
-            uiLogger.warn("请先采纳一个供应商的保价");
-            return;
-        }
-
-        try {
-            ctx.data.access(PurchaseAdvice.class).saveOrUpdate(purchaseAdvice.unmarshal());
-            uiLogger.info("保存成功.");
-        } catch (Exception e) {
-            uiLogger.error("保存失败.", e);
-        }
+        // if (purchaseAdvice == null || purchaseAdvice.getId() == null) {
+        uiLogger.warn("请先采纳一个供应商的保价");
     }
 
     public void deletePurchaseAdvice() {
-        if (purchaseAdvice == null || purchaseAdvice.getId() == null) {
-            return;
-        }
-
         // TODO 如果已经审核，则不能删除
         // if (purchaseAdvice.getVerifyContext().getVerifyState().isFinalized())
         // uiLogger.warn("采购建议已经审核，不能删除!");
         // return;
         // }
-
-        try {
-            PurchaseAdvice _purchaseAdvice = purchaseAdvice.unmarshal();
-            _purchaseAdvice.getPurchaseRequestItem().setPurchaseAdvice(null);
-            ctx.data.access(PurchaseAdvice.class).delete(_purchaseAdvice);
-            purchaseAdvice = new PurchaseAdviceDto().create();
-            uiLogger.info("删除成功.");
-        } catch (Exception e) {
-            uiLogger.error("删除失败.", e);
-        }
     }
 
     public void verifyPurchaseAdvice() {
@@ -185,8 +120,29 @@ public class PurchaseRequestAdminBean
         }
     }
 
-    public List<?> getSelectedPurchaseAdvices() {
-        return listOfNonNulls(purchaseAdvice);
+    final ListMBean<MaterialPlanDto> plansMBean = ListMBean.fromEL(this, //
+            "openedObject.plans", MaterialPlanDto.class);
+    final ListMBean<PurchaseRequestItemDto> itemsMBean = ListMBean.fromEL(this, //
+            "openedObject.items", PurchaseRequestItemDto.class);
+    final ListMBean<PurchaseInquiryDto> inquiresMBean = ListMBean.fromEL(itemsMBean, //
+            "openedObject.inquires", PurchaseInquiryDto.class);
+    final ListMBean<PurchaseTakeInDto> takeInsMBean = ListMBean.fromEL(this, //
+            "openedObject.takeIns", PurchaseTakeInDto.class);
+
+    public ListMBean<MaterialPlanDto> getPlansMBean() {
+        return plansMBean;
+    }
+
+    public ListMBean<PurchaseRequestItemDto> getItemsMBean() {
+        return itemsMBean;
+    }
+
+    public ListMBean<PurchaseInquiryDto> getInquiresMBean() {
+        return inquiresMBean;
+    }
+
+    public ListMBean<PurchaseTakeInDto> getTakeInsMBean() {
+        return takeInsMBean;
     }
 
 }
