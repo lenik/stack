@@ -15,7 +15,9 @@ dist_seccadb_DATA = \
     named.conf \
     bee32.key \
     bee32.db \
+    bee32-lan.db \
     bee32-fw.db \
+    bee32-gw.db \
     rad.db \
     bia.db
 
