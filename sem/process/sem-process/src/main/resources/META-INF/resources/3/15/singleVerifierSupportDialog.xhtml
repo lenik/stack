@@ -29,8 +29,7 @@
                     <h:outputLabel for="verifyAs" value="审核身份：" />
                     <p:selectOneMenu id="verifyAs" title="审核身份"
                         value="${cc.attrs.dialogBean.verifier1Template.idRequiredInt}">
-                        <f:selectItems value="${sessionUser.internalUser.imSet}" var="p" itemValue="${p.id}"
-                            itemLabel="${p.displayName}" />
+                        <f:selectItems value="${sessionUser.imSet}" var="p" itemValue="${p.id}" itemLabel="${p.displayName}" />
                     </p:selectOneMenu>
 
                     <h:outputLabel for="rejectedReason1" value="拒绝的附加信息：" />

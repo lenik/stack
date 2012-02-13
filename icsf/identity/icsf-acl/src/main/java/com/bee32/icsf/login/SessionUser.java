@@ -30,8 +30,12 @@ public class SessionUser
     UserDto user;
 
     User internalUserOverride;
-    Set<Integer> imSet = new HashSet<Integer>();
-    Set<Integer> invSet = new HashSet<Integer>();
+    Set<Integer> imIdSet = new HashSet<Integer>();
+    Set<Integer> invIdSet = new HashSet<Integer>();
+
+    List<PrincipalDto> imSet = new ArrayList<PrincipalDto>();
+
+    // List<UserDto> invUsers = new ArrayList<UserDto>();
 
     public SessionUser() {
     }
@@ -96,24 +100,34 @@ public class SessionUser
         return user;
     }
 
-    public Set<Integer> getImSet() {
+    public Set<Integer> getImIdSet() {
+        return imIdSet;
+    }
+
+    public void setImIdSet(Set<Integer> imIdSet) {
+        if (imIdSet == null)
+            throw new NullPointerException("imIdSet");
+        this.imIdSet = imIdSet;
+    }
+
+    public Set<Integer> getInvIdSet() {
+        return invIdSet;
+    }
+
+    public void setInvIdSet(Set<Integer> invIdSet) {
+        if (invIdSet == null)
+            throw new NullPointerException("invIdSet");
+        this.invIdSet = invIdSet;
+    }
+
+    public List<PrincipalDto> getImSet() {
         return imSet;
     }
 
-    public void setImSet(Set<Integer> imSet) {
+    public void setImSet(List<PrincipalDto> imSet) {
         if (imSet == null)
             throw new NullPointerException("imSet");
         this.imSet = imSet;
-    }
-
-    public Set<Integer> getInvSet() {
-        return invSet;
-    }
-
-    public void setInvSet(Set<Integer> invSet) {
-        if (invSet == null)
-            throw new NullPointerException("invSet");
-        this.invSet = invSet;
     }
 
     public synchronized void runAs(User user, Runnable runnable) {

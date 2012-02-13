@@ -16,6 +16,7 @@ public abstract class BaseDto<S>
     protected Class<? extends S> sourceType;
     public final Flags32 selection = new Flags32();
     private boolean newCreated;
+    private boolean locked;
 
     /**
      * Full marshal by default.
@@ -113,6 +114,14 @@ public abstract class BaseDto<S>
 
     public void setFmask(int fmask) {
         this.selection.bits = fmask;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 
     /**

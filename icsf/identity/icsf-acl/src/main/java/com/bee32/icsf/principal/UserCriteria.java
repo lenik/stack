@@ -17,12 +17,12 @@ public class UserCriteria
     }
 
     public static CriteriaElement impliedByCurrentUser(String propertyName) {
-        Set<Integer> imSet = SessionUser.getInstance().getImSet();
+        Set<Integer> imSet = SessionUser.getInstance().getImIdSet();
         return PrincipalCriteria.inImSet(propertyName, imSet);
     }
 
     public static CriteriaElement responsibleByCurrentUser(String propertyName) {
-        Set<Integer> invSet = SessionUser.getInstance().getInvSet();
+        Set<Integer> invSet = SessionUser.getInstance().getInvIdSet();
         return PrincipalCriteria.inInvSet(propertyName, invSet);
     }
 

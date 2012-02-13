@@ -163,14 +163,14 @@ public abstract class Principal
     }
 
     @Transient
-    public final Collection<Principal> getImSet() {
+    public final Set<Principal> getImSet() {
         Set<Principal> imSet = new HashSet<Principal>();
         populateImSet(imSet);
         return imSet;
     }
 
     @Transient
-    public final Collection<Principal> getInvSet() {
+    public final Set<Principal> getInvSet() {
         Set<Principal> invSet = new HashSet<Principal>();
         populateInvSet(invSet);
         return invSet;
