@@ -107,14 +107,16 @@ public abstract class EntityViewBean
     }
 
     public boolean isSelectionEditable() {
+        if (getSelection().isEmpty())
+            return false;
         for (Object sel : getSelection()) {
             if (sel instanceof BaseDto<?>) {
                 BaseDto<?> dto = (BaseDto<?>) sel;
                 if (dto.isLocked())
-                    return true;
+                    return false;
             }
         }
-        return false;
+        return true;
     }
 
     protected void openSelection() {

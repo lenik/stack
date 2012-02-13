@@ -30,7 +30,7 @@ public class VerifiableSupportBean
         commandLabelMap.put(VerifyEvalState.PENDING, "审核中");
 
         commandEnabledMap = new HashMap<VerifyEvalState, Boolean>();
-        commandEnabledMap.put(VerifyEvalState.NOT_APPLICABLE, false);
+        commandEnabledMap.put(VerifyEvalState.NOT_APPLICABLE, true /* for shake-fx. */);
         commandEnabledMap.put(VerifyEvalState.UNKNOWN, true);
         commandEnabledMap.put(VerifyEvalState.INVALID, true);
         commandEnabledMap.put(VerifyEvalState.VERIFIED, false);
