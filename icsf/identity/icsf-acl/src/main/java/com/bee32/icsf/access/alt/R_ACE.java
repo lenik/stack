@@ -9,6 +9,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.NaturalId;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.resource.Resource;
@@ -64,6 +65,7 @@ public class R_ACE
         this.mode = mode;
     }
 
+    @NaturalId
     @Column(name = "qName", length = 100, nullable = false)
     public String getQualifiedName() {
         return qualifiedName;
@@ -95,6 +97,7 @@ public class R_ACE
         this.qualifiedName = ResourceRegistry.qualify(resource);
     }
 
+    @NaturalId
     @ManyToOne(optional = false)
     public Principal getPrincipal() {
         return principal;
