@@ -15,9 +15,10 @@ public class PrincipalDto
 
     private static final long serialVersionUID = 1L;
 
-    public static final int IMPS = 0x1000;
+    // 800000, 400000 used by TreeEntityDto.
+    public static final int IMPS = 0x200000;
 
-    public static final Mask32 DEPTH_MASK = new Mask32(0xff000000);
+    public static final Mask32 DEPTH_MASK = new Mask32(0x000F0000);
 
     public static int depthOf(int depth) {
         return DEPTH_MASK.compose(depth);

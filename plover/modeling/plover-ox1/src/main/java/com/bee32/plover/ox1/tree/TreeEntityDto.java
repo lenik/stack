@@ -22,8 +22,8 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
 
     private static final long serialVersionUID = 1L;
 
-    public static final int PARENT = 0x00010000;
-    public static final int CHILDREN = 0x00020000;
+    public static final int PARENT = 0x00800000;
+    public static final int CHILDREN = 0x00400000;
 
     protected self_t parent;
     protected List<self_t> children;
