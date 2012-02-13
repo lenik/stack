@@ -86,7 +86,6 @@ public class AbstractStockOrder<Item extends StockOrderItem>
             super.populate(source);
     }
 
-    @SuppressWarnings("unchecked")
     protected void _populate(AbstractStockOrder<?> o) {
         super._populate(o);
         base = o.base;
@@ -318,9 +317,9 @@ public class AbstractStockOrder<Item extends StockOrderItem>
         return verifyContext;
     }
 
-    public void setVerifyContext(StockOrderVerifySupport stockOrderVerifySupport) {
-        this.verifyContext = stockOrderVerifySupport;
-        stockOrderVerifySupport.bind(this);
+    public void setVerifyContext(StockOrderVerifySupport verifyContext) {
+        this.verifyContext = verifyContext;
+        verifyContext.bind(this);
     }
 
 }

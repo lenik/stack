@@ -5,6 +5,6 @@ import user.war.entity.AttackMission;
 import com.bee32.plover.orm.entity.EntityDao;
 
 public class AttackMissionDao
-        extends EntityDao<AttackMission, Integer> {
+        extends EntityDao<AttackMission, Long> {
 
 }

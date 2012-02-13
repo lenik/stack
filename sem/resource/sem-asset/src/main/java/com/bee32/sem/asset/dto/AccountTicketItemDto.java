@@ -6,20 +6,17 @@ import javax.free.ParseException;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.asset.entity.AccountTicketItem;
-import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.people.dto.PartyDto;
-import com.bee32.sem.process.verify.builtin.dto.SingleVerifierWithNumberSupportDto;
+import com.bee32.sem.process.base.TxProcessEntityDto;
 import com.bee32.sem.process.verify.dto.IVerifiableDto;
 import com.bee32.sem.world.monetary.MutableMCValue;
 
 public class AccountTicketItemDto
-        extends TxEntityDto<AccountTicketItem>
+        extends TxProcessEntityDto<AccountTicketItem>
         implements IVerifiableDto, IEnclosedObject<Object> {
 
     private static final long serialVersionUID = 1L;
-
-    SingleVerifierWithNumberSupportDto singleVerifierWithNumberSupport;
 
     AccountTicketDto ticket;
     int index;
@@ -43,8 +40,6 @@ public class AccountTicketItemDto
             value = source.getValue().negate().toMutable();
         else
             value = source.getValue().toMutable();
-
-        singleVerifierWithNumberSupport = marshal(SingleVerifierWithNumberSupportDto.class, source.getVerifyContext());
     }
 
     @Override
@@ -60,8 +55,6 @@ public class AccountTicketItemDto
             target.setValue(value.negate());
         else
             target.setValue(value);
-
-        merge(target, "verifyContext", singleVerifierWithNumberSupport);
     }
 
     @Override
@@ -169,15 +162,6 @@ public class AccountTicketItemDto
             return "(n/a)";
         else
             return owner.getDisplayName();
-    }
-
-    @Override
-    public SingleVerifierWithNumberSupportDto getVerifyContext() {
-        return singleVerifierWithNumberSupport;
-    }
-
-    public void setVerifyContext(SingleVerifierWithNumberSupportDto singleVerifierWithNumberSupport) {
-        this.singleVerifierWithNumberSupport = singleVerifierWithNumberSupport;
     }
 
 }

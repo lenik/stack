@@ -10,11 +10,11 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.sem.base.tx.TxEntityDto;
+import com.bee32.sem.process.base.ProcessEntityDto;
 import com.bee32.sem.purchase.entity.MakeTask;
 
 public class MakeTaskDto
-        extends TxEntityDto<MakeTask> {
+        extends ProcessEntityDto<MakeTask> {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,10 +23,8 @@ public class MakeTaskDto
     // public static final int ITEM_PART_CHILDREN = 0x01000000;
 
     MakeOrderDto order;
-
     Date deadline;
     List<MakeTaskItemDto> items;
-
     List<MaterialPlanDto> plans;
 
     @Override

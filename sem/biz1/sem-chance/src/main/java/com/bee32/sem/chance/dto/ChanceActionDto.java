@@ -10,18 +10,16 @@ import javax.validation.constraints.NotNull;
 
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.ox1.color.MomentIntervalDto;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.util.DateToRange;
 import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.people.dto.PartyDto;
-import com.bee32.sem.process.verify.builtin.dto.SingleVerifierSupportDto;
-import com.bee32.sem.process.verify.dto.IVerifiableDto;
+import com.bee32.sem.process.base.ProcessEntityDto;
 
 public class ChanceActionDto
-        extends MomentIntervalDto<ChanceAction>
-        implements IVerifiableDto, IEnclosedObject<ChanceDto> {
+        extends ProcessEntityDto<ChanceAction>
+        implements IEnclosedObject<ChanceDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -43,8 +41,6 @@ public class ChanceActionDto
     ChanceDto chance;
     ChanceStageDto stage;
     ChanceStageDto stage0;
-
-    SingleVerifierSupportDto singleVerifierSupport;
 
     public ChanceActionDto() {
         super();
@@ -73,9 +69,6 @@ public class ChanceActionDto
         this.chance = mref(ChanceDto.class, source.getChance());
         this.stage = mref(ChanceStageDto.class, source.getStage());
         this.stage0 = stage;
-
-        singleVerifierSupport = marshal(SingleVerifierSupportDto.class, source.getVerifyContext());
-
     }
 
     @Override
@@ -90,8 +83,6 @@ public class ChanceActionDto
 
         merge(target, "chance", chance);
         merge(target, "stage", stage.joinByOrder(stage0));
-
-        merge(target, "verifyContext", singleVerifierSupport);
     }
 
     @Override
@@ -288,15 +279,6 @@ public class ChanceActionDto
             if (stageDto.getOrder() > stage.getOrder())
                 this.stage = stageDto;
         }
-    }
-
-    @Override
-    public SingleVerifierSupportDto getVerifyContext() {
-        return singleVerifierSupport;
-    }
-
-    public void setVerifyContext(SingleVerifierSupportDto singleVerifierSupport) {
-        this.singleVerifierSupport = singleVerifierSupport;
     }
 
 }

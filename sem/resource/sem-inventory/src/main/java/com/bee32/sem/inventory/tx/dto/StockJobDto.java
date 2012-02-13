@@ -8,13 +8,13 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.entity.EntityUtil;
-import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.entity.AbstractStockOrder;
 import com.bee32.sem.inventory.tx.entity.StockJob;
+import com.bee32.sem.process.base.ProcessEntityDto;
 
 public class StockJobDto<E extends StockJob>
-        extends TxEntityDto<E> {
+        extends ProcessEntityDto<E> {
 
     private static final long serialVersionUID = 1L;
 

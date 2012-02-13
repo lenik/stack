@@ -12,15 +12,15 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
-import com.bee32.plover.ox1.color.MomentIntervalDto;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.people.dto.PartyDto;
+import com.bee32.sem.process.base.ProcessEntityDto;
 import com.bee32.sem.purchase.entity.PurchaseRequestItem;
 
 public class PurchaseRequestItemDto
-        extends MomentIntervalDto<PurchaseRequestItem>
+        extends ProcessEntityDto<PurchaseRequestItem>
         implements IEnclosedObject<PurchaseRequestDto> {
 
     private static final long serialVersionUID = 1L;

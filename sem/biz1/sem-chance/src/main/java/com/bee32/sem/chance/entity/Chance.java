@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,10 +21,7 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.ox1.color.Green;
-import com.bee32.plover.ox1.color.UIEntityAuto;
-import com.bee32.sem.process.verify.IVerifiable;
-import com.bee32.sem.process.verify.builtin.ISingleVerifier;
-import com.bee32.sem.process.verify.builtin.SingleVerifierSupport;
+import com.bee32.sem.process.base.ProcessEntity;
 
 /**
  * 销售机会
@@ -34,8 +30,7 @@ import com.bee32.sem.process.verify.builtin.SingleVerifierSupport;
 @Green
 @SequenceGenerator(name = "idgen", sequenceName = "chance_seq", allocationSize = 1)
 public class Chance
-        extends UIEntityAuto<Long>
-        implements IVerifiable<ISingleVerifier> {
+        extends ProcessEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -58,10 +53,6 @@ public class Chance
     ChanceStage stage = ChanceStage.INIT;
 
     String address;
-
-    public Chance() {
-        setVerifyContext(new SingleVerifierSupport());
-    }
 
     @NaturalId
     @Column(length = SERIAL_LENGTH)
@@ -250,15 +241,4 @@ public class Chance
         return new Equals(prefix + "serial", serial);
     }
 
-    SingleVerifierSupport verifyContext;
-
-    @Embedded
-    @Override
-    public SingleVerifierSupport getVerifyContext() {
-        return verifyContext;
-    }
-
-    public void setVerifyContext(SingleVerifierSupport verifyContext) {
-        this.verifyContext = verifyContext;
-    }
 }

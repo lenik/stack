@@ -14,7 +14,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.sem.base.tx.TxEntity;
+import com.bee32.sem.process.base.ProcessEntity;
 
 /**
  * 生产任务
@@ -22,15 +22,13 @@ import com.bee32.sem.base.tx.TxEntity;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "make_task_seq", allocationSize = 1)
 public class MakeTask
-        extends TxEntity {
+        extends ProcessEntity {
 
     private static final long serialVersionUID = 1L;
 
     MakeOrder order;
-
     Date deadline;
     List<MakeTaskItem> items = new ArrayList<MakeTaskItem>();
-
     List<MaterialPlan> plans = new ArrayList<MaterialPlan>();
 
     @ManyToOne(optional = false)
@@ -110,4 +108,5 @@ public class MakeTask
             throw new NullPointerException("plans");
         this.plans = plans;
     }
+
 }

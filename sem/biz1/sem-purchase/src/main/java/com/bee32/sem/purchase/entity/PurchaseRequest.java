@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -13,11 +12,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.arch.bean.IPropertyAccessor;
-import com.bee32.plover.ox1.color.MomentInterval;
-import com.bee32.sem.process.verify.IVerifiable;
-import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;
-import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
+import com.bee32.sem.process.base.ProcessEntity;
 
 /**
  * 采购请求/采购申请/采购计划
@@ -25,18 +20,13 @@ import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "purchase_request_seq", allocationSize = 1)
 public class PurchaseRequest
-        extends MomentInterval
-        implements IVerifiable<ISingleVerifierWithNumber> {
+        extends ProcessEntity {
 
     private static final long serialVersionUID = 1L;
 
     List<MaterialPlan> plans = new ArrayList<MaterialPlan>();
     List<PurchaseRequestItem> items = new ArrayList<PurchaseRequestItem>();
     List<PurchaseTakeIn> takeIns = new ArrayList<PurchaseTakeIn>();
-
-    public PurchaseRequest() {
-        setVerifyContext(new SingleVerifierWithNumberSupport());
-    }
 
     @OneToMany(mappedBy = "purchaseRequest")
     public List<MaterialPlan> getPlans() {
@@ -111,20 +101,16 @@ public class PurchaseRequest
         this.takeIns = takeIns;
     }
 
-    public static final IPropertyAccessor<BigDecimal> totalPlanQuantityProperty = _property_(//
-            PurchaseRequest.class, "totalPlanQuantity");
-
-    SingleVerifierWithNumberSupport verifyContext;
-
-    @Embedded
+    @Transient
     @Override
-    public SingleVerifierWithNumberSupport getVerifyContext() {
-        return verifyContext;
+    public String getNumberDescription() {
+        return "金额";
     }
 
-    public void setVerifyContext(SingleVerifierWithNumberSupport verifyContext) {
-        this.verifyContext = verifyContext;
-        verifyContext.bind(this, totalPlanQuantityProperty, "金额");
+    @Override
+    protected Number computeJudgeNumber()
+            throws Exception {
+        return getTotalPlanQuantity();
     }
 
 }

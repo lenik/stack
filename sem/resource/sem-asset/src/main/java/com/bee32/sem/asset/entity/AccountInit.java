@@ -10,12 +10,12 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.sem.base.tx.TxEntity;
+import com.bee32.sem.process.base.TxProcessEntity;
 
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "account_init_seq", allocationSize = 1)
 public class AccountInit
-        extends TxEntity {
+        extends TxProcessEntity {
 
     private static final long serialVersionUID = 1L;
 

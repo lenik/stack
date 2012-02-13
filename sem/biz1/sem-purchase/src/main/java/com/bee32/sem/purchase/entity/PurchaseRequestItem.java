@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -19,13 +18,10 @@ import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.people.entity.Party;
-import com.bee32.sem.process.verify.IVerifiable;
-import com.bee32.sem.process.verify.builtin.ISingleVerifier;
-import com.bee32.sem.process.verify.builtin.SingleVerifierSupport;
+import com.bee32.sem.process.base.ProcessEntity;
 
 /**
  * 采购请求明细项目
@@ -34,8 +30,8 @@ import com.bee32.sem.process.verify.builtin.SingleVerifierSupport;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "purchase_request_item_seq", allocationSize = 1)
 public class PurchaseRequestItem
-        extends MomentInterval
-        implements IVerifiable<ISingleVerifier>, DecimalConfig {
+        extends ProcessEntity
+        implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
@@ -215,18 +211,6 @@ public class PurchaseRequestItem
         super.detach();
         purchaseRequest = null;
         return this;
-    }
-
-    SingleVerifierSupport verifyContext;
-
-    @Embedded
-    @Override
-    public SingleVerifierSupport getVerifyContext() {
-        return verifyContext;
-    }
-
-    public void setVerifyContext(SingleVerifierSupport verifyContext) {
-        this.verifyContext = verifyContext;
     }
 
 }

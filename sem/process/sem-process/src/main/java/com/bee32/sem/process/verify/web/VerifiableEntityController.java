@@ -12,7 +12,7 @@ import com.bee32.sem.process.verify.dto.VerifyContextDto;
 import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 import com.bee32.sem.process.verify.service.IVerifyService;
 
-public abstract class VerifiableEntityController<E extends Entity<K> & IVerifiable<C>, //
+public abstract class VerifiableEntityController<E extends Entity<K> & IVerifiable<? extends C>, //
 /*        */K extends Number, C extends IVerifyContext, Dto extends EntityDto<? super E, K> & IVerifiableDto>
         extends BasicEntityController<E, K, Dto>
         implements IVerifyHandlerHook<E> {

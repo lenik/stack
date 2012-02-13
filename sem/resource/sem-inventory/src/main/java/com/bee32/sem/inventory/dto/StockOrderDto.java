@@ -29,7 +29,7 @@ public class StockOrderDto
     OrgUnitDto orgUnit;
     StockWarehouseDto warehouse;
 
-    StockOrderVerifySupportDto stockOrderVerifySupport;
+    StockOrderVerifySupportDto verifyContext;
 
     public StockOrderDto() {
         super();
@@ -81,7 +81,7 @@ public class StockOrderDto
         org = mref(OrgDto.class, source.getOrg());
         orgUnit = mref(OrgUnitDto.class, source.getOrgUnit());
         warehouse = mref(StockWarehouseDto.class, source.getWarehouse());
-        stockOrderVerifySupport = marshal(StockOrderVerifySupportDto.class, source.getVerifyContext());
+        verifyContext = marshal(StockOrderVerifySupportDto.class, source.getVerifyContext());
     }
 
     @Override
@@ -95,7 +95,7 @@ public class StockOrderDto
         merge(target, "org", org);
         merge(target, "orgUnit", orgUnit);
         merge(target, "warehouse", warehouse);
-        merge(target, "verifyContext", stockOrderVerifySupport);
+        merge(target, "verifyContext", verifyContext);
     }
 
     @Override
@@ -176,11 +176,11 @@ public class StockOrderDto
 
     @Override
     public StockOrderVerifySupportDto getVerifyContext() {
-        return stockOrderVerifySupport;
+        return verifyContext;
     }
 
     public void setVerifyContext(StockOrderVerifySupportDto stockOrderVerifySupport) {
-        this.stockOrderVerifySupport = stockOrderVerifySupport;
+        this.verifyContext = stockOrderVerifySupport;
     }
 
 }

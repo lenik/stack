@@ -26,7 +26,7 @@ import com.bee32.sem.process.verify.web.VerifiableEntityController;
 
 @RequestMapping(AttackMissionController.PREFIX + "*")
 public class AttackMissionController
-        extends VerifiableEntityController<AttackMission, Integer, ISingleVerifier, AttackMissionDto> {
+        extends VerifiableEntityController<AttackMission, Long, ISingleVerifier, AttackMissionDto> {
 
     public static final String PREFIX = WarModule.PREFIX_ + "attack/";
 

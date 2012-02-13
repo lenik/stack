@@ -7,11 +7,11 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.asset.entity.BudgetRequest;
-import com.bee32.sem.base.tx.TxEntityDto;
+import com.bee32.sem.process.base.TxProcessEntityDto;
 import com.bee32.sem.world.monetary.MutableMCValue;
 
 public class BudgetRequestDto
-        extends TxEntityDto<BudgetRequest> {
+        extends TxProcessEntityDto<BudgetRequest> {
 
     private static final long serialVersionUID = 1L;
 

@@ -16,14 +16,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
-import com.bee32.plover.arch.bean.IPropertyAccessor;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.ox1.config.DecimalConfig;
-import com.bee32.sem.base.tx.TxEntity;
 import com.bee32.sem.people.entity.Party;
-import com.bee32.sem.process.verify.IVerifiable;
-import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;
-import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
+import com.bee32.sem.process.base.TxProcessEntity;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 
@@ -36,8 +32,8 @@ import com.bee32.sem.world.monetary.MCValue;
 @DiscriminatorValue("-")
 @SequenceGenerator(name = "idgen", sequenceName = "account_ticket_item_seq", allocationSize = 1)
 public class AccountTicketItem
-        extends TxEntity
-        implements IVerifiable<ISingleVerifierWithNumber>, DecimalConfig {
+        extends TxProcessEntity
+        implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
@@ -55,7 +51,6 @@ public class AccountTicketItem
     AccountSnapshotItem snapshotItemRef;
 
     public AccountTicketItem() {
-        setVerifyContext(new SingleVerifierWithNumberSupport());
         setDate(new Date());
     }
 
@@ -192,20 +187,16 @@ public class AccountTicketItem
         return snapshotItemRef != null;
     }
 
-    public static final IPropertyAccessor<BigDecimal> nativeValueProperty = _property_(//
-            AccountTicketItem.class, "nativeValue");
-
-    SingleVerifierWithNumberSupport verifyContext;
-
-    @Embedded
+    @Transient
     @Override
-    public SingleVerifierWithNumberSupport getVerifyContext() {
-        return verifyContext;
+    public String getNumberDescription() {
+        return "金额";
     }
 
-    public void setVerifyContext(SingleVerifierWithNumberSupport singleVerifierWithNumberSupport) {
-        this.verifyContext = singleVerifierWithNumberSupport;
-        singleVerifierWithNumberSupport.bind(this, nativeValueProperty, "金额");
+    @Override
+    protected Number computeJudgeNumber()
+            throws FxrQueryException {
+        return getNativeValue();
     }
 
 }

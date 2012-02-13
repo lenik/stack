@@ -9,13 +9,13 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 import com.bee32.plover.util.i18n.CurrencyConfig;
-import com.bee32.sem.base.tx.TxEntity;
+import com.bee32.sem.process.base.TxProcessEntity;
 import com.bee32.sem.world.monetary.MCValue;
 
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "budget_request_seq", allocationSize = 1)
 public class BudgetRequest
-        extends TxEntity {
+        extends TxProcessEntity {
 
     private static final long serialVersionUID = 1L;
 

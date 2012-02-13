@@ -12,8 +12,8 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.sem.base.tx.TxEntity;
 import com.bee32.sem.inventory.entity.AbstractStockOrder;
+import com.bee32.sem.process.base.ProcessEntity;
 
 //@MappedSuperclass
 @Entity
@@ -22,7 +22,7 @@ import com.bee32.sem.inventory.entity.AbstractStockOrder;
 // @DiscriminatorValue("n/a")
 @SequenceGenerator(name = "idgen", sequenceName = "stock_job_seq", allocationSize = 1)
 public class StockJob
-        extends TxEntity {
+        extends ProcessEntity {
 
     private static final long serialVersionUID = 1L;
 
