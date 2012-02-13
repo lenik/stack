@@ -12,9 +12,9 @@ update unit set hint='数量' where hint='';
 alter table material alter column unit_hint drop not null;
 update material set unit_hint=null;
 
+alter table stock_warehouse alter column name drop not null;
 update stock_warehouse set label=name;
 update stock_warehouse set name=null;
-alter table stock_warehouse alter column name drop not null;
 
 update stock_location set label=address;
 alter table stock_location drop column address;
