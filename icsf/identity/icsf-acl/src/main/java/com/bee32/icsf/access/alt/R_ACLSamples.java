@@ -16,7 +16,7 @@ public class R_ACLSamples
 
     public R_ACLSamples() {
         admin_all = new R_ACE("ap:",//
-                Role.adminRole, "S");
+                Role.adminRole, "s");
 
         service_tom_x = new R_ACE("ap:TestService.", //
                 IcsfPrincipalSamples.tom, "x");

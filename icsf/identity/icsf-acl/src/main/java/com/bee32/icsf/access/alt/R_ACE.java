@@ -156,7 +156,7 @@ public class R_ACE
         out.print(mode);
     }
 
-    public static R_ACE adminApAll = new R_ACE("ap:", User.admin, "Srwxlcd");
-    public static R_ACE adminEntityAll = new R_ACE("entity:", User.admin, "Srwxlcd");
+    public static R_ACE adminApAll = new R_ACE("ap:", User.admin, "surwcdx");
+    public static R_ACE adminEntityAll = new R_ACE("entity:", User.admin, "surwcdx");
 
 }
