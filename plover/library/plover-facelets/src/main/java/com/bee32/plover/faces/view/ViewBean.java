@@ -3,7 +3,6 @@ package com.bee32.plover.faces.view;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.faces.application.FacesMessage;
@@ -28,7 +27,7 @@ import com.bee32.plover.servlet.util.ThreadHttpContext;
 @PerView
 public abstract class ViewBean
         extends SelectionHolder
-        implements Serializable, DisposableBean, IValidatable {
+        implements Serializable, DisposableBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -115,14 +114,9 @@ public abstract class ViewBean
         return false;
     }
 
-    @Override
-    public final Set<ConstraintViolation<?>> validate() {
-        Set<ConstraintViolation<?>> violations = new LinkedHashSet<ConstraintViolation<?>>();
-        validate(violations);
-        return violations;
-    }
-
-    protected void validate(Set<ConstraintViolation<?>> violations) {
+    public void validateDialog() {
+        if (getSelection().isEmpty())
+            uiLogger.error("没有选中任何对象。");
     }
 
     public final <T> T getOpenedObject(boolean selectionRequired) {
