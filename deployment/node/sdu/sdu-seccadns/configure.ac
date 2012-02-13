@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.65])
-AC_INIT([sdu-seccadns], [0.12.0], [xjl@99jsj.com])
+AC_INIT([sdu-seccadns], [0.13.0], [xjl@99jsj.com])
 AM_INIT_AUTOMAKE([-Wno-portability])
 
 # Checks for programs.

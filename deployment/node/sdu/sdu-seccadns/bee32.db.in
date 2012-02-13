@@ -64,6 +64,5 @@ bugs                    CNAME   q               ; 缺陷跟踪系统
 www                     CNAME   main            ; SECCA 工程开发网
 
 $INCLUDE @seccadbdir@/bee32-lan.db
-$INCLUDE @seccadbdir@/bee32-fw.db
 $INCLUDE @seccadbdir@/bee32-gw.db
 
