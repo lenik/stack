@@ -45,10 +45,6 @@ public class StockWarehouse
     }
 
     public void setName(String name) {
-        if (name == null)
-            throw new NullPointerException("name");
-        if (name.isEmpty())
-            throw new IllegalArgumentException("Empty stock warehouse name.");
         this.name = name;
     }
 
