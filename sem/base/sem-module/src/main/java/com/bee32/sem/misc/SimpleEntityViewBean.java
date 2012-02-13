@@ -93,8 +93,6 @@ public class SimpleEntityViewBean
     protected int deleteFlags = 0;
 
     String currentView = StandardViews.LIST;
-    int tabIndex;
-
     protected Set<Serializable> requestWindow = new HashSet<Serializable>();
     List<ICriteriaElement> baseRestriction;
     ICriteriaElement userRestriction;
@@ -388,14 +386,6 @@ public class SimpleEntityViewBean
         if (getOpenedObjects().isEmpty())
             throw new IllegalStateException("No opened objects for editing");
         return true;
-    }
-
-    public int getTabIndex() {
-        return tabIndex;
-    }
-
-    public void setTabIndex(int tabIndex) {
-        this.tabIndex = tabIndex;
     }
 
     /* ********************************************************************** */

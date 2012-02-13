@@ -28,6 +28,7 @@ public class ChooseStockLocationDialogBean
     static Logger logger = LoggerFactory.getLogger(ChooseStockLocationDialogBean.class);
 
     String header = "Please choose a stock location..."; // NLS: 选择用户或组
+    int tabIndex;
     StockWarehouseDto warehouse;
     MaterialDto material;
     final TreeNodeSelectionHolder fullSelectionHolder = new TreeNodeSelectionHolder();
@@ -52,6 +53,14 @@ public class ChooseStockLocationDialogBean
 
     public void setHeader(String header) {
         this.header = header;
+    }
+
+    public int getTabIndex() {
+        return tabIndex;
+    }
+
+    public void setTabIndex(int tabIndex) {
+        this.tabIndex = tabIndex;
     }
 
     public StockWarehouseDto getWarehouse() {
@@ -101,7 +110,7 @@ public class ChooseStockLocationDialogBean
 
     @Override
     public List<?> getSelection() {
-        switch (getTabIndex()) {
+        switch (tabIndex) {
         default:
         case 0:
             return fullSelectionHolder.getSelection();

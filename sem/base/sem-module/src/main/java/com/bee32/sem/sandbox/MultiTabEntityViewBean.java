@@ -11,7 +11,7 @@ import com.bee32.sem.misc.SimpleEntityViewBean;
 /**
  * View data exchange
  */
-public abstract class MultiTabEntityVdx
+public abstract class MultiTabEntityViewBean
         extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
@@ -19,37 +19,32 @@ public abstract class MultiTabEntityVdx
     protected static final int TAB_INDEX = 0;
     protected static final int TAB_FORM = 1;
 
+    int tabIndex;
+
     public <E extends Entity<K>, D extends EntityDto<? super E, K>, K extends Serializable> //
-    MultiTabEntityVdx(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
+    MultiTabEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
         super(entityClass, dtoClass, fmask, criteriaElements);
     }
 
-    public boolean isEditing() {
-        return StandardViews.EDIT_FORM.equals(getCurrentView());
+    public int getTabIndex() {
+        return tabIndex;
     }
 
-    public void setEditing(boolean editing) {
-        if (editing)
-            showEditForm();
-        else
-            showIndex();
+    public void setTabIndex(int tabIndex) {
+        this.tabIndex = tabIndex;
     }
 
     @Override
     protected void showView(String viewName) {
+        super.showView(viewName);
         switch (viewName) {
         case StandardViews.LIST:
             setTabIndex(TAB_INDEX);
-            setEditing(false);
             break;
         case StandardViews.CONTENT:
-            setTabIndex(TAB_FORM);
-            setEditing(false);
-            break;
         case StandardViews.CREATE_FORM:
         case StandardViews.EDIT_FORM:
             setTabIndex(TAB_FORM);
-            setEditing(true);
             break;
         }
     }

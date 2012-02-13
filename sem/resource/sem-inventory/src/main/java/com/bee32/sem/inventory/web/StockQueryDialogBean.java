@@ -21,11 +21,11 @@ import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.service.IStockQuery;
 import com.bee32.sem.inventory.service.StockQueryOptions;
 import com.bee32.sem.inventory.service.StockQueryResult;
-import com.bee32.sem.misc.SimpleEntityViewBean;
+import com.bee32.sem.sandbox.MultiTabEntityViewBean;
 import com.bee32.sem.sandbox.UIHelper;
 
 public class StockQueryDialogBean
-        extends SimpleEntityViewBean {
+        extends MultiTabEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -241,6 +241,13 @@ public class StockQueryDialogBean
         options.setCBatch(null, true);
         options.setLocation(null, true);
         return options;
+    }
+
+    /**
+     * Cuz user may select single or multiple items, so don't validate here.
+     */
+    @Override
+    public void validateDialog() {
     }
 
 }
