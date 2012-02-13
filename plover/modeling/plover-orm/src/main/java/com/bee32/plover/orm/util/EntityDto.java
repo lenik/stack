@@ -183,8 +183,11 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     @Override
     protected void __marshal(E source) {
         this._source = source;
+
         id = source.getId();
         version = source.getVersion();
+        _skipId = version == -1;
+
         createdDate = source.getCreatedDate();
         lastModified = source.getLastModified();
         setEntityFlags(EntityAccessor.getFlags(source).bits);

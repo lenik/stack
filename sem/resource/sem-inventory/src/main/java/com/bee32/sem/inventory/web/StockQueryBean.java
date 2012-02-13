@@ -22,6 +22,7 @@ import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.service.StockQueryOptions;
+import com.bee32.sem.inventory.service.StockQueryResult;
 import com.bee32.sem.inventory.util.StockCriteria;
 import com.bee32.sem.inventory.web.business.StockDictsBean;
 
@@ -69,7 +70,7 @@ public class StockQueryBean
         this.queryDate = queryDate;
     }
 
-    public void copyResult(StockOrder result) {
+    public void copyResult(StockQueryResult result) {
         if (result == null)
             throw new NullPointerException("resultList");
         this.resultList = new StockOrderDto().marshal(result);

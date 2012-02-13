@@ -94,6 +94,8 @@ public class StockQuery
 
             StockOrderItem item = new StockOrderItem(all);
             item.setIndex(index++);
+            EntityAccessor.setId(item, (long) -index);
+            EntityAccessor.setVersion(item, -1); // A negative version will be skipped in DTO.
             item.setMaterial(_material);
             item.setQuantity(_quantity);
             if (options.isCBatchVisible()) {

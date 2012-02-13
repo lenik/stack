@@ -17,6 +17,7 @@ import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StocktakingOrder;
+import com.bee32.sem.inventory.service.StockQueryResult;
 import com.bee32.sem.inventory.util.StockJobStepping;
 import com.bee32.sem.sandbox.UIHelper;
 
@@ -107,7 +108,7 @@ public class StockOrderBean_STKD
         // unexpected: not found
     }
 
-    public void copyResult(StockOrder result) {
+    public void copyResult(StockQueryResult result) {
         StocktakingOrderDto order = getOpenedObject();
 
         order.getItems().clear();
