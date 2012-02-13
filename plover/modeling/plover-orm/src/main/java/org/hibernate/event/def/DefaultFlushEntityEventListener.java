@@ -50,11 +50,17 @@ import org.hibernate.util.ArrayHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.plover.arch.util.PloverOverlayPatch;
+
 /**
  * An event that occurs for each entity instance at flush time
  *
  * @author Gavin King
+ *
+ * @patch [LENIK] Fixed incorrect snapshot natural-id.
+ * @see #checkNaturalId(EntityPersister, EntityEntry, Object[], Object[], EntityMode, SessionImplementor)
  */
+@PloverOverlayPatch
 public class DefaultFlushEntityEventListener implements FlushEntityEventListener {
 
     private static final long serialVersionUID = 1L;

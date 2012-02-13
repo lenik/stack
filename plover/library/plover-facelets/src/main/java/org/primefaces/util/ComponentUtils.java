@@ -37,8 +37,17 @@ import javax.faces.model.SelectItem;
 
 import org.primefaces.component.api.Widget;
 
+import com.bee32.plover.arch.util.PloverOverlayPatch;
 import com.bee32.plover.faces.primefaces.ClientIdHelper;
 
+/**
+ * @patch [LENIK] Fixed couldn't find h:form in composite component.
+ * @see #findParentForm(FacesContext, UIComponent)
+ *
+ * @patch [LENIK] Show detailed information about bad client id.
+ * @see #findClientIds(FacesContext, UIComponent, String)
+ */
+@PloverOverlayPatch
 @SuppressWarnings("unchecked")
 public class ComponentUtils {
 
