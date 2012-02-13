@@ -14,8 +14,12 @@
                 <f:facet name="header">${title}</f:facet>
             </ui:insert>
 
+            <ui:insert name="dataColumns.0">
+                <p:column headerText="标识">
+                    <h:outputText value="${entry.id}" />
+                </p:column>
+            </ui:insert>
             <ui:insert name="dataColumns" />
-
             <ui:insert name="dataColumnsC">
                 <p:column headerText="更新日期">
                     <h:outputText value="${entry.lastModified}">

@@ -8,17 +8,20 @@
     <ui:define name="toolbar">
         <p:toolbar id="toolbar">
             <p:toolbarGroup align="left">
-                <p:commandButton id="createButton" value="新建" actionListener="${bean.showCreateForm}"
-                    oncomplete="${plainEditForm ? '' : 'editDialog.show()'}" update=":editDialog:form" />
-                <p:commandButton id="deleteButton" value="删除" onclick="deleteConfirmDialog.show()"
-                    disabled="${not bean.selected}" />
+                <p:commandButton id="createButton" value="新建" rendered="${creatable != null ? creatable : true}"
+                    actionListener="${bean.showCreateForm}" oncomplete="${plainEditForm ? '' : 'editDialog.show()'}"
+                    update=":editDialog:form" />
+                <p:commandButton id="deleteButton" value="删除" rendered="${deletable != null ? deletable : true}"
+                    onclick="deleteConfirmDialog.show()" disabled="${not bean.selected or not bean.selectionEditable}" />
                 <!-- TODO toggle button in PF-3.1: searchPanel toggler -->
             </p:toolbarGroup>
             <p:toolbarGroup align="right">
-                <p:commandButton id="viewButton" value="查看" disabled="${not bean.selected}"
-                    actionListener="${bean.showContent}" update=":editDialog:form" oncomplete="${plainEditForm ? '' : 'editDialog.show()'}" />
-                <p:commandButton id="editButton" value="修改" disabled="${not bean.selected}"
-                    actionListener="${bean.showEditForm}" update=":editDialog:form" oncomplete="${plainEditForm ? '' : 'editDialog.show()'}" />
+                <p:commandButton id="viewButton" value="查看" rendered="${readable != null ? readable : true}"
+                    disabled="${not bean.selected}" actionListener="${bean.showContent}" update=":editDialog:form"
+                    oncomplete="${plainEditForm ? '' : 'editDialog.show()'}" />
+                <p:commandButton id="editButton" value="修改" rendered="${editable != null ? editable : true}"
+                    disabled="${not bean.selected or not bean.selectionEditable}" actionListener="${bean.showEditForm}"
+                    update=":editDialog:form" oncomplete="${plainEditForm ? '' : 'editDialog.show()'}" />
                 <ui:insert name="toolbarPeripherals" />
             </p:toolbarGroup>
         </p:toolbar>

@@ -13,6 +13,7 @@ import org.primefaces.event.UnselectEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.plover.arch.util.dto.BaseDto;
 import com.bee32.plover.faces.utils.FacesUILogger;
 import com.bee32.plover.faces.utils.SelectableList;
 
@@ -98,6 +99,30 @@ public abstract class ListMBean<T>
             }
             selectedIndex = -1;
         }
+    }
+
+    public boolean isSelectionEditable() {
+        T selection = getSelection();
+        if (selection == null)
+            return false;
+        if (selection instanceof BaseDto<?>) {
+            BaseDto<?> dto = (BaseDto<?>) selection;
+            if (dto.isLocked())
+                return false;
+        }
+        return true;
+    }
+
+    public boolean isSelectionRemovable() {
+        T selection = getSelection();
+        if (selection == null)
+            return false;
+        if (selection instanceof BaseDto<?>) {
+            BaseDto<?> dto = (BaseDto<?>) selection;
+            if (dto.isLocked())
+                return false;
+        }
+        return true;
     }
 
     @Override

@@ -85,7 +85,7 @@
                                     <cc:insertRawFacet name="index-buttons" />
                                 </td>
                                 <td align="right">
-                                    <p:commandButton id="edit" value="修改" disabled="${mbean.selection == null}"
+                                    <p:commandButton id="edit" value="修改" disabled="${not mbean.selectionEditable}"
                                         action="${mbean.showEditForm}" update="${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
                                         oncomplete="${style == 'panel' ? '' : cc.attrs.editDialogVar.concat('.show();')}"
                                         rendered="${cc.attrs.editable and (style != 'panel' or not cc.attrs.smooth)}">
@@ -95,7 +95,7 @@
                                     <p:commandButton rendered="${cc.attrs.removable}" id="remove" value="移除"
                                         actionListener="${mbean.removeSelection}"
                                         update=":@form, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
-                                        disabled="${mbean.selection == null}" />
+                                        disabled="${not mbean.selectionRemovable}" />
                                     <cc:insertRawFacet name="index-buttons.right" />
                                     <p:commandButton id="close" value="关闭"
                                         onclick="${cc.attrs.indexDialogVar}.hide()" rendered="${style == 'dialog'}" />

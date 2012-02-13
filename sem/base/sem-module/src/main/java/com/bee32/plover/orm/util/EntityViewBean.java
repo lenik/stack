@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.arch.util.dto.BaseDto;
 import com.bee32.plover.arch.util.dto.Fmask;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.web.EntityHelper;
@@ -103,6 +104,17 @@ public abstract class EntityViewBean
     @Override
     public Object getEnclosingObject() {
         return getOpenedObject();
+    }
+
+    public boolean isSelectionEditable() {
+        for (Object sel : getSelection()) {
+            if (sel instanceof BaseDto<?>) {
+                BaseDto<?> dto = (BaseDto<?>) sel;
+                if (dto.isLocked())
+                    return true;
+            }
+        }
+        return false;
     }
 
     protected void openSelection() {

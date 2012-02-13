@@ -13,13 +13,13 @@
                     resizableColumns="true" paginator="${paginator != null ? paginator : true}" rows="10"
                     paginatorTemplate="${viewConfig.paginatorTemplate}" rowsPerPageTemplate="${viewConfig.pageSizeTemplate}">
 
-                    <p:column headerText="标识">
-                        <h:outputText value="${entry.id}" />
-                    </p:column>
-
+                    <ui:insert name="columns.0">
+                        <p:column headerText="标识">
+                            <h:outputText value="${entry.id}" />
+                        </p:column>
+                    </ui:insert>
                     <ui:insert name="columns" />
-
-                    <ui:insert name="dataColumnsC">
+                    <ui:insert name="columnsC">
                         <p:column headerText="更新日期" style="width: 7em">
                             <h:outputText value="${entry.lastModified}">
                                 <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
