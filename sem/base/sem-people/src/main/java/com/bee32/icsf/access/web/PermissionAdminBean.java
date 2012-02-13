@@ -148,7 +148,7 @@ public class PermissionAdminBean
 
         Map<String, ResourcePermission> havePermissions = new HashMap<String, ResourcePermission>();
         Principal principal = principalDto.unmarshal();
-        List<ResourcePermission> haveResourcePermissions = aclService.getResourcePermissions(principal);
+        List<ResourcePermission> haveResourcePermissions = aclService.getResourcePermissions(principal.getId());
         for (ResourcePermission rp : haveResourcePermissions) {
             String permissionQulifier = srr.qualify(rp.getResource());
             havePermissions.put(permissionQulifier, rp);

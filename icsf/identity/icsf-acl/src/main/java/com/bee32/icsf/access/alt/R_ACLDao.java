@@ -76,13 +76,11 @@ public class R_ACLDao
         template.saveOrUpdateAll(newList);
     }
 
-    public List<ResourcePermission> getResourcePermissions(IPrincipal principal) {
-        if (principal == null)
-            throw new NullPointerException("principal");
+    public List<ResourcePermission> getResourcePermissions(int principalId) {
 
         List<R_ACE> list = getHibernateTemplate().findByNamedParam(// ,
                 "from R_ACE where principal.id = :principalId", //
-                "principalId", principal.getId());
+                "principalId", principalId);
 
         List<ResourcePermission> resources = new ArrayList<ResourcePermission>(list.size());
 
@@ -99,11 +97,9 @@ public class R_ACLDao
     /**
      * @return <code>null</code> if undefined.
      */
-    public Permission getPermission(Resource resource, IPrincipal principal) {
+    public Permission getPermission(Resource resource, int principalId) {
         if (resource == null)
             throw new NullPointerException("resource");
-        if (principal == null)
-            throw new NullPointerException("principal");
 
         String qualifiedName = ResourceRegistry.qualify(resource);
 
@@ -112,7 +108,7 @@ public class R_ACLDao
                         + "   ( :q like qualifiedName || '%' )" //
                         + "   and principal.id = :principalId", //
                 new String[] { "q", "principalId" }, //
-                new Object[] { qualifiedName, principal.getId() });
+                new Object[] { qualifiedName, principalId });
 
         // Only the first matching entry is returned.
         for (R_ACE ace : list)

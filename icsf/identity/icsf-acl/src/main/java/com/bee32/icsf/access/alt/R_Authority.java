@@ -32,7 +32,7 @@ public class R_Authority
      */
     @Override
     public Permission getPermission(Resource resource, Principal principal) {
-        Permission permission = aclDao.getPermission(resource, principal);
+        Permission permission = aclDao.getPermission(resource, principal.getId());
 
         if (permission == null)
             permission = new Permission(0);
@@ -42,7 +42,7 @@ public class R_Authority
 
     @Override
     public Collection<ResourcePermission> getResourcePermissions(Principal principal) {
-        return aclDao.getResourcePermissions(principal);
+        return aclDao.getResourcePermissions(principal.getId());
     }
 
 }

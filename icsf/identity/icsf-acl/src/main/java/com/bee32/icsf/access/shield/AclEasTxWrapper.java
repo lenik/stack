@@ -22,7 +22,7 @@ import com.bee32.icsf.access.resource.IResourceNamespace;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ScannedResourceRegistry;
 import com.bee32.icsf.login.SessionUser;
-import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityResource;
 import com.bee32.plover.orm.entity.EntityResourceNS;
@@ -77,7 +77,7 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
 
         Permission requiredPermission = new Permission(permissionBits);
 
-        User currentUser = SessionUser.getInstance().getInternalUserOpt();
+        UserDto currentUser = SessionUser.getInstance().getUserOpt();
         if (currentUser == null)
             // currentUser = User.ANONYMOUS;
             return;
@@ -91,7 +91,7 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
             return;
         }
 
-        Permission grantedPermission = aclService.getPermission(entityResource, currentUser);
+        Permission grantedPermission = aclService.getPermission(entityResource, currentUser.getId());
 
         if (!grantedPermission.implies(requiredPermission)) {
             String message = String.format(//
