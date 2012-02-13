@@ -2,30 +2,48 @@ package com.bee32.sem.process.verify.web;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.principal.PrincipalDto;
-import com.bee32.icsf.principal.User;
 import com.bee32.plover.arch.operation.Operation;
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.util.DataViewBean;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.process.verify.VerifyEvalState;
 import com.bee32.sem.process.verify.VerifyResult;
 import com.bee32.sem.process.verify.builtin.dto.SingleVerifierSupportDto;
 import com.bee32.sem.process.verify.dto.IVerifiableDto;
+import com.bee32.sem.process.verify.dto.VerifyContextDto;
+import com.bee32.sem.process.verify.service.IVerifyService;
 
 public class SingleVerifierSupportBean<D extends EntityDto<E, K> & IVerifiableDto, E extends Entity<K>, K extends Serializable>
-        extends AbstractVerifySupportBean {
+        extends DataViewBean {
 
     private static final long serialVersionUID = 1L;
 
-    private PrincipalDto verifier1Template;
-    private boolean accepted1Template;
-    private String rejectedReason1Template;
+    PrincipalDto verifier1Template = new PrincipalDto().ref(SessionUser.getInstance().getUser().getId());
+    boolean accepted1Template;
+    String rejectedReason1Template;
 
-    public SingleVerifierSupportBean() {
-        User currentUser = SessionUser.getInstance().getInternalUser();
-        verifier1Template = new PrincipalDto().ref(currentUser);
+    public List<? extends IVerifiableDto> getVerifiables() {
+        return (List<? extends IVerifiableDto>) getSelection();
+    }
+
+    public IVerifiableDto getVerifiable1() {
+        List<? extends IVerifiableDto> verifiables = getVerifiables();
+        if (verifiables.isEmpty())
+            return null;
+        IVerifiableDto first = verifiables.get(0);
+        return first;
+    }
+
+    public VerifyContextDto<?> getVerifyContext1() {
+        IVerifiableDto first = getVerifiable1();
+        if (first == null)
+            return null;
+        VerifyContextDto<?> verifyContext = first.getVerifyContext();
+        return verifyContext;
     }
 
     @SuppressWarnings("unchecked")
@@ -33,7 +51,7 @@ public class SingleVerifierSupportBean<D extends EntityDto<E, K> & IVerifiableDt
     public//
     void reverify() {
         VerifiableSupportBean verifiableSupportBean = ctx.bean.getBean(VerifiableSupportBean.class);
-        if (!verifiableSupportBean.isCurrentUserResponsible()) {
+        if (!verifiableSupportBean.isCurrentUserResponsible(getVerifiables())) {
             uiLogger.error("您不是该对象的审核责任人。");
             return;
         }
@@ -59,8 +77,9 @@ public class SingleVerifierSupportBean<D extends EntityDto<E, K> & IVerifiableDt
                 continue;
             }
 
+            IVerifyService service = ctx.bean.getBean(IVerifyService.class);
             try {
-                VerifyResult result = getVerifyService().verifyEntity(entity);
+                VerifyResult result = service.verifyEntity(entity);
                 VerifyEvalState evalState = result.getState();
                 if (evalState == VerifyEvalState.VERIFIED)
                     uiLogger.info("审核 " + entityLabel + " 成功!");
@@ -92,15 +111,17 @@ public class SingleVerifierSupportBean<D extends EntityDto<E, K> & IVerifiableDt
         reverify();
     }
 
-    public SingleVerifierSupportDto getVerifyContextTemplate() {
-        return (SingleVerifierSupportDto) super.getVerifyContext1();
-    }
-
-    public void loadTemplateFromSelection() {
-        SingleVerifierSupportDto template = getVerifyContextTemplate();
+    public void loadTemplate(IVerifiableDto verifiable) {
+        VerifyContextDto<?> verifyContext = verifiable.getVerifyContext();
+        // if (!(verifyContext instanceof SingleVerifierSupportDto))
+        SingleVerifierSupportDto template = (SingleVerifierSupportDto) verifyContext;
         if (template == null) {
+            verifier1Template = new PrincipalDto().ref();
+            accepted1Template = false;
             rejectedReason1Template = "";
         } else {
+            verifier1Template = template.getVerifier1();
+            accepted1Template = template.isAccepted1();
             rejectedReason1Template = template.getRejectedReason1();
         }
     }

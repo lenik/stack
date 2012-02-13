@@ -3,6 +3,7 @@
     xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:fr="http://java.sun.com/jsf/composite/frame"
     xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
+    <ui:param name="verifiable" value="true" />
     <ui:param name="stock" value="#{stockDictsBean}" />
     <ui:param name="monetary" value="#{monetaryDictsBean}" />
     <ui:param name="obj" value="#{bean.openedObject}" />
@@ -18,12 +19,6 @@
             </p:selectOneMenu>
             <p:separator />
         </h:panelGrid>
-    </ui:define>
-
-    <ui:define name="toolbarPeripherals">
-        <p:separator />
-        <sem:singleVerifierSupportButton id="verifyButton" selection="#{bean.selection}"
-            disabled="#{bean.editing}" />
     </ui:define>
 
     <ui:define name="editDialogContent">
@@ -121,7 +116,6 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:singleVerifierSupportDialog id="verifyDialog" update=":mainForm" />
         <sem:choosePartyDialog id="chooseOrgDialog" var="chooseOrgDialog" stereo="ORG" target="#{obj.org}"
             update=":editDialog:form" />
         <sem:chooseOrgUnitDialog id="chooseOrgUnitDialog" target="#{obj.orgUnit}" update=":editDialog:form" />

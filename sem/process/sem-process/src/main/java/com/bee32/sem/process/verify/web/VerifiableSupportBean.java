@@ -1,10 +1,12 @@
 package com.bee32.sem.process.verify.web;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.principal.User;
+import com.bee32.plover.orm.util.DataViewBean;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.VerifyEvalState;
@@ -12,7 +14,7 @@ import com.bee32.sem.process.verify.dto.IVerifiableDto;
 import com.bee32.sem.process.verify.service.IVerifyService;
 
 public class VerifiableSupportBean
-        extends AbstractVerifySupportBean {
+        extends DataViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,28 +38,33 @@ public class VerifiableSupportBean
         commandEnabledMap.put(VerifyEvalState.PENDING, false);
     }
 
-    public String getCommandLabel() {
-        VerifyEvalState state = getMixedVerifyState();
+    public String getCommandLabel(List<? extends IVerifiableDto> verifiables) {
+        VerifyEvalState state = VerifyEvalState.meet(verifiables);
         String name = commandLabelMap.get(state);
         if (name == null)
             name = "审核";
         return name;
     }
 
-    public boolean isCommandEnabled() {
-        VerifyEvalState state = getMixedVerifyState();
+    public boolean isCommandEnabled(List<? extends IVerifiableDto> verifiables) {
+        VerifyEvalState state = VerifyEvalState.meet(verifiables);
         Boolean enabled = commandEnabledMap.get(state);
         return enabled == Boolean.TRUE;
     }
 
-    public boolean isContextResponsible() {
-        if (getVerifiables().isEmpty())
+    public boolean isCurrentUserResponsible(List<? extends IVerifiableDto> verifiables) {
+        // VerifyEvalState state = getMixedVerifyState(verifiables);
+        return true;
+    }
+
+    public boolean isContextResponsible(List<? extends IVerifiableDto> verifiables) {
+        if (verifiables.isEmpty())
             return false;
 
         IVerifyService service = ctx.bean.getBean(IVerifyService.class);
         User me = SessionUser.getInstance().getInternalUser();
 
-        for (IVerifiableDto verifiableDto : getVerifiables()) {
+        for (IVerifiableDto verifiableDto : verifiables) {
             EntityDto<?, ?> entityDto = (EntityDto<?, ?>) verifiableDto;
             IVerifiable<?> verifiable = (IVerifiable<?>) entityDto.unmarshal();
             boolean responsible = service.isResponsible(me, verifiable);

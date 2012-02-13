@@ -1,10 +1,12 @@
 package com.bee32.sem.process.verify;
 
 import java.util.Collection;
+import java.util.List;
 
 import com.bee32.sem.event.EventFlags;
 import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.EventStateClass;
+import com.bee32.sem.process.verify.dto.IVerifiableDto;
 
 public class VerifyEvalState
         extends EventState<VerifyEvalState> {
@@ -58,15 +60,6 @@ public class VerifyEvalState
         return meet(this, other);
     }
 
-    public static VerifyEvalState meet(VerifyEvalState... states) {
-        if (states.length == 0)
-            return UNKNOWN;
-        VerifyEvalState min = states[0];
-        for (int i = 1; i < states.length; i++)
-            min = meet(min, states[i]);
-        return min;
-    }
-
     public static VerifyEvalState meet(VerifyEvalState s1, VerifyEvalState s2) {
         if (s1 == null)
             return s2;
@@ -88,6 +81,24 @@ public class VerifyEvalState
             return PENDING;
 
         return NOT_APPLICABLE;
+    }
+
+    public static VerifyEvalState meet(VerifyEvalState... states) {
+        if (states.length == 0)
+            return UNKNOWN;
+        VerifyEvalState min = states[0];
+        for (int i = 1; i < states.length; i++)
+            min = meet(min, states[i]);
+        return min;
+    }
+
+    public static VerifyEvalState meet(List<? extends IVerifiableDto> verifiables) {
+        VerifyEvalState[] statev = new VerifyEvalState[verifiables.size()];
+        int index = 0;
+        for (IVerifiableDto verifiable : verifiables)
+            statev[index++] = verifiable.getVerifyContext().getVerifyEvalState();
+        VerifyEvalState state = meet(statev);
+        return state;
     }
 
     static VerifyEvalState _(int index, String name, int stagefinalized, int eventFlags) {

@@ -1,6 +1,6 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
     xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:p="http://primefaces.org/ui"
-    template="/template/simple-entity.xhtml">
+    xmlns:sem="http://java.sun.com/jsf/composite/3/15" template="/template/simple-entity.xhtml">
 
     <ui:param name="plainEditForm" value="true" />
     <ui:param name="searchUpdates" value=":mainForm, :editDialog:form" />
@@ -14,17 +14,14 @@
                 <p:commandButton id="createButton" value="新建" actionListener="${bean.showCreateForm}"
                     disabled="${bean.editing}" update="toolbar, :editDialog:form" />
                 <p:commandButton id="editButton" value="修改" actionListener="${bean.showEditForm}"
-                    disabled="${bean.editing or not bean.selected}" update="toolbar, :editDialog:form" />
+                    disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" update="toolbar, :editDialog:form" />
                 <p:commandButton id="deleteButton" value="删除" onclick="deleteConfirmDialog.show()"
-                    disabled="${bean.editing or not bean.selected}" update="toolbar" />
-                <ui:remove>
-                    <!-- 不能跨表单提交！ -->
-                    <p:commandButton id="save-validated" value="保存" actionListener="${bean.save}"
-                        disabled="${bean.currentView == 'content' or !bean.editing}" update=":mainForm, ${mirrorTargets}, :editDialog:form" />
-                    <p:commandButton id="cancel" value="${bean.currentView == 'content'  ? '返回' : '取消'}"
-                        actionListener="${bean.showIndex}" disabled="${bean.currentView == 'content' or !bean.editing}"
-                        update=":mainForm:toolbar, :editDialog:form" />
-                </ui:remove>
+                    disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" update="toolbar" />
+                <c:if test="${verifiable}">
+                    <p:separator />
+                    <sem:singleVerifierSupportButton id="verifyButton" selection="#{bean.selection}"
+                        disabled="#{bean.editing or not bean.selected}" />
+                </c:if>
                 <ui:insert name="toolbar.left" />
                 <ui:insert name="toolbarPeripherals" />
             </p:toolbarGroup>
@@ -50,4 +47,9 @@
         <!-- No listing at all. -->
     </ui:define>
 
+    <ui:define name="dialogs.0">
+        <c:if test="${verifiable}">
+            <sem:singleVerifierSupportDialog id="verifyDialog" update=":mainForm:toolbar" />
+        </c:if>
+    </ui:define>
 </ui:composition>

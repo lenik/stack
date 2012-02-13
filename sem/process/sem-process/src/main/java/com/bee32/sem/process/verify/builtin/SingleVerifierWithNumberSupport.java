@@ -19,7 +19,15 @@ public class SingleVerifierWithNumberSupport
     // private transient
     private transient IJudgeNumber judgeNumberImpl;
 
+    /**
+     * @see #SingleVerifierWithNumberSupport(Entity, IPropertyAccessor, String)
+     */
+    // @Deprecated
     public SingleVerifierWithNumberSupport() {
+    }
+
+    public <E extends Entity<?>> SingleVerifierWithNumberSupport(E entity) {
+        bind(entity);
     }
 
     public <E extends Entity<?>> SingleVerifierWithNumberSupport(E entity,

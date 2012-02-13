@@ -22,9 +22,9 @@
         <c:set var="buttonBean" value="${cc.attrs.buttonBean}" />
         <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
 
-        <p:commandButton id="button" value="${buttonBean.commandLabel}" actionListener="${dialogBean.loadTemplateFromSelection}"
-            oncomplete="${cc.attrs.dialog}.show()" disabled="${cc.attrs.disabled || not buttonBean.commandEnabled}"
-            async="true">
+        <p:commandButton id="button" value="${buttonBean.getCommandLabel(cc.attrs.selection)}"
+            actionListener="${dialogBean.loadTemplate(cc.attrs.singleSelection)}" oncomplete="${cc.attrs.dialog}.show()"
+            disabled="${cc.attrs.disabled || buttonBean.isCommandEnabled(cc.attrs.selection)}" async="true">
             <f:setPropertyActionListener target="${dialogBean.selection}" value="${cc.attrs.selection}" />
             <cc:insertChildren />
         </p:commandButton>
