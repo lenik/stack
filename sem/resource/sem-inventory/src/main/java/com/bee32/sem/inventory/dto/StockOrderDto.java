@@ -41,7 +41,7 @@ public class StockOrderDto
 
     @SuppressWarnings("unchecked")
     protected Class<? extends StockJobDto<?>> getStockJobDtoClass() {
-        return (Class<? extends StockJobDto<?>>) StockJobDto.class;
+        return (Class<? extends StockJobDto<?>>) (Class<?>) StockJobDto.class;
     }
 
     @Override
