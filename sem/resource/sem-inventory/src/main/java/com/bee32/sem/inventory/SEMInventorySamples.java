@@ -218,7 +218,7 @@ public class SEMInventorySamples
             factoryOutOrder1.setSerial("..FK_O:1");
             factoryOutOrder1.setWarehouse(mainWarehouse);
             factoryOutOrder1.setBeginTime(DateSamples.D_2010_07_30);
-            factoryOutOrder1.addItem(m_handlerf1, null, -5.0, 50.0);
+            factoryOutOrder1.addItem(m_handlerf1, null, -5.0, 30.0);
         }
 
         planOrder1 = new StockOrder();
