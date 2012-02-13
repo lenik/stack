@@ -1,90 +1,96 @@
-<p:dialog id="dialog" header="${header}" widgetVar="${var}" modal="true" dynamic="${viewConfig.dynamicDialog}"
-    position="center" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+<ui:component xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
     xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:p="http://primefaces.org/ui"
     xmlns:icsf="http://java.sun.com/jsf/composite/3/7">
 
-    <div style="margin: 1px" onclick="$('#${var}_sideBarE').hide()">
-        <h:form id="form" styleClass="${formStyleClass}">
+    <h:outputScript library="frame" name="ajax-validation.js" target="head" />
 
-            <table class="x-layout" cellspacing="0" cellpadding="0" border="0">
-                <tr>
-                    <c:if test="${sideBarWVisible != null}">
-                        <td valign="top" id="sideBarW" style="${sideBarWVisible == true ? '' : 'display: none'}">
-                            <h:panelGroup id="sidePanelW">
-                                <ui:insert name="sideBarW" />
-                                <ui:insert name="sideBarW.1" />
+    <p:dialog id="dialog" header="${header}" widgetVar="${var}" modal="true" dynamic="${viewConfig.dynamicDialog}"
+        position="center">
+
+        <div style="margin: 1px" onclick="$('#${var}_sideBarE').hide()">
+            <h:form id="form" styleClass="${formStyleClass}">
+
+                <table class="x-layout" cellspacing="0" cellpadding="0" border="0">
+                    <tr>
+                        <c:if test="${sideBarWVisible != null}">
+                            <td valign="top" id="sideBarW" style="${sideBarWVisible == true ? '' : 'display: none'}">
+                                <h:panelGroup id="sidePanelW">
+                                    <ui:insert name="sideBarW" />
+                                    <ui:insert name="sideBarW.1" />
+                                </h:panelGroup>
+                            </td>
+                            <td valign="center" class="layout-side-toggler ui-state-default" style="width: 9px" />
+                        </c:if>
+
+                        <td valign="top">
+                            <ui:insert name="paneN" />
+                            <ui:param name="tabbed" value="${mainTabTitle != null}" />
+
+                            <c:if test="${tabbed}">
+                                <p:tabView id="tv" activeIndex="${dialogBean.tabIndex}" dynamic="false">
+                                    <ui:insert name="tabs.0" />
+                                    <p:tab id="main" title="${mainTabTitle}">
+                                        <ui:insert name="main">no content</ui:insert>
+                                    </p:tab>
+                                    <ui:insert name="tabs.1" />
+                                </p:tabView>
+                            </c:if>
+
+                            <c:if test="${not tabbed}">
+                                <f:subview id="tv">
+                                    <ui:insert name="main">no content</ui:insert>
+                                </f:subview>
+                            </c:if>
+
+                            <ui:insert name="paneS" />
+
+                            <h:panelGroup id="buttons" layout="block">
+                                <ui:insert name="buttons">
+                                    <table border="0" width="100%">
+                                        <tr>
+                                            <td align="left">
+                                                <ui:insert name="buttons.left.0" />
+                                                <ui:insert name="buttons.left" />
+                                            </td>
+                                            <td align="center">
+                                                <ui:insert name="buttons.center" />
+                                            </td>
+                                            <td align="right">
+                                                <ui:insert name="buttons.right" />
+                                                <ui:insert name="buttons.right.0" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </ui:insert>
                             </h:panelGroup>
                         </td>
-                        <td valign="center" class="layout-side-toggler ui-state-default" style="width: 9px" />
-                    </c:if>
-
-                    <td valign="top">
-                        <ui:insert name="paneN" />
-                        <ui:param name="tabbed" value="${mainTabTitle != null}" />
-
-                        <c:if test="${tabbed}">
-                            <p:tabView id="tv" activeIndex="${dialogBean.tabIndex}">
-                                <ui:insert name="tabs.0" />
-                                <p:tab id="main" title="${mainTabTitle}">
-                                    <ui:insert name="main">no content</ui:insert>
-                                </p:tab>
-                                <ui:insert name="tabs.1" />
-                            </p:tabView>
-                        </c:if>
-
-                        <c:if test="${not tabbed}">
-                            <f:subview id="tv">
-                                <ui:insert name="main">no content</ui:insert>
-                            </f:subview>
-                        </c:if>
-
-                        <ui:insert name="paneS" />
-
-                        <h:panelGroup id="buttons" layout="block">
-                            <ui:insert name="buttons">
-                                <table border="0" width="100%">
-                                    <tr>
-                                        <td align="left">
-                                            <ui:insert name="buttons.left.0" />
-                                            <ui:insert name="buttons.left" />
-                                        </td>
-                                        <td align="center">
-                                            <ui:insert name="buttons.center" />
-                                        </td>
-                                        <td align="right">
-                                            <ui:insert name="buttons.right" />
-                                            <ui:insert name="buttons.right.0" />
-                                        </td>
-                                    </tr>
-                                </table>
-                            </ui:insert>
-                        </h:panelGroup>
-                    </td>
-                </tr>
-            </table>
-        </h:form>
-    </div>
-
-    <div style="position: absolute; display: block; top: 0; bottom: 1em; right: 1px; min-width: 10px">
-        <div id="${var}_sideBarEToggler" class="layout-side-toggler ui-state-default" style="position: absolute; top: 0; bottom: 0; left: 0; width: 9px; "
-            onclick="$('#${var}_sideBarE').toggle()" />
-        <div id="${var}_sideBarE" style="width: 20em; height: 100%; display: none; background: white">
-            <!-- p:panel id="sidePanelE" style="height: 100%" -->
-            <h:panelGroup id="sidePanelE" style="height: 100%">
-                <ui:insert name="sideBarE">
-                    <ui:insert name="sideBarE.0">
-                        <h:form id="searchForm">
-                            <ui:insert name="searchPanels">
-                                <ui:insert name="searchPanels.0" />
-                                <ui:insert name="searchPanels.1" />
-                            </ui:insert>
-                            <ui:insert name="searchFragmentsPanel" />
-                        </h:form>
-                    </ui:insert>
-                    <ui:insert name="sideBarE.1" />
-                </ui:insert>
-                <ui:insert name="sideBarESupport" />
-            </h:panelGroup>
+                    </tr>
+                </table>
+            </h:form>
         </div>
-    </div>
-</p:dialog>
+
+        <div style="position: absolute; display: block; top: 0; bottom: 1em; right: 1px; min-width: 10px">
+            <div id="${var}_sideBarEToggler" class="layout-side-toggler ui-state-default" style="position: absolute; top: 0; bottom: 0; left: 0; width: 9px; "
+                onclick="$('#${var}_sideBarE').toggle()" />
+            <div id="${var}_sideBarE" style="width: 20em; height: 100%; display: none; background: white">
+                <!-- p:panel id="sidePanelE" style="height: 100%" -->
+                <h:panelGroup id="sidePanelE" style="height: 100%">
+                    <ui:insert name="sideBarE">
+                        <ui:insert name="sideBarE.0">
+                            <h:form id="searchForm">
+                                <ui:insert name="searchPanels">
+                                    <ui:insert name="searchPanels.0" />
+                                    <ui:insert name="searchPanels.1" />
+                                </ui:insert>
+                                <ui:insert name="searchFragmentsPanel" />
+                            </h:form>
+                        </ui:insert>
+                        <ui:insert name="sideBarE.1" />
+                    </ui:insert>
+                    <ui:insert name="sideBarESupport" />
+                </h:panelGroup>
+            </div>
+        </div>
+    </p:dialog>
+
+</ui:component>
