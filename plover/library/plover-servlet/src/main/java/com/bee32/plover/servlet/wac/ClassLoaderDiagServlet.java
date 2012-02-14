@@ -1,4 +1,4 @@
-package com.bee32.plover.servlet.util;
+package com.bee32.plover.servlet.wac;
 
 import java.net.URL;
 import java.net.URLClassLoader;

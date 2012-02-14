@@ -3,6 +3,6 @@ com.bee32.plover.servlet.test.C_NotifyWac
 com.bee32.plover.servlet.test.C_SpringWac
 com.bee32.plover.servlet.test.FallbackWac
 com.bee32.plover.servlet.test.ServletTestWac
-com.bee32.plover.servlet.util.ServletBuiltinsWac
+com.bee32.plover.servlet.wac.SystemToolsetWac
 com.bee32.plover.site.SiteManagerWac
 com.bee32.plover.site.SiteWac

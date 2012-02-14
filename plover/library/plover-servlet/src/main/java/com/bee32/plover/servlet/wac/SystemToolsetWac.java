@@ -1,11 +1,11 @@
-package com.bee32.plover.servlet.util;
+package com.bee32.plover.servlet.wac;
 
 import com.bee32.plover.servlet.PloverServletModule;
-import com.bee32.plover.servlet.test.AbstractWac;
 import com.bee32.plover.servlet.test.ServletTestLibrary;
+import com.bee32.plover.servlet.util.ToolsetWac;
 
-public class ServletBuiltinsWac
-        extends AbstractWac {
+public class SystemToolsetWac
+        extends ToolsetWac {
 
     @Override
     public int getOrder() {
