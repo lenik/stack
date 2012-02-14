@@ -8,7 +8,9 @@ import org.hibernate.event.SaveOrUpdateEventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.icsf.login.AbstractLoginListener.ctx;
 import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.orm.access.AbstractEntityProcessor;
 import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.c.CEntityAccessor;
@@ -30,11 +32,15 @@ public class SetOwnerEntityProcessor
     }
 
     public static User getContextUser() {
-        User user = SessionUser.getInstance().getInternalUserOpt();
-        if (user != null)
-            return user;
-        else
-            return User.admin;
+        UserDto user = SessionUser.getInstance().getUserOpt();
+        Integer userId;
+        if (user == null || user.isNull()) {
+            userId = User.admin.getId();
+        } else {
+            userId = user.getId();
+        }
+        User _user = ctx.data.getRef(User.class, userId);
+        return _user;
     }
 
     @Override
