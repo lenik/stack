@@ -40,9 +40,8 @@ public class BeanPropertyAccessor
         Method getter = property.getReadMethod();
         Method setter = property.getWriteMethod();
 
-        this.getter = getter;
-        this.setter = setter;
-
+        if (getter == null)
+            throw new IllegalUsageException("No getter for property: " + property);
         getterMethodName = getter.getName();
         getterMethodSign = getter.getParameterTypes();
         if (setter == null) {
@@ -52,6 +51,10 @@ public class BeanPropertyAccessor
             this.setterMethodName = setter.getName();
             this.setterMethodSign = setter.getParameterTypes();
         }
+
+        // init transients.
+        this.getter = getter;
+        this.setter = setter;
     }
 
     @Override
