@@ -1,6 +1,6 @@
 *.rand
 *.pk8
-*.csr-config
+*.cfg
 *.csr
 *.p12
 *.spc
