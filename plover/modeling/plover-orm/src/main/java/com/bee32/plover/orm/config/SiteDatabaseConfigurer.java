@@ -21,15 +21,16 @@ public class SiteDatabaseConfigurer
         SiteInstance site = ThreadHttpContext.getSiteInstance();
         // VerboseLevel verbose = site.getVerboseLevel();
         OptimizationLevel opt = site.getOptimizationLevel();
+        DBDialect dialect = site.getDbDialect();
         boolean debugMode = opt.compareTo(OptimizationLevel.LOW) <= 0;
 
+        // Set defaults at first
         if (debugMode)
             setTestDefaults(properties);
         else
             setMainDefaults(properties);
 
-        DBDialect dialect = site.getDbDialect();
-
+        // Overrides.
         properties.put(dialectKey, dialect.getDialectClass());
         properties.put(connectionDriverClassKey, dialect.getDriverClass());
         properties.put(connectionUrlKey, site.getDbUrl());
@@ -42,7 +43,22 @@ public class SiteDatabaseConfigurer
 
     void setMainDefaults(Properties properties) {
         // Mapping
-        properties.setProperty(hbm2ddlAutoKey, "create-drop");
+        properties.setProperty(hbm2ddlAutoKey, "update");
+
+        // Debug
+        properties.setProperty(showSqlKey, "false"); // opt. away in userconf
+        properties.setProperty(formatSqlKey, "false");
+        properties.setProperty(useSqlCommentsKey, "false");
+        // properties.setProperty(generateStatistics, "true");
+
+        // Performance
+        properties.setProperty(connectionPoolSizeKey, "30");
+        properties.setProperty(cacheProviderClassKey, NoCacheProvider.class.getName());
+    }
+
+    void setTestDefaults(Properties properties) {
+        // Mapping
+        properties.setProperty(hbm2ddlAutoKey, "create-drop"); // opt. away in userconf
 
         // Debug
         properties.setProperty(showSqlKey, "false"); // true
@@ -51,21 +67,7 @@ public class SiteDatabaseConfigurer
         // properties.setProperty(generateStatistics, "true");
 
         // Performance
-        properties.setProperty(connectionPoolSizeKey, "1");
-        properties.setProperty(cacheProviderClassKey, NoCacheProvider.class.getName());
-    }
-
-    void setTestDefaults(Properties properties) {
-        // Mapping
-        properties.setProperty(hbm2ddlAutoKey, "validate"); // opt. away in userconf
-
-        // Debug
-        properties.setProperty(showSqlKey, "false"); // opt. away in userconf
-        properties.setProperty(formatSqlKey, "false");
-        properties.setProperty(useSqlCommentsKey, "false");
-
-        // Performance
-        properties.setProperty(connectionPoolSizeKey, "100");
+        properties.setProperty(connectionPoolSizeKey, "3");
 
         // TODO: The CacheProvider is deprecated.
         properties.setProperty(cacheProviderClassKey, NoCacheProvider.class.getName());
