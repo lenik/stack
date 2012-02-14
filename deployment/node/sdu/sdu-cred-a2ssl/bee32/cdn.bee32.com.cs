@@ -13,12 +13,6 @@
         st1.cdn.bee32.com
         st2.cdn.bee32.com
         st3.cdn.bee32.com
-        st4.cdn.bee32.com
-        st5.cdn.bee32.com
-        st6.cdn.bee32.com
-        st7.cdn.bee32.com
-        st8.cdn.bee32.com
-        st9.cdn.bee32.com
     )
 
     main "$@"
