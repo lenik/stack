@@ -1,4 +1,11 @@
 #!/bin/bash
+    . shlib-import cliboot
+
+    RCSID='$Id: - @VERSION@ @DATE@ @TIME@ - $'
+    short_opts="d:hqv"
+    long_opts="debug-port:,help,quiet,verbose,version"
+    debug_port=
+    DEFAULT_DEBUG_PORT=7788
 
     declare -A servers
     declare -A modpath
@@ -6,7 +13,6 @@
     # servers['people']=com.bee32.sem.people.SEMPeopleServer
     while read p; do
         [ -z "$p" ] && continue
-
         qn="${p##*/java/}"
         qn="${qn%.java}"
         qn="${qn//\//.}"
@@ -21,44 +27,97 @@
         modpath[$stem]="$dir"
     done < <(find -name 'SEM*Server.java')
 
+function version() {
+    parse_id "$RCSID"
+    echo "[$BASENAME] "
+    echo "Written by Lenik, Version $rcs_rev, Last updated at $rcs_date"
+}
+
+function help() {
+    version
+    echo
+    echo "Syntax: "
+    echo "    $0 [OPTION] [--] <server-name>"
+    echo
+    echo "Options: "
+    echo "    -d, --debug-port=PORT   Enable remote debug"
+    echo "    -q, --quiet             Repeat to get less info"
+    echo "    -v, --verbose           Repeat to get more info"
+    echo "    -h, --help              Show this help page"
+    echo "        --version           Print the version info"
+    echo
+    echo "Discoverred server names:"
+    for k in "${!servers[@]}"; do
+        v="${servers[$k]}"
+        dir="${modpath[$k]}"
+        echo -e "        $k: \t$dir ($v)"
+    done
+}
+
+function setopt() {
+    case "$1" in
+        -d|--debug-port)
+            debug_port="$2"
+            if [ -z "$debug_port" ]; then
+                debug_port=DEFAULT_DEBUG_PORT
+            fi
+            ;;
+        -h|--help)
+            help; exit;;
+        -q|--quiet)
+            LOGLEVEL=$((LOGLEVEL - 1));;
+        -v|--verbose)
+            LOGLEVEL=$((LOGLEVEL + 1));;
+        --version)
+            version; exit;;
+        *)
+            quit "invalid option: $1";;
+    esac
+}
+
+function main() {
     if [ -z "$1" ]; then
-        echo "run-server <server-name>"
-        echo
-        echo "Discoverred server names:"
-        for k in "${!servers[@]}"; do
-            v="${servers[$k]}"
-            dir="${modpath[$k]}"
-            echo -e "        $k: \t$dir ($v)"
-        done
-        exit 0
+        help
+        return 1
     fi
 
     server="${servers[$1]:-$1}"
     shift
-    echo "Run server $server"
+    _log1 "Run server $server"
 
     simple_name="${server##*.}"
     if ! classfile=`find -name "$simple_name.class" | grep -v WEB-INF/classes`; then
-        echo "Can't find class $server"
-        exit 1
+        quit "Can't find class $server"
     fi
-
 
     trim1="${classfile%/target/classes/*}"
     trim2="${classfile%/WEB-INF/classes/*}"
     if [ "$trim1" != "$classfile" ]; then
         module="$trim1"
-        echo "Found jar-module $module"
+        _log1 "Found jar-module $module"
     elif [ "$trim2" != "$classfile" ]; then
         # target/*-SNAPSHOT /WEB-INF/...
         module="${trim2%/target/*}"
-        echo "Found war-module $module"
+        _log1 "Found war-module $module"
     else
-        echo "Can't determine module directory from path $classfile"
-        exit 1
+        quit "Can't determine module directory from path $classfile"
     fi
 
-    echo "Enter into $module"
+    _log1 "Enter into $module"
     cd "$module" || exit 1
 
-    mvn exec:java -Dexec.mainClass="$server" "$@"
+    if [ -z "$debug_port" ]; then
+        mvn exec:java -Dexec.mainClass="$server" "$@"
+    else
+        debug_opts=(
+            -classpath %classpath
+            -Xdebug
+            -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=$debug_port
+            )
+        mvn exec:exec \
+            -Dexec.executable="java" \
+            -Dexec.args="${debug_opts[*]} $server"
+    fi
+}
+
+boot "$@"
