@@ -3,8 +3,10 @@ package com.bee32.plover.orm.util;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.free.IdentityHashSet;
 import javax.inject.Inject;
@@ -73,13 +75,21 @@ public class SamplesLoader
 
     int loadIndex = 0;
 
+    Set<SamplePackage> loadedPackages = new HashSet<>();
+
     @Override
     public void loadSamples(SamplePackage rootPackage) {
         loadSamples(rootPackage, null);
     }
 
     @Override
-    public synchronized void loadSamples(final SamplePackage rootPackage, final Closure<SampleContribution> progress) {
+    public void loadSamples(SamplePackage rootPackage, Closure<SampleContribution> progress) {
+        if (loadedPackages.add(rootPackage)) {
+            _loadSamples(rootPackage, progress);
+        }
+    }
+
+    synchronized void _loadSamples(final SamplePackage rootPackage, final Closure<SampleContribution> progress) {
         logger.debug("Normal samples structure: ");
         SampleDumper.dump(DiamondPackage.NORMAL);
 

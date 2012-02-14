@@ -6,7 +6,6 @@ import com.bee32.plover.servlet.peripheral.AbstractSrl;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.servlet.util.ThreadServletRequestListener;
 import com.bee32.plover.site.SiteInstance;
-import com.bee32.plover.site.SiteLifecycleDispatcher;
 import com.bee32.plover.site.SiteManager;
 
 /**
@@ -31,7 +30,7 @@ public class SiteStartStopListener
     @Override
     public void requestInitialized(ServletRequestEvent sre) {
         SiteInstance site = ThreadHttpContext.getSiteInstance();
-        SiteLifecycleDispatcher.startSite(site);
+        site.start();
     }
 
     @Override
