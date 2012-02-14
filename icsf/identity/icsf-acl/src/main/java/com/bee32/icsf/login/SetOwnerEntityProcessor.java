@@ -33,12 +33,15 @@ public class SetOwnerEntityProcessor
 
     public static User getContextUser() {
         UserDto user = SessionUser.getInstance().getUserOpt();
-        Integer userId;
-        if (user == null || user.isNull()) {
-            userId = User.admin.getId();
-        } else {
-            userId = user.getId();
-        }
+
+        if (user == null || user.isNull())
+            return User.admin;
+
+        Integer userId = user.getId();
+        if (userId == null)
+            // warn??
+            return User.admin;
+
         User _user = ctx.data.getRef(User.class, userId);
         return _user;
     }

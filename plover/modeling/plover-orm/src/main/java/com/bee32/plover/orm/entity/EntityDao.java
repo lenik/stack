@@ -152,6 +152,8 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
 
     @Override
     public E lazyLoad(K id) {
+        if (id == null)
+            throw new NullPointerException("id");
         E entity = getHibernateTemplate().load(entityType, id);
 
         try {
