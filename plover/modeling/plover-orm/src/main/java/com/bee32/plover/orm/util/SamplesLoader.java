@@ -56,6 +56,17 @@ public class SamplesLoader
         unit = CustomizedSessionFactoryBean.getForceUnit();
     }
 
+    class _ctx {
+        AbstractDataPartialContext data = new AbstractDataPartialContext() {
+            @Override
+            public CommonDataManager getDataManager() {
+                return dataManager;
+            }
+        };
+    }
+
+    _ctx ctx = new _ctx();
+
     <E extends Entity<? extends K>, K extends Serializable> //
     IEntityAccessService<E, K> asFor(Class<? extends E> entityType) {
         IEntityAccessService<E, K> service = dataManager.asFor(entityType);
@@ -154,7 +165,7 @@ public class SamplesLoader
 
         List<Entity<?>> autoList = new ArrayList<Entity<?>>();
         // List<Entity<?>> naturalList = new ArrayList<Entity<?>>();
-        List<Entity<?>> specList = new ArrayList<Entity<?>>();
+        List<Entity<?>> fixedList = new ArrayList<Entity<?>>();
 
         // Classify to A/Z
         for (Entity<?> sample : pack.getInstances()) {
@@ -175,14 +186,14 @@ public class SamplesLoader
             else {
                 // Serializable naturalId = sample.getNaturalId();
                 // if (naturalId == null)
-                specList.add(sample);
+                fixedList.add(sample);
                 // else
                 // naturalList.add(sample);
             }
         }
 
         // Load Side-A (before)
-        if (!specList.isEmpty()) {
+        if (!fixedList.isEmpty()) {
             // String packAVersionKey = "sampack.a." + pack.getName();
             // String packAVersion = confManager.getConfValue(packAVersionKey);
             String packAPrefix = "sample.";
@@ -190,17 +201,17 @@ public class SamplesLoader
             boolean packAOnce = true;
 
             if (packAOnce) {
-                // Always save/update spec-entities.
+                // Always save/update fixed-entities.
 
                 if (logger.isDebugEnabled()) {
                     String message = String.format("Loading[%d]: %d A-samples from %s", //
-                            ++loadIndex, specList.size(), pack);
+                            ++loadIndex, fixedList.size(), pack);
                     logger.info(message);
                 }
 
                 IEntityAccessService<Entity<?>, ?> eas = asFor(Entity.class);
                 try {
-                    eas.saveOrUpdateAll(specList);
+                    eas.saveOrUpdateAll(fixedList);
                     // confManager.setConf(packAVersionKey, "1");
                 } catch (Exception e) {
                     logger.error("Failed to load (A) samples from " + pack, e);
@@ -208,16 +219,16 @@ public class SamplesLoader
                     DBAutoDDL autoDdl = ThreadHttpContext.getSiteInstance().getAutoDDL();
                     boolean retry = autoDdl == DBAutoDDL.CreateDrop;
                     if (retry)
-                        for (Entity<?> spec1 : specList)
+                        for (Entity<?> fixed1 : fixedList)
                             try {
-                                eas.saveOrUpdate(spec1);
+                                eas.saveOrUpdate(fixed1);
                             } catch (Exception e2) {
-                                logger.error(">> Retry one-by-one failed to load (A) sample " + spec1, e);
+                                logger.error(">> Retry one-by-one failed to load (A) sample " + fixed1, e);
                             }
                 }
 
             } else {
-                for (Entity<?> sample : specList) {
+                for (Entity<?> sample : fixedList) {
                     if (logger.isDebugEnabled()) {
                         String message = String.format("Loading[%d]: Single A-sample from %s", //
                                 ++loadIndex, pack);
@@ -234,7 +245,7 @@ public class SamplesLoader
                         continue;
 
                     try {
-                        asFor(sampleType).saveOrUpdate(sample);
+                        ctx.data.access(sampleType).saveOrUpdate(sample);
                         confManager.setConf(sampleVersionKey, "1");
                         // dataManager.flush();
                     } catch (Exception e) {
@@ -274,7 +285,7 @@ public class SamplesLoader
 
                         Entity<?> existing;
                         try {
-                            existing = asFor(itemType).getUnique(selector);
+                            existing = ctx.data.access(itemType).getUnique(selector);
 
                         } catch (Exception e) {
                             logger.error("      Failed to reload " + itemType.getSimpleName() + " : " + nid, e);
@@ -288,7 +299,7 @@ public class SamplesLoader
                         }
 
                         EntityAccessor.setId(item, (Serializable) existing.getId());
-                        asFor(itemType).evict(existing);
+                        ctx.data.access(itemType).evict(existing);
                     }
                 }
 
@@ -299,7 +310,7 @@ public class SamplesLoader
                         logger.warn("    Auto fix: readd missing entity " + itemHint);
                     }
                     try {
-                        asFor(Entity.class).saveAll(fixq);
+                        ctx.data.access(Entity.class).saveAll(fixq);
                     } catch (Exception e) {
                         logger.error("      Auto fix failed.", e);
                     }
@@ -313,7 +324,7 @@ public class SamplesLoader
                 }
 
                 try {
-                    asFor(Entity.class).saveAll(autoList);
+                    ctx.data.access(Entity.class).saveAll(autoList);
 
                     confManager.setConf(packZVersionKey, "1");
 
