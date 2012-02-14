@@ -15,6 +15,7 @@ public class ServletBuiltinsWac
     @Override
     public void configureServlets(ServletTestLibrary stl) {
         stl.addServlet(ClassLoaderDiagServlet.class, PloverServletModule.PREFIX + "/loader/*");
+        stl.addServlet(SystemInfoServlet.class, PloverServletModule.PREFIX + "/sys/*");
     }
 
 }

@@ -25,8 +25,21 @@ public class ClassLoaderDiagServlet
 
         @Override
         protected void _pageContent() {
-            ClassLoader scl = ClassLoader.getSystemClassLoader();
-            ClassLoader cl = scl;
+            String type = getRequest().getParameter("type");
+            if (type == null)
+                type = "scl";
+
+            ClassLoader cl;
+            switch (type) {
+            case "ccl":
+                cl = Thread.currentThread().getContextClassLoader();
+                break;
+            case "scl":
+            default:
+                cl = ClassLoader.getSystemClassLoader();
+                break;
+            }
+
             while (cl != null) {
                 fieldset();
                 {
@@ -43,6 +56,8 @@ public class ClassLoaderDiagServlet
                                 style("color: red");
                             else if (entry.contains("plover-"))
                                 style("color: blue");
+                            else if (entry.contains("hibernate"))
+                                style("font-weight: bold");
                             text(entry);
                             end();
                         }
@@ -53,7 +68,6 @@ public class ClassLoaderDiagServlet
                 end();
             }
         }
-
     }
 
 }
