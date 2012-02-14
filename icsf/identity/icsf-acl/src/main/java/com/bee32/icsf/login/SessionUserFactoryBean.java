@@ -1,6 +1,7 @@
 package com.bee32.icsf.login;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
@@ -37,6 +38,38 @@ public class SessionUserFactoryBean {
 
     public List<PrincipalDto> getChain() {
         return SessionUser.getInstance().getChain();
+    }
+
+    public Set<Integer> getImIdSet() {
+        return SessionUser.getInstance().getImIdSet();
+    }
+
+    public void setImIdSet(Set<Integer> imIdSet) {
+        SessionUser.getInstance().setImIdSet(imIdSet);
+    }
+
+    public Set<Integer> getInvIdSet() {
+        return SessionUser.getInstance().getInvIdSet();
+    }
+
+    public void setInvIdSet(Set<Integer> invIdSet) {
+        SessionUser.getInstance().setInvIdSet(invIdSet);
+    }
+
+    public List<PrincipalDto> getImSet() {
+        return SessionUser.getInstance().getImSet();
+    }
+
+    public void setImSet(List<PrincipalDto> imSet) {
+        SessionUser.getInstance().setImSet(imSet);
+    }
+
+    public List<PrincipalDto> getInvSet() {
+        return SessionUser.getInstance().getInvSet();
+    }
+
+    public void setInvSet(List<PrincipalDto> invSet) {
+        SessionUser.getInstance().setInvSet(invSet);
     }
 
 }
