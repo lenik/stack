@@ -40,23 +40,23 @@
             <p:tab id="tab1" title="详细信息">
                 <t:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
                     <h:outputLabel for="personName" value="姓名" />
-                    <p:inputText id="personName" value="#{obj.name}" />
+                    <p:inputText id="personName" value="#{obj.name}" label="姓名"/>
                     <h:outputLabel for="personFullName" value="全名" />
-                    <p:inputText id="personFullName" value="#{obj.fullName}" />
+                    <p:inputText id="personFullName" value="#{obj.fullName}" label="全名"/>
 
                     <h:outputText value="属性" />
                     <t:panelGroup colspan="3">
                         <t:panelGrid columns="3">
                             <t:panelGrid columns="2">
-                                <p:selectBooleanCheckbox value="#{obj.employee}" />
+                                <p:selectBooleanCheckbox value="#{obj.employee}" label="属性"/>
                                 <h:outputText value="内部" />
                             </t:panelGrid>
                             <t:panelGrid columns="2">
-                                <p:selectBooleanCheckbox value="#{obj.customer}" />
+                                <p:selectBooleanCheckbox value="#{obj.customer}" label="属性 "/>
                                 <h:outputText value="客户" />
                             </t:panelGrid>
                             <t:panelGrid columns="2">
-                                <p:selectBooleanCheckbox value="#{obj.supplier}" />
+                                <p:selectBooleanCheckbox value="#{obj.supplier}" label="属性"/>
                                 <h:outputText value="供应商" />
                             </t:panelGrid>
                         </t:panelGrid>
@@ -65,33 +65,33 @@
                     <h:outputLabel for="personBirthday" value="生日" />
                     <t:panelGroup colspan="3">
                         <p:calendar id="personBirthday" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
-                            value="#{obj.birthday}" showOn="button" />
+                            value="#{obj.birthday}" showOn="button" label="生日"/>
                     </t:panelGroup>
 
                     <h:outputLabel for="personSidType" value="证件类型" />
-                    <p:selectOneMenu id="personSidType" value="#{obj.sidType.id}" style="width:150px;">
+                    <p:selectOneMenu id="personSidType" value="#{obj.sidType.id}" style="width:150px;" label="证件类型">
                         <f:selectItem itemValue="" itemLabel="--选择证件类型--" />
                         <f:selectItems value="#{bean.sidTypes}" />
                     </p:selectOneMenu>
                     <h:outputLabel for="personSid" value="证件号码" />
-                    <p:inputText id="personSid" value="#{obj.sid}" />
+                    <p:inputText id="personSid" value="#{obj.sid}" label="证件号码"/>
 
                     <h:outputLabel for="personSex" value="性别" />
-                    <p:selectOneMenu id="personSex" value="#{obj.sex}" style="width:150px;">
+                    <p:selectOneMenu id="personSex" value="#{obj.sex}" style="width:150px;" label="性别">
                         <f:selectItems value="#{bean.genders}" />
                     </p:selectOneMenu>
                     <h:outputLabel for="personCensusRegister" value="户籍" />
-                    <p:inputText id="personCensusRegister" value="#{obj.censusRegister}" />
+                    <p:inputText id="personCensusRegister" value="#{obj.censusRegister}" label="户籍"/>
 
                     <h:outputLabel for="personInterests" value="兴趣爱好" />
                     <t:panelGroup colspan="3">
-                        <p:inputText id="personInterests" value="#{obj.interests}" />
+                        <p:inputText id="personInterests" value="#{obj.interests}" label="兴趣爱好"/>
                     </t:panelGroup>
 
                     <h:outputLabel for="personTags" value="标签" />
                     <t:panelGroup colspan="3">
                         <t:panelGrid columns="2">
-                            <p:selectOneListbox id="personTags" value="#{bean.selectedTagId}" style="height:80px; width:200px;">
+                            <p:selectOneListbox id="personTags" value="#{bean.selectedTagId}" style="height:80px; width:200px;" label="标签">
                                 <f:selectItems value="#{obj.tags}" var="tag" itemLabel="#{tag.label}"
                                     itemValue="#{tag.id}" />
                             </p:selectOneListbox>
@@ -106,7 +106,7 @@
                     <h:outputLabel for="personMemo" value="备注" />
                     <t:panelGroup colspan="3">
                         <p:inputTextarea id="personMemo" value="#{obj.memo}" style="width:300px;height:100px;"
-                            effectDuration="400" />
+                            effectDuration="400" label="备注"/>
                     </t:panelGroup>
                 </t:panelGrid>
             </p:tab>
@@ -216,7 +216,7 @@
         <p:dialog header="标签添加" widgetVar="tagDlg" modal="true" height="500" width="640">
             <h:form id="tagForm">
                 <h:panelGroup id="tagHolder">
-                    <p:selectManyMenu value="#{bean.selectedTagsToAdd}" style="height:300px">
+                    <p:selectManyMenu value="#{bean.selectedTagsToAdd}" style="height:300px" label="标签容器">
                         <f:selectItems value="#{people.partyTagnameSelectItems}" />
                     </p:selectManyMenu>
                 </h:panelGroup>
@@ -238,31 +238,31 @@
                         <h:outputLabel for="contactCategory" value="分类" />
                         <h:panelGroup colspan="3">
                             <p:selectOneMenu id="contactCategory" value="#{bean.contact.category.id}"
-                                style="width:200px;">
+                                style="width:200px;" label="联系方式分类">
                                 <f:selectItem itemValue="" itemLabel="--选择联系方式分类--" />
                                 <f:selectItems value="#{people.contactCategorySelectItems}" />
                             </p:selectOneMenu>
                         </h:panelGroup>
 
                         <h:outputLabel for="contactAddress" value="地址" />
-                        <p:inputText id="contactAddress" value="#{bean.contact.address}" />
+                        <p:inputText id="contactAddress" value="#{bean.contact.address}" label="地址"/>
                         <h:outputLabel for="contactPostCode" value="邮编" />
-                        <p:inputText id="contactPostCode" value="#{bean.contact.postCode}" />
+                        <p:inputText id="contactPostCode" value="#{bean.contact.postCode}" label="邮编"/>
 
                         <h:outputLabel for="contactTel" value="电话" />
-                        <p:inputText id="contactTel" value="#{bean.contact.tel}" />
+                        <p:inputText id="contactTel" value="#{bean.contact.tel}" label="电话"/>
                         <h:outputLabel for="contactMobile" value="移动电话" />
-                        <p:inputText id="contactMobile" value="#{bean.contact.mobile}" />
+                        <p:inputText id="contactMobile" value="#{bean.contact.mobile}" label="移动电话"/>
 
                         <h:outputLabel for="contactFax" value="传真" />
-                        <p:inputText id="contactFax" value="#{bean.contact.fax}" />
+                        <p:inputText id="contactFax" value="#{bean.contact.fax}" label="传真"/>
                         <h:outputLabel for="contactEmail" value="email" />
-                        <p:inputText id="contactEmail" value="#{bean.contact.email}" />
+                        <p:inputText id="contactEmail" value="#{bean.contact.email}" label="email"/>
 
                         <h:outputLabel for="contactWebsite" value="网址" />
-                        <p:inputText id="contactWebsite" value="#{bean.contact.website}" />
+                        <p:inputText id="contactWebsite" value="#{bean.contact.website}" label="网址"/>
                         <h:outputLabel for="contactQq" value="qq" />
-                        <p:inputText id="contactQq" value="#{bean.contact.qq}" />
+                        <p:inputText id="contactQq" value="#{bean.contact.qq}" qq/>
 
                         <h:panelGroup />
                         <h:panelGroup colspan="2">

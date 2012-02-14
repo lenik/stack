@@ -15,20 +15,20 @@
             <h:outputText value="标识:" />
             <h:outputText value="#{obj.id}" />
             <h:outputText value="状态" />
-            <p:inputText value="#{obj.verifyContext.verifyEvalState}" disabled="true" />
+            <p:inputText value="#{obj.verifyContext.verifyEvalState}" disabled="true" label="状态"/>
 
             <h:outputText value="时间:" />
             <h:outputText value="#{obj.createdDate}">
                 <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
             </h:outputText>
             <h:outputText value="制单人:" />
-            <p:inputText value="#{obj.owner.displayName}" disabled="true" />
+            <p:inputText value="#{obj.owner.displayName}" disabled="true" label="制单人"/>
 
             <t:panelGroup colspan="2">
                 <h:outputText value="资金流业务单:" />
             </t:panelGroup>
             <t:panelGroup colspan="2">
-                <p:inputText id="budgetRequest" value="#{obj.request.description}" readonly="true" />
+                <p:inputText id="budgetRequest" value="#{obj.request.description}" readonly="true" label="资金流业务单"/>
                 <p:commandButton value="..." onclick="chooseBudgetRequestDialog.show();" disabled="#{not bean.editing}" />
             </t:panelGroup>
         </t:panelGrid>
@@ -46,7 +46,7 @@
                     <h:outputText value="#{entry.party.displayName}" />
                 </p:column>
                 <p:column headerText="借贷方向">
-                    <p:selectOneMenu value="#{entry.debitSide}" disabled="#{true}" style="width:200px;">
+                    <p:selectOneMenu value="#{entry.debitSide}" disabled="#{true}" style="width:200px;" label="借贷方向">
                         <f:selectItem itemValue="true" itemLabel="借方" />
                         <f:selectItem itemValue="false" itemLabel="贷方" />
                     </p:selectOneMenu>
@@ -68,33 +68,33 @@
 
                 <h:outputLabel value="摘要" />
                 <t:panelGroup colspan="3">
-                    <p:inputText value="#{item.description}" />
+                    <p:inputText value="#{item.description}" label="摘要"/>
                 </t:panelGroup>
 
                 <h:outputLabel value="会计科目" />
                 <t:panelGroup colspan="3">
-                    <p:inputText id="accountSubject" value="#{item.subject.label}" readonly="true" />
+                    <p:inputText id="accountSubject" value="#{item.subject.label}" readonly="true" label="会计科目"/>
                     <p:commandButton value="..." onclick="chooseAccountSubjectDialog.show();" />
                 </t:panelGroup>
 
                 <h:outputLabel value="二级科目" />
                 <t:panelGroup colspan="3">
-                    <p:inputText id="party" value="#{item.party.name}" readonly="true" />
+                    <p:inputText id="party" value="#{item.party.name}" readonly="true" label="二级科目"/>
                     <p:commandButton value="..." onclick="choosePartyDialog.show();" />
                 </t:panelGroup>
 
                 <h:outputLabel value="借贷方向" />
                 <t:panelGroup colspan="3">
-                    <p:selectOneMenu value="#{item.debitSide}" style="width:200px;">
+                    <p:selectOneMenu value="#{item.debitSide}" style="width:200px;" label="借贷方向">
                         <f:selectItem itemValue="true" itemLabel="借方" />
                         <f:selectItem itemValue="false" itemLabel="贷方" />
                     </p:selectOneMenu>
                 </t:panelGroup>
 
                 <h:outputLabel for="value" value="金额" />
-                <p:inputText id="value" label="金额" value="#{item.value.value}" />
+                <p:inputText id="value" label="金额" value="#{item.value.value}" label="金额"/>
                 <h:outputLabel value="币种" />
-                <p:selectOneMenu value="#{item.value.currencyCode}" style="width:200px;">
+                <p:selectOneMenu value="#{item.value.currencyCode}" style="width:200px;" label="币种">
                     <f:selectItem itemValue="" itemLabel="--选择币种--" />
                     <f:selectItems value="#{monetary.currencySelectItems}" />
                 </p:selectOneMenu>

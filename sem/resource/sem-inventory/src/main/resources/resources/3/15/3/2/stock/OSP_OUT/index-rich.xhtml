@@ -10,11 +10,11 @@
         <p:panel id="job" header="委外加工作业信息">
             <h:panelGrid columns="2">
                 <h:outputText value="作业简要" />
-                <p:inputText id="jobLabel" value="#{job.label}" />
+                <p:inputText id="jobLabel" value="#{job.label}" label="作业简要"/>
                 <h:outputText value="作业描述" />
-                <p:inputText id="jobDescription" value="#{job.description}" />
+                <p:inputText id="jobDescription" value="#{job.description}" label="作业描述"/>
                 <h:outputText value="对应的委外入库单：" />
-                <p:inputText id="jobInput" value="#{job.input.label}" disabled="true" />
+                <p:inputText id="jobInput" value="#{job.input.label}" disabled="true" label="对应的委外入库单"/>
             </h:panelGrid>
         </p:panel>
     </ui:define>

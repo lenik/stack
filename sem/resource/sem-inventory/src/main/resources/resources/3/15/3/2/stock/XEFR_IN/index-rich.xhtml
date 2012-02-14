@@ -35,7 +35,7 @@
                 <h:outputLabel for="transferredBy" value="调拨人员" />
                 <h:panelGroup>
                     <p:inputText id="transferredby" readonly="true" value="#{job.transferredBy.displayName}"
-                        style="width: 20em;" />
+                        style="width: 20em;" label="调拨人员"/>
                     <p:commandButton value="..." disabled="true" update=":chooseTransferrerDialog:form"
                         oncomplete="chooseTransferrerDialog.show()">
                         <f:setPropertyActionListener target="#{choosePartyDialogBean.stereo}"
@@ -44,7 +44,7 @@
                 </h:panelGroup>
 
                 <h:outputText value="对应的库存调出单：" />
-                <p:inputText id="jobSource" value="#{job.source.label}" disabled="true" />
+                <p:inputText id="jobSource" value="#{job.source.label}" disabled="true" label="对应的库存调出单"/>
             </h:panelGrid>
         </p:panel>
     </ui:define>
@@ -91,11 +91,11 @@
                     <h:outputText value="#{bean.selectedSourceItem.quantity}" />
 
                     <h:outputText value="拨入数量" />
-                    <p:inputText value="#{bean.destItem.quantity}" />
+                    <p:inputText value="#{bean.destItem.quantity}" label="拨入数量"/>
 
                     <h:outputText value="库位" />
                     <t:panelGroup>
-                        <p:inputText id="location" value="#{bean.destItem.location.label}" readonly="true" />
+                        <p:inputText id="location" value="#{bean.destItem.location.label}" readonly="true" label="库位"/>
                         <p:commandButton value="..." onclick="chooseDestLocationDialog.show()" />
                     </t:panelGroup>
                 </h:panelGrid>

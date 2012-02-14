@@ -21,12 +21,12 @@
             <h:panelGroup rendered="#{job != null}">
                 <h:panelGrid columns="2">
                     <h:outputText value="作业简要" />
-                    <p:inputText id="jobLabel" value="#{job.label}" />
+                    <p:inputText id="jobLabel" value="#{job.label}" label="作业简要"/>
                     <h:outputText value="作业描述" />
-                    <p:inputText id="jobDescription" value="#{job.description}" />
+                    <p:inputText id="jobDescription" value="#{job.description}" label="作业描述"/>
                     <h:outputText value="对应的委外出库单：" />
                     <h:panelGroup>
-                        <p:inputText id="jobOutput" value="#{job.output.label}" disabled="true" />
+                        <p:inputText id="jobOutput" value="#{job.output.label}" disabled="true" label="对应的委外出库单"/>
                     </h:panelGroup>
                 </h:panelGrid>
             </h:panelGroup>

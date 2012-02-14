@@ -11,13 +11,13 @@
             <t:panelGrid columns="3" id="quotationGrid">
                 <h:outputText value="标题:" />
                 <t:panelGroup colspan="2">
-                    <p:inputText id="quotationSubject" value="#{bean.subject}" style="width:300px;" />
+                    <p:inputText id="quotationSubject" value="#{bean.subject}" style="width:300px;" label="标题"/>
                 </t:panelGroup>
 
                 <h:outputText value="机会:" />
                 <t:panelGroup colspan="2">
                     <p:inputText id="quotationChance" value="#{bean.chance.subject}" style="width:300px;"
-                        readonly="true" />
+                        readonly="true" label="机会"/>
                 </t:panelGroup>
 
                 <h:outputText value="明细:" />
@@ -62,12 +62,12 @@
 
                 <h:outputText value="交付说明:" />
                 <t:panelGroup colspan="2">
-                    <p:inputTextarea id="quotationRecommend" value="#{bean.recommend}" style="width:300px;height:60px;" />
+                    <p:inputTextarea id="quotationRecommend" value="#{bean.recommend}" style="width:300px;height:60px;" label="交付说明"/>
                 </t:panelGroup>
 
                 <h:outputText value="付款说明:" />
                 <t:panelGroup colspan="2">
-                    <p:inputTextarea id="quotationPayment" value="#{bean.payment}" style="width:300px;height:60px;" />
+                    <p:inputTextarea id="quotationPayment" value="#{bean.payment}" style="width:300px;height:60px;" label="付款说明"/>
                 </t:panelGroup>
 
                 <t:panelGroup colspan="3">
@@ -95,21 +95,21 @@
                 <h:outputText value="折扣" />
                 <t:panelGroup colspan="2">
                     <t:panelGrid columns="3" id="discount">
-                        <p:inputText id="inputDiscount" value="#{bean.selectedQuotationItem.discount}" />
+                        <p:inputText id="inputDiscount" value="#{bean.selectedQuotationItem.discount}" label="折扣"/>
                     </t:panelGrid>
                 </t:panelGroup>
 
                 <h:outputText value="单价:" />
                 <t:panelGroup id="unitPrice" colspan="2">
                     <t:panelGrid columns="3">
-                        <p:inputText id="inputPrice" value="#{bean.selectedQuotationItem.viewPrice}" />
+                        <p:inputText id="inputPrice" value="#{bean.selectedQuotationItem.viewPrice}" label="单价"/>
                     </t:panelGrid>
                 </t:panelGroup>
 
                 <h:outputText value="数量" />
                 <t:panelGroup id="quantity" colspan="2">
                     <t:panelGrid columns="3">
-                        <p:inputText id="outputQuantity" value="#{bean.selectedQuotationItem.quantity}" />
+                        <p:inputText id="outputQuantity" value="#{bean.selectedQuotationItem.quantity}" label="数量"/>
                     </t:panelGrid>
                 </t:panelGroup>
 

@@ -8,17 +8,17 @@
             <t:panelGrid columns="3">
                 <h:outputText value="国际单位代码:" />
                 <t:panelGroup colspan="2">
-                    <p:inputText value="#{addUnitBean.unit.name}" />
+                    <p:inputText value="#{addUnitBean.unit.name}" label="国际单位代码"/>
                 </t:panelGroup>
 
                 <h:outputText value="中文单位名称:" />
                 <t:panelGroup colspan="2">
-                    <p:inputText value="#{addUnitBean.unit.label}" />
+                    <p:inputText value="#{addUnitBean.unit.label}" label="中文单位名称"/>
                 </t:panelGroup>
 
                 <h:outputText value="基本单位:" />
                 <t:panelGroup colspan="2">
-                    <p:selectOneMenu value="#{addUnitBean.unit.stdUnit.id}" style="width:100px;">
+                    <p:selectOneMenu value="#{addUnitBean.unit.stdUnit.id}" style="width:100px;" label="基本单位">
                         <f:selectItems value="#{addUnitBean.standardUnits}" />
                         <f:selectItem itemLabel="" itemValue="" />
                     </p:selectOneMenu>
@@ -26,7 +26,7 @@
 
                 <h:outputText value="倍率:" />
                 <t:panelGroup colspan="2">
-                    <p:inputText value="#{addUnitBean.unit.scale}" />
+                    <p:inputText value="#{addUnitBean.unit.scale}" label="倍率"/>
                 </t:panelGroup>
 
                 <h:panelGroup colspan="3">

@@ -44,27 +44,27 @@
             <h:panelGrid columns="2">
                 <h:outputLabel value="会计科目" />
                 <h:panelGroup>
-                    <p:inputText id="accountSubject" value="#{item.subject.label}" readonly="true" />
+                    <p:inputText id="accountSubject" value="#{item.subject.label}" readonly="true" label="会计科目"/>
                     <p:commandButton value="..." onclick="chooseAccountSubjectDialog.show();" />
                 </h:panelGroup>
 
                 <h:outputLabel value="二级科目" />
                 <h:panelGroup>
-                    <p:inputText id="party" value="#{item.party.displayName}" readonly="true" />
+                    <p:inputText id="party" value="#{item.party.displayName}" readonly="true" label="二级科目"/>
                     <p:commandButton value="..." onclick="choosePartyDialog.show()" />
                 </h:panelGroup>
 
                 <h:outputLabel value="借贷方向" />
-                <p:selectOneMenu label="借贷方向" value="#{item.debitSide}" disabled="true" style="width: 20em;">
+                <p:selectOneMenu label="借贷方向" value="#{item.debitSide}" disabled="true" style="width: 20em;" label="借贷方向">
                     <f:selectItem itemValue="true" itemLabel="借方" />
                     <f:selectItem itemValue="false" itemLabel="贷方" />
                 </p:selectOneMenu>
 
                 <h:outputLabel for="value" value="金额" />
-                <p:inputText id="value" label="金额" value="#{item.value.value}" />
+                <p:inputText id="value" label="金额" value="#{item.value.value}" label="金额"/>
 
                 <h:outputLabel for="currency" value="币种" />
-                <p:selectOneMenu id="currency" value="#{item.value.currencyCode}" style="width: 20em;">
+                <p:selectOneMenu id="currency" value="#{item.value.currencyCode}" style="width: 20em;" label="币种">
                     <f:selectItem itemValue="" itemLabel="--选择币种--" />
                     <f:selectItems value="#{monetary.currencySelectItems}" />
                 </p:selectOneMenu>

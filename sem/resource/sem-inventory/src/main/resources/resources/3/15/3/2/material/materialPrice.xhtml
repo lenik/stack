@@ -34,9 +34,9 @@
 
             <h:panelGrid id="addMaterialPricePanel" columns="2">
                 <h:outputLabel value="价格" />
-                <p:inputText value="#{bean.materialPrice.price.value}" />
+                <p:inputText value="#{bean.materialPrice.price.value}" label="价格"/>
                 <h:outputLabel value="币种" />
-                <p:selectOneMenu value="#{bean.materialPrice.price.currencyCode}" style="width:200px;">
+                <p:selectOneMenu value="#{bean.materialPrice.price.currencyCode}" style="width:200px;" label="币种">
                     <f:selectItem itemValue="" itemLabel="--选择币种--" />
                     <f:selectItems value="#{monetary.currencySelectItems}" />
                 </p:selectOneMenu>

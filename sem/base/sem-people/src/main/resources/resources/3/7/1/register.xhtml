@@ -36,15 +36,15 @@
                 <h:panelGrid columns="2" columnClasses="detail_col_title, detail_col_value">
 
                     <h:outputLabel for="username" value="用户名"/>
-                    <p:inputText id="username" value="#{registerBean.username}"/>
+                    <p:inputText id="username" value="#{registerBean.username}" label="用户名"/>
 
                     <h:outputLabel for="fullname" value="全名"/>
-                    <p:inputText id="fullname" value="#{registerBean.fullname}"/>
+                    <p:inputText id="fullname" value="#{registerBean.fullname}" label="全名"/>
 
                     <h:outputLabel for="password" value="密码"/>
                     <t:panelGroup>
                         <input id="passPlain" type="password" onchange="calcDigest();" />
-                        <h:inputHidden id="password" value="#{registerBean.password}" />
+                        <h:inputHidden id="password" value="#{registerBean.password}" label="密码"/>
                     </t:panelGroup>
 
 					<h:outputLabel for="passwordConfirm" value="密码确认" />
@@ -52,7 +52,7 @@
 						<input id="passPlainConfirm" type="password"
 							onchange="calcDigestConfirm();" />
 						<h:inputHidden id="passwordConfirm"
-							value="#{registerBean.passwordConfirm}" />
+							value="#{registerBean.passwordConfirm}" label="密码确认"/>
 					</t:panelGroup>
 
 

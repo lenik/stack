@@ -13,22 +13,22 @@
                 <h:outputText value="一级科目" />
                 <t:panelGrid columns="4">
                     <t:panelGrid columns="2">
-                        <p:selectBooleanCheckbox value="#{bean.all}" />
+                        <p:selectBooleanCheckbox value="#{bean.all}" label="选择全部"/>
                         <h:outputText value="全部" />
                     </t:panelGrid>
                     <h:outputText value="/" />
-                    <p:inputText id="accountSubject" value="#{bean.subject.label}" readonly="true" />
+                    <p:inputText id="accountSubject" value="#{bean.subject.label}" readonly="true" label="指定科目"/>
                     <p:commandButton value="..." onclick="chooseAccountSubjectDialog.show();" />
                 </t:panelGrid>
                 <h:outputText value="二级科目(客户/供应商/个人)" />
                 <t:panelGrid columns="2">
-                    <p:inputText id="party" value="#{bean.party.name}" readonly="true" />
+                    <p:inputText id="party" value="#{bean.party.name}" readonly="true" label="二级科目(客户/供应商/个人)"/>
                     <p:commandButton value="..." onclick="choosePartyDialog.show();" disabled="" />
                 </t:panelGrid>
 
                 <h:outputText value="截止时间" />
                 <p:calendar navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{bean.toDate}"
-                    showOn="button" />
+                    showOn="button" label="截止时间"/>
                 <t:panelGroup />
                 <t:panelGroup />
 

@@ -39,13 +39,13 @@
 
             <h:panelGrid id="addUnitScalePanel" columns="2">
                 <h:outputText value="目标单位" />
-                <p:selectOneMenu value="#{bean.scaleItem.unit.displayId}" style="width:150px;">
+                <p:selectOneMenu value="#{bean.scaleItem.unit.displayId}" style="width:150px;" label="目标单位">
                     <f:selectItem itemValue="" itemLabel="--选择单位--" />
                     <f:selectItems value="#{bean.units}" />
                 </p:selectOneMenu>
 
                 <h:outputText value="换算率" />
-                <p:inputText value="#{bean.scaleItem.scale}" />
+                <p:inputText value="#{bean.scaleItem.scale}" label="换算率"/>
 
                 <p:commandButton actionListener="#{bean.addUnitScale}" update=":unitConvDialog:form:scaleMap"
                     value="保存" oncomplete="addUnitScaleDialog.hide()" />

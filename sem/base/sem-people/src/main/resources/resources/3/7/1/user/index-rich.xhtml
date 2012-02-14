@@ -38,21 +38,21 @@
     <ui:define name="editDialogContent">
         <h:panelGrid columns="2">
             <h:outputLabel for="name" value="名称" />
-            <p:inputText label="名称" id="name" value="#{obj.name}" disabled="#{not bean.creating}" />
+            <p:inputText label="名称" id="name" value="#{obj.name}" disabled="#{not bean.creating}" label="名称"/>
 
             <h:outputLabel for="fullName" value="全名" />
-            <p:inputText label="全名" id="fullName" value="#{obj.fullName}" />
+            <p:inputText label="全名" id="fullName" value="#{obj.fullName}" label="全名"/>
 
             <h:outputLabel for="password" value="密码" />
             <t:panelGroup>
-                <input id="passPlain" type="password" onchange="calcDigest();" />
-                <h:inputHidden id="password" value="#{bean.password}" />
+                <input id="passPlain" type="password" onchange="calcDigest();"/>
+                <h:inputHidden id="password" value="#{bean.password}" label="密码"/>
             </t:panelGroup>
 
             <h:outputLabel for="passwordConfirm" value="密码确认" />
             <t:panelGroup>
                 <input id="passPlainConfirm" type="password" onchange="calcDigestConfirm();" />
-                <h:inputHidden id="passwordConfirm" value="#{bean.passwordConfirm}" validator="#{bean.passwordValidator}" />
+                <h:inputHidden id="passwordConfirm" value="#{bean.passwordConfirm}" validator="#{bean.passwordValidator}" label="密码确认"/>
             </t:panelGroup>
         </h:panelGrid>
     </ui:define>

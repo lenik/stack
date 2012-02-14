@@ -30,7 +30,7 @@
         <h:panelGrid columns="2">
             <h:outputLabel for="inheritedGroup" value="继承的组" />
             <h:panelGrid columns="3">
-                <p:inputText value="#{obj.inheritedGroup.name}" disabled="true" />
+                <p:inputText value="#{obj.inheritedGroup.name}" disabled="true" label="继承的组"/>
                 <p:commandButton value="..." oncomplete="chooseInheritedGroupDialog.show();">
                     <f:setPropertyActionListener target="${choosePrincipalDialogBean.stereo}"
                         value="G" />
@@ -39,10 +39,10 @@
             </h:panelGrid>
 
             <h:outputLabel for="name" value="名称" />
-            <p:inputText id="name" value="#{obj.name}" disabled="#{not bean.creating}" />
+            <p:inputText id="name" value="#{obj.name}" disabled="#{not bean.creating}" label="名称"/>
 
             <h:outputLabel for="fullName" value="全名" />
-            <p:inputText id="fullName" value="#{obj.fullName}" />
+            <p:inputText id="fullName" value="#{obj.fullName}" label="全名"/>
 
         </h:panelGrid>
     </ui:define>

@@ -24,15 +24,15 @@
             <h:outputLabel value="上级科目" />
             <h:panelGroup>
                 <h:outputText id="parentSubjectCode" value="#{bean.parentSubject.name}" />
-                <p:inputText id="parentSubject" value="#{bean.parentSubject.label}" disabled="true" />
+                <p:inputText id="parentSubject" value="#{bean.parentSubject.label}" disabled="true" label="上级科目"/>
                 <p:commandButton value="..." onclick="chooseAccountSubjectDialog.show();" />
             </h:panelGroup>
 
             <h:outputLabel value="编号" />
-            <p:inputText id="name" value="#{obj.name}" />
+            <p:inputText id="name" value="#{obj.name}" label="编号"/>
 
             <h:outputLabel value="科目名称" />
-            <p:inputText id="label" value="#{obj.label}" />
+            <p:inputText id="label" value="#{obj.label}" label="科目名称"/>
         </h:panelGrid>
     </ui:define>
 

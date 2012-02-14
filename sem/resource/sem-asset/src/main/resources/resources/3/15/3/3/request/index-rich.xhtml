@@ -16,24 +16,24 @@
                     <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                 </h:outputText>
                 <h:outputText value="经办人:" />
-                <p:inputText value="#{obj.owner.displayName}" disabled="true" style="width: 15em;" />
+                <p:inputText value="#{obj.owner.displayName}" disabled="true" style="width: 15em;" label="经办人"/>
 
                 <h:outputLabel value="金额:" />
-                <p:inputText value="#{obj.value.value}" disabled="#{not bean.editing}" style="width: 15em;" />
+                <p:inputText value="#{obj.value.value}" disabled="#{not bean.editing}" style="width: 15em;" label="金额"/>
                 <h:outputLabel value="币种" />
-                <p:selectOneMenu value="#{obj.value.currencyCode}" disabled="#{not bean.editing}" style="width: 15em;">
+                <p:selectOneMenu value="#{obj.value.currencyCode}" disabled="#{not bean.editing}" style="width: 15em;" label="币种">
                     <f:selectItem itemValue="" itemLabel="--选择币种--" />
                     <f:selectItems value="#{monetary.currencySelectItems}" />
                 </p:selectOneMenu>
 
                 <h:outputText value="简要:" />
                 <t:panelGroup colspan="3">
-                    <p:inputText value="#{obj.label}" disabled="#{not bean.editing}" style="width: 35em" />
+                    <p:inputText value="#{obj.label}" disabled="#{not bean.editing}" style="width: 35em" label="简要"/>
                 </t:panelGroup>
 
                 <h:outputText value="业务详细:" />
                 <t:panelGroup colspan="3">
-                    <p:inputTextarea style="width: 35em; height: 25em;" value="#{obj.text}" disabled="#{not bean.editing}" />
+                    <p:inputTextarea style="width: 35em; height: 25em;" value="#{obj.text}" disabled="#{not bean.editing}" label="业务详细"/>
                 </t:panelGroup>
             </t:panelGrid>
         </p:panel>

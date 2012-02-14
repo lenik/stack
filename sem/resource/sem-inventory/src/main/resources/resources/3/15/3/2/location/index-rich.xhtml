@@ -30,30 +30,30 @@
         <t:panelGrid columns="2">
             <h:outputLabel value="所属库位" />
             <h:panelGrid columns="2">
-                <p:inputText value="#{obj.parent.nodeText}" disabled="true" />
+                <p:inputText value="#{obj.parent.nodeText}" disabled="true" label="所属库位"/>
                 <p:commandButton value="..." onclick="chooseStockLocationDialog.show();" />
             </h:panelGrid>
 
             <h:outputLabel for="name" value="名称" />
-            <p:inputText id="name" value="#{obj.label}" />
+            <p:inputText id="name" value="#{obj.label}" label="名称"/>
 
             <h:outputLabel for="address" value="地址" />
-            <p:inputText id="address" value="#{obj.address}" />
+            <p:inputText id="address" value="#{obj.address}" label="地址"/>
 
             <h:outputLabel for="capacity" value="容量" />
-            <p:inputText id="capacity" value="#{obj.capacity}" />
+            <p:inputText id="capacity" value="#{obj.capacity}" label="容量"/>
 
             <h:outputLabel for="capacityUnit" value="容量单位" />
-            <p:selectOneMenu id="unit" value="#{obj.capacityUnit.id}" style="width:150px;">
+            <p:selectOneMenu id="unit" value="#{obj.capacityUnit.id}" style="width:150px;" label="容量单位">
                 <f:selectItem itemValue="" itemLabel="--选择单位--" />
                 <f:selectItems value="#{bean.units}" />
             </p:selectOneMenu>
 
             <h:outputText value="容量单位提示" />
-            <p:inputText id="capacityUnitHint" value="#{obj.capacityUnitHint}" />
+            <p:inputText id="capacityUnitHint" value="#{obj.capacityUnitHint}" label="容量单位提示"/>
 
             <h:outputLabel for="rank" value="等级" />
-            <p:inputText id="rank" value="#{obj.rank}" />
+            <p:inputText id="rank" value="#{obj.rank}" label="等级"/>
         </t:panelGrid>
     </ui:define>
 

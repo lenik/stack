@@ -65,20 +65,20 @@
 
                     <h:outputLabel for="validDateFrom" value="生效日期" />
                     <p:calendar id="validDateFrom" pattern="yyyy-MM-dd" value="#{obj.validDateFrom}"
-                        navigator="true" locale="zh_CN" showOn="button" />
+                        navigator="true" locale="zh_CN" showOn="button" label="生效日期"/>
                     <h:outputLabel for="validDateTo" value="失效日期" />
                     <p:calendar id="validDateTo" pattern="yyyy-MM-dd" value="#{obj.validDateTo}" navigator="true"
-                        locale="zh_CN" showOn="button" />
+                        locale="zh_CN" showOn="button" label="失效日期" />
 
                     <h:outputLabel for="wage" value="工资" />
-                    <p:inputText id="wage" value="#{obj.wage}" />
+                    <p:inputText id="wage" value="#{obj.wage}" label="工资"/>
                     <h:outputLabel for="otherFee" value="其他费用" />
-                    <p:inputText id="otherFee" value="#{obj.otherFee}" />
+                    <p:inputText id="otherFee" value="#{obj.otherFee}" label="其他费用"/>
 
                     <h:outputLabel for="electricityFee" value="电费" />
-                    <p:inputText id="electricityFee" value="#{obj.electricityFee}" />
+                    <p:inputText id="electricityFee" value="#{obj.electricityFee}" label="电费"/>
                     <h:outputLabel for="equipmentCost" value="设备费" />
-                    <p:inputText id="equipmentCost" value="#{obj.equipmentCost}" />
+                    <p:inputText id="equipmentCost" value="#{obj.equipmentCost}" label="设备费"/>
                 </t:panelGrid>
             </p:tab>
             <p:tab title="BOM明细">
@@ -148,23 +148,23 @@
                     </p:commandButton>
                 </t:panelGroup>
                 <h:outputLabel for="valid" value="是否有效" />
-                <p:selectBooleanCheckbox id="valid" value="#{item.valid}" />
+                <p:selectBooleanCheckbox id="valid" value="#{item.valid}" label="是否有效"/>
 
                 <h:outputLabel for="validDateFrom" value="生效日期" />
                 <p:calendar id="validDateFrom" pattern="yyyy-MM-dd" value="#{item.validDateFrom}" navigator="true"
-                    locale="zh_CN" showOn="button" />
+                    locale="zh_CN" showOn="button" label="生效日期"/>
                 <h:outputLabel for="validDateTo" value="失效日期" />
                 <p:calendar id="validDateTo" pattern="yyyy-MM-dd" value="#{item.validDateTo}" navigator="true"
-                    locale="zh_CN" showOn="button" />
+                    locale="zh_CN" showOn="button" label="失效日期"/>
 
                 <h:outputLabel for="quantity" value="数量" />
                 <t:panelGroup colspan="3">
-                    <p:inputText id="quantity" value="#{item.quantity}" />
+                    <p:inputText id="quantity" value="#{item.quantity}" label="数量"/>
                 </t:panelGroup>
 
                 <h:outputLabel for="description" value="描述" />
                 <t:panelGroup colspan="3">
-                    <p:inputTextarea id="description" rows="5" style="width:40em;" value="#{item.description}" />
+                    <p:inputTextarea id="description" rows="5" style="width:40em;" value="#{item.description}" label="描述"/>
                 </t:panelGroup>
             </t:panelGrid>
         </fr:listView>

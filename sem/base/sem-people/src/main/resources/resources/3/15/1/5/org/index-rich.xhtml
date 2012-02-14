@@ -45,23 +45,23 @@
             <p:tab id="tab1" title="详细信息">
                 <t:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
                     <h:outputLabel for="name" value="公司名称" />
-                    <p:inputText id="name" value="#{obj.label}" />
+                    <p:inputText id="name" value="#{obj.label}" label="公司名称"/>
                     <h:outputLabel for="fullName" value="全名" />
-                    <p:inputText id="fullName" value="#{obj.fullName}" />
+                    <p:inputText id="fullName" value="#{obj.fullName}" label="全名"/>
 
                     <h:outputText value="属性" />
                     <t:panelGroup colspan="3">
                         <t:panelGrid columns="3">
                             <t:panelGrid columns="2">
-                                <p:selectBooleanCheckbox value="#{obj.employee}" />
+                                <p:selectBooleanCheckbox value="#{obj.employee}" label="属性"/>
                                 <h:outputText value="内部"/>
                             </t:panelGrid>
                             <t:panelGrid columns="2">
-                                <p:selectBooleanCheckbox value="#{obj.customer}" />
+                                <p:selectBooleanCheckbox value="#{obj.customer}" label="属性"/>
                                 <h:outputText value="客户"/>
                             </t:panelGrid>
                             <t:panelGrid columns="2">
-                                <p:selectBooleanCheckbox value="#{obj.supplier}" />
+                                <p:selectBooleanCheckbox value="#{obj.supplier}" label="属性"/>
                                 <h:outputText value="供应商"/>
                             </t:panelGrid>
                         </t:panelGrid>
@@ -69,32 +69,32 @@
 
                     <h:outputLabel for="birthday" value="成立日期" />
                     <p:calendar id="birthday" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{obj.birthday}"
-                        showOn="button" />
+                        showOn="button" label="成立日期"/>
                     <h:outputLabel for="type" value="公司类型" />
-                    <p:selectOneMenu id="type" value="#{obj.type.id}" style="width:150px;">
+                    <p:selectOneMenu id="type" value="#{obj.type.id}" style="width:150px;" label="公司类型">
                         <f:selectItem itemValue="" itemLabel="--选择公司类型--" />
                         <f:selectItems value="#{people.orgTypeSelectItems}" />
                     </p:selectOneMenu>
 
                     <h:outputLabel for="bank" value="银行" />
-                    <p:inputText id="bank" value="#{obj.bank}" />
-                    <h:outputLabel for="bankAccount" value="帐号" />
-                    <p:inputText id="bankAccount" value="#{obj.bankAccount}" />
+                    <p:inputText id="bank" value="#{obj.bank}" label="银行"/>
+                    <h:outputLabel for="bankAccount" value="账号" />
+                    <p:inputText id="bankAccount" value="#{obj.bankAccount}" label="账号"/>
 
                     <h:outputLabel for="sid" value="税务登记号" />
-                    <p:inputText id="sid" value="#{obj.sid}" />
+                    <p:inputText id="sid" value="#{obj.sid}" label="税务登记号"/>
                     <h:outputLabel for="size" value="公司规模" />
-                    <p:inputText id="size" value="#{obj.size}" />
+                    <p:inputText id="size" value="#{obj.size}" label="公司规模"/>
 
                     <h:outputLabel for="interests" value="主营业务" />
                     <t:panelGroup colspan="3">
-                        <p:inputText id="interests" value="#{obj.interests}" />
+                        <p:inputText id="interests" value="#{obj.interests}" label="主营业务"/>
                     </t:panelGroup>
 
                     <h:outputLabel for="tags" value="标签" />
                     <t:panelGroup colspan="3">
                         <t:panelGrid columns="2">
-                            <p:selectOneListbox id="tags" value="#{bean.selectedTagId}" style="height:80px; width:200px;">
+                            <p:selectOneListbox id="tags" value="#{bean.selectedTagId}" style="height:80px; width:200px;" label="标签">
                                 <f:selectItems value="#{people.partyTagnameSelectItems}" />
                             </p:selectOneListbox>
                             <t:panelGrid colums="1">
@@ -108,7 +108,7 @@
                     <h:outputLabel for="memo" value="备注" />
                     <t:panelGroup colspan="3">
                         <p:inputTextarea id="memo" value="#{obj.memo}" style="width:300px;height:50px;"
-                            effectDuration="400" />
+                            effectDuration="400" label="备注"/>
                     </t:panelGroup>
                 </t:panelGrid>
             </p:tab>
@@ -213,31 +213,31 @@
             <h:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
                 <h:outputLabel for="category" value="分类" />
                 <h:panelGroup colspan="3">
-                    <p:selectOneMenu id="category" value="#{item.category.id}" style="width:200px;">
+                    <p:selectOneMenu id="category" value="#{item.category.id}" style="width:200px;" label="联系方式分类">
                         <f:selectItem itemValue="" itemLabel="--选择联系方式分类--" />
                         <f:selectItems value="#{people.contactCategorySelectItems}" />
                     </p:selectOneMenu>
                 </h:panelGroup>
 
                 <h:outputLabel for="address" value="地址" />
-                <p:inputText id="address" value="#{item.address}" />
+                <p:inputText id="address" value="#{item.address}" label="地址"/>
                 <h:outputLabel for="postCode" value="邮编" />
-                <p:inputText id="postCode" value="#{item.postCode}" />
+                <p:inputText id="postCode" value="#{item.postCode}" label="邮编"/>
 
                 <h:outputLabel for="tel" value="电话" />
-                <p:inputText id="tel" value="#{item.tel}" />
+                <p:inputText id="tel" value="#{item.tel}" label="电话"/>
                 <h:outputLabel for="mobile" value="移动电话" />
-                <p:inputText id="mobile" value="#{item.mobile}" />
+                <p:inputText id="mobile" value="#{item.mobile}" label="移动电话"/>
 
                 <h:outputLabel for="fax" value="传真" />
-                <p:inputText id="fax" value="#{item.fax}" />
+                <p:inputText id="fax" value="#{item.fax}" label="传真"/>
                 <h:outputLabel for="email" value="email" />
-                <p:inputText id="email" value="#{item.email}" />
+                <p:inputText id="email" value="#{item.email}" label="email"/>
 
                 <h:outputLabel for="website" value="网址" />
-                <p:inputText id="website" value="#{item.website}" />
+                <p:inputText id="website" value="#{item.website}" label="网址"/>
                 <h:outputLabel for="qq" value="qq" />
-                <p:inputText id="qq" value="#{item.qq}" />
+                <p:inputText id="qq" value="#{item.qq}" label="qq"/>
             </h:panelGrid>
         </fr:listView>
 
@@ -248,38 +248,38 @@
                     <h:panelGrid columns="2">
                         <h:outputLabel for="parentOrgUnit" value="上级部门" />
                         <h:panelGroup>
-                            <p:inputText id="parentOrgUnit" value="#{item.parent.label}" disabled="true" />
+                            <p:inputText id="parentOrgUnit" value="#{item.parent.label}" disabled="true" label="上级部门"/>
                             <p:commandButton value="..." oncomplete="chooseParentOrgUnitDialog.show();">
                                 <f:setPropertyActionListener target="#{chooseOrgUnitDialogBean.orgId}"
                                     value="#{item.org.id}" />
                             </p:commandButton>
                         </h:panelGroup>
                         <h:outputLabel for="name" value="名称" />
-                        <p:inputText id="name" value="#{item.label}" />
+                        <p:inputText id="name" value="#{item.label}" label="名称"/>
                     </h:panelGrid>
                 </p:tab>
                 <p:tab title="联系方式">
                     <h:panelGrid columns="4"
                         columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
                         <h:outputLabel for="contactAddress" value="地址" />
-                        <p:inputText id="contactAddress" value="#{item.contact.address}" />
+                        <p:inputText id="contactAddress" value="#{item.contact.address}" label="地址"/>
                         <h:outputLabel for="contactPostCode" value="邮编" />
-                        <p:inputText id="contactPostCode" value="#{item.contact.postCode}" />
+                        <p:inputText id="contactPostCode" value="#{item.contact.postCode}" label="邮编"/>
 
                         <h:outputLabel for="contactTel" value="电话" />
-                        <p:inputText id="contactTel" value="#{item.contact.tel}" />
+                        <p:inputText id="contactTel" value="#{item.contact.tel}" label="电话"/>
                         <h:outputLabel for="contactMobile" value="移动电话" />
-                        <p:inputText id="contactMobile" value="#{item.contact.mobile}" />
+                        <p:inputText id="contactMobile" value="#{item.contact.mobile}" label="移动电话"/>
 
                         <h:outputLabel for="contactFax" value="传真" />
-                        <p:inputText id="contactFax" value="#{item.contact.fax}" />
+                        <p:inputText id="contactFax" value="#{item.contact.fax}" label="传真"/>
                         <h:outputLabel for="contactEmail" value="email" />
-                        <p:inputText id="contactEmail" value="#{item.contact.email}" />
+                        <p:inputText id="contactEmail" value="#{item.contact.email}" label="email"/>
 
                         <h:outputLabel for="contactWebsite" value="网址" />
-                        <p:inputText id="contactWebsite" value="#{item.contact.website}" />
+                        <p:inputText id="contactWebsite" value="#{item.contact.website}" label="网址"/>
                         <h:outputLabel for="contactQq" value="qq" />
-                        <p:inputText id="contactQq" value="#{item.contact.qq}" />
+                        <p:inputText id="contactQq" value="#{item.contact.qq}" label="qq"/>
                     </h:panelGrid>
                 </p:tab>
             </p:tabView>
@@ -293,7 +293,7 @@
 
                 <h:outputLabel for="orgUnitName" value="对应部门" />
                 <h:panelGrid columns="2">
-                    <p:inputText id="orgUnitName" value="#{item.orgUnit.label}" disabled="true" />
+                    <p:inputText id="orgUnitName" value="#{item.orgUnit.label}" disabled="true" label="对应部门"/>
                     <p:commandButton value="..." oncomplete="chooseRoleOrgUnitDialog.show();">
                         <f:setPropertyActionListener target="#{chooseOrgUnitDialogBean.orgId}"
                             value="#{item.org.id}" />
@@ -303,20 +303,20 @@
                 <h:outputLabel for="person" value="对应人员" />
                 <h:panelGrid columns="2">
                     <h:outputText value="#{item.person.displayName}" />
-                    <p:commandButton id="person" value="..." oncomplete="chooseRolePersonDialog.show();">
+                    <p:commandButton id="person" value="..." oncomplete="chooseRolePersonDialog.show();" label="对应人员">
                         <f:setPropertyActionListener target="#{choosePartyDialogBean.stereo}"
                             value="PER" />
                     </p:commandButton>
                 </h:panelGrid>
 
                 <h:outputLabel for="role" value="职务" />
-                <p:inputText id="role" value="#{item.role}" />
+                <p:inputText id="role" value="#{item.role}" label="职务"/>
 
                 <h:outputLabel for="roleDetail" value="负责业务" />
-                <p:inputText id="roleDetail" value="#{item.roleDetail}" />
+                <p:inputText id="roleDetail" value="#{item.roleDetail}" label="负责业务"/>
 
                 <h:outputLabel for="description" value="备注" />
-                <p:inputTextarea id="description" value="#{item.description}" />
+                <p:inputTextarea id="description" value="#{item.description}" label="备注"/>
             </h:panelGrid>
         </fr:listView>
 

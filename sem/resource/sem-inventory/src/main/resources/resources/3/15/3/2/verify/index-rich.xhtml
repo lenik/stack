@@ -73,7 +73,7 @@
                 <t:panelGrid rendered="#{bean.entry != null}" columns="2" columnClasses="detail_col_title,detail_col_value">
                     <h:outputLabel for="subject" value="库存单据类型" />
                     <t:panelGrid columns="2">
-                        <p:selectOneMenu id="subject" value="#{bean.entry.subjectValue}" style="width:100px;">
+                        <p:selectOneMenu id="subject" value="#{bean.entry.subjectValue}" style="width:100px;" label="库存单据类型">
                             <f:selectItems value="#{bean.subjects}" var="subject" itemLabel="#{subject.displayName}"
                                 itemValue="#{subject.value}" />
                         </p:selectOneMenu>
@@ -81,7 +81,7 @@
 
                     <h:outputLabel for="policy" value="白名单策略" />
                     <t:panelGrid columns="2">
-                        <p:inputText id="policy" readonly="#{true}" value="#{bean.entry.policy.label}" />
+                        <p:inputText id="policy" readonly="#{true}" value="#{bean.entry.policy.label}" label="白名单策略"/>
                         <p:commandButton id="choosePolicy" value="..." update=":chooseVerifyPolicyDialog:form"
                             onclick="chooseVerifyPolicyDialog.show()" />
                     </t:panelGrid>

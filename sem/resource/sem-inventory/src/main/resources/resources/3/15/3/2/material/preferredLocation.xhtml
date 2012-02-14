@@ -38,7 +38,7 @@
             <h:panelGrid id="addPreferredLocationPanel" columns="2">
                 <h:outputText value="库位" />
                 <h:panelGroup colspan="2">
-                    <p:inputText value="#{bean.preferredLocation.location.label}" readonly="true" />
+                    <p:inputText value="#{bean.preferredLocation.location.label}" readonly="true" label="库位"/>
                     <p:commandButton value="..." oncomplete="choosePreferredLocationDialog.show()" />
                 </h:panelGroup>
             </h:panelGrid>

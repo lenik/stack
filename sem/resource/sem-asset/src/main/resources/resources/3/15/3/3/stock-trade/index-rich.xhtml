@@ -22,13 +22,13 @@
 
                 <h:outputLabel value="摘要" />
                 <t:panelGroup colspan="3">
-                    <p:inputText value="#{obj.description}" disabled="#{not bean.editing}" />
+                    <p:inputText value="#{obj.description}" disabled="#{not bean.editing}" label="摘要"/>
                 </t:panelGroup>
 
                 <h:outputLabel value="会计科目" />
                 <t:panelGroup colspan="3">
                     <t:panelGrid columns="2">
-                        <p:inputText id="subject" value="#{obj.subject.label}" readonly="true" />
+                        <p:inputText id="subject" value="#{obj.subject.label}" readonly="true" label="会计科目"/>
                         <p:commandButton value="..." onclick="chooseAccountSubjectDialog.show();"
                             disabled="#{not bean.editing}" />
                     </t:panelGrid>
@@ -36,30 +36,30 @@
 
                 <h:outputLabel value="公司" />
                 <t:panelGroup colspan="3">
-                    <p:inputText id="party" value="#{obj.party.displayName}" readonly="true" />
+                    <p:inputText id="party" value="#{obj.party.displayName}" readonly="true" label="公司"/>
                     <p:commandButton value="..." onclick="choosePartyDialog.show();" disabled="#{not bean.editing}" />
                 </t:panelGroup>
 
                 <h:outputLabel value="借贷方向" />
                 <t:panelGroup colspan="3">
-                    <p:selectOneMenu value="#{obj.debitSide}" disabled="true" style="width:200px;">
+                    <p:selectOneMenu value="#{obj.debitSide}" disabled="true" style="width:200px;" label="借贷方向">
                         <f:selectItem itemValue="true" itemLabel="借方" />
                         <f:selectItem itemValue="false" itemLabel="贷方" />
                     </p:selectOneMenu>
                 </t:panelGroup>
 
                 <h:outputLabel value="金额" />
-                <p:inputText value="#{obj.value.value}" disabled="true" />
+                <p:inputText value="#{obj.value.value}" disabled="true" label="金额"/>
                 <h:outputLabel value="币种" />
-                <p:selectOneMenu value="#{obj.value.currencyCode}" disabled="true" style="width:200px;">
+                <p:selectOneMenu value="#{obj.value.currencyCode}" disabled="true" style="width:200px;" label="币种">
                     <f:selectItem itemValue="" itemLabel="--选择币种--" />
                     <f:selectItems value="#{monetary.currencySelectItems}" />
                 </p:selectOneMenu>
 
                 <h:outputText value="制单人" />
-                <p:inputText value="#{obj.creator}" disabled="true" />
+                <p:inputText value="#{obj.creator}" disabled="true" label="制单人"/>
                 <h:outputText value="状态" />
-                <p:inputText value="#{obj.verifyContext.verifyEvalState}" disabled="true" />
+                <p:inputText value="#{obj.verifyContext.verifyEvalState}" disabled="true" label="状态"/>
             </t:panelGrid>
 
             <fr:listView id="itemsIndexView" header="项目" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
@@ -104,27 +104,27 @@
 
                 <h:outputLabel value="物料" />
                 <t:panelGroup colspan="3">
-                    <p:inputText value="#{item.material.label}" readonly="true" />
+                    <p:inputText value="#{item.material.label}" readonly="true" label="物料"/>
                     <p:commandButton value="..." onclick="chooseMaterialDialog.show();" />
                 </t:panelGroup>
 
                 <h:outputLabel value="数量" />
                 <t:panelGroup colspan="3">
-                    <p:inputText value="#{item.quantity}" />
+                    <p:inputText value="#{item.quantity}" label="数量"/>
                     <h:outputText value="#{item.material.unit.name}" />
                 </t:panelGroup>
 
                 <h:outputLabel value="单价" />
-                <p:inputText value="#{item.price.value}" />
+                <p:inputText value="#{item.price.value}" label="单价"/>
                 <h:outputLabel value="币种" />
-                <p:selectOneMenu value="#{item.price.currencyCode}" style="width:200px;">
+                <p:selectOneMenu value="#{item.price.currencyCode}" style="width:200px;" label="币种">
                     <f:selectItem itemValue="" itemLabel="--选择币种--" />
                     <f:selectItems value="#{monetary.currencySelectItems}" />
                 </p:selectOneMenu>
 
                 <h:outputLabel value="备注" />
                 <t:panelGroup colspan="3">
-                    <p:inputText value="#{item.description}" style="width:400px" />
+                    <p:inputText value="#{item.description}" style="width:400px" label="备注"/>
                 </t:panelGroup>
             </t:panelGrid>
         </fr:listView>

@@ -24,11 +24,11 @@
                     <h:outputText value="从" />
                     <p:calendar id="limitDateFrom" navigator="true"
                         locale="zh_CN" pattern="yyyy-MM-dd"
-                        value="#{chanceQueryBean.limitDateFrom}" showOn="button"/>
+                        value="#{chanceQueryBean.limitDateFrom}" showOn="button" label="起始时间"/>
                     <h:outputText value="到" />
                     <p:calendar id="limitDateTo" navigator="true"
                         locale="zh_CN" pattern="yyyy-MM-dd"
-                        value="#{chanceQueryBean.limitDateTo}" showOn="button"/>
+                        value="#{chanceQueryBean.limitDateTo}" showOn="button" label="结束时间"/>
                 </t:panelGrid>
 
                 <t:panelGrid columns="2">
@@ -39,12 +39,12 @@
                             <t:panelGrid columns="1">
                                 <t:panelGrid columns="2">
                                     <p:selectBooleanCheckbox
-                                        value="#{chanceQueryBean.allSalesman}" />
+                                        value="#{chanceQueryBean.allSalesman}" label="所有销售员"/>
                                     <h:outputText value="所有销售员" />
                                 </t:panelGrid>
                                 <p:selectManyMenu id="salesmansToQuery"
                                     value="#{chanceQueryBean.selectedSalesmansToQuery}"
-                                    style="height:200px">
+                                    style="height:200px" label="指定销售员">
                                     <f:selectItems
                                         value="#{chanceQueryBean.salesmansToQuery}" />
                                 </p:selectManyMenu>
@@ -84,7 +84,7 @@
 
                     <h:panelGrid columns="3">
                         <h:outputLabel value="物料名字全部或部份:" />
-                        <p:inputText value="#{stockQueryBean.materialPattern}" />
+                        <p:inputText value="#{stockQueryBean.materialPattern}" label="物料名字全部或部份"/>
                         <p:commandButton value="查找"
                             actionListener="#{stockQueryBean.findMaterial}" update="materials"
                             async="true" />

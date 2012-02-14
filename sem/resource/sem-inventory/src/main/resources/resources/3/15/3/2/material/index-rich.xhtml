@@ -79,17 +79,17 @@
                 <t:panelGrid columns="2">
                     <h:outputText value="物料分类:" />
                     <t:panelGrid columns="2">
-                        <p:inputText id="materialCategory" value="#{obj.category.name}" readonly="true" />
+                        <p:inputText id="materialCategory" value="#{obj.category.name}" readonly="true" label="物料分类"/>
                         <p:commandButton value="..." onclick="chooseMaterialCategoryDialog.show()" />
                     </t:panelGrid>
 
                     <h:outputText value="物料名称:" />
-                    <p:inputText value="#{obj.label}" style="width:400px;" />
+                    <p:inputText value="#{obj.label}" style="width:400px;" label="物料名称"/>
 
                     <h:outputText value="主单位:" />
                     <t:panelGrid columns="4">
                         <t:panelGrid columns="2">
-                            <p:selectOneMenu id="materialUnit" value="#{obj.unit.id}" style="width:100px;">
+                            <p:selectOneMenu id="materialUnit" value="#{obj.unit.id}" style="width:100px;" label="主单位">
                                 <f:selectItem itemLabel="--选择--" itemValue="" />
                                 <f:selectItems value="#{bean.units}" />
                             </p:selectOneMenu>
@@ -97,18 +97,18 @@
                                 onclick="addUnitDialog.show()" />
                         </t:panelGrid>
                         <h:outputText value="单位提示:" />
-                        <p:inputText value="#{obj.unitHint}" />
+                        <p:inputText value="#{obj.unitHint}" label="单位提示"/>
                         <h:outputText value="(重量,长度等)" />
                     </t:panelGrid>
 
                     <h:outputText value="条形码:" />
-                    <p:inputText value="#{obj.barCode}" />
+                    <p:inputText value="#{obj.barCode}" label="条形码"/>
 
                     <h:outputText value="规格型号:" />
-                    <p:inputText value="#{obj.modelSpec}" style="width:400px;" />
+                    <p:inputText value="#{obj.modelSpec}" style="width:400px;" label="规格型号"/>
 
                     <h:outputText value="备注:" />
-                    <p:inputText value="#{obj.description}" style="width:400px;" />
+                    <p:inputText value="#{obj.description}" style="width:400px;" label="备注"/>
                 </t:panelGrid>
             </p:tab>
             <p:tab title="公共" disabled="true">
@@ -116,18 +116,18 @@
             <p:tab title="运输" disabled="true">
                 <h:outputText value="毛重(单位:克):" />
                 <t:panelGrid columns="3">
-                    <p:inputText value="#{obj.packageWeight}" style="width:50px;" />
+                    <p:inputText value="#{obj.packageWeight}" style="width:50px;" label="毛重"/>
                     <h:outputText value="净重(单位:克):" />
-                    <p:inputText value="#{obj.netWeight}" style="width:50px;" />
+                    <p:inputText value="#{obj.netWeight}" style="width:50px;" label="净重"/>
                 </t:panelGrid>
                 <h:outputText value="装箱尺寸:" />
                 <t:panelGrid columns="7">
                     <h:outputText value="长" />
-                    <p:inputText value="#{obj.packageLength}" style="width:40px" />
+                    <p:inputText value="#{obj.packageLength}" style="width:40px" label="长"/>
                     <h:outputText value="宽" />
-                    <p:inputText value="#{obj.packageWidth}" style="width:40px" />
+                    <p:inputText value="#{obj.packageWidth}" style="width:40px" label="宽"/>
                     <h:outputText value="高" />
-                    <p:inputText value="#{obj.packageHeight}" style="width:40px" />
+                    <p:inputText value="#{obj.packageHeight}" style="width:40px" label="高"/>
                     <h:outputText value="(厘米)" />
                 </t:panelGrid>
             </p:tab>
@@ -144,9 +144,9 @@
                     </f:facet>
                     <h:panelGrid columns="2">
                         <h:outputText value="属性名称" />
-                        <p:inputText value="#{item.name}" />
+                        <p:inputText value="#{item.name}" label="属性名称"/>
                         <h:outputText value="属性值" />
-                        <p:inputText value="#{item.value}" />
+                        <p:inputText value="#{item.value}" label="属性值"/>
                     </h:panelGrid>
                 </fr:listView>
             </p:tab>

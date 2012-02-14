@@ -56,13 +56,13 @@
 			<h:panelGrid columns="2">
 
 				<h:outputLabel for="username" value="用户名" />
-				<p:inputText id="username" value="#{loginBean.username}" />
+				<p:inputText id="username" value="#{loginBean.username}" label="用户名"/>
 
 				<h:outputLabel for="password" value="密码" />
 				<t:panelGroup>
 					<input id="passPlain" type="password" onchange="calcDigest();" />
 
-					<h:inputHidden id="password" value="#{loginBean.password}" />
+					<h:inputHidden id="password" value="#{loginBean.password}" label="密码"/>
 				</t:panelGroup>
 
 				<t:panelGroup colspan="2">
