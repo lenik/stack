@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
@@ -99,7 +98,7 @@ public class R_ACE
     }
 
     @NaturalId
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false/*, fetch = FetchType.LAZY*/)
     public Principal getPrincipal() {
         return principal;
     }
