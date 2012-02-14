@@ -24,9 +24,8 @@ public class SEMEventSamples
     public static Event killAngel;
 
     static Event mkRain(double relativeDay, Double duration, String title) {
-        Event rain = new Event();
+        Event rain = new Event(SEMEventSamples.class, EventType.EVENT);
         rain.setCategory(weather);
-        rain.setSourceClass(SEMEventSamples.class);
         rain.setPriority(EventPriority.LOW);
         rain.setState(GenericState.UNKNOWN);
         rain.setClosed(duration != null);

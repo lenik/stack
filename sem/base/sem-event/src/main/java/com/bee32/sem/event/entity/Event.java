@@ -72,6 +72,7 @@ public class Event
 
     private Set<Principal> observers = new HashSet<Principal>();
 
+    @Deprecated
     public Event() {
     }
 
@@ -128,7 +129,10 @@ public class Event
         if (sourceClassId == null)
             throw new NullPointerException("sourceClassId");
         try {
-            this.sourceClass = ABBR.expand(sourceClassId);
+            Class<?> theClass = ABBR.expand(sourceClassId);
+            if (theClass == null)
+                throw new IllegalArgumentException("Bad class id: " + sourceClassId);
+            sourceClass = theClass;
         } catch (ClassNotFoundException e) {
             throw new IllegalUsageException(e);
         }
