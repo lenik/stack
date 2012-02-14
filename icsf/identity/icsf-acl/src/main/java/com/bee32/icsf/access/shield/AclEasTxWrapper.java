@@ -3,6 +3,8 @@ package com.bee32.icsf.access.shield;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.free.JavaioFile;
 import javax.free.Order;
@@ -17,15 +19,28 @@ import org.springframework.stereotype.Service;
 
 import com.bee32.icsf.access.AccessControlException;
 import com.bee32.icsf.access.Permission;
+import com.bee32.icsf.access.acl.ACL;
+import com.bee32.icsf.access.acl.ACLEntry;
+import com.bee32.icsf.access.alt.R_ACE;
 import com.bee32.icsf.access.alt.R_ACLService;
 import com.bee32.icsf.access.resource.IResourceNamespace;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ScannedResourceRegistry;
 import com.bee32.icsf.login.SessionUser;
+import com.bee32.icsf.login.UserPassword;
+import com.bee32.icsf.principal.Group;
+import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.Role;
+import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.UserDto;
+import com.bee32.icsf.principal.UserOption;
+import com.bee32.icsf.principal.UserPreference;
+import com.bee32.plover.orm.builtin.PloverConf;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityResource;
 import com.bee32.plover.orm.entity.EntityResourceNS;
+import com.bee32.plover.ox1.meta.EntityColumn;
+import com.bee32.plover.ox1.meta.EntityInfo;
 import com.bee32.plover.site.scope.PerSite;
 
 @Service
@@ -70,19 +85,39 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
         }
     }
 
+    static Set<Class<?>> coreEntities = new HashSet<>();
+    static {
+        coreEntities.add(PloverConf.class);
+        coreEntities.add(EntityInfo.class);
+        coreEntities.add(EntityColumn.class);
+
+        coreEntities.add(Principal.class);
+        coreEntities.add(User.class);
+        coreEntities.add(Role.class);
+        coreEntities.add(Group.class);
+        coreEntities.add(UserOption.class);
+        coreEntities.add(UserPreference.class);
+
+        coreEntities.add(UserPassword.class);
+        coreEntities.add(ACL.class);
+        coreEntities.add(ACLEntry.class);
+        coreEntities.add(R_ACE.class);
+    }
+
     @Override
-    protected void require(int permissionBits) {
+    protected void require(Class<? extends Entity<?>> entityType, Permission requiredPermission) {
         if (!enabled || aclService == null)
             return;
 
-        Permission requiredPermission = new Permission(permissionBits);
+        boolean readOnly = requiredPermission.getAllowBits() == Permission.READ;
+        if (readOnly && coreEntities.contains(entityType))
+            return;
 
         UserDto currentUser = SessionUser.getInstance().getUserOpt();
         if (currentUser == null || currentUser.isNull())
             // currentUser = User.ANONYMOUS;
             return;
 
-        Class<? extends E> entityType = getEntityType();
         String entityResName = EntityResource.getEntityName(entityType);
         Resource entityResource = entityNS.getResource(entityResName);
 
@@ -104,5 +139,4 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
             throw new AccessControlException(message);
         }
     }
-
 }

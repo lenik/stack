@@ -9,40 +9,46 @@ import com.bee32.plover.orm.entity.Entity;
 public abstract class EasTxWrapperCat<E extends Entity<? extends K>, K extends Serializable>
         extends EasTxWrapper<E, K> {
 
+    static final Permission READ = new Permission(Permission.READ);
+    static final Permission WRITE = new Permission(Permission.WRITE);
+    static final Permission CREATE = new Permission(Permission.CREATE);
+    static final Permission DELETE = new Permission(Permission.DELETE);
+
     @Override
     protected void checkLoad() {
-        require(Permission.READ);
+        require(getEntityType(), READ);
     }
 
     @Override
     protected void checkCount() {
+        require(getEntityType(), READ);
     }
 
     @Override
     protected void checkList() {
-        require(Permission.READ);
+        require(getEntityType(), READ);
     }
 
     @Override
     protected void checkMerge() {
-        require(Permission.WRITE);
+        require(getEntityType(), WRITE);
     }
 
     @Override
     protected void checkSave() {
-        require(Permission.CREATE);
+        require(getEntityType(), CREATE);
     }
 
     @Override
     protected void checkUpdate() {
-        require(Permission.WRITE);
+        require(getEntityType(), WRITE);
     }
 
     @Override
     protected void checkDelete() {
-        require(Permission.DELETE);
+        require(getEntityType(), DELETE);
     }
 
-    protected abstract void require(int permissionBits);
+    protected abstract void require(Class<? extends Entity<?>> entityType, Permission requiredPermission);
 
 }
