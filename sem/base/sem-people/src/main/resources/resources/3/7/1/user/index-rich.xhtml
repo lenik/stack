@@ -38,10 +38,10 @@
     <ui:define name="editDialogContent">
         <h:panelGrid columns="2">
             <h:outputLabel for="name" value="名称" />
-            <p:inputText label="名称" id="name" value="#{obj.name}" disabled="#{not bean.creating}" label="名称"/>
+            <p:inputText label="名称" id="name" value="#{obj.name}" disabled="#{not bean.creating}"/>
 
             <h:outputLabel for="fullName" value="全名" />
-            <p:inputText label="全名" id="fullName" value="#{obj.fullName}" label="全名"/>
+            <p:inputText label="全名" id="fullName" value="#{obj.fullName}"/>
 
             <h:outputLabel for="password" value="密码" />
             <t:panelGroup>

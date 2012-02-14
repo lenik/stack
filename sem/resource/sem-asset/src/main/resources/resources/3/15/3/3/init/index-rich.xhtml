@@ -55,13 +55,13 @@
                 </h:panelGroup>
 
                 <h:outputLabel value="借贷方向" />
-                <p:selectOneMenu label="借贷方向" value="#{item.debitSide}" disabled="true" style="width: 20em;" label="借贷方向">
+                <p:selectOneMenu value="#{item.debitSide}" disabled="true" style="width: 20em;" label="借贷方向">
                     <f:selectItem itemValue="true" itemLabel="借方" />
                     <f:selectItem itemValue="false" itemLabel="贷方" />
                 </p:selectOneMenu>
 
                 <h:outputLabel for="value" value="金额" />
-                <p:inputText id="value" label="金额" value="#{item.value.value}" label="金额"/>
+                <p:inputText id="value" value="#{item.value.value}" label="金额"/>
 
                 <h:outputLabel for="currency" value="币种" />
                 <p:selectOneMenu id="currency" value="#{item.value.currencyCode}" style="width: 20em;" label="币种">
