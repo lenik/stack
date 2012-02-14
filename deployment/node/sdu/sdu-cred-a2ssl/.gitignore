@@ -1,0 +1,12 @@
+*.rand
+*.pem
+*.pk8
+*.csr-config
+*.csr
+# *.crt
+*.p12
+*.spc
+*.pvk
+*.srl
+*.all
+*.log
