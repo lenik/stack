@@ -14,7 +14,9 @@
         <p:column headerText="全名">
             <h:outputText value="#{entry.fullName}" />
         </p:column>
-
+        <p:column headerText="描述">
+            <h:outputText value="#{entry.description}" />
+        </p:column>
         <p:column headerText="操作">
             <p:commandLink value="指派角色" action="#{bean.showPartialForm}" oncomplete="rolesDialog.show()"
                 update=":rolesForm">

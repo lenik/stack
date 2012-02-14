@@ -15,6 +15,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.DummyId;
@@ -34,10 +35,8 @@ public abstract class Principal
     private static final long serialVersionUID = 1L;
 
     public static final int NAME_LENGTH = 16;
-    public static final int FULLNAME_LENGTH = 50;
 
     String name;
-    String fullName;
 
     public Principal() {
         this.name = null;
@@ -49,7 +48,6 @@ public abstract class Principal
 
     public Principal(String name, String fullName) {
         setName(name);
-        setFullName(fullName);
     }
 
     @Transient
@@ -86,20 +84,21 @@ public abstract class Principal
         this.name = name;
     }
 
-    @Column(length = FULLNAME_LENGTH)
+    @Transient
     public String getFullName() {
-        return fullName;
+        return getLabel();
     }
 
     public void setFullName(String fullName) {
-        this.fullName = fullName;
+        setLabel(fullName);
     }
 
     @Transient
     public String getDisplayName() {
-        if (fullName != null && !fullName.isEmpty())
-            return fullName;
-        return name;
+        if (!StringUtils.isEmpty(getLabel()))
+            return getLabel();
+        else
+            return name;
     }
 
     @Override

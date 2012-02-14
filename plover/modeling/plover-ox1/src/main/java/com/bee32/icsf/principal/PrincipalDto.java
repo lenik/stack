@@ -6,8 +6,11 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.bee32.plover.arch.util.Mask32;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.tree.TreeEntityDto;
 
 public class PrincipalDto
@@ -27,8 +30,6 @@ public class PrincipalDto
     protected final int depth = DEPTH_MASK.extract(selection.bits);
 
     String name;
-    String fullName;
-    String description;
 
     public PrincipalDto() {
         super();
@@ -46,23 +47,17 @@ public class PrincipalDto
     @Override
     protected void _marshal(Principal source) {
         name = source.getName();
-        fullName = source.getFullName();
-        description = source.getDescription();
     }
 
     @Override
     protected void _unmarshalTo(Principal target) {
         target.setName(name);
-        target.setFullName(fullName);
-        target.setDescription(description);
     }
 
     @Override
     public void _parse(TextMap map)
             throws ParseException, TypeConvertException {
         this.name = map.getString("name");
-        this.fullName = map.getString("fullName");
-        this.description = map.getString("description");
     }
 
     @Size(min = 3, max = Principal.NAME_LENGTH)
@@ -76,27 +71,20 @@ public class PrincipalDto
         this.name = name;
     }
 
-    @Size(min = 2, max = Principal.FULLNAME_LENGTH)
+    @NLength(min = 2, max = Principal.LABEL_LENGTH)
     public String getFullName() {
-        return fullName;
+        return getLabel();
     }
 
     public void setFullName(String fullName) {
-        this.fullName = fullName;
+        setLabel(fullName);
     }
 
     public String getDisplayName() {
-        if (fullName != null && !fullName.isEmpty())
-            return fullName;
-        return getName();
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+        if (!StringUtils.isEmpty(getFullName()))
+            return getFullName();
+        else
+            return getName();
     }
 
 }
