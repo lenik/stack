@@ -12,45 +12,32 @@
         <p:column headerText="姓名">
             <h:outputText value="#{entry.displayName}" />
         </p:column>
-
-        <p:column headerText="属性">
-            <h:outputText value="*内部" rendered="#{entry.employee}"/>
-            <h:outputText value="*客户" rendered="#{entry.customer}"/>
-            <h:outputText value="*供应商" rendered="#{entry.supplier}"/>
+        <p:column headerText="类型">
+            <h:outputText value="#{entry.types}" />
         </p:column>
-
         <p:column headerText="性别">
             <h:outputText value="#{entry.sexText}" />
         </p:column>
-
+        <p:column headerText="年龄">
+            <h:outputText value="#{entry.age}" />
+        </p:column>
         <p:column headerText="联系电话" style="width: 12em">
             <h:outputText value="#{entry.contactsString}" />
         </p:column>
-
-        <p:column headerText="生日">
-            <h:outputText value="#{entry.birthday}">
-                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-            </h:outputText>
+        <p:column headerText="证件">
+            <h:outputText value="#{entry.sidType.label} #{entry.sid}" />
         </p:column>
-
-        <p:column headerText="证件类型">
-            <h:outputText value="#{entry.sidType.label}" />
-        </p:column>
-
-        <p:column headerText="证件号码">
-            <h:outputText value="#{entry.sid}" />
-        </p:column>
-
         <p:column headerText="户籍">
             <h:outputText value="#{entry.censusRegister}" />
+        </p:column>
+        <p:column headerText="备注">
+            <h:outputText value="#{entry.shortMemo}" />
         </p:column>
     </ui:define>
 
     <ui:define name="editDialogContent">
         <p:tabView id="tv" style="width:100%;">
             <p:tab id="tab1" title="详细信息">
-                <h:inputHidden id="personId" value="#{obj.id}" />
-
                 <t:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
                     <h:outputLabel for="personName" value="姓名" />
                     <p:inputText id="personName" value="#{obj.name}" />
@@ -62,15 +49,15 @@
                         <t:panelGrid columns="3">
                             <t:panelGrid columns="2">
                                 <p:selectBooleanCheckbox value="#{obj.employee}" />
-                                <h:outputText value="内部"/>
+                                <h:outputText value="内部" />
                             </t:panelGrid>
                             <t:panelGrid columns="2">
                                 <p:selectBooleanCheckbox value="#{obj.customer}" />
-                                <h:outputText value="客户"/>
+                                <h:outputText value="客户" />
                             </t:panelGrid>
                             <t:panelGrid columns="2">
                                 <p:selectBooleanCheckbox value="#{obj.supplier}" />
-                                <h:outputText value="供应商"/>
+                                <h:outputText value="供应商" />
                             </t:panelGrid>
                         </t:panelGrid>
                     </t:panelGroup>

@@ -27,7 +27,7 @@ public class PersonAdminBean
 
     public PersonAdminBean() {
         super(Person.class, PersonDto.class, PartyDto.CONTACTS, //
-                Order.desc("id"));
+                Order.desc("lastModified"));
     }
 
     public List<SelectItem> getGenders() {

@@ -7,8 +7,12 @@ import java.util.Date;
 import java.util.List;
 
 import javax.free.ParseException;
+import javax.free.Strings;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Past;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.DummyId;
@@ -18,7 +22,6 @@ import com.bee32.plover.ox1.xp.EntityExtDto;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.PartyXP;
-import com.bee32.sem.people.util.PeopleUtil;
 
 public class PartyDto
         extends EntityExtDto<Party, Integer, PartyXP> {
@@ -148,7 +151,7 @@ public class PartyDto
         setLabel(name);
     }
 
-    @NLength(max = Party.FULLNAME_LENGTH)
+    @NLength(min = 2, max = Party.FULLNAME_LENGTH)
     public String getFullName() {
         return fullName;
     }
@@ -225,6 +228,7 @@ public class PartyDto
         return sidType.getId() + ":" + sid;
     }
 
+    @Past
     public Date getBirthday() {
         return birthday;
     }
@@ -302,6 +306,13 @@ public class PartyDto
         this.memo = TextUtil.normalizeSpace(memo);
     }
 
+    public String getShortMemo() {
+        if (memo == null)
+            return null;
+        else
+            return Strings.ellipse(memo, 20);
+    }
+
     public List<PartyTagnameDto> getTags() {
         return tags;
     }
@@ -319,7 +330,20 @@ public class PartyDto
     }
 
     public String getContactsString() {
-        return PeopleUtil.getCombinedContacts(contacts);
+        if (contacts == null || contacts.isEmpty())
+            return "";
+        StringBuilder builder = new StringBuilder();
+        for (ContactDto contact : contacts) {
+            if (!StringUtils.isEmpty(contact.getTel()))
+                builder.append(", " + contact.getTel());
+            if (!StringUtils.isEmpty(contact.getMobile()))
+                builder.append(",  " + contact.getMobile());
+            if (!StringUtils.isEmpty(contact.getFax()))
+                builder.append(", 传真 " + contact.getFax());
+        }
+        if (builder.length() > 0)
+            builder.delete(0, 2);
+        return builder.toString();
     }
 
     public List<PartyRecordDto> getRecords() {
