@@ -13,7 +13,7 @@ public class AccountInitItem
 
     AccountInit init;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(/* optional = false: =true will break the general AccountTickItem. */)
     public AccountInit getInit() {
         return init;
     }
