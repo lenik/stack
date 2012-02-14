@@ -111,18 +111,23 @@ public class SingleVerifierSupportBean<D extends EntityDto<E, K> & IVerifiableDt
         reverify();
     }
 
-    public void loadTemplate(IVerifiableDto verifiable) {
-        VerifyContextDto<?> verifyContext = verifiable.getVerifyContext();
+    public void loadTemplate(List<? extends IVerifiableDto> verifiables) {
+        if (verifiables.isEmpty()) {
+            uiLogger.warn("没有选中记录");
+            return;
+        }
+        IVerifiableDto verifiable1 = verifiables.get(0);
+        VerifyContextDto<?> verifyContext1 = verifiable1.getVerifyContext();
         // if (!(verifyContext instanceof SingleVerifierSupportDto))
-        SingleVerifierSupportDto template = (SingleVerifierSupportDto) verifyContext;
-        if (template == null) {
+        SingleVerifierSupportDto template1 = (SingleVerifierSupportDto) verifyContext1;
+        if (template1 == null) {
             verifier1Template = new PrincipalDto().ref();
             accepted1Template = false;
             rejectedReason1Template = "";
         } else {
-            verifier1Template = template.getVerifier1();
-            accepted1Template = template.isAccepted1();
-            rejectedReason1Template = template.getRejectedReason1();
+            verifier1Template = template1.getVerifier1();
+            accepted1Template = template1.isAccepted1();
+            rejectedReason1Template = template1.getRejectedReason1();
         }
     }
 

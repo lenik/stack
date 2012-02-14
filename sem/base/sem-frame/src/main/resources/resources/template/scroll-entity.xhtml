@@ -49,7 +49,7 @@
 
     <ui:define name="dialogs.0">
         <c:if test="${verifiable}">
-            <sem:singleVerifierSupportDialog id="verifyDialog" update=":mainForm:toolbar" />
+            <sem:singleVerifierSupportDialog id="verifyDialog" update=":mainForm:toolbar, :editDialog:form" />
         </c:if>
     </ui:define>
 </ui:composition>
