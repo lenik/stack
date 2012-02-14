@@ -102,10 +102,19 @@ public abstract class ServletTestCase
         }
 
         @Override
+        protected String getLocalHost() {
+            return getOuter().getLocalHost();
+        }
+
+        @Override
         public int getPort() {
             return getOuter().getPort();
         }
 
+    }
+
+    protected String getLocalHost() {
+        return "localhost";
     }
 
     protected int getPort() {

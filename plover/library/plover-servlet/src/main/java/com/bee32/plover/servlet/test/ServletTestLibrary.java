@@ -261,6 +261,10 @@ public class ServletTestLibrary
 
     static final String DEFAULT_LOCATION = "";
 
+    protected String getLocalHost() {
+        return "localhost";
+    }
+
     protected URL getURL(String location)
             throws IOException {
         String urlString;
@@ -268,7 +272,7 @@ public class ServletTestLibrary
             urlString = location;
         else {
             String contextPath = getServletContext().getContextPath();
-            String root = "http://localhost:" + actualPort + contextPath;
+            String root = "http://" + getLocalHost() + ":" + actualPort + contextPath;
             if (!location.startsWith("/"))
                 location = "/" + location;
             urlString = root + location;
