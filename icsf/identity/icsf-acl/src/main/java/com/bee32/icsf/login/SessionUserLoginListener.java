@@ -25,15 +25,19 @@ public class SessionUserLoginListener
         // sessionUser.setInternalUser(_user);
         sessionUser.setUser(user);
 
-        Set<Principal> _imSet = _user.getImSet();
-        Set<Principal> _invSet = _user.getImSet();
-        Set<Integer> imIdSet = IdUtils.getIdSet(_imSet);
-        Set<Integer> invIdSet = IdUtils.getIdSet(_invSet);
-        sessionUser.setImIdSet(imIdSet);
-        sessionUser.setInvIdSet(invIdSet);
+        if (_user != null) {
+            Set<Principal> _imSet = _user.getImSet();
+            Set<Principal> _invSet = _user.getImSet();
+            Set<Integer> imIdSet = IdUtils.getIdSet(_imSet);
+            Set<Integer> invIdSet = IdUtils.getIdSet(_invSet);
+            sessionUser.setImIdSet(imIdSet);
+            sessionUser.setInvIdSet(invIdSet);
 
-        List<PrincipalDto> imSet = DTOs.mrefList(PrincipalDto.class, 0, _imSet);
-        sessionUser.setImSet(imSet);
+            List<PrincipalDto> imSet = DTOs.mrefList(PrincipalDto.class, 0, _imSet);
+            List<PrincipalDto> invSet = DTOs.mrefList(PrincipalDto.class, 0, _invSet);
+            sessionUser.setImSet(imSet);
+            sessionUser.setInvSet(invSet);
+        }
     }
 
     @Override

@@ -34,8 +34,7 @@ public class SessionUser
     Set<Integer> invIdSet = new HashSet<Integer>();
 
     List<PrincipalDto> imSet = new ArrayList<PrincipalDto>();
-
-    // List<UserDto> invUsers = new ArrayList<UserDto>();
+    List<PrincipalDto> invSet = new ArrayList<PrincipalDto>();
 
     public SessionUser() {
     }
@@ -85,7 +84,7 @@ public class SessionUser
     public User getInternalUserOpt() {
         if (internalUserOverride != null)
             return internalUserOverride;
-        if (user == null)
+        if (user == null || user.isNull())
             return null;
         Integer userId = user.getId();
         User internalUser = ctx.data.getRef(User.class, userId);
@@ -128,6 +127,16 @@ public class SessionUser
         if (imSet == null)
             throw new NullPointerException("imSet");
         this.imSet = imSet;
+    }
+
+    public List<PrincipalDto> getInvSet() {
+        return invSet;
+    }
+
+    public void setInvSet(List<PrincipalDto> invSet) {
+        if (invSet == null)
+            throw new NullPointerException("invSet");
+        this.invSet = invSet;
     }
 
     public synchronized void runAs(User user, Runnable runnable) {

@@ -78,7 +78,7 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
         Permission requiredPermission = new Permission(permissionBits);
 
         UserDto currentUser = SessionUser.getInstance().getUserOpt();
-        if (currentUser == null)
+        if (currentUser == null || currentUser.isNull())
             // currentUser = User.ANONYMOUS;
             return;
 
