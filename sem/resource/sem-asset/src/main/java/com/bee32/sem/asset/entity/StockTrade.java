@@ -11,8 +11,8 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 @Entity
-@DiscriminatorValue("TRAD")
-public class StockTrade
+@DiscriminatorValue(".ST")
+public abstract class StockTrade
         extends AccountTicketItem {
 
     private static final long serialVersionUID = 1L;
