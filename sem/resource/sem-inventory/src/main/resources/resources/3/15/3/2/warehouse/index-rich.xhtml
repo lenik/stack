@@ -4,6 +4,7 @@
 
     <ui:param name="title" value="仓库" />
     <ui:param name="bean" value="${stockWarehouseAdminBean}" />
+    <ui:param name="obj" value="#{bean.openedObject}" />
 
     <ui:define name="dataColumns">
         <p:column headerText="名称">
@@ -36,9 +37,10 @@
 
             <h:outputText value="负责人:" />
             <h:panelGroup>
-                <p:inputText value="#{obj.manager.displayName}" label="负责人" />
+                <p:inputText value="#{obj.manager.displayName}" label="负责人" disabled="true"/>
                 <p:commandButton value="..." oncomplete="chooseManagerDialog.show();">
-                    <f:setPropertyActionListener target="${choosePartyDialogBean.stereo}"
+                    <f:setPropertyActionListener
+                        target="${choosePartyDialogBean.stereo}"
                         value="PER" />
                 </p:commandButton>
             </h:panelGroup>
@@ -46,7 +48,7 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:choosePartyDialog id="chooseManagerDialog" var="chooseManagerDialog" stereo="PEO"
+        <sem:choosePartyDialog id="chooseManagerDialog" var="chooseManagerDialog" stereo="PER"
             header="选择负责人..." target="${obj.manager}" update=":editDialog:form" />
     </ui:define>
 

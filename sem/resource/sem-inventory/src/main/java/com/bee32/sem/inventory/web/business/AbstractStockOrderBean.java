@@ -34,7 +34,7 @@ public abstract class AbstractStockOrderBean
     protected StockOrderSubject subject;
     StockJobStepping stepping;
 
-    Integer selectedWarehouseId = -1;
+    int selectedWarehouseId = -1;
     OrgDto selectedOrg;
     OrgUnitDto selectedOrgUnit;
 

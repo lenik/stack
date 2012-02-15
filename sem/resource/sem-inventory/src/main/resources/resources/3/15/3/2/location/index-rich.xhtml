@@ -6,22 +6,24 @@
     <ui:param name="title" value="库位设置" />
     <ui:param name="bean" value="#{stockLocationAdminBean}" />
     <ui:param name="stock" value="#{stockDictsBean}" />
+    <ui:param name="things" value="#{thingDictsBean}" />
     <ui:param name="obj" value="#{bean.openedObject}" />
     <ui:param name="sideBarNVisible" value="true" />
+    <ui:param name="mirrorTargets" value=":location-d:form" />
 
-    <ui:define name="sideBarN">
+    <ui:define name="toolbarContexts">
         <h:outputText value="仓库:" />
-        <p:selectOneMenu id="stockWarehouseId" label="仓库" value="#{bean.selectedWarehouse.id}">
+        <p:selectOneMenu id="stockWarehouseId" label="仓库" value="#{bean.selectedWarehouseId}">
             <f:selectItem itemValue="-1" itemLabel="--选择仓库--" />
             <f:selectItems value="#{stock.warehouseSelectItems}" />
-            <p:ajax event="change" listener="#{bean.onSwChange}" update=":mainForm" />
+            <p:ajax event="change" update=":mainForm" />
         </p:selectOneMenu>
 
     </ui:define>
 
     <ui:define name="dataColumns">
         <p:column headerText="库位">
-            <h:outputText value="#{entry.nodeText}" />
+            <h:outputText value="#{entry.label}" />
         </p:column>
         <p:column headerText="所属仓库">
             <h:outputText value="#{entry.warehouse.label}" />
@@ -32,23 +34,20 @@
         <t:panelGrid columns="2">
             <h:outputLabel value="所属库位" />
             <h:panelGrid columns="2">
-                <p:inputText value="#{obj.parent.nodeText}" disabled="true" label="所属库位"/>
+                <p:inputText value="#{obj.parent.label}" disabled="true" label="所属库位"/>
                 <p:commandButton value="..." onclick="chooseStockLocationDialog.show();" />
             </h:panelGrid>
 
             <h:outputLabel for="name" value="名称" />
             <p:inputText id="name" value="#{obj.label}" label="名称"/>
 
-            <h:outputLabel for="address" value="地址" />
-            <p:inputText id="address" value="#{obj.address}" label="地址"/>
-
             <h:outputLabel for="capacity" value="容量" />
             <p:inputText id="capacity" value="#{obj.capacity}" label="容量"/>
 
             <h:outputLabel for="capacityUnit" value="容量单位" />
-            <p:selectOneMenu id="unit" value="#{obj.capacityUnit.id}" style="width:150px;" label="容量单位">
-                <f:selectItem itemValue="" itemLabel="--选择单位--" />
-                <f:selectItems value="#{bean.units}" />
+            <p:selectOneMenu id="unit" value="#{obj.capacityUnit.idOpt}" style="width:150px;" label="容量单位">
+                <f:selectItem itemLabel="" itemValue="" />
+                <f:selectItems value="#{things.unitSelectItems}" />
             </p:selectOneMenu>
 
             <h:outputText value="容量单位提示" />
@@ -60,7 +59,7 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:chooseStockLocationDialog target="#{obj.parent}" />
+        <sem:chooseStockLocationDialog id="location-d" target="#{obj.parent}" update=":editDialog:form"/>
     </ui:define>
 
 </ui:composition>

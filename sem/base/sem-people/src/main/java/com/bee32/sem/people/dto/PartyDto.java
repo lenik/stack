@@ -151,7 +151,7 @@ public class PartyDto
         setLabel(name);
     }
 
-    @NLength(min = 2, max = Party.FULLNAME_LENGTH)
+    @NLength(max = Party.FULLNAME_LENGTH)
     public String getFullName() {
         return fullName;
     }

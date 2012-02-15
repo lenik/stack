@@ -8,6 +8,9 @@
     <ui:define name="toolbar">
         <p:toolbar id="toolbar">
             <p:toolbarGroup align="left">
+                <ui:insert name="toolbarContexts" />
+            </p:toolbarGroup>
+            <p:toolbarGroup align="left">
                 <p:commandButton id="createButton" value="新建" rendered="${creatable != null ? creatable : true}"
                     actionListener="${bean.showCreateForm}" oncomplete="${plainEditForm ? '' : 'editDialog.show()'}"
                     update=":editDialog:form" />
