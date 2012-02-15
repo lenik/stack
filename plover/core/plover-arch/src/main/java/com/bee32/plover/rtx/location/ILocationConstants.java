@@ -17,19 +17,19 @@ public interface ILocationConstants {
     Location LIB_JS = new ServletContextLocation("lib/js/");
 
     Location STYLE_ROOT = new PredefinedContextLocation("STYLE-ROOT", //
-            "http://st1.cdn.bee32.com/style/");
+            "https://st1.cdn.bee32.com/style/");
 
     Location STYLE = new PredefinedContextLocation("STYLE", //
-            "http://st1.cdn.bee32.com/style/default/");
+            "https://st1.cdn.bee32.com/style/default/");
 
     Location ICON = new PredefinedContextLocation("STYLE-ICON", //
-            "http://st1.cdn.bee32.com/style/default/icons/");
+            "https://st1.cdn.bee32.com/style/default/icons/");
 
     Location SYMBOLS = new PredefinedContextLocation("SYMBOLS", //
-            "http://st1.cdn.bee32.com/symbols/");
+            "https://st1.cdn.bee32.com/symbols/");
 
     Location LIB_3RDPARTY = new PredefinedContextLocation("LIB-3RDPARTY", //
-            "http://st1.cdn.bee32.com/lib2/");
+            "https://st1.cdn.bee32.com/lib2/");
 
 }
 
