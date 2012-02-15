@@ -12,6 +12,8 @@ import com.bee32.plover.inject.NotAComponent;
 /**
  * An SRL-adapter for {@link PloverHslMultiplexer}.
  *
+ * http-request -> SRL multiplexer -> (this) -> HSL multiplexer -> HSL*.
+ *
  * @see PloverHslMultiplexer
  * @see PloverSrlMultiplexer
  */

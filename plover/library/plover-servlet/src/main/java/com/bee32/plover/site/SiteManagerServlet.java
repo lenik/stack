@@ -429,6 +429,7 @@ public class SiteManagerServlet
                 for (SiteInstance site : manager.getSites()) {
                     String name = site.getName();
                     String label = site.getLabel();
+                    SiteStats stats = site.getStats();
                     tr();
                     td().text(name).end();
                     td().text(label).end();
@@ -441,20 +442,20 @@ public class SiteManagerServlet
                     }
                     td().text("" + site.getStartupDuration()).end();
 
-                    td().text("" + site.getServiceTime() / 1000).end();
-                    td().text("" + site.getBee32ServiceTime() / 1000).end();
-                    td().text("" + site.getMicroServiceTime() / 1000).end();
-                    td().text("" + site.getOtherServiceTime() / 1000).end();
+                    td().text("" + stats.getServiceTime() / 1000).end();
+                    td().text("" + stats.getBee32ServiceTime() / 1000).end();
+                    td().text("" + stats.getMicroServiceTime() / 1000).end();
+                    td().text("" + stats.getOtherServiceTime() / 1000).end();
 
-                    td().text("" + site.getRequestCount()).end();
-                    td().text("" + site.getBee32RequestCount()).end();
-                    td().text("" + site.getMicroRequestCount()).end();
-                    td().text("" + site.getOtherRequestCount()).end();
+                    td().text("" + stats.getRequestCount()).end();
+                    td().text("" + stats.getBee32RequestCount()).end();
+                    td().text("" + stats.getMicroRequestCount()).end();
+                    td().text("" + stats.getOtherRequestCount()).end();
 
-                    td().text("" + site.getMeanServiceTime()).end();
-                    td().text("" + site.getMeanBee32ServiceTime()).end();
-                    td().text("" + site.getMeanMicroServiceTime()).end();
-                    td().text("" + site.getMeanOtherServiceTime()).end();
+                    td().text("" + stats.getMeanServiceTime()).end();
+                    td().text("" + stats.getMeanBee32ServiceTime()).end();
+                    td().text("" + stats.getMeanMicroServiceTime()).end();
+                    td().text("" + stats.getMeanOtherServiceTime()).end();
 
                     td();
                     {
