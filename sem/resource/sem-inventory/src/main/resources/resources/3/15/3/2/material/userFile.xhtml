@@ -1,5 +1,6 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:sem="http://java.sun.com/jsf/composite/3/15"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
 
     <sem:uploadFileDialog id="addUserFileDialog" var="addUserFileDialog" update=":userFileDialog:form:userFiles"
         fileUploadListener="#{bean.addUserFileListener.handleFileUpload}" />
@@ -25,7 +26,11 @@
             </p:column>
 
             <p:column headerText="操作" style="width:100px;">
-                <p:commandLink title="编辑" update=":editUserFileForm" oncomplete="editUserFileDialog.show()">
+                <p:commandLink
+                    title="编辑"
+                    update=":editUserFileForm"
+                    oncomplete="editUserFileDialog.show()"
+                    action="#{bean.reloadUserFile}">
                     <f:setPropertyActionListener value="#{userFile}" target="#{bean.userFile}" />
                     <p:graphicImage value="#{location.ICON}/etool16/editor_area.gif" />
                 </p:commandLink>
@@ -40,36 +45,37 @@
         </p:dataTable>
     </sem:materialFragmentDialog>
 
-    <p:dialog header="编辑物料附件" widgetVar="editUserFileDialog" modal="true">
-        <h:form id="editUserFileForm">
-
-            <h:panelGrid id="editUserFilePanel" columns="2">
-
-                <h:panelGroup colspan="2">
+    <h:form id="editUserFileForm">
+        <p:dialog header="编辑物料附件" widgetVar="editUserFileDialog" modal="true">
+            <t:panelGrid id="editUserFilePanel" columns="2">
+                <t:panelGroup colspan="2">
                     <div align="center">
-                        <img src="#{bean.userFile.imageHref}" border="1" />
+                        <img src="#{bean.userFile.imageHref}" border="1" style="width:640px;height:480px;"/>
                     </div>
-                </h:panelGroup>
+                </t:panelGroup>
 
                 <h:outputText value="附件名:" />
-                <h:panelGroup>
-                    <p:inputText value="#{bean.userFile.name}" style="width:270px;" label="附件名"/>
-                </h:panelGroup>
+                <t:panelGrid columns="2">
+                    <p:inputText value="#{bean.userFile.fileName.base}" style="width:270px;" label="附件名"/>
+                    <h:outputText value="#{bean.userFile.fileName.extension}"/>
+                </t:panelGrid>
 
                 <h:outputText value="附件标题:" />
                 <p:inputText value="#{bean.userFile.label}" style="width:270px;" label="附件标题"/>
 
                 <h:outputText value="附件描述:" />
                 <p:inputTextarea value="#{bean.userFile.description}" style="width:270px;height:50px;" label="附件描述"/>
-
-            </h:panelGrid>
+            </t:panelGrid>
             <div align="right">
-                <p:commandButton value="保存" actionListener="#{bean.updateUserFile}" update=":userFileDialog:form"
+                <p:commandButton
+                    value="保存"
+                    actionListener="#{bean.updateUserFile}"
+                    update=":userFileDialog:form"
                     oncomplete="editUserFileDialog.hide()" />
                 <p:commandButton value="关闭" onclick="editUserFileDialog.hide()" />
             </div>
-        </h:form>
-    </p:dialog>
+        </p:dialog>
+    </h:form>
 
     <p:confirmDialog message="确定要删除吗?" width="200" header="删除确认" severity="alert" widgetVar="deleteUserFileConfirmDialog"
         modal="true">

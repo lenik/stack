@@ -33,7 +33,7 @@ public class SEMInventoryModuleTest
             throws IOException {
         new SEMInventoryModuleTest().browseAndWait(//
                 // SEMInventoryModule.PREFIX + "/material/" //
-                SEMInventoryModule.PREFIX + "/take/?subject=TK_O" //
+                SEMInventoryModule.PREFIX + "/stock/?subject=TK_I" //
                 );
     }
 

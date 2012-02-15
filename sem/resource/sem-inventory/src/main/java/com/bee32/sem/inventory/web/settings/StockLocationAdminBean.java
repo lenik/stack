@@ -55,13 +55,6 @@ public class StockLocationAdminBean
         super.save(saveFlags, hint);
     }
 
-    public synchronized List<StockWarehouseDto> getWarehouses() {
-        if (warehouses == null) {
-            List<StockWarehouse> _warehouses = ctx.data.access(StockWarehouse.class).list();
-            warehouses = DTOs.mrefList(StockWarehouseDto.class, _warehouses);
-        }
-        return warehouses;
-    }
 
     public synchronized List<UnitDto> getUnits() {
         if (units == null) {

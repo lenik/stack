@@ -352,6 +352,10 @@ public class MaterialExAdminBean
         };
     }
 
+    public void reloadUserFile() {
+        userFile = reload(userFile);
+    }
+
     public void updateUserFile() {
         UserFile file = userFile.unmarshal();
         try {

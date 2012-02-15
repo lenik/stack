@@ -79,7 +79,7 @@
         <c:set var="obj" value="${bean.openedObject}" />
         <h:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
             <h:outputText value="文件名" />
-            <p:inputText value="${obj.name}" label="文件名"/>
+            <p:inputText value="${obj.fileName.base}" label="文件名"/>
 
             <h:outputText value="标题" />
             <p:inputText value="${obj.label}" label="标题"/>

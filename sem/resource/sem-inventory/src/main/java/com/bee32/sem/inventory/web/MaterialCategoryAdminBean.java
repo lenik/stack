@@ -10,6 +10,7 @@ import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.entity.MaterialType;
 import com.bee32.sem.misc.SimpleTreeEntityViewBean;
+import com.bee32.sem.misc.UnmarshalMap;
 
 @ForEntity(MaterialCategory.class)
 public class MaterialCategoryAdminBean
@@ -20,6 +21,13 @@ public class MaterialCategoryAdminBean
     public MaterialCategoryAdminBean() {
         super(MaterialCategory.class, MaterialCategoryDto.class, 0);
     }
+
+    @Override
+    protected void postUpdate(UnmarshalMap uMap) throws Exception {
+        super.postUpdate(uMap);
+        ctx.bean.getBean(ChooseMaterialCategoryDialogBean.class).refreshTree();
+    }
+
 
     public List<SelectItem> getMaterialTypes() {
         List<SelectItem> materialTypes = new ArrayList<SelectItem>();

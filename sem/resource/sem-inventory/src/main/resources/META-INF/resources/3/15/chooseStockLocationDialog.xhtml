@@ -40,7 +40,7 @@
 
             <ui:define name="columns">
                 <p:column headerText="库位">
-                    <h:outputText value="${entry.nodeText}" />
+                    <h:outputText value="${entry.label}" />
                 </p:column>
                 <p:column headerText="所属仓库">
                     <h:outputText value="${entry.warehouse.label}" />
@@ -53,7 +53,7 @@
                         <p:dataTable id="preferredLocations" value="${dialogBean.preferredLocations}" var="entry"
                             selection="${dialogBean.selectedPreferredLocation}" selectionMode="single" resizableColumns="true">
                             <p:column headerText="库位">
-                                <h:outputText value="${entry.nodeText}" />
+                                <h:outputText value="${entry.label}" />
                             </p:column>
                             <p:column headerText="所属仓库">
                                 <h:outputText value="${entry.warehouse.label}" />

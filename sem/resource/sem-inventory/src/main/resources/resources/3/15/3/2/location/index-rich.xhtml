@@ -5,16 +5,18 @@
 
     <ui:param name="title" value="库位设置" />
     <ui:param name="bean" value="#{stockLocationAdminBean}" />
+    <ui:param name="stock" value="#{stockDictsBean}" />
     <ui:param name="obj" value="#{bean.openedObject}" />
     <ui:param name="sideBarNVisible" value="true" />
 
     <ui:define name="sideBarN">
         <h:outputText value="仓库:" />
-        <p:selectOneMenu id="stockWarehouseId" value="#{bean.selectedWarehouse.id}">
-            <f:selectItem itemValue="" itemLabel="--选择仓库--" />
-            <f:selectItems value="#{bean.warehouses}" itemVar="item" itemLabel="${item.label}" itemValue="${item.id}" />
+        <p:selectOneMenu id="stockWarehouseId" label="仓库" value="#{bean.selectedWarehouse.id}">
+            <f:selectItem itemValue="-1" itemLabel="--选择仓库--" />
+            <f:selectItems value="#{stock.warehouseSelectItems}" />
             <p:ajax event="change" listener="#{bean.onSwChange}" update=":mainForm" />
         </p:selectOneMenu>
+
     </ui:define>
 
     <ui:define name="dataColumns">

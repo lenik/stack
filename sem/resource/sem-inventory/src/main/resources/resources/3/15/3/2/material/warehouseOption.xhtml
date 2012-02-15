@@ -37,11 +37,11 @@
 
                 <h:panelGrid id="addWarehouseOptionPanel" columns="2">
                     <h:outputText value="仓库:" />
-                    <p:selectOneMenu value="#{bean.warehouseOption.warehouse.id}" style="width:150px;" label="仓库">
-                        <f:selectItem itemValue="" itemLabel="--选择仓库--" />
-                        <f:selectItems value="#{stockLocationAdminBean.warehouses}" var="it" itemLabel="${it.name}"
-                            itemValue="${it.id}" />
+                    <p:selectOneMenu label="仓库" value="#{bean.warehouseOption.warehouse.id}" >
+                        <f:selectItem itemValue="-1" itemLabel="--选择仓库--" />
+                        <f:selectItems value="#{stock.warehouseSelectItems}" />
                     </p:selectOneMenu>
+
 
                     <h:outputText value="安全库存:" />
                     <p:spinner value="#{bean.warehouseOption.safetyStock}" label="安全库存"/>

@@ -34,7 +34,7 @@
         </p:dataTable>
     </sem:materialFragmentDialog>
 
-    <p:dialog header="新增价格" widgetVar="addUnitScaleDialog" modal="true">
+    <p:dialog header="新增单位换算" widgetVar="addUnitScaleDialog" modal="true">
         <h:form id="addUnitScaleForm">
 
             <h:panelGrid id="addUnitScalePanel" columns="2">
@@ -47,7 +47,7 @@
                 <h:outputText value="换算率" />
                 <p:inputText value="#{bean.scaleItem.scale}" label="换算率"/>
 
-                <p:commandButton actionListener="#{bean.addUnitScale}" update=":unitConvDialog:form:scaleMap"
+                <p:commandButton actionListener="#{bean.addUnitScale}" update=":unitConvDialog:form"
                     value="保存" oncomplete="addUnitScaleDialog.hide()" />
                 <p:commandButton value="关闭" onclick="addUnitScaleDialog.hide()" />
             </h:panelGrid>
