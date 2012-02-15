@@ -1,6 +1,6 @@
 package com.bee32.plover.faces.diag;
 
-import com.bee32.plover.faces.PloverErrorPageRenderer;
+import com.bee32.plover.arch.logging.ExceptionFormat;
 
 public class StackTraceElementWrapper {
 
@@ -47,7 +47,7 @@ public class StackTraceElementWrapper {
 
     public String getHtml() {
         String line = getLine();
-        return PloverErrorPageRenderer.highlight(line);
+        return ExceptionFormat.highlightPackageNames(line);
     }
 
     @Override

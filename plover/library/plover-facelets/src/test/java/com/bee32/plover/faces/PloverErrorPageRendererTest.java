@@ -8,7 +8,7 @@ import org.apache.myfaces.renderkit.ErrorPageRenderer;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.bee32.plover.faces.PloverErrorPageRenderer;
+import com.bee32.plover.arch.logging.ExceptionFormat;
 
 public class PloverErrorPageRendererTest
         extends Assert {
@@ -17,7 +17,7 @@ public class PloverErrorPageRendererTest
     public void testHighlight() {
         String src = "java.lang.String\n    com.bee32.abc.def (line 3)\nEOT";
         String exp = "java.lang.String\n    <b>com.bee32.abc.def</b> (line 3)\nEOT";
-        String actual = PloverErrorPageRenderer.highlight(src);
+        String actual = ExceptionFormat.highlightPackageNames(src);
         assertEquals(exp, actual);
     }
 
