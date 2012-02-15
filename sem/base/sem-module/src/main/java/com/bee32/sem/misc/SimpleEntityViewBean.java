@@ -464,6 +464,20 @@ public class SimpleEntityViewBean
             }
         }
 
+        if (!lockedList.isEmpty()) {
+            StringBuilder buf = null;
+            for (Entity<?> lockedEntity : lockedList) {
+                if (buf == null)
+                    buf = new StringBuilder("以下对象被锁定：\n");
+                else
+                    buf.append(", \n");
+                String entryText = lockedEntity.getEntryLabel();
+                buf.append("    " + entryText);
+            }
+            uiLogger.error("不能" + hint + "锁定的对象: " + buf.toString());
+            return;
+        }
+
         try {
             if (!__preUpdate(uMap))
                 return;
@@ -486,7 +500,6 @@ public class SimpleEntityViewBean
                 ctx.data.access(entityClass).saveAll(entities);
             else
                 ctx.data.access(entityClass).saveOrUpdateAll(entities);
-            // refreshCount();
         } catch (Exception e) {
             uiLogger.error(hint + "失败", e);
             return;
