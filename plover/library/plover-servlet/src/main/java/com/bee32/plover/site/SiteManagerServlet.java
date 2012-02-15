@@ -1,16 +1,21 @@
 package com.bee32.plover.site;
 
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.free.Dates;
 import javax.free.Doc;
 import javax.free.StringArray;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.plover.arch.logging.ExceptionFormat;
+import com.bee32.plover.arch.logging.ExceptionLog;
+import com.bee32.plover.arch.logging.ExceptionLogEntry;
 import com.bee32.plover.html.PageDefMap;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
@@ -41,6 +46,7 @@ public class SiteManagerServlet
         pages.add(DataMaintainance.class);
         pages.add(CacheManager.class);
         pages.add(Monitor.class);
+        pages.add(ExceptionView.class);
         pages.add(HelpDoc.class);
     }
 
@@ -385,6 +391,150 @@ public class SiteManagerServlet
 
         public Monitor(Map<String, ?> _args) {
             super(_args);
+        }
+
+        @Override
+        protected void _content()
+                throws Exception {
+            SiteManager manager = SiteManager.getInstance();
+            table().border("1");
+            {
+                tr();
+                th().rowspan("2").text("站点").end();
+                th().rowspan("2").text("标题").end();
+                th().rowspan("2").text("启动时间").end();
+                th().rowspan("2").text("启动耗时").end();
+
+                th().colspan("4").text("服务时间 (s)").end();
+                th().colspan("4").text("请求数").end();
+                th().colspan("4").text("平均请求处理时间 (ms)").end();
+
+                th().rowspan("2").text("异常数").end();
+                end();
+                tr();
+                th().text("总").end();
+                th().text("发起").end();
+                th().text("微请求").end();
+                th().text("其它").end();
+                th().text("总").end();
+                th().text("发起").end();
+                th().text("微请求").end();
+                th().text("其它").end();
+                th().text("总").end();
+                th().text("发起").end();
+                th().text("微请求").end();
+                th().text("其它").end();
+                end();
+
+                for (SiteInstance site : manager.getSites()) {
+                    String name = site.getName();
+                    String label = site.getLabel();
+                    tr();
+                    td().text(name).end();
+                    td().text(label).end();
+                    td();
+                    {
+                        Date startup = site.getStartup();
+                        if (startup != null)
+                            text(Dates.sysDateTimeFormat.format(startup));
+                        end();
+                    }
+                    td().text("" + site.getStartupDuration()).end();
+
+                    td().text("" + site.getServiceTime() / 1000).end();
+                    td().text("" + site.getBee32ServiceTime() / 1000).end();
+                    td().text("" + site.getMicroServiceTime() / 1000).end();
+                    td().text("" + site.getOtherServiceTime() / 1000).end();
+
+                    td().text("" + site.getRequestCount()).end();
+                    td().text("" + site.getBee32RequestCount()).end();
+                    td().text("" + site.getMicroRequestCount()).end();
+                    td().text("" + site.getOtherRequestCount()).end();
+
+                    td().text("" + site.getMeanServiceTime()).end();
+                    td().text("" + site.getMeanBee32ServiceTime()).end();
+                    td().text("" + site.getMeanMicroServiceTime()).end();
+                    td().text("" + site.getMeanOtherServiceTime()).end();
+
+                    td();
+                    {
+                        ExceptionLog log = (ExceptionLog) site.getAttribute(SiteElt.LOG_KEY);
+                        if (log != null) {
+                            a().href("exceptionView?site=" + name);
+                            text(log.getEntries().size() + " exceptions");
+                            end();
+                        }
+                        end();
+                    }
+                    end();
+                }
+                end();
+            }
+        }
+    }
+
+    @Doc("错误信息")
+    public static class ExceptionView
+            extends SiteTemplate {
+
+        public ExceptionView(Map<String, ?> _args) {
+            super(_args);
+        }
+
+        @Override
+        protected void _content()
+                throws Exception {
+            SiteInstance site;
+            if (this.site == null)
+                site = ThreadHttpContext.getSiteInstance();
+            else
+                site = this.site;
+
+            ExceptionLog log = (ExceptionLog) site.getAttribute(SiteElt.LOG_KEY);
+            if (log == null) {
+                text("Not available.");
+                return;
+            }
+
+            Integer selection = args.getNInt("selection");
+            if (selection == null) {
+                ol();
+                table();
+                int index = 0;
+                for (ExceptionLogEntry entry : log.getEntries()) {
+                    Throwable exception = entry.getException();
+                    tr();
+                    td();
+                    {
+                        li();
+                        a();
+                        {
+                            href("exceptionView?site=" + site.getName() + "&selection=" + (index++));
+                            b().text("" + entry.getMessage()).end();
+                            end();
+                        }
+                        br().end();
+                        text(exception.getClass().getCanonicalName() + ": " + exception.getLocalizedMessage());
+                        end(2);
+                    }
+                    end();
+                }
+                end();
+            } else {
+                ExceptionLogEntry entry = log.getEntries().get(selection);
+                table();
+                tr().th().text("源请求地址").end()//
+                        .td().text("N/A").end(2);
+                tr().th().text("异常时间").end()//
+                        .td().text(Dates.sysDateTimeFormat.format(entry.getDate())).end(2);
+                tr().th().text("错误消息").end()//
+                        .td().text("" + entry.getMessage()).end(2);
+                end();
+                hr().end();
+
+                String stackTrace = ExceptionFormat.highlight(entry.getException());
+                out.write("<pre>" + stackTrace + "</pre>");
+            }
         }
 
     }

@@ -1,7 +1,14 @@
 package com.bee32.plover.site.scope;
 
-import javax.servlet.ServletRequestEvent;
+import java.util.Date;
 
+import javax.servlet.ServletRequestEvent;
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.bee32.plover.servlet.PloverServletModule;
 import com.bee32.plover.servlet.peripheral.AbstractSrl;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.servlet.util.ThreadServletRequestListener;
@@ -18,7 +25,11 @@ import com.bee32.plover.site.SiteManager;
 public class SiteStartStopListener
         extends AbstractSrl {
 
+    static Logger logger = LoggerFactory.getLogger(SiteStartStopListener.class);
+
     public static final int PRIORITY = 10;
+
+    public static final String REQUEST_BEGIN_ATTRIBUTE = "requestBegin";
 
     SiteManager siteManager = SiteManager.getInstance();
 
@@ -29,12 +40,42 @@ public class SiteStartStopListener
 
     @Override
     public void requestInitialized(ServletRequestEvent sre) {
-        SiteInstance site = ThreadHttpContext.getSiteInstance();
+        HttpServletRequest request = (HttpServletRequest) sre.getServletRequest();
+
+        // Skip plover-servlet ops.
+        String contextPath = request.getSession().getServletContext().getContextPath();
+        String _prefix = contextPath + PloverServletModule.PREFIX_;
+        String requestURI = request.getRequestURI();
+        if (requestURI.startsWith(_prefix))
+            return;
+
+        SiteInstance site = ThreadHttpContext.getSiteInstance(request);
+
+        request.setAttribute(REQUEST_BEGIN_ATTRIBUTE, new Date());
         site.start();
     }
 
     @Override
     public void requestDestroyed(ServletRequestEvent sre) {
+        HttpServletRequest request = (HttpServletRequest) sre.getServletRequest();
+        SiteInstance site = ThreadHttpContext.getSiteInstance(request);
+
+        Date requestBegin = (Date) request.getAttribute(REQUEST_BEGIN_ATTRIBUTE);
+        if (requestBegin != null) {
+            long serviceTime = new Date().getTime() - requestBegin.getTime();
+
+            // Skip plover-servlet ops.
+            boolean bee32 = false;
+            String contextPath = request.getSession().getServletContext().getContextPath();
+            String requestURI = request.getRequestURI();
+            if (requestURI.startsWith(contextPath + "/3"))
+                bee32 = true;
+
+            String facesRequest = request.getHeader("Faces-Request");
+            boolean micro = "partial/ajax".equals(facesRequest);
+
+            site.serviceComplete(serviceTime, bee32, micro);
+        }
     }
 
 }

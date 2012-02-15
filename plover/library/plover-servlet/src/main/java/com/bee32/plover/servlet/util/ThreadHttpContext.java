@@ -52,11 +52,15 @@ public class ThreadHttpContext
     public static boolean autoCreateMode = false;
 
     public static SiteInstance getSiteInstance() {
+        HttpServletRequest request = allowNullRequest ? getRequestOpt() : getRequest();
+        return getSiteInstance(request);
+    }
+
+    public static SiteInstance getSiteInstance(HttpServletRequest request) {
         SiteManager siteManager = SiteManager.getInstance();
 
         String siteAlias = SiteNaming.getDefaultSiteName();
 
-        HttpServletRequest request = allowNullRequest ? getRequestOpt() : getRequest();
         if (request != null)
             siteAlias = SiteNaming.getSiteAlias(request);
 

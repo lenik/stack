@@ -21,7 +21,7 @@ import com.googlecode.jatl.Html;
 public abstract class AbstractHtmlTemplate
         extends Html {
 
-    Writer out;
+    protected final Writer out;
     boolean instantiated;
 
     public AbstractHtmlTemplate() {

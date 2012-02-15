@@ -2,6 +2,7 @@ package com.bee32.plover.site;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -33,6 +34,8 @@ public class SiteInstance
 
     static Logger logger = LoggerFactory.getLogger(SiteInstance.class);
 
+    public static final Location DEFAULT_LOGO_LOCATION = SYMBOLS.join("logo-full.png");
+
     public static final String CONFIG_EXTENSION = ".sif";
 
     public static final String ALIASES_KEY = "aliases";
@@ -53,14 +56,23 @@ public class SiteInstance
     public static final String AUTODDL_KEY = "autoddl";
     public static final String SAMPLES_KEY = "samples";
 
-    public static final Location DEFAULT_LOGO_LOCATION = SYMBOLS.join("logo-full.png");
-
     String name;
     File configFile;
     FormatProperties properties;
     boolean dirty;
     Map<String, Object> attributes = new HashMap<String, Object>();
     boolean started;
+    Date startup;
+    int startupDuration;
+
+    long requestCount;
+    long serviceTime;
+    long otherRequestCount;
+    long otherServiceTime;
+    long bee32RequestCount;
+    long bee32ServiceTime;
+    long microRequestCount;
+    long microServiceTime;
 
     public SiteInstance() {
         configFile = null;
@@ -430,7 +442,9 @@ public class SiteInstance
 
     public synchronized void start() {
         if (!started) {
+            startup = new Date();
             SiteLifecycleDispatcher.startSite(this);
+            startupDuration = (int) (new Date().getTime() - startup.getTime());
             started = true;
         }
     }
@@ -439,6 +453,90 @@ public class SiteInstance
         if (started) {
             SiteLifecycleDispatcher.stopSite(this);
             started = false;
+        }
+    }
+
+    public Date getStartup() {
+        return startup;
+    }
+
+    public int getStartupDuration() {
+        return startupDuration;
+    }
+
+    public long getRequestCount() {
+        return requestCount;
+    }
+
+    public long getServiceTime() {
+        return serviceTime;
+    }
+
+    public float getMeanServiceTime() {
+        if (requestCount == 0)
+            return Float.NaN;
+        else
+            return (float) serviceTime / (float) requestCount;
+    }
+
+    public long getOtherRequestCount() {
+        return otherRequestCount;
+    }
+
+    public long getOtherServiceTime() {
+        return otherServiceTime;
+    }
+
+    public float getMeanOtherServiceTime() {
+        if (otherRequestCount == 0)
+            return Float.NaN;
+        else
+            return (float) otherServiceTime / (float) otherRequestCount;
+    }
+
+    public long getBee32RequestCount() {
+        return bee32RequestCount;
+    }
+
+    public long getBee32ServiceTime() {
+        return bee32ServiceTime;
+    }
+
+    public float getMeanBee32ServiceTime() {
+        if (bee32RequestCount == 0)
+            return Float.NaN;
+        else
+            return (float) bee32ServiceTime / (float) bee32RequestCount;
+    }
+
+    public long getMicroRequestCount() {
+        return microRequestCount;
+    }
+
+    public long getMicroServiceTime() {
+        return microServiceTime;
+    }
+
+    public float getMeanMicroServiceTime() {
+        if (microRequestCount == 0)
+            return Float.NaN;
+        else
+            return (float) microServiceTime / (float) microRequestCount;
+    }
+
+    public void serviceComplete(long serviceTime, boolean bee32, boolean micro) {
+        this.requestCount++;
+        this.serviceTime += serviceTime;
+        if (bee32) {
+            this.bee32RequestCount++;
+            this.bee32ServiceTime += serviceTime;
+        }
+        if (micro) {
+            this.microRequestCount++;
+            this.microServiceTime += serviceTime;
+        }
+        if (!bee32 && !micro) {
+            this.otherRequestCount++;
         }
     }
 
