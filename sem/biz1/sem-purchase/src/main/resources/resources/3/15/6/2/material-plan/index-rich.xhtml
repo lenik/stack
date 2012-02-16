@@ -37,7 +37,7 @@
 
             <h:outputText value="生产任务单" />
             <t:panelGroup>
-                <h:inputHidden label="生产任务单" value="#{obj.task.idRequired}" />
+                <h:inputHidden label="生产任务单" value="#{obj.task.id_RZ}" />
                 <p:inputText id="task" value="#{obj.task.label}" disabled="true" />
                 <p:commandButton value="..." onclick="chooseMakeTaskDialog.show()" disabled="#{not bean.editing}" />
             </t:panelGroup>

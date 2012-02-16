@@ -27,6 +27,11 @@ public class SEMPurchaseModuleTest
         return "admin";
     }
 
+    @Override
+    protected String getLocalHost() {
+        return "play.lo";
+    }
+
     public static void main(String[] args)
             throws IOException {
         new SEMPurchaseModuleTest().browseAndWait(SEMPurchaseModule.PREFIX + "/make-order/");

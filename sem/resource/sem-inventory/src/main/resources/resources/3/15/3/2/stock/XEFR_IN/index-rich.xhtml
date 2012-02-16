@@ -26,8 +26,8 @@
                 <p:inputText id="jobDescription" label="作业描述" value="#{job.description}" />
 
                 <h:outputLabel for="destWarehouse" value="目标仓库" />
-                <p:selectOneMenu id="destWarehouse" label="目标仓库" style="width: 20em;"
-                    value="#{job.destWarehouse.idRequiredInt}" disabled="true">
+                <p:selectOneMenu id="destWarehouse" label="目标仓库" style="width: 20em;" value="#{job.destWarehouse.id_RZ}"
+                    disabled="true">
                     <f:selectItem itemValue="0" itemLabel="--选择仓库--" />
                     <f:selectItems value="#{stock.warehouseSelectItems}" />
                 </p:selectOneMenu>
@@ -35,7 +35,7 @@
                 <h:outputLabel for="transferredBy" value="调拨人员" />
                 <h:panelGroup>
                     <p:inputText id="transferredby" readonly="true" value="#{job.transferredBy.displayName}"
-                        style="width: 20em;" label="调拨人员"/>
+                        style="width: 20em;" label="调拨人员" />
                     <p:commandButton value="..." disabled="true" update=":chooseTransferrerDialog:form"
                         oncomplete="chooseTransferrerDialog.show()">
                         <f:setPropertyActionListener target="#{choosePartyDialogBean.stereo}"
@@ -44,7 +44,7 @@
                 </h:panelGroup>
 
                 <h:outputText value="对应的库存调出单：" />
-                <p:inputText id="jobSource" value="#{job.source.label}" disabled="true" label="对应的库存调出单"/>
+                <p:inputText id="jobSource" value="#{job.source.label}" disabled="true" label="对应的库存调出单" />
             </h:panelGrid>
         </p:panel>
     </ui:define>
@@ -91,11 +91,12 @@
                     <h:outputText value="#{bean.selectedSourceItem.quantity}" />
 
                     <h:outputText value="拨入数量" />
-                    <p:inputText value="#{bean.destItem.quantity}" label="拨入数量"/>
+                    <p:inputText value="#{bean.destItem.quantity}" label="拨入数量" />
 
                     <h:outputText value="库位" />
                     <t:panelGroup>
-                        <p:inputText id="location" value="#{bean.destItem.location.label}" readonly="true" label="库位"/>
+                        <p:inputText id="location" value="#{bean.destItem.location.label}" readonly="true"
+                            label="库位" />
                         <p:commandButton value="..." onclick="chooseDestLocationDialog.show()" />
                     </t:panelGroup>
                 </h:panelGrid>

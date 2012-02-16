@@ -26,4 +26,8 @@ public @interface RequiredId {
 
     Class<? extends Payload>[] payload() default {};
 
+    boolean empty() default false;
+
+    boolean zero() default false;
+
 }

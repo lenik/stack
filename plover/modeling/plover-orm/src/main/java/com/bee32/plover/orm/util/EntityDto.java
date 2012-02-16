@@ -14,6 +14,7 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.orm.hibernate3.HibernateSystemException;
 
 import com.bee32.plover.arch.util.ClassUtil;
@@ -103,7 +104,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     public void setIdOpt(K id) {
-        this.id=id;
+        this.id = id;
     }
 
     /**
@@ -548,16 +549,18 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     @RequiredId
-    public final K getIdRequired() {
+    public final K getId_R() {
         return getId();
     }
 
-    public final void setIdRequired(K id) {
+    public final void setId_R(K id) {
+        if (id == null)
+            throw new NullPointerException("id");
         setId(id);
     }
 
-    @RequiredId
-    public int getIdRequiredInt() {
+    @RequiredId(zero = false)
+    public final int getId_RZ() {
         if (id == null)
             return 0;
         else
@@ -565,12 +568,14 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     @SuppressWarnings("unchecked")
-    public void setIdRequiredInt(int id) {
+    public final void setId_RZ(int id) {
+        if (id == 0)
+            throw new IllegalArgumentException("id can't be zero");
         this.id = (K) (Integer) id;
     }
 
-    @RequiredId
-    public long getIdRequiredLong() {
+    @RequiredId(zero = false)
+    public final long getId_RZL() {
         if (id == null)
             return 0L;
         else
@@ -578,12 +583,14 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     @SuppressWarnings("unchecked")
-    public void setIdRequiredLong(long id) {
+    public final void setId_RZL(long id) {
+        if (id == 0L)
+            throw new IllegalArgumentException("id can't be zero: " + id);
         this.id = (K) (Long) id;
     }
 
-    @RequiredId
-    public String getIdRequiredString() {
+    @RequiredId(empty = false)
+    public final String getId_RE() {
         if (id == null)
             return "";
         else
@@ -591,9 +598,61 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     @SuppressWarnings("unchecked")
-    public void setIdRequiredString(String id) {
+    public final void setId_RE(String id) {
+        if (StringUtils.isEmpty(id))
+            throw new IllegalArgumentException("id can't be empty");
+        this.id = (K) id;
+    }
+
+    public final K getId_O() {
+        return getId();
+    }
+
+    public final void setId_O(K id) {
         if (id == null)
             throw new NullPointerException("id");
+        setId(id);
+    }
+
+    public final int getId_OZ() {
+        if (id == null)
+            return 0;
+        else
+            return (Integer) id;
+    }
+
+    @SuppressWarnings("unchecked")
+    public final void setId_OZ(int id) {
+        if (id == 0)
+            throw new IllegalArgumentException("id can't be zero");
+        this.id = (K) (Integer) id;
+    }
+
+    public final long getId_OZL() {
+        if (id == null)
+            return 0L;
+        else
+            return (Long) id;
+    }
+
+    @SuppressWarnings("unchecked")
+    public final void setId_OZL(long id) {
+        if (id == 0L)
+            throw new IllegalArgumentException("id can't be zero: " + id);
+        this.id = (K) (Long) id;
+    }
+
+    public final String getId_OE() {
+        if (id == null)
+            return "";
+        else
+            return (String) id;
+    }
+
+    @SuppressWarnings("unchecked")
+    public final void setId_OE(String id) {
+        if (StringUtils.isEmpty(id))
+            throw new IllegalArgumentException("id can't be empty");
         this.id = (K) id;
     }
 

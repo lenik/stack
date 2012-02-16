@@ -28,7 +28,7 @@
                 <t:panelGrid columns="2">
                     <h:outputLabel for="verifyAs" value="审核身份：" />
                     <p:selectOneMenu id="verifyAs" title="审核身份"
-                        value="${cc.attrs.dialogBean.verifier1Template.idRequiredInt}">
+                        value="${cc.attrs.dialogBean.verifier1Template.id_RZ}">
                         <f:selectItems value="${sessionUser.imSet}" var="p" itemValue="${p.id}" itemLabel="${p.displayName}" />
                     </p:selectOneMenu>
 

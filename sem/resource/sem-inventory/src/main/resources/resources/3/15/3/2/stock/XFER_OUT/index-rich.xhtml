@@ -16,8 +16,7 @@
                 <p:inputText id="jobDescription" label="作业描述" value="#{job.description}" />
 
                 <h:outputLabel for="destWarehouse" value="目标仓库" />
-                <p:selectOneMenu id="destWarehouse" label="目标仓库" style="width: 20em;"
-                    value="#{job.destWarehouse.idRequiredInt}">
+                <p:selectOneMenu id="destWarehouse" label="目标仓库" style="width: 20em;" value="#{job.destWarehouse.id_RZ}">
                     <f:selectItem itemValue="0" itemLabel="--选择仓库--" />
                     <f:selectItems value="#{stock.warehouseSelectItems}" />
                 </p:selectOneMenu>
@@ -25,7 +24,7 @@
                 <h:outputLabel for="transferredBy" value="调拨人员" />
                 <h:panelGroup>
                     <p:inputText id="transferredby" readonly="true" value="#{job.transferredBy.displayName}"
-                        style="width: 20em;" label="调拨人员"/>
+                        style="width: 20em;" label="调拨人员" />
                     <p:commandButton value="..." update=":chooseTransferrerDialog:form" oncomplete="chooseTransferrerDialog.show()">
                         <f:setPropertyActionListener target="#{choosePartyDialogBean.stereo}"
                             value="PER" />
@@ -33,7 +32,7 @@
                 </h:panelGroup>
 
                 <h:outputText value="对应的库存调入单：" />
-                <p:inputText id="jobDest" value="#{job.dest.label}" disabled="true" label="对应的库存调入单"/>
+                <p:inputText id="jobDest" value="#{job.dest.label}" disabled="true" label="对应的库存调入单" />
             </h:panelGrid>
 
         </p:panel>
