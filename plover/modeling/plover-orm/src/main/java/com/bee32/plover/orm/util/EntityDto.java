@@ -616,8 +616,9 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     @SuppressWarnings("unchecked")
     public final void setId_OZ(int id) {
         if (id == 0)
-            throw new IllegalArgumentException("id can't be zero");
-        this.id = (K) (Integer) id;
+            this.id = null;
+        else
+            this.id = (K) (Integer) id;
     }
 
     public final long getId_OZL() {
@@ -630,8 +631,9 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     @SuppressWarnings("unchecked")
     public final void setId_OZL(long id) {
         if (id == 0L)
-            throw new IllegalArgumentException("id can't be zero: " + id);
-        this.id = (K) (Long) id;
+            this.id = null;
+        else
+            this.id = (K) (Long) id;
     }
 
     public final String getId_OE() {
@@ -643,9 +645,10 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
     @SuppressWarnings("unchecked")
     public final void setId_OE(String id) {
-        if (StringUtils.isEmpty(id))
-            throw new IllegalArgumentException("id can't be empty");
-        this.id = (K) id;
+        if (id != null && id.trim().isEmpty())
+            this.id = null;
+        else
+            this.id = (K) id;
     }
 
     /**
