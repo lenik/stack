@@ -3,8 +3,10 @@ package com.bee32.sem.purchase.web;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.purchase.dto.MaterialPlanDto;
+import com.bee32.sem.purchase.dto.MaterialPlanItemDto;
 import com.bee32.sem.purchase.entity.MaterialPlan;
 
 public class ChooseMaterialPlanDialogBean
@@ -28,6 +30,12 @@ public class ChooseMaterialPlanDialogBean
 
     public void setHeader(String header) {
         this.header = header;
+    }
+
+    ListMBean<MaterialPlanItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items", MaterialPlanItemDto.class);
+
+    public ListMBean<MaterialPlanItemDto> getItemsMBean() {
+        return itemsMBean;
     }
 
 }

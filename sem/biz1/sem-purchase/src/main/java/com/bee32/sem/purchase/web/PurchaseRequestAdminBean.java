@@ -53,52 +53,35 @@ public class PurchaseRequestAdminBean
         return true;
     }
 
-    MaterialPlanDto selectedMaterialPlan;
-
-    public void addMaterialPlan() {
-        if (selectedMaterialPlan == null)
+    public void setChosenMaterialPlan(MaterialPlanDto plan) {
+        if (plan == null)
             return;
-        if (selectedMaterialPlan.getPurchaseRequest().getId() != null) {
-            uiLogger.error("选中的物料计划已经有对应的采购请求，请重新选择");
+        if (plan.getPurchaseRequest().getId() != null) {
+            uiLogger.error("选中的物料计划已经有对应的采购请求");
             return;
         }
 
-        PurchaseRequestDto purchaseRequest = getOpenedObject();
-        purchaseRequest.getPlans().add(selectedMaterialPlan);
+        PurchaseRequestDto parent = getOpenedObject();
+        parent.addPlan(plan);
 
         PurchaseService purchaseService = ctx.bean.getBean(PurchaseService.class);
-        List<PurchaseRequestItemDto> items = purchaseService.calcMaterialRequirement(purchaseRequest,
-                Arrays.asList(selectedMaterialPlan));
-        purchaseRequest.setItems(items);
-
-    }
-
-    public void loadInquiry() {
-        PurchaseRequestItemDto itemObj = itemsMBean.getOpenedObject();
-        itemObj = reload(itemObj);
+        List<PurchaseRequestItemDto> items = purchaseService.calcMaterialRequirement(Arrays.asList(plan));
+        for (PurchaseRequestItemDto item : items)
+            item.setParent(parent);
+        parent.setItems(items);
     }
 
     @Transactional
     public void acceptInquiry() {
-        uiLogger.info("采纳成功.");
-// uiLogger.error("采纳失败.", e);
-    }
+        PurchaseInquiryDto selectedInquiry = inquiriesMBean.getSelection();
+        if (selectedInquiry == null) {
+            uiLogger.error("没有选中的询价项。");
+            return;
+        }
 
-    public void savePurchaseAdvice() {
-        // if (purchaseAdvice == null || purchaseAdvice.getId() == null) {
-        uiLogger.warn("请先采纳一个供应商的保价");
-    }
-
-    public void deletePurchaseAdvice() {
-        // TODO 如果已经审核，则不能删除
-        // if (purchaseAdvice.getVerifyContext().getVerifyState().isFinalized())
-        // uiLogger.warn("采购建议已经审核，不能删除!");
-        // return;
-        // }
-    }
-
-    public void verifyPurchaseAdvice() {
-        // TODO add verify code
+        PurchaseRequestItemDto requestItem = itemsMBean.getOpenedObject();
+        requestItem.setAcceptedInquiry(selectedInquiry);
+        uiLogger.info("采纳成功");
     }
 
     public void generateTakeInStockOrders() {
@@ -124,8 +107,8 @@ public class PurchaseRequestAdminBean
             "openedObject.plans", MaterialPlanDto.class);
     final ListMBean<PurchaseRequestItemDto> itemsMBean = ListMBean.fromEL(this, //
             "openedObject.items", PurchaseRequestItemDto.class);
-    final ListMBean<PurchaseInquiryDto> inquiresMBean = ListMBean.fromEL(itemsMBean, //
-            "openedObject.inquires", PurchaseInquiryDto.class);
+    final ListMBean<PurchaseInquiryDto> inquiriesMBean = ListMBean.fromEL(itemsMBean, //
+            "openedObject.inquiries", PurchaseInquiryDto.class);
     final ListMBean<PurchaseTakeInDto> takeInsMBean = ListMBean.fromEL(this, //
             "openedObject.takeIns", PurchaseTakeInDto.class);
 
@@ -137,8 +120,8 @@ public class PurchaseRequestAdminBean
         return itemsMBean;
     }
 
-    public ListMBean<PurchaseInquiryDto> getInquiresMBean() {
-        return inquiresMBean;
+    public ListMBean<PurchaseInquiryDto> getInquiriesMBean() {
+        return inquiriesMBean;
     }
 
     public ListMBean<PurchaseTakeInDto> getTakeInsMBean() {

@@ -81,12 +81,12 @@ public class PurchaseRequest
     }
 
     @Transient
-    public BigDecimal getTotalPlanQuantity() {
-        BigDecimal totalPlanQuantity = new BigDecimal(0);
+    public BigDecimal getTotal() {
+        BigDecimal total = new BigDecimal(0);
         for (PurchaseRequestItem item : items) {
-            totalPlanQuantity = totalPlanQuantity.add(item.getPlanQuantity());
+            total = total.add(item.getQuantity());
         }
-        return totalPlanQuantity;
+        return total;
     }
 
     @OneToMany(mappedBy = "purchaseRequest", orphanRemoval = true)
@@ -104,13 +104,13 @@ public class PurchaseRequest
     @Transient
     @Override
     public String getNumberDescription() {
-        return "金额";
+        return "总数量";
     }
 
     @Override
     protected Number computeJudgeNumber()
             throws Exception {
-        return getTotalPlanQuantity();
+        return getTotal();
     }
 
 }

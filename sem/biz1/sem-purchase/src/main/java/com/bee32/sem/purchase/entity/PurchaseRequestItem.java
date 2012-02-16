@@ -36,30 +36,28 @@ public class PurchaseRequestItem
     private static final long serialVersionUID = 1L;
 
     public static final int ADDITIONAL_REQUIREMENT_LENGTH = 200;
-    public static final int ADVICED_REASON_LENGTH = 500;
 
-    PurchaseRequest purchaseRequest;
+    PurchaseRequest parent;
     int index;
     Material material;
+    BigDecimal requiredQuantity = new BigDecimal(0);
     BigDecimal quantity = new BigDecimal(0);
-    BigDecimal planQuantity = new BigDecimal(0);
 
     Party preferredSupplier;
     String additionalRequirement;
 
     List<PurchaseInquiry> inquiries = new ArrayList<PurchaseInquiry>();
 
-    PurchaseInquiry advicedInquiry;
-    String advicedReason;
+    PurchaseInquiry acceptedInquiry;
 
     @NaturalId
     @ManyToOne(optional = false)
-    public PurchaseRequest getPurchaseRequest() {
-        return purchaseRequest;
+    public PurchaseRequest getParent() {
+        return parent;
     }
 
-    public void setPurchaseRequest(PurchaseRequest purchaseRequest) {
-        this.purchaseRequest = purchaseRequest;
+    public void setParent(PurchaseRequest parent) {
+        this.parent = parent;
     }
 
     /**
@@ -88,28 +86,28 @@ public class PurchaseRequestItem
      * 从物料需求计算复制过来的数量(请求数量)
      */
     @Column(scale = QTY_ITEM_SCALE, precision = QTY_ITEM_PRECISION, nullable = false)
-    public BigDecimal getQuantity() {
-        return quantity;
+    public BigDecimal getRequiredQuantity() {
+        return requiredQuantity;
     }
 
-    public void setQuantity(BigDecimal quantity) {
-        if (quantity == null)
-            throw new NullPointerException("quantity");
-        this.quantity = quantity;
+    public void setRequiredQuantity(BigDecimal requiredQuantity) {
+        if (requiredQuantity == null)
+            throw new NullPointerException("requiredQuantity");
+        this.requiredQuantity = requiredQuantity;
     }
 
     /**
      * 实际计划采购的数量(计划数量)
      */
     @Column(scale = QTY_ITEM_SCALE, precision = QTY_ITEM_PRECISION, nullable = false)
-    public BigDecimal getPlanQuantity() {
-        return planQuantity;
+    public BigDecimal getQuantity() {
+        return quantity;
     }
 
-    public void setPlanQuantity(BigDecimal planQuantity) {
+    public void setQuantity(BigDecimal planQuantity) {
         if (planQuantity == null)
             throw new NullPointerException("planQuantity");
-        this.planQuantity = planQuantity;
+        this.quantity = planQuantity;
     }
 
     @ManyToOne
@@ -168,48 +166,36 @@ public class PurchaseRequestItem
      * 询价建议
      */
     @OneToOne
-    public PurchaseInquiry getAdvicedInquiry() {
-        return advicedInquiry;
+    public PurchaseInquiry getAcceptedInquiry() {
+        return acceptedInquiry;
     }
 
-    public void setAdvicedInquiry(PurchaseInquiry advicedInquiry) {
-        this.advicedInquiry = advicedInquiry;
-    }
-
-    /**
-     * 询价建议的理由
-     */
-    @Column(length = ADVICED_REASON_LENGTH)
-    public String getAdvicedReason() {
-        return advicedReason;
-    }
-
-    public void setAdvicedReason(String advicedReason) {
-        this.advicedReason = advicedReason;
+    public void setAcceptedInquiry(PurchaseInquiry acceptedInquiry) {
+        this.acceptedInquiry = acceptedInquiry;
     }
 
     @Override
     protected Serializable naturalId() {
         return new IdComposite(//
-                naturalId(purchaseRequest), //
+                naturalId(parent), //
                 naturalId(material));
     }
 
     @Override
     protected ICriteriaElement selector(String prefix) {
-        if (purchaseRequest == null)
+        if (parent == null)
             throw new NullPointerException("purchaseRequest");
         if (material == null)
             throw new NullPointerException("material");
         return selectors(//
-                selector(prefix + "purchaseRequest", purchaseRequest), //
+                selector(prefix + "purchaseRequest", parent), //
                 selector(prefix + "material", material));
     }
 
     @Override
     public PurchaseRequestItem detach() {
         super.detach();
-        purchaseRequest = null;
+        parent = null;
         return this;
     }
 

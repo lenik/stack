@@ -28,8 +28,9 @@ public class PurchaseInquiry
     public static final int PAYMENT_TERM_LENGTH = 60;
     public static final int AFTER_SERVICE_LENGTH = 60;
     public static final int OTHER_LENGTH = 1000;
+    public static final int COMMENT_LENGTH = 200;
 
-    PurchaseRequestItem purchaseRequestItem;
+    PurchaseRequestItem parent;
     Org supplier;
     MCValue price;
     String deliveryDate;
@@ -37,20 +38,21 @@ public class PurchaseInquiry
     String paymentTerm;
     String afterService;
     String other;
+    String comment;
 
     /**
      * 需要询价的采购项目
      */
     @ManyToOne(optional = false)
     @NaturalId
-    public PurchaseRequestItem getPurchaseRequestItem() {
-        return purchaseRequestItem;
+    public PurchaseRequestItem getParent() {
+        return parent;
     }
 
-    public void setPurchaseRequestItem(PurchaseRequestItem purchaseRequestItem) {
-        if (purchaseRequestItem == null)
-            throw new NullPointerException("purchaseRequestItem");
-        this.purchaseRequestItem = purchaseRequestItem;
+    public void setParent(PurchaseRequestItem parent) {
+        if (parent == null)
+            throw new NullPointerException("parent");
+        this.parent = parent;
     }
 
     /**
@@ -135,6 +137,18 @@ public class PurchaseInquiry
 
     public void setOther(String other) {
         this.other = other;
+    }
+
+    /**
+     * 询价建议的理由
+     */
+    @Column(length = COMMENT_LENGTH)
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
 }

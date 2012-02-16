@@ -117,6 +117,13 @@ public class PurchaseRequestDto
         this.plans = plans;
     }
 
+    public void addPlan(MaterialPlanDto plan) {
+        if (plan == null)
+            throw new NullPointerException("plan");
+        plans.add(plan);
+        plan.setPurchaseRequest(this);
+    }
+
     public List<PurchaseTakeInDto> getTakeIns() {
         return takeIns;
     }
@@ -130,8 +137,10 @@ public class PurchaseRequestDto
     public synchronized void addTakeIn(PurchaseTakeInDto takeIn) {
         if (takeIn == null)
             throw new NullPointerException("takeIn");
-        if (!takeIns.contains(takeIn))
+        if (!takeIns.contains(takeIn)) {
             takeIns.add(takeIn);
+            takeIn.setPurchaseRequest(this);
+        }
     }
 
     public synchronized void removeTakeIn(PurchaseTakeInDto takeIn) {

@@ -2,7 +2,6 @@ package com.bee32.sem.purchase.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,28 +26,28 @@ public class PurchaseRequestItemDto
 
     public static final int INQUIRIES = 1;
 
-    PurchaseRequestDto purchaseRequest;
+    PurchaseRequestDto parent;
     int index;
     MaterialDto material;
+    BigDecimal requiredQuantity = new BigDecimal(0);
     BigDecimal quantity = new BigDecimal(0);
-    BigDecimal planQuantity = new BigDecimal(0);
 
     PartyDto preferredSupplier;
     String additionalRequirement;
 
     List<PurchaseInquiryDto> inquiries;
-    PurchaseInquiryDto advicedInquiry;
-    String advicedReason;
+    PurchaseInquiryDto acceptedInquiry;
+    String comment;
 
     Integer warehouseId; // 公用于接收界面上传入的仓库id
 
     @Override
     protected void _marshal(PurchaseRequestItem source) {
-        purchaseRequest = mref(PurchaseRequestDto.class, source.getPurchaseRequest());
+        parent = mref(PurchaseRequestDto.class, source.getParent());
         index = source.getIndex();
         material = mref(MaterialDto.class, source.getMaterial());
+        requiredQuantity = source.getRequiredQuantity();
         quantity = source.getQuantity();
-        planQuantity = source.getPlanQuantity();
 
         preferredSupplier = mref(PartyDto.class, source.getPreferredSupplier());
         additionalRequirement = source.getAdditionalRequirement();
@@ -56,19 +55,18 @@ public class PurchaseRequestItemDto
         if (selection.contains(INQUIRIES))
             inquiries = marshalList(PurchaseInquiryDto.class, source.getInquiries());
         else
-            inquiries = new ArrayList<PurchaseInquiryDto>();
+            inquiries = Collections.emptyList();
 
-        advicedInquiry = mref(PurchaseInquiryDto.class, source.getAdvicedInquiry());
-        advicedReason = source.getAdvicedReason();
+        acceptedInquiry = mref(PurchaseInquiryDto.class, source.getAcceptedInquiry());
     }
 
     @Override
     protected void _unmarshalTo(PurchaseRequestItem target) {
-        merge(target, "purchaseRequest", purchaseRequest);
+        merge(target, "parent", parent);
         target.setIndex(index);
         merge(target, "material", material);
+        target.setRequiredQuantity(requiredQuantity);
         target.setQuantity(quantity);
-        target.setPlanQuantity(planQuantity);
 
         merge(target, "preferredSupplier", preferredSupplier);
 
@@ -76,11 +74,8 @@ public class PurchaseRequestItemDto
 
         if (selection.contains(INQUIRIES))
             mergeList(target, "inquiries", inquiries);
-        else
-            inquiries = Collections.emptyList();
 
-        merge(target, "advicedInquiry", advicedInquiry);
-        target.setAdvicedReason(advicedReason);
+        merge(target, "acceptedInquiry", acceptedInquiry);
     }
 
     @Override
@@ -91,20 +86,22 @@ public class PurchaseRequestItemDto
 
     @Override
     public PurchaseRequestDto getEnclosingObject() {
-        return getPurchaseRequest();
+        return getParent();
     }
 
     @Override
     public void setEnclosingObject(PurchaseRequestDto enclosingObject) {
-        setPurchaseRequest(enclosingObject);
+        setParent(enclosingObject);
     }
 
-    public PurchaseRequestDto getPurchaseRequest() {
-        return purchaseRequest;
+    public PurchaseRequestDto getParent() {
+        return parent;
     }
 
-    public void setPurchaseRequest(PurchaseRequestDto purchaseRequest) {
-        this.purchaseRequest = purchaseRequest;
+    public void setParent(PurchaseRequestDto parent) {
+        if (parent == null)
+            throw new NullPointerException("parent");
+        this.parent = parent;
     }
 
     public int getIndex() {
@@ -124,19 +121,19 @@ public class PurchaseRequestItemDto
     }
 
     public BigDecimal getQuantity() {
-        return quantity;
+        return requiredQuantity;
     }
 
     public void setQuantity(BigDecimal quantity) {
-        this.quantity = quantity;
+        this.requiredQuantity = quantity;
     }
 
     public BigDecimal getPlanQuantity() {
-        return planQuantity;
+        return quantity;
     }
 
     public void setPlanQuantity(BigDecimal planQuantity) {
-        this.planQuantity = planQuantity;
+        this.quantity = planQuantity;
     }
 
     public PartyDto getPreferredSupplier() {
@@ -167,7 +164,6 @@ public class PurchaseRequestItemDto
     public synchronized void addInquiry(PurchaseInquiryDto inquiry) {
         if (inquiry == null)
             throw new NullPointerException("inquiry");
-
         inquiries.add(inquiry);
     }
 
@@ -183,21 +179,12 @@ public class PurchaseRequestItemDto
         // inquiry.detach();
     }
 
-    public PurchaseInquiryDto getAdvicedInquiry() {
-        return advicedInquiry;
+    public PurchaseInquiryDto getAcceptedInquiry() {
+        return acceptedInquiry;
     }
 
-    public void setAdvicedInquiry(PurchaseInquiryDto advicedInquiry) {
-        this.advicedInquiry = advicedInquiry;
-    }
-
-    @NLength(max = PurchaseRequestItem.ADVICED_REASON_LENGTH)
-    public String getAdvicedReason() {
-        return advicedReason;
-    }
-
-    public void setAdvicedReason(String advicedReason) {
-        this.advicedReason = advicedReason;
+    public void setAcceptedInquiry(PurchaseInquiryDto acceptedInquiry) {
+        this.acceptedInquiry = acceptedInquiry;
     }
 
     public Integer getWarehouseId() {
@@ -211,7 +198,7 @@ public class PurchaseRequestItemDto
     @Override
     protected Serializable naturalId() {
         return new IdComposite(//
-                naturalId(purchaseRequest), //
+                naturalId(parent), //
                 naturalId(material));
     }
 

@@ -40,12 +40,12 @@ public class PurchaseService
     IStockQuery stockQuery;
 
     /**
+     *
      * 根据传入的物料计划，结合当前库存和物料的安全库存，计算所需要采购的量
      *
      * 注：如果同一物料分布在多个仓库，此处目前数量合并计算
      */
-    public List<PurchaseRequestItemDto> calcMaterialRequirement(PurchaseRequestDto purchaseRequest,
-            List<MaterialPlanDto> plans) {
+    public List<PurchaseRequestItemDto> calcMaterialRequirement(List<MaterialPlanDto> plans) {
         // 计算需求
         ConsumptionMap cmap = new ConsumptionMap();
         for (MaterialPlanDto materialPlan : plans)
@@ -79,7 +79,6 @@ public class PurchaseService
             if (requestQuantity != null) {
                 PurchaseRequestItemDto requestItem = new PurchaseRequestItemDto().create();
                 requestItem.setMaterial(material);
-                requestItem.setPurchaseRequest(purchaseRequest);
 
                 // 从物料计划计算采购请求量时，把计划采购量首先设置为和计算量相同
                 requestItem.setQuantity(requestQuantity);
@@ -113,14 +112,10 @@ public class PurchaseService
 
         // 检测有没有询价和审核采购建议
         for (PurchaseRequestItemDto requestItem : purchaseRequest.getItems()) {
-            if (requestItem.getAdvicedInquiry() == null || requestItem.getAdvicedInquiry().getId() == null) {
+            if (requestItem.getAcceptedInquiry() == null || requestItem.getAcceptedInquiry().getId() == null) {
                 throw new NoPurchaseAdviceException();
             }
 
-            // TODO verify check
-            // if(!advice.isVerified()) {
-            // throw new AdviceHaveNotVerifiedException();
-            // }
         }
 
         Map<Object, List<PurchaseRequestItemDto>> splitMap //
@@ -128,7 +123,7 @@ public class PurchaseService
 
         // 按仓库和供应商区分要生成的采购入库单
         for (PurchaseRequestItemDto item : purchaseRequest.getItems()) {
-            OrgDto preferredSupplier = item.getAdvicedInquiry().getSupplier();
+            OrgDto preferredSupplier = item.getAcceptedInquiry().getSupplier();
             // 以warehouseId和对应供应商的id组合成 x&y 的形式
             IdComposite key = new IdComposite(item.getWarehouseId(), preferredSupplier.getId());
 
@@ -143,7 +138,7 @@ public class PurchaseService
 
         // 3.按仓库生成subject为takeIn的StockOrder->StockOrderItem*
         for (List<PurchaseRequestItemDto> itemList : splitMap.values()) {
-            OrgDto preferredSupplier = itemList.get(0).getAdvicedInquiry().getSupplier();
+            OrgDto preferredSupplier = itemList.get(0).getAcceptedInquiry().getSupplier();
 
             StockOrder _takeInOrder = new StockOrder();
             _takeInOrder.setSubject(StockOrderSubject.TAKE_IN);
@@ -156,7 +151,7 @@ public class PurchaseService
                 _item.setParent(_takeInOrder);
                 _item.setMaterial(item.getMaterial().unmarshal());
                 _item.setQuantity(item.getPlanQuantity());
-                _item.setPrice(item.getAdvicedInquiry().getPrice());
+                _item.setPrice(item.getAcceptedInquiry().getPrice());
                 _item.setDescription("由采购请求生成的入库明细项目");
 
                 _takeInOrder.addItem(_item);

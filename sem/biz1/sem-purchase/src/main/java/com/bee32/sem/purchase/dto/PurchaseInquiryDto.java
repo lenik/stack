@@ -12,17 +12,18 @@ import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.base.tx.TxEntityDto;
+import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.purchase.entity.PurchaseInquiry;
 import com.bee32.sem.world.monetary.MutableMCValue;
 
 public class PurchaseInquiryDto
         extends TxEntityDto<PurchaseInquiry>
-        implements DecimalConfig {
+        implements DecimalConfig, IEnclosedObject<PurchaseRequestItemDto> {
 
     private static final long serialVersionUID = 1L;
 
-    PurchaseRequestItemDto purchaseRequestItem;
+    PurchaseRequestItemDto parent;
     OrgDto supplier;
     MutableMCValue price;
     String deliveryDate;
@@ -30,10 +31,11 @@ public class PurchaseInquiryDto
     String paymentTerm;
     String afterService;
     String other;
+    String comment;
 
     @Override
     protected void _marshal(PurchaseInquiry source) {
-        purchaseRequestItem = mref(PurchaseRequestItemDto.class, source.getPurchaseRequestItem());
+        parent = mref(PurchaseRequestItemDto.class, source.getParent());
         supplier = mref(OrgDto.class, source.getSupplier());
         price = source.getPrice().toMutable();
         deliveryDate = source.getDeliveryDate();
@@ -41,11 +43,12 @@ public class PurchaseInquiryDto
         paymentTerm = source.getPaymentTerm();
         afterService = source.getAfterService();
         other = source.getOther();
+        comment = source.getComment();
     }
 
     @Override
     protected void _unmarshalTo(PurchaseInquiry target) {
-        merge(target, "purchaseRequestItem", purchaseRequestItem);
+        merge(target, "purchaseRequestItem", parent);
         merge(target, "supplier", supplier);
         target.setPrice(price);
         target.setDeliveryDate(deliveryDate);
@@ -53,6 +56,7 @@ public class PurchaseInquiryDto
         target.setPaymentTerm(paymentTerm);
         target.setAfterService(afterService);
         target.setOther(other);
+        target.setComment(comment);
     }
 
     @Override
@@ -61,12 +65,22 @@ public class PurchaseInquiryDto
         throw new NotImplementedException();
     }
 
-    public PurchaseRequestItemDto getPurchaseRequestItem() {
-        return purchaseRequestItem;
+    @Override
+    public PurchaseRequestItemDto getEnclosingObject() {
+        return getParent();
     }
 
-    public void setPurchaseRequestItem(PurchaseRequestItemDto purchaseRequestItem) {
-        this.purchaseRequestItem = purchaseRequestItem;
+    @Override
+    public void setEnclosingObject(PurchaseRequestItemDto enclosingObject) {
+        setParent(enclosingObject);
+    }
+
+    public PurchaseRequestItemDto getParent() {
+        return parent;
+    }
+
+    public void setParent(PurchaseRequestItemDto parent) {
+        this.parent = parent;
     }
 
     public OrgDto getSupplier() {
@@ -130,10 +144,19 @@ public class PurchaseInquiryDto
         this.other = TextUtil.normalizeSpace(other);
     }
 
+    @NLength(max = PurchaseInquiry.COMMENT_LENGTH)
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     @Override
     protected Serializable naturalId() {
         return new IdComposite(//
-                naturalId(purchaseRequestItem), //
+                naturalId(parent), //
                 naturalId(supplier));
     }
 
