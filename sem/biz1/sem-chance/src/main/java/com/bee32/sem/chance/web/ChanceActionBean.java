@@ -1,5 +1,6 @@
 package com.bee32.sem.chance.web;
 
+import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.sem.chance.dto.ChanceActionDto;
@@ -27,6 +28,7 @@ public class ChanceActionBean
     protected boolean preUpdate(UnmarshalMap uMap)
             throws Exception {
         for (ChanceActionDto action : uMap.<ChanceActionDto> dtos()) {
+            action.setActor(SessionUser.getInstance().getUser());
             ChanceStageDto stage = action.getStage();
             Long chanceId = action.getChance().getId();
             if (chanceId == null && !stage.isNull()) {
