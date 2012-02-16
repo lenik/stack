@@ -58,7 +58,7 @@
             </p:selectOneMenu>
 
             <h:outputLabel for="style" value="洽谈方式:" />
-            <p:selectOneMenu id="style" value="${obj.style.displayId}" label="洽谈方式">
+            <p:selectOneMenu id="style" value="${obj.style.id_OE}" label="洽谈方式">
                 <f:selectItems value="${dicts.actionStyles}" var="it" itemLabel="${it.label}" itemValue="${it.id}" />
             </p:selectOneMenu>
 
@@ -109,14 +109,13 @@
 
             <h:outputLabel for="chanceSubject" value="相关机会:" />
             <t:panelGroup id="correChance" colspan="3">
-                <h:inputHidden id="chanceId" value="${obj.chance.id}" />
                 <p:inputText id="chanceSubject" readonly="true" value="${obj.chance.subject}" style="width: 30em" label="相关机会"/>
                 <p:commandButton title="挑选机会" value="..." onclick="chooseChanceDialog.show();" />
             </t:panelGroup>
 
             <h:outputLabel for="stage" value="机会阶段:" />
             <t:panelGroup colspan="3">
-                <p:selectOneMenu id="stage" value="${obj.stage.displayId}" label="机会阶段">
+                <p:selectOneMenu id="stage" value="${obj.stage.id_OE}" label="机会阶段">
                     <f:selectItem itemLabel="--请选择机会阶段--" itemValue="" />
                     <f:selectItems value="${dicts.stages}" var="it" itemLabel="${it.label}" itemValue="${it.id}" />
                 </p:selectOneMenu>
