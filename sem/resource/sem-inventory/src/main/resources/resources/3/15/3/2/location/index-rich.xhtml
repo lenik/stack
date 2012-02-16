@@ -18,7 +18,6 @@
             <f:selectItems value="#{stock.warehouseSelectItems}" />
             <p:ajax event="change" update=":mainForm" />
         </p:selectOneMenu>
-
     </ui:define>
 
     <ui:define name="dataColumns">
@@ -34,32 +33,32 @@
         <t:panelGrid columns="2">
             <h:outputLabel value="所属库位" />
             <h:panelGrid columns="2">
-                <p:inputText value="#{obj.parent.label}" disabled="true" label="所属库位"/>
+                <p:inputText value="#{obj.parent.label}" disabled="true" label="所属库位" />
                 <p:commandButton value="..." onclick="chooseStockLocationDialog.show();" />
             </h:panelGrid>
 
             <h:outputLabel for="name" value="名称" />
-            <p:inputText id="name" value="#{obj.label}" label="名称"/>
+            <p:inputText id="name" value="#{obj.label}" label="名称" />
 
             <h:outputLabel for="capacity" value="容量" />
-            <p:inputText id="capacity" value="#{obj.capacity}" label="容量"/>
+            <p:inputText id="capacity" value="#{obj.capacity}" label="容量" />
 
             <h:outputLabel for="capacityUnit" value="容量单位" />
-            <p:selectOneMenu id="unit" value="#{obj.capacityUnit.idOpt}" style="width:150px;" label="容量单位">
+            <p:selectOneMenu id="unit" value="#{obj.capacityUnit.id_OE}" style="width:150px;" label="容量单位">
                 <f:selectItem itemLabel="" itemValue="" />
                 <f:selectItems value="#{things.unitSelectItems}" />
             </p:selectOneMenu>
 
             <h:outputText value="容量单位提示" />
-            <p:inputText id="capacityUnitHint" value="#{obj.capacityUnitHint}" label="容量单位提示"/>
+            <p:inputText id="capacityUnitHint" value="#{obj.capacityUnitHint}" label="容量单位提示" />
 
             <h:outputLabel for="rank" value="等级" />
-            <p:inputText id="rank" value="#{obj.rank}" label="等级"/>
+            <p:inputText id="rank" value="#{obj.rank}" label="等级" />
         </t:panelGrid>
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:chooseStockLocationDialog id="location-d" target="#{obj.parent}" update=":editDialog:form"/>
+        <sem:chooseStockLocationDialog id="location-d" target="#{obj.parent}" update=":editDialog:form" />
     </ui:define>
 
 </ui:composition>

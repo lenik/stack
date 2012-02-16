@@ -99,14 +99,6 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         return self;
     }
 
-    public K getIdOpt() {
-        return id;
-    }
-
-    public void setIdOpt(K id) {
-        this.id = id;
-    }
-
     /**
      * @see BaseDto_Skel#getKey()
      */
