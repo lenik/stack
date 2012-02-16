@@ -53,7 +53,18 @@
 
 		<h:form id="loginForm">
 	        <h:inputHidden id="challenge" value="#{loginBean.challenge}"/>
-			<h:panelGrid columns="2">
+			<t:panelGrid columns="2">
+                <t:panelGroup colspan="2">
+                    <t:panelGrid columns="1">
+                        <h:outputText value="使用本系统前，需要确保使用了正确的浏览器，并导入了本公司的证书!" style="font-weight:bold;"/>
+                        <h:outputText value="关于浏览器下载和证书导入的相关说明请参考如下地址:" style="font-weight:bold;"/>
+                        <a target="_blank" href="http://ca.bee32.com/readme.html">http://ca.bee32.com/readme.html</a>
+                    </t:panelGrid>
+                </t:panelGroup>
+
+                <t:panelGroup colspan="2" style="width:100%">
+                    <hr style="width:100%"/>
+                </t:panelGroup>
 
 				<h:outputLabel for="username" value="用户名" />
 				<p:inputText id="username" value="#{loginBean.username}" label="用户名"/>
@@ -68,7 +79,7 @@
 				<t:panelGroup colspan="2">
 					<p:commandButton value="登录" actionListener="#{loginBean.login}" oncomplete="handleLoginRequest(xhr, status, args)"/>
 				</t:panelGroup>
-			</h:panelGrid>
+			</t:panelGrid>
 		</h:form>
 
 	</div>
