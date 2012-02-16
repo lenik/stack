@@ -1,9 +1,11 @@
 package com.bee32.plover.arch.util.dto;
 
-import org.hibernate.LazyInitializationException;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class BaseDto_MKey {
+
+    static Logger logger = LoggerFactory.getLogger(BaseDto_MKey.class);
 
     final Object source;
     final Class<?> dtoType;
@@ -24,15 +26,26 @@ public class BaseDto_MKey {
 
     static boolean debugOsiv = false;
 
+    static final Class<?> LazyInitializationException_class;
+    static {
+        try {
+            LazyInitializationException_class = Class.forName("org.hibernate.LazyInitializationException");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
         try {
             hash += source.hashCode();
-        } catch (LazyInitializationException e) {
-            LoggerFactory.getLogger(BaseDto_MKey.class).error("Not in open-session: " + e.getMessage());
-            if (debugOsiv)
-                e.printStackTrace();
+        } catch (Exception e) {
+            if (LazyInitializationException_class.isAssignableFrom(e.getClass())) {
+                logger.error("Not in open-session: " + e.getMessage());
+                if (debugOsiv)
+                    e.printStackTrace();
+            }
             throw e;
         }
         hash += dtoType.hashCode();

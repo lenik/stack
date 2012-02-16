@@ -12,7 +12,6 @@ import java.util.Set;
 
 import javax.free.UnexpectedException;
 
-import org.hibernate.collection.AbstractPersistentCollection;
 import org.springframework.ui.Model;
 
 import com.bee32.plover.arch.Component;
@@ -198,10 +197,12 @@ public abstract class ObjectFormatter<T> {
         out.print("]");
     }
 
+    static final Class<?> APC_class;
     static final Method APC_isConnectedToSession;
     static {
         try {
-            APC_isConnectedToSession = AbstractPersistentCollection.class.getDeclaredMethod("isConnectedToSession");
+            APC_class = Class.forName("org.hibernate.collection.AbstractPersistentCollection");
+            APC_isConnectedToSession = APC_class.getDeclaredMethod("isConnectedToSession");
             APC_isConnectedToSession.setAccessible(true);
         } catch (ReflectiveOperationException e) {
             throw new Error("Failed to init APC.isConnectedToSession method.", e);
@@ -209,7 +210,7 @@ public abstract class ObjectFormatter<T> {
     }
 
     void formatCollection(Collection<?> val, FormatStyle format, int depth) {
-        if (val instanceof AbstractPersistentCollection) {
+        if (APC_class.isInstance(val)) {
             try {
                 Object connected = APC_isConnectedToSession.invoke(val);
                 if (connected != Boolean.TRUE) {
