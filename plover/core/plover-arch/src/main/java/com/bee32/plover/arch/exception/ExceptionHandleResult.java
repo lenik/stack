@@ -1,4 +1,4 @@
-package com.bee32.plover.faces;
+package com.bee32.plover.arch.exception;
 
 public class ExceptionHandleResult {
 

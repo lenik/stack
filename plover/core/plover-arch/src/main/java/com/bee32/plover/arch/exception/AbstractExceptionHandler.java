@@ -1,6 +1,5 @@
-package com.bee32.plover.faces;
+package com.bee32.plover.arch.exception;
 
-import com.bee32.plover.faces.utils.FacesUILogger;
 import com.bee32.plover.inject.ServiceTemplate;
 
 /**
@@ -9,12 +8,12 @@ import com.bee32.plover.inject.ServiceTemplate;
 @ServiceTemplate
 // Must be eager, so as to inject to PloverExceptionHandler.handlerMap as soon as possible.
 // @Lazy
-public abstract class AnnotatedFeh
-        implements IFaceletExceptionHandler {
+public abstract class AbstractExceptionHandler
+        implements IExceptionHandler {
 
     boolean fullStackSearch;
 
-    public AnnotatedFeh() {
+    public AbstractExceptionHandler() {
         ForException annotation = getClass().getAnnotation(ForException.class);
         if (annotation != null)
             fullStackSearch = annotation.fullStackSearch();
@@ -35,10 +34,6 @@ public abstract class AnnotatedFeh
 
     public ExceptionHandleResult redirect(String resultView) {
         return new ExceptionHandleResult(ExceptionHandleResult.TYPE_REDIRECT, resultView);
-    }
-
-    public FacesUILogger getUILogger() {
-        return new FacesUILogger(false);
     }
 
     @Override

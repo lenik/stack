@@ -66,10 +66,10 @@ public class SessionUser
     }
 
     public final UserDto getUser()
-            throws LoginException {
+            throws LoginControl {
         UserDto user = getUserOpt();
         if (user == null)
-            throw new LoginException("Not login yet.");
+            throw new LoginControl("Not login yet.");
         return user;
     }
 
@@ -92,10 +92,10 @@ public class SessionUser
     }
 
     public final User getInternalUser()
-            throws LoginException {
+            throws LoginControl {
         User user = getInternalUserOpt();
         if (user == null)
-            throw new LoginException("Not login yet.");
+            throw new LoginControl("Not login yet.");
         return user;
     }
 

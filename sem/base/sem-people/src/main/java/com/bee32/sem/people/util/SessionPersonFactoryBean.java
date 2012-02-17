@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.bee32.icsf.login.LoginException;
+import com.bee32.icsf.login.LoginControl;
 import com.bee32.plover.inject.scope.PerSession;
 import com.bee32.sem.people.dto.PersonDto;
 
@@ -17,7 +17,7 @@ public class SessionPersonFactoryBean {
     }
 
     public final PersonDto getPerson()
-            throws LoginException {
+            throws LoginControl {
         return SessionPerson.getInstance().getPerson();
     }
 

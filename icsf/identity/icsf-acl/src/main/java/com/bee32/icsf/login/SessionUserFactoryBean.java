@@ -19,7 +19,7 @@ public class SessionUserFactoryBean {
     }
 
     public final User getInternalUser()
-            throws LoginException {
+            throws LoginControl {
         return SessionUser.getInstance().getInternalUser();
     }
 
@@ -28,7 +28,7 @@ public class SessionUserFactoryBean {
     }
 
     public final UserDto getUser()
-            throws LoginException {
+            throws LoginControl {
         return SessionUser.getInstance().getUser();
     }
 

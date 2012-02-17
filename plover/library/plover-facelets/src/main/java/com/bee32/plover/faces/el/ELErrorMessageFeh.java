@@ -3,10 +3,10 @@ package com.bee32.plover.faces.el;
 import javax.el.ELException;
 import javax.free.IdentifiedException;
 
-import com.bee32.plover.faces.AnnotatedFeh;
-import com.bee32.plover.faces.ExceptionHandleResult;
+import com.bee32.plover.arch.exception.ExceptionHandleResult;
+import com.bee32.plover.arch.exception.ForException;
 import com.bee32.plover.faces.FaceletExceptionContext;
-import com.bee32.plover.faces.ForException;
+import com.bee32.plover.faces.FaceletsExceptionHandler;
 import com.bee32.plover.faces.utils.FacesUILogger;
 
 /**
@@ -14,10 +14,10 @@ import com.bee32.plover.faces.utils.FacesUILogger;
  */
 @ForException(ELException.class)
 public class ELErrorMessageFeh
-        extends AnnotatedFeh {
+        extends FaceletsExceptionHandler {
 
     @Override
-    public ExceptionHandleResult handle(FaceletExceptionContext context, Throwable exception) {
+    public ExceptionHandleResult handle(Throwable exception, FaceletExceptionContext context) {
         exception.printStackTrace();
         Throwable elCause = exception.getCause();
         if (elCause instanceof IllegalArgumentException) {

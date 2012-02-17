@@ -11,7 +11,7 @@ import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import com.bee32.icsf.login.LoginException;
+import com.bee32.icsf.login.LoginControl;
 import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.principal.User;
 
@@ -35,7 +35,7 @@ public class UILogin
 
     @Override
     public void encodeEnd(FacesContext context)
-            throws IOException, LoginException {
+            throws IOException, LoginControl {
 
         User currentUser = SessionUser.getInstance().getInternalUser();
 

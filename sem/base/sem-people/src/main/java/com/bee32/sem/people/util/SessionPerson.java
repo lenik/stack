@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
-import com.bee32.icsf.login.LoginException;
+import com.bee32.icsf.login.LoginControl;
 import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
@@ -36,10 +36,10 @@ public class SessionPerson
     }
 
     public final PersonDto getPerson()
-            throws LoginException {
+            throws LoginControl {
         PersonDto person = getPersonOpt();
         if (person == null)
-            throw new LoginException("Not login yet.");
+            throw new LoginControl("Not login yet.");
         return person;
     }
 

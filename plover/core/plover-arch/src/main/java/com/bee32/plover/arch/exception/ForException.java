@@ -1,4 +1,4 @@
-package com.bee32.plover.faces;
+package com.bee32.plover.arch.exception;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -13,6 +13,9 @@ public @interface ForException {
 
     Class<? extends Throwable> value();
 
+    /**
+     *
+     */
     boolean fullStackSearch() default false;
 
 }
