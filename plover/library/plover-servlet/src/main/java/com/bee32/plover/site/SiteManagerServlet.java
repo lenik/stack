@@ -400,16 +400,16 @@ public class SiteManagerServlet
             table().border("1");
             {
                 tr();
-                th().rowspan("2").text("站点").end();
-                th().rowspan("2").text("标题").end();
-                th().rowspan("2").text("启动时间").end();
-                th().rowspan("2").text("启动耗时").end();
+                th().rowspan("2").text("站点").end(); // 1
+                th().rowspan("2").text("标题").end(); // 2
+                th().rowspan("2").text("启动时间/次数").end(); // 3
+                th().rowspan("2").text("启动耗时").end();// 4
 
-                th().colspan("4").text("服务时间 (s)").end();
-                th().colspan("4").text("请求数").end();
-                th().colspan("4").text("平均请求处理时间 (ms)").end();
+                th().colspan("4").text("服务时间 (s)").end(); // 5-8
+                th().colspan("4").text("请求数").end(); // 9-12
+                th().colspan("4").text("平均请求处理时间 (ms)").end(); // 13-16
 
-                th().rowspan("2").text("异常数").end();
+                th().rowspan("2").text("异常数").end(); // 17
                 end();
                 tr();
                 th().text("总").end();
@@ -429,7 +429,6 @@ public class SiteManagerServlet
                 for (SiteInstance site : manager.getSites()) {
                     String name = site.getName();
                     String label = site.getLabel();
-                    SiteStats stats = site.getStats();
                     tr();
                     td().text(name).end();
                     td().text(label).end();
@@ -440,22 +439,8 @@ public class SiteManagerServlet
                             text(Dates.sysDateTimeFormat.format(startup));
                         end();
                     }
-                    td().text("" + stats.getStartupCost()).end();
 
-                    td().text("" + stats.getServiceTime() / 1000).end();
-                    td().text("" + stats.getBee32ServiceTime() / 1000).end();
-                    td().text("" + stats.getMicroServiceTime() / 1000).end();
-                    td().text("" + stats.getOtherServiceTime() / 1000).end();
-
-                    td().text("" + stats.getRequestCount()).end();
-                    td().text("" + stats.getBee32RequestCount()).end();
-                    td().text("" + stats.getMicroRequestCount()).end();
-                    td().text("" + stats.getOtherRequestCount()).end();
-
-                    td().text("" + stats.getMeanServiceTime()).end();
-                    td().text("" + stats.getMeanBee32ServiceTime()).end();
-                    td().text("" + stats.getMeanMicroServiceTime()).end();
-                    td().text("" + stats.getMeanOtherServiceTime()).end();
+                    site.getLocalStats().dump(this);
 
                     td();
                     {
@@ -467,6 +452,23 @@ public class SiteManagerServlet
                         }
                         end();
                     }
+                    end();
+                }
+
+                tr();
+                td().colspan("17").style("background: gray").text("统计: ").end();
+                end();
+
+                for (SiteInstance site : manager.getSites()) {
+                    String name = site.getName();
+                    String label = site.getLabel();
+                    SiteStats allStats = site.getAllStats();
+                    tr();
+                    td().text(name).end();
+                    td().text(label).end();
+                    td().text("" + allStats.getGroups()).end();
+                    site.getAllStats().dump(this);
+                    td().text("" + allStats.getExceptions()).end();
                     end();
                 }
                 end();

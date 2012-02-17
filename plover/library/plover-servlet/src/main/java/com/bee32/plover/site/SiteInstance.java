@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import javax.free.FilePath;
 import javax.free.IFile;
 import javax.free.JavaioFile;
 import javax.free.ParseException;
@@ -63,10 +64,11 @@ public class SiteInstance
     Map<String, Object> attributes = new HashMap<String, Object>();
     boolean started;
     Date startup;
-    SiteStats stats = new SiteStats();
+
+    File statsFile;
+    SiteStats stats;
 
     public SiteInstance() {
-        configFile = null;
         properties = new FormatProperties();
 
         setVerboseLevel(VerboseLevel.SQL);
@@ -83,9 +85,7 @@ public class SiteInstance
             throws IOException, ParseException {
         this();
 
-        if (file == null)
-            throw new NullPointerException("file");
-        configFile = file;
+        setConfigFile(file);
 
         String name = file.getName();
         if (name.endsWith(CONFIG_EXTENSION))
@@ -98,10 +98,8 @@ public class SiteInstance
     SiteInstance(FormatProperties properties, File configFile) {
         if (properties == null)
             throw new NullPointerException("properties");
-        if (configFile == null)
-            throw new NullPointerException("configFile");
         this.properties = properties;
-        this.configFile = configFile;
+        setConfigFile(configFile);
     }
 
     public String getName() {
@@ -122,6 +120,20 @@ public class SiteInstance
                 setDbName(dbName);
             }
         }
+    }
+
+    public File getConfigFile() {
+        return configFile;
+    }
+
+    public void setConfigFile(File configFile) {
+        if (configFile == null)
+            throw new NullPointerException("configFile");
+        this.configFile = configFile;
+
+        String base = configFile.getName();
+        String statsName = FilePath.stripExtension(base) + ".stats.xml";
+        this.statsFile = new File(configFile.getParentFile(), statsName);
     }
 
     public String getProperty(String key) {
@@ -446,14 +458,35 @@ public class SiteInstance
             SiteLifecycleDispatcher.stopSite(this);
             started = false;
         }
+        if (statsFile != null) {
+            try {
+                stats.saveToFile(statsFile);
+            } catch (IOException e) {
+                logger.error("Failed to save stats to file: " + statsFile, e);
+            }
+        }
     }
 
     public Date getStartup() {
         return startup;
     }
 
-    public SiteStats getStats() {
+    public SiteStats getAllStats() {
+        if (stats == null)
+            synchronized (this) {
+                if (stats == null)
+                    try {
+                        stats = SiteStats.readFromFile(statsFile);
+                    } catch (IOException e) {
+                        logger.error("Failed to read stats from file " + statsFile, e);
+                        stats = new SiteStats();
+                    }
+            }
         return stats;
+    }
+
+    public SiteStats getLocalStats() {
+        return getAllStats().getLastChild();
     }
 
     @Override

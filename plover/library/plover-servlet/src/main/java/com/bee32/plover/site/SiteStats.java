@@ -1,13 +1,30 @@
 package com.bee32.plover.site;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.free.JavaioFile;
+import javax.free.XMLs;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.bee32.plover.arch.logging.ExceptionLogEntry;
+import com.bee32.plover.html.HtmlTemplate;
 
 public class SiteStats
         implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private long groups;
+    static Logger logger = LoggerFactory.getLogger(SiteStats.class);
+
+    private int groups;
+    private int exceptions;
+
     private long startupCost;
     private long requestCount;
     private long serviceTime;
@@ -18,20 +35,59 @@ public class SiteStats
     private long microRequestCount;
     private long microServiceTime;
 
-    public long getGroups() {
+    private SiteStats parent;
+    private List<SiteStats> children = new ArrayList<SiteStats>();
+
+    public SiteStats() {
+        this(1);
+    }
+
+    public SiteStats(int childrenCount) {
+        for (int i = 0; i < childrenCount; i++) {
+            SiteStats simpleChild = new SiteStats(0 /* End-term */);
+            simpleChild.parent = this;
+            children.add(simpleChild);
+        }
+    }
+
+    public int getGroups() {
         return groups;
+    }
+
+    public void setGroups(int groups) {
+        this.groups = groups;
+    }
+
+    public int getExceptions() {
+        return exceptions;
+    }
+
+    public void setExceptions(int exceptions) {
+        this.exceptions = exceptions;
     }
 
     public long getStartupCost() {
         return startupCost;
     }
 
+    public void setStartupCost(long startupCost) {
+        this.startupCost = startupCost;
+    }
+
     public long getRequestCount() {
         return requestCount;
     }
 
+    public void setRequestCount(long requestCount) {
+        this.requestCount = requestCount;
+    }
+
     public long getServiceTime() {
         return serviceTime;
+    }
+
+    public void setServiceTime(long serviceTime) {
+        this.serviceTime = serviceTime;
     }
 
     public float getMeanServiceTime() {
@@ -45,8 +101,16 @@ public class SiteStats
         return otherRequestCount;
     }
 
+    public void setOtherRequestCount(long otherRequestCount) {
+        this.otherRequestCount = otherRequestCount;
+    }
+
     public long getOtherServiceTime() {
         return otherServiceTime;
+    }
+
+    public void setOtherServiceTime(long otherServiceTime) {
+        this.otherServiceTime = otherServiceTime;
     }
 
     public float getMeanOtherServiceTime() {
@@ -60,8 +124,16 @@ public class SiteStats
         return bee32RequestCount;
     }
 
+    public void setBee32RequestCount(long bee32RequestCount) {
+        this.bee32RequestCount = bee32RequestCount;
+    }
+
     public long getBee32ServiceTime() {
         return bee32ServiceTime;
+    }
+
+    public void setBee32ServiceTime(long bee32ServiceTime) {
+        this.bee32ServiceTime = bee32ServiceTime;
     }
 
     public float getMeanBee32ServiceTime() {
@@ -75,8 +147,16 @@ public class SiteStats
         return microRequestCount;
     }
 
+    public void setMicroRequestCount(long microRequestCount) {
+        this.microRequestCount = microRequestCount;
+    }
+
     public long getMicroServiceTime() {
         return microServiceTime;
+    }
+
+    public void setMicroServiceTime(long microServiceTime) {
+        this.microServiceTime = microServiceTime;
     }
 
     public float getMeanMicroServiceTime() {
@@ -84,6 +164,29 @@ public class SiteStats
             return Float.NaN;
         else
             return (float) microServiceTime / (float) microRequestCount;
+    }
+
+    public SiteStats getParent() {
+        return parent;
+    }
+
+    public void setParent(SiteStats parent) {
+        this.parent = parent;
+    }
+
+    public List<SiteStats> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<SiteStats> children) {
+        this.children = children;
+    }
+
+    public SiteStats getLastChild() {
+        if (children.isEmpty())
+            return null;
+        else
+            return children.get(children.size() - 1);
     }
 
     public void addGroup(SiteStats group) {
@@ -97,10 +200,20 @@ public class SiteStats
         microServiceTime += group.microServiceTime;
         otherRequestCount += group.otherRequestCount;
         otherServiceTime += group.otherServiceTime;
+        if (parent != null)
+            parent.addGroup(group);
+    }
+
+    public void addException(ExceptionLogEntry entry) {
+        exceptions++;
+        if (parent != null)
+            parent.addException(entry);
     }
 
     public void addStartup(long startupCost) {
         startupCost += startupCost;
+        if (parent != null)
+            parent.addStartup(startupCost);
     }
 
     public void addService(long serviceTime, boolean bee32, boolean micro) {
@@ -118,6 +231,51 @@ public class SiteStats
             this.otherRequestCount++;
             this.otherServiceTime += serviceTime;
         }
+        if (parent != null)
+            parent.addService(serviceTime, bee32, micro);
+    }
+
+    public void dump(HtmlTemplate sink) {
+        sink.td().text("" + getStartupCost()).end();
+
+        sink.td().text("" + getServiceTime() / 1000).end();
+        sink.td().text("" + getBee32ServiceTime() / 1000).end();
+        sink.td().text("" + getMicroServiceTime() / 1000).end();
+        sink.td().text("" + getOtherServiceTime() / 1000).end();
+
+        sink.td().text("" + getRequestCount()).end();
+        sink.td().text("" + getBee32RequestCount()).end();
+        sink.td().text("" + getMicroRequestCount()).end();
+        sink.td().text("" + getOtherRequestCount()).end();
+
+        sink.td().text("" + getMeanServiceTime()).end();
+        sink.td().text("" + getMeanBee32ServiceTime()).end();
+        sink.td().text("" + getMeanMicroServiceTime()).end();
+        sink.td().text("" + getMeanOtherServiceTime()).end();
+    }
+
+    public void saveToFile(File statsFile)
+            throws IOException {
+        String xml = XMLs.encode(this);
+        new JavaioFile(statsFile).forWrite().write(xml);
+    }
+
+    public static SiteStats readFromFile(File statsFile)
+            throws IOException {
+        SiteStats stats = null;
+        if (statsFile != null && statsFile.exists())
+            try {
+                String statsXml = new JavaioFile(statsFile).forRead().readTextContents();
+                stats = (SiteStats) XMLs.decode(statsXml);
+            } catch (IOException e) {
+                throw e;
+            } catch (Exception e) {
+                logger.error("Failed to load stats from " + statsFile + ", reset the stats.", e);
+                stats = new SiteStats();
+            }
+        else
+            stats = new SiteStats();
+        return stats;
     }
 
 }
