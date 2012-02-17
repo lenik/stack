@@ -1,6 +1,7 @@
 package com.bee32.sem.chance.web;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.bee32.plover.orm.annotation.ForEntity;
@@ -28,10 +29,10 @@ public class ChanceBean
     }
 
     @Override
-    protected boolean preUpdate(UnmarshalMap uMap)
-            throws Exception {
-        for (ChanceDto dto : uMap.<ChanceDto> dtos()) {
-            if (dto.getParties().isEmpty()) {
+    protected boolean postValidate(List<?> dtos) {
+        for (Object dto : dtos) {
+            ChanceDto chance = (ChanceDto) dto;
+            if (chance.getParties().isEmpty()) {
                 uiLogger.error("错误提示", "请选择机会对应的客户!");
                 return false;
             }

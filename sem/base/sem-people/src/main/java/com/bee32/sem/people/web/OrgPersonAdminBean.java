@@ -12,7 +12,6 @@ import com.bee32.plover.orm.annotation.ForEntities;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.misc.SimpleEntityViewBean;
-import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.people.Gender;
 import com.bee32.sem.people.dto.ContactDto;
 import com.bee32.sem.people.dto.OrgDto;
@@ -150,8 +149,7 @@ public class OrgPersonAdminBean
     }
 
     @Override
-    protected boolean preUpdate(UnmarshalMap uMap)
-            throws Exception {
+    protected boolean postValidate(List<?> dtos) {
         if (selectedTags == null || selectedTags.size() <= 0) {
             uiLogger.error("没有为公司选择标签!");
             return false;

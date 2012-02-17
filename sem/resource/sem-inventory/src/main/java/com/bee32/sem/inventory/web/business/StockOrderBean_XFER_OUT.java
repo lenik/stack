@@ -1,5 +1,7 @@
 package com.bee32.sem.inventory.web.business;
 
+import java.util.List;
+
 import javax.free.Nullables;
 
 import com.bee32.plover.orm.annotation.ForEntity;
@@ -10,7 +12,6 @@ import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.tx.dto.StockTransferDto;
 import com.bee32.sem.inventory.tx.entity.StockTransfer;
 import com.bee32.sem.inventory.util.StockJobStepping;
-import com.bee32.sem.misc.UnmarshalMap;
 
 @ForEntity(value = StockOrder.class, parameters = @TypeParameter(name = "_subject", value = "XFRO"))
 public class StockOrderBean_XFER_OUT
@@ -36,15 +37,16 @@ public class StockOrderBean_XFER_OUT
     boolean noEmptyOrder = false;
 
     @Override
-    protected boolean preUpdate(UnmarshalMap uMap)
-            throws Exception {
+    protected boolean postValidate(List<?> dtos) {
         StockTransferDto stockTransfer = stepping.getOpenedObject();
         if (Nullables.equals(selectedWarehouseId, stockTransfer.getDestWarehouse().getId())) {
             uiLogger.error("调拨源仓库和目标仓库不能相同");
             return false;
         }
+
         if (noEmptyOrder)
-            for (StockOrderDto stockOrder : uMap.<StockOrderDto> dtos()) {
+            for (Object dto : dtos) {
+                StockOrderDto stockOrder = (StockOrderDto) dto;
                 if (stockOrder.getItems() != null && stockOrder.getItems().size() <= 0) {
                     uiLogger.error("单据上至少应该有一条明细");
                     return false;

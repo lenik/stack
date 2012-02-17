@@ -1,5 +1,7 @@
 package com.bee32.sem.chance.web;
 
+import java.util.List;
+
 import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.orm.annotation.ForEntity;
@@ -25,16 +27,17 @@ public class ChanceActionBean
     }
 
     @Override
-    protected boolean preUpdate(UnmarshalMap uMap)
-            throws Exception {
-        for (ChanceActionDto action : uMap.<ChanceActionDto> dtos()) {
-            action.setActor(SessionUser.getInstance().getUser());
+    protected boolean postValidate(List<?> dtos) {
+        UserDto me = SessionUser.getInstance().getUser();
+        for (Object dto : dtos) {
+            ChanceActionDto action = (ChanceActionDto) dto;
             ChanceStageDto stage = action.getStage();
             Long chanceId = action.getChance().getId();
             if (chanceId == null && !stage.isNull()) {
                 uiLogger.error("错误提示", "必须先选择机会,才能设置机会阶段");
                 return false;
             }
+            action.setActor(me);
         }
         return true;
     }

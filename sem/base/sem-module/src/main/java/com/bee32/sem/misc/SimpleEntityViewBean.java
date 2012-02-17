@@ -426,9 +426,16 @@ public class SimpleEntityViewBean
             return;
         }
 
+        List<EntityDto<?, ?>> dtos = getOpenedObjects();
+        for (SevbFriend friend : sortedFriends)
+            if (!friend.postValidate(dtos))
+                return;
+        if (!postValidate(dtos))
+            return;
+
         UnmarshalMap uMap;
         try {
-            uMap = unmarshalDtos(getOpenedObjects(), false);
+            uMap = unmarshalDtos(dtos, false/* result not-null */);
         } catch (Exception e) {
             uiLogger.error("反编列失败", e);
             return;
@@ -464,19 +471,8 @@ public class SimpleEntityViewBean
             }
         }
 
-        if (!lockedList.isEmpty()) {
-            StringBuilder buf = null;
-            for (Entity<?> lockedEntity : lockedList) {
-                if (buf == null)
-                    buf = new StringBuilder("以下对象被锁定：\n");
-                else
-                    buf.append(", \n");
-                String entryText = lockedEntity.getEntryLabel();
-                buf.append("    " + entryText);
-            }
-            uiLogger.error("不能" + hint + "锁定的对象: " + buf.toString());
+        if (!checkLockList(lockedList, hint))
             return;
-        }
 
         try {
             if (!__preUpdate(uMap))
@@ -553,7 +549,7 @@ public class SimpleEntityViewBean
 
         UnmarshalMap uMap;
         try {
-            uMap = unmarshalDtos(getSelection(), true);
+            uMap = unmarshalDtos(getSelection(), true/* result nullable */);
         } catch (Exception e) {
             uiLogger.error("反编列失败", e);
             return;
@@ -589,20 +585,8 @@ public class SimpleEntityViewBean
             }
         }
 
-        if (!lockedList.isEmpty()) {
-            StringBuilder buf = null;
-            for (Entity<?> lockedEntity : lockedList) {
-                if (buf == null)
-                    buf = new StringBuilder("以下对象被锁定：\n");
-                else
-                    buf.append(", \n");
-                String entryText = lockedEntity.getEntryLabel();
-                buf.append("    " + entryText);
-            }
-            uiLogger.error("不能删除锁定的对象: " + buf.toString());
-            setSelection(null);
+        if (!checkLockList(lockedList, "删除"))
             return;
-        }
 
         setSelection(null);
 
@@ -652,6 +636,27 @@ public class SimpleEntityViewBean
 
         String countHint = count == -1 ? "" : (" [" + count + "]");
         uiLogger.info("删除成功" + countHint);
+    }
+
+    protected boolean checkLockList(Iterable<? extends Entity<?>> lockedList, String hint) {
+        StringBuilder buf = null;
+        for (Entity<?> lockedEntity : lockedList) {
+            if (buf == null)
+                buf = new StringBuilder("以下对象被锁定：\n");
+            else
+                buf.append(", \n");
+            String entryText = lockedEntity.getEntryLabel();
+            buf.append("    " + entryText);
+        }
+        if (buf != null) {
+            uiLogger.error("不能" + hint + "锁定的对象: " + buf.toString());
+            return false;
+        } else
+            return true;
+    }
+
+    protected boolean postValidate(List<?> dtos) {
+        return true;
     }
 
     /**

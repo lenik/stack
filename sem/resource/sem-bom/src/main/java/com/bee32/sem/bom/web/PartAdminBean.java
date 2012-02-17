@@ -6,6 +6,7 @@ import java.util.List;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.annotation.ForEntity;
+import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.bom.dto.PartDto;
 import com.bee32.sem.bom.dto.PartItemDto;
 import com.bee32.sem.bom.entity.Part;
@@ -13,7 +14,6 @@ import com.bee32.sem.bom.service.PartService;
 import com.bee32.sem.bom.util.BomCriteria;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.MaterialDto;
-import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialType;
 import com.bee32.sem.inventory.web.MaterialCategorySupportBean;
 import com.bee32.sem.misc.UnmarshalMap;
@@ -46,11 +46,10 @@ public class PartAdminBean
     }
 
     @Override
-    protected boolean preUpdate(UnmarshalMap uMap)
-            throws Exception {
-        for (Part _part : uMap.<Part> entitySet()) {
-            Material material = _part.getTarget();
-            if (material == null) {
+    protected boolean postValidate(List<?> dtos) {
+        for (Object dto : dtos) {
+            PartDto part = (PartDto) dto;
+            if (DTOs.isNull(part.getTarget())) {
                 uiLogger.error("组件没有设置对应的物料");
                 return false;
             }

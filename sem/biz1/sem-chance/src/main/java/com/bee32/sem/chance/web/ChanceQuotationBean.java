@@ -10,7 +10,6 @@ import com.bee32.sem.chance.dto.ChanceQuotationItemDto;
 import com.bee32.sem.chance.entity.ChanceQuotation;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.misc.SimpleEntityViewBean;
-import com.bee32.sem.misc.UnmarshalMap;
 
 public class ChanceQuotationBean
         extends SimpleEntityViewBean {
@@ -32,9 +31,9 @@ public class ChanceQuotationBean
     }
 
     @Override
-    protected boolean preUpdate(UnmarshalMap uMap)
-            throws Exception {
-        for (ChanceQuotationDto quotation : uMap.<ChanceQuotationDto> dtos()) {
+    protected boolean postValidate(List<?> dtos) {
+        for (Object dto : dtos) {
+            ChanceQuotationDto quotation = (ChanceQuotationDto) dto;
             if (quotation.getItems() == null || quotation.getItems().size() == 0) {
                 uiLogger.error("错误提示:", "请添加明细");
                 return false;

@@ -59,9 +59,9 @@ public class MaterialExAdminBean
     }
 
     @Override
-    protected boolean preUpdate(UnmarshalMap uMap)
-            throws Exception {
-        for (MaterialDto material : uMap.<MaterialDto> dtos()) {
+    protected boolean postValidate(List<?> dtos) {
+        for (Object dto : dtos) {
+            MaterialDto material = (MaterialDto) dto;
             if (material.getCategory() == null || material.getCategory().getId() == null) {
                 uiLogger.error("物料所属分类不能为空!");
                 return false;

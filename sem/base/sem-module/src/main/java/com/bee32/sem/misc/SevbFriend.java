@@ -75,6 +75,10 @@ public abstract class SevbFriend
         }
     }
 
+    public boolean postValidate(List<? extends EntityDto<?, ?>> dtos) {
+        return true;
+    }
+
     public boolean preUpdate(UnmarshalMap uMap) {
         return true;
     }
