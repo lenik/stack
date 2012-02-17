@@ -63,7 +63,6 @@ public class SiteInstance
     Map<String, Object> attributes = new HashMap<String, Object>();
     boolean started;
     Date startup;
-    int startupDuration;
     SiteStats stats = new SiteStats();
 
     public SiteInstance() {
@@ -436,7 +435,8 @@ public class SiteInstance
         if (!started) {
             startup = new Date();
             SiteLifecycleDispatcher.startSite(this);
-            startupDuration = (int) (new Date().getTime() - startup.getTime());
+            long cost = (int) (new Date().getTime() - startup.getTime());
+            stats.addStartup(cost);
             started = true;
         }
     }
@@ -450,10 +450,6 @@ public class SiteInstance
 
     public Date getStartup() {
         return startup;
-    }
-
-    public int getStartupDuration() {
-        return startupDuration;
     }
 
     public SiteStats getStats() {

@@ -17,6 +17,7 @@ import javax.free.JavaioFile;
 
 import org.springframework.context.annotation.Lazy;
 
+import com.bee32.plover.arch.DefaultClassLoader;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.inject.NotAComponent;
 import com.bee32.plover.inject.ServiceTemplate;
@@ -44,7 +45,7 @@ public abstract class ServiceCollector<T> {
     protected ClassScanner scanner = new ClassScanner();
 
     public ServiceCollector() {
-        URLClassLoader scl = (URLClassLoader) ClassLoader.getSystemClassLoader();
+        URLClassLoader scl = (URLClassLoader) DefaultClassLoader.getInstance();
         URLClassLoader tcl = TestClassLoader.createMavenTestClassLoader(scl);
         scanner.setClassLoader(tcl);
 

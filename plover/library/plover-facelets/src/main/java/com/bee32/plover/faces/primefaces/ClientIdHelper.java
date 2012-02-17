@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.plover.arch.DefaultClassLoader;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 
 public class ClientIdHelper {
@@ -25,7 +26,7 @@ public class ClientIdHelper {
         String path = servletPath.replace(".jsf", ".xhtml");
         path = "resources" + path;
 
-        URL resource = ClassLoader.getSystemClassLoader().getResource(path);
+        URL resource = DefaultClassLoader.getInstance().getResource(path);
         if (!"file".equals(resource.getProtocol()))
             return;
 

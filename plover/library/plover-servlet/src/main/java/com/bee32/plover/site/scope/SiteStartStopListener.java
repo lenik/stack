@@ -74,7 +74,7 @@ public class SiteStartStopListener
             String facesRequest = request.getHeader("Faces-Request");
             boolean micro = "partial/ajax".equals(facesRequest);
 
-            site.getStats().serviceComplete(serviceTime, bee32, micro);
+            site.getStats().addService(serviceTime, bee32, micro);
         }
     }
 

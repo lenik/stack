@@ -28,6 +28,7 @@ import java.util.Set;
 import javax.free.Strings;
 import javax.free.SystemProperties;
 
+import com.bee32.plover.arch.DefaultClassLoader;
 import com.bee32.plover.arch.util.EnumAlt;
 import com.bee32.plover.orm.util.EntityFormatter;
 import com.bee32.plover.xutil.m2.MavenPath;
@@ -226,7 +227,7 @@ public class NLSInitiator {
             throws Exception {
         System.setProperty("line.separator", "\n");
 
-        URLClassLoader mainLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
+        URLClassLoader mainLoader = (URLClassLoader) DefaultClassLoader.getInstance();
         URLClassLoader testLoader = TestClassLoader.createMavenTestClassLoader(mainLoader);
         URLClassLoader[] loaders = { mainLoader, testLoader };
 

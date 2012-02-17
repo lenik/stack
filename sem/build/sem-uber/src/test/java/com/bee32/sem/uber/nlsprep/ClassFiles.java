@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.free.FilePath;
 
+import com.bee32.plover.arch.DefaultClassLoader;
 import com.bee32.plover.xutil.m2.UCLDumper;
 
 public class ClassFiles {
@@ -37,7 +38,7 @@ public class ClassFiles {
 
     public static List<Class<?>> forNames(List<String> fqcns, boolean skipLocals)
             throws ClassNotFoundException {
-        return forNames(fqcns, skipLocals, ClassLoader.getSystemClassLoader());
+        return forNames(fqcns, skipLocals, DefaultClassLoader.getInstance());
     }
 
     public static List<Class<?>> forNames(List<String> fqcns, boolean skipLocals, ClassLoader loader)

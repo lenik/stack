@@ -8,10 +8,12 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bee32.plover.arch.DefaultClassLoader;
+
 public class UCLDumper {
 
     public static List<File> getLocalClasspaths() {
-        ClassLoader scl = ClassLoader.getSystemClassLoader();
+        ClassLoader scl = DefaultClassLoader.getInstance();
         return getLocalClasspaths(scl);
     }
 
@@ -43,7 +45,7 @@ public class UCLDumper {
 
     public static void main(String[] args) {
         if (dumpRaw) {
-            ClassLoader scl = ClassLoader.getSystemClassLoader();
+            ClassLoader scl = DefaultClassLoader.getInstance();
             ClassLoader cl = (URLClassLoader) scl;
             while (cl != null) {
                 System.out.println(cl);

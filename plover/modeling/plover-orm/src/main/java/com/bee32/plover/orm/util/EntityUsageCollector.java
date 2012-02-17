@@ -14,6 +14,7 @@ import java.util.TreeMap;
 
 import javax.free.URLResource;
 
+import com.bee32.plover.arch.DefaultClassLoader;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.xutil.ResourceScanner;
 import com.bee32.plover.xutil.m2.MavenPath;
@@ -65,7 +66,8 @@ public class EntityUsageCollector {
 
     public void loadFromResources()
             throws ClassNotFoundException, IOException {
-        loadFromResources(ClassLoader.getSystemClassLoader());
+        ClassLoader loader = DefaultClassLoader.getInstance();
+        loadFromResources(loader);
     }
 
     static final String entityUsageDir = "META-INF/entity-usage/";

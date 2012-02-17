@@ -11,13 +11,16 @@ import java.util.jar.JarFile;
 
 import javax.free.Pred1;
 
+import com.bee32.plover.arch.DefaultClassLoader;
+
 public class ResourceScanner {
 
-    private ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+    private ClassLoader classLoader;
     private IFileOrEntryFilter filter;
 
     public ResourceScanner(IFileOrEntryFilter filter) {
         setFilter(filter);
+        classLoader = DefaultClassLoader.getInstance();
     }
 
     public ClassLoader getClassLoader() {
