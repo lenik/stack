@@ -72,6 +72,7 @@ public class ChooseMaterialDialogBean
 
     public void setProductLike(Boolean productLike) {
         this.productLike = productLike;
+        this.refreshRowCount();
     }
 
 }
