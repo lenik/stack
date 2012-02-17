@@ -63,6 +63,7 @@ public class PartAdminBean
         for (Part _part : uMap.<Part> entitySet()) {
             ctx.bean.getBean(PartService.class).changePartItemFromMaterialToPart(_part);
         }
+
     }
 
     @Override
@@ -101,7 +102,7 @@ public class PartAdminBean
             return;
         }
         item.setMaterial(selectedMaterial);
-        item.setPart(null);
+        //item.setPart(null);
 
         selectedMaterial = null;
     }

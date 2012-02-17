@@ -57,7 +57,7 @@
                     <t:panelGroup colspan="3">
                         <h:inputHidden id="target" label="对应物料" value="#{obj.target.id_RZL}" />
                         <h:outputText value="#{obj.target.label}" />
-                        <p:commandButton title="选择生成的物料" value="..." oncomplete="chooseTargetDialog.show();" update="material-d:form">
+                        <p:commandButton title="选择生成的物料" value="..." oncomplete="chooseTargetDialog.show();" update=":material-d:form">
                             <f:setPropertyActionListener
                                 target="#{chooseMaterialDialogBean.materialType}"
                                 value="1" />
