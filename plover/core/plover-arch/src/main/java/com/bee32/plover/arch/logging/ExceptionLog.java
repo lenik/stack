@@ -17,14 +17,18 @@ public class ExceptionLog {
         this.maxSize = size;
     }
 
-    public void addException(Object message, Throwable exception, String... strRep) {
-        ExceptionLogEntry entry = new ExceptionLogEntry(new Date(), message, exception, strRep);
+    public void addException(ExceptionLogEntry entry) {
         entries.addFirst(entry);
         while (entries.size() > maxSize)
             entries.removeLast();
     }
 
-    public void addException(Object message, ThrowableInformation ti) {
+    public final void addException(Object message, Throwable exception, String... strRep) {
+        ExceptionLogEntry entry = new ExceptionLogEntry(new Date(), message, exception, strRep);
+        addException(entry);
+    }
+
+    public final void addException(Object message, ThrowableInformation ti) {
         if (ti == null)
             throw new NullPointerException("ti");
         addException(message, ti.getThrowable(), ti.getThrowableStrRep());
