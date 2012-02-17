@@ -152,6 +152,14 @@ public abstract class DTOs {
         return map;
     }
 
+    public static boolean isNull(EntityDto<?, ?> dto) {
+        if (dto == null)
+            return true;
+        if (dto.isNull())
+            return true;
+        return false;
+    }
+
 }
 
 class DummyEntity
