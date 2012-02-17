@@ -9,10 +9,10 @@ import org.slf4j.LoggerFactory;
 import com.bee32.plover.servlet.peripheral.AbstractScl;
 import com.bee32.plover.servlet.rabbits.RabbitServer;
 
-public class ServletTestCaseScl
+public class InitializeStcScl
         extends AbstractScl {
 
-    static Logger logger = LoggerFactory.getLogger(ServletTestCaseScl.class);
+    static Logger logger = LoggerFactory.getLogger(InitializeStcScl.class);
 
     /**
      * How to know myself?

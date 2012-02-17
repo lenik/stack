@@ -19,7 +19,7 @@ import com.bee32.plover.servlet.rabbits.RootContextLoaderScl;
  *
  * @see RootContextLoaderScl
  */
-public class WiredServletTestCaseAppctxScl
+public class InitializeWstcScl
         extends AbstractScl {
 
     WiredServletTestCase wstc;

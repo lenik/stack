@@ -1,16 +1,17 @@
 package com.bee32.plover.faces.test;
 
 import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
 
 import org.apache.myfaces.webapp.StartupServletContextListener;
 
-import com.bee32.plover.servlet.peripheral.AbstractScl;
+import com.bee32.plover.servlet.peripheral.DecoratedScl;
 
 public class FaceletsStartupScl
-        extends AbstractScl {
+        extends DecoratedScl {
 
-    ServletContextListener myfacesScl = new StartupServletContextListener();
+    public FaceletsStartupScl() {
+        super(new StartupServletContextListener());
+    }
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
@@ -26,7 +27,7 @@ public class FaceletsStartupScl
              * Normally, servlet containers will automatically load and process .tld files at
              * startup time, and therefore register and run this class automatically.
              */
-            myfacesScl.contextInitialized(sce);
+            super.contextInitialized(sce);
             break;
         }
     }
