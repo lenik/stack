@@ -14,7 +14,6 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 import javax.validation.constraints.NotNull;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.orm.hibernate3.HibernateSystemException;
 
 import com.bee32.plover.arch.util.ClassUtil;
@@ -540,62 +539,6 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         this._skipId = skipped;
     }
 
-    @RequiredId
-    public final K getId_R() {
-        return getId();
-    }
-
-    public final void setId_R(K id) {
-        if (id == null)
-            throw new NullPointerException("id");
-        setId(id);
-    }
-
-    @RequiredId(zero = false)
-    public final int getId_RZ() {
-        if (id == null)
-            return 0;
-        else
-            return (Integer) id;
-    }
-
-    @SuppressWarnings("unchecked")
-    public final void setId_RZ(int id) {
-        if (id == 0)
-            throw new IllegalArgumentException("id can't be zero");
-        this.id = (K) (Integer) id;
-    }
-
-    @RequiredId(zero = false)
-    public final long getId_RZL() {
-        if (id == null)
-            return 0L;
-        else
-            return (Long) id;
-    }
-
-    @SuppressWarnings("unchecked")
-    public final void setId_RZL(long id) {
-        if (id == 0L)
-            throw new IllegalArgumentException("id can't be zero: " + id);
-        this.id = (K) (Long) id;
-    }
-
-    @RequiredId(empty = false)
-    public final String getId_RE() {
-        if (id == null)
-            return "";
-        else
-            return (String) id;
-    }
-
-    @SuppressWarnings("unchecked")
-    public final void setId_RE(String id) {
-        if (StringUtils.isEmpty(id))
-            throw new IllegalArgumentException("id can't be empty");
-        this.id = (K) id;
-    }
-
     public final K getId_O() {
         return getId();
     }
@@ -649,6 +592,44 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             this.id = null;
         else
             this.id = (K) id;
+    }
+
+    // Require-Validation enabled:
+
+    @RequiredId
+    public final K getId_R() {
+        return getId_O();
+    }
+
+    public final void setId_R(K id) {
+        setId_O(id);
+    }
+
+    @RequiredId(zeroForNull = true)
+    public final int getId_RZ() {
+        return getId_OZ();
+    }
+
+    public final void setId_RZ(int id) {
+        setId_OZ(id);
+    }
+
+    @RequiredId(zeroForNull = true)
+    public final long getId_RZL() {
+        return getId_OZL();
+    }
+
+    public final void setId_RZL(long id) {
+        setId_OZL(id);
+    }
+
+    @RequiredId(emptyForNull = true)
+    public final String getId_RE() {
+        return getId_OE();
+    }
+
+    public final void setId_RE(String id) {
+        setId_OE(id);
     }
 
     /**
