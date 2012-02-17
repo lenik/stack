@@ -19,7 +19,7 @@ public class SessionUserLoginListener
     @Override
     public void logIn(LoginEvent event) {
         User _user = event.getUser();
-        UserDto user = DTOs.marshal(UserDto.class, UserDto.GROUPS | UserDto.ROLES, _user);
+        UserDto user = DTOs.mref(UserDto.class, UserDto.GROUPS | UserDto.ROLES, _user);
 
         SessionUser sessionUser = SessionUser.getInstance();
         // sessionUser.setInternalUser(_user);

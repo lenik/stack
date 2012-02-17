@@ -4,6 +4,10 @@ import java.util.EventObject;
 
 import com.bee32.icsf.principal.User;
 
+/**
+ * @see ILoginListener
+ * @see SessionUserLoginListener
+ */
 public class LoginEvent
         extends EventObject {
 
