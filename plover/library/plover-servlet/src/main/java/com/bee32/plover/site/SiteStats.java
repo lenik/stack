@@ -7,14 +7,24 @@ public class SiteStats
 
     private static final long serialVersionUID = 1L;
 
-    long requestCount;
-    long serviceTime;
-    long otherRequestCount;
-    long otherServiceTime;
-    long bee32RequestCount;
-    long bee32ServiceTime;
-    long microRequestCount;
-    long microServiceTime;
+    private long groups;
+    private long startupCost;
+    private long requestCount;
+    private long serviceTime;
+    private long otherRequestCount;
+    private long otherServiceTime;
+    private long bee32RequestCount;
+    private long bee32ServiceTime;
+    private long microRequestCount;
+    private long microServiceTime;
+
+    public long getGroups() {
+        return groups;
+    }
+
+    public long getStartupCost() {
+        return startupCost;
+    }
 
     public long getRequestCount() {
         return requestCount;
@@ -76,7 +86,24 @@ public class SiteStats
             return (float) microServiceTime / (float) microRequestCount;
     }
 
-    public void serviceComplete(long serviceTime, boolean bee32, boolean micro) {
+    public void addGroup(SiteStats group) {
+        groups++;
+        startupCost += group.startupCost;
+        requestCount += group.requestCount;
+        serviceTime += group.serviceTime;
+        bee32RequestCount += group.bee32RequestCount;
+        bee32ServiceTime += group.bee32ServiceTime;
+        microRequestCount += group.microRequestCount;
+        microServiceTime += group.microServiceTime;
+        otherRequestCount += group.otherRequestCount;
+        otherServiceTime += group.otherServiceTime;
+    }
+
+    public void addStartup(long startupCost) {
+        startupCost += startupCost;
+    }
+
+    public void addService(long serviceTime, boolean bee32, boolean micro) {
         this.requestCount++;
         this.serviceTime += serviceTime;
         if (bee32) {

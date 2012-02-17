@@ -440,7 +440,7 @@ public class SiteManagerServlet
                             text(Dates.sysDateTimeFormat.format(startup));
                         end();
                     }
-                    td().text("" + site.getStartupDuration()).end();
+                    td().text("" + stats.getStartupCost()).end();
 
                     td().text("" + stats.getServiceTime() / 1000).end();
                     td().text("" + stats.getBee32ServiceTime() / 1000).end();
