@@ -4,7 +4,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.orm.annotation.ForEntity;
+import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.chance.dto.ChancePartyDto;
@@ -14,6 +16,7 @@ import com.bee32.sem.chance.dto.ChanceStageDto;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.entity.ChanceStage;
+import com.bee32.sem.chance.util.ChanceCriteria;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
@@ -92,6 +95,13 @@ public class ChanceBean
         selectedAction.setStage(null);
         attachSet.remove(selectedAction);
         detachSet.add(selectedAction);
+    }
+
+    public void addNameOrLabelRestriction() {
+        addSearchFragment("名称含有 " + searchPattern, Or.of(//
+                CommonCriteria.labelledWith(searchPattern, true), //
+                ChanceCriteria.subjectLike(searchPattern, true)));
+        searchPattern = null;
     }
 
     ListMBean<ChancePartyDto> partiesMBean = ListMBean.fromEL(this, "openedObject.parties", ChancePartyDto.class);
