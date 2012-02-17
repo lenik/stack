@@ -134,7 +134,7 @@ public class PurchaseRequestItem
     /**
      * 采购项目对应的询价
      */
-    @OneToMany(mappedBy = "purchaseRequestItem", orphanRemoval = true)
+    @OneToMany(mappedBy = "parent", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<PurchaseInquiry> getInquiries() {
         return inquiries;

@@ -37,7 +37,7 @@ public class PurchaseRequest
         this.plans = plans;
     }
 
-    @OneToMany(mappedBy = "purchaseRequest", orphanRemoval = true)
+    @OneToMany(mappedBy = "parent", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<PurchaseRequestItem> getItems() {
         return items;
