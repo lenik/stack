@@ -16,13 +16,17 @@ public class EltManager {
             logTargets.add(targeter);
     }
 
-    public void addException(Object message, ThrowableInformation ti) {
+    public void addException(Object message, Throwable exception, String... strRep) {
         for (IExceptionLogTargeter logTarget : logTargets) {
             Collection<? extends ExceptionLog> logGroup = logTarget.getLogTargets();
             for (ExceptionLog log : logGroup) {
-                log.addException(message, ti);
+                log.addException(message, exception, strRep);
             }
         }
+    }
+
+    public void addException(Object message, ThrowableInformation ti) {
+        addException(message, ti.getThrowable(), ti.getThrowableStrRep());
     }
 
     static EltManager instance;

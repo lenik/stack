@@ -13,7 +13,7 @@ public class ExceptionLogEntry
     Throwable exception;
     String[] strRep;
 
-    public ExceptionLogEntry(Date date, Object message, Throwable exception, String[] strRep) {
+    public ExceptionLogEntry(Date date, Object message, Throwable exception, String... strRep) {
         this.date = date;
         this.message = message;
         this.exception = exception;
@@ -44,11 +44,11 @@ public class ExceptionLogEntry
         this.exception = exception;
     }
 
-    public String[] getStrRep() {
+    String[] getStrRep() {
         return strRep;
     }
 
-    public void setStrRep(String[] strRep) {
+    void setStrRep(String[] strRep) {
         this.strRep = strRep;
     }
 
