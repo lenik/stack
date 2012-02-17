@@ -66,9 +66,9 @@ public class SiteInstance
     Date startup;
 
     File statsFile;
-    SiteStats stats;
+    private SiteStats stats;
 
-    public SiteInstance() {
+    private SiteInstance() {
         properties = new FormatProperties();
 
         setVerboseLevel(VerboseLevel.SQL);
@@ -81,17 +81,20 @@ public class SiteInstance
         setLogoLocation(DEFAULT_LOGO_LOCATION);
     }
 
+    public static SiteInstance createSite() {
+        return new SiteInstance();
+    }
+
     public SiteInstance(File file)
             throws IOException, ParseException {
         this();
-
-        setConfigFile(file);
 
         String name = file.getName();
         if (name.endsWith(CONFIG_EXTENSION))
             name = name.substring(0, name.length() - CONFIG_EXTENSION.length());
         this.name = name;
 
+        setConfigFile(file);
         loadConfig();
     }
 
@@ -448,7 +451,7 @@ public class SiteInstance
             startup = new Date();
             SiteLifecycleDispatcher.startSite(this);
             long cost = (int) (new Date().getTime() - startup.getTime());
-            stats.addStartup(cost);
+            getLocalStats().addStartup(cost);
             started = true;
         }
     }

@@ -175,7 +175,7 @@ public class SiteManagerServlet
                 throws Exception {
             boolean createSite = site == null;
             if (createSite)
-                site = new SiteInstance();
+                site = SiteInstance.createSite();
 
             String name = args.getNString("site");
             boolean save = args.getString("save") != null;
