@@ -24,6 +24,14 @@ public class ChoosePartDialogBean
         super(Part.class, PartDto.class, 0);
     }
 
+    @Override
+    public void addNameOrLabelRestriction() {
+        addSearchFragment("名称含有 " + searchPattern, Or.of(//
+                CommonCriteria.labelledWith(searchPattern, true), //
+                BomCriteria.targetLabel(searchPattern, true)));
+        searchPattern = null;
+    }
+
     // Properties
 
     public String getHeader() {
@@ -41,13 +49,4 @@ public class ChoosePartDialogBean
     public void setMode(String mode) {
         this.mode = mode;
     }
-
-    @Override
-    public void addNameOrLabelRestriction() {
-        addSearchFragment("名称含有 " + searchPattern, Or.of(//
-                CommonCriteria.labelledWith(searchPattern, true), //
-                BomCriteria.targetLabel(searchPattern, true)));
-        searchPattern = null;
-    }
-
 }

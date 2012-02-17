@@ -24,6 +24,7 @@ public class MaterialCategoryDto
     String name;
     List<MaterialDto> materials;
     int materialCount;
+    int partCount;
     CodeGenerator codeGenerator;
     MaterialType materialType;
 
@@ -39,6 +40,7 @@ public class MaterialCategoryDto
             this.materials = Collections.emptyList();
 
         this.materialCount = source.getMaterialCount();
+        this.partCount = source.getPartCount();
     }
 
     @Override
@@ -94,6 +96,14 @@ public class MaterialCategoryDto
 
     public void setMaterialCount(int materialCount) {
         this.materialCount = materialCount;
+    }
+
+    public int getPartCount() {
+        return partCount;
+    }
+
+    public void setPartCount(int partCount) {
+        this.partCount = partCount;
     }
 
     public CodeGenerator getCodeGenerator() {

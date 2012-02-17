@@ -77,28 +77,31 @@ public class PartAdminBean
         return true;
     }
 
-    public void confirmMaterial() {
-        if (productLike) {
-            PartDto part = getOpenedObject();
-            // 检查此物料(成品)是否已经有bom存在
-            List<Part> partList = ctx.data.access(Part.class).list(new Equals("target.id", selectedMaterial.getId()));
+    public void setPartMaterial() {
+        PartDto part = getOpenedObject();
+        // 检查此物料(成品)是否已经有bom存在
+        List<Part> partList = ctx.data.access(Part.class).list(new Equals("target.id", selectedMaterial.getId()));
 
-            if (partList != null & partList.size() > 0) {
-                uiLogger.info("此物料已经存在BOM信息,继续新增的话,此物料将存在多个BOM信息");
-                return;
-            }
-            part.setTarget(selectedMaterial);
-        } else {
-            PartItemDto item = childrenMBean.getOpenedObject();
-            List<Part> materialsIsPart = ctx.data.access(Part.class).list(
-                    new Equals("target.id", selectedMaterial.getId()));
-            if (materialsIsPart != null && materialsIsPart.size() > 0) {
-                uiLogger.info("此物料是成品或半成品，已经存在BOM，请用[组件是半成品]标签页进行查找选择!!!");
-                return;
-            }
-            item.setMaterial(selectedMaterial);
-            item.setPart(null);
+        if (partList != null & partList.size() > 0) {
+            uiLogger.info("此物料已经存在BOM信息,继续新增的话,此物料将存在多个BOM信息");
+            return;
         }
+        part.setTarget(selectedMaterial);
+        part.setCategory(selectedMaterial.getCategory());
+
+        selectedMaterial = null;
+    }
+
+    public void setPartItemMaterial() {
+        PartItemDto item = childrenMBean.getOpenedObject();
+        List<Part> materialsIsPart = ctx.data.access(Part.class).list(
+                new Equals("target.id", selectedMaterial.getId()));
+        if (materialsIsPart != null && materialsIsPart.size() > 0) {
+            uiLogger.info("此物料是成品或半成品，已经存在BOM，请用[组件是半成品]标签页进行查找选择!!!");
+            return;
+        }
+        item.setMaterial(selectedMaterial);
+        item.setPart(null);
 
         selectedMaterial = null;
     }
@@ -129,4 +132,11 @@ public class PartAdminBean
         return childrenMBean;
     }
 
+    public MaterialDto getSelectedMaterial() {
+        return selectedMaterial;
+    }
+
+    public void setSelectedMaterial(MaterialDto selectedMaterial) {
+        this.selectedMaterial = selectedMaterial;
+    }
 }

@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.criteria.hibernate.Not;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialType;
@@ -24,7 +23,7 @@ public class ChooseMaterialDialogBean
 
     String header = "Please choose a material..."; // NLS: 选择用户或组
 
-    Boolean productLike;
+    Integer materialType = null;
 
     public ChooseMaterialDialogBean() {
         super(Material.class, MaterialDto.class, 0);
@@ -40,11 +39,15 @@ public class ChooseMaterialDialogBean
     @Override
     protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
         super.composeBaseRestrictions(elements);
-        if (productLike != null) {
-            if (productLike)
-                elements.add(MaterialCriteria.materialType(productLikeClasses));
-            else
-                elements.add(Not.of(MaterialCriteria.materialType(MaterialType.PRODUCT)));
+        if (materialType != null) {
+            switch(materialType) {
+            case 1:
+                elements.add(MaterialCriteria.materialType(MaterialType.PRODUCT, MaterialType.SEMI));
+                break;
+            case 2:
+                elements.add(MaterialCriteria.materialType(MaterialType.SEMI, MaterialType.RAW, MaterialType.OTHER));
+                break;
+            }
         }
     }
 
@@ -61,17 +64,20 @@ public class ChooseMaterialDialogBean
     /**
      * Values:
      * <ul>
-     * <li>true = 成品/半成品
-     * <li>false = not 成品
-     * <li>null = 不限
+     * <li>1 = 所属分类为成品,半成品的物料
+     * <li>2 = 所属分类为半成品,原材料,其他的物料
+     * <li>null = 所有物料
      * </ul>
      */
-    public Boolean getProductLike() {
-        return productLike;
+    public Integer getMaterialType() {
+        return materialType;
     }
 
-    public void setProductLike(Boolean productLike) {
-        this.productLike = productLike;
+    /**
+     * 一般在页面上用f:setPropertyActionListener来进行设置
+     */
+    public void setMaterialType(Integer materialType) {
+        this.materialType = materialType;
         this.refreshRowCount();
     }
 

@@ -34,6 +34,7 @@ public class MaterialCategory
     List<Material> materials = new ArrayList<Material>();
 
     int materialCount;
+    int partCount;
 
     public MaterialCategory() {
         super();
@@ -116,6 +117,15 @@ public class MaterialCategory
 
     public void setMaterialCount(int materialCount) {
         this.materialCount = materialCount;
+    }
+
+    @Formula("(select count(*) from part p where p.category=id)")
+    public int getPartCount() {
+        return partCount;
+    }
+
+    public void setPartCount(int partCount) {
+        this.partCount = partCount;
     }
 
     public void setMaterials(List<Material> materials) {

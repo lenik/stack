@@ -30,5 +30,4 @@ public class BomCriteria
     public static CriteriaElement notObsolete() {
         return isNull("obsolete");
     }
-
 }

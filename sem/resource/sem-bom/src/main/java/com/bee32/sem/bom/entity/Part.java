@@ -26,6 +26,7 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.bom.service.PriceStrategy;
 import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.entity.MaterialType;
 import com.bee32.sem.inventory.util.ConsumptionMap;
 import com.bee32.sem.world.monetary.FxrQueryException;
@@ -61,6 +62,8 @@ public class Part
     BigDecimal electricityFee = new BigDecimal(0);
     BigDecimal equipmentCost = new BigDecimal(0);
 
+    MaterialCategory category;
+
     public Part() {
         // Default valid duration = 1 year.
         Calendar cal = Calendar.getInstance();
@@ -91,6 +94,20 @@ public class Part
 
     public void setTarget(Material target) {
         this.target = target;
+    }
+
+
+    /**
+     * 冗余物料分类，便于统计某个物料分类下的BOM数量
+     * @return
+     */
+    @ManyToOne
+    public MaterialCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(MaterialCategory category) {
+        this.category = category;
     }
 
     /**

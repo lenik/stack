@@ -13,6 +13,7 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.bom.entity.Part;
+import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.util.ConsumptionMap;
@@ -44,6 +45,8 @@ public class PartDto
     BigDecimal equipmentCost;
 
     ConsumptionMap materialConsumption;
+
+    MaterialCategoryDto category;
 
     public PartDto() {
         super();
@@ -86,6 +89,8 @@ public class PartDto
         otherFee = source.getOtherFee();
         electricityFee = source.getElectricityFee();
         equipmentCost = source.getEquipmentCost();
+
+        category = mref(MaterialCategoryDto.class, source.getCategory());
     }
 
     @Override
@@ -108,6 +113,8 @@ public class PartDto
         target.setOtherFee(otherFee);
         target.setElectricityFee(electricityFee);
         target.setEquipmentCost(equipmentCost);
+
+        merge(target, "category", this.category);
     }
 
     @Override
@@ -250,4 +257,11 @@ public class PartDto
         return materialConsumption;
     }
 
+    public MaterialCategoryDto getCategory() {
+        return category;
+    }
+
+    public void setCategory(MaterialCategoryDto category) {
+        this.category = category;
+    }
 }
