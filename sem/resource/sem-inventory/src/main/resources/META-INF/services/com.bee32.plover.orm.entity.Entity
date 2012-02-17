@@ -16,6 +16,7 @@ com.bee32.sem.inventory.entity.StockPeriod
 com.bee32.sem.inventory.entity.StockWarehouse
 com.bee32.sem.inventory.entity.StocktakingOrder
 com.bee32.sem.inventory.entity.StocktakingOrderItem
-com.bee32.sem.inventory.tx.entity.SimpleStockJob
+com.bee32.sem.inventory.service.StockQueryResult
+com.bee32.sem.inventory.tx.entity.StockJob
 com.bee32.sem.inventory.tx.entity.StockOutsourcing
 com.bee32.sem.inventory.tx.entity.StockTransfer
