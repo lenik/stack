@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
-import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.people.Gender;
@@ -26,8 +25,7 @@ public class PersonAdminBean
     private PersonRoleDto selectedRole;
 
     public PersonAdminBean() {
-        super(Person.class, PersonDto.class, PartyDto.CONTACTS, //
-                Order.desc("lastModified"));
+        super(Person.class, PersonDto.class, PartyDto.CONTACTS);
     }
 
     public List<SelectItem> getGenders() {

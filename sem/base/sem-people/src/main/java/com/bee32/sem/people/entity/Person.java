@@ -58,17 +58,11 @@ public class Person
         sex = Gender.valueOf(_sex);
     }
 
-    /**
-     * 性别
-     */
     @Transient
     public Gender getSex() {
         return sex;
     }
 
-    /**
-     * 性别
-     */
     public void setSex(Gender sex) {
         this.sex = sex;
     }
@@ -81,9 +75,6 @@ public class Person
         return censusRegister;
     }
 
-    /**
-     * 户籍
-     */
     public void setCensusRegister(String censusRegister) {
         this.censusRegister = censusRegister;
     }
