@@ -87,8 +87,7 @@ public class MaterialExAdminBean
     @Override
     protected void postDelete(UnmarshalMap uMap)
             throws Exception {
-        for (Material _m : uMap.<Material> entitySet()) {
-            MaterialDto material = uMap.getSourceDto(_m);
+        for (MaterialDto material : uMap.<MaterialDto> dtos()) {
             onDeleteMaterial(material);
         }
     }

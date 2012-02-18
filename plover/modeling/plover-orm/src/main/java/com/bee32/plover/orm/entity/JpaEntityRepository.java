@@ -46,7 +46,6 @@ public abstract class JpaEntityRepository<E extends Entity<K>, K extends Seriali
 
     @Override
     public E get(K key) {
-        // TODO SHOULD convert key -> serializable.
         E entity = template.find(entityType, key);
         return entity;
     }

@@ -3,6 +3,12 @@ package com.bee32.plover.inject;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.concurrent.NotThreadSafe;
+
+/**
+ * Thead safe: enter/leave may be interweaved and thus break thread safe.
+ */
+@NotThreadSafe
 public class SimpleContainer
         extends AbstractContainer {
 
@@ -15,17 +21,11 @@ public class SimpleContainer
         stackPointer = -1;
     }
 
-    /**
-     * XXX - synchronized is just not enough.
-     */
     public synchronized void enter() {
         stack.add(null);
         stackPointer++;
     }
 
-    /**
-     * XXX - synchronized is just not enough.
-     */
     public synchronized void leave() {
         if (stack.isEmpty())
             throw new StackUnderflowException();

@@ -54,7 +54,6 @@ public class ChanceQuotationItem
      * 物料
      */
     @NaturalId(mutable = true)
-    // XXX Should be immutable.
     @ManyToOne
     public Material getMaterial() {
         return material;

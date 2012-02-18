@@ -1,7 +1,6 @@
 package com.bee32.icsf.principal;
 
-import java.util.IdentityHashMap;
-
+import javax.free.IdentityHashSet;
 
 /**
  * @test {@link com.bee32.icsf.principal.util.icsf.principal.util.PrincipalDiagTest}
@@ -22,9 +21,9 @@ public class PrincipalDiag {
          * optimized result cache, for implied principals who don't make a loop to the start,
          * there's no need search them again.
          *
-         * spec ⇒ base (specialized ⇒ common-base) XXX - use IdentityHashSet.
+         * spec ⇒ base (specialized ⇒ common-base)
          */
-        final IdentityHashMap<IPrincipal, Boolean> ident = new IdentityHashMap<IPrincipal, Boolean>();
+        final IdentityHashSet ident = new IdentityHashSet();
 
         try {
             start.accept(new IPrincipalVisitor() {
@@ -52,8 +51,7 @@ public class PrincipalDiag {
                     if (impliedSpec.implies(start))
                         throw new PrincipalDiagException("Loop detected: " + impliedSpec);
 
-                    if (!ident.containsKey(impliedSpec)) {
-                        ident.put(impliedSpec, Boolean.TRUE);
+                    if (ident.add(impliedSpec)) {
                         impliedSpec.accept(this);
                     }
                 }

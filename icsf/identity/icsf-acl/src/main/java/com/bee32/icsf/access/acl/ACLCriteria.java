@@ -94,8 +94,6 @@ public class ACLCriteria
         if (permission == null)
             throw new NullPointerException("permission");
 
-        // XXX 3-state booleans.
-
         CriteriaElement adminSpec = equals(prefix + "admin", true);
         CriteriaElement conj = conj(//
                 implies(prefix + "usable", permission.getUse()), //

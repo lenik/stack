@@ -185,7 +185,6 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
 
         HibernateTemplate template = getHibernateTemplate();
         Serializable key = template.save(entity);
-        // XXX - convert serializable to K.
         return keyType.cast(key);
     }
 

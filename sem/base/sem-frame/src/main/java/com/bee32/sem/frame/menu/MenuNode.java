@@ -215,7 +215,7 @@ public class MenuNode
         out.enter();
         for (Entry<String, IMenuNode> child : children.entrySet()) {
             // String childName = child.getKey();
-            MenuNode childNode = (MenuNode) child.getValue(); // XXX interface?
+            MenuNode childNode = (MenuNode) child.getValue();
             childNode.format(out);
         }
         out.leave();

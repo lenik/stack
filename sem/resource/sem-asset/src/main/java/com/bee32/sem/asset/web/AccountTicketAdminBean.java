@@ -13,8 +13,6 @@ public class AccountTicketAdminBean
 
     private static final long serialVersionUID = 1L;
 
-    int budgetRequestCreatorId; // XXX What's this?
-
     ListMBean<AccountTicketItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items",
             AccountTicketItemDto.class);
 

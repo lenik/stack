@@ -42,7 +42,7 @@ public class MaterialPlanDto
         if (selection.contains(PURCHASE_REQUEST))
             purchaseRequest = mref(PurchaseRequestDto.class, source.getPurchaseRequest());
         else
-            // XXX: Optim: is purchase request entity fetched here??
+            // OPT - Is purchase request entity fetched here??
             purchaseRequest = new PurchaseRequestDto().ref(source.getPurchaseRequest());
     }
 
