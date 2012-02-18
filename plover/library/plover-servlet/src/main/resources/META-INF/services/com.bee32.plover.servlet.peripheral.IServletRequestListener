@@ -1,2 +1,2 @@
 com.bee32.plover.servlet.util.ThreadServletRequestListener
-com.bee32.plover.site.scope.SiteStartStopListener
+com.bee32.plover.site.scope.StartAndStatsSrl

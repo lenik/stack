@@ -1,8 +1,8 @@
 package com.bee32.plover.site;
 
+import com.bee32.plover.servlet.peripheral.PloverSrlMultiplexer;
 import com.bee32.plover.servlet.test.AbstractWac;
 import com.bee32.plover.servlet.test.ServletTestLibrary;
-import com.bee32.plover.site.scope.SiteStartStopListener;
 
 public class SiteWac
         extends AbstractWac {
@@ -12,9 +12,13 @@ public class SiteWac
         return 0;
     }
 
+    /**
+     * @see PloverSrlMultiplexer
+     */
     @Override
     public void configureContext(ServletTestLibrary stl) {
-        stl.addEventListener(new SiteStartStopListener());
+        // This is already added in srl-multiplexer.
+        // stl.addEventListener(new StartAndStatsSrl());
     }
 
 }
