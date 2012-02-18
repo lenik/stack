@@ -22,6 +22,7 @@ public class ExceptionLogEntry
         this.message = message;
         this.exception = exception;
         this.strRep = strRep;
+        EecManager.getInstance().completeEntry(this);
     }
 
     public Date getDate() {
