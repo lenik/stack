@@ -11,7 +11,8 @@
                 <p:dataTable id="dataTable" value="${dialogBean.dataModel}" selection="${_selection}"
                     selectionMode="${multiple ? 'multiple' : 'single'}" var="entry" rowIndexVar="rowIndex"
                     resizableColumns="true" paginator="${paginator != null ? paginator : true}" rows="10"
-                    paginatorTemplate="${viewConfig.paginatorTemplate}" rowsPerPageTemplate="${viewConfig.pageSizeTemplate}">
+                    paginatorTemplate="${viewConfig.paginatorTemplate}" rowsPerPageTemplate="${viewConfig.pageSizeTemplate}"
+                    sortBy="${entry.lastModified}" sortOrder="descending">
 
                     <ui:insert name="columns.0">
                         <p:column headerText="ID" sortBy="${entry.id}">

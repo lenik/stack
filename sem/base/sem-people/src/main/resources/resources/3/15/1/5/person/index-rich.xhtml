@@ -118,9 +118,9 @@
                     <p:toolbarGroup align="left">
                         <p:commandButton value="新增" disabled="#{obj == null or obj.id == null}"
                             actionListener="#{bean.doNewContact}" update=":contactForm:contactHolder" async="true"
-                            onclick="contactHolderDlg.show();" />
+                            onclick="contactDialog.show();" />
                         <p:commandButton value="修改" actionListener="#{bean.doModifyContact}" disabled="#{not bean.contactSelected}"
-                            update=":contactForm:contactHolder" async="true" onclick="contactHolderDlg.show();" />
+                            update=":contactForm:contactHolder" async="true" onclick="contactDialog.show();" />
                         <p:commandButton value="删除" actionListener="#{bean.doDeleteContact}" disabled="#{not bean.contactSelected}"
                             update=":editDialog:form:tv:contacts" async="true" />
                         <p:separator />
@@ -230,7 +230,7 @@
             </h:form>
         </p:dialog>
 
-        <p:dialog header="联系方式编辑" widgetVar="contactHolderDlg" modal="true" height="500" width="640">
+        <p:dialog header="联系方式编辑" widgetVar="contactDialog" modal="true" height="500" width="640">
             <h:form id="contactForm">
                 <h:panelGroup id="contactHolder">
                     <h:inputHidden id="contactId" value="#{bean.contact.id}" />
@@ -270,8 +270,8 @@
                         <h:panelGroup colspan="2">
                             <h:panelGrid columns="2">
                                 <p:commandButton value="保存" actionListener="#{bean.doSaveContact}"
-                                    oncomplete="contactHolderDlg.hide();" async="true" update=":editDialog:form:tv:contacts" />
-                                <p:commandButton value="取消" oncomplete="contactHolderDlg.hide();" />
+                                    oncomplete="contactDialog.hide();" async="true" update=":editDialog:form:tv:contacts" />
+                                <p:commandButton value="取消" oncomplete="contactDialog.hide();" />
                             </h:panelGrid>
                         </h:panelGroup>
                         <h:panelGroup />

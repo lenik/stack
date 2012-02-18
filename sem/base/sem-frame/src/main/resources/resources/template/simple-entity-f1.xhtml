@@ -63,7 +63,7 @@
                                         selection="${bean.singleSelection}" selectionMode="single" paginator="true"
                                         rows="${viewConfig.pageSize}" paginatorTemplate="${viewConfig.paginatorTemplate}"
                                         rowsPerPageTemplate="${viewConfig.pageSizeTemplate}" resizableColumns="true"
-                                        rowIndexVar="rowIndex">
+                                        rowIndexVar="rowIndex" sortBy="${entry.lastModified}" sortOrder="descending">
 
                                         <p:ajax event="rowSelect" update=":mainForm:toolbar" />
                                         <p:ajax event="rowUnselect" update=":mainForm:toolbar" />
