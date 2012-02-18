@@ -13,7 +13,9 @@ import com.bee32.sem.bom.entity.Part;
 import com.bee32.sem.bom.service.PartService;
 import com.bee32.sem.bom.util.BomCriteria;
 import com.bee32.sem.frame.ui.ListMBean;
+import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
+import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialType;
 import com.bee32.sem.inventory.util.MaterialCriteria;
 import com.bee32.sem.inventory.web.MaterialCategorySupportBean;
@@ -70,8 +72,18 @@ public class PartAdminBean
             throws Exception {
         for (Part _part : uMap.<Part> entitySet()) {
             ctx.bean.getBean(PartService.class).changePartItemFromMaterialToPart(_part);
+            PartDto partDto = uMap.getSourceDto(_part);
+            if (partDto.isNewCreated())
+                onCreatePart(partDto);
         }
+    }
 
+    @Override
+    protected void postDelete(UnmarshalMap uMap) throws Exception {
+        for (Part _part : uMap.<Part> entitySet()) {
+            PartDto partDto = uMap.getSourceDto(_part);
+            onDeletePart(partDto);
+        }
     }
 
     @Override
@@ -147,5 +159,19 @@ public class PartAdminBean
 
     public void setSelectedMaterial(MaterialDto selectedMaterial) {
         this.selectedMaterial = selectedMaterial;
+    }
+
+    protected void onCreatePart(PartDto part) {
+        Integer categoryId = part.getCategory().getId();
+        MaterialCategoryDto category = categoryTree.getIndex().get(categoryId);
+        if (category != null)
+            category.setPartCount(category.getPartCount() + 1);
+    }
+
+    protected void onDeletePart(PartDto part) {
+        Integer categoryId = part.getCategory().getId();
+        MaterialCategoryDto category = categoryTree.getIndex().get(categoryId);
+        if (category != null)
+            category.setPartCount(category.getPartCount() - 1);
     }
 }
