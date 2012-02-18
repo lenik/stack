@@ -14,11 +14,16 @@ public class MaterialCategorySupportBean
 
     private static final long serialVersionUID = 1L;
 
-    protected MaterialCategoryTreeModel categoryTree = new MaterialCategoryTreeModel();
+    protected final MaterialCategoryTreeModel categoryTree;
 
     public <E extends Entity<K>, D extends EntityDto<? super E, K>, K extends Serializable> MaterialCategorySupportBean(
             Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
         super(entityClass, dtoClass, fmask, criteriaElements);
+        categoryTree = createCategoryTree();
+    }
+
+    protected MaterialCategoryTreeModel createCategoryTree() {
+        return new MaterialCategoryTreeModel();
     }
 
     public MaterialCategoryTreeModel getCategoryTree() {

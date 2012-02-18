@@ -15,7 +15,9 @@ import com.bee32.sem.bom.util.BomCriteria;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.MaterialType;
+import com.bee32.sem.inventory.util.MaterialCriteria;
 import com.bee32.sem.inventory.web.MaterialCategorySupportBean;
+import com.bee32.sem.inventory.web.MaterialCategoryTreeModel;
 import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.world.monetary.FxrQueryException;
 
@@ -31,8 +33,14 @@ public class PartAdminBean
 
     public PartAdminBean() {
         super(Part.class, PartDto.class, 0);
-        this.categoryTree.addMaterialType(MaterialType.PRODUCT);
-        this.categoryTree.addMaterialType(MaterialType.SEMI);
+    }
+
+    @Override
+    protected MaterialCategoryTreeModel createCategoryTree() {
+        return new MaterialCategoryTreeModel(//
+                MaterialCriteria.categoryType(//
+                        MaterialType.PRODUCT, //
+                        MaterialType.SEMI));
     }
 
     @Override
@@ -95,8 +103,8 @@ public class PartAdminBean
 
     public void setPartItemMaterial() {
         PartItemDto item = childrenMBean.getOpenedObject();
-        List<Part> materialsIsPart = ctx.data.access(Part.class).list(
-                new Equals("target.id", selectedMaterial.getId()));
+        List<Part> materialsIsPart = ctx.data.access(Part.class)
+                .list(new Equals("target.id", selectedMaterial.getId()));
         if (materialsIsPart != null && materialsIsPart.size() > 0) {
             uiLogger.info("此物料是成品或半成品，已经存在BOM，请用[组件是半成品]标签页进行查找选择!!!");
             return;
