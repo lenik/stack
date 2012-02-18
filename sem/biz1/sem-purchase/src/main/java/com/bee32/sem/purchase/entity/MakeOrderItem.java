@@ -54,14 +54,14 @@ public class MakeOrderItem
     }
 
     @NaturalId
-    @ManyToOne(optional = false)
+    @ManyToOne
     public Part getPart() {
         return part;
     }
 
     public void setPart(Part part) {
-        if (part == null)
-            throw new NullPointerException("part");
+//        if (part == null)
+//            throw new NullPointerException("part");
         this.part = part;
     }
 

@@ -82,8 +82,8 @@ public class MakeOrderItemDto
     }
 
     public void setPart(PartDto part) {
-        if (part == null)
-            throw new NullPointerException("part");
+//        if (part == null)
+//            throw new NullPointerException("part");
         this.part = part;
     }
 

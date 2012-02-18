@@ -16,7 +16,7 @@ public final class AssetQueryOptions
 
     Date timestamp = new Date();
 
-    boolean verifiedOnly = true;
+    boolean verifiedOnly = false;   //true:查询审核的项目   false:查询所有项目
     List<AccountSubject> subjects;
     boolean recursive;
     List<Party> parties;

@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import com.bee32.sem.asset.dto.BudgetRequestDto;
 import com.bee32.sem.asset.entity.BudgetRequest;
+import com.bee32.sem.asset.util.AssetCriteria;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 
 public class ChooseBudgetRequestDialogBean
@@ -17,7 +18,7 @@ public class ChooseBudgetRequestDialogBean
     String header = "选择资金流业务单";
 
     public ChooseBudgetRequestDialogBean() {
-        super(BudgetRequest.class, BudgetRequestDto.class, 0);
+        super(BudgetRequest.class, BudgetRequestDto.class, 0, AssetCriteria.haveNoCorrespondingTicket());
     }
 
     // Properties

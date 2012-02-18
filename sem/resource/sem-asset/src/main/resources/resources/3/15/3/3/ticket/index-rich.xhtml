@@ -28,8 +28,13 @@
                 <h:outputText value="资金流业务单:" />
             </t:panelGroup>
             <t:panelGroup colspan="2">
-                <p:inputText id="budgetRequest" value="#{obj.request.description}" readonly="true" label="资金流业务单"/>
-                <p:commandButton value="..." onclick="chooseBudgetRequestDialog.show();" disabled="#{not bean.editing}" />
+                <p:inputText
+                    id="budgetRequest"
+                    value="#{obj.request.label}(#{obj.request.owner.displayName},#{obj.request.value})"
+                    readonly="true"
+                    label="资金流业务单"
+                    style="width:300px;"/>
+                <p:commandButton value="..." onclick="chooseBudgetRequestDialog.show();" disabled="#{not bean.editing}" update=":d-request:form" />
             </t:panelGroup>
         </t:panelGrid>
 
@@ -101,11 +106,11 @@
             </t:panelGrid>
         </fr:listView>
 
-        <sem:chooseBudgetRequestDialog id="d-request" target="#{obj.request}" update=":editDialog:form:basic" />
+        <sem:chooseBudgetRequestDialog id="d-request" target="#{obj.request}" update=":editDialog:form:budgetRequest" />
         <sem:chooseAccountSubjectDialog id="d-subject" target="#{itemObj.subject}"
-            update=":itemsEditView:editForm:body" />
+            update=":itemsEditView:editForm:accountSubject" />
         <sem:choosePartyDialog id="d-customer" header="选择客户作为二级科目" target="#{itemObj.party}"
-            update=":itemsEditView:editForm:body" />
+            update=":itemsEditView:editForm:party" />
     </ui:define>
 
 </ui:composition>
