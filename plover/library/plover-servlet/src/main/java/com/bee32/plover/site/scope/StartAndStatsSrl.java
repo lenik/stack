@@ -22,10 +22,10 @@ import com.bee32.plover.site.SiteManager;
  * <li>For standalone (scope-wired) test, it should start the default site by hand.
  * </ul>
  */
-public class SiteStartStopListener
+public class StartAndStatsSrl
         extends AbstractSrl {
 
-    static Logger logger = LoggerFactory.getLogger(SiteStartStopListener.class);
+    static Logger logger = LoggerFactory.getLogger(StartAndStatsSrl.class);
 
     public static final int PRIORITY = 10;
 
