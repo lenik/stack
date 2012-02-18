@@ -18,7 +18,7 @@ public class SiteElt
         SiteInstance site = ThreadHttpContext.getSiteInstance();
         ExceptionLog log = (ExceptionLog) site.getAttribute(LOG_KEY);
         if (log == null) {
-            log = new SiteExceptionLog(DEFAULT_LOG_SIZE);
+            log = new ExceptionLog(DEFAULT_LOG_SIZE);
             site.setAttribute(LOG_KEY, log);
         }
         return Arrays.asList(log);

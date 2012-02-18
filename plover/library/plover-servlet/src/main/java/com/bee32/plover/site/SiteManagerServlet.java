@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.free.Dates;
@@ -532,6 +533,11 @@ public class SiteManagerServlet
                         .td().text(Dates.sysDateTimeFormat.format(entry.getDate())).end(2);
                 tr().th().text("错误消息").end()//
                         .td().text("" + entry.getMessage()).end(2);
+                for (Entry<String, ?> attr : entry.getAttributes().entrySet()) {
+                    String name = ExceptionLogEntry.getDisplayName(attr.getKey());
+                    String value = String.valueOf(attr.getValue());
+                    tr().th().text(name).end().td().text(value).end(2);
+                }
                 end();
                 hr().end();
 

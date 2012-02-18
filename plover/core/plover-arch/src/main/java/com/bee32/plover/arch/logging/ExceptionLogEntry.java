@@ -2,6 +2,9 @@ package com.bee32.plover.arch.logging;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class ExceptionLogEntry
         implements Serializable {
@@ -12,6 +15,7 @@ public class ExceptionLogEntry
     Object message;
     Throwable exception;
     String[] strRep;
+    Map<String, Object> attributes = new TreeMap<>();
 
     public ExceptionLogEntry(Date date, Object message, Throwable exception, String... strRep) {
         this.date = date;
@@ -50,6 +54,35 @@ public class ExceptionLogEntry
 
     void setStrRep(String[] strRep) {
         this.strRep = strRep;
+    }
+
+    public Map<String, Object> getAttributes() {
+        return attributes;
+    }
+
+    public Object getAttribute(String attributeName) {
+        return attributes.get(attributeName);
+    }
+
+    public void setAttribute(String attributeName, Object attributeValue) {
+        attributes.put(attributeName, attributeValue);
+    }
+
+    static final Map<String, String> attributeDisplayNameMap;
+    static {
+        attributeDisplayNameMap = new HashMap<String, String>();
+    }
+
+    public static void registerAttribute(String name, String displayName) {
+        attributeDisplayNameMap.put(name, displayName);
+    }
+
+    public static String getDisplayName(String attributeName) {
+        String displayName = attributeDisplayNameMap.get(attributeName);
+        if (displayName == null)
+            return attributeName;
+        else
+            return displayName;
     }
 
 }
