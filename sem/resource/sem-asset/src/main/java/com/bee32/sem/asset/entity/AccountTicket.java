@@ -127,26 +127,6 @@ public class AccountTicket
     }
 
     /**
-     * 判断借贷是否相等
-     *
-     * @throws FxrQueryException
-     */
-    @Transient
-    public boolean isDebitCreditEqual()
-            throws FxrQueryException {
-        BigDecimal debitTotal = new BigDecimal(0, DecimalConfig.MONEY_TOTAL_CONTEXT);
-        BigDecimal creditTotal = new BigDecimal(0, DecimalConfig.MONEY_TOTAL_CONTEXT);
-        for (AccountTicketItem i : items) {
-            if (i.isDebitSide()) {
-                debitTotal = debitTotal.add(i.getValue().getNativeValue(getCreatedDate()).abs());
-            } else {
-                creditTotal = creditTotal.add(i.getValue().getNativeValue(getCreatedDate()).abs());
-            }
-        }
-        return debitTotal.equals(creditTotal);
-    }
-
-    /**
      * 多币种表示的金额。
      */
     @Transient

@@ -427,11 +427,15 @@ public class SimpleEntityViewBean
         }
 
         List<EntityDto<?, ?>> dtos = getOpenedObjects();
-        for (SevbFriend friend : sortedFriends)
-            if (!friend.postValidate(dtos))
+        try {
+            for (SevbFriend friend : sortedFriends)
+                if (!friend.postValidate(dtos))
+                    return;
+            if (!postValidate(dtos))
                 return;
-        if (!postValidate(dtos))
-            return;
+        } catch (Exception e) {
+            uiLogger.error("参数整理失败", e);
+        }
 
         UnmarshalMap uMap;
         try {
@@ -655,7 +659,8 @@ public class SimpleEntityViewBean
             return true;
     }
 
-    protected boolean postValidate(List<?> dtos) {
+    protected boolean postValidate(List<?> dtos)
+            throws Exception {
         return true;
     }
 

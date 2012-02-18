@@ -1,5 +1,6 @@
 package com.bee32.sem.asset.dto;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,8 @@ import com.bee32.sem.asset.entity.AccountTicket;
 import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.process.verify.builtin.dto.SingleVerifierWithNumberSupportDto;
 import com.bee32.sem.process.verify.dto.IVerifiableDto;
+import com.bee32.sem.world.monetary.FxrQueryException;
+import com.bee32.sem.world.monetary.MutableMCValue;
 
 public class AccountTicketDto
         extends TxEntityDto<AccountTicket>
@@ -98,6 +101,24 @@ public class AccountTicketDto
 
     public void setRequest(BudgetRequestDto request) {
         this.request = request;
+    }
+
+    /**
+     * 判断借贷是否相等
+     */
+    public boolean isDebitCreditEqual()
+            throws FxrQueryException {
+        BigDecimal debitTotal = BigDecimal.ZERO;
+        BigDecimal creditTotal = BigDecimal.ZERO;
+        for (AccountTicketItemDto item : items) {
+            if (item.isDebitSide()) {
+                MutableMCValue xx = item.getValue();
+                debitTotal = debitTotal.add(item.getValue().getNativeValue(getCreatedDate()).abs());
+            } else {
+                creditTotal = creditTotal.add(item.getValue().getNativeValue(getCreatedDate()).abs());
+            }
+        }
+        return debitTotal.equals(creditTotal);
     }
 
     @Override

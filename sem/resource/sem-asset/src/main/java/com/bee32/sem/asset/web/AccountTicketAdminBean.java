@@ -1,11 +1,14 @@
 package com.bee32.sem.asset.web;
 
+import java.util.List;
+
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.sem.asset.dto.AccountTicketDto;
 import com.bee32.sem.asset.dto.AccountTicketItemDto;
 import com.bee32.sem.asset.entity.AccountTicket;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.misc.ScrollEntityViewBean;
+import com.bee32.sem.world.monetary.FxrQueryException;
 
 @ForEntity(AccountTicket.class)
 public class AccountTicketAdminBean
@@ -18,6 +21,19 @@ public class AccountTicketAdminBean
 
     public AccountTicketAdminBean() {
         super(AccountTicket.class, AccountTicketDto.class, 0);
+    }
+
+    @Override
+    protected boolean postValidate(List<?> dtos)
+            throws FxrQueryException {
+        for (Object dto : dtos) {
+            AccountTicketDto ticket = (AccountTicketDto) dto;
+            if (!ticket.isDebitCreditEqual()) {
+                uiLogger.error("借贷金额不相等");
+                return false;
+            }
+        }
+        return true;
     }
 
     public void findBudgetRequest() {
