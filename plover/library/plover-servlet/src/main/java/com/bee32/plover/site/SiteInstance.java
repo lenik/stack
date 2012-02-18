@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -63,7 +64,6 @@ public class SiteInstance
     boolean dirty;
     Map<String, Object> attributes = new HashMap<String, Object>();
     boolean started;
-    Date startup;
 
     File statsFile;
     private SiteStats stats;
@@ -200,10 +200,10 @@ public class SiteInstance
         return attributes;
     }
 
-    public Object getAttribute(String attributeName) {
+    public <T> T getAttribute(String attributeName) {
         if (attributeName == null)
             throw new NullPointerException("attributeName");
-        return attributes.get(attributeName);
+        return (T) attributes.get(attributeName);
     }
 
     public void setAttribute(String attributeName, Object attributeValue) {
@@ -212,8 +212,8 @@ public class SiteInstance
         attributes.put(attributeName, attributeValue);
     }
 
-    public Object removeAttribute(String attributeName) {
-        return attributes.remove(attributeName);
+    public <T> T removeAttribute(String attributeName) {
+        return (T) attributes.remove(attributeName);
     }
 
     public void reloadConfig()
@@ -448,10 +448,12 @@ public class SiteInstance
 
     public synchronized void start() {
         if (!started) {
-            startup = new Date();
+            SiteStats stats = getLocalStats();
+            long startupTime = System.currentTimeMillis();
+            stats.setStartupTime(startupTime);
             SiteLifecycleDispatcher.startSite(this);
-            long cost = (int) (new Date().getTime() - startup.getTime());
-            getLocalStats().addStartup(cost);
+            long cost = (int) (new Date().getTime() - startupTime);
+            stats.addStartup(cost);
             started = true;
         }
     }
@@ -470,10 +472,6 @@ public class SiteInstance
         }
     }
 
-    public Date getStartup() {
-        return startup;
-    }
-
     public SiteStats getAllStats() {
         if (stats == null)
             synchronized (this) {
@@ -490,6 +488,27 @@ public class SiteInstance
 
     public SiteStats getLocalStats() {
         return getAllStats().getLastChild();
+    }
+
+    public static final String SITE_REQUESTS_ATTRIBUTE = "requests";
+    static int maxRecentRequests = 200;
+
+    public LinkedList<HttpServletRequest> getRecentRequests() {
+        LinkedList<HttpServletRequest> requests = getAttribute(SITE_REQUESTS_ATTRIBUTE);
+        if (requests == null) {
+            requests = new LinkedList<>();
+            setAttribute(SITE_REQUESTS_ATTRIBUTE, requests);
+        }
+        return requests;
+    }
+
+    public void addRecentRequest(HttpServletRequest request) {
+        if (request == null)
+            throw new NullPointerException("request");
+        LinkedList<HttpServletRequest> requests = getRecentRequests();
+        requests.addFirst(request);
+        while (requests.size() > maxRecentRequests)
+            requests.removeLast();
     }
 
     @Override

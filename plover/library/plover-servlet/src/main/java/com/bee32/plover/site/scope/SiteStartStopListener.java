@@ -49,9 +49,9 @@ public class SiteStartStopListener
         if (requestURI.startsWith(_prefix))
             return;
 
-        SiteInstance site = ThreadHttpContext.getSiteInstance(request);
-
         request.setAttribute(REQUEST_BEGIN_ATTRIBUTE, new Date());
+
+        SiteInstance site = ThreadHttpContext.getSiteInstance(request);
         site.start();
     }
 
@@ -75,6 +75,9 @@ public class SiteStartStopListener
             boolean micro = "partial/ajax".equals(facesRequest);
 
             site.getLocalStats().addService(serviceTime, bee32, micro);
+
+            if (bee32 && !micro)
+                site.addRecentRequest(request);
         }
     }
 

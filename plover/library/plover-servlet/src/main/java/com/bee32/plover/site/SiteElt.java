@@ -16,7 +16,7 @@ public class SiteElt
     @Override
     public synchronized Collection<? extends ExceptionLog> getLogTargets() {
         SiteInstance site = ThreadHttpContext.getSiteInstance();
-        ExceptionLog log = (ExceptionLog) site.getAttribute(LOG_KEY);
+        ExceptionLog log = site.getAttribute(LOG_KEY);
         if (log == null) {
             log = new ExceptionLog(DEFAULT_LOG_SIZE);
             site.setAttribute(LOG_KEY, log);

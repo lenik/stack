@@ -1,8 +1,8 @@
 package com.bee32.plover.site;
 
-import java.util.Date;
 import java.util.Enumeration;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.free.Dates;
 import javax.free.Doc;
 import javax.free.StringArray;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +47,8 @@ public class SiteManagerServlet
         pages.add(Reload.class);
         pages.add(DataMaintainance.class);
         pages.add(CacheManager.class);
-        pages.add(Monitor.class);
+        pages.add(SiteMonitorPage.class);
+        pages.add(RecentRequests.class);
         pages.add(ExceptionView.class);
         pages.add(HelpDoc.class);
     }
@@ -386,95 +388,34 @@ public class SiteManagerServlet
 
     }
 
-    @Doc("站点监控")
-    public static class Monitor
+    @Doc("最近的发起请求")
+    static class RecentRequests
             extends SiteTemplate {
 
-        public Monitor(Map<String, ?> _args) {
+        public RecentRequests(Map<String, ?> _args) {
             super(_args);
         }
 
         @Override
         protected void _content()
                 throws Exception {
-            SiteManager manager = SiteManager.getInstance();
-            table().border("1");
-            {
-                tr();
-                th().rowspan("2").text("站点").end(); // 1
-                th().rowspan("2").text("标题").end(); // 2
-                th().rowspan("2").text("启动时间/次数").end(); // 3
-                th().rowspan("2").text("启动耗时").end();// 4
+            SiteInstance site;
+            if (this.site == null)
+                site = ThreadHttpContext.getSiteInstance();
+            else
+                site = this.site;
 
-                th().colspan("4").text("服务时间 (s)").end(); // 5-8
-                th().colspan("4").text("请求数").end(); // 9-12
-                th().colspan("4").text("平均请求处理时间 (ms)").end(); // 13-16
-
-                th().rowspan("2").text("异常数").end(); // 17
-                end();
-                tr();
-                th().text("总").end();
-                th().text("发起").end();
-                th().text("微请求").end();
-                th().text("其它").end();
-                th().text("总").end();
-                th().text("发起").end();
-                th().text("微请求").end();
-                th().text("其它").end();
-                th().text("总").end();
-                th().text("发起").end();
-                th().text("微请求").end();
-                th().text("其它").end();
-                end();
-
-                for (SiteInstance site : manager.getSites()) {
-                    String name = site.getName();
-                    String label = site.getLabel();
-                    tr();
-                    td().text(name).end();
-                    td().text(label).end();
-                    td();
-                    {
-                        Date startup = site.getStartup();
-                        if (startup != null)
-                            text(Dates.sysDateTimeFormat.format(startup));
-                        end();
-                    }
-
-                    site.getLocalStats().dump(this);
-
-                    td();
-                    {
-                        ExceptionLog log = (ExceptionLog) site.getAttribute(SiteElt.LOG_KEY);
-                        if (log != null) {
-                            a().href("exceptionView?site=" + name);
-                            text(log.getEntries().size() + " exceptions");
-                            end();
-                        }
-                        end();
-                    }
-                    end();
-                }
-
-                tr();
-                td().colspan("17").style("background: gray").text("统计: ").end();
-                end();
-
-                for (SiteInstance site : manager.getSites()) {
-                    String name = site.getName();
-                    String label = site.getLabel();
-                    SiteStats allStats = site.getAllStats();
-                    tr();
-                    td().text(name).end();
-                    td().text(label).end();
-                    td().text("" + allStats.getGroups()).end();
-                    site.getAllStats().dump(this);
-                    td().text("" + allStats.getExceptions()).end();
-                    end();
-                }
+            LinkedList<HttpServletRequest> requests = site.getRecentRequests();
+            ol();
+            for (HttpServletRequest request : requests) {
+                li();
+                String requestURI = request.getRequestURI();
+                text(requestURI);
                 end();
             }
+            end();
         }
+
     }
 
     @Doc("错误信息")
@@ -494,7 +435,7 @@ public class SiteManagerServlet
             else
                 site = this.site;
 
-            ExceptionLog log = (ExceptionLog) site.getAttribute(SiteElt.LOG_KEY);
+            ExceptionLog log = site.getAttribute(SiteElt.LOG_KEY);
             if (log == null) {
                 text("Not available.");
                 return;

@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.arch.logging.ExceptionLogEntry;
-import com.bee32.plover.html.HtmlTemplate;
 
 public class SiteStats
         implements Serializable {
@@ -25,7 +24,9 @@ public class SiteStats
     private int groups;
     private int exceptions;
 
+    private Long startupTime;
     private long startupCost;
+    private Long runTime;
     private long requestCount;
     private long serviceTime;
     private long otherRequestCount;
@@ -66,12 +67,32 @@ public class SiteStats
         this.exceptions = exceptions;
     }
 
+    public long getStartupTime() {
+        return startupTime;
+    }
+
+    public void setStartupTime(long startupTime) {
+        this.startupTime = startupTime;
+    }
+
     public long getStartupCost() {
         return startupCost;
     }
 
     public void setStartupCost(long startupCost) {
         this.startupCost = startupCost;
+    }
+
+    public Long getRunTime() {
+        if (runTime != null)
+            return runTime; // sum children up here.
+        if (startupTime == null)
+            return null;
+        return System.currentTimeMillis() - startupTime;
+    }
+
+    public void setRunTime(Long runTime) {
+        this.runTime = runTime;
     }
 
     public long getRequestCount() {
@@ -192,6 +213,7 @@ public class SiteStats
     public void addGroup(SiteStats group) {
         groups++;
         startupCost += group.startupCost;
+        runTime += group.runTime;
         requestCount += group.requestCount;
         serviceTime += group.serviceTime;
         bee32RequestCount += group.bee32RequestCount;
@@ -233,25 +255,6 @@ public class SiteStats
         }
         if (parent != null)
             parent.addService(serviceTime, bee32, micro);
-    }
-
-    public void dump(HtmlTemplate sink) {
-        sink.td().text("" + getStartupCost()).end();
-
-        sink.td().text("" + getServiceTime() / 1000).end();
-        sink.td().text("" + getBee32ServiceTime() / 1000).end();
-        sink.td().text("" + getMicroServiceTime() / 1000).end();
-        sink.td().text("" + getOtherServiceTime() / 1000).end();
-
-        sink.td().text("" + getRequestCount()).end();
-        sink.td().text("" + getBee32RequestCount()).end();
-        sink.td().text("" + getMicroRequestCount()).end();
-        sink.td().text("" + getOtherRequestCount()).end();
-
-        sink.td().text("" + getMeanServiceTime()).end();
-        sink.td().text("" + getMeanBee32ServiceTime()).end();
-        sink.td().text("" + getMeanMicroServiceTime()).end();
-        sink.td().text("" + getMeanOtherServiceTime()).end();
     }
 
     public void saveToFile(File statsFile)
