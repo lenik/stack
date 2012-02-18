@@ -8,6 +8,7 @@ import com.bee32.sem.asset.dto.StockPurchaseDto;
 import com.bee32.sem.asset.dto.StockSaleDto;
 import com.bee32.sem.asset.dto.StockTradeDto;
 import com.bee32.sem.asset.dto.StockTradeItemDto;
+import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.asset.entity.StockPurchase;
 import com.bee32.sem.asset.entity.StockSale;
 import com.bee32.sem.asset.entity.StockTrade;
@@ -21,6 +22,7 @@ public class StockTradeAdminBean
     private static final long serialVersionUID = 1L;
 
     String typeName;
+    String subjectPrefix;
 
     ListMBean<StockTradeItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items", StockTradeItemDto.class);
 
@@ -33,11 +35,13 @@ public class StockTradeAdminBean
                 typeName = "销售入账单";
                 entityClass = StockSale.class;
                 dtoClass = StockSaleDto.class;
+                subjectPrefix = AccountSubject.s1131.getId();
                 break;
             case "PURCHASE":
                 typeName = "采购入账单";
                 entityClass = StockPurchase.class;
                 dtoClass = StockPurchaseDto.class;
+                subjectPrefix = AccountSubject.s2121.getId();
                 break;
             default:
                 throw new IllegalUsageException("非正常方式进入入账单管理功能");
@@ -72,4 +76,7 @@ public class StockTradeAdminBean
         return itemsMBean;
     }
 
+    public String getSubjectPrefix() {
+        return subjectPrefix;
+    }
 }

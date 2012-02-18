@@ -49,4 +49,9 @@ public class AccountInitItemDto
         this.init = init;
     }
 
+    @Override
+    public void setSubject(AccountSubjectDto subject) {
+        super.setSubject(subject);
+        this.debitSide = subject.isDebitSign();
+    }
 }

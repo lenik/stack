@@ -29,8 +29,13 @@
                 <t:panelGroup colspan="3">
                     <t:panelGrid columns="2">
                         <p:inputText id="subject" value="#{obj.subject.label}" readonly="true" label="会计科目"/>
-                        <p:commandButton value="..." onclick="chooseAccountSubjectDialog.show();"
-                            disabled="#{not bean.editing}" />
+                        <p:commandButton value="..."
+                            oncomplete="chooseAccountSubjectDialog.show();"
+                            disabled="#{not bean.editing}">
+                            <f:setPropertyActionListener
+                                target="#{chooseAccountSubjectDialogBean.subjectPrefix}"
+                                value="#{bean.subjectPrefix}" />
+                        </p:commandButton>
                     </t:panelGrid>
                 </t:panelGroup>
 

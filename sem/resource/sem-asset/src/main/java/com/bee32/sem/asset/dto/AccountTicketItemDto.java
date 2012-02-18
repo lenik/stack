@@ -32,7 +32,7 @@ public class AccountTicketItemDto
         ticket = mref(AccountTicketDto.class, source.getTicket());
         index = source.getIndex();
 
-        subject = mref(AccountSubjectDto.class, source.getSubject());
+        setSubject(mref(AccountSubjectDto.class, source.getSubject()));
         party = mref(PartyDto.class, source.getParty());
 
         debitSide = source.isDebitSide();
@@ -95,6 +95,7 @@ public class AccountTicketItemDto
 
     public void setSubject(AccountSubjectDto subject) {
         this.subject = subject;
+
     }
 
     public boolean isNegative() {

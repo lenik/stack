@@ -70,4 +70,10 @@ public class AssetCriteria
                 like("label", label, MatchMode.ANYWHERE));
     }
 
+    @LeftHand(AccountSubject.class)
+    public static ICriteriaElement subjectWithPrefix(String prefix) {
+        return compose(//
+                like("id", prefix, MatchMode.START));
+    }
+
 }
