@@ -10,10 +10,16 @@ import java.util.Map.Entry;
 import javax.free.IStreamResource;
 import javax.free.URLResource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.bee32.plover.arch.logging.ExceptionFormat;
 import com.bee32.plover.arch.util.ClassUtil;
 
 public class HtmlTemplate
         extends AbstractHtmlTemplate {
+
+    static Logger logger = LoggerFactory.getLogger(HtmlTemplate.class);
 
     public HtmlTemplate() {
         super();
@@ -26,7 +32,7 @@ public class HtmlTemplate
     @Override
     protected void instantiate() {
         if (isFragment()) {
-            _pageContent();
+            _pageContentWrapper();
         } else {
             html();
             _header();
@@ -78,7 +84,7 @@ public class HtmlTemplate
         div().classAttr("content-container");
         {
             div().classAttr("content");
-            _pageContent();
+            _pageContentWrapper();
             end();
         }
         end();
@@ -88,7 +94,23 @@ public class HtmlTemplate
         end();
     }
 
-    protected void _pageContent() {
+    protected void _pageContentWrapper() {
+        try {
+            _pageContent();
+        } catch (Exception e) {
+            logger.error("Failed to render the page: " + e.getMessage(), e);
+            h3().text("Failed to render the page: " + e.getMessage()).end();
+            String errorHtml = ExceptionFormat.highlight(e);
+            try {
+                out.write("Stacktrace: <pre>" + errorHtml + "</pre>\n");
+            } catch (IOException e1) {
+                throw new RuntimeException(e1.getMessage(), e1);
+            }
+        }
+    }
+
+    protected void _pageContent()
+            throws Exception {
         p().text("No content").end();
     }
 

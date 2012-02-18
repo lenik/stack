@@ -34,7 +34,7 @@ public abstract class SimpleServlet
         else
             pageName = uri;
 
-        logger.info(getPageHint() + ": " + pageName);
+        logger.debug(getPageHint() + ": " + pageName);
 
         IPageGenerator page = getPage(pageName);
         if (page == null)
