@@ -19,6 +19,7 @@ import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.inventory.process.StockOrderVerifyPolicy;
 import com.bee32.sem.people.SEMPeopleSamples;
 import com.bee32.sem.process.SEMVerifyPolicySamples;
+import com.bee32.sem.process.verify.VerifyContextAccessor;
 import com.bee32.sem.test.DateSamples;
 import com.bee32.sem.world.SEMWorldSamples;
 import com.bee32.sem.world.thing.Unit;
@@ -230,6 +231,10 @@ public class SEMInventorySamples
             planOrder1.addItem(m_glass1, "B1", -3, null);
             planOrder1.addItem(m_glue1, "G01", -5, null);
         }
+        VerifyContextAccessor.forceVerified(//
+                takeInOrder1, takeOutOrder1, //
+                factoryInOrder1, factoryOutOrder1, //
+                planOrder1);
     }
 
     @Override
