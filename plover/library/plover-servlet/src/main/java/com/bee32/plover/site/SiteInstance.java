@@ -493,8 +493,8 @@ public class SiteInstance
     public static final String SITE_REQUESTS_ATTRIBUTE = "requests";
     static int maxRecentRequests = 200;
 
-    public LinkedList<HttpServletRequest> getRecentRequests() {
-        LinkedList<HttpServletRequest> requests = getAttribute(SITE_REQUESTS_ATTRIBUTE);
+    public LinkedList<RequestEntry> getRecentRequests() {
+        LinkedList<RequestEntry> requests = getAttribute(SITE_REQUESTS_ATTRIBUTE);
         if (requests == null) {
             requests = new LinkedList<>();
             setAttribute(SITE_REQUESTS_ATTRIBUTE, requests);
@@ -505,8 +505,8 @@ public class SiteInstance
     public void addRecentRequest(HttpServletRequest request) {
         if (request == null)
             throw new NullPointerException("request");
-        LinkedList<HttpServletRequest> requests = getRecentRequests();
-        requests.addFirst(request);
+        LinkedList<RequestEntry> requests = getRecentRequests();
+        requests.addFirst(new RequestEntry(request));
         while (requests.size() > maxRecentRequests)
             requests.removeLast();
     }

@@ -106,31 +106,33 @@ public class SiteMonitorPage
     static final NumberFormat ratioFormat;
     static {
         meanTimeFormat = new DecimalFormat("0.0");
-        ratioFormat = new DecimalFormat("0.0");
+        ratioFormat = new DecimalFormat("0.0%");
     }
 
     static double utilizationScale = 5.0;
 
     public void dump(SiteInstance site, SiteStats stats) {
-        td().text(DurationFormat.format(stats.getStartupCost())).end();
-        td().text(DurationFormat.format(stats.getRunTime())).end();
 
         long serviceTime = stats.getServiceTime();
         Long runTime = stats.getRunTime();
-        String serviceText;
+        String serviceRatioText;
         if (runTime != null) {
-            double serviceRatio = (double) serviceTime / runTime * utilizationScale;
+            double serviceRatio = (double) serviceTime / runTime; // * utilizationScale;
             // double spareRatio = 1 - serviceRatio;
-            serviceText = ratioFormat.format(serviceRatio);
+            serviceRatioText = ratioFormat.format(100 * serviceRatio);
         } else {
-            serviceText = "";
+            serviceRatioText = "";
         }
-        td().text(serviceText).end();
 
-        td().text(DurationFormat.format(stats.getServiceTime())).end();
-        td().text(DurationFormat.format(stats.getBee32ServiceTime())).end();
-        td().text(DurationFormat.format(stats.getMicroServiceTime())).end();
-        td().text(DurationFormat.format(stats.getOtherServiceTime())).end();
+        long startupCost = stats.getStartupCost();
+        durationField(startupCost);
+        durationField(runTime);
+        td().text(serviceRatioText).end();
+
+        durationField(stats.getServiceTime());
+        durationField(stats.getBee32ServiceTime());
+        durationField(stats.getMicroServiceTime());
+        durationField(stats.getOtherServiceTime());
 
         td().text("" + stats.getRequestCount()).end();
         td();
@@ -142,10 +144,23 @@ public class SiteMonitorPage
         td().text("" + stats.getMicroRequestCount()).end();
         td().text("" + stats.getOtherRequestCount()).end();
 
-        td().text("" + meanTimeFormat.format(stats.getMeanServiceTime())).end();
-        td().text("" + meanTimeFormat.format(stats.getMeanBee32ServiceTime())).end();
-        td().text("" + meanTimeFormat.format(stats.getMeanMicroServiceTime())).end();
-        td().text("" + meanTimeFormat.format(stats.getMeanOtherServiceTime())).end();
+        meanTimeField(stats.getMeanServiceTime());
+        meanTimeField(stats.getMeanBee32ServiceTime());
+        meanTimeField(stats.getMeanMicroServiceTime());
+        meanTimeField(stats.getMeanOtherServiceTime());
+    }
+
+    void durationField(Long duration) {
+        td().text(DurationFormat.format(duration)).end();
+    }
+
+    void meanTimeField(float meanTime) {
+        td();
+        if (Float.isNaN(meanTime))
+            text("");
+        else
+            text(meanTimeFormat.format(meanTime));
+        end();
     }
 
 }

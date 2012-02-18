@@ -10,7 +10,6 @@ import java.util.Set;
 import javax.free.Dates;
 import javax.free.Doc;
 import javax.free.StringArray;
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -405,9 +404,9 @@ public class SiteManagerServlet
             else
                 site = this.site;
 
-            LinkedList<HttpServletRequest> requests = site.getRecentRequests();
+            LinkedList<RequestEntry> requests = site.getRecentRequests();
             ol();
-            for (HttpServletRequest request : requests) {
+            for (RequestEntry request : requests) {
                 li();
                 String requestURI = request.getRequestURI();
                 text(requestURI);

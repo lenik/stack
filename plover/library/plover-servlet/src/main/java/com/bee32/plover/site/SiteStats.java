@@ -67,11 +67,11 @@ public class SiteStats
         this.exceptions = exceptions;
     }
 
-    public long getStartupTime() {
+    public Long getStartupTime() {
         return startupTime;
     }
 
-    public void setStartupTime(long startupTime) {
+    public void setStartupTime(Long startupTime) {
         this.startupTime = startupTime;
     }
 
