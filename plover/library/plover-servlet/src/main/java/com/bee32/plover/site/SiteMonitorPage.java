@@ -21,9 +21,9 @@ public class SiteMonitorPage
     protected void _content()
             throws Exception {
         SiteManager manager = SiteManager.getInstance();
-        table().border("1");
+        table().border("1").cellspacing("0").cellpadding("2");
         {
-            tr();
+            tr().style("background: #ffffcc");
             th().rowspan("2").text("站点").end(); // 1-3
             th().rowspan("2").text("标题").end();
             th().rowspan("2").text("启动时间/次数").end();
@@ -37,7 +37,7 @@ public class SiteMonitorPage
 
             th().rowspan("2").text("异常数").end(); // 19
             end();
-            tr();
+            tr().style("background: #ffffaa");
             th().text("总").end();
             th().text("发起").end();
             th().text("微请求").end();
@@ -52,11 +52,17 @@ public class SiteMonitorPage
             th().text("其它").end();
             end();
 
+            int index = 0;
             for (SiteInstance site : manager.getSites()) {
                 String name = site.getName();
                 String label = site.getLabel();
                 SiteStats stats = site.getLocalStats();
                 tr();
+                if ((index++) % 2 == 0) {
+                    style("background: #eeffff");
+                } else {
+                    style("background: #eeffee");
+                }
                 td().text(name).end();
                 td().text(label).end();
                 td();
@@ -86,11 +92,17 @@ public class SiteMonitorPage
             td().colspan("19").style("background: gray").text("统计: ").end();
             end();
 
+            index = 0;
             for (SiteInstance site : manager.getSites()) {
                 String name = site.getName();
                 String label = site.getLabel();
                 SiteStats allStats = site.getAllStats();
                 tr();
+                if ((index++) % 2 == 0) {
+                    style("background: #eeffff");
+                } else {
+                    style("background: #eeffee");
+                }
                 td().text(name).end();
                 td().text(label).end();
                 td().text("" + allStats.getGroups()).end();
@@ -106,7 +118,7 @@ public class SiteMonitorPage
     static final NumberFormat ratioFormat;
     static {
         meanTimeFormat = new DecimalFormat("0.0");
-        ratioFormat = new DecimalFormat("0.0%");
+        ratioFormat = new DecimalFormat("0.00%");
     }
 
     static double utilizationScale = 5.0;
@@ -119,7 +131,7 @@ public class SiteMonitorPage
         if (runTime != null) {
             double serviceRatio = (double) serviceTime / runTime; // * utilizationScale;
             // double spareRatio = 1 - serviceRatio;
-            serviceRatioText = ratioFormat.format(100 * serviceRatio);
+            serviceRatioText = ratioFormat.format(serviceRatio);
         } else {
             serviceRatioText = "";
         }

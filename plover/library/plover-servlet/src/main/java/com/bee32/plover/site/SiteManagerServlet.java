@@ -467,8 +467,6 @@ public class SiteManagerServlet
             } else {
                 ExceptionLogEntry entry = log.getEntries().get(selection);
                 table();
-                tr().th().text("源请求地址").end()//
-                        .td().text("N/A").end(2);
                 tr().th().text("异常时间").end()//
                         .td().text(Dates.sysDateTimeFormat.format(entry.getDate())).end(2);
                 tr().th().text("错误消息").end()//
