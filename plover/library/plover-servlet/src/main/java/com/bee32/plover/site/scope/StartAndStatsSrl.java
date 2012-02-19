@@ -30,6 +30,7 @@ public class StartAndStatsSrl
     public static final int PRIORITY = 10;
 
     public static final String REQUEST_BEGIN_ATTRIBUTE = "requestBegin";
+    public static final String NO_STATS_ATTRIBUTE = "noStats";
 
     SiteManager siteManager = SiteManager.getInstance();
 
@@ -59,6 +60,10 @@ public class StartAndStatsSrl
     public void requestDestroyed(ServletRequestEvent sre) {
         HttpServletRequest request = (HttpServletRequest) sre.getServletRequest();
         SiteInstance site = ThreadHttpContext.getSiteInstance(request);
+
+        Boolean noStats = (Boolean) request.getAttribute(NO_STATS_ATTRIBUTE);
+        if (noStats == Boolean.TRUE)
+            return;
 
         Date requestBegin = (Date) request.getAttribute(REQUEST_BEGIN_ATTRIBUTE);
         if (requestBegin != null) {

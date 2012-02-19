@@ -73,7 +73,8 @@ public class SiteStats
     }
 
     public void setStartupTime(Long startupTime) {
-        this.startupTime = startupTime;
+        if (this.startupTime == null)
+            this.startupTime = startupTime;
     }
 
     public long getStartupCost() {

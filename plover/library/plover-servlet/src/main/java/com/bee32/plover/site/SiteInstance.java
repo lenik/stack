@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import com.bee32.plover.rtx.location.ILocationConstants;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.rtx.location.Locations;
+import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.servlet.util.ThreadServletContext;
 import com.bee32.plover.site.cfg.DBAutoDDL;
 import com.bee32.plover.site.cfg.DBDialect;
@@ -30,6 +31,7 @@ import com.bee32.plover.site.cfg.OptimizationLevel;
 import com.bee32.plover.site.cfg.PrimefacesTheme;
 import com.bee32.plover.site.cfg.SamplesSelection;
 import com.bee32.plover.site.cfg.VerboseLevel;
+import com.bee32.plover.site.scope.StartAndStatsSrl;
 
 public class SiteInstance
         implements ILocationConstants {
@@ -451,7 +453,14 @@ public class SiteInstance
             SiteStats stats = getLocalStats();
             long startupTime = System.currentTimeMillis();
             stats.setStartupTime(startupTime);
+
+            // See StartAndStopSrl
+            HttpServletRequest request = ThreadHttpContext.getRequestOpt();
+            if (request != null)
+                request.setAttribute(StartAndStatsSrl.NO_STATS_ATTRIBUTE, true);
+
             SiteLifecycleDispatcher.startSite(this);
+
             long cost = (int) (new Date().getTime() - startupTime);
             stats.addStartup(cost);
             started = true;
