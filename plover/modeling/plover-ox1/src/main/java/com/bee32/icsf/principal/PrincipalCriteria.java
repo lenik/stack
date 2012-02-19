@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.criterion.MatchMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,10 +29,8 @@ public class PrincipalCriteria
     public static ICriteriaElement namedLike(String pattern, boolean ignoreCase) {
         if (StringUtils.isEmpty(pattern))
             return null;
-        return or(
-                CommonCriteria.namedLike(pattern, ignoreCase), //
-                ignoreCase ? likeIgnoreCase("fullName", pattern, MatchMode.ANYWHERE) : like("fullName", pattern,
-                        MatchMode.ANYWHERE));
+        return or(CommonCriteria.namedLike(pattern, ignoreCase), //
+                CommonCriteria.labelledWith(pattern, ignoreCase));
     }
 
     /**
