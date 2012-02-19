@@ -69,7 +69,7 @@ public class SiteMonitorPage
                 {
                     Long startupTime = stats.getStartupTime();
                     if (startupTime != null)
-                        text(Dates.sysDateTimeFormat.format(startupTime));
+                        text(Dates.dateTimeFormat.format(startupTime));
                     end();
                 }
 

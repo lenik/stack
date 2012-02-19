@@ -240,24 +240,24 @@ public class SiteStats
     }
 
     public void addStartup(long startupCost) {
-        startupCost += startupCost;
+        this.startupCost += startupCost;
     }
 
     public void addService(long serviceTime, boolean bee32, boolean micro) {
         this.requestCount++;
         this.serviceTime += serviceTime;
-        if (bee32) {
-            this.bee32RequestCount++;
-            this.bee32ServiceTime += serviceTime;
-        }
         if (micro) {
             this.microRequestCount++;
             this.microServiceTime += serviceTime;
+            return;
         }
-        if (!bee32 && !micro) {
-            this.otherRequestCount++;
-            this.otherServiceTime += serviceTime;
+        if (bee32) {
+            this.bee32RequestCount++;
+            this.bee32ServiceTime += serviceTime;
+            return;
         }
+        this.otherRequestCount++;
+        this.otherServiceTime += serviceTime;
     }
 
     public void saveToFile(File statsFile)
