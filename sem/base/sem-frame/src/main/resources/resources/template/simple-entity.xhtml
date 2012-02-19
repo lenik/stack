@@ -209,16 +209,27 @@
                 </pf:locker>
             </h:panelGroup>
             <!-- Hide edit buttons in plain-edit-form/show-content mode. -->
-            <h:panelGroup id="editButtons" rendered="${bean.editing or not plainEditForm}">
-                <div align="right">
-                    <p:commandButton id="save-validated" value="保存" actionListener="${bean.save}"
-                        disabled="${bean.currentView == 'content'}" update="${_contentUpdate} ${_indexUpdate} ${mirrorTargets}"
-                        oncomplete="${plainEditForm ? '' : 'editDialog.hideValidated(args)'}" />
-                    <p:commandButton id="cancel" value="${bean.currentView == 'content'  ? '关闭' : '取消'}"
-                        onclick="${plainEditForm ? '' : 'editDialog.hide()'}" actionListener="${bean.showIndex}"
-                        update="${plainEditForm ? _contentUpdate : '@none'}" />
-                </div>
-            </h:panelGroup>
+            <table border="0" width="100%">
+                <tr>
+                    <td align="left">
+                        <h:panelGroup rendered="${bean.openedObject != null and not bean.editing}">
+                            <h:panelGroup title="如果要编辑请点击工具栏上的修改按钮。" style="font-size: 120%; color: green">
+                                （您正在浏览数据中…）
+                            </h:panelGroup>
+                        </h:panelGroup>
+                    </td>
+                    <td align="right">
+                        <h:panelGroup rendered="${bean.editing or not plainEditForm}">
+                            <p:commandButton id="save-validated" value="保存" actionListener="${bean.save}"
+                                disabled="${not bean.editing}" update="${_contentUpdate} ${_indexUpdate} ${mirrorTargets}"
+                                oncomplete="${plainEditForm ? '' : 'editDialog.hideValidated(args)'}" />
+                            <p:commandButton id="cancel" value="${bean.editing  ? '取消' : '关闭'}"
+                                onclick="${plainEditForm ? '' : 'editDialog.hide()'}" actionListener="${bean.showIndex}"
+                                update="${plainEditForm ? _contentUpdate : '@none'}" />
+                        </h:panelGroup>
+                    </td>
+                </tr>
+            </table>
         </h:form>
     </ui:define>
 
