@@ -39,9 +39,9 @@
 
                 <div align="right">
                     <p:commandButton id="pass-validated" value="通过" oncomplete="${dialogVar}.hideValidated(args)"
-                        actionListener="${handler.approve}" update="${cc.attrs.update}" async="true" />
+                        actionListener="${handler.approve}" update="${cc.attrs.update}" />
                     <p:commandButton id="reject-validated" value="拒绝" oncomplete="${dialogVar}.hideValidated(args)"
-                        actionListener="${handler.reject}" update="${cc.attrs.update}" async="true" />
+                        actionListener="${handler.reject}" update="${cc.attrs.update}" />
                     <p:commandButton id="cancel" value="取消" oncomplete="${dialogVar}.hide();" />
                 </div>
             </h:form>

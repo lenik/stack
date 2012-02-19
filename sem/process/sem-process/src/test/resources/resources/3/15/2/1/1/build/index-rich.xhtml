@@ -4,72 +4,45 @@
     xmlns:sem="http://java.sun.com/jsf/composite/3/15" template="/template/simple-entity.xhtml">
 
     <ui:param name="title" value="Build Mission" />
+    <ui:param name="verifiable" value="true" />
     <ui:param name="bean" value="#{buildMissionBean}" />
-
-    <ui:define name="dialogs">
-        <sem:singleVerifierSupportDialog update=":mainForm" />
-    </ui:define>
-
-    <ui:define name="toolbarPeripherals">
-        <sem:singleVerifierSupportButton selection="#{bean.selection}" />
-    </ui:define>
 
     <ui:define name="dataColumns">
         <p:column headerText="Money">
             <h:outputText value="#{entry.money}" />
         </p:column>
-
         <p:column headerText="Target">
             <h:outputText value="#{entry.target}" />
         </p:column>
-
         <p:column headerText="Locked">
             <h:outputText value="#{entry.entityFlags.locked}" />
         </p:column>
-
         <p:column headerText="State">
             <h:outputText value="#{entry.verifyContext.verifyEvalState}" />
         </p:column>
-
         <p:column headerText="Verifier">
             <h:outputText value="#{entry.verifyContext.verifier1}" />
         </p:column>
-
         <p:column headerText="Verified Date">
             <h:outputText value="#{entry.verifyContext.verifiedDate1}" />
         </p:column>
-
         <p:column headerText="Accepted">
             <h:outputText value="#{entry.verifyContext.accepted1}" />
         </p:column>
-
         <p:column headerText="Rejected Reason">
             <h:outputText value="#{entry.verifyContext.rejectedReason1}" />
         </p:column>
     </ui:define>
 
-    <ui:define name="editDialog">
-        <p:dialog header="Mission Profile" widgetVar="editDialog" modal="true">
-            <h:form id="form" styleClass="ui-dialog-form">
-                <c:set var="obj" value="#{bean.openedObject}" />
-
-                <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
-                    <h:outputText value="Money" />
-                    <p:inputText value="#{obj.money}" />
-                </t:panelGrid>
-
-                <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
-                    <h:outputText value="Target" />
-                    <p:inputText value="#{obj.target}" />
-                </t:panelGrid>
-
-                <div align="right">
-                    <p:commandButton update="mainForm:dataTable" value="保存" actionListener="#{bean.save}"
-                        oncomplete="editDialog.hide()" />
-                    <p:commandButton value="取消" onclick="editDialog.hide()" />
-                </div>
-            </h:form>
-        </p:dialog>
+    <ui:define name="editDialogContent">
+        <h:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
+            <h:outputText value="Money" />
+            <p:inputText value="#{obj.money}" />
+        </h:panelGrid>
+        <h:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
+            <h:outputText value="Target" />
+            <p:inputText value="#{obj.target}" />
+        </h:panelGrid>
     </ui:define>
 
 </ui:composition>
