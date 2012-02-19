@@ -4,23 +4,16 @@
     xmlns:sem="http://java.sun.com/jsf/composite/3/15" template="/template/simple-entity.xhtml">
 
     <ui:param name="title" value="用户文件" />
+    <ui:param name="creatable" value="false" />
     <ui:param name="bean" value="${userFileBean}" />
 
-    <ui:define name="toolbar">
-        <p:toolbar id="toolbar">
-            <p:toolbarGroup align="left">
-                <p:commandButton value="上传" onclick="createUserFileDialog.show()" />
-                <p:commandButton value="下载" disabled="${not bean.selected}"
-                    onclick="location.href = '${bean.singleSelection.downloadHref}'" />
-                <p:commandButton value="查看文件" disabled="${not bean.selected}"
-                    onclick="location.href = '${bean.singleSelection.viewHref}'" />
-            </p:toolbarGroup>
-            <p:toolbarGroup align="right">
-                <p:commandButton value="修改" disabled="${not bean.selected}" actionListener="${bean.showEditForm}"
-                    oncomplete="editDialog.show()" update=":editDialog:form" />
-                <p:commandButton value="删除" disabled="${not bean.selected}" onclick="deleteConfirmDialog.show()" />
-            </p:toolbarGroup>
-        </p:toolbar>
+    <ui:define name="toolbar.left">
+        <p:toolbarGroup align="left">
+            <p:commandButton value="上传" onclick="createUserFileDialog.show()" />
+            <p:commandButton value="下载" disabled="${not bean.selected}"
+                onclick="location.href = '${bean.singleSelection.downloadHref}'" />
+            <p:commandButton value="打开文件" disabled="${not bean.selected}" onclick="location.href = '${bean.singleSelection.viewHref}'" />
+        </p:toolbarGroup>
     </ui:define>
 
     <ui:define name="dataColumns">
@@ -79,13 +72,13 @@
         <c:set var="obj" value="${bean.openedObject}" />
         <h:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
             <h:outputText value="文件名" />
-            <p:inputText value="${obj.fileName.base}" label="文件名"/>
+            <p:inputText value="${obj.fileName.base}" label="文件名" />
 
             <h:outputText value="标题" />
-            <p:inputText value="${obj.label}" label="标题"/>
+            <p:inputText value="${obj.label}" label="标题" />
 
             <h:outputText value="描述信息" />
-            <p:inputText value="${obj.description}" label="描述信息"/>
+            <p:inputText value="${obj.description}" label="描述信息" />
         </h:panelGrid>
 
         <p:fieldset legend="标签" toggleable="false">
