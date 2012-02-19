@@ -4,6 +4,9 @@
 
     <ui:param name="plainEditForm" value="true" />
     <ui:param name="searchUpdates" value=":mainForm, :editDialog:form" />
+    <ui:param name="_indexUpdate" value=":mainForm:dataContainer" />
+    <ui:param name="_entryUpdate" value=":mainForm:toolbar ${verifiable ? ':verifyInfoForm' : ''}" />
+    <ui:param name="_contentUpdate" value="${_entryUpdate} :editDialog:form" />
 
     <ui:define name="toolbar">
         <p:toolbar id="toolbar">
@@ -12,33 +15,34 @@
             </p:toolbarGroup>
             <p:toolbarGroup align="left">
                 <p:commandButton id="createButton" value="新建" actionListener="${bean.showCreateForm}"
-                    disabled="${bean.editing}" update="toolbar, :editDialog:form" />
+                    disabled="${bean.editing}" update="${_contentUpdate}" />
                 <p:commandButton id="editButton" value="修改" actionListener="${bean.showEditForm}"
-                    disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" update="toolbar, :editDialog:form" />
-                <p:commandButton id="deleteButton" value="删除" onclick="deleteConfirmDialog.show()"
-                    disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" update="toolbar" />
+                    disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" update="${_contentUpdate}" />
                 <c:if test="${verifiable}">
                     <p:separator />
                     <sem:singleVerifierSupportButton id="verifyButton" selection="#{bean.selection}"
                         disabled="#{bean.editing or not bean.selected}" />
                 </c:if>
+                <p:separator />
+                <p:commandButton id="deleteButton" value="删除" onclick="deleteConfirmDialog.show()"
+                    disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" />
                 <ui:insert name="toolbar.left" />
                 <ui:insert name="toolbarPeripherals" />
             </p:toolbarGroup>
             <p:toolbarGroup align="right">
                 <p:commandButton id="first" value="第一条" actionListener="${bean.gotoFirst}"
-                    disabled="${bean.first or bean.dataModel.rowCount == 0 or bean.editing}" update="mainForm, :editDialog:form" />
+                    disabled="${bean.first or bean.dataModel.rowCount == 0 or bean.editing}" update="mainForm, ${_contentUpdate}" />
                 <p:commandButton id="previous" value="上一条" actionListener="${bean.gotoPrevious}"
-                    disabled="${bean.first or bean.dataModel.rowCount == 0 or bean.editing}" update="mainForm, :editDialog:form" />
+                    disabled="${bean.first or bean.dataModel.rowCount == 0 or bean.editing}" update="mainForm, ${_contentUpdate}" />
                 <p:commandButton id="next" value="下一条" actionListener="${bean.gotoNext}"
-                    disabled="${bean.last or bean.dataModel.rowCount == 0 or bean.editing}" update="mainForm, :editDialog:form" />
+                    disabled="${bean.last or bean.dataModel.rowCount == 0 or bean.editing}" update="mainForm, ${_contentUpdate}" />
                 <p:commandButton id="last" value="最末条" actionListener="${bean.gotoLast}"
-                    disabled="${bean.last or bean.dataModel.rowCount == 0 or bean.editing}" update="mainForm, :editDialog:form" />
+                    disabled="${bean.last or bean.dataModel.rowCount == 0 or bean.editing}" update="mainForm, ${_contentUpdate}" />
                 <p:separator />
                 <p:inputText id="rowNumber" value="${bean.rowNumberInput}" disabled="${bean.editing}" style="width: 3em;" />
                 <h:outputText value="/${bean.dataModel.rowCount}" />
                 <p:commandButton id="jump" value="前往" actionListener="${bean.gotoInput}" disabled="${bean.editing}"
-                    update="mainForm, :editDialog:form" />
+                    update="mainForm, ${_contentUpdate}" />
             </p:toolbarGroup>
         </p:toolbar>
     </ui:define>
@@ -47,9 +51,4 @@
         <!-- No listing at all. -->
     </ui:define>
 
-    <ui:define name="dialogs.0">
-        <c:if test="${verifiable}">
-            <sem:singleVerifierSupportDialog id="verifyDialog" update=":mainForm:toolbar, :editDialog:form" />
-        </c:if>
-    </ui:define>
 </ui:composition>

@@ -65,29 +65,14 @@
                                         rowsPerPageTemplate="${viewConfig.pageSizeTemplate}" resizableColumns="true"
                                         rowIndexVar="rowIndex" sortBy="${entry.lastModified}" sortOrder="descending">
 
-                                        <p:ajax event="rowSelect" update=":mainForm:toolbar" />
-                                        <p:ajax event="rowUnselect" update=":mainForm:toolbar" />
+                                        <p:ajax event="rowSelect" update="${_entryUpdate}" />
+                                        <p:ajax event="rowUnselect" update="${_entryUpdate}" />
 
                                         <ui:insert name="dataTableHeader">
                                             <f:facet name="header">${title}</f:facet>
                                         </ui:insert>
 
-                                        <p:column headerText="ID" sortBy="${entry.id}">
-                                            <h:outputText value="#{entry.id}" />
-                                        </p:column>
-
-                                        <ui:insert name="dataColumns" />
-
-                                        <ui:insert name="dataColumnsC">
-                                            <p:column headerText="更新日期" sortBy="${entry.lastModified}" style="width: 6.5em">
-                                                <h:outputText value="${entry.lastModified}">
-                                                    <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-                                                </h:outputText>
-                                            </p:column>
-                                            <p:column headerText="属主" sortBy="${entry.owner}">
-                                                <h:outputText value="${entry.owner.displayName}" />
-                                            </p:column>
-                                        </ui:insert>
+                                        <ui:insert name="dataTableRow" />
                                     </p:dataTable>
                                 </ui:insert>
                             </h:panelGroup>

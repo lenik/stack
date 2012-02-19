@@ -4,43 +4,139 @@
     xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:icsf="http://java.sun.com/jsf/composite/3/7" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
     <ui:param name="_searchUpdates" value="${searchUpdates != null ? searchUpdates : ':mainForm'}" />
+    <ui:param name="_indexUpdate" value=":mainForm:dataContainer" />
+    <ui:param name="_entryUpdate" value=":mainForm:toolbar ${verifiable ? ':verifyInfoForm' : ''}" />
+    <ui:param name="_contentUpdate" value="${_entryUpdate} :editDialog:form" />
+    <ui:param name="vctx" value="${bean.singleSelection.verifyContext}" />
 
     <ui:define name="toolbar">
         <p:toolbar id="toolbar">
             <p:toolbarGroup align="left">
                 <ui:insert name="toolbarContexts" />
             </p:toolbarGroup>
-            <p:toolbarGroup align="left">
-                <p:commandButton id="createButton" value="新建" rendered="${creatable != null ? creatable : true}"
-                    actionListener="${bean.showCreateForm}" oncomplete="${plainEditForm ? '' : 'editDialog.show()'}"
-                    update=":editDialog:form" />
-                <p:commandButton id="deleteButton" value="删除" rendered="${deletable != null ? deletable : true}"
-                    onclick="deleteConfirmDialog.show()" disabled="${not bean.selected or not bean.selectionEditable}" />
-                <!-- TODO toggle button in PF-3.1: searchPanel toggler -->
-            </p:toolbarGroup>
-            <p:toolbarGroup align="right">
-                <p:commandButton id="viewButton" value="查看" rendered="${readable != null ? readable : true}"
-                    disabled="${not bean.selected}" actionListener="${bean.showContent}" update=":editDialog:form"
-                    oncomplete="${plainEditForm ? '' : 'editDialog.show()'}" />
-                <p:commandButton id="editButton" value="修改" rendered="${editable != null ? editable : true}"
-                    disabled="${not bean.selected or not bean.selectionEditable}" actionListener="${bean.showEditForm}"
-                    update=":editDialog:form" oncomplete="${plainEditForm ? '' : 'editDialog.show()'}" />
-                <ui:insert name="toolbarPeripherals" />
-            </p:toolbarGroup>
+            <ui:insert name="toolbar.left">
+                <p:toolbarGroup align="left">
+                    <p:commandButton id="createButton" value="新建" rendered="${creatable != null ? creatable : true}"
+                        actionListener="${bean.showCreateForm}" oncomplete="${plainEditForm ? '' : 'editDialog.show()'}"
+                        update="${_contentUpdate}" />
+                    <!-- TODO toggle button in PF-3.1: searchPanel toggler -->
+                    <ui:insert name="toolbar.left.1" />
+                </p:toolbarGroup>
+            </ui:insert>
+            <ui:insert name="toolbar.right">
+                <p:toolbarGroup align="right">
+                    <ui:insert name="toolbar.right.1" />
+                    <p:commandButton id="viewButton" value="查看" rendered="${readable != null ? readable : true}"
+                        disabled="${not bean.selected}" actionListener="${bean.showContent}" update="${_contentUpdate}"
+                        oncomplete="${plainEditForm ? '' : 'editDialog.show()'}" />
+                    <p:commandButton id="editButton" value="修改" rendered="${editable != null ? editable : true}"
+                        disabled="${not bean.selected or not bean.selectionEditable}" actionListener="${bean.showEditForm}"
+                        update="${_contentUpdate}" oncomplete="${plainEditForm ? '' : 'editDialog.show()'}" />
+                    <c:if test="${verifiable}">
+                        <p:separator />
+                        <sem:singleVerifierSupportButton id="verifyButton" selection="${bean.selection}"
+                            disabled="${bean.editing or not bean.selected}" />
+                    </c:if>
+                    <p:separator />
+                    <p:commandButton id="deleteButton" value="删除" rendered="${deletable != null ? deletable : true}"
+                        onclick="deleteConfirmDialog.show()" disabled="${not bean.selected or not bean.selectionEditable}" />
+                </p:toolbarGroup>
+            </ui:insert>
         </p:toolbar>
     </ui:define>
+
+    <ui:define name="dataTableRow">
+        <p:column headerText="ID" sortBy="${entry.id}">
+            <h:outputText value="${entry.id}" />
+        </p:column>
+
+        <ui:insert name="dataColumns" />
+
+        <ui:insert name="dataColumnsV">
+            <c:if test="${verifiable}">
+                <p:column headerText="审核状态">
+                    <p:commandLink id="vst" value="${entry.verifyContext.verifyEvalState}" update="${_entryUpdate}"
+                        oncomplete="verifyInfoDialog.show()">
+                        <f:setPropertyActionListener target="${bean.singleSelection}" value="${entry}" />
+                    </p:commandLink>
+                </p:column>
+            </c:if>
+        </ui:insert>
+
+        <ui:insert name="dataColumnsC">
+            <p:column headerText="更新日期" sortBy="${entry.lastModified}" style="width: 6.5em">
+                <h:outputText value="${entry.lastModified}">
+                    <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                </h:outputText>
+            </p:column>
+            <p:column headerText="属主" sortBy="${entry.owner}">
+                <h:outputText value="${entry.owner.displayName}" />
+            </p:column>
+        </ui:insert>
+
+        <p:column headerText="工具">
+            <ui:insert name="toolsColumn">
+                <p:commandButton id="viewTool" title="查看" image="ui-icon ui-icon-search" rendered="${readable != null ? readable : true}"
+                    actionListener="${bean.showContent(entry)}" update="${_contentUpdate}" oncomplete="${plainEditForm ? '' : 'editDialog.show()'}">
+                </p:commandButton>
+                <c:if test="${editInline}">
+                    <p:commandButton id="editTool" title="修改" disabled="${not entry.locked}" image="ui-icon ui-icon-pencil"
+                        rendered="${editable != null ? editable : true}" actionListener="${bean.showEditForm(entry)}"
+                        update="${_contentUpdate}" oncomplete="${plainEditForm ? '' : 'editDialog.show()'}">
+                    </p:commandButton>
+                </c:if>
+                <c:if test="${deleteInline}">
+                    <p:commandButton id="delTool" title="删除" disabled="${not entry.locked}" image="ui-icon ui-icon-close"
+                        rendered="${deletable != null ? deletable : true}" onclick="deleteConfirmDialog.show()">
+                        <f:setPropertyActionListener target="${bean.singleSelection}" value="${entry}" />
+                    </p:commandButton>
+                </c:if>
+            </ui:insert>
+        </p:column>
+    </ui:define>
+
 
     <ui:define name="toolbarDialogs">
         <ui:insert name="deleteConfirmDialog">
             <p:confirmDialog id="deleteConfirmDialog" widgetVar="deleteConfirmDialog" header="删除确认"
                 message="确定要删除吗?" severity="alert" modal="true">
                 <h:form id="deleteConfirmForm" style="margin: 0em 7em 1em">
-                    <p:commandButton id="ok" value="确定" update=":mainForm, :editDialog:form ${mirrorTargets}"
+                    <p:commandButton id="ok" value="确定" update=":mainForm, ${_contentUpdate} ${mirrorTargets}"
                         actionListener="${bean.deleteSelection}" oncomplete="deleteConfirmDialog.hide()" />
                     <p:commandButton id="cancel" value="取消" onclick="deleteConfirmDialog.hide()" type="button" />
                 </h:form>
             </p:confirmDialog>
         </ui:insert>
+        <c:if test="${verifiable}">
+            <sem:singleVerifierSupportDialog id="verifyDialog" update="${_contentUpdate}" />
+            <p:dialog id="verifyInfoDialog" widgetVar="verifyInfoDialog" header="记录审核信息" modal="true"
+                dynamic="${viewConfig.dynamicDialog}">
+                <h:form id="verifyInfoForm" styleClass="ui-dialog-form">
+                    <h:panelGrid columns="2" rendered="${bean.singleSelection != null}">
+                        <h:outputText value="锁定状态:" />
+                        <h:outputText value="${bean.singleSelection.entityFlags.locked ? '记录已锁定' : '未锁定'}" />
+
+                        <h:outputText value="审核求值状态:" />
+                        <h:outputText value="${vctx.verifyEvalState}" />
+
+                        <h:outputText value="审核执行:" />
+                        <h:outputText value="${vctx.verifier1.displayName}" />
+
+                        <h:outputText value="审核时间:" />
+                        <h:outputText value="${vctx.verifiedDate1}" />
+
+                        <h:outputText value="审核谓词:" />
+                        <h:outputText value="${vctx.accepted1 ? '同意' : '拒绝'}" />
+
+                        <h:outputText value="拒绝审核的原因:" rendered="${not vctx.accepted1}" />
+                        <h:outputText value="${vctx.rejectedReason1}" rendered="${not vctx.accepted1}" />
+                    </h:panelGrid>
+                    <div align="right">
+                        <p:commandButton id="close" value="关闭" onclick="verifyInfoDialog.hide()" />
+                    </div>
+                </h:form>
+            </p:dialog>
+        </c:if>
     </ui:define>
 
     <ui:define name="sideBarESupport.0">
@@ -105,7 +201,7 @@
         <!-- TODO: fr:disable applied=${not plainEditForm} -->
         <h:form id="form" styleClass="${(plainEditForm and bean.editing) ? 'form-editing' : ''}">
             <h:panelGroup rendered="${bean.openedObject == null}">
-                No opened object!
+                （请选择要操作的对象。）
             </h:panelGroup>
             <h:panelGroup rendered="${bean.openedObject != null}">
                 <ui:insert name="editDialogContent">The edit dialog's content is undefined.</ui:insert>
@@ -114,11 +210,11 @@
             <h:panelGroup id="editButtons" rendered="${bean.editing or not plainEditForm}">
                 <div align="right">
                     <p:commandButton id="save-validated" value="保存" actionListener="${bean.save}"
-                        disabled="${bean.currentView == 'content'}" update=":mainForm:toolbar, :mainForm:dataContainer, :editDialog:form ${mirrorTargets}"
+                        disabled="${bean.currentView == 'content'}" update="${_contentUpdate} ${_indexUpdate} ${mirrorTargets}"
                         oncomplete="${plainEditForm ? '' : 'editDialog.hideValidated(args)'}" />
                     <p:commandButton id="cancel" value="${bean.currentView == 'content'  ? '关闭' : '取消'}"
                         onclick="${plainEditForm ? '' : 'editDialog.hide()'}" actionListener="${bean.showIndex}"
-                        update="${plainEditForm ? ':mainForm:toolbar, :editDialog:form' : '@none'}" />
+                        update="${plainEditForm ? '${_entryUpdate}, ${_contentUpdate}' : '@none'}" />
                 </div>
             </h:panelGroup>
         </h:form>
