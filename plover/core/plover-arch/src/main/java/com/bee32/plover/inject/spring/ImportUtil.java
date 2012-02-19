@@ -12,7 +12,7 @@ import com.bee32.plover.inject.cref.Import;
 public class ImportUtil {
 
     /**
-     * XXX 这个 flatten 只为 &#64;Configuration 类服务。
+     * 这个 flatten 只为 &#64;Configuration 类服务。
      *
      * 应用程序应该使用 ApplicationContextBuilder.selfWire().
      */

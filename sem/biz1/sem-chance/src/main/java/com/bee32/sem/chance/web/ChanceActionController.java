@@ -19,7 +19,6 @@ import com.bee32.sem.chance.dao.ChanceActionStyleDao;
 import com.bee32.sem.chance.dao.ChanceDao;
 import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.entity.ChanceAction;
-import com.bee32.sem.chance.service.IChanceService;
 import com.bee32.sem.people.dto.PartyDto;
 
 @RequestMapping(ChanceActionController.PREFIX)
@@ -36,9 +35,6 @@ public class ChanceActionController
 
     @Inject
     UserDao userDao;
-
-    @Inject
-    IChanceService chanceService;
 
 // @Override
 // protected void fillSearchModel(SearchModel model, TextMap request)

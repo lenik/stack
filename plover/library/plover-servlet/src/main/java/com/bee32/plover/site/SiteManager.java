@@ -122,7 +122,7 @@ public class SiteManager {
         try {
             SiteLifecycleDispatcher.removeSite(site);
         } catch (Exception e) {
-            // TODO Keep from remove if any exception.
+            // Cancel immediate if any exception.
             throw e;
         }
 

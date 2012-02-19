@@ -17,7 +17,6 @@ public class CommonDictController<E extends DictEntity<K>, K extends Serializabl
 
     @Override
     protected void fillDataRow(DataTableDxo tab, Dto dto) {
-        // XXX tab.push(dto.getName());
         tab.push(dto.getLabel());
         tab.push(dto.getDescription());
     }

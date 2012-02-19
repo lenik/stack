@@ -69,7 +69,7 @@ public class HttpBlobDumper {
                      */
                     String encodedFilename = URLEncoder.encode(filename, "utf-8");
 
-                    // TODO This is for IE8:
+                    // This is for IE8:
                     // contentDisposition += "; filename=" + encodedFilename;
 
                     // This is for Firefox and rest.

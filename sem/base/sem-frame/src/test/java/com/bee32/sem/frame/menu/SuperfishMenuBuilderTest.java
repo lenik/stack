@@ -15,9 +15,9 @@ public class SuperfishMenuBuilderTest
 
     public static void main(String[] args)
             throws IOException, Exception {
-// new SuperfishMenuBuilderTest().browseAndWait("sfmenuDemo.jsf");
+        // new SuperfishMenuBuilderTest().browseAndWait("sfmenuDemo.jsf");
 
-        new SEMFrameMenu().dump();
+        new SEMFrameMenu().prepareMap();
         SuperfishMenuBuilder builder = new SuperfishMenuBuilder(SEMFrameMenu.MAIN);
         String html = builder.toString();
         System.out.println(html);

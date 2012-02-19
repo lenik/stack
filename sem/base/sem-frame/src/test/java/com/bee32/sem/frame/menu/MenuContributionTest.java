@@ -14,7 +14,7 @@ public class MenuContributionTest {
     public void testDump() {
 
         MyMenu menu = new MyMenu();
-        Map<String, MenuNode> map = menu.dump();
+        Map<String, MenuNode> map = menu.prepareMap();
 
         IMenuEntry firstMenu = map.get("FILE");
 

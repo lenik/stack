@@ -70,9 +70,6 @@ public class ACL
         setParent(inheritedACL);
     }
 
-    /**
-     * TODO key should not orphan-removed or any cascaded.
-     */
     @OneToMany(mappedBy = "ACL", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<ACLEntry> getEntries() {

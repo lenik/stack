@@ -29,9 +29,7 @@ public class FaceletsTestCase
     /**
      * Please call this method in constructore, or configContext.
      *
-     * TODO META-INF taglib.xml isn't read by myfaces-impl?
-     *
-     * It's recommendded to export taglib by declare taglib.xml files under META-INF/.
+     * @deprecated It's recommendded to export taglib by declare taglib.xml files under META-INF/.
      */
     protected final void addTagLibrary(String taglib) {
         taglibs.add(taglib);

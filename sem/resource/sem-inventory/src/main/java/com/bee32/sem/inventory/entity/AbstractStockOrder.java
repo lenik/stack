@@ -290,7 +290,9 @@ public class AbstractStockOrder<Item extends StockOrderItem>
     }
 
     public void addItem(Material material, String batch, double quantity, Double price) {
+        @SuppressWarnings("unchecked")
         Item item = (Item) new StockOrderItem(); // XXX
+
         item.setMaterial(material);
         item.setBatch(batch);
         item.setQuantity(quantity);

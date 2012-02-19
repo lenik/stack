@@ -96,7 +96,7 @@ public class Flags32
         if (bits == 0)
             return "0";
 
-        // char[32]: XXX - needs to fast check the MSB index.
+        // char[32]: needs to fast check the MSB index.
         StringBuilder buffer = new StringBuilder();
         int x = bits;
         while (x != 0) {

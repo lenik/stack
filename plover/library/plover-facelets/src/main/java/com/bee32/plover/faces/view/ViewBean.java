@@ -13,15 +13,12 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.context.ApplicationContext;
 
 import com.bee32.plover.arch.operation.Operation;
 import com.bee32.plover.arch.util.SelectionHolder;
 import com.bee32.plover.faces.utils.FacesAssembledContext;
 import com.bee32.plover.faces.utils.FacesUILogger;
 import com.bee32.plover.inject.ComponentTemplate;
-import com.bee32.plover.servlet.util.ThreadHttpContext;
 
 @ComponentTemplate
 @PerView
@@ -52,16 +49,6 @@ public abstract class ViewBean
 
     public ViewMetadata getMetadata() {
         return ctx.bean.getBean(ViewMetadata.class);
-    }
-
-    /**
-     * TODO Is this safe for view-bean?
-     */
-    @Deprecated
-    protected void wire() {
-        ApplicationContext context = ThreadHttpContext.requireApplicationContext();
-        AutowireCapableBeanFactory factory = context.getAutowireCapableBeanFactory();
-        factory.autowireBean(this);
     }
 
     protected void createTransients() {

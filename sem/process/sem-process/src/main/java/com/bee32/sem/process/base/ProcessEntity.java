@@ -44,7 +44,7 @@ public abstract class ProcessEntity
 
     @Transient
     @Override
-    public final Number getJudgeNumber() { //XXX
+    public final Number getJudgeNumber() {
         try {
             return computeJudgeNumber();
         } catch (Exception e) {

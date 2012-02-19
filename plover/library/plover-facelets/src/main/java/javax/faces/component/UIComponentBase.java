@@ -56,7 +56,6 @@ import com.bee32.plover.arch.util.PloverOverlayPatch;
 
 
 /**
- * TODO: IMPLEMENT HERE - Delta state saving support
  *
  * Standard implementation of the UIComponent base class; all standard JSF components extend this class.
  * <p>
@@ -73,6 +72,7 @@ import com.bee32.plover.arch.util.PloverOverlayPatch;
  * @patch [LENIK] Break from validation-failing action listener.
  * @see #broadcast(FacesEvent)
  */
+@SuppressWarnings("deprecation")
 @PloverOverlayPatch
 //@JSFComponent(type = "javax.faces.ComponentBase", family = "javax.faces.ComponentBase", desc = "base component when all components must inherit", tagClass = "javax.faces.webapp.UIComponentELTag", configExcluded = true)
 //@JSFJspProperty(name = "binding", returnType = "javax.faces.component.UIComponent", longDesc = "Identifies a backing bean property (of type UIComponent or appropriate subclass) to bind to this component instance. This value must be an EL expression.", desc = "backing bean property to bind to this component instance")
@@ -950,8 +950,6 @@ public abstract class UIComponentBase extends UIComponent {
 
     public boolean initialStateMarked()
     {
-        // TODO: IMPLEMENT HERE
-        // FIXME: Nofity EG, this method should be in the specification
         return super.initialStateMarked();
     }
 
@@ -1068,7 +1066,6 @@ public abstract class UIComponentBase extends UIComponent {
         }
     }
 
-    // FIXME: Notify EG for generic usage
     @Override
     protected FacesListener[] getFacesListeners(Class clazz)
     {
@@ -1378,7 +1375,7 @@ public abstract class UIComponentBase extends UIComponent {
 
                         Object childState = child.processSaveState(context);
                         if (childState != null)
-                        { // FIXME: Isn't that check dangerous for restoration since the child isn't marked transient?
+                        {
                             childrenList.add(childState);
                         }
 

@@ -21,8 +21,8 @@ public class MenuLoader
         for (MenuContribution contribution : applicationContext.getBeansOfType(MenuContribution.class).values()) {
             logger.debug("Merge menu contribution: " + contribution);
 
-            // XXX Force load of NLS.
-            contribution.dump();
+            // Force load of NLS.
+            contribution.prepareMap();
             // merge(contribution);
         }
     }
