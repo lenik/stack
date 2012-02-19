@@ -16,7 +16,8 @@ public class SessionUserEec
     @Override
     public void completeEntry(ExceptionLogEntry entry) {
         UserDto user = SessionUser.getInstance().getUserOpt();
-        entry.setAttribute(USER_KEY, user.getDisplayName());
+        String userName = user == null ? "(N/A)" : user.getDisplayName();
+        entry.setAttribute(USER_KEY, userName);
     }
 
 }
