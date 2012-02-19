@@ -19,6 +19,7 @@ import com.bee32.sem.inventory.tx.entity.StockJob;
 import com.bee32.sem.inventory.util.StockCriteria;
 import com.bee32.sem.inventory.util.StockJobStepping;
 import com.bee32.sem.inventory.web.StockQueryDialogBean;
+import com.bee32.sem.misc.DateRangeTemplate;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.people.dto.OrgDto;
@@ -50,6 +51,8 @@ public abstract class AbstractStockOrderBean
         stepping = new StockJobStepping();
         if (configJobStepping(stepping))
             addFriend("job", stepping);
+        dateRange = DateRangeTemplate.thisMonth;
+        addBeginEndDateRestriction();
     }
 
     protected abstract boolean configJobStepping(StockJobStepping stepping);
