@@ -5,6 +5,7 @@
     <ui:param name="title" value="Attack Mission" />
     <ui:param name="verifiable" value="true" />
     <ui:param name="bean" value="#{attackMissionBean}" />
+    <ui:param name="obj" value="#{bean.openedObject}" />
 
     <ui:define name="dataColumns">
         <p:column headerText="Target">
@@ -31,9 +32,9 @@
     </ui:define>
 
     <ui:define name="editDialogContent">
-        <h:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
-            <h:outputText value="Target" />
-            <p:inputText value="#{obj.target}" />
+        <h:panelGrid id="grid" columns="2" columnClasses="detail_col_title,detail_col_value">
+            <h:outputLabel id="targetLabel" for="target" value="Target" />
+            <p:inputText id="target" value="#{obj.target}" label="Target" />
         </h:panelGrid>
     </ui:define>
 

@@ -28,6 +28,7 @@ public abstract class ListMBean<T>
 
     int selectedIndex = -1;
     int openedIndex = -1;
+    boolean editing;
 
     public ListMBean(Class<T> elementType, Object context) {
         super(elementType, context);
@@ -161,6 +162,7 @@ public abstract class ListMBean<T>
     public void showIndexForm() {
         openedObject = null;
         openedIndex = -1;
+        editing = false;
     }
 
     @Override
@@ -172,12 +174,19 @@ public abstract class ListMBean<T>
         } catch (CreateException e) {
             new FacesUILogger(false).error("创建失败", openedObject);
         }
+        editing = true;
     }
 
     @Override
     public void showEditForm() {
         openedObject = copyObject(getSelection());
         openedIndex = getSelectedIndex();
+        editing = true;
+    }
+
+    @Override
+    public boolean isEditing() {
+        return editing;
     }
 
     public void apply() {

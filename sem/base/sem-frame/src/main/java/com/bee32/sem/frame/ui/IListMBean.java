@@ -43,4 +43,6 @@ public interface IListMBean<T> {
 
     void showEditForm();
 
+    boolean isEditing();
+
 }

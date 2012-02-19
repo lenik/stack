@@ -418,12 +418,13 @@ public class SimpleEntityViewBean
     }
 
     public boolean isEditing() {
-        if (!currentView.equals(StandardViews.CREATE_FORM) //
-                && !currentView.equals(StandardViews.EDIT_FORM))
-            return false;
-        if (getOpenedObjects().isEmpty())
-            throw new IllegalStateException("No opened objects for editing");
-        return true;
+        if (currentView.equals(StandardViews.CREATE_FORM) //
+                || currentView.equals(StandardViews.EDIT_FORM)) {
+            if (getOpenedObjects().isEmpty())
+                throw new IllegalStateException("No opened objects for editing");
+            return true;
+        }
+        return false;
     }
 
     /* ********************************************************************** */
