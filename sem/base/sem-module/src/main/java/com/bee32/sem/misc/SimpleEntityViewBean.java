@@ -335,19 +335,24 @@ public class SimpleEntityViewBean
             return;
         }
 
+        boolean readOnly = false;
         for (Object sel : getSelection()) {
             EntityDto<?, ?> dto = (EntityDto<?, ?>) sel;
             EntityFlags ef = dto.getEntityFlags();
             if (ef.isLocked()) {
-                uiLogger.error("不能编辑锁定的对象【系统锁定】");
-                return;
+                uiLogger.warn("不能编辑锁定的对象【系统锁定】");
+                readOnly = true;
+                break;
             }
             if (ef.isUserLock()) {
-                uiLogger.error("不能编辑锁定的对象【用户级锁定】");
-                return;
+                uiLogger.warn("不能编辑锁定的对象【用户级锁定】");
+                readOnly = true;
+                break;
             }
             if (ef.isBuitlinData()) {
-                uiLogger.warn("您正在编辑系统预置数据: 更改系统数据可能导致系统无法正常运行，也可能会被系统自动复原。");
+                uiLogger.warn("不能编辑系统预置数据: 更改系统数据可能导致系统无法正常运行。");
+                readOnly = true;
+                break;
             }
             if (ef.isTestData()) {
                 uiLogger.warn("您正在编辑测试数据: 测试数据是自动生成的，未来可能会被系统复原。");
@@ -355,7 +360,10 @@ public class SimpleEntityViewBean
         }
 
         openSelection();
-        showView(StandardViews.EDIT_FORM);
+        if (readOnly)
+            showView(StandardViews.CONTENT);
+        else
+            showView(StandardViews.EDIT_FORM);
     }
 
     @Operation
