@@ -23,4 +23,22 @@
         <component-class>com.bee32.plover.faces.controls.UILogo</component-class>
     </component>
 
+    <component>
+        <component-type>plover.faces.Locker</component-type>
+        <component-class>com.bee32.plover.faces.component.Locker</component-class>
+    </component>
+
+    <component>
+        <component-type>plover.faces.SelectOneObjectMenu</component-type>
+        <component-class>com.bee32.plover.faces.component.SelectOneObjectMenu</component-class>
+    </component>
+
+    <render-kit>
+        <renderer>
+            <component-family>plover.faces.preprocessor</component-family>
+            <renderer-type>javax.faces.Group</renderer-type>
+            <renderer-class>org.apache.myfaces.renderkit.html.HtmlGroupRenderer</renderer-class>
+        </renderer>
+    </render-kit>
+
 </faces-config>

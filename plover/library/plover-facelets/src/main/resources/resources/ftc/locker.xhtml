@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition template="template.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+    xmlns:pf="http://bee32.com/plover/faces">
+
+    <ui:define name="title">Locker Component Test</ui:define>
+
+    <ui:define name="body">
+
+        <h:form id="form">
+            <pf:locker test="${true}">
+                <p:commandButton value="A button" disabled="${false}" />
+            </pf:locker>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

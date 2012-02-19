@@ -1,5 +1,8 @@
 package com.bee32.plover.faces;
 
+import com.bee32.plover.faces.component.Locker;
+import com.bee32.plover.faces.component.SelectOneObjectMenu;
+import com.bee32.plover.faces.tag.DisableHandler;
 
 public class PloverFacesLibrary
         extends _TagLibrary {
@@ -9,10 +12,10 @@ public class PloverFacesLibrary
     public PloverFacesLibrary() {
         super(NAMESPACE);
 
-        // addTagHandler("select", SelectHandler);
-        // addComponent("select", SelectOneObjectMenu.class.getCanonicalName(),
-        // "org.primefaces.component.SelectOneMenuRenderer");
-        // addTagHandler("disable", DisableHandler.class);
+        addComponent("select", SelectOneObjectMenu.COMPONENT_TYPE, SelectOneObjectMenu.DEFAULT_RENDERER_TYPE);
+
+        addTagHandler("disable", DisableHandler.class); // Not used.
+        addComponent("locker", Locker.COMPONENT_TYPE, Locker.DEFAULT_RENDERER_TYPE);
     }
 
 }

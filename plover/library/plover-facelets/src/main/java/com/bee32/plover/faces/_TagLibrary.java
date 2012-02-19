@@ -15,12 +15,14 @@ public class _TagLibrary
     }
 
     protected final void addComponent(String name, Class<?> componentType, Class<?> rendererType) {
-        super.addComponent(name, componentType.getCanonicalName(), rendererType.getCanonicalName());
+        String renderer = rendererType == null ? null : rendererType.getCanonicalName();
+        super.addComponent(name, componentType.getCanonicalName(), renderer);
     }
 
     protected final void addComponent(String name, Class<?> componentType, Class<?> rendererType,
             Class<? extends TagHandler> handlerType) {
-        super.addComponent(name, componentType.getCanonicalName(), rendererType.getCanonicalName(), handlerType);
+        String renderer = rendererType == null ? null : rendererType.getCanonicalName();
+        super.addComponent(name, componentType.getCanonicalName(), renderer, handlerType);
     }
 
     protected void importFunctions(Class<?> clazz) {
