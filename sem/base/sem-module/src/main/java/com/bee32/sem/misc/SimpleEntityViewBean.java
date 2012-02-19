@@ -323,6 +323,12 @@ public class SimpleEntityViewBean
     }
 
     @Operation
+    public void showEditForm(Object selection) {
+        setSingleSelection(selection);
+        showEditForm();
+    }
+
+    @Operation
     public void showEditForm() {
         if (getSelection().isEmpty()) {
             uiLogger.error("没有选定对象!");
@@ -353,6 +359,12 @@ public class SimpleEntityViewBean
     }
 
     @Operation
+    public void showContent(Object selection) {
+        setSingleSelection(selection);
+        showContent();
+    }
+
+    @Operation
     public void showContent() {
         if (getSelection().isEmpty()) {
             uiLogger.error("没有选定对象!");
@@ -362,9 +374,27 @@ public class SimpleEntityViewBean
         showView(StandardViews.CONTENT);
     }
 
+    @Operation
+    public void showPartialForm(Object selection) {
+        setSingleSelection(selection);
+        showPartialForm();
+    }
+
+    @Operation
     public void showPartialForm() {
         // default fmask override..
         showEditForm();
+    }
+
+    @Operation
+    public void showPartialContent(Object selection, int fmask) {
+        setSingleSelection(selection);
+        showPartialContent(fmask);
+    }
+
+    @Operation
+    public void showPartialContent(int fmask) {
+        showContent();
     }
 
     public String getCurrentView() {
