@@ -16,7 +16,8 @@ public class FaceletsTestCaseTest
 
     public static void main(String[] args)
             throws Exception {
-        new FaceletsTestCaseTest().browseAndWait("play/lvalue.jsf");
+        // new FaceletsTestCaseTest().browseAndWait("play/lvalue.jsf");
+        new FaceletsTestCaseTest().browseAndWait("ftc/locker.jsf");
     }
 
 }

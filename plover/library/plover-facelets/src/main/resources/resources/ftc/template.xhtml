@@ -13,7 +13,7 @@
 
     <body>
         Theme:
-        <p:themeSwitcher value="#{themeSwitcherBean.theme}" style="width:150px" effect="fade">
+        <p:themeSwitcher value="#{themeSwitcherBean.themeName}" style="width:150px" effect="fade">
             <f:selectItem itemLabel="选择风格" itemValue="" />
             <f:selectItems value="#{themeSwitcherBean.themes}" />
             <p:ajax listener="#{themeSwitcherBean.saveTheme}" />
