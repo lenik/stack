@@ -10,7 +10,7 @@
     <ui:param name="dicts" value="${chanceDictsBean}" />
 
     <ui:define name="dataColumns">
-        <p:column headerText="日期" sortBy="${entry.date}">
+        <p:column headerText="日期" sortBy="${entry.beginDate}">
             <h:outputText value="${entry.date}" />
         </p:column>
         <p:column headerText="类型" sortBy="${entry.category}">

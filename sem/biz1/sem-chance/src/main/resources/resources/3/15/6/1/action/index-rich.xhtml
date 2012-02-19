@@ -10,10 +10,10 @@
     <ui:param name="dicts" value="${chanceDictsBean}" />
 
     <ui:define name="dataColumns">
-        <p:column headerText="日期" sortBy="${entry.date}">
+        <p:column headerText="日期" sortBy="${entry.beginTime}" style="width: 6.5em">
             <h:outputText value="${entry.date}" />
         </p:column>
-        <p:column headerText="时间段">
+        <p:column headerText="时间段" style="width: 10em">
             <h:outputText value="${entry.timeRange}" />
         </p:column>
         <p:column headerText="执行" sortBy="${entry.actor}">
