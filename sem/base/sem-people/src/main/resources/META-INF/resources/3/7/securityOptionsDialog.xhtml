@@ -33,8 +33,8 @@
                     <h:panelGrid columns="3">
                         <p:commandButton id="loadAclButton" value="读取对象上的ACL" actionListener="${dialogBean.loadACL}"
                             update=":${cc.clientId}:form" style="display: none" />
-                        <p:commandButton id="refreshSelection" value="更新" actionListener="${dialogBean.refreshSelection}"
-                            update=":${cc.clientId}:form" />
+                        <p:commandButton id="refreshSelection" value="更新"
+                            actionListener="${dialogBean.refreshContextSelection}" update=":${cc.clientId}:form" />
                         <h:panelGroup>
                             <pre>
                                 <h:outputText value="${dialogBean.selectionDump}" />
