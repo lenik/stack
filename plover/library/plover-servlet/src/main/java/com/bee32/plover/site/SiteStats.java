@@ -1,5 +1,6 @@
 package com.bee32.plover.site;
 
+import java.beans.Transient;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -195,6 +196,7 @@ public class SiteStats
         this.parent = parent;
     }
 
+    @Transient
     public List<SiteStats> getChildren() {
         return children;
     }
@@ -211,9 +213,16 @@ public class SiteStats
     }
 
     public void addGroup(SiteStats group) {
+        Long _runTime = group.getRunTime();
+        if (_runTime == null)
+            return;
+
         groups++;
         startupCost += group.startupCost;
-        runTime += group.runTime;
+        if (runTime == null)
+            runTime = _runTime;
+        else
+            runTime += _runTime;
         requestCount += group.requestCount;
         serviceTime += group.serviceTime;
         bee32RequestCount += group.bee32RequestCount;
@@ -228,14 +237,10 @@ public class SiteStats
 
     public void addException(ExceptionLogEntry entry) {
         exceptions++;
-        if (parent != null)
-            parent.addException(entry);
     }
 
     public void addStartup(long startupCost) {
         startupCost += startupCost;
-        if (parent != null)
-            parent.addStartup(startupCost);
     }
 
     public void addService(long serviceTime, boolean bee32, boolean micro) {
@@ -253,8 +258,6 @@ public class SiteStats
             this.otherRequestCount++;
             this.otherServiceTime += serviceTime;
         }
-        if (parent != null)
-            parent.addService(serviceTime, bee32, micro);
     }
 
     public void saveToFile(File statsFile)

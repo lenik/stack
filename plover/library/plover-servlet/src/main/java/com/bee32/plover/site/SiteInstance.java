@@ -463,8 +463,10 @@ public class SiteInstance
             SiteLifecycleDispatcher.stopSite(this);
             started = false;
         }
-        if (statsFile != null) {
+        if (statsFile != null && stats != null) {
             try {
+                SiteStats child = stats.getLastChild();
+                stats.addGroup(child);
                 stats.saveToFile(statsFile);
             } catch (IOException e) {
                 logger.error("Failed to save stats to file: " + statsFile, e);
