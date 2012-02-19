@@ -26,7 +26,7 @@ public class SiteTemplate
 
     @Override
     public String getTitle() {
-        return "应用站点管理 (V-0.3)";
+        return "应用站点管理 (V-0.8.1)";
     }
 
     @Override

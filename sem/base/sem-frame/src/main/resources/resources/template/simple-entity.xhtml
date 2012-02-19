@@ -54,7 +54,7 @@
 
         <ui:insert name="dataColumnsV">
             <c:if test="${verifiable}">
-                <p:column headerText="审核状态">
+                <p:column headerText="审核">
                     <p:commandLink id="vst" value="${entry.verifyContext.verifyEvalState}" update="${_entryUpdate}"
                         oncomplete="verifyInfoDialog.show()">
                         <f:setPropertyActionListener target="${bean.singleSelection}" value="${entry}" />
@@ -76,17 +76,17 @@
 
         <p:column headerText="工具">
             <ui:insert name="toolsColumn">
-                <p:commandButton id="viewTool" title="查看" image="ui-icon ui-icon-search" rendered="${readable != null ? readable : true}"
+                <p:commandButton id="viewTool" title="查看" icon="ui-icon-search" rendered="${readable != null ? readable : true}"
                     actionListener="${bean.showContent(entry)}" update="${_contentUpdate}" oncomplete="${plainEditForm ? '' : 'editDialog.show()'}">
                 </p:commandButton>
                 <c:if test="${editInline}">
-                    <p:commandButton id="editTool" title="修改" disabled="${not entry.locked}" image="ui-icon ui-icon-pencil"
+                    <p:commandButton id="editTool" title="修改" disabled="${not entry.locked}" icon="ui-icon-pencil"
                         rendered="${editable != null ? editable : true}" actionListener="${bean.showEditForm(entry)}"
                         update="${_contentUpdate}" oncomplete="${plainEditForm ? '' : 'editDialog.show()'}">
                     </p:commandButton>
                 </c:if>
                 <c:if test="${deleteInline}">
-                    <p:commandButton id="delTool" title="删除" disabled="${not entry.locked}" image="ui-icon ui-icon-close"
+                    <p:commandButton id="delTool" title="删除" disabled="${not entry.locked}" icon="ui-icon-close"
                         rendered="${deletable != null ? deletable : true}" onclick="deleteConfirmDialog.show()">
                         <f:setPropertyActionListener target="${bean.singleSelection}" value="${entry}" />
                     </p:commandButton>
