@@ -4,46 +4,35 @@
     xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
     <ui:param name="title" value="销售机会" />
+    <ui:param name="verifiable" value="true" />
     <ui:param name="bean" value="${chanceBean}" />
     <ui:param name="obj" value="${bean.openedObject}" />
     <ui:param name="dicts" value="${chanceDictsBean}" />
 
-    <ui:define name="toolbarPeripherals">
-        <sem:singleVerifierSupportButton id="verifyButton" selection="${bean.selection}"
-            disabled="${not bean.selected}" />
-    </ui:define>
-
     <ui:define name="dataColumns">
-        <p:column headerText="日期">
+        <p:column headerText="日期" sortBy="${entry.date}">
             <h:outputText value="${entry.date}" />
         </p:column>
-
-        <p:column headerText="类型">
+        <p:column headerText="类型" sortBy="${entry.category}">
             <h:outputText value="${entry.category.label}" />
         </p:column>
-
-        <p:column headerText="机会标题">
+        <p:column headerText="机会标题" sortBy="${entry.subject}">
             <h:outputText value="${entry.subject}" />
         </p:column>
-
-        <p:column headerText="来源">
+        <p:column headerText="来源" sortBy="${entry.source}">
             <h:outputText value="${entry.source.label}" />
         </p:column>
-
         <ui:remove>
             <p:column headerText="客户">
                 <h:outputText value="${entry.partiesHint}" />
             </p:column>
         </ui:remove>
-
         <p:column headerText="机会内容">
             <h:outputText value="${entry.shortContent}" />
         </p:column>
-
-        <p:column headerText="机会阶段">
+        <p:column headerText="机会阶段" sortBy="${entry.stage}">
             <h:outputText value="${entry.stage.label}" />
         </p:column>
-
         <p:column headerText="状态">
             <h:outputText value="${entry.verifyContext.verifyEvalState}" />
         </p:column>
@@ -183,7 +172,6 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:singleVerifierSupportDialog id="verifyDialog" update=":editDialog:form" />
         <sem:choosePartyDialog id="choosePartyDialog" header="选择机会客户" stereo="ORG"
             target="${bean.partiesMBean.openedObject.party}" update=":editDialog:form:tv:partiesView:editForm:body" />
         <sem:chooseMaterialDialog id="chooseMaterialDialog" header="选择产品/物料"
@@ -216,30 +204,27 @@
                     <fr:listView id="quotationItemsView" header="报价明细" style="panel" orientation="td"
                         mbean="${bean.quotationItemsMBean}" nested="true">
                         <f:facet name="columns">
-                            <p:column headerText="产品" style="width: 7em;">
+                            <p:column headerText="产品">
                                 <h:outputText value="${entry.material.label}" />
                             </p:column>
-
-                            <p:column headerText="折扣" style="width: 8em;">
+                            <p:column headerText="折扣">
                                 <h:outputText value="${entry.discount}" />
                             </p:column>
-
-                            <p:column headerText="基础价格" style="width: 8em;">
+                            <p:column headerText="基础价格">
                                 <h:outputText value="${entry.basePrice}" />
                             </p:column>
-
-                            <p:column headerText="单价" style="width: 8em;">
+                            <p:column headerText="单价">
                                 <h:outputText value="${entry.price}" />
                             </p:column>
-
-                            <p:column headerText="数目" style="width: 5em;">
+                            <p:column headerText="数目">
                                 <h:outputText value="${entry.quantity}" />
                             </p:column>
                         </f:facet>
                         <h:panelGrid columns="2">
                             <h:outputText value="产品/物料" />
                             <h:panelGroup>
-                                <p:inputText id="material" value="${item.material.label}" readonly="true" label="产品/物料"/>
+                                <p:inputText id="material" value="${item.material.label}" readonly="true"
+                                    label="产品/物料" />
                                 <p:commandButton id="chooseMaterial" value="..." onclick="chooseMaterialDialog.show()" />
                             </h:panelGroup>
 
@@ -247,13 +232,13 @@
                             <h:outputText value="${item.basePrice}" />
 
                             <h:outputText value="折扣" />
-                            <p:inputText id="discount" value="${item.discount}" label="折扣"/>
+                            <p:inputText id="discount" value="${item.discount}" label="折扣" />
 
                             <h:outputText value="单价" />
-                            <p:inputText id="price" value="${item.price.value}" label="单价"/>
+                            <p:inputText id="price" value="${item.price.value}" label="单价" />
 
                             <h:outputText value="数量" />
-                            <p:inputText id="quantity" value="${item.quantity}" label="数量"/>
+                            <p:inputText id="quantity" value="${item.quantity}" label="数量" />
                         </h:panelGrid>
                     </fr:listView>
                 </p:tab>
@@ -277,10 +262,10 @@
 
                     <h:outputText value="开始时间:" />
                     <p:calendar id="beginTime" pattern="yyyy-MM-dd HH:mm" navigator="${true}" value="${action.beginTime}"
-                        showOn="button" disabled="${true}" label="开始时间"/>
+                        showOn="button" disabled="${true}" label="开始时间" />
                     <h:outputText value="结束时间:" />
                     <p:calendar id="endTime" pattern="yyyy-MM-dd HH:mm" navigator="${true}" value="${action.endTime}"
-                        showOn="button" disabled="${true}" label="结束时间"/>
+                        showOn="button" disabled="${true}" label="结束时间" />
 
                     <h:outputText value="日志类型:" />
                     <p:selectOneMenu id="actionStyle" value="${action.plan}" style="width: 10em;"
@@ -312,19 +297,19 @@
                     <h:outputText value="内容描述:" />
                     <t:panelGroup colspan="3">
                         <p:inputTextarea id="description" value="${action.moreInfo}" style="width: 40em;height: 5em;"
-                            readonly="${true}" label="内容描述"/>
+                            readonly="${true}" label="内容描述" />
                     </t:panelGroup>
 
                     <h:outputText value="花费详细:" />
                     <t:panelGroup colspan="3">
                         <p:inputTextarea id="spending" value="${action.spending}" style="width: 40em;height: 5em;"
-                            readonly="${true}" label="花费详细"/>
+                            readonly="${true}" label="花费详细" />
                     </t:panelGroup>
 
                     <h:outputText value="机会标题:" />
                     <t:panelGroup colspan="3">
                         <p:inputText id="chanceSubject" readonly="true" value="${action.chance.subject}"
-                            style="width: 30em" label="机会标题"/>
+                            style="width: 30em" label="机会标题" />
                     </t:panelGroup>
 
                     <h:outputText value="机会阶段:" />

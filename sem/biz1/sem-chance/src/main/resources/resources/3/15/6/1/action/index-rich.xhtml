@@ -4,41 +4,35 @@
     xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
     <ui:param name="title" value="机会跟进日志" />
+    <ui:param name="verifiable" value="true" />
     <ui:param name="bean" value="${chanceActionBean}" />
     <ui:param name="obj" value="${bean.openedObject}" />
     <ui:param name="dicts" value="${chanceDictsBean}" />
 
-    <ui:define name="toolbarPeripherals">
-        <sem:singleVerifierSupportButton id="verifyButton" selection="#{bean.selection}" />
-    </ui:define>
-
     <ui:define name="dataColumns">
-        <p:column headerText="日期" style="width: 10em;">
+        <p:column headerText="日期" sortBy="${entry.date}">
             <h:outputText value="${entry.date}" />
         </p:column>
-        <p:column headerText="时间段" style="width: 12em;">
+        <p:column headerText="时间段">
             <h:outputText value="${entry.timeRange}" />
         </p:column>
-        <p:column headerText="执行" style="width: 6em;">
+        <p:column headerText="执行" sortBy="${entry.actor}">
             <h:outputText value="${entry.actor.displayName}" />
         </p:column>
-        <p:column headerText="类型" style="width: 3em;">
-            <h:outputText value="${entry.plan ? '计划' : '日至'}" />
+        <p:column headerText="类型" sortBy="${entry.plan}">
+            <h:outputText value="${entry.plan ? '计划' : '日志'}" />
         </p:column>
-        <p:column headerText="洽谈类型" style="width: 7em;">
+        <p:column headerText="洽谈类型" sortBy="${entry.style}">
             <h:outputText value="${entry.style.label}" />
         </p:column>
-        <p:column headerText="行动简略">
+        <p:column headerText="行动简略" sortBy="${entry.description}">
             <h:outputText value="${entry.subject}" />
         </p:column>
-        <p:column headerText="对应机会">
+        <p:column headerText="对应机会" sortBy="${entry.chance}">
             <h:outputText value="${entry.chance.subject}" />
         </p:column>
-        <p:column headerText="阶段">
+        <p:column headerText="阶段" sortBy="${entry.stage}">
             <h:outputText value="${entry.stage.label}" />
-        </p:column>
-        <p:column headerText="壮态">
-            <h:outputText value="${entry.verifyContext.verifyEvalState}" />
         </p:column>
     </ui:define>
 
@@ -46,16 +40,16 @@
         <t:panelGrid columns="4" columnClasses="detail_col_title, detail_col_value, detail_col_title, detail_col_value">
             <h:outputLabel for="beginTime" value="开始时间:" />
             <p:calendar id="beginTime" pattern="yyyy-MM-dd HH:mm" navigator="${true}" value="${obj.beginTime}"
-                showOn="button" label="开始时间"/>
+                showOn="button" label="开始时间" />
             <h:outputLabel for="endTime" value="结束时间:" />
             <p:calendar id="endTime" pattern="yyyy-MM-dd HH:mm" navigator="${true}" value="${obj.endTime}"
-                showOn="button" label="结束时间"/>
+                showOn="button" label="结束时间" />
 
             <h:outputLabel for="actionStyle" value="日志类型:" />
-            <p:selectOneMenu id="actionStyle" value="${obj.plan}" label="日志类型">
+            <p:selectOneButton id="actionStyle" value="${obj.plan}" label="日志类型">
                 <f:selectItem itemLabel="计划" itemValue="${true}" />
                 <f:selectItem itemLabel="日志" itemValue="${false}" />
-            </p:selectOneMenu>
+            </p:selectOneButton>
 
             <h:outputLabel for="style" value="洽谈方式:" />
             <p:selectOneMenu id="style" value="${obj.style.id_OE}" label="洽谈方式">
@@ -99,17 +93,20 @@
 
             <h:outputLabel for="moreInfo" value="内容描述:" />
             <t:panelGroup colspan="3">
-                <p:inputTextarea id="moreInfo" value="${obj.moreInfo}" style="width: 30em; height: 5em;" label="内容描述"/>
+                <p:inputTextarea id="moreInfo" value="${obj.moreInfo}" style="width: 30em; height: 5em;"
+                    label="内容描述" />
             </t:panelGroup>
 
             <h:outputLabel for="spending" value="花费详细:" />
             <t:panelGroup colspan="3">
-                <p:inputTextarea id="spending" value="${obj.spending}" style="width: 30em; height: 5em;" label="花费详细"/>
+                <p:inputTextarea id="spending" value="${obj.spending}" style="width: 30em; height: 5em;"
+                    label="花费详细" />
             </t:panelGroup>
 
             <h:outputLabel for="chanceSubject" value="相关机会:" />
             <t:panelGroup id="correChance" colspan="3">
-                <p:inputText id="chanceSubject" readonly="true" value="${obj.chance.subject}" style="width: 30em" label="相关机会"/>
+                <p:inputText id="chanceSubject" readonly="true" value="${obj.chance.subject}" style="width: 30em"
+                    label="相关机会" />
                 <p:commandButton title="挑选机会" value="..." onclick="chooseChanceDialog.show();" />
             </t:panelGroup>
 
@@ -125,8 +122,6 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:singleVerifierSupportDialog id="verifyDialog" selection="${bean.selection}"
-            update=":mainForm" />
         <sem:chooseChanceDialog id="chooseChanceDialog" target="${obj.chance}" update=":editDialog:form" />
         <sem:choosePartyDialog id="choosePartyDialog" header="选择客户" target="${bean.selectedParty}"
             actionListener="${bean.addParty}" update=":editDialog:form" />
