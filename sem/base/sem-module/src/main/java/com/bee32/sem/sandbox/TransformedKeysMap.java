@@ -2,13 +2,13 @@ package com.bee32.sem.sandbox;
 
 import java.util.AbstractMap;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import javax.free.IBidiTransformer;
 
 import org.apache.commons.collections15.Transformer;
-import org.apache.commons.collections15.set.TransformedSet;
 
 public class TransformedKeysMap<_K, K, V>
         extends AbstractMap<K, V> {
@@ -67,13 +67,25 @@ public class TransformedKeysMap<_K, K, V>
     @Override
     public Set<K> keySet() {
         Set<_K> innerKeySet = inner.keySet();
-        return TransformedSet.decorate(innerKeySet, new OKeyTransformer());
+        // return TransformedSet.decorate(innerKeySet, new OKeyTransformer());
+        Set<K> outerKeySet = new HashSet<K>(innerKeySet.size());
+        for (_K innerKey : innerKeySet) {
+            K outerKey = getOuterKey(innerKey);
+            outerKeySet.add(outerKey);
+        }
+        return outerKeySet;
     }
 
     @Override
     public Set<Entry<K, V>> entrySet() {
         Set<Entry<_K, V>> innerEntries = inner.entrySet();
-        return TransformedSet.decorate(innerEntries, new OEntryTransformer());
+        // return TransformedSet.decorate(innerEntries, new OEntryTransformer());
+        Set<Entry<K, V>> outerEntries = new HashSet<Entry<K, V>>(innerEntries.size());
+        for (Entry<_K, V> innerEntry : innerEntries) {
+            OEntry outerEntry = new OEntry(innerEntry);
+            outerEntries.add(outerEntry);
+        }
+        return outerEntries;
     }
 
     @Override
@@ -81,7 +93,7 @@ public class TransformedKeysMap<_K, K, V>
         return inner.values();
     }
 
-    private class OKeyTransformer
+    final class OKeyTransformer
             implements Transformer<_K, K> {
         @Override
         public K transform(_K input) {
@@ -89,7 +101,7 @@ public class TransformedKeysMap<_K, K, V>
         }
     }
 
-    private class OEntryTransformer
+    final class OEntryTransformer
             implements Transformer<Entry<_K, V>, Entry<K, V>> {
         @Override
         public Entry<K, V> transform(Entry<_K, V> input) {
@@ -97,7 +109,7 @@ public class TransformedKeysMap<_K, K, V>
         }
     }
 
-    private class OEntry
+    final class OEntry
             implements Entry<K, V> {
 
         Entry<_K, V> innerEntry;
