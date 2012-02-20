@@ -1,11 +1,12 @@
 package com.bee32.sem.chance.web;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
+import com.bee32.plover.arch.util.dto.Fmask;
 import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.orm.annotation.ForEntity;
+import com.bee32.plover.orm.util.Identities;
+import com.bee32.plover.orm.util.RefsDiff;
 import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.dto.ChanceDto;
@@ -42,48 +43,31 @@ public class ChanceBean
     }
 
     @Override
+    protected Integer getFmaskOverride(int saveFlags) {
+        return Fmask.F_MORE & ~ChanceDto.ACTIONS;
+    }
+
+    @Override
     protected boolean preUpdate(UnmarshalMap uMap)
             throws Exception {
         UnmarshalMap actionUMap = uMap.getSubMap("actions");
         actionUMap.setLabel("关联行动");
         actionUMap.setEntityClass(ChanceAction.class);
+
         for (Chance _chance : uMap.<Chance> entitySet()) {
-            for (ChanceActionDto attachAction : attachSet) {
-                ChanceAction _action = attachAction.unmarshal();
-                _chance.addAction(_action);
-                actionUMap.put(_action, attachAction);
+            ChanceDto chance = uMap.getSourceDto(_chance);
+            RefsDiff diff = Identities.compare(_chance.getActions(), chance.getActions());
+            for (ChanceAction _detached : diff.<ChanceAction> leftOnly()) {
+                _detached.setChance(null);
+                actionUMap.put(_detached, null);
             }
-            for (ChanceActionDto detachAction : detachSet) {
-                ChanceAction _action = detachAction.unmarshal();
-                _chance.removeAction(_action);
-                actionUMap.put(_action, detachAction);
+            for (ChanceActionDto attached : diff.<ChanceActionDto> rightOnly()) {
+                ChanceAction _attached = attached.unmarshal();
+                _attached.setChance(_chance);
+                actionUMap.put(_attached, attached);
             }
         }
-        attachSet.clear();
-        detachSet.clear();
         return true;
-    }
-
-    Set<ChanceActionDto> attachSet = new HashSet<ChanceActionDto>();
-    Set<ChanceActionDto> detachSet = new HashSet<ChanceActionDto>();
-
-    public void setChosenAction(ChanceActionDto attachAction) {
-        if (attachAction == null)
-            return;
-        ChanceDto chance = getOpenedObject();
-        chance.addAction(attachAction);
-        attachSet.add(attachAction);
-        detachSet.remove(attachAction);
-    }
-
-    public void detachAction() {
-        ChanceActionDto detachAction = actionsMBean.getSelection();
-        if (detachAction == null)
-            return;
-        ChanceDto chance = getOpenedObject();
-        chance.removeAction(detachAction);
-        attachSet.remove(detachAction);
-        detachSet.add(detachAction);
     }
 
     public void addNameOrLabelRestriction() {
