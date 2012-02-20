@@ -176,25 +176,23 @@ public class Chance
         if (action == null)
             throw new NullPointerException("action");
         actions.add(action);
+        action.setChance(this);
         refreshStage();
     }
 
     public void removeAction(ChanceAction action) {
         actions.remove(action);
+        action.setChance(null);
         refreshStage();
     }
 
     void refreshStage() {
-        ChanceStage maxStage = null;
+        ChanceStage maxStage = ChanceStage.INIT;
         for (ChanceAction action : actions) {
-            if (maxStage == null)
-                maxStage = action.getStage();
-            else {
-                ChanceStage stage = action.getStage();
-                if (stage != null)
-                    if (stage.getOrder() >= maxStage.getOrder())
-                        maxStage = stage;
-            }
+            ChanceStage stage = action.getStage();
+            if (stage != null)
+                if (stage.getOrder() >= maxStage.getOrder())
+                    maxStage = stage;
         }
         this.stage = maxStage;
     }

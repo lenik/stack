@@ -10,6 +10,7 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.chance.entity.Chance;
+import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.chance.util.DateToRange;
 import com.bee32.sem.process.base.ProcessEntityDto;
 
@@ -215,14 +216,14 @@ public class ChanceDto
         if (action == null)
             throw new NullPointerException("action");
         actions.add(action);
-        // TODO Collections.sort(actions); // sort by begin-date.
         refreshStage();
     }
 
-    public void deleteAction(ChanceActionDto action) {
-        if (actions.contains(action))
-            actions.remove(action);
+    public boolean removeAction(ChanceActionDto action) {
+        if (!actions.remove(action))
+            return false;
         refreshStage();
+        return true;
     }
 
     public ChanceStageDto getStage() {
@@ -246,7 +247,7 @@ public class ChanceDto
         int cachedOrder = getStage().getOrder();
 
         int maxOrder = 0;
-        ChanceStageDto maxStage = null;
+        ChanceStageDto maxStage = new ChanceStageDto().ref(ChanceStage.INIT);
         for (ChanceActionDto action : getActions()) {
             int order = action.getStage().getOrder();
             if (order > maxOrder) {
@@ -255,9 +256,8 @@ public class ChanceDto
             }
         }
 
-        if (maxStage != null)
-            if (maxOrder > cachedOrder)
-                this.stage = maxStage;
+        if (maxOrder > cachedOrder)
+            this.stage = maxStage;
     }
 
 }

@@ -7,6 +7,9 @@
     <ui:param name="verifiable" value="true" />
     <ui:param name="bean" value="${chanceBean}" />
     <ui:param name="obj" value="${bean.openedObject}" />
+    <ui:param name="partyObj" value="${bean.partiesMBean.openedObject}" />
+    <ui:param name="actionObj" value="${bean.actionsMBean.openedObject}" />
+    <ui:param name="quotationItemObj" value="${bean.quotationItemsMBean.openedObject}" />
     <ui:param name="dicts" value="${chanceDictsBean}" />
 
     <ui:define name="dataColumns">
@@ -106,54 +109,44 @@
             </p:tab>
 
             <p:tab title="行动跟踪">
-                <p:toolbar id="toolbar">
-                    <p:toolbarGroup align="left">
-                        <p:commandButton id="relateActionButton" value="增加关联" actionListener="${bean.initActions}"
-                            onclick="chooseChanceActionDialog.show();" />
-                        <p:commandButton id="unrelateActionButton" value="取消关联" onclick="deleteActionConfirm.show();"
-                            disabled="${bean.selectedAction == null}" />
-                        <p:commandButton id="viewActionDetailButton" value="详细" actionListener="${bean.viewActionDetail}"
-                            update=":actionDetailForm" oncomplete="actionDetailDialog.show();" disabled="${bean.selectedAction == null}" />
-                    </p:toolbarGroup>
-                </p:toolbar>
-                <p:dataTable id="actionTable" var="action" value="${obj.actions}" selection="${bean.selectedAction}"
-                    selectionMode="single" rowKey="${action.id}" rowIndexVar="rowIndex">
-
-                    <p:ajax event="rowSelect" update=":editDialog:form:tv:toolbar" />
-
-                    <p:column headerText="序号" style="width: 45px;">
-                        <h:outputText value="${rowIndex + 1}" />
-                    </p:column>
-
-                    <p:column headerText="日期">
-                        <h:outputText value="${action.date}" />
-                    </p:column>
-
-                    <p:column headerText="时间段">
-                        <h:outputText value="${action.timeRange}" />
-                    </p:column>
-
-                    <p:column headerText="类型">
-                        <h:outputText value="${action.plan ? '计划' : '日志'}" />
-                    </p:column>
-
-                    <p:column headerText="洽谈类型">
-                        <h:outputText value="${action.style.label}" />
-                    </p:column>
-
-                    <p:column headerText="行动简略">
-                        <h:outputText value="${action.subject}" />
-                    </p:column>
-
-                    <p:column headerText="机会阶段">
-                        <h:outputText value="${action.stage.label}" />
-                    </p:column>
-
-                </p:dataTable>
+                <fr:listView id="actionsView" header="行动记录" style="panel" mbean="${bean.actionsMBean}"
+                    nested="true" creatable="false" editable="false" removable="false">
+                    <f:facet name="columns">
+                        <p:column headerText="日期">
+                            <h:outputText value="${entry.date}" />
+                        </p:column>
+                        <p:column headerText="类型">
+                            <h:outputText value="${entry.plan ? '计划' : '日志'}" />
+                        </p:column>
+                        <p:column headerText="执行">
+                            <h:outputText value="${entry.actor.displayName}" />
+                        </p:column>
+                        <p:column headerText="洽谈类型">
+                            <h:outputText value="${entry.style.label}" />
+                        </p:column>
+                        <p:column headerText="行动简略">
+                            <h:outputText value="${entry.subject}" />
+                        </p:column>
+                        <p:column headerText="机会阶段">
+                            <h:outputText value="${entry.stage.label}" />
+                        </p:column>
+                    </f:facet>
+                    <f:facet name="index-buttons.left">
+                        <p:commandButton id="attach" value="连接" oncomplete="chooseChanceActionDialog.show()">
+                            <f:setPropertyActionListener target="${chooseChanceActionDialogBean.detachedOnly}"
+                                value="true" />
+                        </p:commandButton>
+                        <p:commandButton id="detach" value="断开" actionListener="${bean.detachAction}"
+                            update="dataTable" />
+                    </f:facet>
+                    <f:facet name="index-buttons.right">
+                        <p:commandButton id="show" value="查看" update=":actionDetailForm" oncomplete="actionDetailDialog.show()" />
+                    </f:facet>
+                </fr:listView>
             </p:tab>
 
             <p:tab title="报价">
-                <fr:listView id="quotationsIndexView" editView=":quotationsEditView" header="报价" style="indexPanel"
+                <fr:listView id="qIndexView" editView=":qEditView" header="报价" style="indexPanel"
                     orientation="td" mbean="${bean.quotationsMBean}" nested="true">
                     <f:facet name="columns">
                         <p:column headerText="标题">
@@ -172,13 +165,15 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:choosePartyDialog id="choosePartyDialog" header="选择机会客户" stereo="ORG"
-            target="${bean.partiesMBean.openedObject.party}" update=":editDialog:form:tv:partiesView:editForm:body" />
-        <sem:chooseMaterialDialog id="chooseMaterialDialog" header="选择产品/物料"
-            target="${bean.quotationItemsMBean.openedObject.material}" update=":quotationsEditView:editForm:tv:quotationItemsView:editForm:body" />
+        <sem:choosePartyDialog id="party-d" header="选择机会客户" stereo="ORG" target="${partyObj.party}"
+            update=":editDialog:form:tv:partiesView:editForm:body" />
+        <sem:chooseChanceActionDialog id="action-d" header="选择要连接的行动日志" target="${bean.chosenAction}"
+            update=":editDialog:form:tv:actionsView:indexForm:body" />
+        <sem:chooseMaterialDialog id="material-d" header="选择产品/物料" target="${quotationItemObj.material}"
+            update=":qEditView:editForm:tv:qItemsView:editForm:body" />
 
-        <fr:listView id="quotationsEditView" indexView=":editDialog:form:tv:quotationsIndexView" header="报价"
-            style="editDialog" mbean="${bean.quotationsMBean}">
+        <fr:listView id="qEditView" indexView=":editDialog:form:tv:qIndexView" header="报价" style="editDialog"
+            mbean="${bean.quotationsMBean}">
             <p:tabView id="tv">
                 <p:tab title="基本信息">
                     <h:panelGrid columns="2">
@@ -201,7 +196,7 @@
                     </h:panelGrid>
                 </p:tab>
                 <p:tab title="报价明细">
-                    <fr:listView id="quotationItemsView" header="报价明细" style="panel" orientation="td"
+                    <fr:listView id="qItemsView" header="报价明细" style="panel" orientation="td"
                         mbean="${bean.quotationItemsMBean}" nested="true">
                         <f:facet name="columns">
                             <p:column headerText="产品">
@@ -245,50 +240,41 @@
             </p:tabView>
         </fr:listView>
 
-        <p:confirmDialog message="确定要取消此行动记录的关联?" hideEffect="explode" header="注意" severity="alert"
-            widgetVar="deleteActionConfirm">
-            <h:form>
-                <p:commandButton value="确定" actionListener="${bean.detachAction}"
-                    update=":editDialog:form:tv:actionTable, :editDialog:form:tv:toolbar" oncomplete="deleteActionConfirm.hide();" />
-                <p:commandButton value="取消" onclick="deleteActionConfirm.hide();" />
-            </h:form>
-        </p:confirmDialog>
-
-        <p:dialog header="行动记录详细" widgetVar="actionDetailDialog" modal="true">
-            <c:set var="action" value="${bean.selectedAction}" />
+        <p:dialog header="行动记录详细" widgetVar="actionDetailDialog" modal="true" dynamic="true">
+            <c:set var="item" value="${bean.actionsMBean.selection}" />
             <h:form id="actionDetailForm">
-                <t:panelGrid rendered="${action != null}" columns="4"
+                <t:panelGrid rendered="${item != null}" columns="4"
                     columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
 
                     <h:outputText value="开始时间:" />
-                    <p:calendar id="beginTime" pattern="yyyy-MM-dd HH:mm" navigator="${true}" value="${action.beginTime}"
+                    <p:calendar id="beginTime" pattern="yyyy-MM-dd HH:mm" navigator="${true}" value="${item.beginTime}"
                         showOn="button" disabled="${true}" label="开始时间" />
                     <h:outputText value="结束时间:" />
-                    <p:calendar id="endTime" pattern="yyyy-MM-dd HH:mm" navigator="${true}" value="${action.endTime}"
+                    <p:calendar id="endTime" pattern="yyyy-MM-dd HH:mm" navigator="${true}" value="${item.endTime}"
                         showOn="button" disabled="${true}" label="结束时间" />
 
                     <h:outputText value="日志类型:" />
-                    <p:selectOneMenu id="actionStyle" value="${action.plan}" style="width: 10em;"
+                    <p:selectOneButton id="actionStyle" value="${item.plan}" style="width: 10em;"
                         disabled="${true}" label="日志类型">
                         <f:selectItem itemLabel="计划" itemValue="${true}" />
                         <f:selectItem itemLabel="日志" itemValue="${false}" />
-                    </p:selectOneMenu>
+                    </p:selectOneButton>
 
                     <h:outputText value="洽谈方式:" />
-                    <p:selectOneMenu id="style" value="${action.style.displayId}" style="width:  10em;"
+                    <p:selectOneMenu id="style" value="${item.style.displayId}" style="width:  10em;"
                         disabled="${true}" label="洽谈方式">
                         <f:selectItems value="${dicts.actionStyles}" var="it" itemLabel="${it.label}"
                             itemValue="${it.id}" />
                     </p:selectOneMenu>
 
                     <h:outputText value="拜访客户:" />
-                    <p:dataList var="party" value="${action.parties}" effectSpeed="fast">
+                    <p:dataList var="party" value="${item.parties}" effectSpeed="fast">
                         <p:column>
                             <h:outputText value="${party.displayName}" />
                         </p:column>
                     </p:dataList>
                     <h:outputText value="工作伙伴:" />
-                    <p:dataList id="partners" var="partner" value="${action.partners}" effectSpeed="fast">
+                    <p:dataList id="partners" var="partner" value="${item.partners}" effectSpeed="fast">
                         <p:column>
                             <h:outputText value="${partner.displayName}" />
                         </p:column>
@@ -296,28 +282,28 @@
 
                     <h:outputText value="内容描述:" />
                     <t:panelGroup colspan="3">
-                        <p:inputTextarea id="description" value="${action.moreInfo}" style="width: 40em;height: 5em;"
+                        <p:inputTextarea id="description" value="${item.moreInfo}" style="width: 40em;height: 5em;"
                             readonly="${true}" label="内容描述" />
                     </t:panelGroup>
 
                     <h:outputText value="花费详细:" />
                     <t:panelGroup colspan="3">
-                        <p:inputTextarea id="spending" value="${action.spending}" style="width: 40em;height: 5em;"
+                        <p:inputTextarea id="spending" value="${item.spending}" style="width: 40em;height: 5em;"
                             readonly="${true}" label="花费详细" />
                     </t:panelGroup>
 
                     <h:outputText value="机会标题:" />
                     <t:panelGroup colspan="3">
-                        <p:inputText id="chanceSubject" readonly="true" value="${action.chance.subject}"
+                        <p:inputText id="chanceSubject" readonly="true" value="${item.chance.subject}"
                             style="width: 30em" label="机会标题" />
                     </t:panelGroup>
 
                     <h:outputText value="机会阶段:" />
                     <t:panelGroup colspan="3">
-                        <p:selectOneMenu id="stage" value="${action.stage.displayId}" disabled="${true}"
+                        <p:selectOneMenu id="stage" value="${item.stage.displayId}" disabled="${true}"
                             style="width: 20em;" label="机会阶段">
                             <f:selectItem itemLabel="请选择机会阶段" itemValue="" />
-                            <f:selectItems value="${dicts.stages}" var="it" itemLabel="${it.itemLabel}"
+                            <f:selectItems value="${dicts.stages}" var="it" itemLabel="${it.label}"
                                 itemValue="${it.id}" />
                         </p:selectOneMenu>
                     </t:panelGroup>

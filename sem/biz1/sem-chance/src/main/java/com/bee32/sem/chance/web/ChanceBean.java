@@ -12,10 +12,8 @@ import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.chance.dto.ChancePartyDto;
 import com.bee32.sem.chance.dto.ChanceQuotationDto;
 import com.bee32.sem.chance.dto.ChanceQuotationItemDto;
-import com.bee32.sem.chance.dto.ChanceStageDto;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
-import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.chance.util.ChanceCriteria;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.misc.SimpleEntityViewBean;
@@ -44,57 +42,48 @@ public class ChanceBean
     }
 
     @Override
-    protected void postUpdate(UnmarshalMap uMap)
+    protected boolean preUpdate(UnmarshalMap uMap)
             throws Exception {
-        Set<ChanceAction> updates = new HashSet<ChanceAction>();
+        UnmarshalMap actionUMap = uMap.getSubMap("actions");
+        actionUMap.setLabel("关联行动");
+        actionUMap.setEntityClass(ChanceAction.class);
         for (Chance _chance : uMap.<Chance> entitySet()) {
-            for (ChanceActionDto action : attachSet) {
-                ChanceAction _action = action.unmarshal();
-                _action.setChance(_chance);
-                updates.add(_action);
+            for (ChanceActionDto attachAction : attachSet) {
+                ChanceAction _action = attachAction.unmarshal();
+                _chance.addAction(_action);
+                actionUMap.put(_action, attachAction);
             }
-            for (ChanceActionDto action : detachSet) {
-                ChanceAction _action = action.unmarshal();
-                _action.setChance(null);
-                updates.add(_action);
+            for (ChanceActionDto detachAction : detachSet) {
+                ChanceAction _action = detachAction.unmarshal();
+                _chance.removeAction(_action);
+                actionUMap.put(_action, detachAction);
             }
-            break;
         }
-        try {
-            ctx.data.access(ChanceAction.class).saveOrUpdateAll(updates);
-        } finally {
-            attachSet.clear();
-            detachSet.clear();
-        }
+        attachSet.clear();
+        detachSet.clear();
+        return true;
     }
 
-    ChanceActionDto selectedAction;
     Set<ChanceActionDto> attachSet = new HashSet<ChanceActionDto>();
     Set<ChanceActionDto> detachSet = new HashSet<ChanceActionDto>();
 
-    public ChanceActionDto getSelectedAction() {
-        return selectedAction;
-    }
-
-    public void setSelectedAction(ChanceActionDto selectedAction) {
-        this.selectedAction = selectedAction;
-    }
-
-    public void addAction() {
+    public void setChosenAction(ChanceActionDto attachAction) {
+        if (attachAction == null)
+            return;
         ChanceDto chance = getOpenedObject();
-        if (selectedAction.getStage() == null) {
-            ChanceStageDto initStage = new ChanceStageDto().ref(ChanceStage.INIT);
-            selectedAction.setStage(initStage);
-        }
-        chance.addAction(selectedAction);
-        attachSet.add(selectedAction);
-        detachSet.remove(selectedAction);
+        chance.addAction(attachAction);
+        attachSet.add(attachAction);
+        detachSet.remove(attachAction);
     }
 
-    public void removeAction() {
-        selectedAction.setStage(null);
-        attachSet.remove(selectedAction);
-        detachSet.add(selectedAction);
+    public void detachAction() {
+        ChanceActionDto detachAction = actionsMBean.getSelection();
+        if (detachAction == null)
+            return;
+        ChanceDto chance = getOpenedObject();
+        chance.removeAction(detachAction);
+        attachSet.remove(detachAction);
+        detachSet.add(detachAction);
     }
 
     public void addNameOrLabelRestriction() {
@@ -105,6 +94,7 @@ public class ChanceBean
     }
 
     ListMBean<ChancePartyDto> partiesMBean = ListMBean.fromEL(this, "openedObject.parties", ChancePartyDto.class);
+    ListMBean<ChanceActionDto> actionsMBean = ListMBean.fromEL(this, "openedObject.actions", ChanceActionDto.class);
     ListMBean<ChanceQuotationDto> quotationsMBean = ListMBean.fromEL(this, "openedObject.quotations",
             ChanceQuotationDto.class);
     ListMBean<ChanceQuotationItemDto> quotationItemsMBean = ListMBean.fromEL(quotationsMBean, "openedObject.items",
@@ -112,6 +102,10 @@ public class ChanceBean
 
     public ListMBean<ChancePartyDto> getPartiesMBean() {
         return partiesMBean;
+    }
+
+    public ListMBean<ChanceActionDto> getActionsMBean() {
+        return actionsMBean;
     }
 
     public ListMBean<ChanceQuotationDto> getQuotationsMBean() {
