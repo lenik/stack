@@ -26,12 +26,14 @@ import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.entity.EntityFlags;
 import com.bee32.plover.orm.entity.EntityUtil;
+import com.bee32.plover.orm.entity.IIdentity;
 import com.bee32.plover.orm.validation.RequiredId;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
 
 public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
-        extends EntityDto_VTU<E, K> {
+        extends EntityDto_VTU<E, K>
+        implements IIdentity<K> {
 
     private static final long serialVersionUID = 1L;
 
@@ -520,6 +522,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      * @return <code>null</code> If id isn't set. Thus should be skipped.
      */
     @NotNull
+    @Override
     public K getId() {
         return id;
     }

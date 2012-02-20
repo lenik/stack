@@ -8,11 +8,7 @@ import com.bee32.plover.arch.naming.INamed;
  * @see javax.ejb.EntityBean
  */
 public interface IEntity<K extends Serializable>
-        extends INamed, Serializable {
-
-    K getId();
-
-    // void setId(K id);
+        extends IIdentity<K>, INamed, Serializable {
 
     /**
      * Detach.
