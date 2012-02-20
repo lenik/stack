@@ -6,12 +6,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.commons.collections15.Transformer;
-import org.apache.commons.collections15.functors.NOPTransformer;
-import org.apache.commons.collections15.map.TransformedMap;
+import javax.free.IBidiTransformer;
 
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.sandbox.TransformedKeysMap;
 
 public class ConsumptionMap
         extends HashMap<Number, BigDecimal> {
@@ -116,31 +115,49 @@ public class ConsumptionMap
     }
 
     class Index2Entity
-            implements Transformer<Number, Material> {
+            implements IBidiTransformer<Material, Number> {
 
         @Override
-        public Material transform(Number input) {
-            return entityIndex.get(input);
+        public Number transform(Material material)
+                throws RuntimeException {
+            if (material == null)
+                return null;
+            else
+                return material.getId();
+        }
+
+        @Override
+        public Material untransform(Number id) {
+            return entityIndex.get(id);
         }
 
     };
 
     class Index2Dto
-            implements Transformer<Number, MaterialDto> {
+            implements IBidiTransformer<MaterialDto, Number> {
 
         @Override
-        public MaterialDto transform(Number input) {
-            return dtoIndex.get(input);
+        public Number transform(MaterialDto material)
+                throws RuntimeException {
+            if (material == null)
+                return null;
+            else
+                return material.getId();
+        }
+
+        @Override
+        public MaterialDto untransform(Number id) {
+            return dtoIndex.get(id);
         }
 
     };
 
     public Map<Material, BigDecimal> entityMap() {
-        return TransformedMap.decorate(this, new Index2Entity(), NOPTransformer.getInstance());
+        return TransformedKeysMap.decorate(this, new Index2Entity());
     }
 
     public Map<MaterialDto, BigDecimal> dtoMap() {
-        return TransformedMap.decorate(this, new Index2Dto(), NOPTransformer.getInstance());
+        return TransformedKeysMap.decorate(this, new Index2Dto());
     }
 
 }
