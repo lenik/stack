@@ -73,6 +73,7 @@ public abstract class SimpleTreeEntityViewBean
 
     public void refreshTree() {
         rootNode = null;
+        reindexNodes();
     }
 
     public void reindexNodes() {
@@ -82,7 +83,6 @@ public abstract class SimpleTreeEntityViewBean
     @Override
     protected void searchFragmentsChanged() {
         refreshTree();
-        reindexNodes();
     }
 
     /**
