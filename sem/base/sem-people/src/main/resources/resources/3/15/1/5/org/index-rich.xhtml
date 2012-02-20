@@ -9,7 +9,7 @@
     <ui:param name="people" value="#{peopleDictsBean}" />
 
     <ui:define name="dataColumns">
-        <p:column headerText="公司名称">
+        <p:column headerText="公司名称" sortBy="#{entry.label}">
             <h:outputText value="#{entry.label}" />
         </p:column>
 

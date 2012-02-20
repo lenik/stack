@@ -12,7 +12,7 @@
             update=":addLevelForm:targetPolicy" />
     </ui:define>
 
-    <ui:define name="dataColumns">
+    <ui:define name="dataColumns" sortBy="#{entry.label}">
         <p:column headerText="名称">
             <h:outputText value="#{entry.label}" />
         </p:column>

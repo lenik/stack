@@ -13,7 +13,7 @@ public final class StockQueryOptions
 
     Date timestamp = new Date();
     boolean endOfToday;
-    boolean verifiedOnly = true;
+    boolean verifiedOnly = false;
 
     String cBatch;
     Integer locationId;

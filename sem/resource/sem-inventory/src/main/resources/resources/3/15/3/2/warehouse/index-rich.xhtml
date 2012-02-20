@@ -7,7 +7,7 @@
     <ui:param name="obj" value="#{bean.openedObject}" />
 
     <ui:define name="dataColumns">
-        <p:column headerText="名称">
+        <p:column headerText="名称" sortBy="#{entry.label}">
             <h:outputText value="#{entry.label}" />
         </p:column>
 

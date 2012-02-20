@@ -48,6 +48,7 @@ public class StockOrderItem
 
     public StockOrderItem(StockOrderItem item) {
         super(item);
+        naturalId();
         parent = item.parent;
         material = item.material;
         batch = item.batch;
@@ -216,7 +217,7 @@ public class StockOrderItem
 
     @Override
     protected Serializable naturalId() {
-        return new IdComposite(naturalId(parent), naturalId(material), getCBatch());
+        return new IdComposite(naturalId(parent), naturalId(material), getCBatch(), getPrice());
     }
 
     @Override
@@ -225,7 +226,8 @@ public class StockOrderItem
         return selectors(//
                 selector(prefix + "parent", parent), //
                 selector(prefix + "material", material), //
-                new Equals(prefix + "CBatch", cBatch));
+                new Equals(prefix + "CBatch", cBatch), //
+                new Equals(prefix + "price", getPrice()));
     }
 
     @Override

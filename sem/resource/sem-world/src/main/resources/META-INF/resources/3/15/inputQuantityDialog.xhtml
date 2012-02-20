@@ -35,29 +35,37 @@
                 <h:outputText value="没有指定单位！" rendered="${dialogBean.unitUnit == null}" />
 
                 <p:fieldset legend="主单位" rendered="${dialogBean.unitUnit != null}">
-                    <p:radioButton id="byUnit" for="mode" itemIndex="0" />
                     <t:panelGrid columns="3">
-                        <h:outputText value="（主）单位:" />
+                        <p:radioButton id="byUnit" for="mode" itemIndex="0" />
+                        <h:outputText value="主单位:"/>
                         <t:panelGroup colspan="2">
-                            <p:selectOneMenu value="${dialogBean.unitUnit.id}" style="width: 20em;">
+                            <p:selectOneMenu value="${dialogBean.unitUnit.id}" style="width:15em;" disabled="true">
                                 <f:selectItems value="${thing.unitSelectItems}" />
                             </p:selectOneMenu>
                         </t:panelGroup>
-                        <h:outputText value="数量:" />
+
+                        <t:panelGroup/>
+                        <h:outputText value="数量:"/>
                         <p:inputText value="${dialogBean.unitQuantity}" />
-                        <p:commandButton id="toView" value="向下转换" actionListener="${dialogBean.toViewQuantity}"
-                            update="@form" rendered="${dialogBean.unitConv != null}" />
+                        <p:commandButton id="toView" value="向下转换"
+                            actionListener="${dialogBean.toViewQuantity}"
+                            update="@form"
+                            rendered="${dialogBean.unitConv != null}" />
+
                     </t:panelGrid>
                 </p:fieldset>
                 <p:fieldset legend="换算单位" rendered="${dialogBean.unitConv != null}">
-                    <p:radioButton id="byView" for="mode" itemIndex="1" />
+
                     <t:panelGrid columns="3">
-                        <h:outputText value="换算单位:" />
+                        <p:radioButton id="byView" for="mode" itemIndex="1" />
+                        <h:outputText value="换算单位:"/>
                         <t:panelGroup colspan="2">
-                            <p:selectOneMenu value="${dialogBean.viewUnit.id}" style="width: 20em;">
+                            <p:selectOneMenu value="${dialogBean.viewUnit.id}" style="width:15em;">
                                 <f:selectItems value="${dialogBean.viewUnits}" />
                             </p:selectOneMenu>
                         </t:panelGroup>
+
+                        <t:panelGroup/>
                         <h:outputText value="数量:" />
                         <p:inputText id="toUnit" value="${dialogBean.viewQuantity}" />
                         <p:commandButton value="向上转换" actionListener="${dialogBean.toUnitQuantity}"

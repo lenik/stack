@@ -7,7 +7,7 @@
     <ui:param name="bean" value="#{singleVerifierPolicyBean}" />
 
     <ui:define name="dataColumns">
-        <p:column headerText="名称" sortBy="label">
+        <p:column headerText="名称" sortBy="#{entry.label}">
             <h:outputText value="#{entry.label}" />
         </p:column>
 
