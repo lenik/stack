@@ -64,6 +64,7 @@ public class StockLocationAdminBean
     public void setSelectedWarehouseId(int selectedWarehouseId) {
         if (this.selectedWarehouseId != selectedWarehouseId) {
             this.selectedWarehouseId = selectedWarehouseId;
+            refreshTree();
         }
     }
 
