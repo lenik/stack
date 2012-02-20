@@ -8,7 +8,7 @@ import com.bee32.plover.faces.FaceletExceptionContext;
 import com.bee32.plover.faces.FaceletsExceptionHandler;
 import com.bee32.plover.faces.utils.FacesUILogger;
 
-@ForException(ViewExpiredException.class)
+@ForException(value = ViewExpiredException.class, fullStackSearch = true)
 public class ViewExpiredFeh
         extends FaceletsExceptionHandler {
 

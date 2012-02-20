@@ -89,6 +89,8 @@ public interface FacesConstants {
      */
     String PROJECT_STAGE = "javax.faces.PROJECT_STAGE";
 
+    String STATE_SAVING_METHOD = "javax.faces.STATE_SAVING_METHOD";
+
     String DEFAULT_SUFFIX = "javax.faces.DEFAULT_SUFFIX";
 
     String RI_VALIDATE_XML = "com.sun.faces.validateXml";

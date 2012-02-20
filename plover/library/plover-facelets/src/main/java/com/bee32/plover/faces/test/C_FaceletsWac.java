@@ -45,6 +45,9 @@ public class C_FaceletsWac
                 context.addInitParam(PROJECT_STAGE, "Development");
             }
 
+            // context.addInitParam(STATE_SAVING_METHOD, "partial");
+            // context.addInitParam(STATE_SAVING_METHOD, "client");
+
             context.addInitParam(REFRESH_PERIOD, String.valueOf(outer.getRefreshPeriod()));
 
             if (outer.isStrictMode()) {
