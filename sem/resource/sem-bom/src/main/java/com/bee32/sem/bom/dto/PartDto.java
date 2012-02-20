@@ -68,11 +68,12 @@ public class PartDto
             children = Collections.emptyList();
 
         materialConsumption = new ConsumptionMap();
-        if (selection.contains(MATERIAL_CONSUMPTION))
+        if (selection.contains(MATERIAL_CONSUMPTION)) {
             for (Entry<Material, BigDecimal> entry : source.getMaterialConsumption().entityMap().entrySet()) {
                 MaterialDto material = DTOs.mref(MaterialDto.class, entry.getKey());
                 materialConsumption.consume(material, entry.getValue());
             }
+        }
 
         if (selection.contains(XREFS))
             xrefs = marshalList(PartItemDto.class, 0, source.getXrefs());

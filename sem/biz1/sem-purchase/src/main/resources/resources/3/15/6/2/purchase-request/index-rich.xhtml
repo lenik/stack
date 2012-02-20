@@ -32,7 +32,7 @@
 
             <p:tab title="采购需求">
                 <fr:listView id="plansIndexView" header="物料计划" style="panel" picker="chooseMaterialPlanDialog"
-                    mbean="#{bean.itemsMBean}" nested="true" editable="false">
+                    mbean="#{bean.plansMBean}" nested="true" editable="false">
                     <p:column headerText="简要">
                         <h:outputText value="#{entry.label}" />
                     </p:column>
@@ -65,7 +65,7 @@
                             <h:outputText value="#{entry.additionalRequirement}" />
                         </p:column>
                         <p:column headerText="入库仓库">
-                            <p:selectOneMenu id="warehouse" label="仓库" value="#{entry.warehouse.id_RZ}">
+                            <p:selectOneMenu id="warehouse" label="仓库" value="#{entry.warehouseId}">
                                 <f:selectItem itemValue="0" itemLabel="--选择仓库--" />
                                 <f:selectItems value="#{stock.warehouseSelectItems}" />
                             </p:selectOneMenu>
@@ -78,7 +78,8 @@
 
     <ui:define name="dialogs">
         <sem:singleVerifierSupportDialog update=":mainForm" />
-        <sem:chooseMaterialPlanDialog id="plan-d" target="${bean.materialPlanToAttach}" />
+        <sem:chooseMaterialPlanDialog id="plan-d" target="${bean.plansMBean.addition}"
+            update=":editDialog:form:tv:plansIndexView:indexForm:body" />
         <sem:choosePartyDialog id="preferredSupplier-d" var="choosePreferredSupplierDialog"
             header="选择优选供应商" target="${itemObj.preferredSupplier}" stereo="SUP" />
         <sem:choosePartyDialog id="supplier-d" var="chooseSupplierDialog" header="选择询价方"

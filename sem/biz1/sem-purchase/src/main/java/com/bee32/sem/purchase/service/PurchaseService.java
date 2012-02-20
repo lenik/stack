@@ -3,6 +3,7 @@ package com.bee32.sem.purchase.service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -53,6 +54,9 @@ public class PurchaseService
 
         // 用当前库存余量（不考虑锁定）去抵消需求
         Collection<MaterialDto> materials = cmap.getDtoIndex().values();
+        if (materials.isEmpty())
+            return Collections.emptyList();
+
         List<Long> materialIds = IdUtils.getDtoIdList(materials);
         StockQueryOptions queryOptions = new StockQueryOptions(new Date(), true);
         StockQueryResult queryResult = stockQuery.getPhysicalStock(materialIds, queryOptions);
