@@ -19,7 +19,7 @@ public class ChooseChanceActionDialogBean
     static Logger logger = LoggerFactory.getLogger(ChooseChanceActionDialogBean.class);
 
     String header = "Please choose a party..."; // NLS: 选择用户或组
-    boolean detachedOnly;
+    boolean pending = true;
 
     public ChooseChanceActionDialogBean() {
         super(ChanceAction.class, ChanceActionDto.class, 0);
@@ -27,7 +27,7 @@ public class ChooseChanceActionDialogBean
 
     @Override
     protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
-        if (detachedOnly)
+        if (pending)
             elements.add(new IsNull("chance.id"));
     }
 
@@ -41,12 +41,12 @@ public class ChooseChanceActionDialogBean
         this.header = header;
     }
 
-    public boolean isDetachedOnly() {
-        return detachedOnly;
+    public boolean isPending() {
+        return pending;
     }
 
-    public void setDetachedOnly(boolean detachedOnly) {
-        this.detachedOnly = detachedOnly;
+    public void setPending(boolean pending) {
+        this.pending = pending;
     }
 
 }
