@@ -647,8 +647,6 @@ public class SimpleEntityViewBean
         if (!checkLockList(lockedList, "删除"))
             return;
 
-        setSelection(null);
-
         try {
             if (!__preDelete(uMap))
                 return;
@@ -662,6 +660,15 @@ public class SimpleEntityViewBean
             return;
         }
 
+        for (SevbFriend friend : sortedFriends) {
+            try {
+                friend.deleteSelection(deleteFlags);
+            } catch (Exception e) {
+                uiLogger.error("友元删除失败:" + friend, e);
+                return;
+            }
+        }
+
         Set<Entity<?>> entities = uMap.keySet();
         int count;
         try {
@@ -671,14 +678,7 @@ public class SimpleEntityViewBean
             return;
         }
 
-        for (SevbFriend friend : sortedFriends) {
-            try {
-                friend.deleteSelection(deleteFlags);
-            } catch (Exception e) {
-                uiLogger.error("友元删除失败:" + friend, e);
-                return;
-            }
-        }
+        setSelection(null);
 
         if ((deleteFlags & DELETE_NO_REFRESH) == 0)
             refreshRowCount();
