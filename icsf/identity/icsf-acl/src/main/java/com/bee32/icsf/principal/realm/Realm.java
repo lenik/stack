@@ -53,7 +53,7 @@ public class Realm
     @Column(length = 30, unique = true)
     @Override
     public String getName() {
-        return super.getName();
+        return name;
     }
 
     public void setName(String name) {

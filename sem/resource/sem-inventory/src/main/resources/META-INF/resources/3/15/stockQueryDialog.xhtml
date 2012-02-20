@@ -24,8 +24,8 @@
     </cc:interface>
 
     <cc:implementation>
-        <sem:chooseMaterialDialog id="_cmd" var="_stockQuery_cmd" target="${cc.parent.attrs.dialogBean.chosenMaterial}"
-            actionListener="${cc.parent.attrs.dialogBean.addMaterial}" update=":${cc.parent.clientId}:form:tv:materials" />
+        <sem:chooseMaterialDialog id="_cmd" var="_stockQuery_cmd" target="${cc.parent.attrs.dialogBean.materialToAdd}"
+            update=":${cc.parent.clientId}:form:tv:materials" />
 
         <ui:decorate template="/template/simple-entity-dialog.xhtml">
             <ui:param name="var" value="${cc.attrs.var}" />
@@ -68,7 +68,7 @@
                 </p:tab>
             </ui:define>
 
-            <ui:define name="columns.0"/>
+            <ui:define name="columns.0" />
             <ui:define name="columns">
                 <p:column headerText="物料">
                     <h:outputText value="${entry.material.label}" />

@@ -41,7 +41,6 @@ public class StockQueryDialogBean
     boolean queryAllMaterials;
     List<MaterialDto> materials = new ArrayList<MaterialDto>();
     Long selectedMaterialId;
-    MaterialDto chosenMaterial;
 
     boolean autoQuery;
 
@@ -217,15 +216,7 @@ public class StockQueryDialogBean
         selectedMaterialId = null;
     }
 
-    public MaterialDto getChosenMaterial() {
-        return chosenMaterial;
-    }
-
-    public void setChosenMaterial(MaterialDto chosenMaterial) {
-        this.chosenMaterial = chosenMaterial;
-    }
-
-    public void addMaterial() {
+    public void setMaterialToAdd(MaterialDto chosenMaterial) {
         if (materials == null)
             materials = new ArrayList<MaterialDto>();
         if (!materials.contains(chosenMaterial))

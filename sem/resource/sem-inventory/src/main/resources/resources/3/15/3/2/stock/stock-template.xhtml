@@ -57,10 +57,10 @@
                 </t:panelGroup>
 
                 <h:outputText value="制单人" />
-                <p:inputText value="#{obj.owner.displayName}" disabled="true" label="制单人"/>
+                <p:inputText value="#{obj.owner.displayName}" disabled="true" label="制单人" />
                 <h:outputText value="单据状态" />
                 <p:inputText value="#{obj.verifyContext.verifyEvalState} #{obj.verifyContext.rejectedReason1}"
-                    disabled="true" label="单据状态"/>
+                    disabled="true" label="单据状态" />
             </t:panelGrid>
         </ui:insert>
         <ui:insert name="edit-more" />
@@ -125,8 +125,8 @@
             update=":itemsEditView:editForm:body" />
         <sem:inputQuantityDialog id="inputQuantityDialog" target="#{itemObj.quantity}" update=":itemsEditView:editForm:body" />
         <c:if test="${not disableStockQuery}">
-            <sem:stockQueryDialog id="stockQueryDialog" target="#{bean.selectedStockQueryItem}"
-                actionListener="#{bean.applySelectedStockQueryItem}" update=":itemsEditView:editForm:body" />
+            <sem:stockQueryDialog id="stockQueryDialog" target="#{bean.stockQueryItemToApply}"
+                update=":itemsEditView:editForm:body" />
         </c:if>
 
         <fr:listView id="itemsEditView" header="明细" style="editDialog" indexView=":editDialog:form:itemsIndexView"
@@ -156,7 +156,7 @@
                 <p:inputText id="batch" label="批号" value="#{item.batch}" />
                 <h:outputLabel for="expiration" value="有效期" />
                 <p:calendar id="expiration" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{item.expirationDate}"
-                    showOn="button" label="有效期"/>
+                    showOn="button" label="有效期" />
 
                 <h:outputLabel for="location" value="库位" />
                 <t:panelGroup colspan="3">

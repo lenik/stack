@@ -40,8 +40,6 @@ public abstract class AbstractStockOrderBean
     OrgDto selectedOrg;
     OrgUnitDto selectedOrgUnit;
 
-    StockOrderItemDto selectedStockQueryItem;
-
     @Inject
     protected StockDictsBean dicts;
 
@@ -165,25 +163,17 @@ public abstract class AbstractStockOrderBean
         return options;
     }
 
-    public StockOrderItemDto getSelectedStockQueryItem() {
-        return selectedStockQueryItem;
-    }
-
-    public void setSelectedStockQueryItem(StockOrderItemDto selectedStockQueryItem) {
-        this.selectedStockQueryItem = selectedStockQueryItem;
-    }
-
-    public void applySelectedStockQueryItem() {
-        if (selectedStockQueryItem == null) {
+    public void setStockQueryItemToApply(StockOrderItemDto stockQueryItem) {
+        if (stockQueryItem == null) {
             uiLogger.warn("没有选定查询的项目。");
             return;
         }
         StockOrderItemDto orderItem = itemsMBean.getOpenedObject();
-        orderItem.setMaterial(selectedStockQueryItem.getMaterial());
-        orderItem.setBatch(selectedStockQueryItem.getBatch());
-        orderItem.setPrice(selectedStockQueryItem.getPrice());
-        orderItem.setExpirationDate(selectedStockQueryItem.getExpirationDate());
-        orderItem.setLocation(selectedStockQueryItem.getLocation());
+        orderItem.setMaterial(stockQueryItem.getMaterial());
+        orderItem.setBatch(stockQueryItem.getBatch());
+        orderItem.setPrice(stockQueryItem.getPrice());
+        orderItem.setExpirationDate(stockQueryItem.getExpirationDate());
+        orderItem.setLocation(stockQueryItem.getLocation());
         // itemsMBean.apply();
     }
 
