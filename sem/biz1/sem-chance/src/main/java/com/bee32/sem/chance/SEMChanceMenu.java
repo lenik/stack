@@ -22,7 +22,6 @@ public class SEMChanceMenu
     public static MenuNode CHANCE = menu(SEMFrameMenu.BIZ1, 10, "chance");
     /**/static MenuNode chance = entry(CHANCE, -1, "chance", CHANCE_.join("chance/"));
     /**/static MenuNode action = entry(CHANCE, 0, "action", CHANCE_.join("action/"));
-    /**/static MenuNode query = entry(CHANCE, 0, "query", CHANCE_.join("query/"));
     /**/public static MenuNode CHANCE_DICT = menu(CHANCE, 1, "dict");
     /*    */static MenuNode category = entry(CHANCE_DICT, 1, "category", getDictIndex(ChanceCategory.class));
     /*    */static MenuNode sourceType = entry(CHANCE_DICT, 2, "sourceType", getDictIndex(ChanceSourceType.class));
@@ -30,13 +29,7 @@ public class SEMChanceMenu
     /*    */static MenuNode stage = entry(CHANCE_DICT, 4, "stage", getDictIndex(ChanceStage.class));
     public static MenuNode PRICE = menu(SEMFrameMenu.BIZ1, 21, "price");
 
-
-
-
-
-// static MenuNode competitor = entry(CHANCE, "competitor", CHANCE_.join("competitor/ "));
-// static MenuNode basePrice = entry(PRICE, "price", PRICE_.join("price/"));
-// static MenuNode quotation = entry(PRICE, "quotation", PRICE_.join("quote/"));
+    // static MenuNode competitor = entry(CHANCE, "competitor", CHANCE_.join("competitor/ "));
 
     @Override
     protected void preamble() {
