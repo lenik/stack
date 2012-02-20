@@ -54,7 +54,7 @@
         </ui:decorate>
 
         <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
-        <fr:listView id="_chooseMP_itemsView" header="物料计划明细" style="indexDialog" itemsMBean="${dialogBean.itemsMBean}"
+        <fr:listView id="_chooseMP_itemsView" header="物料计划明细" style="indexDialog" mbean="${dialogBean.itemsMBean}"
             creatable="false" editable="false" removable="false">
             <f:facet name="columns">
                 <p:column headerText="物料">

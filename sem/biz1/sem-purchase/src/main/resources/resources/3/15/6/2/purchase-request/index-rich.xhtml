@@ -26,22 +26,19 @@
                         <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                     </h:outputText>
                     <h:outputText value="制单人:" />
-                    <p:inputText value="#{bean.creator}" disabled="true" />
+                    <p:inputText value="#{obj.owner.displayName}" disabled="true" />
                 </t:panelGrid>
             </p:tab>
 
             <p:tab title="采购需求">
-                <fr:listView id="plansIndexView" header="物料计划" style="indexPanel" mbean="#{bean.itemsMBean}"
-                    nested="true" creatable="false" editable="false">
+                <fr:listView id="plansIndexView" header="物料计划" style="panel" picker="chooseMaterialPlanDialog"
+                    mbean="#{bean.itemsMBean}" nested="true" editable="false">
                     <p:column headerText="简要">
                         <h:outputText value="#{entry.label}" />
                     </p:column>
                     <p:column headerText="备注">
                         <h:outputText value="#{entry.description}" />
                     </p:column>
-                    <f:facet name="index-buttons">
-                        <p:commandButton value="添加" onclick="chooseMaterialPlanDialog.show()" />
-                    </f:facet>
                 </fr:listView>
             </p:tab>
 
@@ -81,7 +78,7 @@
 
     <ui:define name="dialogs">
         <sem:singleVerifierSupportDialog update=":mainForm" />
-        <sem:chooseMaterialPlanDialog id="plan-d" target="${bean.chosenMaterialPlan}" />
+        <sem:chooseMaterialPlanDialog id="plan-d" target="${bean.materialPlanToAttach}" />
         <sem:choosePartyDialog id="preferredSupplier-d" var="choosePreferredSupplierDialog"
             header="选择优选供应商" target="${itemObj.preferredSupplier}" stereo="SUP" />
         <sem:choosePartyDialog id="supplier-d" var="chooseSupplierDialog" header="选择询价方"
@@ -113,7 +110,7 @@
             </h:panelGrid>
         </fr:listView>
 
-        <fr:listView id="inquiries" header="询价和建议" style="dialog" mbean="#{bean.inquiresMBean}" paginator="false">
+        <fr:listView id="inquiries" header="询价和建议" style="dialog" mbean="#{bean.inquiriesMBean}" paginator="false">
             <f:facet name="index-header">
                 <h:outputText value="询价物料: #{itemObj.material.label}" />
             </f:facet>

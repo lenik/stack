@@ -5,7 +5,10 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bee32.plover.arch.util.dto.Fmask;
 import com.bee32.plover.orm.annotation.ForEntity;
+import com.bee32.plover.orm.util.Identities;
+import com.bee32.plover.orm.util.RefsDiff;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
@@ -28,16 +31,33 @@ public class PurchaseRequestAdminBean
         super(PurchaseRequest.class, PurchaseRequestDto.class, 0);
     }
 
+    @Override
+    protected Integer getFmaskOverride(int saveFlags) {
+        return Fmask.F_MORE & ~PurchaseRequestDto.PLANS;
+    }
+
     /** 更新物料：设置关联 */
     @Override
-    protected void postUpdate(UnmarshalMap uMap)
+    protected boolean preUpdate(UnmarshalMap uMap)
             throws Exception {
-        for (PurchaseRequest request : uMap.<PurchaseRequest> entitySet()) {
-            List<MaterialPlan> plans = request.getPlans();
-            for (MaterialPlan plan : plans)
-                plan.setPurchaseRequest(request);
-            ctx.data.access(MaterialPlan.class).saveOrUpdateAll(plans);
+        UnmarshalMap plansUMap = uMap.getSubMap("plans");
+        plansUMap.setLabel("关联的物料计划");
+        plansUMap.setEntityClass(MaterialPlan.class);
+
+        for (PurchaseRequest _purchaseRequest : uMap.<PurchaseRequest> entitySet()) {
+            PurchaseRequestDto purchaseRequest = uMap.getSourceDto(_purchaseRequest);
+            RefsDiff diff = Identities.compare(_purchaseRequest.getPlans(), purchaseRequest.getPlans());
+            for (MaterialPlan _detached : diff.<MaterialPlan> leftOnly()) {
+                _detached.setPurchaseRequest(null);
+                plansUMap.put(_detached, null);
+            }
+            for (MaterialPlanDto attached : diff.<MaterialPlanDto> rightOnly()) {
+                MaterialPlan _attached = attached.unmarshal();
+                _attached.setPurchaseRequest(_purchaseRequest);
+                plansUMap.put(_attached, attached);
+            }
         }
+        return true;
     }
 
     /** 更新物料计划：取消关联 */
@@ -53,7 +73,7 @@ public class PurchaseRequestAdminBean
         return true;
     }
 
-    public void setChosenMaterialPlan(MaterialPlanDto plan) {
+    public void setMaterialPlanToAttach(MaterialPlanDto plan) {
         if (plan == null)
             return;
         if (plan.getPurchaseRequest().getId() != null) {
