@@ -8,15 +8,17 @@
         <cc:attribute name="indexView" default=":${cc.clientId}" />
         <cc:attribute name="editView" default=":${cc.clientId}" />
         <cc:attribute name="nested" type="java.lang.Boolean" default="false" />
+        <cc:attribute name="picker" />
         <cc:attribute name="indexDialogVar" default="${pc:lastPart(cc.attrs.indexView, ':')}IndexDialog" />
         <cc:attribute name="editDialogVar" default="${pc:lastPart(cc.attrs.editView, ':')}EditDialog" />
         <cc:attribute name="header" required="true" />
         <cc:attribute name="legend" default="${cc.attrs.header}" />
         <cc:attribute name="mbean" type="java.lang.Object" required="true" />
         <cc:attribute name="smooth" type="java.lang.Boolean" default="false" />
+        <cc:attribute name="readonly" type="java.lang.Boolean" default="${cc.attrs.picker != null}" />
         <cc:attribute name="copy" type="java.lang.Boolean" default="${cc.attrs.style != 'panel' or not cc.attrs.smooth}" />
         <cc:attribute name="paginator" type="java.lang.Boolean" default="true" />
-        <cc:attribute name="creatable" type="java.lang.Boolean" default="true" />
+        <cc:attribute name="creatable" type="java.lang.Boolean" default="${not cc.attrs.readonly}" />
         <cc:attribute name="editable" type="java.lang.Boolean" default="true" />
         <cc:attribute name="removable" type="java.lang.Boolean" default="true" />
         <cc:facet name="columns" required="true" />
@@ -32,6 +34,7 @@
 
         <ui:decorate template="/template/listView-f4.xhtml">
             <ui:param name="style" value="${cc.attrs.style}" />
+            <ui:param name="picker" value="${cc.attrs.picker}" />
             <ui:param name="orientation" value="${cc.attrs.orientation}" />
             <ui:param name="nested" value="${cc.attrs.nested}" />
             <ui:param name="header" value="${cc.attrs.header}" />
@@ -40,6 +43,9 @@
             <ui:param name="editDialogVar" value="${cc.attrs.editDialogVar}" />
             <ui:param name="mbean" value="${cc.attrs.mbean}" />
             <ui:param name="smooth" value="${cc.attrs.smooth}" />
+
+            <ui:param name="indexPopup" value="${style == 'dialog'}" />
+            <ui:param name="editPopup" value="${style != 'panel'}" />
 
             <ui:define name="indexFormContent">
                 <h:panelGrid columns="1">
@@ -75,27 +81,34 @@
                                     <p:commandButton rendered="${cc.attrs.creatable}" id="create" value="添加"
                                         actionListener="${mbean.showCreateForm}"
                                         update=":@form, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
-                                        oncomplete="${style == 'panel' ? '' : cc.attrs.editDialogVar.concat('.show();')}" />
+                                        oncomplete="${editPopup ? cc.attrs.editDialogVar.concat('.show();') : ''}" />
+                                    <p:commandButton rendered="${picker != null}" id="link" value="连接到…"
+                                        onclick="${picker}.show();" />
+                                    <p:commandButton rendered="${cc.attrs.removable and picker != null}"
+                                        id="unlink" value="断开" disabled="${not mbean.selectionRemovable}"
+                                        actionListener="${mbean.removeSelection}"
+                                        update=":@form, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more" />
                                     <cc:insertRawFacet name="index-buttons.left" />
                                 </td>
                                 <td align="center">
                                     <cc:insertRawFacet name="index-buttons" />
                                 </td>
                                 <td align="right">
-                                    <p:commandButton id="edit" value="修改" disabled="${not mbean.selectionEditable}"
-                                        action="${mbean.showEditForm}" update="${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
-                                        oncomplete="${style == 'panel' ? '' : cc.attrs.editDialogVar.concat('.show();')}"
-                                        rendered="${cc.attrs.editable and (style != 'panel' or not cc.attrs.smooth)}">
+                                    <p:commandButton id="edit" value="${cc.attrs.readonly ? '查看' : '修改'}"
+                                        disabled="${not mbean.selectionEditable}" action="${mbean.showEditForm}"
+                                        update="${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
+                                        oncomplete="${editPopup ? cc.attrs.editDialogVar.concat('.show();') : ''}"
+                                        rendered="${cc.attrs.editable and (editPopup or not cc.attrs.smooth)}">
                                         <f:setPropertyActionListener target="${mbean.copyMode}"
                                             value="${cc.attrs.copy}" />
                                     </p:commandButton>
-                                    <p:commandButton rendered="${cc.attrs.removable}" id="remove" value="移除"
+                                    <p:commandButton rendered="${cc.attrs.removable and picker == null}"
+                                        id="remove" value="移除" disabled="${not mbean.selectionRemovable}"
                                         actionListener="${mbean.removeSelection}"
-                                        update=":@form, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
-                                        disabled="${not mbean.selectionRemovable}" />
+                                        update=":@form, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more" />
                                     <cc:insertRawFacet name="index-buttons.right" />
                                     <p:commandButton id="close" value="关闭"
-                                        onclick="${cc.attrs.indexDialogVar}.hide()" rendered="${style == 'dialog'}" />
+                                        onclick="${cc.attrs.indexDialogVar}.hide()" rendered="${indexPopup}" />
                                 </td>
                             </tr>
                         </table>
@@ -105,8 +118,7 @@
 
             <ui:define name="editFormContent">
                 <ui:param name="item" value="${mbean.openedObject}" />
-                <h:panelGroup id="noContent" layout="block"
-                    rendered="${item == null and (style == 'dialog' or style == 'editDialog')}">
+                <h:panelGroup id="noContent" layout="block" rendered="${item == null and editPopup}">
                     No opened object.
                 </h:panelGroup>
                 <h:panelGroup layout="block" rendered="${item != null}">
@@ -119,19 +131,19 @@
                                 </td>
                                 <td align="right">
                                     <p:commandButton id="apply-validated"
-                                        value="${(style == 'dialog' || style == 'editDialog') ? '确定' : (mbean.openedIndex == -1 ? '添加' : '应用').concat(smooth ? '*' : '')}"
-                                        title="${(style == 'panel' || style == 'indexPanel') and smooth ? '在快速编辑模式下，当前修改的内容可能已经被自动保存。' : ''}"
-                                        disabled="${mbean.openedObject == null}" action="${mbean.apply}"
-                                        oncomplete="${style == 'panel' ? '' : cc.attrs.editDialogVar.concat('.hideValidated(args)')}"
+                                        value="${editPopup ? '确定' : (mbean.openedIndex == -1 ? '添加' : '应用').concat(smooth ? '*' : '')}"
+                                        title="${(not editPopup) and smooth ? '在快速编辑模式下，当前修改的内容可能已经被自动保存。' : ''}"
+                                        disabled="${mbean.openedObject == null or cc.attrs.readonly}" action="${mbean.apply}"
+                                        oncomplete="${editPopup ? cc.attrs.editDialogVar.concat('.hideValidated(args)') : ''}"
                                         update="${cc.attrs.indexView}:indexForm:body, apply-validated">
                                         <f:setPropertyActionListener target="${mbean.copyMode}"
                                             value="${cc.attrs.copy}" />
                                     </p:commandButton>
                                     <p:commandButton id="cancel" value="取消" disabled="${mbean.openedObject == null}"
                                         actionListener="${mbean.cancel}" update="body, ${cc.attrs.editView}:more"
-                                        rendered="${style == 'panel' and not smooth}" />
+                                        rendered="${not editPopup and not smooth}" />
                                     <p:commandButton id="close" value="关闭" onclick="${cc.attrs.editDialogVar}.hide()"
-                                        rendered="${style == 'dialog' or style == 'editDialog'}" />
+                                        rendered="${editPopup}" />
                                 </td>
                             </tr>
                         </table>

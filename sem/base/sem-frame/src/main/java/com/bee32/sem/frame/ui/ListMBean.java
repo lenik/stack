@@ -207,6 +207,13 @@ public abstract class ListMBean<T>
         openedObject = null;
     }
 
+    public void setAddition(T picked) {
+        if (picked == null)
+            return; // maybe nullable...?
+        else
+            getList().add(picked);
+    }
+
     public static <T> ListMBean<T> fromEL(Object root, String property, Factory<T> elementFactory) {
         return new ELListMBean<T>(elementFactory, root, property);
     }
