@@ -64,7 +64,7 @@ public class ResourceScanner {
                 Enumeration<JarEntry> entries = jarFile.entries();
                 while (entries.hasMoreElements()) {
                     JarEntry entry = entries.nextElement();
-                    if (entry.getName().startsWith(rootResourceName))
+                    if (!entry.getName().startsWith(rootResourceName))
                         continue;
                     if (filter.accept(entry)) {
                         processor.process(jarFile, entry);
