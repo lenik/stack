@@ -451,6 +451,7 @@ public class SimpleEntityViewBean
         save(createOrUpdate ? SAVE_NOEXIST : SAVE_MUSTEXIST, null);
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     protected void save(int saveFlags, String hint) {
         checkSaveFlags(saveFlags);
 
@@ -551,6 +552,17 @@ public class SimpleEntityViewBean
                 dto.setId(newId);
             }
 
+        for (UnmarshalMap subMap : uMap.getSubMaps().values()) {
+            Class<?> subEntityClass = subMap.getEntityClass();
+            Set<Entity<?>> subEntities = subMap.keySet();
+            try {
+                ctx.data.access((Class) subEntityClass).saveOrUpdateAll(subEntities);
+            } catch (Exception e) {
+                uiLogger.error(hint + subMap.getLabel() + "失败。", e);
+                return;
+            }
+        }
+
         for (SevbFriend friend : sortedFriends) {
             try {
                 friend.saveOpenedObject(saveFlags, uMap);
@@ -563,6 +575,8 @@ public class SimpleEntityViewBean
         if ((saveFlags & SAVE_NO_REFRESH) == 0)
             refreshRowCount();
 
+        boolean warned = false;
+
         try {
             postUpdate(uMap);
             for (SevbFriend friend : sortedFriends)
@@ -570,10 +584,12 @@ public class SimpleEntityViewBean
             __postUpdate(uMap);
         } catch (Exception e) {
             uiLogger.warn(hint + "不完全，次要的数据可能不一致，建议您检查相关的数据。", e);
-            return;
+            warned = true;
         }
 
-        uiLogger.info(hint + "成功");
+        if (!warned)
+            uiLogger.info(hint + "成功");
+
         showIndex();
     }
 
