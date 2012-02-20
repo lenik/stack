@@ -96,6 +96,7 @@ public class StockQueryBean
         StockQueryOptions opts = new StockQueryOptions(queryDate, true);
         opts.setWarehouse(getSelectedWarehouseId());
         opts.setCBatch(selectedItem.getCBatch(), true);
+        opts.setPrice(selectedItem.getPrice(), true);
         opts.setLocation(selectedItem.getLocation().getId(), true);
 
         List<StockOrderItem> details = ctx.data.access(StockOrderItem.class).list( //

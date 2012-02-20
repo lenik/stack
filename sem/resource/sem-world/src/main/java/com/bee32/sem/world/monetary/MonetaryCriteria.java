@@ -16,4 +16,10 @@ public class MonetaryCriteria
         return currencyOf("_unit", currency);
     }
 
+    public static CriteriaElement equals(String property, MCValue value) {
+        if(value == null) return null;
+        return and(currencyOf(property + ".currencyCode", value.getCurrency()), //
+                equals(property+".value" ,value.getValue()));
+    }
+
 }

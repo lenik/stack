@@ -25,7 +25,7 @@
                 <h:panelGroup>
                     <p:inputText id="transferredby" readonly="true" value="#{job.transferredBy.displayName}"
                         style="width: 20em;" label="调拨人员" />
-                    <p:commandButton value="..." update=":chooseTransferrerDialog:form" oncomplete="chooseTransferrerDialog.show()">
+                    <p:commandButton value="..." update=":chooseTransferredDialog:form" oncomplete="chooseTransferredDialog.show()">
                         <f:setPropertyActionListener target="#{choosePartyDialogBean.stereo}"
                             value="PER" />
                     </p:commandButton>
@@ -39,8 +39,8 @@
     </ui:define>
 
     <ui:define name="dialogs.1">
-        <sem:choosePartyDialog id="chooseTransferrerDialog" var="chooseTransferrerDialog" stereo="PER"
-            target="#{job.transferrerBy}" update=":editDialog:form:job" />
+        <sem:choosePartyDialog id="chooseTransferredDialog" var="chooseTransferredDialog" stereo="PER"
+            target="#{job.transferredBy}" update=":editDialog:form:job" />
     </ui:define>
 
 </ui:composition>

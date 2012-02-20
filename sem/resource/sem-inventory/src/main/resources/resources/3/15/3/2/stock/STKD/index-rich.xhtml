@@ -65,7 +65,7 @@
         <h:outputLabel value="盘点数量" />
         <t:panelGroup colspan="3">
             <p:inputText value="#{item.actualQuantity}" label="盘点数量"/>
-            <h:outputText value="#{item.material.unit.name}" />
+            <h:outputText value="#{item.material.unit.label}" />
             <p:commandButton id="inputQuantity" value="..." oncomplete="inputQuantityDialog.show()">
                 <f:setPropertyActionListener target="#{inputQuantityDialogBean.unitUnit}"
                     value="#{item.material.unit}" />

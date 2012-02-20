@@ -139,7 +139,7 @@
                         <h:outputText value="#{entry.material.modelSpec}" />
                     </p:column>
                     <p:column headerText="单位">
-                        <h:outputText value="#{entry.material.unit.name}" />
+                        <h:outputText value="#{entry.material.unit.label}" />
                     </p:column>
                     <p:column headerText="批号">
                         <h:outputText value="#{entry.batch}" />
@@ -193,7 +193,7 @@
                     <h:outputLabel for="quantity" value="数量" />
                     <t:panelGroup colspan="3">
                         <p:inputText id="quantity" label="数量" value="#{item.quantity}" />
-                        <h:outputText value="#{item.material.unit.name}" />
+                        <h:outputText value="#{item.material.unit.label}" />
                         <p:commandButton id="inputQuantity" value="..." oncomplete="inputQuantityDialog.show()">
                             <f:setPropertyActionListener target="#{inputQuantityDialogBean.unitUnit}"
                                 value="#{item.material.unit}" />

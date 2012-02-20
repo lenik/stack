@@ -5,7 +5,7 @@
     <sem:materialFragmentDialog header="单位转换表" id="unitConvDialog" widgetVar="unitConvDialog"
         material="#{bean.openedObject}">
 
-        <h:outputText rendered="${obj != null}" value="当前物料主单位: #{obj.unit.name}" style="font-weight:bold;" />
+        <h:outputText rendered="${obj != null}" value="当前物料主单位: #{obj.unit.label}" style="font-weight:bold;" />
         <p:separator style="height:2px" />
 
         <p:commandButton value="增加换算关系" update=":addUnitScaleForm" actionListener="#{bean.newUnitScale}"
@@ -18,7 +18,7 @@
             </p:column>
 
             <p:column headerText="目标单位" style="width:100px;">
-                <h:outputText value="#{scale.unit.name}" />
+                <h:outputText value="#{scale.unit.label}" />
             </p:column>
 
             <p:column headerText="换算关系" style="width:50px;">

@@ -12,6 +12,7 @@ import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
+import com.bee32.sem.inventory.entity.AbstractStockOrder;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.service.StockQueryOptions;
@@ -70,18 +71,18 @@ public abstract class AbstractStockOrderBean
             elements.add(new Equals("warehouse.id", selectedWarehouseId));
     }
 
-    protected StockJob createStockJob(StockOrder stockOrder) {
+    protected StockJob createStockJob(AbstractStockOrder<?> stockOrder) {
         return null;
     }
 
-    protected boolean deleteStockJob(StockOrder stockOrder) {
+    protected boolean deleteStockJob(AbstractStockOrder<?> stockOrder) {
         return true;
     }
 
     @Override
     protected boolean preDelete(UnmarshalMap uMap)
             throws Exception {
-        for (StockOrder stockOrder : uMap.<StockOrder> entitySet()) {
+        for (AbstractStockOrder<?> stockOrder : uMap.<AbstractStockOrder<?>> entitySet()) {
             if (!deleteStockJob(stockOrder))
                 return false;
         }
@@ -180,6 +181,7 @@ public abstract class AbstractStockOrderBean
         StockOrderItemDto orderItem = itemsMBean.getOpenedObject();
         orderItem.setMaterial(selectedStockQueryItem.getMaterial());
         orderItem.setBatch(selectedStockQueryItem.getBatch());
+        orderItem.setPrice(selectedStockQueryItem.getPrice());
         orderItem.setExpirationDate(selectedStockQueryItem.getExpirationDate());
         orderItem.setLocation(selectedStockQueryItem.getLocation());
         // itemsMBean.apply();

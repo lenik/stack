@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import com.bee32.plover.criteria.hibernate.GroupPropertyProjection;
+import com.bee32.sem.world.monetary.MCValue;
 
 public final class StockQueryOptions
         implements Serializable {
@@ -16,21 +17,24 @@ public final class StockQueryOptions
     boolean verifiedOnly = false;
 
     String cBatch;
+    MCValue price;
     Integer locationId;
     Integer warehouseId;
 
+    boolean priceVisible;
     boolean cbatchVisible;
     boolean locationVisible;
     boolean warehouseVisible;
 
     public StockQueryOptions(Date timestamp, boolean endOfDay) {
-        this(timestamp, null, null, null);
+        this(timestamp, null, null, null, null);
         this.endOfToday = endOfDay;
     }
 
-    public StockQueryOptions(Date timestamp, String cbatch, Integer locationId, Integer warehouseId) {
+    public StockQueryOptions(Date timestamp, String cbatch, MCValue price, Integer locationId, Integer warehouseId) {
         setTimestamp(timestamp);
         setCBatch(cbatch);
+        setPrice(price);
         setLocation(locationId);
         setWarehouse(warehouseId);
     }
@@ -40,6 +44,7 @@ public final class StockQueryOptions
         endOfToday = o.endOfToday;
         verifiedOnly = o.verifiedOnly;
         cBatch = o.cBatch;
+        price = o.price;
         locationId = o.locationId;
         warehouseId = o.warehouseId;
         cbatchVisible = o.cbatchVisible;
@@ -102,6 +107,23 @@ public final class StockQueryOptions
 
     public boolean isCBatchVisible() {
         return cbatchVisible;
+    }
+
+    public MCValue getPrice() {
+        return price;
+    }
+
+    public void setPrice(MCValue price) {
+        setPrice(price, price != null);
+    }
+
+    public void setPrice(MCValue price, boolean visible) {
+        this.price = price;
+        this.priceVisible = price != null || visible;
+    }
+
+    public boolean isPriceVisible() {
+        return priceVisible;
     }
 
     public Integer getLocation() {

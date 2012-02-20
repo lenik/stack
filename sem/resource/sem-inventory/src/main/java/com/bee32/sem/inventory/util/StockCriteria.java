@@ -18,6 +18,7 @@ import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockPeriod;
 import com.bee32.sem.inventory.service.StockQueryOptions;
 import com.bee32.sem.process.verify.util.VerifyCriteria;
+import com.bee32.sem.world.monetary.MonetaryCriteria;
 
 public class StockCriteria
         extends CriteriaSpec {
@@ -113,6 +114,7 @@ public class StockCriteria
                 lessOrEquals("parent.beginTime", options.getTimestampOpt()), //
                 _equals("material.id", materialId), //
                 _equals("CBatch", options.getCBatch()), //
+                MonetaryCriteria.equals("price", options.getPrice()), //
                 _equals("location.id", options.getLocation()), //
                 _equals("warehouse.id", options.getWarehouse()));
     }
