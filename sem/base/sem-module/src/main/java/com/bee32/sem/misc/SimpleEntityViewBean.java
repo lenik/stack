@@ -451,6 +451,10 @@ public class SimpleEntityViewBean
         save(createOrUpdate ? SAVE_NOEXIST : SAVE_MUSTEXIST, null);
     }
 
+    protected Integer getFmaskOverride(int saveFlags) {
+        return null;
+    }
+
     @SuppressWarnings({ "unchecked", "rawtypes" })
     protected void save(int saveFlags, String hint) {
         checkSaveFlags(saveFlags);
@@ -479,7 +483,7 @@ public class SimpleEntityViewBean
 
         UnmarshalMap uMap;
         try {
-            uMap = unmarshalDtos(dtos, false/* result not-null */);
+            uMap = unmarshalDtos(dtos, getFmaskOverride(saveFlags), false/* result not-null */);
         } catch (Exception e) {
             uiLogger.error("反编列失败", e);
             return;
@@ -608,7 +612,7 @@ public class SimpleEntityViewBean
 
         UnmarshalMap uMap;
         try {
-            uMap = unmarshalDtos(getSelection(), true/* result nullable */);
+            uMap = unmarshalDtos(getSelection(), null, true/* result nullable */);
         } catch (Exception e) {
             uiLogger.error("反编列失败", e);
             return;
@@ -783,12 +787,24 @@ public class SimpleEntityViewBean
             throws Exception {
     }
 
-    UnmarshalMap unmarshalDtos(Collection<?> objects, boolean nullable) {
+    UnmarshalMap unmarshalDtos(Collection<?> objects, Integer fmaskOverride, boolean nullable) {
         UnmarshalMap resultMap = new UnmarshalMap();
         for (Object object : objects) {
             if (dtoClass.isInstance(object)) {
                 EntityDto<?, ?> entityDto = (EntityDto<?, ?>) object;
-                Entity<?> entity = entityDto.unmarshal();
+
+                int oldFmask = entityDto.getFmask();
+                if (fmaskOverride != null)
+                    entityDto.setFmask(fmaskOverride);
+
+                Entity<?> entity;
+                try {
+                    entity = entityDto.unmarshal();
+                } finally {
+                    if (fmaskOverride != null)
+                        entityDto.setFmask(oldFmask);
+                }
+
                 if (entity == null) {
                     if (!nullable)
                         throw new NullPointerException("DTO unmarshalled to null: " + entityDto);
