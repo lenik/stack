@@ -65,6 +65,8 @@ public class PloverP6spySlf4jLogger
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
         for (StackTraceElement frame : stackTrace) {
             String fqcn = frame.getClassName();
+            if (fqcn.contains("$$")) // skip proxies.
+                continue;
             if (fqcn.startsWith("com.bee32.sem.") || fqcn.startsWith("com.bee32.icsf.")) {
                 int dot = fqcn.lastIndexOf('.');
                 String simple = fqcn.substring(dot + 1);

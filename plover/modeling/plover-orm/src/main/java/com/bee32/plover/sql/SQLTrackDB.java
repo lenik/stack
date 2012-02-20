@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class SQLTrackDB {
 
-    int cacheSize = 10;
+    int cacheSize = 100;
     LinkedList<SQLRecord> recentSqls = new LinkedList<SQLRecord>();
 
     public SQLTrackDB() {

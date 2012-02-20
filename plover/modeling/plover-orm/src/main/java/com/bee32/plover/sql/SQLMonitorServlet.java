@@ -44,6 +44,8 @@ public class SQLMonitorServlet
             SiteInstance site = ThreadHttpContext.getSiteInstance();
             SQLTrackDB sqlTrackDB = SQLTrackDB.getInstance(site);
 
+            String format = getRequest().getParameter("format");
+
             table().border("1");
             {
                 tr();
@@ -67,17 +69,21 @@ public class SQLMonitorServlet
                         // td().text(record.prepared).end();
                         td().valign("top");
                         {
-                            if (i++ >= 3) {
-                                text(record.sql);
-                                continue;
-                            }
-                            sqlParser.sqltext = comments.matcher(record.sql).replaceAll("");
-                            if (sqlParser.parse() != 0) {
-                                b().text("Failed to parse SQL: " + sqlParser.getErrormessage()).end();
-                                text(record.sql);
+                            if ("1".equals(format)) {
+                                sqlParser.sqltext = comments.matcher(record.sql).replaceAll("");
+                                if (sqlParser.parse() != 0) {
+                                    b().text("Failed to parse SQL: " + sqlParser.getErrormessage()).end();
+                                    text(record.sql);
+                                } else {
+                                    String formatted = FormattorFactory.pp(sqlParser, sqlFormat);
+                                    pre().text(formatted).end();
+                                }
+                                break;
                             } else {
-                                String formatted = FormattorFactory.pp(sqlParser, sqlFormat);
-                                pre().text(formatted).end();
+                                text("[");
+                                a().href("?format=1").text("VIEW").end();
+                                text("] ");
+                                text(record.sql);
                             }
                             end();
                         }
