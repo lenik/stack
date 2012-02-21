@@ -1,0 +1,139 @@
+<ui:composition template="/template/scroll-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:fr="http://java.sun.com/jsf/composite/frame"
+    xmlns:sem="http://java.sun.com/jsf/composite/3/15">
+
+    <ui:param name="title" value="采购请求" />
+    <ui:param name="verifiable" value="true" />
+    <ui:param name="bean" value="#{purchaseRequestAdminBean}" />
+    <ui:param name="obj" value="#{bean.openedObject}" />
+    <ui:param name="planObj" value="#{bean.plansMBean.openedObject}" />
+    <ui:param name="itemObj" value="#{bean.itemsMBean.openedObject}" />
+    <ui:param name="inquiryObj" value="#{bean.inquiriesMBean.openedObject}" />
+    <ui:param name="takeInObj" value="#{bean.takeInsMBean.openedObject}" />
+    <ui:param name="stock" value="#{stockDictsBean}" />
+
+    <ui:define name="editDialogContent">
+        <t:panelGrid id="basic" columns="4" columnClasses="field-label, field-content, field-label, field-content">
+            <h:outputText value="标识：" />
+            <h:outputText value="#{obj.id}" style="font-weight:bold;font-size:large" />
+            <h:outputText value="状态：" />
+            <p:inputText value="#{obj.verifyContext.verifyEvalState}" disabled="true" />
+
+            <h:outputText value="时间：" />
+            <h:outputText value="#{obj.createdDate}">
+                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+            </h:outputText>
+            <h:outputText value="制单人：" />
+            <p:inputText value="#{obj.owner.displayName}" disabled="true" />
+
+            <h:outputText value="简要：" />
+            <t:panelGroup colspan="3">
+                <p:inputText value="#{obj.label}" />
+            </t:panelGroup>
+
+            <h:outputText value="描述：" />
+            <t:panelGroup colspan="3">
+                <p:inputText value="#{obj.description}" />
+            </t:panelGroup>
+        </t:panelGrid>
+
+        <p:tabView id="tv" activeIndex="#{bean.tabIndex}">
+            <p:tab title="采购需求">
+                <fr:listView id="plansIndexView" header="物料计划" style="panel" picker="chooseMaterialPlanDialog"
+                    mbean="#{bean.plansMBean}" nested="true" editable="false">
+                    <f:facet name="columns">
+                        <p:column headerText="简要">
+                            <h:outputText value="#{entry.label}" />
+                        </p:column>
+                        <p:column headerText="备注" styleClass="f-wrappable">
+                            <h:outputText value="#{entry.description}" />
+                        </p:column>
+                    </f:facet>
+                    <f:facet name="picker-init">
+                        <f:setPropertyActionListener target="${chooseMaterialPlanDialogBean.pending}"
+                            value="true" />
+                    </f:facet>
+                </fr:listView>
+            </p:tab>
+
+            <p:tab title="采购项目">
+                <fr:listView id="itemsIndexView" header="采购项" style="indexPanel" editView=":itemsEditView"
+                    mbean="#{bean.itemsMBean}" nested="true" creatable="true">
+                    <f:facet name="columns">
+                        <p:column headerText="物料" styleClass="f-wrappable">
+                            <h:outputText value="#{entry.material.label}" />
+                        </p:column>
+                        <p:column headerText="规格型号" styleClass="f-wrappable">
+                            <h:outputText value="#{entry.material.modelSpec}" />
+                        </p:column>
+                        <p:column headerText="需求数量">
+                            <h:outputText value="#{entry.requiredQuantity}" />
+                        </p:column>
+                        <p:column headerText="采购数量">
+                            <h:outputText value="#{entry.quantity}" />
+                        </p:column>
+                        <p:column headerText="优选供应商" styleClass="f-wrappable">
+                            <h:outputText value="#{entry.preferredSupplier.displayName}" />
+                        </p:column>
+                        <p:column headerText="附加要求" styleClass="f-wrappable">
+                            <h:outputText value="#{entry.additionalRequirement}" />
+                        </p:column>
+                        <p:column headerText="入库仓库">
+                            <h:outputText value="#{entry.destWarehouse.label}" />
+                        </p:column>
+                    </f:facet>
+                </fr:listView>
+            </p:tab>
+        </p:tabView>
+    </ui:define>
+
+    <ui:define name="dialogs">
+        <sem:chooseMaterialPlanDialog id="plan-d" target="#{bean.materialPlanToAttach}"
+            update=":editDialog:form:tv:plansIndexView:indexForm:body" />
+        <sem:choosePartyDialog id="preferredSupplier-d" var="choosePreferredSupplierDialog"
+            header="选择优选供应商" target="#{itemObj.preferredSupplier}" stereo="SUP" />
+
+        <fr:listView id="itemsEditView" header="采购项" style="editDialog" indexView=":editDialog:form:tv:itemsIndexView"
+            mbean="#{bean.itemsMBean}">
+            <h:panelGrid columns="2" columnClasses="field-label, field-content">
+                <h:outputText value="物料：" />
+                <h:outputText value="#{item.material.label}" />
+
+                <h:outputText value="需求数量：" />
+                <h:outputText value="#{item.requiredQuantity}" />
+
+                <h:outputLabel for="quantity" value="采购数量：" />
+                <p:inputText id="quantity" value="#{item.quantity}" />
+
+                <h:outputLabel value="优选供应商：" />
+                <h:panelGroup>
+                    <p:inputText id="supplier" value="#{item.preferredSupplier.displayName}" disabled="true" />
+                    <p:commandButton value="..." oncomplete="choosePreferredSupplierDialog.show()">
+                        <f:setPropertyActionListener target="#{choosePartyDialogBean.stereo}"
+                            value="SUP" />
+                    </p:commandButton>
+                </h:panelGroup>
+
+                <h:outputLabel value="附加要求" />
+                <p:inputText value="#{item.additionalRequirement}" />
+
+                <h:outputLabel for="warehouse" value="采购入库：" />
+                <p:selectOneMenu id="warehouse" label="采购入库" value="#{bean.destWarehouseId_RZ}">
+                    <f:selectItem itemValue="0" itemLabel="--选择仓库--" />
+                    <f:selectItems value="#{stock.warehouseSelectItems}" />
+                </p:selectOneMenu>
+
+                <h:outputLabel for="acceptedInquiry" value="接受询价：" />
+                <h:panelGroup>
+                    <p:inputText id="acceptedInquiry" value="#{item.acceptedInquiryInfo}" disabled="true" />
+                    <p:commandButton value="..." oncomplete="choosePurchaseInquiryDialog.show()">
+                        <f:setPropertyActionListener target="#{choosePurchaseInquiryDialog.parent}"
+                            value="#{item}" />
+                    </p:commandButton>
+                </h:panelGroup>
+            </h:panelGrid>
+        </fr:listView>
+
+    </ui:define>
+</ui:composition>

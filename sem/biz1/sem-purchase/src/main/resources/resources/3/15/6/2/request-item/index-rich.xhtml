@@ -1,0 +1,140 @@
+<ui:composition template="/template/simple-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:fr="http://java.sun.com/jsf/composite/frame"
+    xmlns:sem="http://java.sun.com/jsf/composite/3/15">
+
+    <ui:param name="title" value="采购项询价" />
+    <ui:param name="verifiable" value="false" />
+    <ui:param name="bean" value="#{purchaseRequestItemAdminBean}" />
+    <ui:param name="obj" value="#{bean.openedObject}" />
+    <ui:param name="inquiryObj" value="#{bean.inquiriesMBean.openedObject}" />
+    <ui:param name="stock" value="#{stockDictsBean}" />
+    <ui:param name="monetary" value="#{monetaryDictsBean}" />
+
+    <ui:define name="dataColumns">
+        <p:column headerText="物料" styleClass="f-wrappable">
+            <h:outputText value="#{entry.material.label}" />
+        </p:column>
+        <p:column headerText="规格型号" styleClass="f-wrappable">
+            <h:outputText value="#{entry.material.modelSpec}" />
+        </p:column>
+        <p:column headerText="需求数量">
+            <h:outputText value="#{entry.requiredQuantity}" />
+        </p:column>
+        <p:column headerText="采购数量">
+            <h:outputText value="#{entry.quantity}" />
+        </p:column>
+        <p:column headerText="优选供应商" styleClass="f-wrappable">
+            <h:outputText value="#{entry.preferredSupplier.displayName}" />
+        </p:column>
+        <p:column headerText="附加要求" styleClass="f-wrappable">
+            <h:outputText value="#{entry.additionalRequirement}" />
+        </p:column>
+    </ui:define>
+
+    <ui:define name="editDialogContent">
+        <p:tabView id="tv">
+            <p:tab title="采购项目">
+                <h:panelGrid columns="2" columnClasses="field-label, field-content">
+                    <h:outputText value="物料：" />
+                    <h:outputText value="#{obj.material.label}" />
+
+                    <h:outputText value="需求数量：" />
+                    <h:outputText value="#{obj.requiredQuantity}" />
+
+                    <h:outputLabel for="quantity" value="采购数量：" />
+                    <p:inputText id="quantity" value="#{obj.quantity}" />
+
+                    <h:outputLabel value="优选供应商：" />
+                    <h:panelGroup>
+                        <p:inputText id="supplier" value="#{obj.preferredSupplier.displayName}" readonly="true" />
+                        <p:commandButton value="..." oncomplete="choosePreferredSupplierDialog.show()">
+                            <f:setPropertyActionListener target="#{choosePartyDialogBean.stereo}"
+                                value="SUP" />
+                        </p:commandButton>
+                    </h:panelGroup>
+
+                    <h:outputLabel value="附加要求：" />
+                    <p:inputText value="#{obj.additionalRequirement}" />
+                </h:panelGrid>
+            </p:tab>
+
+            <p:tab title="询价与建议">
+                <fr:listView id="inquiriesIndexView" header="询价信息" style="indexPanel" editView=":inquiriesEditView"
+                    mbean="#{bean.inquiriesMBean}" nested="true">
+                    <f:facet name="columns">
+                        <p:column headerText="供应商" styleClass="f-wrappable">
+                            <h:outputText value="#{entry.supplier.displayName}" />
+                        </p:column>
+                        <p:column headerText="单价">
+                            <h:outputText value="#{entry.price}" />
+                        </p:column>
+                        <p:column headerText="交货时间">
+                            <h:outputText value="#{entry.deliveryDate}" />
+                        </p:column>
+                        <p:column headerText="质量状况" styleClass="f-wrappable">
+                            <h:outputText value="#{entry.quality}" />
+                        </p:column>
+                        <p:column headerText="付款方式" styleClass="f-wrappable">
+                            <h:outputText value="#{entry.paymentTerm}" />
+                        </p:column>
+                        <p:column headerText="售后服务" styleClass="f-wrappable">
+                            <h:outputText value="#{entry.afterService}" />
+                        </p:column>
+                        <p:column headerText="建议" styleClass="f-wrappable">
+                            <h:outputText value="#{entry.comment}" />
+                        </p:column>
+                    </f:facet>
+                </fr:listView>
+            </p:tab>
+        </p:tabView>
+    </ui:define>
+
+    <ui:define name="dialogs">
+        <sem:choosePartyDialog id="supplier-d" var="chooseSupplierDialog" header="选择询价方" stereo="ORG"
+            target="#{inquiryObj.supplier}" update=":inquiriesEditView:editForm:supplier" />
+
+        <fr:listView id="inquiriesEditView" header="询价信息" style="editDialog" indexView=":editDialog:form:tv:inquiriesIndexView"
+            mbean="#{bean.inquiriesMBean}">
+            <h:panelGrid columns="2" columnClasses="field-label, field-content">
+                <h:outputLabel for="supplier" value="供应商：" />
+                <t:panelGroup>
+                    <p:inputText id="supplier" value="#{item.supplier.displayName}" disabled="true" style="width: 20em" />
+                    <p:commandButton value="..." oncomplete="chooseSupplierDialog.show()">
+                        <f:setPropertyActionListener target="${choosePartyDialogBean.stereo}"
+                            value="ORG" />
+                    </p:commandButton>
+                </t:panelGroup>
+
+                <h:outputLabel for="price" value="价格：" />
+                <h:panelGrid columns="3">
+                    <p:inputText id="price" value="#{item.price.value}" />
+                    <h:outputLabel value="币种：" />
+                    <p:selectOneMenu id="currency" value="#{item.price.currencyCode}" style="width: 15em;">
+                        <f:selectItem itemValue="" itemLabel="--选择币种--" />
+                        <f:selectItems value="#{monetary.currencySelectItems}" />
+                    </p:selectOneMenu>
+                </h:panelGrid>
+
+                <h:outputText for="deliveryDate" value="交货时间：" />
+                <p:inputText id="deliveryDate" style="width: 30em;" value="#{item.deliveryDate}" />
+
+                <h:outputLabel for="quality" value="质量状况：" />
+                <p:inputText id="quality" style="width: 30em;" value="#{item.quality}" />
+
+                <h:outputLabel for="payment" value="付款方式：" />
+                <p:inputText id="payment" style="width: 30em;" value="#{item.paymentTerm}" />
+
+                <h:outputLabel for="service" value="售后服务：" />
+                <p:inputText id="service" style="width: 30em;" value="#{item.afterService}" />
+
+                <h:outputLabel for="other" value="其他：" />
+                <p:inputText id="other" style="width: 30em;" value="#{item.other}" />
+
+                <h:outputLabel for="comment" value="询价建议：" />
+                <p:inputTextarea id="comment" style="width: 30em; height: 3em" value="#{item.comment}" />
+            </h:panelGrid>
+        </fr:listView>
+
+    </ui:define>
+</ui:composition>
