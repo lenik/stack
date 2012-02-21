@@ -1,7 +1,5 @@
 package com.bee32.sem.inventory.web.business;
 
-import java.math.BigDecimal;
-
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.annotation.TypeParameter;
 import com.bee32.sem.inventory.dto.StockOrderDto;
@@ -72,6 +70,7 @@ public class StockOrderBean_XFER_IN
         StockOrderDto destOrder = getOpenedObject();
         destOrder.addItem(destItem);
         destItem.setParent(destOrder);
+        destItem.setQuantity(destItem.getQuantity().abs());
         // XXX generated tmp id here.
         destItem.setId(-destOrder.getItems().size() - 1L, true);
         destItem = null;
