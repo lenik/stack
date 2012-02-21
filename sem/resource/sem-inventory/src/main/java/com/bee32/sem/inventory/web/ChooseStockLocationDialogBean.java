@@ -69,6 +69,7 @@ public class ChooseStockLocationDialogBean
 
     public void setWarehouse(StockWarehouseDto warehouse) {
         this.warehouse = warehouse;
+        refreshTree();
     }
 
     public MaterialDto getMaterial() {

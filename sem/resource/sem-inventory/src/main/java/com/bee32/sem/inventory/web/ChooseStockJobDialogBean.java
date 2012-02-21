@@ -1,10 +1,15 @@
 package com.bee32.sem.inventory.web;
 
+import java.util.List;
+
 import javax.free.IllegalUsageException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.criteria.hibernate.IsNull;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.util.EntityDto;
@@ -20,6 +25,9 @@ public class ChooseStockJobDialogBean
     static Logger logger = LoggerFactory.getLogger(ChooseStockJobDialogBean.class);
 
     String header = "Please choose a stock job..."; // NLS: 选择用户或组
+
+    int destWarehouseId = -1;
+    boolean nullDest = false;
 
     @SuppressWarnings("unchecked")
     public ChooseStockJobDialogBean() {
@@ -43,6 +51,18 @@ public class ChooseStockJobDialogBean
         dtoClass = dtoType;
     }
 
+    @Override
+    protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
+        super.composeBaseRestrictions(elements);
+        if(destWarehouseId != -1) {
+            elements.add(new Equals("destWarehouse.id", destWarehouseId));
+        }
+
+        if(nullDest) {
+            elements.add(new IsNull("dest"));
+        }
+    }
+
     // Properties
 
     public String getHeader() {
@@ -52,5 +72,27 @@ public class ChooseStockJobDialogBean
     public void setHeader(String header) {
         this.header = header;
     }
+
+    //限定StockTransfer的拨入仓库
+    public int getDestWarehouseId() {
+        return destWarehouseId;
+    }
+
+    public void setDestWarehouseId(int destWarehouseId) {
+        this.destWarehouseId = destWarehouseId;
+        refreshRowCount();
+    }
+
+    //限定StockTransfer的dest为null,即还没有拨入的拨出单
+    public boolean isNullDest() {
+        return nullDest;
+    }
+
+    public void setNullDest(boolean nullDest) {
+        this.nullDest = nullDest;
+    }
+
+
+
 
 }

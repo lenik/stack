@@ -17,6 +17,10 @@
                         value="com.bee32.sem.inventory.tx.entity.StockTransfer" />
                     <f:setPropertyActionListener target="#{chooseStockJobDialogBean.restriction}"
                         value="#{bean.job.jobQueueing}" />
+                    <f:setPropertyActionListener target="#{chooseStockJobDialogBean.destWarehouseId}"
+                        value="#{bean.selectedWarehouseId}" />
+                    <f:setPropertyActionListener target="#{chooseStockJobDialogBean.nullDest}"
+                        value="true" />
                 </p:commandButton>
             </h:panelGroup>
             <h:panelGrid columns="2" rendered="#{job != null}">
@@ -53,7 +57,7 @@
         <sem:stockOrderPanel id="sourceOrderPanel" header="库存调拨出库单" value="#{job.source}">
             <f:facet name="columns">
                 <p:column headerText="操作">
-                    <p:commandLink id="import" value="拨入" update=":itemForm" actionListener="#{bean.copyItem}"
+                    <p:commandLink id="import" value="拨入" update=":itemForm" action="#{bean.copyItem}"
                         oncomplete="itemDialog.show()">
                         <f:setPropertyActionListener target="#{bean.selectedSourceItem}"
                             value="#{entry}" />
@@ -75,29 +79,32 @@
             <h:form id="itemForm">
                 <h:panelGrid columns="2" rendered="#{bean.destItem != null}">
 
-                    <h:outputText value="物料" />
-                    <h:outputText value="#{bean.destItem.material.label}" />
+                    <h:outputText value="物料:" />
+                    <h:outputText value="#{bean.destItem.material.label}" style="font-weight:bold;"/>
 
-                    <h:outputText value="规格型号" />
-                    <h:outputText value="#{bean.destItem.material.modelSpec}" />
+                    <h:outputText value="规格型号:" />
+                    <h:outputText value="#{bean.destItem.material.modelSpec}" style="font-weight:bold;"/>
 
-                    <h:outputText value="批号" />
+                    <h:outputText value="批号:" />
                     <h:outputText value="#{bean.destItem.batch}" />
 
-                    <h:outputText value="调出库位" />
-                    <h:outputText value="#{bean.selectedSourceItem.location.label}" />
+                    <h:outputText value="调出库位:" />
+                    <h:outputText value="#{bean.selectedSourceItem.location.label}" style="font-weight:bold;"/>
 
-                    <h:outputText value="调出数量" />
-                    <h:outputText value="#{bean.selectedSourceItem.quantity}" />
+                    <h:outputText value="调出数量:" />
+                    <h:outputText value="#{bean.selectedSourceItem.quantity}" style="font-weight:bold;"/>
 
-                    <h:outputText value="拨入数量" />
-                    <p:inputText value="#{bean.destItem.quantity}" label="拨入数量" />
+                    <h:outputText value="拨入数量:" />
+                    <p:inputText value="#{bean.destItem.quantity}" label="拨入数量"/>
 
-                    <h:outputText value="库位" />
+                    <h:outputText value="库位:" />
                     <t:panelGroup>
                         <p:inputText id="location" value="#{bean.destItem.location.label}" readonly="true"
                             label="库位" />
-                        <p:commandButton value="..." onclick="chooseDestLocationDialog.show()" />
+                        <p:commandButton value="..." oncomplete="chooseDestLocationDialog.show()" >
+                            <f:setPropertyActionListener target="#{chooseStockLocationDialogBean.warehouse}"
+                                value="#{bean.selectedWarehouse}" />
+                        </p:commandButton>
                     </t:panelGroup>
                 </h:panelGrid>
                 <div align="right">

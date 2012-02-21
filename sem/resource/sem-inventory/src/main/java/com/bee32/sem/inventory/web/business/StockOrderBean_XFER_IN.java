@@ -63,7 +63,7 @@ public class StockOrderBean_XFER_IN
         destItem.setParent(destOrder);
         destItem.populate(selectedSourceItem);
         destItem.setLocation(null);
-        destItem.setQuantity(BigDecimal.ZERO);
+        //destItem.setQuantity(BigDecimal.ZERO);
     }
 
     public void addDestItem() {
