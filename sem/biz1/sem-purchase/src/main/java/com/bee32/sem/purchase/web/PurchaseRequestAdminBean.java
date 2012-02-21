@@ -3,17 +3,17 @@ package com.bee32.sem.purchase.web;
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import com.bee32.plover.arch.util.dto.Fmask;
 import com.bee32.plover.orm.annotation.ForEntity;
+import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.Identities;
 import com.bee32.plover.orm.util.RefsDiff;
+import com.bee32.plover.orm.validation.RequiredId;
 import com.bee32.sem.frame.ui.ListMBean;
+import com.bee32.sem.inventory.web.business.StockDictsBean;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.purchase.dto.MaterialPlanDto;
-import com.bee32.sem.purchase.dto.PurchaseInquiryDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestItemDto;
 import com.bee32.sem.purchase.dto.PurchaseTakeInDto;
@@ -27,8 +27,23 @@ public class PurchaseRequestAdminBean
 
     private static final long serialVersionUID = 1L;
 
+    static final int TAB_BASIC = 0;
+    static final int TAB_PLANS = 1;
+    static final int TAB_ITEMS = 2;
+    static final int TAB_TAKEINS = 3;
+
+    int tabIndex;
+
     public PurchaseRequestAdminBean() {
         super(PurchaseRequest.class, PurchaseRequestDto.class, 0);
+    }
+
+    public int getTabIndex() {
+        return tabIndex;
+    }
+
+    public void setTabIndex(int tabIndex) {
+        this.tabIndex = tabIndex;
     }
 
     @Override
@@ -85,29 +100,31 @@ public class PurchaseRequestAdminBean
         parent.addPlan(plan);
 
         PurchaseService purchaseService = ctx.bean.getBean(PurchaseService.class);
+        plan = reload(plan, Fmask.F_MORE);
         List<PurchaseRequestItemDto> items = purchaseService.calcMaterialRequirement(Arrays.asList(plan));
+
         for (PurchaseRequestItemDto item : items)
             item.setParent(parent);
         parent.setItems(items);
     }
 
-    @Transactional
-    public void acceptInquiry() {
-        PurchaseInquiryDto selectedInquiry = inquiriesMBean.getSelection();
-        if (selectedInquiry == null) {
-            uiLogger.error("没有选中的询价项。");
-            return;
-        }
+    @RequiredId(zeroForNull = true)
+    public int getDestWarehouseId_RZ() {
+        PurchaseRequestItemDto item = itemsMBean.getOpenedObject();
+        Integer id = item.getDestWarehouse().getId();
+        return id == null ? 0 : id;
+    }
 
-        PurchaseRequestItemDto requestItem = itemsMBean.getOpenedObject();
-        requestItem.setAcceptedInquiry(selectedInquiry);
-        uiLogger.info("采纳成功");
+    public void setDestWarehouseId_RZ(int warehouseId) {
+        StockDictsBean stockDicts = ctx.bean.getBean(StockDictsBean.class);
+        PurchaseRequestItemDto item = itemsMBean.getOpenedObject();
+        item.setDestWarehouse(stockDicts.getWarehouse(warehouseId));
     }
 
     public void generateTakeInStockOrders() {
         PurchaseRequestDto purchaseRequest = getOpenedObject();
         for (PurchaseRequestItemDto item : purchaseRequest.getItems()) {
-            if (item.getWarehouseId() == null) {
+            if (DTOs.isNull(item.getDestWarehouse())) {
                 uiLogger.error("所有采购请求的明细都必须选择对应的入库仓库!");
                 return;
             }
@@ -127,8 +144,6 @@ public class PurchaseRequestAdminBean
             "openedObject.plans", MaterialPlanDto.class);
     final ListMBean<PurchaseRequestItemDto> itemsMBean = ListMBean.fromEL(this, //
             "openedObject.items", PurchaseRequestItemDto.class);
-    final ListMBean<PurchaseInquiryDto> inquiriesMBean = ListMBean.fromEL(itemsMBean, //
-            "openedObject.inquiries", PurchaseInquiryDto.class);
     final ListMBean<PurchaseTakeInDto> takeInsMBean = ListMBean.fromEL(this, //
             "openedObject.takeIns", PurchaseTakeInDto.class);
 
@@ -138,10 +153,6 @@ public class PurchaseRequestAdminBean
 
     public ListMBean<PurchaseRequestItemDto> getItemsMBean() {
         return itemsMBean;
-    }
-
-    public ListMBean<PurchaseInquiryDto> getInquiriesMBean() {
-        return inquiriesMBean;
     }
 
     public ListMBean<PurchaseTakeInDto> getTakeInsMBean() {

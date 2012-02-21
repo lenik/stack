@@ -7,9 +7,11 @@ import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.purchase.dto.MakeOrderDto;
+import com.bee32.sem.purchase.dto.MakeOrderItemDto;
 import com.bee32.sem.purchase.entity.MakeOrder;
 
 public class ChooseMakeOrderDialogBean
@@ -51,6 +53,12 @@ public class ChooseMakeOrderDialogBean
             customer = new PartyDto().ref();
         this.customer = customer;
         // refreshRowCount();
+    }
+
+    final ListMBean<MakeOrderItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items", MakeOrderItemDto.class);
+
+    public ListMBean<MakeOrderItemDto> getItemsMBean() {
+        return itemsMBean;
     }
 
 }

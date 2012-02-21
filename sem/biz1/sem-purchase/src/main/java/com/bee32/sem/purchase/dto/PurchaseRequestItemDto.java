@@ -14,6 +14,7 @@ import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.inventory.dto.MaterialDto;
+import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.process.base.ProcessEntityDto;
 import com.bee32.sem.purchase.entity.PurchaseRequestItem;
@@ -39,7 +40,7 @@ public class PurchaseRequestItemDto
     PurchaseInquiryDto acceptedInquiry;
     String comment;
 
-    Integer warehouseId; // 公用于接收界面上传入的仓库id
+    StockWarehouseDto destWarehouse;
 
     @Override
     protected void _marshal(PurchaseRequestItem source) {
@@ -58,6 +59,7 @@ public class PurchaseRequestItemDto
             inquiries = Collections.emptyList();
 
         acceptedInquiry = mref(PurchaseInquiryDto.class, source.getAcceptedInquiry());
+        destWarehouse = mref(StockWarehouseDto.class, source.getDestWarehouse());
     }
 
     @Override
@@ -76,6 +78,7 @@ public class PurchaseRequestItemDto
             mergeList(target, "inquiries", inquiries);
 
         merge(target, "acceptedInquiry", acceptedInquiry);
+        merge(target, "destWarehouse", destWarehouse);
     }
 
     @Override
@@ -120,20 +123,20 @@ public class PurchaseRequestItemDto
         this.material = material;
     }
 
-    public BigDecimal getQuantity() {
+    public BigDecimal getRequiredQuantity() {
         return requiredQuantity;
     }
 
-    public void setQuantity(BigDecimal quantity) {
-        this.requiredQuantity = quantity;
+    public void setRequiredQuantity(BigDecimal requiredQuantity) {
+        this.requiredQuantity = requiredQuantity;
     }
 
-    public BigDecimal getPlanQuantity() {
+    public BigDecimal getQuantity() {
         return quantity;
     }
 
-    public void setPlanQuantity(BigDecimal planQuantity) {
-        this.quantity = planQuantity;
+    public void setQuantity(BigDecimal quantity) {
+        this.quantity = quantity;
     }
 
     public PartyDto getPreferredSupplier() {
@@ -187,12 +190,16 @@ public class PurchaseRequestItemDto
         this.acceptedInquiry = acceptedInquiry;
     }
 
-    public Integer getWarehouseId() {
-        return warehouseId;
+    public String getAcceptedInquiryInfo() {
+        return "TODO";
     }
 
-    public void setWarehouseId(Integer warehouseId) {
-        this.warehouseId = warehouseId;
+    public StockWarehouseDto getDestWarehouse() {
+        return destWarehouse;
+    }
+
+    public void setDestWarehouse(StockWarehouseDto destWarehouse) {
+        this.destWarehouse = destWarehouse;
     }
 
     @Override

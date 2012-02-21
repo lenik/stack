@@ -57,12 +57,12 @@
 
             <ui:define name="buttons.left">
                 <p:commandButton id="showContent" value="明细" actionListener="${dialogBean.showContent}"
-                    update=":${cc.clientId}:itemsForm" oncomplete="_ItemsDialog.show()" />
+                    update=":${cc.clientId}:itemsForm" oncomplete="_chooseMakeTask_itemsDialog.show()" />
             </ui:define>
         </ui:decorate>
 
         <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
-        <p:dialog header="生产任务单明细" widgetVar="_ItemsDialog" modal="true" height="480" width="800">
+        <p:dialog header="生产任务单明细" widgetVar="_chooseMakeTask_itemsDialog" modal="true" height="480" width="800">
             <h:form id="itemsForm">
                 <h:panelGroup rendered="${dialogBean.openedObject != null}">
                     <p:dataTable id="table" var="entry" value="${dialogBean.openedObject.items}"
@@ -72,11 +72,11 @@
                             <h:outputText value="${rowIndex + 1}" />
                         </p:column>
 
-                        <p:column headerText="物料">
+                        <p:column headerText="物料" styleClass="f-wrappable">
                             <h:outputText value="${entry.part.target.label}" />
                         </p:column>
 
-                        <p:column headerText="规格型号">
+                        <p:column headerText="规格型号" styleClass="f-wrappable">
                             <h:outputText value="${entry.part.target.modelSpec}" />
                         </p:column>
 

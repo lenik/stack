@@ -48,7 +48,7 @@ public class PurchaseInquiryDto
 
     @Override
     protected void _unmarshalTo(PurchaseInquiry target) {
-        merge(target, "purchaseRequestItem", parent);
+        merge(target, "parent", parent);
         merge(target, "supplier", supplier);
         target.setPrice(price);
         target.setDeliveryDate(deliveryDate);

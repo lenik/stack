@@ -32,7 +32,7 @@ public class PurchaseInquiry
 
     PurchaseRequestItem parent;
     Org supplier;
-    MCValue price;
+    MCValue price = new MCValue();
     String deliveryDate;
     String quality;
     String paymentTerm;

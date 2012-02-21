@@ -21,7 +21,7 @@ public class ChooseMaterialPlanDialogBean
     static Logger logger = LoggerFactory.getLogger(ChooseMaterialPlanDialogBean.class);
 
     String header = "选择物料计划";
-    boolean pending = true;
+    boolean pending = false;
 
     public ChooseMaterialPlanDialogBean() {
         super(MaterialPlan.class, MaterialPlanDto.class, 0);

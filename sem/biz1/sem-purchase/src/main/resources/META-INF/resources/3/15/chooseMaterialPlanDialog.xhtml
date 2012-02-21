@@ -49,11 +49,11 @@
 
             <ui:define name="buttons.left">
                 <p:commandButton id="items" value="详细信息" actionListener="${dialogBean.showContent}"
-                    update=":_chooseMP_itemsView:indexForm:body" oncomplete="_chooseMP_itemsViewIndexDialog.show()" />
+                    update=":${cc.clientId}:items:indexForm:body" oncomplete="_chooseMP_itemsIndexDialog.show()" />
             </ui:define>
         </ui:decorate>
 
-        <fr:listView id="_chooseMP_itemsView" header="物料计划明细" style="dialog"
+        <fr:listView id="items" indexDialogVar="_chooseMP_itemsIndexDialog" header="物料计划明细" style="dialog"
             mbean="${cc.parent.attrs.dialogBean.itemsMBean}" creatable="false" editable="false" removable="false">
             <f:facet name="columns">
                 <p:column headerText="物料" styleClass="f-wrappable">

@@ -20,6 +20,7 @@ import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.process.base.ProcessEntity;
 
@@ -49,6 +50,7 @@ public class PurchaseRequestItem
     List<PurchaseInquiry> inquiries = new ArrayList<PurchaseInquiry>();
 
     PurchaseInquiry acceptedInquiry;
+    StockWarehouse destWarehouse;
 
     @NaturalId
     @ManyToOne(optional = false)
@@ -172,6 +174,15 @@ public class PurchaseRequestItem
 
     public void setAcceptedInquiry(PurchaseInquiry acceptedInquiry) {
         this.acceptedInquiry = acceptedInquiry;
+    }
+
+    @ManyToOne
+    public StockWarehouse getDestWarehouse() {
+        return destWarehouse;
+    }
+
+    public void setDestWarehouse(StockWarehouse destWarehouse) {
+        this.destWarehouse = destWarehouse;
     }
 
     @Override

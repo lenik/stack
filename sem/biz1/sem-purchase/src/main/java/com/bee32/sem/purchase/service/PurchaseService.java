@@ -85,8 +85,8 @@ public class PurchaseService
                 requestItem.setMaterial(material);
 
                 // 从物料计划计算采购请求量时，把计划采购量首先设置为和计算量相同
+                requestItem.setRequiredQuantity(requestQuantity);
                 requestItem.setQuantity(requestQuantity);
-                requestItem.setPlanQuantity(requestQuantity);
 
                 requestItems.add(requestItem);
             }
@@ -104,7 +104,7 @@ public class PurchaseService
         // 先用map保存用户输入的warehouseId，因为后面的reload(purchaseRequest)会导致这些warehouseIds丢失
         Map<Long, Integer> itemWarehouseMap = new HashMap<Long, Integer>();
         for (PurchaseRequestItemDto requestItem : purchaseRequest.getItems()) {
-            itemWarehouseMap.put(requestItem.getId(), requestItem.getWarehouseId());
+            itemWarehouseMap.put(requestItem.getId(), requestItem.getDestWarehouse().getId());
         }
 
         purchaseRequest = reload(purchaseRequest);
@@ -129,7 +129,7 @@ public class PurchaseService
         for (PurchaseRequestItemDto item : purchaseRequest.getItems()) {
             OrgDto preferredSupplier = item.getAcceptedInquiry().getSupplier();
             // 以warehouseId和对应供应商的id组合成 x&y 的形式
-            IdComposite key = new IdComposite(item.getWarehouseId(), preferredSupplier.getId());
+            IdComposite key = new IdComposite(item.getDestWarehouse().getId(), preferredSupplier.getId());
 
             if (!splitMap.containsKey(key)) {
                 List<PurchaseRequestItemDto> newItemList = new ArrayList<PurchaseRequestItemDto>();
@@ -154,7 +154,7 @@ public class PurchaseService
 
                 _item.setParent(_takeInOrder);
                 _item.setMaterial(item.getMaterial().unmarshal());
-                _item.setQuantity(item.getPlanQuantity());
+                _item.setQuantity(item.getQuantity());
                 _item.setPrice(item.getAcceptedInquiry().getPrice());
                 _item.setDescription("由采购请求生成的入库明细项目");
 
