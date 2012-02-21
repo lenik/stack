@@ -33,13 +33,15 @@ public class ScrollEntityViewBean
     protected void searchFragmentsChanged() {
         super.searchFragmentsChanged();
         showIndex(); // Fix: force to back to index whenever in editing mode.
-        selectRow(rowNumber);
     }
 
     @Override
     public void showIndex() {
         showView(StandardViews.LIST);
-        // leaving objects opened.
+        // Refresh the current record when:
+        // - Saved/Updated
+        // - Cancel button clicked
+        selectRow(rowNumber);
     }
 
     @Override
