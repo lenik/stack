@@ -85,7 +85,8 @@ public class StockOrderItemDto
         }
 
         material = mref(MaterialDto.class, source.getMaterial());
-        batchArray = source.getBatchArray();
+        batchArray = BatchArray.expandCopy(source.getBatchArray());
+
         expirationDate = source.getExpirationDate();
         location = mref(StockLocationDto.class, source.getLocation());
         state = source.getState();
@@ -98,7 +99,7 @@ public class StockOrderItemDto
 
         merge(target, "parent", parent);
         merge(target, "material", material);
-        target.setBatchArray(batchArray);
+        target.setBatchArray(batchArray.reduce());
         target.setExpirationDate(expirationDate);
         merge(target, "location", location);
         target.setState(state);

@@ -2,6 +2,8 @@ package com.bee32.sem.inventory.service;
 
 import java.util.Currency;
 
+import javax.free.Nullables;
+
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.util.BatchArray;
@@ -20,8 +22,6 @@ public class SMS_MBC
         public Key(Material material, BatchArray batchArray, Currency currency) {
             if (material == null)
                 throw new NullPointerException("material");
-            if (batchArray == null)
-                throw new NullPointerException("batchArray");
             if (currency == null)
                 throw new NullPointerException("currency");
             this.material = material;
@@ -38,7 +38,7 @@ public class SMS_MBC
             if (!material.equals(o.material))
                 return false;
 
-            if (!batchArray.equals(o.batchArray))
+            if (!Nullables.equals(batchArray, o.batchArray))
                 return false;
 
             if (!currency.equals(o.currency))
@@ -51,7 +51,8 @@ public class SMS_MBC
         public int hashCode() {
             int hash = 0;
             hash += material.hashCode();
-            hash += batchArray.hashCode();
+            if (batchArray != null)
+                hash += batchArray.hashCode();
             hash += currency.hashCode();
             return hash;
         }

@@ -137,9 +137,9 @@ public class BatchArray
     public BatchArrayEntry[] getEntries() {
         BatchMetadata metadata = BatchMetadata.getInstance();
         BatchArrayEntry[] entries = new BatchArrayEntry[array.length];
-        for (int index = 0; index < array.length; index++) {
-            BatchArrayEntry entry = new BatchArrayEntry(metadata, this, index);
-            entries[index] = entry;
+        for (int i = 0; i < array.length; i++) {
+            BatchArrayEntry entry = new BatchArrayEntry(metadata, this, i);
+            entries[i] = entry;
         }
         return entries;
     }
@@ -163,6 +163,29 @@ public class BatchArray
     @Override
     public String toString() {
         return Arrays.toString(array);
+    }
+
+    @Transient
+    public boolean isNull() {
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] != null)
+                return false;
+        }
+        return true;
+    }
+
+    public BatchArray reduce() {
+        if (isNull())
+            return null;
+        else
+            return this;
+    }
+
+    public static BatchArray expandCopy(BatchArray batchArray) {
+        if (batchArray == null)
+            return new BatchArray();
+        else
+            return new BatchArray(batchArray);
     }
 
 }

@@ -1,5 +1,7 @@
 package com.bee32.sem.inventory.service;
 
+import javax.free.Nullables;
+
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.util.BatchArray;
@@ -17,8 +19,6 @@ public class SMS_MB
         public Key(Material material, BatchArray batchArray) {
             if (material == null)
                 throw new NullPointerException("material");
-            if (batchArray == null)
-                throw new NullPointerException("batchArray");
             this.material = material;
             this.batchArray = batchArray;
         }
@@ -32,7 +32,7 @@ public class SMS_MB
             if (!material.equals(o.material))
                 return false;
 
-            if (!batchArray.equals(o.batchArray))
+            if (!Nullables.equals(batchArray, o.batchArray))
                 return false;
 
             return true;
@@ -42,7 +42,8 @@ public class SMS_MB
         public int hashCode() {
             int hash = 0;
             hash += material.hashCode();
-            hash += batchArray.hashCode();
+            if (batchArray != null)
+                hash += batchArray.hashCode();
             return hash;
         }
     }
