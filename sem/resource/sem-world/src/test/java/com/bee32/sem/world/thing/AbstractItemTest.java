@@ -10,7 +10,7 @@ import com.bee32.plover.util.i18n.ICurrencyAware;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 
-public class AbstractOrderItemTest
+public class AbstractItemTest
         extends TestSupport
         implements ICurrencyAware {
 
