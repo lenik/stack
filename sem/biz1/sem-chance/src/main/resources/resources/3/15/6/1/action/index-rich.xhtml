@@ -10,10 +10,10 @@
     <ui:param name="dicts" value="${chanceDictsBean}" />
 
     <ui:define name="dataColumns">
-        <p:column headerText="日期" sortBy="${entry.beginTime}" style="width: 6.5em">
+        <p:column headerText="日期" sortBy="${entry.beginTime}">
             <h:outputText value="${entry.date}" />
         </p:column>
-        <p:column headerText="时间段" style="width: 10em">
+        <p:column headerText="时间段" styleClass="f-wrappable">
             <h:outputText value="${entry.timeRange}" />
         </p:column>
         <p:column headerText="执行" sortBy="${entry.actor}">
@@ -25,10 +25,10 @@
         <p:column headerText="洽谈类型" sortBy="${entry.style}">
             <h:outputText value="${entry.style.label}" />
         </p:column>
-        <p:column headerText="行动简略" sortBy="${entry.description}">
+        <p:column headerText="行动简略" sortBy="${entry.description}" styleClass="f-wrappable">
             <h:outputText value="${entry.subject}" />
         </p:column>
-        <p:column headerText="对应机会" sortBy="${entry.chance}">
+        <p:column headerText="对应机会" sortBy="${entry.chance}" styleClass="f-wrappable">
             <h:outputText value="${entry.chance.subject}" />
         </p:column>
         <p:column headerText="阶段" sortBy="${entry.stage}">

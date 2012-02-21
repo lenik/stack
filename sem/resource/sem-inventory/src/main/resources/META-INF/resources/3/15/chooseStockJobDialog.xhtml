@@ -36,13 +36,13 @@
             <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
 
             <ui:define name="columns">
-                <p:column headerText="时间">
+                <p:column headerText="时间" sortBy="${entry.createdDate}">
                     <h:outputText value="${entry.createdDate}" />
                 </p:column>
-                <p:column headerText="简要">
+                <p:column headerText="简要" sortBy="${entry.label}">
                     <h:outputText value="${entry.label}" />
                 </p:column>
-                <p:column headerText="描述">
+                <p:column headerText="描述" sortBy="${entry.description}" styleClass="f-wrappable">
                     <h:outputText value="${entry.description}" />
                 </p:column>
             </ui:define>

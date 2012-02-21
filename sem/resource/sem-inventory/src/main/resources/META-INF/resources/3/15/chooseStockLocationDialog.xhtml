@@ -39,10 +39,10 @@
             <ui:param name="selectionHolder" value="${dialogBean.fullSelectionHolder}" />
 
             <ui:define name="columns">
-                <p:column headerText="库位">
+                <p:column headerText="库位" sortBy="${entry.label}">
                     <h:outputText value="${entry.label}" />
                 </p:column>
-                <p:column headerText="所属仓库">
+                <p:column headerText="所属仓库" sortBy="${entry.warehouse.label}">
                     <h:outputText value="${entry.warehouse.label}" />
                 </p:column>
             </ui:define>

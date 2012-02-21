@@ -38,16 +38,16 @@
             <ui:param name="selectionHolder" value="${cc.attrs.selectionHolder}" />
 
             <ui:define name="columns">
-                <p:column headerText="生产订单">
-                    <h:outputText value="(#{entry.order.id}) #{entry.order.label}" />
+                <p:column headerText="生产订单" sortBy="${entry.order}" styleClass="f-wrappable">
+                    <h:outputText value="(${entry.order.id}) ${entry.order.label}" />
                 </p:column>
 
-                <p:column headerText="生产任务">
-                    <h:outputText value="#{entry.label}" />
+                <p:column headerText="生产任务" sortBy="${entry.label}" styleClass="f-wrappable">
+                    <h:outputText value="${entry.label}" />
                 </p:column>
 
-                <p:column headerText="交货时间">
-                    <h:outputText value="#{entry.deadline}">
+                <p:column headerText="交货时间" sortBy="${entry.deadline}">
+                    <h:outputText value="${entry.deadline}">
                         <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                     </h:outputText>
                 </p:column>
@@ -64,28 +64,28 @@
         <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
         <p:dialog header="生产任务单明细" widgetVar="_ItemsDialog" modal="true" height="480" width="800">
             <h:form id="itemsForm">
-                <h:panelGroup rendered="#{dialogBean.openedObject != null}">
-                    <p:dataTable id="table" var="entry" value="#{dialogBean.openedObject.items}"
+                <h:panelGroup rendered="${dialogBean.openedObject != null}">
+                    <p:dataTable id="table" var="entry" value="${dialogBean.openedObject.items}"
                         resizableColumns="true" rowIndexVar="rowIndex" scrollable="true" scrollWidth="750" scrollHeight="350">
 
                         <p:column headerText="序号">
-                            <h:outputText value="#{rowIndex + 1}" />
+                            <h:outputText value="${rowIndex + 1}" />
                         </p:column>
 
                         <p:column headerText="物料">
-                            <h:outputText value="#{entry.part.target.label}" />
+                            <h:outputText value="${entry.part.target.label}" />
                         </p:column>
 
                         <p:column headerText="规格型号">
-                            <h:outputText value="#{entry.part.target.modelSpec}" />
+                            <h:outputText value="${entry.part.target.modelSpec}" />
                         </p:column>
 
                         <p:column headerText="数量">
-                            <h:outputText value="#{entry.quantity}" />
+                            <h:outputText value="${entry.quantity}" />
                         </p:column>
 
                         <p:column headerText="交货日期">
-                            <h:outputText value="#{entry.deadline}">
+                            <h:outputText value="${entry.deadline}">
                                 <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                             </h:outputText>
                         </p:column>

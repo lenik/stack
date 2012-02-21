@@ -69,15 +69,16 @@
             </ui:define>
 
             <ui:define name="columns.0" />
+            <ui:define name="columnsC" />
             <ui:define name="columns">
-                <p:column headerText="物料">
+                <p:column headerText="物料" styleClass="f-wrappable">
                     <h:outputText value="${entry.material.label}" />
                 </p:column>
-                <p:column headerText="规格型号">
+                <p:column headerText="规格型号" styleClass="f-wrappable">
                     <h:outputText value="${entry.material.modelSpec}" />
                 </p:column>
 
-                <p:column headerText="${batchMetadata.labels[0]}">
+                <p:column headerText="${batchMetadata.labels[0]}" styleClass="f-wrappable">
                     <h:outputText value="${entry.batches[0].value}" />
                 </p:column>
                 <p:column headerText="${batchMetadata.labels[1]}" rendered="${batchMetadata.arraySize >= 2}">
@@ -96,7 +97,7 @@
                 <p:column headerText="有效期">
                     <h:outputText value="${entry.expirationDate}" />
                 </p:column>
-                <p:column headerText="库位">
+                <p:column headerText="库位" styleClass="f-wrappable">
                     <h:outputText value="${entry.location.label}" />
                 </p:column>
                 <p:column headerText="单价">

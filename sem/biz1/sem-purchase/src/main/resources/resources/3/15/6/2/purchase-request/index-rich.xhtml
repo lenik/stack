@@ -36,7 +36,7 @@
                     <p:column headerText="简要">
                         <h:outputText value="#{entry.label}" />
                     </p:column>
-                    <p:column headerText="备注">
+                    <p:column headerText="备注" styleClass="f-wrappable">
                         <h:outputText value="#{entry.description}" />
                     </p:column>
                 </fr:listView>
@@ -46,10 +46,10 @@
                 <fr:listView id="itemsIndexView" header="采购项" style="indexPanel" editView=":itemsEditView"
                     mbean="#{bean.itemsMBean}" nested="true" creatable="true">
                     <f:facet name="columns">
-                        <p:column headerText="物料">
+                        <p:column headerText="物料" styleClass="f-wrappable">
                             <h:outputText value="#{entry.material.label}" />
                         </p:column>
-                        <p:column headerText="规格型号">
+                        <p:column headerText="规格型号" styleClass="f-wrappable">
                             <h:outputText value="#{entry.material.modelSpec}" />
                         </p:column>
                         <p:column headerText="需求数量">
@@ -58,10 +58,10 @@
                         <p:column headerText="采购数量">
                             <h:outputText value="#{entry.quantity}" />
                         </p:column>
-                        <p:column headerText="优选供应商">
+                        <p:column headerText="优选供应商" styleClass="f-wrappable">
                             <h:outputText value="#{entry.preferredSupplier.displayName}" />
                         </p:column>
-                        <p:column headerText="附加要求">
+                        <p:column headerText="附加要求" styleClass="f-wrappable">
                             <h:outputText value="#{entry.additionalRequirement}" />
                         </p:column>
                         <p:column headerText="入库仓库">
@@ -116,14 +116,11 @@
                 <h:outputText value="询价物料: #{itemObj.material.label}" />
             </f:facet>
             <f:facet name="columns">
-                <p:column headerText="供应商">
+                <p:column headerText="供应商" styleClass="f-wrappable">
                     <h:outputText value="#{entry.org.displayName}" />
                 </p:column>
                 <p:column headerText="单价">
-                    <h:outputText value="#{entry.price.value}" />
-                </p:column>
-                <p:column headerText="币种">
-                    <h:outputText value="#{entry.price.currencyText}" />
+                    <h:outputText value="#{entry.price}" />
                 </p:column>
                 <p:column headerText="交货时间">
                     <h:outputText value="#{entry.deliveryDate}" />

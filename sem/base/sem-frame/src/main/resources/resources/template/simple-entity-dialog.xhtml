@@ -21,9 +21,9 @@
                     </ui:insert>
                     <ui:insert name="columns" />
                     <ui:insert name="columnsC">
-                        <p:column headerText="更新日期" sortBy="${entry.lastModified}" style="width: 7em">
+                        <p:column headerText="更新日期" sortBy="${entry.lastModified}">
                             <h:outputText value="${entry.lastModified}">
-                                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                                <f:convertDateTime pattern="yy-MM-dd" timeZone="Asia/Shanghai" />
                             </h:outputText>
                         </p:column>
                         <p:column headerText="属主" sortBy="${entry.owner}">

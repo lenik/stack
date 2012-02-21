@@ -50,19 +50,19 @@
                 <fr:listView id="itemsIndexView" header="物料计划项" style="indexPanel" editView=":itemsEditView"
                     mbean="#{bean.itemsMBean}" nested="true" paginator="false" creatable="false">
                     <f:facet name="columns">
-                        <p:column headerText="物料">
+                        <p:column headerText="物料" styleClass="f-wrappable">
                             <h:outputText value="#{entry.material.label}" />
                         </p:column>
-                        <p:column headerText="规格型号">
+                        <p:column headerText="规格型号" styleClass="f-wrappable">
                             <h:outputText value="#{entry.material.modelSpec}" />
                         </p:column>
                         <p:column headerText="数量">
                             <h:outputText value="#{entry.quantity}" />
                         </p:column>
-                        <p:column headerText="优选供应商">
+                        <p:column headerText="优选供应商" styleClass="f-wrappable">
                             <h:outputText value="#{entry.preferredSupplier.displayName}" />
                         </p:column>
-                        <p:column headerText="附加要求">
+                        <p:column headerText="附加要求" styleClass="f-wrappable">
                             <h:outputText value="#{entry.additionalRequirement}" />
                         </p:column>
                     </f:facet>
@@ -132,26 +132,38 @@
             <fr:listView id="planOrderItemsIndexView" header="库存锁定项" style="indexPanel" editView=":planOrderItemsEditView"
                 mbean="#{bean.planOrderItemsMBean}" nested="true" creatable="false">
                 <f:facet name="columns">
-                    <p:column headerText="物料">
+                    <p:column headerText="物料" styleClass="f-wrappable">
                         <h:outputText value="#{entry.material.label}" />
                     </p:column>
-                    <p:column headerText="规格型号">
+                    <p:column headerText="规格型号" styleClass="f-wrappable">
                         <h:outputText value="#{entry.material.modelSpec}" />
                     </p:column>
                     <p:column headerText="单位">
                         <h:outputText value="#{entry.material.unit.label}" />
                     </p:column>
-                    <ui:repeat id="batching" var="i" value="#{batchMetadata.indexes}">
-                        <p:column headerText="#{batchMetadata.label[i]}">
-                            <h:outputText value="#{entry.batchArray.batch[i]}" />
-                        </p:column>
-                    </ui:repeat>
+
+                    <p:column headerText="${batchMetadata.labels[0]}">
+                        <h:outputText value="${entry.batches[0].value}" />
+                    </p:column>
+                    <p:column headerText="${batchMetadata.labels[1]}" rendered="${batchMetadata.arraySize >= 2}">
+                        <h:outputText value="${entry.batches[1].value}" />
+                    </p:column>
+                    <p:column headerText="${batchMetadata.labels[2]}" rendered="${batchMetadata.arraySize >= 3}">
+                        <h:outputText value="${entry.batches[2].value}" />
+                    </p:column>
+                    <p:column headerText="${batchMetadata.labels[3]}" rendered="${batchMetadata.arraySize >= 4}">
+                        <h:outputText value="${entry.batches[3].value}" />
+                    </p:column>
+                    <p:column headerText="${batchMetadata.labels[4]}" rendered="${batchMetadata.arraySize >= 5}">
+                        <h:outputText value="${entry.batches[4].value}" />
+                    </p:column>
+
                     <p:column headerText="有效期">
                         <h:outputText value="#{entry.expirationDate}">
                             <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                         </h:outputText>
                     </p:column>
-                    <p:column headerText="库位">
+                    <p:column headerText="库位" styleClass="f-wrappable">
                         <h:outputText value="#{entry.location.label}" />
                     </p:column>
                     <p:column headerText="单价">
@@ -160,7 +172,7 @@
                     <p:column headerText="数量">
                         <h:outputText value="#{entry.quantity}" />
                     </p:column>
-                    <p:column headerText="备注">
+                    <p:column headerText="备注" styleClass="f-wrappable">
                         <h:outputText value="#{entry.description}" />
                     </p:column>
                     <p:column headerText="锁定">
@@ -180,10 +192,10 @@
                 <p:selectBooleanCheckbox id="checked" value="#{item.checked1}" />
 
                 <h:panelGroup colspan="4">
-                        <ui:repeat id="batches" var="i" value="#{batchMetadata.indexes}">
-                            <h:outputLabel value="#{batchMetadata.label[i]}" />
-                            <h:outputText value="#{item.batchArray.batch[i]}" />
-                        </ui:repeat>
+                    <ui:repeat id="batches" var="i" value="#{batchMetadata.indexes}">
+                        <h:outputLabel value="#{batchMetadata.label[i]}" />
+                        <h:outputText value="#{item.batchArray.batch[i]}" />
+                    </ui:repeat>
                 </h:panelGroup>
 
                 <h:outputLabel value="有效期" />

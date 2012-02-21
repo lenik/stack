@@ -40,47 +40,47 @@
             <ui:define name="columns">
                 <c:if test="${cc.attrs.stereo == '-'}">
                     <p:column headerText="类型">
-                        <h:outputText value="#{entry.types}" />
+                        <h:outputText value="${entry.types}" />
                     </p:column>
-                    <p:column headerText="名称">
-                        <h:outputText value="#{entry.displayName}" />
+                    <p:column headerText="名称" sortBy="${entry.label}">
+                        <h:outputText value="${entry.displayName}" />
                     </p:column>
                 </c:if>
 
                 <c:if test="${cc.attrs.stereo == 'PER'}">
-                    <p:column headerText="姓名">
-                        <h:outputText value="#{entry.displayName}" />
+                    <p:column headerText="姓名" sortBy="${entry.label}" styleClass="f-wrappable">
+                        <h:outputText value="${entry.displayName}" />
                     </p:column>
                     <p:column headerText="性别">
-                        <h:outputText value="#{entry.sexText}" />
+                        <h:outputText value="${entry.sexText}" />
                     </p:column>
-                    <p:column headerText="生日">
-                        <h:outputText value="#{entry.birthday}">
+                    <p:column headerText="生日" sortBy="${entry.birthday}">
+                        <h:outputText value="${entry.birthday}">
                             <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                         </h:outputText>
                     </p:column>
                     <p:column headerText="证件类型">
-                        <h:outputText value="#{entry.sidType.label}" />
+                        <h:outputText value="${entry.sidType.label}" />
                     </p:column>
                     <p:column headerText="证件号码">
-                        <h:outputText value="#{entry.sid}" />
+                        <h:outputText value="${entry.sid}" />
                     </p:column>
-                    <p:column headerText="户籍">
-                        <h:outputText value="#{entry.censusRegister}" />
+                    <p:column headerText="户籍" sortBy="${entry.censusRegister}" styleClass="f-wrappable">
+                        <h:outputText value="${entry.censusRegister}" />
                     </p:column>
                 </c:if>
 
                 <c:if test="${cc.attrs.stereo == 'ORG'}">
-                    <p:column headerText="名称">
-                        <h:outputText value="#{entry.displayName}" />
+                    <p:column headerText="名称" styleClass="f-wrappable">
+                        <h:outputText value="${entry.displayName}" />
                     </p:column>
-                    <p:column headerText="成立日期/生日">
-                        <h:outputText value="#{entry.birthday}">
+                    <p:column headerText="成立日期/生日" sortBy="${entry.birthday}">
+                        <h:outputText value="${entry.birthday}">
                             <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                         </h:outputText>
                     </p:column>
-                    <p:column headerText="税务登记号/证件号">
-                        <h:outputText value="#{entry.sid}" />
+                    <p:column headerText="税务登记号/证件号" sortBy="${entry.sid}" styleClass="f-wrappable">
+                        <h:outputText value="${entry.sid}" />
                     </p:column>
                 </c:if>
 

@@ -12,7 +12,7 @@
         <p:column headerText="类型">
             <h:outputText value="#{entry.types}" />
         </p:column>
-        <p:column headerText="姓名" sortBy="#{entry.label}">
+        <p:column headerText="姓名" sortBy="#{entry.label}" styleClass="f-wrappable">
             <h:outputText value="#{entry.displayName}" />
         </p:column>
         <p:column headerText="性别">
@@ -21,16 +21,13 @@
         <p:column headerText="年龄" sortBy="#{entry.birthday}">
             <h:outputText value="#{entry.age}" />
         </p:column>
-        <p:column headerText="联系电话" style="width: 12em">
+        <p:column headerText="联系电话" styleClass="f-wrappable" style="width: 10em">
             <h:outputText value="#{entry.contactsString}" />
         </p:column>
-        <p:column headerText="证件" sortBy="#{entry.sid}">
-            <h:outputText value="#{entry.sidType.label} #{entry.sid}" />
-        </p:column>
-        <p:column headerText="户籍" sortBy="#{entry.censusRegister}">
+        <p:column headerText="户籍" sortBy="#{entry.censusRegister}" styleClass="f-wrappable">
             <h:outputText value="#{entry.censusRegister}" />
         </p:column>
-        <p:column headerText="备注">
+        <p:column headerText="备注" styleClass="f-wrappable">
             <h:outputText value="#{entry.shortMemo}" />
         </p:column>
     </ui:define>
@@ -234,8 +231,7 @@
             <h:form id="contactForm">
                 <h:panelGroup id="contactHolder">
                     <h:inputHidden id="contactId" value="#{bean.contact.id}" />
-                    <h:panelGrid columns="4"
-                        columnClasses="field-label, field-content, field-label, field-content">
+                    <h:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
 
                         <h:outputLabel for="contactCategory" value="分类" />
                         <h:panelGroup colspan="3">

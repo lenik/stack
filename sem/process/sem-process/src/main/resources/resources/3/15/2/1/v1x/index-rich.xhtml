@@ -12,12 +12,12 @@
             update=":addLevelForm:targetPolicy" />
     </ui:define>
 
-    <ui:define name="dataColumns" sortBy="#{entry.label}">
-        <p:column headerText="名称">
+    <ui:define name="dataColumns">
+        <p:column headerText="名称" sortBy="#{entry.label}">
             <h:outputText value="#{entry.label}" />
         </p:column>
 
-        <p:column headerText="描述">
+        <p:column headerText="描述" styleClass="f-wrappable">
             <h:outputText value="#{entry.description}" />
         </p:column>
     </ui:define>

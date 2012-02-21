@@ -9,27 +9,27 @@
     <ui:param name="people" value="#{peopleDictsBean}" />
 
     <ui:define name="dataColumns">
-        <p:column headerText="公司名称" sortBy="#{entry.label}">
+        <p:column headerText="公司名称" sortBy="#{entry.label}" styleClass="f-wrappable">
             <h:outputText value="#{entry.label}" />
         </p:column>
 
-        <p:column headerText="类型">
+        <p:column headerText="类型" styleClass="f-wrappable">
             <h:outputText value="#{entry.types}" />
         </p:column>
 
-        <p:column headerText="联系电话" style="width: 12em">
+        <p:column headerText="联系电话" styleClass="f-wrappable" style="width: 12em">
             <h:outputText value="#{entry.contactsString}" />
         </p:column>
 
-        <p:column headerText="银行">
+        <p:column headerText="银行" styleClass="f-wrappable">
             <h:outputText value="#{entry.bank}" />
         </p:column>
 
-        <p:column headerText="帐号">
+        <p:column headerText="帐号" styleClass="f-wrappable">
             <h:outputText value="#{entry.bankAccount}" />
         </p:column>
 
-        <p:column headerText="税务登记号">
+        <p:column headerText="税务登记号" styleClass="f-wrappable">
             <h:outputText value="#{entry.sid}" />
         </p:column>
 
@@ -260,8 +260,7 @@
                     </h:panelGrid>
                 </p:tab>
                 <p:tab title="联系方式">
-                    <h:panelGrid columns="4"
-                        columnClasses="field-label, field-content, field-label, field-content">
+                    <h:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
                         <h:outputLabel for="contactAddress" value="地址" />
                         <p:inputText id="contactAddress" value="#{item.contact.address}" label="地址" />
                         <h:outputLabel for="contactPostCode" value="邮编" />

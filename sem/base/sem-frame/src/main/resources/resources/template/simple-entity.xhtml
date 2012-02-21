@@ -64,12 +64,12 @@
         </ui:insert>
 
         <ui:insert name="dataColumnsC">
-            <p:column headerText="更新日期" sortBy="${entry.lastModified}" style="width: 6.5em">
+            <p:column headerText="更新日期" sortBy="${entry.lastModified}">
                 <h:outputText value="${entry.lastModified}">
                     <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                 </h:outputText>
             </p:column>
-            <p:column headerText="属主" sortBy="${entry.owner}">
+            <p:column headerText="属主" sortBy="${entry.owner}" styleClass="f-nowrap">
                 <h:outputText value="${entry.owner.displayName}" />
             </p:column>
         </ui:insert>

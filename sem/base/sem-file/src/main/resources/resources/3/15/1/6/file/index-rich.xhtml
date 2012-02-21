@@ -26,7 +26,7 @@
             </h:outputText>
         </p:column>
 
-        <p:column headerText="文件">
+        <p:column headerText="文件" sortBy="${entry.label}" styleClass="f-wrappable" style="min-width: 30em">
             <div class="entry">
                 <span>${entry.labelOrName}</span>
                 <span class="ui-icon ui-icon-circle-triangle-e" onclick="toggleDetailPanel(event)" />

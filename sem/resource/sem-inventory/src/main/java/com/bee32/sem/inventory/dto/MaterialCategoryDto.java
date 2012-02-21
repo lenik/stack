@@ -98,12 +98,26 @@ public class MaterialCategoryDto
         this.materialCount = materialCount;
     }
 
+    public int getTotalMaterialCount() {
+        int total = materialCount;
+        for (MaterialCategoryDto child : getChildren())
+            total += child.getTotalMaterialCount();
+        return total;
+    }
+
     public int getPartCount() {
         return partCount;
     }
 
     public void setPartCount(int partCount) {
         this.partCount = partCount;
+    }
+
+    public int getTotalPartCount() {
+        int total = partCount;
+        for (MaterialCategoryDto child : getChildren())
+            total += child.getTotalPartCount();
+        return total;
     }
 
     public CodeGenerator getCodeGenerator() {

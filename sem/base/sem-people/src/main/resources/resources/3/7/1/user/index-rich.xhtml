@@ -14,7 +14,7 @@
         <p:column headerText="全名" sortBy="${entry.fullNAme}">
             <h:outputText value="#{entry.fullName}" />
         </p:column>
-        <p:column headerText="描述" sortBy="${entry.description}">
+        <p:column headerText="描述" sortBy="${entry.description}" styleClass="f-wrappable">
             <h:outputText value="#{entry.description}" />
         </p:column>
         <p:column headerText="操作">
@@ -130,8 +130,7 @@
             <c:set var="person" value="#{bean.person}" />
             <h:form id="personForm" style="max-height: 40em; margin: 1em">
                 <p:panel header="详细信息" toggleable="true">
-                    <t:panelGrid columns="4" border="1"
-                        columnClasses="field-label, field-content, field-label, field-content">
+                    <t:panelGrid columns="4" border="1" columnClasses="field-label, field-content, field-label, field-content">
 
                         <h:outputLabel value="姓名" />
                         <h:outputText value="#{person.name}" />

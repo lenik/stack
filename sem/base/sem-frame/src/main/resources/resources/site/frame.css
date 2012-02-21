@@ -74,3 +74,19 @@ label {
 .field-content {
 
 }
+
+.ui-datatable-data td {
+    white-space: nowrap;
+}
+
+.ui-datatable-data td.f-wrappable {
+    white-space: normal;
+}
+
+.ui-treetable-data td {
+    white-space: nowrap;
+}
+
+.ui-treetable-data td.f-wrappable {
+    white-space: normal;
+}

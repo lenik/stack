@@ -36,20 +36,17 @@
             <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
 
             <ui:define name="columns">
-                <p:column headerText="物料名称">
+                <p:column headerText="物料名称" styleClass="f-wrappable">
                     <h:outputText value="${entry.label}" />
                 </p:column>
-                <p:column headerText="序列号">
-                    <h:outputText value="${entry.serial}" />
-                </p:column>
-                <p:column headerText="条形码">
-                    <h:outputText value="${entry.barCode}" />
+                <p:column headerText="规格型号" styleClass="f-wrappable">
+                    <h:outputText value="${entry.modelSpec}" />
                 </p:column>
                 <p:column headerText="主单位">
-                    <h:outputText value="${entry.unit.name}" />
+                    <h:outputText value="${entry.unit.label}" />
                 </p:column>
-                <p:column headerText="规格型号">
-                    <h:outputText value="${entry.modelSpec}" />
+                <p:column headerText="条形码" styleClass="f-wrappable">
+                    <h:outputText value="${entry.barCode}" />
                 </p:column>
             </ui:define>
         </ui:decorate>

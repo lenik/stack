@@ -38,11 +38,11 @@
             <ui:param name="selectionHolder" value="${cc.attrs.selectionHolder}" />
 
             <ui:define name="columns">
-                <p:column headerText="简要">
-                    <h:outputText value="#{entry.label}" />
+                <p:column headerText="简要" sortBy="${entry.label}">
+                    <h:outputText value="${entry.label}" />
                 </p:column>
-                <p:column headerText="备注">
-                    <h:outputText value="#{entry.description}" />
+                <p:column headerText="备注" styleClass="f-wrappable">
+                    <h:outputText value="${entry.description}" />
                 </p:column>
                 <cc:renderFacet name="columns" />
             </ui:define>
@@ -58,19 +58,19 @@
             creatable="false" editable="false" removable="false">
             <f:facet name="columns">
                 <p:column headerText="物料">
-                    <h:outputText value="#{entry.material.label}" />
+                    <h:outputText value="${entry.material.label}" />
                 </p:column>
                 <p:column headerText="规格型号">
-                    <h:outputText value="#{entry.material.modelSpec}" />
+                    <h:outputText value="${entry.material.modelSpec}" />
                 </p:column>
                 <p:column headerText="数量">
-                    <h:outputText value="#{entry.quantity}" />
+                    <h:outputText value="${entry.quantity}" />
                 </p:column>
                 <p:column headerText="优选供应商">
-                    <h:outputText value="#{entry.preferredSupplier.name}" />
+                    <h:outputText value="${entry.preferredSupplier.name}" />
                 </p:column>
                 <p:column headerText="附加要求">
-                    <h:outputText value="#{entry.additionalRequirement}" />
+                    <h:outputText value="${entry.additionalRequirement}" />
                 </p:column>
             </f:facet>
         </fr:listView>

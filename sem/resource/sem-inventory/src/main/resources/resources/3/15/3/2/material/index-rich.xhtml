@@ -18,35 +18,35 @@
 
                 <p:ajax event="select" listener="#{bean.refreshRowCount}" update=":mainForm:dataTable" />
 
-                <p:column headerText="分类名称" style="width:150px;">
+                <p:column headerText="分类名称" style="width:15em;">
                     <h:outputText value="#{category.name}" />
                 </p:column>
 
-                <p:column headerText="物料数" style="width:50px;">
-                    <h:outputText value="#{category.materialCount}" />
+                <p:column headerText="物料数" style="width:5em;">
+                    <h:outputText value="#{category.materialCount} (#{category.totalMaterialCount})" />
                 </p:column>
             </p:treeTable>
         </h:form>
     </ui:define>
 
     <ui:define name="dataColumns">
-        <p:column sortBy="#{entry.label}" headerText="物料名称" style="width:100px;">
+        <p:column headerText="物料名称" sortBy="#{entry.label}">
             <h:outputText value="#{entry.label}" />
         </p:column>
 
-        <p:column headerText="规格型号" style="width:80px;">
+        <p:column headerText="规格型号">
             <h:outputText value="#{entry.modelSpec}" />
         </p:column>
 
-        <p:column headerText="主单位" style="width:40px;">
+        <p:column headerText="主单位">
             <h:outputText value="#{entry.unit.label}(#{entry.unit.label})" />
         </p:column>
 
-        <p:column headerText="基准价格" style="width:60px;">
+        <p:column headerText="基准价格">
             <h:outputText value="#{entry.currentPrice}" />
         </p:column>
 
-        <p:column headerText="操作" style="width:150px;">
+        <p:column headerText="操作">
             <p:commandLink styleClass="icon-button" title="价格" update=":materialPriceDialog:form"
                 oncomplete="materialPriceDialog.show()">
                 <f:setPropertyActionListener value="#{entry}" target="#{bean.openedObject}" />
@@ -80,17 +80,19 @@
                 <t:panelGrid columns="2">
                     <h:outputText value="物料分类:" />
                     <t:panelGrid columns="2">
-                        <p:inputText id="materialCategory" value="#{obj.category.name}" readonly="true" label="物料分类"/>
+                        <p:inputText id="materialCategory" value="#{obj.category.name}" readonly="true"
+                            label="物料分类" />
                         <p:commandButton value="..." onclick="chooseMaterialCategoryDialog.show()" />
                     </t:panelGrid>
 
                     <h:outputText value="物料名称:" />
-                    <p:inputText value="#{obj.label}" style="width:400px;" label="物料名称"/>
+                    <p:inputText value="#{obj.label}" style="width:40em;" label="物料名称" />
 
                     <h:outputText value="主单位:" />
                     <t:panelGrid columns="4">
                         <t:panelGrid columns="2">
-                            <p:selectOneMenu id="materialUnit" value="#{obj.unit.id}" style="width:100px;" label="主单位">
+                            <p:selectOneMenu id="materialUnit" value="#{obj.unit.id}" style="width:10em;"
+                                label="主单位">
                                 <f:selectItem itemLabel="--选择--" itemValue="" />
                                 <f:selectItems value="#{bean.units}" />
                             </p:selectOneMenu>
@@ -98,18 +100,18 @@
                                 onclick="addUnitDialog.show()" />
                         </t:panelGrid>
                         <h:outputText value="单位提示:" />
-                        <p:inputText value="#{obj.unitHint}" label="单位提示"/>
+                        <p:inputText value="#{obj.unitHint}" label="单位提示" />
                         <h:outputText value="(重量,长度等)" />
                     </t:panelGrid>
 
                     <h:outputText value="条形码:" />
-                    <p:inputText value="#{obj.barCode}" label="条形码"/>
+                    <p:inputText value="#{obj.barCode}" label="条形码" />
 
                     <h:outputText value="规格型号:" />
-                    <p:inputText value="#{obj.modelSpec}" style="width:400px;" label="规格型号"/>
+                    <p:inputText value="#{obj.modelSpec}" style="width:40em;" label="规格型号" />
 
                     <h:outputText value="备注:" />
-                    <p:inputText value="#{obj.description}" style="width:400px;" label="备注"/>
+                    <p:inputText value="#{obj.description}" style="width:40em;" label="备注" />
                 </t:panelGrid>
             </p:tab>
             <p:tab title="公共" disabled="true">
@@ -117,18 +119,18 @@
             <p:tab title="运输" disabled="true">
                 <h:outputText value="毛重(单位:克):" />
                 <t:panelGrid columns="3">
-                    <p:inputText value="#{obj.packageWeight}" style="width:50px;" label="毛重"/>
+                    <p:inputText value="#{obj.packageWeight}" style="width:5em;" label="毛重" />
                     <h:outputText value="净重(单位:克):" />
-                    <p:inputText value="#{obj.netWeight}" style="width:50px;" label="净重"/>
+                    <p:inputText value="#{obj.netWeight}" style="width:5em;" label="净重" />
                 </t:panelGrid>
                 <h:outputText value="装箱尺寸:" />
                 <t:panelGrid columns="7">
                     <h:outputText value="长" />
-                    <p:inputText value="#{obj.packageLength}" style="width:40px" label="长"/>
+                    <p:inputText value="#{obj.packageLength}" style="width:4em" label="长" />
                     <h:outputText value="宽" />
-                    <p:inputText value="#{obj.packageWidth}" style="width:40px" label="宽"/>
+                    <p:inputText value="#{obj.packageWidth}" style="width:4em" label="宽" />
                     <h:outputText value="高" />
-                    <p:inputText value="#{obj.packageHeight}" style="width:40px" label="高"/>
+                    <p:inputText value="#{obj.packageHeight}" style="width:4em" label="高" />
                     <h:outputText value="(厘米)" />
                 </t:panelGrid>
             </p:tab>
@@ -145,9 +147,9 @@
                     </f:facet>
                     <h:panelGrid columns="2">
                         <h:outputText value="属性名称" />
-                        <p:inputText value="#{item.name}" label="属性名称"/>
+                        <p:inputText value="#{item.name}" label="属性名称" />
                         <h:outputText value="属性值" />
-                        <p:inputText value="#{item.value}" label="属性值"/>
+                        <p:inputText value="#{item.value}" label="属性值" />
                     </h:panelGrid>
                 </fr:listView>
             </p:tab>
@@ -155,7 +157,8 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:chooseMaterialCategoryDialog id="mcdlg" target="#{obj.category}" update=":editDialog:form:tv:materialCategory" />
+        <sem:chooseMaterialCategoryDialog id="mcdlg" target="#{obj.category}"
+            update=":editDialog:form:tv:materialCategory" />
         <ui:include src="addUnit.xhtml">
             <ui:param name="update" value=":editDialog:form:tv:materialUnit" />
         </ui:include>

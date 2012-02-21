@@ -40,10 +40,10 @@
         <fr:listView id="itemsIndexView" header="生产项目" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
             nested="true" paginator="false" creatable="false">
             <f:facet name="columns">
-                <p:column headerText="物料">
+                <p:column headerText="物料" styleClass="f-wrappable">
                     <h:outputText value="#{entry.part.target.label}" />
                 </p:column>
-                <p:column headerText="规格型号">
+                <p:column headerText="规格型号" styleClass="f-wrappable">
                     <h:outputText value="#{entry.part.target.modelSpec}" />
                 </p:column>
                 <p:column headerText="数量">
@@ -54,7 +54,7 @@
                         <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                     </h:outputText>
                 </p:column>
-                <p:column headerText="备注">
+                <p:column headerText="备注" styleClass="f-wrappable">
                     <h:outputText value="#{entry.description}" />
                 </p:column>
             </f:facet>

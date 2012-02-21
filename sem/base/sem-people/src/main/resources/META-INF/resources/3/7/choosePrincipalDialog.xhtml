@@ -42,11 +42,11 @@
                     <h:outputText value="${entry.typeName}" />
                 </p:column>
 
-                <p:column headerText="名称">
+                <p:column headerText="名称" sortBy="${entry.name}">
                     <h:outputText value="${entry.name}" />
                 </p:column>
 
-                <p:column headerText="全名">
+                <p:column headerText="全名" sortBy="${entry.label}">
                     <h:outputText value="${entry.fullName}" />
                 </p:column>
 

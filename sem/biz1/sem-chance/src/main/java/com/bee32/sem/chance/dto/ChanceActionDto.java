@@ -123,7 +123,7 @@ public class ChanceActionDto
 
     public String getTimeRange() {
         if (beginTime != null && endTime != null)
-            return DateToRange.fullFormat.format(beginTime).substring(10, 16) + " 到 "
+            return DateToRange.fullFormat.format(beginTime).substring(10, 16) + "-"
                     + DateToRange.fullFormat.format(endTime).substring(10, 16);
         else
             return "";

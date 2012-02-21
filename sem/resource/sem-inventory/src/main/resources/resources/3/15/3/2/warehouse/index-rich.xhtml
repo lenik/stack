@@ -11,16 +11,16 @@
             <h:outputText value="#{entry.label}" />
         </p:column>
 
-        <p:column headerText="地址">
+        <p:column headerText="地址" styleClass="f-wrappable">
             <h:outputText value="#{entry.address}" />
         </p:column>
 
-        <p:column headerText="电话">
+        <p:column headerText="电话" styleClass="f-wrappable">
             <h:outputText value="#{entry.phone}" />
         </p:column>
 
         <p:column headerText="负责人">
-            <h:outputText value="#{entry.manager.name}" />
+            <h:outputText value="#{entry.manager.displayName}" />
         </p:column>
     </ui:define>
 
@@ -37,10 +37,9 @@
 
             <h:outputText value="负责人:" />
             <h:panelGroup>
-                <p:inputText value="#{obj.manager.displayName}" label="负责人" disabled="true"/>
+                <p:inputText value="#{obj.manager.displayName}" label="负责人" disabled="true" />
                 <p:commandButton value="..." oncomplete="chooseManagerDialog.show();">
-                    <f:setPropertyActionListener
-                        target="${choosePartyDialogBean.stereo}"
+                    <f:setPropertyActionListener target="${choosePartyDialogBean.stereo}"
                         value="PER" />
                 </p:commandButton>
             </h:panelGroup>

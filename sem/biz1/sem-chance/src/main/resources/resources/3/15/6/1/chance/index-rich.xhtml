@@ -13,13 +13,13 @@
     <ui:param name="dicts" value="${chanceDictsBean}" />
 
     <ui:define name="dataColumns">
-        <p:column headerText="日期" sortBy="${entry.beginDate}">
+        <p:column headerText="日期" sortBy="${entry.beginDate}" styleClass="f-wrappable">
             <h:outputText value="${entry.date}" />
         </p:column>
         <p:column headerText="类型" sortBy="${entry.category}">
             <h:outputText value="${entry.category.label}" />
         </p:column>
-        <p:column headerText="机会标题" sortBy="${entry.subject}">
+        <p:column headerText="机会标题" sortBy="${entry.subject}" styleClass="f-wrappable">
             <h:outputText value="${entry.subject}" />
         </p:column>
         <p:column headerText="来源" sortBy="${entry.source}">
@@ -30,7 +30,7 @@
                 <h:outputText value="${entry.partiesHint}" />
             </p:column>
         </ui:remove>
-        <p:column headerText="机会内容">
+        <p:column headerText="机会内容" styleClass="f-wrappable">
             <h:outputText value="${entry.shortContent}" />
         </p:column>
         <p:column headerText="机会阶段" sortBy="${entry.stage}">

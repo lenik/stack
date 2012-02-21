@@ -65,15 +65,15 @@
         </ui:insert>
         <ui:insert name="edit-more" />
 
-        <fr:listView id="itemsIndexView" header="明细" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
-            nested="true" paginator="${paginator != null ? paginator : false}" creatable="${itemCreatable != null ? itemCreatable : true}"
+        <fr:listView id="itemsIndexView" header="${title}项目" style="indexPanel" editView=":itemsEditView"
+            mbean="#{bean.itemsMBean}" nested="true" paginator="${paginator != null ? paginator : false}" creatable="${itemCreatable != null ? itemCreatable : true}"
             editable="${itemEditable != null ? itemEditable : true}" removable="${itemRemovable != null ? itemRemovable : true}">
             <f:facet name="columns">
-                <p:column headerText="物料" sortBy="#{entry.material.label}">
+                <p:column headerText="物料" sortBy="#{entry.material.label}" styleClass="f-wrappable">
                     <h:outputText value="#{entry.material.label}" />
                 </p:column>
 
-                <p:column headerText="规格型号">
+                <p:column headerText="规格型号" styleClass="f-wrappable">
                     <h:outputText value="#{entry.material.modelSpec}" />
                 </p:column>
 
@@ -101,16 +101,12 @@
                     <h:outputText value="#{entry.expirationDate}" />
                 </p:column>
 
-                <p:column headerText="库位">
+                <p:column headerText="库位" styleClass="f-wrappable">
                     <h:outputText value="#{entry.location.label}" />
                 </p:column>
 
                 <p:column headerText="单价">
-                    <h:outputText value="#{entry.price.value}" />
-                </p:column>
-
-                <p:column headerText="币种">
-                    <h:outputText value="#{entry.price.currencyText}" />
+                    <h:outputText value="#{entry.price}" />
                 </p:column>
 
                 <ui:insert name="entry-quantity">
@@ -119,7 +115,7 @@
                     </p:column>
                 </ui:insert>
 
-                <p:column headerText="备注">
+                <p:column headerText="备注" styleClass="f-wrappable">
                     <h:outputText value="#{entry.description}" />
                 </p:column>
             </f:facet>
@@ -141,28 +137,34 @@
                 update=":itemsEditView:editForm:body" />
         </c:if>
 
-        <fr:listView id="itemsEditView" header="明细" style="editDialog" indexView=":editDialog:form:itemsIndexView"
+        <fr:listView id="itemsEditView" header="#{title}项目" style="editDialog" indexView=":editDialog:form:itemsIndexView"
             mbean="#{bean.itemsMBean}">
             <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
                 <h:outputLabel for="material" value="物料：" />
                 <t:panelGroup colspan="3">
-                    <p:inputText id="material" label="物料" value="#{item.material.label}" readonly="true" />
-                    <p:commandButton value="..." onclick="chooseMaterialDialog.show();" />
+                    <table width="100%">
+                        <tr>
+                            <td>
+                                <p:inputText id="material" label="物料" value="#{item.material.label}"
+                                    readonly="true" style="width: 20em" />
+                                <p:commandButton value="..." onclick="chooseMaterialDialog.show();" />
+                            </td>
+                            <td align="right">
+                                <c:if test="${not disableStockQuery}">
+                                    <p:commandButton value="查询库存" update=":stockQueryDialog:form"
+                                        oncomplete="stockQueryDialog.show()">
+                                        <f:setPropertyActionListener target="#{stockQueryDialogBean.autoQuery}"
+                                            value="#{item.material != null}" />
+                                        <f:setPropertyActionListener target="#{stockQueryDialogBean.queryOptions}"
+                                            value="#{bean.stockQueryOptions}" />
+                                        <f:setPropertyActionListener target="#{stockQueryDialogBean.singleMaterial}"
+                                            value="#{item.material}" />
+                                    </p:commandButton>
+                                </c:if>
+                            </td>
+                        </tr>
+                    </table>
                 </t:panelGroup>
-
-                <c:if test="${not disableStockQuery}">
-                    <t:panelGroup colspan="2">
-                        <p:commandButton value="查询库存" update=":stockQueryDialog:form" oncomplete="stockQueryDialog.show()">
-                            <f:setPropertyActionListener target="#{stockQueryDialogBean.autoQuery}"
-                                value="#{item.material != null}" />
-                            <f:setPropertyActionListener target="#{stockQueryDialogBean.queryOptions}"
-                                value="#{bean.stockQueryOptions}" />
-                            <f:setPropertyActionListener target="#{stockQueryDialogBean.singleMaterial}"
-                                value="#{item.material}" />
-                        </p:commandButton>
-                    </t:panelGroup>
-                    <t:panelGroup colspan="2" />
-                </c:if>
 
                 <h:outputLabel for="batch0" value="批号：" />
                 <p:inputText id="batch0" label="批号" value="#{item.batchArray.batch0}" />
@@ -215,14 +217,14 @@
                 <h:outputLabel for="price" value="单价：" />
                 <p:inputText id="price" label="单价" value="#{item.price.value}" />
                 <h:outputLabel for="currency" value="币种" />
-                <p:selectOneMenu id="currency" label="币种" value="#{item.price.currencyCode}" style="width: 20em;">
+                <p:selectOneMenu id="currency" label="币种" value="#{item.price.currencyCode}" style="width: 15em;">
                     <f:selectItem itemValue="" itemLabel="--选择币种--" />
                     <f:selectItems value="#{monetary.currencySelectItems}" />
                 </p:selectOneMenu>
 
                 <h:outputLabel for="description" value="备注：" />
                 <t:panelGroup id="description" label="备注" colspan="3">
-                    <p:inputText value="#{item.description}" style="width: 40em" />
+                    <p:inputText value="#{item.description}" style="width: 90%" />
                 </t:panelGroup>
             </t:panelGrid>
         </fr:listView>

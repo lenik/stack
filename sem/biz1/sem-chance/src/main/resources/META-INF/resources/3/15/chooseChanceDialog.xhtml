@@ -38,19 +38,19 @@
             <ui:param name="selectionHolder" value="${cc.attrs.selectionHolder}" />
 
             <ui:define name="columns">
-                <p:column headerText="分类">
+                <p:column headerText="分类" sortBy="${entry.category}">
                     <h:outputText value="${entry.category.label}" />
                 </p:column>
 
-                <p:column headerText="来源">
+                <p:column headerText="来源" sortBy="${entry.source}">
                     <h:outputText value="${entry.source.label}" />
                 </p:column>
 
-                <p:column headerText="标题">
+                <p:column headerText="标题" sortBy="${entry.subject}" styleClass="f-wrappable">
                     <h:outputText value="${entry.subject}" />
                 </p:column>
 
-                <p:column headerText="阶段">
+                <p:column headerText="阶段" sortBy="${entry.stage}">
                     <h:outputText value="${entry.stage.label}" />
                 </p:column>
 
