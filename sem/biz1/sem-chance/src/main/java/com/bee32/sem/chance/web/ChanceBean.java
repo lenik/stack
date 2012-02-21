@@ -50,21 +50,21 @@ public class ChanceBean
     @Override
     protected boolean preUpdate(UnmarshalMap uMap)
             throws Exception {
-        UnmarshalMap actionUMap = uMap.getSubMap("actions");
-        actionUMap.setLabel("关联行动");
-        actionUMap.setEntityClass(ChanceAction.class);
+        UnmarshalMap dActions = uMap.deltaMap("actions");
+        dActions.setLabel("关联行动");
+        dActions.setEntityClass(ChanceAction.class);
 
         for (Chance _chance : uMap.<Chance> entitySet()) {
             ChanceDto chance = uMap.getSourceDto(_chance);
             RefsDiff diff = Identities.compare(_chance.getActions(), chance.getActions());
             for (ChanceAction _detached : diff.<ChanceAction> leftOnly()) {
                 _detached.setChance(null);
-                actionUMap.put(_detached, null);
+                dActions.put(_detached, null);
             }
             for (ChanceActionDto attached : diff.<ChanceActionDto> rightOnly()) {
                 ChanceAction _attached = attached.unmarshal();
                 _attached.setChance(_chance);
-                actionUMap.put(_attached, attached);
+                dActions.put(_attached, attached);
             }
         }
         return true;

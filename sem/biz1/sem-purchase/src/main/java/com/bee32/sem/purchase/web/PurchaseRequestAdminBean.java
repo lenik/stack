@@ -40,21 +40,21 @@ public class PurchaseRequestAdminBean
     @Override
     protected boolean preUpdate(UnmarshalMap uMap)
             throws Exception {
-        UnmarshalMap plansUMap = uMap.getSubMap("plans");
-        plansUMap.setLabel("关联的物料计划");
-        plansUMap.setEntityClass(MaterialPlan.class);
+        UnmarshalMap dPlans = uMap.deltaMap("plans");
+        dPlans.setLabel("关联的物料计划");
+        dPlans.setEntityClass(MaterialPlan.class);
 
         for (PurchaseRequest _purchaseRequest : uMap.<PurchaseRequest> entitySet()) {
             PurchaseRequestDto purchaseRequest = uMap.getSourceDto(_purchaseRequest);
             RefsDiff diff = Identities.compare(_purchaseRequest.getPlans(), purchaseRequest.getPlans());
             for (MaterialPlan _detached : diff.<MaterialPlan> leftOnly()) {
                 _detached.setPurchaseRequest(null);
-                plansUMap.put(_detached, null);
+                dPlans.put(_detached, null);
             }
             for (MaterialPlanDto attached : diff.<MaterialPlanDto> rightOnly()) {
                 MaterialPlan _attached = attached.unmarshal();
                 _attached.setPurchaseRequest(_purchaseRequest);
-                plansUMap.put(_attached, attached);
+                dPlans.put(_attached, attached);
             }
         }
         return true;

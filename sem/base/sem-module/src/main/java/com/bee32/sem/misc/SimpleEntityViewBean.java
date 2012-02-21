@@ -556,7 +556,7 @@ public class SimpleEntityViewBean
                 dto.setId(newId);
             }
 
-        for (UnmarshalMap subMap : uMap.getSubMaps().values()) {
+        for (UnmarshalMap subMap : uMap.getDeltaMaps().values()) {
             Class<?> subEntityClass = subMap.getEntityClass();
             Set<Entity<?>> subEntities = subMap.keySet();
             try {

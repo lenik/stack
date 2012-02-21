@@ -17,7 +17,7 @@ public class UnmarshalMap
     String label;
     Class<?> entityClass = Entity.class;
 
-    Map<String, UnmarshalMap> subMaps;
+    Map<String, UnmarshalMap> deltaMaps;
 
     public UnmarshalMap() {
         super(new IdentityHashMap<Entity<?>, EntityDto<?, ?>>());
@@ -53,29 +53,29 @@ public class UnmarshalMap
         return _get(entity);
     }
 
-    public Map<String, UnmarshalMap> getSubMaps() {
-        if (subMaps == null) {
+    public Map<String, UnmarshalMap> getDeltaMaps() {
+        if (deltaMaps == null) {
             synchronized (this) {
-                if (subMaps == null) {
-                    subMaps = new LinkedHashMap<String, UnmarshalMap>();
+                if (deltaMaps == null) {
+                    deltaMaps = new LinkedHashMap<String, UnmarshalMap>();
                 }
             }
         }
-        return subMaps;
+        return deltaMaps;
     }
 
-    public UnmarshalMap getSubMap(String id) {
-        Map<String, UnmarshalMap> subMaps = getSubMaps();
-        UnmarshalMap subMap = subMaps.get(id);
-        if (subMap == null) {
+    public UnmarshalMap deltaMap(String id) {
+        Map<String, UnmarshalMap> deltaMaps = getDeltaMaps();
+        UnmarshalMap deltaMap = deltaMaps.get(id);
+        if (deltaMap == null) {
             synchronized (this) {
-                if (subMap == null) {
-                    subMap = new UnmarshalMap();
-                    subMaps.put(id, subMap);
+                if (deltaMap == null) {
+                    deltaMap = new UnmarshalMap();
+                    deltaMaps.put(id, deltaMap);
                 }
             }
         }
-        return subMap;
+        return deltaMap;
     }
 
 }
