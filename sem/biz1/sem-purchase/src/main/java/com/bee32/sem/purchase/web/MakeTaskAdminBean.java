@@ -57,7 +57,7 @@ public class MakeTaskAdminBean
         MakeOrderDto makeOrder = reload(makeOrderRef, MakeOrderDto.NOT_ARRANGED_ITEMS);
         List<MakeTaskItemDto> taskItems = makeOrder.arrangeMakeTask();
         if (taskItems.isEmpty()) {
-            uiLogger.error("此定单上的产品的生产任务已经全部安排完成");
+            uiLogger.error("此订单上的产品的生产任务已经全部安排完成");
             return;
         }
         makeTask.setOrder(makeOrderRef);

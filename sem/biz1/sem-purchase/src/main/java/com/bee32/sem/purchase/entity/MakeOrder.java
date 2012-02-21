@@ -30,7 +30,7 @@ import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
 import com.bee32.sem.world.thing.AbstractItemList;
 
 /**
- * 生产定单
+ * 生产订单
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "make_order_seq", allocationSize = 1)
