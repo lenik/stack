@@ -38,7 +38,11 @@
             <ui:param name="selectionHolder" value="${cc.attrs.selectionHolder}" />
 
             <ui:define name="columns">
-                <p:column headerText="简要">
+                <p:column headerText="生产订单">
+                    <h:outputText value="(#{entry.order.id}) #{entry.order.label}" />
+                </p:column>
+
+                <p:column headerText="生产任务">
                     <h:outputText value="#{entry.label}" />
                 </p:column>
 
@@ -46,10 +50,6 @@
                     <h:outputText value="#{entry.deadline}">
                         <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                     </h:outputText>
-                </p:column>
-
-                <p:column headerText="对应生产订单">
-                    <h:outputText value="#{entry.order.id}" />
                 </p:column>
 
                 <cc:renderFacet name="columns" />
