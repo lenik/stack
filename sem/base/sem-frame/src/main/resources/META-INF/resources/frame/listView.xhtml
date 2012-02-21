@@ -23,9 +23,11 @@
         <cc:attribute name="removable" type="java.lang.Boolean" default="true" />
         <cc:facet name="columns" required="true" />
         <cc:facet name="more" />
+        <cc:facet name="index-header" />
         <cc:facet name="index-buttons" />
         <cc:facet name="index-buttons.left" />
         <cc:facet name="index-buttons.right" />
+        <cc:facet name="picker-init" />
         <cc:facet name="edit-buttons" />
     </cc:interface>
 
@@ -49,6 +51,8 @@
 
             <ui:define name="indexFormContent">
                 <h:panelGrid columns="1">
+                    <cc:insertRawFacet name="index-header" />
+
                     <h:panelGroup id="dataContainer" layout="block">
                         <ui:insert name="dataContainer">
                             <p:dataTable id="dataTable" value="${mbean.selectableList}" selection="${mbean.selection}"
@@ -83,7 +87,9 @@
                                         update=":@form, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
                                         oncomplete="${editPopup ? cc.attrs.editDialogVar.concat('.show();') : ''}" />
                                     <p:commandButton rendered="${picker != null}" id="link" value="连接到…"
-                                        onclick="${picker}.show();" />
+                                        oncomplete="${picker}.show();">
+                                        <cc:insertRawFacet name="picker-init" />
+                                    </p:commandButton>
                                     <p:commandButton rendered="${cc.attrs.removable and picker != null}"
                                         id="unlink" value="断开" disabled="${not mbean.selectionRemovable}"
                                         actionListener="${mbean.removeSelection}"
