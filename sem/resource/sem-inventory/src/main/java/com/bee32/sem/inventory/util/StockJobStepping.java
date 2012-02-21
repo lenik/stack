@@ -60,14 +60,20 @@ public class StockJobStepping
         }
         if (job == null && isInitiator()) // Re-Create the missing job for secondary steppings.
             try {
-                job = jobDtoClass.newInstance();
-                job.create();
-                setJobDtoBinding(job, initiatorOrder);
+                job = createJob(initiatorOrder);
             } catch (ReflectiveOperationException e) {
                 uiLogger.error("无法创建作业对象", e);
                 return;
             }
         setOpenedObject(job);
+    }
+
+    protected StockJobDto<?> createJob(StockOrderDto initiatorOrder)
+            throws InstantiationException, IllegalAccessException {
+        StockJobDto<?> job = jobDtoClass.newInstance();
+        job.create();
+        setJobDtoBinding(job, initiatorOrder);
+        return job;
     }
 
     @Override

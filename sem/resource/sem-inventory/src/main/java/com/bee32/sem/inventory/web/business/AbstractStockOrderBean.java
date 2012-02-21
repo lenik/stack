@@ -12,17 +12,15 @@ import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
-import com.bee32.sem.inventory.entity.AbstractStockOrder;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.service.StockQueryOptions;
-import com.bee32.sem.inventory.tx.entity.StockJob;
+import com.bee32.sem.inventory.tx.dto.StockJobDto;
 import com.bee32.sem.inventory.util.StockCriteria;
 import com.bee32.sem.inventory.util.StockJobStepping;
 import com.bee32.sem.inventory.web.StockQueryDialogBean;
 import com.bee32.sem.misc.DateRangeTemplate;
 import com.bee32.sem.misc.ScrollEntityViewBean;
-import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.OrgUnitDto;
 
@@ -47,11 +45,26 @@ public abstract class AbstractStockOrderBean
         super(StockOrder.class, StockOrderDto.class, 0);
         String s = ctx.view.getRequest().getParameter("subject");
         subject = s == null ? null : StockOrderSubject.valueOf(s);
-        stepping = new StockJobStepping();
+        stepping = new StockJobFriend();
         if (configJobStepping(stepping))
             addFriend("job", stepping);
         dateRange = DateRangeTemplate.thisMonth;
         addBeginEndDateRestriction();
+    }
+
+    class StockJobFriend
+            extends StockJobStepping {
+
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        protected StockJobDto<?> createJob(StockOrderDto initiatorOrder)
+                throws InstantiationException, IllegalAccessException {
+            StockJobDto<?> stockJob = super.createJob(initiatorOrder);
+            initStockJob(stockJob);
+            return stockJob;
+        }
+
     }
 
     protected abstract boolean configJobStepping(StockJobStepping stepping);
@@ -69,22 +82,7 @@ public abstract class AbstractStockOrderBean
             elements.add(new Equals("warehouse.id", selectedWarehouseId));
     }
 
-    protected StockJob createStockJob(AbstractStockOrder<?> stockOrder) {
-        return null;
-    }
-
-    protected boolean deleteStockJob(AbstractStockOrder<?> stockOrder) {
-        return true;
-    }
-
-    @Override
-    protected boolean preDelete(UnmarshalMap uMap)
-            throws Exception {
-        for (AbstractStockOrder<?> stockOrder : uMap.<AbstractStockOrder<?>> entitySet()) {
-            if (!deleteStockJob(stockOrder))
-                return false;
-        }
-        return true;
+    protected void initStockJob(StockJobDto<?> stockJob) {
     }
 
     @Override
