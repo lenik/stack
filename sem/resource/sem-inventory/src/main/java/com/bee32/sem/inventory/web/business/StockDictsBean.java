@@ -65,7 +65,10 @@ public class StockDictsBean
             StockWarehouseDto.class, 0);
 
     public StockWarehouseDto getWarehouse(int id) {
-        return warehouseMap.get(id);
+        StockWarehouseDto warehouse = warehouseMap.get(id);
+        if (warehouse == null)
+            warehouse = new StockWarehouseDto().ref();
+        return warehouse;
     }
 
     public List<SelectItem> getWarehouseSelectItems() {
