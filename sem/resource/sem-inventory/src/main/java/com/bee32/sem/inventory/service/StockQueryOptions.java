@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import com.bee32.plover.criteria.hibernate.GroupPropertyProjection;
+import com.bee32.sem.inventory.util.CBatch;
 import com.bee32.sem.world.monetary.MCValue;
 
 public final class StockQueryOptions
@@ -16,7 +17,7 @@ public final class StockQueryOptions
     boolean endOfToday;
     boolean verifiedOnly = false;
 
-    String cBatch;
+    CBatch cBatch;
     MCValue price;
     Integer locationId;
     Integer warehouseId;
@@ -31,9 +32,9 @@ public final class StockQueryOptions
         this.endOfToday = endOfDay;
     }
 
-    public StockQueryOptions(Date timestamp, String cbatch, MCValue price, Integer locationId, Integer warehouseId) {
+    public StockQueryOptions(Date timestamp, CBatch cBatch, MCValue price, Integer locationId, Integer warehouseId) {
         setTimestamp(timestamp);
-        setCBatch(cbatch);
+        setCBatch(cBatch);
         setPrice(price);
         setLocation(locationId);
         setWarehouse(warehouseId);
@@ -92,15 +93,15 @@ public final class StockQueryOptions
         this.verifiedOnly = verifiedOnly;
     }
 
-    public String getCBatch() {
+    public CBatch getCBatch() {
         return cBatch;
     }
 
-    public void setCBatch(String cbatch) {
+    public void setCBatch(CBatch cbatch) {
         setCBatch(cbatch, cbatch != null);
     }
 
-    public void setCBatch(String cbatch, boolean visible) {
+    public void setCBatch(CBatch cbatch, boolean visible) {
         this.cBatch = cbatch;
         this.cbatchVisible = cbatch != null || visible;
     }

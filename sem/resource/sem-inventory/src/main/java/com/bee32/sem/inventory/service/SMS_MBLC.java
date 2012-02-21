@@ -5,6 +5,7 @@ import java.util.Currency;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockOrderItem;
+import com.bee32.sem.inventory.util.CBatch;
 
 public class SMS_MBLC
         implements IStockMergeStrategy {
@@ -14,7 +15,7 @@ public class SMS_MBLC
     static final class Key {
 
         final Material material;
-        final String cbatch;
+        final CBatch cBatch;
         final StockLocation location;
         final Currency currency;
 
@@ -22,20 +23,20 @@ public class SMS_MBLC
             if (item == null)
                 throw new NullPointerException("item");
             material = item.getMaterial();
-            cbatch = item.getCBatch();
+            cBatch = item.getCBatch();
             location = item.getLocation();
             currency = item.getPrice().getCurrency();
         }
 
-        public Key(Material material, String cbatch, StockLocation location, Currency currency) {
+        public Key(Material material, CBatch cBatch, StockLocation location, Currency currency) {
             if (material == null)
                 throw new NullPointerException("material");
-            if (cbatch == null)
+            if (cBatch == null)
                 throw new NullPointerException("cbatch");
             if (currency == null)
                 throw new NullPointerException("currency");
             this.material = material;
-            this.cbatch = cbatch;
+            this.cBatch = cBatch;
             this.location = location;
             this.currency = currency;
         }
@@ -49,7 +50,7 @@ public class SMS_MBLC
             if (!material.equals(o.material))
                 return false;
 
-            if (!cbatch.equals(o.cbatch))
+            if (!cBatch.equals(o.cBatch))
                 return false;
 
             if (!currency.equals(o.currency))
@@ -62,7 +63,7 @@ public class SMS_MBLC
         public int hashCode() {
             int hash = 0;
             hash += material.hashCode();
-            hash += cbatch.hashCode();
+            hash += cBatch.hashCode();
             hash += currency.hashCode();
             return hash;
         }

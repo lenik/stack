@@ -4,15 +4,17 @@ import java.io.Serializable;
 
 import javax.free.Nullables;
 
+import com.bee32.sem.inventory.util.CBatch;
+
 public class StockItemKey
         implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     final Material material;
-    final String cbatch;
+    final CBatch cbatch;
 
-    public StockItemKey(Material material, String cbatch) {
+    public StockItemKey(Material material, CBatch cbatch) {
         if (material == null)
             throw new NullPointerException("material");
         this.material = material;
@@ -23,7 +25,7 @@ public class StockItemKey
         return material;
     }
 
-    public String getCbatch() {
+    public CBatch getCbatch() {
         return cbatch;
     }
 

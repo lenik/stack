@@ -1,11 +1,11 @@
 package com.bee32.sem.inventory.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -16,13 +16,9 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.NaturalId;
 
-import com.bee32.plover.arch.util.IdComposite;
-import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.cache.Redundant;
-import com.bee32.sem.inventory.config.BatchingConfig;
+import com.bee32.sem.inventory.util.CBatch;
 import com.bee32.sem.world.thing.AbstractItem;
 
 @BatchSize(size = 100)
@@ -36,9 +32,11 @@ public class StockOrderItem
 
     private static final long serialVersionUID = 1L;
 
+    public static final int BATCH_LENGTH = 20;
+
     AbstractStockOrder<?> parent;
     Material material;
-    String batch;
+    CBatch cBatch;
     Date expirationDate;
     StockLocation location;
     StockItemState state = StockItemState.NORMAL;
@@ -48,10 +46,9 @@ public class StockOrderItem
 
     public StockOrderItem(StockOrderItem item) {
         super(item);
-        naturalId();
         parent = item.parent;
         material = item.material;
-        batch = item.batch;
+        cBatch = item.cBatch.clone();
         expirationDate = item.expirationDate;
         location = item.location;
         state = item.state;
@@ -66,7 +63,6 @@ public class StockOrderItem
     /**
      * 所属订单
      */
-    @NaturalId
     @ManyToOne(optional = false)
     public AbstractStockOrder<?> getParent() {
         return parent;
@@ -94,7 +90,6 @@ public class StockOrderItem
     /**
      * 物料
      */
-    @NaturalId(mutable = true)
     @ManyToOne(optional = false)
     public Material getMaterial() {
         return material;
@@ -102,35 +97,6 @@ public class StockOrderItem
 
     public void setMaterial(Material material) {
         this.material = material;
-    }
-
-    /**
-     * 合成批号（冗余，作为简化自然键结构）
-     */
-    @Redundant
-    @NaturalId(mutable = true)
-    @Column(length = BatchingConfig.CBATCH_MAXLEN, nullable = false)
-    public String getCBatch() {
-        return computeCanonicalBatch();
-    }
-
-    public void setCBatch(String cBatch) {
-        parseCanonicalBatch(cBatch);
-    }
-
-    protected String computeCanonicalBatch() {
-        String batch = getBatch();
-        if (batch == null)
-            batch = "";
-        return batch;
-    }
-
-    protected void parseCanonicalBatch(String cBatch) {
-        if (cBatch == null || cBatch.isEmpty()) {
-            batch = null;
-            return;
-        }
-        batch = cBatch;
     }
 
     @Transient
@@ -141,13 +107,13 @@ public class StockOrderItem
     /**
      * 批号
      */
-    @Column(length = BatchingConfig.BATCH_LENGTH)
-    public String getBatch() {
-        return batch;
+    @Embedded
+    public CBatch getCBatch() {
+        return cBatch;
     }
 
-    public void setBatch(String batch) {
-        this.batch = batch;
+    public void setCBatch(CBatch cBatch) {
+        this.cBatch = cBatch;
     }
 
     /*
@@ -213,21 +179,6 @@ public class StockOrderItem
 
     void set_State(char _state) {
         this.state = StockItemState.valueOf(_state);
-    }
-
-    @Override
-    protected Serializable naturalId() {
-        return new IdComposite(naturalId(parent), naturalId(material), getCBatch(), getPrice());
-    }
-
-    @Override
-    protected ICriteriaElement selector(String prefix) {
-        String cBatch = getCBatch();
-        return selectors(//
-                selector(prefix + "parent", parent), //
-                selector(prefix + "material", material), //
-                new Equals(prefix + "CBatch", cBatch), //
-                new Equals(prefix + "price", getPrice()));
     }
 
     @Override

@@ -17,6 +17,7 @@ import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
+import com.bee32.sem.inventory.util.CBatch;
 import com.bee32.sem.world.monetary.MCValue;
 
 public class StockQuery
@@ -65,7 +66,7 @@ public class StockQuery
             int _column = 0;
             Material _material = (Material) line[_column++];
             BigDecimal _quantity = (BigDecimal) line[_column++];
-            String _cBatch = null;
+            CBatch _cBatch = null;
             Date _expire = null;
             MCValue _price = null;
             StockLocation _location = null;
@@ -73,7 +74,9 @@ public class StockQuery
             StockWarehouse _parentWarehouse = null;
 
             if (options.isCBatchVisible()) {
-                _cBatch = (String) line[_column++];
+                _cBatch = new CBatch();
+                for (int i = 0; i < 1; i++)
+                    _cBatch.setBatch(i + 1, (String) line[_column++]);
                 _price = (MCValue) line[_column++];
                 _expire = (Date) line[_column++];
             }

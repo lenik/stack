@@ -2,6 +2,7 @@ package com.bee32.sem.inventory.service;
 
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockOrderItem;
+import com.bee32.sem.inventory.util.CBatch;
 
 public class SMS_MB
         implements IStockMergeStrategy {
@@ -11,9 +12,9 @@ public class SMS_MB
     static final class Key {
 
         Material material;
-        String cbatch;
+        CBatch cbatch;
 
-        public Key(Material material, String cbatch) {
+        public Key(Material material, CBatch cbatch) {
             if (material == null)
                 throw new NullPointerException("material");
             if (cbatch == null)

@@ -168,7 +168,7 @@ public abstract class AbstractStockOrderBean
         }
         StockOrderItemDto orderItem = itemsMBean.getOpenedObject();
         orderItem.setMaterial(stockQueryItem.getMaterial());
-        orderItem.setBatch(stockQueryItem.getBatch());
+        orderItem.setCBatch(stockQueryItem.getCBatch());
         orderItem.setPrice(stockQueryItem.getPrice());
         orderItem.setExpirationDate(stockQueryItem.getExpirationDate());
         orderItem.setLocation(stockQueryItem.getLocation());

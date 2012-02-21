@@ -25,6 +25,7 @@ import com.bee32.sem.inventory.process.StockOrderVerifySupport;
 import com.bee32.sem.inventory.tx.entity.StockJob;
 import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
 import com.bee32.sem.inventory.tx.entity.StockTransfer;
+import com.bee32.sem.inventory.util.CBatch;
 import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.entity.OrgUnit;
 import com.bee32.sem.process.verify.IVerifiable;
@@ -289,12 +290,12 @@ public class AbstractStockOrder<Item extends StockOrderItem>
         item.setParent(this);
     }
 
-    public void addItem(Material material, String batch, double quantity, Double price) {
+    public void addItem(Material material, String batch1, double quantity, Double price) {
         @SuppressWarnings("unchecked")
         Item item = (Item) new StockOrderItem(); // XXX
 
         item.setMaterial(material);
-        item.setBatch(batch);
+        item.setCBatch(new CBatch(batch1));
         item.setQuantity(quantity);
         if (price != null)
             item.setPrice(price);

@@ -1,13 +1,11 @@
 package com.bee32.sem.inventory.dto;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 import javax.free.IllegalUsageException;
 import javax.free.ParseException;
 
-import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.sem.frame.ui.IEnclosedObject;
@@ -15,6 +13,7 @@ import com.bee32.sem.inventory.entity.AbstractStockOrder;
 import com.bee32.sem.inventory.entity.StockItemState;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
+import com.bee32.sem.inventory.util.CBatch;
 import com.bee32.sem.world.thing.AbstractItemDto;
 
 public class StockOrderItemDto
@@ -25,7 +24,7 @@ public class StockOrderItemDto
 
     StockOrderDto parent;
     MaterialDto material;
-    String batch;
+    CBatch cBatch;
     Date expirationDate;
     StockLocationDto location;
     StockItemState state;
@@ -52,7 +51,7 @@ public class StockOrderItemDto
         super._populate(o);
         parent = o.parent;
         material = o.material;
-        batch = o.batch;
+        cBatch = o.cBatch;
         expirationDate = o.expirationDate;
         location = o.location;
         state = o.state;
@@ -85,7 +84,7 @@ public class StockOrderItemDto
         }
 
         material = mref(MaterialDto.class, source.getMaterial());
-        batch = source.getBatch();
+        cBatch = source.getCBatch();
         expirationDate = source.getExpirationDate();
         location = mref(StockLocationDto.class, source.getLocation());
         state = source.getState();
@@ -98,7 +97,7 @@ public class StockOrderItemDto
 
         merge(target, "parent", parent);
         merge(target, "material", material);
-        target.setBatch(batch);
+        target.setCBatch(cBatch);
         target.setExpirationDate(expirationDate);
         merge(target, "location", location);
         target.setState(state);
@@ -155,12 +154,12 @@ public class StockOrderItemDto
         }
     }
 
-    public String getBatch() {
-        return batch;
+    public CBatch getCBatch() {
+        return cBatch;
     }
 
-    public void setBatch(String batch) {
-        this.batch = batch;
+    public void setCBatch(CBatch cBatch) {
+        this.cBatch = cBatch;
     }
 
     public Date getExpirationDate() {
@@ -169,17 +168,6 @@ public class StockOrderItemDto
 
     public void setExpirationDate(Date expirationDate) {
         this.expirationDate = expirationDate;
-    }
-
-    public String getCBatch() {
-        return computeCanonicalBatch();
-    }
-
-    protected String computeCanonicalBatch() {
-        String batch = getBatch();
-        if (batch == null)
-            batch = "";
-        return batch;
     }
 
     public StockLocationDto getLocation() {
@@ -198,11 +186,6 @@ public class StockOrderItemDto
         if (state == null)
             throw new NullPointerException("state");
         this.state = state;
-    }
-
-    @Override
-    protected Serializable naturalId() {
-        return new IdComposite(naturalId(parent), naturalId(material), getCBatch());
     }
 
 }

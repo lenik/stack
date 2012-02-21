@@ -4,6 +4,7 @@ import java.util.Currency;
 
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockOrderItem;
+import com.bee32.sem.inventory.util.CBatch;
 
 public class SMS_MBC
         implements IStockMergeStrategy {
@@ -13,10 +14,10 @@ public class SMS_MBC
     static final class Key {
 
         Material material;
-        String cbatch;
+        CBatch cbatch;
         Currency currency;
 
-        public Key(Material material, String cbatch, Currency currency) {
+        public Key(Material material, CBatch cbatch, Currency currency) {
             if (material == null)
                 throw new NullPointerException("material");
             if (cbatch == null)

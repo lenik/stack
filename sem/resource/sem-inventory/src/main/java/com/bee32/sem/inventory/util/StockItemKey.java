@@ -12,7 +12,7 @@ public class StockItemKey
     private static final long serialVersionUID = 1L;
 
     Serializable materialId;
-    String cBatch;
+    CBatch cBatch;
     Serializable locationId;
 
     public StockItemKey(StockOrderItem item) {
