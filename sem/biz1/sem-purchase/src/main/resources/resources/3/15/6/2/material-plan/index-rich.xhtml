@@ -97,7 +97,7 @@
 
         <fr:listView id="itemsEditView" header="物料计划项" style="editDialog" indexView=":editDialog:form:tv:itemsIndexView"
             mbean="#{bean.itemsMBean}">
-            <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
+            <t:panelGrid columns="2" columnClasses="field-label, field-content">
 
                 <h:outputLabel value="物料" />
                 <h:outputText value="#{item.material.label}" />
@@ -173,7 +173,7 @@
 
         <fr:listView id="planOrderItemsEditView" header="库存锁定项" style="editDialog"
             indexView=":planOrdersEditView:editForm:planOrderItemsIndexView" mbean="#{bean.planOrderItemsMBean}">
-            <t:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+            <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
                 <h:outputLabel for="material" value="物料" />
                 <h:outputText id="material" value="#{item.material.label}" />
                 <h:outputLabel for="checked" value="锁定" />

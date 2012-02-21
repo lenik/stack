@@ -99,7 +99,7 @@
             <h:form id="editEntryForm" styleClass="${cc.attrs.formStyleClass}">
 
                 <t:panelGrid rendered="${dialogBean.entry != null}" columns="2"
-                    columnClasses="detail_col_title,detail_col_value">
+                    columnClasses="field-label, field-content">
                     <h:outputText value="安全主体" />
                     <t:panelGrid columns="2">
                         <p:inputText id="principal" readonly="true" value="${dialogBean.entry.principal.displayName}" />

@@ -41,7 +41,7 @@
     <ui:define name="editDialogContent">
         <p:tabView id="tv">
             <p:tab id="tab1" title="详细信息">
-                <t:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+                <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
                     <h:outputLabel for="name" value="公司名称" />
                     <p:inputText id="name" value="#{obj.label}" label="公司名称" />
                     <h:outputLabel for="fullName" value="全名" />
@@ -209,7 +209,7 @@
 
         <fr:listView id="contactsEditView" header="联系方式" style="editDialog" indexView=":editDialog:form:tv:contactsIndexView"
             mbean="#{bean.contactsMBean}">
-            <h:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+            <h:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
                 <h:outputLabel for="category" value="分类" />
                 <h:panelGroup colspan="3">
                     <p:selectOneMenu id="category" value="#{item.category.id}" style="width:200px;"
@@ -261,7 +261,7 @@
                 </p:tab>
                 <p:tab title="联系方式">
                     <h:panelGrid columns="4"
-                        columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+                        columnClasses="field-label, field-content, field-label, field-content">
                         <h:outputLabel for="contactAddress" value="地址" />
                         <p:inputText id="contactAddress" value="#{item.contact.address}" label="地址" />
                         <h:outputLabel for="contactPostCode" value="邮编" />
@@ -288,7 +288,7 @@
 
         <fr:listView id="rolesEditView" header="公司相关人员" style="editDialog" indexView=":editDialog:form:tv:rolesIndexView"
             mbean="#{bean.rolesMBean}">
-            <h:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
+            <h:panelGrid columns="2" columnClasses="field-label, field-content">
                 <h:outputLabel for="orgName" value="对应公司" />
                 <h:outputText id="orgName" value="#{item.org.displayName}" />
 

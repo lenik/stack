@@ -41,7 +41,7 @@
     <ui:define name="editDialogContent">
         <p:tabView id="tv">
             <p:tab title="机会基本信息">
-                <t:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+                <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
                     <h:outputLabel for="subject" value="机会标题:" />
                     <t:panelGroup colspan="3">
                         <p:inputText id="subject" label="机会标题" value="${obj.subject}" style="width: 100%;" />
@@ -228,7 +228,7 @@
 
         <fr:listView id="actionsEditView" header="行动记录" style="editDialog" picker="chooseChanceActionDialog"
             indexView=":editDialog:form:tv:actionsIndexView" mbean="${bean.actionsMBean}" readonly="true">
-            <t:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+            <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
 
                 <h:outputText value="开始时间:" />
                 <p:calendar id="beginTime" pattern="yyyy-MM-dd HH:mm" navigator="${true}" value="${item.beginTime}"

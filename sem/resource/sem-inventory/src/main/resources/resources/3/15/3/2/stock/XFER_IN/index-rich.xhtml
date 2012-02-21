@@ -77,7 +77,7 @@
 
         <p:dialog header="拨入数量分配" widgetVar="itemDialog" modal="true">
             <h:form id="itemForm">
-                <h:panelGrid columns="2" styleClasses="detail_col_title, detail_col_value" rendered="#{bean.destItem != null}">
+                <h:panelGrid columns="2" columnClasses="field-label, field-content" rendered="#{bean.destItem != null}">
 
                     <h:outputText value="物料:" />
                     <h:outputText value="#{bean.destItem.material.label}" style="font-weight:bold;" />
@@ -89,10 +89,10 @@
                         <table>
                             <ui:repeat id="batches" var="i" value="${batchMetadata.indexes}">
                                 <tr>
-                                    <td class="detail_col_title">
+                                    <td class="field-label">
                                         <h:outputLabel for="val" value="${batchMetadata.labels[i]}：" />
                                     </td>
-                                    <td class="detail_col_value">
+                                    <td class="field-content">
                                         <p:inputText id="val" value="${bean.destItem.batches[i].value}" />
                                     </td>
                                 </tr>

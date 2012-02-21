@@ -66,7 +66,7 @@
 
         <fr:listView id="itemsEditView" header="生产项目" style="editDialog" indexView=":editDialog:form:itemsIndexView"
             mbean="#{bean.itemsMBean}">
-            <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
+            <t:panelGrid columns="2" columnClasses="field-label, field-content">
 
                 <h:outputLabel value="物料" />
                 <h:outputText value="#{item.part.target.label}" />

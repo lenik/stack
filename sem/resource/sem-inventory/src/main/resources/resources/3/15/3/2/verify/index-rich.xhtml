@@ -18,7 +18,7 @@
 
     <ui:define name="editDialogContent">
         <c:set var="obj" value="#{bean.openedObject}" />
-        <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
+        <t:panelGrid columns="2" columnClasses="field-label, field-content">
             <h:outputLabel for="label" value="名称" />
             <p:inputText id="label" title="名称" value="#{obj.label}" />
 
@@ -70,7 +70,7 @@
 
         <p:dialog header="新增项目" widgetVar="addEntryDialog" modal="true">
             <h:form id="addEntryForm" styleClass="ui-dialog-form">
-                <t:panelGrid rendered="#{bean.entry != null}" columns="2" columnClasses="detail_col_title,detail_col_value">
+                <t:panelGrid rendered="#{bean.entry != null}" columns="2" columnClasses="field-label, field-content">
                     <h:outputLabel for="subject" value="库存单据类型" />
                     <t:panelGrid columns="2">
                         <p:selectOneMenu id="subject" value="#{bean.entry.subjectValue}" style="width:100px;" label="库存单据类型">

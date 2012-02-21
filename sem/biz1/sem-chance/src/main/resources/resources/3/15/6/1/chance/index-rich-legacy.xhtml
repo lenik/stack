@@ -116,7 +116,7 @@
                         <c:set var="_c" value="#{chanceBean.chanceCopy}" />
                         <p:fieldset legend="机会基本信息" toggleable="true" toggleSpeed="300">
                             <t:panelGrid columns="4"
-                                columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+                                columnClasses="field-label, field-content, field-label, field-content">
                                 <h:outputText value="机会标题:" />
                                 <t:panelGroup colspan="3">
                                     <p:inputText id="subject" value="#{_c.subject}" style="width:100%;"
@@ -447,7 +447,7 @@
                     <p:outputPanel rendered="#{chanceBean.chances.selected}">
                         <c:set var="_a" value="#{chanceBean.chanceCopy.selectedAction}" />
                         <t:panelGrid columns="4"
-                            columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+                            columnClasses="field-label, field-content, field-label, field-content">
 
                             <h:outputText value="开始时间:" />
                             <p:calendar id="beginTime" pattern="yyyy-MM-dd HH:mm" navigator="#{true}"

@@ -66,43 +66,11 @@ label {
     color: #cccccc;
 }
 
-.partColumnTitle {
-    width: 150px;
+.field-label {
+    width: 6em;
     text-align: right;
 }
 
-.partColumnValue {
+.field-content {
 
-}
-
-.alignTop {
-    vertical-align: top;
-}
-
-.detail_col_title {
-    width: 80px;
-    text-align: right;
-}
-
-.detail_col_value {
-
-}
-
-.col_left {
-    width: 350px;
-}
-
-.table_inner_line {
-    border: solid 1px #ccc;
-    text-align: center;
-}
-
-.ftd {
-    vertical-align: top;
-    width: 25%;
-}
-
-.std {
-    vertical-align: top;
-    width: 75%;
 }

@@ -38,7 +38,7 @@
     <ui:define name="editDialogContent">
         <p:tabView id="tv" style="width:100%;">
             <p:tab id="tab1" title="详细信息">
-                <t:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+                <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
                     <h:outputLabel for="personName" value="姓名" />
                     <p:inputText id="personName" value="#{obj.name}" label="姓名" />
                     <h:outputLabel for="personFullName" value="全名" />
@@ -235,7 +235,7 @@
                 <h:panelGroup id="contactHolder">
                     <h:inputHidden id="contactId" value="#{bean.contact.id}" />
                     <h:panelGrid columns="4"
-                        columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+                        columnClasses="field-label, field-content, field-label, field-content">
 
                         <h:outputLabel for="contactCategory" value="分类" />
                         <h:panelGroup colspan="3">

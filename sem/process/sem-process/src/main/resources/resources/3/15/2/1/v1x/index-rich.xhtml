@@ -24,7 +24,7 @@
 
     <ui:define name="editDialogContent">
         <c:set var="obj" value="#{bean.openedObject}" />
-        <t:panelGrid columns="2" columnClasses="detail_col_title,detail_col_value">
+        <t:panelGrid columns="2" columnClasses="field-label, field-content">
             <h:outputText value="名称" />
             <p:inputText value="#{obj.label}" />
             <h:outputText value="描述" />
@@ -62,7 +62,7 @@
     <ui:define name="dialogs">
         <p:dialog header="新增#{numberHint}级别" widgetVar="addLevelDialog" modal="true">
             <h:form id="addLevelForm" styleClass="ui-dialog-form">
-                <t:panelGrid id="addLevelPanel" columns="2" columnClasses="detail_col_title,detail_col_value">
+                <t:panelGrid id="addLevelPanel" columns="2" columnClasses="field-label, field-content">
 
                     <h:outputText value="#{numberHint}" />
                     <p:spinner value="#{bean.level.limit}" />
