@@ -104,6 +104,8 @@
                         <p:commandButton value="..." oncomplete="chooseDestLocationDialog.show()" >
                             <f:setPropertyActionListener target="#{chooseStockLocationDialogBean.warehouse}"
                                 value="#{bean.selectedWarehouse}" />
+                            <f:setPropertyActionListener target="#{chooseStockLocationDialogBean.material}"
+                                value="#{bean.destItem.material}" />
                         </p:commandButton>
                     </t:panelGroup>
                 </h:panelGrid>

@@ -9,6 +9,7 @@ import com.bee32.plover.orm.annotation.TypeParameter;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
+import com.bee32.sem.inventory.tx.dto.StockJobDto;
 import com.bee32.sem.inventory.tx.dto.StockTransferDto;
 import com.bee32.sem.inventory.tx.entity.StockTransfer;
 import com.bee32.sem.inventory.util.StockJobStepping;
@@ -54,5 +55,15 @@ public class StockOrderBean_XFER_OUT
             }
         return true;
     }
+
+    @Override
+    protected void initStockJob(StockJobDto<?> stockJob) {
+        super.initStockJob(stockJob);
+
+        StockTransferDto _dto = (StockTransferDto)stockJob;
+        _dto.setSourceWarehouse(getSelectedWarehouse());
+    }
+
+
 
 }
