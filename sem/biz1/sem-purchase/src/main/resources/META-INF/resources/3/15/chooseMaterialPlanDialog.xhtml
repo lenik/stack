@@ -53,23 +53,22 @@
             </ui:define>
         </ui:decorate>
 
-        <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
-        <fr:listView id="_chooseMP_itemsView" header="物料计划明细" style="dialog" mbean="${dialogBean.itemsMBean}"
-            creatable="false" editable="false" removable="false">
+        <fr:listView id="_chooseMP_itemsView" header="物料计划明细" style="dialog"
+            mbean="${cc.parent.attrs.dialogBean.itemsMBean}" creatable="false" editable="false" removable="false">
             <f:facet name="columns">
-                <p:column headerText="物料">
+                <p:column headerText="物料" styleClass="f-wrappable">
                     <h:outputText value="${entry.material.label}" />
                 </p:column>
-                <p:column headerText="规格型号">
+                <p:column headerText="规格型号" styleClass="f-wrappable">
                     <h:outputText value="${entry.material.modelSpec}" />
                 </p:column>
                 <p:column headerText="数量">
                     <h:outputText value="${entry.quantity}" />
                 </p:column>
-                <p:column headerText="优选供应商">
+                <p:column headerText="优选供应商" styleClass="f-wrappable">
                     <h:outputText value="${entry.preferredSupplier.name}" />
                 </p:column>
-                <p:column headerText="附加要求">
+                <p:column headerText="附加要求" styleClass="f-wrappable">
                     <h:outputText value="${entry.additionalRequirement}" />
                 </p:column>
             </f:facet>
