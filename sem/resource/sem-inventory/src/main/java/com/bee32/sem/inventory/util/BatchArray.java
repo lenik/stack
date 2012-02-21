@@ -20,10 +20,10 @@ public class BatchArray
     private static final long serialVersionUID = 1L;
 
     public static final int BATCH0_LENGTH = 30;
-    public static final int BATCH1_LENGTH = 30;
-    public static final int BATCH2_LENGTH = 30;
-    public static final int BATCH3_LENGTH = 30;
-    public static final int BATCH4_LENGTH = 30;
+    public static final int BATCH1_LENGTH = 20;
+    public static final int BATCH2_LENGTH = 20;
+    public static final int BATCH3_LENGTH = 20;
+    public static final int BATCH4_LENGTH = 20;
 
     public static final int MAX_ARRAYSIZE = 5;
     final String[] array;
