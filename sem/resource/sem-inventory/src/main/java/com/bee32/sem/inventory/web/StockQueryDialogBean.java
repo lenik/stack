@@ -56,7 +56,7 @@ public class StockQueryDialogBean
         setTabIndex(TAB_OPTIONS);
         queryOptions = new StockQueryOptions(new Date(), true);
         queryOptions.setWarehouse(null, true);
-        queryOptions.setCBatch(null, true);
+        queryOptions.setBatchArray(null, true);
         queryOptions.setLocation(null, true);
     }
 
@@ -229,7 +229,7 @@ public class StockQueryDialogBean
 
         StockQueryOptions options = new StockQueryOptions(new Date(), true);
         options.setWarehouse(warehouseId);
-        options.setCBatch(null, true);
+        options.setBatchArray(null, true);
         options.setLocation(null, true);
         return options;
     }

@@ -13,7 +13,8 @@ import com.bee32.sem.inventory.entity.AbstractStockOrder;
 import com.bee32.sem.inventory.entity.StockItemState;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
-import com.bee32.sem.inventory.util.CBatch;
+import com.bee32.sem.inventory.util.BatchArray;
+import com.bee32.sem.inventory.util.BatchArrayEntry;
 import com.bee32.sem.world.thing.AbstractItemDto;
 
 public class StockOrderItemDto
@@ -24,7 +25,7 @@ public class StockOrderItemDto
 
     StockOrderDto parent;
     MaterialDto material;
-    CBatch cBatch;
+    BatchArray batchArray;
     Date expirationDate;
     StockLocationDto location;
     StockItemState state;
@@ -51,7 +52,7 @@ public class StockOrderItemDto
         super._populate(o);
         parent = o.parent;
         material = o.material;
-        cBatch = o.cBatch;
+        batchArray = new BatchArray(o.batchArray);
         expirationDate = o.expirationDate;
         location = o.location;
         state = o.state;
@@ -84,7 +85,7 @@ public class StockOrderItemDto
         }
 
         material = mref(MaterialDto.class, source.getMaterial());
-        cBatch = source.getCBatch();
+        batchArray = source.getBatchArray();
         expirationDate = source.getExpirationDate();
         location = mref(StockLocationDto.class, source.getLocation());
         state = source.getState();
@@ -97,7 +98,7 @@ public class StockOrderItemDto
 
         merge(target, "parent", parent);
         merge(target, "material", material);
-        target.setCBatch(cBatch);
+        target.setBatchArray(batchArray);
         target.setExpirationDate(expirationDate);
         merge(target, "location", location);
         target.setState(state);
@@ -154,12 +155,18 @@ public class StockOrderItemDto
         }
     }
 
-    public CBatch getCBatch() {
-        return cBatch;
+    public BatchArrayEntry[] getBatches() {
+        return batchArray.getEntries();
     }
 
-    public void setCBatch(CBatch cBatch) {
-        this.cBatch = cBatch;
+    public BatchArray getBatchArray() {
+        return batchArray;
+    }
+
+    public void setBatchArray(BatchArray batchArray) {
+        if (batchArray == null)
+            throw new NullPointerException("batchArray");
+        this.batchArray = batchArray;
     }
 
     public Date getExpirationDate() {

@@ -5,7 +5,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 import com.bee32.plover.criteria.hibernate.GroupPropertyProjection;
-import com.bee32.sem.inventory.util.CBatch;
+import com.bee32.plover.criteria.hibernate.ProjectionList;
+import com.bee32.sem.inventory.util.BatchArray;
+import com.bee32.sem.inventory.util.BatchMetadata;
 import com.bee32.sem.world.monetary.MCValue;
 
 public final class StockQueryOptions
@@ -17,13 +19,13 @@ public final class StockQueryOptions
     boolean endOfToday;
     boolean verifiedOnly = false;
 
-    CBatch cBatch;
+    BatchArray batchArray;
     MCValue price;
     Integer locationId;
     Integer warehouseId;
 
     boolean priceVisible;
-    boolean cbatchVisible;
+    boolean batchArrayVisible;
     boolean locationVisible;
     boolean warehouseVisible;
 
@@ -32,9 +34,10 @@ public final class StockQueryOptions
         this.endOfToday = endOfDay;
     }
 
-    public StockQueryOptions(Date timestamp, CBatch cBatch, MCValue price, Integer locationId, Integer warehouseId) {
+    public StockQueryOptions(Date timestamp, BatchArray batchArray, MCValue price, Integer locationId,
+            Integer warehouseId) {
         setTimestamp(timestamp);
-        setCBatch(cBatch);
+        setBatchArray(batchArray);
         setPrice(price);
         setLocation(locationId);
         setWarehouse(warehouseId);
@@ -44,11 +47,11 @@ public final class StockQueryOptions
         timestamp = o.timestamp;
         endOfToday = o.endOfToday;
         verifiedOnly = o.verifiedOnly;
-        cBatch = o.cBatch;
+        batchArray = o.batchArray;
         price = o.price;
         locationId = o.locationId;
         warehouseId = o.warehouseId;
-        cbatchVisible = o.cbatchVisible;
+        batchArrayVisible = o.batchArrayVisible;
         locationVisible = o.locationVisible;
         warehouseVisible = o.warehouseVisible;
     }
@@ -93,21 +96,21 @@ public final class StockQueryOptions
         this.verifiedOnly = verifiedOnly;
     }
 
-    public CBatch getCBatch() {
-        return cBatch;
+    public BatchArray getBatchArray() {
+        return batchArray;
     }
 
-    public void setCBatch(CBatch cbatch) {
-        setCBatch(cbatch, cbatch != null);
+    public void setBatchArray(BatchArray batchArray) {
+        setBatchArray(batchArray, batchArray != null);
     }
 
-    public void setCBatch(CBatch cbatch, boolean visible) {
-        this.cBatch = cbatch;
-        this.cbatchVisible = cbatch != null || visible;
+    public void setBatchArray(BatchArray batchArray, boolean visible) {
+        this.batchArray = batchArray;
+        this.batchArrayVisible = batchArray != null || visible;
     }
 
-    public boolean isCBatchVisible() {
-        return cbatchVisible;
+    public boolean isBatchArrayVisible() {
+        return batchArrayVisible;
     }
 
     public MCValue getPrice() {
@@ -161,11 +164,14 @@ public final class StockQueryOptions
         return warehouseVisible;
     }
 
-    public GroupPropertyProjection getCBatchProjection() {
-        if (cbatchVisible)
-            return new GroupPropertyProjection("CBatch");
-        else
-            return null;
+    public void fillBatchProjections(ProjectionList projectionList) {
+        if (batchArrayVisible) {
+            BatchMetadata metadata = BatchMetadata.getInstance();
+            int n = metadata.getArraySize();
+            for (int i = 0; i < n; i++) {
+                projectionList.add(new GroupPropertyProjection("batchArray.batch" + i));
+            }
+        }
     }
 
     public GroupPropertyProjection getLocationProjection() {
@@ -190,14 +196,14 @@ public final class StockQueryOptions
     }
 
     public GroupPropertyProjection getExpirationProjection() {
-        if (cbatchVisible)
+        if (batchArrayVisible)
             return new GroupPropertyProjection("expirationDate");
         else
             return null;
     }
 
     public GroupPropertyProjection getPriceProjection() {
-        if (cbatchVisible)
+        if (batchArrayVisible)
             return new GroupPropertyProjection("price");
         else
             return null;

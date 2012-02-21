@@ -77,31 +77,43 @@
 
         <p:dialog header="拨入数量分配" widgetVar="itemDialog" modal="true">
             <h:form id="itemForm">
-                <h:panelGrid columns="2" rendered="#{bean.destItem != null}">
+                <h:panelGrid columns="2" styleClasses="detail_col_title, detail_col_value" rendered="#{bean.destItem != null}">
 
                     <h:outputText value="物料:" />
-                    <h:outputText value="#{bean.destItem.material.label}" style="font-weight:bold;"/>
+                    <h:outputText value="#{bean.destItem.material.label}" style="font-weight:bold;" />
 
                     <h:outputText value="规格型号:" />
-                    <h:outputText value="#{bean.destItem.material.modelSpec}" style="font-weight:bold;"/>
+                    <h:outputText value="#{bean.destItem.material.modelSpec}" style="font-weight:bold;" />
 
-                    <h:outputText value="批号:" />
-                    <h:outputText value="#{bean.destItem.batch}" />
+                    <t:panelGroup colspan="2">
+                        <table>
+                            <ui:repeat id="batches" var="i" value="${batchMetadata.indexes}">
+                                <tr>
+                                    <td class="detail_col_title">
+                                        <h:outputLabel for="val" value="${batchMetadata.labels[i]}：" />
+                                    </td>
+                                    <td class="detail_col_value">
+                                        <p:inputText id="val" value="${bean.destItem.batches[i].value}" />
+                                    </td>
+                                </tr>
+                            </ui:repeat>
+                        </table>
+                    </t:panelGroup>
 
                     <h:outputText value="调出库位:" />
-                    <h:outputText value="#{bean.selectedSourceItem.location.label}" style="font-weight:bold;"/>
+                    <h:outputText value="#{bean.selectedSourceItem.location.label}" style="font-weight:bold;" />
 
                     <h:outputText value="调出数量:" />
-                    <h:outputText value="#{bean.selectedSourceItem.quantity}" style="font-weight:bold;"/>
+                    <h:outputText value="#{bean.selectedSourceItem.quantity}" style="font-weight:bold;" />
 
                     <h:outputText value="拨入数量:" />
-                    <p:inputText value="#{bean.destItem.quantity}" label="拨入数量"/>
+                    <p:inputText value="#{bean.destItem.quantity}" label="拨入数量" />
 
                     <h:outputText value="库位:" />
                     <t:panelGroup>
                         <p:inputText id="location" value="#{bean.destItem.location.label}" readonly="true"
                             label="库位" />
-                        <p:commandButton value="..." oncomplete="chooseDestLocationDialog.show()" >
+                        <p:commandButton value="..." oncomplete="chooseDestLocationDialog.show()">
                             <f:setPropertyActionListener target="#{chooseStockLocationDialogBean.warehouse}"
                                 value="#{bean.selectedWarehouse}" />
                             <f:setPropertyActionListener target="#{chooseStockLocationDialogBean.material}"

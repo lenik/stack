@@ -104,7 +104,7 @@ public class MaterialPlanAdminBean
             materialIds.add(item.getMaterial().getId());
 
         StockQueryOptions opts = new StockQueryOptions(new Date(), true);
-        opts.setCBatch(null, true);
+        opts.setBatchArray(null, true);
         opts.setLocation(null, true);
         opts.setWarehouse(null, true);
         StockQueryResult queryResult = ctx.bean.getBean(IStockQuery.class).getAvailableStock(materialIds, opts);

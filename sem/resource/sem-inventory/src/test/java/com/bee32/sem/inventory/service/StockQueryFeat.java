@@ -31,7 +31,7 @@ public class StockQueryFeat
                 SEMInventorySamples.m_glue1.getId());
 
         StockQueryOptions sqopts = new StockQueryOptions(new Date(), false);
-        sqopts.setCBatch(null, true);
+        sqopts.setBatchArray(null, true);
         StockQueryResult actual = stockQuery.getPhysicalStock(materials, sqopts);
         StockQueryResult virtual = stockQuery.getAvailableStock(materials, sqopts);
 

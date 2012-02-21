@@ -4,7 +4,7 @@ import java.util.Currency;
 
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockOrderItem;
-import com.bee32.sem.inventory.util.CBatch;
+import com.bee32.sem.inventory.util.BatchArray;
 
 public class SMS_MBC
         implements IStockMergeStrategy {
@@ -14,18 +14,18 @@ public class SMS_MBC
     static final class Key {
 
         Material material;
-        CBatch cbatch;
+        BatchArray batchArray;
         Currency currency;
 
-        public Key(Material material, CBatch cbatch, Currency currency) {
+        public Key(Material material, BatchArray batchArray, Currency currency) {
             if (material == null)
                 throw new NullPointerException("material");
-            if (cbatch == null)
-                throw new NullPointerException("cbatch");
+            if (batchArray == null)
+                throw new NullPointerException("batchArray");
             if (currency == null)
                 throw new NullPointerException("currency");
             this.material = material;
-            this.cbatch = cbatch;
+            this.batchArray = batchArray;
             this.currency = currency;
         }
 
@@ -38,7 +38,7 @@ public class SMS_MBC
             if (!material.equals(o.material))
                 return false;
 
-            if (!cbatch.equals(o.cbatch))
+            if (!batchArray.equals(o.batchArray))
                 return false;
 
             if (!currency.equals(o.currency))
@@ -51,7 +51,7 @@ public class SMS_MBC
         public int hashCode() {
             int hash = 0;
             hash += material.hashCode();
-            hash += cbatch.hashCode();
+            hash += batchArray.hashCode();
             hash += currency.hashCode();
             return hash;
         }
@@ -59,7 +59,7 @@ public class SMS_MBC
 
     @Override
     public Object getMergeKey(StockOrderItem item) {
-        return new Key(item.getMaterial(), item.getCBatch(), item.getPrice().getCurrency());
+        return new Key(item.getMaterial(), item.getBatchArray(), item.getPrice().getCurrency());
     }
 
     public static final SMS_MBC INSTANCE = new SMS_MBC();

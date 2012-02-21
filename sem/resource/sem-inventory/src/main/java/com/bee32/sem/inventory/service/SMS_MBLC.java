@@ -5,7 +5,7 @@ import java.util.Currency;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockOrderItem;
-import com.bee32.sem.inventory.util.CBatch;
+import com.bee32.sem.inventory.util.BatchArray;
 
 public class SMS_MBLC
         implements IStockMergeStrategy {
@@ -15,7 +15,7 @@ public class SMS_MBLC
     static final class Key {
 
         final Material material;
-        final CBatch cBatch;
+        final BatchArray batchArray;
         final StockLocation location;
         final Currency currency;
 
@@ -23,20 +23,20 @@ public class SMS_MBLC
             if (item == null)
                 throw new NullPointerException("item");
             material = item.getMaterial();
-            cBatch = item.getCBatch();
+            batchArray = item.getBatchArray();
             location = item.getLocation();
             currency = item.getPrice().getCurrency();
         }
 
-        public Key(Material material, CBatch cBatch, StockLocation location, Currency currency) {
+        public Key(Material material, BatchArray batchArray, StockLocation location, Currency currency) {
             if (material == null)
                 throw new NullPointerException("material");
-            if (cBatch == null)
-                throw new NullPointerException("cbatch");
+            if (batchArray == null)
+                throw new NullPointerException("batchArray");
             if (currency == null)
                 throw new NullPointerException("currency");
             this.material = material;
-            this.cBatch = cBatch;
+            this.batchArray = batchArray;
             this.location = location;
             this.currency = currency;
         }
@@ -50,7 +50,7 @@ public class SMS_MBLC
             if (!material.equals(o.material))
                 return false;
 
-            if (!cBatch.equals(o.cBatch))
+            if (!batchArray.equals(o.batchArray))
                 return false;
 
             if (!currency.equals(o.currency))
@@ -63,7 +63,7 @@ public class SMS_MBLC
         public int hashCode() {
             int hash = 0;
             hash += material.hashCode();
-            hash += cBatch.hashCode();
+            hash += batchArray.hashCode();
             hash += currency.hashCode();
             return hash;
         }

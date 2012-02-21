@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import javax.free.Nullables;
 
-import com.bee32.sem.inventory.util.CBatch;
+import com.bee32.sem.inventory.util.BatchArray;
 
 public class StockItemKey
         implements Serializable {
@@ -12,21 +12,21 @@ public class StockItemKey
     private static final long serialVersionUID = 1L;
 
     final Material material;
-    final CBatch cbatch;
+    final BatchArray batchArray;
 
-    public StockItemKey(Material material, CBatch cbatch) {
+    public StockItemKey(Material material, BatchArray batchArray) {
         if (material == null)
             throw new NullPointerException("material");
         this.material = material;
-        this.cbatch = cbatch;
+        this.batchArray = batchArray;
     }
 
     public Material getMaterial() {
         return material;
     }
 
-    public CBatch getCbatch() {
-        return cbatch;
+    public BatchArray getCbatch() {
+        return batchArray;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class StockItemKey
         if (!material.equals(o.material))
             return false;
 
-        if (!Nullables.equals(cbatch, o.cbatch))
+        if (!Nullables.equals(batchArray, o.batchArray))
             return false;
 
         return true;
@@ -48,8 +48,8 @@ public class StockItemKey
     public int hashCode() {
         int hash = 0;
         hash += material.hashCode();
-        if (cbatch != null)
-            hash += cbatch.hashCode();
+        if (batchArray != null)
+            hash += batchArray.hashCode();
         return hash;
     }
 
@@ -61,7 +61,7 @@ public class StockItemKey
         sb.append(':');
         sb.append(material.getName());
         sb.append(',');
-        sb.append(cbatch);
+        sb.append(batchArray);
         sb.append('>');
         return sb.toString();
     }

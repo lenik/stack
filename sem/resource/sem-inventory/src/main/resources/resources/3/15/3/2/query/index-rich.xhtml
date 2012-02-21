@@ -39,7 +39,7 @@
                 </p:toolbarGroup>
             </p:toolbar>
 
-            <p:dataTable id="result" value="#{bean.resultList.items}" var="item" resizableColumns="true"
+            <p:dataTable id="result" value="#{bean.resultList.items}" var="entry" resizableColumns="true"
                 rowIndexVar="rowIndex">
 
                 <p:column headerText="序号">
@@ -47,40 +47,48 @@
                 </p:column>
 
                 <p:column headerText="物料">
-                    <h:outputText value="#{item.material.label}" />
+                    <h:outputText value="#{entry.material.label}" />
                 </p:column>
 
                 <p:column headerText="规格型号">
-                    <h:outputText value="#{item.material.modelSpec}" />
+                    <h:outputText value="#{entry.material.modelSpec}" />
                 </p:column>
 
-                <p:column headerText="批号">
-                    <h:outputText value="#{item.batch}" />
+                <p:column headerText="${batchMetadata.labels[0]}">
+                    <h:outputText value="${entry.batches[0].value}" />
+                </p:column>
+                <p:column headerText="${batchMetadata.labels[1]}" rendered="${batchMetadata.arraySize >= 2}">
+                    <h:outputText value="${entry.batches[1].value}" />
+                </p:column>
+                <p:column headerText="${batchMetadata.labels[2]}" rendered="${batchMetadata.arraySize >= 3}">
+                    <h:outputText value="${entry.batches[2].value}" />
+                </p:column>
+                <p:column headerText="${batchMetadata.labels[3]}" rendered="${batchMetadata.arraySize >= 4}">
+                    <h:outputText value="${entry.batches[3].value}" />
+                </p:column>
+                <p:column headerText="${batchMetadata.labels[4]}" rendered="${batchMetadata.arraySize >= 5}">
+                    <h:outputText value="${entry.batches[4].value}" />
                 </p:column>
 
                 <p:column headerText="有效期">
-                    <h:outputText value="#{item.expirationDate}" />
+                    <h:outputText value="#{entry.expirationDate}" />
                 </p:column>
 
                 <p:column headerText="库位">
-                    <h:outputText value="#{item.location.label}" />
+                    <h:outputText value="#{entry.location.label}" />
                 </p:column>
 
                 <p:column headerText="单价">
-                    <h:outputText value="#{item.price.value}" />
-                </p:column>
-
-                <p:column headerText="币种">
-                    <h:outputText value="#{item.price.currencyText}" />
+                    <h:outputText value="#{entry.price}" />
                 </p:column>
 
                 <p:column headerText="数量">
-                    <h:outputText value="#{item.quantity}" />
+                    <h:outputText value="#{entry.quantity}" />
                 </p:column>
 
                 <p:column headerText="操作">
                     <p:commandLink value="明细" update=":detailForm" oncomplete="detailDialog.show()">
-                        <f:setPropertyActionListener value="#{item}" target="#{bean.selectedItem}" />
+                        <f:setPropertyActionListener value="#{entry}" target="#{bean.selectedItem}" />
                     </p:commandLink>
                 </p:column>
             </p:dataTable>
@@ -89,57 +97,65 @@
         <p:dialog header="出入库明细" widgetVar="detailDialog" modal="true" height="480" width="800">
             <h:form id="detailForm">
 
-                <p:dataTable id="details" var="item" value="#{bean.details}" resizableColumns="true"
+                <p:dataTable id="details" var="entry" value="#{bean.details}" resizableColumns="true"
                     rowIndexVar="rowIndex" scrollable="true" scrollWidth="750" scrollHeight="350">
 
-                    <p:column headerText="序号" style="width:30px;">
+                    <p:column headerText="序号">
                         <h:outputText value="#{rowIndex + 1}" />
                     </p:column>
 
-                    <p:column headerText="单据类型" style="width:100px;">
-                        <h:outputText value="#{item.parent.subject.displayName}" />
+                    <p:column headerText="单据类型">
+                        <h:outputText value="#{entry.parent.subject.displayName}" />
                     </p:column>
 
-                    <p:column headerText="物料" style="width:150px;">
-                        <h:outputText value="#{item.material.label}" />
+                    <p:column headerText="物料">
+                        <h:outputText value="#{entry.material.label}" />
                     </p:column>
 
-                    <p:column headerText="规格型号" style="width:100px;">
-                        <h:outputText value="#{item.material.modelSpec}" />
+                    <p:column headerText="规格型号">
+                        <h:outputText value="#{entry.material.modelSpec}" />
                     </p:column>
 
-                    <p:column headerText="发生日期" style="width:100px;">
-                        <h:outputText value="#{item.parent.createdDate}" />
+                    <p:column headerText="发生日期">
+                        <h:outputText value="#{entry.parent.createdDate}" />
                     </p:column>
 
-                    <p:column headerText="批号" style="width:100px;">
-                        <h:outputText value="#{item.batch}" />
+                    <p:column headerText="${batchMetadata.labels[0]}">
+                        <h:outputText value="${entry.batches[0].value}" />
+                    </p:column>
+                    <p:column headerText="${batchMetadata.labels[1]}" rendered="${batchMetadata.arraySize >= 2}">
+                        <h:outputText value="${entry.batches[1].value}" />
+                    </p:column>
+                    <p:column headerText="${batchMetadata.labels[2]}" rendered="${batchMetadata.arraySize >= 3}">
+                        <h:outputText value="${entry.batches[2].value}" />
+                    </p:column>
+                    <p:column headerText="${batchMetadata.labels[3]}" rendered="${batchMetadata.arraySize >= 4}">
+                        <h:outputText value="${entry.batches[3].value}" />
+                    </p:column>
+                    <p:column headerText="${batchMetadata.labels[4]}" rendered="${batchMetadata.arraySize >= 5}">
+                        <h:outputText value="${entry.batches[4].value}" />
                     </p:column>
 
-                    <p:column headerText="有效期" style="width:100px;">
-                        <h:outputText value="#{item.expirationDate}" />
+                    <p:column headerText="有效期">
+                        <h:outputText value="#{entry.expirationDate}" />
                     </p:column>
 
-                    <p:column headerText="库位" style="width:100px;">
-                        <h:outputText value="#{item.location.label}" />
+                    <p:column headerText="库位">
+                        <h:outputText value="#{entry.location.label}" />
                     </p:column>
 
-                    <p:column headerText="单价" style="width:80px;">
-                        <h:outputText value="#{item.price.value}" />
+                    <p:column headerText="单价">
+                        <h:outputText value="#{entry.price}" />
                     </p:column>
 
-                    <p:column headerText="币种" style="width:100px;">
-                        <h:outputText value="#{item.price.currencyText}" />
+                    <p:column headerText="数量">
+                        <h:outputText value="#{entry.quantity}" />
                     </p:column>
 
-                    <p:column headerText="数量" style="width:80px;">
-                        <h:outputText value="#{item.quantity}" />
-                    </p:column>
-
-                    <p:column headerText="操作" style="width:100px;">
+                    <p:column headerText="操作">
                         <p:commandLink oncomplete="positionDialog.show()" update=":positionForm" action="#{bean.findOrderSn}"
                             value="所在位置">
-                            <f:setPropertyActionListener value="#{item}" target="#{bean.detailItem}" />
+                            <f:setPropertyActionListener value="#{entry}" target="#{bean.detailItem}" />
                         </p:commandLink>
                     </p:column>
 

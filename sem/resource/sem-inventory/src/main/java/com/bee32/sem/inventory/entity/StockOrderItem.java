@@ -18,7 +18,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.BatchSize;
 
 import com.bee32.plover.orm.cache.Redundant;
-import com.bee32.sem.inventory.util.CBatch;
+import com.bee32.sem.inventory.util.BatchArray;
 import com.bee32.sem.world.thing.AbstractItem;
 
 @BatchSize(size = 100)
@@ -36,7 +36,7 @@ public class StockOrderItem
 
     AbstractStockOrder<?> parent;
     Material material;
-    CBatch cBatch;
+    BatchArray batchArray = new BatchArray();
     Date expirationDate;
     StockLocation location;
     StockItemState state = StockItemState.NORMAL;
@@ -48,7 +48,7 @@ public class StockOrderItem
         super(item);
         parent = item.parent;
         material = item.material;
-        cBatch = item.cBatch.clone();
+        batchArray = item.batchArray.clone();
         expirationDate = item.expirationDate;
         location = item.location;
         state = item.state;
@@ -101,19 +101,19 @@ public class StockOrderItem
 
     @Transient
     public StockItemKey getKey() {
-        return new StockItemKey(material, getCBatch());
+        return new StockItemKey(material, getBatchArray());
     }
 
     /**
      * 批号
      */
     @Embedded
-    public CBatch getCBatch() {
-        return cBatch;
+    public BatchArray getBatchArray() {
+        return batchArray;
     }
 
-    public void setCBatch(CBatch cBatch) {
-        this.cBatch = cBatch;
+    public void setBatchArray(BatchArray batchArray) {
+        this.batchArray = batchArray;
     }
 
     /*

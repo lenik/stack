@@ -87,7 +87,7 @@ public class StockCriteria
                 options.isVerifiedOnly() ? VerifyCriteria.verified("parent") : null, //
                 in("parent._subject", subjects), //
                 materialIds == null ? null : in("material.id", materialIds), // _in
-                _equals("CBatch", options.getCBatch()), //
+                _equals("BatchArray", options.getBatchArray()), //
                 _equals("location.id", options.getLocation()), //
                 _equals("warehouse.id", options.getWarehouse()));
     }
@@ -113,7 +113,7 @@ public class StockCriteria
                 options.isVerifiedOnly() ? VerifyCriteria.verified("parent") : null, //
                 lessOrEquals("parent.beginTime", options.getTimestampOpt()), //
                 _equals("material.id", materialId), //
-                _equals("CBatch", options.getCBatch()), //
+                _equals("BatchArray", options.getBatchArray()), //
                 MonetaryCriteria.equals("price", options.getPrice()), //
                 _equals("location.id", options.getLocation()), //
                 _equals("warehouse.id", options.getWarehouse()));

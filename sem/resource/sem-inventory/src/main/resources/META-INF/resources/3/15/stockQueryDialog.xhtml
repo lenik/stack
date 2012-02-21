@@ -76,9 +76,23 @@
                 <p:column headerText="规格型号">
                     <h:outputText value="${entry.material.modelSpec}" />
                 </p:column>
-                <p:column headerText="批号">
-                    <h:outputText value="${entry.batch}" />
+
+                <p:column headerText="${batchMetadata.labels[0]}">
+                    <h:outputText value="${entry.batches[0].value}" />
                 </p:column>
+                <p:column headerText="${batchMetadata.labels[1]}" rendered="${batchMetadata.arraySize >= 2}">
+                    <h:outputText value="${entry.batches[1].value}" />
+                </p:column>
+                <p:column headerText="${batchMetadata.labels[2]}" rendered="${batchMetadata.arraySize >= 3}">
+                    <h:outputText value="${entry.batches[2].value}" />
+                </p:column>
+                <p:column headerText="${batchMetadata.labels[3]}" rendered="${batchMetadata.arraySize >= 4}">
+                    <h:outputText value="${entry.batches[3].value}" />
+                </p:column>
+                <p:column headerText="${batchMetadata.labels[4]}" rendered="${batchMetadata.arraySize >= 5}">
+                    <h:outputText value="${entry.batches[4].value}" />
+                </p:column>
+
                 <p:column headerText="有效期">
                     <h:outputText value="${entry.expirationDate}" />
                 </p:column>

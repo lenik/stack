@@ -17,7 +17,8 @@ import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
-import com.bee32.sem.inventory.util.CBatch;
+import com.bee32.sem.inventory.util.BatchArray;
+import com.bee32.sem.inventory.util.BatchMetadata;
 import com.bee32.sem.world.monetary.MCValue;
 
 public class StockQuery
@@ -41,17 +42,18 @@ public class StockQuery
         ProjectionList projection = new ProjectionList(//
                 new GroupPropertyProjection("material"), //
                 new SumProjection("quantity"), //
-                options.getCBatchProjection(), //
                 options.getPriceProjection(), //
                 options.getExpirationProjection(), //
                 options.getLocationProjection(), //
                 options.getWarehouseProjection(), //
                 options.getParentWarehouseProjection());
 
+        options.fillBatchProjections(projection);
+
         List<Object[]> list = ctx.data.access(StockOrderItem.class).listMisc(projection, selection);
 
         StockOrderSubject subject = StockOrderSubject.PACK_M;
-        if (options.getCBatch() != null) {
+        if (options.getBatchArray() != null) {
             subject = StockOrderSubject.PACK_MB;
             if (options.getLocation() != null)
                 subject = StockOrderSubject.PACK_MBL;
@@ -66,17 +68,14 @@ public class StockQuery
             int _column = 0;
             Material _material = (Material) line[_column++];
             BigDecimal _quantity = (BigDecimal) line[_column++];
-            CBatch _cBatch = null;
+            BatchArray _batchArray = null;
             Date _expire = null;
             MCValue _price = null;
             StockLocation _location = null;
             StockWarehouse _warehouse = null;
             StockWarehouse _parentWarehouse = null;
 
-            if (options.isCBatchVisible()) {
-                _cBatch = new CBatch();
-                for (int i = 0; i < 1; i++)
-                    _cBatch.setBatch(i + 1, (String) line[_column++]);
+            if (options.isBatchArrayVisible()) {
                 _price = (MCValue) line[_column++];
                 _expire = (Date) line[_column++];
             }
@@ -96,14 +95,22 @@ public class StockQuery
                 }
             }
 
+            // Extensible batch columns.
+            if (options.isBatchArrayVisible()) {
+                BatchMetadata metadata = BatchMetadata.getInstance();
+                _batchArray = new BatchArray();
+                for (int i = 0; i < metadata.getArraySize(); i++)
+                    _batchArray.setBatch(i, (String) line[_column++]);
+            }
+
             StockOrderItem item = new StockOrderItem(all);
             item.setIndex(index++);
             EntityAccessor.setId(item, (long) -index);
             EntityAccessor.setVersion(item, -1); // A negative version will be skipped in DTO.
             item.setMaterial(_material);
             item.setQuantity(_quantity);
-            if (options.isCBatchVisible()) {
-                item.setCBatch(_cBatch);
+            if (options.isBatchArrayVisible()) {
+                item.setBatchArray(_batchArray);
                 item.setPrice(_price);
                 item.setExpirationDate(_expire);
             }

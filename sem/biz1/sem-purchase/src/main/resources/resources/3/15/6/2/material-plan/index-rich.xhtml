@@ -141,9 +141,11 @@
                     <p:column headerText="单位">
                         <h:outputText value="#{entry.material.unit.label}" />
                     </p:column>
-                    <p:column headerText="批号">
-                        <h:outputText value="#{entry.batch}" />
-                    </p:column>
+                    <ui:repeat id="batching" var="i" value="#{batchMetadata.indexes}">
+                        <p:column headerText="#{batchMetadata.label[i]}">
+                            <h:outputText value="#{entry.batchArray.batch[i]}" />
+                        </p:column>
+                    </ui:repeat>
                     <p:column headerText="有效期">
                         <h:outputText value="#{entry.expirationDate}">
                             <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
@@ -177,10 +179,15 @@
                 <h:outputLabel for="checked" value="锁定" />
                 <p:selectBooleanCheckbox id="checked" value="#{item.checked1}" />
 
-                <h:outputLabel value="批号" />
-                <h:outputText value="#{item.batch}" />
+                <h:panelGroup colspan="4">
+                        <ui:repeat id="batches" var="i" value="#{batchMetadata.indexes}">
+                            <h:outputLabel value="#{batchMetadata.label[i]}" />
+                            <h:outputText value="#{item.batchArray.batch[i]}" />
+                        </ui:repeat>
+                </h:panelGroup>
+
                 <h:outputLabel value="有效期" />
-                <h:outputText value="#{item.expirationDate}">
+                <h:outputText value="#{item.expirationDate}" colspan="3">
                     <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                 </h:outputText>
 

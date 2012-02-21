@@ -1,8 +1,8 @@
 package com.bee32.sem.inventory.util;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
-import javax.free.Nullables;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
@@ -10,49 +10,68 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Index;
 
 import com.bee32.plover.model.validation.core.NLength;
+import com.bee32.plover.orm.entity.IPopulatable;
 import com.bee32.plover.util.TextUtil;
 
 @Embeddable
-public class CBatch
-        implements Cloneable, Serializable {
+public class BatchArray
+        implements Serializable, Cloneable, IPopulatable {
 
     private static final long serialVersionUID = 1L;
 
+    public static final int BATCH0_LENGTH = 30;
     public static final int BATCH1_LENGTH = 30;
     public static final int BATCH2_LENGTH = 30;
     public static final int BATCH3_LENGTH = 30;
     public static final int BATCH4_LENGTH = 30;
-    public static final int BATCH5_LENGTH = 30;
 
-    static int size;
-    static String[] batchLabels;
-    static {
-        size = 5;
-        batchLabels = new String[size];
-        for (int i = 0; i < size; i++)
-            batchLabels[i] = "批号" + (i + 1);
+    public static final int MAX_ARRAYSIZE = 5;
+    final String[] array;
+
+    public BatchArray() {
+        array = new String[MAX_ARRAYSIZE];
     }
 
-    final String[] batches;
-
-    public CBatch() {
-        batches = new String[size];
+    public BatchArray(BatchArray init) {
+        this();
+        populate(init);
     }
 
-    public CBatch(String... init) {
+    public BatchArray(String... init) {
         this();
         if (init == null)
             throw new NullPointerException("init");
-        int initSize = Math.min(size, init.length);
-        for (int i = 0; i < initSize; i++)
-            batches[i] = init[i];
+        int n = Math.min(array.length, init.length);
+        for (int i = 0; i < n; i++)
+            array[i] = init[i];
     }
 
     @Override
-    public CBatch clone() {
-        CBatch o = new CBatch();
-        System.arraycopy(batches, 0, o.batches, 0, size);
+    public BatchArray clone() {
+        BatchArray o = new BatchArray();
+        System.arraycopy(array, 0, o.array, 0, array.length);
         return o;
+    }
+
+    @Override
+    public void populate(Object source) {
+        if (source instanceof BatchArray) {
+            BatchArray o = (BatchArray) source;
+            int n = Math.min(array.length, o.array.length);
+            for (int i = 0; i < n; i++)
+                array[i] = o.array[i];
+        }
+    }
+
+    @Column(length = BATCH0_LENGTH)
+    @Index(name = "##_batch0")
+    @NLength(max = BATCH0_LENGTH)
+    public String getBatch0() {
+        return getBatch(0);
+    }
+
+    public void setBatch0(String batch0) {
+        setBatch(0, batch0);
     }
 
     @Column(length = BATCH1_LENGTH)
@@ -99,60 +118,51 @@ public class CBatch
         setBatch(4, batch4);
     }
 
-    @Column(length = BATCH5_LENGTH)
-    @Index(name = "##_batch5")
-    @NLength(max = BATCH5_LENGTH)
-    public String getBatch5() {
-        return getBatch(5);
-    }
-
-    public void setBatch5(String batch5) {
-        setBatch(5, batch5);
-    }
-
     @Transient
     public String getBatch(int index) {
-        return batches[index - 1];
+        return array[index];
     }
 
     public void setBatch(int index, String batch) {
         batch = TextUtil.normalizeSpace(batch, true);
-        batches[index - 1] = batch;
+        array[index] = batch;
     }
 
     @Transient
-    public String[] getBatches() {
-        return batches;
+    public String[] getArray() {
+        return array;
     }
 
     @Transient
-    public String[] getBatchLabels() {
-        return batchLabels;
+    public BatchArrayEntry[] getEntries() {
+        BatchMetadata metadata = BatchMetadata.getInstance();
+        BatchArrayEntry[] entries = new BatchArrayEntry[array.length];
+        for (int index = 0; index < array.length; index++) {
+            BatchArrayEntry entry = new BatchArrayEntry(metadata, this, index);
+            entries[index] = entry;
+        }
+        return entries;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof CBatch))
+        if (!(obj instanceof BatchArray))
             return false;
-        CBatch o = (CBatch) obj;
-        if (size != o.size)
+        BatchArray o = (BatchArray) obj;
+        if (!Arrays.equals(array, o.array))
             return false;
-        for (int i = 0; i < size; i++)
-            if (!Nullables.equals(batches[i], o.batches[i]))
-                return false;
         return true;
     }
 
     @Override
     public int hashCode() {
-        int hash = size * 0x32821265;
-        for (int i = 0; i < size; i++) {
-            String el = batches[i];
-            if (el != null)
-                hash += el.hashCode();
-            hash *= 17;
-        }
+        int hash = Arrays.hashCode(array);
         return hash;
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(array);
     }
 
 }

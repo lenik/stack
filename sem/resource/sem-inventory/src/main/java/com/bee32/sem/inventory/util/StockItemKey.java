@@ -12,13 +12,13 @@ public class StockItemKey
     private static final long serialVersionUID = 1L;
 
     Serializable materialId;
-    CBatch cBatch;
+    BatchArray batchArray;
     Serializable locationId;
 
     public StockItemKey(StockOrderItem item) {
         item.getNaturalId();
         materialId = item.getMaterial().getNaturalId();
-        cBatch = item.getCBatch();
+        batchArray = item.getBatchArray();
         StockLocation location = item.getLocation();
         if (location != null)
             locationId = location.getNaturalId();
