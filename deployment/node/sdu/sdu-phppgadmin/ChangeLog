@@ -26,7 +26,7 @@
 	  debian/README.source, debian/changelog, debian/compat,
 	  debian/control, debian/copyright, debian/docs, debian/postinst,
 	  debian/prerm, debian/rules, install-sh, libauto/coolauto.am,
-	  missing, post-install.sh.in, pre-remove.sh.in, secca-pgsql.site:
+	  missing, post-install.sh.in, pre-remove.sh.in, 20secca-pgsql.site:
 	  set eol-style to native
 
 2010-09-30  lenik
@@ -54,7 +54,7 @@
 2010-09-27  lenik
 
 	* Makefile.am, Makefile.in, VERSION.av, configure, configure.ac,
-	  secca-pgsql.site: a2site file isn't disted.
+	  20secca-pgsql.site: a2site file isn't disted.
 
 	  set auth name to sql.
 	* Makefile.am, Makefile.in, VERSION.av, configure, configure.ac,
