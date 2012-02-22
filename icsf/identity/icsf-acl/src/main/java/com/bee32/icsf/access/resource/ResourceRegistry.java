@@ -83,7 +83,10 @@ public class ResourceRegistry {
 
         String ns = rn.getNamespace();
         String localName = resource.getName();
-        return ns + ":" + localName + ".";
+        if (localName.endsWith(":"))
+            return ns + ":" + localName;
+        else
+            return ns + ":" + localName + ".";
     }
 
     public static IResourceNamespace getNamespace(String ns) {
