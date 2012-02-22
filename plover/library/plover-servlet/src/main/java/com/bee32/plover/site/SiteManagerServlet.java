@@ -408,7 +408,8 @@ public class SiteManagerServlet
             ol();
             for (RequestEntry request : requests) {
                 li();
-                String requestURI = request.getRequestURI();
+                String user = (String) request.getAttribute("user");
+                String requestURI = user + "@" + request.getRequestURI();
                 text(requestURI);
                 end();
             }
