@@ -5,8 +5,11 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
+import com.bee32.icsf.access.DefaultPermission;
+import com.bee32.icsf.access.Permission;
 import com.bee32.plover.ox1.c.CEntitySpec;
 
+@DefaultPermission(Permission.R_X)
 @MappedSuperclass
 public abstract class DictEntity<K extends Serializable>
         extends CEntitySpec<K> {
