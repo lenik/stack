@@ -44,9 +44,11 @@ public class ResourceRegistry {
      *             If namespace is undefined.
      */
     public static Resource query(String qualifiedName) {
+        if (qualifiedName == null)
+            throw new NullPointerException("qualifiedName");
+
         String ns = defaultNS;
         String localName;
-
         int colon = qualifiedName.indexOf(':');
         if (colon != -1) {
             ns = qualifiedName.substring(0, colon);

@@ -13,7 +13,7 @@ import org.primefaces.event.UnselectEvent;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.alt.R_ACE;
-import com.bee32.icsf.access.alt.ResourceACLService;
+import com.bee32.icsf.access.alt.R_ACLService;
 import com.bee32.icsf.access.resource.IResourceNamespace;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ResourcePermission;
@@ -144,7 +144,7 @@ public class PermissionAdminBean
 
     private void loadEntries(PrincipalDto principalDto) {
         ScannedResourceRegistry srr = ctx.bean.getBean(ScannedResourceRegistry.class);
-        ResourceACLService aclService = ctx.bean.getBean(ResourceACLService.class);
+        R_ACLService aclService = ctx.bean.getBean(R_ACLService.class);
 
         Map<String, ResourcePermission> havePermissions = new HashMap<String, ResourcePermission>();
         Principal principal = principalDto.unmarshal();

@@ -35,7 +35,6 @@ import com.bee32.plover.arch.util.PriorityComparator;
 import com.bee32.plover.arch.util.dto.Fmask;
 import com.bee32.plover.collections.Varargs;
 import com.bee32.plover.criteria.hibernate.CriteriaComposite;
-import com.bee32.plover.criteria.hibernate.Disjunction;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.InCollection;
 import com.bee32.plover.orm.entity.Entity;
@@ -112,10 +111,6 @@ public class SimpleEntityViewBean
         this.entityClass = entityClass;
         this.dtoClass = dtoClass;
         this.baseRestriction = Varargs.toList(criteriaElements);
-        this.baseRestriction.add(new Disjunction(//
-                // AnyOwnerUtil.isForAnyOwner(getClass()) ? null :
-                UserCriteria.ownedByCurrentUser(),//
-                ACLCriteria.aclWithin(getACLs(visiblePermission))));
 
         String requestIdList = ctx.view.getRequest().getParameter("id");
         if (requestIdList != null) {
@@ -219,6 +214,15 @@ public class SimpleEntityViewBean
     protected final List<? extends ICriteriaElement> composeBaseRestrictions() {
         List<ICriteriaElement> join = new ArrayList<ICriteriaElement>();
         join.addAll(baseRestriction);
+
+        /** Only restrict owner for CEntity+ */
+        if (CEntity.class.isAssignableFrom(entityClass)) {
+            // Boolean anyOwner = AnyOwnerUtil.isForAnyOwner(getClass());
+            // if (anyOwner) ...
+            join.add(UserCriteria.ownedByCurrentUser());
+            join.add(ACLCriteria.aclWithin(getACLs(visiblePermission)));
+        }
+
         if (requestWindow != null && !requestWindow.isEmpty()) {
             join.add(new InCollection("id", requestWindow));
         } else {

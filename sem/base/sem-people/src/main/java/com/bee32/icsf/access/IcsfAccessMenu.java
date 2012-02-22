@@ -15,7 +15,7 @@ public class IcsfAccessMenu
 
     static MenuNode acl = entry(SEMFrameMenu.SECURITY, 10, "acl", BASE_.join("acl/index-rich.jsf"));
     static MenuNode permissionAdmin = entry(SEMFrameMenu.SECURITY, 10, "permissionAdmin",
-            BASE_.join("r_list/index-rich.jsf"));
+            BASE_.join("r-ace/index-rich.jsf"));
 
     @Override
     protected void preamble() {

@@ -19,10 +19,11 @@
 
     <cc:implementation>
 
-        <icsf:chooseACLDialog id="acld" var="${cc.parent.attrs.var}_acld" target="${cc.parent.attrs.dialogBean.selectedACL}"
+        <icsf:chooseACLDialog id="c_acl" var="${cc.parent.attrs.var}_acld" target="${cc.parent.attrs.dialogBean.selectedACL}"
             update=":${cc.parent.clientId}:form" />
         <icsf:editACLDialog id="aclEditor" var="${cc.parent.attrs.var}_aclEditor" value="${cc.parent.attrs.dialogBean.selectedACL}"
-            actionListener="${cc.parent.attrs.dialogBean.saveACL}" update=":${cc.parent.clientId}:form, :${cc.parent.clientId}:acld:form" />
+            _value="${cc.parent.parent.attrs.dialogBean.selectedACL}" actionListener="${cc.parent.attrs.dialogBean.saveACL}"
+            update=":${cc.parent.clientId}:form, :${cc.parent.clientId}:c_acl:form" />
 
         <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
 

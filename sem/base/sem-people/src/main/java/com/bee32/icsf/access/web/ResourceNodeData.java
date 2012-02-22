@@ -3,6 +3,7 @@ package com.bee32.icsf.access.web;
 import java.io.Serializable;
 
 import com.bee32.icsf.access.resource.Resource;
+import com.bee32.icsf.access.resource.ResourceRegistry;
 
 public class ResourceNodeData
         implements Serializable {
@@ -10,7 +11,7 @@ public class ResourceNodeData
     private static final long serialVersionUID = 1L;
 
     String typeName;
-    Resource resource;
+    String qualifiedName;
 
     public String getTypeName() {
         return typeName;
@@ -20,28 +21,45 @@ public class ResourceNodeData
         this.typeName = typeName;
     }
 
+    public String getQualifiedName() {
+        return qualifiedName;
+    }
+
+    public void setQualifiedName(String qualifiedName) {
+        this.qualifiedName = qualifiedName;
+    }
+
     public Resource getResource() {
-        return resource;
+        if (qualifiedName == null)
+            return null;
+        else
+            return ResourceRegistry.query(qualifiedName);
     }
 
     public void setResource(Resource resource) {
-        this.resource = resource;
-        if (resource != null)
-            typeName = resource.getTypeName();
+        if (qualifiedName != null)
+            qualifiedName = null;
+        typeName = resource.getTypeName();
+        qualifiedName = ResourceRegistry.qualify(resource);
     }
 
     public String getResourceLabel() {
-        if (resource == null)
+        if (qualifiedName == null)
             return null;
-        else
-            return resource.getAppearance().getDisplayName();
+        Resource resource = ResourceRegistry.query(qualifiedName);
+        return resource.getAppearance().getDisplayName();
     }
 
     public String getResourceDescription() {
-        if (resource == null)
+        if (qualifiedName == null)
             return null;
-        else
-            return resource.getAppearance().getDescription();
+        Resource resource = ResourceRegistry.query(qualifiedName);
+        return resource.getAppearance().getDescription();
+    }
+
+    @Override
+    public String toString() {
+        return qualifiedName;
     }
 
 }

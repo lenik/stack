@@ -1,68 +1,84 @@
 package com.bee32.icsf.access.alt;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
+import javax.free.IllegalUsageException;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.NaturalId;
+import com.bee32.icsf.access.acl.legacy.LegacyACL;
+import com.bee32.icsf.access.resource.Resource;
 
-import com.bee32.icsf.principal.Principal;
-import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.orm.entity.EntityAuto;
-import com.bee32.plover.ox1.color.Green;
-
-@Entity
-@Green
-@SequenceGenerator(name = "idgen", sequenceName = "r_acl_seq", allocationSize = 1)
 public class R_ACL
-        extends EntityAuto<Integer> {
+        extends LegacyACL
+        implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    Principal principal;
-    List<R_ACE> entries = new ArrayList<R_ACE>();
+    private R_ACL parent;
+    private Resource resource;
 
-    @NaturalId
-    @ManyToOne(optional = false)
-    public Principal getPrincipal() {
-        return principal;
+    public R_ACL() {
     }
 
-    public void setPrincipal(Principal principal) {
-        if (principal == null)
-            throw new NullPointerException("principal");
-        this.principal = principal;
+    public R_ACL(R_ACL parent, Resource resource) {
+        this.parent = parent;
+        this.resource = resource;
     }
 
-    @OneToMany(orphanRemoval = true)
-    @Cascade(CascadeType.ALL)
-    public List<R_ACE> getEntries() {
-        return entries;
+    public R_ACL getParent() {
+        return parent;
     }
 
-    public void setEntries(List<R_ACE> entries) {
-        if (entries == null)
-            throw new NullPointerException("entries");
-        this.entries = entries;
+    public void setParent(R_ACL parent) {
+        this.parent = parent;
     }
 
-    @Override
-    protected Serializable naturalId() {
-        return naturalId(principal);
+    public Resource getResource() {
+        return resource;
     }
 
-    @Override
-    protected ICriteriaElement selector(String prefix) {
-        if (principal == null)
-            throw new NullPointerException("principal");
-        return selector(prefix + "principal", principal);
+    public void setResource(Resource resource) {
+        this.resource = resource;
+    }
+
+    /**
+     * Add ACE entry.
+     * <p>
+     * Duplicated ACE are skipped.
+     *
+     * @param ace
+     *            Non-<code>null</code> ACE to be added.
+     * @throws IllegalUsageException
+     *             If the ACE is bound to another ACL.
+     */
+    public void addACE(R_ACE ace) {
+        if (ace == null)
+            throw new NullPointerException("ace");
+        add(ace.getPrincipal(), ace.getPermission());
+    }
+
+    /**
+     * Remove an ACE entry from this ACL.
+     *
+     * If the ACE isn't existed in this ACL, it's just skipped.
+     *
+     * @param ace
+     *            Non-<code>null</code> ACE entry to be removed.
+     * @return <code>true</code> If the ACE is existed and have been successfully removed from this
+     *         ACL.
+     */
+    public boolean removeACE(R_ACE ace) {
+        if (ace == null)
+            throw new NullPointerException("ace");
+        return this.remove(ace.getPrincipal());
+    }
+
+    /**
+     * Convert to the underlying ACL.
+     *
+     * @return Non-<code>null</code> underlying ACL.
+     */
+    public LegacyACL toACL() {
+        return this;
     }
 
 }

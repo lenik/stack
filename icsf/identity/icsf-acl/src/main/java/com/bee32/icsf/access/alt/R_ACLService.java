@@ -12,19 +12,19 @@ import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ResourcePermission;
 import com.bee32.plover.arch.DataService;
 
-public class ResourceACLService
+public class R_ACLService
         extends DataService {
 
     @Inject
-    ResourceACLDao resourceACLDao;
+    R_ACLDao resourceACLDao;
 
-    public ResourceACL loadACL(Resource resource) {
+    public R_ACL loadACL(Resource resource) {
         return resourceACLDao.loadACL(resource);
     }
 
     @AccessCheck
     @Transactional(readOnly = false)
-    public void saveACL(ResourceACL acl) {
+    public void saveACL(R_ACL acl) {
         resourceACLDao.saveACL(acl);
     }
 

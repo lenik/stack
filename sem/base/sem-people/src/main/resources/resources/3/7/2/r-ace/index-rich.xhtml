@@ -1,0 +1,71 @@
+<ui:composition template="/template/simple-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:icsf="http://java.sun.com/jsf/composite/3/7" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
+
+    <ui:param name="title" value="权限管理" />
+    <ui:param name="baseEntity" value="true" />
+    <ui:param name="bean" value="${r_ACEViewBean}" />
+    <ui:param name="obj" value="${bean.openedObject}" />
+
+    <ui:define name="dataColumns">
+        <p:column headerText="主体" sortBy="${entry.principal}">
+            <h:outputText value="${entry.principal.displayName}" />
+        </p:column>
+        <p:column headerText="单元模块" sortBy="${entry.qualifiedName}" styleClass="f-wrappable">
+            <h:outputText value="${entry.catalogName}" />
+        </p:column>
+        <p:column headerText="数据对象" sortBy="${entry.qualifiedName}" styleClass="f-wrappable">
+            <h:outputText value="${entry.entityName}" />
+        </p:column>
+        <p:column headerText="访问点" sortBy="${entry.qualifiedName}" styleClass="f-wrappable">
+            <h:outputText value="${entry.accessPointName}" />
+        </p:column>
+        <p:column headerText="访问权限" sortBy="${entry.mode}">
+            <h:outputText value="${entry.permission.modeString}" />
+        </p:column>
+    </ui:define>
+
+    <ui:define name="dataColumnsC">
+    </ui:define>
+
+    <ui:define name="editDialogs">
+        <icsf:editACEDialog id="editDialog" var="editDialog" value="${obj}" _value="${obj}"
+            actionListener="${bean.save}" update=":mainForm">
+            <f:facet name="ext">
+                <tr>
+                    <td class="field-label">
+                        <h:outputLabel for="catalog" value="数据单元模块：" />
+                    </td>
+                    <td class="field-content">
+                        <p:inputText id="catalog" label="数据单元模块" value="${obj.catalogName}" disabled="true" />
+                    </td>
+                    <td align="right" rowspan="3" style="border-left: solid 1px gray">
+                        <p:commandButton id="chooseRes" value="..." onclick="chooseResourceDialog.show()" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="field-label">
+                        <h:outputLabel for="entity" value="数据对象：" />
+                    </td>
+                    <td class="field-content">
+                        <p:inputText id="entity" label="数据对象" value="${obj.entityName}" disabled="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="field-label">
+                        <h:outputLabel for="accessPoint" value="访问点：" />
+                    </td>
+                    <td class="field-content">
+                        <p:inputText id="accessPoint" label="访问点" value="${obj.accessPointName}" disabled="true" />
+                    </td>
+                </tr>
+            </f:facet>
+        </icsf:editACEDialog>
+    </ui:define>
+
+    <ui:define name="dialogs">
+        <icsf:chooseResourceDialog id="c_resource" target="${bean.resourceNodeData}" update=":editDialog:form" />
+    </ui:define>
+
+</ui:composition>

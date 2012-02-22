@@ -1,12 +1,19 @@
 package com.bee32.icsf.access.alt;
 
+import java.beans.Transient;
+
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
+import javax.validation.constraints.NotNull;
 
 import com.bee32.icsf.access.Permission;
+import com.bee32.icsf.access.resource.AccessPoint;
 import com.bee32.icsf.access.resource.Resource;
+import com.bee32.icsf.access.resource.ResourceRegistry;
 import com.bee32.icsf.principal.PrincipalDto;
+import com.bee32.plover.arch.util.ClassCatalog;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.orm.entity.EntityResource;
 import com.bee32.plover.orm.util.EntityDto;
 
 public class R_ACEDto
@@ -14,20 +21,20 @@ public class R_ACEDto
 
     private static final long serialVersionUID = 1L;
 
-    Resource resource;
+    String qualifiedName;
     PrincipalDto principal;
     Permission permission;
 
     @Override
     protected void _marshal(R_ACE source) {
-        resource = source.getResource();
+        qualifiedName = source.getQualifiedName();
         principal = mref(PrincipalDto.class, source.getPrincipal());
         permission = source.getPermission().clone();
     }
 
     @Override
     protected void _unmarshalTo(R_ACE target) {
-        target.setResource(resource);
+        target.setQualifiedName(qualifiedName);
         merge(target, "principal", principal);
         target.setPermission(permission.clone());
     }
@@ -38,14 +45,29 @@ public class R_ACEDto
         throw new NotImplementedException();
     }
 
+    @NotNull
+    public String getQualifiedName() {
+        return qualifiedName;
+    }
+
+    public void setQualifiedName(String qualifiedName) {
+        if (qualifiedName == null)
+            throw new NullPointerException("qualifiedName");
+        this.qualifiedName = qualifiedName;
+    }
+
+    @Transient
     public Resource getResource() {
-        return resource;
+        if (qualifiedName == null)
+            return null; // Unexpected.
+        else
+            return ResourceRegistry.query(qualifiedName);
     }
 
     public void setResource(Resource resource) {
         if (resource == null)
             throw new NullPointerException("resource");
-        this.resource = resource;
+        this.qualifiedName = ResourceRegistry.qualify(resource);
     }
 
     public PrincipalDto getPrincipal() {
@@ -66,6 +88,37 @@ public class R_ACEDto
         if (permission == null)
             throw new NullPointerException("permission");
         this.permission = permission;
+    }
+
+    public String getCatalogName() {
+        Resource resource = getResource();
+        if (!(resource instanceof EntityResource))
+            return null;
+        EntityResource res = (EntityResource) resource;
+        ClassCatalog catalog = res.getCatalog();
+        String catalogName = catalog.getAppearance().getDisplayName();
+        return catalogName;
+    }
+
+    public String getEntityName() {
+        Resource resource = getResource();
+        if (!(resource instanceof EntityResource))
+            return null;
+        EntityResource res = (EntityResource) resource;
+        Class<?> entityClass = res.getEntityClass();
+        if (entityClass == null)
+            return null;
+        String entityName = res.getAppearance().getDisplayName();
+        return entityName;
+    }
+
+    public String getAccessPointName() {
+        Resource resource = getResource();
+        if (!(resource instanceof AccessPoint))
+            return null;
+        AccessPoint accessPoint = (AccessPoint) resource;
+        String accessPointName = accessPoint.getAppearance().getDisplayName();
+        return accessPointName;
     }
 
 }

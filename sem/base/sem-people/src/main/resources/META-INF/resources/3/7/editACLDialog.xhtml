@@ -6,6 +6,7 @@
         <!-- basic -->
         <cc:attribute name="var" default="editACLDialog" shortDescription="nc(0)" />
         <cc:attribute name="value" type="java.lang.Object" required="true" />
+        <cc:attribute name="_value" type="java.lang.Object" required="true" />
         <cc:attribute name="actionListener" targets="form:save-validated" required="true" />
         <cc:attribute name="update" />
 
@@ -22,7 +23,7 @@
         <h:outputStylesheet library="3/7/2" name="acl.css" />
 
         <icsf:chooseACLDialog id="c_acl" var="${fn:replace(cc.parent.clientId, ':', '_')}_acld"
-            target="${cc.parent.attrs.dialogBean.openedObject.inheritedACL}" update=":${cc.parent.clientId}:form:inheritedACL" />
+            target="${cc.parent.attrs._value.inheritedACL}" update=":${cc.parent.clientId}:form:inheritedACL" />
         <icsf:editACEDialog id="c_ace" var="${fn:replace(cc.parent.clientId, ':', '_')}_ed" value="${cc.parent.attrs.dialogBean.entry}"
             _value="${cc.parent.parent.attrs.dialogBean.entry}" actionListener="${cc.parent.attrs.dialogBean.addEntry}"
             update=":${cc.parent.clientId}:form:entryTable" />
@@ -44,6 +45,9 @@
                         <p:inputText id="inheritedLabel" value="${obj.inheritedACL.label}" readonly="true" />
                         <p:commandButton id="chooseACL" value="选择"
                             onclick="${fn:replace(cc.clientId, ':', '_')}_acld.show()" />
+                        <p:commandButton id="clear" title="清除" icon="ui-icon-cancel" update="inheritedLabel">
+                            <f:setPropertyActionListener target="${obj.inheritedACL}" value="${null}" />
+                        </p:commandButton>
                     </h:panelGroup>
 
                     <h:outputLabel for="description" value="描述：" />
@@ -80,11 +84,19 @@
                     </p:dataTable>
 
                     <h:panelGroup id="entryCmds">
-                        <p:commandButton id="createEntry" value="添加条目" actionListener="${dialogBean.createEntry}"
-                            update=":${cc.clientId}:c_ace:form" oncomplete="${fn:replace(cc.clientId, ':', '_')}_ed.show()" />
-                        <p:commandButton id="editEntry" value="编辑条目" actionListener="${dialogBean.editEntry}"
-                            update=":${cc.clientId}:c_ace:form" oncomplete="${fn:replace(cc.clientId, ':', '_')}_ed.show()"
-                            disabled="${dialogBean.selectedEntry == null}" />
+                        <table width="100%">
+                            <tr>
+                                <td align="left">
+                                    <p:commandButton id="createEntry" value="添加条目" actionListener="${dialogBean.createEntry}"
+                                        update=":${cc.clientId}:c_ace:form" oncomplete="${fn:replace(cc.clientId, ':', '_')}_ed.show()" />
+                                </td>
+                                <td align="right">
+                                    <p:commandButton id="editEntry" value="编辑条目" actionListener="${dialogBean.editEntry}"
+                                        update=":${cc.clientId}:c_ace:form" oncomplete="${fn:replace(cc.clientId, ':', '_')}_ed.show()"
+                                        disabled="${dialogBean.selectedEntry == null}" />
+                                </td>
+                            </tr>
+                        </table>
                     </h:panelGroup>
                 </p:fieldset>
 

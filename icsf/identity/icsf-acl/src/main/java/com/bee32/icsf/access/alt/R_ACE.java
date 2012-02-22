@@ -33,7 +33,7 @@ public class R_ACE
 
     private static final long serialVersionUID = 1L;
 
-    private String qualifiedName;
+    private String qualifiedName = "entity:";
     private Principal principal;
     private Permission permission = new Permission(0);
 

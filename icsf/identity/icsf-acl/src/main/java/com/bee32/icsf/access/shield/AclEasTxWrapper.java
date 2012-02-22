@@ -23,7 +23,7 @@ import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.acl.ACL;
 import com.bee32.icsf.access.acl.ACLEntry;
 import com.bee32.icsf.access.alt.R_ACE;
-import com.bee32.icsf.access.alt.ResourceACLService;
+import com.bee32.icsf.access.alt.R_ACLService;
 import com.bee32.icsf.access.resource.IResourceNamespace;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ScannedResourceRegistry;
@@ -61,7 +61,7 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
     ScannedResourceRegistry registry;
 
     @Inject
-    ResourceACLService aclService;
+    R_ACLService aclService;
 
     IResourceNamespace entityNS;
 

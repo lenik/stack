@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.plover.arch.ComponentBuilder;
+import com.bee32.plover.arch.ui.Appearance;
 import com.bee32.plover.arch.ui.res.InjectedAppearance;
 import com.bee32.plover.arch.util.ClassCatalog;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
@@ -15,7 +16,7 @@ public class EntityResource
         extends Resource
         implements ITypeAbbrAware {
 
-    String catalogName;
+    ClassCatalog catalog;
     Class<?> entityClass;
     String member;
 
@@ -25,25 +26,25 @@ public class EntityResource
 
     public EntityResource(ClassCatalog catalog, Class<?> entityClass, String member) {
         super(getLocalName(catalog, entityClass, member));
-        this.catalogName = catalog.getName();
+        this.catalog = catalog;
         this.entityClass = entityClass;
         this.member = member;
 
         // XXX locale override?
         Locale locale = Locale.getDefault();
 
-        InjectedAppearance appearance;
+        Appearance appearance;
         if (entityClass != null) {
             appearance = new InjectedAppearance(entityClass, locale);
         } else {
-            appearance = new InjectedAppearance(catalog.getClass(), locale);
+            appearance = catalog.getAppearance();
         }
         // appearance.getPropertyDispatcher().dispatch();
         ComponentBuilder.setAppearance(this, appearance);
     }
 
-    public String getCatalogName() {
-        return catalogName;
+    public ClassCatalog getCatalog() {
+        return catalog;
     }
 
     public Class<?> getEntityClass() {

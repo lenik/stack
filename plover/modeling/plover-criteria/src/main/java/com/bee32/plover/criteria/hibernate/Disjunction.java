@@ -24,6 +24,17 @@ public class Disjunction
                 this.elements.add(e);
     }
 
+    public static ICriteriaElement of(ICriteriaElement... elements) {
+        if (elements == null || elements.length == 0)
+            return null;
+        Disjunction disj = new Disjunction(elements);
+        if (disj.elements.isEmpty())
+            return null;
+        if (disj.elements.size() == 1)
+            return disj.elements.get(0);
+        return disj;
+    }
+
     @Override
     public void apply(Criteria criteria, int options) {
         for (ICriteriaElement e : elements)

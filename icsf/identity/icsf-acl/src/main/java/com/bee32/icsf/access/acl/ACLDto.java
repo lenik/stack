@@ -55,6 +55,8 @@ public class ACLDto
     }
 
     public void setInheritedACL(ACLDto inheritedDto) {
+        if (inheritedDto == null)
+            inheritedDto = new ACLDto().ref();
         setParent(inheritedDto);
     }
 
