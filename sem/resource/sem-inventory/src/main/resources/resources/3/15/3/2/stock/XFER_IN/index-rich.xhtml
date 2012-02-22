@@ -77,7 +77,7 @@
 
         <p:dialog header="拨入数量分配" widgetVar="itemDialog" modal="true">
             <h:form id="itemForm">
-                <h:panelGrid columns="2" columnClasses="field-label, field-content" rendered="#{bean.destItem != null}">
+                <t:panelGrid columns="2" columnClasses="field-label, field-content" rendered="#{bean.destItem != null}">
 
                     <h:outputText value="物料:" />
                     <h:outputText value="#{bean.destItem.material.label}" style="font-weight:bold;" />
@@ -120,7 +120,7 @@
                                 value="#{bean.destItem.material}" />
                         </p:commandButton>
                     </t:panelGroup>
-                </h:panelGrid>
+                </t:panelGrid>
                 <div align="right">
                     <p:commandButton id="add" value="确定" actionListener="#{bean.addDestItem}" update=":editDialog:form"
                         oncomplete="itemDialog.hide();" />

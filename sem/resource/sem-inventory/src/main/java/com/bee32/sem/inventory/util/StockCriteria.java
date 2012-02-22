@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.hibernate.criterion.Criterion;
 
+import com.bee32.plover.criteria.hibernate.CriteriaComposite;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.Equals;
@@ -109,13 +110,24 @@ public class StockCriteria
 
     @LeftHand(StockOrderItem.class)
     public static ICriteriaElement inOutDetail(Date beginDate, Long materialId, StockQueryOptions options) {
-        return compose(alias("parent", "parent"), //
+        CriteriaComposite comp = compose(alias("parent", "parent"), //
+                _equals("material.id", materialId), //
                 options.isVerifiedOnly() ? VerifyCriteria.verified("parent") : null, //
                 lessOrEquals("parent.beginTime", options.getTimestampOpt()), //
-                _equals("material.id", materialId), //
-                _equals("BatchArray", options.getBatchArray()), //
                 MonetaryCriteria.equals("price", options.getPrice()), //
                 _equals("location.id", options.getLocation()), //
                 _equals("warehouse.id", options.getWarehouse()));
+
+        BatchArray batchArray = options.getBatchArray();
+        if (batchArray != null) {
+            BatchMetadata metadata = BatchMetadata.getInstance();
+            for (int i = 0; i < metadata.getArraySize(); i++) {
+                String batch = batchArray.getBatch(i);
+                if (batch != null)
+                    comp.add(_equals("batchArray.batch" + i, batch));
+            }
+        }
+        return comp;
     }
+
 }

@@ -10,7 +10,7 @@ public class SEMFileMenu
 
     static Location FILE_ = WEB_APP.join(SEMFileModule.PREFIX_);
 
-    static MenuNode userFile = entry(SEMFrameMenu.DATA, 30, "file", FILE_.join("file/"));
+    static MenuNode userFile = entry(SEMFrameMenu.DATA, 40, "file", FILE_.join("file/"));
 
     @Override
     protected void preamble() {

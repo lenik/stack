@@ -19,7 +19,7 @@ public class SEMChanceMenu
     static Location CHANCE_ = WEB_APP.join(SEMChanceModule.PREFIX_);
 // static Location PRICE_ = WEB_APP.join(SEMChanceModule.PREFIX_);
 
-    public static MenuNode CHANCE = menu(SEMFrameMenu.BIZ1, 10, "chance");
+    public static MenuNode CHANCE = menu(SEMFrameMenu.MAIN, 110, "chance");
     /**/static MenuNode chance = entry(CHANCE, -1, "chance", CHANCE_.join("chance/"));
     /**/static MenuNode action = entry(CHANCE, 0, "action", CHANCE_.join("action/"));
     /**/public static MenuNode CHANCE_DICT = menu(CHANCE, 1, "dict");

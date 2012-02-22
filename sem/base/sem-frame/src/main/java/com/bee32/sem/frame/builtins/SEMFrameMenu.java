@@ -20,14 +20,14 @@ public class SEMFrameMenu
 
     public static final MenuNode MAIN = menu("main");
 
-    public static final MenuNode FILE = menu(MAIN, 10, "file");
-    public static final MenuNode EDIT = menu(MAIN, 20, "edit");
-    public static final MenuNode DATA = menu(MAIN, 30, "data");
-    public static final MenuNode RESOURCES = menu(MAIN, 40, "resources");
-    public static final MenuNode BIZ1 = menu(MAIN, 50, "biz1");
-    public static final MenuNode PROCESS = menu(MAIN, 60, "process");
-    public static final MenuNode OPTIONS = menu(MAIN, 900, "options");
-    public static final MenuNode HELP = menu(MAIN, 1000, "help");
+    public static final MenuNode FILE = menu(MAIN, 100, "file");
+    public static final MenuNode EDIT = menu(MAIN, 200, "edit");
+    public static final MenuNode DATA = menu(MAIN, 300, "data");
+    public static final MenuNode RESOURCES = menu(MAIN, 400, "resources");
+    public static final MenuNode BIZ1 = menu(MAIN, 500, "biz1");
+    public static final MenuNode PROCESS = menu(MAIN, 600, "process");
+    public static final MenuNode OPTIONS = menu(MAIN, 9000, "options");
+    public static final MenuNode HELP = menu(MAIN, 10000, "help");
 
     public static final MenuNode ATTRIBUTES = menu(EDIT, 100, "attributes");
 

@@ -16,6 +16,8 @@
                         value="com.bee32.sem.inventory.tx.entity.StockOutsourcing" />
                     <f:setPropertyActionListener target="#{chooseStockJobDialogBean.restriction}"
                         value="#{bean.job.jobQueueing}" />
+                    <f:setPropertyActionListener target="#{chooseStockJobDialogBean.nullInput}"
+                        value="true" />
                 </p:commandButton>
             </h:panelGroup>
             <h:panelGroup rendered="#{job != null}">
