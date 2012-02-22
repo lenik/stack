@@ -96,7 +96,7 @@ public class R_ACLDao
     }
 
     /**
-     * @return <code>null</code> if undefined.
+     * @return Non-<code>null</code> permission.
      */
     public Permission getPermission(Resource resource, Set<Integer> imset) {
         if (resource == null)
@@ -111,12 +111,10 @@ public class R_ACLDao
                 new String[] { "q", "imset" }, //
                 new Object[] { qualifiedName, imset });
 
-        // Only the first matching entry is returned.
+        Permission join = new Permission(0);
         for (R_ACE ace : list)
-            return ace.getPermission();
-
-        // No matching entry.
-        return null;
+            join.merge(ace.getPermission());
+        return join;
     }
 
 }

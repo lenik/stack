@@ -39,8 +39,6 @@ public class R_ACLService
      */
     public Permission getPermission(Resource resource, Set<Integer> imset) {
         Permission permission = resourceACLDao.getPermission(resource, imset);
-        if (permission == null)
-            permission = new Permission(0);
         return permission;
     }
 

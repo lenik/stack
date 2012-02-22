@@ -35,12 +35,8 @@ public class R_Authority
     @Override
     public Permission getPermission(Resource resource, Principal principal) {
         Set<Integer> imset = IdUtils.getIdSet(principal.getImSet());
-
         Permission permission = aclDao.getPermission(resource, imset);
-        if (permission == null)
-            return new Permission(0);
-        else
-            return permission;
+        return permission;
     }
 
     @Override
