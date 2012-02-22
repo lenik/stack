@@ -33,20 +33,8 @@ public class PrimefacesMenuBuilder
     @Override
     public MenuModel buildMenubar(IMenuNode virtualRoot) {
         MenuModel model = new DefaultMenuModel();
-        for (IMenuNode root : virtualRoot) {
-            Object obj = convert(root);
-            if (obj == null) {
-                continue;
-            } else if (obj instanceof Submenu) {
-                Submenu submenu = (Submenu) obj;
-                model.addSubmenu(submenu);
-            } else if (obj instanceof MenuItem) {
-                MenuItem item = (MenuItem) obj;
-                model.addMenuItem(item);
-            } else {
-                throw new IllegalUsageException("Bad converted menu type: " + obj);
-            }
-        }
+        Submenu topMenu = (Submenu) convert(virtualRoot);
+        model.getContents().addAll(topMenu.getChildren());
         return model;
     }
 
