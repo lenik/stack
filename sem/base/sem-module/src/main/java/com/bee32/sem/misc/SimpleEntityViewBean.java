@@ -22,6 +22,7 @@ import javax.free.ParseException;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
+import com.bee32.icsf.access.AccessControlException;
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.acl.ACLCriteria;
 import com.bee32.icsf.login.SessionUser;
@@ -260,7 +261,12 @@ public class SimpleEntityViewBean
 
     protected <E extends Entity<?>> List<E> loadImpl(SevbLazyDataModel<E, ?> def, int first, int pageSize,
             String sortField, SortOrder sortOrder, Map<String, String> filters) {
-        return def._loadImpl(first, pageSize, sortField, sortOrder, filters);
+        try {
+            return def._loadImpl(first, pageSize, sortField, sortOrder, filters);
+        } catch (AccessControlException e) {
+            reportException(e, "读取", entityClass);
+            return Collections.emptyList();
+        }
     }
 
     protected <E extends Entity<?>> int countImpl(SevbLazyDataModel<E, ?> def) {

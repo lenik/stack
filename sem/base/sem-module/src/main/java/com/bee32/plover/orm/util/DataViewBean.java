@@ -1,13 +1,16 @@
 package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import com.bee32.icsf.access.AccessControlException;
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.acl.IACLService;
 import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.principal.User;
+import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.faces.view.GenericViewBean;
 import com.bee32.plover.faces.view.ViewBean;
@@ -63,9 +66,20 @@ public abstract class DataViewBean
 
     protected <E extends Entity<?>, D extends EntityDto<E, ?>> //
     List<D> mrefList(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
-        List<E> entities = ctx.data.access(entityClass).list(criteriaElements);
-        List<D> list = DTOs.mrefList(dtoClass, entities);
-        return list;
+        try {
+            List<E> entities = ctx.data.access(entityClass).list(criteriaElements);
+            List<D> list = DTOs.mrefList(dtoClass, entities);
+            return list;
+        } catch (AccessControlException e) {
+            reportException(e, "读取", entityClass);
+            return Collections.emptyList();
+        }
+    }
+
+    protected boolean reportException(AccessControlException e, String hint, Class<?> entityClass) {
+        String entityName = ClassUtil.getTypeName(entityClass);
+        uiLogger.error("您没有" + hint + entityName + "的权限。", e);
+        return false;
     }
 
 }
