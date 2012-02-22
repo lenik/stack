@@ -21,7 +21,7 @@ public abstract class EasTxWrapperCat<E extends Entity<? extends K>, K extends S
 
     @Override
     protected void checkCount() {
-        require(getEntityType(), READ);
+        // require(getEntityType(), READ);
     }
 
     @Override
