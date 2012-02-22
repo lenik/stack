@@ -71,9 +71,9 @@ public class StockTransfer
      *
      * @see StockOrderSubject#XFER_IN
      */
-    @OneToOne(orphanRemoval = true)
+    @OneToOne(/*orphanRemoval = true*/)
     @JoinColumn(name = "s2")
-    @Cascade(CascadeType.ALL)
+    // @Cascade(CascadeType.ALL)
     public StockOrder getDest() {
         return dest;
     }

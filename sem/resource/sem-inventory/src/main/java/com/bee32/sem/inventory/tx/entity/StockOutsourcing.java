@@ -47,9 +47,9 @@ public class StockOutsourcing
     /**
      * 委外入库单
      */
-    @OneToOne(orphanRemoval = true)
+    @OneToOne(/*orphanRemoval = true*/)
     @JoinColumn(name = "s2")
-    @Cascade(CascadeType.ALL)
+    // @Cascade(CascadeType.ALL)
     public StockOrder getInput() {
         return input;
     }
