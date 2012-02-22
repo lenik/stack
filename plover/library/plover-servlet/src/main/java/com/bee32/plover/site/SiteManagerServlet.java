@@ -1,5 +1,6 @@
 package com.bee32.plover.site;
 
+import java.text.DecimalFormat;
 import java.util.Enumeration;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -500,6 +501,36 @@ public class SiteManagerServlet
                 throws Exception {
             h3().text("智恒站点管理程序。").end();
             p().text("本程序用于创建、配置、监控一台服务器上运行的所有站点。").end();
+
+            fieldset();
+            {
+                legend().text("服务器信息").end();
+                Runtime runtime = Runtime.getRuntime();
+                table();
+                amountEntry("可用处理器内核数: ", runtime.availableProcessors(), "个");
+                amountEntry("最大内存: ", runtime.maxMemory());
+                amountEntry("当前可用内存: ", runtime.totalMemory());
+                amountEntry("已使用内存: ", runtime.totalMemory() - runtime.freeMemory());
+                amountEntry("空闲内存: ", runtime.freeMemory());
+                end();
+            }
+            end();
+        }
+
+        void amountEntry(String label, long amount) {
+            amountEntry(label, amount, "字节");
+        }
+
+        void amountEntry(String label, long amount, String suffix) {
+            DecimalFormat format = new DecimalFormat("#,###");
+            tr();
+            th().align("right").text(label).end();
+            td();
+            {
+                text(format.format(amount));
+                text(" " + suffix);
+            }
+            end(2);
         }
 
     }
