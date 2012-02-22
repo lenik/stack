@@ -4,11 +4,11 @@ a2confdir = ${sysconfdir}/apache2
 sitesdir  = ${a2confdir}/sites-available
 
 dist_sites_DATA = \
-	secca-static.site
+    20secca-static.site
 
 setup_SCRIPTS = \
-	post-install.sh \
-	pre-remove.sh
+    post-install.sh \
+    pre-remove.sh
 
 EXTRA_DIST = post-install.sh.in pre-remove.sh.in
 CLEANFILES = post-install.sh    pre-remove.sh

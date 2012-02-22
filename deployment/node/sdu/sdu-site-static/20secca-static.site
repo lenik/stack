@@ -45,5 +45,7 @@
     </Directory>
 
     SSLEngine on
+    SSLCertificateFile    /etc/ssl/certs/cdn.bee32.com.crt
+    SSLCertificateKeyFile /etc/ssl/private/cdn.bee32.com.pem
 
 </VirtualHost>
