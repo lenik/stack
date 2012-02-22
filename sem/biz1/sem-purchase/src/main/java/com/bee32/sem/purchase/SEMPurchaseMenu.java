@@ -10,7 +10,7 @@ public class SEMPurchaseMenu
 
     static Location PURCHASE_ = WEB_APP.join(SEMPurchaseModule.PREFIX_);
 
-    public static MenuNode PURCHASE = menu(SEMFrameMenu.MAIN, 30, "purchase");
+    public static MenuNode PURCHASE = menu(SEMFrameMenu.MAIN, 450, "purchase");
 
     static MenuNode makeOrderAdmin = entry(PURCHASE, 1, "makeOrderAdmin", PURCHASE_.join("make-order/"));
     static MenuNode makeTaskAdmin = entry(PURCHASE, 2, "makeTaskAdmin", PURCHASE_.join("make-task/"));

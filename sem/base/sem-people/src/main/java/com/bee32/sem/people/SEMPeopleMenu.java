@@ -19,8 +19,8 @@ public class SEMPeopleMenu
 
     static MenuNode personAdmin = entry(SEMFrameMenu.DATA, 10, "personAdmin", PEOPLE_.join("person/index-rich.jsf"));
     static MenuNode orgAdmin = entry(SEMFrameMenu.DATA, 20, "orgAdmin", PEOPLE_.join("org/index-rich.jsf"));
-    static MenuNode internalPersonAdmin = entry(SEMFrameMenu.DATA, 30, "internalPersonAdmin",
-            PEOPLE_.join("internalPerson/index-rich.jsf"));
+//    static MenuNode internalPersonAdmin = entry(SEMFrameMenu.DATA, 30, "internalPersonAdmin",
+//            PEOPLE_.join("internalPerson/index-rich.jsf"));
 
     public static MenuNode SETTINGS = menu(SEMFrameMenu.DATA, 0, "dict");
     /**/static MenuNode partyTag = entry(SETTINGS, 1, "partyTag", getDictIndex(PartyTagname.class));

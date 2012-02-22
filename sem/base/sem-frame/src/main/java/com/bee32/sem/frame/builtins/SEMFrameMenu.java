@@ -19,27 +19,23 @@ public class SEMFrameMenu
     static String VERSION = "SEM-Frame 0.3.2";
 
     public static final MenuNode MAIN = menu("main");
+    /**/public static final MenuNode FILE = menu(MAIN, 100, "file");
+    /*    */static MenuNode print = entry(FILE, 100, "print", JAVASCRIPT.join("alert('under development')"));
+    /**/public static final MenuNode EDIT = menu(MAIN, 200, "edit");
+    /*    */public static final MenuNode ATTRIBUTES = menu(EDIT, 100, "attributes");
+    /**/public static final MenuNode DATA = menu(MAIN, 300, "data");
+    /*    */static MenuNode contract = entry(DATA, 50, "contract", JAVASCRIPT.join("alert('under development')"));
+    /**/public static final MenuNode RESOURCES = menu(MAIN, 400, "resources");
+    /**/public static final MenuNode BIZ1 = menu(MAIN, 500, "biz1");
+    /**/public static final MenuNode PROCESS = menu(MAIN, 600, "process");
+    /**/public static final MenuNode OPTIONS = menu(MAIN, 9000, "options");
+    /*    */public static final MenuNode SYSTEM = menu(OPTIONS, 10, "system");
+    /*        */public static final MenuNode SECURITY = menu(SYSTEM, 100, "security");
+    /*    */public static final MenuNode PREFERENCES = menu(OPTIONS, 20, "preferences");
+    /*    */public static final MenuNode THEME = menu(OPTIONS, 30, "theme");
+    /**/public static final MenuNode HELP = menu(MAIN, 10000, "help");
+    /*    */static MenuNode about = entry(HELP, 1, "aboutFrame", JAVASCRIPT.join("alert('" + VERSION + "')"));
 
-    public static final MenuNode FILE = menu(MAIN, 100, "file");
-    public static final MenuNode EDIT = menu(MAIN, 200, "edit");
-    public static final MenuNode DATA = menu(MAIN, 300, "data");
-    public static final MenuNode RESOURCES = menu(MAIN, 400, "resources");
-    public static final MenuNode BIZ1 = menu(MAIN, 500, "biz1");
-    public static final MenuNode PROCESS = menu(MAIN, 600, "process");
-    public static final MenuNode OPTIONS = menu(MAIN, 9000, "options");
-    public static final MenuNode HELP = menu(MAIN, 10000, "help");
-
-    public static final MenuNode ATTRIBUTES = menu(EDIT, 100, "attributes");
-
-    public static final MenuNode SYSTEM = menu(OPTIONS, 10, "system");
-    public static final MenuNode SECURITY = menu(SYSTEM, 100, "security");
-    public static final MenuNode PREFERENCES = menu(OPTIONS, 20, "preferences");
-    public static final MenuNode THEME = menu(OPTIONS, 30, "theme");
-
-    static MenuNode print = entry(FILE, 100, "print", JAVASCRIPT.join("alert('under development')"));
-    static MenuNode contract = entry(DATA, 50, "contract", JAVASCRIPT.join("alert('under development')"));
-
-    static MenuNode about = entry(HELP, 1, "aboutFrame", JAVASCRIPT.join("alert('" + VERSION + "')"));
 
     @Override
     protected void preamble() {

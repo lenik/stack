@@ -10,7 +10,7 @@ public class SEMAssetMenu
 
     static Location ASSET_ = WEB_APP.join(SEMAssetModule.PREFIX_);
 
-    public static MenuNode ASSET = menu(SEMFrameMenu.MAIN, 120, "asset");
+    public static MenuNode ASSET = menu(SEMFrameMenu.MAIN, 410, "asset");
 
     static MenuNode accountSubjectAdmin = entry(ASSET, 1, "accountSubjectAdmin", ASSET_.join("subject/"));
 

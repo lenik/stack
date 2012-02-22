@@ -20,11 +20,11 @@ public class SEMInventoryMenu
         return _("stock/?subject=" + subject.getValue());
     }
 
-    public static MenuNode MATERIAL = menu(SEMFrameMenu.MAIN, 410, "material");
+    public static MenuNode MATERIAL = menu(SEMFrameMenu.MAIN, 430, "material");
     /*    */static MenuNode materialCategory = entry(MATERIAL, 1, "materialCategory", _("category/"));
     /*    */static MenuNode material = entry(MATERIAL, 3, "material", _("material/"));
 
-    public static MenuNode INVENTORY = menu(SEMFrameMenu.MAIN, 420, "inventory");
+    public static MenuNode INVENTORY = menu(SEMFrameMenu.MAIN, 440, "inventory");
 
     public static MenuNode SETTINGS = menu(INVENTORY, 1, "settings");
     /*    */static MenuNode verifyPolicy = entry(SEMProcessMenu.VERIFY_POLICY, 100, "verifyPolicy", _("verify/"));
