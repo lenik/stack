@@ -3,9 +3,8 @@ package com.bee32.icsf.access.shield;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import javax.free.JavaioFile;
 import javax.free.Order;
@@ -18,8 +17,9 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-import com.bee32.icsf.access.AccessControlException;
+import com.bee32.icsf.access.DefaultPermission;
 import com.bee32.icsf.access.Permission;
+import com.bee32.icsf.access.UnauthorizedAccessException;
 import com.bee32.icsf.access.acl.ACL;
 import com.bee32.icsf.access.acl.ACLEntry;
 import com.bee32.icsf.access.alt.R_ACE;
@@ -89,23 +89,35 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
         }
     }
 
-    static Set<Class<?>> coreEntities = new HashSet<>();
+    static Map<Class<?>, Permission> defaults = new HashMap<>();
+    static final Permission R_X = new Permission(Permission.R_X);
+    static final Permission RWX = new Permission(Permission.RWX);
+
     static {
-        coreEntities.add(PloverConf.class);
-        coreEntities.add(EntityInfo.class);
-        coreEntities.add(EntityColumn.class);
+        defaults.put(PloverConf.class, R_X);
+        defaults.put(EntityInfo.class, R_X);
+        defaults.put(EntityColumn.class, R_X);
 
-        coreEntities.add(Principal.class);
-        coreEntities.add(User.class);
-        coreEntities.add(Role.class);
-        coreEntities.add(Group.class);
-        coreEntities.add(UserOption.class);
-        coreEntities.add(UserPreference.class);
+        defaults.put(Principal.class, R_X);
+        defaults.put(User.class, R_X);
+        defaults.put(Role.class, R_X);
+        defaults.put(Group.class, R_X);
+        defaults.put(UserOption.class, RWX);
+        defaults.put(UserPreference.class, RWX);
 
-        coreEntities.add(UserPassword.class);
-        coreEntities.add(ACL.class);
-        coreEntities.add(ACLEntry.class);
-        coreEntities.add(R_ACE.class);
+        defaults.put(UserPassword.class, RWX);
+        defaults.put(ACL.class, RWX);
+        defaults.put(ACLEntry.class, RWX);
+        defaults.put(R_ACE.class, R_X);
+
+        PersistenceUnit unit = CustomizedSessionFactoryBean.getForceUnit();
+        for (Class<?> entityType : unit.getClasses()) {
+            DefaultPermission _defaultPermission = entityType.getAnnotation(DefaultPermission.class);
+            if (_defaultPermission != null) {
+                Permission defaultPermission = new Permission(_defaultPermission.value());
+                defaults.put(entityType, defaultPermission);
+            }
+        }
     }
 
     @Override
@@ -113,8 +125,9 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
         if (!enabled || aclService == null)
             return;
 
+        Permission defl = defaults.get(entityType);
         boolean readOnly = requiredPermission.getAllowBits() == Permission.READ;
-        if (readOnly && coreEntities.contains(entityType))
+        if (readOnly && defl.isReadable())
             return;
 
         UserDto currentUser = SessionUser.getInstance().getUserOpt();
@@ -134,17 +147,19 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
             return;
         }
 
+        Permission mixed = defl.clone();
         Permission grantedPermission = aclService.getPermission(entityResource, currentUser.getId());
+        mixed.merge(grantedPermission);
 
-        if (!grantedPermission.implies(requiredPermission)) {
+        if (!mixed.implies(requiredPermission)) {
             String message = String.format(//
                     "User %s has insufficient permission to resource %s. " + //
                             "Required permission is %s, but user has granted %s", //
                     currentUser.getDisplayName(), //
                     entityResource.getAppearance().getDisplayName() + "(" + entityType + ")", // /
                     requiredPermission, //
-                    grantedPermission);
-            throw new AccessControlException(message);
+                    mixed);
+            throw new UnauthorizedAccessException(message, entityType, requiredPermission);
         }
     }
 
