@@ -8,5 +8,5 @@ Homepage: http://sdu.secca-project.com/sdu-site-static
 
 Package: sdu-site-static
 Architecture: all
-Depends: sdu-site-maindev
+Depends: sdu-site-maindev, sdu-cred-a2ssl
 Description: Static resources website

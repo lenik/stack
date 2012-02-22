@@ -1,3 +1,5 @@
+# vim: set filetype=apache :
+
 <VirtualHost *:80>
     ServerName  static.bee32.com
     ServerAlias st*.cdn.bee32.com
@@ -18,5 +20,30 @@
         Order allow,deny
         allow from all
     </Directory>
+
+</VirtualHost>
+
+<VirtualHost *:444>
+    ServerName  static.bee32.com
+    ServerAlias st*.cdn.bee32.com
+    ServerAdmin admin@bee32.com
+
+    LogLevel  error
+    ErrorLog  /var/log/apache2/static_error.log
+    CustomLog /var/log/apache2/static_access.log combined
+
+    Alias /lib     /mnt/istore/projects/public/www/lib
+    Alias /lib2    /mnt/istore/projects/public/www/lib2
+    Alias /style   /mnt/istore/projects/public/www/style
+    Alias /symbols /mnt/istore/projects/public/www/symbols
+
+    <Directory /mnt/istore/projects/html/>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Order allow,deny
+        allow from all
+    </Directory>
+
+    SSLEngine on
 
 </VirtualHost>
