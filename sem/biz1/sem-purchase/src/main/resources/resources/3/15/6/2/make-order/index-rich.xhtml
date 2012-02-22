@@ -88,9 +88,9 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:choosePartyDialog id="d-customer" header="选择客户" target="#{obj.customer}" update=":editDialog:form:basic" />
-        <sem:chooseChanceDialog id="d-chance" target="#{obj.chance}" update=":editDialog:form:basic" />
-        <sem:choosePartDialog id="d-part" target="#{itemObj.part}" update=":itemsEditView:editForm:body" />
+        <sem:choosePartyDialog id="c_customer" header="选择客户" target="#{obj.customer}" update=":editDialog:form:basic" />
+        <sem:chooseChanceDialog id="c_chance" target="#{obj.chance}" update=":editDialog:form:basic" />
+        <sem:choosePartDialog id="c_part" target="#{itemObj.part}" update=":itemsEditView:editForm:body" />
 
         <fr:listView id="itemsEditView" header="订单项目" style="editDialog" indexView=":editDialog:form:itemsIndexView"
             mbean="#{bean.itemsMBean}">

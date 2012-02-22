@@ -91,7 +91,7 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:choosePartyDialog id="supplier-d" var="chooseSupplierDialog" header="选择询价方" stereo="ORG"
+        <sem:choosePartyDialog id="c_supplier" var="chooseSupplierDialog" header="选择询价方" stereo="ORG"
             target="#{inquiryObj.supplier}" update=":inquiriesEditView:editForm:supplier" />
 
         <fr:listView id="inquiriesEditView" header="询价信息" style="editDialog" indexView=":editDialog:form:tv:inquiriesIndexView"

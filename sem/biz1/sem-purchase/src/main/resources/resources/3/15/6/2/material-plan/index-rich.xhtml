@@ -89,8 +89,8 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:chooseMakeTaskDialog id="maskTask-d" target="#{bean.applyMakeTask}" update=":editDialog:form" />
-        <sem:choosePartyDialog id="supplier-d" header="选择首选供应商" var="chooseSupplierDialog" target="#{itemObj.preferredSupplier}"
+        <sem:chooseMakeTaskDialog id="c_maskTask" target="#{bean.applyMakeTask}" update=":editDialog:form" />
+        <sem:choosePartyDialog id="c_supplier" header="选择首选供应商" var="chooseSupplierDialog" target="#{itemObj.preferredSupplier}"
             update=":itemsEditView:editForm:body" />
         <sem:inputQuantityDialog id="inputQuantityDialog" target="#{planOrderItemObj.quantity}"
             update=":planOrderItemsEditView:editForm:body" />

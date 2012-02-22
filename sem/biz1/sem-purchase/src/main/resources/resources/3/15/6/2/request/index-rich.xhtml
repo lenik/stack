@@ -89,9 +89,9 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:chooseMaterialPlanDialog id="plan-d" target="#{bean.materialPlanToAttach}"
+        <sem:chooseMaterialPlanDialog id="c_plan" target="#{bean.materialPlanToAttach}"
             update=":editDialog:form:tv:plansIndexView:indexForm:body" />
-        <sem:choosePartyDialog id="preferredSupplier-d" var="choosePreferredSupplierDialog"
+        <sem:choosePartyDialog id="c_preferredSupplier" var="choosePreferredSupplierDialog"
             header="选择优选供应商" target="#{itemObj.preferredSupplier}" stereo="SUP" />
 
         <fr:listView id="itemsEditView" header="采购项" style="editDialog" indexView=":editDialog:form:tv:itemsIndexView"

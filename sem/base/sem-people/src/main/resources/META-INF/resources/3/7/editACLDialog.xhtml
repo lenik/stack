@@ -21,9 +21,9 @@
         <h:outputStylesheet library="frame" name="table.css" />
         <h:outputStylesheet library="3/7/2" name="acl.css" />
 
-        <icsf:chooseACLDialog id="acl_d" var="${fn:replace(cc.parent.clientId, ':', '_')}_acld"
+        <icsf:chooseACLDialog id="c_acl" var="${fn:replace(cc.parent.clientId, ':', '_')}_acld"
             target="${cc.parent.attrs.dialogBean.openedObject.inheritedACL}" update=":${cc.parent.clientId}:form:inheritedACL" />
-        <icsf:editACEDialog id="ace_d" var="${fn:replace(cc.parent.clientId, ':', '_')}_ed" value="${cc.parent.attrs.dialogBean.entry}"
+        <icsf:editACEDialog id="c_ace" var="${fn:replace(cc.parent.clientId, ':', '_')}_ed" value="${cc.parent.attrs.dialogBean.entry}"
             _value="${cc.parent.parent.attrs.dialogBean.entry}" actionListener="${cc.parent.attrs.dialogBean.addEntry}"
             update=":${cc.parent.clientId}:form:entryTable" />
 
@@ -81,16 +81,16 @@
 
                     <h:panelGroup id="entryCmds">
                         <p:commandButton id="createEntry" value="添加条目" actionListener="${dialogBean.createEntry}"
-                            update=":${cc.clientId}:ace_d:form" oncomplete="${fn:replace(cc.clientId, ':', '_')}_ed.show()" />
+                            update=":${cc.clientId}:c_ace:form" oncomplete="${fn:replace(cc.clientId, ':', '_')}_ed.show()" />
                         <p:commandButton id="editEntry" value="编辑条目" actionListener="${dialogBean.editEntry}"
-                            update=":${cc.clientId}:ace_d:form" oncomplete="${fn:replace(cc.clientId, ':', '_')}_ed.show()"
+                            update=":${cc.clientId}:c_ace:form" oncomplete="${fn:replace(cc.clientId, ':', '_')}_ed.show()"
                             disabled="${dialogBean.selectedEntry == null}" />
                     </h:panelGroup>
                 </p:fieldset>
 
                 <div align="right">
                     <p:commandButton id="save-validated" value="保存"
-                        update="${cc.attrs.update}, :${cc.clientId}:acl_d:form" oncomplete="${cc.attrs.var}.hideValidated(args)" />
+                        update="${cc.attrs.update}, :${cc.clientId}:c_acl:form" oncomplete="${cc.attrs.var}.hideValidated(args)" />
                     <p:commandButton id="cancel" value="取消" onclick="${cc.attrs.var}.hide()" />
                 </div>
             </h:form>

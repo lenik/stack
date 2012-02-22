@@ -151,11 +151,11 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:choosePartyDialog id="party-d" header="选择机会客户" stereo="ORG" target="${partyObj.party}"
+        <sem:choosePartyDialog id="c_party" header="选择机会客户" stereo="ORG" target="${partyObj.party}"
             update=":editDialog:form:tv:partiesView:editForm:body" />
-        <sem:chooseChanceActionDialog id="action-d" header="选择要关联的行动日志" target="${bean.actionsMBean.addition}"
+        <sem:chooseChanceActionDialog id="c_action" header="选择要关联的行动日志" target="${bean.actionsMBean.addition}"
             update=":editDialog:form:tv:actionsIndexView:indexForm:body" />
-        <sem:chooseMaterialDialog id="material-d" header="选择产品/物料" target="${quotationItemObj.material}"
+        <sem:chooseMaterialDialog id="c_material" header="选择产品/物料" target="${quotationItemObj.material}"
             update=":qEditView:editForm:tv:qItemsView:editForm:body" />
 
         <fr:listView id="qEditView" indexView=":editDialog:form:tv:qIndexView" header="报价" style="editDialog"

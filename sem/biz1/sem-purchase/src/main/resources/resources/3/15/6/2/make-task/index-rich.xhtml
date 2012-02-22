@@ -62,7 +62,7 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:chooseMakeOrderDialog id="d-makeOrder" target="#{bean.applyMakeOrder}" update=":editDialog:form" />
+        <sem:chooseMakeOrderDialog id="c_makeOrder" target="#{bean.applyMakeOrder}" update=":editDialog:form" />
 
         <fr:listView id="itemsEditView" header="生产项目" style="editDialog" indexView=":editDialog:form:itemsIndexView"
             mbean="#{bean.itemsMBean}">

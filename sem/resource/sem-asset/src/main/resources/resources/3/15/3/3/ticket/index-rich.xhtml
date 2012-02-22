@@ -34,7 +34,7 @@
                     readonly="true"
                     label="资金流业务单"
                     style="width:300px;"/>
-                <p:commandButton value="..." onclick="chooseBudgetRequestDialog.show();" disabled="#{not bean.editing}" update=":d-request:form" />
+                <p:commandButton value="..." onclick="chooseBudgetRequestDialog.show();" disabled="#{not bean.editing}" update=":c_request:form" />
             </t:panelGroup>
         </t:panelGrid>
 
@@ -106,10 +106,10 @@
             </t:panelGrid>
         </fr:listView>
 
-        <sem:chooseBudgetRequestDialog id="d-request" target="#{obj.request}" update=":editDialog:form:budgetRequest" />
-        <sem:chooseAccountSubjectDialog id="d-subject" target="#{itemObj.subject}"
+        <sem:chooseBudgetRequestDialog id="c_request" target="#{obj.request}" update=":editDialog:form:budgetRequest" />
+        <sem:chooseAccountSubjectDialog id="c_subject" target="#{itemObj.subject}"
             update=":itemsEditView:editForm:accountSubject" />
-        <sem:choosePartyDialog id="d-customer" header="选择客户作为二级科目" target="#{itemObj.party}"
+        <sem:choosePartyDialog id="c_customer" header="选择客户作为二级科目" target="#{itemObj.party}"
             update=":itemsEditView:editForm:party" />
     </ui:define>
 

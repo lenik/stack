@@ -26,7 +26,7 @@
     </cc:interface>
 
     <cc:implementation>
-        <sem:choosePartyDialog id="d-customer" header="选择订单的客户..." var="chooseMakeOrderCustomerDialog"
+        <sem:choosePartyDialog id="c_customer" header="选择订单的客户..." var="chooseMakeOrderCustomerDialog"
             target="${cc.parent.attrs.dialogBean.customer}" update=":${cc.parent.clientId}:form" />
 
         <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />

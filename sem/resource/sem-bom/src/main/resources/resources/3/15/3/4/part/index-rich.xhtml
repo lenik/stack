@@ -59,7 +59,7 @@
                     <t:panelGroup colspan="3">
                         <h:inputHidden id="target" label="对应物料" value="#{obj.target.id_RZL}" />
                         <h:outputText value="#{obj.target.label}" />
-                        <p:commandButton title="选择生成的物料" value="..." oncomplete="chooseTargetDialog.show();" update=":material-d:form">
+                        <p:commandButton title="选择生成的物料" value="..." oncomplete="chooseTargetDialog.show();" update=":c_material:form">
                             <f:setPropertyActionListener
                                 target="#{chooseMaterialDialogBean.materialType}"
                                 value="1" />
@@ -131,11 +131,11 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:chooseMaterialDialog id="material-d" header="选择产品对应的物料" var="chooseTargetDialog"
+        <sem:chooseMaterialDialog id="c_material" header="选择产品对应的物料" var="chooseTargetDialog"
             target="#{bean.selectedMaterial}" actionListener="#{bean.setPartMaterial}" update=":editDialog:form:tv:basic" />
-        <sem:choosePartDialog id="itemPart-d" header="选择组件对应的半成品" var="chooseItemPartDialog"
+        <sem:choosePartDialog id="c_itemPart" header="选择组件对应的半成品" var="chooseItemPartDialog"
             target="#{childObj.part}" update=":childrenEditView:editForm:body" />
-        <sem:chooseMaterialDialog id="itemMaterial-d" header="选择组件对应的物料" var="chooseItemMaterialDialog"
+        <sem:chooseMaterialDialog id="c_itemMaterial" header="选择组件对应的物料" var="chooseItemMaterialDialog"
             target="#{bean.selectedMaterial}" actionListener="#{bean.setPartItemMaterial}" update=":childrenEditView:editForm:body" />
 
         <fr:listView id="childrenEditView" header="BOM明细" style="editDialog" indexView=":editDialog:form:tv:childrenIndexView"

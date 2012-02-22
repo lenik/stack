@@ -9,7 +9,7 @@
     <ui:param name="things" value="#{thingDictsBean}" />
     <ui:param name="obj" value="#{bean.openedObject}" />
     <ui:param name="sideBarNVisible" value="true" />
-    <ui:param name="mirrorTargets" value=":location-d:form" />
+    <ui:param name="mirrorTargets" value=":c_location:form" />
 
     <ui:define name="toolbarContexts">
         <h:outputText value="仓库:" />
@@ -58,7 +58,7 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:chooseStockLocationDialog id="location-d" target="#{obj.parent}" update=":editDialog:form" />
+        <sem:chooseStockLocationDialog id="c_location" target="#{obj.parent}" update=":editDialog:form" />
     </ui:define>
 
 </ui:composition>

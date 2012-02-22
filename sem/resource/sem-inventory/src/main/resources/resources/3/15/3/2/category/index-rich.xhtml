@@ -5,7 +5,7 @@
     <ui:param name="title" value="物料分类" />
     <ui:param name="bean" value="${materialCategoryAdminBean}" />
     <ui:param name="obj" value="${bean.openedObject}" />
-    <ui:param name="mirrorTargets" value=":category-d:form" />
+    <ui:param name="mirrorTargets" value=":c_category:form" />
 
     <ui:define name="dataColumns">
         <p:column headerText="分类名称">
@@ -32,7 +32,7 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:chooseMaterialCategoryDialog id="category-d" target="${obj.parent}"
+        <sem:chooseMaterialCategoryDialog id="c_category" target="${obj.parent}"
             update=":editDialog:form" />
     </ui:define>
 

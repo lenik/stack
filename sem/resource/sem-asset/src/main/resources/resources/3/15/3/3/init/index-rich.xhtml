@@ -35,9 +35,9 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:chooseAccountSubjectDialog id="d-subject" target="#{itemObj.subject}"
+        <sem:chooseAccountSubjectDialog id="c_subject" target="#{itemObj.subject}"
             update=":itemsEditView:editForm:body" />
-        <sem:choosePartyDialog id="d-customer" header="选择客户" target="#{itemObj.party}" update=":itemsEditView:editForm:body" />
+        <sem:choosePartyDialog id="c_customer" header="选择客户" target="#{itemObj.party}" update=":itemsEditView:editForm:body" />
 
         <fr:listView id="itemsEditView" header="凭证项目" style="editDialog" indexView=":editDialog:form:itemsIndexView"
             mbean="#{bean.itemsMBean}">
