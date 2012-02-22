@@ -4,14 +4,14 @@ include libauto/coolauto.am
 siteconfdir = ${sysconfdir}/apache2/sites-available
 
 siteconf_DATA = \
-	secca-devsite.site
+    20secca-devsite.site
 
 setup_SCRIPTS = \
-	post-install.sh \
-	pre-remove.sh
+    post-install.sh \
+    pre-remove.sh
 
-EXTRA_DIST = post-install.sh.in pre-remove.sh.in secca-devsite.site.in
-CLEANFILES = post-install.sh    pre-remove.sh	 secca-devsite.site
+EXTRA_DIST = post-install.sh.in pre-remove.sh.in 20secca-devsite.site.in
+CLEANFILES = post-install.sh    pre-remove.sh	 20secca-devsite.site
 
 post-install.sh: post-install.sh.in Makefile
 	$(do_subst) <$(srcdir)/post-install.sh.in >$@
@@ -19,5 +19,5 @@ post-install.sh: post-install.sh.in Makefile
 pre-remove.sh: pre-remove.sh.in Makefile
 	$(do_subst) <$(srcdir)/pre-remove.sh.in >$@
 
-secca-devsite.site: secca-devsite.site.in Makefile
-	$(do_subst) <$(srcdir)/secca-devsite.site.in >$@
+20secca-devsite.site: 20secca-devsite.site.in Makefile
+	$(do_subst) <$(srcdir)/20secca-devsite.site.in >$@

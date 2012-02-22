@@ -33,7 +33,7 @@
 	  debian/compat, debian/control, debian/copyright, debian/docs,
 	  debian/postinst, debian/prerm, debian/rules, install-sh,
 	  libauto/coolauto.am, missing, post-install.sh.in,
-	  pre-remove.sh.in, secca-devsite.site.in: set eol-style to native
+	  pre-remove.sh.in, 20secca-devsite.site.in: set eol-style to native
 
 2010-09-29  lenik
 
@@ -42,22 +42,22 @@
 2010-09-23  lenik
 
 	* VERSION.av, configure, configure.ac, debian/control,
-	  post-install.sh.in, pre-remove.sh.in, secca-devsite.site.in:
+	  post-install.sh.in, pre-remove.sh.in, 20secca-devsite.site.in:
 	  a2enmod userdir
 	  pre/post take care of devsite_dir.
 	* Makefile.am, VERSION.av, configure, configure.ac,
-	  post-install.sh.in, secca-devsite.site.in: a2site: add /doc/,
+	  post-install.sh.in, 20secca-devsite.site.in: a2site: add /doc/,
 	  ~user/
 	* .: set ignores.
 	* .: ignore *.gz
 
 2010-09-22  lenik
 
-	* VERSION.av, configure, configure.ac, secca-devsite.site.in:
+	* VERSION.av, configure, configure.ac, 20secca-devsite.site.in:
 	  switch to www.
 	* Makefile.am, Makefile.in, VERSION.av, configure, configure.ac,
-	  debian/control, post-install.sh.in, secca-devsite.site,
-	  secca-devsite.site.in: refactor /node
+	  debian/control, post-install.sh.in, 20secca-devsite.site,
+	  20secca-devsite.site.in: refactor /node
 	* Makefile.in, libauto/coolauto.am: auto updates.
 
 2010-09-21  lenik
@@ -81,12 +81,12 @@
 	  debian/sdu-serv-deviste.substvars,
 	  debian/sdu-serv-devsite.substvars,
 	  debian/sdu-site-maindev.substvars: add debian control files.
-	* secca-devsite.site: rename devsite. to main-dev.
+	* 20secca-devsite.site: rename devsite. to main-dev.
 
 2010-09-15  lenik
 
 	* ., AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am,
 	  Makefile.in, NEWS, README, VERSION.av, aclocal.m4, configure,
 	  configure.ac, install-sh, libauto, libauto/coolauto.am, missing,
-	  post-install.sh.in, pre-remove.sh.in, secca-devsite.site: rename
+	  post-install.sh.in, pre-remove.sh.in, 20secca-devsite.site: rename
 	  sdu-serv-devsite to -site-maindev.
