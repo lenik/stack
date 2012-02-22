@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.free.JavaioFile;
@@ -22,7 +23,7 @@ import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.acl.ACL;
 import com.bee32.icsf.access.acl.ACLEntry;
 import com.bee32.icsf.access.alt.R_ACE;
-import com.bee32.icsf.access.alt.R_ACLService;
+import com.bee32.icsf.access.alt.ResourceACLService;
 import com.bee32.icsf.access.resource.IResourceNamespace;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ScannedResourceRegistry;
@@ -35,10 +36,13 @@ import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.icsf.principal.UserOption;
 import com.bee32.icsf.principal.UserPreference;
+import com.bee32.plover.arch.util.ClassCatalog;
 import com.bee32.plover.orm.builtin.PloverConf;
+import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityResource;
 import com.bee32.plover.orm.entity.EntityResourceNS;
+import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.ox1.meta.EntityColumn;
 import com.bee32.plover.ox1.meta.EntityInfo;
 import com.bee32.plover.site.scope.PerSite;
@@ -57,7 +61,7 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
     ScannedResourceRegistry registry;
 
     @Inject
-    R_ACLService aclService;
+    ResourceACLService aclService;
 
     IResourceNamespace entityNS;
 
@@ -118,7 +122,11 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
             // currentUser = User.ANONYMOUS;
             return;
 
-        String entityResName = EntityResource.getEntityName(entityType);
+        PersistenceUnit unit = CustomizedSessionFactoryBean.getForceUnit();
+        Map<Class<?>, ClassCatalog> invMap = unit.getInvMap();
+        ClassCatalog catalog = invMap.get(entityType);
+
+        String entityResName = EntityResource.getLocalName(catalog, entityType);
         Resource entityResource = entityNS.getResource(entityResName);
 
         if (entityResource == null) {
@@ -139,4 +147,5 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
             throw new AccessControlException(message);
         }
     }
+
 }

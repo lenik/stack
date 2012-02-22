@@ -58,6 +58,19 @@ public abstract class ClassCatalog
         return dependencies;
     }
 
+    public Set<? extends ClassCatalog> getAllDependencies() {
+        Set<ClassCatalog> dependencies = new LinkedHashSet<ClassCatalog>();
+        findAllDependencies(dependencies);
+        return dependencies;
+    }
+
+    void findAllDependencies(Set<ClassCatalog> dependencies) {
+        for (ClassCatalog dependency : getDependencies()) {
+            dependency.findAllDependencies(dependencies);
+        }
+        dependencies.add(this);
+    }
+
     public Map<Class<?>, ClassCatalog> getInvMap() {
         assemble();
         return invMap;

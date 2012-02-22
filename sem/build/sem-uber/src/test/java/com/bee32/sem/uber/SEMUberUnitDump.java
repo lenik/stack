@@ -3,9 +3,12 @@ package com.bee32.sem.uber;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 import javax.free.AbstractNonNullComparator;
 
+import com.bee32.plover.arch.util.ClassCatalog;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 
 public class SEMUberUnitDump
@@ -13,6 +16,12 @@ public class SEMUberUnitDump
 
     public static void main(String[] args) {
         SEMUberUnit unit = new SEMUberUnit();
+
+        Locale.setDefault(Locale.SIMPLIFIED_CHINESE);
+        Set<? extends ClassCatalog> deps = unit.getAllDependencies();
+        for (ClassCatalog dep : deps)
+            System.out.println(dep.getName() + ": " + dep.getAppearance().getDisplayName());
+
         List<Class<?>> classes = new ArrayList<Class<?>>(unit.getClasses());
 
         Collections.sort(classes, SimpleNameComparator.INSTANCE);

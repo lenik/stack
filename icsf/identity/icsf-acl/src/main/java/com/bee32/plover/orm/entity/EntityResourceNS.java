@@ -7,6 +7,7 @@ import java.util.Map;
 import com.bee32.icsf.access.resource.IResourceNamespace;
 import com.bee32.icsf.access.resource.IResourceScanner;
 import com.bee32.icsf.access.resource.Resource;
+import com.bee32.plover.arch.util.ClassCatalog;
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 
@@ -52,8 +53,10 @@ public class EntityResourceNS
 
         // PersistenceUnit.getDefault().getClasses();
         PersistenceUnit unit = CustomizedSessionFactoryBean.getForceUnit();
+        Map<Class<?>, ClassCatalog> invMap = unit.getInvMap();
         for (Class<?> entityClass : unit.getClasses()) {
-            EntityResource entityResource = new EntityResource(entityClass);
+            ClassCatalog catalog = invMap.get(entityClass);
+            EntityResource entityResource = new EntityResource(catalog, entityClass);
             String localName = entityResource.getName();
             resources.put(localName, entityResource);
         }
