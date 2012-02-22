@@ -13,13 +13,15 @@
 
                     <ui:insert name="dataHeader" />
 
-                    <p:column headerText="标识">
-                        <h:outputText value="${entry.id}" />
-                    </p:column>
+                    <ui:insert name="columns.0">
+                        <p:column headerText="标识">
+                            <h:outputText value="${entry.id}" />
+                        </p:column>
+                    </ui:insert>
 
                     <ui:insert name="columns" />
 
-                    <ui:insert name="dataColumnsC">
+                    <ui:insert name="columnsC">
                         <p:column headerText="更新日期">
                             <h:outputText value="${entry.lastModified}">
                                 <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
