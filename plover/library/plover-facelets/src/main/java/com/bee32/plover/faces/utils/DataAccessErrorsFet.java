@@ -9,10 +9,10 @@ import java.util.regex.Pattern;
 import javax.free.UnexpectedException;
 
 import com.bee32.plover.arch.util.ClassUtil;
-import com.bee32.plover.faces.ErrorMessageTranslator;
+import com.bee32.plover.faces.AbstractFet;
 
-public class DaoEmt
-        extends ErrorMessageTranslator {
+public class DataAccessErrorsFet
+        extends AbstractFet {
 
     static final Map<String, DaoEmtFilter> registry;
     static {
@@ -24,7 +24,8 @@ public class DaoEmt
     }
 
     @Override
-    public int handle(String message) {
+    public int handle(Throwable exception) {
+        String message = exception.getMessage();
         if (message == null)
             return SKIP;
         if (message.contains("org.hibernate."))
@@ -34,7 +35,7 @@ public class DaoEmt
     }
 
     @Override
-    public String translate(String message) {
+    public String translate(Throwable exception, String message) {
         for (Entry<String, DaoEmtFilter> entry : registry.entrySet()) {
             String pattern = entry.getKey();
             if (message.contains(pattern)) {

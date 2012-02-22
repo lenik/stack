@@ -10,7 +10,7 @@ import javax.free.LogLevel;
 import javax.free.NullLogSink;
 
 import com.bee32.plover.arch.logging.EltManager;
-import com.bee32.plover.faces.ErrorMessageTranslator;
+import com.bee32.plover.faces.FetManager;
 
 public class FacesUILogger
         extends AbstractLogger {
@@ -91,22 +91,20 @@ public class FacesUILogger
             message = encodeHtml(message);
 
             if (exception != null) {
-                String err = exception.getMessage();
-                if (err != null) {
-                    err = ErrorMessageTranslator.translateMessage(err);
-                    message = "<div style='color: #ff0033; font-size: small; font-style: italic'>" //
-                            + "（错误消息：" + encodeHtml(err) + "）" + message + "</div>";
-                }
+                String errmsg = FetManager.translateMessage(exception);
+                message = "<div style='color: #ff0033; font-size: small; font-style: italic'>" //
+                        + "（错误消息：" + encodeHtml(errmsg) + "）" + message + "</div>";
             }
 
-            FacesMessage facesMessage = new FacesMessage(getSeverity(), title, message);
-            append(facesMessage);
-
             if (exception != null) {
+                // Record ACE as well...
                 EltManager eltManager = EltManager.getInstance();
                 eltManager.addException(title, exception);
                 exception.printStackTrace();
             }
+
+            FacesMessage facesMessage = new FacesMessage(getSeverity(), title, message);
+            append(facesMessage);
         }
 
         protected abstract Severity getSeverity();
