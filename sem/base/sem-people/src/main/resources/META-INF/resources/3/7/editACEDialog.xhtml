@@ -12,6 +12,9 @@
         <!-- ui overrides -->
         <cc:attribute name="header" default="编辑 ACL 条目" />
         <cc:attribute name="formStyleClass" default="ui-dialog-form" />
+
+        <!-- facets -->
+        <cc:facet name="ext" />
     </cc:interface>
 
     <cc:implementation>
@@ -28,14 +31,24 @@
             dynamic="${viewConfig.dynamicDialog}" position="center">
             <h:form id="form" styleClass="${cc.attrs.formStyleClass}">
 
-                <h:panelGrid rendered="${entry != null}" columns="2" columnClasses="field-label, field-content">
-                    <h:outputText value="安全主体" />
-                    <h:panelGrid columns="2">
-                        <p:inputText id="principal" readonly="true" value="${entry.principal.displayName}" />
-                        <p:commandButton id="choosePrincipal" value="..."
-                            onclick="${fn:replace(cc.clientId, ':', '_')}_cpd.show()" />
-                    </h:panelGrid>
-                </h:panelGrid>
+                <h:panelGroup rendered="${entry != null}">
+                    <table width="100%">
+                        <tr>
+                            <td class="field-label">
+                                <h:outputLabel for="principal" value="主体：" />
+                            </td>
+                            <td class="field-content">
+                                <p:inputText id="principal" label="安全主体" readonly="true"
+                                    value="${entry.principal.displayName}" />
+                            </td>
+                            <td>
+                                <p:commandButton id="choosePrincipal" value="..."
+                                    onclick="${fn:replace(cc.clientId, ':', '_')}_cpd.show()" />
+                            </td>
+                        </tr>
+                        <cc:insertRawFacet name="ext" />
+                    </table>
+                </h:panelGroup>
 
                 <p:fieldset legend="权限" rendered="${entry != null}">
                     <div align="center">

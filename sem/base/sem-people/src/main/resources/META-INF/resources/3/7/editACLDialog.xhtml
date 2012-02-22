@@ -35,17 +35,17 @@
 
                 <h:panelGrid rendered="${obj != null}" columns="2" styleClass="attr-table" columnClasses="attr-name, attr-value"
                     cellspacing="0" cellpadding="0">
-                    <h:outputLabel for="label" value="名称" />
+                    <h:outputLabel for="label" value="名称：" />
                     <p:inputText id="label" value="${obj.label}" />
 
-                    <h:outputLabel for="inheritedLabel" value="继承的策略" />
+                    <h:outputLabel for="inheritedLabel" value="继承的策略：" />
                     <h:panelGroup id="inheritedACL">
                         <p:inputText id="inheritedLabel" value="${obj.inheritedACL.label}" readonly="true" />
                         <p:commandButton id="chooseACL" value="选择"
                             onclick="${fn:replace(cc.clientId, ':', '_')}_acld.show()" />
                     </h:panelGroup>
 
-                    <h:outputLabel for="description" value="描述" />
+                    <h:outputLabel for="description" value="描述：" />
                     <p:inputText id="description" value="${obj.description}" size="32" />
                 </h:panelGrid>
 

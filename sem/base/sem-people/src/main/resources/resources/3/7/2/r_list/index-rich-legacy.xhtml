@@ -1,0 +1,371 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:pc="http://bee32.com/plover/core"
+      xmlns:sem="http://bee32.com/sem/functions"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      >
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+        .alignTop {
+            vertical-align: top;
+        }
+
+        .col_left {
+            width: 350px;
+        }
+    </style>
+</head>
+
+<ui:composition template="/template/primefaces.xhtml">
+
+	<ui:define name="title">权限管理</ui:define>
+
+
+	<ui:define name="content">
+
+		<h:form id="permissionForm">
+
+			<p:panel header="权限管理">
+				<p:toolbar id="permissionToolbar">
+					<p:toolbarGroup align="left">
+
+						<p:commandButton value="保存"
+							actionListener="#{permissionAdminBean.doSave}"
+							update=":permissionForm:rpEntries"
+							async="true" />
+						<p:separator />
+
+					</p:toolbarGroup>
+				</p:toolbar>
+
+
+				<t:panelGrid columns="2" rowClasses="alignTop" columnClasses="col_left">
+                    <p:panel header="权限主体列表">
+					<p:tabView activeIndex="#{permissionAdminBean.activeTab}" style="width:100%;">
+
+						<p:tab title="组列表">
+							<p:dataTable id="groups" var="group"
+								value="#{permissionAdminBean.groups}" resizableColumns="true"
+								selection="#{permissionAdminBean.selectedGroup}"
+								selectionMode="single"
+                                    rowKey="#{group.id}" rowIndexVar="rowIndex"
+                                    scrollable="true" scrollWidth="250" scrollHeight="480">
+
+								<p:ajax event="rowSelect"
+									listener="#{permissionAdminBean.onRowSelectGroup}"
+									update=":permissionForm:rpEntries" />
+								<p:ajax event="rowUnselect"
+									listener="#{personAdminBean.onRowUnselectGroup}"
+									update=":permissionForm:rpEntries" />
+
+
+								<p:column headerText="序号" style="width:30px;">
+									<h:outputText value="#{rowIndex + 1}" />
+								</p:column>
+
+								<p:column headerText="名称" style="width:80px;">
+									<h:outputText value="#{group.name}" />
+								</p:column>
+
+								<p:column headerText="全名" style="width:80px;">
+                                        <h:outputText value="#{group.fullName}" />
+                                    </p:column>
+
+							</p:dataTable>
+						</p:tab>
+
+						<p:tab title="角色列表">
+							<p:dataTable id="roles" var="role"
+								value="#{permissionAdminBean.roles}" resizableColumns="true"
+								selection="#{permissionAdminBean.selectedRole}"
+								selectionMode="single"
+                                    rowKey="#{role.id}" rowIndexVar="rowIndex"
+                                    scrollable="true" scrollWidth="250" scrollHeight="480">
+
+								<p:ajax event="rowSelect"
+									listener="#{permissionAdminBean.onRowSelectRole}"
+									update=":permissionForm:rpEntries" />
+								<p:ajax event="rowUnselect"
+									listener="#{personAdminBean.onRowUnselectRole}"
+									update=":permissionForm:rpEntries" />
+
+
+								<p:column headerText="序号" style="width:30px;">
+									<h:outputText value="#{rowIndex + 1}" />
+								</p:column>
+
+								<p:column headerText="名称" style="width:80px;">
+									<h:outputText value="#{role.name}" />
+								</p:column>
+
+								<p:column headerText="全名" style="width:80px;">
+                                        <h:outputText value="#{role.fullName}" />
+                                    </p:column>
+
+							</p:dataTable>
+
+						</p:tab>
+
+						<p:tab title="用户列表">
+							<p:dataTable id="users" var="user"
+								value="#{permissionAdminBean.users}" resizableColumns="true"
+								selection="#{permissionAdminBean.selectedUser}"
+								selectionMode="single"
+                                    rowKey="#{user.id}" rowIndexVar="rowIndex"
+                                    scrollable="true" scrollWidth="250" scrollHeight="480">
+
+								<p:ajax event="rowSelect"
+									listener="#{permissionAdminBean.onRowSelectUser}"
+									update=":permissionForm:rpEntries" />
+								<p:ajax event="rowUnselect"
+									listener="#{personAdminBean.onRowUnselectUser}"
+									update=":permissionForm:rpEntries" />
+
+
+								<p:column headerText="序号" style="width:30px;">
+									<h:outputText value="#{rowIndex + 1}" />
+								</p:column>
+
+								<p:column headerText="名称" style="width:80px;">
+									<h:outputText value="#{user.name}" />
+								</p:column>
+
+								<p:column headerText="全名" style="width:80px;">
+                                        <h:outputText value="#{user.fullName}" />
+                                    </p:column>
+
+							</p:dataTable>
+						</p:tab>
+
+					</p:tabView>
+                    </p:panel>
+
+					<p:panel header="权限列表" style="width:100%; margin-left:10px;">
+
+						<p:dataTable id="rpEntries" var="rpEntry"
+							value="#{permissionAdminBean.rpEntries}" resizableColumns="true" rowIndexVar="rowIndex">
+
+                            <f:facet name="header">
+                                <t:panelGrid columns="10" style="width:100%;">
+                                    <t:panelGroup style="width:30px;"/>
+                                    <t:panelGroup style="width:100px;"/>
+                                    <t:panelGroup style="width:100px;">
+                                        <h:outputText value="操作"/>
+                                    </t:panelGroup>
+
+                                    <t:panelGrid columns="1" style="width:60px; align:center">
+                                        <h:outputText value="管理" />
+                                        <p:commandButton value="允许"
+                                            actionListener="#{permissionAdminBean.onSelectAllAdmin}"
+                                            update=":permissionForm:rpEntries" />
+                                        <p:commandButton value="拒绝"
+                                            actionListener="#{permissionAdminBean.onSelectNoneAdmin}"
+                                            update=":permissionForm:rpEntries" />
+                                    </t:panelGrid>
+
+                                    <t:panelGrid columns="1" style="width:60px; align:center">
+                                        <h:outputText value="使用" />
+                                        <p:commandButton value="允许"
+                                            actionListener="#{permissionAdminBean.onSelectAllUsable}"
+                                            update=":permissionForm:rpEntries"/>
+                                        <p:commandButton value="拒绝"
+                                            actionListener="#{permissionAdminBean.onSelectNoneUsable}"
+                                            update=":permissionForm:rpEntries"/>
+                                    </t:panelGrid>
+
+                                    <t:panelGrid columns="1" style="width:60px; align:center">
+                                        <h:outputText value="读取" />
+                                        <p:commandButton value="允许"
+                                            actionListener="#{permissionAdminBean.onSelectAllReadable}"
+                                            update=":permissionForm:rpEntries"/>
+                                        <p:commandButton value="拒绝"
+                                            actionListener="#{permissionAdminBean.onSelectNoneReadable}"
+                                            update=":permissionForm:rpEntries"/>
+                                    </t:panelGrid>
+
+                                    <t:panelGrid columns="1" style="width:60px; align:center">
+                                        <h:outputText value="写入" />
+                                        <p:commandButton value="允许"
+                                            actionListener="#{permissionAdminBean.onSelectAllWritable}"
+                                            update=":permissionForm:rpEntries"/>
+                                        <p:commandButton value="拒绝"
+                                            actionListener="#{permissionAdminBean.onSelectNoneWritable}"
+                                            update=":permissionForm:rpEntries"/>
+                                    </t:panelGrid>
+
+                                    <t:panelGrid columns="1" style="width:60px; align:center">
+                                        <h:outputText value="执行" />
+                                        <p:commandButton value="允许"
+                                            actionListener="#{permissionAdminBean.onSelectAllExecutable}"
+                                            update=":permissionForm:rpEntries"/>
+                                        <p:commandButton value="拒绝"
+                                            actionListener="#{permissionAdminBean.onSelectNoneExecutable}"
+                                            update=":permissionForm:rpEntries"/>
+                                    </t:panelGrid>
+
+                                    <t:panelGrid columns="1" style="width:60px; align:center">
+                                        <h:outputText value="建立" />
+                                        <p:commandButton value="允许"
+                                            actionListener="#{permissionAdminBean.onSelectAllCreatable}"
+                                            update=":permissionForm:rpEntries"/>
+                                        <p:commandButton value="拒绝"
+                                            actionListener="#{permissionAdminBean.onSelectNoneCreatable}"
+                                            update=":permissionForm:rpEntries"/>
+                                    </t:panelGrid>
+
+                                    <t:panelGrid columns="1" style="width:60px; align:center">
+                                        <h:outputText value="删除" />
+                                        <p:commandButton value="允许"
+                                            actionListener="#{permissionAdminBean.onSelectAllDeletable}"
+                                            update=":permissionForm:rpEntries"/>
+                                        <p:commandButton value="拒绝"
+                                            actionListener="#{permissionAdminBean.onSelectNoneDeletable}"
+                                            update=":permissionForm:rpEntries"/>
+                                    </t:panelGrid>
+
+                                </t:panelGrid>
+                            </f:facet>
+
+                            <p:columnGroup type="header">
+								<p:row>
+									<p:column rowspan="2" headerText="序号" style="width:30px;"/>
+									<p:column rowspan="2" colspan="2" headerText="权限资源" style="width:200px;"/>
+									<p:column colspan="7" headerText="权限" />
+								</p:row>
+
+								<p:row>
+                                    <p:column style="width:60px;">
+                                        <f:facet name="header">
+                                            <t:panelGrid columns="1">
+                                                <h:outputText value="管理"/>
+                                            </t:panelGrid>
+                                        </f:facet>
+                                    </p:column>
+
+                                    <p:column style="width:60px;">
+                                        <f:facet name="header">
+                                            <t:panelGrid columns="1">
+                                                <h:outputText value="使用"/>
+                                            </t:panelGrid>
+                                        </f:facet>
+                                    </p:column>
+
+                                    <p:column style="width:60px;">
+                                        <f:facet name="header">
+                                            <t:panelGrid columns="1">
+                                                <h:outputText value="读取" />
+                                            </t:panelGrid>
+                                        </f:facet>
+                                    </p:column>
+
+                                    <p:column style="width:60px;">
+                                        <f:facet name="header">
+                                            <t:panelGrid columns="1">
+                                                <h:outputText value="写入" />
+                                            </t:panelGrid>
+                                        </f:facet>
+                                    </p:column>
+
+                                    <p:column style="width:60px;">
+                                        <f:facet name="header">
+                                            <t:panelGrid columns="1">
+                                                <h:outputText value="执行" />
+                                            </t:panelGrid>
+                                        </f:facet>
+                                    </p:column>
+
+                                    <p:column style="width:60px;">
+                                        <f:facet name="header">
+                                            <t:panelGrid columns="1">
+                                                <h:outputText value="建立" />
+                                            </t:panelGrid>
+                                        </f:facet>
+                                    </p:column>
+
+                                    <p:column style="width:60px;">
+                                        <f:facet name="header">
+                                            <t:panelGrid columns="1">
+                                                <h:outputText value="删除" />
+                                            </t:panelGrid>
+                                        </f:facet>
+                                    </p:column>
+
+								</p:row>
+							</p:columnGroup>
+
+							<p:column>
+								<h:outputText value="#{rowIndex + 1}" />
+							</p:column>
+
+							<p:column>
+								<h:outputText value="#{rpEntry.resourceType}" />
+							</p:column>
+
+							<p:column>
+								<h:outputText value="#{rpEntry.displayName}" />
+							</p:column>
+
+							<p:column>
+                                <p:selectOneMenu value="#{rpEntry.permission.own.tristateIndex}">
+                                    <f:selectItems value="#{permissionAdminBean.permissionStatus}" />
+                                </p:selectOneMenu>
+							</p:column>
+
+                            <p:column>
+                                <p:selectOneMenu value="#{rpEntry.permission.use.tristateIndex}">
+                                    <f:selectItems value="#{permissionAdminBean.permissionStatus}" />
+                                </p:selectOneMenu>
+                            </p:column>
+
+							<p:column>
+                                <p:selectOneMenu value="#{rpEntry.permission.read.tristateIndex}">
+                                    <f:selectItems value="#{permissionAdminBean.permissionStatus}" />
+                                </p:selectOneMenu>
+							</p:column>
+
+							<p:column>
+                                <p:selectOneMenu value="#{rpEntry.permission.write.tristateIndex}">
+                                    <f:selectItems value="#{permissionAdminBean.permissionStatus}" />
+                                </p:selectOneMenu>
+							</p:column>
+
+							<p:column>
+                                <p:selectOneMenu value="#{rpEntry.permission.execute.tristateIndex}">
+                                    <f:selectItems value="#{permissionAdminBean.permissionStatus}" />
+                                </p:selectOneMenu>
+							</p:column>
+
+							<p:column>
+                                <p:selectOneMenu value="#{rpEntry.permission.create.tristateIndex}">
+                                    <f:selectItems value="#{permissionAdminBean.permissionStatus}" />
+                                </p:selectOneMenu>
+							</p:column>
+
+							<p:column>
+                                <p:selectOneMenu value="#{rpEntry.permission.delete.tristateIndex}">
+                                    <f:selectItems value="#{permissionAdminBean.permissionStatus}" />
+                                </p:selectOneMenu>
+							</p:column>
+
+
+						</p:dataTable>
+
+
+					</p:panel>
+				</t:panelGrid>
+
+			</p:panel>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>
