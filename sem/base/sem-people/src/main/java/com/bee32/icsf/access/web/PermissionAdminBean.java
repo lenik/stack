@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.faces.model.SelectItem;
 
@@ -27,6 +28,7 @@ import com.bee32.icsf.principal.RoleDto;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.collections.Varargs;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
@@ -148,7 +150,8 @@ public class PermissionAdminBean
 
         Map<String, ResourcePermission> havePermissions = new HashMap<String, ResourcePermission>();
         Principal principal = principalDto.unmarshal();
-        List<ResourcePermission> haveResourcePermissions = aclService.getResourcePermissions(principal.getId());
+        Set<Integer> imset = Varargs.toSet(principal.getId()); // IdUtils.getIdSet(principal.getImSet());
+        List<ResourcePermission> haveResourcePermissions = aclService.getResourcePermissions(imset);
         for (ResourcePermission rp : haveResourcePermissions) {
             String permissionQulifier = srr.qualify(rp.getResource());
             havePermissions.put(permissionQulifier, rp);

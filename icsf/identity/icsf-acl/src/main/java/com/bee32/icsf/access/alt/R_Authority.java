@@ -1,6 +1,7 @@
 package com.bee32.icsf.access.alt;
 
 import java.util.Collection;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -13,6 +14,7 @@ import com.bee32.icsf.access.acl.legacy.Authority;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ResourcePermission;
 import com.bee32.icsf.principal.Principal;
+import com.bee32.plover.orm.entity.IdUtils;
 
 @Lazy
 @Service
@@ -32,17 +34,19 @@ public class R_Authority
      */
     @Override
     public Permission getPermission(Resource resource, Principal principal) {
-        Permission permission = aclDao.getPermission(resource, principal.getId());
+        Set<Integer> imset = IdUtils.getIdSet(principal.getImSet());
 
+        Permission permission = aclDao.getPermission(resource, imset);
         if (permission == null)
-            permission = new Permission(0);
-
-        return permission;
+            return new Permission(0);
+        else
+            return permission;
     }
 
     @Override
     public Collection<ResourcePermission> getResourcePermissions(Principal principal) {
-        return aclDao.getResourcePermissions(principal.getId());
+        Set<Integer> imset = IdUtils.getIdSet(principal.getImSet());
+        return aclDao.getResourcePermissions(imset);
     }
 
 }

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
@@ -76,11 +77,11 @@ public class R_ACLDao
         template.saveOrUpdateAll(newList);
     }
 
-    public List<ResourcePermission> getResourcePermissions(int principalId) {
+    public List<ResourcePermission> getResourcePermissions(Set<Integer> imset) {
 
         List<R_ACE> list = getHibernateTemplate().findByNamedParam(// ,
-                "from R_ACE where principal.id = :principalId", //
-                "principalId", principalId);
+                "from R_ACE where principal.id in :imset", //
+                "imset", imset);
 
         List<ResourcePermission> resources = new ArrayList<ResourcePermission>(list.size());
 
@@ -97,7 +98,7 @@ public class R_ACLDao
     /**
      * @return <code>null</code> if undefined.
      */
-    public Permission getPermission(Resource resource, int principalId) {
+    public Permission getPermission(Resource resource, Set<Integer> imset) {
         if (resource == null)
             throw new NullPointerException("resource");
 
@@ -106,9 +107,9 @@ public class R_ACLDao
         List<R_ACE> list = getHibernateTemplate().findByNamedParam(// ,
                 "from R_ACE where" //
                         + "   ( :q like qualifiedName || '%' )" //
-                        + "   and principal.id = :principalId", //
-                new String[] { "q", "principalId" }, //
-                new Object[] { qualifiedName, principalId });
+                        + "   and principal.id in :imset", //
+                new String[] { "q", "imset" }, //
+                new Object[] { qualifiedName, imset });
 
         // Only the first matching entry is returned.
         for (R_ACE ace : list)

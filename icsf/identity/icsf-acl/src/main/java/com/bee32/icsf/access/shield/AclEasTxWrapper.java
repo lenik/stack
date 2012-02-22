@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.free.JavaioFile;
 import javax.free.Order;
@@ -134,6 +135,7 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
         if (currentUser == null || currentUser.isNull())
             // currentUser = User.ANONYMOUS;
             return;
+        Set<Integer> imset = SessionUser.getInstance().getImIdSet();
 
         PersistenceUnit unit = CustomizedSessionFactoryBean.getForceUnit();
         Map<Class<?>, ClassCatalog> invMap = unit.getInvMap();
@@ -148,7 +150,7 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
         }
 
         Permission mixed = defl == null ? null : defl.clone();
-        Permission grantedPermission = aclService.getPermission(entityResource, currentUser.getId());
+        Permission grantedPermission = aclService.getPermission(entityResource, imset);
         if (mixed == null)
             mixed = grantedPermission;
         else

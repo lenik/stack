@@ -1,6 +1,7 @@
 package com.bee32.icsf.access.alt;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -28,16 +29,16 @@ public class R_ACLService
         resourceACLDao.saveACL(acl);
     }
 
-    public List<ResourcePermission> getResourcePermissions(int principalId) {
-        return resourceACLDao.getResourcePermissions(principalId);
+    public List<ResourcePermission> getResourcePermissions(Set<Integer> imset) {
+        return resourceACLDao.getResourcePermissions(imset);
     }
 
     /**
      * @return Non-<code>null</code> permission. If no permission was declared, a new empty
      *         permission is created.
      */
-    public Permission getPermission(Resource resource, int principalId) {
-        Permission permission = resourceACLDao.getPermission(resource, principalId);
+    public Permission getPermission(Resource resource, Set<Integer> imset) {
+        Permission permission = resourceACLDao.getPermission(resource, imset);
         if (permission == null)
             permission = new Permission(0);
         return permission;
