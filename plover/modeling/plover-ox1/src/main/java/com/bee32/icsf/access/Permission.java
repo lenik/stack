@@ -1,7 +1,9 @@
 package com.bee32.icsf.access;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public final class Permission
         implements Serializable {
@@ -20,6 +22,10 @@ public final class Permission
     public static final int READ = 1 << 2;
     public static final int WRITE = 1 << 1;
     public static final int EXECUTE = 1 << 0;
+
+    public static final int R_X = USE | READ | EXECUTE;
+    public static final int RWX = USE | READ | EXECUTE | WRITE | CREATE | DELETE;
+    public static final int RWS = USE | READ | EXECUTE | WRITE | CREATE | DELETE | OWN;
 
     static final char C_ADMIN = 's';
     static final char C_USER = 'u';
@@ -153,6 +159,7 @@ public final class Permission
         if (o != null) {
             this.allowBits |= o.allowBits;
             this.denyBits |= o.denyBits;
+            allowBits &= ~denyBits;
         }
     }
 
@@ -310,6 +317,39 @@ public final class Permission
             formatBits(sb, denyBits);
         }
 
+        return sb.toString();
+    }
+
+    public String getReadableString() {
+        return getReadableString(true);
+    }
+
+    public String getReadableString(boolean allowOrDeny) {
+        int bits = allowOrDeny ? getAllowBits() : getDenyBits();
+        List<String> words = new ArrayList<String>();
+        if ((bits & OWN) != 0)
+            words.add("管理");
+        if ((bits & USE) != 0)
+            words.add("使用");
+        if ((bits & CREATE) != 0)
+            words.add("创建");
+        if ((bits & READ) != 0)
+            words.add("读取");
+        if ((bits & WRITE) != 0)
+            words.add("写入");
+        if ((bits & DELETE) != 0)
+            words.add("删除");
+        if ((bits & EXECUTE) != 0)
+            words.add("执行");
+
+        StringBuilder sb = null;
+        for (String word : words) {
+            if (sb == null)
+                sb = new StringBuilder();
+            else
+                sb.append(", ");
+            sb.append(word);
+        }
         return sb.toString();
     }
 
