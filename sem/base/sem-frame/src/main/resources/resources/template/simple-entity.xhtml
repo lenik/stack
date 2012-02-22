@@ -69,7 +69,7 @@
                     <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                 </h:outputText>
             </p:column>
-            <p:column headerText="属主" sortBy="${entry.owner}" styleClass="f-nowrap">
+            <p:column headerText="属主" sortBy="${entry.owner}">
                 <h:outputText value="${entry.owner.displayName}" />
             </p:column>
         </ui:insert>
@@ -145,7 +145,7 @@
 
     <ui:define name="searchPanels.0">
         <ui:insert name="searchPanel.keyword">
-            <p:panel header="按关键字搜索" toggleable="true">
+            <p:panel header="按关键字搜索" toggleable="true" rendered="${not baseEntity}">
                 <div align="center">
                     <p:inputText id="pattern" value="${bean.searchPattern}" />
                     <p:commandButton id="filterNameOrLabel" value="限定名称" actionListener="${bean.addNameOrLabelRestriction}"
@@ -157,7 +157,7 @@
             </p:panel>
         </ui:insert>
         <ui:insert name="searchPanel.time">
-            <p:panel header="按时间搜索" toggleable="true">
+            <p:panel header="按时间搜索" toggleable="true" rendered="${not baseEntity}">
                 <div align="center">
                     时间范围：
                     <p:selectOneMenu id="lastModifiedRange" value="${bean.dateRangeIndex}">
@@ -179,7 +179,7 @@
                     <p:inputText id="principal" readonly="true" value="${bean.searchPrincipal.displayName}" />
                     <p:commandButton id="choosePrincipal" value="..." onclick="choosePrincipalToSearchDialog.show()" />
                     <p:commandButton id="filterOwner" value="限定所有者" actionListener="${bean.addOwnerRestriction}"
-                        update="@form, ${_searchUpdates}" />
+                        update="@form, ${_searchUpdates}" rendered="${not baseEntity}" />
                     <ui:insert name="searchPanel.principal.1" />
                 </div>
             </p:panel>

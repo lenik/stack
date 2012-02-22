@@ -6,7 +6,7 @@
     <ui:param name="_selection" value="${multiple ? _selectionHolder.selectionArray : _selectionHolder.singleSelection}" />
 
     <ui:define name="main">
-        <h:panelGroup id="dataContainer" layout="block">
+        <h:panelGroup id="dataContainer" layout="block" styleClass="ui-dialog-data">
             <ui:insert name="dataContainer">
                 <p:treeTable id="treeTable" value="#{dialogBean.rootNode}" var="entry" selectionMode="single"
                     selection="#{_selectionHolder.selectedNode}">
@@ -24,7 +24,7 @@
                     <ui:insert name="columnsC">
                         <p:column headerText="更新日期">
                             <h:outputText value="${entry.lastModified}">
-                                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                                <f:convertDateTime pattern="yy-MM-dd" timeZone="Asia/Shanghai" />
                             </h:outputText>
                         </p:column>
                         <p:column headerText="属主">

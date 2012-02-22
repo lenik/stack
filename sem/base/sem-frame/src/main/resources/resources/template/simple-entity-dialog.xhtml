@@ -6,7 +6,7 @@
     <ui:param name="_selection" value="${multiple ? _selectionHolder.selectionArray : _selectionHolder.singleSelection}" />
 
     <ui:define name="main">
-        <h:panelGroup id="dataContainer" layout="block">
+        <h:panelGroup id="dataContainer" layout="block" styleClass="ui-dialog-data">
             <ui:insert name="dataContainer">
                 <p:dataTable id="dataTable" value="${dialogBean.dataModel}" selection="${_selection}"
                     selectionMode="${multiple ? 'multiple' : 'single'}" var="entry" rowIndexVar="rowIndex"

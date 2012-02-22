@@ -24,6 +24,12 @@ label {
     margin: 1em;
 }
 
+.ui-dialog-data {
+    max-width: 80em;
+    max-height: 30em;
+    overflow: auto;
+}
+
 .logo-container {
     border-left: solid #cccccc 5px;
     border-right: solid #cccccc 5px;

@@ -53,7 +53,7 @@
                 <h:panelGrid columns="1">
                     <cc:insertRawFacet name="index-header" />
 
-                    <h:panelGroup id="dataContainer" layout="block">
+                    <h:panelGroup id="dataContainer" layout="block" styleClass="ui-dialog-data">
                         <ui:insert name="dataContainer">
                             <p:dataTable id="dataTable" value="${mbean.selectableList}" selection="${mbean.selection}"
                                 selectionMode="single" var="entry" paginator="${cc.attrs.paginator}" rows="10"
