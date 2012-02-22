@@ -58,19 +58,19 @@
                         <p:ajax event="rowSelect" update=":${cc.clientId}:form:entryCmds" />
                         <p:ajax event="rowUnselect" update=":${cc.clientId}:form:entryCmds" />
 
-                        <p:column headerText="序号" style="width: 4em;">
-                            <h:outputText value="${rowIndex+1}" />
+                        <p:column headerText="ID">
+                            <h:outputText value="${entry.id}" />
                         </p:column>
 
-                        <p:column headerText="主体" style="width: 10em;">
+                        <p:column headerText="主体">
                             <h:outputText value="${entry.principal.displayName}" />
                         </p:column>
 
-                        <p:column headerText="权限" style="width: 5em;">
+                        <p:column headerText="权限">
                             <h:outputText value="${entry.permission}" />
                         </p:column>
 
-                        <p:column headerText="操作" style="width: 3em;">
+                        <p:column headerText="操作">
                             <p:commandLink title="删除" action="${dialogBean.removeEntry}" update=":${cc.clientId}:form:entryTable">
                                 <f:setPropertyActionListener value="${entry}"
                                     target="${dialogBean.selectedEntry}" />
