@@ -20,10 +20,7 @@ public class EntityResource
     String member;
 
     public EntityResource(ClassCatalog catalog, Class<?> entityClass) {
-        super(getLocalName(catalog, entityClass));
-        this.catalogName = catalog.getName();
-        this.entityClass = entityClass;
-        init();
+        this(catalog, entityClass, null);
     }
 
     public EntityResource(ClassCatalog catalog, Class<?> entityClass, String member) {
@@ -31,18 +28,30 @@ public class EntityResource
         this.catalogName = catalog.getName();
         this.entityClass = entityClass;
         this.member = member;
-        init();
-    }
 
-    void init() {
+        // XXX locale override?
         Locale locale = Locale.getDefault();
-        InjectedAppearance appearance = new InjectedAppearance(entityClass, locale);
+
+        InjectedAppearance appearance;
+        if (entityClass != null) {
+            appearance = new InjectedAppearance(entityClass, locale);
+        } else {
+            appearance = new InjectedAppearance(catalog.getClass(), locale);
+        }
         // appearance.getPropertyDispatcher().dispatch();
         ComponentBuilder.setAppearance(this, appearance);
     }
 
     public String getCatalogName() {
         return catalogName;
+    }
+
+    public Class<?> getEntityClass() {
+        return entityClass;
+    }
+
+    public String getMember() {
+        return member;
     }
 
     public static String getLocalName(ClassCatalog catalog, Class<?> clazz) {
@@ -52,16 +61,16 @@ public class EntityResource
     public static String getLocalName(ClassCatalog catalog, Class<?> clazz, String member) {
         if (catalog == null)
             throw new NullPointerException("catalog");
-        if (clazz == null)
-            throw new NullPointerException("clazz");
 
         StringBuilder sb = new StringBuilder();
         sb.append(catalog.getName());
         sb.append(":");
-        sb.append(ABBR.abbr(clazz));
-        if (member != null) {
-            sb.append(".");
-            sb.append(member);
+        if (clazz != null) {
+            sb.append(ABBR.abbr(clazz));
+            if (member != null) {
+                sb.append(".");
+                sb.append(member);
+            }
         }
         return sb.toString();
     }

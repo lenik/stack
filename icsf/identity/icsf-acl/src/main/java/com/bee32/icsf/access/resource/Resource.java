@@ -1,6 +1,7 @@
 package com.bee32.icsf.access.resource;
 
 import com.bee32.plover.arch.Component;
+import com.bee32.plover.arch.util.ClassUtil;
 
 /**
  * Base class for ICSF-Protected Resource
@@ -10,6 +11,11 @@ public abstract class Resource
 
     public Resource(String name) {
         super(name);
+    }
+
+    public String getTypeName() {
+        String typeName = ClassUtil.getTypeName(getClass());
+        return typeName;
     }
 
     /**

@@ -51,14 +51,18 @@ public class EntityResourceNS
             return;
         scanned = true;
 
-        // PersistenceUnit.getDefault().getClasses();
         PersistenceUnit unit = CustomizedSessionFactoryBean.getForceUnit();
-        Map<Class<?>, ClassCatalog> invMap = unit.getInvMap();
-        for (Class<?> entityClass : unit.getClasses()) {
-            ClassCatalog catalog = invMap.get(entityClass);
-            EntityResource entityResource = new EntityResource(catalog, entityClass);
-            String localName = entityResource.getName();
-            resources.put(localName, entityResource);
+
+        for (ClassCatalog catalog : unit.getAllDependencies()) {
+            String superLocalName = EntityResource.getLocalName(catalog, null);
+            EntityResource superResource = new EntityResource(catalog, null);
+            resources.put(superLocalName, superResource);
+
+            for (Class<?> entityClass : catalog.getLocalClasses()) {
+                EntityResource entityResource = new EntityResource(catalog, entityClass);
+                String localName = entityResource.getName();
+                resources.put(localName, entityResource);
+            }
         }
     }
 

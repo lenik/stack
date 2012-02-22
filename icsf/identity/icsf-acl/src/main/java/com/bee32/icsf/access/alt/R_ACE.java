@@ -19,7 +19,7 @@ import com.bee32.icsf.principal.User;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.ox1.c.CEntityAuto;
+import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.ox1.color.Blue;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
@@ -29,13 +29,13 @@ import com.bee32.plover.util.PrettyPrintStream;
 @BatchSize(size = 100)
 @SequenceGenerator(name = "idgen", sequenceName = "r_ace_seq", allocationSize = 1)
 public class R_ACE
-        extends CEntityAuto<Long> {
+        extends EntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 
     private String qualifiedName;
     private Principal principal;
-    private String mode;
+    private Permission permission = new Permission(0);
 
     public R_ACE() {
         super("ACE");
@@ -62,7 +62,7 @@ public class R_ACE
         setQualifiedName(qualifiedName);
 
         this.principal = principal;
-        this.mode = mode;
+        setMode(mode);
     }
 
     @NaturalId
@@ -111,24 +111,24 @@ public class R_ACE
 
     @Column(length = 32, nullable = false)
     public String getMode() {
-        return mode;
+        return permission.getModeString();
     }
 
     public void setMode(String mode) {
         if (mode == null)
             throw new NullPointerException("mode");
-        this.mode = mode;
+        this.permission = new Permission(mode);
     }
 
     @Transient
     public Permission getPermission() {
-        return new Permission(mode);
+        return permission;
     }
 
     public void setPermission(Permission permission) {
         if (permission == null)
             throw new NullPointerException("permission");
-        this.mode = permission.toString();
+        this.permission = permission;
     }
 
     @Override
@@ -156,7 +156,7 @@ public class R_ACE
         out.print(principal.getName());
 
         out.print(" +");
-        out.print(mode);
+        out.print(permission.getModeString());
     }
 
     public static R_ACE adminApAll = new R_ACE("ap:", User.admin, "surwcdx");
