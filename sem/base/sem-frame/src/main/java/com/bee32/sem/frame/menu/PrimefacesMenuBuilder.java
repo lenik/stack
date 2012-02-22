@@ -39,12 +39,16 @@ public class PrimefacesMenuBuilder
     }
 
     protected UIComponent convert(IMenuNode node) {
-        boolean skipped;
-        if (showAll)
-            skipped = node.isEmpty();
-        else
-            skipped = node.isBarren();
-        if (skipped)
+        if (showAll) {
+            if (node.isEmpty())
+                return null;
+        } else {
+            if (node.isBarren())
+                return null;
+        }
+
+        int flags = node.getFlags();
+        if ((flags & IMenuEntry.HIDDEN) != 0)
             return null;
 
         IAppearance appearance = node.getAppearance();
@@ -53,7 +57,7 @@ public class PrimefacesMenuBuilder
         if (label == null || label.isEmpty())
             label = node.getName();
 
-        String tooltips = appearance.getDescription();
+        // String tooltips = appearance.getDescription();
 
         if (node.isEmpty()) { // menu-item
             MenuItem item = new MenuItem();
