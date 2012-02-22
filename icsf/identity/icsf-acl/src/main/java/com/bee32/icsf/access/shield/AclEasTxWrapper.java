@@ -127,7 +127,7 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
 
         Permission defl = defaults.get(entityType);
         boolean readOnly = requiredPermission.getAllowBits() == Permission.READ;
-        if (readOnly && defl.isReadable())
+        if (readOnly && defl != null && defl.isReadable())
             return;
 
         UserDto currentUser = SessionUser.getInstance().getUserOpt();
@@ -147,9 +147,12 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
             return;
         }
 
-        Permission mixed = defl.clone();
+        Permission mixed = defl == null ? null : defl.clone();
         Permission grantedPermission = aclService.getPermission(entityResource, currentUser.getId());
-        mixed.merge(grantedPermission);
+        if (mixed == null)
+            mixed = grantedPermission;
+        else
+            mixed.merge(grantedPermission);
 
         if (!mixed.implies(requiredPermission)) {
             String message = String.format(//
