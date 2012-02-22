@@ -6,6 +6,7 @@
         <!-- basic -->
         <cc:attribute name="var" default="editACEDialog" shortDescription="nc(0)" />
         <cc:attribute name="value" type="java.lang.Object" required="true" />
+        <cc:attribute name="_value" type="java.lang.Object" required="true" />
         <cc:attribute name="actionListener" targets="form:ok-validated" required="true" />
         <cc:attribute name="update" />
 
@@ -22,7 +23,7 @@
         <h:outputStylesheet library="3/7/2" name="acl.css" />
 
         <icsf:choosePrincipalDialog id="cpd" var="${fn:replace(cc.parent.clientId, ':', '_')}_cpd"
-            target="${cc.parent.attrs.value.principal}" update=":${cc.parent.clientId}:form" />
+            target="${cc.parent.attrs._value.principal}" update=":${cc.parent.clientId}:form" />
 
         <ui:param name="entry" value="${cc.attrs.value}" />
         <ui:param name="p" value="${entry.permission}" />
