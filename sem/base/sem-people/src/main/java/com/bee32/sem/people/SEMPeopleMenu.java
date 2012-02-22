@@ -22,7 +22,7 @@ public class SEMPeopleMenu
 //    static MenuNode internalPersonAdmin = entry(SEMFrameMenu.DATA, 30, "internalPersonAdmin",
 //            PEOPLE_.join("internalPerson/index-rich.jsf"));
 
-    public static MenuNode SETTINGS = menu(SEMFrameMenu.DATA, 0, "dict");
+    public static MenuNode SETTINGS = menu(SEMFrameMenu.DATA, 1000, "dict");
     /**/static MenuNode partyTag = entry(SETTINGS, 1, "partyTag", getDictIndex(PartyTagname.class));
     /**/static MenuNode personSidType = entry(SETTINGS, 2, "personSidType", getDictIndex(PartySidType.class));
     /**/static MenuNode orgType = entry(SETTINGS, 3, "orgType", getDictIndex(OrgType.class));
