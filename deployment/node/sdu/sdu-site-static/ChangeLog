@@ -26,13 +26,13 @@
 	  debian/compat, debian/control, debian/copyright, debian/docs,
 	  debian/postinst, debian/postrm, debian/prerm, debian/rules,
 	  install-sh, libauto/coolauto.am, missing, post-install.sh.in,
-	  pre-remove.sh.in, secca-static.site: set eol-style to native
+	  pre-remove.sh.in, 20secca-static.site: set eol-style to native
 
 2010-10-07  lenik
 
 	* Makefile.am, Makefile.in, VERSION.av, configure, configure.ac,
 	  debian/changelog, post-install.sh.in, pre-remove.sh.in,
-	  secca-static.site: initial
+	  20secca-static.site: initial
 
 2010-09-29  lenik
 
@@ -40,7 +40,7 @@
 
 2010-09-27  lenik
 
-	* secca-static.site: ignores
+	* 20secca-static.site: ignores
 
 2010-09-23  lenik
 

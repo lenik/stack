@@ -5,5 +5,5 @@
 
 echo "Config apache2"
 
-    a2ensite secca-static.site
+    a2ensite 20secca-static.site
     a2reload
