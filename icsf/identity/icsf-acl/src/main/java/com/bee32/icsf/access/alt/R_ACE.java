@@ -98,7 +98,7 @@ public class R_ACE
     }
 
     @NaturalId
-    @ManyToOne(optional = false/*, fetch = FetchType.LAZY*/)
+    @ManyToOne(optional = false/* , fetch = FetchType.LAZY */)
     public Principal getPrincipal() {
         return principal;
     }

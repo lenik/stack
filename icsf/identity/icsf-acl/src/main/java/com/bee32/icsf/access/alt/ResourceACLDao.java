@@ -16,19 +16,19 @@ import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.orm.dao.GenericDao;
 
-public class R_ACLDao
+public class ResourceACLDao
         extends GenericDao {
 
     // @Inject
     // private R_ACEDao aceDao;
 
-    public R_ACL loadACL(Resource resource) {
+    public ResourceACL loadACL(Resource resource) {
         if (resource == null)
             throw new NullPointerException("resource");
 
         String qualifiedName = ResourceRegistry.qualify(resource);
 
-        R_ACL acl = new R_ACL(null, resource);
+        ResourceACL acl = new ResourceACL(null, resource);
 
         List<R_ACE> list = getHibernateTemplate().findByNamedParam(//
                 "from R_ACE where" //
@@ -41,7 +41,7 @@ public class R_ACLDao
         return acl;
     }
 
-    public void saveACL(R_ACL acl) {
+    public void saveACL(ResourceACL acl) {
         if (acl == null)
             throw new NullPointerException("acl");
 

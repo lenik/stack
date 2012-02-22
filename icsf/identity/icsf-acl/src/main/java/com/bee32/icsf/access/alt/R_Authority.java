@@ -20,7 +20,7 @@ public class R_Authority
         extends Authority {
 
     @Inject
-    R_ACLDao aclDao;
+    ResourceACLDao aclDao;
 
     @Override
     public IACL getACL(Resource resource) {

@@ -33,7 +33,7 @@ public abstract class AbstractACL
         Map<Principal, Permission> all = new HashMap<Principal, Permission>();
         merge(all, this);
 
-        return new ACL(all);
+        return new LegacyACL(all);
     }
 
     static void merge(Map<Principal, Permission> all, IACL acl) {

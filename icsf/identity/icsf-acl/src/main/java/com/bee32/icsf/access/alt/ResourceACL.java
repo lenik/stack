@@ -4,31 +4,31 @@ import java.io.Serializable;
 
 import javax.free.IllegalUsageException;
 
-import com.bee32.icsf.access.acl.legacy.ACL;
+import com.bee32.icsf.access.acl.legacy.LegacyACL;
 import com.bee32.icsf.access.resource.Resource;
 
-public class R_ACL
-        extends ACL
+public class ResourceACL
+        extends LegacyACL
         implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private R_ACL parent;
+    private ResourceACL parent;
     private Resource resource;
 
-    public R_ACL() {
+    public ResourceACL() {
     }
 
-    public R_ACL(R_ACL parent, Resource resource) {
+    public ResourceACL(ResourceACL parent, Resource resource) {
         this.parent = parent;
         this.resource = resource;
     }
 
-    public R_ACL getParent() {
+    public ResourceACL getParent() {
         return parent;
     }
 
-    public void setParent(R_ACL parent) {
+    public void setParent(ResourceACL parent) {
         this.parent = parent;
     }
 
@@ -77,7 +77,7 @@ public class R_ACL
      *
      * @return Non-<code>null</code> underlying ACL.
      */
-    public ACL toACL() {
+    public LegacyACL toACL() {
         return this;
     }
 

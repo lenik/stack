@@ -9,17 +9,17 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bee32.icsf.IcsfAccessUnit;
 import com.bee32.icsf.access.alt.R_ACE;
 import com.bee32.icsf.access.alt.R_ACEDao;
-import com.bee32.icsf.access.alt.R_ACLDao;
+import com.bee32.icsf.access.alt.ResourceACLDao;
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.WiredDaoFeat;
 import com.bee32.plover.test.ICoordinator;
 
 @Using(IcsfAccessUnit.class)
-public class R_ACLFeat
-        extends WiredDaoFeat<R_ACLFeat> {
+public class ResourceACLFeat
+        extends WiredDaoFeat<ResourceACLFeat> {
 
     @Inject
-    R_ACLDao aclDao;
+    ResourceACLDao aclDao;
 
     @Inject
     R_ACEDao aceDao;
@@ -33,9 +33,9 @@ public class R_ACLFeat
 
     public static void main(String[] args)
             throws IOException {
-        new R_ACLFeat().mainLoop(new ICoordinator<R_ACLFeat>() {
+        new ResourceACLFeat().mainLoop(new ICoordinator<ResourceACLFeat>() {
             @Override
-            public void main(R_ACLFeat feat)
+            public void main(ResourceACLFeat feat)
                     throws Exception {
                 feat.listSamples();
             }

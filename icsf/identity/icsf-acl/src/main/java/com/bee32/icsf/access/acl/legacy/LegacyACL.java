@@ -9,22 +9,22 @@ import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.acl.IACL;
 import com.bee32.icsf.principal.Principal;
 
-public class ACL
+public class LegacyACL
         extends AbstractACL {
 
     private final IACL parent;
     private final Map<Principal, Permission> map;
 
-    public ACL() {
+    public LegacyACL() {
         this((IACL) null);
     }
 
-    public ACL(IACL parent) {
+    public LegacyACL(IACL parent) {
         this.parent = parent;
         this.map = new HashMap<Principal, Permission>();
     }
 
-    public ACL(Map<Principal, Permission> map) {
+    public LegacyACL(Map<Principal, Permission> map) {
         if (map == null)
             throw new NullPointerException("map");
         this.parent = null;
