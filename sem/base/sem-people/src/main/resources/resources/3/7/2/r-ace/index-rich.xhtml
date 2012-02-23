@@ -5,7 +5,7 @@
 
     <ui:param name="title" value="资源访问权限" />
     <ui:param name="baseEntity" value="true" />
-    <ui:param name="bean" value="${r_ACEViewBean}" />
+    <ui:param name="bean" value="${r_ACEBean}" />
     <ui:param name="obj" value="${bean.openedObject}" />
 
     <ui:define name="dataColumns">
@@ -31,7 +31,7 @@
 
     <ui:define name="editDialogs">
         <icsf:editACEDialog id="editDialog" var="editDialog" value="${obj}" _value="${obj}"
-            actionListener="${bean.save}" update=":mainForm">
+            readonly="${not bean.editing}" actionListener="${bean.save}" update=":mainForm">
             <f:facet name="ext">
                 <tr>
                     <td class="field-label">

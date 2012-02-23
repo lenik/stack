@@ -4,12 +4,12 @@ import com.bee32.icsf.access.alt.R_ACE;
 import com.bee32.icsf.access.alt.R_ACEDto;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 
-public class R_ACEViewBean
+public class R_ACEBean
         extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
-    public R_ACEViewBean() {
+    public R_ACEBean() {
         super(R_ACE.class, R_ACEDto.class, 0);
     }
 
