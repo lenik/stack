@@ -25,14 +25,13 @@
         <icsf:choosePrincipalDialog id="cpd" var="${fn:replace(cc.parent.clientId, ':', '_')}_cpd"
             target="${cc.parent.attrs._value.principal}" update=":${cc.parent.clientId}:form" />
 
-        <ui:param name="entry" value="${cc.attrs.value}" />
-        <ui:param name="p" value="${entry.permission}" />
+        <ui:param name="p" value="${cc.attrs.value.permission}" />
 
         <p:dialog id="editEntryDialog" header="${cc.attrs.header}" widgetVar="${cc.attrs.var}" modal="true"
             dynamic="${viewConfig.dynamicDialog}" position="center">
             <h:form id="form" styleClass="${cc.attrs.formStyleClass}">
 
-                <h:panelGroup rendered="${entry != null}">
+                <h:panelGroup rendered="${cc.attrs.value != null}">
                     <table width="100%">
                         <tr>
                             <td class="field-label">
@@ -40,7 +39,7 @@
                             </td>
                             <td class="field-content">
                                 <p:inputText id="principal" label="安全主体" readonly="true"
-                                    value="${entry.principal.displayName}" />
+                                    value="${cc.attrs.value.principal.displayName}" />
                             </td>
                             <td>
                                 <p:commandButton id="choosePrincipal" value="..."
@@ -51,7 +50,7 @@
                     </table>
                 </h:panelGroup>
 
-                <p:fieldset legend="权限" rendered="${entry != null}">
+                <p:fieldset legend="权限" rendered="${cc.attrs.value != null}">
                     <div align="center">
                         <t:panelGrid columns="5" columnClasses="cell-leader, cell-skip, cell-icon, cell-icon, cell-icon">
                             <h:panelGroup styleClass="cell-header" />
