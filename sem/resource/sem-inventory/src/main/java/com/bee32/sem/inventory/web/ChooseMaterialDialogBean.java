@@ -12,10 +12,10 @@ import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialType;
 import com.bee32.sem.inventory.util.MaterialCriteria;
-import com.bee32.sem.misc.SimpleEntityViewBean;
+import com.bee32.sem.misc.ChooseEntityDialogBean;
 
 public class ChooseMaterialDialogBean
-        extends SimpleEntityViewBean {
+        extends ChooseEntityDialogBean {
 
     private static final long serialVersionUID = 1L;
 

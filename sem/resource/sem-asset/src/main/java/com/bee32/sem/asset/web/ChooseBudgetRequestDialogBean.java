@@ -6,10 +6,10 @@ import org.slf4j.LoggerFactory;
 import com.bee32.sem.asset.dto.BudgetRequestDto;
 import com.bee32.sem.asset.entity.BudgetRequest;
 import com.bee32.sem.asset.util.AssetCriteria;
-import com.bee32.sem.misc.SimpleEntityViewBean;
+import com.bee32.sem.misc.ChooseEntityDialogBean;
 
 public class ChooseBudgetRequestDialogBean
-        extends SimpleEntityViewBean {
+        extends ChooseEntityDialogBean {
 
     private static final long serialVersionUID = 1L;
 

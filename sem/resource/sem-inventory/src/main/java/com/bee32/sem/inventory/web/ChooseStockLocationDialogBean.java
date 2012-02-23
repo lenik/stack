@@ -17,11 +17,11 @@ import com.bee32.sem.inventory.dto.StockLocationDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.MaterialPreferredLocation;
 import com.bee32.sem.inventory.entity.StockLocation;
-import com.bee32.sem.misc.SimpleTreeEntityViewBean;
+import com.bee32.sem.misc.ChooseTreeEntityDialogBean;
 import com.bee32.sem.sandbox.TreeNodeSelectionHolder;
 
 public class ChooseStockLocationDialogBean
-        extends SimpleTreeEntityViewBean {
+        extends ChooseTreeEntityDialogBean {
 
     private static final long serialVersionUID = 1L;
 

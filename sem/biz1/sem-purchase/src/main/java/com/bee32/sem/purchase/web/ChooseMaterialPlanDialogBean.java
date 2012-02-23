@@ -8,13 +8,13 @@ import org.slf4j.LoggerFactory;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.IsNull;
 import com.bee32.sem.frame.ui.ListMBean;
-import com.bee32.sem.misc.SimpleEntityViewBean;
+import com.bee32.sem.misc.ChooseEntityDialogBean;
 import com.bee32.sem.purchase.dto.MaterialPlanDto;
 import com.bee32.sem.purchase.dto.MaterialPlanItemDto;
 import com.bee32.sem.purchase.entity.MaterialPlan;
 
 public class ChooseMaterialPlanDialogBean
-        extends SimpleEntityViewBean {
+        extends ChooseEntityDialogBean {
 
     private static final long serialVersionUID = 1L;
 

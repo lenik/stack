@@ -12,10 +12,10 @@ import com.bee32.icsf.principal.Role;
 import com.bee32.icsf.principal.RoleDto;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.UserDto;
-import com.bee32.sem.misc.SimpleEntityViewBean;
+import com.bee32.sem.misc.ChooseEntityDialogBean;
 
 public class ChoosePrincipalDialogBean
-        extends SimpleEntityViewBean {
+        extends ChooseEntityDialogBean {
 
     private static final long serialVersionUID = 1L;
 

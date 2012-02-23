@@ -6,10 +6,10 @@ import org.slf4j.LoggerFactory;
 import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.util.ChanceCriteria;
-import com.bee32.sem.misc.SimpleEntityViewBean;
+import com.bee32.sem.misc.ChooseEntityDialogBean;
 
 public class ChooseChanceDialogBean
-        extends SimpleEntityViewBean {
+        extends ChooseEntityDialogBean {
 
     private static final long serialVersionUID = 1L;
 

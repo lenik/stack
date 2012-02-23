@@ -10,12 +10,12 @@ import org.slf4j.LoggerFactory;
 import com.bee32.plover.criteria.hibernate.Alias;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.sem.misc.SimpleTreeEntityViewBean;
+import com.bee32.sem.misc.ChooseTreeEntityDialogBean;
 import com.bee32.sem.people.dto.OrgUnitDto;
 import com.bee32.sem.people.entity.OrgUnit;
 
 public class ChooseOrgUnitDialogBean
-        extends SimpleTreeEntityViewBean {
+        extends ChooseTreeEntityDialogBean {
 
     private static final long serialVersionUID = 1L;
 

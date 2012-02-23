@@ -5,10 +5,10 @@ import org.slf4j.LoggerFactory;
 
 import com.bee32.icsf.access.acl.ACL;
 import com.bee32.icsf.access.acl.ACLDto;
-import com.bee32.sem.misc.SimpleEntityViewBean;
+import com.bee32.sem.misc.ChooseEntityDialogBean;
 
 public class ChooseACLDialogBean
-        extends SimpleEntityViewBean {
+        extends ChooseEntityDialogBean {
 
     private static final long serialVersionUID = 1L;
 

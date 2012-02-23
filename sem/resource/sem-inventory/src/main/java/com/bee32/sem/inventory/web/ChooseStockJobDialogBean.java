@@ -17,10 +17,10 @@ import com.bee32.sem.inventory.tx.dto.StockJobDto;
 import com.bee32.sem.inventory.tx.dto.StockOutsourcingDto;
 import com.bee32.sem.inventory.tx.dto.StockTransferDto;
 import com.bee32.sem.inventory.tx.entity.StockJob;
-import com.bee32.sem.misc.SimpleEntityViewBean;
+import com.bee32.sem.misc.ChooseEntityDialogBean;
 
 public class ChooseStockJobDialogBean
-        extends SimpleEntityViewBean {
+        extends ChooseEntityDialogBean {
 
     private static final long serialVersionUID = 1L;
 

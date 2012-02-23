@@ -9,10 +9,10 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.sem.asset.dto.AccountSubjectDto;
 import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.asset.util.AssetCriteria;
-import com.bee32.sem.misc.SimpleEntityViewBean;
+import com.bee32.sem.misc.ChooseEntityDialogBean;
 
 public class ChooseAccountSubjectDialogBean
-        extends SimpleEntityViewBean {
+        extends ChooseEntityDialogBean {
 
     private static final long serialVersionUID = 1L;
 

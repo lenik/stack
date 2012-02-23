@@ -5,10 +5,10 @@ import org.slf4j.LoggerFactory;
 
 import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.entity.MaterialCategory;
-import com.bee32.sem.misc.SimpleTreeEntityViewBean;
+import com.bee32.sem.misc.ChooseTreeEntityDialogBean;
 
 public class ChooseMaterialCategoryDialogBean
-        extends SimpleTreeEntityViewBean {
+        extends ChooseTreeEntityDialogBean {
 
     private static final long serialVersionUID = 1L;
 

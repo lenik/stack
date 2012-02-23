@@ -3,12 +3,12 @@ package com.bee32.sem.process.verify.web;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.sem.misc.SimpleEntityViewBean;
+import com.bee32.sem.misc.ChooseEntityDialogBean;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.dto.VerifyPolicyDto;
 
 public class ChooseVerifyPolicyDialogBean
-        extends SimpleEntityViewBean {
+        extends ChooseEntityDialogBean {
 
     private static final long serialVersionUID = 1L;
 

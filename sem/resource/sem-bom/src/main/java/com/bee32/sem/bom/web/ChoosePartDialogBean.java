@@ -8,10 +8,10 @@ import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.sem.bom.dto.PartDto;
 import com.bee32.sem.bom.entity.Part;
 import com.bee32.sem.bom.util.BomCriteria;
-import com.bee32.sem.misc.SimpleEntityViewBean;
+import com.bee32.sem.misc.ChooseEntityDialogBean;
 
 public class ChoosePartDialogBean
-        extends SimpleEntityViewBean {
+        extends ChooseEntityDialogBean {
 
     private static final long serialVersionUID = 1L;
 

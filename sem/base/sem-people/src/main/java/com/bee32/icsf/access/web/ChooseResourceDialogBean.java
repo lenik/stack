@@ -17,10 +17,10 @@ import com.bee32.plover.orm.entity.EntityResource;
 import com.bee32.plover.orm.entity.EntityResourceNS;
 import com.bee32.plover.ox1.tree.TreeEntity;
 import com.bee32.plover.ox1.tree.TreeEntityDto;
-import com.bee32.sem.misc.SimpleTreeEntityViewBean;
+import com.bee32.sem.misc.ChooseTreeEntityDialogBean;
 
 public class ChooseResourceDialogBean
-        extends SimpleTreeEntityViewBean {
+        extends ChooseTreeEntityDialogBean {
 
     private static final long serialVersionUID = 1L;
 
