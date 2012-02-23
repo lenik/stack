@@ -38,6 +38,7 @@ import com.bee32.icsf.principal.UserDto;
 import com.bee32.icsf.principal.UserOption;
 import com.bee32.icsf.principal.UserPreference;
 import com.bee32.plover.arch.util.ClassCatalog;
+import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.builtin.PloverConf;
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.entity.Entity;
@@ -126,6 +127,9 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
         if (!enabled || aclService == null)
             return;
 
+        // Damn.. could be proxy classes..??
+        entityType = (Class<? extends Entity<?>>) ClassUtil.skipProxies(entityType);
+
         Permission defl = defaults.get(entityType);
         boolean readOnly = requiredPermission.getAllowBits() == Permission.READ;
         if (readOnly && defl != null && defl.isReadable())
@@ -142,6 +146,8 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
         PersistenceUnit unit = CustomizedSessionFactoryBean.getForceUnit();
         Map<Class<?>, ClassCatalog> invMap = unit.getInvMap();
         ClassCatalog catalog = invMap.get(entityType);
+        if (catalog == null)
+            throw new IllegalStateException("Catalog unknown for entity type: " + entityType);
 
         String entityResName = EntityResource.getLocalName(catalog, entityType);
         Resource entityResource = entityNS.getResource(entityResName);
