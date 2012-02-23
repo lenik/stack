@@ -18,10 +18,10 @@
     </ui:define>
 
     <ui:define name="dataColumns">
-        <p:column headerText="名称" sortBy="${entry.name}">
+        <p:column headerText="代码" sortBy="${entry.name}">
             <h:outputText value="#{entry.name}" />
         </p:column>
-        <p:column headerText="全名" sortBy="${entry.fullNAme}">
+        <p:column headerText="名称" sortBy="${entry.fullNAme}">
             <h:outputText value="#{entry.fullName}" />
         </p:column>
         <p:column headerText="描述" sortBy="${entry.description}" styleClass="f-wrappable">
@@ -30,7 +30,7 @@
     </ui:define>
 
     <ui:define name="editDialogContent">
-        <h:panelGrid columns="2">
+        <h:panelGrid columns="2" columnClasses="field-label, field-content">
             <h:outputLabel for="inheritedRole" value="继承的角色" />
             <h:panelGrid columns="3">
                 <p:inputText value="#{obj.inheritedRole.name}" disabled="true" label="继承的角色" />
@@ -41,11 +41,11 @@
                 <p:commandButton value="X" actionListener="#{obj.clearInheritedRole}" update="form" />
             </h:panelGrid>
 
-            <h:outputLabel for="name" value="名称" />
-            <p:inputText id="name" value="#{obj.name}" disabled="#{not bean.creating}" label="名称" />
+            <h:outputLabel for="name" value="代码" />
+            <p:inputText id="name" value="#{obj.name}" disabled="#{not bean.creating}" label="代码" />
 
-            <h:outputLabel for="fullName" value="全名" />
-            <p:inputText id="fullName" value="#{obj.fullName}" label="全名" />
+            <h:outputLabel for="fullName" value="名称" />
+            <p:inputText id="fullName" value="#{obj.fullName}" label="名称" />
         </h:panelGrid>
     </ui:define>
 
@@ -68,10 +68,10 @@
                         <p:column headerText="序号">
                             <h:outputText value="#{rowIndex + 1}" />
                         </p:column>
-                        <p:column headerText="名称">
+                        <p:column headerText="代码">
                             <h:outputText value="#{group.name}" />
                         </p:column>
-                        <p:column headerText="全名">
+                        <p:column headerText="名称">
                             <h:outputText value="#{group.fullName}" />
                         </p:column>
                     </p:dataTable>
@@ -98,10 +98,10 @@
                         <p:column headerText="序号">
                             <h:outputText value="#{rowIndex + 1}" />
                         </p:column>
-                        <p:column headerText="名称">
+                        <p:column headerText="代码">
                             <h:outputText value="#{user.name}" />
                         </p:column>
-                        <p:column headerText="全名">
+                        <p:column headerText="名称">
                             <h:outputText value="#{user.fullName}" />
                         </p:column>
                     </p:dataTable>

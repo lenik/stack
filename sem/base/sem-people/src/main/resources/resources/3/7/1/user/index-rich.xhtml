@@ -8,10 +8,10 @@
     <ui:param name="obj" value="#{bean.openedObject}" />
 
     <ui:define name="dataColumns">
-        <p:column headerText="名称" sortBy="${entry.name}">
+        <p:column headerText="代码" sortBy="${entry.name}">
             <h:outputText value="#{entry.name}" />
         </p:column>
-        <p:column headerText="全名" sortBy="${entry.fullNAme}">
+        <p:column headerText="名称" sortBy="${entry.fullNAme}">
             <h:outputText value="#{entry.fullName}" />
         </p:column>
         <p:column headerText="描述" sortBy="${entry.description}" styleClass="f-wrappable">
@@ -36,17 +36,17 @@
     </ui:define>
 
     <ui:define name="editDialogContent">
-        <h:panelGrid columns="2">
-            <h:outputLabel for="name" value="名称" />
-            <p:inputText label="名称" id="name" value="#{obj.name}" disabled="#{not bean.creating}" />
+        <h:panelGrid columns="2" columnClasses="field-label, field-content">
+            <h:outputLabel for="name" value="代码" />
+            <p:inputText id="name" label="代码" value="#{obj.name}" disabled="#{not bean.creating}" />
 
-            <h:outputLabel for="fullName" value="全名" />
-            <p:inputText label="全名" id="fullName" value="#{obj.fullName}" />
+            <h:outputLabel for="fullName" value="名称" />
+            <p:inputText id="fullName" label="名称" value="#{obj.fullName}" />
 
             <h:outputLabel for="password" value="密码" />
             <t:panelGroup>
                 <input id="passPlain" type="password" onchange="calcDigest();" />
-                <h:inputHidden id="password" value="#{bean.password}" label="密码" />
+                <h:inputHidden id="password" label="密码" value="#{bean.password}" />
             </t:panelGroup>
 
             <h:outputLabel for="passwordConfirm" value="密码确认" />
@@ -78,10 +78,10 @@
                         <p:column headerText="序号">
                             <h:outputText value="#{rowIndex + 1}" />
                         </p:column>
-                        <p:column headerText="名称">
+                        <p:column headerText="代码">
                             <h:outputText value="#{group.name}" />
                         </p:column>
-                        <p:column headerText="全名">
+                        <p:column headerText="名称">
                             <h:outputText value="#{group.fullName}" />
                         </p:column>
                     </p:dataTable>
@@ -107,10 +107,10 @@
                         <p:column headerText="序号">
                             <h:outputText value="#{rowIndex + 1}" />
                         </p:column>
-                        <p:column headerText="名称">
+                        <p:column headerText="代码">
                             <h:outputText value="#{role.name}" />
                         </p:column>
-                        <p:column headerText="全名">
+                        <p:column headerText="名称">
                             <h:outputText value="#{role.fullName}" />
                         </p:column>
                     </p:dataTable>
@@ -134,7 +134,7 @@
 
                         <h:outputLabel value="姓名" />
                         <h:outputText value="#{person.name}" />
-                        <h:outputLabel value="全名" />
+                        <h:outputLabel value="名称" />
                         <h:outputText value="#{person.fullName}" />
 
                         <h:outputLabel value="生日" />
