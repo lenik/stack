@@ -13,8 +13,8 @@ public class IcsfAccessMenu
     static MenuNode security = entry(SEMFrameMenu.ATTRIBUTES, 100, "security", //
             JAVASCRIPT.join("loadAclAndShow(securityDialog)"));
 
-    static MenuNode acl = entry(SEMFrameMenu.SECURITY, 10, "acl", BASE_.join("acl/index-rich.jsf"));
-    static MenuNode permissionAdmin = entry(SEMFrameMenu.SECURITY, 10, "permissionAdmin",
+    static MenuNode acl = entry(SEMFrameMenu.SECURITY, 30, "acl", BASE_.join("acl/index-rich.jsf"));
+    static MenuNode permissionAdmin = entry(SEMFrameMenu.SECURITY, 40, "permissionAdmin",
             BASE_.join("r-ace/index-rich.jsf"));
 
     @Override

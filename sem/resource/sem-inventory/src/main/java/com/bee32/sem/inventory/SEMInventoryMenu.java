@@ -25,25 +25,25 @@ public class SEMInventoryMenu
     /*    */static MenuNode material = entry(MATERIAL, 3, "material", _("material/"));
 
     public static MenuNode INVENTORY = menu(SEMFrameMenu.MAIN, 440, "inventory");
+    /*    */static MenuNode init = entry(INVENTORY, 10, "init", _("stock/INIT/"));
+    /*    */static MenuNode takeIn = entry(INVENTORY, 20, "takeIn", _stock(StockOrderSubject.TAKE_IN));
+    /*    */static MenuNode takeOut = entry(INVENTORY, 21, "takeOut", _stock(StockOrderSubject.TAKE_OUT));
+    /*    */static MenuNode factoryTakeIn = entry(INVENTORY, 40, "factoryTakeIn", _stock(StockOrderSubject.FACTORY_IN));
+    /*    */static MenuNode factoryTakeOut = entry(INVENTORY, 41, "factoryTakeOut", _stock(StockOrderSubject.FACTORY_OUT));
+    /*    */static MenuNode stocktaking = entry(INVENTORY, 60, "stocktaking", _("stock/STKD/"));
+    /*    */static MenuNode transferOut = entry(INVENTORY, 70, "transferOut", _("stock/XFER_OUT/"));
+    /*    */static MenuNode transferIn = entry(INVENTORY, 71, "transferIn", _("stock/XFER_IN/"));
+    /*    */static MenuNode outsourcingOut = entry(INVENTORY, 80, "outsourcingOut", _("stock/OSP_OUT/"));
+    /*    */static MenuNode outsourcingIn = entry(INVENTORY, 81, "outsourcingIn", _("stock/OSP_IN/"));
+    /*    */static MenuNode __1 = _separator_(INVENTORY, 100);
+    /*    */static MenuNode stockQuery = entry(INVENTORY, 110, "stockQuery", _("query/"));
+    /*    */static MenuNode __2 = _separator_(INVENTORY, 999);
 
-    public static MenuNode SETTINGS = menu(INVENTORY, 1, "settings");
-    /*    */static MenuNode verifyPolicy = entry(SEMProcessMenu.VERIFY_POLICY, 100, "verifyPolicy", _("verify/"));
+    public static MenuNode SETTINGS = menu(INVENTORY, 1000, "settings");
     /*    */static MenuNode stockWarehouse = entry(SETTINGS, 1, "stockWarehouse", _("warehouse/"));
     /*    */static MenuNode stockLocation = entry(SETTINGS, 10, "stockLocation", _("location/"));
 
-
-    /*    */static MenuNode init = entry(INVENTORY, 10, "init", _("stock/INIT/"));
-    /*    */static MenuNode takeIn = entry(INVENTORY, 20, "takeIn", _stock(StockOrderSubject.TAKE_IN));
-    /*    */static MenuNode takeOut = entry(INVENTORY, 30, "takeOut", _stock(StockOrderSubject.TAKE_OUT));
-    /*    */static MenuNode factoryTakeIn = entry(INVENTORY, 40, "factoryTakeIn", _stock(StockOrderSubject.FACTORY_IN));
-    /*    */static MenuNode factoryTakeOut = entry(INVENTORY, 50, "factoryTakeOut", _stock(StockOrderSubject.FACTORY_OUT));
-    /*    */static MenuNode stocktaking = entry(INVENTORY, 60, "stocktaking", _("stock/STKD/"));
-    /*    */static MenuNode transferOut = entry(INVENTORY, 70, "transferOut", _("stock/XFER_OUT/"));
-    /*    */static MenuNode transferIn = entry(INVENTORY, 80, "transferIn", _("stock/XFER_IN/"));
-    /*    */static MenuNode outsourcingOut = entry(INVENTORY, 90, "outsourcingOut", _("stock/OSP_OUT/"));
-    /*    */static MenuNode outsourcingIn = entry(INVENTORY, 100, "outsourcingIn", _("stock/OSP_IN/"));
-
-    /*    */static MenuNode stockQuery = entry(INVENTORY, 110, "stockQuery", _("query/"));
+    /*    */static MenuNode verifyPolicy = entry(SEMProcessMenu.VERIFY_POLICY, 100, "verifyPolicy", _("verify/"));
 
     @Override
     protected void preamble() {

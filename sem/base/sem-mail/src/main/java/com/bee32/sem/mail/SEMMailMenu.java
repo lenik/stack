@@ -10,7 +10,7 @@ public class SEMMailMenu
 
     static ILocationContext MAIL_ = WEB_APP.join(SEMMailModule.PREFIX + "/");
 
-    public static MenuNode MAIL = menu(SEMFrameMenu.FILE, 20, "mail");
+    public static MenuNode MAIL = menu(SEMFrameMenu.START, 20, "mail");
     public static MenuNode SETTINGS = menu(MAIL, 100, "settings");
 
     static MenuNode folder = entry(SETTINGS, 10, "mailbox", MAIL_.join("folder/index.do"));
@@ -23,6 +23,7 @@ public class SEMMailMenu
 
     @Override
     protected void preamble() {
+        MAIL.setFlags(MenuNode.HIDDEN);
     }
 
 }
