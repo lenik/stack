@@ -21,6 +21,7 @@ public class EntityFlags
     public static final int USER_SEL1 = 1 << 10;
     public static final int USER_SEL2 = 1 << 11;
     public static final int USER_SEL3 = 1 << 12;
+    public static final int WEAK_DATA = 1 << 13; // LTS: Mutable builtin/test data.
     public static final int TEST_DATA = 1 << 14; // LTS
     public static final int BUILTIN_DATA = 1 << 15; // LTS
 
@@ -131,6 +132,14 @@ public class EntityFlags
 
     public void setUserSel3(boolean userSel3) {
         set(USER_SEL3, userSel3);
+    }
+
+    public boolean isWeakData() {
+        return test(WEAK_DATA);
+    }
+
+    public void setWeakData(boolean weakData) {
+        set(WEAK_DATA, weakData);
     }
 
     public boolean isBuitlinData() {
