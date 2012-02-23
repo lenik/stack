@@ -54,7 +54,7 @@ public class SQLMonitorServlet
                     td().text("SQL").end();
                     end();
                 }
-                int i = 0;
+                // int i = 0;
                 for (SQLRecord record : sqlTrackDB.getRecentSqls()) {
                     tr();
                     {
