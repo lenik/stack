@@ -16,6 +16,8 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.NaturalId;
 
+import com.bee32.icsf.access.DefaultPermission;
+import com.bee32.icsf.access.Permission;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.color.UIEntityAuto;
@@ -24,6 +26,7 @@ import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialType;
 
 @Entity
+@DefaultPermission(Permission.R_X)
 @SequenceGenerator(name = "idgen", sequenceName = "part_material_seq", allocationSize = 1)
 public class PartItem
         extends UIEntityAuto<Long>

@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
+import com.bee32.icsf.access.DefaultPermission;
+import com.bee32.icsf.access.Permission;
 import com.bee32.plover.ox1.color.Blue;
 import com.bee32.plover.ox1.xp.EntityExt;
 
@@ -16,6 +18,7 @@ import com.bee32.plover.ox1.xp.EntityExt;
 // @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 // @DiscriminatorColumn(name = "stereo", length = 4)
 // @DiscriminatorValue("-")
+@DefaultPermission(Permission.R_X)
 @SequenceGenerator(name = "idgen", sequenceName = "contact_seq", allocationSize = 1)
 public class Contact
         extends EntityExt<Integer, ContactXP> {

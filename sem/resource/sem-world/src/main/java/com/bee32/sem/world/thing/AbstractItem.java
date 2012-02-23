@@ -10,6 +10,8 @@ import javax.persistence.Embedded;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import com.bee32.icsf.access.DefaultPermission;
+import com.bee32.icsf.access.Permission;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.ox1.color.Blue;
 import com.bee32.plover.ox1.color.UIEntityAuto;
@@ -20,6 +22,7 @@ import com.bee32.sem.world.monetary.MCValue;
 
 @MappedSuperclass
 @Blue
+@DefaultPermission(Permission.R_X)
 public abstract class AbstractItem
         extends UIEntityAuto<Long>
         implements DecimalConfig {
