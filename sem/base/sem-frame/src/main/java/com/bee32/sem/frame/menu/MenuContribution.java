@@ -138,6 +138,14 @@ public abstract class MenuContribution
         return node;
     }
 
+    static int separatorId = 0;
+
+    protected static MenuNode _separator_(MenuNode parent, int order) {
+        MenuNode separator = entry(parent, order, "separator" + (++separatorId), null);
+        separator.setFlags(IMenuEntry.SEPARATOR);
+        return separator;
+    }
+
     @Deprecated
     protected static MenuNode entry(MenuNode parent, String name, ILocationContext location) {
         return entry(parent, 0, name, location);

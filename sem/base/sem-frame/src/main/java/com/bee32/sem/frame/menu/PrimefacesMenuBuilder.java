@@ -6,10 +6,10 @@ import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.event.ActionListener;
-import javax.free.IllegalUsageException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.primefaces.component.menuitem.MenuItem;
+import org.primefaces.component.separator.Separator;
 import org.primefaces.component.submenu.Submenu;
 import org.primefaces.model.DefaultMenuModel;
 import org.primefaces.model.MenuModel;
@@ -39,6 +39,13 @@ public class PrimefacesMenuBuilder
     }
 
     protected UIComponent convert(IMenuNode node) {
+        int flags = node.getFlags();
+        if ((flags & IMenuEntry.HIDDEN) != 0)
+            return null;
+
+        if ((flags & IMenuEntry.SEPARATOR) != 0)
+            return new Separator();
+
         if (showAll) {
             if (node.isEmpty())
                 return null;
@@ -46,10 +53,6 @@ public class PrimefacesMenuBuilder
             if (node.isBarren())
                 return null;
         }
-
-        int flags = node.getFlags();
-        if ((flags & IMenuEntry.HIDDEN) != 0)
-            return null;
 
         IAppearance appearance = node.getAppearance();
 
