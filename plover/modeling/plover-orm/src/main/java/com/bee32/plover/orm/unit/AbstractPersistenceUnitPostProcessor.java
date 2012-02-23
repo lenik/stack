@@ -1,9 +1,9 @@
 package com.bee32.plover.orm.unit;
 
-import com.bee32.plover.inject.ServiceTemplate;
+import com.bee32.plover.servlet.util.ServiceTemplateRC;
 
-@ServiceTemplate
 public abstract class AbstractPersistenceUnitPostProcessor
+        extends ServiceTemplateRC
         implements IPersistenceUnitPostProcessor {
 
 }

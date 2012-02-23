@@ -7,11 +7,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 
-import com.bee32.plover.inject.ServiceTemplate;
 import com.bee32.plover.orm.dao.CommonDataManager;
+import com.bee32.plover.servlet.util.ServiceTemplateRC;
 
-@ServiceTemplate
 public abstract class AbstractDatabaseConfigurer
+        extends ServiceTemplateRC
         implements IDatabaseConfigurer {
 
     static Logger logger = LoggerFactory.getLogger(AbstractDatabaseConfigurer.class);

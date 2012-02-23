@@ -1,10 +1,10 @@
 package com.bee32.sem.world.monetary;
 
-import com.bee32.plover.inject.ServiceTemplate;
+import com.bee32.plover.servlet.util.ServiceTemplateRC;
 import com.bee32.plover.util.i18n.ICurrencyAware;
 
-@ServiceTemplate
 public abstract class AbstractFxrSource
+        extends ServiceTemplateRC
         implements IFxrSource, ICurrencyAware {
 
 }

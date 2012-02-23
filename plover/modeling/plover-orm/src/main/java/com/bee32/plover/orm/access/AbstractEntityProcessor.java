@@ -5,10 +5,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.bee32.plover.inject.ServiceTemplate;
+import com.bee32.plover.servlet.util.ServiceTemplateRC;
 
-@ServiceTemplate
 public abstract class AbstractEntityProcessor
+        extends ServiceTemplateRC
         implements IEntityProcessor {
 
     @Override
