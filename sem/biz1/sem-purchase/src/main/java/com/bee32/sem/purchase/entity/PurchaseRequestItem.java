@@ -16,10 +16,9 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.icsf.access.DefaultPermission;
-import com.bee32.icsf.access.Permission;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockWarehouse;
@@ -31,7 +30,6 @@ import com.bee32.sem.process.base.ProcessEntity;
  *
  */
 @Entity
-@DefaultPermission(Permission.R_X)
 @SequenceGenerator(name = "idgen", sequenceName = "purchase_request_item_seq", allocationSize = 1)
 public class PurchaseRequestItem
         extends ProcessEntity
@@ -211,6 +209,11 @@ public class PurchaseRequestItem
         super.detach();
         parent = null;
         return this;
+    }
+
+    @Override
+    protected CEntity<?> owningEntity() {
+        return parent;
     }
 
 }

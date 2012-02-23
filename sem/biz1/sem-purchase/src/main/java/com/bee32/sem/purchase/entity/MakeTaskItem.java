@@ -13,10 +13,9 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.icsf.access.DefaultPermission;
-import com.bee32.icsf.access.Permission;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.bom.entity.Part;
@@ -25,7 +24,6 @@ import com.bee32.sem.bom.entity.Part;
  * 生产任务明细
  */
 @Entity
-@DefaultPermission(Permission.R_X)
 @SequenceGenerator(name = "idgen", sequenceName = "make_task_item_seq", allocationSize = 1)
 public class MakeTaskItem
         extends MomentInterval
@@ -128,4 +126,10 @@ public class MakeTaskItem
         task = null;
         return this;
     }
+
+    @Override
+    protected CEntity<?> owningEntity() {
+        return getTask();
+    }
+
 }

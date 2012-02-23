@@ -6,15 +6,13 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-import com.bee32.icsf.access.DefaultPermission;
-import com.bee32.icsf.access.Permission;
+import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.color.MomentInterval;
 
 /**
  * 人或组织的社会档案记录.
  */
 @Entity
-@DefaultPermission(Permission.R_X)
 @SequenceGenerator(name = "idgen", sequenceName = "party_record_seq", allocationSize = 1)
 public class PartyRecord
         extends MomentInterval {
@@ -59,6 +57,11 @@ public class PartyRecord
         if (text == null)
             throw new NullPointerException("text");
         this.text = text;
+    }
+
+    @Override
+    protected CEntity<?> owningEntity() {
+        return getParty();
     }
 
 }

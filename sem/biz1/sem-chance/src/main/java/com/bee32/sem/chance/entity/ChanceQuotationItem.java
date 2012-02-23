@@ -9,8 +9,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.icsf.access.DefaultPermission;
-import com.bee32.icsf.access.Permission;
+import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.color.Blue;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.world.thing.AbstractItem;
@@ -20,7 +19,6 @@ import com.bee32.sem.world.thing.AbstractItem;
  */
 @Entity
 @Blue
-@DefaultPermission(Permission.R_X)
 @SequenceGenerator(name = "idgen", sequenceName = "chance_quotation_item_seq", allocationSize = 1)
 public class ChanceQuotationItem
         extends AbstractItem {
@@ -77,6 +75,11 @@ public class ChanceQuotationItem
 
     public void setDiscount(float discount) {
         this.discount = discount;
+    }
+
+    @Override
+    protected CEntity<?> owningEntity() {
+        return getParent();
     }
 
 }

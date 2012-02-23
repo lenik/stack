@@ -29,8 +29,6 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.DefaultValue;
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.icsf.access.DefaultPermission;
-import com.bee32.icsf.access.Permission;
 import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
@@ -42,7 +40,7 @@ import com.bee32.plover.ox1.xp.EntityExt;
  */
 @Entity
 @Green
-@DefaultPermission(Permission.R_X)
+// @DefaultPermission(Permission.R_X)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 4)
 @DiscriminatorValue("-")

@@ -12,9 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
-import com.bee32.icsf.access.DefaultPermission;
-import com.bee32.icsf.access.Permission;
 import com.bee32.plover.orm.cache.Redundant;
+import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.util.i18n.CurrencyConfig;
 import com.bee32.sem.base.tx.TxEntity;
@@ -23,7 +22,6 @@ import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 
 @Entity
-@DefaultPermission(Permission.R_X)
 @SequenceGenerator(name = "idgen", sequenceName = "stock_trade_item_seq", allocationSize = 1)
 public class StockTradeItem
         extends TxEntity
@@ -183,6 +181,11 @@ public class StockTradeItem
     protected void invalidate() {
         super.invalidate();
         invalidateTotal();
+    }
+
+    @Override
+    protected CEntity<?> owningEntity() {
+        return trade;
     }
 
 }

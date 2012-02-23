@@ -16,9 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
-import com.bee32.icsf.access.DefaultPermission;
-import com.bee32.icsf.access.Permission;
 import com.bee32.plover.orm.cache.Redundant;
+import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.process.base.TxProcessEntity;
@@ -32,7 +31,6 @@ import com.bee32.sem.world.monetary.MCValue;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 4)
 @DiscriminatorValue("-")
-@DefaultPermission(Permission.R_X)
 @SequenceGenerator(name = "idgen", sequenceName = "account_ticket_item_seq", allocationSize = 1)
 public class AccountTicketItem
         extends TxProcessEntity
@@ -200,6 +198,11 @@ public class AccountTicketItem
     protected Number computeJudgeNumber()
             throws FxrQueryException {
         return getNativeValue();
+    }
+
+    @Override
+    protected CEntity<?> owningEntity() {
+        return ticket;
     }
 
 }

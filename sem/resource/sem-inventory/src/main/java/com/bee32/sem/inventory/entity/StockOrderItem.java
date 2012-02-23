@@ -18,6 +18,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.BatchSize;
 
 import com.bee32.plover.orm.cache.Redundant;
+import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.sem.inventory.util.BatchArray;
 import com.bee32.sem.world.thing.AbstractItem;
 
@@ -186,6 +187,11 @@ public class StockOrderItem
         super.detach();
         parent = null;
         return this;
+    }
+
+    @Override
+    protected CEntity<?> owningEntity() {
+        return getParent();
     }
 
 }

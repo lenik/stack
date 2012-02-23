@@ -16,8 +16,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.icsf.access.DefaultPermission;
-import com.bee32.icsf.access.Permission;
+import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.color.Blue;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.util.i18n.CurrencyConfig;
@@ -29,7 +28,6 @@ import com.bee32.sem.world.monetary.MCValue;
  */
 @Entity
 @Blue
-@DefaultPermission(Permission.R_X)
 @SequenceGenerator(name = "idgen", sequenceName = "material_price_seq", allocationSize = 1)
 public class MaterialPrice
         extends UIEntityAuto<Long> {
@@ -101,6 +99,11 @@ public class MaterialPrice
      */
     public final void setPrice(double price) {
         setPrice(new MCValue(CurrencyConfig.getNative(), price));
+    }
+
+    @Override
+    protected CEntity<?> owningEntity() {
+        return material;
     }
 
 }

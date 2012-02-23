@@ -10,10 +10,9 @@ import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.icsf.access.DefaultPermission;
-import com.bee32.icsf.access.Permission;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.inventory.entity.Material;
@@ -24,7 +23,6 @@ import com.bee32.sem.people.entity.Party;
  *
  */
 @Entity
-@DefaultPermission(Permission.R_X)
 @SequenceGenerator(name = "idgen", sequenceName = "plan_item_seq", allocationSize = 1)
 public class MaterialPlanItem
         extends MomentInterval
@@ -145,6 +143,11 @@ public class MaterialPlanItem
         super.detach();
         materialPlan = null;
         return this;
+    }
+
+    @Override
+    protected CEntity<?> owningEntity() {
+        return materialPlan;
     }
 
 }

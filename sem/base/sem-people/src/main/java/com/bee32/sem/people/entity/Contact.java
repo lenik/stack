@@ -175,31 +175,4 @@ public class Contact
         this.qq = qq;
     }
 
-// @Override
-// protected Boolean naturalEquals(EntityBase<Integer> other) {
-// Contact o = (Contact) other;
-//
-// if (!party.equals(o.party))
-// return false;
-//
-// if (!Nullables.equals(category, o.category))
-// return false;
-//
-// return true;
-// }
-//
-// @Override
-// protected Integer naturalHashCode() {
-// int hash = 0;
-//
-// if (party == null)
-// throw new NullPointerException("Contact.party is required.");
-// hash += party.hashCode();
-//
-// if (category != null)
-// hash += category.hashCode();
-//
-// return hash;
-// }
-
 }

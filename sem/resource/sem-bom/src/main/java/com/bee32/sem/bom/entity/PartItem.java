@@ -16,17 +16,15 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.icsf.access.DefaultPermission;
-import com.bee32.icsf.access.Permission;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialType;
 
 @Entity
-@DefaultPermission(Permission.R_X)
 @SequenceGenerator(name = "idgen", sequenceName = "part_material_seq", allocationSize = 1)
 public class PartItem
         extends UIEntityAuto<Long>
@@ -67,6 +65,14 @@ public class PartItem
         if (parent == null)
             throw new NullPointerException("parent");
         this.parent = parent;
+    }
+
+    @Transient
+    public MaterialType getType() {
+        if (part != null)
+            return MaterialType.SEMI;
+        else
+            return MaterialType.RAW;
     }
 
     /**
@@ -178,12 +184,9 @@ public class PartItem
                 selector(prefix + "material", material, true));
     }
 
-    @Transient
-    public MaterialType getType() {
-        if (part != null)
-            return MaterialType.SEMI;
-        else
-            return MaterialType.RAW;
+    @Override
+    protected CEntity<?> owningEntity() {
+        return parent;
     }
 
 }
