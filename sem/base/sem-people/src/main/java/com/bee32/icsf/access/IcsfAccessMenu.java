@@ -13,9 +13,9 @@ public class IcsfAccessMenu
     static MenuNode security = entry(SEMFrameMenu.ATTRIBUTES, 100, "security", //
             JAVASCRIPT.join("loadAclAndShow(securityDialog)"));
 
-    static MenuNode acl = entry(SEMFrameMenu.SECURITY, 30, "acl", BASE_.join("acl/index-rich.jsf"));
-    static MenuNode permissionAdmin = entry(SEMFrameMenu.SECURITY, 40, "permissionAdmin",
-            BASE_.join("r-ace/index-rich.jsf"));
+    static MenuNode acl = entry(SEMFrameMenu.SECURITY, 31, "acl", BASE_.join("acl/"));
+    static MenuNode aclPref = entry(SEMFrameMenu.SECURITY, 32, "aclPref", BASE_.join("acl-pref/"));
+    static MenuNode r_ace = entry(SEMFrameMenu.SECURITY, 33, "r_ace", BASE_.join("r-ace/"));
 
     @Override
     protected void preamble() {

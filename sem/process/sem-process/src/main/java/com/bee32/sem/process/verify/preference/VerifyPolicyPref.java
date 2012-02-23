@@ -13,6 +13,8 @@ public class VerifyPolicyPref
 
     private static final long serialVersionUID = 1L;
 
+    public static final int DESCRIPTION_LENGTH = 200;
+
     private VerifyPolicy preferredPolicy;
     private String description;
 
@@ -25,7 +27,7 @@ public class VerifyPolicyPref
         this.preferredPolicy = preferredPolicy;
     }
 
-    @Column(length = 200)
+    @Column(length = DESCRIPTION_LENGTH)
     public String getDescription() {
         return description;
     }
