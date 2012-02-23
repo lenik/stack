@@ -19,10 +19,10 @@
 
     <cc:implementation>
 
-        <icsf:chooseACLDialog id="c_acl" var="${cc.parent.attrs.var}_acld" target="${cc.parent.attrs.dialogBean.selectedACL}"
+        <icsf:chooseACLDialog id="c_acl" var="${cc.parent.attrs.var}_acld" target="${cc.parent.attrs.dialogBean.chosenACL}"
             update=":${cc.parent.clientId}:form" />
-        <icsf:editACLDialog id="aclEditor" var="${cc.parent.attrs.var}_aclEditor" value="${cc.parent.attrs.dialogBean.selectedACL}"
-            _value="${cc.parent.parent.attrs.dialogBean.selectedACL}" actionListener="${cc.parent.attrs.dialogBean.saveACL}"
+        <icsf:editACLDialog id="aclEditor" var="${cc.parent.attrs.var}_aclEditor" value="${cc.parent.attrs.dialogBean.chosenACL}"
+            _value="${cc.parent.parent.attrs.dialogBean.chosenACL}" actionListener="${cc.parent.attrs.dialogBean.saveACL}"
             update=":${cc.parent.clientId}:form, :${cc.parent.clientId}:c_acl:form" />
 
         <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
@@ -34,7 +34,7 @@
                     <h:panelGrid columns="3">
                         <p:commandButton id="loadAclButton" value="读取对象上的ACL" actionListener="${dialogBean.loadACL}"
                             update=":${cc.clientId}:form" style="display: none" />
-                        <p:commandButton id="refreshSelection" value="更新"
+                        <p:commandButton id="refreshSelection" value="显示" title="显示当前准备编辑的对象。"
                             actionListener="${dialogBean.refreshContextSelection}" update=":${cc.clientId}:form" />
                         <h:panelGroup>
                             <pre>
@@ -46,9 +46,9 @@
 
                 <h:panelGrid columns="4">
                     <h:outputLabel for="acl" value="选定的安全策略：" />
-                    <p:inputText id="acl" value="${dialogBean.selectedACL.label}" readonly="true" size="30" />
+                    <p:inputText id="acl" value="${dialogBean.chosenACL.label}" readonly="true" size="30" />
                     <p:commandButton id="chooseACL" value="..." onclick="${cc.attrs.var}_acld.show()" />
-                    <p:commandButton id="clearACL" value="X" actionListener="${dialogBean.clearACL}"
+                    <p:commandButton id="clearACL" icon="ui-icon-trash" actionListener="${dialogBean.clearACL}"
                         update=":${cc.clientId}:form" />
                 </h:panelGrid>
 
@@ -56,10 +56,10 @@
                     <tr>
                         <td align="left">
                             <p:commandButton id="edit" value="编辑" title="编辑当前的安全策略"
-                                disabled="${dialogBean.selectedACL == null}" actionListener="${dialogBean.showEditACLForm}"
+                                disabled="${dialogBean.chosenACL == null}" actionListener="${dialogBean.showEditACLForm}"
                                 update=":${cc.clientId}:aclEditor:form" oncomplete="${cc.attrs.var}_aclEditor.show()">
                                 <f:setPropertyActionListener target="${ACLBean.openedObject}"
-                                    value="${dialogBean.selectedACL}" />
+                                    value="${dialogBean.chosenACL}" />
                             </p:commandButton>
                         </td>
                         <td align="center">

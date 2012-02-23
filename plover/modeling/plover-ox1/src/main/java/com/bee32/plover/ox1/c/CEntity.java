@@ -127,7 +127,6 @@ public abstract class CEntity<K extends Serializable>
 
     void setAclId(Integer aclId) {
         this.aclId = aclId;
-
     }
 
     protected CEntity<?> owningEntity() {

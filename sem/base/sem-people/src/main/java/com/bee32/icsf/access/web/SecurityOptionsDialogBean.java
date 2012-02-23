@@ -20,7 +20,7 @@ public class SecurityOptionsDialogBean
 
     String header = "安全选项...";
     String selectionDump;
-    ACLDto selectedACL;
+    ACLDto chosenACL;
 
     public String getHeader() {
         return header;
@@ -70,20 +70,20 @@ public class SecurityOptionsDialogBean
         return selectionDump;
     }
 
-    public ACLDto getSelectedACL() {
-        return selectedACL;
+    public ACLDto getChosenACL() {
+        return chosenACL;
     }
 
-    public void setSelectedACL(ACLDto selectedACL) {
-        this.selectedACL = selectedACL;
+    public void setChosenACL(ACLDto chosenACL) {
+        this.chosenACL = chosenACL;
     }
 
     public void clearACL() {
-        this.selectedACL = null;
+        this.chosenACL = null;
     }
 
     public void loadACL() {
-        selectedACL = getACLFromFirstSelection();
+        chosenACL = getACLFromFirstSelection();
     }
 
     ACLDto getACLFromFirstSelection() {
@@ -111,22 +111,22 @@ public class SecurityOptionsDialogBean
     }
 
     public void showEditACLForm() {
-        if (selectedACL == null) {
+        if (chosenACL == null) {
             uiLogger.error("没有 ACL 可供编辑！");
             return;
         }
-        selectedACL = reload(selectedACL, -1);
+        chosenACL = reload(chosenACL, -1);
     }
 
     public void saveACL() {
-        if (selectedACL == null) {
+        if (chosenACL == null) {
             uiLogger.error("ACL尚未装载。");
             return;
         }
 
         ACL _acl;
         try {
-            _acl = selectedACL.unmarshal();
+            _acl = chosenACL.unmarshal();
         } catch (Exception e) {
             uiLogger.error("反编列失败", e);
             return;
@@ -145,8 +145,8 @@ public class SecurityOptionsDialogBean
     @SuppressWarnings("unchecked")
     public void applyACL() {
         Integer aclId = null;
-        if (selectedACL != null)
-            aclId = selectedACL.getId();
+        if (chosenACL != null)
+            aclId = chosenACL.getId();
 
         for (Object selection : getContextSelection()) {
             if (!(selection instanceof CEntityDto<?, ?>))
