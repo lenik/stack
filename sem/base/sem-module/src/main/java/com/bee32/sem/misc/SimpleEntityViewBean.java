@@ -25,6 +25,7 @@ import org.primefaces.model.SortOrder;
 import com.bee32.icsf.access.AccessControlException;
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.acl.ACLCriteria;
+import com.bee32.icsf.access.shield.AclEasTxWrapper;
 import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.PrincipalDto;
@@ -219,11 +220,14 @@ public class SimpleEntityViewBean
 
         /** Only restrict owner for CEntity+ */
         if (CEntity.class.isAssignableFrom(entityClass)) {
+            Permission defaultPermission = AclEasTxWrapper.defaults.get(entityClass);
             // Boolean anyOwner = AnyOwnerUtil.isForAnyOwner(getClass());
             // if (anyOwner) ...
-            join.add(Or.of(//
-                    UserCriteria.ownedByCurrentUser(), //
-                    ACLCriteria.aclWithin(getACLs(visiblePermission))));
+            if (defaultPermission == null || !defaultPermission.implies(visiblePermission)) {
+                join.add(Or.of(//
+                        UserCriteria.ownedByCurrentUser(), //
+                        ACLCriteria.aclWithin(getACLs(visiblePermission))));
+            }
         }
 
         if (requestWindow != null && !requestWindow.isEmpty()) {
@@ -361,13 +365,15 @@ public class SimpleEntityViewBean
                 readOnly = true;
                 break;
             }
-            if (ef.isBuitlinData()) {
-                uiLogger.warn("不能编辑系统预置数据: 更改系统数据可能导致系统无法正常运行。");
-                readOnly = true;
-                break;
-            }
-            if (ef.isTestData()) {
-                uiLogger.warn("您正在编辑测试数据: 测试数据是自动生成的，未来可能会被系统复原。");
+            if (!ef.isWeakData()) {
+                if (ef.isBuitlinData()) {
+                    uiLogger.warn("不能编辑系统预置数据: 更改系统数据可能导致系统无法正常运行。");
+                    readOnly = true;
+                    break;
+                }
+                if (ef.isTestData()) {
+                    uiLogger.warn("您正在编辑测试数据: 测试数据是自动生成的，未来可能会被系统复原。");
+                }
             }
         }
 
@@ -657,6 +663,13 @@ public class SimpleEntityViewBean
             if (locked) {
                 lockedList.add(entity);
                 continue;
+            }
+
+            EntityFlags ef = EntityAccessor.getFlags(entity);
+            // if (!ef.isWeakData()) ...: WEAK_DATA is skipped in deleteion.
+            if (ef.isBuitlinData()) {
+                uiLogger.error("不能删除系统预置数据: 删除系统数据可能导致系统无法正常运行。");
+                return;
             }
         }
 

@@ -90,7 +90,7 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
         }
     }
 
-    static Map<Class<?>, Permission> defaults = new HashMap<>();
+    public static Map<Class<?>, Permission> defaults = new HashMap<>();
     static final Permission R_X = new Permission(Permission.R_X);
     static final Permission RWX = new Permission(Permission.RWX);
 

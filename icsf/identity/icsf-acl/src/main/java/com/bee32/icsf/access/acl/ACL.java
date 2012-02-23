@@ -217,9 +217,10 @@ public class ACL
         DEFAULT.setLabel("默认安全策略");
         DEFAULT.setDescription("系统为新建的数据自动设置的安全策略。");
         DEFAULT.add(Role.adminRole, Permission.RWS);
-        DEFAULT.add(Role.powerUserRole, Permission.RWX);
-        DEFAULT.add(Role.userRole, Permission.R_X);
-        DEFAULT.add(Role.guestRole, Permission.R_X);
+        DEFAULT.add(Role.powerUserRole, Permission.R_X);
+        // DEFAULT.add(Role.userRole, Permission.R_X);
+        // DEFAULT.add(Role.guestRole, Permission.R_X);
+        DEFAULT.getEntityFlags().setWeakData(true);
     }
 
 }
