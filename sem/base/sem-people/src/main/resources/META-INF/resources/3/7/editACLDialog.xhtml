@@ -25,8 +25,8 @@
         <icsf:chooseACLDialog id="c_acl" var="${fn:replace(cc.parent.clientId, ':', '_')}_acld"
             target="${cc.parent.attrs._value.inheritedACL}" update=":${cc.parent.clientId}:form:inheritedACL" />
         <icsf:editACEDialog id="c_ace" var="${fn:replace(cc.parent.clientId, ':', '_')}_ed" value="${cc.parent.attrs.dialogBean.entry}"
-            _value="${cc.parent.parent.attrs.dialogBean.entry}" actionListener="${cc.parent.attrs.dialogBean.addEntry}"
-            update=":${cc.parent.clientId}:form:entryTable" />
+            _value="${cc.parent.parent.attrs.dialogBean.entry}" readonly="${not cc.parent.attrs.dialogBean.editing}"
+            actionListener="${cc.parent.attrs.dialogBean.addEntry}" update=":${cc.parent.clientId}:form:entryTable" />
 
         <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
 
