@@ -56,7 +56,7 @@ public abstract class Principal
         return true;
     }
 
-    @NaturalId
+    @NaturalId(mutable = true)
     @Column(length = NAME_LENGTH, nullable = false)
     @Override
     public String getName() {
@@ -64,7 +64,7 @@ public abstract class Principal
     }
 
     /**
-     * You can't change the name of a principal.
+     * You should not change the name of a principal.
      * <p>
      * Names are automaticlly converted to lower-case.
      *
