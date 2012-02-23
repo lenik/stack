@@ -136,6 +136,8 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
             // currentUser = User.ANONYMOUS;
             return;
         Set<Integer> imset = SessionUser.getInstance().getImIdSet();
+        if (imset.contains(Role.adminRole))
+            return;
 
         PersistenceUnit unit = CustomizedSessionFactoryBean.getForceUnit();
         Map<Class<?>, ClassCatalog> invMap = unit.getInvMap();
