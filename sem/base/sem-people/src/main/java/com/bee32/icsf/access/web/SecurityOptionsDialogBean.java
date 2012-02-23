@@ -5,7 +5,6 @@ import java.util.List;
 import com.bee32.icsf.access.acl.ACL;
 import com.bee32.icsf.access.acl.ACLDto;
 import com.bee32.plover.arch.util.dto.MarshalType;
-import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.EntityPeripheralBean;
@@ -164,7 +163,7 @@ public class SecurityOptionsDialogBean
             CEntityAccessor.setAclId(_entity, aclId);
 
             try {
-                ctx.data.access(Entity.class).update(_entity);
+                ctx.data.access(_entity.getClass()).update(_entity);
             } catch (Exception e) {
                 uiLogger.error("更新对象属性失败", e);
                 return;

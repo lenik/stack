@@ -71,7 +71,7 @@ public class SingleVerifierSupportBean<D extends EntityDto<E, K> & IVerifiableDt
             String entityLabel = entity.getEntryLabel();
 
             try {
-                ctx.data.access(Entity.class).update(entity);
+                ctx.data.access(entity.getClass()).update(entity);
             } catch (Exception e) {
                 uiLogger.error("更新 " + entityLabel + " 的审核资料失败", e);
                 continue;
