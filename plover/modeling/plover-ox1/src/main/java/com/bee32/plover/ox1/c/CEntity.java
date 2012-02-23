@@ -104,7 +104,11 @@ public abstract class CEntity<K extends Serializable>
 
     @ManyToOne(fetch = FetchType.LAZY)
     public User getOwner() {
-        return owner;
+        CEntity<?> owning = owningEntity();
+        if (owning != null)
+            return owning.getOwner();
+        else
+            return owner;
     }
 
     public void setOwner(User owner) {
@@ -114,11 +118,20 @@ public abstract class CEntity<K extends Serializable>
     @Column(name = "acl")
     @Index(name = "##_acl")
     public Integer getAclId() {
-        return aclId;
+        CEntity<?> owning = owningEntity();
+        if (owning != null)
+            return owning.getAclId();
+        else
+            return aclId;
     }
 
     void setAclId(Integer aclId) {
         this.aclId = aclId;
+
+    }
+
+    protected CEntity<?> owningEntity() {
+        return null;
     }
 
 }
