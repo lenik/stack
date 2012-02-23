@@ -1,6 +1,7 @@
 package com.bee32.plover.site;
 
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -409,8 +410,14 @@ public class SiteManagerServlet
             ol();
             for (RequestEntry request : requests) {
                 li();
+                Date date = request.getDate();
+                text("[" + Dates.dateTimeFormat.format(date) + "] ");
                 String user = (String) request.getAttribute("user");
-                String requestURI = user + "@" + request.getRequestURI();
+                if (user != null) {
+                    text(user);
+                    text("@");
+                }
+                String requestURI = request.getRequestURI();
                 text(requestURI);
                 end();
             }
