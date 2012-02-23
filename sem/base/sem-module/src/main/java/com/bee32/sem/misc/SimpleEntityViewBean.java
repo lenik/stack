@@ -38,6 +38,7 @@ import com.bee32.plover.collections.Varargs;
 import com.bee32.plover.criteria.hibernate.CriteriaComposite;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.InCollection;
+import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityFlags;
@@ -220,8 +221,9 @@ public class SimpleEntityViewBean
         if (CEntity.class.isAssignableFrom(entityClass)) {
             // Boolean anyOwner = AnyOwnerUtil.isForAnyOwner(getClass());
             // if (anyOwner) ...
-            join.add(UserCriteria.ownedByCurrentUser());
-            join.add(ACLCriteria.aclWithin(getACLs(visiblePermission)));
+            join.add(Or.of(//
+                    UserCriteria.ownedByCurrentUser(), //
+                    ACLCriteria.aclWithin(getACLs(visiblePermission))));
         }
 
         if (requestWindow != null && !requestWindow.isEmpty()) {
