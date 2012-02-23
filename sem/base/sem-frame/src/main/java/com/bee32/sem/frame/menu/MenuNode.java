@@ -1,8 +1,11 @@
 package com.bee32.sem.frame.menu;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -213,9 +216,12 @@ public class MenuNode
 
         out.println(displayName + " -> " + getAction());
         out.enter();
-        for (Entry<String, IMenuNode> child : children.entrySet()) {
-            // String childName = child.getKey();
-            MenuNode childNode = (MenuNode) child.getValue();
+
+        List<IMenuNode> children = new ArrayList<>(this.children.values());
+        Collections.sort(children, MenuEntryComparator.INSTANCE);
+
+        for (IMenuNode child : children) {
+            MenuNode childNode = (MenuNode) child;
             childNode.format(out);
         }
         out.leave();

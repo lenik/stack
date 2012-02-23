@@ -1,5 +1,7 @@
 package com.bee32.sem.frame.menu;
 
+import java.util.Collection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -15,10 +17,16 @@ public class MenuLoader
 
     static Logger logger = LoggerFactory.getLogger(MenuLoader.class);
 
+    boolean menuLoaded;
+
     @Override
-    public synchronized void setApplicationContext(ApplicationContext applicationContext)
+    public void setApplicationContext(ApplicationContext applicationContext)
             throws BeansException {
-        for (MenuContribution contribution : applicationContext.getBeansOfType(MenuContribution.class).values()) {
+        loadMenus(applicationContext.getBeansOfType(MenuContribution.class).values());
+    }
+
+    synchronized void loadMenus(Collection<MenuContribution> contributions) {
+        for (MenuContribution contribution : contributions) {
             logger.debug("Merge menu contribution: " + contribution);
 
             // Force load of NLS.

@@ -1,5 +1,7 @@
 package com.bee32.sem.uber;
 
+import java.util.Locale;
+
 import javax.faces.component.UIComponent;
 import javax.inject.Inject;
 
@@ -18,9 +20,18 @@ public class SEMUberMenuTest
     @Inject
     MenuLoader menuLoader;
 
+    static {
+        Locale.setDefault(Locale.SIMPLIFIED_CHINESE);
+    }
+
     @Test
+    public void testDump() {
+        System.out.println(SEMFrameMenu.MAIN.toString());
+    }
+
+    // @Test
     public void testPrimefacesMenuBuilder() {
-        PrimefacesMenuBuilder mb=PrimefacesMenuBuilder.INSTANCE;
+        PrimefacesMenuBuilder mb = PrimefacesMenuBuilder.INSTANCE;
         MenuModel menubar = mb.buildMenubar(SEMFrameMenu.MAIN);
         for (UIComponent m : menubar.getContents()) {
             Submenu submenu = (Submenu) m;

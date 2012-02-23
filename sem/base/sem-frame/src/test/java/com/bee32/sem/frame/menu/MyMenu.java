@@ -5,7 +5,7 @@ import com.bee32.sem.frame.builtins.SEMFrameMenu;
 public class MyMenu
         extends MenuContribution {
 
-    public static MenuNode FILE = SEMFrameMenu.FILE;
+    public static MenuNode FILE = SEMFrameMenu.START;
 
     static MenuNode OPEN = entry(FILE, 10, "open", WEB_APP.join("file/open.do"));
     static MenuNode SAVE = entry(FILE, 20, "save", WEB_APP.join("file/save.do"));
