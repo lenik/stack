@@ -76,8 +76,8 @@
 
                         <p:column headerText="操作">
                             <p:commandLink title="删除" action="${dialogBean.removeEntry}" update=":${cc.clientId}:form:entryTable">
-                                <f:setPropertyActionListener value="${entry}"
-                                    target="${dialogBean.selectedEntry}" />
+                                <f:setPropertyActionListener target="${dialogBean.selectedEntry}"
+                                    value="${entry}" />
                                 <p:graphicImage value="${location.ICON}/etool16/delete_edit.gif" />
                             </p:commandLink>
                         </p:column>
