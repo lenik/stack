@@ -18,12 +18,12 @@
 
                 <p:ajax event="select" listener="#{bean.refreshRowCount}" update=":mainForm:dataTable" />
 
-                <p:column headerText="分类名称" style="width:150px;">
+                <p:column headerText="分类名称" styleClass="f-wrappable" style="width:15em;">
                     <h:outputText value="#{category.name}" />
                 </p:column>
 
                 <p:column headerText="BOM数" style="width:50px;">
-                    <h:outputText value="#{category.partCount}" />
+                    <h:outputText value="#{category.partCount} (#{category.totalPartCount})" />
                 </p:column>
             </p:treeTable>
         </h:form>
@@ -59,9 +59,9 @@
                     <t:panelGroup colspan="3">
                         <h:inputHidden id="target" label="对应物料" value="#{obj.target.id_RZL}" />
                         <h:outputText value="#{obj.target.label}" />
-                        <p:commandButton title="选择生成的物料" value="..." oncomplete="chooseTargetDialog.show();" update=":c_material:form">
-                            <f:setPropertyActionListener
-                                target="#{chooseMaterialDialogBean.materialType}"
+                        <p:commandButton title="选择生成的物料" value="..." oncomplete="chooseTargetDialog.show();"
+                            update=":c_material:form">
+                            <f:setPropertyActionListener target="#{chooseMaterialDialogBean.materialType}"
                                 value="1" />
                         </p:commandButton>
                     </t:panelGroup>
@@ -144,11 +144,10 @@
                 <h:outputLabel for="material" value="物料" />
                 <t:panelGroup>
                     <h:outputText id="material" value="#{item.anyMaterial.label}" />
-                    <p:commandButton id="itemPart" value="选择半成品" oncomplete="chooseItemPartDialog.show()"/>
+                    <p:commandButton id="itemPart" value="选择半成品" oncomplete="chooseItemPartDialog.show()" />
                     <p:commandButton id="itemMaterial" value="选择原材料" oncomplete="chooseItemMaterialDialog.show()">
-                        <f:setPropertyActionListener
-                                target="#{chooseMaterialDialogBean.materialType}"
-                                value="2" />
+                        <f:setPropertyActionListener target="#{chooseMaterialDialogBean.materialType}"
+                            value="2" />
                     </p:commandButton>
                 </t:panelGroup>
                 <h:outputLabel for="valid" value="是否有效" />
