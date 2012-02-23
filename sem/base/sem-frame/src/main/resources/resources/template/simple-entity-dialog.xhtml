@@ -4,11 +4,12 @@
 
     <ui:param name="_selectionHolder" value="${selectionHolder != null ? selectionHolder : dialogBean}" />
     <ui:param name="_selection" value="${multiple ? _selectionHolder.selectionArray : _selectionHolder.singleSelection}" />
+    <ui:param name="_dataModel" value="${dataModel != null ? dataModel : dialogBean.dataModel}" />
 
     <ui:define name="main">
         <h:panelGroup id="dataContainer" layout="block" styleClass="ui-dialog-data">
             <ui:insert name="dataContainer">
-                <p:dataTable id="dataTable" value="${dialogBean.dataModel}" selection="${_selection}"
+                <p:dataTable id="dataTable" value="${_dataModel}" selection="${_selection}"
                     selectionMode="${multiple ? 'multiple' : 'single'}" var="entry" rowIndexVar="rowIndex"
                     resizableColumns="true" paginator="${paginator != null ? paginator : true}" rows="10"
                     paginatorTemplate="${viewConfig.paginatorTemplate}" rowsPerPageTemplate="${viewConfig.pageSizeTemplate}"

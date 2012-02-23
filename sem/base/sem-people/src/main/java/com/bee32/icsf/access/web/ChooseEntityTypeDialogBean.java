@@ -3,8 +3,6 @@ package com.bee32.icsf.access.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.model.DataModel;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,8 +45,7 @@ public class ChooseEntityTypeDialogBean
         }
     }
 
-    @Override
-    public DataModel<?> getDataModel() {
+    public SelectableList<?> getList() {
         return SelectableList.decorate(descriptors);
     }
 
