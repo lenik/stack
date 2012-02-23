@@ -73,27 +73,21 @@
                         <p:column headerText="权限">
                             <h:outputText value="${entry.permission}" />
                         </p:column>
-
-                        <p:column headerText="操作">
-                            <p:commandLink title="删除" action="${dialogBean.removeEntry}" update=":${cc.clientId}:form:entryTable">
-                                <f:setPropertyActionListener target="${dialogBean.selectedEntry}"
-                                    value="${entry}" />
-                                <p:graphicImage value="${location.ICON}/etool16/delete_edit.gif" />
-                            </p:commandLink>
-                        </p:column>
                     </p:dataTable>
 
                     <h:panelGroup id="entryCmds">
                         <table width="100%">
                             <tr>
                                 <td align="left">
-                                    <p:commandButton id="createEntry" value="添加条目" actionListener="${dialogBean.createEntry}"
+                                    <p:commandButton id="create" value="添加" actionListener="${dialogBean.createEntry}"
                                         update=":${cc.clientId}:c_ace:form" oncomplete="${fn:replace(cc.clientId, ':', '_')}_ed.show()" />
                                 </td>
                                 <td align="right">
-                                    <p:commandButton id="editEntry" value="编辑条目" actionListener="${dialogBean.editEntry}"
+                                    <p:commandButton id="edit" value="编辑" actionListener="${dialogBean.editEntry}"
                                         update=":${cc.clientId}:c_ace:form" oncomplete="${fn:replace(cc.clientId, ':', '_')}_ed.show()"
                                         disabled="${dialogBean.selectedEntry == null}" />
+                                    <p:commandButton id="remove" value="移除" actionListener="${dialogBean.removeEntry}"
+                                        update=":${cc.clientId}:form:entryTable" disabled="${dialogBean.selectedEntry == null}" />
                                 </td>
                             </tr>
                         </table>
