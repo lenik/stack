@@ -34,9 +34,10 @@ public class Ox1SQLServlet
                 for (Class<?> entityType : CustomizedSessionFactoryBean.getForceUnit().getClasses()) {
                     if (CEntity.class.isAssignableFrom(entityType)) {
                         String entityName = naming.classToTableName(entityType.getCanonicalName());
+                        entityName = entityName.replace("`", "\""); // PL/SQL.
                         String sql = String.format(template, entityName);
                         text(sql);
-                        text("\n");
+                        text(";\n");
                     }
                 }
                 end();

@@ -18,11 +18,11 @@
 
                 <p:ajax event="select" listener="#{bean.refreshRowCount}" update=":mainForm:dataTable" />
 
-                <p:column headerText="分类名称" styleClass="f-wrappable" style="width:15em;">
+                <p:column headerText="分类名称" styleClass="f-wrappable" style="width: 15em;">
                     <h:outputText value="#{category.name}" />
                 </p:column>
 
-                <p:column headerText="BOM数" style="width:50px;">
+                <p:column headerText="BOM数" style="width: 5em;">
                     <h:outputText value="#{category.partCount} (#{category.totalPartCount})" />
                 </p:column>
             </p:treeTable>
