@@ -153,6 +153,10 @@ public class SecurityOptionsDialogBean
                 continue;
 
             CEntityDto<?, ?> dto = (CEntityDto<?, ?>) selection;
+
+            // selection is mostly mref-DTO.
+            dto = reload(dto);
+
             CEntity<?> _entity;
             try {
                 _entity = dto.unmarshal();

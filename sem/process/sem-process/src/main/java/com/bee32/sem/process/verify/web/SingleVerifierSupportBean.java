@@ -59,6 +59,7 @@ public class SingleVerifierSupportBean<D extends EntityDto<E, K> & IVerifiableDt
         Date verifyDate1 = new Date();
 
         for (IVerifiableDto verifiable : getVerifiables()) {
+            // Reload: (1) selection is mostly mref-dto, unmarshal mref will got lazyLoad() entity.
             D reloaded = reload((D) verifiable);
 
             SingleVerifierSupportDto context = (SingleVerifierSupportDto) reloaded.getVerifyContext();
