@@ -225,7 +225,12 @@ public class SimpleEntityViewBean
             // if (anyOwner) ...
             if (defaultPermission == null || !defaultPermission.implies(visiblePermission)) {
                 join.add(Or.of(//
+                        // owner in (currentUser.imset)
                         UserCriteria.ownedByCurrentUser(), //
+
+                        // r-ace(entity-resource, currentUser.imset) mix = own
+
+                        // acl in (currentUser.visibleACLs)
                         ACLCriteria.aclWithin(getACLs(visiblePermission))));
             }
         }
