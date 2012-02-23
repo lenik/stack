@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.faces.model.DataModel;
 import javax.free.ChainUsage;
 import javax.free.Dates;
 import javax.free.IllegalUsageException;
@@ -199,7 +200,7 @@ public class SimpleEntityViewBean
 
     }
 
-    public LazyDataModel<?> getDataModel() {
+    public DataModel<?> getDataModel() {
         return dataModel;
     }
 

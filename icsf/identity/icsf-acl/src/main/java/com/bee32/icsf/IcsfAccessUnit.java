@@ -2,6 +2,7 @@ package com.bee32.icsf;
 
 import com.bee32.icsf.access.acl.ACL;
 import com.bee32.icsf.access.acl.ACLEntry;
+import com.bee32.icsf.access.acl.ACLPref;
 import com.bee32.icsf.access.alt.R_ACE;
 import com.bee32.icsf.login.PrivateQuestion;
 import com.bee32.icsf.login.UserPassword;
@@ -24,6 +25,7 @@ public class IcsfAccessUnit
         add(ACLEntry.class);
         // add(R_ACL.class);
         add(R_ACE.class);
+        add(ACLPref.class);
     }
 
 }

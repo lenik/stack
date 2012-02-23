@@ -5,9 +5,12 @@ import java.util.Map;
 
 import javax.free.Nullables;
 
+import org.springframework.stereotype.Component;
+
 import com.bee32.plover.orm.cache.DataCacheBean;
 import com.bee32.plover.site.scope.PerSite;
 
+@Component
 @PerSite
 public class ACLPrefCache
         extends DataCacheBean {

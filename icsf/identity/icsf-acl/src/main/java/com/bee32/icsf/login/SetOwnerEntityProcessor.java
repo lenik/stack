@@ -8,10 +8,10 @@ import org.hibernate.event.SaveOrUpdateEventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.icsf.login.AbstractLoginListener.ctx;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.orm.access.AbstractEntityProcessor;
+import com.bee32.plover.orm.util.DefaultDataAssembledContext;
 import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.c.CEntityAccessor;
 
@@ -25,6 +25,10 @@ public class SetOwnerEntityProcessor
     private static final long serialVersionUID = 1L;
 
     static Logger logger = LoggerFactory.getLogger(SetOwnerEntityProcessor.class);
+
+    static class ctx
+            extends DefaultDataAssembledContext {
+    }
 
     @Override
     public Collection<String> getInterestingEvents() {

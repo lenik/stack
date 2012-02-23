@@ -34,11 +34,10 @@ public class SetDefaultACLEntityProcessor
     void injectACL(CEntity<?> entity) {
         Integer aclId = entity.getAclId();
         if (aclId == null) {
-            Integer defaultAclId = ACL.DEFAULT.getId();
-            if (defaultAclId != null) {
-                aclId = defaultAclId;
-                CEntityAccessor.setAclId(entity, aclId);
-            }
+            ACLPrefCache cache = ctx.bean.getBean(ACLPrefCache.class);
+            Integer preferredAclId = cache.getPreferredAclId(entity.getClass());
+            if (preferredAclId != null)
+                CEntityAccessor.setAclId(entity, preferredAclId);
         }
     }
 
