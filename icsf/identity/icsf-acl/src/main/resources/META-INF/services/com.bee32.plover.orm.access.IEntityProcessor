@@ -1,1 +1,2 @@
+com.bee32.icsf.access.acl.SetDefaultACLEntityProcessor
 com.bee32.icsf.login.SetOwnerEntityProcessor
