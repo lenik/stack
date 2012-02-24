@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.free.Strings;
 import javax.free.SystemProperties;
@@ -187,7 +188,7 @@ public class NLSInitiator {
             }
         }
 
-        System.out.println("Create " + file);
+        // System.out.println("Create " + file);
         file.getParentFile().mkdirs();
 
         OutputStream _out = new FileOutputStream(file, false); // append
@@ -231,36 +232,42 @@ public class NLSInitiator {
         URLClassLoader testLoader = TestClassLoader.createMavenTestClassLoader(mainLoader);
         URLClassLoader[] loaders = { mainLoader, testLoader };
 
+        Set<String> scandirs = new TreeSet<String>();
+
         for (URLClassLoader loader : loaders)
             for (File classdir : UCLDumper.getLocalClasspaths(loader)) {
                 if (classdir.isDirectory()) {
-                    File resdir = MavenPath.getSiblingResource(classdir);
-
-                    System.out.println("Scan " + classdir);
-
-                    List<String> fqcns = ClassFiles.findClasses(classdir);
-                    List<Class<?>> types = ClassFiles.forNames(fqcns, true, testLoader);
-
-                    for (Class<?> type : types) {
-                        if (type.isInterface())
-                            continue;
-
-                        int modifiers = type.getModifiers();
-                        if (Modifier.isAbstract(modifiers))
-                            continue;
-
-                        Map<String, String> map = getNLSMap(type);
-
-                        String fileName = type.getName().replace(".", SystemProperties.getFileSeparator());
-
-                        File file = new File(resdir, fileName + ".properties");
-                        dumpNLS(map, file);
-
-                        file = new File(resdir, fileName + "_zh_CN.properties");
-                        dumpNLS(map, file);
-                    }
+                    scandirs.add(classdir.getPath());
                 }
             }
+
+        for (String scandir : scandirs) {
+            File classdir = new File(scandir);
+            File resdir = MavenPath.getSiblingResource(classdir);
+            System.out.println("Scan " + classdir);
+
+            List<String> fqcns = ClassFiles.findClasses(classdir);
+            List<Class<?>> types = ClassFiles.forNames(fqcns, true, testLoader);
+
+            for (Class<?> type : types) {
+                if (type.isInterface())
+                    continue;
+
+                int modifiers = type.getModifiers();
+                if (Modifier.isAbstract(modifiers))
+                    continue;
+
+                Map<String, String> map = getNLSMap(type);
+
+                String fileName = type.getName().replace(".", SystemProperties.getFileSeparator());
+
+                File file = new File(resdir, fileName + ".properties");
+                dumpNLS(map, file);
+
+                file = new File(resdir, fileName + "_zh_CN.properties");
+                dumpNLS(map, file);
+            }
+        }
     }
 
 }
