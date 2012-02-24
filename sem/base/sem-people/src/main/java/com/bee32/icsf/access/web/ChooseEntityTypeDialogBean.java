@@ -33,19 +33,16 @@ public class ChooseEntityTypeDialogBean
 
     // Properties
 
-    static List<EntityTypeDescriptor> descriptors;
-    static {
+    public SelectableList<?> getList() {
+        List<EntityTypeDescriptor> descriptors;
         descriptors = new ArrayList<EntityTypeDescriptor>();
         PersistenceUnit unit = CustomizedSessionFactoryBean.getForceUnit();
-        for (ClassCatalog catalog : unit.getDependencies()) {
+        for (ClassCatalog catalog : unit.getAllDependencies()) {
             for (Class<?> entityType : catalog.getLocalClasses()) {
                 EntityTypeDescriptor descriptor = new EntityTypeDescriptor(catalog, entityType);
                 descriptors.add(descriptor);
             }
         }
-    }
-
-    public SelectableList<?> getList() {
         return SelectableList.decorate(descriptors);
     }
 
