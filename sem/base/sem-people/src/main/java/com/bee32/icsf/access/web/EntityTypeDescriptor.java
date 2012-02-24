@@ -11,6 +11,7 @@ public class EntityTypeDescriptor
     private static final long serialVersionUID = 1L;
 
     // ClassCatalog catalog;
+    String catalogName;
     Class<?> entityType;
     // String qualifiedName;
     String displayName;
@@ -18,13 +19,18 @@ public class EntityTypeDescriptor
 
     public EntityTypeDescriptor(ClassCatalog catalog, Class<?> entityType) {
         // this.catalog = catalog;
+        this.catalogName = catalog.getAppearance().getDisplayName();
         this.entityType = entityType;
-        displayName = ClassUtil.getTypeName(entityType);
+        this.displayName = ClassUtil.getTypeName(entityType);
     }
 
     // public ClassCatalog getCatalog() {
     // return catalog;
     // }
+
+    public String getCatalogName() {
+        return catalogName;
+    }
 
     public Class<?> getEntityType() {
         return entityType;

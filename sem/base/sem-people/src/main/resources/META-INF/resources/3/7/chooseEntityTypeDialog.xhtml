@@ -34,7 +34,10 @@
 
             <ui:define name="columns.0" />
             <ui:define name="columns">
-                <p:column headerText="名称">
+                <p:column headerText="数据单元">
+                    <h:outputText value="${entry.catalogName}" />
+                </p:column>
+                <p:column headerText="数据对象">
                     <h:outputText value="${entry.displayName}" />
                 </p:column>
                 <p:column headerText="描述" styleClass="f-wrappable">
