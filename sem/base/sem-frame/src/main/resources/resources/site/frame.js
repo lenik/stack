@@ -24,6 +24,11 @@
             cache : false
         });
         $("ul.sf-menu").superfish();
+
+        var logo = $(".logo-container");
+        logo.mouseover(function() {
+            logo.hide().delay(5000).fadeIn();
+        });
     });
 
 })(jQuery);
