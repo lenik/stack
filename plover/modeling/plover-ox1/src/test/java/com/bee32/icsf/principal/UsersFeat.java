@@ -37,12 +37,15 @@ public class UsersFeat
     @Inject
     CommonDataManager dataManager = MemdbDataManager.getInstance();
 
+    @Inject
+    IcsfPrincipalSamples principals;
+
     @Transactional(readOnly = true)
     public void listSamples() {
         for (User user : userDao.list())
             System.out.println("Sample User: " + user);
 
-        System.out.println("Alice.id = " + IcsfPrincipalSamples.alice.getId());
+        System.out.println("Alice.id = " + principals.alice.getId());
     }
 
     Group g1 = new Group("g1");

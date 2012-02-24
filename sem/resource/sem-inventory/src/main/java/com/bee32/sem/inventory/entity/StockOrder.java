@@ -14,6 +14,10 @@ public class StockOrder
         super();
     }
 
+    public StockOrder(StockOrderSubject subject) {
+        super(null, subject);
+    }
+
     public StockOrder(StockPeriod base, StockOrderSubject subject, StockWarehouse warehouse) {
         super(base, subject, warehouse);
     }

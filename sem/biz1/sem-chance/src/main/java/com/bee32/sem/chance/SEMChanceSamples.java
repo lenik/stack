@@ -3,6 +3,8 @@ package com.bee32.sem.chance;
 import java.util.Arrays;
 import java.util.Calendar;
 
+import javax.inject.Inject;
+
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.plover.orm.util.SampleContribution;
@@ -23,14 +25,25 @@ import com.bee32.sem.world.monetary.MCValue;
 public class SEMChanceSamples
         extends SampleContribution {
 
-    public static Chance chance = new Chance();
-    public static ChanceParty party = new ChanceParty();
-    public static ChanceParty party2 = new ChanceParty();
-    public static ChanceAction chanceAction1 = new ChanceAction();
-    public static ChanceAction chanceAction2 = new ChanceAction();
-    public static ChanceCompetitor competitor = new ChanceCompetitor();
+    public final Chance chance = new Chance();
+    public final ChanceParty party = new ChanceParty();
+    public final ChanceParty party2 = new ChanceParty();
+    public final ChanceAction chanceAction1 = new ChanceAction();
+    public final ChanceAction chanceAction2 = new ChanceAction();
+    public final ChanceCompetitor competitor = new ChanceCompetitor();
+    public final ChanceQuotation quotation = new ChanceQuotation();
 
-    static {
+    @Inject
+    IcsfPrincipalSamples principals;
+
+    @Inject
+    SEMPeopleSamples people;
+
+    @Inject
+    SEMInventorySamples inventories;
+
+    @Override
+    protected void preamble() {
         Calendar cal = Calendar.getInstance();
         cal.set(2011, 4, 8);
 
@@ -42,11 +55,11 @@ public class SEMChanceSamples
         chance.setCategory(ChanceCategory.NORMAL);
 
         party.setChance(chance);
-        party.setParty(SEMPeopleSamples.bugatti);
+        party.setParty(people.bugatti);
         party.setRole("main");
 
         party2.setChance(chance);
-        party2.setParty(SEMPeopleSamples.bentley);
+        party2.setParty(people.bentley);
         party2.setRole("subordinate");
 
         chance.setParties(Arrays.asList(party, party2));
@@ -67,25 +80,30 @@ public class SEMChanceSamples
         chanceAction1.setEndTime(cal.getTime());
         chanceAction1.setMoreInfo("在北京、上海、广州三个重点区域发展8至10家大OEM厂商");
         chanceAction1.setSpending("打的15, 吃饭30,住宿100,共145");
-        chanceAction1.setActor(IcsfPrincipalSamples.eva);
+        chanceAction1.setActor(principals.eva);
         chanceAction1.setStyle(ChanceActionStyle.INTERNET);
-        chanceAction1.setParties(Arrays.<Party> asList(SEMPeopleSamples.bentley, SEMPeopleSamples.bugatti));
+        chanceAction1.setParties(Arrays.<Party> asList(people.bentley, people.bugatti));
         chanceAction1.setStage(ChanceStage.INIT);
 
         chanceAction2.setBeginTime(cal.getTime());
         chanceAction2.setEndTime(cal.getTime());
         chanceAction2.setMoreInfo("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
         chanceAction2.setSpending("spendingspendingspendingspendingspendingspending");
-        chanceAction2.setActor(IcsfPrincipalSamples.eva);
+        chanceAction2.setActor(principals.eva);
         chanceAction2.setStyle(ChanceActionStyle.TALK);
-        chanceAction2.setParties(Arrays.asList((Party) SEMPeopleSamples.weiXiaoBao));
+        chanceAction2.setParties(Arrays.asList((Party) people.weiXiaoBao));
 
         chance.addAction(chanceAction1);
         chance.addAction(chanceAction2);
-    }
 
-    @Override
-    protected void preamble() {
+        quotation.setLabel("7月2号报价");
+        quotation.setChance(chance);
+        quotation.setDeliverInfo("发顺丰加保价");
+        quotation.setPayment("网上转帐");
+        quotation.addItem(inventories.m_light_A, //
+                inventories.m_light_A.getLatestPrice().getPrice(), //
+                new BigDecimal(3), 1.0f);
+
         // add <price>->quotionDetail
         add(chance);
         add(party);
@@ -94,6 +112,8 @@ public class SEMChanceSamples
         add(chanceAction1);
         add(chanceAction2);
 
+        // add <price>->quotation and quotationItem
+        add(quotation);
     }
 
 }

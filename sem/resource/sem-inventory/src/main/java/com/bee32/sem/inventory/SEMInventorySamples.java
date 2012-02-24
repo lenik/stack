@@ -3,10 +3,17 @@ package com.bee32.sem.inventory;
 import static com.bee32.sem.inventory.entity.MaterialType.PRODUCT;
 import static com.bee32.sem.inventory.entity.MaterialType.RAW;
 import static com.bee32.sem.inventory.entity.MaterialType.SEMI;
+import static com.bee32.sem.inventory.entity.StockOrderSubject.FACTORY_IN;
+import static com.bee32.sem.inventory.entity.StockOrderSubject.FACTORY_OUT;
+import static com.bee32.sem.inventory.entity.StockOrderSubject.PLAN_OUT;
+import static com.bee32.sem.inventory.entity.StockOrderSubject.TAKE_IN;
+import static com.bee32.sem.inventory.entity.StockOrderSubject.TAKE_OUT;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
+
+import javax.inject.Inject;
 
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.plover.orm.util.SampleContribution;
@@ -28,65 +35,71 @@ import com.bee32.sem.world.thing.Unit;
 public class SEMInventorySamples
         extends SampleContribution {
 
-    public static StockOrderVerifyPolicy stockPolicy = new StockOrderVerifyPolicy();
+    public final StockOrderVerifyPolicy stockPolicy = new StockOrderVerifyPolicy();
 
-    public static StockWarehouse mainWarehouse = new StockWarehouse();
-    public static StockWarehouse rawWarehouse = new StockWarehouse();
+    public final StockWarehouse mainWarehouse = new StockWarehouse();
+    public final StockWarehouse rawWarehouse = new StockWarehouse();
 
-    public static StockLocation sl_glass_1 = new StockLocation(rawWarehouse, "防爆玻璃区");
-    public static StockLocation sl_glue_1 = new StockLocation(rawWarehouse, "综合胶水区");
-    public static StockLocation sl_glue_pp = new StockLocation(rawWarehouse, "等离子胶水预搅拌区", sl_glue_1);
-    public static StockLocation sl_handler_1 = new StockLocation(mainWarehouse, "一楼");
-    public static StockLocation sl_handler_2 = new StockLocation(mainWarehouse, "地下拿手废料区");
-    public static StockLocation sl_handler_KJ = new StockLocation(mainWarehouse, "氪金拿手区", sl_handler_1);
-    public static StockLocation sl_handler_F1 = new StockLocation(mainWarehouse, "方程式氪金燃烧室", sl_handler_KJ);
-    public static StockLocation sl_dedi_1 = new StockLocation(mainWarehouse, "一楼");
-    public static StockLocation sl_light_1 = new StockLocation(mainWarehouse, "二楼");
+    public final StockLocation sl_glass_1 = new StockLocation(rawWarehouse, "防爆玻璃区");
+    public final StockLocation sl_glue_1 = new StockLocation(rawWarehouse, "综合胶水区");
+    public final StockLocation sl_glue_pp = new StockLocation(rawWarehouse, "等离子胶水预搅拌区", sl_glue_1);
+    public final StockLocation sl_handler_1 = new StockLocation(mainWarehouse, "一楼");
+    public final StockLocation sl_handler_2 = new StockLocation(mainWarehouse, "地下拿手废料区");
+    public final StockLocation sl_handler_KJ = new StockLocation(mainWarehouse, "氪金拿手区", sl_handler_1);
+    public final StockLocation sl_handler_F1 = new StockLocation(mainWarehouse, "方程式氪金燃烧室", sl_handler_KJ);
+    public final StockLocation sl_dedi_1 = new StockLocation(mainWarehouse, "一楼");
+    public final StockLocation sl_light_1 = new StockLocation(mainWarehouse, "二楼");
 
-    public static MaterialCategory cupRoot = new MaterialCategory(PRODUCT, "宇航员的杯具");
-    public static MaterialCategory cupSet_dedi = new MaterialCategory(cupRoot, PRODUCT, "客户定制杯具");
-    public static MaterialCategory cupSet_light = new MaterialCategory(cupRoot, PRODUCT, "专利无重力杯具");
-    public static MaterialCategory cupGlass_AM = new MaterialCategory(cupRoot, RAW, "反物质玻璃");
-    public static MaterialCategory cupGlue = new MaterialCategory(cupRoot, RAW, "等离子胶水");
-    public static MaterialCategory cupGlue_pp = new MaterialCategory(cupGlue, SEMI, "预搅拌等离子胶水");
-    public static MaterialCategory cupHandler = new MaterialCategory(cupRoot, SEMI, "杯具拿手");
-    public static MaterialCategory cupHandler_KJ = new MaterialCategory(cupHandler, SEMI, "氪金拿手");
-    public static MaterialCategory cupHandler_F1 = new MaterialCategory(cupHandler_KJ, SEMI, "方程式氪金拿手");
+    public final MaterialCategory cupRoot = new MaterialCategory(PRODUCT, "宇航员的杯具");
+    public final MaterialCategory cupSet_dedi = new MaterialCategory(cupRoot, PRODUCT, "客户定制杯具");
+    public final MaterialCategory cupSet_light = new MaterialCategory(cupRoot, PRODUCT, "专利无重力杯具");
+    public final MaterialCategory cupGlass_AM = new MaterialCategory(cupRoot, RAW, "反物质玻璃");
+    public final MaterialCategory cupGlue = new MaterialCategory(cupRoot, RAW, "等离子胶水");
+    public final MaterialCategory cupGlue_pp = new MaterialCategory(cupGlue, SEMI, "预搅拌等离子胶水");
+    public final MaterialCategory cupHandler = new MaterialCategory(cupRoot, SEMI, "杯具拿手");
+    public final MaterialCategory cupHandler_KJ = new MaterialCategory(cupHandler, SEMI, "氪金拿手");
+    public final MaterialCategory cupHandler_F1 = new MaterialCategory(cupHandler_KJ, SEMI, "方程式氪金拿手");
 
-    public static Material m_light_A = new Material();
-    public static Material m_light_B = new Material();
-    public static Material m_glass1 = new Material();
-    public static Material m_glue1 = new Material();
-    public static Material m_gluepp1 = new Material();
-    public static Material m_handlerkj1 = new Material();
-    public static Material m_handlerkj2 = new Material();
-    public static Material m_handlerf1 = new Material();
+    public final Material m_light_A = new Material();
+    public final Material m_light_B = new Material();
+    public final Material m_glass1 = new Material();
+    public final Material m_glue1 = new Material();
+    public final Material m_gluepp1 = new Material();
+    public final Material m_handlerkj1 = new Material();
+    public final Material m_handlerkj2 = new Material();
+    public final Material m_handlerf1 = new Material();
 
-    public static StockOrder takeInOrder1;
-    public static StockOrder takeOutOrder1;
-    public static StockOrder factoryInOrder1;
-    public static StockOrder factoryOutOrder1;
-    public static StockOrder planOrder1;
+    public final StockOrder takeInOrder1 = new StockOrder(TAKE_IN);
+    public final StockOrder takeOutOrder1 = new StockOrder(TAKE_OUT);
+    public final StockOrder factoryInOrder1 = new StockOrder(FACTORY_IN);
+    public final StockOrder factoryOutOrder1 = new StockOrder(FACTORY_OUT);
+    public final StockOrder planOrder1 = new StockOrder(PLAN_OUT);
 
-    static {
+    @Inject
+    SEMVerifyPolicySamples verifyPolicies;
+    @Inject
+    SEMPeopleSamples people;
+
+    @Override
+    protected void preamble() {
         stockPolicy.setName(".stockvp-1");
         stockPolicy.setLabel("库存审核策略");
         stockPolicy.setDescription("测试用的库存审核策略。");
-        stockPolicy.setSubjectPolicy(StockOrderSubject.PACK_M, SEMVerifyPolicySamples.robotList);
-        stockPolicy.setSubjectPolicy(StockOrderSubject.PACK_MB, SEMVerifyPolicySamples.robotList);
-        stockPolicy.setSubjectPolicy(StockOrderSubject.PACK_MBC, SEMVerifyPolicySamples.robotList);
-        stockPolicy.setSubjectPolicy(StockOrderSubject.PACK_MBL, SEMVerifyPolicySamples.robotList);
-        stockPolicy.setSubjectPolicy(StockOrderSubject.PACK_MBLC, SEMVerifyPolicySamples.robotList);
-        stockPolicy.setSubjectPolicy(StockOrderSubject.PACK_MC, SEMVerifyPolicySamples.robotList);
-        stockPolicy.setSubjectPolicy(StockOrderSubject.INIT, SEMVerifyPolicySamples.robotList);
-        stockPolicy.setSubjectPolicy(StockOrderSubject.TAKE_IN, SEMVerifyPolicySamples.robotList);
-        stockPolicy.setSubjectPolicy(StockOrderSubject.TAKE_OUT, SEMVerifyPolicySamples.robotList);
+        stockPolicy.setSubjectPolicy(StockOrderSubject.PACK_M, verifyPolicies.robotList);
+        stockPolicy.setSubjectPolicy(StockOrderSubject.PACK_MB, verifyPolicies.robotList);
+        stockPolicy.setSubjectPolicy(StockOrderSubject.PACK_MBC, verifyPolicies.robotList);
+        stockPolicy.setSubjectPolicy(StockOrderSubject.PACK_MBL, verifyPolicies.robotList);
+        stockPolicy.setSubjectPolicy(StockOrderSubject.PACK_MBLC, verifyPolicies.robotList);
+        stockPolicy.setSubjectPolicy(StockOrderSubject.PACK_MC, verifyPolicies.robotList);
+        stockPolicy.setSubjectPolicy(StockOrderSubject.INIT, verifyPolicies.robotList);
+        stockPolicy.setSubjectPolicy(StockOrderSubject.TAKE_IN, verifyPolicies.robotList);
+        stockPolicy.setSubjectPolicy(StockOrderSubject.TAKE_OUT, verifyPolicies.robotList);
 
         mainWarehouse.setName("ASP-S");
         mainWarehouse.setLabel("宇航员杯具综合仓库");
         mainWarehouse.setAddress("浙江省楚门镇城东路11号先锋杯具公司北");
         mainWarehouse.setPhone("911");
-        mainWarehouse.setManager(SEMPeopleSamples.jackPerson);
+        mainWarehouse.setManager(people.jackPerson);
 
         rawWarehouse.setName("ASP-R");
         rawWarehouse.setLabel("宇航员杯具原材料仓库");
@@ -181,9 +194,7 @@ public class SEMInventorySamples
         m_handlerf1.setAttribute("光滑度", "20mx");
         m_handlerf1.addPrice(date, new BigDecimal(30));
 
-        takeInOrder1 = new StockOrder();
         {
-            takeInOrder1.setSubject(StockOrderSubject.TAKE_IN);
             takeInOrder1.setSerial("..TK_I:1");
             takeInOrder1.setWarehouse(rawWarehouse);
             takeInOrder1.setBeginTime(DateSamples.D_2010_07_20);
@@ -195,36 +206,28 @@ public class SEMInventorySamples
             takeInOrder1.addItem(m_handlerkj2, null, 120, 9.0);
         }
 
-        takeOutOrder1 = new StockOrder();
         {
-            takeOutOrder1.setSubject(StockOrderSubject.TAKE_OUT);
             takeOutOrder1.setSerial("..TK_O:1");
             takeOutOrder1.setWarehouse(mainWarehouse);
             takeOutOrder1.setBeginTime(DateSamples.D_2010_07_20);
             takeOutOrder1.addItem(m_light_B, null, -5, 50.0);
         }
 
-        factoryInOrder1 = new StockOrder();
         {
-            factoryInOrder1.setSubject(StockOrderSubject.FACTORY_IN);
             factoryInOrder1.setSerial("..FK_I:1");
             factoryInOrder1.setWarehouse(mainWarehouse);
             factoryInOrder1.setBeginTime(DateSamples.D_2010_07_20);
             factoryInOrder1.addItem(m_handlerf1, null, 20.0, 30.0/* ??? */);
         }
 
-        factoryOutOrder1 = new StockOrder();
         {
-            factoryOutOrder1.setSubject(StockOrderSubject.FACTORY_OUT);
             factoryOutOrder1.setSerial("..FK_O:1");
             factoryOutOrder1.setWarehouse(mainWarehouse);
             factoryOutOrder1.setBeginTime(DateSamples.D_2010_07_30);
             factoryOutOrder1.addItem(m_handlerf1, null, -5.0, 30.0);
         }
 
-        planOrder1 = new StockOrder();
         {
-            planOrder1.setSubject(StockOrderSubject.PLAN_OUT);
             planOrder1.setSerial("..PLAN:1");
             planOrder1.setWarehouse(rawWarehouse);
             planOrder1.setBeginTime(DateSamples.D_2010_07_30);
@@ -235,10 +238,7 @@ public class SEMInventorySamples
                 takeInOrder1, takeOutOrder1, //
                 factoryInOrder1, factoryOutOrder1, //
                 planOrder1);
-    }
 
-    @Override
-    protected void preamble() {
         add(stockPolicy);
         addBulk(mainWarehouse, rawWarehouse);
         addBulk(sl_dedi_1, sl_light_1, //

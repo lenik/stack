@@ -13,16 +13,17 @@ import com.bee32.plover.orm.util.SampleContribution;
 public class IcsfPrincipalSamples
         extends SampleContribution {
 
-    public static Group solaRobots = new Group("sola", "Sola Robots Club");
-    public static Group sunCorp = new Group("sun", "Sun Corp");
+    public final Group solaRobots = new Group("sola", "Sola Robots Club");
+    public final Group sunCorp = new Group("sun", "Sun Corp");
 
-    public static User eva = new User("Eva", null, Role.adminRole);
-    public static User wallE = new User("Wall-E", solaRobots, Role.powerUserRole);
-    public static User alice = new User("Alice", null, null);
-    public static User tom = new User("Tom", null, Role.adminRole);
-    public static User kate = new User("Kate", sunCorp, Role.userRole);
+    public final User eva = new User("Eva", null, Role.adminRole);
+    public final User wallE = new User("Wall-E", solaRobots, Role.powerUserRole);
+    public final User alice = new User("Alice", null, null);
+    public final User tom = new User("Tom", null, Role.adminRole);
+    public final User kate = new User("Kate", sunCorp, Role.userRole);
 
-    static {
+    @Override
+    protected void preamble() {
         eva.setPrimaryGroup(solaRobots);
         tom.setPrimaryGroup(sunCorp);
 
@@ -35,10 +36,7 @@ public class IcsfPrincipalSamples
         tom.setPreferredEmail("tom@bee32.com");
         kate.setPreferredEmail("kate@bee32.com");
         alice.setPreferredEmail("alice@bee32.com");
-    }
 
-    @Override
-    protected void preamble() {
         addBulk(sunCorp, solaRobots);
         addBulk(eva, wallE, alice, tom, kate);
     }

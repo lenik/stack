@@ -5,9 +5,6 @@ import com.bee32.plover.orm.util.SampleContribution;
 public class SEMAssetSamples
         extends SampleContribution {
 
-    static {
-    }
-
     @Override
     protected void preamble() {
     }

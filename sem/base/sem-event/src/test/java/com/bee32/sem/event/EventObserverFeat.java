@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 
 import javax.free.Dates;
+import javax.inject.Inject;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.icsf.principal.Role;
@@ -22,6 +23,9 @@ import com.bee32.sem.event.util.EventCriteria;
 @Using(SEMEventUnit.class)
 public class EventObserverFeat
         extends WiredDaoFeat<EventObserverFeat> {
+
+    @Inject
+    IcsfPrincipalSamples principals;
 
     void cleanUp() {
         ctx.data.access(Event.class).deleteAll();
@@ -43,13 +47,13 @@ public class EventObserverFeat
     void setup() {
         aa = new Event(this, EventType.TASK);
         aa.setLabel("Attack fish");
-        aa.addObserver(IcsfPrincipalSamples.solaRobots); // {eva, alice}
+        aa.addObserver(principals.solaRobots); // {eva, alice}
         aa.setBeginTime(parseDate("2011-1-1"));
 
         bb = new Event(this, EventType.EVENT);
         bb.setLabel("B-event.");
         bb.addObserver(Role.adminRole); // eva, tom
-        bb.addObserver(IcsfPrincipalSamples.sunCorp); // +tom, +kate, alice
+        bb.addObserver(principals.sunCorp); // +tom, +kate, alice
         aa.setBeginTime(parseDate("2011-2-1"));
 
         ctx.data.access(Event.class).saveOrUpdateAll(aa, bb);
@@ -66,11 +70,11 @@ public class EventObserverFeat
     }
 
     void list() {
-        list(IcsfPrincipalSamples.alice); // a, b
-        list(IcsfPrincipalSamples.eva); // a, b
-        list(IcsfPrincipalSamples.kate); // b
-        list(IcsfPrincipalSamples.tom); // b
-        list(IcsfPrincipalSamples.wallE); // a
+        list(principals.alice); // a, b
+        list(principals.eva); // a, b
+        list(principals.kate); // b
+        list(principals.tom); // b
+        list(principals.wallE); // a
     }
 
     public static void main(String[] args)

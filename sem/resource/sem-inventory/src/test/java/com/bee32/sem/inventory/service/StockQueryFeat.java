@@ -22,13 +22,15 @@ public class StockQueryFeat
 
     @Inject
     IStockQuery stockQuery;
+    @Inject
+    SEMInventorySamples inventories;
 
     void list()
             throws FxrQueryException {
         System.out.println("----------- LIST BEGIN -----------");
         List<Long> materials = Arrays.asList( //
-                SEMInventorySamples.m_glass1.getId(), //
-                SEMInventorySamples.m_glue1.getId());
+                inventories.m_glass1.getId(), //
+                inventories.m_glue1.getId());
 
         StockQueryOptions sqopts = new StockQueryOptions(new Date(), false);
         sqopts.setBatchArray(null, true);
@@ -43,8 +45,8 @@ public class StockQueryFeat
         System.out.println(actualTotal);
         System.out.println(virtualTotal);
 
-        BigDecimal gunAq = stockQuery.getPhysicalStock(SEMInventorySamples.m_glass1.getId(), sqopts);
-        BigDecimal gunVq = stockQuery.getAvailableStock(SEMInventorySamples.m_glass1.getId(), sqopts);
+        BigDecimal gunAq = stockQuery.getPhysicalStock(inventories.m_glass1.getId(), sqopts);
+        BigDecimal gunVq = stockQuery.getAvailableStock(inventories.m_glass1.getId(), sqopts);
 
         System.out.println("----------- LIST END -----------");
     }

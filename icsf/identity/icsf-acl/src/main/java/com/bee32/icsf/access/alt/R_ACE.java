@@ -51,7 +51,10 @@ public class R_ACE
 
     public R_ACE(String qualifiedName, Principal principal, String mode) {
         super("ACE");
+        init(qualifiedName, principal, mode);
+    }
 
+    public void init(String qualifiedName, Principal principal, String mode) {
         if (qualifiedName == null)
             throw new NullPointerException("qualifiedName");
         if (principal == null)

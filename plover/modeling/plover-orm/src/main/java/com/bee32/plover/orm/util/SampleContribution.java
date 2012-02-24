@@ -6,11 +6,11 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
+import com.bee32.plover.site.scope.PerSite;
 
 /**
  * Lifecycle:
@@ -23,7 +23,7 @@ import com.bee32.plover.orm.entity.EntityAccessor;
  * </ol>
  */
 @ComponentTemplate
-@Lazy
+@PerSite
 public abstract class SampleContribution
         extends SamplePackage {
 

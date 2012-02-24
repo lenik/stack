@@ -27,6 +27,9 @@ public class AssetQueryTest
         extends WiredDaoFeat<AssetQueryTest> {
 
     @Inject
+    SEMPeopleSamples people;
+
+    @Inject
     IAssetQuery query;
 
     static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -49,7 +52,7 @@ public class AssetQueryTest
         sitem1.setSnapshot(snapshot1);
         sitem1.setSerial("_AQT_S1-1");
         sitem1.setSubject(AccountSubject.s110110);
-        sitem1.setParty(SEMPeopleSamples.bentley);
+        sitem1.setParty(people.bentley);
         sitem1.setValue(new MCValue(10000));
 
         AccountTicket ticket1 = new AccountTicket();
@@ -59,7 +62,7 @@ public class AssetQueryTest
         item1.setTicket(ticket1);
         item1.setSerial("_AQT_T1-1");
         item1.setSubject(AccountSubject.s100901);
-        item1.setParty(SEMPeopleSamples.bugatti);
+        item1.setParty(people.bugatti);
         item1.setValue(new MCValue(200));
         item1.setEndTime(parseDate("2011-12-1"));
 
@@ -67,7 +70,7 @@ public class AssetQueryTest
         item2.setTicket(ticket1);
         item2.setSerial("_AQT_T1-2");
         item2.setSubject(AccountSubject.s110110);
-        item2.setParty(SEMPeopleSamples.bentley);
+        item2.setParty(people.bentley);
         item2.setValue(new MCValue(300));
         item2.setEndTime(parseDate("2011-12-2"));
 
@@ -75,7 +78,7 @@ public class AssetQueryTest
         item3.setTicket(ticket1);
         item3.setSerial("_AQT_T1-3");
         item3.setSubject(AccountSubject.s110103);
-        item3.setParty(SEMPeopleSamples.bugatti);
+        item3.setParty(people.bugatti);
         item3.setValue(new MCValue(50));
         item3.setEndTime(parseDate("2011-12-3"));
 

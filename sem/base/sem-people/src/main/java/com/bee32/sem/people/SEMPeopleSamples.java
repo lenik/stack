@@ -28,38 +28,25 @@ public class SEMPeopleSamples
         extends SampleContribution {
 
     // 原来 SEMOrgSamples 中的样本。
-    public static Group abcCorp = new Group("ABC Company");
-    public static Group humanCorp = new Group("Human Company");
-    public static Group abcRAD = new Group("ABC 研究发展办公室");
-    public static Group abcSales = new Group("ABC 国际贸易部");
+    public final Group abcCorp = new Group("ABC Company");
+    public final Group humanCorp = new Group("Human Company");
+    public final Group abcRAD = new Group("ABC 研究发展办公室");
+    public final Group abcSales = new Group("ABC 国际贸易部");
 
-    public static User jack;
-    public static User tang;
-    public static Person jackPerson = new Person("贾雨村");
-    public static Person tangPerson = new Person("唐玄奘");
+    public final User jack;
+    public final User tang;
+    public final Person jackPerson = new Person("贾雨村");
+    public final Person tangPerson = new Person("唐玄奘");
 
-    public static Org moonOrg = new Org("火星探索公司");
-    public static Org abcOrg = new Org("abc");
-    public static Person bugatti = new Person("Bugatti");
-    public static Person bentley = new Person("Bentley");
-    public static Person weiXiaoBao = new Person("wxb");
+    public final Org moonOrg = new Org("火星探索公司");
+    public final Org abcOrg = new Org("abc");
+    public final Person bugatti = new Person("Bugatti");
+    public final Person bentley = new Person("Bentley");
+    public final Person weiXiaoBao = new Person("wxb");
 
-    static {
-        try {
-            series1();
-            series2();
-        } catch (ParseException e) {
-            throw new RuntimeException("Error when setup SEMPeopleSamples.", e);
-        }
-    }
-
-    /**
-     * 相当于原来的 ebi-org
-     *
-     * @throws ParseException
-     */
-    static void series1()
+    public SEMPeopleSamples()
             throws ParseException {
+
         humanCorp.setDescription(//
                 "本公司致力于人类补完计划。人类（无论是肉体还是心灵）都是由脆弱的物质构成的，" + //
                         "所以也就非常容易受到伤害，而在人与人之间，心灵的世界是彼此隔绝的，要使人类向" + //
@@ -116,7 +103,7 @@ public class SEMPeopleSamples
     }
 
     /** 相当于原来的 ebo-templatetypes */
-    static void series2() {
+    void series2() {
         moonOrg.setFullName("海宁市火星探索公司");
         moonOrg.setType(OrgType.MILITARY);
         moonOrg.setSize(1000);
@@ -200,6 +187,8 @@ public class SEMPeopleSamples
 
     @Override
     protected void preamble() {
+        series2();
+
         add(humanCorp);
         addBulk(abcCorp, abcRAD, abcSales);
 

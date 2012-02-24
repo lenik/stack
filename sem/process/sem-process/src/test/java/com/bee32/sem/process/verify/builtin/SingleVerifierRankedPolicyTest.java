@@ -12,7 +12,8 @@ public class SingleVerifierRankedPolicyTest
 
     @Test
     public void testLimitOrder() {
-        SingleVerifierRankedPolicy policy = SEMVerifyPolicySamples.macLevel;
+        SEMVerifyPolicySamples policies = new SEMVerifyPolicySamples();
+        SingleVerifierRankedPolicy policy = policies.macLevel;
         List<SingleVerifierLevel> levels = policy.getLevels();
         long limit1 = levels.get(0).getLimit();
         SingleVerifierLevel level2 = levels.get(1);
