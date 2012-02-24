@@ -38,12 +38,16 @@ public class ACLCriteria
                 PrincipalCriteria.inImSet("entry.principal", imSet));
     }
 
+    static boolean nullForEveryone = false;
+
     @LeftHand(CEntity.class)
     public static CriteriaElement aclWithin(Collection<Integer> aclIds) {
         if (aclIds == null)
             return null;
-        else
+        if (nullForEveryone)
             return or(isNull("aclId"), in("aclId", aclIds));
+        else
+            return in("aclId", aclIds);
     }
 
     /**
