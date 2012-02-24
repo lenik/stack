@@ -20,7 +20,7 @@ public class UserCriteria
         Set<Integer> imSet = SessionUser.getInstance().getImIdSet();
 
         // Admin-exception is only applied in this method.
-        if (imSet.contains(User.admin) || imSet.contains(Role.adminRole))
+        if (imSet.contains(User.admin.getId()) || imSet.contains(Role.adminRole.getId()))
             return null;
 
         return PrincipalCriteria.inImSet(propertyName, imSet);
