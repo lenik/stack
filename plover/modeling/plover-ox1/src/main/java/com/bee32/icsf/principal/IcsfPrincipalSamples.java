@@ -53,7 +53,7 @@ public class IcsfPrincipalSamples
     }
 
     @Override
-    protected void more() {
+    protected void postSave() {
         solaRobots.setOwner(eva);
         sunCorp.setOwner(tom);
         ctx.data.access(Group.class).saveOrUpdateAll(solaRobots, sunCorp);

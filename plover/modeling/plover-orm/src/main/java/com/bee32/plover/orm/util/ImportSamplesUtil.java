@@ -12,12 +12,12 @@ public class ImportSamplesUtil {
 
     static Logger logger = LoggerFactory.getLogger(ImportSamplesUtil.class);
 
-    static final Map<Class<?>, SampleContribution> beanMap = new HashMap<Class<?>, SampleContribution>();
+    static final Map<Class<?>, SamplePackage> beanMap = new HashMap<Class<?>, SamplePackage>();
 
-    public static boolean register(SampleContribution contrib) {
+    public static boolean register(SamplePackage contrib) {
         Class<?> clazz = contrib.getClass();
 
-        SampleContribution existing = beanMap.get(clazz);
+        SamplePackage existing = beanMap.get(clazz);
         if (existing != null)
             return false;
 
@@ -25,11 +25,11 @@ public class ImportSamplesUtil {
         return true;
     }
 
-    public static synchronized SampleContribution getInstance(Class<? extends SampleContribution> clazz) {
+    public static synchronized SamplePackage getInstance(Class<? extends SamplePackage> clazz) {
         if (clazz == null)
             throw new NullPointerException("clazz");
 
-        SampleContribution instance = beanMap.get(clazz);
+        SamplePackage instance = beanMap.get(clazz);
         if (instance == null) {
             // lazy-create
             try {
@@ -48,15 +48,15 @@ public class ImportSamplesUtil {
      *
      * 注：{@link ImportSamples} 仅在此处被分析并被转换为依赖。
      */
-    public static void applyImports(SampleContribution contrib) {
+    public static void applyImports(SamplePackage contrib) {
         Class<?> clazz = contrib.getClass();
 
         ImportSamples imports = clazz.getAnnotation(ImportSamples.class);
         if (imports == null)
             return;
 
-        for (Class<? extends SampleContribution> importClass : imports.value()) {
-            SampleContribution importInstance = getInstance(importClass);
+        for (Class<? extends SamplePackage> importClass : imports.value()) {
+            SamplePackage importInstance = getInstance(importClass);
             if (importInstance == null) {
                 logger.warn("Samples contribution " + contrib + " imports non-existing contribution " + importClass);
                 continue;
@@ -71,9 +71,9 @@ public class ImportSamplesUtil {
      *
      * @return All sample contributions with import converted to dependencies.
      */
-    public static Collection<SampleContribution> applyImports(ApplicationContext appctx) {
-        Collection<SampleContribution> contribs = appctx.getBeansOfType(SampleContribution.class).values();
-        for (SampleContribution contrib : contribs) {
+    public static Collection<SamplePackage> applyImports(ApplicationContext appctx) {
+        Collection<SamplePackage> contribs = appctx.getBeansOfType(SamplePackage.class).values();
+        for (SamplePackage contrib : contribs) {
             applyImports(contrib);
         }
         return contribs;

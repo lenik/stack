@@ -16,11 +16,11 @@ public class IcsfAccessSamples
 
     @Override
     protected void preamble() {
-        add(new UserPassword(principals.eva, digest("EVA")));
-        add(new UserPassword(principals.wallE, digest("WALL-E")));
-        add(new UserPassword(principals.alice, digest("ALICE")));
-        add(new UserPassword(principals.tom, digest("TOM")));
-        add(new UserPassword(principals.kate, digest("KATE")));
+        new UserPassword(principals.eva, digest("EVA"));
+        new UserPassword(principals.wallE, digest("WALL-E"));
+        new UserPassword(principals.alice, digest("ALICE"));
+        new UserPassword(principals.tom, digest("TOM"));
+        new UserPassword(principals.kate, digest("KATE"));
     }
 
 }

@@ -8,13 +8,8 @@ public class DiamondPackage
 
     final DiamondPackage base;
 
-    public DiamondPackage(DiamondPackage _super) {
-        super();
-        this.base = _super;
-    }
-
     public DiamondPackage(String name, DiamondPackage base) {
-        super(name);
+        // super(name);
         this.base = base;
     }
 

@@ -213,7 +213,7 @@ public class SEMPeopleSamples
     }
 
     @Override
-    protected void more() {
+    protected void postSave() {
         abcSales.setOwner(tang);
         ctx.data.access(Group.class).saveOrUpdate(abcSales);
     }

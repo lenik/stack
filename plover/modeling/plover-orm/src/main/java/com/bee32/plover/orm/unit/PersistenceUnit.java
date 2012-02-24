@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.arch.util.ClassCatalog;
 import com.bee32.plover.arch.util.IPriority;
-import com.bee32.plover.orm.util.SamplePackage;
 
 /**
  * ImportUnit is merged by PersistenceUnit implementation.
@@ -130,12 +129,6 @@ public abstract class PersistenceUnit
      */
     @Override
     protected abstract void preamble();
-
-    public void beginLoadSamples(SamplePackage samplePackage) {
-    }
-
-    public void endLoadSamples(SamplePackage samplePackage) {
-    }
 
     static final PersistenceUnit defaultUnit = new SimplePUnit("DEFAULT");
 

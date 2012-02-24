@@ -23,23 +23,10 @@ public class R_ACLSamples
 
     @Override
     public void preamble() {
-
-        admin_all.init("ap:",//
-                roles.adminRole, "s");
-
-        service_tom_x.init("ap:TestService.", //
-                principals.tom, "x");
-
-        method1_kate_rx.init("ap:TestService.method1.", //
-                principals.kate, "rx");
-
-        foo_reguser_w.init("ap:TestService.foo.", //
-                roles.userRole, "w");
-
-        add(admin_all);
-        add(service_tom_x);
-        add(method1_kate_rx);
-        add(foo_reguser_w);
+        admin_all.init("ap:", roles.adminRole, "s");
+        service_tom_x.init("ap:TestService.", principals.tom, "x");
+        method1_kate_rx.init("ap:TestService.method1.", principals.kate, "rx");
+        foo_reguser_w.init("ap:TestService.foo.", roles.userRole, "w");
     }
 
 }
