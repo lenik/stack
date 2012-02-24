@@ -12,8 +12,11 @@
         <p:column headerText="数据对象" sortBy="${entry.typeId}">
             <h:outputText value="${entry.displayName}" />
         </p:column>
-        <p:column headerText="默认记录权限" sortBy="${entry.mode}">
-            <h:outputText value="${entry.permission.modeString}" />
+        <p:column headerText="默认安全策略" sortBy="${entry.preferredACL}">
+            <h:outputText value="${entry.preferredACL.label}" />
+        </p:column>
+        <p:column headerText="备注" sortBy="${entry.description}" styleClass="f-wrappable">
+            <h:outputText value="${entry.description}" />
         </p:column>
     </ui:define>
 
@@ -29,7 +32,18 @@
             <h:outputLabel for="acl" value="默认安全策略：" />
             <p:inputText id="acl" label="默认安全策略" value="${obj.preferredACL.label}" disabled="true" />
             <p:commandButton id="chooseACL" value="..." onclick="chooseACLDialog.show()" />
+
+            <h:outputLabel for="description" value="备注：" />
+            <p:inputText id="description" label="备注" value="${obj.description}" />
+            <h:panelGroup />
         </h:panelGrid>
+        <h:panelGroup layout="block" style="width: 30em">
+            <h:outputText value="注意：" style="font-weight: bold; white-space: nowrap" />
+            默认记录安全策略
+            <b>仅</b>
+            对以后新建的记录产生作用，
+            而不会修改现有记录的安全策略。
+        </h:panelGroup>
     </ui:define>
 
     <ui:define name="dialogs">
