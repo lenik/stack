@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.UserDto;
+import com.bee32.icsf.principal.Users;
 import com.bee32.plover.orm.access.AbstractEntityProcessor;
 import com.bee32.plover.orm.util.DefaultDataAssembledContext;
 import com.bee32.plover.ox1.c.CEntity;
@@ -38,13 +39,14 @@ public class SetOwnerEntityProcessor
     public static User getContextUser() {
         UserDto user = SessionUser.getInstance().getUserOpt();
 
+        Users users = ctx.bean.getBean(Users.class);
         if (user == null || user.isNull())
-            return User.admin;
+            return users.admin;
 
         Integer userId = user.getId();
         if (userId == null)
             // warn??
-            return User.admin;
+            return users.admin;
 
         User _user = ctx.data.getRef(User.class, userId);
         return _user;

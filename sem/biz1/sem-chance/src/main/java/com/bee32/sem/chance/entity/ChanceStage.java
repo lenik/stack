@@ -48,12 +48,4 @@ public class ChanceStage
             return entry.getValue();
     }
 
-    public static ChanceStage INIT = new ChanceStage(10, "INIT", "初始化");
-    public static ChanceStage LAUNCHED = new ChanceStage(20, "LAUN", "初步沟通");
-    public static ChanceStage MEETING = new ChanceStage(30, "MEET", "交涉中");
-    public static ChanceStage QUOTED = new ChanceStage(40, "QUOT", "已经报价");
-    public static ChanceStage PAYMENT = new ChanceStage(50, "PAYM", "合同付款洽谈");
-    public static ChanceStage DONE = new ChanceStage(100, "DONE", "合同签订");
-    public static ChanceStage TERMINATED = new ChanceStage(110, "TERM", "终止");
-
 }

@@ -25,7 +25,6 @@ import org.hibernate.annotations.NaturalId;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.principal.Principal;
-import com.bee32.icsf.principal.Role;
 import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
@@ -209,17 +208,6 @@ public class ACL
         if (name == null)
             throw new NullPointerException("name");
         return new Equals(prefix + "name", name);
-    }
-
-    public static ACL DEFAULT = new ACL();
-    static {
-        DEFAULT.setName("default");
-        DEFAULT.setLabel("一般安全策略");
-        DEFAULT.add(Role.adminRole, Permission.RWS);
-        DEFAULT.add(Role.powerUserRole, Permission.R_X);
-        DEFAULT.add(Role.userRole, Permission.R_X);
-        DEFAULT.add(Role.guestRole, Permission.R_X);
-        DEFAULT.getEntityFlags().setWeakData(true);
     }
 
 }

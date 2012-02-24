@@ -10,12 +10,12 @@ import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.plover.orm.util.SampleContribution;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
-import com.bee32.sem.chance.entity.ChanceActionStyle;
-import com.bee32.sem.chance.entity.ChanceCategory;
+import com.bee32.sem.chance.entity.ChanceActionStyles;
 import com.bee32.sem.chance.entity.ChanceCompetitor;
 import com.bee32.sem.chance.entity.ChanceParty;
-import com.bee32.sem.chance.entity.ChanceSourceType;
-import com.bee32.sem.chance.entity.ChanceStage;
+import com.bee32.sem.chance.entity.ChanceQuotation;
+import com.bee32.sem.chance.entity.ChanceSourceTypes;
+import com.bee32.sem.chance.entity.ChanceStages;
 import com.bee32.sem.inventory.SEMInventorySamples;
 import com.bee32.sem.people.SEMPeopleSamples;
 import com.bee32.sem.people.entity.Party;
@@ -35,12 +35,16 @@ public class SEMChanceSamples
 
     @Inject
     IcsfPrincipalSamples principals;
-
     @Inject
     SEMPeopleSamples people;
-
     @Inject
     SEMInventorySamples inventories;
+    @Inject
+    ChanceActionStyles actionStyles;
+    @Inject
+    ChanceSourceTypes sourceTypes;
+    @Inject
+    ChanceStages chanceStages;
 
     @Override
     protected void preamble() {
@@ -50,9 +54,8 @@ public class SEMChanceSamples
         chance.setSerial("CHJFST-00001");
         chance.setSubject("初号机发射塔");
         // chance.setCreatedDate(cal.getTime());
-        chance.setSource(ChanceSourceType.DEVELOP);
+        chance.setSource(sourceTypes.DEVELOP);
         chance.setContent("需要专门的安防系统，能够在浦东的销售中心直接监控闵行区厂房实时录像和声音");
-        chance.setCategory(ChanceCategory.NORMAL);
 
         party.setChance(chance);
         party.setParty(people.bugatti);
@@ -81,16 +84,16 @@ public class SEMChanceSamples
         chanceAction1.setMoreInfo("在北京、上海、广州三个重点区域发展8至10家大OEM厂商");
         chanceAction1.setSpending("打的15, 吃饭30,住宿100,共145");
         chanceAction1.setActor(principals.eva);
-        chanceAction1.setStyle(ChanceActionStyle.INTERNET);
+        chanceAction1.setStyle(actionStyles.INTERNET);
         chanceAction1.setParties(Arrays.<Party> asList(people.bentley, people.bugatti));
-        chanceAction1.setStage(ChanceStage.INIT);
+        chanceAction1.setStage(chanceStages.INIT);
 
         chanceAction2.setBeginTime(cal.getTime());
         chanceAction2.setEndTime(cal.getTime());
         chanceAction2.setMoreInfo("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
         chanceAction2.setSpending("spendingspendingspendingspendingspendingspending");
         chanceAction2.setActor(principals.eva);
-        chanceAction2.setStyle(ChanceActionStyle.TALK);
+        chanceAction2.setStyle(actionStyles.TALK);
         chanceAction2.setParties(Arrays.asList((Party) people.weiXiaoBao));
 
         chance.addAction(chanceAction1);

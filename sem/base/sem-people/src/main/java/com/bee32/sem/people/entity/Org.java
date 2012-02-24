@@ -23,7 +23,7 @@ public class Org
 
     private static final long serialVersionUID = 1L;
 
-    OrgType type = OrgType.PARTNER;
+    OrgType type = predefined(OrgTypes.class).PARTNER;
     int size;
 
     List<OrgUnit> orgUnits = new ArrayList<OrgUnit>();
@@ -40,7 +40,7 @@ public class Org
     }
 
     {
-        sidType = PartySidType.TAX_ID;
+        sidType = predefined(PartySidTypes.class).TAX_ID;
     }
 
     @ManyToOne

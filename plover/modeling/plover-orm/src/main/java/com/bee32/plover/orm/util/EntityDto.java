@@ -28,6 +28,7 @@ import com.bee32.plover.orm.entity.EntityFlags;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.entity.IIdentity;
 import com.bee32.plover.orm.validation.RequiredId;
+import com.bee32.plover.servlet.util.HttpAssembledContext;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
 
@@ -697,6 +698,11 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
     public void setEntityFlags(int entityFlags) {
         this.entityFlags = new EntityFlags(entityFlags);
+    }
+
+    protected static <S extends StandardSamples> S predefined(Class<? extends S> samplesClass) {
+        S samples = HttpAssembledContext.bean.getBean(samplesClass);
+        return samples;
     }
 
 }

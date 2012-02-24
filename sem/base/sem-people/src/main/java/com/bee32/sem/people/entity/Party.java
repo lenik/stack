@@ -59,7 +59,7 @@ public abstract class Party
     public static final int MEMO_LENGTH = 1000;
 
     String fullName;
-    PartySidType sidType = PartySidType.IDENTITYCARD;
+    PartySidType sidType = predefined(PartySidTypes.class).IDENTITYCARD;
     String sid;
 
     boolean employee;

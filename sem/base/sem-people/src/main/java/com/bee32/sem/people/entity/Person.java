@@ -46,7 +46,7 @@ public class Person
     }
 
     {
-        sidType = PartySidType.IDENTITYCARD;
+        sidType = predefined(PartySidTypes.class).IDENTITYCARD;
     }
 
     @Column(name = "sex")

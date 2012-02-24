@@ -164,7 +164,4 @@ public class UserPassword
         return DigestUtils.shaHex(text);
     }
 
-    public static UserPassword adminPasswd = new UserPassword(User.admin, digest("Bee32"));
-    public static UserPassword guestPasswd = new UserPassword(User.guest, digest("guest"));
-
 }

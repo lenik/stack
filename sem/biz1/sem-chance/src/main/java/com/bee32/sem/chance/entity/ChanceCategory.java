@@ -25,8 +25,4 @@ public class ChanceCategory
         super(name, label, description);
     }
 
-    public static ChanceCategory IMPORTANT = new ChanceCategory("IMPO", "重要");
-    public static ChanceCategory NORMAL = new ChanceCategory("NORM", "一般");
-    public static ChanceCategory OTHER = new ChanceCategory("OTHE", "其它");
-
 }

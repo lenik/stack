@@ -10,7 +10,7 @@ import javax.free.Dates;
 import javax.inject.Inject;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
-import com.bee32.icsf.principal.Role;
+import com.bee32.icsf.principal.Roles;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.unit.Using;
@@ -26,6 +26,8 @@ public class EventObserverFeat
 
     @Inject
     IcsfPrincipalSamples principals;
+    @Inject
+    Roles roles;
 
     void cleanUp() {
         ctx.data.access(Event.class).deleteAll();
@@ -52,7 +54,7 @@ public class EventObserverFeat
 
         bb = new Event(this, EventType.EVENT);
         bb.setLabel("B-event.");
-        bb.addObserver(Role.adminRole); // eva, tom
+        bb.addObserver(roles.adminRole); // eva, tom
         bb.addObserver(principals.sunCorp); // +tom, +kate, alice
         aa.setBeginTime(parseDate("2011-2-1"));
 

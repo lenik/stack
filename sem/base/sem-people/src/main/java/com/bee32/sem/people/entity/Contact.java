@@ -33,7 +33,7 @@ public class Contact
     public static final int QQ_LENGTH = 15;
 
     Party party;
-    ContactCategory category = ContactCategory.NORMAL;
+    ContactCategory category = predefined(ContactCategories.class).NORMAL;
 
     String address;
     String postCode;

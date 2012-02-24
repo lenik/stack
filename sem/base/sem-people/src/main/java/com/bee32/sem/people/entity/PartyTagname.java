@@ -59,7 +59,4 @@ public class PartyTagname
         this.instances = instances;
     }
 
-    public static final PartyTagname ENEMY = new PartyTagname("ENY", "竞争对手");
-    public static final PartyTagname OTHER = new PartyTagname("OTH", "其他");
-
 }

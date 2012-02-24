@@ -38,7 +38,7 @@ public class ChanceAction
     List<User> partners = new ArrayList<User>();
 
     User actor;
-    ChanceActionStyle style = ChanceActionStyle.OTHER;
+    ChanceActionStyle style = predefined(ChanceActionStyles.class).OTHER;
 
     String moreInfo;
     String spending = "";

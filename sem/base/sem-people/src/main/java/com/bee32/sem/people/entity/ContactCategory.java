@@ -25,10 +25,4 @@ public class ContactCategory
         super(name, label, description);
     }
 
-    public static ContactCategory NORMAL = new ContactCategory("NORM", "常用");
-    public static ContactCategory HOME = new ContactCategory("HOME", "家庭");
-    public static ContactCategory WORK = new ContactCategory("WORK", "工作");
-    public static ContactCategory OUT = new ContactCategory("OUT", "出差");
-    public static ContactCategory OTHER = new ContactCategory("OTHE", "其它");
-
 }

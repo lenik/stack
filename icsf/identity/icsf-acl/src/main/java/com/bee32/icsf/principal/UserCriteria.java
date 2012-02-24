@@ -9,6 +9,7 @@ import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.util.DefaultDataAssembledContext;
+import com.bee32.plover.servlet.util.HttpAssembledContext;
 
 public class UserCriteria
         extends CriteriaSpec {
@@ -27,8 +28,8 @@ public class UserCriteria
             throw new IllegalStateException("imSet");
 
         // Admin-exception is only applied in this method.
-        Role _adminRole = Role._adminRole();
-        if (_adminRole != null && imSet.contains(_adminRole.getId()))
+        Roles roles = HttpAssembledContext.bean.getBean(Roles.class);
+        if (imSet.contains(roles.adminRole.getId()))
             return null;
 
         return PrincipalCriteria.inImSet(propertyName, imSet);

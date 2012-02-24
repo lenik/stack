@@ -15,7 +15,6 @@ import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ResourceRegistry;
 import com.bee32.icsf.principal.Principal;
-import com.bee32.icsf.principal.User;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
@@ -161,8 +160,5 @@ public class R_ACE
         out.print(" +");
         out.print(permission.getModeString());
     }
-
-    public static R_ACE adminApAll = new R_ACE("ap:", User.admin, "surwcdx");
-    public static R_ACE adminEntityAll = new R_ACE("entity:", User.admin, "surwcdx");
 
 }

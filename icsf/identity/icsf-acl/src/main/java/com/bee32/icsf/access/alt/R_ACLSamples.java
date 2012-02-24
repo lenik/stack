@@ -3,7 +3,7 @@ package com.bee32.icsf.access.alt;
 import javax.inject.Inject;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
-import com.bee32.icsf.principal.Role;
+import com.bee32.icsf.principal.Roles;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.plover.orm.util.SampleContribution;
 
@@ -18,12 +18,14 @@ public class R_ACLSamples
 
     @Inject
     IcsfPrincipalSamples principals;
+    @Inject
+    Roles roles;
 
     @Override
     public void preamble() {
 
         admin_all.init("ap:",//
-                Role.adminRole, "s");
+                roles.adminRole, "s");
 
         service_tom_x.init("ap:TestService.", //
                 principals.tom, "x");
@@ -32,7 +34,7 @@ public class R_ACLSamples
                 principals.kate, "rx");
 
         foo_reguser_w.init("ap:TestService.foo.", //
-                Role.userRole, "w");
+                roles.userRole, "w");
 
         add(admin_all);
         add(service_tom_x);

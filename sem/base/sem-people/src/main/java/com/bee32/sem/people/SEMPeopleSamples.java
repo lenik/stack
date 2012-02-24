@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.free.Dates;
+import javax.inject.Inject;
 
 import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
@@ -15,11 +16,12 @@ import com.bee32.plover.collections.Varargs;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.plover.orm.util.SampleContribution;
 import com.bee32.sem.people.entity.Contact;
-import com.bee32.sem.people.entity.ContactCategory;
+import com.bee32.sem.people.entity.ContactCategories;
 import com.bee32.sem.people.entity.Org;
-import com.bee32.sem.people.entity.OrgType;
-import com.bee32.sem.people.entity.PartySidType;
+import com.bee32.sem.people.entity.OrgTypes;
+import com.bee32.sem.people.entity.PartySidTypes;
 import com.bee32.sem.people.entity.PartyTagname;
+import com.bee32.sem.people.entity.PartyTagnames;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonRole;
 
@@ -44,6 +46,15 @@ public class SEMPeopleSamples
     public final Person bentley = new Person("Bentley");
     public final Person weiXiaoBao = new Person("wxb");
 
+    @Inject
+    ContactCategories contactCategories;
+    @Inject
+    PartyTagnames partyTagnames;
+    @Inject
+    OrgTypes orgTypes;
+    @Inject
+    PartySidTypes sidTypes;
+
     public SEMPeopleSamples()
             throws ParseException {
 
@@ -61,12 +72,12 @@ public class SEMPeopleSamples
         // admin.setPasswordByString("");
 
         {
-            Contact jackHome = new Contact(jackPerson, ContactCategory.HOME);
+            Contact jackHome = new Contact(jackPerson, contactCategories.HOME);
             jackHome.setAddress("海狞鞋桥");
             jackHome.setMobile("15392969212");
             jackHome.setTel("85963291");
 
-            Contact jackWork = new Contact(jackPerson, ContactCategory.WORK);
+            Contact jackWork = new Contact(jackPerson, contactCategories.WORK);
             jackHome.setAddress("海狞黑丝园区");
             jackWork.setTel("87219592");
             jackWork.setEmail("jack@abc.com");
@@ -82,8 +93,8 @@ public class SEMPeopleSamples
         abcRAD.addMemberUser(jack);
 
         {
-            Contact tangHome = new Contact(tangPerson, ContactCategory.HOME);
-            Contact tangWork = new Contact(tangPerson, ContactCategory.WORK);
+            Contact tangHome = new Contact(tangPerson, contactCategories.HOME);
+            Contact tangWork = new Contact(tangPerson, contactCategories.WORK);
             tangHome.setEmail("cruise@war.org");
             tangHome.setAddress("美国德州海滨公园");
             tangHome.setMobile("13947385860");
@@ -105,15 +116,15 @@ public class SEMPeopleSamples
     /** 相当于原来的 ebo-templatetypes */
     void series2() {
         moonOrg.setFullName("海宁市火星探索公司");
-        moonOrg.setType(OrgType.MILITARY);
+        moonOrg.setType(orgTypes.MILITARY);
         moonOrg.setSize(1000);
         moonOrg.setCustomer(true);
         Set<PartyTagname> tags = new HashSet<PartyTagname>();
-        tags.add(PartyTagname.OTHER);
+        tags.add(partyTagnames.OTHER);
         moonOrg.setTags(tags);
 
         abcOrg.setFullName("ABC 有限责任公司");
-        abcOrg.setType(OrgType.LTD_CORP);
+        abcOrg.setType(orgTypes.LTD_CORP);
         abcOrg.setSize(20);
         abcOrg.setInterests("互联网搜索");
 
@@ -141,14 +152,14 @@ public class SEMPeopleSamples
         weiXiaoBao.setInterests("吃饭睡觉玩老婆");
         weiXiaoBao.setSex(Gender.MALE);
         weiXiaoBao.setSid("11010116541220517");
-        weiXiaoBao.setSidType(PartySidType.IDENTITYCARD);
+        weiXiaoBao.setSidType(sidTypes.IDENTITYCARD);
         moonOrg.setCustomer(true);
         moonOrg.setEmployee(true);
 
         Contact weiXiaoBaoHome = new Contact();
         weiXiaoBaoHome.setParty(weiXiaoBao);
         weiXiaoBaoHome.setAddress("东城区景山前街4号紫禁城敬事房 胡同1号");
-        weiXiaoBaoHome.setCategory(ContactCategory.HOME);
+        weiXiaoBaoHome.setCategory(contactCategories.HOME);
         weiXiaoBaoHome.setTel("010 43728693");
         weiXiaoBaoHome.setMobile("13543823439");
         weiXiaoBaoHome.setEmail("weixiaobao@ldj.novel");
@@ -158,7 +169,7 @@ public class SEMPeopleSamples
         Contact weiXiaoBaoWork = new Contact();
         weiXiaoBaoWork.setParty(weiXiaoBao);
         weiXiaoBaoWork.setAddress("东城区景山前街4号紫禁城敬事房 大清帝国内务敬事房");
-        weiXiaoBaoWork.setCategory(ContactCategory.WORK);
+        weiXiaoBaoWork.setCategory(contactCategories.WORK);
         weiXiaoBaoWork.setTel("010 2397825");
         weiXiaoBaoWork.setMobile("13832947841");
         weiXiaoBaoWork.setEmail("weixiaobao@ibm.com.cn");

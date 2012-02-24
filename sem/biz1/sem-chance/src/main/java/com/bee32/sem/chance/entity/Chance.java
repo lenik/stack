@@ -41,8 +41,8 @@ public class Chance
 
     String serial;
 
-    ChanceCategory category = ChanceCategory.NORMAL;
-    ChanceSourceType source = ChanceSourceType.OTHER;
+    ChanceCategory category = null;
+    ChanceSourceType source = predefined(ChanceSourceTypes.class).OTHER;
     String subject = "";
     String content = "";
 
@@ -50,7 +50,7 @@ public class Chance
     List<HintProduct> products = new ArrayList<HintProduct>();
     List<ChanceAction> actions = new ArrayList<ChanceAction>();
 
-    ChanceStage stage = ChanceStage.INIT;
+    ChanceStage stage = predefined(ChanceStages.class).INIT;
 
     String address;
 
@@ -187,7 +187,7 @@ public class Chance
     }
 
     void refreshStage() {
-        ChanceStage maxStage = ChanceStage.INIT;
+        ChanceStage maxStage = predefined(ChanceStages.class).INIT;
         for (ChanceAction action : actions) {
             ChanceStage stage = action.getStage();
             if (stage != null)

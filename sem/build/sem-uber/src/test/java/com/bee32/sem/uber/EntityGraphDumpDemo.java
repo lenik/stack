@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.Users;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.unit.EntityGraphTool;
 import com.bee32.plover.orm.unit.EntityPartialRefs;
@@ -24,6 +24,8 @@ public class EntityGraphDumpDemo
 
     @Inject
     EntityGraphTool tool;
+    @Inject
+    Users users;
 
     public void dumpXrefs(Entity<?> entity)
             throws DataAccessException {
@@ -47,7 +49,7 @@ public class EntityGraphDumpDemo
 
     @Transactional(readOnly = true)
     public void listAllForAdmin() {
-        dumpXrefs(User.admin);
+        dumpXrefs(users.admin);
     }
 
     public static void main(String[] args)

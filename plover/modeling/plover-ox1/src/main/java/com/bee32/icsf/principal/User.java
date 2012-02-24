@@ -304,7 +304,4 @@ public class User
         return this;
     }
 
-    public static User admin = new User("admin", null, Role.adminRole);
-    public static User guest = new User("guest", null, Role.guestRole);
-
 }

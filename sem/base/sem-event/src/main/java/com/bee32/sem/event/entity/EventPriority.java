@@ -32,9 +32,4 @@ public class EventPriority
         setNumber(priority);
     }
 
-    public static final EventPriority URGENT = new EventPriority(P_URGENT, "urgent", "紧急");
-    public static final EventPriority HIGH = new EventPriority(P_HIGH, "high", "高");
-    public static final EventPriority NORMAL = new EventPriority(P_NORMAL, "normal", "普通");
-    public static final EventPriority LOW = new EventPriority(P_LOW, "low", "低");
-
 }

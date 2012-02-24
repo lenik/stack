@@ -55,12 +55,4 @@ public class EventStatus
         this.state = EventState.valueOf(state);
     }
 
-    public static final EventStatus UNKNOWN = new EventStatus(GenericState.UNKNOWN, "unknown", "无状态");
-    public static final EventStatus RUNNING = new EventStatus(GenericState.RUNNING, "running", "进行中");
-    public static final EventStatus SUSPENDED = new EventStatus(GenericState.SUSPENDED, "suspended", "挂起");
-    public static final EventStatus CANCELED = new EventStatus(GenericState.CANCELED, "canceled", "取消");
-    public static final EventStatus DONE = new EventStatus(GenericState.DONE, "done", "成功");
-    public static final EventStatus FAILED = new EventStatus(GenericState.FAILED, "failed", "失败");
-    public static final EventStatus ERRORED = new EventStatus(GenericState.ERRORED, "errored", "异常");
-
 }

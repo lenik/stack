@@ -25,7 +25,7 @@ import com.bee32.plover.restful.resource.PageDirectory;
 import com.bee32.plover.restful.resource.StandardViews;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.event.entity.Event;
-import com.bee32.sem.event.entity.EventPriority;
+import com.bee32.sem.event.entity.EventPriorities;
 import com.bee32.sem.event.entity.EventType;
 import com.bee32.sem.process.verify.AbstractVerifyContext;
 import com.bee32.sem.process.verify.DummyVerifyProcessHandler;
@@ -47,6 +47,8 @@ public class VerifyService
 
     @Inject
     VerifyPolicyDao policyDao;
+    @Inject
+    EventPriorities eventPriorities;
 
     @Transactional(readOnly = true)
     @Override
@@ -171,7 +173,7 @@ public class VerifyService
         if (event != null) {
             User op = SessionUser.getInstance().getInternalUserOpt();
 
-            event.setPriority(EventPriority.HIGH);
+            event.setPriority(eventPriorities.HIGH);
             event.setClosed(state.isFinalized());
             event.setState(state);
             event.setActor(op);

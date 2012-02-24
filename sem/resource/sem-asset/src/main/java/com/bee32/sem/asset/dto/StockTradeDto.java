@@ -20,6 +20,14 @@ public class StockTradeDto
 
     List<StockTradeItemDto> items;
 
+    public StockTradeDto() {
+        super();
+    }
+
+    public StockTradeDto(int fmask) {
+        super(fmask);
+    }
+
     @Override
     protected void _marshal(AccountTicketItem source) {
         super._marshal(source);
@@ -30,8 +38,7 @@ public class StockTradeDto
                 items = marshalList(StockTradeItemDto.class, _source.getItems());
             else
                 items = mrefList(StockTradeItemDto.class, _source.getItems());
-        }
-        else
+        } else
             items = new ArrayList<StockTradeItemDto>();
     }
 

@@ -27,6 +27,14 @@ public class AccountTicketItemDto
     boolean debitSide;
     MutableMCValue value;
 
+    public AccountTicketItemDto() {
+        super();
+    }
+
+    public AccountTicketItemDto(int fmask) {
+        super(fmask);
+    }
+
     @Override
     protected void _marshal(AccountTicketItem source) {
         ticket = mref(AccountTicketDto.class, source.getTicket());

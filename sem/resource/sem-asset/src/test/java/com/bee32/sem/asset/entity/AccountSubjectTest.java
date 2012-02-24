@@ -11,8 +11,10 @@ public class AccountSubjectTest
         extends Assert {
 
     public static void main(String[] args) {
+        AccountSubjects samples = new AccountSubjects();
+
         Collection<? extends AccountSubject> subjects = DictUtil.getPredefinedInstances(AccountSubject.class);
-        subjects.contains(AccountSubject.s1002);
+        subjects.contains(samples.s1002);
 
         CodeTreeBuilder ctb = new CodeTreeBuilder();
         ctb.learn(subjects);

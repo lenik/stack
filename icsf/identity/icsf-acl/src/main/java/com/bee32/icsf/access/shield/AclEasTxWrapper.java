@@ -33,6 +33,7 @@ import com.bee32.icsf.login.UserPassword;
 import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.Role;
+import com.bee32.icsf.principal.Roles;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.icsf.principal.UserOption;
@@ -61,9 +62,10 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
 
     @Inject
     ScannedResourceRegistry registry;
-
     @Inject
     R_ACLService aclService;
+    @Inject
+    Roles roles;
 
     IResourceNamespace entityNS;
 
@@ -141,8 +143,7 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
             return;
 
         Set<Integer> imset = SessionUser.getInstance().getImIdSet();
-
-        if (imset.contains(Role.adminRole)) // XXX TO BE FIXED.
+        if (imset.contains(roles.adminRole))
             return;
 
         PersistenceUnit unit = CustomizedSessionFactoryBean.getForceUnit();

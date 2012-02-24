@@ -8,12 +8,12 @@ import javax.inject.Inject;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.icsf.principal.Principal;
-import com.bee32.icsf.principal.Role;
+import com.bee32.icsf.principal.Roles;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.plover.orm.util.SampleContribution;
 import com.bee32.sem.event.entity.Event;
 import com.bee32.sem.event.entity.EventCategory;
-import com.bee32.sem.event.entity.EventPriority;
+import com.bee32.sem.event.entity.EventPriorities;
 import com.bee32.sem.event.entity.EventType;
 
 @ImportSamples(IcsfPrincipalSamples.class)
@@ -28,11 +28,15 @@ public class SEMEventSamples
 
     @Inject
     IcsfPrincipalSamples principals;
+    @Inject
+    Roles roles;
+    @Inject
+    EventPriorities eventPriorities;
 
     Event mkRain(double relativeDay, Double duration, String title, Principal observer) {
         Event rain = new Event(SEMEventSamples.class, EventType.EVENT);
         rain.setCategory(weather);
-        rain.setPriority(EventPriority.LOW);
+        rain.setPriority(eventPriorities.LOW);
         rain.setState(GenericState.UNKNOWN);
         rain.setClosed(duration != null);
 
@@ -62,7 +66,7 @@ public class SEMEventSamples
 
         killAngel.setCategory(special);
         killAngel.setSourceClass(SEMEventSamples.class);
-        killAngel.setPriority(EventPriority.HIGH);
+        killAngel.setPriority(eventPriorities.HIGH);
         killAngel.setState(GenericState.RUNNING);
         killAngel.setClosed(false);
         killAngel.setSubject("EVA 奉命去消灭第18使徒");
@@ -70,7 +74,7 @@ public class SEMEventSamples
         killAngel.setBeginTime(new Date(System.currentTimeMillis() + 10));
         killAngel.addObservers(//
                 robots, //
-                Role.adminRole);
+                roles.adminRole);
 
         addBulk(weather, special);
 

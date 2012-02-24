@@ -11,6 +11,7 @@ import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceStage;
+import com.bee32.sem.chance.entity.ChanceStages;
 import com.bee32.sem.chance.entity.HintProduct;
 import com.bee32.sem.chance.util.DateToRange;
 import com.bee32.sem.process.base.ProcessEntityDto;
@@ -270,7 +271,8 @@ public class ChanceDto
         int cachedOrder = getStage().getOrder();
 
         int maxOrder = 0;
-        ChanceStageDto maxStage = new ChanceStageDto().ref(ChanceStage.INIT);
+        ChanceStage initStage = predefined(ChanceStages.class).INIT;
+        ChanceStageDto maxStage = new ChanceStageDto().ref(initStage);
         for (ChanceActionDto action : getActions()) {
             int order = action.getStage().getOrder();
             if (order > maxOrder) {

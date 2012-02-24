@@ -25,6 +25,8 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.IsNull;
 import com.bee32.plover.inject.ServiceTemplate;
 import com.bee32.plover.orm.util.EntityFormatter;
+import com.bee32.plover.orm.util.StandardSamples;
+import com.bee32.plover.servlet.util.HttpAssembledContext;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.IMultiFormat;
 import com.bee32.plover.util.PrettyPrintStream;
@@ -421,6 +423,11 @@ public abstract class Entity<K extends Serializable>
         if (lockFlags != 0)
             return true;
         return isLocked();
+    }
+
+    protected static <S extends StandardSamples> S predefined(Class<? extends S> samplesClass) {
+        S samples = HttpAssembledContext.bean.getBean(samplesClass);
+        return samples;
     }
 
 }

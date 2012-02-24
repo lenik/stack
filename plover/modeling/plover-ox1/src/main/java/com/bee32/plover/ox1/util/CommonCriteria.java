@@ -6,9 +6,10 @@ import org.hibernate.criterion.MatchMode;
 
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.PrincipalCriteria;
-import com.bee32.icsf.principal.Role;
+import com.bee32.icsf.principal.Roles;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
+import com.bee32.plover.servlet.util.HttpAssembledContext;
 import com.bee32.plover.util.date.LocalDateUtil;
 
 public class CommonCriteria
@@ -24,7 +25,8 @@ public class CommonCriteria
         if (user == null)
             return null;
 
-        if (user.implies(Role._adminRole()))
+        Roles roles = HttpAssembledContext.bean.getBean(Roles.class);
+        if (user.implies(roles.adminRole))
             return null;
 
         return PrincipalCriteria.inImSet("owner", user);

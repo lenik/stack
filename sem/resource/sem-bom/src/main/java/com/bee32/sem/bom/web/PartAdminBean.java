@@ -15,7 +15,6 @@ import com.bee32.sem.bom.util.BomCriteria;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
-import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialType;
 import com.bee32.sem.inventory.util.MaterialCriteria;
 import com.bee32.sem.inventory.web.MaterialCategorySupportBean;
