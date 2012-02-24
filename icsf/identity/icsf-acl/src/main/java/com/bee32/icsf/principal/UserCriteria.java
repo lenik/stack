@@ -18,6 +18,11 @@ public class UserCriteria
 
     public static CriteriaElement impliedByCurrentUser(String propertyName) {
         Set<Integer> imSet = SessionUser.getInstance().getImIdSet();
+
+        // Admin-exception is only applied in this method.
+        if (imSet.contains(User.admin) || imSet.contains(Role.adminRole))
+            return null;
+
         return PrincipalCriteria.inImSet(propertyName, imSet);
     }
 
