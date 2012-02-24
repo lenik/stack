@@ -32,9 +32,9 @@ public class Or
 
     public static CriteriaElement of(CriteriaElement lhs, CriteriaElement rhs) {
         if (lhs == null)
-            return rhs;
+            return null;
         if (rhs == null)
-            return lhs;
+            return null;
         return new Or(lhs, rhs);
     }
 
