@@ -78,6 +78,10 @@
                     <h:outputText value="#{entry.externalSpecification}" />
                 </p:column>
 
+                <p:column headerText="备注" styleClass="f-wrappable">
+                    <h:outputText value="#{entry.description}" />
+                </p:column>
+
                 <p:column headerText="交货时间">
                     <h:outputText value="#{entry.deadline}">
                         <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
@@ -119,6 +123,11 @@
                 <p:inputText value="#{item.externalProductName}" />
                 <h:outputLabel value="外部规格型号" />
                 <p:inputText value="#{item.externalSpecification}" />
+
+                <h:outputLabel value="备注" />
+                <t:panelGroup colspan="3">
+                    <p:inputText value="#{item.description}" label="备注" style="width:35em;"/>
+                </t:panelGroup>
 
                 <h:outputLabel for="deadline" value="交货时间:" />
                 <t:panelGroup colspan="3">
