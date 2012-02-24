@@ -18,9 +18,15 @@ public class UserCriteria
 
     public static CriteriaElement impliedByCurrentUser(String propertyName) {
         Set<Integer> imSet = SessionUser.getInstance().getImIdSet();
+        if (imSet == null)
+            throw new IllegalStateException("imSet");
 
         // Admin-exception is only applied in this method.
-        if (imSet.contains(User.admin.getId()) || imSet.contains(Role.adminRole.getId()))
+        Integer adminId = User.admin.getId();
+        Integer adminRoleId = Role.adminRole.getId();
+        if (adminId != null && imSet.contains(adminId))
+            return null;
+        if (adminRoleId != null && imSet.contains(Role.adminRole.getId()))
             return null;
 
         return PrincipalCriteria.inImSet(propertyName, imSet);
