@@ -79,11 +79,4 @@ public class MailFolder
         this.mails = mails;
     }
 
-    public static MailFolder INBOX = new MailFolder(0, "收件箱");
-    public static MailFolder OUTBOX = new MailFolder(1, "发件箱");
-    public static MailFolder DRAFT = new MailFolder(2, "草稿");
-    public static MailFolder FAVORITES = new MailFolder(3, "收藏夹");
-    public static MailFolder SPAMBOX = new MailFolder(4, "垃圾邮件");
-    public static MailFolder TRASH = new MailFolder(5, "回收站");
-
 }

@@ -29,7 +29,7 @@ public abstract class Thing<X extends XPool<?>>
 
     String serial;
 
-    Unit unit = Unit.PIECE;
+    Unit unit = predefined(Units.class).PIECE;
     String unitHint;
     UnitConv unitConv;
 

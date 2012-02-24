@@ -10,7 +10,7 @@ import com.bee32.plover.orm.util.SampleContribution;
 import com.bee32.sem.mail.entity.Mail;
 import com.bee32.sem.mail.entity.MailDelivery;
 import com.bee32.sem.mail.entity.MailFilter;
-import com.bee32.sem.mail.entity.MailFolder;
+import com.bee32.sem.mail.entity.MailFolders;
 import com.bee32.sem.mail.entity.MailOrientation;
 
 @ImportSamples(IcsfPrincipalSamples.class)
@@ -19,6 +19,8 @@ public class SEMMailSamples
 
     @Inject
     IcsfPrincipalSamples principals;
+    @Inject
+    MailFolders mailFolders;
 
     public MailFilter spamFilter = new MailFilter();
 
@@ -31,7 +33,7 @@ public class SEMMailSamples
         spamFilter.setDescription("将标记为'垃圾'的邮件移动到'垃圾箱'");
         spamFilter.setExpr("a.is-spam...");
         spamFilter.setSource(null); // in-box only
-        spamFilter.setTarget(MailFolder.SPAMBOX);
+        spamFilter.setTarget(mailFolders.SPAMBOX);
 
         hello.setFromUser(principals.wallE);
         hello.addRecipientUser(principals.eva);
@@ -39,10 +41,10 @@ public class SEMMailSamples
         hello.setBody("Hello, world!\n\n这句话的意思是：朋友、再见！");
 
         MailDelivery helloSend = new MailDelivery(hello, MailOrientation.FROM);
-        helloSend.setFolder(MailFolder.OUTBOX);
+        helloSend.setFolder(mailFolders.OUTBOX);
         // helloSend.setSentDate();
         MailDelivery helloRecv = new MailDelivery(hello, MailOrientation.RECIPIENT);
-        helloRecv.setFolder(MailFolder.INBOX);
+        helloRecv.setFolder(mailFolders.INBOX);
 
         hello.setDeliveries(Arrays.asList(helloSend, helloRecv));
 

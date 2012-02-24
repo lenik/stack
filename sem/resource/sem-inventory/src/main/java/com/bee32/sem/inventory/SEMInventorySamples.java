@@ -29,7 +29,7 @@ import com.bee32.sem.process.SEMVerifyPolicySamples;
 import com.bee32.sem.process.verify.VerifyContextAccessor;
 import com.bee32.sem.test.DateSamples;
 import com.bee32.sem.world.SEMWorldSamples;
-import com.bee32.sem.world.thing.Unit;
+import com.bee32.sem.world.thing.Units;
 
 @ImportSamples({ SEMPeopleSamples.class, SEMWorldSamples.class, SEMVerifyPolicySamples.class })
 public class SEMInventorySamples
@@ -79,6 +79,8 @@ public class SEMInventorySamples
     SEMVerifyPolicySamples verifyPolicies;
     @Inject
     SEMPeopleSamples people;
+    @Inject
+    Units units;
 
     @Override
     protected void preamble() {
@@ -114,7 +116,7 @@ public class SEMInventorySamples
         m_light_A.setSerial("..M1");
         m_light_A.setLabel("无重力A型杯具");
         m_light_A.setModelSpec("ASP-LG-1A");
-        m_light_A.setUnit(Unit.PIECE);
+        m_light_A.setUnit(units.PIECE);
         m_light_A.setBarCode("00120001");
         m_light_A.setCategory(cupSet_light);
         m_light_A.addPreferredLocation(sl_light_1);
@@ -125,7 +127,7 @@ public class SEMInventorySamples
         m_light_B.setSerial("..M2");
         m_light_B.setLabel("无重力B型杯具");
         m_light_B.setModelSpec("ASP-LG-1B");
-        m_light_B.setUnit(Unit.PIECE);
+        m_light_B.setUnit(units.PIECE);
         m_light_B.setBarCode("00120002");
         m_light_B.setCategory(cupSet_light);
         m_light_B.addPreferredLocation(sl_light_1);
@@ -136,7 +138,7 @@ public class SEMInventorySamples
         m_glass1.setSerial("..M3");
         m_glass1.setLabel("牛顿Z型反物质玻璃");
         m_glass1.setModelSpec("ASP-AG-Z1");
-        m_glass1.setUnit(Unit.SQUARE_METER);
+        m_glass1.setUnit(units.SQUARE_METER);
         m_glass1.setBarCode("00121201");
         m_glass1.setCategory(cupGlass_AM);
         m_glass1.addPreferredLocation(sl_glass_1);
@@ -145,7 +147,7 @@ public class SEMInventorySamples
         m_glue1.setSerial("..M4");
         m_glue1.setLabel("青岛离子胶");
         m_glue1.setModelSpec("ASP-GL-QingDao");
-        m_glue1.setUnit(Unit.KILOGRAM);
+        m_glue1.setUnit(units.KILOGRAM);
         m_glue1.setBarCode("00124001");
         m_glue1.setCategory(cupGlue);
         m_glue1.addPreferredLocation(sl_glue_1);
@@ -155,18 +157,18 @@ public class SEMInventorySamples
         m_gluepp1.setSerial("..M5");
         m_gluepp1.setLabel("胶州特种离子胶/预处理");
         m_gluepp1.setModelSpec("ASP-GL-JZT1");
-        m_gluepp1.setUnit(Unit.P_TONG);
+        m_gluepp1.setUnit(units.P_TONG);
         m_gluepp1.setBarCode("00124050");
         m_gluepp1.setCategory(cupGlue_pp);
         m_gluepp1.addPreferredLocation(sl_glue_pp);
         m_gluepp1.getOption(rawWarehouse).setSafetyStock(new BigDecimal(10));
         m_gluepp1.setAttribute("溶点", "600c");
-        m_gluepp1.addUnitConv(Unit.SQUARE_METER, 10);
+        m_gluepp1.addUnitConv(units.SQUARE_METER, 10);
 
         m_handlerkj1.setSerial("..M6");
         m_handlerkj1.setLabel("迪拜产氪金拿手");
         m_handlerkj1.setModelSpec("ASP-HKJ-DB");
-        m_handlerkj1.setUnit(Unit.P_ZHI);
+        m_handlerkj1.setUnit(units.P_ZHI);
         m_handlerkj1.setBarCode("00140612");
         m_handlerkj1.setCategory(cupHandler_KJ);
         m_handlerkj1.addPreferredLocation(sl_handler_KJ);
@@ -176,7 +178,7 @@ public class SEMInventorySamples
         m_handlerkj2.setSerial("..M7");
         m_handlerkj2.setLabel("迪拜产特种氪金拿手");
         m_handlerkj2.setModelSpec("ASP-HKJ-DX");
-        m_handlerkj2.setUnit(Unit.P_ZHI);
+        m_handlerkj2.setUnit(units.P_ZHI);
         m_handlerkj2.setBarCode("00140613");
         m_handlerkj2.setCategory(cupHandler_KJ);
         m_handlerkj2.addPreferredLocation(sl_handler_KJ);
@@ -186,7 +188,7 @@ public class SEMInventorySamples
         m_handlerf1.setSerial("..M8");
         m_handlerf1.setLabel("我厂生产许冠杰式改良方程式拿手Y型");
         m_handlerf1.setModelSpec("ASP-HF1-XGY");
-        m_handlerf1.setUnit(Unit.P_ZHI);
+        m_handlerf1.setUnit(units.P_ZHI);
         m_handlerf1.setBarCode("00146021");
         m_handlerf1.setCategory(cupHandler_F1);
         m_handlerf1.addPreferredLocation(sl_handler_F1);

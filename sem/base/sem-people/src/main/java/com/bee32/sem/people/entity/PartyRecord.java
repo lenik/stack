@@ -21,7 +21,7 @@ public class PartyRecord
 
     public static final int TEXT_LENGTH = 10000;
 
-    PartyRecordCategory category = PartyRecordCategory.INFO;
+    PartyRecordCategory category = predefined(PartyRecordCategories.class).INFO;
     Party party;
     String text = "";
 
