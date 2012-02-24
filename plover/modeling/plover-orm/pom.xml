@@ -88,7 +88,7 @@
         <dependency>
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-criteria</artifactId>
-            <version>0.2.113</version>
+            <version>0.2.114</version>
         </dependency>
     </dependencies>
     <name>Plover :: Modeling :: Orm</name>

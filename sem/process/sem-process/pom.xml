@@ -21,12 +21,12 @@
         <dependency>
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-stateflow</artifactId>
-            <version>0.2.113</version>
+            <version>0.2.114</version>
         </dependency>
         <dependency>
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-indexing</artifactId>
-            <version>0.2.113</version>
+            <version>0.2.114</version>
         </dependency>
     </dependencies>
     <name>SEM :: Process :: Process</name>
