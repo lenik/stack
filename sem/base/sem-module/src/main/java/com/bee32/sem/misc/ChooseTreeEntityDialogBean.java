@@ -6,8 +6,8 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.EntityDto;
 
-public class ChooseTreeEntityDialogBean
-        extends SimpleTreeEntityViewBean {
+public abstract class ChooseTreeEntityDialogBean
+        extends TreeEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 

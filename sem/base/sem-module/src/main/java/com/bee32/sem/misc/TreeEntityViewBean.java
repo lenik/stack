@@ -20,7 +20,7 @@ import com.bee32.plover.ox1.tree.TreeEntityUtils;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.sandbox.ZLazyDataModel;
 
-public abstract class SimpleTreeEntityViewBean
+public abstract class TreeEntityViewBean
         extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
@@ -32,7 +32,7 @@ public abstract class SimpleTreeEntityViewBean
     TreeNode selectedNode;
 
     public <E extends Entity<K>, D extends EntityDto<? super E, K>, K extends Serializable> //
-    SimpleTreeEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
+    TreeEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
         super(entityClass, dtoClass, fmask | TreeEntityDto.PARENT, criteriaElements);
     }
 

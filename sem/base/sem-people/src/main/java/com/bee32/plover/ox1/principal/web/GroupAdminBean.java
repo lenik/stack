@@ -8,11 +8,11 @@ import com.bee32.icsf.principal.PrincipalDiag;
 import com.bee32.icsf.principal.RoleDto;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.restful.resource.StandardViews;
-import com.bee32.sem.misc.SimpleTreeEntityViewBean;
+import com.bee32.sem.misc.TreeEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
 
 public class GroupAdminBean
-        extends SimpleTreeEntityViewBean {
+        extends TreeEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 

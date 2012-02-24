@@ -12,13 +12,13 @@ import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.web.ChooseStockLocationDialogBean;
 import com.bee32.sem.inventory.web.business.StockDictsBean;
-import com.bee32.sem.misc.SimpleTreeEntityViewBean;
+import com.bee32.sem.misc.TreeEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.world.thing.UnitDto;
 
 @ForEntity(StockLocation.class)
 public class StockLocationAdminBean
-        extends SimpleTreeEntityViewBean {
+        extends TreeEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 

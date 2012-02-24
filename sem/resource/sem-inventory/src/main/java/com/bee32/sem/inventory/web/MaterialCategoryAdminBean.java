@@ -9,12 +9,12 @@ import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.entity.MaterialType;
-import com.bee32.sem.misc.SimpleTreeEntityViewBean;
+import com.bee32.sem.misc.TreeEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
 
 @ForEntity(MaterialCategory.class)
 public class MaterialCategoryAdminBean
-        extends SimpleTreeEntityViewBean {
+        extends TreeEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
