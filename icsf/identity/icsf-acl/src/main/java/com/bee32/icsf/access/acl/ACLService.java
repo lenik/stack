@@ -14,6 +14,11 @@ public class ACLService
         implements IACLService {
 
     /**
+     * 因为 ACL.id=0 通常不存在，所以实际上 Everyone won't have this ACL.
+     */
+    int aclForEveryone = 0;
+
+    /**
      * 查找蕴涵给定 principal -> permission 的 ACL 列表。
      *
      * @param principal
@@ -28,7 +33,7 @@ public class ACLService
         List<ACL> acls = ctx.data.access(ACL.class).list(criteria);
 
         Set<Integer> aclIds = new HashSet<Integer>();
-        aclIds.add(0); // 0 is always shown.
+        aclIds.add(aclForEveryone); // 0 is always shown.
 
         for (ACL acl : acls) {
             aclIds.add(acl.getId());

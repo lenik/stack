@@ -228,7 +228,8 @@ public abstract class SimpleEntityViewBean
                         // owner in (currentUser.imset)
                         UserCriteria.ownedByCurrentUser(), //
 
-                        // r-ace(entity-resource, currentUser.imset) mix = own
+                        // r-ace(entity-resource, currentUser.imset) > OWN ==> VISIBLE
+                        // (disabled)
 
                         // acl in (currentUser.visibleACLs)
                         ACLCriteria.aclWithin(getACLs(visiblePermission))));
