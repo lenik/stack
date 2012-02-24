@@ -18,7 +18,6 @@ public class ChooseChanceActionDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChooseChanceActionDialogBean.class);
 
-    String header = "Please choose a party..."; // NLS: 选择用户或组
     boolean pending = true;
 
     public ChooseChanceActionDialogBean() {
@@ -29,16 +28,6 @@ public class ChooseChanceActionDialogBean
     protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
         if (pending)
             elements.add(new IsNull("chance.id"));
-    }
-
-    // Properties
-
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
     }
 
     public boolean isPending() {

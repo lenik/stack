@@ -21,7 +21,6 @@ public class ChooseMakeOrderDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChooseMakeOrderDialogBean.class);
 
-    String header = "选择生产订单";
     PartyDto customer = new PartyDto().ref(); // null.
 
     public ChooseMakeOrderDialogBean() {
@@ -34,14 +33,6 @@ public class ChooseMakeOrderDialogBean
         if (!customer.isNull()) {
             elements.add(new Equals("customer.id", customer.getId()));
         }
-    }
-
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
     }
 
     public PartyDto getCustomer() {

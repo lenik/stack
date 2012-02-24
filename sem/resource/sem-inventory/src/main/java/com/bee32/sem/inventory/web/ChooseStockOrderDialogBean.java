@@ -19,7 +19,6 @@ public class ChooseStockOrderDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChooseStockOrderDialogBean.class);
 
-    String header = "Please choose a stock order..."; // NLS: 选择用户或组
     StockOrderSubject subject;
 
     public ChooseStockOrderDialogBean() {
@@ -33,14 +32,12 @@ public class ChooseStockOrderDialogBean
             elements.add(StockCriteria.subjectOf(subject));
     }
 
-    // Properties
-
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
+    @Override
+    public String getObjectTypeName() {
+        if (subject != null)
+            return subject.getDisplayName() + " 单...";
+        else
+            return "库存单据";
     }
 
     public StockOrderSubject getSubject() {
@@ -51,11 +48,6 @@ public class ChooseStockOrderDialogBean
         if (this.subject != subject) {
             this.subject = subject;
             refreshRowCount();
-        }
-        if (subject != null) {
-            header = "请选择 " + subject.getDisplayName() + " 单...";
-        } else {
-            header = "请选择库存单据...";
         }
     }
 

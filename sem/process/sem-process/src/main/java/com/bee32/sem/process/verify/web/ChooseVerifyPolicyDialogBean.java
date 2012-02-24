@@ -14,20 +14,8 @@ public class ChooseVerifyPolicyDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChooseVerifyPolicyDialogBean.class);
 
-    String header = "选择审核策略";
-
     public ChooseVerifyPolicyDialogBean() {
         super(VerifyPolicy.class, VerifyPolicyDto.class, 0);
-    }
-
-    // Properties
-
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
     }
 
 }

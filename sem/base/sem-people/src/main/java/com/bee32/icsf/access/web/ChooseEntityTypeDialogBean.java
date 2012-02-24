@@ -21,8 +21,6 @@ public class ChooseEntityTypeDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChooseEntityTypeDialogBean.class);
 
-    String header = "Please choose an entity type..."; // NLS: 选择资源…
-
     /**
      * NOT USED !
      */
@@ -44,14 +42,6 @@ public class ChooseEntityTypeDialogBean
             }
         }
         return SelectableList.decorate(descriptors);
-    }
-
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
     }
 
 }

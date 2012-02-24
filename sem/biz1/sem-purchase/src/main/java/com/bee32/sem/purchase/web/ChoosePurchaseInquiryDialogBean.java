@@ -20,7 +20,6 @@ public class ChoosePurchaseInquiryDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChoosePurchaseInquiryDialogBean.class);
 
-    String header = "选择采购询价…";
     PurchaseRequestItemDto parent;
 
     public ChoosePurchaseInquiryDialogBean() {
@@ -31,16 +30,6 @@ public class ChoosePurchaseInquiryDialogBean
     protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
         if (!DTOs.isNull(parent))
             elements.add(new Equals("parent.id", parent.getId()));
-    }
-
-    // Properties
-
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
     }
 
     public PurchaseRequestItemDto getParent() {

@@ -21,7 +21,6 @@ public class ChooseOrgUnitDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChooseOrgUnitDialogBean.class);
 
-    String header = "Please choose an organization unit..."; // NLS: 选择用户或组
     Integer orgId;
 
     public ChooseOrgUnitDialogBean() {
@@ -38,16 +37,6 @@ public class ChooseOrgUnitDialogBean
             elements.add(new Alias("org", "org"));
             elements.add(new Equals("org.employee", true));
         }
-    }
-
-    // Properties
-
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
     }
 
     public void setOrgId(Integer orgId) {

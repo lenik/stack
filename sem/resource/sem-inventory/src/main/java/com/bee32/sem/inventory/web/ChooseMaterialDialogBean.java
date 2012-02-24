@@ -21,8 +21,6 @@ public class ChooseMaterialDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChooseMaterialDialogBean.class);
 
-    String header = "Please choose a material..."; // NLS: 选择用户或组
-
     Integer materialType = null;
 
     public ChooseMaterialDialogBean() {
@@ -40,7 +38,7 @@ public class ChooseMaterialDialogBean
     protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
         super.composeBaseRestrictions(elements);
         if (materialType != null) {
-            switch(materialType) {
+            switch (materialType) {
             case 1:
                 elements.add(MaterialCriteria.materialType(MaterialType.PRODUCT, MaterialType.SEMI));
                 break;
@@ -49,16 +47,6 @@ public class ChooseMaterialDialogBean
                 break;
             }
         }
-    }
-
-    // Properties
-
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
     }
 
     /**

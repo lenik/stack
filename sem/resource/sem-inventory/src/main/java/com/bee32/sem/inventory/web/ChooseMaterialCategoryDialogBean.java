@@ -14,20 +14,8 @@ public class ChooseMaterialCategoryDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChooseMaterialCategoryDialogBean.class);
 
-    String header = "Please choose a material category..."; // NLS: 选择用户或组
-
     public ChooseMaterialCategoryDialogBean() {
         super(MaterialCategory.class, MaterialCategoryDto.class, 0);
-    }
-
-    // Properties
-
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
     }
 
 }

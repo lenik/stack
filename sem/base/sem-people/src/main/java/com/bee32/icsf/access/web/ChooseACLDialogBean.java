@@ -14,20 +14,8 @@ public class ChooseACLDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChooseACLDialogBean.class);
 
-    String header = "Please choose an ACL..."; // NLS: 选择用户或组
-
     public ChooseACLDialogBean() {
         super(ACL.class, ACLDto.class, 0);
-    }
-
-    // Properties
-
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
     }
 
 }

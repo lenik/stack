@@ -17,7 +17,6 @@ public class ChoosePartDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChoosePartDialogBean.class);
 
-    String header = "Please choose a component part..."; // NLS: 选择用户或组
     String mode;
 
     public ChoosePartDialogBean() {
@@ -30,16 +29,6 @@ public class ChoosePartDialogBean
                 CommonCriteria.labelledWith(searchPattern, true), //
                 BomCriteria.targetLabel(searchPattern, true)));
         searchPattern = null;
-    }
-
-    // Properties
-
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
     }
 
     public String getMode() {

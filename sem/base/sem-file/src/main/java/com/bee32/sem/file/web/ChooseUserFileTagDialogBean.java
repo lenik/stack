@@ -14,20 +14,8 @@ public class ChooseUserFileTagDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChooseUserFileTagDialogBean.class);
 
-    String header = "Please choose a user file tag..."; // NLS: 选择用户或组
-
     public ChooseUserFileTagDialogBean() {
         super(UserFileTagname.class, UserFileTagnameDto.class, 0);
-    }
-
-    // Properties
-
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
     }
 
 }

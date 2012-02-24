@@ -27,7 +27,6 @@ public class ChoosePartyDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChoosePartyDialogBean.class);
 
-    String header = "Please choose a party..."; // NLS: 选择用户或组
     String stereo;
     Boolean employee;
     Boolean customer;
@@ -59,14 +58,6 @@ public class ChoosePartyDialogBean
     }
 
     // Properties
-
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
-    }
 
     public void setStereo(String stereo) {
         if (stereo == null)

@@ -27,7 +27,6 @@ public class ChooseStockLocationDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChooseStockLocationDialogBean.class);
 
-    String header = "Please choose a stock location..."; // NLS: 选择用户或组
     int tabIndex;
     StockWarehouseDto warehouse;
     MaterialDto material;
@@ -43,16 +42,6 @@ public class ChooseStockLocationDialogBean
     protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
         if (warehouse != null && !warehouse.isNull())
             elements.add(new Equals("warehouse.id", warehouse.getId()));
-    }
-
-    // Properties
-
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
     }
 
     public int getTabIndex() {

@@ -21,22 +21,11 @@ public class ChoosePrincipalDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChoosePrincipalDialogBean.class);
 
-    String header = "Please choose a principal..."; // NLS: 选择用户或组
     String stereo;
 
     public ChoosePrincipalDialogBean() {
         super(Principal.class, PrincipalDto.class, 0);
         // addSearchFragment("类型为", User.class);
-    }
-
-    // Properties
-
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
     }
 
     public void setStereo(String stereo) {

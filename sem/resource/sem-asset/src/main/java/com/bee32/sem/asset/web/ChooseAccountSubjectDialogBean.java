@@ -18,8 +18,6 @@ public class ChooseAccountSubjectDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChooseAccountSubjectDialogBean.class);
 
-    String header = "选择资金科目";
-
     String subjectPrefix = null;
 
     public ChooseAccountSubjectDialogBean() {
@@ -36,14 +34,6 @@ public class ChooseAccountSubjectDialogBean
     }
 
     // Properties
-
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
-    }
 
 //    // TODO 检测是否末级科目
 //    String name = selectedAccountSubject.getName();

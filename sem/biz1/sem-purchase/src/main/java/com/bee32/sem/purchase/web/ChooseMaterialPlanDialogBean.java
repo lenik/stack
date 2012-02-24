@@ -20,7 +20,6 @@ public class ChooseMaterialPlanDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChooseMaterialPlanDialogBean.class);
 
-    String header = "选择物料计划";
     boolean pending = false;
 
     public ChooseMaterialPlanDialogBean() {
@@ -31,16 +30,6 @@ public class ChooseMaterialPlanDialogBean
     protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
         if (pending)
             elements.add(new IsNull("purchaseRequest.id"));
-    }
-
-    // Properties
-
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
     }
 
     public boolean isPending() {

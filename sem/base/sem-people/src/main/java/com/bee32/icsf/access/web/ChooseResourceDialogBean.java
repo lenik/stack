@@ -26,8 +26,6 @@ public class ChooseResourceDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChooseResourceDialogBean.class);
 
-    String header = "Please choose a resource..."; // NLS: 选择资源…
-
     /**
      * NOT USED !
      */
@@ -36,14 +34,9 @@ public class ChooseResourceDialogBean
         super(TreeEntity.class, TreeEntityDto.class, 0);
     }
 
-    // Properties
-
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
+    @Override
+    public String getObjectTypeName() {
+        return "Security Resource";
     }
 
     @Override

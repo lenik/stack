@@ -26,13 +26,11 @@ public class ChooseStockJobDialogBean
 
     static Logger logger = LoggerFactory.getLogger(ChooseStockJobDialogBean.class);
 
-    String header = "Please choose a stock job..."; // NLS: 选择用户或组
-
-    //用于查询拨出单
+    // 用于查询拨出单
     int destWarehouseId = -1;
     boolean nullDest = false;
 
-    //用于查询委外单
+    // 用于查询委外单
     boolean nullInput = false;
 
     @SuppressWarnings("unchecked")
@@ -61,31 +59,20 @@ public class ChooseStockJobDialogBean
     protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
         super.composeBaseRestrictions(elements);
 
-
-        if(StockTransferDto.class.isAssignableFrom(entityClass) && destWarehouseId != -1) {
+        if (StockTransferDto.class.isAssignableFrom(entityClass) && destWarehouseId != -1) {
             elements.add(new Equals("destWarehouse.id", destWarehouseId));
         }
 
-        if(StockTransferDto.class.isAssignableFrom(entityClass) && nullDest) {
+        if (StockTransferDto.class.isAssignableFrom(entityClass) && nullDest) {
             elements.add(new IsNull("dest"));
         }
 
-        if(StockOutsourcingDto.class.isAssignableFrom(entityClass) && nullInput) {
+        if (StockOutsourcingDto.class.isAssignableFrom(entityClass) && nullInput) {
             elements.add(new IsNull("input"));
         }
     }
 
-    // Properties
-
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
-    }
-
-    //限定StockTransfer的拨入仓库
+    // 限定StockTransfer的拨入仓库
     public int getDestWarehouseId() {
         return destWarehouseId;
     }
@@ -95,7 +82,7 @@ public class ChooseStockJobDialogBean
         refreshRowCount();
     }
 
-    //限定StockTransfer的dest为null,即还没有对应拨入单的拨出单
+    // 限定StockTransfer的dest为null,即还没有对应拨入单的拨出单
     public boolean isNullDest() {
         return nullDest;
     }
@@ -104,7 +91,7 @@ public class ChooseStockJobDialogBean
         this.nullDest = nullDest;
     }
 
-    //限定StockOutsourcing的input为null,即还没有对应委外入库的委外出库单
+    // 限定StockOutsourcing的input为null,即还没有对应委外入库的委外出库单
     public boolean isNullInput() {
         return nullInput;
     }
@@ -112,9 +99,5 @@ public class ChooseStockJobDialogBean
     public void setNullInput(boolean nullInput) {
         this.nullInput = nullInput;
     }
-
-
-
-
 
 }
