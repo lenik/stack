@@ -1,5 +1,6 @@
 package com.bee32.sem.uber;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,6 +11,7 @@ import javax.free.AbstractNonNullComparator;
 
 import com.bee32.plover.arch.util.ClassCatalog;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
+import com.bee32.plover.xutil.m2.MavenPath;
 
 public class SEMUberUnitDump
         implements ITypeAbbrAware {
@@ -31,6 +33,20 @@ public class SEMUberUnitDump
             String simpleName = clazz.getSimpleName();
             if (!simpleName.equals(abbr))
                 System.out.println("      Entity " + simpleName + " -> " + abbr);
+        }
+
+        System.out.println("\nJava Sources:");
+        for (Class<?> clazz : classes) {
+            File javaFile = MavenPath.getSourceFile(clazz);
+            System.out.println(javaFile);
+        }
+
+        System.out.println("\nNLS Files:");
+        for (Class<?> clazz : classes) {
+            File javaFile = MavenPath.getSourceFile(clazz);
+            File nlsFile = MavenPath.getSiblingResource(javaFile);
+            String nlsPath = nlsFile.getPath().replace(".java", ".properties");
+            System.out.println(nlsPath);
         }
     }
 
