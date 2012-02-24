@@ -139,8 +139,10 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
         if (currentUser == null || currentUser.isNull())
             // currentUser = User.ANONYMOUS;
             return;
+
         Set<Integer> imset = SessionUser.getInstance().getImIdSet();
-        if (imset.contains(Role.adminRole))
+
+        if (imset.contains(Role.adminRole)) // XXX TO BE FIXED.
             return;
 
         PersistenceUnit unit = CustomizedSessionFactoryBean.getForceUnit();

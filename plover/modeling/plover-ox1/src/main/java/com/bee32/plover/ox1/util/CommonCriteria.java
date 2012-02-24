@@ -24,7 +24,7 @@ public class CommonCriteria
         if (user == null)
             return null;
 
-        if (user.implies(Role.adminRole))
+        if (user.implies(Role._adminRole()))
             return null;
 
         return PrincipalCriteria.inImSet("owner", user);

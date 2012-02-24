@@ -12,6 +12,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.orm.util.DefaultDataAssembledContext;
+
 @Entity
 @DiscriminatorValue("R")
 public class Role
@@ -299,6 +302,11 @@ public class Role
 
     static {
         powerUserRole.setInheritedRole(userRole);
+    }
+
+    public static Role _adminRole() {
+        return DefaultDataAssembledContext.data.access(Role.class)//
+                .getUnique(new Equals("name", Role.adminRole.getName()));
     }
 
 }

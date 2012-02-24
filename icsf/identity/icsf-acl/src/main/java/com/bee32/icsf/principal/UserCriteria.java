@@ -8,9 +8,14 @@ import com.bee32.icsf.login.SessionUser;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.orm.util.DefaultDataAssembledContext;
 
 public class UserCriteria
         extends CriteriaSpec {
+
+    static class ctx
+            extends DefaultDataAssembledContext {
+    }
 
     public static CriteriaElement ownedByCurrentUser() {
         return impliedByCurrentUser("owner");
@@ -22,11 +27,8 @@ public class UserCriteria
             throw new IllegalStateException("imSet");
 
         // Admin-exception is only applied in this method.
-        Integer adminId = User.admin.getId();
-        Integer adminRoleId = Role.adminRole.getId();
-        if (adminId != null && imSet.contains(adminId))
-            return null;
-        if (adminRoleId != null && imSet.contains(Role.adminRole.getId()))
+        Role _adminRole = Role._adminRole();
+        if (_adminRole != null && imSet.contains(_adminRole.getId()))
             return null;
 
         return PrincipalCriteria.inImSet(propertyName, imSet);
