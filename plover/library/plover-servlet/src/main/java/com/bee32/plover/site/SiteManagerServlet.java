@@ -1,10 +1,14 @@
 package com.bee32.plover.site;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryPoolMXBean;
+import java.lang.management.MemoryUsage;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -503,6 +507,8 @@ public class SiteManagerServlet
             super(args);
         }
 
+        DecimalFormat sizef = new DecimalFormat("#,###");
+
         @Override
         protected void _content()
                 throws Exception {
@@ -520,6 +526,29 @@ public class SiteManagerServlet
                 amountEntry("已使用内存: ", runtime.totalMemory() - runtime.freeMemory());
                 amountEntry("空闲内存: ", runtime.freeMemory());
                 end();
+
+                h3().text("内存池分配").end();
+
+                table();
+                tr().th().text("内存池名称").end()//
+                        .th().text("初始").end()//
+                        .th().text("提交").end()//
+                        .th().text("已使用").end()//
+                        .th().text("峰值").end()//
+                        .th().text("最大").end(2);
+
+                List<MemoryPoolMXBean> pools = ManagementFactory.getMemoryPoolMXBeans();
+                for (MemoryPoolMXBean pool : pools) {
+                    MemoryUsage usage = pool.getUsage();
+                    MemoryUsage peakUsage = pool.getPeakUsage();
+                    tr().td().text(pool.getName()).end()//
+                            .td().align("right").text(sizef.format(usage.getInit())).end() //
+                            .td().align("right").text(sizef.format(usage.getCommitted())).end() //
+                            .td().align("right").text(sizef.format(usage.getUsed())).end() //
+                            .td().align("right").text(sizef.format(peakUsage.getUsed())).end() //
+                            .td().align("right").text(sizef.format(usage.getMax())).end(2); //
+                }
+                end(); // table
             }
             end();
         }
@@ -529,12 +558,11 @@ public class SiteManagerServlet
         }
 
         void amountEntry(String label, long amount, String suffix) {
-            DecimalFormat format = new DecimalFormat("#,###");
             tr();
             th().align("right").text(label).end();
             td();
             {
-                text(format.format(amount));
+                text(sizef.format(amount));
                 text(" " + suffix);
             }
             end(2);
