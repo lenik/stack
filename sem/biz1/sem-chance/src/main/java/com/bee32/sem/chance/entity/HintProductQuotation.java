@@ -31,14 +31,14 @@ public class HintProductQuotation
     }
 
     @ManyToOne
-    public HintProduct getLectotypeItem() {
+    public HintProduct getProduct() {
         return product;
     }
 
-    public void setLectotypeItem(HintProduct lectotypeItem) {
-        if (lectotypeItem == null)
-            throw new NullPointerException("lectotypeItem");
-        this.product = lectotypeItem;
+    public void setProduct(HintProduct product) {
+        if (product == null)
+            throw new NullPointerException("product");
+        this.product = product;
     }
 
     /**

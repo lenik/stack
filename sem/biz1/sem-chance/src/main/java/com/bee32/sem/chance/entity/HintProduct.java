@@ -28,8 +28,8 @@ public class HintProduct
 
     private static final long serialVersionUID = 1L;
 
-    public static final int NAME_LENGTH = 100;
-    public static final int SPEC_LENGTH = 100;
+    public static final int PRODUCT_NAME_LENGTH = 100;
+    public static final int MODEL_SPEC_LENGTH = 100;
     public static final int UNIT_NAME_LENGTH = 30;
 
     Chance chance;
@@ -54,7 +54,7 @@ public class HintProduct
     /**
      * 选型产品的名称（外部名称）
      */
-    @Column(length = NAME_LENGTH)
+    @Column(length = PRODUCT_NAME_LENGTH)
     public String getProductName() {
         return productName;
     }
@@ -66,7 +66,7 @@ public class HintProduct
     /**
      * 选型产品的规格（外部规格）
      */
-    @Column(length = SPEC_LENGTH)
+    @Column(length = MODEL_SPEC_LENGTH)
     public String getModelSpec() {
         return modelSpec;
     }
