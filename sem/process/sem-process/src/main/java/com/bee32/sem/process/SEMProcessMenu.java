@@ -20,8 +20,4 @@ public class SEMProcessMenu
 
     // static MenuNode p2next = entry(verifyPolicy, 3, "p2next", PROCESS.join("p2next/index.do"));
 
-    @Override
-    protected void preamble() {
-    }
-
 }

@@ -39,8 +39,7 @@ public class SEMFrameMenu
     public static final MenuNode HELP = menu(MAIN, 10000, "help");
     /**/static MenuNode about = entry(HELP, 1, "aboutFrame", JAVASCRIPT.join("alert('" + VERSION + "')"));
 
-    @Override
-    protected void preamble() {
+    static {
         int index = 0;
         for (PrimefacesTheme theme : PrimefacesTheme.values()) {
             String label = theme.getEntryLabel();

@@ -39,8 +39,8 @@ public abstract class MenuContribution
     Map<String, MenuNode> localMap = new HashMap<String, MenuNode>();
 
     @Override
-    protected final void introduce() {
-        super.introduce();
+    protected final void __assemble() {
+        super.__assemble();
 
         for (Field field : getElementFields()) {
 
@@ -101,7 +101,7 @@ public abstract class MenuContribution
      */
     public synchronized final Map<String, MenuNode> prepareMap() {
         // Invoke the introduce/preambles.
-        assemble();
+        assembleOnce();
 
         // otherwise, the properties are set by menu UI builder.
         IProperties properties = new ClassResourceProperties(getClass(), Locale.getDefault());

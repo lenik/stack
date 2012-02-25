@@ -28,8 +28,4 @@ public class SEMEventMenu
     static MenuNode completedTasks = entry(EVENT, 11, "completedTasks", EVENT_.join("index.do?type=t&closed=true"));
     static MenuNode eventIndex = entry(EVENT, 20, "eventIndex", EVENT_.join("index.do?recent=30"));
 
-    @Override
-    protected void preamble() {
-    }
-
 }

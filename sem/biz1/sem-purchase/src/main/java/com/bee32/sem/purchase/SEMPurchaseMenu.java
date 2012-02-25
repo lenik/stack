@@ -18,8 +18,4 @@ public class SEMPurchaseMenu
     static MenuNode purchaseRequest = entry(PURCHASE, 2, "purchaseRequest", PURCHASE_.join("request/"));
     static MenuNode purchaseRequestItem = entry(PURCHASE, 2, "purchaseRequestItem", PURCHASE_.join("request-item/"));
 
-    @Override
-    protected void preamble() {
-    }
-
 }

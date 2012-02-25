@@ -17,8 +17,4 @@ public class SEMBomMenu
 
     static MenuNode bomadmin = entry(SEMInventoryMenu.MATERIAL, 30, "bomadmin", _("part/"));
 
-    @Override
-    protected void preamble() {
-    }
-
 }

@@ -30,8 +30,4 @@ public class SEMPeopleMenu
     /**/static MenuNode partyRecordCategory = entry(SETTINGS, 5, "partyRecordCategory",
             getDictIndex(PartyRecordCategory.class));
 
-    @Override
-    protected void preamble() {
-    }
-
 }

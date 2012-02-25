@@ -21,8 +21,7 @@ public class SEMMailMenu
     static MenuNode outbox = entry(MAIL, 200, "outbox", MAIL_.join("mailbox/outbox.do"));
     static MenuNode trash = entry(MAIL, 300, "trash", MAIL_.join("mailbox/trash.do"));
 
-    @Override
-    protected void preamble() {
+    static {
         MAIL.setFlags(MenuNode.HIDDEN);
     }
 

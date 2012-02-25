@@ -24,7 +24,4 @@ public class SEMAssetMenu
 
     static MenuNode assetQuery = entry(ASSET, 7, "assetQuery", ASSET_.join("query/"));
 
-    @Override
-    protected void preamble() {
-    }
 }

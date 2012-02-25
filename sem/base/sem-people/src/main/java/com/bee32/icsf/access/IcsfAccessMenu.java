@@ -17,8 +17,4 @@ public class IcsfAccessMenu
     static MenuNode aclPref = entry(SEMFrameMenu.SECURITY, 32, "aclPref", BASE_.join("acl-pref/"));
     static MenuNode r_ace = entry(SEMFrameMenu.SECURITY, 33, "r_ace", BASE_.join("r-ace/"));
 
-    @Override
-    protected void preamble() {
-    }
-
 }

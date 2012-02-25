@@ -45,8 +45,4 @@ public class SEMInventoryMenu
 
     /*    */static MenuNode verifyPolicy = entry(SEMProcessMenu.VERIFY_POLICY, 100, "verifyPolicy", _("verify/"));
 
-    @Override
-    protected void preamble() {
-    }
-
 }

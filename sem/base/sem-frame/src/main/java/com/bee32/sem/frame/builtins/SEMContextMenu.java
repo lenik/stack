@@ -35,8 +35,4 @@ public class SEMContextMenu
     public static final MenuNode NET_FORWARD = section(NETWORK, 20, ":forward");
     public static final MenuNode NET_SEARCH = section(NETWORK, 30, ":search");
 
-    @Override
-    protected void preamble() {
-    }
-
 }

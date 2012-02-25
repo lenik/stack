@@ -20,8 +20,4 @@ public class IcsfPrincipalMenu
     static MenuNode modifyPassword = entry(SEMFrameMenu.CONTROL, 50, "modifyPassword",
             PRINCIPAL_.join("modifyPassword.jsf"));
 
-    @Override
-    protected void preamble() {
-    }
-
 }

@@ -14,8 +14,4 @@ public class WarMenu
     static MenuNode attack = entry(WAR, 10, "attack", BASE.join("attack/index-rich.jsf"));
     static MenuNode build = entry(WAR, 20, "build", BASE.join("build/index-rich.jsf"));
 
-    @Override
-    protected void preamble() {
-    }
-
 }

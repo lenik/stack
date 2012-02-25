@@ -11,8 +11,4 @@ public class MyMenu
     static MenuNode SAVE = entry(FILE, 20, "save", WEB_APP.join("file/save.do"));
     static MenuNode CLOSE = entry(FILE, 30, "close", WEB_APP.join("file/close.do"));
 
-    @Override
-    protected void preamble() {
-    }
-
 }

@@ -34,8 +34,4 @@ public class SEMChanceMenu
 
     // static MenuNode competitor = entry(CHANCE, "competitor", CHANCE_.join("competitor/ "));
 
-    @Override
-    protected void preamble() {
-    }
-
 }
