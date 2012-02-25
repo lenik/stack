@@ -61,6 +61,7 @@ public class SamplePackage
     }
 
     public Set<SamplePackage> getDependencies() {
+        assembleOnce();
         return Collections.unmodifiableSet(dependencies);
     }
 
@@ -71,7 +72,7 @@ public class SamplePackage
     }
 
     public List<Entity<?>> getInstances() {
-        assemble();
+        assembleOnce();
         return Collections.unmodifiableList(instances);
     }
 
