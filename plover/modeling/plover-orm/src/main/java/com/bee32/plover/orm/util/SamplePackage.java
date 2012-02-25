@@ -11,13 +11,13 @@ import javax.free.LinkedSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.plover.arch.Component;
+import com.bee32.plover.arch.Assembled;
 import com.bee32.plover.arch.util.IPriority;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
 
 public class SamplePackage
-        extends Component
+        extends Assembled
         implements IPriority {
 
     protected static class ctx
@@ -35,6 +35,11 @@ public class SamplePackage
     private final List<Entity<?>> instances = new ArrayList<Entity<?>>();
 
     public SamplePackage() {
+        this(null);
+    }
+
+    public SamplePackage(String name) {
+        super(name, true);
         ImportSamplesUtil.register(this);
     }
 

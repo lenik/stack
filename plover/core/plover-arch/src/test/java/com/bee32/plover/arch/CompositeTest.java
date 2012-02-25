@@ -48,10 +48,6 @@ public class CompositeTest
         Fruit pear = new Fruit("pear");
 
         @Override
-        protected void preamble() {
-        }
-
-        @Override
         protected boolean isFallbackEnabled() {
             return true;
         }
@@ -71,7 +67,7 @@ public class CompositeTest
         properties.setProperty("pear.description", "A Pear");
 
         basket.setProperties(new MapProperties(properties));
-        basket.assemble();
+        basket.assembleOnce();
     }
 
     @Test

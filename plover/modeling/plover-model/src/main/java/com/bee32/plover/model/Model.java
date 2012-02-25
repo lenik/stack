@@ -23,6 +23,10 @@ public class Model
         super(name);
     }
 
+    public Model(String name, boolean autoName) {
+        super(name, autoName);
+    }
+
     @Override
     public ISchema getSchema() {
         if (schema == null) {

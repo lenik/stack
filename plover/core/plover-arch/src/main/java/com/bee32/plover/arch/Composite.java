@@ -19,7 +19,7 @@ import com.bee32.plover.arch.util.res.IPropertyDispatcher;
 import com.bee32.plover.arch.util.res.PropertyDispatcher;
 
 public abstract class Composite
-        extends Component
+        extends Assembled
         implements IComposite {
 
     static Logger logger = LoggerFactory.getLogger(Composite.class);
@@ -27,8 +27,6 @@ public abstract class Composite
     // private Class<?> baseClass;
     private URL contextURL;
     private IPropertyDispatcher propertyDispatcher;
-
-    private boolean assembled;
 
     public Composite() {
         super();
@@ -96,23 +94,12 @@ public abstract class Composite
         propertyDispatcher.setProperties(properties);
     }
 
-    public void assemble() {
-        if (!assembled) {
-            synchronized (this) {
-                if (!assembled) {
-                    introduce();
-                    preamble();
-                    assembled = true;
-                }
-            }
-        }
-    }
-
     protected Iterable<Field> getElementFields() {
         return ReflectiveChildrenComponents.getImplicitAnalyzer(getClass());
     }
 
-    protected void introduce() {
+    @Override
+    protected void __assemble() {
         declare("", this);
 
         boolean usingComponentName = isUsingComponentName();
@@ -171,8 +158,6 @@ public abstract class Composite
 
         ComponentBuilder.setAppearance(childComponent, childOverride);
     }
-
-    protected abstract void preamble();
 
 }
 

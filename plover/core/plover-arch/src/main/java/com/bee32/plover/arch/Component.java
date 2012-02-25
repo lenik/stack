@@ -32,12 +32,19 @@ public abstract class Component
     Appearance appearance;
     ExceptionSupport exceptionSupport;
 
-    public Component(String name) {
-        this.name = name;
+    public Component() {
+        this(null, true);
     }
 
-    public Component() {
-        this.name = AutoNaming.getAutoName(getClass());
+    public Component(String name) {
+        this(name, false);
+    }
+
+    public Component(String name, boolean autoName) {
+        if (name == null && autoName)
+            this.name = AutoNaming.getAutoName(getClass());
+        else
+            this.name = name;
     }
 
     @Override

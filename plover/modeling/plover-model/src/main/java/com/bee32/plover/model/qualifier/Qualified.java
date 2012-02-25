@@ -17,6 +17,10 @@ public class Qualified
         super(name);
     }
 
+    public Qualified(String name, boolean autoName) {
+        super(name, autoName);
+    }
+
     public QualifierMap getQualifierMap() {
         return qualifierMap;
     }
