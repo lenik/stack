@@ -22,6 +22,7 @@ public class ChanceDto
     public static final int PARTIES = 1;
     public static final int QUOTATIONS = 2;
     public static final int ACTIONS = 4;
+    public static final int PRODUCTS = 8;
 
     String serial;
 
@@ -35,6 +36,7 @@ public class ChanceDto
     List<ChancePartyDto> parties;
     List<ChanceQuotationDto> quotations;
     List<ChanceActionDto> actions;
+    List<HintProductDto> products;
 
     ChanceStageDto stage;
 
@@ -73,6 +75,11 @@ public class ChanceDto
         else
             actions = new ArrayList<ChanceActionDto>();
 
+        if (selection.contains(PRODUCTS))
+            products = mrefList(HintProductDto.class, source.getProducts());
+        else
+            products = new ArrayList<HintProductDto>();
+
         stage = mref(ChanceStageDto.class, source.getStage());
         address = source.getAddress();
     }
@@ -92,6 +99,8 @@ public class ChanceDto
             mergeList(target, "quotations", quotations);
         if (selection.contains(ACTIONS))
             mergeList(target, "actions", actions);
+        if (selection.contains(PRODUCTS))
+            mergeList(target, "products", products);
 
         target.setAddress(address);
     }
@@ -223,6 +232,28 @@ public class ChanceDto
         if (!actions.remove(action))
             return false;
         refreshStage();
+        return true;
+    }
+
+    public List<HintProductDto> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<HintProductDto> products) {
+        if (products == null)
+            throw new NullPointerException("products");
+        this.products = products;
+    }
+
+    public void addProduct(HintProductDto product) {
+        if (product == null)
+            throw new NullPointerException("product");
+        products.add(product);
+    }
+
+    public boolean removeProduct(HintProductDto product) {
+        if (!products.remove(product))
+            return false;
         return true;
     }
 

@@ -23,7 +23,7 @@ public class HintProductDto
     private static final int CHANCE = 1;
 
     private static final int ATTRIBUTES = 2;
-    private static final int QUOTATIONS = 1;
+    private static final int QUOTATIONS = 4;
 
     ChanceDto chance;
     String productName;
@@ -64,8 +64,13 @@ public class HintProductDto
         target.setProductName(productName);
         target.setModelSpec(modelSpec);
         target.setUnitName(unitName);
-        mergeList(target, "attributes", attributes);
-        mergeList(target, "quotations", quotations);
+
+        if(selection.contains(ATTRIBUTES))
+            mergeList(target, "attributes", attributes);
+
+        if(selection.contains(QUOTATIONS))
+            mergeList(target, "quotations", quotations);
+
         merge(target, "decidedMaterial", decidedMaterial);
     }
 
