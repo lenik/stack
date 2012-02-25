@@ -27,7 +27,7 @@ public class MakeOrderItemDto
     Date deadline;
 
     String externalProductName;
-    String externalSpecification;
+    String externalModelSpec;
 
     @Override
     protected void _marshal(MakeOrderItem source) {
@@ -35,7 +35,7 @@ public class MakeOrderItemDto
         part = mref(PartDto.class, source.getPart());
         deadline = source.getDeadline();
         externalProductName = source.getExternalProductName();
-        externalSpecification = source.getExternalSpecification();
+        externalModelSpec = source.getExternalModelSpec();
     }
 
     @Override
@@ -44,7 +44,7 @@ public class MakeOrderItemDto
         merge(target, "part", part);
         target.setDeadline(deadline);
         target.setExternalProductName(externalProductName);
-        target.setExternalSpecification(externalSpecification);
+        target.setExternalModelSpec(externalModelSpec);
     }
 
     @Override
@@ -82,8 +82,8 @@ public class MakeOrderItemDto
     }
 
     public void setPart(PartDto part) {
-//        if (part == null)
-//            throw new NullPointerException("part");
+// if (part == null)
+// throw new NullPointerException("part");
         this.part = part;
     }
 
@@ -107,12 +107,12 @@ public class MakeOrderItemDto
     }
 
     @NLength(max = MakeOrderItem.EXT_SPEC_LENGTH)
-    public String getExternalSpecification() {
-        return externalSpecification;
+    public String getExternalModelSpec() {
+        return externalModelSpec;
     }
 
-    public void setExternalSpecification(String externalSpecification) {
-        this.externalSpecification = TextUtil.normalizeSpace(externalSpecification);
+    public void setExternalModelSpec(String externalModelSpec) {
+        this.externalModelSpec = TextUtil.normalizeSpace(externalModelSpec);
     }
 
     @Override

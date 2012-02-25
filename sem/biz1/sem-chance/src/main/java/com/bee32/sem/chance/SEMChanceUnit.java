@@ -12,10 +12,9 @@ import com.bee32.sem.chance.entity.ChanceQuotation;
 import com.bee32.sem.chance.entity.ChanceQuotationItem;
 import com.bee32.sem.chance.entity.ChanceSourceType;
 import com.bee32.sem.chance.entity.ChanceStage;
-import com.bee32.sem.chance.entity.Lectotype;
-import com.bee32.sem.chance.entity.LectotypeAttribute;
-import com.bee32.sem.chance.entity.LectotypeItem;
-import com.bee32.sem.chance.entity.Quotation;
+import com.bee32.sem.chance.entity.HintProduct;
+import com.bee32.sem.chance.entity.HintProductAttribute;
+import com.bee32.sem.chance.entity.HintProductQuotation;
 import com.bee32.sem.inventory.SEMInventoryUnit;
 
 @ImportUnit({ SEMInventoryUnit.class })
@@ -37,10 +36,9 @@ public class SEMChanceUnit
         add(ChanceQuotation.class);
         add(ChanceQuotationItem.class);
 
-        add(Lectotype.class);
-        add(LectotypeItem.class);
-        add(LectotypeAttribute.class);
-        add(Quotation.class);
+        add(HintProduct.class);
+        add(HintProductAttribute.class);
+        add(HintProductQuotation.class);
     }
 
 }

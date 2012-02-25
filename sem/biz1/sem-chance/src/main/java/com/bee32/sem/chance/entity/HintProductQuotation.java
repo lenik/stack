@@ -14,37 +14,36 @@ import com.bee32.sem.world.thing.AbstractItem;
  *
  */
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "quotation_seq", allocationSize = 1)
-public class Quotation
-    extends AbstractItem {
+@SequenceGenerator(name = "idgen", sequenceName = "hint_product_quotation_seq", allocationSize = 1)
+public class HintProductQuotation
+        extends AbstractItem {
 
     private static final long serialVersionUID = 1L;
 
-    LectotypeItem lectotypeItem;
-
+    HintProduct product;
     BigDecimal discountRate = new BigDecimal(1);
 
     /**
      * AbstractItem中继承的quantity设为1，实际在报价中不使用
      */
-    public Quotation() {
+    public HintProductQuotation() {
         setQuantity(new BigDecimal(1));
     }
 
     @ManyToOne
-    public LectotypeItem getLectotypeItem() {
-        return lectotypeItem;
+    public HintProduct getLectotypeItem() {
+        return product;
     }
 
-    public void setLectotypeItem(LectotypeItem lectotypeItem) {
-        if(lectotypeItem == null)
+    public void setLectotypeItem(HintProduct lectotypeItem) {
+        if (lectotypeItem == null)
             throw new NullPointerException("lectotypeItem");
-        this.lectotypeItem = lectotypeItem;
+        this.product = lectotypeItem;
     }
-
 
     /**
      * 折扣率，按中国人的折扣率习惯填写
+     *
      * @return
      */
     public BigDecimal getDiscountRate() {
@@ -59,6 +58,5 @@ public class Quotation
     protected Date getFxrDate() {
         return this.getCreatedDate();
     }
-
 
 }

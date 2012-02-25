@@ -40,7 +40,7 @@ public class MakeOrderItem
     Date deadline;
 
     String externalProductName;
-    String externalSpecification;
+    String externalModelSpec;
 
     @NaturalId
     @ManyToOne(optional = false)
@@ -107,12 +107,12 @@ public class MakeOrderItem
      * @return
      */
     @Column(length = EXT_SPEC_LENGTH)
-    public String getExternalSpecification() {
-        return externalSpecification;
+    public String getExternalModelSpec() {
+        return externalModelSpec;
     }
 
-    public void setExternalSpecification(String externalSpecification) {
-        this.externalSpecification = externalSpecification;
+    public void setExternalModelSpec(String externalModelSpec) {
+        this.externalModelSpec = externalModelSpec;
     }
 
     @Transient

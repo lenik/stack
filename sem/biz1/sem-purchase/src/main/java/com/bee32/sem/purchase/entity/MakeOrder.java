@@ -142,7 +142,7 @@ public class MakeOrder
                 remainingItem.setPart(orderItem.getPart());
                 remainingItem.setQuantity(remaining);
                 remainingItem.setExternalProductName(orderItem.getExternalProductName());
-                remainingItem.setExternalSpecification(orderItem.getExternalSpecification());
+                remainingItem.setExternalModelSpec(orderItem.getExternalModelSpec());
                 result.add(remainingItem);
             }
         }
