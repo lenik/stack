@@ -1,7 +1,7 @@
 package com.bee32.sem.chance.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -15,9 +15,9 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
-import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.world.thing.AbstractItem;
 
 /**
  * 选型明细
@@ -26,7 +26,7 @@ import com.bee32.sem.inventory.entity.Material;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "lectotype_item_seq", allocationSize = 1)
 public class LectotypeItem
-    extends UIEntityAuto<Long>
+    extends AbstractItem
     implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
@@ -40,8 +40,6 @@ public class LectotypeItem
     String name;
     String spec;
     String unit;
-
-    BigDecimal quantity = new BigDecimal(1);
 
     List<LectotypeAttribute> attrs;
     List<Quotation> quotations;
@@ -99,18 +97,6 @@ public class LectotypeItem
     }
 
     /**
-     * 数量
-     * @return
-     */
-    public BigDecimal getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(BigDecimal quantity) {
-        this.quantity = quantity;
-    }
-
-    /**
      * 选型产品的附加属性
      * @return
      */
@@ -155,5 +141,10 @@ public class LectotypeItem
     protected Serializable naturalId() {
         return new IdComposite(//
                 naturalId(parent));
+    }
+
+    @Override
+    protected Date getFxrDate() {
+        return parent.getCreatedDate();
     }
 }

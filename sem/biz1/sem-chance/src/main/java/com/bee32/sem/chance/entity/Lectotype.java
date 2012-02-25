@@ -1,7 +1,9 @@
 package com.bee32.sem.chance.entity;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -10,7 +12,13 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.sem.process.base.ProcessEntity;
+import com.bee32.plover.arch.bean.BeanPropertyAccessor;
+import com.bee32.plover.arch.bean.IPropertyAccessor;
+import com.bee32.plover.ox1.config.DecimalConfig;
+import com.bee32.sem.process.verify.IVerifiable;
+import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;
+import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
+import com.bee32.sem.world.thing.AbstractItemList;
 
 /**
  * 选型
@@ -18,13 +26,19 @@ import com.bee32.sem.process.base.ProcessEntity;
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "lectotype_seq", allocationSize = 1)
-public class Lectotype extends ProcessEntity {
+public class Lectotype
+    extends AbstractItemList<LectotypeItem>
+    implements DecimalConfig, IVerifiable<ISingleVerifierWithNumber> {
 
     private static final long serialVersionUID = 1L;
 
     Chance chance;
 
     List<LectotypeItem> items;
+
+    public Lectotype() {
+        setVerifyContext(new SingleVerifierWithNumberSupport());
+    }
 
     /**
      * 对应机会
@@ -48,5 +62,21 @@ public class Lectotype extends ProcessEntity {
         this.items = items;
     }
 
+
+    public static final IPropertyAccessor<BigDecimal> nativeTotalProperty = BeanPropertyAccessor.access(//
+            Lectotype.class, "nativeTotal");
+
+    SingleVerifierWithNumberSupport verifyContext;
+
+    @Embedded
+    @Override
+    public SingleVerifierWithNumberSupport getVerifyContext() {
+        return verifyContext;
+    }
+
+    public void setVerifyContext(SingleVerifierWithNumberSupport verifyContext) {
+        this.verifyContext = verifyContext;
+        verifyContext.bind(this, nativeTotalProperty, "金额");
+    }
 
 }
