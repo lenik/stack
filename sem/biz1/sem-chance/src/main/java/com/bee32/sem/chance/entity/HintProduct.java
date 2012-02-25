@@ -90,7 +90,7 @@ public class HintProduct
     /**
      * 选型产品的附加属性
      */
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<HintProductAttribute> getAttributes() {
         return attributes;
