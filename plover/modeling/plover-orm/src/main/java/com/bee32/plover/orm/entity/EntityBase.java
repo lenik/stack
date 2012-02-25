@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.bee32.plover.arch.bean.BeanPropertyAccessor;
@@ -24,15 +26,13 @@ public abstract class EntityBase<K extends Serializable>
     protected boolean autoId;
     protected String name;
 
-    transient Entity<?> nextOfMicroLoop;
-
     public EntityBase() {
-        super();
+        super(null, false);
         createTransients();
     }
 
     public EntityBase(String name) {
-        super(name);
+        super(name, false);
         this.name = name;
         createTransients();
     }
@@ -128,6 +128,11 @@ public abstract class EntityBase<K extends Serializable>
     protected static <bean_t, property_t> IPropertyAccessor<property_t> _property_(Class<bean_t> beanClass,
             String propertyName) {
         return BeanPropertyAccessor.access(beanClass, propertyName);
+    }
+
+    @SafeVarargs
+    protected static <T> List<T> listOf(T... args) {
+        return Arrays.asList(args);
     }
 
 }

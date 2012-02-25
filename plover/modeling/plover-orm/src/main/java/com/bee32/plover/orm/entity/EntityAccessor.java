@@ -2,6 +2,7 @@ package com.bee32.plover.orm.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class EntityAccessor {
 
@@ -67,6 +68,12 @@ public class EntityAccessor {
         if (entity == null)
             throw new NullPointerException("entity");
         entity.nextOfMicroLoop = nextOfMicroLoop;
+    }
+
+    public static List<Entity<?>> getPrereqs(Entity<?> entity) {
+        if (entity == null)
+            throw new NullPointerException("entity");
+        return entity.getPrereqs();
     }
 
     public static boolean isLocked(Entity<?> entity) {

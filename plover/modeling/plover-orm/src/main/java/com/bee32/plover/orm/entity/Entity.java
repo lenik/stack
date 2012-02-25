@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
+import javax.free.IdentityHashSet;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
@@ -46,8 +47,10 @@ public abstract class Entity<K extends Serializable>
 
     final EntityFlags entityFlags = new EntityFlags();
 
+    transient Entity<?> nextOfMicroLoop;
+
     public Entity() {
-        super(null);
+        super();
         // prePersist();
     }
 
@@ -423,6 +426,17 @@ public abstract class Entity<K extends Serializable>
         if (lockFlags != 0)
             return true;
         return isLocked();
+    }
+
+    @Transient
+    Set<Entity<?>> getPrereqs() {
+        @SuppressWarnings("unchecked")
+        Set<Entity<?>> prereqs = (Set<Entity<?>>) (Object) new IdentityHashSet();
+        fillPrereqs(prereqs);
+        return prereqs;
+    }
+
+    protected void fillPrereqs(Set<Entity<?>> prereqs) {
     }
 
     protected static <S extends StandardSamples> S predefined(Class<? extends S> samplesClass) {
