@@ -30,7 +30,7 @@ public class WarSamples
     SEMVerifyPolicySamples policies;
 
     @Override
-    protected void preamble() {
+    protected void assemble() {
         attackPref.setType(AttackMission.class);
         attackPref.setPreferredPolicy(policies.robotList);
         attackPref.setDescription("必须让机器人统治世界。");
@@ -49,7 +49,10 @@ public class WarSamples
         rescueMao_SV.setAccepted1(true);
         rescueMao_SV.setVerifier1(principals.kate);
         rescueMao_SV.setVerifiedDate1(new Date());
+    }
 
+    @Override
+    protected void listSamples() {
         add(attackPref);
         add(bombAmerica);
         add(killSimpsons);

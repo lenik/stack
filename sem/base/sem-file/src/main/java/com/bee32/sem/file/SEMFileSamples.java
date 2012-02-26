@@ -7,7 +7,7 @@ public class SEMFileSamples
         extends SampleContribution {
 
     @Override
-    protected void preamble() {
+    protected void listSamples() {
         add(new UserFileTagname("图片"));
         add(new UserFileTagname("音乐"));
         add(new UserFileTagname("设计资料"));

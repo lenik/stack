@@ -22,7 +22,7 @@ public class SEMVerifyPolicySamples
     IcsfPrincipalSamples principals;
 
     @Override
-    protected void preamble() {
+    protected void assemble() {
         robotList.setLabel("机器人");
         robotList.setDescription("机器人统治地球之权威机器人名单");
         robotList.addResponsible(principals.eva);
@@ -43,7 +43,10 @@ public class SEMVerifyPolicySamples
         macLevel.setDescription("1千以内由凯特好友审批，1万以内由机器人审批。");
         macLevel.addLevel(1000, plainList);
         macLevel.addLevel(10000, robotList);
+    }
 
+    @Override
+    protected void listSamples() {
         add(robotList);
         add(plainList);
         add(kateWallE);

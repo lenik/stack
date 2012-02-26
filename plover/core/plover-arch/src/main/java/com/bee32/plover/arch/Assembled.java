@@ -23,6 +23,7 @@ public abstract class Assembled
                 if (!assembled) {
                     __assemble();
                     assemble();
+                    postAssemble();
                     assembled = true;
                 }
             }
@@ -33,6 +34,9 @@ public abstract class Assembled
     }
 
     protected void assemble() {
+    }
+
+    protected void postAssemble() {
     }
 
 }

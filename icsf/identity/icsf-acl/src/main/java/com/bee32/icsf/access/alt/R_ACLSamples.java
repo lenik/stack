@@ -22,7 +22,7 @@ public class R_ACLSamples
     Roles roles;
 
     @Override
-    public void preamble() {
+    public void assemble() {
         admin_all.init("ap:", roles.adminRole, "s");
         service_tom_x.init("ap:TestService.", principals.tom, "x");
         method1_kate_rx.init("ap:TestService.method1.", principals.kate, "rx");

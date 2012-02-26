@@ -15,7 +15,7 @@ public class IcsfAccessSamples
     IcsfPrincipalSamples principals;
 
     @Override
-    protected void preamble() {
+    protected void listSamples() {
         new UserPassword(principals.eva, digest("EVA"));
         new UserPassword(principals.wallE, digest("WALL-E"));
         new UserPassword(principals.alice, digest("ALICE"));

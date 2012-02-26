@@ -13,7 +13,7 @@ public class MonetarySamples
         implements ICurrencyAware {
 
     @Override
-    protected void preamble() {
+    protected void listSamples() {
         Date date;
         try {
             date = Dates.YYYY_MM_DD.parse("2011-7-22");

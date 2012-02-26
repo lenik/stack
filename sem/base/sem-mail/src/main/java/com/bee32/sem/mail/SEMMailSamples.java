@@ -28,7 +28,7 @@ public class SEMMailSamples
     public Mail helloEcho = new Mail();
 
     @Override
-    protected void preamble() {
+    protected void assemble() {
         spamFilter.setLabel("spam-filter");
         spamFilter.setDescription("将标记为'垃圾'的邮件移动到'垃圾箱'");
         spamFilter.setExpr("a.is-spam...");
@@ -59,7 +59,10 @@ public class SEMMailSamples
         MailDelivery helloEchoSend = new MailDelivery(helloEcho, MailOrientation.FROM);
         MailDelivery helloEchoRecv = new MailDelivery(helloEcho, MailOrientation.RECIPIENT);
         helloEcho.setDeliveries(Arrays.asList(helloEchoSend, helloEchoRecv));
+    }
 
+    @Override
+    protected void listSamples() {
         add(spamFilter);
         add(hello);
         add(helloEcho);

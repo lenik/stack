@@ -55,7 +55,7 @@ public class SEMEventSamples
     }
 
     @Override
-    protected void preamble() {
+    protected void assemble() {
         Principal robots = principals.solaRobots;
 
         rains.add(mkRain(-28.5, 1.0, "28.5 天前", robots));
@@ -75,7 +75,10 @@ public class SEMEventSamples
         killAngel.addObservers(//
                 robots, //
                 roles.adminRole);
+    }
 
+    @Override
+    protected void listSamples() {
         addBulk(weather, special);
 
         for (Event rain : rains)

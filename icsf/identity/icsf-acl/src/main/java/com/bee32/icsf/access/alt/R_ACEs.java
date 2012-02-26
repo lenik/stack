@@ -15,7 +15,7 @@ public class R_ACEs
     Users users;
 
     @Override
-    protected void preamble() {
+    protected void assemble() {
         adminApAll.init("ap:", users.admin, "surwcdx");
         adminEntityAll.init("entity:", users.admin, "surwcdx");
     }

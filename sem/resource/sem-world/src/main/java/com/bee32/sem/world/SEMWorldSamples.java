@@ -9,8 +9,4 @@ import com.bee32.sem.world.thing.ThingSamples;
 public class SEMWorldSamples
         extends SampleContribution {
 
-    @Override
-    protected void preamble() {
-    }
-
 }

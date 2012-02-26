@@ -14,7 +14,7 @@ public class Users
     Roles roles;
 
     @Override
-    protected void preamble() {
+    protected void assemble() {
         admin.setPrimaryRole(roles.adminRole);
     }
 

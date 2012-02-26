@@ -34,7 +34,7 @@ public class SEMBomSamples
     }
 
     @Override
-    protected void preamble() {
+    protected void assemble() {
         p_light_A.setTarget(inventories.m_light_A);
         p_light_B.setTarget(inventories.m_light_B);
         p_handler_kj1.setTarget(inventories.m_handlerkj1);
@@ -57,7 +57,10 @@ public class SEMBomSamples
         p_handlerf1.addChild(inventories.m_handlerkj2, 1);
         p_handlerf1.addChild(inventories.m_glass1, 0.03);
         p_handlerf1.addChild(inventories.m_glue1, 0.01);
+    }
 
+    @Override
+    protected void listSamples() {
         addBulk(p_light_A, p_light_B, //
                 p_handlerf1, p_handler_kj1, p_handler_kj2);
     }

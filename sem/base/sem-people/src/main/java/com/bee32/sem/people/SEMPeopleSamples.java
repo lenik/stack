@@ -197,7 +197,7 @@ public class SEMPeopleSamples
     }
 
     @Override
-    protected void preamble() {
+    protected void assemble() {
         series2();
 
         add(humanCorp);

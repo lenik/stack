@@ -83,7 +83,7 @@ public class SEMInventorySamples
     Units units;
 
     @Override
-    protected void preamble() {
+    protected void assemble() {
         stockPolicy.setName(".stockvp-1");
         stockPolicy.setLabel("库存审核策略");
         stockPolicy.setDescription("测试用的库存审核策略。");
@@ -240,7 +240,10 @@ public class SEMInventorySamples
                 takeInOrder1, takeOutOrder1, //
                 factoryInOrder1, factoryOutOrder1, //
                 planOrder1);
+    }
 
+    @Override
+    protected void listSamples() {
         add(stockPolicy);
         addBulk(mainWarehouse, rawWarehouse);
         addBulk(sl_dedi_1, sl_light_1, //

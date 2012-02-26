@@ -10,10 +10,10 @@ public class SimpleBooks
     public static final Book helloWorld = new Book("World", "Hello, world!");
 
     @Override
-    protected void preamble() {
-        add(SimpleBooks.tom);
-        add(SimpleBooks.jerry);
-        add(SimpleBooks.helloWorld);
+    protected void listSamples() {
+        add(tom);
+        add(jerry);
+        add(helloWorld);
     }
 
 }

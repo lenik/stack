@@ -17,11 +17,14 @@ public class SEMInventorySamples2
     SEMInventorySamples inventories;
 
     @Override
-    protected void preamble() {
+    protected void assemble() {
         stockVerifyPref.setType(StockOrder.class);
         stockVerifyPref.setPreferredPolicy(inventories.stockPolicy);
         stockVerifyPref.setDescription("用库存审核策略对库存对象审核。");
+    }
 
+    @Override
+    protected void listSamples() {
         add(stockVerifyPref);
     }
 

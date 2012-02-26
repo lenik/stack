@@ -47,7 +47,7 @@ public class SEMChanceSamples
     ChanceStages chanceStages;
 
     @Override
-    protected void preamble() {
+    protected void assemble() {
         Calendar cal = Calendar.getInstance();
         cal.set(2011, 4, 8);
 
@@ -106,7 +106,10 @@ public class SEMChanceSamples
         quotation.addItem(inventories.m_light_A, //
                 inventories.m_light_A.getLatestPrice().getPrice(), //
                 new BigDecimal(3), 1.0f);
+    }
 
+    @Override
+    protected void listSamples() {
         // add <price>->quotionDetail
         add(chance);
         add(party);

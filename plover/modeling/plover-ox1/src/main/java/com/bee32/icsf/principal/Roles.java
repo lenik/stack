@@ -11,7 +11,7 @@ public class Roles
     public final Role guestRole = new Role("guestRole", "Guest Users");
 
     @Override
-    protected void preamble() {
+    protected void assemble() {
         powerUserRole.setInheritedRole(userRole);
     }
 

@@ -28,7 +28,7 @@ public class IcsfPrincipalSamples
     Roles roles;
 
     @Override
-    protected void preamble() {
+    protected void assemble() {
         eva.setPrimaryGroup(solaRobots);
         eva.setPrimaryRole(roles.adminRole);
         wallE.setPrimaryGroup(solaRobots);
@@ -47,7 +47,10 @@ public class IcsfPrincipalSamples
         tom.setPreferredEmail("tom@bee32.com");
         kate.setPreferredEmail("kate@bee32.com");
         alice.setPreferredEmail("alice@bee32.com");
+    }
 
+    @Override
+    protected void listSamples() {
         addBulk(sunCorp, solaRobots);
         addBulk(eva, wallE, alice, tom, kate);
     }

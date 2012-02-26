@@ -1,6 +1,7 @@
 package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -74,6 +75,21 @@ public class SamplePackage
     public List<Entity<?>> getInstances() {
         assembleOnce();
         return Collections.unmodifiableList(instances);
+    }
+
+    protected void listSamples() {
+        for (Field field : getClass().getDeclaredFields()) {
+            if (!Entity.class.isAssignableFrom(field.getType()))
+                continue;
+            field.setAccessible(true);
+            Entity<?> entity;
+            try {
+                entity = (Entity<?>) field.get(this);
+            } catch (ReflectiveOperationException e) {
+                throw new RuntimeException(e.getMessage(), e);
+            }
+            add(entity);
+        }
     }
 
     public void add(Entity<? extends Serializable> instance) {
