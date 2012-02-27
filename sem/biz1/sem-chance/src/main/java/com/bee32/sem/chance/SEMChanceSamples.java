@@ -1,6 +1,5 @@
 package com.bee32.sem.chance;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Calendar;
 
@@ -13,7 +12,6 @@ import com.bee32.sem.chance.entity.ChanceActionStyle;
 import com.bee32.sem.chance.entity.ChanceCategory;
 import com.bee32.sem.chance.entity.ChanceCompetitor;
 import com.bee32.sem.chance.entity.ChanceParty;
-import com.bee32.sem.chance.entity.ChanceQuotation;
 import com.bee32.sem.chance.entity.ChanceSourceType;
 import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.inventory.SEMInventorySamples;
@@ -31,7 +29,6 @@ public class SEMChanceSamples
     public static ChanceAction chanceAction1 = new ChanceAction();
     public static ChanceAction chanceAction2 = new ChanceAction();
     public static ChanceCompetitor competitor = new ChanceCompetitor();
-    public static ChanceQuotation quotation = new ChanceQuotation();
 
     static {
         Calendar cal = Calendar.getInstance();
@@ -85,14 +82,6 @@ public class SEMChanceSamples
 
         chance.addAction(chanceAction1);
         chance.addAction(chanceAction2);
-
-        quotation.setLabel("7月2号报价");
-        quotation.setChance(chance);
-        quotation.setDeliverInfo("发顺丰加保价");
-        quotation.setPayment("网上转帐");
-        quotation.addItem(SEMInventorySamples.m_light_A, //
-                SEMInventorySamples.m_light_A.getLatestPrice().getPrice(), //
-                new BigDecimal(3), 1.0f);
     }
 
     @Override
@@ -105,8 +94,6 @@ public class SEMChanceSamples
         add(chanceAction1);
         add(chanceAction2);
 
-        // add <price>->quotation and quotationItem
-        add(quotation);
     }
 
 }

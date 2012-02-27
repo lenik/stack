@@ -20,7 +20,6 @@ public class ChanceDto
     private static final long serialVersionUID = 1L;
 
     public static final int PARTIES = 1;
-    public static final int QUOTATIONS = 2;
     public static final int ACTIONS = 4;
     public static final int PRODUCTS = 8;
 
@@ -34,7 +33,6 @@ public class ChanceDto
     ChanceSourceTypeDto source;
 
     List<ChancePartyDto> parties;
-    List<ChanceQuotationDto> quotations;
     List<ChanceActionDto> actions;
     List<HintProductDto> products;
 
@@ -65,11 +63,6 @@ public class ChanceDto
         else
             parties = new ArrayList<ChancePartyDto>();
 
-        if (selection.contains(QUOTATIONS))
-            quotations = marshalList(ChanceQuotationDto.class, source.getQuotations());
-        else
-            quotations = new ArrayList<ChanceQuotationDto>();
-
         if (selection.contains(ACTIONS))
             actions = mrefList(ChanceActionDto.class, source.getActions());
         else
@@ -95,8 +88,6 @@ public class ChanceDto
 
         if (selection.contains(PARTIES))
             mergeList(target, "parties", parties);
-        if (selection.contains(QUOTATIONS))
-            mergeList(target, "quotations", quotations);
         if (selection.contains(ACTIONS))
             mergeList(target, "actions", actions);
         if (selection.contains(PRODUCTS))
@@ -201,14 +192,6 @@ public class ChanceDto
             sb.append(chparty.getParty().getDisplayName());
         }
         return sb.toString();
-    }
-
-    public List<ChanceQuotationDto> getQuotations() {
-        return quotations;
-    }
-
-    public void setQuotations(List<ChanceQuotationDto> quotations) {
-        this.quotations = quotations;
     }
 
     public List<ChanceActionDto> getActions() {

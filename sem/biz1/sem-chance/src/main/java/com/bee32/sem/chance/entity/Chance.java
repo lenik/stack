@@ -47,8 +47,6 @@ public class Chance
     String content = "";
 
     List<ChanceParty> parties = new ArrayList<ChanceParty>();
-    /** @deprecated */
-    List<ChanceQuotation> quotations = new ArrayList<ChanceQuotation>();
     List<HintProduct> products = new ArrayList<HintProduct>();
     List<ChanceAction> actions = new ArrayList<ChanceAction>();
 
@@ -130,20 +128,6 @@ public class Chance
         if (parties == null)
             throw new NullPointerException("parties");
         this.parties = parties;
-    }
-
-    @Deprecated
-    @OneToMany(mappedBy = "chance", orphanRemoval = true)
-    @Cascade(CascadeType.ALL)
-    public List<ChanceQuotation> getQuotations() {
-        return quotations;
-    }
-
-    @Deprecated
-    public void setQuotations(List<ChanceQuotation> quotations) {
-        if (quotations == null)
-            throw new NullPointerException("quotations");
-        this.quotations = quotations;
     }
 
     @OneToMany(mappedBy = "chance", orphanRemoval = true)
