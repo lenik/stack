@@ -3,26 +3,24 @@ package com.bee32.sem.process;
 import javax.inject.Inject;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
-import com.bee32.plover.orm.util.ImportSamples;
-import com.bee32.plover.orm.util.SampleContribution;
+import com.bee32.plover.orm.util.NormalSamples;
+import com.bee32.plover.orm.util.SampleList;
 import com.bee32.sem.process.verify.builtin.SingleVerifierPolicy;
 import com.bee32.sem.process.verify.builtin.SingleVerifierRankedPolicy;
 
-@ImportSamples(IcsfPrincipalSamples.class)
 public class SEMVerifyPolicySamples
-        extends SampleContribution {
+        extends NormalSamples {
 
     public final SingleVerifierPolicy robotList = new SingleVerifierPolicy();
     public final SingleVerifierPolicy plainList = new SingleVerifierPolicy();
     public final SingleVerifierPolicy kateWallE = new SingleVerifierPolicy();
-
     public final SingleVerifierRankedPolicy macLevel = new SingleVerifierRankedPolicy();
 
     @Inject
     IcsfPrincipalSamples principals;
 
     @Override
-    protected void assemble() {
+    protected void wireUp() {
         robotList.setLabel("机器人");
         robotList.setDescription("机器人统治地球之权威机器人名单");
         robotList.addResponsible(principals.eva);
@@ -46,11 +44,11 @@ public class SEMVerifyPolicySamples
     }
 
     @Override
-    protected void listSamples() {
-        add(robotList);
-        add(plainList);
-        add(kateWallE);
-        add(macLevel);
+    protected void getSamples(SampleList samples) {
+        samples.add(robotList);
+        samples.add(plainList);
+        samples.add(kateWallE);
+        samples.add(macLevel);
     }
 
 }

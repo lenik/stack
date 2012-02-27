@@ -6,16 +6,17 @@ import javax.inject.Inject;
 
 import com.bee32.icsf.login.UserPassword;
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
-import com.bee32.plover.orm.util.SampleContribution;
+import com.bee32.plover.orm.util.SampleList;
+import com.bee32.plover.orm.util.NormalSamples;
 
 public class IcsfAccessSamples
-        extends SampleContribution {
+        extends NormalSamples {
 
     @Inject
     IcsfPrincipalSamples principals;
 
     @Override
-    protected void listSamples() {
+    protected void getSamples(SampleList samples) {
         new UserPassword(principals.eva, digest("EVA"));
         new UserPassword(principals.wallE, digest("WALL-E"));
         new UserPassword(principals.alice, digest("ALICE"));

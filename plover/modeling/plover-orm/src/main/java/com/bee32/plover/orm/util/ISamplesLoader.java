@@ -6,6 +6,6 @@ public interface ISamplesLoader {
 
     void loadSamples(SamplePackage rootPackage);
 
-    void loadSamples(SamplePackage rootPackage, Closure<SampleContribution> progress);
+    void loadSamples(SamplePackage rootPackage, Closure<NormalSamples> progress);
 
 }

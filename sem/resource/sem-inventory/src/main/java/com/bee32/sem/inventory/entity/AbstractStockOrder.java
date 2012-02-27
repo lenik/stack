@@ -55,8 +55,7 @@ public class AbstractStockOrder<Item extends StockOrderItem>
     StockWarehouse warehouse; // Redundant.
 
     public AbstractStockOrder() {
-        this.subject = StockOrderSubject.INIT;
-        setVerifyContext(new StockOrderVerifySupport());
+        this(null, StockOrderSubject.INIT, null);
     }
 
     public AbstractStockOrder(StockPeriod base, StockOrderSubject subject) {
@@ -71,6 +70,7 @@ public class AbstractStockOrder<Item extends StockOrderItem>
         if (subject.isPacking())
             this.spec = base;
         this.warehouse = warehouse;
+        setVerifyContext(new StockOrderVerifySupport());
     }
 
     @Transient

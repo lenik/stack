@@ -17,7 +17,7 @@ public class ACLs
     Roles roles;
 
     @Override
-    protected void assemble() {
+    protected void wireUp() {
         DEFAULT.setName("default");
         DEFAULT.setLabel("一般安全策略");
         DEFAULT.add(roles.adminRole, Permission.RWS);

@@ -8,15 +8,14 @@ import user.war.entity.AttackMission;
 import user.war.entity.BuildMission;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
-import com.bee32.plover.orm.util.ImportSamples;
-import com.bee32.plover.orm.util.SampleContribution;
+import com.bee32.plover.orm.util.NormalSamples;
+import com.bee32.plover.orm.util.SampleList;
 import com.bee32.sem.process.SEMVerifyPolicySamples;
 import com.bee32.sem.process.verify.builtin.SingleVerifierSupport;
 import com.bee32.sem.process.verify.preference.VerifyPolicyPref;
 
-@ImportSamples(SEMVerifyPolicySamples.class)
 public class WarSamples
-        extends SampleContribution {
+        extends NormalSamples {
 
     public final VerifyPolicyPref attackPref = new VerifyPolicyPref();
 
@@ -30,7 +29,7 @@ public class WarSamples
     SEMVerifyPolicySamples policies;
 
     @Override
-    protected void assemble() {
+    protected void wireUp() {
         attackPref.setType(AttackMission.class);
         attackPref.setPreferredPolicy(policies.robotList);
         attackPref.setDescription("必须让机器人统治世界。");
@@ -52,11 +51,11 @@ public class WarSamples
     }
 
     @Override
-    protected void listSamples() {
-        add(attackPref);
-        add(bombAmerica);
-        add(killSimpsons);
-        add(rescueMao);
+    protected void getSamples(SampleList samples) {
+        samples.add(attackPref);
+        samples.add(bombAmerica);
+        samples.add(killSimpsons);
+        samples.add(rescueMao);
     }
 
 }

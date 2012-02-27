@@ -15,8 +15,8 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
-import com.bee32.plover.orm.util.ImportSamples;
-import com.bee32.plover.orm.util.SampleContribution;
+import com.bee32.plover.orm.util.NormalSamples;
+import com.bee32.plover.orm.util.SampleList;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.entity.StockLocation;
@@ -28,12 +28,10 @@ import com.bee32.sem.people.SEMPeopleSamples;
 import com.bee32.sem.process.SEMVerifyPolicySamples;
 import com.bee32.sem.process.verify.VerifyContextAccessor;
 import com.bee32.sem.test.DateSamples;
-import com.bee32.sem.world.SEMWorldSamples;
 import com.bee32.sem.world.thing.Units;
 
-@ImportSamples({ SEMPeopleSamples.class, SEMWorldSamples.class, SEMVerifyPolicySamples.class })
 public class SEMInventorySamples
-        extends SampleContribution {
+        extends NormalSamples {
 
     public final StockOrderVerifyPolicy stockPolicy = new StockOrderVerifyPolicy();
 
@@ -83,7 +81,7 @@ public class SEMInventorySamples
     Units units;
 
     @Override
-    protected void assemble() {
+    protected void wireUp() {
         stockPolicy.setName(".stockvp-1");
         stockPolicy.setLabel("库存审核策略");
         stockPolicy.setDescription("测试用的库存审核策略。");
@@ -196,46 +194,36 @@ public class SEMInventorySamples
         m_handlerf1.setAttribute("光滑度", "20mx");
         m_handlerf1.addPrice(date, new BigDecimal(30));
 
-        {
-            takeInOrder1.setSerial("..TK_I:1");
-            takeInOrder1.setWarehouse(rawWarehouse);
-            takeInOrder1.setBeginTime(DateSamples.D_2010_07_20);
+        takeInOrder1.setSerial("..TK_I:1");
+        takeInOrder1.setWarehouse(rawWarehouse);
+        takeInOrder1.setBeginTime(DateSamples.D_2010_07_20);
+        takeInOrder1.addItem(m_glass1, "B1", 50.0, 85.0);
+        takeInOrder1.addItem(m_glue1, "G01", 30.0, 25.0);
+        takeInOrder1.addItem(m_gluepp1, null, 8.0, 15.0);
+        takeInOrder1.addItem(m_handlerkj1, "Z", 150, 6.5);
+        takeInOrder1.addItem(m_handlerkj2, null, 120, 9.0);
 
-            takeInOrder1.addItem(m_glass1, "B1", 50.0, 85.0);
-            takeInOrder1.addItem(m_glue1, "G01", 30.0, 25.0);
-            takeInOrder1.addItem(m_gluepp1, null, 8.0, 15.0);
-            takeInOrder1.addItem(m_handlerkj1, "Z", 150, 6.5);
-            takeInOrder1.addItem(m_handlerkj2, null, 120, 9.0);
-        }
+        takeOutOrder1.setSerial("..TK_O:1");
+        takeOutOrder1.setWarehouse(mainWarehouse);
+        takeOutOrder1.setBeginTime(DateSamples.D_2010_07_20);
+        takeOutOrder1.addItem(m_light_B, null, -5, 50.0);
 
-        {
-            takeOutOrder1.setSerial("..TK_O:1");
-            takeOutOrder1.setWarehouse(mainWarehouse);
-            takeOutOrder1.setBeginTime(DateSamples.D_2010_07_20);
-            takeOutOrder1.addItem(m_light_B, null, -5, 50.0);
-        }
+        factoryInOrder1.setSerial("..FK_I:1");
+        factoryInOrder1.setWarehouse(mainWarehouse);
+        factoryInOrder1.setBeginTime(DateSamples.D_2010_07_20);
+        factoryInOrder1.addItem(m_handlerf1, null, 20.0, 30.0/* ??? */);
 
-        {
-            factoryInOrder1.setSerial("..FK_I:1");
-            factoryInOrder1.setWarehouse(mainWarehouse);
-            factoryInOrder1.setBeginTime(DateSamples.D_2010_07_20);
-            factoryInOrder1.addItem(m_handlerf1, null, 20.0, 30.0/* ??? */);
-        }
+        factoryOutOrder1.setSerial("..FK_O:1");
+        factoryOutOrder1.setWarehouse(mainWarehouse);
+        factoryOutOrder1.setBeginTime(DateSamples.D_2010_07_30);
+        factoryOutOrder1.addItem(m_handlerf1, null, -5.0, 30.0);
 
-        {
-            factoryOutOrder1.setSerial("..FK_O:1");
-            factoryOutOrder1.setWarehouse(mainWarehouse);
-            factoryOutOrder1.setBeginTime(DateSamples.D_2010_07_30);
-            factoryOutOrder1.addItem(m_handlerf1, null, -5.0, 30.0);
-        }
+        planOrder1.setSerial("..PLAN:1");
+        planOrder1.setWarehouse(rawWarehouse);
+        planOrder1.setBeginTime(DateSamples.D_2010_07_30);
+        planOrder1.addItem(m_glass1, "B1", -3, null);
+        planOrder1.addItem(m_glue1, "G01", -5, null);
 
-        {
-            planOrder1.setSerial("..PLAN:1");
-            planOrder1.setWarehouse(rawWarehouse);
-            planOrder1.setBeginTime(DateSamples.D_2010_07_30);
-            planOrder1.addItem(m_glass1, "B1", -3, null);
-            planOrder1.addItem(m_glue1, "G01", -5, null);
-        }
         VerifyContextAccessor.forceVerified(//
                 takeInOrder1, takeOutOrder1, //
                 factoryInOrder1, factoryOutOrder1, //
@@ -243,24 +231,24 @@ public class SEMInventorySamples
     }
 
     @Override
-    protected void listSamples() {
-        add(stockPolicy);
-        addBulk(mainWarehouse, rawWarehouse);
-        addBulk(sl_dedi_1, sl_light_1, //
+    protected void getSamples(SampleList samples) {
+        samples.addBatch(stockPolicy);
+        samples.addBatch(mainWarehouse, rawWarehouse);
+        samples.addBatch(sl_dedi_1, sl_light_1, //
                 sl_glass_1, sl_glue_1, sl_glue_pp, //
                 sl_handler_1, sl_handler_2, sl_handler_KJ, sl_handler_F1);
-        addBulk(cupRoot, //
+        samples.addBatch(cupRoot, //
                 cupSet_dedi, cupSet_light, //
                 cupGlue, cupGlue_pp, //
                 cupGlass_AM, //
                 cupHandler, cupHandler_KJ, cupHandler_F1);
-        addBulk(m_gluepp1.getUnitConv());
-        addBulk(m_light_A, m_light_B, //
+        samples.addBatch(m_gluepp1.getUnitConv());
+        samples.addBatch(m_light_A, m_light_B, //
                 m_glass1, //
                 m_glue1, m_gluepp1, //
                 m_handlerkj1, m_handlerkj2, //
                 m_handlerf1);
-        addBulk(takeInOrder1, takeOutOrder1, //
+        samples.addBatch(takeInOrder1, takeOutOrder1, //
                 factoryInOrder1, factoryOutOrder1, //
                 planOrder1);
     }

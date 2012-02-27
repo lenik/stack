@@ -1,12 +1,10 @@
 package com.bee32.plover.orm.util;
 
-import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
+import javax.free.IdentityHashSet;
 import javax.free.LinkedSet;
 
 import org.slf4j.Logger;
@@ -33,7 +31,6 @@ public class SamplePackage
 
     private int priority;
     private final Set<SamplePackage> dependencies = new LinkedSet<SamplePackage>();
-    private final List<Entity<?>> instances = new ArrayList<Entity<?>>();
 
     public SamplePackage() {
         this(null);
@@ -41,7 +38,6 @@ public class SamplePackage
 
     public SamplePackage(String name) {
         super(name, true);
-        ImportSamplesUtil.register(this);
     }
 
     @Override
@@ -61,6 +57,19 @@ public class SamplePackage
         return LEVEL_NORMAL;
     }
 
+    public Set<SamplePackage> getAllDependencies() {
+        @SuppressWarnings("unchecked")
+        Set<SamplePackage> all = (Set<SamplePackage>) (Set<?>) new IdentityHashSet();
+        getAllDependencies(all);
+        return all;
+    }
+
+    void getAllDependencies(Set<SamplePackage> all) {
+        if (all.add(this))
+            for (SamplePackage dep : getDependencies())
+                dep.getAllDependencies(all);
+    }
+
     public Set<SamplePackage> getDependencies() {
         assembleOnce();
         return Collections.unmodifiableSet(dependencies);
@@ -72,12 +81,55 @@ public class SamplePackage
         dependencies.add(dependency);
     }
 
-    public List<Entity<?>> getInstances() {
+    public final SampleList getSamples() {
         assembleOnce();
-        return Collections.unmodifiableList(instances);
+        SampleList samples = new SampleList();
+        getSamples(samples);
+        return samples;
     }
 
-    protected void listSamples() {
+    @Override
+    protected final void assemble() {
+        wireUp();
+
+        // scan dependencies from injected fields.
+        for (Field field : getClass().getDeclaredFields()) {
+            if (SamplePackage.class.isAssignableFrom(field.getType())) {
+                field.setAccessible(true);
+                try {
+                    SamplePackage dep = (SamplePackage) field.get(this);
+                    addDependency(dep);
+                } catch (ReflectiveOperationException e) {
+                    throw new RuntimeException(e.getMessage(), e);
+                }
+            }
+        }
+    }
+
+    protected void wireUp() {
+    }
+
+    @Override
+    protected void postAssemble() {
+        SampleList samples = new SampleList();
+        getSamples(samples);
+        for (Entity<?> sample : samples) {
+            switch (getLevel()) {
+            case LEVEL_BAD:
+                EntityAccessor.getFlags(sample).setWarn(true);
+            case LEVEL_NORMAL:
+                EntityAccessor.getFlags(sample).setTestData(true);
+                EntityAccessor.getFlags(sample).setBuiltinData(false);
+                break;
+            case LEVEL_STANDARD:
+                EntityAccessor.getFlags(sample).setTestData(false);
+                EntityAccessor.getFlags(sample).setBuiltinData(true);
+                break;
+            }
+        }
+    }
+
+    protected void getSamples(SampleList samples) {
         for (Field field : getClass().getDeclaredFields()) {
             if (!Entity.class.isAssignableFrom(field.getType()))
                 continue;
@@ -88,47 +140,8 @@ public class SamplePackage
             } catch (ReflectiveOperationException e) {
                 throw new RuntimeException(e.getMessage(), e);
             }
-            add(entity);
+            samples.add(entity);
         }
-    }
-
-    public void add(Entity<? extends Serializable> instance) {
-        if (instance == null)
-            throw new NullPointerException("instance");
-        switch (getLevel()) {
-        case LEVEL_BAD:
-            EntityAccessor.getFlags(instance).setWarn(true);
-        case LEVEL_NORMAL:
-            EntityAccessor.getFlags(instance).setTestData(true);
-            EntityAccessor.getFlags(instance).setBuiltinData(false);
-            break;
-        case LEVEL_STANDARD:
-            EntityAccessor.getFlags(instance).setTestData(false);
-            EntityAccessor.getFlags(instance).setBuiltinData(true);
-            break;
-        }
-        instances.add(instance);
-    }
-
-    @SafeVarargs
-    protected final <E extends Entity<?>> void addBulk(E... samples) {
-        for (Entity<?> sample : samples)
-            add(sample);
-    }
-
-    @SafeVarargs
-    protected final <E extends Entity<?>> void addMicroGroup(E... samples) {
-        if (samples.length == 0)
-            return;
-
-        E head = samples[0];
-        E prev = head;
-        for (int i = 1; i < samples.length; i++) {
-            E node = samples[i];
-            EntityAccessor.setNextOfMicroLoop(prev, node);
-        }
-
-        add(head);
     }
 
     /**

@@ -6,14 +6,13 @@ import java.util.Calendar;
 import javax.inject.Inject;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
-import com.bee32.plover.orm.util.ImportSamples;
-import com.bee32.plover.orm.util.SampleContribution;
+import com.bee32.plover.orm.util.NormalSamples;
+import com.bee32.plover.orm.util.SampleList;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.entity.ChanceActionStyles;
 import com.bee32.sem.chance.entity.ChanceCompetitor;
 import com.bee32.sem.chance.entity.ChanceParty;
-import com.bee32.sem.chance.entity.ChanceQuotation;
 import com.bee32.sem.chance.entity.ChanceSourceTypes;
 import com.bee32.sem.chance.entity.ChanceStages;
 import com.bee32.sem.inventory.SEMInventorySamples;
@@ -21,9 +20,8 @@ import com.bee32.sem.people.SEMPeopleSamples;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.world.monetary.MCValue;
 
-@ImportSamples({ SEMInventorySamples.class })
 public class SEMChanceSamples
-        extends SampleContribution {
+        extends NormalSamples {
 
     public final Chance chance = new Chance();
     public final ChanceParty party = new ChanceParty();
@@ -31,7 +29,6 @@ public class SEMChanceSamples
     public final ChanceAction chanceAction1 = new ChanceAction();
     public final ChanceAction chanceAction2 = new ChanceAction();
     public final ChanceCompetitor competitor = new ChanceCompetitor();
-    public final ChanceQuotation quotation = new ChanceQuotation();
 
     @Inject
     IcsfPrincipalSamples principals;
@@ -47,7 +44,7 @@ public class SEMChanceSamples
     ChanceStages chanceStages;
 
     @Override
-    protected void assemble() {
+    protected void wireUp() {
         Calendar cal = Calendar.getInstance();
         cal.set(2011, 4, 8);
 
@@ -98,28 +95,17 @@ public class SEMChanceSamples
 
         chance.addAction(chanceAction1);
         chance.addAction(chanceAction2);
-
-        quotation.setLabel("7月2号报价");
-        quotation.setChance(chance);
-        quotation.setDeliverInfo("发顺丰加保价");
-        quotation.setPayment("网上转帐");
-        quotation.addItem(inventories.m_light_A, //
-                inventories.m_light_A.getLatestPrice().getPrice(), //
-                new BigDecimal(3), 1.0f);
     }
 
     @Override
-    protected void listSamples() {
+    protected void getSamples(SampleList samples) {
         // add <price>->quotionDetail
-        add(chance);
-        add(party);
-        add(party2);
-        add(competitor);
-        add(chanceAction1);
-        add(chanceAction2);
-
-        // add <price>->quotation and quotationItem
-        add(quotation);
+        samples.add(chance);
+        samples.add(party);
+        samples.add(party2);
+        samples.add(competitor);
+        samples.add(chanceAction1);
+        samples.add(chanceAction2);
     }
 
 }

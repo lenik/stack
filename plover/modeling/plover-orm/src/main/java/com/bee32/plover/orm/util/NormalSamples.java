@@ -1,6 +1,9 @@
 package com.bee32.plover.orm.util;
 
+import javax.inject.Inject;
+
 import com.bee32.plover.inject.ComponentTemplate;
+import com.bee32.plover.orm.util.DiamondPackage.NormalGroup;
 import com.bee32.plover.site.scope.PerSite;
 
 /**
@@ -37,14 +40,13 @@ import com.bee32.plover.site.scope.PerSite;
  */
 @ComponentTemplate
 @PerSite
-public abstract class SampleContribution
+public abstract class NormalSamples
         extends SamplePackage {
 
-    public SampleContribution() {
-        this(DiamondPackage.NORMAL);
-    }
+    @Inject
+    NormalGroup normals;
 
-    protected SampleContribution(DiamondPackage diamond) {
+    protected NormalSamples(DiamondPackage diamond) {
         addToDiamond(diamond);
     }
 

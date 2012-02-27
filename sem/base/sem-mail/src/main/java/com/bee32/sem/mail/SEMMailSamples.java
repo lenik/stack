@@ -5,17 +5,16 @@ import java.util.Arrays;
 import javax.inject.Inject;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
-import com.bee32.plover.orm.util.ImportSamples;
-import com.bee32.plover.orm.util.SampleContribution;
+import com.bee32.plover.orm.util.NormalSamples;
+import com.bee32.plover.orm.util.SampleList;
 import com.bee32.sem.mail.entity.Mail;
 import com.bee32.sem.mail.entity.MailDelivery;
 import com.bee32.sem.mail.entity.MailFilter;
 import com.bee32.sem.mail.entity.MailFolders;
 import com.bee32.sem.mail.entity.MailOrientation;
 
-@ImportSamples(IcsfPrincipalSamples.class)
 public class SEMMailSamples
-        extends SampleContribution {
+        extends NormalSamples {
 
     @Inject
     IcsfPrincipalSamples principals;
@@ -28,7 +27,7 @@ public class SEMMailSamples
     public Mail helloEcho = new Mail();
 
     @Override
-    protected void assemble() {
+    protected void wireUp() {
         spamFilter.setLabel("spam-filter");
         spamFilter.setDescription("将标记为'垃圾'的邮件移动到'垃圾箱'");
         spamFilter.setExpr("a.is-spam...");
@@ -62,10 +61,10 @@ public class SEMMailSamples
     }
 
     @Override
-    protected void listSamples() {
-        add(spamFilter);
-        add(hello);
-        add(helloEcho);
+    protected void getSamples(SampleList samples) {
+        samples.add(spamFilter);
+        samples.add(hello);
+        samples.add(helloEcho);
     }
 
 }

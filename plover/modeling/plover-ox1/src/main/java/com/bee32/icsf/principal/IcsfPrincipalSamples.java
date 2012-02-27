@@ -2,7 +2,8 @@ package com.bee32.icsf.principal;
 
 import javax.inject.Inject;
 
-import com.bee32.plover.orm.util.SampleContribution;
+import com.bee32.plover.orm.util.SampleList;
+import com.bee32.plover.orm.util.NormalSamples;
 
 /**
  * Sample principals:
@@ -13,7 +14,7 @@ import com.bee32.plover.orm.util.SampleContribution;
  * </pre>
  */
 public class IcsfPrincipalSamples
-        extends SampleContribution {
+        extends NormalSamples {
 
     public final Group solaRobots = new Group("sola", "Sola Robots Club");
     public final Group sunCorp = new Group("sun", "Sun Corp");
@@ -28,7 +29,7 @@ public class IcsfPrincipalSamples
     Roles roles;
 
     @Override
-    protected void assemble() {
+    protected void wireUp() {
         eva.setPrimaryGroup(solaRobots);
         eva.setPrimaryRole(roles.adminRole);
         wallE.setPrimaryGroup(solaRobots);
@@ -50,9 +51,9 @@ public class IcsfPrincipalSamples
     }
 
     @Override
-    protected void listSamples() {
-        addBulk(sunCorp, solaRobots);
-        addBulk(eva, wallE, alice, tom, kate);
+    protected void getSamples(SampleList samples) {
+        samples.addBatch(sunCorp, solaRobots);
+        samples.addBatch(eva, wallE, alice, tom, kate);
     }
 
     @Override

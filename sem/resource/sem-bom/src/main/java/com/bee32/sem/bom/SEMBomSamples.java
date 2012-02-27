@@ -7,14 +7,13 @@ import javax.free.Dates;
 import javax.free.UnexpectedException;
 import javax.inject.Inject;
 
-import com.bee32.plover.orm.util.ImportSamples;
-import com.bee32.plover.orm.util.SampleContribution;
+import com.bee32.plover.orm.util.NormalSamples;
+import com.bee32.plover.orm.util.SampleList;
 import com.bee32.sem.bom.entity.Part;
 import com.bee32.sem.inventory.SEMInventorySamples;
 
-@ImportSamples({ SEMInventorySamples.class })
 public class SEMBomSamples
-        extends SampleContribution {
+        extends NormalSamples {
 
     public final Part p_light_A = new Part();
     public final Part p_light_B = new Part();
@@ -34,7 +33,7 @@ public class SEMBomSamples
     }
 
     @Override
-    protected void assemble() {
+    protected void wireUp() {
         p_light_A.setTarget(inventories.m_light_A);
         p_light_B.setTarget(inventories.m_light_B);
         p_handler_kj1.setTarget(inventories.m_handlerkj1);
@@ -60,8 +59,8 @@ public class SEMBomSamples
     }
 
     @Override
-    protected void listSamples() {
-        addBulk(p_light_A, p_light_B, //
+    protected void getSamples(SampleList samples) {
+        samples.addBatch(p_light_A, p_light_B, //
                 p_handlerf1, p_handler_kj1, p_handler_kj2);
     }
 

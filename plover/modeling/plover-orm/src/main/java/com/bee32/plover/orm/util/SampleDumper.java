@@ -1,8 +1,12 @@
 package com.bee32.plover.orm.util;
 
+import java.util.ArrayList;
 import java.util.IdentityHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
 
 import javax.free.IdentityHashSet;
@@ -18,51 +22,76 @@ public class SampleDumper {
 
     public static void dump(SamplePackage node) {
         PrettyPrintStream out = new PrettyPrintStream();
-        dump(node, out, new IdentityHashSet());
+
+        Map<SamplePackage, List<SamplePackage>> xrefMap = new IdentityHashMap<>();
+
+        Set<SamplePackage> roots = new LinkedHashSet<>();
+        for (SamplePackage pkg : node.getAllDependencies()) {
+            Set<SamplePackage> deps = pkg.getDependencies();
+            if (deps.isEmpty())
+                roots.add(pkg);
+            else
+                for (SamplePackage dep : deps) {
+                    List<SamplePackage> users = xrefMap.get(dep);
+                    if (users == null)
+                        xrefMap.put(dep, users = new ArrayList<>());
+                    users.add(pkg);
+                }
+        }
+
+        for (SamplePackage root : roots)
+            dump(out, root, xrefMap, new IdentityHashSet());
         System.out.println(out);
     }
 
-    static void dump(SamplePackage node, PrettyPrintStream out, IdentityHashSet pset) {
-        if (node == null)
-            throw new NullPointerException("node");
+    static void dump(PrettyPrintStream out, SamplePackage start, Map<SamplePackage, List<SamplePackage>> xrefMap,
+            IdentityHashSet pset) {
+        if (start == null)
+            throw new NullPointerException("start");
 
-        out.println("+ " + node.getName() + " @" + System.identityHashCode(node));
-        if (!pset.add(node)) {
-            out.println("    ...");
+        out.print("+ " + start.getName() + " @" + System.identityHashCode(start));
+        if (!pset.add(start)) {
+            out.println(" (...)");
             return;
         }
 
+        out.println();
         out.enter();
 
-        TreeMap<String, Entity<?>> sorted = new TreeMap<String, Entity<?>>();
-        for (Entity<?> entity : node.getInstances()) {
-            String typeName = entity.getClass().getSimpleName();
-            Object id = entity.getId();
-            String title = typeName + " : " + (id == null ? System.identityHashCode(entity) : id);
-            sorted.put(title, entity);
+        TreeMap<String, Entity<?>> sortedSamples = new TreeMap<String, Entity<?>>();
+        for (Entity<?> sample : start.getSamples()) {
+            String typeName = sample.getClass().getSimpleName();
+            Object id = sample.getId();
+            String title = typeName + " : " + (id == null ? System.identityHashCode(sample) : id);
+            sortedSamples.put(title, sample);
         }
 
-        for (Entry<String, Entity<?>> entry : sorted.entrySet()) {
-            String title = entry.getKey();
-            Entity<?> entity = entry.getValue();
+        for (Entry<String, Entity<?>> sample : sortedSamples.entrySet()) {
+            String title = sample.getKey();
+            Entity<?> entity = sample.getValue();
             out.println(title);
 
             // Dump auto entity in more detail.
             if (verboseForAutoEntities && EntityAccessor.isAutoId(entity)) {
                 entity.toString(out, FormatStyle.NORMAL);
             }
-
         }
 
-        for (SamplePackage dep : node.getDependencies())
-            dump(dep, out, pset);
+        List<SamplePackage> users = xrefMap.get(start);
+        if (users != null)
+            for (SamplePackage user : users)
+                dump(out, user, xrefMap, pset);
 
         out.leave();
     }
 
-    public static void checkUnique(SamplePackage start) {
+    /**
+     * @param bottom
+     *            Sample package towards the bottom side.
+     */
+    public static void checkUnique(SamplePackage bottom) {
         IdentityHashMap<String, Object> map = new IdentityHashMap<String, Object>();
-        checkUnique(start, map);
+        checkUnique(bottom, map);
     }
 
     static void checkUnique(SamplePackage node, Map<String, Object> map) {

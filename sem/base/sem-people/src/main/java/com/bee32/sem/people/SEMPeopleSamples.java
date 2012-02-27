@@ -3,31 +3,26 @@ package com.bee32.sem.people;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.free.Dates;
 import javax.inject.Inject;
 
 import com.bee32.icsf.principal.Group;
-import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.collections.Varargs;
-import com.bee32.plover.orm.util.ImportSamples;
-import com.bee32.plover.orm.util.SampleContribution;
+import com.bee32.plover.orm.util.NormalSamples;
+import com.bee32.plover.orm.util.SampleList;
 import com.bee32.sem.people.entity.Contact;
 import com.bee32.sem.people.entity.ContactCategories;
 import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.entity.OrgTypes;
 import com.bee32.sem.people.entity.PartySidTypes;
-import com.bee32.sem.people.entity.PartyTagname;
 import com.bee32.sem.people.entity.PartyTagnames;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonRole;
 
-@ImportSamples(IcsfPrincipalSamples.class)
 public class SEMPeopleSamples
-        extends SampleContribution {
+        extends NormalSamples {
 
     // 原来 SEMOrgSamples 中的样本。
     public final Group abcCorp = new Group("ABC Company");
@@ -46,15 +41,6 @@ public class SEMPeopleSamples
     public final Person bentley = new Person("Bentley");
     public final Person weiXiaoBao = new Person("wxb");
 
-    @Inject
-    ContactCategories contactCategories;
-    @Inject
-    PartyTagnames partyTagnames;
-    @Inject
-    OrgTypes orgTypes;
-    @Inject
-    PartySidTypes sidTypes;
-
     public SEMPeopleSamples()
             throws ParseException {
 
@@ -69,62 +55,32 @@ public class SEMPeopleSamples
         abcRAD.setInheritedGroup(abcCorp);
         abcCorp.getDerivedGroups().add(abcRAD);
 
-        // admin.setPasswordByString("");
-
-        {
-            Contact jackHome = new Contact(jackPerson, contactCategories.HOME);
-            jackHome.setAddress("海狞鞋桥");
-            jackHome.setMobile("15392969212");
-            jackHome.setTel("85963291");
-
-            Contact jackWork = new Contact(jackPerson, contactCategories.WORK);
-            jackHome.setAddress("海狞黑丝园区");
-            jackWork.setTel("87219592");
-            jackWork.setEmail("jack@abc.com");
-
-            jackPerson.setBirthday(Dates.YYYY_MM_DD.parse("1980-4-5"));
-            jackPerson.setMemo("康桥鞋业二十年");
-            jackPerson.setSex(Gender.MALE);
-            jackPerson.setCensusRegister("海狞市公安局");
-            jackPerson.setSid("330401198210250230");
-        }
+        jackPerson.setBirthday(Dates.YYYY_MM_DD.parse("1980-4-5"));
+        jackPerson.setMemo("康桥鞋业二十年");
+        jackPerson.setSex(Gender.MALE);
+        jackPerson.setCensusRegister("海狞市公安局");
+        jackPerson.setSid("330401198210250230");
         jack = jackPerson.createUserLikeThis("jack");
         jack.setPrimaryGroup(abcRAD);
         abcRAD.addMemberUser(jack);
 
-        {
-            Contact tangHome = new Contact(tangPerson, contactCategories.HOME);
-            Contact tangWork = new Contact(tangPerson, contactCategories.WORK);
-            tangHome.setEmail("cruise@war.org");
-            tangHome.setAddress("美国德州海滨公园");
-            tangHome.setMobile("13947385860");
-            tangHome.setTel("82957395");
-            tangWork.setTel("86593184");
-            tangPerson.setBirthday(Dates.YYYY_MM_DD.parse("1970-3-12"));
-            tangPerson.setMemo("每天喝水8升拥有好身体。");
-            tangPerson.setSex(Gender.MALE);
-            tangPerson.setCensusRegister("德州府");
-            tangPerson.setSid("330481197003124931");
-        }
+        tangPerson.setBirthday(Dates.YYYY_MM_DD.parse("1970-3-12"));
+        tangPerson.setMemo("每天喝水8升拥有好身体。");
+        tangPerson.setSex(Gender.MALE);
+        tangPerson.setCensusRegister("德州府");
+        tangPerson.setSid("330481197003124931");
         tang = tangPerson.createUserLikeThis("tang");
         tang.setPrimaryGroup(abcRAD);
         tang.addAssignedGroup(abcSales);
+
         abcRAD.addMemberUser(tang);
         abcSales.addMemberUser(tang);
-    }
 
-    /** 相当于原来的 ebo-templatetypes */
-    void series2() {
         moonOrg.setFullName("海宁市火星探索公司");
-        moonOrg.setType(orgTypes.MILITARY);
         moonOrg.setSize(1000);
         moonOrg.setCustomer(true);
-        Set<PartyTagname> tags = new HashSet<PartyTagname>();
-        tags.add(partyTagnames.OTHER);
-        moonOrg.setTags(tags);
 
         abcOrg.setFullName("ABC 有限责任公司");
-        abcOrg.setType(orgTypes.LTD_CORP);
         abcOrg.setSize(20);
         abcOrg.setInterests("互联网搜索");
 
@@ -152,9 +108,60 @@ public class SEMPeopleSamples
         weiXiaoBao.setInterests("吃饭睡觉玩老婆");
         weiXiaoBao.setSex(Gender.MALE);
         weiXiaoBao.setSid("11010116541220517");
-        weiXiaoBao.setSidType(sidTypes.IDENTITYCARD);
         moonOrg.setCustomer(true);
         moonOrg.setEmployee(true);
+
+        PersonRole salesTitle = new PersonRole();
+        salesTitle.setPerson(bentley);
+        salesTitle.setOrg(abcOrg);
+        salesTitle.setAltOrgUnit("销售部");
+        salesTitle.setRole("销售经理");
+        salesTitle.setDescription("The ripest fruit falls first.");
+        bentley.setRoles(Varargs.toSet(salesTitle));
+
+        PersonRole productSale = new PersonRole();
+        productSale.setPerson(bugatti);
+        productSale.setOrg(abcOrg);
+        productSale.setAltOrgUnit("销售部");
+        productSale.setRole("产品导购");
+        productSale.setDescription("People are beginning to notice you.  Try dressing before you leave the house.");
+        bugatti.setRoles(Varargs.toSet(productSale));
+    }
+
+    @Inject
+    OrgTypes orgTypes;
+    @Inject
+    PartyTagnames partyTagnames;
+    @Inject
+    ContactCategories contactCategories;
+    @Inject
+    PartySidTypes sidTypes;
+
+    @Override
+    protected void wireUp() {
+        moonOrg.setType(orgTypes.MILITARY);
+        moonOrg.setTags(Varargs.toSet(partyTagnames.OTHER));
+        abcOrg.setType(orgTypes.LTD_CORP);
+        weiXiaoBao.setSidType(sidTypes.IDENTITYCARD);
+
+        Contact jackHome = new Contact(jackPerson, contactCategories.HOME);
+        Contact jackWork = new Contact(jackPerson, contactCategories.WORK);
+        jackHome.setAddress("海狞鞋桥");
+        jackHome.setMobile("15392969212");
+        jackHome.setTel("85963291");
+        jackWork.setAddress("海狞黑丝园区");
+        jackWork.setTel("87219592");
+        jackWork.setEmail("jack@abc.com");
+        jackPerson.setContacts(Varargs.toList(jackHome, jackWork));
+
+        Contact tangHome = new Contact(tangPerson, contactCategories.HOME);
+        Contact tangWork = new Contact(tangPerson, contactCategories.WORK);
+        tangHome.setEmail("cruise@war.org");
+        tangHome.setAddress("美国德州海滨公园");
+        tangHome.setMobile("13947385860");
+        tangHome.setTel("82957395");
+        tangWork.setTel("86593184");
+        tangPerson.setContacts(Varargs.toList(tangHome, tangWork));
 
         Contact weiXiaoBaoHome = new Contact();
         weiXiaoBaoHome.setParty(weiXiaoBao);
@@ -178,38 +185,20 @@ public class SEMPeopleSamples
         weiXiaoBaoWork.setWebsite("http://www.weixiaobao.com");
 
         weiXiaoBao.setContacts(Arrays.asList(weiXiaoBaoHome, weiXiaoBaoWork));
-
-        PersonRole salesTitle = new PersonRole();
-        salesTitle.setPerson(bentley);
-        salesTitle.setOrg(abcOrg);
-        salesTitle.setAltOrgUnit("销售部");
-        salesTitle.setRole("销售经理");
-        salesTitle.setDescription("The ripest fruit falls first.");
-        bentley.setRoles(Varargs.toSet(salesTitle));
-
-        PersonRole productSale = new PersonRole();
-        productSale.setPerson(bugatti);
-        productSale.setOrg(abcOrg);
-        productSale.setAltOrgUnit("销售部");
-        productSale.setRole("产品导购");
-        productSale.setDescription("People are beginning to notice you.  Try dressing before you leave the house.");
-        bugatti.setRoles(Varargs.toSet(productSale));
     }
 
     @Override
-    protected void assemble() {
-        series2();
+    protected void getSamples(SampleList samples) {
+        samples.add(humanCorp);
+        samples.addBatch(abcCorp, abcRAD, abcSales);
 
-        add(humanCorp);
-        addBulk(abcCorp, abcRAD, abcSales);
+        samples.addBatch(jack, tang);
+        samples.addBatch(jackPerson, tangPerson);
 
-        addBulk(jack, tang);
-        addBulk(jackPerson, tangPerson);
+        samples.add(moonOrg);
 
-        add(moonOrg);
-
-        add(abcOrg);
-        addBulk(bugatti, bentley, weiXiaoBao);
+        samples.add(abcOrg);
+        samples.addBatch(bugatti, bentley, weiXiaoBao);
     }
 
     @Override

@@ -9,16 +9,15 @@ import javax.inject.Inject;
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.Roles;
-import com.bee32.plover.orm.util.ImportSamples;
-import com.bee32.plover.orm.util.SampleContribution;
+import com.bee32.plover.orm.util.NormalSamples;
+import com.bee32.plover.orm.util.SampleList;
 import com.bee32.sem.event.entity.Event;
 import com.bee32.sem.event.entity.EventCategory;
 import com.bee32.sem.event.entity.EventPriorities;
 import com.bee32.sem.event.entity.EventType;
 
-@ImportSamples(IcsfPrincipalSamples.class)
 public class SEMEventSamples
-        extends SampleContribution {
+        extends NormalSamples {
 
     public final EventCategory weather = new EventCategory("weather", "天气预报");
     public final EventCategory special = new EventCategory("special", "特种");
@@ -55,7 +54,7 @@ public class SEMEventSamples
     }
 
     @Override
-    protected void assemble() {
+    protected void wireUp() {
         Principal robots = principals.solaRobots;
 
         rains.add(mkRain(-28.5, 1.0, "28.5 天前", robots));
@@ -78,13 +77,14 @@ public class SEMEventSamples
     }
 
     @Override
-    protected void listSamples() {
-        addBulk(weather, special);
+    protected void getSamples(SampleList samples) {
+        samples.add(weather);
+        samples.add(special);
 
         for (Event rain : rains)
-            add(rain);
+            samples.add(rain);
 
-        add(killAngel);
+        samples.add(killAngel);
     }
 
 }

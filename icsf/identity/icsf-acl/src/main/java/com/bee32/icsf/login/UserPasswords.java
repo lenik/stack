@@ -15,7 +15,7 @@ public class UserPasswords
     Users users;
 
     @Override
-    protected void assemble() {
+    protected void wireUp() {
         adminPasswd.setUser(users.admin);
         adminPasswd.setPasswd(UserPassword.digest("Bee32"));
 

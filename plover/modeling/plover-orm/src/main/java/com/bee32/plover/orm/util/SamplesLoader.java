@@ -14,9 +14,7 @@ import javax.inject.Inject;
 import org.apache.commons.collections15.Closure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +30,7 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.PersistenceUnit;
+import com.bee32.plover.orm.util.DiamondPackage.NormalGroup;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.site.cfg.DBAutoDDL;
 import com.bee32.plover.site.scope.PerSite;
@@ -40,10 +39,12 @@ import com.bee32.plover.site.scope.PerSite;
 @PerSite
 @ScopeProxy(ScopedProxyMode.INTERFACES)
 public class SamplesLoader
-        implements ISamplesLoader, ApplicationContextAware, ITypeAbbrAware {
+        implements ISamplesLoader, ITypeAbbrAware {
 
     static Logger logger = LoggerFactory.getLogger(SamplesLoader.class);
 
+    @Inject
+    ApplicationContext appctx;
     @Inject
     IPloverConfManager confManager = StaticPloverConfManager.getInstance();
 
@@ -73,20 +74,13 @@ public class SamplesLoader
         return service;
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext)
-            throws BeansException {
-        /**
-         * 立即分析 {@link ImportSamples} 依赖关系。
-         *
-         * ImportSamples
-         */
-        ImportSamplesUtil.applyImports(applicationContext);
-    }
-
     int loadIndex = 0;
 
     Set<SamplePackage> loadedPackages = new HashSet<>();
+
+    public void loadSamples(Class<? extends SamplePackage> rootPackageClass) {
+
+    }
 
     @Override
     public void loadSamples(SamplePackage rootPackage) {
@@ -94,15 +88,15 @@ public class SamplesLoader
     }
 
     @Override
-    public void loadSamples(SamplePackage rootPackage, Closure<SampleContribution> progress) {
+    public void loadSamples(SamplePackage rootPackage, Closure<NormalSamples> progress) {
         if (loadedPackages.add(rootPackage)) {
             _loadSamples(rootPackage, progress);
         }
     }
 
-    synchronized void _loadSamples(final SamplePackage rootPackage, final Closure<SampleContribution> progress) {
+    synchronized void _loadSamples(final SamplePackage rootPackage, final Closure<NormalSamples> progress) {
         logger.debug("Normal samples structure: ");
-        SampleDumper.dump(DiamondPackage.NORMAL);
+        SampleDumper.dump(appctx.getBean(NormalGroup.class));
 
         final List<SamplePackage> queue = new ArrayList<SamplePackage>();
 
@@ -157,7 +151,7 @@ public class SamplesLoader
     }
 
     @SuppressWarnings("unchecked")
-    void _actualLoad(SamplePackage pack, Closure<SampleContribution> progress) {
+    void _actualLoad(SamplePackage pack, Closure<NormalSamples> progress) {
         if (pack == null)
             throw new NullPointerException("pack");
 
@@ -168,7 +162,7 @@ public class SamplesLoader
         List<Entity<?>> fixedList = new ArrayList<Entity<?>>();
 
         // Classify to A/Z
-        for (Entity<?> sample : pack.getInstances()) {
+        for (Entity<?> sample : pack.getSamples()) {
             if (sample == null) {
                 logger.error("Null sample in package " + pack);
                 continue;

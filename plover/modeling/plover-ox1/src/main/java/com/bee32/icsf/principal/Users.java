@@ -14,7 +14,7 @@ public class Users
     Roles roles;
 
     @Override
-    protected void assemble() {
+    protected void wireUp() {
         admin.setPrimaryRole(roles.adminRole);
     }
 

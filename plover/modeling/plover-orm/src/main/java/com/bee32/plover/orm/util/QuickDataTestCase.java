@@ -31,7 +31,7 @@ public class QuickDataTestCase
         new StandardSamples();
 
         SamplesLoader samplesLoader = new SamplesLoader();
-        samplesLoader.loadSamples(DiamondPackage.NORMAL);
+        // samplesLoader.loadSamples(DiamondPackage.NORMAL);
     }
 
 }
