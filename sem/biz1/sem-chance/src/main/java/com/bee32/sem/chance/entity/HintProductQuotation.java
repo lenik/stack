@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import com.bee32.sem.world.thing.AbstractItem;
 
@@ -22,13 +23,6 @@ public class HintProductQuotation
 
     HintProduct product;
     BigDecimal discountRate = new BigDecimal(1);
-
-    /**
-     * AbstractItem中继承的quantity设为1，实际在报价中不使用
-     */
-    public HintProductQuotation() {
-        setQuantity(new BigDecimal(1));
-    }
 
     @ManyToOne
     public HintProduct getProduct() {
@@ -55,6 +49,7 @@ public class HintProductQuotation
     }
 
     @Override
+    @Transient
     protected Date getFxrDate() {
         return this.getCreatedDate();
     }

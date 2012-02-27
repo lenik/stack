@@ -76,7 +76,7 @@ public class ChanceDto
             actions = new ArrayList<ChanceActionDto>();
 
         if (selection.contains(PRODUCTS))
-            products = mrefList(HintProductDto.class, source.getProducts());
+            products = marshalList(HintProductDto.class, source.getProducts());
         else
             products = new ArrayList<HintProductDto>();
 

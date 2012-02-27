@@ -9,8 +9,9 @@
     <ui:param name="obj" value="${bean.openedObject}" />
     <ui:param name="partyObj" value="${bean.partiesMBean.openedObject}" />
     <ui:param name="actionObj" value="${bean.actionsMBean.openedObject}" />
-    <ui:param name="quotationItemObj" value="${bean.quotationItemsMBean.openedObject}" />
+    <ui:param name="productObj" value="${bean.productsMBean.openedObject}" />
     <ui:param name="dicts" value="${chanceDictsBean}" />
+    <ui:param name="monetary" value="#{monetaryDictsBean}" />
 
     <ui:define name="dataColumns">
         <p:column headerText="日期" sortBy="${entry.beginDate}" styleClass="f-wrappable">
@@ -131,18 +132,21 @@
                 </fr:listView>
             </p:tab>
 
-            <p:tab title="报价">
-                <fr:listView id="qIndexView" editView=":qEditView" header="报价" style="indexPanel"
-                    orientation="td" mbean="${bean.quotationsMBean}" nested="true">
+            <p:tab title="选型">
+                <fr:listView id="pIndexView" editView=":pEditView" header="选型" style="indexPanel"
+                    orientation="td" mbean="${bean.productsMBean}" nested="true">
                     <f:facet name="columns">
-                        <p:column headerText="标题">
-                            <h:outputText value="${entry.label}" />
+                        <p:column headerText="客户名称">
+                            <h:outputText value="${entry.productName}" />
                         </p:column>
-                        <p:column headerText="报价日期">
-                            <h:outputText value="${entry.createdDate}" />
+                        <p:column headerText="客户型号">
+                            <h:outputText value="${entry.modelSpec}" />
                         </p:column>
-                        <p:column headerText="总金额">
-                            <h:outputText value="${entry.nativeTotal}" />
+                        <p:column headerText="客户单位">
+                            <h:outputText value="${entry.unitName}" />
+                        </p:column>
+                        <p:column headerText="对应物料">
+                            <h:outputText value="${entry.decidedMaterial.label}" />
                         </p:column>
                     </f:facet>
                 </fr:listView>
@@ -155,76 +159,8 @@
             update=":editDialog:form:tv:partiesView:editForm:body" />
         <sem:chooseChanceActionDialog id="c_action" header="选择要关联的行动日志" target="${bean.actionsMBean.addition}"
             update=":editDialog:form:tv:actionsIndexView:indexForm:body" />
-        <sem:chooseMaterialDialog id="c_material" header="选择产品/物料" target="${quotationItemObj.material}"
-            update=":qEditView:editForm:tv:qItemsView:editForm:body" />
-
-        <fr:listView id="qEditView" indexView=":editDialog:form:tv:qIndexView" header="报价" style="editDialog"
-            mbean="${bean.quotationsMBean}">
-            <p:tabView id="tv">
-                <p:tab title="基本信息">
-                    <h:panelGrid columns="2">
-                        <h:outputLabel for="chance" value="所属机会:" />
-                        <p:inputText id="chance" label="所属机会" value="${item.chance.subject}" style="width: 30em;"
-                            readonly="true" />
-
-                        <h:outputLabel for="label" value="简要:" />
-                        <p:inputText id="label" label="简要" value="${item.label}" style="width: 30em;" />
-
-                        <h:outputLabel for="description" value="描述信息:" />
-                        <p:inputText id="description" label="描述信息" value="${item.description}" style="width: 30em;" />
-
-                        <h:outputLabel for="deliverInfo" value="交付说明:" />
-                        <p:inputTextarea id="deliverInfo" label="交付说明" value="${item.deliverInfo}"
-                            style="width: 30em; height: 6em;" />
-
-                        <h:outputText for="payment" value="付款说明:" />
-                        <p:inputTextarea id="payment" label="付款说明" value="${item.payment}" style="width: 30em; height: 6em;" />
-                    </h:panelGrid>
-                </p:tab>
-                <p:tab title="报价明细">
-                    <fr:listView id="qItemsView" header="报价明细" style="panel" orientation="td"
-                        mbean="${bean.quotationItemsMBean}" nested="true">
-                        <f:facet name="columns">
-                            <p:column headerText="产品">
-                                <h:outputText value="${entry.material.label}" />
-                            </p:column>
-                            <p:column headerText="折扣">
-                                <h:outputText value="${entry.discount}" />
-                            </p:column>
-                            <p:column headerText="基础价格">
-                                <h:outputText value="${entry.basePrice}" />
-                            </p:column>
-                            <p:column headerText="单价">
-                                <h:outputText value="${entry.price}" />
-                            </p:column>
-                            <p:column headerText="数目">
-                                <h:outputText value="${entry.quantity}" />
-                            </p:column>
-                        </f:facet>
-                        <h:panelGrid columns="2">
-                            <h:outputText value="产品/物料" />
-                            <h:panelGroup>
-                                <p:inputText id="material" value="${item.material.label}" readonly="true"
-                                    label="产品/物料" />
-                                <p:commandButton id="chooseMaterial" value="..." onclick="chooseMaterialDialog.show()" />
-                            </h:panelGroup>
-
-                            <h:outputText value="基础价格" />
-                            <h:outputText value="${item.basePrice}" />
-
-                            <h:outputText value="折扣" />
-                            <p:inputText id="discount" value="${item.discount}" label="折扣" />
-
-                            <h:outputText value="单价" />
-                            <p:inputText id="price" value="${item.price.value}" label="单价" />
-
-                            <h:outputText value="数量" />
-                            <p:inputText id="quantity" value="${item.quantity}" label="数量" />
-                        </h:panelGrid>
-                    </fr:listView>
-                </p:tab>
-            </p:tabView>
-        </fr:listView>
+        <sem:chooseMaterialDialog id="c_material" header="选择产品/物料" target="${productObj.decidedMaterial}"
+            update=":pEditView:editForm:tv:decidedMaterial" />
 
         <fr:listView id="actionsEditView" header="行动记录" style="editDialog" picker="chooseChanceActionDialog"
             indexView=":editDialog:form:tv:actionsIndexView" mbean="${bean.actionsMBean}" readonly="true">
@@ -291,5 +227,106 @@
                 </t:panelGroup>
             </t:panelGrid>
         </fr:listView>
+
+        <fr:listView id="pEditView" header="选型"
+            style="editDialog"
+            indexView=":editDialog:form:tv:pIndexView"
+            mbean="${bean.productsMBean}">
+
+            <p:tabView id="tv">
+                <p:tab title="选型基本信息">
+                    <t:panelGrid columns="4"
+                        columnClasses="field-label, field-content, field-label, field-content">
+
+                        <h:outputText value="客户名称:" />
+                        <p:inputText id="productName" value="#{item.productName}" label="客户名称"/>
+                        <h:outputText value="客户型号:" />
+                        <p:inputText id="modelSpec" value="#{item.modelSpec}" label="客户型号"/>
+
+                        <h:outputText value="客户单位:" />
+                        <p:inputText id="unitName" value="#{item.unitName}" label="客户单位"/>
+                        <h:outputText value="对应物料:" />
+                        <t:panelGrid columns="2">
+                            <p:inputText id="decidedMaterial" readonly="true" value="#{item.decidedMaterial.label}"/>
+                            <p:commandButton id="chooseMaterial" value="..." onclick="chooseMaterialDialog.show()" />
+                        </t:panelGrid>
+                    </t:panelGrid>
+                </p:tab>
+
+                <p:tab title="附加属性">
+                    <fr:listView id="attributeIndexView" editView=":attributeEditView"
+                        header="附加属性" style="indexPanel" orientation="td"
+                        mbean="${bean.productAttributesMBean}" nested="true">
+                        <f:facet name="columns">
+                            <p:column headerText="属性名">
+                                <h:outputText
+                                    value="${entry.name}" />
+                            </p:column>
+                            <p:column headerText="属性值">
+                                <h:outputText value="${entry.value}" />
+                            </p:column>
+                        </f:facet>
+                    </fr:listView>
+                </p:tab>
+
+                <p:tab title="报价">
+
+                    <fr:listView id="quotationIndexView" editView=":quotationEditView"
+                        header="报价" style="indexPanel" orientation="td"
+                        mbean="${bean.productQuotationsMBean}" nested="true">
+                        <f:facet name="columns">
+                            <p:column headerText="价格">
+                                <h:outputText value="${entry.price}" />
+                            </p:column>
+                            <p:column headerText="数量">
+                                <h:outputText value="${entry.quantity}" />
+                            </p:column>
+                            <p:column headerText="折扣">
+                                <h:outputText value="${entry.discountRate}" />
+                            </p:column>
+                        </f:facet>
+                    </fr:listView>
+                </p:tab>
+            </p:tabView>
+
+        </fr:listView>
+
+        <fr:listView id="attributeEditView" header="附加属性"
+            style="editDialog"
+            indexView=":pEditView:editForm:tv:attributeIndexView"
+            mbean="${bean.productAttributesMBean}">
+
+            <t:panelGrid columns="2">
+                <h:outputText value="属性名称:" />
+                <p:inputText id="attributeName" value="#{item.name}" label="属性名称"/>
+                <h:outputText value="属性值:" />
+                <p:inputText id="attributeValue" value="#{item.value}" label="属性值"/>
+            </t:panelGrid>
+        </fr:listView>
+
+        <fr:listView id="quotationEditView" header="报价"
+            style="editDialog"
+            indexView=":pEditView:editForm:tv:quotationIndexView"
+            mbean="${bean.productQuotationsMBean}">
+
+            <t:panelGrid columns="2">
+
+                <h:outputLabel value="单价:" />
+                <t:panelGrid columns="3">
+                    <p:inputText value="#{item.price.value}" />
+                    <h:outputLabel value="币种" />
+                    <p:selectOneMenu value="#{item.price.currencyCode}" style="width:20em;">
+                        <f:selectItem itemValue="" itemLabel="--选择币种--" />
+                        <f:selectItems value="#{monetary.currencySelectItems}" />
+                    </p:selectOneMenu>
+                </t:panelGrid>
+                <h:outputText value="数量:" />
+                <p:inputText id="quantity" value="#{item.quantity}" label="属性值"/>
+                <h:outputText value="折扣:" />
+                <p:inputText id="discountRate" value="#{item.discountRate}" label="属性值"/>
+            </t:panelGrid>
+        </fr:listView>
+
+
     </ui:define>
 </ui:composition>
