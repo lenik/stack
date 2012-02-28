@@ -3,10 +3,10 @@ package com.bee32.plover.site;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.plover.inject.ServiceTemplate;
+import com.bee32.plover.servlet.util.ServiceTemplateRC;
 
-@ServiceTemplate
 public abstract class AbstractSll
+        extends ServiceTemplateRC
         implements ISiteLifecycleListener {
 
     static Logger logger = LoggerFactory.getLogger(AbstractSll.class);

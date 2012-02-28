@@ -2,9 +2,10 @@ package com.bee32.plover.orm.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
 
-import com.bee32.plover.servlet.util.ThreadHttpContext;
+import com.bee32.plover.orm.util.SuperSamplePackage.Boundaries;
+import com.bee32.plover.orm.util.SuperSamplePackage.Normals;
+import com.bee32.plover.orm.util.SuperSamplePackage.Standards;
 import com.bee32.plover.site.AbstractSll;
 import com.bee32.plover.site.SiteInstance;
 
@@ -22,27 +23,31 @@ public class SamplesLoaderSll
     }
 
     void loadSamples() {
-        ApplicationContext appctx = ThreadHttpContext.requireApplicationContext();
-        SiteInstance site = appctx.getBean(SiteInstance.class);
-        SamplesLoader samplesLoader = appctx.getBean(SamplesLoader.class);
+        SiteInstance site = ctx.bean.getBean(SiteInstance.class);
+        SamplesLoader samplesLoader = ctx.bean.getBean(SamplesLoader.class);
 
         String prefix = site.getLoggingPrefix();
         logger.info(prefix + "Activate samples loader.");
 
+        SamplePackageAllocation alloc = SamplePackageAllocation.BOOTSTRAP;
+        SamplePackage max;
         switch (site.getSamples()) {
-        case WORSE:
-            samplesLoader.loadSamples(DiamondPackage.WORSE);
+        case STANDARD:
+            max = alloc.getObject(Standards.class);
             break;
         case NORMAL:
-            samplesLoader.loadSamples(DiamondPackage.NORMAL);
+            max = alloc.getObject(Normals.class);
             break;
-        case STANDARD:
-            samplesLoader.loadSamples(DiamondPackage.STANDARD);
+        case BOUNDARIES:
+            max = alloc.getObject(Boundaries.class);
             break;
         case NONE:
         default:
-            break;
+            max = null;
         }
+
+        if (max != null)
+            samplesLoader.loadSamples(max);
     }
 
 }
