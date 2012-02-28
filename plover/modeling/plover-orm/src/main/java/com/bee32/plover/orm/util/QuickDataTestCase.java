@@ -7,6 +7,7 @@ import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.dao.MemdbDataManager;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.unit.UsingUtil;
+import com.bee32.plover.orm.util.SuperSamplePackage.Normals;
 
 public class QuickDataTestCase
         extends Assert {
@@ -14,7 +15,7 @@ public class QuickDataTestCase
     protected static class ctx
             extends DefaultDataAssembledContext {
 
-        public static final AbstractDataPartialContext data = new AbstractDataPartialContext() {
+        public static final DataPartialContext data = new DataPartialContext() {
 
             @Override
             public CommonDataManager getDataManager() {
@@ -28,10 +29,9 @@ public class QuickDataTestCase
         PersistenceUnit unit = UsingUtil.getUsingUnit(getClass());
         CustomizedSessionFactoryBean.setForceUnit(unit);
 
-        new StandardSamples();
-
         SamplesLoader samplesLoader = new SamplesLoader();
-        // samplesLoader.loadSamples(DiamondPackage.NORMAL);
+        SamplePackage.allocation = SamplePackageAllocation.STATIC;
+        samplesLoader.loadSamples(Normals.class);
     }
 
 }
