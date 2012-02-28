@@ -4,7 +4,6 @@ import static com.bee32.sem.asset.entity.AccountSubject.CREDIT;
 import static com.bee32.sem.asset.entity.AccountSubject.DEBIT;
 
 import com.bee32.plover.orm.util.StandardSamples;
-import com.bee32.plover.servlet.util.HttpAssembledContext;
 
 public class AccountSubjects
         extends StandardSamples {
@@ -182,9 +181,5 @@ public class AccountSubjects
     public final AccountSubject s5601 = _("5601", "营业外支出", DEBIT);
     public final AccountSubject s5701 = _("5701", "所得税", DEBIT);
     public final AccountSubject s5801 = _("5801", "以前年度损益调整", DEBIT);
-
-    public static AccountSubjects getInstance() {
-        return HttpAssembledContext.bean.getBean(AccountSubjects.class);
-    }
 
 }

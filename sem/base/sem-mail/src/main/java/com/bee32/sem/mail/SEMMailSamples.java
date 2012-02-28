@@ -2,8 +2,6 @@ package com.bee32.sem.mail;
 
 import java.util.Arrays;
 
-import javax.inject.Inject;
-
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.plover.orm.util.NormalSamples;
 import com.bee32.plover.orm.util.SampleList;
@@ -16,15 +14,13 @@ import com.bee32.sem.mail.entity.MailOrientation;
 public class SEMMailSamples
         extends NormalSamples {
 
-    @Inject
-    IcsfPrincipalSamples principals;
-    @Inject
-    MailFolders mailFolders;
-
     public MailFilter spamFilter = new MailFilter();
 
     public Mail hello = new Mail();
     public Mail helloEcho = new Mail();
+
+    IcsfPrincipalSamples principals = predefined(IcsfPrincipalSamples.class);
+    MailFolders mailFolders = predefined(MailFolders.class);
 
     @Override
     protected void wireUp() {

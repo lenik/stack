@@ -38,7 +38,7 @@ public class UserPassword
     String master;
     String passwd; // Not used.
 
-    PrivateQuestion resetQ = PrivateQuestion.DADS_NAME;
+    PrivateQuestion resetQ = predefined(PrivateQuestions.class).DADS_NAME;
     String resetA = "";
     int resetTicket;
     Date resetExpires = new Date();

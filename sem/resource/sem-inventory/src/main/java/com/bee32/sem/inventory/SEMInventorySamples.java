@@ -13,8 +13,6 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.inject.Inject;
-
 import com.bee32.plover.orm.util.NormalSamples;
 import com.bee32.plover.orm.util.SampleList;
 import com.bee32.sem.inventory.entity.Material;
@@ -73,12 +71,9 @@ public class SEMInventorySamples
     public final StockOrder factoryOutOrder1 = new StockOrder(FACTORY_OUT);
     public final StockOrder planOrder1 = new StockOrder(PLAN_OUT);
 
-    @Inject
-    SEMVerifyPolicySamples verifyPolicies;
-    @Inject
-    SEMPeopleSamples people;
-    @Inject
-    Units units;
+    SEMVerifyPolicySamples verifyPolicies = predefined(SEMVerifyPolicySamples.class);
+    SEMPeopleSamples people = predefined(SEMPeopleSamples.class);
+    Units units = predefined(Units.class);
 
     @Override
     protected void wireUp() {

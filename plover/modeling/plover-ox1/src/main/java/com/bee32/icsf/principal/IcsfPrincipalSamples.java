@@ -25,23 +25,22 @@ public class IcsfPrincipalSamples
     public final User tom = new User("Tom");
     public final User kate = new User("Kate");
 
-    @Inject
-    Roles roles;
+    Users users = predefined(Users.class);
 
     @Override
     protected void wireUp() {
         eva.setPrimaryGroup(solaRobots);
-        eva.setPrimaryRole(roles.adminRole);
+        eva.setPrimaryRole(users.adminRole);
         wallE.setPrimaryGroup(solaRobots);
-        wallE.setPrimaryRole(roles.powerUserRole);
+        wallE.setPrimaryRole(users.powerUserRole);
         tom.setPrimaryGroup(sunCorp);
-        tom.setPrimaryRole(roles.adminRole);
+        tom.setPrimaryRole(users.adminRole);
         kate.setPrimaryGroup(sunCorp);
-        kate.setPrimaryRole(roles.userRole);
+        kate.setPrimaryRole(users.userRole);
 
         alice.addAssignedGroup(sunCorp);
         alice.addAssignedGroup(solaRobots);
-        alice.addAssignedRole(roles.userRole);
+        alice.addAssignedRole(users.userRole);
 
         eva.setPreferredEmail("eva@bee32.com");
         wallE.setPreferredEmail("wall-e@bee32.com");

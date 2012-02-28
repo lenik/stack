@@ -1,7 +1,5 @@
 package com.bee32.icsf.login;
 
-import javax.inject.Inject;
-
 import com.bee32.icsf.principal.Users;
 import com.bee32.plover.orm.util.StandardSamples;
 
@@ -11,8 +9,7 @@ public class UserPasswords
     public final UserPassword adminPasswd = new UserPassword();
     public final UserPassword guestPasswd = new UserPassword();
 
-    @Inject
-    Users users;
+    Users users = predefined(Users.class);
 
     @Override
     protected void wireUp() {

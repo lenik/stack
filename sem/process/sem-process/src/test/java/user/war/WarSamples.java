@@ -2,8 +2,6 @@ package user.war;
 
 import java.util.Date;
 
-import javax.inject.Inject;
-
 import user.war.entity.AttackMission;
 import user.war.entity.BuildMission;
 
@@ -23,10 +21,8 @@ public class WarSamples
     public final AttackMission killSimpsons = new AttackMission();
     public final BuildMission rescueMao = new BuildMission();
 
-    @Inject
-    IcsfPrincipalSamples principals;
-    @Inject
-    SEMVerifyPolicySamples policies;
+    IcsfPrincipalSamples principals = predefined(IcsfPrincipalSamples.class);
+    SEMVerifyPolicySamples policies = predefined(SEMVerifyPolicySamples.class);
 
     @Override
     protected void wireUp() {

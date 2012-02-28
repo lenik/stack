@@ -1,7 +1,5 @@
 package com.bee32.sem.process;
 
-import javax.inject.Inject;
-
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.plover.orm.util.NormalSamples;
 import com.bee32.plover.orm.util.SampleList;
@@ -16,8 +14,7 @@ public class SEMVerifyPolicySamples
     public final SingleVerifierPolicy kateWallE = new SingleVerifierPolicy();
     public final SingleVerifierRankedPolicy macLevel = new SingleVerifierRankedPolicy();
 
-    @Inject
-    IcsfPrincipalSamples principals;
+    IcsfPrincipalSamples principals = predefined(IcsfPrincipalSamples.class);
 
     @Override
     protected void wireUp() {

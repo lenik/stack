@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.icsf.principal.Principal;
-import com.bee32.icsf.principal.Roles;
+import com.bee32.icsf.principal.Users;
 import com.bee32.plover.orm.util.NormalSamples;
 import com.bee32.plover.orm.util.SampleList;
 import com.bee32.sem.event.entity.Event;
@@ -25,12 +23,9 @@ public class SEMEventSamples
     public final List<Event> rains = new ArrayList<Event>();
     public final Event killAngel = new Event(SEMEventSamples.class, EventType.TASK);
 
-    @Inject
-    IcsfPrincipalSamples principals;
-    @Inject
-    Roles roles;
-    @Inject
-    EventPriorities eventPriorities;
+    IcsfPrincipalSamples principals = predefined(IcsfPrincipalSamples.class);
+    Users users = predefined(Users.class);
+    EventPriorities eventPriorities = predefined(EventPriorities.class);
 
     Event mkRain(double relativeDay, Double duration, String title, Principal observer) {
         Event rain = new Event(SEMEventSamples.class, EventType.EVENT);
@@ -73,17 +68,14 @@ public class SEMEventSamples
         killAngel.setBeginTime(new Date(System.currentTimeMillis() + 10));
         killAngel.addObservers(//
                 robots, //
-                roles.adminRole);
+                users.adminRole);
     }
 
     @Override
     protected void getSamples(SampleList samples) {
         samples.add(weather);
         samples.add(special);
-
-        for (Event rain : rains)
-            samples.add(rain);
-
+        samples.addAll(rains);
         samples.add(killAngel);
     }
 

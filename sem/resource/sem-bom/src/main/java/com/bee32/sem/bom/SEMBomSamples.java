@@ -5,7 +5,6 @@ import java.util.Date;
 
 import javax.free.Dates;
 import javax.free.UnexpectedException;
-import javax.inject.Inject;
 
 import com.bee32.plover.orm.util.NormalSamples;
 import com.bee32.plover.orm.util.SampleList;
@@ -21,16 +20,7 @@ public class SEMBomSamples
     public final Part p_handler_kj2 = new Part();
     public final Part p_handlerf1 = new Part();
 
-    @Inject
-    SEMInventorySamples inventories;
-
-    static Date parseDate(String str) {
-        try {
-            return Dates.YYYY_MM_DD.parse(str);
-        } catch (ParseException e) {
-            throw new UnexpectedException(e);
-        }
-    }
+    SEMInventorySamples inventories = predefined(SEMInventorySamples.class);
 
     @Override
     protected void wireUp() {
@@ -62,6 +52,14 @@ public class SEMBomSamples
     protected void getSamples(SampleList samples) {
         samples.addBatch(p_light_A, p_light_B, //
                 p_handlerf1, p_handler_kj1, p_handler_kj2);
+    }
+
+    static Date parseDate(String str) {
+        try {
+            return Dates.YYYY_MM_DD.parse(str);
+        } catch (ParseException e) {
+            throw new UnexpectedException(e);
+        }
     }
 
 }

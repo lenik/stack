@@ -128,14 +128,10 @@ public class SEMPeopleSamples
         bugatti.setRoles(Varargs.toSet(productSale));
     }
 
-    @Inject
-    OrgTypes orgTypes;
-    @Inject
-    PartyTagnames partyTagnames;
-    @Inject
-    ContactCategories contactCategories;
-    @Inject
-    PartySidTypes sidTypes;
+    OrgTypes orgTypes = predefined(OrgTypes.class);
+    PartyTagnames partyTagnames = predefined(PartyTagnames.class);
+    ContactCategories contactCategories = predefined(ContactCategories.class);
+    PartySidTypes sidTypes = predefined(PartySidTypes.class);
 
     @Override
     protected void wireUp() {

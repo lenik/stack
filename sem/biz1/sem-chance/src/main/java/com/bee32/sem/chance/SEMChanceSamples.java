@@ -3,8 +3,6 @@ package com.bee32.sem.chance;
 import java.util.Arrays;
 import java.util.Calendar;
 
-import javax.inject.Inject;
-
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.plover.orm.util.NormalSamples;
 import com.bee32.plover.orm.util.SampleList;
@@ -30,18 +28,12 @@ public class SEMChanceSamples
     public final ChanceAction chanceAction2 = new ChanceAction();
     public final ChanceCompetitor competitor = new ChanceCompetitor();
 
-    @Inject
-    IcsfPrincipalSamples principals;
-    @Inject
-    SEMPeopleSamples people;
-    @Inject
-    SEMInventorySamples inventories;
-    @Inject
-    ChanceActionStyles actionStyles;
-    @Inject
-    ChanceSourceTypes sourceTypes;
-    @Inject
-    ChanceStages chanceStages;
+    IcsfPrincipalSamples principals = predefined(IcsfPrincipalSamples.class);
+    SEMPeopleSamples people = predefined(SEMPeopleSamples.class);
+    SEMInventorySamples inventories = predefined(SEMInventorySamples.class);
+    ChanceActionStyles actionStyles = predefined(ChanceActionStyles.class);
+    ChanceSourceTypes sourceTypes = predefined(ChanceSourceTypes.class);
+    ChanceStages chanceStages = predefined(ChanceStages.class);
 
     @Override
     protected void wireUp() {

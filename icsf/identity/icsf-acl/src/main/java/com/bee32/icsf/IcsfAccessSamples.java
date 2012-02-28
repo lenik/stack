@@ -2,18 +2,15 @@ package com.bee32.icsf;
 
 import static com.bee32.icsf.login.UserPassword.digest;
 
-import javax.inject.Inject;
-
 import com.bee32.icsf.login.UserPassword;
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
-import com.bee32.plover.orm.util.SampleList;
 import com.bee32.plover.orm.util.NormalSamples;
+import com.bee32.plover.orm.util.SampleList;
 
 public class IcsfAccessSamples
         extends NormalSamples {
 
-    @Inject
-    IcsfPrincipalSamples principals;
+    IcsfPrincipalSamples principals = predefined(IcsfPrincipalSamples.class);
 
     @Override
     protected void getSamples(SampleList samples) {
