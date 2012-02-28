@@ -11,7 +11,7 @@ public enum SamplesSelection
 
     NORMAL("常规测试样本（适用于集成测试）"),
 
-    WORSE("边界样本（仅适用边界测试）"),
+    BOUNDARIES("边界样本（仅适用边界测试）"),
 
     ;
 
