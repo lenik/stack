@@ -156,7 +156,15 @@ public class SamplePackage
     public void endLoad() {
     }
 
-    protected void postSave() {
+    protected void postSave(DataPartialContext data) {
+    }
+
+    public static SamplePackageAllocation allocation = SamplePackageAllocation.BOOTSTRAP;
+
+    protected <S extends SamplePackage> S predefined(Class<? extends S> samplesClass) {
+        S dep = allocation.getObject(samplesClass);
+        addDependency(dep);
+        return dep;
     }
 
 }

@@ -5,11 +5,11 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 import javax.free.Dates;
-import javax.inject.Inject;
 
 import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.collections.Varargs;
+import com.bee32.plover.orm.util.DataPartialContext;
 import com.bee32.plover.orm.util.NormalSamples;
 import com.bee32.plover.orm.util.SampleList;
 import com.bee32.sem.people.entity.Contact;
@@ -198,9 +198,9 @@ public class SEMPeopleSamples
     }
 
     @Override
-    protected void postSave() {
+    protected void postSave(DataPartialContext data) {
         abcSales.setOwner(tang);
-        ctx.data.access(Group.class).saveOrUpdate(abcSales);
+        data.access(Group.class).saveOrUpdate(abcSales);
     }
 
 }

@@ -1,9 +1,8 @@
 package com.bee32.icsf.principal;
 
-import javax.inject.Inject;
-
-import com.bee32.plover.orm.util.SampleList;
+import com.bee32.plover.orm.util.DataPartialContext;
 import com.bee32.plover.orm.util.NormalSamples;
+import com.bee32.plover.orm.util.SampleList;
 
 /**
  * Sample principals:
@@ -56,10 +55,10 @@ public class IcsfPrincipalSamples
     }
 
     @Override
-    protected void postSave() {
+    protected void postSave(DataPartialContext data) {
         solaRobots.setOwner(eva);
         sunCorp.setOwner(tom);
-        ctx.data.access(Group.class).saveOrUpdateAll(solaRobots, sunCorp);
+        data.access(Group.class).saveOrUpdateAll(solaRobots, sunCorp);
     }
 
 }
