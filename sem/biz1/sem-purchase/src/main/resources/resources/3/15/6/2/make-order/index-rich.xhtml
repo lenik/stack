@@ -78,6 +78,10 @@
                     <h:outputText value="#{entry.externalModelSpec}" />
                 </p:column>
 
+                <p:column headerText="铭牌" styleClass="f-wrappable">
+                    <h:outputText value="#{entry.nameplate? '外部' : '内部'}" />
+                </p:column>
+
                 <p:column headerText="备注" styleClass="f-wrappable">
                     <h:outputText value="#{entry.description}" />
                 </p:column>
@@ -93,7 +97,7 @@
 
     <ui:define name="dialogs">
         <sem:choosePartyDialog id="c_customer" header="选择客户" target="#{obj.customer}" update=":editDialog:form:basic" />
-        <sem:chooseChanceDialog id="c_chance" target="#{obj.chance}" update=":editDialog:form:basic" />
+        <sem:chooseChanceDialog id="c_chance" target="#{bean.chanceToApply}" update=":editDialog:form:basic :editDialog:form:itemsIndexView:indexForm:body" />
         <sem:choosePartDialog id="c_part" target="#{itemObj.part}" update=":itemsEditView:editForm:body" />
 
         <fr:listView id="itemsEditView" header="订单项目" style="editDialog" indexView=":editDialog:form:itemsIndexView"

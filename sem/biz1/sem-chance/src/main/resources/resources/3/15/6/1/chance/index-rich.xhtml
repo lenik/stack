@@ -284,6 +284,11 @@
                             <p:column headerText="折扣">
                                 <h:outputText value="${entry.discountRate}" />
                             </p:column>
+                            <p:column headerText="报价日期">
+                                <h:outputText value="${entry.createdDate}">
+                                    <f:convertDateTime pattern="yy-MM-dd" timeZone="Asia/Shanghai" />
+                                </h:outputText>
+                            </p:column>
                         </f:facet>
                     </fr:listView>
                 </p:tab>

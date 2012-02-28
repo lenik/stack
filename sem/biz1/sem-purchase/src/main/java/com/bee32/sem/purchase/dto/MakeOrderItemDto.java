@@ -29,6 +29,8 @@ public class MakeOrderItemDto
     String externalProductName;
     String externalModelSpec;
 
+    boolean nameplate;
+
     @Override
     protected void _marshal(MakeOrderItem source) {
         parent = mref(MakeOrderDto.class, source.getParent());
@@ -36,6 +38,7 @@ public class MakeOrderItemDto
         deadline = source.getDeadline();
         externalProductName = source.getExternalProductName();
         externalModelSpec = source.getExternalModelSpec();
+        nameplate = source.isNameplate();
     }
 
     @Override
@@ -45,6 +48,7 @@ public class MakeOrderItemDto
         target.setDeadline(deadline);
         target.setExternalProductName(externalProductName);
         target.setExternalModelSpec(externalModelSpec);
+        target.setNameplate(nameplate);
     }
 
     @Override
@@ -113,6 +117,14 @@ public class MakeOrderItemDto
 
     public void setExternalModelSpec(String externalModelSpec) {
         this.externalModelSpec = TextUtil.normalizeSpace(externalModelSpec);
+    }
+
+    public boolean isNameplate() {
+        return nameplate;
+    }
+
+    public void setNameplate(boolean nameplate) {
+        this.nameplate = nameplate;
     }
 
     @Override

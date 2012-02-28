@@ -48,10 +48,9 @@ public class HintProductAttributeDto
 
     @Override
     protected void _unmarshalTo(HintProductAttribute target) {
-        merge(target, "product", product);
         target.setName(name);
         target.setValue(value);
-
+        merge(target, "product", product);
     }
 
     @Override

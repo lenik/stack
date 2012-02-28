@@ -11,6 +11,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.DefaultValue;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
@@ -41,6 +42,8 @@ public class MakeOrderItem
 
     String externalProductName;
     String externalModelSpec;
+
+    boolean nameplate = true;
 
     @NaturalId
     @ManyToOne(optional = false)
@@ -113,6 +116,19 @@ public class MakeOrderItem
 
     public void setExternalModelSpec(String externalModelSpec) {
         this.externalModelSpec = externalModelSpec;
+    }
+
+    /**
+     * @return true-使用物料名称，规格，参数     false-使用外部物料名称，规格，参数
+     */
+    @DefaultValue("true")
+    @Column(nullable = false)
+    public boolean isNameplate() {
+        return nameplate;
+    }
+
+    public void setNameplate(boolean nameplate) {
+        this.nameplate = nameplate;
     }
 
     @Transient

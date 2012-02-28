@@ -30,4 +30,10 @@ public class BomCriteria
     public static CriteriaElement notObsolete() {
         return isNull("obsolete");
     }
+
+    @LeftHand(Part.class)
+    public static CriteriaElement findPartByMaterial(Long materialId) {
+        return new Equals("target.id", materialId);
+
+    }
 }

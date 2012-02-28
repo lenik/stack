@@ -1,6 +1,8 @@
 package com.bee32.sem.chance.dto;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.free.ParseException;
@@ -20,10 +22,10 @@ public class HintProductDto
 
     private static final long serialVersionUID = 1L;
 
-    private static final int CHANCE = 1;
+    public static final int CHANCE = 1;
 
-    private static final int ATTRIBUTES = 2;
-    private static final int QUOTATIONS = 4;
+    public static final int ATTRIBUTES = 2;
+    public static final int QUOTATIONS = 4;
 
     ChanceDto chance;
     String productName;
@@ -38,11 +40,9 @@ public class HintProductDto
         if(selection.contains(CHANCE))
             chance = mref(ChanceDto.class, source.getChance());
 
-
         productName = source.getProductName();
         modelSpec = source.getModelSpec();
         unitName = source.getUnitName();
-
 
         if (selection.contains(ATTRIBUTES))
             attributes = marshalList(HintProductAttributeDto.class, source.getAttributes());
@@ -54,16 +54,16 @@ public class HintProductDto
         else
             quotations = new ArrayList<HintProductQuotationDto>();
 
-
         decidedMaterial = mref(MaterialDto.class, source.getDecidedMaterial());
     }
 
     @Override
     protected void _unmarshalTo(HintProduct target) {
-        merge(target, "chance", chance);
         target.setProductName(productName);
         target.setModelSpec(modelSpec);
         target.setUnitName(unitName);
+
+        merge(target, "decidedMaterial", decidedMaterial);
 
         if(selection.contains(ATTRIBUTES))
             mergeList(target, "attributes", attributes);
@@ -71,7 +71,7 @@ public class HintProductDto
         if(selection.contains(QUOTATIONS))
             mergeList(target, "quotations", quotations);
 
-        merge(target, "decidedMaterial", decidedMaterial);
+        merge(target, "chance", chance);
     }
 
     @Override
@@ -148,6 +148,21 @@ public class HintProductDto
         this.decidedMaterial = decidedMaterial;
     }
 
+    public HintProductQuotationDto getLastQuotation() {
+        if(quotations.size() > 0) {
+            Collections.sort(quotations, new ComparatorQuotationByLastModified());
+            return quotations.get(0);
+        }
+        return null;
+    }
 
+    private class ComparatorQuotationByLastModified implements Comparator<HintProductQuotationDto> {
 
+        @Override
+        public int compare(HintProductQuotationDto o1,
+                HintProductQuotationDto o2) {
+            //加负号，因为要倒序
+            return -o1.getLastModified().compareTo(o2.getLastModified());
+        }
+    }
 }

@@ -44,9 +44,8 @@ public class HintProductQuotationDto
 
     @Override
     protected void _unmarshalTo(HintProductQuotation target) {
-        merge(target, "product", product);
         target.setDiscountRate(discountRate);
-
+        merge(target, "product", product);
     }
 
     @Override

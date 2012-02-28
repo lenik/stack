@@ -11,6 +11,7 @@ import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceStage;
+import com.bee32.sem.chance.entity.HintProduct;
 import com.bee32.sem.chance.util.DateToRange;
 import com.bee32.sem.process.base.ProcessEntityDto;
 
@@ -22,6 +23,7 @@ public class ChanceDto
     public static final int PARTIES = 1;
     public static final int ACTIONS = 4;
     public static final int PRODUCTS = 8;
+    public static final int PRODUCTS_CHAIN = 16 | PRODUCTS;
 
     String serial;
 
@@ -68,10 +70,17 @@ public class ChanceDto
         else
             actions = new ArrayList<ChanceActionDto>();
 
-        if (selection.contains(PRODUCTS))
-            products = marshalList(HintProductDto.class, source.getProducts());
-        else
-            products = new ArrayList<HintProductDto>();
+        products = new ArrayList<HintProductDto>();
+        if (selection.contains(PRODUCTS)) {
+            int hintProductSelection = 0;
+            if(selection.contains(PRODUCTS_CHAIN)) {
+                hintProductSelection = HintProductDto.ATTRIBUTES | HintProductDto.QUOTATIONS;
+            }
+            for(HintProduct _product : source.getProducts()) {
+                HintProductDto product =  marshal(HintProductDto.class, hintProductSelection, _product);
+                products.add(product);
+            }
+        }
 
         stage = mref(ChanceStageDto.class, source.getStage());
         address = source.getAddress();

@@ -17,6 +17,13 @@ import com.bee32.plover.arch.DataService;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.InCollection;
 import com.bee32.plover.orm.entity.IdUtils;
+import com.bee32.plover.orm.util.DTOs;
+import com.bee32.sem.bom.dto.PartDto;
+import com.bee32.sem.bom.entity.Part;
+import com.bee32.sem.bom.util.BomCriteria;
+import com.bee32.sem.chance.dto.ChanceDto;
+import com.bee32.sem.chance.dto.HintProductDto;
+import com.bee32.sem.chance.dto.HintProductQuotationDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.MaterialWarehouseOption;
 import com.bee32.sem.inventory.entity.StockOrder;
@@ -29,10 +36,13 @@ import com.bee32.sem.inventory.service.StockQueryResult;
 import com.bee32.sem.inventory.util.ConsumptionMap;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.entity.Org;
+import com.bee32.sem.purchase.dto.MakeOrderDto;
+import com.bee32.sem.purchase.dto.MakeOrderItemDto;
 import com.bee32.sem.purchase.dto.MaterialPlanDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestItemDto;
 import com.bee32.sem.purchase.entity.PurchaseTakeIn;
+import com.bee32.sem.world.monetary.MutableMCValue;
 
 public class PurchaseService
         extends DataService {
@@ -173,6 +183,39 @@ public class PurchaseService
 
                 ctx.data.access(PurchaseTakeIn.class).saveOrUpdate(_takeIn);
             }
+        }
+    }
+
+    public void chanceApplyToMakeOrder(ChanceDto chance, MakeOrderDto makeOrder) {
+        chance = reload(chance, ChanceDto.PRODUCTS_CHAIN);
+
+        makeOrder.setChance(chance);
+
+        List<MakeOrderItemDto> items = new ArrayList<MakeOrderItemDto>();
+        makeOrder.setItems(items);
+        for(HintProductDto product : chance.getProducts()) {
+            MakeOrderItemDto item = new MakeOrderItemDto();
+            item.setParent(makeOrder);
+
+            item.setExternalProductName(product.getProductName());
+            item.setExternalModelSpec(product.getModelSpec());
+
+            Part _part = ctx.data.access(Part.class).getFirst(BomCriteria.findPartByMaterial(product.getDecidedMaterial().getId()));
+            item.setPart(DTOs.marshal(PartDto.class, _part));
+
+            HintProductQuotationDto lastQuotation = product.getLastQuotation();
+            if(lastQuotation != null) {
+                    item.setPrice(
+                        new MutableMCValue(
+                            lastQuotation.getPriceCurrency(),
+                            lastQuotation.getPrice().getValue().multiply(lastQuotation.getDiscountRate())));
+                item.setQuantity(lastQuotation.getQuantity());
+            } else {
+                item.setPrice(new MutableMCValue(0));
+                item.setQuantity(new BigDecimal(0));
+            }
+
+            items.add(item);
         }
     }
 
