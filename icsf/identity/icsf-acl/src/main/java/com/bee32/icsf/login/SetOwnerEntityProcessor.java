@@ -2,6 +2,8 @@ package com.bee32.icsf.login;
 
 import java.util.Collection;
 
+import javax.free.UnexpectedException;
+
 import org.hibernate.HibernateException;
 import org.hibernate.event.SaveOrUpdateEvent;
 import org.hibernate.event.SaveOrUpdateEventListener;
@@ -37,16 +39,17 @@ public class SetOwnerEntityProcessor
     }
 
     public static User getContextUser() {
-        UserDto user = SessionUser.getInstance().getUserOpt();
+        UserDto me = SessionUser.getInstance().getUserOpt();
 
-        Users users = ctx.bean.getBean(Users.class);
-        if (user == null || user.isNull())
+        if (me == null || me.isNull()) {
+            // Not logged-in yet, fallback to admin.
+            Users users = ctx.bean.getBean(Users.class);
             return users.admin;
+        }
 
-        Integer userId = user.getId();
+        Integer userId = me.getId();
         if (userId == null)
-            // warn??
-            return users.admin;
+            throw new UnexpectedException("Session user doesn't have an ID ?");
 
         User _user = ctx.data.getRef(User.class, userId);
         return _user;
@@ -70,14 +73,21 @@ public class SetOwnerEntityProcessor
             return;
 
         // EntityFlags ef = EntityAccessor.getFlags(owner); ...?
-        owner = getContextUser();
-        if (owner == null)
+        User newOwner = getContextUser();
+        if (newOwner == null)
             return;
 
-        if (logger.isTraceEnabled())
-            logger.trace("Set owner of new entity: " + owner.getName());
+        if (newOwner.getId() == null) {
+            if (newOwner != entity) {
+                logger.warn("Create C-Entity without context user: " + entity);
+                return;
+            }
+        }
 
-        CEntityAccessor.setOwner(entity, owner);
+        if (logger.isTraceEnabled())
+            logger.trace("Set owner of new entity: " + newOwner.getName());
+
+        CEntityAccessor.setOwner(entity, newOwner);
     }
 
 }
