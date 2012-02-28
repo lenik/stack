@@ -23,16 +23,16 @@ public class UserCriteria
     }
 
     public static CriteriaElement impliedByCurrentUser(String propertyName) {
-        Set<Integer> imSet = SessionUser.getInstance().getImIdSet();
-        if (imSet == null)
+        Set<Integer> imIdSet = SessionUser.getInstance().getImIdSet();
+        if (imIdSet == null)
             throw new IllegalStateException("imSet");
 
         // Admin-exception is only applied in this method.
-        Roles roles = HttpAssembledContext.bean.getBean(Roles.class);
-        if (imSet.contains(roles.adminRole.getId()))
+        Users users = HttpAssembledContext.bean.getBean(Users.class);
+        if (imIdSet.contains(users.adminRole.getId()))
             return null;
 
-        return PrincipalCriteria.inImSet(propertyName, imSet);
+        return PrincipalCriteria.inImSet(propertyName, imIdSet);
     }
 
     public static CriteriaElement responsibleByCurrentUser(String propertyName) {

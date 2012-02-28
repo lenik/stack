@@ -33,11 +33,11 @@ import com.bee32.icsf.login.UserPassword;
 import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.Role;
-import com.bee32.icsf.principal.Roles;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.icsf.principal.UserOption;
 import com.bee32.icsf.principal.UserPreference;
+import com.bee32.icsf.principal.Users;
 import com.bee32.plover.arch.util.ClassCatalog;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.builtin.PloverConf;
@@ -65,7 +65,7 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
     @Inject
     R_ACLService aclService;
     @Inject
-    Roles roles;
+    Users users;
 
     IResourceNamespace entityNS;
 
@@ -143,7 +143,7 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
             return;
 
         Set<Integer> imset = SessionUser.getInstance().getImIdSet();
-        if (imset.contains(roles.adminRole))
+        if (imset.contains(users.adminRole.getId()))
             return;
 
         PersistenceUnit unit = CustomizedSessionFactoryBean.getForceUnit();
