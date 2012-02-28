@@ -9,6 +9,6 @@ public class DefaultDataAssembledContext
 
     public static final HttpPartialContext http = HttpPartialContext.INSTANCE;
     public static final BeanPartialContext bean = new BeanPartialContext(http);
-    public static final DataPartialContext data = new DataPartialContext(bean);
+    public static final DataPartialContext data = new WiredDataPartialContext(bean);
 
 }

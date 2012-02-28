@@ -9,6 +9,6 @@ public class BootstrapDataAssembledContext
 
     public static final BeanPartialContext bean = new BeanPartialContext(
             BootstrapApplicationContextPartialContext.INSTANCE);
-    public static final DataPartialContext data = new DataPartialContext(bean);
+    public static final DataPartialContext data = new WiredDataPartialContext(bean);
 
 }

@@ -26,7 +26,7 @@ public abstract class DataViewBean
 
     protected static class ctx
             extends ViewBean.ctx {
-        public static final DataPartialContext data = new DataPartialContext(bean);
+        public static final WiredDataPartialContext data = new WiredDataPartialContext(bean);
     }
 
     @Override
