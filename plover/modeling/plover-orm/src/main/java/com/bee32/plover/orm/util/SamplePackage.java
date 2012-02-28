@@ -12,24 +12,28 @@ import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.arch.Assembled;
 import com.bee32.plover.arch.util.IPriority;
+import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
+import com.bee32.plover.site.scope.PerSite;
 
-public class SamplePackage
+@ComponentTemplate
+@PerSite
+public abstract class SamplePackage
         extends Assembled
         implements IPriority {
 
-    protected static class ctx
-            extends BootstrapDataAssembledContext {
-    }
-
     static Logger logger = LoggerFactory.getLogger(SamplePackage.class);
 
-    public static final int LEVEL_BAD = -1;
+    public static final int LEVEL_STANDARD = -1;
     public static final int LEVEL_NORMAL = 0;
-    public static final int LEVEL_STANDARD = 1;
+    public static final int LEVEL_BAD = 1;
 
-    private int priority;
+    public static final int PRIORITY_SYSTEM = -10;
+    public static final int PRIORITY_NORMAL = 0;
+    public static final int PRIORITY_EXTRA = 10;
+
+    private int seq;
     private final Set<SamplePackage> dependencies = new LinkedSet<SamplePackage>();
 
     public SamplePackage() {
@@ -45,11 +49,15 @@ public class SamplePackage
 
     @Override
     public int getPriority() {
-        return priority;
+        return PRIORITY_NORMAL;
     }
 
-    public void setPriority(int priority) {
-        this.priority = priority;
+    public int getSeq() {
+        return seq;
+    }
+
+    public void setSeq(int seq) {
+        this.seq = seq;
     }
 
     public boolean isVirtual() {
@@ -98,19 +106,6 @@ public class SamplePackage
     @Override
     protected final void assemble() {
         wireUp();
-
-        // scan dependencies from injected fields.
-        for (Field field : getClass().getDeclaredFields()) {
-            if (SamplePackage.class.isAssignableFrom(field.getType())) {
-                field.setAccessible(true);
-                try {
-                    SamplePackage dep = (SamplePackage) field.get(this);
-                    addDependency(dep);
-                } catch (ReflectiveOperationException e) {
-                    throw new RuntimeException(e.getMessage(), e);
-                }
-            }
-        }
     }
 
     protected void wireUp() {

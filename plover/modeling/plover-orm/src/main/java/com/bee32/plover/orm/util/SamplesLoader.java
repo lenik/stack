@@ -3,10 +3,8 @@ package com.bee32.plover.orm.util;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import javax.free.IdentityHashSet;
 import javax.inject.Inject;
@@ -18,7 +16,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
-import com.bee32.plover.arch.util.PriorityComparator;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.inject.spring.ScopeProxy;
 import com.bee32.plover.orm.builtin.IPloverConfManager;
@@ -30,7 +27,7 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.PersistenceUnit;
-import com.bee32.plover.orm.util.DiamondPackage.NormalGroup;
+import com.bee32.plover.orm.util.SuperSamplePackage.Normals;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.site.cfg.DBAutoDDL;
 import com.bee32.plover.site.scope.PerSite;
@@ -58,7 +55,7 @@ public class SamplesLoader
     }
 
     class _ctx {
-        AbstractDataPartialContext data = new AbstractDataPartialContext() {
+        DataPartialContext data = new DataPartialContext() {
             @Override
             public CommonDataManager getDataManager() {
                 return dataManager;
@@ -76,47 +73,36 @@ public class SamplesLoader
 
     int loadIndex = 0;
 
-    Set<SamplePackage> loadedPackages = new HashSet<>();
-
-    public void loadSamples(Class<? extends SamplePackage> rootPackageClass) {
-
+    public void loadSamples(Class<? extends SamplePackage> maxPackageClass) {
+        SamplePackage maxPackage = appctx.getBean(maxPackageClass);
+        loadSamples(maxPackage);
     }
 
     @Override
-    public void loadSamples(SamplePackage rootPackage) {
-        loadSamples(rootPackage, null);
+    public void loadSamples(SamplePackage maxPackage) {
+        loadSamples(maxPackage, null);
     }
 
+    /**
+     * <strike>Static: the samples-loader maybe instantiated twice cuz WebAppCtx & AppCtx. So here
+     * just make the map static to avoid of duplicates.</strike>
+     */
     @Override
-    public void loadSamples(SamplePackage rootPackage, Closure<NormalSamples> progress) {
-        if (loadedPackages.add(rootPackage)) {
-            _loadSamples(rootPackage, progress);
-        }
-    }
+    public void loadSamples(SamplePackage maxPackage, final Closure<NormalSamples> progress) {
+        // Scan and inject dependencies to super packages.
+        appctx.getBeansOfType(SamplePackage.class);
 
-    synchronized void _loadSamples(final SamplePackage rootPackage, final Closure<NormalSamples> progress) {
         logger.debug("Normal samples structure: ");
-        SampleDumper.dump(appctx.getBean(NormalGroup.class));
+        SampleDumper.dump(appctx.getBean(Normals.class));
 
         final List<SamplePackage> queue = new ArrayList<SamplePackage>();
 
-        /**
-         * Static: the samples-loader maybe instantiated twice cuz WebAppCtx & AppCtx. So here just
-         * make the map static to avoid of duplicates.
-         */
-        IdentityHashSet scannedPackages = new IdentityHashSet();
+        _preLoad(maxPackage, new IdentityHashSet(), queue);
 
-        _preLoad(rootPackage, scannedPackages, queue);
-
-        int index = 0;
-        for (SamplePackage p : queue) {
-            int priority = p.getPriority();
-            if (priority == 0) {
-                priority = ++index;
-                p.setPriority(priority);
-            }
-        }
-        Collections.sort(queue, PriorityComparator.INSTANCE);
+        int seq = 0;
+        for (SamplePackage p : queue)
+            p.setSeq(++seq);
+        Collections.sort(queue, SamplePackageComparator.INSTANCE);
 
         for (int i = 0; i < queue.size(); i++) {
             SamplePackage pack = queue.get(i);
@@ -128,8 +114,8 @@ public class SamplesLoader
                 implements Runnable {
             @Override
             public void run() {
-                for (SamplePackage pack : queue) {
-                    _actualLoad(pack, progress);
+                for (SamplePackage singlePackage : queue) {
+                    _actualLoad(singlePackage, progress);
                 }
             }
         }
@@ -140,12 +126,12 @@ public class SamplesLoader
         ThreadHttpContext.escape(process);
     }
 
-    void _preLoad(SamplePackage pack, IdentityHashSet set, List<SamplePackage> queue) {
-        if (!set.add(pack))
+    void _preLoad(SamplePackage pack, IdentityHashSet pset, List<SamplePackage> queue) {
+        if (!pset.add(pack))
             return;
 
         for (SamplePackage dependency : pack.getDependencies())
-            _preLoad(dependency, set, queue);
+            _preLoad(dependency, pset, queue);
 
         queue.add(pack);
     }
