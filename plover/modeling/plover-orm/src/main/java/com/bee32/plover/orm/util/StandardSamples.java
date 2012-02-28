@@ -1,15 +1,18 @@
 package com.bee32.plover.orm.util;
 
-public class StandardSamples
-        extends NormalSamples {
+import com.bee32.plover.orm.util.SuperSamplePackage.Standards;
 
-    public StandardSamples() {
-        super(DiamondPackage.STANDARD);
-    }
+public abstract class StandardSamples
+        extends SamplePackage {
 
     @Override
     public int getLevel() {
         return LEVEL_STANDARD;
+    }
+
+    @Override
+    protected SuperSamplePackage getSuperPackage() {
+        return predefined(Standards.class);
     }
 
 }

@@ -38,6 +38,9 @@ public class SamplePackage
 
     public SamplePackage(String name) {
         super(name, true);
+        SuperSamplePackage superPackage = getSuperPackage();
+        if (superPackage != null)
+            superPackage.insert(this);
     }
 
     @Override
@@ -55,6 +58,10 @@ public class SamplePackage
 
     public int getLevel() {
         return LEVEL_NORMAL;
+    }
+
+    protected SuperSamplePackage getSuperPackage() {
+        return null;
     }
 
     public Set<SamplePackage> getAllDependencies() {

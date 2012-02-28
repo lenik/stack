@@ -1,10 +1,6 @@
 package com.bee32.plover.orm.util;
 
-import javax.inject.Inject;
-
-import com.bee32.plover.inject.ComponentTemplate;
-import com.bee32.plover.orm.util.DiamondPackage.NormalGroup;
-import com.bee32.plover.site.scope.PerSite;
+import com.bee32.plover.orm.util.SuperSamplePackage.Normals;
 
 /**
  * Lifecycle:
@@ -38,20 +34,17 @@ import com.bee32.plover.site.scope.PerSite;
  * <p>
  * 一些比较正常的、面向实际的样本集合应该加入到 {@link VirtualSamplePackage#NORMAL} 包中。
  */
-@ComponentTemplate
-@PerSite
 public abstract class NormalSamples
         extends SamplePackage {
 
-    @Inject
-    NormalGroup normals;
-
-    protected NormalSamples(DiamondPackage diamond) {
-        addToDiamond(diamond);
+    @Override
+    public int getLevel() {
+        return LEVEL_NORMAL;
     }
 
-    protected void addToDiamond(DiamondPackage diamond) {
-        diamond.insert(this);
+    @Override
+    protected SuperSamplePackage getSuperPackage() {
+        return predefined(Normals.class);
     }
 
 }
