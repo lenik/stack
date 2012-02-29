@@ -77,6 +77,11 @@ label {
     text-align: right;
 }
 
+.field-label-long {
+    width: 10em;
+    text-align: right;
+}
+
 .field-content {
 
 }
