@@ -9,6 +9,7 @@ import javax.free.ParseException;
 import org.apache.commons.lang.NotImplementedException;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.orm.util.dto.LastModifiedComparator;
 import com.bee32.sem.chance.entity.WantedProduct;
 import com.bee32.sem.chance.entity.WantedProductXP;
@@ -84,6 +85,15 @@ public class WantedProductDto
 
     public void setChance(ChanceDto chance) {
         this.chance = chance;
+    }
+
+    @NLength(min = 1, max = WantedProduct.LABEL_LENGTH)
+    public String getProductName() {
+        return getLabel();
+    }
+
+    public void setProductName(String productName) {
+        setLabel(productName);
     }
 
     public List<WantedProductAttributeDto> getAttributes() {

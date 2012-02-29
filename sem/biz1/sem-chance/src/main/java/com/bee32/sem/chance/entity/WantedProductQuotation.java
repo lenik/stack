@@ -3,6 +3,7 @@ package com.bee32.sem.chance.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
@@ -15,14 +16,17 @@ import com.bee32.sem.world.thing.AbstractItem;
  *
  */
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "hint_product_quotation_seq", allocationSize = 1)
+@SequenceGenerator(name = "idgen", sequenceName = "wanted_product_quotation_seq", allocationSize = 1)
 public class WantedProductQuotation
         extends AbstractItem {
 
     private static final long serialVersionUID = 1L;
 
+    public static final int DISCOUNT_SCALE = 1000;
+    static final BigDecimal DISCOUNT_SCALE_REAL = new BigDecimal(DISCOUNT_SCALE);
+
     WantedProduct product;
-    BigDecimal discountRate = new BigDecimal(1);
+    int discount = DISCOUNT_SCALE;
 
     @ManyToOne
     public WantedProduct getProduct() {
@@ -40,12 +44,19 @@ public class WantedProductQuotation
      *
      * @return
      */
-    public BigDecimal getDiscountRate() {
-        return discountRate;
+    @Column(nullable = false)
+    public int getDiscount() {
+        return discount;
     }
 
-    public void setDiscountRate(BigDecimal discountRate) {
-        this.discountRate = discountRate;
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
+
+    @Transient
+    public BigDecimal getDiscountReal() {
+        BigDecimal discountReal = new BigDecimal(discount).divide(DISCOUNT_SCALE_REAL);
+        return discountReal;
     }
 
     @Override

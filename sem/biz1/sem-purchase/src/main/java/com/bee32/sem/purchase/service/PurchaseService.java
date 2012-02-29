@@ -204,7 +204,7 @@ public class PurchaseService
 
             WantedProductQuotationDto lastQuotation = product.getLastQuotation();
             if (lastQuotation != null) {
-                item.setPrice(lastQuotation.getPrice().multiply(lastQuotation.getDiscountRate()).toMutable());
+                item.setPrice(lastQuotation.getPrice().multiply(lastQuotation.getDiscountReal()).toMutable());
                 item.setQuantity(lastQuotation.getQuantity());
             } else {
                 item.setPrice(new MutableMCValue(0));

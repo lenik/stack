@@ -21,7 +21,7 @@ import com.bee32.sem.world.thing.Thing;
  * 注：label, modelSpec 分别对应选型产品的外部名称 、和外部规格。
  */
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "hint_product_seq", allocationSize = 1)
+@SequenceGenerator(name = "idgen", sequenceName = "wanted_product_seq", allocationSize = 1)
 public class WantedProduct
         extends Thing<WantedProductXP>
         implements DecimalConfig {

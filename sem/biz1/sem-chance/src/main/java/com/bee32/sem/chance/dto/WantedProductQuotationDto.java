@@ -1,5 +1,6 @@
 package com.bee32.sem.chance.dto;
 
+import java.beans.Transient;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -18,8 +19,11 @@ public class WantedProductQuotationDto
 
     private static final long serialVersionUID = 1L;
 
+    public static final int DISCOUNT_SCALE = WantedProductQuotation.DISCOUNT_SCALE;
+    static final BigDecimal DISCOUNT_SCALE_REAL = new BigDecimal(DISCOUNT_SCALE);
+
     WantedProductDto product;
-    BigDecimal discountRate = new BigDecimal(1);
+    int discount;
 
     @Override
     public WantedProductDto getEnclosingObject() {
@@ -35,12 +39,12 @@ public class WantedProductQuotationDto
     @Override
     protected void _marshal(WantedProductQuotation source) {
         this.product = mref(WantedProductDto.class, source.getProduct());
-        this.discountRate = source.getDiscountRate();
+        this.discount = source.getDiscount();
     }
 
     @Override
     protected void _unmarshalTo(WantedProductQuotation target) {
-        target.setDiscountRate(discountRate);
+        target.setDiscount(discount);
         merge(target, "product", product);
     }
 
@@ -61,12 +65,27 @@ public class WantedProductQuotationDto
         this.product = product;
     }
 
-    public BigDecimal getDiscountRate() {
-        return discountRate;
+    public int getDiscount() {
+        return discount;
     }
 
-    public void setDiscountRate(BigDecimal discountRate) {
-        this.discountRate = discountRate;
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
+
+    @Transient
+    public BigDecimal getDiscountReal() {
+        BigDecimal discountReal = new BigDecimal(discount).divide(DISCOUNT_SCALE_REAL);
+        return discountReal;
+    }
+
+    @Transient
+    public int getDiscountPercent() {
+        return discount * 100 / DISCOUNT_SCALE;
+    }
+
+    public void setDiscountPercent(int discountPercent) {
+        discount = discountPercent * DISCOUNT_SCALE / 100;
     }
 
     @Override

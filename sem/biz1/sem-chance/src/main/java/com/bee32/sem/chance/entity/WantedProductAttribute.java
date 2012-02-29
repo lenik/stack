@@ -11,7 +11,7 @@ import com.bee32.plover.orm.entity.EntityAuto;
  * 选型产品的附加属性
  */
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "product_preference_attribute_seq", allocationSize = 1)
+@SequenceGenerator(name = "idgen", sequenceName = "wanted_product_attribute_seq", allocationSize = 1)
 public class WantedProductAttribute
         extends EntityAuto<Long> {
 
