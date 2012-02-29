@@ -3,7 +3,6 @@ package com.bee32.plover.orm.util;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.free.IdentityHashSet;
@@ -25,11 +24,11 @@ import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.dao.MemdbDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
+import com.bee32.plover.orm.entity.EntityFlags;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.util.SuperSamplePackage.Normals;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
-import com.bee32.plover.site.cfg.DBAutoDDL;
 import com.bee32.plover.site.scope.PerSite;
 
 @Component
@@ -141,11 +140,13 @@ public class SamplesLoader
         if (pack == null)
             throw new NullPointerException("pack");
 
-        pack.beginLoad();
+// String packZVersionKey = "sampack.z." + pack.getName();
+// String packZVersion = confManager.getConfValue(packZVersionKey);
+//
+// DBAutoDDL autoDdl = ThreadHttpContext.getSiteInstance().getAutoDDL();
+// boolean retry = autoDdl == DBAutoDDL.CreateDrop;
 
-        List<Entity<?>> autoList = new ArrayList<Entity<?>>();
-        // List<Entity<?>> naturalList = new ArrayList<Entity<?>>();
-        List<Entity<?>> fixedList = new ArrayList<Entity<?>>();
+        pack.beginLoad();
 
         // Classify to A/Z
         for (Entity<?> sample : pack.getSamples()) {
@@ -154,177 +155,32 @@ public class SamplesLoader
                 continue;
             }
 
-            Class<?> sampleClass = sample.getClass();
+            Class<? extends Entity<?>> sampleClass = (Class<? extends Entity<?>>) sample.getClass();
             if (!unit.getClasses().contains(sampleClass)) {
-                logger.debug("  Ignored entity of non-using class: " + sampleClass);
+                logger.debug("Skipped sample out of unit: " + sampleClass);
                 continue;
             }
 
-            boolean isAutoId = EntityAccessor.isAutoId(sample);
-            if (isAutoId)
-                autoList.add(sample);
-            else {
-                // Serializable naturalId = sample.getNaturalId();
-                // if (naturalId == null)
-                fixedList.add(sample);
-                // else
-                // naturalList.add(sample);
+            ICriteriaElement selector = sample.getSelector();
+            if (selector == null) {
+                logger.error("Sample without natural-id: " + sample);
+                continue;
             }
-        }
 
-        // Load Side-A (before)
-        if (!fixedList.isEmpty()) {
-            // String packAVersionKey = "sampack.a." + pack.getName();
-            // String packAVersion = confManager.getConfValue(packAVersionKey);
-            String packAPrefix = "sample.";
-
-            boolean packAOnce = true;
-
-            if (packAOnce) {
-                // Always save/update fixed-entities.
-
-                if (logger.isDebugEnabled()) {
-                    String message = String.format("Loading[%d]: %d A-samples from %s", //
-                            ++loadIndex, fixedList.size(), pack);
-                    logger.info(message);
-                }
-
-                IEntityAccessService<Entity<?>, ?> eas = asFor(Entity.class);
-                try {
-                    eas.saveOrUpdateAll(fixedList);
-                    // confManager.setConf(packAVersionKey, "1");
-                } catch (Exception e) {
-                    logger.error("Failed to load (A) samples from " + pack, e);
-
-                    DBAutoDDL autoDdl = ThreadHttpContext.getSiteInstance().getAutoDDL();
-                    boolean retry = autoDdl == DBAutoDDL.CreateDrop;
-                    if (retry)
-                        for (Entity<?> fixed1 : fixedList)
-                            try {
-                                eas.saveOrUpdate(fixed1);
-                            } catch (Exception e2) {
-                                logger.error(">> Retry one-by-one failed to load (A) sample " + fixed1, e);
-                            }
-                }
-
-            } else {
-                for (Entity<?> sample : fixedList) {
-                    if (logger.isDebugEnabled()) {
-                        String message = String.format("Loading[%d]: Single A-sample from %s", //
-                                ++loadIndex, pack);
-                        logger.debug(message);
-                    }
-
-                    // sample.getVersion();
-                    Class<? extends Entity<?>> sampleType = (Class<? extends Entity<?>>) sample.getClass();
-                    String typeAbbr = ABBR.abbr(sampleType);
-                    String sampleVersionKey = packAPrefix + typeAbbr + "." + sample.getId();
-                    String sampleVersion = confManager.getConfValue(sampleVersionKey);
-
-                    if ("NEVER-UPDATE".equals(sampleVersion))
-                        continue;
-
-                    try {
-                        ctx.data.access(sampleType).saveOrUpdate(sample);
-                        confManager.setConf(sampleVersionKey, "1");
-                        // dataManager.flush();
-                    } catch (Exception e) {
-                        logger.error("Failed to load (Z) samples from " + pack, e);
-                    }
-                } // for
-            } // packBOnce
-        } // A.empty
-
-        // Load Side Z. (after)
-        if (!autoList.isEmpty()) {
-            String packZVersionKey = "sampack.z." + pack.getName();
-            String packZVersion = confManager.getConfValue(packZVersionKey);
-
-            if ("1".equals(packZVersion)) {
-                logger.info("  (Z) Already loaded: " + pack.getName());
-
-                // Reload naturals.
-                Iterator<Entity<?>> iter = autoList.iterator();
-                List<Entity<Serializable>> fixq = new ArrayList<Entity<Serializable>>();
-
-                while (iter.hasNext()) {
-                    Entity<Serializable> item = (Entity<Serializable>) iter.next();
-                    Class<? extends Entity<?>> itemType = (Class<? extends Entity<?>>) item.getClass();
-
-                    Serializable nid = item.getNaturalId();
-                    if (nid != null) {
-                        String itemHint = itemType.getSimpleName() + " : " + nid;
-                        logger.info("      Reload " + itemHint);
-
-                        ICriteriaElement selector = item.getSelector();
-                        if (selector == null) {
-                            logger.warn("    Append (dependant-) transient sample: " + itemHint);
-                            fixq.add(item);
-                            continue;
-                        }
-
-                        Entity<?> existing;
-                        try {
-                            existing = ctx.data.access(itemType).getUnique(selector);
-
-                        } catch (Exception e) {
-                            logger.error("      Failed to reload " + itemType.getSimpleName() + " : " + nid, e);
-                            continue;
-                        }
-
-                        if (existing == null) {
-                            logger.warn("    Append to fix queue: " + itemHint);
-                            fixq.add(item);
-                            continue;
-                        }
-
-                        EntityAccessor.setId(item, (Serializable) existing.getId());
-                        ctx.data.access(itemType).evict(existing);
-                    }
-                }
-
-                if (!fixq.isEmpty()) {
-                    for (Entity<Serializable> item : fixq) {
-                        Serializable nid = item.getNaturalId();
-                        String itemHint = item.getClass().getSimpleName() + " : " + nid;
-                        logger.warn("    Auto fix: readd missing entity " + itemHint);
-                    }
-                    try {
-                        ctx.data.access(Entity.class).saveAll(fixq);
-                    } catch (Exception e) {
-                        logger.error("      Auto fix failed.", e);
-                    }
-                }
-
-            } else {
-                if (logger.isDebugEnabled()) {
-                    String message = String.format("Loading[%d]: %d Z-samples from %s", //
-                            ++loadIndex, autoList.size(), pack);
-                    logger.info(message);
-                }
-
-                try {
-                    ctx.data.access(Entity.class).saveAll(autoList);
-
-                    confManager.setConf(packZVersionKey, "1");
-
-                    // dataManager.flush();
-                } catch (Exception e) {
-                    logger.error("Failed to load samples (Z) from " + pack, e);
-
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Samples in the pack: ");
-                        for (Entity<?> entity : autoList)
-                            logger.debug("    -- " + entity);
-                    }
-                }
-
-                // more is only belonged to side Z.
-                pack.postSave(ctx.data);
-
-            } // loaded?
+            Entity<?> existing = ctx.data.access(sampleClass).getUnique(selector);
+            if (existing != null) {
+                EntityFlags ef = EntityAccessor.getFlags(existing);
+                if (ef.isWeakData() || ef.isLocked() || ef.isUserLock())
+                    continue;
+                if (ef.isHidden() || ef.isMarked())
+                    continue;
+            }
+            EntityAccessor.setId(sample, existing.getId());
+            ctx.data.access(sampleClass).evict(existing);
+            ctx.data.access(sampleClass).saveOrUpdate(sample);
         } // !sideZ.empty
 
+        pack.postSave(ctx.data);
         pack.endLoad();
     }
 
