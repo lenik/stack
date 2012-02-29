@@ -7,6 +7,7 @@ import org.apache.commons.lang.NotImplementedException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.chance.entity.WantedProductAttribute;
 import com.bee32.sem.frame.ui.IEnclosedObject;
 
@@ -16,10 +17,7 @@ public class WantedProductAttributeDto
 
     private static final long serialVersionUID = 1L;
 
-    public static final int HINT_PRODUCT = 1;
-
     WantedProductDto product;
-
     String name;
     String value;
 
@@ -42,18 +40,16 @@ public class WantedProductAttributeDto
 
     @Override
     protected void _marshal(WantedProductAttribute source) {
-        if (selection.contains(HINT_PRODUCT))
-            this.product = mref(WantedProductDto.class, source.getProduct());
-
+        this.product = mref(WantedProductDto.class, source.getProduct());
         this.name = source.getName();
         this.value = source.getValue();
     }
 
     @Override
     protected void _unmarshalTo(WantedProductAttribute target) {
+        merge(target, "product", product);
         target.setName(name);
         target.setValue(value);
-        merge(target, "product", product);
     }
 
     @Override
@@ -78,7 +74,7 @@ public class WantedProductAttributeDto
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = TextUtil.normalizeSpace(name);
     }
 
     @NLength(max = WantedProductAttribute.VALUE_LENGTH)
@@ -87,7 +83,7 @@ public class WantedProductAttributeDto
     }
 
     public void setValue(String value) {
-        this.value = value;
+        this.value = TextUtil.normalizeSpace(value);
     }
 
 }

@@ -23,9 +23,8 @@ public class WantedProductDto
 
     private static final long serialVersionUID = 1L;
 
-    public static final int CHANCE = 1;
-    public static final int ATTRIBUTES = 2;
-    public static final int QUOTATIONS = 4;
+    public static final int ATTRIBUTES = 1;
+    public static final int QUOTATIONS = 2;
 
     ChanceDto chance;
     List<WantedProductAttributeDto> attributes = new ArrayList<>();
@@ -34,8 +33,7 @@ public class WantedProductDto
 
     @Override
     protected void _marshal(WantedProduct source) {
-        if (selection.contains(CHANCE))
-            chance = mref(ChanceDto.class, source.getChance());
+        chance = mref(ChanceDto.class, source.getChance());
 
         if (selection.contains(ATTRIBUTES))
             attributes = marshalList(WantedProductAttributeDto.class, source.getAttributes());

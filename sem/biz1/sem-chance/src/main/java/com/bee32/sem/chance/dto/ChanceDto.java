@@ -71,7 +71,6 @@ public class ChanceDto
         else
             actions = Collections.emptyList();
 
-        int pfmask = selection.translate(PRODUCTS_MORE, F_MORE);
         if (selection.contains(PRODUCTS))
             products = marshalList(WantedProductDto.class, selection.translate(PRODUCTS_MORE, F_MORE),
                     source.getProducts());

@@ -154,6 +154,10 @@ public abstract class BaseDto_Skel<S>
             Object marshalKey = getMarshalKey(source);
             D marshalled = session.getMarshalled(marshalKey);
             if (marshalled != null)
+                /**
+                 * 当 entity 被 marshal 多次，并且 marshal-type/fmask 不同时，则第一个进入 marshalled-cache 的 为有效。
+                 * 这个背后的逻辑是：内部重复的通常只有一种可能，即 parent-ref。
+                 */
                 return (D) marshalled;
 
             session.addMarshalled(marshalKey, this);
@@ -198,6 +202,10 @@ public abstract class BaseDto_Skel<S>
     @Override
     final S mergeImpl(S target) {
 
+        // String prefix = Strings.repeat(sessionStack.size(), "    ");
+        // System.err.println(prefix + "merge " + ObjectIndex.objid(this)
+        // + ": " + ObjectIndex.objid(target));
+
         // Force stereotyped before unmarshal.
         if (!stereotyped)
             stereotyped = true;
@@ -211,8 +219,11 @@ public abstract class BaseDto_Skel<S>
         if (target == null || /* TODO Check this later */target == deref) {
             IMarshalSession session = getSession();
             S unmarshalled = session.getUnmarshalled(this);
-            if (unmarshalled != null)
+            if (unmarshalled != null) {
+                // System.err.println(prefix + "    cache-exist");
                 return unmarshalled;
+            }
+            // System.err.println(prefix + "    cache-add");
             session.addUnmarshalled(this, deref);
         }
 
