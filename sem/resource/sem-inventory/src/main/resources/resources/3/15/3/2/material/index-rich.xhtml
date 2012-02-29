@@ -5,10 +5,11 @@
 
     <ui:param name="title" value="物料管理" />
     <ui:param name="sideBarWVisible" value="true" />
-    <ui:param name="bean" value="${materialExAdminBean}" />
+    <ui:param name="bean" value="${materialAdminBean}" />
     <ui:param name="stock" value="#{stockDictsBean}" />
     <ui:param name="obj" value="${bean.openedObject}" />
     <ui:param name="mirrorTargets" value=":navigatorForm:categoryTree" />
+    <ui:param name="thing" value="#{thingDictsBean}" />
     <ui:param name="monetary" value="#{monetaryDictsBean}" />
 
     <ui:define name="sideBarW">
@@ -91,10 +92,10 @@
                     <h:outputText value="主单位:" />
                     <t:panelGrid columns="4">
                         <t:panelGrid columns="2">
-                            <p:selectOneMenu id="materialUnit" value="#{obj.unit.id}" style="width:10em;"
+                            <p:selectOneMenu id="materialUnit" value="#{obj.unit.id_RE}" style="width:10em;"
                                 label="主单位">
                                 <f:selectItem itemLabel="--选择--" itemValue="" />
-                                <f:selectItems value="#{bean.units}" />
+                                <f:selectItems value="#{thing.unitSelectItems}" />
                             </p:selectOneMenu>
                             <p:commandButton actionListener="#{addUnitBean.newUnit}" value="..."
                                 onclick="addUnitDialog.show()" />

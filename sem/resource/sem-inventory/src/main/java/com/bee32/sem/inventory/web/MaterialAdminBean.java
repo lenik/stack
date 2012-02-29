@@ -3,12 +3,9 @@ package com.bee32.sem.inventory.web;
 import java.io.IOException;
 import java.util.List;
 
-import javax.faces.model.SelectItem;
-
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.file.entity.FileBlob;
 import com.bee32.sem.file.entity.UserFile;
@@ -26,14 +23,12 @@ import com.bee32.sem.inventory.entity.MaterialPrice;
 import com.bee32.sem.inventory.entity.MaterialWarehouseOption;
 import com.bee32.sem.inventory.util.MaterialCriteria;
 import com.bee32.sem.misc.UnmarshalMap;
-import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.world.thing.ScaleItem;
 import com.bee32.sem.world.thing.Unit;
 import com.bee32.sem.world.thing.UnitConv;
 import com.bee32.sem.world.thing.UnitConvDto;
-import com.bee32.sem.world.thing.UnitDto;
 
-public class MaterialExAdminBean
+public class MaterialAdminBean
         extends MaterialCategorySupportBean {
 
     private static final long serialVersionUID = 1L;
@@ -44,7 +39,7 @@ public class MaterialExAdminBean
     MaterialWarehouseOptionDto warehouseOption = new MaterialWarehouseOptionDto().create();
     UserFileDto userFile = new UserFileDto().create();
 
-    public MaterialExAdminBean() {
+    public MaterialAdminBean() {
         super(Material.class, MaterialDto.class, 0);
     }
 
@@ -90,12 +85,6 @@ public class MaterialExAdminBean
         for (MaterialDto material : uMap.<MaterialDto> dtos()) {
             onDeleteMaterial(material);
         }
-    }
-
-    public List<SelectItem> getUnits() {
-        List<Unit> units = ctx.data.access(Unit.class).list();
-        List<UnitDto> unitDtos = DTOs.marshalList(UnitDto.class, units);
-        return UIHelper.selectItemsFromDict(unitDtos);
     }
 
     public List<MaterialPriceDto> getMaterialPrices() {
