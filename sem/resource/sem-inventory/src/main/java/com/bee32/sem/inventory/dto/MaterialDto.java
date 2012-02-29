@@ -9,12 +9,9 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.model.validation.core.NLength;
-import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialXP;
-import com.bee32.sem.world.color.NaturalColor;
 import com.bee32.sem.world.thing.ThingDto;
 
 public class MaterialDto
@@ -30,12 +27,8 @@ public class MaterialDto
     public static final int PREFERRED_LOCATIONS = 16;
 
     MaterialCategoryDto category;
-    String barCode;
-    String modelSpec;
 
     int alarmAhead;
-
-    NaturalColor color;
 
     int packageWidth;
     int packageHeight;
@@ -52,12 +45,7 @@ public class MaterialDto
     @Override
     protected void _marshal(Material source) {
         category = mref(MaterialCategoryDto.class, 0, source.getCategory());
-        barCode = source.getBarCode();
-        modelSpec = source.getModelSpec();
-
         alarmAhead = source.getAlarmAhead();
-
-        color = source.getColor();
         packageWidth = source.getPackageWidth();
         packageHeight = source.getPackageHeight();
         packageLength = source.getPackageLength();
@@ -71,12 +59,11 @@ public class MaterialDto
             attachments = mrefList(UserFileDto.class, source.getAttachments());
 
         if (selection.contains(OPTIONS))
-            options = marshalList(MaterialWarehouseOptionDto.class,
-                    ~MaterialWarehouseOptionDto.MATERIAL, source.getOptions());
+            options = marshalList(MaterialWarehouseOptionDto.class, ~MaterialWarehouseOptionDto.MATERIAL,
+                    source.getOptions());
 
         if (selection.contains(PREFERRED_LOCATIONS))
-            preferredLocations = mrefList(MaterialPreferredLocationDto.class,
-                    ~MaterialPreferredLocationDto.MATERIAL,
+            preferredLocations = mrefList(MaterialPreferredLocationDto.class, ~MaterialPreferredLocationDto.MATERIAL,
                     source.getPreferredLocations());
 
         if (selection.contains(PRICES))
@@ -87,9 +74,6 @@ public class MaterialDto
     protected void _unmarshalTo(Material target) {
         merge(target, "category", category);
 
-        target.setBarCode(barCode);
-        target.setModelSpec(modelSpec);
-        target.setColor(color);
         target.setPackageWidth(packageWidth);
         target.setPackageHeight(packageHeight);
         target.setPackageLength(packageLength);
@@ -152,38 +136,12 @@ public class MaterialDto
         this.category = category;
     }
 
-    @NLength(max = Material.BARCODE_LENGTH)
-    public String getBarCode() {
-        return barCode;
-    }
-
-    public void setBarCode(String barCode) {
-        this.barCode = TextUtil.normalizeSpace(barCode);
-    }
-
-    @NLength(max = Material.MODELSPEC_LENGTH)
-    public String getModelSpec() {
-        return modelSpec;
-    }
-
-    public void setModelSpec(String modelSpec) {
-        this.modelSpec = TextUtil.normalizeSpace(modelSpec);
-    }
-
     public int getAlarmAhead() {
         return alarmAhead;
     }
 
     public void setAlarmAhead(int alarmAhead) {
         this.alarmAhead = alarmAhead;
-    }
-
-    public NaturalColor getColor() {
-        return color;
-    }
-
-    public void setColor(NaturalColor color) {
-        this.color = color;
     }
 
     public int getPackageWidth() {

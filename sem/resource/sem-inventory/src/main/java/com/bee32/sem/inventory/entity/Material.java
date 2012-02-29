@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -19,11 +18,9 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.Index;
 
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.sem.file.entity.UserFile;
-import com.bee32.sem.world.color.NaturalColor;
 import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.thing.Thing;
 
@@ -37,14 +34,7 @@ public class Material
 
     private static final long serialVersionUID = 1L;
 
-    public static final int BARCODE_LENGTH = 30;
-    public static final int MODELSPEC_LENGTH = 30;
-
     MaterialCategory category;
-
-    String barCode;
-    String modelSpec;
-
     int alarmAhead;
 
     List<MaterialAttribute> attributes = new ArrayList<MaterialAttribute>();
@@ -58,8 +48,6 @@ public class Material
     // ------------------------------------------------------------------------
     // 需要索引的常用的物料属性（这些属性和单位换算无关）。
     //
-    NaturalColor color = new NaturalColor();
-
     int packageWidth;
     int packageHeight;
     int packageLength;
@@ -92,13 +80,10 @@ public class Material
     protected void _populate(Material o) {
         super._populate(o);
         category = o.category;
-        barCode = o.barCode;
-        modelSpec = o.modelSpec;
         alarmAhead = o.alarmAhead;
         // attributes = new ArrayList<>(o.attributes);
         // options = new ArrayList<>(o.options);
         // prices = new ArrayList<>(o.prices);
-        color = o.color;
         packageWidth = o.packageWidth;
         packageHeight = o.packageHeight;
         packageLength = o.packageLength;
@@ -126,35 +111,6 @@ public class Material
     }
 
     /**
-     * 物品条码
-     */
-    @Column(length = BARCODE_LENGTH)
-    @Index(name = "material_bar_code")
-    public String getBarCode() {
-        return barCode;
-    }
-
-    /**
-     * 物品条码
-     */
-    public void setBarCode(String barCode) {
-        this.barCode = barCode;
-    }
-
-    /**
-     * 规格型号
-     */
-    @Column(length = MODELSPEC_LENGTH)
-    @Index(name = "material_model_spec")
-    public String getModelSpec() {
-        return modelSpec;
-    }
-
-    public void setModelSpec(String modelSpec) {
-        this.modelSpec = modelSpec;
-    }
-
-    /**
      * 提前报警天数
      */
     @Column(nullable = false)
@@ -164,20 +120,6 @@ public class Material
 
     public void setAlarmAhead(int alarmAhead) {
         this.alarmAhead = alarmAhead;
-    }
-
-    /**
-     * 颜色
-     */
-    @Embedded
-    public NaturalColor getColor() {
-        return color;
-    }
-
-    public void setColor(NaturalColor color) {
-        if (color == null)
-            throw new NullPointerException("color");
-        this.color = color;
     }
 
     /**

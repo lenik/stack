@@ -3,11 +3,13 @@ package com.bee32.sem.world.thing;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Index;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.DummyId;
@@ -16,6 +18,7 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.xp.EntityExt;
 import com.bee32.plover.ox1.xp.XPool;
+import com.bee32.sem.world.color.NaturalColor;
 
 @MappedSuperclass
 @Green
@@ -26,12 +29,16 @@ public abstract class Thing<X extends XPool<?>>
 
     public static final int SERIAL_LENGTH = 32;
     public static final int UNIT_HINT_LENGTH = Unit.HINT_LENGTH;
+    public static final int BARCODE_LENGTH = 30;
+    public static final int MODELSPEC_LENGTH = 40;
 
     String serial;
-
+    String barCode;
     Unit unit = predefined(Units.class).PIECE;
     String unitHint;
     UnitConv unitConv;
+    String modelSpec;
+    NaturalColor color = new NaturalColor();
 
     public Thing() {
         super();
@@ -60,9 +67,20 @@ public abstract class Thing<X extends XPool<?>>
     protected void _populate(Thing<?> o) {
         super._populate(o);
         serial = o.serial;
+        barCode = o.barCode;
         unit = o.unit;
         unitHint = o.unitHint;
         unitConv = o.unitConv;
+        modelSpec = o.modelSpec;
+        color = o.color; // clone?
+    }
+
+    /**
+     * 名称
+     */
+    @Transient
+    public String getDisplayName() {
+        return getLabel();
     }
 
     /**
@@ -79,11 +97,16 @@ public abstract class Thing<X extends XPool<?>>
     }
 
     /**
-     * 物品名称（必填）
+     * 条形码
      */
-    @Transient
-    public String getDisplayName() {
-        return label;
+    @Column(length = BARCODE_LENGTH)
+    @Index(name = "##_bar_code")
+    public String getBarCode() {
+        return barCode;
+    }
+
+    public void setBarCode(String barCode) {
+        this.barCode = barCode;
     }
 
     /**
@@ -155,6 +178,33 @@ public abstract class Thing<X extends XPool<?>>
             unitConv = new UnitConv(getLabel(), unit);
         }
         unitConv.setScale(convUnit, scale);
+    }
+
+    /**
+     * 规格型号
+     */
+    @Column(length = MODELSPEC_LENGTH)
+    @Index(name = "##_model_spec")
+    public String getModelSpec() {
+        return modelSpec;
+    }
+
+    public void setModelSpec(String modelSpec) {
+        this.modelSpec = modelSpec;
+    }
+
+    /**
+     * 颜色
+     */
+    @Embedded
+    public NaturalColor getColor() {
+        return color;
+    }
+
+    public void setColor(NaturalColor color) {
+        if (color == null)
+            throw new NullPointerException("color");
+        this.color = color;
     }
 
     @Override
