@@ -184,7 +184,7 @@ public abstract class AbstractPartyAdminBean
     }
 
     public void addTags() {
-        PartyDto party = getParty();
+        PartyDto party = getOpenedObject();
 
         if (party == null) {
             uiLogger.error("提示:请选择所操作的联系方式对应的客户/供应商!");
@@ -205,7 +205,7 @@ public abstract class AbstractPartyAdminBean
     }
 
     public void deleteTag() {
-        PartyDto party = getParty();
+        PartyDto party = getOpenedObject();
 
         if (party == null) {
             uiLogger.error("提示:请选择所操作的联系方式对应的客户/供应商!");

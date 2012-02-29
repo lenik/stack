@@ -90,12 +90,12 @@ public class PartyDto
             tags = Collections.emptyList();
 
         if (selection.contains(CONTACTS))
-            contacts = mrefList(ContactDto.class, source.getContacts());
+            contacts = marshalList(ContactDto.class, source.getContacts());
         else
             contacts = Collections.emptyList();
 
         if (selection.contains(RECORDS))
-            records = mrefList(PartyRecordDto.class, source.getRecords());
+            records = marshalList(PartyRecordDto.class, source.getRecords());
         else
             records = Collections.emptyList();
     }

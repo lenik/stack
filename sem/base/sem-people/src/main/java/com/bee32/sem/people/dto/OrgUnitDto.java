@@ -37,10 +37,10 @@ public class OrgUnitDto
     @Override
     protected void _marshal(OrgUnit source) {
         org = mref(OrgDto.class, source.getOrg());
-        contact = mref(ContactDto.class, source.getContact());
+        contact = marshal(ContactDto.class, source.getContact());
 
         if (selection.contains(ROLES))
-            roles = mrefList(PersonRoleDto.class, source.getRoles());
+            roles = marshalList(PersonRoleDto.class, source.getRoles());
         else
             roles = Collections.emptyList();
 

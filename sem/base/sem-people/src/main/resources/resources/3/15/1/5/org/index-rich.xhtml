@@ -94,12 +94,12 @@
                         <t:panelGrid columns="2">
                             <p:selectOneListbox id="tags" value="#{bean.selectedTagId}" style="height:80px; width:200px;"
                                 label="标签">
-                                <f:selectItems value="#{people.partyTagnameSelectItems}" />
+                                <f:selectItems value="#{obj.tags}" var="tag" itemValue="#{tag.id}" itemLabel="#{tag.label}"/>
                             </p:selectOneListbox>
                             <t:panelGrid colums="1">
-                                <p:commandButton value="增加标签" disabled="#{obj == null}" onclick="tagDlg.show();" />
+                                <p:commandButton value="增加标签" disabled="#{obj == null}" onclick="tagDlg.show();"/>
                                 <p:commandButton value="删除标签" disabled="#{obj == null}" actionListener="#{bean.deleteTag}"
-                                    update="tags" />
+                                    update=":editDialog:form:tv:tags" />
                             </t:panelGrid>
                         </t:panelGrid>
                     </t:panelGroup>
@@ -322,7 +322,18 @@
         </fr:listView>
 
         <p:dialog header="标签添加" widgetVar="tagDlg" modal="true">
-            正在建设中
+            <h:form id="tagForm">
+                <h:panelGroup id="tagHolder">
+                    <p:selectManyMenu value="#{bean.selectedTagsToAdd}" style="height:200px" label="标签容器">
+                        <f:selectItems value="#{people.partyTagnameSelectItems}" />
+                    </p:selectManyMenu>
+                </h:panelGroup>
+                <h:panelGrid columns="2">
+                    <p:commandButton value="添加" actionListener="#{bean.addTags}" oncomplete="tagDlg.hide();"
+                        async="true" update=":editDialog:form:tv:tags" />
+                    <p:commandButton value="取消" oncomplete="tagDlg.hide();" />
+                </h:panelGrid>
+            </h:form>
         </p:dialog>
 
     </ui:define>

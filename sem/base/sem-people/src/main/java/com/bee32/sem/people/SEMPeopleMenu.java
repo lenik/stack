@@ -19,8 +19,8 @@ public class SEMPeopleMenu
 
     public static transient MenuNode PEOPLE = SEMFrameMenu.BIZ1;
 
-    static MenuNode personAdmin = entry(PEOPLE, 10, "personAdmin", PEOPLE_.join("person/index-rich.jsf"));
-    static MenuNode orgAdmin = entry(PEOPLE, 11, "orgAdmin", PEOPLE_.join("org/index-rich.jsf"));
+    static MenuNode personAdmin = entry(PEOPLE, 10, "personAdmin", PEOPLE_.join("person/"));
+    static MenuNode orgAdmin = entry(PEOPLE, 11, "orgAdmin", PEOPLE_.join("org/"));
 
     public static MenuNode SETTINGS = menu(PEOPLE, 12, "peopleDicts");
     /**/static MenuNode partyTag = entry(SETTINGS, 1, "partyTag", getDictIndex(PartyTagname.class));

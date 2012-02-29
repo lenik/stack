@@ -72,7 +72,7 @@ public class OrgUnit
         this.forWhichGroup = forWhichGroup;
     }
 
-    @OneToMany(mappedBy = "orgUnit")
+    @OneToMany(mappedBy = "orgUnit", cascade = CascadeType.ALL)
     public List<PersonRole> getRoles() {
         return roles;
     }

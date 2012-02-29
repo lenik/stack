@@ -7,7 +7,9 @@ import javax.faces.model.SelectItem;
 
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.people.Gender;
+import com.bee32.sem.people.dto.ContactDto;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.dto.PartySidTypeDto;
 import com.bee32.sem.people.dto.PersonDto;
@@ -22,10 +24,16 @@ public class PersonAdminBean
 
     private static final long serialVersionUID = 1L;
 
+    ListMBean<ContactDto> contactsMBean = ListMBean.fromEL(this, "openedObject.contacts", ContactDto.class);
+
     private PersonRoleDto selectedRole;
 
     public PersonAdminBean() {
         super(Person.class, PersonDto.class, PartyDto.CONTACTS);
+    }
+
+    public ListMBean<ContactDto> getContactsMBean() {
+        return contactsMBean;
     }
 
     public List<SelectItem> getGenders() {
