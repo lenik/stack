@@ -30,7 +30,7 @@
 
             <h:outputText value="生产订单:" />
             <t:panelGroup>
-                <p:inputText id="order" value="#{obj.order.label}" readonly="true" />
+                <p:inputText id="order" value="#{obj.order.label}" readonly="true" label="生产订单"/>
                 <p:commandButton value="..." onclick="chooseMakeOrderDialog.show()" disabled="#{not bean.editing}" />
             </t:panelGroup>
             <t:panelGroup />
@@ -72,14 +72,14 @@
                 <h:outputText value="#{item.part.target.label}" />
 
                 <h:outputLabel value="数量" />
-                <p:inputText value="#{item.quantity}" />
+                <p:inputText value="#{item.quantity}" label="数量"/>
 
                 <h:outputText value="完工时间:" />
                 <p:calendar navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{item.deadline}"
-                    showOn="button" />
+                    showOn="button" label="完工时间"/>
 
                 <h:outputLabel value="备注" />
-                <p:inputText value="#{item.description}" />
+                <p:inputText value="#{item.description}" label="备注"/>
 
             </t:panelGrid>
         </fr:listView>

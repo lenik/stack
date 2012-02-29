@@ -39,9 +39,9 @@
 
             <h:panelGrid id="addUnitScalePanel" columns="2">
                 <h:outputText value="目标单位" />
-                <p:selectOneMenu value="#{bean.scaleItem.unit.displayId}" style="width:150px;" label="目标单位">
+                <p:selectOneMenu value="#{bean.scaleItem.unit.id_RE}" style="width:150px;" label="目标单位">
                     <f:selectItem itemValue="" itemLabel="--选择单位--" />
-                    <f:selectItems value="#{bean.units}" />
+                    <f:selectItems value="#{thing.unitSelectItems}" />
                 </p:selectOneMenu>
 
                 <h:outputText value="换算率" />

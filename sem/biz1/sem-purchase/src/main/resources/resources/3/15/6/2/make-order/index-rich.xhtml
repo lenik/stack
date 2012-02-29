@@ -31,7 +31,7 @@
 
             <h:outputText value="客户:" />
             <t:panelGroup colspan="3">
-                <p:inputText id="customer" value="#{obj.customer.displayName}" readonly="true" />
+                <p:inputText id="customer" value="#{obj.customer.displayName}" readonly="true" label="客户"/>
                 <p:commandButton value="..." oncomplete="choosePartyDialog.show()" disabled="#{not bean.editing}">
                     <f:setPropertyActionListener target="#{choosePartyDialogBean.customer}"
                         value="true" />
@@ -40,13 +40,13 @@
 
             <h:outputText value="对应机会:" />
             <t:panelGroup colspan="3">
-                <p:inputText id="chance" value="#{obj.chance.subject}" readonly="true" />
+                <p:inputText id="chance" value="#{obj.chance.subject}" readonly="true" label="对应机会"/>
                 <p:commandButton value="..." onclick="chooseChanceDialog.show()" disabled="#{not bean.editing}" />
             </t:panelGroup>
 
             <h:outputText value="附加要求:" />
             <t:panelGroup colspan="3">
-                <p:inputTextarea style="width: 30em; height: 4em;" value="#{obj.description}" disabled="#{not bean.editing}" />
+                <p:inputTextarea style="width: 30em; height: 4em;" value="#{obj.description}" disabled="#{not bean.editing}" label="附加要求"/>
             </t:panelGroup>
 
         </t:panelGrid>
@@ -106,34 +106,38 @@
 
                 <h:outputLabel value="物料" />
                 <t:panelGroup colspan="3">
-                    <p:inputText value="#{item.part.target.label}" readonly="true" />
+                    <p:inputText value="#{item.part.target.label}" readonly="true" label="物料"/>
                     <p:commandButton value="..." onclick="choosePartDialog.show();" />
                 </t:panelGroup>
 
                 <h:outputLabel value="单价" />
-                <p:inputText value="#{item.price.value}" />
+                <p:inputText value="#{item.price.value}" label="单价"/>
                 <h:outputLabel value="币种" />
-                <p:selectOneMenu value="#{item.price.currencyCode}" style="width:20em;">
+                <p:selectOneMenu value="#{item.price.currencyCode}" style="width:20em;" label="币种">
                     <f:selectItem itemValue="" itemLabel="--选择币种--" />
                     <f:selectItems value="#{monetary.currencySelectItems}" />
                 </p:selectOneMenu>
 
                 <h:outputLabel value="数量" />
-                <t:panelGroup colspan="3">
-                    <p:inputText value="#{item.quantity}" />
-                </t:panelGroup>
+                <p:inputText value="#{item.quantity}" label="数量"/>
+                <h:outputLabel value="铭牌" />
+                <p:selectOneRadio value="#{item.nameplate}" label="铭牌">
+                    <f:selectItem itemLabel="外部" itemValue="false" />
+                    <f:selectItem itemLabel="内部" itemValue="true" />
+                </p:selectOneRadio>
+
 
                 <h:outputLabel value="外部名称" />
-                <p:inputText value="#{item.externalProductName}" />
+                <p:inputText value="#{item.externalProductName}" label="外部名称"/>
                 <h:outputLabel value="外部规格型号" />
-                <p:inputText value="#{item.externalModelSpec}" />
+                <p:inputText value="#{item.externalModelSpec}" label="外部规格型号"/>
 
                 <h:outputLabel value="备注" />
                 <t:panelGroup colspan="3">
                     <p:inputText value="#{item.description}" label="备注" style="width:35em;"/>
                 </t:panelGroup>
 
-                <h:outputLabel for="deadline" value="交货时 间" />
+                <h:outputLabel for="deadline" value="交货时间" />
                 <t:panelGroup colspan="3">
                     <p:calendar id="deadline" label="交货时间" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
                         value="#{item.deadline}" showOn="button" />

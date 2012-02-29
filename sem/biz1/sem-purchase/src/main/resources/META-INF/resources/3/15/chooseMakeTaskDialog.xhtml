@@ -62,11 +62,11 @@
         </ui:decorate>
 
         <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
-        <p:dialog header="生产任务单明细" widgetVar="_chooseMakeTask_itemsDialog" modal="true" height="480" width="800">
+        <p:dialog header="生产任务单明细" widgetVar="_chooseMakeTask_itemsDialog" modal="true">
             <h:form id="itemsForm">
                 <h:panelGroup rendered="${dialogBean.openedObject != null}">
                     <p:dataTable id="table" var="entry" value="${dialogBean.openedObject.items}"
-                        resizableColumns="true" rowIndexVar="rowIndex" scrollable="true" scrollWidth="750" scrollHeight="350">
+                        resizableColumns="true" rowIndexVar="rowIndex">
 
                         <p:column headerText="序号">
                             <h:outputText value="${rowIndex + 1}" />

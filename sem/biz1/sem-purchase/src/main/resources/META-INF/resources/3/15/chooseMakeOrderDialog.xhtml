@@ -51,7 +51,7 @@
                             <f:setPropertyActionListener target="${choosePartyDialogBean.customer}"
                                 value="true" />
                         </p:commandButton>
-                        <p:commandButton id="clearCustomer" value="X" update="@form">
+                        <p:commandButton id="clearCustomer" value="X" update=":@form">
                             <f:setPropertyActionListener target="${dialogBean.customer}"
                                 value="${null}" />
                         </p:commandButton>
@@ -70,7 +70,7 @@
             </ui:define>
 
             <ui:define name="buttons.left">
-                <p:commandButton value="查看" actionListener="${dialogBean.showContent}" update=":${cc.clientId}:itemsForm"
+                <p:commandButton value="查看" actionListener="${dialogBean.showContent}" update=":${cc.clientId}:itemsView"
                     oncomplete="chooseMakeOrder_itemsDialog.show()" />
             </ui:define>
 
@@ -81,7 +81,7 @@
             </ui:define>
         </ui:decorate>
 
-        <fr:listView header="订单明细" indexDialogVar="chooseMakeOrder_itemsDialog" style="dialog"
+        <fr:listView id="itemsView" header="订单明细" indexDialogVar="chooseMakeOrder_itemsDialog" style="dialog"
             mbean="${cc.parent.attrs.dialogBean.itemsMBean}" addable="false" editable="false" removable="false">
             <f:facet name="columns">
                 <p:column headerText="物料" styleClass="f-wrappable">

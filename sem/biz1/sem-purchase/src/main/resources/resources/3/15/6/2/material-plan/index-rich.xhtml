@@ -27,18 +27,18 @@
 
             <h:outputText value="简要：" />
             <t:panelGroup colspan="3">
-                <p:inputText value="#{obj.label}" />
+                <p:inputText value="#{obj.label}" label="简要"/>
             </t:panelGroup>
 
             <h:outputText value="描述：" />
             <t:panelGroup colspan="3">
-                <p:inputText value="#{obj.description}" />
+                <p:inputText value="#{obj.description}" label="描述"/>
             </t:panelGroup>
 
             <h:outputText value="生产任务单：" />
             <t:panelGroup>
                 <h:inputHidden label="生产任务单" value="#{obj.task.id_RZL}" />
-                <p:inputText id="task" value="#{obj.task.label}" disabled="true" />
+                <p:inputText id="task" value="#{obj.task.label}" disabled="true" label="生产任务单"/>
                 <p:commandButton value="..." onclick="chooseMakeTaskDialog.show()" disabled="#{not bean.editing}" />
             </t:panelGroup>
             <t:panelGroup />
@@ -108,7 +108,7 @@
                 <h:outputLabel value="优选供应商" />
                 <t:panelGroup>
                     <p:inputText id="preferredSupplier" value="#{item.preferredSupplier.displayName}"
-                        readonly="true" />
+                        readonly="true" label="优选供应商"/>
                     <p:commandButton value="..." oncomplete="chooseSupplierDialog.show()" disabled="#{not bean.editing}">
                         <f:setPropertyActionListener target="${chooseOrgDialogBean.supplier}"
                             value="true" />
@@ -189,7 +189,7 @@
                 <h:outputLabel for="material" value="物料" />
                 <h:outputText id="material" value="#{item.material.label}" />
                 <h:outputLabel for="checked" value="锁定" />
-                <p:selectBooleanCheckbox id="checked" value="#{item.checked1}" />
+                <p:selectBooleanCheckbox id="checked" value="#{item.checked1}" label="锁定"/>
 
                 <h:panelGroup colspan="4">
                     <ui:repeat id="batches" var="i" value="#{batchMetadata.indexes}">
@@ -205,7 +205,7 @@
 
                 <h:outputLabel value="库位" />
                 <t:panelGroup colspan="3">
-                    <p:inputText value="#{item.location.label}" disabled="true" />
+                    <p:inputText value="#{item.location.label}" disabled="true" label="库位"/>
                 </t:panelGroup>
 
                 <ui:insert name="item-quantity">
@@ -231,7 +231,7 @@
 
                 <h:outputLabel value="备注" />
                 <t:panelGroup colspan="3">
-                    <p:inputText value="#{item.description}" style="width: 30em" />
+                    <p:inputText value="#{item.description}" style="width: 30em" label="备注"/>
                 </t:panelGroup>
             </t:panelGrid>
         </fr:listView>
