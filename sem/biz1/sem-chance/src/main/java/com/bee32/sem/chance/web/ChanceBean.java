@@ -11,9 +11,9 @@ import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.chance.dto.ChancePartyDto;
-import com.bee32.sem.chance.dto.HintProductAttributeDto;
-import com.bee32.sem.chance.dto.HintProductDto;
-import com.bee32.sem.chance.dto.HintProductQuotationDto;
+import com.bee32.sem.chance.dto.WantedProductAttributeDto;
+import com.bee32.sem.chance.dto.WantedProductDto;
+import com.bee32.sem.chance.dto.WantedProductQuotationDto;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.util.ChanceCriteria;
@@ -81,9 +81,9 @@ public class ChanceBean
     ListMBean<ChancePartyDto> partiesMBean = ListMBean.fromEL(this, "openedObject.parties", ChancePartyDto.class);
     ListMBean<ChanceActionDto> actionsMBean = ListMBean.fromEL(this, "openedObject.actions", ChanceActionDto.class);
 
-    ListMBean<HintProductDto> productsMBean = ListMBean.fromEL(this, "openedObject.products", HintProductDto.class);
-    ListMBean<HintProductAttributeDto> productAttributesMBean = ListMBean.fromEL(productsMBean, "openedObject.attributes", HintProductAttributeDto.class);
-    ListMBean<HintProductQuotationDto> productQuotationsMBean = ListMBean.fromEL(productsMBean, "openedObject.quotations", HintProductQuotationDto.class);
+    ListMBean<WantedProductDto> productsMBean = ListMBean.fromEL(this, "openedObject.products", WantedProductDto.class);
+    ListMBean<WantedProductAttributeDto> productAttributesMBean = ListMBean.fromEL(productsMBean, "openedObject.attributes", WantedProductAttributeDto.class);
+    ListMBean<WantedProductQuotationDto> productQuotationsMBean = ListMBean.fromEL(productsMBean, "openedObject.quotations", WantedProductQuotationDto.class);
 
     public ListMBean<ChancePartyDto> getPartiesMBean() {
         return partiesMBean;
@@ -93,15 +93,15 @@ public class ChanceBean
         return actionsMBean;
     }
 
-    public ListMBean<HintProductDto> getProductsMBean() {
+    public ListMBean<WantedProductDto> getProductsMBean() {
         return productsMBean;
     }
 
-    public ListMBean<HintProductAttributeDto> getProductAttributesMBean() {
+    public ListMBean<WantedProductAttributeDto> getProductAttributesMBean() {
         return productAttributesMBean;
     }
 
-    public ListMBean<HintProductQuotationDto> getProductQuotationsMBean() {
+    public ListMBean<WantedProductQuotationDto> getProductQuotationsMBean() {
         return productQuotationsMBean;
     }
 }

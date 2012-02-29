@@ -22,8 +22,8 @@ import com.bee32.sem.bom.dto.PartDto;
 import com.bee32.sem.bom.entity.Part;
 import com.bee32.sem.bom.util.BomCriteria;
 import com.bee32.sem.chance.dto.ChanceDto;
-import com.bee32.sem.chance.dto.HintProductDto;
-import com.bee32.sem.chance.dto.HintProductQuotationDto;
+import com.bee32.sem.chance.dto.WantedProductDto;
+import com.bee32.sem.chance.dto.WantedProductQuotationDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.MaterialWarehouseOption;
 import com.bee32.sem.inventory.entity.StockOrder;
@@ -187,36 +187,32 @@ public class PurchaseService
     }
 
     public void chanceApplyToMakeOrder(ChanceDto chance, MakeOrderDto makeOrder) {
-        chance = reload(chance, ChanceDto.PRODUCTS_CHAIN);
-
+        chance = reload(chance, ChanceDto.PRODUCTS_MORE);
         makeOrder.setChance(chance);
 
         List<MakeOrderItemDto> items = new ArrayList<MakeOrderItemDto>();
-        makeOrder.setItems(items);
-        for(HintProductDto product : chance.getProducts()) {
+        for (WantedProductDto product : chance.getProducts()) {
             MakeOrderItemDto item = new MakeOrderItemDto();
             item.setParent(makeOrder);
 
-            item.setExternalProductName(product.getProductName());
+            item.setExternalProductName(product.getLabel());
             item.setExternalModelSpec(product.getModelSpec());
 
-            Part _part = ctx.data.access(Part.class).getFirst(BomCriteria.findPartByMaterial(product.getDecidedMaterial().getId()));
-            item.setPart(DTOs.marshal(PartDto.class, _part));
+            Part _part = ctx.data.access(Part.class).getFirst(
+                    BomCriteria.findPartByMaterial(product.getDecidedMaterial().getId()));
+            item.setPart(DTOs.mref(PartDto.class, _part));
 
-            HintProductQuotationDto lastQuotation = product.getLastQuotation();
-            if(lastQuotation != null) {
-                    item.setPrice(
-                        new MutableMCValue(
-                            lastQuotation.getPriceCurrency(),
-                            lastQuotation.getPrice().getValue().multiply(lastQuotation.getDiscountRate())));
+            WantedProductQuotationDto lastQuotation = product.getLastQuotation();
+            if (lastQuotation != null) {
+                item.setPrice(lastQuotation.getPrice().multiply(lastQuotation.getDiscountRate()).toMutable());
                 item.setQuantity(lastQuotation.getQuantity());
             } else {
                 item.setPrice(new MutableMCValue(0));
-                item.setQuantity(new BigDecimal(0));
+                item.setQuantity(BigDecimal.ZERO);
             }
-
             items.add(item);
         }
+        makeOrder.setItems(items);
     }
 
 }
