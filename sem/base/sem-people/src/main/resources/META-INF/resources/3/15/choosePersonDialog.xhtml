@@ -4,7 +4,7 @@
 
     <cc:interface>
         <!-- basic -->
-        <cc:attribute name="var" default="choosePartyDialog" />
+        <cc:attribute name="var" default="choosePersonDialog" />
         <cc:attribute name="stereo" default="-" shortDescription="NOT IMPLMENETED" />
         <cc:attribute name="target" type="java.lang.Object" required="true" />
         <cc:attribute name="multiple" type="java.lang.Boolean" default="false" />
@@ -17,7 +17,7 @@
         <cc:attribute name="mode" default="table" shortDescription="table, list, tree" />
 
         <!-- internals -->
-        <cc:attribute name="dialogBean" type="java.lang.Object" default="${choosePartyDialogBean}" />
+        <cc:attribute name="dialogBean" type="java.lang.Object" default="${choosePersonDialogBean}" />
         <cc:attribute name="selectionHolder" type="java.lang.Object" />
 
         <!-- facets -->
@@ -41,8 +41,25 @@
                 <p:column headerText="类型">
                     <h:outputText value="${entry.types}" />
                 </p:column>
-                <p:column headerText="名称" sortBy="${entry.label}">
+                <p:column headerText="姓名" sortBy="${entry.label}" styleClass="f-wrappable">
                     <h:outputText value="${entry.displayName}" />
+                </p:column>
+                <p:column headerText="性别">
+                    <h:outputText value="${entry.sexText}" />
+                </p:column>
+                <p:column headerText="生日" sortBy="${entry.birthday}">
+                    <h:outputText value="${entry.birthday}">
+                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="证件类型">
+                    <h:outputText value="${entry.sidType.label}" />
+                </p:column>
+                <p:column headerText="证件号码">
+                    <h:outputText value="${entry.sid}" />
+                </p:column>
+                <p:column headerText="户籍" sortBy="${entry.censusRegister}" styleClass="f-wrappable">
+                    <h:outputText value="${entry.censusRegister}" />
                 </p:column>
                 <cc:renderFacet name="columns" />
             </ui:define>

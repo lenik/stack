@@ -39,15 +39,15 @@
             <h:panelGroup>
                 <p:inputText value="#{obj.manager.displayName}" label="负责人" disabled="true" />
                 <p:commandButton value="..." oncomplete="chooseManagerDialog.show();">
-                    <f:setPropertyActionListener target="${choosePartyDialogBean.stereo}"
-                        value="PER" />
+                    <f:setPropertyActionListener target="${choosePersonDialogBean.employee}"
+                        value="true" />
                 </p:commandButton>
             </h:panelGroup>
         </h:panelGrid>
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:choosePartyDialog id="chooseManagerDialog" var="chooseManagerDialog" stereo="PER"
+        <sem:choosePersonDialog id="chooseManagerDialog" var="chooseManagerDialog"
             header="选择负责人..." target="${obj.manager}" update=":editDialog:form" />
     </ui:define>
 

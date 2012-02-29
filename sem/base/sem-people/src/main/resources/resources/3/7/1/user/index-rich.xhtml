@@ -61,12 +61,12 @@
     <ui:define name="dialogs">
         <script language="javascript" src="password.js"></script>
 
-        <icsf:choosePrincipalDialog id="chooseGroupDialog" var="chooseGroupDialog" header="添加指派的组"
+        <icsf:choosePrincipalDialog id="c_group" var="chooseGroupDialog" header="添加指派的组"
             stereo="G" target="${bean.selectedGroup}" actionListener="${bean.addGroup}" update=":groupsForm" />
-        <icsf:choosePrincipalDialog id="chooseRoleDialog" var="chooseRoleDialog" header="添加指派的角色"
+        <icsf:choosePrincipalDialog id="c_role" var="chooseRoleDialog" header="添加指派的角色"
             stereo="R" target="${bean.selectedRole}" actionListener="${bean.addRole}" update=":rolesForm" />
-        <sem:choosePartyDialog id="choosePersonDialog" var="choosePersonDialog" header="选择对应的人员"
-            stereo="PER" target="${bean.selectedPerson}" actionListener="${bean.savePersonLogin}" update=":personForm" />
+        <sem:choosePersonDialog id="c_person" var="choosePersonDialog" header="选择对应的人员"
+            target="${bean.selectedPerson}" actionListener="${bean.savePersonLogin}" update=":personForm" />
 
         <p:dialog header="指派的组" id="groupsDialog" widgetVar="groupsDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
             <h:form id="groupsForm">
@@ -162,9 +162,7 @@
                             <h:outputText value="#{person.memo}" />
                         </t:panelGroup>
                     </t:panelGrid>
-                    <p:commandButton value="选择对应人员" update=":choosePersonDialog:form" oncomplete="choosePersonDialog.show();">
-                        <f:setPropertyActionListener target="#{choosePartyDialogBean.stereo}"
-                            value="PER" />
+                    <p:commandButton value="选择对应人员" onclick="choosePersonDialog.show();" />
                     </p:commandButton>
                 </p:panel>
 

@@ -200,12 +200,12 @@
 
     <ui:define name="dialogs">
 
-        <sem:chooseOrgUnitDialog id="parentOu" var="chooseParentOrgUnitDialog" target="#{bean.orgUnitsMBean.openedObject.parent}"
+        <sem:chooseOrgUnitDialog id="c_parentOU" var="chooseParentOrgUnitDialog" target="#{bean.orgUnitsMBean.openedObject.parent}"
             update=":orgUnitsEditView:editForm" />
-        <sem:chooseOrgUnitDialog id="roleOu" var="chooseRoleOrgUnitDialog" target="#{bean.rolesMBean.openedObject.orgUnit}"
+        <sem:chooseOrgUnitDialog id="c_roleOU" var="chooseRoleOrgUnitDialog" target="#{bean.rolesMBean.openedObject.orgUnit}"
             update=":rolesEditView:editForm" />
-        <sem:choosePartyDialog id="rolePerson" var="chooseRolePersonDialog" target="#{bean.rolesMBean.openedObject.person}"
-            update=":rolesEditView:editForm" stereo="PER" />
+        <sem:choosePersonDialog id="c_rolePerson" var="chooseRolePersonDialog" target="#{bean.rolesMBean.openedObject.person}"
+            update=":rolesEditView:editForm" />
 
         <fr:listView id="contactsEditView" header="联系方式" style="editDialog" indexView=":editDialog:form:tv:contactsIndexView"
             mbean="#{bean.contactsMBean}">
@@ -304,10 +304,7 @@
                 <h:panelGrid columns="2">
                     <h:outputText value="#{item.person.displayName}" />
                     <p:commandButton id="person" value="..." oncomplete="chooseRolePersonDialog.show();"
-                        label="对应人员">
-                        <f:setPropertyActionListener target="#{choosePartyDialogBean.stereo}"
-                            value="PER" />
-                    </p:commandButton>
+                        label="对应人员" />
                 </h:panelGrid>
 
                 <h:outputLabel for="role" value="职务" />

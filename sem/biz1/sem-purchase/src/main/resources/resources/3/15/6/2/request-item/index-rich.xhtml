@@ -91,7 +91,7 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:choosePartyDialog id="c_supplier" var="chooseSupplierDialog" header="选择询价方" stereo="ORG"
+        <sem:chooseOrgDialog id="c_supplier" var="chooseSupplierDialog" header="选择询价方"
             target="#{inquiryObj.supplier}" update=":inquiriesEditView:editForm:supplier" />
 
         <fr:listView id="inquiriesEditView" header="询价信息" style="editDialog" indexView=":editDialog:form:tv:inquiriesIndexView"
@@ -100,10 +100,7 @@
                 <h:outputLabel for="supplier" value="供应商：" />
                 <t:panelGroup>
                     <p:inputText id="supplier" value="#{item.supplier.displayName}" disabled="true" style="width: 20em" />
-                    <p:commandButton value="..." oncomplete="chooseSupplierDialog.show()">
-                        <f:setPropertyActionListener target="${choosePartyDialogBean.stereo}"
-                            value="ORG" />
-                    </p:commandButton>
+                    <p:commandButton value="..." oncomplete="chooseSupplierDialog.show()" />
                 </t:panelGroup>
 
                 <h:outputLabel for="price" value="价格：" />

@@ -91,8 +91,8 @@
     <ui:define name="dialogs">
         <sem:chooseMaterialPlanDialog id="c_plan" target="#{bean.materialPlanToAttach}"
             update=":editDialog:form:tv:plansIndexView:indexForm:body" />
-        <sem:choosePartyDialog id="c_preferredSupplier" var="choosePreferredSupplierDialog"
-            header="选择优选供应商" target="#{itemObj.preferredSupplier}" stereo="SUP" />
+        <sem:chooseOrgDialog id="c_preferredSupplier" var="choosePreferredSupplierDialog"
+            header="选择优选供应商" target="#{itemObj.preferredSupplier}" />
 
         <fr:listView id="itemsEditView" header="采购项" style="editDialog" indexView=":editDialog:form:tv:itemsIndexView"
             mbean="#{bean.itemsMBean}">
@@ -110,8 +110,8 @@
                 <h:panelGroup>
                     <p:inputText id="supplier" value="#{item.preferredSupplier.displayName}" disabled="true" />
                     <p:commandButton value="..." oncomplete="choosePreferredSupplierDialog.show()">
-                        <f:setPropertyActionListener target="#{choosePartyDialogBean.stereo}"
-                            value="SUP" />
+                        <f:setPropertyActionListener target="#{chooseOrgDialogBean.supplier}"
+                            value="true" />
                     </p:commandButton>
                 </h:panelGroup>
 

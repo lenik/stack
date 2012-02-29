@@ -97,10 +97,10 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:chooseAccountSubjectDialog id="chooseSubjectDialog" target="#{obj.subject}"
+        <sem:chooseAccountSubjectDialog id="c_subject" target="#{obj.subject}"
             update=":editDialog:form:subject" />
-        <sem:choosePartyDialog id="choosePartyDialog" target="#{obj.party}" update=":editDialog:form:basic" />
-        <sem:chooseMaterialDialog id="chooseMaterialDialog" target="#{itemObj.material}"
+        <sem:choosePartyDialog id="c_party" target="#{obj.party}" update=":editDialog:form:basic" />
+        <sem:chooseMaterialDialog id="c_material" target="#{itemObj.material}"
             update=":itemsEditView:editForm:body" />
 
         <fr:listView id="itemsEditView" header="项目" style="editDialog" indexView=":editDialog:form:itemsIndexView"

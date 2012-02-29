@@ -42,8 +42,8 @@
                         style="width: 20em;" label="调拨人员" />
                     <p:commandButton value="..." disabled="true" update=":chooseTransferrerDialog:form"
                         oncomplete="chooseTransferrerDialog.show()">
-                        <f:setPropertyActionListener target="#{choosePartyDialogBean.stereo}"
-                            value="PER" />
+                        <f:setPropertyActionListener target="#{choosePersonDialogBean.employee}"
+                            value="true" />
                     </p:commandButton>
                 </h:panelGroup>
 
@@ -70,7 +70,7 @@
     <ui:define name="dialogs.1">
         <sem:chooseStockJobDialog id="chooseStockJobDialog" header="选择库存调拨出库单" target="#{bean.job.reload}"
             update=":editDialog:form" />
-        <sem:choosePartyDialog id="chooseTransferrerDialog" var="chooseTransferrerDialog" stereo="PER"
+        <sem:choosePersonDialog id="chooseTransferrerDialog" var="chooseTransferrerDialog"
             target="#{job.transferredBy}" update=":editDialog:form:job" />
         <sem:chooseStockLocationDialog id="chooseDestLocationDialog" var="chooseDestLocationDialog"
             target="#{bean.destItem.location}" update=":itemForm" />

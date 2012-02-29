@@ -42,10 +42,7 @@
                 <h:outputText value="对应公司" />
                 <t:panelGroup>
                     <p:inputText id="org" label="对应公司" value="#{obj.org.displayName}" readonly="true" />
-                    <p:commandButton value="..." oncomplete="chooseOrgDialog.show()">
-                        <f:setPropertyActionListener target="#{choosePartyDialogBean.stereo}"
-                            value="ORG" />
-                    </p:commandButton>
+                    <p:commandButton value="..." oncomplete="chooseOrgDialog.show()" />
                 </t:panelGroup>
                 <h:outputText value="对应部门" />
                 <t:panelGroup>
@@ -124,16 +121,15 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:choosePartyDialog id="chooseOrgDialog" var="chooseOrgDialog" stereo="ORG" target="#{obj.org}"
-            update=":editDialog:form" />
-        <sem:chooseOrgUnitDialog id="chooseOrgUnitDialog" target="#{obj.orgUnit}" update=":editDialog:form" />
-        <sem:chooseStockLocationDialog id="chooseStockLocationDialog" target="#{itemObj.location}"
+        <sem:chooseOrgDialog id="c_org" target="#{obj.org}" update=":editDialog:form" />
+        <sem:chooseOrgUnitDialog id="c_orgunit" target="#{obj.orgUnit}" update=":editDialog:form" />
+        <sem:chooseStockLocationDialog id="c_location" target="#{itemObj.location}"
             update=":itemsEditView:editForm:body" />
-        <sem:chooseMaterialDialog id="chooseMaterialDialog" target="#{itemObj.material}"
+        <sem:chooseMaterialDialog id="c_material" target="#{itemObj.material}"
             update=":itemsEditView:editForm:body" />
-        <sem:inputQuantityDialog id="inputQuantityDialog" target="#{itemObj.quantity}" update=":itemsEditView:editForm:body" />
+        <sem:inputQuantityDialog id="i_quantity" target="#{itemObj.quantity}" update=":itemsEditView:editForm:body" />
         <c:if test="${not disableStockQuery}">
-            <sem:stockQueryDialog id="stockQueryDialog" target="#{bean.stockQueryItemToApply}"
+            <sem:stockQueryDialog id="q_stock" target="#{bean.stockQueryItemToApply}"
                 update=":itemsEditView:editForm:body" />
         </c:if>
 

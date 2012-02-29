@@ -110,7 +110,7 @@
                     <p:inputText id="preferredSupplier" value="#{item.preferredSupplier.displayName}"
                         readonly="true" />
                     <p:commandButton value="..." oncomplete="chooseSupplierDialog.show()" disabled="#{not bean.editing}">
-                        <f:setPropertyActionListener target="${choosePartyDialogBean.supplier}"
+                        <f:setPropertyActionListener target="${chooseOrgDialogBean.supplier}"
                             value="true" />
                     </p:commandButton>
                 </t:panelGroup>

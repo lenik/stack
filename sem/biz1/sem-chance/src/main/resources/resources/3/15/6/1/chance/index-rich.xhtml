@@ -93,13 +93,10 @@
                         </p:column>
                     </f:facet>
                     <h:panelGrid columns="2">
-                        <h:outputLabel for="chooseParty" value="客户:" />
+                        <h:outputLabel for="chooseCustomer" value="客户:" />
                         <h:panelGroup>
                             <h:outputText value="${item.party.displayName}" />
-                            <p:commandButton id="chooseParty" value="..." onclick="choosePartyDialog.show()">
-                                <f:setPropertyActionListener target="${choosePartyDialogBean.stereo}"
-                                    value="ORG" />
-                            </p:commandButton>
+                            <p:commandButton id="chooseCustomer" value="..." onclick="chooseCustomerDialog.show()" />
                         </h:panelGroup>
                         <h:outputLabel for="role" value="角色:" />
                         <p:inputText id="role" label="角色" value="${item.role}" />
@@ -156,7 +153,7 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:choosePartyDialog id="c_party" header="选择机会客户" stereo="ORG" target="${partyObj.party}"
+        <sem:chooseOrgDialog id="c_party" header="选择机会客户" var="chooseCustomerDialog" target="${partyObj.party}"
             update=":editDialog:form:tv:partiesView:editForm:body" />
         <sem:chooseChanceActionDialog id="c_action" header="选择要关联的行动日志" target="${bean.actionsMBean.addition}"
             update=":editDialog:form:tv:actionsIndexView:indexForm:body" />
