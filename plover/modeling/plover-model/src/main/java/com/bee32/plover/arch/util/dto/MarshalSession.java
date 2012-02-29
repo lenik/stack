@@ -3,6 +3,7 @@ package com.bee32.plover.arch.util.dto;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.free.IllegalUsageException;
 
@@ -19,7 +20,7 @@ public class MarshalSession
         if (marshalledMap == null) {
             synchronized (this) {
                 if (marshalledMap == null) {
-                    marshalledMap = new HashMap<Object, Object>();
+                    marshalledMap = new HashMap<Object, Object>(); // <Object, Object>();
                 }
             }
         }
@@ -65,6 +66,21 @@ public class MarshalSession
         map.put(dto, source);
     }
 
+    public String getUnmarshalledContent() {
+        Map<Object, Object> map = getUnmarshalledMap();
+        StringBuilder sb = new StringBuilder(map.size() * 1000);
+        for (Entry<?, ?> entry : map.entrySet()) {
+            BaseDto<?> dto = (BaseDto<?>) entry.getKey();
+            Object ent = entry.getValue();
+            if (sb.length() != 0)
+                sb.append('\n');
+            sb.append(dto.getClass().getSimpleName() + ":" + dto.getKey());
+            sb.append(" => ");
+            sb.append(ent.getClass().getSimpleName());
+        }
+        return sb.toString();
+    }
+
 }
 
 class MarshalKey {
@@ -81,21 +97,22 @@ class MarshalKey {
 
     @Override
     public int hashCode() {
-        int hash = mt.hashCode();
+        int hash =0;
+//        hash += mt.hashCode();
         hash += System.identityHashCode(source);
-        hash += fmask;
+//        hash += fmask;
         return hash;
     }
 
     @Override
     public boolean equals(Object obj) {
         MarshalKey o = (MarshalKey) obj;
-        if (mt != o.mt)
-            return false;
+//        if (mt != o.mt)
+//            return false;
         if (source != o.source)
             return false;
-        if (fmask != o.fmask)
-            return false;
+//        if (fmask != o.fmask)
+//            return false;
         return true;
     }
 
