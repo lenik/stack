@@ -6,8 +6,9 @@ import java.util.Set;
 
 public class EntityAccessor {
 
-    public static <K extends Serializable> void setId(Entity<K> entity, K id) {
-        entity.setId(id);
+    @SuppressWarnings("unchecked")
+    public static <K extends Serializable> void setId(Entity<K> entity, Serializable id) {
+        entity.setId((K) id);
     }
 
     public static void setVersion(Entity<?> entity, int version) {
