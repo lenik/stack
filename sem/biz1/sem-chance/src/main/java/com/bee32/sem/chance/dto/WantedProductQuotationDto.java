@@ -8,65 +8,57 @@ import javax.free.ParseException;
 import org.apache.commons.lang.NotImplementedException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.sem.chance.entity.HintProductQuotation;
+import com.bee32.sem.chance.entity.WantedProductQuotation;
 import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.world.thing.AbstractItemDto;
 
-public class HintProductQuotationDto
-    extends AbstractItemDto<HintProductQuotation>
-    implements IEnclosedObject<HintProductDto> {
+public class WantedProductQuotationDto
+        extends AbstractItemDto<WantedProductQuotation>
+        implements IEnclosedObject<WantedProductDto> {
 
     private static final long serialVersionUID = 1L;
 
-    public static final int HINT_PRODUCT = 1;
-
-    HintProductDto product;
+    WantedProductDto product;
     BigDecimal discountRate = new BigDecimal(1);
 
     @Override
-    public HintProductDto getEnclosingObject() {
+    public WantedProductDto getEnclosingObject() {
         return getProduct();
     }
 
     @Override
-    public void setEnclosingObject(HintProductDto enclosingObject) {
+    public void setEnclosingObject(WantedProductDto enclosingObject) {
         setProduct(enclosingObject);
 
     }
 
     @Override
-    protected void _marshal(HintProductQuotation source) {
-        if(selection.contains(HINT_PRODUCT))
-            this.product = mref(HintProductDto.class, source.getProduct());
-
+    protected void _marshal(WantedProductQuotation source) {
+        this.product = mref(WantedProductDto.class, source.getProduct());
         this.discountRate = source.getDiscountRate();
     }
 
     @Override
-    protected void _unmarshalTo(HintProductQuotation target) {
+    protected void _unmarshalTo(WantedProductQuotation target) {
         target.setDiscountRate(discountRate);
         merge(target, "product", product);
     }
 
     @Override
-    protected void _parse(TextMap map) throws ParseException {
+    protected void _parse(TextMap map)
+            throws ParseException {
         throw new NotImplementedException();
 
     }
 
-    public HintProductDto getProduct() {
+    public WantedProductDto getProduct() {
         return product;
     }
 
-    public void setProduct(HintProductDto product) {
+    public void setProduct(WantedProductDto product) {
         if (product == null)
             throw new NullPointerException("product");
         this.product = product;
-    }
-
-    @Override
-    protected Date getFxrDate() {
-        return product.getCreatedDate();
     }
 
     public BigDecimal getDiscountRate() {
@@ -76,4 +68,10 @@ public class HintProductQuotationDto
     public void setDiscountRate(BigDecimal discountRate) {
         this.discountRate = discountRate;
     }
+
+    @Override
+    protected Date getFxrDate() {
+        return product.getCreatedDate();
+    }
+
 }

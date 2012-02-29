@@ -16,20 +16,20 @@ import com.bee32.sem.world.thing.AbstractItem;
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "hint_product_quotation_seq", allocationSize = 1)
-public class HintProductQuotation
+public class WantedProductQuotation
         extends AbstractItem {
 
     private static final long serialVersionUID = 1L;
 
-    HintProduct product;
+    WantedProduct product;
     BigDecimal discountRate = new BigDecimal(1);
 
     @ManyToOne
-    public HintProduct getProduct() {
+    public WantedProduct getProduct() {
         return product;
     }
 
-    public void setProduct(HintProduct product) {
+    public void setProduct(WantedProduct product) {
         if (product == null)
             throw new NullPointerException("product");
         this.product = product;

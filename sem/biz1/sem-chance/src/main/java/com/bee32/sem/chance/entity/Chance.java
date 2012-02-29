@@ -47,7 +47,7 @@ public class Chance
     String content = "";
 
     List<ChanceParty> parties = new ArrayList<ChanceParty>();
-    List<HintProduct> products = new ArrayList<HintProduct>();
+    List<WantedProduct> products = new ArrayList<WantedProduct>();
     List<ChanceAction> actions = new ArrayList<ChanceAction>();
 
     ChanceStage stage = predefined(ChanceStages.class).INIT;
@@ -132,11 +132,11 @@ public class Chance
 
     @OneToMany(mappedBy = "chance", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
-    public List<HintProduct> getProducts() {
+    public List<WantedProduct> getProducts() {
         return products;
     }
 
-    public void setProducts(List<HintProduct> products) {
+    public void setProducts(List<WantedProduct> products) {
         if (products == null)
             throw new NullPointerException("products");
         this.products = products;

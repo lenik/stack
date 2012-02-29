@@ -12,7 +12,7 @@ import com.bee32.plover.orm.entity.EntityAuto;
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "product_preference_attribute_seq", allocationSize = 1)
-public class HintProductAttribute
+public class WantedProductAttribute
         extends EntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
@@ -20,17 +20,17 @@ public class HintProductAttribute
     public static final int NAME_LENGTH = 50;
     public static final int VALUE_LENGTH = 100;
 
-    HintProduct product;
+    WantedProduct product;
 
     String name;
     String value;
 
     @ManyToOne(optional = false)
-    public HintProduct getProduct() {
+    public WantedProduct getProduct() {
         return product;
     }
 
-    public void setProduct(HintProduct product) {
+    public void setProduct(WantedProduct product) {
         if (product == null)
             throw new NullPointerException("product");
         this.product = product;

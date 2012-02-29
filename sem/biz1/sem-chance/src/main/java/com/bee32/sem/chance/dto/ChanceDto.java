@@ -1,8 +1,9 @@
 package com.bee32.sem.chance.dto;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import javax.free.NotImplementedException;
 import javax.free.ParseException;
 import javax.free.Strings;
 
@@ -12,7 +13,6 @@ import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.chance.entity.ChanceStages;
-import com.bee32.sem.chance.entity.HintProduct;
 import com.bee32.sem.chance.util.DateToRange;
 import com.bee32.sem.process.base.ProcessEntityDto;
 
@@ -24,7 +24,7 @@ public class ChanceDto
     public static final int PARTIES = 1;
     public static final int ACTIONS = 4;
     public static final int PRODUCTS = 8;
-    public static final int PRODUCTS_CHAIN = 16 | PRODUCTS;
+    public static final int PRODUCTS_MORE = 16 | PRODUCTS;
 
     String serial;
 
@@ -37,7 +37,7 @@ public class ChanceDto
 
     List<ChancePartyDto> parties;
     List<ChanceActionDto> actions;
-    List<HintProductDto> products;
+    List<WantedProductDto> products;
 
     ChanceStageDto stage;
 
@@ -64,24 +64,19 @@ public class ChanceDto
         if (selection.contains(PARTIES))
             parties = marshalList(ChancePartyDto.class, source.getParties());
         else
-            parties = new ArrayList<ChancePartyDto>();
+            parties = Collections.emptyList();
 
         if (selection.contains(ACTIONS))
             actions = mrefList(ChanceActionDto.class, source.getActions());
         else
-            actions = new ArrayList<ChanceActionDto>();
+            actions = Collections.emptyList();
 
-        products = new ArrayList<HintProductDto>();
-        if (selection.contains(PRODUCTS)) {
-            int hintProductSelection = 0;
-            if(selection.contains(PRODUCTS_CHAIN)) {
-                hintProductSelection = HintProductDto.ATTRIBUTES | HintProductDto.QUOTATIONS;
-            }
-            for(HintProduct _product : source.getProducts()) {
-                HintProductDto product =  marshal(HintProductDto.class, hintProductSelection, _product);
-                products.add(product);
-            }
-        }
+        int pfmask = selection.translate(PRODUCTS_MORE, F_MORE);
+        if (selection.contains(PRODUCTS))
+            products = marshalList(WantedProductDto.class, selection.translate(PRODUCTS_MORE, F_MORE),
+                    source.getProducts());
+        else
+            products = Collections.emptyList();
 
         stage = mref(ChanceStageDto.class, source.getStage());
         address = source.getAddress();
@@ -109,6 +104,7 @@ public class ChanceDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
+        throw new NotImplementedException();
     }
 
     @NLength(max = Chance.SERIAL_LENGTH)
@@ -228,23 +224,23 @@ public class ChanceDto
         return true;
     }
 
-    public List<HintProductDto> getProducts() {
+    public List<WantedProductDto> getProducts() {
         return products;
     }
 
-    public void setProducts(List<HintProductDto> products) {
+    public void setProducts(List<WantedProductDto> products) {
         if (products == null)
             throw new NullPointerException("products");
         this.products = products;
     }
 
-    public void addProduct(HintProductDto product) {
+    public void addProduct(WantedProductDto product) {
         if (product == null)
             throw new NullPointerException("product");
         products.add(product);
     }
 
-    public boolean removeProduct(HintProductDto product) {
+    public boolean removeProduct(WantedProductDto product) {
         if (!products.remove(product))
             return false;
         return true;

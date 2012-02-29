@@ -7,69 +7,72 @@ import org.apache.commons.lang.NotImplementedException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.sem.chance.entity.HintProductAttribute;
+import com.bee32.sem.chance.entity.WantedProductAttribute;
 import com.bee32.sem.frame.ui.IEnclosedObject;
 
-public class HintProductAttributeDto
-    extends EntityDto<HintProductAttribute, Long>
-    implements IEnclosedObject<HintProductDto> {
+public class WantedProductAttributeDto
+        extends EntityDto<WantedProductAttribute, Long>
+        implements IEnclosedObject<WantedProductDto> {
 
     private static final long serialVersionUID = 1L;
 
     public static final int HINT_PRODUCT = 1;
 
-    HintProductDto product;
+    WantedProductDto product;
 
     String name;
     String value;
 
-    public HintProductAttributeDto() {
+    public WantedProductAttributeDto() {
+    }
 
+    public WantedProductAttributeDto(int fmask) {
+        super(fmask);
     }
 
     @Override
-    public HintProductDto getEnclosingObject() {
+    public WantedProductDto getEnclosingObject() {
         return getProduct();
     }
 
     @Override
-    public void setEnclosingObject(HintProductDto enclosingObject) {
+    public void setEnclosingObject(WantedProductDto enclosingObject) {
         setProduct(enclosingObject);
     }
 
     @Override
-    protected void _marshal(HintProductAttribute source) {
-        if(selection.contains(HINT_PRODUCT))
-            this.product = mref(HintProductDto.class, source.getProduct());
+    protected void _marshal(WantedProductAttribute source) {
+        if (selection.contains(HINT_PRODUCT))
+            this.product = mref(WantedProductDto.class, source.getProduct());
 
         this.name = source.getName();
         this.value = source.getValue();
     }
 
     @Override
-    protected void _unmarshalTo(HintProductAttribute target) {
+    protected void _unmarshalTo(WantedProductAttribute target) {
         target.setName(name);
         target.setValue(value);
         merge(target, "product", product);
     }
 
     @Override
-    protected void _parse(TextMap map) throws ParseException {
+    protected void _parse(TextMap map)
+            throws ParseException {
         throw new NotImplementedException();
-
     }
 
-    public HintProductDto getProduct() {
+    public WantedProductDto getProduct() {
         return product;
     }
 
-    public void setProduct(HintProductDto product) {
+    public void setProduct(WantedProductDto product) {
         if (product == null)
             throw new NullPointerException("product");
         this.product = product;
     }
 
-    @NLength(min = 1, max = HintProductAttribute.NAME_LENGTH)
+    @NLength(min = 1, max = WantedProductAttribute.NAME_LENGTH)
     public String getName() {
         return name;
     }
@@ -78,7 +81,7 @@ public class HintProductAttributeDto
         this.name = name;
     }
 
-    @NLength(min = 1, max = HintProductAttribute.VALUE_LENGTH)
+    @NLength(max = WantedProductAttribute.VALUE_LENGTH)
     public String getValue() {
         return value;
     }
@@ -86,7 +89,5 @@ public class HintProductAttributeDto
     public void setValue(String value) {
         this.value = value;
     }
-
-
 
 }

@@ -3,7 +3,6 @@ package com.bee32.sem.chance.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -12,32 +11,26 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.world.thing.Thing;
 
 /**
  * 选型明细
  *
+ * 注：label, modelSpec 分别对应选型产品的外部名称 、和外部规格。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "hint_product_seq", allocationSize = 1)
-public class HintProduct
-        extends UIEntityAuto<Long>
+public class WantedProduct
+        extends Thing<WantedProductXP>
         implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
-    public static final int PRODUCT_NAME_LENGTH = 100;
-    public static final int MODEL_SPEC_LENGTH = 100;
-    public static final int UNIT_NAME_LENGTH = 30;
-
     Chance chance;
-    String productName;
-    String modelSpec;
-    String unitName;
-    List<HintProductAttribute> attributes = new ArrayList<>();
-    List<HintProductQuotation> quotations = new ArrayList<>();
+    List<WantedProductAttribute> attributes = new ArrayList<>();
+    List<WantedProductQuotation> quotations = new ArrayList<>();
     Material decidedMaterial;
 
     @ManyToOne(optional = false)
@@ -52,51 +45,15 @@ public class HintProduct
     }
 
     /**
-     * 选型产品的名称（外部名称）
-     */
-    @Column(length = PRODUCT_NAME_LENGTH)
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    /**
-     * 选型产品的规格（外部规格）
-     */
-    @Column(length = MODEL_SPEC_LENGTH)
-    public String getModelSpec() {
-        return modelSpec;
-    }
-
-    public void setModelSpec(String modelSpec) {
-        this.modelSpec = modelSpec;
-    }
-
-    /**
-     * 选型产品的单位(外部单位)
-     */
-    @Column(length = UNIT_NAME_LENGTH)
-    public String getUnitName() {
-        return unitName;
-    }
-
-    public void setUnitName(String unitName) {
-        this.unitName = unitName;
-    }
-
-    /**
      * 选型产品的附加属性
      */
     @OneToMany(mappedBy = "product", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
-    public List<HintProductAttribute> getAttributes() {
+    public List<WantedProductAttribute> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<HintProductAttribute> attributes) {
+    public void setAttributes(List<WantedProductAttribute> attributes) {
         if (attributes == null)
             throw new NullPointerException("attributes");
         this.attributes = attributes;
@@ -107,11 +64,11 @@ public class HintProduct
      */
     @OneToMany(mappedBy = "product", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
-    public List<HintProductQuotation> getQuotations() {
+    public List<WantedProductQuotation> getQuotations() {
         return quotations;
     }
 
-    public void setQuotations(List<HintProductQuotation> quotations) {
+    public void setQuotations(List<WantedProductQuotation> quotations) {
         if (quotations == null)
             throw new NullPointerException("quotations");
         this.quotations = quotations;
