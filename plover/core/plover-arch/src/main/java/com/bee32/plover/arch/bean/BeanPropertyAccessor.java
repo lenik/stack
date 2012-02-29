@@ -13,10 +13,17 @@ import javax.free.IllegalUsageException;
 import javax.free.ReadOnlyException;
 import javax.free.UnexpectedException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.bee32.plover.arch.util.ClassUtil;
+
 public class BeanPropertyAccessor
         implements IPropertyAccessor<Object>, Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    static Logger logger = LoggerFactory.getLogger(BeanPropertyAccessor.class);
 
     final Class<?> beanClass;
     final Class<?> type;
@@ -128,6 +135,7 @@ public class BeanPropertyAccessor
     public static synchronized PropertyMap parse(Class<?> beanClass)
             throws IntrospectionException {
 
+        beanClass = ClassUtil.skipProxies(beanClass);
         PropertyMap propertyMap = classPropertyMap.get(beanClass);
 
         if (propertyMap == null) {
@@ -135,6 +143,10 @@ public class BeanPropertyAccessor
 
             BeanInfo beanInfo = Introspector.getBeanInfo(beanClass);
             for (PropertyDescriptor property : beanInfo.getPropertyDescriptors()) {
+                if (property.getReadMethod() == null) {
+                    logger.warn("Found Write-Only property: " + property);
+                    continue;
+                }
                 BeanPropertyAccessor propertyAccessor = new BeanPropertyAccessor(beanClass, property);
                 propertyMap.put(property.getName(), propertyAccessor);
             }
