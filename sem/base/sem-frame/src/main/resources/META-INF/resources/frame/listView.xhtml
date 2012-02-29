@@ -16,7 +16,7 @@
         <cc:attribute name="mbean" type="java.lang.Object" required="true" />
         <cc:attribute name="smooth" type="java.lang.Boolean" default="false" />
         <cc:attribute name="readonly" type="java.lang.Boolean" default="${cc.attrs.picker != null}" />
-        <cc:attribute name="copy" type="java.lang.Boolean" default="${cc.attrs.style != 'panel' or not cc.attrs.smooth}" />
+        <cc:attribute name="copy" type="java.lang.Boolean" default="${cc.attrs.style == 'panel' and not cc.attrs.smooth}" />
         <cc:attribute name="paginator" type="java.lang.Boolean" default="true" />
         <cc:attribute name="creatable" type="java.lang.Boolean" default="${not cc.attrs.readonly}" />
         <cc:attribute name="editable" type="java.lang.Boolean" default="true" />
