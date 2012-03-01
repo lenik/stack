@@ -1,5 +1,6 @@
 package com.bee32.plover.orm.util;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.LinkedHashSet;
@@ -11,12 +12,17 @@ import java.util.TreeMap;
 
 import javax.free.IdentityHashSet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
 
 public class SampleDumper {
+
+    static Logger logger = LoggerFactory.getLogger(SampleDumper.class);
 
     static boolean verboseForAutoEntities = false;
 
@@ -70,6 +76,10 @@ public class SampleDumper {
             String title = sample.getKey();
             Entity<?> entity = sample.getValue();
             out.println(title);
+
+            Serializable naturalId = entity.getNaturalId();
+            if (naturalId == null)
+                out.println("XXX No natural-id.");
 
             // Dump auto entity in more detail.
             if (verboseForAutoEntities && EntityAccessor.isAutoId(entity)) {
