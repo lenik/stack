@@ -27,44 +27,43 @@ public abstract class NameDict
 
     public static final int ID_LENGTH = 20;
 
-    protected int order;
-    protected float rank;
+    String id;
+    int order;
+    float rank;
 
     public NameDict() {
     }
 
-    public NameDict(String name, String label) {
-        super(label);
-        this.name = name;
+    public NameDict(String id, String label) {
+        this(0, id, label, null);
     }
 
-    public NameDict(String name, String label, String description) {
+    public NameDict(String id, String label, String description) {
+        this(0, id, label, description);
+    }
+
+    public NameDict(int order, String id, String label) {
+        this(order, id, label, null);
+    }
+
+    public NameDict(int order, String id, String label, String description) {
         super(label, description);
-        this.name = name;
-    }
-
-    public NameDict(int order, String name, String label) {
-        super(label);
+        this.id = id;
         this.order = order;
-        this.name = name;
-    }
-
-    public NameDict(int order, String name, String label, String description) {
-        super(label, description);
-        this.order = order;
-        this.name = name;
     }
 
     @Id
     @Column(length = ID_LENGTH, unique = true)
     @Override
     public String getId() {
-        return getName();
+        return id;
     }
 
     @Override
     protected void setId(String id) {
-        setName(id);
+        if (id == null)
+            throw new NullPointerException("id");
+        this.id = id;
     }
 
     @Column(nullable = false)
@@ -90,27 +89,27 @@ public abstract class NameDict
 
     @Transient
     public String getName() {
-        return name;
+        return getId();
     }
 
     public void setName(String name) {
-        if (name == null)
-            throw new NullPointerException("name");
-        this.name = name;
+        setId(name);
     }
 
     @Override
     protected Serializable naturalId() {
-        if (name == null)
+        if (id == null)
             return new DummyId(this);
-        return name;
+        else
+            return id;
     }
 
     @Override
     protected ICriteriaElement selector(String prefix) {
-        if (name == null)
-            throw new NullPointerException("name");
-        return new Equals(prefix + "name", name);
+        if (id == null)
+            throw new NullPointerException("id");
+        else
+            return new Equals(prefix + "id", id);
     }
 
 }
