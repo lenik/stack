@@ -35,6 +35,12 @@ public class EntityAccessor {
         return entity.getEntityFlags();
     }
 
+    public static void putFlags(int flags, Entity<?>... entities) {
+        for (Entity<?> entity : entities) {
+            entity.getEntityFlags().set(flags);
+        }
+    }
+
     static final boolean useAutoIdAnnotation = false;
 
     /**
