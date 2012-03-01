@@ -75,7 +75,7 @@ public abstract class BaseDto_Skel<S>
         return stereotyped;
     }
 
-    public abstract Serializable getKey();
+    public abstract Serializable getPrimaryKey();
 
     public boolean isNull() {
         return _null;

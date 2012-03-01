@@ -102,10 +102,10 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     /**
-     * @see BaseDto_Skel#getKey()
+     * @see BaseDto_Skel#getPrimaryKey()
      */
     @Override
-    public final Serializable getKey() {
+    public final Serializable getPrimaryKey() {
         return getId();
     }
 

@@ -37,7 +37,7 @@ public abstract class PartialDto<T extends Serializable>
     }
 
     @Override
-    public Serializable getKey() {
+    public Serializable getPrimaryKey() {
         return this;
     }
 

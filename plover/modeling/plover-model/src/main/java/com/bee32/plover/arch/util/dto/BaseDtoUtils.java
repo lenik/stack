@@ -66,7 +66,7 @@ class DummyDto
     }
 
     @Override
-    public Serializable getKey() {
+    public Serializable getPrimaryKey() {
         return null;
     }
 

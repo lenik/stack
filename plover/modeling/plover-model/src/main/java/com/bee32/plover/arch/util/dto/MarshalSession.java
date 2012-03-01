@@ -74,7 +74,7 @@ public class MarshalSession
             Object ent = entry.getValue();
             if (sb.length() != 0)
                 sb.append('\n');
-            sb.append(dto.getClass().getSimpleName() + ":" + dto.getKey());
+            sb.append(dto.getClass().getSimpleName() + ":" + dto.getPrimaryKey());
             sb.append(" => ");
             sb.append(ent.getClass().getSimpleName());
         }

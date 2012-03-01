@@ -24,7 +24,7 @@ public abstract class DataExchangeObject<T>
     }
 
     @Override
-    public Serializable getKey() {
+    public Serializable getPrimaryKey() {
         throw new UnsupportedOperationException("DXO.key is undefined.");
     }
 
