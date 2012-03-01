@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
-import com.bee32.sem.base.tx.TxEntity;
 import com.bee32.sem.inventory.service.IStockMergeStrategy;
 import com.bee32.sem.inventory.service.SMS_MBLC;
 import com.bee32.sem.world.monetary.FxrQueryException;

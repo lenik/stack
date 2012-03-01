@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-import com.bee32.sem.base.tx.TxEntity;
+import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.world.monetary.MCValue;
 
@@ -20,7 +20,7 @@ import com.bee32.sem.world.monetary.MCValue;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "account_snapshot_item_seq", allocationSize = 1)
 public class AccountSnapshotItem
-        extends TxEntity {
+        extends MomentInterval {
 
     private static final long serialVersionUID = 1L;
 

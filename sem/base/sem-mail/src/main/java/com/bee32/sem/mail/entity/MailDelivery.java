@@ -11,15 +11,15 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.plover.ox1.color.Pink;
-import com.bee32.sem.base.tx.TxEntity;
 import com.bee32.sem.mail.MailFlags;
 
 @Entity
 @Pink
 @SequenceGenerator(name = "idgen", sequenceName = "mail_delivery_seq", allocationSize = 1)
 public class MailDelivery
-        extends TxEntity {
+        extends MomentInterval {
 
     private static final long serialVersionUID = 1L;
 

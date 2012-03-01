@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
-import com.bee32.sem.base.tx.TxEntity;
+import com.bee32.plover.ox1.color.MomentInterval;
 
 /**
  * {@link #getEndTime() end-time} is used as the snapshot time.
@@ -14,7 +14,7 @@ import com.bee32.sem.base.tx.TxEntity;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "account_snapshot_seq", allocationSize = 1)
 public class AccountSnapshot
-        extends TxEntity {
+        extends MomentInterval {
 
     private static final long serialVersionUID = 1L;
 

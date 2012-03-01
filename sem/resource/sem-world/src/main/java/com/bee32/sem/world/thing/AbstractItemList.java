@@ -16,17 +16,17 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.plover.orm.cache.Redundant;
+import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.util.PrettyPrintStream;
 import com.bee32.plover.util.i18n.ICurrencyAware;
-import com.bee32.sem.base.tx.TxEntity;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.monetary.MCVector;
 
 @MappedSuperclass
 public abstract class AbstractItemList<Item extends AbstractItem>
-        extends TxEntity
+        extends MomentInterval
         implements ICurrencyAware, DecimalConfig, Iterable<Item> {
 
     private static final long serialVersionUID = 1L;
@@ -176,12 +176,12 @@ public abstract class AbstractItemList<Item extends AbstractItem>
     public void dump(IIndentedOut out) {
         String orderType = getClass().getSimpleName();
 
-        String serialPart = "";
-        if (getSerial() != null) {
-            serialPart = " [" + getSerial() + "]";
+        String altId = "";
+        if (getAltId() != null) {
+            altId = " [" + getAltId() + "]";
         }
 
-        out.println(orderType + ": " + getDisplayName() + serialPart + " ON " + getBeginTime());
+        out.println(orderType + ": " + getDisplayName() + altId + " ON " + getBeginTime());
         out.enter();
         for (Item item : this) {
             out.printf("%-30s | %10.2f | %12s | %12s", //

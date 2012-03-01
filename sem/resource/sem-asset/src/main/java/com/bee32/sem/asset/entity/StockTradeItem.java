@@ -14,9 +14,9 @@ import javax.persistence.Transient;
 
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.ox1.c.CEntity;
+import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.util.i18n.CurrencyConfig;
-import com.bee32.sem.base.tx.TxEntity;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
@@ -24,7 +24,7 @@ import com.bee32.sem.world.monetary.MCValue;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "stock_trade_item_seq", allocationSize = 1)
 public class StockTradeItem
-        extends TxEntity
+        extends MomentInterval
         implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;

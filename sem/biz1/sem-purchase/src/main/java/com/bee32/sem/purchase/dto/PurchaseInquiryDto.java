@@ -9,16 +9,16 @@ import org.apache.commons.lang.NotImplementedException;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
+import com.bee32.plover.ox1.color.MomentIntervalDto;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.util.TextUtil;
-import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.purchase.entity.PurchaseInquiry;
 import com.bee32.sem.world.monetary.MutableMCValue;
 
 public class PurchaseInquiryDto
-        extends TxEntityDto<PurchaseInquiry>
+        extends MomentIntervalDto<PurchaseInquiry>
         implements DecimalConfig, IEnclosedObject<PurchaseRequestItemDto> {
 
     private static final long serialVersionUID = 1L;

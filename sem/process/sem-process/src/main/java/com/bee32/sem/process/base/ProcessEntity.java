@@ -34,7 +34,7 @@ public abstract class ProcessEntity
         return verifyContext;
     }
 
-    void setVerifyContext(SingleVerifierWithNumberSupport verifyContext) {
+    protected void setVerifyContext(SingleVerifierWithNumberSupport verifyContext) {
         if (verifyContext == null)
             throw new NullPointerException("verifyContext");
         this.verifyContext = verifyContext;

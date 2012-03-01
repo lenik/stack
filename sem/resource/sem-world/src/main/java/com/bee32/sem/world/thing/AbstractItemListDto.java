@@ -8,9 +8,9 @@ import java.util.List;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.ox1.color.MomentIntervalDto;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.util.i18n.ICurrencyAware;
-import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.monetary.MCVector;
@@ -19,7 +19,7 @@ public abstract class AbstractItemListDto< //
 /*        */E extends AbstractItemList<? extends _et>, //
 /*        */_et extends AbstractItem, //
 /*        */_dt extends AbstractItemDto<_et>>
-        extends TxEntityDto<E>
+        extends MomentIntervalDto<E>
         implements ICurrencyAware, DecimalConfig {
 
     private static final long serialVersionUID = 1L;

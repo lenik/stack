@@ -8,12 +8,12 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.asset.entity.AccountTicketItem;
 import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.people.dto.PartyDto;
-import com.bee32.sem.process.base.TxProcessEntityDto;
+import com.bee32.sem.process.base.ProcessEntityDto;
 import com.bee32.sem.process.verify.dto.IVerifiableDto;
 import com.bee32.sem.world.monetary.MutableMCValue;
 
 public class AccountTicketItemDto
-        extends TxProcessEntityDto<AccountTicketItem>
+        extends ProcessEntityDto<AccountTicketItem>
         implements IVerifiableDto, IEnclosedObject<Object> {
 
     private static final long serialVersionUID = 1L;

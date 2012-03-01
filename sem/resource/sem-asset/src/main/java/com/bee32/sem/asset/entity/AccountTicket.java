@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -16,16 +15,12 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.arch.bean.BeanPropertyAccessor;
-import com.bee32.plover.arch.bean.IPropertyAccessor;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.ox1.config.DecimalConfig;
-import com.bee32.sem.base.tx.TxEntity;
+import com.bee32.sem.process.base.ProcessEntity;
 import com.bee32.sem.process.verify.AbstractVerifyProcessHandler;
-import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.IVerifyProcessAware;
 import com.bee32.sem.process.verify.IVerifyProcessHandler;
-import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;
 import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
@@ -40,8 +35,8 @@ import com.bee32.sem.world.monetary.MCVector;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "account_ticket_seq", allocationSize = 1)
 public class AccountTicket
-        extends TxEntity
-        implements IVerifiable<ISingleVerifierWithNumber>, IVerifyProcessAware, DecimalConfig {
+        extends ProcessEntity
+        implements IVerifyProcessAware, DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
@@ -181,15 +176,16 @@ public class AccountTicket
         nativeTotal = null;
     }
 
-    @Embedded
+    @Transient
     @Override
-    public SingleVerifierWithNumberSupport getVerifyContext() {
-        return verifyContext;
+    public String getNumberDescription() {
+        return "金额";
     }
 
-    public void setVerifyContext(SingleVerifierWithNumberSupport singleVerifierWithNumberSupport) {
-        this.verifyContext = singleVerifierWithNumberSupport;
-        singleVerifierWithNumberSupport.bind(this, NATIVE_TOTAL_PROPERTY, "金额");
+    @Override
+    protected Number computeJudgeNumber()
+            throws Exception {
+        return getNativeTotal();
     }
 
     @Transient
@@ -203,11 +199,6 @@ public class AccountTicket
                     item.getVerifyContext().populate(getVerifyContext());
             }
         };
-    }
-
-    public static final IPropertyAccessor<BigDecimal> NATIVE_TOTAL_PROPERTY;
-    static {
-        NATIVE_TOTAL_PROPERTY = BeanPropertyAccessor.access(AccountTicket.class, "nativeTotal");
     }
 
 }

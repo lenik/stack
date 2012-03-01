@@ -7,8 +7,8 @@ import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.NaturalId;
 
+import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.plover.ox1.config.DecimalConfig;
-import com.bee32.sem.base.tx.TxEntity;
 import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.world.monetary.MCValue;
 
@@ -18,7 +18,7 @@ import com.bee32.sem.world.monetary.MCValue;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "purchase_inquiry_seq", allocationSize = 1)
 public class PurchaseInquiry
-        extends TxEntity
+        extends MomentInterval
         implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;

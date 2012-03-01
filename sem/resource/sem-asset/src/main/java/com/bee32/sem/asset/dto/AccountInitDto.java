@@ -8,10 +8,10 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.asset.entity.AccountInit;
-import com.bee32.sem.process.base.TxProcessEntityDto;
+import com.bee32.sem.process.base.ProcessEntityDto;
 
 public class AccountInitDto
-        extends TxProcessEntityDto<AccountInit> {
+        extends ProcessEntityDto<AccountInit> {
 
     private static final long serialVersionUID = 1L;
 
