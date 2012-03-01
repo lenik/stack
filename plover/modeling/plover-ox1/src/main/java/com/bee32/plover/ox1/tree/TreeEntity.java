@@ -18,12 +18,6 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.criteria.hibernate.Alias;
-import com.bee32.plover.criteria.hibernate.And;
-import com.bee32.plover.criteria.hibernate.CriteriaComposite;
-import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.criteria.hibernate.IsNull;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.ox1.color.UIEntitySpec;
 
@@ -306,29 +300,6 @@ public abstract class TreeEntity<K extends Serializable, self_t extends TreeEnti
     public void dump()
             throws IOException {
         dump(Stdio.cout);
-    }
-
-    protected ICriteriaElement localSelector(String prefix) {
-        return super.selector(prefix);
-    }
-
-    protected ICriteriaElement selector(String prefix) {
-        ICriteriaElement localSelector = localSelector(prefix);
-
-        self_t parent = getParent();
-        if (parent == null)
-            return And.of(//
-                    new IsNull(prefix + "parent"), //
-                    localSelector);
-
-        K parentId = getParent().getId();
-        if (parentId == null)
-            return null; // parent hasn't been saved.
-
-        return new CriteriaComposite(//
-                new Alias(prefix + "parent", "parent"), //
-                new Equals(prefix + "parent.id", parentId), //
-                localSelector);
     }
 
 }
