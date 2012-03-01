@@ -56,7 +56,7 @@
                     <h:panelGroup id="dataContainer" layout="block" styleClass="ui-dialog-data">
                         <ui:insert name="dataContainer">
                             <p:dataTable id="dataTable" value="${mbean.selectableList}" selection="${mbean.selection}"
-                                selectionMode="single" var="entry" paginator="${cc.attrs.paginator}" rows="10"
+                                selectionMode="single" var="entry" paginator="${cc.attrs.paginator}" rows="${cc.attrs.paginator ? 10 : 10000}"
                                 paginatorTemplate="${viewConfig.paginatorTemplate}" rowsPerPageTemplate="${viewConfig.pageSizeTemplate}"
                                 resizableColumns="true" rowIndexVar="rowIndex">
 
