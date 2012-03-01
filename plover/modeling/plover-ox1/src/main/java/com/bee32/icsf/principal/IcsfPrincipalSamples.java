@@ -2,7 +2,6 @@ package com.bee32.icsf.principal;
 
 import com.bee32.plover.orm.util.DataPartialContext;
 import com.bee32.plover.orm.util.NormalSamples;
-import com.bee32.plover.orm.util.SampleList;
 
 /**
  * Sample principals:
@@ -46,12 +45,6 @@ public class IcsfPrincipalSamples
         tom.setPreferredEmail("tom@bee32.com");
         kate.setPreferredEmail("kate@bee32.com");
         alice.setPreferredEmail("alice@bee32.com");
-    }
-
-    @Override
-    protected void getSamples(SampleList samples) {
-        samples.addBatch(sunCorp, solaRobots);
-        samples.addBatch(eva, wallE, alice, tom, kate);
     }
 
     @Override

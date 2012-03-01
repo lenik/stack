@@ -26,6 +26,7 @@ import com.bee32.sem.people.SEMPeopleSamples;
 import com.bee32.sem.process.SEMVerifyPolicySamples;
 import com.bee32.sem.process.verify.VerifyContextAccessor;
 import com.bee32.sem.test.DateSamples;
+import com.bee32.sem.world.thing.UnitConv;
 import com.bee32.sem.world.thing.Units;
 
 public class SEMInventorySamples
@@ -64,12 +65,13 @@ public class SEMInventorySamples
     public final Material m_handlerkj1 = new Material();
     public final Material m_handlerkj2 = new Material();
     public final Material m_handlerf1 = new Material();
+    public final UnitConv m_gluepp1_uc = new UnitConv();
 
-    public final StockOrder takeInOrder1 = new StockOrder(TAKE_IN);
-    public final StockOrder takeOutOrder1 = new StockOrder(TAKE_OUT);
-    public final StockOrder factoryInOrder1 = new StockOrder(FACTORY_IN);
-    public final StockOrder factoryOutOrder1 = new StockOrder(FACTORY_OUT);
-    public final StockOrder planOrder1 = new StockOrder(PLAN_OUT);
+    public final StockOrder cupx_I_1 = new StockOrder(TAKE_IN);
+    public final StockOrder lightB_o_1 = new StockOrder(TAKE_OUT);
+    public final StockOrder handlerf1_fi = new StockOrder(FACTORY_IN);
+    public final StockOrder handlerf1_fo = new StockOrder(FACTORY_OUT);
+    public final StockOrder cupx_plan_1 = new StockOrder(PLAN_OUT);
 
     SEMVerifyPolicySamples verifyPolicies = predefined(SEMVerifyPolicySamples.class);
     SEMPeopleSamples people = predefined(SEMPeopleSamples.class);
@@ -150,10 +152,12 @@ public class SEMInventorySamples
         m_gluepp1.addPreferredLocation(sl_glue_pp);
         m_gluepp1.getOption(rawWarehouse).setSafetyStock(new BigDecimal(10));
         m_gluepp1.setAttribute("溶点", "600c");
-        m_gluepp1.addUnitConv(units.SQUARE_METER, 10);
+        m_gluepp1.setUnitConv(m_gluepp1_uc);
+        m_gluepp1_uc.setLabel(PREFIX + "胶州特种离子胶/预处理");
+        m_gluepp1_uc.setUnit(m_gluepp1.getUnit());
+        m_gluepp1_uc.setScale(units.SQUARE_METER, 10.0);
 
-        m_handlerkj1.setSerial("..M6");
-        m_handlerkj1.setLabel("迪拜产氪金拿手");
+        m_handlerkj1.setLabel(PREFIX + "迪拜产氪金拿手");
         m_handlerkj1.setModelSpec("ASP-HKJ-DB");
         m_handlerkj1.setUnit(units.P_ZHI);
         m_handlerkj1.setBarCode("00140612");
@@ -181,44 +185,39 @@ public class SEMInventorySamples
         m_handlerf1.setAttribute("光滑度", "20mx");
         m_handlerf1.addPrice(date, new BigDecimal(30));
 
-        takeInOrder1.setSerial("..TK_I:1");
-        takeInOrder1.setWarehouse(rawWarehouse);
-        takeInOrder1.setBeginTime(DateSamples.D_2010_07_20);
-        takeInOrder1.addItem(m_glass1, "B1", 50.0, 85.0);
-        takeInOrder1.addItem(m_glue1, "G01", 30.0, 25.0);
-        takeInOrder1.addItem(m_gluepp1, null, 8.0, 15.0);
-        takeInOrder1.addItem(m_handlerkj1, "Z", 150, 6.5);
-        takeInOrder1.addItem(m_handlerkj2, null, 120, 9.0);
+        cupx_I_1.setWarehouse(rawWarehouse);
+        cupx_I_1.setBeginTime(DateSamples.D_2010_07_20);
+        cupx_I_1.addItem(m_glass1, "B1", 50.0, 85.0);
+        cupx_I_1.addItem(m_glue1, "G01", 30.0, 25.0);
+        cupx_I_1.addItem(m_gluepp1, null, 8.0, 15.0);
+        cupx_I_1.addItem(m_handlerkj1, "Z", 150, 6.5);
+        cupx_I_1.addItem(m_handlerkj2, null, 120, 9.0);
 
-        takeOutOrder1.setSerial("..TK_O:1");
-        takeOutOrder1.setWarehouse(mainWarehouse);
-        takeOutOrder1.setBeginTime(DateSamples.D_2010_07_20);
-        takeOutOrder1.addItem(m_light_B, null, -5, 50.0);
+        lightB_o_1.setWarehouse(mainWarehouse);
+        lightB_o_1.setBeginTime(DateSamples.D_2010_07_20);
+        lightB_o_1.addItem(m_light_B, null, -5, 50.0);
 
-        factoryInOrder1.setSerial("..FK_I:1");
-        factoryInOrder1.setWarehouse(mainWarehouse);
-        factoryInOrder1.setBeginTime(DateSamples.D_2010_07_20);
-        factoryInOrder1.addItem(m_handlerf1, null, 20.0, 30.0/* ??? */);
+        handlerf1_fi.setWarehouse(mainWarehouse);
+        handlerf1_fi.setBeginTime(DateSamples.D_2010_07_20);
+        handlerf1_fi.addItem(m_handlerf1, null, 20.0, 30.0/* ??? */);
 
-        factoryOutOrder1.setSerial("..FK_O:1");
-        factoryOutOrder1.setWarehouse(mainWarehouse);
-        factoryOutOrder1.setBeginTime(DateSamples.D_2010_07_30);
-        factoryOutOrder1.addItem(m_handlerf1, null, -5.0, 30.0);
+        handlerf1_fo.setWarehouse(mainWarehouse);
+        handlerf1_fo.setBeginTime(DateSamples.D_2010_07_30);
+        handlerf1_fo.addItem(m_handlerf1, null, -5.0, 30.0);
 
-        planOrder1.setSerial("..PLAN:1");
-        planOrder1.setWarehouse(rawWarehouse);
-        planOrder1.setBeginTime(DateSamples.D_2010_07_30);
-        planOrder1.addItem(m_glass1, "B1", -3, null);
-        planOrder1.addItem(m_glue1, "G01", -5, null);
+        cupx_plan_1.setWarehouse(rawWarehouse);
+        cupx_plan_1.setBeginTime(DateSamples.D_2010_07_30);
+        cupx_plan_1.addItem(m_glass1, "B1", -3, null);
+        cupx_plan_1.addItem(m_glue1, "G01", -5, null);
 
         VerifyContextAccessor.forceVerified(//
-                takeInOrder1, takeOutOrder1, //
-                factoryInOrder1, factoryOutOrder1, //
-                planOrder1);
+                cupx_I_1, lightB_o_1, //
+                handlerf1_fi, handlerf1_fo, //
+                cupx_plan_1);
     }
 
-    @Override
-    protected void getSamples(SampleList samples) {
+    @Deprecated
+    protected void _getSamples(SampleList samples) {
         samples.addBatch(stockPolicy);
         samples.addBatch(mainWarehouse, rawWarehouse);
         samples.addBatch(sl_dedi_1, sl_light_1, //
@@ -229,15 +228,14 @@ public class SEMInventorySamples
                 cupGlue, cupGlue_pp, //
                 cupGlass_AM, //
                 cupHandler, cupHandler_KJ, cupHandler_F1);
-        samples.addBatch(m_gluepp1.getUnitConv());
         samples.addBatch(m_light_A, m_light_B, //
                 m_glass1, //
                 m_glue1, m_gluepp1, //
                 m_handlerkj1, m_handlerkj2, //
                 m_handlerf1);
-        samples.addBatch(takeInOrder1, takeOutOrder1, //
-                factoryInOrder1, factoryOutOrder1, //
-                planOrder1);
+        samples.addBatch(cupx_I_1, lightB_o_1, //
+                handlerf1_fi, handlerf1_fo, //
+                cupx_plan_1);
     }
 
 }

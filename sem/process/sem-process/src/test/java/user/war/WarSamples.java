@@ -44,12 +44,4 @@ public class WarSamples
         rescueMao_SV.setVerifiedDate1(new Date());
     }
 
-    @Override
-    protected void getSamples(SampleList samples) {
-        samples.add(attackPref);
-        samples.add(bombAmerica);
-        samples.add(killSimpsons);
-        samples.add(rescueMao);
-    }
-
 }

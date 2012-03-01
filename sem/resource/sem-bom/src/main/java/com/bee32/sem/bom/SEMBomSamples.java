@@ -7,7 +7,6 @@ import javax.free.Dates;
 import javax.free.UnexpectedException;
 
 import com.bee32.plover.orm.util.NormalSamples;
-import com.bee32.plover.orm.util.SampleList;
 import com.bee32.sem.bom.entity.Part;
 import com.bee32.sem.inventory.SEMInventorySamples;
 
@@ -46,12 +45,6 @@ public class SEMBomSamples
         p_handlerf1.addChild(inventories.m_handlerkj2, 1);
         p_handlerf1.addChild(inventories.m_glass1, 0.03);
         p_handlerf1.addChild(inventories.m_glue1, 0.01);
-    }
-
-    @Override
-    protected void getSamples(SampleList samples) {
-        samples.addBatch(p_light_A, p_light_B, //
-                p_handlerf1, p_handler_kj1, p_handler_kj2);
     }
 
     static Date parseDate(String str) {

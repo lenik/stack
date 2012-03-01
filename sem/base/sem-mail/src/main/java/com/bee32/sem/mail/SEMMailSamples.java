@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.plover.orm.util.NormalSamples;
-import com.bee32.plover.orm.util.SampleList;
 import com.bee32.sem.mail.entity.Mail;
 import com.bee32.sem.mail.entity.MailDelivery;
 import com.bee32.sem.mail.entity.MailFilter;
@@ -54,13 +53,6 @@ public class SEMMailSamples
         MailDelivery helloEchoSend = new MailDelivery(helloEcho, MailOrientation.FROM);
         MailDelivery helloEchoRecv = new MailDelivery(helloEcho, MailOrientation.RECIPIENT);
         helloEcho.setDeliveries(Arrays.asList(helloEchoSend, helloEchoRecv));
-    }
-
-    @Override
-    protected void getSamples(SampleList samples) {
-        samples.add(spamFilter);
-        samples.add(hello);
-        samples.add(helloEcho);
     }
 
 }

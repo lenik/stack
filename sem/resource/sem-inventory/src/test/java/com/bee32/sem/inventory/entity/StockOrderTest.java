@@ -8,7 +8,7 @@ public class StockOrderTest
         extends Assert {
 
     public static void main(String[] args) {
-        StockOrder order1 = new SEMInventorySamples().takeInOrder1;
+        StockOrder order1 = new SEMInventorySamples().cupx_I_1;
         String dump = order1.dump();
         System.out.println(dump);
     }

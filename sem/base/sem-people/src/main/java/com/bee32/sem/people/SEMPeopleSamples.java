@@ -183,8 +183,8 @@ public class SEMPeopleSamples
         weiXiaoBao.setContacts(Arrays.asList(weiXiaoBaoHome, weiXiaoBaoWork));
     }
 
-    @Override
-    protected void getSamples(SampleList samples) {
+    @Deprecated
+    protected void _getSamples(SampleList samples) {
         samples.add(humanCorp);
         samples.addBatch(abcCorp, abcRAD, abcSales);
 

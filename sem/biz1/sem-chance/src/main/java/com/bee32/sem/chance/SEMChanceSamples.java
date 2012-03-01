@@ -5,7 +5,6 @@ import java.util.Calendar;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.plover.orm.util.NormalSamples;
-import com.bee32.plover.orm.util.SampleList;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.entity.ChanceActionStyles;
@@ -87,17 +86,6 @@ public class SEMChanceSamples
 
         chance.addAction(chanceAction1);
         chance.addAction(chanceAction2);
-    }
-
-    @Override
-    protected void getSamples(SampleList samples) {
-        // add <price>->quotionDetail
-        samples.add(chance);
-        samples.add(party);
-        samples.add(party2);
-        samples.add(competitor);
-        samples.add(chanceAction1);
-        samples.add(chanceAction2);
     }
 
 }
