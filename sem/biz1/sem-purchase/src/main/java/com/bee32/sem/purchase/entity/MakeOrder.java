@@ -48,8 +48,11 @@ public class MakeOrder
 
     List<MakeTask> tasks = new ArrayList<MakeTask>();
 
-    public MakeOrder() {
-        setVerifyContext(new SingleVerifierWithNumberSupport());
+    @Override
+    protected void createTransients() {
+        if (verifyContext == null)
+            verifyContext = new SingleVerifierWithNumberSupport();
+        verifyContext.bind(this);
     }
 
     @ManyToOne(optional = false)

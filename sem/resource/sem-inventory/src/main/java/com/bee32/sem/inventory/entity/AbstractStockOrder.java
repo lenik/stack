@@ -70,11 +70,12 @@ public class AbstractStockOrder<Item extends StockOrderItem>
         if (subject.isPacking())
             this.spec = base;
         this.warehouse = warehouse;
-        setVerifyContext(new StockOrderVerifySupport());
     }
 
     @Override
     protected void createTransients() {
+        if (verifyContext == null)
+            verifyContext = new StockOrderVerifySupport();
         verifyContext.bind(this);
     }
 
