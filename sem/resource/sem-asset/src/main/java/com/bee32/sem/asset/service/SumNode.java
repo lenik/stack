@@ -113,7 +113,7 @@ public class SumNode
                 sb.append(item.getSubject().getLabel());
                 sb.append(":");
                 Party party = item.getParty();
-                sb.append(party == null ? "*" : party.getName());
+                sb.append(party == null ? "*" : party.getDisplayName());
                 sb.append("+" + item.getValue());
                 sb.append(", ");
             }

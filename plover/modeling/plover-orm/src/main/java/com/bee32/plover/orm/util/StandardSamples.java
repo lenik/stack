@@ -15,4 +15,9 @@ public abstract class StandardSamples
         return predefined(Standards.class);
     }
 
+    @Override
+    protected void getSamples(SampleList samples) {
+        super.getSamples(samples);
+    }
+
 }
