@@ -4,12 +4,9 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.free.ParseException;
-import javax.validation.constraints.NotNull;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.tree.TreeEntityDto;
-import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.inventory.entity.CodeGenerator;
 import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.entity.MaterialType;
@@ -30,7 +27,6 @@ public class MaterialCategoryDto
 
     @Override
     protected void _marshal(MaterialCategory source) {
-        this.name = source.getName();
         this.codeGenerator = source.getCodeGenerator();
         this.materialType = source.getMaterialType();
 
@@ -45,7 +41,6 @@ public class MaterialCategoryDto
 
     @Override
     protected void _unmarshalTo(MaterialCategory target) {
-        target.setName(name);
         target.setCodeGenerator(codeGenerator);
         target.setMaterialType(materialType);
 
@@ -56,8 +51,6 @@ public class MaterialCategoryDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
-        name = map.getString("name");
-
         char _cg = map.getChar("codeGenerator");
         codeGenerator = CodeGenerator.valueOf(_cg);
         char _materialType = map.getChar("materialType");
@@ -67,17 +60,6 @@ public class MaterialCategoryDto
     @Override
     protected boolean isUniqueChildren() {
         return true;
-    }
-
-    @NotNull
-    @NLength(min = 1, max = MaterialCategory.NAME_LENGTH)
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        name = TextUtil.normalizeSpace(name);
-        this.name = name;
     }
 
     public List<MaterialDto> getMaterials() {

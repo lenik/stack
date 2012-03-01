@@ -1,6 +1,5 @@
 package com.bee32.sem.inventory.entity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +12,6 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Formula;
 
-import com.bee32.plover.arch.util.IdComposite;
-import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.config.BatchConfig;
 import com.bee32.plover.ox1.tree.TreeEntityAuto;
 
@@ -26,8 +22,6 @@ public class MaterialCategory
         extends TreeEntityAuto<Integer, MaterialCategory> {
 
     private static final long serialVersionUID = 1L;
-
-    public static final int NAME_LENGTH = 40;
 
     CodeGenerator codeGenerator = CodeGenerator.NONE;
     MaterialType materialType = MaterialType.OTHER;
@@ -54,18 +48,6 @@ public class MaterialCategory
     @Transient
     protected boolean isUniqueChildren() {
         return true;
-    }
-
-    /**
-     * 分类名称
-     */
-    @Column(length = NAME_LENGTH)
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     /**
@@ -170,26 +152,6 @@ public class MaterialCategory
         if (materialType == null)
             throw new NullPointerException("materialType");
         this.materialType = materialType;
-    }
-
-    @Override
-    protected Serializable naturalId() {
-        Integer parentId;
-        if (getParent() == null)
-            parentId = null;
-        else
-            parentId = getParent().getId();
-
-        return new IdComposite(//
-                parentId, //
-                name);
-    }
-
-    @Override
-    protected ICriteriaElement localSelector(String prefix) {
-        if (name == null)
-            throw new NullPointerException("name");
-        return new Equals(prefix + "name", name);
     }
 
 }
