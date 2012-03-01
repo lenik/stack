@@ -1,23 +1,18 @@
 package user.war.entity;
 
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import com.bee32.plover.ox1.color.Pink;
-import com.bee32.plover.ox1.color.UIEntityAuto;
-import com.bee32.sem.process.verify.IVerifiable;
-import com.bee32.sem.process.verify.builtin.IJudgeNumber;
-import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;
+import com.bee32.sem.process.base.ProcessEntity;
 import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
 
 @Entity
 @Pink
 @SequenceGenerator(name = "idgen", sequenceName = "build_mission_seq", allocationSize = 1)
 public class BuildMission
-        extends UIEntityAuto<Integer>
-        implements IVerifiable<ISingleVerifierWithNumber>, IJudgeNumber {
+        extends ProcessEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -49,29 +44,16 @@ public class BuildMission
         buf.append(getId() + ": " + target);
     }
 
-    SingleVerifierWithNumberSupport verifyContext;
-
     @Transient
     @Override
     public String getNumberDescription() {
         return "建筑费用";
     }
 
-    @Transient
     @Override
-    public Number getJudgeNumber() {
+    protected Number computeJudgeNumber()
+            throws Exception {
         return getMoney();
-    }
-
-    @Embedded
-    @Override
-    public SingleVerifierWithNumberSupport getVerifyContext() {
-        return verifyContext;
-    }
-
-    void setVerifyContext(SingleVerifierWithNumberSupport verifyContext) {
-        this.verifyContext = verifyContext;
-        verifyContext.bind(this);
     }
 
 }
