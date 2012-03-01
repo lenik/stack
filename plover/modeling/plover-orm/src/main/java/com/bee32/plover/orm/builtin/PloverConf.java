@@ -1,46 +1,75 @@
 package com.bee32.plover.orm.builtin;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.NaturalId;
 
-import com.bee32.plover.orm.entity.EntitySpec;
+import com.bee32.plover.arch.util.IdComposite;
+import com.bee32.plover.criteria.hibernate.And;
+import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.util.TextUtil;
 
 @Entity
 @BatchSize(size = 100)
+@SequenceGenerator(name = "idgen", sequenceName = "plover_conf_seq", allocationSize = 1)
 public class PloverConf
-        extends EntitySpec<String> {
+        extends EntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 
-    public static final int ID_LENGTH = 40;
+    public static final int SECTION_LENGTH = 50;
+    public static final int KEY_LENGTH = 50;
     public static final int VALUE_LENGTH = 200;
     public static final int DESCRIPTION_LENGTH = 200;
 
-    private String id;
+    private String section;
+    private String key;
     private String value;
     private String description;
 
     public PloverConf() {
     }
 
-    public PloverConf(String key, String value) {
-        this.id = key;
-        this.value = value;
+    public PloverConf(String section, String key, String value) {
+        this(section, key, value, null);
     }
 
-    @Id
-    @Column(length = ID_LENGTH)
-    @Override
-    public String getId() {
-        return id;
+    public PloverConf(String section, String key, String value, String description) {
+        setSection(section);
+        setKey(key);
+        setValue(value);
+        setDescription(description);
     }
 
-    @Override
-    protected void setId(String id) {
-        this.id = id;
+    @NaturalId
+    @Column(length = SECTION_LENGTH, nullable = false)
+    public String getSection() {
+        return section;
+    }
+
+    public void setSection(String section) {
+        if (section == null)
+            throw new NullPointerException("section");
+        this.section = TextUtil.normalizeSpace(section);
+    }
+
+    @NaturalId
+    @Column(length = KEY_LENGTH, nullable = false)
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        if (key == null)
+            throw new NullPointerException("key");
+        this.key = TextUtil.normalizeSpace(key);
     }
 
     @Column(length = VALUE_LENGTH)
@@ -49,7 +78,7 @@ public class PloverConf
     }
 
     public void setValue(String value) {
-        this.value = value;
+        this.value = TextUtil.normalizeSpace(value);
     }
 
     @Column(length = DESCRIPTION_LENGTH)
@@ -61,6 +90,20 @@ public class PloverConf
         this.description = description;
     }
 
-    public static PloverConf VERSION = new PloverConf("version", "1.0");
+    @Override
+    protected Serializable naturalId() {
+        if (section == null)
+            throw new NullPointerException("section");
+        if (key == null)
+            throw new NullPointerException("key");
+        return new IdComposite(section, key);
+    }
+
+    @Override
+    protected ICriteriaElement selector(String prefix) {
+        return And.of(//
+                new Equals(prefix + "section", section), //
+                new Equals(prefix + "key", key));
+    }
 
 }

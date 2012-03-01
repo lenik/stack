@@ -17,14 +17,14 @@ public class PloverConfManagerTest
 
     @Test
     public void testSetConf() {
-        confManager.setConf("hello", "world");
-        String value = confManager.getConfValue("hello");
+        confManager.set("test", "hello", "world");
+        String value = confManager.get("test", "hello");
         assertEquals("world", value);
     }
 
     @Test
     public void testNotExist() {
-        String value = confManager.getConfValue("not-a-existed-key");
+        String value = confManager.get("test", "not-a-existed-key");
         assertNull(value);
     }
 

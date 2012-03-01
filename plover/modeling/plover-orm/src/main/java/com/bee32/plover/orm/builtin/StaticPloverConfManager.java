@@ -1,7 +1,10 @@
 package com.bee32.plover.orm.builtin;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 public class StaticPloverConfManager
         implements IPloverConfManager {
@@ -13,37 +16,69 @@ public class StaticPloverConfManager
     }
 
     @Override
-    public PloverConfDto getConf(String key) {
-        String value = configs.get(key);
+    public PloverConfDto getConf(String section, String key) {
+        String value = configs.get(key(section, key));
+        if (value == null)
+            return null;
         PloverConfDto conf = new PloverConfDto();
-        conf.setId(key);
+        conf.setSection(section);
+        conf.setKey(key);
         conf.setValue(value);
         return conf;
     }
 
     @Override
-    public String getConfValue(String key) {
-        return configs.get(key);
+    public String get(String section, String key) {
+        return configs.get(key(section, key));
+    }
+
+    public void set(String section, String key, String value) {
+        configs.put(key(section, key), value);
     }
 
     @Override
-    public String getConfDescription(String key) {
-        return null;
+    public void set(String section, String key, String value, String description) {
+        configs.put(key(section, key), value);
     }
 
     @Override
-    public void setConf(String key, String value) {
-        configs.put(key, value);
+    public void remove(String section, String key) {
+        configs.remove(key(section, key));
     }
 
     @Override
-    public void setConf(String key, String value, String description) {
-        configs.put(key, value);
+    public Map<String, PloverConfDto> getSection(String section) {
+        String prefix = section + "::";
+        int nprefix = prefix.length();
+        Map<String, PloverConfDto> map = new TreeMap<>();
+        for (Entry<String, String> entry : configs.entrySet()) {
+            if (!entry.getKey().startsWith(prefix))
+                continue;
+            String key = entry.getKey().substring(nprefix);
+            String value = entry.getValue();
+            PloverConfDto conf = new PloverConfDto();
+            conf.setSection(section);
+            conf.setKey(key);
+            conf.setValue(value);
+            map.put(key, conf);
+        }
+        return map;
     }
 
     @Override
-    public void removeConf(String key) {
-        configs.remove(key);
+    public void removeSection(String section) {
+        String prefix = section + "::";
+        Iterator<Entry<String, String>> iterator = configs.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Entry<String, String> entry = iterator.next();
+            if (entry.getKey().startsWith(prefix)) {
+                iterator.remove();
+            }
+        }
+    }
+
+    static String key(String section, String key) {
+        return section + "::" + key;
     }
 
     static final StaticPloverConfManager instance = new StaticPloverConfManager();
