@@ -51,8 +51,9 @@ public class MakeOrder
     @Override
     protected void createTransients() {
         if (verifyContext == null)
-            verifyContext = new SingleVerifierWithNumberSupport();
-        verifyContext.bind(this);
+            setVerifyContext(new SingleVerifierWithNumberSupport());
+        else
+            verifyContext.bind(this, nativeTotalProperty, "金额");
     }
 
     @ManyToOne(optional = false)
