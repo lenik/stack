@@ -46,7 +46,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     protected K id;
     boolean _skipId;
     Integer version;
-
+    String altId;
     Date createdDate;
     Date lastModified;
     boolean createdDateDirty;
@@ -158,8 +158,8 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         @SuppressWarnings("unchecked")
         K _o_id = (K) o.id;
         id = _o_id;
-
         version = o.version;
+        altId = o.altId;
         createdDate = o.createdDate;
         lastModified = o.lastModified;
         createdDateDirty = o.createdDateDirty;
@@ -190,7 +190,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         id = source.getId();
         version = source.getVersion();
         _skipId = version == -1;
-
+        altId = source.getAltId();
         createdDate = source.getCreatedDate();
         lastModified = source.getLastModified();
         setEntityFlags(EntityAccessor.getFlags(source).bits);
@@ -206,6 +206,8 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
         if (version != null)
             EntityAccessor.setVersion(target, version);
+
+        target.setAltId(altId);
 
         if (createdDateDirty)
             EntityAccessor.setCreatedDate(target, createdDate);
@@ -239,6 +241,8 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             } catch (NumberFormatException e) {
                 throw new ParseException("Version isn't an integer: " + _version);
             }
+
+        altId = map.getString("altId");
 
         // created-date maybe overrided by DAOs.
         Date createdDate = map.getDate("createdDate");

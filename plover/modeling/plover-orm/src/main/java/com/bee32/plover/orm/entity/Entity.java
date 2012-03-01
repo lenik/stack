@@ -40,7 +40,10 @@ public abstract class Entity<K extends Serializable>
 
     private static final long serialVersionUID = 1L;
 
+    public static final int ALT_ID_LENGTH = 20;
+
     int version;
+    String altId;
 
     Date createdDate = new Date();
     Date lastModified = createdDate;
@@ -93,6 +96,15 @@ public abstract class Entity<K extends Serializable>
 
     void setVersion(int version) {
         this.version = version;
+    }
+
+    @Column(length = ALT_ID_LENGTH)
+    public String getAltId() {
+        return altId;
+    }
+
+    public void setAltId(String altId) {
+        this.altId = altId;
     }
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -274,7 +286,10 @@ public abstract class Entity<K extends Serializable>
      * @see IdComposite
      */
     protected Serializable naturalId() {
-        return null;
+        if (altId != null)
+            return altId;
+        else
+            return null;
     }
 
     protected static Serializable naturalId(Entity<?> entity) {
@@ -297,10 +312,14 @@ public abstract class Entity<K extends Serializable>
      * @return <code>null</code> for transient object (its natural-id is undetermined).
      */
     protected ICriteriaElement selector(String prefix) {
+        if (altId != null)
+            return new Equals(prefix + "altId", altId);
+
         K id = getId();
-        if (id == null)
-            return null;
-        return new Equals(prefix + "id", id);
+        if (id != null)
+            return new Equals(prefix + "id", id);
+
+        return null;
     }
 
     protected static ICriteriaElement selectors(ICriteriaElement... selectors) {

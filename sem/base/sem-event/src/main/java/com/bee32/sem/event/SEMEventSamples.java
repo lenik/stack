@@ -27,8 +27,11 @@ public class SEMEventSamples
     Users users = predefined(Users.class);
     EventPriorities eventPriorities = predefined(EventPriorities.class);
 
+    int rainIndex = 0;
+
     Event mkRain(double relativeDay, Double duration, String title, Principal observer) {
         Event rain = new Event(SEMEventSamples.class, EventType.EVENT);
+        rain.setAltId("rain" + (++rainIndex));
         rain.setCategory(weather);
         rain.setPriority(eventPriorities.LOW);
         rain.setState(GenericState.UNKNOWN);
@@ -73,10 +76,10 @@ public class SEMEventSamples
 
     @Override
     protected void getSamples(SampleList samples) {
-        samples.add(weather);
-        samples.add(special);
+        samples.add("weather", weather);
+        samples.add("special", special);
         samples.addAll(rains);
-        samples.add(killAngel);
+        samples.add("killAngel", killAngel);
     }
 
 }
