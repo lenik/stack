@@ -25,6 +25,8 @@ public abstract class SamplePackage
 
     static Logger logger = LoggerFactory.getLogger(SamplePackage.class);
 
+    public static String SECTION = "samples";
+
     public static final int LEVEL_STANDARD = -1;
     public static final int LEVEL_NORMAL = 0;
     public static final int LEVEL_BAD = 1;
@@ -142,7 +144,20 @@ public abstract class SamplePackage
             } catch (ReflectiveOperationException e) {
                 throw new RuntimeException(e.getMessage(), e);
             }
-            samples.add(entity);
+            samples.add(field.getName(), entity);
+        }
+
+        // Think about: unit hierarchy => microgroups.
+        if (!samples.isEmpty()) {
+            Entity<?> first = samples.get(0);
+            Entity<?> prev = first;
+            for (int i = 1; i < samples.size(); i++) {
+                Entity<?> next = samples.get(i);
+                EntityAccessor.setNextOfMicroLoop(prev, next);
+                prev = next;
+            }
+            samples.clear();
+            samples.add(first);
         }
     }
 
