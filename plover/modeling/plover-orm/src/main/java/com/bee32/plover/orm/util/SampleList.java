@@ -10,6 +10,17 @@ public class SampleList
 
     private static final long serialVersionUID = 1L;
 
+    @Deprecated
+    @Override
+    public boolean add(Entity<?> e) {
+        return super.add(e);
+    }
+
+    public void add(String altId, Entity<?> sample) {
+        sample.setAltId(altId);
+        add(sample);
+    }
+
     public void addBatch(Entity<?>... samples) {
         for (Entity<?> sample : samples)
             add(sample);
