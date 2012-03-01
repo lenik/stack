@@ -15,7 +15,7 @@ import javax.validation.constraints.Past;
 import org.apache.commons.lang.StringUtils;
 
 import com.bee32.icsf.principal.UserDto;
-import com.bee32.plover.arch.util.DummyId;
+import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.xp.EntityExtDto;
@@ -222,12 +222,6 @@ public class PartyDto
         this.supplier = supplier;
     }
 
-    public String getXid() {
-        if (sidType == null || sid == null || sid.isEmpty())
-            return null;
-        return sidType.getId() + ":" + sid;
-    }
-
     @Past
     public Date getBirthday() {
         return birthday;
@@ -356,11 +350,10 @@ public class PartyDto
 
     @Override
     protected Serializable naturalId() {
-        String xid = getXid();
-        if (xid == null)
-            return new DummyId(this);
+        if (sidType == null && sid == null)
+            return super.naturalId();
         else
-            return xid;
+            return new IdComposite(naturalId(getSidType()), sid);
     }
 
 }

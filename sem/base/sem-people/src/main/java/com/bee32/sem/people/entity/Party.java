@@ -29,7 +29,8 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.DefaultValue;
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.plover.arch.util.DummyId;
+import com.bee32.plover.arch.util.IdComposite;
+import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.color.Green;
@@ -82,17 +83,19 @@ public abstract class Party
     }
 
     protected Party(String name) {
-        this.name = name;
+        setLabel(name);
     }
 
     /**
      * 名称
      */
+    @Deprecated
     @Transient
     public String getName() {
         return label;
     }
 
+    @Deprecated
     public void setName(String name) {
         if (name == null)
             name = "";
@@ -124,6 +127,7 @@ public abstract class Party
     /**
      * 证件类型 (SID = Social ID)
      */
+    @NaturalId(mutable = true)
     @ManyToOne
     public PartySidType getSidType() {
         return sidType;
@@ -136,6 +140,7 @@ public abstract class Party
     /**
      * 证件号码 (SID = Social ID)
      */
+    @NaturalId(mutable = true)
     @Column(length = SID_LENGTH)
     public String getSid() {
         return sid;
@@ -148,18 +153,6 @@ public abstract class Party
                 sid = null;
         }
         this.sid = sid;
-    }
-
-    @NaturalId(mutable = true)
-    @Column(length = XID_LENGTH)
-    String getXid() {
-        if (sidType == null || sid == null || sid.isEmpty())
-            return null;
-        return sidType.getId() + ":" + sid;
-    }
-
-    void setXid(String xid) {
-        // work on the fly.
     }
 
     @DefaultValue("false")
@@ -290,19 +283,19 @@ public abstract class Party
 
     @Override
     protected Serializable naturalId() {
-        String xid = getXid();
-        if (xid == null)
-            return new DummyId(this);
+        if (sidType == null && sid == null)
+            return super.naturalId();
         else
-            return xid;
+            return new IdComposite(naturalId(getSidType()), sid);
     }
 
     @Override
     protected ICriteriaElement selector(String prefix) {
-        String xid = getXid();
-        if (xid == null)
-            return null;
-        return new Equals(prefix + "xid", xid);
+        if (sidType == null && sid == null)
+            return super.selector(prefix);
+        return And.of(//
+                new Equals(prefix + "sidType", sidType), //
+                new Equals(prefix + "sid", sid));
     }
 
     @Override
