@@ -15,7 +15,7 @@ public class SEMInventorySamples2
     protected void wireUp() {
         stockVerifyPref.setType(StockOrder.class);
         stockVerifyPref.setPreferredPolicy(inventories.stockPolicy);
-        stockVerifyPref.setDescription("用库存审核策略对库存对象审核。");
+        stockVerifyPref.setDescription(PREFIX + "用库存审核策略对库存对象审核。");
     }
 
 }

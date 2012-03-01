@@ -46,7 +46,7 @@ public class SEMInventorySamples
     public final StockLocation sl_dedi_1 = new StockLocation(mainWarehouse, "一楼");
     public final StockLocation sl_light_1 = new StockLocation(mainWarehouse, "二楼");
 
-    public final MaterialCategory cupRoot = new MaterialCategory(PRODUCT, "宇航员的杯具");
+    public final MaterialCategory cupRoot = new MaterialCategory(PRODUCT, PREFIX + "宇航员的杯具");
     public final MaterialCategory cupSet_dedi = new MaterialCategory(cupRoot, PRODUCT, "客户定制杯具");
     public final MaterialCategory cupSet_light = new MaterialCategory(cupRoot, PRODUCT, "专利无重力杯具");
     public final MaterialCategory cupGlass_AM = new MaterialCategory(cupRoot, RAW, "反物质玻璃");
@@ -77,8 +77,7 @@ public class SEMInventorySamples
 
     @Override
     protected void wireUp() {
-        stockPolicy.setName(".stockvp-1");
-        stockPolicy.setLabel("库存审核策略");
+        stockPolicy.setLabel(PREFIX + "库存审核策略");
         stockPolicy.setDescription("测试用的库存审核策略。");
         stockPolicy.setSubjectPolicy(StockOrderSubject.PACK_M, verifyPolicies.robotList);
         stockPolicy.setSubjectPolicy(StockOrderSubject.PACK_MB, verifyPolicies.robotList);
@@ -91,13 +90,13 @@ public class SEMInventorySamples
         stockPolicy.setSubjectPolicy(StockOrderSubject.TAKE_OUT, verifyPolicies.robotList);
 
         mainWarehouse.setName("ASP-S");
-        mainWarehouse.setLabel("宇航员杯具综合仓库");
+        mainWarehouse.setLabel(PREFIX + "宇航员杯具综合仓库");
         mainWarehouse.setAddress("浙江省楚门镇城东路11号先锋杯具公司北");
         mainWarehouse.setPhone("911");
         mainWarehouse.setManager(people.jackPerson);
 
         rawWarehouse.setName("ASP-R");
-        rawWarehouse.setLabel("宇航员杯具原材料仓库");
+        rawWarehouse.setLabel(PREFIX + "宇航员杯具原材料仓库");
         mainWarehouse.setAddress("浙江省楚门镇城东路11号先锋杯具公司东厂");
 
         Calendar cal = Calendar.getInstance();
@@ -106,8 +105,7 @@ public class SEMInventorySamples
         cal.set(Calendar.DAY_OF_MONTH, 19);
         Date date = cal.getTime();
 
-        m_light_A.setSerial("..M1");
-        m_light_A.setLabel("无重力A型杯具");
+        m_light_A.setLabel(PREFIX + "无重力A型杯具");
         m_light_A.setModelSpec("ASP-LG-1A");
         m_light_A.setUnit(units.PIECE);
         m_light_A.setBarCode("00120001");
@@ -117,8 +115,7 @@ public class SEMInventorySamples
         m_light_A.setAttribute("容积", "50L");
         m_light_A.addPrice(date, new BigDecimal(16));
 
-        m_light_B.setSerial("..M2");
-        m_light_B.setLabel("无重力B型杯具");
+        m_light_B.setLabel(PREFIX + "无重力B型杯具");
         m_light_B.setModelSpec("ASP-LG-1B");
         m_light_B.setUnit(units.PIECE);
         m_light_B.setBarCode("00120002");
@@ -128,8 +125,7 @@ public class SEMInventorySamples
         m_light_B.setAttribute("容积", "100L");
         m_light_B.addPrice(date, new BigDecimal(22));
 
-        m_glass1.setSerial("..M3");
-        m_glass1.setLabel("牛顿Z型反物质玻璃");
+        m_glass1.setLabel(PREFIX + "牛顿Z型反物质玻璃");
         m_glass1.setModelSpec("ASP-AG-Z1");
         m_glass1.setUnit(units.SQUARE_METER);
         m_glass1.setBarCode("00121201");
@@ -137,8 +133,7 @@ public class SEMInventorySamples
         m_glass1.addPreferredLocation(sl_glass_1);
         m_glass1.getOption(rawWarehouse).setSafetyStock(new BigDecimal(200));
 
-        m_glue1.setSerial("..M4");
-        m_glue1.setLabel("青岛离子胶");
+        m_glue1.setLabel(PREFIX + "青岛离子胶");
         m_glue1.setModelSpec("ASP-GL-QingDao");
         m_glue1.setUnit(units.KILOGRAM);
         m_glue1.setBarCode("00124001");
@@ -147,8 +142,7 @@ public class SEMInventorySamples
         m_glue1.getOption(rawWarehouse).setSafetyStock(new BigDecimal(100));
         m_glue1.setAttribute("溶点", "450c");
 
-        m_gluepp1.setSerial("..M5");
-        m_gluepp1.setLabel("胶州特种离子胶/预处理");
+        m_gluepp1.setLabel(PREFIX + "胶州特种离子胶/预处理");
         m_gluepp1.setModelSpec("ASP-GL-JZT1");
         m_gluepp1.setUnit(units.P_TONG);
         m_gluepp1.setBarCode("00124050");
@@ -168,8 +162,7 @@ public class SEMInventorySamples
         m_handlerkj1.getOption(mainWarehouse).setSafetyStock(new BigDecimal(10));
         m_handlerkj1.setAttribute("光滑度", "12mx");
 
-        m_handlerkj2.setSerial("..M7");
-        m_handlerkj2.setLabel("迪拜产特种氪金拿手");
+        m_handlerkj2.setLabel(PREFIX + "迪拜产特种氪金拿手");
         m_handlerkj2.setModelSpec("ASP-HKJ-DX");
         m_handlerkj2.setUnit(units.P_ZHI);
         m_handlerkj2.setBarCode("00140613");
@@ -178,8 +171,7 @@ public class SEMInventorySamples
         m_handlerkj2.getOption(mainWarehouse).setSafetyStock(new BigDecimal(10));
         m_handlerkj2.setAttribute("光滑度", "16mx");
 
-        m_handlerf1.setSerial("..M8");
-        m_handlerf1.setLabel("我厂生产许冠杰式改良方程式拿手Y型");
+        m_handlerf1.setLabel(PREFIX + "我厂生产许冠杰式改良方程式拿手Y型");
         m_handlerf1.setModelSpec("ASP-HF1-XGY");
         m_handlerf1.setUnit(units.P_ZHI);
         m_handlerf1.setBarCode("00146021");

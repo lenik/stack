@@ -37,6 +37,8 @@ import com.bee32.plover.orm.util.SuperSamplePackage.Normals;
 public abstract class NormalSamples
         extends SamplePackage {
 
+    protected static String PREFIX = "【测试】";
+
     @Override
     public int getLevel() {
         return LEVEL_NORMAL;

@@ -32,7 +32,7 @@ public class SEMMailSamples
 
         hello.setFromUser(principals.wallE);
         hello.addRecipientUser(principals.eva);
-        hello.setSubject("Hello!");
+        hello.setSubject(PREFIX + "Hello!");
         hello.setBody("Hello, world!\n\n这句话的意思是：朋友、再见！");
 
         MailDelivery helloSend = new MailDelivery(hello, MailOrientation.FROM);
@@ -46,7 +46,7 @@ public class SEMMailSamples
         helloEcho.setFromUser(principals.eva);
         helloEcho.addRecipientUser(principals.wallE);
         helloEcho.setReferrer(hello);
-        helloEcho.setSubject("Hi, 我收到了你的 Hello！");
+        helloEcho.setSubject(PREFIX + "Hi, 我收到了你的 Hello！");
         helloEcho.setBody("谢谢你告诉我 Hello, world 的真正含义！\n" + //
                 "在此之前，我一直以为它是\"你好、世界\"，现在我才知道自己的愚蠢。");
         // helloEcho.setCc("");

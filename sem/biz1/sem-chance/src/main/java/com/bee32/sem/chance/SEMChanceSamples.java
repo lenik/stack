@@ -40,8 +40,8 @@ public class SEMChanceSamples
         Calendar cal = Calendar.getInstance();
         cal.set(2011, 4, 8);
 
-        chance.setSerial("CHJFST-00001");
-        chance.setSubject("初号机发射塔");
+        chance.setAltId("C-001");
+        chance.setSubject(PREFIX + "初号机发射塔");
         // chance.setCreatedDate(cal.getTime());
         chance.setSource(sourceTypes.DEVELOP);
         chance.setContent("需要专门的安防系统，能够在浦东的销售中心直接监控闵行区厂房实时录像和声音");
@@ -56,7 +56,7 @@ public class SEMChanceSamples
 
         chance.setParties(Arrays.asList(party, party2));
 
-        competitor.setLabel("第三使徒");
+        competitor.setLabel(PREFIX + "第三使徒");
         competitor.setChance(chance);
         competitor.setTactic("在北京、上海、广州三地召开大规模的产品发布会");
         competitor.setComment("柳良的朋友，关系很好");

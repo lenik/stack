@@ -17,8 +17,8 @@ import com.bee32.sem.event.entity.EventType;
 public class SEMEventSamples
         extends NormalSamples {
 
-    public final EventCategory weather = new EventCategory("weather", "天气预报");
-    public final EventCategory special = new EventCategory("special", "特种");
+    public final EventCategory weather = new EventCategory("weather", PREFIX + "天气预报");
+    public final EventCategory special = new EventCategory("special", PREFIX + "特种");
 
     public final List<Event> rains = new ArrayList<Event>();
     public final Event killAngel = new Event(SEMEventSamples.class, EventType.TASK);
@@ -41,7 +41,7 @@ public class SEMEventSamples
             rain.setEndTime(new Date(beginMs + durMs));
         }
 
-        rain.setSubject("在 " + title + " (" + rain.getBeginTime() + ") 时刻有流星雨，请大家出门带上望远镜。");
+        rain.setSubject(PREFIX + "在 " + title + " (" + rain.getBeginTime() + ") 时刻有流星雨，请大家出门带上望远镜。");
         rain.setMessage("你以为带上望远镜就能看到土卫3的流行雨吗？少年哟，别做梦了，那是不可能的。");
 
         rain.addObservers(observer);
@@ -63,7 +63,7 @@ public class SEMEventSamples
         killAngel.setPriority(eventPriorities.HIGH);
         killAngel.setState(GenericState.RUNNING);
         killAngel.setClosed(false);
-        killAngel.setSubject("EVA 奉命去消灭第18使徒");
+        killAngel.setSubject(PREFIX + "EVA 奉命去消灭第18使徒");
         killAngel.setMessage("[绝密] 最好能活捉。");
         killAngel.setBeginTime(new Date(System.currentTimeMillis() + 10));
         killAngel.addObservers(//

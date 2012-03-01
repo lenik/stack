@@ -25,21 +25,21 @@ public class SEMPeopleSamples
         extends NormalSamples {
 
     // 原来 SEMOrgSamples 中的样本。
-    public final Group abcCorp = new Group("ABC Company");
-    public final Group humanCorp = new Group("Human Company");
-    public final Group abcRAD = new Group("ABC 研究发展办公室");
-    public final Group abcSales = new Group("ABC 国际贸易部");
+    public final Group abcCorp = new Group("abc", PREFIX + "ABC Company");
+    public final Group humanCorp = new Group("human", PREFIX + "Human Company");
+    public final Group abcRAD = new Group("abc-rd", PREFIX + "ABC 研究发展办公室");
+    public final Group abcSales = new Group("abc-trade", PREFIX + "ABC 国际贸易部");
 
+    public final Person jackPerson = new Person(PREFIX + "贾雨村");
+    public final Person tangPerson = new Person(PREFIX + "唐玄奘");
     public final User jack;
     public final User tang;
-    public final Person jackPerson = new Person("贾雨村");
-    public final Person tangPerson = new Person("唐玄奘");
 
-    public final Org moonOrg = new Org("火星探索公司");
-    public final Org abcOrg = new Org("abc");
-    public final Person bugatti = new Person("Bugatti");
-    public final Person bentley = new Person("Bentley");
-    public final Person weiXiaoBao = new Person("wxb");
+    public final Org moonOrg = new Org(PREFIX + "火星探索");
+    public final Org abcOrg = new Org(PREFIX + "ABC搜索");
+    public final Person bugatti = new Person(PREFIX + "Bugatti");
+    public final Person bentley = new Person(PREFIX + "Bentley");
+    public final Person weiXiaoBao = new Person(PREFIX + "韦小宝");
 
     public SEMPeopleSamples()
             throws ParseException {
@@ -76,24 +76,24 @@ public class SEMPeopleSamples
         abcRAD.addMemberUser(tang);
         abcSales.addMemberUser(tang);
 
-        moonOrg.setFullName("海宁市火星探索公司");
+        moonOrg.setFullName(PREFIX + "海宁市火星探索公司");
         moonOrg.setSize(1000);
         moonOrg.setCustomer(true);
 
-        abcOrg.setFullName("ABC 有限责任公司");
+        abcOrg.setFullName(PREFIX + "ABC 有限责任公司");
         abcOrg.setSize(20);
         abcOrg.setInterests("互联网搜索");
 
-        bugatti.setName("ONE - 77");
-        bugatti.setFullName("Ettore Bugatti ONE - 77");
+        bugatti.setLabel(PREFIX + "ONE - 77");
+        bugatti.setFullName(PREFIX + "Ettore Bugatti ONE - 77");
         bugatti.setSid("294741103659387246x");
         Calendar one77Birthday = Calendar.getInstance();
         one77Birthday.set(1909, 1, 1);
         bugatti.setBirthday(one77Birthday.getTime());
         moonOrg.setCustomer(true);
 
-        bentley.setName("Arnage");
-        bentley.setFullName("Walter Owen Bentley");
+        bentley.setLabel(PREFIX + "Arnage");
+        bentley.setFullName(PREFIX + "Walter Owen Bentley");
         bentley.setSid("580672610347561394");
         Calendar bentleyBirthday = Calendar.getInstance();
         bentleyBirthday.set(1919, 7, 1);
@@ -101,12 +101,12 @@ public class SEMPeopleSamples
         moonOrg.setSupplier(true);
         moonOrg.setEmployee(true);
 
+        weiXiaoBao.setLabel(PREFIX + "小宝");
+        weiXiaoBao.setFullName(PREFIX + "韦小宝");
+        weiXiaoBao.setSex(Gender.MALE);
         weiXiaoBao.setBirthday(bentleyBirthday.getTime());
         weiXiaoBao.setCensusRegister("北京市");
-        weiXiaoBao.setName("小宝");
-        weiXiaoBao.setFullName("韦小宝");
         weiXiaoBao.setInterests("吃饭睡觉玩老婆");
-        weiXiaoBao.setSex(Gender.MALE);
         weiXiaoBao.setSid("11010116541220517");
         moonOrg.setCustomer(true);
         moonOrg.setEmployee(true);
