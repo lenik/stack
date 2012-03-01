@@ -16,8 +16,7 @@ public class SingleVerifierWithNumberSupport
 
     private static final long serialVersionUID = 1L;
 
-    // private transient
-    private transient IJudgeNumber judgeNumberImpl;
+    transient IJudgeNumber judgeNumberImpl;
 
     /**
      * @see #SingleVerifierWithNumberSupport(Entity, IPropertyAccessor, String)

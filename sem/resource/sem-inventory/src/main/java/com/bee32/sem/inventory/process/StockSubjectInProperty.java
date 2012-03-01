@@ -7,9 +7,7 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 
 public class StockSubjectInProperty
-        implements Serializable,IStockSubjectAware {
-
-    private static final long serialVersionUID = 1L;
+        implements IStockSubjectAware {
 
     final Entity<?> entity;
     final IPropertyAccessor<StockOrderSubject> property;

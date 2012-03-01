@@ -73,6 +73,11 @@ public class AbstractStockOrder<Item extends StockOrderItem>
         setVerifyContext(new StockOrderVerifySupport());
     }
 
+    @Override
+    protected void createTransients() {
+        verifyContext.bind(this);
+    }
+
     @Transient
     @Override
     public IParameterizedType getParameterizedType() {

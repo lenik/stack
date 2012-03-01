@@ -1,5 +1,7 @@
 package com.bee32.sem.process.verify.builtin;
 
+import java.io.Serializable;
+
 import com.bee32.plover.arch.bean.IPropertyAccessor;
 import com.bee32.plover.orm.entity.Entity;
 

@@ -23,6 +23,11 @@ public abstract class ProcessEntity
         setVerifyContext(new SingleVerifierWithNumberSupport(this));
     }
 
+    @Override
+    protected void createTransients() {
+        verifyContext.bind(this);
+    }
+
     @Embedded
     @Override
     public SingleVerifierWithNumberSupport getVerifyContext() {

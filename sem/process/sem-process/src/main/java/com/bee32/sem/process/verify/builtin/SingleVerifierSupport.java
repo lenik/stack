@@ -31,10 +31,10 @@ public class SingleVerifierSupport
 
     public static final int REJECTED_REASON_LENGTH = 80;
 
-    private Principal verifier1;
-    private Date verifiedDate1;
-    private boolean accepted1;
-    private String rejectedReason1;
+    Principal verifier1;
+    Date verifiedDate1;
+    boolean accepted1;
+    String rejectedReason1;
 
     public SingleVerifierSupport() {
         super();

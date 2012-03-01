@@ -17,7 +17,7 @@ public class StockOrderVerifySupport
 
     private static final long serialVersionUID = 1L;
 
-    IStockSubjectAware stockSubjectAware;
+    transient IStockSubjectAware stockSubjectAware;
 
     // @Deprecated
     public StockOrderVerifySupport() {
