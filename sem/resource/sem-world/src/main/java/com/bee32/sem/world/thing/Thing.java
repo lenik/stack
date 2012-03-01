@@ -1,7 +1,5 @@
 package com.bee32.sem.world.thing;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.JoinColumn;
@@ -12,9 +10,6 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Index;
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.plover.arch.util.DummyId;
-import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.xp.EntityExt;
 import com.bee32.plover.ox1.xp.XPool;
@@ -205,21 +200,6 @@ public abstract class Thing<X extends XPool<?>>
         if (color == null)
             throw new NullPointerException("color");
         this.color = color;
-    }
-
-    @Override
-    protected Serializable naturalId() {
-        if (serial == null)
-            return new DummyId(this);
-        else
-            return serial;
-    }
-
-    @Override
-    protected ICriteriaElement selector(String prefix) {
-        if (serial == null)
-            return null;
-        return new Equals(prefix + "serial", serial);
     }
 
 }

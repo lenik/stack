@@ -23,8 +23,6 @@ public class MailDto
     public static final int REFERRER_MASK = 0x0000000f;
     public static final int COPIES = 1 << 16;
 
-    String serial;
-
     MailType type;
     MailPriority priority;
 
@@ -56,7 +54,6 @@ public class MailDto
 
     @Override
     protected void _marshal(Mail source) {
-        serial = source.getSerial();
         type = source.getType();
         priority = source.getPriority();
 
@@ -85,7 +82,6 @@ public class MailDto
 
     @Override
     protected void _unmarshalTo(Mail target) {
-        target.setSerial(serial);
         target.setType(type);
         // target.setMailbox(mailbox);
         target.setPriority(priority);
@@ -133,15 +129,6 @@ public class MailDto
         body = map.getString("body");
 
         // dates...
-    }
-
-    @NLength(max = Mail.SERIAL_LENGTH)
-    public String getSerial() {
-        return serial;
-    }
-
-    public void setSerial(String serial) {
-        this.serial = serial;
     }
 
     @NotNull

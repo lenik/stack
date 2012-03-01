@@ -18,7 +18,6 @@ import javax.persistence.Transient;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.ox1.tree.TreeEntityAuto;
@@ -190,7 +189,7 @@ public abstract class Principal
     @Override
     protected Serializable naturalId() {
         if (name == null)
-            return new DummyId(this);
+            throw new NullPointerException("name");
         return name;
     }
 

@@ -15,14 +15,12 @@ public class ACLs
 
     @Override
     protected void wireUp() {
-        DEFAULT.setName("default");
         DEFAULT.setLabel("一般安全策略");
         DEFAULT.add(users.adminRole, Permission.RWS);
         DEFAULT.add(users.powerUserRole, Permission.R_X);
         DEFAULT.add(users.userRole, Permission.R_X);
         DEFAULT.add(users.guestRole, Permission.R_X);
-        EntityFlags ef = EntityAccessor.getFlags(DEFAULT);
-        ef.setWeakData(true);
+        EntityAccessor.putFlags(EntityFlags.WEAK_DATA, DEFAULT);
     }
 
 }

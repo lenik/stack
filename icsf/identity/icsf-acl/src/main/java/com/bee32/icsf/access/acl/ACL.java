@@ -1,6 +1,5 @@
 package com.bee32.icsf.access.acl;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,7 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
@@ -21,13 +19,9 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.NaturalId;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.principal.Principal;
-import com.bee32.plover.arch.util.DummyId;
-import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -40,7 +34,6 @@ public class ACL
 
     public static final int NAME_LENGTH = 10;
 
-    String name;
     List<ACLEntry> entries = new ArrayList<ACLEntry>();
 
     public ACL() {
@@ -54,16 +47,6 @@ public class ACL
     public ACL(ACL parent, List<ACLEntry> entries) {
         super();
         setEntries(entries);
-    }
-
-    @NaturalId
-    @Column(length = NAME_LENGTH)
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override
@@ -194,20 +177,6 @@ public class ACL
             }
         }
         return false;
-    }
-
-    @Override
-    protected Serializable naturalId() {
-        if (name == null)
-            return new DummyId(this);
-        return name;
-    }
-
-    @Override
-    protected ICriteriaElement selector(String prefix) {
-        if (name == null)
-            throw new NullPointerException("name");
-        return new Equals(prefix + "name", name);
     }
 
 }

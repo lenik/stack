@@ -1,6 +1,5 @@
 package com.bee32.sem.chance.entity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +14,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.NaturalId;
 
-import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.sem.process.base.ProcessEntity;
@@ -34,12 +30,9 @@ public class Chance
 
     private static final long serialVersionUID = 1L;
 
-    public static final int SERIAL_LENGTH = 30;
     public static final int SUBJECT_LENGTH = 100;
     public static final int CONTENT_LENGTH = 500;
     public static final int ADDRESS_LENGTH = 200;
-
-    String serial;
 
     ChanceCategory category = null;
     ChanceSourceType source = predefined(ChanceSourceTypes.class).OTHER;
@@ -53,16 +46,6 @@ public class Chance
     ChanceStage stage = predefined(ChanceStages.class).INIT;
 
     String address;
-
-    @NaturalId
-    @Column(length = SERIAL_LENGTH)
-    public String getSerial() {
-        return serial;
-    }
-
-    public void setSerial(String serial) {
-        this.serial = serial;
-    }
 
     /**
      * 类型
@@ -225,18 +208,6 @@ public class Chance
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    @Override
-    protected Serializable naturalId() {
-        return serial;
-    }
-
-    @Override
-    protected ICriteriaElement selector(String prefix) {
-        if (serial == null)
-            return null;
-        return new Equals(prefix + "serial", serial);
     }
 
 }

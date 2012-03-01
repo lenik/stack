@@ -1,11 +1,8 @@
 package com.bee32.sem.world.thing;
 
-import java.io.Serializable;
-
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
-import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.xp.EntityExtDto;
@@ -139,14 +136,6 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
 
     public void setColor(NaturalColor color) {
         this.color = color;
-    }
-
-    @Override
-    protected Serializable naturalId() {
-        if (serial == null)
-            return new DummyId(this);
-        else
-            return serial;
     }
 
 }

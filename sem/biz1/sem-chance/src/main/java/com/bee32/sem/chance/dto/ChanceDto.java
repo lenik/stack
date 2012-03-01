@@ -26,8 +26,6 @@ public class ChanceDto
     public static final int PRODUCTS = 8;
     public static final int PRODUCTS_MORE = 16 | PRODUCTS;
 
-    String serial;
-
     ChanceCategoryDto category;
     String subject;
     String content;
@@ -53,8 +51,6 @@ public class ChanceDto
 
     @Override
     protected void _marshal(Chance source) {
-        serial = source.getSerial();
-
         date = DateToRange.fullFormat.format(source.getCreatedDate()).substring(0, 16);
         category = mref(ChanceCategoryDto.class, source.getCategory());
         this.source = mref(ChanceSourceTypeDto.class, source.getSource());
@@ -83,8 +79,6 @@ public class ChanceDto
 
     @Override
     protected void _unmarshalTo(Chance target) {
-        target.setSerial(serial);
-
         merge(target, "category", category);
         merge(target, "source", source);
         target.setSubject(subject);
@@ -104,15 +98,6 @@ public class ChanceDto
     protected void _parse(TextMap map)
             throws ParseException {
         throw new NotImplementedException();
-    }
-
-    @NLength(max = Chance.SERIAL_LENGTH)
-    public String getSerial() {
-        return serial;
-    }
-
-    public void setSerial(String serial) {
-        this.serial = TextUtil.normalizeSpace(serial);
     }
 
     public String getDate() {
