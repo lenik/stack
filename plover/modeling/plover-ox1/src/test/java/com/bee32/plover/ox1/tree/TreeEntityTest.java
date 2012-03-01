@@ -14,11 +14,12 @@ public class TreeEntityTest
         private static final long serialVersionUID = 1L;
 
         public Node(String name) {
-            super(name);
+            this(null, name);
         }
 
         public Node(Node parent, String name) {
-            super(parent, name);
+            super(parent);
+            this.name = name;
         }
 
         public String getText() {

@@ -19,22 +19,11 @@ public abstract class TreeEntityAuto<K extends Serializable, self_t extends Tree
     K id;
 
     public TreeEntityAuto() {
-        super();
-    }
-
-    public TreeEntityAuto(String name) {
-        super(name);
+        this(null);
     }
 
     public TreeEntityAuto(self_t parent) {
         super(parent);
-    }
-
-    public TreeEntityAuto(self_t parent, String name) {
-        super(parent, name);
-    }
-
-    {
         autoId = true;
     }
 

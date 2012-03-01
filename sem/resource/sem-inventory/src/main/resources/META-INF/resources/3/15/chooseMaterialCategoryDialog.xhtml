@@ -36,7 +36,10 @@
 
             <ui:define name="columns">
                 <p:column headerText="分类名称">
-                    <h:outputText value="${entry.name}" />
+                    <h:outputText value="${entry.label}" />
+                </p:column>
+                <p:column headerText="分类描述">
+                    <h:outputText value="${entry.description}" />
                 </p:column>
                 <p:column headerText="物料数">
                     <h:outputText value="${entry.materialCount}" />

@@ -40,22 +40,10 @@ public abstract class TreeEntity<K extends Serializable, self_t extends TreeEnti
     List<self_t> children = new ArrayList<self_t>();
 
     public TreeEntity() {
-        super();
-    }
-
-    public TreeEntity(String name) {
-        super(name);
+        this(null);
     }
 
     public TreeEntity(self_t parent) {
-        super();
-        this.parent = parent;
-        if (parent != null)
-            parent.addChild(self());
-    }
-
-    public TreeEntity(self_t parent, String name) {
-        super(name);
         this.parent = parent;
         if (parent != null)
             parent.addChild(self());

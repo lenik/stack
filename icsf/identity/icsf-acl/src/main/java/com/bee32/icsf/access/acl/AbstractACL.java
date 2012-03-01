@@ -25,16 +25,8 @@ public abstract class AbstractACL<self_t extends AbstractACL<self_t>>
         super();
     }
 
-    public AbstractACL(String name) {
-        super(name);
-    }
-
     public AbstractACL(self_t parent) {
         super(parent);
-    }
-
-    public AbstractACL(self_t parent, String name) {
-        super(parent, name);
     }
 
     /**

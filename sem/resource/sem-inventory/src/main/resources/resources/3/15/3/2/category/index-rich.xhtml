@@ -9,7 +9,10 @@
 
     <ui:define name="dataColumns">
         <p:column headerText="分类名称">
-            <h:outputText value="${entry.name}" />
+            <h:outputText value="${entry.label}" />
+        </p:column>
+        <p:column headerText="分类描述">
+            <h:outputText value="${entry.description}" />
         </p:column>
     </ui:define>
 
@@ -17,17 +20,22 @@
         <h:panelGrid columns="2">
             <h:outputText value="上级分类:" />
             <h:panelGroup>
-                <p:inputText value="${obj.parent.name}" readonly="true" label="上级分类"/>
+                <p:inputText value="${obj.parent.name}" readonly="true" label="上级分类" />
                 <p:commandButton value="..." title="选择上级分类" onclick="chooseMaterialCategoryDialog.show()" />
             </h:panelGroup>
 
             <h:outputText value="分类名称:" />
-            <p:inputText value="${obj.name}" label="分类名称"/>
+            <p:inputText id="label" value="${obj.label}" label="分类名称" />
 
             <h:outputLabel for="materialType" value="分类性质" />
-            <p:selectOneMenu id="materialType" value="${obj.materialTypeValue}" style="width:150px;" label="分类性质">
+            <p:selectOneMenu id="materialType" value="${obj.materialTypeValue}" style="width:150px;"
+                label="分类性质">
                 <f:selectItems value="${bean.materialTypes}" />
             </p:selectOneMenu>
+
+            <h:outputText value="分类描述:" />
+            <p:inputText id="description" value="${obj.description}" label="分类描述" />
+
         </h:panelGrid>
     </ui:define>
 

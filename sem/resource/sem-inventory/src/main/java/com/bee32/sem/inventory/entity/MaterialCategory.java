@@ -34,15 +34,16 @@ public class MaterialCategory
         super();
     }
 
-    public MaterialCategory(MaterialType type, String name) {
-        this(null, type, name);
+    public MaterialCategory(MaterialType type, String label) {
+        this(null, type, label);
     }
 
-    public MaterialCategory(MaterialCategory parent, MaterialType type, String name) {
-        super(parent, name);
-        if (type == null)
-            throw new NullPointerException("type");
-        this.materialType = type;
+    public MaterialCategory(MaterialCategory parent, MaterialType materialType, String label) {
+        super(parent);
+        if (materialType == null)
+            throw new NullPointerException("materialType");
+        this.materialType = materialType;
+        this.label = label;
     }
 
     @Transient
