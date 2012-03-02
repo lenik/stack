@@ -20,7 +20,6 @@ import com.bee32.sem.people.entity.Party;
 
 /**
  * 物料计划明细项目
- *
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "material_plan_item_seq", allocationSize = 1)
