@@ -2,14 +2,16 @@
     . shlib-import cliboot
 
     RCSID='$Id: - @VERSION@ @DATE@ @TIME@ - $'
-    short_opts="O:hqv"
-    long_opts="outdir:,help,quiet,verbose,version"
+    short_opts="O:chqv"
+    long_opts="outdir:,commit,help,quiet,verbose,version"
 
     PSQL=seccadb-psql
     PG_DUMP=seccadb-pg_dump
 
     node=`hostname`
     outdir="/mnt/istore/projects/migdata/backup/$node"
+    commit=
+    commit_mesg="Cluster backup at $node"
 
     declare -A dat_dba
 
@@ -27,6 +29,7 @@ function help() {
     echo
     echo "Options: "
     echo "    -O, --outdir=DIR        Specify out dir, default $outdir"
+    echo "    -c, --commit            Do VCS commit after backed up"
     echo "    -q, --quiet             Repeat to get less info"
     echo "    -v, --verbose           Repeat to get more info"
     echo "    -h, --help              Show this help page"
@@ -68,6 +71,14 @@ function main() {
         $PG_DUMP "$datname" | grep -v '^--' >>"$out"
     done
     _log1 "Backup completed."
+
+    date=`date "+%Y-%m-%d %H:%M:%S"`
+    if [ "$commit" = 1 ]; then
+        cd "$outdir"
+        git add .
+        git commit -m "[$date] $commit_mesg"
+        git push origin master
+    fi
 }
 
 function list_databases() {

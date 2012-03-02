@@ -4,8 +4,8 @@ include libauto/coolauto.am
 PG_CREATE_SHORTCUTS = pg-create-shortcuts
 
 dist_bin_SCRIPTS = \
-	secca-backup \
-	secca-restore
+	seccadb-backup \
+	seccadb-restore
 
 setup_SCRIPTS = \
 	post-install.sh \
