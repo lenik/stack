@@ -18,6 +18,7 @@
     </cc:interface>
 
     <cc:implementation>
+        <h:outputScript library="3/7" name="security-dialog.js" target="head" />
 
         <icsf:chooseACLDialog id="c_acl" var="${cc.parent.attrs.var}_acld" target="${cc.parent.attrs.dialogBean.chosenACL}"
             update=":${cc.parent.clientId}:form" />
@@ -33,7 +34,7 @@
                 <p:fieldset legend="对象信息">
                     <h:panelGrid columns="3">
                         <p:commandButton id="loadAclButton" value="读取对象上的ACL" actionListener="${dialogBean.loadACL}"
-                            update=":${cc.clientId}:form" style="display: none" />
+                            update=":${cc.clientId}:form" style="display: none" styleClass="x-load-acl-button" />
                         <p:commandButton id="refreshSelection" value="显示" title="显示当前准备编辑的对象。"
                             actionListener="${dialogBean.refreshContextSelection}" update=":${cc.clientId}:form" />
                         <h:panelGroup>
@@ -74,6 +75,5 @@
                 </table>
             </h:form>
         </p:dialog>
-
     </cc:implementation>
 </html>
