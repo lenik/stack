@@ -6,33 +6,27 @@ import com.bee32.plover.orm.entity.Entity;
 
 public class EntityPartialRefs {
 
-    final EntityXrefMetadata xrefMetadata;
-    final Class<? extends Entity<?>> entityType;
-    final String entityLabel;
+    final EntityXrefMetadata metadata;
+    final Class<? extends Entity<?>> clientType;
     final String label;
     final List<? extends Entity<?>> list;
 
     @SuppressWarnings("unchecked")
-    public EntityPartialRefs(EntityXrefMetadata xrefMetadata, List<? extends Entity<?>> list) {
-        if (xrefMetadata == null)
+    public EntityPartialRefs(EntityXrefMetadata metadata, List<? extends Entity<?>> list) {
+        if (metadata == null)
             throw new NullPointerException("xrefMetadata");
-        this.xrefMetadata = xrefMetadata;
-        this.entityType = (Class<? extends Entity<?>>) xrefMetadata.propertyClass;
-        this.entityLabel = xrefMetadata.entityLabel;
-        this.label = xrefMetadata.toString(); // property @ entity
+        this.metadata = metadata;
+        this.clientType = (Class<? extends Entity<?>>) metadata.propertyClass;
+        this.label = metadata.toString(); // property @ entity
         this.list = list;
     }
 
-    public EntityXrefMetadata getXrefMetadata() {
-        return xrefMetadata;
+    public EntityXrefMetadata getMetadata() {
+        return metadata;
     }
 
-    public Class<? extends Entity<?>> getEntityType() {
-        return entityType;
-    }
-
-    public String getEntityLabel() {
-        return entityLabel;
+    public Class<? extends Entity<?>> getClientType() {
+        return clientType;
     }
 
     public String getLabel() {

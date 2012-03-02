@@ -1,5 +1,6 @@
 package com.bee32.plover.orm.unit.xgraph;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,6 @@ import org.hibernate.type.ManyToOneType;
 import org.hibernate.type.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
@@ -21,11 +21,13 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
+import com.bee32.plover.site.scope.PerSite;
 
 @Component
-@Lazy
+@PerSite
 public class EntityGraphTool {
 
     static Logger logger = LoggerFactory.getLogger(EntityGraphTool.class);
@@ -80,7 +82,8 @@ public class EntityGraphTool {
         for (Class<?> clazz : unit.getClasses()) {
             @SuppressWarnings("unchecked")
             Class<? extends Entity<?>> entityType = (Class<? extends Entity<?>>) clazz;
-
+            if (clazz.getSimpleName().equals("MaterialPlanItem"))
+                System.out.println(111);
             ClassMetadata metadata = sessionFactory.getClassMetadata(entityType);
             String entityName = metadata.getEntityName();
 
@@ -146,19 +149,29 @@ public class EntityGraphTool {
         Class<? extends Entity<?>> entityClass = (Class<? extends Entity<?>>) entity.getClass();
         EntityGraph graph = getEntityGraph(entityClass);
 
-        for (EntityXrefMetadata xrefMetadata : graph.getXrefs()) {
-            Class<? extends Entity<?>> targetType = xrefMetadata.getEntityType();
-            String fkProperty = xrefMetadata.getPropertyName();
+        for (EntityXrefMetadata xref : graph.getXrefs()) {
+            // logger.debug(String.format("Search refs in %s : %s", //
+            // xref.getEntityLabel(), xref.getPropertyName()));
+
+            Class<? extends Entity<?>> targetType = xref.getEntityType();
+            String fkProperty = xref.getPropertyName();
 
             Equals fkSelector = new Equals(fkProperty, entity);
-            List<Entity<?>> list = dataManager.asFor(targetType).list(fkSelector);
 
-            EntityPartialRefs refList = new EntityPartialRefs(xrefMetadata, list);
+            List<Entity<?>> list;
+            try {
+                IEntityAccessService<Entity<?>, Serializable> accessor = dataManager.asFor(targetType);
+                list = accessor.list(fkSelector);
+                sessionFactory.getCache().evictDefaultQueryRegion();
+            } catch (Exception e) {
+                logger.error("Failed to get xref-list on target " + targetType, e);
+                continue;
+            }
 
-            xrefMap.put(xrefMetadata, refList);
+            EntityPartialRefs refList = new EntityPartialRefs(xref, list);
+            xrefMap.put(xref, refList);
         }
 
         return xrefMap;
     }
-
 }

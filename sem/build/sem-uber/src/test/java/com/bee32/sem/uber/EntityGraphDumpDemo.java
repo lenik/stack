@@ -38,6 +38,9 @@ public class EntityGraphDumpDemo
             String label = partialRefs.getLabel();
             List<? extends Entity<?>> list = partialRefs.getList();
 
+            if (list.isEmpty())
+                continue;
+
             System.out.println("Partial references by " + label + ": ");
             for (Entity<?> ref : list) {
                 String line = ref.toString(FormatStyle.SIMPLE);

@@ -1,18 +1,27 @@
 package com.bee32.plover.orm.unit.xgraph;
 
+import java.io.Serializable;
+
 import org.hibernate.type.Type;
 
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.entity.Entity;
 
-public class EntityXrefMetadata {
+/**
+ * @see EntityGraphTool#buildGraphs(org.hibernate.SessionFactory)
+ */
+public class EntityXrefMetadata
+        implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     final Class<? extends Entity<?>> entityType;
-    final String entityLabel;
+    final String entityTypeName;
     final String propertyName;
+
     final Type propertyType;
     final Class<?> propertyClass;
-    final String propertyLabel;
+    final String propertyTypeName;
 
     String label;
     boolean weak;
@@ -26,13 +35,13 @@ public class EntityXrefMetadata {
             throw new NullPointerException("propertyType");
 
         this.entityType = entityType;
-        this.entityLabel = ClassUtil.getTypeName(entityType);
+        this.entityTypeName = ClassUtil.getTypeName(entityType);
         this.propertyName = propertyName;
         this.propertyType = propertyType;
         this.propertyClass = propertyType.getReturnedClass();
 
         // Enh: get property NLS instead of type display name.
-        this.propertyLabel = ClassUtil.getTypeName(propertyClass);
+        this.propertyTypeName = ClassUtil.getTypeName(propertyClass);
 
         // ManyToOneType manyToOneType = (ManyToOneType) propertyType;
         // manyToOneType.getAssociatedEntityName();
@@ -42,8 +51,8 @@ public class EntityXrefMetadata {
         return entityType;
     }
 
-    public String getEntityLabel() {
-        return entityLabel;
+    public String getEntityTypeName() {
+        return entityTypeName;
     }
 
     public String getPropertyName() {
@@ -58,8 +67,8 @@ public class EntityXrefMetadata {
         return propertyClass;
     }
 
-    public String getPropertyLabel() {
-        return propertyLabel;
+    public String getPropertyTypeName() {
+        return propertyTypeName;
     }
 
     public String getLabel() {
@@ -80,7 +89,7 @@ public class EntityXrefMetadata {
      */
     @Override
     public String toString() {
-        return propertyName + " ◎ " + entityLabel;
+        return propertyName + " ◎ " + entityTypeName;
     }
 
     @Override
