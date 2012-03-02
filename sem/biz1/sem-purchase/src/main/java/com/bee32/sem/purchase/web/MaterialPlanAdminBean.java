@@ -110,7 +110,6 @@ public class MaterialPlanAdminBean
         StockQueryResult queryResult = ctx.bean.getBean(IStockQuery.class).getAvailableStock(materialIds, opts);
         StockOrderDto sumOrder = DTOs.marshal(StockOrderDto.class, StockOrderDto.ITEMS, queryResult);
 
-        // 把查询结果变成SelectItemHoder的list,以便于绑定primefaces的DataTable组件
         // 把items变成map,便于根据物料查询数量
         ConsumptionMap cmap = new ConsumptionMap();
         materialPlan.declareConsumption(cmap);
@@ -122,8 +121,8 @@ public class MaterialPlanAdminBean
                 continue;
 
             BigDecimal plannedQuantity = needQuantity.min(sumItem.getQuantity());
-            needQuantity = needQuantity.subtract(plannedQuantity);
-            cmap.consume(material, needQuantity);
+            // needQuantity = needQuantity.subtract(plannedQuantity);
+            cmap.supply(material, plannedQuantity);
 
             materialPlan.plan(sumItem/* 作为拷贝模版 */, plannedQuantity);
         }

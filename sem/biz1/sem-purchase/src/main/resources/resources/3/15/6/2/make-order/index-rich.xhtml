@@ -98,7 +98,7 @@
     <ui:define name="dialogs">
         <sem:choosePartyDialog id="c_customer" header="选择客户" target="#{obj.customer}" update=":editDialog:form:basic" />
         <sem:chooseChanceDialog id="c_chance" target="#{bean.chanceToApply}" update=":editDialog:form:basic :editDialog:form:itemsIndexView:indexForm:body" />
-        <sem:choosePartDialog id="c_part" target="#{itemObj.part}" update=":itemsEditView:editForm:body" />
+        <sem:choosePartDialog id="c_part" target="#{itemObj.part}" update=":itemsEditView:editForm:material" />
 
         <fr:listView id="itemsEditView" header="订单项目" style="editDialog" indexView=":editDialog:form:itemsIndexView"
             mbean="#{bean.itemsMBean}">
@@ -106,7 +106,7 @@
 
                 <h:outputLabel value="物料" />
                 <t:panelGroup colspan="3">
-                    <p:inputText value="#{item.part.target.label}" readonly="true" label="物料"/>
+                    <p:inputText id="material" value="#{item.part.target.label}" readonly="true" label="物料"/>
                     <p:commandButton value="..." onclick="choosePartDialog.show();" />
                 </t:panelGroup>
 
