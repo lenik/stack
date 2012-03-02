@@ -27,7 +27,7 @@ public class SEMUberModuleTest
 
     @Override
     protected int getRefreshPeriod() {
-        return 10;
+        return 3;
     }
 
     public static void main(String[] args)
