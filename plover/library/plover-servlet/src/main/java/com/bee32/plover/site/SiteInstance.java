@@ -65,7 +65,7 @@ public class SiteInstance
     FormatProperties properties;
     boolean dirty;
     Map<String, Object> attributes = new HashMap<String, Object>();
-    boolean started;
+    SiteState state = SiteState.STOPPED;
 
     File statsFile;
     private SiteStats stats;
@@ -444,12 +444,13 @@ public class SiteInstance
         setProperty(SAMPLES_KEY, property);
     }
 
-    public boolean isStarted() {
-        return started;
+    public SiteState getState() {
+        return state;
     }
 
     public synchronized void start() {
-        if (!started) {
+        if (state == SiteState.STOPPED) {
+            state = SiteState.STARTING;
             SiteStats stats = getLocalStats();
             long startupTime = System.currentTimeMillis();
             stats.setStartupTime(startupTime);
@@ -463,23 +464,25 @@ public class SiteInstance
 
             long cost = (int) (new Date().getTime() - startupTime);
             stats.addStartup(cost);
-            started = true;
         }
     }
 
     public synchronized void stop() {
-        if (started) {
+        if (state == SiteState.STARTED) {
+            state = SiteState.STOPPING;
             SiteLifecycleDispatcher.stopSite(this);
-            started = false;
-        }
-        if (statsFile != null && stats != null) {
-            try {
-                SiteStats child = stats.getLastChild();
-                stats.addGroup(child);
-                stats.saveToFile(statsFile);
-            } catch (IOException e) {
-                logger.error("Failed to save stats to file: " + statsFile, e);
+
+            if (statsFile != null && stats != null) {
+                try {
+                    SiteStats child = stats.getLastChild();
+                    stats.addGroup(child);
+                    stats.saveToFile(statsFile);
+                } catch (IOException e) {
+                    logger.error("Failed to save stats to file: " + statsFile, e);
+                }
             }
+
+            state = SiteState.STOPPED;
         }
     }
 
