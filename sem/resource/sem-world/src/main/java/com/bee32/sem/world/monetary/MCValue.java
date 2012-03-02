@@ -116,7 +116,7 @@ public class MCValue
      */
     void setCurrency(Currency currency) {
         if (currency == null)
-            throw new NullPointerException("currency");
+            currency = CurrencyConfig.getNative();
         this.currency = currency;
     }
 
@@ -128,13 +128,16 @@ public class MCValue
     }
 
     void setCurrencyCode(String currencyCode) {
-        if (currencyCode == null)
-            throw new NullPointerException("currencyCode");
+        Currency currency;
 
-        // throws IllegalArgumentException if currency code is illegal.
-        Currency currency = Currency.getInstance(currencyCode);
-        if (currency == null)
-            throw new IllegalArgumentException("Bad currency code: " + currencyCode);
+        if (currencyCode == null)
+            currency = CurrencyConfig.getNative();
+        else {
+            currency = Currency.getInstance(currencyCode);
+            if (currency == null)
+                // throws IllegalArgumentException if currency code is illegal.
+                throw new IllegalArgumentException("Bad currency code: " + currencyCode);
+        }
 
         setCurrency(currency);
     }
