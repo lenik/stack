@@ -14,7 +14,12 @@ public abstract class WiredDaoFeat<T extends WiredDaoFeat<T>>
     }
 
     public WiredDaoFeat() {
-        SiteNaming.setDefaultSiteName("feat");
+        String siteName = getFeatureSite();
+        SiteNaming.setDefaultSiteName(siteName);
+    }
+
+    protected String getFeatureSite() {
+        return "feat";
     }
 
 }
