@@ -1,11 +1,15 @@
-
 include libauto/coolauto.am
+
+crondir	= ${sysconfdir}/cron.daily
 
 PG_CREATE_SHORTCUTS = pg-create-shortcuts
 
 dist_bin_SCRIPTS = \
 	seccadb-backup \
 	seccadb-restore
+
+dist_cron_SCRIPTS = \
+	seccadb-backup.job
 
 setup_SCRIPTS = \
 	post-install.sh \

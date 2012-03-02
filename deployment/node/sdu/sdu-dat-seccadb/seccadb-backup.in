@@ -40,6 +40,8 @@ function setopt() {
     case "$1" in
         -O|--outdir)
             outdir="$2";;
+        -c|--commit)
+            commit=1;;
         -h|--help)
             help; exit;;
         -q|--quiet)
