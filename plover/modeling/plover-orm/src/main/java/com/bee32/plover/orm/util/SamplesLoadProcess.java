@@ -84,41 +84,48 @@ public class SamplesLoadProcess
         /** 考虑到无法分析 entity 的倚赖关系 （需要完整实现prereqs），这里简单的重载所有样本。 */
         addMissings = true;
 
-        S: for (Entity<?> sample : pack.getSamples()) {
-            if (sample == null)
+        S: for (Entity<?> micro1 : pack.getSamples()) {
+            if (micro1 == null)
                 throw new NullPointerException("sample");
 
             List<Entity<?>> group = new ArrayList<>();
-            Entity<?> next = sample;
+            Entity<?> next = micro1;
             while (next != null) {
-                Class<? extends Entity<?>> entityType = (Class<? extends Entity<?>>) next.getClass();
+                Entity<?> micro = next;
+                next = EntityAccessor.getNextOfMicroLoop(next);
+                Class<? extends Entity<?>> entityType = (Class<? extends Entity<?>>) micro.getClass();
                 if (!unit.getClasses().contains(entityType)) {
                     logger.debug("Skipped sample out of unit: " + entityType);
                     continue;
                 }
 
-                ICriteriaElement selector = next.getSelector();
+                ICriteriaElement selector = micro.getSelector();
                 if (selector == null) {
-                    logger.error("Sample without natural-id: " + next);
+                    logger.error("Sample without natural-id: " + micro);
                     continue S;
                 }
 
-                Entity<?> existing = ctx.data.access(entityType).getUnique(selector);
-                if (existing == null) {
+                Entity<?> existing = null;
+                List<Entity<?>> selection = ctx.data.access(entityType).list(selector);
+                if (selection.isEmpty()) {
                     if (!addMissings)
                         continue;
                 } else {
+                    existing = selection.get(0);
+                    if (selection.size() > 1) {
+                        logger.error("Selector returns multiple results: " + selection);
+                        continue;
+                    }
                     EntityFlags ef = EntityAccessor.getFlags(existing);
                     if (ef.isWeakData() || ef.isLocked() || ef.isUserLock())
                         continue;
                     if (ef.isHidden() || ef.isMarked())
                         continue;
-                    EntityAccessor.setId(next, existing.getId());
+                    EntityAccessor.setId(micro, existing.getId());
                     ctx.data.access(entityType).evict(existing);
                 }
 
-                group.add(next);
-                next = EntityAccessor.getNextOfMicroLoop(next);
+                group.add(micro);
             } // for micro-next
 
             logger.info("    Micro-Group: ");
