@@ -20,7 +20,7 @@ public class PloverConfDto
     @Override
     protected void _marshal(PloverConf source) {
         section = source.getSection();
-        key = source.getName();
+        key = source.getKey();
         value = source.getValue();
         description = source.getDescription();
     }
