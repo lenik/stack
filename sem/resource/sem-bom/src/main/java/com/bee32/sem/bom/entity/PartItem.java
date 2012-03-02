@@ -25,7 +25,7 @@ import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialType;
 
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "part_material_seq", allocationSize = 1)
+@SequenceGenerator(name = "idgen", sequenceName = "part_item_seq", allocationSize = 1)
 public class PartItem
         extends UIEntityAuto<Long>
         implements DecimalConfig {

@@ -14,12 +14,13 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.sem.people.entity.Person;
 
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "employee_info_seq", allocationSize = 1)
-public class EmployeeInfo extends EntityAuto<Long> {
+public class EmployeeInfo
+        extends UIEntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 
@@ -49,6 +50,7 @@ public class EmployeeInfo extends EntityAuto<Long> {
 
     /**
      * 职位
+     *
      * @return
      */
     @ManyToOne
@@ -62,6 +64,7 @@ public class EmployeeInfo extends EntityAuto<Long> {
 
     /**
      * 职称
+     *
      * @return
      */
     @ManyToOne
@@ -75,6 +78,7 @@ public class EmployeeInfo extends EntityAuto<Long> {
 
     /**
      * 月度工作表现
+     *
      * @return
      */
     @ManyToOne
@@ -88,6 +92,7 @@ public class EmployeeInfo extends EntityAuto<Long> {
 
     /**
      * 学历
+     *
      * @return
      */
     @ManyToOne
@@ -101,6 +106,7 @@ public class EmployeeInfo extends EntityAuto<Long> {
 
     /**
      * 考勤
+     *
      * @return
      */
     public int getDuty() {
@@ -113,6 +119,7 @@ public class EmployeeInfo extends EntityAuto<Long> {
 
     /**
      * 工作能力指数
+     *
      * @return
      */
     public int getWorkAbility() {
@@ -125,6 +132,7 @@ public class EmployeeInfo extends EntityAuto<Long> {
 
     /**
      * 入职日期
+     *
      * @return
      */
     @Temporal(TemporalType.TIMESTAMP)
@@ -138,6 +146,7 @@ public class EmployeeInfo extends EntityAuto<Long> {
 
     /**
      * 离职日期
+     *
      * @return
      */
     @Temporal(TemporalType.TIMESTAMP)
@@ -151,6 +160,7 @@ public class EmployeeInfo extends EntityAuto<Long> {
 
     /**
      * 劳动合同(多个)
+     *
      * @return
      */
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "employeeInfo")
@@ -164,6 +174,7 @@ public class EmployeeInfo extends EntityAuto<Long> {
 
     /**
      * 专业技能(多个)
+     *
      * @return
      */
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "employeeInfo")
@@ -177,6 +188,7 @@ public class EmployeeInfo extends EntityAuto<Long> {
 
     /**
      * 工龄
+     *
      * @return
      */
     @Transient
@@ -184,23 +196,26 @@ public class EmployeeInfo extends EntityAuto<Long> {
         // if (currentDate > resignedDate) reutrn resignedDate - employedDate
         // else return currentDate - employedDate
         Date currentDate = new Date();
-        Calendar current = Calendar.getInstance(); current.setTime(currentDate);
-        Calendar resigned = Calendar.getInstance(); resigned.setTime(resignedDate);
-        Calendar employed = Calendar.getInstance(); employed.setTime(employedDate);
+        Calendar current = Calendar.getInstance();
+        current.setTime(currentDate);
+        Calendar resigned = Calendar.getInstance();
+        resigned.setTime(resignedDate);
+        Calendar employed = Calendar.getInstance();
+        employed.setTime(employedDate);
 
-        //计算方法:
-        //  月数之差=年份相减*12+月份之差
-        //  工龄(年)=月数之差/12
+        // 计算方法:
+        // 月数之差=年份相减*12+月份之差
+        // 工龄(年)=月数之差/12
 
         int months = 0;
 
         if (resignedDate != null && currentDate.after(resignedDate)) {
             months = (resigned.get(Calendar.YEAR) - employed.get(Calendar.YEAR)) * 12 //
-                     + ( resigned.get(Calendar.MONTH) - employed.get(Calendar.MONTH));
+                    + (resigned.get(Calendar.MONTH) - employed.get(Calendar.MONTH));
 
         } else {
             months = (current.get(Calendar.YEAR) - employed.get(Calendar.YEAR)) * 12 //
-                    + ( current.get(Calendar.MONTH) - employed.get(Calendar.MONTH));
+                    + (current.get(Calendar.MONTH) - employed.get(Calendar.MONTH));
         }
 
         return months / 12;

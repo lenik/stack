@@ -23,7 +23,7 @@ import com.bee32.sem.people.entity.Party;
  *
  */
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "plan_item_seq", allocationSize = 1)
+@SequenceGenerator(name = "idgen", sequenceName = "material_plan_item_seq", allocationSize = 1)
 public class MaterialPlanItem
         extends MomentInterval
         implements DecimalConfig {

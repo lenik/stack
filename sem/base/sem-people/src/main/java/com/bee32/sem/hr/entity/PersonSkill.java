@@ -25,7 +25,7 @@ import com.bee32.sem.hr.util.ScoreLevelMap;
  * 字段 {@link #getDescription() description} 中描述获得技能的附加信息。
  */
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "skill_seq", allocationSize = 1)
+@SequenceGenerator(name = "idgen", sequenceName = "person_skill_seq", allocationSize = 1)
 public class PersonSkill
         extends UIEntityAuto<Long> {
 
