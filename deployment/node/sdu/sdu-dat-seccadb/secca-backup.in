@@ -1,0 +1,84 @@
+#!/bin/bash
+    . shlib-import cliboot
+
+    RCSID='$Id: - @VERSION@ @DATE@ @TIME@ - $'
+    short_opts="O:hqv"
+    long_opts="outdir:,help,quiet,verbose,version"
+
+    PSQL=seccadb-psql
+    PG_DUMP=seccadb-pg_dump
+
+    node=`hostname`
+    outdir="/mnt/istore/projects/migdata/backup/$node"
+
+    declare -A dat_dba
+
+function version() {
+    parse_id "$RCSID"
+    echo "[$BASENAME] Backup databases in SECCADB cluster"
+    echo "Written by Lenik, Version $rcs_rev, Last updated at $rcs_date"
+}
+
+function help() {
+    version
+    echo
+    echo "Syntax: "
+    echo "    $0 [OPTION] [--] ..."
+    echo
+    echo "Options: "
+    echo "    -O, --outdir=DIR        Specify out dir, default $outdir"
+    echo "    -q, --quiet             Repeat to get less info"
+    echo "    -v, --verbose           Repeat to get more info"
+    echo "    -h, --help              Show this help page"
+    echo "        --version           Print the version info"
+}
+
+function setopt() {
+    case "$1" in
+        -O|--outdir)
+            outdir="$2";;
+        -h|--help)
+            help; exit;;
+        -q|--quiet)
+            LOGLEVEL=$((LOGLEVEL - 1));;
+        -v|--verbose)
+            LOGLEVEL=$((LOGLEVEL + 1));;
+        --version)
+            version; exit;;
+        *)
+            quit "invalid option: $1";;
+    esac
+}
+
+function main() {
+    mkdir -p "$outdir"
+    list_databases
+
+    for datname in "${!dat_dba[@]}"; do
+        dba="${dat_dba[$datname]}"
+        out="$outdir/$datname.bak.sql"
+        date=`date "+%Y-%m-%d %H:%M:%S"`
+        _log1 "Backup database $datname..."
+        echo "--! BACKUP_VERSION=1.0"       >"$out"
+        echo "--! BACKUP_DATE=$date"        >>"$out"
+        echo "--! CLUSTER=$node"            >>"$out"
+        echo "--! DATNAME=$datname"         >>"$out"
+        echo "--! DATDBA=$dba"              >>"$out"
+        echo >>"$out"
+        $PG_DUMP "$datname" | grep -v '^--' >>"$out"
+    done
+    _log1 "Backup completed."
+}
+
+function list_databases() {
+    local sql="select datname, rolname, datistemplate \
+        from pg_database d left join pg_authid a on d.datdba=a.oid"
+    # -A: no-align, -t: tuples-only (no header/footer), -c: command
+    while IFS='|' read datname rolname istmpl _; do
+        [ "$istmpl" = t ] && continue
+        _log1 "Found database $datname (dba: $rolname)"
+        dat_dba[$datname]="$rolname"
+    done < <($PSQL -Atc "$sql")
+}
+
+boot "$@"
