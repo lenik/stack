@@ -59,9 +59,11 @@ function main() {
     mkdir -p "$outdir"
     cd "$outdir"
     if [ "$commit" = 1 ]; then
-        if ! git pull --rebase; then
-            quit "Failed to update"
-        fi
+        git config --global user.name >/dev/null ||
+            git config --global user.name "SEM Operator"
+        git config --global user.email >/dev/null ||
+            git config --global user.email "semop@bee32.com"
+        git pull --rebase origin master || quit "Failed to update"
     fi
 
     list_databases
@@ -72,7 +74,7 @@ function main() {
         date=`date "+%Y-%m-%d %H:%M:%S"`
         _log1 "Backup database $datname..."
         echo "--! BACKUP_VERSION=1.0"       >"$out"
-        echo "--! BACKUP_DATE='$date'"      >>"$out"
+        # echo "--! BACKUP_DATE='$date'"      >>"$out"
         echo "--! CLUSTER='$node'"          >>"$out"
         echo "--! DATNAME='$datname'"       >>"$out"
         echo "--! DATDBA='$dba'"            >>"$out"
@@ -85,9 +87,7 @@ function main() {
     if [ "$commit" = 1 ]; then
         cd "$outdir"
         git add .
-        git commit \
-            --author 'SEM Operator <semop@bee32.com>' \
-            -m "[$date] $commit_mesg"
+        git commit -m "[$date] $commit_mesg"
         git push origin master
     fi
 }
