@@ -57,6 +57,13 @@ function setopt() {
 
 function main() {
     mkdir -p "$outdir"
+    cd "$outdir"
+    if [ "$commit" = 1 ]; then
+        if ! git pull --rebase; then
+            quit "Failed to update"
+        fi
+    fi
+
     list_databases
 
     for datname in "${!dat_dba[@]}"; do
