@@ -82,8 +82,6 @@ public class EntityGraphTool {
         for (Class<?> clazz : unit.getClasses()) {
             @SuppressWarnings("unchecked")
             Class<? extends Entity<?>> entityType = (Class<? extends Entity<?>>) clazz;
-            if (clazz.getSimpleName().equals("MaterialPlanItem"))
-                System.out.println(111);
             ClassMetadata metadata = sessionFactory.getClassMetadata(entityType);
             String entityName = metadata.getEntityName();
 
@@ -114,6 +112,10 @@ public class EntityGraphTool {
                 }
             }
         }
+
+        // Create empty graph for entity types without any reference.
+        for (Class<?> clazz : unit.getClasses())
+            _getOrCreateEntityGraph(clazz);
 
         built = true;
     }

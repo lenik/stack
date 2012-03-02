@@ -1,17 +1,13 @@
-package com.bee32.plover.orm.unit.xgraph;
+package com.bee32.sem.uber.xref;
 
 import java.io.Serializable;
 
-import javax.free.NotImplementedException;
-import javax.free.ParseException;
-
 import com.bee32.plover.arch.util.ClassUtil;
-import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.unit.xgraph.EntityXrefMetadata;
 
-public class EntityRefDto<K extends Serializable>
-        extends EntityDto<EntityRef, Integer> {
+public class XrefEntry
+        implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,30 +22,16 @@ public class EntityRefDto<K extends Serializable>
     Serializable clientId;
     String clientLabel;
 
-    @Override
-    protected void _marshal(EntityRef source) {
-        Entity<?> entity = source.getEntity();
-        Entity<?> client = source.getClient();
-
+    public XrefEntry(Entity<?> entity, EntityXrefMetadata metadata, Entity<?> client) {
         entityTypeName = ClassUtil.getParameterizedTypeName(entity);
         entityId = entity.getId();
         entityLabel = entity.getEntryLabel();
 
-        metadata = source.getMetadata();
+        this.metadata = metadata;
 
         clientTypeName = ClassUtil.getParameterizedTypeName(client);
         clientId = client.getId();
         clientLabel = client.getEntryLabel();
-    }
-
-    @Override
-    protected void _unmarshalTo(EntityRef target) {
-    }
-
-    @Override
-    protected void _parse(TextMap map)
-            throws ParseException {
-        throw new NotImplementedException();
     }
 
     public int getOrder() {
