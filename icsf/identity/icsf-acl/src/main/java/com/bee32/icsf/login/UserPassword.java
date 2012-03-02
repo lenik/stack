@@ -34,11 +34,10 @@ public class UserPassword
     User user;
 
     int salt = random.nextInt();
-
     String master;
     String passwd; // Not used.
 
-    PrivateQuestion resetQ = predefined(PrivateQuestions.class).DADS_NAME;
+    PrivateQuestion resetQ;
     String resetA = "";
     int resetTicket;
     Date resetExpires = new Date();
