@@ -52,7 +52,7 @@
                                 </div>
                             </c:if>
 
-                            <h:inputHidden id="entityType" value="${bean.entityTypeAbbr}" />
+                            <h:inputHidden id="entityType" value="${bean.entityTypeAbbr}" disabled="true" />
 
                             <h:panelGroup id="dataContainer" layout="block">
                                 <ui:insert name="dataContainer">
@@ -84,9 +84,6 @@
                             </c:if>
                         </h:form>
                     </ui:insert>
-
-                    <h:form id="xform" style="display: none">
-                    </h:form>
 
                     <c:if test="${plainEditForm}">
                         <f:subview id="editDialog">

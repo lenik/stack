@@ -43,15 +43,6 @@ function showXrefs() {
     if (ids.length == 0)
         return;
 
-    var xform = $("#xform")[0];
-    if (xform.type == null)
-        $(xform).append("<input type='hidden' name='type' />");
-    if (xform.pkey == null)
-        $(xform).append("<input type='hidden' name='pkey' />");
-    // Cuz a lot of JSF stuff in the form, so get rid of it by post form.
-    // xform.method = "get";
-    xform.action = document.WEB_APP + "/3/12/3/4/xref/";
-    xform.type.value = entityTypeAbbr;
-    xform.pkey.value = ids.text();
-    xform.submit();
+    var xrefLoc = "3/12/3/4/xref/?type=" + encodeURI(entityTypeAbbr + "&pkey=" + ids.text());
+    location.href = document.WEB_APP + "/" + xrefLoc;
 }
