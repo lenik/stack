@@ -89,8 +89,6 @@ public abstract class SimpleEntityViewBean
     /** Don't refresh row count */
     protected static final int SAVE_NO_REFRESH = 128;
 
-    protected Class<? extends Entity<?>> entityClass;
-    protected Class<? extends EntityDto<?, ?>> dtoClass;
     protected int saveFlags = 0;
     protected int deleteFlags = 0;
 
@@ -143,13 +141,11 @@ public abstract class SimpleEntityViewBean
             super(entityClass, dtoClass, fmask, criteriaElements);
         }
 
-        @SuppressWarnings("unchecked")
         @Override
         public Class<E> getEntityClass() {
             return (Class<E>) SimpleEntityViewBean.this.entityClass;
         }
 
-        @SuppressWarnings("unchecked")
         @Override
         public Class<D> getDtoClass() {
             return (Class<D>) SimpleEntityViewBean.this.dtoClass;

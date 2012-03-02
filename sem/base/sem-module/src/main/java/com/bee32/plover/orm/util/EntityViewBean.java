@@ -27,6 +27,9 @@ public abstract class EntityViewBean
 
     static Logger logger = LoggerFactory.getLogger(EntityViewBean.class);
 
+    protected Class<? extends Entity<?>> entityClass;
+    protected Class<? extends EntityDto<?, ?>> dtoClass;
+
     public EntityViewBean() {
         if (logger.isTraceEnabled()) {
             Class<?> viewBeanType = getClass();
@@ -139,6 +142,18 @@ public abstract class EntityViewBean
             reloadedList.add(reloaded);
         }
         setOpenedObjects(reloadedList);
+    }
+
+    public Class<? extends Entity<?>> getEntityType() {
+        return entityClass;
+    }
+
+    public Class<? extends EntityDto<?, ?>> getEntityDtoType() {
+        return dtoClass;
+    }
+
+    public String getEntityTypeAbbr() {
+        return ITypeAbbrAware.ABBR.abbr(entityClass);
     }
 
 }
