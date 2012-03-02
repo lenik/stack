@@ -78,7 +78,9 @@ function main() {
     if [ "$commit" = 1 ]; then
         cd "$outdir"
         git add .
-        git commit -m "[$date] $commit_mesg"
+        git commit \
+            --author 'SEM Operator <semop@bee32.com>' \
+            -m "[$date] $commit_mesg"
         git push origin master
     fi
 }
