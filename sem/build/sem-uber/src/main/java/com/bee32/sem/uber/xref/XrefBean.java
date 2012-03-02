@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 import javax.free.ParseException;
 
+import com.bee32.plover.faces.utils.SelectableList;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.unit.xgraph.EntityGraphTool;
 import com.bee32.plover.orm.unit.xgraph.EntityPartialRefs;
@@ -51,18 +52,38 @@ public class XrefBean
         }
     }
 
-    public List<XrefEntry> getEntries() {
-        if (entries == null) {
-            synchronized (this) {
-                if (entries == null) {
-                    entries = scan();
-                }
-            }
-        }
-        return entries;
+    public synchronized List<XrefEntry> getEntries() {
+        // if (entries == null)
+        entries = scan();
+        return SelectableList.decorate(entries);
     }
 
     List<XrefEntry> scan() {
+        String typeAbbr = ctx.view.getRequest().getParameter("type");
+        if (typeAbbr == null)
+            throw new NullPointerException("type");
+
+        try {
+            entityType = (Class<? extends Entity<?>>) ABBR.expand(typeAbbr);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+
+        String requestIdList = ctx.view.getRequest().getParameter("pkey");
+        requestWindow.clear();
+        if (requestIdList != null) {
+            EntityHelper<?, ?> eh = EntityHelper.getInstance(entityType);
+            for (String _id : requestIdList.split(",")) {
+                _id = _id.trim();
+                try {
+                    Serializable id = eh.parseId(_id);
+                    requestWindow.add(id);
+                } catch (ParseException e) {
+                    throw new IllegalArgumentException(e.getMessage(), e);
+                }
+            }
+        }
+
         if (requestWindow.isEmpty()) {
             uiLogger.error("没有指定对象标识:request-window 为空。");
             return Collections.emptyList();
@@ -84,7 +105,6 @@ public class XrefBean
                 xrefs.add(xref);
             }
         }
-
         return xrefs;
     }
 
