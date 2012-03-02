@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.unit;
+package com.bee32.plover.orm.unit.xgraph;
 
 import java.util.List;
 

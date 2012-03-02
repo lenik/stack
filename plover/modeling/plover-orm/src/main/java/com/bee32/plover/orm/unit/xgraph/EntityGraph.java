@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.unit;
+package com.bee32.plover.orm.unit.xgraph;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import org.hibernate.type.Type;
 
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.unit.PersistenceUnit;
 
 public class EntityGraph {
 

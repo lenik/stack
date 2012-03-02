@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.unit;
+package com.bee32.plover.orm.unit.xgraph;
 
 import org.hibernate.type.Type;
 
@@ -30,6 +30,8 @@ public class EntityXrefMetadata {
         this.propertyName = propertyName;
         this.propertyType = propertyType;
         this.propertyClass = propertyType.getReturnedClass();
+
+        // Enh: get property NLS instead of type display name.
         this.propertyLabel = ClassUtil.getTypeName(propertyClass);
 
         // ManyToOneType manyToOneType = (ManyToOneType) propertyType;

@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.unit;
+package com.bee32.plover.orm.unit.xgraph;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +21,7 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 
 @Component

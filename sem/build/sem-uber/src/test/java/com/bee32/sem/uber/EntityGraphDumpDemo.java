@@ -10,10 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.icsf.principal.Users;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.unit.EntityGraphTool;
-import com.bee32.plover.orm.unit.EntityPartialRefs;
-import com.bee32.plover.orm.unit.EntityXrefMap;
 import com.bee32.plover.orm.unit.Using;
+import com.bee32.plover.orm.unit.xgraph.EntityGraphTool;
+import com.bee32.plover.orm.unit.xgraph.EntityPartialRefs;
+import com.bee32.plover.orm.unit.xgraph.EntityXrefMap;
 import com.bee32.plover.orm.util.WiredDaoFeat;
 import com.bee32.plover.test.ICoordinator;
 import com.bee32.plover.util.FormatStyle;
@@ -50,6 +50,11 @@ public class EntityGraphDumpDemo
     @Transactional(readOnly = true)
     public void listAllForAdmin() {
         dumpXrefs(users.admin);
+    }
+
+    @Override
+    protected String getFeatureSite() {
+        return "zjhf";
     }
 
     public static void main(String[] args)
