@@ -15,7 +15,7 @@ public class IcsfPrincipalSamples
         extends NormalSamples {
 
     public final Group solaRobots = new Group("sola", PREFIX + "Sola Robots Club");
-    public final Group sunCorp = new Group("sun", PREFIX + "Sun Corp");
+    public final Group sunCorp = new Group("sun-corp", PREFIX + "Sun Corp");
 
     public final User eva = new User("Eva");
     public final User wallE = new User("Wall-E");
