@@ -14,7 +14,6 @@
 
     <ui:define name="scripts.0.simple-entity">
         <h:outputScript library="frame" name="ajax-validation.js" target="head" />
-        <h:outputScript library="frame" name="security-load.js" target="head" />
     </ui:define>
 
     <ui:define name="content">
@@ -53,6 +52,8 @@
                                 </div>
                             </c:if>
 
+                            <h:inputHidden id="entityType" value="${bean.entityTypeAbbr}" />
+
                             <h:panelGroup id="dataContainer" layout="block">
                                 <ui:insert name="dataContainer">
                                     <p:dataTable id="dataTable" var="entry" value="${bean.dataModel}"
@@ -83,6 +84,9 @@
                             </c:if>
                         </h:form>
                     </ui:insert>
+
+                    <h:form id="xform" style="display: none">
+                    </h:form>
 
                     <c:if test="${plainEditForm}">
                         <f:subview id="editDialog">
