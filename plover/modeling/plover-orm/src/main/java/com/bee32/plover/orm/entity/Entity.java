@@ -114,8 +114,10 @@ public abstract class Entity<K extends Serializable>
     }
 
     void setCreatedDate(Date createdDate) {
-        if (createdDate == null)
-            throw new NullPointerException("createdDate");
+        if (createdDate == null) {
+            // logger.warn
+            createdDate = new Date(); // new NullPointerException("createdDate");
+        }
         this.createdDate = createdDate;
     }
 
@@ -127,8 +129,10 @@ public abstract class Entity<K extends Serializable>
     }
 
     public void setLastModified(Date lastModified) {
-        if (lastModified == null)
-            throw new NullPointerException("lastModified");
+        if (lastModified == null) {
+            // logger.warn
+            lastModified = new Date(); // throw new NullPointerException("lastModified");
+        }
         this.lastModified = lastModified;
     }
 
