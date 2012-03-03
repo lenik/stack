@@ -5,8 +5,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections15.Closure;
+import org.hibernate.FlushMode;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.orm.hibernate3.SessionFactoryUtils;
+import org.springframework.orm.hibernate3.SessionHolder;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import com.bee32.plover.arch.DataService;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
@@ -44,6 +50,32 @@ public class SamplesLoadProcess
 
     @Override
     public void run() {
+        SessionFactory sessionFactory = ctx.bean.getBean(SessionFactory.class);
+        boolean participate = false; // Shared mode.
+        FlushMode flushMode = FlushMode.MANUAL;
+
+        if (TransactionSynchronizationManager.hasResource(sessionFactory)) {
+            // Do not modify the Session: just set the participate flag.
+            participate = true;
+        } else {
+            Session session = SessionFactoryUtils.getSession(sessionFactory, true);
+            if (flushMode != null)
+                session.setFlushMode(flushMode);
+            TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
+        }
+
+        try {
+            processQueue();
+        } finally {
+            if (!participate) {
+                SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager
+                        .unbindResource(sessionFactory);
+                SessionFactoryUtils.closeSession(sessionHolder.getSession());
+            }
+        }
+    }
+
+    void processQueue() {
         for (SamplePackage pack : queue) {
             logger.info("Loading sample package " + pack.getName());
             pack.beginLoad();
@@ -123,7 +155,7 @@ public class SamplesLoadProcess
 
                     // EntityAccessor.setId(micro, existing.getId());
                     micro.retarget(existing);
-                    // ctx.data.access(entityType).evict(existing);
+                    ctx.data.access(entityType).evict(existing);
                 }
 
                 group.add(micro);
