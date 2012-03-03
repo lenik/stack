@@ -15,8 +15,8 @@ public class SEMMailSamples
 
     public final MailFilter spamFilter = new MailFilter();
 
-    public Mail hello = new Mail();
-    public Mail helloEcho = new Mail();
+    public final Mail hello = new Mail();
+    public final Mail helloEcho = new Mail();
 
     IcsfPrincipalSamples principals = predefined(IcsfPrincipalSamples.class);
     MailFolders mailFolders = predefined(MailFolders.class);

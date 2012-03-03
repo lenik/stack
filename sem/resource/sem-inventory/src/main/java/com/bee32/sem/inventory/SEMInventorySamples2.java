@@ -7,7 +7,7 @@ import com.bee32.sem.process.verify.preference.VerifyPolicyPref;
 public class SEMInventorySamples2
         extends NormalSamples {
 
-    public VerifyPolicyPref stockVerifyPref = new VerifyPolicyPref();
+    public final VerifyPolicyPref stockVerifyPref = new VerifyPolicyPref();
 
     SEMInventorySamples inventories = predefined(SEMInventorySamples.class);
 

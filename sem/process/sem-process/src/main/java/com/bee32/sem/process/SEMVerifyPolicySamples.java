@@ -8,10 +8,10 @@ import com.bee32.sem.process.verify.builtin.SingleVerifierRankedPolicy;
 public class SEMVerifyPolicySamples
         extends NormalSamples {
 
-    public SingleVerifierPolicy robotList = new SingleVerifierPolicy();
-    public SingleVerifierPolicy plainList = new SingleVerifierPolicy();
-    public SingleVerifierPolicy kateWallE = new SingleVerifierPolicy();
-    public SingleVerifierRankedPolicy macLevel = new SingleVerifierRankedPolicy();
+    public final SingleVerifierPolicy robotList = new SingleVerifierPolicy();
+    public final SingleVerifierPolicy plainList = new SingleVerifierPolicy();
+    public final SingleVerifierPolicy kateWallE = new SingleVerifierPolicy();
+    public final SingleVerifierRankedPolicy macLevel = new SingleVerifierRankedPolicy();
 
     IcsfPrincipalSamples principals = predefined(IcsfPrincipalSamples.class);
 

@@ -14,10 +14,10 @@ import com.bee32.sem.process.verify.preference.VerifyPolicyPref;
 public class WarSamples
         extends NormalSamples {
 
-    public VerifyPolicyPref attackPref = new VerifyPolicyPref();
-    public AttackMission bombAmerica = new AttackMission();
-    public AttackMission killSimpsons = new AttackMission();
-    public BuildMission rescueMao = new BuildMission();
+    public final VerifyPolicyPref attackPref = new VerifyPolicyPref();
+    public final AttackMission bombAmerica = new AttackMission();
+    public final AttackMission killSimpsons = new AttackMission();
+    public final BuildMission rescueMao = new BuildMission();
 
     IcsfPrincipalSamples principals = predefined(IcsfPrincipalSamples.class);
     SEMVerifyPolicySamples policies = predefined(SEMVerifyPolicySamples.class);

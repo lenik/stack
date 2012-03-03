@@ -21,7 +21,7 @@ public class SEMEventSamples
     public final EventCategory special = new EventCategory("special", PREFIX + "特种");
 
     public List<Event> rains = new ArrayList<Event>();
-    public Event killAngel = new Event(SEMEventSamples.class, EventType.TASK);
+    public final Event killAngel = new Event(SEMEventSamples.class, EventType.TASK);
 
     IcsfPrincipalSamples principals = predefined(IcsfPrincipalSamples.class);
     Users users = predefined(Users.class);
