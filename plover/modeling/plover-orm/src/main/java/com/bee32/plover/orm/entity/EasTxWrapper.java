@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import javax.free.IllegalUsageError;
 import javax.servlet.ServletRequest;
 
 import org.hibernate.LockMode;
@@ -381,7 +380,7 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
     @Override
     @Deprecated
     public void flush() {
-        throw new IllegalUsageError("ETW.flush should never be called.");
+        // throw new IllegalUsageError("ETW.flush should never be called.");
     }
 
     @Transactional(readOnly = true)

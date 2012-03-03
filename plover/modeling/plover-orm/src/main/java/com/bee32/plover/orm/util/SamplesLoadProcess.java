@@ -155,7 +155,8 @@ public class SamplesLoadProcess
 
                     // EntityAccessor.setId(micro, existing.getId());
                     micro.retarget(existing);
-                    ctx.data.access(entityType).evict(existing);
+                    // ctx.data.access(entityType).evict(existing);
+                    ctx.data.access(entityType).flush();
                 }
 
                 group.add(micro);
