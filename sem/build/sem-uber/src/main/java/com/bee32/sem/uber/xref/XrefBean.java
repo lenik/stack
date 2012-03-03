@@ -31,11 +31,15 @@ public class XrefBean
 
     public XrefBean()
             throws ClassNotFoundException {
+        System.err.println("Create "+System.identityHashCode(this));
         String typeAbbr = ctx.view.getRequest().getParameter("type");
         if (typeAbbr == null)
             throw new NullPointerException("type");
+        typeAbbr = typeAbbr.replace(' ', '+'); // Fix the URL escape.
 
         entityType = (Class<? extends Entity<?>>) ABBR.expand(typeAbbr);
+        if (entityType == null)
+            throw new NullPointerException("Bad type abbr: " + typeAbbr);
 
         String requestIdList = ctx.view.getRequest().getParameter("pkey");
         if (requestIdList != null) {
@@ -62,12 +66,15 @@ public class XrefBean
         String typeAbbr = ctx.view.getRequest().getParameter("type");
         if (typeAbbr == null)
             throw new NullPointerException("type");
+        typeAbbr = typeAbbr.replace(' ', '+'); // Fix the URL escape.
 
         try {
             entityType = (Class<? extends Entity<?>>) ABBR.expand(typeAbbr);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
+        if (entityType == null)
+            throw new NullPointerException("Bad type abbr: " + typeAbbr);
 
         String requestIdList = ctx.view.getRequest().getParameter("pkey");
         requestWindow.clear();
