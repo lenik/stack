@@ -25,21 +25,21 @@ public class SEMPeopleSamples
         extends NormalSamples {
 
     // 原来 SEMOrgSamples 中的样本。
-    public final Group abcCorp = new Group("abc", PREFIX + "ABC Company");
-    public final Group humanCorp = new Group("human", PREFIX + "Human Company");
-    public final Group abcRAD = new Group("abc-rd", PREFIX + "ABC 研究发展办公室");
-    public final Group abcSales = new Group("abc-trade", PREFIX + "ABC 国际贸易部");
+    public Group abcCorp = new Group("abc", PREFIX + "ABC Company");
+    public Group humanCorp = new Group("human", PREFIX + "Human Company");
+    public Group abcRAD = new Group("abc-rd", PREFIX + "ABC 研究发展办公室");
+    public Group abcSales = new Group("abc-trade", PREFIX + "ABC 国际贸易部");
 
-    public final Person jackPerson = new Person(PREFIX + "贾雨村");
-    public final Person tangPerson = new Person(PREFIX + "唐玄奘");
-    public final User jack;
-    public final User tang;
+    public Person jackPerson = new Person(PREFIX + "贾雨村");
+    public Person tangPerson = new Person(PREFIX + "唐玄奘");
+    public User jack;
+    public User tang;
 
-    public final Org moonOrg = new Org(PREFIX + "火星探索");
-    public final Org abcOrg = new Org(PREFIX + "ABC搜索");
-    public final Person bugatti = new Person(PREFIX + "Bugatti");
-    public final Person bentley = new Person(PREFIX + "Bentley");
-    public final Person weiXiaoBao = new Person(PREFIX + "韦小宝");
+    public Org moonOrg = new Org(PREFIX + "火星探索");
+    public Org abcOrg = new Org(PREFIX + "ABC搜索");
+    public Person bugatti = new Person(PREFIX + "Bugatti");
+    public Person bentley = new Person(PREFIX + "Bentley");
+    public Person weiXiaoBao = new Person(PREFIX + "韦小宝");
 
     public SEMPeopleSamples()
             throws ParseException {

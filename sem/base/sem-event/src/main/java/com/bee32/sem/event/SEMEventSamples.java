@@ -20,8 +20,8 @@ public class SEMEventSamples
     public final EventCategory weather = new EventCategory("weather", PREFIX + "天气预报");
     public final EventCategory special = new EventCategory("special", PREFIX + "特种");
 
-    public final List<Event> rains = new ArrayList<Event>();
-    public final Event killAngel = new Event(SEMEventSamples.class, EventType.TASK);
+    public List<Event> rains = new ArrayList<Event>();
+    public Event killAngel = new Event(SEMEventSamples.class, EventType.TASK);
 
     IcsfPrincipalSamples principals = predefined(IcsfPrincipalSamples.class);
     Users users = predefined(Users.class);

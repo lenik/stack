@@ -5,20 +5,25 @@ import static com.bee32.icsf.login.UserPassword.digest;
 import com.bee32.icsf.login.UserPassword;
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.plover.orm.util.NormalSamples;
-import com.bee32.plover.orm.util.SampleList;
 
 public class IcsfAccessSamples
         extends NormalSamples {
 
+    public final UserPassword eva = new UserPassword();
+    public final UserPassword wallE = new UserPassword();
+    public final UserPassword alice = new UserPassword();
+    public final UserPassword tom = new UserPassword();
+    public final UserPassword kate = new UserPassword();
+
     IcsfPrincipalSamples principals = predefined(IcsfPrincipalSamples.class);
 
     @Override
-    protected void getSamples(SampleList samples) {
-        new UserPassword(principals.eva, digest("EVA"));
-        new UserPassword(principals.wallE, digest("WALL-E"));
-        new UserPassword(principals.alice, digest("ALICE"));
-        new UserPassword(principals.tom, digest("TOM"));
-        new UserPassword(principals.kate, digest("KATE"));
+    protected void wireUp() {
+        eva.init(principals.eva, digest("EVA"));
+        wallE.init(principals.wallE, digest("WALL-E"));
+        alice.init(principals.alice, digest("ALICE"));
+        tom.init(principals.tom, digest("TOM"));
+        kate.init(principals.kate, digest("KATE"));
     }
 
 }

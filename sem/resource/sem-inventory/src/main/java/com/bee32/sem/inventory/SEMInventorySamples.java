@@ -32,46 +32,46 @@ import com.bee32.sem.world.thing.Units;
 public class SEMInventorySamples
         extends NormalSamples {
 
-    public final StockOrderVerifyPolicy stockPolicy = new StockOrderVerifyPolicy();
+    public StockOrderVerifyPolicy stockPolicy = new StockOrderVerifyPolicy();
 
     public final StockWarehouse mainWarehouse = new StockWarehouse();
     public final StockWarehouse rawWarehouse = new StockWarehouse();
 
-    public final StockLocation sl_glass_1 = new StockLocation(rawWarehouse, "防爆玻璃区");
-    public final StockLocation sl_glue_1 = new StockLocation(rawWarehouse, "综合胶水区");
-    public final StockLocation sl_glue_pp = new StockLocation(rawWarehouse, "等离子胶水预搅拌区", sl_glue_1);
-    public final StockLocation sl_handler_1 = new StockLocation(mainWarehouse, "一楼");
-    public final StockLocation sl_handler_2 = new StockLocation(mainWarehouse, "地下拿手废料区");
-    public final StockLocation sl_handler_KJ = new StockLocation(mainWarehouse, "氪金拿手区", sl_handler_1);
-    public final StockLocation sl_handler_F1 = new StockLocation(mainWarehouse, "方程式氪金燃烧室", sl_handler_KJ);
-    public final StockLocation sl_dedi_1 = new StockLocation(mainWarehouse, "一楼");
-    public final StockLocation sl_light_1 = new StockLocation(mainWarehouse, "二楼");
+    public StockLocation sl_glass_1 = new StockLocation(rawWarehouse, "防爆玻璃区");
+    public StockLocation sl_glue_1 = new StockLocation(rawWarehouse, "综合胶水区");
+    public StockLocation sl_glue_pp = new StockLocation(rawWarehouse, "等离子胶水预搅拌区", sl_glue_1);
+    public StockLocation sl_handler_1 = new StockLocation(mainWarehouse, "一楼");
+    public StockLocation sl_handler_2 = new StockLocation(mainWarehouse, "地下拿手废料区");
+    public StockLocation sl_handler_KJ = new StockLocation(mainWarehouse, "氪金拿手区", sl_handler_1);
+    public StockLocation sl_handler_F1 = new StockLocation(mainWarehouse, "方程式氪金燃烧室", sl_handler_KJ);
+    public StockLocation sl_dedi_1 = new StockLocation(mainWarehouse, "一楼");
+    public StockLocation sl_light_1 = new StockLocation(mainWarehouse, "二楼");
 
-    public final MaterialCategory cupRoot = new MaterialCategory(PRODUCT, PREFIX + "宇航员的杯具");
-    public final MaterialCategory cupSet_dedi = new MaterialCategory(cupRoot, PRODUCT, "客户定制杯具");
-    public final MaterialCategory cupSet_light = new MaterialCategory(cupRoot, PRODUCT, "专利无重力杯具");
-    public final MaterialCategory cupGlass_AM = new MaterialCategory(cupRoot, RAW, "反物质玻璃");
-    public final MaterialCategory cupGlue = new MaterialCategory(cupRoot, RAW, "等离子胶水");
-    public final MaterialCategory cupGlue_pp = new MaterialCategory(cupGlue, SEMI, "预搅拌等离子胶水");
-    public final MaterialCategory cupHandler = new MaterialCategory(cupRoot, SEMI, "杯具拿手");
-    public final MaterialCategory cupHandler_KJ = new MaterialCategory(cupHandler, SEMI, "氪金拿手");
-    public final MaterialCategory cupHandler_F1 = new MaterialCategory(cupHandler_KJ, SEMI, "方程式氪金拿手");
+    public MaterialCategory cupRoot = new MaterialCategory(PRODUCT, PREFIX + "宇航员的杯具");
+    public MaterialCategory cupSet_dedi = new MaterialCategory(cupRoot, PRODUCT, "客户定制杯具");
+    public MaterialCategory cupSet_light = new MaterialCategory(cupRoot, PRODUCT, "专利无重力杯具");
+    public MaterialCategory cupGlass_AM = new MaterialCategory(cupRoot, RAW, "反物质玻璃");
+    public MaterialCategory cupGlue = new MaterialCategory(cupRoot, RAW, "等离子胶水");
+    public MaterialCategory cupGlue_pp = new MaterialCategory(cupGlue, SEMI, "预搅拌等离子胶水");
+    public MaterialCategory cupHandler = new MaterialCategory(cupRoot, SEMI, "杯具拿手");
+    public MaterialCategory cupHandler_KJ = new MaterialCategory(cupHandler, SEMI, "氪金拿手");
+    public MaterialCategory cupHandler_F1 = new MaterialCategory(cupHandler_KJ, SEMI, "方程式氪金拿手");
 
-    public final Material m_light_A = new Material();
-    public final Material m_light_B = new Material();
-    public final Material m_glass1 = new Material();
-    public final Material m_glue1 = new Material();
-    public final Material m_gluepp1 = new Material();
-    public final Material m_handlerkj1 = new Material();
-    public final Material m_handlerkj2 = new Material();
-    public final Material m_handlerf1 = new Material();
-    public final UnitConv m_gluepp1_uc = new UnitConv();
+    public Material m_light_A = new Material();
+    public Material m_light_B = new Material();
+    public Material m_glass1 = new Material();
+    public Material m_glue1 = new Material();
+    public Material m_gluepp1 = new Material();
+    public Material m_handlerkj1 = new Material();
+    public Material m_handlerkj2 = new Material();
+    public Material m_handlerf1 = new Material();
+    public UnitConv m_gluepp1_uc = new UnitConv();
 
-    public final StockOrder cupx_I_1 = new StockOrder(TAKE_IN);
-    public final StockOrder lightB_o_1 = new StockOrder(TAKE_OUT);
-    public final StockOrder handlerf1_fi = new StockOrder(FACTORY_IN);
-    public final StockOrder handlerf1_fo = new StockOrder(FACTORY_OUT);
-    public final StockOrder cupx_plan_1 = new StockOrder(PLAN_OUT);
+    public StockOrder cupx_I_1 = new StockOrder(TAKE_IN);
+    public StockOrder lightB_o_1 = new StockOrder(TAKE_OUT);
+    public StockOrder handlerf1_fi = new StockOrder(FACTORY_IN);
+    public StockOrder handlerf1_fo = new StockOrder(FACTORY_OUT);
+    public StockOrder cupx_plan_1 = new StockOrder(PLAN_OUT);
 
     SEMVerifyPolicySamples verifyPolicies = predefined(SEMVerifyPolicySamples.class);
     SEMPeopleSamples people = predefined(SEMPeopleSamples.class);

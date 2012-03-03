@@ -13,11 +13,11 @@ import com.bee32.sem.inventory.SEMInventorySamples;
 public class SEMBomSamples
         extends NormalSamples {
 
-    public final Part p_light_A = new Part();
-    public final Part p_light_B = new Part();
-    public final Part p_handler_kj1 = new Part();
-    public final Part p_handler_kj2 = new Part();
-    public final Part p_handlerf1 = new Part();
+    public Part p_light_A = new Part();
+    public Part p_light_B = new Part();
+    public Part p_handler_kj1 = new Part();
+    public Part p_handler_kj2 = new Part();
+    public Part p_handlerf1 = new Part();
 
     SEMInventorySamples inventories = predefined(SEMInventorySamples.class);
 

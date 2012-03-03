@@ -20,11 +20,11 @@ import com.bee32.sem.world.monetary.MCValue;
 public class SEMChanceSamples
         extends NormalSamples {
 
-    public final Chance chance = new Chance();
+    public Chance chance = new Chance();
     public final ChanceParty party = new ChanceParty();
     public final ChanceParty party2 = new ChanceParty();
-    public final ChanceAction chanceAction1 = new ChanceAction();
-    public final ChanceAction chanceAction2 = new ChanceAction();
+    public ChanceAction chanceAction1 = new ChanceAction();
+    public ChanceAction chanceAction2 = new ChanceAction();
     public final ChanceCompetitor competitor = new ChanceCompetitor();
 
     IcsfPrincipalSamples principals = predefined(IcsfPrincipalSamples.class);

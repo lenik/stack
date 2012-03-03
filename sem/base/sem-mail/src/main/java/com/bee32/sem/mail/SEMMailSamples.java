@@ -13,7 +13,7 @@ import com.bee32.sem.mail.entity.MailOrientation;
 public class SEMMailSamples
         extends NormalSamples {
 
-    public MailFilter spamFilter = new MailFilter();
+    public final MailFilter spamFilter = new MailFilter();
 
     public Mail hello = new Mail();
     public Mail helloEcho = new Mail();

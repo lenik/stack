@@ -7,10 +7,10 @@ import com.bee32.plover.orm.util.NormalSamples;
 public class R_ACLSamples
         extends NormalSamples {
 
-    final R_ACE admin_all = new R_ACE();
-    final R_ACE service_tom_x = new R_ACE();
-    final R_ACE method1_kate_rx = new R_ACE();
-    final R_ACE foo_reguser_w = new R_ACE();
+    public final R_ACE admin_all = new R_ACE();
+    public final R_ACE service_tom_x = new R_ACE();
+    public final R_ACE method1_kate_rx = new R_ACE();
+    public final R_ACE foo_reguser_w = new R_ACE();
 
     IcsfPrincipalSamples principals = predefined(IcsfPrincipalSamples.class);
     Users users = predefined(Users.class);
