@@ -32,15 +32,23 @@ public class Org
     Group forWhichGroup;
 
     public Org() {
-        super();
+        this(null);
     }
 
-    public Org(String name) {
-        super(name);
-    }
-
-    {
+    public Org(String label) {
+        super(label);
         sidType = predefined(PartySidTypes.class).TAX_ID;
+    }
+
+    @Override
+    public void retarget(Object o) {
+        super.retarget(o);
+        _retarget((Org) o);
+    }
+
+    private void _retarget(Org o) {
+        _retargetMerge(orgUnits, o.orgUnits);
+        _retargetMerge(roles, o.roles);
     }
 
     @ManyToOne

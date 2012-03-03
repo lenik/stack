@@ -3,6 +3,7 @@ package com.bee32.plover.orm.entity;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.free.IdentityHashSet;
@@ -88,6 +89,79 @@ public abstract class Entity<K extends Serializable>
         createdDate = o.createdDate;
         lastModified = o.lastModified;
         entityFlags.bits = o.entityFlags.bits;
+    }
+
+    public void retarget(Object o) {
+        if (o instanceof Entity<?>) {
+            @SuppressWarnings("unchecked")
+            Entity<K> entity = (Entity<K>) o;
+            _retarget(entity);
+        } else {
+            // super.populate(source);
+            throw new IllegalArgumentException("Unsupport retarget target: " + o);
+        }
+    }
+
+    final void _retarget(Entity<?> o) {
+        if (o == null) {
+            setId(null);
+            version = 0;
+            lastModified = createdDate = new Date();
+        } else {
+            K id = (K) o.getId();
+            setId(id);
+            version = o.version;
+            createdDate = o.createdDate;
+            lastModified = o.lastModified;
+            entityFlags.bits = o.entityFlags.bits;
+        }
+    }
+
+    protected static <E extends Entity<?>> E _retarget(E source, E target) {
+        if (source == null)
+            return target;
+        source.retarget(target);
+        return source;
+    }
+
+    protected static <E extends Entity<?>> void _retargetMerge(List<E> list, Iterable<E> targetItems) {
+        for (E targetItem : targetItems) {
+            if (!_retargetMerge(list, targetItem)) {
+                list.add(targetItem);
+            }
+        }
+    }
+
+    protected static <E extends Entity<?>> boolean _retargetMerge(List<E> list, E targetItem) {
+        if (targetItem == null)
+            throw new NullPointerException("targetItem");
+        int index = list.indexOf(targetItem);
+        if (index != -1) {
+            Entity<?> found = list.get(index);
+            found.retarget(targetItem);
+            return true;
+        }
+        return false;
+    }
+
+    protected static <E extends Entity<?>> void _retargetMerge(Set<E> set, Set<E> targetItems) {
+        for (E targetItem : targetItems) {
+            if (!_retargetMerge(set, targetItem)) {
+                set.add(targetItem);
+            }
+        }
+    }
+
+    protected static <E extends Entity<?>> boolean _retargetMerge(Set<E> set, E targetItem) {
+        if (targetItem == null)
+            throw new NullPointerException("targetItem");
+        for (E item : set) {
+            if (item.equals(targetItem)) {
+                item.retarget(targetItem);
+                return true;
+            }
+        }
+        return false;
     }
 
     protected abstract void setId(K id);

@@ -47,6 +47,20 @@ public class User
         this.primaryRole = primaryRole;
     }
 
+    @Override
+    public void retarget(Object o) {
+        super.retarget(o);
+        _retarget((User) o);
+    }
+
+    private void _retarget(User o) {
+        // primaryGroup = _retarget(primaryGroup, o.primaryGroup);
+        // primaryRole = _retarget(primaryRole, o.primaryRole);
+        // _retargetMerge(assignedGroups, o.assignedGroups);
+        // _retargetMerge(assignedRoles, o.assignedRoles);
+        _retargetMerge(emails, o.emails);
+    }
+
     @ManyToOne(targetEntity = Group.class)
     @JoinColumn(name = "group1")
     @Override

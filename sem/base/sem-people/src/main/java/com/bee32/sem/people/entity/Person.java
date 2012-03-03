@@ -38,15 +38,22 @@ public class Person
     Set<PersonRole> roles = new HashSet<PersonRole>();
 
     public Person() {
-        super();
+        this(null);
     }
 
-    public Person(String name) {
-        super(name);
-    }
-
-    {
+    public Person(String label) {
+        super(label);
         sidType = predefined(PartySidTypes.class).IDENTITYCARD;
+    }
+
+    @Override
+    public void retarget(Object o) {
+        super.retarget(o);
+        _retarget((Person) o);
+    }
+
+    private void _retarget(Person o) {
+        _retargetMerge(roles, o.roles);
     }
 
     @Column(name = "sex")

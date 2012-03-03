@@ -54,6 +54,17 @@ public abstract class TreeEntity<K extends Serializable, self_t extends TreeEnti
         return (self_t) this;
     }
 
+    @Override
+    public void retarget(Object o) {
+        super.retarget(o);
+        _retarget((self_t) cast(o));
+    }
+
+    private void _retarget(self_t o) {
+        // parent = _retarget(parent, o.getParent());
+        // _retargetMerge(getChildren(), o.getChildren());
+    }
+
     @ManyToOne
     public self_t getParent() {
         return parent;

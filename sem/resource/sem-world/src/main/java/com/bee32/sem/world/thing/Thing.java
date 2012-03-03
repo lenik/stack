@@ -43,13 +43,6 @@ public abstract class Thing<X extends XPool<?>>
         super(name);
     }
 
-    public Thing(String name, String serial) {
-        super(name);
-        if (serial == null)
-            throw new NullPointerException("serial");
-        this.serial = serial;
-    }
-
     @Override
     public void populate(Object source) {
         if (source instanceof Thing) {

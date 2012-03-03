@@ -38,6 +38,19 @@ public class Role
         super(name, fullName);
     }
 
+    @Override
+    public void retarget(Object o) {
+        super.retarget(o);
+        _retarget((Role) o);
+    }
+
+    private void _retarget(Role o) {
+        // _retargetMerge(controlUsers, o.controlUsers);
+        // _retargetMerge(controlGroups, o.controlGroups);
+        _retargetMerge(responsibleUsers, o.responsibleUsers);
+        _retargetMerge(responsibleGroups, o.responsibleGroups);
+    }
+
     @Transient
     @Override
     public Role getInheritedRole() {

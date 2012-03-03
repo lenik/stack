@@ -82,8 +82,20 @@ public abstract class Party
     protected Party() {
     }
 
-    protected Party(String name) {
-        setLabel(name);
+    protected Party(String label) {
+        setLabel(label);
+    }
+
+    @Override
+    public void retarget(Object o) {
+        super.retarget(o);
+        _retarget((Party) o);
+    }
+
+    private void _retarget(Party o) {
+        // _retargetMerge(tags, o.tags);
+        _retargetMerge(contacts, o.contacts);
+        _retargetMerge(records, o.records);
     }
 
     /**

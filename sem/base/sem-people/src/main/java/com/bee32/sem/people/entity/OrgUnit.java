@@ -25,6 +25,16 @@ public class OrgUnit
     Group forWhichGroup;
     List<PersonRole> roles = new ArrayList<PersonRole>();
 
+    @Override
+    public void retarget(Object o) {
+        super.retarget(o);
+        _retarget((OrgUnit) o);
+    }
+
+    void _retarget(OrgUnit o) {
+        _retargetMerge(roles, o.roles);
+    }
+
     /**
      * 属主组织。
      */

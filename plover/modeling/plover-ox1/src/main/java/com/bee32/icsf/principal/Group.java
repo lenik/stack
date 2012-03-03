@@ -46,6 +46,19 @@ public class Group
             addMemberUser(user);
     }
 
+    @Override
+    public void retarget(Object o) {
+        super.retarget(o);
+        _retarget((Group) o);
+    }
+
+    private void _retarget(Group o) {
+        primaryRole = _retarget(primaryRole, o.primaryRole);
+        _retargetMerge(assignedRoles, o.assignedRoles);
+        _retargetMerge(controlUsers, o.controlUsers);
+        _retargetMerge(memberUsers, o.memberUsers);
+    }
+
     @Transient
     @Override
     public Group getInheritedGroup() {

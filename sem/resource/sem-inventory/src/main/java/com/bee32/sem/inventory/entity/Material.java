@@ -64,8 +64,16 @@ public class Material
         super(name);
     }
 
-    public Material(String name, String serial) {
-        super(name, serial);
+    @Override
+    public void retarget(Object o) {
+        super.retarget(o);
+        _retarget((Material) o);
+    }
+
+    private void _retarget(Material o) {
+        _retargetMerge(attributes, o.attributes);
+        _retargetMerge(options, o.options);
+        _retargetMerge(preferredLocations, o.preferredLocations);
     }
 
     @Override
