@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.bee32.plover.ox1.c.CEntityAuto;
 import com.bee32.plover.ox1.color.Yellow;
 
@@ -121,6 +123,22 @@ public class PersonRole
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    protected void formatEntryText(StringBuilder buf) {
+        buf.append(person.getDisplayName());
+        buf.append("@");
+        if (!StringUtils.isEmpty(altOrgUnit))
+            buf.append(altOrgUnit);
+        else if (orgUnit != null)
+            buf.append(orgUnit.getLabel());
+        else if (org != null)
+            buf.append(org.getDisplayName());
+        else
+            buf.append("*");
+        buf.append(": ");
+        buf.append(role);
     }
 
 }

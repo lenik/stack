@@ -200,4 +200,9 @@ public abstract class Principal
         return new Equals(prefix + "name", name);
     }
 
+    @Override
+    protected void formatEntryText(StringBuilder buf) {
+        buf.append(getDisplayName());
+    }
+
 }

@@ -9,8 +9,8 @@ import com.bee32.plover.disp.DispatchException;
 import com.bee32.plover.disp.Dispatcher;
 import com.bee32.plover.disp.util.DispatchUtil;
 import com.bee32.plover.orm.unit.Using;
-import com.bee32.plover.orm.util.SuperSamplePackage.Normals;
 import com.bee32.plover.orm.util.SamplesLoader;
+import com.bee32.plover.orm.util.SuperSamplePackage.Normals;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 import com.bee32.plover.pub.oid.OidUtil;
 import com.bee32.plover.restful.ModuleIndex;
@@ -35,6 +35,9 @@ public class BookStoreTest
     @Inject
     BookStore bookStore;
 
+    @Inject
+    SimpleBooks books;
+
     @Before
     public void loadSamples() {
         samplesLoader.loadSamples(Normals.class);
@@ -53,11 +56,11 @@ public class BookStoreTest
     public void testDispatchToBook()
             throws DispatchException {
 
-        int id = SimpleBooks.helloWorld.getId();
+        int id = books.helloWorld.getId();
         Object got = DispatchUtil.dispatch(dispatcher, mm, bookModuleOid + "/book/" + id);
 
         // for MemoryBookStore, this should be exact same.
-        assertEquals(SimpleBooks.helloWorld, got);
+        assertEquals(books.helloWorld, got);
     }
 
     @Test
@@ -72,9 +75,9 @@ public class BookStoreTest
     public void testReverseBook()
             throws DispatchException {
 
-        String path = mm.getReversedPath(SimpleBooks.helloWorld);
+        String path = mm.getReversedPath(books.helloWorld);
 
-        int id = SimpleBooks.helloWorld.getId();
+        int id = books.helloWorld.getId();
 
         assertEquals(bookModuleOid + "/book/" + id, path);
     }
