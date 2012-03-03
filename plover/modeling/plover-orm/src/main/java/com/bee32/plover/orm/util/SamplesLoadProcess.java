@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.free.IllegalUsageException;
+
 import org.apache.commons.collections15.Closure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -114,10 +116,9 @@ public class SamplesLoadProcess
                         continue;
                 } else {
                     existing = selection.get(0);
-                    if (selection.size() > 1) {
-                        logger.error("Selector returns multiple results: " + selection);
-                        continue;
-                    }
+                    if (selection.size() > 1)
+                        logger.warn("Selector returns multiple results: " + selection + ", choose the first.");
+
                     EntityFlags ef = EntityAccessor.getFlags(existing);
                     if (ef.isWeakData() || ef.isLocked() || ef.isUserLock())
                         continue;
