@@ -1,5 +1,7 @@
 package com.bee32.plover.orm.util;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -121,6 +123,23 @@ public class SamplesLoadProcess
                         continue;
                     if (ef.isHidden() || ef.isMarked())
                         continue;
+
+                    Object declObj = EntityAccessor.getDeclaringObject(micro);
+                    Field declField = EntityAccessor.getDeclaringField(micro);
+                    if (declField != null) {
+                        // Write back to non-final sample fields.
+                        if (!Modifier.isFinal(declField.getModifiers())) {
+                            try {
+                                declField.setAccessible(true);
+                                declField.set(declObj, existing);
+                            } catch (ReflectiveOperationException e) {
+                                throw new IllegalUsageException(//
+                                        String.format("Failed to write back non-final sample field %s.%s", //
+                                                declField.getDeclaringClass().getSimpleName(), declField.getName()), e);
+                            }
+                            continue;
+                        }
+                    }
                     EntityAccessor.setId(micro, existing.getId());
                     ctx.data.access(entityType).evict(existing);
                 }

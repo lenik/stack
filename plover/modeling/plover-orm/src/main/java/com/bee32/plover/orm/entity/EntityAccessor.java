@@ -1,6 +1,7 @@
 package com.bee32.plover.orm.entity;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.Set;
 
@@ -75,6 +76,19 @@ public class EntityAccessor {
         if (entity == null)
             throw new NullPointerException("entity");
         entity.nextOfMicroLoop = nextOfMicroLoop;
+    }
+
+    public static Object getDeclaringObject(Entity<?> entity) {
+        return entity.declaringObject;
+    }
+
+    public static Field getDeclaringField(Entity<?> entity) {
+        return entity.declaringField;
+    }
+
+    public static void setDeclaringField(Entity<?> entity, Object declaringObject, Field declaringField) {
+        entity.declaringObject = declaringObject;
+        entity.declaringField = declaringField;
     }
 
     public static Set<Entity<?>> getPrereqs(Entity<?> entity) {

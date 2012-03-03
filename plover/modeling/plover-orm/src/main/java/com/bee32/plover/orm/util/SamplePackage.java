@@ -144,6 +144,7 @@ public abstract class SamplePackage
             } catch (ReflectiveOperationException e) {
                 throw new RuntimeException(e.getMessage(), e);
             }
+            EntityAccessor.setDeclaringField(entity, this, field);
             samples.add(field.getName(), entity);
         }
 

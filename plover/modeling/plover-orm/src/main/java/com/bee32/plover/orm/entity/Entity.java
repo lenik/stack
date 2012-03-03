@@ -1,6 +1,7 @@
 package com.bee32.plover.orm.entity;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.Set;
 
@@ -51,6 +52,8 @@ public abstract class Entity<K extends Serializable>
     final EntityFlags entityFlags = new EntityFlags();
 
     transient Entity<?> nextOfMicroLoop;
+    transient Object declaringObject;
+    transient Field declaringField;
 
     public Entity() {
         super();
