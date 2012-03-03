@@ -24,4 +24,8 @@ public class Users
         powerUserRole.setInheritedRole(userRole);
     }
 
+    @Override
+    public void beginLoad() {
+    }
+
 }
