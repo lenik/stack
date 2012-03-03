@@ -143,7 +143,8 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
             return;
 
         Set<Integer> imset = SessionUser.getInstance().getImIdSet();
-        if (imset.contains(users.adminRole.getId()))
+        Integer adminRoleId = users.adminRole.getId();
+        if (imset.contains(adminRoleId))
             return;
 
         PersistenceUnit unit = CustomizedSessionFactoryBean.getForceUnit();

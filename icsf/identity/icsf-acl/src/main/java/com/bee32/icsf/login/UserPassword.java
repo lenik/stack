@@ -50,6 +50,14 @@ public class UserPassword
     }
 
     public UserPassword(User user, String passwd, String master) {
+        init(user, passwd, master);
+    }
+
+    public void init(User user, String passwd) {
+        init(user, passwd, null);
+    }
+
+    public void init(User user, String passwd, String master) {
         if (user == null)
             throw new NullPointerException("user");
         if (passwd == null)
