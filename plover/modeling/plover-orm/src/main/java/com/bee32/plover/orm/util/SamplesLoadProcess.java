@@ -17,6 +17,7 @@ import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityFlags;
+import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 
 @NotAComponent
@@ -44,8 +45,12 @@ public class SamplesLoadProcess
 
     @Override
     public void run() {
-        // openSession: // for each retarget().
-        processQueue();
+        TransactionHelper.openSession(new Runnable() {
+            @Override
+            public void run() {
+                processQueue();
+            }
+        });
     }
 
     void processQueue() {
@@ -74,9 +79,12 @@ public class SamplesLoadProcess
 
     /**
      * non-standard: check conf, skip entirely if loaded.
+     *
+     * @throws CloneNotSupportedException
      */
     @SuppressWarnings("unchecked")
-    void loadPackage(SamplePackage pack) {
+    void loadPackage(SamplePackage pack)
+            throws CloneNotSupportedException {
         if (pack == null)
             throw new NullPointerException("pack");
 
@@ -85,6 +93,7 @@ public class SamplesLoadProcess
 
         PloverConfDto packConfig = section.get(pack.getName());
         boolean addMissings = packConfig == null || pack.getLevel() <= SamplePackage.LEVEL_STANDARD;
+        IEntityAccessService<Entity<?>, ?> database = ctx.data.access(Entity.class);
 
         /** 考虑到无法分析 entity 的倚赖关系 （需要完整实现prereqs），这里简单的重载所有样本。 */
         addMissings = true;
@@ -126,17 +135,13 @@ public class SamplesLoadProcess
                         continue;
 
                     // EntityAccessor.setId(micro, existing.getId());
-                    TransactionHelper.openSession(new Runnable() {
-                        @Override
-                        public void run() {
-                            micro.retarget(existing);
-                        }
-                    });
+                    micro.retarget(existing);
                     ctx.data.access(entityType).evict(existing);
                     // ctx.data.access(entityType).flush();
                 }
 
-                group.add(micro);
+                Entity<?> clone = micro.clone();
+                group.add(clone);
             } // for micro-next
 
             logger.info("    Micro-Group: ");
@@ -148,7 +153,9 @@ public class SamplesLoadProcess
             }
 
             // By each entity type...?
-            ctx.data.access(Entity.class).saveOrUpdateAll(group);
+            database.saveOrUpdateAll(group);
+            for (Entity<?> entity : group)
+                database.evict(entity);
         } // for sample
     }
 

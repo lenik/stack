@@ -11,4 +11,5 @@ public class ChooseOrgDialogBean
     public ChooseOrgDialogBean() {
         super(Org.class, OrgDto.class, 0);
     }
+
 }
