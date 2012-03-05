@@ -6,6 +6,7 @@ import com.bee32.plover.arch.util.dto.Fmask;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.misc.SimpleEntityViewBean;
+import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.purchase.dto.PurchaseInquiryDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestItemDto;
@@ -44,6 +45,13 @@ public class PurchaseRequestItemAdminBean
 
     public ListMBean<PurchaseInquiryDto> getInquiriesMBean() {
         return inquiriesMBean;
+    }
+
+    @Override
+    protected void postUpdate(UnmarshalMap uMap) throws Exception {
+        for (PurchaseRequestItem _purchaseRequestItem : uMap.<PurchaseRequestItem> entitySet()) {
+            _purchaseRequestItem.setInquiryCount(_purchaseRequestItem.getInquiries().size());
+        }
     }
 
 }

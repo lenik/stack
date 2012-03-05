@@ -89,6 +89,29 @@
                     </f:facet>
                 </fr:listView>
             </p:tab>
+
+            <p:tab title="采购入库">
+                <fr:listView id="takeInIndexView" header="入库项" style="panel"
+                    mbean="#{bean.takeInsMBean}" nested="true"
+                    creatable="false" editable="false" removable="false">
+                    <f:facet name="columns">
+                        <p:column headerText="日期" styleClass="f-wrappable">
+                            <h:outputText value="#{entry.stockOrder.createdDate}" />
+                        </p:column>
+                        <p:column headerText="简要" styleClass="f-wrappable">
+                            <h:outputText value="#{entry.stockOrder.label}" />
+                        </p:column>
+                        <p:column headerText="供应商" styleClass="f-wrappable">
+                            <h:outputText value="#{entry.stockOrder.party.displayName}" />
+                        </p:column>
+                    </f:facet>
+                    <f:facet name="index-buttons.left">
+                        <p:commandButton id="generateTakeIn" value="生成采购入库单" actionListener="#{bean.generateTakeInStockOrders}"
+                            update=":editDialog:form:tv:takeInIndexView:indexForm:dataTable" />
+                    </f:facet>
+                </fr:listView>
+            </p:tab>
+
         </p:tabView>
     </ui:define>
 
@@ -99,7 +122,8 @@
             header="选择优选供应商" target="#{itemObj.preferredSupplier}" update=":itemsEditView:editForm:supplier"/>
         <sem:chooseMaterialDialog id="c_material" header="选择物料" target="${itemObj.material}"
             update=":itemsEditView:editForm:material" />
-        <sem:choosePurchaseInquiryDialog id="c_purchaseInquiry" var="choosePurchaseInquiryDialog" header="挑选报价" target="${itemObj.acceptedInquiry}"
+        <sem:choosePurchaseInquiryDialog id="c_purchaseInquiry" var="choosePurchaseInquiryDialog" header="挑选报价"
+            target="${itemObj.acceptedInquiry}"
             update=":itemsEditView:editForm:acceptedInquiry" />
 
 
@@ -136,7 +160,7 @@
                     <f:selectItems value="#{stock.warehouseSelectItems}" />
                 </p:selectOneMenu>
 
-                <h:outputLabel for="acceptedInquiry" value="接受询价：" />
+                <h:outputLabel for="acceptedInquiry" value="采购建议:" />
                 <h:panelGroup>
                     <p:inputText id="acceptedInquiry" value="#{item.acceptedInquiry.supplier.label}(#{item.acceptedInquiry.price})" disabled="true" />
                     <p:commandButton value="..." oncomplete="choosePurchaseInquiryDialog.show()">

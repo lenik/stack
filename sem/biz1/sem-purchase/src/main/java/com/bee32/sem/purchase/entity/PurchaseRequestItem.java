@@ -14,6 +14,7 @@ import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
@@ -52,6 +53,8 @@ public class PurchaseRequestItem
 
     PurchaseInquiry acceptedInquiry;
     StockWarehouse destWarehouse;
+
+    int inquiryCount;
 
     @NaturalId
     @ManyToOne(optional = false)
@@ -185,6 +188,16 @@ public class PurchaseRequestItem
     public void setDestWarehouse(StockWarehouse destWarehouse) {
         this.destWarehouse = destWarehouse;
     }
+
+    @Formula("(select count(*) from purchase_inquiry i where i.parent=id)")
+    public int getInquiryCount() {
+        return inquiryCount;
+    }
+
+    public void setInquiryCount(int inquiryCount) {
+        this.inquiryCount = inquiryCount;
+    }
+
 
     @Override
     protected Serializable naturalId() {

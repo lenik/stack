@@ -134,6 +134,9 @@ public class PurchaseRequestAdminBean
         item.setDestWarehouse(stockDicts.getWarehouse(warehouseId));
     }
 
+    /**
+     * 生成产购入库单
+     */
     public void generateTakeInStockOrders() {
         PurchaseRequestDto purchaseRequest = getOpenedObject();
         for (PurchaseRequestItemDto item : purchaseRequest.getItems()) {

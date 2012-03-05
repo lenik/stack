@@ -12,7 +12,10 @@
     <ui:param name="monetary" value="#{monetaryDictsBean}" />
 
     <ui:define name="dataColumns">
-        <p:column headerText="采购请求" styleClass="f-wrappable">
+        <p:column headerText="询价数量" styleClass="f-wrappable">
+            <h:outputText value="#{entry.inquiryCount}" />
+        </p:column>
+        <p:column headerText="采购请求" styleClass="f-wrappable" sortBy="#{entry.parent}">
             <h:outputText value="#{entry.parent.label}" />
         </p:column>
         <p:column headerText="物料" styleClass="f-wrappable">
@@ -52,8 +55,8 @@
                     <t:panelGroup>
                         <p:inputText id="supplier" value="#{obj.preferredSupplier.displayName}" readonly="true" />
                         <p:commandButton value="..." oncomplete="choosePreferredSupplierDialog.show()">
-                            <f:setPropertyActionListener target="#{choosePartyDialogBean.stereo}"
-                                value="SUP" />
+                            <f:setPropertyActionListener target="#{chooseOrgDialogBean.supplier}"
+                            value="true" />
                         </p:commandButton>
                     </t:panelGroup>
 

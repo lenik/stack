@@ -42,6 +42,8 @@ public class PurchaseRequestItemDto
 
     StockWarehouseDto destWarehouse;
 
+    int inquiryCount;
+
     @Override
     protected void _marshal(PurchaseRequestItem source) {
         parent = mref(PurchaseRequestDto.class, source.getParent());
@@ -60,6 +62,8 @@ public class PurchaseRequestItemDto
 
         acceptedInquiry = mref(PurchaseInquiryDto.class, source.getAcceptedInquiry());
         destWarehouse = mref(StockWarehouseDto.class, source.getDestWarehouse());
+
+        inquiryCount = source.getInquiryCount();
     }
 
     @Override
@@ -79,6 +83,8 @@ public class PurchaseRequestItemDto
 
         merge(target, "acceptedInquiry", acceptedInquiry);
         merge(target, "destWarehouse", destWarehouse);
+
+        target.setInquiryCount(inquiryCount);
     }
 
     @Override
@@ -197,6 +203,14 @@ public class PurchaseRequestItemDto
 
     public void setDestWarehouse(StockWarehouseDto destWarehouse) {
         this.destWarehouse = destWarehouse;
+    }
+
+    public int getInquiryCount() {
+        return inquiryCount;
+    }
+
+    public void setInquiryCount(int inquiryCount) {
+        this.inquiryCount = inquiryCount;
     }
 
     @Override
