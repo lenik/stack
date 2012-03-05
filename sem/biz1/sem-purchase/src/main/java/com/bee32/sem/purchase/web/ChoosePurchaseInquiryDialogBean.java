@@ -38,6 +38,7 @@ public class ChoosePurchaseInquiryDialogBean
 
     public void setParent(PurchaseRequestItemDto parent) {
         this.parent = parent;
+        refreshRowCount();
     }
 
 }

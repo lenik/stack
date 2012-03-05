@@ -86,6 +86,7 @@ public class PurchaseService
 
             // 采购 至少要满足安全库存
             BigDecimal safetyStock = safetyMap.getConsumption(material);
+            if(safetyStock == null) safetyStock = new BigDecimal(0);
             needQuantity = needQuantity.max(safetyStock);
 
             // 计算需要采购的数量

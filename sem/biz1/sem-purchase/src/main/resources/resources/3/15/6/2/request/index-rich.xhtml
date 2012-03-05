@@ -83,6 +83,10 @@
                             <h:outputText value="#{entry.destWarehouse.label}" />
                         </p:column>
                     </f:facet>
+                    <f:facet name="index-buttons.left">
+                        <p:commandButton id="calc" value="计算需求量" actionListener="#{bean.calcMaterialRequirement}"
+                            update=":editDialog:form:tv:itemsIndexView:indexForm:dataTable" />
+                    </f:facet>
                 </fr:listView>
             </p:tab>
         </p:tabView>
@@ -92,13 +96,21 @@
         <sem:chooseMaterialPlanDialog id="c_plan" target="#{bean.materialPlanToAttach}"
             update=":editDialog:form:tv:plansIndexView:indexForm:body" />
         <sem:chooseOrgDialog id="c_preferredSupplier" var="choosePreferredSupplierDialog"
-            header="选择优选供应商" target="#{itemObj.preferredSupplier}" />
+            header="选择优选供应商" target="#{itemObj.preferredSupplier}" update=":itemsEditView:editForm:supplier"/>
+        <sem:chooseMaterialDialog id="c_material" header="选择物料" target="${itemObj.material}"
+            update=":itemsEditView:editForm:material" />
+        <sem:choosePurchaseInquiryDialog id="c_purchaseInquiry" var="choosePurchaseInquiryDialog" header="挑选报价" target="${itemObj.acceptedInquiry}"
+            update=":itemsEditView:editForm:acceptedInquiry" />
+
 
         <fr:listView id="itemsEditView" header="采购项" style="editDialog" indexView=":editDialog:form:tv:itemsIndexView"
             mbean="#{bean.itemsMBean}">
             <h:panelGrid columns="2" columnClasses="field-label, field-content">
                 <h:outputText value="物料：" />
-                <h:outputText value="#{item.material.label}" />
+                <t:panelGrid columns="2">
+                    <p:inputText id="material" value="#{item.material.label}" readonly="true"/>
+                    <p:commandButton id="chooseMaterial" value="..." onclick="chooseMaterialDialog.show()" />
+                </t:panelGrid>
 
                 <h:outputText value="需求数量：" />
                 <h:outputText value="#{item.requiredQuantity}" />
@@ -115,20 +127,20 @@
                     </p:commandButton>
                 </h:panelGroup>
 
-                <h:outputLabel value="附加要求" />
+                <h:outputLabel value="附加要求:" />
                 <p:inputText value="#{item.additionalRequirement}" />
 
-                <h:outputLabel for="warehouse" value="采购入库：" />
-                <p:selectOneMenu id="warehouse" label="采购入库" value="#{bean.destWarehouseId_RZ}">
+                <h:outputLabel for="warehouse" value="入库仓库：" />
+                <p:selectOneMenu id="warehouse" label="入库仓库" value="#{bean.destWarehouseId_RZ}">
                     <f:selectItem itemValue="0" itemLabel="--选择仓库--" />
                     <f:selectItems value="#{stock.warehouseSelectItems}" />
                 </p:selectOneMenu>
 
                 <h:outputLabel for="acceptedInquiry" value="接受询价：" />
                 <h:panelGroup>
-                    <p:inputText id="acceptedInquiry" value="#{item.acceptedInquiryInfo}" disabled="true" />
+                    <p:inputText id="acceptedInquiry" value="#{item.acceptedInquiry.supplier.label}(#{item.acceptedInquiry.price})" disabled="true" />
                     <p:commandButton value="..." oncomplete="choosePurchaseInquiryDialog.show()">
-                        <f:setPropertyActionListener target="#{choosePurchaseInquiryDialog.parent}"
+                        <f:setPropertyActionListener target="#{choosePurchaseInquiryDialogBean.parent}"
                             value="#{item}" />
                     </p:commandButton>
                 </h:panelGroup>

@@ -12,6 +12,9 @@
     <ui:param name="monetary" value="#{monetaryDictsBean}" />
 
     <ui:define name="dataColumns">
+        <p:column headerText="采购请求" styleClass="f-wrappable">
+            <h:outputText value="#{entry.parent.label}" />
+        </p:column>
         <p:column headerText="物料" styleClass="f-wrappable">
             <h:outputText value="#{entry.material.label}" />
         </p:column>
@@ -35,7 +38,7 @@
     <ui:define name="editDialogContent">
         <p:tabView id="tv">
             <p:tab title="采购项目">
-                <h:panelGrid columns="2" columnClasses="field-label, field-content">
+                <t:panelGrid columns="2" columnClasses="field-label, field-content">
                     <h:outputText value="物料：" />
                     <h:outputText value="#{obj.material.label}" />
 
@@ -46,17 +49,17 @@
                     <p:inputText id="quantity" value="#{obj.quantity}" />
 
                     <h:outputLabel value="优选供应商：" />
-                    <h:panelGroup>
+                    <t:panelGroup>
                         <p:inputText id="supplier" value="#{obj.preferredSupplier.displayName}" readonly="true" />
                         <p:commandButton value="..." oncomplete="choosePreferredSupplierDialog.show()">
                             <f:setPropertyActionListener target="#{choosePartyDialogBean.stereo}"
                                 value="SUP" />
                         </p:commandButton>
-                    </h:panelGroup>
+                    </t:panelGroup>
 
                     <h:outputLabel value="附加要求：" />
                     <p:inputText value="#{obj.additionalRequirement}" />
-                </h:panelGrid>
+                </t:panelGrid>
             </p:tab>
 
             <p:tab title="询价与建议">
@@ -96,22 +99,26 @@
 
         <fr:listView id="inquiriesEditView" header="询价信息" style="editDialog" indexView=":editDialog:form:tv:inquiriesIndexView"
             mbean="#{bean.inquiriesMBean}">
-            <h:panelGrid columns="2" columnClasses="field-label, field-content">
+            <t:panelGrid columns="2" columnClasses="field-label, field-content">
                 <h:outputLabel for="supplier" value="供应商：" />
                 <t:panelGroup>
                     <p:inputText id="supplier" value="#{item.supplier.displayName}" disabled="true" style="width: 20em" />
-                    <p:commandButton value="..." oncomplete="chooseSupplierDialog.show()" />
+                    <p:commandButton value="..." oncomplete="chooseSupplierDialog.show()" >
+                        <f:setPropertyActionListener target="#{chooseOrgDialogBean.supplier}"
+                            value="true" />
+                    </p:commandButton>
+
                 </t:panelGroup>
 
                 <h:outputLabel for="price" value="价格：" />
-                <h:panelGrid columns="3">
+                <t:panelGrid columns="3">
                     <p:inputText id="price" value="#{item.price.value}" />
                     <h:outputLabel value="币种：" />
                     <p:selectOneMenu id="currency" value="#{item.price.currencyCode}" style="width: 15em;">
                         <f:selectItem itemValue="" itemLabel="--选择币种--" />
                         <f:selectItems value="#{monetary.currencySelectItems}" />
                     </p:selectOneMenu>
-                </h:panelGrid>
+                </t:panelGrid>
 
                 <h:outputText for="deliveryDate" value="交货时间：" />
                 <p:inputText id="deliveryDate" style="width: 30em;" value="#{item.deliveryDate}" />
@@ -130,7 +137,7 @@
 
                 <h:outputLabel for="comment" value="询价建议：" />
                 <p:inputTextarea id="comment" style="width: 30em; height: 3em" value="#{item.comment}" />
-            </h:panelGrid>
+            </t:panelGrid>
         </fr:listView>
 
     </ui:define>

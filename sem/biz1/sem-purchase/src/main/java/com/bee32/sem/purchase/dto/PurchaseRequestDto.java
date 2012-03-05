@@ -120,8 +120,10 @@ public class PurchaseRequestDto
     public void addPlan(MaterialPlanDto plan) {
         if (plan == null)
             throw new NullPointerException("plan");
-        plans.add(plan);
-        plan.setPurchaseRequest(this);
+        if (!plans.contains(plan)) {
+            plans.add(plan);
+            plan.setPurchaseRequest(this);
+        }
     }
 
     public List<PurchaseTakeInDto> getTakeIns() {

@@ -1,6 +1,5 @@
 package com.bee32.sem.purchase.web;
 
-import java.util.Arrays;
 import java.util.List;
 
 import com.bee32.plover.arch.util.dto.Fmask;
@@ -88,6 +87,10 @@ public class PurchaseRequestAdminBean
         return true;
     }
 
+    /**
+     * 用户每选择一次plan,都调用本方法。
+     * 由parent.addPlan(plan)来记录多次选择的结果
+     */
     public void setMaterialPlanToAttach(MaterialPlanDto plan) {
         if (plan == null)
             return;
@@ -97,14 +100,24 @@ public class PurchaseRequestAdminBean
         }
 
         PurchaseRequestDto parent = getOpenedObject();
+        plan = reload(plan, MaterialPlanDto.ITEMS);
         parent.addPlan(plan);
+    }
+
+    /**
+     * 由物料计划计算采购量
+     */
+    public void calcMaterialRequirement() {
+        PurchaseRequestDto parent = getOpenedObject();
 
         PurchaseService purchaseService = ctx.bean.getBean(PurchaseService.class);
-        plan = reload(plan, Fmask.F_MORE);
-        List<PurchaseRequestItemDto> items = purchaseService.calcMaterialRequirement(Arrays.asList(plan));
 
+        List<PurchaseRequestItemDto> items = purchaseService.calcMaterialRequirement(parent.getPlans());
+
+        //为返回的PurchaseRequestItem设置parent
         for (PurchaseRequestItemDto item : items)
             item.setParent(parent);
+
         parent.setItems(items);
     }
 

@@ -190,9 +190,6 @@ public class PurchaseRequestItemDto
         this.acceptedInquiry = acceptedInquiry;
     }
 
-    public String getAcceptedInquiryInfo() {
-        return "TODO";
-    }
 
     public StockWarehouseDto getDestWarehouse() {
         return destWarehouse;
