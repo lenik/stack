@@ -69,26 +69,31 @@ public abstract class Entity<K extends Serializable>
     @Overlay
     public Entity<K> clone()
             throws CloneNotSupportedException {
-        return (Entity<K>) super.clone();
+        Entity<K> copy;
+        try {
+            copy = getClass().newInstance();
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+        copy._retarget(this);
+        copy.populate(this);
+        return copy;
     }
 
     @Override
     public void populate(Object source) {
         if (source instanceof Entity<?>) {
-            @SuppressWarnings("unchecked")
-            Entity<K> o = (Entity<K>) source;
-            _populate(o);
+            // Don't copy the identity properties.
+            // _retarget((Entity<K>) source);
+            _populate((Entity<?>) source);
         } else {
             // super.populate(source);
             throw new IllegalArgumentException("Unsupport populate source: " + source);
         }
     }
 
-    protected void _populate(Entity<?> o) {
-        version = o.version;
-        createdDate = o.createdDate;
-        lastModified = o.lastModified;
-        entityFlags.bits = o.entityFlags.bits;
+    public void _populate(Entity<?> o) {
+        altId = o.altId;
     }
 
     public void retarget(Object o) {
