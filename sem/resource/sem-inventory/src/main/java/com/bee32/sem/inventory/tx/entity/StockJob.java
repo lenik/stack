@@ -34,6 +34,12 @@ public class StockJob
         return stockOrders;
     }
 
+    /**
+     * You should change the reference of the list. If you want to change the
+     * content of the list, you may have to clear the list and insert elements
+     * into it.
+     */
+    @Deprecated
     @SuppressWarnings("unchecked")
     public void setStockOrders(List<? extends AbstractStockOrder<?>> stockOrders) {
         if (stockOrders == null)
