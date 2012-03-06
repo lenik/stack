@@ -56,12 +56,18 @@ public class SingleVerifierWithNumberSupport
     @Transient
     @Override
     public String getNumberDescription() {
+        if (judgeNumberImpl == null)
+            // throw new IllegalStateException("Verify context isn't bound yet");
+            return "XXX Number-Description";
         return judgeNumberImpl.getNumberDescription();
     }
 
     @Transient
     @Override
     public Number getJudgeNumber() {
+        if (judgeNumberImpl == null)
+            // throw new IllegalStateException("Verify context isn't bound yet");
+            return null;
         return judgeNumberImpl.getJudgeNumber();
     }
 

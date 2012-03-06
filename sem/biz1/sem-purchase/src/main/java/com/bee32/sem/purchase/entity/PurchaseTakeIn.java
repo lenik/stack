@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
+import com.bee32.sem.inventory.entity.AbstractStockOrder;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.tx.entity.StockJob;
 
@@ -41,8 +42,10 @@ public class PurchaseTakeIn
     }
 
     public void setStockOrder(StockOrder stockOrder) {
-        List<StockOrder> stockOrders = Arrays.asList(stockOrder);
-        setStockOrders(stockOrders);
+        List<AbstractStockOrder<?>> stockOrders = getStockOrders();
+        stockOrders.clear();
+        if (stockOrder != null)
+            stockOrders.add(stockOrder);
     }
 
 }

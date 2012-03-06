@@ -82,6 +82,9 @@
                         <p:column headerText="入库仓库">
                             <h:outputText value="#{entry.destWarehouse.label}" />
                         </p:column>
+                        <p:column headerText="选定供应商">
+                            <h:outputText value="#{entry.acceptedInquiry.supplier.label}(#{entry.acceptedInquiry.price})" />
+                        </p:column>
                     </f:facet>
                     <f:facet name="index-buttons.left">
                         <p:commandButton id="calc" value="计算需求量" actionListener="#{bean.calcMaterialRequirement}"
@@ -91,9 +94,9 @@
             </p:tab>
 
             <p:tab title="采购入库">
-                <fr:listView id="takeInIndexView" header="入库项" style="panel"
+                <fr:listView id="takeInsIndexView" header="入库项" style="indexPanel" editView=":takeInsEditView"
                     mbean="#{bean.takeInsMBean}" nested="true"
-                    creatable="false" editable="false" removable="false">
+                    creatable="false" removable="false" readonly="true">
                     <f:facet name="columns">
                         <p:column headerText="日期" styleClass="f-wrappable">
                             <h:outputText value="#{entry.stockOrder.createdDate}" />
@@ -102,12 +105,12 @@
                             <h:outputText value="#{entry.stockOrder.label}" />
                         </p:column>
                         <p:column headerText="供应商" styleClass="f-wrappable">
-                            <h:outputText value="#{entry.stockOrder.party.displayName}" />
+                            <h:outputText value="#{entry.stockOrder.org.displayName}" />
                         </p:column>
                     </f:facet>
                     <f:facet name="index-buttons.left">
                         <p:commandButton id="generateTakeIn" value="生成采购入库单" actionListener="#{bean.generateTakeInStockOrders}"
-                            update=":editDialog:form:tv:takeInIndexView:indexForm:dataTable" />
+                            update=":editDialog:form:tv:takeInsIndexView:indexForm:dataTable"/>
                     </f:facet>
                 </fr:listView>
             </p:tab>
@@ -171,5 +174,64 @@
             </h:panelGrid>
         </fr:listView>
 
+        <fr:listView
+            id="takeInsEditView" header="入库项"
+            style="editDialog" indexView=":editDialog:form:tv:takeInsIndexView"
+            mbean="#{bean.takeInsMBean}">
+            <fr:listView id="orderItemsView" header="入库明细" style="panel" mbean="#{bean.orderItemsMBean}"
+                creatable="false" removable="false" editiable="false" nested="true">
+                <f:facet name="columns">
+                    <p:column headerText="物料" sortBy="#{entry.material.label}" styleClass="f-wrappable">
+                        <h:outputText value="#{entry.material.label}" />
+                    </p:column>
+
+                    <p:column headerText="规格型号" styleClass="f-wrappable">
+                        <h:outputText value="#{entry.material.modelSpec}" />
+                    </p:column>
+
+                    <p:column headerText="单位">
+                        <h:outputText value="#{entry.material.unit.label}" />
+                    </p:column>
+
+                    <p:column headerText="${batchMetadata.labels[0]}">
+                        <h:outputText value="${entry.batches[0].value}" />
+                    </p:column>
+                    <p:column headerText="${batchMetadata.labels[1]}" rendered="${batchMetadata.arraySize >= 2}">
+                        <h:outputText value="${entry.batches[1].value}" />
+                    </p:column>
+                    <p:column headerText="${batchMetadata.labels[2]}" rendered="${batchMetadata.arraySize >= 3}">
+                        <h:outputText value="${entry.batches[2].value}" />
+                    </p:column>
+                    <p:column headerText="${batchMetadata.labels[3]}" rendered="${batchMetadata.arraySize >= 4}">
+                        <h:outputText value="${entry.batches[3].value}" />
+                    </p:column>
+                    <p:column headerText="${batchMetadata.labels[4]}" rendered="${batchMetadata.arraySize >= 5}">
+                        <h:outputText value="${entry.batches[4].value}" />
+                    </p:column>
+
+                    <p:column headerText="有效期">
+                        <h:outputText value="#{entry.expirationDate}" />
+                    </p:column>
+
+                    <p:column headerText="库位" styleClass="f-wrappable">
+                        <h:outputText value="#{entry.location.label}" />
+                    </p:column>
+
+                    <p:column headerText="单价">
+                        <h:outputText value="#{entry.price}" />
+                    </p:column>
+
+                    <ui:insert name="entry-quantity">
+                        <p:column headerText="数量">
+                            <h:outputText value="#{entry.quantity}" />
+                        </p:column>
+                    </ui:insert>
+
+                    <p:column headerText="备注" styleClass="f-wrappable">
+                        <h:outputText value="#{entry.description}" />
+                    </p:column>
+                </f:facet>
+            </fr:listView>
+        </fr:listView>
     </ui:define>
 </ui:composition>

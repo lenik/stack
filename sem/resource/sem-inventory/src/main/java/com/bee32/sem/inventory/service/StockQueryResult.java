@@ -19,12 +19,8 @@ public class StockQueryResult
         super();
     }
 
-    public StockQueryResult(StockPeriod base, StockOrderSubject subject) {
-        super(base, subject);
-    }
-
-    public StockQueryResult(StockPeriod base, StockOrderSubject subject, StockWarehouse warehouse) {
-        super(base, subject, warehouse);
+    public StockQueryResult(StockOrderSubject subject) {
+        super(null, subject, null);
     }
 
     @Override

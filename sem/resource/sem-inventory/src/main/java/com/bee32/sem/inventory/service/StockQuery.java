@@ -59,7 +59,7 @@ public class StockQuery
                 subject = StockOrderSubject.PACK_MBL;
         }
 
-        StockQueryResult all = new StockQueryResult(null, subject, null/* warehouse */);
+        StockQueryResult all = new StockQueryResult(subject);
 
         // XXX How about: batch == null, location != null ?
 

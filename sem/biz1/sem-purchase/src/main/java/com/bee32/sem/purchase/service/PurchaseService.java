@@ -25,9 +25,10 @@ import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.chance.dto.WantedProductDto;
 import com.bee32.sem.chance.dto.WantedProductQuotationDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
+import com.bee32.sem.inventory.dto.StockOrderDto;
+import com.bee32.sem.inventory.dto.StockOrderItemDto;
+import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.MaterialWarehouseOption;
-import com.bee32.sem.inventory.entity.StockOrder;
-import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.inventory.service.IStockQuery;
@@ -35,13 +36,12 @@ import com.bee32.sem.inventory.service.StockQueryOptions;
 import com.bee32.sem.inventory.service.StockQueryResult;
 import com.bee32.sem.inventory.util.ConsumptionMap;
 import com.bee32.sem.people.dto.OrgDto;
-import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.purchase.dto.MakeOrderDto;
 import com.bee32.sem.purchase.dto.MakeOrderItemDto;
 import com.bee32.sem.purchase.dto.MaterialPlanDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestItemDto;
-import com.bee32.sem.purchase.entity.PurchaseTakeIn;
+import com.bee32.sem.purchase.dto.PurchaseTakeInDto;
 import com.bee32.sem.world.monetary.MutableMCValue;
 
 public class PurchaseService
@@ -118,7 +118,7 @@ public class PurchaseService
             itemWarehouseMap.put(requestItem.getId(), requestItem.getDestWarehouse().getId());
         }
 
-        purchaseRequest = reload(purchaseRequest);
+        //purchaseRequest = reload(purchaseRequest);
 
         // 检测purchaseReqeust是否已经生成过采购入库单
         if (!purchaseRequest.getTakeIns().isEmpty()) {
@@ -127,7 +127,7 @@ public class PurchaseService
 
         // 检测有没有询价和审核采购建议
         for (PurchaseRequestItemDto requestItem : purchaseRequest.getItems()) {
-            if (requestItem.getAcceptedInquiry() == null || requestItem.getAcceptedInquiry().getId() == null) {
+            if (DTOs.isNull(requestItem.getAcceptedInquiry())) {
                 throw new NoPurchaseAdviceException();
             }
 
@@ -155,35 +155,31 @@ public class PurchaseService
         for (List<PurchaseRequestItemDto> itemList : splitMap.values()) {
             OrgDto preferredSupplier = itemList.get(0).getAcceptedInquiry().getSupplier();
 
-            StockOrder _takeInOrder = new StockOrder();
-            _takeInOrder.setSubject(StockOrderSubject.TAKE_IN);
-            _takeInOrder.setLabel("从采购请求生成的入库单");
-            _takeInOrder.setOrg((Org) preferredSupplier.unmarshal());
+            StockWarehouse warehouse = ctx.data.access(StockWarehouse.class).lazyLoad(
+                    itemWarehouseMap.get(itemList.get(0).getId()));
+
+            StockOrderDto takeInOrder = new StockOrderDto().create();
+            takeInOrder.setOrg(preferredSupplier);
+            takeInOrder.setWarehouse(DTOs.marshal(StockWarehouseDto.class, warehouse));
+            takeInOrder.setSubject(StockOrderSubject.TAKE_IN);
+            takeInOrder.setLabel("从采购请求[" + purchaseRequest.getLabel() + "]生成的入库单");
 
             for (PurchaseRequestItemDto item : itemList) {
-                StockOrderItem _item = new StockOrderItem();
+                StockOrderItemDto orderItem = new StockOrderItemDto().create();
 
-                _item.setParent(_takeInOrder);
-                _item.setMaterial(item.getMaterial().unmarshal());
-                _item.setQuantity(item.getQuantity());
-                _item.setPrice(item.getAcceptedInquiry().getPrice());
-                _item.setDescription("由采购请求生成的入库明细项目");
+                orderItem.setMaterial(item.getMaterial());
+                orderItem.setQuantity(item.getQuantity());
+                orderItem.setPrice(item.getAcceptedInquiry().getPrice());
+                orderItem.setDescription("由采购请求[" + purchaseRequest.getLabel() + "]生成的入库明细项目");
 
-                _takeInOrder.addItem(_item);
-
-                // 保存以上StockOrder*
-                StockWarehouse warehouse = ctx.data.access(StockWarehouse.class).lazyLoad(
-                        itemWarehouseMap.get(item.getId()));
-                _takeInOrder.setWarehouse(warehouse);
-                ctx.data.access(StockOrder.class).saveOrUpdate(_takeInOrder);
-
-                // 填充并保存OrderHolder,以在PurchaseRequest和StockOrder之间建立关联
-                PurchaseTakeIn _takeIn = new PurchaseTakeIn();
-                _takeIn.setPurchaseRequest(purchaseRequest.unmarshal());
-                _takeIn.setStockOrder(_takeInOrder); // 重新marshal，以便dto中包含id
-
-                ctx.data.access(PurchaseTakeIn.class).saveOrUpdate(_takeIn);
+                orderItem.setParent(takeInOrder);
+                takeInOrder.addItem(orderItem);
             }
+
+            PurchaseTakeInDto takeIn = new PurchaseTakeInDto().create();
+            takeIn.setPurchaseRequest(purchaseRequest);
+            takeIn.setStockOrder(takeInOrder);
+            purchaseRequest.addTakeIn(takeIn);
         }
     }
 

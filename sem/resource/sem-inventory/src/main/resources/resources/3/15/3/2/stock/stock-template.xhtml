@@ -147,7 +147,7 @@
                             </td>
                             <td align="right">
                                 <c:if test="${not disableStockQuery}">
-                                    <p:commandButton value="查询库存" update=":stockQueryDialog:form"
+                                    <p:commandButton value="查询库存" update=":q_stock:dialog"
                                         oncomplete="stockQueryDialog.show()">
                                         <f:setPropertyActionListener target="#{stockQueryDialogBean.autoQuery}"
                                             value="#{item.material != null}" />

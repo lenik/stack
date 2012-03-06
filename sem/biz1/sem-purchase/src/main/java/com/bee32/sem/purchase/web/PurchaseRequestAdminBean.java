@@ -9,6 +9,7 @@ import com.bee32.plover.orm.util.Identities;
 import com.bee32.plover.orm.util.RefsDiff;
 import com.bee32.plover.orm.validation.RequiredId;
 import com.bee32.sem.frame.ui.ListMBean;
+import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.web.business.StockDictsBean;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
@@ -162,6 +163,8 @@ public class PurchaseRequestAdminBean
             "openedObject.items", PurchaseRequestItemDto.class);
     final ListMBean<PurchaseTakeInDto> takeInsMBean = ListMBean.fromEL(this, //
             "openedObject.takeIns", PurchaseTakeInDto.class);
+    final ListMBean<StockOrderItemDto> orderItemsMBean = ListMBean.fromEL(takeInsMBean, //
+            "openedObject.stockOrder.items", StockOrderItemDto.class);
 
     public ListMBean<MaterialPlanDto> getPlansMBean() {
         return plansMBean;
@@ -173,6 +176,10 @@ public class PurchaseRequestAdminBean
 
     public ListMBean<PurchaseTakeInDto> getTakeInsMBean() {
         return takeInsMBean;
+    }
+
+    public ListMBean<StockOrderItemDto> getOrderItemsMBean() {
+        return orderItemsMBean;
     }
 
 }
