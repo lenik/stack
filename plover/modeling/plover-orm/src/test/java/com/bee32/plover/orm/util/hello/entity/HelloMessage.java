@@ -15,7 +15,18 @@ public class HelloMessage
 
     String message;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof HelloMessage)
+            _populate((HelloMessage) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(HelloMessage o) {
+        super._populate(o);
+        message = o.message;
+    }
 
     @Column(length = MESSAGE_LENGTH)
     public String getMessage() {

@@ -35,7 +35,18 @@ public class UserFileTagname
         super(name);
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof UserFileTagname)
+            _populate((UserFileTagname) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(UserFileTagname o) {
+        super._populate(o);
+        this.refCount = o.refCount;
+    }
 
     /**
      * 标签名字

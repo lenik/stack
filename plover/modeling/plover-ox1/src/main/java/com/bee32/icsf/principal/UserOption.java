@@ -29,7 +29,20 @@ public class UserOption
     String key;
     String value;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof UserOption)
+            _populate((UserOption) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(UserOption o) {
+        super._populate(o);
+        user = o.user;
+        key = o.key;
+        value = o.value;
+    }
 
     @NaturalId
     @ManyToOne(optional = false)

@@ -66,7 +66,23 @@ public class FxrRecord
         this.baseRate = baseRate;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof FxrRecord)
+            _populate((FxrRecord) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(FxrRecord o) {
+        super._populate(o);
+        date = o.date;
+        unitCurrency = o.unitCurrency;
+        buyingRate = o.buyingRate;
+        sellingRate = o.sellingRate;
+        baseRate = o.baseRate;
+        xbuyingRate = o.xbuyingRate;
+    }
 
     @NaturalId
     @Temporal(TemporalType.DATE)

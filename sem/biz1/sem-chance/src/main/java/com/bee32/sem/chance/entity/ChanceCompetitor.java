@@ -51,7 +51,26 @@ public class ChanceCompetitor
     public ChanceCompetitor() {
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof ChanceCompetitor)
+            _populate((ChanceCompetitor) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(ChanceCompetitor o) {
+        super._populate(o);
+        chance = o.chance;
+        party = o.party;
+        price = o.price;
+        capability = o.capability;
+        solution = o.solution;
+        advantage = o.advantage;
+        disvantage = o.disvantage;
+        tactic = o.tactic;
+        comment = o.comment;
+    }
 
     /**
      * 对应销售机会

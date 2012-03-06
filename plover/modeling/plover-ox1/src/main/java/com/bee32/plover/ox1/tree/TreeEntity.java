@@ -49,7 +49,20 @@ public abstract class TreeEntity<K extends Serializable, self_t extends TreeEnti
             parent.addChild(self());
     }
 
-X-Population
+    @SuppressWarnings("unchecked")
+    @Override
+    public void populate(Object source) {
+        if (source instanceof TreeEntity)
+            _populate((TreeEntity<K, self_t>) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(TreeEntity<K, self_t> o) {
+        super._populate(o);
+        parent = o.parent;
+        children = new ArrayList<self_t>(o.children);
+    }
 
     @SuppressWarnings("unchecked")
     protected final self_t self() {

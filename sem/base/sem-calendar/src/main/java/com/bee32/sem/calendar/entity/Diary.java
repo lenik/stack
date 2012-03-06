@@ -37,7 +37,24 @@ public class Diary
 
     int score;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof Diary)
+            _populate((Diary) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(Diary o) {
+        super._populate(o);
+        user = o.user;
+        category = o.category;
+        subject = o.subject;
+        content = o.content;
+        beginDate = o.beginDate;
+        endDate = o.endDate;
+        score = o.score;
+    }
 
     @ManyToOne(optional = false)
     public User getUser() {

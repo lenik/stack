@@ -44,7 +44,21 @@ public class PassStep
         this.optional = optional;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof PassStep)
+            _populate((PassStep) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(PassStep o) {
+        super._populate(o);
+        policy = o.policy;
+        order = o.order;
+        responsible = o.responsible;
+        optional = o.optional;
+    }
 
     @ManyToOne
     @JoinColumn(nullable = false)

@@ -49,7 +49,22 @@ public class MakeOrder
     List<MakeTask> tasks = new ArrayList<MakeTask>();
     List<DeliveryNote> deliveryNotes = new ArrayList<DeliveryNote>();
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof MakeOrder)
+            _populate((MakeOrder) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(MakeOrder o) {
+        super._populate(o);
+        customer = o.customer;
+        status = o.status;
+        chance = o.chance;
+        tasks = new ArrayList<MakeTask>(o.tasks);
+        verifyContext = (SingleVerifierWithNumberSupport) verifyContext.clone();
+    }
 
     @Override
     protected void createTransients() {

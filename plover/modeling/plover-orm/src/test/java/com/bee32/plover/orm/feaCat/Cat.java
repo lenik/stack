@@ -1,6 +1,7 @@
 package com.bee32.plover.orm.feaCat;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -46,7 +47,23 @@ public class Cat
         this.color = color;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof Cat)
+            _populate((Cat) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(Cat o) {
+        super._populate(o);
+        // name = o.name;
+        color = o.color;
+        leader = o.leader;
+        parent = o.parent;
+        children = new HashSet<Cat>(o.children);
+        addr = o.addr; //.clone();
+    }
 
     @NaturalId
     @Override

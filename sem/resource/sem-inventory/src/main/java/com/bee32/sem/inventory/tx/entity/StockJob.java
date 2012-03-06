@@ -12,6 +12,7 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.plover.orm.entity.CloneUtils;
 import com.bee32.sem.inventory.entity.AbstractStockOrder;
 import com.bee32.sem.process.base.ProcessEntity;
 
@@ -28,7 +29,18 @@ public class StockJob
 
     List<AbstractStockOrder<?>> stockOrders = new ArrayList<>();
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof StockJob)
+            _populate((StockJob) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(StockJob o) {
+        super._populate(o);
+        stockOrders = CloneUtils.cloneList(o.stockOrders);
+    }
 
     @OneToMany(mappedBy = "job", targetEntity = AbstractStockOrder.class, orphanRemoval = true)
     @Cascade(CascadeType.ALL)

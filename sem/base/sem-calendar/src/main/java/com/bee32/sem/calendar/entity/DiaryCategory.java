@@ -15,7 +15,18 @@ public class DiaryCategory
 
     DiaryVisibility visibility = DiaryVisibility.PRIVATE;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof DiaryCategory)
+            _populate((DiaryCategory) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(DiaryCategory o) {
+        super._populate(o);
+        visibility = o.visibility;
+    }
 
     @Transient
     public DiaryVisibility getVisibility() {

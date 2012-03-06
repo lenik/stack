@@ -25,7 +25,20 @@ public class BudgetRequest
     MCValue value = new MCValue();
     AccountTicket ticket;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof BudgetRequest)
+            _populate((BudgetRequest) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(BudgetRequest o) {
+        super._populate(o);
+        text = o.text;
+        value = o.value;
+        ticket = o.ticket;
+    }
 
     /**
      * 业务详细说明

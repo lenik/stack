@@ -79,7 +79,7 @@ public abstract class AbstractStockItemList<Item extends StockOrderItem>
             StockOrderItem merging = map.get(key);
             if (merging == null) {
                 // always create a new one. never share the object.
-                merging = new StockOrderItem(item);
+                merging = (StockOrderItem) item.clone();
                 continue;
             }
 

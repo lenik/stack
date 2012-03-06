@@ -6,10 +6,6 @@ import java.util.List;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import com.bee32.icsf.principal.Group;
-import com.bee32.icsf.principal.Role;
-import com.bee32.icsf.principal.User;
-
 @Entity
 @DiscriminatorValue("R1")
 public class SimpleRole
@@ -17,8 +13,8 @@ public class SimpleRole
 
     private static final long serialVersionUID = 1L;
 
-    private final String name;
-    private final Role parent;
+    String name;
+    Role parent;
 
     public SimpleRole(String name, Role parent) {
         if (name == null)
@@ -27,7 +23,19 @@ public class SimpleRole
         this.parent = parent;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof SimpleRole)
+            _populate((SimpleRole) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(SimpleRole o) {
+        super._populate(o);
+        name = o.name;
+        parent = o.parent;
+    }
 
     @Override
     public String getName() {

@@ -22,7 +22,20 @@ public class DiaryObserver
     DiaryCategory category;
     User observer;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof DiaryObserver)
+            _populate((DiaryObserver) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(DiaryObserver o) {
+        super._populate(o);
+        user = o.user;
+        category = o.category;
+        observer = o.observer;
+    }
 
     @NaturalId
     @ManyToOne(optional = false)

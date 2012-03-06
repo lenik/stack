@@ -29,7 +29,21 @@ public class AccountSnapshotItem
     Party party;
     MCValue value;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof AccountSnapshotItem)
+            _populate((AccountSnapshotItem) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(AccountSnapshotItem o) {
+        super._populate(o);
+        snapshot = o.snapshot;
+        subject = o.subject;
+        party = o.party;
+        value = o.value;
+    }
 
     @ManyToOne(optional = false)
     public AccountSnapshot getSnapshot() {

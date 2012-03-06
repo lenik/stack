@@ -34,7 +34,24 @@ public class PersonRole
     String roleDetail;
     String description;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof PersonRole)
+            _populate((PersonRole) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(PersonRole o) {
+        super._populate(o);
+        person = o.person;
+        org = o.org;
+        orgUnit = o.orgUnit;
+        altOrgUnit = o.altOrgUnit;
+        role = o.role;
+        roleDetail = o.roleDetail;
+        description = o.description;
+    }
 
     @ManyToOne(optional = false)
     public Person getPerson() {

@@ -54,7 +54,25 @@ public class StockLocation
         this.label = label;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof StockLocation)
+            _populate((StockLocation) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(StockLocation o) {
+        super._populate(o);
+        warehouse = o.warehouse;
+        x = o.x;
+        y = o.y;
+        z = o.z;
+        capacity = o.capacity;
+        capacityUnit = o.capacityUnit;
+        capacityUnitHint = o.capacityUnitHint;
+        rank = o.rank;
+    }
 
     /**
      * 所属仓库

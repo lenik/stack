@@ -15,7 +15,17 @@ public class StockSale
         this.debitSide = true;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof StockSale)
+            _populate((StockSale) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(StockSale o) {
+        super._populate(o);
+    }
 
     @Override
     public void setSubject(AccountSubject subject) {

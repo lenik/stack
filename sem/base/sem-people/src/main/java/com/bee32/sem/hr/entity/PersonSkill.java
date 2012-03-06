@@ -37,7 +37,21 @@ public class PersonSkill
     int score;
     Date date;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof PersonSkill)
+            _populate((PersonSkill) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(PersonSkill o) {
+        super._populate(o);
+        employeeInfo = o.employeeInfo;
+        category = o.category;
+        score = o.score;
+        date = o.date;
+    }
 
     @ManyToOne
     public EmployeeInfo getEmployeeInfo() {
@@ -50,6 +64,7 @@ X-Population
 
     /**
      * 技能种类
+     *
      * @return
      */
     @ManyToOne
@@ -87,6 +102,7 @@ X-Population
 
     /**
      * 技术获得日期
+     *
      * @return
      */
     @Temporal(TemporalType.TIMESTAMP)
@@ -97,7 +113,5 @@ X-Population
     public void setDate(Date date) {
         this.date = date;
     }
-
-
 
 }

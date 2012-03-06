@@ -10,6 +10,7 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.plover.orm.entity.CloneUtils;
 import com.bee32.sem.process.base.ProcessEntity;
 
 @Entity
@@ -21,7 +22,18 @@ public class AccountInit
 
     List<AccountInitItem> items = new ArrayList<AccountInitItem>();
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof AccountInit)
+            _populate((AccountInit) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(AccountInit o) {
+        super._populate(o);
+        items = CloneUtils.cloneList(o.items);
+    }
 
     @OneToMany(mappedBy = "init", orphanRemoval = true)
     @Cascade(CascadeType.ALL)

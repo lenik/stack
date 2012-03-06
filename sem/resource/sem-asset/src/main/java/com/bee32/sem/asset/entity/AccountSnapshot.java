@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
+import com.bee32.plover.orm.entity.CloneUtils;
 import com.bee32.plover.ox1.color.MomentInterval;
 
 /**
@@ -20,7 +21,18 @@ public class AccountSnapshot
 
     List<AccountSnapshotItem> items;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof AccountSnapshot)
+            _populate((AccountSnapshot) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(AccountSnapshot o) {
+        super._populate(o);
+        items = CloneUtils.cloneList(o.items);
+    }
 
     @OneToMany(mappedBy = "snapshot")
     public List<AccountSnapshotItem> getItems() {

@@ -67,8 +67,7 @@ public abstract class Entity<K extends Serializable>
     }
 
     @Overlay
-    public Entity<K> clone()
-            throws CloneNotSupportedException {
+    public Entity<K> clone() {
         Entity<K> copy;
         try {
             copy = getClass().newInstance();

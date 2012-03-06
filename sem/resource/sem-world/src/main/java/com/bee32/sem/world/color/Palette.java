@@ -10,6 +10,7 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.plover.orm.entity.CloneUtils;
 import com.bee32.plover.ox1.dict.ShortNameDict;
 
 @Entity
@@ -41,7 +42,18 @@ public class Palette
         super(name, label);
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof Palette)
+            _populate((Palette) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(Palette o) {
+        super._populate(o);
+        entries = CloneUtils.cloneList(o.entries);
+    }
 
     @OneToMany(mappedBy = "palette", orphanRemoval = true)
     @Cascade(CascadeType.ALL)

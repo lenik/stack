@@ -15,6 +15,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.icsf.principal.Group;
+import com.bee32.plover.orm.entity.CloneUtils;
 
 @Entity
 @DiscriminatorValue("ORG")
@@ -40,7 +41,22 @@ public class Org
         sidType = predefined(PartySidTypes.class).TAX_ID;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof Org)
+            _populate((Org) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(Org o) {
+        super._populate(o);
+        type = o.type;
+        size = o.size;
+        orgUnits = CloneUtils.cloneList(o.orgUnits);
+        roles = CloneUtils.cloneSet(o.roles);
+        forWhichGroup = o.forWhichGroup;
+    }
 
     @Override
     public void retarget(Object o) {

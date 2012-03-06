@@ -46,11 +46,15 @@ public class SingleVerifierWithNumberSupport
 
     @Override
     public void populate(Object source) {
-        super.populate(source);
-        if (source instanceof SingleVerifierWithNumberSupport) {
-            SingleVerifierWithNumberSupport o = (SingleVerifierWithNumberSupport) source;
-            this.judgeNumberImpl = o.judgeNumberImpl;
-        }
+        if (source instanceof SingleVerifierWithNumberSupport)
+            _populate((SingleVerifierWithNumberSupport) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(SingleVerifierWithNumberSupport o) {
+        super._populate(o);
+        judgeNumberImpl = o.judgeNumberImpl;
     }
 
     @Transient

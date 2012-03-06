@@ -40,7 +40,19 @@ public abstract class VerifyPolicy
     public VerifyPolicy() {
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof VerifyPolicy)
+            _populate((VerifyPolicy) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(VerifyPolicy o) {
+        super._populate(o);
+        // principalResponsibleStagesMap=new HashMap<Principal,
+        // Map<Object,Boolean>>(o.principalResponsibleStagesMap);
+    }
 
     @Transient
     @Override

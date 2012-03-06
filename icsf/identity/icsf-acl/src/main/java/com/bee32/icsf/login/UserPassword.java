@@ -67,7 +67,25 @@ public class UserPassword
         this.master = master;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof UserPassword)
+            _populate((UserPassword) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(UserPassword o) {
+        super._populate(o);
+        user = o.user;
+        salt = o.salt;
+        master = o.master;
+        passwd = o.passwd;
+        resetQ = o.resetQ;
+        resetA = o.resetA;
+        resetTicket = o.resetTicket;
+        resetExpires = o.resetExpires;
+    }
 
     @OneToOne
     @JoinColumn(nullable = false)

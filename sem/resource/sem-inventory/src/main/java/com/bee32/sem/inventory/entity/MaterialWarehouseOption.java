@@ -35,7 +35,21 @@ public class MaterialWarehouseOption
     BigDecimal safetyStock = new BigDecimal(1);
     int stkPeriod = 365;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof MaterialWarehouseOption)
+            _populate((MaterialWarehouseOption) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(MaterialWarehouseOption o) {
+        super._populate(o);
+        material = o.material;
+        warehouse = o.warehouse;
+        safetyStock = o.safetyStock;
+        stkPeriod = o.stkPeriod;
+    }
 
     /**
      * 物料

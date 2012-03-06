@@ -16,7 +16,21 @@ public class Bank
 
     TrueColor color;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof Bank)
+            _populate((Bank) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(Bank o) {
+        super._populate(o);
+        if (o.color == null)
+            color = null;
+        else
+            color = o.color.clone();
+    }
 
     /**
      * 显示颜色（未使用）

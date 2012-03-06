@@ -25,7 +25,20 @@ public class WantedProductAttribute
     String name;
     String value;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof WantedProductAttribute)
+            _populate((WantedProductAttribute) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(WantedProductAttribute o) {
+        super._populate(o);
+        product = o.product;
+        name = o.name;
+        value = o.value;
+    }
 
     @ManyToOne(optional = false)
     public WantedProduct getProduct() {

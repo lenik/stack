@@ -34,7 +34,18 @@ public class StockOrderVerifyPolicy
 
     Map<String, VerifyPolicy> subjectPolicyMap = new HashMap<String, VerifyPolicy>();
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof StockOrderVerifyPolicy)
+            _populate((StockOrderVerifyPolicy) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(StockOrderVerifyPolicy o) {
+        super._populate(o);
+        subjectPolicyMap = new HashMap<String, VerifyPolicy>(o.subjectPolicyMap);
+    }
 
     @ManyToMany
     @JoinTable(name = "StockOrderSubjectPolicy")

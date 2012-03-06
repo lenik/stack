@@ -49,7 +49,25 @@ public class UserFile
     Class<?> refType;
     String refId;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof UserFile)
+            _populate((UserFile) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(UserFile o) {
+        super._populate(o);
+        fileBlob = o.fileBlob;
+        dir = o.dir;
+        name = o.name;
+        fileDate = o.fileDate;
+        expiredDate = o.expiredDate;
+        tags = new HashSet<UserFileTagname>(o.tags);
+        refType = o.refType;
+        refId = o.refId;
+    }
 
     /**
      * 文件数据。

@@ -48,7 +48,21 @@ public class PloverConf
         setDescription(description);
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof PloverConf)
+            _populate((PloverConf) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(PloverConf o) {
+        super._populate(o);
+        section = o.section;
+        key = o.key;
+        value = o.value;
+        description = o.description;
+    }
 
     @NaturalId
     @Column(length = SECTION_LENGTH, nullable = false)

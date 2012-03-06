@@ -36,7 +36,22 @@ public class FileAttribute
     double floatVal;
     String strVal;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof FileAttribute)
+            _populate((FileAttribute) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(FileAttribute o) {
+        super._populate(o);
+        file = o.file;
+        name = o.name;
+        intVal = o.intVal;
+        floatVal = o.floatVal;
+        strVal = o.strVal;
+    }
 
     @NaturalId
     @ManyToOne

@@ -18,7 +18,19 @@ public class VerifyPolicyPref
     private VerifyPolicy preferredPolicy;
     private String description;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof VerifyPolicyPref)
+            _populate((VerifyPolicyPref) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(VerifyPolicyPref o) {
+        super._populate(o);
+        preferredPolicy = o.preferredPolicy;
+        description = o.description;
+    }
 
     @ManyToOne
     public VerifyPolicy getPreferredPolicy() {

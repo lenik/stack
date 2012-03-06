@@ -41,7 +41,24 @@ public class StockTradeItem
 
     StockTrade trade;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof StockTradeItem)
+            _populate((StockTradeItem) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(StockTradeItem o) {
+        super._populate(o);
+        index = o.index;
+        material = o.material;
+        quantity = o.quantity;
+        price = o.price;
+        nativePrice = o.nativePrice;
+        nativeTotal = o.nativeTotal;
+        trade = o.trade;
+    }
 
     /**
      * 单据内部的序号

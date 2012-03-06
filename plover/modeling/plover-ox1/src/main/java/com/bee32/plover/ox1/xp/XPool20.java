@@ -58,7 +58,38 @@ public abstract class XPool20<Es extends Entity<?>>
     String aa1;
     String aa2;
 
-X-Population
+    @SuppressWarnings("unchecked")
+    @Override
+    public void populate(Object source) {
+        if (source instanceof XPool20)
+            _populate((XPool20<? extends Entity<?>>) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(XPool20<? extends Entity<?>> o) {
+        super._populate(o);
+        bits = o.bits;
+        int1 = o.int1;
+        int2 = o.int2;
+        int3 = o.int3;
+        int4 = o.int4;
+        long1 = o.long1;
+        long2 = o.long2;
+        float1 = o.float1;
+        float2 = o.float2;
+        double1 = o.double1;
+        double2 = o.double2;
+        date1 = o.date1;
+        date2 = o.date2;
+        a1 = o.a1;
+        a2 = o.a2;
+        a3 = o.a3;
+        a4 = o.a4;
+        a5 = o.a5;
+        aa1 = o.aa1;
+        aa2 = o.aa2;
+    }
 
     @Column(nullable = false)
     public int getBits() {

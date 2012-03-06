@@ -61,7 +61,25 @@ public class FileBlob
     int refCount;
     List<UserFile> usage = new ArrayList<UserFile>();
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof FileBlob)
+            _populate((FileBlob) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(FileBlob o) {
+        super._populate(o);
+        length = o.length;
+        header = o.header;
+        thumbnail = o.thumbnail;
+        preview = o.preview;
+        encoding = o.encoding;
+        contentType = o.contentType;
+        refCount = o.refCount;
+        usage = o.usage;
+    }
 
     /**
      * 文件长度 （字节）。

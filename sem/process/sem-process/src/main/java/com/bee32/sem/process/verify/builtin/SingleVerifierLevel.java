@@ -42,7 +42,20 @@ public class SingleVerifierLevel
         this.targetPolicy = verifyPolicy;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof SingleVerifierLevel)
+            _populate((SingleVerifierLevel) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(SingleVerifierLevel o) {
+        super._populate(o);
+        policy = o.policy;
+        limit = o.limit;
+        targetPolicy = o.targetPolicy;
+    }
 
     // @NaturalId
     @ManyToOne(optional = false)

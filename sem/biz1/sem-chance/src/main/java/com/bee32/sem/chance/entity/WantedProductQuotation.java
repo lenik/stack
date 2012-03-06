@@ -28,7 +28,19 @@ public class WantedProductQuotation
     WantedProduct product;
     int discount = DISCOUNT_SCALE;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof WantedProductQuotation)
+            _populate((WantedProductQuotation) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(WantedProductQuotation o) {
+        super._populate(o);
+        product = o.product;
+        discount = o.discount;
+    }
 
     @ManyToOne
     public WantedProduct getProduct() {

@@ -6,6 +6,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
+import com.bee32.plover.orm.entity.CloneUtils;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.people.entity.Org;
@@ -27,7 +28,20 @@ public class StockOutsourcing
     StockOrder input;
     Org processedBy;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof StockOutsourcing)
+            _populate((StockOutsourcing) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(StockOutsourcing o) {
+        super._populate(o);
+        output = CloneUtils.clone(o.output);
+        input = CloneUtils.clone(o.input);
+        processedBy = o.processedBy;
+    }
 
     /**
      * 委外出库单
@@ -46,7 +60,7 @@ X-Population
     /**
      * 委外入库单
      */
-    @OneToOne(/*orphanRemoval = true*/)
+    @OneToOne(/* orphanRemoval = true */)
     @JoinColumn(name = "s2")
     // @Cascade(CascadeType.ALL)
     public StockOrder getInput() {

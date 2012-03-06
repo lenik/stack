@@ -85,7 +85,34 @@ public class Event
         this.setType(type);
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof Event)
+            _populate((Event) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(Event o) {
+        super._populate(o);
+        type = o.type;
+        category = o.category;
+        sourceClass = o.sourceClass;
+        priority = o.priority;
+        flags.bits = o.flags.bits;
+        closed = o.closed;
+        _state = o._state;
+        status = o.status;
+        actor = o.actor;
+        subject = o.subject;
+        message = o.message;
+        scheduledEndTime = o.scheduledEndTime;
+        refType = o.refType;
+        refId = o.refId;
+        refAlt = o.refAlt;
+        seeAlsos = o.seeAlsos;
+        observers = new HashSet<Principal>(o.observers);
+    }
 
     @Transient
     public EventType getType() {

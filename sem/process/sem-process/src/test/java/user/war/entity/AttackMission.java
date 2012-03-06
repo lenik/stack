@@ -16,7 +16,18 @@ public class AttackMission
 
     private String target;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof AttackMission)
+            _populate((AttackMission) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(AttackMission o) {
+        super._populate(o);
+        target = o.target;
+    }
 
     public String getTarget() {
         return target;

@@ -23,7 +23,7 @@ public class PersonSkillCategory
     static final int LEVEL_ENTRY_LENGTH = LEVEL_NAME_LENGTH + 10;
     public static final int LEVELS_DATA_LENGTH = MAX_LEVELS * LEVEL_ENTRY_LENGTH;
 
-    private ScoreLevelMap levelMap;
+    private ScoreLevelMap levelMap = new ScoreLevelMap();
 
     public PersonSkillCategory() {
         super();
@@ -37,7 +37,18 @@ public class PersonSkillCategory
         super(name, label, description);
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof PersonSkillCategory)
+            _populate((PersonSkillCategory) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(PersonSkillCategory o) {
+        super._populate(o);
+        // levelMap.populate(o.levelMap);
+    }
 
     @Transient
     public ScoreLevelMap getLevelMap() {

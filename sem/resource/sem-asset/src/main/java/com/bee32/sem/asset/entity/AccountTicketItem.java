@@ -55,18 +55,33 @@ public class AccountTicketItem
         setDate(new Date());
     }
 
-X-Population
-
     @Override
     public void populate(Object source) {
-        super.populate(source);
-        if (source instanceof AccountSnapshotItem) {
-            AccountSnapshotItem si = (AccountSnapshotItem) source;
-            setSubject(si.getSubject());
-            setParty(si.getParty());
-            setValue(si.getValue());
-            snapshotItemRef = si;
-        }
+        if (source instanceof AccountTicketItem)
+            _populate((AccountTicketItem) source);
+        else if (source instanceof AccountSnapshotItem)
+            _populate((AccountSnapshotItem) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(AccountTicketItem o) {
+        super._populate(o);
+        ticket = o.ticket;
+        index = o.index;
+        subject = o.subject;
+        party = o.party;
+        debitSide = o.debitSide;
+        value = o.value;
+        nativeValue = o.nativeValue;
+    }
+
+    protected void _populate(AccountSnapshotItem o) {
+        super._populate(o);
+        subject = o.subject;
+        party = o.party;
+        value = o.value;
+        snapshotItemRef = o;
     }
 
     @Transient

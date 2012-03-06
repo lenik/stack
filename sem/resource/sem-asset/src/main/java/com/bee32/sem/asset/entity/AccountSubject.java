@@ -50,7 +50,19 @@ public class AccountSubject
         this.creditSign = (flags & CREDIT) != 0;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof AccountSubject)
+            _populate((AccountSubject) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(AccountSubject o) {
+        super._populate(o);
+        debitSign = o.debitSign;
+        creditSign = o.creditSign;
+    }
 
     /**
      * 借方符号

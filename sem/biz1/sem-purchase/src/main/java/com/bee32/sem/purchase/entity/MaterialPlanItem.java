@@ -39,7 +39,23 @@ public class MaterialPlanItem
     Party preferredSupplier;
     String additionalRequirement;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof MaterialPlanItem)
+            _populate((MaterialPlanItem) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(MaterialPlanItem o) {
+        super._populate(o);
+        materialPlan = o.materialPlan;
+        index = o.index;
+        material = o.material;
+        quantity = o.quantity;
+        preferredSupplier = o.preferredSupplier;
+        additionalRequirement = o.additionalRequirement;
+    }
 
     @NaturalId
     @ManyToOne(optional = false)

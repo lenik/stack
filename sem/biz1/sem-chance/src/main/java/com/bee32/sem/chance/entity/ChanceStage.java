@@ -37,7 +37,17 @@ public class ChanceStage
         stages.put(getOrder(), this);
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof ChanceStage)
+            _populate((ChanceStage) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(ChanceStage o) {
+        super._populate(o);
+    }
 
     @Transient
     public ChanceStage getPrevious() {

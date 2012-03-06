@@ -47,7 +47,33 @@ public abstract class XPool15_Scores<Es extends Entity<?>>
 
     Date date1;
 
-X-Population
+    @SuppressWarnings("unchecked")
+    @Override
+    public void populate(Object source) {
+        if (source instanceof XPool15_Scores)
+            _populate((XPool15_Scores<? extends Entity<?>>) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(XPool15_Scores<? extends Entity<?>> o) {
+        super._populate(o);
+        int1 = o.int1;
+        int2 = o.int2;
+        long1 = o.long1;
+        long2 = o.long2;
+        float1 = o.float1;
+        float2 = o.float2;
+        float3 = o.float3;
+        float4 = o.float4;
+        float5 = o.float5;
+        float6 = o.float6;
+        float7 = o.float7;
+        float8 = o.float8;
+        double1 = o.double1;
+        double2 = o.double2;
+        date1 = o.date1;
+    }
 
     @Column
     public Integer getInt1() {

@@ -46,7 +46,22 @@ public class MaterialCategory
         this.label = label;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof MaterialCategory)
+            _populate((MaterialCategory) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(MaterialCategory o) {
+        super._populate(o);
+        codeGenerator = o.codeGenerator;
+        materialType = o.materialType;
+        materials = new ArrayList<Material>(materials);
+        materialCount = o.materialCount;
+        partCount = o.partCount;
+    }
 
     @Transient
     protected boolean isUniqueChildren() {

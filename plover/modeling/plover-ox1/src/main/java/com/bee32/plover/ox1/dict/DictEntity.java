@@ -34,7 +34,20 @@ public abstract class DictEntity<K extends Serializable>
         this.description = description;
     }
 
-X-Population
+    @SuppressWarnings("unchecked")
+    @Override
+    public void populate(Object source) {
+        if (source instanceof DictEntity)
+            _populate((DictEntity<K>) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(DictEntity<K> o) {
+        super._populate(o);
+        label = o.label;
+        description = o.description;
+    }
 
     /**
      * 别名：一般用本地语言表示，不能用于搜索。（如果要用显示名称搜索，建议通过全文索引）

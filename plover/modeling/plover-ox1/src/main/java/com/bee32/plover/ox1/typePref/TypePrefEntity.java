@@ -21,7 +21,20 @@ public class TypePrefEntity
     private Class<?> type;
     private String typeId;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof TypePrefEntity)
+            _populate((TypePrefEntity) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(TypePrefEntity o) {
+        super._populate(o);
+        earlyResolve = o.earlyResolve;
+        type = o.type;
+        typeId = o.typeId;
+    }
 
     @Transient
     public boolean isEarlyResolve() {

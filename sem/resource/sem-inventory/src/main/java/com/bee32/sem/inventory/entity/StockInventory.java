@@ -12,6 +12,7 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.plover.orm.entity.CloneUtils;
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.xp.EntityExt;
 
@@ -38,7 +39,19 @@ public class StockInventory
         super(name);
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof StockInventory)
+            _populate((StockInventory) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(StockInventory o) {
+        super._populate(o);
+        snapshots = CloneUtils.cloneList(o.snapshots);
+        workingBase = o.workingBase;
+    }
 
     /**
      * 逻辑库存名称

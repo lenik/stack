@@ -46,7 +46,21 @@ public class Group
             addMemberUser(user);
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof Group)
+            _populate((Group) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(Group o) {
+        super._populate(o);
+        primaryRole = o.primaryRole;
+        assignedRoles = new ArrayList<Role>(o.assignedRoles);
+        controlUsers = new ArrayList<User>(o.controlUsers);
+        memberUsers = new ArrayList<User>(o.memberUsers);
+    }
 
     @Override
     public void retarget(Object o) {

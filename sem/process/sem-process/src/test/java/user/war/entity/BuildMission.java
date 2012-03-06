@@ -23,7 +23,19 @@ public class BuildMission
         setVerifyContext(new SingleVerifierWithNumberSupport());
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof BuildMission)
+            _populate((BuildMission) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(BuildMission o) {
+        super._populate(o);
+        money = o.money;
+        target = o.target;
+    }
 
     public long getMoney() {
         return money;

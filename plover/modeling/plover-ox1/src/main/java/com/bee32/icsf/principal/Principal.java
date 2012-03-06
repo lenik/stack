@@ -49,7 +49,18 @@ public abstract class Principal
         setName(name);
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof Principal)
+            _populate((Principal) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(Principal o) {
+        super._populate(o);
+        name = o.name;
+    }
 
     @Transient
     @Override

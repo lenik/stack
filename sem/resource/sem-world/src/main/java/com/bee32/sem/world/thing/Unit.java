@@ -44,7 +44,20 @@ public class Unit
         this.hint = hint;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof Unit)
+            _populate((Unit) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(Unit o) {
+        super._populate(o);
+        stdUnit = o.stdUnit;
+        scale = o.scale;
+        hint = o.hint;
+    }
 
     @Column(length = HINT_LENGTH, nullable = false)
     public String getHint() {

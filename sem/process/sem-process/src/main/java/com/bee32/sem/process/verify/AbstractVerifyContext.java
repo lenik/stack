@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
+import javax.free.IllegalUsageException;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
@@ -28,7 +29,7 @@ import com.bee32.sem.event.entity.Event;
 
 @MappedSuperclass
 public abstract class AbstractVerifyContext
-        implements Serializable, IVerifyContext, IMultiFormat, ILockable, IPopulatable {
+        implements Serializable, IVerifyContext, IMultiFormat, ILockable, IPopulatable, Cloneable {
 
     private static final long serialVersionUID = 1L;
 
@@ -39,6 +40,32 @@ public abstract class AbstractVerifyContext
     Date verifyEvalDate;
     Event verifyEvent;
 
+    @Override
+    public AbstractVerifyContext clone() {
+        try {
+            AbstractVerifyContext copy = getClass().newInstance();
+            copy.populate(this);
+            return copy;
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void populate(Object source) {
+        if (source instanceof AbstractVerifyContext)
+            _populate((AbstractVerifyContext) source);
+        else
+            throw new IllegalUsageException("Unsupport source for population: " + source);
+    }
+
+    protected void _populate(AbstractVerifyContext o) {
+        this.verifyEvalState = o.verifyEvalState;
+        this.verifyError = o.verifyError;
+        this.verifyEvalDate = o.verifyEvalDate;
+        this.verifyEvent = o.verifyEvent;
+    }
+
     /**
      * 清楚审核数据，以便重新审核
      */
@@ -47,17 +74,6 @@ public abstract class AbstractVerifyContext
         verifyError = null;
         verifyEvalDate = null;
         verifyEvent = null;
-    }
-
-    @Override
-    public void populate(Object source) {
-        if (source instanceof AbstractVerifyContext) {
-            AbstractVerifyContext o = (AbstractVerifyContext) source;
-            this.verifyEvalState = o.verifyEvalState;
-            this.verifyError = o.verifyError;
-            this.verifyEvalDate = o.verifyEvalDate;
-            this.verifyEvent = o.verifyEvent;
-        }
     }
 
     @Column(name = "verifyEvalState", nullable = false)

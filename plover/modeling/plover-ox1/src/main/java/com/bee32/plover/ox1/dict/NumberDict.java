@@ -27,7 +27,18 @@ public abstract class NumberDict
         this.number = number;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof NumberDict)
+            _populate((NumberDict) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(NumberDict o) {
+        super._populate(o);
+        number = o.number;
+    }
 
     @Transient
     @Override

@@ -1,5 +1,6 @@
 package com.bee32.sem.mail.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -43,7 +44,21 @@ public class MailFolder
         setLabel(label);
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof MailFolder)
+            _populate((MailFolder) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(MailFolder o) {
+        super._populate(o);
+        shared = o.shared;
+        order = o.order;
+        color = o.color;
+        mails = new ArrayList<MailDelivery>(o.mails);
+    }
 
     @Column(nullable = false)
     public byte getPriority() {

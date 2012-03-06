@@ -9,6 +9,7 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.plover.orm.entity.CloneUtils;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 
 public abstract class EntityExt<K extends Serializable, X extends XPool<?>>
@@ -27,7 +28,19 @@ public abstract class EntityExt<K extends Serializable, X extends XPool<?>>
         super(name);
     }
 
-X-Population
+    @SuppressWarnings("unchecked")
+    @Override
+    public void populate(Object source) {
+        if (source instanceof EntityExt)
+            _populate((EntityExt<K, X>) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(EntityExt<K, X> o) {
+        super._populate(o);
+        xPool = CloneUtils.cloneList(o.xPool);
+    }
 
     @OneToMany
     @Cascade(CascadeType.ALL)

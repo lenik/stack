@@ -38,7 +38,21 @@ public class Role
         super(name, fullName);
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof Role)
+            _populate((Role) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(Role o) {
+        super._populate(o);
+        controlUsers = new ArrayList<User>(o.controlUsers);
+        controlGroups = new ArrayList<Group>(o.controlGroups);
+        responsibleUsers = new ArrayList<User>(o.responsibleUsers);
+        responsibleGroups = new ArrayList<Group>(o.responsibleGroups);
+    }
 
     @Override
     public void retarget(Object o) {

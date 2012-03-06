@@ -38,7 +38,25 @@ public class EntityColumn
 
     BackedCandidateMap1 candidates = new BackedCandidateMap1("");
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof EntityColumn)
+            _populate((EntityColumn) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(EntityColumn o) {
+        super._populate(o);
+        entity = o.entity;
+        name = o.name;
+        type = o.type;
+        precision = o.precision;
+        scale = o.scale;
+        indexed = o.indexed;
+        helpDoc = o.helpDoc;
+        candidates = o.candidates; // XXX CLONE
+    }
 
     /**
      * Must override Entity-Info before add EntityColumn.

@@ -22,6 +22,7 @@ import org.hibernate.annotations.CascadeType;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.principal.Principal;
+import com.bee32.plover.orm.entity.CloneUtils;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -49,7 +50,18 @@ public class ACL
         setEntries(entries);
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof ACL)
+            _populate((ACL) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(ACL o) {
+        super._populate(o);
+        entries = CloneUtils.cloneList(o.entries);
+    }
 
     @Override
     protected ACL create(Map<Principal, Permission> entryMap) {

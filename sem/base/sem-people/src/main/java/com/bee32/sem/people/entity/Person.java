@@ -16,6 +16,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.icsf.principal.User;
+import com.bee32.plover.orm.entity.CloneUtils;
 import com.bee32.sem.people.Gender;
 
 @Entity
@@ -46,7 +47,23 @@ public class Person
         sidType = predefined(PartySidTypes.class).IDENTITYCARD;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof Person)
+            _populate((Person) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(Person o) {
+        super._populate(o);
+        sex = o.sex;
+        locale = o.locale;
+        timeZone = o.timeZone;
+        theme = o.theme;
+        censusRegister = o.censusRegister;
+        roles = CloneUtils.cloneSet(o.roles);
+    }
 
     @Override
     public void retarget(Object o) {

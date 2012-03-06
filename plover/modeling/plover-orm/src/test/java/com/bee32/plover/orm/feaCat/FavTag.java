@@ -12,7 +12,20 @@ public abstract class FavTag<T>
     T who;
     String tag;
 
-X-Population
+    @SuppressWarnings("unchecked")
+    @Override
+    public void populate(Object source) {
+        if (source instanceof FavTag)
+            _populate((FavTag<T>) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(FavTag<T> o) {
+        super._populate(o);
+        who = o.who;
+        tag = o.tag;
+    }
 
     @ManyToOne
     public T getWho() {

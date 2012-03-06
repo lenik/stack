@@ -12,6 +12,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.plover.orm.entity.CloneUtils;
 import com.bee32.sem.process.base.ProcessEntity;
 
 /**
@@ -28,7 +29,20 @@ public class PurchaseRequest
     List<PurchaseRequestItem> items = new ArrayList<PurchaseRequestItem>();
     List<PurchaseTakeIn> takeIns = new ArrayList<PurchaseTakeIn>();
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof PurchaseRequest)
+            _populate((PurchaseRequest) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(PurchaseRequest o) {
+        super._populate(o);
+        plans = new ArrayList<MaterialPlan>(o.plans);
+        items = CloneUtils.cloneList(o.items);
+        takeIns = CloneUtils.cloneList(o.takeIns);
+    }
 
     @OneToMany(mappedBy = "purchaseRequest")
     public List<MaterialPlan> getPlans() {

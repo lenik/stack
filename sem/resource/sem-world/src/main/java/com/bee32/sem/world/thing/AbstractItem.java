@@ -37,14 +37,22 @@ public abstract class AbstractItem
     public AbstractItem() {
     }
 
-    public AbstractItem(AbstractItem item) {
-        quantity = item.quantity;
-        price = item.price.clone();
-        nativePrice = item.nativePrice;
-        nativeTotal = item.nativeTotal;
+    @Override
+    public void populate(Object source) {
+        if (source instanceof AbstractItem)
+            _populate((AbstractItem) source);
+        else
+            super.populate(source);
     }
 
-X-Population
+    protected void _populate(AbstractItem o) {
+        super._populate(o);
+        index = o.index;
+        quantity = o.quantity;
+        price = o.price;
+        nativePrice = o.nativePrice;
+        nativeTotal = o.nativeTotal;
+    }
 
     @Transient
     public String getDisplayName() {

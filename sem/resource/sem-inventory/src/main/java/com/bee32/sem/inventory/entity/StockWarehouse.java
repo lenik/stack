@@ -35,7 +35,20 @@ public class StockWarehouse
 
     Person manager; // Person in charge.
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof StockWarehouse)
+            _populate((StockWarehouse) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(StockWarehouse o) {
+        super._populate(o);
+        address = o.address;
+        phone = o.phone;
+        manager = o.manager;
+    }
 
     /**
      * 仓库名称

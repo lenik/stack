@@ -18,18 +18,26 @@ public abstract class EntityAuto<K extends Serializable>
     K id;
 
     public EntityAuto() {
-        super();
+        this(null);
     }
 
     public EntityAuto(String name) {
         super(name);
-    }
-
-    {
         autoId = true;
     }
 
-X-Population
+    @SuppressWarnings("unchecked")
+    @Override
+    public void populate(Object source) {
+        if (source instanceof EntityAuto)
+            _populate((EntityAuto<K>) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(EntityAuto<K> o) {
+        super._populate(o);
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idgen")

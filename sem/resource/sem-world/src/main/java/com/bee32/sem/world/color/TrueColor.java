@@ -3,8 +3,10 @@ package com.bee32.sem.world.color;
 import java.awt.Color;
 import java.io.Serializable;
 
+import com.bee32.plover.orm.entity.IPopulatable;
+
 public class TrueColor
-        implements Serializable {
+        implements Serializable, Cloneable, IPopulatable {
 
     private static final long serialVersionUID = 1L;
 
@@ -45,6 +47,20 @@ public class TrueColor
 
     public TrueColor(Color awtColor) {
         setAwtColor(awtColor);
+    }
+
+    @Override
+    public TrueColor clone() {
+        return new TrueColor(alpha, red, green, blue);
+    }
+
+    @Override
+    public void populate(Object source) {
+        TrueColor o = (TrueColor) source;
+        alpha = o.alpha;
+        red = o.red;
+        green = o.green;
+        blue = o.blue;
     }
 
     public long getLong() {

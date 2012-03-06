@@ -33,7 +33,20 @@ public class ChanceParty
     Party party;
     String role;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof ChanceParty)
+            _populate((ChanceParty) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(ChanceParty o) {
+        super._populate(o);
+        chance = o.chance;
+        party = o.party;
+        role = o.role;
+    }
 
     @NaturalId
     @ManyToOne(optional = false)

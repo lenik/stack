@@ -27,7 +27,19 @@ public abstract class DigestEntity
     String digestEncoded;
     Boolean digestValidated;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof DigestEntity)
+            _populate((DigestEntity) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(DigestEntity o) {
+        super._populate(o);
+        digestEncoded = o.digestEncoded;
+        digestValidated = o.digestValidated;
+    }
 
     @Id
     @Column(length = ID_LENGTH)

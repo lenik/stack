@@ -36,7 +36,7 @@ public class Realm
 
     private static final long serialVersionUID = 1L;
 
-    protected Set<Principal> principals;
+    protected Set<Principal> principals = new HashSet<Principal>();
     protected transient Set<User> users;
     protected transient Set<Group> groups;
     protected transient Set<Role> roles;
@@ -49,7 +49,21 @@ public class Realm
         super(name);
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof Realm)
+            _populate((Realm) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(Realm o) {
+        super._populate(o);
+        principals = new HashSet<Principal>(o.principals);
+        users = null;
+        groups = null;
+        roles = null;
+    }
 
     @NaturalId
     @Column(length = 30, unique = true)
@@ -85,17 +99,12 @@ X-Population
     /*            */inverseJoinColumns = @JoinColumn(name = "realm"))
     @Override
     public Set<Principal> getPrincipals() {
-        if (principals == null) {
-            synchronized (this) {
-                if (principals == null) {
-                    principals = new HashSet<Principal>();
-                }
-            }
-        }
         return principals;
     }
 
     public void setPrincipals(Set<Principal> principals) {
+        if (principals == null)
+            throw new NullPointerException("principals");
         this.principals = principals;
     }
 
@@ -107,7 +116,7 @@ X-Population
                 if (users == null) {
                     users = new HashSet<User>();
 
-                    for (Principal principal : getPrincipals())
+                    for (Principal principal : principals)
                         if (principal instanceof User)
                             users.add((User) principal);
                 }
@@ -124,7 +133,7 @@ X-Population
                 if (groups == null) {
                     groups = new HashSet<Group>();
 
-                    for (Principal principal : getPrincipals())
+                    for (Principal principal : principals)
                         if (principal instanceof Group)
                             groups.add((Group) principal);
                 }
@@ -141,7 +150,7 @@ X-Population
                 if (roles == null) {
                     roles = new HashSet<Role>();
 
-                    for (Principal principal : getPrincipals())
+                    for (Principal principal : principals)
                         if (principal instanceof Role)
                             roles.add((Role) principal);
                 }

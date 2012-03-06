@@ -40,7 +40,22 @@ public class StockPeriod
     public StockPeriod() {
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof StockPeriod)
+            _populate((StockPeriod) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(StockPeriod o) {
+        super._populate(o);
+        inventory = o.inventory;
+        type = o.type;
+        checkedOut = o.checkedOut;
+        packOrders = new ArrayList<AbstractStockOrder<?>>(o.packOrders);
+        orders = new ArrayList<AbstractStockOrder<?>>(o.orders);
+    }
 
     @ManyToOne(optional = false)
     public StockInventory getInventory() {

@@ -23,7 +23,18 @@ public class EventPriority
         super(priority, alias, description);
     }
 
-X-Population
+
+    @Override
+    public void populate(Object source) {
+        if (source instanceof EventPriority)
+            _populate((EventPriority) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(EventPriority o) {
+        super._populate(o);
+    }
 
     @Transient
     public int getPriority() {

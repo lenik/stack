@@ -19,6 +19,7 @@ import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.orm.entity.CloneUtils;
 import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.inventory.entity.Material;
@@ -56,7 +57,27 @@ public class PurchaseRequestItem
 
     int inquiryCount;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof PurchaseRequestItem)
+            _populate((PurchaseRequestItem) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(PurchaseRequestItem o) {
+        super._populate(o);
+        parent = o.parent;
+        index = o.index;
+        material = o.material;
+        requiredQuantity = o.requiredQuantity;
+        quantity = o.quantity;
+        preferredSupplier = o.preferredSupplier;
+        additionalRequirement = o.additionalRequirement;
+        inquiries = CloneUtils.cloneList(o.inquiries);
+        acceptedInquiry = o.acceptedInquiry;
+        destWarehouse = o.destWarehouse;
+    }
 
     @NaturalId
     @ManyToOne(optional = false)

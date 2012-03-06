@@ -71,7 +71,33 @@ public class Mail
 
     List<MailDelivery> deliveries = new ArrayList<MailDelivery>();
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof Mail)
+            _populate((Mail) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(Mail o) {
+        super._populate(o);
+        type = o.type;
+        priority = o.priority;
+        from = o.from;
+        recipient = o.recipient;
+        replyTo = o.replyTo;
+        fromUser = o.fromUser;
+        replyToUser = o.replyToUser;
+        recipientUsers = new ArrayList<User>(o.recipientUsers);
+        cc = o.cc;
+        bcc = o.bcc;
+        subject = o.subject;
+        body = o.body;
+        theme = o.theme;
+        footer = o.footer;
+        referrer = o.referrer;
+        deliveries = new ArrayList<MailDelivery>(o.deliveries);
+    }
 
     /**
      * 邮件类型，如：公文、帖子、系统广播、E-Mail等。

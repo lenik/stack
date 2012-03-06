@@ -19,7 +19,19 @@ public class Formula
     IFormulaContext context;
     String formula;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof Formula)
+            _populate((Formula) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(Formula o) {
+        super._populate(o);
+        context = o.context;
+        formula = o.formula;
+    }
 
     @Transient
     public IFormulaContext getContext() {

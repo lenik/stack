@@ -34,7 +34,7 @@ public class SingleVerifierPolicy
     public static final int END = -1;
     static final Set<Integer> predefinedStages = setOf(VERIFYING_1, END);
 
-    private Set<Principal> responsibles;
+    private Set<Principal> responsibles = new HashSet<Principal>();
 
     public SingleVerifierPolicy() {
         this(new Principal[0]);
@@ -54,7 +54,18 @@ public class SingleVerifierPolicy
         this.responsibles = new HashSet<Principal>(responsibles);
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof SingleVerifierPolicy)
+            _populate((SingleVerifierPolicy) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(SingleVerifierPolicy o) {
+        super._populate(o);
+        responsibles = new HashSet<Principal>(o.responsibles);
+    }
 
     @Transient
     @Override
@@ -77,7 +88,7 @@ X-Population
     @Override
     public Set<Principal> getStageResponsibles(Object stage) { //
         if (stage.equals(VERIFYING_1))
-            return getResponsibles();
+            return responsibles;
         else
             return Collections.emptySet();
     }
@@ -87,26 +98,21 @@ X-Population
     /*        */joinColumns = @JoinColumn(name = "allowList"), //
     /*        */inverseJoinColumns = @JoinColumn(name = "responsible"))
     public Set<Principal> getResponsibles() {
-        if (responsibles == null) {
-            synchronized (this) {
-                if (responsibles == null) {
-                    responsibles = new HashSet<Principal>();
-                }
-            }
-        }
         return responsibles;
     }
 
     public void setResponsibles(Set<Principal> responsibles) {
+        if (responsibles == null)
+            throw new NullPointerException("responsibles");
         this.responsibles = responsibles;
     }
 
     public void addResponsible(Principal responsible) {
-        getResponsibles().add(responsible);
+        responsibles.add(responsible);
     }
 
     public void removeResponsible(Principal responsible) {
-        getResponsibles().remove(responsible);
+        responsibles.remove(responsible);
     }
 
     @Override

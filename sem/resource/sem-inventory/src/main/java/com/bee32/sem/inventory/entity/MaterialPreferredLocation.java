@@ -35,7 +35,19 @@ public class MaterialPreferredLocation
         this.location = location;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof MaterialPreferredLocation)
+            _populate((MaterialPreferredLocation) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(MaterialPreferredLocation o) {
+        super._populate(o);
+        material = o.material;
+        location = o.location;
+    }
 
     /**
      * 物料

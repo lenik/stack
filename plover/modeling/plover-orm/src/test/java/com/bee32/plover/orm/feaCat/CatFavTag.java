@@ -12,6 +12,16 @@ public class CatFavTag
 
     Integer id;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof CatFavTag)
+            _populate((CatFavTag) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(CatFavTag o) {
+        super._populate(o);
+    }
 
 }

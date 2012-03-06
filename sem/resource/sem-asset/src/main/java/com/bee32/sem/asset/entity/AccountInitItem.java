@@ -13,7 +13,18 @@ public class AccountInitItem
 
     AccountInit init;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof AccountInitItem)
+            _populate((AccountInitItem) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(AccountInitItem o) {
+        super._populate(o);
+        init = o.init;
+    }
 
     @ManyToOne(/* optional = false: =true will break the general AccountTickItem. */)
     public AccountInit getInit() {

@@ -40,7 +40,26 @@ public class PurchaseInquiry
     String other;
     String comment;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof PurchaseInquiry)
+            _populate((PurchaseInquiry) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(PurchaseInquiry o) {
+        super._populate(o);
+        parent = o.parent;
+        supplier = o.supplier;
+        price = o.price;
+        deliveryDate = o.deliveryDate;
+        quality = o.quality;
+        paymentTerm = o.paymentTerm;
+        afterService = o.afterService;
+        other = o.other;
+        comment = o.comment;
+    }
 
     /**
      * 需要询价的采购项目

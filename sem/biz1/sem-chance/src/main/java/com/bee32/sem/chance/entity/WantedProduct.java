@@ -11,6 +11,7 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.plover.orm.entity.CloneUtils;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.world.thing.Thing;
@@ -33,7 +34,21 @@ public class WantedProduct
     List<WantedProductQuotation> quotations = new ArrayList<>();
     Material decidedMaterial;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof WantedProduct)
+            _populate((WantedProduct) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(WantedProduct o) {
+        super._populate(o);
+        chance = o.chance;
+        attributes = CloneUtils.cloneList(o.attributes);
+        quotations = CloneUtils.cloneList(o.quotations);
+        decidedMaterial = o.decidedMaterial;
+    }
 
     @ManyToOne(optional = false)
     public Chance getChance() {

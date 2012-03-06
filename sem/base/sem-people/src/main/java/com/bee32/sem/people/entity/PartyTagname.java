@@ -15,7 +15,7 @@ public class PartyTagname
     private static final long serialVersionUID = 1L;
 
     boolean internal;
-    Set<Party> instances;
+    Set<Party> instances = new HashSet<Party>();
 
     public PartyTagname() {
         super();
@@ -30,7 +30,19 @@ public class PartyTagname
         this.internal = internal;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof PartyTagname)
+            _populate((PartyTagname) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(PartyTagname o) {
+        super._populate(o);
+        internal = o.internal;
+        instances = new HashSet<Party>(o.instances);
+    }
 
     public boolean isInternal() {
         return internal;
@@ -45,13 +57,7 @@ X-Population
      */
     @ManyToMany(mappedBy = "tags")
     public Set<Party> getInstances() {
-        if (instances == null) {
-            synchronized (this) {
-                if (instances == null) {
-                    instances = new HashSet<Party>();
-                }
-            }
-        }
+        instances = new HashSet<Party>();
         return instances;
     }
 

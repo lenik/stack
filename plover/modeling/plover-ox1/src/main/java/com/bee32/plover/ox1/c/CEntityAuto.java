@@ -20,18 +20,27 @@ public abstract class CEntityAuto<K extends Serializable>
     K id;
 
     public CEntityAuto() {
-        super();
+        this(null);
     }
 
     public CEntityAuto(String name) {
         super(name);
-    }
-
-    {
         autoId = true;
     }
 
-X-Population
+    @SuppressWarnings("unchecked")
+    @Override
+    public void populate(Object source) {
+        if (source instanceof CEntityAuto)
+            _populate((CEntityAuto<K>) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(CEntityAuto <K>o) {
+        super._populate(o);
+        // this. = o.;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idgen")

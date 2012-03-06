@@ -54,7 +54,26 @@ public class ChanceAction
         setEndTime(new Date());
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof ChanceAction)
+            _populate((ChanceAction) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(ChanceAction o) {
+        super._populate(o);
+        plan = o.plan;
+        parties = new ArrayList<Party>(o.parties);
+        partners = new ArrayList<User>(o.partners);
+        actor = o.actor;
+        style = o.style;
+        moreInfo = o.moreInfo;
+        spending = o.spending;
+        chance = o.chance;
+        stage = o.stage;
+    }
 
     /**
      * 工作日志类型

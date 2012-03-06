@@ -28,7 +28,20 @@ public class EventStatus
         super(state.getValue(), alias, description);
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof EventStatus)
+            _populate((EventStatus) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(EventStatus o) {
+        super._populate(o);
+        flagsMask = o.flagsMask;
+        closed = o.closed;
+        state = o.state;
+    }
 
     @Column(nullable = false)
     public int getFlagsMask() {

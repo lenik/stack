@@ -67,7 +67,20 @@ public class R_ACE
         setMode(mode);
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof R_ACE)
+            _populate((R_ACE) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(R_ACE o) {
+        super._populate(o);
+        qualifiedName = o.qualifiedName;
+        principal = o.principal;
+        permission = o.permission.clone();
+    }
 
     @NaturalId
     @Column(name = "qName", length = 100, nullable = false)

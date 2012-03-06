@@ -16,6 +16,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.plover.orm.cache.Redundant;
+import com.bee32.plover.orm.entity.CloneUtils;
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.sem.process.base.ProcessEntity;
 
@@ -47,7 +48,26 @@ public class Chance
 
     String address;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof Chance)
+            _populate((Chance) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(Chance o) {
+        super._populate(o);
+        category = o.category;
+        source = o.source;
+        subject = o.subject;
+        content = o.content;
+        parties = CloneUtils.cloneList(o.parties);
+        products = CloneUtils.cloneList(o.products);
+        actions = new ArrayList<ChanceAction>(o.actions);
+        stage = o.stage;
+        address = o.address;
+    }
 
     /**
      * 类型

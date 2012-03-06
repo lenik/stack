@@ -45,23 +45,29 @@ public class StockOrderItem
     public StockOrderItem() {
     }
 
-    public StockOrderItem(StockOrderItem item) {
-        super(item);
-        parent = item.parent;
-        material = item.material;
-        batchArray = item.batchArray.clone();
-        expirationDate = item.expirationDate;
-        location = item.location;
-        state = item.state;
-    }
-
     public StockOrderItem(AbstractStockOrder<?> parent) {
         if (parent == null)
             throw new NullPointerException("parent");
         this.parent = parent;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof StockOrderItem)
+            _populate((StockOrderItem) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(StockOrderItem o) {
+        super._populate(o);
+        parent = o.parent;
+        material = o.material;
+        batchArray = o.batchArray.clone();
+        expirationDate = o.expirationDate;
+        location = o.location;
+        state = o.state;
+    }
 
     /**
      * 所属订单

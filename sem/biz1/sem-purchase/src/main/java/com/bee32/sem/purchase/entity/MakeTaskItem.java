@@ -41,7 +41,23 @@ public class MakeTaskItem
     Date deadline;
     String status;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof MakeTaskItem)
+            _populate((MakeTaskItem) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(MakeTaskItem o) {
+        super._populate(o);
+        task = o.task;
+        index = o.index;
+        part = o.part;
+        quantity = o.quantity;
+        deadline = o.deadline;
+        status = o.status;
+    }
 
     @NaturalId
     @ManyToOne(optional = false)

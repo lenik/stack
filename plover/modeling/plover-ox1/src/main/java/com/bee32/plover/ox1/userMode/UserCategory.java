@@ -11,6 +11,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.plover.orm.entity.CloneUtils;
 import com.bee32.plover.ox1.dict.NameDict;
 
 /**
@@ -42,7 +43,21 @@ public class UserCategory
         setType(type);
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof UserCategory)
+            _populate((UserCategory) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(UserCategory o) {
+        super._populate(o);
+        type = o.type;
+        precision = o.precision;
+        scale = o.scale;
+        items = CloneUtils.cloneList(o.items);
+    }
 
     @Transient
     public UserDataType getType() {

@@ -29,7 +29,19 @@ public class PersonLogin
     Person person;
     User user;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof PersonLogin)
+            _populate((PersonLogin) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(PersonLogin o) {
+        super._populate(o);
+        person = o.person;
+        user = o.user;
+    }
 
     @NaturalId
     @OneToOne(optional = false)

@@ -19,7 +19,18 @@ public abstract class ProcessEntity
 
     SingleVerifierWithNumberSupport verifyContext;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof ProcessEntity)
+            _populate((ProcessEntity) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(ProcessEntity o) {
+        super._populate(o);
+        verifyContext = (SingleVerifierWithNumberSupport) o.verifyContext.clone();
+    }
 
     @Override
     protected void createTransients() {

@@ -31,7 +31,25 @@ public class MailFilter
     int chMask;
     int chBits;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof MailFilter)
+            _populate((MailFilter) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(MailFilter o) {
+        super._populate(o);
+        enabled = o.enabled;
+        order = o.order;
+        expr = o.expr;
+        source = o.source;
+        target = o.target;
+        transferTo = o.transferTo;
+        chMask = o.chMask;
+        chBits = o.chBits;
+    }
 
     @Column(nullable = false)
     public boolean isEnabled() {

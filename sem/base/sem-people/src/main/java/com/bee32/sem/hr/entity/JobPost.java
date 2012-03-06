@@ -25,6 +25,16 @@ public class JobPost
         super(name, label, description);
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof JobPost)
+            _populate((JobPost) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(JobPost o) {
+        super._populate(o);
+    }
 
 }

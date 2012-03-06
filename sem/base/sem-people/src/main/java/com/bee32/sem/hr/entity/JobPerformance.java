@@ -25,6 +25,16 @@ public class JobPerformance
         super(name, label, description);
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof JobPerformance)
+            _populate((JobPerformance) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(JobPerformance o) {
+        super._populate(o);
+    }
 
 }

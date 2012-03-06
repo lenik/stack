@@ -42,7 +42,19 @@ public class PaletteEntry
         this.trueColor = color;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof PaletteEntry)
+            _populate((PaletteEntry) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(PaletteEntry o) {
+        super._populate(o);
+        palette = o.palette;
+        trueColor.populate(o.trueColor);
+    }
 
     /**
      * 调色板

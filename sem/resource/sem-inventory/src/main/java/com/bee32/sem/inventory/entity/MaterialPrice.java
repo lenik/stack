@@ -39,7 +39,20 @@ public class MaterialPrice
 // Date date = LocalDateUtil.truncate(new Date());
     MCValue price = new MCValue();
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof MaterialPrice)
+            _populate((MaterialPrice) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(MaterialPrice o) {
+        super._populate(o);
+        material = o.material;
+        date = o.date;
+        price = o.price;
+    }
 
     /**
      * 物料

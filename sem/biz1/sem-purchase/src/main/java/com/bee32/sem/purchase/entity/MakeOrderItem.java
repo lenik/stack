@@ -45,7 +45,24 @@ public class MakeOrderItem
 
     boolean nameplate = true;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof MakeOrderItem)
+            _populate((MakeOrderItem) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(MakeOrderItem o) {
+        super._populate(o);
+        parent = o.parent;
+        index = o.index;
+        part = o.part;
+        deadline = o.deadline;
+        externalProductName = o.externalProductName;
+        externalModelSpec = o.externalModelSpec;
+        nameplate = o.nameplate;
+    }
 
     @NaturalId
     @ManyToOne(optional = false)
@@ -121,7 +138,7 @@ X-Population
     }
 
     /**
-     * @return true-使用物料名称，规格，参数     false-使用外部物料名称，规格，参数
+     * @return true-使用物料名称，规格，参数 false-使用外部物料名称，规格，参数
      */
     @DefaultValue("true")
     @Column(nullable = false)

@@ -43,16 +43,16 @@ public abstract class Thing<X extends XPool<?>>
         super(name);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void populate(Object source) {
-        if (source instanceof Thing) {
-            Thing<?> o = (Thing<?>) source;
-            _populate(o);
-        } else
+        if (source instanceof Thing)
+            _populate((Thing<X>) source);
+        else
             super.populate(source);
     }
 
-    protected void _populate(Thing<?> o) {
+    protected void _populate(Thing<X> o) {
         super._populate(o);
         serial = o.serial;
         barCode = o.barCode;

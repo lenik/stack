@@ -21,6 +21,7 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.DefaultValue;
 
 import com.bee32.plover.orm.cache.Redundant;
+import com.bee32.plover.orm.entity.CloneUtils;
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
@@ -72,7 +73,31 @@ public class Part
         validDateTo = cal.getTime();
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof Part)
+            _populate((Part) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(Part o) {
+        super._populate(o);
+        obsolete = o.obsolete;
+        children = CloneUtils.cloneList(o.children);
+        xrefs = new ArrayList<PartItem>(o.xrefs);
+        xrefCount = o.xrefCount;
+        target = o.target;
+        valid = o.valid;
+        validDateFrom = o.validDateFrom;
+        validDateTo = o.validDateTo;
+        priceStrategy = o.priceStrategy;
+        wage = o.wage;
+        otherFee = o.otherFee;
+        electricityFee = o.electricityFee;
+        equipmentCost = o.equipmentCost;
+        category = o.category;
+    }
 
     /**
      * 上一个版本。
@@ -98,9 +123,9 @@ X-Population
         this.target = target;
     }
 
-
     /**
      * 冗余物料分类，便于统计某个物料分类下的BOM数量
+     *
      * @return
      */
     @ManyToOne

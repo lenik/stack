@@ -25,7 +25,18 @@ public class PartySidType
         this.category = category;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof PartySidType)
+            _populate((PartySidType) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(PartySidType o) {
+        super._populate(o);
+        category = o.category;
+    }
 
     @Column(nullable = false)
     public char getCategory() {

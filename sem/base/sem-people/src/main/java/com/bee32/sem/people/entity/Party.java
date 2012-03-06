@@ -33,6 +33,7 @@ import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.orm.entity.CloneUtils;
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.xp.EntityExt;
 
@@ -86,7 +87,31 @@ public abstract class Party
         setLabel(label);
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof Party)
+            _populate((Party) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(Party o) {
+        super._populate(o);
+        fullName = o.fullName;
+        sidType = o.sidType;
+        sid = o.sid;
+        employee = o.employee;
+        customer = o.customer;
+        supplier = o.supplier;
+        birthday = o.birthday;
+        interests = o.interests;
+        bank = o.bank;
+        bankAccount = o.bankAccount;
+        memo = o.memo;
+        tags = new HashSet<PartyTagname>(o.tags);
+        contacts = CloneUtils.cloneList(o.contacts);
+        records = CloneUtils.cloneList(o.records);
+    }
 
     @Override
     public void retarget(Object o) {

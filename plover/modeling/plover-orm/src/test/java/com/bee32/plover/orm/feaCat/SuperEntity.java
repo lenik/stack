@@ -25,7 +25,18 @@ public abstract class SuperEntity<K extends Serializable>
         super(name);
     }
 
-X-Population
+    @SuppressWarnings("unchecked")
+    @Override
+    public void populate(Object source) {
+        if (source instanceof SuperEntity)
+            _populate((SuperEntity<K>) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(SuperEntity<K> o) {
+        super._populate(o);
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idgen")

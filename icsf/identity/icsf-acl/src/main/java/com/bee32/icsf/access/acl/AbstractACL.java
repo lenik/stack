@@ -29,7 +29,18 @@ public abstract class AbstractACL<self_t extends AbstractACL<self_t>>
         super(parent);
     }
 
-X-Population
+    @SuppressWarnings("unchecked")
+    @Override
+    public void populate(Object source) {
+        if (source instanceof AbstractACL)
+            _populate((AbstractACL<self_t>) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(AbstractACL<self_t> o) {
+        super._populate(o);
+    }
 
     /**
      * Used to generate a flatten ACL.

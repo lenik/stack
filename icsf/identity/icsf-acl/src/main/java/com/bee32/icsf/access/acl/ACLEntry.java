@@ -49,7 +49,20 @@ public class ACLEntry
         this.permission = permission;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof ACLEntry)
+            _populate((ACLEntry) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(ACLEntry o) {
+        super._populate(o);
+        acl = o.acl;
+        principal = o.principal;
+        permission = o.permission.clone();
+    }
 
     @NaturalId
     @ManyToOne

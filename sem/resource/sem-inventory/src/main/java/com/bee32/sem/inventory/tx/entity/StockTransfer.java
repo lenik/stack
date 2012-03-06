@@ -6,6 +6,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
+import com.bee32.plover.orm.entity.CloneUtils;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
@@ -29,7 +30,20 @@ public class StockTransfer
 
     Person transferredBy;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof StockTransfer)
+            _populate((StockTransfer) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(StockTransfer o) {
+        super._populate(o);
+        source = CloneUtils.clone(o.source);
+        dest = CloneUtils.clone(o.dest);
+        transferredBy = o.transferredBy;
+    }
 
     @ManyToOne
     public StockWarehouse getSourceWarehouse() {
@@ -70,7 +84,7 @@ X-Population
      *
      * @see StockOrderSubject#XFER_IN
      */
-    @OneToOne(/*orphanRemoval = true*/)
+    @OneToOne(/* orphanRemoval = true */)
     @JoinColumn(name = "s2")
     // @Cascade(CascadeType.ALL)
     public StockOrder getDest() {

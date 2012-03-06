@@ -10,6 +10,8 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.plover.orm.entity.CloneUtils;
+
 @Entity
 @DiscriminatorValue(".ST")
 public abstract class StockTrade
@@ -19,7 +21,18 @@ public abstract class StockTrade
 
     List<StockTradeItem> items = new ArrayList<StockTradeItem>();
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof StockTrade)
+            _populate((StockTrade) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(StockTrade o) {
+        super._populate(o);
+        items = CloneUtils.cloneList(o.items);
+    }
 
     @OneToMany(mappedBy = "trade", orphanRemoval = true)
     @Cascade(CascadeType.ALL)

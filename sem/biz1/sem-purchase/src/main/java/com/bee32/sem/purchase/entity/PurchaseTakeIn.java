@@ -23,7 +23,18 @@ public class PurchaseTakeIn
 
     PurchaseRequest purchaseRequest;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof PurchaseTakeIn)
+            _populate((PurchaseTakeIn) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(PurchaseTakeIn o) {
+        super._populate(o);
+        purchaseRequest = o.purchaseRequest;
+    }
 
     @ManyToOne(optional = false)
     public PurchaseRequest getPurchaseRequest() {

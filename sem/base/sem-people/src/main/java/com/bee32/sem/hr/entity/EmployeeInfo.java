@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -14,6 +13,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
+import com.bee32.plover.orm.entity.CloneUtils;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.sem.people.entity.Person;
 
@@ -26,7 +29,7 @@ public class EmployeeInfo
 
     Person person;
 
-    JobPost role;
+    JobPost role; // =predefined(JobPosts.class);
     JobTitle title;
     JobPerformance jobPerformance;
     PersonEducationType education = PersonEducationType.L2;
@@ -36,10 +39,31 @@ public class EmployeeInfo
     Date employedDate;
     Date resignedDate;
 
-    List<LaborContract> laborContracts;
+    List<LaborContract> laborContracts = new ArrayList<LaborContract>();
     List<PersonSkill> skills = new ArrayList<PersonSkill>();
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof EmployeeInfo)
+            _populate((EmployeeInfo) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(EmployeeInfo o) {
+        super._populate(o);
+        person = o.person;
+        role = o.role;
+        title = o.title;
+        jobPerformance = o.jobPerformance;
+        education = o.education;
+        duty = o.duty;
+        workAbility = o.workAbility;
+        employedDate = o.employedDate;
+        resignedDate = o.resignedDate;
+        laborContracts = CloneUtils.cloneList(o.laborContracts);
+        skills = CloneUtils.cloneList(o.skills);
+    }
 
     @ManyToOne
     public Person getPerson() {
@@ -165,7 +189,8 @@ X-Population
      *
      * @return
      */
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employeeInfo")
+    @OneToMany(mappedBy = "employeeInfo", orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
     public List<LaborContract> getLaborContracts() {
         return laborContracts;
     }
@@ -179,7 +204,8 @@ X-Population
      *
      * @return
      */
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employeeInfo")
+    @OneToMany(mappedBy = "employeeInfo", orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
     public List<PersonSkill> getSkills() {
         return skills;
     }

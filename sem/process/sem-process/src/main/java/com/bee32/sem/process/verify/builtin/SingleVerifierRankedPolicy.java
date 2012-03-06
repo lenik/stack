@@ -35,7 +35,18 @@ public class SingleVerifierRankedPolicy
     private List<SingleVerifierLevel> levels;
     private LevelMap levelMap;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof SingleVerifierRankedPolicy)
+            _populate((SingleVerifierRankedPolicy) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(SingleVerifierRankedPolicy o) {
+        super._populate(o);
+        setLevels(o.getLevels());
+    }
 
     /**
      * @return Non-null range set.

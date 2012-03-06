@@ -49,7 +49,20 @@ public class MaterialAttribute
         setValue(value);
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof MaterialAttribute)
+            _populate((MaterialAttribute) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(MaterialAttribute o) {
+        super._populate(o);
+        material = o.material;
+        name = o.name;
+        value = o.value;
+    }
 
     @NaturalId
     @ManyToOne

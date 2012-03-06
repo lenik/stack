@@ -22,7 +22,18 @@ public abstract class LongNumberDict
         this.number = number;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof LongNumberDict)
+            _populate((LongNumberDict) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(LongNumberDict o) {
+        super._populate(o);
+        this.number = o.number;
+    }
 
     @Transient
     @Override

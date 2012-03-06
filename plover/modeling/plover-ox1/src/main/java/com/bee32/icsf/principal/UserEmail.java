@@ -37,7 +37,21 @@ public class UserEmail
         this.address = address;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof UserEmail)
+            _populate((UserEmail) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(UserEmail o) {
+        super._populate(o);
+        user = o.user;
+        rank = o.rank;
+        address = o.address;
+        status = o.status;
+    }
 
     @NaturalId
     @ManyToOne(optional = false)

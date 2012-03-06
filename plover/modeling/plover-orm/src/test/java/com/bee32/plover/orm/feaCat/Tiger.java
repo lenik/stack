@@ -31,7 +31,20 @@ public class Tiger
         super(name, color);
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof Tiger)
+            _populate((Tiger) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(Tiger o) {
+        super._populate(o);
+        power = o.power;
+        birthday = o.birthday;
+        conf = o.conf;
+    }
 
     public int getPower() {
         return power;

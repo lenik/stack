@@ -16,6 +16,8 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.plover.orm.entity.CloneUtils;
+
 @Entity
 @DiscriminatorValue("U")
 public class User
@@ -47,7 +49,22 @@ public class User
         this.primaryRole = primaryRole;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof User)
+            _populate((User) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(User o) {
+        super._populate(o);
+        primaryGroup = o.primaryGroup;
+        primaryRole = o.primaryRole;
+        assignedGroups = new ArrayList<Group>(o.assignedGroups);
+        assignedRoles = new ArrayList<Role>(o.assignedRoles);
+        emails = CloneUtils.cloneList(o.emails);
+    }
 
     @Override
     public void retarget(Object o) {

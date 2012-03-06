@@ -16,7 +16,18 @@ public class StocktakingOrderItem
 
     BigDecimal expectedQuantity;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof StocktakingOrderItem)
+            _populate((StocktakingOrderItem) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(StocktakingOrderItem o) {
+        super._populate(o);
+        expectedQuantity = o.expectedQuantity;
+    }
 
     @Column(name = "quantity1", precision = QTY_ITEM_PRECISION, scale = QTY_ITEM_SCALE)
     public BigDecimal getExpectedQuantity() {

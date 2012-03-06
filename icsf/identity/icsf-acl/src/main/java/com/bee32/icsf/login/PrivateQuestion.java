@@ -18,6 +18,17 @@ public class PrivateQuestion
         super(name, label);
     }
 
-X-Population
+
+    @Override
+    public void populate(Object source) {
+        if (source instanceof PrivateQuestion)
+            _populate((PrivateQuestion) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(PrivateQuestion o) {
+        super._populate(o);
+    }
 
 }

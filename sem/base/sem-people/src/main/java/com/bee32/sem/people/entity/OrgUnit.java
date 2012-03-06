@@ -11,6 +11,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 import com.bee32.icsf.principal.Group;
+import com.bee32.plover.orm.entity.CloneUtils;
 import com.bee32.plover.ox1.tree.TreeEntityAuto;
 
 @Entity
@@ -25,7 +26,21 @@ public class OrgUnit
     Group forWhichGroup;
     List<PersonRole> roles = new ArrayList<PersonRole>();
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof OrgUnit)
+            _populate((OrgUnit) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(OrgUnit o) {
+        super._populate(o);
+        org = o.org;
+        contact = (Contact) o.contact.clone();
+        forWhichGroup = o.forWhichGroup;
+        roles = CloneUtils.cloneList(o.roles);
+    }
 
     @Override
     public void retarget(Object o) {

@@ -26,7 +26,21 @@ public abstract class XPool<Es extends Entity<?>>
 
     XPoolModel model;
 
-X-Population
+    @SuppressWarnings("unchecked")
+    @Override
+    public void populate(Object source) {
+        if (source instanceof XPool)
+            _populate((XPool<? extends Entity<?>>) source);
+        else
+            super.populate(source);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected void _populate(XPool<? extends Entity<?>> o) {
+        super._populate(o);
+        source = (Es) o.source;
+        model = o.model;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idgen")

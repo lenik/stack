@@ -43,7 +43,29 @@ public abstract class XPool30<Es extends Entity<?>>
 
     String aaaa1;
 
-X-Population
+    @SuppressWarnings("unchecked")
+    @Override
+    public void populate(Object source) {
+        if (source instanceof XPool30)
+            _populate((XPool30<? extends Entity<?>>) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(XPool30<? extends Entity<?>> o) {
+        super._populate(o);
+        int5 = o.int5;
+        int6 = o.int6;
+        int7 = o.int7;
+        int8 = o.int8;
+        long3 = o.long3;
+        long4 = o.long4;
+        float3 = o.float3;
+        float4 = o.float4;
+        double3 = o.double3;
+        double4 = o.double4;
+        aaaa1 = o.aaaa1;
+    }
 
     @Column
     public Integer getInt5() {

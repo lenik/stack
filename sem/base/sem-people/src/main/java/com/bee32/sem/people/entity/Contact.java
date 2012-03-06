@@ -56,7 +56,27 @@ public class Contact
         this.category = category;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof Contact)
+            _populate((Contact) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(Contact o) {
+        super._populate(o);
+        party = o.party;
+        category = o.category;
+        address = o.address;
+        postCode = o.postCode;
+        tel = o.tel;
+        mobile = o.mobile;
+        fax = o.fax;
+        email = o.email;
+        website = o.website;
+        qq = o.qq;
+    }
 
     /**
      * 联系人分类

@@ -10,6 +10,7 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.plover.orm.entity.CloneUtils;
 import com.bee32.plover.ox1.typePref.TypePrefEntity;
 
 @Entity
@@ -27,7 +28,21 @@ public class EntityInfo
 
     List<EntityColumn> columns;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof EntityInfo)
+            _populate((EntityInfo) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(EntityInfo o) {
+        super._populate(o);
+        nameOtf = o.nameOtf;
+        label = o.label;
+        description = o.description;
+        columns = CloneUtils.cloneList(o.columns);
+    }
 
     @Column(length = 20)
     public String getNameOtf() {
@@ -56,7 +71,7 @@ X-Population
         this.description = description;
     }
 
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(mappedBy = "entity", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<EntityColumn> getColumns() {
         if (columns == null) {

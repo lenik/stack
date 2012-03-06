@@ -25,7 +25,20 @@ public class PartyRecord
     Party party;
     String text = "";
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof PartyRecord)
+            _populate((PartyRecord) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(PartyRecord o) {
+        super._populate(o);
+        category = o.category;
+        party = o.party;
+        text = o.text;
+    }
 
     @ManyToOne(optional = false)
     public PartyRecordCategory getCategory() {

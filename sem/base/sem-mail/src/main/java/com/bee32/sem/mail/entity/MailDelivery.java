@@ -39,7 +39,22 @@ public class MailDelivery
         this.orientation = orientation;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof MailDelivery)
+            _populate((MailDelivery) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(MailDelivery o) {
+        super._populate(o);
+        mail = o.mail;
+        orientation = o.orientation;
+        folder = o.folder;
+        sendError = o.sendError;
+        flags.bits = o.flags.bits;
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     public Mail getMail() {

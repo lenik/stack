@@ -13,13 +13,25 @@ import com.bee32.sem.misc.Contract;
  */
 @Entity
 @DiscriminatorValue("LAB")
-public class LaborContract extends Contract {
+public class LaborContract
+        extends Contract {
 
     private static final long serialVersionUID = 1L;
 
     EmployeeInfo employeeInfo;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof LaborContract)
+            _populate((LaborContract) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(LaborContract o) {
+        super._populate(o);
+        this.employeeInfo = o.employeeInfo;
+    }
 
     @ManyToOne
     public EmployeeInfo getEmployeeInfo() {

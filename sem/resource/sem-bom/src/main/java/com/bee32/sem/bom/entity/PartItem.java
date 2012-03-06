@@ -50,7 +50,24 @@ public class PartItem
         validDateTo = cal.getTime();
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof PartItem)
+            _populate((PartItem) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(PartItem o) {
+        super._populate(o);
+        parent = o.parent;
+        part = o.part;
+        material = o.material;
+        quantity = o.quantity;
+        valid = o.valid;
+        validDateFrom = o.validDateFrom;
+        validDateTo = o.validDateTo;
+    }
 
     /**
      * 所属的部件

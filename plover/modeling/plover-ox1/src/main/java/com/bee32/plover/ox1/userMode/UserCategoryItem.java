@@ -28,7 +28,22 @@ public class UserCategoryItem
 
     String description;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof UserCategoryItem)
+            _populate((UserCategoryItem) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(UserCategoryItem o) {
+        super._populate(o);
+        category = o.category;
+        intVal = o.intVal;
+        doubleVal = o.doubleVal;
+        textVal = o.textVal;
+        description = o.description;
+    }
 
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)

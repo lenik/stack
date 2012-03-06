@@ -11,6 +11,7 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.plover.orm.entity.CloneUtils;
 import com.bee32.sem.inventory.tx.entity.StockJob;
 
 /**
@@ -34,7 +35,20 @@ public class MaterialPlan
     List<MaterialPlanItem> items = new ArrayList<MaterialPlanItem>();
     PurchaseRequest purchaseRequest;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof MaterialPlan)
+            _populate((MaterialPlan) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(MaterialPlan o) {
+        super._populate(o);
+        task = o.task;
+        items = CloneUtils.cloneList(o.items);
+        purchaseRequest = o.purchaseRequest;
+    }
 
     @ManyToOne(optional = false)
     public MakeTask getTask() {

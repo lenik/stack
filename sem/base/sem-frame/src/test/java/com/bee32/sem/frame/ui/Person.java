@@ -28,7 +28,21 @@ public class Person
         this.age = age;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof Person)
+            _populate((Person) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(Person o) {
+        super._populate(o);
+        name = o.name;
+        age = o.age;
+        girl = o.girl;
+        children = new ArrayList<Person>(o.children);
+    }
 
     @Override
     public String getId() {

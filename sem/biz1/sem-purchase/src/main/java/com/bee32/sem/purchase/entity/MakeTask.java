@@ -14,6 +14,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.plover.orm.entity.CloneUtils;
 import com.bee32.sem.process.base.ProcessEntity;
 
 /**
@@ -31,7 +32,21 @@ public class MakeTask
     List<MakeTaskItem> items = new ArrayList<MakeTaskItem>();
     List<MaterialPlan> plans = new ArrayList<MaterialPlan>();
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof MakeTask)
+            _populate((MakeTask) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(MakeTask o) {
+        super._populate(o);
+        order = o.order;
+        deadline = o.deadline;
+        items = CloneUtils.cloneList(o.items);
+        plans = new ArrayList<MaterialPlan>(o.plans);
+    }
 
     @ManyToOne(optional = false)
     public MakeOrder getOrder() {

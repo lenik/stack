@@ -29,7 +29,28 @@ public class XPool40<Es extends Entity<?>>
     String aaaa2;
     String aaaa3;
 
-X-Population
+    @SuppressWarnings("unchecked")
+    @Override
+    public void populate(Object source) {
+        if (source instanceof XPool40)
+            _populate((XPool40<? extends Entity<?>>) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(XPool40<? extends Entity<?>> o) {
+        super._populate(o);
+        a6 = o.a6;
+        a7 = o.a7;
+        a8 = o.a8;
+        a9 = o.a9;
+        a10 = o.a10;
+        aa3 = o.aa3;
+        aa4 = o.aa4;
+        aa5 = o.aa5;
+        aaaa2 = o.aaaa2;
+        aaaa3 = o.aaaa3;
+    }
 
     @Column(length = LEN_A)
     public String getA6() {

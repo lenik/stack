@@ -52,7 +52,19 @@ public abstract class NameDict
         this.order = order;
     }
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof NameDict)
+            _populate((NameDict) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(NameDict o) {
+        super._populate(o);
+        order = o.order;
+        rank = o.rank;
+    }
 
     @Id
     @Column(length = ID_LENGTH, unique = true)

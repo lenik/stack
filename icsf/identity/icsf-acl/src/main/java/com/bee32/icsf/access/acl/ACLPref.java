@@ -17,7 +17,19 @@ public class ACLPref
     private ACL preferredACL;
     private String description;
 
-X-Population
+    @Override
+    public void populate(Object source) {
+        if (source instanceof ACLPref)
+            _populate((ACLPref) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(ACLPref o) {
+        super._populate(o);
+        this.preferredACL = o.preferredACL;
+        this.description = o.description;
+    }
 
     @ManyToOne
     public ACL getPreferredACL() {
