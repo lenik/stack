@@ -4,7 +4,9 @@ com.bee32.sem.chance.entity.ChanceActionStyle
 com.bee32.sem.chance.entity.ChanceCategory
 com.bee32.sem.chance.entity.ChanceCompetitor
 com.bee32.sem.chance.entity.ChanceParty
-com.bee32.sem.chance.entity.ChanceQuotation
-com.bee32.sem.chance.entity.ChanceQuotationItem
 com.bee32.sem.chance.entity.ChanceSourceType
 com.bee32.sem.chance.entity.ChanceStage
+com.bee32.sem.chance.entity.WantedProduct
+com.bee32.sem.chance.entity.WantedProductAttribute
+com.bee32.sem.chance.entity.WantedProductQuotation
+com.bee32.sem.chance.entity.WantedProductXP
