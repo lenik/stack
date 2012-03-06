@@ -56,6 +56,8 @@ public class PurchaseRequestItem
 
     int inquiryCount;
 
+X-Population
+
     @NaturalId
     @ManyToOne(optional = false)
     public PurchaseRequest getParent() {

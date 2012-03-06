@@ -19,6 +19,8 @@ public class LaborContract extends Contract {
 
     EmployeeInfo employeeInfo;
 
+X-Population
+
     @ManyToOne
     public EmployeeInfo getEmployeeInfo() {
         return employeeInfo;

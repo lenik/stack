@@ -23,6 +23,8 @@ public class PurchaseTakeIn
 
     PurchaseRequest purchaseRequest;
 
+X-Population
+
     @ManyToOne(optional = false)
     public PurchaseRequest getPurchaseRequest() {
         return purchaseRequest;

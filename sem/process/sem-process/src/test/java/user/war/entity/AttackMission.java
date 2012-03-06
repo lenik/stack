@@ -16,6 +16,8 @@ public class AttackMission
 
     private String target;
 
+X-Population
+
     public String getTarget() {
         return target;
     }

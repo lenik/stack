@@ -23,6 +23,8 @@ public class EventPriority
         super(priority, alias, description);
     }
 
+X-Population
+
     @Transient
     public int getPriority() {
         return getNumber();

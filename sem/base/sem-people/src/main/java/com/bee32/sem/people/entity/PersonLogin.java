@@ -29,6 +29,8 @@ public class PersonLogin
     Person person;
     User user;
 
+X-Population
+
     @NaturalId
     @OneToOne(optional = false)
     public User getUser() {

@@ -38,6 +38,8 @@ public class EntityColumn
 
     BackedCandidateMap1 candidates = new BackedCandidateMap1("");
 
+X-Population
+
     /**
      * Must override Entity-Info before add EntityColumn.
      */

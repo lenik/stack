@@ -28,6 +28,8 @@ public class EventStatus
         super(state.getValue(), alias, description);
     }
 
+X-Population
+
     @Column(nullable = false)
     public int getFlagsMask() {
         return flagsMask;

@@ -29,6 +29,8 @@ public class UserOption
     String key;
     String value;
 
+X-Population
+
     @NaturalId
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)

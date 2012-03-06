@@ -27,6 +27,8 @@ public abstract class EntityExt<K extends Serializable, X extends XPool<?>>
         super(name);
     }
 
+X-Population
+
     @OneToMany
     @Cascade(CascadeType.ALL)
     final List<X> getXPool() {

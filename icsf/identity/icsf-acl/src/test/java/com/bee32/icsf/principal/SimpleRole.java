@@ -27,6 +27,8 @@ public class SimpleRole
         this.parent = parent;
     }
 
+X-Population
+
     @Override
     public String getName() {
         return name;

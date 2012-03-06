@@ -41,6 +41,8 @@ public class StockTradeItem
 
     StockTrade trade;
 
+X-Population
+
     /**
      * 单据内部的序号
      */

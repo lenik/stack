@@ -42,6 +42,8 @@ public class PaletteEntry
         this.trueColor = color;
     }
 
+X-Population
+
     /**
      * 调色板
      */

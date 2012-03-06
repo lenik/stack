@@ -43,6 +43,8 @@ public abstract class XPool30<Es extends Entity<?>>
 
     String aaaa1;
 
+X-Population
+
     @Column
     public Integer getInt5() {
         return int5;

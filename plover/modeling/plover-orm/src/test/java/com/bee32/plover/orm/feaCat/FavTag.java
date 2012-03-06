@@ -12,6 +12,8 @@ public abstract class FavTag<T>
     T who;
     String tag;
 
+X-Population
+
     @ManyToOne
     public T getWho() {
         return who;

@@ -35,6 +35,8 @@ public class MaterialWarehouseOption
     BigDecimal safetyStock = new BigDecimal(1);
     int stkPeriod = 365;
 
+X-Population
+
     /**
      * 物料
      */

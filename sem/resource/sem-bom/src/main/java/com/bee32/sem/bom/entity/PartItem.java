@@ -36,7 +36,6 @@ public class PartItem
 
     Part part;
     Material material;
-
     BigDecimal quantity = new BigDecimal(1);
 
     boolean valid = true;
@@ -50,6 +49,8 @@ public class PartItem
         cal.add(Calendar.YEAR, 1);
         validDateTo = cal.getTime();
     }
+
+X-Population
 
     /**
      * 所属的部件

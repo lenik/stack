@@ -35,6 +35,8 @@ public class StockWarehouse
 
     Person manager; // Person in charge.
 
+X-Population
+
     /**
      * 仓库名称
      */

@@ -49,6 +49,8 @@ public class MaterialAttribute
         setValue(value);
     }
 
+X-Population
+
     @NaturalId
     @ManyToOne
     public Material getMaterial() {

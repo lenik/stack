@@ -19,6 +19,8 @@ public abstract class StockTrade
 
     List<StockTradeItem> items = new ArrayList<StockTradeItem>();
 
+X-Population
+
     @OneToMany(mappedBy = "trade", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<StockTradeItem> getItems() {

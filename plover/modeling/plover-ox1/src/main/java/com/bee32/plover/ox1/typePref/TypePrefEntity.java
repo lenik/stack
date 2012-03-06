@@ -21,6 +21,8 @@ public class TypePrefEntity
     private Class<?> type;
     private String typeId;
 
+X-Population
+
     @Transient
     public boolean isEarlyResolve() {
         return earlyResolve;

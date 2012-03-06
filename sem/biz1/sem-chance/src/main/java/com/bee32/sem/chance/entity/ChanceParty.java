@@ -33,6 +33,8 @@ public class ChanceParty
     Party party;
     String role;
 
+X-Population
+
     @NaturalId
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)

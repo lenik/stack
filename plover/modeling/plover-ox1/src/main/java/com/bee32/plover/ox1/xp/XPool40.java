@@ -29,6 +29,8 @@ public class XPool40<Es extends Entity<?>>
     String aaaa2;
     String aaaa3;
 
+X-Population
+
     @Column(length = LEN_A)
     public String getA6() {
         return a6;

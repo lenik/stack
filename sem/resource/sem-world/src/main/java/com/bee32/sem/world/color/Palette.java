@@ -41,6 +41,8 @@ public class Palette
         super(name, label);
     }
 
+X-Population
+
     @OneToMany(mappedBy = "palette", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<PaletteEntry> getEntries() {

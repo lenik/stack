@@ -13,6 +13,8 @@ public class AccountInitItem
 
     AccountInit init;
 
+X-Population
+
     @ManyToOne(/* optional = false: =true will break the general AccountTickItem. */)
     public AccountInit getInit() {
         return init;

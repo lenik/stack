@@ -42,6 +42,8 @@ public class UserCategory
         setType(type);
     }
 
+X-Population
+
     @Transient
     public UserDataType getType() {
         return type;

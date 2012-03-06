@@ -31,6 +31,8 @@ public class MailFilter
     int chMask;
     int chBits;
 
+X-Population
+
     @Column(nullable = false)
     public boolean isEnabled() {
         return enabled;

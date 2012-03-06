@@ -52,6 +52,8 @@ public abstract class NameDict
         this.order = order;
     }
 
+X-Population
+
     @Id
     @Column(length = ID_LENGTH, unique = true)
     @Override

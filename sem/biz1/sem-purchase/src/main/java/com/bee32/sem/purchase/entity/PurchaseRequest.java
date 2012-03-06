@@ -28,6 +28,8 @@ public class PurchaseRequest
     List<PurchaseRequestItem> items = new ArrayList<PurchaseRequestItem>();
     List<PurchaseTakeIn> takeIns = new ArrayList<PurchaseTakeIn>();
 
+X-Population
+
     @OneToMany(mappedBy = "purchaseRequest")
     public List<MaterialPlan> getPlans() {
         return plans;

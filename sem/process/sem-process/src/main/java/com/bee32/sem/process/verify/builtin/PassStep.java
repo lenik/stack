@@ -44,6 +44,8 @@ public class PassStep
         this.optional = optional;
     }
 
+X-Population
+
     @ManyToOne
     @JoinColumn(nullable = false)
     public PassToNextPolicy getPolicy() {

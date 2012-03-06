@@ -54,6 +54,8 @@ public class StockLocation
         this.label = label;
     }
 
+X-Population
+
     /**
      * 所属仓库
      */

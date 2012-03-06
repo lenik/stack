@@ -66,6 +66,8 @@ public class FxrRecord
         this.baseRate = baseRate;
     }
 
+X-Population
+
     @NaturalId
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)

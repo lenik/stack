@@ -51,6 +51,8 @@ public class ChanceCompetitor
     public ChanceCompetitor() {
     }
 
+X-Population
+
     /**
      * 对应销售机会
      */

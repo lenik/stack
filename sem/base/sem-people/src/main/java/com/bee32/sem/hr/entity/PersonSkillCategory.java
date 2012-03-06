@@ -37,6 +37,8 @@ public class PersonSkillCategory
         super(name, label, description);
     }
 
+X-Population
+
     @Transient
     public ScoreLevelMap getLevelMap() {
         return levelMap;

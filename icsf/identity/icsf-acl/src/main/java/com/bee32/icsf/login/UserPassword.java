@@ -67,6 +67,8 @@ public class UserPassword
         this.master = master;
     }
 
+X-Population
+
     @OneToOne
     @JoinColumn(nullable = false)
     public User getUser() {

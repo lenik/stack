@@ -31,6 +31,8 @@ public abstract class CEntityAuto<K extends Serializable>
         autoId = true;
     }
 
+X-Population
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idgen")
     @Override

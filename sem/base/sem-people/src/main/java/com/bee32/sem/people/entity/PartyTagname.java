@@ -30,6 +30,8 @@ public class PartyTagname
         this.internal = internal;
     }
 
+X-Population
+
     public boolean isInternal() {
         return internal;
     }

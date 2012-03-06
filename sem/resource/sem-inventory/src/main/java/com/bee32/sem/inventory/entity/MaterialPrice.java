@@ -39,6 +39,8 @@ public class MaterialPrice
 // Date date = LocalDateUtil.truncate(new Date());
     MCValue price = new MCValue();
 
+X-Population
+
     /**
      * 物料
      */

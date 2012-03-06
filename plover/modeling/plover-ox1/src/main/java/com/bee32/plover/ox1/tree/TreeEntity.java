@@ -49,6 +49,8 @@ public abstract class TreeEntity<K extends Serializable, self_t extends TreeEnti
             parent.addChild(self());
     }
 
+X-Population
+
     @SuppressWarnings("unchecked")
     protected final self_t self() {
         return (self_t) this;

@@ -49,6 +49,8 @@ public class ACLEntry
         this.permission = permission;
     }
 
+X-Population
+
     @NaturalId
     @ManyToOne
     @JoinColumn(name = "acl", nullable = false)

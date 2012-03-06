@@ -25,6 +25,8 @@ public class WantedProductAttribute
     String name;
     String value;
 
+X-Population
+
     @ManyToOne(optional = false)
     public WantedProduct getProduct() {
         return product;

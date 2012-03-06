@@ -12,4 +12,6 @@ public class CatFavTag
 
     Integer id;
 
+X-Population
+
 }

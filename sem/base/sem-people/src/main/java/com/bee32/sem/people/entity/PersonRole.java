@@ -34,6 +34,8 @@ public class PersonRole
     String roleDetail;
     String description;
 
+X-Population
+
     @ManyToOne(optional = false)
     public Person getPerson() {
         return person;

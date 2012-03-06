@@ -25,6 +25,8 @@ public class BudgetRequest
     MCValue value = new MCValue();
     AccountTicket ticket;
 
+X-Population
+
     /**
      * 业务详细说明
      */

@@ -37,6 +37,8 @@ public class Diary
 
     int score;
 
+X-Population
+
     @ManyToOne(optional = false)
     public User getUser() {
         return user;

@@ -54,6 +54,8 @@ public class ChanceAction
         setEndTime(new Date());
     }
 
+X-Population
+
     /**
      * 工作日志类型
      */

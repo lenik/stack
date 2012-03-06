@@ -71,6 +71,8 @@ public class Mail
 
     List<MailDelivery> deliveries = new ArrayList<MailDelivery>();
 
+X-Population
+
     /**
      * 邮件类型，如：公文、帖子、系统广播、E-Mail等。
      */

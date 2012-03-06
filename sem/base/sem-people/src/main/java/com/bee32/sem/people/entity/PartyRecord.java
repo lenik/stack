@@ -25,6 +25,8 @@ public class PartyRecord
     Party party;
     String text = "";
 
+X-Population
+
     @ManyToOne(optional = false)
     public PartyRecordCategory getCategory() {
         return category;

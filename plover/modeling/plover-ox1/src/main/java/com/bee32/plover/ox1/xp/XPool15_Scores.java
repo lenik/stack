@@ -47,6 +47,8 @@ public abstract class XPool15_Scores<Es extends Entity<?>>
 
     Date date1;
 
+X-Population
+
     @Column
     public Integer getInt1() {
         return int1;

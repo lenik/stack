@@ -56,6 +56,8 @@ public class Contact
         this.category = category;
     }
 
+X-Population
+
     /**
      * 联系人分类
      */

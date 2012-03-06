@@ -25,6 +25,8 @@ public class OrgUnit
     Group forWhichGroup;
     List<PersonRole> roles = new ArrayList<PersonRole>();
 
+X-Population
+
     @Override
     public void retarget(Object o) {
         super.retarget(o);

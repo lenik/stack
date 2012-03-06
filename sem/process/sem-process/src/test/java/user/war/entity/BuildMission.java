@@ -23,6 +23,8 @@ public class BuildMission
         setVerifyContext(new SingleVerifierWithNumberSupport());
     }
 
+X-Population
+
     public long getMoney() {
         return money;
     }

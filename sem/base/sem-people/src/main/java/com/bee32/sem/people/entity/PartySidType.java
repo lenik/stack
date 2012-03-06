@@ -25,6 +25,8 @@ public class PartySidType
         this.category = category;
     }
 
+X-Population
+
     @Column(nullable = false)
     public char getCategory() {
         return category;

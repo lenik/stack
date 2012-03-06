@@ -27,6 +27,8 @@ public class EntityInfo
 
     List<EntityColumn> columns;
 
+X-Population
+
     @Column(length = 20)
     public String getNameOtf() {
         return nameOtf;

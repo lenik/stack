@@ -29,6 +29,8 @@ public class StockTransfer
 
     Person transferredBy;
 
+X-Population
+
     @ManyToOne
     public StockWarehouse getSourceWarehouse() {
         return sourceWarehouse;

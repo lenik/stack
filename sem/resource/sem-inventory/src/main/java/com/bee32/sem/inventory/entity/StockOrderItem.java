@@ -61,6 +61,8 @@ public class StockOrderItem
         this.parent = parent;
     }
 
+X-Population
+
     /**
      * 所属订单
      */

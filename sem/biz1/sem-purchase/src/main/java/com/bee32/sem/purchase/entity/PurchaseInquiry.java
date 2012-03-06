@@ -40,6 +40,8 @@ public class PurchaseInquiry
     String other;
     String comment;
 
+X-Population
+
     /**
      * 需要询价的采购项目
      */

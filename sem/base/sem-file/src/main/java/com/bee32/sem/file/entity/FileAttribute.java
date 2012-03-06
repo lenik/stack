@@ -36,6 +36,8 @@ public class FileAttribute
     double floatVal;
     String strVal;
 
+X-Population
+
     @NaturalId
     @ManyToOne
     public UserFile getFile() {

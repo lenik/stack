@@ -39,6 +39,8 @@ public class MaterialPlanItem
     Party preferredSupplier;
     String additionalRequirement;
 
+X-Population
+
     @NaturalId
     @ManyToOne(optional = false)
     public MaterialPlan getMaterialPlan() {

@@ -31,6 +31,8 @@ public class Tiger
         super(name, color);
     }
 
+X-Population
+
     public int getPower() {
         return power;
     }

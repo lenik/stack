@@ -40,6 +40,8 @@ public class StockPeriod
     public StockPeriod() {
     }
 
+X-Population
+
     @ManyToOne(optional = false)
     public StockInventory getInventory() {
         return inventory;

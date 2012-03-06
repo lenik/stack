@@ -16,6 +16,8 @@ public class Bank
 
     TrueColor color;
 
+X-Population
+
     /**
      * 显示颜色（未使用）
      */

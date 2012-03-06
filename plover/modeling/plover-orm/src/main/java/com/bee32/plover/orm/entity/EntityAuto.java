@@ -29,6 +29,8 @@ public abstract class EntityAuto<K extends Serializable>
         autoId = true;
     }
 
+X-Population
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idgen")
     @Override

@@ -48,6 +48,8 @@ public class PloverConf
         setDescription(description);
     }
 
+X-Population
+
     @NaturalId
     @Column(length = SECTION_LENGTH, nullable = false)
     public String getSection() {

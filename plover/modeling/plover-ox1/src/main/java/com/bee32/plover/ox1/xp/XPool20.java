@@ -58,6 +58,8 @@ public abstract class XPool20<Es extends Entity<?>>
     String aa1;
     String aa2;
 
+X-Population
+
     @Column(nullable = false)
     public int getBits() {
         return bits;

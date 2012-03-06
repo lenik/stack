@@ -34,6 +34,8 @@ public abstract class DictEntity<K extends Serializable>
         this.description = description;
     }
 
+X-Population
+
     /**
      * 别名：一般用本地语言表示，不能用于搜索。（如果要用显示名称搜索，建议通过全文索引）
      */

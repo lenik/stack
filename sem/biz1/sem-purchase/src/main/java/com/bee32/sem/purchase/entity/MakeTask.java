@@ -31,6 +31,8 @@ public class MakeTask
     List<MakeTaskItem> items = new ArrayList<MakeTaskItem>();
     List<MaterialPlan> plans = new ArrayList<MaterialPlan>();
 
+X-Population
+
     @ManyToOne(optional = false)
     public MakeOrder getOrder() {
         return order;

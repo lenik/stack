@@ -25,6 +25,8 @@ public abstract class SuperEntity<K extends Serializable>
         super(name);
     }
 
+X-Population
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idgen")
     @Override

@@ -65,18 +65,6 @@ public class Material
     }
 
     @Override
-    public void retarget(Object o) {
-        super.retarget(o);
-        _retarget((Material) o);
-    }
-
-    private void _retarget(Material o) {
-        _retargetMerge(attributes, o.attributes);
-        _retargetMerge(options, o.options);
-        _retargetMerge(preferredLocations, o.preferredLocations);
-    }
-
-    @Override
     public void populate(Object source) {
         if (source instanceof Material) {
             Material o = (Material) source;
@@ -97,6 +85,18 @@ public class Material
         packageLength = o.packageLength;
         packageWeight = o.packageWeight;
         netWeight = o.netWeight;
+    }
+
+    @Override
+    public void retarget(Object o) {
+        super.retarget(o);
+        _retarget((Material) o);
+    }
+
+    private void _retarget(Material o) {
+        _retargetMerge(attributes, o.attributes);
+        _retargetMerge(options, o.options);
+        _retargetMerge(preferredLocations, o.preferredLocations);
     }
 
     @Transient

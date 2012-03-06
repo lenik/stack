@@ -85,6 +85,8 @@ public class Event
         this.setType(type);
     }
 
+X-Population
+
     @Transient
     public EventType getType() {
         return EventType.valueOf(type);

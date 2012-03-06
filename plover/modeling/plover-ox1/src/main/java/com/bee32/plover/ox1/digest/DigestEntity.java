@@ -27,6 +27,8 @@ public abstract class DigestEntity
     String digestEncoded;
     Boolean digestValidated;
 
+X-Population
+
     @Id
     @Column(length = ID_LENGTH)
     @Override

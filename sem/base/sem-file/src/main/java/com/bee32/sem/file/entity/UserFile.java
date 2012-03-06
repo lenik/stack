@@ -49,6 +49,8 @@ public class UserFile
     Class<?> refType;
     String refId;
 
+X-Population
+
     /**
      * 文件数据。
      */

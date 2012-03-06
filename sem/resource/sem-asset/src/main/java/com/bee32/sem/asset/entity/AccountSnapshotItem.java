@@ -29,6 +29,8 @@ public class AccountSnapshotItem
     Party party;
     MCValue value;
 
+X-Population
+
     @ManyToOne(optional = false)
     public AccountSnapshot getSnapshot() {
         return snapshot;

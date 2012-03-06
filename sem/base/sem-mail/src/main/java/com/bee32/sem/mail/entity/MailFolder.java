@@ -43,6 +43,8 @@ public class MailFolder
         setLabel(label);
     }
 
+X-Population
+
     @Column(nullable = false)
     public byte getPriority() {
         return priority;

@@ -26,6 +26,8 @@ public abstract class XPool<Es extends Entity<?>>
 
     XPoolModel model;
 
+X-Population
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idgen")
     @Override

@@ -15,6 +15,8 @@ public class DiaryCategory
 
     DiaryVisibility visibility = DiaryVisibility.PRIVATE;
 
+X-Population
+
     @Transient
     public DiaryVisibility getVisibility() {
         return visibility;

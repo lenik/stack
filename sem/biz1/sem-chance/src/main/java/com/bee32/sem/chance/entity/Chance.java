@@ -47,6 +47,8 @@ public class Chance
 
     String address;
 
+X-Population
+
     /**
      * 类型
      */

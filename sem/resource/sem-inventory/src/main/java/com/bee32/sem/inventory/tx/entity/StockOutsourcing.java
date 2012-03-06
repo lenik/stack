@@ -27,6 +27,8 @@ public class StockOutsourcing
     StockOrder input;
     Org processedBy;
 
+X-Population
+
     /**
      * 委外出库单
      */

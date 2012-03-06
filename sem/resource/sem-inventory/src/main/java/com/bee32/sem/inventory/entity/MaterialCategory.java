@@ -46,6 +46,8 @@ public class MaterialCategory
         this.label = label;
     }
 
+X-Population
+
     @Transient
     protected boolean isUniqueChildren() {
         return true;

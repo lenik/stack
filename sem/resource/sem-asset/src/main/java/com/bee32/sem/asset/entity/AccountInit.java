@@ -21,6 +21,8 @@ public class AccountInit
 
     List<AccountInitItem> items = new ArrayList<AccountInitItem>();
 
+X-Population
+
     @OneToMany(mappedBy = "init", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<AccountInitItem> getItems() {

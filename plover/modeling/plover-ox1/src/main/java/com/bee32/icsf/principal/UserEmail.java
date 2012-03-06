@@ -37,6 +37,8 @@ public class UserEmail
         this.address = address;
     }
 
+X-Population
+
     @NaturalId
     @ManyToOne(optional = false)
     public User getUser() {

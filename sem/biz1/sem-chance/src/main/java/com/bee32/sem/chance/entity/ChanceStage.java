@@ -37,6 +37,8 @@ public class ChanceStage
         stages.put(getOrder(), this);
     }
 
+X-Population
+
     @Transient
     public ChanceStage getPrevious() {
         int order = getOrder();

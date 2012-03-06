@@ -20,6 +20,8 @@ public class AccountSnapshot
 
     List<AccountSnapshotItem> items;
 
+X-Population
+
     @OneToMany(mappedBy = "snapshot")
     public List<AccountSnapshotItem> getItems() {
         return items;

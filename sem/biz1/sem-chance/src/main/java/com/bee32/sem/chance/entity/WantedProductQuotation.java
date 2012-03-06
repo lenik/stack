@@ -28,6 +28,8 @@ public class WantedProductQuotation
     WantedProduct product;
     int discount = DISCOUNT_SCALE;
 
+X-Population
+
     @ManyToOne
     public WantedProduct getProduct() {
         return product;

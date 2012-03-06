@@ -50,6 +50,8 @@ public class AccountSubject
         this.creditSign = (flags & CREDIT) != 0;
     }
 
+X-Population
+
     /**
      * 借方符号
      */

@@ -34,6 +34,8 @@ public class MaterialPlan
     List<MaterialPlanItem> items = new ArrayList<MaterialPlanItem>();
     PurchaseRequest purchaseRequest;
 
+X-Population
+
     @ManyToOne(optional = false)
     public MakeTask getTask() {
         return task;

@@ -44,6 +44,8 @@ public abstract class AbstractItem
         nativeTotal = item.nativeTotal;
     }
 
+X-Population
+
     @Transient
     public String getDisplayName() {
         return getLabel();

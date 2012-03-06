@@ -27,11 +27,8 @@ public class MailDelivery
 
     Mail mail;
     MailOrientation orientation = MailOrientation.FROM;
-
     MailFolder folder;
-
     String sendError;
-
     public final MailFlags flags = new MailFlags();
 
     public MailDelivery() {
@@ -41,6 +38,8 @@ public class MailDelivery
         this.mail = mail;
         this.orientation = orientation;
     }
+
+X-Population
 
     @ManyToOne(fetch = FetchType.LAZY)
     public Mail getMail() {

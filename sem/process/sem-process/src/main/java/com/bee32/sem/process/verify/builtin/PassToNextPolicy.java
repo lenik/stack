@@ -50,6 +50,8 @@ public class PassToNextPolicy
         this.sequences = sequence;
     }
 
+X-Population
+
     @OneToMany(mappedBy = "policy", orphanRemoval = true)
     @OrderBy("order")
     @Cascade(CascadeType.ALL)

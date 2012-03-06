@@ -28,6 +28,8 @@ public class UserCategoryItem
 
     String description;
 
+X-Population
+
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     public UserCategory getCategory() {

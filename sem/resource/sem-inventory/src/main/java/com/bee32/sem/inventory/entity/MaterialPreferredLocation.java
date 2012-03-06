@@ -35,6 +35,8 @@ public class MaterialPreferredLocation
         this.location = location;
     }
 
+X-Population
+
     /**
      * 物料
      */

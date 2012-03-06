@@ -28,6 +28,8 @@ public class StockJob
 
     List<AbstractStockOrder<?>> stockOrders = new ArrayList<>();
 
+X-Population
+
     @OneToMany(mappedBy = "job", targetEntity = AbstractStockOrder.class, orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<AbstractStockOrder<?>> getStockOrders() {

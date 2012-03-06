@@ -33,6 +33,8 @@ public class WantedProduct
     List<WantedProductQuotation> quotations = new ArrayList<>();
     Material decidedMaterial;
 
+X-Population
+
     @ManyToOne(optional = false)
     public Chance getChance() {
         return chance;

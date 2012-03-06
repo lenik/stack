@@ -61,6 +61,8 @@ public class FileBlob
     int refCount;
     List<UserFile> usage = new ArrayList<UserFile>();
 
+X-Population
+
     /**
      * 文件长度 （字节）。
      */

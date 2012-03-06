@@ -15,6 +15,8 @@ public class HelloMessage
 
     String message;
 
+X-Population
+
     @Column(length = MESSAGE_LENGTH)
     public String getMessage() {
         return message;

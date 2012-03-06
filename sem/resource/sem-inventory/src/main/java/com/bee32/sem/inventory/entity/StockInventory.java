@@ -38,6 +38,8 @@ public class StockInventory
         super(name);
     }
 
+X-Population
+
     /**
      * 逻辑库存名称
      */

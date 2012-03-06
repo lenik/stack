@@ -25,4 +25,6 @@ public class JobPost
         super(name, label, description);
     }
 
+X-Population
+
 }

@@ -16,6 +16,8 @@ public class StocktakingOrderItem
 
     BigDecimal expectedQuantity;
 
+X-Population
+
     @Column(name = "quantity1", precision = QTY_ITEM_PRECISION, scale = QTY_ITEM_SCALE)
     public BigDecimal getExpectedQuantity() {
         return expectedQuantity;

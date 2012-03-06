@@ -72,6 +72,8 @@ public class AbstractStockOrder<Item extends StockOrderItem>
         this.warehouse = warehouse;
     }
 
+X-Population
+
     @Override
     protected void createTransients() {
         if (verifyContext == null)

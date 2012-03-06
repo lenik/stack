@@ -49,6 +49,8 @@ public abstract class Principal
         setName(name);
     }
 
+X-Population
+
     @Transient
     @Override
     protected boolean isUniqueChildren() {

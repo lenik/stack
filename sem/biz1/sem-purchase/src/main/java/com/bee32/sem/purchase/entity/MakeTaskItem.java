@@ -41,6 +41,8 @@ public class MakeTaskItem
     Date deadline;
     String status;
 
+X-Population
+
     @NaturalId
     @ManyToOne(optional = false)
     public MakeTask getTask() {

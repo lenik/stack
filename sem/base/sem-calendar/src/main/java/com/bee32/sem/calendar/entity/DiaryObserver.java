@@ -22,6 +22,8 @@ public class DiaryObserver
     DiaryCategory category;
     User observer;
 
+X-Population
+
     @NaturalId
     @ManyToOne(optional = false)
     public User getUser() {

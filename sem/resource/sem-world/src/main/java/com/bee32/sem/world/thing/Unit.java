@@ -44,6 +44,8 @@ public class Unit
         this.hint = hint;
     }
 
+X-Population
+
     @Column(length = HINT_LENGTH, nullable = false)
     public String getHint() {
         return hint;

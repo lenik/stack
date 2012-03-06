@@ -37,6 +37,8 @@ public class PersonSkill
     int score;
     Date date;
 
+X-Population
+
     @ManyToOne
     public EmployeeInfo getEmployeeInfo() {
         return employeeInfo;

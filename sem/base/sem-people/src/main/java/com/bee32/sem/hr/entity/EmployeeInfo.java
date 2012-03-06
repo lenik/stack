@@ -39,6 +39,8 @@ public class EmployeeInfo
     List<LaborContract> laborContracts;
     List<PersonSkill> skills = new ArrayList<PersonSkill>();
 
+X-Population
+
     @ManyToOne
     public Person getPerson() {
         return person;

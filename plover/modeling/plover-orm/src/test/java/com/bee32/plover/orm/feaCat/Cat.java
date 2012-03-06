@@ -46,6 +46,8 @@ public class Cat
         this.color = color;
     }
 
+X-Population
+
     @NaturalId
     @Override
     public String getName() {

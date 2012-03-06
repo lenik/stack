@@ -54,6 +54,8 @@ public class SingleVerifierPolicy
         this.responsibles = new HashSet<Principal>(responsibles);
     }
 
+X-Population
+
     @Transient
     @Override
     public Set<?> getPredefinedStages() {
