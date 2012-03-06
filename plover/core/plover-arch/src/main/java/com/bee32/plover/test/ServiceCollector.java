@@ -15,6 +15,8 @@ import java.util.Map.Entry;
 
 import javax.free.JavaioFile;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.arch.DefaultClassLoader;
@@ -41,8 +43,14 @@ import com.bee32.plover.xutil.m2.TestClassLoader;
 @Import(value = ScanServiceContext.class, inherits = false)
 public abstract class ServiceCollector<T> {
 
+    static Logger logger = LoggerFactory.getLogger(ServiceCollector.class);
+
     protected final Class<T> serviceClass;
     protected ClassScanner scanner = new ClassScanner();
+
+    boolean showPaths;
+    List<Class<?>> serviceImpls;
+    Map<File, List<String>> commitMap;
 
     public ServiceCollector() {
         URLClassLoader scl = (URLClassLoader) DefaultClassLoader.getInstance();
@@ -72,14 +80,19 @@ public abstract class ServiceCollector<T> {
         wired._collect();
     }
 
-    private Map<File, List<String>> files;
-
     synchronized void _collect()
             throws IOException {
-        files = new HashMap<File, List<String>>();
+        commitMap = new HashMap<File, List<String>>();
+        serviceImpls = new ArrayList<>();
         scan();
-        commit(files);
-        files = null;
+        commit(commitMap);
+        if (showPaths)
+            for (Class<?> serviceImpl : serviceImpls) {
+                File sourceFile = MavenPath.getSourceFile(serviceImpl);
+                System.out.println(sourceFile);
+            }
+        commitMap = null;
+        serviceImpls = null;
     }
 
     protected void scan() {
@@ -91,33 +104,35 @@ public abstract class ServiceCollector<T> {
     }
 
     protected void publish(Class<?> serviceClass, Class<?> serviceImpl) {
-        System.out.println("    Service: " + serviceImpl);
+        logger.info("    Service: " + serviceImpl);
 
-        ServiceTemplate annotation = serviceImpl.getAnnotation(ServiceTemplate.class);
-        if (annotation == null) {
-            System.out.println("        (No service-template annotation, skipped)");
+        ServiceTemplate _serviceTemplate = serviceImpl.getAnnotation(ServiceTemplate.class);
+        if (_serviceTemplate == null) {
+            logger.debug("        (No service-template annotation, skipped)");
             return;
         }
 
+        serviceImpls.add(serviceImpl);
+
         int mod = serviceImpl.getModifiers();
         if (Modifier.isAbstract(mod)) {
-            if (!annotation.prototype())
+            if (!_serviceTemplate.prototype())
                 return;
-            // System.out.println("    (Abstract class included for prototype)");
+            logger.debug("    (Abstract class included for prototype)");
         }
 
         File resdir = MavenPath.getResourceDir(serviceImpl);
         File sfile;
 
-        if (annotation.prototype())
+        if (_serviceTemplate.prototype())
             sfile = new File(resdir, "META-INF/prototypes/" + serviceClass.getName());
         else
             sfile = new File(resdir, "META-INF/services/" + serviceClass.getName());
 
-        List<String> lines = files.get(sfile);
+        List<String> lines = commitMap.get(sfile);
         if (lines == null) {
             lines = new ArrayList<String>();
-            files.put(sfile, lines);
+            commitMap.put(sfile, lines);
         }
 
         lines.add(serviceImpl.getName());
@@ -148,7 +163,15 @@ public abstract class ServiceCollector<T> {
         return list;
     }
 
-    protected void commit(Map<File, List<String>> files)
+    public boolean isShowPaths() {
+        return showPaths;
+    }
+
+    public void setShowPaths(boolean showPaths) {
+        this.showPaths = showPaths;
+    }
+
+    protected static void commit(Map<File, List<String>> files)
             throws IOException {
         for (Entry<File, List<String>> entry : files.entrySet()) {
             File _file = entry.getKey();
@@ -176,7 +199,7 @@ public abstract class ServiceCollector<T> {
                     continue;
             }
 
-            System.out.println("Update " + _file);
+            logger.info("Update " + _file);
             file.forWrite().write(content.toString());
         }
     }

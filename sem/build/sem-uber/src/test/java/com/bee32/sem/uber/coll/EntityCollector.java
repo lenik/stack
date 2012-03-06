@@ -10,7 +10,9 @@ public class EntityCollector
 
     public static void main(String[] args)
             throws IOException {
-        new EntityCollector().collect();
+        EntityCollector collector = new EntityCollector();
+        collector.setShowPaths(true);
+        collector.collect();
     }
 
 }
