@@ -26,14 +26,19 @@ public class MakeOrderDto
     private static final long serialVersionUID = 1L;
 
     public static final int TASKS = 2;
-    public static final int NOT_ARRANGED_ITEMS = 4;
+    public static final int DELIVERY_NOTES = 4;
+
+    public static final int NOT_ARRANGED_ITEMS = 8;
+    public static final int NOT_DELIVERIED_ITEMS = 16;
 
     PartyDto customer;
     String status;
     ChanceDto chance;
 
     List<MakeTaskDto> tasks;
+    List<DeliveryNoteDto> deliveryNotes;
     List<MakeOrderItemDto> notArrangedItems;
+    List<MakeOrderItemDto> notDeliveriedItems;
 
     SingleVerifierWithNumberSupportDto singleVerifierWithNumberSupport;
 
@@ -58,10 +63,20 @@ public class MakeOrderDto
         else
             tasks = Collections.emptyList();
 
+        if (selection.contains(DELIVERY_NOTES))
+            deliveryNotes = marshalList(DeliveryNoteDto.class, source.getDeliveryNotes());
+        else
+            deliveryNotes = Collections.emptyList();
+
         if (selection.contains(NOT_ARRANGED_ITEMS))
             notArrangedItems = marshalList(MakeOrderItemDto.class, source.getNotArrangedItems());
         else
             notArrangedItems = Collections.emptyList();
+
+        if (selection.contains(NOT_DELIVERIED_ITEMS))
+            notDeliveriedItems = marshalList(MakeOrderItemDto.class, source.getNotDeliveriedItems());
+        else
+            notDeliveriedItems = Collections.emptyList();
 
         singleVerifierWithNumberSupport = marshal(SingleVerifierWithNumberSupportDto.class, source.getVerifyContext());
     }
@@ -74,6 +89,9 @@ public class MakeOrderDto
 
         if (selection.contains(TASKS))
             mergeList(target, "tasks", tasks);
+
+        if (selection.contains(DELIVERY_NOTES))
+            mergeList(target, "deliveryNotes", deliveryNotes);
 
         merge(target, "verifyContext", singleVerifierWithNumberSupport);
     }
@@ -121,6 +139,16 @@ public class MakeOrderDto
         this.tasks = tasks;
     }
 
+    public List<DeliveryNoteDto> getDeliveryNotes() {
+        return deliveryNotes;
+    }
+
+    public void setDeliveryNotes(List<DeliveryNoteDto> deliveryNotes) {
+        if (deliveryNotes == null)
+            throw new NullPointerException("deliveryNotes");
+        this.deliveryNotes = deliveryNotes;
+    }
+
     public List<MakeTaskItemDto> arrangeMakeTask() {
         List<MakeTaskItemDto> taskItems = new ArrayList<MakeTaskItemDto>();
 
@@ -132,6 +160,19 @@ public class MakeOrderDto
             taskItems.add(taskItem);
         }
         return taskItems;
+    }
+
+    public List<DeliveryNoteItemDto> arrangeDeliveryNote() {
+        List<DeliveryNoteItemDto> deliveryNoteItems = new ArrayList<DeliveryNoteItemDto>();
+
+        for (MakeOrderItemDto orderItem : notDeliveriedItems) {
+            DeliveryNoteItemDto deliveryNoteItem = new DeliveryNoteItemDto().create();
+            deliveryNoteItem.setPart(orderItem.getPart());
+            deliveryNoteItem.setQuantity(orderItem.getQuantity());
+
+            deliveryNoteItems.add(deliveryNoteItem);
+        }
+        return deliveryNoteItems;
     }
 
     @Override

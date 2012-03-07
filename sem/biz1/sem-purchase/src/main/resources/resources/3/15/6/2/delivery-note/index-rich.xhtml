@@ -1,0 +1,110 @@
+<ui:composition template="/template/scroll-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:fr="http://java.sun.com/jsf/composite/frame"
+    xmlns:sem="http://java.sun.com/jsf/composite/3/15">
+
+    <ui:param name="title" value="送货单" />
+    <ui:param name="verifiable" value="true" />
+    <ui:param name="bean" value="#{deliveryNoteAdminBean}" />
+    <ui:param name="obj" value="#{bean.openedObject}" />
+    <ui:param name="itemObj" value="#{bean.itemsMBean.openedObject}" />
+
+    <ui:define name="editDialogContent">
+        <t:panelGrid id="basic" columns="4">
+            <h:outputText value="标识:" />
+            <t:panelGroup colspan="3">
+                <h:outputText value="#{obj.id}" style="font-weight:bold;font-size:large" />
+            </t:panelGroup>
+
+            <h:outputText value="时间:" />
+            <h:outputText value="#{obj.createdDate}">
+                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+            </h:outputText>
+            <h:outputText value="制单人:" />
+            <p:inputText value="#{obj.owner.displayName}" disabled="true" />
+
+            <h:outputText value="要求送达日期:" />
+            <t:panelGroup colspan="3">
+                <p:calendar id="arrivalDate" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{obj.arrivalDate}"
+                    showOn="button" label="送达日期" />
+            </t:panelGroup>
+
+            <h:outputText value="简要:" />
+            <t:panelGroup colspan="3">
+                <p:inputText label="简要" value="#{obj.label}" />
+            </t:panelGroup>
+
+            <h:outputText value="生产订单:" />
+            <t:panelGroup>
+                <p:inputText id="order" value="#{obj.order.label}" readonly="true" label="生产订单"/>
+                <p:commandButton value="..." onclick="chooseMakeOrderDialog.show()" disabled="#{not bean.editing}" />
+            </t:panelGroup>
+            <t:panelGroup />
+            <t:panelGroup />
+
+            <h:outputText value="客户:" />
+            <t:panelGroup colspan="3">
+                <p:inputText id="customer" value="#{obj.customer.displayName}" readonly="true" label="客户"/>
+                <p:commandButton value="..." oncomplete="choosePartyDialog.show()" disabled="#{not bean.editing}">
+                    <f:setPropertyActionListener target="#{choosePartyDialogBean.customer}"
+                        value="true" />
+                </p:commandButton>
+            </t:panelGroup>
+        </t:panelGrid>
+
+        <fr:listView id="itemsIndexView" header="送货项目" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
+            nested="true" paginator="false" creatable="false">
+            <f:facet name="columns">
+                <p:column headerText="物料" styleClass="f-wrappable">
+                    <h:outputText value="#{entry.part.target.label}" />
+                </p:column>
+
+                <p:column headerText="规格型号" styleClass="f-wrappable">
+                    <h:outputText value="#{entry.part.target.modelSpec}" />
+                </p:column>
+
+                <p:column headerText="单价">
+                    <h:outputText value="#{entry.price}" />
+                </p:column>
+
+                <p:column headerText="数量">
+                    <h:outputText value="#{entry.quantity}" />
+                </p:column>
+
+                <p:column headerText="备注" styleClass="f-wrappable">
+                    <h:outputText value="#{entry.description}" />
+                </p:column>
+            </f:facet>
+        </fr:listView>
+    </ui:define>
+
+    <ui:define name="dialogs">
+        <sem:chooseMakeOrderDialog id="c_makeOrder" target="#{bean.applyMakeOrder}" update=":editDialog:form" />
+
+        <fr:listView id="itemsEditView" header="订单项目" style="editDialog" indexView=":editDialog:form:itemsIndexView"
+            mbean="#{bean.itemsMBean}">
+            <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
+
+                <h:outputLabel value="物料" />
+                <t:panelGroup colspan="3">
+                    <h:outputText id="material" value="#{item.part.target.label}"/>
+                </t:panelGroup>
+
+                <h:outputLabel value="单价" />
+                <t:panelGroup colspan="3">
+                    <h:outputText value="#{item.price}"/>
+                </t:panelGroup>
+
+                <h:outputLabel value="数量" />
+                <t:panelGroup colspan="3">
+                    <p:inputText value="#{item.quantity}" label="数量"/>
+                </t:panelGroup>
+
+                <h:outputLabel value="备注" />
+                <t:panelGroup colspan="3">
+                    <p:inputText value="#{item.description}" label="备注" style="width:35em;"/>
+                </t:panelGroup>
+            </t:panelGrid>
+        </fr:listView>
+    </ui:define>
+</ui:composition>

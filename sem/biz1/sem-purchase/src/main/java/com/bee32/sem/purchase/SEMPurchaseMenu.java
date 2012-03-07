@@ -13,9 +13,10 @@ public class SEMPurchaseMenu
     public static MenuNode PURCHASE = menu(SEMFrameMenu.MAIN, 450, "purchase");
 
     static MenuNode makeOrderAdmin = entry(PURCHASE, 1, "makeOrderAdmin", PURCHASE_.join("make-order/"));
-    static MenuNode makeTaskAdmin = entry(PURCHASE, 2, "makeTaskAdmin", PURCHASE_.join("make-task/"));
-    static MenuNode materialPlanAdmin = entry(PURCHASE, 2, "materialPlanAdmin", PURCHASE_.join("material-plan/"));
-    static MenuNode purchaseRequest = entry(PURCHASE, 2, "purchaseRequest", PURCHASE_.join("request/"));
-    static MenuNode purchaseRequestItem = entry(PURCHASE, 2, "purchaseRequestItem", PURCHASE_.join("request-item/"));
+    static MenuNode makeTaskAdmin = entry(PURCHASE, 10, "makeTaskAdmin", PURCHASE_.join("make-task/"));
+    static MenuNode materialPlanAdmin = entry(PURCHASE, 20, "materialPlanAdmin", PURCHASE_.join("material-plan/"));
+    static MenuNode purchaseRequest = entry(PURCHASE, 30, "purchaseRequest", PURCHASE_.join("request/"));
+    static MenuNode purchaseRequestItem = entry(PURCHASE, 40, "purchaseRequestItem", PURCHASE_.join("request-item/"));
+    static MenuNode deliveryNoteAdmin = entry(PURCHASE, 50, "deliveryNoteAdmin", PURCHASE_.join("delivery-note/"));
 
 }

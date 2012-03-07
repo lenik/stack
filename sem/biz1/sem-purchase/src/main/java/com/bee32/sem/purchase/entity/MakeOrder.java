@@ -47,6 +47,7 @@ public class MakeOrder
     Chance chance;
 
     List<MakeTask> tasks = new ArrayList<MakeTask>();
+    List<DeliveryNote> deliveryNotes = new ArrayList<DeliveryNote>();
 
     @Override
     protected void createTransients() {
@@ -88,6 +89,18 @@ public class MakeOrder
         this.tasks = tasks;
     }
 
+    @OneToMany(mappedBy = "order")
+    @Cascade(CascadeType.ALL)
+    public List<DeliveryNote> getDeliveryNotes() {
+        return deliveryNotes;
+    }
+
+    public void setDeliveryNotes(List<DeliveryNote> deliveryNotes) {
+        if(deliveryNotes == null)
+            throw new NullPointerException("deliveryNotes");
+        this.deliveryNotes = deliveryNotes;
+    }
+
     @OneToOne
     public Chance getChance() {
         return chance;
@@ -120,10 +133,32 @@ public class MakeOrder
     }
 
     /**
-     * 找寻还没有按排生产任务的产品列表
+     * Sum of part quantity in each delivery note item.
+     *
+     * @aka deliveryNoteItemListToMap
+     */
+    @Transient
+    Map<Part, BigDecimal> getDeliveriedPartSum() {
+        Map<Part, BigDecimal> sumMap = new HashMap<Part, BigDecimal>();
+        for (DeliveryNote note : deliveryNotes) {
+            for (DeliveryNoteItem deliveryNoteItem : note.getItems()) {
+                BigDecimal sum = sumMap.get(deliveryNoteItem.part);
+                if (sum == null) {
+                    sumMap.put(deliveryNoteItem.part, deliveryNoteItem.getQuantity());
+                } else {
+                    sum = sum.add(deliveryNoteItem.getQuantity());
+                    sumMap.put(deliveryNoteItem.part, sum);
+                }
+            }
+        }
+        return sumMap;
+    }
+
+    /**
+     * 寻找还没有按排生产任务的产品列表
      *
      * @return Non-null list of {@link MakeOrderItem}.
-     * @aka getNoCorrespondingTaskItems
+     * @aka getNoCorrespondingOrderItems
      */
     @Transient
     public List<MakeOrderItem> getNotArrangedItems() {
@@ -140,7 +175,7 @@ public class MakeOrder
             // 有对应的生产任务，生产剩下的部分
             BigDecimal remaining = orderItem.getQuantity().subtract(sum);
             if (remaining.longValue() > 0) {
-                // 生产任务的数量小订单的数量
+                // 生产任务的数量小于订单的数量
                 MakeOrderItem remainingItem = new MakeOrderItem();
                 remainingItem.setParent(this);
                 remainingItem.setPart(orderItem.getPart());
@@ -152,6 +187,41 @@ public class MakeOrder
         }
         return result;
     }
+
+    /**
+     * 寻找还没有按排送货单的产品列表
+     *
+     * @return Non-null list of {@link MakeOrderItem}.
+     * @aka getNoCorrespondingOrderItems
+     */
+    @Transient
+    public List<MakeOrderItem> getNotDeliveriedItems() {
+        List<MakeOrderItem> result = new ArrayList<MakeOrderItem>();
+        Map<Part, BigDecimal> sumMap = getDeliveriedPartSum();
+
+        for (MakeOrderItem orderItem : items) {
+            BigDecimal sum = sumMap.get(orderItem.getPart());
+            // 尚没有对应的送货单，安排全部
+            if (sum == null) {
+                result.add(orderItem);
+                continue;
+            }
+            // 有对应的送货单，安排剩下的部分
+            BigDecimal remaining = orderItem.getQuantity().subtract(sum);
+            if (remaining.longValue() > 0) {
+                // 送货单的数量小于订单的数量
+                MakeOrderItem remainingItem = new MakeOrderItem();
+                remainingItem.setParent(this);
+                remainingItem.setPart(orderItem.getPart());
+                remainingItem.setQuantity(remaining);
+                remainingItem.setExternalProductName(orderItem.getExternalProductName());
+                remainingItem.setExternalModelSpec(orderItem.getExternalModelSpec());
+                result.add(remainingItem);
+            }
+        }
+        return result;
+    }
+
 
     /**
      * 检查所有对应生产任务单的数量总合是否超过订单的数量
@@ -173,6 +243,29 @@ public class MakeOrder
             }
         }
         return overloadParts;
+    }
+
+
+    /**
+     * 检查所有对应送货单的数量总合是否超过订单的数量
+     *
+     * @aka checkIfDeliveryQuantityFitOrder
+     */
+    @Transient
+    public Map<Part, BigDecimal> getOverloadPartsOfDelivery() {
+        Map<Part, BigDecimal> overloadPartsDelivery = new HashMap<Part, BigDecimal>();
+        Map<Part, BigDecimal> sumMap = getDeliveriedPartSum();
+        for (MakeOrderItem orderItem : items) {
+            BigDecimal sum = sumMap.get(orderItem.getPart());
+            if (sum != null) {
+                if (sum.compareTo(orderItem.getQuantity()) > 0) {
+                    BigDecimal overloaded = sum.subtract(orderItem.getQuantity());
+                    // 送货单中的数量大于订单中的数量
+                    overloadPartsDelivery.put(orderItem.getPart(), overloaded);
+                }
+            }
+        }
+        return overloadPartsDelivery;
     }
 
     public static final IPropertyAccessor<BigDecimal> nativeTotalProperty = BeanPropertyAccessor.access(//
