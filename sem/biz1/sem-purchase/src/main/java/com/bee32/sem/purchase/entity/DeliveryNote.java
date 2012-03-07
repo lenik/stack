@@ -112,7 +112,8 @@ public class DeliveryNote
 
 
 
-    @OneToOne
+    @OneToOne(orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
     public DeliveryNoteTakeOut getTakeOut() {
         return takeOut;
     }

@@ -1,7 +1,6 @@
 package com.bee32.sem.purchase.entity;
 
 import java.beans.Transient;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.Entity;
