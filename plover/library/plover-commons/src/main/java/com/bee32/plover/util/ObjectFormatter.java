@@ -197,11 +197,17 @@ public abstract class ObjectFormatter<T> {
         out.print("]");
     }
 
+    /** @see AbstractPersistentCollection */
     static final Class<?> APC_class;
+    /** @see AbstractPersistentCollection#initialized */
+    static final Field APC_initialized;
+    /** @see AbstractPersistentCollection#isConnectedToSession() */
     static final Method APC_isConnectedToSession;
     static {
         try {
             APC_class = Class.forName("org.hibernate.collection.AbstractPersistentCollection");
+            APC_initialized = APC_class.getDeclaredField("initialized");
+            APC_initialized.setAccessible(true);
             APC_isConnectedToSession = APC_class.getDeclaredMethod("isConnectedToSession");
             APC_isConnectedToSession.setAccessible(true);
         } catch (ReflectiveOperationException e) {
@@ -212,10 +218,13 @@ public abstract class ObjectFormatter<T> {
     void formatCollection(Collection<?> val, FormatStyle format, int depth) {
         if (APC_class.isInstance(val)) {
             try {
-                Object connected = APC_isConnectedToSession.invoke(val);
-                if (connected != Boolean.TRUE) {
-                    out.print("APC/ERROR: Out of session.");
-                    return;
+                boolean initialized = (Boolean) APC_initialized.get(val);
+                if (!initialized) {
+                    boolean connected = (Boolean) APC_isConnectedToSession.invoke(val);
+                    if (!connected) {
+                        out.print("APC/ERROR: Out of session.");
+                        return;
+                    }
                 }
             } catch (ReflectiveOperationException e) {
                 throw new UnexpectedException(e);
