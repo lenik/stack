@@ -63,8 +63,8 @@ public class Role
     private void _retarget(Role o) {
         // _retargetMerge(controlUsers, o.controlUsers);
         // _retargetMerge(controlGroups, o.controlGroups);
-        _retargetMerge(responsibleUsers, o.responsibleUsers);
-        _retargetMerge(responsibleGroups, o.responsibleGroups);
+        // _retargetMerge(responsibleUsers, o.responsibleUsers);
+        // _retargetMerge(responsibleGroups, o.responsibleGroups);
     }
 
     @Transient

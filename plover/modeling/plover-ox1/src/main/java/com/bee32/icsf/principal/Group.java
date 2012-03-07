@@ -69,10 +69,10 @@ public class Group
     }
 
     private void _retarget(Group o) {
-        primaryRole = _retarget(primaryRole, o.primaryRole);
-        _retargetMerge(assignedRoles, o.assignedRoles);
-        _retargetMerge(controlUsers, o.controlUsers);
-        _retargetMerge(memberUsers, o.memberUsers);
+        // primaryRole = _retarget(primaryRole, o.primaryRole);
+        // _retargetMerge(assignedRoles, o.assignedRoles);
+        // _retargetMerge(controlUsers, o.controlUsers);
+        // _retargetMerge(memberUsers, o.memberUsers);
     }
 
     @Transient
