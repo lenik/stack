@@ -13,23 +13,27 @@ public class TransactionHelper {
             extends DefaultDataAssembledContext {
     }
 
-    public static void openSession(Runnable runnable) {
+    public static Object openSession(ISessionProcedure proc)
+            throws Exception {
         SessionFactory sessionFactory = ctx.bean.getBean(SessionFactory.class);
         boolean participate = false; // Shared mode.
         FlushMode flushMode = FlushMode.MANUAL;
+        Session session;
 
         if (TransactionSynchronizationManager.hasResource(sessionFactory)) {
             // Do not modify the Session: just set the participate flag.
             participate = true;
+            session = SessionFactoryUtils.getSession(sessionFactory, false);
         } else {
-            Session session = SessionFactoryUtils.getSession(sessionFactory, true);
+            session = SessionFactoryUtils.getSession(sessionFactory, true);
             if (flushMode != null)
                 session.setFlushMode(flushMode);
             TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
         }
 
+        Object retval;
         try {
-            runnable.run();
+            retval = proc.run(session);
         } finally {
             if (!participate) {
                 SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager
@@ -37,6 +41,8 @@ public class TransactionHelper {
                 SessionFactoryUtils.closeSession(sessionHolder.getSession());
             }
         }
+
+        return retval;
     }
 
 }
