@@ -1,10 +1,9 @@
-package com.bee32.plover.orm.util;
+package com.bee32.plover.orm.unit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.plover.orm.unit.AbstractPersistenceUnitPostProcessor;
-import com.bee32.plover.orm.unit.PersistenceUnit;
+import com.bee32.plover.orm.util.ITypeAbbrAware;
 
 public class DumpUnitAbbrPostProcessor
         extends AbstractPersistenceUnitPostProcessor
