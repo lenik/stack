@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.free.IdentityHashSet;
+import javax.free.IllegalUsageException;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
@@ -20,6 +21,7 @@ import overlay.Overlay;
 import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.bean.ReflectLocks;
 import com.bee32.plover.arch.util.IdComposite;
+import com.bee32.plover.arch.util.Identity;
 import com.bee32.plover.criteria.hibernate.Alias;
 import com.bee32.plover.criteria.hibernate.Conjunction;
 import com.bee32.plover.criteria.hibernate.CriteriaComposite;
@@ -129,10 +131,14 @@ public abstract class Entity<K extends Serializable>
     }
 
     protected static <E extends Entity<?>> void _retargetMerge(List<E> list, Iterable<E> targetItems) {
-        for (E targetItem : targetItems) {
-            if (!_retargetMerge(list, targetItem)) {
-                list.add(targetItem);
+        try {
+            for (E targetItem : targetItems) {
+                if (!_retargetMerge(list, targetItem)) {
+                    list.add(targetItem);
+                }
             }
+        } catch (UnsupportedOperationException e) {
+            throw new IllegalUsageException(e);
         }
     }
 
