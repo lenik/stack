@@ -9,6 +9,7 @@ import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.bom.dto.PartDto;
 import com.bee32.sem.frame.ui.IEnclosedObject;
+import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.purchase.entity.DeliveryNoteItem;
 import com.bee32.sem.world.thing.AbstractItemDto;
 
@@ -19,18 +20,27 @@ public class DeliveryNoteItemDto
     private static final long serialVersionUID = 1L;
 
     DeliveryNoteDto parent;
+    int index;
     PartDto part;
+
+    StockWarehouseDto sourceWarehouse;
 
     @Override
     protected void _marshal(DeliveryNoteItem source) {
         parent = mref(DeliveryNoteDto.class, source.getParent());
+        index = source.getIndex();
         part = mref(PartDto.class, source.getPart());
+
+        sourceWarehouse = mref(StockWarehouseDto.class, source.getSourceWarehouse());
     }
 
     @Override
     protected void _unmarshalTo(DeliveryNoteItem target) {
         merge(target, "parent", parent);
+        target.setIndex(index);
         merge(target, "part", part);
+
+        merge(target, "sourceWarehouse", sourceWarehouse);
     }
 
     @Override
@@ -58,6 +68,14 @@ public class DeliveryNoteItemDto
         this.parent = parent;
     }
 
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
     @Override
     protected Date getFxrDate() {
         return parent.getBeginTime();
@@ -73,6 +91,13 @@ public class DeliveryNoteItemDto
         this.part = part;
     }
 
+    public StockWarehouseDto getSourceWarehouse() {
+        return sourceWarehouse;
+    }
+
+    public void setSourceWarehouse(StockWarehouseDto sourceWarehouse) {
+        this.sourceWarehouse = sourceWarehouse;
+    }
 
     @Override
     protected Serializable naturalId() {

@@ -1,6 +1,7 @@
 package com.bee32.sem.purchase.dto;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -139,5 +140,9 @@ public class DeliveryNoteDto
 
     public void setTakeOut(DeliveryNoteTakeOutDto takeOut) {
         this.takeOut = takeOut;
+    }
+
+    public List<DeliveryNoteTakeOutDto> getTakeOuts() {
+        return Arrays.asList(takeOut);
     }
 }

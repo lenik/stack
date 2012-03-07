@@ -15,6 +15,7 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.bom.entity.Part;
+import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.world.thing.AbstractItem;
 
 /**
@@ -32,6 +33,7 @@ public class DeliveryNoteItem
     int index;
     Part part;
 
+    StockWarehouse sourceWarehouse;
 
     @NaturalId
     @ManyToOne(optional = false)
@@ -91,4 +93,12 @@ public class DeliveryNoteItem
         return getParent();
     }
 
+    @ManyToOne
+    public StockWarehouse getSourceWarehouse() {
+        return sourceWarehouse;
+    }
+
+    public void setSourceWarehouse(StockWarehouse sourceWarehouse) {
+        this.sourceWarehouse = sourceWarehouse;
+    }
 }

@@ -67,7 +67,7 @@ public class DeliveryNote
         this.arrivalDate = arrivalDate;
     }
 
-    @OneToMany(mappedBy = "task", orphanRemoval = true)
+    @OneToMany(mappedBy = "parent", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<DeliveryNoteItem> getItems() {
         return items;

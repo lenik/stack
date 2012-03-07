@@ -23,17 +23,6 @@
             <h:outputText value="制单人:" />
             <p:inputText value="#{obj.owner.displayName}" disabled="true" />
 
-            <h:outputText value="要求送达日期:" />
-            <t:panelGroup colspan="3">
-                <p:calendar id="arrivalDate" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{obj.arrivalDate}"
-                    showOn="button" label="送达日期" />
-            </t:panelGroup>
-
-            <h:outputText value="简要:" />
-            <t:panelGroup colspan="3">
-                <p:inputText label="简要" value="#{obj.label}" />
-            </t:panelGroup>
-
             <h:outputText value="生产订单:" />
             <t:panelGroup>
                 <p:inputText id="order" value="#{obj.order.label}" readonly="true" label="生产订单"/>
@@ -42,46 +31,85 @@
             <t:panelGroup />
             <t:panelGroup />
 
+            <h:outputText value="简要:" />
+            <t:panelGroup colspan="3">
+                <p:inputText label="简要" value="#{obj.label}" />
+            </t:panelGroup>
+
             <h:outputText value="客户:" />
             <t:panelGroup colspan="3">
                 <p:inputText id="customer" value="#{obj.customer.displayName}" readonly="true" label="客户"/>
-                <p:commandButton value="..." oncomplete="choosePartyDialog.show()" disabled="#{not bean.editing}">
-                    <f:setPropertyActionListener target="#{choosePartyDialogBean.customer}"
-                        value="true" />
-                </p:commandButton>
+            </t:panelGroup>
+
+            <h:outputText value="要求送达日期:" />
+            <t:panelGroup colspan="3">
+                <p:calendar id="arrivalDate" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{obj.arrivalDate}"
+                    showOn="button" label="送达日期" />
             </t:panelGroup>
         </t:panelGrid>
 
-        <fr:listView id="itemsIndexView" header="送货项目" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
-            nested="true" paginator="false" creatable="false">
-            <f:facet name="columns">
-                <p:column headerText="物料" styleClass="f-wrappable">
-                    <h:outputText value="#{entry.part.target.label}" />
-                </p:column>
+        <p:tabView id="tv" activeIndex="#{bean.tabIndex}">
+            <p:tab title="送货明细">
+                <fr:listView id="itemsIndexView" header="送货项目" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
+                    nested="true" paginator="false" creatable="false">
+                    <f:facet name="columns">
+                        <p:column headerText="物料" styleClass="f-wrappable">
+                            <h:outputText value="#{entry.part.target.label}" />
+                        </p:column>
 
-                <p:column headerText="规格型号" styleClass="f-wrappable">
-                    <h:outputText value="#{entry.part.target.modelSpec}" />
-                </p:column>
+                        <p:column headerText="规格型号" styleClass="f-wrappable">
+                            <h:outputText value="#{entry.part.target.modelSpec}" />
+                        </p:column>
 
-                <p:column headerText="单价">
-                    <h:outputText value="#{entry.price}" />
-                </p:column>
+                        <p:column headerText="单价">
+                            <h:outputText value="#{entry.price}" />
+                        </p:column>
 
-                <p:column headerText="数量">
-                    <h:outputText value="#{entry.quantity}" />
-                </p:column>
+                        <p:column headerText="数量">
+                            <h:outputText value="#{entry.quantity}" />
+                        </p:column>
 
-                <p:column headerText="备注" styleClass="f-wrappable">
-                    <h:outputText value="#{entry.description}" />
-                </p:column>
-            </f:facet>
-        </fr:listView>
+                        <p:column headerText="出库仓库">
+                            <h:outputText value="#{entry.sourceWarehouse.label}" />
+                        </p:column>
+
+                        <p:column headerText="备注" styleClass="f-wrappable">
+                            <h:outputText value="#{entry.description}" />
+                        </p:column>
+                    </f:facet>
+                </fr:listView>
+            </p:tab>
+            <p:tab title="销售出库">
+                <fr:listView id="takeOutsIndexView" header="出库项" style="indexPanel" editView=":takeOutsEditView"
+                    mbean="#{bean.takeOutsMBean}" nested="true"
+                    creatable="false" removable="false" readonly="true">
+                    <f:facet name="columns">
+                        <p:column headerText="日期" styleClass="f-wrappable">
+                            <h:outputText value="#{entry.stockOrder.createdDate}" />
+                        </p:column>
+                        <p:column headerText="简要" styleClass="f-wrappable">
+                            <h:outputText value="#{entry.stockOrder.label}" />
+                        </p:column>
+                        <p:column headerText="客户" styleClass="f-wrappable">
+                            <h:outputText value="#{entry.stockOrder.org.displayName}" />
+                        </p:column>
+                    </f:facet>
+                    <f:facet name="index-buttons.left">
+                        <p:commandButton id="generateTakeOut" value="生成销售出库单" actionListener="#{bean.generateTakeOutStockOrders}"
+                            update=":editDialog:form:tv:takeOutsIndexView:indexForm:dataTable"/>
+                    </f:facet>
+                </fr:listView>
+            </p:tab>
+        </p:tabView>
+
+
+
     </ui:define>
 
     <ui:define name="dialogs">
         <sem:chooseMakeOrderDialog id="c_makeOrder" target="#{bean.applyMakeOrder}" update=":editDialog:form" />
 
-        <fr:listView id="itemsEditView" header="订单项目" style="editDialog" indexView=":editDialog:form:itemsIndexView"
+        <fr:listView id="itemsEditView" header="订单项目" style="editDialog" indexView=":editDialog:form:tv:itemsIndexView"
             mbean="#{bean.itemsMBean}">
             <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
 
@@ -106,5 +134,66 @@
                 </t:panelGroup>
             </t:panelGrid>
         </fr:listView>
+
+        <fr:listView
+            id="takeOutsEditView" header="出库项"
+            style="editDialog" indexView=":editDialog:form:tv:takeOutsIndexView"
+            mbean="#{bean.takeOutsMBean}">
+            <fr:listView id="orderItemsView" header="出库明细" style="panel" mbean="#{bean.orderItemsMBean}"
+                creatable="false" removable="false" editiable="false" nested="true">
+                <f:facet name="columns">
+                    <p:column headerText="物料" sortBy="#{entry.material.label}" styleClass="f-wrappable">
+                        <h:outputText value="#{entry.material.label}" />
+                    </p:column>
+
+                    <p:column headerText="规格型号" styleClass="f-wrappable">
+                        <h:outputText value="#{entry.material.modelSpec}" />
+                    </p:column>
+
+                    <p:column headerText="单位">
+                        <h:outputText value="#{entry.material.unit.label}" />
+                    </p:column>
+
+                    <p:column headerText="${batchMetadata.labels[0]}">
+                        <h:outputText value="${entry.batches[0].value}" />
+                    </p:column>
+                    <p:column headerText="${batchMetadata.labels[1]}" rendered="${batchMetadata.arraySize >= 2}">
+                        <h:outputText value="${entry.batches[1].value}" />
+                    </p:column>
+                    <p:column headerText="${batchMetadata.labels[2]}" rendered="${batchMetadata.arraySize >= 3}">
+                        <h:outputText value="${entry.batches[2].value}" />
+                    </p:column>
+                    <p:column headerText="${batchMetadata.labels[3]}" rendered="${batchMetadata.arraySize >= 4}">
+                        <h:outputText value="${entry.batches[3].value}" />
+                    </p:column>
+                    <p:column headerText="${batchMetadata.labels[4]}" rendered="${batchMetadata.arraySize >= 5}">
+                        <h:outputText value="${entry.batches[4].value}" />
+                    </p:column>
+
+                    <p:column headerText="有效期">
+                        <h:outputText value="#{entry.expirationDate}" />
+                    </p:column>
+
+                    <p:column headerText="库位" styleClass="f-wrappable">
+                        <h:outputText value="#{entry.location.label}" />
+                    </p:column>
+
+                    <p:column headerText="单价">
+                        <h:outputText value="#{entry.price}" />
+                    </p:column>
+
+                    <ui:insert name="entry-quantity">
+                        <p:column headerText="数量">
+                            <h:outputText value="#{entry.quantity}" />
+                        </p:column>
+                    </ui:insert>
+
+                    <p:column headerText="备注" styleClass="f-wrappable">
+                        <h:outputText value="#{entry.description}" />
+                    </p:column>
+                </f:facet>
+            </fr:listView>
+        </fr:listView>
+
     </ui:define>
 </ui:composition>

@@ -11,8 +11,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import com.bee32.plover.arch.DataService;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.InCollection;
@@ -36,6 +34,10 @@ import com.bee32.sem.inventory.service.StockQueryOptions;
 import com.bee32.sem.inventory.service.StockQueryResult;
 import com.bee32.sem.inventory.util.ConsumptionMap;
 import com.bee32.sem.people.dto.OrgDto;
+import com.bee32.sem.people.dto.PartyDto;
+import com.bee32.sem.purchase.dto.DeliveryNoteDto;
+import com.bee32.sem.purchase.dto.DeliveryNoteItemDto;
+import com.bee32.sem.purchase.dto.DeliveryNoteTakeOutDto;
 import com.bee32.sem.purchase.dto.MakeOrderDto;
 import com.bee32.sem.purchase.dto.MakeOrderItemDto;
 import com.bee32.sem.purchase.dto.MaterialPlanDto;
@@ -106,9 +108,8 @@ public class PurchaseService
     }
 
     /**
-     * 根据采购请求和所选择的仓库id,自动生成采购入库单
+     * 根据采购请求和所选择的仓库,自动生成采购入库单
      */
-    @Transactional
     public void generateTakeInStockOrders(PurchaseRequestDto purchaseRequest)
             throws NoPurchaseAdviceException, AdviceHaveNotVerifiedException, TakeInStockOrderAlreadyGeneratedException {
 
@@ -117,8 +118,6 @@ public class PurchaseService
         for (PurchaseRequestItemDto requestItem : purchaseRequest.getItems()) {
             itemWarehouseMap.put(requestItem.getId(), requestItem.getDestWarehouse().getId());
         }
-
-        //purchaseRequest = reload(purchaseRequest);
 
         // 检测purchaseReqeust是否已经生成过采购入库单
         if (!purchaseRequest.getTakeIns().isEmpty()) {
@@ -183,6 +182,72 @@ public class PurchaseService
         }
     }
 
+    /**
+     * 根据送货单和所选择的仓库,自动生成销售出库单
+     */
+    public void generateTakeOutStockOrders(DeliveryNoteDto deliveryNote) throws TakeOutStockOrderAlreadyGeneratedException {
+        // 先用map保存用户输入的warehouseId，因为后面的reload(purchaseRequest)会导致这些warehouseIds丢失
+        Map<Long, Integer> itemWarehouseMap = new HashMap<Long, Integer>();
+        for (DeliveryNoteItemDto deliveryNoteItem : deliveryNote.getItems()) {
+            itemWarehouseMap.put(deliveryNoteItem.getId(), deliveryNoteItem.getSourceWarehouse().getId());
+        }
+
+        // 检测deliveryNote是否已经生成过销售出库单
+        if (!deliveryNote.getTakeOuts().isEmpty()) {
+            throw new TakeOutStockOrderAlreadyGeneratedException();
+        }
+
+        Map<Object, List<DeliveryNoteItemDto>> splitMap //
+        = new HashMap<Object, List<DeliveryNoteItemDto>>();
+
+        // 按仓库和客户区分要生成的销售出库单
+        for (DeliveryNoteItemDto item : deliveryNote.getItems()) {
+            PartyDto customer = deliveryNote.getCustomer();
+            // 以warehouseId和对应客户的id组合成 x&y 的形式
+            IdComposite key = new IdComposite(item.getSourceWarehouse().getId(), customer.getId());
+
+            if (!splitMap.containsKey(key)) {
+                List<DeliveryNoteItemDto> newItemList = new ArrayList<DeliveryNoteItemDto>();
+                splitMap.put(key, newItemList);
+            }
+
+            List<DeliveryNoteItemDto> itemList = splitMap.get(key);
+            itemList.add(item);
+        }
+
+        // 3.按仓库生成subject为takeOut的StockOrder->StockOrderItem*
+        for (List<DeliveryNoteItemDto> itemList : splitMap.values()) {
+            PartyDto customer = itemList.get(0).getParent().getCustomer();
+
+            StockWarehouse warehouse = ctx.data.access(StockWarehouse.class).lazyLoad(
+                    itemWarehouseMap.get(itemList.get(0).getId()));
+
+            StockOrderDto takeOutOrder = new StockOrderDto().create();
+            takeOutOrder.setOrg((OrgDto) customer);
+            takeOutOrder.setWarehouse(DTOs.marshal(StockWarehouseDto.class, warehouse));
+            takeOutOrder.setSubject(StockOrderSubject.TAKE_OUT);
+            takeOutOrder.setLabel("从送货单[" + deliveryNote.getLabel() + "]生成的出库单");
+
+            for (DeliveryNoteItemDto item : itemList) {
+                StockOrderItemDto orderItem = new StockOrderItemDto().create();
+
+                orderItem.setMaterial(item.getPart().getTarget());
+                orderItem.setQuantity(item.getQuantity());
+                orderItem.setPrice(item.getPrice());
+                orderItem.setDescription("由送货单[" + deliveryNote.getLabel() + "]生成的出库明细项目");
+
+                orderItem.setParent(takeOutOrder);
+                takeOutOrder.addItem(orderItem);
+            }
+
+            DeliveryNoteTakeOutDto takeOut = new DeliveryNoteTakeOutDto().create();
+            takeOut.setDeliveryNote(deliveryNote);
+            takeOut.setStockOrder(takeOutOrder);
+            deliveryNote.setTakeOut(takeOut);
+        }
+
+    }
+
     public void chanceApplyToMakeOrder(ChanceDto chance, MakeOrderDto makeOrder) {
         chance = reload(chance, ChanceDto.PRODUCTS_MORE);
         makeOrder.setChance(chance);
@@ -211,5 +276,4 @@ public class PurchaseService
         }
         makeOrder.setItems(items);
     }
-
 }

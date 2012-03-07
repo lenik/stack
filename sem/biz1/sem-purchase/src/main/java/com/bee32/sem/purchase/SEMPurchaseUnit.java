@@ -4,6 +4,9 @@ import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.sem.bom.SEMBomUnit;
 import com.bee32.sem.chance.SEMChanceUnit;
+import com.bee32.sem.purchase.entity.DeliveryNote;
+import com.bee32.sem.purchase.entity.DeliveryNoteItem;
+import com.bee32.sem.purchase.entity.DeliveryNoteTakeOut;
 import com.bee32.sem.purchase.entity.MakeOrder;
 import com.bee32.sem.purchase.entity.MakeOrderItem;
 import com.bee32.sem.purchase.entity.MakeTask;
@@ -33,6 +36,9 @@ public class SEMPurchaseUnit
         add(PurchaseInquiry.class);
         add(PurchaseTakeIn.class);
         add(StockPlanOrder.class);
+        add(DeliveryNote.class);
+        add(DeliveryNoteItem.class);
+        add(DeliveryNoteTakeOut.class);
     }
 
 }
