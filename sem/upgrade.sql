@@ -21,3 +21,7 @@ update material_category set label=name;
 alter table material_category drop column name;
 alter table palette_entry drop column name;
 alter table acl drop column name;
+
+-- 4
+update chance_competitor set label=name;
+alter table chance_competitor drop column name;
