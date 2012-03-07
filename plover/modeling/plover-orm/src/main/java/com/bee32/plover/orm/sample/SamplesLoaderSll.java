@@ -1,11 +1,11 @@
-package com.bee32.plover.orm.util;
+package com.bee32.plover.orm.sample;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.plover.orm.util.SuperSamplePackage.Boundaries;
-import com.bee32.plover.orm.util.SuperSamplePackage.Normals;
-import com.bee32.plover.orm.util.SuperSamplePackage.Standards;
+import com.bee32.plover.orm.sample.SuperSamplePackage.Boundaries;
+import com.bee32.plover.orm.sample.SuperSamplePackage.Normals;
+import com.bee32.plover.orm.sample.SuperSamplePackage.Standards;
 import com.bee32.plover.site.AbstractSll;
 import com.bee32.plover.site.SiteInstance;
 

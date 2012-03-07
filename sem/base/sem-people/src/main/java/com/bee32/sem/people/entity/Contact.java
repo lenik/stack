@@ -1,12 +1,20 @@
 package com.bee32.sem.people.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.NaturalId;
+
 import com.bee32.icsf.access.DefaultPermission;
 import com.bee32.icsf.access.Permission;
+import com.bee32.plover.arch.util.IdComposite;
+import com.bee32.plover.criteria.hibernate.And;
+import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.color.Blue;
 import com.bee32.plover.ox1.xp.EntityExt;
 
@@ -79,8 +87,22 @@ public class Contact
     }
 
     /**
+     * 联系人
+     */
+    @NaturalId
+    @ManyToOne
+    public Party getParty() {
+        return party;
+    }
+
+    public void setParty(Party party) {
+        this.party = party;
+    }
+
+    /**
      * 联系人分类
      */
+    @NaturalId(mutable = true)
     @ManyToOne(optional = false)
     public ContactCategory getCategory() {
         return category;
@@ -90,18 +112,6 @@ public class Contact
         if (category == null)
             throw new NullPointerException("category");
         this.category = category;
-    }
-
-    /**
-     * 联系人
-     */
-    @ManyToOne
-    public Party getParty() {
-        return party;
-    }
-
-    public void setParty(Party party) {
-        this.party = party;
     }
 
     /**
@@ -195,6 +205,20 @@ public class Contact
 
     public void setQq(String qq) {
         this.qq = qq;
+    }
+
+    @Override
+    protected Serializable naturalId() {
+        return new IdComposite(//
+                naturalIdOpt(party), //
+                naturalId(category));
+    }
+
+    @Override
+    protected ICriteriaElement selector(String prefix) {
+        return And.of(//
+                new Equals(prefix + "party", party), //
+                new Equals(prefix + "category", category));
     }
 
 }

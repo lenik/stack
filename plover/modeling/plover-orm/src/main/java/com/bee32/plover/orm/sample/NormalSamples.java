@@ -1,6 +1,7 @@
-package com.bee32.plover.orm.util;
+package com.bee32.plover.orm.sample;
 
-import com.bee32.plover.orm.util.SuperSamplePackage.Normals;
+import com.bee32.plover.orm.sample.SuperSamplePackage.Normals;
+
 
 /**
  * Lifecycle:

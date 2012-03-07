@@ -1,6 +1,7 @@
-package com.bee32.plover.orm.util;
+package com.bee32.plover.orm.sample;
 
 import org.apache.commons.collections15.Closure;
+
 
 public interface ISamplesLoader {
 

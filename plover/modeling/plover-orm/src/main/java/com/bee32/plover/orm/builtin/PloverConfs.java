@@ -1,6 +1,6 @@
 package com.bee32.plover.orm.builtin;
 
-import com.bee32.plover.orm.util.StandardSamples;
+import com.bee32.plover.orm.sample.StandardSamples;
 
 public class PloverConfs
         extends StandardSamples {

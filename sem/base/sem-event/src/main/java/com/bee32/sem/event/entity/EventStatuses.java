@@ -1,6 +1,6 @@
 package com.bee32.sem.event.entity;
 
-import com.bee32.plover.orm.util.StandardSamples;
+import com.bee32.plover.orm.sample.StandardSamples;
 import com.bee32.sem.event.GenericState;
 
 public class EventStatuses

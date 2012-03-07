@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.util;
+package com.bee32.plover.orm.sample;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,7 +17,9 @@ import org.springframework.stereotype.Component;
 import com.bee32.plover.inject.spring.ScopeProxy;
 import com.bee32.plover.orm.builtin.IPloverConfManager;
 import com.bee32.plover.orm.builtin.StaticPloverConfManager;
-import com.bee32.plover.orm.util.SuperSamplePackage.Normals;
+import com.bee32.plover.orm.sample.SuperSamplePackage.Normals;
+import com.bee32.plover.orm.util.ITypeAbbrAware;
+import com.bee32.plover.orm.util.ObjectPool;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.site.scope.PerSite;
 

@@ -1,6 +1,6 @@
 package com.bee32.icsf.login;
 
-import com.bee32.plover.orm.util.StandardSamples;
+import com.bee32.plover.orm.sample.StandardSamples;
 
 public class PrivateQuestions
         extends StandardSamples {

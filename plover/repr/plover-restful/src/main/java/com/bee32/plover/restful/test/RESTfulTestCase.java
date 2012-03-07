@@ -8,10 +8,10 @@ import org.springframework.context.ApplicationContext;
 
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
+import com.bee32.plover.orm.sample.SamplesLoader;
+import com.bee32.plover.orm.sample.SuperSamplePackage.Normals;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.unit.UsingUtil;
-import com.bee32.plover.orm.util.SuperSamplePackage.Normals;
-import com.bee32.plover.orm.util.SamplesLoader;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 import com.bee32.plover.pub.oid.OidUtil;
 import com.bee32.plover.restful.RESTfulConfig;

@@ -2,7 +2,7 @@ package com.bee32.sem.file;
 
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityFlags;
-import com.bee32.plover.orm.util.NormalSamples;
+import com.bee32.plover.orm.sample.NormalSamples;
 import com.bee32.sem.file.entity.UserFileTagname;
 
 public class SEMFileSamples

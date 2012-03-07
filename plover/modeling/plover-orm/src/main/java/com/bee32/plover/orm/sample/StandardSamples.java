@@ -1,6 +1,6 @@
-package com.bee32.plover.orm.util;
+package com.bee32.plover.orm.sample;
 
-import com.bee32.plover.orm.util.SuperSamplePackage.Standards;
+import com.bee32.plover.orm.sample.SuperSamplePackage.Standards;
 
 public abstract class StandardSamples
         extends SamplePackage {
@@ -16,8 +16,8 @@ public abstract class StandardSamples
     }
 
     @Override
-    protected void getSamples(SampleList samples) {
-        super.getSamples(samples);
+    protected void getSamples(SampleList samples, boolean grouped) {
+        super.getSamples(samples, grouped);
     }
 
 }

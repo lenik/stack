@@ -104,7 +104,9 @@ public class FileAttribute
 
     @Override
     protected Serializable naturalId() {
-        return new IdComposite(naturalId(file), name);
+        return new IdComposite(//
+                naturalId(file), //
+                name);
     }
 
     @Override

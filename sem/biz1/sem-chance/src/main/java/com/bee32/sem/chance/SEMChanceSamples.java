@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
-import com.bee32.plover.orm.util.NormalSamples;
+import com.bee32.plover.orm.sample.NormalSamples;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.entity.ChanceActionStyles;

@@ -3,7 +3,7 @@ package com.bee32.sem.asset.entity;
 import static com.bee32.sem.asset.entity.AccountSubject.CREDIT;
 import static com.bee32.sem.asset.entity.AccountSubject.DEBIT;
 
-import com.bee32.plover.orm.util.StandardSamples;
+import com.bee32.plover.orm.sample.StandardSamples;
 
 public class AccountSubjects
         extends StandardSamples {

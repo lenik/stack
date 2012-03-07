@@ -1,7 +1,9 @@
-package com.bee32.plover.orm.util;
+package com.bee32.plover.orm.sample;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import com.bee32.plover.orm.util.BootstrapDataAssembledContext;
 
 public abstract class SamplePackageAllocation {
 

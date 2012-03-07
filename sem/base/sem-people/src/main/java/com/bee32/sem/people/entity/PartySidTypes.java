@@ -3,7 +3,7 @@ package com.bee32.sem.people.entity;
 import static com.bee32.sem.people.entity.PartySidType.ORG;
 import static com.bee32.sem.people.entity.PartySidType.PERSON;
 
-import com.bee32.plover.orm.util.StandardSamples;
+import com.bee32.plover.orm.sample.StandardSamples;
 
 public class PartySidTypes
         extends StandardSamples {

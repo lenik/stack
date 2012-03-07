@@ -2,7 +2,7 @@ package com.bee32.icsf.access.alt;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.icsf.principal.Users;
-import com.bee32.plover.orm.util.NormalSamples;
+import com.bee32.plover.orm.sample.NormalSamples;
 
 public class R_ACLSamples
         extends NormalSamples {

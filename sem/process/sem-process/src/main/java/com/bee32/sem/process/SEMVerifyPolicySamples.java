@@ -1,7 +1,7 @@
 package com.bee32.sem.process;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
-import com.bee32.plover.orm.util.NormalSamples;
+import com.bee32.plover.orm.sample.NormalSamples;
 import com.bee32.sem.process.verify.builtin.SingleVerifierPolicy;
 import com.bee32.sem.process.verify.builtin.SingleVerifierRankedPolicy;
 

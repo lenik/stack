@@ -6,7 +6,7 @@ import user.war.entity.AttackMission;
 import user.war.entity.BuildMission;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
-import com.bee32.plover.orm.util.NormalSamples;
+import com.bee32.plover.orm.sample.NormalSamples;
 import com.bee32.sem.process.SEMVerifyPolicySamples;
 import com.bee32.sem.process.verify.builtin.SingleVerifierSupport;
 import com.bee32.sem.process.verify.preference.VerifyPolicyPref;

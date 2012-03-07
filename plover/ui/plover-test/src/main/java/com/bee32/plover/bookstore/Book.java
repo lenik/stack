@@ -6,7 +6,7 @@ import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 
-import com.bee32.plover.arch.util.DummyId;
+import com.bee32.plover.arch.util.Identity;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.ox1.color.Green;
@@ -53,7 +53,7 @@ public class Book
     @Override
     protected Serializable naturalId() {
         if (name == null)
-            return new DummyId(this);
+            return new Identity(this);
         return name;
     }
 

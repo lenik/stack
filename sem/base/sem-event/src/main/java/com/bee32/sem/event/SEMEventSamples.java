@@ -7,8 +7,8 @@ import java.util.List;
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.Users;
-import com.bee32.plover.orm.util.NormalSamples;
-import com.bee32.plover.orm.util.SampleList;
+import com.bee32.plover.orm.sample.NormalSamples;
+import com.bee32.plover.orm.sample.SampleList;
 import com.bee32.sem.event.entity.Event;
 import com.bee32.sem.event.entity.EventCategory;
 import com.bee32.sem.event.entity.EventPriorities;
@@ -75,9 +75,10 @@ public class SEMEventSamples
     }
 
     @Override
-    protected void getSamples(SampleList samples) {
+    protected void getSamples(SampleList samples, boolean grouped) {
         samples.add("weather", weather);
         samples.add("special", special);
+        // samples.addBatch(rains);
         samples.addAll(rains);
         samples.add("killAngel", killAngel);
     }

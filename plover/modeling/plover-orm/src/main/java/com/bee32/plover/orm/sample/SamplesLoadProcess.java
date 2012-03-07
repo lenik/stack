@@ -1,10 +1,13 @@
-package com.bee32.plover.orm.util;
+package com.bee32.plover.orm.sample;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections15.Closure;
+import org.hibernate.Session;
+import org.hibernate.proxy.HibernateProxy;
+import org.hibernate.proxy.LazyInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +22,8 @@ import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityFlags;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.PersistenceUnit;
+import com.bee32.plover.orm.util.ISessionProcedure;
+import com.bee32.plover.orm.util.TransactionHelper;
 
 @NotAComponent
 public class SamplesLoadProcess
@@ -45,65 +50,78 @@ public class SamplesLoadProcess
 
     @Override
     public void run() {
-        TransactionHelper.openSession(new Runnable() {
-            @Override
-            public void run() {
-                processQueue();
-            }
-        });
+        // TransactionHelper.openSession(new ISessionProcedure() {
+        // @Override
+        // public void run(Session session) {
+        // processQueue(session);
+        // }
+        // });
+        processQueue();
     }
 
     void processQueue() {
-        for (SamplePackage pack : queue) {
-            logger.info("Loading sample package " + pack.getName());
-            pack.beginLoad();
+        SampleLoadStats stats = new SampleLoadStats();
+        for (final SamplePackage samplePackage : queue) {
+            if (samplePackage.isVirtual())
+                continue;
+
+            logger.info("Loading sample package " + samplePackage.getName());
+            samplePackage.beginLoad();
+
+            SampleLoadStats packageStats;
+            try {
+                packageStats = (SampleLoadStats) TransactionHelper.openSession(new ISessionProcedure() {
+                    @Override
+                    public SampleLoadStats run(Session session) {
+                        return loadPackage(session, samplePackage);
+                    }
+                });
+            } catch (Exception e) {
+                logger.error("  Failed to load package " + samplePackage.getName(), e);
+                continue;
+            }
+            stats.add(packageStats);
 
             try {
-                loadPackage(pack);
+                samplePackage.postSave(ctx.data);
             } catch (Exception e) {
-                logger.error("  Failed to load package " + pack.getName(), e);
+                logger.error("  Failed to post-save package " + samplePackage.getName(), e);
                 continue;
             }
 
-            try {
-                pack.postSave(ctx.data);
-            } catch (Exception e) {
-                logger.error("  Failed to post-save package " + pack.getName(), e);
-                continue;
-            }
-
-            pack.endLoad();
-            confManager.set(SamplePackage.SECTION, pack.getName(), "1");
+            samplePackage.endLoad();
+            confManager.set(SamplePackage.SECTION, samplePackage.getName(), "1");
         }
     }
 
     /**
      * non-standard: check conf, skip entirely if loaded.
-     *
-     * @throws CloneNotSupportedException
      */
     @SuppressWarnings("unchecked")
-    void loadPackage(SamplePackage pack)
-            throws CloneNotSupportedException {
-        if (pack == null)
+    SampleLoadStats loadPackage(Session session, SamplePackage samplePackage) {
+        if (samplePackage == null)
             throw new NullPointerException("pack");
+
+        // SessionImpl sessionImpl = (SessionImpl) session;
+        SampleLoadStats stats = new SampleLoadStats();
 
         // DBAutoDDL autoDdl = ThreadHttpContext.getSiteInstance().getAutoDDL();
         // boolean firstTime = autoDdl == DBAutoDDL.CreateDrop;
 
-        PloverConfDto packConfig = section.get(pack.getName());
-        boolean addMissings = packConfig == null || pack.getLevel() <= SamplePackage.LEVEL_STANDARD;
+        PloverConfDto packConfig = section.get(samplePackage.getName());
+        boolean addMissings = packConfig == null || samplePackage.getLevel() <= SamplePackage.LEVEL_STANDARD;
         IEntityAccessService<Entity<?>, ?> database = ctx.data.access(Entity.class);
 
         /** 考虑到无法分析 entity 的倚赖关系 （需要完整实现prereqs），这里简单的重载所有样本。 */
         addMissings = true;
 
-        S: for (Entity<?> micro1 : pack.getSamples()) {
-            if (micro1 == null)
-                throw new NullPointerException("sample");
+        SampleList heads = samplePackage.getSamples(true);
+        S: for (Entity<?> head : heads) {
+            if (head == null)
+                throw new NullPointerException("head of micro-group");
 
             List<Entity<?>> group = new ArrayList<>();
-            Entity<?> next = micro1;
+            Entity<?> next = head;
             while (next != null) {
                 final Entity<?> micro = next;
                 next = EntityAccessor.getNextOfMicroLoop(next);
@@ -124,7 +142,7 @@ public class SamplesLoadProcess
                     if (!addMissings)
                         continue;
                 } else {
-                    final Entity<?> existing = selection.get(0);
+                    Entity<?> existing = selection.get(0);
                     if (selection.size() > 1)
                         logger.warn("Selector returns multiple results: " + selection + ", choose the first.");
 
@@ -134,14 +152,18 @@ public class SamplesLoadProcess
                     if (ef.isHidden() || ef.isMarked())
                         continue;
 
+                    if (existing instanceof HibernateProxy) {
+                        LazyInitializer lazyInitializer = ((HibernateProxy) existing).getHibernateLazyInitializer();
+                        Object target = lazyInitializer.getImplementation(); // (sessionImpl);
+                        existing = (Entity<?>) target;
+                    }
                     // EntityAccessor.setId(micro, existing.getId());
                     micro.retarget(existing);
-                    ctx.data.access(entityType).evict(existing);
-                    // ctx.data.access(entityType).flush();
+                    // session.clear();
                 }
 
-                Entity<?> clone = micro.clone();
-                group.add(clone);
+                // Entity<?> clone = micro.clone();
+                group.add(micro);
             } // for micro-next
 
             logger.info("    Micro-Group: ");
@@ -152,11 +174,12 @@ public class SamplesLoadProcess
                 logger.info("        " + title);
             }
 
+            session.clear();
             // By each entity type...?
             database.saveOrUpdateAll(group);
-            for (Entity<?> entity : group)
-                database.evict(entity);
+            // session.clear();
         } // for sample
+        return stats;
     }
 
 }

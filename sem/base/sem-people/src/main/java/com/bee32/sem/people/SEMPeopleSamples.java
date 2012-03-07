@@ -5,13 +5,15 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 import javax.free.Dates;
+import javax.inject.Inject;
 
 import com.bee32.icsf.principal.Group;
+import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.collections.Varargs;
+import com.bee32.plover.orm.sample.NormalSamples;
+import com.bee32.plover.orm.sample.SampleList;
 import com.bee32.plover.orm.util.DataPartialContext;
-import com.bee32.plover.orm.util.NormalSamples;
-import com.bee32.plover.orm.util.SampleList;
 import com.bee32.sem.people.entity.Contact;
 import com.bee32.sem.people.entity.ContactCategories;
 import com.bee32.sem.people.entity.Org;
@@ -40,6 +42,9 @@ public class SEMPeopleSamples
     public final Person bugatti = new Person(PREFIX + "Bugatti");
     public final Person bentley = new Person(PREFIX + "Bentley");
     public final Person weiXiaoBao = new Person(PREFIX + "韦小宝");
+
+    @Inject
+    IcsfPrincipalSamples principals;
 
     public SEMPeopleSamples()
             throws ParseException {
@@ -201,6 +206,10 @@ public class SEMPeopleSamples
     protected void postSave(DataPartialContext data) {
         abcSales.setOwner(tang);
         data.access(Group.class).saveOrUpdate(abcSales);
+    }
+
+    @Override
+    public void beginLoad() {
     }
 
 }

@@ -10,7 +10,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.DefaultValue;
 import org.hibernate.annotations.Index;
 
-import com.bee32.plover.arch.util.DummyId;
+import com.bee32.plover.arch.util.Identity;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.color.Blue;
@@ -113,7 +113,7 @@ public abstract class NameDict
     @Override
     protected Serializable naturalId() {
         if (id == null)
-            return new DummyId(this);
+            return new Identity(this);
         else
             return id;
     }

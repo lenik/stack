@@ -13,9 +13,10 @@ import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.dao.MemdbDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IEntityAccessService;
+import com.bee32.plover.orm.sample.SamplesLoader;
+import com.bee32.plover.orm.sample.SuperSamplePackage.Normals;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.unit.UsingUtil;
-import com.bee32.plover.orm.util.SuperSamplePackage.Normals;
 import com.bee32.plover.test.WiredTestCase;
 
 @Import({ TestDataConfig.class })

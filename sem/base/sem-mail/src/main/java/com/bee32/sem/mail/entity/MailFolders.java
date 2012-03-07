@@ -1,6 +1,6 @@
 package com.bee32.sem.mail.entity;
 
-import com.bee32.plover.orm.util.StandardSamples;
+import com.bee32.plover.orm.sample.StandardSamples;
 
 public class MailFolders
         extends StandardSamples {

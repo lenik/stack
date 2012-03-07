@@ -1,6 +1,6 @@
 package com.bee32.sem.inventory;
 
-import com.bee32.plover.orm.util.NormalSamples;
+import com.bee32.plover.orm.sample.NormalSamples;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.process.verify.preference.VerifyPolicyPref;
 

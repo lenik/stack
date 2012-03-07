@@ -13,8 +13,8 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.bee32.plover.orm.util.NormalSamples;
-import com.bee32.plover.orm.util.SampleList;
+import com.bee32.plover.orm.sample.NormalSamples;
+import com.bee32.plover.orm.sample.SampleList;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.entity.StockLocation;
@@ -236,6 +236,10 @@ public class SEMInventorySamples
         samples.addBatch(cupx_I_1, lightB_o_1, //
                 handlerf1_fi, handlerf1_fo, //
                 cupx_plan_1);
+    }
+
+    @Override
+    public void beginLoad() {
     }
 
 }

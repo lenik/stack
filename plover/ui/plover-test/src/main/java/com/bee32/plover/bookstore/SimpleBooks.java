@@ -1,6 +1,6 @@
 package com.bee32.plover.bookstore;
 
-import com.bee32.plover.orm.util.NormalSamples;
+import com.bee32.plover.orm.sample.NormalSamples;
 
 public class SimpleBooks
         extends NormalSamples {

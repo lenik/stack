@@ -3,8 +3,8 @@ package com.bee32.sem.chance;
 import javax.free.IdentityHashSet;
 import javax.free.Strings;
 
-import com.bee32.plover.orm.util.SuperSamplePackage.Normals;
-import com.bee32.plover.orm.util.SamplePackage;
+import com.bee32.plover.orm.sample.SamplePackage;
+import com.bee32.plover.orm.sample.SuperSamplePackage.Normals;
 import com.bee32.plover.test.WiredTestCase;
 
 public class SEMChanceSamplesTest

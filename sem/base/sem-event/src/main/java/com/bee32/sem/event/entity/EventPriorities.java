@@ -5,7 +5,7 @@ import static com.bee32.sem.event.entity.EventPriority.P_LOW;
 import static com.bee32.sem.event.entity.EventPriority.P_NORMAL;
 import static com.bee32.sem.event.entity.EventPriority.P_URGENT;
 
-import com.bee32.plover.orm.util.StandardSamples;
+import com.bee32.plover.orm.sample.StandardSamples;
 
 public class EventPriorities
         extends StandardSamples {

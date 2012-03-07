@@ -27,6 +27,7 @@ import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.entity.EntityFlags;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.entity.IIdentity;
+import com.bee32.plover.orm.sample.StandardSamples;
 import com.bee32.plover.orm.validation.RequiredId;
 import com.bee32.plover.servlet.util.HttpAssembledContext;
 import com.bee32.plover.util.FormatStyle;

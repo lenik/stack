@@ -99,7 +99,9 @@ public class MaterialAttribute
 
     @Override
     protected Serializable naturalId() {
-        return new IdComposite(naturalId(material), name);
+        return new IdComposite(//
+                naturalId(material), //
+                name);
     }
 
     @Override

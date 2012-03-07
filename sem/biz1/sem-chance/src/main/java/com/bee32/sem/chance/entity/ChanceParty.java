@@ -87,7 +87,9 @@ public class ChanceParty
 
     @Override
     protected Serializable naturalId() {
-        return new IdComposite(naturalId(chance), naturalId(party));
+        return new IdComposite(//
+                naturalId(chance), //
+                naturalId(party));
     }
 
     @Override

@@ -6,7 +6,7 @@ import java.util.Date;
 import javax.free.Dates;
 import javax.free.UnexpectedException;
 
-import com.bee32.plover.orm.util.NormalSamples;
+import com.bee32.plover.orm.sample.NormalSamples;
 import com.bee32.sem.bom.entity.Part;
 import com.bee32.sem.inventory.SEMInventorySamples;
 

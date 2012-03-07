@@ -31,7 +31,7 @@ public class MaterialWarehouseOption
     private static final long serialVersionUID = 1L;
 
     Material material;
-    StockWarehouse warehouse;
+    StockWarehouse warehouse; // null for "default" options.
     BigDecimal safetyStock = new BigDecimal(1);
     int stkPeriod = 365;
 
@@ -109,7 +109,9 @@ public class MaterialWarehouseOption
 
     @Override
     protected Serializable naturalId() {
-        return new IdComposite(naturalId(material), naturalId(warehouse));
+        return new IdComposite(//
+                naturalId(material), //
+                naturalIdOpt(warehouse));
     }
 
     @Override

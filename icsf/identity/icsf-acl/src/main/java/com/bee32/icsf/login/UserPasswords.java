@@ -3,7 +3,7 @@ package com.bee32.icsf.login;
 import static com.bee32.icsf.login.UserPassword.digest;
 
 import com.bee32.icsf.principal.Users;
-import com.bee32.plover.orm.util.StandardSamples;
+import com.bee32.plover.orm.sample.StandardSamples;
 
 public class UserPasswords
         extends StandardSamples {

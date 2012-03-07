@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.util;
+package com.bee32.plover.orm.sample;
 
 import javax.free.AbstractNonNullComparator;
 

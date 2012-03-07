@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.util;
+package com.bee32.plover.orm.sample;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -65,7 +65,7 @@ public class SampleDumper {
         out.enter();
 
         TreeMap<String, Entity<?>> sortedSamples = new TreeMap<String, Entity<?>>();
-        for (Entity<?> sample : start.getSamples()) {
+        for (Entity<?> sample : start.getSamples(false)) {
             String typeName = sample.getClass().getSimpleName();
             Object id = sample.getId();
             String title = typeName + " : " + (id == null ? System.identityHashCode(sample) : id);

@@ -1,7 +1,7 @@
 package com.bee32.icsf.principal;
 
+import com.bee32.plover.orm.sample.NormalSamples;
 import com.bee32.plover.orm.util.DataPartialContext;
-import com.bee32.plover.orm.util.NormalSamples;
 
 /**
  * Sample principals:
@@ -52,6 +52,10 @@ public class IcsfPrincipalSamples
         solaRobots.setOwner(eva);
         sunCorp.setOwner(tom);
         data.access(Group.class).saveOrUpdateAll(solaRobots, sunCorp);
+    }
+
+    @Override
+    public void beginLoad() {
     }
 
 }

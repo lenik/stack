@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.util;
+package com.bee32.plover.orm.sample;
 
 import java.lang.reflect.Field;
 import java.util.Collections;
@@ -15,6 +15,7 @@ import com.bee32.plover.arch.util.IPriority;
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
+import com.bee32.plover.orm.util.DataPartialContext;
 import com.bee32.plover.site.scope.PerSite;
 
 @ComponentTemplate
@@ -98,10 +99,10 @@ public abstract class SamplePackage
         dependencies.add(dependency);
     }
 
-    public final SampleList getSamples() {
+    public final SampleList getSamples(boolean grouped) {
         assembleOnce();
         SampleList samples = new SampleList();
-        getSamples(samples);
+        getSamples(samples, grouped);
         return samples;
     }
 
@@ -116,7 +117,7 @@ public abstract class SamplePackage
     @Override
     protected void postAssemble() {
         SampleList samples = new SampleList();
-        getSamples(samples);
+        getSamples(samples, false);
         for (Entity<?> sample : samples) {
             switch (getLevel()) {
             case LEVEL_BAD:
@@ -133,7 +134,7 @@ public abstract class SamplePackage
         }
     }
 
-    protected void getSamples(SampleList samples) {
+    protected void getSamples(SampleList samples, boolean grouped) {
         for (Field field : getClass().getDeclaredFields()) {
             if (!Entity.class.isAssignableFrom(field.getType()))
                 continue;
@@ -149,17 +150,18 @@ public abstract class SamplePackage
         }
 
         // Think about: unit hierarchy => microgroups.
-        if (!samples.isEmpty()) {
-            Entity<?> first = samples.get(0);
-            Entity<?> prev = first;
-            for (int i = 1; i < samples.size(); i++) {
-                Entity<?> next = samples.get(i);
-                EntityAccessor.setNextOfMicroLoop(prev, next);
-                prev = next;
+        if (grouped)
+            if (!samples.isEmpty()) {
+                Entity<?> first = samples.get(0);
+                Entity<?> prev = first;
+                for (int i = 1; i < samples.size(); i++) {
+                    Entity<?> next = samples.get(i);
+                    EntityAccessor.setNextOfMicroLoop(prev, next);
+                    prev = next;
+                }
+                samples.clear();
+                samples.add(first);
             }
-            samples.clear();
-            samples.add(first);
-        }
     }
 
     /**

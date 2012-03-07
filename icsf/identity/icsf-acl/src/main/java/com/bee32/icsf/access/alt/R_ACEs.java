@@ -1,7 +1,7 @@
 package com.bee32.icsf.access.alt;
 
 import com.bee32.icsf.principal.Users;
-import com.bee32.plover.orm.util.StandardSamples;
+import com.bee32.plover.orm.sample.StandardSamples;
 
 public class R_ACEs
         extends StandardSamples {

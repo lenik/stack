@@ -4,9 +4,9 @@ import javax.inject.Inject;
 
 import org.junit.Test;
 
-import com.bee32.plover.orm.util.SampleDumper;
-import com.bee32.plover.orm.util.SamplePackage;
-import com.bee32.plover.orm.util.SuperSamplePackage.Normals;
+import com.bee32.plover.orm.sample.SampleDumper;
+import com.bee32.plover.orm.sample.SamplePackage;
+import com.bee32.plover.orm.sample.SuperSamplePackage.Normals;
 import com.bee32.plover.test.WiredTestCase;
 
 public class SEMUberSamplesDumper
