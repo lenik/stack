@@ -91,7 +91,9 @@ public class MaterialPreferredLocation
 
     @Override
     protected Serializable naturalId() {
-        return new IdComposite(naturalId(material), naturalId(location));
+        return new IdComposite(//
+                naturalId(material), //
+                naturalId(location));
     }
 
     @Override

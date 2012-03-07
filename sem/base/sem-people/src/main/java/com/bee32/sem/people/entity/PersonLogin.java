@@ -12,7 +12,7 @@ import org.hibernate.annotations.NaturalId;
 import com.bee32.icsf.access.DefaultPermission;
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.arch.util.DummyId;
+import com.bee32.plover.arch.util.Identity;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.c.CEntityAuto;
 import com.bee32.plover.ox1.color.Yellow;
@@ -65,7 +65,7 @@ public class PersonLogin
     @Override
     protected Serializable naturalId() {
         if (user == null)
-            return new DummyId(this);
+            return new Identity(this);
         return user;
     }
 

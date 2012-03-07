@@ -377,7 +377,14 @@ public abstract class Entity<K extends Serializable>
             return null;
     }
 
-    protected static Serializable naturalId(Entity<?> entity) {
+    protected Serializable naturalId(Entity<?> entity) {
+        if (entity == null)
+            return new Identity(this);
+        else
+            return entity.naturalId();
+    }
+
+    protected static Serializable naturalIdOpt(Entity<?> entity) {
         if (entity == null)
             return null;
         else

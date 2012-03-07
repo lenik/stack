@@ -185,8 +185,8 @@ public class PartItem
     protected Serializable naturalId() {
         return new IdComposite(//
                 naturalId(parent), //
-                naturalId(part), //
-                naturalId(material));
+                naturalIdOpt(part), //
+                naturalIdOpt(material));
     }
 
     @Override

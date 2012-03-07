@@ -322,15 +322,17 @@ public abstract class Party
 
     @Override
     protected Serializable naturalId() {
-        if (sidType == null && sid == null)
+        if (sid == null)
             return super.naturalId();
         else
-            return new IdComposite(naturalId(getSidType()), sid);
+            return new IdComposite(//
+                    naturalIdOpt(getSidType()), //
+                    sid);
     }
 
     @Override
     protected ICriteriaElement selector(String prefix) {
-        if (sidType == null && sid == null)
+        if (sid == null)
             return super.selector(prefix);
         return And.of(//
                 new Equals(prefix + "sidType", sidType), //

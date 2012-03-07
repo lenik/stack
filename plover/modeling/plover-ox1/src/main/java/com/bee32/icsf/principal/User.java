@@ -32,8 +32,6 @@ public class User
     List<Group> assignedGroups = new ArrayList<Group>();
     List<Role> assignedRoles = new ArrayList<Role>();
 
-    // Integer createACL;
-
     List<UserEmail> emails = new ArrayList<UserEmail>();
 
     public User() {

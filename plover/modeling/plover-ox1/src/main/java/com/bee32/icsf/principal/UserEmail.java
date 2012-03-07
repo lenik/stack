@@ -1,5 +1,7 @@
 package com.bee32.icsf.principal;
 
+import java.io.Serializable;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +11,10 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.NaturalId;
 
+import com.bee32.plover.arch.util.IdComposite;
+import com.bee32.plover.criteria.hibernate.And;
+import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.ox1.color.Blue;
 
@@ -99,6 +105,20 @@ public class UserEmail
     @Transient
     public boolean isEmailVerified() {
         return status == EMAIL_VERIFIED;
+    }
+
+    @Override
+    protected Serializable naturalId() {
+        return new IdComposite(//
+                naturalIdOpt(user), //
+                address);
+    }
+
+    @Override
+    protected ICriteriaElement selector(String prefix) {
+        return And.of(//
+                new Equals(prefix + "user", user), //
+                new Equals(prefix + "address", address));
     }
 
 }

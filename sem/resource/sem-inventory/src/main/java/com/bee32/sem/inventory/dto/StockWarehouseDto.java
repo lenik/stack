@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
-import com.bee32.plover.arch.util.DummyId;
+import com.bee32.plover.arch.util.Identity;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.UIEntityDto;
@@ -97,7 +97,7 @@ public class StockWarehouseDto
     @Override
     protected Serializable naturalId() {
         if (name == null)
-            return new DummyId(this);
+            return new Identity(this);
         else
             return name;
     }

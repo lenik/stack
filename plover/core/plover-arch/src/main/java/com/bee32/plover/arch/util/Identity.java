@@ -2,35 +2,35 @@ package com.bee32.plover.arch.util;
 
 import java.io.Serializable;
 
-public final class DummyId
+public final class Identity
         implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Object outer;
+    private final Object obj;
 
-    public DummyId(Object outer) {
-        this.outer = outer;
+    public Identity(Object outer) {
+        this.obj = outer;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof DummyId))
+        if (!(obj instanceof Identity))
             return false;
 
-        DummyId o = (DummyId) obj;
-        return outer == o.outer;
+        Identity o = (Identity) obj;
+        return obj == o.obj;
     }
 
     @Override
     public int hashCode() {
-        return System.identityHashCode(outer);
+        return System.identityHashCode(obj);
     }
 
     @Override
     public String toString() {
-        String typeName = outer.getClass().getSimpleName();
-        int sysId = System.identityHashCode(outer);
+        String typeName = obj.getClass().getSimpleName();
+        int sysId = System.identityHashCode(obj);
         return "<" + typeName + "@" + sysId + ">";
     }
 

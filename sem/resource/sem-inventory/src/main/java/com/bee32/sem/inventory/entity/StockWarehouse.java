@@ -9,7 +9,7 @@ import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.plover.arch.util.DummyId;
+import com.bee32.plover.arch.util.Identity;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.ox1.color.UIEntityAuto;
@@ -104,7 +104,7 @@ public class StockWarehouse
     @Override
     protected Serializable naturalId() {
         if (name == null)
-            return new DummyId(this);
+            return new Identity(this);
         else
             return name;
     }
