@@ -30,7 +30,7 @@ public class IdComposite
             Serializable o2 = other.elements[i];
 
             if (o1 == null || o2 == null)
-                return false;
+                return true;
 
             if (!o1.equals(o2))
                 return false;

@@ -22,7 +22,7 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
 
-import com.bee32.plover.arch.util.DummyId;
+import com.bee32.plover.arch.util.Identity;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.entity.EntityAuto;
@@ -116,7 +116,7 @@ public class Food
     @Override
     protected Serializable naturalId() {
         if (name == null)
-            return new DummyId(this);
+            return new Identity(this);
         return name;
     }
 
