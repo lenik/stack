@@ -41,7 +41,7 @@
         <p:tabView id="tv" activeIndex="#{bean.tabIndex}">
             <p:tab title="采购需求">
                 <fr:listView id="plansIndexView" header="物料计划" style="panel" picker="chooseMaterialPlanDialog"
-                    mbean="#{bean.plansMBean}" nested="true" editable="false">
+                    mbean="#{bean.plansMBean}" paginator="false" nested="true" editable="false">
                     <f:facet name="columns">
                         <p:column headerText="简要">
                             <h:outputText value="#{entry.label}" />
@@ -59,7 +59,7 @@
 
             <p:tab title="采购项目">
                 <fr:listView id="itemsIndexView" header="采购项" style="indexPanel" editView=":itemsEditView"
-                    mbean="#{bean.itemsMBean}" nested="true" creatable="true">
+                    mbean="#{bean.itemsMBean}" paginator="false" nested="true" creatable="true">
                     <f:facet name="columns">
                         <p:column headerText="物料" styleClass="f-wrappable">
                             <h:outputText value="#{entry.material.label}" />
@@ -96,7 +96,7 @@
             <p:tab title="采购入库">
                 <fr:listView id="takeInsIndexView" header="入库项" style="indexPanel" editView=":takeInsEditView"
                     mbean="#{bean.takeInsMBean}" nested="true"
-                    creatable="false" removable="false" readonly="true">
+                    creatable="false" removable="false" readonly="true" paginator="false">
                     <f:facet name="columns">
                         <p:column headerText="日期" styleClass="f-wrappable">
                             <h:outputText value="#{entry.stockOrder.createdDate}" />
@@ -179,7 +179,7 @@
             style="editDialog" indexView=":editDialog:form:tv:takeInsIndexView"
             mbean="#{bean.takeInsMBean}">
             <fr:listView id="orderItemsView" header="入库明细" style="panel" mbean="#{bean.orderItemsMBean}"
-                creatable="false" removable="false" editiable="false" nested="true">
+                creatable="false" removable="false" editiable="false" nested="true" paginator="false">
                 <f:facet name="columns">
                     <p:column headerText="物料" sortBy="#{entry.material.label}" styleClass="f-wrappable">
                         <h:outputText value="#{entry.material.label}" />

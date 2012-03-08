@@ -26,8 +26,8 @@ import com.bee32.sem.inventory.tx.entity.StockJob;
 import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
 import com.bee32.sem.inventory.tx.entity.StockTransfer;
 import com.bee32.sem.inventory.util.BatchArray;
-import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.entity.OrgUnit;
+import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.world.thing.AbstractItemList;
 
@@ -50,7 +50,7 @@ public class AbstractStockOrder<Item extends StockOrderItem>
     StockOrderSubject subject;
     StockJob job;
 
-    Org org;
+    Party org;
     OrgUnit orgUnit;
     StockWarehouse warehouse; // Redundant.
 
@@ -205,11 +205,11 @@ public class AbstractStockOrder<Item extends StockOrderItem>
      * 出库单对应的客户或入库单对应的供应商
      */
     @ManyToOne
-    public Org getOrg() {
+    public Party getOrg() {
         return org;
     }
 
-    public void setOrg(Org org) {
+    public void setOrg(Party org) {
         this.org = org;
     }
 

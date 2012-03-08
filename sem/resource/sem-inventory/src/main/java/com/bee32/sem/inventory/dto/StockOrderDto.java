@@ -12,6 +12,7 @@ import com.bee32.sem.inventory.tx.dto.StockJobDto;
 import com.bee32.sem.inventory.tx.entity.StockJob;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.OrgUnitDto;
+import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.process.verify.dto.IVerifiableDto;
 
 public class StockOrderDto
@@ -25,7 +26,7 @@ public class StockOrderDto
     StockOrderSubject subject;
     StockJobDto<?> job;
 
-    OrgDto org;
+    PartyDto org;
     OrgUnitDto orgUnit;
     StockWarehouseDto warehouse;
 
@@ -145,11 +146,11 @@ public class StockOrderDto
         this.job = job;
     }
 
-    public OrgDto getOrg() {
+    public PartyDto getOrg() {
         return org;
     }
 
-    public void setOrg(OrgDto org) {
+    public void setOrg(PartyDto org) {
         if (!Nullables.equals(this.org, org)) {
             this.org = org;
             this.orgUnit = new OrgUnitDto().ref();

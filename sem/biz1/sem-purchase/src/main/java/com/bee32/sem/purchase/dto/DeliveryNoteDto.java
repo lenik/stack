@@ -21,6 +21,7 @@ public class DeliveryNoteDto
     private static final long serialVersionUID = 1L;
 
     public static final int ITEMS = 1;
+    public static final int TAKEOUT_ITEMS = 2;
 
     MakeOrderDto order;
     PartyDto customer;
@@ -40,7 +41,8 @@ public class DeliveryNoteDto
         else
             items = new ArrayList<DeliveryNoteItemDto>();
 
-        takeOut = mref(DeliveryNoteTakeOutDto.class, source.getTakeOut());
+        takeOut = marshal(DeliveryNoteTakeOutDto.class,
+                selection.translate(TAKEOUT_ITEMS, DeliveryNoteTakeOutDto.ORDER_ITEMS), source.getTakeOut());
     }
 
     @Override
@@ -143,6 +145,8 @@ public class DeliveryNoteDto
     }
 
     public List<DeliveryNoteTakeOutDto> getTakeOuts() {
+        if(takeOut.isNull())
+            return new ArrayList<DeliveryNoteTakeOutDto>();
         return Arrays.asList(takeOut);
     }
 }

@@ -42,7 +42,7 @@ public class PurchaseRequestDto
             plans = Collections.emptyList();
 
         if (selection.contains(TAKE_INS))
-            takeIns = mrefList(PurchaseTakeInDto.class, PurchaseTakeInDto.ORDERS, source.getTakeIns());
+            takeIns = mrefList(PurchaseTakeInDto.class, PurchaseTakeInDto.ORDER_ITEMS, source.getTakeIns());
         else
             takeIns = Collections.emptyList();
 

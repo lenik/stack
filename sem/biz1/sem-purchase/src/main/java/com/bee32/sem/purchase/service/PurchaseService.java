@@ -162,6 +162,7 @@ public class PurchaseService
             }
 
             PurchaseTakeInDto takeIn = new PurchaseTakeInDto().create();
+            takeInOrder.setJob(takeIn);
             takeIn.setPurchaseRequest(purchaseRequest);
             takeIn.setStockOrder(takeInOrder);
             purchaseRequest.addTakeIn(takeIn);
@@ -207,7 +208,7 @@ public class PurchaseService
                     itemWarehouseMap.get(itemList.get(0).getId()));
 
             StockOrderDto takeOutOrder = new StockOrderDto().create();
-            takeOutOrder.setOrg((OrgDto) customer);
+            takeOutOrder.setOrg(customer);
             takeOutOrder.setWarehouse(DTOs.marshal(StockWarehouseDto.class, warehouse));
             takeOutOrder.setSubject(StockOrderSubject.TAKE_OUT);
             takeOutOrder.setLabel("从送货单[" + deliveryNote.getLabel() + "]生成的出库单");
@@ -225,6 +226,7 @@ public class PurchaseService
             }
 
             DeliveryNoteTakeOutDto takeOut = new DeliveryNoteTakeOutDto().create();
+            takeOutOrder.setJob(takeOut);
             takeOut.setDeliveryNote(deliveryNote);
             takeOut.setStockOrder(takeOutOrder);
             deliveryNote.setTakeOut(takeOut);

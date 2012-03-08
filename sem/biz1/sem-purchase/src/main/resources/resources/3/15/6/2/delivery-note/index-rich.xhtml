@@ -8,6 +8,7 @@
     <ui:param name="bean" value="#{deliveryNoteAdminBean}" />
     <ui:param name="obj" value="#{bean.openedObject}" />
     <ui:param name="itemObj" value="#{bean.itemsMBean.openedObject}" />
+    <ui:param name="stock" value="#{stockDictsBean}" />
 
     <ui:define name="editDialogContent">
         <t:panelGrid id="basic" columns="4">
@@ -81,7 +82,7 @@
             </p:tab>
             <p:tab title="销售出库">
                 <fr:listView id="takeOutsIndexView" header="出库项" style="indexPanel" editView=":takeOutsEditView"
-                    mbean="#{bean.takeOutsMBean}" nested="true"
+                    mbean="#{bean.takeOutsMBean}" nested="true" paginator="false"
                     creatable="false" removable="false" readonly="true">
                     <f:facet name="columns">
                         <p:column headerText="日期" styleClass="f-wrappable">
@@ -92,6 +93,9 @@
                         </p:column>
                         <p:column headerText="客户" styleClass="f-wrappable">
                             <h:outputText value="#{entry.stockOrder.org.displayName}" />
+                        </p:column>
+                        <p:column headerText="仓库" styleClass="f-wrappable">
+                            <h:outputText value="#{entry.stockOrder.warehouse.label}" />
                         </p:column>
                     </f:facet>
                     <f:facet name="index-buttons.left">
@@ -128,6 +132,14 @@
                     <p:inputText value="#{item.quantity}" label="数量"/>
                 </t:panelGroup>
 
+                <h:outputLabel for="warehouse" value="出库仓库：" />
+                <t:panelGroup colspan="3">
+                    <p:selectOneMenu id="warehouse" label="出库仓库" value="#{bean.sourceWarehouseId_RZ}">
+                        <f:selectItem itemValue="0" itemLabel="--选择仓库--" />
+                        <f:selectItems value="#{stock.warehouseSelectItems}" />
+                    </p:selectOneMenu>
+                </t:panelGroup>
+
                 <h:outputLabel value="备注" />
                 <t:panelGroup colspan="3">
                     <p:inputText value="#{item.description}" label="备注" style="width:35em;"/>
@@ -140,7 +152,7 @@
             style="editDialog" indexView=":editDialog:form:tv:takeOutsIndexView"
             mbean="#{bean.takeOutsMBean}">
             <fr:listView id="orderItemsView" header="出库明细" style="panel" mbean="#{bean.orderItemsMBean}"
-                creatable="false" removable="false" editiable="false" nested="true">
+                creatable="false" removable="false" editiable="false" nested="true" paginator="false">
                 <f:facet name="columns">
                     <p:column headerText="物料" sortBy="#{entry.material.label}" styleClass="f-wrappable">
                         <h:outputText value="#{entry.material.label}" />
