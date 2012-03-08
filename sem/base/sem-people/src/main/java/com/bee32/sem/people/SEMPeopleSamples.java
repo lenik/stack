@@ -67,7 +67,6 @@ public class SEMPeopleSamples
         jackPerson.setSid("330401198210250230");
         jack = jackPerson.createUserLikeThis("jack");
         jack.setPrimaryGroup(abcRAD);
-        abcRAD.addMemberUser(jack);
 
         tangPerson.setBirthday(Dates.YYYY_MM_DD.parse("1970-3-12"));
         tangPerson.setMemo("每天喝水8升拥有好身体。");
@@ -76,10 +75,11 @@ public class SEMPeopleSamples
         tangPerson.setSid("330481197003124931");
         tang = tangPerson.createUserLikeThis("tang");
         tang.setPrimaryGroup(abcRAD);
-        tang.addAssignedGroup(abcSales);
 
-        abcRAD.addMemberUser(tang);
-        abcSales.addMemberUser(tang);
+        // Workaround: duplicated keys
+        abcRAD.addMemberUser(jack, false);
+        abcRAD.addMemberUser(tang, false);
+        abcSales.addMemberUser(tang, false);
 
         moonOrg.setFullName(PREFIX + "海宁市火星探索公司");
         moonOrg.setSize(1000);

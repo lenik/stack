@@ -179,20 +179,26 @@ public class Group
 
     @Override
     public boolean addMemberUser(User user) {
+        return addMemberUser(user, OptimConfig.setPeerSide);
+    }
+
+    public boolean addMemberUser(User user, boolean peer) {
         if (user == null)
             throw new NullPointerException("user");
 
         List<User> memberUsers = getMemberUsers();
         if (memberUsers.contains(user))
             return false;
+        else
+            memberUsers.add(user);
 
-        memberUsers.add(user);
-        user.addAssignedGroup(this);
+        if (peer)
+            user.addAssignedGroup(this);
+
         invalidateRelations();
         return true;
     }
 
-    @Override
     public boolean removeMemberUser(User user) {
         if (user == null)
             throw new NullPointerException("user");
@@ -202,6 +208,7 @@ public class Group
             return false;
 
         user.removeAssignedGroup(this);
+
         invalidateRelations();
         return true;
     }
@@ -221,15 +228,21 @@ public class Group
 
     @Override
     public boolean addAssignedRole(Role role) {
+        return addAssignedRole(role, OptimConfig.setPeerSide);
+    }
+
+    public boolean addAssignedRole(Role role, boolean peer) {
         if (role == null)
             throw new NullPointerException("role");
 
         List<Role> assignedRoles = getAssignedRoles();
         if (assignedRoles.contains(role))
             return false;
+        else
+            assignedRoles.add(role);
 
-        assignedRoles.add(role);
-        role.addResponsibleGroup(this);
+        if (peer)
+            role.addResponsibleGroup(this);
         return true;
     }
 

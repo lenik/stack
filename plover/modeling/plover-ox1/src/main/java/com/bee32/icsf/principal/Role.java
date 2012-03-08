@@ -111,8 +111,8 @@ public class Role
         List<User> controlUsers = (List<User>) getControlUsers();
         if (controlUsers.contains(user))
             return false;
-
-        controlUsers.add(user);
+        else
+            controlUsers.add(user);
         invalidateRelations();
         return true;
     }
@@ -149,8 +149,8 @@ public class Role
         List<Group> controlGroups = (List<Group>) getControlGroups();
         if (controlGroups.contains(group))
             return false;
-
-        controlGroups.add(group);
+        else
+            controlGroups.add(group);
         invalidateRelations();
         return true;
     }
@@ -191,9 +191,12 @@ public class Role
         List<User> responsibleUsers = (List<User>) getResponsibleUsers();
         if (responsibleUsers.contains(user))
             return false;
+        else
+            responsibleUsers.add(user);
 
-        responsibleUsers.add(user);
-        user.addAssignedRole(this);
+        if (OptimConfig.setPeerSide)
+            user.addAssignedRole(this);
+
         invalidateRelations();
         return true;
     }
@@ -206,7 +209,9 @@ public class Role
         if (!getResponsibleUsers().remove(user))
             return false;
 
-        user.removeAssignedRole(this);
+        if (OptimConfig.setPeerSide)
+            user.removeAssignedRole(this);
+
         invalidateRelations();
         return true;
     }
@@ -238,9 +243,12 @@ public class Role
         List<Group> responsibleGroups = getResponsibleGroups();
         if (responsibleGroups.contains(group))
             return false;
+        else
+            responsibleGroups.add(group);
 
-        responsibleGroups.add(group);
-        group.addAssignedRole(this);
+        if (OptimConfig.setPeerSide)
+            group.addAssignedRole(this);
+
         invalidateRelations();
         return true;
     }
@@ -254,7 +262,9 @@ public class Role
         if (!responsibleGroups.remove(group))
             return false;
 
-        group.removeAssignedRole(this);
+        if (OptimConfig.setPeerSide)
+            group.removeAssignedRole(this);
+
         invalidateRelations();
         return true;
     }

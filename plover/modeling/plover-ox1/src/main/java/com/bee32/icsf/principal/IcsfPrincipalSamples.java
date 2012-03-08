@@ -36,8 +36,12 @@ public class IcsfPrincipalSamples
         kate.setPrimaryGroup(sunCorp);
         kate.setPrimaryRole(users.userRole);
 
-        alice.addAssignedGroup(sunCorp);
-        alice.addAssignedGroup(solaRobots);
+        // Workaround: duplicated keys.
+        // alice.addAssignedGroup(sunCorp);
+        // alice.addAssignedGroup(solaRobots);
+        // alice.addAssignedRole(users.userRole);
+        sunCorp.addMemberUser(alice, false);
+        solaRobots.addMemberUser(alice, false);
         alice.addAssignedRole(users.userRole);
 
         eva.setPreferredEmail("eva@bee32.com");

@@ -144,9 +144,11 @@ public class User
         List<Group> assignedGroups = getAssignedGroups();
         if (assignedGroups.contains(group))
             return false;
+        else
+            assignedGroups.add(group);
 
-        assignedGroups.add(group);
-        group.addMemberUser(this);
+        if (OptimConfig.setPeerSide)
+            group.addMemberUser(this);
         return true;
     }
 
@@ -155,10 +157,11 @@ public class User
         if (group == null)
             throw new NullPointerException("group");
 
-        if (!group.removeMemberUser(this))
+        List<Group> assignedGroups = getAssignedGroups();
+        if (!assignedGroups.remove(group))
             return false;
 
-        if (getAssignedGroups().remove(group))
+        if (OptimConfig.setPeerSide)
             group.removeMemberUser(this);
 
         return true;
@@ -199,10 +202,13 @@ public class User
         if (role == null)
             throw new NullPointerException("role");
 
-        if (!getAssignedRoles().remove(role))
+        List<Role> assignedRoles = getAssignedRoles();
+        if (!assignedRoles.remove(role))
             return false;
 
-        role.removeResponsibleUser(this);
+        if (OptimConfig.setPeerSide)
+            role.removeResponsibleUser(this);
+
         return true;
     }
 
