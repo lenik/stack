@@ -31,7 +31,7 @@ public class XrefBean
 
     public XrefBean()
             throws ClassNotFoundException {
-        System.err.println("Create "+System.identityHashCode(this));
+        System.err.println("Create " + System.identityHashCode(this));
         String typeAbbr = ctx.view.getRequest().getParameter("type");
         if (typeAbbr == null)
             throw new NullPointerException("type");
@@ -43,7 +43,8 @@ public class XrefBean
 
         String requestIdList = ctx.view.getRequest().getParameter("pkey");
         if (requestIdList != null) {
-            EntityHelper<?, ?> eh = EntityHelper.getInstance(entityType);
+            @SuppressWarnings({ "unchecked", "rawtypes" })
+            EntityHelper eh = EntityHelper.getInstance((Class) entityType);
             for (String _id : requestIdList.split(",")) {
                 _id = _id.trim();
                 try {
@@ -79,7 +80,8 @@ public class XrefBean
         String requestIdList = ctx.view.getRequest().getParameter("pkey");
         requestWindow.clear();
         if (requestIdList != null) {
-            EntityHelper<?, ?> eh = EntityHelper.getInstance(entityType);
+            @SuppressWarnings({ "unchecked", "rawtypes" })
+            EntityHelper eh = EntityHelper.getInstance((Class) entityType);
             for (String _id : requestIdList.split(",")) {
                 _id = _id.trim();
                 try {
