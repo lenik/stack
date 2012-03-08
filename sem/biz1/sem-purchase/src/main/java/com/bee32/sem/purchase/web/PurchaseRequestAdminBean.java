@@ -89,8 +89,7 @@ public class PurchaseRequestAdminBean
     }
 
     /**
-     * 用户每选择一次plan,都调用本方法。
-     * 由parent.addPlan(plan)来记录多次选择的结果
+     * 用户每选择一次plan,都调用本方法。 由parent.addPlan(plan)来记录多次选择的结果
      */
     public void setMaterialPlanToAttach(MaterialPlanDto plan) {
         if (plan == null)
@@ -115,7 +114,7 @@ public class PurchaseRequestAdminBean
 
         List<PurchaseRequestItemDto> items = purchaseService.calcMaterialRequirement(parent.getPlans());
 
-        //为返回的PurchaseRequestItem设置parent
+        // 为返回的PurchaseRequestItem设置parent
         for (PurchaseRequestItemDto item : items)
             item.setParent(parent);
 
@@ -140,12 +139,21 @@ public class PurchaseRequestAdminBean
      */
     public void generateTakeInStockOrders() {
         PurchaseRequestDto purchaseRequest = getOpenedObject();
-        for (PurchaseRequestItemDto item : purchaseRequest.getItems()) {
+
+        if (!purchaseRequest.getTakeIns().isEmpty()) {
+            uiLogger.error("采购请求已经生成过采购入库单.");
+            return;
+        }
+        for (PurchaseRequestItemDto item : purchaseRequest.getItems())
             if (DTOs.isNull(item.getDestWarehouse())) {
                 uiLogger.error("所有采购请求的明细都必须选择对应的入库仓库!");
                 return;
             }
-        }
+        for (PurchaseRequestItemDto requestItem : purchaseRequest.getItems())
+            if (DTOs.isNull(requestItem.getAcceptedInquiry())) {
+                uiLogger.error("采购请求项目没有对应的采购建议.");
+                return;
+            }
 
         PurchaseService purchaseService = ctx.bean.getBean(PurchaseService.class);
         try {

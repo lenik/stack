@@ -18,8 +18,6 @@ import com.bee32.sem.purchase.dto.DeliveryNoteDto;
 import com.bee32.sem.purchase.dto.DeliveryNoteItemDto;
 import com.bee32.sem.purchase.dto.DeliveryNoteTakeOutDto;
 import com.bee32.sem.purchase.dto.MakeOrderDto;
-import com.bee32.sem.purchase.dto.PurchaseRequestDto;
-import com.bee32.sem.purchase.dto.PurchaseRequestItemDto;
 import com.bee32.sem.purchase.entity.DeliveryNote;
 import com.bee32.sem.purchase.entity.MakeOrder;
 import com.bee32.sem.purchase.service.PurchaseService;
@@ -88,11 +86,17 @@ public class DeliveryNoteAdminBean
      */
     public void generateTakeOutStockOrders() {
         DeliveryNoteDto deliveryNote = getOpenedObject();
+
         for (DeliveryNoteItemDto item : deliveryNote.getItems()) {
             if (DTOs.isNull(item.getSourceWarehouse())) {
                 uiLogger.error("所有送货单的明细都必须选择对应的出库仓库!");
                 return;
             }
+        }
+
+        if (!deliveryNote.getTakeOuts().isEmpty()) {
+            uiLogger.error("送货单已经生成过销售出库单.");
+            return;
         }
 
         PurchaseService purchaseService = ctx.bean.getBean(PurchaseService.class);

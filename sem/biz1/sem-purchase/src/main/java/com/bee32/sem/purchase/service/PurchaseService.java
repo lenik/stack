@@ -88,7 +88,8 @@ public class PurchaseService
 
             // 采购 至少要满足安全库存
             BigDecimal safetyStock = safetyMap.getConsumption(material);
-            if(safetyStock == null) safetyStock = new BigDecimal(0);
+            if (safetyStock == null)
+                safetyStock = new BigDecimal(0);
             needQuantity = needQuantity.max(safetyStock);
 
             // 计算需要采购的数量
@@ -110,8 +111,7 @@ public class PurchaseService
     /**
      * 根据采购请求和所选择的仓库,自动生成采购入库单
      */
-    public void generateTakeInStockOrders(PurchaseRequestDto purchaseRequest)
-            throws NoPurchaseAdviceException, AdviceHaveNotVerifiedException, TakeInStockOrderAlreadyGeneratedException {
+    public void generateTakeInStockOrders(PurchaseRequestDto purchaseRequest) {
 
         // 先用map保存用户输入的warehouseId，因为后面的reload(purchaseRequest)会导致这些warehouseIds丢失
         Map<Long, Integer> itemWarehouseMap = new HashMap<Long, Integer>();
@@ -119,21 +119,7 @@ public class PurchaseService
             itemWarehouseMap.put(requestItem.getId(), requestItem.getDestWarehouse().getId());
         }
 
-        // 检测purchaseReqeust是否已经生成过采购入库单
-        if (!purchaseRequest.getTakeIns().isEmpty()) {
-            throw new TakeInStockOrderAlreadyGeneratedException();
-        }
-
-        // 检测有没有询价和审核采购建议
-        for (PurchaseRequestItemDto requestItem : purchaseRequest.getItems()) {
-            if (DTOs.isNull(requestItem.getAcceptedInquiry())) {
-                throw new NoPurchaseAdviceException();
-            }
-
-        }
-
-        Map<Object, List<PurchaseRequestItemDto>> splitMap //
-        = new HashMap<Object, List<PurchaseRequestItemDto>>();
+        Map<Object, List<PurchaseRequestItemDto>> splitMap = new HashMap<>();
 
         // 按仓库和供应商区分要生成的采购入库单
         for (PurchaseRequestItemDto item : purchaseRequest.getItems()) {
@@ -142,7 +128,7 @@ public class PurchaseService
             IdComposite key = new IdComposite(item.getDestWarehouse().getId(), preferredSupplier.getId());
 
             if (!splitMap.containsKey(key)) {
-                List<PurchaseRequestItemDto> newItemList = new ArrayList<PurchaseRequestItemDto>();
+                List<PurchaseRequestItemDto> newItemList = new ArrayList<>();
                 splitMap.put(key, newItemList);
             }
 
@@ -185,20 +171,18 @@ public class PurchaseService
     /**
      * 根据送货单和所选择的仓库,自动生成销售出库单
      */
-    public void generateTakeOutStockOrders(DeliveryNoteDto deliveryNote) throws TakeOutStockOrderAlreadyGeneratedException {
+    public void generateTakeOutStockOrders(DeliveryNoteDto deliveryNote) {
+        // 检测deliveryNote是否已经生成过销售出库单
+        if (!deliveryNote.getTakeOuts().isEmpty())
+            throw new IllegalStateException("送货单已经生成过销售出库单.");
+
         // 先用map保存用户输入的warehouseId，因为后面的reload(purchaseRequest)会导致这些warehouseIds丢失
         Map<Long, Integer> itemWarehouseMap = new HashMap<Long, Integer>();
-        for (DeliveryNoteItemDto deliveryNoteItem : deliveryNote.getItems()) {
-            itemWarehouseMap.put(deliveryNoteItem.getId(), deliveryNoteItem.getSourceWarehouse().getId());
+        for (DeliveryNoteItemDto item : deliveryNote.getItems()) {
+            itemWarehouseMap.put(item.getId(), item.getSourceWarehouse().getId());
         }
 
-        // 检测deliveryNote是否已经生成过销售出库单
-        if (!deliveryNote.getTakeOuts().isEmpty()) {
-            throw new TakeOutStockOrderAlreadyGeneratedException();
-        }
-
-        Map<Object, List<DeliveryNoteItemDto>> splitMap //
-        = new HashMap<Object, List<DeliveryNoteItemDto>>();
+        Map<Object, List<DeliveryNoteItemDto>> splitMap = new HashMap<>();
 
         // 按仓库和客户区分要生成的销售出库单
         for (DeliveryNoteItemDto item : deliveryNote.getItems()) {
@@ -276,4 +260,5 @@ public class PurchaseService
         }
         makeOrder.setItems(items);
     }
+
 }
