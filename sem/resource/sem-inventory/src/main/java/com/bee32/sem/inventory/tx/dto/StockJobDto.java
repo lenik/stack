@@ -34,13 +34,14 @@ public class StockJobDto<E extends StockJob>
     @Override
     protected void __marshal(E source) {
         super.__marshal(source);
+
+        int orderFmask = selection.translate(ORDER_ITEMS, StockOrderDto.ITEMS);
+
         if (selection.contains(ORDERS)) {
             stockOrders = new ArrayList<StockOrderDto>();
             for (AbstractStockOrder<?> _stockOrder : source.getStockOrders()) {
                 Class<StockOrderDto> dtoClass = (Class<StockOrderDto>) EntityUtil.getDtoType(_stockOrder.getClass());
-                StockOrderDto stockOrder = marshal(dtoClass, selection.translate(//
-                        ORDER_ITEMS, StockOrderDto.ITEMS), //
-                        _stockOrder);
+                StockOrderDto stockOrder = marshal(dtoClass, orderFmask, _stockOrder);
                 stockOrders.add(stockOrder);
             }
         } else
@@ -78,7 +79,7 @@ public class StockJobDto<E extends StockJob>
     }
 
     public StockOrderDto getStockOrder() {
-        if (stockOrders.isEmpty())
+        if (stockOrders == null || stockOrders.isEmpty())
             return null;
         else
             return stockOrders.get(0);
