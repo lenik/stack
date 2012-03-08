@@ -108,18 +108,25 @@ public abstract class Entity<K extends Serializable>
         }
     }
 
-    final void _retarget(Entity<?> o) {
-        if (o == null) {
+    final void _retarget(Entity<?> newOrig) {
+        if (newOrig == null) {
             setId(null);
             version = 0;
             lastModified = createdDate = new Date();
         } else {
-            K id = (K) o.getId();
+            K id = (K) newOrig.getId();
             setId(id);
-            version = o.version;
-            createdDate = o.createdDate;
-            lastModified = o.lastModified;
-            entityFlags.bits = o.entityFlags.bits;
+            version = newOrig.version;
+            createdDate = newOrig.createdDate;
+            if (newOrig.entityFlags.isWeakData()) {
+                entityFlags.bits = newOrig.entityFlags.bits;
+                // lastModified = newOrig.lastModified;
+            }
+            /*
+             * Cuz we can't determine wether this object is changed, so let's leave lastModified as
+             * it is.
+             */
+            lastModified = newOrig.lastModified;
         }
     }
 
