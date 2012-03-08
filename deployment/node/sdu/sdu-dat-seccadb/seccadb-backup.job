@@ -1,4 +1,0 @@
-#!/bin/bash
-
-BAK_ROOT=/mnt/istore/projects/migdata/backup
-seccadb-backup -qc

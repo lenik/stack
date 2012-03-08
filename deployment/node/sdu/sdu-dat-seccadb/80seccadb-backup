@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# WARNING:
+#   If you put this script under cron.daily/, the filename
+#   must conform to run-part spec.
+#
+#   I.e., it must consist solely of upper- and lower- case letters,
+#   digits, underscores, and hyphens.
+#
+#   Otherwise, the script won't run at all.
+
+BAK_ROOT=/mnt/istore/projects/migdata/backup
+seccadb-backup -qc

@@ -9,7 +9,7 @@ dist_bin_SCRIPTS = \
 	seccadb-restore
 
 dist_cron_SCRIPTS = \
-	seccadb-backup.job
+	80seccadb-backup
 
 setup_SCRIPTS = \
 	post-install.sh \
