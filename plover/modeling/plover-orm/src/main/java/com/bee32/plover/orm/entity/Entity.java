@@ -14,6 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.DefaultValue;
 import org.hibernate.annotations.Index;
 
 import overlay.Overlay;
@@ -184,6 +185,8 @@ public abstract class Entity<K extends Serializable>
     protected abstract void setId(K id);
 
     // @Version
+    @DefaultValue("0")
+    @Column(nullable = false)
     public int getVersion() {
         return version;
     }
@@ -201,6 +204,7 @@ public abstract class Entity<K extends Serializable>
         this.altId = altId;
     }
 
+    @DefaultValue("now()")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     public Date getCreatedDate() {
@@ -215,9 +219,10 @@ public abstract class Entity<K extends Serializable>
         this.createdDate = createdDate;
     }
 
+    @DefaultValue("now()")
+    @Index(name = "##_lastModified")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
-    @Index(name = "##_lastModified")
     public Date getLastModified() {
         return lastModified;
     }
@@ -230,6 +235,7 @@ public abstract class Entity<K extends Serializable>
         this.lastModified = lastModified;
     }
 
+    @DefaultValue("0")
     @Column(nullable = false)
     int getEf() {
         return entityFlags.bits;
