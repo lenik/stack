@@ -47,19 +47,26 @@ public class DeliveryNoteItem
         this.parent = parent;
     }
 
-    @NaturalId
+    @NaturalId(mutable = true)
     @ManyToOne
     public Part getPart() {
         return part;
     }
 
     public void setPart(Part part) {
-// if (part == null)
-// throw new NullPointerException("part");
+        // if (part == null)
+        // throw new NullPointerException("part");
         this.part = part;
     }
 
+    @ManyToOne
+    public StockWarehouse getSourceWarehouse() {
+        return sourceWarehouse;
+    }
 
+    public void setSourceWarehouse(StockWarehouse sourceWarehouse) {
+        this.sourceWarehouse = sourceWarehouse;
+    }
 
     @Transient
     @Override
@@ -93,12 +100,4 @@ public class DeliveryNoteItem
         return getParent();
     }
 
-    @ManyToOne
-    public StockWarehouse getSourceWarehouse() {
-        return sourceWarehouse;
-    }
-
-    public void setSourceWarehouse(StockWarehouse sourceWarehouse) {
-        this.sourceWarehouse = sourceWarehouse;
-    }
 }

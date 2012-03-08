@@ -1,5 +1,6 @@
 package com.bee32.sem.inventory.tx.entity;
 
+import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import org.hibernate.annotations.CascadeType;
 
 import com.bee32.plover.orm.entity.CloneUtils;
 import com.bee32.sem.inventory.entity.AbstractStockOrder;
+import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.process.base.ProcessEntity;
 
 //@MappedSuperclass
@@ -49,9 +51,8 @@ public class StockJob
     }
 
     /**
-     * You should change the reference of the list. If you want to change the
-     * content of the list, you may have to clear the list and insert elements
-     * into it.
+     * You should change the reference of the list. If you want to change the content of the list,
+     * you may have to clear the list and insert elements into it.
      */
     @Deprecated
     @SuppressWarnings("unchecked")
@@ -59,6 +60,21 @@ public class StockJob
         if (stockOrders == null)
             throw new NullPointerException("stockOrders");
         this.stockOrders = (List<AbstractStockOrder<?>>) stockOrders;
+    }
+
+    @Transient
+    public StockOrder getStockOrder() {
+        if (getStockOrders().isEmpty())
+            return null;
+        StockOrder first = (StockOrder) getStockOrders().get(0);
+        return first;
+    }
+
+    public void setStockOrder(StockOrder first) {
+        List<AbstractStockOrder<?>> stockOrders = getStockOrders();
+        stockOrders.clear();
+        if (first != null)
+            stockOrders.add(first);
     }
 
 }

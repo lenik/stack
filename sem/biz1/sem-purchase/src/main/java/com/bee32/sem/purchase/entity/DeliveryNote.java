@@ -9,8 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -56,15 +55,14 @@ public class DeliveryNote
 
     /**
      * 按指定时间送达货物
-     * @return
      */
-    @Temporal(TemporalType.TIMESTAMP)
+    @Transient
     public Date getArrivalDate() {
-        return arrivalDate;
+        return getBeginTime();
     }
 
     public void setArrivalDate(Date arrivalDate) {
-        this.arrivalDate = arrivalDate;
+        setBeginTime(arrivalDate);
     }
 
     @OneToMany(mappedBy = "parent", orphanRemoval = true)
@@ -110,8 +108,6 @@ public class DeliveryNote
             items.get(index).setIndex(index);
     }
 
-
-
     @OneToOne(orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public DeliveryNoteTakeOut getTakeOut() {
@@ -121,7 +117,5 @@ public class DeliveryNote
     public void setTakeOut(DeliveryNoteTakeOut takeOut) {
         this.takeOut = takeOut;
     }
-
-
 
 }

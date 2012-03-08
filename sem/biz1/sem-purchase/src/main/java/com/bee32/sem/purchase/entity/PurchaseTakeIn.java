@@ -1,14 +1,9 @@
 package com.bee32.sem.purchase.entity;
 
-import java.beans.Transient;
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-import com.bee32.sem.inventory.entity.AbstractStockOrder;
-import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.tx.entity.StockJob;
 
 /**
@@ -43,21 +38,6 @@ public class PurchaseTakeIn
 
     public void setPurchaseRequest(PurchaseRequest purchaseRequest) {
         this.purchaseRequest = purchaseRequest;
-    }
-
-    @Transient
-    public StockOrder getStockOrder() {
-        if (getStockOrders().isEmpty())
-            return null;
-        StockOrder first = (StockOrder) getStockOrders().get(0);
-        return first;
-    }
-
-    public void setStockOrder(StockOrder stockOrder) {
-        List<AbstractStockOrder<?>> stockOrders = getStockOrders();
-        stockOrders.clear();
-        if (stockOrder != null)
-            stockOrders.add(stockOrder);
     }
 
 }

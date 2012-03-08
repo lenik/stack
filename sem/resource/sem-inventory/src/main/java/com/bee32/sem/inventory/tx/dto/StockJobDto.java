@@ -77,4 +77,17 @@ public class StockJobDto<E extends StockJob>
         this.stockOrders = stockOrders;
     }
 
+    public StockOrderDto getStockOrder() {
+        if (stockOrders.isEmpty())
+            return null;
+        else
+            return stockOrders.get(0);
+    }
+
+    public void setStockOrder(StockOrderDto stockOrder) {
+        stockOrders.clear();
+        if (stockOrder != null)
+            stockOrders.add(stockOrder);
+    }
+
 }
