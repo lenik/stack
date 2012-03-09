@@ -19,7 +19,7 @@ public abstract class AbstractItemDto<E extends AbstractItem>
 
     int index = -1;
 
-    BigDecimal quantity;
+    BigDecimal _quantity;
     MutableMCValue price;
 
     BigDecimal nativePrice;
@@ -46,7 +46,7 @@ public abstract class AbstractItemDto<E extends AbstractItem>
 
     protected void _populate(AbstractItemDto<E> o) {
         super._populate(o);
-        setQuantity(o.quantity);
+        setQuantity(o._quantity);
         price = o.price.clone();
         nativePrice = o.nativePrice;
         nativeTotal = o.nativeTotal;
@@ -67,15 +67,14 @@ public abstract class AbstractItemDto<E extends AbstractItem>
     @Override
     protected void __marshal(E source) {
         super.__marshal(source);
-
-        setQuantity(source.getQuantity());
+        _quantity = source.getQuantity();
         price = source.getPrice().toMutable();
     }
 
     @Override
     protected void __unmarshalTo(E target) {
         super.__unmarshalTo(target);
-        target.setQuantity(quantity);
+        target.setQuantity(_quantity);
         target.setPrice(price);
     }
 
@@ -106,12 +105,12 @@ public abstract class AbstractItemDto<E extends AbstractItem>
     }
 
     public BigDecimal getQuantity() {
-        if (quantity == null)
+        if (_quantity == null)
             return null;
         if (isNegated())
-            return quantity.negate();
+            return _quantity.negate();
         else
-            return quantity;
+            return _quantity;
     }
 
     public void setQuantity(BigDecimal quantity) {
@@ -121,7 +120,7 @@ public abstract class AbstractItemDto<E extends AbstractItem>
         } else if (isNegated()) {
             quantity = quantity.negate();
         }
-        this.quantity = quantity;
+        this._quantity = quantity;
         nativeTotal = null;
     }
 

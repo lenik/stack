@@ -151,13 +151,14 @@ public class PurchaseService
 
             for (PurchaseRequestItemDto item : itemList) {
                 StockOrderItemDto orderItem = new StockOrderItemDto().create();
+                orderItem.setParent(takeInOrder);
 
                 orderItem.setMaterial(item.getMaterial());
                 orderItem.setQuantity(item.getQuantity());
                 orderItem.setPrice(item.getAcceptedInquiry().getPrice());
                 orderItem.setDescription("由采购请求[" + purchaseRequest.getLabel() + "]生成的入库明细项目");
 
-                orderItem.setParent(takeInOrder);
+
                 takeInOrder.addItem(orderItem);
             }
 
@@ -215,13 +216,13 @@ public class PurchaseService
 
             for (DeliveryNoteItemDto item : itemList) {
                 StockOrderItemDto orderItem = new StockOrderItemDto().create();
+                orderItem.setParent(takeOutOrder);
 
                 orderItem.setMaterial(item.getPart().getTarget());
                 orderItem.setQuantity(item.getQuantity());
                 orderItem.setPrice(item.getPrice());
                 orderItem.setDescription("由送货单[" + deliveryNote.getLabel() + "]生成的出库明细项目");
 
-                orderItem.setParent(takeOutOrder);
                 takeOutOrder.addItem(orderItem);
             }
 
