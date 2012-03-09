@@ -16,8 +16,6 @@ public class SiteElt
     @Override
     public synchronized Collection<? extends ExceptionLog> getLogTargets() {
         SiteInstance site = ThreadHttpContext.getSiteInstance();
-        if (site == null)
-            throw new NullPointerException("site");
         ExceptionLog log = site.getAttribute(LOG_KEY);
         if (log == null) {
             log = new ExceptionLog(DEFAULT_LOG_SIZE);

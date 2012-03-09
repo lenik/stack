@@ -10,7 +10,8 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.bee32.plover.inject.GlobalAppCtx;
-import com.bee32.plover.site.LoadSiteException;
+import com.bee32.plover.site.NoSuchSiteException;
+import com.bee32.plover.site.SiteException;
 import com.bee32.plover.site.SiteInstance;
 import com.bee32.plover.site.SiteManager;
 import com.bee32.plover.site.scope.SiteNaming;
@@ -53,10 +54,16 @@ public class ThreadHttpContext
 
     public static SiteInstance getSiteInstance() {
         HttpServletRequest request = allowNullRequest ? getRequestOpt() : getRequest();
-        return getSiteInstance(request);
+        return getSiteInstance(request, true);
     }
 
-    public static SiteInstance getSiteInstance(HttpServletRequest request) {
+    public static SiteInstance getSiteInstanceOpt() {
+        HttpServletRequest request = allowNullRequest ? getRequestOpt() : getRequest();
+        return getSiteInstance(request, false);
+    }
+
+    public static SiteInstance getSiteInstance(HttpServletRequest request, boolean required)
+            throws SiteException {
         SiteManager siteManager = SiteManager.getInstance();
 
         String siteAlias = SiteNaming.getDefaultSiteName();
@@ -66,16 +73,14 @@ public class ThreadHttpContext
 
         SiteInstance siteInstance;
         if (autoCreateMode) {
-            try {
-                siteInstance = siteManager.getOrLoadSite(siteAlias);
-            } catch (LoadSiteException e) {
-                throw new RuntimeException(e.getMessage(), e);
-            }
+            siteInstance = siteManager.getOrLoadSite(siteAlias);
         } else {
             siteInstance = siteManager.getSite(siteAlias);
         }
 
+        if (siteInstance == null && required)
+            throw new NoSuchSiteException(siteAlias);
+
         return siteInstance;
     }
-
 }

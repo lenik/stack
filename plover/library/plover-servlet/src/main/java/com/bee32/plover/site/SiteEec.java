@@ -21,7 +21,7 @@ public class SiteEec
         if (request != null)
             entry.setAttribute(REQUEST_URI_KEY, request.getRequestURI());
 
-        SiteInstance site = ThreadHttpContext.getSiteInstance();
+        SiteInstance site = ThreadHttpContext.getSiteInstanceOpt();
         if (site != null)
             site.getLocalStats().addException(entry);
     }

@@ -66,7 +66,7 @@ public class SiteManager {
         try {
             site = new SiteInstance(configFile);
         } catch (Exception e) {
-            throw new LoadSiteException("Failed to load site config " + configFile, e);
+            throw new LoadSiteException(siteName, "Failed to load site config " + configFile, e);
         }
         return site;
     }

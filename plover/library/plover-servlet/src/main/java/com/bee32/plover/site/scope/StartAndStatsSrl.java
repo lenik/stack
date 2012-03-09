@@ -52,14 +52,14 @@ public class StartAndStatsSrl
 
         request.setAttribute(REQUEST_BEGIN_ATTRIBUTE, new Date());
 
-        SiteInstance site = ThreadHttpContext.getSiteInstance(request);
+        SiteInstance site = ThreadHttpContext.getSiteInstance(request, true);
         site.start();
     }
 
     @Override
     public void requestDestroyed(ServletRequestEvent sre) {
         HttpServletRequest request = (HttpServletRequest) sre.getServletRequest();
-        SiteInstance site = ThreadHttpContext.getSiteInstance(request);
+        SiteInstance site = ThreadHttpContext.getSiteInstance(request, true);
 
         Boolean noStats = (Boolean) request.getAttribute(NO_STATS_ATTRIBUTE);
         if (noStats == Boolean.TRUE)

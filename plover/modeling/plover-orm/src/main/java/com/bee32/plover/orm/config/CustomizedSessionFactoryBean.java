@@ -31,7 +31,7 @@ import com.bee32.plover.orm.access.HibernateEvents;
 import com.bee32.plover.orm.unit.PUnitDumper;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
-import com.bee32.plover.site.LoadSiteException;
+import com.bee32.plover.site.SiteException;
 import com.bee32.plover.site.SiteInstance;
 import com.bee32.plover.site.scope.PerSite;
 import com.bee32.plover.thirdparty.hibernate.util.HibernateProperties;
@@ -72,7 +72,7 @@ public class CustomizedSessionFactoryBean
     SiteInstance site;
 
     public CustomizedSessionFactoryBean()
-            throws LoadSiteException {
+            throws SiteException {
         site = ThreadHttpContext.getSiteInstance();
     }
 

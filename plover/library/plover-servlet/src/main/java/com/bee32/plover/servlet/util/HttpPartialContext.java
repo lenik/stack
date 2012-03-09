@@ -49,7 +49,7 @@ public class HttpPartialContext
     }
 
     public SiteInstance getSite() {
-        return ThreadHttpContext.getSiteInstance();
+        return ThreadHttpContext.getSiteInstanceOpt();
     }
 
     public SiteInstance getSite(String nameOrAlias) {

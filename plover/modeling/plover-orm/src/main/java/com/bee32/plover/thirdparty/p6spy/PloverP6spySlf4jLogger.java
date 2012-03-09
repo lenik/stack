@@ -86,6 +86,7 @@ public class PloverP6spySlf4jLogger
         String text = sb.toString();
         logText(text);
 
+        // The fallback site should be enabled.
         SiteInstance site = ThreadHttpContext.getSiteInstance();
         SQLTrackDB trackDB = SQLTrackDB.getInstance(site);
         SQLRecord sqlRecord = new SQLRecord(appfn, connectionId, _time, elapsed, category, prepared, sql);

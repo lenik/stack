@@ -35,7 +35,8 @@ public class SiteNaming {
         if (host == null) {
             host = request.getHeader("Host");
             if (host == null)
-                host = request.getServerName(); // "localhost"
+                // host = request.getServerName(); // "localhost"
+                host = "localhost"; //
         }
         int colon = host.lastIndexOf(':');
         if (colon == -1)
