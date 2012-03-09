@@ -108,7 +108,7 @@ public class DeliveryNote
             items.get(index).setIndex(index);
     }
 
-    @OneToOne(orphanRemoval = true)
+    @OneToOne(orphanRemoval = true, mappedBy = "deliveryNote")
     @Cascade(CascadeType.ALL)
     public DeliveryNoteTakeOut getTakeOut() {
         return takeOut;
