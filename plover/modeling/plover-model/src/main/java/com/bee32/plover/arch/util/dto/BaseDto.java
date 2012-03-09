@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.lang.reflect.Modifier;
 
 import javax.free.IllegalUsageException;
+import javax.free.Nullables;
 
 import com.bee32.plover.arch.util.Flags32;
+import com.bee32.plover.arch.util.Identity;
 
 public abstract class BaseDto<S>
         extends BaseDto_AS2<S>
@@ -164,6 +166,7 @@ public abstract class BaseDto<S>
         Class<?> thisClass = getClass();
         Class<?> otherClass = obj.getClass();
         if (thisClass != otherClass) {
+            // TODO Optim.
             if (!thisClass.isAssignableFrom(otherClass)) {
                 if (otherClass.isAssignableFrom(thisClass))
                     return obj.equals(this);
@@ -176,6 +179,15 @@ public abstract class BaseDto<S>
 
         @SuppressWarnings("unchecked")
         BaseDto<S> other = (BaseDto<S>) obj;
+        if (isNull() && other.isNull())
+            return true;
+
+        if (getMarshalType().isReference() && other.getMarshalType().isReference()) {
+            idEquals(other);
+            Serializable key1 = getPrimaryKey();
+            Serializable key2 = other.getPrimaryKey();
+            return Nullables.equals(key1, key2);
+        }
 
         Serializable nid = getNaturalId();
         if (nid == null)
@@ -220,11 +232,14 @@ public abstract class BaseDto<S>
      */
     @Override
     public final int hashCode() {
-        Serializable nid = getNaturalId();
-        if (nid == null)
-            return idHashCode();
-        else
-            return nid.hashCode();
+        int hash = 0;
+        if (getMarshalType().isReference()) {
+            hash = idHashCode();
+        } else {
+            Serializable naturalId = getNaturalId();
+            hash = naturalId.hashCode();
+        }
+        return hash;
     }
 
     protected final Serializable getNaturalId() {
@@ -244,7 +259,14 @@ public abstract class BaseDto<S>
         return null;
     }
 
-    protected static Serializable naturalId(BaseDto<?> o) {
+    protected Serializable naturalId(BaseDto<?> o) {
+        if (o == null || o.isNull())
+            return new Identity(this);
+        else
+            return o.getNaturalId();
+    }
+
+    protected static Serializable naturalIdOpt(BaseDto<?> o) {
         if (o == null)
             return null;
         else
