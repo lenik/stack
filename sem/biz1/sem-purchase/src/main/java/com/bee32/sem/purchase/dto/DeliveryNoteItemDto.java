@@ -20,26 +20,20 @@ public class DeliveryNoteItemDto
     private static final long serialVersionUID = 1L;
 
     DeliveryNoteDto parent;
-    int index;
     PartDto part;
-
     StockWarehouseDto sourceWarehouse;
 
     @Override
     protected void _marshal(DeliveryNoteItem source) {
         parent = mref(DeliveryNoteDto.class, source.getParent());
-        index = source.getIndex();
         part = mref(PartDto.class, source.getPart());
-
         sourceWarehouse = mref(StockWarehouseDto.class, source.getSourceWarehouse());
     }
 
     @Override
     protected void _unmarshalTo(DeliveryNoteItem target) {
         merge(target, "parent", parent);
-        target.setIndex(index);
         merge(target, "part", part);
-
         merge(target, "sourceWarehouse", sourceWarehouse);
     }
 
@@ -66,14 +60,6 @@ public class DeliveryNoteItemDto
         if (parent == null)
             throw new NullPointerException("parent");
         this.parent = parent;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
     }
 
     @Override

@@ -36,7 +36,6 @@ public class MakeOrderItem
     public static final int EXT_SPEC_LENGTH = 30;
 
     MakeOrder parent;
-    int index;
     Part part;
     Date deadline;
 
@@ -56,7 +55,6 @@ public class MakeOrderItem
     protected void _populate(MakeOrderItem o) {
         super._populate(o);
         parent = o.parent;
-        index = o.index;
         part = o.part;
         deadline = o.deadline;
         externalProductName = o.externalProductName;

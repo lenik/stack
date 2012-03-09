@@ -30,7 +30,6 @@ public class DeliveryNoteItem
     private static final long serialVersionUID = 1L;
 
     DeliveryNote parent;
-    int index;
     Part part;
 
     StockWarehouse sourceWarehouse;
