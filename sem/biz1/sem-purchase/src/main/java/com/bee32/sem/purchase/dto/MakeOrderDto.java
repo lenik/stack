@@ -168,6 +168,7 @@ public class MakeOrderDto
         for (MakeOrderItemDto orderItem : notDeliveriedItems) {
             DeliveryNoteItemDto deliveryNoteItem = new DeliveryNoteItemDto().create();
             deliveryNoteItem.setPart(orderItem.getPart());
+            deliveryNoteItem.setPrice(orderItem.getPrice());
             deliveryNoteItem.setQuantity(orderItem.getQuantity());
 
             deliveryNoteItems.add(deliveryNoteItem);
