@@ -42,14 +42,18 @@ public class SelectionHolder
     @Override
     public final Object getSingleSelection() {
         List<?> selection = getSelection();
+        Object singleSelection;
         if (selection.isEmpty())
-            return null;
+            singleSelection = null;
         else
-            return selection.get(0);
+            singleSelection = selection.get(0);
+        // System.out.println("Get S = " + singleSelection + "  @" + getClass().getSimpleName());
+        return singleSelection;
     }
 
     @Override
     public final void setSingleSelection(Object singleSelection) {
+        // System.out.println("Set S=" + singleSelection + "  @" + getClass().getSimpleName());
         List<Object> list = new ArrayList<Object>();
         if (singleSelection != null)
             list.add(singleSelection);

@@ -453,11 +453,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     protected final boolean idEquals(EntityDto<E, K> other) {
         K id1 = getId();
         K id2 = other.getId();
-
-        if (id1 == null || id2 == null)
-            return false;
-
-        return id1.equals(id2);
+        return Nullables.equals(id1, id2);
     }
 
     /**
@@ -465,10 +461,11 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      */
     @Override
     protected final int idHashCode() {
+        int hash = 0;
         K id = getId();
         if (id != null)
-            return id.hashCode();
-        return System.identityHashCode(this);
+            hash += id.hashCode();
+        return hash;
     }
 
     @Override

@@ -107,8 +107,6 @@ public class MakeOrderDto
     }
 
     public void setCustomer(PartyDto customer) {
-        if (customer == null)
-            return; // throw new NullPointerException("customer");
         this.customer = customer;
     }
 
