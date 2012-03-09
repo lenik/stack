@@ -147,18 +147,22 @@ public class SamplesLoadProcess
                         logger.warn("Selector returns multiple results: " + selection + ", choose the first.");
 
                     EntityFlags ef = EntityAccessor.getFlags(existing);
-                    if (ef.isWeakData() || ef.isLocked() || ef.isUserLock())
-                        continue;
-                    if (ef.isHidden() || ef.isMarked())
-                        continue;
 
                     if (existing instanceof HibernateProxy) {
                         LazyInitializer lazyInitializer = ((HibernateProxy) existing).getHibernateLazyInitializer();
                         Object target = lazyInitializer.getImplementation(); // (sessionImpl);
                         existing = (Entity<?>) target;
                     }
+
+                    // FIXME children collection is reset to empty..?
                     // EntityAccessor.setId(micro, existing.getId());
                     micro.retarget(existing);
+
+                    if (ef.isWeakData() || ef.isLocked() || ef.isUserLock())
+                        continue;
+                    if (ef.isHidden() || ef.isMarked())
+                        continue;
+
                     // session.clear();
                 }
 
