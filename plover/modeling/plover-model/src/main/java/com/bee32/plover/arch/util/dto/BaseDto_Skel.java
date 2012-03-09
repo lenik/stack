@@ -210,7 +210,7 @@ public abstract class BaseDto_Skel<S>
         if (!stereotyped)
             stereotyped = true;
 
-        if (isNullRef())
+        if (isNull() || isNullRef())
             return null;
 
         @SuppressWarnings("unchecked")
