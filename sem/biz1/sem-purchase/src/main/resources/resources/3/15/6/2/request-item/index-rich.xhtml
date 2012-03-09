@@ -13,7 +13,7 @@
 
     <ui:define name="dataColumns">
         <p:column headerText="询价数量" styleClass="f-wrappable">
-            <h:outputText value="#{entry.inquiryCount}" />
+            <h:outputText value="#{entry.inquiryCount}" style="font-weight:bold;"/>
         </p:column>
         <p:column headerText="采购请求" styleClass="f-wrappable" sortBy="#{entry.parent}">
             <h:outputText value="#{entry.parent.label}" />
@@ -97,6 +97,8 @@
     </ui:define>
 
     <ui:define name="dialogs">
+        <sem:chooseOrgDialog id="c_preferredSupplier" var="choosePreferredSupplierDialog"
+            header="选择优选供应商" target="#{obj.preferredSupplier}" update=":editDialog:form:tv:supplier"/>
         <sem:chooseOrgDialog id="c_supplier" var="chooseSupplierDialog" header="选择询价方"
             target="#{inquiryObj.supplier}" update=":inquiriesEditView:editForm:supplier" />
 

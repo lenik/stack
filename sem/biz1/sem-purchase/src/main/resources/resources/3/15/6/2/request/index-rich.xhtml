@@ -39,12 +39,15 @@
         </t:panelGrid>
 
         <p:tabView id="tv" activeIndex="#{bean.tabIndex}">
-            <p:tab title="采购需求">
+            <p:tab title="物料计划">
                 <fr:listView id="plansIndexView" header="物料计划" style="panel" picker="chooseMaterialPlanDialog"
                     mbean="#{bean.plansMBean}" paginator="false" nested="true" editable="false">
                     <f:facet name="columns">
                         <p:column headerText="简要">
                             <h:outputText value="#{entry.label}" />
+                        </p:column>
+                        <p:column headerText="创建时间">
+                            <h:outputText value="#{entry.createdDate}" />
                         </p:column>
                         <p:column headerText="备注" styleClass="f-wrappable">
                             <h:outputText value="#{entry.description}" />

@@ -79,7 +79,7 @@ public class StockOrderDto
         StockJob stockJob = source.getJob();
         job = mref(stockJobDtoClass, stockJob);
 
-        org = mref(OrgDto.class, source.getOrg());
+        org = mref(PartyDto.class, source.getOrg());
         orgUnit = mref(OrgUnitDto.class, source.getOrgUnit());
         warehouse = mref(StockWarehouseDto.class, source.getWarehouse());
         verifyContext = marshal(StockOrderVerifySupportDto.class, source.getVerifyContext());
