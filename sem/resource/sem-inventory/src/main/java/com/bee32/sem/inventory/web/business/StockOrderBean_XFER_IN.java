@@ -61,7 +61,7 @@ public class StockOrderBean_XFER_IN
         destItem.setParent(destOrder);
         destItem.populate(selectedSourceItem);
         destItem.setLocation(null);
-        //destItem.setQuantity(BigDecimal.ZERO);
+        // destItem.setQuantity(BigDecimal.ZERO);
     }
 
     public void addDestItem() {
@@ -70,8 +70,8 @@ public class StockOrderBean_XFER_IN
         StockOrderDto destOrder = getOpenedObject();
         destOrder.addItem(destItem);
         destItem.setParent(destOrder);
-        destItem.setQuantity(destItem.getQuantity().abs());
-        // XXX generated tmp id here.
+        destItem.setQuantity(destItem.getQuantity());
+        // negative id won't unmarshalled.
         destItem.setId(-destOrder.getItems().size() - 1L, true);
         destItem = null;
     }

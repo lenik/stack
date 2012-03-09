@@ -62,7 +62,8 @@ public class StockOrderItemDto
     protected boolean isNegated() {
         StockOrderDto parent = getParent();
         if (parent == null || parent.isNull()) {
-            throw new IllegalStateException("StockOrderItem's parent isn't set. you must call setParent before setQuantity");
+            throw new IllegalStateException(
+                    "StockOrderItem's parent isn't set. you must call setParent before setQuantity");
         }
 
         StockOrderSubject subject = parent.getSubject();

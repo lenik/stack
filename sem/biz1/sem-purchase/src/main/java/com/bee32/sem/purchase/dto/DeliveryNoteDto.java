@@ -145,7 +145,7 @@ public class DeliveryNoteDto
     }
 
     public List<DeliveryNoteTakeOutDto> getTakeOuts() {
-        if(takeOut.isNull())
+        if (takeOut.isNull())
             return new ArrayList<DeliveryNoteTakeOutDto>();
         return Arrays.asList(takeOut);
     }
