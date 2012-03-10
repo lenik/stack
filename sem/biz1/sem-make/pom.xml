@@ -5,19 +5,19 @@
         <artifactId>biz1</artifactId>
         <version>0.3.2-SNAPSHOT</version>
     </parent>
-    <artifactId>sem-purchase</artifactId>
+    <artifactId>sem-make</artifactId>
     <version>0.3.2-SNAPSHOT</version>
     <dependencies>
         <dependency>
             <groupId>com.bee32.sem</groupId>
-            <artifactId>sem-inventory</artifactId>
+            <artifactId>sem-bom</artifactId>
             <version>0.3.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.bee32.sem</groupId>
-            <artifactId>sem-make</artifactId>
+            <artifactId>sem-chance</artifactId>
             <version>0.3.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
-    <name>SEM :: Biz1 :: Purchase</name>
+    <name>SEM :: Biz1 :: Order</name>
 </project>

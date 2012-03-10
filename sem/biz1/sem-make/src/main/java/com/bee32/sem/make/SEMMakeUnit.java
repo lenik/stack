@@ -1,4 +1,4 @@
-package com.bee32.sem.purchase;
+package com.bee32.sem.make;
 
 import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
@@ -14,13 +14,9 @@ import com.bee32.sem.make.entity.MakeTaskItem;
 import com.bee32.sem.make.entity.MaterialPlan;
 import com.bee32.sem.make.entity.MaterialPlanItem;
 import com.bee32.sem.make.entity.StockPlanOrder;
-import com.bee32.sem.purchase.entity.PurchaseInquiry;
-import com.bee32.sem.purchase.entity.PurchaseRequest;
-import com.bee32.sem.purchase.entity.PurchaseRequestItem;
-import com.bee32.sem.purchase.entity.PurchaseTakeIn;
 
 @ImportUnit({ SEMBomUnit.class, SEMChanceUnit.class })
-public class SEMPurchaseUnit
+public class SEMMakeUnit
         extends PersistenceUnit {
 
     @Override
@@ -31,10 +27,6 @@ public class SEMPurchaseUnit
         add(MakeTaskItem.class);
         add(MaterialPlan.class);
         add(MaterialPlanItem.class);
-        add(PurchaseRequest.class);
-        add(PurchaseRequestItem.class);
-        add(PurchaseInquiry.class);
-        add(PurchaseTakeIn.class);
         add(StockPlanOrder.class);
         add(DeliveryNote.class);
         add(DeliveryNoteItem.class);

@@ -11,13 +11,13 @@ import com.bee32.plover.orm.validation.RequiredId;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.web.business.StockDictsBean;
+import com.bee32.sem.make.dto.MaterialPlanDto;
+import com.bee32.sem.make.entity.MaterialPlan;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
-import com.bee32.sem.purchase.dto.MaterialPlanDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestItemDto;
 import com.bee32.sem.purchase.dto.PurchaseTakeInDto;
-import com.bee32.sem.purchase.entity.MaterialPlan;
 import com.bee32.sem.purchase.entity.PurchaseRequest;
 import com.bee32.sem.purchase.service.PurchaseService;
 

@@ -1,22 +1,18 @@
 package com.bee32.sem.purchase;
 
 import com.bee32.plover.rtx.location.Location;
-import com.bee32.sem.frame.builtins.SEMFrameMenu;
 import com.bee32.sem.frame.menu.MenuContribution;
 import com.bee32.sem.frame.menu.MenuNode;
+import com.bee32.sem.make.SEMMakeMenu;
 
 public class SEMPurchaseMenu
         extends MenuContribution {
 
-    static Location PURCHASE_ = WEB_APP.join(SEMPurchaseModule.PREFIX_);
+    static Location PREFIX_ = WEB_APP.join(SEMPurchaseModule.PREFIX_);
 
-    public static MenuNode PURCHASE = menu(SEMFrameMenu.MAIN, 450, "purchase");
+    public static transient MenuNode PURCHASE = SEMMakeMenu.MAKE;
 
-    static MenuNode makeOrderAdmin = entry(PURCHASE, 1, "makeOrderAdmin", PURCHASE_.join("make-order/"));
-    static MenuNode makeTaskAdmin = entry(PURCHASE, 10, "makeTaskAdmin", PURCHASE_.join("make-task/"));
-    static MenuNode materialPlanAdmin = entry(PURCHASE, 20, "materialPlanAdmin", PURCHASE_.join("material-plan/"));
-    static MenuNode purchaseRequest = entry(PURCHASE, 30, "purchaseRequest", PURCHASE_.join("request/"));
-    static MenuNode purchaseRequestItem = entry(PURCHASE, 40, "purchaseRequestItem", PURCHASE_.join("request-item/"));
-    static MenuNode deliveryNoteAdmin = entry(PURCHASE, 50, "deliveryNoteAdmin", PURCHASE_.join("delivery-note/"));
+    static MenuNode purchaseRequest = entry(PURCHASE, 30, "purchaseRequest", PREFIX_.join("request/"));
+    static MenuNode purchaseRequestItem = entry(PURCHASE, 40, "purchaseRequestItem", PREFIX_.join("request-item/"));
 
 }
