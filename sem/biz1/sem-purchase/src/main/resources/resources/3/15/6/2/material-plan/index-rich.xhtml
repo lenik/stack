@@ -25,6 +25,20 @@
             <h:outputText value="制单人：" />
             <p:inputText value="#{obj.owner.displayName}" disabled="true" />
 
+            <h:outputText value="生产任务单：" />
+            <t:panelGroup colspan="3">
+                <h:inputHidden label="生产任务单" value="#{obj.task.id_RZL}" />
+                <p:inputText id="task" value="#{obj.task.label}" disabled="true" label="生产任务单"/>
+                <p:commandButton value="..." onclick="chooseMakeTaskDialog.show()" disabled="#{not bean.editing}" />
+            </t:panelGroup>
+
+            <h:outputText value="或定单(直接外购产品)：" />
+            <t:panelGroup colspan="3">
+                <h:inputHidden label="订单" value="#{obj.order.id_RZL}" />
+                <p:inputText id="order" value="#{obj.order.label}" disabled="true" label="订单"/>
+                <p:commandButton value="..." onclick="chooseMakeOrderDialog.show()" disabled="#{not bean.editing}" />
+            </t:panelGroup>
+
             <h:outputText value="简要：" />
             <t:panelGroup colspan="3">
                 <p:inputText value="#{obj.label}" label="简要"/>
@@ -34,15 +48,6 @@
             <t:panelGroup colspan="3">
                 <p:inputText value="#{obj.description}" label="描述"/>
             </t:panelGroup>
-
-            <h:outputText value="生产任务单：" />
-            <t:panelGroup>
-                <h:inputHidden label="生产任务单" value="#{obj.task.id_RZL}" />
-                <p:inputText id="task" value="#{obj.task.label}" disabled="true" label="生产任务单"/>
-                <p:commandButton value="..." onclick="chooseMakeTaskDialog.show()" disabled="#{not bean.editing}" />
-            </t:panelGroup>
-            <t:panelGroup />
-            <t:panelGroup />
         </t:panelGrid>
 
         <p:tabView id="tv">
@@ -90,6 +95,7 @@
 
     <ui:define name="dialogs">
         <sem:chooseMakeTaskDialog id="c_maskTask" target="#{bean.applyMakeTask}" update=":editDialog:form" />
+        <sem:chooseMakeOrderDialog id="c_maskOrder" target="#{bean.applyMakeOrder}" update=":editDialog:form" />
         <sem:choosePartyDialog id="c_supplier" header="选择首选供应商" var="chooseSupplierDialog" target="#{itemObj.preferredSupplier}"
             update=":itemsEditView:editForm:body" />
         <sem:inputQuantityDialog id="inputQuantityDialog" target="#{planOrderItemObj.quantity}"

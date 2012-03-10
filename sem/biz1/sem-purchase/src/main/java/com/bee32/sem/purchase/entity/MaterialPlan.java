@@ -32,6 +32,8 @@ public class MaterialPlan
     public static final int MEMO_LENGTH = 3000;
 
     MakeTask task;
+    MakeOrder order;
+
     List<MaterialPlanItem> items = new ArrayList<MaterialPlanItem>();
     PurchaseRequest purchaseRequest;
 
@@ -46,6 +48,7 @@ public class MaterialPlan
     protected void _populate(MaterialPlan o) {
         super._populate(o);
         task = o.task;
+        order = o.order;
         items = CloneUtils.cloneList(o.items);
         purchaseRequest = o.purchaseRequest;
     }
@@ -57,6 +60,15 @@ public class MaterialPlan
 
     public void setTask(MakeTask task) {
         this.task = task;
+    }
+
+    @ManyToOne
+    public MakeOrder getOrder() {
+        return order;
+    }
+
+    public void setOrder(MakeOrder order) {
+        this.order = order;
     }
 
     @OneToMany(mappedBy = "materialPlan", orphanRemoval = true)

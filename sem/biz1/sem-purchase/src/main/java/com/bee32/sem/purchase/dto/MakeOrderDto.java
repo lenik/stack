@@ -27,15 +27,17 @@ public class MakeOrderDto
 
     public static final int TASKS = 2;
     public static final int DELIVERY_NOTES = 4;
+    public static final int PLANS = 8;
 
-    public static final int NOT_ARRANGED_ITEMS = 8;
-    public static final int NOT_DELIVERIED_ITEMS = 16;
+    public static final int NOT_ARRANGED_ITEMS = 16;
+    public static final int NOT_DELIVERIED_ITEMS = 32;
 
     PartyDto customer;
     String status;
     ChanceDto chance;
 
     List<MakeTaskDto> tasks;
+    List<MaterialPlanDto> plans;
     List<DeliveryNoteDto> deliveryNotes;
     List<MakeOrderItemDto> notArrangedItems;
     List<MakeOrderItemDto> notDeliveriedItems;
@@ -62,6 +64,11 @@ public class MakeOrderDto
             tasks = marshalList(MakeTaskDto.class, source.getTasks());
         else
             tasks = Collections.emptyList();
+
+        if (selection.contains(PLANS))
+            plans = marshalList(MaterialPlanDto.class, source.getPlans());
+        else
+            plans = Collections.emptyList();
 
         if (selection.contains(DELIVERY_NOTES))
             deliveryNotes = marshalList(DeliveryNoteDto.class, source.getDeliveryNotes());
@@ -90,6 +97,9 @@ public class MakeOrderDto
         if (selection.contains(TASKS))
             mergeList(target, "tasks", tasks);
 
+        if (selection.contains(PLANS))
+            mergeList(target, "plans", plans);
+
         if (selection.contains(DELIVERY_NOTES))
             mergeList(target, "deliveryNotes", deliveryNotes);
 
@@ -107,6 +117,8 @@ public class MakeOrderDto
     }
 
     public void setCustomer(PartyDto customer) {
+        if (customer == null)
+            return; // throw new NullPointerException("customer");
         this.customer = customer;
     }
 
@@ -135,6 +147,14 @@ public class MakeOrderDto
         if (tasks == null)
             throw new NullPointerException("tasks");
         this.tasks = tasks;
+    }
+
+    public List<MaterialPlanDto> getPlans() {
+        return plans;
+    }
+
+    public void setPlans(List<MaterialPlanDto> plans) {
+        this.plans = plans;
     }
 
     public List<DeliveryNoteDto> getDeliveryNotes() {

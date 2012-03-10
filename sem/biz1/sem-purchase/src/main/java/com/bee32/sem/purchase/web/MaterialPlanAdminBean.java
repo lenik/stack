@@ -4,14 +4,10 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
-
-import org.apache.commons.lang.StringUtils;
 
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.sem.bom.dto.PartDto;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.StockOrderDto;
@@ -22,13 +18,14 @@ import com.bee32.sem.inventory.service.StockQueryResult;
 import com.bee32.sem.inventory.util.ConsumptionMap;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
+import com.bee32.sem.purchase.dto.MakeOrderDto;
 import com.bee32.sem.purchase.dto.MakeTaskDto;
-import com.bee32.sem.purchase.dto.MakeTaskItemDto;
 import com.bee32.sem.purchase.dto.MaterialPlanDto;
 import com.bee32.sem.purchase.dto.MaterialPlanItemDto;
 import com.bee32.sem.purchase.dto.StockPlanOrderDto;
 import com.bee32.sem.purchase.entity.MakeTask;
 import com.bee32.sem.purchase.entity.MaterialPlan;
+import com.bee32.sem.purchase.service.PurchaseService;
 
 @ForEntity(MaterialPlan.class)
 public class MaterialPlanAdminBean
@@ -55,45 +52,32 @@ public class MaterialPlanAdminBean
     /**
      * 根据bom计算所需物料
      */
-    public void setApplyMakeTask(MakeTaskDto makeTaskRef) {
-        if (makeTaskRef == null) {
+    public void setApplyMakeTask(MakeTaskDto task) {
+        if (task == null) {
             uiLogger.error("没有选中生产任务。");
             return;
         }
         MaterialPlanDto materialPlan = getOpenedObject();
-        MakeTaskDto makeTask = reload(makeTaskRef, MakeTaskDto.ITEMS | MakeTaskDto.PLANS);
 
-        if (!makeTask.getPlans().isEmpty()) {
-            uiLogger.error("此生产任务单已经有对应的物料计划!");
-            return;
-        }
+        PurchaseService purchaseService = ctx.bean.getBean(PurchaseService.class);
+        purchaseService.calcMaterialPlanFromBom(materialPlan, task);
 
-        materialPlan.setTask(makeTaskRef);
-        if (StringUtils.isEmpty(materialPlan.getLabel()))
-            materialPlan.setLabel(makeTask.getLabel());
-        materialPlan.getItems().clear();
-
-        for (MakeTaskItemDto taskItem : makeTask.getItems()) {
-            PartDto part = reload(taskItem.getPart(), PartDto.MATERIAL_CONSUMPTION);
-            BigDecimal quantity = taskItem.getQuantity();
-
-            Map<MaterialDto, BigDecimal> allMaterial = part.getMaterialConsumption().dtoMap();
-            long index = 0;
-            for (Entry<MaterialDto, BigDecimal> ent : allMaterial.entrySet()) {
-                MaterialPlanItemDto planItem = new MaterialPlanItemDto().create();
-                planItem.setId(-(index++) - 1L, true);
-                planItem.setMaterialPlan(materialPlan);
-                planItem.setMaterial(ent.getKey());
-                planItem.setQuantity(quantity.multiply(ent.getValue())); // 产品数量乘以原物料数量
-                materialPlan.addItem(planItem);
-            }
-        }
-        // 清空物料锁定。
-        materialPlan.getPlanOrders().clear();
+        uiLogger.info("计算完成。");
     }
 
     /**
-     * 查询可用库存，并形成一个锁定列表让用户勾选。
+     * 定单上的外购物品，直接形成物料需求
+     */
+    public void setApplyMakeOrder(MakeOrderDto order) {
+        if (order == null) {
+            uiLogger.error("没有选中订单。");
+        }
+
+
+    }
+
+    /**
+     * 查询可用库存，并形成一个锁定列表
      */
     public void importFromStock() {
         MaterialPlanDto materialPlan = getOpenedObject();

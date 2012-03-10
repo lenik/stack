@@ -8,8 +8,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.inject.Inject;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.bee32.plover.arch.DataService;
 import com.bee32.plover.arch.util.IdComposite;
@@ -40,7 +43,10 @@ import com.bee32.sem.purchase.dto.DeliveryNoteItemDto;
 import com.bee32.sem.purchase.dto.DeliveryNoteTakeOutDto;
 import com.bee32.sem.purchase.dto.MakeOrderDto;
 import com.bee32.sem.purchase.dto.MakeOrderItemDto;
+import com.bee32.sem.purchase.dto.MakeTaskDto;
+import com.bee32.sem.purchase.dto.MakeTaskItemDto;
 import com.bee32.sem.purchase.dto.MaterialPlanDto;
+import com.bee32.sem.purchase.dto.MaterialPlanItemDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestItemDto;
 import com.bee32.sem.purchase.dto.PurchaseTakeInDto;
@@ -262,6 +268,39 @@ public class PurchaseService
             items.add(item);
         }
         makeOrder.setItems(items);
+    }
+
+    /**
+     * 由生产任务单，根据bom表生成物料计划
+     */
+    public void calcMaterialPlanFromBom(MaterialPlanDto plan, MakeTaskDto task) {
+        MakeTaskDto makeTask = reload(task, MakeTaskDto.ITEMS | MakeTaskDto.PLANS);
+
+        if (!makeTask.getPlans().isEmpty())
+            throw new IllegalStateException("此生产任务单已经有对应的物料计划!");
+
+        plan.setTask(task);
+        if (StringUtils.isEmpty(plan.getLabel()))
+            plan.setLabel(makeTask.getLabel());
+        plan.getItems().clear();
+
+        for (MakeTaskItemDto taskItem : makeTask.getItems()) {
+            PartDto part = reload(taskItem.getPart(), PartDto.MATERIAL_CONSUMPTION);
+            BigDecimal quantity = taskItem.getQuantity();
+
+            Map<MaterialDto, BigDecimal> allMaterial = part.getMaterialConsumption().dtoMap();
+            long index = 0;
+            for (Entry<MaterialDto, BigDecimal> ent : allMaterial.entrySet()) {
+                MaterialPlanItemDto planItem = new MaterialPlanItemDto().create();
+                planItem.setId(-(index++) - 1L, true);
+                planItem.setMaterialPlan(plan);
+                planItem.setMaterial(ent.getKey());
+                planItem.setQuantity(quantity.multiply(ent.getValue())); // 产品数量乘以原物料数量
+                plan.addItem(planItem);
+            }
+        }
+        // 清空物料锁定。
+        plan.getPlanOrders().clear();
     }
 
 }

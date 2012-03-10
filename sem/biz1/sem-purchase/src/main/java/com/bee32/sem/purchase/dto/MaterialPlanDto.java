@@ -27,12 +27,15 @@ public class MaterialPlanDto
     public static final int PURCHASE_REQUEST = 2;
 
     MakeTaskDto task;
+    MakeOrderDto order;
+
     List<MaterialPlanItemDto> items;
     PurchaseRequestDto purchaseRequest;
 
     @Override
     protected void _marshal(MaterialPlan source) {
         task = mref(MakeTaskDto.class, source.getTask());
+        order = mref(MakeOrderDto.class, source.getOrder());
 
         if (selection.contains(ITEMS))
             items = marshalList(MaterialPlanItemDto.class, source.getItems());
@@ -49,6 +52,7 @@ public class MaterialPlanDto
     @Override
     protected void _unmarshalTo(MaterialPlan target) {
         merge(target, "task", task);
+        merge(target, "order", order);
 
         if (selection.contains(ITEMS))
             mergeList(target, "items", items);
@@ -71,6 +75,14 @@ public class MaterialPlanDto
         if (task == null)
             throw new NullPointerException("task");
         this.task = task;
+    }
+
+    public MakeOrderDto getOrder() {
+        return order;
+    }
+
+    public void setOrder(MakeOrderDto order) {
+        this.order = order;
     }
 
     @SuppressWarnings("unchecked")

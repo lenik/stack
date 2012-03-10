@@ -47,6 +47,7 @@ public class MakeOrder
     Chance chance;
 
     List<MakeTask> tasks = new ArrayList<MakeTask>();
+    List<MaterialPlan> plans = new ArrayList<MaterialPlan>();
     List<DeliveryNote> deliveryNotes = new ArrayList<DeliveryNote>();
 
     @Override
@@ -63,6 +64,7 @@ public class MakeOrder
         status = o.status;
         chance = o.chance;
         tasks = new ArrayList<MakeTask>(o.tasks);
+        plans = new ArrayList<MaterialPlan>(o.plans);
         verifyContext = (SingleVerifierWithNumberSupport) verifyContext.clone();
     }
 
@@ -104,6 +106,16 @@ public class MakeOrder
         if (tasks == null)
             throw new NullPointerException("tasks");
         this.tasks = tasks;
+    }
+
+    @OneToMany(mappedBy="order")
+    @Cascade(CascadeType.ALL)
+    public List<MaterialPlan> getPlans() {
+        return plans;
+    }
+
+    public void setPlans(List<MaterialPlan> plans) {
+        this.plans = plans;
     }
 
     @OneToMany(mappedBy = "order")
