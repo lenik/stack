@@ -10,7 +10,6 @@ import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.process.StockOrderVerifySupportDto;
 import com.bee32.sem.inventory.tx.dto.StockJobDto;
 import com.bee32.sem.inventory.tx.entity.StockJob;
-import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.OrgUnitDto;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.process.verify.dto.IVerifiableDto;

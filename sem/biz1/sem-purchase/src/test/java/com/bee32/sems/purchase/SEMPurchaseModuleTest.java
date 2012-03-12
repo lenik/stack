@@ -36,7 +36,7 @@ public class SEMPurchaseModuleTest
 
     public static void main(String[] args)
             throws IOException {
-        new SEMPurchaseModuleTest().browseAndWait(SEMPurchaseModule.PREFIX + "/make-order/");
+        new SEMPurchaseModuleTest().browseAndWait(SEMPurchaseModule.PREFIX + "/request/");
     }
 
     static {
