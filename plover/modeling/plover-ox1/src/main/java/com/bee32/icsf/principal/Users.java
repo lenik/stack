@@ -1,5 +1,6 @@
 package com.bee32.icsf.principal;
 
+import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.sample.StandardSamples;
 
 public class Users
@@ -16,6 +17,12 @@ public class Users
     @Override
     public int getPriority() {
         return PRIORITY_SYSTEM;
+    }
+
+    @Override
+    protected void decorate(Entity<?> sample) {
+        super.decorate(sample);
+        sample.getEntityFlags().setOverrided(true);
     }
 
     @Override
