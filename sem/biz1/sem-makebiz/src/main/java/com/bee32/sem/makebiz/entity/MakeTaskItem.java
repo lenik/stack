@@ -18,7 +18,7 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.plover.ox1.config.DecimalConfig;
-import com.bee32.sem.bom.entity.Part;
+import com.bee32.sem.make.entity.Part;
 
 /**
  * 生产任务明细

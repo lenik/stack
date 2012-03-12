@@ -21,8 +21,8 @@ import org.hibernate.annotations.CascadeType;
 import com.bee32.plover.arch.bean.BeanPropertyAccessor;
 import com.bee32.plover.arch.bean.IPropertyAccessor;
 import com.bee32.plover.ox1.config.DecimalConfig;
-import com.bee32.sem.bom.entity.Part;
 import com.bee32.sem.chance.entity.Chance;
+import com.bee32.sem.make.entity.Part;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;
@@ -108,7 +108,7 @@ public class MakeOrder
         this.tasks = tasks;
     }
 
-    @OneToMany(mappedBy="order")
+    @OneToMany(mappedBy = "order")
     @Cascade(CascadeType.ALL)
     public List<MaterialPlan> getPlans() {
         return plans;
@@ -125,7 +125,7 @@ public class MakeOrder
     }
 
     public void setDeliveryNotes(List<DeliveryNote> deliveryNotes) {
-        if(deliveryNotes == null)
+        if (deliveryNotes == null)
             throw new NullPointerException("deliveryNotes");
         this.deliveryNotes = deliveryNotes;
     }
@@ -251,7 +251,6 @@ public class MakeOrder
         return result;
     }
 
-
     /**
      * 检查所有对应生产任务单的数量总合是否超过订单的数量
      *
@@ -273,7 +272,6 @@ public class MakeOrder
         }
         return overloadParts;
     }
-
 
     /**
      * 检查所有对应送货单的数量总合是否超过订单的数量

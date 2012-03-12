@@ -8,8 +8,8 @@ import java.util.Map.Entry;
 import org.apache.commons.lang.StringUtils;
 
 import com.bee32.plover.orm.annotation.ForEntity;
-import com.bee32.sem.bom.entity.Part;
 import com.bee32.sem.frame.ui.ListMBean;
+import com.bee32.sem.make.entity.Part;
 import com.bee32.sem.makebiz.dto.MakeOrderDto;
 import com.bee32.sem.makebiz.dto.MakeTaskDto;
 import com.bee32.sem.makebiz.dto.MakeTaskItemDto;

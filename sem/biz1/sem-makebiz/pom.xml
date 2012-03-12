@@ -10,7 +10,7 @@
     <dependencies>
         <dependency>
             <groupId>com.bee32.sem</groupId>
-            <artifactId>sem-bom</artifactId>
+            <artifactId>sem-make</artifactId>
             <version>0.3.2-SNAPSHOT</version>
         </dependency>
         <dependency>

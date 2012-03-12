@@ -2,8 +2,8 @@ package com.bee32.sem.purchase;
 
 import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
-import com.bee32.sem.bom.SEMBomUnit;
 import com.bee32.sem.chance.SEMChanceUnit;
+import com.bee32.sem.make.SEMBomUnit;
 import com.bee32.sem.makebiz.entity.DeliveryNote;
 import com.bee32.sem.makebiz.entity.DeliveryNoteItem;
 import com.bee32.sem.makebiz.entity.DeliveryNoteTakeOut;
