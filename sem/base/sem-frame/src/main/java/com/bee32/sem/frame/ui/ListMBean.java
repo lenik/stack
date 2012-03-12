@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import com.bee32.plover.arch.util.dto.BaseDto;
 import com.bee32.plover.faces.utils.FacesUILogger;
 import com.bee32.plover.faces.utils.SelectableList;
+import com.bee32.plover.orm.util.EntityDto;
 
 @NotThreadSafe
 public abstract class ListMBean<T>
@@ -194,6 +195,14 @@ public abstract class ListMBean<T>
             return;
         List<T> list = getList();
         T dup = _copyObject(openedObject);
+        if (dup instanceof EntityDto<?, ?>) {
+            EntityDto<?, ?> dto = (EntityDto<?, ?>) dup;
+            dto.setId(null);
+            dto.setVersion(null);
+            dto.setLastModified(null);
+            dto.setCreatedDate(null);
+            dto.setEntityFlags(0);
+        }
         list.add(dup);
     }
 
