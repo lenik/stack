@@ -2,9 +2,9 @@ package com.bee32.sem.purchase;
 
 import com.bee32.plover.pub.oid.Oid;
 import com.bee32.sem.SEMOids;
-import com.bee32.sem.make.entity.MakeOrder;
-import com.bee32.sem.make.entity.MakeTask;
-import com.bee32.sem.make.entity.MaterialPlan;
+import com.bee32.sem.makebiz.entity.MakeOrder;
+import com.bee32.sem.makebiz.entity.MakeTask;
+import com.bee32.sem.makebiz.entity.MaterialPlan;
 import com.bee32.sem.module.EnterpriseModule;
 import com.bee32.sem.purchase.entity.PurchaseRequest;
 

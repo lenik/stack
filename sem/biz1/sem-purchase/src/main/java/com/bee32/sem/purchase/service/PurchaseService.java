@@ -27,7 +27,7 @@ import com.bee32.sem.inventory.service.IStockQuery;
 import com.bee32.sem.inventory.service.StockQueryOptions;
 import com.bee32.sem.inventory.service.StockQueryResult;
 import com.bee32.sem.inventory.util.ConsumptionMap;
-import com.bee32.sem.make.dto.MaterialPlanDto;
+import com.bee32.sem.makebiz.dto.MaterialPlanDto;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestItemDto;

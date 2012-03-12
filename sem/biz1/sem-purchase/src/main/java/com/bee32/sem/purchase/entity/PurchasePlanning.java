@@ -6,7 +6,7 @@ import javax.persistence.OneToOne;
 
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.ox1.color.Yellow;
-import com.bee32.sem.make.entity.MaterialPlan;
+import com.bee32.sem.makebiz.entity.MaterialPlan;
 
 @Yellow
 @Entity

@@ -7,7 +7,7 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.sem.make.dto.MaterialPlanDto;
+import com.bee32.sem.makebiz.dto.MaterialPlanDto;
 import com.bee32.sem.process.base.ProcessEntityDto;
 import com.bee32.sem.purchase.entity.PurchaseRequest;
 

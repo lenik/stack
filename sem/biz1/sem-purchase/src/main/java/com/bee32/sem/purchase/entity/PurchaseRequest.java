@@ -15,7 +15,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.plover.orm.entity.CloneUtils;
-import com.bee32.sem.make.entity.MaterialPlan;
+import com.bee32.sem.makebiz.entity.MaterialPlan;
 import com.bee32.sem.process.base.ProcessEntity;
 
 /**

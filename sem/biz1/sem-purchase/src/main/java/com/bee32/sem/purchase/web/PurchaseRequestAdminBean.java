@@ -8,7 +8,7 @@ import com.bee32.plover.orm.validation.RequiredId;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.web.business.StockDictsBean;
-import com.bee32.sem.make.dto.MaterialPlanDto;
+import com.bee32.sem.makebiz.dto.MaterialPlanDto;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.purchase.dto.PurchaseRequestDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestItemDto;
