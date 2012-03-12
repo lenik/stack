@@ -34,9 +34,7 @@
 
             <h:outputText value="或定单(直接外购产品)：" />
             <t:panelGroup colspan="3">
-                <h:inputHidden label="订单" value="#{obj.order.id_RZL}" />
-                <p:inputText id="order" value="#{obj.order.label}" disabled="true" label="订单"/>
-                <p:commandButton value="..." onclick="chooseMakeOrderDialog.show()" disabled="#{not bean.editing}" />
+                <h:outputText id="order" value="#{obj.order.label}"/>
             </t:panelGroup>
 
             <h:outputText value="简要：" />
@@ -95,7 +93,6 @@
 
     <ui:define name="dialogs">
         <sem:chooseMakeTaskDialog id="c_maskTask" target="#{bean.applyMakeTask}" update=":editDialog:form" />
-        <sem:chooseMakeOrderDialog id="c_maskOrder" target="#{bean.applyMakeOrder}" update=":editDialog:form" />
         <sem:choosePartyDialog id="c_supplier" header="选择首选供应商" var="chooseSupplierDialog" target="#{itemObj.preferredSupplier}"
             update=":itemsEditView:editForm:body" />
         <sem:inputQuantityDialog id="inputQuantityDialog" target="#{planOrderItemObj.quantity}"

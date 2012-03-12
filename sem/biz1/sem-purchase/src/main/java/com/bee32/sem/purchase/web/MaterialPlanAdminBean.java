@@ -66,17 +66,6 @@ public class MaterialPlanAdminBean
     }
 
     /**
-     * 定单上的外购物品，直接形成物料需求
-     */
-    public void setApplyMakeOrder(MakeOrderDto order) {
-        if (order == null) {
-            uiLogger.error("没有选中订单。");
-        }
-
-
-    }
-
-    /**
      * 查询可用库存，并形成一个锁定列表
      */
     public void importFromStock() {

@@ -23,18 +23,16 @@
             <h:outputText value="制单人:" />
             <p:inputText value="#{obj.owner.displayName}" disabled="true" />
 
+            <h:outputText value="生产订单:" />
+            <t:panelGroup colspan="3">
+                <p:inputText id="order" value="#{obj.order.label}" readonly="true" label="生产订单"/>
+                <p:commandButton value="..." onclick="chooseMakeOrderDialog.show()" disabled="#{not bean.editing}" />
+            </t:panelGroup>
+
             <h:outputText value="简要:" />
             <t:panelGroup colspan="3">
                 <p:inputText label="简要" value="#{obj.label}" />
             </t:panelGroup>
-
-            <h:outputText value="生产订单:" />
-            <t:panelGroup>
-                <p:inputText id="order" value="#{obj.order.label}" readonly="true" label="生产订单"/>
-                <p:commandButton value="..." onclick="chooseMakeOrderDialog.show()" disabled="#{not bean.editing}" />
-            </t:panelGroup>
-            <t:panelGroup />
-            <t:panelGroup />
         </t:panelGrid>
 
         <fr:listView id="itemsIndexView" header="生产项目" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"

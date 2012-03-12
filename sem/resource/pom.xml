@@ -12,6 +12,7 @@
         <module>sem-asset</module>
         <module>sem-bom</module>
         <module>sem-inventory</module>
+		<module>sem-technics</module>
         <module>sem-world</module>
     </modules>
     <name>SEM :: Resource</name>
