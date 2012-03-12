@@ -8,11 +8,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.inject.Inject;
-
-import org.apache.commons.lang.StringUtils;
 
 import com.bee32.plover.arch.DataService;
 import com.bee32.plover.arch.util.IdComposite;
@@ -32,19 +29,6 @@ import com.bee32.sem.inventory.service.StockQueryResult;
 import com.bee32.sem.inventory.util.ConsumptionMap;
 import com.bee32.sem.make.dto.MaterialPlanDto;
 import com.bee32.sem.people.dto.OrgDto;
-<<<<<<< HEAD
-import com.bee32.sem.people.dto.PartyDto;
-import com.bee32.sem.purchase.dto.DeliveryNoteDto;
-import com.bee32.sem.purchase.dto.DeliveryNoteItemDto;
-import com.bee32.sem.purchase.dto.DeliveryNoteTakeOutDto;
-import com.bee32.sem.purchase.dto.MakeOrderDto;
-import com.bee32.sem.purchase.dto.MakeOrderItemDto;
-import com.bee32.sem.purchase.dto.MakeTaskDto;
-import com.bee32.sem.purchase.dto.MakeTaskItemDto;
-import com.bee32.sem.purchase.dto.MaterialPlanDto;
-import com.bee32.sem.purchase.dto.MaterialPlanItemDto;
-=======
->>>>>>> Moved make-* to sem-order module, and renamed sem-order to sem-make.
 import com.bee32.sem.purchase.dto.PurchaseRequestDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestItemDto;
 import com.bee32.sem.purchase.dto.PurchaseTakeInDto;

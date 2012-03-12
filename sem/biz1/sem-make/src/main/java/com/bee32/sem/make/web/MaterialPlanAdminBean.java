@@ -17,12 +17,12 @@ import com.bee32.sem.inventory.service.StockQueryOptions;
 import com.bee32.sem.inventory.service.StockQueryResult;
 import com.bee32.sem.inventory.util.ConsumptionMap;
 import com.bee32.sem.make.dto.MakeTaskDto;
-import com.bee32.sem.make.dto.MakeTaskItemDto;
 import com.bee32.sem.make.dto.MaterialPlanDto;
 import com.bee32.sem.make.dto.MaterialPlanItemDto;
 import com.bee32.sem.make.dto.StockPlanOrderDto;
 import com.bee32.sem.make.entity.MakeTask;
 import com.bee32.sem.make.entity.MaterialPlan;
+import com.bee32.sem.make.service.MakeService;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
 
@@ -51,15 +51,15 @@ public class MaterialPlanAdminBean
     /**
      * 根据bom计算所需物料
      */
-    public void setApplyMakeTask(MakeTaskDto task) {
+    public void setMakeTaskToApply(MakeTaskDto task) {
         if (task == null) {
             uiLogger.error("没有选中生产任务。");
             return;
         }
         MaterialPlanDto materialPlan = getOpenedObject();
 
-        PurchaseService purchaseService = ctx.bean.getBean(PurchaseService.class);
-        purchaseService.calcMaterialPlanFromBom(materialPlan, task);
+        MakeService service = ctx.bean.getBean(MakeService.class);
+        service.calcMaterialPlanFromBom(materialPlan, task);
 
         uiLogger.info("计算完成。");
     }
