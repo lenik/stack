@@ -3,7 +3,7 @@ package com.bee32.sem.makebiz;
 import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.sem.chance.SEMChanceUnit;
-import com.bee32.sem.make.SEMBomUnit;
+import com.bee32.sem.make.SEMMakeUnit;
 import com.bee32.sem.makebiz.entity.DeliveryNote;
 import com.bee32.sem.makebiz.entity.DeliveryNoteItem;
 import com.bee32.sem.makebiz.entity.DeliveryNoteTakeOut;
@@ -15,7 +15,7 @@ import com.bee32.sem.makebiz.entity.MaterialPlan;
 import com.bee32.sem.makebiz.entity.MaterialPlanItem;
 import com.bee32.sem.makebiz.entity.StockPlanOrder;
 
-@ImportUnit({ SEMBomUnit.class, SEMChanceUnit.class })
+@ImportUnit({ SEMMakeUnit.class, SEMChanceUnit.class })
 public class SEMMakebizUnit
         extends PersistenceUnit {
 

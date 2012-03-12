@@ -5,10 +5,10 @@ import java.util.Locale;
 
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.sem.make.SEMBomModule;
-import com.bee32.sem.make.SEMBomUnit;
+import com.bee32.sem.make.SEMMakeUnit;
 import com.bee32.sem.test.SEMTestCase;
 
-@Using(SEMBomUnit.class)
+@Using(SEMMakeUnit.class)
 public class SEMBomModuleTest
         extends SEMTestCase {
 

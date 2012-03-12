@@ -7,7 +7,7 @@ import com.bee32.sem.make.entity.Part;
 import com.bee32.sem.make.entity.PartItem;
 
 @ImportUnit({ SEMInventoryUnit.class })
-public class SEMBomUnit
+public class SEMMakeUnit
         extends PersistenceUnit {
 
     @Override
