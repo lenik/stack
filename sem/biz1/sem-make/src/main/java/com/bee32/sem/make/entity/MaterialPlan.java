@@ -6,7 +6,6 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -23,7 +22,6 @@ import com.bee32.sem.inventory.tx.entity.StockJob;
  * @see StockPlanOrder
  */
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "material_plan_seq", allocationSize = 1)
 public class MaterialPlan
         extends StockJob {
 

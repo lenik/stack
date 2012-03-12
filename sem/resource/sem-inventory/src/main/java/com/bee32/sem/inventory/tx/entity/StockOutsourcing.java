@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
 
 import com.bee32.plover.orm.entity.CloneUtils;
 import com.bee32.sem.inventory.entity.StockOrder;
@@ -18,7 +17,6 @@ import com.bee32.sem.people.entity.Org;
  * @see StockOrderSubject#F_CHECKIN
  */
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "stock_outsourcing_seq", allocationSize = 1)
 public class StockOutsourcing
         extends StockJob {
 

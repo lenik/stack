@@ -2,7 +2,6 @@ package com.bee32.sem.purchase.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 
 import com.bee32.sem.inventory.tx.entity.StockJob;
 
@@ -10,7 +9,6 @@ import com.bee32.sem.inventory.tx.entity.StockJob;
  * 采购请求对应的采购入库单
  */
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "purchase_take_in_seq", allocationSize = 1)
 public class PurchaseTakeIn
         extends StockJob {
 

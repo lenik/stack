@@ -2,7 +2,6 @@ package com.bee32.sem.make.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
 
 import com.bee32.sem.inventory.tx.entity.StockJob;
 
@@ -10,7 +9,6 @@ import com.bee32.sem.inventory.tx.entity.StockJob;
  * 送货单对应的销售出库单
  */
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "delivery_note_take_out_seq", allocationSize = 1)
 public class DeliveryNoteTakeOut
         extends StockJob {
 
