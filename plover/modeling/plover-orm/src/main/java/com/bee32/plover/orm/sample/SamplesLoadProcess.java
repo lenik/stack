@@ -158,7 +158,7 @@ public class SamplesLoadProcess
                     // EntityAccessor.setId(micro, existing.getId());
                     micro.retarget(existing);
 
-                    if (ef.isWeakData() || ef.isLocked() || ef.isUserLock())
+                    if (ef.isLocked() || ef.isUserLock() || ef.isOverrided())
                         continue;
                     if (ef.isHidden() || ef.isMarked())
                         continue;
@@ -185,5 +185,4 @@ public class SamplesLoadProcess
         } // for sample
         return stats;
     }
-
 }

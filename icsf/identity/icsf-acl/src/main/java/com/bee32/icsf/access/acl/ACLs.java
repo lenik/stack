@@ -20,7 +20,7 @@ public class ACLs
         DEFAULT.add(users.powerUserRole, Permission.R_X);
         DEFAULT.add(users.userRole, Permission.R_X);
         DEFAULT.add(users.guestRole, Permission.R_X);
-        EntityAccessor.putFlags(EntityFlags.WEAK_DATA, DEFAULT);
+        EntityAccessor.putFlags(EntityFlags.OVERRIDED, DEFAULT);
     }
 
 }

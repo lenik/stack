@@ -15,7 +15,7 @@ public class SEMFileSamples
     public final UserFileTagname adTag = new UserFileTagname("宣传资料");
 
     public SEMFileSamples() {
-        EntityAccessor.putFlags(EntityFlags.WEAK_DATA, //
+        EntityAccessor.putFlags(EntityFlags.OVERRIDED, //
                 pictureTag, musicTag, designTag, secretTag, adTag);
     }
 

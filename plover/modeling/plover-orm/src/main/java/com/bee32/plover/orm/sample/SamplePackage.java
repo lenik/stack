@@ -118,19 +118,22 @@ public abstract class SamplePackage
     protected void postAssemble() {
         SampleList samples = new SampleList();
         getSamples(samples, false);
-        for (Entity<?> sample : samples) {
-            switch (getLevel()) {
-            case LEVEL_BAD:
-                EntityAccessor.getFlags(sample).setWarn(true);
-            case LEVEL_NORMAL:
-                EntityAccessor.getFlags(sample).setTestData(true);
-                EntityAccessor.getFlags(sample).setBuiltinData(false);
-                break;
-            case LEVEL_STANDARD:
-                EntityAccessor.getFlags(sample).setTestData(false);
-                EntityAccessor.getFlags(sample).setBuiltinData(true);
-                break;
-            }
+        for (Entity<?> sample : samples)
+            decorate(sample);
+    }
+
+    protected void decorate(Entity<?> sample) {
+        switch (getLevel()) {
+        case LEVEL_BAD:
+            EntityAccessor.getFlags(sample).setWarn(true);
+        case LEVEL_NORMAL:
+            EntityAccessor.getFlags(sample).setTestData(true);
+            EntityAccessor.getFlags(sample).setBuiltinData(false);
+            break;
+        case LEVEL_STANDARD:
+            EntityAccessor.getFlags(sample).setTestData(false);
+            EntityAccessor.getFlags(sample).setBuiltinData(true);
+            break;
         }
     }
 

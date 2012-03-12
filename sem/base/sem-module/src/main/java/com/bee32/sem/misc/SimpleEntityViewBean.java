@@ -367,7 +367,7 @@ public abstract class SimpleEntityViewBean
                 readOnly = true;
                 break;
             }
-            if (!ef.isWeakData()) {
+            if (!ef.isOverrided()) {
                 if (ef.isBuitlinData()) {
                     uiLogger.warn("不能编辑系统预置数据: 更改系统数据可能导致系统无法正常运行。");
                     readOnly = true;

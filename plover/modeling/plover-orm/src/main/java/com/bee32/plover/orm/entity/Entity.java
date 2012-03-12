@@ -119,7 +119,7 @@ public abstract class Entity<K extends Serializable>
             setId(id);
             version = newOrig.version;
             createdDate = newOrig.createdDate;
-            if (newOrig.entityFlags.isWeakData()) {
+            if (newOrig.entityFlags.isOverrided()) {
                 entityFlags.bits = newOrig.entityFlags.bits;
                 // lastModified = newOrig.lastModified;
             }
@@ -246,7 +246,7 @@ public abstract class Entity<K extends Serializable>
     }
 
     @Transient
-    protected EntityFlags getEntityFlags() {
+    public EntityFlags getEntityFlags() {
         return entityFlags;
     }
 
@@ -551,7 +551,7 @@ public abstract class Entity<K extends Serializable>
 
     @Transient
     boolean isAnyLocked() {
-        EntityFlags ef = EntityAccessor.getFlags(this);
+        EntityFlags ef = getEntityFlags();
         int lockFlags = ef.bits & (EntityFlags.USER_LOCK | EntityFlags.LOCKED);
         if (lockFlags != 0)
             return true;
