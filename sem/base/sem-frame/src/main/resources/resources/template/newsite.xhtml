@@ -89,7 +89,7 @@
     <h:panelGroup id="pageFooter" layout="block">
         <ui:insert name="pageFooter">
             <div class="site-page-footer">
-                <div style=" padding: 0.5em;">
+                <div style=" padding: 0.5em;" title="Effective-Implication: #{sessionUser.imIdSet}">
                     ■ 当前用户：
                     <ui:repeat var="node" value="#{sessionPerson.chain}">
                         <span>#{node}</span>
