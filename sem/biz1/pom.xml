@@ -15,7 +15,7 @@
         <module>sem-chain</module>
         <module>sem-chance</module>
         <module>sem-contract</module>
-        <module>sem-make</module>
+        <module>sem-makebiz</module>
         <module>sem-pricing</module>
         <module>sem-purchase</module>
         <module>sem-salary</module>
