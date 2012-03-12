@@ -40,15 +40,15 @@ public class StockLocationAdminBean
     }
 
     @Override
-    protected void save(int saveFlags, String hint) {
+    protected boolean postValidate(List<?> dtos)
+            throws Exception {
         if (selectedWarehouseId == -1) {
             uiLogger.warn("请先选择需要添加库位的仓库");
-            return;
+            return false;
         }
         StockLocationDto location = getOpenedObject();
         location.setWarehouse(getSelectedWarehouse());
-        // continue save.
-        super.save(saveFlags, hint);
+        return true;
     }
 
     @Override
