@@ -82,7 +82,7 @@ public class R_ACE
         permission = o.permission.clone();
     }
 
-    @NaturalId
+    @NaturalId(mutable = true)
     @Column(name = "qName", length = 100, nullable = false)
     public String getQualifiedName() {
         return qualifiedName;
@@ -114,7 +114,7 @@ public class R_ACE
         this.qualifiedName = ResourceRegistry.qualify(resource);
     }
 
-    @NaturalId
+    @NaturalId(mutable = true)
     @ManyToOne(optional = false/* , fetch = FetchType.LAZY */)
     public Principal getPrincipal() {
         return principal;

@@ -74,7 +74,7 @@ public class MakeOrderItem
         this.parent = parent;
     }
 
-    @NaturalId
+    @NaturalId(mutable = true)
     @ManyToOne
     public Part getPart() {
         return part;
