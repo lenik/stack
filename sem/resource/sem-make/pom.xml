@@ -2,22 +2,22 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.bee32.sem</groupId>
-        <artifactId>biz1</artifactId>
+        <artifactId>resource</artifactId>
         <version>0.3.2-SNAPSHOT</version>
     </parent>
-    <artifactId>sem-makebiz</artifactId>
+    <artifactId>sem-make</artifactId>
     <version>0.3.2-SNAPSHOT</version>
     <dependencies>
         <dependency>
             <groupId>com.bee32.sem</groupId>
-            <artifactId>sem-bom</artifactId>
+            <artifactId>sem-module</artifactId>
             <version>0.3.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.bee32.sem</groupId>
-            <artifactId>sem-chance</artifactId>
+            <artifactId>sem-inventory</artifactId>
             <version>0.3.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
-    <name>SEM :: Biz1 :: Makebiz</name>
+    <name>SEM :: Resource :: Make</name>
 </project>

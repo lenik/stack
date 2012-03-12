@@ -12,14 +12,13 @@ base/               基本类型
 
 process/            过程支持
     sem-process
-    sem-techproc
     sem-workflow
 
 resource/           资源
     sem-world
     sem-asset
     sem-inventory
-    sem-bom
+    sem-make
 
 support/            （偏低层）支持
     sem-track
@@ -30,7 +29,7 @@ biz1/                日常业务
     sem-contract
     sem-pricing
     sem-chain
-    sem-order
+    sem-makebiz
     sem-salary
     sem-purchase
 
