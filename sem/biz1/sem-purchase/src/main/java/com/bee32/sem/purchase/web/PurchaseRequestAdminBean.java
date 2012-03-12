@@ -2,24 +2,20 @@ package com.bee32.sem.purchase.web;
 
 import java.util.List;
 
-import com.bee32.plover.arch.util.dto.Fmask;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.orm.util.Identities;
-import com.bee32.plover.orm.util.RefsDiff;
 import com.bee32.plover.orm.validation.RequiredId;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.web.business.StockDictsBean;
 import com.bee32.sem.make.dto.MaterialPlanDto;
-import com.bee32.sem.make.entity.MaterialPlan;
 import com.bee32.sem.misc.ScrollEntityViewBean;
-import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.purchase.dto.PurchaseRequestDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestItemDto;
 import com.bee32.sem.purchase.dto.PurchaseTakeInDto;
 import com.bee32.sem.purchase.entity.PurchaseRequest;
 import com.bee32.sem.purchase.service.PurchaseService;
+import com.bee32.sem.purchase.util.PurchaseCriteria;
 
 @ForEntity(PurchaseRequest.class)
 public class PurchaseRequestAdminBean
@@ -48,44 +44,7 @@ public class PurchaseRequestAdminBean
 
     @Override
     protected Integer getFmaskOverride(int saveFlags) {
-        return Fmask.F_MORE & ~PurchaseRequestDto.PLANS;
-    }
-
-    /** 更新物料：设置关联 */
-    @Override
-    protected boolean preUpdate(UnmarshalMap uMap)
-            throws Exception {
-        UnmarshalMap dPlans = uMap.deltaMap("plans");
-        dPlans.setLabel("关联的物料计划");
-        dPlans.setEntityClass(MaterialPlan.class);
-
-        for (PurchaseRequest _purchaseRequest : uMap.<PurchaseRequest> entitySet()) {
-            PurchaseRequestDto purchaseRequest = uMap.getSourceDto(_purchaseRequest);
-            RefsDiff diff = Identities.compare(_purchaseRequest.getPlans(), purchaseRequest.getPlans());
-            for (MaterialPlan _detached : diff.<MaterialPlan> leftOnly()) {
-                _detached.setPurchaseRequest(null);
-                dPlans.put(_detached, null);
-            }
-            for (MaterialPlanDto attached : diff.<MaterialPlanDto> rightOnly()) {
-                MaterialPlan _attached = attached.unmarshal();
-                _attached.setPurchaseRequest(_purchaseRequest);
-                dPlans.put(_attached, attached);
-            }
-        }
-        return true;
-    }
-
-    /** 更新物料计划：取消关联 */
-    @Override
-    protected boolean preDelete(UnmarshalMap uMap)
-            throws Exception {
-        for (PurchaseRequest request : uMap.<PurchaseRequest> entitySet()) {
-            List<MaterialPlan> plans = request.getPlans();
-            for (MaterialPlan plan : plans)
-                plan.setPurchaseRequest(null);
-            ctx.data.access(MaterialPlan.class).saveOrUpdateAll(plans);
-        }
-        return true;
+        return super.getFmaskOverride(saveFlags);
     }
 
     /**
@@ -94,7 +53,10 @@ public class PurchaseRequestAdminBean
     public void setMaterialPlanToAttach(MaterialPlanDto plan) {
         if (plan == null)
             return;
-        if (plan.getPurchaseRequest().getId() != null) {
+
+        List<PurchaseRequest> boundRequests = ctx.data.access(PurchaseRequest.class).list(
+                PurchaseCriteria.boundRequest(plan.getId()));
+        if (!boundRequests.isEmpty()) {
             uiLogger.error("选中的物料计划已经有对应的采购请求");
             return;
         }

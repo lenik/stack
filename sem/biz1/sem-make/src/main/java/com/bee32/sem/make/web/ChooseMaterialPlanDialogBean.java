@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.criteria.hibernate.IsNull;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.make.dto.MaterialPlanDto;
 import com.bee32.sem.make.dto.MaterialPlanItemDto;
@@ -28,8 +27,8 @@ public class ChooseMaterialPlanDialogBean
 
     @Override
     protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
-        if (pending)
-            elements.add(new IsNull("purchaseRequest.id"));
+        // if (pending)
+        // elements.add(new IsNull("purchaseRequest.id"));
     }
 
     public boolean isPending() {

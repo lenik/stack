@@ -7,15 +7,12 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.ox1.color.MomentIntervalDto;
 import com.bee32.sem.make.dto.MaterialPlanDto;
-import com.bee32.sem.process.verify.builtin.dto.SingleVerifierWithNumberSupportDto;
-import com.bee32.sem.process.verify.dto.IVerifiableDto;
+import com.bee32.sem.process.base.ProcessEntityDto;
 import com.bee32.sem.purchase.entity.PurchaseRequest;
 
 public class PurchaseRequestDto
-        extends MomentIntervalDto<PurchaseRequest>
-        implements IVerifiableDto {
+        extends ProcessEntityDto<PurchaseRequest> {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,8 +25,6 @@ public class PurchaseRequestDto
 
     List<PurchaseTakeInDto> takeIns;
 
-    SingleVerifierWithNumberSupportDto singleVerifierWithNumberSupport;
-
     @Override
     protected void _marshal(PurchaseRequest source) {
         if (selection.contains(ITEMS))
@@ -38,7 +33,7 @@ public class PurchaseRequestDto
             items = Collections.emptyList();
 
         if (selection.contains(PLANS))
-            plans = marshalList(MaterialPlanDto.class, source.getPlans());
+            plans = mrefList(MaterialPlanDto.class, source.getPlans());
         else
             plans = Collections.emptyList();
 
@@ -46,8 +41,6 @@ public class PurchaseRequestDto
             takeIns = mrefList(PurchaseTakeInDto.class, PurchaseTakeInDto.ORDER_ITEMS, source.getTakeIns());
         else
             takeIns = Collections.emptyList();
-
-        singleVerifierWithNumberSupport = marshal(SingleVerifierWithNumberSupportDto.class, source.getVerifyContext());
     }
 
     @Override
@@ -58,9 +51,8 @@ public class PurchaseRequestDto
         if (selection.contains(PLANS))
             mergeList(target, "plans", plans);
 
-        mergeList(target, "takeIns", takeIns);
-
-        merge(target, "verifyContext", singleVerifierWithNumberSupport);
+        if (selection.contains(TAKE_INS))
+            mergeList(target, "takeIns", takeIns);
     }
 
     @Override
@@ -121,10 +113,8 @@ public class PurchaseRequestDto
     public void addPlan(MaterialPlanDto plan) {
         if (plan == null)
             throw new NullPointerException("plan");
-        if (!plans.contains(plan)) {
+        if (!plans.contains(plan))
             plans.add(plan);
-            plan.setPurchaseRequest(this);
-        }
     }
 
     public List<PurchaseTakeInDto> getTakeIns() {
@@ -153,12 +143,4 @@ public class PurchaseRequestDto
         // orderHolder.detach();
     }
 
-    @Override
-    public SingleVerifierWithNumberSupportDto getVerifyContext() {
-        return singleVerifierWithNumberSupport;
-    }
-
-    public void setVerifyContext(SingleVerifierWithNumberSupportDto singleVerifierWithNumberSupport) {
-        this.singleVerifierWithNumberSupport = singleVerifierWithNumberSupport;
-    }
 }

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
@@ -45,12 +47,17 @@ public class PurchaseRequest
         takeIns = CloneUtils.cloneList(o.takeIns);
     }
 
-    @OneToMany(mappedBy = "purchaseRequest")
+    @OneToMany
+    @JoinTable(name = "PurchaseRequestPlan",//
+    /*            */joinColumns = @JoinColumn(name = "request"), //
+    /*            */inverseJoinColumns = @JoinColumn(name = "plan"))
     public List<MaterialPlan> getPlans() {
         return plans;
     }
 
     public void setPlans(List<MaterialPlan> plans) {
+        if (plans == null)
+            throw new NullPointerException("plans");
         this.plans = plans;
     }
 
