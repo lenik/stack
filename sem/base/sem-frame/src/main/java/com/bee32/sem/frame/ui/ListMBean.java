@@ -189,14 +189,22 @@ public abstract class ListMBean<T>
         return editing;
     }
 
+    public void dup() {
+        if (openedObject == null)
+            return;
+        List<T> list = getList();
+        T dup = _copyObject(openedObject);
+        list.add(dup);
+    }
+
     public void apply() {
         if (openedObject == null)
             return;
         List<T> list = getList();
-        if (openedIndex == -1) {
+        if (openedIndex == -1) { // create
             openedIndex = list.size();
             list.add(copyObject(openedObject));
-        } else {
+        } else { // edit
             list.set(openedIndex, copyObject(openedObject));
         }
         selectedIndex = openedIndex;

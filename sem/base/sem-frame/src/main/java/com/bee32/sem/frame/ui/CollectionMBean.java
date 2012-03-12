@@ -97,6 +97,10 @@ public abstract class CollectionMBean<T>
     protected T copyObject(T value) {
         if (!copyMode)
             return value;
+        return _copyObject(value);
+    }
+
+    protected T _copyObject(T value) {
         // System.out.println("Copy: " + value);
         if (value == null)
             return null;

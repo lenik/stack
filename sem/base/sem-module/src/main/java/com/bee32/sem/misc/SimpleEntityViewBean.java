@@ -463,12 +463,20 @@ public abstract class SimpleEntityViewBean
     }
 
     @Operation
-    public final void save() {
-        save(saveFlags, null);
+    public final boolean saveDup() {
+        if (!save())
+            return false;
+        showCreateForm();
+        return true;
     }
 
-    protected final void save(boolean createOrUpdate) {
-        save(createOrUpdate ? SAVE_NOEXIST : SAVE_MUSTEXIST, null);
+    @Operation
+    public final boolean save() {
+        return save(saveFlags, null);
+    }
+
+    protected final boolean save(boolean createOrUpdate) {
+        return save(createOrUpdate ? SAVE_NOEXIST : SAVE_MUSTEXIST, null);
     }
 
     protected Integer getFmaskOverride(int saveFlags) {
@@ -476,7 +484,7 @@ public abstract class SimpleEntityViewBean
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    protected void save(int saveFlags, String hint) {
+    protected boolean save(int saveFlags, String hint) {
         checkSaveFlags(saveFlags);
 
         if (hint == null)
@@ -487,16 +495,16 @@ public abstract class SimpleEntityViewBean
 
         if (getOpenedObjects().isEmpty()) {
             uiLogger.error("没有需要" + hint + "的对象!");
-            return;
+            return false;
         }
 
         List<EntityDto<?, ?>> dtos = getOpenedObjects();
         try {
             for (SevbFriend friend : sortedFriends)
                 if (!friend.postValidate(dtos))
-                    return;
+                    return false;
             if (!postValidate(dtos))
-                return;
+                return false;
         } catch (Exception e) {
             uiLogger.error("参数整理失败", e);
         }
@@ -506,7 +514,7 @@ public abstract class SimpleEntityViewBean
             uMap = unmarshalDtos(dtos, getFmaskOverride(saveFlags), false/* result not-null */);
         } catch (Exception e) {
             uiLogger.error("反编列失败", e);
-            return;
+            return false;
         }
 
         User me = SessionUser.getInstance().getInternalUserOpt();
@@ -540,19 +548,19 @@ public abstract class SimpleEntityViewBean
         }
 
         if (!checkLockList(lockedList, hint))
-            return;
+            return false;
 
         try {
             if (!__preUpdate(uMap))
-                return;
+                return false;
             for (SevbFriend friend : sortedFriends)
                 if (!friend.preUpdate(uMap))
-                    return;
+                    return false;
             if (!preUpdate(uMap))
-                return;
+                return false;
         } catch (Exception e) {
             uiLogger.error("预处理失败", e);
-            return;
+            return false;
         }
 
         Set<Entity<?>> entities = uMap.keySet();
@@ -566,7 +574,7 @@ public abstract class SimpleEntityViewBean
                 ctx.data.access(entityClass).saveOrUpdateAll(entities);
         } catch (Exception e) {
             uiLogger.error(hint + "失败", e);
-            return;
+            return false;
         }
 
         if (isCreating()) // write back generated-id(s).
@@ -583,7 +591,7 @@ public abstract class SimpleEntityViewBean
                 ctx.data.access((Class) subEntityClass).saveOrUpdateAll(subEntities);
             } catch (Exception e) {
                 uiLogger.error(hint + subMap.getLabel() + "失败。", e);
-                return;
+                return false;
             }
         }
 
@@ -592,7 +600,7 @@ public abstract class SimpleEntityViewBean
                 friend.saveOpenedObject(saveFlags, uMap);
             } catch (Exception e) {
                 uiLogger.error(hint + "友元失败" + friend, e);
-                return;
+                return false;
             }
         }
 
@@ -615,6 +623,7 @@ public abstract class SimpleEntityViewBean
             uiLogger.info(hint + "成功");
 
         showIndex();
+        return true;
     }
 
     @Operation
