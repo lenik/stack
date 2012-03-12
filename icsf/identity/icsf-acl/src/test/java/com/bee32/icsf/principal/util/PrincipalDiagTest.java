@@ -22,15 +22,15 @@ public class PrincipalDiagTest {
     @Test
     public void testNoLoop1()
             throws PrincipalCheckException {
-        User u1 = new User("u1");
+        User u1 = new User("u1", "User 1");
         PrincipalDiag.checkDeadLoop(u1);
     }
 
     @Test
     public void testNoLoop2_UG()
             throws PrincipalCheckException {
-        User u1 = new User("u1");
-        Group g1 = new Group("g1", null);
+        User u1 = new User("u1", "User 1");
+        Group g1 = new Group("g1", "Group 1");
         u1.addAssignedGroup(g1);
         PrincipalDiag.checkDeadLoop(u1);
     }

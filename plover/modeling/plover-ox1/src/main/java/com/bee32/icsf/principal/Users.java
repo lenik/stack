@@ -10,8 +10,8 @@ public class Users
     public Role userRole = new Role("userRole", "Registered Users");
     public Role guestRole = new Role("guestRole", "Guest Users");
 
-    public User admin = new User("admin");
-    public User guest = new User("guest");
+    public User admin = new User("admin", "系统管理员");
+    public User guest = new User("guest", "来宾帐户");
 
     @Override
     public int getPriority() {

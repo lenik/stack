@@ -14,14 +14,14 @@ import com.bee32.plover.orm.util.DataPartialContext;
 public class IcsfPrincipalSamples
         extends NormalSamples {
 
-    public final Group solaRobots = new Group("sola", PREFIX + "Sola Robots Club");
-    public final Group sunCorp = new Group("sun-corp", PREFIX + "Sun Corp");
+    public final Group solaRobots = new Group("sola", PREFIX + "Sola 机器人俱乐部");
+    public final Group sunCorp = new Group("sun-corp", PREFIX + "太阳微电子公司");
 
-    public final User eva = new User("Eva");
-    public final User wallE = new User("Wall-E");
-    public final User alice = new User("Alice");
-    public final User tom = new User("Tom");
-    public final User kate = new User("Kate");
+    public final User eva = new User("Eva", PREFIX + "伊娃");
+    public final User wallE = new User("Wall-E", PREFIX + "瓦利");
+    public final User alice = new User("Alice", PREFIX + "爱丽丝");
+    public final User tom = new User("Tom", PREFIX + "汤姆");
+    public final User kate = new User("Kate", PREFIX + "凯特");
 
     Users users = predefined(Users.class);
 

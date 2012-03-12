@@ -37,8 +37,9 @@ public class User
     public User() {
     }
 
-    public User(String name) {
+    public User(String name, String fullName) {
         super(name);
+        setFullName(fullName);
     }
 
     public User(String name, Group primaryGroup, Role primaryRole) {

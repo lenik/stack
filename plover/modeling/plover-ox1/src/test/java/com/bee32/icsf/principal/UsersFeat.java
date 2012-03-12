@@ -48,9 +48,9 @@ public class UsersFeat
         System.out.println("Alice.id = " + principals.alice.getId());
     }
 
-    Group g1 = new Group("g1");
-    User u1 = new User("u1");
-    User u2 = new User("u2");
+    Group g1 = new Group("g1", "Group 1");
+    User u1 = new User("u1", "User 1");
+    User u2 = new User("u2", "User 2");
 
     @Transactional
     public void run_0() {

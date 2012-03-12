@@ -138,8 +138,7 @@ public class Person
         if (loginName == null)
             loginName = this.name;
 
-        User user = new User(loginName);
-        user.setFullName(fullName);
+        User user = new User(loginName, fullName);
         List<Contact> contacts = getContacts();
         if (!contacts.isEmpty()) {
             Contact firstContact = contacts.get(0);

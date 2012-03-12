@@ -3,8 +3,6 @@ package com.bee32.icsf.principal;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import com.bee32.icsf.principal.User;
-
 @Entity
 @DiscriminatorValue("U1")
 public class SimpleUser
@@ -21,7 +19,7 @@ public class SimpleUser
     }
 
     public SimpleUser(String name) {
-        super(name);
+        super(name, null);
     }
 
 }

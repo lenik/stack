@@ -14,8 +14,8 @@ public class PrincipalImFeat
         extends WiredDaoFeat<PrincipalImFeat> {
 
     Group g1 = new Group("group1");
-    User u1 = new User("user1");
-    Role r1 = new Role("role1");
+    User u1 = new User("user1", "User 1");
+    Role r1 = new Role("role1", "Role 1");
 
     public void clean() {
         ctx.data.access(Principal.class).deleteAll();
