@@ -153,7 +153,7 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:chooseOrgDialog id="c_party" header="选择机会客户" var="chooseCustomerDialog" target="${partyObj.party}"
+        <sem:choosePartyDialog id="c_party" header="选择机会客户" var="chooseCustomerDialog" target="${partyObj.party}"
             update=":editDialog:form:tv:partiesView:editForm:body" />
         <sem:chooseChanceActionDialog id="c_action" header="选择要关联的行动日志" target="${bean.actionsMBean.addition}"
             update=":editDialog:form:tv:actionsIndexView:indexForm:body" />
