@@ -22,6 +22,14 @@
 
     <ui:define name="scripts.0.primefaces">
         <h:outputScript library="frame" name="primefaces-fix.js" target="head" />
+        <p:dialog header="正在处理中……" id="waitbox" widgetVar="waitbox" modal="true">
+            <div class="ui-dialog-form">
+                <p align="center">
+                    服务正在处理中，请耐心等待……
+                    （如果本窗口长时间没有响应，请刷新页面并再试。）
+                </p>
+            </div>
+        </p:dialog>
     </ui:define>
 
 </ui:composition>

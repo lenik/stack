@@ -136,11 +136,18 @@
                                     <cc:insertRawFacet name="edit-buttons" />
                                 </td>
                                 <td align="right">
+                                    <p:commandButton id="dup" value="${'创建副本'.concat(smooth ? '*' : '')}"
+                                        disabled="${mbean.openedObject == null or cc.attrs.readonly}" action="${mbean.dup}"
+                                        onclick="waitbox.show()" oncomplete="waitbox.hide()"
+                                        update="${cc.attrs.indexView}:indexForm:body, apply-validated">
+                                        <f:setPropertyActionListener target="${mbean.copyMode}"
+                                            value="${cc.attrs.copy}" />
+                                    </p:commandButton>
                                     <p:commandButton id="apply-validated"
                                         value="${editPopup ? '确定' : (mbean.openedIndex == -1 ? '添加' : '应用').concat(smooth ? '*' : '')}"
                                         title="${(not editPopup) and smooth ? '在快速编辑模式下，当前修改的内容可能已经被自动保存。' : ''}"
                                         disabled="${mbean.openedObject == null or cc.attrs.readonly}" action="${mbean.apply}"
-                                        oncomplete="${editPopup ? cc.attrs.editDialogVar.concat('.hideValidated(args)') : ''}"
+                                        oncomplete="waitbox.hide(); ${editPopup ? cc.attrs.editDialogVar.concat('.hideValidated(args)') : ''}"
                                         update="${cc.attrs.indexView}:indexForm:body, apply-validated">
                                         <f:setPropertyActionListener target="${mbean.copyMode}"
                                             value="${cc.attrs.copy}" />
