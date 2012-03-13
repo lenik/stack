@@ -172,11 +172,11 @@
                     showOn="button" disabled="${true}" label="结束时间" />
 
                 <h:outputText value="日志类型:" />
-                <p:selectOneButton id="actionStyle" value="${item.plan}" style="width: 10em;"
+                <p:selectOneRadio id="actionStyle" value="${item.plan}" style="width: 10em;"
                     disabled="${true}" label="日志类型">
                     <f:selectItem itemLabel="计划" itemValue="${true}" />
                     <f:selectItem itemLabel="日志" itemValue="${false}" />
-                </p:selectOneButton>
+                </p:selectOneRadio>
 
                 <h:outputText value="洽谈方式:" />
                 <p:selectOneMenu id="style" value="${item.style.displayId}" disabled="${true}" label="洽谈方式">
