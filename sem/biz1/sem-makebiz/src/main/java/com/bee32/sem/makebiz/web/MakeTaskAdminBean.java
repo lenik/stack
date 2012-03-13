@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.sem.frame.ui.ListMBean;
+import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.make.entity.Part;
 import com.bee32.sem.makebiz.dto.MakeOrderDto;
 import com.bee32.sem.makebiz.dto.MakeTaskDto;
@@ -36,11 +37,11 @@ public class MakeTaskAdminBean
             if (!order.getTasks().contains(_task)) {
                 order.getTasks().add(_task);
             }
-            Map<Part, BigDecimal> overloadParts = order.getOverloadParts();
+            Map<Material, BigDecimal> overloadParts = order.getOverloadParts();
             if (!overloadParts.isEmpty()) {
                 StringBuilder message = new StringBuilder();
-                for (Entry<Part, BigDecimal> entry : overloadParts.entrySet()) {
-                    message.append(entry.getKey().getTarget().getLabel());
+                for (Entry<Material, BigDecimal> entry : overloadParts.entrySet()) {
+                    message.append(entry.getKey().getLabel());
                     message.append(" 超出 ");
                     message.append(entry.getValue());
                     message.append("; ");

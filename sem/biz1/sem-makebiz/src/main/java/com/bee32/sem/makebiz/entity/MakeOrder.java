@@ -22,7 +22,7 @@ import com.bee32.plover.arch.bean.BeanPropertyAccessor;
 import com.bee32.plover.arch.bean.IPropertyAccessor;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.chance.entity.Chance;
-import com.bee32.sem.make.entity.Part;
+import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;
@@ -145,37 +145,33 @@ public class MakeOrder
      * @aka taskItemListToMap
      */
     @Transient
-    Map<Part, BigDecimal> getArrangedPartSum() {
-        Map<Part, BigDecimal> sumMap = new HashMap<Part, BigDecimal>();
+    Map<Material, BigDecimal> getArrangedPartSum() {
+        Map<Material, BigDecimal> sumMap = new HashMap<Material, BigDecimal>();
         //计算已经在task中按排的量
         for (MakeTask task : tasks) {
             for (MakeTaskItem taskItem : task.getItems()) {
-                BigDecimal sum = sumMap.get(taskItem.part);
+                BigDecimal sum = sumMap.get(taskItem.part.getTarget());
                 if (sum == null) {
-                    sumMap.put(taskItem.part, taskItem.getQuantity());
+                    sumMap.put(taskItem.part.getTarget(), taskItem.getQuantity());
                 } else {
                     sum = sum.add(taskItem.getQuantity());
-                    sumMap.put(taskItem.part, sum);
+                    sumMap.put(taskItem.part.getTarget(), sum);
                 }
             }
         }
 
         //计算已经在plan中按排的量
-//        for (MaterialPlan plan : plans) {
-//            for (MaterialPlanItem planItem : plan.getItems()) {
-//                Part part =
-//
-//                planItem.material
-//
-//                BigDecimal sum = sumMap.get(planItem.part);
-//                if (sum == null) {
-//                    sumMap.put(taskItem.part, taskItem.getQuantity());
-//                } else {
-//                    sum = sum.add(taskItem.getQuantity());
-//                    sumMap.put(taskItem.part, sum);
-//                }
-//            }
-//        }
+        for (MaterialPlan plan : plans) {
+            for (MaterialPlanItem planItem : plan.getItems()) {
+                BigDecimal sum = sumMap.get(planItem.getMaterial());
+                if (sum == null) {
+                    sumMap.put(planItem.getMaterial(), planItem.getQuantity());
+                } else {
+                    sum = sum.add(planItem.getQuantity());
+                    sumMap.put(planItem.getMaterial(), sum);
+                }
+            }
+        }
 
         return sumMap;
     }
@@ -186,16 +182,16 @@ public class MakeOrder
      * @aka deliveryNoteItemListToMap
      */
     @Transient
-    Map<Part, BigDecimal> getDeliveriedPartSum() {
-        Map<Part, BigDecimal> sumMap = new HashMap<Part, BigDecimal>();
+    Map<Material, BigDecimal> getDeliveriedPartSum() {
+        Map<Material, BigDecimal> sumMap = new HashMap<Material, BigDecimal>();
         for (DeliveryNote note : deliveryNotes) {
             for (DeliveryNoteItem deliveryNoteItem : note.getItems()) {
-                BigDecimal sum = sumMap.get(deliveryNoteItem.part);
+                BigDecimal sum = sumMap.get(deliveryNoteItem.part.getTarget());
                 if (sum == null) {
-                    sumMap.put(deliveryNoteItem.part, deliveryNoteItem.getQuantity());
+                    sumMap.put(deliveryNoteItem.part.getTarget(), deliveryNoteItem.getQuantity());
                 } else {
                     sum = sum.add(deliveryNoteItem.getQuantity());
-                    sumMap.put(deliveryNoteItem.part, sum);
+                    sumMap.put(deliveryNoteItem.part.getTarget(), sum);
                 }
             }
         }
@@ -211,10 +207,10 @@ public class MakeOrder
     @Transient
     public List<MakeOrderItem> getNotArrangedItems() {
         List<MakeOrderItem> result = new ArrayList<MakeOrderItem>();
-        Map<Part, BigDecimal> sumMap = getArrangedPartSum();
+        Map<Material, BigDecimal> sumMap = getArrangedPartSum();
 
         for (MakeOrderItem orderItem : items) {
-            BigDecimal sum = sumMap.get(orderItem.getPart());
+            BigDecimal sum = sumMap.get(orderItem.getPart().getTarget());
             // 尚没有对应的生产任务，生产全部
             if (sum == null) {
                 result.add(orderItem);
@@ -245,10 +241,10 @@ public class MakeOrder
     @Transient
     public List<MakeOrderItem> getNotDeliveriedItems() {
         List<MakeOrderItem> result = new ArrayList<MakeOrderItem>();
-        Map<Part, BigDecimal> sumMap = getDeliveriedPartSum();
+        Map<Material, BigDecimal> sumMap = getDeliveriedPartSum();
 
         for (MakeOrderItem orderItem : items) {
-            BigDecimal sum = sumMap.get(orderItem.getPart());
+            BigDecimal sum = sumMap.get(orderItem.getPart().getTarget());
             // 尚没有对应的送货单，安排全部
             if (sum == null) {
                 result.add(orderItem);
@@ -276,16 +272,16 @@ public class MakeOrder
      * @aka checkIfTaskQuantityFitOrder
      */
     @Transient
-    public Map<Part, BigDecimal> getOverloadParts() {
-        Map<Part, BigDecimal> overloadParts = new HashMap<Part, BigDecimal>();
-        Map<Part, BigDecimal> sumMap = getArrangedPartSum();
+    public Map<Material, BigDecimal> getOverloadParts() {
+        Map<Material, BigDecimal> overloadParts = new HashMap<Material, BigDecimal>();
+        Map<Material, BigDecimal> sumMap = getArrangedPartSum();
         for (MakeOrderItem orderItem : items) {
-            BigDecimal sum = sumMap.get(orderItem.getPart());
+            BigDecimal sum = sumMap.get(orderItem.getPart().getTarget());
             if (sum != null) {
                 if (sum.compareTo(orderItem.getQuantity()) > 0) {
                     BigDecimal overloaded = sum.subtract(orderItem.getQuantity());
                     // 生产任务中的数量大于订单中的数量
-                    overloadParts.put(orderItem.getPart(), overloaded);
+                    overloadParts.put(orderItem.getPart().getTarget(), overloaded);
                 }
             }
         }
@@ -298,16 +294,16 @@ public class MakeOrder
      * @aka checkIfDeliveryQuantityFitOrder
      */
     @Transient
-    public Map<Part, BigDecimal> getOverloadPartsOfDelivery() {
-        Map<Part, BigDecimal> overloadPartsDelivery = new HashMap<Part, BigDecimal>();
-        Map<Part, BigDecimal> sumMap = getDeliveriedPartSum();
+    public Map<Material, BigDecimal> getOverloadPartsOfDelivery() {
+        Map<Material, BigDecimal> overloadPartsDelivery = new HashMap<Material, BigDecimal>();
+        Map<Material, BigDecimal> sumMap = getDeliveriedPartSum();
         for (MakeOrderItem orderItem : items) {
-            BigDecimal sum = sumMap.get(orderItem.getPart());
+            BigDecimal sum = sumMap.get(orderItem.getPart().getTarget());
             if (sum != null) {
                 if (sum.compareTo(orderItem.getQuantity()) > 0) {
                     BigDecimal overloaded = sum.subtract(orderItem.getQuantity());
                     // 送货单中的数量大于订单中的数量
-                    overloadPartsDelivery.put(orderItem.getPart(), overloaded);
+                    overloadPartsDelivery.put(orderItem.getPart().getTarget(), overloaded);
                 }
             }
         }

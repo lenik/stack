@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
@@ -17,7 +16,6 @@ import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.inventory.entity.Material;
-import com.bee32.sem.make.entity.Part;
 import com.bee32.sem.people.entity.Party;
 
 /**

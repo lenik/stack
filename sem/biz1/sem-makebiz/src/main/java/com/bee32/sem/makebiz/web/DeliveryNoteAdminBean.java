@@ -12,8 +12,8 @@ import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.validation.RequiredId;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
+import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.web.business.StockDictsBean;
-import com.bee32.sem.make.entity.Part;
 import com.bee32.sem.makebiz.dto.DeliveryNoteDto;
 import com.bee32.sem.makebiz.dto.DeliveryNoteItemDto;
 import com.bee32.sem.makebiz.dto.DeliveryNoteTakeOutDto;
@@ -65,11 +65,11 @@ public class DeliveryNoteAdminBean
             if (!order.getDeliveryNotes().contains(_note)) {
                 order.getDeliveryNotes().add(_note);
             }
-            Map<Part, BigDecimal> overloadPartsOfDelivery = order.getOverloadPartsOfDelivery();
+            Map<Material, BigDecimal> overloadPartsOfDelivery = order.getOverloadPartsOfDelivery();
             if (!overloadPartsOfDelivery.isEmpty()) {
                 StringBuilder message = new StringBuilder();
-                for (Entry<Part, BigDecimal> entry : overloadPartsOfDelivery.entrySet()) {
-                    message.append(entry.getKey().getTarget().getLabel());
+                for (Entry<Material, BigDecimal> entry : overloadPartsOfDelivery.entrySet()) {
+                    message.append(entry.getKey().getLabel());
                     message.append(" 超出 ");
                     message.append(entry.getValue());
                     message.append("; ");
