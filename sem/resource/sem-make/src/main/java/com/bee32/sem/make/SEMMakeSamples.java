@@ -10,7 +10,7 @@ import com.bee32.plover.orm.sample.NormalSamples;
 import com.bee32.sem.inventory.SEMInventorySamples;
 import com.bee32.sem.make.entity.Part;
 
-public class SEMBomSamples
+public class SEMMakeSamples
         extends NormalSamples {
 
     public final Part p_light_A = new Part();

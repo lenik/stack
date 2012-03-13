@@ -6,13 +6,13 @@ import com.bee32.sem.frame.menu.MenuContribution;
 import com.bee32.sem.frame.menu.MenuNode;
 import com.bee32.sem.inventory.SEMInventoryMenu;
 
-public class SEMBomMenu
+public class SEMMakeMenu
         extends MenuContribution {
 
     static Location DICT = WEB_APP.join(CommonDictController.PREFIX_);
 
     static Location _(String path) {
-        return WEB_APP.join(SEMBomModule.PREFIX_).join(path);
+        return WEB_APP.join(SEMMakeModule.PREFIX_).join(path);
     }
 
     static MenuNode bomadmin = entry(SEMInventoryMenu.MATERIAL, 30, "bomadmin", _("part/"));

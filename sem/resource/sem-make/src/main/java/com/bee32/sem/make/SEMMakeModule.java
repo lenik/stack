@@ -5,7 +5,7 @@ import com.bee32.sem.SEMOids;
 import com.bee32.sem.module.EnterpriseModule;
 
 @Oid({ 3, 15, SEMOids.Resource, SEMOids.resource.Bom })
-public class SEMBomModule
+public class SEMMakeModule
         extends EnterpriseModule {
 
     public static final String PREFIX = "/3/15/3/4";

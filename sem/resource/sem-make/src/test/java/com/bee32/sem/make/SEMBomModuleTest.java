@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Locale;
 
 import com.bee32.plover.orm.unit.Using;
-import com.bee32.sem.make.SEMBomModule;
+import com.bee32.sem.make.SEMMakeModule;
 import com.bee32.sem.make.SEMMakeUnit;
 import com.bee32.sem.test.SEMTestCase;
 
@@ -24,7 +24,7 @@ public class SEMBomModuleTest
     public static void main(String[] args)
             throws IOException {
         new SEMBomModuleTest().browseAndWait(//
-                SEMBomModule.PREFIX + "/part");
+                SEMMakeModule.PREFIX + "/part");
     }
 
 }
