@@ -46,10 +46,10 @@
                 showOn="button" label="结束时间" />
 
             <h:outputLabel for="actionStyle" value="日志类型:" />
-            <p:selectOneButton id="actionStyle" value="${obj.plan}" label="日志类型">
-                <f:selectItem itemLabel="计划" itemValue="${true}" />
-                <f:selectItem itemLabel="日志" itemValue="${false}" />
-            </p:selectOneButton>
+            <p:selectOneRadio id="actionStyle" value="${obj.plan}" label="日志类型">
+                <f:selectItem itemLabel="计划" itemValue="true" />
+                <f:selectItem itemLabel="日志" itemValue="false" />
+            </p:selectOneRadio>
 
             <h:outputLabel for="style" value="洽谈方式:" />
             <p:selectOneMenu id="style" value="${obj.style.id_OE}" label="洽谈方式">
