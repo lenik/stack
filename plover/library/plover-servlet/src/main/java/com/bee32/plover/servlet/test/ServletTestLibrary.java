@@ -283,7 +283,7 @@ public class ServletTestLibrary
     }
 
     static enum Command {
-        HELP, SHOW_LOCATION, BROWSE, QUIT
+        HELP, SHOW_LOCATION, BROWSE, QUIT_SAFE, QUIT
     }
 
     static Map<String, Command> commands = new TreeMap<String, Command>();
@@ -293,7 +293,8 @@ public class ServletTestLibrary
         commands.put("?", Command.HELP);
         commands.put("l", Command.SHOW_LOCATION);
         commands.put("b", Command.BROWSE);
-        commands.put("q", Command.QUIT);
+        commands.put("q", Command.QUIT_SAFE);
+        commands.put("qq", Command.QUIT);
     }
 
     public void mainLoop()
@@ -336,6 +337,10 @@ public class ServletTestLibrary
                         key = "(empty)";
                     System.out.println("    " + key + ": " + cmd.getValue());
                 }
+                break;
+
+            case QUIT_SAFE:
+                QuitListeners.getInstance().quit();
                 break;
 
             case QUIT:
