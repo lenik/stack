@@ -22,14 +22,20 @@
 
     <ui:define name="scripts.0.primefaces">
         <h:outputScript library="frame" name="primefaces-fix.js" target="head" />
+
         <p:dialog header="正在处理中……" id="waitbox" widgetVar="waitbox" modal="true">
             <div class="ui-dialog-form">
-                <p align="center">
-                    服务正在处理中，请耐心等待……
-                    （如果本窗口长时间没有响应，请刷新页面并再试。）
-                </p>
+                <p align="center" style="font-size: +1">服务正在处理中，请耐心等待……</p>
+                <p align="center">（如果本窗口长时间没有响应，请刷新页面并再试。）</p>
             </div>
         </p:dialog>
+        <ui:remove>
+            <p:push onmessage="bcastSystem" channel="system" />
+            <p:push onmessage="bcastUserMail" channel="mail" />
+        </ui:remove>
+        <p:notificationBar position="bottom" effect="slide" widgetVar="sysbar">
+            <div id="sysmsg" styleClass="ui-sysmsg">(No Message)</div>
+        </p:notificationBar>
     </ui:define>
 
 </ui:composition>

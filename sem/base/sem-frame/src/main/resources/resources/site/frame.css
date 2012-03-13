@@ -101,3 +101,8 @@ label {
 .ui-treetable-data td.f-wrappable {
     white-space: normal;
 }
+
+.ui-sysmsg {
+    color: #ffcc00;
+    font-size: large :
+}

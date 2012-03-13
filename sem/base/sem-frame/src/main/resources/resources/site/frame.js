@@ -46,3 +46,12 @@ function showXrefs() {
     var xrefLoc = "3/12/3/4/xref/?type=" + encodeURI(entityTypeAbbr + "&pkey=" + ids.text());
     location.href = document.WEB_APP + "/" + xrefLoc;
 }
+
+function bcastSystem(evt, data) {
+    var div = $('#sysmsg');
+    div.text(data);
+    sysbar.show();
+}
+
+function bcastUserMail(evt, data) {
+}
