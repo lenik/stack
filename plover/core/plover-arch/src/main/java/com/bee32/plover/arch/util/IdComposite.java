@@ -2,6 +2,8 @@ package com.bee32.plover.arch.util;
 
 import java.io.Serializable;
 
+import javax.free.Nullables;
+
 public class IdComposite
         implements Serializable {
 
@@ -28,11 +30,7 @@ public class IdComposite
         for (int i = 0; i < elements.length; i++) {
             Serializable o1 = elements[i];
             Serializable o2 = other.elements[i];
-
-            if (o1 == o2)
-                continue;
-
-            if (!o1.equals(o2))
+            if (!Nullables.equals(o1, o2))
                 return false;
         }
         return true;
