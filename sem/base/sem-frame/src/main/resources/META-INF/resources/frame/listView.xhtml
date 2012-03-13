@@ -16,7 +16,6 @@
         <cc:attribute name="mbean" type="java.lang.Object" required="true" />
         <cc:attribute name="smooth" type="java.lang.Boolean" default="false" />
         <cc:attribute name="readonly" type="java.lang.Boolean" default="${cc.attrs.picker != null}" />
-        <cc:attribute name="copy" type="java.lang.Boolean" default="${cc.attrs.style == 'panel' and not cc.attrs.smooth}" />
         <cc:attribute name="paginator" type="java.lang.Boolean" default="true" />
         <cc:attribute name="creatable" type="java.lang.Boolean" default="${not cc.attrs.readonly}" />
         <cc:attribute name="editable" type="java.lang.Boolean" default="true" />
@@ -44,7 +43,7 @@
             <ui:param name="indexDialogVar" value="${cc.attrs.indexDialogVar}" />
             <ui:param name="editDialogVar" value="${cc.attrs.editDialogVar}" />
             <ui:param name="mbean" value="${cc.attrs.mbean}" />
-            <ui:param name="smooth" value="${cc.attrs.smooth}" />
+            <ui:param name="copyMode" value="${not cc.attrs.smooth}" />
 
             <ui:param name="indexPopup" value="${style == 'dialog'}" />
             <ui:param name="editPopup" value="${style != 'panel'}" />
@@ -104,9 +103,9 @@
                                         disabled="${not mbean.selectionEditable}" action="${mbean.showEditForm}"
                                         update="${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
                                         oncomplete="${editPopup ? cc.attrs.editDialogVar.concat('.show();') : ''}"
-                                        rendered="${cc.attrs.editable and (editPopup or not cc.attrs.smooth)}">
+                                        rendered="${cc.attrs.editable and (editPopup or copyMode)}">
                                         <f:setPropertyActionListener target="${mbean.copyMode}"
-                                            value="${cc.attrs.copy}" />
+                                            value="${copyMode}" />
                                     </p:commandButton>
                                     <p:commandButton rendered="${cc.attrs.removable and picker == null}"
                                         id="remove" value="移除" disabled="${not mbean.selectionRemovable}"
@@ -136,25 +135,25 @@
                                     <cc:insertRawFacet name="edit-buttons" />
                                 </td>
                                 <td align="right">
-                                    <p:commandButton id="dup" value="${'创建副本'.concat(smooth ? '*' : '')}"
-                                        disabled="${mbean.openedObject == null or cc.attrs.readonly}" action="${mbean.dup}"
-                                        onclick="waitbox.show()" oncomplete="waitbox.hide()"
+                                    <p:commandButton id="copy-validated" value="${'创建副本'.concat(copyMode ? '' : '*')}"
+                                        rendered="${copyMode}" disabled="${mbean.openedObject == null or cc.attrs.readonly}"
+                                        action="${mbean.dup}" onclick="waitbox.show()" oncomplete="waitbox.hide()"
                                         update="${cc.attrs.indexView}:indexForm:body, apply-validated">
                                         <f:setPropertyActionListener target="${mbean.copyMode}"
-                                            value="${cc.attrs.copy}" />
+                                            value="${copyMode}" />
                                     </p:commandButton>
                                     <p:commandButton id="apply-validated"
-                                        value="${editPopup ? '确定' : (mbean.openedIndex == -1 ? '添加' : '应用').concat(smooth ? '*' : '')}"
-                                        title="${(not editPopup) and smooth ? '在快速编辑模式下，当前修改的内容可能已经被自动保存。' : ''}"
+                                        value="${editPopup ? '确定' : (mbean.openedIndex == -1 ? '添加' : '应用').concat(copyMode ? '' : '*')}"
+                                        title="${(not editPopup) and cc.attrs.smooth ? '在快速编辑模式下，当前修改的内容可能已经被自动保存。' : ''}"
                                         disabled="${mbean.openedObject == null or cc.attrs.readonly}" action="${mbean.apply}"
                                         oncomplete="waitbox.hide(); ${editPopup ? cc.attrs.editDialogVar.concat('.hideValidated(args)') : ''}"
                                         update="${cc.attrs.indexView}:indexForm:body, apply-validated">
                                         <f:setPropertyActionListener target="${mbean.copyMode}"
-                                            value="${cc.attrs.copy}" />
+                                            value="${copyMode}" />
                                     </p:commandButton>
                                     <p:commandButton id="cancel" value="取消" disabled="${mbean.openedObject == null}"
                                         actionListener="${mbean.cancel}" update="body, ${cc.attrs.editView}:more"
-                                        rendered="${not editPopup and not smooth}" />
+                                        rendered="${not editPopup and copyMode}" />
                                     <p:commandButton id="close" value="关闭" onclick="${cc.attrs.editDialogVar}.hide()"
                                         rendered="${editPopup}" />
                                 </td>
