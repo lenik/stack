@@ -27,11 +27,28 @@ public class SelectionHolder
         return selections;
     }
 
+    static boolean _listEquals(List<?> list1, List<?> list2) {
+        if (list1 == list2)
+            return true;
+        if (list1 == null || list2 == null)
+            return false;
+        if (list1.size() != list2.size())
+            return false;
+        int n = list1.size();
+        for (int i = 0; i < n; i++) {
+            Object o1 = list1.get(i);
+            Object o2 = list2.get(i);
+            if (o1 != o2) // Using identity-equality for items.
+                return false;
+        }
+        return true;
+    }
+
     @Override
     public void setSelection(List<?> selections) {
         if (selections == null)
             selections = new ArrayList<Object>();
-        if (!this.selections.equals(selections)) {
+        if (!_listEquals(this.selections, selections)) {
             this.selections = selections;
             for (ISelectionChangeListener listener : selectionChangeListeners) {
                 listener.selectionChanged(selections);
@@ -122,11 +139,13 @@ public class SelectionHolder
     public void setOpenedObjects(List<?> openedObjects) {
         if (openedObjects == null)
             openedObjects = Collections.emptyList();
-        if (!this.openedObjects.equals(openedObjects)) {
+
+        if (!_listEquals(this.openedObjects, openedObjects)) {
+            // for (IObjectOpenListener listener : objectOpenListeners)
+            // listener.objectClosed(this.openedObjects)
             this.openedObjects = openedObjects;
-            for (IObjectOpenListener listener : objectOpenListeners) {
+            for (IObjectOpenListener listener : objectOpenListeners)
                 listener.objectOpened(openedObjects);
-            }
         }
     }
 
