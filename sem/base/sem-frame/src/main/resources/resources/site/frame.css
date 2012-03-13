@@ -30,6 +30,10 @@ label {
     overflow: auto;
 }
 
+.ui-dialog-system {
+    background: #eeeeee;
+}
+
 .logo-container {
     border-left: solid #cccccc 5px;
     border-right: solid #cccccc 5px;
