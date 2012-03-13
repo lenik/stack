@@ -20,7 +20,7 @@ import com.bee32.sem.makebiz.dto.DeliveryNoteTakeOutDto;
 import com.bee32.sem.makebiz.dto.MakeOrderDto;
 import com.bee32.sem.makebiz.entity.DeliveryNote;
 import com.bee32.sem.makebiz.entity.MakeOrder;
-import com.bee32.sem.makebiz.service.MakeService;
+import com.bee32.sem.makebiz.service.MakebizService;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
 
@@ -114,7 +114,7 @@ public class DeliveryNoteAdminBean
             return;
         }
 
-        MakeService service = ctx.bean.getBean(MakeService.class);
+        MakebizService service = ctx.bean.getBean(MakebizService.class);
         try {
             service.generateTakeOutStockOrders(deliveryNote);
             uiLogger.info("生成成功");

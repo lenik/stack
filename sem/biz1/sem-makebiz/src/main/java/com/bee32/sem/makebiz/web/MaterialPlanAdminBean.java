@@ -22,7 +22,7 @@ import com.bee32.sem.makebiz.dto.MaterialPlanItemDto;
 import com.bee32.sem.makebiz.dto.StockPlanOrderDto;
 import com.bee32.sem.makebiz.entity.MakeTask;
 import com.bee32.sem.makebiz.entity.MaterialPlan;
-import com.bee32.sem.makebiz.service.MakeService;
+import com.bee32.sem.makebiz.service.MakebizService;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
 
@@ -58,7 +58,7 @@ public class MaterialPlanAdminBean
         }
         MaterialPlanDto materialPlan = getOpenedObject();
 
-        MakeService service = ctx.bean.getBean(MakeService.class);
+        MakebizService service = ctx.bean.getBean(MakebizService.class);
         service.calcMaterialPlanFromBom(materialPlan, task);
 
         uiLogger.info("计算完成。");

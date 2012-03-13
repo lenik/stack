@@ -7,7 +7,7 @@ import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.makebiz.dto.MakeOrderDto;
 import com.bee32.sem.makebiz.dto.MakeOrderItemDto;
 import com.bee32.sem.makebiz.entity.MakeOrder;
-import com.bee32.sem.makebiz.service.MakeService;
+import com.bee32.sem.makebiz.service.MakebizService;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 
 @ForEntity(MakeOrder.class)
@@ -35,7 +35,7 @@ public class MakeOrderAdminBean
             return;
         }
 
-        ctx.bean.getBean(MakeService.class).chanceApplyToMakeOrder(chance, makeOrder);
+        ctx.bean.getBean(MakebizService.class).chanceApplyToMakeOrder(chance, makeOrder);
     }
 
 }

@@ -36,7 +36,7 @@ import com.bee32.sem.makebiz.dto.MaterialPlanItemDto;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.world.monetary.MutableMCValue;
 
-public class MakeService
+public class MakebizService
         extends DataService {
 
     /**
