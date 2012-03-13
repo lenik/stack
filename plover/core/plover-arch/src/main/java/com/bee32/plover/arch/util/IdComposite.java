@@ -29,8 +29,8 @@ public class IdComposite
             Serializable o1 = elements[i];
             Serializable o2 = other.elements[i];
 
-            if (o1 == null && o2 == null)
-                return true;
+            if (o1 == o2)
+                continue;
 
             if (!o1.equals(o2))
                 return false;
@@ -41,12 +41,10 @@ public class IdComposite
     @Override
     public int hashCode() {
         int hash = 0;
-        for (int i = 0; i < elements.length; i++) {
-            Serializable o = elements[i];
-            if (o == null)
-                hash += System.identityHashCode(this); // meaningless..?
-            else
-                hash += o.hashCode();
+        for (Object el : elements) {
+            hash *= 17;
+            if (el != null)
+                hash += el.hashCode();
         }
         return hash;
     }

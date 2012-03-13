@@ -17,7 +17,6 @@ public final class Identity
     public boolean equals(Object obj) {
         if (!(obj instanceof Identity))
             return false;
-
         Identity o = (Identity) obj;
         return obj == o.obj;
     }
