@@ -167,6 +167,10 @@ public class MakeOrderDto
         this.deliveryNotes = deliveryNotes;
     }
 
+    /**
+     * 按排生产任务
+     * @return
+     */
     public List<MakeTaskItemDto> arrangeMakeTask() {
         List<MakeTaskItemDto> taskItems = new ArrayList<MakeTaskItemDto>();
 
@@ -180,6 +184,27 @@ public class MakeOrderDto
         return taskItems;
     }
 
+    /**
+     * 按排物料计划（外购产品）
+     * @return
+     */
+    public List<MaterialPlanItemDto> arrangeMaterialPlan() {
+        List<MaterialPlanItemDto> planItems = new ArrayList<MaterialPlanItemDto>();
+
+        for (MakeOrderItemDto orderItem : notArrangedItems) {
+            MaterialPlanItemDto planItem = new MaterialPlanItemDto().create();
+            planItem.setMaterial(orderItem.getPart().getTarget());
+            planItem.setQuantity(orderItem.getQuantity());
+
+            planItems.add(planItem);
+        }
+        return planItems;
+    }
+
+    /**
+     * 按排送货单
+     * @return
+     */
     public List<DeliveryNoteItemDto> arrangeDeliveryNote() {
         List<DeliveryNoteItemDto> deliveryNoteItems = new ArrayList<DeliveryNoteItemDto>();
 

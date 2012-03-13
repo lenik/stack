@@ -49,7 +49,7 @@ public class MaterialPlan
         items = CloneUtils.cloneList(o.items);
     }
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     public MakeTask getTask() {
         return task;
     }

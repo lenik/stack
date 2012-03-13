@@ -62,8 +62,6 @@ public class MaterialPlanDto
     }
 
     public void setTask(MakeTaskDto task) {
-        if (task == null)
-            throw new NullPointerException("task");
         this.task = task;
     }
 

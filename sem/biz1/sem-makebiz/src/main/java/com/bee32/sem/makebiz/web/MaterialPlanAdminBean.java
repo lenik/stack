@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.frame.ui.ListMBean;
@@ -16,10 +18,12 @@ import com.bee32.sem.inventory.service.IStockQuery;
 import com.bee32.sem.inventory.service.StockQueryOptions;
 import com.bee32.sem.inventory.service.StockQueryResult;
 import com.bee32.sem.inventory.util.ConsumptionMap;
+import com.bee32.sem.makebiz.dto.MakeOrderDto;
 import com.bee32.sem.makebiz.dto.MakeTaskDto;
 import com.bee32.sem.makebiz.dto.MaterialPlanDto;
 import com.bee32.sem.makebiz.dto.MaterialPlanItemDto;
 import com.bee32.sem.makebiz.dto.StockPlanOrderDto;
+import com.bee32.sem.makebiz.entity.MakeOrder;
 import com.bee32.sem.makebiz.entity.MakeTask;
 import com.bee32.sem.makebiz.entity.MaterialPlan;
 import com.bee32.sem.makebiz.service.MakebizService;
@@ -41,9 +45,19 @@ public class MaterialPlanAdminBean
             throws Exception {
         // Update hibernate cache
         for (MaterialPlan _plan : uMap.<MaterialPlan> entitySet()) {
+            if (_plan.getOrder() == null && _plan.getTask() == null) {
+                uiLogger.error("物料计划缺少对应的证单或生产任务!");
+                return false;
+            }
+
+
             MakeTask _task = _plan.getTask();
-            if (!_task.getPlans().contains(_plan))
+            if ((_task != null) && (!_task.getPlans().contains(_plan)))
                 _task.getPlans().add(_plan);
+
+            MakeOrder _order = _plan.getOrder();
+            if ((_order != null) && (!_order.getPlans().contains(_plan)))
+                _order.getPlans().add(_plan);
         }
         return true;
     }
@@ -63,6 +77,24 @@ public class MaterialPlanAdminBean
 
         uiLogger.info("计算完成。");
     }
+
+    /**
+     * 外购产品,则定单直接生成
+     */
+    public void setMakeOrderToApply(MakeOrderDto order) {
+        MaterialPlanDto materialPlan = getOpenedObject();
+        MakeOrderDto makeOrder = reload(order, MakeOrderDto.NOT_ARRANGED_ITEMS);
+        List<MaterialPlanItemDto> planItems = makeOrder.arrangeMaterialPlan();
+        if (planItems.isEmpty()) {
+            uiLogger.error("此订单上的产品已经全部安排为生产任务或外购物料计划!");
+            return;
+        }
+        materialPlan.setOrder(order);
+        materialPlan.setItems(planItems);
+        if (StringUtils.isEmpty(materialPlan.getLabel()))
+            materialPlan.setLabel(makeOrder.getLabel());
+    }
+
 
     /**
      * 查询可用库存，并形成一个锁定列表

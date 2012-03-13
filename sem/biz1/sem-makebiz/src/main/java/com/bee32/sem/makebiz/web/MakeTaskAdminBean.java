@@ -10,7 +10,6 @@ import org.apache.commons.lang.StringUtils;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.entity.Material;
-import com.bee32.sem.make.entity.Part;
 import com.bee32.sem.makebiz.dto.MakeOrderDto;
 import com.bee32.sem.makebiz.dto.MakeTaskDto;
 import com.bee32.sem.makebiz.dto.MakeTaskItemDto;
@@ -58,7 +57,7 @@ public class MakeTaskAdminBean
         MakeOrderDto makeOrder = reload(makeOrderRef, MakeOrderDto.NOT_ARRANGED_ITEMS);
         List<MakeTaskItemDto> taskItems = makeOrder.arrangeMakeTask();
         if (taskItems.isEmpty()) {
-            uiLogger.error("此订单上的产品的生产任务已经全部安排完成");
+            uiLogger.error("此订单上的产品已经全部安排为生产任务或外购物料计划!");
             return;
         }
         makeTask.setOrder(makeOrderRef);
