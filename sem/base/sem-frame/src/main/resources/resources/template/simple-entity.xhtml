@@ -219,12 +219,12 @@
                     </td>
                     <td align="right">
                         <h:panelGroup rendered="${bean.editing or not plainEditForm}">
+                            <p:commandButton id="dup-validated" value="创建副本" actionListener="${bean.saveDup}"
+                                disabled="${not bean.editing}" update="${_contentUpdate} ${_indexUpdate} ${mirrorTargets}"
+                                rendered="${not plainEditForm}" onclick="waitbox.show()" oncomplete="waitbox.hide(); editDialog.shakeOnFail(args)" />
                             <p:commandButton id="save-validated" value="保存" actionListener="${bean.save}"
                                 disabled="${not bean.editing}" update="${_contentUpdate} ${_indexUpdate} ${mirrorTargets}"
                                 onclick="waitbox.show()" oncomplete="waitbox.hide(); ${plainEditForm ? '' : 'editDialog.hideValidated(args)'}" />
-                            <p:commandButton id="dup-validated" value="保存副本" actionListener="${bean.saveDup}"
-                                disabled="${not bean.editing}" update="${_contentUpdate} ${_indexUpdate} ${mirrorTargets}"
-                                rendered="${not plainEditForm}" onclick="waitbox.show()" oncomplete="waitbox.hide()" />
                             <p:commandButton id="cancel" value="${bean.editing  ? '取消' : '关闭'}"
                                 onclick="${plainEditForm ? '' : 'editDialog.hide()'}" actionListener="${bean.showIndex}"
                                 update="${plainEditForm ? _contentUpdate : '@none'}" />

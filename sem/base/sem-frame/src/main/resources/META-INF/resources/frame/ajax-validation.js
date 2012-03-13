@@ -15,3 +15,15 @@ PrimeFaces.widget.Dialog.prototype.hideValidated = function(args) {
         this.hide();
     }
 }
+
+PrimeFaces.widget.Dialog.prototype.shakeOnFail = function(args) {
+    if (args == null) {
+        alert("shakeOnFail 需要参数 args");
+        return;
+    }
+    if (args.validationFailed) {
+        this.jq.effect("shake", {
+            times : 2
+        }, 100);
+    }
+}

@@ -137,7 +137,8 @@
                                 <td align="right">
                                     <p:commandButton id="copy-validated" value="${'创建副本'.concat(copyMode ? '' : '*')}"
                                         rendered="${copyMode}" disabled="${mbean.openedObject == null or cc.attrs.readonly}"
-                                        action="${mbean.dup}" onclick="waitbox.show()" oncomplete="waitbox.hide()"
+                                        action="${mbean.dup}" onclick="waitbox.show()"
+                                        oncomplete="waitbox.hide(); ${editPopup ? cc.attrs.editDialogVar.concat('.shakeOnFail(args)') : ''}"
                                         update="${cc.attrs.indexView}:indexForm:body, apply-validated">
                                         <f:setPropertyActionListener target="${mbean.copyMode}"
                                             value="${copyMode}" />
