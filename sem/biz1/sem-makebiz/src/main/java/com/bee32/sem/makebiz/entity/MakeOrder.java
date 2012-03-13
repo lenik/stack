@@ -147,6 +147,7 @@ public class MakeOrder
     @Transient
     Map<Part, BigDecimal> getArrangedPartSum() {
         Map<Part, BigDecimal> sumMap = new HashMap<Part, BigDecimal>();
+        //计算已经在task中按排的量
         for (MakeTask task : tasks) {
             for (MakeTaskItem taskItem : task.getItems()) {
                 BigDecimal sum = sumMap.get(taskItem.part);
@@ -158,6 +159,24 @@ public class MakeOrder
                 }
             }
         }
+
+        //计算已经在plan中按排的量
+//        for (MaterialPlan plan : plans) {
+//            for (MaterialPlanItem planItem : plan.getItems()) {
+//                Part part =
+//
+//                planItem.material
+//
+//                BigDecimal sum = sumMap.get(planItem.part);
+//                if (sum == null) {
+//                    sumMap.put(taskItem.part, taskItem.getQuantity());
+//                } else {
+//                    sum = sum.add(taskItem.getQuantity());
+//                    sumMap.put(taskItem.part, sum);
+//                }
+//            }
+//        }
+
         return sumMap;
     }
 

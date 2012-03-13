@@ -109,5 +109,4 @@ public class MaterialPlan
         for (int index = items.size() - 1; index >= 0; index--)
             items.get(index).setIndex(index);
     }
-
 }
