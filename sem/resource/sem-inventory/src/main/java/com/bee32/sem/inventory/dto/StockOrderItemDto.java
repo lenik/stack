@@ -6,9 +6,9 @@ import java.util.List;
 import javax.free.IllegalUsageException;
 import javax.free.ParseException;
 
+import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.entity.EntityUtil;
-import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.inventory.entity.AbstractStockOrder;
 import com.bee32.sem.inventory.entity.StockItemState;
 import com.bee32.sem.inventory.entity.StockOrderItem;
@@ -48,6 +48,11 @@ public class StockOrderItemDto
 
         StockOrderSubject subject = parent.getSubject();
         return subject.isNegative();
+    }
+
+    @Override
+    protected void _copy() {
+        batchArray = batchArray.clone();
     }
 
     @Override

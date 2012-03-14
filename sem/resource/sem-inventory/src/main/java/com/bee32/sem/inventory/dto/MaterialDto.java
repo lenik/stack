@@ -9,6 +9,7 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialXP;
@@ -41,6 +42,15 @@ public class MaterialDto
     List<MaterialWarehouseOptionDto> options;
     List<MaterialPreferredLocationDto> preferredLocations;
     List<MaterialPriceDto> prices = new ArrayList<MaterialPriceDto>();
+
+    @Override
+    protected void _copy() {
+        attributes = CopyUtils.copyList(attributes, this);
+        attachments = new ArrayList<UserFileDto>(attachments);
+        options = CopyUtils.copyList(options, this);
+        preferredLocations = CopyUtils.copyList(preferredLocations, this);
+        prices = CopyUtils.copyList(prices, this);
+    }
 
     @Override
     protected void _marshal(Material source) {

@@ -5,6 +5,7 @@ import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.xp.EntityExtDto;
 import com.bee32.plover.ox1.xp.XPool;
 import com.bee32.plover.util.TextUtil;
@@ -34,9 +35,15 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
     }
 
     @Override
+    protected void __copy() {
+        super.__copy();
+        // unitConv = CopyUtils.copy(unitConv);
+        color = CopyUtils.clone(color);
+    }
+
+    @Override
     protected void __marshal(E source) {
         super.__marshal(source);
-
         serial = source.getSerial();
         barCode = source.getBarCode();
         unitHint = source.getUnitHint();
@@ -54,7 +61,6 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
     @Override
     protected void __unmarshalTo(E target) {
         super.__unmarshalTo(target);
-
         target.setSerial(serial);
         target.setBarCode(barCode);
         target.setUnitHint(unitHint);

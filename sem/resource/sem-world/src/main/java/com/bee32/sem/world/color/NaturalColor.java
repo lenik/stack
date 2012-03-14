@@ -7,15 +7,27 @@ import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import com.bee32.plover.arch.util.ICloneable;
+import com.bee32.plover.orm.entity.CopyUtils;
+
 @Embeddable
 public class NaturalColor
-        implements Serializable {
+        implements Serializable, ICloneable {
 
     private static final long serialVersionUID = 1L;
 
     Palette palette;
     String entryName;
-    final TrueColor trueColor = new TrueColor();
+    /* final */TrueColor trueColor = new TrueColor();
+
+    @Override
+    public Object clone() {
+        NaturalColor copy = new NaturalColor();
+        copy.palette = palette;
+        copy.entryName = entryName;
+        copy.trueColor = CopyUtils.clone(trueColor);
+        return copy;
+    }
 
     /**
      * 调色板。

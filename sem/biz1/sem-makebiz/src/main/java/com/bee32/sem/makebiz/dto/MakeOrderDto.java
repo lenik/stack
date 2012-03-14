@@ -181,6 +181,7 @@ public class MakeOrderDto
 
     /**
      * 按排生产任务
+     *
      * @return
      */
     public List<MakeTaskItemDto> arrangeMakeTask() {
@@ -198,6 +199,7 @@ public class MakeOrderDto
 
     /**
      * 按排物料计划（外购产品）
+     *
      * @return
      */
     public void arrangeMaterialPlan(MaterialPlanDto materialPlan) {
@@ -219,12 +221,11 @@ public class MakeOrderDto
         materialPlan.setItems(planItems);
         if (StringUtils.isEmpty(materialPlan.getLabel()))
             materialPlan.setLabel(this.getLabel());
-
-
     }
 
     /**
      * 按排送货单
+     *
      * @return
      */
     public List<DeliveryNoteItemDto> arrangeDeliveryNote() {

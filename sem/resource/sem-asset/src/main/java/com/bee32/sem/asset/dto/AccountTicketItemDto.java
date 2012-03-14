@@ -36,6 +36,12 @@ public class AccountTicketItemDto
     }
 
     @Override
+    protected void _copy() {
+        super._copy();
+        value = value.clone();
+    }
+
+    @Override
     protected void _marshal(AccountTicketItem source) {
         ticket = mref(AccountTicketDto.class, source.getTicket());
         index = source.getIndex();
