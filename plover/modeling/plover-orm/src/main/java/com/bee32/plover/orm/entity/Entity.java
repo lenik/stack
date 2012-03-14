@@ -21,6 +21,7 @@ import overlay.Overlay;
 
 import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.bean.ReflectLocks;
+import com.bee32.plover.arch.util.ICopyable;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.Identity;
 import com.bee32.plover.criteria.hibernate.Alias;
@@ -41,7 +42,7 @@ import com.bee32.plover.util.PrettyPrintStream;
 @MappedSuperclass
 public abstract class Entity<K extends Serializable>
         extends EntityBase<K>
-        implements Cloneable, IMultiFormat {
+        implements ICopyable, Cloneable, IMultiFormat {
 
     private static final long serialVersionUID = 1L;
 
@@ -67,6 +68,12 @@ public abstract class Entity<K extends Serializable>
     public Entity(String name) {
         super(name);
         // prePersist();
+    }
+
+    @SuppressWarnings("unchecked")
+    public <self_t> self_t copy() {
+        Entity<K> copy = clone();
+        return (self_t) copy;
     }
 
     @Overlay

@@ -7,11 +7,12 @@ import javax.free.IllegalUsageException;
 import javax.free.Nullables;
 
 import com.bee32.plover.arch.util.Flags32;
+import com.bee32.plover.arch.util.ICopyable;
 import com.bee32.plover.arch.util.Identity;
 
 public abstract class BaseDto<S>
         extends BaseDto_AS2<S>
-        implements Cloneable {
+        implements Cloneable, ICopyable {
 
     private static final long serialVersionUID = 1L;
 
@@ -61,10 +62,23 @@ public abstract class BaseDto<S>
         initSourceType(srcType);
     }
 
-    @Override
-    public Object clone()
-            throws CloneNotSupportedException {
-        return super.clone();
+    public final <self_t> self_t copy() {
+        self_t copy;
+        try {
+            copy = (self_t) clone();
+        } catch (CloneNotSupportedException e) {
+            throw new IllegalUsageException(e.getMessage(), e);
+        }
+        BaseDto<?> dto = (BaseDto<?>) copy;
+        dto.__copy();
+        dto._copy();
+        return copy;
+    }
+
+    protected void __copy() {
+    }
+
+    protected void _copy() {
     }
 
     /**
@@ -191,7 +205,7 @@ public abstract class BaseDto<S>
 
         Serializable nid = getNaturalId();
         if (nid == null)
-            return idEquals(other);
+            return false; // idEquals(other);
 
         Serializable nidOther = other.getNaturalId();
         if (nidOther == null) {

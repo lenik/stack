@@ -65,6 +65,12 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         createTransients();
     }
 
+    @Override
+    protected void __copy() {
+        super.__copy();
+        clearId();
+    }
+
     protected void createTransients() {
     }
 
@@ -118,10 +124,11 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     public <$ extends EntityDto<E, K>> $ clearId() {
         this.id = null;
         this.version = null;
+        this.createdDate = new Date();
+        this.lastModified = this.createdDate;
 
         @SuppressWarnings("unchecked")
         $ _this = ($) this;
-
         return _this;
     }
 
