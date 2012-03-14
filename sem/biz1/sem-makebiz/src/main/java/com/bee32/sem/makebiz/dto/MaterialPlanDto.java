@@ -147,8 +147,7 @@ public class MaterialPlanDto
             getPlanOrders().add(planOrder);
         }
 
-        StockOrderItemDto copy = new StockOrderItemDto().create();
-        copy.populate(itemTemplate); // 导入
+        StockOrderItemDto copy = itemTemplate.copy();
         copy.setId(-planOrder.getItems().size() - 1L, true);
         copy.setParent(planOrder);
         copy.setQuantity(quantity);

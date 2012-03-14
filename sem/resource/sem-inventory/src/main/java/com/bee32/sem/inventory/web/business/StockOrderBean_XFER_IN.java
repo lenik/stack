@@ -57,9 +57,8 @@ public class StockOrderBean_XFER_IN
         }
         // StockTransferDto job = stepping.getOpenedObject();
         StockOrderDto destOrder = getOpenedObject();
-        destItem = new StockOrderItemDto().create();
+        destItem = selectedSourceItem.copy();
         destItem.setParent(destOrder);
-        destItem.populate(selectedSourceItem);
         destItem.setLocation(null);
         // destItem.setQuantity(BigDecimal.ZERO);
     }
