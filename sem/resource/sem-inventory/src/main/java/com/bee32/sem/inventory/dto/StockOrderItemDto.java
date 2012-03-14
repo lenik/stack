@@ -39,26 +39,6 @@ public class StockOrderItemDto
     }
 
     @Override
-    public StockOrderItemDto populate(Object source) {
-        if (source instanceof StockOrderItemDto) {
-            StockOrderItemDto o = (StockOrderItemDto) source;
-            _populate(o);
-        } else
-            super.populate(source);
-        return this;
-    }
-
-    protected void _populate(StockOrderItemDto o) {
-        super._populate(o);
-        parent = o.parent;
-        material = o.material;
-        batchArray = new BatchArray(o.batchArray);
-        expirationDate = o.expirationDate;
-        location = o.location;
-        state = o.state;
-    }
-
-    @Override
     protected boolean isNegated() {
         StockOrderDto parent = getParent();
         if (parent == null || parent.isNull()) {

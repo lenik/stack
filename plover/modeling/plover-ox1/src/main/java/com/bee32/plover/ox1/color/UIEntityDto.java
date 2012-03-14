@@ -26,21 +26,6 @@ public abstract class UIEntityDto<E extends UIEntity<K>, K extends Serializable>
         super(fmask);
     }
 
-    @Override
-    public UIEntityDto<E, K> populate(Object source) {
-        if (source instanceof UIEntityDto<?, ?>) {
-            UIEntityDto<?, ?> o = (UIEntityDto<?, ?>) source;
-            _populate(o);
-        } else
-            super.populate(source);
-        return this;
-    }
-
-    protected void _populate(UIEntityDto<?, ?> o) {
-        super._populate(o);
-        label = o.label;
-        description = o.description;
-    }
 
     @Override
     protected void __marshal(E source) {

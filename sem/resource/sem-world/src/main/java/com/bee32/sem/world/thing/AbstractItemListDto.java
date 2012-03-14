@@ -8,6 +8,7 @@ import java.util.List;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.color.MomentIntervalDto;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.util.i18n.ICurrencyAware;
@@ -42,21 +43,11 @@ public abstract class AbstractItemListDto< //
     protected abstract Class<? extends _dt> getItemDtoClass();
 
     @Override
-    public AbstractItemListDto<E, _et, _dt> populate(Object source) {
-        if (source instanceof AbstractItemListDto<?, ?, ?>) {
-            @SuppressWarnings("unchecked")
-            AbstractItemListDto<?, _et, _dt> o = (AbstractItemListDto<?, _et, _dt>) source;
-            _populate(o);
-        } else
-            super.populate(source);
-        return this;
-    }
-
-    protected void _populate(AbstractItemListDto<?, _et, _dt> o) {
-        super._populate(o);
-        items = new ArrayList<_dt>(); // Never copy (o.items);
-        total = o.total;
-        nativeTotal = o.nativeTotal;
+    protected void __copy() {
+        super.__copy();
+        items = CopyUtils.copyList(items, this);
+        if (total != null)
+            total = total.clone();
     }
 
     @Override

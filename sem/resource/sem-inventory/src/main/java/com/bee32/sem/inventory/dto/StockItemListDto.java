@@ -30,21 +30,6 @@ public class StockItemListDto
     }
 
     @Override
-    public StockItemListDto populate(Object source) {
-        if (source instanceof StockItemListDto) {
-            StockItemListDto o = (StockItemListDto) source;
-            _populate(o);
-        } else
-            super.populate(source);
-        return this;
-    }
-
-    protected void _populate(StockItemListDto o) {
-        super._populate(o);
-        mergeStrategy = o.mergeStrategy;
-    }
-
-    @Override
     protected void _marshal(AbstractStockItemList<?> source) {
         mergeStrategy = source.getMergeStrategy();
     }

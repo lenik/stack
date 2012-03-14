@@ -23,21 +23,6 @@ public abstract class MomentIntervalDto<E extends MomentInterval>
         super(fmask);
     }
 
-    @Override
-    public MomentIntervalDto<E> populate(Object source) {
-        if (source instanceof MomentIntervalDto<?>) {
-            MomentIntervalDto<?> o = (MomentIntervalDto<?>) source;
-            _populate(o);
-        } else
-            super.populate(source);
-        return this;
-    }
-
-    protected void _populate(MomentIntervalDto<?> o) {
-        super._populate(o);
-        beginTime = o.beginTime;
-        endTime = o.endTime;
-    }
 
     protected void __marshal(E source) {
         super.__marshal(source);

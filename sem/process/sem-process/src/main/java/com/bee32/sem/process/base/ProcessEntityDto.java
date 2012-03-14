@@ -20,20 +20,6 @@ public abstract class ProcessEntityDto<E extends ProcessEntity>
         super(fmask);
     }
 
-    @Override
-    public ProcessEntityDto<E> populate(Object source) {
-        if (source instanceof ProcessEntityDto) {
-            ProcessEntityDto<?> o = (ProcessEntityDto<?>) source;
-            _populate(o);
-        } else
-            super.populate(source);
-        return this;
-    }
-
-    protected void _populate(ProcessEntityDto<?> o) {
-        super._populate(o);
-        // vc..
-    }
 
     @Override
     protected void __marshal(E source) {

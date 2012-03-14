@@ -34,22 +34,9 @@ public abstract class AbstractItemDto<E extends AbstractItem>
     }
 
     @Override
-    public AbstractItemDto<E> populate(Object source) {
-        if (source instanceof AbstractItemDto) {
-            @SuppressWarnings("unchecked")
-            AbstractItemDto<E> o = (AbstractItemDto<E>) source;
-            _populate(o);
-        } else
-            super.populate(source);
-        return this;
-    }
-
-    protected void _populate(AbstractItemDto<E> o) {
-        super._populate(o);
-        setQuantity(o._quantity);
-        price = o.price.clone();
-        nativePrice = o.nativePrice;
-        nativeTotal = o.nativeTotal;
+    protected void __copy() {
+        super.__copy();
+        price = price.clone();
     }
 
     protected boolean isNegated() {

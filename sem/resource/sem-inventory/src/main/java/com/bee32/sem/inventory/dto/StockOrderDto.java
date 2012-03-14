@@ -45,27 +45,6 @@ public class StockOrderDto
     }
 
     @Override
-    public StockOrderDto populate(Object source) {
-        if (source instanceof StockOrderDto) {
-            StockOrderDto o = (StockOrderDto) source;
-            _populate(o);
-        } else
-            super.populate(source);
-        return this;
-    }
-
-    protected void _populate(StockOrderDto o) {
-        super._populate(o);
-        base = o.base;
-        spec = o.spec;
-        subject = o.subject;
-        job = o.job;
-        org = o.org;
-        orgUnit = o.orgUnit;
-        warehouse = o.warehouse;
-    }
-
-    @Override
     protected void _marshal(AbstractStockItemList<?> _source) {
         super._marshal(_source);
         AbstractStockOrder<?> source = (AbstractStockOrder<?>) _source;

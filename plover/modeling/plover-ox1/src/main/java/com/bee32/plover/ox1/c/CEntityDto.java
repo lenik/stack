@@ -35,22 +35,6 @@ public abstract class CEntityDto<E extends CEntity<K>, K extends Serializable>
     }
 
     @Override
-    public CEntityDto<E, K> populate(Object source) {
-        if (source instanceof CEntityDto<?, ?>) {
-            CEntityDto<?, ?> o = (CEntityDto<?, ?>) source;
-            _populate(o);
-        } else
-            super.populate(source);
-        return this;
-    }
-
-    protected void _populate(CEntityDto<?, ?> o) {
-        super._populate(o);
-        owner = o.owner;
-        aclId = o.aclId;
-    }
-
-    @Override
     protected void __marshal(E source) {
         super.__marshal(source);
 

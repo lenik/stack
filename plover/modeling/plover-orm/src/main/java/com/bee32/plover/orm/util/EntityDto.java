@@ -153,28 +153,6 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             return ClassUtil.getTypeName(sourceType);
     }
 
-    public EntityDto<E, K> populate(Object source) {
-        if (source instanceof EntityDto<?, ?>) {
-            EntityDto<?, ?> o = (EntityDto<?, ?>) source;
-            _populate(o);
-        } else
-            throw new UnsupportedOperationException("Populate from unknown source type: " + source);
-        return this;
-    }
-
-    protected void _populate(EntityDto<?, ?> o) {
-        @SuppressWarnings("unchecked")
-        K _o_id = (K) o.id;
-        id = _o_id;
-        version = o.version;
-        altId = o.altId;
-        createdDate = o.createdDate;
-        lastModified = o.lastModified;
-        createdDateDirty = o.createdDateDirty;
-        lastModifiedDirty = o.lastModifiedDirty;
-        entityFlags = o.entityFlags;
-    }
-
     /**
      * <pre>
      * LAYER 1 - Entity Commons
