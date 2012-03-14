@@ -73,9 +73,12 @@ public class MaterialPlanAdminBean
         MaterialPlanDto materialPlan = getOpenedObject();
 
         MakebizService service = ctx.bean.getBean(MakebizService.class);
-        service.calcMaterialPlanFromBom(materialPlan, task);
-
-        uiLogger.info("计算完成。");
+        try {
+            service.calcMaterialPlanFromBom(materialPlan, task);
+            uiLogger.info("计算完成。");
+        } catch (Exception e) {
+            uiLogger.error("错误", e);
+        }
     }
 
     /**

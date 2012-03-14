@@ -210,6 +210,7 @@ public class MakeOrder
         Map<Material, BigDecimal> sumMap = getArrangedPartSum();
 
         for (MakeOrderItem orderItem : items) {
+            if (orderItem.getPart() == null) continue;  //用户只输入了外部名称和规格
             BigDecimal sum = sumMap.get(orderItem.getPart().getTarget());
             // 尚没有对应的生产任务，生产全部
             if (sum == null) {
@@ -244,6 +245,7 @@ public class MakeOrder
         Map<Material, BigDecimal> sumMap = getDeliveriedPartSum();
 
         for (MakeOrderItem orderItem : items) {
+            if (orderItem.getPart() == null) continue;  //用户只输入了外部名称和规格
             BigDecimal sum = sumMap.get(orderItem.getPart().getTarget());
             // 尚没有对应的送货单，安排全部
             if (sum == null) {
@@ -276,6 +278,7 @@ public class MakeOrder
         Map<Material, BigDecimal> overloadParts = new HashMap<Material, BigDecimal>();
         Map<Material, BigDecimal> sumMap = getArrangedPartSum();
         for (MakeOrderItem orderItem : items) {
+            if (orderItem.getPart() == null) continue;  //用户只输入了外部名称和规格
             BigDecimal sum = sumMap.get(orderItem.getPart().getTarget());
             if (sum != null) {
                 if (sum.compareTo(orderItem.getQuantity()) > 0) {
@@ -298,6 +301,7 @@ public class MakeOrder
         Map<Material, BigDecimal> overloadPartsDelivery = new HashMap<Material, BigDecimal>();
         Map<Material, BigDecimal> sumMap = getDeliveriedPartSum();
         for (MakeOrderItem orderItem : items) {
+            if (orderItem.getPart() == null) continue;  //用户只输入了外部名称和规格
             BigDecimal sum = sumMap.get(orderItem.getPart().getTarget());
             if (sum != null) {
                 if (sum.compareTo(orderItem.getQuantity()) > 0) {
