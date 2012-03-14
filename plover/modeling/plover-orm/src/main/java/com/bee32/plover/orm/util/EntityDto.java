@@ -455,7 +455,12 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
     @Override
     protected Serializable naturalId() {
-        return getId();
+        // K id = getId();
+        // if (id == null)
+        // return new Identity(this);
+        // else
+        // return id;
+        return null;
     }
 
     @Override
