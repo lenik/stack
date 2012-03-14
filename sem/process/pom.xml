@@ -13,7 +13,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>sem-process</module>
-        <module>sem-techproc</module>
         <module>sem-workflow</module>
     </modules>
     <name>SEM :: Process</name>
