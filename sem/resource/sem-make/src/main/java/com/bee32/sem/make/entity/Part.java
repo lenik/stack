@@ -21,7 +21,7 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.DefaultValue;
 
 import com.bee32.plover.orm.cache.Redundant;
-import com.bee32.plover.orm.entity.CloneUtils;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
@@ -86,7 +86,7 @@ public class Part
     protected void _populate(Part o) {
         super._populate(o);
         obsolete = o.obsolete;
-        children = CloneUtils.cloneList(o.children);
+        children = CopyUtils.copyList(o.children);
         xrefs = new ArrayList<PartItem>(o.xrefs);
         xrefCount = o.xrefCount;
         target = o.target;

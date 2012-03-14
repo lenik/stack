@@ -3,10 +3,11 @@ package com.bee32.sem.world.color;
 import java.awt.Color;
 import java.io.Serializable;
 
+import com.bee32.plover.arch.util.ICloneable;
 import com.bee32.plover.orm.entity.IPopulatable;
 
 public class TrueColor
-        implements Serializable, Cloneable, IPopulatable {
+        implements Serializable, ICloneable, IPopulatable {
 
     private static final long serialVersionUID = 1L;
 

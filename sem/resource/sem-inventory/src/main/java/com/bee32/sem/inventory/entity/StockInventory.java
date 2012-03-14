@@ -12,7 +12,7 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.orm.entity.CloneUtils;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.xp.EntityExt;
 
@@ -49,7 +49,7 @@ public class StockInventory
 
     protected void _populate(StockInventory o) {
         super._populate(o);
-        snapshots = CloneUtils.cloneList(o.snapshots);
+        snapshots = CopyUtils.copyList(o.snapshots);
         workingBase = o.workingBase;
     }
 

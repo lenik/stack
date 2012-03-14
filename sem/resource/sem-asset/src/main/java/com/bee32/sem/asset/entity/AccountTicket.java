@@ -16,7 +16,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.plover.orm.cache.Redundant;
-import com.bee32.plover.orm.entity.CloneUtils;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.process.base.ProcessEntity;
 import com.bee32.sem.process.verify.AbstractVerifyProcessHandler;
@@ -63,7 +63,7 @@ public class AccountTicket
 
     protected void _populate(AccountTicket o) {
         super._populate(o);
-        items = CloneUtils.cloneList(o.items);
+        items = CopyUtils.copyList(o.items);
         total = o.total;
         nativeTotal = o.nativeTotal;
         request = o.request;

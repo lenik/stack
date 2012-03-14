@@ -11,7 +11,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 import com.bee32.icsf.principal.Group;
-import com.bee32.plover.orm.entity.CloneUtils;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.tree.TreeEntityAuto;
 
 @Entity
@@ -39,7 +39,7 @@ public class OrgUnit
         org = o.org;
         contact = (Contact) o.contact.clone();
         forWhichGroup = o.forWhichGroup;
-        roles = CloneUtils.cloneList(o.roles);
+        roles = CopyUtils.copyList(o.roles);
     }
 
     @Override

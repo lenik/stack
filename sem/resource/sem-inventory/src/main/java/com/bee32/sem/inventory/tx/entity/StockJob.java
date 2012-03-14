@@ -13,7 +13,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.orm.entity.CloneUtils;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.sem.inventory.entity.AbstractStockOrder;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.process.base.ProcessEntity;
@@ -41,7 +41,7 @@ public class StockJob
 
     protected void _populate(StockJob o) {
         super._populate(o);
-        stockOrders = CloneUtils.cloneList(o.stockOrders);
+        stockOrders = CopyUtils.copyList(o.stockOrders);
     }
 
     @OneToMany(mappedBy = "job", targetEntity = AbstractStockOrder.class, orphanRemoval = true)

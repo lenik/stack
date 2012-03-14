@@ -10,7 +10,7 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.orm.entity.CloneUtils;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.sem.process.base.ProcessEntity;
 
 @Entity
@@ -32,7 +32,7 @@ public class AccountInit
 
     protected void _populate(AccountInit o) {
         super._populate(o);
-        items = CloneUtils.cloneList(o.items);
+        items = CopyUtils.copyList(o.items);
     }
 
     @OneToMany(mappedBy = "init", orphanRemoval = true)

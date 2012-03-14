@@ -16,7 +16,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.orm.entity.CloneUtils;
+import com.bee32.plover.orm.entity.CopyUtils;
 
 @Entity
 @DiscriminatorValue("U")
@@ -62,7 +62,7 @@ public class User
         primaryRole = o.primaryRole;
         assignedGroups = new ArrayList<Group>(o.assignedGroups);
         assignedRoles = new ArrayList<Role>(o.assignedRoles);
-        emails = CloneUtils.cloneList(o.emails);
+        emails = CopyUtils.copyList(o.emails);
     }
 
     @Override

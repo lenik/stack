@@ -10,7 +10,7 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.orm.entity.CloneUtils;
+import com.bee32.plover.orm.entity.CopyUtils;
 
 @Entity
 @DiscriminatorValue(".ST")
@@ -31,7 +31,7 @@ public abstract class StockTrade
 
     protected void _populate(StockTrade o) {
         super._populate(o);
-        items = CloneUtils.cloneList(o.items);
+        items = CopyUtils.copyList(o.items);
     }
 
     @OneToMany(mappedBy = "trade", orphanRemoval = true)

@@ -16,7 +16,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.orm.entity.CloneUtils;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.sem.people.entity.Person;
 
@@ -61,8 +61,8 @@ public class EmployeeInfo
         workAbility = o.workAbility;
         employedDate = o.employedDate;
         resignedDate = o.resignedDate;
-        laborContracts = CloneUtils.cloneList(o.laborContracts);
-        skills = CloneUtils.cloneList(o.skills);
+        laborContracts = CopyUtils.copyList(o.laborContracts);
+        skills = CopyUtils.copyList(o.skills);
     }
 
     @ManyToOne

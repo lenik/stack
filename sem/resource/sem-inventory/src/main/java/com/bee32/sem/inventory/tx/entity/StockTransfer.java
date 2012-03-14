@@ -5,7 +5,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
-import com.bee32.plover.orm.entity.CloneUtils;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
@@ -38,8 +38,8 @@ public class StockTransfer
 
     protected void _populate(StockTransfer o) {
         super._populate(o);
-        source = CloneUtils.clone(o.source);
-        dest = CloneUtils.clone(o.dest);
+        source = CopyUtils.copy(o.source, this);
+        dest = CopyUtils.copy(o.dest, this);
         transferredBy = o.transferredBy;
     }
 

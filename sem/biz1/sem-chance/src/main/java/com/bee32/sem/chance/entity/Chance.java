@@ -16,7 +16,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.plover.orm.cache.Redundant;
-import com.bee32.plover.orm.entity.CloneUtils;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.sem.process.base.ProcessEntity;
 
@@ -62,8 +62,8 @@ public class Chance
         source = o.source;
         subject = o.subject;
         content = o.content;
-        parties = CloneUtils.cloneList(o.parties);
-        products = CloneUtils.cloneList(o.products);
+        parties = CopyUtils.copyList(o.parties);
+        products = CopyUtils.copyList(o.products);
         actions = new ArrayList<ChanceAction>(o.actions);
         stage = o.stage;
         address = o.address;

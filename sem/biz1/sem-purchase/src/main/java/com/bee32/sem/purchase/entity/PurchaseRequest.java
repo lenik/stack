@@ -14,7 +14,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.orm.entity.CloneUtils;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.sem.makebiz.entity.MaterialPlan;
 import com.bee32.sem.process.base.ProcessEntity;
 
@@ -43,8 +43,8 @@ public class PurchaseRequest
     protected void _populate(PurchaseRequest o) {
         super._populate(o);
         plans = new ArrayList<MaterialPlan>(o.plans);
-        items = CloneUtils.cloneList(o.items);
-        takeIns = CloneUtils.cloneList(o.takeIns);
+        items = CopyUtils.copyList(o.items);
+        takeIns = CopyUtils.copyList(o.takeIns);
     }
 
     @OneToMany

@@ -1,6 +1,7 @@
 package com.bee32.sem.make.dto;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +11,7 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.inventory.dto.MaterialCategoryDto;
@@ -57,6 +59,13 @@ public class PartDto
 
     public PartDto(int fmask) {
         super(fmask);
+    }
+
+    @Override
+    protected void _copy() {
+        children = CopyUtils.copyList(children, this);
+        xrefs = new ArrayList<PartItemDto>(xrefs);
+        materialConsumption = (ConsumptionMap) materialConsumption.clone();
     }
 
     @Override

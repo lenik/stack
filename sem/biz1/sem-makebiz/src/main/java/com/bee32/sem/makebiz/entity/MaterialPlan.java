@@ -10,7 +10,7 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.orm.entity.CloneUtils;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.sem.inventory.tx.entity.StockJob;
 
 /**
@@ -46,7 +46,7 @@ public class MaterialPlan
         super._populate(o);
         task = o.task;
         order = o.order;
-        items = CloneUtils.cloneList(o.items);
+        items = CopyUtils.copyList(o.items);
     }
 
     @ManyToOne

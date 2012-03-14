@@ -15,7 +15,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.icsf.principal.Group;
-import com.bee32.plover.orm.entity.CloneUtils;
+import com.bee32.plover.orm.entity.CopyUtils;
 
 @Entity
 @DiscriminatorValue("ORG")
@@ -53,8 +53,8 @@ public class Org
         super._populate(o);
         type = o.type;
         size = o.size;
-        orgUnits = CloneUtils.cloneList(o.orgUnits);
-        roles = CloneUtils.cloneSet(o.roles);
+        orgUnits = CopyUtils.copyList(o.orgUnits);
+        roles = CopyUtils.copySet(o.roles);
         forWhichGroup = o.forWhichGroup;
     }
 

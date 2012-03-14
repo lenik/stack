@@ -22,7 +22,7 @@ import org.hibernate.annotations.CascadeType;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.principal.Principal;
-import com.bee32.plover.orm.entity.CloneUtils;
+import com.bee32.plover.orm.entity.CopyUtils;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -60,7 +60,7 @@ public class ACL
 
     protected void _populate(ACL o) {
         super._populate(o);
-        entries = CloneUtils.cloneList(o.entries);
+        entries = CopyUtils.copyList(o.entries);
     }
 
     @Override

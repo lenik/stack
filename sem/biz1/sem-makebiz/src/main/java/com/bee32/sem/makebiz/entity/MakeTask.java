@@ -14,7 +14,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.orm.entity.CloneUtils;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.sem.process.base.ProcessEntity;
 
 /**
@@ -44,7 +44,7 @@ public class MakeTask
         super._populate(o);
         order = o.order;
         deadline = o.deadline;
-        items = CloneUtils.cloneList(o.items);
+        items = CopyUtils.copyList(o.items);
         plans = new ArrayList<MaterialPlan>(o.plans);
     }
 

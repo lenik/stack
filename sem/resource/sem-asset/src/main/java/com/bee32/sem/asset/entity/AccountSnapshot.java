@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
-import com.bee32.plover.orm.entity.CloneUtils;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.color.MomentInterval;
 
 /**
@@ -31,7 +31,7 @@ public class AccountSnapshot
 
     protected void _populate(AccountSnapshot o) {
         super._populate(o);
-        items = CloneUtils.cloneList(o.items);
+        items = CopyUtils.copyList(o.items);
     }
 
     @OneToMany(mappedBy = "snapshot")

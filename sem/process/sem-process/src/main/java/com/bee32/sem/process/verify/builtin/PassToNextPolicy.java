@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.entity.CloneUtils;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.sem.process.verify.ForVerifyContext;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyEvent;
@@ -61,7 +61,7 @@ public class PassToNextPolicy
 
     protected void _populate(PassToNextPolicy o) {
         super._populate(o);
-        sequences = CloneUtils.cloneList(o.sequences);
+        sequences = CopyUtils.copyList(o.sequences);
     }
 
     @OneToMany(mappedBy = "policy", orphanRemoval = true)

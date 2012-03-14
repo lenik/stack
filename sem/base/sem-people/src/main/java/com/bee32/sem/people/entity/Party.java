@@ -33,7 +33,7 @@ import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.orm.entity.CloneUtils;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.xp.EntityExt;
 
@@ -109,8 +109,8 @@ public abstract class Party
         bankAccount = o.bankAccount;
         memo = o.memo;
         tags = new HashSet<PartyTagname>(o.tags);
-        contacts = CloneUtils.cloneList(o.contacts);
-        records = CloneUtils.cloneList(o.records);
+        contacts = CopyUtils.copyList(o.contacts);
+        records = CopyUtils.copyList(o.records);
     }
 
     @Override

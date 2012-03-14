@@ -36,6 +36,12 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
         super(fmask);
     }
 
+    @Override
+    protected void __copy() {
+        super.__copy();
+        children = new ArrayList<self_t>(); // don't clone the whole tree.
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     protected void __marshal(E source) {

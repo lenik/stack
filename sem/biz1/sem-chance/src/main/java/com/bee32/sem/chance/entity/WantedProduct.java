@@ -11,7 +11,7 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.orm.entity.CloneUtils;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.world.thing.Thing;
@@ -45,8 +45,8 @@ public class WantedProduct
     protected void _populate(WantedProduct o) {
         super._populate(o);
         chance = o.chance;
-        attributes = CloneUtils.cloneList(o.attributes);
-        quotations = CloneUtils.cloneList(o.quotations);
+        attributes = CopyUtils.copyList(o.attributes);
+        quotations = CopyUtils.copyList(o.quotations);
         decidedMaterial = o.decidedMaterial;
     }
 

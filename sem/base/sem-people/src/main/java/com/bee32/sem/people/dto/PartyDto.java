@@ -1,6 +1,7 @@
 package com.bee32.sem.people.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -18,6 +19,7 @@ import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.xp.EntityExtDto;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.people.entity.Party;
@@ -37,7 +39,6 @@ public class PartyDto
     UserDto owner;
 
     String fullName;
-
     PartySidTypeDto sidType;
     String sid;
 
@@ -50,7 +51,6 @@ public class PartyDto
 
     String bank;
     String bankAccount;
-
     String memo;
 
     List<PartyTagnameDto> tags;
@@ -66,9 +66,15 @@ public class PartyDto
     }
 
     @Override
+    protected void _copy() {
+        tags = new ArrayList<PartyTagnameDto>(tags);
+        contacts = CopyUtils.copyList(contacts);
+        records = CopyUtils.copyList(records);
+    }
+
+    @Override
     protected void _marshal(Party source) {
         fullName = source.getFullName();
-
         sidType = mref(PartySidTypeDto.class, source.getSidType());
         sid = source.getSid();
 
@@ -81,7 +87,6 @@ public class PartyDto
 
         bank = source.getBank();
         bankAccount = source.getBankAccount();
-
         memo = source.getMemo();
 
         if (selection.contains(TAGS))

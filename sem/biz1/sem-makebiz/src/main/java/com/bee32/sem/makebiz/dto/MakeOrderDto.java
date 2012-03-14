@@ -57,6 +57,16 @@ public class MakeOrderDto
     }
 
     @Override
+    protected void _copy() {
+        super._copy();
+        tasks = new ArrayList<MakeTaskDto>();
+        plans = new ArrayList<MaterialPlanDto>();
+        deliveryNotes = new ArrayList<DeliveryNoteDto>();
+        notArrangedItems = new ArrayList<MakeOrderItemDto>();
+        notDeliveriedItems = new ArrayList<MakeOrderItemDto>();
+    }
+
+    @Override
     protected void _marshal(MakeOrder source) {
         customer = mref(PartyDto.class, source.getCustomer());
         status = source.getStatus();

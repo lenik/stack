@@ -1,13 +1,14 @@
 package com.bee32.sem.asset.dto;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.sem.asset.entity.AccountTicket;
 import com.bee32.sem.process.base.ProcessEntityDto;
 import com.bee32.sem.world.monetary.FxrQueryException;
@@ -24,11 +25,17 @@ public class AccountTicketDto
     BudgetRequestDto request;
 
     @Override
+    protected void _copy() {
+        super._copy();
+        items = CopyUtils.copyList(items, this);
+    }
+
+    @Override
     protected void _marshal(AccountTicket source) {
         if (selection.contains(ITEMS))
             items = marshalList(AccountTicketItemDto.class, source.getItems());
         else
-            items = new ArrayList<AccountTicketItemDto>();
+            items = Collections.emptyList();
 
         request = mref(BudgetRequestDto.class, source.getRequest());
     }

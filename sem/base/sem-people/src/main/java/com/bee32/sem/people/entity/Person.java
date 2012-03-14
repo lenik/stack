@@ -16,7 +16,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.entity.CloneUtils;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.sem.people.Gender;
 
 @Entity
@@ -62,7 +62,7 @@ public class Person
         timeZone = o.timeZone;
         theme = o.theme;
         censusRegister = o.censusRegister;
-        roles = CloneUtils.cloneSet(o.roles);
+        roles = CopyUtils.copySet(o.roles);
     }
 
     @Override

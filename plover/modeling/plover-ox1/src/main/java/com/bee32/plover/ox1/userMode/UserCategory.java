@@ -11,7 +11,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.orm.entity.CloneUtils;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.dict.NameDict;
 
 /**
@@ -56,7 +56,7 @@ public class UserCategory
         type = o.type;
         precision = o.precision;
         scale = o.scale;
-        items = CloneUtils.cloneList(o.items);
+        items = CopyUtils.copyList(o.items);
     }
 
     @Transient

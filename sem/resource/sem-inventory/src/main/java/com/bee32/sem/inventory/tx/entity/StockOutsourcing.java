@@ -5,7 +5,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
-import com.bee32.plover.orm.entity.CloneUtils;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.people.entity.Org;
@@ -36,8 +36,8 @@ public class StockOutsourcing
 
     protected void _populate(StockOutsourcing o) {
         super._populate(o);
-        output = CloneUtils.clone(o.output);
-        input = CloneUtils.clone(o.input);
+        output = CopyUtils.copy(o.output, this);
+        input = CopyUtils.copy(o.input, this);
         processedBy = o.processedBy;
     }
 

@@ -32,6 +32,13 @@ public class WantedProductDto
     MaterialDto decidedMaterial;
 
     @Override
+    protected void _copy() {
+        super._copy();
+        attributes = CopyUtils.copyList(attributes, this);
+        quotations = CopyUtils.copyList(quotations, this);
+    }
+
+    @Override
     protected void _marshal(WantedProduct source) {
         chance = mref(ChanceDto.class, source.getChance());
 

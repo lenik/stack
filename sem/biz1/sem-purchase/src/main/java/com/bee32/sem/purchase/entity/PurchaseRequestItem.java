@@ -19,7 +19,7 @@ import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.orm.entity.CloneUtils;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.inventory.entity.Material;
@@ -74,7 +74,7 @@ public class PurchaseRequestItem
         quantity = o.quantity;
         preferredSupplier = o.preferredSupplier;
         additionalRequirement = o.additionalRequirement;
-        inquiries = CloneUtils.cloneList(o.inquiries);
+        inquiries = CopyUtils.copyList(o.inquiries);
         acceptedInquiry = o.acceptedInquiry;
         destWarehouse = o.destWarehouse;
     }

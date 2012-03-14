@@ -10,7 +10,7 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.orm.entity.CloneUtils;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.typePref.TypePrefEntity;
 
 @Entity
@@ -41,7 +41,7 @@ public class EntityInfo
         nameOtf = o.nameOtf;
         label = o.label;
         description = o.description;
-        columns = CloneUtils.cloneList(o.columns);
+        columns = CopyUtils.copyList(o.columns);
     }
 
     @Column(length = 20)
