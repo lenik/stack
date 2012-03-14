@@ -18,14 +18,23 @@ public class BaseDto_MKey {
             throw new NullPointerException("dtoType");
         if (marshalType == null)
             throw new NullPointerException("marshalType");
+
+        // Unwrap hibernate proxy if necesary:
+        // if (source instanceof HibernateProxy) {
+        // LazyInitializer lazyInitializer = ((HibernateProxy)
+        // source).getHibernateLazyInitializer();
+        // Object target = lazyInitializer.getImplementation(); // (sessionImpl);
+        // source = (Entity<?>) target;
+        // }
+
         this.source = source;
         this.dtoType = dtoType;
         this.marshalType = marshalType;
-        hashCode();
     }
 
     static boolean debugOsiv = false;
 
+    @Deprecated
     static final Class<?> LazyInitializationException_class;
     static {
         try {
@@ -38,16 +47,17 @@ public class BaseDto_MKey {
     @Override
     public int hashCode() {
         int hash = 0;
-        try {
-            hash += source.hashCode();
-        } catch (Exception e) {
-            if (LazyInitializationException_class.isAssignableFrom(e.getClass())) {
-                logger.error("Not in open-session: " + e.getMessage());
-                if (debugOsiv)
-                    e.printStackTrace();
-            }
-            throw e;
-        }
+        hash += System.identityHashCode(source);
+        // try {
+        // hash += source.hashCode();
+        // } catch (Exception e) {
+        // if (LazyInitializationException_class.isAssignableFrom(e.getClass())) {
+        // logger.error("Not in open-session: " + e.getMessage());
+        // if (debugOsiv)
+        // e.printStackTrace();
+        // }
+        // throw e;
+        // }
         hash += dtoType.hashCode();
         // hash += marshalType.hashCode();
         return hash;
@@ -56,7 +66,7 @@ public class BaseDto_MKey {
     @Override
     public boolean equals(Object obj) {
         BaseDto_MKey o = (BaseDto_MKey) obj;
-        if (!source.equals(o.source))
+        if (source != o.source)
             return false;
         if (!dtoType.equals(o.dtoType))
             return false;
