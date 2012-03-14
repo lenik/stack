@@ -7,6 +7,8 @@ import java.util.List;
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.config.DecimalConfig;
@@ -188,17 +190,27 @@ public class MakeOrderDto
      * 按排物料计划（外购产品）
      * @return
      */
-    public List<MaterialPlanItemDto> arrangeMaterialPlan() {
+    public void arrangeMaterialPlan(MaterialPlanDto materialPlan) {
         List<MaterialPlanItemDto> planItems = new ArrayList<MaterialPlanItemDto>();
 
         for (MakeOrderItemDto orderItem : notArrangedItems) {
             MaterialPlanItemDto planItem = new MaterialPlanItemDto().create();
+            planItem.setMaterialPlan(materialPlan);
             planItem.setMaterial(orderItem.getPart().getTarget());
             planItem.setQuantity(orderItem.getQuantity());
 
             planItems.add(planItem);
         }
-        return planItems;
+
+        if(planItems.isEmpty())
+            throw new IllegalStateException("此订单上的产品已经全部安排为生产任务或外购物料计划!");
+
+        materialPlan.setOrder(this);
+        materialPlan.setItems(planItems);
+        if (StringUtils.isEmpty(materialPlan.getLabel()))
+            materialPlan.setLabel(this.getLabel());
+
+
     }
 
     /**

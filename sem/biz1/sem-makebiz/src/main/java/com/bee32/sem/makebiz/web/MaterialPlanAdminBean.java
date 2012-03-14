@@ -87,15 +87,12 @@ public class MaterialPlanAdminBean
     public void setMakeOrderToApply(MakeOrderDto order) {
         MaterialPlanDto materialPlan = getOpenedObject();
         MakeOrderDto makeOrder = reload(order, MakeOrderDto.NOT_ARRANGED_ITEMS);
-        List<MaterialPlanItemDto> planItems = makeOrder.arrangeMaterialPlan();
-        if (planItems.isEmpty()) {
-            uiLogger.error("此订单上的产品已经全部安排为生产任务或外购物料计划!");
-            return;
+        try {
+            makeOrder.arrangeMaterialPlan(materialPlan);
+            uiLogger.info("计算完成.");
+        } catch (Exception e) {
+            uiLogger.error("错误", e);
         }
-        materialPlan.setOrder(order);
-        materialPlan.setItems(planItems);
-        if (StringUtils.isEmpty(materialPlan.getLabel()))
-            materialPlan.setLabel(makeOrder.getLabel());
     }
 
 
