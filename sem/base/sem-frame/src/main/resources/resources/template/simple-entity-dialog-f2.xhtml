@@ -40,7 +40,7 @@
         <h:panelGroup id="searchFragments" layout="block" style="padding: .2em 0em; background: #eee">
             <ui:repeat id="repeat" var="fragment" value="${dialogBean.searchFragments}">
                 <p:commandButton id="removeButton" value="${fragment.entryLabel}" async="true"
-                    actionListener="${fragment.detach}" update=":@form, :${dialogForm}" />
+                    actionListener="${fragment.detach}" onclick="waitbox.show()" oncomplete="waitbox.hide()" update=":@form, :${dialogForm}" />
             </ui:repeat>
         </h:panelGroup>
     </ui:define>

@@ -17,8 +17,8 @@
             <ui:insert name="toolbar.left">
                 <p:toolbarGroup align="left">
                     <p:commandButton id="createButton" value="新建" rendered="${creatable != null ? creatable : true}"
-                        actionListener="${bean.showCreateForm}" oncomplete="${plainEditForm ? '' : 'editDialog.show()'}"
-                        update="${_contentUpdate}" />
+                        actionListener="${bean.showCreateForm}" onclick="waitbox.show()"
+                        oncomplete="waitbox.hide(); ${plainEditForm ? '' : 'editDialog.show()'}" update="${_contentUpdate}" />
                     <!-- TODO toggle button in PF-3.1: searchPanel toggler -->
                     <ui:insert name="toolbar.left.1" />
                 </p:toolbarGroup>
@@ -28,10 +28,10 @@
                     <ui:insert name="toolbar.right.1" />
                     <p:commandButton id="viewButton" value="查看" rendered="${readable != null ? readable : true}"
                         disabled="${not bean.selected}" actionListener="${bean.showContent}" update="${_contentUpdate}"
-                        oncomplete="${plainEditForm ? '' : 'editDialog.show()'}" />
+                        onclick="waitbox.show()" oncomplete="waitbox.hide(); ${plainEditForm ? '' : 'editDialog.show()'}" />
                     <p:commandButton id="editButton" value="修改" rendered="${editable != null ? editable : true}"
                         disabled="${not bean.selected or not bean.selectionEditable}" actionListener="${bean.showEditForm}"
-                        update="${_contentUpdate}" oncomplete="${plainEditForm ? '' : 'editDialog.show()'}" />
+                        update="${_contentUpdate}" onclick="waitbox.show()" oncomplete="waitbox.hide(); ${plainEditForm ? '' : 'editDialog.show()'}" />
                     <c:if test="${verifiable}">
                         <p:separator />
                         <sem:singleVerifierSupportButton id="verifyButton" selection="${bean.selection}"
@@ -101,7 +101,7 @@
                 message="确定要删除吗?" severity="alert" modal="true">
                 <h:form id="deleteConfirmForm" style="margin: 0em 7em 1em">
                     <p:commandButton id="ok" value="确定" update=":mainForm ${_contentUpdate} ${mirrorTargets}"
-                        actionListener="${bean.deleteSelection}" oncomplete="deleteConfirmDialog.hide()" />
+                        actionListener="${bean.deleteSelection}" onclick="waitbox.show()" oncomplete="waitbox.hide(); deleteConfirmDialog.hide()" />
                     <p:commandButton id="cancel" value="取消" onclick="deleteConfirmDialog.hide()" type="button" />
                 </h:form>
             </p:confirmDialog>
@@ -191,7 +191,8 @@
             <ui:repeat id="repeat" var="fragment" value="${bean.searchFragments}">
                 <c:set var="form" value="${component.parent.parent.parent.clientId}" />
                 <p:commandButton id="removeButton" value="${fragment.entryLabel}" async="true"
-                    actionListener="${fragment.detach}" update=":searchForm:searchFragments, ${_searchUpdates}" />
+                    actionListener="${fragment.detach}" onclick="waitbox.show()" oncomplete="waitbox.hide()"
+                    update=":searchForm:searchFragments, ${_searchUpdates}" />
             </ui:repeat>
         </h:panelGroup>
     </ui:define>
@@ -216,12 +217,14 @@
                                 （您正在浏览数据中…）
                             </h:panelGroup>
                         </h:panelGroup>
-                    </td>
-                    <td align="right">
-                        <h:panelGroup rendered="${bean.editing or not plainEditForm}">
+                        <h:panelGroup rendered="${copyable and (bean.editing or not plainEditForm)}">
                             <p:commandButton id="dup-validated" value="创建副本" actionListener="${bean.saveDup}"
                                 disabled="${not bean.editing}" update="${_contentUpdate} ${_indexUpdate} ${mirrorTargets}"
                                 rendered="${not plainEditForm}" onclick="waitbox.show()" oncomplete="waitbox.hide(); editDialog.shakeOnFail(args)" />
+                        </h:panelGroup>
+                    </td>
+                    <td align="right">
+                        <h:panelGroup rendered="${bean.editing or not plainEditForm}">
                             <p:commandButton id="save-validated" value="保存" actionListener="${bean.save}"
                                 disabled="${not bean.editing}" update="${_contentUpdate} ${_indexUpdate} ${mirrorTargets}"
                                 onclick="waitbox.show()" oncomplete="waitbox.hide(); ${plainEditForm ? '' : 'editDialog.hideValidated(args)'}" />
