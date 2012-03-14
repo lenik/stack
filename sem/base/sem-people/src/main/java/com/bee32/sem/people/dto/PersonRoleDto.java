@@ -3,11 +3,11 @@ package com.bee32.sem.people.dto;
 import javax.free.ParseException;
 import javax.validation.constraints.NotNull;
 
+import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.c.CEntityDto;
 import com.bee32.plover.util.TextUtil;
-import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.people.entity.PersonRole;
 
 public class PersonRoleDto

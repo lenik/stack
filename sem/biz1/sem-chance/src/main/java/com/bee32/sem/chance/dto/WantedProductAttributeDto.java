@@ -4,12 +4,12 @@ import javax.free.ParseException;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.chance.entity.WantedProductAttribute;
-import com.bee32.sem.frame.ui.IEnclosedObject;
 
 public class WantedProductAttributeDto
         extends EntityDto<WantedProductAttribute, Long>

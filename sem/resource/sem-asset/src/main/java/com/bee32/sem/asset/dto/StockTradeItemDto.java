@@ -6,10 +6,10 @@ import java.util.Date;
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
+import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.MomentIntervalDto;
 import com.bee32.sem.asset.entity.StockTradeItem;
-import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;

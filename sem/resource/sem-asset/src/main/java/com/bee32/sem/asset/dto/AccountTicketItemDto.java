@@ -4,9 +4,9 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.icsf.principal.UserDto;
+import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.asset.entity.AccountTicketItem;
-import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.process.base.ProcessEntityDto;
 import com.bee32.sem.process.verify.dto.IVerifiableDto;

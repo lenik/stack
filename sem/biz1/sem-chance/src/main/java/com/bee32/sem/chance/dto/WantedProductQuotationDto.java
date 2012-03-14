@@ -8,9 +8,9 @@ import javax.free.ParseException;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.chance.entity.WantedProductQuotation;
-import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.world.thing.AbstractItemDto;
 
 public class WantedProductQuotationDto
@@ -33,7 +33,6 @@ public class WantedProductQuotationDto
     @Override
     public void setEnclosingObject(WantedProductDto enclosingObject) {
         setProduct(enclosingObject);
-
     }
 
     @Override
@@ -52,7 +51,6 @@ public class WantedProductQuotationDto
     protected void _parse(TextMap map)
             throws ParseException {
         throw new NotImplementedException();
-
     }
 
     public WantedProductDto getProduct() {

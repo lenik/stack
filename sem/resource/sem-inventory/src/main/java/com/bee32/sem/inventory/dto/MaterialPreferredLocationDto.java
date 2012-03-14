@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 import javax.free.ParseException;
 
+import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
-import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.inventory.entity.MaterialPreferredLocation;
 
 public class MaterialPreferredLocationDto

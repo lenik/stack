@@ -4,13 +4,13 @@ import java.io.Serializable;
 
 import javax.free.ParseException;
 
+import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.c.CEntityDto;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.chance.entity.ChanceParty;
-import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.people.dto.PartyDto;
 
 public class ChancePartyDto

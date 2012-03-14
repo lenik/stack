@@ -1,4 +1,4 @@
-package com.bee32.sem.frame.ui;
+package com.bee32.plover.arch.util;
 
 public interface IEnclosedObject<T> {
 

@@ -5,9 +5,9 @@ import java.util.Date;
 
 import javax.free.ParseException;
 
+import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.make.dto.PartDto;
 import com.bee32.sem.makebiz.entity.DeliveryNoteItem;

@@ -8,12 +8,13 @@ import javax.free.ParseException;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.orm.util.dto.LastModifiedComparator;
 import com.bee32.sem.chance.entity.WantedProduct;
 import com.bee32.sem.chance.entity.WantedProductXP;
-import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.world.thing.ThingDto;
 

@@ -18,6 +18,8 @@ import org.apache.commons.collections15.functors.InstantiateFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.plover.arch.util.IEnclosedObject;
+import com.bee32.plover.arch.util.IEnclosingContext;
 import com.bee32.plover.arch.util.dto.BaseDto;
 
 @NotThreadSafe

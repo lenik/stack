@@ -7,9 +7,9 @@ import javax.free.TypeConvertException;
 import javax.free.UnexpectedException;
 
 import com.bee32.icsf.principal.UserDto;
+import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.MomentIntervalDto;
-import com.bee32.sem.frame.ui.IEnclosedObject;
 import com.bee32.sem.mail.MailFlags;
 import com.bee32.sem.mail.entity.MailDelivery;
 import com.bee32.sem.mail.entity.MailOrientation;

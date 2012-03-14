@@ -20,6 +20,7 @@ import org.hibernate.annotations.Index;
 import com.bee32.plover.arch.bean.IPropertyAccessor;
 import com.bee32.plover.arch.generic.IParameterized;
 import com.bee32.plover.arch.generic.IParameterizedType;
+import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.sem.inventory.process.IStockOrderVerifyContext;
 import com.bee32.sem.inventory.process.StockOrderVerifySupport;
 import com.bee32.sem.inventory.tx.entity.StockJob;
@@ -41,7 +42,7 @@ import com.bee32.sem.world.thing.AbstractItemList;
 @SequenceGenerator(name = "idgen", sequenceName = "stock_order_seq", allocationSize = 1)
 public class AbstractStockOrder<Item extends StockOrderItem>
         extends AbstractStockItemList<Item>
-        implements IParameterized, IVerifiable<IStockOrderVerifyContext> {
+        implements IParameterized, IVerifiable<IStockOrderVerifyContext>, IEnclosedObject<StockJob> {
 
     private static final long serialVersionUID = 1L;
 
@@ -83,6 +84,16 @@ public class AbstractStockOrder<Item extends StockOrderItem>
     @Override
     public IParameterizedType getParameterizedType() {
         return StockOrderParameterizedType.INSTANCE;
+    }
+
+    @Override
+    public StockJob getEnclosingObject() {
+        return getJob();
+    }
+
+    @Override
+    public void setEnclosingObject(StockJob enclosingObject) {
+        setJob(enclosingObject);
     }
 
     @Override
