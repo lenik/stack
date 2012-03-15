@@ -18,7 +18,7 @@
 
 	<script language="javascript">
         function calcDigest() {
-            var p = $.sha1($("#passPlain").val());
+            var p = $.sha1($("#loginForm\\:passPlain").val());
 
             var c = $("#loginForm\\:challenge").val();
             var p2 = $.sha1(c + p + c);
@@ -56,7 +56,7 @@
 			<t:panelGrid columns="2">
                 <t:panelGroup colspan="2">
                     <t:panelGrid columns="1">
-                        <h:outputText value="使用本系统前，需要确保使用了正确的浏览器，并导入了本公司的证书!" style="font-weight:bold;"/>
+                        <h:outputText value="使用本系统前，需确保使用正确的浏览器，并导入本公司的证书!" style="font-weight:bold;"/>
                         <h:outputText value="关于浏览器下载和证书导入的相关说明请参考如下地址:" style="font-weight:bold;"/>
                         <a target="_blank" href="http://ca.bee32.com/readme.html">http://ca.bee32.com/readme.html</a>
                     </t:panelGrid>
@@ -66,19 +66,22 @@
                     <hr style="width:100%"/>
                 </t:panelGroup>
 
-				<h:outputLabel for="username" value="用户名" />
+                <t:panelGroup style="text-align:right;">
+				    <h:outputLabel for="username" value="用户名:"/>
+                </t:panelGroup>
 				<p:inputText id="username" value="#{loginBean.username}" label="用户名"/>
 
-				<h:outputLabel for="password" value="密码" />
+                <t:panelGroup style="text-align:right;">
+				    <h:outputLabel for="password" value="密码:"/>
+                </t:panelGroup>
 				<t:panelGroup>
-					<input id="passPlain" type="password" onchange="calcDigest();" />
+					<p:inputText id="passPlain" type="password" onchange="calcDigest();" label="密码"/>
 
 					<h:inputHidden id="password" value="#{loginBean.password}" label="密码"/>
 				</t:panelGroup>
 
-				<t:panelGroup colspan="2">
-					<p:commandButton value="登录" actionListener="#{loginBean.login}" oncomplete="handleLoginRequest(xhr, status, args)"/>
-				</t:panelGroup>
+				<t:panelGroup/>
+			    <p:commandButton value="登录" actionListener="#{loginBean.login}" oncomplete="handleLoginRequest(xhr, status, args)"/>
 			</t:panelGrid>
 		</h:form>
 
@@ -106,7 +109,7 @@
     <div style="margin-top: 10px;">
         <div style="display: inline">版权所有©2010-2011 海宁市智恒软件有限公司</div>
         <div style="display: inline; margin-left: 50px;">
-            <a href="${location.WEB_APP}/site/contact.jsf">联系我们</a>
+            <a href="${location.WEB_APP}/3/15/1/1/contact.jsf">联系我们</a>
         </div>
     </div>
 </h:body>
