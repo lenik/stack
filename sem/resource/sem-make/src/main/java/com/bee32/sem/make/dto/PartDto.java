@@ -25,6 +25,7 @@ public class PartDto
 
     public static final int CHILDREN = 1;
     public static final int XREFS = 2;
+    public static final int TECHNICS = 4;
     public static final int MATERIAL_CONSUMPTION = 0x01000000 | CHILDREN;
 
     PartDto obsolete;
@@ -47,6 +48,8 @@ public class PartDto
     ConsumptionMap materialConsumption;
 
     MaterialCategoryDto category;
+
+    List<TechnicDto> technics;
 
     public PartDto() {
         super();
@@ -92,6 +95,11 @@ public class PartDto
         equipmentCost = source.getEquipmentCost();
 
         category = mref(MaterialCategoryDto.class, source.getCategory());
+
+        if (selection.contains(TECHNICS))
+            technics = marshalList(TechnicDto.class, 0, source.getTechincs());
+        else
+            technics = Collections.emptyList();
     }
 
     @Override
@@ -116,6 +124,9 @@ public class PartDto
         target.setEquipmentCost(equipmentCost);
 
         merge(target, "category", this.category);
+
+        if (selection.contains(TECHNICS))
+            mergeList(target, "technics", technics);
     }
 
     @Override
@@ -264,5 +275,28 @@ public class PartDto
 
     public void setCategory(MaterialCategoryDto category) {
         this.category = category;
+    }
+
+    public List<TechnicDto> getTechnics() {
+        return technics;
+    }
+
+    public void setTechnics(List<TechnicDto> technics) {
+        this.technics = technics;
+    }
+
+    public boolean addTechnic(TechnicDto technic) {
+        if (technic == null)
+            throw new NullPointerException("technic");
+        if (technics.contains(technic))
+            return false;
+        technics.add(technic);
+        return true;
+    }
+
+    public boolean removeTechnic(TechnicDto technic) {
+        if (technic == null)
+            throw new NullPointerException("technic");
+        return technics.remove(technic);
     }
 }

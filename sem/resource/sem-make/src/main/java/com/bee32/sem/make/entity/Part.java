@@ -65,6 +65,8 @@ public class Part
 
     MaterialCategory category;
 
+    List<Technic> techincs;
+
     public Part() {
         // Default valid duration = 1 year.
         Calendar cal = Calendar.getInstance();
@@ -97,6 +99,7 @@ public class Part
         electricityFee = o.electricityFee;
         equipmentCost = o.equipmentCost;
         category = o.category;
+        techincs = CloneUtils.cloneList(o.techincs);
     }
 
     /**
@@ -351,6 +354,19 @@ public class Part
             throws FxrQueryException {
         BigDecimal price = priceStrategy.getPrice(this);
         return price;
+    }
+
+    /**
+     * 工艺
+     */
+    @OneToMany(orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
+    public List<Technic> getTechincs() {
+        return techincs;
+    }
+
+    public void setTechincs(List<Technic> techincs) {
+        this.techincs = techincs;
     }
 
     /**
