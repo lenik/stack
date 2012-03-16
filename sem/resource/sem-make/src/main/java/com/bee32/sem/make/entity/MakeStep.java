@@ -53,20 +53,6 @@ public class MakeStep
     int order;
 
     /**
-     * 工艺的输入物料
-     *
-     * @see MakeStepConsumption
-     */
-    // @ManyToOne(optional = true)
-    // public Material getInput() {
-    // return input;
-    // }
-    //
-    // public void setInput(Material input) {
-    // this.input = input;
-    // }
-
-    /**
      * 工艺的输出物料
      */
     @ManyToOne
