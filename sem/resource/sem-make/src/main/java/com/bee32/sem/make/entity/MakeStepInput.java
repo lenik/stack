@@ -17,8 +17,8 @@ import com.bee32.sem.inventory.entity.Material;
  */
 @Entity
 @Green
-@SequenceGenerator(name = "idgen", sequenceName = "consumable_material_seq", allocationSize = 1)
-public class MakeStepConsumption
+@SequenceGenerator(name = "idgen", sequenceName = "make_step_input", allocationSize = 1)
+public class MakeStepInput
         extends UIEntityAuto<Integer>
         implements DecimalConfig {
 
