@@ -6,7 +6,7 @@ import com.bee32.sem.make.entity.MakeProcess;
 /**
  * 工艺流转单
  */
-public class MakeInstance
+public class MakeProcessInstance
         extends MomentInterval {
 
     private static final long serialVersionUID = 1L;

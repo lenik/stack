@@ -1,6 +1,7 @@
 package com.bee32.sem.make.entity;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class MakeStep
     Date validateTime;
     String equipment;
     String operation;
-    List<MakeStepConsumption> consumedMaterials;
+    List<MakeStepInput> inputs = new ArrayList<MakeStepInput>();
 
     int order;
 
@@ -186,14 +187,14 @@ public class MakeStep
     }
 
     @OneToMany
-    public List<MakeStepConsumption> getConsumedMaterials() {
-        return consumedMaterials;
+    public List<MakeStepInput> getInputs() {
+        return inputs;
     }
 
-    public void setConsumableMaterials(List<MakeStepConsumption> consumedMaterials) {
-        if (consumedMaterials == null)
-            throw new NullPointerException("consumedMaterials");
-        this.consumedMaterials = consumedMaterials;
+    public void setInputs(List<MakeStepInput> inputs) {
+        if (inputs == null)
+            throw new NullPointerException("inputs");
+        this.inputs = inputs;
     }
 
     /**
