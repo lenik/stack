@@ -47,7 +47,8 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <icsf:chooseEntityTypeDialog id="c_entity" target="${bean.entityType}" update=":editDialog:form" />
+        <icsf:chooseEntityTypeDialog id="c_entity" target="${bean.descriptorToApply}"
+            update=":editDialog:form" />
         <icsf:chooseACLDialog id="c_acl" target="${obj.preferredACL}" update=":editDialog:form" />
     </ui:define>
 

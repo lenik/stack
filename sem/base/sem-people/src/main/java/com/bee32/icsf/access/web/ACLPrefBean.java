@@ -16,7 +16,7 @@ public class ACLPrefBean
         super(ACLPref.class, ACLPrefDto.class, 0);
     }
 
-    public void setEntityType(EntityTypeDescriptor descriptor) {
+    public void setDescriptorToApply(EntityTypeDescriptor descriptor) {
         ACLPrefDto pref = getOpenedObject();
         pref.setType(descriptor.getEntityType());
     }
