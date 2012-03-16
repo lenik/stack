@@ -124,15 +124,19 @@ public class Part
 
     public void setTarget(Material target) {
         this.target = target;
+        if (target != null)
+            category = target.getCategory();
     }
 
     /**
-     * 冗余物料分类，便于统计某个物料分类下的BOM数量
+     * 【冗余】 物料分类，便于统计某个物料分类下的BOM数量
      *
-     * @return
+     * 相当于 target.category.
      */
     @ManyToOne
     public MaterialCategory getCategory() {
+        if (category == null && target != null)
+            category = target.getCategory();
         return category;
     }
 
