@@ -13,35 +13,37 @@ import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.inventory.entity.Material;
 
 /**
- *  工艺中的消耗材料
- *
+ * 工艺中的消耗材料
  */
 @Entity
 @Green
 @SequenceGenerator(name = "idgen", sequenceName = "consumable_material_seq", allocationSize = 1)
-public class ConsumableMaterial extends UIEntityAuto<Integer> implements DecimalConfig {
+public class MakeStepConsumption
+        extends UIEntityAuto<Integer>
+        implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
-    MakeProcess technic;
+    MakeStep step;
 
     Material material;
     BigDecimal quantity = new BigDecimal(0);
 
-    @ManyToOne(optional=false)
-    public MakeProcess getTechnic() {
-        return technic;
+    @ManyToOne(optional = false)
+    public MakeStep getStep() {
+        return step;
     }
 
-    public void setTechnic(MakeProcess technic) {
-        this.technic = technic;
+    public void setStep(MakeStep step) {
+        this.step = step;
     }
 
     /**
      * 消耗材料对应的物料
+     *
      * @return
      */
-    @ManyToOne(optional=false)
+    @ManyToOne(optional = false)
     public Material getMaterial() {
         return material;
     }
@@ -52,6 +54,7 @@ public class ConsumableMaterial extends UIEntityAuto<Integer> implements Decimal
 
     /**
      * 数量
+     *
      * @return
      */
     @Column(scale = QTY_ITEM_SCALE, precision = QTY_ITEM_PRECISION, nullable = false)

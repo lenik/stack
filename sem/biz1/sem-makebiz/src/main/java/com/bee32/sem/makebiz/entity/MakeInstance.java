@@ -1,7 +1,7 @@
 package com.bee32.sem.makebiz.entity;
 
 import com.bee32.plover.ox1.color.MomentInterval;
-import com.bee32.sem.make.entity.MakeProcess;
+import com.bee32.sem.make.entity.MakeStep;
 
 /**
  * 工艺流转单
@@ -11,6 +11,6 @@ public class MakeInstance
 
     private static final long serialVersionUID = 1L;
 
-    MakeProcess def;
+    MakeStep def;
 
 }

@@ -1,7 +1,7 @@
 package com.bee32.sem.makebiz.entity;
 
 import com.bee32.plover.ox1.color.MomentInterval;
-import com.bee32.sem.make.entity.MakeProcessStep;
+import com.bee32.sem.make.entity.MakeStep;
 
 public class MakeInstanceStep
         extends MomentInterval {
@@ -9,6 +9,6 @@ public class MakeInstanceStep
     private static final long serialVersionUID = 1L;
 
     MakeInstance instance;
-    MakeProcessStep def;
+    MakeStep def;
 
 }

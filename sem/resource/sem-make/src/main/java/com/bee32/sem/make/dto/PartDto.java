@@ -27,7 +27,7 @@ public class PartDto
 
     public static final int CHILDREN = 1;
     public static final int XREFS = 2;
-    public static final int TECHNICS = 4;
+    public static final int STEPS = 4;
     public static final int MATERIAL_CONSUMPTION = 0x01000000 | CHILDREN;
 
     PartDto obsolete;
@@ -51,7 +51,7 @@ public class PartDto
 
     MaterialCategoryDto category;
 
-    List<MakeProcessDto> technics;
+    List<MakeStepDto> steps;
 
     public PartDto() {
         super();
@@ -105,10 +105,10 @@ public class PartDto
 
         category = mref(MaterialCategoryDto.class, source.getCategory());
 
-        if (selection.contains(TECHNICS))
-            technics = marshalList(MakeProcessDto.class, 0, source.getTechincs());
+        if (selection.contains(STEPS))
+            steps = marshalList(MakeStepDto.class, 0, source.getSteps());
         else
-            technics = Collections.emptyList();
+            steps = Collections.emptyList();
     }
 
     @Override
@@ -134,8 +134,8 @@ public class PartDto
 
         merge(target, "category", this.category);
 
-        if (selection.contains(TECHNICS))
-            mergeList(target, "technics", technics);
+        if (selection.contains(STEPS))
+            mergeList(target, "steps", steps);
     }
 
     @Override
@@ -286,26 +286,26 @@ public class PartDto
         this.category = category;
     }
 
-    public List<MakeProcessDto> getTechnics() {
-        return technics;
+    public List<MakeStepDto> getTechnics() {
+        return steps;
     }
 
-    public void setTechnics(List<MakeProcessDto> technics) {
-        this.technics = technics;
+    public void setTechnics(List<MakeStepDto> technics) {
+        this.steps = technics;
     }
 
-    public boolean addTechnic(MakeProcessDto technic) {
+    public boolean addTechnic(MakeStepDto technic) {
         if (technic == null)
             throw new NullPointerException("technic");
-        if (technics.contains(technic))
+        if (steps.contains(technic))
             return false;
-        technics.add(technic);
+        steps.add(technic);
         return true;
     }
 
-    public boolean removeTechnic(MakeProcessDto technic) {
+    public boolean removeTechnic(MakeStepDto technic) {
         if (technic == null)
             throw new NullPointerException("technic");
-        return technics.remove(technic);
+        return steps.remove(technic);
     }
 }
