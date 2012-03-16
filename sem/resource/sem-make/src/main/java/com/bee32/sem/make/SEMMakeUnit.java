@@ -6,7 +6,7 @@ import com.bee32.sem.inventory.SEMInventoryUnit;
 import com.bee32.sem.make.entity.ConsumableMaterial;
 import com.bee32.sem.make.entity.Part;
 import com.bee32.sem.make.entity.PartItem;
-import com.bee32.sem.make.entity.Technic;
+import com.bee32.sem.make.entity.MakeProcess;
 
 @ImportUnit({ SEMInventoryUnit.class })
 public class SEMMakeUnit
@@ -16,7 +16,7 @@ public class SEMMakeUnit
     protected void preamble() {
         add(Part.class);
         add(PartItem.class);
-        add(Technic.class);
+        add(MakeProcess.class);
         add(ConsumableMaterial.class);
     }
 

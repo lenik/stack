@@ -23,17 +23,17 @@ public class ConsumableMaterial extends UIEntityAuto<Integer> implements Decimal
 
     private static final long serialVersionUID = 1L;
 
-    Technic technic;
+    MakeProcess technic;
 
     Material material;
     BigDecimal quantity = new BigDecimal(0);
 
     @ManyToOne(optional=false)
-    public Technic getTechnic() {
+    public MakeProcess getTechnic() {
         return technic;
     }
 
-    public void setTechnic(Technic technic) {
+    public void setTechnic(MakeProcess technic) {
         this.technic = technic;
     }
 

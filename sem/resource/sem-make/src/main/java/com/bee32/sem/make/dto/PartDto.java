@@ -51,7 +51,7 @@ public class PartDto
 
     MaterialCategoryDto category;
 
-    List<TechnicDto> technics;
+    List<MakeProcessDto> technics;
 
     public PartDto() {
         super();
@@ -106,7 +106,7 @@ public class PartDto
         category = mref(MaterialCategoryDto.class, source.getCategory());
 
         if (selection.contains(TECHNICS))
-            technics = marshalList(TechnicDto.class, 0, source.getTechincs());
+            technics = marshalList(MakeProcessDto.class, 0, source.getTechincs());
         else
             technics = Collections.emptyList();
     }
@@ -286,15 +286,15 @@ public class PartDto
         this.category = category;
     }
 
-    public List<TechnicDto> getTechnics() {
+    public List<MakeProcessDto> getTechnics() {
         return technics;
     }
 
-    public void setTechnics(List<TechnicDto> technics) {
+    public void setTechnics(List<MakeProcessDto> technics) {
         this.technics = technics;
     }
 
-    public boolean addTechnic(TechnicDto technic) {
+    public boolean addTechnic(MakeProcessDto technic) {
         if (technic == null)
             throw new NullPointerException("technic");
         if (technics.contains(technic))
@@ -303,7 +303,7 @@ public class PartDto
         return true;
     }
 
-    public boolean removeTechnic(TechnicDto technic) {
+    public boolean removeTechnic(MakeProcessDto technic) {
         if (technic == null)
             throw new NullPointerException("technic");
         return technics.remove(technic);

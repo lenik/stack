@@ -65,7 +65,7 @@ public class Part
 
     MaterialCategory category;
 
-    List<Technic> techincs;
+    List<MakeProcess> techincs;
 
     public Part() {
         // Default valid duration = 1 year.
@@ -99,7 +99,7 @@ public class Part
         electricityFee = o.electricityFee;
         equipmentCost = o.equipmentCost;
         category = o.category;
-        techincs = CloneUtils.cloneList(o.techincs);
+        techincs = CopyUtils.copyList(o.techincs);
     }
 
     /**
@@ -361,11 +361,11 @@ public class Part
      */
     @OneToMany(orphanRemoval = true)
     @Cascade(CascadeType.ALL)
-    public List<Technic> getTechincs() {
+    public List<MakeProcess> getTechincs() {
         return techincs;
     }
 
-    public void setTechincs(List<Technic> techincs) {
+    public void setTechincs(List<MakeProcess> techincs) {
         this.techincs = techincs;
     }
 
