@@ -229,8 +229,8 @@
                                 disabled="${not bean.editing}" update="${_contentUpdate} ${_indexUpdate} ${mirrorTargets}"
                                 onclick="waitbox.show()" oncomplete="waitbox.hide(); ${plainEditForm ? '' : 'editDialog.hideValidated(args)'}" />
                             <p:commandButton id="cancel" value="${bean.editing  ? '取消' : '关闭'}"
-                                onclick="${plainEditForm ? '' : 'editDialog.hide()'}" actionListener="${bean.showIndex}"
-                                update="${plainEditForm ? _contentUpdate : '@none'}" />
+                                onclick="waitbox.show(); ${plainEditForm ? '' : 'editDialog.hide()'}" oncomplete="waitbox.hide()"
+                                actionListener="${bean.showIndex}" update="${plainEditForm ? _contentUpdate : '@none'}" />
                         </h:panelGroup>
                     </td>
                 </tr>

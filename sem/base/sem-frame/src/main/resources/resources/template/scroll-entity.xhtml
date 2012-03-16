@@ -15,8 +15,9 @@
             </p:toolbarGroup>
             <p:toolbarGroup align="left">
                 <p:commandButton id="createButton" value="新建" actionListener="${bean.showCreateForm}"
-                    disabled="${bean.editing}" update="${_contentUpdate}" />
+                    onclick="waitbox.show()" oncomplete="waitbox.hide()" disabled="${bean.editing}" update="${_contentUpdate}" />
                 <p:commandButton id="editButton" value="修改" actionListener="${bean.showEditForm}"
+                    onclick="waitbox.show()" oncomplete="waitbox.hide()"
                     disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" update="${_contentUpdate}" />
                 <c:if test="${verifiable}">
                     <p:separator />
@@ -31,18 +32,22 @@
             </p:toolbarGroup>
             <p:toolbarGroup align="right">
                 <p:commandButton id="first" value="第一条" actionListener="${bean.gotoFirst}"
-                    disabled="${bean.first or bean.dataModel.rowCount == 0 or bean.editing}" update="mainForm, ${_contentUpdate}" />
+                    disabled="${bean.first or bean.dataModel.rowCount == 0 or bean.editing}" update="mainForm, ${_contentUpdate}"
+                    onclick="waitbox.show()" oncomplete="waitbox.hide()" />
                 <p:commandButton id="previous" value="上一条" actionListener="${bean.gotoPrevious}"
-                    disabled="${bean.first or bean.dataModel.rowCount == 0 or bean.editing}" update="mainForm, ${_contentUpdate}" />
+                    disabled="${bean.first or bean.dataModel.rowCount == 0 or bean.editing}" update="mainForm, ${_contentUpdate}"
+                    onclick="waitbox.show()" oncomplete="waitbox.hide()" />
                 <p:commandButton id="next" value="下一条" actionListener="${bean.gotoNext}"
-                    disabled="${bean.last or bean.dataModel.rowCount == 0 or bean.editing}" update="mainForm, ${_contentUpdate}" />
+                    disabled="${bean.last or bean.dataModel.rowCount == 0 or bean.editing}" update="mainForm, ${_contentUpdate}"
+                    onclick="waitbox.show()" oncomplete="waitbox.hide()" />
                 <p:commandButton id="last" value="最末条" actionListener="${bean.gotoLast}"
-                    disabled="${bean.last or bean.dataModel.rowCount == 0 or bean.editing}" update="mainForm, ${_contentUpdate}" />
+                    disabled="${bean.last or bean.dataModel.rowCount == 0 or bean.editing}" update="mainForm, ${_contentUpdate}"
+                    onclick="waitbox.show()" oncomplete="waitbox.hide()" />
                 <p:separator />
                 <p:inputText id="rowNumber" value="${bean.rowNumberInput}" disabled="${bean.editing}" style="width: 3em;" />
                 <h:outputText value="/${bean.dataModel.rowCount}" />
                 <p:commandButton id="jump" value="前往" actionListener="${bean.gotoInput}" disabled="${bean.editing}"
-                    update="mainForm, ${_contentUpdate}" />
+                    update="mainForm, ${_contentUpdate}" onclick="waitbox.show()" oncomplete="waitbox.hide()" />
             </p:toolbarGroup>
         </p:toolbar>
     </ui:define>
