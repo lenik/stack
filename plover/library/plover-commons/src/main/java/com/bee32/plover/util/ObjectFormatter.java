@@ -2,15 +2,12 @@ package com.bee32.plover.util;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
-import javax.free.UnexpectedException;
 
 import org.springframework.ui.Model;
 
@@ -163,7 +160,7 @@ public abstract class ObjectFormatter<T> {
             out.print(val);
     }
 
-    void formatArray(Object val, FormatStyle format, int depth) {
+    protected void formatArray(Object val, FormatStyle format, int depth) {
         int n = Array.getLength(val);
         if (n == 0) {
             out.print("[]");
@@ -197,40 +194,7 @@ public abstract class ObjectFormatter<T> {
         out.print("]");
     }
 
-    /** @see AbstractPersistentCollection */
-    static final Class<?> APC_class;
-    /** @see AbstractPersistentCollection#initialized */
-    static final Field APC_initialized;
-    /** @see AbstractPersistentCollection#isConnectedToSession() */
-    static final Method APC_isConnectedToSession;
-    static {
-        try {
-            APC_class = Class.forName("org.hibernate.collection.AbstractPersistentCollection");
-            APC_initialized = APC_class.getDeclaredField("initialized");
-            APC_initialized.setAccessible(true);
-            APC_isConnectedToSession = APC_class.getDeclaredMethod("isConnectedToSession");
-            APC_isConnectedToSession.setAccessible(true);
-        } catch (ReflectiveOperationException e) {
-            throw new Error("Failed to init APC.isConnectedToSession method.", e);
-        }
-    }
-
-    void formatCollection(Collection<?> val, FormatStyle format, int depth) {
-        if (APC_class.isInstance(val)) {
-            try {
-                boolean initialized = (Boolean) APC_initialized.get(val);
-                if (!initialized) {
-                    boolean connected = (Boolean) APC_isConnectedToSession.invoke(val);
-                    if (!connected) {
-                        out.print("APC/ERROR: Out of session.");
-                        return;
-                    }
-                }
-            } catch (ReflectiveOperationException e) {
-                throw new UnexpectedException(e);
-            }
-        }
-
+    protected void formatCollection(Collection<?> val, FormatStyle format, int depth) {
         Collection<?> collection = (Collection<?>) val;
         if (collection.isEmpty()) {
             out.print("()");
@@ -264,7 +228,7 @@ public abstract class ObjectFormatter<T> {
         out.print(")");
     }
 
-    void formatMap(Map<?, ?> val, FormatStyle format, int depth) {
+    protected void formatMap(Map<?, ?> val, FormatStyle format, int depth) {
         Map<?, ?> map = (Map<?, ?>) val;
         if (map.isEmpty()) {
             out.print("{}");

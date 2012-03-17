@@ -1,6 +1,10 @@
 package com.bee32.plover.orm.util;
 
+import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
+
+import org.hibernate.Hibernate;
 
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityBase;
@@ -44,6 +48,24 @@ public class EntityFormatter
                 }
             }
         }
+    }
+
+    @Override
+    protected void formatCollection(Collection<?> val, FormatStyle format, int depth) {
+        if (!Hibernate.isInitialized(val)) {
+            out.print("(n/a: not initialized)");
+            return;
+        }
+        super.formatCollection(val, format, depth);
+    }
+
+    @Override
+    protected void formatMap(Map<?, ?> val, FormatStyle format, int depth) {
+        if (!Hibernate.isInitialized(val)) {
+            out.print("(n/a: not initialized)");
+            return;
+        }
+        super.formatMap(val, format, depth);
     }
 
     static {
