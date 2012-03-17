@@ -220,6 +220,7 @@ public abstract class SimpleEntityViewBean
             // Boolean anyOwner = AnyOwnerUtil.isForAnyOwner(getClass());
             // if (anyOwner) ...
             if (defaultPermission == null || !defaultPermission.implies(visiblePermission)) {
+                SessionUser me = SessionUser.getInstance();
                 join.add(Or.of(//
                         // owner in (currentUser.imset)
                         UserCriteria.ownedByCurrentUser(), //
@@ -228,7 +229,7 @@ public abstract class SimpleEntityViewBean
                         // (disabled)
 
                         // acl in (currentUser.visibleACLs)
-                        ACLCriteria.aclWithin(getACLs(visiblePermission))));
+                        ACLCriteria.aclWithin(me.getACLs(visiblePermission))));
             }
         }
 

@@ -98,7 +98,7 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
     @Transactional(readOnly = false)
     @Override
     public K save(E entity) {
-        checkSave();
+        checkSave(entity);
 
         EntityDao<E, K> dao = getDao();
         K id = (K) dao.save(entity);
@@ -110,7 +110,7 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
     @Transactional(readOnly = false)
     @Override
     public void update(E entity) {
-        checkUpdate();
+        checkUpdate(entity);
 
         EntityDao<E, K> dao = getDao();
         dao.update(entity);
@@ -123,10 +123,10 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
     public void saveOrUpdate(E entity) {
         K id = entity.getId();
         if (id == null)
-            checkSave();
+            checkSave(entity);
         else
             // EntitySpec?
-            checkUpdate();
+            checkUpdate(entity);
         getDao().saveOrUpdate(entity);
 
         autoFlush();
@@ -136,7 +136,7 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
     @Transactional(readOnly = false)
     @Override
     public void saveAll(E... entities) {
-        checkSave();
+        checkSave(Arrays.asList(entities));
 
         EntityDao<E, K> dao = getDao();
         dao.saveAll(entities);
@@ -147,7 +147,7 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
     @Transactional(readOnly = false)
     @Override
     public void saveAll(Collection<? extends E> entities) {
-        checkSave();
+        checkSave(entities);
         getDao().saveAll(entities);
         autoBulkFlush();
     }
@@ -163,7 +163,7 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
     @Transactional(readOnly = false)
     @Override
     public void saveByNaturalId(E entity) {
-        checkSave();
+        checkSave(entity);
         getDao().saveByNaturalId(entity);
     }
 
@@ -173,9 +173,9 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
         ICriteriaElement selector = entity.getSelector();
         E first = getDao().getFirst(selector);
         if (first == null)
-            checkSave();
+            checkSave(entity);
         else
-            checkUpdate();
+            checkUpdate(entity);
         getDao().evict(first);
         getDao().saveOrUpdateByNaturalId(entity);
     }
@@ -190,7 +190,7 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
     @Transactional(readOnly = false)
     @Override
     public void saveOrUpdateAllByNaturalId(Collection<? extends E> entities) {
-        checkSave();
+        checkSave(entities);
 
         for (E entity : entities)
             saveOrUpdateByNaturalId(entity);
@@ -264,9 +264,9 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
         }
 
         if (haveNew)
-            checkSave();
+            checkSave(entities);
         if (haveOld)
-            checkUpdate();
+            checkUpdate(entities);
 
         EntityDao<E, K> dao = getDao();
         dao.saveOrUpdateAll(entities);
@@ -314,7 +314,7 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
     @Override
     public void update(E entity, LockMode lockMode)
             throws DataAccessException {
-        checkUpdate();
+        checkUpdate(entity);
         getDao().update(entity, lockMode);
         autoFlush();
     }
@@ -334,8 +334,10 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
 
     @Transactional(readOnly = false)
     @Override
-    public boolean delete(Object entity, LockMode lockMode)
+    public boolean delete(Object _entity, LockMode lockMode)
             throws DataAccessException {
+        @SuppressWarnings("unchecked")
+        E entity = (E) _entity;
         checkDelete();
         boolean status = getDao().delete(entity, lockMode);
         autoFlush();
@@ -355,7 +357,7 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
     @Override
     public E merge(E entity)
             throws DataAccessException {
-        checkMerge();
+        checkMerge(entity);
         return (E) getDao().merge(entity);
     }
 
@@ -470,13 +472,21 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
     protected void checkList() {
     }
 
-    protected void checkMerge() {
+    protected void checkMerge(E entity) {
     }
 
-    protected void checkSave() {
+    protected final void checkSave(E entity) {
+        checkSave(Arrays.asList(entity));
     }
 
-    protected void checkUpdate() {
+    protected final void checkUpdate(E entity) {
+        checkUpdate(Arrays.asList(entity));
+    }
+
+    protected void checkSave(Collection<? extends E> entities) {
+    }
+
+    protected void checkUpdate(Collection<? extends E> entities) {
     }
 
     protected void checkDelete() {

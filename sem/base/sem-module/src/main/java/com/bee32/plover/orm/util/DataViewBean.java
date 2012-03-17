@@ -3,13 +3,8 @@ package com.bee32.plover.orm.util;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import com.bee32.icsf.access.AccessControlException;
-import com.bee32.icsf.access.Permission;
-import com.bee32.icsf.access.acl.IACLService;
-import com.bee32.icsf.login.SessionUser;
-import com.bee32.icsf.principal.User;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.faces.view.GenericViewBean;
@@ -55,13 +50,6 @@ public abstract class DataViewBean
     protected static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
     D reload(D dto, int fmask) {
         return ctx.data.reload(dto, fmask);
-    }
-
-    protected Set<Integer> getACLs(Permission minimum) {
-        User currentUser = SessionUser.getInstance().getInternalUser();
-        IACLService aclService = ctx.bean.getBean(IACLService.class);
-        Set<Integer> acls = aclService.getACLs(currentUser, minimum);
-        return acls;
     }
 
     protected <E extends Entity<?>, D extends EntityDto<E, ?>> //

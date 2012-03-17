@@ -163,6 +163,15 @@ public final class Permission
         }
     }
 
+    public Permission add(Permission o) {
+        if (o == null)
+            return clone();
+        int allowBits = this.allowBits | o.allowBits;
+        int denyBits = this.denyBits | o.denyBits;
+        allowBits &= ~denyBits;
+        return new Permission(allowBits, denyBits);
+    }
+
     public boolean isAdmin() {
         return test(OWN);
     }
