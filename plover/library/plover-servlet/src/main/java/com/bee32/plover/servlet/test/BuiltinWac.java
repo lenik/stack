@@ -18,7 +18,7 @@ public class BuiltinWac
     @Override
     public void configureContext(ServletTestLibrary stl) {
         String[] welcomeFiles = stl.welcomeList.toArray(new String[0]);
-        stl.getServletContext().setWelcomeFiles(welcomeFiles);
+        stl.getServletContextHandler().setWelcomeFiles(welcomeFiles);
 
         // Plover SCL dispatcher.
         stl.addEventListener(new PloverSclMultiplexer());
@@ -27,7 +27,7 @@ public class BuiltinWac
          * There is no HttpResponse parameter in servlet-request-event, this is a work-around fix,
          * use filter to get the reponse object.
          */
-        stl.addFilter(ThreadServletResponseListener.class, "/*", 0);
+        stl.addFilter(ThreadServletResponseListener.class, "/*");
 
         /*
          * Jetty-6.1.x doesn't support http session listener, so we adapter it using
@@ -39,13 +39,13 @@ public class BuiltinWac
 
     @Override
     public void configureServlets(ServletTestLibrary stl) {
-        stl.addFilter(RequestLogger.class, "*", 0);
+        stl.addFilter(RequestLogger.class, "*");
 
         stl.addServlet(Favicon.class, "/favicon.ico");
 
         // The wildcard * is needed, cuz they are class resources, not overlapped resources.
         stl.addServlet(Logo.class, "/logo/*");
-        stl.addFilter(Welcome.class, "/", 0);
+        stl.addFilter(Welcome.class, "/");
     }
 
     @Override

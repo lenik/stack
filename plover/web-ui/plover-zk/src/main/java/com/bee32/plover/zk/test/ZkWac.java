@@ -1,6 +1,6 @@
 package com.bee32.plover.zk.test;
 
-import org.mortbay.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.zkoss.web.servlet.dsp.InterpreterServlet;
 import org.zkoss.zk.au.http.DHtmlUpdateServlet;
 import org.zkoss.zk.ui.http.DHtmlLayoutServlet;

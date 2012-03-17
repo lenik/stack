@@ -1,6 +1,6 @@
 package com.bee32.plover.faces.misc;
 
-import org.mortbay.resource.Resource;
+import org.eclipse.jetty.util.resource.Resource;
 
 import com.bee32.plover.faces.view.ViewBean;
 

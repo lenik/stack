@@ -2,7 +2,7 @@ package com.bee32.sem.test;
 
 import javax.servlet.http.HttpSessionEvent;
 
-import org.mortbay.resource.Resource;
+import org.eclipse.jetty.util.resource.Resource;
 import org.springframework.context.ApplicationContext;
 
 import com.bee32.icsf.login.LoginManager;

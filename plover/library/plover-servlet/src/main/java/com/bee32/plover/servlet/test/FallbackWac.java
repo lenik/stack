@@ -1,6 +1,6 @@
 package com.bee32.plover.servlet.test;
 
-import org.mortbay.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.servlet.ServletHolder;
 
 import com.bee32.plover.servlet.rabbits.OverlappedResourceServlet;
 

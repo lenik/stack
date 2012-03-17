@@ -28,7 +28,7 @@ public class C_OSIVWac
         if (!usingRequired)
             return;
 
-        stl.addFilter(OSIVFilter.class, "/*", 0);
+        stl.addFilter(OSIVFilter.class, "/*");
     }
 
 }

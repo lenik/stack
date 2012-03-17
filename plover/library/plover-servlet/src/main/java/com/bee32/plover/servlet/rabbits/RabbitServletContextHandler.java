@@ -1,20 +1,18 @@
 package com.bee32.plover.servlet.rabbits;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.Servlet;
 
-import org.mortbay.jetty.servlet.Context;
-import org.mortbay.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.servlet.ServletHolder;
 
-public class RabbitServletContext
-        extends OverlappedContext {
+public class RabbitServletContextHandler
+        extends OverlappedContextHandler {
 
     final RabbitServer rabbitServer;
 
-    public RabbitServletContext(RabbitServer rabbitServer) {
-        super(Context.SESSIONS | Context.SECURITY);
+    public RabbitServletContextHandler(RabbitServer rabbitServer) {
+        super(SESSIONS | SECURITY);
         if (rabbitServer == null)
             throw new NullPointerException("rabbitServer");
         this.rabbitServer = rabbitServer;
@@ -26,18 +24,11 @@ public class RabbitServletContext
 
     public synchronized void addInitParam(String name, String value) {
         Map<String, String> _initParams = getInitParams();
-        if (_initParams == null) {
-            setInitParams(new HashMap<String, String>());
-            _initParams = getInitParams();
-        }
-
-        assert _initParams != null;
-
         _initParams.put(name, value);
     }
 
     @Override
-    public ServletHolder addServlet(Class servlet, String pathSpec) {
+    public ServletHolder addServlet(Class<? extends Servlet> servlet, String pathSpec) {
         // return super.addServlet(servlet, pathSpec);
         if (pathSpec == null) {
             ServletHolder holder = new ServletHolder(servlet);

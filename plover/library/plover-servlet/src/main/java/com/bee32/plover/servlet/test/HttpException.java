@@ -1,6 +1,6 @@
 package com.bee32.plover.servlet.test;
 
-import org.mortbay.jetty.testing.HttpTester;
+import org.eclipse.jetty.testing.HttpTester;
 
 public class HttpException
         extends Exception {

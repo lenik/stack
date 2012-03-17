@@ -2,10 +2,12 @@ package com.bee32.plover.servlet.test;
 
 import java.io.PrintStream;
 
-import org.mortbay.jetty.servlet.ServletHandler;
-import org.mortbay.jetty.servlet.ServletHolder;
+import javax.servlet.Servlet;
 
-import com.bee32.plover.servlet.rabbits.RabbitServletContext;
+import org.eclipse.jetty.servlet.ServletHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
+
+import com.bee32.plover.servlet.rabbits.RabbitServletContextHandler;
 
 public class WebAppXmlGenerator {
 
@@ -16,7 +18,7 @@ public class WebAppXmlGenerator {
     }
 
     public void generateServletDefs() {
-        RabbitServletContext rsc = stl.getServletContext();
+        RabbitServletContextHandler rsc = stl.getServletContextHandler();
         ServletHandler servletHandler = rsc.getServletHandler();
         for (ServletHolder holder : servletHandler.getServlets()) {
             holder.getName();
@@ -33,7 +35,7 @@ class XmlSTL
         extends ServletTestLibrary {
 
     @Override
-    public ServletHolder addServlet(Class<?> servlet) {
+    public ServletHolder addServlet(Class<? extends Servlet> servlet) {
         return null;
     }
 

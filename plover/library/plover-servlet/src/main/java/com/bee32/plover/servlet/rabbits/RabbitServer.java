@@ -1,26 +1,46 @@
 package com.bee32.plover.servlet.rabbits;
 
 import java.net.InetAddress;
+import java.util.EnumSet;
 import java.util.Enumeration;
 import java.util.EventListener;
 
+import javax.servlet.DispatcherType;
+import javax.servlet.Filter;
+import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
 
-import org.mortbay.io.ByteArrayBuffer;
-import org.mortbay.jetty.LocalConnector;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.handler.ContextHandler;
-import org.mortbay.jetty.nio.SelectChannelConnector;
-import org.mortbay.jetty.servlet.Context.SContext;
-import org.mortbay.jetty.servlet.FilterHolder;
-import org.mortbay.jetty.servlet.ServletHolder;
-import org.mortbay.util.Attributes;
+import org.eclipse.jetty.io.ByteArrayBuffer;
+import org.eclipse.jetty.server.LocalConnector;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ContextHandler;
+import org.eclipse.jetty.server.nio.SelectChannelConnector;
+import org.eclipse.jetty.servlet.FilterHolder;
+import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.util.Attributes;
 
+/**
+ * Jetty Dependency Graph:
+ *
+ * <code>
+   -tester
+      -webapp
+        -servlet
+           -security
+               -server
+                   -continuation
+                   -http
+                       -io
+                           -util
+        -xml
+           -util
+ * </code>
+ */
 public class RabbitServer {
 
     private Server server;
     private LocalConnector localConnector;
-    private RabbitServletContext servletContext;
+    private RabbitServletContextHandler servletContextHandler;
 
     public RabbitServer() {
         server = new Server();
@@ -30,20 +50,20 @@ public class RabbitServer {
         localConnector.setPort(getPort());
         server.addConnector(localConnector);
 
-        servletContext = new RabbitServletContext(this);
-        server.addHandler(servletContext);
+        servletContextHandler = new RabbitServletContextHandler(this);
+        server.setHandler(servletContextHandler);
     }
 
     public static RabbitServer getInstanceFromContext(ServletContext servletContext) {
-        if (!(servletContext instanceof SContext))
+        if (!(servletContext instanceof ContextHandler.Context))
             return null;
 
-        SContext sContext = (SContext) servletContext;
+        ContextHandler.Context sContext = (ContextHandler.Context) servletContext;
         ContextHandler contextHandler = sContext.getContextHandler();
-        if (!(contextHandler instanceof RabbitServletContext))
+        if (!(contextHandler instanceof RabbitServletContextHandler))
             return null;
 
-        RabbitServletContext rsc = (RabbitServletContext) contextHandler;
+        RabbitServletContextHandler rsc = (RabbitServletContextHandler) contextHandler;
         RabbitServer rs = rsc.getRabbitServer();
         return rs;
     }
@@ -63,36 +83,41 @@ public class RabbitServer {
         return 0;
     }
 
-    public RabbitServletContext getServletContext() {
-        return servletContext;
+    public RabbitServletContextHandler getServletContextHandler() {
+        return servletContextHandler;
     }
 
     public String getResponses(String rawRequests)
             throws Exception {
-        localConnector.reopen();
+        reopen(localConnector);
         String responses = localConnector.getResponses(rawRequests);
         return responses;
     }
 
     public String getResponses(String rawRequests, LocalConnector connector)
             throws Exception {
-        connector.reopen();
+        reopen(localConnector);
         String responses = connector.getResponses(rawRequests);
         return responses;
     }
 
     public ByteArrayBuffer getResponses(ByteArrayBuffer rawRequests)
             throws Exception {
-        localConnector.reopen();
+        reopen(localConnector);
         ByteArrayBuffer responses = localConnector.getResponses(rawRequests, false);
         return responses;
     }
 
     public ByteArrayBuffer getResponses(ByteArrayBuffer rawRequests, LocalConnector connector)
             throws Exception {
-        connector.reopen();
+        reopen(localConnector);
         ByteArrayBuffer responses = connector.getResponses(rawRequests, false);
         return responses;
+    }
+
+    static void reopen(LocalConnector connector) {
+        // if (connector.isStopped())
+        // connector.open();
     }
 
     public synchronized String createSocketConnector(boolean boundToLocalhostonly)
@@ -132,65 +157,71 @@ public class RabbitServer {
     // Facade to servlet context.
 
     public void setEventListeners(EventListener[] eventListeners) {
-        servletContext.setEventListeners(eventListeners);
+        servletContextHandler.setEventListeners(eventListeners);
     }
 
     public void addEventListener(EventListener listener) {
-        servletContext.addEventListener(listener);
+        servletContextHandler.addEventListener(listener);
     }
 
-    public FilterHolder addFilter(Class<?> filterClass, String pathSpec, int dispatches) {
-        return servletContext.addFilter(filterClass, pathSpec, dispatches);
+    public FilterHolder addFilter(Class<? extends Filter> filterClass, String pathSpec, DispatcherType... dispatches) {
+        EnumSet<DispatcherType> set = EnumSet.noneOf(DispatcherType.class);
+        for (DispatcherType dispatch : dispatches)
+            set.add(dispatch);
+        return servletContextHandler.addFilter(filterClass, pathSpec, set);
     }
 
-    public FilterHolder addFilter(String filterClass, String pathSpec, int dispatches) {
-        return servletContext.addFilter(filterClass, pathSpec, dispatches);
+    public FilterHolder addFilter(String filterClass, String pathSpec, DispatcherType... dispatches) {
+        EnumSet<DispatcherType> set = EnumSet.noneOf(DispatcherType.class);
+        for (DispatcherType dispatch : dispatches)
+            set.add(dispatch);
+        return servletContextHandler.addFilter(filterClass, pathSpec, set);
     }
 
     /**
      * Add servlet without mapping, and load-on-startup.
      */
-    public ServletHolder addServlet(Class<?> servlet) {
-        return servletContext.addServlet(servlet, null);
+    public ServletHolder addServlet(Class<? extends Servlet> servlet) {
+        return servletContextHandler.addServlet(servlet, null);
     }
 
-    public ServletHolder addServlet(Class<?> servlet, String pathSpec) {
-        return servletContext.addServlet(servlet, pathSpec);
+    public ServletHolder addServlet(Class<? extends Servlet> servlet, String pathSpec) {
+        return servletContextHandler.addServlet(servlet, pathSpec);
     }
 
     /**
      * Add servlet without mapping, and load-on-startup.
      */
     public ServletHolder addServlet(String className) {
-        return servletContext.addServlet(className, null);
+        return servletContextHandler.addServlet(className, null);
     }
 
     public ServletHolder addServlet(String className, String pathSpec) {
-        return servletContext.addServlet(className, pathSpec);
+        return servletContextHandler.addServlet(className, pathSpec);
     }
 
     public Attributes getAttributes() {
-        return servletContext.getAttributes();
+        return servletContextHandler.getAttributes();
     }
 
     public Enumeration<String> getAttributeNames() {
-        return servletContext.getAttributeNames();
+        return servletContextHandler.getAttributeNames();
     }
 
     public Object getAttribute(String name) {
-        return servletContext.getAttribute(name);
+        return servletContextHandler.getAttribute(name);
     }
 
     public void setAttribute(String name, Object value) {
-        servletContext.setAttribute(name, value);
+        servletContextHandler.setAttribute(name, value);
     }
 
     public void setClassLoader(ClassLoader classLoader) {
-        servletContext.setClassLoader(classLoader);
+        servletContextHandler.setClassLoader(classLoader);
     }
 
     public void setContextPath(String contextPath) {
-        servletContext.setContextPath(contextPath);
+        servletContextHandler.setContextPath(contextPath);
     }
 
 }

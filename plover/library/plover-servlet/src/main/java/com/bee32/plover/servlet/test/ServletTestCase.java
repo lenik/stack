@@ -8,7 +8,7 @@ import javax.free.Strings;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSessionEvent;
 
-import org.mortbay.jetty.testing.HttpTester;
+import org.eclipse.jetty.testing.HttpTester;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

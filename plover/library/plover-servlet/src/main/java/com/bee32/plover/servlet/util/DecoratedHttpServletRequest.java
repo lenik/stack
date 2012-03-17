@@ -4,17 +4,26 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
 
 import javax.free.AbstractProxy;
+import javax.servlet.AsyncContext;
+import javax.servlet.DispatcherType;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 /**
  * @see HttpServletRequestWrapper
@@ -301,6 +310,74 @@ public class DecoratedHttpServletRequest
     @Override
     public boolean isRequestedSessionIdFromUrl() {
         return proxy.isRequestedSessionIdFromUrl();
+    }
+
+    // Java Servlet 3.0
+    @Override
+    public ServletContext getServletContext() {
+        return proxy.getServletContext();
+    }
+
+    @Override
+    public AsyncContext startAsync()
+            throws IllegalStateException {
+        return proxy.startAsync();
+    }
+
+    @Override
+    public boolean authenticate(HttpServletResponse response)
+            throws IOException, ServletException {
+        return proxy.authenticate(response);
+    }
+
+    @Override
+    public AsyncContext startAsync(ServletRequest servletRequest, ServletResponse servletResponse)
+            throws IllegalStateException {
+        return proxy.startAsync(servletRequest, servletResponse);
+    }
+
+    @Override
+    public void login(String username, String password)
+            throws ServletException {
+        proxy.login(username, password);
+    }
+
+    @Override
+    public void logout()
+            throws ServletException {
+        proxy.logout();
+    }
+
+    @Override
+    public Collection<Part> getParts()
+            throws IOException, ServletException {
+        return proxy.getParts();
+    }
+
+    @Override
+    public boolean isAsyncStarted() {
+        return proxy.isAsyncStarted();
+    }
+
+    @Override
+    public Part getPart(String name)
+            throws IOException, ServletException {
+        return proxy.getPart(name);
+    }
+
+    @Override
+    public boolean isAsyncSupported() {
+        return proxy.isAsyncSupported();
+    }
+
+    @Override
+    public AsyncContext getAsyncContext() {
+        return proxy.getAsyncContext();
+    }
+
+    @Override
+    public DispatcherType getDispatcherType() {
+        return proxy.getDispatcherType();
     }
 
 }

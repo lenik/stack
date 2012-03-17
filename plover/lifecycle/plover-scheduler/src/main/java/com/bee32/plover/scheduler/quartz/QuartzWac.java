@@ -22,7 +22,7 @@ public class QuartzWac
         // ServletHolder holder =
         stl.addServlet(QuartzMonitorServlet.class, "/quartz/*");
         // holder.setInitParameter(QuartzConfig.SCHED_SC_KEY_NAME, QuartzConfig.SCHED_SC_KEY);
-        stl.getServletContext().addInitParam(QuartzConfig.SCHED_SC_KEY_NAME, QuartzConfig.SCHED_SC_KEY);
+        stl.getServletContextHandler().addInitParam(QuartzConfig.SCHED_SC_KEY_NAME, QuartzConfig.SCHED_SC_KEY);
     }
 
 }

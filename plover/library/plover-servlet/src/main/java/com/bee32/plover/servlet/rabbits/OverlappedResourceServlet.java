@@ -14,8 +14,9 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.mortbay.log.Log;
-import org.mortbay.resource.Resource;
+import org.eclipse.jetty.servlet.DefaultServlet_WF;
+import org.eclipse.jetty.util.log.Log;
+import org.eclipse.jetty.util.resource.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +42,7 @@ public class OverlappedResourceServlet
     }
 
     /**
-     * @see OverlappedContext#getResource(String)
+     * @see OverlappedContextHandler#getResource(String)
      * @see OverlappedBases#searchResource(String)
      */
     @Override
@@ -86,6 +87,9 @@ public class OverlappedResourceServlet
         return resource;
     }
 
+    /**
+     * Local HTTP-Get Implementation. (Not used)
+     */
     // @Override
     protected void _doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {

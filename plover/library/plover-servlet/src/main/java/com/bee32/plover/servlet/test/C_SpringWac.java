@@ -1,6 +1,6 @@
 package com.bee32.plover.servlet.test;
 
-import org.mortbay.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -8,7 +8,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 import com.bee32.plover.inject.spring.ContextConfigurationUtil;
 import com.bee32.plover.servlet.context.ServletContextUtil;
 import com.bee32.plover.servlet.mvc.MVCConfig;
-import com.bee32.plover.servlet.rabbits.RabbitServletContext;
+import com.bee32.plover.servlet.rabbits.RabbitServletContextHandler;
 
 public class C_SpringWac
         extends C_Wac<WiredServletTestCase> {
@@ -29,7 +29,7 @@ public class C_SpringWac
             Class<?> outerType = outer.getClass();
             String locations = ContextConfigurationUtil.getConcatConfigLocations(outerType);
 
-            RabbitServletContext context = stl.getServletContext();
+            RabbitServletContextHandler context = stl.getServletContextHandler();
             context.addInitParam("contextConfigLocation", locations);
 
         } else {

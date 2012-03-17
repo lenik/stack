@@ -5,13 +5,14 @@ import java.util.List;
 import javax.faces.webapp.FacesServlet;
 import javax.free.StringArray;
 
-import org.mortbay.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.servlet.ServletHolder;
+import org.primefaces.push.PushServlet;
 import org.primefaces.webapp.filter.FileUploadFilter;
 
 import com.bee32.plover.faces.ClassResourceResolver;
 import com.bee32.plover.faces.FaceletsConfig;
 import com.bee32.plover.faces.FacesConstants;
-import com.bee32.plover.servlet.rabbits.RabbitServletContext;
+import com.bee32.plover.servlet.rabbits.RabbitServletContextHandler;
 import com.bee32.plover.servlet.test.C_Wac;
 import com.bee32.plover.servlet.test.ServletTestLibrary;
 
@@ -28,7 +29,7 @@ public class C_FaceletsWac
 
     @Override
     protected void configureServlets(ServletTestLibrary stl, FaceletsTestCase outer) {
-        RabbitServletContext context = stl.getServletContext();
+        RabbitServletContextHandler context = stl.getServletContextHandler();
         {
             List<String> taglibs = outer.taglibs;
             if (!taglibs.isEmpty()) {

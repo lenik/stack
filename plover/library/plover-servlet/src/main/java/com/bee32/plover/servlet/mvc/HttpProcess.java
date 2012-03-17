@@ -1,11 +1,13 @@
 package com.bee32.plover.servlet.mvc;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 import com.bee32.plover.rtx.location.Location;
 
 public class HttpProcess
+        extends HttpServletRequestWrapper
         implements IHttpProcess {
 
     final HttpServletRequest request;
@@ -16,8 +18,7 @@ public class HttpProcess
     Object targetView;
 
     public HttpProcess(HttpServletRequest request, HttpServletResponse response) {
-        if (request == null)
-            throw new NullPointerException("request");
+        super(request);
         if (response == null)
             throw new NullPointerException("response");
         this.request = request;

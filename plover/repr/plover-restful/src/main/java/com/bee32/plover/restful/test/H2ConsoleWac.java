@@ -1,6 +1,6 @@
 package com.bee32.plover.restful.test;
 
-import org.mortbay.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.servlet.ServletHolder;
 
 import com.bee32.plover.servlet.test.AbstractWac;
 import com.bee32.plover.servlet.test.ServletTestLibrary;

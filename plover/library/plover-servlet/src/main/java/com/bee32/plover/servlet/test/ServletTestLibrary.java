@@ -20,17 +20,17 @@ import javax.free.IllegalUsageException;
 import javax.free.StringPart;
 import javax.servlet.http.HttpServlet;
 
+import org.eclipse.jetty.servlet.ServletHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.testing.HttpTester;
 import org.junit.After;
 import org.junit.Before;
-import org.mortbay.jetty.servlet.ServletHandler;
-import org.mortbay.jetty.servlet.ServletHolder;
-import org.mortbay.jetty.testing.HttpTester;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.arch.ISupportLibrary;
 import com.bee32.plover.servlet.rabbits.RabbitServer;
-import com.bee32.plover.servlet.rabbits.RabbitServletContext;
+import com.bee32.plover.servlet.rabbits.RabbitServletContextHandler;
 
 public class ServletTestLibrary
         extends RabbitServer
@@ -130,7 +130,7 @@ public class ServletTestLibrary
              *
              * NOTE: Using RabbitServer to override the resource resolver.
              */
-            getServletContext().setResourceBase(resourceRoot);
+            getServletContextHandler().setResourceBase(resourceRoot);
         }
 
         initialized = true;
@@ -175,7 +175,7 @@ public class ServletTestLibrary
         if (servletName == null)
             throw new NullPointerException("servletName");
 
-        RabbitServletContext servletManager = getServletContext();
+        RabbitServletContextHandler servletManager = getServletContextHandler();
         ServletHandler servletHandler = servletManager.getServletHandler();
 
         ServletHolder holder = new ServletHolder(servlet);
@@ -271,7 +271,7 @@ public class ServletTestLibrary
         if (location.contains("://"))
             urlString = location;
         else {
-            String contextPath = getServletContext().getContextPath();
+            String contextPath = getServletContextHandler().getContextPath();
             String root = "http://" + getLocalHost() + ":" + actualPort + contextPath;
             if (!location.startsWith("/"))
                 location = "/" + location;

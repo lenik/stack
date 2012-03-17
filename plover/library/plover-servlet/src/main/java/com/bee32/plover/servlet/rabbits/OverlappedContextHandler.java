@@ -4,18 +4,18 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.mortbay.jetty.servlet.Context;
-import org.mortbay.log.Log;
-import org.mortbay.resource.Resource;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.util.log.Log;
+import org.eclipse.jetty.util.resource.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class OverlappedContext
-        extends Context {
+public class OverlappedContextHandler
+        extends ServletContextHandler {
 
-    static Logger logger = LoggerFactory.getLogger(OverlappedContext.class);
+    static Logger logger = LoggerFactory.getLogger(OverlappedContextHandler.class);
 
-    public OverlappedContext(int options) {
+    public OverlappedContextHandler(int options) {
         super(options);
     }
 
@@ -23,7 +23,7 @@ public class OverlappedContext
     public Resource getResource(String path)
             throws MalformedURLException {
 
-         // logger.debug("OC::GET " + path);
+        // logger.debug("OC::GET " + path);
 
         if (path == null || !path.startsWith("/"))
             throw new MalformedURLException(path);
