@@ -251,7 +251,10 @@ public abstract class BaseDto<S>
             hash = idHashCode();
         } else {
             Serializable naturalId = getNaturalId();
-            hash = naturalId.hashCode();
+            if (naturalId == null)
+                hash = System.identityHashCode(this);
+            else
+                hash = naturalId.hashCode();
         }
         return hash;
     }
