@@ -19,6 +19,8 @@ public class C_FaceletsWac
         extends C_Wac<FaceletsTestCase>
         implements FacesConstants {
 
+    boolean pushServerEnabled = false;
+
     @Override
     public int getOrder() {
         return NORMAL_ORDER;
@@ -70,8 +72,17 @@ public class C_FaceletsWac
         facesServlet.setInitOrder(0);
 
         // Primefaces configuration
-        stl.addFilter(FileUploadFilter.class, "*." + FaceletsConfig.extension, 0);
+        stl.addFilter(FileUploadFilter.class, "*." + FaceletsConfig.extension);
         context.addInitParam("primefaces.THEME", "#{guestPreferences.theme.id}");
+
+        if (pushServerEnabled) {
+            // Prime Push Server: must be load-on-startup.
+            ServletHolder pushServlet = stl.addServlet(PushServlet.class, "/local-push/*");
+            pushServlet.setInitOrder(1);
+            pushServlet.setInitParameter("channels", "system, mail, counter");
+            context.addInitParam("primefaces.PUSH_SERVER_URL", //
+                    "ws://localhost:" + stl.getPort() + "/local-push");
+        }
     }
 
 }
