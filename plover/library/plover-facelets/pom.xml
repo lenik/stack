@@ -55,6 +55,17 @@
             <artifactId>primefaces-themes</artifactId>
             <version>1.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-websocket</artifactId>
+            <version>7.0.2.RC0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-server</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
     <name>Plover :: Library :: Facelets</name>
 </project>
