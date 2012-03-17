@@ -11,6 +11,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
+import com.bee32.icsf.access.Permission;
+import com.bee32.icsf.access.acl.IACLService;
 import com.bee32.icsf.principal.GroupDto;
 import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.icsf.principal.User;
@@ -174,6 +176,13 @@ public class SessionUser
 
         Collections.reverse(chain);
         return chain;
+    }
+
+    public Set<Integer> getACLs(Permission minimum) {
+        User currentUser = SessionUser.getInstance().getInternalUser();
+        IACLService aclService = ctx.bean.getBean(IACLService.class);
+        Set<Integer> acls = aclService.getACLs(currentUser, minimum);
+        return acls;
     }
 
 }

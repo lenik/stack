@@ -3,6 +3,7 @@ package com.bee32.icsf.access.shield;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import com.bee32.icsf.access.AccessControlException;
 import com.bee32.icsf.access.DefaultPermission;
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.UnauthorizedAccessException;
@@ -46,6 +48,7 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityResource;
 import com.bee32.plover.orm.entity.EntityResourceNS;
 import com.bee32.plover.orm.unit.PersistenceUnit;
+import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.meta.EntityColumn;
 import com.bee32.plover.ox1.meta.EntityInfo;
 import com.bee32.plover.site.scope.PerSite;
@@ -125,16 +128,17 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
     }
 
     @Override
-    protected void require(Class<? extends Entity<?>> entityType, Permission requiredPermission) {
+    protected void require(Class<? extends Entity<?>> entityType, Collection<? extends E> entities,
+            Permission requiredPermission) {
         if (!enabled || aclService == null)
             return;
 
         // Damn.. could be proxy classes..??
         entityType = (Class<? extends Entity<?>>) ClassUtil.skipProxies(entityType);
 
-        Permission defl = defaults.get(entityType);
+        Permission defaultPerm = defaults.get(entityType);
         boolean readOnly = requiredPermission.getAllowBits() == Permission.READ;
-        if (readOnly && defl != null && defl.isReadable())
+        if (readOnly && defaultPerm != null && defaultPerm.isReadable())
             return;
 
         UserDto currentUser = SessionUser.getInstance().getUserOpt();
@@ -161,23 +165,44 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
             return;
         }
 
-        Permission mixed = defl == null ? null : defl.clone();
-        Permission grantedPermission = aclService.getPermission(entityResource, imset);
-        if (mixed == null)
-            mixed = grantedPermission;
-        else
-            mixed.merge(grantedPermission);
+        Permission grantedPerm = aclService.getPermission(entityResource, imset);
+        if (defaultPerm != null)
+            grantedPerm = grantedPerm.add(defaultPerm);
 
-        if (!mixed.implies(requiredPermission)) {
+        if (!grantedPerm.implies(requiredPermission)) {
             String message = String.format(//
                     "User %s has insufficient permission to resource %s. " + //
                             "Required permission is %s, but user has granted %s", //
                     currentUser.getDisplayName(), //
                     entityResource.getAppearance().getDisplayName() + "(" + entityType + ")", // /
                     requiredPermission, //
-                    mixed);
+                    grantedPerm);
             throw new UnauthorizedAccessException(message, entityType, requiredPermission);
         }
-    }
 
+        if (entities == null)
+            return;
+
+        Set<Integer> effectiveAcls = SessionUser.getInstance().getACLs(requiredPermission);
+        for (E entity : entities)
+            if (entity instanceof CEntity<?>) {
+                CEntity<?> ce = (CEntity<?>) entity;
+                Integer acl = ce.getAclId();
+                if (acl == null)
+                    continue;
+                if (!effectiveAcls.contains(acl)) {
+                    String message = String.format(//
+                            // "User %s can't access %s. " + //
+                            // "ACL rejected, required permission is %s", //
+                            "由于安全策略限制，用户 %s 不能访问 %s。 需要权限为 %s。", //
+                            currentUser.getDisplayName(), //
+                            ClassUtil.getParameterizedTypeName(entity) + ": " + ce.getEntryLabel(), //
+                            requiredPermission.getReadableString());
+                    AccessControlException e = new AccessControlException(message);
+                    e.setResourceType(entityType);
+                    e.setRequiredPermission(requiredPermission);
+                    throw e;
+                }
+            }
+    }
 }

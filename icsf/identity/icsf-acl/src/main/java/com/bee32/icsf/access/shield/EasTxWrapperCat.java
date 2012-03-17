@@ -1,6 +1,9 @@
 package com.bee32.icsf.access.shield;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.plover.orm.entity.EasTxWrapper;
@@ -16,7 +19,7 @@ public abstract class EasTxWrapperCat<E extends Entity<? extends K>, K extends S
 
     @Override
     protected void checkLoad() {
-        require(getEntityType(), READ);
+        require(getEntityType(), null, READ);
     }
 
     @Override
@@ -26,29 +29,31 @@ public abstract class EasTxWrapperCat<E extends Entity<? extends K>, K extends S
 
     @Override
     protected void checkList() {
-        require(getEntityType(), READ);
+        require(getEntityType(), null, READ);
     }
 
     @Override
-    protected void checkMerge() {
-        require(getEntityType(), WRITE);
+    protected void checkMerge(E entity) {
+        List<E> entities = Arrays.asList(entity);
+        require(getEntityType(), entities, WRITE);
     }
 
     @Override
-    protected void checkSave() {
-        require(getEntityType(), CREATE);
+    protected void checkSave(Collection<? extends E> entities) {
+        require(getEntityType(), entities, CREATE);
     }
 
     @Override
-    protected void checkUpdate() {
-        require(getEntityType(), WRITE);
+    protected void checkUpdate(Collection<? extends E> entities) {
+        require(getEntityType(), entities, WRITE);
     }
 
     @Override
     protected void checkDelete() {
-        require(getEntityType(), DELETE);
+        require(getEntityType(), null, DELETE);
     }
 
-    protected abstract void require(Class<? extends Entity<?>> entityType, Permission requiredPermission);
+    protected abstract void require(Class<? extends Entity<?>> entityType, Collection<? extends E> entities,
+            Permission requiredPermission);
 
 }

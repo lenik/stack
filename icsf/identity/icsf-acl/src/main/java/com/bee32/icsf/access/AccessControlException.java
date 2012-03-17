@@ -42,4 +42,9 @@ public class AccessControlException
         this.requiredPermission = requiredPermission;
     }
 
+    @Override
+    public String getLocalizedMessage() {
+        return "访问被禁止：" + getMessage();
+    }
+
 }
