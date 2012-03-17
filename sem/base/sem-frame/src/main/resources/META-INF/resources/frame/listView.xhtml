@@ -148,6 +148,7 @@
                                         value="${editPopup ? '确定' : (mbean.openedIndex == -1 ? '添加' : '应用').concat(copyMode ? '' : '*')}"
                                         title="${(not editPopup) and cc.attrs.smooth ? '在快速编辑模式下，当前修改的内容可能已经被自动保存。' : ''}"
                                         disabled="${mbean.openedObject == null or cc.attrs.readonly}" action="${mbean.apply}"
+                                        onclick="waitbox.show()"
                                         oncomplete="waitbox.hide(); ${editPopup ? cc.attrs.editDialogVar.concat('.hideValidated(args)') : ''}"
                                         update="${cc.attrs.indexView}:indexForm:body, apply-validated">
                                         <f:setPropertyActionListener target="${mbean.copyMode}"
@@ -155,7 +156,7 @@
                                     </p:commandButton>
                                     <p:commandButton id="cancel" value="取消" disabled="${mbean.openedObject == null}"
                                         actionListener="${mbean.cancel}" update="body, ${cc.attrs.editView}:more"
-                                        rendered="${not editPopup and copyMode}" />
+                                        onclick="waitbox.show()" oncomplete="waitbox.hide()" rendered="${not editPopup and copyMode}" />
                                     <p:commandButton id="close" value="关闭" onclick="${cc.attrs.editDialogVar}.hide()"
                                         rendered="${editPopup}" />
                                 </td>
