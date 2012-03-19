@@ -14,8 +14,9 @@ public class MapStruct
         super(new HashMap<String, Object>());
     }
 
-    public MapStruct(Map<String, Object> map) {
-        super(map);
+    @SuppressWarnings("unchecked")
+    public MapStruct(Map<String, ?> map) {
+        super((Map<String, Object>) (Map<?, ?>) map);
     }
 
     @Override

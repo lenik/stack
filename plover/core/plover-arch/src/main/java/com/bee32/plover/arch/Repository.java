@@ -172,7 +172,6 @@ public abstract class Repository<K, T>
         } catch (Exception e) {
             throw new BuildException(e);
         }
-
         populate(instance, new MapStruct(request.getParameterMap()));
         return instance;
     }
