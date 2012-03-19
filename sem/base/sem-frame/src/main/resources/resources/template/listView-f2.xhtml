@@ -4,6 +4,11 @@
 
     <ui:define name="indexDialog">
         <p:dialog id="indexDialog" header="${header} 列表" widgetVar="${indexDialogVar}" modal="true">
+            <div class="ui-toolbox">
+                <h:form id="toolform">
+                    <ui:insert name="indexTools" />
+                </h:form>
+            </div>
             <div class="${formStyleClass}">
                 <ui:insert name="indexForm" />
             </div>
@@ -12,6 +17,11 @@
 
     <ui:define name="editDialog">
         <p:dialog id="editDialog" header="${header} 编辑" widgetVar="${editDialogVar}" modal="true">
+            <div class="ui-toolbox">
+                <h:form id="toolform">
+                    <ui:insert name="editTools" />
+                </h:form>
+            </div>
             <div class="${formStyleClass}">
                 <ui:insert name="editForm" />
             </div>

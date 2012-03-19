@@ -48,6 +48,13 @@
             <ui:param name="indexPopup" value="${style == 'dialog'}" />
             <ui:param name="editPopup" value="${style != 'panel'}" />
 
+            <ui:define name="indexTools">
+                <p:commandLink id="printIndex" styleClass="ui-icon ui-icon-print" onclick="print('')" />
+            </ui:define>
+            <ui:define name="editTools">
+                <p:commandLink id="printForm" styleClass="ui-icon ui-icon-print" onclick="print('')" />
+            </ui:define>
+
             <ui:define name="indexFormContent">
                 <h:panelGrid columns="1">
                     <cc:insertRawFacet name="index-header" />
