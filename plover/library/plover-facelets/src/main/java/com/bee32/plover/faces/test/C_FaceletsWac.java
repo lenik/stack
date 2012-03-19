@@ -20,7 +20,7 @@ public class C_FaceletsWac
         extends C_Wac<FaceletsTestCase>
         implements FacesConstants {
 
-    boolean pushServerEnabled = false;
+    boolean pushServerEnabled = true;
 
     @Override
     public int getOrder() {
@@ -78,11 +78,15 @@ public class C_FaceletsWac
 
         if (pushServerEnabled) {
             // Prime Push Server: must be load-on-startup.
-            ServletHolder pushServlet = stl.addServlet(PushServlet.class, "/local-push/*");
+            ServletHolder pushServlet = stl.addServlet(PushServlet.class, "/prime-push/*");
             pushServlet.setInitOrder(1);
             pushServlet.setInitParameter("channels", "system, mail, counter");
+
+            // This context-param is used by PushRenderer
             context.addInitParam("primefaces.PUSH_SERVER_URL", //
-                    "ws://localhost:" + stl.getPort() + "/local-push");
+                    // "ws://localhost:" + stl.getPort() + "/prime-push" //
+                    "/prime-push" // See: PloverPushRenderer.
+            );
         }
     }
 
