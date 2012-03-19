@@ -18,10 +18,10 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
 
 /**
- * 工艺点
+ * 工艺
  *
- * label = 工艺点名称<br>
- * description = 工艺点描述
+ * label = 工艺名称<br>
+ * description = 工艺描述
  */
 @Entity
 @Green
@@ -35,8 +35,6 @@ public class MakeStep
     public static final int EQUIPMENT_LENGTH = 2000;
     public static final int OPERATION_LENGTH = 2000;
 
-    MakeProcess process;
-    // Material input;
     Part output;
     boolean qualityControlled;
 
@@ -48,7 +46,9 @@ public class MakeStep
     Date validateTime;
     String equipment;
     String operation;
+
     List<MakeStepInput> inputs = new ArrayList<MakeStepInput>();
+    List<QualityStandard> qualityStandards = new ArrayList<QualityStandard>();
 
     int order;
 
@@ -181,6 +181,17 @@ public class MakeStep
         if (inputs == null)
             throw new NullPointerException("inputs");
         this.inputs = inputs;
+    }
+
+    @OneToMany
+    public List<QualityStandard> getQualityStandards() {
+        return qualityStandards;
+    }
+
+    public void setQualityStandards(List<QualityStandard> qualityStandards) {
+        if(qualityStandards == null)
+            throw new NullPointerException("quality standards");
+        this.qualityStandards = qualityStandards;
     }
 
     /**
