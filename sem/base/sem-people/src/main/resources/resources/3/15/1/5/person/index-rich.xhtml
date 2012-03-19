@@ -1,7 +1,7 @@
 <ui:composition template="/template/simple-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
     xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk"
-     xmlns:icsf="http://java.sun.com/jsf/composite/3/7" xmlns:fr="http://java.sun.com/jsf/composite/frame" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
+    xmlns:icsf="http://java.sun.com/jsf/composite/3/7" xmlns:fr="http://java.sun.com/jsf/composite/frame" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
     <ui:param name="title" value="联系人信息" />
     <ui:param name="bean" value="#{personAdminBean}" />
@@ -91,10 +91,11 @@
                         <t:panelGrid columns="2">
                             <p:selectOneListbox id="tags" value="#{bean.selectedTagId}" style="height:80px; width:200px;"
                                 label="标签">
-                                <f:selectItems value="#{obj.tags}" var="tag" itemValue="#{tag.id}"  itemLabel="#{tag.label}"/>
+                                <f:selectItems value="#{obj.tags}" var="tag" itemValue="#{tag.id}"
+                                    itemLabel="#{tag.label}" />
                             </p:selectOneListbox>
                             <t:panelGrid colums="1">
-                                <p:commandButton value="增加标签" disabled="#{obj == null}" onclick="tagDlg.show();"/>
+                                <p:commandButton value="增加标签" disabled="#{obj == null}" onclick="tagDlg.show();" />
                                 <p:commandButton value="删除标签" disabled="#{obj == null}" actionListener="#{bean.deleteTag}"
                                     update=":editDialog:form:tv:tags" />
                             </t:panelGrid>
@@ -116,28 +117,28 @@
                         <p:column headerText="分类">
                             <h:outputText value="#{entry.category.label}" />
                         </p:column>
-                        <p:column headerText="地址">
+                        <p:column headerText="地址" styleClass="f-wrappable" style="min-width: 15em">
                             <h:outputText value="#{entry.address}" />
                         </p:column>
                         <p:column headerText="邮编">
                             <h:outputText value="#{entry.postCode}" />
                         </p:column>
-                        <p:column headerText="电话">
+                        <p:column headerText="电话" styleClass="f-wrappable">
                             <h:outputText value="#{entry.tel}" />
                         </p:column>
-                        <p:column headerText="移动电话">
+                        <p:column headerText="移动电话" styleClass="f-wrappable">
                             <h:outputText value="#{entry.mobile}" />
                         </p:column>
-                        <p:column headerText="传真">
+                        <p:column headerText="传真" styleClass="f-wrappable">
                             <h:outputText value="#{entry.fax}" />
                         </p:column>
-                        <p:column headerText="email">
+                        <p:column headerText="email" styleClass="f-wrappable">
                             <h:outputText value="#{entry.email}" />
                         </p:column>
-                        <p:column headerText="网址">
+                        <p:column headerText="网址" styleClass="f-wrappable">
                             <h:outputText value="#{entry.website}" />
                         </p:column>
-                        <p:column headerText="QQ">
+                        <p:column headerText="QQ" styleClass="f-wrappable">
                             <h:outputText value="#{entry.qq}" />
                         </p:column>
                     </f:facet>
@@ -147,45 +148,35 @@
             <p:tab id="tab3" title="相关客户/供应商">
                 <p:dataTable id="roles" var="role" value="#{bean.roles}" resizableColumns="true"
                     selection="#{bean.selectedRole}" selectionMode="single" rowKey="#{role.id}" rowIndexVar="rowIndex">
-
                     <p:column headerText="序号">
                         <h:outputText value="#{rowIndex + 1}" />
                     </p:column>
-
                     <p:column headerText="所在部门">
                         <h:outputText value="#{role.orgUnit.label}" />
                     </p:column>
-
                     <p:column headerText="职务">
                         <h:outputText value="#{role.role}" />
                     </p:column>
-
                     <p:column headerText="负责业务">
                         <h:outputText value="#{role.roleDetail}" />
                     </p:column>
-
                     <p:column headerText="客户/供应商名称">
                         <h:outputText value="#{role.org.name}" />
                     </p:column>
-
                     <p:column headerText="成立日期">
                         <h:outputText value="#{role.org.birthday}">
                             <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                         </h:outputText>
                     </p:column>
-
                     <p:column headerText="公司类型">
                         <h:outputText value="#{role.org.type.label}" />
                     </p:column>
-
                     <p:column headerText="税务登记号">
                         <h:outputText value="#{role.org.sid}" />
                     </p:column>
-
                     <p:column headerText="公司规模">
                         <h:outputText value="#{role.org.size}" />
                     </p:column>
-
                 </p:dataTable>
             </p:tab>
         </p:tabView>
