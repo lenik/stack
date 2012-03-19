@@ -3,12 +3,13 @@
     xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
     xmlns:pf="http://bee32.com/plover/faces">
 
-    <ui:define name="title">Locker Component Test</ui:define>
+    <ui:define name="title">Push-Counter Test</ui:define>
 
     <ui:define name="body">
 
         <script type="text/javascript">
             function handleMessage(evt, data) {
+            alert("on message: " + data);
             $('.display').html(data);
             }
         </script>
@@ -18,7 +19,7 @@
             <p:commandButton value="Click" actionListener="#{globalCounterBean.increment}" />
         </h:form>
 
-        <p:push onmessage="handleMessage" channel="counter" />
+        <pf:push id="push1" onmessage="handleMessage" channel="counter" />
 
     </ui:define>
 </ui:composition>

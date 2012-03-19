@@ -1,13 +1,10 @@
 package com.bee32.plover.faces.test;
 
 import org.primefaces.context.RequestContext;
+import org.springframework.stereotype.Component;
 
-import com.bee32.plover.faces.view.ViewBean;
-
-public class GlobalCounterBean
-        extends ViewBean {
-
-    private static final long serialVersionUID = 1L;
+@Component
+public class GlobalCounterBean {
 
     private int count;
 
