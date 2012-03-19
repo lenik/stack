@@ -25,16 +25,27 @@ public class TimestampEntityProcessor
     public void onSaveOrUpdate(SaveOrUpdateEvent event)
             throws HibernateException {
         EntityEntry entry = event.getEntry();
+        boolean dirty = true;
         if (entry != null) {
             Object loadedValue = entry.getLoadedValue("lastModified");
             System.out.println("Loaded-value: " + loadedValue);
+            if (!entry.isModifiableEntity())
+                dirty = false;
         }
 
         Object obj = event.getObject();
-        if (obj instanceof Entity<?>) {
-            Entity<?> en = (Entity<?>) obj;
-            en.setLastModified(new Date());
+        if (!(obj instanceof Entity<?>))
+            return;
+
+        Entity<?> en = (Entity<?>) obj;
+        if (en.getLastModified() != null) // Currently, only modify last-modified in SEVB.
+        {
+            // entry.getLoadedState();
+            dirty = false;
         }
+
+        if (dirty)
+            en.setLastModified(new Date());
     }
 
 }

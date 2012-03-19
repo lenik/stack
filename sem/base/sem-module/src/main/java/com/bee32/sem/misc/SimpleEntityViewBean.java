@@ -565,6 +565,7 @@ public abstract class SimpleEntityViewBean
         }
 
         Set<Entity<?>> entities = uMap.keySet();
+        EntityAccessor.updateTimestamp(entities);
         try {
             if ((saveFlags & SAVE_MUSTEXIST) != 0)
                 for (Entity<?> entity : entities)
@@ -588,6 +589,7 @@ public abstract class SimpleEntityViewBean
         for (UnmarshalMap subMap : uMap.getDeltaMaps().values()) {
             Class<?> subEntityClass = subMap.getEntityClass();
             Set<Entity<?>> subEntities = subMap.keySet();
+            EntityAccessor.updateTimestamp(subEntities);
             try {
                 ctx.data.access((Class) subEntityClass).saveOrUpdateAll(subEntities);
             } catch (Exception e) {

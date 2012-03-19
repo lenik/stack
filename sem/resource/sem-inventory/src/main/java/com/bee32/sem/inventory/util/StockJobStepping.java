@@ -12,6 +12,7 @@ import com.bee32.plover.criteria.hibernate.IsNull;
 import com.bee32.plover.criteria.hibernate.LeftHand;
 import com.bee32.plover.criteria.hibernate.SqlRestriction;
 import com.bee32.plover.orm.PloverNamingStrategy;
+import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.entity.StockOrder;
@@ -92,6 +93,7 @@ public class StockJobStepping
             StockJob _job = job.unmarshal();
             for (StockOrder _order : uMapMain.<StockOrder> entitySet())
                 setJobBinding(_job, _order);
+            EntityAccessor.updateTimestamp(_job);
             if (_job.getId() != null) { // ???
                 ctx.data.access(jobClass).update(_job);
             } else {

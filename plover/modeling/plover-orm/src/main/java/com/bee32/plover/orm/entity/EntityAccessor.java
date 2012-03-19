@@ -109,4 +109,14 @@ public class EntityAccessor {
         return entity.isAnyLocked();
     }
 
+    public static void updateTimestamp(Entity<?> entity) {
+        entity.setLastModified(new Date());
+    }
+
+    public static void updateTimestamp(Iterable<? extends Entity<?>> entities) {
+        Date date = new Date();
+        for (Entity<?> entity : entities)
+            entity.setLastModified(date);
+    }
+
 }
