@@ -20,7 +20,7 @@
 
     <cc:implementation>
 
-        <icsf:choosePrincipalDialog id="cpd" header="选择用户或组"
+        <icsf:choosePrincipalDialog id="c_principal" header="选择用户或组"
             var="${fn:replace(cc.parent.clientId, ':', '_')}_cpd" actionListener="${cc.parent.attrs.dialogBean.addResponsible}"
             target="${cc.parent.attrs.dialogBean.selectedResponsible}" update=":${cc.parent.clientId}:form" />
 

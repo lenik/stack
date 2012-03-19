@@ -22,7 +22,7 @@
 
         <icsf:chooseACLDialog id="c_acl" var="${cc.parent.attrs.var}_acld" target="${cc.parent.attrs.dialogBean.chosenACL}"
             update=":${cc.parent.clientId}:form" />
-        <icsf:editACLDialog id="aclEditor" var="${cc.parent.attrs.var}_aclEditor" value="${cc.parent.attrs.dialogBean.chosenACL}"
+        <icsf:editACLDialog id="ed_ACL" var="${cc.parent.attrs.var}_aclEditor" value="${cc.parent.attrs.dialogBean.chosenACL}"
             _value="${cc.parent.parent.attrs.dialogBean.chosenACL}" actionListener="${cc.parent.attrs.dialogBean.saveACL}"
             update=":${cc.parent.clientId}:form, :${cc.parent.clientId}:c_acl:form" />
 
@@ -58,7 +58,7 @@
                         <td align="left">
                             <p:commandButton id="edit" value="编辑" title="编辑当前的安全策略"
                                 disabled="${dialogBean.chosenACL == null}" actionListener="${dialogBean.showEditACLForm}"
-                                update=":${cc.clientId}:aclEditor:form" onclick="waitbox.show()"
+                                update=":${cc.clientId}:ed_ACL:form" onclick="waitbox.show()"
                                 oncomplete="waitbox.hide(); ${cc.attrs.var}_aclEditor.show()">
                                 <f:setPropertyActionListener target="${ACLBean.openedObject}"
                                     value="${dialogBean.chosenACL}" />
