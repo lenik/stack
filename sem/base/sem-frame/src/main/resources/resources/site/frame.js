@@ -55,3 +55,32 @@ function bcastSystem(evt, data) {
 
 function bcastUserMail(evt, data) {
 }
+
+function print(node) {
+    var win = window.open();
+    var doc = win.document;
+
+    // typeof(jQuery-node) == 'function'.
+    if (typeof (node) == 'string') {
+        node = $(node);
+    } else if (typeof (node) == 'object') {
+        node = $(node);
+    }
+
+    doc.open();
+    doc.write("<html><head>");
+    doc.write("<title>" + document.title + "</title>");
+
+    // CSS here...
+    var links = $(document.head).find('link');
+    for ( var i = 0; i < links.length; i++) {
+        var link = $(links[i]).html();
+        // doc.write(link);
+    }
+
+    doc.write("</head><body>");
+    doc.write(node.html());
+    doc.write("</body></html>");
+    win.print();
+    win.close();
+}

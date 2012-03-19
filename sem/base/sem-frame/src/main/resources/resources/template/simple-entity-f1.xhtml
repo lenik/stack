@@ -135,8 +135,12 @@
                     <c:if test="${not plainEditForm}">
                         <f:subview id="editDialog">
                             <ui:insert name="editDialog">
-                                <p:dialog header="编辑${title}" id="editDialog" widgetVar="editDialog" modal="true"
+                                <p:dialog id="editDialog" widgetVar="editdlg" modal="true"
                                     dynamic="${viewConfig.dynamicDialog}">
+                                    <f:facet name="header">
+                                        编辑${title}
+                                        <a href="javascript: print('#editDialog\\:form\\:content')">【打印】</a>
+                                    </f:facet>
                                     <div class="${formStyleClass != null ? formStyleClass : 'ui-dialog-form'}">
                                         <ui:insert name="editDialogBody" />
                                     </div>
