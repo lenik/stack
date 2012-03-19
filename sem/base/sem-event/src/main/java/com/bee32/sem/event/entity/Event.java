@@ -135,7 +135,7 @@ public class Event
     }
 
     @ManyToOne
-    @Index(name = "##_category")
+    @Index(name = "##_cat")
     @Override
     public EventCategory getCategory() {
         return category;
