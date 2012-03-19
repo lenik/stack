@@ -9,5 +9,5 @@
 #
 #   Otherwise, the script won't run at all.
 
-BAK_ROOT=/mnt/istore/projects/migdata/backup
-seccadb-backup -qc
+sudo -usemop BAK_ROOT=/mnt/istore/projects/migdata/backup \
+    seccadb-backup -qc
