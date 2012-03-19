@@ -31,8 +31,8 @@ public class MakeOrderDto
     public static final int DELIVERY_NOTES = 4;
     public static final int PLANS = 8;
 
-    public static final int NOT_ARRANGED_ITEMS = 16;
-    public static final int NOT_DELIVERIED_ITEMS = 32;
+    public static final int NOT_ARRANGED_ITEMS = 16 | ITEMS;
+    public static final int NOT_DELIVERIED_ITEMS = 32 | ITEMS;
 
     PartyDto customer;
     String status;

@@ -18,6 +18,7 @@ import com.bee32.sem.makebiz.dto.DeliveryNoteDto;
 import com.bee32.sem.makebiz.dto.DeliveryNoteItemDto;
 import com.bee32.sem.makebiz.dto.DeliveryNoteTakeOutDto;
 import com.bee32.sem.makebiz.dto.MakeOrderDto;
+import com.bee32.sem.makebiz.dto.MakeOrderItemDto;
 import com.bee32.sem.makebiz.entity.DeliveryNote;
 import com.bee32.sem.makebiz.entity.MakeOrder;
 import com.bee32.sem.makebiz.service.MakebizService;
@@ -84,6 +85,14 @@ public class DeliveryNoteAdminBean
     public void setApplyMakeOrder(MakeOrderDto makeOrderRef) {
         DeliveryNoteDto deliveryNote = getOpenedObject();
         MakeOrderDto makeOrder = reload(makeOrderRef, MakeOrderDto.NOT_DELIVERIED_ITEMS);
+
+        for(MakeOrderItemDto item: makeOrder.getItems()) {
+            if(item.getPart().isNull()) {
+                uiLogger.error("定单明细没有指定物料.");
+                return;
+            }
+        }
+
         List<DeliveryNoteItemDto> deliveryNoteItems = makeOrder.arrangeDeliveryNote();
         if (deliveryNoteItems.isEmpty()) {
             uiLogger.error("此订单已经全部安排送货.");

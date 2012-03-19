@@ -11,6 +11,7 @@ import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.makebiz.dto.MakeOrderDto;
+import com.bee32.sem.makebiz.dto.MakeOrderItemDto;
 import com.bee32.sem.makebiz.dto.MakeTaskDto;
 import com.bee32.sem.makebiz.dto.MakeTaskItemDto;
 import com.bee32.sem.makebiz.entity.MakeOrder;
@@ -55,6 +56,14 @@ public class MakeTaskAdminBean
     public void setApplyMakeOrder(MakeOrderDto makeOrderRef) {
         MakeTaskDto makeTask = getOpenedObject();
         MakeOrderDto makeOrder = reload(makeOrderRef, MakeOrderDto.NOT_ARRANGED_ITEMS);
+
+        for(MakeOrderItemDto item: makeOrder.getItems()) {
+            if(item.getPart().isNull()) {
+                uiLogger.error("定单明细没有指定物料.");
+                return;
+            }
+        }
+
         List<MakeTaskItemDto> taskItems = makeOrder.arrangeMakeTask();
         if (taskItems.isEmpty()) {
             uiLogger.error("此订单上的产品已经全部安排为生产任务或外购物料计划!");
