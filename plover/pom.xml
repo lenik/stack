@@ -78,6 +78,12 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+    <properties>
+        <spec.servlet.groupId>org.mortbay.jetty</spec.servlet.groupId>
+        <spec.servlet.artifactId>servlet-api</spec.servlet.artifactId>
+        <spec.servlet.version>3.0.20100224</spec.servlet.version>
+        <spec.jetty.version>8.1.0.RC5</spec.jetty.version>
+    </properties>
     <build>
         <plugins>
             <plugin>

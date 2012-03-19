@@ -10,9 +10,9 @@
     <version>0.3.2-SNAPSHOT</version>
     <dependencies>
         <dependency>
-            <groupId>org.mortbay.jetty</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>3.0.20100224</version>
+            <groupId>${spec.servlet.groupId}</groupId>
+            <artifactId>${spec.servlet.artifactId}</artifactId>
+            <version>${spec.servlet.version}</version>
         </dependency>
         <!-- <dependency> -->
         <!-- <groupId>javax.servlet</groupId> -->
@@ -38,7 +38,7 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-webapp</artifactId>
-            <version>8.1.0.RC5</version>
+            <version>${spec.jetty.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
