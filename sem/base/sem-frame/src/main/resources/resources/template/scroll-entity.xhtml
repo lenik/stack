@@ -19,14 +19,14 @@
                 <p:commandButton id="editButton" value="修改" actionListener="${bean.showEditForm}"
                     onclick="waitbox.show()" oncomplete="waitbox.hide()"
                     disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" update="${_contentUpdate}" />
+                <p:separator />
+                <p:commandButton id="deleteButton" value="删除" onclick="deleteConfirmDialog.show()"
+                    disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" />
                 <c:if test="${verifiable}">
                     <p:separator />
                     <sem:singleVerifierSupportButton id="verifyButton" selection="#{bean.selection}"
                         disabled="#{bean.editing or not bean.selected}" />
                 </c:if>
-                <p:separator />
-                <p:commandButton id="deleteButton" value="删除" onclick="deleteConfirmDialog.show()"
-                    disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" />
                 <ui:insert name="toolbar.left" />
                 <ui:insert name="toolbarPeripherals" />
             </p:toolbarGroup>
@@ -48,6 +48,8 @@
                 <h:outputText value="/${bean.dataModel.rowCount}" />
                 <p:commandButton id="jump" value="前往" actionListener="${bean.gotoInput}" disabled="${bean.editing}"
                     update="mainForm, ${_contentUpdate}" onclick="waitbox.show()" oncomplete="waitbox.hide()" />
+                <p:separator />
+                <p:commandButton id="printButton" icon="ui-icon-print" onclick="print('#editDialog:form:content')" />
             </p:toolbarGroup>
         </p:toolbar>
     </ui:define>

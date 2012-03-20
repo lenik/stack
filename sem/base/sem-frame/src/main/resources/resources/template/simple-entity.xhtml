@@ -32,14 +32,16 @@
                     <p:commandButton id="editButton" value="修改" rendered="${editable != null ? editable : true}"
                         disabled="${not bean.selected or not bean.selectionEditable}" actionListener="${bean.showEditForm}"
                         update="${_contentUpdate}" onclick="waitbox.show()" oncomplete="waitbox.hide(); ${plainEditForm ? '' : 'editdlg.show()'}" />
-                    <c:if test="${verifiable}">
-                        <p:separator />
-                        <sem:singleVerifierSupportButton id="verifyButton" selection="${bean.selection}"
-                            disabled="${bean.editing or not bean.selected}" />
-                    </c:if>
                     <p:separator />
                     <p:commandButton id="deleteButton" value="删除" rendered="${deletable != null ? deletable : true}"
                         onclick="deleteConfirmDialog.show()" disabled="${not bean.selected or not bean.selectionEditable}" />
+                    <p:separator />
+                    <c:if test="${verifiable}">
+                        <sem:singleVerifierSupportButton id="verifyButton" selection="${bean.selection}"
+                            disabled="${bean.editing or not bean.selected}" />
+                    </c:if>
+                    <p:commandButton id="print" icon="ui-icon-print" title="打印"
+                        onclick="print('#mainForm:dataContainer')" />
                 </p:toolbarGroup>
             </ui:insert>
         </p:toolbar>
@@ -204,7 +206,7 @@
                 （请选择要操作的对象。）
             </h:panelGroup>
             <h:panelGroup rendered="${bean.openedObject != null}">
-                <h:panelGroup id="content">
+                <h:panelGroup id="content" layout="block">
                     <pf:locker id="locker" test="${not bean.editing}">
                         <ui:insert name="editDialogContent">The edit dialog's content is undefined.</ui:insert>
                     </pf:locker>

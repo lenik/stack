@@ -170,12 +170,14 @@
                     <c:if test="${not plainEditForm}">
                         <f:subview id="editDialog">
                             <ui:insert name="editDialog">
-                                <p:dialog id="editDialog" widgetVar="editdlg" modal="true"
+                                <p:dialog id="editDialog" header="编辑${title}" widgetVar="editdlg" modal="true"
                                     dynamic="${viewConfig.dynamicDialog}">
-                                    <f:facet name="header">
-                                        编辑${title}
-                                        <a href="javascript: print('#editDialog\\:form\\:content')">【打印】</a>
-                                    </f:facet>
+                                    <div class="ui-toolbox">
+                                        <h:form id="toolform">
+                                            <p:commandLink id="printIndex" styleClass="ui-icon ui-icon-print"
+                                                onclick="print('#editDialog:form:content')" />
+                                        </h:form>
+                                    </div>
                                     <div class="${formStyleClass != null ? formStyleClass : 'ui-dialog-form'}">
                                         <ui:insert name="editDialogBody" />
                                     </div>

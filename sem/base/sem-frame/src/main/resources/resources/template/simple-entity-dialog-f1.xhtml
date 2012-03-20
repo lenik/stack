@@ -7,9 +7,14 @@
     <p:dialog id="dialog" header="${header}" widgetVar="${var}" modal="true" dynamic="${viewConfig.dynamicDialog}"
         position="center">
 
-        <div style="margin: 1px" onclick="$('#${var}_sideBarE').hide()">
+        <div class="x-body" style="margin: 1px" onclick="$('#${var}_sideBarE').hide()">
+            <div class="ui-toolbox" style="right: 2em">
+                <h:form id="toolform">
+                    <p:commandLink id="printIndex" styleClass="ui-icon ui-icon-print"
+                        onclick="print('.x-content', $(this).parent('.x-body')[0])" />
+                </h:form>
+            </div>
             <h:form id="form" styleClass="${formStyleClass}">
-
                 <table class="x-layout" cellspacing="0" cellpadding="0" border="0">
                     <tr>
                         <c:if test="${sideBarWVisible != null}">
@@ -23,26 +28,28 @@
                         </c:if>
 
                         <td valign="top">
-                            <ui:insert name="paneN" />
-                            <ui:param name="tabbed" value="${mainTabTitle != null}" />
+                            <h:panelGroup styleClass="x-content">
+                                <ui:insert name="paneN" />
+                                <ui:param name="tabbed" value="${mainTabTitle != null}" />
 
-                            <c:if test="${tabbed}">
-                                <p:tabView id="tv" activeIndex="${dialogBean.tabIndex}" dynamic="false">
-                                    <ui:insert name="tabs.0" />
-                                    <p:tab id="main" title="${mainTabTitle}">
+                                <c:if test="${tabbed}">
+                                    <p:tabView id="tv" activeIndex="${dialogBean.tabIndex}" dynamic="false">
+                                        <ui:insert name="tabs.0" />
+                                        <p:tab id="main" title="${mainTabTitle}">
+                                            <ui:insert name="main">no content</ui:insert>
+                                        </p:tab>
+                                        <ui:insert name="tabs.1" />
+                                    </p:tabView>
+                                </c:if>
+
+                                <c:if test="${not tabbed}">
+                                    <f:subview id="tv">
                                         <ui:insert name="main">no content</ui:insert>
-                                    </p:tab>
-                                    <ui:insert name="tabs.1" />
-                                </p:tabView>
-                            </c:if>
+                                    </f:subview>
+                                </c:if>
 
-                            <c:if test="${not tabbed}">
-                                <f:subview id="tv">
-                                    <ui:insert name="main">no content</ui:insert>
-                                </f:subview>
-                            </c:if>
-
-                            <ui:insert name="paneS" />
+                                <ui:insert name="paneS" />
+                            </h:panelGroup>
 
                             <h:panelGroup id="buttons" layout="block">
                                 <ui:insert name="buttons">
