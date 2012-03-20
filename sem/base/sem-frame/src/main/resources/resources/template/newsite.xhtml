@@ -141,21 +141,23 @@
                 <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.autocomplete.js"></script>
                 <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.datepicker.js"></script>
             </ui:remove>
-            <h:form id="dummy" style="display: none;">
+            <h:form id="dm_form" style="display: none;">
                 A Dummy Form.
-                <p:dataTable />
-                <p:tabView rendered="false">
+                <p:dataTable id="tab" />
+                <p:tabView id="tv" rendered="false">
                     <p:tab title="" />
                 </p:tabView>
             </h:form>
 
-            <div id="scriptsJQueryUIDefault">
-                <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.draggable.js"></script>
-                <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.position.js"></script>
-                <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.resizable.js"></script>
-                <script language="javascript" src="${JQUERY_UI}/ui/jquery.effects.core.js"></script>
-                <script language="javascript" src="${JQUERY_UI}/ui/i18n/jquery.ui.datepicker-zh-CN.js"></script>
-            </div>
+            <ui:remove>
+                <div id="scriptsJQueryUIDefault">
+                    <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.draggable.js"></script>
+                    <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.position.js"></script>
+                    <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.resizable.js"></script>
+                    <script language="javascript" src="${JQUERY_UI}/ui/jquery.effects.core.js"></script>
+                    <script language="javascript" src="${JQUERY_UI}/ui/i18n/jquery.ui.datepicker-zh-CN.js"></script>
+                </div>
+            </ui:remove>
 
             <div id="preScripts">
                 <ui:insert name="pre-scripts">
