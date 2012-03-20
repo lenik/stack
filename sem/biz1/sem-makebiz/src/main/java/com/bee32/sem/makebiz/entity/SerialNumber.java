@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.ox1.color.UIEntityAuto;
 
 /**
  * 序列号
@@ -13,7 +13,7 @@ import com.bee32.plover.orm.entity.EntityAuto;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "serial_number_seq", allocationSize = 1)
 public class SerialNumber
-        extends EntityAuto<Long> {
+        extends UIEntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 

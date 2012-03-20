@@ -20,7 +20,7 @@ public class QCSpecParameterDto
 
     @Override
     protected void _marshal(QCSpecParameter source) {
-        parent = marshal(QCSpecDto.class, source.getParent());
+        parent = mref(QCSpecDto.class, source.getParent());
         value = source.getValue();
         required = source.isRequired();
 
