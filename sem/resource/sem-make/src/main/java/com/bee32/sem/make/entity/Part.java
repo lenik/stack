@@ -51,6 +51,7 @@ public class Part
     Integer xrefCount;
 
     Material target;
+    MaterialCategory category;// @Redundant
 
     boolean valid = true;
     Date validDateFrom = new Date();
@@ -63,9 +64,7 @@ public class Part
     BigDecimal electricityFee = new BigDecimal(0);
     BigDecimal equipmentCost = new BigDecimal(0);
 
-    MaterialCategory category;
-
-    List<MakeStep> steps;
+    List<MakeStepModel> steps = new ArrayList<MakeStepModel>();
 
     public Part() {
         // Default valid duration = 1 year.
@@ -90,6 +89,7 @@ public class Part
         xrefs = new ArrayList<PartItem>(o.xrefs);
         xrefCount = o.xrefCount;
         target = o.target;
+        category = o.category;
         valid = o.valid;
         validDateFrom = o.validDateFrom;
         validDateTo = o.validDateTo;
@@ -98,7 +98,6 @@ public class Part
         otherFee = o.otherFee;
         electricityFee = o.electricityFee;
         equipmentCost = o.equipmentCost;
-        category = o.category;
         steps = CopyUtils.copyList(o.steps);
     }
 
@@ -365,11 +364,11 @@ public class Part
      */
     @OneToMany(mappedBy = "output", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
-    public List<MakeStep> getSteps() {
+    public List<MakeStepModel> getSteps() {
         return steps;
     }
 
-    public void setSteps(List<MakeStep> steps) {
+    public void setSteps(List<MakeStepModel> steps) {
         this.steps = steps;
     }
 

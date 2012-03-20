@@ -1,76 +1,85 @@
 package com.bee32.sem.makebiz.entity;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.plover.ox1.config.DecimalConfig;
-import com.bee32.sem.make.entity.MakeStep;
+import com.bee32.sem.make.entity.MakeStepModel;
 import com.bee32.sem.make.entity.Part;
+import com.bee32.sem.make.entity.QCResult;
 import com.bee32.sem.people.entity.OrgUnit;
+import com.bee32.sem.people.entity.Person;
 
 /**
  * 工艺流转单明细
+ *
  * @author jack
  *
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "make_step_instance_seq", allocationSize = 1)
-public class MakeStepInstance
+public class MakeStep
         extends MomentInterval
         implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
-    MakeProcess process;
+    MakeProcess parent;
 
-    MakeStep step;
-    Part part;
+    // Behavior as <model.part, model.processOrder>.
+    MakeStepModel model;
+    Part part; // @Redundant for grouping.
 
-    BigDecimal palnQuantity = new BigDecimal(1);
+    BigDecimal planQuantity = new BigDecimal(1);
     BigDecimal actualQuantity = new BigDecimal(1);
 
     Date planDeadline;
     Date actualDeadline;
 
     OrgUnit orgUnit;
-    List<MakeStepOperator> operators;
-    List<QualityCheck> qcs;
+    List<Person> operators = new ArrayList<Person>();
+    QCResult qcResult = new QCResult();
 
-    boolean flag;
+    boolean done;
 
-    @ManyToOne(optional=false)
-    public MakeProcess getProcess() {
-        return process;
+    @ManyToOne(optional = false)
+    public MakeProcess getParent() {
+        return parent;
     }
 
-    public void setProcess(MakeProcess process) {
-        this.process = process;
-    }
-
-    @NaturalId
-    @ManyToOne(optional=false)
-    public MakeStep getStep() {
-        return step;
-    }
-
-    public void setStep(MakeStep step) {
-        this.step = step;
+    public void setProcess(MakeProcess parent) {
+        this.parent = parent;
     }
 
     @NaturalId
-    @ManyToOne(optional=false)
+    @ManyToOne(optional = false)
+    public MakeStepModel getModel() {
+        return model;
+    }
+
+    public void setModel(MakeStepModel model) {
+        this.model = model;
+    }
+
+    @NaturalId
+    @ManyToOne(optional = false)
     public Part getPart() {
         return part;
     }
@@ -80,20 +89,20 @@ public class MakeStepInstance
     }
 
     @Column(scale = QTY_ITEM_SCALE, precision = QTY_ITEM_PRECISION, nullable = false)
-    public BigDecimal getPalnQuantity() {
-        return palnQuantity;
+    public BigDecimal getPlanQuantity() {
+        return planQuantity;
     }
 
-    public void setPalnQuantity(BigDecimal palnQuantity) {
-        this.palnQuantity = palnQuantity;
+    public void setPlanQuantity(BigDecimal planQuantity) {
+        this.planQuantity = planQuantity;
     }
 
-    public void setPalnQuantity(long palnQuantity) {
-        setPalnQuantity(new BigDecimal(palnQuantity));
+    public void setPlanQuantity(long planQuantity) {
+        setPlanQuantity(new BigDecimal(planQuantity));
     }
 
-    public void setPalnQuantity(double palnQuantity) {
-        setPalnQuantity(new BigDecimal(palnQuantity));
+    public void setPlanQuantity(double planQuantity) {
+        setPlanQuantity(new BigDecimal(planQuantity));
     }
 
     @Column(scale = QTY_ITEM_SCALE, precision = QTY_ITEM_PRECISION, nullable = false)
@@ -140,30 +149,37 @@ public class MakeStepInstance
         this.orgUnit = orgUnit;
     }
 
-    @OneToMany(mappedBy="instance")
-    public List<MakeStepOperator> getOperators() {
+    @ManyToMany
+    @JoinTable(name = "MakeStepOperator",
+    /*            */joinColumns = @JoinColumn(name = "makeStep"), //
+    /*            */inverseJoinColumns = @JoinColumn(name = "operator"))
+    public List<Person> getOperators() {
         return operators;
     }
 
-    public void setOperators(List<MakeStepOperator> operators) {
+    public void setOperators(List<Person> operators) {
+        if (operators == null)
+            throw new NullPointerException("operators");
         this.operators = operators;
     }
 
-    @OneToMany(mappedBy="instance")
-    public List<QualityCheck> getQcs() {
-        return qcs;
+    @ManyToOne(optional = false)
+    @Cascade(CascadeType.ALL)
+    public QCResult getQcResult() {
+        return qcResult;
     }
 
-    public void setQcs(List<QualityCheck> qcs) {
-        this.qcs = qcs;
+    public void setQcResult(QCResult qcResult) {
+        this.qcResult = qcResult;
     }
 
-    public boolean isFlag() {
-        return flag;
+    @Column(nullable = false)
+    public boolean isDone() {
+        return done;
     }
 
-    public void setFlag(boolean flag) {
-        this.flag = flag;
+    public void setDone(boolean done) {
+        this.done = done;
     }
 
 }

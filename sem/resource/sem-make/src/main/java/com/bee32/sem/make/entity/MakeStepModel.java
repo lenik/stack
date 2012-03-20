@@ -13,6 +13,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
@@ -26,7 +29,7 @@ import com.bee32.plover.ox1.config.DecimalConfig;
 @Entity
 @Green
 @SequenceGenerator(name = "idgen", sequenceName = "make_step_seq", allocationSize = 1)
-public class MakeStep
+public class MakeStepModel
         extends UIEntityAuto<Integer>
         implements DecimalConfig {
 
@@ -35,6 +38,7 @@ public class MakeStep
     public static final int EQUIPMENT_LENGTH = 2000;
     public static final int OPERATION_LENGTH = 2000;
 
+    int order;
     Part output;
     boolean qualityControlled;
 
@@ -48,9 +52,18 @@ public class MakeStep
     String operation;
 
     List<MakeStepInput> inputs = new ArrayList<MakeStepInput>();
-    List<QualityStandard> qualityStandards = new ArrayList<QualityStandard>();
+    QCSpec qcSpec = new QCSpec();
 
-    int order;
+    /**
+     * 如果同一个part对应多个工艺，则order反应了这多个工艺的顺序
+     */
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
 
     /**
      * 工艺的输出物料
@@ -172,7 +185,8 @@ public class MakeStep
         this.operation = operation;
     }
 
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
     public List<MakeStepInput> getInputs() {
         return inputs;
     }
@@ -183,26 +197,14 @@ public class MakeStep
         this.inputs = inputs;
     }
 
-    @OneToMany
-    public List<QualityStandard> getQualityStandards() {
-        return qualityStandards;
+    @ManyToOne
+    @Cascade(CascadeType.ALL)
+    public QCSpec getQcSpec() {
+        return qcSpec;
     }
 
-    public void setQualityStandards(List<QualityStandard> qualityStandards) {
-        if(qualityStandards == null)
-            throw new NullPointerException("quality standards");
-        this.qualityStandards = qualityStandards;
-    }
-
-    /**
-     * 如果同一个part对应多个工艺，则order反应了这多个工艺的顺序
-     */
-    public int getOrder() {
-        return order;
-    }
-
-    public void setOrder(int order) {
-        this.order = order;
+    public void setQcSpec(QCSpec qcSpec) {
+        this.qcSpec = qcSpec;
     }
 
 }

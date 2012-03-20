@@ -24,24 +24,24 @@ public class MakeStepInput
 
     private static final long serialVersionUID = 1L;
 
-    MakeStep step;
+    MakeStepModel step;
 
     Material material;
     BigDecimal quantity = new BigDecimal(0);
 
     @ManyToOne(optional = false)
-    public MakeStep getStep() {
+    public MakeStepModel getStep() {
         return step;
     }
 
-    public void setStep(MakeStep step) {
+    public void setStep(MakeStepModel step) {
+        if (step == null)
+            throw new NullPointerException("step");
         this.step = step;
     }
 
     /**
      * 消耗材料对应的物料
-     *
-     * @return
      */
     @ManyToOne(optional = false)
     public Material getMaterial() {
@@ -49,6 +49,8 @@ public class MakeStepInput
     }
 
     public void setMaterial(Material material) {
+        if (material == null)
+            throw new NullPointerException("material");
         this.material = material;
     }
 

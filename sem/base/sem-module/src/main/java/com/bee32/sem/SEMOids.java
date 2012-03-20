@@ -29,6 +29,7 @@ public interface SEMOids {
         int Process = 1;
         int Techproc = 2;
         int Workflow = 3;
+        int QualityControl = 4;
     }
 
     interface resource {

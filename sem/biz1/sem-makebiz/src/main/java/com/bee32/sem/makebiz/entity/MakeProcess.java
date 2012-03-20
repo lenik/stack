@@ -39,7 +39,7 @@ public class MakeProcess
 
     Date deadline;
 
-    List<MakeStepInstance> stepInstances;
+    List<MakeStep> stepInstances;
     List<SerialNumber> sns;
 
     @ManyToOne(optional=false)
@@ -96,11 +96,11 @@ public class MakeProcess
     }
 
     @OneToMany(mappedBy="process")
-    public List<MakeStepInstance> getStepInstances() {
+    public List<MakeStep> getStepInstances() {
         return stepInstances;
     }
 
-    public void setStepInstances(List<MakeStepInstance> stepInstances) {
+    public void setStepInstances(List<MakeStep> stepInstances) {
         this.stepInstances = stepInstances;
     }
 
