@@ -49,41 +49,44 @@
             <ui:param name="editPopup" value="${style != 'panel'}" />
 
             <ui:define name="indexTools">
-                <p:commandLink id="printIndex" styleClass="ui-icon ui-icon-print" onclick="print('')" />
+                <p:commandLink id="printIndex" styleClass="ui-icon ui-icon-print"
+                    onclick="print('#'+'${cc.attrs.clientId}:indexForm:content'); " />
             </ui:define>
             <ui:define name="editTools">
-                <p:commandLink id="printForm" styleClass="ui-icon ui-icon-print" onclick="print('')" />
+                <p:commandLink id="printForm" styleClass="ui-icon ui-icon-print"
+                    onclick="print('#'+'${cc.attrs.clientId}:editForm:content'); " />
             </ui:define>
 
             <ui:define name="indexFormContent">
                 <h:panelGrid columns="1">
                     <cc:insertRawFacet name="index-header" />
 
-                    <h:panelGroup id="dataContainer" layout="block" styleClass="${indexPopup ? 'ui-dialog-data' : ''}">
-                        <ui:insert name="dataContainer">
-                            <p:dataTable id="dataTable" value="${mbean.selectableList}" selection="${mbean.selection}"
-                                selectionMode="single" var="entry" paginator="${cc.attrs.paginator}" rows="${cc.attrs.paginator ? 10 : 10000}"
-                                paginatorTemplate="${viewConfig.paginatorTemplate}" rowsPerPageTemplate="${viewConfig.pageSizeTemplate}"
-                                resizableColumns="true" rowIndexVar="rowIndex">
+                    <h:panelGroup id="content" layout="block">
+                        <h:panelGroup id="dataContainer" layout="block" styleClass="${indexPopup ? 'ui-dialog-data' : ''}">
+                            <ui:insert name="dataContainer">
+                                <p:dataTable id="dataTable" value="${mbean.selectableList}" selection="${mbean.selection}"
+                                    selectionMode="single" var="entry" paginator="${cc.attrs.paginator}" rows="${cc.attrs.paginator ? 10 : 10000}"
+                                    paginatorTemplate="${viewConfig.paginatorTemplate}" rowsPerPageTemplate="${viewConfig.pageSizeTemplate}"
+                                    resizableColumns="true" rowIndexVar="rowIndex">
 
-                                <f:attribute name="smooth" value="${cc.attrs.smooth}" />
+                                    <f:attribute name="smooth" value="${cc.attrs.smooth}" />
 
-                                <!-- mbean not work, must be cc.attrs.mbean here. -->
-                                <p:ajax event="rowSelect" listener="${cc.attrs.mbean.rowSelect}"
-                                    update="${cc.attrs.indexView}:indexForm:ibuttons, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more" />
-                                <p:ajax event="rowUnselect" listener="${cc.attrs.mbean.rowUnselect}"
-                                    update="${cc.attrs.indexView}:indexForm:ibuttons, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more" />
+                                    <!-- mbean not work, must be cc.attrs.mbean here. -->
+                                    <p:ajax event="rowSelect" listener="${cc.attrs.mbean.rowSelect}"
+                                        update="${cc.attrs.indexView}:indexForm:ibuttons, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more" />
+                                    <p:ajax event="rowUnselect" listener="${cc.attrs.mbean.rowUnselect}"
+                                        update="${cc.attrs.indexView}:indexForm:ibuttons, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more" />
 
-                                <p:column headerText="ID">
-                                    <h:outputText value="${entry.id}" sortBy="${entry.id}" />
-                                </p:column>
+                                    <p:column headerText="ID">
+                                        <h:outputText value="${entry.id}" sortBy="${entry.id}" />
+                                    </p:column>
 
-                                <cc:insertRawFacet name="columns" />
+                                    <cc:insertRawFacet name="columns" />
 
-                            </p:dataTable>
-                        </ui:insert>
+                                </p:dataTable>
+                            </ui:insert>
+                        </h:panelGroup>
                     </h:panelGroup>
-
                     <h:panelGroup id="ibuttons">
                         <table border="0" width="100%">
                             <tr>
@@ -134,42 +137,44 @@
                 <h:panelGroup id="noContent" layout="block" rendered="${item == null and editPopup}">
                     No opened object.
                 </h:panelGroup>
-                <h:panelGroup layout="block" rendered="${item != null}">
+
+                <h:panelGroup id="content" layout="block" rendered="${item != null}">
                     <cc:insertChildren />
-                    <h:panelGroup id="ebuttons">
-                        <table border="0" width="100%">
-                            <tr>
-                                <td align="left">
-                                    <cc:insertRawFacet name="edit-buttons" />
-                                    <p:commandButton id="copy-validated" value="${'创建副本'.concat(copyMode ? '' : '*')}"
-                                        rendered="${copyMode}" disabled="${mbean.openedObject == null or cc.attrs.readonly}"
-                                        action="${mbean.dup}" onclick="waitbox.show()"
-                                        oncomplete="waitbox.hide(); ${editPopup ? cc.attrs.editDialogVar.concat('.shakeOnFail(args)') : ''}"
-                                        update="${cc.attrs.indexView}:indexForm:body, apply-validated">
-                                        <f:setPropertyActionListener target="${mbean.copyMode}"
-                                            value="${copyMode}" />
-                                    </p:commandButton>
-                                </td>
-                                <td align="right">
-                                    <p:commandButton id="apply-validated"
-                                        value="${editPopup ? '确定' : (mbean.openedIndex == -1 ? '添加' : '应用').concat(copyMode ? '' : '*')}"
-                                        title="${(not editPopup) and cc.attrs.smooth ? '在快速编辑模式下，当前修改的内容可能已经被自动保存。' : ''}"
-                                        disabled="${mbean.openedObject == null or cc.attrs.readonly}" action="${mbean.apply}"
-                                        onclick="waitbox.show()"
-                                        oncomplete="waitbox.hide(); ${editPopup ? cc.attrs.editDialogVar.concat('.hideValidated(args)') : ''}"
-                                        update="${cc.attrs.indexView}:indexForm:body, apply-validated">
-                                        <f:setPropertyActionListener target="${mbean.copyMode}"
-                                            value="${copyMode}" />
-                                    </p:commandButton>
-                                    <p:commandButton id="cancel" value="取消" disabled="${mbean.openedObject == null}"
-                                        actionListener="${mbean.cancel}" update="body, ${cc.attrs.editView}:more"
-                                        onclick="waitbox.show()" oncomplete="waitbox.hide()" rendered="${not editPopup and copyMode}" />
-                                    <p:commandButton id="close" value="关闭" onclick="${cc.attrs.editDialogVar}.hide()"
-                                        rendered="${editPopup}" />
-                                </td>
-                            </tr>
-                        </table>
-                    </h:panelGroup>
+                </h:panelGroup>
+
+                <h:panelGroup id="ebuttons" rendered="${item != null}">
+                    <table border="0" width="100%">
+                        <tr>
+                            <td align="left">
+                                <cc:insertRawFacet name="edit-buttons" />
+                                <p:commandButton id="copy-validated" value="${'创建副本'.concat(copyMode ? '' : '*')}"
+                                    rendered="${copyMode}" disabled="${mbean.openedObject == null or cc.attrs.readonly}"
+                                    action="${mbean.dup}" onclick="waitbox.show()"
+                                    oncomplete="waitbox.hide(); ${editPopup ? cc.attrs.editDialogVar.concat('.shakeOnFail(args)') : ''}"
+                                    update="${cc.attrs.indexView}:indexForm:body, apply-validated">
+                                    <f:setPropertyActionListener target="${mbean.copyMode}"
+                                        value="${copyMode}" />
+                                </p:commandButton>
+                            </td>
+                            <td align="right">
+                                <p:commandButton id="apply-validated"
+                                    value="${editPopup ? '确定' : (mbean.openedIndex == -1 ? '添加' : '应用').concat(copyMode ? '' : '*')}"
+                                    title="${(not editPopup) and cc.attrs.smooth ? '在快速编辑模式下，当前修改的内容可能已经被自动保存。' : ''}"
+                                    disabled="${mbean.openedObject == null or cc.attrs.readonly}" action="${mbean.apply}"
+                                    onclick="waitbox.show()"
+                                    oncomplete="waitbox.hide(); ${editPopup ? cc.attrs.editDialogVar.concat('.hideValidated(args)') : ''}"
+                                    update="${cc.attrs.indexView}:indexForm:body, apply-validated">
+                                    <f:setPropertyActionListener target="${mbean.copyMode}"
+                                        value="${copyMode}" />
+                                </p:commandButton>
+                                <p:commandButton id="cancel" value="取消" disabled="${mbean.openedObject == null}"
+                                    actionListener="${mbean.cancel}" update="body, ${cc.attrs.editView}:more" onclick="waitbox.show()"
+                                    oncomplete="waitbox.hide()" rendered="${not editPopup and copyMode}" />
+                                <p:commandButton id="close" value="关闭" onclick="${cc.attrs.editDialogVar}.hide()"
+                                    rendered="${editPopup}" />
+                            </td>
+                        </tr>
+                    </table>
                 </h:panelGroup>
             </ui:define>
 
