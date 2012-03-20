@@ -16,7 +16,7 @@ public class QCResultParameter
 
     private static final long serialVersionUID = 1L;
 
-    public static final int VALUE_LENGTH = 100;
+    public static final int VALUE_LENGTH = 200;
 
     QCResult parent;
     QCSpecParameter key;

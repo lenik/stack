@@ -24,8 +24,11 @@ public class QCSpecParameter
 
     private static final long serialVersionUID = 1L;
 
+    public static final int VALUE_LENGTH = 200;
+
     QCSpec parent;
     // String typeName;
+    String value;
     boolean required;
 
     @ManyToOne(optional = false)
@@ -46,6 +49,19 @@ public class QCSpecParameter
 
     public void setRequired(boolean required) {
         this.required = required;
+    }
+
+    /**
+     * 质检标准值
+     * @return
+     */
+    @Column(length = VALUE_LENGTH)
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
 }
