@@ -6,7 +6,7 @@
     <ui:define name="pageStatus">
         <h:form id="__tips">
             <ui:insert name="growl">
-                <p:growl id="growl" showDetail="true" />
+                <p:growl id="growl" showDetail="true" autoUpdate="true" />
             </ui:insert>
         </h:form>
         <h:form id="__status">
@@ -16,7 +16,7 @@
 
     <ui:define name="menu">
         <h:form id="menuForm">
-            <p:menubar autoSubmenuDisplay="true" model="#{primefacesMenuBean.model}" />
+            <p:menubar autoDisplay="true" model="#{primefacesMenuBean.model}" />
         </h:form>
     </ui:define>
 
