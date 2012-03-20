@@ -12,17 +12,17 @@ import com.bee32.plover.orm.entity.EntityAuto;
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "serial_number_seq", allocationSize = 1)
-public class SerialNumber extends EntityAuto<Long> {
+public class SerialNumber
+        extends EntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 
     public static final int NUMBER_LENGTH = 50;
 
     MakeProcess process;
-
     String number;
 
-    @ManyToOne(optional=false)
+    @ManyToOne(optional = false)
     public MakeProcess getProcess() {
         return process;
     }

@@ -1,6 +1,7 @@
 package com.bee32.sem.makebiz.entity;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +12,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.plover.ox1.config.DecimalConfig;
@@ -29,20 +33,16 @@ public class MakeProcess
 
     public static final int BATCH_NUMBER_LENGTH = 50;
 
-
     MakeTask task;
-
     Part part;
     BigDecimal quantity = new BigDecimal(1);
-
     String batchNumber;
-
     Date deadline;
 
-    List<MakeStep> stepInstances;
-    List<SerialNumber> sns;
+    List<MakeStep> steps = new ArrayList<MakeStep>();
+    List<SerialNumber> serials = new ArrayList<SerialNumber>();
 
-    @ManyToOne(optional=false)
+    @ManyToOne(optional = false)
     public MakeTask getTask() {
         return task;
     }
@@ -51,7 +51,7 @@ public class MakeProcess
         this.task = task;
     }
 
-    @ManyToOne(optional=false)
+    @ManyToOne(optional = false)
     public Part getPart() {
         return part;
     }
@@ -77,7 +77,7 @@ public class MakeProcess
         setQuantity(new BigDecimal(quantity));
     }
 
-    @Column(length=BATCH_NUMBER_LENGTH)
+    @Column(length = BATCH_NUMBER_LENGTH)
     public String getBatchNumber() {
         return batchNumber;
     }
@@ -95,22 +95,23 @@ public class MakeProcess
         this.deadline = deadline;
     }
 
-    @OneToMany(mappedBy="process")
-    public List<MakeStep> getStepInstances() {
-        return stepInstances;
+    @OneToMany(mappedBy = "parent", orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
+    public List<MakeStep> getSteps() {
+        return steps;
     }
 
-    public void setStepInstances(List<MakeStep> stepInstances) {
-        this.stepInstances = stepInstances;
+    public void setSteps(List<MakeStep> steps) {
+        this.steps = steps;
     }
 
-    @OneToMany(mappedBy="process")
-    public List<SerialNumber> getSns() {
-        return sns;
+    @OneToMany(mappedBy = "process")
+    public List<SerialNumber> getSerials() {
+        return serials;
     }
 
-    public void setSns(List<SerialNumber> sns) {
-        this.sns = sns;
+    public void setSerials(List<SerialNumber> serials) {
+        this.serials = serials;
     }
 
 }
