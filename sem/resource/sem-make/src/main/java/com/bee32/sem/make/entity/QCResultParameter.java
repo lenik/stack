@@ -38,7 +38,7 @@ public class QCResultParameter
         return key;
     }
 
-    public void setSpec(QCSpecParameter key) {
+    public void setKey(QCSpecParameter key) {
         if (key == null)
             throw new NullPointerException("key");
         this.key = key;

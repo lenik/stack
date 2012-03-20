@@ -136,7 +136,7 @@ public class MakeOrderItem
     }
 
     /**
-     * @return true-使用物料名称，规格，参数 false-使用外部物料名称，规格，参数
+     * @return true-使用物料名称，规格，参数; false-使用外部物料名称，规格，参数
      */
     @DefaultValue("true")
     @Column(nullable = false)
