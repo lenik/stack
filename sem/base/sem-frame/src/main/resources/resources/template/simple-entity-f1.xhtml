@@ -71,6 +71,41 @@
 
                                         <ui:insert name="dataTableRow" />
                                     </p:dataTable>
+                                    <p:contextMenu id="exportMenu" for="dataTable">
+                                        <p:menuitem value="导出当前页到 PDF …" icon="ui-icon-extlink">
+                                            <p:dataExporter target="dataTable" type="pdf" pageOnly="true"
+                                                fileName="${title}-${bean.dataModel.rowIndex}+${bean.dataModel.pageSize}" />
+                                        </p:menuitem>
+                                        <p:menuitem value="导出当前页到 CSV …" icon="ui-icon-extlink">
+                                            <p:dataExporter target="dataTable" type="csv" pageOnly="true"
+                                                fileName="${title}-${bean.dataModel.rowIndex}+${bean.dataModel.pageSize}" />
+                                        </p:menuitem>
+                                        <p:menuitem value="导出当前页到 XML …" icon="ui-icon-extlink">
+                                            <p:dataExporter target="dataTable" type="xml" pageOnly="true"
+                                                fileName="${title}-${bean.dataModel.rowIndex}+${bean.dataModel.pageSize}" />
+                                        </p:menuitem>
+                                        <p:menuitem value="导出当前页到 Excel …" icon="ui-icon-extlink">
+                                            <p:dataExporter target="dataTable" type="xls" pageOnly="true"
+                                                fileName="${title}-${bean.dataModel.rowIndex}+${bean.dataModel.pageSize}" />
+                                        </p:menuitem>
+                                        <p:separator />
+                                        <p:menuitem value="导出全部记录到 PDF …" icon="ui-icon-extlink">
+                                            <p:dataExporter target="dataTable" type="pdf" pageOnly="false"
+                                                fileName="${title}" />
+                                        </p:menuitem>
+                                        <p:menuitem value="导出全部记录到 CSV …" icon="ui-icon-extlink">
+                                            <p:dataExporter target="dataTable" type="csv" pageOnly="false"
+                                                fileName="${title}" />
+                                        </p:menuitem>
+                                        <p:menuitem value="导出全部记录到 XML …" icon="ui-icon-extlink">
+                                            <p:dataExporter target="dataTable" type="xml" pageOnly="false"
+                                                fileName="${title}" />
+                                        </p:menuitem>
+                                        <p:menuitem value="导出全部记录到 Excel …" icon="ui-icon-extlink">
+                                            <p:dataExporter target="dataTable" type="xls" pageOnly="false"
+                                                fileName="${title}" />
+                                        </p:menuitem>
+                                    </p:contextMenu>
                                 </ui:insert>
                             </h:panelGroup>
                             <div id="dataContextMenu">
