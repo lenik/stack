@@ -27,7 +27,6 @@ public class QCSpecParameter
     public static final int VALUE_LENGTH = 200;
 
     QCSpec parent;
-    // String typeName;
     String value;
     boolean required;
 

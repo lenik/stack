@@ -5,14 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.ox1.color.Blue;
+import com.bee32.plover.ox1.color.UIEntityAuto;
 
 @Entity
 @Blue
 @SequenceGenerator(name = "idgen", sequenceName = "qc_result_parameter_seq", allocationSize = 1)
 public class QCResultParameter
-        extends EntityAuto<Long> {
+        extends UIEntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 

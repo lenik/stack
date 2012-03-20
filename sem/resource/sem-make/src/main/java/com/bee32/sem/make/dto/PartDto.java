@@ -51,7 +51,7 @@ public class PartDto
 
     MaterialCategoryDto category;
 
-    List<MakeStepDto> steps;
+    List<MakeStepModelDto> steps;
 
     public PartDto() {
         super();
@@ -106,7 +106,7 @@ public class PartDto
         category = mref(MaterialCategoryDto.class, source.getCategory());
 
         if (selection.contains(STEPS))
-            steps = marshalList(MakeStepDto.class, 0, source.getSteps());
+            steps = marshalList(MakeStepModelDto.class, 0, source.getSteps());
         else
             steps = Collections.emptyList();
     }
@@ -286,15 +286,15 @@ public class PartDto
         this.category = category;
     }
 
-    public List<MakeStepDto> getTechnics() {
+    public List<MakeStepModelDto> getTechnics() {
         return steps;
     }
 
-    public void setTechnics(List<MakeStepDto> technics) {
+    public void setTechnics(List<MakeStepModelDto> technics) {
         this.steps = technics;
     }
 
-    public boolean addTechnic(MakeStepDto technic) {
+    public boolean addTechnic(MakeStepModelDto technic) {
         if (technic == null)
             throw new NullPointerException("technic");
         if (steps.contains(technic))
@@ -303,7 +303,7 @@ public class PartDto
         return true;
     }
 
-    public boolean removeTechnic(MakeStepDto technic) {
+    public boolean removeTechnic(MakeStepModelDto technic) {
         if (technic == null)
             throw new NullPointerException("technic");
         return steps.remove(technic);
