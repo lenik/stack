@@ -96,6 +96,7 @@ label {
 
 .ui-datatable-data td.f-wrappable {
     white-space: normal;
+    word-wrap: break-word;
 }
 
 .ui-treetable-data td {
@@ -104,6 +105,7 @@ label {
 
 .ui-treetable-data td.f-wrappable {
     white-space: normal;
+    word-wrap: break-word;
 }
 
 .ui-sysmsg {
@@ -117,3 +119,19 @@ label {
     right: 3px;
     color: gray;
 }
+
+.print-header {
+    margin-bottom: 1em;
+}
+
+.print h1 {
+    display: inline;
+    padding: 0 2em;
+    border-bottom: double 4px blue;
+}
+
+/* .print input,.print button {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+} */

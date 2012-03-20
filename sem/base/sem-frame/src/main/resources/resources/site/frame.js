@@ -56,31 +56,64 @@ function bcastSystem(evt, data) {
 function bcastUserMail(evt, data) {
 }
 
-function print(node) {
+function print(node, parent) {
+    var title = document.title;
+    title = title.replace(/管理/g, '');
+
     var win = window.open();
     var doc = win.document;
-
+    // var elements;
     // typeof(jQuery-node) == 'function'.
     if (typeof (node) == 'string') {
-        node = $(node);
+        var q = node;
+        q = q.replace(/:/g, '\\:');
+        var outer = $;
+        if (parent != null)
+            outer = $(parent);
+        var elements = outer.find(q);
+        if (elements.length == 0) {
+            alert("Nothing to print, selector: " + q);
+            return;
+        }
+        node = $(elements[0]);
     } else if (typeof (node) == 'object') {
-        node = $(node);
+        var element = node;
+        node = $(element);
     }
 
     doc.open();
     doc.write("<html><head>");
-    doc.write("<title>" + document.title + "</title>");
+    doc.write("<title>" + title + "</title>\n");
 
     // CSS here...
     var links = $(document.head).find('link');
     for ( var i = 0; i < links.length; i++) {
-        var link = $(links[i]).html();
-        // doc.write(link);
+        var link = links[i];
+        // $(link).html() doesn't work.
+        doc.write(link.outerHTML);
     }
 
-    doc.write("</head><body>");
-    doc.write(node.html());
-    doc.write("</body></html>");
+    doc.write("</head><body class='print'>");
+    doc.write("<div align='center' class='print-header'><h1>" + title + "</h1></div>\n");
+    doc.write("<div align='center'>" + node.html() + "</div>\n");
+    doc.write("</body></html>\n");
+    doc.close();
+
+    // Remove all buttons: should query with jQuery.
+    var buttons = doc.body.querySelectorAll('button');
+    for ( var i = 0; i < buttons.length; i++) {
+        var button = buttons[i];
+        button.parentElement.removeChild(button);
+    }
+
     win.print();
-    win.close();
+
+    if (typeof (win.onafterprint) != 'undefined') {
+        win.onafterprint = function() {
+            win.close();
+        }
+    } else {
+        // alert("请在打印完成后点击确定。");
+        // win.close();
+    }
 }
