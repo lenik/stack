@@ -3,20 +3,11 @@ package com.bee32.sem.people.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.model.SelectItem;
-
 import com.bee32.plover.orm.annotation.ForEntity;
-import com.bee32.plover.orm.util.DTOs;
-import com.bee32.sem.frame.ui.ListMBean;
-import com.bee32.sem.people.Gender;
-import com.bee32.sem.people.dto.ContactDto;
 import com.bee32.sem.people.dto.PartyDto;
-import com.bee32.sem.people.dto.PartySidTypeDto;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.dto.PersonRoleDto;
-import com.bee32.sem.people.entity.PartySidType;
 import com.bee32.sem.people.entity.Person;
-import com.bee32.sem.sandbox.UIHelper;
 
 @ForEntity(Person.class)
 public class PersonAdminBean
@@ -24,29 +15,10 @@ public class PersonAdminBean
 
     private static final long serialVersionUID = 1L;
 
-    ListMBean<ContactDto> contactsMBean = ListMBean.fromEL(this, "openedObject.contacts", ContactDto.class);
-
     private PersonRoleDto selectedRole;
 
     public PersonAdminBean() {
         super(Person.class, PersonDto.class, PartyDto.CONTACTS);
-    }
-
-    public ListMBean<ContactDto> getContactsMBean() {
-        return contactsMBean;
-    }
-
-    public List<SelectItem> getGenders() {
-        List<SelectItem> genders = new ArrayList<SelectItem>();
-        for (Gender g : Gender.values())
-            genders.add(new SelectItem(g.getValue(), g.getDisplayName()));
-        return genders;
-    }
-
-    public List<SelectItem> getSidTypes() {
-        List<PartySidType> sidTypes = ctx.data.access(PartySidType.class).list();
-        List<PartySidTypeDto> sidTypeDtos = DTOs.marshalList(PartySidTypeDto.class, sidTypes);
-        return UIHelper.selectItemsFromDict(sidTypeDtos);
     }
 
     public PersonRoleDto getSelectedRole() {
@@ -66,7 +38,6 @@ public class PersonAdminBean
                 roles = new ArrayList<PersonRoleDto>(person.getRoles());
             }
         }
-
         return roles;
     }
 

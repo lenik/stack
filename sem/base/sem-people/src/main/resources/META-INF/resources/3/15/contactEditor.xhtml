@@ -1,0 +1,55 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:cc="http://java.sun.com/jsf/composite"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk">
+
+    <cc:interface>
+        <!-- basic -->
+        <cc:attribute name="value" type="java.lang.Object" required="true" />
+
+        <!-- ui overrides -->
+        <cc:attribute name="header" default="编辑联系方式" />
+
+        <!-- facets -->
+        <cc:facet name="ext" />
+    </cc:interface>
+
+    <cc:implementation>
+        <c:set var="contact" value="${cc.attrs.value}" />
+        <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
+            <h:outputLabel for="address" value="地址：" />
+            <t:panelGroup colspan="3">
+                <p:inputText id="address" label="地址" value="#{cc.attrs.value.address}" style="width: 100%" />
+            </t:panelGroup>
+
+            <h:outputLabel for="postCode" value="邮编：" />
+            <t:panelGroup colspan="3">
+                <p:inputText id="postCode" label="邮编" value="#{contact.postCode}" />
+            </t:panelGroup>
+
+            <h:outputLabel for="tel" value="电话：" />
+            <p:inputText id="tel" label="电话" value="#{contact.tel}" />
+            <h:outputLabel for="fax" value="传真：" />
+            <p:inputText id="fax" label="传真" value="#{contact.fax}" />
+
+            <h:outputLabel for="mobile" value="手机：" />
+            <t:panelGroup colspan="3">
+                <p:inputText id="mobile" value="#{contact.mobile}" label="移动电话" />
+            </t:panelGroup>
+
+            <h:outputLabel for="qq" value="QQ：" />
+            <p:inputText id="qq" label="QQ" value="#{contact.qq}" />
+            <h:outputLabel for="email" value="电子邮件：" />
+            <p:inputText id="email" label="电子邮件" value="#{contact.email}" />
+
+            <h:outputLabel for="website" value="网址：" />
+            <t:panelGroup colspan="3">
+                <p:inputText id="website" label="网址" value="#{contact.website}" style="width: 100%" />
+            </t:panelGroup>
+
+            <h:outputLabel for="description" value="附加信息：" />
+            <t:panelGroup colspan="3">
+                <p:inputText id="description" label="附加信息" value="#{contact.description}" style="width: 100%" />
+            </t:panelGroup>
+        </t:panelGrid>
+    </cc:implementation>
+</html>

@@ -1,11 +1,13 @@
 <ui:composition template="/template/simple-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
-    xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk"
-    xmlns:icsf="http://java.sun.com/jsf/composite/3/7" xmlns:fr="http://java.sun.com/jsf/composite/frame" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+    xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:icsf="http://java.sun.com/jsf/composite/3/7" xmlns:fr="http://java.sun.com/jsf/composite/frame"
+    xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
     <ui:param name="title" value="企业组织" />
     <ui:param name="bean" value="#{orgAdminBean}" />
     <ui:param name="obj" value="#{bean.openedObject}" />
+    <ui:param name="contactObj" value="#{bean.contactsMBean.openedObject}" />
+    <ui:param name="orgUnitObj" value="#{bean.orgUnitsMBean.openedObject}" />
     <ui:param name="people" value="#{peopleDictsBean}" />
 
     <ui:define name="dataColumns">
@@ -115,21 +117,15 @@
                             <h:outputText value="#{entry.category.label}" />
                         </p:column>
                         <p:column headerText="地址">
-                            <h:outputText value="#{entry.address}" />
-                        </p:column>
-                        <p:column headerText="邮编">
-                            <h:outputText value="#{entry.postCode}" />
+                            <h:outputText value="#{entry.address} (邮编：#{entry.postCode})" />
                         </p:column>
                         <p:column headerText="电话">
                             <h:outputText value="#{entry.tel}" />
                         </p:column>
-                        <p:column headerText="移动电话">
+                        <p:column headerText="手机">
                             <h:outputText value="#{entry.mobile}" />
                         </p:column>
-                        <p:column headerText="传真">
-                            <h:outputText value="#{entry.fax}" />
-                        </p:column>
-                        <p:column headerText="email">
+                        <p:column headerText="电子邮件">
                             <h:outputText value="#{entry.email}" />
                         </p:column>
                         <p:column headerText="网址">
@@ -204,8 +200,8 @@
 
         <fr:listView id="contactsEditView" header="联系方式" style="editDialog" indexView=":editDialog:form:tv:contactsIndexView"
             mbean="#{bean.contactsMBean}">
-            <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
-                <h:outputLabel for="category" value="分类" />
+            <h:panelGrid columns="2" columnClasses="field-label, field-contact">
+                <h:outputLabel for="category" value="分类：" />
                 <h:panelGroup colspan="3">
                     <p:selectOneMenu id="category" value="#{item.category.id}" style="width:200px;"
                         label="联系方式分类">
@@ -213,42 +209,8 @@
                         <f:selectItems value="#{people.contactCategorySelectItems}" />
                     </p:selectOneMenu>
                 </h:panelGroup>
-
-                <h:outputLabel for="address" value="地址：" />
-                <t:panelGroup colspan="3">
-                    <p:inputText id="address" label="地址" value="#{item.address}" style="width: 100%" />
-                </t:panelGroup>
-
-                <h:outputLabel for="postCode" value="邮编：" />
-                <t:panelGroup colspan="3">
-                    <p:inputText id="postCode" label="邮编" value="#{item.postCode}" />
-                </t:panelGroup>
-
-                <h:outputLabel for="tel" value="电话：" />
-                <p:inputText id="tel" label="电话" value="#{item.tel}" />
-                <h:outputLabel for="fax" value="传真：" />
-                <p:inputText id="fax" label="传真" value="#{item.fax}" />
-
-                <h:outputLabel for="mobile" value="手机：" />
-                <t:panelGroup colspan="3">
-                    <p:inputText id="mobile" value="#{item.mobile}" label="移动电话" />
-                </t:panelGroup>
-
-                <h:outputLabel for="qq" value="QQ：" />
-                <p:inputText id="qq" label="QQ" value="#{item.qq}" />
-                <h:outputLabel for="email" value="电子邮件：" />
-                <p:inputText id="email" label="电子邮件" value="#{item.email}" />
-
-                <h:outputLabel for="website" value="网址：" />
-                <t:panelGroup colspan="3">
-                    <p:inputText id="website" label="网址" value="#{item.website}" style="width: 100%" />
-                </t:panelGroup>
-
-                <h:outputLabel for="description" value="附加信息：" />
-                <t:panelGroup colspan="3">
-                    <p:inputText id="description" label="附加信息" value="#{item.description}" style="width: 100%" />
-                </t:panelGroup>
-            </t:panelGrid>
+            </h:panelGrid>
+            <sem:contactEditor id="ed_contact" value="${contactObj}" />
         </fr:listView>
 
         <fr:listView id="orgUnitsEditView" header="下属部门" style="editDialog" indexView=":editDialog:form:tv:orgUnitsIndexView"
@@ -270,43 +232,7 @@
                     </h:panelGrid>
                 </p:tab>
                 <p:tab title="联系方式">
-                    <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
-                        <h:outputLabel for="address" value="地址：" />
-                        <t:panelGroup colspan="3">
-                            <p:inputText id="address" label="地址" value="#{item.contact.address}" style="width: 100%" />
-                        </t:panelGroup>
-
-                        <h:outputLabel for="postCode" value="邮编：" />
-                        <t:panelGroup colspan="3">
-                            <p:inputText id="postCode" label="邮编" value="#{item.contact.postCode}" />
-                        </t:panelGroup>
-
-                        <h:outputLabel for="tel" value="电话：" />
-                        <p:inputText id="tel" label="电话" value="#{item.contact.tel}" />
-                        <h:outputLabel for="fax" value="传真：" />
-                        <p:inputText id="fax" label="传真" value="#{item.contact.fax}" />
-
-                        <h:outputLabel for="mobile" value="手机：" />
-                        <t:panelGroup colspan="3">
-                            <p:inputText id="mobile" value="#{item.contact.mobile}" label="移动电话" />
-                        </t:panelGroup>
-
-                        <h:outputLabel for="qq" value="QQ：" />
-                        <p:inputText id="qq" label="QQ" value="#{item.contact.qq}" />
-                        <h:outputLabel for="email" value="电子邮件：" />
-                        <p:inputText id="email" label="电子邮件" value="#{item.contact.email}" />
-
-                        <h:outputLabel for="website" value="网址：" />
-                        <t:panelGroup colspan="3">
-                            <p:inputText id="website" label="网址" value="#{item.contact.website}" style="width: 100%" />
-                        </t:panelGroup>
-
-                        <h:outputLabel for="description" value="附加信息：" />
-                        <t:panelGroup colspan="3">
-                            <p:inputText id="description" label="附加信息" value="#{item.contact.description}"
-                                style="width: 100%" />
-                        </t:panelGroup>
-                    </t:panelGrid>
+                    <sem:contactEditor id="ed_ouContact" value="${orgUnitObj.contact}" />
                 </p:tab>
             </p:tabView>
         </fr:listView>

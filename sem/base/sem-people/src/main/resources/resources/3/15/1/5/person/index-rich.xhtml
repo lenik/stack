@@ -6,6 +6,7 @@
     <ui:param name="title" value="联系人信息" />
     <ui:param name="bean" value="#{personAdminBean}" />
     <ui:param name="obj" value="#{bean.openedObject}" />
+    <ui:param name="contactObj" value="#{bean.contactsMBean.openedObject}" />
     <ui:param name="people" value="#{peopleDictsBean}" />
 
     <ui:define name="dataColumns">
@@ -69,14 +70,14 @@
                     <p:selectOneMenu id="personSidType" value="#{obj.sidType.id}" style="width:150px;"
                         label="证件类型">
                         <f:selectItem itemValue="" itemLabel="--选择证件类型--" />
-                        <f:selectItems value="#{bean.sidTypes}" />
+                        <f:selectItems value="#{people.sidTypes}" />
                     </p:selectOneMenu>
                     <h:outputLabel for="personSid" value="证件号码" />
                     <p:inputText id="personSid" value="#{obj.sid}" label="证件号码" />
 
                     <h:outputLabel for="personSex" value="性别" />
                     <p:selectOneMenu id="personSex" value="#{obj.sex}" style="width:150px;" label="性别">
-                        <f:selectItems value="#{bean.genders}" />
+                        <f:selectItems value="#{people.genders}" />
                     </p:selectOneMenu>
                     <h:outputLabel for="personCensusRegister" value="户籍" />
                     <p:inputText id="personCensusRegister" value="#{obj.censusRegister}" label="户籍" />
@@ -118,10 +119,7 @@
                             <h:outputText value="#{entry.category.label}" />
                         </p:column>
                         <p:column headerText="地址" styleClass="f-wrappable" style="min-width: 15em">
-                            <h:outputText value="#{entry.address}" />
-                        </p:column>
-                        <p:column headerText="邮编">
-                            <h:outputText value="#{entry.postCode}" />
+                            <h:outputText value="#{entry.address} (邮编: #{entry.postCode})" />
                         </p:column>
                         <p:column headerText="电话" styleClass="f-wrappable">
                             <h:outputText value="#{entry.tel}" />
@@ -129,14 +127,8 @@
                         <p:column headerText="移动电话" styleClass="f-wrappable">
                             <h:outputText value="#{entry.mobile}" />
                         </p:column>
-                        <p:column headerText="传真" styleClass="f-wrappable">
-                            <h:outputText value="#{entry.fax}" />
-                        </p:column>
-                        <p:column headerText="email" styleClass="f-wrappable">
+                        <p:column headerText="电子邮件" styleClass="f-wrappable">
                             <h:outputText value="#{entry.email}" />
-                        </p:column>
-                        <p:column headerText="网址" styleClass="f-wrappable">
-                            <h:outputText value="#{entry.website}" />
                         </p:column>
                         <p:column headerText="QQ" styleClass="f-wrappable">
                             <h:outputText value="#{entry.qq}" />
@@ -185,8 +177,8 @@
     <ui:define name="dialogs">
         <fr:listView id="contactsEditView" header="联系方式" style="editDialog" indexView=":editDialog:form:tv:contactsIndexView"
             mbean="#{bean.contactsMBean}">
-            <h:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
-                <h:outputLabel for="category" value="分类" />
+            <h:panelGrid columns="2" columnClasses="field-label, field-content">
+                <h:outputLabel for="category" value="分类：" />
                 <h:panelGroup colspan="3">
                     <p:selectOneMenu id="category" value="#{item.category.id}" style="width:200px;"
                         label="联系方式分类">
@@ -194,27 +186,8 @@
                         <f:selectItems value="#{people.contactCategorySelectItems}" />
                     </p:selectOneMenu>
                 </h:panelGroup>
-
-                <h:outputLabel for="address" value="地址" />
-                <p:inputText id="address" value="#{item.address}" label="地址" />
-                <h:outputLabel for="postCode" value="邮编" />
-                <p:inputText id="postCode" value="#{item.postCode}" label="邮编" />
-
-                <h:outputLabel for="tel" value="电话" />
-                <p:inputText id="tel" value="#{item.tel}" label="电话" />
-                <h:outputLabel for="mobile" value="移动电话" />
-                <p:inputText id="mobile" value="#{item.mobile}" label="移动电话" />
-
-                <h:outputLabel for="fax" value="传真" />
-                <p:inputText id="fax" value="#{item.fax}" label="传真" />
-                <h:outputLabel for="email" value="email" />
-                <p:inputText id="email" value="#{item.email}" label="email" />
-
-                <h:outputLabel for="website" value="网址" />
-                <p:inputText id="website" value="#{item.website}" label="网址" />
-                <h:outputLabel for="qq" value="qq" />
-                <p:inputText id="qq" value="#{item.qq}" label="qq" />
             </h:panelGrid>
+            <sem:contactEditor id="ed_contact" value="${contactObj}" />
         </fr:listView>
 
         <p:dialog header="标签添加" widgetVar="tagDlg" modal="true">

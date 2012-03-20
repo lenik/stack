@@ -3,7 +3,6 @@ package com.bee32.sem.people.web;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.sem.frame.ui.ListMBean;
-import com.bee32.sem.people.dto.ContactDto;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.OrgUnitDto;
 import com.bee32.sem.people.dto.PartyDto;
@@ -16,17 +15,12 @@ public class OrgAdminBean
 
     private static final long serialVersionUID = 1L;
 
-    ListMBean<ContactDto> contactsMBean = ListMBean.fromEL(this, "openedObject.contacts", ContactDto.class);
     ListMBean<PersonRoleDto> rolesMBean = ListMBean.fromEL(this, "openedObject.roles", PersonRoleDto.class);
     ListMBean<OrgUnitDto> orgUnitsMBean = ListMBean.fromEL(this, "openedObject.orgUnits", OrgUnitDto.class);
 
     public OrgAdminBean() {
         super(Org.class, OrgDto.class, PartyDto.CONTACTS, //
                 Order.desc("id"));
-    }
-
-    public ListMBean<ContactDto> getContactsMBean() {
-        return contactsMBean;
     }
 
     public ListMBean<PersonRoleDto> getRolesMBean() {

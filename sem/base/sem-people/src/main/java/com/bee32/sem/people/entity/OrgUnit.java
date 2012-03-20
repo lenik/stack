@@ -68,18 +68,18 @@ public class OrgUnit
     }
 
     /**
-     * 部门的联系方式(可选）
+     * 部门的联系方式（可选）
+     *
+     * 注：为简化，这里 contact 为必选。
      */
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     public Contact getContact() {
         return contact;
     }
 
-    /**
-     * @param contact
-     *            may be <code>null</code>.
-     */
     public void setContact(Contact contact) {
+        if (contact == null)
+            contact = new Contact();
         this.contact = contact;
     }
 
