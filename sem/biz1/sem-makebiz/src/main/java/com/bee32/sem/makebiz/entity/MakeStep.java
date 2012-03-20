@@ -64,7 +64,7 @@ public class MakeStep
         return parent;
     }
 
-    public void setProcess(MakeProcess parent) {
+    public void setParent(MakeProcess parent) {
         this.parent = parent;
     }
 
