@@ -106,11 +106,14 @@ function print(node, parent) {
     removeElements(doc.body, 'button');
     removeElements(doc.body, '[aria-hidden="true"]');
     // removeElements(doc.body, '.ui-tabs-nav');
-    var actives = $(doc.body).find('.ui-state-active');
-    for ( var i = 0; i < actives.length; i++) {
-        var parent = actives[i].parentElement;
-        var deactives = $(parent).children(":not(.ui-state-active')");
-        removeElements(deactives);
+    var removeDeactives = false;
+    if (removeDeactives) {
+        var actives = $(doc.body).find('.ui-state-active');
+        for ( var i = 0; i < actives.length; i++) {
+            var parent = actives[i].parentElement;
+            var deactives = $(parent).children(":not(.ui-state-active')");
+            removeElements(deactives);
+        }
     }
 
     win.print();
