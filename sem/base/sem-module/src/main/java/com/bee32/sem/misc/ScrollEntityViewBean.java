@@ -38,12 +38,15 @@ public class ScrollEntityViewBean
     }
 
     @Override
-    public void showIndex() {
+    public void showIndex(Integer offset) {
         showView(StandardViews.LIST);
+
+        if (offset == null)
+            offset = rowNumber;
         // Refresh the current record when:
         // - Saved/Updated
         // - Cancel button clicked
-        selectRow(rowNumber);
+        selectRow(offset);
     }
 
     @Override

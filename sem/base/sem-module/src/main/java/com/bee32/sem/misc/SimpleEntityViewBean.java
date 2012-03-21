@@ -327,7 +327,11 @@ public abstract class SimpleEntityViewBean
     }
 
     @Operation
-    public void showIndex() {
+    public final void showIndex() {
+        showIndex(null);
+    }
+
+    protected void showIndex(Integer offset) {
         setOpenedObjects(Collections.emptyList());
         showView(StandardViews.LIST);
     }
@@ -489,10 +493,8 @@ public abstract class SimpleEntityViewBean
         checkSaveFlags(saveFlags);
 
         if (hint == null)
-            if ((saveFlags & SAVE_MUSTEXIST) != 0)
-                hint = "更新";
-            else
-                hint = "保存";
+            // if ((saveFlags & SAVE_MUSTEXIST) != 0)
+            hint = isCreating() ? "保存" : "更新";
 
         if (getOpenedObjects().isEmpty()) {
             uiLogger.error("没有需要" + hint + "的对象!");
@@ -625,7 +627,7 @@ public abstract class SimpleEntityViewBean
         if (!warned)
             uiLogger.info(hint + "成功");
 
-        showIndex();
+        showIndex(isCreating() ? 1 : null);
         return true;
     }
 
