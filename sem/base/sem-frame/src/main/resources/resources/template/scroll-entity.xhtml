@@ -48,8 +48,6 @@
                 <h:outputText value="/${bean.dataModel.rowCount}" />
                 <p:commandButton id="jump" value="前往" actionListener="${bean.gotoInput}" disabled="${bean.editing}"
                     update="mainForm, ${_contentUpdate}" onclick="waitbox.show()" oncomplete="waitbox.hide()" />
-                <p:separator />
-                <p:commandButton id="printButton" icon="ui-icon-print" onclick="print('#editDialog:form:content')" />
             </p:toolbarGroup>
         </p:toolbar>
     </ui:define>

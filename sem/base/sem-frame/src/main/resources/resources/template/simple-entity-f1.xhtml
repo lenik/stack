@@ -122,7 +122,13 @@
 
                     <c:if test="${plainEditForm}">
                         <f:subview id="editDialog">
-                            <p:panel id="editPanel" header="${title}">
+                            <p:panel id="editPanel" header="${title}" style="position: relative">
+                                <div class="ui-toolbox">
+                                    <h:form id="toolform" style="background: white">
+                                        <p:commandLink id="printIndex" styleClass="ui-icon ui-icon-print"
+                                            onclick="print('#editDialog:form:content')" />
+                                    </h:form>
+                                </div>
                                 <ui:insert name="editDialogBody" />
                             </p:panel>
                         </f:subview>
