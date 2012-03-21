@@ -148,4 +148,23 @@
             </t:panelGrid>
         </fr:listView>
     </ui:define>
+
+    <ui:define name="searchPanels.1">
+        <ui:insert name="searchPanel.party">
+            <p:panel header="按相关人搜索" toggleable="true">
+                <div align="center">
+                    <p:inputText id="party" readonly="true" value="${bean.searchParty.displayName}" />
+                    <p:commandButton id="chooseParty" value="..." onclick="choosePartyToSearchDialog.show()" />
+                    <p:commandButton id="filterCustomer" value="限定客户" actionListener="${bean.addCustomerRestriction}"
+                        update="@form, ${_searchUpdates}" />
+                </div>
+            </p:panel>
+        </ui:insert>
+    </ui:define>
+
+    <ui:define name="searchSupport.1">
+        <sem:choosePartyDialog id="c_searchParty" var="choosePartyToSearchDialog" target="${bean.searchParty}"
+            update=":searchForm" />
+    </ui:define>
+
 </ui:composition>

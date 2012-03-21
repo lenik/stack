@@ -9,6 +9,7 @@ import com.bee32.sem.makebiz.dto.MakeOrderItemDto;
 import com.bee32.sem.makebiz.entity.MakeOrder;
 import com.bee32.sem.makebiz.service.MakebizService;
 import com.bee32.sem.misc.ScrollEntityViewBean;
+import com.bee32.sem.people.dto.PartyDto;
 
 @ForEntity(MakeOrder.class)
 public class MakeOrderAdminBean
@@ -31,6 +32,27 @@ public class MakeOrderAdminBean
         }
 
         ctx.bean.getBean(MakebizService.class).chanceApplyToMakeOrder(chance, makeOrder);
+    }
+
+    /*************************************************************************
+     * Section: Search
+     *************************************************************************/
+    PartyDto searchParty;
+
+    public PartyDto getSearchParty() {
+        return searchParty;
+    }
+
+    public void setSearchParty(PartyDto searchParty) {
+        this.searchParty = searchParty;
+    }
+
+    public void addCustomerRestriction() {
+        if (searchParty != null) {
+            addSearchFragment("客户为 " + searchParty.getDisplayName(), //
+                    new Equals("customer.id", searchParty.getId()));
+            searchParty = null;
+        }
     }
 
     /*************************************************************************

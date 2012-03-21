@@ -57,6 +57,19 @@ import com.bee32.sem.sandbox.CriteriaHolderExpansion;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.ZLazyDataModel;
 
+/**
+ * Suggested Section Order:
+ *
+ * <ol>
+ * <li>Interface Implementation
+ * <li>...
+ * <li>User Properties...
+ * <li>...
+ * <li>Search
+ * <li>MBeans
+ * <li>Persistence
+ * </ol>
+ */
 public abstract class SimpleEntityViewBean
         extends EntityViewBean
         implements ISearchFragmentsHolder {
