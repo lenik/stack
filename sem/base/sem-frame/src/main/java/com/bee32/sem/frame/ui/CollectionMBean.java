@@ -18,6 +18,7 @@ import org.apache.commons.collections15.functors.InstantiateFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.plover.arch.util.ICopyable;
 import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.IEnclosingContext;
 import com.bee32.plover.arch.util.dto.BaseDto;
@@ -106,7 +107,13 @@ public abstract class CollectionMBean<T>
         // System.out.println("Copy: " + value);
         if (value == null)
             return null;
+        if (value instanceof ICopyable) {
+            ICopyable copyable = (ICopyable) value;
+            T copy = copyable.copy();
+            return copy;
+        }
         if (value instanceof Cloneable) {
+            logger.warn("Copy by clone: " + value);
             try {
                 return (T) cloneMethod.invoke(value);
             } catch (ReflectiveOperationException e) {
@@ -114,6 +121,7 @@ public abstract class CollectionMBean<T>
             }
         }
         if (value instanceof Serializable) {
+            logger.warn("Copy by serialization: " + value);
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             try {
                 new ObjectOutputStream(out).writeObject(value);
