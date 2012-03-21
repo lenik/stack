@@ -140,7 +140,7 @@
         </c:if>
     </ui:define>
 
-    <ui:define name="sideBarESupport.0">
+    <ui:define name="searchSupport.0">
         <icsf:choosePrincipalDialog id="c_principalToSearch" var="choosePrincipalToSearchDialog"
             target="${bean.searchPrincipal}" update=":searchForm" />
     </ui:define>
@@ -176,7 +176,7 @@
             </p:panel>
         </ui:insert>
         <ui:insert name="searchPanel.principal">
-            <p:panel header="按相关人搜索" toggleable="true">
+            <p:panel header="按用户搜索" toggleable="true">
                 <div align="center">
                     <p:inputText id="principal" readonly="true" value="${bean.searchPrincipal.displayName}" />
                     <p:commandButton id="choosePrincipal" value="..." onclick="choosePrincipalToSearchDialog.show()" />
