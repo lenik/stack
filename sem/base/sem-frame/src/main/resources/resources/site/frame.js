@@ -95,15 +95,22 @@ function print(node, parent) {
 
     doc.write("</head><body class='print'>");
     doc.write("<div align='center' class='print-header'><h1>" + title + "</h1></div>\n");
-    doc.write("<div align='center'>" + node.html() + "</div>\n");
+    var centered = false;
+    if (centered)
+        doc.write("<div align='center'>" + node.html() + "</div>\n");
+    else
+        doc.write(node.html());
     doc.write("</body></html>\n");
     doc.close();
 
-    // Remove all buttons: should query with jQuery.
-    var buttons = doc.body.querySelectorAll('button');
-    for ( var i = 0; i < buttons.length; i++) {
-        var button = buttons[i];
-        button.parentElement.removeChild(button);
+    removeElements(doc.body, 'button');
+    removeElements(doc.body, '[aria-hidden="true"]');
+    // removeElements(doc.body, '.ui-tabs-nav');
+    var actives = $(doc.body).find('.ui-state-active');
+    for ( var i = 0; i < actives.length; i++) {
+        var parent = actives[i].parentElement;
+        var deactives = $(parent).children(":not(.ui-state-active')");
+        removeElements(deactives);
     }
 
     win.print();
@@ -115,5 +122,14 @@ function print(node, parent) {
     } else {
         // alert("请在打印完成后点击确定。");
         // win.close();
+    }
+}
+
+function removeElements(outer, q) {
+    // var elements = outer.querySelectorAll(q);
+    var elements = q == null ? outer : $(outer).find(q);
+    for ( var i = 0; i < elements.length; i++) {
+        var e = elements[i];
+        e.parentElement.removeChild(e);
     }
 }

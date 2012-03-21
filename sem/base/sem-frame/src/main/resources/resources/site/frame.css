@@ -130,8 +130,18 @@ label {
     border-bottom: double 4px blue;
 }
 
-/* .print input,.print button {
+.print .ui-inputfield {
     border-top: none;
     border-left: none;
     border-right: none;
-} */
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.print .ui-widget-content {
+    border: none;
+}
