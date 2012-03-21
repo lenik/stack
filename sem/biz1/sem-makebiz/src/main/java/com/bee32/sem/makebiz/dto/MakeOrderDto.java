@@ -130,7 +130,7 @@ public class MakeOrderDto
 
     public void setCustomer(PartyDto customer) {
         if (customer == null)
-            return; // throw new NullPointerException("customer");
+            throw new NullPointerException("customer");
         this.customer = customer;
     }
 
@@ -214,7 +214,7 @@ public class MakeOrderDto
             planItems.add(planItem);
         }
 
-        if(planItems.isEmpty())
+        if (planItems.isEmpty())
             throw new IllegalStateException("此订单上的产品已经全部安排为生产任务或外购物料计划!");
 
         materialPlan.setOrder(this);
