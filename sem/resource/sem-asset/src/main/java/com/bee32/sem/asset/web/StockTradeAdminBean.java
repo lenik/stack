@@ -24,8 +24,6 @@ public class StockTradeAdminBean
     String typeName;
     String subjectPrefix;
 
-    ListMBean<StockTradeItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items", StockTradeItemDto.class);
-
     public StockTradeAdminBean() {
         super(StockTrade.class, StockTradeDto.class, 0);
         String type = ctx.view.getRequest().getParameter("type");
@@ -52,6 +50,23 @@ public class StockTradeAdminBean
         return typeName;
     }
 
+    public String getSubjectPrefix() {
+        return subjectPrefix;
+    }
+
+    /*************************************************************************
+     * Section: MBeans
+     *************************************************************************/
+    final ListMBean<StockTradeItemDto> itemsMBean = ListMBean.fromEL(this, //
+            "openedObject.items", StockTradeItemDto.class);
+
+    public ListMBean<StockTradeItemDto> getItemsMBean() {
+        return itemsMBean;
+    }
+
+    /*************************************************************************
+     * Section: Persistence
+     *************************************************************************/
     @Override
     protected boolean preUpdate(UnmarshalMap uMap)
             throws Exception {
@@ -72,11 +87,4 @@ public class StockTradeAdminBean
         return true;
     }
 
-    public ListMBean<StockTradeItemDto> getItemsMBean() {
-        return itemsMBean;
-    }
-
-    public String getSubjectPrefix() {
-        return subjectPrefix;
-    }
 }

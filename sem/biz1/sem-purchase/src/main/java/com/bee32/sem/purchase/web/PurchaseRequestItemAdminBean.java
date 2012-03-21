@@ -22,11 +22,6 @@ public class PurchaseRequestItemAdminBean
         super(PurchaseRequestItem.class, PurchaseRequestItemDto.class, 0);
     }
 
-    @Override
-    protected Integer getFmaskOverride(int saveFlags) {
-        return Fmask.F_MORE & ~PurchaseRequestDto.PLANS;
-    }
-
     @Transactional
     public void acceptInquiry() {
         PurchaseInquiryDto selectedInquiry = inquiriesMBean.getSelection();
@@ -40,6 +35,9 @@ public class PurchaseRequestItemAdminBean
         uiLogger.info("采纳成功");
     }
 
+    /*************************************************************************
+     * Section: MBeans
+     *************************************************************************/
     final ListMBean<PurchaseInquiryDto> inquiriesMBean = ListMBean.fromEL(this, //
             "openedObject.inquiries", PurchaseInquiryDto.class);
 
@@ -47,8 +45,17 @@ public class PurchaseRequestItemAdminBean
         return inquiriesMBean;
     }
 
+    /*************************************************************************
+     * Section: Persistence
+     *************************************************************************/
     @Override
-    protected void postUpdate(UnmarshalMap uMap) throws Exception {
+    protected Integer getFmaskOverride(int saveFlags) {
+        return Fmask.F_MORE & ~PurchaseRequestDto.PLANS;
+    }
+
+    @Override
+    protected void postUpdate(UnmarshalMap uMap)
+            throws Exception {
         for (PurchaseRequestItem _purchaseRequestItem : uMap.<PurchaseRequestItem> entitySet()) {
             _purchaseRequestItem.setInquiryCount(_purchaseRequestItem.getInquiries().size());
         }

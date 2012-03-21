@@ -54,49 +54,6 @@ public class PartAdminBean
         elements.add(BomCriteria.targetCategory(categoryId));
     }
 
-    @Override
-    protected boolean postValidate(List<?> dtos) {
-        for (Object dto : dtos) {
-            PartDto part = (PartDto) dto;
-            if (DTOs.isNull(part.getTarget())) {
-                uiLogger.error("组件没有设置对应的物料");
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @Override
-    protected void postUpdate(UnmarshalMap uMap)
-            throws Exception {
-        for (Part _part : uMap.<Part> entitySet()) {
-            ctx.bean.getBean(PartService.class).changePartItemFromMaterialToPart(_part);
-            PartDto partDto = uMap.getSourceDto(_part);
-            if (partDto.isNewCreated())
-                onCreatePart(partDto);
-        }
-    }
-
-    @Override
-    protected void postDelete(UnmarshalMap uMap) throws Exception {
-        for (Part _part : uMap.<Part> entitySet()) {
-            PartDto partDto = uMap.getSourceDto(_part);
-            onDeletePart(partDto);
-        }
-    }
-
-    @Override
-    protected boolean preDelete(UnmarshalMap uMap)
-            throws Exception {
-        for (PartDto part : uMap.<PartDto> dtos()) {
-            if (part.getXrefCount() != 0) {
-                uiLogger.error("此产品已经包含组件，必须先删除相应组件，才能删除本产品!");
-                return false;
-            }
-        }
-        return true;
-    }
-
     public void setPartMaterial() {
         PartDto part = getOpenedObject();
         // 检查此物料(成品)是否已经有bom存在
@@ -121,7 +78,7 @@ public class PartAdminBean
             return;
         }
         item.setMaterial(selectedMaterial);
-        //item.setPart(null);
+        // item.setPart(null);
 
         selectedMaterial = null;
     }
@@ -146,18 +103,69 @@ public class PartAdminBean
         return calcPriceResult;
     }
 
-    ListMBean<PartItemDto> childrenMBean = ListMBean.fromEL(this, "openedObject.children", PartItemDto.class);
-
-    public ListMBean<PartItemDto> getChildrenMBean() {
-        return childrenMBean;
-    }
-
     public MaterialDto getSelectedMaterial() {
         return selectedMaterial;
     }
 
     public void setSelectedMaterial(MaterialDto selectedMaterial) {
         this.selectedMaterial = selectedMaterial;
+    }
+
+    /*************************************************************************
+     * Section: MBeans
+     *************************************************************************/
+    final ListMBean<PartItemDto> childrenMBean = ListMBean.fromEL(this, //
+            "openedObject.children", PartItemDto.class);
+
+    public ListMBean<PartItemDto> getChildrenMBean() {
+        return childrenMBean;
+    }
+
+    /*************************************************************************
+     * Section: Persistence
+     *************************************************************************/
+    @Override
+    protected boolean postValidate(List<?> dtos) {
+        for (Object dto : dtos) {
+            PartDto part = (PartDto) dto;
+            if (DTOs.isNull(part.getTarget())) {
+                uiLogger.error("组件没有设置对应的物料");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    protected void postUpdate(UnmarshalMap uMap)
+            throws Exception {
+        for (Part _part : uMap.<Part> entitySet()) {
+            ctx.bean.getBean(PartService.class).changePartItemFromMaterialToPart(_part);
+            PartDto partDto = uMap.getSourceDto(_part);
+            if (partDto.isNewCreated())
+                onCreatePart(partDto);
+        }
+    }
+
+    @Override
+    protected boolean preDelete(UnmarshalMap uMap)
+            throws Exception {
+        for (PartDto part : uMap.<PartDto> dtos()) {
+            if (part.getXrefCount() != 0) {
+                uiLogger.error("此产品已经包含组件，必须先删除相应组件，才能删除本产品!");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    protected void postDelete(UnmarshalMap uMap)
+            throws Exception {
+        for (Part _part : uMap.<Part> entitySet()) {
+            PartDto partDto = uMap.getSourceDto(_part);
+            onDeletePart(partDto);
+        }
     }
 
     protected void onCreatePart(PartDto part) {
@@ -173,4 +181,5 @@ public class PartAdminBean
         if (category != null)
             category.setPartCount(category.getPartCount() - 1);
     }
+
 }

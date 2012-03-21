@@ -82,34 +82,6 @@ public abstract class AbstractStockOrderBean
     protected void initStockJob(StockJobDto<?> stockJob) {
     }
 
-    @Override
-    protected StockOrderDto create() {
-        if (selectedWarehouseId == -1) {
-            uiLogger.error("请选择对应的仓库!");
-            return null;
-        }
-        if (subject == null) {
-            uiLogger.error("非法使用：科目尚未确定");
-            return null;
-        }
-        StockOrderDto order = (StockOrderDto) super.create();
-        order.setWarehouse(getSelectedWarehouse());
-        order.setSubject(subject);
-        return order;
-    }
-
-    @Override
-    public void showEditForm() {
-        for (Object s : getSelection()) {
-            StockOrderDto stockOrder = (StockOrderDto) s;
-            if (stockOrder.getEntityFlags().isLocked()) {
-                uiLogger.error("单据已经锁定，不能修改!");
-                return;
-            }
-        }
-        super.showEditForm();
-    }
-
     public StockOrderSubject getSubject() {
         return subject;
     }
@@ -172,14 +144,49 @@ public abstract class AbstractStockOrderBean
         // itemsMBean.apply();
     }
 
-    ListMBean<? extends StockOrderItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items", getItemDtoClass());
+    /*************************************************************************
+     * Section: MBeans
+     *************************************************************************/
+    protected Class<? extends StockOrderItemDto> getItemDtoClass() {
+        return StockOrderItemDto.class;
+    }
+
+    final ListMBean<? extends StockOrderItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items",
+            getItemDtoClass());
 
     public ListMBean<? extends StockOrderItemDto> getItemsMBean() {
         return itemsMBean;
     }
 
-    protected Class<? extends StockOrderItemDto> getItemDtoClass() {
-        return StockOrderItemDto.class;
+    /*************************************************************************
+     * Section: Persistence
+     *************************************************************************/
+    @Override
+    protected StockOrderDto create() {
+        if (selectedWarehouseId == -1) {
+            uiLogger.error("请选择对应的仓库!");
+            return null;
+        }
+        if (subject == null) {
+            uiLogger.error("非法使用：科目尚未确定");
+            return null;
+        }
+        StockOrderDto order = (StockOrderDto) super.create();
+        order.setWarehouse(getSelectedWarehouse());
+        order.setSubject(subject);
+        return order;
+    }
+
+    @Override
+    public void showEditForm() {
+        for (Object s : getSelection()) {
+            StockOrderDto stockOrder = (StockOrderDto) s;
+            if (stockOrder.getEntityFlags().isLocked()) {
+                uiLogger.error("单据已经锁定，不能修改!");
+                return;
+            }
+        }
+        super.showEditForm();
     }
 
 }

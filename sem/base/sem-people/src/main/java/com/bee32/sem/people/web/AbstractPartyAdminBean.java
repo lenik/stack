@@ -85,6 +85,9 @@ public abstract class AbstractPartyAdminBean
         }
     }
 
+    /*************************************************************************
+     * Section: Search
+     *************************************************************************/
     @Override
     public void addNameOrLabelRestriction() {
         addSearchFragment("名称含有 " + searchPattern, //
@@ -93,7 +96,11 @@ public abstract class AbstractPartyAdminBean
         searchPattern = null;
     }
 
-    final ListMBean<ContactDto> contactsMBean = ListMBean.fromEL(this, "openedObject.contacts", ContactDto.class);
+    /*************************************************************************
+     * Section: MBeans
+     *************************************************************************/
+    final ListMBean<ContactDto> contactsMBean = ListMBean.fromEL(this, //
+            "openedObject.contacts", ContactDto.class);
 
     public ListMBean<ContactDto> getContactsMBean() {
         return contactsMBean;

@@ -16,26 +16,31 @@ public class MakeOrderAdminBean
 
     private static final long serialVersionUID = 1L;
 
-    ListMBean<MakeOrderItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items", MakeOrderItemDto.class);
-
     public MakeOrderAdminBean() {
         super(MakeOrder.class, MakeOrderDto.class, 0);
-    }
-
-    public ListMBean<MakeOrderItemDto> getItemsMBean() {
-        return itemsMBean;
     }
 
     public void setChanceToApply(ChanceDto chance) {
         MakeOrderDto makeOrder = getOpenedObject();
 
-        MakeOrder _checkSameChanceOrder = ctx.data.access(MakeOrder.class).getFirst(new Equals("chance.id", chance.getId()));
-        if(_checkSameChanceOrder != null && !_checkSameChanceOrder.getId().equals(makeOrder.getId())) {
+        MakeOrder _checkSameChanceOrder = ctx.data.access(MakeOrder.class).getFirst(
+                new Equals("chance.id", chance.getId()));
+        if (_checkSameChanceOrder != null && !_checkSameChanceOrder.getId().equals(makeOrder.getId())) {
             uiLogger.error("此机会已经对应的订单!");
             return;
         }
 
         ctx.bean.getBean(MakebizService.class).chanceApplyToMakeOrder(chance, makeOrder);
+    }
+
+    /*************************************************************************
+     * Section: MBeans
+     *************************************************************************/
+    final ListMBean<MakeOrderItemDto> itemsMBean = ListMBean.fromEL(this, //
+            "openedObject.items", MakeOrderItemDto.class);
+
+    public ListMBean<MakeOrderItemDto> getItemsMBean() {
+        return itemsMBean;
     }
 
 }

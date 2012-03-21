@@ -42,11 +42,6 @@ public class PurchaseRequestAdminBean
         this.tabIndex = tabIndex;
     }
 
-    @Override
-    protected Integer getFmaskOverride(int saveFlags) {
-        return super.getFmaskOverride(saveFlags);
-    }
-
     /**
      * 用户每选择一次plan,都调用本方法。 由parent.addPlan(plan)来记录多次选择的结果
      */
@@ -127,6 +122,17 @@ public class PurchaseRequestAdminBean
         }
     }
 
+    /*************************************************************************
+     * Section: MBeans
+     *************************************************************************/
+    @Override
+    protected Integer getFmaskOverride(int saveFlags) {
+        return super.getFmaskOverride(saveFlags);
+    }
+
+    /*************************************************************************
+     * Section: MBeans
+     *************************************************************************/
     final ListMBean<MaterialPlanDto> plansMBean = ListMBean.fromEL(this, //
             "openedObject.plans", MaterialPlanDto.class);
     final ListMBean<PurchaseRequestItemDto> itemsMBean = ListMBean.fromEL(this, //

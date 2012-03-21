@@ -16,13 +16,31 @@ public class AccountTicketAdminBean
 
     private static final long serialVersionUID = 1L;
 
-    ListMBean<AccountTicketItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items",
-            AccountTicketItemDto.class);
-
     public AccountTicketAdminBean() {
         super(AccountTicket.class, AccountTicketDto.class, 0);
     }
 
+    public void findBudgetRequest() {
+        // TODO : 加入业务单是否已经审核的条件检查
+        // new Or(
+        // new Equals("owner.id", budgetRequestCreatorId),
+        // new Like("description", "%" + budgetRequestPattern + "%")),
+        // AssetCriteria.haveNoCorrespondingTicket()
+    }
+
+    /*************************************************************************
+     * Section: MBeans
+     *************************************************************************/
+    final ListMBean<AccountTicketItemDto> itemsMBean = ListMBean.fromEL(this, //
+            "openedObject.items", AccountTicketItemDto.class);
+
+    public ListMBean<AccountTicketItemDto> getItemsMBean() {
+        return itemsMBean;
+    }
+
+    /*************************************************************************
+     * Section: Persistence
+     *************************************************************************/
     @Override
     protected boolean postValidate(List<?> dtos)
             throws FxrQueryException {
@@ -34,22 +52,6 @@ public class AccountTicketAdminBean
             }
         }
         return true;
-    }
-
-    public void findBudgetRequest() {
-        // TODO : 加入业务单是否已经审核的条件检查
-        // new Or(
-        // new Equals("owner.id", budgetRequestCreatorId),
-        // new Like("description", "%" + budgetRequestPattern + "%")),
-        // AssetCriteria.haveNoCorrespondingTicket()
-    }
-
-    public ListMBean<AccountTicketItemDto> getItemsMBean() {
-        return itemsMBean;
-    }
-
-    public void setItemsMBean(ListMBean<AccountTicketItemDto> itemsMBean) {
-        this.itemsMBean = itemsMBean;
     }
 
 }

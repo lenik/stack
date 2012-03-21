@@ -31,6 +31,54 @@ public class ChanceBean
         super(Chance.class, ChanceDto.class, 0);
     }
 
+    /*************************************************************************
+     * Section: Search
+     *************************************************************************/
+    @Override
+    public void addNameOrLabelRestriction() {
+        addSearchFragment("名称含有 " + searchPattern, Or.of(//
+                CommonCriteria.labelledWith(searchPattern, true), //
+                ChanceCriteria.subjectLike(searchPattern, true)));
+        searchPattern = null;
+    }
+
+    /*************************************************************************
+     * Section: MBeans
+     *************************************************************************/
+    final ListMBean<ChancePartyDto> partiesMBean = ListMBean.fromEL(this,//
+            "openedObject.parties", ChancePartyDto.class);
+    final ListMBean<ChanceActionDto> actionsMBean = ListMBean.fromEL(this,//
+            "openedObject.actions", ChanceActionDto.class);
+    final ListMBean<WantedProductDto> productsMBean = ListMBean.fromEL(this, //
+            "openedObject.products", WantedProductDto.class);
+    final ListMBean<WantedProductAttributeDto> productAttributesMBean = ListMBean.fromEL(productsMBean,
+            "openedObject.attributes", WantedProductAttributeDto.class);
+    final ListMBean<WantedProductQuotationDto> productQuotationsMBean = ListMBean.fromEL(productsMBean,
+            "openedObject.quotations", WantedProductQuotationDto.class);
+
+    public ListMBean<ChancePartyDto> getPartiesMBean() {
+        return partiesMBean;
+    }
+
+    public ListMBean<ChanceActionDto> getActionsMBean() {
+        return actionsMBean;
+    }
+
+    public ListMBean<WantedProductDto> getProductsMBean() {
+        return productsMBean;
+    }
+
+    public ListMBean<WantedProductAttributeDto> getProductAttributesMBean() {
+        return productAttributesMBean;
+    }
+
+    public ListMBean<WantedProductQuotationDto> getProductQuotationsMBean() {
+        return productQuotationsMBean;
+    }
+
+    /*************************************************************************
+     * Section: Persistence
+     *************************************************************************/
     @Override
     protected boolean postValidate(List<?> dtos) {
         for (Object dto : dtos) {
@@ -71,37 +119,4 @@ public class ChanceBean
         return true;
     }
 
-    public void addNameOrLabelRestriction() {
-        addSearchFragment("名称含有 " + searchPattern, Or.of(//
-                CommonCriteria.labelledWith(searchPattern, true), //
-                ChanceCriteria.subjectLike(searchPattern, true)));
-        searchPattern = null;
-    }
-
-    ListMBean<ChancePartyDto> partiesMBean = ListMBean.fromEL(this, "openedObject.parties", ChancePartyDto.class);
-    ListMBean<ChanceActionDto> actionsMBean = ListMBean.fromEL(this, "openedObject.actions", ChanceActionDto.class);
-
-    ListMBean<WantedProductDto> productsMBean = ListMBean.fromEL(this, "openedObject.products", WantedProductDto.class);
-    ListMBean<WantedProductAttributeDto> productAttributesMBean = ListMBean.fromEL(productsMBean, "openedObject.attributes", WantedProductAttributeDto.class);
-    ListMBean<WantedProductQuotationDto> productQuotationsMBean = ListMBean.fromEL(productsMBean, "openedObject.quotations", WantedProductQuotationDto.class);
-
-    public ListMBean<ChancePartyDto> getPartiesMBean() {
-        return partiesMBean;
-    }
-
-    public ListMBean<ChanceActionDto> getActionsMBean() {
-        return actionsMBean;
-    }
-
-    public ListMBean<WantedProductDto> getProductsMBean() {
-        return productsMBean;
-    }
-
-    public ListMBean<WantedProductAttributeDto> getProductAttributesMBean() {
-        return productAttributesMBean;
-    }
-
-    public ListMBean<WantedProductQuotationDto> getProductQuotationsMBean() {
-        return productQuotationsMBean;
-    }
 }

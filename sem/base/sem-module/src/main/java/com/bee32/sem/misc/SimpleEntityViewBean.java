@@ -101,12 +101,6 @@ public abstract class SimpleEntityViewBean
     EntityDataModelOptions<?, ?> dataModelOptions;
     LazyDataModel<?> dataModel;
 
-    protected String searchPattern;
-    protected DateRangeTemplate dateRange = DateRangeTemplate.recentWeek;
-    protected Date beginDate;
-    protected Date endDate;
-    protected PrincipalDto searchPrincipal; // TODO implication opt.
-
     public <E extends Entity<K>, D extends EntityDto<? super E, K>, K extends Serializable> //
     /*    */SimpleEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
         this.entityClass = entityClass;
@@ -452,8 +446,9 @@ public abstract class SimpleEntityViewBean
         return false;
     }
 
-    /* ********************************************************************** */
-
+    /*************************************************************************
+     * Section: Persistence
+     *************************************************************************/
     protected Object create() {
         EntityDto<?, ?> entityDto;
         try {
@@ -867,7 +862,14 @@ public abstract class SimpleEntityViewBean
     static void checkDeleteFlags(int deleteFlags) {
     }
 
-    /* ********************************************************************** */
+    /*************************************************************************
+     * Section: Search
+     *************************************************************************/
+    protected String searchPattern;
+    protected DateRangeTemplate dateRange = DateRangeTemplate.recentWeek;
+    protected Date beginDate;
+    protected Date endDate;
+    protected PrincipalDto searchPrincipal; // TODO implication opt.
 
     @Override
     public List<SearchFragment> getSearchFragments() {

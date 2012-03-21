@@ -14,14 +14,8 @@ public class AccountInitAdminBean
 
     private static final long serialVersionUID = 1L;
 
-    ListMBean<AccountInitItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items", AccountInitItemDto.class);
-
     public AccountInitAdminBean() {
         super(AccountInit.class, AccountInitDto.class, 0);
-    }
-
-    public ListMBean<AccountInitItemDto> getItemsMBean() {
-        return itemsMBean;
     }
 
     public void setAccountSubject(AccountSubjectDto subject) {
@@ -29,6 +23,16 @@ public class AccountInitAdminBean
         AccountInitItemDto item = itemsMBean.getOpenedObject();
         item.setSubject(subject);
         item.setDebitSide(subject.isDebitSign());
+    }
+
+    /*************************************************************************
+     * Section: MBeans
+     *************************************************************************/
+    final ListMBean<AccountInitItemDto> itemsMBean = ListMBean.fromEL(this, //
+            "openedObject.items", AccountInitItemDto.class);
+
+    public ListMBean<AccountInitItemDto> getItemsMBean() {
+        return itemsMBean;
     }
 
 }

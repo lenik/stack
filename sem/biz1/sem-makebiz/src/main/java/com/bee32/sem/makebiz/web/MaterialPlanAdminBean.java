@@ -38,28 +38,6 @@ public class MaterialPlanAdminBean
         super(MaterialPlan.class, MaterialPlanDto.class, 0);
     }
 
-    @Override
-    protected boolean preUpdate(UnmarshalMap uMap)
-            throws Exception {
-        // Update hibernate cache
-        for (MaterialPlan _plan : uMap.<MaterialPlan> entitySet()) {
-            if (_plan.getOrder() == null && _plan.getTask() == null) {
-                uiLogger.error("物料计划缺少对应的证单或生产任务!");
-                return false;
-            }
-
-
-            MakeTask _task = _plan.getTask();
-            if ((_task != null) && (!_task.getPlans().contains(_plan)))
-                _task.getPlans().add(_plan);
-
-            MakeOrder _order = _plan.getOrder();
-            if ((_order != null) && (!_order.getPlans().contains(_plan)))
-                _order.getPlans().add(_plan);
-        }
-        return true;
-    }
-
     /**
      * 根据bom计算所需物料
      */
@@ -92,7 +70,6 @@ public class MaterialPlanAdminBean
             uiLogger.error("错误", e);
         }
     }
-
 
     /**
      * 查询可用库存，并形成一个锁定列表
@@ -140,11 +117,15 @@ public class MaterialPlanAdminBean
         uiLogger.info("库存导入完成。");
     }
 
-    ListMBean<MaterialPlanItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items", MaterialPlanItemDto.class);
-    ListMBean<StockPlanOrderDto> planOrdersMBean = ListMBean.fromEL(this, "openedObject.planOrders",
-            StockPlanOrderDto.class);
-    ListMBean<StockOrderItemDto> planOrderItemsMBean = ListMBean.fromEL(planOrdersMBean, "openedObject.items",
-            StockOrderItemDto.class);
+    /*************************************************************************
+     * Section: MBeans
+     *************************************************************************/
+    final ListMBean<MaterialPlanItemDto> itemsMBean = ListMBean.fromEL(this, //
+            "openedObject.items", MaterialPlanItemDto.class);
+    final ListMBean<StockPlanOrderDto> planOrdersMBean = ListMBean.fromEL(this,//
+            "openedObject.planOrders", StockPlanOrderDto.class);
+    final ListMBean<StockOrderItemDto> planOrderItemsMBean = ListMBean.fromEL(planOrdersMBean, //
+            "openedObject.items", StockOrderItemDto.class);
 
     public ListMBean<MaterialPlanItemDto> getItemsMBean() {
         return itemsMBean;
@@ -156,6 +137,30 @@ public class MaterialPlanAdminBean
 
     public ListMBean<StockOrderItemDto> getPlanOrderItemsMBean() {
         return planOrderItemsMBean;
+    }
+
+    /*************************************************************************
+     * Section: Persistence
+     *************************************************************************/
+    @Override
+    protected boolean preUpdate(UnmarshalMap uMap)
+            throws Exception {
+        // Update hibernate cache
+        for (MaterialPlan _plan : uMap.<MaterialPlan> entitySet()) {
+            if (_plan.getOrder() == null && _plan.getTask() == null) {
+                uiLogger.error("物料计划缺少对应的证单或生产任务!");
+                return false;
+            }
+
+            MakeTask _task = _plan.getTask();
+            if ((_task != null) && (!_task.getPlans().contains(_plan)))
+                _task.getPlans().add(_plan);
+
+            MakeOrder _order = _plan.getOrder();
+            if ((_order != null) && (!_order.getPlans().contains(_plan)))
+                _order.getPlans().add(_plan);
+        }
+        return true;
     }
 
 }

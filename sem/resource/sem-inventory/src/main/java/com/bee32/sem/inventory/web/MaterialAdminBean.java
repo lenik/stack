@@ -53,40 +53,6 @@ public class MaterialAdminBean
         elements.add(MaterialCriteria.categoryOf(categoryId));
     }
 
-    @Override
-    protected boolean postValidate(List<?> dtos) {
-        for (Object dto : dtos) {
-            MaterialDto material = (MaterialDto) dto;
-            if (material.getCategory() == null || material.getCategory().getId() == null) {
-                uiLogger.error("物料所属分类不能为空!");
-                return false;
-            }
-            if (material.getUnit() == null || material.getUnit().getId() == null
-                    || material.getUnit().getId().isEmpty()) {
-                uiLogger.error("主单位不能为空!");
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @Override
-    protected void postUpdate(UnmarshalMap uMap)
-            throws Exception {
-        for (MaterialDto material : uMap.<MaterialDto> dtos()) {
-            if (material.isNewCreated())
-                onCreateMaterial(material);
-        }
-    }
-
-    @Override
-    protected void postDelete(UnmarshalMap uMap)
-            throws Exception {
-        for (MaterialDto material : uMap.<MaterialDto> dtos()) {
-            onDeleteMaterial(material);
-        }
-    }
-
     public List<MaterialPriceDto> getMaterialPrices() {
         MaterialDto material = getOpenedObject();
         if (material != null && material.getId() != null) {
@@ -369,11 +335,51 @@ public class MaterialAdminBean
         }
     }
 
-    ListMBean<MaterialAttributeDto> attributesMBean = ListMBean.fromEL(this, "openedObject.attributes",
-            MaterialAttributeDto.class);
+    /*************************************************************************
+     * Section: MBeans
+     *************************************************************************/
+    final ListMBean<MaterialAttributeDto> attributesMBean = ListMBean.fromEL(this, //
+            "openedObject.attributes", MaterialAttributeDto.class);
 
     public ListMBean<MaterialAttributeDto> getAttributesMBean() {
         return attributesMBean;
+    }
+
+    /*************************************************************************
+     * Section: Persistence
+     *************************************************************************/
+    @Override
+    protected boolean postValidate(List<?> dtos) {
+        for (Object dto : dtos) {
+            MaterialDto material = (MaterialDto) dto;
+            if (material.getCategory() == null || material.getCategory().getId() == null) {
+                uiLogger.error("物料所属分类不能为空!");
+                return false;
+            }
+            if (material.getUnit() == null || material.getUnit().getId() == null
+                    || material.getUnit().getId().isEmpty()) {
+                uiLogger.error("主单位不能为空!");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    protected void postUpdate(UnmarshalMap uMap)
+            throws Exception {
+        for (MaterialDto material : uMap.<MaterialDto> dtos()) {
+            if (material.isNewCreated())
+                onCreateMaterial(material);
+        }
+    }
+
+    @Override
+    protected void postDelete(UnmarshalMap uMap)
+            throws Exception {
+        for (MaterialDto material : uMap.<MaterialDto> dtos()) {
+            onDeleteMaterial(material);
+        }
     }
 
 }

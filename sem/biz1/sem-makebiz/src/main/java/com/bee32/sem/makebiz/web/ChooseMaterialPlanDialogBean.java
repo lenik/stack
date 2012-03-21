@@ -39,7 +39,11 @@ public class ChooseMaterialPlanDialogBean
         this.pending = pending;
     }
 
-    ListMBean<MaterialPlanItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items", MaterialPlanItemDto.class);
+    /*************************************************************************
+     * Section: MBeans
+     *************************************************************************/
+    final ListMBean<MaterialPlanItemDto> itemsMBean = ListMBean.fromEL(this, //
+            "openedObject.items", MaterialPlanItemDto.class);
 
     public ListMBean<MaterialPlanItemDto> getItemsMBean() {
         return itemsMBean;

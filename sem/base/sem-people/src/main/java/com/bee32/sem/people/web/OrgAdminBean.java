@@ -15,13 +15,18 @@ public class OrgAdminBean
 
     private static final long serialVersionUID = 1L;
 
-    ListMBean<PersonRoleDto> rolesMBean = ListMBean.fromEL(this, "openedObject.roles", PersonRoleDto.class);
-    ListMBean<OrgUnitDto> orgUnitsMBean = ListMBean.fromEL(this, "openedObject.orgUnits", OrgUnitDto.class);
-
     public OrgAdminBean() {
         super(Org.class, OrgDto.class, PartyDto.CONTACTS, //
                 Order.desc("id"));
     }
+
+    /*************************************************************************
+     * Section: MBeans
+     *************************************************************************/
+    final ListMBean<PersonRoleDto> rolesMBean = ListMBean.fromEL(this, //
+            "openedObject.roles", PersonRoleDto.class);
+    final ListMBean<OrgUnitDto> orgUnitsMBean = ListMBean.fromEL(this, //
+            "openedObject.orgUnits", OrgUnitDto.class);
 
     public ListMBean<PersonRoleDto> getRolesMBean() {
         return rolesMBean;

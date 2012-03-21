@@ -46,7 +46,11 @@ public class ChooseMakeOrderDialogBean
         // refreshRowCount();
     }
 
-    final ListMBean<MakeOrderItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items", MakeOrderItemDto.class);
+    /*************************************************************************
+     * Section: MBeans
+     *************************************************************************/
+    final ListMBean<MakeOrderItemDto> itemsMBean = ListMBean.fromEL(this, //
+            "openedObject.items", MakeOrderItemDto.class);
 
     public ListMBean<MakeOrderItemDto> getItemsMBean() {
         return itemsMBean;

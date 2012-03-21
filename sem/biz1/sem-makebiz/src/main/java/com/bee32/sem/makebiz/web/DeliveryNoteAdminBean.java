@@ -58,36 +58,12 @@ public class DeliveryNoteAdminBean
         item.setSourceWarehouse(stockDicts.getWarehouse(warehouseId));
     }
 
-    @Override
-    protected boolean preUpdate(UnmarshalMap uMap)
-            throws Exception {
-        for (DeliveryNote _note : uMap.<DeliveryNote> entitySet()) {
-            MakeOrder order = _note.getOrder();
-            if (!order.getDeliveryNotes().contains(_note)) {
-                order.getDeliveryNotes().add(_note);
-            }
-            Map<Material, BigDecimal> overloadPartsOfDelivery = order.getOverloadPartsOfDelivery();
-            if (!overloadPartsOfDelivery.isEmpty()) {
-                StringBuilder message = new StringBuilder();
-                for (Entry<Material, BigDecimal> entry : overloadPartsOfDelivery.entrySet()) {
-                    message.append(entry.getKey().getLabel());
-                    message.append(" 超出 ");
-                    message.append(entry.getValue());
-                    message.append("; ");
-                }
-                uiLogger.error("送货数量超过订单中的数量: " + message);
-                return false;
-            }
-        }
-        return true;
-    }
-
     public void setApplyMakeOrder(MakeOrderDto makeOrderRef) {
         DeliveryNoteDto deliveryNote = getOpenedObject();
         MakeOrderDto makeOrder = reload(makeOrderRef, MakeOrderDto.NOT_DELIVERIED_ITEMS);
 
-        for(MakeOrderItemDto item: makeOrder.getItems()) {
-            if(item.getPart().isNull()) {
+        for (MakeOrderItemDto item : makeOrder.getItems()) {
+            if (item.getPart().isNull()) {
                 uiLogger.error("定单明细没有指定物料.");
                 return;
             }
@@ -133,6 +109,9 @@ public class DeliveryNoteAdminBean
         }
     }
 
+    /*************************************************************************
+     * Section: MBeans
+     *************************************************************************/
     final ListMBean<DeliveryNoteItemDto> itemsMBean = ListMBean.fromEL(this, //
             "openedObject.items", DeliveryNoteItemDto.class);
     final ListMBean<DeliveryNoteTakeOutDto> takeOutsMBean = ListMBean.fromEL(this, //
@@ -150,6 +129,33 @@ public class DeliveryNoteAdminBean
 
     public ListMBean<StockOrderItemDto> getOrderItemsMBean() {
         return orderItemsMBean;
+    }
+
+    /*************************************************************************
+     * Section: Persistence
+     *************************************************************************/
+    @Override
+    protected boolean preUpdate(UnmarshalMap uMap)
+            throws Exception {
+        for (DeliveryNote _note : uMap.<DeliveryNote> entitySet()) {
+            MakeOrder order = _note.getOrder();
+            if (!order.getDeliveryNotes().contains(_note)) {
+                order.getDeliveryNotes().add(_note);
+            }
+            Map<Material, BigDecimal> overloadPartsOfDelivery = order.getOverloadPartsOfDelivery();
+            if (!overloadPartsOfDelivery.isEmpty()) {
+                StringBuilder message = new StringBuilder();
+                for (Entry<Material, BigDecimal> entry : overloadPartsOfDelivery.entrySet()) {
+                    message.append(entry.getKey().getLabel());
+                    message.append(" 超出 ");
+                    message.append(entry.getValue());
+                    message.append("; ");
+                }
+                uiLogger.error("送货数量超过订单中的数量: " + message);
+                return false;
+            }
+        }
+        return true;
     }
 
 }

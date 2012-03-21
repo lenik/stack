@@ -29,6 +29,41 @@ public class MakeTaskAdminBean
         super(MakeTask.class, MakeTaskDto.class, 0);
     }
 
+    public void setApplyMakeOrder(MakeOrderDto makeOrderRef) {
+        MakeTaskDto makeTask = getOpenedObject();
+        MakeOrderDto makeOrder = reload(makeOrderRef, MakeOrderDto.NOT_ARRANGED_ITEMS);
+
+        for (MakeOrderItemDto item : makeOrder.getItems()) {
+            if (item.getPart().isNull()) {
+                uiLogger.error("定单明细没有指定物料.");
+                return;
+            }
+        }
+
+        List<MakeTaskItemDto> taskItems = makeOrder.arrangeMakeTask();
+        if (taskItems.isEmpty()) {
+            uiLogger.error("此订单上的产品已经全部安排为生产任务或外购物料计划!");
+            return;
+        }
+        makeTask.setOrder(makeOrderRef);
+        makeTask.setItems(taskItems);
+        if (StringUtils.isEmpty(makeTask.getLabel()))
+            makeTask.setLabel(makeOrder.getLabel());
+    }
+
+    /*************************************************************************
+     * Section: MBeans
+     *************************************************************************/
+    final ListMBean<MakeTaskItemDto> itemsMBean = ListMBean.fromEL(this, //
+            "openedObject.items", MakeTaskItemDto.class);
+
+    public ListMBean<MakeTaskItemDto> getItemsMBean() {
+        return itemsMBean;
+    }
+
+    /*************************************************************************
+     * Section: Persistence
+     *************************************************************************/
     @Override
     protected boolean preUpdate(UnmarshalMap uMap)
             throws Exception {
@@ -51,34 +86,6 @@ public class MakeTaskAdminBean
             }
         }
         return true;
-    }
-
-    public void setApplyMakeOrder(MakeOrderDto makeOrderRef) {
-        MakeTaskDto makeTask = getOpenedObject();
-        MakeOrderDto makeOrder = reload(makeOrderRef, MakeOrderDto.NOT_ARRANGED_ITEMS);
-
-        for(MakeOrderItemDto item: makeOrder.getItems()) {
-            if(item.getPart().isNull()) {
-                uiLogger.error("定单明细没有指定物料.");
-                return;
-            }
-        }
-
-        List<MakeTaskItemDto> taskItems = makeOrder.arrangeMakeTask();
-        if (taskItems.isEmpty()) {
-            uiLogger.error("此订单上的产品已经全部安排为生产任务或外购物料计划!");
-            return;
-        }
-        makeTask.setOrder(makeOrderRef);
-        makeTask.setItems(taskItems);
-        if (StringUtils.isEmpty(makeTask.getLabel()))
-            makeTask.setLabel(makeOrder.getLabel());
-    }
-
-    ListMBean<MakeTaskItemDto> itemsMBean = ListMBean.fromEL(this, "openedObject.items", MakeTaskItemDto.class);
-
-    public ListMBean<MakeTaskItemDto> getItemsMBean() {
-        return itemsMBean;
     }
 
 }
