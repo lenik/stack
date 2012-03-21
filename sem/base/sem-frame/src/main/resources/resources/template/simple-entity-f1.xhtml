@@ -35,7 +35,7 @@
                     <td valign="center" id="sideBarWToggler" class="layout-side-toggler ui-state-default" style="width: 9px"
                         onclick="$('#sideBarW').toggle()" />
                 </c:if>
-                <td valign="top">
+                <td valign="top" style="overflow: hidden; overflow-x: auto">
                     <c:if test="${sideBarNVisible != null}">
                         <h:panelGroup id="sideBarN" layout="block">
                             <ui:insert name="sideBarN" />
