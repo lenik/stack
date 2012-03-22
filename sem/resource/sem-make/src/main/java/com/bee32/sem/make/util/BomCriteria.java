@@ -2,7 +2,6 @@ package com.bee32.sem.make.util;
 
 import org.hibernate.criterion.MatchMode;
 
-import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
@@ -27,13 +26,15 @@ public class BomCriteria
     }
 
     @LeftHand(Part.class)
-    public static CriteriaElement notObsolete() {
+    public static ICriteriaElement notObsolete() {
         return isNull("obsolete");
     }
 
     @LeftHand(Part.class)
-    public static CriteriaElement findPartByMaterial(Long materialId) {
+    public static ICriteriaElement findPartByMaterial(Long materialId) {
         return new Equals("target.id", materialId);
 
     }
+
+
 }

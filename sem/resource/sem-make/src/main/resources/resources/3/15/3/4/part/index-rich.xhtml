@@ -11,6 +11,15 @@
     <ui:param name="mirrorTargets" value=":navigatorForm:categoryTree" />
     <ui:param name="childObj" value="#{bean.childrenMBean.openedObject}" />
 
+    <ui:define name="toolbar.right.1">
+        <p:commandButton
+            value="BOM树"
+            oncomplete="bomTreeDialog.show();" rendered="${readable != null ? readable : true}"
+            actionListener="#{bean.loadBomTree}"
+            update=":bomTreeForm"
+            disabled="${not bean.selected}"/>
+    </ui:define>
+
     <ui:define name="sideBarW">
         <h:form id="navigatorForm">
             <p:treeTable id="categoryTree" value="#{bean.categoryTree.rootNode}" var="category"
@@ -172,5 +181,45 @@
                 </t:panelGroup>
             </t:panelGrid>
         </fr:listView>
+
+        <p:dialog id="bomTreeDialog" header="BOM树" widgetVar="bomTreeDialog" modal="true">
+            <h:form id="bomTreeForm">
+                <p:treeTable id="bomTree" value="#{bean.bomTree.rootNode}" var="entry"
+                    selectionMode="single" selection="#{bean.bomTree.selectedNode}">
+                        <p:column headerText="物料" sortBy="#{entry.material.label}">
+                            <h:outputText value="#{entry.material.label}" />
+                        </p:column>
+                        <p:column headerText="规格型号" sortBy="#{entry.material.modelSpec}">
+                            <h:outputText value="#{entry.material.modelSpec}" />
+                        </p:column>
+                        <p:column headerText="数量">
+                            <h:outputText value="#{entry.quantity}" />
+                        </p:column>
+                        <p:column headerText="设置工艺">
+                            <p:commandButton value="设置" rendered="#{entry.makeStep}" onclick="stepListDialog.show();"/>
+                        </p:column>
+
+                </p:treeTable>
+                <div align="right">
+                    <p:commandButton id="close" value="关闭" onclick="bomTreeDialog.hide()" />
+                </div>
+            </h:form>
+        </p:dialog>
+
+
+        <fr:listView id="stepIndexView" header="工艺明细" style="dialog"
+            mbean="#{bean.stepsMBean}" indexDialogVar="stepListDialog">
+            <f:facet name="columns">
+                <p:column headerText="名称">
+                    <h:outputText value="#{entry.label}"/>
+                </p:column>
+            </f:facet>
+            888998
+        </fr:listView>
+
+
+
+
+
     </ui:define>
 </ui:composition>

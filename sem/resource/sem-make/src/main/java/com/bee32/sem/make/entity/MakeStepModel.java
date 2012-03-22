@@ -15,6 +15,7 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.color.UIEntityAuto;
@@ -57,6 +58,7 @@ public class MakeStepModel
     /**
      * 如果同一个part对应多个工艺，则order反应了这多个工艺的顺序
      */
+    @NaturalId
     public int getOrder() {
         return order;
     }
@@ -68,6 +70,7 @@ public class MakeStepModel
     /**
      * 工艺的输出物料
      */
+    @NaturalId
     @ManyToOne
     public Part getOutput() {
         return output;

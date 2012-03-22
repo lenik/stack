@@ -29,6 +29,7 @@ public class MaterialCategory
 
     int materialCount;
     int partCount;
+    int topPartCount;
 
     public MaterialCategory() {
         super();
@@ -132,6 +133,19 @@ public class MaterialCategory
         if (materials == null)
             throw new NullPointerException("materials");
         this.materials = materials;
+    }
+
+    /**
+     * 顶层bom数
+     * @return
+     */
+    @Formula("(select count(*) from part p where p.category=id and p.id not in (select distinct pi.part from part_item pi where pi.part is not null))")
+    public int getTopPartCount() {
+        return topPartCount;
+    }
+
+    public void setTopPartCount(int topPartCount) {
+        this.topPartCount = topPartCount;
     }
 
     public void addMaterial(Material material) {

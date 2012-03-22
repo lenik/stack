@@ -22,6 +22,7 @@ public class MaterialCategoryDto
     List<MaterialDto> materials;
     int materialCount;
     int partCount;
+    int topPartCount;
     CodeGenerator codeGenerator;
     MaterialType materialType;
 
@@ -37,6 +38,7 @@ public class MaterialCategoryDto
 
         this.materialCount = source.getMaterialCount();
         this.partCount = source.getPartCount();
+        this.topPartCount = source.getTopPartCount();
     }
 
     @Override
@@ -99,6 +101,21 @@ public class MaterialCategoryDto
         int total = partCount;
         for (MaterialCategoryDto child : getChildren())
             total += child.getTotalPartCount();
+        return total;
+    }
+
+    public int getTopPartCount() {
+        return topPartCount;
+    }
+
+    public void setTopPartCount(int topPartCount) {
+        this.topPartCount = topPartCount;
+    }
+
+    public int getTotalTopPartCount() {
+        int total = topPartCount;
+        for (MaterialCategoryDto child : getChildren())
+            total += child.getTotalTopPartCount();
         return total;
     }
 

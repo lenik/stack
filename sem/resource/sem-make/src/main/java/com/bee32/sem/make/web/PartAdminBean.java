@@ -14,6 +14,7 @@ import com.bee32.sem.inventory.entity.MaterialType;
 import com.bee32.sem.inventory.util.MaterialCriteria;
 import com.bee32.sem.inventory.web.MaterialCategorySupportBean;
 import com.bee32.sem.inventory.web.MaterialCategoryTreeModel;
+import com.bee32.sem.make.dto.MakeStepModelDto;
 import com.bee32.sem.make.dto.PartDto;
 import com.bee32.sem.make.dto.PartItemDto;
 import com.bee32.sem.make.entity.Part;
@@ -31,6 +32,8 @@ public class PartAdminBean
     boolean productLike;
     MaterialDto selectedMaterial;
     BigDecimal calcPriceResult;
+
+    BomTreeModel bomTree;
 
     public PartAdminBean() {
         super(Part.class, PartDto.class, 0);
@@ -99,6 +102,7 @@ public class PartAdminBean
         calcPriceResult = price;
     }
 
+
     public BigDecimal getCalcPriceResult() {
         return calcPriceResult;
     }
@@ -111,14 +115,40 @@ public class PartAdminBean
         this.selectedMaterial = selectedMaterial;
     }
 
+    public void loadBomTree() {
+        if (getSelection().isEmpty()) {
+            uiLogger.error("没有选定对象!");
+            return;
+        }
+        openSelection();
+
+        PartDto part = getOpenedObject();
+        bomTree = new BomTreeModel(part);
+    }
+
+    public BomTreeModel getBomTree() {
+        return bomTree;
+    }
+
+    public void setBomTree(BomTreeModel bomTree) {
+        this.bomTree = bomTree;
+    }
+
     /*************************************************************************
      * Section: MBeans
      *************************************************************************/
     final ListMBean<PartItemDto> childrenMBean = ListMBean.fromEL(this, //
             "openedObject.children", PartItemDto.class);
 
+    final ListMBean<MakeStepModelDto> stepsMBean = ListMBean.fromEL(this, //
+            "bomTree.selectedNode.part.steps", MakeStepModelDto.class);
+
     public ListMBean<PartItemDto> getChildrenMBean() {
         return childrenMBean;
+    }
+
+    public ListMBean<MakeStepModelDto> getStepsMBean() {
+        return stepsMBean;
     }
 
     /*************************************************************************

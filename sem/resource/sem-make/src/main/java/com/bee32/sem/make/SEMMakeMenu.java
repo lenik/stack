@@ -16,6 +16,5 @@ public class SEMMakeMenu
     }
 
     static MenuNode bomAdmin = entry(SEMInventoryMenu.MATERIAL, 30, "bomAdmin", _("part/"));
-    static MenuNode makeStepModelAdmin = entry(SEMInventoryMenu.MATERIAL, 40, "makeStepModelAdmin", _("makeStepModel/"));
 
 }
