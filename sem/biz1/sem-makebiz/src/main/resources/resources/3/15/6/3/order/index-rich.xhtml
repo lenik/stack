@@ -54,7 +54,7 @@
         </t:panelGrid>
 
         <fr:listView id="itemsIndexView" header="订单项目" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
-            nested="true" paginator="false">
+            nested="true" paginator="false" readonly="#{not bean.editing}">
             <f:facet name="columns">
                 <p:column headerText="物料" styleClass="f-wrappable">
                     <h:outputText value="#{entry.part.target.label}" />
@@ -64,11 +64,11 @@
                     <h:outputText value="#{entry.part.target.modelSpec}" />
                 </p:column>
 
-                <p:column headerText="单价">
+                <p:column headerText="单价" styleClass="f-right">
                     <h:outputText value="#{entry.price}" />
                 </p:column>
 
-                <p:column headerText="数量">
+                <p:column headerText="数量" styleClass="f-right">
                     <h:outputText value="#{entry.quantity}" />
                 </p:column>
 
@@ -104,7 +104,7 @@
         <sem:choosePartDialog id="c_part" target="#{itemObj.part}" update=":itemsEditView:editForm:material" />
 
         <fr:listView id="itemsEditView" header="订单项目" style="editDialog" indexView=":editDialog:form:itemsIndexView"
-            mbean="#{bean.itemsMBean}">
+            mbean="#{bean.itemsMBean}" readonly="#{not bean.editing}">
             <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
 
                 <h:outputLabel value="物料" />
