@@ -332,7 +332,8 @@ public class MCValue
 
     @Override
     public String toString() {
-        return currency.getCurrencyCode() + "$ " + value;
+        String symbol = currency.getSymbol();
+        return symbol + value + " " + currency.getCurrencyCode();
     }
 
 }
