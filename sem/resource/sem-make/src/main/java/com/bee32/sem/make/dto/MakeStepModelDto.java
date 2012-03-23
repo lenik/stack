@@ -21,6 +21,7 @@ public class MakeStepModelDto
 
     public static final int INPUTS = 1;
 
+    MakeStepNameDto stepName;
     int order;
     PartDto output;
     boolean qualityControlled;
@@ -39,6 +40,7 @@ public class MakeStepModelDto
 
     @Override
     protected void _marshal(MakeStepModel source) {
+        stepName = mref(MakeStepNameDto.class, source.getStepName());
         order = source.getOrder();
         output = mref(PartDto.class, source.getOutput());
         qualityControlled = source.isQualityControlled();
@@ -63,6 +65,7 @@ public class MakeStepModelDto
 
     @Override
     protected void _unmarshalTo(MakeStepModel target) {
+        merge(target, "stepName", stepName);
         target.setOrder(order);
         merge(target, "output", output);
         target.setQualityControlled(qualityControlled);
@@ -87,6 +90,14 @@ public class MakeStepModelDto
     protected void _parse(TextMap map) throws ParseException {
         throw new NotImplementedException();
 
+    }
+
+    public MakeStepNameDto getStepName() {
+        return stepName;
+    }
+
+    public void setStepName(MakeStepNameDto stepName) {
+        this.stepName = stepName;
     }
 
     public int getOrder() {

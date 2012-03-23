@@ -10,6 +10,7 @@
     <ui:param name="obj" value="#{bean.openedObject}" />
     <ui:param name="mirrorTargets" value=":navigatorForm:categoryTree" />
     <ui:param name="childObj" value="#{bean.childrenMBean.openedObject}" />
+    <ui:param name="dicts" value="${bomDictsBean}" />
 
     <ui:define name="toolbar.right.1">
         <p:commandButton
@@ -216,7 +217,73 @@
                     <h:outputText value="#{entry.label}"/>
                 </p:column>
             </f:facet>
-            888998
+
+            <f:facet name="index-buttons.right">
+                <p:commandButton value="保存"/>
+            </f:facet>
+
+
+            <p:tabView id="stepEditTab">
+                <p:tab title="基本信息">
+
+                    <t:panelGrid columns="4">
+
+                        <h:outputText value="工艺名称:" />
+                        <t:panelGroup colspan="3">
+                            <p:selectOneMenu label="工艺名称" value="${item.stepName.id}" style="width: 10em;">
+                                <f:selectItems value="${dicts.stepNames}" var="it" itemLabel="${it.label}"
+                                    itemValue="${it.id}" />
+                            </p:selectOneMenu>
+                        </t:panelGroup>
+
+                        <h:outputText value="顺序:"/>
+                        <p:inputText value="#{item.order}" label="顺序"/>
+                        <h:outputText value="是否质检:"/>
+                        <p:selectBooleanCheckbox value="#{item.qualityControlled}" label="是否质检"/>
+
+                        <h:outputText value="耗费时间(分钟):"/>
+                        <p:inputText value="#{item.consumeTime}" label="耗费时间"/>
+                        <h:outputText value="标准小时工资:"/>
+                        <p:inputText value="#{item.oneHourWage}" label="标准小时工资"/>
+
+                        <h:outputText value="电费:"/>
+                        <p:inputText value="#{item.electricityFee}" label="电费"/>
+                        <h:outputText value="设备费:"/>
+                        <p:inputText value="#{item.equipmentCost}" label="设备费"/>
+
+                        <h:outputText value="其他费用:"/>
+                        <p:inputText value="#{item.otherFee}" label="其他费用"/>
+                        <h:outputText value="起用时间:"/>
+                        <p:calendar pattern="yyyy-MM-dd" value="#{item.validateTime}"
+                            navigator="true" locale="zh_CN" showOn="button" label="起用时间" />
+
+                        <h:outputText value="设备描述:"/>
+                        <t:panelGroup colspan="3">
+                            <p:inputTextarea value="#{item.equipment}" rows="5" cols="30" label="设备描述"/>
+                        </t:panelGroup>
+
+                        <h:outputText value="操作描述:"/>
+                        <t:panelGroup colspan="3">
+                            <p:inputTextarea value="#{item.operation}" rows="5" cols="30" label="操作描述"/>
+                        </t:panelGroup>
+
+                        <h:outputText value="质量规范描述:"/>
+                        <t:panelGroup colspan="3">
+                            <p:inputTextarea value="#{item.qcSpec.text}" rows="5" cols="30" label="质量规范描述"/>
+                        </t:panelGroup>
+
+                    </t:panelGrid>
+
+                </p:tab>
+
+                <p:tab title="消耗材料">
+                </p:tab>
+
+                <p:tab title="质检标准值">
+                </p:tab>
+
+            </p:tabView>
+
         </fr:listView>
 
 
@@ -224,4 +291,6 @@
 
 
     </ui:define>
+
+
 </ui:composition>

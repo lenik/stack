@@ -39,6 +39,7 @@ public class MakeStepModel
     public static final int EQUIPMENT_LENGTH = 2000;
     public static final int OPERATION_LENGTH = 2000;
 
+    MakeStepName stepName;
     int order;
     Part output;
     boolean qualityControlled;
@@ -54,6 +55,18 @@ public class MakeStepModel
 
     List<MakeStepInput> inputs = new ArrayList<MakeStepInput>();
     QCSpec qcSpec = new QCSpec();
+
+    @NaturalId
+    @ManyToOne
+    public MakeStepName getStepName() {
+        return stepName;
+    }
+
+    public void setStepName(MakeStepName stepName) {
+        if (stepName == null)
+            throw new NullPointerException("stepName");
+        this.stepName = stepName;
+    }
 
     /**
      * 如果同一个part对应多个工艺，则order反应了这多个工艺的顺序
