@@ -1,6 +1,8 @@
 package com.bee32.sem.misc;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -32,6 +34,7 @@ import com.bee32.icsf.principal.PrincipalDto;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.UserCriteria;
 import com.bee32.plover.arch.operation.Operation;
+import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.GetOpenedObjectTransformer;
 import com.bee32.plover.arch.util.PriorityComparator;
 import com.bee32.plover.arch.util.dto.Fmask;
@@ -200,6 +203,13 @@ public abstract class SimpleEntityViewBean
             return super.countImpl();
         }
 
+    }
+
+    public String getExportFileName()
+            throws UnsupportedEncodingException {
+        String entityName = ClassUtil.getTypeName(getEntityType());
+        String encoded = URLEncoder.encode(entityName, "utf-8");
+        return encoded;
     }
 
     public LazyDataModel<?> getDataModel() {

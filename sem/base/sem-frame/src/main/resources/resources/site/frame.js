@@ -29,6 +29,15 @@
         logo.mouseover(function() {
             logo.hide().delay(5000).fadeIn();
         });
+
+        var dataTable = $("#mainForm\\:dataTable");
+        var exportMenu = $("#mainForm\\:exportMenu");
+        dataTable.oncontextmenu = function() {
+            exportMenu.show();
+        };
+        exportMenu.onexit = function() {
+            exportMenu.hide();
+        }
     });
 
 })(jQuery);
