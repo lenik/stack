@@ -47,7 +47,7 @@
             </c:if>
             <ui:insert name="actions" />
         </p:commandButton>
-        <p:commandButton id="cancel" value="关闭" onclick="${var}.hide();" />
+        <p:commandButton id="cancel" value="关闭" onclick="${var}.hide(); return false;" ajax="false" />
     </ui:define>
 
 </ui:composition>

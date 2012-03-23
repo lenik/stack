@@ -6,10 +6,6 @@ label {
     font-family: Verdana, Arial, sans-serif;
 }
 
-.form-editing {
-    background: #eeeeee;
-}
-
 .ui-widget,.ui-widget input,.ui-widget select,.ui-widget textarea,.ui-widget button {
     font-family: Verdana, Arial, sans-serif;
 }
@@ -144,4 +140,28 @@ label {
 
 .print .ui-widget-content {
     border: none;
+}
+
+.form-editing {
+
+}
+
+.locker-active {
+
+}
+
+.locker-active .locker-bypass {
+    display: inherit !important;
+}
+
+.locker-active button:enabled {
+    display: none;
+}
+
+.f-left {
+    text-align: left;
+}
+
+.f-right {
+    text-align: right;
 }

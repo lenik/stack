@@ -207,7 +207,8 @@
             </h:panelGroup>
             <h:panelGroup rendered="${bean.openedObject != null}">
                 <h:panelGroup id="content" layout="block">
-                    <pf:locker id="locker" test="${not bean.editing}">
+                    <pf:locker id="locker" test="${not bean.editing}" layout="block"
+                        styleClass="${bean.editing ? '' : 'locker-active'}">
                         <ui:insert name="editDialogContent">The edit dialog's content is undefined.</ui:insert>
                     </pf:locker>
                 </h:panelGroup>
@@ -222,9 +223,10 @@
                             </h:panelGroup>
                         </h:panelGroup>
                         <h:panelGroup rendered="${copyable and (bean.editing or not plainEditForm)}">
-                            <p:commandButton id="dup-validated" value="创建副本" actionListener="${bean.saveDup}"
+                            <p:commandButton id="dup-validated" value="另存为副本" actionListener="${bean.saveDup}"
                                 disabled="${not bean.editing}" update="${_contentUpdate} ${_indexUpdate} ${mirrorTargets}"
-                                rendered="${not plainEditForm}" onclick="waitbox.show()" oncomplete="waitbox.hide(); editdlg.shakeOnFail(args)" />
+                                rendered="${false and not plainEditForm}" onclick="waitbox.show()"
+                                oncomplete="waitbox.hide(); editdlg.shakeOnFail(args)" />
                         </h:panelGroup>
                     </td>
                     <td align="right">

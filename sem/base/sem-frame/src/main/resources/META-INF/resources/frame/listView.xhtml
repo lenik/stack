@@ -111,8 +111,9 @@
                                 </td>
                                 <td align="right">
                                     <p:commandButton id="edit" value="${cc.attrs.readonly ? '查看' : '修改'}"
-                                        disabled="${not mbean.selectionEditable}" action="${mbean.showEditForm}"
-                                        update="${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more" onclick="waitbox.show()"
+                                        styleClass="locker-bypass" disabled="${not mbean.selectionEditable}" action="${mbean.showEditForm}"
+                                        process=":@form" update="${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
+                                        onclick="waitbox.show()"
                                         oncomplete="waitbox.hide(); ${editPopup ? cc.attrs.editDialogVar.concat('.show();') : ''}"
                                         rendered="${cc.attrs.editable and (editPopup or copyMode)}">
                                         <f:setPropertyActionListener target="${mbean.copyMode}"
@@ -120,11 +121,13 @@
                                     </p:commandButton>
                                     <p:commandButton rendered="${cc.attrs.removable and picker == null}"
                                         id="remove" value="移除" disabled="${not mbean.selectionRemovable}"
-                                        actionListener="${mbean.removeSelection}" onclick="waitbox.show()" oncomplete="waitbox.hide()"
+                                        actionListener="${mbean.removeSelection}" process=":@form" onclick="waitbox.show()"
+                                        oncomplete="waitbox.hide()"
                                         update=":@form, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more" />
                                     <cc:insertRawFacet name="index-buttons.right" />
                                     <p:commandButton id="close" value="关闭"
-                                        onclick="${cc.attrs.indexDialogVar}.hide()" rendered="${indexPopup}" />
+                                        onclick="${cc.attrs.indexDialogVar}.hide(); return false;" ajax="false"
+                                        rendered="${indexPopup}" />
                                 </td>
                             </tr>
                         </table>
@@ -148,8 +151,9 @@
                             <td align="left">
                                 <cc:insertRawFacet name="edit-buttons" />
                                 <p:commandButton id="copy-validated" value="${'创建副本'.concat(copyMode ? '' : '*')}"
-                                    rendered="${copyMode}" disabled="${mbean.openedObject == null or cc.attrs.readonly}"
-                                    action="${mbean.dup}" onclick="waitbox.show()"
+                                    title="以正在编辑的记录为模版，在后台创建一个副本。" rendered="${copyMode}"
+                                    disabled="${mbean.openedObject == null or cc.attrs.readonly}" action="${mbean.dup}"
+                                    onclick="waitbox.show()"
                                     oncomplete="waitbox.hide(); ${editPopup ? cc.attrs.editDialogVar.concat('.shakeOnFail(args)') : ''}"
                                     update="${cc.attrs.indexView}:indexForm:body, apply-validated">
                                     <f:setPropertyActionListener target="${mbean.copyMode}"
@@ -161,7 +165,7 @@
                                     value="${editPopup ? '确定' : (mbean.openedIndex == -1 ? '添加' : '应用').concat(copyMode ? '' : '*')}"
                                     title="${(not editPopup) and cc.attrs.smooth ? '在快速编辑模式下，当前修改的内容可能已经被自动保存。' : ''}"
                                     disabled="${mbean.openedObject == null or cc.attrs.readonly}" action="${mbean.apply}"
-                                    onclick="waitbox.show()"
+                                    process=":@form" onclick="waitbox.show()"
                                     oncomplete="waitbox.hide(); ${editPopup ? cc.attrs.editDialogVar.concat('.hideValidated(args)') : ''}"
                                     update="${cc.attrs.indexView}:indexForm:body, apply-validated">
                                     <f:setPropertyActionListener target="${mbean.copyMode}"
@@ -170,8 +174,9 @@
                                 <p:commandButton id="cancel" value="取消" disabled="${mbean.openedObject == null}"
                                     actionListener="${mbean.cancel}" update="body, ${cc.attrs.editView}:more" onclick="waitbox.show()"
                                     oncomplete="waitbox.hide()" rendered="${not editPopup and copyMode}" />
-                                <p:commandButton id="close" value="关闭" onclick="${cc.attrs.editDialogVar}.hide()"
-                                    rendered="${editPopup}" />
+                                <p:commandButton id="close" value="关闭"
+                                    onclick="${cc.attrs.editDialogVar}.hide(); return false" rendered="${editPopup}"
+                                    ajax="false" />
                             </td>
                         </tr>
                     </table>
