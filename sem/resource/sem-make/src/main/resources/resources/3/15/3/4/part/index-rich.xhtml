@@ -184,8 +184,7 @@
 
         <p:dialog id="bomTreeDialog" header="BOM树" widgetVar="bomTreeDialog" modal="true">
             <h:form id="bomTreeForm">
-                <p:treeTable id="bomTree" value="#{bean.bomTree.rootNode}" var="entry"
-                    selectionMode="single" selection="#{bean.bomTree.selectedNode}">
+                <p:treeTable id="bomTree" value="#{bean.bomTree.rootNode}" var="entry">
                         <p:column headerText="物料" sortBy="#{entry.material.label}">
                             <h:outputText value="#{entry.material.label}" />
                         </p:column>
@@ -196,7 +195,10 @@
                             <h:outputText value="#{entry.quantity}" />
                         </p:column>
                         <p:column headerText="设置工艺">
-                            <p:commandButton value="设置" rendered="#{entry.makeStep}" onclick="stepListDialog.show();"/>
+                            <p:commandButton value="设置" rendered="#{entry.makeStep}" onclick="stepListDialog.show();">
+                                <f:setPropertyActionListener target="#{bean.makeStepTarget}"
+                                    value="#{entry.part}" />
+                            </p:commandButton>
                         </p:column>
 
                 </p:treeTable>

@@ -35,6 +35,8 @@ public class PartAdminBean
 
     BomTreeModel bomTree;
 
+    PartDto makeStepTarget;
+
     public PartAdminBean() {
         super(Part.class, PartDto.class, 0);
     }
@@ -134,6 +136,18 @@ public class PartAdminBean
         this.bomTree = bomTree;
     }
 
+
+
+    public PartDto getMakeStepTarget() {
+        return makeStepTarget;
+    }
+
+    public void setMakeStepTarget(PartDto makeStepTarget) {
+        this.makeStepTarget = makeStepTarget;
+    }
+
+
+
     /*************************************************************************
      * Section: MBeans
      *************************************************************************/
@@ -141,7 +155,7 @@ public class PartAdminBean
             "openedObject.children", PartItemDto.class);
 
     final ListMBean<MakeStepModelDto> stepsMBean = ListMBean.fromEL(this, //
-            "bomTree.selectedNode.part.steps", MakeStepModelDto.class);
+            "makeStepTarget.steps", MakeStepModelDto.class);
 
     public ListMBean<PartItemDto> getChildrenMBean() {
         return childrenMBean;
