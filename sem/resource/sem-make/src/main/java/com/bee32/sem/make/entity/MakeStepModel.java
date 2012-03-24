@@ -45,10 +45,10 @@ public class MakeStepModel
     boolean qualityControlled;
 
     float consumeTime;
-    BigDecimal oneHourWage = BigDecimal.ZERO;
-    BigDecimal otherFee = BigDecimal.ZERO;
-    BigDecimal electricityFee = BigDecimal.ZERO;
-    BigDecimal equipmentCost = BigDecimal.ZERO;
+    BigDecimal oneHourWage = new BigDecimal(0);
+    BigDecimal otherFee = new BigDecimal(0);
+    BigDecimal electricityFee = new BigDecimal(0);
+    BigDecimal equipmentCost = new BigDecimal(0);
     Date validateTime;
     String equipment;
     String operation;
@@ -120,7 +120,7 @@ public class MakeStepModel
     /**
      * 标准小时工资
      */
-    @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE)
+    @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE, nullable = false)
     public BigDecimal getOneHourWage() {
         return oneHourWage;
     }
@@ -132,7 +132,7 @@ public class MakeStepModel
     /**
      * 其它费用
      */
-    @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE)
+    @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE, nullable = false)
     public BigDecimal getOtherFee() {
         return otherFee;
     }
@@ -144,7 +144,7 @@ public class MakeStepModel
     /**
      * 电费
      */
-    @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE)
+    @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE, nullable = false)
     public BigDecimal getElectricityFee() {
         return electricityFee;
     }
@@ -156,7 +156,7 @@ public class MakeStepModel
     /**
      * 设备费
      */
-    @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE)
+    @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE, nullable = false)
     public BigDecimal getEquipmentCost() {
         return equipmentCost;
     }

@@ -173,6 +173,7 @@ public class MakeStepModelDto
         this.validateTime = validateTime;
     }
 
+    @NLength(max = MakeStepModel.EQUIPMENT_LENGTH)
     public String getEquipment() {
         return equipment;
     }

@@ -8,6 +8,8 @@ import javax.free.UnexpectedException;
 
 import com.bee32.plover.orm.sample.NormalSamples;
 import com.bee32.sem.inventory.SEMInventorySamples;
+import com.bee32.sem.make.entity.MakeStepName;
+import com.bee32.sem.make.entity.MakeStepNames;
 import com.bee32.sem.make.entity.Part;
 
 public class SEMMakeSamples
@@ -19,7 +21,12 @@ public class SEMMakeSamples
     public final Part p_handler_kj2 = new Part();
     public final Part p_handlerf1 = new Part();
 
+    public final MakeStepName stepName1 = new MakeStepName();
+    public final MakeStepName stepName2 = new MakeStepName();
+
+
     SEMInventorySamples inventories = predefined(SEMInventorySamples.class);
+    MakeStepNames stepNames = predefined(MakeStepNames.class);
 
     @Override
     protected void wireUp() {
