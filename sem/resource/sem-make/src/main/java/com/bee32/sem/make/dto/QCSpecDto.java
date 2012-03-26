@@ -9,6 +9,7 @@ import org.apache.commons.lang.NotImplementedException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.UIEntityDto;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.make.entity.QCSpec;
 
 public class QCSpecDto
@@ -49,7 +50,7 @@ public class QCSpecDto
     }
 
     public void setText(String text) {
-        this.text = text;
+        this.text = TextUtil.normalizeSpace(text);
     }
 
     public List<QCSpecParameterDto> getParameters() {

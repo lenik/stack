@@ -1,28 +1,18 @@
 package com.bee32.sem.make.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.SequenceGenerator;
 
-import com.bee32.plover.ox1.dict.ShortNameDict;
+import com.bee32.plover.ox1.color.UIEntityAuto;
 
 /**
- * 工艺标准名称
+ * 标准工艺名称
  */
 @Entity
+@SequenceGenerator(name = "idgen", sequenceName = "make_step_name_seq", allocationSize = 1)
 public class MakeStepName
-        extends ShortNameDict {
+        extends UIEntityAuto<Integer> {
 
     private static final long serialVersionUID = 1L;
-
-    public MakeStepName() {
-        super();
-    }
-
-    public MakeStepName(String name, String label, String description) {
-        super(name, label, description);
-    }
-
-    public MakeStepName(String name, String label) {
-        super(name, label);
-    }
 
 }

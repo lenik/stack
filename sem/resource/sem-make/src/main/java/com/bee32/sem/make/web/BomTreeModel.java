@@ -42,6 +42,7 @@ public class BomTreeModel
             BomTreeNode bomTreeNode = new BomTreeNode();
             bomTreeNode.setId(topPart.getId());
             bomTreeNode.setMaterial(topPart.getTarget());
+            bomTreeNode.setPart(topPart);
             bomTreeNode.setQuantity(new BigDecimal(1));
             bomTreeNode.setMakeStep(true);
 

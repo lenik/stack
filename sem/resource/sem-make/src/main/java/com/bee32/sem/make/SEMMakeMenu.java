@@ -5,7 +5,6 @@ import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.frame.menu.MenuContribution;
 import com.bee32.sem.frame.menu.MenuNode;
 import com.bee32.sem.inventory.SEMInventoryMenu;
-import com.bee32.sem.make.entity.MakeStepName;
 
 public class SEMMakeMenu
         extends MenuContribution {
@@ -16,7 +15,7 @@ public class SEMMakeMenu
         return WEB_APP.join(SEMMakeModule.PREFIX_).join(path);
     }
 
-    static MenuNode makeStepNameDict = entry(SEMInventoryMenu.MATERIAL, 30, "makeStepNameDict", getDictIndex(MakeStepName.class));
+    static MenuNode makeStepNameDict = entry(SEMInventoryMenu.MATERIAL, 30, "makeStepName", _("makeStepName/"));
     static MenuNode bomAdmin = entry(SEMInventoryMenu.MATERIAL, 40, "bomAdmin", _("part/"));
 
 

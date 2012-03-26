@@ -3,7 +3,7 @@
     xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="indexDialog">
-        <p:dialog id="indexDialog" header="${header} 列表" widgetVar="${indexDialogVar}" modal="true">
+        <p:dialog id="indexDialog" header="${header} 列表" widgetVar="${indexDialogVar}" modal="true" dynamic="${viewConfig.dynamicDialog}">
             <div class="ui-toolbox">
                 <h:form id="indexTools">
                     <ui:insert name="indexTools" />
@@ -16,7 +16,7 @@
     </ui:define>
 
     <ui:define name="editDialog">
-        <p:dialog id="editDialog" header="${header} 编辑" widgetVar="${editDialogVar}" modal="true">
+        <p:dialog id="editDialog" header="${header} 编辑" widgetVar="${editDialogVar}" modal="true" dynamic="${viewConfig.dynamicDialog}">
             <div class="ui-toolbox">
                 <h:form id="editTools">
                     <ui:insert name="editTools" />

@@ -4,13 +4,16 @@ import javax.free.ParseException;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.UIEntityDto;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.makebiz.entity.SerialNumber;
 
 public class SerialNumberDto
-    extends UIEntityDto<SerialNumber, Long> {
+    extends UIEntityDto<SerialNumber, Long>
+    implements IEnclosedObject<MakeProcessDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -51,7 +54,18 @@ public class SerialNumberDto
     }
 
     public void setNumber(String number) {
-        this.number = number;
+        this.number = TextUtil.normalizeSpace(number);
+    }
+
+    @Override
+    public MakeProcessDto getEnclosingObject() {
+        return getProcess();
+    }
+
+    @Override
+    public void setEnclosingObject(MakeProcessDto enclosingObject) {
+        setProcess(enclosingObject);
+
     }
 
 

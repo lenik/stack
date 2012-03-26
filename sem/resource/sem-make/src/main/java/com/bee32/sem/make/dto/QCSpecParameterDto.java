@@ -4,13 +4,16 @@ import javax.free.ParseException;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.UIEntityDto;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.make.entity.QCSpecParameter;
 
 public class QCSpecParameterDto
-    extends UIEntityDto<QCSpecParameter, Integer> {
+    extends UIEntityDto<QCSpecParameter, Integer>
+    implements IEnclosedObject<QCSpecDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -54,7 +57,7 @@ public class QCSpecParameterDto
     }
 
     public void setValue(String value) {
-        this.value = value;
+        this.value = TextUtil.normalizeSpace(value);
     }
 
     public boolean isRequired() {
@@ -63,6 +66,17 @@ public class QCSpecParameterDto
 
     public void setRequired(boolean required) {
         this.required = required;
+    }
+
+    @Override
+    public QCSpecDto getEnclosingObject() {
+        return getParent();
+    }
+
+    @Override
+    public void setEnclosingObject(QCSpecDto enclosingObject) {
+        setParent(enclosingObject);
+
     }
 
 

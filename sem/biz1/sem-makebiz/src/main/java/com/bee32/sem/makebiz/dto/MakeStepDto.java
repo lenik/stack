@@ -1,5 +1,6 @@
 package com.bee32.sem.makebiz.dto;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -8,6 +9,8 @@ import javax.free.ParseException;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import com.bee32.plover.arch.util.IEnclosedObject;
+import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.MomentIntervalDto;
 import com.bee32.sem.make.dto.MakeStepModelDto;
@@ -18,7 +21,8 @@ import com.bee32.sem.people.dto.OrgUnitDto;
 import com.bee32.sem.people.dto.PersonDto;
 
 public class MakeStepDto
-    extends MomentIntervalDto<MakeStep> {
+    extends MomentIntervalDto<MakeStep>
+    implements IEnclosedObject<MakeProcessDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -166,6 +170,22 @@ public class MakeStepDto
         this.qcResult = qcResult;
     }
 
+    @Override
+    protected Serializable naturalId() {
+        return new IdComposite(//
+                naturalId(part), //
+                naturalId(model));
+    }
 
+    @Override
+    public MakeProcessDto getEnclosingObject() {
+        return getParent();
+    }
+
+    @Override
+    public void setEnclosingObject(MakeProcessDto enclosingObject) {
+        setParent(enclosingObject);
+
+    }
 
 }

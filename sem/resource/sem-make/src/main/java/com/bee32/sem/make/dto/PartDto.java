@@ -286,26 +286,26 @@ public class PartDto
         this.category = category;
     }
 
-    public List<MakeStepModelDto> getTechnics() {
+    public List<MakeStepModelDto> getSteps() {
         return steps;
     }
 
-    public void setTechnics(List<MakeStepModelDto> technics) {
-        this.steps = technics;
+    public void setSteps(List<MakeStepModelDto> steps) {
+        this.steps = steps;
     }
 
-    public boolean addTechnic(MakeStepModelDto technic) {
-        if (technic == null)
-            throw new NullPointerException("technic");
-        if (steps.contains(technic))
+    public boolean addStep(MakeStepModelDto step) {
+        if (step == null)
+            throw new NullPointerException("step");
+        if (steps.contains(step))
             return false;
-        steps.add(technic);
+        steps.add(step);
         return true;
     }
 
-    public boolean removeTechnic(MakeStepModelDto technic) {
-        if (technic == null)
-            throw new NullPointerException("technic");
-        return steps.remove(technic);
+    public boolean removeStep(MakeStepModelDto step) {
+        if (step == null)
+            throw new NullPointerException("step");
+        return steps.remove(step);
     }
 }

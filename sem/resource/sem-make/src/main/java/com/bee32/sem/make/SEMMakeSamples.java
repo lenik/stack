@@ -9,7 +9,6 @@ import javax.free.UnexpectedException;
 import com.bee32.plover.orm.sample.NormalSamples;
 import com.bee32.sem.inventory.SEMInventorySamples;
 import com.bee32.sem.make.entity.MakeStepName;
-import com.bee32.sem.make.entity.MakeStepNames;
 import com.bee32.sem.make.entity.Part;
 
 public class SEMMakeSamples
@@ -26,7 +25,6 @@ public class SEMMakeSamples
 
 
     SEMInventorySamples inventories = predefined(SEMInventorySamples.class);
-    MakeStepNames stepNames = predefined(MakeStepNames.class);
 
     @Override
     protected void wireUp() {
@@ -52,6 +50,9 @@ public class SEMMakeSamples
         p_handlerf1.addChild(inventories.m_handlerkj2, 1);
         p_handlerf1.addChild(inventories.m_glass1, 0.03);
         p_handlerf1.addChild(inventories.m_glue1, 0.01);
+
+        stepName1.setLabel("铣");
+        stepName2.setLabel("弧焊");
     }
 
     static Date parseDate(String str) {

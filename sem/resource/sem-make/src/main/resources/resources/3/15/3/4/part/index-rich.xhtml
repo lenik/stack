@@ -10,7 +10,7 @@
     <ui:param name="obj" value="#{bean.openedObject}" />
     <ui:param name="mirrorTargets" value=":navigatorForm:categoryTree" />
     <ui:param name="childObj" value="#{bean.childrenMBean.openedObject}" />
-    <ui:param name="dicts" value="${bomDictsBean}" />
+    <ui:param name="dicts" value="#{bomDictsBean}" />
 
     <ui:define name="toolbar.right.1">
         <p:commandButton
@@ -183,7 +183,7 @@
             </t:panelGrid>
         </fr:listView>
 
-        <p:dialog id="bomTreeDialog" header="BOM树" widgetVar="bomTreeDialog" modal="true">
+        <p:dialog id="bomTreeDialog" header="BOM树" widgetVar="bomTreeDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
             <h:form id="bomTreeForm">
                 <p:treeTable id="bomTree" value="#{bean.bomTree.rootNode}" var="entry">
                         <p:column headerText="物料" sortBy="#{entry.material.label}">
@@ -196,9 +196,9 @@
                             <h:outputText value="#{entry.quantity}" />
                         </p:column>
                         <p:column headerText="设置工艺">
-                            <p:commandButton value="设置" rendered="#{entry.makeStep}" onclick="stepListDialog.show();">
+                            <p:commandButton value="设置" rendered="#{entry.makeStep}" oncomplete="stepListDialog.show();">
                                 <f:setPropertyActionListener target="#{bean.makeStepTarget}"
-                                    value="#{entry.part}" />
+                                    value="#{entry}" />
                             </p:commandButton>
                         </p:column>
 
@@ -210,16 +210,25 @@
         </p:dialog>
 
 
-        <fr:listView id="stepIndexView" header="工艺明细" style="dialog"
+        <fr:listView id="stepsView" header="工艺明细" style="dialog"
             mbean="#{bean.stepsMBean}" indexDialogVar="stepListDialog">
             <f:facet name="columns">
                 <p:column headerText="名称">
-                    <h:outputText value="#{entry.label}"/>
+                    <h:outputText value="#{entry.stepName.label}"/>
+                </p:column>
+                <p:column headerText="顺序">
+                    <h:outputText value="#{entry.order}"/>
+                </p:column>
+                <p:column headerText="耗费时间(分钟)">
+                    <h:outputText value="#{entry.consumeTime}"/>
+                </p:column>
+                <p:column headerText="标准小时工资">
+                    <h:outputText value="#{entry.oneHourWage}"/>
                 </p:column>
             </f:facet>
 
             <f:facet name="index-buttons.right">
-                <p:commandButton value="保存"/>
+                <p:commandButton value="保存" actionListener="#{bean.save}" oncomplete="stepListDialog.hide();"/>
             </f:facet>
 
 
@@ -230,9 +239,8 @@
 
                         <h:outputText value="工艺名称:" />
                         <t:panelGroup colspan="3">
-                            <p:selectOneMenu label="工艺名称" value="${item.stepName.id}" style="width: 10em;">
-                                <f:selectItems value="${dicts.stepNames}" var="it" itemLabel="${it.label}"
-                                    itemValue="${it.id}" />
+                            <p:selectOneMenu label="工艺名称" value="#{item.stepName.id_RZ}" style="width: 10em;">
+                                <f:selectItems value="#{dicts.stepNameSelectItems}" />
                             </p:selectOneMenu>
                         </t:panelGroup>
 

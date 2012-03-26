@@ -1,5 +1,6 @@
 package com.bee32.sem.make.dto;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,13 +10,17 @@ import javax.free.ParseException;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import com.bee32.plover.arch.util.IEnclosedObject;
+import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.UIEntityDto;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.make.entity.MakeStepModel;
 
 public class MakeStepModelDto
-    extends UIEntityDto<MakeStepModel, Integer>  {
+    extends UIEntityDto<MakeStepModel, Integer>
+    implements IEnclosedObject<PartDto>{
 
     private static final long serialVersionUID = 1L;
 
@@ -148,7 +153,6 @@ public class MakeStepModelDto
         this.otherFee = otherFee;
     }
 
-    @NLength(max = MakeStepModel.EQUIPMENT_LENGTH)
     public BigDecimal getElectricityFee() {
         return electricityFee;
     }
@@ -179,7 +183,7 @@ public class MakeStepModelDto
     }
 
     public void setEquipment(String equipment) {
-        this.equipment = equipment;
+        this.equipment = TextUtil.normalizeSpace(equipment);
     }
 
     @NLength(max = MakeStepModel.OPERATION_LENGTH)
@@ -188,7 +192,7 @@ public class MakeStepModelDto
     }
 
     public void setOperation(String operation) {
-        this.operation = operation;
+        this.operation = TextUtil.normalizeSpace(operation);
     }
 
     public List<MakeStepInputDto> getInputs() {
@@ -205,6 +209,25 @@ public class MakeStepModelDto
 
     public void setQcSpec(QCSpecDto qcSpec) {
         this.qcSpec = qcSpec;
+    }
+
+    @Override
+    public PartDto getEnclosingObject() {
+        return getOutput();
+    }
+
+    @Override
+    public void setEnclosingObject(PartDto enclosingObject) {
+        setOutput(enclosingObject);
+
+    }
+
+    @Override
+    protected Serializable naturalId() {
+        return new IdComposite(//
+                naturalId(stepName), //
+                naturalId(output),
+                order);
     }
 
 }

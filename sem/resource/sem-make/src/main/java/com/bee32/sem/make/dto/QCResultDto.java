@@ -9,6 +9,7 @@ import org.apache.commons.lang.NotImplementedException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.MomentIntervalDto;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.make.entity.QCResult;
 
 public class QCResultDto
@@ -57,7 +58,7 @@ public class QCResultDto
     }
 
     public void setMemo(String memo) {
-        this.memo = memo;
+        this.memo = TextUtil.normalizeSpace(memo);
     }
 
 

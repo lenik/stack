@@ -11,6 +11,7 @@ import org.apache.commons.lang.NotImplementedException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.MomentIntervalDto;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.make.dto.PartDto;
 import com.bee32.sem.makebiz.entity.MakeProcess;
 
@@ -97,7 +98,7 @@ public class MakeProcessDto
     }
 
     public void setBatchNumber(String batchNumber) {
-        this.batchNumber = batchNumber;
+        this.batchNumber = TextUtil.normalizeSpace(batchNumber);
     }
 
     public Date getDeadline() {

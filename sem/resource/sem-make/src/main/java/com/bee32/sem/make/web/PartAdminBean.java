@@ -3,6 +3,7 @@ package com.bee32.sem.make.web;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.bee32.plover.arch.util.dto.Fmask;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.annotation.ForEntity;
@@ -35,10 +36,14 @@ public class PartAdminBean
 
     BomTreeModel bomTree;
 
-    PartDto makeStepTarget;
+    BomTreeNode makeStepTarget;
 
     public PartAdminBean() {
         super(Part.class, PartDto.class, 0);
+
+        //viewBean初始化时，为了保证makeStepTarget.part.steps不为空
+        makeStepTarget = new BomTreeNode();
+        makeStepTarget.part = new PartDto().create();
     }
 
     @Override
@@ -136,14 +141,15 @@ public class PartAdminBean
         this.bomTree = bomTree;
     }
 
-
-
-    public PartDto getMakeStepTarget() {
+    public BomTreeNode getMakeStepTarget() {
         return makeStepTarget;
     }
 
-    public void setMakeStepTarget(PartDto makeStepTarget) {
+    public void setMakeStepTarget(BomTreeNode makeStepTarget) {
         this.makeStepTarget = makeStepTarget;
+        PartDto part = makeStepTarget.getPart();
+        setSingleSelection(part);
+        openSelection(Fmask.F_MORE);
     }
 
 
@@ -155,7 +161,7 @@ public class PartAdminBean
             "openedObject.children", PartItemDto.class);
 
     final ListMBean<MakeStepModelDto> stepsMBean = ListMBean.fromEL(this, //
-            "makeStepTarget.steps", MakeStepModelDto.class);
+            "openedObject.steps", MakeStepModelDto.class);
 
     public ListMBean<PartItemDto> getChildrenMBean() {
         return childrenMBean;
@@ -188,6 +194,10 @@ public class PartAdminBean
             PartDto partDto = uMap.getSourceDto(_part);
             if (partDto.isNewCreated())
                 onCreatePart(partDto);
+
+            for(MakeStepModelDto step : partDto.getSteps()) {
+                step.setOutput(partDto);
+            }
         }
     }
 
@@ -225,5 +235,6 @@ public class PartAdminBean
         if (category != null)
             category.setPartCount(category.getPartCount() - 1);
     }
+
 
 }

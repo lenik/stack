@@ -6,13 +6,15 @@ import javax.free.ParseException;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.make.entity.MakeStepInput;
 
 public class MakeStepInputDto
-    extends UIEntityDto<MakeStepInput, Integer>  {
+    extends UIEntityDto<MakeStepInput, Integer>
+    implements IEnclosedObject<MakeStepModelDto>{
 
     private static final long serialVersionUID = 1L;
 
@@ -78,4 +80,17 @@ public class MakeStepInputDto
     public void setQuantity(double quantity) {
         setQuantity(new BigDecimal(quantity));
     }
+
+    @Override
+    public MakeStepModelDto getEnclosingObject() {
+        return getStepModel();
+    }
+
+    @Override
+    public void setEnclosingObject(MakeStepModelDto enclosingObject) {
+        setStepModel(enclosingObject);
+
+    }
+
+
 }
