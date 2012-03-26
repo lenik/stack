@@ -52,7 +52,8 @@ public class ELListMBean<T>
                 value = elResolver.getValue(elContext, value, token);
             }
             if (value == null)
-                return new ArrayList<T>();
+                // return new ArrayList<T>();
+                throw new IllegalUsageException("Property resolved to null: " + property);
 
             if (!(value instanceof List<?>))
                 throw new IllegalUsageException("Property doesn't resolve to a List: " + property);
