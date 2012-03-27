@@ -106,7 +106,7 @@ public class PartDto
         category = mref(MaterialCategoryDto.class, source.getCategory());
 
         if (selection.contains(STEPS))
-            steps = marshalList(MakeStepModelDto.class, 0, source.getSteps());
+            steps = marshalList(MakeStepModelDto.class, MakeStepModelDto.INPUTS, source.getSteps());
         else
             steps = Collections.emptyList();
     }

@@ -15,6 +15,7 @@ import com.bee32.sem.inventory.entity.MaterialType;
 import com.bee32.sem.inventory.util.MaterialCriteria;
 import com.bee32.sem.inventory.web.MaterialCategorySupportBean;
 import com.bee32.sem.inventory.web.MaterialCategoryTreeModel;
+import com.bee32.sem.make.dto.MakeStepInputDto;
 import com.bee32.sem.make.dto.MakeStepModelDto;
 import com.bee32.sem.make.dto.PartDto;
 import com.bee32.sem.make.dto.PartItemDto;
@@ -163,12 +164,19 @@ public class PartAdminBean
     final ListMBean<MakeStepModelDto> stepsMBean = ListMBean.fromEL(this, //
             "openedObject.steps", MakeStepModelDto.class);
 
+    final ListMBean<MakeStepInputDto> stepInputsMBean = ListMBean.fromEL(stepsMBean, //
+            "openedObject.inputs", MakeStepInputDto.class);
+
     public ListMBean<PartItemDto> getChildrenMBean() {
         return childrenMBean;
     }
 
     public ListMBean<MakeStepModelDto> getStepsMBean() {
         return stepsMBean;
+    }
+
+    public ListMBean<MakeStepInputDto> getStepInputsMBean() {
+        return stepInputsMBean;
     }
 
     /*************************************************************************

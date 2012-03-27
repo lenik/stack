@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -23,6 +24,8 @@ import javax.free.ParseException;
 
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bee32.icsf.access.AccessControlException;
 import com.bee32.icsf.access.Permission;
@@ -46,6 +49,7 @@ import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityFlags;
+import com.bee32.plover.orm.sample.SamplesLoader;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.orm.web.EntityHelper;
@@ -78,6 +82,7 @@ public abstract class SimpleEntityViewBean
         implements ISearchFragmentsHolder {
 
     private static final long serialVersionUID = 1L;
+    static Logger logger = LoggerFactory.getLogger(SimpleEntityViewBean.class);
 
     public static Permission visiblePermission = new Permission(Permission.READ);
 
@@ -536,6 +541,12 @@ public abstract class SimpleEntityViewBean
         } catch (Exception e) {
             uiLogger.error("反编列失败", e);
             return false;
+        }
+        // For debug purpose.
+        for (Entry<Entity<?>, EntityDto<?, ?>> _ent : uMap.entrySet()) {
+            Entity<?> entity = _ent.getKey();
+            EntityDto<?, ?> dto = _ent.getValue();
+            // logger.debug("Unmarshalled %s => %s", entity, dto);
         }
 
         User me = SessionUser.getInstance().getInternalUserOpt();

@@ -11,6 +11,7 @@
     <ui:param name="mirrorTargets" value=":navigatorForm:categoryTree" />
     <ui:param name="childObj" value="#{bean.childrenMBean.openedObject}" />
     <ui:param name="stepObj" value="#{bean.stepsMBean.openedObject}" />
+    <ui:param name="stepInputObj" value="#{bean.stepInputsMBean.openedObject}" />
 
     <ui:define name="toolbar.right.1">
         <p:commandButton
@@ -149,6 +150,9 @@
             target="#{bean.selectedMaterial}" actionListener="#{bean.setPartItemMaterial}" update=":childrenEditView:editForm:body" />
         <sem:chooseMakeStepNameDialog id="c_makeStepName" header="选择标准工艺" var="chooseMakeStepNameDialog"
             target="#{stepObj.stepName}" update=":stepsView:editForm:stepEditTab:makeStepName" />
+        <sem:chooseMaterialDialog id="c_setpInputMaterial" header="选择材料" var="chooseStepInputMaterialDialog"
+            target="#{stepInputObj.material}" update=":stepInputEditView:editForm:material" />
+
 
         <fr:listView id="childrenEditView" header="BOM明细" style="editDialog" indexView=":editDialog:form:tv:childrenIndexView"
             mbean="#{bean.childrenMBean}">
@@ -286,6 +290,17 @@
                 </p:tab>
 
                 <p:tab title="消耗材料">
+                    <fr:listView id="stepInputIndexView" header="工艺消耗材料" style="indexPanel" editView=":stepInputEditView"
+                        mbean="#{bean.stepInputsMBean}" nested="true">
+                        <f:facet name="columns">
+                            <p:column headerText="材料(物料)">
+                                <h:outputText value="#{entry.material.label}"/>
+                            </p:column>
+                            <p:column headerText="数量">
+                                <h:outputText value="#{entry.quantity}"/>
+                            </p:column>
+                        </f:facet>
+                    </fr:listView>
                 </p:tab>
 
                 <p:tab title="质检标准值">
@@ -297,6 +312,24 @@
 
 
 
+
+        <fr:listView id="stepInputEditView" header="工艺消耗材料编辑"
+            style="editDialog"
+            indexView=":stepsView:editForm:stepEditTab:stepInputIndexView"
+            mbean="#{bean.stepInputsMBean}">
+            <t:panelGrid columns="2">
+
+                <h:outputText value="材料(物料)" />
+                <t:panelGroup>
+                    <p:inputText id="material" value="#{item.material.label}" label="材料(物料)"/>
+                    <p:commandButton value="..." oncomplete="chooseStepInputMaterialDialog.show()"/>
+                </t:panelGroup>
+
+                <h:outputLabel for="valid" value="数量" />
+                <p:inputText value="#{item.quantity}"/>
+
+            </t:panelGrid>
+        </fr:listView>
 
 
     </ui:define>
