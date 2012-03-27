@@ -56,7 +56,6 @@ public class MakeStepModel
     List<MakeStepInput> inputs = new ArrayList<MakeStepInput>();
     QCSpec qcSpec = new QCSpec();
 
-    @NaturalId
     @ManyToOne
     public MakeStepName getStepName() {
         return stepName;

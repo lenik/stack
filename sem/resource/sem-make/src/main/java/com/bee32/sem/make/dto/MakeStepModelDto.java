@@ -225,7 +225,6 @@ public class MakeStepModelDto
     @Override
     protected Serializable naturalId() {
         return new IdComposite(//
-                naturalId(stepName), //
                 naturalId(output),
                 order);
     }
