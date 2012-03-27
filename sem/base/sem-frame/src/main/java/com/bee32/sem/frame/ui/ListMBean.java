@@ -180,7 +180,8 @@ public abstract class ListMBean<T>
 
     @Override
     public void showEditForm() {
-        openedObject = copyObject(getSelection());
+        T selection = getSelection();
+        openedObject = copyObject(selection);
         openedIndex = getSelectedIndex();
         editing = true;
     }
@@ -197,10 +198,7 @@ public abstract class ListMBean<T>
         T dup = _copyObject(openedObject);
         if (dup instanceof EntityDto<?, ?>) {
             EntityDto<?, ?> dto = (EntityDto<?, ?>) dup;
-            dto.setId(null);
-            dto.setVersion(null);
-            dto.setLastModified(null);
-            dto.setCreatedDate(null);
+            dto.clearId();
             dto.setEntityFlags(0);
         }
         list.add(dup);

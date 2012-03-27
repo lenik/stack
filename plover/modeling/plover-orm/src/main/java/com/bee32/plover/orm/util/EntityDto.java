@@ -68,7 +68,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     @Override
     protected void __copy() {
         super.__copy();
-        clearId();
+        // clearId();
     }
 
     protected void createTransients() {
