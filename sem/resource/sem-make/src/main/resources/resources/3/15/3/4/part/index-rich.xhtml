@@ -10,7 +10,7 @@
     <ui:param name="obj" value="#{bean.openedObject}" />
     <ui:param name="mirrorTargets" value=":navigatorForm:categoryTree" />
     <ui:param name="childObj" value="#{bean.childrenMBean.openedObject}" />
-    <ui:param name="dicts" value="#{bomDictsBean}" />
+    <ui:param name="stepObj" value="#{bean.stepsMBean.openedObject}" />
 
     <ui:define name="toolbar.right.1">
         <p:commandButton
@@ -147,6 +147,8 @@
             target="#{childObj.part}" update=":childrenEditView:editForm:body" />
         <sem:chooseMaterialDialog id="c_itemMaterial" header="选择组件对应的物料" var="chooseItemMaterialDialog"
             target="#{bean.selectedMaterial}" actionListener="#{bean.setPartItemMaterial}" update=":childrenEditView:editForm:body" />
+        <sem:chooseMakeStepNameDialog id="c_makeStepName" header="选择标准工艺" var="chooseMakeStepNameDialog"
+            target="#{stepObj.stepName}" update=":stepsView:editForm:stepEditTab:makeStepName" />
 
         <fr:listView id="childrenEditView" header="BOM明细" style="editDialog" indexView=":editDialog:form:tv:childrenIndexView"
             mbean="#{bean.childrenMBean}">
@@ -239,9 +241,8 @@
 
                         <h:outputText value="工艺名称:" />
                         <t:panelGroup colspan="3">
-                            <p:selectOneMenu label="工艺名称" value="#{item.stepName.id_RZ}" style="width: 10em;">
-                                <f:selectItems value="#{dicts.stepNameSelectItems}" />
-                            </p:selectOneMenu>
+                            <p:inputText id="makeStepName" value="#{item.stepName.label}" readonly="true"/>
+                            <p:commandButton value="..." oncomplete="chooseMakeStepNameDialog.show()" />
                         </t:panelGroup>
 
                         <h:outputText value="顺序:"/>

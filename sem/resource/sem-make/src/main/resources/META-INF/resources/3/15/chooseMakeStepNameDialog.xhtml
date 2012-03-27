@@ -1,0 +1,45 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:cc="http://java.sun.com/jsf/composite"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui">
+
+    <cc:interface>
+        <!-- basic -->
+        <cc:attribute name="var" default="chooseMakeStepNameDialog" />
+        <cc:attribute name="target" type="java.lang.Object" required="true" />
+        <cc:attribute name="multiple" type="java.lang.Boolean" default="false" />
+        <cc:attribute name="actionListener" targets="form:ok-validated" />
+        <cc:attribute name="update" />
+
+        <!-- ui overrides -->
+        <cc:attribute name="header" default="${cc.attrs.dialogBean.header}" />
+        <cc:attribute name="formStyleClass" default="ui-dialog-form" />
+        <cc:attribute name="mode" default="table" shortDescription="table, list, tree" />
+
+        <!-- internals -->
+        <cc:attribute name="dialogBean" type="java.lang.Object" default="${chooseMakeStepNameDialogBean}" />
+
+        <!-- facets -->
+        <cc:facet name="search" />
+        <cc:facet name="columns" />
+        <cc:facet name="buttons" />
+    </cc:interface>
+
+    <cc:implementation>
+        <ui:decorate template="/template/simple-entity-dialog.xhtml">
+            <ui:param name="var" value="${cc.attrs.var}" />
+            <ui:param name="target" value="${cc.attrs.target}" />
+            <ui:param name="multiple" value="${cc.attrs.multiple}" />
+            <ui:param name="update" value="${cc.attrs.update}" />
+            <ui:param name="var" value="${cc.attrs.var}" />
+            <ui:param name="header" value="${cc.attrs.header}" />
+            <ui:param name="formStyleClass" value="${cc.attrs.formStyleClass}" />
+            <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
+
+            <ui:define name="columns">
+                <p:column headerText="工艺名称">
+                    <h:outputText value="#{entry.label}" />
+                </p:column>
+            </ui:define>
+        </ui:decorate>
+    </cc:implementation>
+</html>
