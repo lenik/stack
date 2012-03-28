@@ -19,6 +19,7 @@ import com.bee32.sem.make.dto.MakeStepInputDto;
 import com.bee32.sem.make.dto.MakeStepModelDto;
 import com.bee32.sem.make.dto.PartDto;
 import com.bee32.sem.make.dto.PartItemDto;
+import com.bee32.sem.make.dto.QCSpecParameterDto;
 import com.bee32.sem.make.entity.Part;
 import com.bee32.sem.make.service.PartService;
 import com.bee32.sem.make.util.BomCriteria;
@@ -41,10 +42,6 @@ public class PartAdminBean
 
     public PartAdminBean() {
         super(Part.class, PartDto.class, 0);
-
-        //viewBean初始化时，为了保证makeStepTarget.part.steps不为空
-        makeStepTarget = new BomTreeNode();
-        makeStepTarget.part = new PartDto().create();
     }
 
     @Override
@@ -167,6 +164,9 @@ public class PartAdminBean
     final ListMBean<MakeStepInputDto> stepInputsMBean = ListMBean.fromEL(stepsMBean, //
             "openedObject.inputs", MakeStepInputDto.class);
 
+    final ListMBean<QCSpecParameterDto> qcSpecParasMBean = ListMBean.fromEL(stepsMBean, //
+            "openedObject.qcSpec.parameters", QCSpecParameterDto.class);
+
     public ListMBean<PartItemDto> getChildrenMBean() {
         return childrenMBean;
     }
@@ -179,7 +179,11 @@ public class PartAdminBean
         return stepInputsMBean;
     }
 
-    /*************************************************************************
+    public ListMBean<QCSpecParameterDto> getQcSpecParasMBean() {
+	return qcSpecParasMBean;
+    }
+
+	/*************************************************************************
      * Section: Persistence
      *************************************************************************/
     @Override

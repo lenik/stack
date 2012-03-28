@@ -200,7 +200,7 @@ public class MakeStepModel
         this.operation = operation;
     }
 
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(orphanRemoval = true, mappedBy="stepModel")
     @Cascade(CascadeType.ALL)
     public List<MakeStepInput> getInputs() {
         return inputs;

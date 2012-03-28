@@ -304,14 +304,21 @@
                 </p:tab>
 
                 <p:tab title="质检标准值">
+                    <fr:listView id="qcSpecParaIndexView" header="质检标准" style="indexPanel" editView=":qcSpecParaEditView"
+                        mbean="#{bean.qcSpecParasMBean}" nested="true">
+                        <f:facet name="columns">
+                            <p:column headerText="质检内容">
+                                <h:outputText value="#{entry.label}"/>
+                            </p:column>
+                            <p:column headerText="标准值">
+                                <h:outputText value="#{entry.value}"/>
+                            </p:column>
+                        </f:facet>
+                    </fr:listView>
                 </p:tab>
 
             </p:tabView>
-
         </fr:listView>
-
-
-
 
         <fr:listView id="stepInputEditView" header="工艺消耗材料编辑"
             style="editDialog"
@@ -319,14 +326,32 @@
             mbean="#{bean.stepInputsMBean}">
             <t:panelGrid columns="2">
 
-                <h:outputText value="材料(物料)" />
+                <h:outputText value="材料(物料):" />
                 <t:panelGroup>
                     <p:inputText id="material" value="#{item.material.label}" label="材料(物料)"/>
                     <p:commandButton value="..." oncomplete="chooseStepInputMaterialDialog.show()"/>
                 </t:panelGroup>
 
-                <h:outputLabel for="valid" value="数量" />
-                <p:inputText value="#{item.quantity}"/>
+                <h:outputText value="数量:" />
+                <p:inputText value="#{item.quantity}" label="数量"/>
+
+            </t:panelGrid>
+        </fr:listView>
+
+        <fr:listView id="qcSpecParaEditView" header="质检标准编辑"
+            style="editDialog"
+            indexView=":stepsView:editForm:stepEditTab:qcSpecParaIndexView"
+            mbean="#{bean.qcSepcParasMBean}">
+            <t:panelGrid columns="2">
+
+                <h:outputText value="质检内容:" />
+                <p:inputText value="#{item.label}" label="质检内容"/>
+
+                <h:outputText value="标准值:" />
+                <p:inputText value="#{item.value}" label="标准值"/>
+
+                <h:outputText value="标准描述:" />
+                <p:inputTextarea value="#{item.operation}" rows="5" cols="30" label="标准描述"/>
 
             </t:panelGrid>
         </fr:listView>

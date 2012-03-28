@@ -546,7 +546,7 @@ public abstract class SimpleEntityViewBean
         for (Entry<Entity<?>, EntityDto<?, ?>> _ent : uMap.entrySet()) {
             Entity<?> entity = _ent.getKey();
             EntityDto<?, ?> dto = _ent.getValue();
-            // logger.debug("Unmarshalled %s => %s", entity, dto);
+            logger.trace("Unmarshalled {} => {}", entity, dto);
         }
 
         User me = SessionUser.getInstance().getInternalUserOpt();
