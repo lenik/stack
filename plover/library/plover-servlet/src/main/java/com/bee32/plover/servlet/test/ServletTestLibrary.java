@@ -2,6 +2,7 @@ package com.bee32.plover.servlet.test;
 
 import java.awt.Desktop;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -18,6 +19,7 @@ import java.util.TreeMap;
 
 import javax.free.IllegalUsageException;
 import javax.free.StringPart;
+import javax.free.SystemProperties;
 import javax.servlet.http.HttpServlet;
 
 import org.eclipse.jetty.servlet.ServletHandler;
@@ -371,7 +373,26 @@ public class ServletTestLibrary
         } catch (URISyntaxException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
-        Desktop.getDesktop().browse(uri);
+
+        try {
+		Desktop.getDesktop().browse(uri);
+        } catch (UnsupportedOperationException e) {
+			String[] browsers = { "google-chrome", "firefox", "iexplore" };
+			String browser = null;
+			b: for (String br : browsers) {
+				for (String dir : System.getenv("PATH").split(
+				        SystemProperties.getPathSeparator())) {
+					if (new File(dir, br).canExecute()) {
+						browser = br;
+						break b;
+					}
+				}
+			}
+			if (browser == null)
+				throw new RuntimeException("No available browser.");
+			logger.debug("Launch browser: " + browser + " for " + uri);
+			Runtime.getRuntime().exec( new String[] {browser, uri.toString()}, null);
+        }
 
         return url;
     }
