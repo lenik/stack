@@ -36,7 +36,7 @@ public class FaceletsTestCase
     }
 
     protected boolean isDebugMode() {
-        return false;
+        return true;
     }
 
     protected boolean isStrictMode() {
