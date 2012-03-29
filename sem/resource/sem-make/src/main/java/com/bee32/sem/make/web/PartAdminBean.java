@@ -1,8 +1,10 @@
 package com.bee32.sem.make.web;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.bee32.plover.arch.util.IEnclosingContext;
 import com.bee32.plover.arch.util.dto.Fmask;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
@@ -164,8 +166,19 @@ public class PartAdminBean
     final ListMBean<MakeStepInputDto> stepInputsMBean = ListMBean.fromEL(stepsMBean, //
             "openedObject.inputs", MakeStepInputDto.class);
 
-    final ListMBean<QCSpecParameterDto> qcSpecParasMBean = ListMBean.fromEL(stepsMBean, //
-            "openedObject.qcSpec.parameters", QCSpecParameterDto.class);
+    class QCSpecContext implements IEnclosingContext, Serializable {
+
+        private static final long serialVersionUID = 1L;
+
+		@Override
+	public Object getEnclosingObject() {
+	    return stepsMBean.getOpenedObject().getQcSpec();
+	}
+
+    }
+
+    final ListMBean<QCSpecParameterDto> qcSpecParasMBean = ListMBean.fromEL(new QCSpecContext(), //
+            "enclosingObject.parameters", QCSpecParameterDto.class);
 
     public ListMBean<PartItemDto> getChildrenMBean() {
         return childrenMBean;

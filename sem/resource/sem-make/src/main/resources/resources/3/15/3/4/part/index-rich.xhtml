@@ -341,7 +341,7 @@
         <fr:listView id="qcSpecParaEditView" header="质检标准编辑"
             style="editDialog"
             indexView=":stepsView:editForm:stepEditTab:qcSpecParaIndexView"
-            mbean="#{bean.qcSepcParasMBean}">
+            mbean="#{bean.qcSpecParasMBean}">
             <t:panelGrid columns="2">
 
                 <h:outputText value="质检内容:" />
@@ -351,7 +351,7 @@
                 <p:inputText value="#{item.value}" label="标准值"/>
 
                 <h:outputText value="标准描述:" />
-                <p:inputTextarea value="#{item.operation}" rows="5" cols="30" label="标准描述"/>
+                <p:inputTextarea value="#{item.description}" rows="5" cols="30" label="标准描述"/>
 
             </t:panelGrid>
         </fr:listView>
