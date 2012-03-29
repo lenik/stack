@@ -15,9 +15,7 @@ public class SEMMakeMenu
         return WEB_APP.join(SEMMakeModule.PREFIX_).join(path);
     }
 
-    static MenuNode makeStepNameDict = entry(SEMInventoryMenu.MATERIAL, 30, "makeStepName", _("makeStepName/"));
+    static MenuNode makeStepNameAdmin = entry(SEMInventoryMenu.MATERIAL, 30, "makeStepNameAdmin", _("makeStepName/"));
     static MenuNode bomAdmin = entry(SEMInventoryMenu.MATERIAL, 40, "bomAdmin", _("part/"));
-
-
 
 }
