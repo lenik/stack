@@ -1,6 +1,7 @@
 package com.bee32.sem.frame.ui;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -51,9 +52,11 @@ public class ELListMBean<T>
                 String token = tokens.nextToken();
                 value = elResolver.getValue(elContext, value, token);
             }
-            if (value == null)
-                // return new ArrayList<T>();
-                throw new IllegalUsageException("Property resolved to null: " + property);
+            if (value == null) {
+                // throw new IllegalUsageException("Property resolved to null: " + property);
+		logger.debug("Property resolved to null: " + property + ", a read-only empty list is created.");
+		return Collections.emptyList();
+            }
 
             if (!(value instanceof List<?>))
                 throw new IllegalUsageException("Property doesn't resolve to a List: " + property);
