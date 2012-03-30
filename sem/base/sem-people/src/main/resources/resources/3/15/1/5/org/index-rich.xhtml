@@ -199,7 +199,7 @@
             update=":rolesEditView:editForm" />
 
         <fr:listView id="contactsEditView" header="联系方式" style="editDialog" indexView=":editDialog:form:tv:contactsIndexView"
-            mbean="#{bean.contactsMBean}">
+            mbean="#{bean.contactsMBean}" readonly="#{not bean.editing}">
             <h:panelGrid columns="2" columnClasses="field-label, field-contact">
                 <h:outputLabel for="category" value="分类：" />
                 <h:panelGroup colspan="3">
@@ -214,7 +214,7 @@
         </fr:listView>
 
         <fr:listView id="orgUnitsEditView" header="下属部门" style="editDialog" indexView=":editDialog:form:tv:orgUnitsIndexView"
-            mbean="#{bean.orgUnitsMBean}">
+            mbean="#{bean.orgUnitsMBean}" readonly="#{not bean.editing}">
             <p:tabView id="tv">
                 <p:tab title="基本信息">
                     <h:panelGrid columns="2">
@@ -238,7 +238,7 @@
         </fr:listView>
 
         <fr:listView id="rolesEditView" header="公司相关人员" style="editDialog" indexView=":editDialog:form:tv:rolesIndexView"
-            mbean="#{bean.rolesMBean}">
+            mbean="#{bean.rolesMBean}" readonly="#{not bean.editing}">
             <h:panelGrid columns="2" columnClasses="field-label, field-content">
                 <h:outputLabel for="orgName" value="对应公司" />
                 <h:outputText id="orgName" value="#{item.org.displayName}" />

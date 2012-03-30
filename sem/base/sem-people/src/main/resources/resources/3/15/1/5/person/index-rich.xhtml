@@ -176,7 +176,7 @@
 
     <ui:define name="dialogs">
         <fr:listView id="contactsEditView" header="联系方式" style="editDialog" indexView=":editDialog:form:tv:contactsIndexView"
-            mbean="#{bean.contactsMBean}">
+            mbean="#{bean.contactsMBean}" readonly="#{not bean.editing}">
             <h:panelGrid columns="2" columnClasses="field-label, field-content">
                 <h:outputLabel for="category" value="分类：" />
                 <h:panelGroup colspan="3">

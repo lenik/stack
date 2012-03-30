@@ -114,7 +114,7 @@
         <sem:chooseMakeOrderDialog id="c_makeOrder" target="#{bean.applyMakeOrder}" update=":editDialog:form" />
 
         <fr:listView id="itemsEditView" header="订单项目" style="editDialog" indexView=":editDialog:form:tv:itemsIndexView"
-            mbean="#{bean.itemsMBean}">
+            mbean="#{bean.itemsMBean}" readonly="#{not bean.editing}">
             <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
 
                 <h:outputLabel value="物料" />
@@ -150,7 +150,7 @@
         <fr:listView
             id="takeOutsEditView" header="出库项"
             style="editDialog" indexView=":editDialog:form:tv:takeOutsIndexView"
-            mbean="#{bean.takeOutsMBean}">
+            mbean="#{bean.takeOutsMBean}" readonly="#{not bean.editing}">
             <fr:listView id="orderItemsView" header="出库明细" style="panel" mbean="#{bean.orderItemsMBean}"
                 creatable="false" removable="false" editiable="false" nested="true" paginator="false">
                 <f:facet name="columns">

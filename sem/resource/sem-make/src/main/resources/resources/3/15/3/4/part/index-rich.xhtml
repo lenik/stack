@@ -155,7 +155,7 @@
 
 
         <fr:listView id="childrenEditView" header="BOM明细" style="editDialog" indexView=":editDialog:form:tv:childrenIndexView"
-            mbean="#{bean.childrenMBean}">
+            mbean="#{bean.childrenMBean}" readonly="#{not bean.editing}">
             <t:panelGrid columns="4">
                 <h:outputLabel for="material" value="物料" />
                 <t:panelGroup>
@@ -323,7 +323,7 @@
         <fr:listView id="stepInputEditView" header="工艺消耗材料编辑"
             style="editDialog"
             indexView=":stepsView:editForm:stepEditTab:stepInputIndexView"
-            mbean="#{bean.stepInputsMBean}">
+            mbean="#{bean.stepInputsMBean}" readonly="#{not bean.editing}">
             <t:panelGrid columns="2">
 
                 <h:outputText value="材料(物料):" />
@@ -341,7 +341,7 @@
         <fr:listView id="qcSpecParaEditView" header="质检标准编辑"
             style="editDialog"
             indexView=":stepsView:editForm:stepEditTab:qcSpecParaIndexView"
-            mbean="#{bean.qcSpecParasMBean}">
+            mbean="#{bean.qcSpecParasMBean}" readonly="#{not bean.editing}">
             <t:panelGrid columns="2">
 
                 <h:outputText value="质检内容:" />

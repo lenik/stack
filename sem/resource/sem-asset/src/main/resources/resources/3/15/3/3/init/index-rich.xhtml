@@ -40,7 +40,7 @@
         <sem:choosePartyDialog id="c_customer" header="选择客户" target="#{itemObj.party}" update=":itemsEditView:editForm:body" />
 
         <fr:listView id="itemsEditView" header="凭证项目" style="editDialog" indexView=":editDialog:form:itemsIndexView"
-            mbean="#{bean.itemsMBean}">
+            mbean="#{bean.itemsMBean}" readonly="#{not bean.editing}">
             <h:panelGrid columns="2">
                 <h:outputLabel value="会计科目" />
                 <h:panelGroup>

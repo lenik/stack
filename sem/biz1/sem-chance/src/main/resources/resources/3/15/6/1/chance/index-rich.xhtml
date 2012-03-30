@@ -227,7 +227,7 @@
         </fr:listView>
 
         <fr:listView id="pEditView" header="选型" style="editDialog" indexView=":editDialog:form:tv:pIndexView"
-            mbean="${bean.productsMBean}">
+            mbean="${bean.productsMBean}" readonly="#{not bean.editing}">
 
             <p:tabView id="tv">
                 <p:tab title="基本信息">
@@ -296,7 +296,7 @@
         </fr:listView>
 
         <fr:listView id="quotationsEditView" header="报价" style="editDialog" indexView=":pEditView:editForm:tv:quotationsIndexView"
-            mbean="${bean.productQuotationsMBean}">
+            mbean="${bean.productQuotationsMBean}" readonly="#{not bean.editing}">
             <t:panelGrid columns="2" columnClasses="field-label, field-content">
                 <h:outputLabel value="单价:" />
                 <p:inputText value="#{item.price.value}" />

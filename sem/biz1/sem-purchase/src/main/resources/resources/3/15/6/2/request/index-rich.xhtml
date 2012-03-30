@@ -134,7 +134,7 @@
 
 
         <fr:listView id="itemsEditView" header="采购项" style="editDialog" indexView=":editDialog:form:tv:itemsIndexView"
-            mbean="#{bean.itemsMBean}">
+            mbean="#{bean.itemsMBean}" readonly="#{not bean.editing}">
             <h:panelGrid columns="2" columnClasses="field-label, field-content">
                 <h:outputText value="物料：" />
                 <t:panelGrid columns="2">
@@ -180,7 +180,7 @@
         <fr:listView
             id="takeInsEditView" header="入库项"
             style="editDialog" indexView=":editDialog:form:tv:takeInsIndexView"
-            mbean="#{bean.takeInsMBean}">
+            mbean="#{bean.takeInsMBean}" readonly="#{not bean.editing}">
             <fr:listView id="orderItemsView" header="入库明细" style="panel" mbean="#{bean.orderItemsMBean}"
                 creatable="false" removable="false" editiable="false" nested="true" paginator="false">
                 <f:facet name="columns">

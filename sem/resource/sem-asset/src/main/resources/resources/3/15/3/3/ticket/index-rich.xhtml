@@ -68,7 +68,7 @@
 
     <ui:define name="dialogs">
         <fr:listView id="itemsEditView" header="凭证项目" style="editDialog" indexView=":editDialog:form:itemsIndexView"
-            mbean="#{bean.itemsMBean}">
+            mbean="#{bean.itemsMBean}" readonly="#{not bean.editing}">
             <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
 
                 <h:outputLabel value="摘要" />
