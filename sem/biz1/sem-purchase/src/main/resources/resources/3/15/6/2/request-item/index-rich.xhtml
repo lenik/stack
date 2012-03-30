@@ -67,12 +67,12 @@
 
             <p:tab title="询价与建议">
                 <fr:listView id="inquiriesIndexView" header="询价信息" style="indexPanel" editView=":inquiriesEditView"
-                    mbean="#{bean.inquiriesMBean}" nested="true">
+                    mbean="#{bean.inquiriesMBean}" nested="true" readonly="#{not bean.editing}">
                     <f:facet name="columns">
                         <p:column headerText="供应商" styleClass="f-wrappable">
                             <h:outputText value="#{entry.supplier.displayName}" />
                         </p:column>
-                        <p:column headerText="单价">
+                        <p:column headerText="单价" styleClass="f-right">
                             <h:outputText value="#{entry.price}" />
                         </p:column>
                         <p:column headerText="交货时间">

@@ -39,7 +39,7 @@
         </t:panelGrid>
 
         <fr:listView id="itemsIndexView" header="凭证项目" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
-            nested="true">
+            nested="true" readonly="#{not bean.editing}">
             <f:facet name="columns">
                 <p:column headerText="摘要">
                     <h:outputText value="#{entry.description}" />
@@ -56,7 +56,7 @@
                         <f:selectItem itemValue="false" itemLabel="贷方" />
                     </p:selectOneMenu>
                 </p:column>
-                <p:column headerText="金额">
+                <p:column headerText="金额" styleClass="f-right">
                     <h:outputText value="#{entry.value}" />
                 </p:column>
                 <p:column headerText="状态">

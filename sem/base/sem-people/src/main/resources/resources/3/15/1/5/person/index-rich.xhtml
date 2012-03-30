@@ -113,7 +113,7 @@
 
             <p:tab id="contactsTab" title="联系方式">
                 <fr:listView id="contactsIndexView" style="indexPanel" header="联系方式" editView=":contactsEditView"
-                    mbean="#{bean.contactsMBean}" nested="true">
+                    mbean="#{bean.contactsMBean}" nested="true" readonly="#{not bean.editing}">
                     <f:facet name="columns">
                         <p:column headerText="分类">
                             <h:outputText value="#{entry.category.label}" />

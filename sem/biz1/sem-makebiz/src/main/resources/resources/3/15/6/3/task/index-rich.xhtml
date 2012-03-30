@@ -36,7 +36,7 @@
         </t:panelGrid>
 
         <fr:listView id="itemsIndexView" header="生产项目" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
-            nested="true" paginator="false" creatable="false">
+            nested="true" paginator="false" creatable="false" readonly="#{not bean.editing}">
             <f:facet name="columns">
                 <p:column headerText="物料" styleClass="f-wrappable">
                     <h:outputText value="#{entry.part.target.label}" />
@@ -44,7 +44,7 @@
                 <p:column headerText="规格型号" styleClass="f-wrappable">
                     <h:outputText value="#{entry.part.target.modelSpec}" />
                 </p:column>
-                <p:column headerText="数量">
+                <p:column headerText="数量" styleClass="f-right">
                     <h:outputText value="#{entry.quantity}" />
                 </p:column>
                 <p:column headerText="完工时间">

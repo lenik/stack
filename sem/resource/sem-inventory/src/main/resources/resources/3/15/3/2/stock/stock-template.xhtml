@@ -64,7 +64,7 @@
 
         <fr:listView id="itemsIndexView" header="${title}项目" style="indexPanel" editView=":itemsEditView"
             mbean="#{bean.itemsMBean}" nested="true" paginator="${paginator != null ? paginator : false}" creatable="${itemCreatable != null ? itemCreatable : true}"
-            editable="${itemEditable != null ? itemEditable : true}" removable="${itemRemovable != null ? itemRemovable : true}">
+            editable="${itemEditable != null ? itemEditable : true}" removable="${itemRemovable != null ? itemRemovable : true}" readonly="#{not bean.editing}">
             <f:facet name="columns">
                 <p:column headerText="物料" sortBy="#{entry.material.label}" styleClass="f-wrappable">
                     <h:outputText value="#{entry.material.label}" />
@@ -102,12 +102,12 @@
                     <h:outputText value="#{entry.location.label}" />
                 </p:column>
 
-                <p:column headerText="单价">
+                <p:column headerText="单价" styleClass="f-right">
                     <h:outputText value="#{entry.price}" />
                 </p:column>
 
                 <ui:insert name="entry-quantity">
-                    <p:column headerText="数量">
+                    <p:column headerText="数量" styleClass="f-right">
                         <h:outputText value="#{entry.quantity}" />
                     </p:column>
                 </ui:insert>

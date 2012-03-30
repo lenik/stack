@@ -68,7 +68,7 @@
             </t:panelGrid>
 
             <fr:listView id="itemsIndexView" header="项目" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
-                nested="true">
+                nested="true" readonly="#{not bean.editing}">
                 <f:facet name="columns">
                     <p:column headerText="物料">
                         <h:outputText value="#{entry.material.label}" />
@@ -79,13 +79,13 @@
                     <p:column headerText="单位">
                         <h:outputText value="#{entry.material.unit.name}" />
                     </p:column>
-                    <p:column headerText="单价">
+                    <p:column headerText="单价" styleClass="f-right">
                         <h:outputText value="#{entry.price.value}" />
                     </p:column>
                     <p:column headerText="币种">
                         <h:outputText value="#{entry.price.currencyText}" />
                     </p:column>
-                    <p:column headerText="数量">
+                    <p:column headerText="数量" styleClass="f-right">
                         <h:outputText value="#{entry.quantity}" />
                     </p:column>
                     <p:column headerText="备注">

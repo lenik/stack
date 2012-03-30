@@ -97,7 +97,7 @@
             </p:tab>
             <p:tab title="BOM明细">
                 <fr:listView id="childrenIndexView" header="BOM明细" style="indexPanel" editView=":childrenEditView"
-                    mbean="#{bean.childrenMBean}" nested="true">
+                    mbean="#{bean.childrenMBean}" nested="true" readonly="#{not bean.editing}">
                     <f:facet name="columns">
                         <p:column headerText="物料">
                             <h:outputText value="#{entry.anyMaterial.label}" />
@@ -108,7 +108,7 @@
                         <p:column headerText="单位">
                             <h:outputText value="#{entry.anyMaterial.unit.label}" />
                         </p:column>
-                        <p:column headerText="数量">
+                        <p:column headerText="数量" styleClass="f-right">
                             <h:outputText value="#{entry.quantity}" />
                         </p:column>
                         <p:column headerText="是否有效">
@@ -291,12 +291,12 @@
 
                 <p:tab title="消耗材料">
                     <fr:listView id="stepInputIndexView" header="工艺消耗材料" style="indexPanel" editView=":stepInputEditView"
-                        mbean="#{bean.stepInputsMBean}" nested="true">
+                        mbean="#{bean.stepInputsMBean}" nested="true" readonly="#{not bean.editing}">
                         <f:facet name="columns">
                             <p:column headerText="材料(物料)">
                                 <h:outputText value="#{entry.material.label}"/>
                             </p:column>
-                            <p:column headerText="数量">
+                            <p:column headerText="数量" styleClass="f-right">
                                 <h:outputText value="#{entry.quantity}"/>
                             </p:column>
                         </f:facet>
@@ -305,12 +305,12 @@
 
                 <p:tab title="质检标准值">
                     <fr:listView id="qcSpecParaIndexView" header="质检标准" style="indexPanel" editView=":qcSpecParaEditView"
-                        mbean="#{bean.qcSpecParasMBean}" nested="true">
+                        mbean="#{bean.qcSpecParasMBean}" nested="true" readonly="#{not bean.editing}">
                         <f:facet name="columns">
                             <p:column headerText="质检内容">
                                 <h:outputText value="#{entry.label}"/>
                             </p:column>
-                            <p:column headerText="标准值">
+                            <p:column headerText="标准值" styleClass="f-right">
                                 <h:outputText value="#{entry.value}"/>
                             </p:column>
                         </f:facet>

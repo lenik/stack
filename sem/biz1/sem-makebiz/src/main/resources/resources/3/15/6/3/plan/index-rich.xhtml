@@ -59,7 +59,7 @@
         <p:tabView id="tv">
             <p:tab title="物料计划明细">
                 <fr:listView id="itemsIndexView" header="物料计划项" style="indexPanel" editView=":itemsEditView"
-                    mbean="#{bean.itemsMBean}" nested="true" paginator="false" creatable="false">
+                    mbean="#{bean.itemsMBean}" nested="true" paginator="false" creatable="false" readonly="#{not bean.editing}">
                     <f:facet name="columns">
                         <p:column headerText="物料" styleClass="f-wrappable">
                             <h:outputText value="#{entry.material.label}" />
@@ -67,7 +67,7 @@
                         <p:column headerText="规格型号" styleClass="f-wrappable">
                             <h:outputText value="#{entry.material.modelSpec}" />
                         </p:column>
-                        <p:column headerText="数量">
+                        <p:column headerText="数量" styleClass="f-right">
                             <h:outputText value="#{entry.quantity}" />
                         </p:column>
                         <p:column headerText="优选供应商" styleClass="f-wrappable">
@@ -81,7 +81,7 @@
             </p:tab>
             <p:tab title="库存锁定">
                 <fr:listView id="planOrdersIndexView" header="库存锁定" style="indexPanel" editView=":planOrdersEditView"
-                    mbean="#{bean.planOrdersMBean}" nested="true" paginator="false" creatable="false">
+                    mbean="#{bean.planOrdersMBean}" nested="true" paginator="false" creatable="false" readonly="#{not bean.editing}">
                     <f:facet name="columns">
                         <p:column headerText="时间">
                             <h:outputText value="${entry.createdDate}" />
@@ -142,7 +142,7 @@
             </h:panelGrid>
             <p:separator />
             <fr:listView id="planOrderItemsIndexView" header="库存锁定项" style="indexPanel" editView=":planOrderItemsEditView"
-                mbean="#{bean.planOrderItemsMBean}" nested="true" creatable="false">
+                mbean="#{bean.planOrderItemsMBean}" nested="true" creatable="false" readonly="#{not bean.editing}">
                 <f:facet name="columns">
                     <p:column headerText="物料" styleClass="f-wrappable">
                         <h:outputText value="#{entry.material.label}" />
@@ -178,10 +178,10 @@
                     <p:column headerText="库位" styleClass="f-wrappable">
                         <h:outputText value="#{entry.location.label}" />
                     </p:column>
-                    <p:column headerText="单价">
+                    <p:column headerText="单价" styleClass="f-right">
                         <h:outputText value="#{entry.price}" />
                     </p:column>
-                    <p:column headerText="数量">
+                    <p:column headerText="数量" styleClass="f-right">
                         <h:outputText value="#{entry.quantity}" />
                     </p:column>
                     <p:column headerText="备注" styleClass="f-wrappable">

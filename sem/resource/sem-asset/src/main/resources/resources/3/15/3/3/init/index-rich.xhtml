@@ -13,7 +13,7 @@
     <ui:define name="editDialogContent">
 
         <fr:listView id="itemsIndexView" header="资产初始化" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
-            nested="true" paginator="false">
+            nested="true" paginator="false" readonly="#{not bean.editing}">
             <f:facet name="columns">
                 <p:column headerText="会计科目">
                     <h:outputText value="#{entry.subject.label}" />
@@ -23,7 +23,7 @@
                     <h:outputText value="#{entry.party.displayName}" />
                 </p:column>
 
-                <p:column headerText="金额">
+                <p:column headerText="金额" styleClass="f-right">
                     <h:outputText value="#{entry.value}" />
                 </p:column>
 

@@ -62,7 +62,7 @@
 
             <p:tab title="采购项目">
                 <fr:listView id="itemsIndexView" header="采购项" style="indexPanel" editView=":itemsEditView"
-                    mbean="#{bean.itemsMBean}" paginator="false" nested="true" creatable="true">
+                    mbean="#{bean.itemsMBean}" paginator="false" nested="true" creatable="true" readonly="#{not bean.editing}">
                     <f:facet name="columns">
                         <p:column headerText="物料" styleClass="f-wrappable">
                             <h:outputText value="#{entry.material.label}" />
@@ -70,10 +70,10 @@
                         <p:column headerText="规格型号" styleClass="f-wrappable">
                             <h:outputText value="#{entry.material.modelSpec}" />
                         </p:column>
-                        <p:column headerText="需求数量">
+                        <p:column headerText="需求数量" styleClass="f-right">
                             <h:outputText value="#{entry.requiredQuantity}" />
                         </p:column>
-                        <p:column headerText="采购数量">
+                        <p:column headerText="采购数量" styleClass="f-right">
                             <h:outputText value="#{entry.quantity}" />
                         </p:column>
                         <p:column headerText="优选供应商" styleClass="f-wrappable">

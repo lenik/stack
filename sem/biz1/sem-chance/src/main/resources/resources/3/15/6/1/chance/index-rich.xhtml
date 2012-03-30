@@ -106,7 +106,7 @@
 
             <p:tab title="行动跟踪">
                 <fr:listView id="actionsIndexView" header="行动记录" style="indexPanel" picker="chooseChanceActionDialog"
-                    editView=":actionsEditView" mbean="${bean.actionsMBean}" nested="true">
+                    editView=":actionsEditView" mbean="${bean.actionsMBean}" nested="true" readonly="#{not bean.editing}">
                     <f:facet name="columns">
                         <p:column headerText="日期">
                             <h:outputText value="${entry.date}" />
@@ -132,7 +132,7 @@
 
             <p:tab title="选型">
                 <fr:listView id="pIndexView" header="选型" style="indexPanel" editView=":pEditView" mbean="${bean.productsMBean}"
-                    nested="true">
+                    nested="true" readonly="#{not bean.editing}">
                     <f:facet name="columns">
                         <p:column headerText="客户名称">
                             <h:outputText value="${entry.productName}" />
@@ -273,7 +273,7 @@
 
                 <p:tab title="报价">
                     <fr:listView id="quotationsIndexView" editView=":quotationsEditView" header="报价" style="indexPanel"
-                        orientation="td" mbean="${bean.productQuotationsMBean}" nested="true">
+                        orientation="td" mbean="${bean.productQuotationsMBean}" nested="true" readonly="#{not bean.editing}">
                         <f:facet name="columns">
                             <p:column headerText="价格">
                                 <h:outputText value="${entry.price}" />

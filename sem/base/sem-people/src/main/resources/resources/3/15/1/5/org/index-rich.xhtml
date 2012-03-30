@@ -111,7 +111,7 @@
 
             <p:tab id="contactsTab" title="联系方式">
                 <fr:listView id="contactsIndexView" style="indexPanel" header="联系方式" editView=":contactsEditView"
-                    mbean="#{bean.contactsMBean}" nested="true">
+                    mbean="#{bean.contactsMBean}" nested="true" readonly="#{not bean.editing}">
                     <f:facet name="columns">
                         <p:column headerText="分类">
                             <h:outputText value="#{entry.category.label}" />
@@ -140,7 +140,7 @@
 
             <p:tab id="rolesTab" title="公司人员">
                 <fr:listView id="rolesIndexView" header="公司相关人员" style="indexPanel" editView=":rolesEditView"
-                    mbean="#{bean.rolesMBean}" nested="true">
+                    mbean="#{bean.rolesMBean}" nested="true" readonly="#{not bean.editing}">
                     <f:facet name="columns">
                         <p:column headerText="部门">
                             <h:outputText value="#{entry.orgUnit.label}" />
@@ -163,7 +163,7 @@
 
             <p:tab id="orgUnitsTab" title="下属部门">
                 <fr:listView id="orgUnitsIndexView" header="下属组织部门" style="indexPanel" editView=":orgUnitsEditView"
-                    mbean="#{bean.orgUnitsMBean}" nested="true">
+                    mbean="#{bean.orgUnitsMBean}" nested="true" readonly="#{not bean.editing}">
                     <f:facet name="columns">
                         <p:column headerText="名称">
                             <h:outputText value="#{entry.label}" />
