@@ -55,6 +55,12 @@
                 <p:column headerText="备注" styleClass="f-wrappable">
                     <h:outputText value="#{entry.description}" />
                 </p:column>
+                <p:column headerText="工艺流转单" styleClass="f-wrappable">
+                    <h:outputText value="#{entry.process.id}" />
+                </p:column>
+                <p:column headerText="动作">
+                    <p:commandButton value="生成工艺流转单" styleClass="locker-invert" rendered="#{entry.process.id == null}" action="#{bean.generateProcess(entry)}"/>
+                </p:column>
             </f:facet>
         </fr:listView>
     </ui:define>

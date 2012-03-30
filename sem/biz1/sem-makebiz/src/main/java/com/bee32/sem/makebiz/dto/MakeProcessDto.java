@@ -23,7 +23,7 @@ public class MakeProcessDto
     public static final int STEPS = 1;
     public static final int SERIALS = 2;
 
-    MakeTaskDto task;
+    MakeTaskItemDto taskItem;
     PartDto part;
     BigDecimal quantity;
     String batchNumber;
@@ -34,7 +34,7 @@ public class MakeProcessDto
 
     @Override
     protected void _marshal(MakeProcess source) {
-        task = mref(MakeTaskDto.class, source.getTask());
+	taskItem = mref(MakeTaskItemDto.class, source.getTaskItem());
         part = mref(PartDto.class, source.getPart());
         quantity = source.getQuantity();
         batchNumber = source.getBatchNumber();
@@ -49,7 +49,7 @@ public class MakeProcessDto
 
     @Override
     protected void _unmarshalTo(MakeProcess target) {
-        merge(target, "task", task);
+        merge(target, "taskItem", taskItem);
         merge(target, "part", part);
         target.setQuantity(quantity);
         target.setBatchNumber(batchNumber);
@@ -68,15 +68,15 @@ public class MakeProcessDto
 
     }
 
-    public MakeTaskDto getTask() {
-        return task;
+    public MakeTaskItemDto getTaskItem() {
+	return taskItem;
     }
 
-    public void setTask(MakeTaskDto task) {
-        this.task = task;
+	public void setTaskItem(MakeTaskItemDto taskItem) {
+	this.taskItem = taskItem;
     }
 
-    public PartDto getPart() {
+	public PartDto getPart() {
         return part;
     }
 

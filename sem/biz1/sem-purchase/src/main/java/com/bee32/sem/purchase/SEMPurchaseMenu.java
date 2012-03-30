@@ -10,7 +10,7 @@ public class SEMPurchaseMenu
 
     static Location PREFIX_ = WEB_APP.join(SEMPurchaseModule.PREFIX_);
 
-    public static transient MenuNode PURCHASE = SEMMakebizMenu.MAKE;
+    public static transient MenuNode PURCHASE = SEMMakebizMenu.MAKEBIZ;
 
     static MenuNode purchaseRequest = entry(PURCHASE, 30, "purchaseRequest", PREFIX_.join("request/"));
     static MenuNode purchaseRequestItem = entry(PURCHASE, 40, "purchaseRequestItem", PREFIX_.join("request-item/"));

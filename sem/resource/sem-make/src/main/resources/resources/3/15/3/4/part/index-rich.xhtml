@@ -189,7 +189,7 @@
             </t:panelGrid>
         </fr:listView>
 
-        <p:dialog id="bomTreeDialog" header="BOM树" widgetVar="bomTreeDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
+        <p:dialog id="d_bomTree" header="BOM树" widgetVar="bomTreeDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
             <h:form id="bomTreeForm">
                 <p:treeTable id="bomTree" value="#{bean.bomTree.rootNode}" var="entry">
                         <p:column headerText="物料" sortBy="#{entry.material.label}">

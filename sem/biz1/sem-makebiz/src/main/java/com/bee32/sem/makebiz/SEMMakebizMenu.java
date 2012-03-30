@@ -10,11 +10,12 @@ public class SEMMakebizMenu
 
     static Location PREFIX_ = WEB_APP.join(SEMMakebizModule.PREFIX_);
 
-    public static MenuNode MAKE = menu(SEMFrameMenu.MAIN, 450, "make");
+    public static MenuNode MAKEBIZ = menu(SEMFrameMenu.MAIN, 450, "makeBiz");
 
-    static MenuNode makeOrderAdmin = entry(MAKE, 1, "makeOrderAdmin", PREFIX_.join("order/"));
-    static MenuNode makeTaskAdmin = entry(MAKE, 10, "makeTaskAdmin", PREFIX_.join("task/"));
-    static MenuNode materialPlanAdmin = entry(MAKE, 20, "materialPlanAdmin", PREFIX_.join("plan/"));
-    static MenuNode deliveryNoteAdmin = entry(MAKE, 50, "deliveryNoteAdmin", PREFIX_.join("delivery/"));
+    static MenuNode makeOrderAdmin = entry(MAKEBIZ, 1, "makeOrderAdmin", PREFIX_.join("order/"));
+    static MenuNode makeTaskAdmin = entry(MAKEBIZ, 10, "makeTaskAdmin", PREFIX_.join("task/"));
+    static MenuNode materialPlanAdmin = entry(MAKEBIZ, 20, "materialPlanAdmin", PREFIX_.join("plan/"));
+    static MenuNode deliveryNoteAdmin = entry(MAKEBIZ, 50, "deliveryNoteAdmin", PREFIX_.join("delivery/"));
+    static MenuNode makeProcessAdmin = entry(MAKEBIZ, 60, "makeProcessAdmin", PREFIX_.join("process/"));
 
 }

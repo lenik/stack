@@ -7,6 +7,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -41,6 +42,8 @@ public class MakeTaskItem
     Date deadline;
     String status;
 
+    MakeProcess process;
+
     @Override
     public void populate(Object source) {
         if (source instanceof MakeTaskItem)
@@ -57,6 +60,7 @@ public class MakeTaskItem
         quantity = o.quantity;
         deadline = o.deadline;
         status = o.status;
+        process = o.process;
     }
 
     @NaturalId
@@ -120,7 +124,16 @@ public class MakeTaskItem
         this.deadline = deadline;
     }
 
-    @Override
+    @OneToOne(mappedBy = "taskItem")
+    public MakeProcess getProcess() {
+	return process;
+    }
+
+	public void setProcess(MakeProcess process) {
+	this.process = process;
+    }
+
+	@Override
     protected Serializable naturalId() {
         return new IdComposite(//
                 naturalId(task), //

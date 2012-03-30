@@ -33,6 +33,8 @@ public class MakeTaskItemDto
     Date deadline;
     String status;
 
+    MakeProcessDto process;
+
     @Override
     protected void _marshal(MakeTaskItem source) {
         task = mref(MakeTaskDto.class, source.getTask());
@@ -44,6 +46,8 @@ public class MakeTaskItemDto
 
         deadline = source.getDeadline();
         status = source.getStatus();
+
+        process = marshal(MakeProcessDto.class, source.getProcess());
     }
 
     @Override
@@ -54,6 +58,7 @@ public class MakeTaskItemDto
         target.setQuantity(quantity);
         target.setDeadline(deadline);
         target.setStatus(status);
+        merge(target, "process", process);
     }
 
     @Override
@@ -129,7 +134,15 @@ public class MakeTaskItemDto
         this.status = TextUtil.normalizeSpace(status);
     }
 
-    @Override
+    public MakeProcessDto getProcess() {
+	return process;
+    }
+
+	public void setProcess(MakeProcessDto process) {
+	this.process = process;
+    }
+
+	@Override
     protected Serializable naturalId() {
         return new IdComposite(//
                 naturalId(task), //

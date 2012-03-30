@@ -51,7 +51,12 @@ public class MakeTaskAdminBean
             makeTask.setLabel(makeOrder.getLabel());
     }
 
-    /*************************************************************************
+	public void generateProcess(MakeTaskItemDto item) {
+		uiLogger.info(item);
+	}
+
+
+	/*************************************************************************
      * Section: MBeans
      *************************************************************************/
     final ListMBean<MakeTaskItemDto> itemsMBean = ListMBean.fromEL(this, //

@@ -150,7 +150,15 @@ label {
 
 }
 
+.locker-invert {
+    display: none;
+}
+
 .locker-active .locker-bypass {
+    display: inherit !important;
+}
+
+.locker-active .locker-invert {
     display: inherit !important;
 }
 
