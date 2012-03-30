@@ -279,8 +279,13 @@ public abstract class BaseDto<S>
     protected Serializable naturalId(BaseDto<?> o) {
         if (o == null || o.isNull())
             return new Identity(this);
-        else
-            return o.getNaturalId();
+        else {
+            Serializable naturalId = o.getNaturalId();
+            if (naturalId == null)
+		return new Identity(this);
+            else
+		return naturalId;
+        }
     }
 
     protected static Serializable naturalIdOpt(BaseDto<?> o) {
