@@ -52,6 +52,13 @@ public class MakeProcess
 	this.taskItem = taskItem;
     }
 
+	public void setTaskItemEven(MakeTaskItem taskItem) {
+		this.taskItem = taskItem;
+		this.part = taskItem.getPart();
+		this.quantity = taskItem.getQuantity();
+		this.deadline = taskItem.deadline;
+	}
+
 	@ManyToOne(optional = false)
     public Part getPart() {
         return part;

@@ -33,6 +33,8 @@ import com.bee32.sem.makebiz.dto.MakeTaskDto;
 import com.bee32.sem.makebiz.dto.MakeTaskItemDto;
 import com.bee32.sem.makebiz.dto.MaterialPlanDto;
 import com.bee32.sem.makebiz.dto.MaterialPlanItemDto;
+import com.bee32.sem.makebiz.entity.MakeProcess;
+import com.bee32.sem.makebiz.entity.MakeTaskItem;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.world.monetary.MutableMCValue;
 
@@ -165,5 +167,22 @@ public class MakebizService
         // 清空物料锁定。
         plan.getPlanOrders().clear();
     }
+
+    /**
+     * 根据生产任务明细条目，生成工艺流转单
+     */
+    public void generateProcess(MakeTaskItemDto taskItem) {
+	if(taskItem == null || DTOs.isNull(taskItem))
+		throw new NullPointerException("生产任务明细为空");
+
+	MakeTaskItem _taskItem = taskItem.unmarshal();
+
+	MakeProcess process = new MakeProcess();
+	process.setTaskItemEven(_taskItem);
+
+	//根据bom表和工艺，生成所有的MakeStep
+
+    }
+
 
 }

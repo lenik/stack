@@ -16,6 +16,7 @@ import com.bee32.sem.makebiz.dto.MakeTaskDto;
 import com.bee32.sem.makebiz.dto.MakeTaskItemDto;
 import com.bee32.sem.makebiz.entity.MakeOrder;
 import com.bee32.sem.makebiz.entity.MakeTask;
+import com.bee32.sem.makebiz.service.MakebizService;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
 
@@ -52,7 +53,12 @@ public class MakeTaskAdminBean
     }
 
 	public void generateProcess(MakeTaskItemDto item) {
-		uiLogger.info(item);
+		MakebizService service = ctx.bean.getBean(MakebizService.class);
+		try {
+			service.generateProcess(item);
+		} catch (Exception e) {
+			uiLogger.error("生成失败.", e);
+		}
 	}
 
 
