@@ -18,6 +18,7 @@
                 selectionMode="single" selection="#{bean.categoryTree.selectedNode}">
 
                 <p:ajax event="select" listener="#{bean.refreshRowCount}" update=":mainForm:dataTable" />
+                <p:ajax event="unselect" listener="#{bean.refreshRowCount}" update=":mainForm:dataTable" />
 
                 <p:column headerText="分类名称" styleClass="f-wrappable" style="width:15em;">
                     <h:outputText value="#{category.label}" />

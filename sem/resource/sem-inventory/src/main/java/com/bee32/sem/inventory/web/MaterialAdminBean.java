@@ -48,9 +48,10 @@ public class MaterialAdminBean
         super.composeBaseRestrictions(elements);
         Integer categoryId = categoryTree.getSelectedId();
         // if (categoryId != null)
-        if (categoryId == null) // select none if no category.
-            categoryId = -1;
-        elements.add(MaterialCriteria.categoryOf(categoryId));
+//        if (categoryId == null) // select none if no category.
+//            categoryId = -1;
+        if(categoryId != null)
+		elements.add(MaterialCriteria.categoryOf(categoryId));
     }
 
     public List<MaterialPriceDto> getMaterialPrices() {
