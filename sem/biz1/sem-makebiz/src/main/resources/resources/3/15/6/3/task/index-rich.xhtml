@@ -21,7 +21,7 @@
                 <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
             </h:outputText>
             <h:outputText value="制单人:" />
-            <p:inputText value="#{obj.owner.displayName}" disabled="true" />
+            <p:inputText value="#{obj.owner.displayName}" readonly="true" />
 
             <h:outputText value="生产订单:" />
             <t:panelGroup colspan="3">

@@ -22,7 +22,7 @@
                 <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
             </h:outputText>
             <h:outputText value="制单人:" />
-            <p:inputText value="#{obj.owner.displayName}" disabled="true" />
+            <p:inputText value="#{obj.owner.displayName}" readonly="true" />
 
             <h:outputText value="简要:" />
             <t:panelGroup colspan="3">
@@ -47,7 +47,7 @@
 
             <h:outputText value="附加要求:" />
             <t:panelGroup colspan="3">
-                <p:inputTextarea style="width: 30em; height: 4em;" value="#{obj.description}" disabled="#{not bean.editing}"
+                <p:inputTextarea style="width: 30em; height: 4em;" value="#{obj.description}" readonly="#{not bean.editing}"
                     label="附加要求" />
             </t:panelGroup>
 
