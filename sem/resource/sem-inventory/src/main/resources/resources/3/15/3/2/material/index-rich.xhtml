@@ -137,8 +137,9 @@
                 </t:panelGrid>
             </p:tab>
             <p:tab title="自定义属性">
-                <fr:listView id="attributes" header="物料属性" style="panel" orientation="lr"
-                    mbean="#{bean.attributesMBean}" nested="true">
+                <fr:listView id="attributesIndexView" header="物料属性" style="indexPanel"
+                    editView=":attributesEditView"
+                    mbean="#{bean.attributesMBean}" nested="true" readonly="#{not bean.editing}">
                     <f:facet name="columns">
                         <p:column headerText="属性名称">
                             <h:outputText value="#{entry.name}" />
@@ -147,12 +148,6 @@
                             <h:outputText value="#{entry.value}" />
                         </p:column>
                     </f:facet>
-                    <h:panelGrid columns="2">
-                        <h:outputText value="属性名称" />
-                        <p:inputText value="#{item.name}" label="属性名称" />
-                        <h:outputText value="属性值" />
-                        <p:inputText value="#{item.value}" label="属性值" />
-                    </h:panelGrid>
                 </fr:listView>
             </p:tab>
         </p:tabView>
@@ -169,6 +164,22 @@
         <ui:include src="preferredLocation.xhtml" />
         <ui:include src="warehouseOption.xhtml" />
         <ui:include src="userFile.xhtml" />
+
+
+        <fr:listView id="attributesEditView" header="附加属性"
+            style="editDialog"
+            indexView=":editDialog:form:tv:attributesIndexView"
+            mbean="#{bean.attributesMBean}" readonly="#{not bean.editing}">
+
+            <h:panelGrid columns="2">
+                <h:outputText value="属性名称" />
+                <p:inputText value="#{item.name}" label="属性名称" />
+                <h:outputText value="属性值" />
+                <p:inputText value="#{item.value}" label="属性值" />
+            </h:panelGrid>
+        </fr:listView>
+
+
     </ui:define>
 
 </ui:composition>

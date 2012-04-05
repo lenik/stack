@@ -377,7 +377,7 @@ public class ServletTestLibrary
         try {
 		Desktop.getDesktop().browse(uri);
         } catch (UnsupportedOperationException e) {
-			String[] browsers = { "google-chrome", "firefox", "iexplore" };
+			String[] browsers = { "gnome-open", "google-chrome", "firefox", "iexplore" };
 			String browser = null;
 			b: for (String br : browsers) {
 				for (String dir : System.getenv("PATH").split(

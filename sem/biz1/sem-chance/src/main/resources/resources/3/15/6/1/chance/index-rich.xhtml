@@ -82,8 +82,8 @@
             </p:tab>
 
             <p:tab title="客户">
-                <fr:listView id="partiesView" header="客户" style="panel" orientation="lr" mbean="${bean.partiesMBean}"
-                    smooth="true" nested="true">
+                <fr:listView id="partiesIndexView" header="客户" style="indexPanel" mbean="${bean.partiesMBean}"
+                    editView=":partiesEditView" nested="true" paginator="false" readonly="#{not bean.editing}">
                     <f:facet name="columns">
                         <p:column headerText="客户">
                             <h:outputText value="${entry.party.displayName}" />
@@ -92,15 +92,6 @@
                             <h:outputText value="${entry.role}" />
                         </p:column>
                     </f:facet>
-                    <h:panelGrid columns="2">
-                        <h:outputLabel for="chooseCustomer" value="客户:" />
-                        <h:panelGroup>
-                            <h:outputText value="${item.party.displayName}" />
-                            <p:commandButton id="chooseCustomer" value="..." onclick="chooseCustomerDialog.show()" />
-                        </h:panelGroup>
-                        <h:outputLabel for="role" value="角色:" />
-                        <p:inputText id="role" label="角色" value="${item.role}" />
-                    </h:panelGrid>
                 </fr:listView>
             </p:tab>
 
@@ -154,7 +145,7 @@
 
     <ui:define name="dialogs">
         <sem:choosePartyDialog id="c_party" header="选择机会客户" var="chooseCustomerDialog" target="${partyObj.party}"
-            update=":editDialog:form:tv:partiesView:editForm:body" />
+            update=":partiesEditView:editForm:party" />
         <sem:chooseChanceActionDialog id="c_action" header="选择要关联的行动日志" target="${bean.actionsMBean.addition}"
             update=":editDialog:form:tv:actionsIndexView:indexForm:body" />
         <sem:chooseMaterialDialog id="c_material" header="选择产品/物料" target="${productObj.decidedMaterial}"
@@ -320,6 +311,22 @@
                 <h:outputText value="备注:" />
                 <p:inputText id="description" value="#{item.description}" label="备注" />
             </t:panelGrid>
+        </fr:listView>
+
+
+        <fr:listView id="partiesEditView" header="客户"
+            style="editDialog"
+            indexView=":editDialog:form:tv:partiesIndexView"
+            mbean="${bean.partiesMBean}" readonly="#{not bean.editing}">
+            <h:panelGrid columns="2">
+                <h:outputLabel for="chooseCustomer" value="客户:" />
+                <h:panelGroup>
+                    <h:outputText id="party" value="${item.party.displayName}" />
+                    <p:commandButton id="chooseCustomer" value="..." onclick="chooseCustomerDialog.show()" />
+                </h:panelGroup>
+                <h:outputLabel for="role" value="角色:" />
+                <p:inputText id="role" label="角色" value="${item.role}" />
+            </h:panelGrid>
         </fr:listView>
 
     </ui:define>
