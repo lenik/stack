@@ -26,5 +26,6 @@ CLEANFILES = post-install.sh    pre-remove.sh
 
 install-data-hook:
 	mkdir -p ${DESTDIR}${sslcertsdir}/
+	echo XXX ln -snf ${bee32cadir}/*.crt ${DESTDIR}${sslcertsdir}/
 	ln -snf ${bee32cadir}/*.crt ${DESTDIR}${sslcertsdir}/
 
