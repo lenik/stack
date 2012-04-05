@@ -6,7 +6,8 @@ PG_CREATE_SHORTCUTS = pg-create-shortcuts
 
 dist_bin_SCRIPTS = \
 	seccadb-backup \
-	seccadb-restore
+	seccadb-restore \
+	seccadb-csv
 
 dist_cron_SCRIPTS = \
 	80seccadb-backup

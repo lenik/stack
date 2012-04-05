@@ -1,0 +1,82 @@
+#!/bin/bash
+    . shlib-import cliboot
+
+    RCSID='$Id: - @VERSION@ @DATE@ @TIME@ - $'
+    short_opts="brd:X:hqv"
+    long_opts="body-only,raw,delim:,help,quiet,verbose,version"
+
+    body_only=0
+    raw=0
+    delim=
+    xargs=()
+    nxargs=0
+
+function version() {
+    parse_id "$RCSID"
+    echo "[$BASENAME] Simple CSV Exporter Utility"
+    echo "Written by Lenik, Version $rcs_rev, Last updated at $rcs_date"
+}
+
+function help() {
+    version
+    echo
+    echo "Syntax: "
+    echo "    $0 [OPTION] [--] <psql args>"
+    echo
+    echo "Options: "
+    echo "    -b, --body-only         Don't print headers"
+    echo "    -r, --raw               Never quote strings"
+    echo "    -d, --delim=DELIM       Column separator other then $DELIM_DEFAULT"
+    echo "    -X, --Xname=value       Extra args passed to psql"
+    echo "    -q, --quiet             Repeat to get less info"
+    echo "    -v, --verbose           Repeat to get more info"
+    echo "    -h, --help              Show this help page"
+    echo "        --version           Print the version info"
+}
+
+function setopt() {
+    case "$1" in
+        -b|--body-only)
+            body_only=1;;
+        -r|--raw)
+            raw=1;;
+        -d|--delim)
+            delim="$2";;
+        -X)
+            xargs[nxargs++]="-$2";;
+        -h|--help)
+            help; exit;;
+        -q|--quiet)
+            LOGLEVEL=$((LOGLEVEL - 1));;
+        -v|--verbose)
+            LOGLEVEL=$((LOGLEVEL + 1));;
+        --version)
+            version; exit;;
+        *)
+            quit "invalid option: $1";;
+    esac
+}
+
+function main() {
+    if [ "$#" = 0 ]; then
+        quit "SQL isn't specified"
+    fi
+
+    opts=()
+    nopt=0
+    if [ "$body_only" = 1 ]; then
+        opts[nopt++]=--tuples-only
+    fi
+    if [ -n "$delim" ]; then
+        opts[nopt++]=--no-align
+        opts[nopt++]=--field-separator="$delim"
+    fi
+    if [ -n "$raw" ]; then
+        _warn "Raw-format isn't supported, yet"
+    fi
+
+    _log1 seccadb-psql "${opts[@]}" "${xargs[@]}" -c "$*"
+    seccadb-psql "${opts[@]}" "${xargs[@]}" -c "$*"
+}
+
+boot "$@"
