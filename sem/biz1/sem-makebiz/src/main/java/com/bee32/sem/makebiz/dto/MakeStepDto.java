@@ -14,7 +14,6 @@ import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.MomentIntervalDto;
 import com.bee32.sem.make.dto.MakeStepModelDto;
-import com.bee32.sem.make.dto.PartDto;
 import com.bee32.sem.make.dto.QCResultDto;
 import com.bee32.sem.makebiz.entity.MakeStep;
 import com.bee32.sem.people.dto.OrgUnitDto;
@@ -32,7 +31,6 @@ public class MakeStepDto
 
     // Behavior as <model.part, model.processOrder>.
     MakeStepModelDto model;
-    PartDto part; // @Redundant for grouping.
 
     BigDecimal planQuantity;
     BigDecimal actualQuantity;
@@ -49,7 +47,6 @@ public class MakeStepDto
         parent = mref(MakeProcessDto.class, source.getParent());
 
         model = mref(MakeStepModelDto.class, source.getModel());
-        part = mref(PartDto.class, source.getPart());
 
         planQuantity = source.getPlanQuantity();
         actualQuantity = source.getActualQuantity();
@@ -69,8 +66,6 @@ public class MakeStepDto
         merge(target, "parent", parent);
 
         merge(target, "model", model);
-        merge(target, "part", part);
-
         target.setPlanQuantity(planQuantity);
         target.setActualQuantity(actualQuantity);
 
@@ -104,14 +99,6 @@ public class MakeStepDto
 
     public void setModel(MakeStepModelDto model) {
         this.model = model;
-    }
-
-    public PartDto getPart() {
-        return part;
-    }
-
-    public void setPart(PartDto part) {
-        this.part = part;
     }
 
     public BigDecimal getPlanQuantity() {
@@ -173,7 +160,6 @@ public class MakeStepDto
     @Override
     protected Serializable naturalId() {
         return new IdComposite(//
-                naturalId(part), //
                 naturalId(model));
     }
 

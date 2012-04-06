@@ -5,6 +5,7 @@ import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.html.HtmlInputText;
+import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;
 
@@ -15,20 +16,34 @@ public class MakeProcessAdminBean extends EntityViewBean {
     private static final long serialVersionUID = 1L;
 
     UIViewRoot viewRoot;
-    private static int inputIndex = 0;
+
 
 
     public MakeProcessAdminBean() {
 	FacesContext context = FacesContext.getCurrentInstance();
         UIComponent panelGroup = context.getViewRoot().findComponent("panelGroup");
-        HtmlInputText input = new HtmlInputText();
-        input.setId("input" + (inputIndex++));
-        input.setValue("Input 1");
-        input.setRendered(true);
 
-        ((HtmlPanelGroup)panelGroup).getChildren().add(input);
+        int inputIndex = 0;
 
+        int rows = 5;
+        int cols = 5;
 
+        HtmlPanelGrid grid = new HtmlPanelGrid();
+        grid.setColumns(cols);
+        grid.setRendered(true);
+
+        for(int i = 0; i < rows; i++) {
+		for(int j = 0; j < cols; j++) {
+                HtmlInputText input = new HtmlInputText();
+                input.setId("input" + (inputIndex++));
+                input.setValue("input " + inputIndex);
+                input.setRendered(true);
+			grid.getChildren().add(input);
+		}
+        }
+
+        ((HtmlPanelGroup)panelGroup).getChildren().add(grid);
+        System.out.print("test");
 
     }
 

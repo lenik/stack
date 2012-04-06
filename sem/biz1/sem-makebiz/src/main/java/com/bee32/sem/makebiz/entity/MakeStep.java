@@ -22,7 +22,6 @@ import org.hibernate.annotations.NaturalId;
 import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.make.entity.MakeStepModel;
-import com.bee32.sem.make.entity.Part;
 import com.bee32.sem.make.entity.QCResult;
 import com.bee32.sem.people.entity.OrgUnit;
 import com.bee32.sem.people.entity.Person;
@@ -45,7 +44,6 @@ public class MakeStep
 
     // Behavior as <model.part, model.processOrder>.
     MakeStepModel model;
-    Part part; // @Redundant for grouping.
 
     BigDecimal planQuantity = new BigDecimal(1);
     BigDecimal actualQuantity = new BigDecimal(1);
@@ -78,15 +76,6 @@ public class MakeStep
         this.model = model;
     }
 
-    @NaturalId
-    @ManyToOne(optional = false)
-    public Part getPart() {
-        return part;
-    }
-
-    public void setPart(Part part) {
-        this.part = part;
-    }
 
     @Column(scale = QTY_ITEM_SCALE, precision = QTY_ITEM_PRECISION, nullable = false)
     public BigDecimal getPlanQuantity() {
