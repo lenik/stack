@@ -406,8 +406,13 @@ public abstract class Entity<K extends Serializable>
     protected Serializable naturalId(Entity<?> entity) {
         if (entity == null)
             return new Identity(this);
-        else
-            return entity.naturalId();
+        else {
+            Serializable naturalId = entity.getNaturalId();
+            if (naturalId == null)
+		return new Identity(this);
+            else
+		return naturalId;
+        }
     }
 
     protected static Serializable naturalIdOpt(Entity<?> entity) {
