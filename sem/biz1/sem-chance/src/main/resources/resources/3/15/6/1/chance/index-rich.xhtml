@@ -145,7 +145,7 @@
 
     <ui:define name="dialogs">
         <sem:choosePartyDialog id="c_party" header="选择机会客户" var="chooseCustomerDialog" target="${partyObj.party}"
-            update=":partiesEditView:editForm:party" />
+            update=":partiesEditView:editForm" />
         <sem:chooseChanceActionDialog id="c_action" header="选择要关联的行动日志" target="${bean.actionsMBean.addition}"
             update=":editDialog:form:tv:actionsIndexView:indexForm:body" />
         <sem:chooseMaterialDialog id="c_material" header="选择产品/物料" target="${productObj.decidedMaterial}"
@@ -324,6 +324,10 @@
                     <h:outputText id="party" value="${item.party.displayName}" />
                     <p:commandButton id="chooseCustomer" value="..." onclick="chooseCustomerDialog.show()" />
                 </h:panelGroup>
+
+                <h:outputText value="备注:" />
+                <h:outputText value="${item.party.shortMemo}" />
+
                 <h:outputLabel for="role" value="角色:" />
                 <p:inputText id="role" label="角色" value="${item.role}" />
             </h:panelGrid>
