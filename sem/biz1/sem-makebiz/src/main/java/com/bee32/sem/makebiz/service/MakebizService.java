@@ -23,7 +23,9 @@ import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.make.dto.PartDto;
+import com.bee32.sem.make.entity.MakeStepModel;
 import com.bee32.sem.make.entity.Part;
+import com.bee32.sem.make.entity.PartItem;
 import com.bee32.sem.make.util.BomCriteria;
 import com.bee32.sem.makebiz.dto.DeliveryNoteDto;
 import com.bee32.sem.makebiz.dto.DeliveryNoteItemDto;
@@ -35,6 +37,7 @@ import com.bee32.sem.makebiz.dto.MakeTaskItemDto;
 import com.bee32.sem.makebiz.dto.MaterialPlanDto;
 import com.bee32.sem.makebiz.dto.MaterialPlanItemDto;
 import com.bee32.sem.makebiz.entity.MakeProcess;
+import com.bee32.sem.makebiz.entity.MakeStep;
 import com.bee32.sem.makebiz.entity.MakeTaskItem;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.world.monetary.MutableMCValue;
@@ -191,8 +194,24 @@ public class MakebizService
 	process.setTaskItemEven(_taskItem);
 
 	//根据bom表和工艺，生成所有的MakeStep
+	Part part = _taskItem.getPart();
 
+	//saveProcess(process);
     }
 
+    private void claimTree(MakeProcess process, Part part) {
+	for (PartItem partItem : part.getChildren()) {
+		if (partItem.getPart() != null) {
+			//说明子部件是半成品
+			claimTree(process, partItem.getPart());
+		}
+	}
+
+	for (MakeStepModel stepMode : part.getSteps()) {
+		MakeStep step = new MakeStep();
+
+		step.setParent(process);
+	}
+    }
 
 }
