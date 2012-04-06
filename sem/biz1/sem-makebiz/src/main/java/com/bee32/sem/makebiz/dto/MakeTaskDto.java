@@ -9,6 +9,7 @@ import javax.free.ParseException;
 import javax.validation.constraints.NotNull;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.sem.makebiz.entity.MakeTask;
 import com.bee32.sem.process.base.ProcessEntityDto;
 
@@ -20,21 +21,37 @@ public class MakeTaskDto
     public static final int ITEMS = 1;
     public static final int PLANS = 2;
     // public static final int ITEM_PART_CHILDREN = 0x01000000;
+    public static final int ITEM_ATTRIBUTES = 64 | ITEMS;
 
     MakeOrderDto order;
     Date deadline;
     List<MakeTaskItemDto> items;
     List<MaterialPlanDto> plans;
 
+
     @Override
+    protected void _copy() {
+	items = CopyUtils.copyList(items, this);
+	plans = new ArrayList<MaterialPlanDto>();
+    }
+
+	@Override
+    protected Object clone() throws CloneNotSupportedException {
+	    // TODO Auto-generated method stub
+	    return super.clone();
+    }
+
+	@Override
     protected void _marshal(MakeTask source) {
         order = mref(MakeOrderDto.class, source.getOrder());
 
         deadline = source.getDeadline();
 
-        if (selection.contains(ITEMS))
-            items = marshalList(MakeTaskItemDto.class, source.getItems());
-        else
+        if (selection.contains(ITEMS)) {
+		int itemSelection = 0;
+		if (selection.contains(ITEM_ATTRIBUTES)) itemSelection |= MakeTaskItemDto.PART_ATTRIBUTES;
+            items = marshalList(MakeTaskItemDto.class, itemSelection, source.getItems());
+        } else
             items = new ArrayList<MakeTaskItemDto>();
 
         if (selection.contains(PLANS))

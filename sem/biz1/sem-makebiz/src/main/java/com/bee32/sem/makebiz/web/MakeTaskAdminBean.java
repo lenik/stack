@@ -32,7 +32,7 @@ public class MakeTaskAdminBean
 
     public void setApplyMakeOrder(MakeOrderDto makeOrderRef) {
         MakeTaskDto makeTask = getOpenedObject();
-        MakeOrderDto makeOrder = reload(makeOrderRef, MakeOrderDto.NOT_ARRANGED_ITEMS);
+        MakeOrderDto makeOrder = reload(makeOrderRef, MakeOrderDto.NOT_ARRANGED_ITEMS | MakeOrderDto.ITEM_ATTRIBUTES);
 
         for (MakeOrderItemDto item : makeOrder.getItems()) {
             if (item.getPart().isNull()) {

@@ -23,7 +23,7 @@ public class MakeTaskItemDto
 
     private static final long serialVersionUID = 1L;
 
-    // public static final int PART_CHILDREN = 1;
+    public static final int PART_ATTRIBUTES = 1;
 
     MakeTaskDto task;
     int index;
@@ -39,9 +39,11 @@ public class MakeTaskItemDto
     protected void _marshal(MakeTaskItem source) {
         task = mref(MakeTaskDto.class, source.getTask());
         index = source.getIndex();
-        part = mref(PartDto.class, //
-                // selection.translate(PART_CHILDREN, PartDto.CHILDREN), //
-                source.getPart());
+
+        int partSelection = 0;
+        if(selection.contains(PART_ATTRIBUTES)) partSelection |= PartDto.TARGET_ATTRIBUTES;
+        part = mref(PartDto.class, partSelection, source.getPart());
+
         quantity = source.getQuantity();
 
         deadline = source.getDeadline();

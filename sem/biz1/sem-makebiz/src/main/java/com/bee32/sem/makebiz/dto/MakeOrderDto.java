@@ -206,6 +206,7 @@ public class MakeOrderDto
             MakeTaskItemDto taskItem = new MakeTaskItemDto().create();
             taskItem.setPart(orderItem.getPart());
             taskItem.setQuantity(orderItem.getQuantity());
+            taskItem.setDescription(orderItem.getDescription());
 
             taskItems.add(taskItem);
         }
