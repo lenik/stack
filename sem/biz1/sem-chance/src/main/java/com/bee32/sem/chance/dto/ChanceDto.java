@@ -1,5 +1,6 @@
 package com.bee32.sem.chance.dto;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import javax.free.Strings;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
+import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceStage;
@@ -50,6 +52,12 @@ public class ChanceDto
     }
 
     @Override
+    protected void _copy() {
+	    parties = CopyUtils.copyList(parties, this);
+	    products = CopyUtils.copyList(products, this);
+    }
+
+	@Override
     protected void _marshal(Chance source) {
         date = DateToRange.fullFormat.format(source.getCreatedDate()).substring(0, 16);
         category = mref(ChanceCategoryDto.class, source.getCategory());
