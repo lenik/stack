@@ -21,6 +21,8 @@ public class MakeOrderItemDto
 
     private static final long serialVersionUID = 1L;
 
+    public static final int PART_ATTRIBUTES = 1;
+
     MakeOrderDto parent;
     PartDto part;
     Date deadline;
@@ -33,7 +35,11 @@ public class MakeOrderItemDto
     @Override
     protected void _marshal(MakeOrderItem source) {
         parent = mref(MakeOrderDto.class, source.getParent());
-        part = mref(PartDto.class, source.getPart());
+
+        int partSelection = 0;
+        if(selection.contains(PART_ATTRIBUTES)) partSelection |= PartDto.TARGET_ATTRIBUTES;
+        part = mref(PartDto.class, partSelection, source.getPart());
+
         deadline = source.getDeadline();
         externalProductName = source.getExternalProductName();
         externalModelSpec = source.getExternalModelSpec();

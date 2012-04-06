@@ -34,6 +34,8 @@ public class MakeOrderDto
     public static final int NOT_ARRANGED_ITEMS = 16 | ITEMS;
     public static final int NOT_DELIVERIED_ITEMS = 32 | ITEMS;
 
+    public static final int ITEM_ATTRIBUTES = 64;
+
     PartyDto customer;
     String status;
     ChanceDto chance;
@@ -101,6 +103,19 @@ public class MakeOrderDto
     }
 
     @Override
+    public int getItemSelection() {
+	int itemSelection = 0;
+	if (selection.contains(ITEM_ATTRIBUTES)) itemSelection |= MakeOrderItemDto.PART_ATTRIBUTES;
+	return itemSelection;
+    }
+
+	@Override
+    protected Object clone() throws CloneNotSupportedException {
+	    // TODO Auto-generated method stub
+	    return super.clone();
+    }
+
+	@Override
     protected void _unmarshalTo(MakeOrder target) {
         merge(target, "customer", customer);
         target.setStatus(status);

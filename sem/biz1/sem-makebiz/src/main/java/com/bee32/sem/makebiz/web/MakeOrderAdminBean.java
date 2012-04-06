@@ -18,7 +18,7 @@ public class MakeOrderAdminBean
     private static final long serialVersionUID = 1L;
 
     public MakeOrderAdminBean() {
-        super(MakeOrder.class, MakeOrderDto.class, 0);
+        super(MakeOrder.class, MakeOrderDto.class, MakeOrderDto.ITEM_ATTRIBUTES);
     }
 
     public void setChanceToApply(ChanceDto chance) {

@@ -54,9 +54,13 @@ public abstract class AbstractItemListDto< //
     protected void __marshal(E source) {
         super.__marshal(source);
         if (selection.contains(ITEMS))
-            items = (List<_dt>) marshalList(getItemDtoClass(), source.getItems()); // cascade..
+            items = (List<_dt>) marshalList(getItemDtoClass(), getItemSelection(), source.getItems()); // cascade..
         else
             items = new ArrayList<_dt>();
+    }
+
+    public int getItemSelection() {
+	return 0;
     }
 
     @Override

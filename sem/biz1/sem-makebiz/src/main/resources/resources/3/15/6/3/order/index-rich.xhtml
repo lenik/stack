@@ -65,7 +65,11 @@
                 </p:column>
 
                 <p:column headerText="附加属性">
-                    <h:outputText value="#{entry.part.target.attributes}" />
+                    <p:dataList var="attr" value="#{entry.part.target.attributes}" effectSpeed="fast">
+                        <p:column>
+                            <h:outputText value="${attr.name}:${attr.value};" />
+                        </p:column>
+                    </p:dataList>
                 </p:column>
 
                 <p:column headerText="单价" styleClass="f-right">

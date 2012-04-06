@@ -29,6 +29,7 @@ public class PartDto
     public static final int XREFS = 2;
     public static final int STEPS = 4;
     public static final int MATERIAL_CONSUMPTION = 0x01000000 | CHILDREN;
+    public static final int TARGET_ATTRIBUTES = 8;
 
     PartDto obsolete;
 
@@ -72,7 +73,9 @@ public class PartDto
     protected void _marshal(Part source) {
         obsolete = new PartDto().ref(source.getObsolete());
 
-        target = mref(MaterialDto.class, source.getTarget());
+        int materialSelection = 0;
+        if(selection.contains(TARGET_ATTRIBUTES)) materialSelection |= MaterialDto.ATTRBUTES;
+        target = mref(MaterialDto.class, materialSelection, source.getTarget());
 
         if (selection.contains(CHILDREN))
             children = marshalList(PartItemDto.class, 0, source.getChildren());
