@@ -13,6 +13,7 @@ import com.bee32.plover.arch.DataService;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.chance.dto.ChanceDto;
+import com.bee32.sem.chance.dto.WantedProductAttributeDto;
 import com.bee32.sem.chance.dto.WantedProductDto;
 import com.bee32.sem.chance.dto.WantedProductQuotationDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
@@ -117,6 +118,15 @@ public class MakebizService
 
             item.setExternalProductName(product.getLabel());
             item.setExternalModelSpec(product.getModelSpec());
+
+            StringBuilder descBuilder = new StringBuilder();
+            for(WantedProductAttributeDto attr : product.getAttributes()) {
+		descBuilder.append(attr.getName());
+		descBuilder.append(":");
+		descBuilder.append(attr.getValue());
+		descBuilder.append(";");
+            }
+            item.setDescription(descBuilder.toString());
 
             Part _part = ctx.data.access(Part.class).getFirst(
                     BomCriteria.findPartByMaterial(product.getDecidedMaterial().getId()));
