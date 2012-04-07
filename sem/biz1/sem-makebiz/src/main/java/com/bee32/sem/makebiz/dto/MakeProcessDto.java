@@ -120,6 +120,26 @@ public class MakeProcessDto
         return steps;
     }
 
+    public synchronized void addStep(MakeStepDto step) {
+        if (step == null)
+            throw new NullPointerException("step");
+
+        step.setParent(this);
+        steps.add(step);
+    }
+
+    public synchronized void removeStep(MakeStepDto step) {
+        if (step == null)
+            throw new NullPointerException("step");
+
+        int index = steps.indexOf(step);
+        if (index == -1)
+            return /* false */;
+
+        steps.remove(index);
+        // item.detach();
+    }
+
     public void setSteps(List<MakeStepDto> steps) {
         this.steps = steps;
     }

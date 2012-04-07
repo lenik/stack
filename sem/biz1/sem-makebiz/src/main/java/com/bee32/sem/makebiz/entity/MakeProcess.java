@@ -113,6 +113,26 @@ public class MakeProcess
         this.steps = steps;
     }
 
+    public synchronized void addStep(MakeStep step) {
+        if (step == null)
+            throw new NullPointerException("step");
+
+        step.setParent(this);
+        steps.add(step);
+    }
+
+    public synchronized void removeStep(MakeStep step) {
+        if (step == null)
+            throw new NullPointerException("step");
+
+        int index = steps.indexOf(step);
+        if (index == -1)
+            return /* false */;
+
+        steps.remove(index);
+        step.detach();
+    }
+
     @OneToMany(mappedBy = "process")
     public List<SerialNumber> getSerials() {
         return serials;

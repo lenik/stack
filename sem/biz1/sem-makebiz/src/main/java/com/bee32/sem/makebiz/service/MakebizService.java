@@ -196,14 +196,18 @@ public class MakebizService
 	//根据bom表和工艺，生成所有的MakeStep
 	Part part = _taskItem.getPart();
 
-	//saveProcess(process);
+	claimTree(process, part, _taskItem.getQuantity());
+
+
+	ctx.data.access(MakeProcess.class).save(process);
+
     }
 
-    private void claimTree(MakeProcess process, Part part) {
+    private void claimTree(MakeProcess process, Part part, BigDecimal quantity) {
 	for (PartItem partItem : part.getChildren()) {
 		if (partItem.getPart() != null) {
 			//说明子部件是半成品
-			claimTree(process, partItem.getPart());
+			claimTree(process, partItem.getPart(), partItem.getQuantity());
 		}
 	}
 
@@ -211,6 +215,10 @@ public class MakebizService
 		MakeStep step = new MakeStep();
 
 		step.setParent(process);
+		step.setModel(stepMode);
+		step.setPlanQuantity(quantity);
+
+		process.addStep(step);
 	}
     }
 

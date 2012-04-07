@@ -90,6 +90,7 @@ public class MakeTask
         if (item.getIndex() == -1)
             item.setIndex(items.size());
 
+        item.setTask(this);
         items.add(item);
     }
 
