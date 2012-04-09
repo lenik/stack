@@ -28,9 +28,6 @@ import com.bee32.sem.people.entity.Person;
 
 /**
  * 工艺流转单明细
- *
- * @author jack
- *
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "make_step_instance_seq", allocationSize = 1)

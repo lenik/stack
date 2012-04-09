@@ -45,6 +45,12 @@ public class StockOrderDto
     }
 
     @Override
+    protected void _copy() {
+        for (StockOrderItemDto item : getItems())
+            item.setParent(this);
+    }
+
+    @Override
     protected void _marshal(AbstractStockItemList<?> _source) {
         super._marshal(_source);
         AbstractStockOrder<?> source = (AbstractStockOrder<?>) _source;

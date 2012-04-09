@@ -11,17 +11,17 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 import com.bee32.plover.orm.cache.Redundant;
-import com.bee32.plover.ox1.color.Blue;
-import com.bee32.plover.ox1.color.UIEntityAuto;
+import com.bee32.plover.ox1.color.Green;
+import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.util.i18n.CurrencyConfig;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 
 @MappedSuperclass
-@Blue
+@Green
 public abstract class AbstractItem
-        extends UIEntityAuto<Long>
+        extends MomentInterval
         implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;

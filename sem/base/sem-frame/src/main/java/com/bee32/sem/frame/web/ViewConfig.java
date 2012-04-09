@@ -30,7 +30,8 @@ public class ViewConfig
             + " {LastPageLink}" //
             + " {RowsPerPageDropdown}";
 
-    String allowTypes = "/(\\.|\\/)(gif|jpe?g|png|docx?|xlsx?|pdf|zip|rar)$/";
+    String allowTypes = "/(\\.|\\/)(gif|jpe?g|png|docx?|xlsx?|pptx?|pdf|zip|rar)$/";
+    String denyTypes = "/(\\.|\\/)(exe|dll|ocx|msi)$/";
     long maxFileSize = 10_000_000;
 
     boolean dynamicDialog = true;

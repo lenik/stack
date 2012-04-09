@@ -86,6 +86,7 @@ public class AbstractStockOrder<Item extends StockOrderItem>
         return StockOrderParameterizedType.INSTANCE;
     }
 
+    @Transient
     @Override
     public StockJob getEnclosingObject() {
         return getJob();
@@ -324,8 +325,8 @@ public class AbstractStockOrder<Item extends StockOrderItem>
         addItem(item);
     }
 
-    public static final IPropertyAccessor<StockOrderSubject> subjectProperty = _property_(AbstractStockOrder.class,
-            "subject");
+    public static final IPropertyAccessor<StockOrderSubject> subjectProperty = _property_(//
+            AbstractStockOrder.class, "subject");
     public static final IPropertyAccessor<BigDecimal> nativeTotalProperty = _property_(//
             AbstractItemList.class, "nativeTotal");
 

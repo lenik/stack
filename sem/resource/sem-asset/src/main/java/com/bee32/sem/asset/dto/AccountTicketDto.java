@@ -26,7 +26,6 @@ public class AccountTicketDto
 
     @Override
     protected void _copy() {
-        super._copy();
         items = CopyUtils.copyList(items, this);
     }
 

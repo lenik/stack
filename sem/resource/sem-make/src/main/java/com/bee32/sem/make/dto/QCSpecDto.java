@@ -13,7 +13,7 @@ import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.make.entity.QCSpec;
 
 public class QCSpecDto
-    extends UIEntityDto<QCSpec, Long> {
+        extends UIEntityDto<QCSpec, Long> {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,7 +27,6 @@ public class QCSpecDto
         text = source.getText();
         if (selection.contains(PARAMETERS))
             parameters = marshalList(QCSpecParameterDto.class, source.getParameters());
-
     }
 
     @Override
@@ -35,13 +34,12 @@ public class QCSpecDto
         target.setText(text);
         if (selection.contains(PARAMETERS))
             mergeList(target, "parameters", parameters);
-
     }
 
     @Override
-    protected void _parse(TextMap map) throws ParseException {
+    protected void _parse(TextMap map)
+            throws ParseException {
         throw new NotImplementedException();
-
     }
 
     @NLength(max = QCSpec.TEXT_LENGTH)
@@ -60,7 +58,5 @@ public class QCSpecDto
     public void setParameters(List<QCSpecParameterDto> parameters) {
         this.parameters = parameters;
     }
-
-
 
 }

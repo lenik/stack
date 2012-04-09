@@ -233,9 +233,7 @@ public class ChanceDto
     }
 
     public boolean removeProduct(WantedProductDto product) {
-        if (!products.remove(product))
-            return false;
-        return true;
+        return products.remove(product);
     }
 
     public ChanceStageDto getStage() {
