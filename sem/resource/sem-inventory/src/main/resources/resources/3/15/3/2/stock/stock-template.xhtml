@@ -112,6 +112,10 @@
                     </p:column>
                 </ui:insert>
 
+                <p:column headerText="状态">
+                    <h:outputText value="#{entry.stateText}" />
+                </p:column>
+
                 <p:column headerText="备注" styleClass="f-wrappable">
                     <h:outputText value="#{entry.description}" />
                 </p:column>
@@ -216,6 +220,11 @@
                 <p:selectOneMenu id="currency" label="币种" value="#{item.price.currencyCode}" style="width: 15em;">
                     <f:selectItem itemValue="" itemLabel="--选择币种--" />
                     <f:selectItems value="#{monetary.currencySelectItems}" />
+                </p:selectOneMenu>
+
+                <h:outputLabel for="state" value="状态" />
+                <p:selectOneMenu id="state" value="#{item.state}" style="width:300px;" label="状态">
+                    <f:selectItems value="#{stock.stockItemStates}" />
                 </p:selectOneMenu>
 
                 <h:outputLabel for="description" value="备注：" />

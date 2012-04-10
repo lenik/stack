@@ -58,4 +58,12 @@ public class StockItemState
     /** 调拨中 */
     public static final StockItemState TRANSFERRING = new StockItemState('M', "transferring");
 
+    /** 合格 */
+    public static final StockItemState QUALIFIED = new StockItemState('Q', "qualified");
+
+    /** 不合格 */
+    public static final StockItemState UNQUALIFIED = new StockItemState('U', "unqualified");
+
+    /** 让步(勉强)／勉强合格，让步接收。 */
+    public static final StockItemState RELUCTANCE = new StockItemState('R', "reluctance");
 }

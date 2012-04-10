@@ -181,4 +181,8 @@ public class StockOrderItemDto
         this.state = state;
     }
 
+    public String getStateText() {
+        return state.getDisplayName();
+    }
+
 }

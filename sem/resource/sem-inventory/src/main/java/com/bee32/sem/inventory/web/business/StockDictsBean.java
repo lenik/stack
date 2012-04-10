@@ -12,6 +12,7 @@ import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.StockLocationDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.MaterialCategory;
+import com.bee32.sem.inventory.entity.StockItemState;
 import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.misc.LazyDTOMap;
@@ -56,6 +57,13 @@ public class StockDictsBean
             }
         }
         return SelectableList.decorate(locations);
+    }
+
+    public List<SelectItem> getStockItemStates() {
+        List<SelectItem> states = new ArrayList<SelectItem>();
+        for (StockItemState s : StockItemState.values())
+            states.add(new SelectItem(s.getValue(), s.getDisplayName()));
+        return states;
     }
 
     /**
