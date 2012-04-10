@@ -1,0 +1,52 @@
+<ui:composition template="/template/primefaces.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
+
+    <ui:define name="title">库存查询</ui:define>
+    <ui:param name="bean" value="#{unqualifiedQueryBean}" />
+    <ui:param name="stock" value="#{stockDictsBean}" />
+
+    <ui:define name="content">
+
+
+        <h:form id="mainForm">
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <h:panelGrid columns="3">
+                        <h:outputLabel for="warehouse" value="仓库：" />
+                        <p:selectOneMenu id="warehouse" label="仓库" value="#{bean.selectedWarehouseId}">
+                            <f:selectItem itemValue="-1" itemLabel="--选择仓库--" />
+                            <f:selectItems value="#{stock.warehouseSelectItems}" />
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                </p:toolbarGroup>
+                <p:toolbarGroup>
+                    <p:separator />
+                    <h:outputText value="时间段：从" />
+                    <p:calendar id="queryDateFrom" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
+                        value="#{bean.queryDateFrom}" showOn="button" />
+                    <h:outputText value="至" />
+                    <p:calendar id="queryDateTo" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
+                        value="#{bean.queryDateTo}" showOn="button" />
+                    <p:separator />
+                    <p:commandButton id="query" value="查询"  update="result" actionListener="#{bean.query}"/>
+                </p:toolbarGroup>
+            </p:toolbar>
+
+            <p:dataTable id="result" value="#{bean.result}" var="entry" resizableColumns="true"
+                rowIndexVar="rowIndex">
+
+                <p:column headerText="序号">
+                    <h:outputText value="#{rowIndex + 1}" />
+                </p:column>
+
+                <p:column headerText="日期" styleClass="f-wrappable">
+                    <h:outputText value="#{entry.material.label}" />
+                </p:column>
+
+
+            </p:dataTable>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

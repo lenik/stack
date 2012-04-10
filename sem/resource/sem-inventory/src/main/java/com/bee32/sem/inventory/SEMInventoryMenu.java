@@ -38,6 +38,7 @@ public class SEMInventoryMenu
     /*    */static MenuNode outsourcingIn = entry(INVENTORY, 81, "outsourcingIn", _("stock/OSP_IN/"));
     /*    */static MenuNode __1 = _separator_(INVENTORY, 100);
     /*    */static MenuNode stockQuery = entry(INVENTORY, 110, "stockQuery", _("query/"));
+    /*    */static MenuNode unqualifiedQuery = entry(INVENTORY, 120, "unqualifiedQuery", _("unqualifiedQuery/"));
     /*    */static MenuNode __2 = _separator_(INVENTORY, 999);
 
     public static MenuNode SETTINGS = menu(INVENTORY, 1000, "settings");
