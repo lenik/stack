@@ -30,8 +30,8 @@ public class SEMPurchaseModuleTest
     @Override
     protected String getLocalHost() {
 //        return "play.lo";
-        return "sems.lo";
-//        return "localhost";
+//        return "sems.lo";
+        return "localhost";
     }
 
     public static void main(String[] args)
