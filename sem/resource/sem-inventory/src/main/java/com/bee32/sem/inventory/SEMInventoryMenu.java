@@ -30,6 +30,7 @@ public class SEMInventoryMenu
     /*    */static MenuNode takeOut = entry(INVENTORY, 21, "takeOut", _stock(StockOrderSubject.TAKE_OUT));
     /*    */static MenuNode factoryTakeIn = entry(INVENTORY, 40, "factoryTakeIn", _stock(StockOrderSubject.FACTORY_IN));
     /*    */static MenuNode factoryTakeOut = entry(INVENTORY, 41, "factoryTakeOut", _stock(StockOrderSubject.FACTORY_OUT));
+    /*    */static MenuNode planOut = entry(INVENTORY, 42, "planOut", _stock(StockOrderSubject.PLAN_OUT));
     /*    */static MenuNode stocktaking = entry(INVENTORY, 60, "stocktaking", _("stock/STKD/"));
     /*    */static MenuNode transferOut = entry(INVENTORY, 70, "transferOut", _("stock/XFER_OUT/"));
     /*    */static MenuNode transferIn = entry(INVENTORY, 71, "transferIn", _("stock/XFER_IN/"));
