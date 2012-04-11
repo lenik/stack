@@ -8,7 +8,6 @@
 
     <ui:define name="content">
 
-
         <h:form id="mainForm">
             <p:toolbar>
                 <p:toolbarGroup>
@@ -40,8 +39,26 @@
                     <h:outputText value="#{rowIndex + 1}" />
                 </p:column>
 
-                <p:column headerText="日期" styleClass="f-wrappable">
-                    <h:outputText value="#{entry.material.label}" />
+                <p:column headerText="日期">
+                    <h:outputText value="#{entry.date}" >
+                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="总数">
+                    <h:outputText value="#{entry.total}" />
+                </p:column>
+
+                <p:column headerText="合格数">
+                    <h:outputText value="#{entry.qualified}" />
+                </p:column>
+
+                <p:column headerText="不合格数">
+                    <h:outputText value="#{entry.unqualified}" />
+                </p:column>
+
+                <p:column headerText="不合格率">
+                    <h:outputText value="#{entry.unqualifiedRatio}" />
                 </p:column>
 
 

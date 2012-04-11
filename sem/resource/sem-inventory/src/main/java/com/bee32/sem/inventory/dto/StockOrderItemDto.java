@@ -29,6 +29,7 @@ public class StockOrderItemDto
     Date expirationDate;
     StockLocationDto location;
     StockItemState state;
+    char stateChar;
 
     public StockOrderItemDto() {
         super();
@@ -181,7 +182,16 @@ public class StockOrderItemDto
         this.state = state;
     }
 
-    public String getStateText() {
+    public char getStateChar() {
+	return state.getValue();
+    }
+
+	public void setStateChar(char stateChar) {
+	this.stateChar = stateChar;
+	state = StockItemState.valueOf(stateChar);
+    }
+
+	public String getStateText() {
         return state.getDisplayName();
     }
 
