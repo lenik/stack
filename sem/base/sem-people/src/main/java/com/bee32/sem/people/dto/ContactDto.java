@@ -3,6 +3,8 @@ package com.bee32.sem.people.dto;
 import javax.free.ParseException;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
@@ -114,6 +116,12 @@ public class ContactDto
         return address;
     }
 
+    public String getAddressWithPostCode() {
+        if(StringUtils.isEmpty(postCode))
+            return address;
+        return address + "(邮编:" + postCode + ")";
+    }
+
     public void setAddress(String address) {
         this.address = TextUtil.normalizeSpace(address);
     }
@@ -180,6 +188,7 @@ public class ContactDto
     public void setQq(String qq) {
         this.qq = TextUtil.normalizeSpace(qq);
     }
+
 
     // @Override
     // protected Integer naturalHashCode() {
