@@ -216,14 +216,14 @@
 
                 <h:outputLabel for="price" value="单价：" />
                 <p:inputText id="price" label="单价" value="#{item.price.value}" />
-                <h:outputLabel for="currency" value="币种" />
+                <h:outputLabel for="currency" value="币种:" />
                 <p:selectOneMenu id="currency" label="币种" value="#{item.price.currencyCode}" style="width: 15em;">
                     <f:selectItem itemValue="" itemLabel="--选择币种--" />
                     <f:selectItems value="#{monetary.currencySelectItems}" />
                 </p:selectOneMenu>
 
-                <h:outputLabel for="state" value="状态" />
-                <p:selectOneMenu id="state" value="#{item.stateChar}" style="width:300px;" label="状态">
+                <h:outputLabel for="state" value="状态:" />
+                <p:selectOneMenu id="state" value="#{item.stateChar}" style="width:10em;" label="状态">
                     <f:selectItems value="#{stock.stockItemStates}" />
                 </p:selectOneMenu>
 
