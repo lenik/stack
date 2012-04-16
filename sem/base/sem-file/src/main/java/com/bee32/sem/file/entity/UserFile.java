@@ -16,9 +16,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.color.UIEntityAuto;
+import com.bee32.sem.people.entity.Party;
 
 /**
  * 用户文件。
@@ -45,6 +47,8 @@ public class UserFile
     Date fileDate;
     Date expiredDate;
     Set<UserFileTagname> tags = new HashSet<UserFileTagname>();
+    User operator;
+    Party party;
 
     Class<?> refType;
     String refId;
@@ -159,6 +163,30 @@ public class UserFile
         if (tags == null)
             throw new NullPointerException("tags");
         this.tags = tags;
+    }
+
+    /**
+     * 经办人
+     */
+    @ManyToOne
+    public User getOperator() {
+        return operator;
+    }
+
+    public void setOperator(User operator) {
+        this.operator = operator;
+    }
+
+    /**
+     * 客户
+     */
+    @ManyToOne
+    public Party getParty() {
+        return party;
+    }
+
+    public void setParty(Party party) {
+        this.party = party;
     }
 
     /**

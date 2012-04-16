@@ -7,6 +7,7 @@ import java.util.List;
 import javax.free.ParseException;
 import javax.persistence.Transient;
 
+import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.UIEntityDto;
@@ -17,6 +18,7 @@ import com.bee32.plover.util.Mime;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.file.web.UserFileController;
+import com.bee32.sem.people.dto.PartyDto;
 
 public class UserFileDto
         extends UIEntityDto<UserFile, Long>
@@ -32,6 +34,8 @@ public class UserFileDto
     Date fileDate;
     Date expiredDate;
     List<UserFileTagnameDto> tags;
+    UserDto operator;
+    PartyDto party;
 
     public UserFileDto() {
         super();
@@ -50,6 +54,8 @@ public class UserFileDto
         expiredDate = source.getExpiredDate();
         if (selection.contains(TAGS))
             tags = mrefList(UserFileTagnameDto.class, 0, source.getTags());
+        operator = mref(UserDto.class, source.getOperator());
+        party = mref(PartyDto.class, source.getParty());
     }
 
     @Override
@@ -61,6 +67,8 @@ public class UserFileDto
         target.setExpiredDate(expiredDate);
         if (selection.contains(TAGS))
             mergeSet(target, "tags", tags);
+        merge(target, "operator", operator);
+        merge(target, "party", party);
     }
 
     @Override
@@ -225,6 +233,22 @@ public class UserFileDto
             sb.append(tag.getName());
         }
         return sb.toString();
+    }
+
+    public UserDto getOperator() {
+        return operator;
+    }
+
+    public void setOperator(UserDto operator) {
+        this.operator = operator;
+    }
+
+    public PartyDto getParty() {
+        return party;
+    }
+
+    public void setParty(PartyDto party) {
+        this.party = party;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.bee32.sem.file.web;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +11,11 @@ import org.primefaces.model.tagcloud.DefaultTagCloudItem;
 import org.primefaces.model.tagcloud.DefaultTagCloudModel;
 import org.primefaces.model.tagcloud.TagCloudModel;
 
+import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.annotation.ForEntity;
+import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.file.dto.UserFileTagnameDto;
 import com.bee32.sem.file.entity.FileBlob;
@@ -19,8 +24,10 @@ import com.bee32.sem.file.entity.UserFileTagname;
 import com.bee32.sem.file.service.IUserFileTagStatService;
 import com.bee32.sem.file.util.UserFileCriteria;
 import com.bee32.sem.frame.search.SearchFragment;
+import com.bee32.sem.misc.IDateCriteriaComposer;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
+import com.bee32.sem.people.dto.PartyDto;
 
 @ForEntity(UserFile.class)
 public class UserFileBean
@@ -30,6 +37,8 @@ public class UserFileBean
 
     UserFileTagnameDto selectedTag;
     Map<Integer, String> searchTags = new LinkedHashMap<Integer, String>();
+
+    PartyDto searchParty;
 
     public UserFileBean() {
         super(UserFile.class, UserFileDto.class, UserFileDto.TAGS);
@@ -146,6 +155,39 @@ public class UserFileBean
 
         tsf.map.put(tagId, tagName);
         searchFragmentsChanged();
+    }
+
+    public PartyDto getSearchParty() {
+        return searchParty;
+    }
+
+    public void setSearchParty(PartyDto searchParty) {
+        this.searchParty = searchParty;
+    }
+
+    public void addPartyRestriction() {
+        if (DTOs.isNull(searchParty))
+            return;
+        addSearchFragment("客户是 " + searchParty.getDisplayName(), //
+                new Equals("party.id", searchParty.getId()));
+        searchParty = null;
+    }
+
+    public void addOperatorRestriction() {
+        if (searchPrincipal == null)
+            return;
+        addSearchFragment("经办人是 " + searchPrincipal.getDisplayName(), //
+                new Equals("operator.id", searchPrincipal.getId()));
+        searchPrincipal = null;
+    }
+
+    public void addFileDateRestriction() {
+        addDateSearchFragment("档案日期为", new IDateCriteriaComposer() {
+            @Override
+            public ICriteriaElement composeDateCriteria(Date begin, Date end) {
+                return CommonCriteria.between("fileDate", begin, end);
+            }
+        });
     }
 
 }

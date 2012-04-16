@@ -20,10 +20,14 @@
         <h:outputStylesheet library="frame" name="table.css" />
         <h:outputScript library="frame" name="switcher.js" target="head" />
 
-        <p:column headerText="存档日期">
+        <p:column headerText="档案日期">
             <h:outputText value="${entry.fileDate}">
                 <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
             </h:outputText>
+        </p:column>
+
+        <p:column headerText="客户">
+            <h:outputText value="${entry.party.displayName}" />
         </p:column>
 
         <p:column headerText="文件" sortBy="${entry.label}" styleClass="f-wrappable" style="min-width: 30em">
@@ -44,41 +48,54 @@
                 <h:outputText value="${entry.description}" />
             </h:panelGrid>
         </p:column>
-    </ui:define>
 
-    <ui:define name="searchPanels.1">
-        <h:outputScript library="3/15" name="searchTag.js" target="head" />
-        <p:panel header="按标签搜索" toggleable="true">
-            <div id="tagCloud" align="center">
-                <p:tagCloud model="${bean.tagCloudModel}" />
-            </div>
-            <p:commandButton id="searchTag" value="限定标签" actionListener="${bean.addTagRestriction}"
-                update="@form, :mainForm" style="display: none" />
-        </p:panel>
-        <script>
-            jQuery('#tagCloud a').click(searchTag);
-        </script>
-        <ui:insert name="searchPanels.2" />
+        <p:column headerText="经办人">
+            <h:outputText value="${entry.operator.displayName}" />
+        </p:column>
     </ui:define>
 
     <ui:define name="dialogs">
         <sem:uploadFileDialog id="createUserFileDialog" var="createUserFileDialog"
             fileUploadListener="${bean.createUserFileListener.handleFileUpload}" update=":mainForm:dataTable" />
-        <sem:chooseUserFileTagDialog id="addTagDialog" var="addTagDialog" target="${bean.selectedTag}"
+        <sem:chooseUserFileTagDialog id="addTag_d" var="addTagDialog" target="${bean.selectedTag}"
             actionListener="${bean.addTag}" update=":editDialog:form" />
+        <icsf:choosePrincipalDialog id="c_operator" var="chooseOperatorDialog" target="${obj.operator}"
+            update=":editDialog:form" stereo="U" />
+        <sem:choosePartyDialog id="c_party" var="choosePartyDialog" target="${obj.party}" update=":editDialog:form" />
+        <sem:choosePartyDialog id="c_searchParty" var="choosePartyToSearchDialog" target="${bean.searchParty}"
+            update=":searchForm" />
     </ui:define>
 
     <ui:define name="editDialogContent">
         <c:set var="obj" value="${bean.openedObject}" />
         <h:panelGrid columns="2" columnClasses="field-label, field-content">
-            <h:outputText value="文件名" />
-            <p:inputText value="${obj.fileName.base}" label="文件名" />
+            <h:outputText value="档案日期：" />
+            <p:calendar id="date" label="档案日期" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="${obj.fileDate}"
+                showOn="button" />
 
-            <h:outputText value="标题" />
-            <p:inputText value="${obj.label}" label="标题" />
+            <h:outputText value="客户：" />
+            <h:panelGroup>
+                <p:inputText label="客户" value="${obj.party.displayName}" readonly="true" />
+                <p:commandButton value="..." onclick="choosePartyDialog.show()" disabled="${not bean.editing}" />
+            </h:panelGroup>
 
-            <h:outputText value="描述信息" />
-            <p:inputText value="${obj.description}" label="描述信息" />
+            <h:outputText value="文件名：" />
+            <p:inputText label="文件名" value="${obj.fileName.base}" />
+
+            <h:outputText value="标题：" />
+            <p:inputText label="标题" value="${obj.label}" />
+
+            <h:outputText value="描述信息：" />
+            <p:inputText label="描述信息" value="${obj.description}" />
+
+            <h:outputText value="经办人" />
+            <h:panelGroup>
+                <p:inputText label="经办人" value="${obj.operator.displayName}" readonly="true" />
+                <p:commandButton value="..." disabled="${not bean.editing}" oncomplete="chooseOperatorDialog.show()">
+                    <f:setPropertyActionListener target="${choosePrincipalDialogBean.stereo}"
+                        value="U" />
+                </p:commandButton>
+            </h:panelGroup>
         </h:panelGrid>
 
         <p:fieldset legend="标签" toggleable="false">
@@ -102,6 +119,45 @@
             </p:dataTable>
             <p:commandButton value="添加标签" update="tagTable" onclick="addTagDialog.show()" />
         </p:fieldset>
+    </ui:define>
+
+    <ui:define name="searchPanels.1">
+        <ui:insert name="searchPanel.party">
+            <p:panel header="按涉众搜索" toggleable="true">
+                <div align="center">
+                    <p:inputText id="party" readonly="true" value="${bean.searchParty.displayName}" />
+                    <p:commandButton id="chooseParty" value="..." onclick="choosePartyToSearchDialog.show()" />
+                    <p:commandButton id="filterParty" value="限定客户" actionListener="${bean.addPartyRestriction}"
+                        update="@form, ${_searchUpdates}" rendered="${not baseEntity}" />
+                    <ui:insert name="searchPanel.party.1" />
+                </div>
+            </p:panel>
+        </ui:insert>
+
+        <h:outputScript library="3/15" name="searchTag.js" target="head" />
+        <p:panel header="按标签搜索" toggleable="true">
+            <div id="tagCloud" align="center">
+                <p:tagCloud model="${bean.tagCloudModel}" />
+            </div>
+            <p:commandButton id="searchTag" value="限定标签" actionListener="${bean.addTagRestriction}"
+                update="@form, :mainForm" style="display: none" />
+        </p:panel>
+        <script>
+            jQuery('#tagCloud a').click(searchTag);
+        </script>
+        <ui:insert name="searchPanels.2" />
+    </ui:define>
+
+    <ui:define name="searchPanel.time.1">
+        <p:commandButton id="filterFileDate" value="限定档案时间" actionListener="${bean.addFileDateRestriction}"
+            update="@form, ${_searchUpdates}" />
+        <ui:insert name="searchPanel.time.2" />
+    </ui:define>
+
+    <ui:define name="searchPanel.principal.1">
+        <p:commandButton id="filterOperator" value="限定经办人" actionListener="${bean.addOperatorRestriction}"
+            update="@form, ${_searchUpdates}" rendered="${not baseEntity}" />
+        <ui:insert name="searchPanel.principal.2" />
     </ui:define>
 
 </ui:composition>
