@@ -180,7 +180,7 @@
                 <div align="center">
                     <p:inputText id="principal" readonly="true" value="${bean.searchPrincipal.displayName}" />
                     <p:commandButton id="choosePrincipal" value="..." onclick="choosePrincipalToSearchDialog.show()" />
-                    <p:commandButton id="filterOwner" value="限定所有者" actionListener="${bean.addOwnerRestriction}"
+                    <p:commandButton id="filterOwner" value="限定属主" actionListener="${bean.addOwnerRestriction}"
                         update="@form, ${_searchUpdates}" rendered="${not baseEntity}" />
                     <ui:insert name="searchPanel.principal.1" />
                 </div>
