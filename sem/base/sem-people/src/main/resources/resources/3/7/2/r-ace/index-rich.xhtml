@@ -30,7 +30,7 @@
     </ui:define>
 
     <ui:define name="editDialogs">
-        <icsf:editACEDialog id="editDialog" var="editDialog" value="${obj}" _value="${obj}"
+        <icsf:editACEDialog id="editDialog" var="editdlg" value="${obj}" _value="${obj}"
             readonly="${not bean.editing}" actionListener="${bean.save}" update=":mainForm">
             <f:facet name="ext">
                 <tr>
