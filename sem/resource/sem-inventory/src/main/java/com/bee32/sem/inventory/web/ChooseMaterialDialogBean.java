@@ -82,6 +82,7 @@ public class ChooseMaterialDialogBean
 
     public void setCategoryId(Integer materialCategoryId) {
         this.categoryId = materialCategoryId;
+        this.refreshRowCount();
     }
 
 }

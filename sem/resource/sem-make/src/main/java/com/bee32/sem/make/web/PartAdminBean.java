@@ -8,6 +8,7 @@ import com.bee32.plover.arch.util.IEnclosingContext;
 import com.bee32.plover.arch.util.dto.Fmask;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.criteria.hibernate.Limit;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.frame.ui.ListMBean;
@@ -67,29 +68,27 @@ public class PartAdminBean
     public void setPartMaterial() {
         PartDto part = getOpenedObject();
         // 检查此物料(成品)是否已经有bom存在
-        List<Part> partList = ctx.data.access(Part.class).list(new Equals("target.id", selectedMaterial.getId()));
-
-        if (partList != null & partList.size() > 0) {
-            uiLogger.info("此物料已经存在BOM信息,继续新增的话,此物料将存在多个BOM信息");
+        List<Part> partList = ctx.data.access(Part.class).list(new Limit(0, 3),//
+                new Equals("target.id", selectedMaterial.getId()));
+        if (!partList.isEmpty()) {
+            uiLogger.error("此物料已经存在BOM信息 (" + partList.get(0).getId() + "...)");
             return;
         }
         part.setTarget(selectedMaterial);
         part.setCategory(selectedMaterial.getCategory());
-
         selectedMaterial = null;
     }
 
     public void setPartItemMaterial() {
         PartItemDto item = childrenMBean.getOpenedObject();
-        List<Part> materialsIsPart = ctx.data.access(Part.class)
-                .list(new Equals("target.id", selectedMaterial.getId()));
-        if (materialsIsPart != null && materialsIsPart.size() > 0) {
-            uiLogger.info("此物料是成品或半成品，已经存在BOM，请用[组件是半成品]标签页进行查找选择!!!");
+        List<Part> materialsIsPart = ctx.data.access(Part.class).list(new Limit(0, 3),//
+                new Equals("target.id", selectedMaterial.getId()));
+        if (!materialsIsPart.isEmpty()) {
+            uiLogger.error("此物料是成品或半成品，已经存在BOM，请用[组件是半成品]标签页进行查找选择!");
             return;
         }
         item.setMaterial(selectedMaterial);
         // item.setPart(null);
-
         selectedMaterial = null;
     }
 
@@ -108,7 +107,6 @@ public class PartAdminBean
         }
         calcPriceResult = price;
     }
-
 
     public BigDecimal getCalcPriceResult() {
         return calcPriceResult;
@@ -152,8 +150,6 @@ public class PartAdminBean
         openSelection(Fmask.F_MORE);
     }
 
-
-
     /*************************************************************************
      * Section: MBeans
      *************************************************************************/
@@ -166,14 +162,15 @@ public class PartAdminBean
     final ListMBean<MakeStepInputDto> stepInputsMBean = ListMBean.fromEL(stepsMBean, //
             "openedObject.inputs", MakeStepInputDto.class);
 
-    class QCSpecContext implements IEnclosingContext, Serializable {
+    class QCSpecContext
+            implements IEnclosingContext, Serializable {
 
         private static final long serialVersionUID = 1L;
 
-		@Override
-	public Object getEnclosingObject() {
-	    return stepsMBean.getOpenedObject().getQcSpec();
-	}
+        @Override
+        public Object getEnclosingObject() {
+            return stepsMBean.getOpenedObject().getQcSpec();
+        }
 
     }
 
@@ -193,10 +190,10 @@ public class PartAdminBean
     }
 
     public ListMBean<QCSpecParameterDto> getQcSpecParasMBean() {
-	return qcSpecParasMBean;
+        return qcSpecParasMBean;
     }
 
-	/*************************************************************************
+    /*************************************************************************
      * Section: Persistence
      *************************************************************************/
     @Override
@@ -220,7 +217,7 @@ public class PartAdminBean
             if (partDto.isNewCreated())
                 onCreatePart(partDto);
 
-            for(MakeStepModelDto step : partDto.getSteps()) {
+            for (MakeStepModelDto step : partDto.getSteps()) {
                 step.setOutput(partDto);
             }
         }
@@ -260,6 +257,5 @@ public class PartAdminBean
         if (category != null)
             category.setPartCount(category.getPartCount() - 1);
     }
-
 
 }
