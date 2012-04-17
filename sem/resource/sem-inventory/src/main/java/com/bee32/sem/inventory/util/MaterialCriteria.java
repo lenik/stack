@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.hibernate.criterion.MatchMode;
+
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.LeftHand;
@@ -56,6 +58,18 @@ public class MaterialCriteria
             vals.add(c.getValue());
         }
         return in("_materialType", vals);
+    }
+
+    public static CriteriaElement modelSpecLike(String pattern, boolean ignoreCase) {
+        if (pattern == null)
+            return null;
+        pattern = pattern.trim();
+        if (pattern.isEmpty())
+            return null;
+        if (ignoreCase)
+            return likeIgnoreCase("modelSpec", pattern, MatchMode.ANYWHERE);
+        else
+            return like("modelSpec", pattern, MatchMode.ANYWHERE);
     }
 
 }

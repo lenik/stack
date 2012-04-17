@@ -13,16 +13,22 @@ public class BomCriteria
 
     @LeftHand(Part.class)
     public static ICriteriaElement targetLabel(String pattern, boolean ignoreCase) {
-        return compose(
-                alias("target", "material"), //
-                ignoreCase ? likeIgnoreCase("material.label", pattern, MatchMode.ANYWHERE) : like("material.label",
-                        pattern, MatchMode.ANYWHERE));
+        return compose(alias("target", "material"), //
+                ignoreCase ? likeIgnoreCase("material.label", pattern, MatchMode.ANYWHERE) //
+                        : like("material.label", pattern, MatchMode.ANYWHERE));
     }
 
     @LeftHand(Part.class)
     public static ICriteriaElement targetCategory(int materialCategoryId) {
         return compose(alias("target", "material"), //
                 new Equals("material.category.id", materialCategoryId));
+    }
+
+    @LeftHand(Part.class)
+    public static ICriteriaElement targetModelSpec(String pattern, boolean ignoreCase) {
+        return compose(alias("target", "material"), //
+                ignoreCase ? likeIgnoreCase("material.modelSpec", pattern, MatchMode.ANYWHERE) //
+                        : like("material.modelSpec", pattern, MatchMode.ANYWHERE));
     }
 
     @LeftHand(Part.class)
@@ -35,6 +41,5 @@ public class BomCriteria
         return new Equals("target.id", materialId);
 
     }
-
 
 }

@@ -85,4 +85,14 @@ public class ChooseMaterialDialogBean
         this.refreshRowCount();
     }
 
+    /*************************************************************************
+     * Section: Search
+     *************************************************************************/
+    public void addModelSpecRestriction() {
+        addSearchFragment("规格型号含有 " + searchPattern, //
+                // UIEntity doesn't have name: CommonCriteria.namedLike(pattern), //
+                MaterialCriteria.modelSpecLike(searchPattern, true));
+        searchPattern = null;
+    }
+
 }

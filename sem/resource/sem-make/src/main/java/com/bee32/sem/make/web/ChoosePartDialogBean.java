@@ -23,6 +23,17 @@ public class ChoosePartDialogBean
         super(Part.class, PartDto.class, 0);
     }
 
+    public String getMode() {
+        return mode;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
+    }
+
+    /*************************************************************************
+     * Section: Search
+     *************************************************************************/
     @Override
     public void addNameOrLabelRestriction() {
         addSearchFragment("名称含有 " + searchPattern, Or.of(//
@@ -31,11 +42,11 @@ public class ChoosePartDialogBean
         searchPattern = null;
     }
 
-    public String getMode() {
-        return mode;
+    public void addModelSpecRestriction() {
+        addSearchFragment("规格型号含有 " + searchPattern, //
+                // UIEntity doesn't have name: CommonCriteria.namedLike(pattern), //
+                BomCriteria.targetModelSpec(searchPattern, true));
+        searchPattern = null;
     }
 
-    public void setMode(String mode) {
-        this.mode = mode;
-    }
 }

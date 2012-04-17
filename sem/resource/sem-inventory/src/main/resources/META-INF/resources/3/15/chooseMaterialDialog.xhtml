@@ -49,6 +49,13 @@
                     <h:outputText value="${entry.barCode}" />
                 </p:column>
             </ui:define>
+
+            <ui:define name="searchPanel.keyword.1">
+                <p:commandButton id="filterModelSpec" value="限定规格型号" actionListener="${dialogBean.addModelSpecRestriction}"
+                    update="searchForm, :${dialogForm}" />
+                <ui:insert name="searchPanel.keyword.2" />
+            </ui:define>
+
         </ui:decorate>
     </cc:implementation>
 </html>
