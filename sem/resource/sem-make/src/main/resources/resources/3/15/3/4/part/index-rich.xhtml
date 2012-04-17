@@ -14,12 +14,8 @@
     <ui:param name="stepInputObj" value="#{bean.stepInputsMBean.openedObject}" />
 
     <ui:define name="toolbar.right.1">
-        <p:commandButton
-            value="BOM树"
-            oncomplete="bomTreeDialog.show();" rendered="${readable != null ? readable : true}"
-            actionListener="#{bean.loadBomTree}"
-            update=":bomTreeForm"
-            disabled="${not bean.selected}"/>
+        <p:commandButton value="BOM树" oncomplete="bomTreeDialog.show();" rendered="${readable != null ? readable : true}"
+            actionListener="#{bean.loadBomTree}" update=":bomTreeForm" disabled="${not bean.selected}" />
     </ui:define>
 
     <ui:define name="sideBarW">
@@ -74,6 +70,8 @@
                             update=":c_material:form">
                             <f:setPropertyActionListener target="#{chooseMaterialDialogBean.materialType}"
                                 value="1" />
+                            <f:setPropertyActionListener target="#{chooseMaterialDialogBean.categoryId}"
+                                value="#{bean.categoryTree.selectedId}" />
                         </p:commandButton>
                     </t:panelGroup>
 
@@ -150,7 +148,7 @@
             target="#{bean.selectedMaterial}" actionListener="#{bean.setPartItemMaterial}" update=":childrenEditView:editForm:body" />
         <sem:chooseMakeStepNameDialog id="c_makeStepName" header="选择标准工艺" var="chooseMakeStepNameDialog"
             target="#{stepObj.stepName}" update=":stepsView:editForm:stepEditTab:makeStepName" />
-        <sem:chooseMaterialDialog id="c_setpInputMaterial" header="选择材料" var="chooseStepInputMaterialDialog"
+        <sem:chooseMaterialDialog id="c_stepInput" header="选择材料" var="chooseStepInputMaterialDialog"
             target="#{stepInputObj.material}" update=":stepInputEditView:editForm:material" />
 
 
@@ -164,6 +162,8 @@
                     <p:commandButton id="itemMaterial" value="选择原材料" oncomplete="chooseItemMaterialDialog.show()">
                         <f:setPropertyActionListener target="#{chooseMaterialDialogBean.materialType}"
                             value="2" />
+                        <f:setPropertyActionListener target="#{chooseMaterialDialogBean.categoryId}"
+                            value="#{null}" />
                     </p:commandButton>
                 </t:panelGroup>
                 <h:outputLabel for="valid" value="是否有效" />
@@ -192,21 +192,21 @@
         <p:dialog id="d_bomTree" header="BOM树" widgetVar="bomTreeDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
             <h:form id="bomTreeForm">
                 <p:treeTable id="bomTree" value="#{bean.bomTree.rootNode}" var="entry">
-                        <p:column headerText="物料" sortBy="#{entry.material.label}">
-                            <h:outputText value="#{entry.material.label}" />
-                        </p:column>
-                        <p:column headerText="规格型号" sortBy="#{entry.material.modelSpec}">
-                            <h:outputText value="#{entry.material.modelSpec}" />
-                        </p:column>
-                        <p:column headerText="数量">
-                            <h:outputText value="#{entry.quantity}" />
-                        </p:column>
-                        <p:column headerText="设置工艺">
-                            <p:commandButton value="设置" rendered="#{entry.makeStep}" oncomplete="stepListDialog.show();">
-                                <f:setPropertyActionListener target="#{bean.makeStepTarget}"
-                                    value="#{entry}" />
-                            </p:commandButton>
-                        </p:column>
+                    <p:column headerText="物料" sortBy="#{entry.material.label}">
+                        <h:outputText value="#{entry.material.label}" />
+                    </p:column>
+                    <p:column headerText="规格型号" sortBy="#{entry.material.modelSpec}">
+                        <h:outputText value="#{entry.material.modelSpec}" />
+                    </p:column>
+                    <p:column headerText="数量">
+                        <h:outputText value="#{entry.quantity}" />
+                    </p:column>
+                    <p:column headerText="设置工艺">
+                        <p:commandButton value="设置" rendered="#{entry.makeStep}" oncomplete="stepListDialog.show();">
+                            <f:setPropertyActionListener target="#{bean.makeStepTarget}"
+                                value="#{entry}" />
+                        </p:commandButton>
+                    </p:column>
 
                 </p:treeTable>
                 <div align="right">
@@ -216,27 +216,25 @@
         </p:dialog>
 
 
-        <fr:listView id="stepsView" header="工艺明细" style="dialog"
-            mbean="#{bean.stepsMBean}" indexDialogVar="stepListDialog">
+        <fr:listView id="stepsView" header="工艺明细" style="dialog" mbean="#{bean.stepsMBean}" indexDialogVar="stepListDialog">
             <f:facet name="columns">
                 <p:column headerText="名称">
-                    <h:outputText value="#{entry.stepName.label}"/>
+                    <h:outputText value="#{entry.stepName.label}" />
                 </p:column>
                 <p:column headerText="顺序">
-                    <h:outputText value="#{entry.order}"/>
+                    <h:outputText value="#{entry.order}" />
                 </p:column>
                 <p:column headerText="耗费时间(分钟)">
-                    <h:outputText value="#{entry.consumeTime}"/>
+                    <h:outputText value="#{entry.consumeTime}" />
                 </p:column>
                 <p:column headerText="标准小时工资">
-                    <h:outputText value="#{entry.oneHourWage}"/>
+                    <h:outputText value="#{entry.oneHourWage}" />
                 </p:column>
             </f:facet>
 
             <f:facet name="index-buttons.right">
-                <p:commandButton value="保存" actionListener="#{bean.save}" oncomplete="stepListDialog.hide();"/>
+                <p:commandButton value="保存" actionListener="#{bean.save}" oncomplete="stepListDialog.hide();" />
             </f:facet>
-
 
             <p:tabView id="stepEditTab">
                 <p:tab title="基本信息">
@@ -245,44 +243,44 @@
 
                         <h:outputText value="工艺名称:" />
                         <t:panelGroup colspan="3">
-                            <p:inputText id="makeStepName" value="#{item.stepName.label}" readonly="true"/>
+                            <p:inputText id="makeStepName" value="#{item.stepName.label}" readonly="true" />
                             <p:commandButton value="..." oncomplete="chooseMakeStepNameDialog.show()" />
                         </t:panelGroup>
 
-                        <h:outputText value="顺序:"/>
-                        <p:inputText value="#{item.order}" label="顺序"/>
-                        <h:outputText value="是否质检:"/>
-                        <p:selectBooleanCheckbox value="#{item.qualityControlled}" label="是否质检"/>
+                        <h:outputText value="顺序:" />
+                        <p:inputText value="#{item.order}" label="顺序" />
+                        <h:outputText value="是否质检:" />
+                        <p:selectBooleanCheckbox value="#{item.qualityControlled}" label="是否质检" />
 
-                        <h:outputText value="耗费时间(分钟):"/>
-                        <p:inputText value="#{item.consumeTime}" label="耗费时间"/>
-                        <h:outputText value="标准小时工资:"/>
-                        <p:inputText value="#{item.oneHourWage}" label="标准小时工资"/>
+                        <h:outputText value="耗费时间(分钟):" />
+                        <p:inputText value="#{item.consumeTime}" label="耗费时间" />
+                        <h:outputText value="标准小时工资:" />
+                        <p:inputText value="#{item.oneHourWage}" label="标准小时工资" />
 
-                        <h:outputText value="电费:"/>
-                        <p:inputText value="#{item.electricityFee}" label="电费"/>
-                        <h:outputText value="设备费:"/>
-                        <p:inputText value="#{item.equipmentCost}" label="设备费"/>
+                        <h:outputText value="电费:" />
+                        <p:inputText value="#{item.electricityFee}" label="电费" />
+                        <h:outputText value="设备费:" />
+                        <p:inputText value="#{item.equipmentCost}" label="设备费" />
 
-                        <h:outputText value="其他费用:"/>
-                        <p:inputText value="#{item.otherFee}" label="其他费用"/>
-                        <h:outputText value="起用时间:"/>
-                        <p:calendar pattern="yyyy-MM-dd" value="#{item.validateTime}"
-                            navigator="true" locale="zh_CN" showOn="button" label="起用时间" />
+                        <h:outputText value="其他费用:" />
+                        <p:inputText value="#{item.otherFee}" label="其他费用" />
+                        <h:outputText value="起用时间:" />
+                        <p:calendar pattern="yyyy-MM-dd" value="#{item.validateTime}" navigator="true"
+                            locale="zh_CN" showOn="button" label="起用时间" />
 
-                        <h:outputText value="设备描述:"/>
+                        <h:outputText value="设备描述:" />
                         <t:panelGroup colspan="3">
-                            <p:inputTextarea value="#{item.equipment}" rows="5" cols="30" label="设备描述"/>
+                            <p:inputTextarea value="#{item.equipment}" rows="5" cols="30" label="设备描述" />
                         </t:panelGroup>
 
-                        <h:outputText value="操作描述:"/>
+                        <h:outputText value="操作描述:" />
                         <t:panelGroup colspan="3">
-                            <p:inputTextarea value="#{item.operation}" rows="5" cols="30" label="操作描述"/>
+                            <p:inputTextarea value="#{item.operation}" rows="5" cols="30" label="操作描述" />
                         </t:panelGroup>
 
-                        <h:outputText value="质量规范描述:"/>
+                        <h:outputText value="质量规范描述:" />
                         <t:panelGroup colspan="3">
-                            <p:inputTextarea value="#{item.qcSpec.text}" rows="5" cols="30" label="质量规范描述"/>
+                            <p:inputTextarea value="#{item.qcSpec.text}" rows="5" cols="30" label="质量规范描述" />
                         </t:panelGroup>
 
                     </t:panelGrid>
@@ -294,10 +292,10 @@
                         mbean="#{bean.stepInputsMBean}" nested="true" readonly="#{not bean.editing}">
                         <f:facet name="columns">
                             <p:column headerText="材料(物料)">
-                                <h:outputText value="#{entry.material.label}"/>
+                                <h:outputText value="#{entry.material.label}" />
                             </p:column>
                             <p:column headerText="数量" styleClass="f-right">
-                                <h:outputText value="#{entry.quantity}"/>
+                                <h:outputText value="#{entry.quantity}" />
                             </p:column>
                         </f:facet>
                     </fr:listView>
@@ -308,10 +306,10 @@
                         mbean="#{bean.qcSpecParasMBean}" nested="true" readonly="#{not bean.editing}">
                         <f:facet name="columns">
                             <p:column headerText="质检内容">
-                                <h:outputText value="#{entry.label}"/>
+                                <h:outputText value="#{entry.label}" />
                             </p:column>
                             <p:column headerText="标准值" styleClass="f-right">
-                                <h:outputText value="#{entry.value}"/>
+                                <h:outputText value="#{entry.value}" />
                             </p:column>
                         </f:facet>
                     </fr:listView>
@@ -320,44 +318,43 @@
             </p:tabView>
         </fr:listView>
 
-        <fr:listView id="stepInputEditView" header="工艺消耗材料编辑"
-            style="editDialog"
-            indexView=":stepsView:editForm:stepEditTab:stepInputIndexView"
-            mbean="#{bean.stepInputsMBean}" readonly="#{not bean.editing}">
+        <fr:listView id="stepInputEditView" header="工艺消耗材料编辑" style="editDialog"
+            indexView=":stepsView:editForm:stepEditTab:stepInputIndexView" mbean="#{bean.stepInputsMBean}" readonly="#{not bean.editing}">
             <t:panelGrid columns="2">
 
                 <h:outputText value="材料(物料):" />
                 <t:panelGroup>
-                    <p:inputText id="material" value="#{item.material.label}" label="材料(物料)"/>
-                    <p:commandButton value="..." oncomplete="chooseStepInputMaterialDialog.show()"/>
+                    <p:inputText id="material" value="#{item.material.label}" label="材料(物料)" />
+                    <p:commandButton value="..." oncomplete="chooseStepInputMaterialDialog.show()">
+                        <f:setPropertyActionListener target="#{chooseMaterialDialogBean.materialType}"
+                            value="#{null}" />
+                        <f:setPropertyActionListener target="#{chooseMaterialDialogBean.categoryId}"
+                            value="#{null}" />
+                    </p:commandButton>
                 </t:panelGroup>
 
                 <h:outputText value="数量:" />
-                <p:inputText value="#{item.quantity}" label="数量"/>
+                <p:inputText value="#{item.quantity}" label="数量" />
 
             </t:panelGrid>
         </fr:listView>
 
-        <fr:listView id="qcSpecParaEditView" header="质检标准编辑"
-            style="editDialog"
-            indexView=":stepsView:editForm:stepEditTab:qcSpecParaIndexView"
-            mbean="#{bean.qcSpecParasMBean}" readonly="#{not bean.editing}">
+        <fr:listView id="qcSpecParaEditView" header="质检标准编辑" style="editDialog"
+            indexView=":stepsView:editForm:stepEditTab:qcSpecParaIndexView" mbean="#{bean.qcSpecParasMBean}" readonly="#{not bean.editing}">
             <t:panelGrid columns="2">
 
                 <h:outputText value="质检内容:" />
-                <p:inputText value="#{item.label}" label="质检内容"/>
+                <p:inputText value="#{item.label}" label="质检内容" />
 
                 <h:outputText value="标准值:" />
-                <p:inputText value="#{item.value}" label="标准值"/>
+                <p:inputText value="#{item.value}" label="标准值" />
 
                 <h:outputText value="标准描述:" />
-                <p:inputTextarea value="#{item.description}" rows="5" cols="30" label="标准描述"/>
+                <p:inputTextarea value="#{item.description}" rows="5" cols="30" label="标准描述" />
 
             </t:panelGrid>
         </fr:listView>
 
-
     </ui:define>
-
 
 </ui:composition>
