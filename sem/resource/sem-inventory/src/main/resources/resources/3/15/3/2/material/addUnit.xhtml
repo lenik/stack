@@ -29,6 +29,14 @@
                     <p:inputText value="#{addUnitBean.unit.scale}" label="倍率"/>
                 </t:panelGroup>
 
+                <h:outputText value="单位提示:" />
+                <t:panelGroup colspan="2">
+                    <t:panelGrid columns="2">
+                        <p:inputText value="#{addUnitBean.unit.hint}" label="单位提示" />
+                        <h:outputText value="(重量,长度等)" />
+                    </t:panelGrid>
+                </t:panelGroup>
+
                 <h:panelGroup colspan="3">
                     <p:commandButton value="添加" actionListener="#{addUnitBean.addUnit}" update="#{update}"
                         oncomplete="addUnitDialog.hide();" />

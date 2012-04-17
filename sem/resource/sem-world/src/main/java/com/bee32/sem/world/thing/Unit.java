@@ -19,7 +19,7 @@ public class Unit
 
     Unit stdUnit;
     Double scale;
-    String hint;
+    String hint = "数量";
 
     public Unit() {
         super();
