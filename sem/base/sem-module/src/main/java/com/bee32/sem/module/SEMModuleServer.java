@@ -23,7 +23,7 @@ public class SEMModuleServer
 
     @Override
     protected int getRefreshPeriod() {
-        return 3600;
+        return 60; // 1 minute
     }
 
     @Override
