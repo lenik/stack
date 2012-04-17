@@ -183,6 +183,12 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
         if (entities == null)
             return;
 
+        // 记录集安全控制
+
+        // 管理权可以跳过记录集安全控制。
+        if (grantedPerm.isAdmin())
+            return;
+
         Set<Integer> effectiveAcls = SessionUser.getInstance().getACLs(requiredPermission);
         for (E entity : entities)
             if (entity instanceof CEntity<?>) {
@@ -191,13 +197,18 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
                 if (acl == null)
                     continue;
                 if (!effectiveAcls.contains(acl)) {
+                    User owner = ce.getOwner();
+                    String ownerName = owner == null ? "（无属主）" : owner.getDisplayName();
                     String message = String.format(//
                             // "User %s can't access %s. " + //
                             // "ACL rejected, required permission is %s", //
-                            "由于安全策略限制，用户 %s 不能访问 %s。 需要权限为 %s。", //
+                            "由于记录安全限制(策略 %d)，用户 %s 不能对记录 %s - %s。" + //
+                                    "请联系记录属主 %s 调整记录安全策略，或联系系统管理员。", //
+                            acl, //
                             currentUser.getDisplayName(), //
                             ClassUtil.getParameterizedTypeName(entity) + ": " + ce.getEntryLabel(), //
-                            requiredPermission.getReadableString());
+                            requiredPermission.getReadableString(), //
+                            ce.getOwner().getDisplayName());
                     AccessControlException e = new AccessControlException(message);
                     e.setResourceType(entityType);
                     e.setRequiredPermission(requiredPermission);
@@ -205,4 +216,5 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
                 }
             }
     }
+
 }
