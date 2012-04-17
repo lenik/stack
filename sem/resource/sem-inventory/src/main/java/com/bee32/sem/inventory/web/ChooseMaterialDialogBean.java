@@ -7,6 +7,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.Material;
@@ -22,6 +23,7 @@ public class ChooseMaterialDialogBean
     static Logger logger = LoggerFactory.getLogger(ChooseMaterialDialogBean.class);
 
     Integer materialType = null;
+    Integer categoryId;
 
     public ChooseMaterialDialogBean() {
         super(Material.class, MaterialDto.class, 0);
@@ -47,6 +49,8 @@ public class ChooseMaterialDialogBean
                 break;
             }
         }
+        if (categoryId != null && categoryId != -1)
+            elements.add(new Equals("category.id", categoryId));
     }
 
     /**
@@ -67,6 +71,17 @@ public class ChooseMaterialDialogBean
     public void setMaterialType(Integer materialType) {
         this.materialType = materialType;
         this.refreshRowCount();
+    }
+
+    /**
+     * 限制物料分类
+     */
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer materialCategoryId) {
+        this.categoryId = materialCategoryId;
     }
 
 }
