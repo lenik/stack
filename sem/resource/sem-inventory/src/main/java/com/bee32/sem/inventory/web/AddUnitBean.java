@@ -40,7 +40,8 @@ public class AddUnitBean
 
     public void addUnit() {
         try {
-            ctx.data.access(Unit.class).saveOrUpdate(unit.unmarshal());
+            Unit _unit = unit.unmarshal();
+            ctx.data.access(Unit.class).saveOrUpdate(_unit);
             uiLogger.info("保存成功!");
         } catch (Exception e) {
             uiLogger.error("添加单位失败", e);
