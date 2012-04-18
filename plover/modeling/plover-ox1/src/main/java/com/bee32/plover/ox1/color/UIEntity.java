@@ -18,7 +18,7 @@ public abstract class UIEntity<K extends Serializable>
 
     private static final long serialVersionUID = 1L;
 
-    public static final int LABEL_LENGTH = 40;
+    public static final int LABEL_LENGTH = 100;
     public static final int DESCRIPTION_LENGTH = 200;
 
     protected String label;

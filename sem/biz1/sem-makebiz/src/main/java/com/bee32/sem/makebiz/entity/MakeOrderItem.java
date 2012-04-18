@@ -32,8 +32,8 @@ public class MakeOrderItem
 
     private static final long serialVersionUID = 1L;
 
-    public static final int EXT_PROD_NAME_LENGTH = 30;
-    public static final int EXT_SPEC_LENGTH = 30;
+    public static final int EXT_PROD_NAME_LENGTH = 100;
+    public static final int EXT_SPEC_LENGTH = 200;
 
     MakeOrder parent;
     Part part;

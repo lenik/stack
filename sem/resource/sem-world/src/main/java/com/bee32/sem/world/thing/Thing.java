@@ -25,7 +25,7 @@ public abstract class Thing<X extends XPool<?>>
     public static final int SERIAL_LENGTH = 32;
     public static final int UNIT_HINT_LENGTH = Unit.HINT_LENGTH;
     public static final int BARCODE_LENGTH = 30;
-    public static final int MODELSPEC_LENGTH = 40;
+    public static final int MODELSPEC_LENGTH = 200;
 
     String serial;
     String barCode;
