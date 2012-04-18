@@ -73,8 +73,11 @@ public class BomTreeModel
             }
 
             TreeNode childNode = new DefaultTreeNode(bomTreeNode.getIdString(), bomTreeNode, parentNode);
-            if(childPart != null && (!DTOs.isNull(childPart)))
+            if(childPart != null && (!DTOs.isNull(childPart))) {
+                childPart = reload(childPart, PartDto.CHILDREN);
                 buildTree(childPart, childNode);
+            }
+
         }
     }
 
