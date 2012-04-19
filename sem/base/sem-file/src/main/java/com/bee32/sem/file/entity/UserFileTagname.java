@@ -15,7 +15,7 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 
 /**
- * 用户用语文件分类的标签。
+ * 用户用于文件分类的标签。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "user_file_tagname_seq", allocationSize = 1)
