@@ -114,7 +114,7 @@ public class CommonCriteria
 
     public static CriteriaElement beginEndDateBetween(Date beginTime, Date endTime) {
         CriteriaElement _begin = or(isNull("beginTime"), _greaterOrEquals("beginTime", beginTime));
-        CriteriaElement _end = or(isNull("endTime"), _lessThan("endTime", beginTime));
+        CriteriaElement _end = or(isNull("endTime"), _lessThan("endTime", endTime));
         if (_begin == null)
             return _end;
         if (_end == null)

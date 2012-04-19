@@ -61,17 +61,20 @@ public enum DateRangeTemplate {
     }
 
     public Date getBegin(Date date) {
+        Date beginDate;
         if (truncated) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
             truncateBegin(calendar);
-            return calendar.getTime();
+            beginDate = calendar.getTime();
         } else {
-            return new Date(date.getTime() - duration);
+            beginDate = new Date(date.getTime() - duration);
         }
+        return beginDate;
     }
 
     public Date getEnd(Date date) {
+        Date endDate;
         if (truncated) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
@@ -87,10 +90,11 @@ public enum DateRangeTemplate {
                 calendar.add(Calendar.DATE, 1);
                 break;
             }
-            return calendar.getTime();
+            endDate = calendar.getTime();
         } else {
-            return date;
+            endDate = date;
         }
+        return endDate;
     }
 
     void truncateBegin(Calendar calendar) {
