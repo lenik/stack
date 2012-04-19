@@ -514,10 +514,11 @@ public abstract class SimpleEntityViewBean
     @SuppressWarnings({ "unchecked", "rawtypes" })
     protected boolean save(int saveFlags, String hint) {
         checkSaveFlags(saveFlags);
+        boolean creating = isCreating();
 
         if (hint == null)
             // if ((saveFlags & SAVE_MUSTEXIST) != 0)
-            hint = isCreating() ? "保存" : "更新";
+            hint = creating ? "保存" : "更新";
 
         if (getOpenedObjects().isEmpty()) {
             uiLogger.error("没有需要" + hint + "的对象!");
@@ -610,7 +611,7 @@ public abstract class SimpleEntityViewBean
             return false;
         }
 
-        if (isCreating()) // write back generated-id(s).
+        if (creating) // write back generated-id(s).
             for (Entity<?> entity : entities) {
                 EntityDto<?, Serializable> dto = uMap.getSourceDto(entity);
                 Serializable newId = entity.getId();
@@ -656,7 +657,7 @@ public abstract class SimpleEntityViewBean
         if (!warned)
             uiLogger.info(hint + "成功");
 
-        showIndex(isCreating() ? 1 : null);
+        showIndex(creating ? 1 : null);
         return true;
     }
 
