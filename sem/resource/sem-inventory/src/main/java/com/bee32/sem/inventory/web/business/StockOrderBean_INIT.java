@@ -17,6 +17,11 @@ public class StockOrderBean_INIT
     }
 
     @Override
+    protected void beginEndDateRestriction() {
+    }
+
+
+    @Override
     protected boolean configJobStepping(StockJobStepping stepping) {
         return false;
     }

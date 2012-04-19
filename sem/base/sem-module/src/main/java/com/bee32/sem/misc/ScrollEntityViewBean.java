@@ -22,6 +22,10 @@ public class ScrollEntityViewBean
     ScrollEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
         super(entityClass, dtoClass, fmask, criteriaElements);
         dateRange = DateRangeTemplate.thisMonth;
+        beginEndDateRestriction();
+    }
+
+    protected void beginEndDateRestriction() {
         addBeginEndDateRestriction();
     }
 

@@ -21,6 +21,7 @@ public abstract class StockTrade
 
     List<StockTradeItem> items = new ArrayList<StockTradeItem>();
 
+
     @Override
     public void populate(Object source) {
         if (source instanceof StockTrade)
