@@ -80,6 +80,11 @@ function main() {
         echo "--! DATDBA='$dba'"            >>"$out"
         echo >>"$out"
         $PG_DUMP "$datname" | grep -v '^--' >>"$out"
+
+        # split tables
+        git rm -r "$outdir/$datname"
+        baksplit "$out"
+        git add "$outdir/$datname"
     done
     _log1 "Backup completed."
 

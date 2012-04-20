@@ -5,6 +5,7 @@ crondir	= ${sysconfdir}/cron.daily
 PG_CREATE_SHORTCUTS = pg-create-shortcuts
 
 dist_bin_SCRIPTS = \
+	baksplit \
 	seccadb-backup \
 	seccadb-restore \
 	seccadb-csv
@@ -17,11 +18,9 @@ setup_SCRIPTS = \
 	pre-remove.sh
 
 EXTRA_DIST = post-install.sh.in pre-remove.sh.in
-CLEANFILES = \
+CLEANFILES = ${dist_bin_SCRIPTS} \
 	post-install.sh \
-	pre-remove.sh \
-	secca-backup \
-	secca-restore
+	pre-remove.sh
 
 post-install.sh: post-install.sh.in Makefile
 	$(do_subst) <$(srcdir)/post-install.sh.in >$@
