@@ -210,8 +210,13 @@ public abstract class BaseDto_Skel<S>
         if (!stereotyped)
             stereotyped = true;
 
-        if (isNull() || isNullRef())
+        if (marshalType.isReference()) {
+            if (isNullRef())
             return null;
+        } else {
+            if (isNull())
+                return null;
+        }
 
         @SuppressWarnings("unchecked")
         S deref = (S) mergeDeref(target);
