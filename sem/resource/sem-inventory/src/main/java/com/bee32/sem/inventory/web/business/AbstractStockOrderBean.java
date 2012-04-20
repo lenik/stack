@@ -44,6 +44,7 @@ public abstract class AbstractStockOrderBean
         super(StockOrder.class, StockOrderDto.class, 0);
         String s = ctx.view.getRequest().getParameter("subject");
         subject = s == null ? null : StockOrderSubject.valueOf(s);
+
         stepping = new StockJobFriend();
         if (configJobStepping(stepping))
             addFriend("job", stepping);
