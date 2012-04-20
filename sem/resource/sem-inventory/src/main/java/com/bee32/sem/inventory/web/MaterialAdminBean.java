@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.file.entity.FileBlob;
 import com.bee32.sem.file.entity.UserFile;
@@ -98,9 +99,10 @@ public class MaterialAdminBean
 
     public List<ScaleItem> getScaleList() {
         MaterialDto material = getOpenedObject();
-        if (material != null && material.getId() != null) {
+        material = reload(material);
+        if (!DTOs.isNull(material)) {
             UnitConvDto unitConv = material.getUnitConv();
-            if (unitConv == null || unitConv.getId() == null) {
+            if (DTOs.isNull(unitConv)) {
                 return null;
             } else {
                 unitConv = reload(unitConv, UnitConvDto.MAP);
@@ -117,6 +119,7 @@ public class MaterialAdminBean
     @Transactional
     public void addUnitScale() {
         MaterialDto material = getOpenedObject();
+        material = reload(material);
         try {
             UnitConvDto unitConv = material.getUnitConv();
             UnitConv _unitConv = unitConv.unmarshal();
@@ -130,7 +133,7 @@ public class MaterialAdminBean
 
             _unitConv.setUnit(_m.getUnit());
             _unitConv.setLabel(_m.getLabel());
-            _unitConv.getScaleMap().put(scaleItem.getUnit().unmarshal(), scaleItem.getScale());
+            _unitConv.setScale(scaleItem.getUnit().unmarshal(), scaleItem.getScale());
             ctx.data.access(UnitConv.class).saveOrUpdate(_unitConv);
 
             if (!alreadyHaveUnitConv) {
@@ -147,6 +150,7 @@ public class MaterialAdminBean
 
     public void deleteUnitScale() {
         MaterialDto material = getOpenedObject();
+        material = reload(material);
         try {
             Unit unit = scaleItem.getUnit().unmarshal();
             UnitConvDto unitConv = material.getUnitConv();
