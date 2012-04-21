@@ -10,6 +10,7 @@ import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.web.business.StockDictsBean;
 import com.bee32.sem.makebiz.dto.MaterialPlanDto;
 import com.bee32.sem.misc.ScrollEntityViewBean;
+import com.bee32.sem.process.verify.VerifyEvalState;
 import com.bee32.sem.purchase.dto.PurchaseRequestDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestItemDto;
 import com.bee32.sem.purchase.dto.PurchaseTakeInDto;
@@ -43,7 +44,7 @@ public class PurchaseRequestAdminBean
     }
 
     /**
-     * 用户每选择一次plan,都调用本方法。 由parent.addPlan(plan)来记录多次选择的结果
+     * 用户每选择一次plan,都调用本方法。 由request.addPlan(plan)来记录多次选择的结果
      */
     public void setMaterialPlanToAttach(MaterialPlanDto plan) {
         if (plan == null)
@@ -56,9 +57,19 @@ public class PurchaseRequestAdminBean
             return;
         }
 
-        PurchaseRequestDto parent = getOpenedObject();
+        PurchaseRequestDto request = getOpenedObject();
         plan = reload(plan, MaterialPlanDto.ITEMS);
-        parent.addPlan(plan);
+
+        //把物料计划的简要附加到采购请求的描述中
+        StringBuilder descBuilder = new StringBuilder();
+        if(request.getDescription().length() > 0) {
+            descBuilder.append(request.getDescription());
+        }
+        descBuilder.append(plan.getLabel());
+        descBuilder.append(";");
+        request.setDescription(descBuilder.toString());
+
+        request.addPlan(plan);
     }
 
     /**
@@ -111,6 +122,11 @@ public class PurchaseRequestAdminBean
                 uiLogger.error("采购请求项目没有对应的采购建议.");
                 return;
             }
+
+        if(purchaseRequest.getVerifyContext().getVerifyEvalState() != VerifyEvalState.VERIFIED) {
+            uiLogger.error("采购请求还没有审核.");
+            return;
+        }
 
         PurchaseService purchaseService = ctx.bean.getBean(PurchaseService.class);
         try {

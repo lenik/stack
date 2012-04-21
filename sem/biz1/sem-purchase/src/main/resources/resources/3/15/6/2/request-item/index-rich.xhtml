@@ -13,7 +13,7 @@
 
     <ui:define name="dataColumns">
         <p:column headerText="询价数量" styleClass="f-wrappable">
-            <h:outputText value="#{entry.inquiryCount}" style="font-weight:bold;"/>
+            <h:outputText value="#{entry.inquiryCount}" style="font-weight:bold; color:red;"/>
         </p:column>
         <p:column headerText="采购请求" styleClass="f-wrappable" sortBy="#{entry.parent}">
             <h:outputText value="#{entry.parent.label}" />

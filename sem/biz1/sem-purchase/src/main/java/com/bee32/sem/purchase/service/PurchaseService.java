@@ -81,7 +81,7 @@ public class PurchaseService
 
             // 计算需要采购的数量
             BigDecimal requestQuantity = needQuantity;
-            if (requestQuantity != null) {
+            if (requestQuantity != null && requestQuantity.compareTo(BigDecimal.ZERO) != 0) {
                 PurchaseRequestItemDto requestItem = new PurchaseRequestItemDto().create();
                 requestItem.setMaterial(material);
 
