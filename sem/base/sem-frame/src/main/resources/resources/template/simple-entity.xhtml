@@ -109,7 +109,7 @@
             </p:confirmDialog>
         </ui:insert>
         <c:if test="${verifiable}">
-            <sem:singleVerifierSupportDialog id="verifyDialog" update="${_contentUpdate}" />
+            <sem:singleVerifierSupportDialog id="verifyDialog" pageBean="${bean}" update="${_contentUpdate}" />
             <p:dialog id="d_verifyInfo" widgetVar="verifyInfoDialog" header="记录审核信息" modal="true"
                 dynamic="${viewConfig.dynamicDialog}">
                 <h:form id="verifyInfoForm" styleClass="ui-dialog-form">

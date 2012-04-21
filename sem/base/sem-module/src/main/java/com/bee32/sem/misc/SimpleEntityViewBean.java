@@ -474,6 +474,20 @@ public abstract class SimpleEntityViewBean
         return false;
     }
 
+    public void refresh() {
+        switch (currentView) {
+        case StandardViews.LIST:
+            showIndex();
+            break;
+        case StandardViews.CONTENT:
+        case StandardViews.CREATE_FORM:
+        case StandardViews.EDIT_FORM:
+            break;
+        default:
+            break;
+        }
+    }
+
     /*************************************************************************
      * Section: Persistence
      *************************************************************************/

@@ -8,6 +8,7 @@
         <cc:attribute name="selection" type="java.lang.Object" />
         <cc:attribute name="handler" type="java.lang.Object" default="${singleVerifierSupportBean}" />
         <cc:attribute name="update" />
+        <cc:attribute name="pageBean" type="java.lang.Object" required="true" />
 
         <!-- ui overrides -->
         <cc:attribute name="header" default="审核信息" />
@@ -18,6 +19,7 @@
     </cc:interface>
 
     <cc:implementation>
+        <c:set var="pageBean" value="${cc.attrs.pageBean}" />
         <c:set var="dialogBean" value="${cc.attrs.dialogBean}" />
         <c:set var="dialogVar" value="${cc.attrs.var}" />
         <c:set var="handler" value="${cc.attrs.handler}" />
@@ -38,10 +40,10 @@
                 </t:panelGrid>
 
                 <div align="right">
-                    <p:commandButton id="pass-validated" value="通过" oncomplete="${dialogVar}.hideValidated(args)"
-                        actionListener="${handler.approve}" update="${cc.attrs.update}" />
-                    <p:commandButton id="reject-validated" value="拒绝" oncomplete="${dialogVar}.hideValidated(args)"
-                        actionListener="${handler.reject}" update="${cc.attrs.update}" />
+                    <p:commandButton id="pass-validated" value="通过" actionListener="${handler.approve}"
+                        action="${pageBean.refresh}" oncomplete="${dialogVar}.hideValidated(args)" update="${cc.attrs.update}" />
+                    <p:commandButton id="reject-validated" value="拒绝" actionListener="${handler.reject}"
+                        action="${pageBean.refresh}" oncomplete="${dialogVar}.hideValidated(args)" update="${cc.attrs.update}" />
                     <p:commandButton id="cancel" value="取消" oncomplete="${dialogVar}.hide();" />
                 </div>
             </h:form>
