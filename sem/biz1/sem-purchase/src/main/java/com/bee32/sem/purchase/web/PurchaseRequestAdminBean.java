@@ -2,6 +2,9 @@ package com.bee32.sem.purchase.web;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
+import com.bee32.plover.arch.util.dto.Fmask;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.validation.RequiredId;
@@ -15,6 +18,7 @@ import com.bee32.sem.purchase.dto.PurchaseRequestDto;
 import com.bee32.sem.purchase.dto.PurchaseRequestItemDto;
 import com.bee32.sem.purchase.dto.PurchaseTakeInDto;
 import com.bee32.sem.purchase.entity.PurchaseRequest;
+import com.bee32.sem.purchase.entity.PurchaseTakeIn;
 import com.bee32.sem.purchase.service.PurchaseService;
 import com.bee32.sem.purchase.util.PurchaseCriteria;
 
@@ -102,6 +106,14 @@ public class PurchaseRequestAdminBean
         item.setDestWarehouse(stockDicts.getWarehouse(warehouseId));
     }
 
+    public void showTakeIns() {
+        if (getSelection().isEmpty()) {
+            uiLogger.error("没有选定对象!");
+            return;
+        }
+        openSelection(Fmask.F_MORE);
+    }
+
     /**
      * 生成产购入库单
      */
@@ -123,7 +135,9 @@ public class PurchaseRequestAdminBean
                 return;
             }
 
-        if(purchaseRequest.getVerifyContext().getVerifyEvalState() != VerifyEvalState.VERIFIED) {
+
+        VerifyEvalState state = purchaseRequest.getVerifyContext().getVerifyEvalState();
+        if(!VerifyEvalState.VERIFIED.equals(state)) {
             uiLogger.error("采购请求还没有审核.");
             return;
         }
@@ -135,6 +149,27 @@ public class PurchaseRequestAdminBean
         } catch (Exception e) {
             uiLogger.error("错误", e);
             return;
+        }
+    }
+
+    /**
+     * 保存已经生成的采购入库
+     */
+    @Transactional
+    public void saveTakeInStockOrders() {
+        PurchaseRequestDto purchaseRequest = getOpenedObject();
+
+        List<PurchaseTakeInDto> takeIns = purchaseRequest.getTakeIns();
+
+        try {
+            for(PurchaseTakeInDto takeIn : takeIns) {
+                PurchaseTakeIn _takeIn = takeIn.unmarshal();
+                ctx.data.access(PurchaseTakeIn.class).saveOrUpdate(_takeIn);
+            }
+
+            uiLogger.info("采购入库单保存成功.");
+        } catch(Exception e) {
+            uiLogger.error("采购入库单保存失败!", e);
         }
     }
 

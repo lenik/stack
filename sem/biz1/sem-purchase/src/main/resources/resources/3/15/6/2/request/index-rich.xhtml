@@ -13,6 +13,13 @@
     <ui:param name="takeInObj" value="#{bean.takeInsMBean.openedObject}" />
     <ui:param name="stock" value="#{stockDictsBean}" />
 
+    <ui:define name="toolbar.left">
+        <p:commandButton id="purchaseTakeIn" value="采购入库"
+            onclick="waitbox.show()" oncomplete="waitbox.hide();takeInsDialog.show()"
+            actionListener="#{bean.showTakeIns}"
+            disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" update="${_contentUpdate}" />
+    </ui:define>
+
     <ui:define name="editDialogContent">
         <t:panelGrid id="basic" columns="4" columnClasses="field-label, field-content, field-label, field-content">
             <h:outputText value="标识：" />
@@ -95,29 +102,6 @@
                     </f:facet>
                 </fr:listView>
             </p:tab>
-
-            <p:tab title="采购入库">
-                <fr:listView id="takeInsIndexView" header="入库项" style="indexPanel" editView=":takeInsEditView"
-                    mbean="#{bean.takeInsMBean}" nested="true"
-                    creatable="false" removable="false" readonly="true" paginator="false">
-                    <f:facet name="columns">
-                        <p:column headerText="日期" styleClass="f-wrappable">
-                            <h:outputText value="#{entry.stockOrder.createdDate}" />
-                        </p:column>
-                        <p:column headerText="简要" styleClass="f-wrappable">
-                            <h:outputText value="#{entry.stockOrder.label}" />
-                        </p:column>
-                        <p:column headerText="供应商" styleClass="f-wrappable">
-                            <h:outputText value="#{entry.stockOrder.org.displayName}" />
-                        </p:column>
-                    </f:facet>
-                    <f:facet name="index-buttons.left">
-                        <p:commandButton id="generateTakeIn" value="生成采购入库单" actionListener="#{bean.generateTakeInStockOrders}"
-                            update=":editDialog:form:tv:takeInsIndexView:indexForm:dataTable"/>
-                    </f:facet>
-                </fr:listView>
-            </p:tab>
-
         </p:tabView>
     </ui:define>
 
@@ -131,7 +115,6 @@
         <sem:choosePurchaseInquiryDialog id="c_purchaseInquiry" var="choosePurchaseInquiryDialog" header="挑选报价"
             target="${itemObj.acceptedInquiry}"
             update=":itemsEditView:editForm:acceptedInquiry" />
-
 
         <fr:listView id="itemsEditView" header="采购项" style="editDialog" indexView=":editDialog:form:tv:itemsIndexView"
             mbean="#{bean.itemsMBean}" readonly="#{not bean.editing}">
@@ -178,9 +161,36 @@
         </fr:listView>
 
         <fr:listView
-            id="takeInsEditView" header="入库项"
-            style="editDialog" indexView=":editDialog:form:tv:takeInsIndexView"
-            mbean="#{bean.takeInsMBean}" readonly="#{not bean.editing}">
+            id="takeInsView" header="入库项"
+            style="dialog" indexDialogVar="takeInsDialog"
+            mbean="#{bean.takeInsMBean}" readonly="#{not bean.editing}"
+            creatable="false" removable="false">
+
+            <f:facet name="columns">
+                <p:column headerText="日期" styleClass="f-wrappable">
+                    <h:outputText value="#{entry.stockOrder.createdDate}" />
+                </p:column>
+                <p:column headerText="简要" styleClass="f-wrappable">
+                    <h:outputText value="#{entry.stockOrder.label}" />
+                </p:column>
+                <p:column headerText="仓库">
+                    <h:outputText value="#{entry.stockOrder.warehouse.label}" />
+                </p:column>
+                <p:column headerText="供应商" styleClass="f-wrappable">
+                    <h:outputText value="#{entry.stockOrder.org.displayName}" />
+                </p:column>
+            </f:facet>
+            <f:facet name="index-buttons.left">
+                <p:commandButton id="generateTakeIn" value="生成采购入库单" actionListener="#{bean.generateTakeInStockOrders}"
+                    update=":takeInsView:indexForm:body"/>
+            </f:facet>
+
+            <f:facet name="index-buttons.right">
+                <p:commandButton id="saveTakeIn" value="保存" actionListener="#{bean.saveTakeInStockOrders}"
+                    update=":takeInsView:indexForm:body" oncomplete="takeInsDialog.hide()"/>
+            </f:facet>
+
+
             <fr:listView id="orderItemsView" header="入库明细" style="panel" mbean="#{bean.orderItemsMBean}"
                 creatable="false" removable="false" editiable="false" nested="true" paginator="false">
                 <f:facet name="columns">
