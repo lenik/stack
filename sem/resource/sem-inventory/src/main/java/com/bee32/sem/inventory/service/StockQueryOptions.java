@@ -29,6 +29,8 @@ public final class StockQueryOptions
     boolean locationVisible;
     boolean warehouseVisible;
 
+    boolean showAll = false;
+
     public StockQueryOptions(Date timestamp, boolean endOfDay) {
         this(timestamp, null, null, null, null);
         this.endOfToday = endOfDay;
@@ -207,6 +209,14 @@ public final class StockQueryOptions
             return new GroupPropertyProjection("price");
         else
             return null;
+    }
+
+    public boolean isShowAll() {
+        return showAll;
+    }
+
+    public void setShowAll(boolean showAll) {
+        this.showAll = showAll;
     }
 
 }

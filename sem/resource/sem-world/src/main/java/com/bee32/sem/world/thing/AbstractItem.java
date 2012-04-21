@@ -28,7 +28,7 @@ public abstract class AbstractItem
 
     int index;
 
-    BigDecimal quantity = new BigDecimal(1);
+    BigDecimal quantity = new BigDecimal(0);
     MCValue price = new MCValue();
 
     BigDecimal nativePrice;

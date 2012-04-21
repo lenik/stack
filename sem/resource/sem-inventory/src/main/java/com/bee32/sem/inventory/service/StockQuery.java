@@ -120,7 +120,12 @@ public class StockQuery
                 item.setLocation(_location);
             }
 
-            all.addItem(item);
+            boolean itemNeedAdd = true;
+            if(item.getQuantity().compareTo(BigDecimal.ZERO) == 0 && !options.isShowAll()) {
+                itemNeedAdd = false;
+            }
+
+            if(itemNeedAdd) all.addItem(item);
         }
         return all;
     }
