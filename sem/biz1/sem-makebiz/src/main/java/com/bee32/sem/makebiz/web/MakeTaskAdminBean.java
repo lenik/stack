@@ -57,7 +57,7 @@ public class MakeTaskAdminBean
 		try {
 			service.generateProcess(item);
 		} catch (Exception e) {
-			uiLogger.error("生成失败.", e);
+			uiLogger.error("生成失败!", e);
 		}
 	}
 

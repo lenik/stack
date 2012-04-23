@@ -34,6 +34,7 @@ public class MakeStepDto
 
     BigDecimal planQuantity;
     BigDecimal actualQuantity;
+    BigDecimal verifiedQuantity;
 
     Date planDeadline;
     Date actualDeadline;
@@ -50,6 +51,7 @@ public class MakeStepDto
 
         planQuantity = source.getPlanQuantity();
         actualQuantity = source.getActualQuantity();
+        verifiedQuantity = source.getVerifiedQuantity();
 
         planDeadline = source.getPlanDeadline();
         actualDeadline = source.getActualDeadline();
@@ -68,6 +70,7 @@ public class MakeStepDto
         merge(target, "model", model);
         target.setPlanQuantity(planQuantity);
         target.setActualQuantity(actualQuantity);
+        target.setVerifiedQuantity(verifiedQuantity);
 
         target.setPlanDeadline(planDeadline);
         target.setActualDeadline(actualDeadline);
@@ -131,6 +134,18 @@ public class MakeStepDto
 
     public void setActualDeadline(Date actualDeadline) {
         this.actualDeadline = actualDeadline;
+    }
+
+    public BigDecimal getVerifiedQuantity() {
+        return verifiedQuantity;
+    }
+
+    public void setVerifiedQuantity(BigDecimal verifiedQuantity) {
+        this.verifiedQuantity = verifiedQuantity;
+    }
+
+    public BigDecimal getNotVerifiedQuantity() {
+        return actualQuantity.subtract(verifiedQuantity);
     }
 
     public OrgUnitDto getOrgUnit() {

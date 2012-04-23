@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -42,8 +43,9 @@ public class MakeStep
     // Behavior as <model.part, model.processOrder>.
     MakeStepModel model;
 
-    BigDecimal planQuantity = new BigDecimal(1);
-    BigDecimal actualQuantity = new BigDecimal(1);
+    BigDecimal planQuantity = new BigDecimal(0);
+    BigDecimal actualQuantity = new BigDecimal(0);
+    BigDecimal verifiedQuantity = new BigDecimal(0);
 
     Date planDeadline;
     Date actualDeadline;
@@ -74,6 +76,10 @@ public class MakeStep
     }
 
 
+    /**
+     * 计划数量
+     * @return
+     */
     @Column(scale = QTY_ITEM_SCALE, precision = QTY_ITEM_PRECISION, nullable = false)
     public BigDecimal getPlanQuantity() {
         return planQuantity;
@@ -91,6 +97,10 @@ public class MakeStep
         setPlanQuantity(new BigDecimal(planQuantity));
     }
 
+    /**
+     * 实际数量
+     * @return
+     */
     @Column(scale = QTY_ITEM_SCALE, precision = QTY_ITEM_PRECISION, nullable = false)
     public BigDecimal getActualQuantity() {
         return actualQuantity;
@@ -106,6 +116,36 @@ public class MakeStep
 
     public void setActualQuantity(double actualQuantity) {
         setActualQuantity(new BigDecimal(actualQuantity));
+    }
+
+    /**
+     * 实际数量
+     * @return
+     */
+    @Column(scale = QTY_ITEM_SCALE, precision = QTY_ITEM_PRECISION, nullable = false)
+    public BigDecimal getVerifiedQuantity() {
+        return verifiedQuantity;
+    }
+
+    public void setVerifiedQuantity(BigDecimal verifiedQuantity) {
+        this.verifiedQuantity = verifiedQuantity;
+    }
+
+    public void setVerifiedQuantity(long verifiedQuantity) {
+        setVerifiedQuantity(new BigDecimal(verifiedQuantity));
+    }
+
+    public void setVerifiedQuantity(double verifiedQuantity) {
+        setVerifiedQuantity(new BigDecimal(verifiedQuantity));
+    }
+
+    /**
+     * 不合格数量=实际数量减合格数量
+     * @return
+     */
+    @Transient
+    public BigDecimal getNotVerifiedQuantity() {
+        return actualQuantity.subtract(verifiedQuantity);
     }
 
     @Temporal(TemporalType.TIMESTAMP)
