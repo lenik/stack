@@ -6,9 +6,20 @@
     <ui:param name="title" value="工艺流转单" />
     <ui:param name="bean" value="#{makeProcessAdminBean}" />
 
+    <ui:define name="title">
+        <h:outputText value="${title}"/>
+    </ui:define>
+
     <ui:define name="content">
+        <p:toolbar>
+            <p:toolbarGroup align="left">
+                <p:commandButton type="button" value="上一张" icon="ui-icon-seek-prev"/>
+                <p:commandButton type="button" value="下一张" icon="ui-icon-seek-next"/>
+            </p:toolbarGroup>
+        </p:toolbar>
+
+
         <h:panelGroup id="panelGroup">
-            <h:outputText value="dynamic content test"/>
         </h:panelGroup>
     </ui:define>
 

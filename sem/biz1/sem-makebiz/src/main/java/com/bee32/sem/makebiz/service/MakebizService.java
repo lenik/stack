@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.arch.DataService;
 import com.bee32.plover.arch.util.IdComposite;
@@ -184,6 +185,7 @@ public class MakebizService
     /**
      * 根据生产任务明细条目，生成工艺流转单
      */
+    @Transactional
     public void generateProcess(MakeTaskItemDto taskItem) {
 	if(taskItem == null || DTOs.isNull(taskItem))
 		throw new NullPointerException("生产任务明细为空");

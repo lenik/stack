@@ -56,6 +56,7 @@ public class MakeTaskAdminBean
 		MakebizService service = ctx.bean.getBean(MakebizService.class);
 		try {
 			service.generateProcess(item);
+			uiLogger.info("生成成功，进入\"工世流转单\"功能进行下一步操作.");
 		} catch (Exception e) {
 			uiLogger.error("生成失败!", e);
 		}

@@ -9,17 +9,20 @@ import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;
 
-import com.bee32.plover.orm.util.EntityViewBean;
+import com.bee32.sem.makebiz.dto.MakeProcessDto;
+import com.bee32.sem.makebiz.entity.MakeProcess;
+import com.bee32.sem.misc.ScrollEntityViewBean;
 
-public class MakeProcessAdminBean extends EntityViewBean {
+public class MakeProcessAdminBean extends ScrollEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
     UIViewRoot viewRoot;
 
 
-
     public MakeProcessAdminBean() {
+        super(MakeProcess.class, MakeProcessDto.class, 0);
+
 	FacesContext context = FacesContext.getCurrentInstance();
         UIComponent panelGroup = context.getViewRoot().findComponent("panelGroup");
 
