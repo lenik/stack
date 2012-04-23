@@ -1,9 +1,10 @@
 function searchTag(event) {
-    var a = event.srcElement;
+    var a = event.target; // IE: event.target is available since IE8+
     var href = a.href;
     var eq = href.indexOf('=');
     var tagId = href.substring(eq + 1);
     var tagName = a.text;
+    if (tagName == null) tagName = a.innerText; // IE FIX.
 
     PrimeFaces.ajax.AjaxRequest({
         formId : 'searchForm',
