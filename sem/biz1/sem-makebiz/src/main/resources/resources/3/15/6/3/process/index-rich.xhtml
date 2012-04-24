@@ -11,16 +11,28 @@
     </ui:define>
 
     <ui:define name="content">
-        <p:toolbar>
-            <p:toolbarGroup align="left">
-                <p:commandButton type="button" value="上一张" icon="ui-icon-seek-prev"/>
-                <p:commandButton type="button" value="下一张" icon="ui-icon-seek-next"/>
-            </p:toolbarGroup>
-        </p:toolbar>
+        <h:form id="mainForm">
+            <p:toolbar>
+                <p:toolbarGroup align="left">
+                        <p:commandButton value="第一条"
+                            actionListener="#{bean.first}" update="mainForm" />
+                        <p:commandButton value="上一条"
+                            actionListener="#{bean.previous}" update="mainForm" />
+                        <p:commandButton value="下一条"
+                            actionListener="#{bean.next}" update="mainForm" />
+                        <p:commandButton value="最末条"
+                            actionListener="#{bean.last}" update="mainForm" />
+                        <p:inputText value="#{bean.goNumber}" style="width:30px;" />
+                        <h:outputText value="/#{bean.count}"/>
+                        <p:commandButton value="前往"
+                            actionListener="#{bean.go}" update="mainForm" />
+                </p:toolbarGroup>
+            </p:toolbar>
 
 
-        <h:panelGroup id="panelGroup">
-        </h:panelGroup>
+            <h:panelGroup id="panelGroup">
+            </h:panelGroup>
+        </h:form>
     </ui:define>
 
 </ui:composition>

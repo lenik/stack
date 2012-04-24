@@ -66,7 +66,12 @@
                     <h:outputText value="#{entry.process.id}" />
                 </p:column>
                 <p:column headerText="动作">
-                    <p:commandButton value="生成工艺流转单" styleClass="locker-invert" rendered="#{entry.process.id == null}" action="#{bean.generateProcess(entry)}"/>
+                    <p:commandButton
+                        value="生成工艺流转单"
+                        styleClass="locker-invert"
+                        rendered="#{entry.process.id == null}"
+                        action="#{bean.generateProcess(entry)}"
+                        update=":editDialog:form:itemsIndexView:indexForm:content"/>
                 </p:column>
             </f:facet>
         </fr:listView>
