@@ -319,7 +319,7 @@
             </p:tabView>
         </fr:listView>
 
-        <fr:listView id="stepInputEditView" header="工艺消耗材料编辑" style="editDialog"
+        <fr:listView id="stepInputEditView" header="工艺消耗材料" style="editDialog"
             indexView=":stepsView:editForm:stepEditTab:stepInputIndexView" mbean="#{bean.stepInputsMBean}" readonly="#{not bean.editing}">
             <t:panelGrid columns="2">
 
@@ -340,7 +340,7 @@
             </t:panelGrid>
         </fr:listView>
 
-        <fr:listView id="qcSpecParaEditView" header="质检标准编辑" style="editDialog"
+        <fr:listView id="qcSpecParaEditView" header="质检标准" style="editDialog"
             indexView=":stepsView:editForm:stepEditTab:qcSpecParaIndexView" mbean="#{bean.qcSpecParasMBean}" readonly="#{not bean.editing}">
             <t:panelGrid columns="2">
 

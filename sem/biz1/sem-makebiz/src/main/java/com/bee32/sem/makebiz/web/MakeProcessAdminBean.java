@@ -5,15 +5,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.html.HtmlOutputText;
-import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionListener;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.MethodExpressionActionListener;
 
 import org.primefaces.component.commandbutton.CommandButton;
+import org.primefaces.component.panel.Panel;
+import org.primefaces.component.panelgrid.PanelGrid;
 
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.orm.util.DTOs;
@@ -91,15 +94,14 @@ public class MakeProcessAdminBean extends DataViewBean {
 
         //动态生成表格
         FacesContext context = FacesContext.getCurrentInstance();
-        UIComponent panelGroup = context.getViewRoot().findComponent("mainForm:panelGroup");
+        UIComponent panel = context.getViewRoot().findComponent("mainForm:panel");
 
-        if (panelGroup.getChildCount() > 0) {
-            panelGroup.getChildren().remove(0);
+        if (panel.getChildCount() > 0) {
+            panel.getChildren().remove(0);
         }
 
-        HtmlPanelGrid grid = new HtmlPanelGrid();
+        PanelGrid grid = new PanelGrid();
         grid.setColumns(stepNames.size() + 1);
-        grid.setBorder(1);
         grid.setRendered(true);
 
         //形成表头
@@ -124,7 +126,20 @@ public class MakeProcessAdminBean extends DataViewBean {
                 MakeStepDto makeStep = table.get(part).get(stepName);
                 if (makeStep != null) {
                     CommandButton button = new CommandButton();
-                    button.setValue("输入工艺数据");
+                    button.setId("btnFillStep" + makeStep.getId());
+                    button.setValue("...");
+
+                    MethodExpression methodExpression =
+                            context.getApplication().getExpressionFactory().createMethodExpression(
+                                    context.getELContext(),
+                                    "#{makeProcessAdminBean.fillStep(" + makeStep.getId() + ")}",
+                                    null,
+                                    new Class[] { ActionEvent.class });
+
+                    button.addActionListener(new MethodExpressionActionListener(methodExpression));
+                    button.setOnclick("waitbox.show();");
+                    button.setOncomplete("waitbox.hide();stepDialog.show();");
+
 
                     //ActionListener listener = new ActionListener();
 
@@ -141,7 +156,7 @@ public class MakeProcessAdminBean extends DataViewBean {
             }
         }
 
-        ((HtmlPanelGroup)panelGroup).getChildren().add(grid);
+        ((Panel)panel).getChildren().add(grid);
     }
 
     public int getGoNumber() {
@@ -212,6 +227,10 @@ public class MakeProcessAdminBean extends DataViewBean {
     public void last() {
         goNumber = count + 1;
         loadMakeProcess(goNumber);
+    }
+
+    public void fillStep(long stepId) {
+        uiLogger.info("fill " + stepId);
     }
 
 

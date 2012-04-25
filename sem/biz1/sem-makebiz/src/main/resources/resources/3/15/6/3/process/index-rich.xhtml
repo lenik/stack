@@ -5,6 +5,7 @@
 
     <ui:param name="title" value="工艺流转单" />
     <ui:param name="bean" value="#{makeProcessAdminBean}" />
+    <ui:param name="item" value="#{bean.process}" />
 
     <ui:define name="title">
         <h:outputText value="${title}"/>
@@ -29,10 +30,124 @@
                 </p:toolbarGroup>
             </p:toolbar>
 
-
-            <h:panelGroup id="panelGroup">
-            </h:panelGroup>
+            <p:panel id="panel" header="工艺流转单">
+            </p:panel>
         </h:form>
+
+        <p:dialog widgetVar="stepDialog" modal="true">
+            <h:form id="stepDialogForm">
+                <p:tabView id="stepEditTab">
+                    <p:tab title="基本信息">
+
+                        <t:panelGrid columns="4">
+                            <h:outputText value="工艺名称:" />
+                            <t:panelGroup colspan="3">
+                                <h:outputText id="makeStepName" value="#{item.model.stepName.label}"/>
+                            </t:panelGroup>
+
+                            <h:outputText value="计划数量:" />
+                            <p:inputText value="#{item.planQuantity}" label="计划数量" />
+                            <h:outputText value="实际生产数量:" />
+                            <p:inputText value="#{item.actualQuantity}" label="实际生产数量" />
+
+                            <h:outputText value="合格数量:" />
+                            <p:inputText value="#{item.verifiedQuantity}" label="合格数量" />
+                            <h:panelGroup />
+                            <h:panelGroup />
+
+                            <h:outputText value="计划完成时间：" />
+                            <p:calendar pattern="yyyy-MM-dd" value="#{item.planDeadline}" navigator="true"
+                                locale="zh_CN" showOn="button" label="计划完成时间" />
+
+                            <h:outputText value="实际完成时间：" />
+                            <p:calendar pattern="yyyy-MM-dd" value="#{item.actualDeadline}" navigator="true"
+                                locale="zh_CN" showOn="button" label="实际完成时间" />
+
+
+                            <h:outputText value="部门:" />
+                            <p:inputText value="#{item.orgUnit.displayName}" label="部门" readonly="true"/>
+                            <h:panelGroup />
+                            <h:panelGroup />
+                        </t:panelGrid>
+
+                    </p:tab>
+
+                    <p:tab title="操作员">
+                        <fr:listView id="operatorIndexView" header="操作员" style="indexPanel"
+                            picker="choosePersonDialog"
+                            editView=":operatorEditView"
+                            mbean="#{bean.operatorsMBean}" nested="true" readonly="#{not bean.editing}">
+                            <f:facet name="columns">
+                                <p:column headerText="姓名" sortBy="#{entry.label}" styleClass="f-wrappable">
+                                    <h:outputText value="#{entry.displayName}" />
+                                </p:column>
+                                <p:column headerText="性别">
+                                    <h:outputText value="#{entry.sexText}" />
+                                </p:column>
+                                <p:column headerText="年龄" sortBy="#{entry.birthday}">
+                                    <h:outputText value="#{entry.age}" />
+                                </p:column>
+                            </f:facet>
+                        </fr:listView>
+                    </p:tab>
+
+                    <p:tab title="质检结果">
+                        <fr:listView id="qcResultParaIndexView" header="质检结果" style="indexPanel" editView=":qcResultParaEditView"
+                            mbean="#{bean.qcResultParasMBean}" nested="true" readonly="#{not bean.editing}">
+                            <f:facet name="columns">
+                                <p:column headerText="质检内容">
+                                    <h:outputText value="#{entry.label}" />
+                                </p:column>
+                                <p:column headerText="标准值" styleClass="f-right">
+                                    <h:outputText value="#{entry.key.value}" />
+                                </p:column>
+                                <p:column headerText="检测值" styleClass="f-right">
+                                    <h:outputText value="#{entry.value}" />
+                                </p:column>
+                            </f:facet>
+                        </fr:listView>
+                    </p:tab>
+                </p:tabView>
+            </h:form>
+        </p:dialog>
+
+        <sem:choosePersonDialog id="c_person" header="选择要关联的操作员" target="${bean.operatorsMBean.addition}"
+            update=":editDialog:form:tv:operatorsIndexView:indexForm:body">
+            <f:setPropertyActionListener target="#{choosePersonDialogBean.employee}" value="#{true}" />
+        </sem:choosePersonDialog>
+
+        <fr:listView id="operatorEditView" header="操作员" style="editDialog"
+            indexView=":operatorsView:editForm:stepEditTab:operatorIndexView" mbean="#{bean.operatorsMBean}" readonly="#{not bean.editing}">
+            <t:panelGrid columns="2">
+
+                <h:outputText value="操作员:" />
+                <t:panelGroup>
+                    <p:inputText id="material" value="#{item.material.label}" label="材料(物料)" />
+                    <p:commandButton value="..." oncomplete="chooseOperatorDialog.show()">
+                        <f:setPropertyActionListener target="#{chooseMaterialDialogBean.materialType}"
+                            value="#{null}" />
+                        <f:setPropertyActionListener target="#{chooseMaterialDialogBean.categoryId}"
+                            value="#{null}" />
+                    </p:commandButton>
+                </t:panelGroup>
+            </t:panelGrid>
+        </fr:listView>
+
+        <fr:listView id="qcSpecParaEditView" header="质检标准编辑" style="editDialog"
+            indexView=":stepsView:editForm:stepEditTab:qcSpecParaIndexView" mbean="#{bean.qcSpecParasMBean}" readonly="#{not bean.editing}">
+            <t:panelGrid columns="2">
+
+                <h:outputText value="质检内容:" />
+                <p:inputText value="#{item.label}" label="质检内容" />
+
+                <h:outputText value="标准值:" />
+                <p:inputText value="#{item.value}" label="标准值" />
+
+                <h:outputText value="标准描述:" />
+                <p:inputTextarea value="#{item.description}" rows="5" cols="30" label="标准描述" />
+
+            </t:panelGrid>
+        </fr:listView>
     </ui:define>
 
 </ui:composition>
