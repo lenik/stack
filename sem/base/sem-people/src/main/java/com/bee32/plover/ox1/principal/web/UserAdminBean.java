@@ -113,6 +113,15 @@ public class UserAdminBean
                 } catch (Exception e) {
                     uiLogger.error("更新密码失败。", e);
                 }
+
+                //虽然p:inputText:passPlain和passPlainConfirm没有绑定bean内的值，
+                //但是里面输入的值在page范围内还是会自动保存,
+                //所以这里做清除
+                FacesContext context = FacesContext.getCurrentInstance();
+                UIInput passPlain = (UIInput) context.getViewRoot().findComponent("editDialog:form:passPlain");
+                passPlain.setValue(null);
+                UIInput passPlainConfirm = (UIInput) context.getViewRoot().findComponent("editDialog:form:passPlainConfirm");
+                passPlainConfirm.setValue(null);
             }
     }
 
