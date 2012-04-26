@@ -57,7 +57,7 @@
         <icsf:choosePrincipalDialog id="chooseUserDialog" var="chooseUserDialog" header="添加蕴含本角色的用户"
             stereo="U" target="${bean.selectedUser}" actionListener="${bean.addUser}" update=":usersForm" />
 
-        <p:dialog header="蕴涵本角色的组" id="groupsDialog" widgetVar="groupsDialog" modal="true"
+        <p:dialog header="蕴涵本角色的组" id="c_groupsDialog" widgetVar="groupsDialog" modal="true"
             dynamic="${viewConfig.dynamicDialog}">
             <h:form id="groupsForm">
                 <h3>当前角色: #{obj.name}</h3>
@@ -87,7 +87,7 @@
             </h:form>
         </p:dialog>
 
-        <p:dialog header="蕴含本角色的用户" id="usersDialog" widgetVar="usersDialog" modal="true"
+        <p:dialog header="蕴含本角色的用户" id="c_usersDialog" widgetVar="usersDialog" modal="true"
             dynamic="${viewConfig.dynamicDialog}">
             <h:form id="usersForm">
                 <h3>当前角色: #{obj.name}</h3>

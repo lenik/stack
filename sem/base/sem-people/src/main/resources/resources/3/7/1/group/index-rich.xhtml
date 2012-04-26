@@ -61,7 +61,7 @@
         <icsf:choosePrincipalDialog id="chooseUserDialog" var="chooseUserDialog" header="添加成员用户"
             stereo="U" target="${bean.selectedUser}" actionListener="${bean.addUser}" update=":usersForm" />
 
-        <p:dialog header="指派的角色" id="rolesDialog" widgetVar="rolesDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
+        <p:dialog header="指派的角色" id="c_rolesDialog" widgetVar="rolesDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
             <h:form id="rolesForm">
                 <h3>当前组: #{obj.displayName}</h3>
                 <h:panelGrid columns="3">
@@ -90,7 +90,7 @@
             </h:form>
         </p:dialog>
 
-        <p:dialog header="成员用户" id="usersDialog" widgetVar="usersDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
+        <p:dialog header="成员用户" id="c_usersDialog" widgetVar="usersDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
             <h:form id="usersForm">
                 <h3>当前组: #{obj.displayName}</h3>
                 <h:panelGrid columns="3">

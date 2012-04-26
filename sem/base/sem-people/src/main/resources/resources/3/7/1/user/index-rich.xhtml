@@ -71,7 +71,7 @@
         <sem:choosePersonDialog id="c_person" var="choosePersonDialog" header="选择对应的人员"
             target="${bean.selectedPerson}" actionListener="${bean.savePersonLogin}" update=":personForm" />
 
-        <p:dialog header="指派的组" id="groupsDialog" widgetVar="groupsDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
+        <p:dialog header="指派的组" id="c_groupsDialog" widgetVar="groupsDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
             <h:form id="groupsForm">
                 <h3>当前用户: #{obj.name}</h3>
                 <h:panelGrid columns="3">
@@ -101,7 +101,7 @@
             </h:form>
         </p:dialog>
 
-        <p:dialog header="指派的角色" id="rolesDialog" widgetVar="rolesDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
+        <p:dialog header="指派的角色" id="c_rolesDialog" widgetVar="rolesDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
             <h:form id="rolesForm">
                 <h3>当前用户: #{obj.name}</h3>
                 <h:panelGrid columns="3">
@@ -131,7 +131,7 @@
             </h:form>
         </p:dialog>
 
-        <p:dialog header="对应人员" id="personDialog" widgetVar="personDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
+        <p:dialog header="对应人员" id="c_personDialog" widgetVar="personDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
             <c:set var="person" value="#{bean.person}" />
             <h:form id="personForm" style="max-height: 40em; margin: 1em">
                 <p:panel header="详细信息" toggleable="true">
