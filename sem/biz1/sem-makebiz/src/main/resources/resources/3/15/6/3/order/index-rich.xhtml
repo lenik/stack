@@ -10,6 +10,13 @@
     <ui:param name="itemObj" value="#{bean.itemsMBean.openedObject}" />
     <ui:param name="monetary" value="#{monetaryDictsBean}" />
 
+    <ui:define name="toolbar.left">
+        <p:separator />
+        <p:commandButton id="exportToPdf" value="PDF" actionListener="${bean.exportToPdf}"
+            onclick="waitbox.show()" oncomplete="waitbox.hide()"
+            disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" update="${_contentUpdate}" />
+    </ui:define>
+
     <ui:define name="editDialogContent">
         <t:panelGrid id="basic" columns="4">
             <h:outputText value="标识:" />

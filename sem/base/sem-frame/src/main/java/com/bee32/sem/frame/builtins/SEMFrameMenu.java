@@ -32,7 +32,7 @@ public class SEMFrameMenu
 
     public static final MenuNode RESOURCES = menu(MAIN, 310, "resources");
     public static final MenuNode BIZ1 = menu(MAIN, 320, "biz1");
-    /**/static MenuNode contract = entry(BIZ1, 10, "contract", JAVASCRIPT.join("alert('under development')"));
+    /**//*static MenuNode contract = entry(BIZ1, 10, "contract", JAVASCRIPT.join("alert('under development')"));*/
 
     public static final MenuNode PROCESS = menu(MAIN, 600, "process");
 

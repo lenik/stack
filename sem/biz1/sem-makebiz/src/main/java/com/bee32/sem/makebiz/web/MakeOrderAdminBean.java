@@ -1,5 +1,14 @@
 package com.bee32.sem.makebiz.web;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.sem.chance.dto.ChanceDto;
@@ -32,6 +41,29 @@ public class MakeOrderAdminBean
         }
 
         ctx.bean.getBean(MakebizService.class).chanceApplyToMakeOrder(chance, makeOrder);
+    }
+
+    public void exportToPdf() {
+        MakeOrderDto makeOrder = this.getOpenedObject();
+        JRBeanCollectionDataSource beanCollectionDataSource=new JRBeanCollectionDataSource(makeOrder.getItems());
+        String reportPath = "D:/work/secca/stack/sem/biz1/sem-makebiz/src/main/resources/resources/3/15/6/3/order/report1.jasper";
+        try {
+            Map<String, Object> reportParams = new HashMap<String, Object>();
+            reportParams.put("id", makeOrder.getId());
+            reportParams.put("createDate", makeOrder.getCreatedDate());
+            reportParams.put("owner", makeOrder.getOwnerDisplayName());
+            reportParams.put("label", makeOrder.getLabel());
+            reportParams.put("customer", makeOrder.getCustomer().getDisplayName());
+            reportParams.put("description", makeOrder.getDescription());
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(reportPath, reportParams, beanCollectionDataSource);
+            JasperExportManager.exportReportToPdfFile(jasperPrint, "D:/work/secca/stack/sem/biz1/sem-makebiz/src/main/resources/resources/3/15/6/3/order/report1.pdf");
+        } catch (JRException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
     }
 
     /*************************************************************************
