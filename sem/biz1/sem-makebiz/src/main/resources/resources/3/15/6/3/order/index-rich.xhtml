@@ -13,8 +13,9 @@
     <ui:define name="toolbar.left">
         <p:separator />
         <p:commandButton id="exportToPdf" value="PDF" actionListener="${bean.exportToPdf}"
-            onclick="waitbox.show()" oncomplete="waitbox.hide()"
-            disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" update="${_contentUpdate}" />
+            disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" ajax="false">
+            <p:fileDownload value="#{bean.pdfFile}" />
+        </p:commandButton>
     </ui:define>
 
     <ui:define name="editDialogContent">

@@ -1,13 +1,22 @@
 package com.bee32.sem.makebiz.web;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.jasperreports.engine.JRException;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.annotation.ForEntity;
@@ -25,6 +34,8 @@ public class MakeOrderAdminBean
         extends ScrollEntityViewBean {
 
     private static final long serialVersionUID = 1L;
+
+    StreamedContent pdfFile;
 
     public MakeOrderAdminBean() {
         super(MakeOrder.class, MakeOrderDto.class, MakeOrderDto.ITEM_ATTRIBUTES);
@@ -46,8 +57,13 @@ public class MakeOrderAdminBean
     public void exportToPdf() {
         MakeOrderDto makeOrder = this.getOpenedObject();
         JRBeanCollectionDataSource beanCollectionDataSource=new JRBeanCollectionDataSource(makeOrder.getItems());
-        String reportPath = "D:/work/secca/stack/sem/biz1/sem-makebiz/src/main/resources/resources/3/15/6/3/order/report1.jasper";
+
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = facesContext.getExternalContext();
+        InputStream reportStream = externalContext.getResourceAsStream("/3/15/6/3/order/report1.jrxml");
+
         try {
+            JasperReport report = JasperCompileManager.compileReport(reportStream);
             Map<String, Object> reportParams = new HashMap<String, Object>();
             reportParams.put("id", makeOrder.getId());
             reportParams.put("createDate", makeOrder.getCreatedDate());
@@ -56,14 +72,18 @@ public class MakeOrderAdminBean
             reportParams.put("customer", makeOrder.getCustomer().getDisplayName());
             reportParams.put("description", makeOrder.getDescription());
 
-            JasperPrint jasperPrint = JasperFillManager.fillReport(reportPath, reportParams, beanCollectionDataSource);
-            JasperExportManager.exportReportToPdfFile(jasperPrint, "D:/work/secca/stack/sem/biz1/sem-makebiz/src/main/resources/resources/3/15/6/3/order/report1.pdf");
-        } catch (JRException e) {
-            // TODO Auto-generated catch block
+            JasperPrint jasperPrint = JasperFillManager.fillReport(report, reportParams, beanCollectionDataSource);
+            byte[] pdfByteArray = JasperExportManager.exportReportToPdf(jasperPrint);
+
+            InputStream stream = new ByteArrayInputStream(pdfByteArray);
+            pdfFile = new DefaultStreamedContent(stream);
+        } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
-
+    public StreamedContent getPdfFile() {
+        return pdfFile;
     }
 
     /*************************************************************************

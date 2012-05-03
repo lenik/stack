@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" pageWidth="850" pageHeight="842" columnWidth="810" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -19,93 +19,93 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="134" splitType="Stretch">
+		<band height="94" splitType="Stretch">
 			<staticText>
-				<reportElement x="174" y="0" width="41" height="26"/>
+				<reportElement x="363" y="0" width="41" height="26"/>
 				<textElement>
 					<font fontName="宋体" size="18" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[订单]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="64" y="80" width="419" height="20"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="428" y="52" width="321" height="20"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{customer}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="23" y="80" width="40" height="20"/>
-				<textElement>
+				<reportElement x="386" y="52" width="40" height="20"/>
+				<textElement textAlignment="Right">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[客户:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="23" y="40" width="40" height="20"/>
-				<textElement>
+				<reportElement x="32" y="32" width="40" height="20"/>
+				<textElement textAlignment="Right">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[标识:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="164" y="40" width="40" height="20"/>
-				<textElement>
+				<reportElement x="173" y="32" width="40" height="20"/>
+				<textElement textAlignment="Right">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[时间:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="326" y="40" width="40" height="20"/>
-				<textElement>
+				<reportElement x="386" y="32" width="40" height="20"/>
+				<textElement textAlignment="Right">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[制单人:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="23" y="60" width="40" height="20"/>
-				<textElement>
+				<reportElement x="32" y="52" width="40" height="20"/>
+				<textElement textAlignment="Right">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[简要:]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="64" y="60" width="419" height="20"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="73" y="52" width="302" height="20"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{label}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="64" y="100" width="419" height="20"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="73" y="72" width="676" height="20"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{description}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="5" y="100" width="58" height="20"/>
-				<textElement>
+				<reportElement x="14" y="72" width="58" height="20"/>
+				<textElement textAlignment="Right">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[附加要求:]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="64" y="40" width="59" height="20"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="73" y="32" width="59" height="20"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{id}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="204" y="40" width="97" height="20"/>
+			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
+				<reportElement x="213" y="32" width="97" height="20"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{createDate}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="366" y="40" width="97" height="20"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="428" y="32" width="97" height="20"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -117,107 +117,115 @@
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="16" splitType="Stretch">
+		<band height="17" splitType="Stretch">
 			<staticText>
-				<reportElement x="4" y="0" width="43" height="15"/>
-				<textElement>
+				<reportElement x="55" y="0" width="43" height="15"/>
+				<textElement textAlignment="Right">
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[ID]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="63" y="0" width="41" height="15"/>
-				<textElement>
-					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[物料名称]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="189" y="1" width="137" height="15"/>
-				<textElement>
+				<reportElement x="179" y="1" width="122" height="15"/>
+				<textElement textAlignment="Left">
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[外部名称]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="337" y="1" width="179" height="15"/>
-				<textElement>
+				<reportElement x="306" y="1" width="120" height="15"/>
+				<textElement textAlignment="Left">
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[外部规格 ]]></text>
 			</staticText>
-			<line>
-				<reportElement x="-4" y="15" width="800" height="1"/>
-			</line>
 			<staticText>
-				<reportElement x="123" y="1" width="51" height="15"/>
-				<textElement>
+				<reportElement x="107" y="1" width="66" height="15"/>
+				<textElement textAlignment="Right">
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[数量]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="529" y="0" width="179" height="15"/>
-				<textElement>
+				<reportElement x="432" y="0" width="293" height="15"/>
+				<textElement textAlignment="Left">
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[备注]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="718" y="1" width="65" height="15"/>
-				<textElement>
+				<reportElement x="736" y="1" width="65" height="15"/>
+				<textElement textAlignment="Left">
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[交货时间]]></text>
 			</staticText>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="-1" y="16" width="802" height="1"/>
+				<graphicElement>
+					<pen lineWidth="1.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="0" y="2" width="43" height="15"/>
+				<textElement textAlignment="Right">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[序号]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="16" splitType="Stretch">
-			<line>
-				<reportElement x="-4" y="15" width="800" height="1"/>
-			</line>
-			<textField>
-				<reportElement x="5" y="0" width="42" height="15"/>
+		<band height="23">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="432" y="2" width="293" height="20"/>
 				<textElement>
-					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="337" y="0" width="179" height="15"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="306" y="2" width="120" height="20"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{externalModelSpec}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="189" y="0" width="137" height="15"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="179" y="2" width="122" height="20"/>
 				<textElement>
-					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{externalProductName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="123" y="0" width="51" height="15"/>
-				<textElement>
-					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				<reportElement x="55" y="2" width="43" height="20"/>
+				<textElement textAlignment="Right">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField pattern="0.00">
+				<reportElement x="107" y="2" width="66" height="20"/>
+				<textElement textAlignment="Right">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="529" y="0" width="179" height="15"/>
+			<textField pattern="yyyy-MM-dd">
+				<reportElement x="736" y="2" width="65" height="20"/>
 				<textElement>
-					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="718" y="1" width="65" height="15"/>
-				<textElement>
-					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{deadline}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="22" width="802" height="1"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="3" width="43" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -225,7 +233,25 @@
 		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band splitType="Stretch"/>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="561" y="3" width="100" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="661" y="3" width="11" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="672" y="3" width="100" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageFooter>
 	<summary>
 		<band splitType="Stretch"/>
