@@ -107,17 +107,25 @@ function main() {
     cd "$module" || exit 1
 
     if [ -z "$debug_port" ]; then
-        mvn exec:java -Dexec.mainClass="$server" "$@"
+        _mvn exec:java -Dexec.mainClass="$server" "$@"
     else
         debug_opts=(
             -classpath %classpath
             -Xdebug
             -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=$debug_port
             )
-        mvn exec:exec \
+        _mvn exec:exec \
             -Dexec.executable="java" \
             -Dexec.args="${debug_opts[*]} $server"
     fi
+}
+
+function _mvn() {
+    _log1 "Execute mvn $*: "
+    if [ $LOGLEVEL -ge 2 ]; then
+        echoli "$@"
+    fi
+    mvn "$@"
 }
 
 boot "$@"
