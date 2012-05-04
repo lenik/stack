@@ -58,9 +58,8 @@ public class MakeOrderAdminBean
         MakeOrderDto makeOrder = this.getOpenedObject();
         JRBeanCollectionDataSource beanCollectionDataSource=new JRBeanCollectionDataSource(makeOrder.getItems());
 
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        ExternalContext externalContext = facesContext.getExternalContext();
-        InputStream reportStream = externalContext.getResourceAsStream("/3/15/6/3/order/report1.jrxml");
+        ClassLoader ccl = Thread.currentThread().getContextClassLoader();
+        InputStream reportStream = ccl.getResourceAsStream("/3/15/6/3/order/report1.jrxml");
 
         try {
             JasperReport report = JasperCompileManager.compileReport(reportStream);
