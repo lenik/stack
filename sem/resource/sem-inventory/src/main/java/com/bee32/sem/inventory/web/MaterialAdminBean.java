@@ -99,8 +99,8 @@ public class MaterialAdminBean
 
     public List<ScaleItem> getScaleList() {
         MaterialDto material = getOpenedObject();
-        material = reload(material);
         if (!DTOs.isNull(material)) {
+            material = reload(material);
             UnitConvDto unitConv = material.getUnitConv();
             if (DTOs.isNull(unitConv)) {
                 return null;
