@@ -5,9 +5,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -59,7 +56,7 @@ public class MakeOrderAdminBean
         JRBeanCollectionDataSource beanCollectionDataSource=new JRBeanCollectionDataSource(makeOrder.getItems());
 
         ClassLoader ccl = Thread.currentThread().getContextClassLoader();
-        InputStream reportStream = ccl.getResourceAsStream("/3/15/6/3/order/report1.jrxml");
+        InputStream reportStream = ccl.getResourceAsStream("resources/3/15/6/3/order/report1.jrxml");
 
         try {
             JasperReport report = JasperCompileManager.compileReport(reportStream);
