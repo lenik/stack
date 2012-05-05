@@ -8,8 +8,10 @@ import javax.faces.model.SelectItem;
 import com.bee32.plover.faces.utils.SelectableList;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.DataViewBean;
+import com.bee32.plover.site.scope.PerSite;
 import com.bee32.sem.sandbox.UIHelper;
 
+@PerSite
 public class ThingDictsBean
         extends DataViewBean {
 
@@ -59,6 +61,11 @@ public class ThingDictsBean
         List<Unit> unitList = ctx.data.access(Unit.class).list();
         List<UnitDto> unitDtoList = DTOs.marshalList(UnitDto.class, unitList);
         return UIHelper.selectItemsFromDict(unitDtoList);
+    }
+
+    public synchronized void invalidateUnits() {
+        units = null;
+        unitSelectItems = null;
     }
 
 }

@@ -8,6 +8,7 @@ import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.sandbox.UIHelper;
+import com.bee32.sem.world.thing.ThingDictsBean;
 import com.bee32.sem.world.thing.Unit;
 import com.bee32.sem.world.thing.UnitCriteria;
 import com.bee32.sem.world.thing.UnitDto;
@@ -43,6 +44,9 @@ public class AddUnitBean
             Unit _unit = unit.unmarshal();
             ctx.data.access(Unit.class).saveOrUpdate(_unit);
             uiLogger.info("保存成功!");
+
+            // Refresh units.
+            ctx.bean.getBean(ThingDictsBean.class).invalidateUnits();
         } catch (Exception e) {
             uiLogger.error("添加单位失败", e);
         }
