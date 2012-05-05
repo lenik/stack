@@ -5,7 +5,7 @@
 
     <ui:param name="title" value="工艺流转单" />
     <ui:param name="bean" value="#{makeProcessAdminBean}" />
-    <ui:param name="item" value="#{bean.process}" />
+    <ui:param name="item" value="#{bean.currStep}" />
 
     <ui:define name="title">
         <h:outputText value="${title}"/>
@@ -76,7 +76,7 @@
                         <fr:listView id="operatorIndexView" header="操作员" style="indexPanel"
                             picker="choosePersonDialog"
                             editView=":operatorEditView"
-                            mbean="#{bean.operatorsMBean}" nested="true" readonly="#{not bean.editing}">
+                            mbean="#{bean.operatorsMBean}" nested="true">
                             <f:facet name="columns">
                                 <p:column headerText="姓名" sortBy="#{entry.label}" styleClass="f-wrappable">
                                     <h:outputText value="#{entry.displayName}" />
@@ -93,7 +93,7 @@
 
                     <p:tab title="质检结果">
                         <fr:listView id="qcResultParaIndexView" header="质检结果" style="indexPanel" editView=":qcResultParaEditView"
-                            mbean="#{bean.qcResultParasMBean}" nested="true" readonly="#{not bean.editing}">
+                            mbean="#{bean.qcResultParasMBean}" nested="true">
                             <f:facet name="columns">
                                 <p:column headerText="质检内容">
                                     <h:outputText value="#{entry.label}" />
@@ -117,7 +117,7 @@
         </sem:choosePersonDialog>
 
         <fr:listView id="operatorEditView" header="操作员" style="editDialog"
-            indexView=":operatorsView:editForm:stepEditTab:operatorIndexView" mbean="#{bean.operatorsMBean}" readonly="#{not bean.editing}">
+            indexView=":operatorsView:editForm:stepEditTab:operatorIndexView" mbean="#{bean.operatorsMBean}">
             <t:panelGrid columns="2">
 
                 <h:outputText value="操作员:" />
@@ -133,8 +133,8 @@
             </t:panelGrid>
         </fr:listView>
 
-        <fr:listView id="qcSpecParaEditView" header="质检标准编辑" style="editDialog"
-            indexView=":stepsView:editForm:stepEditTab:qcSpecParaIndexView" mbean="#{bean.qcSpecParasMBean}" readonly="#{not bean.editing}">
+        <fr:listView id="qcResultParaEditView" header="质检结果编辑" style="editDialog"
+            indexView=":stepsView:editForm:stepEditTab:qcResultParaIndexView" mbean="#{bean.qcResultParasMBean}">
             <t:panelGrid columns="2">
 
                 <h:outputText value="质检内容:" />

@@ -1,5 +1,6 @@
 package com.bee32.sem.makebiz.web;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,15 +19,20 @@ import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.component.panelgrid.PanelGrid;
 
+import com.bee32.plover.arch.util.IEnclosingContext;
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.DataViewBean;
+import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.make.dto.MakeStepModelDto;
 import com.bee32.sem.make.dto.MakeStepNameDto;
 import com.bee32.sem.make.dto.PartDto;
+import com.bee32.sem.make.dto.QCResultParameterDto;
 import com.bee32.sem.makebiz.dto.MakeProcessDto;
 import com.bee32.sem.makebiz.dto.MakeStepDto;
 import com.bee32.sem.makebiz.entity.MakeProcess;
+import com.bee32.sem.makebiz.entity.MakeStep;
+import com.bee32.sem.people.dto.PersonDto;
 
 public class MakeProcessAdminBean extends DataViewBean {
 
@@ -40,9 +46,13 @@ public class MakeProcessAdminBean extends DataViewBean {
     int count;
 
 
+    MakeStepDto currStep;
+
     public MakeProcessAdminBean() {
         goNumber = 1;
         loadMakeProcess(goNumber);
+
+        currStep = new MakeStepDto().create();
 
     }
 
@@ -167,6 +177,14 @@ public class MakeProcessAdminBean extends DataViewBean {
         this.goNumber = goNumber;
     }
 
+    public MakeStepDto getCurrStep() {
+        return currStep;
+    }
+
+    public void setCurrStep(MakeStepDto currStep) {
+        this.currStep = currStep;
+    }
+
     public int getCount() {
         count = ctx.data.access(MakeProcess.class).count();
         return count;
@@ -230,8 +248,41 @@ public class MakeProcessAdminBean extends DataViewBean {
     }
 
     public void fillStep(long stepId) {
-        uiLogger.info("fill " + stepId);
+        MakeStep _step = ctx.data.access(MakeStep.class).get(stepId);
+
+        currStep = DTOs.marshal(MakeStepDto.class, _step);
     }
+
+
+    /*************************************************************************
+     * Section: MBeans
+     *************************************************************************/
+    final ListMBean<PersonDto> operatorsMBean = ListMBean.fromEL(this, //
+            "currStep.operators", PersonDto.class);
+
+    class QCResultContext
+    implements IEnclosingContext, Serializable {
+
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public Object getEnclosingObject() {
+            return currStep.getQcResult();
+        }
+    }
+
+    final ListMBean<QCResultParameterDto> qcResultParasMBean = ListMBean.fromEL(new QCResultContext(), //
+            "enclosingObject.parameters", QCResultParameterDto.class);
+
+    public ListMBean<PersonDto> getOperatorsMBean() {
+        return operatorsMBean;
+    }
+
+    public ListMBean<QCResultParameterDto> getQcResultParasMBean() {
+        return qcResultParasMBean;
+    }
+
+
 
 
 }
