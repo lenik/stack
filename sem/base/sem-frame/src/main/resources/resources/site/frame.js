@@ -32,12 +32,19 @@
 
         var dataTable = $("#mainForm\\:dataTable");
         var exportMenu = $("#mainForm\\:exportMenu");
-        dataTable.oncontextmenu = function() {
+        dataTable[0].oncontextmenu = function(event) {
+            exportMenu.css({
+                left: event.x+"px",
+                top: window.scrollY + event.y + "px",
+            });
             exportMenu.show();
         };
-        exportMenu.onexit = function() {
+        exportMenu.mouseleave(function() {
             exportMenu.hide();
-        }
+        });
+        dataTable.click(function() {
+            exportMenu.hide();
+        });
     });
 
 })(jQuery);
