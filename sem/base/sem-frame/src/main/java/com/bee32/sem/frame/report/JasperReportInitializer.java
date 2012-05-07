@@ -20,7 +20,8 @@ public class JasperReportInitializer
      *
      * @see JRProperties#COMPILER_CLASSPATH
      */
-    static final String JASPERREPORTS_CCPATH = "net.sf.jasperreports.compiler.classpath";
+    // static final String JASPERREPORTS_CCPATH = "net.sf.jasperreports.compiler.classpath";
+    static final String JASPERREPORTS_CCPATH = JRProperties.COMPILER_CLASSPATH;
 
     static final String PATH_SEP = SystemProperties.getPathSeparator();
 
@@ -39,8 +40,9 @@ public class JasperReportInitializer
         }
         String classpath = pathBuf.toString();
         System.setProperty(JASPERREPORTS_CCPATH, classpath);
+
         // If JasperReports is already loaded, you may have to hack on the JRProperties.
-        // JRProperties.setProperty(JASPERREPORTS_CCPATH, classpath);
+        JRProperties.setProperty(JASPERREPORTS_CCPATH, classpath);
     }
 
     public static void main(String[] args) {
