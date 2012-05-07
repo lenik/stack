@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import org.apache.commons.lang.StringUtils;
 
 import com.bee32.plover.orm.annotation.ForEntity;
+import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.makebiz.dto.MakeOrderDto;
@@ -55,7 +56,13 @@ public class MakeTaskAdminBean
 	public void generateProcess(MakeTaskItemDto item) {
 		MakebizService service = ctx.bean.getBean(MakebizService.class);
 		try {
+		    if (!DTOs.isNull(item.getProcess())) {
+		        uiLogger.info("此生产任务已经有工艺流转单.");
+		        return;
+		    }
+
 			service.generateProcess(item);
+			item = reload(item);
 			uiLogger.info("生成成功，进入\"工世流转单\"功能进行下一步操作.");
 		} catch (Exception e) {
 			uiLogger.error("生成失败!", e);

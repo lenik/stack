@@ -13,6 +13,9 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.bee32.plover.ox1.color.MomentInterval;
 
 @Entity
@@ -34,6 +37,7 @@ public class QCResult
      * 质检得到的实际参数
      */
     @OneToMany(mappedBy = "parent", orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
     public List<QCResultParameter> getParameters() {
         return parameters;
     }

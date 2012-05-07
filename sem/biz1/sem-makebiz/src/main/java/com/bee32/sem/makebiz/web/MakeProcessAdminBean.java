@@ -52,11 +52,12 @@ public class MakeProcessAdminBean extends DataViewBean {
         goNumber = 1;
         loadMakeProcess(goNumber);
 
+        //初始建一个空的MakeStepDto,为避免程序出错
         currStep = new MakeStepDto().create();
 
     }
 
-	private List<UIComponent> getComponentChildren(UIComponent component){
+	private List<UIComponent> getComponentChildren(UIComponent component) {
         List<UIComponent> componentList = null;
         System.out.println(component.getId());
         if(component.getChildCount() > 0){
@@ -138,6 +139,7 @@ public class MakeProcessAdminBean extends DataViewBean {
                     CommandButton button = new CommandButton();
                     button.setId("btnFillStep" + makeStep.getId());
                     button.setValue("...");
+                    button.setUpdate("stepDialogForm:stepEditTab");
 
                     MethodExpression methodExpression =
                             context.getApplication().getExpressionFactory().createMethodExpression(
@@ -251,6 +253,16 @@ public class MakeProcessAdminBean extends DataViewBean {
         MakeStep _step = ctx.data.access(MakeStep.class).get(stepId);
 
         currStep = DTOs.marshal(MakeStepDto.class, _step);
+    }
+
+    public void save() {
+        try {
+            MakeStep _step = currStep.unmarshal();
+            ctx.data.access(MakeStep.class).saveOrUpdate(_step);
+            uiLogger.info("保存成功");
+        } catch (Exception e) {
+            uiLogger.error("保存出错!", e);
+        }
     }
 
 

@@ -27,6 +27,9 @@ import com.bee32.sem.make.dto.PartDto;
 import com.bee32.sem.make.entity.MakeStepModel;
 import com.bee32.sem.make.entity.Part;
 import com.bee32.sem.make.entity.PartItem;
+import com.bee32.sem.make.entity.QCResult;
+import com.bee32.sem.make.entity.QCResultParameter;
+import com.bee32.sem.make.entity.QCSpecParameter;
 import com.bee32.sem.make.util.BomCriteria;
 import com.bee32.sem.makebiz.dto.DeliveryNoteDto;
 import com.bee32.sem.makebiz.dto.DeliveryNoteItemDto;
@@ -212,12 +215,25 @@ public class MakebizService
 		}
 	}
 
-	for (MakeStepModel stepMode : part.getSteps()) {
+	for (MakeStepModel stepModel : part.getSteps()) {
 		MakeStep step = new MakeStep();
 
 		step.setParent(process);
-		step.setModel(stepMode);
+		step.setModel(stepModel);
 		step.setPlanQuantity(quantity);
+
+		if(stepModel.isQualityControlled()) {
+		    //如果需要质量控制
+		    QCResult qcResult = new QCResult();
+		    step.setQcResult(qcResult);
+		    for(QCSpecParameter specPara : stepModel.getQcSpec().getParameters()) {
+		        QCResultParameter resultPara = new QCResultParameter();
+		        resultPara.setParent(qcResult);
+		        resultPara.setKey(specPara);
+
+		        qcResult.getParameters().add(resultPara);
+		    }
+		}
 
 		process.addStep(step);
 	}
