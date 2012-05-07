@@ -55,7 +55,7 @@ public class MakeOrderAdminBean
         MakeOrderDto makeOrder = this.getOpenedObject();
         JRBeanCollectionDataSource beanCollectionDataSource=new JRBeanCollectionDataSource(makeOrder.getItems());
 
-        ClassLoader ccl = Thread.currentThread().getContextClassLoader();
+        ClassLoader ccl = getClass().getClassLoader(); //Thread.currentThread().getContextClassLoader();
         InputStream reportStream = ccl.getResourceAsStream("resources/3/15/6/3/order/report1.jrxml");
 
         try {
