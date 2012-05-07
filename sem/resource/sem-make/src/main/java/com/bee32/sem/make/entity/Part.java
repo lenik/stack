@@ -44,7 +44,10 @@ public class Part
 
     private static final long serialVersionUID = 1L;
 
+    public static final int RELEASE_VERSION_LENGTH = 20;
+
     Part obsolete;
+    String releaseVersion;
 
     List<PartItem> children = new ArrayList<PartItem>();
     List<PartItem> xrefs = new ArrayList<PartItem>();
@@ -85,6 +88,7 @@ public class Part
     protected void _populate(Part o) {
         super._populate(o);
         obsolete = o.obsolete;
+        releaseVersion = o.releaseVersion;
         children = CopyUtils.copyList(o.children);
         xrefs = new ArrayList<PartItem>(o.xrefs);
         xrefCount = o.xrefCount;
@@ -111,6 +115,15 @@ public class Part
 
     public void setObsolete(Part obsolete) {
         this.obsolete = obsolete;
+    }
+
+    @Column(length = RELEASE_VERSION_LENGTH)
+    public String getReleaseVersion() {
+        return releaseVersion;
+    }
+
+    public void setReleaseVersion(String releaseVersion) {
+        this.releaseVersion = releaseVersion;
     }
 
     /**
