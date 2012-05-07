@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
  * Global application context holder.
  *
  * This service should be eargely activated by Spring CDI.
+ *
+ * @see IActivatorService
  */
 @Component
 public class GlobalAppCtx

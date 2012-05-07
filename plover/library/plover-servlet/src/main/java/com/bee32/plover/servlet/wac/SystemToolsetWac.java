@@ -16,6 +16,7 @@ public class SystemToolsetWac
     public void configureServlets(ServletTestLibrary stl) {
         stl.addServlet(ClassLoaderDiagServlet.class, PloverServletModule.PREFIX + "/loader/*");
         stl.addServlet(SystemInfoServlet.class, PloverServletModule.PREFIX + "/sys/*");
+        stl.addServlet(WacToolsServlet.class, PloverServletModule.PREFIX + "/wac/*");
     }
 
 }

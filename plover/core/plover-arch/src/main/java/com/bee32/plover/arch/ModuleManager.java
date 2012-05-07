@@ -22,6 +22,7 @@ public class ModuleManager
         return modules;
     }
 
+    @Override
     protected TreeSet<IModulePostProcessor> getPostProcessors() {
         TreeSet<IModulePostProcessor> modulePostProcessors = new TreeSet<IModulePostProcessor>(
                 ModulePostProcessorComparator.getInstance());
