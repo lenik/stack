@@ -545,6 +545,11 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         setId(id);
     }
 
+    /**
+     * Get optional ID, and translate null to zero.
+     *
+     * @return Int32 value of ID, returns zero if id is missing.
+     */
     public final int getId_OZ() {
         if (id == null)
             return 0;
