@@ -223,7 +223,7 @@
                             </h:panelGroup>
                         </h:panelGroup>
                         <h:panelGroup rendered="${copyable and (bean.editing or not plainEditForm)}">
-                            <p:commandButton id="dup-validated" value="另存为副本" actionListener="${bean.saveDup}"
+                            <p:commandButton id="dup-validated" value="创建副本" actionListener="${bean.saveDup}"
                                 disabled="${not bean.editing}" update="${_contentUpdate} ${_indexUpdate} ${mirrorTargets}"
                                 rendered="${not plainEditForm}" onclick="waitbox.show()"
                                 oncomplete="waitbox.hide(); editdlg.shakeOnFail(args)" />
