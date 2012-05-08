@@ -49,7 +49,6 @@ import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityFlags;
-import com.bee32.plover.orm.sample.SamplesLoader;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.orm.web.EntityHelper;
@@ -111,6 +110,8 @@ public abstract class SimpleEntityViewBean
     protected static final int SAVE_NO_REFRESH = 128;
     /** Used by saveDup */
     protected static final int SAVE_CONT = 256;
+    /** Used by saveDup */
+    protected static final int SAVE_DUP = 512;
 
     protected int saveFlags = 0;
     protected int deleteFlags = 0;
@@ -509,11 +510,7 @@ public abstract class SimpleEntityViewBean
     @Operation
     public final boolean saveDup() {
         // Re-mark as new-created object.
-        for (Object openedObject : getOpenedObjects()) {
-            EntityDto<?, ?> dto = (EntityDto<?, ?>) openedObject;
-            dto.clearId();
-        }
-        if (!save(SAVE_CONT, null))
+        if (!save(SAVE_DUP | SAVE_CONT, null))
             return false;
         // showCreateForm();
         return true;
@@ -535,7 +532,7 @@ public abstract class SimpleEntityViewBean
     @SuppressWarnings({ "unchecked", "rawtypes" })
     protected boolean save(int saveFlags, String hint) {
         checkSaveFlags(saveFlags);
-        boolean creating = isCreating();
+        boolean creating = isCreating() || (saveFlags & SAVE_DUP) != 0;
 
         if (hint == null)
             // if ((saveFlags & SAVE_MUSTEXIST) != 0)
@@ -555,6 +552,13 @@ public abstract class SimpleEntityViewBean
                 return false;
         } catch (Exception e) {
             uiLogger.error("参数整理失败", e);
+        }
+
+        if ((saveFlags & SAVE_DUP) != 0) {
+            for (EntityDto<?,?> dto : dtos) {
+                dto.copy();
+                dto.clearId();
+            }
         }
 
         UnmarshalMap uMap;
