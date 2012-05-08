@@ -109,6 +109,8 @@ public abstract class SimpleEntityViewBean
     protected static final int SAVE_MUSTEXIST = 32;
     /** Don't refresh row count */
     protected static final int SAVE_NO_REFRESH = 128;
+    /** Used by saveDup */
+    protected static final int SAVE_CONT = 256;
 
     protected int saveFlags = 0;
     protected int deleteFlags = 0;
@@ -506,9 +508,14 @@ public abstract class SimpleEntityViewBean
 
     @Operation
     public final boolean saveDup() {
-        if (!save())
+        // Re-mark as new-created object.
+        for (Object openedObject : getOpenedObjects()) {
+            EntityDto<?, ?> dto = (EntityDto<?, ?>) openedObject;
+            dto.clearId();
+        }
+        if (!save(SAVE_CONT, null))
             return false;
-        showCreateForm();
+        // showCreateForm();
         return true;
     }
 
@@ -671,7 +678,8 @@ public abstract class SimpleEntityViewBean
         if (!warned)
             uiLogger.info(hint + "成功");
 
-        showIndex(creating ? 1 : null);
+        if ((saveFlags & SAVE_CONT) == 0)
+            showIndex(creating ? 1 : null);
         return true;
     }
 
