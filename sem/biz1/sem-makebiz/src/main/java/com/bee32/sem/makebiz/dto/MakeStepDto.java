@@ -43,6 +43,8 @@ public class MakeStepDto
     List<PersonDto> operators;
     QCResultDto qcResult;
 
+    boolean done;
+
     @Override
     protected void _marshal(MakeStep source) {
         parent = mref(MakeProcessDto.class, source.getParent());
@@ -60,6 +62,8 @@ public class MakeStepDto
         if (selection.contains(OPERATORS))
             operators = mrefList(PersonDto.class, source.getOperators());
         qcResult = marshal(QCResultDto.class, source.getQcResult());
+
+        done = source.isDone();
 
     }
 
@@ -79,6 +83,8 @@ public class MakeStepDto
         if (selection.contains(OPERATORS))
             mergeList(target, "operators", operators);
         merge(target, "qcResult", qcResult);
+
+        target.setDone(done);
 
     }
 
@@ -189,4 +195,11 @@ public class MakeStepDto
 
     }
 
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
 }

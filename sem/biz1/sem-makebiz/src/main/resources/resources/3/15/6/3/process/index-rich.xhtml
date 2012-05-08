@@ -69,8 +69,8 @@
                                 <p:inputText id="orgUnit" label="对应部门" value="#{item.orgUnit.path}" readonly="true" />
                                 <p:commandButton value="..." oncomplete="chooseOrgUnitDialog.show()" />
                             </t:panelGroup>
-                            <h:panelGroup />
-                            <h:panelGroup />
+                            <h:outputText value="是否完成:" />
+                            <p:selectBooleanCheckbox value="#{item.done}" />
                         </t:panelGrid>
 
                     </p:tab>
