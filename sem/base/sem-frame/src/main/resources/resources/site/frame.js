@@ -31,20 +31,22 @@
         });
 
         var dataTable = $("#mainForm\\:dataTable");
-        var exportMenu = $("#mainForm\\:exportMenu");
-        dataTable[0].oncontextmenu = function(event) {
-            exportMenu.css({
-                left: event.x+"px",
-                top: window.scrollY + event.y + "px",
+        if (dataTable.length != 0) {
+            var exportMenu = $("#mainForm\\:exportMenu");
+            dataTable[0].oncontextmenu = function(event) {
+                exportMenu.css({
+                    left: event.x+"px",
+                    top: window.scrollY + event.y + "px",
+                });
+                exportMenu.show();
+            };
+            exportMenu.mouseleave(function() {
+                exportMenu.hide();
             });
-            exportMenu.show();
-        };
-        exportMenu.mouseleave(function() {
-            exportMenu.hide();
-        });
-        dataTable.click(function() {
-            exportMenu.hide();
-        });
+            dataTable.click(function() {
+                exportMenu.hide();
+            });
+        }
     });
 
 })(jQuery);
