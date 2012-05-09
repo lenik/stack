@@ -72,7 +72,7 @@ public class MakeOrderAdminBean
             byte[] pdfByteArray = JasperExportManager.exportReportToPdf(jasperPrint);
 
             InputStream stream = new ByteArrayInputStream(pdfByteArray);
-            pdfFile = new DefaultStreamedContent(stream);
+            pdfFile = new DefaultStreamedContent(stream, "application/pdf", "order.pdf");
         } catch (Exception e) {
             e.printStackTrace();
         }
