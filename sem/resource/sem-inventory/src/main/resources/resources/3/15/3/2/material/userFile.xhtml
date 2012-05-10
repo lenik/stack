@@ -29,12 +29,15 @@
                 <p:commandLink
                     title="编辑"
                     update=":editUserFileForm"
-                    oncomplete="editUserFileDialog.show()"
+                    onclick="waitbox.show();"
+                    oncomplete="waitbox.hide();editUserFileDialog.show()"
                     action="#{bean.reloadUserFile}">
                     <f:setPropertyActionListener value="#{userFile}" target="#{bean.userFile}" />
                     <p:graphicImage value="#{location.ICON}/etool16/editor_area.gif" />
                 </p:commandLink>
-                <p:commandLink title="删除" oncomplete="deleteUserFileConfirmDialog.show()">
+                <p:commandLink title="删除"
+                    onclick="waitbox.show();"
+                    oncomplete="waitbox.hide();deleteUserFileConfirmDialog.show()">
                     <f:setPropertyActionListener value="#{userFile}" target="#{bean.userFile}" />
                     <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
                 </p:commandLink>
@@ -71,7 +74,8 @@
                     value="保存"
                     actionListener="#{bean.updateUserFile}"
                     update=":userFileDialog:form"
-                    oncomplete="editUserFileDialog.hide()" />
+                    onclick="waitbox.show();"
+                    oncomplete="waitbox.hide();editUserFileDialog.hide()" />
                 <p:commandButton value="关闭" onclick="editUserFileDialog.hide()" />
             </div>
         </p:dialog>
@@ -81,7 +85,8 @@
         modal="true">
         <h:form id="deleteUserFileConfirmForm">
             <p:commandButton value="确定" update=":userFileDialog:form" actionListener="#{bean.deleteUserFile}"
-                oncomplete="deleteUserFileConfirmDialog.hide()" />
+                onclick="waitbox.show();"
+                oncomplete="waitbox.hide();deleteUserFileConfirmDialog.hide()" />
             <p:commandButton value="取消" onclick="deleteUserFileConfirmDialog.hide()" type="button" />
         </h:form>
     </p:confirmDialog>

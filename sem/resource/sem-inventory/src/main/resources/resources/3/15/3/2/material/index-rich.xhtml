@@ -50,26 +50,32 @@
 
         <p:column headerText="操作">
             <p:commandLink styleClass="icon-button" title="价格" update=":materialPriceDialog:form"
-                oncomplete="materialPriceDialog.show()">
+                onclick="waitbox.show();"
+                oncomplete="waitbox.hide();materialPriceDialog.show()">
                 <f:setPropertyActionListener value="#{entry}" target="#{bean.openedObject}" />
                 <p:graphicImage value="#{location.ICON}/obj16/prjversions_rep.gif" />
             </p:commandLink>
             <p:commandLink styleClass="icon-button" title="单位换算表" update=":unitConvDialog:form"
-                oncomplete="unitConvDialog.show()">
+                onclick="waitbox.show();"
+                oncomplete="waitbox.hide();unitConvDialog.show()">
                 <f:setPropertyActionListener value="#{entry}" target="#{bean.openedObject}" />
                 <p:graphicImage value="#{location.ICON}/elcl16/toggledetailpane_co.gif" />
             </p:commandLink>
             <p:commandLink styleClass="icon-button" title="推荐库位" update=":preferredLocationDialog:form"
-                oncomplete="preferredLocationDialog.show()">
+                onclick="waitbox.show();"
+                oncomplete="waitbox.hide();preferredLocationDialog.show()">
                 <f:setPropertyActionListener value="#{entry}" target="#{bean.openedObject}" />
                 <p:graphicImage value="#{location.ICON}/cview16/filenav_nav.gif" />
             </p:commandLink>
             <p:commandLink styleClass="icon-button" title="仓库选项" update=":warehouseOptionDialog:form"
-                oncomplete="warehouseOptionDialog.show()">
+                onclick="waitbox.show();"
+                oncomplete="waitbox.hide();warehouseOptionDialog.show()">
                 <f:setPropertyActionListener value="#{entry}" target="#{bean.openedObject}" />
                 <p:graphicImage value="#{location.ICON}/elcl16/all_history_mode.gif" />
             </p:commandLink>
-            <p:commandLink styleClass="icon-button" title="附件" update=":unitConvDialog:form" oncomplete="userFileDialog.show()">
+            <p:commandLink styleClass="icon-button" title="附件" update=":unitConvDialog:form"
+                onclick="waitbox.show();"
+                oncomplete="waitbox.hide();userFileDialog.show()">
                 <f:setPropertyActionListener value="#{entry}" target="#{bean.openedObject}" />
                 <p:graphicImage value="#{location.ICON}/etool16/annotate.gif" />
             </p:commandLink>

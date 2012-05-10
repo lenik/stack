@@ -26,7 +26,9 @@
             </p:column>
 
             <p:column headerText="操作" style="width:100px;">
-                <p:commandLink title="删除" oncomplete="deleteUnitScaleConfirmDialog.show()">
+                <p:commandLink title="删除"
+                    onclick="waitbox.show();"
+                    oncomplete="waitbox.hide();deleteUnitScaleConfirmDialog.show()">
                     <f:setPropertyActionListener value="#{scale}" target="#{bean.scaleItem}" />
                     <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
                 </p:commandLink>
@@ -48,7 +50,9 @@
                 <p:inputText value="#{bean.scaleItem.scale}" label="换算率"/>
 
                 <p:commandButton actionListener="#{bean.addUnitScale}" update=":unitConvDialog:form"
-                    value="保存" oncomplete="addUnitScaleDialog.hide()" />
+                    value="保存"
+                    onclick="waitbox.show();"
+                    oncomplete="waitbox.hide();addUnitScaleDialog.hide()" />
                 <p:commandButton value="关闭" onclick="addUnitScaleDialog.hide()" />
             </h:panelGrid>
         </h:form>
@@ -58,7 +62,8 @@
         modal="true">
         <h:form id="deleteUnitScaleConfirmForm">
             <p:commandButton value="确定" update=":unitConvDialog:form:scaleMap" actionListener="#{bean.deleteUnitScale}"
-                oncomplete="deleteUnitScaleConfirmDialog.hide()" />
+                onclick="waitbox.show();"
+                oncomplete="waitbox.hide();deleteUnitScaleConfirmDialog.hide()" />
             <p:commandButton value="取消" onclick="deleteUnitScaleConfirmDialog.hide()" type="button" />
         </h:form>
     </p:confirmDialog>

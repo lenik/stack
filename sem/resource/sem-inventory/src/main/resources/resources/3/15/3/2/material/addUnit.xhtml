@@ -39,7 +39,8 @@
 
                 <h:panelGroup colspan="3">
                     <p:commandButton value="添加" actionListener="#{addUnitBean.addUnit}" update="#{update}"
-                        oncomplete="addUnitDialog.hide();" />
+                        onclick="waitbox.show();"
+                        oncomplete="waitbox.hide();addUnitDialog.hide();" />
                     <p:commandButton value="关闭" onclick="addUnitDialog.hide();" />
                 </h:panelGroup>
             </t:panelGrid>

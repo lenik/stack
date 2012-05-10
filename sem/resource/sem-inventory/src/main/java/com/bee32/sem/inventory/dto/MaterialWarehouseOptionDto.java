@@ -21,7 +21,7 @@ public class MaterialWarehouseOptionDto
 
     MaterialDto material;
     StockWarehouseDto warehouse;
-    BigDecimal safetyStock = new BigDecimal(1);
+    BigDecimal safetyStock = new BigDecimal(0);
     int stkPeriod = 365;
 
     @Override

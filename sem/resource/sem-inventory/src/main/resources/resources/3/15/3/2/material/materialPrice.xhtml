@@ -42,7 +42,9 @@
                 </p:selectOneMenu>
 
                 <p:commandButton actionListener="#{bean.addMaterialPrice}" update=":materialPriceDialog:form:prices, :mainForm:dataTable"
-                    value="保存" oncomplete="addMaterialPriceDialog.hide()" />
+                    value="保存"
+                    onclick="waitbox.show();"
+                    oncomplete="waitbox.hide();addMaterialPriceDialog.hide()" />
                 <p:commandButton value="关闭" onclick="addMaterialPriceDialog.hide()" />
             </h:panelGrid>
         </h:form>

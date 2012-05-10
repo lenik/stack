@@ -24,7 +24,9 @@
                 </p:column>
 
                 <p:column headerText="操作" style="width:100px;">
-                    <p:commandLink title="删除" oncomplete="deleteWarehouseOptionConfirmDialog.show()">
+                    <p:commandLink title="删除"
+                        onclick="waitbox.show();"
+                        oncomplete="waitbox.hide();deleteWarehouseOptionConfirmDialog.show()">
                         <f:setPropertyActionListener value="#{warehouseOption}" target="#{bean.warehouseOption}" />
                         <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
                     </p:commandLink>
@@ -50,7 +52,9 @@
                     <p:spinner value="#{bean.warehouseOption.stkPeriod}" label="循环盘点周期(天)"/>
 
                     <p:commandButton actionListener="#{bean.addWarehouseOption}" update=":warehouseOptionDialog:form"
-                        value="保存" oncomplete="addWarehouseOptionDialog.hide()" />
+                        value="保存"
+                        onclick="waitbox.show();"
+                        oncomplete="waitbox.hide();addWarehouseOptionDialog.hide()" />
                     <p:commandButton value="关闭" onclick="addWarehouseOptionDialog.hide()" />
                 </h:panelGrid>
             </h:form>
@@ -61,7 +65,8 @@
             <h:form id="deleteWarehouseOptionConfirmForm">
 
                 <p:commandButton value="确定" update=":warehouseOptionDialog:form" actionListener="#{bean.deleteWarehouseOption}"
-                    oncomplete="deleteWarehouseOptionConfirmDialog.hide()" />
+                    onclick="waitbox.show();"
+                    oncomplete="waitbox.hide();deleteWarehouseOptionConfirmDialog.hide()" />
                 <p:commandButton value="取消" onclick="deleteWarehouseOptionConfirmDialog.hide()" type="button" />
 
             </h:form>

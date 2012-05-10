@@ -39,12 +39,14 @@
                 <h:outputText value="库位" />
                 <h:panelGroup colspan="2">
                     <p:inputText value="#{bean.preferredLocation.location.label}" readonly="true" label="库位"/>
-                    <p:commandButton value="..." oncomplete="choosePreferredLocationDialog.show()" />
+                    <p:commandButton value="..." onclick="waitbox.show();" oncomplete="waitbox().hide();choosePreferredLocationDialog.show()" />
                 </h:panelGroup>
             </h:panelGrid>
             <div align="right">
                 <p:commandButton id="save-validated" value="保存" actionListener="#{bean.addPreferredLocation}"
-                    update=":preferredLocationDialog:form" oncomplete="addPreferredLocationDialog.hide()" />
+                    update=":preferredLocationDialog:form"
+                    onclick="waitbox.show();"
+                    oncomplete="waitbox.hide();addPreferredLocationDialog.hide()" />
                 <p:commandButton id="cancel" value="关闭" onclick="addPreferredLocationDialog.hide()" />
             </div>
         </h:form>
@@ -54,7 +56,8 @@
         widgetVar="deletePreferredLocationConfirmDialog" modal="true">
         <h:form id="deletePreferredLocationConfirmForm">
             <p:commandButton value="确定" update=":preferredLocationDialog:form" actionListener="#{bean.deletePreferredLocation}"
-                oncomplete="deletePreferredLocationConfirmDialog.hide()" />
+                onclick="waitbox.show();"
+                oncomplete="waitbox.hide();deletePreferredLocationConfirmDialog.hide()" />
             <p:commandButton value="取消" onclick="deletePreferredLocationConfirmDialog.hide()" type="button" />
         </h:form>
     </p:confirmDialog>
