@@ -46,19 +46,27 @@
                 </p:column>
 
                 <p:column headerText="总数">
-                    <h:outputText value="#{entry.total}" />
+                    <h:outputText value="#{entry.total}" >
+                        <f:convertNumber pattern="#0.00"/>
+                    </h:outputText>
                 </p:column>
 
                 <p:column headerText="合格数">
-                    <h:outputText value="#{entry.qualified}" />
+                    <h:outputText value="#{entry.qualified}" >
+                        <f:convertNumber pattern="#0.00"/>
+                    </h:outputText>
                 </p:column>
 
                 <p:column headerText="不合格数">
-                    <h:outputText value="#{entry.unqualified}" />
+                    <h:outputText value="#{entry.unqualified}" >
+                        <f:convertNumber pattern="#0.00"/>
+                    </h:outputText>
                 </p:column>
 
                 <p:column headerText="不合格率">
-                    <h:outputText value="#{entry.unqualifiedRatio}" />
+                    <h:outputText value="#{entry.unqualifiedRatio}" >
+                        <f:convertNumber type="percent" minFractionDigits="2"/>
+                    </h:outputText>
                 </p:column>
 
 
