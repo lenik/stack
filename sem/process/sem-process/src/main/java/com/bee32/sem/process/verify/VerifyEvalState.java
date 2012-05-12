@@ -112,4 +112,7 @@ public class VerifyEvalState
     public static final VerifyEvalState PENDING = _(4, "PENDING", RUNNING, 0);
     public static final VerifyEvalState INVALID = _(5, "INVALID", END, EventFlags.ERROR);
 
+    public static void main(String[] args) {
+        System.out.println(VERIFIED.getValue());
+    }
 }

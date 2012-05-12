@@ -38,6 +38,8 @@ public class StockQueryBean
     Integer selectedWarehouseId = -1;
     Date queryDate = new Date();
 
+    boolean verified;
+
     StockItemListDto resultList = new StockItemListDto().create();
     StockOrderItemDto selectedItem;
 
@@ -122,6 +124,14 @@ public class StockQueryBean
 
     public int getOrderItemIndex() {
         return orderItemIndex;
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
     }
 
     public void findOrderSn() {

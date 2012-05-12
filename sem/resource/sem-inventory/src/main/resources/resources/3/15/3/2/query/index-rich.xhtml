@@ -28,6 +28,9 @@
                     <p:calendar id="limitDateFrom" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
                         value="#{bean.queryDate}" showOn="button" />
                     <p:separator />
+                    <p:selectBooleanCheckbox value="#{bean.verified}" />
+                    <h:outputText value="审核" />
+                    <p:separator />
                     <p:commandButton id="query" value="查询" oncomplete="stockQueryDialog.show()" update="result">
                         <f:setPropertyActionListener target="${stockQueryDialogBean.tabIndex}"
                             value="0" />
@@ -35,6 +38,8 @@
                             value="${bean.queryDate}" />
                         <f:setPropertyActionListener target="${stockQueryDialogBean.queryOptions.warehouse}"
                             value="${bean.selectedWarehouseId}" />
+                        <f:setPropertyActionListener target="${stockQueryDialogBean.queryOptions.verifiedOnly}"
+                            value="${bean.verified}" />
                     </p:commandButton>
                 </p:toolbarGroup>
             </p:toolbar>

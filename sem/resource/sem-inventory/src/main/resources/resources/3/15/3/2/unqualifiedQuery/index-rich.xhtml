@@ -28,7 +28,16 @@
                     <p:calendar id="queryDateTo" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
                         value="#{bean.queryDateTo}" showOn="button" />
                     <p:separator />
-                    <p:commandButton id="query" value="查询"  update="result" actionListener="#{bean.query}"/>
+                    <p:selectBooleanCheckbox value="#{bean.verified}" />
+                    <h:outputText value="审核" />
+                    <p:separator />
+                    <p:commandButton
+                        id="query"
+                        value="查询"
+                        update="result"
+                        onclick="waitbox.show();"
+                        oncomplete="waitbox.hide();"
+                        actionListener="#{bean.query}"/>
                 </p:toolbarGroup>
             </p:toolbar>
 

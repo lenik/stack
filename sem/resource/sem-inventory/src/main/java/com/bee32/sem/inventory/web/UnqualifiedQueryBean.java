@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 import javax.inject.Inject;
 
@@ -40,6 +39,8 @@ public class UnqualifiedQueryBean
     Integer selectedWarehouseId = -1;
     Date queryDateFrom = new Date();
     Date queryDateTo = new Date();
+
+    boolean verified;
 
     List<QualifiedHolder> result = new ArrayList<QualifiedHolder>();
 
@@ -84,6 +85,14 @@ public class UnqualifiedQueryBean
         this.result = result;
     }
 
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
+
     @Transactional
     // (readOnly = true)
     public void query() {
@@ -91,8 +100,6 @@ public class UnqualifiedQueryBean
             uiLogger.error("未选择仓库!");
             return;
         }
-
-        TimeZone timeZone = TimeZone.getDefault();
 
         // 设为 0:0:0.000
         Calendar calFrom = Calendar.getInstance();
@@ -113,17 +120,22 @@ public class UnqualifiedQueryBean
         StringBuilder sb = new StringBuilder();
 
         sb.append("select ");
-        sb.append("    date_trunc('day', created_date) as d_day, ");
-        sb.append("	   state, ");
-        sb.append("	   sum(quantity) as quantity ");
-        sb.append("from stock_order_item ");
+        sb.append("    date_trunc('day', a.created_date) as d_day, ");
+        sb.append("	   a.state, ");
+        sb.append("	   sum(a.quantity) as quantity ");
+        sb.append("from stock_order_item a ");
+        sb.append("left join stock_order b ");
+        sb.append(" on a.parent=b.id ");
         sb.append("where ");
-        sb.append("	   warehouse=:warehouseId ");
-        sb.append("	   and created_date between :dateFrom and :dateTo ");
+        sb.append("	   a.warehouse=:warehouseId ");
+        sb.append("	   and a.created_date between :dateFrom and :dateTo ");
+        if(verified) {
+            sb.append("and b.verify_eval_state=33554434 ");
+        }
         sb.append("group by ");
-        sb.append("	   date_trunc('day', created_date), ");
-        sb.append("	   state ");
-        sb.append("order by date_trunc('day', created_date) ");
+        sb.append("	   date_trunc('day', a.created_date), ");
+        sb.append("	   a.state ");
+        sb.append("order by date_trunc('day', a.created_date) ");
 
         Session session = SessionFactoryUtils.getSession(sessionFactory, false);
         SQLQuery sqlQuery = session.createSQLQuery(sb.toString());
