@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.MatchMode;
 
 import com.bee32.plover.criteria.hibernate.CriteriaComposite;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
@@ -130,4 +131,12 @@ public class StockCriteria
         return comp;
     }
 
+    @LeftHand(StockOrder.class)
+    public static ICriteriaElement test (String pattern){
+        //return sqlRestriction("select * from sotck_order");
+        return compose(alias("items", "item"),
+                alias("item.material", "mat"),
+                likeIgnoreCase("mat.label", pattern, MatchMode.ANYWHERE)
+                );
+    }
 }

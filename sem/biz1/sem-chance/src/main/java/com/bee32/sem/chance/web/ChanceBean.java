@@ -11,11 +11,15 @@ import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.chance.dto.ChancePartyDto;
+import com.bee32.sem.chance.dto.ChanceSourceTypeDto;
+import com.bee32.sem.chance.dto.ChanceStageDto;
 import com.bee32.sem.chance.dto.WantedProductAttributeDto;
 import com.bee32.sem.chance.dto.WantedProductDto;
 import com.bee32.sem.chance.dto.WantedProductQuotationDto;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
+import com.bee32.sem.chance.entity.ChanceSourceType;
+import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.chance.util.ChanceCriteria;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.misc.SimpleEntityViewBean;
@@ -26,6 +30,9 @@ public class ChanceBean
         extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
+
+    ChanceStageDto searchStage = new ChanceStageDto().create();
+    ChanceSourceTypeDto searchSource = new ChanceSourceTypeDto().create();
 
     public ChanceBean() {
         super(Chance.class, ChanceDto.class, 0);
@@ -40,6 +47,18 @@ public class ChanceBean
                 CommonCriteria.labelledWith(searchPattern, true), //
                 ChanceCriteria.subjectLike(searchPattern, true)));
         searchPattern = null;
+    }
+
+    public void addStageRestricion(){
+        ChanceStage chanceStage = ctx.data.access(ChanceStage.class).lazyLoad(searchStage.getId());
+        addSearchFragment("阶段为 " + chanceStage.getLabel(),//
+                ChanceCriteria.stageOf(searchStage.getId()));
+    }
+
+    public void addSourceRestricion(){
+        ChanceSourceType cst = ctx.data.access(ChanceSourceType.class).lazyLoad(searchSource.getId());
+        addSearchFragment("来源为 " + cst.getLabel(),//
+                ChanceCriteria.sourceTypeOf(searchSource.getId()));
     }
 
     /*************************************************************************
@@ -117,6 +136,22 @@ public class ChanceBean
             }
         }
         return true;
+    }
+
+    public ChanceStageDto getSearchStage() {
+        return searchStage;
+    }
+
+    public void setSearchStage(ChanceStageDto searchStage) {
+        this.searchStage = searchStage;
+    }
+
+    public ChanceSourceTypeDto getSearchSource() {
+        return searchSource;
+    }
+
+    public void setSearchSource(ChanceSourceTypeDto searchSource) {
+        this.searchSource = searchSource;
     }
 
 }

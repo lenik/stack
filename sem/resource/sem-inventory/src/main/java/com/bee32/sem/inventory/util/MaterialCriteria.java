@@ -9,6 +9,7 @@ import org.hibernate.criterion.MatchMode;
 
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.LeftHand;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialCategory;
@@ -16,6 +17,28 @@ import com.bee32.sem.inventory.entity.MaterialType;
 
 public class MaterialCriteria
         extends CriteriaSpec {
+
+    @LeftHand(Material.class)
+    public static ICriteriaElement categoryLike(String pattern) {
+        if (pattern == null || pattern.isEmpty())
+            return null;
+        else
+            return compose(alias("category", "category"),
+                    likeIgnoreCase("category.label", pattern, MatchMode.ANYWHERE));
+    }
+
+    @LeftHand(Material.class)
+    public static ICriteriaElement clike(String pattern) {
+        if (pattern == null || pattern.isEmpty())
+            return null;
+        else
+            return
+//                    likeIgnoreCase("material.category.label", pattern, MatchMode.ANYWHERE);
+                    compose(
+                    alias("category", "materialCategory"),
+                    likeIgnoreCase("materialCategory.label", pattern,
+                            MatchMode.ANYWHERE));
+    }
 
     @LeftHand(Material.class)
     public static CriteriaElement categoryOf(Integer categoryId) {

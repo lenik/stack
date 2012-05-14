@@ -204,5 +204,28 @@
                 </h:panelGrid>
             </h:form>
         </p:dialog>
+
     </ui:define>
+
+    <ui:define name="searchPanel.keyword.1">
+        <p:commandButton id="interest" value="限定兴趣" actionListener="${bean.addInterestRestriction}"
+            update="@form, ${_searchUpdates}" />
+        <p:commandButton id="numberFilter" value="限定联系方式" actionListener="${bean.addNumberRestricion}"
+                    update="@form, ${_searchUpdates}" rendered="${not baseEntity}" />
+    </ui:define>
+
+    <ui:define name="searchPanels.1">
+        <p:panel header="按属性搜索" toggleable="true">
+            <div align="center">
+                <p:commandButton id="employeeFilter" value="限定为内部人员" actionListener="${bean.addEmployeeRestriction}"
+                   update="@form, ${_searchUpdates}" rendered="${not baseEntity}" />
+               <p:commandButton id="customerFilter" value="限定为客户" actionListener="${bean.addCustomerRestriction}"
+                   update="@form, ${_searchUpdates}" rendered="${not baseEntity}" />
+               <p:commandButton id="supplierFilter" value="限定为供应商" actionListener="${bean.addSupplierRestriction}"
+                   update="@form, ${_searchUpdates}" rendered="${not baseEntity}" />
+            </div>
+        </p:panel>
+
+    </ui:define>
+
 </ui:composition>

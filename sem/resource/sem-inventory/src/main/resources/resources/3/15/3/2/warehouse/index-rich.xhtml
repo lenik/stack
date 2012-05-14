@@ -51,4 +51,10 @@
             header="选择负责人..." target="${obj.manager}" update=":editDialog:form" />
     </ui:define>
 
+    <ui:define name="searchPanel.keyword.1">
+        <p:commandButton id="address" value="限定地址" actionListener="${bean.addAddressRestriction}"
+            update="@form, ${_searchUpdates}" />
+        <p:commandButton id="phone" value="限定电话" actionListener="${bean.addPhoneRestriction}"
+            update="@form, ${_searchUpdates}" />
+    </ui:define>
 </ui:composition>

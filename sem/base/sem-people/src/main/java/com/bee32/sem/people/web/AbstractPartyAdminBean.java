@@ -96,6 +96,18 @@ public abstract class AbstractPartyAdminBean
         searchPattern = null;
     }
 
+    public void addInterestRestriction() {
+        addSearchFragment("兴趣含有 " + searchPattern, //
+                PeopleCriteria.interestLike(searchPattern));
+        searchPattern = null;
+    }
+
+    public void addPhoneRestriction() {
+        addSearchFragment("电话含有 " + searchPattern, //
+                PeopleCriteria.customers());
+        searchPattern = null;
+    }
+
     /*************************************************************************
      * Section: MBeans
      *************************************************************************/

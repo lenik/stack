@@ -26,7 +26,6 @@
                 <p:inputText value="${obj.parent.label}" readonly="true" label="上级分类" />
                 <p:commandButton value="..." title="选择上级分类" onclick="chooseMaterialCategoryDialog.show()" />
             </h:panelGroup>
-
             <h:outputText value="分类名称:" />
             <p:inputText id="label" value="${obj.label}" label="分类名称" />
 
@@ -45,6 +44,21 @@
     <ui:define name="dialogs">
         <sem:chooseMaterialCategoryDialog id="c_category" target="${obj.parent}"
             update=":editDialog:form" />
+    </ui:define>
+
+    <ui:define name="searchPanels.1">
+        <p:panel header="按分类性质搜索" toggleable="true">
+            <div align="center">
+                <p:commandButton id="finished" value="限定为成品" actionListener="${bean.addCfinishedRestriction}"
+                    update="@form, ${_searchUpdates}" />
+                <p:commandButton id="semiFinished" value="限定为半成品" actionListener="${bean.addSemiRestriction}"
+                    update="@form, ${_searchUpdates}" />
+                <p:commandButton id="rawMaterials" value="限定为原料" actionListener="${bean.addRawRestriction}"
+                    update="@form, ${_searchUpdates}" />
+                <p:commandButton id="other" value="限定为其他" actionListener="${bean.addOtherRestriction}"
+                    update="@form ${_searchUpdates}" />
+            </div>
+        </p:panel>
     </ui:define>
 
 </ui:composition>

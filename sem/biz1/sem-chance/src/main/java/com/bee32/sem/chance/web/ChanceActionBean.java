@@ -9,13 +9,14 @@ import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.dto.ChanceStageDto;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
+import com.bee32.sem.chance.util.ChanceCriteria;
+import com.bee32.sem.frame.search.SearchFragment;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.people.dto.PartyDto;
 
 @ForEntity(ChanceAction.class)
-public class ChanceActionBean
-        extends SimpleEntityViewBean {
+public class ChanceActionBean extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -43,14 +44,49 @@ public class ChanceActionBean
     }
 
     @Override
-    protected void postUpdate(UnmarshalMap uMap)
-            throws Exception {
+    protected void postUpdate(UnmarshalMap uMap) throws Exception {
         for (ChanceAction _action : uMap.<ChanceAction> entitySet()) {
             Chance _chance = _action.getChance();
             if (_chance != null) {
                 _chance.addAction(_action);
                 ctx.data.access(Chance.class).saveOrUpdate(_chance);
             }
+        }
+    }
+
+    public void addSubjectRestricion() {
+        addSearchFragment("限定机会标题 " + searchPattern,//
+                ChanceCriteria.actionSubjectLike(searchPattern));
+        searchPattern = null;
+    }
+
+    public void addContentRestricion() {
+        addSearchFragment("限定行动内容 " + searchPattern, //
+                ChanceCriteria.actionContentLike(searchPattern));
+        searchPattern = null;
+    }
+
+    public void addMisRestricion() {
+        planFilter("是日志", false);
+    }
+
+    public void addPlaRestricion() {
+        planFilter("是计划", true);
+    }
+
+    void planFilter(String pattern, boolean flag) {
+        PlanSearchFragment psf = null;
+        for (SearchFragment sf : getSearchFragments()) {
+            if (sf instanceof PlanSearchFragment)
+                psf = (PlanSearchFragment) sf;
+        }
+        if (psf == null) {
+            psf = new PlanSearchFragment(pattern, flag);
+            addSearchFragment(psf);
+        } else {
+            psf.setPattern(pattern);
+            psf.setFlag(flag);
+            searchFragmentsChanged();
         }
     }
 

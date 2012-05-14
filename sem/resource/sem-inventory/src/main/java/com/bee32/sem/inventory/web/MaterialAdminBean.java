@@ -12,6 +12,7 @@ import com.bee32.sem.file.entity.FileBlob;
 import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.file.web.IncomingFile;
 import com.bee32.sem.file.web.IncomingFileBlobAdapter;
+import com.bee32.sem.frame.search.SearchFragment;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.MaterialAttributeDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
@@ -53,6 +54,28 @@ public class MaterialAdminBean
 //            categoryId = -1;
         if(categoryId != null)
 		elements.add(MaterialCriteria.categoryOf(categoryId));
+    }
+
+    public void addModelRestricion() {
+        addSearchFragment("型号含有 " + searchPattern, //
+                MaterialCriteria.modelSpecLike(searchPattern, true));
+        searchPattern = null;
+    }
+
+    public void addCategoryRestricion() {
+        CategorySearchFragment csf = null;
+        for (SearchFragment searchFragment : getSearchFragments()) {
+            if (searchFragment instanceof CategorySearchFragment)
+                csf = (CategorySearchFragment) searchFragment;
+        }
+        if (csf == null) {
+            csf = new CategorySearchFragment(searchPattern);
+            addSearchFragment(csf);
+        } else {
+            csf.setPattern(searchPattern);
+            searchFragmentsChanged();
+        }
+        searchPattern = null;
     }
 
     public List<MaterialPriceDto> getMaterialPrices() {

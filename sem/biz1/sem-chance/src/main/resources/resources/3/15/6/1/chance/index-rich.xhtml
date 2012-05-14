@@ -334,4 +334,34 @@
         </fr:listView>
 
     </ui:define>
+
+    <ui:define name="searchPanels.1">
+        <p:panel header="按阶段搜索" toggleable="true">
+            <div align="center">
+                <p>
+                    <p:selectOneMenu id="searchStage" value="${bean.searchStage.displayId}" label="searchStage">
+                        <f:selectItem itemLabel="请选择机会阶段" itemValue="" />
+                        <f:selectItems value="${dicts.stages}" var="it" itemLabel="${it.label}" itemValue="${it.id}" />
+                    </p:selectOneMenu>
+                </p>
+                <p:commandButton id="stageFilter" value="限定阶段"  actionListener="${bean.addStageRestricion}"
+                    update="@form, ${_searchUpdates}" />
+            </div>
+        </p:panel>
+
+        <p:panel header="按来源搜索">
+            <div align="center">
+                <p>
+                    <p:selectOneMenu id="searchSource" value="${bean.searchSource.displayId}" label="searchSource">
+                        <f:selectItem itemLabel="请选择机会来源" itemValue="" />
+                        <f:selectItems value="${dicts.sourceTypes}" var="it" itemLabel="${it.label}"
+                            itemValue="${it.id}" />
+                    </p:selectOneMenu>
+                </p>
+                <p:commandButton id="sourceFilter" value="限定来源" actionListener="${bean.addSourceRestricion}"
+                    update="@form, ${_searchUpdates}" />
+            </div>
+        </p:panel>
+    </ui:define>
+
 </ui:composition>

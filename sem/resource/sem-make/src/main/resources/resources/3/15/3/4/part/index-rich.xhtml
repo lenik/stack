@@ -358,4 +358,9 @@
 
     </ui:define>
 
+    <ui:define name="searchPanel.keyword.1">
+        <p:commandButton id="labelFilter" value="限定规格" actionListener="${bean.addSpecRestriction}"
+            update="@form, :mainForm" />
+    </ui:define>
+
 </ui:composition>

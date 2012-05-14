@@ -11,6 +11,46 @@ import com.bee32.sem.make.entity.Part;
 public class BomCriteria
         extends CriteriaSpec {
 
+
+    /*<-- change begin*/
+    @LeftHand(Part.class)
+    public static ICriteriaElement targetCategoryOrNameLike(int materialCategoryId,
+            String searchPattern) {
+        if (materialCategoryId == -1)
+            return compose(
+                    alias("target", "material"),//
+                    likeIgnoreCase("material.lable", searchPattern,
+                            MatchMode.ANYWHERE));
+        else
+            return compose(
+                    alias("target", "material"),
+                    likeIgnoreCase("material.label", searchPattern,
+                            MatchMode.ANYWHERE),
+                    equals("material.category.id", materialCategoryId));
+    }
+
+    @LeftHand(Part.class)
+    public static ICriteriaElement specLike(String pattern){
+        return //compose(alias("target", "material"),//
+                likeIgnoreCase("material.modelSpec", pattern, MatchMode.ANYWHERE);//);
+    }
+
+    @LeftHand(Part.class)
+    public static ICriteriaElement nameOrLabelLike(String pattern){
+        return
+            likeIgnoreCase("material.label", pattern, MatchMode.ANYWHERE); //
+        // or(
+        // likeIgnoreCase("material.label", pattern, MatchMode.ANYWHERE));
+    }
+
+    @LeftHand(Part.class)
+    public static ICriteriaElement targetDescriptionLike(String pattern){
+        return
+                likeIgnoreCase("material.description", pattern, MatchMode.ANYWHERE);
+    }
+
+    /*--->end change*/
+
     @LeftHand(Part.class)
     public static ICriteriaElement targetLabel(String pattern, boolean ignoreCase) {
         return compose(alias("target", "material"), //

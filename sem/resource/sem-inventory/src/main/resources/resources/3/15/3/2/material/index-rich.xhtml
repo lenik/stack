@@ -188,4 +188,11 @@
 
     </ui:define>
 
+    <ui:define name="searchPanel.keyword.1">
+        <p:commandButton id="modelSpecFilter" value="限定规格" actionListener="${bean.addModelRestricion}"
+            update="@form, ${_searchUpdates}" />
+        <p:commandButton id="materialCategoryFilter" value="限定分类" actionListener="${bean.addCategoryRestricion}"
+            update="@form, ${_searchUpdates}" />
+    </ui:define>
+
 </ui:composition>

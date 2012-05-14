@@ -12,11 +12,13 @@ import com.bee32.plover.criteria.hibernate.Limit;
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.restful.resource.StandardViews;
+import com.bee32.sem.frame.search.SearchFragment;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.MaterialType;
 import com.bee32.sem.inventory.util.MaterialCriteria;
+import com.bee32.sem.inventory.web.CategorySearchFragment;
 import com.bee32.sem.inventory.web.MaterialCategorySupportBean;
 import com.bee32.sem.inventory.web.MaterialCategoryTreeModel;
 import com.bee32.sem.make.dto.MakeStepInputDto;
@@ -64,6 +66,42 @@ public class PartAdminBean
         if (categoryId == null) // select none if no category.
             categoryId = -1;
         elements.add(BomCriteria.targetCategory(categoryId));
+    }
+
+    public void addSpecRestriction(){
+        //TODO 已经选择了bom节点，直接搜索， 反之，创建一个alias
+        addSearchFragment("型号含有 " + searchPattern, //
+                BomCriteria.specLike(searchPattern));
+        searchPattern = null;
+    }
+
+    public void addCategoryRestriction(){
+        CategorySearchFragment csf = null;
+        for(SearchFragment searchFragment : getSearchFragments()){
+            if(searchFragment instanceof CategorySearchFragment)
+                csf = (CategorySearchFragment) searchFragment;
+        }
+        if(csf == null){
+//            csf = new CategorySearchFragment(searchPattern);
+            addSearchFragment("限定分类 " + searchPattern, //
+                    MaterialCriteria.clike(searchPattern));
+        }else{
+            csf.setPattern(searchPattern);
+            searchFragmentsChanged();
+        }
+        searchPattern = null;
+    }
+
+    @Override
+    public void addNameOrLabelRestriction() {
+        addSearchFragment("名称含有 " + searchPattern,//
+                BomCriteria.nameOrLabelLike(searchPattern));
+    }
+
+    @Override
+    public void addDescriptionRestriction() {
+        addSearchFragment("描述含有 " + searchPattern, //
+                BomCriteria.targetDescriptionLike(searchPattern));
     }
 
     public void setPartMaterial() {

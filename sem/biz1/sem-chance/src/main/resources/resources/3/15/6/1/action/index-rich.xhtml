@@ -129,4 +129,26 @@
             header="选择工作伙伴" stereo="U" target="${bean.selectedPartner}" actionListener="${bean.addPartner}" update=":editDialog:form" />
     </ui:define>
 
+    <ui:define name="searchPanel.keyword">
+        <p:panel header="按关键字搜索" toggleable="true">
+            <div align="center">
+                <p:inputText id="searchPattern" value="${bean.searchPattern}" />
+                <p:commandButton id="chanceFilter" value="限定机会" actionListener="${bean.addSubjectRestricion}"
+                    update="@form, ${_searchUpdates}" />
+                <p:commandButton id="contentFilter" value="限定内容" actionListener="${bean.addContentRestricion}"
+                    update="@form, ${_searchUpdates}" />
+            </div>
+        </p:panel>
+    </ui:define>
+
+    <ui:define name="searchPanels.1">
+        <p:panel header="按类型搜索">
+            <div align="center">
+                <p:commandButton id="misFilter" value="限定为日志" actionListener="${bean.addMisRestricion}"
+                    update="@form, ${_searchUpdates}" />
+                <p:commandButton id="plaFilter" value="限定为计划" actionListener="${bean.addPlaRestricion}"
+                    update="@form, ${_searchUpdates}" />
+            </div>
+        </p:panel>
+    </ui:define>
 </ui:composition>
