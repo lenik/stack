@@ -19,13 +19,18 @@
 
     <ui:define name="sideBarW">
         <h:form id="navigatorForm">
-            <p:treeTable id="categoryTree" value="#{bean.categoryTree.rootNode}" var="category"
-                selectionMode="single" selection="#{bean.categoryTree.selectedNode}">
+            <p:treeTable
+                id="categoryTree"
+                value="#{bean.categoryTree.rootNode}"
+                var="category"
+                selectionMode="single" selection="#{bean.categoryTree.selectedNode}"
+                scrollable="true"
+                scrollHeight="600">
 
                 <p:ajax event="select" listener="#{bean.refreshRowCount}" update=":mainForm:dataTable" onstart="waitbox.show()"
                     oncomplete="waitbox.hide()" />
 
-                <p:column headerText="分类名称" styleClass="f-wrappable" style="width: 15em;">
+                <p:column headerText="分类名称" styleClass="f-wrappable" style="width: 13em;">
                     <h:outputText value="#{category.label}" />
                 </p:column>
 
