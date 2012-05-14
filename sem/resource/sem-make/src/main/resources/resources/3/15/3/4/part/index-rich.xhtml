@@ -1,5 +1,4 @@
 <ui:composition template="/template/simple-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-
     xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
     xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:fr="http://java.sun.com/jsf/composite/frame"
     xmlns:sem="http://java.sun.com/jsf/composite/3/15">
@@ -84,14 +83,22 @@
                         locale="zh_CN" showOn="button" label="失效日期" />
 
                     <h:outputLabel for="wage" value="工资" />
-                    <p:inputText id="wage" value="#{obj.wage}" label="工资" />
+                    <p:inputText id="wage" value="#{obj.wage}" label="工资" >
+                        <f:convertNumber pattern="#0.00" />
+                    </p:inputText>
                     <h:outputLabel for="otherFee" value="其他费用" />
-                    <p:inputText id="otherFee" value="#{obj.otherFee}" label="其他费用" />
+                    <p:inputText id="otherFee" value="#{obj.otherFee}" label="其他费用" >
+                        <f:convertNumber pattern="#0.00" />
+                    </p:inputText>
 
                     <h:outputLabel for="electricityFee" value="电费" />
-                    <p:inputText id="electricityFee" value="#{obj.electricityFee}" label="电费" />
+                    <p:inputText id="electricityFee" value="#{obj.electricityFee}" label="电费" >
+                        <f:convertNumber pattern="#0.00" />
+                    </p:inputText>
                     <h:outputLabel for="equipmentCost" value="设备费" />
-                    <p:inputText id="equipmentCost" value="#{obj.equipmentCost}" label="设备费" />
+                    <p:inputText id="equipmentCost" value="#{obj.equipmentCost}" label="设备费" >
+                        <f:convertNumber pattern="#0.00" />
+                    </p:inputText>
                 </t:panelGrid>
             </p:tab>
             <p:tab title="BOM明细">
@@ -108,7 +115,9 @@
                             <h:outputText value="#{entry.anyMaterial.unit.label}" />
                         </p:column>
                         <p:column headerText="数量" styleClass="f-right">
-                            <h:outputText value="#{entry.quantity}" />
+                            <h:outputText value="#{entry.quantity}" >
+                                <f:convertNumber pattern="#0.00" />
+                            </h:outputText>
                         </p:column>
                         <p:column headerText="是否有效">
                             <p:selectBooleanCheckbox value="#{entry.valid}" disabled="true" />
@@ -179,7 +188,9 @@
 
                 <h:outputLabel for="quantity" value="数量" />
                 <t:panelGroup colspan="3">
-                    <p:inputText id="quantity" value="#{item.quantity}" label="数量" />
+                    <p:inputText id="quantity" value="#{item.quantity}" label="数量" >
+                        <f:convertNumber pattern="#0.00" />
+                    </p:inputText>
                 </t:panelGroup>
 
                 <h:outputLabel for="description" value="描述" />
@@ -192,17 +203,27 @@
 
         <p:dialog id="d_bomTree" header="BOM树" widgetVar="bomTreeDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
             <h:form id="bomTreeForm">
-                <p:treeTable id="bomTree" value="#{bean.bomTree.rootNode}" var="entry">
-                    <p:column headerText="物料" sortBy="#{entry.material.label}">
+                <p:treeTable
+                    id="bomTree"
+                    value="#{bean.bomTree.rootNode}"
+                    var="entry"
+                    scrollable="true"
+                    scrollHeight="500">
+                    <p:column headerText="物料" sortBy="#{entry.material.label}" style="width:10em;">
                         <h:outputText value="#{entry.material.label}" />
                     </p:column>
-                    <p:column headerText="规格型号" sortBy="#{entry.material.modelSpec}">
+                    <p:column headerText="规格型号" sortBy="#{entry.material.modelSpec}" style="width:10em;">
                         <h:outputText value="#{entry.material.modelSpec}" />
                     </p:column>
-                    <p:column headerText="数量">
-                        <h:outputText value="#{entry.quantity}" />
+                    <p:column headerText="单位" style="width:4em;">
+                        <h:outputText value="#{entry.material.unit.label}" />
                     </p:column>
-                    <p:column headerText="设置工艺">
+                    <p:column headerText="数量" style="width:5em;">
+                        <h:outputText value="#{entry.quantity}" >
+                            <f:convertNumber pattern="#0.00" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="设置工艺" style="width:5em;">
                         <p:commandButton value="设置" rendered="#{entry.makeStep}" oncomplete="stepListDialog.show();">
                             <f:setPropertyActionListener target="#{bean.makeStepTarget}"
                                 value="#{entry}" />
@@ -223,7 +244,9 @@
                     <h:outputText value="#{entry.stepName.label}" />
                 </p:column>
                 <p:column headerText="顺序">
-                    <h:outputText value="#{entry.order}" />
+                    <h:outputText value="#{entry.order}" >
+                        <f:convertNumber pattern="#0" />
+                    </h:outputText>
                 </p:column>
                 <p:column headerText="耗费时间(分钟)">
                     <h:outputText value="#{entry.consumeTime}" />
@@ -249,22 +272,34 @@
                         </t:panelGroup>
 
                         <h:outputText value="顺序:" />
-                        <p:inputText value="#{item.order}" label="顺序" />
+                        <p:inputText value="#{item.order}" label="顺序" >
+                            <f:convertNumber pattern="#0" />
+                        </p:inputText>
                         <h:outputText value="是否质检:" />
                         <p:selectBooleanCheckbox value="#{item.qualityControlled}" label="是否质检" />
 
                         <h:outputText value="耗费时间(分钟):" />
-                        <p:inputText value="#{item.consumeTime}" label="耗费时间" />
+                        <p:inputText value="#{item.consumeTime}" label="耗费时间" >
+                            <f:convertNumber pattern="#0.00" />
+                        </p:inputText>
                         <h:outputText value="标准小时工资:" />
-                        <p:inputText value="#{item.oneHourWage}" label="标准小时工资" />
+                        <p:inputText value="#{item.oneHourWage}" label="标准小时工资" >
+                            <f:convertNumber pattern="#0.00" />
+                        </p:inputText>
 
                         <h:outputText value="电费:" />
-                        <p:inputText value="#{item.electricityFee}" label="电费" />
+                        <p:inputText value="#{item.electricityFee}" label="电费" >
+                            <f:convertNumber pattern="#0.00" />
+                        </p:inputText>
                         <h:outputText value="设备费:" />
-                        <p:inputText value="#{item.equipmentCost}" label="设备费" />
+                        <p:inputText value="#{item.equipmentCost}" label="设备费" >
+                            <f:convertNumber pattern="#0.00" />
+                        </p:inputText>
 
                         <h:outputText value="其他费用:" />
-                        <p:inputText value="#{item.otherFee}" label="其他费用" />
+                        <p:inputText value="#{item.otherFee}" label="其他费用" >
+                            <f:convertNumber pattern="#0.00" />
+                        </p:inputText>
                         <h:outputText value="起用时间:" />
                         <p:calendar pattern="yyyy-MM-dd" value="#{item.validateTime}" navigator="true"
                             locale="zh_CN" showOn="button" label="起用时间" />
@@ -296,7 +331,9 @@
                                 <h:outputText value="#{entry.material.label}" />
                             </p:column>
                             <p:column headerText="数量" styleClass="f-right">
-                                <h:outputText value="#{entry.quantity}" />
+                                <h:outputText value="#{entry.quantity}" >
+                                    <f:convertNumber pattern="#0.00" />
+                                </h:outputText>
                             </p:column>
                         </f:facet>
                     </fr:listView>
@@ -335,7 +372,9 @@
                 </t:panelGroup>
 
                 <h:outputText value="数量:" />
-                <p:inputText value="#{item.quantity}" label="数量" />
+                <p:inputText value="#{item.quantity}" label="数量" >
+                    <f:convertNumber pattern="#0.00" />
+                </p:inputText>
 
             </t:panelGrid>
         </fr:listView>
