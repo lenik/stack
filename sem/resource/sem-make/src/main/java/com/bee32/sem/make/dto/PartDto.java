@@ -91,7 +91,7 @@ public class PartDto
         }
 
         if (selection.contains(XREFS))
-            xrefs = marshalList(PartItemDto.class, 0, source.getXrefs());
+            xrefs = marshalList(PartItemDto.class, PartItemDto.PARENT, source.getXrefs());
         else
             xrefs = Collections.emptyList();
 

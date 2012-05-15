@@ -19,6 +19,10 @@
             actionListener="${bean.copyBom}" onclick="waitbox.show()"
             disabled="${not bean.selected or not bean.selectionEditable}"
             oncomplete="waitbox.hide(); ${plainEditForm ? '' : 'editdlg.show()'}" update=":editDialog:form" />
+        <p:commandButton id="viewXrefButton" value="引用" rendered="${readable != null ? readable : true}"
+            actionListener="${bean.findXref}"
+            disabled="${not bean.selected}" update=":xrefForm"
+            onclick="waitbox.show()" oncomplete="waitbox.hide(); xrefDialog.show();" />
     </ui:define>
 
     <ui:define name="sideBarW">
@@ -404,7 +408,36 @@
             </t:panelGrid>
         </fr:listView>
 
+        <p:dialog id="d_xref" header="查看引用" widgetVar="xrefDialog" modal="true" dynamic="${viewConfig.dynamicDialog}">
+            <h:form id="xrefForm">
+                <p:dataTable
+                    id="xrefDataTable"
+                    value="#{bean.xrefs}"
+                    var="entry"
+                    scrollable="true"
+                    scrollHeight="500">
+                    <p:column headerText="分类" style="width:10em;">
+                        <h:outputText value="#{entry.category.label}" />
+                    </p:column>
+                    <p:column headerText="物料" style="width:10em;">
+                        <h:outputText value="#{entry.target.label}" />
+                    </p:column>
+                    <p:column headerText="规格型号" style="width:10em;">
+                        <h:outputText value="#{entry.target.modelSpec}" />
+                    </p:column>
+                    <p:column headerText="单位" style="width:4em;">
+                        <h:outputText value="#{entry.target.unit.label}" />
+                    </p:column>
+                </p:dataTable>
+                <div align="right">
+                    <p:commandButton id="close" value="关闭" onclick="xrefDialog.hide()" />
+                </div>
+            </h:form>
+        </p:dialog>
+
     </ui:define>
+
+
 
     <ui:define name="searchPanel.keyword.1">
         <p:commandButton id="labelFilter" value="限定规格" actionListener="${bean.addSpecRestriction}"

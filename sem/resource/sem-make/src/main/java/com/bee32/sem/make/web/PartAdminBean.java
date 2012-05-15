@@ -2,6 +2,7 @@ package com.bee32.sem.make.web;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.bee32.plover.arch.util.IEnclosingContext;
@@ -183,12 +184,35 @@ public class PartAdminBean
         return makeStepTarget;
     }
 
+
+    public List<PartDto> getXrefs() {
+        List<PartDto> xrefs = new ArrayList<PartDto>();
+
+        PartDto part = getOpenedObject();
+        if (part != null && !(DTOs.isNull(part))) {
+            part = reload(part, PartDto.XREFS);
+
+            for (PartItemDto item : part.getXrefs()) {
+                xrefs.add(item.getParent());
+            }
+        }
+        return xrefs;
+    }
+
     public void setMakeStepTarget(BomTreeNode makeStepTarget) {
         this.makeStepTarget = makeStepTarget;
         PartDto part = makeStepTarget.getPart();
         setSingleSelection(part);
         openSelection(Fmask.F_MORE);
         showView(StandardViews.EDIT_FORM);
+    }
+
+    public void findXref() {
+        if (getSelection().isEmpty()) {
+            uiLogger.error("没有选定对象!");
+            return;
+        }
+        openSelection(PartDto.XREFS);
     }
 
     public void copyBom() {
