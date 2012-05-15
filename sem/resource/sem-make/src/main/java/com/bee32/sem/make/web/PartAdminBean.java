@@ -25,6 +25,7 @@ import com.bee32.sem.make.dto.MakeStepInputDto;
 import com.bee32.sem.make.dto.MakeStepModelDto;
 import com.bee32.sem.make.dto.PartDto;
 import com.bee32.sem.make.dto.PartItemDto;
+import com.bee32.sem.make.dto.QCSpecDto;
 import com.bee32.sem.make.dto.QCSpecParameterDto;
 import com.bee32.sem.make.entity.Part;
 import com.bee32.sem.make.service.PartService;
@@ -188,6 +189,90 @@ public class PartAdminBean
         setSingleSelection(part);
         openSelection(Fmask.F_MORE);
         showView(StandardViews.EDIT_FORM);
+    }
+
+    public void copyBom() {
+        if (getSelection().isEmpty()) {
+            uiLogger.error("没有选定对象!");
+            return;
+        }
+        openSelection();
+
+        PartDto part = getOpenedObject();
+
+        PartDto newPart = new PartDto().create();
+        newPart.setValid(part.isValid());
+        newPart.setValidDateFrom(part.getValidDateFrom());
+        newPart.setValidDateTo(part.getValidDateTo());
+        newPart.setWage(part.getWage());
+        newPart.setOtherFee(part.getOtherFee());
+        newPart.setElectricityFee(part.getElectricityFee());
+        newPart.setEquipmentCost(part.getEquipmentCost());
+
+
+        for(PartItemDto item : part.getChildren()) {
+            PartItemDto newItem = new PartItemDto().create();
+            newItem.setParent(newPart);
+
+            if (DTOs.isNull(item.getMaterial()))
+                newItem.setPart(item.getPart());
+            else
+                newItem.setMaterial(item.getMaterial());
+
+            newItem.setQuantity(item.getQuantity());
+            newItem.setValid(item.isValid());
+            newItem.setValidDateFrom(item.getValidDateFrom());
+            newItem.setValidDateTo(item.getValidDateTo());
+
+            newPart.addChild(newItem);
+        }
+
+        for(MakeStepModelDto step : part.getSteps()) {
+            MakeStepModelDto newStep = new MakeStepModelDto().create();
+
+            newStep.setStepName(step.getStepName());
+            newStep.setOrder(step.getOrder());
+            newStep.setOutput(newPart);
+            newStep.setQualityControlled(step.isQualityControlled());
+            newStep.setConsumeTime(step.getConsumeTime());
+            newStep.setOneHourWage(step.getOneHourWage());
+            newStep.setOtherFee(step.getOtherFee());
+            newStep.setElectricityFee(step.getElectricityFee());
+            newStep.setEquipmentCost(step.getEquipmentCost());
+            newStep.setValidateTime(step.getValidateTime());
+            newStep.setEquipment(step.getEquipment());
+            newStep.setOperation(step.getOperation());
+
+            for(MakeStepInputDto input : step.getInputs()) {
+                MakeStepInputDto newInput = new MakeStepInputDto().create();
+                newInput.setStepModel(newStep);
+                newInput.setMaterial(input.getMaterial());
+                newInput.setQuantity(input.getQuantity());
+
+                newStep.getInputs().add(newInput);
+            }
+
+            QCSpecDto qcSpec = step.getQcSpec();
+            QCSpecDto newQcSpec = new QCSpecDto().create();
+            newQcSpec.setText(qcSpec.getText());
+            for(QCSpecParameterDto para : qcSpec.getParameters()) {
+                QCSpecParameterDto newPara = new QCSpecParameterDto().create();
+
+                newPara.setParent(newQcSpec);
+                newPara.setLabel(para.getLabel());
+                newPara.setDescription(para.getDescription());
+                newPara.setValue(para.getValue());
+                newPara.setRequired(para.isRequired());
+
+                newQcSpec.getParameters().add(newPara);
+            }
+            newStep.setQcSpec(qcSpec);
+
+            newPart.addStep(newStep);
+        }
+
+        setOpenedObject(newPart);
+        showView(StandardViews.CREATE_FORM);
     }
 
     /*************************************************************************

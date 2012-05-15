@@ -15,6 +15,10 @@
     <ui:define name="toolbar.right.1">
         <p:commandButton value="BOM树" oncomplete="bomTreeDialog.show();" rendered="${readable != null ? readable : true}"
             actionListener="#{bean.loadBomTree}" update=":bomTreeForm" disabled="${not bean.selected}" />
+        <p:commandButton id="copyButton" value="复制" rendered="${editable != null ? editable : true}"
+            actionListener="${bean.copyBom}" onclick="waitbox.show()"
+            disabled="${not bean.selected or not bean.selectionEditable}"
+            oncomplete="waitbox.hide(); ${plainEditForm ? '' : 'editdlg.show()'}" update=":editDialog:form" />
     </ui:define>
 
     <ui:define name="sideBarW">
