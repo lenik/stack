@@ -254,7 +254,7 @@ public abstract class SimpleEntityViewBean
                         // (disabled)
 
                         // acl in (currentUser.visibleACLs)
-                        ACLCriteria.aclWithin(me.getACLs(visiblePermission))));
+                        ACLCriteria.aclWithin(me.getACLs(visiblePermission), true)));
             }
         }
 

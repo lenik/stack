@@ -99,6 +99,7 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
     public static Map<Class<?>, Permission> defaults = new HashMap<>();
     static final Permission R_X = new Permission(Permission.R_X);
     static final Permission RWX = new Permission(Permission.RWX);
+    static final Permission NULL_PERM = R_X;
 
     static {
         defaults.put(PloverConf.class, R_X);
@@ -194,26 +195,32 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
             if (entity instanceof CEntity<?>) {
                 CEntity<?> ce = (CEntity<?>) entity;
                 Integer acl = ce.getAclId();
-                if (acl == null)
-                    continue;
-                if (!effectiveAcls.contains(acl)) {
-                    User owner = ce.getOwner();
-                    String ownerName = owner == null ? "（无属主）" : owner.getDisplayName();
-                    String message = String.format(//
-                            // "User %s can't access %s. " + //
-                            // "ACL rejected, required permission is %s", //
-                            "由于记录安全限制(策略 %d)，用户 %s 不能对记录 %s - %s。" + //
-                                    "请联系记录属主 %s 调整记录安全策略，或联系系统管理员。", //
-                            acl, //
-                            currentUser.getDisplayName(), //
-                            ClassUtil.getParameterizedTypeName(entity) + ": " + ce.getEntryLabel(), //
-                            requiredPermission.getReadableString(), //
-                            ce.getOwner().getDisplayName());
-                    AccessControlException e = new AccessControlException(message);
-                    e.setResourceType(entityType);
-                    e.setRequiredPermission(requiredPermission);
-                    throw e;
+
+                // null 相当于 r--, 见 nullPermission.
+                if (acl == null) {
+                    if (NULL_PERM.implies(requiredPermission))
+                        continue;
                 }
+
+                if (effectiveAcls.contains(acl))
+                    continue;
+
+                User owner = ce.getOwner();
+                String ownerName = owner == null ? "（无属主）" : owner.getDisplayName();
+                String message = String.format(//
+                        // "User %s can't access %s. " + //
+                        // "ACL rejected, required permission is %s", //
+                        "由于记录安全限制(策略 %d)，用户 %s 不能对记录 %s - %s。" + //
+                                "请联系记录属主 %s 调整记录安全策略，或联系系统管理员。", //
+                        acl == null ? "（未定义）" : acl, //
+                        currentUser.getDisplayName(), //
+                        ClassUtil.getParameterizedTypeName(entity) + ": " + ce.getEntryLabel(), //
+                        requiredPermission.getReadableString(), //
+                        ownerName);
+                AccessControlException e = new AccessControlException(message);
+                e.setResourceType(entityType);
+                e.setRequiredPermission(requiredPermission);
+                throw e;
             }
     }
 
