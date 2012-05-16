@@ -93,8 +93,8 @@ public final class Permission
             return false;
         if ((allowBits & bits) == bits)
             return true;
-        // allow by default.
-        return true;
+        // deny by default.
+        return false;
     }
 
     public void set(boolean f, int bits) {
