@@ -198,11 +198,11 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
                 String ownerName = owner == null ? "（无属主）" : owner.getDisplayName();
                 Integer acl = ce.getAclId();
 
-                // 属主不检查ACL
-                if (imset.contains(owner.getId()))
+                // 属主不检查ACL, 如果没有设置属主，视为“不属于任何人” 并检查ACL.
+                if (owner != null && imset.contains(owner.getId()))
                     continue;
 
-                // null 相当于 r--, 见 nullPermission.
+                // 如果没有设置ACL，视为只可读。null 相当于 r--, 见 NULL_PERM.
                 if (acl == null) {
                     if (NULL_PERM.implies(requiredPermission))
                         continue;
