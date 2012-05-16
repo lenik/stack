@@ -5,6 +5,7 @@
     short_opts="d:hqv"
     long_opts="debug-port:,help,quiet,verbose,version"
     debug_port=
+    headless=1
     DEFAULT_DEBUG_PORT=7788
 
     declare -A servers
@@ -106,8 +107,16 @@ function main() {
     _log1 "Enter into $module"
     cd "$module" || exit 1
 
+    sysprops=()
+    nsysprop=0
+    if [ "$headless" = 1 ]; then
+        sysprops[nsysprop++]=-Djava.awt.headless=true
+    fi
+
     if [ -z "$debug_port" ]; then
-        _mvn exec:java -Dexec.mainClass="$server" "$@"
+        _mvn exec:java \
+            -Dexec.mainClass="$server" \
+            "${sysprops[@]}" "$@"
     else
         debug_opts=(
             -classpath %classpath
@@ -116,7 +125,8 @@ function main() {
             )
         _mvn exec:exec \
             -Dexec.executable="java" \
-            -Dexec.args="${debug_opts[*]} $server"
+            -Dexec.args="${debug_opts[*]} $server" \
+            "${sysprops[@]}" "$@"
     fi
 }
 
