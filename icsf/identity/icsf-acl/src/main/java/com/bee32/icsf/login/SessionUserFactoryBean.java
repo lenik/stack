@@ -56,6 +56,22 @@ public class SessionUserFactoryBean {
         SessionUser.getInstance().setInvIdSet(invIdSet);
     }
 
+    public Set<String> getImNameSet() {
+        return SessionUser.getInstance().getImNameSet();
+    }
+
+    public void setImNameSet(Set<String> imNameSet) {
+        SessionUser.getInstance().setImNameSet(imNameSet);
+    }
+
+    public Set<String> getInvNameSet() {
+        return SessionUser.getInstance().getInvNameSet();
+    }
+
+    public void setInvNameSet(Set<String> invNameSet) {
+        SessionUser.getInstance().setInvNameSet(invNameSet);
+    }
+
     public List<PrincipalDto> getImSet() {
         return SessionUser.getInstance().getImSet();
     }

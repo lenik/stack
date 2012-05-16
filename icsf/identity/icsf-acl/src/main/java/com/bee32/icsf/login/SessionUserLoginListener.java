@@ -1,5 +1,6 @@
 package com.bee32.icsf.login;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -32,6 +33,15 @@ public class SessionUserLoginListener
             Set<Integer> invIdSet = IdUtils.getIdSet(_invSet);
             sessionUser.setImIdSet(imIdSet);
             sessionUser.setInvIdSet(invIdSet);
+
+            Set<String> imNameSet = new HashSet<String>();
+            Set<String> invNameSet = new HashSet<String>();
+            for (Principal p : _imSet)
+                imNameSet.add(p.getName());
+            for (Principal p : _invSet)
+                invNameSet.add(p.getName());
+            sessionUser.setImNameSet(imNameSet);
+            sessionUser.setInvNameSet(imNameSet);
 
             List<PrincipalDto> imSet = DTOs.mrefList(PrincipalDto.class, 0, _imSet);
             List<PrincipalDto> invSet = DTOs.mrefList(PrincipalDto.class, 0, _invSet);

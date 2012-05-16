@@ -194,7 +194,13 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
         for (E entity : entities)
             if (entity instanceof CEntity<?>) {
                 CEntity<?> ce = (CEntity<?>) entity;
+                User owner = ce.getOwner();
+                String ownerName = owner == null ? "（无属主）" : owner.getDisplayName();
                 Integer acl = ce.getAclId();
+
+                // 属主不检查ACL
+                if (imset.contains(owner.getId()))
+                    continue;
 
                 // null 相当于 r--, 见 nullPermission.
                 if (acl == null) {
@@ -205,12 +211,10 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
                 if (effectiveAcls.contains(acl))
                     continue;
 
-                User owner = ce.getOwner();
-                String ownerName = owner == null ? "（无属主）" : owner.getDisplayName();
                 String message = String.format(//
                         // "User %s can't access %s. " + //
                         // "ACL rejected, required permission is %s", //
-                        "由于记录安全限制(策略 %d)，用户 %s 不能对记录 %s - %s。" + //
+                        "由于记录安全限制(策略 %s)，用户 %s 不能对记录 %s - %s。" + //
                                 "请联系记录属主 %s 调整记录安全策略，或联系系统管理员。", //
                         acl == null ? "（未定义）" : acl, //
                         currentUser.getDisplayName(), //

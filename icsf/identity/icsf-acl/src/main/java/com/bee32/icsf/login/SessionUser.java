@@ -34,7 +34,8 @@ public class SessionUser
     User internalUserOverride;
     Set<Integer> imIdSet = new HashSet<Integer>();
     Set<Integer> invIdSet = new HashSet<Integer>();
-
+    Set<String> imNameSet = new HashSet<String>();
+    Set<String> invNameSet = new HashSet<String>();
     List<PrincipalDto> imSet = new ArrayList<PrincipalDto>();
     List<PrincipalDto> invSet = new ArrayList<PrincipalDto>();
 
@@ -119,6 +120,22 @@ public class SessionUser
         if (invIdSet == null)
             throw new NullPointerException("invIdSet");
         this.invIdSet = invIdSet;
+    }
+
+    public Set<String> getImNameSet() {
+        return imNameSet;
+    }
+
+    public void setImNameSet(Set<String> imNameSet) {
+        this.imNameSet = imNameSet;
+    }
+
+    public Set<String> getInvNameSet() {
+        return invNameSet;
+    }
+
+    public void setInvNameSet(Set<String> invNameSet) {
+        this.invNameSet = invNameSet;
     }
 
     public List<PrincipalDto> getImSet() {
