@@ -18,9 +18,8 @@ public class SEMAssetMenu
     static MenuNode budgetRequestAdmin = entry(ASSET, 3, "budgetRequestAdmin", ASSET_.join("request/"));
     static MenuNode accountTicketAdmin = entry(ASSET, 4, "accountTicketAdmin", ASSET_.join("ticket/"));
 
-    static MenuNode stockSaleAdmin = entry(ASSET, 5, "stockSaleAdmin", ASSET_.join("stock-trade/?type=SALE"));
-    static MenuNode stockPurchaseAdmin = entry(ASSET, 6, "stockPurchaseAdmin",
-            ASSET_.join("stock-trade/?type=PURCHASE"));
+    //static MenuNode stockSaleAdmin = entry(ASSET, 5, "stockSaleAdmin", ASSET_.join("stock-trade/?type=SALE"));
+    //static MenuNode stockPurchaseAdmin = entry(ASSET, 6, "stockPurchaseAdmin", ASSET_.join("stock-trade/?type=PURCHASE"));
 
     static MenuNode assetQuery = entry(ASSET, 7, "assetQuery", ASSET_.join("query/"));
 
