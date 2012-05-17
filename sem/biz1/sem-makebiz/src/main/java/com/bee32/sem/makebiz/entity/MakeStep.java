@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -189,8 +190,8 @@ public class MakeStep
         this.operators = operators;
     }
 
-    @ManyToOne(optional = false)
-    @Cascade(CascadeType.ALL)
+    @OneToOne(orphanRemoval=true)
+    @Cascade(CascadeType.SAVE_UPDATE )
     public QCResult getQcResult() {
         return qcResult;
     }

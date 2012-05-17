@@ -26,9 +26,10 @@ import com.bee32.sem.make.dto.MakeStepInputDto;
 import com.bee32.sem.make.dto.MakeStepModelDto;
 import com.bee32.sem.make.dto.PartDto;
 import com.bee32.sem.make.dto.PartItemDto;
-import com.bee32.sem.make.dto.QCSpecDto;
 import com.bee32.sem.make.dto.QCSpecParameterDto;
+import com.bee32.sem.make.entity.MakeStepModel;
 import com.bee32.sem.make.entity.Part;
+import com.bee32.sem.make.entity.QCSpec;
 import com.bee32.sem.make.service.PartService;
 import com.bee32.sem.make.util.BomCriteria;
 import com.bee32.sem.misc.UnmarshalMap;
@@ -224,78 +225,7 @@ public class PartAdminBean
 
         PartDto part = getOpenedObject();
 
-        PartDto newPart = new PartDto().create();
-        newPart.setValid(part.isValid());
-        newPart.setValidDateFrom(part.getValidDateFrom());
-        newPart.setValidDateTo(part.getValidDateTo());
-        newPart.setWage(part.getWage());
-        newPart.setOtherFee(part.getOtherFee());
-        newPart.setElectricityFee(part.getElectricityFee());
-        newPart.setEquipmentCost(part.getEquipmentCost());
-
-
-        for(PartItemDto item : part.getChildren()) {
-            PartItemDto newItem = new PartItemDto().create();
-            newItem.setParent(newPart);
-
-            if (DTOs.isNull(item.getMaterial()))
-                newItem.setPart(item.getPart());
-            else
-                newItem.setMaterial(item.getMaterial());
-
-            newItem.setQuantity(item.getQuantity());
-            newItem.setValid(item.isValid());
-            newItem.setValidDateFrom(item.getValidDateFrom());
-            newItem.setValidDateTo(item.getValidDateTo());
-
-            newPart.addChild(newItem);
-        }
-
-        for(MakeStepModelDto step : part.getSteps()) {
-            MakeStepModelDto newStep = new MakeStepModelDto().create();
-
-            newStep.setStepName(step.getStepName());
-            newStep.setOrder(step.getOrder());
-            newStep.setOutput(newPart);
-            newStep.setQualityControlled(step.isQualityControlled());
-            newStep.setConsumeTime(step.getConsumeTime());
-            newStep.setOneHourWage(step.getOneHourWage());
-            newStep.setOtherFee(step.getOtherFee());
-            newStep.setElectricityFee(step.getElectricityFee());
-            newStep.setEquipmentCost(step.getEquipmentCost());
-            newStep.setValidateTime(step.getValidateTime());
-            newStep.setEquipment(step.getEquipment());
-            newStep.setOperation(step.getOperation());
-
-            for(MakeStepInputDto input : step.getInputs()) {
-                MakeStepInputDto newInput = new MakeStepInputDto().create();
-                newInput.setStepModel(newStep);
-                newInput.setMaterial(input.getMaterial());
-                newInput.setQuantity(input.getQuantity());
-
-                newStep.getInputs().add(newInput);
-            }
-
-            QCSpecDto qcSpec = step.getQcSpec();
-            QCSpecDto newQcSpec = new QCSpecDto().create();
-            newQcSpec.setText(qcSpec.getText());
-            for(QCSpecParameterDto para : qcSpec.getParameters()) {
-                QCSpecParameterDto newPara = new QCSpecParameterDto().create();
-
-                newPara.setParent(newQcSpec);
-                newPara.setLabel(para.getLabel());
-                newPara.setDescription(para.getDescription());
-                newPara.setValue(para.getValue());
-                newPara.setRequired(para.isRequired());
-
-                newQcSpec.getParameters().add(newPara);
-            }
-            newStep.setQcSpec(qcSpec);
-
-            newPart.addStep(newStep);
-        }
-
-        setOpenedObject(newPart);
+        setOpenedObject(ctx.bean.getBean(PartService.class).copyBom(part));
         showView(StandardViews.CREATE_FORM);
     }
 
@@ -377,10 +307,11 @@ public class PartAdminBean
             throws Exception {
         for (PartDto part : uMap.<PartDto> dtos()) {
             if (part.getXrefCount() != 0) {
-                uiLogger.error("此产品已经包含组件，必须先删除相应组件，才能删除本产品!");
+                uiLogger.error("此组件已经被其他组件引用，必须先删除相应组件，才能删除!");
                 return false;
             }
         }
+
         return true;
     }
 
@@ -390,6 +321,13 @@ public class PartAdminBean
         for (Part _part : uMap.<Part> entitySet()) {
             PartDto partDto = uMap.getSourceDto(_part);
             onDeletePart(partDto);
+
+//            for (MakeStepModel step : _part.getSteps()) {
+//                QCSpec _qcSpec = step.getQcSpec();
+//                if (_qcSpec != null) {
+//                    ctx.data.access(QCSpec.class).delete(_qcSpec);
+//                }
+//            }
         }
     }
 
