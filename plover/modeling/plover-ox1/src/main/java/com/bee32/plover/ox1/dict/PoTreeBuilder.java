@@ -1,11 +1,11 @@
 package com.bee32.plover.ox1.dict;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import javax.free.IFormatter;
 import javax.free.IPreorder;
@@ -27,7 +27,7 @@ public class PoTreeBuilder<T, K> {
 
     public PoTreeBuilder(IKeyMapper<T, K> mapper, IPreorder<K> preorder) {
         this.roots = new HashSet<PoNode<T>>();
-        this.nodes = new HashMap<K, PoNode<T>>();
+        this.nodes = new TreeMap<K, PoNode<T>>();
         this.mapper = mapper;
         this.preorder = preorder;
     }

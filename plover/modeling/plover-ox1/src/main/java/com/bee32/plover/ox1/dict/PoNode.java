@@ -1,13 +1,18 @@
 package com.bee32.plover.ox1.dict;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.free.AbstractNonNullComparator;
+import javax.free.ComparableComparator;
 import javax.free.IFormatter;
 import javax.free.INegotiation;
 import javax.free.IllegalUsageException;
+import javax.free.NaturalComparator;
 import javax.free.NegotiationException;
 import javax.free.PrefetchedIterator;
 import javax.free.TreeNode;
@@ -57,8 +62,25 @@ public class PoNode<T>
         return children;
     }
 
+    static class PoNodeComparator extends AbstractNonNullComparator<PoNode<?>> {
+        static final Comparator<Object> cc = ComparableComparator.getRawInstance();
+        @Override
+        public int compareNonNull(PoNode<?> o1, PoNode<?> o2) {
+            Object k1 = o1.getKey();
+            Object k2 = o2.getKey();
+            int cmp = cc.compare(k1, k2);
+            if (cmp == 0)
+                cmp = compareIdentity(o1, o2);
+            return cmp;
+        }
+        static final PoNodeComparator INSTANCE = new PoNodeComparator();
+    }
+
     public void addChild(PoNode<T> child) {
-        children.add(child);
+        // pos = -i - 1, -i = pos + 1, i = -pos - 1
+        int pos = Collections.binarySearch(children, child, PoNodeComparator.INSTANCE);
+        int insert = -pos - 1;
+        children.add(insert, child);
     }
 
     public void removeChild(PoNode<T> child) {
