@@ -24,7 +24,7 @@
     </cc:interface>
 
     <cc:implementation>
-        <sem:chooseMaterialDialog id="_cmd" var="_stockQuery_cmd" target="${cc.parent.attrs.dialogBean.materialToAdd}"
+        <sem:chooseMaterialDialog id="_cmd" var="${fn:replace(cc.parent.clientId, ':', '_')}_cmd" target="${cc.parent.attrs.dialogBean.materialToAdd}"
             update=":${cc.parent.clientId}:form:tv:materials" />
 
         <ui:decorate template="/template/simple-entity-dialog.xhtml">
@@ -55,7 +55,7 @@
                         </tr>
                         <tr>
                             <td align="left">
-                                <p:commandButton id="add" value="添加" onclick="_stockQuery_cmd.show()" />
+                                <p:commandButton id="add" value="添加" onclick="${fn:replace(cc.clientId, ':', '_')}_cmd.show()" />
                                 <p:commandButton id="remove" value="移除"
                                     actionListener="${dialogBean.removeSelectedMaterial}" update="materials" />
                             </td>

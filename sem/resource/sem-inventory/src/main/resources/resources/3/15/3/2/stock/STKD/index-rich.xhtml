@@ -34,7 +34,7 @@
             <p:calendar id="limitDateFrom" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{bean.queryDate}"
                 showOn="button" />
             <p:commandButton id="queryButton" value="查询" oncomplete="stockQueryForStocktakingDialog.show()"
-                disabled="${!bean.editing}" update=":stockQueryDialog:form">
+                disabled="${!bean.editing}" update=":queryDialog:form">
                 <f:setPropertyActionListener target="${stockQueryDialogBean.tabIndex}"
                     value="0" />
                 <f:setPropertyActionListener target="${stockQueryDialogBean.queryOptions.timestamp}"
