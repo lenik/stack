@@ -970,6 +970,13 @@ public abstract class SimpleEntityViewBean
             searchFragmentsChanged();
     }
 
+    public void clearSearchFragments() {
+        if (searchFragments.isEmpty()) {
+            searchFragments.clear();
+            searchFragmentsChanged();
+        }
+    }
+
     protected void searchFragmentsChanged() {
         refreshRowCount();
     }

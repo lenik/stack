@@ -155,13 +155,13 @@
                     <p:column headerText="客户/供应商名称">
                         <h:outputText value="#{role.org.name}" />
                     </p:column>
+                    <p:column headerText="联系电话" styleClass="f-wrappable">
+                        <h:outputText value="#{role.org.contactsString}" />
+                    </p:column>
                     <p:column headerText="成立日期">
                         <h:outputText value="#{role.org.birthday}">
                             <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                         </h:outputText>
-                    </p:column>
-                    <p:column headerText="公司类型">
-                        <h:outputText value="#{role.org.type.label}" />
                     </p:column>
                     <p:column headerText="税务登记号">
                         <h:outputText value="#{role.org.sid}" />

@@ -24,7 +24,7 @@
                 </p:toolbarGroup>
             </ui:insert>
             <ui:insert name="toolbar.right">
-                <p:toolbarGroup align="right">
+                <p:toolbarGroup align="left">
                     <ui:insert name="toolbar.right.1" />
                     <p:commandButton id="viewButton" value="查看" rendered="${readable != null ? readable : true}"
                         disabled="${not bean.selected}" actionListener="${bean.showContent}" update="${_contentUpdate}"

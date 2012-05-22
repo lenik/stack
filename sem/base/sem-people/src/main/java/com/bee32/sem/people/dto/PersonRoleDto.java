@@ -19,6 +19,7 @@ public class PersonRoleDto
     public static final int ORG_UNIT_FULL = 1;
 
     public static final int PERSON_CONTACTS = 2;
+    public static final int ORG_CONTACTS = 4;
 
     OrgDto org;
     PersonDto person;
@@ -43,7 +44,10 @@ public class PersonRoleDto
             x |= PersonDto.CONTACTS;
         person = mref(PersonDto.class, x, source.getPerson());
 
-        org = mref(OrgDto.class, source.getOrg());
+        x = 0;
+        if (selection.contains(ORG_CONTACTS))
+            x |= OrgDto.CONTACTS;
+        org = mref(OrgDto.class, x, source.getOrg());
         altOrgUnit = source.getAltOrgUnit();
 
         int orgUnitSelection = 0;

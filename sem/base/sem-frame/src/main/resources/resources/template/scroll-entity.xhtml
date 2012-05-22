@@ -30,7 +30,7 @@
                 <ui:insert name="toolbar.left" />
                 <ui:insert name="toolbarPeripherals" />
             </p:toolbarGroup>
-            <p:toolbarGroup align="right">
+            <p:toolbarGroup align="left">
                 <p:commandButton id="first" value="第一条" actionListener="${bean.gotoFirst}"
                     disabled="${bean.first or bean.dataModel.rowCount == 0 or bean.editing}" update="mainForm, ${_contentUpdate}"
                     onclick="waitbox.show()" oncomplete="waitbox.hide()" />

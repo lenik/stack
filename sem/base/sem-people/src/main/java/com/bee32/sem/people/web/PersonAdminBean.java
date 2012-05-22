@@ -80,6 +80,7 @@ public class PersonAdminBean extends AbstractPartyAdminBean {
 
     public List<PersonRoleDto> getRoles() {
         PersonDto person = getOpenedObject();
+        person = reload(person, PartyDto.CONTACTS);
         List<PersonRoleDto> roles = new ArrayList<PersonRoleDto>();
 
         if (person != null && person.getId() != null) {

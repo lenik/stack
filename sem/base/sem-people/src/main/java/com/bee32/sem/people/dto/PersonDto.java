@@ -15,6 +15,8 @@ public class PersonDto
 
     private static final long serialVersionUID = 1L;
 
+    public static final int ROLE_CONTACTS = 256;
+
     char sex;
 
     String censusRegister;
@@ -43,6 +45,9 @@ public class PersonDto
             int personRoleSelection = 0;
             if (selection.contains(ROLES_CHAIN))
                 personRoleSelection = PersonRoleDto.ORG_UNIT_FULL;
+
+            if (selection.contains(ROLE_CONTACTS))
+                personRoleSelection |= PersonRoleDto.ORG_CONTACTS;
 
             roles = new HashSet<PersonRoleDto>();
             for (PersonRole role : source.getRoles()) {

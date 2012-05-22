@@ -148,6 +148,9 @@
                         <p:column headerText="人员">
                             <h:outputText value="#{entry.person.displayName}" />
                         </p:column>
+                        <p:column headerText="联系电话">
+                            <h:outputText value="#{entry.person.contactsString}" />
+                        </p:column>
                         <p:column headerText="职务">
                             <h:outputText value="#{entry.role}" />
                         </p:column>
