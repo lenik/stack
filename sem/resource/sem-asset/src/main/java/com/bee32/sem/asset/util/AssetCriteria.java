@@ -71,6 +71,14 @@ public class AssetCriteria
     }
 
     @LeftHand(AccountSubject.class)
+    public static CriteriaElement subjectCodeLike(String pattern) {
+        if (pattern == null || pattern.isEmpty())
+            return null;
+        else
+            return likeIgnoreCase("id", pattern, MatchMode.ANYWHERE);
+    }
+
+    @LeftHand(AccountSubject.class)
     public static ICriteriaElement subjectWithPrefix(String prefix) {
         return compose(//
                 like("id", prefix, MatchMode.START));

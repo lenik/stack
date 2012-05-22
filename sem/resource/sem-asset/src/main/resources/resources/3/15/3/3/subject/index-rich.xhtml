@@ -41,4 +41,9 @@
             update=":editDialog:form" />
     </ui:define>
 
+    <ui:define name="searchPanel.keyword.1">
+        <p:commandButton id="test" value="限定科目代码"  actionListener="${bean.addSubjectCodeRestriction}"
+            update="@form, ${_searchUpdates}" />
+    </ui:define>
+
 </ui:composition>

@@ -49,9 +49,9 @@
                 <cc:renderFacet name="columns" />
             </ui:define>
 
-            <ui:define name="search+">
-                <h:outputLabel value="科目代码的全部或部份:" />
-                <h:outputLabel value="科目名称全部或部份:" />
+            <ui:define name="searchPanel.keyword.1">
+                <p:commandButton id="subjectFileter" value="限定科目代码"  actionListener="${dialogBean.addSubjectCodeRestriction}"
+                    update="searchForm, :${dialogForm}" />
             </ui:define>
 
         </ui:decorate>
