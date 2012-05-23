@@ -38,6 +38,7 @@
             <ui:param name="formStyleClass" value="${cc.attrs.formStyleClass}" />
             <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
             <ui:param name="mainTabTitle" value="查询结果" />
+            <ui:param name="paginator"  value="${true}" />
 
             <ui:define name="tabs.0">
                 <p:tab title="物料列表">
@@ -55,7 +56,7 @@
                         </tr>
                         <tr>
                             <td align="left">
-                                <p:commandButton id="add" value="添加" onclick="${fn:replace(cc.clientId, ':', '_')}_cmd.show()" />
+                                <p:commandButton id="add" value="添加" onclick="${fn:replace(cc.clientId, ':', '_')}_cmd.show()"  />
                                 <p:commandButton id="remove" value="移除"
                                     actionListener="${dialogBean.removeSelectedMaterial}" update="materials" />
                             </td>
