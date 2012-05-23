@@ -25,7 +25,7 @@ public class ChooseMakeStepNameDialogBean
 
     @Override
     public void addNameOrLabelRestriction() {
-        addSearchFragment("名称含有 " + searchPattern, Or.of(//
+        setSearchFragment("name", "名称含有 " + searchPattern, Or.of(//
                 CommonCriteria.labelledWith(searchPattern, true), //
                 BomCriteria.targetLabel(searchPattern, true)));
         searchPattern = null;

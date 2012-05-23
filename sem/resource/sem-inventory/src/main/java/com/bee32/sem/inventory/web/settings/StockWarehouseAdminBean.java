@@ -16,13 +16,13 @@ public class StockWarehouseAdminBean extends SimpleEntityViewBean {
     }
 
     public void addAddressRestriction() {
-        addSearchFragment("限定地址 " + searchPattern,//
+        setSearchFragment("address", "限定地址 " + searchPattern,//
                 StockWarehouseCriteria.addressLike(searchPattern));
         searchPattern = null;
     }
 
     public void addPhoneRestriction() {
-        addSearchFragment("限定电话 " + searchPattern,//
+        setSearchFragment("phone", "限定电话 " + searchPattern,//
                 StockWarehouseCriteria.phoneLike(searchPattern));
         searchPattern = null;
     }

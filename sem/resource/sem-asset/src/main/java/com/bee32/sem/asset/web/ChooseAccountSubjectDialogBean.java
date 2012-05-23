@@ -33,7 +33,7 @@ public class ChooseAccountSubjectDialogBean extends ChooseEntityDialogBean {
     }
 
     public void addSubjectCodeRestriction() {
-        addSearchFragment("科目代码含有: " + searchPattern, //
+        setSearchFragment("code", "科目代码含有: " + searchPattern, //
                 AssetCriteria.subjectCodeLike(searchPattern));
         searchPattern = null;
     }

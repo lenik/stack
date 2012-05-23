@@ -21,7 +21,7 @@ public class ChooseChanceDialogBean
 
     @Override
     public void addNameOrLabelRestriction() {
-        addSearchFragment("名称含有 " + searchPattern, //
+        setSearchFragment("name", "名称含有 " + searchPattern, //
                 // UIEntity doesn't have name: CommonCriteria.namedLike(pattern), //
                 ChanceCriteria.subjectLike(searchPattern, true));
         searchPattern = null;

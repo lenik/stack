@@ -97,7 +97,7 @@ public class MakeOrderAdminBean
 
     public void addCustomerRestriction() {
         if (searchParty != null) {
-            addSearchFragment("客户为 " + searchParty.getDisplayName(), //
+            setSearchFragment("customer", "客户为 " + searchParty.getDisplayName(), //
                     new Equals("customer.id", searchParty.getId()));
             searchParty = null;
         }

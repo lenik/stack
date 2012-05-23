@@ -9,6 +9,7 @@ import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.dto.PersonRoleDto;
 import com.bee32.sem.people.entity.Person;
+import com.bee32.sem.people.util.PeopleCriteria;
 
 @ForEntity(Person.class)
 public class PersonAdminBean
@@ -30,51 +31,25 @@ public class PersonAdminBean
         this.selectedRole = selectedRole;
     }
 
-    void attributeFilter(String pattern) {
-        AttributeSearchFragment asf = new AttributeSearchFragment(pattern);
-        List<AttributeSearchFragment> asfs = new ArrayList<AttributeSearchFragment>();
-        for (SearchFragment sf : getSearchFragments()) {
-            if (sf instanceof AttributeSearchFragment)
-                asfs.add((AttributeSearchFragment) sf);
-        }
-
-        if (!asfs.contains(asf)) {
-            addSearchFragment(asf);
-        }
-    }
-
     public void addEmployeeRestriction() {
-        attributeFilter("是内部员工");
+        setSearchFragment("attribute", "是内部员工", PeopleCriteria.isEmployee());
     }
 
     public void addCustomerRestriction() {
-        attributeFilter("是客户");
+        setSearchFragment("attribute", "是客户", PeopleCriteria.isCustomer());
     }
 
     public void addSupplierRestriction() {
-        attributeFilter("是供应商");
+        setSearchFragment("attribute", "是供应商", PeopleCriteria.isSupplier());
     }
 
     public void addNumberRestricion() {
         if (searchPattern == null || searchPattern.isEmpty())
             return;
 
-        List<SearchFragment> searchFragmentList = getSearchFragments();
+        setSearchFragment("number", "联系方式包含 " + searchPattern,//
+                PeopleCriteria.withAnyNumberLike(searchPattern));
 
-        ContactSearchFragment csf = null;
-
-        for (SearchFragment searchFragment : searchFragmentList) {
-            if (searchFragment instanceof ContactSearchFragment) {
-                csf = (ContactSearchFragment) searchFragment;
-            }
-        }
-        if (csf == null) {
-            csf = new ContactSearchFragment(searchPattern);
-            addSearchFragment(csf);
-        } else {
-            csf.pattern = searchPattern;
-            searchFragmentsChanged();
-        }
         searchPattern = null;
     }
 

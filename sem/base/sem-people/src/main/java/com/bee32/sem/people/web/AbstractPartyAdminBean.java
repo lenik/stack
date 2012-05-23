@@ -90,20 +90,20 @@ public abstract class AbstractPartyAdminBean
      *************************************************************************/
     @Override
     public void addNameOrLabelRestriction() {
-        addSearchFragment("名称含有 " + searchPattern, //
+        setSearchFragment("name", "名称含有 " + searchPattern, //
                 // UIEntity doesn't have name: CommonCriteria.namedLike(pattern), //
                 PeopleCriteria.namedLike(searchPattern, true));
         searchPattern = null;
     }
 
     public void addInterestRestriction() {
-        addSearchFragment("兴趣含有 " + searchPattern, //
+        setSearchFragment("interest", "兴趣含有 " + searchPattern, //
                 PeopleCriteria.interestLike(searchPattern));
         searchPattern = null;
     }
 
     public void addPhoneRestriction() {
-        addSearchFragment("电话含有 " + searchPattern, //
+        setSearchFragment("phone", "电话含有 " + searchPattern, //
                 PeopleCriteria.customers());
         searchPattern = null;
     }

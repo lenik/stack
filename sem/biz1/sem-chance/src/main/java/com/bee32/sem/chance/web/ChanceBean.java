@@ -43,7 +43,7 @@ public class ChanceBean
      *************************************************************************/
     @Override
     public void addNameOrLabelRestriction() {
-        addSearchFragment("名称含有 " + searchPattern, Or.of(//
+        setSearchFragment("name", "名称含有 " + searchPattern, Or.of(//
                 CommonCriteria.labelledWith(searchPattern, true), //
                 ChanceCriteria.subjectLike(searchPattern, true)));
         searchPattern = null;
@@ -51,13 +51,13 @@ public class ChanceBean
 
     public void addStageRestricion(){
         ChanceStage chanceStage = ctx.data.access(ChanceStage.class).lazyLoad(searchStage.getId());
-        addSearchFragment("阶段为 " + chanceStage.getLabel(),//
+        setSearchFragment("stage", "阶段为 " + chanceStage.getLabel(),//
                 ChanceCriteria.stageOf(searchStage.getId()));
     }
 
     public void addSourceRestricion(){
         ChanceSourceType cst = ctx.data.access(ChanceSourceType.class).lazyLoad(searchSource.getId());
-        addSearchFragment("来源为 " + cst.getLabel(),//
+        setSearchFragment("source", "来源为 " + cst.getLabel(),//
                 ChanceCriteria.sourceTypeOf(searchSource.getId()));
     }
 

@@ -57,24 +57,14 @@ public class MaterialAdminBean
     }
 
     public void addModelRestricion() {
-        addSearchFragment("型号含有 " + searchPattern, //
+        setSearchFragment("model-spec", "型号含有 " + searchPattern, //
                 MaterialCriteria.modelSpecLike(searchPattern, true));
         searchPattern = null;
     }
 
     public void addCategoryRestricion() {
-        CategorySearchFragment csf = null;
-        for (SearchFragment searchFragment : getSearchFragments()) {
-            if (searchFragment instanceof CategorySearchFragment)
-                csf = (CategorySearchFragment) searchFragment;
-        }
-        if (csf == null) {
-            csf = new CategorySearchFragment(searchPattern);
-            addSearchFragment(csf);
-        } else {
-            csf.setPattern(searchPattern);
-            searchFragmentsChanged();
-        }
+        setSearchFragment("category", "分类含有 " + searchPattern, //
+                MaterialCriteria.categoryLike(searchPattern));
         searchPattern = null;
     }
 

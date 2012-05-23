@@ -55,39 +55,23 @@ public class ChanceActionBean extends SimpleEntityViewBean {
     }
 
     public void addSubjectRestricion() {
-        addSearchFragment("限定机会标题 " + searchPattern,//
+        setSearchFragment("subject", "限定机会标题 " + searchPattern,//
                 ChanceCriteria.actionSubjectLike(searchPattern));
         searchPattern = null;
     }
 
     public void addContentRestricion() {
-        addSearchFragment("限定行动内容 " + searchPattern, //
+        setSearchFragment("content", "限定行动内容 " + searchPattern, //
                 ChanceCriteria.actionContentLike(searchPattern));
         searchPattern = null;
     }
 
     public void addMisRestricion() {
-        planFilter("是日志", false);
+        setSearchFragment("plan", "是日志", ChanceCriteria.isPlan(false));
     }
 
     public void addPlaRestricion() {
-        planFilter("是计划", true);
-    }
-
-    void planFilter(String pattern, boolean flag) {
-        PlanSearchFragment psf = null;
-        for (SearchFragment sf : getSearchFragments()) {
-            if (sf instanceof PlanSearchFragment)
-                psf = (PlanSearchFragment) sf;
-        }
-        if (psf == null) {
-            psf = new PlanSearchFragment(pattern, flag);
-            addSearchFragment(psf);
-        } else {
-            psf.setPattern(pattern);
-            psf.setFlag(flag);
-            searchFragmentsChanged();
-        }
+        setSearchFragment("plan", "是计划", ChanceCriteria.isPlan(true));
     }
 
     public PartyDto getSelectedParty() {

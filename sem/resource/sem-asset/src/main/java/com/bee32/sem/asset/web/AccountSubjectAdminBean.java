@@ -19,7 +19,7 @@ public class AccountSubjectAdminBean
     }
 
     public void addSubjectCodeRestriction() {
-        addSearchFragment("科目编号含有: " + searchPattern, //
+        setSearchFragment("code", "科目编号含有: " + searchPattern, //
                 AssetCriteria.subjectCodeLike(searchPattern));
         searchPattern = null;
     }

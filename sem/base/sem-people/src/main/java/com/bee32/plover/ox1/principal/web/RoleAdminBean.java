@@ -82,7 +82,7 @@ public class RoleAdminBean
 
     @Override
     public void addNameOrLabelRestriction() {
-        addSearchFragment("名称含有 " + searchPattern, PrincipalCriteria.namedLike(searchPattern));
+        setSearchFragment("name", "名称含有 " + searchPattern, PrincipalCriteria.namedLike(searchPattern));
         searchPattern = null;
     }
 

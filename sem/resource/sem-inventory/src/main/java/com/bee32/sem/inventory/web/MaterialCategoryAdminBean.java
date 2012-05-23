@@ -36,42 +36,23 @@ public class MaterialCategoryAdminBean
     }
 
     public void addCfinishedRestriction(){
-        setAttributeFilter("限定为成品", Arrays.asList(MaterialType.PRODUCT));
-        searchFragmentsChanged();
+        setSearchFragment("type", "成品", //
+                MaterialCriteria.categoryType(Arrays.asList(MaterialType.PRODUCT)));
     }
 
     public void addSemiRestriction(){
-        setAttributeFilter("限定为半成品", Arrays.asList(MaterialType.SEMI));
-        searchFragmentsChanged();
+        setSearchFragment("type", "半成品", //
+                MaterialCriteria.categoryType(Arrays.asList(MaterialType.SEMI)));
     }
 
     public void addRawRestriction(){
-        setAttributeFilter("限定为原材料", Arrays.asList(MaterialType.RAW));
-        searchFragmentsChanged();
+        setSearchFragment("type", "原材料", //
+                MaterialCriteria.categoryType(Arrays.asList(MaterialType.RAW)));
     }
 
     public void addOtherRestriction(){
-        setAttributeFilter("限定为其他", Arrays.asList(MaterialType.OTHER));
-        searchFragmentsChanged();
-    }
-
-
-    TypeSearchFragment setAttributeFilter(String pattern, List<MaterialType> types){
-
-        TypeSearchFragment tsf = null;
-        for(SearchFragment searchFragment : getSearchFragments()){
-            if(searchFragment instanceof TypeSearchFragment)
-                tsf = (TypeSearchFragment) searchFragment;
-        }
-        if(tsf == null ){
-            tsf = new TypeSearchFragment(pattern, types);
-            addSearchFragment(tsf);
-        }
-        else{
-            tsf.setPattern(pattern);
-            tsf.setTypes(types);
-        }
-        return tsf;
+        setSearchFragment("type", "其他", //
+                MaterialCriteria.categoryType(Arrays.asList(MaterialType.OTHER)));
     }
 
     public List<SelectItem> getMaterialTypes() {
