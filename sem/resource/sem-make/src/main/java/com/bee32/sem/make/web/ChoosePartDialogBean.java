@@ -50,10 +50,10 @@ public class ChoosePartDialogBean
         searchPattern = null;
     }
 
-    public void addCategoryRestriction(Integer categoryId) {
+    public void setCategoryRestriction(Integer categoryId) {
         if (categoryId != null && categoryId != -1) {
             MaterialCategory category = ctx.data.access(MaterialCategory.class).get(categoryId);
-            addSearchFragment("分类为" + category.getLabel(), //
+            setSearchFragment("category", "分类为" + category.getLabel(), //
                     BomCriteria.targetCategory(categoryId));
         }
     }

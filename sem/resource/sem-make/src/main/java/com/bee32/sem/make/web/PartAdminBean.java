@@ -18,6 +18,7 @@ import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.MaterialType;
 import com.bee32.sem.inventory.util.MaterialCriteria;
+import com.bee32.sem.inventory.web.ChooseMaterialDialogBean;
 import com.bee32.sem.inventory.web.MaterialCategorySupportBean;
 import com.bee32.sem.inventory.web.MaterialCategoryTreeModel;
 import com.bee32.sem.make.dto.MakeStepInputDto;
@@ -218,11 +219,9 @@ public class PartAdminBean
      * 编辑Part时，
      */
     public void setCategory() {
-        PartDto part = getOpenedObject();
-        if (!DTOs.isNull(part.getTarget())) {
+        if (this.categoryTree.getSelectedId() != -1) {
             ChooseMaterialDialogBean bean = ctx.bean.getBean(ChooseMaterialDialogBean.class);
-            bean.clearSearchFragments();
-            bean.addCategoryRestriction(this.categoryTree.getSelectedId());
+            bean.setCategoryRestriction(this.categoryTree.getSelectedId());
         }
     }
 
@@ -233,8 +232,7 @@ public class PartAdminBean
         PartItemDto partItem = childrenMBean.getOpenedObject();
         if (!DTOs.isNull(partItem.getPart())) {
             ChoosePartDialogBean bean = ctx.bean.getBean(ChoosePartDialogBean.class);
-            bean.clearSearchFragments();
-            bean.addCategoryRestriction(partItem.getPart().getTarget().getCategory().getId());
+            bean.setCategoryRestriction(partItem.getPart().getTarget().getCategory().getId());
         }
     }
 
@@ -245,8 +243,7 @@ public class PartAdminBean
         PartItemDto partItem = childrenMBean.getOpenedObject();
         if (!DTOs.isNull(partItem.getMaterial())) {
             ChooseMaterialDialogBean bean = ctx.bean.getBean(ChooseMaterialDialogBean.class);
-            bean.clearSearchFragments();
-            bean.addCategoryRestriction(partItem.getMaterial().getCategory().getId());
+            bean.setCategoryRestriction(partItem.getMaterial().getCategory().getId());
         }
     }
 

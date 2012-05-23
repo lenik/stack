@@ -934,6 +934,13 @@ public abstract class SimpleEntityViewBean
     protected Date endDate;
     protected PrincipalDto searchPrincipal; // TODO implication opt.
 
+    public List<SearchFragment> getSearchFragments() {
+        List<SearchFragment> all = new ArrayList<SearchFragment>();
+        for (List<SearchFragment> fragments : searchFragmentMap.values())
+            all.addAll(fragments);
+        return all;
+    }
+
     @Override
     public List<SearchFragment> getSearchFragments(String groupId) {
         if (groupId == null)
@@ -958,6 +965,7 @@ public abstract class SimpleEntityViewBean
     public void setSearchFragment(String groupId, SearchFragment fragment) {
         if (fragment == null)
             throw new NullPointerException("searchFragments");
+        fragment.setHolder(this);
         List<SearchFragment> fragments = getSearchFragments(groupId);
         fragments.clear();
         fragments.add(fragment);
