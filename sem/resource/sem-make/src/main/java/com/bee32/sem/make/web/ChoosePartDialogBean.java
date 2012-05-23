@@ -36,14 +36,14 @@ public class ChoosePartDialogBean
      *************************************************************************/
     @Override
     public void addNameOrLabelRestriction() {
-        addSearchFragment("名称含有 " + searchPattern, Or.of(//
+        setSearchFragment("name", "名称含有 " + searchPattern, Or.of(//
                 CommonCriteria.labelledWith(searchPattern, true), //
                 BomCriteria.targetLabel(searchPattern, true)));
         searchPattern = null;
     }
 
     public void addModelSpecRestriction() {
-        addSearchFragment("规格型号含有 " + searchPattern, //
+        setSearchFragment("model-spec", "规格型号含有 " + searchPattern, //
                 // UIEntity doesn't have name: CommonCriteria.namedLike(pattern), //
                 BomCriteria.targetModelSpec(searchPattern, true));
         searchPattern = null;

@@ -127,7 +127,7 @@ public class UserFileBean
 
     @Override
     public void addNameOrLabelRestriction() {
-        addSearchFragment("名称含有 " + searchPattern, UserFileCriteria.namedLike(searchPattern));
+        addSearchFragment("name", "名称含有 " + searchPattern, UserFileCriteria.namedLike(searchPattern));
         searchPattern = null;
     }
 
@@ -144,13 +144,13 @@ public class UserFileBean
         // UserFileTagname tag = ctx.data.access(UserFileTagname.class).get(tagId);
 
         TagsSearchFragment tsf = null;
-        for (SearchFragment sf : getSearchFragments()) {
+        for (SearchFragment sf : getSearchFragments("tag")) {
             if (sf instanceof TagsSearchFragment)
                 tsf = (TagsSearchFragment) sf;
         }
         if (tsf == null) {
             tsf = new TagsSearchFragment();
-            addSearchFragment(tsf);
+            addSearchFragment("tag", tsf);
         }
 
         tsf.map.put(tagId, tagName);
@@ -168,7 +168,7 @@ public class UserFileBean
     public void addPartyRestriction() {
         if (DTOs.isNull(searchParty))
             return;
-        addSearchFragment("客户是 " + searchParty.getDisplayName(), //
+        setSearchFragment("party", "客户是 " + searchParty.getDisplayName(), //
                 new Equals("party.id", searchParty.getId()));
         searchParty = null;
     }
@@ -176,13 +176,13 @@ public class UserFileBean
     public void addOperatorRestriction() {
         if (searchPrincipal == null)
             return;
-        addSearchFragment("经办人是 " + searchPrincipal.getDisplayName(), //
+        setSearchFragment("operator", "经办人是 " + searchPrincipal.getDisplayName(), //
                 new Equals("operator.id", searchPrincipal.getId()));
         searchPrincipal = null;
     }
 
     public void addFileDateRestriction() {
-        addDateSearchFragment("档案日期为", new IDateCriteriaComposer() {
+        setDateSearchFragment("file-date", "档案日期为", new IDateCriteriaComposer() {
             @Override
             public ICriteriaElement composeDateCriteria(Date begin, Date end) {
                 return CommonCriteria.between("fileDate", begin, end);

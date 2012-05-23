@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -121,7 +122,7 @@ public abstract class SimpleEntityViewBean
     List<ICriteriaElement> baseRestriction;
     ICriteriaElement userRestriction;
     boolean verifiedOnly;
-    List<SearchFragment> searchFragments = new ArrayList<SearchFragment>();
+    Map<String, List<SearchFragment>> searchFragmentMap = new LinkedHashMap<>();
     EntityDataModelOptions<?, ?> dataModelOptions;
     LazyDataModel<?> dataModel;
 
@@ -270,11 +271,12 @@ public abstract class SimpleEntityViewBean
         if (userRestriction != null)
             join.add(userRestriction);
 
-        for (SearchFragment fragment : searchFragments) {
-            ICriteriaElement element = fragment.compose();
-            if (element != null)
-                join.add(element);
-        }
+        for (List<SearchFragment> fragments : searchFragmentMap.values())
+            for (SearchFragment fragment : fragments) {
+                ICriteriaElement element = fragment.compose();
+                if (element != null)
+                    join.add(element);
+            }
         return join;
     }
 
@@ -555,7 +557,7 @@ public abstract class SimpleEntityViewBean
         }
 
         if ((saveFlags & SAVE_DUP) != 0) {
-            for (EntityDto<?,?> dto : dtos) {
+            for (EntityDto<?, ?> dto : dtos) {
                 dto.copy();
                 dto.clearId();
             }
@@ -933,48 +935,82 @@ public abstract class SimpleEntityViewBean
     protected PrincipalDto searchPrincipal; // TODO implication opt.
 
     @Override
-    public List<SearchFragment> getSearchFragments() {
-        return searchFragments;
-    }
-
-    public void setSearchFragments(List<SearchFragment> searchFragments) {
-        if (searchFragments == null)
-            throw new NullPointerException("searchFragments");
-        this.searchFragments = searchFragments;
-    }
-
-    public void addSearchFragment(String entryLabel, ICriteriaElement... criteriaElements) {
-        CriteriaComposite composite = new CriteriaComposite(criteriaElements);
-        addSearchFragment(entryLabel, composite);
-    }
-
-    public void addSearchFragment(String entryLabel, ICriteriaElement criteriaElement) {
-        if (criteriaElement == null)
-            return;
-        SearchFragmentWrapper fragment = new SearchFragmentWrapper(criteriaElement, entryLabel);
-        addSearchFragment(fragment);
+    public List<SearchFragment> getSearchFragments(String groupId) {
+        if (groupId == null)
+            throw new NullPointerException("groupId");
+        List<SearchFragment> fragments = searchFragmentMap.get(groupId);
+        if (fragments == null) {
+            fragments = new ArrayList<SearchFragment>();
+            searchFragmentMap.put(groupId, fragments);
+        }
+        return fragments;
     }
 
     @Override
-    public void addSearchFragment(SearchFragment fragment) {
+    public void clearSearchFragments() {
+        if (searchFragmentMap.isEmpty()) {
+            searchFragmentMap.clear();
+            searchFragmentsChanged();
+        }
+    }
+
+    @Override
+    public void setSearchFragment(String groupId, SearchFragment fragment) {
         if (fragment == null)
-            throw new NullPointerException("fragment");
-        fragment.setHolder(this);
-        searchFragments.add(fragment);
+            throw new NullPointerException("searchFragments");
+        List<SearchFragment> fragments = getSearchFragments(groupId);
+        fragments.clear();
+        fragments.add(fragment);
         searchFragmentsChanged();
     }
 
     @Override
-    public void removeSearchFragment(SearchFragment fragment) {
-        if (searchFragments.remove(fragment))
-            searchFragmentsChanged();
+    public void addSearchFragment(String groupId, SearchFragment fragment) {
+        if (fragment == null)
+            throw new NullPointerException("fragment");
+        fragment.setHolder(this);
+        List<SearchFragment> fragments = getSearchFragments(groupId);
+        fragments.add(fragment);
+        searchFragmentsChanged();
     }
 
-    public void clearSearchFragments() {
-        if (searchFragments.isEmpty()) {
-            searchFragments.clear();
+    public void setSearchFragment(String groupId, String entryLabel, ICriteriaElement... criteriaElements) {
+        if (criteriaElements.length == 0)
+            return;
+        ICriteriaElement composite;
+        if (criteriaElements.length == 1)
+            composite = criteriaElements[0];
+        else
+            composite = new CriteriaComposite(criteriaElements);
+        SearchFragmentWrapper fragment = new SearchFragmentWrapper(composite, entryLabel);
+        setSearchFragment(groupId, fragment);
+    }
+
+    public void addSearchFragment(String groupId, String entryLabel, ICriteriaElement... criteriaElements) {
+        if (criteriaElements.length == 0)
+            return;
+        ICriteriaElement composite;
+        if (criteriaElements.length == 1)
+            composite = criteriaElements[0];
+        else
+            composite = new CriteriaComposite(criteriaElements);
+        SearchFragmentWrapper fragment = new SearchFragmentWrapper(composite, entryLabel);
+        addSearchFragment(groupId, fragment);
+    }
+
+    @Override
+    public void removeSearchFragmentGroup(String groupId) {
+        searchFragmentMap.remove(groupId);
+    }
+
+    @Override
+    public void removeSearchFragment(SearchFragment fragment) {
+        boolean dirty = false;
+        for (List<SearchFragment> fragments : searchFragmentMap.values())
+            if (!fragments.remove(fragment))
+                dirty = true;
+        if (dirty)
             searchFragmentsChanged();
-        }
     }
 
     protected void searchFragmentsChanged() {
@@ -990,24 +1026,24 @@ public abstract class SimpleEntityViewBean
     }
 
     public void addNameRestriction() {
-        addSearchFragment("名称含有 " + searchPattern, CommonCriteria.namedLike(searchPattern, true));
+        addSearchFragment("name", "名称含有 " + searchPattern, CommonCriteria.namedLike(searchPattern, true));
         searchPattern = null;
     }
 
     public void addLabelRestriction() {
-        addSearchFragment("标题含有 " + searchPattern, CommonCriteria.labelledWith(searchPattern, true));
+        addSearchFragment("label", "标题含有 " + searchPattern, CommonCriteria.labelledWith(searchPattern, true));
         searchPattern = null;
     }
 
     public void addNameOrLabelRestriction() {
-        addSearchFragment("名称含有 " + searchPattern, //
+        setSearchFragment("name", "名称含有 " + searchPattern, //
                 // UIEntity doesn't have name: CommonCriteria.namedLike(pattern), //
                 CommonCriteria.labelledWith(searchPattern, true));
         searchPattern = null;
     }
 
     public void addDescriptionRestriction() {
-        addSearchFragment("描述含有 " + searchPattern, CommonCriteria.describedWith(searchPattern, true));
+        setSearchFragment("description", "描述含有 " + searchPattern, CommonCriteria.describedWith(searchPattern, true));
         searchPattern = null;
     }
 
@@ -1045,7 +1081,7 @@ public abstract class SimpleEntityViewBean
         this.endDate = endDate;
     }
 
-    protected void addDateSearchFragment(String hint, IDateCriteriaComposer composer) {
+    protected void setDateSearchFragment(String groupId, String hint, IDateCriteriaComposer composer) {
         Date now = new Date();
         Date begin = dateRange == null ? beginDate : dateRange.getBegin(now);
         Date end = dateRange == null ? endDate : dateRange.getEnd(now);
@@ -1063,20 +1099,20 @@ public abstract class SimpleEntityViewBean
                     sb.append(Dates.YYYY_MM_DD.format(end) + "之前");
                 label = sb.toString();
             }
-            addSearchFragment(label, criteriaElement);
+            setSearchFragment(groupId, label, criteriaElement);
         }
     }
 
     public void addCreatedDateRestriction() {
-        addDateSearchFragment("创建于", IDateCriteriaComposer.createdDate);
+        setDateSearchFragment("create-date", "创建于", IDateCriteriaComposer.createdDate);
     }
 
     public void addLastModifiedRestriction() {
-        addDateSearchFragment("修改于", IDateCriteriaComposer.lastModified);
+        setDateSearchFragment("modify-date", "修改于", IDateCriteriaComposer.lastModified);
     }
 
     public void addBeginEndDateRestriction() {
-        addDateSearchFragment("发生于", IDateCriteriaComposer.beginEndDate);
+        setDateSearchFragment("begin-date", "发生于", IDateCriteriaComposer.beginEndDate);
     }
 
     public PrincipalDto getSearchPrincipal() {
@@ -1091,7 +1127,7 @@ public abstract class SimpleEntityViewBean
         if (searchPrincipal == null)
             return;
         Principal principal = searchPrincipal.unmarshal();
-        addSearchFragment("为 " + searchPrincipal.getDisplayName() + " 所有", //
+        setSearchFragment("owner", "为 " + searchPrincipal.getDisplayName() + " 所有", //
                 CommonCriteria.ownedBy(principal));
         searchPrincipal = null;
     }

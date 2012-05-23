@@ -11,7 +11,8 @@ import com.bee32.sem.people.dto.PersonRoleDto;
 import com.bee32.sem.people.entity.Person;
 
 @ForEntity(Person.class)
-public class PersonAdminBean extends AbstractPartyAdminBean {
+public class PersonAdminBean
+        extends AbstractPartyAdminBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,16 +30,15 @@ public class PersonAdminBean extends AbstractPartyAdminBean {
         this.selectedRole = selectedRole;
     }
 
-
-    void attributeFilter(String pattern){
-        AttributeSearchFragment  asf = new AttributeSearchFragment(pattern);
+    void attributeFilter(String pattern) {
+        AttributeSearchFragment asf = new AttributeSearchFragment(pattern);
         List<AttributeSearchFragment> asfs = new ArrayList<AttributeSearchFragment>();
-        for(SearchFragment sf : getSearchFragments()){
-            if(sf instanceof AttributeSearchFragment)
+        for (SearchFragment sf : getSearchFragments()) {
+            if (sf instanceof AttributeSearchFragment)
                 asfs.add((AttributeSearchFragment) sf);
         }
 
-        if(!asfs.contains(asf)){
+        if (!asfs.contains(asf)) {
             addSearchFragment(asf);
         }
     }
