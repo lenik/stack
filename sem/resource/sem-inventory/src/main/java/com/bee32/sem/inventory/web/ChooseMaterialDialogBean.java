@@ -11,6 +11,7 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.entity.MaterialType;
 import com.bee32.sem.inventory.util.MaterialCriteria;
 import com.bee32.sem.misc.ChooseEntityDialogBean;
@@ -93,6 +94,14 @@ public class ChooseMaterialDialogBean
                 // UIEntity doesn't have name: CommonCriteria.namedLike(pattern), //
                 MaterialCriteria.modelSpecLike(searchPattern, true));
         searchPattern = null;
+    }
+
+    public void addCategoryRestriction(Integer categoryId) {
+        if (categoryId != null && categoryId != -1) {
+            MaterialCategory category = ctx.data.access(MaterialCategory.class).get(categoryId);
+            addSearchFragment("分类为" + category.getLabel(), //
+                    MaterialCriteria.categoryOf(categoryId));
+        }
     }
 
 }

@@ -214,6 +214,41 @@ public class PartAdminBean
         showView(StandardViews.CREATE_FORM);
     }
 
+    /**
+     * 编辑Part时，
+     */
+    public void setCategory() {
+        PartDto part = getOpenedObject();
+        if (!DTOs.isNull(part.getTarget())) {
+            ChooseMaterialDialogBean bean = ctx.bean.getBean(ChooseMaterialDialogBean.class);
+            bean.clearSearchFragments();
+            bean.addCategoryRestriction(this.categoryTree.getSelectedId());
+        }
+    }
+
+    /**
+     * 编辑明细选择半成品时，限定半成品的分类
+     */
+    public void setSemiCategory() {
+        PartItemDto partItem = childrenMBean.getOpenedObject();
+        if (!DTOs.isNull(partItem.getPart())) {
+            ChoosePartDialogBean bean = ctx.bean.getBean(ChoosePartDialogBean.class);
+            bean.clearSearchFragments();
+            bean.addCategoryRestriction(partItem.getPart().getTarget().getCategory().getId());
+        }
+    }
+
+    /**
+     * 编辑明细选择原材料时，限定原材料的分类
+     */
+    public void setRawCategory() {
+        PartItemDto partItem = childrenMBean.getOpenedObject();
+        if (!DTOs.isNull(partItem.getMaterial())) {
+            ChooseMaterialDialogBean bean = ctx.bean.getBean(ChooseMaterialDialogBean.class);
+            bean.clearSearchFragments();
+            bean.addCategoryRestriction(partItem.getMaterial().getCategory().getId());
+        }
+    }
 
     /*************************************************************************
      * Section: MBeans

@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.ox1.util.CommonCriteria;
+import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.make.dto.PartDto;
 import com.bee32.sem.make.entity.Part;
 import com.bee32.sem.make.util.BomCriteria;
@@ -47,6 +48,14 @@ public class ChoosePartDialogBean
                 // UIEntity doesn't have name: CommonCriteria.namedLike(pattern), //
                 BomCriteria.targetModelSpec(searchPattern, true));
         searchPattern = null;
+    }
+
+    public void addCategoryRestriction(Integer categoryId) {
+        if (categoryId != null && categoryId != -1) {
+            MaterialCategory category = ctx.data.access(MaterialCategory.class).get(categoryId);
+            addSearchFragment("分类为" + category.getLabel(), //
+                    BomCriteria.targetCategory(categoryId));
+        }
     }
 
 }
