@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bee32.plover.orm.annotation.ForEntity;
-import com.bee32.sem.frame.search.SearchFragment;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.dto.PersonRoleDto;

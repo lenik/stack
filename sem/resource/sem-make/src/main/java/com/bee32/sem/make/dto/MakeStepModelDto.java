@@ -2,7 +2,7 @@ package com.bee32.sem.make.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -19,8 +19,8 @@ import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.make.entity.MakeStepModel;
 
 public class MakeStepModelDto
-    extends UIEntityDto<MakeStepModel, Integer>
-    implements IEnclosedObject<PartDto>{
+        extends UIEntityDto<MakeStepModel, Integer>
+        implements IEnclosedObject<PartDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -62,7 +62,7 @@ public class MakeStepModelDto
         if (selection.contains(INPUTS))
             inputs = marshalList(MakeStepInputDto.class, source.getInputs());
         else
-            inputs = new ArrayList<MakeStepInputDto>();
+            inputs = Collections.emptyList();
 
         qcSpec = marshal(QCSpecDto.class, source.getQcSpec());
 
@@ -92,7 +92,8 @@ public class MakeStepModelDto
     }
 
     @Override
-    protected void _parse(TextMap map) throws ParseException {
+    protected void _parse(TextMap map)
+            throws ParseException {
         throw new NotImplementedException();
 
     }
@@ -225,8 +226,7 @@ public class MakeStepModelDto
     @Override
     protected Serializable naturalId() {
         return new IdComposite(//
-                naturalId(output),
-                order);
+                naturalId(output), order);
     }
 
 }
