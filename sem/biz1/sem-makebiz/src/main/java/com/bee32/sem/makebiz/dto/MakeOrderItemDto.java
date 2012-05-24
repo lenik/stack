@@ -36,9 +36,9 @@ public class MakeOrderItemDto
     protected void _marshal(MakeOrderItem source) {
         parent = mref(MakeOrderDto.class, source.getParent());
 
-        int partSelection = 0;
-        if(selection.contains(PART_ATTRIBUTES)) partSelection |= PartDto.TARGET_ATTRIBUTES;
-        part = mref(PartDto.class, partSelection, source.getPart());
+        part = mref(PartDto.class, //
+                selection.translate(PART_ATTRIBUTES, PartDto.TARGET_ATTRIBUTES), //
+                source.getPart());
 
         deadline = source.getDeadline();
         externalProductName = source.getExternalProductName();

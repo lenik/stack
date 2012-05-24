@@ -39,21 +39,17 @@ public class PersonRoleDto
 
     @Override
     protected void _marshal(PersonRole source) {
-        int x = 0;
-        if (selection.contains(PERSON_CONTACTS))
-            x |= PersonDto.CONTACTS;
-        person = mref(PersonDto.class, x, source.getPerson());
-
-        x = 0;
-        if (selection.contains(ORG_CONTACTS))
-            x |= OrgDto.CONTACTS;
-        org = mref(OrgDto.class, x, source.getOrg());
+        person = mref(PersonDto.class, //
+                selection.translate(PERSON_CONTACTS, PersonDto.CONTACTS), //
+                source.getPerson());
+        org = mref(OrgDto.class, //
+                selection.translate(ORG_CONTACTS, OrgDto.CONTACTS), //
+                source.getOrg());
         altOrgUnit = source.getAltOrgUnit();
 
-        int orgUnitSelection = 0;
-        if (selection.contains(ORG_UNIT_FULL))
-            orgUnitSelection |= OrgUnitDto.PARENT;
-        orgUnit = mref(OrgUnitDto.class, orgUnitSelection, source.getOrgUnit());
+        orgUnit = mref(OrgUnitDto.class, //
+                selection.translate(ORG_UNIT_FULL, OrgUnitDto.PARENT), //
+                source.getOrgUnit());
 
         role = source.getRole();
         roleDetail = source.getRoleDetail();
