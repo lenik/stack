@@ -60,7 +60,7 @@ public class PrincipalDto
         this.name = map.getString("name");
     }
 
-    @Size(min = 3, max = Principal.NAME_LENGTH)
+    @Size(min = 2, max = Principal.NAME_LENGTH)
     public String getName() {
         return name;
     }
