@@ -31,8 +31,8 @@
             <h:outputLabel value="编号" />
             <p:inputText id="name" value="#{obj.name}" label="编号"/>
 
-            <h:outputLabel value="科目名称" />
-            <p:inputText id="label" value="#{obj.label}" label="科目名称"/>
+            <h:outputLabel value="名称" />
+            <p:inputText id="label" value="#{obj.label}" label="名称"/>
         </h:panelGrid>
     </ui:define>
 
@@ -42,7 +42,7 @@
     </ui:define>
 
     <ui:define name="searchPanel.keyword.1">
-        <p:commandButton id="test" value="限定科目代码"  actionListener="${bean.addSubjectCodeRestriction}"
+        <p:commandButton id="test" value="限定代码"  actionListener="${bean.addSubjectCodeRestriction}"
             update="@form, ${_searchUpdates}" />
     </ui:define>
 

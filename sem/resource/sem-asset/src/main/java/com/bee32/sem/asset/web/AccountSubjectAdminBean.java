@@ -1,5 +1,9 @@
 package com.bee32.sem.asset.web;
 
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.sem.asset.dto.AccountSubjectDto;
 import com.bee32.sem.asset.entity.AccountSubject;
@@ -35,5 +39,24 @@ public class AccountSubjectAdminBean
         subject.setDebitSign(parentSubject.isDebitSign());
         subject.setCreditSign(parentSubject.isCreditSign());
     }
+
+    @Override
+    protected boolean postValidate(List<?> dtos) throws Exception {
+        for(Object dto :dtos) {
+            AccountSubjectDto subject = (AccountSubjectDto)dto;
+            if(StringUtils.isEmpty(subject.getLabel())) {
+                uiLogger.error("科目编码不能为空");
+                return false;
+            }
+
+            if(StringUtils.isEmpty(subject.getName())) {
+                uiLogger.error("科目名称不能为空");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 
 }

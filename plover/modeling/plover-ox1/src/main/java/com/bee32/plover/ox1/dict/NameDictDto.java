@@ -3,6 +3,7 @@ package com.bee32.plover.ox1.dict;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.util.TextUtil;
 
 public abstract class NameDictDto<E extends NameDict>
@@ -106,6 +107,7 @@ public abstract class NameDictDto<E extends NameDict>
             return other;
     }
 
+    @NLength(min=1, max=NameDict.ID_LENGTH)
     public String getName() {
         return getId();
     }

@@ -39,7 +39,7 @@
                 <p:column headerText="物料名称" styleClass="f-wrappable">
                     <h:outputText value="${entry.label}" />
                 </p:column>
-                <p:column headerText="规格型号" styleClass="f-wrappable">
+                <p:column headerText="规格型号" styleClass="f-wrappable" sortBy="${entry.modelSpec}">
                     <h:outputText value="${entry.modelSpec}" />
                 </p:column>
                 <p:column headerText="主单位">
