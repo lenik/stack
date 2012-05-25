@@ -3,13 +3,13 @@ package com.bee32.sem.inventory;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.frame.builtins.SEMFrameMenu;
-import com.bee32.sem.frame.menu.MenuContribution;
+import com.bee32.sem.frame.menu.MenuComposite;
 import com.bee32.sem.frame.menu.MenuNode;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.process.SEMProcessMenu;
 
 public class SEMInventoryMenu
-        extends MenuContribution
+        extends MenuComposite
         implements ITypeAbbrAware {
 
     static Location _(String path) {

@@ -3,7 +3,7 @@ package com.bee32.sem.people;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.frame.builtins.SEMFrameMenu;
-import com.bee32.sem.frame.menu.MenuContribution;
+import com.bee32.sem.frame.menu.MenuComposite;
 import com.bee32.sem.frame.menu.MenuNode;
 import com.bee32.sem.hr.entity.JobPerformance;
 import com.bee32.sem.hr.entity.JobPost;
@@ -16,7 +16,7 @@ import com.bee32.sem.people.entity.PartySidType;
 import com.bee32.sem.people.entity.PartyTagname;
 
 public class SEMPeopleMenu
-        extends MenuContribution
+        extends MenuComposite
         implements ITypeAbbrAware {
 
     static Location PEOPLE_ = WEB_APP.join(SEMPeopleModule.PREFIX_);

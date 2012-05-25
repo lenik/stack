@@ -35,7 +35,7 @@ import com.bee32.plover.orm.util.EntityFormatter;
 import com.bee32.plover.xutil.m2.MavenPath;
 import com.bee32.plover.xutil.m2.TestClassLoader;
 import com.bee32.plover.xutil.m2.UCLDumper;
-import com.bee32.sem.frame.menu.MenuContribution;
+import com.bee32.sem.frame.menu.MenuComposite;
 import com.bee32.sem.frame.menu.MenuEntry;
 
 /**
@@ -156,7 +156,7 @@ public class NLSInitiator {
 
         if (EnumAlt.class.isAssignableFrom(type)) {
             collectEnum(type, keys);
-        } else if (MenuContribution.class.isAssignableFrom(type)) {
+        } else if (MenuComposite.class.isAssignableFrom(type)) {
             collectMembers(type, keys, MenuEntry.class);
         } else {
             collectMembers(type, keys, null);

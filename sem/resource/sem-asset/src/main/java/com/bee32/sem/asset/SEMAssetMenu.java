@@ -2,11 +2,11 @@ package com.bee32.sem.asset;
 
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.frame.builtins.SEMFrameMenu;
-import com.bee32.sem.frame.menu.MenuContribution;
+import com.bee32.sem.frame.menu.MenuComposite;
 import com.bee32.sem.frame.menu.MenuNode;
 
 public class SEMAssetMenu
-        extends MenuContribution {
+        extends MenuComposite {
 
     static Location ASSET_ = WEB_APP.join(SEMAssetModule.PREFIX_);
 

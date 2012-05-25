@@ -3,11 +3,11 @@ package com.bee32.plover.ox1.principal;
 import com.bee32.icsf.principal.IcsfPrincipalModule;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.frame.builtins.SEMFrameMenu;
-import com.bee32.sem.frame.menu.MenuContribution;
+import com.bee32.sem.frame.menu.MenuComposite;
 import com.bee32.sem.frame.menu.MenuNode;
 
 public class IcsfPrincipalMenu
-        extends MenuContribution {
+        extends MenuComposite {
 
     static Location PRINCIPAL_ = WEB_APP.join(IcsfPrincipalModule.PREFIX_);
 

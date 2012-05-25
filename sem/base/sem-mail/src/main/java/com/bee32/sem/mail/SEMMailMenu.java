@@ -2,11 +2,11 @@ package com.bee32.sem.mail;
 
 import com.bee32.plover.rtx.location.ILocationContext;
 import com.bee32.sem.frame.builtins.SEMFrameMenu;
-import com.bee32.sem.frame.menu.MenuContribution;
+import com.bee32.sem.frame.menu.MenuComposite;
 import com.bee32.sem.frame.menu.MenuNode;
 
 public class SEMMailMenu
-        extends MenuContribution {
+        extends MenuComposite {
 
     static ILocationContext MAIL_ = WEB_APP.join(SEMMailModule.PREFIX + "/");
 

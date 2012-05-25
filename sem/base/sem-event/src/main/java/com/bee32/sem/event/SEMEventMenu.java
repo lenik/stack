@@ -7,11 +7,11 @@ import com.bee32.sem.event.entity.EventStatus;
 import com.bee32.sem.event.web.EventController;
 import com.bee32.sem.event.web.EventPriorityController;
 import com.bee32.sem.frame.builtins.SEMFrameMenu;
-import com.bee32.sem.frame.menu.MenuContribution;
+import com.bee32.sem.frame.menu.MenuComposite;
 import com.bee32.sem.frame.menu.MenuNode;
 
 public class SEMEventMenu
-        extends MenuContribution
+        extends MenuComposite
         implements ITypeAbbrAware {
 
     static Location EVENT_ = WEB_APP.join(EventController.PREFIX_);

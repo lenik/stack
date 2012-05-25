@@ -11,13 +11,13 @@ public class MenuModel
         super(name);
     }
 
-    private IdentityHashMap<String, MenuContribution> srcmap = new IdentityHashMap<String, MenuContribution>();
+    private IdentityHashMap<String, MenuComposite> srcmap = new IdentityHashMap<String, MenuComposite>();
 
-    protected void checkDup(String path, MenuContribution contrib) {
-        MenuContribution last = srcmap.get(path);
+    protected void checkDup(String path, MenuComposite comp) {
+        MenuComposite last = srcmap.get(path);
         if (last != null)
             throw new IllegalUsageException(String.format(DUP_MENU_DEF, path, last));
-        srcmap.put(path, contrib);
+        srcmap.put(path, comp);
     }
 
     static String DUP_MENU_DEF = "Duplicated menu path %s, last occurred in %s.";

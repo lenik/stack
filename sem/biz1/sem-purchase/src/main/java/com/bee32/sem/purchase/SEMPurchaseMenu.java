@@ -1,12 +1,12 @@
 package com.bee32.sem.purchase;
 
 import com.bee32.plover.rtx.location.Location;
-import com.bee32.sem.frame.menu.MenuContribution;
+import com.bee32.sem.frame.menu.MenuComposite;
 import com.bee32.sem.frame.menu.MenuNode;
 import com.bee32.sem.makebiz.SEMMakebizMenu;
 
 public class SEMPurchaseMenu
-        extends MenuContribution {
+        extends MenuComposite {
 
     static Location PREFIX_ = WEB_APP.join(SEMPurchaseModule.PREFIX_);
 

@@ -2,11 +2,11 @@ package com.bee32.icsf.access;
 
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.frame.builtins.SEMFrameMenu;
-import com.bee32.sem.frame.menu.MenuContribution;
+import com.bee32.sem.frame.menu.MenuComposite;
 import com.bee32.sem.frame.menu.MenuNode;
 
 public class IcsfAccessMenu
-        extends MenuContribution {
+        extends MenuComposite {
 
     static Location BASE_ = WEB_APP.join(IcsfAccessModule.PREFIX_);
 

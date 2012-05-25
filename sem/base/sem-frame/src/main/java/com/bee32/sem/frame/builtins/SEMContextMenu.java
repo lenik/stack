@@ -1,10 +1,10 @@
 package com.bee32.sem.frame.builtins;
 
-import com.bee32.sem.frame.menu.MenuContribution;
+import com.bee32.sem.frame.menu.MenuComposite;
 import com.bee32.sem.frame.menu.MenuNode;
 
 public class SEMContextMenu
-        extends MenuContribution {
+        extends MenuComposite {
 
     public static final MenuNode CONTEXT = menu("context");
 

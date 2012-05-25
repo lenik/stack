@@ -8,11 +8,11 @@ import com.bee32.sem.chance.entity.ChanceCategory;
 import com.bee32.sem.chance.entity.ChanceSourceType;
 import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.frame.builtins.SEMFrameMenu;
-import com.bee32.sem.frame.menu.MenuContribution;
+import com.bee32.sem.frame.menu.MenuComposite;
 import com.bee32.sem.frame.menu.MenuNode;
 
 public class SEMChanceMenu
-        extends MenuContribution
+        extends MenuComposite
         implements ITypeAbbrAware {
 
     static Location DICT = WEB_APP.join(CommonDictController.PREFIX_);

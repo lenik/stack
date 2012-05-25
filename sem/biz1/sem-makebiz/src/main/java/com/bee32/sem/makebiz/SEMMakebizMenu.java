@@ -2,11 +2,11 @@ package com.bee32.sem.makebiz;
 
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.frame.builtins.SEMFrameMenu;
-import com.bee32.sem.frame.menu.MenuContribution;
+import com.bee32.sem.frame.menu.MenuComposite;
 import com.bee32.sem.frame.menu.MenuNode;
 
 public class SEMMakebizMenu
-        extends MenuContribution {
+        extends MenuComposite {
 
     static Location PREFIX_ = WEB_APP.join(SEMMakebizModule.PREFIX_);
 

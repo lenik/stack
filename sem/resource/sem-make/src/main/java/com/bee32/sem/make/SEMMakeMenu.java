@@ -2,12 +2,12 @@ package com.bee32.sem.make;
 
 import com.bee32.plover.ox1.dict.CommonDictController;
 import com.bee32.plover.rtx.location.Location;
-import com.bee32.sem.frame.menu.MenuContribution;
+import com.bee32.sem.frame.menu.MenuComposite;
 import com.bee32.sem.frame.menu.MenuNode;
 import com.bee32.sem.inventory.SEMInventoryMenu;
 
 public class SEMMakeMenu
-        extends MenuContribution {
+        extends MenuComposite {
 
     static Location DICT = WEB_APP.join(CommonDictController.PREFIX_);
 

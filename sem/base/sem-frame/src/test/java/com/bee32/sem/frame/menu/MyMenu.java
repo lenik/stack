@@ -3,7 +3,7 @@ package com.bee32.sem.frame.menu;
 import com.bee32.sem.frame.builtins.SEMFrameMenu;
 
 public class MyMenu
-        extends MenuContribution {
+        extends MenuComposite {
 
     public static MenuNode FILE = SEMFrameMenu.START;
 

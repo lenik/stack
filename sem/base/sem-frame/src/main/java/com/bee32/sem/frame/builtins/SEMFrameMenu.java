@@ -10,11 +10,11 @@ import com.bee32.plover.faces.misc.GuestPreferences;
 import com.bee32.plover.faces.utils.FacesAssembledContext;
 import com.bee32.plover.site.cfg.PrimefacesTheme;
 import com.bee32.sem.frame.action.Action;
-import com.bee32.sem.frame.menu.MenuContribution;
+import com.bee32.sem.frame.menu.MenuComposite;
 import com.bee32.sem.frame.menu.MenuNode;
 
 public class SEMFrameMenu
-        extends MenuContribution {
+        extends MenuComposite {
 
     static String VERSION = "SEM-Frame 0.3.2";
 
