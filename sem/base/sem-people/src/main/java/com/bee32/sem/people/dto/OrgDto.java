@@ -1,5 +1,6 @@
 package com.bee32.sem.people.dto;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -124,6 +125,13 @@ public class OrgDto
 
     public void setForWhichGroup(GroupDto forWhichGroup) {
         this.forWhichGroup = forWhichGroup;
+    }
+
+    public List<PersonRoleDto> getRoleList() {
+        List<PersonRoleDto> roleList = new ArrayList<PersonRoleDto>();
+
+        roleList.addAll(roles);
+        return roleList;
     }
 
 }

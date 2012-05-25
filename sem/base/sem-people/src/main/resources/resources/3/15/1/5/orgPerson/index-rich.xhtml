@@ -1,93 +1,174 @@
-<ui:composition template="/template/simple-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
-    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:pc="http://bee32.com/plover/core"
+      xmlns:sem="http://bee32.com/sem/functions"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      >
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
 
-    <ui:param name="title" value="公司/人员" />
-    <ui:param name="bean" value="#{orgPersonAdminBean}" />
-    <ui:param name="obj" value="#{bean.openedObject}" />
-    <ui:param name="people" value="#{peopleDictsBean}" />
+<ui:composition template="/template/primefaces.xhtml">
 
-    <ui:define name="dataColumns">
-        <p:column style="width:16px">
-            <p:rowToggler />
-        </p:column>
+    <ui:define name="title">公司/人员管理</ui:define>
 
-        <p:column headerText="公司名称">
-            <h:outputText value="#{entry.label}" />
-        </p:column>
+    <ui:define name="content">
 
-        <p:column headerText="标签">
-            <p:dataList value="#{entry.tags}" var="tag" type="definition">
-                <f:facet name="description">
-                    <h:outputText value="#{tag.label}" />
-                </f:facet>
-            </p:dataList>
-        </p:column>
+        <h:form id="mainForm">
 
-        <p:column headerText="联系电话">
-            <h:outputText value="#{entry.contactsString}" />
-        </p:column>
+            <p:toolbar id="orgToolbar">
+                <p:toolbarGroup align="left">
+                    <p:commandButton
+                        update=":editForm:editPanel"
+                        actionListener="#{orgPersonAdminBean.add}"
+                        value="新增"
+                        onclick="editDialog.show()"/>
+                </p:toolbarGroup>
+            </p:toolbar>
 
-        <p:rowExpansion>
-        <!--  dataTable doesn't render: PF-3.0.1, 3.1.RC1 -->
-            <ui:repeat id="roles" var="role" value="#{entry.rolesList}">
-                <h:panelGrid columns="4">
-                    <h:outputText value="#{role.person.displayName}" />
-                    <h:outputText value="#{role.role}" />
-                    <h:outputText value="#{role.person.sexText}" />
-                    <h:outputText value="#{role.person.contactsString}" />
-                </h:panelGrid>
-            </ui:repeat>
-        </p:rowExpansion>
-    </ui:define>
 
-    <ui:define name="editDialogContent">
-        <t:panelGrid id="editPanel" columns="4">
-            <h:outputText value="公司名称" />
-            <p:inputText value="#{bean.orgName}" />
-            <h:outputText value="标签" />
-            <p:selectManyCheckbox value="#{bean.selectedTags}">
-                <f:selectItems value="#{people.partyTagnameSelectItems}" />
-            </p:selectManyCheckbox>
+            <p:dataTable id="orgs" var="org"
+                value="#{orgPersonAdminBean.orgs}" paginator="true"
+                rows="#{viewConfig.pageSize}" lazy="true"
+                paginatorTemplate="#{viewConfig.paginatorTemplate}"
+                rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}"
+                resizableColumns="true"
+                rowIndexVar="rowIndex">
 
-            <h:outputText value="地址" />
-            <t:panelGroup colspan="3">
-                <p:inputText value="#{bean.orgAddress}" style="width:400px;" />
-            </t:panelGroup>
+                <p:column style="width:16px">
+                    <p:rowToggler />
+                </p:column>
 
-            <h:outputText value="相关人员姓名" />
-            <p:inputText value="#{bean.personName}" />
-            <h:outputText value="性别" />
-            <p:selectOneMenu id="personSex" value="#{bean.sex}" style="width:150px;">
-                <f:selectItems value="#{bean.genders}" />
-            </p:selectOneMenu>
+                <p:column headerText="序号">
+                    <h:outputText value="#{rowIndex + 1}" />
+                </p:column>
 
-            <h:outputText value="职务" />
-            <t:panelGroup colspan="3">
-                <p:inputText value="#{bean.personRole}" style="width:200px;" />
-            </t:panelGroup>
+                <p:column headerText="公司名称">
+                    <h:outputText value="#{org.name}" />
+                </p:column>
 
-            <h:outputText value="相关人员备注" />
-            <t:panelGroup colspan="3">
-                <p:inputText value="#{bean.personMemo}" style="width:400px;" />
-            </t:panelGroup>
+                <p:column headerText="类型">
+                    <h:outputText value="#{org.types}" />
+                </p:column>
 
-            <t:panelGroup colspan="4">
-                <p:dataTable var="contact" value="#{bean.contactHolders}">
-                    <p:column headerText="电话">
-                        <p:inputText value="#{contact.tel}" />
-                    </p:column>
-                    <p:column headerText="手机">
-                        <p:inputText value="#{contact.cellphone}" />
-                    </p:column>
-                    <p:column headerText="公司">
-                        <p:selectBooleanCheckbox value="#{contact.org}" />
-                    </p:column>
-                    <p:column headerText="人员">
-                        <p:selectBooleanCheckbox value="#{contact.person}" />
-                    </p:column>
-                </p:dataTable>
-            </t:panelGroup>
-        </t:panelGrid>
+                <p:column headerText="联系电话">
+                    <h:outputText value="#{org.contactsString}" />
+                </p:column>
+
+                <p:rowExpansion>
+                    <p:dataTable id="roles" var="role"
+                        value="#{org.roleList}" resizableColumns="true">
+
+                        <p:column headerText="姓名" style="width:5em;">
+                            <h:outputText value="#{role.person.displayName}" />
+                        </p:column>
+
+                        <p:column headerText="职务"  style="width:5em;">
+                            <h:outputText value="#{role.role}" />
+                        </p:column>
+
+                        <p:column headerText="性别"  style="width:3em;">
+                            <h:outputText value="#{role.person.sexText}" />
+                        </p:column>
+
+                        <p:column headerText="联系电话"  style="width:10em;" styleClass="f-wrappable">
+                            <h:outputText value="#{role.person.contactsString}" />
+                        </p:column>
+
+                    </p:dataTable>
+                </p:rowExpansion>
+
+                <p:column headerText="所有人">
+                    <h:outputText value="#{org.owner.displayName}" />
+                </p:column>
+            </p:dataTable>
+
+        </h:form>
+
+        <h:form id="editForm">
+            <p:dialog header="新增" widgetVar="editDialog" modal="true"
+                height="500" width="640">
+                <t:panelGrid id="editPanel" columns="4">
+                    <h:outputText value="公司名称" />
+                    <p:inputText value="#{orgPersonAdminBean.orgName}"/>
+                    <h:outputText value="属性" />
+                    <t:panelGrid columns="3">
+                        <t:panelGrid columns="2">
+                            <p:selectBooleanCheckbox value="#{orgPersonAdminBean.employee}" label="属性" />
+                            <h:outputText value="内部" />
+                        </t:panelGrid>
+                        <t:panelGrid columns="2">
+                            <p:selectBooleanCheckbox value="#{orgPersonAdminBean.customer}" label="属性" />
+                            <h:outputText value="客户" />
+                        </t:panelGrid>
+                        <t:panelGrid columns="2">
+                            <p:selectBooleanCheckbox value="#{orgPersonAdminBean.supplier}" label="属性" />
+                            <h:outputText value="供应商" />
+                        </t:panelGrid>
+                    </t:panelGrid>
+
+                    <h:outputText value="地址" />
+                    <t:panelGroup colspan="3">
+                        <p:inputText value="#{orgPersonAdminBean.orgAddress}" style="width:400px;"/>
+                    </t:panelGroup>
+
+                    <h:outputText value="相关人员姓名" />
+                    <p:inputText value="#{orgPersonAdminBean.personName}"/>
+                    <h:outputText value="性别" />
+                    <p:selectOneMenu id="personSex"
+                        value="#{orgPersonAdminBean.sex}"
+                        style="width:150px;">
+                        <f:selectItems
+                            value="#{orgPersonAdminBean.genders}" />
+                    </p:selectOneMenu>
+
+                    <h:outputText value="职务" />
+                    <t:panelGroup colspan="3">
+                        <p:inputText value="#{orgPersonAdminBean.personRole}" style="width:200px;"/>
+                    </t:panelGroup>
+
+                    <h:outputText value="相关人员备注" />
+                    <t:panelGroup colspan="3">
+                        <p:inputText value="#{orgPersonAdminBean.personMemo}" style="width:400px;"/>
+                    </t:panelGroup>
+
+                    <t:panelGroup colspan="4">
+                        <p:dataTable var="contact" value="#{orgPersonAdminBean.contactHolders}">
+                            <p:column headerText="电话">
+                                <p:inputText value="#{contact.tel}"/>
+                            </p:column>
+                            <p:column headerText="手机">
+                                <p:inputText value="#{contact.cellphone}"/>
+                            </p:column>
+                            <p:column headerText="公司">
+                                <p:selectBooleanCheckbox value="#{contact.org}"/>
+                            </p:column>
+                            <p:column headerText="人员">
+                                <p:selectBooleanCheckbox value="#{contact.person}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </t:panelGroup>
+
+                    <p:commandButton
+                        update=":mainForm:orgs"
+                        value="保存"
+                        actionListener="#{orgPersonAdminBean.save}"
+                        oncomplete="editDialog.hide()"/>
+                    <p:commandButton value="取消" onclick="editDialog.hide()"/>
+                    <t:panelGroup/>
+                    <t:panelGroup/>
+                </t:panelGrid>
+            </p:dialog>
+        </h:form>
+
     </ui:define>
 </ui:composition>
+</html>
