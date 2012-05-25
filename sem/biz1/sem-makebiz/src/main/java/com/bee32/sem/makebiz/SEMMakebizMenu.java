@@ -8,14 +8,15 @@ import com.bee32.sem.frame.menu.MenuNode;
 public class SEMMakebizMenu
         extends MenuComposite {
 
-    static Location PREFIX_ = WEB_APP.join(SEMMakebizModule.PREFIX_);
+    static Location __ = WEB_APP.join(SEMMakebizModule.PREFIX_);
+    SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
 
-    public static MenuNode MAKEBIZ = menu(SEMFrameMenu.MAIN, 450, "makeBiz");
+    public MenuNode MAKEBIZ = menu(_frame_.MAIN, 450, "makeBiz");
 
-    static MenuNode makeOrderAdmin = entry(MAKEBIZ, 1, "makeOrderAdmin", PREFIX_.join("order/"));
-    static MenuNode makeTaskAdmin = entry(MAKEBIZ, 10, "makeTaskAdmin", PREFIX_.join("task/"));
-    static MenuNode materialPlanAdmin = entry(MAKEBIZ, 20, "materialPlanAdmin", PREFIX_.join("plan/"));
-    static MenuNode deliveryNoteAdmin = entry(MAKEBIZ, 50, "deliveryNoteAdmin", PREFIX_.join("delivery/"));
-    static MenuNode makeProcessAdmin = entry(MAKEBIZ, 60, "makeProcessAdmin", PREFIX_.join("process/"));
+    MenuNode makeOrderAdmin = entry(MAKEBIZ, 1, "makeOrderAdmin", __.join("order/"));
+    MenuNode makeTaskAdmin = entry(MAKEBIZ, 10, "makeTaskAdmin", __.join("task/"));
+    MenuNode materialPlanAdmin = entry(MAKEBIZ, 20, "materialPlanAdmin", __.join("plan/"));
+    MenuNode deliveryNoteAdmin = entry(MAKEBIZ, 50, "deliveryNoteAdmin", __.join("delivery/"));
+    MenuNode makeProcessAdmin = entry(MAKEBIZ, 60, "makeProcessAdmin", __.join("process/"));
 
 }

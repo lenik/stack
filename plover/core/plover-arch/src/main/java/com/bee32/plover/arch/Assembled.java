@@ -21,22 +21,46 @@ public abstract class Assembled
         if (!assembled) {
             synchronized (this) {
                 if (!assembled) {
-                    __assemble();
-                    assemble();
-                    postAssemble();
+                    scan();
+                    preprocess();
+                    wireUp();
+                    postprocess();
                     assembled = true;
                 }
             }
         }
     }
 
-    protected void __assemble() {
+    /**
+     * [1] Pre-assemble.
+     *
+     * Scan components to be assembled.
+     */
+    protected void scan() {
     }
 
-    protected void assemble() {
+    /**
+     * [2] Pre-process.
+     *
+     * Add decorations to the components before wire them up.
+     */
+    protected void preprocess() {
     }
 
-    protected void postAssemble() {
+    /**
+     * [3] Assembling.
+     *
+     * Wire up components.
+     */
+    protected void wireUp() {
+    }
+
+    /**
+     * [4] Post-process.
+     *
+     * Add decorations to the components having been wired up.
+     */
+    protected void postprocess() {
     }
 
 }

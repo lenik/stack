@@ -22,15 +22,15 @@ public class MenuLoader
     @Override
     public void setApplicationContext(ApplicationContext applicationContext)
             throws BeansException {
-        loadMenus(applicationContext.getBeansOfType(MenuContribution.class).values());
+        loadMenus(applicationContext.getBeansOfType(MenuComposite.class).values());
     }
 
-    synchronized void loadMenus(Collection<MenuContribution> contributions) {
-        for (MenuContribution contribution : contributions) {
-            logger.debug("Merge menu contribution: " + contribution);
+    synchronized void loadMenus(Collection<MenuComposite> comps) {
+        for (MenuComposite comp : comps) {
+            logger.debug("Merge menu composite: " + comp);
 
             // Force load of NLS.
-            contribution.prepareMap();
+            // comp.prepareMap();
             // merge(contribution);
         }
     }

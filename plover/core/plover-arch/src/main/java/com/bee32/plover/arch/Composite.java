@@ -14,10 +14,26 @@ import org.slf4j.LoggerFactory;
 import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.arch.ui.res.InjectedAppearance;
 import com.bee32.plover.arch.util.ClassUtil;
-import com.bee32.plover.arch.util.res.IProperties;
+import com.bee32.plover.arch.util.res.ClassPropertyDispatcher;
 import com.bee32.plover.arch.util.res.IPropertyDispatcher;
-import com.bee32.plover.arch.util.res.PropertyDispatcher;
 
+/**
+ * Appearance initialization:
+ *
+ * <pre>
+ * assemble:
+ *     field: getElementField
+ *         node = (Node) field.
+ *         if usingComponentName:
+ *             name = node.name
+ *         else
+ *             name = field.name
+ *         declare(name, node).
+ * declare(name, node):
+ *     node.appearance = lazy-injected:
+ *         inject <== propertyDispatcher.prefix-acceptor(name.*)
+ * </pre>
+ */
 public abstract class Composite
         extends Assembled
         implements IComposite {
@@ -26,7 +42,7 @@ public abstract class Composite
 
     // private Class<?> baseClass;
     private URL contextURL;
-    private IPropertyDispatcher propertyDispatcher;
+    IPropertyDispatcher propertyDispatcher = new ClassPropertyDispatcher(getClass());
 
     public Composite() {
         super();
@@ -81,17 +97,6 @@ public abstract class Composite
         // this.baseClass = baseClass;
 
         this.contextURL = ClassUtil.getContextURL(baseClass);
-        if (propertyDispatcher == null)
-            this.propertyDispatcher = new PropertyDispatcher((IProperties) null);
-    }
-
-    /**
-     * Inject properties into this composite.
-     */
-    public void setProperties(IProperties properties) {
-        if (properties == null)
-            throw new NullPointerException("properties");
-        propertyDispatcher.setProperties(properties);
     }
 
     protected Iterable<Field> getElementFields() {
@@ -99,7 +104,7 @@ public abstract class Composite
     }
 
     @Override
-    protected void __assemble() {
+    protected void scan() {
         declare("", this);
 
         boolean usingComponentName = isUsingComponentName();
@@ -125,7 +130,6 @@ public abstract class Composite
 
             declare(name, childComponent);
         }
-
     }
 
     /**
@@ -139,28 +143,35 @@ public abstract class Composite
         return false;
     }
 
-    protected void declare(String propId, Component childComponent) {
+    protected void declare(String propId, Component component) {
         // logger.debug("declare " + id + " in " + this);
 
         IAppearance fallback = null;
         if (isFallbackEnabled())
-            fallback = childComponent.getAppearance();
+            fallback = component.getAppearance();
 
-        InjectedAppearance childOverride = new InjectedAppearance(fallback, contextURL);
+        InjectedAppearance injectedAppearance = new InjectedAppearance(fallback, contextURL);
         {
             String prefix = propId;
             if (!prefix.isEmpty())
                 prefix += ".";
 
-            propertyDispatcher.addPrefixAcceptor(prefix, childOverride);
-            childOverride.setPropertyDispatcher(propertyDispatcher);
+            propertyDispatcher.addPrefixAcceptor(prefix, injectedAppearance);
+            injectedAppearance.setPropertyDispatcher(propertyDispatcher);
         }
 
-        ComponentBuilder.setAppearance(childComponent, childOverride);
+        ComponentBuilder.setAppearance(component, injectedAppearance);
     }
 
 }
 
+/**
+ * <ol>
+ * <li>Exclude: static fields.
+ * <li>Include: fields annotated with @CompositeElement
+ * <li>Include: other field of Component class.
+ * </ol>
+ */
 class ReflectiveChildrenComponents
         extends ArrayList<Field> {
 

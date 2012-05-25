@@ -5,7 +5,7 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-import com.bee32.plover.arch.ui.Appearance;
+import com.bee32.plover.arch.ui.LazyAppearance;
 import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.arch.ui.IImageMap;
 import com.bee32.plover.arch.ui.IRefdocs;
@@ -22,7 +22,7 @@ import com.bee32.plover.arch.util.res.PropertyRefreshEvent;
  * 从资源中提取的用户界面信息。
  */
 public class InjectedAppearance
-        extends Appearance
+        extends LazyAppearance
         implements IPropertyAcceptor, IPropertyDispatcherAware, IPropertyRefreshListener {
 
     private String label;

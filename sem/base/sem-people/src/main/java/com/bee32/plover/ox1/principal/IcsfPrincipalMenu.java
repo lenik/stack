@@ -9,15 +9,15 @@ import com.bee32.sem.frame.menu.MenuNode;
 public class IcsfPrincipalMenu
         extends MenuComposite {
 
-    static Location PRINCIPAL_ = WEB_APP.join(IcsfPrincipalModule.PREFIX_);
+    SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
+    static Location prefix = WEB_APP.join(IcsfPrincipalModule.PREFIX_);
 
-    public static transient MenuNode IDENTITY = SEMFrameMenu.SECURITY;
+    public transient MenuNode IDENTITY = _frame_.SECURITY;
 
-    static MenuNode userAdmin = entry(IDENTITY, 10, "userAdmin", PRINCIPAL_.join("user/index-rich.jsf"));
-    static MenuNode groupAdmin = entry(IDENTITY, 11, "groupAdmin", PRINCIPAL_.join("group/index-rich.jsf"));
-    static MenuNode roleAdmin = entry(IDENTITY, 12, "roleAdmin", PRINCIPAL_.join("role/index-rich.jsf"));
+    MenuNode userAdmin = entry(IDENTITY, 10, "userAdmin", prefix.join("user/index-rich.jsf"));
+    MenuNode groupAdmin = entry(IDENTITY, 11, "groupAdmin", prefix.join("group/index-rich.jsf"));
+    MenuNode roleAdmin = entry(IDENTITY, 12, "roleAdmin", prefix.join("role/index-rich.jsf"));
 
-    static MenuNode modifyPassword = entry(SEMFrameMenu.CONTROL, 50, "modifyPassword",
-            PRINCIPAL_.join("modifyPassword.jsf"));
+    MenuNode modifyPassword = entry(_frame_.CONTROL, 50, "modifyPassword", prefix.join("modifyPassword.jsf"));
 
 }

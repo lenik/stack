@@ -8,20 +8,22 @@ import com.bee32.sem.frame.menu.MenuNode;
 public class SEMMailMenu
         extends MenuComposite {
 
-    static ILocationContext MAIL_ = WEB_APP.join(SEMMailModule.PREFIX + "/");
+    static ILocationContext __ = WEB_APP.join(SEMMailModule.PREFIX + "/");
+    SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
 
-    public static MenuNode MAIL = menu(SEMFrameMenu.START, 20, "mail");
-    public static MenuNode SETTINGS = menu(MAIL, 100, "settings");
+    public MenuNode MAIL = menu(_frame_.START, 20, "mail");
+    public MenuNode SETTINGS = menu(MAIL, 100, "settings");
 
-    static MenuNode folder = entry(SETTINGS, 10, "mailbox", MAIL_.join("folder/index.do"));
-    static MenuNode filter = entry(SETTINGS, 20, "filter", MAIL_.join("filter/index.do"));
+    MenuNode folder = entry(SETTINGS, 10, "mailbox", __.join("folder/index.do"));
+    MenuNode filter = entry(SETTINGS, 20, "filter", __.join("filter/index.do"));
 
-    static MenuNode compose = entry(MAIL, 0, "compose", MAIL_.join("mail/compose.do"));
-    static MenuNode inbox = entry(MAIL, 100, "inbox", MAIL_.join("mailbox/inbox.do"));
-    static MenuNode outbox = entry(MAIL, 200, "outbox", MAIL_.join("mailbox/outbox.do"));
-    static MenuNode trash = entry(MAIL, 300, "trash", MAIL_.join("mailbox/trash.do"));
+    MenuNode compose = entry(MAIL, 0, "compose", __.join("mail/compose.do"));
+    MenuNode inbox = entry(MAIL, 100, "inbox", __.join("mailbox/inbox.do"));
+    MenuNode outbox = entry(MAIL, 200, "outbox", __.join("mailbox/outbox.do"));
+    MenuNode trash = entry(MAIL, 300, "trash", __.join("mailbox/trash.do"));
 
-    static {
+    @Override
+    protected void preamble() {
         MAIL.setFlags(MenuNode.HIDDEN);
     }
 

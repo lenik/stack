@@ -12,39 +12,39 @@ public class SEMInventoryMenu
         extends MenuComposite
         implements ITypeAbbrAware {
 
-    static Location _(String path) {
-        return WEB_APP.join(SEMInventoryModule.PREFIX_).join(path);
-    }
+    static Location __ = WEB_APP.join(SEMInventoryModule.PREFIX_);
+    SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
+    SEMProcessMenu _process_ = require(SEMProcessMenu.class);
 
     static Location _stock(StockOrderSubject subject) {
-        return _("stock/?subject=" + subject.getValue());
+        return __.join("stock/?subject=" + subject.getValue());
     }
 
-    public static MenuNode MATERIAL = menu(SEMFrameMenu.MAIN, 430, "material");
-    /*    */static MenuNode materialCategory = entry(MATERIAL, 1, "materialCategory", _("category/"));
-    /*    */static MenuNode material = entry(MATERIAL, 3, "material", _("material/"));
+    public MenuNode MATERIAL = menu(_frame_.MAIN, 430, "material");
+    /*    */MenuNode materialCategory = entry(MATERIAL, 1, "materialCategory", __.join("category/"));
+    /*    */MenuNode material = entry(MATERIAL, 3, "material", __.join("material/"));
 
-    public static MenuNode INVENTORY = menu(SEMFrameMenu.MAIN, 440, "inventory");
-    /*    */static MenuNode init = entry(INVENTORY, 10, "init", _("stock/INIT/"));
-    /*    */static MenuNode takeIn = entry(INVENTORY, 20, "takeIn", _stock(StockOrderSubject.TAKE_IN));
-    /*    */static MenuNode takeOut = entry(INVENTORY, 21, "takeOut", _stock(StockOrderSubject.TAKE_OUT));
-    /*    */static MenuNode factoryTakeIn = entry(INVENTORY, 40, "factoryTakeIn", _stock(StockOrderSubject.FACTORY_IN));
-    /*    */static MenuNode factoryTakeOut = entry(INVENTORY, 41, "factoryTakeOut", _stock(StockOrderSubject.FACTORY_OUT));
-    /*    */static MenuNode planOut = entry(INVENTORY, 42, "planOut", _stock(StockOrderSubject.PLAN_OUT));
-    /*    */static MenuNode stocktaking = entry(INVENTORY, 60, "stocktaking", _("stock/STKD/"));
-    /*    */static MenuNode transferOut = entry(INVENTORY, 70, "transferOut", _("stock/XFER_OUT/"));
-    /*    */static MenuNode transferIn = entry(INVENTORY, 71, "transferIn", _("stock/XFER_IN/"));
-    /*    */static MenuNode outsourcingOut = entry(INVENTORY, 80, "outsourcingOut", _("stock/OSP_OUT/"));
-    /*    */static MenuNode outsourcingIn = entry(INVENTORY, 81, "outsourcingIn", _("stock/OSP_IN/"));
-    /*    */static MenuNode __1 = _separator_(INVENTORY, 100);
-    /*    */static MenuNode stockQuery = entry(INVENTORY, 110, "stockQuery", _("query/"));
-    /*    */static MenuNode unqualifiedQuery = entry(INVENTORY, 120, "unqualifiedQuery", _("unqualifiedQuery/"));
-    /*    */static MenuNode __2 = _separator_(INVENTORY, 999);
+    public MenuNode INVENTORY = menu(_frame_.MAIN, 440, "inventory");
+    /*    */MenuNode init = entry(INVENTORY, 10, "init", __.join("stock/INIT/"));
+    /*    */MenuNode takeIn = entry(INVENTORY, 20, "takeIn", _stock(StockOrderSubject.TAKE_IN));
+    /*    */MenuNode takeOut = entry(INVENTORY, 21, "takeOut", _stock(StockOrderSubject.TAKE_OUT));
+    /*    */MenuNode factoryTakeIn = entry(INVENTORY, 40, "factoryTakeIn", _stock(StockOrderSubject.FACTORY_IN));
+    /*    */MenuNode factoryTakeOut = entry(INVENTORY, 41, "factoryTakeOut", _stock(StockOrderSubject.FACTORY_OUT));
+    /*    */MenuNode planOut = entry(INVENTORY, 42, "planOut", _stock(StockOrderSubject.PLAN_OUT));
+    /*    */MenuNode stocktaking = entry(INVENTORY, 60, "stocktaking", __.join("stock/STKD/"));
+    /*    */MenuNode transferOut = entry(INVENTORY, 70, "transferOut", __.join("stock/XFER_OUT/"));
+    /*    */MenuNode transferIn = entry(INVENTORY, 71, "transferIn", __.join("stock/XFER_IN/"));
+    /*    */MenuNode outsourcingOut = entry(INVENTORY, 80, "outsourcingOut", __.join("stock/OSP_OUT/"));
+    /*    */MenuNode outsourcingIn = entry(INVENTORY, 81, "outsourcingIn", __.join("stock/OSP_IN/"));
+    /*    */MenuNode __1 = _separator_(INVENTORY, 100);
+    /*    */MenuNode stockQuery = entry(INVENTORY, 110, "stockQuery", __.join("query/"));
+    /*    */MenuNode unqualifiedQuery = entry(INVENTORY, 120, "unqualifiedQuery", __.join("unqualifiedQuery/"));
+    /*    */MenuNode __2 = _separator_(INVENTORY, 999);
 
-    public static MenuNode SETTINGS = menu(INVENTORY, 1000, "settings");
-    /*    */static MenuNode stockWarehouse = entry(SETTINGS, 1, "stockWarehouse", _("warehouse/"));
-    /*    */static MenuNode stockLocation = entry(SETTINGS, 10, "stockLocation", _("location/"));
+    public MenuNode SETTINGS = menu(INVENTORY, 1000, "settings");
+    /*    */MenuNode stockWarehouse = entry(SETTINGS, 1, "stockWarehouse", __.join("warehouse/"));
+    /*    */MenuNode stockLocation = entry(SETTINGS, 10, "stockLocation", __.join("location/"));
 
-    /*    */static MenuNode verifyPolicy = entry(SEMProcessMenu.VERIFY_POLICY, 100, "verifyPolicy", _("verify/"));
+    /*    */MenuNode verifyPolicy = entry(_process_.VERIFY_POLICY, 100, "verifyPolicy", __.join("verify/"));
 
 }

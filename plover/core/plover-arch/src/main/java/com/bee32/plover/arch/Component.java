@@ -1,10 +1,8 @@
 package com.bee32.plover.arch;
 
-import java.util.Locale;
-
 import javax.free.Nullables;
 
-import com.bee32.plover.arch.ui.Appearance;
+import com.bee32.plover.arch.ui.LazyAppearance;
 import com.bee32.plover.arch.ui.res.InjectedAppearance;
 import com.bee32.plover.arch.util.AutoNaming;
 import com.bee32.plover.arch.util.ExceptionSupport;
@@ -29,7 +27,7 @@ public abstract class Component
      */
     protected String name;
 
-    Appearance appearance;
+    LazyAppearance appearance;
     ExceptionSupport exceptionSupport;
 
     public Component() {
@@ -53,7 +51,7 @@ public abstract class Component
     }
 
     @Override
-    public Appearance getAppearance() {
+    public LazyAppearance getAppearance() {
         if (appearance == null) {
             synchronized (this) {
                 if (appearance == null) {
@@ -64,13 +62,13 @@ public abstract class Component
         return appearance;
     }
 
-    Appearance createAppearance() {
+    LazyAppearance createAppearance() {
         Class<?> componentClass = getClass();
 
-        ClassResourceProperties properties = new ClassResourceProperties(componentClass, Locale.getDefault());
+        ClassResourceProperties properties = ClassResourceProperties.getInstance(componentClass);
         IPropertyDispatcher propertyDispatcher = new PropertyDispatcher(properties);
 
-        InjectedAppearance appearance = Appearance.prepareAppearanceCached(componentClass);
+        InjectedAppearance appearance = LazyAppearance.prepareAppearanceCached(componentClass);
 
         propertyDispatcher.setRootAcceptor(appearance);
 
@@ -85,7 +83,7 @@ public abstract class Component
      * @param appearance
      *            The new appearance. Specify <code>null</code> to restore the default appearance.
      */
-    void setAppearance(Appearance appearance) {
+    void setAppearance(LazyAppearance appearance) {
         if (appearance == null)
             throw new NullPointerException("appearance");
         this.appearance = appearance;

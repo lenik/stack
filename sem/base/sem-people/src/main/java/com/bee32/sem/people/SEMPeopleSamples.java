@@ -5,10 +5,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 import javax.free.Dates;
-import javax.inject.Inject;
 
 import com.bee32.icsf.principal.Group;
-import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.collections.Varargs;
 import com.bee32.plover.orm.sample.NormalSamples;
@@ -52,9 +50,6 @@ public class SEMPeopleSamples
     public final EmployeeInfo employee = new EmployeeInfo();
     public final PersonSkill englishSkill = new PersonSkill();
     public final PersonSkill japaneseSkill = new PersonSkill();
-
-    @Inject
-    IcsfPrincipalSamples principals;
 
     public SEMPeopleSamples()
             throws ParseException {

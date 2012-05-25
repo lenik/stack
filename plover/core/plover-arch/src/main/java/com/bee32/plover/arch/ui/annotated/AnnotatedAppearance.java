@@ -8,7 +8,7 @@ import javax.free.DisplayNameUtil;
 import javax.free.DocUtil;
 import javax.free.IllegalUsageException;
 
-import com.bee32.plover.arch.ui.Appearance;
+import com.bee32.plover.arch.ui.LazyAppearance;
 import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.arch.ui.IImageMap;
 import com.bee32.plover.arch.ui.IRefdocs;
@@ -18,7 +18,7 @@ import com.bee32.plover.arch.ui.SimpleRefdocs;
 import com.bee32.plover.arch.ui.res.ImageVariant;
 
 public class AnnotatedAppearance
-        extends Appearance {
+        extends LazyAppearance {
 
     private final AnnotatedElement element;
     private final URL contextURL;

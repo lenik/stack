@@ -10,11 +10,16 @@ public class IcsfAccessMenu
 
     static Location BASE_ = WEB_APP.join(IcsfAccessModule.PREFIX_);
 
-    static MenuNode security = entry(SEMFrameMenu.ATTRIBUTES, 100, "security", //
-            JAVASCRIPT.join("loadAclAndShow(securityDialog)"));
+    SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
 
-    static MenuNode acl = entry(SEMFrameMenu.SECURITY, 31, "acl", BASE_.join("acl/"));
-    static MenuNode aclPref = entry(SEMFrameMenu.SECURITY, 32, "aclPref", BASE_.join("acl-pref/"));
-    static MenuNode r_ace = entry(SEMFrameMenu.SECURITY, 33, "r_ace", BASE_.join("r-ace/"));
+    MenuNode security = entry(_frame_.ATTRIBUTES, 100, "security", //
+            JAVASCRIPT.join("loadAclAndShow(securityDialog)"));
+    MenuNode acl = entry(_frame_.SECURITY, 31, "acl", BASE_.join("acl/"));
+    MenuNode aclPref = entry(_frame_.SECURITY, 32, "aclPref", BASE_.join("acl-pref/"));
+    MenuNode r_ace = entry(_frame_.SECURITY, 33, "r_ace", BASE_.join("r-ace/"));
+
+    @Override
+    protected void preamble() {
+    }
 
 }

@@ -8,12 +8,13 @@ import com.bee32.sem.frame.menu.MenuNode;
 public class SEMFileMenu
         extends MenuComposite {
 
-    static Location FILE_ = WEB_APP.join(SEMFileModule.PREFIX_);
+    static Location __ = WEB_APP.join(SEMFileModule.PREFIX_);
+    SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
 
-    static MenuNode FILE = menu(SEMFrameMenu.START, 1000, "file");
-    /**/static MenuNode userFile = entry(FILE, 40, "userFile", FILE_.join("file/"));
+    MenuNode FILE = menu(_frame_.START, 1000, "file");
+    /**/MenuNode userFile = entry(FILE, 40, "userFile", __.join("file/"));
 
-    /**/static MenuNode SETTINGS = menu(FILE, 1000, "settings");
-    /*    */static MenuNode fileTag = entry(SETTINGS, 10, "fileTag", FILE_.join("fileTag/"));
+    /**/MenuNode SETTINGS = menu(FILE, 1000, "settings");
+    /*    */MenuNode fileTag = entry(SETTINGS, 10, "fileTag", __.join("fileTag/"));
 
 }

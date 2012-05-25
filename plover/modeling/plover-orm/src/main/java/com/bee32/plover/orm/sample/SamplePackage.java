@@ -107,15 +107,11 @@ public abstract class SamplePackage
     }
 
     @Override
-    protected final void assemble() {
-        wireUp();
-    }
-
     protected void wireUp() {
     }
 
     @Override
-    protected void postAssemble() {
+    protected void postprocess() {
         SampleList samples = new SampleList();
         getSamples(samples, false);
         for (Entity<?> sample : samples)

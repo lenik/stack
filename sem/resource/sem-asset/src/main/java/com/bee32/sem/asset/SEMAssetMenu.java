@@ -8,19 +8,22 @@ import com.bee32.sem.frame.menu.MenuNode;
 public class SEMAssetMenu
         extends MenuComposite {
 
-    static Location ASSET_ = WEB_APP.join(SEMAssetModule.PREFIX_);
+    static Location __ = WEB_APP.join(SEMAssetModule.PREFIX_);
+    SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
 
-    public static MenuNode ASSET = menu(SEMFrameMenu.MAIN, 410, "asset");
+    public MenuNode ASSET = menu(_frame_.MAIN, 410, "asset");
 
-    static MenuNode accountSubjectAdmin = entry(ASSET, 1, "accountSubjectAdmin", ASSET_.join("subject/"));
+    MenuNode accountSubjectAdmin = entry(ASSET, 1, "accountSubjectAdmin", __.join("subject/"));
 
-    static MenuNode accountInit = entry(ASSET, 2, "accountInit", ASSET_.join("init/"));
-    static MenuNode budgetRequestAdmin = entry(ASSET, 3, "budgetRequestAdmin", ASSET_.join("request/"));
-    static MenuNode accountTicketAdmin = entry(ASSET, 4, "accountTicketAdmin", ASSET_.join("ticket/"));
+    MenuNode accountInit = entry(ASSET, 2, "accountInit", __.join("init/"));
+    MenuNode budgetRequestAdmin = entry(ASSET, 3, "budgetRequestAdmin", __.join("request/"));
+    MenuNode accountTicketAdmin = entry(ASSET, 4, "accountTicketAdmin", __.join("ticket/"));
 
-    //static MenuNode stockSaleAdmin = entry(ASSET, 5, "stockSaleAdmin", ASSET_.join("stock-trade/?type=SALE"));
-    //static MenuNode stockPurchaseAdmin = entry(ASSET, 6, "stockPurchaseAdmin", ASSET_.join("stock-trade/?type=PURCHASE"));
+    // MenuNode stockSaleAdmin = entry(ASSET, 5, "stockSaleAdmin",
+// __.join("stock-trade/?type=SALE"));
+    // MenuNode stockPurchaseAdmin = entry(ASSET, 6, "stockPurchaseAdmin",
+// __.join("stock-trade/?type=PURCHASE"));
 
-    static MenuNode assetQuery = entry(ASSET, 7, "assetQuery", ASSET_.join("query/"));
+    MenuNode assetQuery = entry(ASSET, 7, "assetQuery", __.join("query/"));
 
 }

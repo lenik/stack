@@ -8,11 +8,12 @@ import com.bee32.sem.makebiz.SEMMakebizMenu;
 public class SEMPurchaseMenu
         extends MenuComposite {
 
-    static Location PREFIX_ = WEB_APP.join(SEMPurchaseModule.PREFIX_);
+    static Location __ = WEB_APP.join(SEMPurchaseModule.PREFIX_);
+    SEMMakebizMenu _makebiz_ = require(SEMMakebizMenu.class);
 
-    public static transient MenuNode PURCHASE = SEMMakebizMenu.MAKEBIZ;
+    public transient MenuNode PURCHASE = _makebiz_.MAKEBIZ;
 
-    static MenuNode purchaseRequest = entry(PURCHASE, 30, "purchaseRequest", PREFIX_.join("request/"));
-    static MenuNode purchaseRequestItem = entry(PURCHASE, 40, "purchaseRequestItem", PREFIX_.join("request-item/"));
+    MenuNode purchaseRequest = entry(PURCHASE, 30, "purchaseRequest", __.join("request/"));
+    MenuNode purchaseRequestItem = entry(PURCHASE, 40, "purchaseRequestItem", __.join("request-item/"));
 
 }

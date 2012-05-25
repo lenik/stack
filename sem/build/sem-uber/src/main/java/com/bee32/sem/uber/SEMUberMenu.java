@@ -7,7 +7,9 @@ import com.bee32.sem.frame.menu.MenuNode;
 public class SEMUberMenu
         extends MenuComposite {
 
-    static MenuNode security = entry(SEMFrameMenu.EDIT, 50, "xrefs", //
+    SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
+
+    MenuNode security = entry(_frame_.EDIT, 50, "xrefs", //
             JAVASCRIPT.join("showXrefs()"));
 
 }

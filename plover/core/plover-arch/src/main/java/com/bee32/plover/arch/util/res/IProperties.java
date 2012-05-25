@@ -8,6 +8,9 @@ public interface IProperties
 
     Set<String> keySet();
 
+    /**
+     * @return <code>null</code> If no property is existed for the specfied <code>key</code>.
+     */
     String get(String key);
 
 }

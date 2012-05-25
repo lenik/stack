@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.plover.arch.ComponentBuilder;
-import com.bee32.plover.arch.ui.Appearance;
+import com.bee32.plover.arch.ui.LazyAppearance;
 import com.bee32.plover.arch.ui.res.InjectedAppearance;
 import com.bee32.plover.arch.util.ClassCatalog;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
@@ -33,7 +33,7 @@ public class EntityResource
         // XXX locale override?
         Locale locale = Locale.getDefault();
 
-        Appearance appearance;
+        LazyAppearance appearance;
         if (entityClass != null) {
             appearance = new InjectedAppearance(entityClass, locale);
         } else {

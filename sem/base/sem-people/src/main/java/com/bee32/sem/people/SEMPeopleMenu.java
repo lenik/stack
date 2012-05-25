@@ -19,20 +19,21 @@ public class SEMPeopleMenu
         extends MenuComposite
         implements ITypeAbbrAware {
 
-    static Location PEOPLE_ = WEB_APP.join(SEMPeopleModule.PREFIX_);
+    SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
+    static Location prefix = WEB_APP.join(SEMPeopleModule.PREFIX_);
 
-    public static transient MenuNode PEOPLE = SEMFrameMenu.BIZ1;
+    public transient MenuNode PEOPLE = _frame_.BIZ1;
 
-    static MenuNode personAdmin = entry(PEOPLE, 10, "personAdmin", PEOPLE_.join("person/"));
-    static MenuNode orgAdmin = entry(PEOPLE, 15, "orgAdmin", PEOPLE_.join("org/"));
-    static MenuNode orgPersonAdmin = entry(PEOPLE, 20, "orgPersonAdmin", PEOPLE_.join("orgPerson/index-rich.jsf"));
+    MenuNode personAdmin = entry(PEOPLE, 10, "personAdmin", prefix.join("person/"));
+    MenuNode orgAdmin = entry(PEOPLE, 11, "orgAdmin", prefix.join("org/"));
+    MenuNode orgPersonAdmin = entry(PEOPLE, 20, "orgPersonAdmin", prefix.join("orgPerson/"));
 
-    public static MenuNode SETTINGS = menu(PEOPLE, 30, "peopleDicts");
-    /**/static MenuNode partyTag = entry(SETTINGS, 1, "partyTag", getDictIndex(PartyTagname.class));
-    /**/static MenuNode personSidType = entry(SETTINGS, 2, "personSidType", getDictIndex(PartySidType.class));
-    /**/static MenuNode orgType = entry(SETTINGS, 3, "orgType", getDictIndex(OrgType.class));
-    /**/static MenuNode contactCategory = entry(SETTINGS, 4, "contactCategory", getDictIndex(ContactCategory.class));
-    /**/static MenuNode partyRecordCategory = entry(SETTINGS, 5, "partyRecordCategory",
+    public MenuNode SETTINGS = menu(PEOPLE, 12, "peopleDicts");
+    /**/MenuNode partyTag = entry(SETTINGS, 1, "partyTag", getDictIndex(PartyTagname.class));
+    /**/MenuNode personSidType = entry(SETTINGS, 2, "personSidType", getDictIndex(PartySidType.class));
+    /**/MenuNode orgType = entry(SETTINGS, 3, "orgType", getDictIndex(OrgType.class));
+    /**/MenuNode contactCategory = entry(SETTINGS, 4, "contactCategory", getDictIndex(ContactCategory.class));
+    /**/MenuNode partyRecordCategory = entry(SETTINGS, 5, "partyRecordCategory",
             getDictIndex(PartyRecordCategory.class));
 
     static MenuNode INTERNALPERSON = menu(PEOPLE, 25, "internal");

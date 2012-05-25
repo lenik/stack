@@ -6,10 +6,16 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import javax.free.ClassLocal;
+
 public class ClassResourceProperties
         extends AbstractProperties {
 
     private ResourceBundle resourceBundle;
+
+    ClassResourceProperties(Class<?> clazz) {
+        this(clazz, Locale.getDefault());
+    }
 
     public ClassResourceProperties(Class<?> clazz, Locale locale)
             throws MissingResourceException {
@@ -31,14 +37,32 @@ public class ClassResourceProperties
     public String get(String key) {
         if (resourceBundle == null)
             return null;
-        return resourceBundle.getString(key);
+        else
+            try {
+                return resourceBundle.getString(key);
+            } catch (MissingResourceException e) {
+                return null;
+            }
     }
 
     @Override
     public Set<String> keySet() {
         if (resourceBundle == null)
             return Collections.emptySet();
-        return resourceBundle.keySet();
+        else
+            return resourceBundle.keySet();
+    }
+
+    static ClassLocal<ClassResourceProperties> instances = new ClassLocal<>();
+
+    public static ClassResourceProperties getInstance(Class<?> clazz) {
+        ClassResourceProperties instance = instances.get(clazz);
+        if (instance == null) {
+            // Locale defaultLocale = Locale.getDefault();
+            instance = new ClassResourceProperties(clazz/* , defaultLocale */);
+            instances.put(clazz, instance);
+        }
+        return instance;
     }
 
 }
