@@ -25,13 +25,19 @@
 
             <h:outputText value="生产订单:" />
             <t:panelGroup colspan="3">
-                <p:inputText id="order" value="#{obj.order.label}" readonly="true" label="生产订单"/>
+                <p:inputText id="order" value="#{obj.order.label}" readonly="true" label="生产订单" style="width:30em;"/>
                 <p:commandButton value="..." onclick="chooseMakeOrderDialog.show()" disabled="#{not bean.editing}" />
             </t:panelGroup>
 
             <h:outputText value="简要:" />
             <t:panelGroup colspan="3">
-                <p:inputText label="简要" value="#{obj.label}" />
+                <p:inputText label="简要" value="#{obj.label}" style="width:30em;"/>
+            </t:panelGroup>
+
+            <h:outputText value="备注:" />
+            <t:panelGroup colspan="3">
+                <p:inputTextarea style="width: 30em; height: 4em;" value="#{obj.description}" readonly="#{not bean.editing}"
+                    label="备注" />
             </t:panelGroup>
         </t:panelGrid>
 

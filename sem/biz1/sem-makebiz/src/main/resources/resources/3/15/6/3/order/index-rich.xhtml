@@ -34,13 +34,13 @@
 
             <h:outputText value="简要:" />
             <t:panelGroup colspan="3">
-                <p:inputText id="label" label="简要" value="#{obj.label}" />
+                <p:inputText id="label" label="简要" value="#{obj.label}" style="width:30em;"/>
             </t:panelGroup>
 
             <h:outputText value="客户:" />
             <t:panelGroup colspan="3">
                 <h:inputHidden id="customerId" label="客户" value="#{obj.customer.id_RZ}" />
-                <p:inputText id="customer" label="客户" value="#{obj.customer.displayName}" readonly="true" />
+                <p:inputText id="customer" label="客户" value="#{obj.customer.displayName}" readonly="true" style="width:30em;"/>
                 <p:commandButton value="..." oncomplete="choosePartyDialog.show()" disabled="#{not bean.editing}">
                     <f:setPropertyActionListener target="#{choosePartyDialogBean.customer}"
                         value="true" />
@@ -49,14 +49,14 @@
 
             <h:outputText value="对应机会:" />
             <t:panelGroup colspan="3">
-                <p:inputText id="chance" value="#{obj.chance.subject}" readonly="true" label="对应机会" />
+                <p:inputText id="chance" value="#{obj.chance.subject}" readonly="true" label="对应机会" style="width:30em;"/>
                 <p:commandButton value="..." onclick="chooseChanceDialog.show()" disabled="#{not bean.editing}" />
             </t:panelGroup>
 
-            <h:outputText value="附加要求:" />
+            <h:outputText value="备注:" />
             <t:panelGroup colspan="3">
                 <p:inputTextarea style="width: 30em; height: 4em;" value="#{obj.description}" readonly="#{not bean.editing}"
-                    label="附加要求" />
+                    label="备注" />
             </t:panelGroup>
 
         </t:panelGrid>
@@ -85,7 +85,9 @@
                 </p:column>
 
                 <p:column headerText="数量" styleClass="f-right">
-                    <h:outputText value="#{entry.quantity}" />
+                    <h:outputText value="#{entry.quantity}" >
+                        <f:convertNumber pattern="#0.00"/>
+                    </h:outputText>
                 </p:column>
 
                 <p:column headerText="外部名称" styleClass="f-wrappable">
