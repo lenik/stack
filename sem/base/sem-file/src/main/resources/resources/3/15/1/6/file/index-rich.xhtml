@@ -58,10 +58,10 @@
         <sem:uploadFileDialog id="createUserFileDialog" var="createUserFileDialog"
             fileUploadListener="${bean.createUserFileListener.handleFileUpload}" update=":mainForm:dataTable" />
         <sem:chooseUserFileTagDialog id="addTag_d" var="addTagDialog" target="${bean.selectedTag}"
-            actionListener="${bean.addTag}" update=":editDialog:form" />
+            actionListener="${bean.addTag}" update=":editDialog:form:tagTable" />
         <icsf:choosePrincipalDialog id="c_operator" var="chooseOperatorDialog" target="${obj.operator}"
-            update=":editDialog:form" stereo="U" />
-        <sem:choosePartyDialog id="c_party" var="choosePartyDialog" target="${obj.party}" update=":editDialog:form" />
+            update=":editDialog:form:operator" stereo="U" />
+        <sem:choosePartyDialog id="c_party" var="choosePartyDialog" target="${obj.party}" update=":editDialog:form:customer" />
         <sem:choosePartyDialog id="c_searchParty" var="choosePartyToSearchDialog" target="${bean.searchParty}"
             update=":searchForm" />
     </ui:define>
@@ -75,7 +75,7 @@
 
             <h:outputText value="客户：" />
             <h:panelGroup>
-                <p:inputText label="客户" value="${obj.party.displayName}" readonly="true" />
+                <p:inputText id="customer" label="客户" value="${obj.party.displayName}" readonly="true" />
                 <p:commandButton value="..." onclick="choosePartyDialog.show()" disabled="${not bean.editing}" />
             </h:panelGroup>
 
@@ -90,7 +90,7 @@
 
             <h:outputText value="经办人" />
             <h:panelGroup>
-                <p:inputText label="经办人" value="${obj.operator.displayName}" readonly="true" />
+                <p:inputText id="operator" label="经办人" value="${obj.operator.displayName}" readonly="true" />
                 <p:commandButton value="..." disabled="${not bean.editing}" oncomplete="chooseOperatorDialog.show()">
                     <f:setPropertyActionListener target="${choosePrincipalDialogBean.stereo}"
                         value="U" />
