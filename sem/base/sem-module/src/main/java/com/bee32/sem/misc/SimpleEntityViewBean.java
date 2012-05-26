@@ -1015,7 +1015,7 @@ public abstract class SimpleEntityViewBean
     public void removeSearchFragment(SearchFragment fragment) {
         boolean dirty = false;
         for (List<SearchFragment> fragments : searchFragmentMap.values())
-            if (!fragments.remove(fragment))
+            if (fragments.remove(fragment))
                 dirty = true;
         if (dirty)
             searchFragmentsChanged();
