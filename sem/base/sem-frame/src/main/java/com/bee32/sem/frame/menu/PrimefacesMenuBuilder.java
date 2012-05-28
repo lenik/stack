@@ -106,19 +106,6 @@ public class PrimefacesMenuBuilder
         }
     }
 
-    @Override
-    protected String resolve(ILocationContext location) {
-        HttpServletRequest request = this.request;
-        if (request == null)
-            request = ThreadServletContext.getRequestOpt();
-
-        if (request == null)
-            return location.toString();
-
-        String cr = location.resolveContextRelative(request);
-        return cr;
-    }
-
     public static PrimefacesMenuBuilder INSTANCE = new PrimefacesMenuBuilder();
 
 }
