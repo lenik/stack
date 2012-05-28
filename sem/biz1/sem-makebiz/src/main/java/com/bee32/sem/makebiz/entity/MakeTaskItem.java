@@ -3,15 +3,19 @@ package com.bee32.sem.makebiz.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
@@ -42,7 +46,7 @@ public class MakeTaskItem
     Date deadline;
     String status;
 
-    MakeProcess process;
+    List<MakeProcess> processes;
 
     @Override
     public void populate(Object source) {
@@ -60,7 +64,6 @@ public class MakeTaskItem
         quantity = o.quantity;
         deadline = o.deadline;
         status = o.status;
-        process = o.process;
     }
 
     @NaturalId
@@ -124,16 +127,18 @@ public class MakeTaskItem
         this.deadline = deadline;
     }
 
-    @OneToOne(mappedBy = "taskItem")
-    public MakeProcess getProcess() {
-	return process;
+    @OneToMany(mappedBy="taskItem", orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
+    @OrderBy("id ASC")
+	public List<MakeProcess> getProcesses() {
+        return processes;
     }
 
-	public void setProcess(MakeProcess process) {
-	this.process = process;
+    public void setProcesses(List<MakeProcess> processes) {
+        this.processes = processes;
     }
 
-	@Override
+    @Override
     protected Serializable naturalId() {
         return new IdComposite(//
                 naturalId(task), //

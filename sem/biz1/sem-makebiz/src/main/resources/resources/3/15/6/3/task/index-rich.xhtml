@@ -71,14 +71,13 @@
                 <p:column headerText="工艺流转单" styleClass="f-wrappable">
                     <h:outputText value="#{entry.process.id}" />
                 </p:column>
-                <p:column headerText="动作">
-                    <p:commandButton
-                        value="生成工艺流转单"
-                        styleClass="locker-invert"
-                        rendered="#{entry.process.id == null}"
-                        action="#{bean.generateProcess(entry)}"
-                        update=":editDialog:form:itemsIndexView:indexForm:content"/>
-                </p:column>
+            </f:facet>
+            <f:facet name="index-buttons">
+                <p:commandButton onclick="waitbox.show();"
+                    oncomplete="waitbox.hide();generateProcessesDialog.show();"
+                    value="生成工艺流转单" styleClass="locker-invert"
+                    rendered="#{entry.process.id == null}"
+                    update=":generateProcessesDialogForm" />
             </f:facet>
         </fr:listView>
     </ui:define>
@@ -105,5 +104,15 @@
 
             </t:panelGrid>
         </fr:listView>
+
+        <p:dialog widgetVar="generateProcessesDialog" modal="true">
+            <h:form id="generateProcessesDialogForm">
+
+
+                <p:commandButton value="生成"
+                    action="#{bean.generateProcess}"
+                    update=":editDialog:form:itemsIndexView:indexForm:content" />
+            </h:form>
+        </p:dialog>
     </ui:define>
 </ui:composition>

@@ -189,7 +189,7 @@ public class MakebizService
      * 根据生产任务明细条目，生成工艺流转单
      */
     @Transactional
-    public void generateProcess(MakeTaskItemDto taskItem) {
+    public void generateProcess(MakeTaskItemDto taskItem, List<SplitToProcessHolder> holders) {
 	if(taskItem == null || DTOs.isNull(taskItem))
 		throw new NullPointerException("生产任务明细为空");
 

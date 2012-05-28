@@ -3,6 +3,7 @@ package com.bee32.sem.makebiz.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
@@ -24,6 +25,7 @@ public class MakeTaskItemDto
     private static final long serialVersionUID = 1L;
 
     public static final int PART_ATTRIBUTES = 1;
+    public static final int PROCESSES = 2;
 
     MakeTaskDto task;
     int index;
@@ -33,7 +35,7 @@ public class MakeTaskItemDto
     Date deadline;
     String status;
 
-    MakeProcessDto process;
+    List<MakeProcessDto> processes;
 
     @Override
     protected void _marshal(MakeTaskItem source) {
@@ -41,7 +43,7 @@ public class MakeTaskItemDto
         index = source.getIndex();
 
         int partSelection = 0;
-        if(selection.contains(PART_ATTRIBUTES)) partSelection |= PartDto.TARGET_ATTRIBUTES;
+        if (selection.contains(PART_ATTRIBUTES)) partSelection |= PartDto.TARGET_ATTRIBUTES;
         part = mref(PartDto.class, partSelection, source.getPart());
 
         quantity = source.getQuantity();
@@ -49,7 +51,8 @@ public class MakeTaskItemDto
         deadline = source.getDeadline();
         status = source.getStatus();
 
-        process = marshal(MakeProcessDto.class, source.getProcess());
+        if (selection.contains(PROCESSES))
+            processes = marshalList(MakeProcessDto.class, source.getProcesses());
     }
 
     @Override
@@ -60,7 +63,8 @@ public class MakeTaskItemDto
         target.setQuantity(quantity);
         target.setDeadline(deadline);
         target.setStatus(status);
-        merge(target, "process", process);
+        if(selection.contains(PROCESSES))
+            mergeList(target, "processes", processes);
     }
 
     @Override
@@ -136,15 +140,16 @@ public class MakeTaskItemDto
         this.status = TextUtil.normalizeSpace(status);
     }
 
-    public MakeProcessDto getProcess() {
-	return process;
+
+	public List<MakeProcessDto> getProcesses() {
+        return processes;
     }
 
-	public void setProcess(MakeProcessDto process) {
-	this.process = process;
+    public void setProcesses(List<MakeProcessDto> processes) {
+        this.processes = processes;
     }
 
-	@Override
+    @Override
     protected Serializable naturalId() {
         return new IdComposite(//
                 naturalId(task), //

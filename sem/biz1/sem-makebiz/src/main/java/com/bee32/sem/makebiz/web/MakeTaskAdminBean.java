@@ -8,7 +8,6 @@ import java.util.Map.Entry;
 import org.apache.commons.lang.StringUtils;
 
 import com.bee32.plover.orm.annotation.ForEntity;
-import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.makebiz.dto.MakeOrderDto;
@@ -18,6 +17,7 @@ import com.bee32.sem.makebiz.dto.MakeTaskItemDto;
 import com.bee32.sem.makebiz.entity.MakeOrder;
 import com.bee32.sem.makebiz.entity.MakeTask;
 import com.bee32.sem.makebiz.service.MakebizService;
+import com.bee32.sem.makebiz.service.SplitToProcessHolder;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
 
@@ -27,8 +27,19 @@ public class MakeTaskAdminBean
 
     private static final long serialVersionUID = 1L;
 
+    List<SplitToProcessHolder> splitToProcessHolders;
+
     public MakeTaskAdminBean() {
         super(MakeTask.class, MakeTaskDto.class, 0);
+    }
+
+    public List<SplitToProcessHolder> getSplitToProcessHolders() {
+        return splitToProcessHolders;
+    }
+
+    public void setSplitToProcessHolders(
+            List<SplitToProcessHolder> splitToProcessHolders) {
+        this.splitToProcessHolders = splitToProcessHolders;
     }
 
     public void setApplyMakeOrder(MakeOrderDto makeOrderRef) {
@@ -53,15 +64,18 @@ public class MakeTaskAdminBean
             makeTask.setLabel(makeOrder.getLabel());
     }
 
-	public void generateProcess(MakeTaskItemDto item) {
+	public void generateProcess() {
+
+	    MakeTaskItemDto item = itemsMBean.getSelection();
+
 		MakebizService service = ctx.bean.getBean(MakebizService.class);
 		try {
-		    if (!DTOs.isNull(item.getProcess())) {
+		    if (item.getProcesses() != null && item.getProcesses().size() > 0) {
 		        uiLogger.info("此生产任务已经有工艺流转单.");
 		        return;
 		    }
 
-			service.generateProcess(item);
+			service.generateProcess(item, splitToProcessHolders);
 			item = reload(item);
 			uiLogger.info("生成成功，进入\"工世流转单\"功能进行下一步操作.");
 		} catch (Exception e) {
