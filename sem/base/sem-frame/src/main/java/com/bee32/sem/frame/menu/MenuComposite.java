@@ -8,24 +8,20 @@ import java.util.Map;
 import javax.free.IllegalUsageException;
 
 import com.bee32.plover.arch.Composite;
-import com.bee32.plover.inject.ComponentTemplate;
+import com.bee32.plover.arch.IAppProfile;
+import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.inject.ServiceTemplate;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.ox1.dict.CommonDictController;
 import com.bee32.plover.ox1.dict.DictEntity;
 import com.bee32.plover.rtx.location.ILocationConstants;
 import com.bee32.plover.rtx.location.ILocationContext;
 import com.bee32.plover.rtx.location.Location;
+import com.bee32.plover.servlet.util.ThreadHttpContext;
+import com.bee32.plover.site.SiteInstance;
 import com.bee32.sem.frame.action.Action;
 
-/**
- * Class derives {@link MenuComposite} will be served as singleton instantiated beans.
- * <p>
- * After all beans are initialized, the instances of {@link MenuComposite}s are then be collected by
- * MenuManager.
- *
- * TODO - Locale-local allocation.
- */
-@ComponentTemplate
+@ServiceTemplate(prototype = true)
 public abstract class MenuComposite
         extends Composite
         implements ILocationConstants, ITypeAbbrAware {
@@ -116,7 +112,17 @@ public abstract class MenuComposite
     }
 
     protected <T extends MenuComposite> T require(Class<T> mcClass) {
-        return null;
+        IMenuAssembler asm;
+        return asm.require(mcClass);
+    }
+
+    protected <T> T getParameter(String key) {
+        SiteInstance site = ThreadHttpContext.getSiteInstance();
+        IAppProfile profile = site.getAppProfile();
+        Class<?> mcClass = getClass();
+        TextMap parameters = profile.getParameters(mcClass);
+        T value = (T) parameters.get(key);
+        return value;
     }
 
     // Helpers.
