@@ -33,8 +33,8 @@ public class SEMPeopleMenu
     /**/MenuNode personSidType = entry(SETTINGS, 2, "personSidType", getDictIndex(PartySidType.class));
     /**/MenuNode orgType = entry(SETTINGS, 3, "orgType", getDictIndex(OrgType.class));
     /**/MenuNode contactCategory = entry(SETTINGS, 4, "contactCategory", getDictIndex(ContactCategory.class));
-    /**/MenuNode partyRecordCategory = entry(SETTINGS, 5, "partyRecordCategory",
-            getDictIndex(PartyRecordCategory.class));
+    /**/MenuNode partyRecordCategory = mode("x") ? entry(SETTINGS, 5, "partyRecordCategory",
+            getDictIndex(PartyRecordCategory.class)) : null;
 
     static MenuNode INTERNALPERSON = menu(PEOPLE, 25, "internal");
     /**/static MenuNode internalPersonAdmin = entry(INTERNALPERSON, 1, "internalPersonAdmin", PEOPLE_.join("internalPerson/index-rich.jsf"));
