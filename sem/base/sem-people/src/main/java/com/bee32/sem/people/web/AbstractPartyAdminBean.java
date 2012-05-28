@@ -118,4 +118,21 @@ public abstract class AbstractPartyAdminBean
         return contactsMBean;
     }
 
+    /*************************************************************************
+     * Section: Persistence
+     *************************************************************************/
+    @Override
+    protected boolean postValidate(List<?> dtos)
+            throws Exception {
+        for (Object dto : dtos) {
+            PartyDto party = (PartyDto) dto;
+            boolean any = party.isCustomer() || party.isSupplier() || party.isEmployee();
+            if (!any) {
+                uiLogger.error("没有指定类型：客户/供应商/雇员 必须选一个。");
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
