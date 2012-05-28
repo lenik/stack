@@ -35,7 +35,7 @@ public class SuperfishMenuBuilder
     }
 
     @Override
-    public String buildMenubar(IMenuNode virtualRoot) {
+    protected String buildMenubarImpl(IMenuNode virtualRoot) {
         PrettyPrintStream out = new PrettyPrintStream();
 
         out.println("<ul class='sf-menu'>");

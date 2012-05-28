@@ -48,7 +48,7 @@ public class ZkMenuBuilder
     }
 
     @Override
-    public Menubar buildMenubar(IMenuNode virtualRoot) {
+    protected Menubar buildMenubarImpl(IMenuNode virtualRoot) {
         Menubar menubar = this.menubar;
         // or create new one?
         for (IMenuNode root : virtualRoot) {

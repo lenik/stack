@@ -16,7 +16,6 @@ import org.primefaces.model.MenuModel;
 
 import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.rtx.location.ILocationContext;
-import com.bee32.plover.servlet.util.ThreadServletContext;
 import com.bee32.sem.frame.action.IAction;
 
 public class PrimefacesMenuBuilder
@@ -31,7 +30,7 @@ public class PrimefacesMenuBuilder
     }
 
     @Override
-    public MenuModel buildMenubar(IMenuNode virtualRoot) {
+    protected MenuModel buildMenubarImpl(IMenuNode virtualRoot) {
         MenuModel model = new DefaultMenuModel();
         Submenu topMenu = (Submenu) convert(virtualRoot);
         model.getContents().addAll(topMenu.getChildren());
