@@ -55,6 +55,11 @@ public class SEMFrameMenu
         }
     }
 
+    public static MenuNode getMainMenu() {
+        // ThreadLocalMenuAssembler
+        return null;
+    }
+
 }
 
 class ThemeSwitcherActionListener

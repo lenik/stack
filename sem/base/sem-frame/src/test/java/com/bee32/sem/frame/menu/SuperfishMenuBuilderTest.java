@@ -18,7 +18,7 @@ public class SuperfishMenuBuilderTest
         // new SuperfishMenuBuilderTest().browseAndWait("sfmenuDemo.jsf");
 
         new SEMFrameMenu().prepareMap();
-        SuperfishMenuBuilder builder = new SuperfishMenuBuilder(SEMFrameMenu.MAIN);
+        SuperfishMenuBuilder builder = new SuperfishMenuBuilder(SEMFrameMenu.getMainMenu());
         String html = builder.toString();
         System.out.println(html);
     }

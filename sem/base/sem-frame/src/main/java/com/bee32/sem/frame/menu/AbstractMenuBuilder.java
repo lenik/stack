@@ -6,7 +6,7 @@ import com.bee32.plover.rtx.location.ILocationContext;
 import com.bee32.plover.servlet.util.ThreadServletContext;
 
 public abstract class AbstractMenuBuilder<T>
-        implements IMenuBuilder<T> {
+        implements IMenuBuilder<T>, IMenuAssembler {
 
     boolean showAll = false;
     final HttpServletRequest request;
@@ -24,6 +24,18 @@ public abstract class AbstractMenuBuilder<T>
     public void setShowAll(boolean showAll) {
         this.showAll = showAll;
     }
+
+    @Override
+    public final T buildMenubar(IMenuNode virtualRoot) {
+        // Load menu here??
+        // No. Please see MenuLoader.
+        ContextMenuAssembler.setMenuAssembler(this);
+        T target = buildMenubarImpl(virtualRoot);
+        ContextMenuAssembler.removeMenuAssembler();
+        return target;
+    }
+
+    protected abstract T buildMenubarImpl(IMenuNode virtualRoot);
 
     protected String resolve(ILocationContext location) {
         HttpServletRequest request = this.request;
