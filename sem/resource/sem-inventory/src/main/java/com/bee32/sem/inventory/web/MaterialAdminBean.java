@@ -12,7 +12,6 @@ import com.bee32.sem.file.entity.FileBlob;
 import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.file.web.IncomingFile;
 import com.bee32.sem.file.web.IncomingFileBlobAdapter;
-import com.bee32.sem.frame.search.SearchFragment;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.MaterialAttributeDto;
 import com.bee32.sem.inventory.dto.MaterialDto;

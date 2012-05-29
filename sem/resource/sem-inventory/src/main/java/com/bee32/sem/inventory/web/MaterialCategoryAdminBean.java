@@ -7,7 +7,6 @@ import java.util.List;
 import javax.faces.model.SelectItem;
 
 import com.bee32.plover.orm.annotation.ForEntity;
-import com.bee32.sem.frame.search.SearchFragment;
 import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.entity.MaterialType;
@@ -30,27 +29,28 @@ public class MaterialCategoryAdminBean
     }
 
     @Override
-    protected void postUpdate(UnmarshalMap uMap) throws Exception {
+    protected void postUpdate(UnmarshalMap uMap)
+            throws Exception {
         super.postUpdate(uMap);
         ctx.bean.getBean(ChooseMaterialCategoryDialogBean.class).refreshTree();
     }
 
-    public void addCfinishedRestriction(){
+    public void addCfinishedRestriction() {
         setSearchFragment("type", "成品", //
                 MaterialCriteria.categoryType(Arrays.asList(MaterialType.PRODUCT)));
     }
 
-    public void addSemiRestriction(){
+    public void addSemiRestriction() {
         setSearchFragment("type", "半成品", //
                 MaterialCriteria.categoryType(Arrays.asList(MaterialType.SEMI)));
     }
 
-    public void addRawRestriction(){
+    public void addRawRestriction() {
         setSearchFragment("type", "原材料", //
                 MaterialCriteria.categoryType(Arrays.asList(MaterialType.RAW)));
     }
 
-    public void addOtherRestriction(){
+    public void addOtherRestriction() {
         setSearchFragment("type", "其他", //
                 MaterialCriteria.categoryType(Arrays.asList(MaterialType.OTHER)));
     }

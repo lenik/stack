@@ -1,6 +1,5 @@
 package com.bee32.sem.chance.dto;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,11 +52,11 @@ public class ChanceDto
 
     @Override
     protected void _copy() {
-	    parties = CopyUtils.copyList(parties, this);
-	    products = CopyUtils.copyList(products, this);
+        parties = CopyUtils.copyList(parties, this);
+        products = CopyUtils.copyList(products, this);
     }
 
-	@Override
+    @Override
     protected void _marshal(Chance source) {
         date = DateToRange.fullFormat.format(source.getCreatedDate()).substring(0, 16);
         category = mref(ChanceCategoryDto.class, source.getCategory());

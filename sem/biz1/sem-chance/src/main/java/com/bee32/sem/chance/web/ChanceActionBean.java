@@ -10,13 +10,13 @@ import com.bee32.sem.chance.dto.ChanceStageDto;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.util.ChanceCriteria;
-import com.bee32.sem.frame.search.SearchFragment;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.people.dto.PartyDto;
 
 @ForEntity(ChanceAction.class)
-public class ChanceActionBean extends SimpleEntityViewBean {
+public class ChanceActionBean
+        extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -44,7 +44,8 @@ public class ChanceActionBean extends SimpleEntityViewBean {
     }
 
     @Override
-    protected void postUpdate(UnmarshalMap uMap) throws Exception {
+    protected void postUpdate(UnmarshalMap uMap)
+            throws Exception {
         for (ChanceAction _action : uMap.<ChanceAction> entitySet()) {
             Chance _chance = _action.getChance();
             if (_chance != null) {
