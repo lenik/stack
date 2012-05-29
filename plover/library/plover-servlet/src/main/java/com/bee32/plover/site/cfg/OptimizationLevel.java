@@ -8,12 +8,28 @@ import java.util.Map;
 import com.bee32.plover.arch.util.NoSuchEnumException;
 
 public class OptimizationLevel
-        extends SiteConfigEnum<Integer, OptimizationLevel> {
+        extends SiteConfigEnum<Integer, OptimizationLevel>
+        implements Comparable<OptimizationLevel> {
 
     private static final long serialVersionUID = 1L;
 
     public OptimizationLevel(int value, String name) {
         super(value, name);
+    }
+
+    @Override
+    public int compareTo(OptimizationLevel o) {
+        if (o == null)
+            return 1;
+        if (this == o)
+            return 0;
+        int val1 = getValue();
+        int val2 = o.getValue();
+        int cmp = val1 - val2;
+        if (cmp != 0)
+            return cmp;
+        else
+            return -1; // undefined: cuz this != o.
     }
 
     static final Map<String, OptimizationLevel> nameMap = new HashMap<String, OptimizationLevel>();
