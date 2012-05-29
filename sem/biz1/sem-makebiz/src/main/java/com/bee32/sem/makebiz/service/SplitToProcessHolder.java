@@ -8,8 +8,8 @@ public class SplitToProcessHolder implements Serializable {
     private static final long serialVersionUID = 1L;
 
 
-    BigDecimal quantity;
-    String batchNumber;
+    private BigDecimal quantity;
+    private String batchNumber;
 
     public BigDecimal getQuantity() {
         return quantity;

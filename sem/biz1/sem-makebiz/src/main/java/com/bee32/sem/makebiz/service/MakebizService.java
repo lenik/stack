@@ -193,18 +193,30 @@ public class MakebizService
 	if(taskItem == null || DTOs.isNull(taskItem))
 		throw new NullPointerException("生产任务明细为空");
 
+	BigDecimal count = new BigDecimal(0);
+	for(SplitToProcessHolder holder : holders) {
+	    count = count.add(holder.getQuantity());
+	}
+	if(count.compareTo(taskItem.getQuantity()) > 0) {
+	    throw new RuntimeException("工艺单数量合计大于生产任务的数量!");
+	}
+
 	MakeTaskItem _taskItem = taskItem.unmarshal();
 
-	MakeProcess process = new MakeProcess();
-	process.setTaskItemEven(_taskItem);
+	for(SplitToProcessHolder holder : holders) {
+            MakeProcess process = new MakeProcess();
+            process.setTaskItemEven(_taskItem);
 
-	//根据bom表和工艺，生成所有的MakeStep
-	Part part = _taskItem.getPart();
+            process.setBatchNumber(holder.getBatchNumber());
+            process.setQuantity(holder.getQuantity());
 
-	claimTree(process, part, _taskItem.getQuantity());
+            //根据bom表和工艺，生成所有的MakeStep
+            Part part = _taskItem.getPart();
 
-	ctx.data.access(MakeProcess.class).save(process);
+            claimTree(process, part, _taskItem.getQuantity());
 
+            ctx.data.access(MakeProcess.class).save(process);
+        }
     }
 
     private void claimTree(MakeProcess process, Part part, BigDecimal quantity) {

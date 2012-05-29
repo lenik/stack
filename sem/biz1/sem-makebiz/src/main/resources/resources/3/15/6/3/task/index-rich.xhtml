@@ -65,11 +65,11 @@
                         <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                     </h:outputText>
                 </p:column>
+                <p:column headerText="工艺单数">
+                    <h:outputText value="#{fn:length(entry.processes)}"/>
+                </p:column>
                 <p:column headerText="备注" styleClass="f-wrappable">
                     <h:outputText value="#{entry.description}" />
-                </p:column>
-                <p:column headerText="工艺流转单" styleClass="f-wrappable">
-                    <h:outputText value="#{entry.process.id}" />
                 </p:column>
             </f:facet>
             <f:facet name="index-buttons">
@@ -77,6 +77,8 @@
                     oncomplete="waitbox.hide();generateProcessesDialog.show();"
                     value="生成工艺流转单" styleClass="locker-invert"
                     rendered="#{entry.process.id == null}"
+                    disabled="${not bean.itemsMBean.selectionEditable}"
+                    action="#{bean.newHolderList}"
                     update=":generateProcessesDialogForm" />
             </f:facet>
         </fr:listView>
@@ -107,11 +109,68 @@
 
         <p:dialog widgetVar="generateProcessesDialog" modal="true">
             <h:form id="generateProcessesDialogForm">
+                <p:dataTable var="holder" value="#{bean.splitToProcessHolders}"
+                    scrollable="true" scrollHeight="150"
+                    resizableColumns="true" id="holderTable"
+                    rowIndexVar="index">
 
+                    <p:column headerText="序号" style="width:2">
+                        <h:outputText value="#{index+1}" />
+                    </p:column>
 
-                <p:commandButton value="生成"
-                    action="#{bean.generateProcess}"
-                    update=":editDialog:form:itemsIndexView:indexForm:content" />
+                    <p:column headerText="批号" style="width:8em;">
+                        <h:outputText value="#{holder.batchNumber}" />
+                    </p:column>
+
+                    <p:column headerText="数量" style="width:8em;">
+                        <h:outputText value="#{holder.quantity}" >
+                            <f:convertNumber pattern="#0.00" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="动作" style="width:8em;">
+                        <p:commandButton
+                            value="删除"
+                            onclick="waitbox.show();"
+                            oncomplete="waitbox.hide();"
+                            update=":generateProcessesDialogForm:holderTable"
+                            actionListener="#{bean.removeHolder(index)}"/>
+                    </p:column>
+
+                </p:dataTable>
+
+                <t:panelGrid columns="3">
+                    <p:commandButton value="增加"
+                        onclick="editHolderDialog.show();"
+                        actionListener="#{bean.newHolder}"
+                        update=":editHolderForm"/>
+                    <p:commandButton value="生成"
+                        action="#{bean.generateProcess}"
+                        update=":editDialog:form:itemsIndexView:indexForm:content" />
+                </t:panelGrid>
+
+            </h:form>
+        </p:dialog>
+
+        <p:dialog widgetVar="editHolderDialog" modal="true">
+            <h:form id="editHolderForm">
+                <t:panelGrid columns="2">
+                    <h:outputText value="批号"/>
+                    <p:inputText value="#{bean.holder.batchNumber}"/>
+
+                    <h:outputText value="数量"/>
+                    <p:inputText value="#{bean.holder.quantity}">
+                        <f:convertNumber pattern="#0.00"/>
+                    </p:inputText>
+                </t:panelGrid>
+                <t:panelGrid columns="2">
+                    <p:commandButton value="确定"
+                        onclick="waitbox.show();"
+                        oncomplete="waitbox.hide();editHolderDialog.hide();"
+                        update=":generateProcessesDialogForm:holderTable"
+                        actionListener="#{bean.addHolder}"/>
+                    <p:commandButton value="关闭" onclick="editHolderDialog.hide()"/>
+                </t:panelGrid>
             </h:form>
         </p:dialog>
     </ui:define>

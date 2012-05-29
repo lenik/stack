@@ -1,6 +1,7 @@
 package com.bee32.sem.makebiz.web;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -28,18 +29,33 @@ public class MakeTaskAdminBean
     private static final long serialVersionUID = 1L;
 
     List<SplitToProcessHolder> splitToProcessHolders;
+    SplitToProcessHolder holder;
 
     public MakeTaskAdminBean() {
         super(MakeTask.class, MakeTaskDto.class, 0);
     }
 
     public List<SplitToProcessHolder> getSplitToProcessHolders() {
+        if (splitToProcessHolders == null) {
+            splitToProcessHolders = new ArrayList<SplitToProcessHolder>();
+        }
         return splitToProcessHolders;
     }
 
     public void setSplitToProcessHolders(
             List<SplitToProcessHolder> splitToProcessHolders) {
         this.splitToProcessHolders = splitToProcessHolders;
+    }
+
+    public SplitToProcessHolder getHolder() {
+        if (holder == null) {
+            holder = new SplitToProcessHolder();
+        }
+        return holder;
+    }
+
+    public void setHolder(SplitToProcessHolder holder) {
+        this.holder = holder;
     }
 
     public void setApplyMakeOrder(MakeOrderDto makeOrderRef) {
@@ -83,6 +99,21 @@ public class MakeTaskAdminBean
 		}
 	}
 
+	public void newHolderList() {
+	    splitToProcessHolders = new ArrayList<SplitToProcessHolder>();
+	}
+
+	public void newHolder() {
+	    holder = new SplitToProcessHolder();
+	}
+
+	public void removeHolder(int index) {
+	    splitToProcessHolders.remove(index);
+	}
+
+	public void addHolder() {
+	    splitToProcessHolders.add(holder);
+	}
 
 	/*************************************************************************
      * Section: MBeans

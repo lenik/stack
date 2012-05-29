@@ -147,15 +147,14 @@
                     <f:selectItem itemLabel="内部" itemValue="true" />
                 </p:selectOneRadio>
 
-
                 <h:outputLabel value="外部名称" />
-                <p:inputText value="#{item.externalProductName}" label="外部名称" />
+                <p:inputTextarea style="height: 6em;" value="#{item.externalProductName}" label="外部名称" />
                 <h:outputLabel value="外部规格型号" />
-                <p:inputText value="#{item.externalModelSpec}" label="外部规格型号" />
+                <p:inputTextarea style="height: 6em;" value="#{item.externalModelSpec}" label="外部规格型号" />
 
                 <h:outputLabel value="备注" />
                 <t:panelGroup colspan="3">
-                    <p:inputText value="#{item.description}" label="备注" style="width:35em;" />
+                    <p:inputTextarea style="width:30em; height: 4em;" value="#{item.description}" label="备注" />
                 </t:panelGroup>
 
                 <h:outputLabel for="deadline" value="交货时间" />
