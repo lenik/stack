@@ -301,11 +301,11 @@ public class SiteInstance
         if (_theme == null)
             return null;
         else
-            return PrimefacesTheme.valueOf(_theme);
+            return PrimefacesTheme.forName(_theme);
     }
 
     public void setTheme(PrimefacesTheme theme) {
-        String _theme = theme == null ? null : theme.name();
+        String _theme = theme == null ? null : theme.getName();
         setProperty(THEME_KEY, _theme);
     }
 
@@ -314,29 +314,29 @@ public class SiteInstance
         if (themeName == null || themeName.isEmpty())
             theme = null;
         else
-            theme = PrimefacesTheme.valueOf(themeName);
+            theme = PrimefacesTheme.forName(themeName);
         setTheme(theme);
     }
 
     public VerboseLevel getVerboseLevel() {
         String _verbose = getProperty(VERBOSE_KEY);
-        VerboseLevel verbose = VerboseLevel.valueOf(_verbose);
+        VerboseLevel verbose = VerboseLevel.forName(_verbose);
         return verbose;
     }
 
     public void setVerboseLevel(VerboseLevel verbose) {
-        String _verbose = verbose.name();
+        String _verbose = verbose.getName();
         setProperty(VERBOSE_KEY, _verbose);
     }
 
     public OptimizationLevel getOptimizationLevel() {
         String _optimization = getProperty(OPTIMIZATION_KEY);
-        OptimizationLevel optimization = OptimizationLevel.valueOf(_optimization);
+        OptimizationLevel optimization = OptimizationLevel.forName(_optimization);
         return optimization;
     }
 
     public void setOptimizationLevel(OptimizationLevel optimization) {
-        String _optimization = optimization.name();
+        String _optimization = optimization.getName();
         setProperty(OPTIMIZATION_KEY, _optimization);
     }
 
@@ -367,7 +367,7 @@ public class SiteInstance
 
     public DBDialect getDbDialect() {
         String _dialect = getProperty(DB_DIALECT_KEY);
-        DBDialect dialect = DBDialect.forValue(_dialect);
+        DBDialect dialect = DBDialect.forName(_dialect);
         return dialect;
     }
 
@@ -422,7 +422,7 @@ public class SiteInstance
 
     public DBAutoDDL getAutoDDL() {
         String _autoddl = getProperty(AUTODDL_KEY);
-        DBAutoDDL autoddl = DBAutoDDL.forValue(_autoddl);
+        DBAutoDDL autoddl = DBAutoDDL.forName(_autoddl);
         return autoddl;
     }
 
@@ -433,14 +433,14 @@ public class SiteInstance
 
     public SamplesSelection getSamples() {
         String property = getProperty(SAMPLES_KEY);
-        SamplesSelection samples = SamplesSelection.valueOf(property);
+        SamplesSelection samples = SamplesSelection.forName(property);
         return samples;
     }
 
     public void setSamples(SamplesSelection samples) {
         if (samples == null)
             throw new NullPointerException("samples");
-        String property = samples.name();
+        String property = samples.getName();
         setProperty(SAMPLES_KEY, property);
     }
 

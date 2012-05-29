@@ -215,12 +215,12 @@ public class SiteManagerServlet
                     aliasSet.add(alias);
                 }
 
-                VerboseLevel verbose = VerboseLevel.valueOf(_verbose);
-                OptimizationLevel optimization = OptimizationLevel.valueOf(_optimization);
+                VerboseLevel verbose = VerboseLevel.forName(_verbose);
+                OptimizationLevel optimization = OptimizationLevel.forName(_optimization);
 
                 DBDialect dialect = DBDialect.forValue(_dialect);
                 DBAutoDDL autoddl = DBAutoDDL.forValue(_autoddl);
-                SamplesSelection samples = SamplesSelection.valueOf(_samples);
+                SamplesSelection samples = SamplesSelection.forName(_samples);
                 if (url == null)
                     url = dialect.getUrlFormat();
 

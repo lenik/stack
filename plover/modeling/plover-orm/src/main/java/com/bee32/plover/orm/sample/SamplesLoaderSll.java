@@ -8,6 +8,7 @@ import com.bee32.plover.orm.sample.SuperSamplePackage.Normals;
 import com.bee32.plover.orm.sample.SuperSamplePackage.Standards;
 import com.bee32.plover.site.AbstractSll;
 import com.bee32.plover.site.SiteInstance;
+import com.bee32.plover.site.cfg.SamplesSelection;
 
 /**
  * No-lazy: eagerly load samples.
@@ -31,17 +32,17 @@ public class SamplesLoaderSll
 
         SamplePackageAllocation alloc = SamplePackageAllocation.BOOTSTRAP;
         SamplePackage max;
-        switch (site.getSamples()) {
-        case STANDARD:
+        switch (site.getSamples().getValue()) {
+        case SamplesSelection.V_STANDARD:
             max = alloc.getObject(Standards.class);
             break;
-        case NORMAL:
+        case SamplesSelection.V_NORMAL:
             max = alloc.getObject(Normals.class);
             break;
-        case BOUNDARIES:
+        case SamplesSelection.V_BOUNDARIES:
             max = alloc.getObject(Boundaries.class);
             break;
-        case NONE:
+        case SamplesSelection.V_NONE:
         default:
             max = null;
         }

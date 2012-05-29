@@ -33,7 +33,7 @@ public class ThemeSwitcherBean
     }
 
     public void saveTheme() {
-        PrimefacesTheme theme = PrimefacesTheme.valueOf(themeName);
+        PrimefacesTheme theme = PrimefacesTheme.forName(themeName);
         preferences.setTheme(theme);
     }
 
