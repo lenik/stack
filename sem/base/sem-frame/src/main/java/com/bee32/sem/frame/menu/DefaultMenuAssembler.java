@@ -1,17 +1,13 @@
 package com.bee32.sem.frame.menu;
 
-import java.io.IOException;
-
 import javax.free.ClassLocal;
 
-import com.bee32.plover.arch.service.ServicePrototypeLoader;
-
-public class MenuAssembler
+public class DefaultMenuAssembler
         implements IMenuAssembler {
 
     ClassLocal<MenuComposite> mcInstances;
 
-    public MenuAssembler() {
+    public DefaultMenuAssembler() {
         mcInstances = new ClassLocal<MenuComposite>();
     }
 
@@ -27,14 +23,6 @@ public class MenuAssembler
             mcInstances.put(mcClass, mc);
         }
         return mc;
-    }
-
-    public void scan()
-            throws ClassNotFoundException, IOException {
-        for (Class<? extends MenuComposite> mcClass : ServicePrototypeLoader.load(MenuComposite.class, false)) {
-            // profile parameters here...?
-            require(mcClass);
-        }
     }
 
 }

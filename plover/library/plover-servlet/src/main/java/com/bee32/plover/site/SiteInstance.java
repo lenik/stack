@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.plover.arch.IAppProfile;
 import com.bee32.plover.rtx.location.ILocationConstants;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.rtx.location.Locations;
@@ -47,6 +48,7 @@ public class SiteInstance
     public static final String DESCRIPTION_KEY = "description";
     public static final String LOGO_KEY = "logo";
     public static final String THEME_KEY = "theme";
+    public static final String PROFILE_KEY = "profile";
 
     public static final String VERBOSE_KEY = "verbose";
     public static final String OPTIMIZATION_KEY = "optimization";
@@ -316,6 +318,27 @@ public class SiteInstance
         else
             theme = PrimefacesTheme.forName(themeName);
         setTheme(theme);
+    }
+
+    public IAppProfile getProfile() {
+        String _profile = getProperty(PROFILE_KEY);
+        if (_profile == null)
+            return null;
+        else
+            return null; // XXX
+    }
+
+    public void setProfile(IAppProfile profile) {
+        String profileName;
+        if (profile == null)
+            profileName = null;
+        else
+            profileName = profile.getClass().getCanonicalName();
+        setProfile(profileName);
+    }
+
+    public void setProfile(String profileName) {
+        setProperty(PROFILE_KEY, profileName);
     }
 
     public VerboseLevel getVerboseLevel() {

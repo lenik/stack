@@ -1,6 +1,5 @@
 package com.bee32.sem.frame.ui;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;

@@ -10,9 +10,16 @@ public abstract class AbstractMenuBuilder<T>
 
     boolean showAll = false;
     final HttpServletRequest request;
+    IMenuAssembler assembler;
 
     protected AbstractMenuBuilder(HttpServletRequest request) {
         this.request = request;
+        assembler = new DefaultMenuAssembler();
+    }
+
+    @Override
+    public <M extends MenuComposite> M require(Class<M> mcClass) {
+        return assembler.require(mcClass);
     }
 
     @Override
@@ -27,10 +34,15 @@ public abstract class AbstractMenuBuilder<T>
 
     @Override
     public final T buildMenubar(IMenuNode virtualRoot) {
-        // Load menu here??
-        // No. Please see MenuLoader.
         ContextMenuAssembler.setMenuAssembler(this);
+
+        for (Class<? extends MenuComposite> mcClass : MenuCompositeManager.load()) {
+            // profile parameters here...?
+            require(mcClass);
+        }
+
         T target = buildMenubarImpl(virtualRoot);
+
         ContextMenuAssembler.removeMenuAssembler();
         return target;
     }

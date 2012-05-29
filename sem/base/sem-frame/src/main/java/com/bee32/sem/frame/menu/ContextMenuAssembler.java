@@ -2,7 +2,7 @@ package com.bee32.sem.frame.menu;
 
 public class ContextMenuAssembler {
 
-    static final IMenuAssembler globalAssembler = new MenuAssembler();
+    static final IMenuAssembler globalAssembler = new DefaultMenuAssembler();
     static final ThreadLocal<IMenuAssembler> clAssemblers = new ThreadLocal<IMenuAssembler>();
 
     public static IMenuAssembler getMenuAssembler() {
