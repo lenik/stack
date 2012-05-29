@@ -218,8 +218,8 @@ public class SiteManagerServlet
                 VerboseLevel verbose = VerboseLevel.valueOf(_verbose);
                 OptimizationLevel optimization = OptimizationLevel.valueOf(_optimization);
 
-                DBDialect dialect = DBDialect.valueOf(_dialect);
-                DBAutoDDL autoddl = DBAutoDDL.valueOf(_autoddl);
+                DBDialect dialect = DBDialect.forValue(_dialect);
+                DBAutoDDL autoddl = DBAutoDDL.forValue(_autoddl);
                 SamplesSelection samples = SamplesSelection.valueOf(_samples);
                 if (url == null)
                     url = dialect.getUrlFormat();

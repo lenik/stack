@@ -54,7 +54,7 @@ public class MailDeliveryDto
             throws ParseException, TypeConvertException {
 
         int _orientation = map.getInt("orientation");
-        orientation = MailOrientation.valueOf(_orientation);
+        orientation = MailOrientation.forValue(_orientation);
 
         flags.bits = map.getInt("flags");
     }

@@ -86,7 +86,7 @@ public abstract class AbstractVerifyContext
         if (stateValue == -1)
             verifyEvalState = VerifyEvalState.UNKNOWN;
         else
-            verifyEvalState = VerifyEvalState.valueOf(stateValue);
+            verifyEvalState = VerifyEvalState.forValue(stateValue);
     }
 
     @Transient

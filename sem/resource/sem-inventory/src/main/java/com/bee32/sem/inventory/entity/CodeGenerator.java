@@ -24,12 +24,12 @@ public class CodeGenerator
         return values(CodeGenerator.class);
     }
 
-    public static CodeGenerator valueOf(Character value) {
-        return valueOf(CodeGenerator.class, value);
+    public static CodeGenerator forValue(Character value) {
+        return forValue(CodeGenerator.class, value);
     }
 
-    public static CodeGenerator valueOf(char value) {
-        return valueOf(new Character(value));
+    public static CodeGenerator forValue(char value) {
+        return forValue(new Character(value));
     }
 
     /** 手动输入 */

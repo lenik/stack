@@ -116,7 +116,7 @@ public class Event
 
     @Transient
     public EventType getType() {
-        return EventType.valueOf(type);
+        return EventType.forValue(type);
     }
 
     public void setType(EventType type) {

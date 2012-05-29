@@ -44,12 +44,12 @@ public abstract class EventState<$ extends EventState<$>>
     }
 
     @SuppressWarnings("unchecked")
-    public static EventState<?> valueOf(Integer value) {
-        return valueOf(EventState.class, value);
+    public static EventState<?> forValue(Integer value) {
+        return forValue(EventState.class, value);
     }
 
-    public static EventState<?> valueOf(int value) {
-        return valueOf(new Integer(value));
+    public static EventState<?> forValue(int value) {
+        return forValue(new Integer(value));
     }
 
 }

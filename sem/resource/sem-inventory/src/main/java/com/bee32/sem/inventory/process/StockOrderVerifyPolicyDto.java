@@ -30,7 +30,7 @@ public class StockOrderVerifyPolicyDto extends VerifyPolicyDto {
             for (Entry<String, VerifyPolicy> _entry : map.entrySet()) {
                 String _subject = _entry.getKey();
                 VerifyPolicy _policy = _entry.getValue();
-                StockOrderSubject subject = StockOrderSubject.valueOf(_subject);
+                StockOrderSubject subject = StockOrderSubject.forValue(_subject);
                 VerifyPolicyDto policy = mref(VerifyPolicyDto.class, _policy);
                 StockOrderSubjectPolicyEntry entry = new StockOrderSubjectPolicyEntry(
                         subject, policy);

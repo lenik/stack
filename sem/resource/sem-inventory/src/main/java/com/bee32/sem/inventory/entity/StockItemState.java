@@ -35,12 +35,12 @@ public class StockItemState
         return values(StockItemState.class);
     }
 
-    public static StockItemState valueOf(Character value) {
-        return valueOf(StockItemState.class, value);
+    public static StockItemState forValue(Character value) {
+        return forValue(StockItemState.class, value);
     }
 
-    public static StockItemState valueOf(char value) {
-        return valueOf(new Character(value));
+    public static StockItemState forValue(char value) {
+        return forValue(new Character(value));
     }
 
     /** 正常 */

@@ -45,7 +45,7 @@ public class DiaryCategory
     }
 
     void setVisibility_(char visibility) {
-        this.visibility = DiaryVisibility.valueOf(visibility);
+        this.visibility = DiaryVisibility.forValue(visibility);
     }
 
 }

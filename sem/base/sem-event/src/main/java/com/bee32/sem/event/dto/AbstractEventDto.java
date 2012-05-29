@@ -239,7 +239,7 @@ public abstract class AbstractEventDto<E extends Event>
         if (statusText == null && stateIndex != 0) {
             EventState<?> eventState;
             try {
-                eventState = EventState.valueOf(stateIndex);
+                eventState = EventState.forValue(stateIndex);
                 statusText = eventState.getName();
             } catch (NoSuchEnumException e) {
                 statusText = "???";

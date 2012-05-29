@@ -96,7 +96,7 @@ public class StockOrderVerifyPolicy
     public Set<Principal> getStageResponsibles(Object stage) {
         Tuple tuple = (Tuple) stage;
         String subjectValue = tuple.getFactor(0);
-        StockOrderSubject subject = StockOrderSubject.valueOf(subjectValue);
+        StockOrderSubject subject = StockOrderSubject.forValue(subjectValue);
         VerifyPolicy subjectPolicy = subjectPolicyMap.get(subject);
         Object subjectStage = tuple.getFactor(1);
         return subjectPolicy.getStageResponsibles(subjectStage);

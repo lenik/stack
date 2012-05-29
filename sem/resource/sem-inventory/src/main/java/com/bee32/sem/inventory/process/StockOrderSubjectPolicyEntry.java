@@ -58,7 +58,7 @@ public class StockOrderSubjectPolicyEntry implements
     }
 
     public void setSubjectValue(String value) {
-        subject = StockOrderSubject.valueOf(value);
+        subject = StockOrderSubject.forValue(value);
     }
 
 }

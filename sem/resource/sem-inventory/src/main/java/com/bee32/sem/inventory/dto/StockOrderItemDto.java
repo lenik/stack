@@ -188,7 +188,7 @@ public class StockOrderItemDto
 
 	public void setStateChar(char stateChar) {
 	this.stateChar = stateChar;
-	state = StockItemState.valueOf(stateChar);
+	state = StockItemState.forValue(stateChar);
     }
 
 	public String getStateText() {

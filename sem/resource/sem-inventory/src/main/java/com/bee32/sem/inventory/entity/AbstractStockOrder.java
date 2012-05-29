@@ -169,7 +169,7 @@ public class AbstractStockOrder<Item extends StockOrderItem>
     void set_subject(String subject) {
         if (subject == null)
             throw new NullPointerException("subject");
-        this.subject = StockOrderSubject.valueOf(subject);
+        this.subject = StockOrderSubject.forValue(subject);
     }
 
     /**

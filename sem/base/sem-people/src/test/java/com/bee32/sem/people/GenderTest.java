@@ -10,16 +10,16 @@ public class GenderTest
 
     @Test
     public void testGetInstance() {
-        Gender male = Gender.valueOf('m');
+        Gender male = Gender.forValue('m');
         assertEquals(Gender.MALE, male);
 
-        Gender female = Gender.valueOf('f');
+        Gender female = Gender.forValue('f');
         assertEquals(Gender.FEMALE, female);
     }
 
     @Test(expected = NoSuchEnumException.class)
     public void testGetInstance_NotExist() {
-        Gender.valueOf('Z');
+        Gender.forValue('Z');
     }
 
     /**

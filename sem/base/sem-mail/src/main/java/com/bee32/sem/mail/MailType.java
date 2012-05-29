@@ -32,12 +32,12 @@ public class MailType
         return values(MailType.class);
     }
 
-    public static MailType valueOf(Integer value) {
-        return valueOf(MailType.class, value);
+    public static MailType forValue(Integer value) {
+        return forValue(MailType.class, value);
     }
 
-    public static MailType valueOf(int value) {
-        return valueOf(new Integer(value));
+    public static MailType forValue(int value) {
+        return forValue(new Integer(value));
     }
 
     public static final MailType __system__ /**/= new MailType(0x00000, "__system__");

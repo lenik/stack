@@ -55,7 +55,7 @@ import com.bee32.plover.rtx.location.Locations;
  * </pre>
  */
 @ServiceTemplate(prototype = true)
-public abstract class EnumAlt<V extends Serializable, $ extends EnumAlt<V, $>>
+public abstract class EnumAlt<V extends Serializable, self_t extends EnumAlt<V, self_t>>
         implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -90,9 +90,9 @@ public abstract class EnumAlt<V extends Serializable, $ extends EnumAlt<V, $>>
      *
      * @return A non-<code>null</code> map contains all the enum elements.
      */
-    protected final Map<String, $> getNameMap() {
+    protected final Map<String, self_t> getNameMap() {
         @SuppressWarnings("unchecked")
-        Map<String, $> nameMap = (Map<String, $>) getNameMap(getClass());
+        Map<String, self_t> nameMap = (Map<String, self_t>) getNameMap(getClass());
         return nameMap;
     }
 
@@ -101,9 +101,9 @@ public abstract class EnumAlt<V extends Serializable, $ extends EnumAlt<V, $>>
      *
      * @return A non-<code>null</code> map contains all the enum elements.
      */
-    protected final Map<V, $> getValueMap() {
+    protected final Map<V, self_t> getValueMap() {
         @SuppressWarnings("unchecked")
-        Map<V, $> valueMap = (Map<V, $>) getValueMap(getClass());
+        Map<V, self_t> valueMap = (Map<V, self_t>) getValueMap(getClass());
         return valueMap;
     }
 
@@ -169,18 +169,21 @@ public abstract class EnumAlt<V extends Serializable, $ extends EnumAlt<V, $>>
             return def;
     }
 
-    public static <E extends EnumAlt<?, E>> //
-    Map<String, E> getNameMap(Class<E> enumType) {
+    public static <E extends EnumAlt<?, E>> Map<String, E> getNameMap(Class<E> enumType) {
         return EnumAltRegistry.getNameMap(enumType);
     }
 
-    public static <E extends EnumAlt<V, E>, V extends Serializable> //
-    Map<V, E> getValueMap(Class<E> enumType) {
+    public static <E extends EnumAlt<V, E>, V extends Serializable> Map<V, E> getValueMap(Class<E> enumType) {
         return EnumAltRegistry.getValueMap(enumType);
     }
 
-    protected static <E extends EnumAlt<V, E>, V extends Serializable> //
-    E forName(Class<E> enumType, String name) {
+    protected static <E extends EnumAlt<V, E>, V extends Serializable> Collection<E> values(Class<E> enumType) {
+        EnumAltRegistry.loadConstants();
+        Collection<E> values = getValueMap(enumType).values();
+        return Collections.unmodifiableCollection(values);
+    }
+
+    protected static <E extends EnumAlt<V, E>, V extends Serializable> E forName(Class<E> enumType, String name) {
         EnumAltRegistry.loadConstants();
         E entry = getNameMap(enumType).get(name);
         if (entry == null)
@@ -188,15 +191,7 @@ public abstract class EnumAlt<V extends Serializable, $ extends EnumAlt<V, $>>
         return entry;
     }
 
-    protected static <E extends EnumAlt<V, E>, V extends Serializable> //
-    Collection<E> values(Class<E> enumType) {
-        EnumAltRegistry.loadConstants();
-        Collection<E> values = getValueMap(enumType).values();
-        return Collections.unmodifiableCollection(values);
-    }
-
-    protected static <E extends EnumAlt<V, E>, V extends Serializable> //
-    E valueOf(Class<E> enumType, V value) {
+    protected static <E extends EnumAlt<V, E>, V extends Serializable> E forValue(Class<E> enumType, V value) {
         if (value == null)
             throw new NullPointerException("value");
 

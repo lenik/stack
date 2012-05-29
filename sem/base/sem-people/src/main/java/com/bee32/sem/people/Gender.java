@@ -21,12 +21,12 @@ public class Gender
         return values(Gender.class);
     }
 
-    public static Gender valueOf(Character value) {
-        return valueOf(Gender.class, value);
+    public static Gender forValue(Character value) {
+        return forValue(Gender.class, value);
     }
 
-    public static Gender valueOf(char value) {
-        return valueOf(new Character(value));
+    public static Gender forValue(char value) {
+        return forValue(new Character(value));
     }
 
     public static final Gender MALE = new Gender('m', "male");

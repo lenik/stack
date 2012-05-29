@@ -25,12 +25,12 @@ public class MailPriority
         return values(MailPriority.class);
     }
 
-    public static MailPriority valueOf(Integer value) {
-        return valueOf(MailPriority.class, value);
+    public static MailPriority forValue(Integer value) {
+        return forValue(MailPriority.class, value);
     }
 
-    public static MailPriority valueOf(int value) {
-        return valueOf(new Integer(value));
+    public static MailPriority forValue(int value) {
+        return forValue(new Integer(value));
     }
 
     public static final MailPriority URGENT = new MailPriority(10, "urgent");

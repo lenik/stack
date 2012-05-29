@@ -19,8 +19,8 @@ public class Country
         return values(Country.class);
     }
 
-    public static Country valueOf(String value) {
-        return valueOf(Country.class, value);
+    public static Country forValue(String value) {
+        return forValue(Country.class, value);
     }
 
 }

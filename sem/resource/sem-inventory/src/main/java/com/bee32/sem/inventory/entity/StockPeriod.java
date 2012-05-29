@@ -88,7 +88,7 @@ public class StockPeriod
     }
 
     void set_Type(char _type) {
-        this.type = StockPeriodType.valueOf(_type);
+        this.type = StockPeriodType.forValue(_type);
     }
 
     /**

@@ -100,7 +100,7 @@ public class MaterialCategory
 
         char cgVal = _codeGenerator.charAt(0);
         // String cgParam = _codeGenerator.substring(1);
-        codeGenerator = CodeGenerator.valueOf(cgVal);
+        codeGenerator = CodeGenerator.forValue(cgVal);
     }
 
     /**
@@ -166,7 +166,7 @@ public class MaterialCategory
     }
 
     void set_materialType(char _materialType) {
-        materialType = MaterialType.valueOf(_materialType);
+        materialType = MaterialType.forValue(_materialType);
     }
 
     /**

@@ -21,12 +21,12 @@ public class MaterialType
         return values(MaterialType.class);
     }
 
-    public static MaterialType valueOf(Character value) {
-        return valueOf(MaterialType.class, value);
+    public static MaterialType forValue(Character value) {
+        return forValue(MaterialType.class, value);
     }
 
-    public static MaterialType valueOf(char value) {
-        return valueOf(new Character(value));
+    public static MaterialType forValue(char value) {
+        return forValue(new Character(value));
     }
 
     // public static final MaterialType ALL= new MaterialType('a', "all");

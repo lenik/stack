@@ -21,12 +21,12 @@ public class MailOrientation
         return values(MailOrientation.class);
     }
 
-    public static MailOrientation valueOf(Integer value) {
-        return valueOf(MailOrientation.class, value);
+    public static MailOrientation forValue(Integer value) {
+        return forValue(MailOrientation.class, value);
     }
 
-    public static MailOrientation valueOf(int value) {
-        return valueOf(new Integer(value));
+    public static MailOrientation forValue(int value) {
+        return forValue(new Integer(value));
     }
 
     public static final MailOrientation FROM = new MailOrientation(1, "from");

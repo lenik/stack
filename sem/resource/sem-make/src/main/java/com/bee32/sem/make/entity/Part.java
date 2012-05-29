@@ -297,7 +297,7 @@ public class Part
     }
 
     void set_priceStrategy(char strategy) {
-        priceStrategy = PriceStrategy.valueOf(strategy);
+        priceStrategy = PriceStrategy.forValue(strategy);
     }
 
     /**

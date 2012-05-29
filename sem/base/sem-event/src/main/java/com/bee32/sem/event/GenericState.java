@@ -21,12 +21,12 @@ public class GenericState
         return values(GenericState.class);
     }
 
-    public static GenericState valueOf(Integer value) {
-        return valueOf(GenericState.class, value);
+    public static GenericState forValue(Integer value) {
+        return forValue(GenericState.class, value);
     }
 
-    public static GenericState valueOf(int value) {
-        return valueOf(new Integer(value));
+    public static GenericState forValue(int value) {
+        return forValue(new Integer(value));
     }
 
     static GenericState _(int index, String name) {

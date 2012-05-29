@@ -22,7 +22,7 @@ public class VerifyEvalStateTest
     @Test
     public void testEnumInherits() {
         VerifyEvalState verifyState = VerifyEvalState.PENDING;
-        EventState<?> eventState = EventState.valueOf(verifyState.getValue());
+        EventState<?> eventState = EventState.forValue(verifyState.getValue());
         assertEquals(eventState, verifyState);
     }
 

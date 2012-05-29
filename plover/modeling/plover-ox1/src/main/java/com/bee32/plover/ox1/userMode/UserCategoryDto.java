@@ -50,7 +50,7 @@ public class UserCategoryDto
             throws ParseException {
 
         char _type = map.getChar("type");
-        type = UserDataType.valueOf(_type);
+        type = UserDataType.forValue(_type);
 
         precision = map.getInt("precision");
         scale = map.getInt("scale");

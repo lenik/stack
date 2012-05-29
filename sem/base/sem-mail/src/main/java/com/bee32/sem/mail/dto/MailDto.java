@@ -111,12 +111,12 @@ public class MailDto
             throws ParseException, TypeConvertException {
 
         int _type = map.getInt("type");
-        type = MailType.valueOf(_type);
+        type = MailType.forValue(_type);
 
         // String _mailbox = map.getString("mailbox");
 
         int _priority = map.getInt("priority");
-        priority = MailPriority.valueOf(_priority);
+        priority = MailPriority.forValue(_priority);
 
         from = map.getString("from");
         recipient = map.getString("to");

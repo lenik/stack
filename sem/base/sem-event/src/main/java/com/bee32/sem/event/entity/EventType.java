@@ -21,12 +21,12 @@ public class EventType
         return values(EventType.class);
     }
 
-    public static EventType valueOf(Character value) {
-        return valueOf(EventType.class, value);
+    public static EventType forValue(Character value) {
+        return forValue(EventType.class, value);
     }
 
-    public static EventType valueOf(char value) {
-        return valueOf(new Character(value));
+    public static EventType forValue(char value) {
+        return forValue(new Character(value));
     }
 
     public static final EventType EVENT = new EventType('e', "event");

@@ -25,12 +25,12 @@ public class UserDataType
         return values(UserDataType.class);
     }
 
-    public static UserDataType valueOf(Character value) {
-        return valueOf(UserDataType.class, value);
+    public static UserDataType forValue(Character value) {
+        return forValue(UserDataType.class, value);
     }
 
-    public static UserDataType valueOf(char value) {
-        return valueOf(new Character(value));
+    public static UserDataType forValue(char value) {
+        return forValue(new Character(value));
     }
 
     public static final char T_INT = 'I';

@@ -74,7 +74,7 @@ public class UserCategory
     }
 
     void set_type(char _type) {
-        this.type = UserDataType.valueOf(_type);
+        this.type = UserDataType.forValue(_type);
     }
 
     @Column(nullable = false)

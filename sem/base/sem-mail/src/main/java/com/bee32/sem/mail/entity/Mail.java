@@ -118,7 +118,7 @@ public class Mail
     }
 
     void set_type(int _type) {
-        type = MailType.valueOf(_type);
+        type = MailType.forValue(_type);
     }
 
     /**
@@ -141,7 +141,7 @@ public class Mail
     }
 
     void set_priority(int _priority) {
-        this.priority = MailPriority.valueOf(_priority);
+        this.priority = MailPriority.forValue(_priority);
     }
 
     /**

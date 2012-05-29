@@ -48,12 +48,12 @@ public class VerifyEvalState
         return values(VerifyEvalState.class);
     }
 
-    public static VerifyEvalState valueOf(Integer value) {
-        return valueOf(VerifyEvalState.class, value);
+    public static VerifyEvalState forValue(Integer value) {
+        return forValue(VerifyEvalState.class, value);
     }
 
-    public static VerifyEvalState valueOf(int value) {
-        return valueOf(new Integer(value));
+    public static VerifyEvalState forValue(int value) {
+        return forValue(new Integer(value));
     }
 
     public VerifyEvalState meet(VerifyEvalState other) {

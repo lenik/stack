@@ -6,7 +6,6 @@ import java.util.List;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.arch.util.dto.Fmask;
 import com.bee32.plover.ox1.tree.TreeEntityDto;
 import com.bee32.sem.inventory.entity.CodeGenerator;
 import com.bee32.sem.inventory.entity.MaterialCategory;
@@ -55,9 +54,9 @@ public class MaterialCategoryDto
     protected void _parse(TextMap map)
             throws ParseException {
         char _cg = map.getChar("codeGenerator");
-        codeGenerator = CodeGenerator.valueOf(_cg);
+        codeGenerator = CodeGenerator.forValue(_cg);
         char _materialType = map.getChar("materialType");
-        materialType = MaterialType.valueOf(_materialType);
+        materialType = MaterialType.forValue(_materialType);
     }
 
     @Override
@@ -145,7 +144,7 @@ public class MaterialCategoryDto
     }
 
     public void setMaterialTypeValue(char materialTypeValue) {
-        this.materialType = MaterialType.valueOf(materialTypeValue);
+        this.materialType = MaterialType.forValue(materialTypeValue);
     }
 
 }

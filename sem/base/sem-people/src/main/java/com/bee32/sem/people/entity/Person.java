@@ -81,7 +81,7 @@ public class Person
     }
 
     void set_sex(char _sex) {
-        sex = Gender.valueOf(_sex);
+        sex = Gender.forValue(_sex);
     }
 
     @Transient

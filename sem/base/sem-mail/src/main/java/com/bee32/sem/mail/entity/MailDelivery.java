@@ -83,7 +83,7 @@ public class MailDelivery
     }
 
     void set_orientation(int _orientation) {
-        orientation = MailOrientation.valueOf(_orientation);
+        orientation = MailOrientation.forValue(_orientation);
     }
 
     @ManyToOne

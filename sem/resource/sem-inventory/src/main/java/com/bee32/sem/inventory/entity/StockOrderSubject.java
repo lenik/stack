@@ -100,8 +100,8 @@ public final class StockOrderSubject
         return values(StockOrderSubject.class);
     }
 
-    public static StockOrderSubject valueOf(String value) {
-        return valueOf(StockOrderSubject.class, value);
+    public static StockOrderSubject forValue(String value) {
+        return forValue(StockOrderSubject.class, value);
     }
 
     /** （冗余）结算【物料】，外币已换算 */

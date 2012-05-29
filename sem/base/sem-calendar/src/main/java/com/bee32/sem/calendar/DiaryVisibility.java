@@ -32,12 +32,12 @@ public class DiaryVisibility
         return values(DiaryVisibility.class);
     }
 
-    public static DiaryVisibility valueOf(Character value) {
-        return valueOf(DiaryVisibility.class, value);
+    public static DiaryVisibility forValue(Character value) {
+        return forValue(DiaryVisibility.class, value);
     }
 
-    public static DiaryVisibility valueOf(char value) {
-        return valueOf(new Character(value));
+    public static DiaryVisibility forValue(char value) {
+        return forValue(new Character(value));
     }
 
     public static final DiaryVisibility PRIVATE //

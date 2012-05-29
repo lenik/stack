@@ -24,12 +24,12 @@ public class StockPeriodType
         return values(StockPeriodType.class);
     }
 
-    public static StockPeriodType valueOf(Character value) {
-        return valueOf(StockPeriodType.class, value);
+    public static StockPeriodType forValue(Character value) {
+        return forValue(StockPeriodType.class, value);
     }
 
-    public static StockPeriodType valueOf(char value) {
-        return valueOf(new Character(value));
+    public static StockPeriodType forValue(char value) {
+        return forValue(new Character(value));
     }
 
     /** 初始库存 */

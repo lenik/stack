@@ -59,7 +59,7 @@ public class PersonDto
 
         Person target = (Person) _target;
 
-        target.setSex(Gender.valueOf(sex));
+        target.setSex(Gender.forValue(sex));
 
         target.setCensusRegister(censusRegister);
 
@@ -76,7 +76,7 @@ public class PersonDto
     }
 
     public String getSexText() {
-        return Gender.valueOf(sex).getDisplayName();
+        return Gender.forValue(sex).getDisplayName();
     }
 
     @NLength(max = Person.CENSUS_REGISTER_LENGTH)

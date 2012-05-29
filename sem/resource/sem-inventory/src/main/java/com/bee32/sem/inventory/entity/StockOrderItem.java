@@ -187,7 +187,7 @@ public class StockOrderItem
     }
 
     void set_State(char _state) {
-        this.state = StockItemState.valueOf(_state);
+        this.state = StockItemState.forValue(_state);
     }
 
     @Override

@@ -19,8 +19,8 @@ public class City
         return values(City.class);
     }
 
-    public static City valueOf(String value) {
-        return valueOf(City.class, value);
+    public static City forValue(String value) {
+        return forValue(City.class, value);
     }
 
 }

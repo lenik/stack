@@ -62,7 +62,7 @@ public class ChooseStockOrderDialogBean
         if (_subject == null)
             setSubject(null);
         else
-            setSubject(StockOrderSubject.valueOf(_subject));
+            setSubject(StockOrderSubject.forValue(_subject));
     }
 
 }

@@ -367,12 +367,12 @@ public class SiteInstance
 
     public DBDialect getDbDialect() {
         String _dialect = getProperty(DB_DIALECT_KEY);
-        DBDialect dialect = DBDialect.valueOf(_dialect);
+        DBDialect dialect = DBDialect.forValue(_dialect);
         return dialect;
     }
 
     public void setDbDialect(DBDialect dialect) {
-        String _dialect = dialect.name();
+        String _dialect = dialect.getName();
         setProperty(DB_DIALECT_KEY, _dialect);
         setProperty(DB_URL_FORMAT_KEY, dialect.getUrlFormat());
     }
@@ -422,12 +422,12 @@ public class SiteInstance
 
     public DBAutoDDL getAutoDDL() {
         String _autoddl = getProperty(AUTODDL_KEY);
-        DBAutoDDL autoddl = DBAutoDDL.valueOf(_autoddl);
+        DBAutoDDL autoddl = DBAutoDDL.forValue(_autoddl);
         return autoddl;
     }
 
     public void setAutoDDL(DBAutoDDL autoddl) {
-        String _autoddl = autoddl.name();
+        String _autoddl = autoddl.getName();
         setProperty(AUTODDL_KEY, _autoddl);
     }
 

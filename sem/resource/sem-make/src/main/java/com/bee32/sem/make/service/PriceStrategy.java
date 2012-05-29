@@ -26,12 +26,12 @@ public abstract class PriceStrategy
         return values(PriceStrategy.class);
     }
 
-    public static PriceStrategy valueOf(Character value) {
-        return valueOf(PriceStrategy.class, value);
+    public static PriceStrategy forValue(Character value) {
+        return forValue(PriceStrategy.class, value);
     }
 
-    public static PriceStrategy valueOf(char value) {
-        return valueOf(new Character(value));
+    public static PriceStrategy forValue(char value) {
+        return forValue(new Character(value));
     }
 
     /**
