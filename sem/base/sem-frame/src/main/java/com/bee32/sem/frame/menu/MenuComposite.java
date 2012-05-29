@@ -2,14 +2,15 @@ package com.bee32.sem.frame.menu;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.free.IllegalUsageException;
 
 import com.bee32.plover.arch.Composite;
 import com.bee32.plover.arch.IAppProfile;
-import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.inject.ServiceTemplate;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.ox1.dict.CommonDictController;
@@ -112,17 +113,32 @@ public abstract class MenuComposite
     }
 
     protected <T extends MenuComposite> T require(Class<T> mcClass) {
-        IMenuAssembler asm;
+        IMenuAssembler asm = ContextMenuAssembler.getMenuAssembler();
         return asm.require(mcClass);
     }
 
     protected <T> T getParameter(String key) {
         SiteInstance site = ThreadHttpContext.getSiteInstance();
-        IAppProfile profile = site.getAppProfile();
+        IAppProfile profile = site.getProfile();
         Class<?> mcClass = getClass();
-        TextMap parameters = profile.getParameters(mcClass);
+        Map<String, ?> parameters = profile.getParameters(mcClass);
         T value = (T) parameters.get(key);
         return value;
+    }
+
+    static Set<Object> TRUE_VALUES = new HashSet<>();
+    static {
+        TRUE_VALUES.add(true);
+        TRUE_VALUES.add("1");
+        TRUE_VALUES.add("true");
+    }
+
+    protected boolean mode(String key) {
+        Object val = getParameter(key);
+        if (TRUE_VALUES.contains(val))
+            return true;
+        else
+            return false;
     }
 
     // Helpers.

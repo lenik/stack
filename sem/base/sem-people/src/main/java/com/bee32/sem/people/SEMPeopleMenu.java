@@ -19,6 +19,8 @@ public class SEMPeopleMenu
         extends MenuComposite
         implements ITypeAbbrAware {
 
+    public static final String X_RECORDS = "records";
+
     SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
     static Location prefix = WEB_APP.join(SEMPeopleModule.PREFIX_);
 
@@ -33,7 +35,7 @@ public class SEMPeopleMenu
     /**/MenuNode personSidType = entry(SETTINGS, 2, "personSidType", getDictIndex(PartySidType.class));
     /**/MenuNode orgType = entry(SETTINGS, 3, "orgType", getDictIndex(OrgType.class));
     /**/MenuNode contactCategory = entry(SETTINGS, 4, "contactCategory", getDictIndex(ContactCategory.class));
-    /**/MenuNode partyRecordCategory = mode("x") ? entry(SETTINGS, 5, "partyRecordCategory",
+    /**/MenuNode partyRecordCategory = mode(X_RECORDS) ? entry(SETTINGS, 5, "partyRecordCategory",
             getDictIndex(PartyRecordCategory.class)) : null;
 
     static MenuNode INTERNALPERSON = menu(PEOPLE, 25, "internal");
