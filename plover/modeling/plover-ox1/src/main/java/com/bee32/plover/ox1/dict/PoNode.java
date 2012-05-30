@@ -12,7 +12,6 @@ import javax.free.ComparableComparator;
 import javax.free.IFormatter;
 import javax.free.INegotiation;
 import javax.free.IllegalUsageException;
-import javax.free.NaturalComparator;
 import javax.free.NegotiationException;
 import javax.free.PrefetchedIterator;
 import javax.free.TreeNode;

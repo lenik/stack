@@ -3,8 +3,6 @@ package com.bee32.plover.faces.utils;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.bee32.plover.faces.utils.CallableMap;
-
 public class CallableMapTest
         extends Assert {
 

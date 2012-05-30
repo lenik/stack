@@ -1,6 +1,5 @@
 package com.bee32.plover.faces.test;
 
-import com.bee32.plover.faces.test.FaceletsTestCase;
 
 public class LogoTest
         extends FaceletsTestCase {

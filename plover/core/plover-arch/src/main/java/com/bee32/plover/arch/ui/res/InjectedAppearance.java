@@ -5,10 +5,10 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-import com.bee32.plover.arch.ui.LazyAppearance;
 import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.arch.ui.IImageMap;
 import com.bee32.plover.arch.ui.IRefdocs;
+import com.bee32.plover.arch.ui.LazyAppearance;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.res.ClassResourceProperties;
 import com.bee32.plover.arch.util.res.IPropertyAcceptor;
