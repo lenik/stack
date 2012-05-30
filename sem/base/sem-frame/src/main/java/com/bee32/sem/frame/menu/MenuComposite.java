@@ -27,6 +27,8 @@ public abstract class MenuComposite
         extends Composite
         implements ILocationConstants, ITypeAbbrAware {
 
+    public static final String ENABLED = "enabled";
+
     List<Field> fields;
     Map<String, MenuNode> localMap = new HashMap<String, MenuNode>();
 
@@ -119,10 +121,9 @@ public abstract class MenuComposite
 
     protected <T> T getParameter(String key) {
         SiteInstance site = ThreadHttpContext.getSiteInstance();
-        IAppProfile profile = site.getProfile();
+        IAppProfile profile = site.getProfileAssembly();
         Class<?> mcClass = getClass();
-        Map<String, ?> parameters = profile.getParameters(mcClass);
-        T value = (T) parameters.get(key);
+        T value = (T) profile.getParameter(mcClass, key);
         return value;
     }
 
