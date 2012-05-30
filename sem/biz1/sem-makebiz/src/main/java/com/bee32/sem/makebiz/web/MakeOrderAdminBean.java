@@ -12,6 +12,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
+import org.apache.commons.lang.StringUtils;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
@@ -23,6 +24,7 @@ import com.bee32.sem.makebiz.dto.MakeOrderDto;
 import com.bee32.sem.makebiz.dto.MakeOrderItemDto;
 import com.bee32.sem.makebiz.entity.MakeOrder;
 import com.bee32.sem.makebiz.service.MakebizService;
+import com.bee32.sem.makebiz.util.MakebizCriteria;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 import com.bee32.sem.people.dto.PartyDto;
 
@@ -99,6 +101,24 @@ public class MakeOrderAdminBean
         if (searchParty != null) {
             setSearchFragment("customer", "客户为 " + searchParty.getDisplayName(), //
                     new Equals("customer.id", searchParty.getId()));
+            searchParty = null;
+        }
+    }
+
+    String searchPartyFuzzy;
+
+    public String getSearchPartyFuzzy() {
+        return searchPartyFuzzy;
+    }
+
+    public void setSearchPartyFuzzy(String searchPartyFuzzy) {
+        this.searchPartyFuzzy = searchPartyFuzzy;
+    }
+
+    public void addCustomerRestrictionFuzzy() {
+        if (!StringUtils.isEmpty(searchPartyFuzzy)) {
+            setSearchFragment("customer", "客户名称包含 " + searchPartyFuzzy, //
+                    MakebizCriteria.customerLike(searchPartyFuzzy));
             searchParty = null;
         }
     }

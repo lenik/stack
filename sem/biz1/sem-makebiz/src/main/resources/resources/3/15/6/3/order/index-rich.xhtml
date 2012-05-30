@@ -168,11 +168,20 @@
 
     <ui:define name="searchPanels.1">
         <ui:insert name="searchPanel.party">
-            <p:panel header="按相关人搜索" toggleable="true">
+            <p:panel header="按客户精确搜索" toggleable="true">
                 <div align="center">
                     <p:inputText id="party" readonly="true" value="${bean.searchParty.displayName}" />
                     <p:commandButton id="chooseParty" value="..." onclick="choosePartyToSearchDialog.show()" />
                     <p:commandButton id="filterCustomer" value="限定客户" actionListener="${bean.addCustomerRestriction}"
+                        update="@form, ${_searchUpdates}" />
+                </div>
+            </p:panel>
+        </ui:insert>
+        <ui:insert name="searchPanel.partyFuzzy">
+            <p:panel header="按客户模糊搜索" toggleable="true">
+                <div align="center">
+                    <p:inputText id="partyFuzzy" value="${bean.searchPartyFuzzy}" />
+                    <p:commandButton id="filterCustomerFuzzy" value="限定客户" actionListener="${bean.addCustomerRestrictionFuzzy}"
                         update="@form, ${_searchUpdates}" />
                 </div>
             </p:panel>
