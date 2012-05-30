@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.plover.arch.AppProfileAssembly;
+import com.bee32.plover.arch.AppProfileManager;
 import com.bee32.plover.arch.IAppProfile;
 import com.bee32.plover.rtx.location.ILocationConstants;
 import com.bee32.plover.rtx.location.Location;
@@ -48,7 +50,7 @@ public class SiteInstance
     public static final String DESCRIPTION_KEY = "description";
     public static final String LOGO_KEY = "logo";
     public static final String THEME_KEY = "theme";
-    public static final String PROFILE_KEY = "profile";
+    public static final String PROFILES_KEY = "profiles";
 
     public static final String VERBOSE_KEY = "verbose";
     public static final String OPTIMIZATION_KEY = "optimization";
@@ -320,25 +322,48 @@ public class SiteInstance
         setTheme(theme);
     }
 
-    public IAppProfile getProfile() {
-        String _profile = getProperty(PROFILE_KEY);
-        if (_profile == null)
+    public Set<IAppProfile> getProfiles() {
+        String profileNames = getProperty(PROFILES_KEY);
+        if (profileNames == null)
             return null;
-        else
-            return null; // XXX
+        profileNames = profileNames.trim();
+
+        Set<IAppProfile> profiles = new LinkedHashSet<IAppProfile>();
+        if (!profileNames.isEmpty())
+            for (String profileName : profileNames.split(",")) {
+                profileName = profileName.trim();
+                if (!profileName.isEmpty()) {
+                    IAppProfile profile = AppProfileManager.getProfile(profileName);
+                    profiles.add(profile);
+                }
+            }
+        return profiles;
     }
 
-    public void setProfile(IAppProfile profile) {
-        String profileName;
-        if (profile == null)
-            profileName = null;
-        else
-            profileName = profile.getClass().getCanonicalName();
-        setProfile(profileName);
+    public void setProfiles(Set<IAppProfile> profiles) {
+        String profileNames;
+        if (profiles == null)
+            profileNames = null;
+        else {
+            StringBuilder sb = new StringBuilder();
+            for (IAppProfile profile : profiles) {
+                String simpleName = profile.getClass().getSimpleName();
+                if (sb.length() != 0)
+                    sb.append(", ");
+                sb.append(simpleName);
+            }
+            profileNames = sb.toString();
+        }
+        setProfiles(profileNames);
     }
 
-    public void setProfile(String profileName) {
-        setProperty(PROFILE_KEY, profileName);
+    public void setProfiles(String profileNames) {
+        setProperty(PROFILES_KEY, profileNames);
+    }
+
+    public AppProfileAssembly getProfileAssembly() {
+        Set<IAppProfile> profiles = getProfiles();
+        return new AppProfileAssembly(profiles);
     }
 
     public VerboseLevel getVerboseLevel() {
