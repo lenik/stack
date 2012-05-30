@@ -127,7 +127,7 @@ public class UserFileBean
 
     @Override
     public void addNameOrLabelRestriction() {
-        addSearchFragment("name", "名称含有 " + searchPattern, UserFileCriteria.namedLike(searchPattern));
+        setSearchFragment("name", "名称含有 " + searchPattern, UserFileCriteria.namedLike(searchPattern));
         searchPattern = null;
     }
 

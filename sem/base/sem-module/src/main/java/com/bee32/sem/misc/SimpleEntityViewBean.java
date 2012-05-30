@@ -1034,12 +1034,12 @@ public abstract class SimpleEntityViewBean
     }
 
     public void addNameRestriction() {
-        addSearchFragment("name", "名称含有 " + searchPattern, CommonCriteria.namedLike(searchPattern, true));
+        setSearchFragment("name", "名称含有 " + searchPattern, CommonCriteria.namedLike(searchPattern, true));
         searchPattern = null;
     }
 
     public void addLabelRestriction() {
-        addSearchFragment("label", "标题含有 " + searchPattern, CommonCriteria.labelledWith(searchPattern, true));
+        setSearchFragment("label", "标题含有 " + searchPattern, CommonCriteria.labelledWith(searchPattern, true));
         searchPattern = null;
     }
 
