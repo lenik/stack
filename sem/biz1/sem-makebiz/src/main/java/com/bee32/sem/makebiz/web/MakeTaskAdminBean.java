@@ -107,11 +107,18 @@ public class MakeTaskAdminBean
 	    holder = new SplitToProcessHolder();
 	}
 
-	public void removeHolder(int index) {
-	    splitToProcessHolders.remove(index);
+	public void removeHolder(SplitToProcessHolder holder) {
+	    splitToProcessHolders.remove(holder);
 	}
 
 	public void addHolder() {
+	    for(SplitToProcessHolder _holder : splitToProcessHolders) {
+	        if(holder.getBatchNumber().equals(_holder.getBatchNumber())) {
+	            uiLogger.error("批号已经存在!");
+
+	            return;
+	        }
+	    }
 	    splitToProcessHolders.add(holder);
 	}
 

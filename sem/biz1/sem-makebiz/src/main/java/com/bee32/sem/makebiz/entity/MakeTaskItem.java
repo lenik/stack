@@ -41,7 +41,7 @@ public class MakeTaskItem
     MakeTask task;
     int index;
     Part part;
-    BigDecimal quantity = new BigDecimal(1);
+    BigDecimal quantity = new BigDecimal(0);
 
     Date deadline;
     String status;

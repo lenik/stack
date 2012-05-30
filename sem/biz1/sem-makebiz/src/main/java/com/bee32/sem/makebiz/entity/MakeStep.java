@@ -57,6 +57,7 @@ public class MakeStep
 
     boolean done;
 
+    @NaturalId
     @ManyToOne(optional = false)
     public MakeProcess getParent() {
         return parent;

@@ -197,8 +197,8 @@ public class MakebizService
 	for(SplitToProcessHolder holder : holders) {
 	    count = count.add(holder.getQuantity());
 	}
-	if(count.compareTo(taskItem.getQuantity()) > 0) {
-	    throw new RuntimeException("工艺单数量合计大于生产任务的数量!");
+	if(count.compareTo(taskItem.getQuantity()) != 0) {
+	    throw new RuntimeException("工艺单数量合计和生产任务的数量不相等!");
 	}
 
 	MakeTaskItem _taskItem = taskItem.unmarshal();
