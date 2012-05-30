@@ -20,6 +20,8 @@ public abstract class PersistenceUnit
         extends ClassCatalog
         implements IPriority {
 
+    public static final String MAIN_UNIT = "main-unit";
+
     static Logger logger = LoggerFactory.getLogger(PersistenceUnit.class);
 
     protected static final int SYSTEM_PRIORITY = -1000;

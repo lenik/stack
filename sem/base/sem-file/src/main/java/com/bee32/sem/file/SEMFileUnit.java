@@ -7,8 +7,9 @@ import com.bee32.sem.file.entity.FileAttribute;
 import com.bee32.sem.file.entity.FileBlob;
 import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.file.entity.UserFileTagname;
+import com.bee32.sem.people.SEMPeopleUnit;
 
-@ImportUnit({ IcsfAccessUnit.class })
+@ImportUnit({ IcsfAccessUnit.class, SEMPeopleUnit.class })
 public class SEMFileUnit
         extends PersistenceUnit {
 
