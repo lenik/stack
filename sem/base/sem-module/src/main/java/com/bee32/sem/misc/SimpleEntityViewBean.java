@@ -44,6 +44,7 @@ import com.bee32.plover.arch.util.PriorityComparator;
 import com.bee32.plover.arch.util.dto.Fmask;
 import com.bee32.plover.collections.Varargs;
 import com.bee32.plover.criteria.hibernate.CriteriaComposite;
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.InCollection;
 import com.bee32.plover.criteria.hibernate.Or;
@@ -928,6 +929,7 @@ public abstract class SimpleEntityViewBean
     /*************************************************************************
      * Section: Search
      *************************************************************************/
+    protected int searchId;
     protected String searchPattern;
     protected DateRangeTemplate dateRange = DateRangeTemplate.recentWeek;
     protected Date beginDate;
@@ -1023,6 +1025,19 @@ public abstract class SimpleEntityViewBean
 
     protected void searchFragmentsChanged() {
         refreshRowCount();
+    }
+
+    public int getSearchId() {
+        return searchId;
+    }
+
+    public void setSearchId(int searchId) {
+        this.searchId = searchId;
+    }
+
+    public void addIdRestriction() {
+        setSearchFragment("id", "ID 为 " + searchId, new Equals("id", searchId));
+        // searchId = 0;
     }
 
     public String getSearchPattern() {

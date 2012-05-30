@@ -109,7 +109,8 @@
             </p:confirmDialog>
         </ui:insert>
         <c:if test="${verifiable}">
-            <sem:singleVerifierSupportDialog id="verifyDialog" pageBean="${bean}" update="${_contentUpdate}" />
+            <sem:singleVerifierSupportDialog id="verifyDialog" pageBean="${bean}"
+                update="${_contentUpdate}" />
             <p:dialog id="d_verifyInfo" widgetVar="verifyInfoDialog" header="记录审核信息" modal="true"
                 dynamic="${viewConfig.dynamicDialog}">
                 <h:form id="verifyInfoForm" styleClass="ui-dialog-form">
@@ -146,6 +147,16 @@
     </ui:define>
 
     <ui:define name="searchPanels.0">
+        <ui:insert name="searchPanel.id">
+            <p:panel header="按编号搜索" toggleable="true" rendered="${not baseEntity}">
+                <div align="center">
+                    <p:spinner id="id" value="${bean.searchId}" />
+                    <p:commandButton id="filterId" value="限定记录 ID" actionListener="${bean.addIdRestriction}"
+                        update="@form, ${_searchUpdates}" />
+                    <ui:insert name="searchPanel.id.1" />
+                </div>
+            </p:panel>
+        </ui:insert>
         <ui:insert name="searchPanel.keyword">
             <p:panel header="按关键字搜索" toggleable="true" rendered="${not baseEntity}">
                 <div align="center">
@@ -225,8 +236,7 @@
                         <h:panelGroup rendered="${copyable and (bean.editing or not plainEditForm)}">
                             <p:commandButton id="dup-validated" value="创建副本" actionListener="${bean.saveDup}"
                                 disabled="${not bean.editing}" update="${_contentUpdate} ${_indexUpdate} ${mirrorTargets}"
-                                rendered="${not plainEditForm}" onclick="waitbox.show()"
-                                oncomplete="waitbox.hide(); editdlg.shakeOnFail(args)" />
+                                rendered="${not plainEditForm}" onclick="waitbox.show()" oncomplete="waitbox.hide(); editdlg.shakeOnFail(args)" />
                         </h:panelGroup>
                     </td>
                     <td align="right">
