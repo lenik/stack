@@ -1,7 +1,13 @@
 package com.bee32.plover.html;
 
 import java.io.Writer;
+import java.util.List;
+import java.util.Set;
 
+import javax.free.Nullables;
+
+import com.bee32.plover.arch.util.EnumAlt;
+import com.bee32.plover.arch.util.EnumAltRegistry;
 import com.bee32.plover.arch.util.ILabelledEntry;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.rtx.location.Locations;
@@ -77,11 +83,9 @@ public class SimpleForm
 
                 tr();
                 th().classAttr("key" + (critical ? " critical" : "")).text(label).end();
-
                 td().classAttr("value");
 
                 Html input;
-
                 if (value == null || value instanceof String || value instanceof Number) {
                     input = input().name(name).type("text");
                     String sval = value == null ? "" : value.toString();
@@ -108,7 +112,7 @@ public class SimpleForm
                     if (bval)
                         input.selected("selected");
 
-                } else if (value instanceof Enum<?>) {
+                } else if (value instanceof Enum<?>) { // select<option> name() -> label.
                     Class<? extends Enum<?>> enumClass = (Class<? extends Enum<?>>) value.getClass();
                     boolean hasLabel = ILabelledEntry.class.isAssignableFrom(enumClass);
 
@@ -116,7 +120,7 @@ public class SimpleForm
 
                     input = select().name(name);
                     for (Enum<?> candidate : candidates) {
-                        boolean selected = value.equals(candidate);
+                        boolean selected = Nullables.equals(value, candidate);
                         Html option = option().value(candidate.name());
                         if (selected)
                             option.selected("selected");
@@ -127,6 +131,41 @@ public class SimpleForm
                             option.text(candidate.name());
                         }
                         option.end();
+                    }
+
+                } else if (value instanceof EnumAlt<?, ?>) { // select<option> name -> label.
+                    Class<? extends EnumAlt<?, ?>> enmClass = (Class<? extends EnumAlt<?, ?>>) value.getClass();
+                    boolean hasLabel = ILabelledEntry.class.isAssignableFrom(enmClass);
+
+                    input = select().name(name);
+                    for (EnumAlt<?, ?> candidate : EnumAltRegistry.getNameMap(enmClass).values()) {
+                        boolean selected = Nullables.equals(value, candidate);
+                        Html option = option().value(candidate.getName());
+                        if (selected)
+                            option.selected("selected");
+                        if (hasLabel) {
+                            String candidateLabel = ((ILabelledEntry) candidate).getEntryLabel();
+                            option.text(candidateLabel);
+                        } else {
+                            option.text(candidate.getName());
+                        }
+                        option.end();
+                    }
+
+                } else if (value instanceof IMultiSelectionModel) {// checkbox*: index[] -> label[].
+                    IMultiSelectionModel msm = (IMultiSelectionModel) value;
+                    input = div();
+                    Set<Integer> indexes = msm.getIndexes();
+                    List<?> candidates = msm.getCandidates();
+                    for (int index = 0; index < candidates.size(); index++) {
+                        boolean selected = indexes.contains(index);
+                        Object candidate = candidates.get(index);
+                        String candidateLabel;
+                        if (candidate instanceof ILabelledEntry)
+                            candidateLabel = ((ILabelledEntry) candidate).getEntryLabel();
+                        else
+                            candidateLabel = candidate.toString();
+                        checkbox(selected).name(name).text(candidateLabel).end();
                     }
                 } else {
                     throw new UnsupportedOperationException("Unsupported field value type for simple-form: " + value);
