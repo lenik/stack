@@ -14,6 +14,11 @@ import com.bee32.plover.collections.Varargs;
 import com.bee32.plover.orm.sample.NormalSamples;
 import com.bee32.plover.orm.sample.SampleList;
 import com.bee32.plover.orm.util.DataPartialContext;
+import com.bee32.sem.hr.entity.EmployeeInfo;
+import com.bee32.sem.hr.entity.JobPerformances;
+import com.bee32.sem.hr.entity.JobPosts;
+import com.bee32.sem.hr.entity.JobTitles;
+import com.bee32.sem.hr.entity.PersonEducationTypes;
 import com.bee32.sem.people.entity.Contact;
 import com.bee32.sem.people.entity.ContactCategories;
 import com.bee32.sem.people.entity.Org;
@@ -42,6 +47,7 @@ public class SEMPeopleSamples
     public final Person bugatti = new Person(PREFIX + "Bugatti");
     public final Person bentley = new Person(PREFIX + "Bentley");
     public final Person weiXiaoBao = new Person(PREFIX + "韦小宝");
+    public final EmployeeInfo employee = new EmployeeInfo();
 
     @Inject
     IcsfPrincipalSamples principals;
@@ -137,6 +143,11 @@ public class SEMPeopleSamples
     PartyTagnames partyTagnames = predefined(PartyTagnames.class);
     ContactCategories contactCategories = predefined(ContactCategories.class);
     PartySidTypes sidTypes = predefined(PartySidTypes.class);
+
+    JobPosts jobPosts = predefined(JobPosts.class);
+    JobTitles jobTitles = predefined(JobTitles.class);
+    PersonEducationTypes educationTypes = predefined(PersonEducationTypes.class);
+    JobPerformances jobPerformances = predefined(JobPerformances.class);
 
     @Override
     protected void wireUp() {
