@@ -19,7 +19,7 @@ public abstract class AppProfile
         preamble();
     }
 
-    @Override
+    // @Override
     public Map<String, Object> getParameters(Class<?> featureClass) {
         Map<String, Object> parameters = featureParameters.get(featureClass);
         if (parameters == null) {
@@ -28,6 +28,15 @@ public abstract class AppProfile
             featureParameters.put(featureClass, parameters);
         }
         return parameters;
+    }
+
+    @Override
+    public Object getParameter(Class<?> featureClass, String key) {
+        Map<String, Object> map = getParameters(featureClass);
+        if (map == null)
+            return null;
+        else
+            return map.get(key);
     }
 
     protected void setParameter(Class<?> featureClass, String key, Object value) {
