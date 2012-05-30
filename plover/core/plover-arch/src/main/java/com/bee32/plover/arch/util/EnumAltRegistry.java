@@ -22,7 +22,7 @@ public class EnumAltRegistry {
     static final ClassLocal<Map<String, ? extends EnumAlt<?, ?>>> clNameMap = new ClassLocal<>();
     static final ClassLocal<Map<Object, ? extends EnumAlt<?, ?>>> clValueMap = new ClassLocal<>();
 
-    public static synchronized <E extends EnumAlt<?, E>> //
+    public static synchronized <E extends EnumAlt<?, ?>> //
     Map<String, E> getNameMap(Class<E> enumType) {
         Map<String, E> nameMap = (Map<String, E>) clNameMap.get(enumType);
         if (nameMap == null) {
@@ -32,7 +32,7 @@ public class EnumAltRegistry {
         return nameMap;
     }
 
-    public static synchronized <E extends EnumAlt<V, E>, V extends Serializable> //
+    public static synchronized <E extends EnumAlt<V, ?>, V extends Serializable> //
     Map<V, E> getValueMap(Class<E> enumType) {
         Map<Object, E> _valueMap = (Map<Object, E>) clValueMap.get(enumType);
         if (_valueMap == null) {
