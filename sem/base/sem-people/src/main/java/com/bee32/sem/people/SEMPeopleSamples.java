@@ -19,6 +19,7 @@ import com.bee32.sem.hr.entity.JobPerformances;
 import com.bee32.sem.hr.entity.JobPosts;
 import com.bee32.sem.hr.entity.JobTitles;
 import com.bee32.sem.hr.entity.PersonEducationTypes;
+import com.bee32.sem.hr.entity.PersonSkillCategories;
 import com.bee32.sem.people.entity.Contact;
 import com.bee32.sem.people.entity.ContactCategories;
 import com.bee32.sem.people.entity.Org;
@@ -148,6 +149,7 @@ public class SEMPeopleSamples
     JobTitles jobTitles = predefined(JobTitles.class);
     PersonEducationTypes educationTypes = predefined(PersonEducationTypes.class);
     JobPerformances jobPerformances = predefined(JobPerformances.class);
+    PersonSkillCategories personSkillCategory = predefined(PersonSkillCategories.class);
 
     @Override
     protected void wireUp() {
