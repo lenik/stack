@@ -4,8 +4,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-public abstract class AbstractMultiSelectionModel
-        implements IMultiSelectionModel {
+public abstract class AbstractMultiSelectionModel<T>
+        implements IMultiSelectionModel<T> {
 
     @Override
     public Set<Integer> getIndexes() {
@@ -20,17 +20,17 @@ public abstract class AbstractMultiSelectionModel
 
     @Override
     public void setIndexes(Set<Integer> indexes) {
-        Set<Object> values = getValues();
+        Set<T> values = getValues();
         values.clear();
 
-        List<?> candidates = getCandidates();
+        List<T> candidates = getCandidates();
         int size = candidates.size();
         for (Integer index : indexes) {
             if (index == null)
                 continue;
             if (index < 0 || index >= size)
                 continue;
-            Object value = candidates.get(index);
+            T value = candidates.get(index);
             values.add(value);
         }
     }

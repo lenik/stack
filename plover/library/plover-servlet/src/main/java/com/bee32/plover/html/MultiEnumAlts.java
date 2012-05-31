@@ -10,17 +10,17 @@ import com.bee32.plover.arch.util.EnumAlt;
 import com.bee32.plover.arch.util.EnumAltRegistry;
 
 public class MultiEnumAlts
-        extends AbstractMultiSelectionModel {
+        extends AbstractMultiSelectionModel<EnumAlt<?, ?>> {
 
     final Class<? extends EnumAlt<?, ?>> enumType;
-    final Set<Object> values;
+    final Set<EnumAlt<?, ?>> values;
 
     // redundant.
     List<EnumAlt<?, ?>> candidates;
 
     public MultiEnumAlts(Class<? extends EnumAlt<?, ?>> enumType) {
         this.enumType = enumType;
-        this.values = new LinkedHashSet<Object>();
+        this.values = new LinkedHashSet<EnumAlt<?, ?>>();
 
         candidates = new ArrayList<EnumAlt<?, ?>>();
         for (Entry<String, ? extends EnumAlt<?, ?>> entry : EnumAltRegistry.getNameMap(enumType).entrySet()) {
@@ -32,7 +32,7 @@ public class MultiEnumAlts
     }
 
     @Override
-    public Set<Object> getValues() {
+    public Set<EnumAlt<?, ?>> getValues() {
         return values;
     }
 

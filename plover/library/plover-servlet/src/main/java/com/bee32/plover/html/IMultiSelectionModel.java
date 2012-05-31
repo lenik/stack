@@ -6,11 +6,11 @@ import java.util.Set;
 /**
  * Multi-selection model.
  */
-public interface IMultiSelectionModel {
+public interface IMultiSelectionModel<T> {
 
-    Set<Object> getValues();
+    Set<T> getValues();
 
-    List<?> getCandidates();
+    List<T> getCandidates();
 
     Set<Integer> getIndexes();
 

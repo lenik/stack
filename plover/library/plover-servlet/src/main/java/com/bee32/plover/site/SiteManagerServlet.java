@@ -20,8 +20,6 @@ import javax.free.StringArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.plover.arch.AppProfileManager;
-import com.bee32.plover.arch.IAppProfile;
 import com.bee32.plover.arch.logging.ExceptionFormat;
 import com.bee32.plover.arch.logging.ExceptionLog;
 import com.bee32.plover.arch.logging.ExceptionLogEntry;
@@ -227,13 +225,9 @@ public class SiteManagerServlet
                 if (url == null)
                     url = dialect.getUrlFormat();
 
-                Set<IAppProfile> profiles = new LinkedHashSet<IAppProfile>();
-                for (String profileName : _profiles) {
-                    IAppProfile profile = AppProfileManager.getProfile(profileName);
-                    if (profile == null)
-                        throw new NullPointerException("profile");
-                    profiles.add(profile);
-                }
+                Set<String> profileNames = new LinkedHashSet<String>();
+                for (String profileName : _profiles)
+                    profileNames.add(profileName);
 
                 ul();
                 if (createSite)
@@ -257,7 +251,7 @@ public class SiteManagerServlet
                 site.setDbPass(dbPass);
                 site.setAutoDDL(autoddl);
                 site.setSamples(samples);
-                site.setProfiles(profiles);
+                site.setProfileNames(profileNames);
 
                 li().text("保存站点配置文件……").end();
                 site.saveConfig();
@@ -288,7 +282,7 @@ public class SiteManagerServlet
                     "dbpass", "数据库密码:数据库的登录密码", site.getDbPass(), //
                     "autoddl", "DDL模式:数据库自动创建DDL的模式", site.getAutoDDL(), //
                     "samples", "样本加载:选择加载哪些样本", site.getSamples(), //
-                    "profiles", "应用剪裁:选择要启用的功能、特性", site.getProfiles() //
+                    "profiles", "应用剪裁:选择要启用的功能、特性", site.getProfileNames() //
             );
 
             if (!createSite) {
@@ -369,7 +363,6 @@ public class SiteManagerServlet
         @Override
         protected void _content()
                 throws Exception {
-
             ul();
             li().text("断开站点……").end();
             manager.removeSite(site);

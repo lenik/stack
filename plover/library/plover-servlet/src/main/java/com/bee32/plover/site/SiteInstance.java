@@ -50,7 +50,7 @@ public class SiteInstance
     public static final String DESCRIPTION_KEY = "description";
     public static final String LOGO_KEY = "logo";
     public static final String THEME_KEY = "theme";
-    public static final String PROFILES_KEY = "profiles";
+    public static final String PROFILE_NAMES_KEY = "profiles";
 
     public static final String VERBOSE_KEY = "verbose";
     public static final String OPTIMIZATION_KEY = "optimization";
@@ -322,47 +322,68 @@ public class SiteInstance
         setTheme(theme);
     }
 
-    public Set<IAppProfile> getProfiles() {
-        String profileNames = getProperty(PROFILES_KEY);
+    public Set<IAppProfile> _getProfiles() {
+        Set<String> profileNames = getProfileNames();
         if (profileNames == null)
             return null;
-        profileNames = profileNames.trim();
-
         Set<IAppProfile> profiles = new LinkedHashSet<IAppProfile>();
-        if (!profileNames.isEmpty())
-            for (String profileName : profileNames.split(",")) {
-                profileName = profileName.trim();
-                if (!profileName.isEmpty()) {
-                    IAppProfile profile = AppProfileManager.getProfile(profileName);
-                    profiles.add(profile);
-                }
-            }
+        for (String profileName : profileNames) {
+            IAppProfile profile = AppProfileManager.getProfile(profileName);
+            profiles.add(profile);
+        }
         return profiles;
     }
 
-    public void setProfiles(Set<IAppProfile> profiles) {
-        String profileNames;
+    public void _setProfiles(Set<IAppProfile> profiles) {
+        Set<String> profileNames;
         if (profiles == null)
             profileNames = null;
         else {
-            StringBuilder sb = new StringBuilder();
+            profileNames = new LinkedHashSet<String>();
             for (IAppProfile profile : profiles) {
                 String simpleName = profile.getClass().getSimpleName();
-                if (sb.length() != 0)
-                    sb.append(", ");
-                sb.append(simpleName);
+                profileNames.add(simpleName);
             }
-            profileNames = sb.toString();
         }
-        setProfiles(profileNames);
+        setProfileNames(profileNames);
     }
 
-    public void setProfiles(String profileNames) {
-        setProperty(PROFILES_KEY, profileNames);
+    public Set<String> getProfileNames() {
+        String _profileNames = getProperty(PROFILE_NAMES_KEY);
+        if (_profileNames == null)
+            return null;
+        else
+            _profileNames = _profileNames.trim();
+
+        Set<String> profileNames = new LinkedHashSet<String>();
+        if (!_profileNames.isEmpty())
+            for (String profileName : _profileNames.split(",")) {
+                profileName = profileName.trim();
+                if (!profileName.isEmpty()) {
+                    profileNames.add(profileName);
+                }
+            }
+        return profileNames;
+    }
+
+    public void setProfileNames(Set<String> profileNames) {
+        StringBuilder sb = null;
+        for (String profileName : profileNames) {
+            if (sb == null)
+                sb = new StringBuilder();
+            else
+                sb.append(", ");
+            sb.append(profileName);
+        }
+        setProperty(PROFILE_NAMES_KEY, sb.toString());
+    }
+
+    public void setProfileNames(String profileNames) {
+        setProperty(PROFILE_NAMES_KEY, profileNames);
     }
 
     public AppProfileAssembly getProfileAssembly() {
-        Set<IAppProfile> profiles = getProfiles();
+        Set<IAppProfile> profiles = _getProfiles();
         return new AppProfileAssembly(profiles);
     }
 
