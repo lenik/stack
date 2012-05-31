@@ -9,51 +9,51 @@
 
     <ui:define name="dataColumns">
         <p:column headerText="姓名">
-            <h:outputText value="#{person.displayName}" />
+            <h:outputText value="#{entry.displayName}" />
         </p:column>
 
         <p:column headerText="性别">
-            <h:outputText value="#{person.sexText}" />
+            <h:outputText value="#{entry.sexText}" />
         </p:column>
 
         <p:column headerText="联系电话">
-            <h:outputText value="#{person.contactsString}" />
+            <h:outputText value="#{entry.contactsString}" />
         </p:column>
 
         <p:column headerText="生日">
-            <h:outputText value="#{person.birthday}">
+            <h:outputText value="#{entry.birthday}">
                 <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
             </h:outputText>
         </p:column>
 
         <p:column headerText="证件类型">
-            <h:outputText value="#{person.sidType.label}" />
+            <h:outputText value="#{entry.sidType.label}" />
         </p:column>
 
         <p:column headerText="证件号码">
-            <h:outputText value="#{person.sid}" />
+            <h:outputText value="#{entry.sid}" />
         </p:column>
 
         <p:column headerText="户籍">
-            <h:outputText value="#{person.censusRegister}" />
+            <h:outputText value="#{entry.censusRegister}" />
         </p:column>
 
         <p:column headerText="操作">
             <t:panelGroup>
-                <p:commandLink title="人事信息" update=":personnelInfoForm" oncomplete="personnelInfoDialog.show()">
+                <p:commandLink title="人事信息"   update=":personnelInfoForm"  onclick="waitbox.show()" oncomplete="waitbox.hide();personnelInfoDialog.show()">
                     <f:setPropertyActionListener value="#{person}"
                         target="#{internalPersonAdminBean.selectedPerson}" />
                     <p:graphicImage value="#{location.ICON}/view16/help_view.gif" />
                 </p:commandLink>
-                <p:commandLink title="专业技能" update="editForm:editPanel" oncomplete="editDialog.show()">
+                <p:commandLink title="专业技能"  update=":personnelInfoForm" oncomplete="editDialog.show()">
                     <f:setPropertyActionListener value="#{person}" target="#{bean.selectedPerson}" />
                     <p:graphicImage value="#{location.ICON}/obj16/native_lib_path_attrib.gif" />
                 </p:commandLink>
-                <p:commandLink title="履历" update="editForm:editPanel" oncomplete="editDialog.show()">
+                <p:commandLink title="履历"  oncomplete="editDialog.show()">
                     <f:setPropertyActionListener value="#{person}" target="#{bean.selectedPerson}" />
                     <p:graphicImage value="#{location.ICON}/elcl16/export_log.gif" />
                 </p:commandLink>
-                <p:commandLink title="劳动合同" update="editForm:editPanel" oncomplete="editDialog.show()">
+                <p:commandLink title="劳动合同"  oncomplete="editDialog.show()">
                     <f:setPropertyActionListener value="#{person}" target="#{bean.selectedPerson}" />
                     <p:graphicImage value="#{location.ICON}/elcl16/cpyqual_menu.gif" />
                 </p:commandLink>
@@ -61,35 +61,49 @@
         </p:column>
     </ui:define>
 
+    <h:form id="editForm">
+        <p:dialog id="editDialog" wigetVar="editDialog" >
+            <p:panel id="editPanel"  header="editPanel">
+                EditForm is Under Development
+            </p:panel>
+        </p:dialog>
+    </h:form>
+
     <ui:define name="editDialogContent">
-        Under development.
+                Under development.
     </ui:define>
 
-    <p:dialog header="人事信息" widgetVar="personnelInfoDialog" modal="true" height="500" width="640">
+    <ui:define name="dialogs">
 
-        <h:form id="personnelInfoForm">
-            <t:panelGrid columns="4">
-                <h:outputText value="入职日期" />
-                <p:inputText />
-                <h:outputText value="离职日期" />
-                <p:inputText />
+        <p:dialog header="人事信息" widgetVar="personnelInfoDialog" modal="true" height="500" width="640">
+            <h:form id="personnelInfoForm">
+                <t:panelGrid columns="4">
+                    <h:outputText value="入职日期" />
+                    <p:inputText />
+                    <h:outputText value="离职日期" />
+                    <p:inputText />
 
-                <h:outputText value="考勤" />
-                <p:inputText />
-                <h:outputText value="学历" />
-                <p:inputText />
+                    <h:outputText value="考勤" />
+                    <p:inputText />
+                    <h:outputText value="学历" />
+                    <p:inputText />
 
-                <h:outputText value="职称" />
-                <p:inputText />
-                <h:outputText value="职位" />
-                <p:inputText />
+                    <h:outputText value="职称" />
+                    <p:inputText />
+                    <h:outputText value="职位" />
+                    <p:inputText />
 
-                <h:outputText value="工作能力指数" />
-                <p:inputText />
-                <h:outputText value="月度工作表现" />
-                <p:inputText />
-            </t:panelGrid>
-        </h:form>
-    </p:dialog>
+                    <h:outputText value="工作能力指数" />
+                    <p:inputText />
+                    <h:outputText value="月度工作表现" />
+                    <p:inputText />
+
+                    <p:commandButton value="编辑" />
+                    <p:commandButton value="保存" />
+                    <p:commandButton value="取消" />
+                </t:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:define>
 
 </ui:composition>
