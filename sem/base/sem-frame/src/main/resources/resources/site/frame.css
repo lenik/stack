@@ -166,6 +166,10 @@ label {
     display: none;
 }
 
+.locker-active .icon-button:not(.ui-state-disabled) {
+    display: none;
+}
+
 .f-left {
     text-align: left;
 }

@@ -31,16 +31,16 @@
                 <ui:insert name="toolbarPeripherals" />
             </p:toolbarGroup>
             <p:toolbarGroup align="left">
-                <p:commandButton id="first" value="第一条" actionListener="${bean.gotoFirst}"
+                <p:commandButton id="first" icon="ui-icon-seek-first" actionListener="${bean.gotoFirst}"
                     disabled="${bean.first or bean.dataModel.rowCount == 0 or bean.editing}" update="mainForm, ${_contentUpdate}"
                     onclick="waitbox.show()" oncomplete="waitbox.hide()" />
-                <p:commandButton id="previous" value="上一条" actionListener="${bean.gotoPrevious}"
+                <p:commandButton id="previous" icon="ui-icon-seek-prev" actionListener="${bean.gotoPrevious}"
                     disabled="${bean.first or bean.dataModel.rowCount == 0 or bean.editing}" update="mainForm, ${_contentUpdate}"
                     onclick="waitbox.show()" oncomplete="waitbox.hide()" />
-                <p:commandButton id="next" value="下一条" actionListener="${bean.gotoNext}"
+                <p:commandButton id="next" icon="ui-icon-seek-next" actionListener="${bean.gotoNext}"
                     disabled="${bean.last or bean.dataModel.rowCount == 0 or bean.editing}" update="mainForm, ${_contentUpdate}"
                     onclick="waitbox.show()" oncomplete="waitbox.hide()" />
-                <p:commandButton id="last" value="最末条" actionListener="${bean.gotoLast}"
+                <p:commandButton id="last" icon="ui-icon-seek-end" actionListener="${bean.gotoLast}"
                     disabled="${bean.last or bean.dataModel.rowCount == 0 or bean.editing}" update="mainForm, ${_contentUpdate}"
                     onclick="waitbox.show()" oncomplete="waitbox.hide()" />
                 <p:separator />

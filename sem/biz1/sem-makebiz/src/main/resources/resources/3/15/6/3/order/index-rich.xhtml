@@ -62,7 +62,7 @@
         </t:panelGrid>
 
         <fr:listView id="itemsIndexView" header="订单项目" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
-            nested="true" paginator="false" readonly="#{not bean.editing}">
+            nested="true" paginator="false" readonly="#{not bean.editing}" inlineEdit="true">
             <f:facet name="columns">
                 <p:column headerText="物料" styleClass="f-wrappable">
                     <h:outputText value="#{entry.part.target.label}" />
