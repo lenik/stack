@@ -9,6 +9,8 @@ public enum DateRangeTemplate {
 
     thisMonth(true, Calendar.MONTH),
 
+    thisYear(true, Calendar.YEAR),
+
     recentWeek(7),
 
     recentMonth(30),
@@ -48,6 +50,8 @@ public enum DateRangeTemplate {
             return "今天";
         case thisMonth:
             return "这个月";
+        case thisYear:
+            return "今年";
         case recentWeek:
             return "最近一个星期";
         case recentMonth:
@@ -57,6 +61,7 @@ public enum DateRangeTemplate {
         case recentYear:
             return "最近一年";
         }
+
         return "???";
     }
 
