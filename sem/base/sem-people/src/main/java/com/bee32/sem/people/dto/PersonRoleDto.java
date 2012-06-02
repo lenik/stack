@@ -37,6 +37,7 @@ public class PersonRoleDto
         super(fmask);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void _marshal(PersonRole source) {
         person = mref(PersonDto.class, //
@@ -56,6 +57,7 @@ public class PersonRoleDto
         description = source.getDescription();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void _unmarshalTo(PersonRole target) {
         merge(target, "person", person);

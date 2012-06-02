@@ -51,6 +51,7 @@ public class SEMPeopleSamples
     public final PersonSkill englishSkill = new PersonSkill();
     public final PersonSkill japaneseSkill = new PersonSkill();
 
+    @SuppressWarnings("deprecation")
     public SEMPeopleSamples()
             throws ParseException {
 
