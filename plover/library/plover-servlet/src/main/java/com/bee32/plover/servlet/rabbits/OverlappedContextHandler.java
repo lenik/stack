@@ -6,14 +6,14 @@ import java.net.URL;
 
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.log.Log;
+import org.eclipse.jetty.util.log.Logger;
 import org.eclipse.jetty.util.resource.Resource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class OverlappedContextHandler
         extends ServletContextHandler {
 
-    static Logger logger = LoggerFactory.getLogger(OverlappedContextHandler.class);
+    // static Logger logger = LoggerFactory.getLogger(OverlappedContextHandler.class);
+    Logger logger = Log.getLogger(OverlappedContextHandler.class);
 
     public OverlappedContextHandler(int options) {
         super(options);
@@ -38,7 +38,7 @@ public class OverlappedContextHandler
         try {
             resource = Resource.newResource(resourceUrl);
         } catch (IOException e) {
-            Log.ignore(e);
+            logger.ignore(e);
             return null;
         }
 

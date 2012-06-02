@@ -16,9 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.servlet.DefaultServlet_WF;
 import org.eclipse.jetty.util.log.Log;
+import org.eclipse.jetty.util.log.Logger;
 import org.eclipse.jetty.util.resource.Resource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.util.Mime;
 
@@ -30,7 +29,7 @@ public class OverlappedResourceServlet
 
     private static final long serialVersionUID = 1L;
 
-    static Logger logger = LoggerFactory.getLogger(OverlappedResourceServlet.class);
+    static Logger logger = Log.getLogger(OverlappedResourceServlet.class);
 
     public OverlappedResourceServlet() {
         super();
@@ -80,7 +79,7 @@ public class OverlappedResourceServlet
             resource = Resource.newResource(resourceUrl);
             // logger.debug("    => " + resource);
         } catch (IOException e) {
-            Log.ignore(e);
+            logger.ignore(e);
             return null;
         }
 
