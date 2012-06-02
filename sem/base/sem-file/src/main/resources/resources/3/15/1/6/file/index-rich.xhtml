@@ -20,13 +20,13 @@
         <h:outputStylesheet library="frame" name="table.css" />
         <h:outputScript library="frame" name="switcher.js" target="head" />
 
-        <p:column headerText="档案日期">
+        <p:column headerText="档案日期" sortBy="${entry.fileDate}">
             <h:outputText value="${entry.fileDate}">
                 <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
             </h:outputText>
         </p:column>
 
-        <p:column headerText="客户">
+        <p:column headerText="客户" sortBy="${entry.party}">
             <h:outputText value="${entry.party.displayName}" />
         </p:column>
 
