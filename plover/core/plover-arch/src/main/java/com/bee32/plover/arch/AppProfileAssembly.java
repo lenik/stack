@@ -6,6 +6,7 @@ import com.bee32.plover.inject.NotAComponent;
 
 @NotAComponent
 public class AppProfileAssembly
+        extends Component
         implements IAppProfile {
 
     Set<IAppProfile> profiles;

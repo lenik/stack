@@ -153,7 +153,7 @@ public class SimpleForm
                     }
 
                 } else if (value instanceof IMultiSelectionModel) {// checkbox*: index[] -> label[].
-                    IMultiSelectionModel msm = (IMultiSelectionModel) value;
+                    IMultiSelectionModel<?> msm = (IMultiSelectionModel<?>) value;
                     input = div();
                     Set<Integer> indexes = msm.getIndexes();
                     List<?> candidates = msm.getCandidates();

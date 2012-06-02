@@ -10,6 +10,10 @@ public class SampleList
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * @deprecated add anonymous entity sample is deprecated, an alt-Id should be given.
+     * @see #add(String, Entity)
+     */
     @Deprecated
     @Override
     public boolean add(Entity<?> e) {

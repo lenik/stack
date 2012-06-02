@@ -12,7 +12,6 @@ import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.sem.asset.entity.AccountTicket;
 import com.bee32.sem.process.base.ProcessEntityDto;
 import com.bee32.sem.world.monetary.FxrQueryException;
-import com.bee32.sem.world.monetary.MutableMCValue;
 
 public class AccountTicketDto
         extends ProcessEntityDto<AccountTicket> {
@@ -110,12 +109,11 @@ public class AccountTicketDto
         BigDecimal debitTotal = BigDecimal.ZERO;
         BigDecimal creditTotal = BigDecimal.ZERO;
         for (AccountTicketItemDto item : items) {
-            if (item.isDebitSide()) {
-                MutableMCValue xx = item.getValue();
-                debitTotal = debitTotal.add(item.getValue().getNativeValue(getCreatedDate()).abs());
-            } else {
-                creditTotal = creditTotal.add(item.getValue().getNativeValue(getCreatedDate()).abs());
-            }
+            BigDecimal itemNativeValue = item.getValue().getNativeValue(getCreatedDate());
+            if (item.isDebitSide())
+                debitTotal = debitTotal.add(itemNativeValue.abs());
+            else
+                creditTotal = creditTotal.add(itemNativeValue.abs());
         }
         return debitTotal.equals(creditTotal);
     }
