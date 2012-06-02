@@ -159,7 +159,7 @@ public abstract class SamplePackage
                     prev = next;
                 }
                 samples.clear();
-                samples.add(first);
+                samples.add(null/* alt-id */, first);
             }
     }
 
