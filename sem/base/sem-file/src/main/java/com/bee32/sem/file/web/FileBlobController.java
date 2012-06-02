@@ -1,9 +1,5 @@
 package com.bee32.sem.file.web;
 
-import java.io.File;
-
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.BeansException;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -34,13 +30,6 @@ public class FileBlobController
         tab.push(dto.getLabel());
         tab.push(dto.getCreatedDate());
         tab.push(dto.getLastModified());
-    }
-
-    void upload(File home) {
-        DiskFileItemFactory factory = new DiskFileItemFactory();
-        factory.setSizeThreshold(10240000); // 设置内存缓冲区，超过后写入临时文件
-        factory.setRepository(home);
-        ServletFileUpload upload = new ServletFileUpload(factory);
     }
 
 }

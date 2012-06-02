@@ -30,7 +30,7 @@ public class StereoType
         return resolutionType;
     }
 
-    private static final int typeHash = StereoType.class.hashCode();
+    static final int typeHash = StereoType.class.hashCode();
 
     @Override
     protected int hashCodeSpecific() {

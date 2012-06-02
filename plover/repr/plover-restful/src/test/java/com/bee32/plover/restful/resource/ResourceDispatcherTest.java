@@ -8,7 +8,7 @@ public class ResourceDispatcherTest
 
     @Test
     public void testDispatchClassResource1() {
-        String selfHref = ResourceDispatcherTest.class.getSimpleName() + ".class";
+        // String selfHref = ResourceDispatcherTest.class.getSimpleName() + ".class";
         // ResourceDispatcher
     }
 

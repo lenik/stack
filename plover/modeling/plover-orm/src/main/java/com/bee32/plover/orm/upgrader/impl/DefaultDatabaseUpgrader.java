@@ -12,7 +12,10 @@ public class DefaultDatabaseUpgrader
     @Override
     public void upgrade(IDatabaseManager databaseManager)
             throws SQLException {
+        // XXX To be implemented.
+        @SuppressWarnings("unused")
         IDatabaseMetadata metadata = databaseManager.getDatabaseMetadata();
+
     }
 
 }

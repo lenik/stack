@@ -14,6 +14,7 @@ import com.bee32.plover.orm.util.WiredDaoFeat;
 import com.bee32.plover.site.scope.SiteNaming;
 import com.bee32.plover.test.ICoordinator;
 
+@SuppressWarnings("unused")
 @Using(AnimalUnit.class)
 public class CatFeat
         extends WiredDaoFeat<CatFeat> {

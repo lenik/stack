@@ -61,7 +61,10 @@ public class UserCategoryDto
             String[] _items = map.getStringArray("item");
             if (_items != null)
                 for (String _item : _items) {
-                    // TODO ...
+                    UserCategoryItemDto item = new UserCategoryItemDto();
+                    // XXX Should parse the full item attributes, not just ref.
+                    item = item.parseRef(_item);
+                    items.add(item);
                 }
         }
     }

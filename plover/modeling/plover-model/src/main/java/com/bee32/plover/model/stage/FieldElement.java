@@ -20,4 +20,8 @@ public class FieldElement
         return null;
     }
 
+    public Field getField() {
+        return field;
+    }
+
 }

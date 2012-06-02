@@ -15,17 +15,22 @@ public class BeanTreeProvider
     @Override
     public IReprTree build(Class<?> clazz, Object obj)
             throws BuildException {
+        DefaultReprTree tree = new DefaultReprTree();
+        BeanInfo beanInfo;
         try {
-            BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
-
-            PropertyDescriptor[] properties = beanInfo.getPropertyDescriptors();
-
-            MethodDescriptor[] methods = beanInfo.getMethodDescriptors();
-
+            beanInfo = Introspector.getBeanInfo(clazz);
         } catch (Exception e) {
             throw new BuildException(e.getMessage(), e);
         }
-        return null;
+        PropertyDescriptor[] properties = beanInfo.getPropertyDescriptors();
+        MethodDescriptor[] methods = beanInfo.getMethodDescriptors();
+
+        // TODO
+        for (PropertyDescriptor property : properties)
+            tree.getMap().put(property.getName(), property);
+        for (MethodDescriptor method : methods)
+            tree.getMap().put(method.getName(), method);
+        return tree;
     }
 
 }

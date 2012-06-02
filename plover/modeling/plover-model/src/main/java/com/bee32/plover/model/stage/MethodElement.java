@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 public class MethodElement
         extends StagedElement {
 
-    private final Method method;
+    final Method method;
 
     public MethodElement(Method method) {
         super(method.getName());

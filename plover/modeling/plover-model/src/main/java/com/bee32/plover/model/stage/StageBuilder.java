@@ -8,17 +8,17 @@ public class StageBuilder {
     /**
      * Non-<code>null</code> enclosing instance.
      */
-    private final Object enclosing;
+    final Object enclosing;
 
     /**
      * The target stage.
      */
-    private final IModelStage stage;
+    final IModelStage stage;
 
     /**
      * The loaded schema for the enclosing object.
      */
-    private ISchema schema;
+    ISchema schema;
 
     public StageBuilder(Object enclosing, IModelStage stage) {
         if (enclosing == null)
@@ -49,7 +49,7 @@ public class StageBuilder {
         Group group = new Group(groupName, priority);
         GroupElement groupElement = new GroupElement(group);
         for (StagedElement e : elements)
-            groupElement.add(groupElement);
+            groupElement.add(e);
         stage.add(groupElement);
     }
 

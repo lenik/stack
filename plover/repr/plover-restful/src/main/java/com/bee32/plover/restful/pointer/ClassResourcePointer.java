@@ -21,4 +21,12 @@ public class ClassResourcePointer
         return null;
     }
 
+    public Class<?> getContextClass() {
+        return contextClass;
+    }
+
+    public String getHref() {
+        return href;
+    }
+
 }

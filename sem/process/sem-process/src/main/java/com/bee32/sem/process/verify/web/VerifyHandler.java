@@ -55,7 +55,7 @@ public class VerifyHandler<E extends Entity<K> & IVerifiable<C>, //
                 if (entity == null)
                     return "审核的目标对象不存在，这可能是因为有人在您审核的同时删除了该对象。";
 
-                C context = entity.getVerifyContext();
+                // C context = entity.getVerifyContext();
                 Set<Principal> responsibles = verifyService.getResponsibles(entity);
 
                 if (!currentUser.impliesOneOf(responsibles))

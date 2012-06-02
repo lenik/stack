@@ -48,7 +48,7 @@ public abstract class VerifyContextDto<T extends AbstractVerifyContext>
         // target.setVerifyState(verifyState);
         // target.setVerifyError(verifyError);
         // target.setVerifyEvalDate(verifyEvalDate);
-         // merge(target, "verifyEvent", verifyEvent);
+        // merge(target, "verifyEvent", verifyEvent);
     }
 
     public VerifyEvalState getVerifyEvalState() {
@@ -85,6 +85,14 @@ public abstract class VerifyContextDto<T extends AbstractVerifyContext>
 
     public void setVerifyPolicy(VerifyPolicyDto verifyPolicy) {
         this.verifyPolicy = verifyPolicy;
+    }
+
+    public EventDto getVerifyEvent() {
+        return verifyEvent;
+    }
+
+    public void setVerifyEvent(EventDto verifyEvent) {
+        this.verifyEvent = verifyEvent;
     }
 
 }

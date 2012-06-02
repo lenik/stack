@@ -1,5 +1,8 @@
 package com.bee32.plover.view.builtin;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServlet;
 
@@ -20,7 +23,11 @@ public class HttpRenderer
             throws RenderException {
         HttpServlet servlet = (HttpServlet) obj;
         ServletResponse response = display.getResponse();
-        // servlet.service(req, response);
+        try {
+            servlet.service(null/* req */, response);
+        } catch (ServletException | IOException e) {
+            throw new RenderException(e.getMessage(), e);
+        }
     }
 
 }

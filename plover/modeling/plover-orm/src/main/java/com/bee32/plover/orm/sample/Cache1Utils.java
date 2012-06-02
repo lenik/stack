@@ -30,7 +30,7 @@ public class Cache1Utils {
         List<Entity<?>> list = new ArrayList<Entity<?>>();
         for (Entry<Entity<?>, EntityEntry> ent : entityEntries.entrySet()) {
             Entity<?> entity = ent.getKey();
-            EntityEntry ee = ent.getValue();
+            // EntityEntry ee = ent.getValue();
             // sb.append(entity);
             list.add(entity);
         }

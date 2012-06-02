@@ -62,7 +62,7 @@ public class PloverEntityCreator {
     public void createDTOClass() {
         String javaName = entityType.getName().replace('.', '/') + "Dto.java";
         File file = new File(javaDir, javaName);
-
+        System.out.println("Create DTO File: " + file);
     }
 
     public void createDAOClass() {

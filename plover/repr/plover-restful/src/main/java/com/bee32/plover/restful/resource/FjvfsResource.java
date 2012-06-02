@@ -10,14 +10,14 @@ import javax.free.VFS;
 public class FjvfsResource
         extends AbstractResource {
 
-    private final String path;
+    // private final String path;
     private final IFile file;
 
     public FjvfsResource(String path)
             throws FileResolveException {
         if (path == null)
             throw new NullPointerException("path");
-        this.path = path;
+        // this.path = path;
         this.file = VFS.resolveFile(path);
     }
 

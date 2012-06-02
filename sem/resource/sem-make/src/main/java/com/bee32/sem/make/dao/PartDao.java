@@ -6,9 +6,4 @@ import com.bee32.sem.make.entity.Part;
 public class PartDao
         extends EntityDao<Part, Integer> {
 
-    @Override
-    protected void preSave(Part entity) {
-        super.preSave(entity);
-    }
-
 }

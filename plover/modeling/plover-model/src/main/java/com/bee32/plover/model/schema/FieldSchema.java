@@ -31,4 +31,8 @@ public class FieldSchema
         // Field has no children.
     }
 
+    public Field getField() {
+        return field;
+    }
+
 }
