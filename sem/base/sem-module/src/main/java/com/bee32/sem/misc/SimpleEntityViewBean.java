@@ -955,7 +955,7 @@ public abstract class SimpleEntityViewBean
 
     @Override
     public void clearSearchFragments() {
-        if (searchFragmentMap.isEmpty()) {
+        if (!searchFragmentMap.isEmpty()) {
             searchFragmentMap.clear();
             searchFragmentsChanged();
         }
