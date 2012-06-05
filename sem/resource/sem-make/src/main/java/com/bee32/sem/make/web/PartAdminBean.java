@@ -97,7 +97,8 @@ public class PartAdminBean
         PartDto part = getOpenedObject();
         // 检查此物料(成品)是否已经有bom存在
         List<Part> partList = ctx.data.access(Part.class).list(new Limit(0, 3),//
-                new Equals("target.id", selectedMaterial.getId()));
+                new Equals("target.id", selectedMaterial.getId()),
+                new Equals("valid", true));
         if (!partList.isEmpty()) {
             uiLogger.error("此物料已经存在BOM信息 (" + partList.get(0).getId() + "...)");
             return;
@@ -109,14 +110,18 @@ public class PartAdminBean
 
     public void setPartItemMaterial() {
         PartItemDto item = childrenMBean.getOpenedObject();
-        List<Part> materialsIsPart = ctx.data.access(Part.class).list(new Limit(0, 3),//
-                new Equals("target.id", selectedMaterial.getId()));
-        if (!materialsIsPart.isEmpty()) {
-            uiLogger.error("此物料是成品或半成品，已经存在BOM，请用[组件是半成品]标签页进行查找选择!");
-            return;
+
+        Part part = ctx.data.access(Part.class).getUnique(new Equals("target.id", selectedMaterial.getId()));
+        if (part != null) {
+            //选中的物料是半成品
+            item.setMaterial(null);
+            item.setPart(DTOs.marshal(PartDto.class, part));
+        } else {
+            //选中的物料是原材料
+            item.setMaterial(selectedMaterial);
+            item.setPart(null);
         }
-        item.setMaterial(selectedMaterial);
-        // item.setPart(null);
+
         selectedMaterial = null;
     }
 
@@ -226,25 +231,21 @@ public class PartAdminBean
     }
 
     /**
-     * 编辑明细选择半成品时，限定半成品的分类
-     */
-    public void setSemiCategory() {
-        PartItemDto partItem = childrenMBean.getOpenedObject();
-        if (!DTOs.isNull(partItem.getPart())) {
-            ChoosePartDialogBean bean = ctx.bean.getBean(ChoosePartDialogBean.class);
-            bean.setCategoryRestriction(partItem.getPart().getTarget().getCategory().getId());
-        }
-    }
-
-    /**
      * 编辑明细选择原材料时，限定原材料的分类
      */
     public void setRawCategory() {
         PartItemDto partItem = childrenMBean.getOpenedObject();
+        ChooseMaterialDialogBean bean = ctx.bean.getBean(ChooseMaterialDialogBean.class);
+        bean.clearSearchFragments();
+
         if (!DTOs.isNull(partItem.getMaterial())) {
-            ChooseMaterialDialogBean bean = ctx.bean.getBean(ChooseMaterialDialogBean.class);
             bean.setCategoryRestriction(partItem.getMaterial().getCategory().getId());
+        } else {
+            if (!DTOs.isNull(partItem.getPart())) {
+                bean.setCategoryRestriction(partItem.getPart().getTarget().getCategory().getId());
+            }
         }
+
     }
 
     /*************************************************************************

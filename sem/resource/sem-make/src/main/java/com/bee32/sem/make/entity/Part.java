@@ -19,6 +19,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.DefaultValue;
+import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.orm.entity.CopyUtils;
@@ -130,6 +131,7 @@ public class Part
      * 目标物料
      */
     @ManyToOne
+    @NaturalId
     public Material getTarget() {
         return target;
     }
@@ -241,6 +243,7 @@ public class Part
     /**
      * 是否有效
      */
+    @NaturalId
     public boolean isValid() {
         return valid;
     }

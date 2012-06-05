@@ -80,7 +80,7 @@
                     <h:outputLabel for="target" value="物料" />
                     <t:panelGroup colspan="3">
                         <h:inputHidden id="target" label="对应物料" value="#{obj.target.id_RZL}" />
-                        <h:outputText value="#{obj.target.label}" />
+                        <p:inputText value="#{obj.target.label}" readonly="true"/>
                         <p:commandButton
                             title="选择生成的物料" value="..."
                             oncomplete="chooseTargetDialog.show();"
@@ -167,10 +167,8 @@
     <ui:define name="dialogs">
         <sem:chooseMaterialDialog id="c_material" header="选择产品对应的物料" var="chooseTargetDialog"
             target="#{bean.selectedMaterial}" actionListener="#{bean.setPartMaterial}" update=":editDialog:form:tv:basic" />
-        <sem:choosePartDialog id="c_itemPart" header="选择组件对应的半成品" var="chooseItemPartDialog"
-            target="#{childObj.part}" update=":childrenEditView:editForm:body" />
         <sem:chooseMaterialDialog id="c_itemMaterial" header="选择组件对应的物料" var="chooseItemMaterialDialog"
-            target="#{bean.selectedMaterial}" actionListener="#{bean.setPartItemMaterial}" update=":childrenEditView:editForm:body" />
+            target="#{bean.selectedMaterial}" actionListener="#{bean.setPartItemMaterial}" update=":childrenEditView:editForm:material" />
         <sem:chooseMakeStepNameDialog id="c_makeStepName" header="选择标准工艺" var="chooseMakeStepNameDialog"
             target="#{stepObj.stepName}" update=":stepsView:editForm:stepEditTab:makeStepName" />
         <sem:chooseMaterialDialog id="c_stepInput" header="选择材料" var="chooseStepInputMaterialDialog"
@@ -182,14 +180,9 @@
             <t:panelGrid columns="4">
                 <h:outputLabel for="material" value="物料" />
                 <t:panelGroup>
-                    <h:outputText id="material" value="#{item.anyMaterial.label}" />
+                    <p:inputText id="material" value="#{item.anyMaterial.label}" />
                     <p:commandButton
-                        id="itemPart" value="选择半成品"
-                        actionListener="#{bean.setSemiCategory}"
-                        update=":c_itemPart:searchForm"
-                        oncomplete="chooseItemPartDialog.show()" />
-                    <p:commandButton
-                        id="itemMaterial" value="选择原材料"
+                        id="itemMaterial" value="..."
                         actionListener="#{bean.setRawCategory}"
                         update=":c_itemMaterial:searchForm"
                         oncomplete="chooseItemMaterialDialog.show()">
