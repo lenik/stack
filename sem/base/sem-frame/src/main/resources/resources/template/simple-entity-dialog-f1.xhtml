@@ -14,20 +14,21 @@
                         onclick="print('.x-content', $(this).parent('.x-body')[0])" />
                 </h:form>
             </div>
-            <h:form id="form" styleClass="${formStyleClass}">
-                <table class="x-layout" cellspacing="0" cellpadding="0" border="0">
-                    <tr>
-                        <c:if test="${sideBarWVisible != null}">
-                            <td valign="top" id="sideBarW" style="${sideBarWVisible == true ? '' : 'display: none'}">
-                                <h:panelGroup id="sidePanelW">
-                                    <ui:insert name="sideBarW" />
-                                    <ui:insert name="sideBarW.1" />
-                                </h:panelGroup>
-                            </td>
-                            <td valign="center" class="layout-side-toggler ui-state-default" style="width: 9px" />
-                        </c:if>
 
-                        <td valign="top">
+            <table class="x-layout" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                    <c:if test="${sideBarWVisible != null}">
+                        <td valign="top" id="sideBarW" style="${sideBarWVisible == true ? '' : 'display: none'}">
+                            <h:panelGroup id="sidePanelW">
+                                <ui:insert name="sideBarW" />
+                                <ui:insert name="sideBarW.1" />
+                            </h:panelGroup>
+                        </td>
+                        <td valign="center" class="layout-side-toggler ui-state-default" style="width: 9px" />
+                    </c:if>
+
+                    <td valign="top">
+                        <h:form id="form" styleClass="${formStyleClass}">
                             <h:panelGroup styleClass="x-content">
                                 <ui:insert name="paneN" />
                                 <ui:param name="tabbed" value="${mainTabTitle != null}" />
@@ -70,34 +71,32 @@
                                     </table>
                                 </ui:insert>
                             </h:panelGroup>
-                        </td>
-                    </tr>
-                </table>
-            </h:form>
+                        </h:form>
+                    </td>
+
+                    <!--  <td valign="center" class="layout-side-toggler ui-state-default" style="width: 9px" /> -->
+                    <td valign="top" id="sideBarE" style="width: 20em;">
+                        <!-- p:panel id="sidePanelE" style="height: 100%" -->
+                        <h:panelGroup id="sidePanelE" style="height: 100%">
+                            <ui:insert name="sideBarE">
+                                <ui:insert name="sideBarE.0">
+                                    <h:form id="searchForm">
+                                        <ui:insert name="searchPanels">
+                                            <ui:insert name="searchPanels.0" />
+                                            <ui:insert name="searchPanels.1" />
+                                        </ui:insert>
+                                        <ui:insert name="searchFragmentsPanel" />
+                                    </h:form>
+                                </ui:insert>
+                                <ui:insert name="sideBarE.1" />
+                            </ui:insert>
+                            <ui:insert name="sideBarESupport" />
+                        </h:panelGroup>
+                    </td>
+                </tr>
+            </table>
         </div>
 
-        <div style="position: absolute; display: block; top: 0; bottom: 1em; right: 1px; min-width: 10px">
-            <div id="${var}_sideBarEToggler" class="layout-side-toggler ui-state-default" style="position: absolute; top: 0; bottom: 0; left: 0; width: 9px; "
-                onclick="$('#${var}_sideBarE').toggle()" />
-            <div id="${var}_sideBarE" style="width: 20em; height: 100%; display: none; background: white">
-                <!-- p:panel id="sidePanelE" style="height: 100%" -->
-                <h:panelGroup id="sidePanelE" style="height: 100%">
-                    <ui:insert name="sideBarE">
-                        <ui:insert name="sideBarE.0">
-                            <h:form id="searchForm">
-                                <ui:insert name="searchPanels">
-                                    <ui:insert name="searchPanels.0" />
-                                    <ui:insert name="searchPanels.1" />
-                                </ui:insert>
-                                <ui:insert name="searchFragmentsPanel" />
-                            </h:form>
-                        </ui:insert>
-                        <ui:insert name="sideBarE.1" />
-                    </ui:insert>
-                    <ui:insert name="sideBarESupport" />
-                </h:panelGroup>
-            </div>
-        </div>
     </p:dialog>
 
 </ui:component>
