@@ -4,11 +4,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.criterion.MatchMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.criteria.hibernate.Like;
+import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialCategory;
@@ -104,4 +107,12 @@ public class ChooseMaterialDialogBean
         }
     }
 
+    public void setNameOrKeywordLike(String pattern) {
+        setSearchFragment("nameOrKeyword", "物料名称或代码包含" + pattern,
+                Or.of(
+                        new Like("label", pattern, MatchMode.ANYWHERE),
+                        new Like("keyword", pattern, MatchMode.ANYWHERE)
+                        )
+                );
+    }
 }

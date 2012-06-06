@@ -80,7 +80,7 @@
                     <h:outputLabel for="target" value="物料" />
                     <t:panelGroup colspan="3">
                         <h:inputHidden id="target" label="对应物料" value="#{obj.target.id_RZL}" />
-                        <p:inputText value="#{obj.target.label}" readonly="true"/>
+                        <p:inputText id="material" value="#{bean.partMaterialMatcher}"/>
                         <p:commandButton
                             title="选择生成的物料" value="..."
                             oncomplete="chooseTargetDialog.show();"
@@ -166,7 +166,7 @@
 
     <ui:define name="dialogs">
         <sem:chooseMaterialDialog id="c_material" header="选择产品对应的物料" var="chooseTargetDialog"
-            target="#{bean.selectedMaterial}" actionListener="#{bean.setPartMaterial}" update=":editDialog:form:tv:basic" />
+            target="#{bean.selectedMaterial}" actionListener="#{bean.setPartMaterial}" update=":editDialog:form:tv:material" />
         <sem:chooseMaterialDialog id="c_itemMaterial" header="选择组件对应的物料" var="chooseItemMaterialDialog"
             target="#{bean.selectedMaterial}" actionListener="#{bean.setPartItemMaterial}" update=":childrenEditView:editForm:material" />
         <sem:chooseMakeStepNameDialog id="c_makeStepName" header="选择标准工艺" var="chooseMakeStepNameDialog"
@@ -180,7 +180,7 @@
             <t:panelGrid columns="4">
                 <h:outputLabel for="material" value="物料" />
                 <t:panelGroup>
-                    <p:inputText id="material" value="#{item.anyMaterial.label}" />
+                    <p:inputText id="material" value="#{bean.partItemMaterialMatcher}" />
                     <p:commandButton
                         id="itemMaterial" value="..."
                         actionListener="#{bean.setRawCategory}"

@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.bee32.plover.arch.util.IEnclosingContext;
 import com.bee32.plover.arch.util.dto.Fmask;
 import com.bee32.plover.criteria.hibernate.Equals;
@@ -45,6 +47,9 @@ public class PartAdminBean
     BomTreeModel bomTree;
 
     BomTreeNode makeStepTarget;
+
+    String partMaterialMatcher;
+    String partItemMaterialMatcher;
 
     public PartAdminBean() {
         super(Part.class, PartDto.class, 0);
@@ -105,6 +110,8 @@ public class PartAdminBean
         }
         part.setTarget(selectedMaterial);
         part.setCategory(selectedMaterial.getCategory());
+
+        partMaterialMatcher = selectedMaterial.getLabel();
         selectedMaterial = null;
     }
 
@@ -122,6 +129,7 @@ public class PartAdminBean
             item.setPart(null);
         }
 
+        partItemMaterialMatcher = selectedMaterial.getLabel();
         selectedMaterial = null;
     }
 
@@ -224,9 +232,14 @@ public class PartAdminBean
      * 编辑Part时，
      */
     public void setCategory() {
-        if (this.categoryTree.getSelectedId() != -1) {
-            ChooseMaterialDialogBean bean = ctx.bean.getBean(ChooseMaterialDialogBean.class);
+        ChooseMaterialDialogBean bean = ctx.bean.getBean(ChooseMaterialDialogBean.class);
+        if (this.categoryTree.getSelectedId() != null && this.categoryTree.getSelectedId() != -1) {
             bean.setCategoryRestriction(this.categoryTree.getSelectedId());
+        }
+
+        if (!StringUtils.isEmpty(partMaterialMatcher)) {
+            bean.setNameOrKeywordLike(partMaterialMatcher);
+            partMaterialMatcher = "";
         }
     }
 
@@ -246,7 +259,29 @@ public class PartAdminBean
             }
         }
 
+        if (!StringUtils.isEmpty(partItemMaterialMatcher)) {
+            bean.setNameOrKeywordLike(partItemMaterialMatcher);
+            partItemMaterialMatcher = "";
+        }
+
     }
+
+    public String getPartMaterialMatcher() {
+        return partMaterialMatcher;
+    }
+
+    public void setPartMaterialMatcher(String partMaterialMatcher) {
+        this.partMaterialMatcher = partMaterialMatcher;
+    }
+
+    public String getPartItemMaterialMatcher() {
+        return partItemMaterialMatcher;
+    }
+
+    public void setPartItemMaterialMatcher(String partItemMaterialMatcher) {
+        this.partItemMaterialMatcher = partItemMaterialMatcher;
+    }
+
 
     /*************************************************************************
      * Section: MBeans
