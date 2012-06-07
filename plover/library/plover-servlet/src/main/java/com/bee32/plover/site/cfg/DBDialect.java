@@ -1,11 +1,6 @@
 package com.bee32.plover.site.cfg;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.bee32.plover.arch.util.NoSuchEnumException;
 
 public class DBDialect
         extends SiteConfigEnum<String, DBDialect> {
@@ -35,53 +30,39 @@ public class DBDialect
         return urlFormat;
     }
 
-    static final Map<String, DBDialect> nameMap = new HashMap<String, DBDialect>();
-    static final Map<String, DBDialect> valueMap = new HashMap<String, DBDialect>();
-
     public static Collection<DBDialect> values() {
-        Collection<DBDialect> values = valueMap.values();
-        return Collections.unmodifiableCollection(values);
+        return values(DBDialect.class);
     }
 
     public static DBDialect forName(String altName) {
-        DBDialect dialect = nameMap.get(altName);
-        if (dialect == null)
-            throw new NoSuchEnumException(DBDialect.class, altName);
-        return dialect;
+        return forName(DBDialect.class, altName);
     }
 
     public static DBDialect forValue(String value) {
-        if (value == null)
-            return null;
-
-        DBDialect dialect = valueMap.get(value);
-        if (dialect == null)
-            throw new NoSuchEnumException(DBDialect.class, value);
-
-        return dialect;
+        return forValue(DBDialect.class, value);
     }
 
-    public static final DBDialect H2 = new DBDialect("H2", //
+    public static final DBDialect H2 = new DBDialect("h2", //
             "org.hibernate.dialect.H2Dialect", //
             "org.h2.Driver", //
             "jdbc:h2://H2_HOME/%s;DB_CLOSE_ON_EXIT=FALSE");
 
-    public static final DBDialect HSQL = new DBDialect("HSQL",//
+    public static final DBDialect HSQL = new DBDialect("hsql",//
             "org.hibernate.dialect.HSQLDialect", //
             "org.hsql.Driver", //
             "jdbc:hsql://HOME/%s");
 
-    public static final DBDialect PostgreSQL = new DBDialect("PostgreSQL", //
+    public static final DBDialect PostgreSQL = new DBDialect("postgresql", //
             "org.hibernate.dialect.PostgreSQLDialect", //
             "org.postgresql.Driver", //
             "jdbc:postgresql://localhost:1063/%s");
 
-    public static final DBDialect Oracle = new DBDialect("Oracle",//
+    public static final DBDialect Oracle = new DBDialect("oracle",//
             "org.hibernate.dialect.OracleDialect", //
             "com.oracle.jdbc.Driver", //
             "jdbc:oracle://localhost/%s");
 
-    public static final DBDialect MySQL = new DBDialect("MySQL",//
+    public static final DBDialect MySQL = new DBDialect("mysql",//
             "org.hibernate.dialect.MySQLDialect", //
             "org.mysql.Driver", //
             "jdbc:mysql://localhost/%s");

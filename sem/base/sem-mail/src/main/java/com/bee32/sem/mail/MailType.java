@@ -1,7 +1,6 @@
 package com.bee32.sem.mail;
 
 import java.util.Collection;
-import java.util.Map;
 
 import com.bee32.plover.arch.util.EnumAlt;
 
@@ -9,9 +8,6 @@ public class MailType
         extends EnumAlt<Integer, MailType> {
 
     private static final long serialVersionUID = 1L;
-
-    static final Map<String, MailType> nameMap = getNameMap(MailType.class);
-    static final Map<Integer, MailType> valueMap = getValueMap(MailType.class);
 
     MailType baseType;
 

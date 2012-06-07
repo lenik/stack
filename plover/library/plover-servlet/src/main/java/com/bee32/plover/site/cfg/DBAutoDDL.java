@@ -1,12 +1,8 @@
 package com.bee32.plover.site.cfg;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.bee32.plover.arch.util.ILabelledEntry;
-import com.bee32.plover.arch.util.NoSuchEnumException;
 
 public class DBAutoDDL
         extends SiteConfigEnum<String, DBAutoDDL>
@@ -27,30 +23,16 @@ public class DBAutoDDL
         return label;
     }
 
-    static final Map<String, DBAutoDDL> nameMap = new HashMap<String, DBAutoDDL>();
-    static final Map<String, DBAutoDDL> valueMap = new HashMap<String, DBAutoDDL>();
-
     public static Collection<DBAutoDDL> values() {
-        Collection<DBAutoDDL> values = valueMap.values();
-        return Collections.unmodifiableCollection(values);
+        return values(DBAutoDDL.class);
     }
 
     public static DBAutoDDL forName(String altName) {
-        DBAutoDDL autoddl = nameMap.get(altName);
-        if (autoddl == null)
-            throw new NoSuchEnumException(DBAutoDDL.class, altName);
-        return autoddl;
+        return forName(DBAutoDDL.class, altName);
     }
 
     public static DBAutoDDL forValue(String value) {
-        if (value == null)
-            return null;
-
-        DBAutoDDL autoddl = valueMap.get(value);
-        if (autoddl == null)
-            throw new NoSuchEnumException(DBAutoDDL.class, value);
-
-        return autoddl;
+        return forValue(DBAutoDDL.class, value);
     }
 
     /** 仅自动创建 */

@@ -1,11 +1,6 @@
 package com.bee32.plover.site.cfg;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.bee32.plover.arch.util.NoSuchEnumException;
 
 public class PrimefacesTheme
         extends SiteConfigEnum<String, PrimefacesTheme> {
@@ -29,30 +24,16 @@ public class PrimefacesTheme
         return preference;
     }
 
-    static final Map<String, PrimefacesTheme> nameMap = new HashMap<String, PrimefacesTheme>();
-    static final Map<String, PrimefacesTheme> valueMap = new HashMap<String, PrimefacesTheme>();
-
     public static Collection<PrimefacesTheme> values() {
-        Collection<PrimefacesTheme> values = valueMap.values();
-        return Collections.unmodifiableCollection(values);
+        return values(PrimefacesTheme.class);
     }
 
     public static PrimefacesTheme forName(String altName) {
-        PrimefacesTheme theme = nameMap.get(altName);
-        if (theme == null)
-            throw new NoSuchEnumException(PrimefacesTheme.class, altName);
-        return theme;
+        return forName(PrimefacesTheme.class, altName);
     }
 
     public static PrimefacesTheme forValue(String value) {
-        if (value == null)
-            return null;
-
-        PrimefacesTheme theme = valueMap.get(value);
-        if (theme == null)
-            throw new NoSuchEnumException(PrimefacesTheme.class, value);
-
-        return theme;
+        return forValue(PrimefacesTheme.class, value);
     }
 
     public static final PrimefacesTheme redmond = new PrimefacesTheme("redmond");

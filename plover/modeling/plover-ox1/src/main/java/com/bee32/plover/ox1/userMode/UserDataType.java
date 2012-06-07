@@ -1,7 +1,6 @@
 package com.bee32.plover.ox1.userMode;
 
 import java.util.Collection;
-import java.util.Map;
 
 import com.bee32.plover.arch.util.EnumAlt;
 
@@ -9,9 +8,6 @@ public class UserDataType
         extends EnumAlt<Character, UserDataType> {
 
     private static final long serialVersionUID = 1L;
-
-    static final Map<String, UserDataType> nameMap = getNameMap(UserDataType.class);
-    static final Map<Character, UserDataType> valueMap = getValueMap(UserDataType.class);
 
     public UserDataType(char value, String name) {
         super(value, name);

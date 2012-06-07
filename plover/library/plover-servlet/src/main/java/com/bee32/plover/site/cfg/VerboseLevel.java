@@ -1,11 +1,6 @@
 package com.bee32.plover.site.cfg;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.bee32.plover.arch.util.NoSuchEnumException;
 
 public class VerboseLevel
         extends SiteConfigEnum<Integer, VerboseLevel>
@@ -32,27 +27,16 @@ public class VerboseLevel
             return -1; // undefined: cuz this != o.
     }
 
-    static final Map<String, VerboseLevel> nameMap = new HashMap<String, VerboseLevel>();
-    static final Map<Integer, VerboseLevel> valueMap = new HashMap<Integer, VerboseLevel>();
-
     public static Collection<VerboseLevel> values() {
-        Collection<VerboseLevel> values = valueMap.values();
-        return Collections.unmodifiableCollection(values);
+        return values(VerboseLevel.class);
     }
 
     public static VerboseLevel forName(String altName) {
-        VerboseLevel verboseLevel = nameMap.get(altName);
-        if (verboseLevel == null)
-            throw new NoSuchEnumException(VerboseLevel.class, altName);
-        return verboseLevel;
+        return forName(VerboseLevel.class, altName);
     }
 
     public static VerboseLevel forValue(int value) {
-        VerboseLevel verboseLevel = valueMap.get(value);
-        if (verboseLevel == null)
-            throw new NoSuchEnumException(VerboseLevel.class, value);
-
-        return verboseLevel;
+        return forValue(VerboseLevel.class, value);
     }
 
     /** 安静 */

@@ -169,22 +169,20 @@ public abstract class EnumAlt<V extends Serializable, self_t extends EnumAlt<V, 
             return def;
     }
 
-    public static <E extends EnumAlt<?, E>> Map<String, E> getNameMap(Class<E> enumType) {
-        return EnumAltRegistry.getNameMap(enumType);
+    private static <E extends EnumAlt<?, E>> Map<String, E> getNameMap(Class<E> enumType) {
+        return EnumAltRegistry.nameMap(enumType);
     }
 
-    public static <E extends EnumAlt<V, E>, V extends Serializable> Map<V, E> getValueMap(Class<E> enumType) {
-        return EnumAltRegistry.getValueMap(enumType);
+    private static <E extends EnumAlt<V, E>, V extends Serializable> Map<V, E> getValueMap(Class<E> enumType) {
+        return EnumAltRegistry.valueMap(enumType);
     }
 
     protected static <E extends EnumAlt<V, E>, V extends Serializable> Collection<E> values(Class<E> enumType) {
-        EnumAltRegistry.loadConstants();
         Collection<E> values = getValueMap(enumType).values();
         return Collections.unmodifiableCollection(values);
     }
 
     protected static <E extends EnumAlt<V, E>, V extends Serializable> E forName(Class<E> enumType, String name) {
-        EnumAltRegistry.loadConstants();
         E entry = getNameMap(enumType).get(name);
         if (entry == null)
             throw new NoSuchEnumException(enumType, name);
@@ -194,13 +192,9 @@ public abstract class EnumAlt<V extends Serializable, self_t extends EnumAlt<V, 
     protected static <E extends EnumAlt<V, E>, V extends Serializable> E forValue(Class<E> enumType, V value) {
         if (value == null)
             throw new NullPointerException("value");
-
-        EnumAltRegistry.loadConstants();
-
         E entry = getValueMap(enumType).get(value);
         if (entry == null)
             throw new NoSuchEnumException(enumType, "value=" + value);
-
         return entry;
     }
 

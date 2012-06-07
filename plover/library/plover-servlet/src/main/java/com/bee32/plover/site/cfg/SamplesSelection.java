@@ -1,11 +1,6 @@
 package com.bee32.plover.site.cfg;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.bee32.plover.arch.util.NoSuchEnumException;
 
 public class SamplesSelection
         extends SiteConfigEnum<Integer, SamplesSelection> {
@@ -16,30 +11,16 @@ public class SamplesSelection
         super(value, name);
     }
 
-    static final Map<String, SamplesSelection> nameMap = new HashMap<String, SamplesSelection>();
-    static final Map<Integer, SamplesSelection> valueMap = new HashMap<Integer, SamplesSelection>();
-
     public static Collection<SamplesSelection> values() {
-        Collection<SamplesSelection> values = valueMap.values();
-        return Collections.unmodifiableCollection(values);
+        return values(SamplesSelection.class);
     }
 
     public static SamplesSelection forName(String altName) {
-        SamplesSelection samplesSelection = nameMap.get(altName);
-        if (samplesSelection == null)
-            throw new NoSuchEnumException(SamplesSelection.class, altName);
-        return samplesSelection;
+        return forName(SamplesSelection.class, altName);
     }
 
-    public static SamplesSelection forValue(String value) {
-        if (value == null)
-            return null;
-
-        SamplesSelection samplesSelection = valueMap.get(value);
-        if (samplesSelection == null)
-            throw new NoSuchEnumException(SamplesSelection.class, value);
-
-        return samplesSelection;
+    public static SamplesSelection forValue(int value) {
+        return forValue(SamplesSelection.class, value);
     }
 
     public static final int V_NONE = 0;

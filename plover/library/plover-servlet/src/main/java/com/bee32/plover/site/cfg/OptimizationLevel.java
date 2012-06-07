@@ -1,11 +1,6 @@
 package com.bee32.plover.site.cfg;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.bee32.plover.arch.util.NoSuchEnumException;
 
 public class OptimizationLevel
         extends SiteConfigEnum<Integer, OptimizationLevel>
@@ -32,27 +27,16 @@ public class OptimizationLevel
             return -1; // undefined: cuz this != o.
     }
 
-    static final Map<String, OptimizationLevel> nameMap = new HashMap<String, OptimizationLevel>();
-    static final Map<Integer, OptimizationLevel> valueMap = new HashMap<Integer, OptimizationLevel>();
-
     public static Collection<OptimizationLevel> values() {
-        Collection<OptimizationLevel> values = valueMap.values();
-        return Collections.unmodifiableCollection(values);
+        return values(OptimizationLevel.class);
     }
 
     public static OptimizationLevel forName(String altName) {
-        OptimizationLevel level = nameMap.get(altName);
-        if (level == null)
-            throw new NoSuchEnumException(OptimizationLevel.class, altName);
-        return level;
+        return forName(OptimizationLevel.class, altName);
     }
 
     public static OptimizationLevel forValue(int value) {
-        OptimizationLevel typeName = valueMap.get(value);
-        if (typeName == null)
-            throw new NoSuchEnumException(OptimizationLevel.class, value);
-
-        return typeName;
+        return forValue(OptimizationLevel.class, value);
     }
 
     /**

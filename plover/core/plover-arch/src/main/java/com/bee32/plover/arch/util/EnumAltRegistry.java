@@ -22,8 +22,20 @@ public class EnumAltRegistry {
     static final ClassLocal<Map<String, ? extends EnumAlt<?, ?>>> clNameMap = new ClassLocal<>();
     static final ClassLocal<Map<Object, ? extends EnumAlt<?, ?>>> clValueMap = new ClassLocal<>();
 
-    public static synchronized <E extends EnumAlt<?, ?>> //
-    Map<String, E> getNameMap(Class<E> enumType) {
+    public static synchronized <E extends EnumAlt<?, ?>>
+    /*    */Map<String, E> nameMap(Class<E> enumType) {
+        EnumAltRegistry.loadConstants();
+        return getNameMap(enumType);
+    }
+
+    public static synchronized <E extends EnumAlt<V, ?>, V extends Serializable> //
+    /*    */Map<V, E> valueMap(Class<E> enumType) {
+        EnumAltRegistry.loadConstants();
+        return getValueMap(enumType);
+    }
+
+    static synchronized <E extends EnumAlt<?, ?>> //
+    /*    */Map<String, E> getNameMap(Class<E> enumType) {
         Map<String, E> nameMap = (Map<String, E>) clNameMap.get(enumType);
         if (nameMap == null) {
             nameMap = new LinkedHashMap<>();
@@ -32,8 +44,8 @@ public class EnumAltRegistry {
         return nameMap;
     }
 
-    public static synchronized <E extends EnumAlt<V, ?>, V extends Serializable> //
-    Map<V, E> getValueMap(Class<E> enumType) {
+    static synchronized <E extends EnumAlt<V, ?>, V extends Serializable> //
+    /*    */Map<V, E> getValueMap(Class<E> enumType) {
         Map<Object, E> _valueMap = (Map<Object, E>) clValueMap.get(enumType);
         if (_valueMap == null) {
             _valueMap = new LinkedHashMap<>();
@@ -42,6 +54,23 @@ public class EnumAltRegistry {
         @SuppressWarnings("unchecked")
         Map<V, E> valueMap = (Map<V, E>) (Object) _valueMap;
         return valueMap;
+    }
+
+    static boolean loaded;
+
+    public static void loadConstants() {
+        if (!loaded) {
+            synchronized (EnumAltRegistry.class) {
+                if (!loaded) {
+                    try {
+                        scanEnumTypes(true);
+                    } catch (ClassNotFoundException | IOException e) {
+                        throw new Error(e.getMessage(), e);
+                    }
+                    loaded = true;
+                }
+            }
+        }
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -89,23 +118,6 @@ public class EnumAltRegistry {
             @SuppressWarnings("unchecked")
             Class<E> _superclass_xxx = (Class<E>) _superclass;
             registerTree(_superclass_xxx, entry);
-        }
-    }
-
-    static boolean loaded;
-
-    public static void loadConstants() {
-        if (!loaded) {
-            synchronized (EnumAltRegistry.class) {
-                if (!loaded) {
-                    try {
-                        scanEnumTypes(true);
-                    } catch (ClassNotFoundException | IOException e) {
-                        throw new Error(e.getMessage(), e);
-                    }
-                    loaded = true;
-                }
-            }
         }
     }
 
