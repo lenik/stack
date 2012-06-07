@@ -74,7 +74,7 @@ public class C_FaceletsWac
 
         // Primefaces configuration
         stl.addFilter(FileUploadFilter.class, "*." + FaceletsConfig.extension);
-        context.addInitParam("primefaces.THEME", "#{guestPreferences.theme.id}");
+        context.addInitParam("primefaces.THEME", "#{guestPreferences.theme.name}");
 
         if (pushServerEnabled) {
             // Prime Push Server: must be load-on-startup.
