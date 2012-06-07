@@ -1,0 +1,7 @@
+com.bee32.plover.site.cfg.DBAutoDDL
+com.bee32.plover.site.cfg.DBDialect
+com.bee32.plover.site.cfg.OptimizationLevel
+com.bee32.plover.site.cfg.PrimefacesTheme
+com.bee32.plover.site.cfg.SamplesSelection
+com.bee32.plover.site.cfg.SiteConfigEnum
+com.bee32.plover.site.cfg.VerboseLevel
