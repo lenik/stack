@@ -4,18 +4,19 @@ import org.primefaces.model.MenuModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.bee32.sem.frame.builtins.SEMFrameMenu;
+import com.bee32.sem.frame.menu.MenuNode;
 import com.bee32.sem.frame.menu.PrimefacesMenuBuilder;
 
 @Component
 @Scope("request")
 public class PrimefacesMenuBean {
 
-    PrimefacesMenuBuilder builder = PrimefacesMenuBuilder.INSTANCE;
+    PrimefacesMenuBuilder builder = new PrimefacesMenuBuilder();
 
     public MenuModel getModel() {
-        MenuModel model = builder.buildMenubar(SEMFrameMenu.getMainMenu());
-        return model;
+        MenuNode root = null;
+        MenuModel menubar = builder.buildMenubar(root);
+        return menubar;
     }
 
 }

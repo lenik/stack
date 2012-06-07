@@ -105,6 +105,4 @@ public class PrimefacesMenuBuilder
         }
     }
 
-    public static PrimefacesMenuBuilder INSTANCE = new PrimefacesMenuBuilder();
-
 }

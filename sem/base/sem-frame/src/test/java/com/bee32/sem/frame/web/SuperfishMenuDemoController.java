@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bee32.sem.frame.builtins.SEMFrameMenu;
 import com.bee32.sem.frame.menu.SuperfishMenuBuilder;
 
 @Controller
@@ -18,7 +17,7 @@ public class SuperfishMenuDemoController {
     @RequestMapping("sfmenuDemo.do")
     public ModelAndView sfmenuDemo(HttpServletRequest request, HttpServletResponse response) {
 
-        String menuHtml = new SuperfishMenuBuilder(SEMFrameMenu.getMainMenu()).toString();
+        String menuHtml = new SuperfishMenuBuilder(null/* main-menu */).toString();
 
         ModelAndView view = new ModelAndView();
         view.addObject("html", menuHtml);

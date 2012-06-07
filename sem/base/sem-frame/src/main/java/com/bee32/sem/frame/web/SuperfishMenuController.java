@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.bee32.sem.frame.builtins.SEMFrameMenu;
 import com.bee32.sem.frame.menu.SuperfishMenuBuilder;
 
 @Controller
@@ -25,7 +24,7 @@ public class SuperfishMenuController {
         try {
             out = response.getWriter();
 
-            out.println(new SuperfishMenuBuilder(SEMFrameMenu.getMainMenu(), request));
+            out.println(new SuperfishMenuBuilder(null /* main-menu */, request));
 
         } catch (IOException ex1) {
             ex1.printStackTrace();

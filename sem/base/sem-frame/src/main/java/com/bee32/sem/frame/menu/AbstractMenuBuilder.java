@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.bee32.plover.rtx.location.ILocationContext;
 import com.bee32.plover.servlet.util.ThreadServletContext;
+import com.bee32.sem.frame.builtins.SEMFrameMenu;
 
 public abstract class AbstractMenuBuilder<T>
         implements IMenuBuilder<T>, IMenuAssembler {
@@ -36,11 +37,15 @@ public abstract class AbstractMenuBuilder<T>
     public final T buildMenubar(IMenuNode virtualRoot) {
         ContextMenuAssembler.setMenuAssembler(this);
 
+        // SiteInstance site = ThreadHttpContext.getSiteInstance();
+        // IAppProfile profile = site.getProfileAssembly();
+
         for (Class<? extends MenuComposite> mcClass : MenuCompositeManager.load()) {
-            // profile parameters here...?
             require(mcClass);
         }
 
+        if (virtualRoot == null)
+            virtualRoot = require(SEMFrameMenu.class).MAIN;
         T target = buildMenubarImpl(virtualRoot);
 
         ContextMenuAssembler.removeMenuAssembler();

@@ -9,7 +9,6 @@ import org.primefaces.component.submenu.Submenu;
 import org.primefaces.model.MenuModel;
 
 import com.bee32.plover.test.WiredTestCase;
-import com.bee32.sem.frame.builtins.SEMFrameMenu;
 import com.bee32.sem.frame.menu.PrimefacesMenuBuilder;
 
 public class SEMUberMenuTest
@@ -20,14 +19,9 @@ public class SEMUberMenuTest
     }
 
     @Test
-    public void testDump() {
-        System.out.println(SEMFrameMenu.getMainMenu().toString());
-    }
-
-    // @Test
     public void testPrimefacesMenuBuilder() {
         PrimefacesMenuBuilder mb = PrimefacesMenuBuilder.INSTANCE;
-        MenuModel menubar = mb.buildMenubar(SEMFrameMenu.getMainMenu());
+        MenuModel menubar = mb.buildMenubar(null);
         for (UIComponent m : menubar.getContents()) {
             Submenu submenu = (Submenu) m;
             System.out.println(submenu.getLabel());

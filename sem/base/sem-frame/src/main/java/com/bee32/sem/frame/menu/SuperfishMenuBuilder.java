@@ -15,6 +15,7 @@ import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.rtx.location.ILocationContext;
 import com.bee32.plover.util.PrettyPrintStream;
 import com.bee32.sem.frame.action.IAction;
+import com.bee32.sem.frame.builtins.SEMFrameMenu;
 
 public class SuperfishMenuBuilder
         extends AbstractMenuBuilder<String> {
@@ -29,8 +30,6 @@ public class SuperfishMenuBuilder
 
     public SuperfishMenuBuilder(MenuNode virtualRoot, HttpServletRequest request) {
         super(request);
-        if (virtualRoot == null)
-            throw new NullPointerException("virtualRoot");
         this.virtualRoot = virtualRoot;
     }
 
@@ -40,6 +39,9 @@ public class SuperfishMenuBuilder
 
         out.println("<ul class='sf-menu'>");
         out.enter();
+
+        if (virtualRoot == null)
+            virtualRoot = require(SEMFrameMenu.class).MAIN;
 
         for (IMenuNode root : virtualRoot)
             buildMenu(out, root);

@@ -19,7 +19,7 @@ public class MainMenu {
 
     @PostConstruct
     public void post() {
-        superfishMenuBuilder = new SuperfishMenuBuilder(SEMFrameMenu.getMainMenu(), null);
+        superfishMenuBuilder = new SuperfishMenuBuilder(null /* main-menu */, null);
     }
 
     public String getSuperfishHtml() {
