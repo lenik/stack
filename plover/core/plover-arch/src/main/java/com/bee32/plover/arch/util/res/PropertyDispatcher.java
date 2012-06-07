@@ -77,11 +77,11 @@ public class PropertyDispatcher
 
         if (prefixAcceptors.containsKey(prefix)) {
             IPropertyAcceptor _sink = prefixAcceptors.get(prefix);
-            throw new IllegalUsageException("Prefix " + prefix + " is already registered with " + _sink);
+            throw new IllegalUsageException(String.format("Prefix  %s is already registered with %s: %s", //
+                    prefix, _sink.getClass().getSimpleName(), _sink));
         }
 
         prefixAcceptors.put(prefix, acceptor);
-
         return this;
     }
 
