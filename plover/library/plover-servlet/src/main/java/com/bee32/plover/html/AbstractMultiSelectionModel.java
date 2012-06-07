@@ -8,30 +8,30 @@ public abstract class AbstractMultiSelectionModel<T>
         implements IMultiSelectionModel<T> {
 
     @Override
-    public Set<Integer> getIndexes() {
+    public Set<Integer> getSelectedIndexes() {
         Set<Integer> indexes = new LinkedHashSet<Integer>();
-        List<?> candidates = getCandidates();
-        for (Object value : getValues()) {
-            int index = candidates.indexOf(value);
+        List<T> candidates = getCandidates();
+        for (Object sel : getSelection()) {
+            int index = candidates.indexOf(sel);
             indexes.add(index);
         }
         return indexes;
     }
 
     @Override
-    public void setIndexes(Set<Integer> indexes) {
-        Set<T> values = getValues();
-        values.clear();
+    public void setSelectedIndexes(Set<Integer> selectedIndexes) {
+        Set<T> selection = getSelection();
+        selection.clear();
 
         List<T> candidates = getCandidates();
         int size = candidates.size();
-        for (Integer index : indexes) {
+        for (Integer index : selectedIndexes) {
             if (index == null)
                 continue;
             if (index < 0 || index >= size)
                 continue;
-            T value = candidates.get(index);
-            values.add(value);
+            T sel = candidates.get(index);
+            selection.add(sel);
         }
     }
 

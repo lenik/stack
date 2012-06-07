@@ -16,24 +16,30 @@ import com.bee32.plover.html.AbstractMultiSelectionModel;
 public class MultiProfileSelection
         extends AbstractMultiSelectionModel<Relabel<String>> {
 
-    Set<Relabel<String>> values;
+    Set<Relabel<String>> selection;
     List<Relabel<String>> candidates;
 
+    /**
+     * Profile name as the key, the profile.appearance.label as the label.
+     */
     public MultiProfileSelection(Set<String> profileNames) {
         if (profileNames == null)
-            values = new LinkedHashSet<Relabel<String>>();
+            selection = new LinkedHashSet<Relabel<String>>();
         else
-            values = Relabel.convert(profileNames);
+            selection = Relabel.convert(profileNames);
 
         candidates = new ArrayList<Relabel<String>>(relabelsDef);
-        for (Relabel<String> value : values)
-            if (!candidates.contains(value))
-                candidates.add(value);
+        for (Relabel<String> relabel : selection) {
+            if (relabel == null)
+                throw new NullPointerException("relabel");
+            if (!candidates.contains(relabel))
+                candidates.add(relabel);
+        }
     }
 
     @Override
-    public Set<Relabel<String>> getValues() {
-        return values;
+    public Set<Relabel<String>> getSelection() {
+        return selection;
     }
 
     @Override

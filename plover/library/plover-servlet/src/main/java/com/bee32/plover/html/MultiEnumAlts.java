@@ -13,17 +13,17 @@ public class MultiEnumAlts
         extends AbstractMultiSelectionModel<EnumAlt<?, ?>> {
 
     final Class<? extends EnumAlt<?, ?>> enumType;
-    final Set<EnumAlt<?, ?>> values;
+    final Set<EnumAlt<?, ?>> selection;
 
     // redundant.
     List<EnumAlt<?, ?>> candidates;
 
     public MultiEnumAlts(Class<? extends EnumAlt<?, ?>> enumType) {
         this.enumType = enumType;
-        this.values = new LinkedHashSet<EnumAlt<?, ?>>();
+        this.selection = new LinkedHashSet<EnumAlt<?, ?>>();
 
         candidates = new ArrayList<EnumAlt<?, ?>>();
-        for (Entry<String, ? extends EnumAlt<?, ?>> entry : EnumAltRegistry.getNameMap(enumType).entrySet()) {
+        for (Entry<String, ? extends EnumAlt<?, ?>> entry : EnumAltRegistry.nameMap(enumType).entrySet()) {
             // String name = entry.getKey();
             EnumAlt<?, ?> alt = entry.getValue();
             // String label = alt.getLabel();
@@ -32,8 +32,8 @@ public class MultiEnumAlts
     }
 
     @Override
-    public Set<EnumAlt<?, ?>> getValues() {
-        return values;
+    public Set<EnumAlt<?, ?>> getSelection() {
+        return selection;
     }
 
     @Override

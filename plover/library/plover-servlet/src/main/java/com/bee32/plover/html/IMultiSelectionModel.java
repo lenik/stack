@@ -8,12 +8,12 @@ import java.util.Set;
  */
 public interface IMultiSelectionModel<T> {
 
-    Set<T> getValues();
+    Set<T> getSelection();
 
     List<T> getCandidates();
 
-    Set<Integer> getIndexes();
+    Set<Integer> getSelectedIndexes();
 
-    void setIndexes(Set<Integer> indexes);
+    void setSelectedIndexes(Set<Integer> selectedIndexes);
 
 }
