@@ -17,8 +17,8 @@ public class SEMEventMenu
     static Location __ = WEB_APP.join(EventController.PREFIX_);
     SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
 
-    public MenuNode EVENT = menu(_frame_.START, 21, "event");
-    public MenuNode ADMIN = menu(EVENT, 100, "eventAdmin"); // MAIN/Admin
+    public MenuNode EVENT = menu(_frame_.START, 21, "EVENT");
+    public MenuNode ADMIN = menu(EVENT, 100, "ADMIN"); // MAIN/Admin
 
     MenuNode categories = entry(ADMIN, 10, "categories", getDictIndex(EventCategory.class));
     MenuNode priorities = entry(ADMIN, 11, "priorities", //

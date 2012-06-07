@@ -30,7 +30,7 @@ public class SEMPeopleMenu
     MenuNode orgAdmin = entry(PEOPLE, 11, "orgAdmin", prefix.join("org/"));
     MenuNode orgPersonAdmin = entry(PEOPLE, 20, "orgPersonAdmin", prefix.join("orgPerson/"));
 
-    public MenuNode SETTINGS = menu(PEOPLE, 12, "peopleDicts");
+    public MenuNode SETTINGS = menu(PEOPLE, 12, "SETTINGS");
     /**/MenuNode partyTag = entry(SETTINGS, 1, "partyTag", getDictIndex(PartyTagname.class));
     /**/MenuNode personSidType = entry(SETTINGS, 2, "personSidType", getDictIndex(PartySidType.class));
     /**/MenuNode orgType = entry(SETTINGS, 3, "orgType", getDictIndex(OrgType.class));

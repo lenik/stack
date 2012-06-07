@@ -11,7 +11,7 @@ public class SEMAssetMenu
     static Location __ = WEB_APP.join(SEMAssetModule.PREFIX_);
     SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
 
-    public MenuNode ASSET = menu(_frame_.MAIN, 410, "asset");
+    public MenuNode ASSET = menu(_frame_.MAIN, 410, "ASSET");
 
     MenuNode accountSubjectAdmin = entry(ASSET, 1, "accountSubjectAdmin", __.join("subject/"));
 
@@ -19,10 +19,8 @@ public class SEMAssetMenu
     MenuNode budgetRequestAdmin = entry(ASSET, 3, "budgetRequestAdmin", __.join("request/"));
     MenuNode accountTicketAdmin = entry(ASSET, 4, "accountTicketAdmin", __.join("ticket/"));
 
-    // MenuNode stockSaleAdmin = entry(ASSET, 5, "stockSaleAdmin",
-// __.join("stock-trade/?type=SALE"));
-    // MenuNode stockPurchaseAdmin = entry(ASSET, 6, "stockPurchaseAdmin",
-// __.join("stock-trade/?type=PURCHASE"));
+//    MenuNode stockSaleAdmin = entry(ASSET, 5, "stockSaleAdmin", __.join("stock-trade/?type=SALE"));
+//    MenuNode stockPurchaseAdmin = entry(ASSET, 6, "stockPurchaseAdmin", __.join("stock-trade/?type=PURCHASE"));
 
     MenuNode assetQuery = entry(ASSET, 7, "assetQuery", __.join("query/"));
 

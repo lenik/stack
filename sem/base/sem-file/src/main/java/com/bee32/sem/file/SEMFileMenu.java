@@ -11,10 +11,10 @@ public class SEMFileMenu
     static Location __ = WEB_APP.join(SEMFileModule.PREFIX_);
     SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
 
-    MenuNode FILE = menu(_frame_.START, 1000, "file");
+    MenuNode FILE = menu(_frame_.START, 1000, "FILE");
     /**/MenuNode userFile = entry(FILE, 40, "userFile", __.join("file/"));
 
-    /**/MenuNode SETTINGS = menu(FILE, 1000, "settings");
+    /**/MenuNode SETTINGS = menu(FILE, 1000, "SETTINGS");
     /*    */MenuNode fileTag = entry(SETTINGS, 10, "fileTag", __.join("fileTag/"));
 
 }

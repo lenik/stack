@@ -29,7 +29,7 @@ public class SEMContextMenu
     public MenuNode BIZ_PARENT = section(BIZ, 30, ":parent");
     public MenuNode BIZ_CHILDREN = section(BIZ, 40, ":children");
     public MenuNode BIZ_COMMENTS = section(BIZ, 50, ":comments");
-    public MenuNode BIZ_ATTR = section(BIZ, 60, ":attr");
+    public MenuNode BIZ_ATTR = section(BIZ, 60, ":bizattr");
 
     public MenuNode NET_SEND = section(NETWORK, 10, ":send");
     public MenuNode NET_FORWARD = section(NETWORK, 20, ":forward");

@@ -22,13 +22,13 @@ public class SEMChanceMenu
     MenuNode chance = entry(CHANCE, 30, "chance", prefix.join("chance/"));
     MenuNode action = entry(CHANCE, 31, "action", prefix.join("action/"));
 
-    public MenuNode CHANCE_DICT = menu(CHANCE, 32, "chanceDicts");
+    public MenuNode CHANCE_DICT = menu(CHANCE, 32, "CHANCE_DICT");
     /*    */MenuNode category = entry(CHANCE_DICT, 1, "category", getDictIndex(ChanceCategory.class));
     /*    */MenuNode sourceType = entry(CHANCE_DICT, 2, "sourceType", getDictIndex(ChanceSourceType.class));
     /*    */MenuNode actionStyle = entry(CHANCE_DICT, 3, "actionStyle", getDictIndex(ChanceActionStyle.class));
     /*    */MenuNode stage = entry(CHANCE_DICT, 4, "stage", getDictIndex(ChanceStage.class));
 
-    public MenuNode PRICE = menu(CHANCE, 32, "price");
+    public MenuNode PRICE = menu(CHANCE, 32, "PRICE");
 
     // MenuNode competitor = entry(CHANCE, "competitor", CHANCE_.join("competitor/ "));
 

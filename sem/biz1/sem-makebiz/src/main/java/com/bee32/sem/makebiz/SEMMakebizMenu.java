@@ -11,7 +11,7 @@ public class SEMMakebizMenu
     static Location __ = WEB_APP.join(SEMMakebizModule.PREFIX_);
     SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
 
-    public MenuNode MAKEBIZ = menu(_frame_.MAIN, 450, "makeBiz");
+    public MenuNode MAKEBIZ = menu(_frame_.MAIN, 450, "MAKEBIZ");
 
     MenuNode makeOrderAdmin = entry(MAKEBIZ, 1, "makeOrderAdmin", __.join("order/"));
     MenuNode makeTaskAdmin = entry(MAKEBIZ, 10, "makeTaskAdmin", __.join("task/"));

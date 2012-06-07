@@ -20,11 +20,11 @@ public class SEMInventoryMenu
         return __.join("stock/?subject=" + subject.getValue());
     }
 
-    public MenuNode MATERIAL = menu(_frame_.MAIN, 430, "material");
-    /*    */MenuNode materialCategory = entry(MATERIAL, 1, "materialCategory", __.join("category/"));
+    public MenuNode MATERIAL = menu(_frame_.MAIN, 430, "MATERIAL");
+    /*    */MenuNode category = entry(MATERIAL, 1, "category", __.join("category/"));
     /*    */MenuNode material = entry(MATERIAL, 3, "material", __.join("material/"));
 
-    public MenuNode INVENTORY = menu(_frame_.MAIN, 440, "inventory");
+    public MenuNode INVENTORY = menu(_frame_.MAIN, 440, "INVENTORY");
     /*    */MenuNode init = entry(INVENTORY, 10, "init", __.join("stock/INIT/"));
     /*    */MenuNode takeIn = entry(INVENTORY, 20, "takeIn", _stock(StockOrderSubject.TAKE_IN));
     /*    */MenuNode takeOut = entry(INVENTORY, 21, "takeOut", _stock(StockOrderSubject.TAKE_OUT));
@@ -41,7 +41,7 @@ public class SEMInventoryMenu
     /*    */MenuNode unqualifiedQuery = entry(INVENTORY, 120, "unqualifiedQuery", __.join("unqualifiedQuery/"));
     /*    */MenuNode __2 = _separator_(INVENTORY, 999);
 
-    public MenuNode SETTINGS = menu(INVENTORY, 1000, "settings");
+    public MenuNode SETTINGS = menu(INVENTORY, 1000, "SETTINGS");
     /*    */MenuNode stockWarehouse = entry(SETTINGS, 1, "stockWarehouse", __.join("warehouse/"));
     /*    */MenuNode stockLocation = entry(SETTINGS, 10, "stockLocation", __.join("location/"));
 

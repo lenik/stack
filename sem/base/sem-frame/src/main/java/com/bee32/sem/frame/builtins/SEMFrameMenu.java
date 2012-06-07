@@ -10,6 +10,8 @@ import com.bee32.plover.faces.misc.GuestPreferences;
 import com.bee32.plover.faces.utils.FacesAssembledContext;
 import com.bee32.plover.site.cfg.PrimefacesTheme;
 import com.bee32.sem.frame.action.Action;
+import com.bee32.sem.frame.menu.ContextMenuAssembler;
+import com.bee32.sem.frame.menu.IMenuAssembler;
 import com.bee32.sem.frame.menu.MenuComposite;
 import com.bee32.sem.frame.menu.MenuNode;
 
@@ -18,28 +20,28 @@ public class SEMFrameMenu
 
     static String VERSION = "SEM-Frame 0.3.2";
 
-    public MenuNode MAIN = menu("main");
+    public MenuNode MAIN = menu("MAIN");
 
-    public MenuNode START = menu(MAIN, 10, "start");
-    /**/public MenuNode CONTROL = menu(START, 100, "control");
-    /*    */public MenuNode SECURITY = menu(CONTROL, 100, "security");
-    /*    */public MenuNode THEME = menu(CONTROL, 200, "theme");
+    public MenuNode START = menu(MAIN, 10, "START");
+    /**/public MenuNode CONTROL = menu(START, 100, "CONTROL");
+    /*    */public MenuNode SECURITY = menu(CONTROL, 100, "SECURITY");
+    /*    */public MenuNode THEME = menu(CONTROL, 200, "THEME");
 
-    public MenuNode EDIT = menu(MAIN, 200, "edit");
-    /**/public MenuNode ATTRIBUTES = menu(EDIT, 100, "attributes");
+    public MenuNode EDIT = menu(MAIN, 200, "EDIT");
+    /**/public MenuNode ATTRIBUTES = menu(EDIT, 100, "ATTRIBUTES");
 
-    public MenuNode DATA = menu(MAIN, 300, "data");
+    public MenuNode DATA = menu(MAIN, 300, "DATA");
 
-    public MenuNode RESOURCES = menu(MAIN, 310, "resources");
-    public MenuNode BIZ1 = menu(MAIN, 320, "biz1");
+    public MenuNode RESOURCES = menu(MAIN, 310, "RESOURCES");
+    public MenuNode BIZ1 = menu(MAIN, 320, "BIZ1");
     /**//*
           * static MenuNode contract = entry(BIZ1, 10, "contract",
           * JAVASCRIPT.join("alert('under development')"));
           */
 
-    public MenuNode PROCESS = menu(MAIN, 600, "process");
+    public MenuNode PROCESS = menu(MAIN, 600, "PROCESS");
 
-    public MenuNode HELP = menu(MAIN, 10000, "help");
+    public MenuNode HELP = menu(MAIN, 10000, "HELP");
 
     @Override
     protected void preamble() {
@@ -55,9 +57,12 @@ public class SEMFrameMenu
         }
     }
 
+    @Deprecated
     public static MenuNode getMainMenu() {
-        // ThreadLocalMenuAssembler
-        return null;
+        IMenuAssembler contextAssembler = ContextMenuAssembler.getMenuAssembler();
+        if (contextAssembler == null)
+            throw new IllegalStateException("No context menu assembler set.");
+        return contextAssembler.require(SEMFrameMenu.class).MAIN;
     }
 
 }

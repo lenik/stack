@@ -11,8 +11,8 @@ public class SEMProcessMenu
     static Location __ = WEB_APP.join(SEMProcessModule.PREFIX + "/");
     SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
 
-    public MenuNode CORE = menu(_frame_.PROCESS, 10, "process");
-    public MenuNode VERIFY_POLICY = menu(CORE, 10, "verifyPolicy");
+    public MenuNode CORE = menu(_frame_.PROCESS, 10, "CORE");
+    public MenuNode VERIFY_POLICY = menu(CORE, 10, "VERIFY_POLICY");
 
     MenuNode preference = entry(CORE, 20, "preference", __.join("pref/index-rich.jsf"));
     MenuNode list = entry(VERIFY_POLICY, 1, "list", __.join("v1/index-rich.jsf"));
