@@ -10,7 +10,7 @@
 
     domains=(
         cdn.bee32.com
-        st1.cdn.bee32.com
+        *.cdn.bee32.com
     )
 
     main "$@"
