@@ -1,6 +1,7 @@
 package com.bee32.plover.site.cfg;
 
 import java.util.LinkedHashSet;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.free.Nullables;
@@ -8,7 +9,7 @@ import javax.free.Nullables;
 import com.bee32.plover.arch.util.ILabelledEntry;
 
 public class Relabel<K>
-        implements ILabelledEntry {
+        implements Entry<K, String>, ILabelledEntry {
 
     K key;
     String label;
@@ -16,6 +17,23 @@ public class Relabel<K>
     public Relabel(K key, String label) {
         this.key = key;
         this.label = label;
+    }
+
+    @Override
+    public K getKey() {
+        return key;
+    }
+
+    @Override
+    public String getValue() {
+        return label;
+    }
+
+    @Override
+    public String setValue(String value) {
+        String old = this.label;
+        this.label = value;
+        return old;
     }
 
     @Override
@@ -53,9 +71,14 @@ public class Relabel<K>
         return getEntryLabel();
     }
 
+    /**
+     * Create Relabel-wrappers for the key set.
+     */
     public static <K> Set<Relabel<K>> convert(Set<K> keys) {
         Set<Relabel<K>> relabels = new LinkedHashSet<Relabel<K>>();
         for (K key : keys) {
+            if (key == null)
+                throw new NullPointerException("key");
             Relabel<K> relabel = new Relabel<K>(key, _label(key));
             relabels.add(relabel);
         }

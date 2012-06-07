@@ -12,6 +12,7 @@ import com.bee32.plover.arch.util.ILabelledEntry;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.rtx.location.Locations;
 import com.bee32.plover.site.EnumUtil;
+import com.bee32.plover.site.cfg.Relabel;
 import com.googlecode.jatl.Html;
 
 public class SimpleForm
@@ -138,34 +139,40 @@ public class SimpleForm
                     boolean hasLabel = ILabelledEntry.class.isAssignableFrom(enmClass);
 
                     input = select().name(name);
-                    for (EnumAlt<?, ?> candidate : EnumAltRegistry.getNameMap(enmClass).values()) {
-                        boolean selected = Nullables.equals(value, candidate);
-                        Html option = option().value(candidate.getName());
+                    for (EnumAlt<?, ?> it : EnumAltRegistry.nameMap(enmClass).values()) {
+                        boolean selected = Nullables.equals(value, it);
+                        Html option = option().value(it.getName());
                         if (selected)
                             option.selected("selected");
                         if (hasLabel) {
-                            String candidateLabel = ((ILabelledEntry) candidate).getEntryLabel();
-                            option.text(candidateLabel);
+                            String itLabel = ((ILabelledEntry) it).getEntryLabel();
+                            option.text(itLabel);
                         } else {
-                            option.text(candidate.getName());
+                            option.text(it.getName());
                         }
                         option.end();
                     }
 
                 } else if (value instanceof IMultiSelectionModel) {// checkbox*: index[] -> label[].
                     IMultiSelectionModel<?> msm = (IMultiSelectionModel<?>) value;
-                    input = div();
-                    Set<Integer> indexes = msm.getIndexes();
+                    input = div().style("max-width: 20em"); // ul();
+                    Set<Integer> selectedIndexes = msm.getSelectedIndexes();
                     List<?> candidates = msm.getCandidates();
                     for (int index = 0; index < candidates.size(); index++) {
-                        boolean selected = indexes.contains(index);
-                        Object candidate = candidates.get(index);
-                        String candidateLabel;
-                        if (candidate instanceof ILabelledEntry)
-                            candidateLabel = ((ILabelledEntry) candidate).getEntryLabel();
+                        boolean isSelected = selectedIndexes.contains(index);
+                        Relabel<?> it = (Relabel<?>) candidates.get(index);
+
+                        String itLabel;
+                        if (it instanceof ILabelledEntry)
+                            itLabel = ((ILabelledEntry) it).getEntryLabel();
                         else
-                            candidateLabel = candidate.toString();
-                        checkbox(selected).name(name).text(candidateLabel).end();
+                            itLabel = it.toString();
+                        if (itLabel == null || itLabel.isEmpty())
+                            itLabel = "(" + it.getKey() + ")";
+
+                        // li().;
+                        checkbox(isSelected).name(name).value(String.valueOf(it.getKey())).text(itLabel);
+                        // .end();
                     }
                 } else {
                     throw new UnsupportedOperationException("Unsupported field value type for simple-form: " + value);

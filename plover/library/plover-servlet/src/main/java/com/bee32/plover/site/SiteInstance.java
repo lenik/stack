@@ -324,12 +324,12 @@ public class SiteInstance
 
     public Set<IAppProfile> _getProfiles() {
         Set<String> profileNames = getProfileNames();
-        if (profileNames == null)
-            return null;
         Set<IAppProfile> profiles = new LinkedHashSet<IAppProfile>();
-        for (String profileName : profileNames) {
-            IAppProfile profile = AppProfileManager.getProfile(profileName);
-            profiles.add(profile);
+        if (profileNames != null) {
+            for (String profileName : profileNames) {
+                IAppProfile profile = AppProfileManager.getProfile(profileName);
+                profiles.add(profile);
+            }
         }
         return profiles;
     }

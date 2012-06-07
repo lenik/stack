@@ -28,6 +28,7 @@ import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.site.cfg.DBAutoDDL;
 import com.bee32.plover.site.cfg.DBDialect;
+import com.bee32.plover.site.cfg.MultiProfileSelection;
 import com.bee32.plover.site.cfg.OptimizationLevel;
 import com.bee32.plover.site.cfg.SamplesSelection;
 import com.bee32.plover.site.cfg.VerboseLevel;
@@ -219,8 +220,8 @@ public class SiteManagerServlet
                 VerboseLevel verbose = VerboseLevel.forName(_verbose);
                 OptimizationLevel optimization = OptimizationLevel.forName(_optimization);
 
-                DBDialect dialect = DBDialect.forValue(_dialect);
-                DBAutoDDL autoddl = DBAutoDDL.forValue(_autoddl);
+                DBDialect dialect = DBDialect.forName(_dialect);
+                DBAutoDDL autoddl = DBAutoDDL.forName(_autoddl);
                 SamplesSelection samples = SamplesSelection.forName(_samples);
                 if (url == null)
                     url = dialect.getUrlFormat();
@@ -282,7 +283,7 @@ public class SiteManagerServlet
                     "dbpass", "数据库密码:数据库的登录密码", site.getDbPass(), //
                     "autoddl", "DDL模式:数据库自动创建DDL的模式", site.getAutoDDL(), //
                     "samples", "样本加载:选择加载哪些样本", site.getSamples(), //
-                    "profiles", "应用剪裁:选择要启用的功能、特性", site.getProfileNames() //
+                    "profiles", "应用剪裁:选择要启用的功能、特性", new MultiProfileSelection(site.getProfileNames()) //
             );
 
             if (!createSite) {
