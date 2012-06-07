@@ -10,7 +10,12 @@ import java.util.Set;
 import javax.free.IllegalUsageException;
 import javax.free.URLResource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ServicePrototypeLoader {
+
+    static Logger logger = LoggerFactory.getLogger(ServicePrototypeLoader.class);
 
     public static <T> Iterable<Class<? extends T>> load(Class<T> serviceBaseType, boolean includeAbstract)
             throws IOException, ClassNotFoundException {
@@ -45,7 +50,13 @@ public class ServicePrototypeLoader {
                  * Optimize: Maybe another class loader different to the resource discoverer should
                  * be used.
                  */
-                Class<?> serviceClass = Class.forName(className, true, classLoader);
+                Class<?> serviceClass;
+                try {
+                    serviceClass = Class.forName(className, true, classLoader);
+                } catch (ExceptionInInitializerError e) {
+                    logger.error("Failed to resolve service class: " + className, e);
+                    throw e;
+                }
 
                 if (!serviceBaseType.isAssignableFrom(serviceClass))
                     throw new IllegalUsageException(String.format("Invalid service class %s for %s.", //
