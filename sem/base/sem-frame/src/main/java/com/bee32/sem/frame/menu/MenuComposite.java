@@ -9,6 +9,9 @@ import java.util.Set;
 
 import javax.free.IllegalUsageException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.bee32.plover.arch.Composite;
 import com.bee32.plover.arch.IAppProfile;
 import com.bee32.plover.inject.ServiceTemplate;
@@ -27,10 +30,20 @@ public abstract class MenuComposite
         extends Composite
         implements ILocationConstants, ITypeAbbrAware {
 
+    static Logger logger = LoggerFactory.getLogger(MenuComposite.class);
+
     public static final String ENABLED = "enabled";
 
+    boolean enabled;
     List<Field> fields;
     Map<String, MenuNode> localMap = new HashMap<String, MenuNode>();
+
+    public MenuComposite() {
+        SiteInstance site = ThreadHttpContext.getSiteInstance();
+        IAppProfile mergedProfile = site.getMergedProfile();
+        Boolean enabled = (Boolean) mergedProfile.getParameter(getClass(), MenuComposite.ENABLED);
+        this.enabled = enabled == Boolean.TRUE;
+    }
 
     @Override
     protected boolean isUsingComponentName() {
@@ -98,7 +111,6 @@ public abstract class MenuComposite
 
     protected MenuNode entry(MenuNode parent, int order, String name, ILocationContext location) {
         MenuNode node = new MenuNode(name);
-
         node.setOrder(order);
 
         if (location != null) {
@@ -106,11 +118,14 @@ public abstract class MenuComposite
             node.setAction(action);
         }
 
-        if (parent != null)
-            if (!parent.add(node))
-                throw new IllegalUsageException("Duplicated menu node: " + node + ", parent: " + parent);
+        // Load resources and attach to the parent of if the composite is enabled.
+        if (enabled) {
+            if (parent != null)
+                if (!parent.add(node))
+                    throw new IllegalUsageException("Duplicated menu node: " + node + ", parent: " + parent);
+            declare(name, node);
+        }
 
-        declare(name, node);
         return node;
     }
 
@@ -121,9 +136,9 @@ public abstract class MenuComposite
 
     protected <T> T getParameter(String key) {
         SiteInstance site = ThreadHttpContext.getSiteInstance();
-        IAppProfile profile = site.getProfileAssembly();
+        IAppProfile mergedProfile = site.getMergedProfile();
         Class<?> mcClass = getClass();
-        T value = (T) profile.getParameter(mcClass, key);
+        T value = (T) mergedProfile.getParameter(mcClass, key);
         return value;
     }
 
