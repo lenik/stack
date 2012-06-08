@@ -7,7 +7,7 @@ public class SEMChanceProfile
 
     @Override
     protected void preamble() {
-        setParameter(SEMChanceMenu.class, "a", "b");
+        setParameter(SEMChanceMenu.class, SEMChanceMenu.ENABLED, true);
     }
 
 }
