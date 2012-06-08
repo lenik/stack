@@ -20,7 +20,7 @@ public class SEMUberMenuTest
 
     @Test
     public void testPrimefacesMenuBuilder() {
-        PrimefacesMenuBuilder mb = PrimefacesMenuBuilder.INSTANCE;
+        PrimefacesMenuBuilder mb = new PrimefacesMenuBuilder();
         MenuModel menubar = mb.buildMenubar(null);
         for (UIComponent m : menubar.getContents()) {
             Submenu submenu = (Submenu) m;

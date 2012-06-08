@@ -3,8 +3,11 @@ com.bee32.sem.makebiz.entity.DeliveryNoteItem
 com.bee32.sem.makebiz.entity.DeliveryNoteTakeOut
 com.bee32.sem.makebiz.entity.MakeOrder
 com.bee32.sem.makebiz.entity.MakeOrderItem
+com.bee32.sem.makebiz.entity.MakeProcess
+com.bee32.sem.makebiz.entity.MakeStep
 com.bee32.sem.makebiz.entity.MakeTask
 com.bee32.sem.makebiz.entity.MakeTaskItem
 com.bee32.sem.makebiz.entity.MaterialPlan
 com.bee32.sem.makebiz.entity.MaterialPlanItem
+com.bee32.sem.makebiz.entity.SerialNumber
 com.bee32.sem.makebiz.entity.StockPlanOrder

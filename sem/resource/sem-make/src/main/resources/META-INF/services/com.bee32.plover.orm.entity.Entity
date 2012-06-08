@@ -1,2 +1,9 @@
+com.bee32.sem.make.entity.MakeStepInput
+com.bee32.sem.make.entity.MakeStepModel
+com.bee32.sem.make.entity.MakeStepName
 com.bee32.sem.make.entity.Part
 com.bee32.sem.make.entity.PartItem
+com.bee32.sem.make.entity.QCResult
+com.bee32.sem.make.entity.QCResultParameter
+com.bee32.sem.make.entity.QCSpec
+com.bee32.sem.make.entity.QCSpecParameter
