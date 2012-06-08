@@ -19,8 +19,15 @@ public class KeywordBuilder
 
     @Override
     public boolean add(String e) {
-        if (e != null && !e.isEmpty())
-            buffer.append(e);
+        if (e == null || e.isEmpty())
+            return false;
+
+        if (buffer.indexOf(e) != -1)
+            return false;
+
+        if (buffer.length() != 0)
+            buffer.append(";");
+        buffer.append(e);
         return true;
     }
 
