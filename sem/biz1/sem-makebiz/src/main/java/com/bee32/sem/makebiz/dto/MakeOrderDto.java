@@ -104,18 +104,13 @@ public class MakeOrderDto
 
     @Override
     public int getItemSelection() {
-	int itemSelection = 0;
-	if (selection.contains(ITEM_ATTRIBUTES)) itemSelection |= MakeOrderItemDto.PART_ATTRIBUTES;
-	return itemSelection;
+        int itemSelection = 0;
+        if (selection.contains(ITEM_ATTRIBUTES))
+            itemSelection |= MakeOrderItemDto.PART_ATTRIBUTES;
+        return itemSelection;
     }
 
-	@Override
-    protected Object clone() throws CloneNotSupportedException {
-	    // TODO Auto-generated method stub
-	    return super.clone();
-    }
-
-	@Override
+    @Override
     protected void _unmarshalTo(MakeOrder target) {
         merge(target, "customer", customer);
         target.setStatus(status);

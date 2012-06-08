@@ -28,29 +28,22 @@ public class MakeTaskDto
     List<MakeTaskItemDto> items;
     List<MaterialPlanDto> plans;
 
-
     @Override
     protected void _copy() {
-	items = CopyUtils.copyList(items, this);
-	plans = new ArrayList<MaterialPlanDto>();
+        items = CopyUtils.copyList(items, this);
+        plans = new ArrayList<MaterialPlanDto>();
     }
 
-	@Override
-    protected Object clone() throws CloneNotSupportedException {
-	    // TODO Auto-generated method stub
-	    return super.clone();
-    }
-
-	@Override
+    @Override
     protected void _marshal(MakeTask source) {
         order = mref(MakeOrderDto.class, source.getOrder());
 
         deadline = source.getDeadline();
 
         if (selection.contains(ITEMS)) {
-		int itemSelection = 0;
-		if (selection.contains(ITEM_ATTRIBUTES)) itemSelection |= MakeTaskItemDto.PART_ATTRIBUTES;
-            items = marshalList(MakeTaskItemDto.class, itemSelection, source.getItems());
+            items = marshalList(MakeTaskItemDto.class, //
+                    selection.translate(ITEM_ATTRIBUTES, MakeTaskItemDto.PART_ATTRIBUTES), //
+                    source.getItems());
         } else
             items = new ArrayList<MakeTaskItemDto>();
 

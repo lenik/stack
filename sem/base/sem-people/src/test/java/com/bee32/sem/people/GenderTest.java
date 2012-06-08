@@ -22,9 +22,6 @@ public class GenderTest
         Gender.forValue('Z');
     }
 
-    /**
-     * TODO ContextLocalGroup
-     */
     @Test
     public void testGetLabel() {
         String name = Gender.MALE.getDisplayName();

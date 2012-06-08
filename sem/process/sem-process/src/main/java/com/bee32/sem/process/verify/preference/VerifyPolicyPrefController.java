@@ -53,7 +53,7 @@ public class VerifyPolicyPrefController
             throws BeansException {
         super.initController();
 
-        // XXX _createOTF = true;
+        // _createOTF = true;
         addHandler("createForm", EntityHandler.NOT_APPLICABLE);
         addHandler("create", EntityHandler.NOT_APPLICABLE);
         addHandler("data", new PrefDataHandler(VerifyPolicyPref.class, impl));

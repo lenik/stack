@@ -66,7 +66,6 @@ public abstract class AbstractItemList<Item extends AbstractItem>
     @Cascade(CascadeType.ALL)
     @OrderBy("index ASC, id ASC")
     public List<Item> getItems() {
-        // TODO Collections.unmodifiableList(items);
         return items;
     }
 
