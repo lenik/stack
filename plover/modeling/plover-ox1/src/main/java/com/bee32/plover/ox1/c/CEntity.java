@@ -21,7 +21,7 @@ public abstract class CEntity<K extends Serializable>
 
     private static final long serialVersionUID = 1L;
 
-    static final int KEYWORD_MAXLEN = 40;
+    static final int KEYWORD_MAXLEN = 200;
 
     String keyword;
     boolean keywordUpdated;
