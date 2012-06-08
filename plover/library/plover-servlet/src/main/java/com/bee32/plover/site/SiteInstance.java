@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.plover.arch.AppProfileAssembly;
+import com.bee32.plover.arch.AppProfileMerger;
 import com.bee32.plover.arch.AppProfileManager;
 import com.bee32.plover.arch.IAppProfile;
 import com.bee32.plover.rtx.location.ILocationConstants;
@@ -382,9 +382,9 @@ public class SiteInstance
         setProperty(PROFILE_NAMES_KEY, profileNames);
     }
 
-    public AppProfileAssembly getProfileAssembly() {
+    public AppProfileMerger getMergedProfile() {
         Set<IAppProfile> profiles = _getProfiles();
-        return new AppProfileAssembly(profiles);
+        return new AppProfileMerger(profiles);
     }
 
     public VerboseLevel getVerboseLevel() {

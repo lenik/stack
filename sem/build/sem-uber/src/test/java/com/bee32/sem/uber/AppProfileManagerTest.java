@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import com.bee32.plover.arch.AppProfileManager;
 
-public class AppProfilesTest
+public class AppProfileManagerTest
         extends Assert {
 
     @Test

@@ -12,10 +12,11 @@ public class DefaultMenuAssembler
     }
 
     @Override
-    public <M extends MenuComposite> M require(Class<M> mcClass) {
+    public synchronized <M extends MenuComposite> M require(Class<M> mcClass) {
         M mc = (M) mcInstances.get(mcClass);
         if (mc == null) {
             try {
+                // System.out.println("NEW: " + mcClass);
                 mc = mcClass.newInstance();
             } catch (ReflectiveOperationException e) {
                 throw new RuntimeException(e.getMessage(), e);

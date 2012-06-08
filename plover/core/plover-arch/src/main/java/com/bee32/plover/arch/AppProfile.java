@@ -39,6 +39,12 @@ public abstract class AppProfile
             return map.get(key);
     }
 
+    /**
+     * The parameter set here will scanned in the priority order by
+     * {@link AppProfileMerger#getParameter(Class, String)}.
+     *
+     * @see AppProfileMerger
+     */
     protected void setParameter(Class<?> featureClass, String key, Object value) {
         Map<String, Object> parameters = getParameters(featureClass);
         parameters.put(key, value);

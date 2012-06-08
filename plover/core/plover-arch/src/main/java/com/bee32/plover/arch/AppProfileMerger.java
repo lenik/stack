@@ -5,13 +5,13 @@ import java.util.Set;
 import com.bee32.plover.inject.NotAComponent;
 
 @NotAComponent
-public class AppProfileAssembly
+public class AppProfileMerger
         extends Component
         implements IAppProfile {
 
     Set<IAppProfile> profiles;
 
-    public AppProfileAssembly(Set<IAppProfile> profiles) {
+    public AppProfileMerger(Set<IAppProfile> profiles) {
         if (profiles == null)
             throw new NullPointerException("profiles");
         this.profiles = profiles;

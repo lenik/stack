@@ -6,7 +6,7 @@ import java.util.TreeMap;
 
 public class AppProfileManager {
 
-    static Map<String, IAppProfile> profileMap;
+    static final Map<String, IAppProfile> profileMap;
 
     static {
         profileMap = new TreeMap<String, IAppProfile>();
