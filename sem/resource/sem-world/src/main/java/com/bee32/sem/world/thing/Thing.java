@@ -1,5 +1,7 @@
 package com.bee32.sem.world.thing;
 
+import java.util.Collection;
+
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.JoinColumn;
@@ -61,6 +63,12 @@ public abstract class Thing<X extends XPool<?>>
         unitConv = o.unitConv;
         modelSpec = o.modelSpec;
         color = o.color; // clone?
+    }
+
+    @Override
+    protected void populateKeywords(Collection<String> keywords) {
+        super.populateKeywords(keywords);
+        // keywords.add(modelSpec);
     }
 
     /**

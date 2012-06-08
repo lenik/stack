@@ -1,6 +1,7 @@
 package com.bee32.plover.ox1.color;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -48,6 +49,12 @@ public abstract class UIEntity<K extends Serializable>
         // name=o.name;
         label = o.label;
         description = o.description;
+    }
+
+    @Override
+    protected void populateKeywords(Collection<String> keywords) {
+        keywords.add(label);
+        keywords.add(description);
     }
 
     @Index(name = "##_label")
