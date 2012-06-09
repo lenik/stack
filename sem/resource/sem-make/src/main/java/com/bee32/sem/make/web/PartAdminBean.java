@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.bee32.plover.arch.util.IEnclosingContext;
 import com.bee32.plover.arch.util.dto.Fmask;
 import com.bee32.plover.criteria.hibernate.Equals;
@@ -46,6 +48,9 @@ public class PartAdminBean
 
     BomTreeNode makeStepTarget;
 
+    String partMaterialMatcher;
+    String partItemMaterialMatcher;
+
     public PartAdminBean() {
         super(Part.class, PartDto.class, 0);
     }
@@ -68,14 +73,14 @@ public class PartAdminBean
         elements.add(BomCriteria.targetCategory(categoryId));
     }
 
-    public void addSpecRestriction(){
-        //TODO 已经选择了bom节点，直接搜索， 反之，创建一个alias
+    public void addSpecRestriction() {
+        // TODO 已经选择了bom节点，直接搜索， 反之，创建一个alias
         setSearchFragment("spec", "型号含有 " + searchPattern, //
                 BomCriteria.specLike(searchPattern));
         searchPattern = null;
     }
 
-    public void addCategoryRestriction(){
+    public void addCategoryRestriction() {
         setSearchFragment("category", "限定分类 " + searchPattern,//
                 MaterialCriteria.clike(searchPattern));
         searchPattern = null;
@@ -97,26 +102,33 @@ public class PartAdminBean
         PartDto part = getOpenedObject();
         // 检查此物料(成品)是否已经有bom存在
         List<Part> partList = ctx.data.access(Part.class).list(new Limit(0, 3),//
-                new Equals("target.id", selectedMaterial.getId()));
+                new Equals("target.id", selectedMaterial.getId()), new Equals("valid", true));
         if (!partList.isEmpty()) {
             uiLogger.error("此物料已经存在BOM信息 (" + partList.get(0).getId() + "...)");
             return;
         }
         part.setTarget(selectedMaterial);
         part.setCategory(selectedMaterial.getCategory());
+
+        partMaterialMatcher = selectedMaterial.getLabel();
         selectedMaterial = null;
     }
 
     public void setPartItemMaterial() {
         PartItemDto item = childrenMBean.getOpenedObject();
-        List<Part> materialsIsPart = ctx.data.access(Part.class).list(new Limit(0, 3),//
-                new Equals("target.id", selectedMaterial.getId()));
-        if (!materialsIsPart.isEmpty()) {
-            uiLogger.error("此物料是成品或半成品，已经存在BOM，请用[组件是半成品]标签页进行查找选择!");
-            return;
+
+        Part part = ctx.data.access(Part.class).getUnique(new Equals("target.id", selectedMaterial.getId()));
+        if (part != null) {
+            // 选中的物料是半成品
+            item.setMaterial(null);
+            item.setPart(DTOs.marshal(PartDto.class, part));
+        } else {
+            // 选中的物料是原材料
+            item.setMaterial(selectedMaterial);
+            item.setPart(null);
         }
-        item.setMaterial(selectedMaterial);
-        // item.setPart(null);
+
+        partItemMaterialMatcher = selectedMaterial.getLabel();
         selectedMaterial = null;
     }
 
@@ -170,7 +182,6 @@ public class PartAdminBean
     public BomTreeNode getMakeStepTarget() {
         return makeStepTarget;
     }
-
 
     public List<PartDto> getXrefs() {
         List<PartDto> xrefs = new ArrayList<PartDto>();
@@ -269,33 +280,25 @@ public class PartAdminBean
         this.partItemMaterialMatcher = partItemMaterialMatcher;
     }
 
-
-
-
-
     @Override
     public void showEditForm() {
         super.showEditForm();
 
         Object selection = getOpenedObject();
-        if(selection instanceof PartDto) {
-            partMaterialMatcher = ((PartDto)selection).getTarget().getLabel();
+        if (selection instanceof PartDto) {
+            partMaterialMatcher = ((PartDto) selection).getTarget().getLabel();
         } else {
-            if(selection instanceof PartItemDto) {
-                if(((PartItemDto)selection).getPart().isNil()) {
-                    //原材料
-                    partItemMaterialMatcher = ((PartItemDto)selection).getMaterial().getLabel();
+            if (selection instanceof PartItemDto) {
+                if (((PartItemDto) selection).getPart().isNil()) {
+                    // 原材料
+                    partItemMaterialMatcher = ((PartItemDto) selection).getMaterial().getLabel();
                 } else {
-                    //半成品
-                    partItemMaterialMatcher = ((PartItemDto)selection).getPart().getTarget().getLabel();
+                    // 半成品
+                    partItemMaterialMatcher = ((PartItemDto) selection).getPart().getTarget().getLabel();
                 }
             }
         }
     }
-
-
-
-
 
     /*************************************************************************
      * Section: MBeans
@@ -390,11 +393,12 @@ public class PartAdminBean
             PartDto partDto = uMap.getSourceDto(_part);
             onDeletePart(partDto);
 
-//            for (MakeStepModel step : _part.getSteps()) {
-//                QCSpec _qcSpec = step.getQcSpec();
-//                if (_qcSpec != null)
-//                    ctx.data.access(QCSpec.class).delete(_qcSpec);
-//            }
+// for (MakeStepModel step : _part.getSteps()) {
+// QCSpec _qcSpec = step.getQcSpec();
+// if (_qcSpec != null) {
+// ctx.data.access(QCSpec.class).delete(_qcSpec);
+// }
+// }
         }
     }
 
