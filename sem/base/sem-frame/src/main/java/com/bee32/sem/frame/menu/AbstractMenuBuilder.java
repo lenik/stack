@@ -62,7 +62,7 @@ public abstract class AbstractMenuBuilder<T>
         if (request == null)
             return location.toString();
 
-        String cr = location.resolveAbsolute(request);
+        String cr = location.resolveContextRelative(request);
         return cr;
     }
 
