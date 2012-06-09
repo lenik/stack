@@ -6,6 +6,7 @@ import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.LeftHand;
+import com.bee32.sem.hr.entity.EmployeeInfo;
 import com.bee32.sem.people.entity.Party;
 
 public class PeopleCriteria extends CriteriaSpec {
@@ -75,4 +76,14 @@ public class PeopleCriteria extends CriteriaSpec {
         return equals("supplier", true);
     }
 
+    @LeftHand(EmployeeInfo.class)
+    public static ICriteriaElement getEmployeeInfo(int personId) {
+        return compose(alias("person", "person"), equals("person.id", personId));
+    }
+
+    @LeftHand(EmployeeInfo.class)
+    public static ICriteriaElement listEmployeeInfo() {
+        return compose(alias("person", "person"),
+                equals("person.employee", true));
+    }
 }

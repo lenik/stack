@@ -11,6 +11,8 @@
     <ui:param name="stock" value="#{stockDictsBean}" />
     <ui:param name="monetary" value="#{monetaryDictsBean}" />
 
+    <ui:define name="toolbar.left" />
+
     <ui:define name="dataColumns">
         <p:column headerText="询价数量" styleClass="f-wrappable">
             <h:outputText value="#{entry.inquiryCount}" style="font-weight:bold; color:red;"/>

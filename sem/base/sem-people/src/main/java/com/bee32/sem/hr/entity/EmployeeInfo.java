@@ -32,7 +32,7 @@ public class EmployeeInfo
     JobPost role; // =predefined(JobPosts.class);
     JobTitle title;
     JobPerformance jobPerformance;
-    PersonEducationType education = PersonEducationType.L2;
+    PersonEducationType education;
     int duty;
     int workAbility;
 

@@ -1,0 +1,53 @@
+<ui:composition template="/template/simple-entity.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
+
+    <ui:param name="title" value="员工技能管理" />
+    <ui:param name="bean" value="#{personSkillDictBean}" />
+    <ui:param name="obj" value="#{bean.openedObject}" />
+
+    <ui:define name="toolbarDialogs" />
+
+    <ui:define name="dataContainer">
+        <p:dataTable id="dataTable" var="entry" value="${bean.dataModel}" paginator="true" rows="${viewConfig.pageSize}"
+            paginatorTemplate="${viewConfig.paginatorTemplate}" rowsPerPageTemplate="${viewConfig.pageSizeTemplate}"
+            resizableColumns="true" rowIndexVar="rowIndex" sortBy="${entry.lastModified}" sortOrder="descending">
+
+            <p:ajax event="rowSelect" update="${_entryUpdate}" />
+            <p:ajax event="rowUnselect" update="${_entryUpdate}" />
+
+            <ui:insert name="dataTableHeader">
+                <f:facet name="header">${title}</f:facet>
+            </ui:insert>
+
+            <p:column headerText="代码" sortBy="${entry.id}" styleClass="entity-id">
+                <h:outputText value="${entry.id}" />
+            </p:column>
+            <p:column headerText="显示名称">
+                <h:outputText value="${entry.label}" />
+            </p:column>
+            <p:column headerText="描述">
+                <h:outputText value="${entry.description}" />
+            </p:column>
+            <p:column headerText="操作">
+                <p:commandLink styleClass="icon-button" title="编辑"
+                    onclick="waitbox.show();" oncomplete="waitbox.hide();employeeSkillDialog.show()">
+                    <f:setPropertyActionListener value="#{entry}" target="#{bean.openedObject}" />
+                    <p:graphicImage value="#{location.ICON}/etool16/edit_area.gif" />
+                </p:commandLink>
+            </p:column>
+
+        </p:dataTable>
+
+    </ui:define>
+
+    <ui:define name="editDialogContent">
+    </ui:define>
+
+    <ui:define name="dialogs">
+        <p:dialog header="personskill" wigetVar="employeeSkillDialog">
+            under development
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>

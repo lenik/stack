@@ -26,11 +26,11 @@ public class PersonEducationType
         super(name, label, desc);
     }
 
-    public static final PersonEducationType L1 = new PersonEducationType("L1", "小学");
-    public static final PersonEducationType L2 = new PersonEducationType("L2", "中学");
-    public static final PersonEducationType L3 = new PersonEducationType("L3", "高中");
-    public static final PersonEducationType L4 = new PersonEducationType("L4", "中专");
-    public static final PersonEducationType L5 = new PersonEducationType("L5", "大专");
-    public static final PersonEducationType L6 = new PersonEducationType("L6", "本科");
+//    public static final PersonEducationType L1 = new PersonEducationType("L1", "小学");
+//    public static final PersonEducationType L2 = new PersonEducationType("L2", "中学");
+//    public static final PersonEducationType L3 = new PersonEducationType("L3", "高中");
+//    public static final PersonEducationType L4 = new PersonEducationType("L4", "中专");
+//    public static final PersonEducationType L5 = new PersonEducationType("L5", "大专");
+//    public static final PersonEducationType L6 = new PersonEducationType("L6", "本科");
 
 }

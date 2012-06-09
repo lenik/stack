@@ -19,6 +19,7 @@ import com.bee32.sem.hr.entity.JobPerformances;
 import com.bee32.sem.hr.entity.JobPosts;
 import com.bee32.sem.hr.entity.JobTitles;
 import com.bee32.sem.hr.entity.PersonEducationTypes;
+import com.bee32.sem.hr.entity.PersonSkill;
 import com.bee32.sem.hr.entity.PersonSkillCategories;
 import com.bee32.sem.people.entity.Contact;
 import com.bee32.sem.people.entity.ContactCategories;
@@ -49,6 +50,8 @@ public class SEMPeopleSamples
     public final Person bentley = new Person(PREFIX + "Bentley");
     public final Person weiXiaoBao = new Person(PREFIX + "韦小宝");
     public final EmployeeInfo employee = new EmployeeInfo();
+    public final PersonSkill englishSkill = new PersonSkill();
+    public final PersonSkill japaneseSkill = new PersonSkill();
 
     @Inject
     IcsfPrincipalSamples principals;
@@ -149,7 +152,7 @@ public class SEMPeopleSamples
     JobTitles jobTitles = predefined(JobTitles.class);
     PersonEducationTypes educationTypes = predefined(PersonEducationTypes.class);
     JobPerformances jobPerformances = predefined(JobPerformances.class);
-    PersonSkillCategories personSkillCategory = predefined(PersonSkillCategories.class);
+    PersonSkillCategories personSkillCategories = predefined(PersonSkillCategories.class);
 
     @Override
     protected void wireUp() {
@@ -199,6 +202,25 @@ public class SEMPeopleSamples
         weiXiaoBaoWork.setWebsite("http://www.weixiaobao.com");
 
         weiXiaoBao.setContacts(Arrays.asList(weiXiaoBaoHome, weiXiaoBaoWork));
+
+        employee.setPerson(weiXiaoBao);
+        employee.setRole(jobPosts.maintenanceDirector);
+        employee.setTitle(jobTitles.deputyDirector);
+        employee.setEmployedDate(Calendar.getInstance().getTime());
+        employee.setEducation(educationTypes.college);
+        employee.setJobPerformance(jobPerformances.idle);
+        employee.setDuty(1);
+        employee.setWorkAbility(1);
+
+        englishSkill.setEmployeeInfo(employee);
+        englishSkill.setCategory(personSkillCategories.english);
+        englishSkill.setScore(4);
+        englishSkill.setDate(Calendar.getInstance().getTime());
+
+        japaneseSkill.setEmployeeInfo(employee);
+        japaneseSkill.setCategory(personSkillCategories.japanese);
+        japaneseSkill.setScore(2);
+        japaneseSkill.setDate(Calendar.getInstance().getTime());
     }
 
     @Deprecated
@@ -213,6 +235,9 @@ public class SEMPeopleSamples
 
         samples.add(abcOrg);
         samples.addBatch(bugatti, bentley, weiXiaoBao);
+        samples.add(employee);
+        samples.add(japaneseSkill);
+        samples.add(englishSkill);
     }
 
     @Override

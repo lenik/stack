@@ -1,7 +1,11 @@
 package com.bee32.sem.hr.web;
 
+import java.util.List;
+
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntity;
+import com.bee32.plover.orm.util.DTOs;
+import com.bee32.sem.hr.dto.EmployeeInfoDto;
 import com.bee32.sem.hr.entity.EmployeeInfo;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.people.dto.PersonDto;
@@ -14,17 +18,21 @@ public class InternalPersonAdminBean
 
     private static final long serialVersionUID = 1L;
 
-    PersonDto selectedPerson;
+    List<PersonDto> internalPersons;
 
     public InternalPersonAdminBean() {
-        super(Person.class, PersonDto.class, 0, Order.desc("id"), PeopleCriteria.internal());
+        super(EmployeeInfo.class, EmployeeInfoDto.class, 0, Order.desc("id"), PeopleCriteria.listEmployeeInfo());
+        internalPersons = DTOs.marshalList(PersonDto.class, ctx.data.access(Person.class).list(PeopleCriteria.internal()));
     }
 
-    public PersonDto getSelectedPerson() {
-        return selectedPerson;
+    @Override
+    protected boolean save(int saveFlags, String hint) {
+        //TODO add filter
+        return super.save(saveFlags, hint);
     }
 
-    public void setSelectedPerson(PersonDto selectedPerson) {
-        this.selectedPerson = selectedPerson;
+    public List<PersonDto> getInternalPersons(){
+        return internalPersons;
     }
+
 }

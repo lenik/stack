@@ -9,7 +9,6 @@ import com.bee32.sem.hr.entity.JobPerformance;
 import com.bee32.sem.hr.entity.JobPost;
 import com.bee32.sem.hr.entity.JobTitle;
 import com.bee32.sem.hr.entity.PersonEducationType;
-import com.bee32.sem.hr.entity.PersonSkillCategory;
 import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.OrgType;
 import com.bee32.sem.people.entity.PartyRecordCategory;
@@ -43,5 +42,5 @@ public class SEMPeopleMenu
     /*    */static MenuNode jobPost = entry(INTERNALDICTS, 2, "jobPost", getDictIndex(JobPost.class));
     /*    */static MenuNode educationType = entry(INTERNALDICTS, 3, "educationType", getDictIndex(PersonEducationType.class));
     /*    */static MenuNode jobPerformance = entry(INTERNALDICTS, 4, "jobPerformance", getDictIndex(JobPerformance.class));
-    /*    */static MenuNode skillCategory = entry(INTERNALDICTS, 5, "skillCategory", getDictIndex(PersonSkillCategory.class));
+    /*    */static MenuNode skillCategory = entry(INTERNALDICTS, 5, "skillCategory", PEOPLE_.join("internalPerson/skillCategory/index-rich.jsf"));
 }
