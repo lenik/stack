@@ -29,6 +29,7 @@ import com.bee32.sem.make.dto.PartDto;
 import com.bee32.sem.make.dto.PartItemDto;
 import com.bee32.sem.make.dto.QCSpecParameterDto;
 import com.bee32.sem.make.entity.Part;
+import com.bee32.sem.make.entity.PartItem;
 import com.bee32.sem.make.service.PartService;
 import com.bee32.sem.make.util.BomCriteria;
 import com.bee32.sem.misc.UnmarshalMap;
@@ -172,7 +173,7 @@ public class PartAdminBean
             part = reload(part, PartDto.XREFS);
 
             for (PartItemDto item : part.getXrefs()) {
-                xrefs.add(item.getParent());
+                xrefs.add(item.getParent());    //取得交叉引用的PartItem的parent
             }
         }
         return xrefs;
@@ -231,6 +232,24 @@ public class PartAdminBean
             if (!DTOs.isNull(partItem.getPart())) {
                 bean.setCategoryRestriction(partItem.getPart().getTarget().getCategory().getId());
             }
+        }
+    }
+
+    public void clearXref() {
+        try {
+            PartDto part = getOpenedObject();
+            if (part != null && !(DTOs.isNull(part))) {
+                part = reload(part, PartDto.XREFS);
+
+                for (PartItemDto item : part.getXrefs()) {
+                    // 引用本Part的PartItem,清空时，把partItem的part清空，并设置相应material
+                    item.setMaterial(part.getTarget());
+                    ctx.data.access(PartItem.class).saveOrUpdate(item.unmarshal());
+                }
+            }
+            uiLogger.info("清空成功.");
+        } catch (Exception e) {
+            uiLogger.error("清空失败!", e);
         }
     }
 

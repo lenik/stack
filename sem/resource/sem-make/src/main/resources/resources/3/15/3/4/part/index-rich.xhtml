@@ -433,6 +433,11 @@
                     </p:column>
                 </p:dataTable>
                 <div align="right">
+                    <p:commandButton id="clearXref" value="清空引用"
+                        actionListener="#{bean.clearXref}"
+                        update=":xrefForm:xrefDataTable"
+                        onclick="waitbox.show()"
+                        oncomplete="waitbox.hide();xrefDialog.hide()"/>
                     <p:commandButton id="close" value="关闭" onclick="xrefDialog.hide()" />
                 </div>
             </h:form>
