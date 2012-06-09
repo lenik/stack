@@ -33,10 +33,17 @@ public class PrimefacesMenuBuilder
     protected MenuModel buildMenubarImpl(IMenuNode virtualRoot) {
         MenuModel model = new DefaultMenuModel();
         Submenu topMenu = (Submenu) convert(virtualRoot);
-        model.getContents().addAll(topMenu.getChildren());
+        // Empty menubar may be reduced to null.
+        if (topMenu != null) {
+            List<UIComponent> contents = model.getContents();
+            contents.addAll(topMenu.getChildren());
+        }
         return model;
     }
 
+    /**
+     * @return <code>null</code> if the node is empty and reduced.
+     */
     protected UIComponent convert(IMenuNode node) {
         int flags = node.getFlags();
         if ((flags & IMenuEntry.HIDDEN) != 0)
