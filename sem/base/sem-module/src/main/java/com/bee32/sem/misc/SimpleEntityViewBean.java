@@ -373,7 +373,7 @@ public abstract class SimpleEntityViewBean
     }
 
     @Operation
-    public void showEditForm(Object selection) {
+    public final void showEditForm(Object selection) {
         setSingleSelection(selection);
         showEditForm();
     }

@@ -283,6 +283,33 @@ public class PartAdminBean
     }
 
 
+
+
+
+    @Override
+    public void showEditForm() {
+        super.showEditForm();
+
+        Object selection = getOpenedObject();
+        if(selection instanceof PartDto) {
+            partMaterialMatcher = ((PartDto)selection).getTarget().getLabel();
+        } else {
+            if(selection instanceof PartItemDto) {
+                if(((PartItemDto)selection).getPart().isNil()) {
+                    //原材料
+                    partItemMaterialMatcher = ((PartItemDto)selection).getMaterial().getLabel();
+                } else {
+                    //半成品
+                    partItemMaterialMatcher = ((PartItemDto)selection).getPart().getTarget().getLabel();
+                }
+            }
+        }
+    }
+
+
+
+
+
     /*************************************************************************
      * Section: MBeans
      *************************************************************************/
