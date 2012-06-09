@@ -6,8 +6,11 @@ import java.util.Date;
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.MaterialType;
@@ -25,6 +28,7 @@ public class PartItemDto
 
     PartDto part;
     MaterialDto material;
+    String anyPattern;
 
     BigDecimal quantity;
 
@@ -95,6 +99,7 @@ public class PartItemDto
     public void setPart(PartDto part) {
         this.part = part;
         this.material = new MaterialDto().ref();
+        this.anyPattern = null;
     }
 
     public MaterialDto getMaterial() {
@@ -104,6 +109,7 @@ public class PartItemDto
     public void setMaterial(MaterialDto material) {
         this.material = material;
         this.part = new PartDto().ref();
+        this.anyPattern = null;
     }
 
     public MaterialDto getAnyMaterial() {
@@ -111,6 +117,26 @@ public class PartItemDto
             return part.getTarget();
         else
             return material;
+    }
+
+    public String getAnyPattern() {
+        if (StringUtils.isEmpty(anyPattern))
+            if (! DTOs.isNull(part)) {
+                MaterialDto target = part.getTarget();
+                if (! DTOs.isNull(target))
+                    anyPattern = target.getLabel();
+                else
+                    anyPattern = "";
+            }
+            else if (! DTOs.isNull(material))
+                anyPattern = material.getLabel();
+            else
+                anyPattern = "";
+        return anyPattern;
+    }
+
+    public void setAnyPattern(String anyPattern) {
+        this.anyPattern = anyPattern;
     }
 
     public BigDecimal getQuantity() {

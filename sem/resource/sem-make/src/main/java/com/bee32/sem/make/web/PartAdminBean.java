@@ -41,15 +41,12 @@ public class PartAdminBean
     private static final long serialVersionUID = 1L;
 
     boolean productLike;
-    MaterialDto selectedMaterial;
+//    MaterialDto selectedMaterial;
     BigDecimal calcPriceResult;
 
     BomTreeModel bomTree;
 
     BomTreeNode makeStepTarget;
-
-    String partMaterialMatcher;
-    String partItemMaterialMatcher;
 
     public PartAdminBean() {
         super(Part.class, PartDto.class, 0);
@@ -102,34 +99,26 @@ public class PartAdminBean
         PartDto part = getOpenedObject();
         // 检查此物料(成品)是否已经有bom存在
         List<Part> partList = ctx.data.access(Part.class).list(new Limit(0, 3),//
-                new Equals("target.id", selectedMaterial.getId()), new Equals("valid", true));
+                new Equals("target.id", part.getTarget().getId()), new Equals("valid", true));
         if (!partList.isEmpty()) {
             uiLogger.error("此物料已经存在BOM信息 (" + partList.get(0).getId() + "...)");
             return;
         }
-        part.setTarget(selectedMaterial);
-        part.setCategory(selectedMaterial.getCategory());
-
-        partMaterialMatcher = selectedMaterial.getLabel();
-        selectedMaterial = null;
+        // part.setTarget(selectedMaterial);
+        // selectedMaterial = null;
     }
 
-    public void setPartItemMaterial() {
+    public void setPartItemMaterial(MaterialDto material) {
         PartItemDto item = childrenMBean.getOpenedObject();
 
-        Part part = ctx.data.access(Part.class).getUnique(new Equals("target.id", selectedMaterial.getId()));
-        if (part != null) {
+        Part itemPart = ctx.data.access(Part.class).getUnique(new Equals("target.id", material.getId()));
+        if (itemPart != null) {
             // 选中的物料是半成品
-            item.setMaterial(null);
-            item.setPart(DTOs.marshal(PartDto.class, part));
+            item.setPart(DTOs.marshal(PartDto.class, itemPart));
         } else {
             // 选中的物料是原材料
-            item.setMaterial(selectedMaterial);
-            item.setPart(null);
+            item.setMaterial(material);
         }
-
-        partItemMaterialMatcher = selectedMaterial.getLabel();
-        selectedMaterial = null;
     }
 
     public void calcPrice()
@@ -150,14 +139,6 @@ public class PartAdminBean
 
     public BigDecimal getCalcPriceResult() {
         return calcPriceResult;
-    }
-
-    public MaterialDto getSelectedMaterial() {
-        return selectedMaterial;
-    }
-
-    public void setSelectedMaterial(MaterialDto selectedMaterial) {
-        this.selectedMaterial = selectedMaterial;
     }
 
     public void loadBomTree() {
@@ -234,11 +215,6 @@ public class PartAdminBean
         if (this.categoryTree.getSelectedId() != null && this.categoryTree.getSelectedId() != -1) {
             bean.setCategoryRestriction(this.categoryTree.getSelectedId());
         }
-
-        if (!StringUtils.isEmpty(partMaterialMatcher)) {
-            bean.setNameOrKeywordLike(partMaterialMatcher);
-            partMaterialMatcher = "";
-        }
     }
 
     /**
@@ -254,48 +230,6 @@ public class PartAdminBean
         } else {
             if (!DTOs.isNull(partItem.getPart())) {
                 bean.setCategoryRestriction(partItem.getPart().getTarget().getCategory().getId());
-            }
-        }
-
-        if (!StringUtils.isEmpty(partItemMaterialMatcher)) {
-            bean.setNameOrKeywordLike(partItemMaterialMatcher);
-            partItemMaterialMatcher = "";
-        }
-
-    }
-
-    public String getPartMaterialMatcher() {
-        return partMaterialMatcher;
-    }
-
-    public void setPartMaterialMatcher(String partMaterialMatcher) {
-        this.partMaterialMatcher = partMaterialMatcher;
-    }
-
-    public String getPartItemMaterialMatcher() {
-        return partItemMaterialMatcher;
-    }
-
-    public void setPartItemMaterialMatcher(String partItemMaterialMatcher) {
-        this.partItemMaterialMatcher = partItemMaterialMatcher;
-    }
-
-    @Override
-    public void showEditForm() {
-        super.showEditForm();
-
-        Object selection = getOpenedObject();
-        if (selection instanceof PartDto) {
-            partMaterialMatcher = ((PartDto) selection).getTarget().getLabel();
-        } else {
-            if (selection instanceof PartItemDto) {
-                if (((PartItemDto) selection).getPart().isNil()) {
-                    // 原材料
-                    partItemMaterialMatcher = ((PartItemDto) selection).getMaterial().getLabel();
-                } else {
-                    // 半成品
-                    partItemMaterialMatcher = ((PartItemDto) selection).getPart().getTarget().getLabel();
-                }
             }
         }
     }

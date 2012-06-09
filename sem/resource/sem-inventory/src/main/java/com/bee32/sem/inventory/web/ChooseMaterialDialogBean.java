@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.MatchMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,12 +108,16 @@ public class ChooseMaterialDialogBean
         }
     }
 
-    public void setNameOrKeywordLike(String pattern) {
-        setSearchFragment("nameOrKeyword", "物料名称或代码包含" + pattern,
+    public void setPattern(String pattern) {
+        if (StringUtils.isEmpty(pattern))
+            removeSearchFragmentGroup("pattern");
+        else
+            setSearchFragment("pattern", "物料名称或代码包含" + pattern,
                 Or.of(
                         new Like("label", pattern, MatchMode.ANYWHERE),
                         new Like("keyword", pattern, MatchMode.ANYWHERE)
                         )
                 );
     }
+
 }

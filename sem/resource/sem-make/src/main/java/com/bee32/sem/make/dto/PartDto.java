@@ -38,6 +38,7 @@ public class PartDto
     int xrefCount;
 
     MaterialDto target;
+    String targetPattern;
 
     boolean valid;
     Date validDateFrom;
@@ -202,6 +203,23 @@ public class PartDto
 
     public void setTarget(MaterialDto target) {
         this.target = target;
+        this.targetPattern = null;
+
+        if (! DTOs.isNull(target))
+            category = target.getCategory();
+    }
+
+    public String getTargetPattern() {
+        if (targetPattern == null)
+            if (target == null)
+                targetPattern = "";
+            else
+                targetPattern = target.getLabel();
+        return targetPattern;
+    }
+
+    public void setTargetPattern(String targetPattern) {
+        this.targetPattern = targetPattern;
     }
 
     public boolean isValid() {
