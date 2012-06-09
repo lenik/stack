@@ -38,12 +38,12 @@ public class SEMPeopleMenu
     /**/MenuNode partyRecordCategory = mode(X_RECORDS) ? entry(SETTINGS, 5, "partyRecordCategory",
             getDictIndex(PartyRecordCategory.class)) : null;
 
-    static MenuNode INTERNALPERSON = menu(PEOPLE, 25, "internal");
-    /**/static MenuNode internalPersonAdmin = entry(INTERNALPERSON, 1, "internalPersonAdmin", PEOPLE_.join("internalPerson/index-rich.jsf"));
-    /**/static MenuNode INTERNALDICTS = menu(INTERNALPERSON, 2, "internalDicts");
-    /*    */static MenuNode jobTitle = entry(INTERNALDICTS, 1, "jobTitle", getDictIndex(JobTitle.class));
-    /*    */static MenuNode jobPost = entry(INTERNALDICTS, 2, "jobPost", getDictIndex(JobPost.class));
-    /*    */static MenuNode educationType = entry(INTERNALDICTS, 3, "educationType", getDictIndex(PersonEducationType.class));
-    /*    */static MenuNode jobPerformance = entry(INTERNALDICTS, 4, "jobPerformance", getDictIndex(JobPerformance.class));
-    /*    */static MenuNode skillCategory = entry(INTERNALDICTS, 5, "skillCategory", PEOPLE_.join("internalPerson/skillCategory/index-rich.jsf"));
+    public MenuNode EMPLOYEE = menu(PEOPLE, 25, "employee");
+    /**/MenuNode employeeAdmin = entry(EMPLOYEE, 1, "employeeAdmin", prefix.join("employee/"));
+    /**/MenuNode EMPLOYEE_DICTS = menu(EMPLOYEE, 2, "employeeDicts");
+    /*    */MenuNode jobTitle = entry(EMPLOYEE_DICTS, 1, "jobTitle", getDictIndex(JobTitle.class));
+    /*    */MenuNode jobPost = entry(EMPLOYEE_DICTS, 2, "jobPost", getDictIndex(JobPost.class));
+    /*    */MenuNode educationType = entry(EMPLOYEE_DICTS, 3, "educationType", getDictIndex(PersonEducationType.class));
+    /*    */MenuNode jobPerformance = entry(EMPLOYEE_DICTS, 4, "jobPerformance", getDictIndex(JobPerformance.class));
+    /*    */MenuNode skillCategory = entry(EMPLOYEE_DICTS, 5, "skillCategory", prefix.join("skill/"));
 }
