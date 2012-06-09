@@ -83,7 +83,8 @@
                         <p:inputText id="material" value="#{obj.targetPattern}"/>
                         <p:commandButton
                             title="选择生成的物料" value="..."
-                            oncomplete="chooseTargetDialog.show();"
+                            onclick="waitbox.show()"
+                            oncomplete="waitbox.hide();chooseTargetDialog.show()"
                             actionListener="#{bean.setCategory}"
                             update=":c_material:form :c_material:searchForm">
                             <f:setPropertyActionListener target="#{chooseMaterialDialogBean.materialType}" value="1" />
@@ -186,7 +187,8 @@
                         id="itemMaterial" value="..."
                         actionListener="#{bean.setRawCategory}"
                         update=":c_itemMaterial:searchForm"
-                        oncomplete="chooseItemMaterialDialog.show()">
+                        onclick="waitbox.show()"
+                        oncomplete="waitbox.hide();chooseItemMaterialDialog.show()">
                         <f:setPropertyActionListener target="#{chooseMaterialDialogBean.materialType}" value="2" />
                         <f:setPropertyActionListener target="#{chooseMaterialDialogBean.pattern}" value="#{item.anyPattern}" />
                     </p:commandButton>
