@@ -75,20 +75,21 @@
 
             <h:outputText value="客户：" />
             <h:panelGroup>
-                <p:inputText id="customer" label="客户" value="${obj.party.displayName}" readonly="true" />
+                <p:inputText id="customer" label="客户" value="${obj.party.displayName}" readonly="true" style="width:30em;"/>
                 <p:commandButton value="..." onclick="choosePartyDialog.show()" disabled="${not bean.editing}" />
             </h:panelGroup>
 
             <h:outputText value="文件名：" />
-            <p:inputText label="文件名" value="${obj.fileName.base}" />
+            <p:inputText label="文件名" value="${obj.fileName.base}" style="width:30em;"/>
 
             <h:outputText value="标题：" />
-            <p:inputText label="标题" value="${obj.label}" />
+            <p:inputText label="标题" value="${obj.label}" style="width:30em;"/>
 
             <h:outputText value="描述信息：" />
-            <p:inputText label="描述信息" value="${obj.description}" />
+            <p:inputTextarea style="width: 30em; height: 4em;" value="#{obj.description}"
+                label="描述信息" />
 
-            <h:outputText value="经办人" />
+            <h:outputText value="经办人：" />
             <h:panelGroup>
                 <p:inputText id="operator" label="经办人" value="${obj.operator.displayName}" readonly="true" />
                 <p:commandButton value="..." disabled="${not bean.editing}" oncomplete="chooseOperatorDialog.show()">
