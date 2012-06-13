@@ -433,15 +433,21 @@
                     </p:column>
                 </p:dataTable>
                 <div align="right">
-                    <p:commandButton id="clearXref" value="清空引用"
-                        actionListener="#{bean.clearXref}"
-                        update=":xrefForm:xrefDataTable"
-                        onclick="waitbox.show()"
-                        oncomplete="waitbox.hide();xrefDialog.hide()"/>
+                    <p:commandButton id="clearXref" value="清空引用并删除"
+                        onclick="deleteXrefConfirmDialog.show()"/>
                     <p:commandButton id="close" value="关闭" onclick="xrefDialog.hide()" />
                 </div>
             </h:form>
         </p:dialog>
+
+        <p:confirmDialog id="xref_delete" widgetVar="deleteXrefConfirmDialog" header="清除引用并删除确认" message="确定要清除引用并删除吗?"
+            severity="alert" modal="true">
+            <h:form id="deleteXrefConfirmForm" style="margin: 0em 7em 1em">
+                <p:commandButton id="ok" value="确定" update=":xrefForm:xrefDataTable :navigatorForm:categoryTree :mainForm:dataTable"
+                    actionListener="#{bean.clearXrefAndDelete}" onclick="waitbox.show()" oncomplete="waitbox.hide();xrefDialog.hide();deleteXrefConfirmDialog.hide()" />
+                <p:commandButton id="cancel" value="取消" onclick="deleteXrefConfirmDialog.hide()" type="button" />
+            </h:form>
+        </p:confirmDialog>
     </ui:define>
 
     <ui:define name="searchPanel.keyword.1">

@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.arch.util.IEnclosingContext;
 import com.bee32.plover.arch.util.dto.Fmask;
@@ -72,7 +72,7 @@ public class PartAdminBean
     }
 
     public void addSpecRestriction() {
-        // TODO 已经选择了bom节点，直接搜索， 反之，创建一个alias
+        //已经选择了bom节点，直接搜索， 反之，创建一个alias
         setSearchFragment("spec", "型号含有 " + searchPattern, //
                 BomCriteria.specLike(searchPattern));
         searchPattern = null;
@@ -235,7 +235,8 @@ public class PartAdminBean
         }
     }
 
-    public void clearXref() {
+    @Transactional
+    public void clearXrefAndDelete() {
         try {
             PartDto part = getOpenedObject();
             if (part != null && !(DTOs.isNull(part))) {
@@ -246,10 +247,13 @@ public class PartAdminBean
                     item.setMaterial(part.getTarget());
                     ctx.data.access(PartItem.class).saveOrUpdate(item.unmarshal());
                 }
+
+                ctx.data.access(Part.class).deleteById(part.getId());
+                onDeletePart(part);
             }
-            uiLogger.info("清空成功.");
+            uiLogger.info("清空并删除成功.");
         } catch (Exception e) {
-            uiLogger.error("清空失败!", e);
+            uiLogger.error("清空并删除失败!", e);
         }
     }
 
