@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.free.ParseException;
+import javax.validation.constraints.Past;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
@@ -135,6 +136,7 @@ public class EmployeeInfoDto
         this.employedDate = employedDate;
     }
 
+    @Past
     public Date getResignedDate() {
         return resignedDate;
     }
