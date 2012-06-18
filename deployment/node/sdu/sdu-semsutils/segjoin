@@ -1,0 +1,87 @@
+#!/bin/bash
+    . shlib-import cliboot
+
+    RCSID='$Id: - @VERSION@ @DATE@ @TIME@ - $'
+    short_opts="nhqv"
+    long_opts="dry,help,quiet,verbose,version"
+    dry=
+
+function version() {
+    parse_id "$RCSID"
+    echo "[$BASENAME] "
+    echo "Written by Lenik, Version $rcs_rev, Last updated at $rcs_date"
+}
+
+function help() {
+    version
+    echo
+    echo "Syntax: "
+    echo "    $0 [OPTION] [--] DIRS"
+    echo
+    echo "Options: "
+    echo "    -n, --dry               Just print what will do"
+    echo "    -q, --quiet             Repeat to get less info"
+    echo "    -v, --verbose           Repeat to get more info"
+    echo "    -h, --help              Show this help page"
+    echo "        --version           Print the version info"
+}
+
+function setopt() {
+    case "$1" in
+        -n|--dry)
+            dry=1;;
+        -h|--help)
+            help; exit;;
+        -q|--quiet)
+            LOGLEVEL=$((LOGLEVEL - 1));;
+        -v|--verbose)
+            LOGLEVEL=$((LOGLEVEL + 1));;
+        --version)
+            version; exit;;
+        *)
+            quit "invalid option: $1";;
+    esac
+}
+
+function main() {
+    shopt -s nullglob
+    for arg in "$@"; do
+        if [ -d "$arg" ]; then
+            if [ "${arg: -1}" != '/' ]; then
+                arg="$arg/"
+            fi
+            scan '' "$arg"
+        fi
+    done
+}
+
+function move() {
+    local src="$1"
+    local dst="$2"
+    src="${src#./}"
+    if [ "$src" != "$dst" ]; then
+        if [ "$dry" = 1 ]; then
+            echo "Move $src -> $dst"
+        else
+            mv -f "$src" "$dst"
+        fi
+    fi
+}
+
+function scan() {
+    local file_prefix="$1"
+    local dir_prefix="$2"
+    local f
+    local base
+    for f in "$dir_prefix"*; do
+        base="$file_prefix${f##*/}"
+        if [ -d "$f" ]; then
+            scan "$base" "$f/"
+        else
+            move "$f" "$base"
+        fi
+    done
+    rmdir "$dir_prefix"
+}
+
+boot "$@"
