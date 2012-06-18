@@ -4,6 +4,16 @@
 
     <ui:define name="searchPanels.0">
         <c:set var="dialogForm" value="${component.namingContainer.parent.namingContainer.clientId}:form" />
+        <ui:insert name="searchPanel.id">
+            <p:panel header="按编号搜索" toggleable="true">
+                <div align="center">
+                    <p:spinner id="id" value="${dialogBean.searchId}" />
+                    <p:commandButton id="filterId" value="限定记录 ID" actionListener="${dialogBean.addIdRestriction}"
+                        update="searchForm, :${dialogForm}" />
+                    <ui:insert name="searchPanel.id.1" />
+                </div>
+            </p:panel>
+        </ui:insert>
         <ui:insert name="searchPanel.keyword">
             <p:panel header="按关键字搜索" toggleable="true">
                 <div align="center">
