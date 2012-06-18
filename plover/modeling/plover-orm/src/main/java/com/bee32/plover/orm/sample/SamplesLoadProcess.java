@@ -112,7 +112,7 @@ public class SamplesLoadProcess
         boolean addMissings = packConfig == null || samplePackage.getLevel() <= SamplePackage.LEVEL_STANDARD;
         IEntityAccessService<Entity<?>, ?> database = ctx.data.access(Entity.class);
 
-        /** 考虑到无法分析 entity 的倚赖关系 （需要完整实现prereqs），这里简单的重载所有样本。 */
+        /** 考虑到无法分析 entity 的依赖关系 （需要完整实现prereqs），这里简单的重载所有样本。 */
         addMissings = true;
 
         SampleList heads = samplePackage.getSamples(true);
@@ -145,14 +145,13 @@ public class SamplesLoadProcess
                     Entity<?> existing = selection.get(0);
                     if (selection.size() > 1)
                         logger.warn("Selector returns multiple results: " + selection + ", choose the first.");
-
-                    EntityFlags ef = EntityAccessor.getFlags(existing);
-
                     if (existing instanceof HibernateProxy) {
                         LazyInitializer lazyInitializer = ((HibernateProxy) existing).getHibernateLazyInitializer();
                         Object target = lazyInitializer.getImplementation(); // (sessionImpl);
                         existing = (Entity<?>) target;
                     }
+
+                    EntityFlags ef = EntityAccessor.getFlags(existing);
 
                     // FIXME children collection is reset to empty..?
                     // EntityAccessor.setId(micro, existing.getId());
