@@ -77,7 +77,9 @@ public class SuperfishMenuBuilder
             ILocationContext target = action.getTargetLocation();
             String hrefEncoded = "#";
             if (target != null) {
-                String href = resolve(target);
+
+                // String href = resolve(target);
+                String href = request == null ? target.toString() : target.resolveAbsolute(request);
                 try {
                     hrefEncoded = UriUtils.encodeUri(href, "utf-8");
                 } catch (UnsupportedEncodingException e) {
