@@ -19,8 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.plover.arch.AppProfileMerger;
 import com.bee32.plover.arch.AppProfileManager;
+import com.bee32.plover.arch.AppProfileMerger;
 import com.bee32.plover.arch.IAppProfile;
 import com.bee32.plover.rtx.location.ILocationConstants;
 import com.bee32.plover.rtx.location.Location;
@@ -328,6 +328,8 @@ public class SiteInstance
         if (profileNames != null) {
             for (String profileName : profileNames) {
                 IAppProfile profile = AppProfileManager.getProfile(profileName);
+                if (profile == null) // Skip non-installed profile
+                    continue;
                 profiles.add(profile);
             }
         }
