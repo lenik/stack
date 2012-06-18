@@ -105,36 +105,36 @@ public abstract class Entity<K extends Serializable>
         altId = o.altId;
     }
 
-    public void retarget(Object o) {
-        if (o instanceof Entity<?>) {
+    public void retarget(Object remote) {
+        if (remote instanceof Entity<?>) {
             @SuppressWarnings("unchecked")
-            Entity<K> entity = (Entity<K>) o;
+            Entity<K> entity = (Entity<K>) remote;
             _retarget(entity);
         } else {
             // super.populate(source);
-            throw new IllegalArgumentException("Unsupport retarget target: " + o);
+            throw new IllegalArgumentException("Unsupport retarget target: " + remote);
         }
     }
 
-    final void _retarget(Entity<?> newOrig) {
-        if (newOrig == null) {
+    final void _retarget(Entity<?> remote) {
+        if (remote == null) {
             setId(null);
             version = 0;
             lastModified = createdDate = new Date();
         } else {
-            K id = (K) newOrig.getId();
+            K id = (K) remote.getId();
             setId(id);
-            version = newOrig.version;
-            createdDate = newOrig.createdDate;
-            if (newOrig.entityFlags.isOverrided()) {
-                entityFlags.bits = newOrig.entityFlags.bits;
+            version = remote.version;
+            createdDate = remote.createdDate;
+            if (!remote.entityFlags.isOverrided()) {
+                entityFlags.bits = remote.entityFlags.bits;
                 // lastModified = newOrig.lastModified;
             }
             /*
              * Cuz we can't determine wether this object is changed, so let's leave lastModified as
              * it is.
              */
-            lastModified = newOrig.lastModified;
+            lastModified = remote.lastModified;
         }
     }
 
@@ -409,9 +409,9 @@ public abstract class Entity<K extends Serializable>
         else {
             Serializable naturalId = entity.getNaturalId();
             if (naturalId == null)
-		return new Identity(this);
+                return new Identity(this);
             else
-		return naturalId;
+                return naturalId;
         }
     }
 
