@@ -3,6 +3,7 @@ package com.bee32.icsf.login;
 import static com.bee32.icsf.login.UserPassword.digest;
 
 import com.bee32.icsf.principal.Users;
+import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.sample.StandardSamples;
 
 public class UserPasswords
@@ -13,6 +14,12 @@ public class UserPasswords
 
     Users users = predefined(Users.class);
     PrivateQuestions privateQuestions = predefined(PrivateQuestions.class);
+
+    @Override
+    protected void decorate(Entity<?> sample) {
+        super.decorate(sample);
+        sample.getEntityFlags().setOverrided(true);
+    }
 
     @Override
     protected void wireUp() {
