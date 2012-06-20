@@ -151,15 +151,16 @@ public class SamplesLoadProcess
                         existing = (Entity<?>) target;
                     }
 
-                    EntityFlags ef = EntityAccessor.getFlags(existing);
+                    EntityFlags oldFlags = EntityAccessor.getFlags(existing);
 
                     // FIXME children collection is reset to empty..?
                     // EntityAccessor.setId(micro, existing.getId());
                     micro.retarget(existing);
 
-                    if (ef.isLocked() || ef.isUserLock() || ef.isOverrided())
+                    boolean changedForever = oldFlags.isOverrided();
+                    if (oldFlags.isLocked() || oldFlags.isUserLock() || changedForever)
                         continue;
-                    if (ef.isHidden() || ef.isMarked())
+                    if (oldFlags.isHidden() || oldFlags.isMarked())
                         continue;
 
                     // session.clear();

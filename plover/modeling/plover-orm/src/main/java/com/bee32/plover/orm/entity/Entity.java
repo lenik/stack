@@ -126,7 +126,9 @@ public abstract class Entity<K extends Serializable>
             setId(id);
             version = remote.version;
             createdDate = remote.createdDate;
-            if (!remote.entityFlags.isOverrided()) {
+
+            boolean remoteChangedForever = remote.entityFlags.isOverrided();
+            if (remoteChangedForever) {
                 entityFlags.bits = remote.entityFlags.bits;
                 // lastModified = newOrig.lastModified;
             }
