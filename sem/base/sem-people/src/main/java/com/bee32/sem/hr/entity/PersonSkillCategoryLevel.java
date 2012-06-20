@@ -1,21 +1,30 @@
 package com.bee32.sem.hr.entity;
 
-import com.bee32.plover.ox1.dict.NameDict;
+import com.bee32.plover.orm.entity.EntityAuto;
 
 public class PersonSkillCategoryLevel
-        extends NameDict {
+        extends EntityAuto<Integer> {
 
     private static final long serialVersionUID = 1L;
 
-    int key;
+    PersonSkillCategory category;
+    int score;
     String label;
 
-    public int getKey() {
-        return key;
+    public PersonSkillCategory getCategory() {
+        return category;
     }
 
-    public void setKey(int key) {
-        this.key = key;
+    public void setCategory(PersonSkillCategory category) {
+        this.category = category;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public String getLabel() {

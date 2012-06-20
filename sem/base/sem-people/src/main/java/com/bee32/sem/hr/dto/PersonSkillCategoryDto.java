@@ -77,4 +77,12 @@ public class PersonSkillCategoryDto
         this.levelList = levelList;
     }
 
+    public PersonSkillCategoryLevelDto getLevel(int score){
+        for(PersonSkillCategoryLevelDto level : levelList){
+            if(level.getScore() == score)
+                return level;
+        }
+        return null;
+    }
+
 }

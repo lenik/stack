@@ -4,17 +4,46 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.ox1.dict.SimpleNameDictDto;
+import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.hr.entity.PersonSkillCategoryLevel;
 
 public class PersonSkillCategoryLevelDto
-        extends SimpleNameDictDto<PersonSkillCategoryLevel>
+        extends EntityDto<PersonSkillCategoryLevel, Integer>
         implements IEnclosedObject<PersonSkillCategoryDto> {
 
     private static final long serialVersionUID = 1L;
     PersonSkillCategoryDto category;
     int score;
     String label;
+
+    public PersonSkillDto toPersonSkillCategory(EmployeeInfoDto info) {
+        PersonSkillDto personSkill = new PersonSkillDto();
+        personSkill.setEmployeeInfo(info);
+        personSkill.setCategory(category);
+        personSkill.setScore(score);
+        personSkill.setDate(getCreatedDate());
+        return personSkill;
+    }
+
+    @Override
+    protected void _marshal(PersonSkillCategoryLevel source) {
+        category = mref(PersonSkillCategoryDto.class, source.getCategory());
+        score = source.getScore();
+        label = source.getLabel();
+    }
+
+    @Override
+    protected void _unmarshalTo(PersonSkillCategoryLevel target) {
+        merge(target, "category", category);
+        target.setScore(score);
+        target.setLabel(label);
+    }
+
+    @Override
+    protected Object clone()
+            throws CloneNotSupportedException {
+        return super.clone();
+    }
 
     @Override
     protected void _parse(TextMap map)

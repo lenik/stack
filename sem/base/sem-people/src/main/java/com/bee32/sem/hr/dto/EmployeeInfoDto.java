@@ -5,13 +5,12 @@ import java.util.Date;
 import java.util.List;
 
 import javax.free.ParseException;
-import javax.validation.constraints.Past;
+import javax.validation.constraints.Future;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.hr.entity.EmployeeInfo;
 import com.bee32.sem.hr.entity.LaborContract;
-import com.bee32.sem.hr.entity.PersonSkill;
 import com.bee32.sem.people.dto.PersonDto;
 
 public class EmployeeInfoDto
@@ -32,7 +31,11 @@ public class EmployeeInfoDto
     Date resignedDate;
 
     List<LaborContract> laborContracts = new ArrayList<LaborContract>();
-    List<PersonSkill> skills = new ArrayList<PersonSkill>();
+    List<PersonSkillDto> skills = new ArrayList<PersonSkillDto>();
+
+// List<PersonSkillCategoryLevelDto> skillLevels = new ArrayList<PersonSkillCategoryLevelDto>();
+    List<Integer> selectedLevels = new ArrayList<Integer>();
+    String skillData = "N/A";
 
     public EmployeeInfoDto() {
         super();
@@ -53,6 +56,19 @@ public class EmployeeInfoDto
         workAbility = source.getWorkAbility();
         employedDate = source.getEmployedDate();
         resignedDate = source.getResignedDate();
+        skills = mrefList(PersonSkillDto.class, source.getSkills());
+        StringBuffer sb = new StringBuffer();
+        for (PersonSkillDto skill : skills) {
+            int score = skill.getScore();
+//            selectedLevels.add(skill.getCategory().getId() + ":" + skill.getScore() + ":" + skill.getLevelLabel(score));
+            if (sb.length() == 0)
+                sb.append(skill.getLevelLabel(score));
+            else
+                sb.append("," + skill.getLevelLabel(score));
+        }
+        if (sb.length() > 0)
+            skillData = sb.toString();
+
     }
 
     @Override
@@ -65,6 +81,7 @@ public class EmployeeInfoDto
         target.setWorkAbility(workAbility);
         target.setEmployedDate(employedDate);
         target.setResignedDate(resignedDate);
+        mergeList(target, "skills", skills);
     }
 
     @Override
@@ -136,7 +153,7 @@ public class EmployeeInfoDto
         this.employedDate = employedDate;
     }
 
-    @Past
+    @Future
     public Date getResignedDate() {
         return resignedDate;
     }
@@ -153,12 +170,28 @@ public class EmployeeInfoDto
         this.laborContracts = laborContracts;
     }
 
-    public List<PersonSkill> getSkills() {
+    public List<PersonSkillDto> getSkills() {
         return skills;
     }
 
-    public void setSkills(List<PersonSkill> skills) {
+    public void setSkills(List<PersonSkillDto> skills) {
         this.skills = skills;
+    }
+
+    public String getSkillData() {
+        return skillData;
+    }
+
+    public List<Integer> getSelectedLevels() {
+        return selectedLevels;
+    }
+
+    public void setSelectedLevels(List<Integer> selectedLevels) {
+        this.selectedLevels = selectedLevels;
+    }
+
+    public void setSkillData(String skillData) {
+        this.skillData = skillData;
     }
 
 }
