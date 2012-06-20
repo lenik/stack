@@ -10,6 +10,29 @@
     <ui:param name="itemObj" value="#{bean.itemsMBean.openedObject}" />
     <ui:param name="stock" value="#{stockDictsBean}" />
 
+    <ui:define name="dataColumns">
+        <p:column headerText="标识" sortBy="#{entry.id}">
+            <h:outputText value="#{entry.id}" />
+        </p:column>
+        <p:column headerText="时间" sortBy="#{entry.createDate}">
+            <h:outputText value="#{entry.createDate}" >
+                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+            </h:outputText>
+        </p:column>
+        <p:column headerText="制单人">
+            <h:outputText value="#{entry.owner.displayName}" />
+        </p:column>
+        <p:column headerText="对应定单" sortBy="#{entry.order}">
+            <h:outputText value="#{entry.order.label}" />
+        </p:column>
+        <p:column headerText="客户" sortBy="#{entry.customer}">
+            <h:outputText value="#{entry.customer.displayName}" />
+        </p:column>
+        <p:column headerText="简要">
+            <h:outputText value="#{entry.label}" />
+        </p:column>
+    </ui:define>
+
     <ui:define name="editDialogContent">
         <t:panelGrid id="basic" columns="4">
             <h:outputText value="标识:" />
