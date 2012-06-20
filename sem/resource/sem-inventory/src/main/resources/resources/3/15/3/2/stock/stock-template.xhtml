@@ -21,6 +21,29 @@
         </h:panelGrid>
     </ui:define>
 
+    <ui:define name="dataColumns">
+        <p:column headerText="时间" sortBy="#{entry.createDate}">
+            <h:outputText value="#{entry.createDate}" >
+                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+            </h:outputText>
+        </p:column>
+        <p:column headerText="简要">
+            <h:outputText value="#{entry.label}" />
+        </p:column>
+        <p:column headerText="对应公司">
+            <h:outputText value="#{entry.org.displayName}" />
+        </p:column>
+                <p:column headerText="对应部门">
+            <h:outputText value="#{entry.orgUnit.path" />
+        </p:column>
+        <p:column headerText="制单人">
+            <h:outputText value="#{entry.owner.displayName}" />
+        </p:column>
+        <p:column headerText="状态">
+            <h:outputText value="#{obj.verifyContext.verifyEvalState} #{obj.verifyContext.rejectedReason1}" />
+        </p:column>
+    </ui:define>
+
     <ui:define name="editDialogContent">
         <ui:insert name="edit-pre" />
         <ui:insert name="edit-main">
