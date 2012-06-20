@@ -17,7 +17,7 @@ public class StockOrderBean_INIT
     }
 
     @Override
-    protected void beginEndDateRestriction() {
+    protected void addInitialRestrictions() {
     }
 
 

@@ -15,6 +15,7 @@ public class ScrollEntityViewBean
 
     private static final long serialVersionUID = 1L;
 
+    Boolean scrollEnabled;
     int rowNumber;
     int rowNumberInput;
 
@@ -22,10 +23,21 @@ public class ScrollEntityViewBean
     ScrollEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
         super(entityClass, dtoClass, fmask, criteriaElements);
         dateRange = DateRangeTemplate.thisYear;
-        beginEndDateRestriction();
+        addInitialRestrictions();
     }
 
-    protected void beginEndDateRestriction() {
+    protected boolean isScrollEnabled() {
+        if (scrollEnabled == null)
+            return true;
+        else
+            return scrollEnabled;
+    }
+
+    protected void setScrollEnabled(Boolean scrollEnabled) {
+        this.scrollEnabled = scrollEnabled;
+    }
+
+    protected void addInitialRestrictions() {
         addBeginEndDateRestriction();
     }
 
@@ -38,11 +50,17 @@ public class ScrollEntityViewBean
     @Override
     protected void searchFragmentsChanged() {
         super.searchFragmentsChanged();
-        showIndex(); // Fix: force to back to index whenever in editing mode.
+        if (isScrollEnabled())
+            showIndex(); // Fix: force to back to index whenever in editing mode.
     }
 
     @Override
     public void showIndex(Integer offset) {
+        if (!isScrollEnabled()) {
+            super.showIndex(offset);
+            return;
+        }
+
         showView(StandardViews.LIST);
 
         if (offset == null)
@@ -56,18 +74,22 @@ public class ScrollEntityViewBean
     @Override
     protected void deleteSelection(int deleteFlags) {
         super.deleteSelection(deleteFlags);
-        if ((deleteFlags & DELETE_NO_REFRESH) == 0)
-            selectRow(rowNumber);
+        if (isScrollEnabled())
+            if ((deleteFlags & DELETE_NO_REFRESH) == 0)
+                selectRow(rowNumber);
     }
 
     @Override
     public boolean refreshRowCount() {
-        if (super.refreshRowCount()) {
+        boolean success = super.refreshRowCount();
+        if (!isScrollEnabled())
+            return success;
+        if (success) {
             if (rowNumber == 0)
                 gotoFirst();
             return true;
-        }
-        return false;
+        } else
+            return false;
     }
 
     protected void selectRow(int rowNumber) {

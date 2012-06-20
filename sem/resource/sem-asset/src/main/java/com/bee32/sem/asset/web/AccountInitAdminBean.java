@@ -20,7 +20,7 @@ public class AccountInitAdminBean
 
     //此方法内容为空，使去掉“发生于这个月”的条件限制，资产初始化不用这个限制
     @Override
-    protected void beginEndDateRestriction() {
+    protected void addInitialRestrictions() {
     }
 
     public void setAccountSubject(AccountSubjectDto subject) {
