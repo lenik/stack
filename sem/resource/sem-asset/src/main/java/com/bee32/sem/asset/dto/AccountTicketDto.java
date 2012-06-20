@@ -23,6 +23,7 @@ public class AccountTicketDto
     List<AccountTicketItemDto> items;
     BudgetRequestDto request;
 
+
     @Override
     protected void _copy() {
         items = CopyUtils.copyList(items, this);
@@ -117,5 +118,4 @@ public class AccountTicketDto
         }
         return debitTotal.equals(creditTotal);
     }
-
 }

@@ -39,7 +39,6 @@ public class SEMChanceSamples
         Calendar cal = Calendar.getInstance();
         cal.set(2011, 4, 8);
 
-        chance.setAltId("C-001");
         chance.setSubject(PREFIX + "初号机发射塔");
         // chance.setCreatedDate(cal.getTime());
         chance.setSource(sourceTypes.DEVELOP);

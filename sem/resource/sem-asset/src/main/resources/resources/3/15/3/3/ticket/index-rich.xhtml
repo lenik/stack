@@ -78,8 +78,13 @@
 
                 <h:outputLabel value="会计科目" />
                 <t:panelGroup colspan="3">
-                    <p:inputText id="accountSubject" value="#{item.subject.label}" readonly="true" label="会计科目"/>
-                    <p:commandButton value="..." onclick="chooseAccountSubjectDialog.show();" />
+                    <p:inputText id="accountSubject" value="#{item.pattern}" label="会计科目"/>
+                    <p:commandButton
+                        value="..."
+                        onclick="chooseAccountSubjectDialog.show();"
+                        update=":c_subject:searchForm">
+                        <f:setPropertyActionListener target="#{chooseAccountSubjectDialogBean.pattern}" value="#{item.pattern}" />
+                    </p:commandButton>
                 </t:panelGroup>
 
                 <h:outputLabel value="二级科目" />

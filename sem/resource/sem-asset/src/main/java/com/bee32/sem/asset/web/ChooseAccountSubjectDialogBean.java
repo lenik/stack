@@ -2,10 +2,14 @@ package com.bee32.sem.asset.web;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.criterion.MatchMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.criteria.hibernate.Like;
+import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.sem.asset.dto.AccountSubjectDto;
 import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.asset.util.AssetCriteria;
@@ -36,6 +40,18 @@ public class ChooseAccountSubjectDialogBean extends ChooseEntityDialogBean {
         setSearchFragment("code", "科目代码含有: " + searchPattern, //
                 AssetCriteria.subjectCodeLike(searchPattern));
         searchPattern = null;
+    }
+
+    public void setPattern(String pattern) {
+        if (StringUtils.isEmpty(pattern))
+            removeSearchFragmentGroup("pattern");
+        else
+            setSearchFragment("pattern", "科止编码或名称包含" + pattern,
+                Or.of(
+                        new Like("id", pattern, MatchMode.ANYWHERE),
+                        new Like("label", pattern, MatchMode.ANYWHERE)
+                        )
+                );
     }
 
     // Properties

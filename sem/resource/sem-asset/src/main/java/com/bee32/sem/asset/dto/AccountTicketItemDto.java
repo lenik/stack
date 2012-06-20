@@ -3,9 +3,12 @@ package com.bee32.sem.asset.dto;
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.asset.entity.AccountTicketItem;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.process.base.ProcessEntityDto;
@@ -26,6 +29,8 @@ public class AccountTicketItemDto
 
     boolean debitSide;
     MutableMCValue value;
+
+    String pattern;
 
     public AccountTicketItemDto() {
         super();
@@ -109,6 +114,7 @@ public class AccountTicketItemDto
 
     public void setSubject(AccountSubjectDto subject) {
         this.subject = subject;
+        pattern = null;
 
     }
 
@@ -179,4 +185,19 @@ public class AccountTicketItemDto
             return owner.getDisplayName();
     }
 
+    public String getPattern() {
+        if (StringUtils.isEmpty(pattern)) {
+            if(!DTOs.isNull(subject)) {
+                pattern = subject.getLabel();
+            } else {
+                pattern = "";
+            }
+        }
+
+        return pattern;
+    }
+
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
+    }
 }
