@@ -328,8 +328,10 @@ public class SiteInstance
         if (profileNames != null) {
             for (String profileName : profileNames) {
                 IAppProfile profile = AppProfileManager.getProfile(profileName);
-                if (profile == null) // Skip non-installed profile
+                if (profile == null) {
+                    logger.debug("Undefined profile: " + profileName);
                     continue;
+                }
                 profiles.add(profile);
             }
         }
