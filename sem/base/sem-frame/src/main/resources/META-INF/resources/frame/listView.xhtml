@@ -20,6 +20,7 @@
         <cc:attribute name="creatable" type="java.lang.Boolean" default="${not cc.attrs.readonly}" />
         <cc:attribute name="editable" type="java.lang.Boolean" default="true" />
         <cc:attribute name="removable" type="java.lang.Boolean" default="true" />
+        <cc:attribute name="confirmed" type="java.lang.Boolean" />
         <cc:facet name="columns" required="true" />
         <cc:facet name="more" />
         <cc:facet name="index-header" />
@@ -108,9 +109,9 @@
                                         </p:commandLink>
                                         <p:commandLink id="remove" title="移除"
                                             styleClass="icon-button"
-                                            actionListener="${mbean.removeSelection}" process=":@form" onclick="waitbox.show()"
+                                            action="${mbean.removeSelection}" process=":@form" onclick="waitbox.show()"
                                             oncomplete="waitbox.hide()"
-                                            update=":@form, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more"
+                                            update=":@form, ${cc.attrs.indexView}:indexForm:body, ${cc.attrs.editView}:more"
                                             rendered="${cc.attrs.removable and picker == null}">
                                             <f:setPropertyActionListener target="#{mbean.selection}" value="#{entry}" />
                                             <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
