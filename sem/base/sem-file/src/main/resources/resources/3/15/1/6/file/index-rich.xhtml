@@ -32,9 +32,11 @@
 
         <p:column headerText="文件" sortBy="${entry.label}" styleClass="f-wrappable" style="min-width: 30em">
             <div class="entry">
-                <span>${entry.labelOrName}</span>
+                <span><a target="_blank" href="${entry.viewHref}">${entry.labelOrName}</a></span>
+                <span><a class="ui-icon ui-icon-arrowthickstop-1-s" target="_blank" href="${entry.downloadHref}"/></span>
                 <span class="ui-icon ui-icon-circle-triangle-e" onclick="toggleDetailPanel(event)" />
                 <span class="ui-icon ui-icon-circle-triangle-s" onclick="toggleDetailPanel(event)" style="display: none" />
+
             </div>
             <h:panelGrid styleClass="detailPanel" columns="2" cellpadding="10" columnClasses="ui-state-default, text"
                 style="display: none">
