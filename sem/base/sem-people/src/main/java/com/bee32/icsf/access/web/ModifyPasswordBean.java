@@ -65,12 +65,19 @@ public class ModifyPasswordBean
             uiLogger.warn("密码不存在");
             return;
         }
-        String p1 = plist.get(0).getPasswd();
+        UserPassword userPassword = plist.get(0);
+        String oldP1 = userPassword.getPasswd();
 
-        if (p1.equals(oldPass)) {
+        if (oldP1.equals(oldPass)) {
             // 用户输入的旧密码正确
-            plist.get(0).setPasswd(newPass);
-            ctx.data.access(UserPassword.class).saveOrUpdate(plist.get(0));
+            userPassword.setPasswd(newPass);
+
+            try {
+                ctx.data.access(UserPassword.class).saveOrUpdate(userPassword);
+            } catch (Exception e) {
+                uiLogger.error(e, "保存密码失败");
+                return;
+            }
 
             uiLogger.info("修改密码成功");
         } else {
