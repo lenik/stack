@@ -89,7 +89,12 @@ public class AccountTicketItemDto
 
     @Override
     public void setEnclosingObject(Object enclosingObject) {
-        setTicket((AccountTicketDto) enclosingObject);
+        AccountTicketDto ticket = (AccountTicketDto) enclosingObject;
+        setTicket(ticket);
+
+        if(ticket.getItems().size() > 0) {
+            this.setDescription(ticket.getItems().get(ticket.getItems().size() - 1).getDescription());
+        }
     }
 
     public AccountTicketDto getTicket() {

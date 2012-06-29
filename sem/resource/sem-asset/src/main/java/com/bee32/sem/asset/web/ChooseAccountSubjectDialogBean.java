@@ -46,7 +46,7 @@ public class ChooseAccountSubjectDialogBean extends ChooseEntityDialogBean {
         if (StringUtils.isEmpty(pattern))
             removeSearchFragmentGroup("pattern");
         else
-            setSearchFragment("pattern", "科止编码或名称包含" + pattern,
+            setSearchFragment("pattern", "科目编码或名称包含" + pattern,
                 Or.of(
                         new Like("id", pattern, MatchMode.ANYWHERE),
                         new Like("label", pattern, MatchMode.ANYWHERE)
