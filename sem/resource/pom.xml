@@ -12,6 +12,8 @@
     <version>0.3.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
+		<module>sem-ar</module>
+		<module>sem-ap</module>
         <module>sem-asset</module>
         <module>sem-inventory</module>
         <module>sem-make</module>
