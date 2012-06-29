@@ -20,7 +20,7 @@ public abstract class ChooseEntityDialogBean
     }
 
     public String getObjectTypeName() {
-        String entityName = ClassUtil.getTypeName(entityClass);
+        String entityName = ClassUtil.getTypeName(getEntityType());
         return entityName;
     }
 

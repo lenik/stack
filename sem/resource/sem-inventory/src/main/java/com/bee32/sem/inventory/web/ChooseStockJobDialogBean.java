@@ -39,25 +39,27 @@ public class ChooseStockJobDialogBean
     }
 
     public String getType() {
-        return entityClass.getName();
+        return getEntityType().getName();
     }
 
     public void setType(String typeName) {
+        Class<? extends Entity<?>> type;
         // sessionFactory.getClassMetadata("typeName").getMappedClass(EntityMode.POJO);
         try {
-            Class<? extends Entity<?>> type = (Class<? extends Entity<?>>) Class.forName(typeName);
-            entityClass = type;
+            type = (Class<? extends Entity<?>>) Class.forName(typeName);
+            setEntityType(type);
         } catch (ClassNotFoundException e) {
             throw new IllegalUsageException("Bad type name: " + typeName, e);
         }
-        Class<? extends EntityDto<?, ?>> dtoType = (Class<? extends EntityDto<?, ?>>) EntityUtil
-                .getDtoType(entityClass);
-        dtoClass = dtoType;
+        Class<? extends EntityDto<?, ?>> dtoType = (Class<? extends EntityDto<?, ?>>) EntityUtil.getDtoType(type);
+        setEntityDtoType(dtoType);
     }
 
     @Override
     protected void composeBaseRestrictions(List<ICriteriaElement> elements) {
         super.composeBaseRestrictions(elements);
+
+        Class<? extends Entity<?>> entityClass = getEntityType();
 
         if (StockTransferDto.class.isAssignableFrom(entityClass) && destWarehouseId != -1) {
             elements.add(new Equals("destWarehouse.id", destWarehouseId));

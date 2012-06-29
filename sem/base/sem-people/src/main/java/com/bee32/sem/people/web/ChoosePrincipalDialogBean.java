@@ -34,20 +34,20 @@ public class ChoosePrincipalDialogBean
         switch (stereo) {
         case "":
         case "-":
-            entityClass = Principal.class;
-            dtoClass = PrincipalDto.class;
+            setEntityType(Principal.class);
+            setEntityDtoType(PrincipalDto.class);
             break;
         case "U":
-            entityClass = User.class;
-            dtoClass = UserDto.class;
+            setEntityType(User.class);
+            setEntityDtoType(UserDto.class);
             break;
         case "G":
-            entityClass = Group.class;
-            dtoClass = GroupDto.class;
+            setEntityType(Group.class);
+            setEntityDtoType(GroupDto.class);
             break;
         case "R":
-            entityClass = Role.class;
-            dtoClass = RoleDto.class;
+            setEntityType(Role.class);
+            setEntityDtoType(RoleDto.class);
             break;
         default:
             throw new IllegalArgumentException("Bad stereo: " + stereo);

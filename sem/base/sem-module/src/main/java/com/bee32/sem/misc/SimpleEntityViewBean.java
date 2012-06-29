@@ -51,6 +51,7 @@ import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityFlags;
+import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.orm.web.EntityHelper;
@@ -129,8 +130,8 @@ public abstract class SimpleEntityViewBean
 
     public <E extends Entity<K>, D extends EntityDto<? super E, K>, K extends Serializable> //
     /*    */SimpleEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
-        this.entityClass = entityClass;
-        this.dtoClass = dtoClass;
+        setEntityType(entityClass);
+        setEntityDtoType(dtoClass);
         this.baseRestriction = Varargs.toList(criteriaElements);
 
         String requestIdList = ctx.view.getRequest().getParameter("id");
@@ -163,12 +164,12 @@ public abstract class SimpleEntityViewBean
 
         @Override
         public Class<E> getEntityClass() {
-            return (Class<E>) SimpleEntityViewBean.this.entityClass;
+            return (Class<E>) SimpleEntityViewBean.this.getEntityType();
         }
 
         @Override
         public Class<D> getDtoClass() {
-            return (Class<D>) SimpleEntityViewBean.this.dtoClass;
+            return (Class<D>) SimpleEntityViewBean.this.getEntityDtoType();
         }
 
     }
@@ -241,9 +242,11 @@ public abstract class SimpleEntityViewBean
         List<ICriteriaElement> join = new ArrayList<ICriteriaElement>();
         join.addAll(baseRestriction);
 
+        Class<? extends Entity<?>> entityType = getEntityType();
+
         /** Only restrict owner for CEntity+ */
-        if (CEntity.class.isAssignableFrom(entityClass)) {
-            Permission defaultPermission = AclEasTxWrapper.defaults.get(entityClass);
+        if (CEntity.class.isAssignableFrom(entityType)) {
+            Permission defaultPermission = AclEasTxWrapper.defaults.get(entityType);
             // Boolean anyOwner = AnyOwnerUtil.isForAnyOwner(getClass());
             // if (anyOwner) ...
             if (defaultPermission == null || !defaultPermission.implies(visiblePermission)) {
@@ -301,7 +304,7 @@ public abstract class SimpleEntityViewBean
         try {
             return def._loadImpl(first, pageSize, sortField, sortOrder, filters);
         } catch (AccessControlException e) {
-            reportException(e, "读取", entityClass);
+            reportException(e, "读取", getEntityType());
             return Collections.emptyList();
         }
     }
@@ -500,7 +503,7 @@ public abstract class SimpleEntityViewBean
     protected Object create() {
         EntityDto<?, ?> entityDto;
         try {
-            entityDto = dtoClass.newInstance(); // Create fmask is always F_MORE..
+            entityDto = getEntityDtoType().newInstance(); // Create fmask is always F_MORE..
             entityDto.setFmask(Fmask.F_MORE);
             entityDto = entityDto.create();
         } catch (Exception e) {
@@ -536,6 +539,7 @@ public abstract class SimpleEntityViewBean
     protected boolean save(int saveFlags, String hint) {
         checkSaveFlags(saveFlags);
         boolean creating = isCreating() || (saveFlags & SAVE_DUP) != 0;
+        Class<? extends Entity<?>> entityType = getEntityType();
 
         if (hint == null)
             // if ((saveFlags & SAVE_MUSTEXIST) != 0)
@@ -629,11 +633,11 @@ public abstract class SimpleEntityViewBean
         try {
             if ((saveFlags & SAVE_MUSTEXIST) != 0)
                 for (Entity<?> entity : entities)
-                    ctx.data.access(entityClass).update(entity);
+                    ctx.data.access(entityType).update(entity);
             else if ((saveFlags & SAVE_NOEXIST) != 0)
-                ctx.data.access(entityClass).saveAll(entities);
+                ctx.data.access(entityType).saveAll(entities);
             else
-                ctx.data.access(entityClass).saveOrUpdateAll(entities);
+                ctx.data.access(entityType).saveOrUpdateAll(entities);
         } catch (Exception e) {
             uiLogger.error(hint + "失败", e);
             return false;
@@ -731,7 +735,7 @@ public abstract class SimpleEntityViewBean
             }
 
             if (needUpdateBeforeDelete) {
-                ctx.data.access(entityClass).update(entity);
+                ctx.data.access(getEntityType()).update(entity);
             }
 
             boolean locked = EntityAccessor.isAnyLocked(entity);
@@ -776,7 +780,7 @@ public abstract class SimpleEntityViewBean
         Set<Entity<?>> entities = uMap.keySet();
         int count;
         try {
-            count = ctx.data.access(entityClass).deleteAll(entities);
+            count = ctx.data.access(getEntityType()).deleteAll(entities);
         } catch (Exception e) {
             uiLogger.error("删除失败", e);
             return;
@@ -890,7 +894,7 @@ public abstract class SimpleEntityViewBean
     UnmarshalMap unmarshalDtos(Collection<?> objects, Integer fmaskOverride, boolean nullable) {
         UnmarshalMap resultMap = new UnmarshalMap();
         for (Object object : objects) {
-            if (dtoClass.isInstance(object)) {
+            if (getEntityDtoType().isInstance(object)) {
                 EntityDto<?, ?> entityDto = (EntityDto<?, ?>) object;
 
                 int oldFmask = entityDto.getFmask();
@@ -929,7 +933,7 @@ public abstract class SimpleEntityViewBean
     /*************************************************************************
      * Section: Search
      *************************************************************************/
-    protected int searchId;
+    protected String searchId;
     protected String searchPattern;
     protected DateRangeTemplate dateRange = DateRangeTemplate.recentWeek;
     protected Date beginDate;
@@ -1027,17 +1031,33 @@ public abstract class SimpleEntityViewBean
         refreshRowCount();
     }
 
-    public int getSearchId() {
+    public String getSearchId() {
         return searchId;
     }
 
-    public void setSearchId(int searchId) {
+    public void setSearchId(String searchId) {
         this.searchId = searchId;
     }
 
     public void addIdRestriction() {
-        setSearchFragment("id", "ID 为 " + searchId, new Equals("id", searchId));
-        // searchId = 0;
+        if (searchId != null) {
+            searchId = searchId.trim();
+            if (searchId.isEmpty())
+                searchId = null;
+        }
+        if (searchId == null)
+            removeSearchFragmentGroup("id");
+        else {
+            Serializable _searchId = null;
+            try {
+                _searchId = EntityUtil.parseId(getKeyType(), searchId);
+            } catch (ParseException e) {
+                uiLogger.error(e, "ID 格式不对");
+                return;
+            }
+            setSearchFragment("id", "ID 为 " + searchId, new Equals("id", _searchId));
+            searchId = null;
+        }
     }
 
     public String getSearchPattern() {

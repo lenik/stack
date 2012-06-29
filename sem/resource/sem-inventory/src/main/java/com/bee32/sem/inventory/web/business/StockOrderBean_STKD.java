@@ -35,8 +35,8 @@ public class StockOrderBean_STKD
 
     public StockOrderBean_STKD() {
         subject = StockOrderSubject.STKD;
-        entityClass = StocktakingOrder.class;
-        dtoClass = StocktakingOrderDto.class;
+        setEntityType(StocktakingOrder.class);
+        setEntityDtoType(StocktakingOrderDto.class);
     }
 
     @Override

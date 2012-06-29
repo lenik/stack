@@ -31,14 +31,14 @@ public class StockTradeAdminBean
             switch (type) {
             case "SALE":
                 typeName = "销售入账单";
-                entityClass = StockSale.class;
-                dtoClass = StockSaleDto.class;
+                setEntityType(StockSale.class);
+                setEntityDtoType(StockSaleDto.class);
                 subjectPrefix = ctx.bean.getBean(AccountSubjects.class).s1131.getId();
                 break;
             case "PURCHASE":
                 typeName = "采购入账单";
-                entityClass = StockPurchase.class;
-                dtoClass = StockPurchaseDto.class;
+                setEntityType(StockPurchase.class);
+                setEntityDtoType(StockPurchaseDto.class);
                 subjectPrefix = ctx.bean.getBean(AccountSubjects.class).s2121.getId();
                 break;
             default:

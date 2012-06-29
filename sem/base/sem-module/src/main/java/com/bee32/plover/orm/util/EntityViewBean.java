@@ -15,6 +15,7 @@ import com.bee32.plover.arch.util.IEnclosingContext;
 import com.bee32.plover.arch.util.dto.BaseDto;
 import com.bee32.plover.arch.util.dto.Fmask;
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.web.EntityHelper;
 import com.bee32.plover.restful.resource.StandardViews;
 import com.bee32.sem.misc.SimpleEntityViewBean;
@@ -27,8 +28,9 @@ public abstract class EntityViewBean
 
     static Logger logger = LoggerFactory.getLogger(EntityViewBean.class);
 
-    protected Class<? extends Entity<?>> entityClass;
-    protected Class<? extends EntityDto<?, ?>> dtoClass;
+    private Class<? extends Entity<?>> entityClass;
+    private Class<? extends EntityDto<?, ?>> dtoClass;
+    private Class<? extends Serializable> keyClass;
 
     public EntityViewBean() {
         if (logger.isTraceEnabled()) {
@@ -144,12 +146,25 @@ public abstract class EntityViewBean
         setOpenedObjects(reloadedList);
     }
 
-    public Class<? extends Entity<?>> getEntityType() {
+    protected Class<? extends Entity<?>> getEntityType() {
         return entityClass;
     }
 
-    public Class<? extends EntityDto<?, ?>> getEntityDtoType() {
+    protected Class<? extends EntityDto<?, ?>> getEntityDtoType() {
         return dtoClass;
+    }
+
+    protected Class<? extends Serializable> getKeyType() {
+        return keyClass;
+    }
+
+    protected void setEntityType(Class<? extends Entity<?>> entityType) {
+        this.entityClass = entityType;
+        this.keyClass = EntityUtil.getKeyType(entityClass);
+    }
+
+    public void setEntityDtoType(Class<? extends EntityDto<?, ?>> dtoClass) {
+        this.dtoClass = dtoClass;
     }
 
     public String getEntityTypeAbbr() {
