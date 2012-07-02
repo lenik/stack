@@ -73,9 +73,9 @@
                                     <f:attribute name="smooth" value="${cc.attrs.smooth}" />
 
                                     <!-- mbean not work, must be cc.attrs.mbean here. -->
-                                    <p:ajax event="rowSelect" listener="${cc.attrs.mbean.rowSelect}"
+                                    <p:ajax event="rowSelect" listener="${cc.attrs.mbean.rowSelect}" process=":@this"
                                         update="${cc.attrs.indexView}:indexForm:ibuttons, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more, ${cc.attrs.indexView}:indexForm:dataTable" />
-                                    <p:ajax event="rowUnselect" listener="${cc.attrs.mbean.rowUnselect}"
+                                    <p:ajax event="rowUnselect" listener="${cc.attrs.mbean.rowUnselect}" process=":@this"
                                         update="${cc.attrs.indexView}:indexForm:ibuttons, ${cc.attrs.editView}:editForm:body, ${cc.attrs.editView}:more, ${cc.attrs.indexView}:indexForm:dataTable" />
 
                                     <p:column headerText="ID">
