@@ -11,19 +11,16 @@ import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.process.base.ProcessEntity;
 
-/**
- * 应收单
- *
- */
+//收款单
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "receivable_seq", allocationSize = 1)
-public class Receivable extends ProcessEntity {
+@SequenceGenerator(name = "idgen", sequenceName = "received_seq", allocationSize = 1)
+public class Received extends ProcessEntity {
 
     private static final long serialVersionUID = 1L;
 
-    Date date;  //日期
-    Party customer; //客户
-    BigDecimal amount;  //金额
+    Date date;
+    Party customer;
+    BigDecimal amount;
 
     OrgUnit orgUnit;    //部门
     Person person;  //业务员
