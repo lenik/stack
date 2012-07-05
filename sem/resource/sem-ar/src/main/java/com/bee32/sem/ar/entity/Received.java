@@ -4,7 +4,10 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.bee32.sem.people.entity.OrgUnit;
 import com.bee32.sem.people.entity.Party;
@@ -24,4 +27,50 @@ public class Received extends ProcessEntity {
 
     OrgUnit orgUnit;    //部门
     Person person;  //业务员
+
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    @ManyToOne(optional=false)
+    public Party getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Party customer) {
+        this.customer = customer;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    @ManyToOne
+    public OrgUnit getOrgUnit() {
+        return orgUnit;
+    }
+
+    public void setOrgUnit(OrgUnit orgUnit) {
+        this.orgUnit = orgUnit;
+    }
+
+    @ManyToOne
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+
 }

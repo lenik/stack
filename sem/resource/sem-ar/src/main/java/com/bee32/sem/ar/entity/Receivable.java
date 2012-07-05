@@ -27,4 +27,5 @@ public class Receivable extends ProcessEntity {
 
     OrgUnit orgUnit;    //部门
     Person person;  //业务员
+
 }
