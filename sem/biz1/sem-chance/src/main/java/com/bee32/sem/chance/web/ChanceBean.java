@@ -1,5 +1,6 @@
 package com.bee32.sem.chance.web;
 
+import java.util.Date;
 import java.util.List;
 
 import com.bee32.plover.arch.util.dto.Fmask;
@@ -9,6 +10,7 @@ import com.bee32.plover.orm.util.Identities;
 import com.bee32.plover.orm.util.RefsDiff;
 import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.sem.chance.dto.ChanceActionDto;
+import com.bee32.sem.chance.dto.ChanceCompetitorDto;
 import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.chance.dto.ChancePartyDto;
 import com.bee32.sem.chance.dto.ChanceSourceTypeDto;
@@ -33,6 +35,8 @@ public class ChanceBean
 
     ChanceStageDto searchStage = new ChanceStageDto().create();
     ChanceSourceTypeDto searchSource = new ChanceSourceTypeDto().create();
+    Date anticipation_begin;
+    Date anticipation_end;
 
     public ChanceBean() {
         super(Chance.class, ChanceDto.class, 0);
@@ -49,16 +53,21 @@ public class ChanceBean
         searchPattern = null;
     }
 
-    public void addStageRestricion(){
+    public void addStageRestricion() {
         ChanceStage chanceStage = ctx.data.access(ChanceStage.class).lazyLoad(searchStage.getId());
         setSearchFragment("stage", "阶段为 " + chanceStage.getLabel(),//
                 ChanceCriteria.stageOf(searchStage.getId()));
     }
 
-    public void addSourceRestricion(){
+    public void addSourceRestricion() {
         ChanceSourceType cst = ctx.data.access(ChanceSourceType.class).lazyLoad(searchSource.getId());
         setSearchFragment("source", "来源为 " + cst.getLabel(),//
                 ChanceCriteria.sourceTypeOf(searchSource.getId()));
+    }
+
+    public void addProcurementDateRestrictions() {
+        setSearchFragment("procurement", "预期订货日期包含在" + anticipation_begin + "到" + anticipation_end + "之间",//
+                ChanceCriteria.findByRange(anticipation_begin, anticipation_end));
     }
 
     /*************************************************************************
@@ -66,8 +75,12 @@ public class ChanceBean
      *************************************************************************/
     final ListMBean<ChancePartyDto> partiesMBean = ListMBean.fromEL(this,//
             "openedObject.parties", ChancePartyDto.class);
+    final ListMBean<ChanceCompetitorDto> competitoriesMBean = ListMBean.fromEL(this,//
+            "openedObject.parties", ChanceCompetitorDto.class);
     final ListMBean<ChanceActionDto> actionsMBean = ListMBean.fromEL(this,//
             "openedObject.actions", ChanceActionDto.class);
+//    final ListMBean<ChanceCompetitorDto> competitories = ListMBean.fromEL(this,//
+//            "openedObject.competitories", ChanceCompetitorDto.class);
     final ListMBean<WantedProductDto> productsMBean = ListMBean.fromEL(this, //
             "openedObject.products", WantedProductDto.class);
     final ListMBean<WantedProductAttributeDto> productAttributesMBean = ListMBean.fromEL(productsMBean,
@@ -83,6 +96,9 @@ public class ChanceBean
         return actionsMBean;
     }
 
+    public ListMBean<ChanceCompetitorDto> getCompetitoriesMBean(){
+        return competitoriesMBean;
+    }
     public ListMBean<WantedProductDto> getProductsMBean() {
         return productsMBean;
     }
@@ -152,6 +168,22 @@ public class ChanceBean
 
     public void setSearchSource(ChanceSourceTypeDto searchSource) {
         this.searchSource = searchSource;
+    }
+
+    public Date getAnticipation_begin() {
+        return anticipation_begin;
+    }
+
+    public void setAnticipation_begin(Date anticipation_begin) {
+        this.anticipation_begin = anticipation_begin;
+    }
+
+    public Date getAnticipation_end() {
+        return anticipation_end;
+    }
+
+    public void setAnticipation_end(Date anticipation_end) {
+        this.anticipation_end = anticipation_end;
     }
 
 }

@@ -10,6 +10,8 @@ import com.bee32.sem.chance.entity.ChanceCompetitor;
 import com.bee32.sem.chance.entity.ChanceParty;
 import com.bee32.sem.chance.entity.ChanceSourceType;
 import com.bee32.sem.chance.entity.ChanceStage;
+import com.bee32.sem.chance.entity.ProcurementMethod;
+import com.bee32.sem.chance.entity.PurchaseRegulation;
 import com.bee32.sem.chance.entity.WantedProduct;
 import com.bee32.sem.chance.entity.WantedProductAttribute;
 import com.bee32.sem.chance.entity.WantedProductQuotation;
@@ -26,6 +28,8 @@ public class SEMChanceUnit
         add(ChanceCategory.class);
         add(ChanceSourceType.class);
         add(ChanceStage.class);
+        add(PurchaseRegulation.class);
+        add(ProcurementMethod.class);
 
         add(Chance.class);
         add(ChanceParty.class);

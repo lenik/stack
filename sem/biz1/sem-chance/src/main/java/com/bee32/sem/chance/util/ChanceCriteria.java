@@ -1,5 +1,7 @@
 package com.bee32.sem.chance.util;
 
+import java.util.Date;
+
 import org.hibernate.criterion.MatchMode;
 
 import com.bee32.icsf.login.SessionUser;
@@ -66,5 +68,9 @@ public class ChanceCriteria extends CriteriaSpec {
     @LeftHand(Chance.class)
     public static CriteriaElement isPlan(boolean flag){
         return equals("plan", flag);
+    }
+
+    public static ICriteriaElement findByRange(Date start, Date end) {
+        return compose(or(lessThan("anticipationBegin", end), greaterThan("anticipationEnd", start)));
     }
 }

@@ -1,6 +1,7 @@
 package com.bee32.sem.chance.entity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -39,12 +40,17 @@ public class Chance
     ChanceSourceType source = predefined(ChanceSourceTypes.class).OTHER;
     String subject = "";
     String content = "";
+    Date anticipationBegin;
+    Date anticipationEnd;
 
     List<ChanceParty> parties = new ArrayList<ChanceParty>();
+    List<ChanceCompetitor> competitories = new ArrayList<ChanceCompetitor>();
     List<WantedProduct> products = new ArrayList<WantedProduct>();
     List<ChanceAction> actions = new ArrayList<ChanceAction>();
 
     ChanceStage stage = predefined(ChanceStages.class).INIT;
+    ProcurementMethod procurementMethod = predefined(ProcurementMethods.class).OTHER;
+    PurchaseRegulation purchaseRegulation = predefined(PurchaseRegulations.class).OTHER;
 
     String address;
 
@@ -62,10 +68,14 @@ public class Chance
         source = o.source;
         subject = o.subject;
         content = o.content;
+        anticipationBegin = o.anticipationBegin;
+        anticipationEnd = o.anticipationEnd;
         parties = CopyUtils.copyList(o.parties);
         products = CopyUtils.copyList(o.products);
         actions = new ArrayList<ChanceAction>(o.actions);
         stage = o.stage;
+        procurementMethod = o.procurementMethod;
+        purchaseRegulation = o.purchaseRegulation;
         address = o.address;
     }
 
@@ -123,6 +133,22 @@ public class Chance
         this.content = content;
     }
 
+    public Date getAnticipationBegin() {
+        return anticipationBegin;
+    }
+
+    public void setAnticipationBegin(Date anticipationBegin) {
+        this.anticipationBegin = anticipationBegin;
+    }
+
+    public Date getAnticipationEnd() {
+        return anticipationEnd;
+    }
+
+    public void setAnticipationEnd(Date anticipationEnd) {
+        this.anticipationEnd = anticipationEnd;
+    }
+
     @OneToMany(mappedBy = "chance", orphanRemoval = true)
     @Cascade({ CascadeType.ALL })
     public List<ChanceParty> getParties() {
@@ -133,6 +159,18 @@ public class Chance
         if (parties == null)
             throw new NullPointerException("parties");
         this.parties = parties;
+    }
+
+    @OneToMany(mappedBy = "chance", orphanRemoval = true)
+    @Cascade({ CascadeType.ALL })
+    public List<ChanceCompetitor> getCompetitories() {
+        return competitories;
+    }
+
+    public void setCompetitories(List<ChanceCompetitor> competitories) {
+        if (competitories == null)
+            throw new NullPointerException("competitories");
+        this.competitories = competitories;
     }
 
     @OneToMany(mappedBy = "chance", orphanRemoval = true)
@@ -219,6 +257,24 @@ public class Chance
      */
     public void setStage(ChanceStage stage) {
         this.stage = stage;
+    }
+
+    @ManyToOne
+    public ProcurementMethod getProcurementMethod() {
+        return procurementMethod;
+    }
+
+    public void setProcurementMethod(ProcurementMethod procurementMethod) {
+        this.procurementMethod = procurementMethod;
+    }
+
+    @ManyToOne
+    public PurchaseRegulation getPurchaseRegulation() {
+        return purchaseRegulation;
+    }
+
+    public void setPurchaseRegulation(PurchaseRegulation purchaseRegulation) {
+        this.purchaseRegulation = purchaseRegulation;
     }
 
     /**

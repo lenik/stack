@@ -8,10 +8,13 @@ import com.bee32.plover.orm.sample.NormalSamples;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.entity.ChanceActionStyles;
+import com.bee32.sem.chance.entity.ChanceCategories;
 import com.bee32.sem.chance.entity.ChanceCompetitor;
 import com.bee32.sem.chance.entity.ChanceParty;
 import com.bee32.sem.chance.entity.ChanceSourceTypes;
 import com.bee32.sem.chance.entity.ChanceStages;
+import com.bee32.sem.chance.entity.ProcurementMethods;
+import com.bee32.sem.chance.entity.PurchaseRegulations;
 import com.bee32.sem.inventory.SEMInventorySamples;
 import com.bee32.sem.people.SEMPeopleSamples;
 import com.bee32.sem.people.entity.Party;
@@ -33,6 +36,9 @@ public class SEMChanceSamples
     ChanceActionStyles actionStyles = predefined(ChanceActionStyles.class);
     ChanceSourceTypes sourceTypes = predefined(ChanceSourceTypes.class);
     ChanceStages chanceStages = predefined(ChanceStages.class);
+    PurchaseRegulations purchaseRegulations = predefined(PurchaseRegulations.class);
+    ProcurementMethods procurementMethods = predefined(ProcurementMethods.class);
+    ChanceCategories chanceCategories = predefined(ChanceCategories.class);
 
     @Override
     protected void wireUp() {

@@ -8,10 +8,14 @@ import com.bee32.sem.chance.dto.ChanceActionStyleDto;
 import com.bee32.sem.chance.dto.ChanceCategoryDto;
 import com.bee32.sem.chance.dto.ChanceSourceTypeDto;
 import com.bee32.sem.chance.dto.ChanceStageDto;
+import com.bee32.sem.chance.dto.ProcurementMethodDto;
+import com.bee32.sem.chance.dto.PurchaseRegulationDto;
 import com.bee32.sem.chance.entity.ChanceActionStyle;
 import com.bee32.sem.chance.entity.ChanceCategory;
 import com.bee32.sem.chance.entity.ChanceSourceType;
 import com.bee32.sem.chance.entity.ChanceStage;
+import com.bee32.sem.chance.entity.ProcurementMethod;
+import com.bee32.sem.chance.entity.PurchaseRegulation;
 
 public class ChanceDictsBean
         extends DataViewBean {
@@ -22,6 +26,8 @@ public class ChanceDictsBean
     List<ChanceSourceTypeDto> sourceTypes;
     List<ChanceActionStyleDto> actionStyles;
     List<ChanceStageDto> stages;
+    List<ProcurementMethodDto> methods;
+    List<PurchaseRegulationDto> regulations;
 
     public SelectableList<ChanceCategoryDto> getCategories() {
         if (categories == null) {
@@ -67,4 +73,25 @@ public class ChanceDictsBean
         return SelectableList.decorate(stages);
     }
 
+    public SelectableList<ProcurementMethodDto> getMethods() {
+        if (methods == null) {
+            synchronized (this) {
+                if (methods == null) {
+                    methods = mrefList(ProcurementMethod.class, ProcurementMethodDto.class, 0);
+                }
+            }
+        }
+        return SelectableList.decorate(methods);
+    }
+
+    public SelectableList<PurchaseRegulationDto> getRegulations() {
+        if (regulations == null) {
+            synchronized (this) {
+                if (regulations == null) {
+                    regulations = mrefList(PurchaseRegulation.class, PurchaseRegulationDto.class, 0);
+                }
+            }
+        }
+        return SelectableList.decorate(regulations);
+    }
 }

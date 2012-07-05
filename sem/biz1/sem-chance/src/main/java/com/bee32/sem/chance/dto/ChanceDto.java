@@ -1,6 +1,7 @@
 package com.bee32.sem.chance.dto;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import javax.free.NotImplementedException;
@@ -24,8 +25,9 @@ public class ChanceDto
 
     public static final int PARTIES = 1;
     public static final int ACTIONS = 4;
-    public static final int PRODUCTS = 8;
-    public static final int PRODUCTS_MORE = 16 | PRODUCTS;
+    public static final int COMPETITORIES = 8;
+    public static final int PRODUCTS = 16;
+    public static final int PRODUCTS_MORE = 32 | PRODUCTS;
 
     ChanceCategoryDto category;
     String subject;
@@ -33,12 +35,17 @@ public class ChanceDto
     String date;
 
     ChanceSourceTypeDto source;
+    Date anticipationBegin;
+    Date anticipationEnd;
 
     List<ChancePartyDto> parties;
+    List<ChanceCompetitorDto> competitories;
     List<ChanceActionDto> actions;
     List<WantedProductDto> products;
 
     ChanceStageDto stage;
+    ProcurementMethodDto procurementMethod;
+    PurchaseRegulationDto purchaseRegulation;
 
     String address;
 
@@ -64,10 +71,17 @@ public class ChanceDto
         subject = source.getSubject();
         content = source.getContent();
 
+        anticipationBegin = source.getAnticipationBegin();
+        anticipationEnd = source.getAnticipationEnd();
         if (selection.contains(PARTIES))
             parties = marshalList(ChancePartyDto.class, source.getParties());
         else
             parties = Collections.emptyList();
+
+        if (selection.contains(COMPETITORIES))
+            competitories = marshalList(ChanceCompetitorDto.class, source.getCompetitories());
+        else
+            competitories = Collections.emptyList();
 
         if (selection.contains(ACTIONS))
             actions = mrefList(ChanceActionDto.class, source.getActions());
@@ -81,6 +95,8 @@ public class ChanceDto
             products = Collections.emptyList();
 
         stage = mref(ChanceStageDto.class, source.getStage());
+        procurementMethod = mref(ProcurementMethodDto.class, source.getProcurementMethod());
+        purchaseRegulation = mref(PurchaseRegulationDto.class, source.getPurchaseRegulation());
         address = source.getAddress();
     }
 
@@ -90,14 +106,20 @@ public class ChanceDto
         merge(target, "source", source);
         target.setSubject(subject);
         target.setContent(content);
+        target.setAnticipationBegin(anticipationBegin);
+        target.setAnticipationEnd(anticipationEnd);
 
         if (selection.contains(PARTIES))
             mergeList(target, "parties", parties);
+        if (selection.contains(COMPETITORIES))
+            mergeList(target, "competitories", competitories);
         if (selection.contains(ACTIONS))
             mergeList(target, "actions", actions);
         if (selection.contains(PRODUCTS))
             mergeList(target, "products", products);
 
+        merge(target, "procurementMethod", procurementMethod);
+        merge(target, "purchaseRegulation", purchaseRegulation);
         target.setAddress(address);
     }
 
@@ -155,6 +177,22 @@ public class ChanceDto
         this.content = TextUtil.normalizeSpace(content);
     }
 
+    public Date getAnticipationBegin() {
+        return anticipationBegin;
+    }
+
+    public void setAnticipationBegin(Date anticipationBegin) {
+        this.anticipationBegin = anticipationBegin;
+    }
+
+    public Date getAnticipationEnd() {
+        return anticipationEnd;
+    }
+
+    public void setAnticipationEnd(Date anticipationEnd) {
+        this.anticipationEnd = anticipationEnd;
+    }
+
     public List<ChancePartyDto> getParties() {
         return parties;
     }
@@ -189,6 +227,14 @@ public class ChanceDto
             sb.append(chparty.getParty().getDisplayName());
         }
         return sb.toString();
+    }
+
+    public List<ChanceCompetitorDto> getCompetitories() {
+        return competitories;
+    }
+
+    public void setCompetitories(List<ChanceCompetitorDto> competitories) {
+        this.competitories = competitories;
     }
 
     public List<ChanceActionDto> getActions() {
@@ -243,6 +289,22 @@ public class ChanceDto
         this.stage = stage;
     }
 
+    public ProcurementMethodDto getProcurementMethod() {
+        return procurementMethod;
+    }
+
+    public void setProcurementMethod(ProcurementMethodDto procurementMethod) {
+        this.procurementMethod = procurementMethod;
+    }
+
+    public PurchaseRegulationDto getPurchaseRegulation() {
+        return purchaseRegulation;
+    }
+
+    public void setPurchaseRegulation(PurchaseRegulationDto purchaseRegulation) {
+        this.purchaseRegulation = purchaseRegulation;
+    }
+
     @NLength(max = Chance.ADDRESS_LENGTH)
     public String getAddress() {
         return address;
@@ -254,7 +316,6 @@ public class ChanceDto
 
     void refreshStage() {
         int cachedOrder = getStage().getOrder();
-
         int maxOrder = 0;
         ChanceStage initStage = predefined(ChanceStages.class).INIT;
         ChanceStageDto maxStage = new ChanceStageDto().ref(initStage);

@@ -41,12 +41,13 @@
     </ui:define>
 
     <ui:define name="editDialogContent">
-        <p:tabView id="tv">
-            <p:tab title="机会基本信息">
-                <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
+        <f:subview id="tv">
+            <p:panel header="机会基本信息" toggleable="true">
+                <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content"
+                    style="width:550px;">
                     <h:outputLabel for="subject" value="机会标题:" />
                     <t:panelGroup colspan="3">
-                        <p:inputText id="subject" label="机会标题" value="${obj.subject}" style="width: 100%;" />
+                        <p:inputText id="subject" label="机会标题" value="${obj.subject}" style="width: 95%;" />
                     </t:panelGroup>
 
                     <h:outputLabel for="category" value="机会分类:" />
@@ -62,13 +63,33 @@
 
                     <h:outputLabel for="address" value="机会地址:" />
                     <t:panelGroup colspan="3">
-                        <p:inputText id="address" label="机会地址" value="${obj.address}" style="width: 100%;" />
+                        <p:inputText id="address" label="机会地址" value="${obj.address}" style="width: 95%;" />
                     </t:panelGroup>
 
                     <h:outputLabel for="content" value="机会内容:" />
                     <t:panelGroup colspan="3">
-                        <p:inputTextarea id="content" label="机会内容" value="${obj.content}" style="width: 100%;height:  6em;" />
+                        <p:inputTextarea id="content" label="机会内容" value="${obj.content}" style="width: 95%;height:  6em;" />
                     </t:panelGroup>
+
+                    <h:outputText value="预期订货日期:" />
+                    <t:panelGroup colspan="3">
+                        <p:calendar value="#{obj.anticipationBegin}" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
+                            showOn="button" />
+                        <h:outputText value="to" />
+                        <p:calendar value="#{obj.anticipationEnd}" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
+                            showOn="button" />
+                    </t:panelGroup>
+
+                    <h:outputText value="采购方式" />
+                    <p:selectOneMenu id="procurement" value="${obj.procurementMethod.displayId}" label="采购方式">
+                        <f:selectItems value="${dicts.methods}" var="it" itemLabel="${it.label}"
+                            itemValue="${it.id}" />
+                    </p:selectOneMenu>
+                    <h:outputText value="采购原则" />
+                    <p:selectOneMenu id="regulation" value="${obj.purchaseRegulation.displayId}" label="采购原则">
+                        <f:selectItems value="${dicts.regulations}" var="it" itemLabel="${it.label}"
+                            itemValue="${it.id}" />
+                    </p:selectOneMenu>
 
                     <h:outputLabel for="stage" value="机会阶段:" />
                     <t:panelGroup colspan="3">
@@ -79,9 +100,9 @@
                         </p:selectOneMenu>
                     </t:panelGroup>
                 </t:panelGrid>
-            </p:tab>
+            </p:panel>
 
-            <p:tab title="客户">
+            <p:panel header="客户" toggleable="true">
                 <fr:listView id="partiesIndexView" header="客户" style="indexPanel" mbean="${bean.partiesMBean}"
                     editView=":partiesEditView" nested="true" paginator="false" readonly="#{not bean.editing}">
                     <f:facet name="columns">
@@ -93,11 +114,12 @@
                         </p:column>
                     </f:facet>
                 </fr:listView>
-            </p:tab>
+            </p:panel>
 
-            <p:tab title="行动跟踪">
+            <p:panel header="行动跟踪" toggleable="true">
                 <fr:listView id="actionsIndexView" header="行动记录" style="indexPanel" picker="chooseChanceActionDialog"
-                    editView=":actionsEditView" mbean="${bean.actionsMBean}" nested="true" readonly="#{not bean.editing}">
+                    editView=":actionsEditView" mbean="${bean.actionsMBean}" nested="true" readonly="#{not bean.editing}"
+                    paginator="false">
                     <f:facet name="columns">
                         <p:column headerText="日期">
                             <h:outputText value="${entry.date}" />
@@ -119,11 +141,15 @@
                         </p:column>
                     </f:facet>
                 </fr:listView>
-            </p:tab>
+            </p:panel>
 
-            <p:tab title="选型">
+            <p:panel header="竞争对手" toggleable="true">
+                <h:outputText>ender developmenet</h:outputText>
+            </p:panel>
+
+            <p:panel header="选型" toggleable="true">
                 <fr:listView id="pIndexView" header="选型" style="indexPanel" editView=":pEditView" mbean="${bean.productsMBean}"
-                    nested="true" readonly="#{not bean.editing}">
+                    nested="true" readonly="#{not bean.editing}" paginator="false">
                     <f:facet name="columns">
                         <p:column headerText="客户名称">
                             <h:outputText value="${entry.productName}" />
@@ -139,8 +165,8 @@
                         </p:column>
                     </f:facet>
                 </fr:listView>
-            </p:tab>
-        </p:tabView>
+            </p:panel>
+        </f:subview>
     </ui:define>
 
     <ui:define name="dialogs">
@@ -150,6 +176,7 @@
             update=":editDialog:form:tv:actionsIndexView:indexForm:body" />
         <sem:chooseMaterialDialog id="c_material" header="选择产品/物料" target="${productObj.decidedMaterial}"
             update=":pEditView:editForm:tv:decidedMaterial" />
+
 
         <fr:listView id="actionsEditView" header="行动记录" style="editDialog" picker="chooseChanceActionDialog"
             indexView=":editDialog:form:tv:actionsIndexView" mbean="${bean.actionsMBean}" readonly="true">
@@ -163,8 +190,8 @@
                     showOn="button" disabled="${true}" label="结束时间" />
 
                 <h:outputText value="日志类型:" />
-                <p:selectOneRadio id="actionStyle" value="${item.plan}" style="width: 10em;"
-                    disabled="${true}" label="日志类型">
+                <p:selectOneRadio id="actionStyle" value="${item.plan}" style="width: 10em;" disabled="${true}"
+                    label="日志类型">
                     <f:selectItem itemLabel="计划" itemValue="${true}" />
                     <f:selectItem itemLabel="日志" itemValue="${false}" />
                 </p:selectOneRadio>
@@ -314,9 +341,7 @@
         </fr:listView>
 
 
-        <fr:listView id="partiesEditView" header="客户"
-            style="editDialog"
-            indexView=":editDialog:form:tv:partiesIndexView"
+        <fr:listView id="partiesEditView" header="客户" style="editDialog" indexView=":editDialog:form:tv:partiesIndexView"
             mbean="${bean.partiesMBean}" readonly="#{not bean.editing}">
             <h:panelGrid columns="2">
                 <h:outputLabel for="chooseCustomer" value="客户:" />
@@ -336,6 +361,18 @@
     </ui:define>
 
     <ui:define name="searchPanels.1">
+        <p:panel header="按预计订货日期搜索" toggleabe="true">
+            <h:outputText value="开始" />
+            <p:calendar value="#{bean.anticipation_begin}" navigator="true"
+                locale="zh_CN" pattern="yyyy-MM-dd" showOn="button" />
+            <br />
+            <h:outputText value="结束" />
+            <p:calendar value="#{bean.anticipation_end}" navigator="true" locale="zh_CN"
+                pattern="yyyy-MM-dd" showOn="button" />
+            <p:commandButton value="限定预期订货日期" actionListener="${bean.addProcurementDateRestrictions}"
+                update="@form, ${_searchUpdates}" />
+        </p:panel>
+
         <p:panel header="按阶段搜索" toggleable="true">
             <div align="center">
                 <p>
@@ -344,7 +381,7 @@
                         <f:selectItems value="${dicts.stages}" var="it" itemLabel="${it.label}" itemValue="${it.id}" />
                     </p:selectOneMenu>
                 </p>
-                <p:commandButton id="stageFilter" value="限定阶段"  actionListener="${bean.addStageRestricion}"
+                <p:commandButton id="stageFilter" value="限定阶段" actionListener="${bean.addStageRestricion}"
                     update="@form, ${_searchUpdates}" />
             </div>
         </p:panel>
