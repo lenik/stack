@@ -23,6 +23,7 @@
         <module>sem-mail</module>
         <module>sem-module</module>
         <module>sem-people</module>
+        <module>sem-wage</module>
     </modules>
     <name>SEM :: Base</name>
 </project>
