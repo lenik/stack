@@ -25,10 +25,6 @@ public class MailOrientation
         return forValue(MailOrientation.class, value);
     }
 
-    public static MailOrientation forValue(int value) {
-        return forValue(new Integer(value));
-    }
-
     public static final MailOrientation FROM = new MailOrientation(1, "from");
     public static final MailOrientation RECIPIENT = new MailOrientation(2, "recipient");
     public static final MailOrientation CC = new MailOrientation(3, "cc");
