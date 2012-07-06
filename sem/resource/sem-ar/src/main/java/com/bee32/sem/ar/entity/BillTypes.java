@@ -2,6 +2,11 @@ package com.bee32.sem.ar.entity;
 
 import com.bee32.plover.orm.sample.StandardSamples;
 
+/**
+ * 票据类型样本
+ * @author jack
+ *
+ */
 public class BillTypes
         extends StandardSamples {
 
