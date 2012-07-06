@@ -104,10 +104,8 @@ public class MakeOrderDto
 
     @Override
     public int getItemSelection() {
-        int itemSelection = 0;
-        if (selection.contains(ITEM_ATTRIBUTES))
-            itemSelection |= MakeOrderItemDto.PART_ATTRIBUTES;
-        return itemSelection;
+        return selection.translate(//
+                ITEM_ATTRIBUTES, MakeOrderItemDto.PART_ATTRIBUTES) ;
     }
 
     @Override

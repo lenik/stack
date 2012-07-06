@@ -2,6 +2,7 @@ package com.bee32.sem.inventory.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.free.NotImplementedException;
@@ -64,20 +65,30 @@ public class MaterialDto
 
         if (selection.contains(ATTRBUTES))
             attributes = marshalList(MaterialAttributeDto.class, ~MaterialAttributeDto.MATERIAL, source.getAttributes());
+        else
+            attributes = Collections.emptyList();
 
         if (selection.contains(ATTACHMENTS))
             attachments = mrefList(UserFileDto.class, source.getAttachments());
+        else
+            attachments = Collections.emptyList();
 
         if (selection.contains(OPTIONS))
             options = marshalList(MaterialWarehouseOptionDto.class, ~MaterialWarehouseOptionDto.MATERIAL,
                     source.getOptions());
+        else
+            options = Collections.emptyList();
 
         if (selection.contains(PREFERRED_LOCATIONS))
             preferredLocations = mrefList(MaterialPreferredLocationDto.class, ~MaterialPreferredLocationDto.MATERIAL,
                     source.getPreferredLocations());
+        else
+            preferredLocations = Collections.emptyList();
 
         if (selection.contains(PRICES))
             prices = mrefList(MaterialPriceDto.class, source.getPrices());
+        else
+            prices = Collections.emptyList();
     }
 
     @Override
