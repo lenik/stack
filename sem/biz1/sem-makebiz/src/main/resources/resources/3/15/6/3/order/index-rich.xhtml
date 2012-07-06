@@ -96,11 +96,13 @@
                 </p:column>
 
                 <p:column headerText="附加属性">
-                    <p:dataList var="attr" value="#{entry.part.target.attributes}" effectSpeed="fast">
-                        <p:column>
-                            <h:outputText value="${attr.name}:${attr.value};" />
-                        </p:column>
-                    </p:dataList>
+                    <h:panelGroup rendered="#{entry.part.target.id != null}">
+                        <p:dataList var="attr" value="#{entry.part.target.attributes}" effectSpeed="fast">
+                            <p:column>
+                                <h:outputText value="${attr.name}:${attr.value};" />
+                            </p:column>
+                        </p:dataList>
+                    </h:panelGroup>
                 </p:column>
 
                 <p:column headerText="单价" styleClass="f-right">
