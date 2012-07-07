@@ -16,8 +16,9 @@ label {
 }
 
 .ui-dialog-form {
-    max-height: 40em;
+    max-height: 35em;
     margin: 1em;
+    overflow: auto;
 }
 
 .ui-dialog-data {
