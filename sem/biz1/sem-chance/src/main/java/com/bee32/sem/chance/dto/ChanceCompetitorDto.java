@@ -1,5 +1,7 @@
 package com.bee32.sem.chance.dto;
 
+import java.math.BigDecimal;
+
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.IEnclosedObject;
@@ -8,7 +10,8 @@ import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.chance.entity.ChanceCompetitor;
-import com.bee32.sem.world.monetary.MutableMCValue;
+import com.bee32.sem.people.dto.PartyDto;
+import com.bee32.sem.world.monetary.MCValue;
 
 public class ChanceCompetitorDto
         extends UIEntityDto<ChanceCompetitor, Integer>
@@ -17,7 +20,8 @@ public class ChanceCompetitorDto
     private static final long serialVersionUID = 1L;
 
     private ChanceDto chance;
-    private MutableMCValue price;
+    private PartyDto party;
+    private BigDecimal price;
     private String capability;
     private String solution;
     private String advantage;
@@ -28,7 +32,8 @@ public class ChanceCompetitorDto
     @Override
     protected void _marshal(ChanceCompetitor source) {
         this.chance = mref(ChanceDto.class, source.getChance());
-        this.price = source.getPrice().toMutable();
+        this.party = mref(PartyDto.class, source.getParty());
+        this.price = source.getPrice().toMutable().getValue();
         this.capability = source.getCapability();
         this.solution = source.getSolution();
         this.advantage = source.getAdvantage();
@@ -40,7 +45,8 @@ public class ChanceCompetitorDto
     @Override
     protected void _unmarshalTo(ChanceCompetitor target) {
         merge(target, "chance", chance);
-        target.setPrice(price);
+        merge(target, "party", party);
+        target.setPrice(new MCValue(null, price));
         target.setCapability(capability);
         target.setSolution(solution);
         target.setAdvantage(advantage);
@@ -74,11 +80,21 @@ public class ChanceCompetitorDto
         this.chance = chance;
     }
 
-    public MutableMCValue getPrice() {
+    public PartyDto getParty() {
+        return party;
+    }
+
+    public void setParty(PartyDto party) {
+        if (party == null)
+            throw new NullPointerException("party");
+        this.party = party;
+    }
+
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(MutableMCValue price) {
+    public void setPrice(BigDecimal price) {
         if (price == null)
             throw new NullPointerException("price");
         this.price = price;
@@ -90,7 +106,8 @@ public class ChanceCompetitorDto
     }
 
     public void setCapability(String capability) {
-        this.capability = TextUtil.normalizeSpace(capability);
+        this.capability = capability;
+//        this.capability = TextUtil.normalizeSpace(capability);
     }
 
     @NLength(max = ChanceCompetitor.SOLUTION_LENGTH)
@@ -108,7 +125,8 @@ public class ChanceCompetitorDto
     }
 
     public void setAdvantage(String advantage) {
-        this.advantage = TextUtil.normalizeSpace(advantage);
+        this.advantage = advantage;
+//        this.advantage = TextUtil.normalizeSpace(advantage);
     }
 
     @NLength(max = ChanceCompetitor.DISVANTAGE_LENGTH)
@@ -117,7 +135,8 @@ public class ChanceCompetitorDto
     }
 
     public void setDisvantage(String disvantage) {
-        this.disvantage = TextUtil.normalizeSpace(disvantage);
+        this.disvantage = disvantage;
+//        this.disvantage = TextUtil.normalizeSpace(disvantage);
     }
 
     @NLength(max = ChanceCompetitor.TACTIC_LENGTH)

@@ -76,7 +76,7 @@ public class ChanceBean
     final ListMBean<ChancePartyDto> partiesMBean = ListMBean.fromEL(this,//
             "openedObject.parties", ChancePartyDto.class);
     final ListMBean<ChanceCompetitorDto> competitoriesMBean = ListMBean.fromEL(this,//
-            "openedObject.parties", ChanceCompetitorDto.class);
+            "openedObject.competitories", ChanceCompetitorDto.class);
     final ListMBean<ChanceActionDto> actionsMBean = ListMBean.fromEL(this,//
             "openedObject.actions", ChanceActionDto.class);
 //    final ListMBean<ChanceCompetitorDto> competitories = ListMBean.fromEL(this,//

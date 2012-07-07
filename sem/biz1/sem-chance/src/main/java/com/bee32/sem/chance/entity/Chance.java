@@ -71,6 +71,7 @@ public class Chance
         anticipationBegin = o.anticipationBegin;
         anticipationEnd = o.anticipationEnd;
         parties = CopyUtils.copyList(o.parties);
+        competitories = CopyUtils.copyList(o.competitories);
         products = CopyUtils.copyList(o.products);
         actions = new ArrayList<ChanceAction>(o.actions);
         stage = o.stage;
@@ -261,6 +262,8 @@ public class Chance
 
     @ManyToOne
     public ProcurementMethod getProcurementMethod() {
+        if (procurementMethod == null)
+            procurementMethod = predefined(ProcurementMethods.class).OTHER;
         return procurementMethod;
     }
 
@@ -270,6 +273,8 @@ public class Chance
 
     @ManyToOne
     public PurchaseRegulation getPurchaseRegulation() {
+        if (purchaseRegulation == null)
+            purchaseRegulation = predefined(PurchaseRegulations.class).OTHER;
         return purchaseRegulation;
     }
 

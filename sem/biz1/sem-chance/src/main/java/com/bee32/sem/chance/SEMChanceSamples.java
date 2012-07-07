@@ -60,6 +60,7 @@ public class SEMChanceSamples
 
         chance.setParties(Arrays.asList(party, party2));
 
+        competitor.setParty(people.abcOrg);
         competitor.setLabel(PREFIX + "第三使徒");
         competitor.setChance(chance);
         competitor.setTactic("在北京、上海、广州三地召开大规模的产品发布会");

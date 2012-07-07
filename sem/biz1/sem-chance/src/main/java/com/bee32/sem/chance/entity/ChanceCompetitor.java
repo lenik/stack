@@ -87,6 +87,17 @@ public class ChanceCompetitor
         this.chance = chance;
     }
 
+    @ManyToOne(optional = false)
+    public Party getParty() {
+        return party;
+    }
+
+    public void setParty(Party party) {
+        if (party == null)
+            throw new NullPointerException("party");
+        this.party = party;
+    }
+
     /**
      * 竞争对手报价
      */

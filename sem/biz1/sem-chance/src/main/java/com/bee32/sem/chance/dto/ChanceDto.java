@@ -1,5 +1,6 @@
 package com.bee32.sem.chance.dto;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -61,6 +62,8 @@ public class ChanceDto
     protected void _copy() {
         parties = CopyUtils.copyList(parties, this);
         products = CopyUtils.copyList(products, this);
+        competitories = CopyUtils.copyList(competitories, this);
+        actions = new ArrayList<ChanceActionDto>(actions);
     }
 
     @Override
@@ -69,7 +72,7 @@ public class ChanceDto
         category = mref(ChanceCategoryDto.class, source.getCategory());
         this.source = mref(ChanceSourceTypeDto.class, source.getSource());
         subject = source.getSubject();
-        content = source.getContent();
+        content = source.getContent().replaceAll(" ", "\r\n");//换行变空格
 
         anticipationBegin = source.getAnticipationBegin();
         anticipationEnd = source.getAnticipationEnd();
@@ -105,7 +108,7 @@ public class ChanceDto
         merge(target, "category", category);
         merge(target, "source", source);
         target.setSubject(subject);
-        target.setContent(content);
+        target.setContent(content.replaceAll("\r\n", "<br />"));
         target.setAnticipationBegin(anticipationBegin);
         target.setAnticipationEnd(anticipationEnd);
 
