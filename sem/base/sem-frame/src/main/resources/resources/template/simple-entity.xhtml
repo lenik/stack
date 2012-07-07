@@ -217,7 +217,8 @@
                 （请选择要操作的对象。）
             </h:panelGroup>
             <h:panelGroup rendered="${bean.openedObject != null}">
-                <h:panelGroup id="content" layout="block">
+                <h:panelGroup id="content" layout="block"
+                    styleClass="${formStyleClass != null ? formStyleClass : 'ui-dialog-form'}">
                     <pf:locker id="locker" test="${not bean.editing}" layout="block"
                         styleClass="${bean.editing ? '' : 'locker-active'}">
                         <ui:insert name="editDialogContent">The edit dialog's content is undefined.</ui:insert>
