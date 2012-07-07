@@ -4,12 +4,12 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.sem.account.entity.AccountVerification;
+import com.bee32.sem.account.entity.AccountReceVerification;
 import com.bee32.sem.process.base.ProcessEntityDto;
 import com.bee32.sem.world.monetary.MutableMCValue;
 
-public class AccountVerificationDto
-        extends ProcessEntityDto<AccountVerification> {
+public class AccountReceVerificationDto
+        extends ProcessEntityDto<AccountReceVerification> {
 
     private static final long serialVersionUID = 1L;
 
@@ -17,16 +17,16 @@ public class AccountVerificationDto
     ReceivedDto received;
     MutableMCValue amount;
 
-    public AccountVerificationDto() {
+    public AccountReceVerificationDto() {
         super();
     }
 
-    public AccountVerificationDto(int fmask) {
+    public AccountReceVerificationDto(int fmask) {
         super(fmask);
     }
 
     @Override
-    protected void _marshal(AccountVerification source) {
+    protected void _marshal(AccountReceVerification source) {
         receivable = mref(ReceivableDto.class, source.getReceivable());
         received = mref(ReceivedDto.class, source.getReceived());
         amount = source.getAmount().toMutable();
@@ -34,7 +34,7 @@ public class AccountVerificationDto
     }
 
     @Override
-    protected void _unmarshalTo(AccountVerification target) {
+    protected void _unmarshalTo(AccountReceVerification target) {
         merge(target, "receivable", receivable);
         merge(target, "received", received);
         target.setAmount(amount);

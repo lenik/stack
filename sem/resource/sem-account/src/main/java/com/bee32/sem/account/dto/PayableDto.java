@@ -1,15 +1,15 @@
 package com.bee32.sem.account.dto;
 
-public class ReceivableDto
+public class PayableDto
         extends AccountReceivePayDto {
 
     private static final long serialVersionUID = 1L;
 
-    public ReceivableDto() {
+    public PayableDto() {
         super();
     }
 
-    public ReceivableDto(int mask) {
+    public PayableDto(int mask) {
         super(mask);
     }
 }

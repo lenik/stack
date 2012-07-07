@@ -2,16 +2,16 @@ package com.bee32.sem.account.dto;
 
 import com.bee32.sem.world.monetary.MutableMCValue;
 
-public class ReceivedDto
+public class PaiedDto
         extends AccountReceivePayDto {
 
     private static final long serialVersionUID = 1L;
 
-    public ReceivedDto() {
+    public PaiedDto() {
         super();
     }
 
-    public ReceivedDto(int mask) {
+    public PaiedDto(int mask) {
         super(mask);
     }
 

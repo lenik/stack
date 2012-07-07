@@ -19,7 +19,7 @@ import com.bee32.sem.process.base.ProcessEntity;
 import com.bee32.sem.world.monetary.MCValue;
 
 /**
- * 应收单，收款单基类
+ * 应收单，收款单，应付单，付款单基类
  *
  * 单据日期：beginTime
  */
@@ -27,28 +27,28 @@ import com.bee32.sem.world.monetary.MCValue;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 4)
 @DiscriminatorValue("-")
-@SequenceGenerator(name = "idgen", sequenceName = "account_receive_seq", allocationSize = 1)
-public class AccountReceive
+@SequenceGenerator(name = "idgen", sequenceName = "account_rece_pay_seq", allocationSize = 1)
+public class AccountRecePay
         extends ProcessEntity {
 
     private static final long serialVersionUID = 1L;
 
-    Party customer;
+    Party party;
     MCValue amount;
 
     OrgUnit orgUnit;
     Person person;
 
     /**
-     * 对应客户
+     * 对应客户或供应商
      */
     @ManyToOne(optional = false)
-    public Party getCustomer() {
-        return customer;
+    public Party getParty() {
+        return party;
     }
 
-    public void setCustomer(Party customer) {
-        this.customer = customer;
+    public void setParty(Party party) {
+        this.party = party;
     }
 
     /**

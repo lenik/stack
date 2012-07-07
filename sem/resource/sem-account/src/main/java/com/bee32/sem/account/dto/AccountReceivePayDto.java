@@ -4,35 +4,35 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.sem.account.entity.AccountReceive;
+import com.bee32.sem.account.entity.AccountRecePay;
 import com.bee32.sem.people.dto.OrgUnitDto;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.process.base.ProcessEntityDto;
 import com.bee32.sem.world.monetary.MutableMCValue;
 
-public class AccountReceiveDto
-        extends ProcessEntityDto<AccountReceive> {
+public class AccountReceivePayDto
+        extends ProcessEntityDto<AccountRecePay> {
 
     private static final long serialVersionUID = 1L;
 
-    PartyDto customer;
+    PartyDto party;
     MutableMCValue amount;
 
     OrgUnitDto orgUnit;
     PersonDto person;
 
-    public AccountReceiveDto() {
+    public AccountReceivePayDto() {
         super();
     }
 
-    public AccountReceiveDto(int mask) {
+    public AccountReceivePayDto(int mask) {
         super(mask);
     }
 
     @Override
-    protected void _marshal(AccountReceive source) {
-        customer = mref(PartyDto.class, source.getCustomer());
+    protected void _marshal(AccountRecePay source) {
+        party = mref(PartyDto.class, source.getParty());
         amount = source.getAmount().toMutable();
 
         orgUnit = mref(OrgUnitDto.class, source.getOrgUnit());
@@ -40,8 +40,8 @@ public class AccountReceiveDto
     }
 
     @Override
-    protected void _unmarshalTo(AccountReceive target) {
-        merge(target, "customer", customer);
+    protected void _unmarshalTo(AccountRecePay target) {
+        merge(target, "party", party);
         target.setAmount(amount);
 
         merge(target, "orgUnit", orgUnit);
@@ -55,12 +55,12 @@ public class AccountReceiveDto
         throw new NotImplementedException();
     }
 
-    public PartyDto getCustomer() {
-        return customer;
+    public PartyDto getParty() {
+        return party;
     }
 
-    public void setCustomer(PartyDto customer) {
-        this.customer = customer;
+    public void setParty(PartyDto party) {
+        this.party = party;
     }
 
     public MutableMCValue getAmount() {

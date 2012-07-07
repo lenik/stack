@@ -12,11 +12,11 @@ import com.bee32.sem.process.base.ProcessEntity;
 import com.bee32.sem.world.monetary.MCValue;
 
 /**
- * 核销
+ * 已付核销
  */
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "account_verification_seq", allocationSize = 1)
-public class AccountVerification
+@SequenceGenerator(name = "idgen", sequenceName = "account_rece_verification_seq", allocationSize = 1)
+public class AccountReceVerification
         extends ProcessEntity {
 
     private static final long serialVersionUID = 1L;
