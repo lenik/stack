@@ -67,7 +67,7 @@ public abstract class Party
     boolean employee;
     boolean customer = true;
     boolean supplier;
-    boolean competitor = true;
+    boolean competitor;
 
     Date birthday;
     String interests;
