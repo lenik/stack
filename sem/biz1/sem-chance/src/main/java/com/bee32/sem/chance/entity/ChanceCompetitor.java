@@ -87,7 +87,7 @@ public class ChanceCompetitor
         this.chance = chance;
     }
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     public Party getParty() {
         return party;
     }
