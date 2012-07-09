@@ -110,7 +110,7 @@ public class ChanceDto
         merge(target, "category", category);
         merge(target, "source", source);
         target.setSubject(subject);
-        target.setContent(content.replaceAll("\r\n", "<br />"));
+        target.setContent(content);
         target.setAnticipationBegin(anticipationBegin);
         target.setAnticipationEnd(anticipationEnd);
 
