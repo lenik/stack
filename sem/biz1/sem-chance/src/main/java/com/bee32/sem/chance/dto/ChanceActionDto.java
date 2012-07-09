@@ -5,13 +5,13 @@ import java.util.List;
 
 import javax.free.ParseException;
 import javax.free.Strings;
-import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.util.DateToRange;
 import com.bee32.sem.people.dto.PartyDto;
@@ -25,9 +25,6 @@ public class ChanceActionDto
 
     public static final int PARTIES = 1;
     public static final int PARTNERS = 2;
-
-    public static final int MORE_INFO_LENGTH = 300;
-    public static final int SPENDING_LENGTH = 200;
 
     boolean plan;
     List<PartyDto> parties;
@@ -224,18 +221,6 @@ public class ChanceActionDto
         this.style = style;
     }
 
-    /**
-     * 更多信息
-     */
-    @Column(length = MORE_INFO_LENGTH)
-    public String getMoreInfo() {
-        return moreInfo;
-    }
-
-    public void setMoreInfo(String moreInfo) {
-        this.moreInfo = TextUtil.normalizeSpace(moreInfo);
-    }
-
     public String getSubject() {
         if (moreInfo == null)
             return "(无标题)";
@@ -243,15 +228,27 @@ public class ChanceActionDto
     }
 
     /**
+     * 更多信息
+     */
+    @Length(max = ChanceAction.MORE_INFO_LENGTH)
+    public String getMoreInfo() {
+        return moreInfo;
+    }
+
+    public void setMoreInfo(String moreInfo) {
+        this.moreInfo = moreInfo;
+    }
+
+    /**
      * 花费情况
      */
-    @Column(length = SPENDING_LENGTH)
+    @Length(max = ChanceAction.SPENDING_LENGTH)
     public String getSpending() {
         return spending;
     }
 
     public void setSpending(String spending) {
-        this.spending = TextUtil.normalizeSpace(spending);
+        this.spending = spending;
     }
 
     public ChanceDto getChance() {

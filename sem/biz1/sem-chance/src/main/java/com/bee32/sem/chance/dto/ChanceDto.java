@@ -9,6 +9,8 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 import javax.free.Strings;
 
+import org.hibernate.validator.constraints.Length;
+
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.orm.entity.CopyUtils;
@@ -72,7 +74,7 @@ public class ChanceDto
         category = mref(ChanceCategoryDto.class, source.getCategory());
         this.source = mref(ChanceSourceTypeDto.class, source.getSource());
         subject = source.getSubject();
-        content = source.getContent().replaceAll(" ", "\r\n");//换行变空格
+        content = source.getContent();
 
         anticipationBegin = source.getAnticipationBegin();
         anticipationEnd = source.getAnticipationEnd();
@@ -171,13 +173,15 @@ public class ChanceDto
         this.subject = TextUtil.normalizeSpace(subject);
     }
 
-    @NLength(min = 1, max = Chance.CONTENT_LENGTH)
+    @Length(min = 1, max = Chance.CONTENT_LENGTH)
     public String getContent() {
         return content;
     }
 
     public void setContent(String content) {
-        this.content = TextUtil.normalizeSpace(content);
+        if (content != null)
+            content = content.trim();
+        this.content = content;
     }
 
     public Date getAnticipationBegin() {
