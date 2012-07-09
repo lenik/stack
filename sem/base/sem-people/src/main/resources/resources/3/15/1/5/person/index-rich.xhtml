@@ -11,7 +11,7 @@
 
     <ui:define name="dataColumns">
         <p:column headerText="类型">
-            <h:outputText value="#{entry.types}" />
+            <h:outputText value="#{entry.types}" title="#{entry.typeHints}" />
         </p:column>
         <p:column headerText="姓名" sortBy="#{entry.label}" styleClass="f-wrappable">
             <h:outputText value="#{entry.displayName}" />
@@ -44,18 +44,22 @@
 
                     <h:outputText value="属性" />
                     <t:panelGroup colspan="3">
-                        <t:panelGrid columns="3">
+                        <t:panelGrid columns="4">
                             <t:panelGrid columns="2">
-                                <p:selectBooleanCheckbox value="#{obj.employee}" label="属性" />
-                                <h:outputText value="内部" />
+                                <p:selectBooleanCheckbox value="#{obj.employee}" label="雇员" />
+                                <h:outputText value="雇员" />
                             </t:panelGrid>
                             <t:panelGrid columns="2">
-                                <p:selectBooleanCheckbox value="#{obj.customer}" label="属性 " />
+                                <p:selectBooleanCheckbox value="#{obj.customer}" label="客户 " />
                                 <h:outputText value="客户" />
                             </t:panelGrid>
                             <t:panelGrid columns="2">
-                                <p:selectBooleanCheckbox value="#{obj.supplier}" label="属性" />
+                                <p:selectBooleanCheckbox value="#{obj.supplier}" label="供应商" />
                                 <h:outputText value="供应商" />
+                            </t:panelGrid>
+                            <t:panelGrid columns="2">
+                                <p:selectBooleanCheckbox value="#{obj.competitor}" label="竞争对手" />
+                                <h:outputText value="竞争对手" />
                             </t:panelGrid>
                         </t:panelGrid>
                     </t:panelGroup>

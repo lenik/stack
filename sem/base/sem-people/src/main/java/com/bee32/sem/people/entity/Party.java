@@ -67,6 +67,7 @@ public abstract class Party
     boolean employee;
     boolean customer = true;
     boolean supplier;
+    boolean competitor = true;
 
     Date birthday;
     String interests;
@@ -103,6 +104,7 @@ public abstract class Party
         employee = o.employee;
         customer = o.customer;
         supplier = o.supplier;
+        competitor = o.competitor;
         birthday = o.birthday;
         interests = o.interests;
         bank = o.bank;
@@ -222,6 +224,16 @@ public abstract class Party
 
     public void setSupplier(boolean supplier) {
         this.supplier = supplier;
+    }
+
+    @DefaultValue("false")
+    @Column(nullable = false)
+    public boolean isCompetitor() {
+        return competitor;
+    }
+
+    public void setCompetitor(boolean competitor) {
+        this.competitor = competitor;
     }
 
     /**

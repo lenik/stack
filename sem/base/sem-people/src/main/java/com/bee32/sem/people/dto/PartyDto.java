@@ -45,6 +45,7 @@ public class PartyDto
     boolean employee;
     boolean customer = true;
     boolean supplier;
+    boolean competitor;
 
     Date birthday;
     String interests;
@@ -81,6 +82,7 @@ public class PartyDto
         employee = source.isEmployee();
         customer = source.isCustomer();
         supplier = source.isSupplier();
+        competitor = source.isCompetitor();
 
         birthday = source.getBirthday();
         interests = source.getInterests();
@@ -121,6 +123,7 @@ public class PartyDto
         target.setEmployee(employee);
         target.setCustomer(customer);
         target.setSupplier(supplier);
+        target.setCompetitor(competitor);
 
         target.setBirthday(birthday);
         target.setInterests(interests);
@@ -195,11 +198,28 @@ public class PartyDto
     public String getTypes() {
         StringBuilder sb = new StringBuilder();
         if (employee)
-            sb.append("用");
+            sb.append("雇");
         if (supplier)
             sb.append("供");
         if (customer)
             sb.append("客");
+        if (competitor)
+            sb.append("竞");
+        return sb.toString();
+    }
+
+    public String getTypeHints() {
+        StringBuilder sb = new StringBuilder();
+        if (employee)
+            sb.append("，雇员");
+        if (supplier)
+            sb.append("，供应商");
+        if (customer)
+            sb.append("，客户");
+        if (competitor)
+            sb.append("，竞争对手");
+        if (sb.length() != 0)
+            sb.delete(0, 1);
         return sb.toString();
     }
 
@@ -225,6 +245,14 @@ public class PartyDto
 
     public void setSupplier(boolean supplier) {
         this.supplier = supplier;
+    }
+
+    public boolean isCompetitor() {
+        return competitor;
+    }
+
+    public void setCompetitor(boolean competitor) {
+        this.competitor = competitor;
     }
 
     @Past

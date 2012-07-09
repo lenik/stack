@@ -56,7 +56,7 @@
                 </p:column>
 
                 <p:column headerText="类型">
-                    <h:outputText value="#{org.types}" />
+                    <h:outputText value="#{org.types}" title="#{org.typeHints}" />
                 </p:column>
 
                 <p:column headerText="联系电话">
@@ -100,18 +100,22 @@
                     <h:outputText value="公司名称" />
                     <p:inputText value="#{orgPersonAdminBean.orgName}"/>
                     <h:outputText value="属性" />
-                    <t:panelGrid columns="3">
+                    <t:panelGrid columns="4">
                         <t:panelGrid columns="2">
-                            <p:selectBooleanCheckbox value="#{orgPersonAdminBean.employee}" label="属性" />
-                            <h:outputText value="内部" />
+                            <p:selectBooleanCheckbox value="#{orgPersonAdminBean.employee}" label="雇员" />
+                            <h:outputText value="雇员" />
                         </t:panelGrid>
                         <t:panelGrid columns="2">
-                            <p:selectBooleanCheckbox value="#{orgPersonAdminBean.customer}" label="属性" />
+                            <p:selectBooleanCheckbox value="#{orgPersonAdminBean.customer}" label="客户" />
                             <h:outputText value="客户" />
                         </t:panelGrid>
                         <t:panelGrid columns="2">
-                            <p:selectBooleanCheckbox value="#{orgPersonAdminBean.supplier}" label="属性" />
+                            <p:selectBooleanCheckbox value="#{orgPersonAdminBean.supplier}" label="供应商" />
                             <h:outputText value="供应商" />
+                        </t:panelGrid>
+                        <t:panelGrid columns="2">
+                            <p:selectBooleanCheckbox value="#{orgPersonAdminBean.competitor}" label="竞争对手" />
+                            <h:outputText value="竞争对手" />
                         </t:panelGrid>
                     </t:panelGrid>
 
