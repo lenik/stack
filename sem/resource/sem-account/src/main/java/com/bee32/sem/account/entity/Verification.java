@@ -15,32 +15,32 @@ import com.bee32.sem.world.monetary.MCValue;
  * 已付核销
  */
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "account_rece_verification_seq", allocationSize = 1)
-public class AccountReceVerification
+@SequenceGenerator(name = "idgen", sequenceName = "verification_seq", allocationSize = 1)
+public class Verification
         extends ProcessEntity {
 
     private static final long serialVersionUID = 1L;
 
-    Receivable receivable;
-    Received received;
+    AccountAble accontAble;
+    AccountEd accountEd;
     MCValue amount;
 
     @ManyToOne
-    public Receivable getReceivable() {
-        return receivable;
+    public AccountAble getAccontAble() {
+        return accontAble;
     }
 
-    public void setReceivable(Receivable receivable) {
-        this.receivable = receivable;
+    public void setAccontAble(AccountAble accontAble) {
+        this.accontAble = accontAble;
     }
 
     @ManyToOne
-    public Received getReceived() {
-        return received;
+    public AccountEd getAccountEd() {
+        return accountEd;
     }
 
-    public void setReceived(Received received) {
-        this.received = received;
+    public void setAccountEd(AccountEd accountEd) {
+        this.accountEd = accountEd;
     }
 
     /**

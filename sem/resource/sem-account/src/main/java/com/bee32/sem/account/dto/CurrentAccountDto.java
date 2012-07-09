@@ -4,15 +4,15 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.sem.account.entity.AccountRecePay;
+import com.bee32.sem.account.entity.CurrentAccount;
 import com.bee32.sem.people.dto.OrgUnitDto;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.process.base.ProcessEntityDto;
 import com.bee32.sem.world.monetary.MutableMCValue;
 
-public class AccountReceivePayDto
-        extends ProcessEntityDto<AccountRecePay> {
+public class CurrentAccountDto
+        extends ProcessEntityDto<CurrentAccount> {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,16 +22,16 @@ public class AccountReceivePayDto
     OrgUnitDto orgUnit;
     PersonDto person;
 
-    public AccountReceivePayDto() {
+    public CurrentAccountDto() {
         super();
     }
 
-    public AccountReceivePayDto(int mask) {
+    public CurrentAccountDto(int mask) {
         super(mask);
     }
 
     @Override
-    protected void _marshal(AccountRecePay source) {
+    protected void _marshal(CurrentAccount source) {
         party = mref(PartyDto.class, source.getParty());
         amount = source.getAmount().toMutable();
 
@@ -40,7 +40,7 @@ public class AccountReceivePayDto
     }
 
     @Override
-    protected void _unmarshalTo(AccountRecePay target) {
+    protected void _unmarshalTo(CurrentAccount target) {
         merge(target, "party", party);
         target.setAmount(amount);
 

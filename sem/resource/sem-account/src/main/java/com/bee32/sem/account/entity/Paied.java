@@ -9,8 +9,8 @@ import javax.persistence.Entity;
  *
  */
 @Entity
-@DiscriminatorValue("P-ED")
-public class Paied extends AccountRecePay {
+@DiscriminatorValue("PED")
+public class Paied extends AccountEd {
 
     private static final long serialVersionUID = 1L;
 

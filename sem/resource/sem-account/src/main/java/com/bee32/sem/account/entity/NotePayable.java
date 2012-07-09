@@ -4,12 +4,12 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 /**
- * 收款单
+ * 应付票据
  */
 @Entity
-@DiscriminatorValue("RED")
-public class Received
-        extends AccountEd {
+@DiscriminatorValue("PNOTE")
+public class NotePayable
+        extends Note {
 
     private static final long serialVersionUID = 1L;
 

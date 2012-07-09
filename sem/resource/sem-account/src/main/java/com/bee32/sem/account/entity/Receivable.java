@@ -7,9 +7,9 @@ import javax.persistence.Entity;
  * 应收单
  */
 @Entity
-@DiscriminatorValue("R---")
+@DiscriminatorValue("RABLE")
 public class Receivable
-        extends AccountRecePay {
+        extends AccountAble {
 
     private static final long serialVersionUID = 1L;
 

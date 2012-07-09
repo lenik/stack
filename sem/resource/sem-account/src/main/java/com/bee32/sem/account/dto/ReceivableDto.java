@@ -1,7 +1,7 @@
 package com.bee32.sem.account.dto;
 
 public class ReceivableDto
-        extends AccountReceivePayDto {
+        extends AccountAbleDto {
 
     private static final long serialVersionUID = 1L;
 

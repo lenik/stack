@@ -25,10 +25,10 @@ import com.bee32.sem.world.monetary.MCValue;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "stereo", length = 4)
+@DiscriminatorColumn(name = "stereo", length = 5)
 @DiscriminatorValue("-")
-@SequenceGenerator(name = "idgen", sequenceName = "account_rece_pay_seq", allocationSize = 1)
-public class AccountRecePay
+@SequenceGenerator(name = "idgen", sequenceName = "current_account_seq", allocationSize = 1)
+public class CurrentAccount
         extends ProcessEntity {
 
     private static final long serialVersionUID = 1L;
