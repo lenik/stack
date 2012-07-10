@@ -34,7 +34,7 @@
         <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
             <h:outputLabel for="label" value="摘要" />
             <t:panelGroup colspan="3">
-                <p:inputText id="label" value="#{obj.label}" label="摘要" />
+                <p:inputText id="label" value="#{obj.label}" label="摘要" style="width:30em;"/>
             </t:panelGroup>
 
             <h:outputText value="客户" />
@@ -80,8 +80,8 @@
 
 
     <ui:define name="dialogs">
-        <sem:choosePartyDialog id="c_customer" header="选择客户" target="#{obj.customer}" update=":editDialog:form:party" />
+        <sem:choosePartyDialog id="c_customer" header="选择客户" target="#{obj.party}" update=":editDialog:form:party" />
         <sem:chooseOrgUnitDialog id="c_orgunit" target="#{obj.orgUnit}" update=":editDialog:form" />
-        <sem:choosePersonDialog id="choosePersonDialog" var="choosePersonDialog" target="#{obj.person}" update=":editDialog:form:job" />
+        <sem:choosePersonDialog id="choosePersonDialog" var="choosePersonDialog" target="#{obj.person}" update=":editDialog:form:person" />
     </ui:define>
 </ui:composition>

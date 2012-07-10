@@ -11,7 +11,7 @@ public class SEMAccountPayMenu
     static Location __ = WEB_APP.join(SEMAccountModule.PREFIX_);
     SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
 
-    public MenuNode PAY = menu(_frame_.MAIN, 460, "PAY");
+    public MenuNode PAY = menu(_frame_.MAIN, 413, "PAY");
 
     MenuNode payableAdmin = entry(PAY, 1, "payableAdmin", __.join("payable/"));
 
