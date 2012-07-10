@@ -11,9 +11,10 @@ public class SEMAccountReceMenu
     static Location __ = WEB_APP.join(SEMAccountModule.PREFIX_);
     SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
 
-    public MenuNode RECE = menu(_frame_.MAIN, 500, "RECE");
+    public MenuNode RECE = menu(_frame_.MAIN, 450, "RECE");
 
-    MenuNode receivableAdmin = entry(RECE, 1, "receivableAdmin", __.join("receivable/"));
+    MenuNode receivableInitAdmin = entry(RECE, 1, "receivableInitAdmin", __.join("receivableInit/"));
+    MenuNode receivableAdmin = entry(RECE, 10, "receivableAdmin", __.join("receivable/"));
 
 
 

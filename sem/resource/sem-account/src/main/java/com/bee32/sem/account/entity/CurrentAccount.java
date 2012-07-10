@@ -34,7 +34,7 @@ public class CurrentAccount
     private static final long serialVersionUID = 1L;
 
     Party party;
-    MCValue amount;
+    MCValue amount = new MCValue();
 
     OrgUnit orgUnit;
     Person person;
