@@ -49,6 +49,7 @@ public class OrgPersonAdminBean
     boolean employee;
     boolean customer;
     boolean supplier;
+    boolean competitor;
 
     List<ContactHolder> contactHolders = new ArrayList<ContactHolder>();
 
@@ -154,6 +155,14 @@ public class OrgPersonAdminBean
         this.supplier = supplier;
     }
 
+    public boolean isCompetitor() {
+        return competitor;
+    }
+
+    public void setCompetitor(boolean competitor) {
+        this.competitor = competitor;
+    }
+
     public List<ContactHolder> getContactHolders() {
         return contactHolders;
     }
@@ -193,7 +202,7 @@ public class OrgPersonAdminBean
             return;
         }
 
-        if(!employee && !customer && !supplier) {
+        if(!employee && !customer && !supplier && !competitor) {
             uiLogger.error("没有为公司选择属性!");
             return;
         }
@@ -233,6 +242,8 @@ public class OrgPersonAdminBean
         person.setCustomer(customer);
         org.setSupplier(supplier);
         person.setSupplier(supplier);
+        org.setCompetitor(competitor);
+        person.setCompetitor(competitor);
 
         person.setSex(sex);
         person.setMemo(personMemo);
