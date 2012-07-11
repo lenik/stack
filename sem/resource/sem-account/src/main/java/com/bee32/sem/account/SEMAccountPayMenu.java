@@ -13,6 +13,8 @@ public class SEMAccountPayMenu
 
     public MenuNode PAY = menu(_frame_.MAIN, 413, "PAY");
 
-    MenuNode payableAdmin = entry(PAY, 1, "payableAdmin", __.join("payable/"));
+    MenuNode payableInitAdmin = entry(PAY, 1, "payableInitAdmin", __.join("payableInit/"));
+    MenuNode payableAdmin = entry(PAY, 10, "payableAdmin", __.join("payable/"));
+    MenuNode paiedAdmin = entry(PAY, 20, "paiedAdmin", __.join("paied/"));
 
 }

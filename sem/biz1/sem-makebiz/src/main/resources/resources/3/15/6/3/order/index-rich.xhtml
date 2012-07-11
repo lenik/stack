@@ -62,7 +62,6 @@
 
             <h:outputText value="客户:" />
             <t:panelGroup colspan="3">
-                <h:inputHidden id="customerId" label="客户" value="#{obj.customer.id_RZ}" />
                 <p:inputText id="customer" label="客户" value="#{obj.customer.displayName}" readonly="true" style="width:30em;"/>
                 <p:commandButton value="..." oncomplete="choosePartyDialog.show()" disabled="#{not bean.editing}">
                     <f:setPropertyActionListener target="#{choosePartyDialogBean.customer}"

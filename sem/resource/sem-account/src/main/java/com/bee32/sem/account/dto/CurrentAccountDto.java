@@ -2,6 +2,7 @@ package com.bee32.sem.account.dto;
 
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
+import javax.validation.constraints.NotNull;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.account.entity.CurrentAccount;
@@ -55,6 +56,7 @@ public class CurrentAccountDto
         throw new NotImplementedException();
     }
 
+    @NotNull
     public PartyDto getParty() {
         return party;
     }

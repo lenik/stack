@@ -3,8 +3,8 @@
     xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk"
     xmlns:icsf="http://java.sun.com/jsf/composite/3/7" xmlns:fr="http://java.sun.com/jsf/composite/frame" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
-    <ui:param name="title" value="应收初始化" />
-    <ui:param name="bean" value="#{receivableInitAdminBean}" />
+    <ui:param name="title" value="应付初始化" />
+    <ui:param name="bean" value="#{payableInitAdminBean}" />
     <ui:param name="obj" value="#{bean.openedObject}" />
     <ui:param name="monetary" value="#{monetaryDictsBean}" />
 
@@ -12,7 +12,7 @@
         <p:column headerText="摘要" sortBy="#{entry.label}" styleClass="f-wrappable">
             <h:outputText value="#{entry.label}" />
         </p:column>
-        <p:column headerText="客户">
+        <p:column headerText="供应商 ">
             <h:outputText value="#{entry.party.displayName}" />
         </p:column>
         <p:column headerText="金额">
@@ -21,7 +21,7 @@
         <p:column headerText="部门">
             <h:outputText value="#{entry.orgUnit.label}" />
         </p:column>
-        <p:column headerText="业务员">
+        <p:column headerText="采购员">
             <h:outputText value="#{entry.person.displayName}" />
         </p:column>
         <p:column headerText="备注" styleClass="f-wrappable">
@@ -37,9 +37,9 @@
                 <p:inputText id="label" value="#{obj.label}" label="摘要" style="width:30em;"/>
             </t:panelGroup>
 
-            <h:outputText value="客户" />
+            <h:outputText value="供应商" />
             <t:panelGroup colspan="3">
-                <p:inputText id="party" label="客户" value="#{obj.party.displayName}" readonly="true" style="width:30em;"/>
+                <p:inputText id="party" label="供应商" value="#{obj.party.displayName}" readonly="true" style="width:30em;"/>
                 <p:commandButton value="..." onclick="waitbox.show()" oncomplete="waitbox.hide();choosePartyDialog.show()"/>
             </t:panelGroup>
 
@@ -60,9 +60,9 @@
                         value="#{bean.selfOrgId}" />
                 </p:commandButton>
             </t:panelGroup>
-            <h:outputLabel for="person" value="业务员" />
+            <h:outputLabel for="person" value="采购员" />
             <h:panelGroup>
-                <p:inputText id="person" readonly="true" value="#{obj.person.displayName}" label="业务员" />
+                <p:inputText id="person" readonly="true" value="#{obj.person.displayName}" label="采购员" />
                 <p:commandButton value="..." update=":choosePersonDialog:form" onclick="waitbox.show()" oncomplete="waitbox.hide();choosePersonDialog.show()">
                     <f:setPropertyActionListener target="#{choosePersonDialogBean.employee}" value="true" />
                 </p:commandButton>
@@ -79,7 +79,7 @@
 
 
     <ui:define name="dialogs">
-        <sem:choosePartyDialog id="c_customer" header="选择客户" target="#{obj.party}" update=":editDialog:form:party" />
+        <sem:choosePartyDialog id="c_customer" header="选择供应商 " target="#{obj.party}" update=":editDialog:form:party" />
         <sem:chooseOrgUnitDialog id="c_orgunit" target="#{obj.orgUnit}" update=":editDialog:form" />
         <sem:choosePersonDialog id="choosePersonDialog" var="choosePersonDialog" target="#{obj.person}" update=":editDialog:form:person" />
     </ui:define>
