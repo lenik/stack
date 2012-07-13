@@ -64,13 +64,13 @@
 
                 <h:outputText value="对应公司" />
                 <t:panelGroup>
-                    <p:inputText id="org" label="对应公司" value="#{obj.org.displayName}" readonly="true" />
-                    <p:commandButton value="..." oncomplete="chooseOrgDialog.show()" />
+                    <p:inputText id="party" label="对应公司" value="#{obj.org.displayName}" readonly="true" />
+                    <p:commandButton value="..." oncomplete="choosePartyDialog.show()" />
                 </t:panelGroup>
                 <h:outputText value="对应部门" />
                 <t:panelGroup>
                     <p:inputText id="orgUnit" label="对应部门" value="#{obj.orgUnit.path}" readonly="true" />
-                    <p:commandButton value="..." oncomplete="chooseOrgUnitDialog.show()">
+                    <p:commandButton value="..." oncomplete="chooseOrgUnitDialog.show()" update=":c_orgunit:form">
                         <f:setPropertyActionListener target="#{chooseOrgUnitDialogBean.orgId}"
                             value="#{obj.org.id}" />
                     </p:commandButton>
@@ -148,7 +148,7 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:chooseOrgDialog id="c_org" target="#{obj.org}" update=":editDialog:form" />
+        <sem:choosePartyDialog id="c_party" target="#{obj.org}" update=":editDialog:form" />
         <sem:chooseOrgUnitDialog id="c_orgunit" target="#{obj.orgUnit}" update=":editDialog:form" />
         <sem:chooseStockLocationDialog id="c_location" target="#{itemObj.location}"
             update=":itemsEditView:editForm:body" />
