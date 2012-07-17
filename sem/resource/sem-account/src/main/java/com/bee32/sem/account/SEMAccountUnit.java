@@ -4,9 +4,13 @@ import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.sem.account.entity.AccountAble;
 import com.bee32.sem.account.entity.AccountEd;
+import com.bee32.sem.account.entity.Balancing;
+import com.bee32.sem.account.entity.BillDiscount;
 import com.bee32.sem.account.entity.BillType;
 import com.bee32.sem.account.entity.CurrentAccount;
+import com.bee32.sem.account.entity.Endorsement;
 import com.bee32.sem.account.entity.Note;
+import com.bee32.sem.account.entity.NoteBalancing;
 import com.bee32.sem.account.entity.NotePayable;
 import com.bee32.sem.account.entity.NoteReceivable;
 import com.bee32.sem.account.entity.Paied;
@@ -40,5 +44,9 @@ public class SEMAccountUnit
         add(ReceivableInit.class);
         add(Received.class);
         add(Verification.class);
+        add(NoteBalancing.class);
+        add(BillDiscount.class);
+        add(Endorsement.class);
+        add(Balancing.class);
     }
 }

@@ -45,12 +45,9 @@
 
 
             <h:outputLabel for="value" value="金额" />
-            <p:inputText id="value" value="#{obj.amount.value}" label="金额"/>
-            <h:outputLabel value="币种" />
-            <p:selectOneMenu value="#{obj.amount.currencyCode}" style="width:200px;" label="币种">
-                <f:selectItem itemValue="" itemLabel="--选择币种--" />
-                <f:selectItems value="#{monetary.currencySelectItems}" />
-            </p:selectOneMenu>
+            <t:panelGroup colspan="3">
+                <p:inputText id="value" value="#{obj.amount.value}" label="金额"/>
+            </t:panelGroup>
 
             <h:outputText value="部门" />
             <t:panelGroup>

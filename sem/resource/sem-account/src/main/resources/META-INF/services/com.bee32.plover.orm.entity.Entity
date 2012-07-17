@@ -12,3 +12,7 @@ com.bee32.sem.account.entity.Receivable
 com.bee32.sem.account.entity.ReceivableInit
 com.bee32.sem.account.entity.Received
 com.bee32.sem.account.entity.Verification
+com.bee32.sem.account.entity.NoteBalancing
+com.bee32.sem.account.entity.BillDiscount
+com.bee32.sem.account.entity.Endorsement
+com.bee32.sem.account.entity.Balancing

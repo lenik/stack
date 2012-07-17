@@ -12,6 +12,11 @@
         <p:column headerText="摘要" sortBy="#{entry.label}" styleClass="f-wrappable">
             <h:outputText value="#{entry.label}" />
         </p:column>
+        <p:column headerText="日期">
+            <h:outputText value="#{entry.beginTime}">
+                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+            </h:outputText>
+        </p:column>
         <p:column headerText="供应商">
             <h:outputText value="#{entry.party.displayName}" />
         </p:column>
@@ -37,20 +42,23 @@
                 <p:inputText id="label" value="#{obj.label}" label="摘要" style="width:30em;"/>
             </t:panelGroup>
 
+            <h:outputLabel for="beginTime" value="日期" />
+            <t:panelGroup colspan="3">
+                <p:calendar id="beginTime" navigator="true"
+                    locale="zh_CN" pattern="yyyy-MM-dd"
+                    value="#{obj.beginTime}" showOn="button" label="日期" />
+            </t:panelGroup>
+
             <h:outputText value="供应商" />
             <t:panelGroup colspan="3">
                 <p:inputText id="party" label="供应商" value="#{obj.party.displayName}" readonly="true" style="width:30em;"/>
                 <p:commandButton value="..." onclick="waitbox.show()" oncomplete="waitbox.hide();choosePartyDialog.show()"/>
             </t:panelGroup>
 
-
             <h:outputLabel for="value" value="金额" />
-            <p:inputText id="value" value="#{obj.amount.value}" label="金额"/>
-            <h:outputLabel value="币种" />
-            <p:selectOneMenu value="#{obj.amount.currencyCode}" style="width:200px;" label="币种">
-                <f:selectItem itemValue="" itemLabel="--选择币种--" />
-                <f:selectItems value="#{monetary.currencySelectItems}" />
-            </p:selectOneMenu>
+            <t:panelGroup colspan="3">
+                <p:inputText id="value" value="#{obj.amount.value}" label="金额"/>
+            </t:panelGroup>
 
             <h:outputText value="部门" />
             <t:panelGroup>

@@ -4,6 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import com.bee32.sem.people.entity.Party;
 
@@ -19,13 +23,29 @@ public class Note extends AccountEd {
 
     private static final long serialVersionUID = 1L;
 
-    private static final int BANK_LENGTH = 100;
-    private static final int BILL_NO_LENGTH = 50;
+    public static final int BANK_LENGTH = 100;
+    public static final int BILL_NO_LENGTH = 50;
+
+    NoteBalancing noteBalancing;
 
     String bank;
     Party party;
     String billNo;
     BillType billType;
+
+    /**
+     * 对应的票据结算
+     * @return
+     */
+    @OneToOne(orphanRemoval = true, mappedBy = "noteBalancing")
+    @Cascade(CascadeType.ALL)
+    public NoteBalancing getNoteBalancing() {
+        return noteBalancing;
+    }
+
+    public void setNoteBalancing(NoteBalancing noteBalancing) {
+        this.noteBalancing = noteBalancing;
+    }
 
     /**
      * 银行承兑汇票对应的银行
