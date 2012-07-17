@@ -16,5 +16,6 @@ public class SEMAccountReceMenu
     MenuNode receivableInitAdmin = entry(RECE, 1, "receivableInitAdmin", __.join("receivableInit/"));
     MenuNode receivableAdmin = entry(RECE, 10, "receivableAdmin", __.join("receivable/"));
     MenuNode receivedAdmin = entry(RECE, 20, "receivedAdmin", __.join("received/"));
+    MenuNode noteReceivableAdmin = entry(RECE, 30, "noteReceivableAdmin", __.join("noteReceivable/"));
 
 }
