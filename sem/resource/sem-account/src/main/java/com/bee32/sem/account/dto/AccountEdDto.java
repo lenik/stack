@@ -1,6 +1,6 @@
 package com.bee32.sem.account.dto;
 
-import com.bee32.sem.world.monetary.MutableMCValue;
+import com.bee32.sem.account.entity.CurrentAccount;
 
 public class AccountEdDto
         extends CurrentAccountDto {
@@ -15,13 +15,21 @@ public class AccountEdDto
         super(mask);
     }
 
+
+
     @Override
-    public MutableMCValue getAmount() {
-        return super.getAmount().negate().toMutable();
+    protected void _marshal(CurrentAccount source) {
+        super._marshal(source);
+
+        //收款或付款数字取反，以减少应收或应付金额
+        amount = source.getAmount().negate().toMutable();
     }
 
     @Override
-    public void setAmount(MutableMCValue amount) {
-        super.setAmount(amount.negate().toMutable()); // 收款数字取反，以减少应收金额
+    protected void _unmarshalTo(CurrentAccount target) {
+        super._unmarshalTo(target);
+
+        //收款或付款数字取反，以减少应收或应付金额
+        target.setAmount(target.getAmount().negate());
     }
 }

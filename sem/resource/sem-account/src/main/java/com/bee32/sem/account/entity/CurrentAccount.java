@@ -12,7 +12,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
-import javax.validation.constraints.NotNull;
 
 import com.bee32.sem.people.entity.OrgUnit;
 import com.bee32.sem.people.entity.Party;
