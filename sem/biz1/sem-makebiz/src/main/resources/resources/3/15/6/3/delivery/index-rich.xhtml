@@ -78,11 +78,11 @@
                     nested="true" paginator="false" creatable="false" readonly="#{not bean.editing}">
                     <f:facet name="columns">
                         <p:column headerText="物料" styleClass="f-wrappable">
-                            <h:outputText value="#{entry.part.target.label}" />
+                            <h:outputText value="#{entry.material.label}" />
                         </p:column>
 
                         <p:column headerText="规格型号" styleClass="f-wrappable">
-                            <h:outputText value="#{entry.part.target.modelSpec}" />
+                            <h:outputText value="#{entry.material.modelSpec}" />
                         </p:column>
 
                         <p:column headerText="单价" styleClass="f-right">
@@ -142,7 +142,7 @@
 
                 <h:outputLabel value="物料" />
                 <t:panelGroup colspan="3">
-                    <h:outputText id="material" value="#{item.part.target.label}"/>
+                    <h:outputText id="material" value="#{item.material.label}"/>
                 </t:panelGroup>
 
                 <h:outputLabel value="单价" />

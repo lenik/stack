@@ -87,16 +87,16 @@
             nested="true" paginator="false" readonly="#{not bean.editing}" inlineEdit="true">
             <f:facet name="columns">
                 <p:column headerText="物料" styleClass="f-wrappable">
-                    <h:outputText value="#{entry.part.target.label}" />
+                    <h:outputText value="#{entry.material.label}" />
                 </p:column>
 
                 <p:column headerText="规格型号" styleClass="f-wrappable">
-                    <h:outputText value="#{entry.part.target.modelSpec}" />
+                    <h:outputText value="#{entry.material.modelSpec}" />
                 </p:column>
 
                 <p:column headerText="附加属性">
-                    <h:panelGroup rendered="#{entry.part.target.id != null}">
-                        <p:dataList var="attr" value="#{entry.part.target.attributes}" effectSpeed="fast">
+                    <h:panelGroup rendered="#{entry.material.id != null}">
+                        <p:dataList var="attr" value="#{entry.material.attributes}" effectSpeed="fast">
                             <p:column>
                                 <h:outputText value="${attr.name}:${attr.value};" />
                             </p:column>
@@ -143,7 +143,7 @@
         <sem:choosePartyDialog id="c_customer" header="选择客户" target="#{obj.customer}" update=":editDialog:form:basic" />
         <sem:chooseChanceDialog id="c_chance" target="#{bean.chanceToApply}"
             update=":editDialog:form:basic :editDialog:form:itemsIndexView:indexForm:body" />
-        <sem:choosePartDialog id="c_part" target="#{itemObj.part}" update=":itemsEditView:editForm:material" />
+        <sem:chooseMaterialDialog id="c_material" target="#{itemObj.material}" update=":itemsEditView:editForm:material" />
 
         <fr:listView id="itemsEditView" header="订单项目" style="editDialog" indexView=":editDialog:form:itemsIndexView"
             mbean="#{bean.itemsMBean}" readonly="#{not bean.editing}">
@@ -151,8 +151,8 @@
 
                 <h:outputLabel value="物料" />
                 <t:panelGroup colspan="3">
-                    <p:inputText id="material" value="#{item.part.target.label}" readonly="true" label="物料" />
-                    <p:commandButton value="..." onclick="choosePartDialog.show();" />
+                    <p:inputText id="material" value="#{item.material.label}" readonly="true" label="物料" />
+                    <p:commandButton value="..." onclick="chooseMaterialDialog.show();" />
                 </t:panelGroup>
 
                 <h:outputLabel value="单价" />

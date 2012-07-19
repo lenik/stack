@@ -63,7 +63,7 @@ public class DeliveryNoteAdminBean
         MakeOrderDto makeOrder = reload(makeOrderRef, MakeOrderDto.NOT_DELIVERIED_ITEMS);
 
         for (MakeOrderItemDto item : makeOrder.getItems()) {
-            if (item.getPart().isNull()) {
+            if (item.getMaterial().isNull()) {
                 uiLogger.error("定单明细没有指定物料.");
                 return;
             }

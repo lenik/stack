@@ -14,8 +14,8 @@ import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.config.DecimalConfig;
+import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockWarehouse;
-import com.bee32.sem.make.entity.Part;
 import com.bee32.sem.world.thing.AbstractItem;
 
 /**
@@ -30,7 +30,7 @@ public class DeliveryNoteItem
     private static final long serialVersionUID = 1L;
 
     DeliveryNote parent;
-    Part part;
+    Material material;
 
     StockWarehouse sourceWarehouse;
 
@@ -48,14 +48,12 @@ public class DeliveryNoteItem
 
     @NaturalId(mutable = true)
     @ManyToOne
-    public Part getPart() {
-        return part;
+    public Material getMaterial() {
+        return material;
     }
 
-    public void setPart(Part part) {
-        // if (part == null)
-        // throw new NullPointerException("part");
-        this.part = part;
+    public void setMaterial(Material material) {
+        this.material = material;
     }
 
     @ManyToOne
@@ -77,14 +75,14 @@ public class DeliveryNoteItem
     protected Serializable naturalId() {
         return new IdComposite(//
                 naturalId(parent), //
-                naturalId(part));
+                naturalId(material));
     }
 
     @Override
     protected ICriteriaElement selector(String prefix) {
         return selectors(//
                 selector(prefix + "parent", parent), //
-                selector(prefix + "part", part));
+                selector(prefix + "material", material));
     }
 
     @Override

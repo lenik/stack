@@ -14,6 +14,9 @@ import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.chance.dto.ChanceDto;
+import com.bee32.sem.make.dto.PartDto;
+import com.bee32.sem.make.entity.Part;
+import com.bee32.sem.make.util.BomCriteria;
 import com.bee32.sem.makebiz.entity.MakeOrder;
 import com.bee32.sem.makebiz.entity.MakeOrderItem;
 import com.bee32.sem.people.dto.PartyDto;
@@ -105,7 +108,7 @@ public class MakeOrderDto
     @Override
     public int getItemSelection() {
         return selection.translate(//
-                ITEM_ATTRIBUTES, MakeOrderItemDto.PART_ATTRIBUTES) ;
+                ITEM_ATTRIBUTES, MakeOrderItemDto.MATERIAL_ATTRIBUTES) ;
     }
 
     @Override
@@ -197,12 +200,18 @@ public class MakeOrderDto
 
         for (MakeOrderItemDto orderItem : notArrangedItems) {
             MakeTaskItemDto taskItem = new MakeTaskItemDto().create();
-            taskItem.setPart(orderItem.getPart());
-            taskItem.setQuantity(orderItem.getQuantity());
-            taskItem.setDeadline(orderItem.getDeadline());
-            taskItem.setDescription(orderItem.getDescription());
 
-            taskItems.add(taskItem);
+            Part _part = ctx.data.access(Part.class).getFirst(
+                    BomCriteria.findPartByMaterial(orderItem.getMaterial().getId()));
+
+            if (_part != null) {
+                taskItem.setPart(marshal(PartDto.class, _part));
+                taskItem.setQuantity(orderItem.getQuantity());
+                taskItem.setDeadline(orderItem.getDeadline());
+                taskItem.setDescription(orderItem.getDescription());
+
+                taskItems.add(taskItem);
+            }
         }
         return taskItems;
     }
@@ -218,7 +227,7 @@ public class MakeOrderDto
         for (MakeOrderItemDto orderItem : notArrangedItems) {
             MaterialPlanItemDto planItem = new MaterialPlanItemDto().create();
             planItem.setMaterialPlan(materialPlan);
-            planItem.setMaterial(orderItem.getPart().getTarget());
+            planItem.setMaterial(orderItem.getMaterial());
             planItem.setQuantity(orderItem.getQuantity());
 
             planItems.add(planItem);
@@ -243,7 +252,7 @@ public class MakeOrderDto
 
         for (MakeOrderItemDto orderItem : notDeliveriedItems) {
             DeliveryNoteItemDto deliveryNoteItem = new DeliveryNoteItemDto().create();
-            deliveryNoteItem.setPart(orderItem.getPart());
+            deliveryNoteItem.setMaterial(orderItem.getMaterial());
             deliveryNoteItem.setPrice(orderItem.getPrice());
             deliveryNoteItem.setQuantity(orderItem.getQuantity());
 

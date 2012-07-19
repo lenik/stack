@@ -30,7 +30,6 @@ import com.bee32.sem.make.entity.PartItem;
 import com.bee32.sem.make.entity.QCResult;
 import com.bee32.sem.make.entity.QCResultParameter;
 import com.bee32.sem.make.entity.QCSpecParameter;
-import com.bee32.sem.make.util.BomCriteria;
 import com.bee32.sem.makebiz.dto.DeliveryNoteDto;
 import com.bee32.sem.makebiz.dto.DeliveryNoteItemDto;
 import com.bee32.sem.makebiz.dto.DeliveryNoteTakeOutDto;
@@ -97,7 +96,7 @@ public class MakebizService
                 StockOrderItemDto orderItem = new StockOrderItemDto().create();
                 orderItem.setParent(takeOutOrder);
 
-                orderItem.setMaterial(item.getPart().getTarget());
+                orderItem.setMaterial(item.getMaterial());
                 orderItem.setQuantity(item.getQuantity());
                 orderItem.setPrice(item.getPrice());
                 orderItem.setDescription("由送货单[" + deliveryNote.getLabel() + "]生成的出库明细项目");
@@ -134,10 +133,7 @@ public class MakebizService
 		descBuilder.append(";");
             }
             item.setDescription(descBuilder.toString());
-
-            Part _part = ctx.data.access(Part.class).getFirst(
-                    BomCriteria.findPartByMaterial(product.getDecidedMaterial().getId()));
-            item.setPart(DTOs.mref(PartDto.class, _part));
+            item.setMaterial(product.getDecidedMaterial());
 
             WantedProductQuotationDto lastQuotation = product.getLastQuotation();
             if (lastQuotation != null) {

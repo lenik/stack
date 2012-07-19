@@ -186,12 +186,12 @@ public class MakeOrder
         Map<Material, BigDecimal> sumMap = new HashMap<Material, BigDecimal>();
         for (DeliveryNote note : deliveryNotes) {
             for (DeliveryNoteItem deliveryNoteItem : note.getItems()) {
-                BigDecimal sum = sumMap.get(deliveryNoteItem.part.getTarget());
+                BigDecimal sum = sumMap.get(deliveryNoteItem.getMaterial());
                 if (sum == null) {
-                    sumMap.put(deliveryNoteItem.part.getTarget(), deliveryNoteItem.getQuantity());
+                    sumMap.put(deliveryNoteItem.getMaterial(), deliveryNoteItem.getQuantity());
                 } else {
                     sum = sum.add(deliveryNoteItem.getQuantity());
-                    sumMap.put(deliveryNoteItem.part.getTarget(), sum);
+                    sumMap.put(deliveryNoteItem.getMaterial(), sum);
                 }
             }
         }
@@ -210,8 +210,8 @@ public class MakeOrder
         Map<Material, BigDecimal> sumMap = getArrangedPartSum();
 
         for (MakeOrderItem orderItem : items) {
-            if (orderItem.getPart() == null) continue;  //用户只输入了外部名称和规格
-            BigDecimal sum = sumMap.get(orderItem.getPart().getTarget());
+            if (orderItem.getMaterial() == null) continue;  //用户只输入了外部名称和规格
+            BigDecimal sum = sumMap.get(orderItem.getMaterial());
             // 尚没有对应的生产任务，生产全部
             if (sum == null) {
                 result.add(orderItem);
@@ -223,7 +223,7 @@ public class MakeOrder
                 // 生产任务的数量小于订单的数量
                 MakeOrderItem remainingItem = new MakeOrderItem();
                 remainingItem.setParent(this);
-                remainingItem.setPart(orderItem.getPart());
+                remainingItem.setMaterial(orderItem.getMaterial());
                 remainingItem.setQuantity(remaining);
                 remainingItem.setExternalProductName(orderItem.getExternalProductName());
                 remainingItem.setExternalModelSpec(orderItem.getExternalModelSpec());
@@ -245,8 +245,8 @@ public class MakeOrder
         Map<Material, BigDecimal> sumMap = getDeliveriedPartSum();
 
         for (MakeOrderItem orderItem : items) {
-            if (orderItem.getPart() == null) continue;  //用户只输入了外部名称和规格
-            BigDecimal sum = sumMap.get(orderItem.getPart().getTarget());
+            if (orderItem.getMaterial() == null) continue;  //用户只输入了外部名称和规格
+            BigDecimal sum = sumMap.get(orderItem.getMaterial());
             // 尚没有对应的送货单，安排全部
             if (sum == null) {
                 result.add(orderItem);
@@ -258,7 +258,7 @@ public class MakeOrder
                 // 送货单的数量小于订单的数量
                 MakeOrderItem remainingItem = new MakeOrderItem();
                 remainingItem.setParent(this);
-                remainingItem.setPart(orderItem.getPart());
+                remainingItem.setMaterial(orderItem.getMaterial());
                 remainingItem.setQuantity(remaining);
                 remainingItem.setExternalProductName(orderItem.getExternalProductName());
                 remainingItem.setExternalModelSpec(orderItem.getExternalModelSpec());
@@ -278,13 +278,13 @@ public class MakeOrder
         Map<Material, BigDecimal> overloadParts = new HashMap<Material, BigDecimal>();
         Map<Material, BigDecimal> sumMap = getArrangedPartSum();
         for (MakeOrderItem orderItem : items) {
-            if (orderItem.getPart() == null) continue;  //用户只输入了外部名称和规格
-            BigDecimal sum = sumMap.get(orderItem.getPart().getTarget());
+            if (orderItem.getMaterial() == null) continue;  //用户只输入了外部名称和规格
+            BigDecimal sum = sumMap.get(orderItem.getMaterial());
             if (sum != null) {
                 if (sum.compareTo(orderItem.getQuantity()) > 0) {
                     BigDecimal overloaded = sum.subtract(orderItem.getQuantity());
                     // 生产任务中的数量大于订单中的数量
-                    overloadParts.put(orderItem.getPart().getTarget(), overloaded);
+                    overloadParts.put(orderItem.getMaterial(), overloaded);
                 }
             }
         }
@@ -301,13 +301,13 @@ public class MakeOrder
         Map<Material, BigDecimal> overloadPartsDelivery = new HashMap<Material, BigDecimal>();
         Map<Material, BigDecimal> sumMap = getDeliveriedPartSum();
         for (MakeOrderItem orderItem : items) {
-            if (orderItem.getPart() == null) continue;  //用户只输入了外部名称和规格
-            BigDecimal sum = sumMap.get(orderItem.getPart().getTarget());
+            if (orderItem.getMaterial() == null) continue;  //用户只输入了外部名称和规格
+            BigDecimal sum = sumMap.get(orderItem.getMaterial());
             if (sum != null) {
                 if (sum.compareTo(orderItem.getQuantity()) > 0) {
                     BigDecimal overloaded = sum.subtract(orderItem.getQuantity());
                     // 送货单中的数量大于订单中的数量
-                    overloadPartsDelivery.put(orderItem.getPart().getTarget(), overloaded);
+                    overloadPartsDelivery.put(orderItem.getMaterial(), overloaded);
                 }
             }
         }

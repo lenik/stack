@@ -63,7 +63,7 @@ public class MakeTaskAdminBean
         MakeOrderDto makeOrder = reload(makeOrderRef, MakeOrderDto.NOT_ARRANGED_ITEMS | MakeOrderDto.ITEM_ATTRIBUTES);
 
         for (MakeOrderItemDto item : makeOrder.getItems()) {
-            if (item.getPart().isNull()) {
+            if (item.getMaterial().isNull()) {
                 uiLogger.error("定单明细没有指定物料.");
                 return;
             }
@@ -71,7 +71,7 @@ public class MakeTaskAdminBean
 
         List<MakeTaskItemDto> taskItems = makeOrder.arrangeMakeTask();
         if (taskItems.isEmpty()) {
-            uiLogger.error("此订单上的产品已经全部安排为生产任务或外购物料计划!");
+            uiLogger.error("此订单上的产品已经全部安排为[生产任务]或[外购物料计划]或[没有BOM而不能按排生产]!");
             return;
         }
         makeTask.setOrder(makeOrderRef);

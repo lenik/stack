@@ -8,8 +8,8 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
-import com.bee32.sem.make.dto.PartDto;
 import com.bee32.sem.makebiz.entity.DeliveryNoteItem;
 import com.bee32.sem.world.thing.AbstractItemDto;
 
@@ -20,20 +20,20 @@ public class DeliveryNoteItemDto
     private static final long serialVersionUID = 1L;
 
     DeliveryNoteDto parent;
-    PartDto part;
+    MaterialDto material;
     StockWarehouseDto sourceWarehouse;
 
     @Override
     protected void _marshal(DeliveryNoteItem source) {
         parent = mref(DeliveryNoteDto.class, source.getParent());
-        part = mref(PartDto.class, source.getPart());
+        material = mref(MaterialDto.class, source.getMaterial());
         sourceWarehouse = mref(StockWarehouseDto.class, source.getSourceWarehouse());
     }
 
     @Override
     protected void _unmarshalTo(DeliveryNoteItem target) {
         merge(target, "parent", parent);
-        merge(target, "part", part);
+        merge(target, "material", material);
         merge(target, "sourceWarehouse", sourceWarehouse);
     }
 
@@ -67,14 +67,13 @@ public class DeliveryNoteItemDto
         return parent.getBeginTime();
     }
 
-    public PartDto getPart() {
-        return part;
+
+    public MaterialDto getMaterial() {
+        return material;
     }
 
-    public void setPart(PartDto part) {
-// if (part == null)
-// throw new NullPointerException("part");
-        this.part = part;
+    public void setMaterial(MaterialDto material) {
+        this.material = material;
     }
 
     public StockWarehouseDto getSourceWarehouse() {
@@ -89,7 +88,7 @@ public class DeliveryNoteItemDto
     protected Serializable naturalId() {
         return new IdComposite(//
                 naturalId(parent), //
-                naturalId(part));
+                naturalId(material));
     }
 
 }

@@ -11,7 +11,7 @@ import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.util.TextUtil;
-import com.bee32.sem.make.dto.PartDto;
+import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.makebiz.entity.MakeOrderItem;
 import com.bee32.sem.world.thing.AbstractItemDto;
 
@@ -21,10 +21,10 @@ public class MakeOrderItemDto
 
     private static final long serialVersionUID = 1L;
 
-    public static final int PART_ATTRIBUTES = 1;
+    public static final int MATERIAL_ATTRIBUTES = 1;
 
     MakeOrderDto parent;
-    PartDto part;
+    MaterialDto material;
     Date deadline;
 
     String externalProductName;
@@ -36,9 +36,11 @@ public class MakeOrderItemDto
     protected void _marshal(MakeOrderItem source) {
         parent = mref(MakeOrderDto.class, source.getParent());
 
-        part = mref(PartDto.class, //
-                selection.translate(PART_ATTRIBUTES, PartDto.TARGET_ATTRIBUTES), //
-                source.getPart());
+        int materialSelection = 0;
+        if(selection.contains(MATERIAL_ATTRIBUTES)) materialSelection = MATERIAL_ATTRIBUTES;
+        material = mref(MaterialDto.class, //
+                materialSelection,
+                source.getMaterial());
 
         deadline = source.getDeadline();
         externalProductName = source.getExternalProductName();
@@ -49,7 +51,7 @@ public class MakeOrderItemDto
     @Override
     protected void _unmarshalTo(MakeOrderItem target) {
         merge(target, "parent", parent);
-        merge(target, "part", part);
+        merge(target, "material", material);
         target.setDeadline(deadline);
         target.setExternalProductName(externalProductName);
         target.setExternalModelSpec(externalModelSpec);
@@ -86,14 +88,12 @@ public class MakeOrderItemDto
         return parent.getBeginTime();
     }
 
-    public PartDto getPart() {
-        return part;
+    public MaterialDto getMaterial() {
+        return material;
     }
 
-    public void setPart(PartDto part) {
-// if (part == null)
-// throw new NullPointerException("part");
-        this.part = part;
+    public void setMaterial(MaterialDto material) {
+        this.material = material;
     }
 
     // @Future
@@ -136,7 +136,7 @@ public class MakeOrderItemDto
     protected Serializable naturalId() {
         return new IdComposite(//
                 naturalId(parent), //
-                naturalId(part));
+                naturalId(material));
     }
 
 }
