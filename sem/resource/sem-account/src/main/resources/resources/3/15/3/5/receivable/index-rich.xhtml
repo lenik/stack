@@ -17,6 +17,11 @@
                 <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
             </h:outputText>
         </p:column>
+        <p:column headerText="预计收款日期">
+            <h:outputText value="#{entry.expectedDate}">
+                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+            </h:outputText>
+        </p:column>
         <p:column headerText="客户">
             <h:outputText value="#{entry.party.displayName}" />
         </p:column>
@@ -43,11 +48,13 @@
             </t:panelGroup>
 
             <h:outputLabel for="beginTime" value="日期：" />
-            <t:panelGroup colspan="3">
-                <p:calendar id="beginTime" navigator="true"
-                    locale="zh_CN" pattern="yyyy-MM-dd"
-                    value="#{obj.beginTime}" showOn="button" label="日期" />
-            </t:panelGroup>
+            <p:calendar id="beginTime" navigator="true"
+                locale="zh_CN" pattern="yyyy-MM-dd"
+                value="#{obj.beginTime}" showOn="button" label="日期" />
+            <h:outputLabel for="expectedDate" value="预计收款日期：" />
+            <p:calendar id="expectedDate" navigator="true"
+                locale="zh_CN" pattern="yyyy-MM-dd"
+                value="#{obj.expectedDate}" showOn="button" label="日期" />
 
             <h:outputText value="客户" />
             <t:panelGroup colspan="3">
