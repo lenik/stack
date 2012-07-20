@@ -29,7 +29,7 @@ demo                    CNAME   1               ; 演示
 
 dev                     CNAME   main            ; 重要开发数据
 s-dev                   CNAME   dev             ; 次要开发数据
-aut-dev                 CNAME   main            ; 构建辅助
+aut-dev                 CNAME   shaoxing-1.gateway ; 构建辅助
 
 backup                  CNAME   app-x           ; 备份
 ghs                     CNAME   app-x           ; 反墙装置
