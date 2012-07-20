@@ -11,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
+import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.chance.dto.ChanceDto;
@@ -205,7 +206,7 @@ public class MakeOrderDto
                     BomCriteria.findPartByMaterial(orderItem.getMaterial().getId()));
 
             if (_part != null) {
-                taskItem.setPart(marshal(PartDto.class, _part));
+                taskItem.setPart(DTOs.marshal(PartDto.class, _part));
                 taskItem.setQuantity(orderItem.getQuantity());
                 taskItem.setDeadline(orderItem.getDeadline());
                 taskItem.setDescription(orderItem.getDescription());
