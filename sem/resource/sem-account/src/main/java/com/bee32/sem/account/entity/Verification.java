@@ -12,7 +12,7 @@ import com.bee32.sem.process.base.ProcessEntity;
 import com.bee32.sem.world.monetary.MCValue;
 
 /**
- * 已付核销
+ * 核销
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "verification_seq", allocationSize = 1)

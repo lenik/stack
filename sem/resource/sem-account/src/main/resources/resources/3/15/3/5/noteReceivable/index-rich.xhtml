@@ -6,6 +6,7 @@
     <ui:param name="title" value="应收票据管理" />
     <ui:param name="bean" value="#{noteReceivableAdminBean}" />
     <ui:param name="obj" value="#{bean.openedObject}" />
+    <ui:param name="dicts" value="${accountDictsBean}" />
     <ui:param name="monetary" value="#{monetaryDictsBean}" />
 
     <ui:define name="dataColumns">
@@ -23,6 +24,22 @@
         <p:column headerText="金额">
             <h:outputText value="#{entry.amount}" />
         </p:column>
+
+
+        <p:column headerText="票据号码">
+            <h:outputText value="#{entry.billNo}" />
+        </p:column>
+        <p:column headerText="票据类型" sortBy="${entry.billType}">
+            <h:outputText value="${entry.billType.label}" />
+        </p:column>
+        <p:column headerText="承兑银行">
+            <h:outputText value="#{entry.acceptBank}" />
+        </p:column>
+        <p:column headerText="承兑公司">
+            <h:outputText value="#{entry.acceptOrg.displayName}" />
+        </p:column>
+
+
         <p:column headerText="部门">
             <h:outputText value="#{entry.orgUnit.label}" />
         </p:column>
@@ -42,7 +59,7 @@
                 <p:inputText id="label" value="#{obj.label}" label="摘要" style="width:30em;"/>
             </t:panelGroup>
 
-            <h:outputLabel for="beginTime" value="日期：" />
+            <h:outputLabel for="beginTime" value="日期" />
             <t:panelGroup colspan="3">
                 <p:calendar id="beginTime" navigator="true"
                     locale="zh_CN" pattern="yyyy-MM-dd"
@@ -59,6 +76,21 @@
             <h:outputLabel for="value" value="金额" />
             <t:panelGroup colspan="3">
                 <p:inputText id="value" value="#{obj.amount.value}" label="金额"/>
+            </t:panelGroup>
+
+            <h:outputLabel for="billNo" value="票据号码" />
+            <p:inputText id="billNo" value="#{obj.billNo}" label="票据号码"/>
+            <h:outputLabel for="billType" value="票据类型" />
+            <p:selectOneMenu id="billType" label="票据类型" value="${obj.billType.id}" style="width: 10em;">
+                <f:selectItems value="${dicts.billTypes}" var="it" itemLabel="${it.label}" itemValue="${it.id}" />
+            </p:selectOneMenu>
+
+            <h:outputLabel for="acceptBank" value="承兑银行" />
+            <p:inputText id="acceptBank" value="#{obj.acceptBank}" label="承兑银行"/>
+            <h:outputText value="承兑公司" />
+            <t:panelGroup colspan="3">
+                <p:inputText id="acceptOrg" label="承兑公司" value="#{obj.acceptOrg.displayName}" readonly="true"/>
+                <p:commandButton value="..." onclick="waitbox.show()" oncomplete="waitbox.hide();chooseOrgDialog.show()"/>
             </t:panelGroup>
 
             <h:outputText value="部门" />
@@ -89,7 +121,8 @@
 
     <ui:define name="dialogs">
         <sem:choosePartyDialog id="c_customer" header="选择客户" target="#{obj.party}" update=":editDialog:form:party" />
-        <sem:chooseOrgUnitDialog id="c_orgunit" target="#{obj.orgUnit}" update=":editDialog:form" />
+        <sem:chooseOrgDialog id="c_org" header="选择承兑公司" target="#{obj.acceptOrg}" update=":editDialog:form:acceptOrg" />
+        <sem:chooseOrgUnitDialog id="c_orgunit" target="#{obj.orgUnit}" update=":editDialog:form:orgUnit" />
         <sem:choosePersonDialog id="choosePersonDialog" var="choosePersonDialog" target="#{obj.person}" update=":editDialog:form:person" />
     </ui:define>
 </ui:composition>

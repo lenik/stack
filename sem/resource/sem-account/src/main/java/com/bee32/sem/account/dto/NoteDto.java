@@ -7,7 +7,7 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.sem.account.entity.CurrentAccount;
 import com.bee32.sem.account.entity.Note;
-import com.bee32.sem.people.dto.PartyDto;
+import com.bee32.sem.people.dto.OrgDto;
 
 
 public class NoteDto
@@ -17,8 +17,8 @@ public class NoteDto
 
     NoteBalancingDto noteBalancing;
 
-    String bank;
-    PartyDto party;
+    String acceptBank;
+    OrgDto acceptOrg;
     String billNo;
     BillTypeDto billType;
 
@@ -37,10 +37,10 @@ public class NoteDto
         Note note = (Note)source;
 
         noteBalancing = marshal(NoteBalancingDto.class, note.getNoteBalancing());
-        bank = note.getBank();
-        party = marshal(PartyDto.class, note.getParty());
+        acceptBank = note.getAcceptBank();
+        acceptOrg = marshal(OrgDto.class, note.getAcceptOrg());
         billNo = note.getBillNo();
-        billType = marshal(BillTypeDto.class, note.getBillType());
+        billType = mref(BillTypeDto.class, note.getBillType());
     }
 
     @Override
@@ -50,8 +50,8 @@ public class NoteDto
         Note note = (Note)target;
 
         merge(note, "noteBalancing", noteBalancing);
-        note.setBank(bank);
-        merge(note, "party", party);
+        note.setAcceptBank(acceptBank);
+        merge(note, "acceptOrg", acceptOrg);
         note.setBillNo(billNo);
         merge(note, "billType", billType);
     }
@@ -69,21 +69,24 @@ public class NoteDto
         this.noteBalancing = noteBalancing;
     }
 
-    @NLength(min = 2, max = Note.BANK_LENGTH)
-    public String getBank() {
-        return bank;
+
+    @NLength(min = 2, max = Note.ACCEPT_BANK_LENGTH)
+    public String getAcceptBank() {
+        return acceptBank;
     }
 
-    public void setBank(String bank) {
-        this.bank = bank;
+    public void setAcceptBank(String acceptBank) {
+        this.acceptBank = acceptBank;
+        this.acceptOrg = new OrgDto().ref();
     }
 
-    public PartyDto getParty() {
-        return party;
+    public OrgDto getAcceptOrg() {
+        return acceptOrg;
     }
 
-    public void setParty(PartyDto party) {
-        this.party = party;
+    public void setAcceptOrg(OrgDto acceptOrg) {
+        this.acceptOrg = acceptOrg;
+        this.acceptBank = "";
     }
 
     @NLength(min = 2, max = Note.BILL_NO_LENGTH)

@@ -9,7 +9,7 @@ import javax.persistence.OneToOne;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.people.entity.Org;
 
 
 /**
@@ -23,13 +23,13 @@ public class Note extends AccountEd {
 
     private static final long serialVersionUID = 1L;
 
-    public static final int BANK_LENGTH = 100;
+    public static final int ACCEPT_BANK_LENGTH = 100;
     public static final int BILL_NO_LENGTH = 50;
 
     NoteBalancing noteBalancing;
 
-    String bank;
-    Party party;
+    String acceptBank;
+    Org acceptOrg;
     String billNo;
     BillType billType;
 
@@ -47,30 +47,31 @@ public class Note extends AccountEd {
         this.noteBalancing = noteBalancing;
     }
 
+
     /**
-     * 银行承兑汇票对应的银行
+     * 承兑银行
      * @return
      */
-    @Column(length = BANK_LENGTH)
-    public String getBank() {
-        return bank;
+    @Column(length = ACCEPT_BANK_LENGTH)
+    public String getAcceptBank() {
+        return acceptBank;
     }
 
-    public void setBank(String bank) {
-        this.bank = bank;
+    public void setAcceptBank(String acceptBank) {
+        this.acceptBank = acceptBank;
     }
-
 
     /**
-     * 商业承兑汇票对应的商业机构
+     * 承兑商业机构
+     * @return
      */
     @ManyToOne
-    public Party getParty() {
-        return party;
+    public Org getAcceptOrg() {
+        return acceptOrg;
     }
 
-    public void setParty(Party party) {
-        this.party = party;
+    public void setAcceptOrg(Org acceptOrg) {
+        this.acceptOrg = acceptOrg;
     }
 
     /**

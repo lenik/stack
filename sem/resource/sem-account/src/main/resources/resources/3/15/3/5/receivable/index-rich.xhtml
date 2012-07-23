@@ -47,14 +47,14 @@
                 <p:inputText id="label" value="#{obj.label}" label="摘要" style="width:30em;"/>
             </t:panelGroup>
 
-            <h:outputLabel for="beginTime" value="日期：" />
+            <h:outputLabel for="beginTime" value="日期" />
             <p:calendar id="beginTime" navigator="true"
                 locale="zh_CN" pattern="yyyy-MM-dd"
                 value="#{obj.beginTime}" showOn="button" label="日期" />
-            <h:outputLabel for="expectedDate" value="预计收款日期：" />
+            <h:outputLabel for="expectedDate" value="预计收款日期" />
             <p:calendar id="expectedDate" navigator="true"
                 locale="zh_CN" pattern="yyyy-MM-dd"
-                value="#{obj.expectedDate}" showOn="button" label="日期" />
+                value="#{obj.expectedDate}" showOn="button" label="预计收款日期" />
 
             <h:outputText value="客户" />
             <t:panelGroup colspan="3">

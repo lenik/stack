@@ -6,18 +6,19 @@ import org.apache.commons.lang.StringUtils;
 
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.sem.account.dto.NotePayableDto;
 import com.bee32.sem.account.dto.NoteReceivableDto;
 import com.bee32.sem.account.entity.BillTypes;
-import com.bee32.sem.account.entity.NoteReceivable;
+import com.bee32.sem.account.entity.NotePayable;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.service.PeopleService;
 
-public class NoteReceivableAdminBean extends SimpleEntityViewBean {
+public class NotePayableAdminBean extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
-    public NoteReceivableAdminBean() {
-        super(NoteReceivable.class, NoteReceivableDto.class, 0, new Equals("class", "RNOTE"));
+    public NotePayableAdminBean() {
+        super(NotePayable.class, NotePayableDto.class, 0, new Equals("class", "PNOTE"));
     }
 
     /**
@@ -31,7 +32,7 @@ public class NoteReceivableAdminBean extends SimpleEntityViewBean {
     @Override
     protected boolean postValidate(List<?> dtos) throws Exception {
         for (Object dto : dtos) {
-            NoteReceivableDto note = (NoteReceivableDto) dto;
+            NotePayableDto note = (NotePayableDto) dto;
 
 
 
