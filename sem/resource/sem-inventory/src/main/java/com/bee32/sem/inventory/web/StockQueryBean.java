@@ -96,6 +96,7 @@ public class StockQueryBean
             return new ArrayList<StockOrderItemDto>();
 
         StockQueryOptions opts = new StockQueryOptions(queryDate, true);
+        opts.setShowAll(true);  //数量为0也显示
         opts.setWarehouse(getSelectedWarehouseId());
         opts.setBatchArray(selectedItem.getBatchArray(), true);
         opts.setPrice(selectedItem.getPrice(), true);
