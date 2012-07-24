@@ -48,8 +48,8 @@
         </p:dataTable>
     </sem:materialFragmentDialog>
 
-    <h:form id="editUserFileForm">
-        <p:dialog header="编辑物料附件" widgetVar="editUserFileDialog" modal="true">
+    <p:dialog header="编辑物料附件" widgetVar="editUserFileDialog" modal="true">
+        <h:form id="editUserFileForm">
             <t:panelGrid id="editUserFilePanel" columns="2">
                 <t:panelGroup colspan="2">
                     <div align="center">
@@ -78,8 +78,9 @@
                     oncomplete="waitbox.hide();editUserFileDialog.hide()" />
                 <p:commandButton value="关闭" onclick="editUserFileDialog.hide()" />
             </div>
-        </p:dialog>
-    </h:form>
+        </h:form>
+    </p:dialog>
+
 
     <p:confirmDialog message="确定要删除吗?" width="200" header="删除确认" severity="alert" widgetVar="deleteUserFileConfirmDialog"
         modal="true">

@@ -49,6 +49,27 @@
         <p:column headerText="备注" styleClass="f-wrappable">
             <h:outputText value="#{entry.description}" />
         </p:column>
+
+        <p:column headerText="操作">
+            <p:commandLink styleClass="icon-button" title="贴现" update=":billDiscountDialog:form"
+                onclick="waitbox.show();"
+                oncomplete="waitbox.hide();billDiscountDialog.show()">
+                <f:setPropertyActionListener value="#{entry}" target="#{bean.openedObject}" />
+                <p:graphicImage value="#{location.ICON}/obj16/cheatsheet_item_obj.gif" />
+            </p:commandLink>
+            <p:commandLink styleClass="icon-button" title="背书" update=":materialPriceDialog:form"
+                onclick="waitbox.show();"
+                oncomplete="waitbox.hide();materialPriceDialog.show()">
+                <f:setPropertyActionListener value="#{entry}" target="#{bean.openedObject}" />
+                <p:graphicImage value="#{location.ICON}/obj16/bookmarks_view.gif" />
+            </p:commandLink>
+            <p:commandLink styleClass="icon-button" title="结算" update=":materialPriceDialog:form"
+                onclick="waitbox.show();"
+                oncomplete="waitbox.hide();materialPriceDialog.show()">
+                <f:setPropertyActionListener value="#{entry}" target="#{bean.openedObject}" />
+                <p:graphicImage value="#{location.ICON}/obj16/cheatsheet_subitem_obj.gif" />
+            </p:commandLink>
+        </p:column>
     </ui:define>
 
     <ui:define name="editDialogContent">
@@ -115,14 +136,72 @@
                     effectDuration="400" label="备注" />
             </t:panelGroup>
         </t:panelGrid>
-
     </ui:define>
-
 
     <ui:define name="dialogs">
         <sem:choosePartyDialog id="c_customer" header="选择客户" target="#{obj.party}" update=":editDialog:form:party" />
         <sem:chooseOrgDialog id="c_org" header="选择承兑公司" target="#{obj.acceptOrg}" update=":editDialog:form:acceptOrg" />
         <sem:chooseOrgUnitDialog id="c_orgunit" target="#{obj.orgUnit}" update=":editDialog:form:orgUnit" />
         <sem:choosePersonDialog id="choosePersonDialog" var="choosePersonDialog" target="#{obj.person}" update=":editDialog:form:person" />
+
+        <p:dialog header="贴现" widgetVar="billDiscountDialog" modal="true">
+            <h:form id="billDiscountForm">
+                <t:panelGrid columns="4">
+                    <h:outputText value="贴现金额"/>
+                    <p:inputText value=""/>
+
+                    <h:outputText value="利息"/>
+                    <p:inputText value=""/>
+
+                    <h:outputText value="费用"/>
+                    <p:inputText value=""/>
+
+                    <h:outputText value="贴现银行"/>
+                    <p:inputText value=""/>
+
+                    <h:outputText value="贴现率 "/>
+                    <p:inputText value=""/>
+                    <t:panelGroup/>
+                    <t:panelGroup/>
+                </t:panelGrid>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog header="背书" widgetVar="endorsementDialog" modal="true">
+            <h:form id="endorsementForm">
+                <t:panelGrid columns="4">
+                    <h:outputText value="背书金额"/>
+                    <p:inputText value=""/>
+
+                    <h:outputText value="利息"/>
+                    <p:inputText value=""/>
+
+                    <h:outputText value="费用"/>
+                    <p:inputText value=""/>
+
+                    <h:outputText value="被被书人"/>
+                    <p:inputText value=""/>
+                </t:panelGrid>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog header="结算" widgetVar="balancingDialog" modal="true">
+            <h:form id="balancingForm">
+                <t:panelGrid columns="4">
+                    <h:outputText value="结算金额"/>
+                    <p:inputText value=""/>
+
+                    <h:outputText value="利息"/>
+                    <p:inputText value=""/>
+
+                    <h:outputText value="费用"/>
+                    <p:inputText value=""/>
+
+                    <h:outputText value="托收银行"/>
+                    <p:inputText value=""/>
+                </t:panelGrid>
+            </h:form>
+        </p:dialog>
+
     </ui:define>
 </ui:composition>

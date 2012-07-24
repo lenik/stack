@@ -2,14 +2,15 @@
     xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
     xmlns:t="http://myfaces.apache.org/tomahawk">
 
-    <h:form id="addUnitForm">
-        <p:dialog header="新增单位" widgetVar="addUnitDialog" modal="true">
 
+    <p:dialog header="新增单位" widgetVar="addUnitDialog" modal="true">
+        <h:form id="addUnitForm">
             <t:panelGrid columns="3">
                 <h:outputText value="国际单位代码:" />
                 <t:panelGroup colspan="2">
                     <p:inputText value="#{addUnitBean.unit.id}" label="国际单位代码"/>
                 </t:panelGroup>
+
 
                 <h:outputText value="中文单位名称:" />
                 <t:panelGroup colspan="2">
@@ -44,8 +45,8 @@
                     <p:commandButton value="关闭" onclick="addUnitDialog.hide();" />
                 </h:panelGroup>
             </t:panelGrid>
+        </h:form>
+    </p:dialog>
 
-        </p:dialog>
-    </h:form>
 
 </ui:composition>
