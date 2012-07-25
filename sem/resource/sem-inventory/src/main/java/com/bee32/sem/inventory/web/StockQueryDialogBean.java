@@ -55,6 +55,7 @@ public class StockQueryDialogBean
         super(StockOrderItem.class, StockOrderItemDto.class, 0);
         setTabIndex(TAB_OPTIONS);
         queryOptions = new StockQueryOptions(new Date(), true);
+        queryOptions.setShowAll(true);
         queryOptions.setWarehouse(null, true);
         queryOptions.setBatchArray(null, true);
         queryOptions.setLocation(null, true);
@@ -228,6 +229,7 @@ public class StockQueryDialogBean
             return null;
 
         StockQueryOptions options = new StockQueryOptions(new Date(), true);
+        options.setShowAll(true);
         options.setWarehouse(warehouseId);
         options.setBatchArray(null, true);
         options.setLocation(null, true);
