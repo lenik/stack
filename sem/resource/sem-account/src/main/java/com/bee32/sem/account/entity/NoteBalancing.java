@@ -9,6 +9,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
@@ -42,6 +43,7 @@ public class NoteBalancing extends ProcessEntity {
      * @return
      */
     @OneToOne(optional = false)
+    @JoinColumn(unique = true)
     public Note getNote() {
         return note;
     }

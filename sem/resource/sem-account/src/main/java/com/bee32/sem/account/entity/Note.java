@@ -37,7 +37,7 @@ public class Note extends AccountEd {
      * 对应的票据结算
      * @return
      */
-    @OneToOne(orphanRemoval = true, mappedBy = "note")
+    @OneToOne(mappedBy = "note")
     @Cascade(CascadeType.ALL)
     public NoteBalancing getNoteBalancing() {
         return noteBalancing;

@@ -5,8 +5,12 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
+import com.bee32.sem.account.entity.Balancing;
+import com.bee32.sem.account.entity.BillDiscount;
 import com.bee32.sem.account.entity.CurrentAccount;
+import com.bee32.sem.account.entity.Endorsement;
 import com.bee32.sem.account.entity.Note;
+import com.bee32.sem.account.entity.NoteBalancing;
 import com.bee32.sem.people.dto.OrgDto;
 
 
@@ -36,7 +40,15 @@ public class NoteDto
 
         Note note = (Note)source;
 
-        noteBalancing = marshal(NoteBalancingDto.class, note.getNoteBalancing());
+        NoteBalancing nb = note.getNoteBalancing();
+        if (nb instanceof BillDiscount) {
+            noteBalancing = marshal(BillDiscountDto.class, note.getNoteBalancing());
+        } else if (nb instanceof Endorsement) {
+            noteBalancing = marshal(EndorsementDto.class, note.getNoteBalancing());
+        } else if (nb instanceof Balancing) {
+            noteBalancing = marshal(BalancingDto.class, note.getNoteBalancing());
+        }
+
         acceptBank = note.getAcceptBank();
         acceptOrg = marshal(OrgDto.class, note.getAcceptOrg());
         billNo = note.getBillNo();

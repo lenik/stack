@@ -51,21 +51,24 @@
         </p:column>
 
         <p:column headerText="操作">
-            <p:commandLink styleClass="icon-button" title="贴现" update=":billDiscountDialog:form"
+            <p:commandLink styleClass="icon-button" title="贴现" update=":billDiscountForm"
                 onclick="waitbox.show();"
-                oncomplete="waitbox.hide();billDiscountDialog.show()">
+                oncomplete="waitbox.hide();billDiscountDialog.show()"
+                action="#{bean.loadBillDiscount}">
                 <f:setPropertyActionListener value="#{entry}" target="#{bean.openedObject}" />
                 <p:graphicImage value="#{location.ICON}/obj16/cheatsheet_item_obj.gif" />
             </p:commandLink>
-            <p:commandLink styleClass="icon-button" title="背书" update=":materialPriceDialog:form"
+            <p:commandLink styleClass="icon-button" title="背书" update=":endorsementForm"
                 onclick="waitbox.show();"
-                oncomplete="waitbox.hide();materialPriceDialog.show()">
+                oncomplete="waitbox.hide();endorsementDialog.show()"
+                action="#{bean.loadEndorsement}">
                 <f:setPropertyActionListener value="#{entry}" target="#{bean.openedObject}" />
                 <p:graphicImage value="#{location.ICON}/obj16/bookmarks_view.gif" />
             </p:commandLink>
-            <p:commandLink styleClass="icon-button" title="结算" update=":materialPriceDialog:form"
+            <p:commandLink styleClass="icon-button" title="结算" update=":balancingForm"
                 onclick="waitbox.show();"
-                oncomplete="waitbox.hide();materialPriceDialog.show()">
+                oncomplete="waitbox.hide();balancingDialog.show()"
+                action="#{bean.loadBalancing}">
                 <f:setPropertyActionListener value="#{entry}" target="#{bean.openedObject}" />
                 <p:graphicImage value="#{location.ICON}/obj16/cheatsheet_subitem_obj.gif" />
             </p:commandLink>
@@ -148,21 +151,27 @@
             <h:form id="billDiscountForm">
                 <t:panelGrid columns="4">
                     <h:outputText value="贴现金额"/>
-                    <p:inputText value=""/>
+                    <p:inputText value="#{bean.billDiscount.amount.value}" label="贴现金额"/>
 
                     <h:outputText value="利息"/>
-                    <p:inputText value=""/>
+                    <p:inputText value="#{bean.billDiscount.interest.value}" label="利息"/>
 
                     <h:outputText value="费用"/>
-                    <p:inputText value=""/>
+                    <p:inputText value="#{bean.billDiscount.cost.value}" label="费用"/>
 
                     <h:outputText value="贴现银行"/>
-                    <p:inputText value=""/>
+                    <p:inputText value="#{bean.billDiscount.bank}" label="贴现银行"/>
 
                     <h:outputText value="贴现率 "/>
-                    <p:inputText value=""/>
+                    <p:inputText value="#{bean.billDiscount.rate}" label="贴现率"/>
                     <t:panelGroup/>
                     <t:panelGroup/>
+
+                    <t:panelGroup colspan="4">
+                        <p:commandButton actionListener="#{bean.saveBillDiscount}" value="保存" onclick="waitbox.show();"
+                            oncomplete="waitbox.hide();billDiscountDialog.hide()" />
+                        <p:commandButton value="关闭" onclick="billDiscountDialog.hide()" />
+                    </t:panelGroup>
                 </t:panelGrid>
             </h:form>
         </p:dialog>
@@ -171,16 +180,22 @@
             <h:form id="endorsementForm">
                 <t:panelGrid columns="4">
                     <h:outputText value="背书金额"/>
-                    <p:inputText value=""/>
+                    <p:inputText value="#{bean.endorsement.amount.value}" label="背书金额"/>
 
                     <h:outputText value="利息"/>
-                    <p:inputText value=""/>
+                    <p:inputText value="#{bean.endorsement.interest.value}" label="利息"/>
 
                     <h:outputText value="费用"/>
-                    <p:inputText value=""/>
+                    <p:inputText value="#{bean.endorsement.cost.value}" label="费用"/>
 
                     <h:outputText value="被被书人"/>
-                    <p:inputText value=""/>
+                    <p:inputText value="#{bean.endorsement.beEndorsementUnit}" label="被被书人"/>
+
+                    <t:panelGroup colspan="4">
+                        <p:commandButton actionListener="#{bean.saveEndorsement}" value="保存" onclick="waitbox.show();"
+                            oncomplete="waitbox.hide();endorsementDialog.hide()" />
+                        <p:commandButton value="关闭" onclick="endorsementDialog.hide()" />
+                    </t:panelGroup>
                 </t:panelGrid>
             </h:form>
         </p:dialog>
@@ -189,16 +204,22 @@
             <h:form id="balancingForm">
                 <t:panelGrid columns="4">
                     <h:outputText value="结算金额"/>
-                    <p:inputText value=""/>
+                    <p:inputText value="#{bean.balancing.amount.value}" label="结算金额"/>
 
                     <h:outputText value="利息"/>
-                    <p:inputText value=""/>
+                    <p:inputText value="#{bean.balancing.interest.value}" label="利息"/>
 
                     <h:outputText value="费用"/>
-                    <p:inputText value=""/>
+                    <p:inputText value="#{bean.balancing.cost.value}" label="费用"/>
 
                     <h:outputText value="托收银行"/>
-                    <p:inputText value=""/>
+                    <p:inputText value="#{bean.balancing.collectionBank}" label="托收银行"/>
+
+                    <t:panelGroup colspan="4">
+                        <p:commandButton actionListener="#{bean.saveBalancing}" value="保存" onclick="waitbox.show();"
+                            oncomplete="waitbox.hide();balancingDialog.hide()" />
+                        <p:commandButton value="关闭" onclick="balancingDialog.hide()" />
+                    </t:panelGroup>
                 </t:panelGrid>
             </h:form>
         </p:dialog>
