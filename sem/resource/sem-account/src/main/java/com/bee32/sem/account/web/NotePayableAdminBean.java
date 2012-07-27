@@ -6,9 +6,13 @@ import org.apache.commons.lang.StringUtils;
 
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.sem.account.dto.BalancingDto;
+import com.bee32.sem.account.dto.NoteBalancingDto;
+import com.bee32.sem.account.dto.NoteDto;
 import com.bee32.sem.account.dto.NotePayableDto;
-import com.bee32.sem.account.dto.NoteReceivableDto;
+import com.bee32.sem.account.entity.Balancing;
 import com.bee32.sem.account.entity.BillTypes;
+import com.bee32.sem.account.entity.Note;
 import com.bee32.sem.account.entity.NotePayable;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.service.PeopleService;
@@ -16,6 +20,8 @@ import com.bee32.sem.service.PeopleService;
 public class NotePayableAdminBean extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
+
+    BalancingDto balancing = new BalancingDto().create();
 
     public NotePayableAdminBean() {
         super(NotePayable.class, NotePayableDto.class, 0, new Equals("class", "PNOTE"));
@@ -53,6 +59,42 @@ public class NotePayableAdminBean extends SimpleEntityViewBean {
         return true;
     }
 
+    public BalancingDto getBalancing() {
+        return balancing;
+    }
 
+    public void setBalancing(BalancingDto balancing) {
+        this.balancing = balancing;
+    }
+
+    public void loadBalancing() {
+        NoteDto note = getOpenedObject();
+        note = reload(note);
+
+        NoteBalancingDto noteBalancing = note.getNoteBalancing();
+        if (noteBalancing != null && noteBalancing.getClass().equals(BalancingDto.class)) {
+            balancing = (BalancingDto)noteBalancing;
+        } else {
+            balancing =  new BalancingDto().create();
+        }
+    }
+
+
+    public void saveBalancing() {
+        NoteDto note = getOpenedObject();
+        note = reload(note);
+
+        try {
+            balancing.setNote(note);
+
+            Balancing _balancing = (Balancing) balancing.unmarshal();
+            ctx.data.access(Note.class).evict(_balancing.getNote());
+            ctx.data.access(Balancing.class).saveOrUpdate(_balancing);
+            ctx.data.access(Note.class).evict(_balancing.getNote());
+            uiLogger.info("结算成功.");
+        } catch (Exception e) {
+            uiLogger.error("结算出错!", e);
+        }
+    }
 
 }
