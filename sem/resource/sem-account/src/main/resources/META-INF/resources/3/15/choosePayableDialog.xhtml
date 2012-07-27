@@ -1,0 +1,73 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:cc="http://java.sun.com/jsf/composite"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui">
+
+    <cc:interface>
+        <!-- basic -->
+        <cc:attribute name="var" default="choosePayableDialog" />
+        <cc:attribute name="stereo" default="-" shortDescription="NOT IMPLMENETED" />
+        <cc:attribute name="target" type="java.lang.Object" required="true" />
+        <cc:attribute name="multiple" type="java.lang.Boolean" default="false" />
+        <cc:attribute name="actionListener" targets="form:ok-validated" />
+        <cc:attribute name="update" />
+
+        <!-- ui overrides -->
+        <cc:attribute name="header" default="${cc.attrs.dialogBean.header}" />
+        <cc:attribute name="formStyleClass" default="ui-dialog-form" />
+        <cc:attribute name="mode" default="table" shortDescription="table, list, tree" />
+
+        <!-- internals -->
+        <cc:attribute name="dialogBean" type="java.lang.Object" default="${choosePayableDialogBean}" />
+        <cc:attribute name="selectionHolder" type="java.lang.Object" />
+
+        <!-- facets -->
+        <cc:facet name="search" />
+        <cc:facet name="columns" />
+    </cc:interface>
+
+    <cc:implementation>
+        <ui:decorate template="/template/simple-entity-dialog.xhtml">
+            <ui:param name="var" value="${cc.attrs.var}" />
+            <ui:param name="target" value="${cc.attrs.target}" />
+            <ui:param name="multiple" value="${cc.attrs.multiple}" />
+            <ui:param name="update" value="${cc.attrs.update}" />
+            <ui:param name="var" value="${cc.attrs.var}" />
+            <ui:param name="header" value="${cc.attrs.header}" />
+            <ui:param name="formStyleClass" value="${cc.attrs.formStyleClass}" />
+            <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
+            <ui:param name="selectionHolder" value="${cc.attrs.selectionHolder}" />
+
+            <ui:define name="columns">
+                <p:column headerText="摘要" sortBy="#{entry.label}" styleClass="f-wrappable">
+                    <h:outputText value="#{entry.label}" />
+                </p:column>
+                <p:column headerText="日期">
+                    <h:outputText value="#{entry.beginTime}">
+                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="预计付款日期">
+                    <h:outputText value="#{entry.expectedDate}">
+                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="供应商">
+                    <h:outputText value="#{entry.party.displayName}" />
+                </p:column>
+                <p:column headerText="金额">
+                    <h:outputText value="#{entry.amount}" />
+                </p:column>
+                <p:column headerText="部门">
+                    <h:outputText value="#{entry.orgUnit.label}" />
+                </p:column>
+                <p:column headerText="采购员">
+                    <h:outputText value="#{entry.person.displayName}" />
+                </p:column>
+                <p:column headerText="备注" styleClass="f-wrappable">
+                    <h:outputText value="#{entry.description}" />
+                </p:column>
+                <cc:renderFacet name="columns" />
+            </ui:define>
+        </ui:decorate>
+    </cc:implementation>
+</html>

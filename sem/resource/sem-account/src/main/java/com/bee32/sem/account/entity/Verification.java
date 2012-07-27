@@ -23,7 +23,7 @@ public class Verification
 
     AccountAble accontAble;
     AccountEd accountEd;
-    MCValue amount;
+    MCValue amount = new MCValue();
 
     @ManyToOne
     public AccountAble getAccontAble() {
