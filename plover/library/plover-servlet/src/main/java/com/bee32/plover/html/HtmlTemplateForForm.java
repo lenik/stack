@@ -16,7 +16,7 @@ public class HtmlTemplateForForm
     }
 
     protected HtmlTemplateForForm simpleForm(String action, Object... array) {
-        new SimpleForm(out).put(action, array);
+        new SimpleForm(out).create(action, array);
         return this;
     }
 

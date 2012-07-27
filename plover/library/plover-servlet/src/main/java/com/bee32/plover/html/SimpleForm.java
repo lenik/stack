@@ -35,7 +35,7 @@ public class SimpleForm
      *
      * label may be in format "LABEL:HELPDOC", where HELPDOC is shown as control title.
      */
-    public void put(String action, Object... array) {
+    public void create(String action, Object... array) {
         String actionText = "保存";
         int actionColon = action.indexOf(':');
         if (actionColon != -1) {
