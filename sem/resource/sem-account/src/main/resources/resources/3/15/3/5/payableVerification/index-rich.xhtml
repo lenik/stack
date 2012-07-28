@@ -3,8 +3,8 @@
     xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk"
     xmlns:icsf="http://java.sun.com/jsf/composite/3/7" xmlns:fr="http://java.sun.com/jsf/composite/frame" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
-    <ui:param name="title" value="应收核销管理" />
-    <ui:param name="bean" value="#{receivableVerificationBean}" />
+    <ui:param name="title" value="应付核销管理" />
+    <ui:param name="bean" value="#{payableVerificationBean}" />
     <ui:param name="obj" value="#{bean.openedObject}" />
     <ui:param name="monetary" value="#{monetaryDictsBean}" />
 
@@ -22,23 +22,23 @@
             <h:outputText value="#{entry.amount}" />
         </p:column>
 
-        <p:column headerText="应收单摘要" sortBy="#{entry.label}" styleClass="f-wrappable">
+        <p:column headerText="应付单摘要" sortBy="#{entry.label}" styleClass="f-wrappable">
             <h:outputText value="#{entry.accountAble.label}" />
         </p:column>
-        <p:column headerText="应收客户">
+        <p:column headerText="应付供应商">
             <h:outputText value="#{entry.accountAble.party.displayName}" />
         </p:column>
-        <p:column headerText="应收金额">
+        <p:column headerText="应付金额">
             <h:outputText value="#{entry.accountAble.amount}" />
         </p:column>
 
-        <p:column headerText="收款单摘要" sortBy="#{entry.label}" styleClass="f-wrappable">
+        <p:column headerText="付款单摘要" sortBy="#{entry.label}" styleClass="f-wrappable">
             <h:outputText value="#{entry.accountEd.label}" />
         </p:column>
-        <p:column headerText="收款客户">
+        <p:column headerText="付款供应商">
             <h:outputText value="#{entry.accountEd.party.displayName}" />
         </p:column>
-        <p:column headerText="收款金额">
+        <p:column headerText="付款金额">
             <h:outputText value="#{entry.accountEd.amount}" />
         </p:column>
 
@@ -68,18 +68,18 @@
             </t:panelGroup>
 
 
-            <h:outputText value="应收单" />
+            <h:outputText value="应付单" />
             <t:panelGroup colspan="3">
-                <p:inputText id="receivable" label="应收单" value="#{obj.accountAble.label}(#{obj.accountAble.amount})" readonly="true" style="width:30em;"/>
-                <p:commandButton value="..." onclick="waitbox.show()" oncomplete="waitbox.hide();chooseReceivableDialog.show()"/>
+                <p:inputText id="payable" label="应付单" value="#{obj.accountAble.label}(#{obj.accountAble.amount})" readonly="true" style="width:30em;"/>
+                <p:commandButton value="..." onclick="waitbox.show()" oncomplete="waitbox.hide();choosePayableDialog.show()"/>
             </t:panelGroup>
 
 
-            <h:outputText value="收款单" />
+            <h:outputText value="付款单" />
             <t:panelGroup colspan="3">
-                <p:inputText id="received" label="收款单" value="#{obj.accountEd.label}(#{obj.accountEd.amount})" readonly="true" style="width:25em;"/>
-                <p:commandButton value="收款单" onclick="waitbox.show()" oncomplete="waitbox.hide();chooseReceivedDialog.show()"/>
-                <p:commandButton value="应收票据" onclick="waitbox.show()" oncomplete="waitbox.hide();chooseNoteReceivableDialog.show()"/>
+                <p:inputText id="paid" label="付款单" value="#{obj.accountEd.label}(#{obj.accountEd.amount})" readonly="true" style="width:25em;"/>
+                <p:commandButton value="付款单" onclick="waitbox.show()" oncomplete="waitbox.hide();choosePaidDialog.show()"/>
+                <p:commandButton value="应付票据" onclick="waitbox.show()" oncomplete="waitbox.hide();chooseNotePayableDialog.show()"/>
             </t:panelGroup>
 
 
@@ -94,9 +94,9 @@
 
 
     <ui:define name="dialogs">
-        <sem:chooseReceivableDialog id="c_receivable" header="选择应收单" target="#{obj.accountAble}" update=":editDialog:form:receivable" />
-        <sem:chooseReceivedDialog id="c_received" header="选择收款单" target="#{obj.accountEd}" update=":editDialog:form:received" />
+        <sem:choosePayableDialog id="c_payable" header="选择应付单" target="#{obj.accountAble}" update=":editDialog:form:payable" />
+        <sem:choosePaidDialog id="c_paid" header="选择付款单" target="#{obj.accountEd}" update=":editDialog:form:paid" />
 
-        <sem:chooseNoteReceivableDialog id="c_note_receivable" header="选择应收票据" target="#{obj.accountEd}" update=":editDialog:form:received" />
+        <sem:chooseNotePayableDialog id="c_note_payable" header="选择应付票据" target="#{obj.accountEd}" update=":editDialog:form:paid" />
     </ui:define>
 </ui:composition>

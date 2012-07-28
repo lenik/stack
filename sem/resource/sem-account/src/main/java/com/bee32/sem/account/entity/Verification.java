@@ -3,8 +3,12 @@ package com.bee32.sem.account.entity;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
@@ -15,6 +19,9 @@ import com.bee32.sem.world.monetary.MCValue;
  * 核销
  */
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "stereo", length = 5)
+@DiscriminatorValue("-")
 @SequenceGenerator(name = "idgen", sequenceName = "verification_seq", allocationSize = 1)
 public class Verification
         extends ProcessEntity {

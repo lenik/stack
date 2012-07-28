@@ -20,6 +20,8 @@ import com.bee32.sem.account.entity.Receivable;
 import com.bee32.sem.account.entity.ReceivableInit;
 import com.bee32.sem.account.entity.Received;
 import com.bee32.sem.account.entity.Verification;
+import com.bee32.sem.account.entity.VerificationPay;
+import com.bee32.sem.account.entity.VerificationRece;
 import com.bee32.sem.inventory.SEMInventoryUnit;
 import com.bee32.sem.people.SEMPeopleUnit;
 import com.bee32.sem.world.SEMWorldUnit;
@@ -44,6 +46,8 @@ public class SEMAccountUnit
         add(ReceivableInit.class);
         add(Received.class);
         add(Verification.class);
+        add(VerificationRece.class);
+        add(VerificationPay.class);
         add(NoteBalancing.class);
         add(BillDiscount.class);
         add(Endorsement.class);
