@@ -27,7 +27,7 @@ public class VerificationDto
 
     @Override
     protected void _marshal(Verification source) {
-        accountAble = mref(AccountAbleDto.class, source.getAccontAble());
+        accountAble = mref(AccountAbleDto.class, source.getAccountAble());
         accountEd = mref(AccountEdDto.class, source.getAccountEd());
         amount = source.getAmount().toMutable();
 

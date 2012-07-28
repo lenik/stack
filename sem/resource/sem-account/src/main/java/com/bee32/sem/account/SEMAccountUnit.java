@@ -13,7 +13,7 @@ import com.bee32.sem.account.entity.Note;
 import com.bee32.sem.account.entity.NoteBalancing;
 import com.bee32.sem.account.entity.NotePayable;
 import com.bee32.sem.account.entity.NoteReceivable;
-import com.bee32.sem.account.entity.Paied;
+import com.bee32.sem.account.entity.Paid;
 import com.bee32.sem.account.entity.Payable;
 import com.bee32.sem.account.entity.PayableInit;
 import com.bee32.sem.account.entity.Receivable;
@@ -37,7 +37,7 @@ public class SEMAccountUnit
         add(Note.class);
         add(NotePayable.class);
         add(NoteReceivable.class);
-        add(Paied.class);
+        add(Paid.class);
         add(Payable.class);
         add(PayableInit.class);
         add(Receivable.class);

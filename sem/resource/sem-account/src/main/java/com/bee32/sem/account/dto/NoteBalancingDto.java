@@ -28,7 +28,7 @@ public class NoteBalancingDto extends ProcessEntityDto<NoteBalancing> {
 
     @Override
     protected void _marshal(NoteBalancing source) {
-        note = marshal(NoteDto.class, source.getNote());
+        note = mref(NoteDto.class, source.getNote());
         amount = source.getAmount().toMutable();
         interest = source.getInterest().toMutable();
         cost = source.getCost().toMutable();

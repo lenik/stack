@@ -10,7 +10,7 @@ import javax.persistence.Entity;
  */
 @Entity
 @DiscriminatorValue("PED")
-public class Paied extends AccountEd {
+public class Paid extends AccountEd {
 
     private static final long serialVersionUID = 1L;
 

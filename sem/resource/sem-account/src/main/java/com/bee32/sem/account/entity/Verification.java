@@ -21,17 +21,17 @@ public class Verification
 
     private static final long serialVersionUID = 1L;
 
-    AccountAble accontAble;
+    AccountAble accountAble;
     AccountEd accountEd;
     MCValue amount = new MCValue();
 
     @ManyToOne
-    public AccountAble getAccontAble() {
-        return accontAble;
+    public AccountAble getAccountAble() {
+        return accountAble;
     }
 
-    public void setAccontAble(AccountAble accontAble) {
-        this.accontAble = accontAble;
+    public void setAccountAble(AccountAble accountAble) {
+        this.accountAble = accountAble;
     }
 
     @ManyToOne

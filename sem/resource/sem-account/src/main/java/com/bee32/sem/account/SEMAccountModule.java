@@ -8,7 +8,7 @@ import com.bee32.sem.account.entity.CurrentAccount;
 import com.bee32.sem.account.entity.Note;
 import com.bee32.sem.account.entity.NotePayable;
 import com.bee32.sem.account.entity.NoteReceivable;
-import com.bee32.sem.account.entity.Paied;
+import com.bee32.sem.account.entity.Paid;
 import com.bee32.sem.account.entity.Payable;
 import com.bee32.sem.account.entity.PayableInit;
 import com.bee32.sem.account.entity.Receivable;
@@ -32,7 +32,7 @@ public class SEMAccountModule
         declareEntityPages(Note.class, "note");
         declareEntityPages(NotePayable.class, "note-payable");
         declareEntityPages(NoteReceivable.class, "note-receivable");
-        declareEntityPages(Paied.class, "paied");
+        declareEntityPages(Paid.class, "paid");
         declareEntityPages(Payable.class, "payable");
         declareEntityPages(PayableInit.class, "payable-init");
         declareEntityPages(Receivable.class, "receivable");
