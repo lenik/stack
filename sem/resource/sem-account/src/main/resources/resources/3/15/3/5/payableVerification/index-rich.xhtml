@@ -71,7 +71,8 @@
             <h:outputText value="应付单" />
             <t:panelGroup colspan="3">
                 <p:inputText id="payable" label="应付单" value="#{obj.accountAble.label}(#{obj.accountAble.amount})" readonly="true" style="width:30em;"/>
-                <p:commandButton value="..." onclick="waitbox.show()" oncomplete="waitbox.hide();choosePayableDialog.show()"/>
+                <p:commandButton value="应付单" onclick="waitbox.show()" oncomplete="waitbox.hide();choosePayableDialog.show()"/>
+                <p:commandButton value="应付初始" onclick="waitbox.show()" oncomplete="waitbox.hide();choosePayableInitDialog.show()"/>
             </t:panelGroup>
 
 
@@ -95,8 +96,9 @@
 
     <ui:define name="dialogs">
         <sem:choosePayableDialog id="c_payable" header="选择应付单" target="#{obj.accountAble}" update=":editDialog:form:payable" />
-        <sem:choosePaidDialog id="c_paid" header="选择付款单" target="#{obj.accountEd}" update=":editDialog:form:paid" />
+        <sem:choosePayableInitDialog id="c_payable" header="选择应付初始" target="#{obj.accountAble}" update=":editDialog:form:payable" />
 
+        <sem:choosePaidDialog id="c_paid" header="选择付款单" target="#{obj.accountEd}" update=":editDialog:form:paid" />
         <sem:chooseNotePayableDialog id="c_note_payable" header="选择应付票据" target="#{obj.accountEd}" update=":editDialog:form:paid" />
     </ui:define>
 </ui:composition>

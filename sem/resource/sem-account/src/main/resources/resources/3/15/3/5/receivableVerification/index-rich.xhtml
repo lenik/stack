@@ -70,8 +70,9 @@
 
             <h:outputText value="应收单" />
             <t:panelGroup colspan="3">
-                <p:inputText id="receivable" label="应收单" value="#{obj.accountAble.label}(#{obj.accountAble.amount})" readonly="true" style="width:30em;"/>
-                <p:commandButton value="..." onclick="waitbox.show()" oncomplete="waitbox.hide();chooseReceivableDialog.show()"/>
+                <p:inputText id="receivable" label="应收单" value="#{obj.accountAble.label}(#{obj.accountAble.amount})" readonly="true" style="width:25em;"/>
+                <p:commandButton value="应收单" onclick="waitbox.show()" oncomplete="waitbox.hide();chooseReceivableDialog.show()"/>
+                <p:commandButton value="应收初始" onclick="waitbox.show()" oncomplete="waitbox.hide();chooseReceivableInitDialog.show()"/>
             </t:panelGroup>
 
 
@@ -95,8 +96,9 @@
 
     <ui:define name="dialogs">
         <sem:chooseReceivableDialog id="c_receivable" header="选择应收单" target="#{obj.accountAble}" update=":editDialog:form:receivable" />
-        <sem:chooseReceivedDialog id="c_received" header="选择收款单" target="#{obj.accountEd}" update=":editDialog:form:received" />
+        <sem:chooseReceivableInitDialog id="c_receivable_init" header="选择应收初始" target="#{obj.accountAble}" update=":editDialog:form:receivable" />
 
+        <sem:chooseReceivedDialog id="c_received" header="选择收款单" target="#{obj.accountEd}" update=":editDialog:form:received" />
         <sem:chooseNoteReceivableDialog id="c_note_receivable" header="选择应收票据" target="#{obj.accountEd}" update=":editDialog:form:received" />
     </ui:define>
 </ui:composition>
