@@ -19,4 +19,13 @@ public class SEMAccountReceMenu
     MenuNode noteReceivableAdmin = entry(RECE, 30, "noteReceivableAdmin", __.join("noteReceivable/"));
     MenuNode receivableVerification = entry(RECE, 40, "receivableVerification", __.join("receivableVerification/"));
 
+
+    public MenuNode queryRece = menu(RECE, 50, "queryRece");
+    /**/MenuNode balanceSheetRece = entry(queryRece, 1, "balanceSheetRece", __.join("balanceSheetRece/"));
+    /**/MenuNode detailRece = entry(queryRece, 10, "detailRece", __.join("detailRece/"));
+    /**/MenuNode reconciliation = entry(queryRece, 20, "reconciliation", __.join("reconciliation/"));
+    /**/MenuNode receivableAccountAge = entry(queryRece, 30, "receivableAccountAge", __.join("receivableAccountAge/"));
+    /**/MenuNode receivedAccountAge = entry(queryRece, 40, "receivedAccountAge", __.join("receivedAccountAge/"));
+    /**/MenuNode arrearageAnalysis = entry(queryRece, 50, "arrearageAnalysis", __.join("arrearageAnalysis/"));
+    /**/MenuNode gatheringPredict = entry(queryRece, 60, "gatheringPredict", __.join("gatheringPredict/"));
 }
