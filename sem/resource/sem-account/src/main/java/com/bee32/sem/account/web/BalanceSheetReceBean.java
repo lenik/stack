@@ -50,6 +50,7 @@ public class BalanceSheetReceBean
         this.summary = summary;
     }
 
+    @SuppressWarnings("unchecked")
     @Transactional
     // (readOnly = true)
     public void query() {
