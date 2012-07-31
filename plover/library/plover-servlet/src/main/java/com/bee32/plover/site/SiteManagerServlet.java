@@ -24,6 +24,7 @@ import com.bee32.plover.arch.logging.ExceptionFormat;
 import com.bee32.plover.arch.logging.ExceptionLog;
 import com.bee32.plover.arch.logging.ExceptionLogEntry;
 import com.bee32.plover.html.PageDefMap;
+import com.bee32.plover.html.SimpleForm;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.site.cfg.DBAutoDDL;
@@ -267,31 +268,30 @@ public class SiteManagerServlet
                 end();
             }
 
-            simpleForm("#", //
-                    (createSite && !save) ? "site" : "-site", "站点代码:站点的唯一代码，用于系统内部标识站点", name, //
-                    "label", "标题:站点的显示名称，一般是企业名称", site.getLabel(), //
-                    "description", "描述:应用的描述信息，如企业的全称", site.getDescription(), //
-                    "logo", "徽标:站点的图标，如公司徽标", site.getLogoLocation(), //
-                    "theme", "风格:站点的首选风格", site.getTheme(), //
-                    "verbose", "调试级别:输出的调试信息的级别", site.getVerboseLevel(), //
-                    "opt", "优化级别:设置缓存等优化支持的级别", site.getOptimizationLevel(), //
-                    "aliases", "网络绑定:多个网络名称绑定，用逗号分隔", StringArray.join(", ", site.getAliases()), //
-                    "dialect", "数据库类型:数据库的厂商类型", site.getDbDialect(), //
-                    "url", "连接地址:数据库的JDBC连接地址（%s用于替换数据库名）", site.getDbUrlFormat(), //
-                    "dbname", "数据库名称:数据库的名称", site.getDbName(), //
-                    "dbuser", "数据库用户名:数据库的登录用户", site.getDbUser(), //
-                    "dbpass", "数据库密码:数据库的登录密码", site.getDbPass(), //
-                    "autoddl", "DDL模式:数据库自动创建DDL的模式", site.getAutoDDL(), //
-                    "samples", "样本加载:选择加载哪些样本", site.getSamples(), //
-                    "profiles", "应用剪裁:选择要启用的功能、特性", new MultiProfileSelection(site.getProfileNames()) //
-            );
+            SimpleForm form = simpleForm("#");
+            form.addEntry((createSite && !save) ? "site" : "-site", "站点代码:站点的唯一代码，用于系统内部标识站点", name);
+            form.addEntry("label", "标题:站点的显示名称，一般是企业名称", site.getLabel());
+            form.addEntry("description", "描述:应用的描述信息，如企业的全称", site.getDescription());
+            form.addEntry("logo", "徽标:站点的图标，如公司徽标", site.getLogoLocation());
+            form.addEntry("theme", "风格:站点的首选风格", site.getTheme());
+            form.addEntry("verbose", "调试级别:输出的调试信息的级别", site.getVerboseLevel());
+            form.addEntry("opt", "优化级别:设置缓存等优化支持的级别", site.getOptimizationLevel());
+            form.addEntry("aliases", "网络绑定:多个网络名称绑定，用逗号分隔", StringArray.join(", ", site.getAliases()));
+            form.addEntry("dialect", "数据库类型:数据库的厂商类型", site.getDbDialect());
+            form.addEntry("url", "连接地址:数据库的JDBC连接地址（%s用于替换数据库名）", site.getDbUrlFormat());
+            form.addEntry("dbname", "数据库名称:数据库的名称", site.getDbName());
+            form.addEntry("dbuser", "数据库用户名:数据库的登录用户", site.getDbUser());
+            form.addEntry("dbpass", "数据库密码:数据库的登录密码", site.getDbPass());
+            form.addEntry("autoddl", "DDL模式:数据库自动创建DDL的模式", site.getAutoDDL());
+            form.addEntry("samples", "样本加载:选择加载哪些样本", site.getSamples());
+            form.addEntry("profiles", "应用剪裁:选择要启用的功能、特性", new MultiProfileSelection(site.getProfileNames()));
+            form.render();
 
             if (!createSite) {
                 fieldset().legend().text("删除该应用配置").end();
-                simpleForm("delete:删除", //
-                        ".site", "站点代码:站点的唯一代码，用于系统内部标识应用", site.getName(), //
-                        "!removeData", "同时删除所有数据:危险：默认只删除配置文件，删除所有数据将无法恢复！", false //
-                );
+                form = simpleForm("delete:删除");
+                form.addEntry(".site", "站点代码:站点的唯一代码，用于系统内部标识应用", site.getName());
+                form.addEntry("!removeData", "同时删除所有数据:危险：默认只删除配置文件，删除所有数据将无法恢复！", false);
                 end();
             }
 

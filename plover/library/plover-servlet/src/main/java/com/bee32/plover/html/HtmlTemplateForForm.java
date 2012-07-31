@@ -15,24 +15,27 @@ public class HtmlTemplateForForm
         super(writer);
     }
 
-    protected HtmlTemplateForForm simpleForm(String action, Object... array) {
-        new SimpleForm(out).create(action, array);
-        return this;
+    protected SimpleForm simpleForm(String actionHrefText) {
+        SimpleForm simpleForm = new SimpleForm(out, actionHrefText);
+        return simpleForm;
     }
 
-    protected HtmlTemplateForForm simpleRow(String name, Object value) {
-        new SimpleRow(out).put(name, value);
-        return this;
+    protected SimpleRow simpleRow(String name, Object value) {
+        SimpleRow simpleRow = new SimpleRow(out);
+        simpleRow.put(name, value);
+        return simpleRow;
     }
 
-    protected HtmlTemplateForForm simpleRow(String name, Object value, String comment) {
-        new SimpleRow(out).put(name, value, comment);
-        return this;
+    protected SimpleRow simpleRow(String name, Object value, String comment) {
+        SimpleRow simpleRow = new SimpleRow(out);
+        simpleRow.put(name, value, comment);
+        return simpleRow;
     }
 
-    protected HtmlTemplateForForm simpleRowImage(String name, Location image, Location href) {
-        new SimpleRowImage(out).put(name, image, href);
-        return this;
+    protected SimpleRowImage simpleRowImage(String name, Location image, Location href) {
+        SimpleRowImage simpleRowImage = new SimpleRowImage(out);
+        simpleRowImage.put(name, image, href);
+        return simpleRowImage;
     }
 
 }
