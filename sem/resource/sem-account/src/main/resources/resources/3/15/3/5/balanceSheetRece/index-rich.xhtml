@@ -23,9 +23,10 @@
             </p:toolbar>
 
             <p:dataTable id="result" value="#{bean.result}" var="entry" resizableColumns="true"
+                sortBy="0"
                 rowIndexVar="rowIndex">
 
-                <p:column headerText="序号">
+                <p:column headerText="序号" style="text-align:right">
                     <h:outputText value="#{rowIndex + 1}" />
                 </p:column>
 
@@ -33,30 +34,47 @@
                     <h:outputText value="#{entry[1]}" />
                 </p:column>
 
-                <p:column headerText="期初">
+                <p:column headerText="期初" style="text-align:right">
                     <h:outputText value="#{entry[2]}" >
                         <f:convertNumber pattern="#0.00"/>
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="应收">
-                    <h:outputText value="#{entry[3]}" >
+                <p:column headerText="应收" style="text-align:right">
+                    <h:outputText value="#{entry[3]}">
                         <f:convertNumber pattern="#0.00"/>
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="己收">
-                    <h:outputText value="#{entry[4]}" >
+                <p:column headerText="己收" style="text-align:right">
+                    <h:outputText value="#{entry[4]}">
                         <f:convertNumber pattern="#0.00"/>
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="余额">
-                    <h:outputText value="#{entry[5]}" >
+                <p:column headerText="余额" style="text-align:right">
+                    <h:outputText value="#{entry[5]}">
                         <f:convertNumber pattern="#0.00"/>
                     </h:outputText>
                 </p:column>
 
+                <p:summaryRow>
+                    <p:column colspan="2" style="text-align:right">
+                        <h:outputText value="合计:" />
+                    </p:column>
+                    <p:column style="text-align:right">
+                        <h:outputText value="#{bean.summary[0][0]}" />
+                    </p:column>
+                    <p:column style="text-align:right">
+                        <h:outputText value="#{bean.summary[0][1]}" />
+                    </p:column>
+                    <p:column style="text-align:right">
+                        <h:outputText value="#{bean.summary[0][2]}" />
+                    </p:column>
+                    <p:column style="text-align:right">
+                        <h:outputText value="#{bean.summary[0][3]}" />
+                    </p:column>
+                </p:summaryRow>
             </p:dataTable>
         </h:form>
 
