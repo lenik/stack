@@ -26,6 +26,12 @@ public abstract class SimpleServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        doPost(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
         String uri = req.getRequestURI(); // no params
         String pageName;
         int lastSlash = uri.lastIndexOf('/');
