@@ -38,6 +38,7 @@ public class SiteTemplate
         return classDoc;
     }
 
+    @Override
     protected void _pageLayout() {
         div().classAttr("header");
         _pageHeader();
