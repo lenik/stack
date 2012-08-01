@@ -44,7 +44,7 @@ public class TextMap
 
     @Override
     public String[] getStringArray(String key) {
-        return getStringArray(key, null);
+        return getStringArray(key, new String[0]);
     }
 
     @Override
