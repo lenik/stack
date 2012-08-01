@@ -19,4 +19,8 @@ public class SEMAccountPayMenu
     MenuNode notePayableAdmin = entry(PAY, 30, "notePayableAdmin", __.join("notePayable/"));
     MenuNode payableVerification = entry(PAY, 40, "payableVerification", __.join("payableVerification/"));
 
+    public MenuNode queryPay = menu(PAY, 50, "queryPay");
+    /**/MenuNode balanceSheetPay = entry(queryPay, 1, "balanceSheetPay", __.join("balanceSheetPay/"));
+    /**/MenuNode detailPay = entry(queryPay, 10, "detailPay", __.join("detailPay/"));
+
 }
