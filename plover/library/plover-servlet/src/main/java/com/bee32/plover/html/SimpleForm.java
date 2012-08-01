@@ -2,8 +2,8 @@ package com.bee32.plover.html;
 
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * array: each entry as { name, label, value }
@@ -19,7 +19,8 @@ public class SimpleForm
 
     String actionText;
     String actionHref;
-    List<FormEntry> entries = new ArrayList<FormEntry>();
+    Map<String, FormSection> sections = new LinkedHashMap<>();
+    FormSection currentSection;
 
     public SimpleForm(String action) {
         this(new StringWriter(), action);
@@ -35,59 +36,82 @@ public class SimpleForm
             actionHref = hrefText;
             actionText = "保存";
         }
+        currentSection = section("default");
+    }
+
+    public synchronized FormSection section(String sectionId) {
+        String defaultTitle = null; // sectionId;
+        return section(sectionId, defaultTitle);
+    }
+
+    public synchronized FormSection section(String sectionId, String defaultTitle) {
+        FormSection section = sections.get(sectionId);
+        if (section == null) {
+            section = new FormSection(defaultTitle);
+            sections.put(sectionId, section);
+        }
+        return currentSection = section;
+    }
+
+    public FormSection getCurrentSection() {
+        return currentSection;
+    }
+
+    public SimpleForm addChild(IFormChild child) {
+        getCurrentSection().add(child);
+        return this;
     }
 
     public SimpleForm addEntry(String name, String labelTip, Object value) {
         FormEntry entry = new FormEntry(name, labelTip, value);
-        return addEntry(entry);
-    }
-
-    public SimpleForm addEntry(FormEntry entry) {
-        entries.add(entry);
-        return this;
-    }
-
-    public SimpleForm addSection(String name) {
-        FormEntry entry = new FormEntry("-", name, null);
-        return addEntry(entry);
+        return addChild(entry);
     }
 
     public SimpleForm render() {
         beginForm();
-        beginTable();
         renderEntries();
-        endTable();
         endForm();
         return this;
     }
 
     public SimpleForm renderEntries() {
-        for (FormEntry entry : entries) {
-            entry.render(this, getRequest());
+        for (String sectionId : sections.keySet()) {
+            FormSection section = sections.get(sectionId);
+            beginSection(section.getTitle());
+            for (IFormChild child : section) {
+                child.render(this, getRequest());
+            }
+            endSection();
         }
+
         return this;
     }
 
     public SimpleForm beginForm() {
-        form().method("get").action(actionHref);
-        return this;
-    }
-
-    public SimpleForm beginTable() {
-        table().classAttr("tcf").border("0");
-        return this;
-    }
-
-    public SimpleForm endTable() {
-        tr().td().colspan("3").align("left");
-        input().type("submit").name("save").value(actionText).end();
-        text("");
-        input().type("reset").value("重置").end();
-        end(3); // .table.tr.td
+        form().classAttr("tcf").method("post").action(actionHref);
         return this;
     }
 
     public SimpleForm endForm() {
+        div().align("center");
+        input().type("submit").name("save").value(actionText).end();
+        text("");
+        input().type("reset").value("重置").end();
+        end();
+
+        end();
+        return this;
+    }
+
+    SimpleForm beginSection(String title) {
+        if (title != null) {
+            h3().text(title).end();
+        }
+        table().border("0");
+        return this;
+    }
+
+    SimpleForm endSection() {
         end();
         return this;
     }

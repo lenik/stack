@@ -16,9 +16,10 @@ import com.bee32.plover.site.EnumUtil;
 import com.bee32.plover.site.cfg.Relabel;
 import com.googlecode.jatl.Html;
 
-public class FormEntry {
+public class FormEntry
+        implements IFormChild {
 
-    String name;
+    String inputName;
 
     String label;
     String tooltip;
@@ -29,18 +30,19 @@ public class FormEntry {
 
     Object value;
 
-    public FormEntry(String name, String labelTip, Object value) {
+    public FormEntry(String inputName, String labelTip, Object value) {
         while (true) {
-            if (name.startsWith("-"))
+            if (inputName.startsWith("-"))
                 readOnly = true;
-            else if (name.startsWith("!"))
+            else if (inputName.startsWith("!"))
                 critical = true;
-            else if (name.startsWith("."))
+            else if (inputName.startsWith("."))
                 hidden = true;
             else
                 break;
-            name = name.substring(1);
+            inputName = inputName.substring(1);
         }
+        this.inputName = inputName;
 
         int labelColon = labelTip.indexOf(':');
         if (labelColon != -1) {
@@ -50,6 +52,8 @@ public class FormEntry {
             label = labelTip;
             tooltip = "";
         }
+
+        this.value = value;
     }
 
     public void render(Html out) {
@@ -57,11 +61,12 @@ public class FormEntry {
         render(out, request);
     }
 
+    @Override
     public void render(Html out, HttpServletRequest req) {
         if (hidden) {
             out.tr().td().colspan("3");
             String sval = value == null ? "" : value.toString();
-            out.input().name(name).type("hidden").value(sval).end();
+            out.input().name(inputName).type("hidden").value(sval).end();
             out.end(2); // .tr.td
             return;
         }
@@ -72,7 +77,7 @@ public class FormEntry {
 
         Html input;
         if (value == null || value instanceof String || value instanceof Number) {
-            input = out.input().name(name).type("text");
+            input = out.input().name(inputName).type("text");
             String sval = value == null ? "" : value.toString();
             input.value(sval);
 
@@ -82,7 +87,7 @@ public class FormEntry {
             String href = location.resolveAbsolute(req);
             out.span();
             {
-                input = out.input().name(name).type("text");
+                input = out.input().name(inputName).type("text");
                 String sval = value == null ? "" : _location;
                 input.value(sval);
                 out.end();
@@ -92,7 +97,7 @@ public class FormEntry {
             }
 
         } else if (value instanceof Boolean) {
-            input = out.input().name(name).type("checkbox").value("1");
+            input = out.input().name(inputName).type("checkbox").value("1");
             Boolean bval = (Boolean) value;
             if (bval)
                 input.selected("selected");
@@ -103,7 +108,7 @@ public class FormEntry {
 
             Enum<?>[] candidates = EnumUtil.values(enumClass);
 
-            input = out.select().name(name);
+            input = out.select().name(inputName);
             for (Enum<?> candidate : candidates) {
                 boolean selected = Nullables.equals(value, candidate);
                 Html option = out.option().value(candidate.name());
@@ -122,7 +127,7 @@ public class FormEntry {
             Class<? extends EnumAlt<?, ?>> enmClass = (Class<? extends EnumAlt<?, ?>>) value.getClass();
             boolean hasLabel = ILabelledEntry.class.isAssignableFrom(enmClass);
 
-            input = out.select().name(name);
+            input = out.select().name(inputName);
             for (EnumAlt<?, ?> it : EnumAltRegistry.nameMap(enmClass).values()) {
                 boolean selected = Nullables.equals(value, it);
                 Html option = out.option().value(it.getName());
@@ -155,7 +160,7 @@ public class FormEntry {
                     itLabel = "(" + it.getKey() + ")";
 
                 // li().;
-                out.checkbox(isSelected).name(name).value(String.valueOf(it.getKey())).text(itLabel);
+                out.checkbox(isSelected).name(inputName).value(String.valueOf(it.getKey())).text(itLabel);
                 // .end();
             }
         } else {
