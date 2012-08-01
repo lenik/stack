@@ -150,8 +150,15 @@ public class SiteInstance
     }
 
     public void setProperty(String key, String value) {
-        properties.setProperty(key, value);
+        if (value == null)
+            removeProperty(key);
+        else
+            properties.setProperty(key, value);
         dirty = true;
+    }
+
+    public void removeProperty(String key) {
+        properties.removeProperty(key);
     }
 
     public int getIntProperty(String key, int defaultValue) {
@@ -371,11 +378,9 @@ public class SiteInstance
     }
 
     public void setProfileNames(Set<String> profileNames) {
-        StringBuilder sb = null;
+        StringBuilder sb = new StringBuilder();
         for (String profileName : profileNames) {
-            if (sb == null)
-                sb = new StringBuilder();
-            else
+            if (sb.length() != 0)
                 sb.append(", ");
             sb.append(profileName);
         }
