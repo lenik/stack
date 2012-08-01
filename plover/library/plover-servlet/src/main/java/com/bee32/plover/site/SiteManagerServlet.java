@@ -29,9 +29,10 @@ import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.site.cfg.DBAutoDDL;
 import com.bee32.plover.site.cfg.DBDialect;
-import com.bee32.plover.site.cfg.MultiProfileSelection;
+import com.bee32.plover.site.cfg.ISiteConfigBlock;
 import com.bee32.plover.site.cfg.OptimizationLevel;
 import com.bee32.plover.site.cfg.SamplesSelection;
+import com.bee32.plover.site.cfg.SiteConfigBlocks;
 import com.bee32.plover.site.cfg.VerboseLevel;
 import com.bee32.plover.site.scope.SiteNaming;
 
@@ -205,7 +206,6 @@ public class SiteManagerServlet
                 String dbPass = args.getNString("dbpass");
                 String _autoddl = args.getString("autoddl");
                 String _samples = args.getString("samples");
-                String[] _profiles = args.getStringArray("profiles");
 
                 if (label == null)
                     label = name;
@@ -226,10 +226,6 @@ public class SiteManagerServlet
                 SamplesSelection samples = SamplesSelection.forName(_samples);
                 if (url == null)
                     url = dialect.getUrlFormat();
-
-                Set<String> profileNames = new LinkedHashSet<String>();
-                for (String profileName : _profiles)
-                    profileNames.add(profileName);
 
                 ul();
                 if (createSite)
@@ -253,7 +249,9 @@ public class SiteManagerServlet
                 site.setDbPass(dbPass);
                 site.setAutoDDL(autoddl);
                 site.setSamples(samples);
-                site.setProfileNames(profileNames);
+
+                for (ISiteConfigBlock block : SiteConfigBlocks.getExtensions())
+                    block.saveForm(site, args);
 
                 li().text("保存站点配置文件……").end();
                 site.saveConfig();
@@ -273,10 +271,16 @@ public class SiteManagerServlet
             form.addEntry("label", "标题:站点的显示名称，一般是企业名称", site.getLabel());
             form.addEntry("description", "描述:应用的描述信息，如企业的全称", site.getDescription());
             form.addEntry("logo", "徽标:站点的图标，如公司徽标", site.getLogoLocation());
+
+            form.section(".settings", "Site Settings");
             form.addEntry("theme", "风格:站点的首选风格", site.getTheme());
             form.addEntry("verbose", "调试级别:输出的调试信息的级别", site.getVerboseLevel());
             form.addEntry("opt", "优化级别:设置缓存等优化支持的级别", site.getOptimizationLevel());
+
+            form.section("net", "Networking");
             form.addEntry("aliases", "网络绑定:多个网络名称绑定，用逗号分隔", StringArray.join(", ", site.getAliases()));
+
+            form.section("database", "Database Configuration");
             form.addEntry("dialect", "数据库类型:数据库的厂商类型", site.getDbDialect());
             form.addEntry("url", "连接地址:数据库的JDBC连接地址（%s用于替换数据库名）", site.getDbUrlFormat());
             form.addEntry("dbname", "数据库名称:数据库的名称", site.getDbName());
@@ -284,14 +288,20 @@ public class SiteManagerServlet
             form.addEntry("dbpass", "数据库密码:数据库的登录密码", site.getDbPass());
             form.addEntry("autoddl", "DDL模式:数据库自动创建DDL的模式", site.getAutoDDL());
             form.addEntry("samples", "样本加载:选择加载哪些样本", site.getSamples());
-            form.addEntry("profiles", "应用剪裁:选择要启用的功能、特性", new MultiProfileSelection(site.getProfileNames()));
+
+            for (ISiteConfigBlock block : SiteConfigBlocks.getExtensions())
+                block.configForm(site, form);
+
             form.render();
 
             if (!createSite) {
+                hr().end();
                 fieldset().legend().text("删除该应用配置").end();
                 form = simpleForm("delete:删除");
                 form.addEntry(".site", "站点代码:站点的唯一代码，用于系统内部标识应用", site.getName());
                 form.addEntry("!removeData", "同时删除所有数据:危险：默认只删除配置文件，删除所有数据将无法恢复！", false);
+                form.render();
+
                 end();
             }
 
