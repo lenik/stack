@@ -29,10 +29,10 @@
                 <h:outputText value="作业描述" />
                 <p:inputText id="jobDescription" label="作业描述" value="#{job.description}" />
 
-                <h:outputLabel for="destWarehouse" value="目标仓库" />
-                <p:selectOneMenu id="destWarehouse" label="目标仓库" style="width: 20em;" value="#{job.destWarehouse.id_RZ}"
+                <h:outputLabel for="destWarehouse" value="目标${inventoryTerms.warehouse}" />
+                <p:selectOneMenu id="destWarehouse" label="目标${inventoryTerms.warehouse}" style="width: 20em;" value="#{job.destWarehouse.id_RZ}"
                     disabled="true">
-                    <f:selectItem itemValue="0" itemLabel="--选择仓库--" />
+                    <f:selectItem itemValue="0" itemLabel="--选择${inventoryTerms.warehouse}--" />
                     <f:selectItems value="#{stock.warehouseSelectItems}" />
                 </p:selectOneMenu>
 

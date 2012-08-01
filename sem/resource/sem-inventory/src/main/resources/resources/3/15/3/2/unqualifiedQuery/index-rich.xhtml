@@ -12,9 +12,9 @@
             <p:toolbar>
                 <p:toolbarGroup>
                     <h:panelGrid columns="3">
-                        <h:outputLabel for="warehouse" value="仓库：" />
-                        <p:selectOneMenu id="warehouse" label="仓库" value="#{bean.selectedWarehouseId}">
-                            <f:selectItem itemValue="-1" itemLabel="--选择仓库--" />
+                        <h:outputLabel for="warehouse" value="${inventoryTerms.warehouse}：" />
+                        <p:selectOneMenu id="warehouse" label="${inventoryTerms.warehouse}" value="#{bean.selectedWarehouseId}">
+                            <f:selectItem itemValue="-1" itemLabel="--选择${inventoryTerms.warehouse}--" />
                             <f:selectItems value="#{stock.warehouseSelectItems}" />
                         </p:selectOneMenu>
                     </h:panelGrid>

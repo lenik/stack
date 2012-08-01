@@ -2,10 +2,10 @@
     xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
     <ui:composition>
 
-        <sem:materialFragmentDialog header="仓库选项" id="warehouseOptionDialog" widgetVar="warehouseOptionDialog"
+        <sem:materialFragmentDialog header="${inventoryTerms.warehouse}选项" id="warehouseOptionDialog" widgetVar="warehouseOptionDialog"
             material="#{bean.openedObject}">
 
-            <p:commandButton value="增加仓库选项" update=":addWarehouseOptionForm" actionListener="#{bean.newWarehouseOption}"
+            <p:commandButton value="增加${inventoryTerms.warehouse}选项" update=":addWarehouseOptionForm" actionListener="#{bean.newWarehouseOption}"
                 onclick="addWarehouseOptionDialog.show()" />
 
             <p:dataTable id="warehouseOptions" value="#{bean.warehouseOptions}" var="warehouseOption"
@@ -15,7 +15,7 @@
                     <h:outputText value="#{rowIndex+1}" />
                 </p:column>
 
-                <p:column headerText="仓库" style="width:100px;">
+                <p:column headerText="${inventoryTerms.warehouse}" style="width:100px;">
                     <h:outputText value="#{warehouseOption.warehouse.label}" />
                 </p:column>
 
@@ -34,13 +34,13 @@
             </p:dataTable>
         </sem:materialFragmentDialog>
 
-        <p:dialog header="新增仓库选项" widgetVar="addWarehouseOptionDialog" modal="true">
+        <p:dialog header="新增${inventoryTerms.warehouse}选项" widgetVar="addWarehouseOptionDialog" modal="true">
             <h:form id="addWarehouseOptionForm">
 
                 <h:panelGrid id="addWarehouseOptionPanel" columns="2">
-                    <h:outputText value="仓库:" />
-                    <p:selectOneMenu label="仓库" value="#{bean.warehouseOption.warehouse.id}" >
-                        <f:selectItem itemValue="-1" itemLabel="--选择仓库--" />
+                    <h:outputText value="${inventoryTerms.warehouse}:" />
+                    <p:selectOneMenu label="${inventoryTerms.warehouse}" value="#{bean.warehouseOption.warehouse.id}" >
+                        <f:selectItem itemValue="-1" itemLabel="--选择${inventoryTerms.warehouse}--" />
                         <f:selectItems value="#{stock.warehouseSelectItems}" />
                     </p:selectOneMenu>
 

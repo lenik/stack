@@ -67,7 +67,7 @@
                 <f:setPropertyActionListener value="#{entry}" target="#{bean.openedObject}" />
                 <p:graphicImage value="#{location.ICON}/cview16/filenav_nav.gif" />
             </p:commandLink>
-            <p:commandLink styleClass="icon-button" title="仓库选项" update=":warehouseOptionDialog:form"
+            <p:commandLink styleClass="icon-button" title="${inventoryTerms.warehouse}选项" update=":warehouseOptionDialog:form"
                 onclick="waitbox.show();"
                 oncomplete="waitbox.hide();warehouseOptionDialog.show()">
                 <f:setPropertyActionListener value="#{entry}" target="#{bean.openedObject}" />

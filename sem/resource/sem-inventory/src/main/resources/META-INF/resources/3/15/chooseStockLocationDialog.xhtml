@@ -42,7 +42,7 @@
                 <p:column headerText="库位" sortBy="${entry.label}">
                     <h:outputText value="${entry.label}" />
                 </p:column>
-                <p:column headerText="所属仓库" sortBy="${entry.warehouse.label}">
+                <p:column headerText="所属${inventoryTerms.warehouse}" sortBy="${entry.warehouse.label}">
                     <h:outputText value="${entry.warehouse.label}" />
                 </p:column>
             </ui:define>
@@ -55,7 +55,7 @@
                             <p:column headerText="库位">
                                 <h:outputText value="${entry.label}" />
                             </p:column>
-                            <p:column headerText="所属仓库">
+                            <p:column headerText="所属${inventoryTerms.warehouse}">
                                 <h:outputText value="${entry.warehouse.label}" />
                             </p:column>
                         </p:dataTable>

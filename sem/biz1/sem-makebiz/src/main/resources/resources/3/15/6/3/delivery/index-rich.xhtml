@@ -93,7 +93,7 @@
                             <h:outputText value="#{entry.quantity}" />
                         </p:column>
 
-                        <p:column headerText="出库仓库">
+                        <p:column headerText="出库${inventoryTerms.warehouse}">
                             <h:outputText value="#{entry.sourceWarehouse.label}" />
                         </p:column>
 
@@ -117,7 +117,7 @@
                         <p:column headerText="客户" styleClass="f-wrappable">
                             <h:outputText value="#{entry.stockOrder.org.displayName}" />
                         </p:column>
-                        <p:column headerText="仓库" styleClass="f-wrappable">
+                        <p:column headerText="${inventoryTerms.warehouse}" styleClass="f-wrappable">
                             <h:outputText value="#{entry.stockOrder.warehouse.label}" />
                         </p:column>
                     </f:facet>
@@ -155,10 +155,10 @@
                     <p:inputText value="#{item.quantity}" label="数量"/>
                 </t:panelGroup>
 
-                <h:outputLabel for="warehouse" value="出库仓库：" />
+                <h:outputLabel for="warehouse" value="出库${inventoryTerms.warehouse}：" />
                 <t:panelGroup colspan="3">
-                    <p:selectOneMenu id="warehouse" label="出库仓库" value="#{bean.sourceWarehouseId_RZ}">
-                        <f:selectItem itemValue="0" itemLabel="--选择仓库--" />
+                    <p:selectOneMenu id="warehouse" label="出库${inventoryTerms.warehouse}" value="#{bean.sourceWarehouseId_RZ}">
+                        <f:selectItem itemValue="0" itemLabel="--选择${inventoryTerms.warehouse}--" />
                         <f:selectItems value="#{stock.warehouseSelectItems}" />
                     </p:selectOneMenu>
                 </t:panelGroup>

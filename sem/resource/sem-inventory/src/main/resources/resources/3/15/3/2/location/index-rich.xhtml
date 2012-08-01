@@ -12,9 +12,9 @@
     <ui:param name="mirrorTargets" value=":c_location:form" />
 
     <ui:define name="toolbarContexts">
-        <h:outputText value="仓库:" />
-        <p:selectOneMenu id="stockWarehouseId" label="仓库" value="#{bean.selectedWarehouseId}">
-            <f:selectItem itemValue="-1" itemLabel="--选择仓库--" />
+        <h:outputText value="${inventoryTerms.warehouse}:" />
+        <p:selectOneMenu id="stockWarehouseId" label="${inventoryTerms.warehouse}" value="#{bean.selectedWarehouseId}">
+            <f:selectItem itemValue="-1" itemLabel="--选择${inventoryTerms.warehouse}--" />
             <f:selectItems value="#{stock.warehouseSelectItems}" />
             <p:ajax event="change" update=":mainForm" />
         </p:selectOneMenu>
@@ -24,7 +24,7 @@
         <p:column headerText="库位">
             <h:outputText value="#{entry.label}" />
         </p:column>
-        <p:column headerText="所属仓库">
+        <p:column headerText="所属${inventoryTerms.warehouse}">
             <h:outputText value="#{entry.warehouse.label}" />
         </p:column>
     </ui:define>
