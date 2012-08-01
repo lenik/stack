@@ -34,6 +34,10 @@ public class FormatProperties {
         }
     }
 
+    public FormatPropertyLine removeProperty(String key) {
+        return map.remove(key);
+    }
+
     public void parse(IFile file)
             throws IOException, ParseException {
         parse(file.getName(), file.forRead().lines(true));
