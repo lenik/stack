@@ -253,9 +253,9 @@ public class MaterialAdminBean
             MaterialWarehouseOption _warehouseOption = warehouseOption.unmarshal();
             ctx.data.access(MaterialWarehouseOption.class).saveOrUpdate(_warehouseOption);
             ctx.data.access(Material.class).evict(_warehouseOption.getMaterial());
-            uiLogger.info("保存物料仓库选项成功.");
+            uiLogger.info("保存物料${inventoryTerms.warehouse}选项成功.");
         } catch (Exception e) {
-            uiLogger.error("保存物料仓库选项出错!", e);
+            uiLogger.error("保存物料${inventoryTerms.warehouse}选项出错!", e);
         }
     }
 
@@ -266,9 +266,9 @@ public class MaterialAdminBean
 
             ctx.data.access(MaterialWarehouseOption.class).delete(_warehouseOption);
             ctx.data.access(Material.class).evict(_warehouseOption.getMaterial());
-            uiLogger.info("删除物料仓库选项成功.");
+            uiLogger.info("删除物料${inventoryTerms.warehouse}选项成功.");
         } catch (Exception e) {
-            uiLogger.error("删除物料仓库选项出错!", e);
+            uiLogger.error("删除物料${inventoryTerms.warehouse}选项出错!", e);
         }
     }
 

@@ -126,7 +126,7 @@ public class PurchaseRequestAdminBean
         }
         for (PurchaseRequestItemDto item : purchaseRequest.getItems())
             if (DTOs.isNull(item.getDestWarehouse())) {
-                uiLogger.error("所有采购请求的明细都必须选择对应的入库仓库!");
+                uiLogger.error("所有采购请求的明细都必须选择对应的入库${inventoryTerms.warehouse}!");
                 return;
             }
         for (PurchaseRequestItemDto requestItem : purchaseRequest.getItems())

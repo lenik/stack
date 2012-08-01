@@ -165,7 +165,7 @@ public abstract class AbstractStockOrderBean
     @Override
     protected StockOrderDto create() {
         if (selectedWarehouseId == -1) {
-            uiLogger.error("请选择对应的仓库!");
+            uiLogger.error("请选择对应的${inventoryTerms.warehouse}!");
             return null;
         }
         if (subject == null) {
