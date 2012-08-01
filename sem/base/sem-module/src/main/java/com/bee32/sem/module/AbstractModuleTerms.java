@@ -1,17 +1,18 @@
 package com.bee32.sem.module;
 
+import java.util.Map;
+
 import javax.free.IllegalUsageException;
 
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.site.SiteInstance;
 import com.bee32.plover.site.cfg.SitePropertyPrefix;
-import com.bee32.plover.site.scope.PerSite;
 
 /**
  * You should annotate with @SiteConfigGroup in concrete implementations.
  */
-@PerSite
-public abstract class AbstractModuleTerms {
+public abstract class AbstractModuleTerms
+        implements ITermProvider {
 
     String propertyPrefix;
 
@@ -26,19 +27,55 @@ public abstract class AbstractModuleTerms {
         this.propertyPrefix = prefix;
     }
 
-    protected SiteInstance getSite() {
+    @Override
+    public Map<String, TermMetadata> getTermMap() {
+        return TermMetadata.getMetadataMap(getClass());
+    }
+
+    @Override
+    public TermMetadata getTermMetadata(String termName) {
+        TermMetadata metadata = TermMetadata.fromTermProperty(getClass(), termName);
+        return metadata;
+    }
+
+    @Override
+    public String getTermLabel(SiteInstance site, String termName) {
+        String propertyName = propertyPrefix + termName + ".label";
+        String label = site.getProperty(propertyName);
+        if (label == null)
+            label = getTermMetadata(termName).getLabel();
+        return label;
+    }
+
+    @Override
+    public void setTermLabel(SiteInstance site, String termName, String termLabel) {
+        String propertyName = propertyPrefix + termName + ".label";
+        site.setProperty(propertyName, termLabel);
+    }
+
+    @Override
+    public String getTermDescription(SiteInstance site, String termName) {
+        String propertyName = propertyPrefix + termName + ".description";
+        String description = site.getProperty(propertyName);
+        if (description == null)
+            description = getTermMetadata(termName).getDescription();
+        return description;
+    }
+
+    @Override
+    public void setTermDescription(SiteInstance site, String termName, String termDescription) {
+        String propertyName = propertyPrefix + termName + ".description";
+        site.setProperty(propertyName, termDescription);
+    }
+
+    public String getTermLabel(String termName) {
         SiteInstance site = ThreadHttpContext.getSiteInstance();
-        return site;
+        return getTermLabel(site, termName);
     }
 
-    protected String getProperty(String name) {
-        String propertyName = propertyPrefix + name;
-        return getSite().getProperty(propertyName);
-    }
-
-    protected void setProperty(String name, String value) {
-        String propertyName = propertyPrefix + name;
-        getSite().setProperty(propertyName, value);
+    public String getTermDescription(String termName) {
+        SiteInstance site = ThreadHttpContext.getSiteInstance();
+        return getTermDescription(site, termName);
     }
 
 }
