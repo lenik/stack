@@ -43,7 +43,7 @@ public class StockLocationAdminBean
     protected boolean postValidate(List<?> dtos)
             throws Exception {
         if (selectedWarehouseId == -1) {
-            uiLogger.warn("请先选择需要添加库位的${inventoryTerms.warehouse}");
+            uiLogger.warn("请先选择需要添加库位的${tr.inventory.warehouse}");
             return false;
         }
         StockLocationDto location = getOpenedObject();

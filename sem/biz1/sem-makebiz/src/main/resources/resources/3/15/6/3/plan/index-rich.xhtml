@@ -115,7 +115,7 @@
                         <p:column headerText="时间">
                             <h:outputText value="${entry.createdDate}" />
                         </p:column>
-                        <p:column headerText="${inventoryTerms.warehouse}">
+                        <p:column headerText="${tr.inventory.warehouse}">
                             <h:outputText value="${entry.warehouse.label}" />
                         </p:column>
                     </f:facet>
@@ -168,7 +168,7 @@
             <h:panelGrid columns="2">
                 <h:outputText value="时间:" />
                 <h:outputText value="#{item.createdDate}" />
-                <h:outputText value="${inventoryTerms.warehouse}:" />
+                <h:outputText value="${tr.inventory.warehouse}:" />
                 <h:outputText value="#{item.warehouse.label}" />
             </h:panelGrid>
             <p:separator />

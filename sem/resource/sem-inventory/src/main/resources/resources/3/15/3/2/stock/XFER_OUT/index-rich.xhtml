@@ -15,9 +15,9 @@
                 <h:outputText value="作业描述" />
                 <p:inputText id="jobDescription" label="作业描述" value="#{job.description}" />
 
-                <h:outputLabel for="destWarehouse" value="目标${inventoryTerms.warehouse}" />
-                <p:selectOneMenu id="destWarehouse" label="目标${inventoryTerms.warehouse}" style="width: 20em;" value="#{job.destWarehouse.id_RZ}">
-                    <f:selectItem itemValue="0" itemLabel="--选择${inventoryTerms.warehouse}--" />
+                <h:outputLabel for="destWarehouse" value="目标${tr.inventory.warehouse}" />
+                <p:selectOneMenu id="destWarehouse" label="目标${tr.inventory.warehouse}" style="width: 20em;" value="#{job.destWarehouse.id_RZ}">
+                    <f:selectItem itemValue="0" itemLabel="--选择${tr.inventory.warehouse}--" />
                     <f:selectItems value="#{stock.warehouseSelectItems}" />
                 </p:selectOneMenu>
 

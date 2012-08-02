@@ -92,13 +92,13 @@ public class SEMInventorySamples
         stockPolicy.setSubjectPolicy(StockOrderSubject.TAKE_OUT, verifyPolicies.robotList);
 
         mainWarehouse.setName("ASP-S");
-        mainWarehouse.setLabel(PREFIX + "宇航员杯具综合${inventoryTerms.warehouse}");
+        mainWarehouse.setLabel(PREFIX + "宇航员杯具综合${tr.inventory.warehouse}");
         mainWarehouse.setAddress("浙江省楚门镇城东路11号先锋杯具公司北");
         mainWarehouse.setPhone("911");
         mainWarehouse.setManager(people.jackPerson);
 
         rawWarehouse.setName("ASP-R");
-        rawWarehouse.setLabel(PREFIX + "宇航员杯具原材料${inventoryTerms.warehouse}");
+        rawWarehouse.setLabel(PREFIX + "宇航员杯具原材料${tr.inventory.warehouse}");
         mainWarehouse.setAddress("浙江省楚门镇城东路11号先锋杯具公司东厂");
 
         Calendar cal = Calendar.getInstance();

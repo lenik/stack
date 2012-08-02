@@ -89,7 +89,7 @@ public class DeliveryNoteAdminBean
 
         for (DeliveryNoteItemDto item : deliveryNote.getItems()) {
             if (DTOs.isNull(item.getSourceWarehouse())) {
-                uiLogger.error("所有送货单的明细都必须选择对应的出库${inventoryTerms.warehouse}!");
+                uiLogger.error("所有送货单的明细都必须选择对应的出库${tr.inventory.warehouse}!");
                 return;
             }
         }

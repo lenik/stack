@@ -97,7 +97,7 @@ public class UnqualifiedQueryBean
     // (readOnly = true)
     public void query() {
         if (selectedWarehouseId == -1) {
-            uiLogger.error("未选择${inventoryTerms.warehouse}!");
+            uiLogger.error("未选择${tr.inventory.warehouse}!");
             return;
         }
 

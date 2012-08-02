@@ -109,7 +109,7 @@
                         <p:column headerText="附加要求" styleClass="f-wrappable">
                             <h:outputText value="#{entry.additionalRequirement}" />
                         </p:column>
-                        <p:column headerText="入库${inventoryTerms.warehouse}">
+                        <p:column headerText="入库${tr.inventory.warehouse}">
                             <h:outputText value="#{entry.destWarehouse.label}" />
                         </p:column>
                         <p:column headerText="选定供应商">
@@ -163,9 +163,9 @@
                 <h:outputLabel value="附加要求:" />
                 <p:inputText value="#{item.additionalRequirement}" />
 
-                <h:outputLabel for="warehouse" value="入库${inventoryTerms.warehouse}：" />
-                <p:selectOneMenu id="warehouse" label="入库${inventoryTerms.warehouse}" value="#{bean.destWarehouseId_RZ}">
-                    <f:selectItem itemValue="0" itemLabel="--选择${inventoryTerms.warehouse}--" />
+                <h:outputLabel for="warehouse" value="入库${tr.inventory.warehouse}：" />
+                <p:selectOneMenu id="warehouse" label="入库${tr.inventory.warehouse}" value="#{bean.destWarehouseId_RZ}">
+                    <f:selectItem itemValue="0" itemLabel="--选择${tr.inventory.warehouse}--" />
                     <f:selectItems value="#{stock.warehouseSelectItems}" />
                 </p:selectOneMenu>
 
@@ -193,7 +193,7 @@
                 <p:column headerText="简要" styleClass="f-wrappable">
                     <h:outputText value="#{entry.stockOrder.label}" />
                 </p:column>
-                <p:column headerText="${inventoryTerms.warehouse}">
+                <p:column headerText="${tr.inventory.warehouse}">
                     <h:outputText value="#{entry.stockOrder.warehouse.label}" />
                 </p:column>
                 <p:column headerText="供应商" styleClass="f-wrappable">

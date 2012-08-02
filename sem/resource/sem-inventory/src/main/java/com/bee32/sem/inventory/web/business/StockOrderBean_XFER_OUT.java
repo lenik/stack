@@ -41,7 +41,7 @@ public class StockOrderBean_XFER_OUT
     protected boolean postValidate(List<?> dtos) {
         StockTransferDto stockTransfer = stepping.getOpenedObject();
         if (Nullables.equals(selectedWarehouseId, stockTransfer.getDestWarehouse().getId())) {
-            uiLogger.error("调拨源${inventoryTerms.warehouse}和目标${inventoryTerms.warehouse}不能相同");
+            uiLogger.error("调拨源${tr.inventory.warehouse}和目标${tr.inventory.warehouse}不能相同");
             return false;
         }
 

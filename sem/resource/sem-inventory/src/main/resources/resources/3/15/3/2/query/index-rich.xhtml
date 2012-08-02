@@ -15,9 +15,9 @@
             <p:toolbar>
                 <p:toolbarGroup>
                     <h:panelGrid columns="3">
-                        <h:outputLabel for="warehouse" value="${inventoryTerms.warehouse}：" />
-                        <p:selectOneMenu id="warehouse" label="${inventoryTerms.warehouse}" value="#{bean.selectedWarehouseId}">
-                            <f:selectItem itemValue="-1" itemLabel="--选择${inventoryTerms.warehouse}--" />
+                        <h:outputLabel for="warehouse" value="${tr.inventory.warehouse}：" />
+                        <p:selectOneMenu id="warehouse" label="${tr.inventory.warehouse}" value="#{bean.selectedWarehouseId}">
+                            <f:selectItem itemValue="-1" itemLabel="--选择${tr.inventory.warehouse}--" />
                             <f:selectItems value="#{stock.warehouseSelectItems}" />
                         </p:selectOneMenu>
                     </h:panelGrid>
@@ -180,7 +180,7 @@
                     <h:outputText value="规格型号:" />
                     <h:outputText value="#{bean.detailItem.material.modelSpec}" />
 
-                    <h:outputText value="所在${inventoryTerms.warehouse}:" />
+                    <h:outputText value="所在${tr.inventory.warehouse}:" />
                     <h:outputText value="#{bean.detailItem.parent.warehouse.label}" />
 
                     <h:outputText value="所在年月:" />
