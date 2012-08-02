@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.free.IllegalUsageException;
@@ -20,7 +19,8 @@ import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.arch.generic.IParameterized;
 import com.bee32.plover.arch.generic.IParameterizedType;
-import com.bee32.plover.arch.util.res.ResourceBundleUTF8;
+import com.bee32.plover.arch.util.res.INlsBundle;
+import com.bee32.plover.arch.util.res.NlsBundles;
 
 public class ClassUtil {
 
@@ -102,7 +102,7 @@ public class ClassUtil {
         String base = clazz.getName().replace('.', '/');
         String displayName = null;
         try {
-            ResourceBundle rb = ResourceBundleUTF8.getBundle(base);
+            INlsBundle rb = NlsBundles.getBundle(base);
             displayName = rb.getString("label");
         } catch (MissingResourceException e) {
             logger.error("Failed to get display name of " + clazz, e);

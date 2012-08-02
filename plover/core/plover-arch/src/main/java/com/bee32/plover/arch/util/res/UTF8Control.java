@@ -19,7 +19,7 @@ public class UTF8Control
         // The below code is copied from default Control#newBundle() implementation.
         // Only the PropertyResourceBundle line is changed to read the file as UTF-8.
         String bundleName = toBundleName(baseName, locale);
-        String resourceName = toResourceName(bundleName, ResourceBundleUTF8.BUNDLE_EXTENSION);
+        String resourceName = toResourceName(bundleName, NlsBundles.BUNDLE_EXTENSION);
         ResourceBundle bundle = null;
         InputStream stream = null;
         if (reload) {

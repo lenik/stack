@@ -6,7 +6,7 @@ import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.util.ResourceBundle.Control;
 
-public class ResourceBundleUTF8 {
+public class NlsBundles {
 
     public static final String BUNDLE_EXTENSION = "properties";
 
@@ -26,8 +26,9 @@ public class ResourceBundleUTF8 {
      *                if no resource bundle for the specified base name can be found
      * @return a resource bundle for the given base name and the default locale
      */
-    public static final ResourceBundle getBundle(String baseName) {
-        return ResourceBundle.getBundle(baseName, UTF8Control.INSTANCE);
+    public static final INlsBundle getBundle(String baseName) {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle(baseName, UTF8Control.INSTANCE);
+        return new NlsFromResourceBundle(resourceBundle);
     }
 
     /**
@@ -48,8 +49,9 @@ public class ResourceBundleUTF8 {
      *                if no resource bundle for the specified base name can be found
      * @return a resource bundle for the given base name and locale
      */
-    public static final ResourceBundle getBundle(String baseName, Locale locale) {
-        return ResourceBundle.getBundle(baseName, locale, UTF8Control.INSTANCE);
+    public static final INlsBundle getBundle(String baseName, Locale locale) {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle(baseName, locale, UTF8Control.INSTANCE);
+        return new NlsFromResourceBundle(resourceBundle);
     }
 
     /**
@@ -246,8 +248,9 @@ public class ResourceBundleUTF8 {
      *                if no resource bundle for the specified base name can be found
      * @since 1.2
      */
-    public static ResourceBundle getBundle(String baseName, Locale locale, ClassLoader loader) {
-        return ResourceBundle.getBundle(baseName, locale, UTF8Control.INSTANCE);
+    public static INlsBundle getBundle(String baseName, Locale locale, ClassLoader loader) {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle(baseName, locale, UTF8Control.INSTANCE);
+        return new NlsFromResourceBundle(resourceBundle);
     }
 
 }

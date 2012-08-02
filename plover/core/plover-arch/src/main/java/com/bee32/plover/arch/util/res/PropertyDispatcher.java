@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.Properties;
-import java.util.ResourceBundle;
 
 import javax.free.IllegalUsageException;
 import javax.free.PrefixMap;
@@ -40,8 +39,8 @@ public class PropertyDispatcher
         this(new MapProperties(properties));
     }
 
-    public PropertyDispatcher(ResourceBundle resourceBundle) {
-        this(new ResourceBundleProperties(resourceBundle));
+    public PropertyDispatcher(INlsBundle resourceBundle) {
+        this(new NlsBundleProperties(resourceBundle));
     }
 
     @Override

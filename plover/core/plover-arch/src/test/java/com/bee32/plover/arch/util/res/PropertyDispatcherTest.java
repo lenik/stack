@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.net.URL;
 import java.util.Properties;
-import java.util.ResourceBundle;
 import java.util.TreeMap;
 
 import org.junit.Test;
@@ -28,7 +27,7 @@ public class PropertyDispatcherTest {
         PropertyBuffer catSink = new PropertyBuffer();
         PropertyBuffer dogSink = new PropertyBuffer();
 
-        ResourceBundle bundle = ResourceBundleUTF8.getBundle(getClass().getName());
+        INlsBundle bundle = NlsBundles.getBundle(getClass().getName());
 
         PropertyDispatcher dispatcher = new PropertyDispatcher(bundle);
         dispatcher.addPrefixAcceptor("cat.", catSink);

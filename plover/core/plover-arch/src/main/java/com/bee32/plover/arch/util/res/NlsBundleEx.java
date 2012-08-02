@@ -4,9 +4,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
-public class ResourceBundleEx {
+public class NlsBundleEx {
 
     public static Map<String, String> load(Class<?> clazz) {
         Map<String, String> properties = new HashMap<String, String>();
@@ -49,9 +48,9 @@ public class ResourceBundleEx {
         if (baseSuffix != null)
             baseName += baseSuffix;
 
-        ResourceBundle bundle;
+        INlsBundle bundle;
         try {
-            bundle = ResourceBundleUTF8.getBundle(baseName);
+            bundle = NlsBundles.getBundle(baseName);
         } catch (MissingResourceException e) {
             // skip intermediates which don't have a resource bundle.
             return;

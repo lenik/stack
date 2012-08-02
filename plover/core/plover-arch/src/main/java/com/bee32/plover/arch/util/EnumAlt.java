@@ -6,9 +6,9 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
-import com.bee32.plover.arch.util.res.ResourceBundleUTF8;
+import com.bee32.plover.arch.util.res.INlsBundle;
+import com.bee32.plover.arch.util.res.NlsBundles;
 import com.bee32.plover.inject.ServiceTemplate;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.rtx.location.Locations;
@@ -156,9 +156,9 @@ public abstract class EnumAlt<V extends Serializable, self_t extends EnumAlt<V, 
         Locale locale = Locale.getDefault(); // SystemCLG.locale.get();
         String baseName = getClass().getName();
 
-        ResourceBundle rb;
+        INlsBundle rb;
         try {
-            rb = ResourceBundleUTF8.getBundle(baseName, locale);
+            rb = NlsBundles.getBundle(baseName, locale);
         } catch (MissingResourceException e) {
             return def;
         }

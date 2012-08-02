@@ -8,12 +8,12 @@ import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
 import javax.free.ClassLocal;
 import javax.free.IllegalUsageException;
 
-import com.bee32.plover.arch.util.res.ResourceBundleUTF8;
+import com.bee32.plover.arch.util.res.INlsBundle;
+import com.bee32.plover.arch.util.res.NlsBundles;
 
 public class TermMetadata {
 
@@ -102,11 +102,11 @@ public class TermMetadata {
         Map<String, TermMetadata> terms = new LinkedHashMap<>();
 
         String baseName = clazz.getName().replace('.', '/');
-        ResourceBundle bundle;
+        INlsBundle bundle;
         BeanInfo beanInfo;
 
         try {
-            bundle = ResourceBundleUTF8.getBundle(baseName);
+            bundle = NlsBundles.getBundle(baseName);
             beanInfo = Introspector.getBeanInfo(clazz);
         } catch (MissingResourceException e) {
             throw new IllegalUsageException(e.getMessage(), e);

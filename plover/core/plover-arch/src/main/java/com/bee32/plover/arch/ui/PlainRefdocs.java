@@ -7,13 +7,13 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeMap;
 
 import javax.free.IllegalUsageException;
 
-import com.bee32.plover.arch.util.res.ResourceBundleUTF8;
+import com.bee32.plover.arch.util.res.INlsBundle;
+import com.bee32.plover.arch.util.res.NlsBundles;
 
 /**
  * 平面化了的参考信息集。
@@ -95,15 +95,15 @@ public class PlainRefdocs
      */
     public static PlainRefdocs parseResource(Class<?> clazz, Locale locale) {
         String baseName = clazz.getName();
-        ResourceBundle bundle = ResourceBundleUTF8.getBundle(baseName, locale);
+        INlsBundle bundle = NlsBundles.getBundle(baseName, locale);
         return parseResource(bundle, clazz, locale);
     }
 
-    public static PlainRefdocs parseResource(ResourceBundle bundle, Locale locale) {
+    public static PlainRefdocs parseResource(INlsBundle bundle, Locale locale) {
         return parseResource(bundle, null, locale);
     }
 
-    static PlainRefdocs parseResource(ResourceBundle bundle, Class<?> clazz, Locale locale) {
+    static PlainRefdocs parseResource(INlsBundle bundle, Class<?> clazz, Locale locale) {
         RefdocsBuilder builder = new RefdocsBuilder();
 
         Enumeration<String> keys = bundle.getKeys();

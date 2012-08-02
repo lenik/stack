@@ -3,7 +3,6 @@ package com.bee32.plover.arch.util.res;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.free.ClassLocal;
@@ -11,7 +10,7 @@ import javax.free.ClassLocal;
 public class ClassResourceProperties
         extends AbstractProperties {
 
-    private ResourceBundle resourceBundle;
+    private INlsBundle nlsBundle;
 
     ClassResourceProperties(Class<?> clazz) {
         this(clazz, Locale.getDefault());
@@ -27,19 +26,19 @@ public class ClassResourceProperties
         String baseName = clazz.getName();
 
         try {
-            this.resourceBundle = ResourceBundleUTF8.getBundle(baseName, locale);
+            this.nlsBundle = NlsBundles.getBundle(baseName, locale);
         } catch (MissingResourceException e) {
-            this.resourceBundle = null;
+            this.nlsBundle = null;
         }
     }
 
     @Override
     public String get(String key) {
-        if (resourceBundle == null)
+        if (nlsBundle == null)
             return null;
         else
             try {
-                return resourceBundle.getString(key);
+                return nlsBundle.getString(key);
             } catch (MissingResourceException e) {
                 return null;
             }
@@ -47,10 +46,10 @@ public class ClassResourceProperties
 
     @Override
     public Set<String> keySet() {
-        if (resourceBundle == null)
+        if (nlsBundle == null)
             return Collections.emptySet();
         else
-            return resourceBundle.keySet();
+            return nlsBundle.keySet();
     }
 
     static ClassLocal<ClassResourceProperties> instances = new ClassLocal<>();

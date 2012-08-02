@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class TermProviderResolver
         extends AbstractMap<String, ITermProvider> {
 
-    TermMessageInterpolator interpolator = TermMessageInterpolator.getInstance();
+    // TermMessageInterpolator interpolator = TermMessageInterpolator.getInstance();
 
     @Override
     public ITermProvider get(Object key) {
