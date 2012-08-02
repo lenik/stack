@@ -10,7 +10,7 @@ public class AppProfileManager {
 
     static {
         profileMap = new TreeMap<String, IAppProfile>();
-        for (IAppProfile profile : ServiceLoader.load(AppProfile.class)) {
+        for (IAppProfile profile : ServiceLoader.load(IAppProfile.class)) {
             // profile.getName();
             String profileName = profile.getClass().getSimpleName();
             profileMap.put(profileName, profile);
