@@ -3,6 +3,8 @@ package com.bee32.plover.test;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,6 +16,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.free.JavaioFile;
+import javax.free.UnexpectedException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,9 +56,19 @@ public abstract class ServiceCollector<T> {
     Map<File, List<String>> commitMap;
 
     public ServiceCollector() {
-        URLClassLoader scl = (URLClassLoader) DefaultClassLoader.getInstance();
-        URLClassLoader tcl = TestClassLoader.createMavenTestClassLoader(scl);
-        scanner.setClassLoader(tcl);
+        this(null);
+    }
+
+    public ServiceCollector(Boolean global) {
+        if (global == null)
+            global = getClass().getName().contains(".uber.");
+
+        URLClassLoader mainLoader = (URLClassLoader) DefaultClassLoader.getInstance();
+        if (!global)
+            mainLoader = restrictLoader(mainLoader, getClass());
+
+        URLClassLoader testLoader = TestClassLoader.createMavenTestClassLoader(mainLoader);
+        scanner.setClassLoader(testLoader);
 
         serviceClass = ClassUtil.infer1(getClass(), ServiceCollector.class, 0);
         try {
@@ -66,7 +79,31 @@ public abstract class ServiceCollector<T> {
         }
     }
 
-    protected void collect()
+    static URLClassLoader restrictLoader(URLClassLoader loader, Class<?> clazz) {
+        String implClass = clazz.getName().replace('.', '/') + ".class";
+        URL _url = loader.getResource(implClass);
+
+        String _path = _url.toString();
+        if (!_path.endsWith(implClass))
+            throw new UnexpectedException("Unexpected URL:  " + _url);
+        _path = _path.substring(0, _path.length() - implClass.length());
+        if (_path.endsWith("/") || _path.endsWith("\\"))
+            _path = _path.substring(0, _path.length() - 1);
+        if (_path.endsWith("!"))
+            _path = _path.substring(0, _path.length() - 1);
+
+        URL folderUrl;
+        try {
+            folderUrl = new URL(_path);
+        } catch (MalformedURLException e) {
+            throw new UnexpectedException(e);
+        }
+
+        loader = new URLClassLoader(new URL[] { folderUrl });
+        return loader;
+    }
+
+    public void collect()
             throws IOException {
         ServiceCollector<T> wired = this;
 
@@ -103,13 +140,17 @@ public abstract class ServiceCollector<T> {
         }
     }
 
-    protected void publish(Class<?> serviceClass, Class<?> serviceImpl) {
+    /**
+     * @return <code>false</code> if the serviceImpl is ignored. For example, it's not a service, or
+     *         it's in a jar.
+     */
+    protected boolean publish(Class<?> serviceClass, Class<?> serviceImpl) {
         logger.info("    Service: " + serviceImpl);
 
         ServiceTemplate _serviceTemplate = serviceImpl.getAnnotation(ServiceTemplate.class);
         if (_serviceTemplate == null) {
             logger.debug("        (No service-template annotation, skipped)");
-            return;
+            return false;
         }
 
         serviceImpls.add(serviceImpl);
@@ -117,11 +158,14 @@ public abstract class ServiceCollector<T> {
         int mod = serviceImpl.getModifiers();
         if (Modifier.isAbstract(mod)) {
             if (!_serviceTemplate.prototype())
-                return;
+                return false;
             logger.debug("    (Abstract class included for prototype)");
         }
 
         File resdir = MavenPath.getResourceDir(serviceImpl);
+        if (resdir == null)
+            return false;
+
         File sfile;
 
         if (_serviceTemplate.prototype())
@@ -136,6 +180,7 @@ public abstract class ServiceCollector<T> {
         }
 
         lines.add(serviceImpl.getName());
+        return true;
     }
 
     protected Collection<Class<?>> getExtensions(Class<?> base, boolean includeAbstract) {
