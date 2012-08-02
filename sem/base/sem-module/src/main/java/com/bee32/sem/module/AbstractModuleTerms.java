@@ -4,13 +4,15 @@ import java.util.Map;
 
 import javax.free.IllegalUsageException;
 
+import com.bee32.plover.inject.ServiceTemplate;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.site.SiteInstance;
 import com.bee32.plover.site.cfg.SitePropertyPrefix;
 
 /**
- * You should annotate with @SiteConfigGroup in concrete implementations.
+ * You should annotate with &#64;{@link SitePropertyPrefix} in concrete implementations.
  */
+@ServiceTemplate
 public abstract class AbstractModuleTerms
         implements ITermProvider {
 
