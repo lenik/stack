@@ -1,4 +1,4 @@
-package com.bee32.sem.module;
+package com.bee32.sem.term;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 

@@ -3,8 +3,8 @@ package com.bee32.sem.inventory;
 import org.springframework.stereotype.Component;
 
 import com.bee32.plover.site.cfg.SitePropertyPrefix;
-import com.bee32.sem.module.AbstractModuleTerms;
-import com.bee32.sem.module.Term;
+import com.bee32.sem.term.AbstractModuleTerms;
+import com.bee32.sem.term.Term;
 
 @Component("inventoryTerms")
 @SitePropertyPrefix("inventory.term")

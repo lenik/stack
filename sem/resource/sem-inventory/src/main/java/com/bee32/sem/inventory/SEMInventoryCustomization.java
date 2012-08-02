@@ -1,7 +1,7 @@
 package com.bee32.sem.inventory;
 
 import com.bee32.sem.module.AbstractModuleCustomization;
-import com.bee32.sem.module.ITermProvider;
+import com.bee32.sem.term.ITermProvider;
 
 public class SEMInventoryCustomization
         extends AbstractModuleCustomization {

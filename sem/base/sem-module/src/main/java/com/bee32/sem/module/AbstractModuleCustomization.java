@@ -9,6 +9,8 @@ import com.bee32.plover.html.SimpleForm;
 import com.bee32.plover.servlet.util.HttpAssembledContext;
 import com.bee32.plover.site.SiteInstance;
 import com.bee32.plover.site.cfg.AbstractSiteConfigBlock;
+import com.bee32.sem.term.ITermProvider;
+import com.bee32.sem.term.TermMetadata;
 
 public abstract class AbstractModuleCustomization
         extends AbstractSiteConfigBlock {

@@ -1,4 +1,4 @@
-package com.bee32.sem.module;
+package com.bee32.sem.term;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;

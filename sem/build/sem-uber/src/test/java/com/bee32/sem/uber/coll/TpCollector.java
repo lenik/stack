@@ -3,7 +3,7 @@ package com.bee32.sem.uber.coll;
 import java.io.IOException;
 
 import com.bee32.plover.test.ServiceCollector;
-import com.bee32.sem.module.ITermProvider;
+import com.bee32.sem.term.ITermProvider;
 
 public class TpCollector
         extends ServiceCollector<ITermProvider> {
