@@ -17,17 +17,30 @@ public class NlsFromResourceBundle
 
     @Override
     public String getString(String key) {
-        return resourceBundle.getString(key);
+        String message = resourceBundle.getString(key);
+        message = NlsMessageProcessors.processMessage(message);
+        return message;
     }
 
     @Override
     public String[] getStringArray(String key) {
-        return resourceBundle.getStringArray(key);
+        String[] src = resourceBundle.getStringArray(key);
+        String[] dst = new String[src.length];
+        for (int i = 0; i < src.length; i++) {
+            dst[i] = NlsMessageProcessors.processMessage(src[i]);
+        }
+        return dst;
     }
 
     @Override
     public Object getObject(String key) {
-        return resourceBundle.getObject(key);
+        Object value = resourceBundle.getObject(key);
+        if (value instanceof String) {
+            String message = (String) value;
+            message = NlsMessageProcessors.processMessage(message);
+            return message;
+        } else
+            return value;
     }
 
     @Override
