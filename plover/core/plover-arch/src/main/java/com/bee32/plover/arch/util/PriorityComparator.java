@@ -19,13 +19,7 @@ public class PriorityComparator
         int h1 = System.identityHashCode(o1);
         int h2 = System.identityHashCode(o2);
         cmp = h1 - h2;
-        if (cmp != 0)
-            return cmp;
-
-        if (!o1.equals(o2))
-            return -2;
-
-        return 0;
+        return cmp;
     }
 
     public static final PriorityComparator INSTANCE = new PriorityComparator();
