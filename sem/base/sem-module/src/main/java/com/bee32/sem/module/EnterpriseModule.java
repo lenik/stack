@@ -9,6 +9,7 @@ import com.bee32.plover.orm.util.ERModule;
 import com.bee32.plover.site.cfg.ISiteConfigBlock;
 import com.bee32.plover.test.ServiceCollector;
 import com.bee32.sem.frame.menu.MenuComposite;
+import com.bee32.sem.term.ITermProvider;
 
 /**
  * Module contributions for the menu:
