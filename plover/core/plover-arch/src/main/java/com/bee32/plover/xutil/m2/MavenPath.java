@@ -31,17 +31,24 @@ public class MavenPath {
         return new File(path);
     }
 
+    /**
+     * @return <code>null</code> if the class file is in jar.
+     */
     public static File getClassFile(Class<?> clazz) {
         String resName = clazz.getName().replace('.', '/') + ".class";
         URL url = clazz.getClassLoader().getResource(resName);
+        if (!url.getProtocol().equals("file"))
+            return null;
+
         URI uri;
         try {
             uri = url.toURI();
+            return new File(uri);
         } catch (URISyntaxException e) {
             throw new RuntimeException(e.getMessage(), e);
+        } catch (IllegalArgumentException e) {
+            throw e;
         }
-        File file = new File(uri);
-        return file;
     }
 
     public static File getSiblingResource(File dir) {
@@ -67,8 +74,13 @@ public class MavenPath {
         return path;
     }
 
+    /**
+     * @return <code>null</code> if the class file is in jar.
+     */
     public static File getResourceDir(Class<?> clazz) {
         File classFile = getClassFile(clazz);
+        if (classFile == null)
+            return null;
 
         // foo/target/classes/ => foo/src/main/java/
         // foo/target/test-classes/ => foo/src/test/java/
