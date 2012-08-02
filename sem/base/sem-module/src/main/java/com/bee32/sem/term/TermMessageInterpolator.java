@@ -12,7 +12,7 @@ public class TermMessageInterpolator
     String rootVar = "tr";
 
     public TermMessageInterpolator() {
-        super("$\\{(.*?)\\}");
+        super("\\$\\{(.*?)\\}");
     }
 
     @Override
@@ -42,7 +42,7 @@ public class TermMessageInterpolator
         print(termLabel);
     }
 
-    static TermMessageInterpolator instance;
+    static TermMessageInterpolator instance = new TermMessageInterpolator();
 
     public static TermMessageInterpolator getInstance() {
         return instance;
