@@ -6,6 +6,7 @@ com.bee32.sem.hr.entity.LaborContract
 com.bee32.sem.hr.entity.PersonEducationType
 com.bee32.sem.hr.entity.PersonSkill
 com.bee32.sem.hr.entity.PersonSkillCategory
+com.bee32.sem.hr.entity.PersonSkillCategoryLevel
 com.bee32.sem.people.entity.Contact
 com.bee32.sem.people.entity.ContactCategory
 com.bee32.sem.people.entity.ContactXP

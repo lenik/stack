@@ -6,6 +6,8 @@ com.bee32.sem.chance.entity.ChanceCompetitor
 com.bee32.sem.chance.entity.ChanceParty
 com.bee32.sem.chance.entity.ChanceSourceType
 com.bee32.sem.chance.entity.ChanceStage
+com.bee32.sem.chance.entity.ProcurementMethod
+com.bee32.sem.chance.entity.PurchaseRegulation
 com.bee32.sem.chance.entity.WantedProduct
 com.bee32.sem.chance.entity.WantedProductAttribute
 com.bee32.sem.chance.entity.WantedProductQuotation
