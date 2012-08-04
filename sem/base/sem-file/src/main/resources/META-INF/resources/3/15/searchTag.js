@@ -9,10 +9,13 @@ function searchTag(event) {
     PrimeFaces.ajax.AjaxRequest({
         formId : 'searchForm',
         source : 'searchForm:searchTag',
-        params : {
-            id : tagId,
-            name : tagName
-        },
+        params : [ {
+            name : 'id',
+            value : tagId
+        }, {
+            name : 'name',
+            value : tagName
+        } ],
         process : '@all',
         update : 'searchForm mainForm'
     });
