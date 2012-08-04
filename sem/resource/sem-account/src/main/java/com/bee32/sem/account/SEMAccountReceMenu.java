@@ -23,6 +23,7 @@ public class SEMAccountReceMenu
     public MenuNode queryRece = menu(RECE, 50, "queryRece");
     /**/MenuNode balanceSheetRece = entry(queryRece, 1, "balanceSheetRece", __.join("balanceSheetRece/"));
     /**/MenuNode detailRece = entry(queryRece, 10, "detailRece", __.join("detailRece/"));
+    /**/MenuNode verificationQueryRece = entry(queryRece, 20, "verificationQueryRece", __.join("verificationQueryRece/"));
 //    /**/MenuNode receivableAccountAge = entry(queryRece, 30, "receivableAccountAge", __.join("receivableAccountAge/"));
 //    /**/MenuNode receivedAccountAge = entry(queryRece, 40, "receivedAccountAge", __.join("receivedAccountAge/"));
 //    /**/MenuNode arrearageAnalysis = entry(queryRece, 50, "arrearageAnalysis", __.join("arrearageAnalysis/"));
