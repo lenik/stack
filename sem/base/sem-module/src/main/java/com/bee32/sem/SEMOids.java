@@ -44,6 +44,7 @@ public interface SEMOids {
         int Chance = 1;
         int Purchase = 2;
         int Makebiz = 3;
+        int Wage = 4;
     }
 
     interface support {

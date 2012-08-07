@@ -10,8 +10,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
 import com.bee32.plover.ox1.color.UIEntityAuto;
+import com.bee32.sem.attendance.entity.AttendanceMR;
 import com.bee32.sem.hr.entity.EmployeeInfo;
-import com.bee32.sem.wage.attendance.entity.AttendanceMR;
 
 /**
  * 基础工资
