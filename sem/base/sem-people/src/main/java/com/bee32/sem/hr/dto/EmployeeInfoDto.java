@@ -1,5 +1,6 @@
 package com.bee32.sem.hr.dto;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +21,8 @@ public class EmployeeInfoDto
 
     PersonDto person;
 
+    BigDecimal baseSalary;
+    boolean motorist;
     JobPostDto role;
     JobTitleDto title;
     JobPerformanceDto jobPerformance;
@@ -48,6 +51,8 @@ public class EmployeeInfoDto
     @Override
     protected void _marshal(EmployeeInfo source) {
         person = mref(PersonDto.class, source.getPerson());
+        baseSalary = source.getBaseSalary();
+        motorist = source.isMotorist();
         role = mref(JobPostDto.class, source.getRole());
         title = mref(JobTitleDto.class, source.getTitle());
         jobPerformance = mref(JobPerformanceDto.class, source.getJobPerformance());
@@ -60,7 +65,8 @@ public class EmployeeInfoDto
         StringBuffer sb = new StringBuffer();
         for (PersonSkillDto skill : skills) {
             int score = skill.getScore();
-//            selectedLevels.add(skill.getCategory().getId() + ":" + skill.getScore() + ":" + skill.getLevelLabel(score));
+// selectedLevels.add(skill.getCategory().getId() + ":" + skill.getScore() + ":" +
+// skill.getLevelLabel(score));
             if (sb.length() == 0)
                 sb.append(skill.getLevelLabel(score));
             else
@@ -74,6 +80,8 @@ public class EmployeeInfoDto
     @Override
     protected void _unmarshalTo(EmployeeInfo target) {
         merge(target, "person", person);
+        target.setBaseSalary(baseSalary);
+        target.setMotorist(motorist);
         merge(target, "role", role);
         merge(target, "title", title);
         merge(target, "jobPerformance", jobPerformance);
@@ -95,6 +103,22 @@ public class EmployeeInfoDto
 
     public void setPerson(PersonDto person) {
         this.person = person;
+    }
+
+    public BigDecimal getBaseSalary() {
+        return baseSalary;
+    }
+
+    public void setBaseSalary(BigDecimal baseSalary) {
+        this.baseSalary = baseSalary;
+    }
+
+    public boolean isMotorist() {
+        return motorist;
+    }
+
+    public void setMotorist(boolean motorist) {
+        this.motorist = motorist;
     }
 
     public JobPostDto getRole() {

@@ -47,18 +47,15 @@
     </ui:define>
 
     <ui:define name="editDialogContent">
-        <h:outputStylesheet>
-            .ui-selectcheckboxmenu-panel{
-            zindex:100000;
-            }
-        </h:outputStylesheet>
         <t:panelGrid columns="4">
             <h:outputText value="选择人员:" />
-            <t:panelGroup colspan="3" id="internalPerson">
+            <t:panelGroup id="internalPerson">
                 <h:inputHidden label="人员" value="#{obj.person.id_RZ}" />
                 <p:inputText value="#{obj.person.displayName}" readonly="#{true}" />
                 <p:commandButton value="..." onclick="choosePersonDialog.show()" />
             </t:panelGroup>
+            <h:outputText value="基础工资" />
+            <p:inputText value="${obj.baseSalary}" />
 
             <h:outputText value="入职日期" />
             <p:calendar navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{obj.employedDate}"

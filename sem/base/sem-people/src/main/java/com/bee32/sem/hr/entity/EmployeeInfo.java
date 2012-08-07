@@ -1,5 +1,6 @@
 package com.bee32.sem.hr.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -29,6 +30,8 @@ public class EmployeeInfo
 
     Person person;
 
+    BigDecimal baseSalary = new BigDecimal(0);
+    boolean motorist;
     JobPost role; // =predefined(JobPosts.class);
     JobTitle title;
     JobPerformance jobPerformance;
@@ -53,6 +56,8 @@ public class EmployeeInfo
     protected void _populate(EmployeeInfo o) {
         super._populate(o);
         person = o.person;
+        baseSalary = o.baseSalary;
+        motorist = o.motorist;
         role = o.role;
         title = o.title;
         jobPerformance = o.jobPerformance;
@@ -72,6 +77,22 @@ public class EmployeeInfo
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    public BigDecimal getBaseSalary() {
+        return baseSalary;
+    }
+
+    public void setBaseSalary(BigDecimal baseSalary) {
+        this.baseSalary = baseSalary;
+    }
+
+    public boolean isMotorist() {
+        return motorist;
+    }
+
+    public void setMotorist(boolean motorist) {
+        this.motorist = motorist;
     }
 
     /**
