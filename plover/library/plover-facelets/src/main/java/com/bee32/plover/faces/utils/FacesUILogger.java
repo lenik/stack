@@ -10,6 +10,7 @@ import javax.free.LogLevel;
 import javax.free.NullLogSink;
 
 import com.bee32.plover.arch.logging.EltManager;
+import com.bee32.plover.arch.util.res.NlsMessageProcessors;
 import com.bee32.plover.faces.FetManager;
 
 public class FacesUILogger
@@ -75,6 +76,8 @@ public class FacesUILogger
         }
 
         protected void log(String text, Throwable exception) {
+            text = NlsMessageProcessors.processMessage(text);
+
             int colon = text.indexOf(':');
             String title;
             String message;
@@ -87,6 +90,7 @@ public class FacesUILogger
                 if (message.startsWith(";")) // title:;cont-message
                     message = title + message.substring(1);
             }
+
             // title = encodeHtml(title);
             message = encodeHtml(message);
 
