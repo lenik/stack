@@ -56,7 +56,7 @@
 
                             <h:panelGroup id="dataContainer" layout="block">
                                 <ui:insert name="dataContainer">
-                                    <p:dataTable id="dataTable" var="entry" value="${bean.dataModel}"
+                                    <p:dataTable id="dataTable" var="entry" value="${bean.dataModel}" lazy="true"
                                         selection="${bean.singleSelection}" selectionMode="single" paginator="true"
                                         rows="${viewConfig.pageSize}" paginatorTemplate="${viewConfig.paginatorTemplate}"
                                         rowsPerPageTemplate="${viewConfig.pageSizeTemplate}" resizableColumns="true"
