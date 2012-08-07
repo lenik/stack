@@ -38,9 +38,9 @@ public class SEMPeopleMenu
     /**/MenuNode partyRecordCategory = mode(X_RECORDS) ? entry(SETTINGS, 5, "partyRecordCategory",
             getDictIndex(PartyRecordCategory.class)) : null;
 
-    public MenuNode EMPLOYEE = menu(PEOPLE, 25, "employee");
+    public MenuNode EMPLOYEE = menu(PEOPLE, 25, "EMPLOYEE");
     /**/MenuNode employeeAdmin = entry(EMPLOYEE, 1, "employeeAdmin", prefix.join("employee/"));
-    /**/MenuNode EMPLOYEE_DICTS = menu(EMPLOYEE, 2, "employeeDicts");
+    /**/MenuNode EMPLOYEE_DICTS = menu(EMPLOYEE, 2, "EMPLOYEE_DICTS");
     /*    */MenuNode jobTitle = entry(EMPLOYEE_DICTS, 1, "jobTitle", getDictIndex(JobTitle.class));
     /*    */MenuNode jobPost = entry(EMPLOYEE_DICTS, 2, "jobPost", getDictIndex(JobPost.class));
     /*    */MenuNode educationType = entry(EMPLOYEE_DICTS, 3, "educationType", getDictIndex(PersonEducationType.class));
