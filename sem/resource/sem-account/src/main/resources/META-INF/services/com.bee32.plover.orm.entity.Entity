@@ -9,10 +9,12 @@ com.bee32.sem.account.entity.Note
 com.bee32.sem.account.entity.NoteBalancing
 com.bee32.sem.account.entity.NotePayable
 com.bee32.sem.account.entity.NoteReceivable
-com.bee32.sem.account.entity.Paied
+com.bee32.sem.account.entity.Paid
 com.bee32.sem.account.entity.Payable
 com.bee32.sem.account.entity.PayableInit
 com.bee32.sem.account.entity.Receivable
 com.bee32.sem.account.entity.ReceivableInit
 com.bee32.sem.account.entity.Received
 com.bee32.sem.account.entity.Verification
+com.bee32.sem.account.entity.VerificationPay
+com.bee32.sem.account.entity.VerificationRece
