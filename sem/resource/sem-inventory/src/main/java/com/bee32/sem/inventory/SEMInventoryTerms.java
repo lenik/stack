@@ -38,4 +38,15 @@ public class SEMInventoryTerms
         return getTermLabel("batch5");
     }
 
+    @Term
+    public String getBatchSize() {
+        return getTermLabel("batchSize");
+    }
+
+    static SEMInventoryTerms instance = new SEMInventoryTerms();
+
+    public static SEMInventoryTerms getInstance() {
+        return instance;
+    }
+
 }

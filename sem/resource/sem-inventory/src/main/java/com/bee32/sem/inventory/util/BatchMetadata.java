@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.bee32.plover.faces.utils.FacesAssembledContext;
 import com.bee32.plover.site.scope.PerSite;
+import com.bee32.sem.inventory.SEMInventoryTerms;
 
 @PerSite
 @Component
@@ -16,25 +17,31 @@ public class BatchMetadata
 
     private static final long serialVersionUID = 1L;
 
-    public int arraySize;
-    public List<Integer> indexes;
-    public List<Integer> indexes_1;
-    public List<String> labels;
-    public List<String> labels_1;
+    public int arraySize = 1;
+    public List<Integer> indexes = new ArrayList<Integer>();
+    public List<Integer> indexes_1 = new ArrayList<Integer>();
+    public List<String> labels = new ArrayList<String>();
+    public List<String> labels_1 = new ArrayList<String>();
+
+    static SEMInventoryTerms terms = SEMInventoryTerms.getInstance();
 
     public BatchMetadata() {
-        arraySize = 3;
-        indexes = new ArrayList<Integer>();
-        indexes_1 = new ArrayList<Integer>();
-        labels = new ArrayList<String>();
-        labels_1 = new ArrayList<String>();
-        for (int i = 0; i < arraySize; i++)
-            if (i == 0) {
+        String _batchSize = terms.getTermLabel("batchSize");
+        if (_batchSize != null)
+            try {
+                arraySize = Integer.parseInt(_batchSize) + 1;
+            } catch (NumberFormatException e) {
+                arraySize = 1;
+            }
+
+        for (int index = 0; index < arraySize; index++)
+            if (index == 0) {
                 indexes.add(0);
                 labels.add("批号");
             } else {
-                int index = i;
-                String label = "编组" + i;
+                // String label = "编组" + index;
+                String label = terms.getTermLabel("batch" + index);
+
                 indexes.add(index);
                 indexes_1.add(index);
                 labels.add(label);
@@ -46,10 +53,16 @@ public class BatchMetadata
         return arraySize;
     }
 
+    /**
+     * Index numbers (0-based)
+     */
     public List<Integer> getIndexes() {
         return indexes;
     }
 
+    /**
+     * Index numbers (1-based)
+     */
     public List<Integer> getIndexes_1() {
         return indexes_1;
     }
