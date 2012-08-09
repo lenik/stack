@@ -21,6 +21,14 @@
         </h:panelGrid>
     </ui:define>
 
+    <ui:define name="toolbar.left">
+        <p:separator />
+        <p:commandButton id="exportToPdf" value="PDF" actionListener="${bean.exportToPdf}"
+            disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" ajax="false">
+            <p:fileDownload value="#{bean.pdfFile}" />
+        </p:commandButton>
+    </ui:define>
+
     <ui:define name="dataColumns">
         <p:column headerText="时间" sortBy="#{entry.createDate}">
             <h:outputText value="#{entry.createDate}" >
@@ -62,9 +70,9 @@
                     <p:inputText label="描述" value="#{obj.description}" />
                 </t:panelGroup>
 
-                <h:outputText value="对应公司" />
+                <h:outputText value="对应企业组织/人员" />
                 <t:panelGroup>
-                    <p:inputText id="party" label="对应公司" value="#{obj.org.displayName}" readonly="true" />
+                    <p:inputText id="party" label="对应企业组织/人员" value="#{obj.org.displayName}" readonly="true" />
                     <p:commandButton value="..." oncomplete="choosePartyDialog.show()" />
                 </t:panelGroup>
                 <h:outputText value="对应部门" />

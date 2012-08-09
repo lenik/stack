@@ -85,6 +85,14 @@
                             <h:outputText value="#{entry.material.modelSpec}" />
                         </p:column>
 
+                        <p:column headerText="外部名称" styleClass="f-wrappable">
+                            <h:outputText value="#{entry.orderItem.externalProductName}" />
+                        </p:column>
+
+                        <p:column headerText="外部规格" styleClass="f-wrappable">
+                            <h:outputText value="#{entry.orderItem.externalModelSpec}" />
+                        </p:column>
+
                         <p:column headerText="单价" styleClass="f-right">
                             <h:outputText value="#{entry.price}" />
                         </p:column>

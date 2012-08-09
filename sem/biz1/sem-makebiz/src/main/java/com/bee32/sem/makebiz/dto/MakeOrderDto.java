@@ -38,7 +38,7 @@ public class MakeOrderDto
     public static final int NOT_ARRANGED_ITEMS = 16 | ITEMS;
     public static final int NOT_DELIVERIED_ITEMS = 32 | ITEMS;
 
-    public static final int ITEM_ATTRIBUTES = 64;
+    public static final int ITEM_ATTRIBUTES = 128;
 
     PartyDto customer;
     String status;
@@ -97,6 +97,7 @@ public class MakeOrderDto
             notArrangedItems = marshalList(MakeOrderItemDto.class, source.getNotArrangedItems());
         else
             notArrangedItems = Collections.emptyList();
+
 
         if (selection.contains(NOT_DELIVERIED_ITEMS))
             notDeliveriedItems = marshalList(MakeOrderItemDto.class, source.getNotDeliveriedItems());
@@ -254,6 +255,7 @@ public class MakeOrderDto
         for (MakeOrderItemDto orderItem : notDeliveriedItems) {
             DeliveryNoteItemDto deliveryNoteItem = new DeliveryNoteItemDto().create();
             deliveryNoteItem.setMaterial(orderItem.getMaterial());
+            deliveryNoteItem.setOrderItem(orderItem);
             deliveryNoteItem.setPrice(orderItem.getPrice());
             deliveryNoteItem.setQuantity(orderItem.getQuantity());
 

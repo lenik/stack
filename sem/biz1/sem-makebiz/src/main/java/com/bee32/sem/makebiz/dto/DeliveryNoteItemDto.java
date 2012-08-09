@@ -21,12 +21,14 @@ public class DeliveryNoteItemDto
 
     DeliveryNoteDto parent;
     MaterialDto material;
+    MakeOrderItemDto orderItem;
     StockWarehouseDto sourceWarehouse;
 
     @Override
     protected void _marshal(DeliveryNoteItem source) {
         parent = mref(DeliveryNoteDto.class, source.getParent());
         material = mref(MaterialDto.class, source.getMaterial());
+        orderItem = mref(MakeOrderItemDto.class, source.getOrderItem());
         sourceWarehouse = mref(StockWarehouseDto.class, source.getSourceWarehouse());
     }
 
@@ -34,6 +36,7 @@ public class DeliveryNoteItemDto
     protected void _unmarshalTo(DeliveryNoteItem target) {
         merge(target, "parent", parent);
         merge(target, "material", material);
+        merge(target, "orderItem", orderItem);
         merge(target, "sourceWarehouse", sourceWarehouse);
     }
 
@@ -74,6 +77,14 @@ public class DeliveryNoteItemDto
 
     public void setMaterial(MaterialDto material) {
         this.material = material;
+    }
+
+    public MakeOrderItemDto getOrderItem() {
+        return orderItem;
+    }
+
+    public void setOrderItem(MakeOrderItemDto orderItem) {
+        this.orderItem = orderItem;
     }
 
     public StockWarehouseDto getSourceWarehouse() {

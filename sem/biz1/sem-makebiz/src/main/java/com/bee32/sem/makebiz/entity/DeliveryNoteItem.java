@@ -32,6 +32,8 @@ public class DeliveryNoteItem
     DeliveryNote parent;
     Material material;
 
+    MakeOrderItem orderItem;
+
     StockWarehouse sourceWarehouse;
 
     @NaturalId
@@ -54,6 +56,15 @@ public class DeliveryNoteItem
 
     public void setMaterial(Material material) {
         this.material = material;
+    }
+
+    @ManyToOne
+    public MakeOrderItem getOrderItem() {
+        return orderItem;
+    }
+
+    public void setOrderItem(MakeOrderItem orderItem) {
+        this.orderItem = orderItem;
     }
 
     @ManyToOne

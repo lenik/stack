@@ -176,22 +176,23 @@ public class MakeOrder
         return sumMap;
     }
 
+
     /**
-     * Sum of part quantity in each delivery note item.
+     * Sum of part quantity in each delivery note item(on orderItem).
      *
      * @aka deliveryNoteItemListToMap
      */
     @Transient
-    Map<Material, BigDecimal> getDeliveriedPartSum() {
-        Map<Material, BigDecimal> sumMap = new HashMap<Material, BigDecimal>();
+    Map<MakeOrderItem, BigDecimal> getDeliveriedPartSum() {
+        Map<MakeOrderItem, BigDecimal> sumMap = new HashMap<MakeOrderItem, BigDecimal>();
         for (DeliveryNote note : deliveryNotes) {
             for (DeliveryNoteItem deliveryNoteItem : note.getItems()) {
-                BigDecimal sum = sumMap.get(deliveryNoteItem.getMaterial());
+                BigDecimal sum = sumMap.get(deliveryNoteItem.getOrderItem());
                 if (sum == null) {
-                    sumMap.put(deliveryNoteItem.getMaterial(), deliveryNoteItem.getQuantity());
+                    sumMap.put(deliveryNoteItem.getOrderItem(), deliveryNoteItem.getQuantity());
                 } else {
                     sum = sum.add(deliveryNoteItem.getQuantity());
-                    sumMap.put(deliveryNoteItem.getMaterial(), sum);
+                    sumMap.put(deliveryNoteItem.getOrderItem(), sum);
                 }
             }
         }
@@ -242,11 +243,10 @@ public class MakeOrder
     @Transient
     public List<MakeOrderItem> getNotDeliveriedItems() {
         List<MakeOrderItem> result = new ArrayList<MakeOrderItem>();
-        Map<Material, BigDecimal> sumMap = getDeliveriedPartSum();
+        Map<MakeOrderItem, BigDecimal> sumMap = getDeliveriedPartSum();
 
         for (MakeOrderItem orderItem : items) {
-            if (orderItem.getMaterial() == null) continue;  //用户只输入了外部名称和规格
-            BigDecimal sum = sumMap.get(orderItem.getMaterial());
+            BigDecimal sum = sumMap.get(orderItem);
             // 尚没有对应的送货单，安排全部
             if (sum == null) {
                 result.add(orderItem);
@@ -262,11 +262,13 @@ public class MakeOrder
                 remainingItem.setQuantity(remaining);
                 remainingItem.setExternalProductName(orderItem.getExternalProductName());
                 remainingItem.setExternalModelSpec(orderItem.getExternalModelSpec());
+
                 result.add(remainingItem);
             }
         }
         return result;
     }
+
 
     /**
      * 检查所有对应生产任务单的数量总合是否超过订单的数量
@@ -297,17 +299,16 @@ public class MakeOrder
      * @aka checkIfDeliveryQuantityFitOrder
      */
     @Transient
-    public Map<Material, BigDecimal> getOverloadPartsOfDelivery() {
-        Map<Material, BigDecimal> overloadPartsDelivery = new HashMap<Material, BigDecimal>();
-        Map<Material, BigDecimal> sumMap = getDeliveriedPartSum();
+    public Map<MakeOrderItem, BigDecimal> getOverloadPartsOfDelivery() {
+        Map<MakeOrderItem, BigDecimal> overloadPartsDelivery = new HashMap<MakeOrderItem, BigDecimal>();
+        Map<MakeOrderItem, BigDecimal> sumMap = getDeliveriedPartSum();
         for (MakeOrderItem orderItem : items) {
-            if (orderItem.getMaterial() == null) continue;  //用户只输入了外部名称和规格
-            BigDecimal sum = sumMap.get(orderItem.getMaterial());
+            BigDecimal sum = sumMap.get(orderItem);
             if (sum != null) {
                 if (sum.compareTo(orderItem.getQuantity()) > 0) {
                     BigDecimal overloaded = sum.subtract(orderItem.getQuantity());
                     // 送货单中的数量大于订单中的数量
-                    overloadPartsDelivery.put(orderItem.getMaterial(), overloaded);
+                    overloadPartsDelivery.put(orderItem, overloaded);
                 }
             }
         }
