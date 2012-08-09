@@ -9,7 +9,12 @@ public class TermExprNlsMessageProcessor
 
     @Override
     public String processMessage(String message) {
-        return interpolator.process(message);
+        try {
+            return interpolator.process(message);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return message;
+        }
     }
 
 }
