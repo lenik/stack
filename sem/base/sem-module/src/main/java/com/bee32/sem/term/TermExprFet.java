@@ -9,7 +9,8 @@ public class TermExprFet
 
     @Override
     public String translate(Throwable exception, String message) {
-        message = interpolator.process(message);
+        if (message != null)
+            message = interpolator.process(message);
         return message;
     }
 

@@ -254,10 +254,15 @@ public class MakeOrderDto
 
         for (MakeOrderItemDto orderItem : notDeliveriedItems) {
             DeliveryNoteItemDto deliveryNoteItem = new DeliveryNoteItemDto().create();
-            deliveryNoteItem.setMaterial(orderItem.getMaterial());
-            deliveryNoteItem.setOrderItem(orderItem);
-            deliveryNoteItem.setPrice(orderItem.getPrice());
+
+            //先取出临时创建的MakeOrderItem中的数量
             deliveryNoteItem.setQuantity(orderItem.getQuantity());
+
+            //因notDeliveriedItems传出来的MakeOrderItem可能是一个临时创建的，所以这里重新从数据库取MakeOrderItem
+            MakeOrderItem originalOrderItem = ctx.data.access(MakeOrderItem.class).get(orderItem.getId());
+            deliveryNoteItem.setOrderItem(DTOs.marshal(MakeOrderItemDto.class, originalOrderItem));
+            deliveryNoteItem.setMaterial(orderItem.getMaterial());
+            deliveryNoteItem.setPrice(orderItem.getPrice());
 
             deliveryNoteItems.add(deliveryNoteItem);
         }

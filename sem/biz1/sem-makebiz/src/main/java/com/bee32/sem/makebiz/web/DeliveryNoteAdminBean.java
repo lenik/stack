@@ -145,7 +145,8 @@ public class DeliveryNoteAdminBean
             if (!overloadPartsOfDelivery.isEmpty()) {
                 StringBuilder message = new StringBuilder();
                 for (Entry<MakeOrderItem, BigDecimal> entry : overloadPartsOfDelivery.entrySet()) {
-                    message.append(entry.getKey().getMaterial().getLabel());
+                    if(entry.getKey().getMaterial() != null)
+                        message.append(entry.getKey().getMaterial().getLabel());
                     message.append("[");
                     message.append(entry.getKey().getExternalProductName());
                     message.append("]");

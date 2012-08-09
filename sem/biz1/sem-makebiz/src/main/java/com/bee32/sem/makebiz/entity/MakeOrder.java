@@ -20,6 +20,8 @@ import org.hibernate.annotations.CascadeType;
 
 import com.bee32.plover.arch.bean.BeanPropertyAccessor;
 import com.bee32.plover.arch.bean.IPropertyAccessor;
+import com.bee32.plover.orm.entity.EntityAccessor;
+import com.bee32.plover.orm.util.DefaultDataAssembledContext;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.inventory.entity.Material;
@@ -256,10 +258,14 @@ public class MakeOrder
             BigDecimal remaining = orderItem.getQuantity().subtract(sum);
             if (remaining.longValue() > 0) {
                 // 送货单的数量小于订单的数量
+//                MakeOrderItem remainingItem =
+//                        DefaultDataAssembledContext.data.access(MakeOrderItem.class).lazyLoad(orderItem.getId());
                 MakeOrderItem remainingItem = new MakeOrderItem();
+                EntityAccessor.setId(remainingItem, orderItem.getId());
                 remainingItem.setParent(this);
                 remainingItem.setMaterial(orderItem.getMaterial());
                 remainingItem.setQuantity(remaining);
+                remainingItem.setPrice(orderItem.getPrice());
                 remainingItem.setExternalProductName(orderItem.getExternalProductName());
                 remainingItem.setExternalModelSpec(orderItem.getExternalModelSpec());
 
