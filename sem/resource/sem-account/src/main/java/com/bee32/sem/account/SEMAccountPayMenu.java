@@ -21,7 +21,8 @@ public class SEMAccountPayMenu
 
     public MenuNode queryPay = menu(PAY, 50, "queryPay");
     /**/MenuNode balanceSheetPay = entry(queryPay, 1, "balanceSheetPay", __.join("balanceSheetPay/"));
-    /**/MenuNode detailPay = entry(queryPay, 10, "detailPay", __.join("detailPay/"));
-    /**/MenuNode verificationQueryPay = entry(queryPay, 20, "verificationQueryPay", __.join("verificationQueryPay/"));
+    /**/MenuNode balanceSheetSalesmanPay = entry(queryPay, 10, "balanceSheetSalesmanPay", __.join("balanceSheetSalesmanPay/"));
+    /**/MenuNode detailPay = entry(queryPay, 20, "detailPay", __.join("detailPay/"));
+    /**/MenuNode verificationQueryPay = entry(queryPay, 30, "verificationQueryPay", __.join("verificationQueryPay/"));
 
 }

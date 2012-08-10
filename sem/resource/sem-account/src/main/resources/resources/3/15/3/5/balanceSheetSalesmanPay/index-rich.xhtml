@@ -2,8 +2,8 @@
     xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
     xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
-    <ui:define name="title">应收业务员余额表</ui:define>
-    <ui:param name="bean" value="#{balanceSheetSalesmanReceBean}" />
+    <ui:define name="title">应村采购员余额表</ui:define>
+    <ui:param name="bean" value="#{balanceSheetSalesmanPayBean}" />
 
     <ui:define name="content">
         <h:form id="mainForm">
@@ -30,11 +30,11 @@
                     <h:outputText value="#{rowIndex + 1}" />
                 </p:column>
 
-                <p:column headerText="销售员">
+                <p:column headerText="采购员">
                     <h:outputText value="#{entry[1]}" />
                 </p:column>
 
-                <p:column headerText="客户">
+                <p:column headerText="供应商">
                     <h:outputText value="#{entry[3]}" />
                 </p:column>
 
@@ -44,13 +44,13 @@
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="应收" style="text-align:right">
+                <p:column headerText="应付" style="text-align:right">
                     <h:outputText value="#{entry[5]}">
                         <f:convertNumber pattern="#0.00"/>
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="己收" style="text-align:right">
+                <p:column headerText="己付" style="text-align:right">
                     <h:outputText value="#{entry[6]}">
                         <f:convertNumber pattern="#0.00"/>
                     </h:outputText>
