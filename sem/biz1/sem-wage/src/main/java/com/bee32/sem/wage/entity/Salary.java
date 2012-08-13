@@ -7,7 +7,11 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.sem.attendance.entity.AttendanceMR;
@@ -18,7 +22,7 @@ import com.bee32.sem.hr.entity.EmployeeInfo;
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "salary_seq", allocationSize = 1)
-public class BaseSalary
+public class Salary
         extends UIEntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
@@ -29,13 +33,16 @@ public class BaseSalary
     AttendanceMR attendance;
     /** 工资计算类型 */
     // AttendanceType type;
+
+    EmployeeInfo employee;
+
+    WageSalaryItem baseSalary;
+
+    List<WageSalaryItem> items;
+
     /**
      * 冗余
      */
-    EmployeeInfo employee;
-    /** 奖惩 */
-    List<BaseBonus> subsidies;
-
     BigDecimal total;
 
     @ManyToOne
@@ -68,12 +75,23 @@ public class BaseSalary
     }
 
     @OneToMany
-    public List<BaseBonus> getSubsidies() {
-        return subsidies;
+    @Cascade({ CascadeType.ALL })
+    public List<WageSalaryItem> getItems() {
+        return items;
     }
 
-    public void setSubsidies(List<BaseBonus> subsidies) {
-        this.subsidies = subsidies;
+    public void setItems(List<WageSalaryItem> items) {
+        this.items = items;
+    }
+
+    @OneToOne
+    @Cascade({ CascadeType.ALL })
+    public WageSalaryItem getBaseSalary() {
+        return baseSalary;
+    }
+
+    public void setBaseSalary(WageSalaryItem baseSalary) {
+        this.baseSalary = baseSalary;
     }
 
     public BigDecimal getTotal() {
