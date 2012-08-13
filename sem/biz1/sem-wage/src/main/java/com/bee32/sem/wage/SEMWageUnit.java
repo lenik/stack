@@ -7,7 +7,8 @@ import com.bee32.sem.attendance.entity.AttendanceMR;
 import com.bee32.sem.attendance.entity.AttendanceType;
 import com.bee32.sem.people.SEMPeopleUnit;
 import com.bee32.sem.wage.entity.BaseBonus;
-import com.bee32.sem.wage.entity.BaseSalary;
+import com.bee32.sem.wage.entity.Salary;
+import com.bee32.sem.wage.entity.WageSalaryItem;
 
 @ImportUnit({ SEMPeopleUnit.class })
 public class SEMWageUnit
@@ -15,11 +16,12 @@ public class SEMWageUnit
 
     @Override
     protected void preamble() {
+        add(WageSalaryItem.class);
         add(AttendanceType.class);
         add(BaseBonus.class);
         add(AttendanceDR.class);
         add(AttendanceMR.class);
-        add(BaseSalary.class);
+        add(Salary.class);
     }
 
 }

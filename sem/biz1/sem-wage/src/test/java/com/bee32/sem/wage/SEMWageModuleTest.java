@@ -5,15 +5,10 @@ import java.util.Locale;
 
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.sem.test.SEMTestCase;
-import com.bee32.sem.wage.SEMWageModule;
-import com.bee32.sem.wage.SEMWageUnit;
 
 @Using(SEMWageUnit.class)
 public class SEMWageModuleTest
         extends SEMTestCase {
-    public SEMWageModuleTest() {
-        super();
-    }
 
     @Override
     protected boolean isDebugMode() {

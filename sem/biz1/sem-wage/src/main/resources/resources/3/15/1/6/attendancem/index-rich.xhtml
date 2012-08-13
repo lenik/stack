@@ -15,6 +15,15 @@
 
     </ui:define>
 
+    <ui:define name="toolbarContexts">
+        <t:panelGrid>
+            <p:calendar value="#{bean.restrictionDate}" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
+                showOn="button">
+                <p:ajax event="dateSelect" listener="#{bean.addMonthRestriction}" update=":searchForm:searchFragments, ${_searchUpdates}" />
+            </p:calendar>
+        </t:panelGrid>
+    </ui:define>
+
     <ui:define name="toolbar.left" />
 
     <ui:define name="toolbar.right.1">
@@ -32,6 +41,7 @@
         <p:column headerText="应出勤">
             <h:outputText value="${entry.should_attendance}" />
         </p:column>
+
         <p:column headerText="出勤">
             <h:outputText value="${entry.real_attendance}" />
         </p:column>
@@ -44,6 +54,12 @@
         <p:column headerText="晚加班">
             <h:outputText value="${entry.real_overtime}" />
         </p:column>
+        <p:column headerText="缺勤">
+            <h:outputText value="${entry.leave}" />
+        </p:column>
+        <p:column headerText="安全">
+            <p:selectBooleanCheckbox value="#{entry.safety}"  disabled="true" />
+        </p:column>
     </ui:define>
 
     <ui:define name="toolsColumn">
@@ -51,7 +67,7 @@
             actionListener="${bean.showContent(entry)}" update="${_contentUpdate}" oncomplete="${plainEditForm ? '' : 'editdlg.show()'}">
         </p:commandButton>
         <p:commandButton id="calsalary" title="生成工资条" icon=".ui-icon-key" actionListener="${bean.doCal(entry)}"
-            disabled="${entry.cal}" />
+            disabled="${entry.cal}" update="${_contentUpdate} ${_indexUpdate} ${mirrorTargets}" />
     </ui:define>
 
     <ui:define name="editDialogContent">
@@ -76,12 +92,19 @@
             <h:outputText value="出差" />
             <p:inputText value="${obj.trip}" />
 
+            <h:outputText value="缺勤" />
+            <p:inputText value="${obj.leave}" />
+
+            <h:outputText value="安全" />
+            <p:selectBooleanCheckbox value="#{obj.safety}" />
+
         </t:panelGrid>
 
     </ui:define>
     <ui:define name="dialogs.1">
         <p:dialog widgetVar="dlg2" modal="true">
             <h:form id="attendanceForm">
+
                 <p:calendar value="#{bean.openDate}" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
                     showOn="button" />
                 <p:dataTable id="create_attendance_m_r" value="${bean.attendanceMRList}" var="record">
@@ -104,10 +127,16 @@
                     <p:column headerText="晚加班">
                         <p:inputText value="${record.real_overtime}" style="width:40px" />
                     </p:column>
+                    <p:column headerText="缺勤">
+                        <p:inputText value="${record.leave}" style="width:40px" />
+                    </p:column>
+                    <p:column headerText="安全">
+                        <p:selectBooleanCheckbox value="#{record.safety}" />
+                    </p:column>
                 </p:dataTable>
-                <p:commandButton value="保存" actionListener="${bean.saveList}" oncomplete="dlg2.hide()"
-                    update="${_contentUpdate}" />
-                <p:commandButton value="取消" />
+                <p:commandButton value="保存" actionListener="${bean.saveList}" oncomplete="dlg2.hide();"
+                    update="${_contentUpdate} ${_indexUpdate} ${mirrorTargets}" />
+                <p:commandButton value="取消" onclick="dlg2.hide();" />
             </h:form>
         </p:dialog>
 

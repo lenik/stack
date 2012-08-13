@@ -72,6 +72,12 @@ public class WageDateUtil {
         return cal.get(Calendar.DAY_OF_MONTH);
     }
 
+    public static int getMonNum(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.MONTH) + 1;
+    }
+
     public static Map<Integer, Date> getRecentlyRange(Map<Integer, Date> rangeMap) {
         Calendar cal = Calendar.getInstance();
         Date from = rangeMap.get(0);
@@ -83,5 +89,17 @@ public class WageDateUtil {
         cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) - 1);
         rangeMap.put(1, cal.getTime());
         return rangeMap;
+    }
+
+    public static String getDateString(Date date) {
+        StringBuffer sb = new StringBuffer();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        sb.append(cal.get(Calendar.YEAR));
+        sb.append("年");
+        sb.append(cal.get(Calendar.MONTH) + 1);
+        sb.append("月");
+        return sb.toString();
+
     }
 }

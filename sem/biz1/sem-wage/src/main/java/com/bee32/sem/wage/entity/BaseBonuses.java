@@ -14,5 +14,6 @@ public class BaseBonuses
     public final BaseBonus LUNCH = new BaseBonus("lunch", "中餐补", true, new BigDecimal(3));
     public final BaseBonus SUPPER = new BaseBonus("supper", "晚餐补", true, new BigDecimal(3));
     public final BaseBonus TRIP = new BaseBonus("trip", "出差补贴", true, new BigDecimal(20));
+    public final BaseBonus SAFETY = new BaseBonus("safety", "安全奖", true, new BigDecimal(100));
 
 }

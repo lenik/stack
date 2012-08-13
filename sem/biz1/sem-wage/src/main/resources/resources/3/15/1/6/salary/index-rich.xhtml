@@ -6,13 +6,66 @@
     <ui:param name="title" value="工资管理" />
     <ui:param name="bean" value="${salaryAdmin}" />
     <ui:param name="obj" value="${bean.openedObject}" />
+
+    <ui:define name="toolbar.left" />
+
+    <ui:define name="toolbarContexts">
+        <t:panelGrid>
+            <p:calendar value="#{bean.targetDate}" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
+                showOn="button">
+                <p:ajax event="dateSelect" listener="#{bean.addDateRestriction}" update=":searchForm:searchFragments, ${_searchUpdates}" />
+            </p:calendar>
+        </t:panelGrid>
+    </ui:define>
+
+    <ui:define name="includes">
+        <div style="width:200px;height100px;"></div>
+    </ui:define>
+
     <ui:define name="dataColumns">
+        <p:column headerText="时间">
+            <h:outputText value="${entry.dateString}"/>
+        </p:column>
         <p:column headerText="出勤">
             <h:outputText value="${entry.attendance.real_attendance}" />
-            <h:outputText value="(${entry.attendance.should_attendance})" />
         </p:column>
-        <p:column headerText="操作">
-            <p:commandButton value="生成工资" actionListener="${bean.calSalary(entry)}" />
+        <p:column headerText="基础工资">
+            <h:outputText value="${entry.baseSalary.bonus * entry.baseSalary.rate}" />
         </p:column>
+        <p:column headerText="补贴">
+            <h:outputText value="${entry.subsidyString}" />
+        </p:column>
+        <p:column headerText="总计">
+            <h:outputText value="${entry.total}" />
+        </p:column>
+    </ui:define>
+
+    <ui:define name="editDialogContent">
+        <p:panel header="工资明细">
+            <table>
+                <tr>
+                    <td>
+                        ${obj.baseSalary.label}
+                    </td>
+                    <td>
+                        (${obj.attendance.real_attendance} + ${obj.attendance.real_overtime}) *
+                        ${obj.baseSalary.bonus}
+                        =
+                        ${obj.baseSalary.bonus * obj.baseSalary.rate}
+                    </td>
+                </tr>
+                <ui:repeat var="item" value="${obj.items}" varStatus="status">
+                    <tr>
+                        <td>${item.label}</td>
+                        <td>${item.bonus} * ${item.rate}= ${item.bonus * item.rate} </td>
+                    </tr>
+                </ui:repeat>
+                <tr>
+                    <td>总计</td>
+                    <td>${obj.total}</td>
+                </tr>
+            </table>
+
+        </p:panel>
     </ui:define>
 </ui:composition>

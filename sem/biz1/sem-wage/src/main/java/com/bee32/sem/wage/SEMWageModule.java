@@ -5,7 +5,7 @@ import com.bee32.sem.SEMOids;
 import com.bee32.sem.attendance.entity.AttendanceMR;
 import com.bee32.sem.module.EnterpriseModule;
 import com.bee32.sem.wage.entity.BaseBonus;
-import com.bee32.sem.wage.entity.BaseSalary;
+import com.bee32.sem.wage.entity.Salary;
 
 @Oid({ 3, 15, SEMOids.Biz1, SEMOids.biz1.Wage })
 public class SEMWageModule
@@ -15,7 +15,7 @@ public class SEMWageModule
 
     @Override
     protected void preamble() {
-        declareEntityPages(BaseSalary.class, "salary");
+        declareEntityPages(Salary.class, "salary");
         declareEntityPages(AttendanceMR.class, "attendance");
         declareEntityPages(BaseBonus.class, "bonus");
     }

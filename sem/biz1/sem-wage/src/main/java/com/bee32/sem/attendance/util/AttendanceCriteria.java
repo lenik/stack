@@ -6,6 +6,7 @@ import java.util.Map;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.criteria.hibernate.SqlRestriction;
 import com.bee32.sem.wage.util.WageDateUtil;
 
 public class AttendanceCriteria
@@ -33,4 +34,9 @@ public class AttendanceCriteria
     public static CriteriaElement getAttType(boolean attendance) {
         return equals("attendance", attendance);
     }
+
+    public static ICriteriaElement getSum(Date date){
+        return new SqlRestriction("");
+    }
+
 }
