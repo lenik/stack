@@ -31,6 +31,7 @@ public class AttendanceMR
     EmployeeInfo employee;
 
     boolean cal = false;
+    boolean safety = true;
 
     /**
      * 三元风机 月考勤
@@ -45,6 +46,8 @@ public class AttendanceMR
     double should_overtime = 0.0;
     // 晚加班天数
     double real_overtime = 0.0;
+
+    double leave;
 
     @OneToMany
     @Cascade({ CascadeType.ALL })
@@ -79,6 +82,14 @@ public class AttendanceMR
 
     public void setCal(boolean cal) {
         this.cal = cal;
+    }
+
+    public boolean isSafety() {
+        return safety;
+    }
+
+    public void setSafety(boolean safety) {
+        this.safety = safety;
     }
 
     public double getShould_attendance() {
@@ -121,4 +132,11 @@ public class AttendanceMR
         this.real_overtime = real_overtime;
     }
 
+    public double getLeave() {
+        return leave;
+    }
+
+    public void setLeave(double leave) {
+        this.leave = leave;
+    }
 }

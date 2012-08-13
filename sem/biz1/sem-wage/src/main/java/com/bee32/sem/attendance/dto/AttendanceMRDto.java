@@ -1,6 +1,5 @@
 package com.bee32.sem.attendance.dto;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -12,6 +11,7 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.attendance.entity.AttendanceMR;
 import com.bee32.sem.hr.dto.EmployeeInfoDto;
+import com.bee32.sem.wage.util.WageDateUtil;
 
 public class AttendanceMRDto
         extends UIEntityDto<AttendanceMR, Long> {
@@ -22,6 +22,8 @@ public class AttendanceMRDto
     Date date;
     EmployeeInfoDto employee;
     boolean cal;
+
+    boolean safety;
     /**
      * 三元风机
      */
@@ -36,17 +38,21 @@ public class AttendanceMRDto
     // 晚加班天数
     double real_overtime = 0.0;
 
+    double leave = 0.0;
+
     @Override
     protected void _marshal(AttendanceMR source) {
         attendances = marshalList(AttendanceDRDto.class, source.getAttendances());
         date = source.getDate();
         employee = marshal(EmployeeInfoDto.class, source.getEmployee());
         cal = source.isCal();
+        safety = source.isSafety();
         should_attendance = source.getShould_attendance();
         real_attendance = source.getReal_attendance();
         trip = source.getTrip();
         should_overtime = source.getShould_overtime();
         real_overtime = source.getReal_overtime();
+        leave = source.getLeave();
     }
 
     @Override
@@ -55,11 +61,13 @@ public class AttendanceMRDto
         target.setDate(date);
         merge(target, "employee", employee);
         target.setCal(cal);
+        target.setSafety(safety);
         target.setShould_attendance(should_attendance);
         target.setReal_attendance(real_attendance);
         target.setTrip(trip);
         target.setShould_overtime(should_overtime);
         target.setReal_overtime(real_overtime);
+        target.setLeave(leave);
     }
 
     @Override
@@ -106,6 +114,14 @@ public class AttendanceMRDto
         this.cal = isCal;
     }
 
+    public boolean isSafety() {
+        return safety;
+    }
+
+    public void setSafety(boolean safety) {
+        this.safety = safety;
+    }
+
     public void setEmployee(EmployeeInfoDto employee) {
         this.employee = employee;
     }
@@ -150,17 +166,16 @@ public class AttendanceMRDto
         this.real_overtime = real_overtime;
     }
 
+    public double getLeave() {
+        return leave;
+    }
+
+    public void setLeave(double leave) {
+        this.leave = leave;
+    }
+
     public String getDateString() {
-        Calendar cal = Calendar.getInstance();
-        if (date == null)
-            date = new Date();
-        cal.setTime(date);
-        StringBuffer sb = new StringBuffer();
-        sb.append(cal.get(Calendar.YEAR));
-        sb.append("年");
-        sb.append(cal.get(Calendar.MONTH) + 1);
-        sb.append("月");
-        return sb.toString();
+        return WageDateUtil.getDateString(date);
     }
 
     Set<Integer> getAttendanceIDSet() {
