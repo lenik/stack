@@ -14,6 +14,13 @@ public class SEMWageMenu
     static Location prefix = WEB_APP.join(SEMWageModule.PREFIX_);
 
     public transient MenuNode WAGE = _frame_.BIZ1;
-    MenuNode bonus = menu(WAGE, 10, "bonus");
+
+    public MenuNode WAGEADMIN = menu(WAGE, 70, "WAGEADMIN");
+    /**/MenuNode salary = entry(WAGEADMIN, 1, "salary", prefix.join("salary/"));
+    /**/MenuNode bonus = entry(WAGEADMIN, 2, "bonus", prefix.join("bonus/"));
+    /**/MenuNode expression = entry(WAGEADMIN, 4, "expression", prefix.join("expression/"));
+
+    public MenuNode ATTENDANCE = menu(WAGE, 71, "ATTENDANCE");
+    /**/MenuNode attendancem = entry(ATTENDANCE, 1, "attendancem", prefix.join("attendancem/"));
 
 }
