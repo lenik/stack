@@ -10,8 +10,8 @@ Package: sdu-postgresql
 Architecture: all
 Depends: postgresql, coolutils, vim-enh,
     sdu-pgutils, sdu-phppgadmin,
-    postgresql-8.4-plsh,
-    postgresql-plperl-8.4,
-    postgresql-plpython-8.4
+    postgresql-8.4-plsh | postgresql-9.1-plsh,
+    postgresql-plperl,
+    postgresql-plpython
 Recommends: pgadmin3
 Description: PostgreSQL SDU with phppgadmin support.
