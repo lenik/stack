@@ -34,7 +34,7 @@ public class NotePayableAdminBean
      * @return
      */
     public Integer getSelfOrgId() {
-        return ctx.bean.getBean(PeopleService.class).getSelfOrg().getId();
+        return BEAN(PeopleService.class).getSelfOrg().getId();
     }
 
     @Override
@@ -43,7 +43,7 @@ public class NotePayableAdminBean
         for (Object dto : dtos) {
             NotePayableDto note = (NotePayableDto) dto;
 
-            if (note.getBillType().getId().equals(ctx.bean.getBean(BillTypes.class).BANK.getId())) {
+            if (note.getBillType().getId().equals(BEAN(BillTypes.class).BANK.getId())) {
                 // 如果为银行承兑汇票
                 if (StringUtils.isEmpty(note.getAcceptBank())) {
                     uiLogger.error("本票据为银行承兑汇票，承兑银行不能为空!");
@@ -88,9 +88,9 @@ public class NotePayableAdminBean
             balancing.setNote(note);
 
             Balancing _balancing = (Balancing) balancing.unmarshal();
-            ctx.data.access(Note.class).evict(_balancing.getNote());
-            ctx.data.access(Balancing.class).saveOrUpdate(_balancing);
-            ctx.data.access(Note.class).evict(_balancing.getNote());
+            DATA(Note.class).evict(_balancing.getNote());
+            DATA(Balancing.class).saveOrUpdate(_balancing);
+            DATA(Note.class).evict(_balancing.getNote());
             uiLogger.info("结算成功.");
         } catch (Exception e) {
             uiLogger.error("结算出错!", e);

@@ -61,7 +61,7 @@ public class VerifiableSupportBean
         if (verifiables.isEmpty())
             return false;
 
-        IVerifyService service = ctx.bean.getBean(IVerifyService.class);
+        IVerifyService service = BEAN(IVerifyService.class);
         User me = SessionUser.getInstance().getInternalUser();
 
         for (IVerifiableDto verifiableDto : verifiables) {

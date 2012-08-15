@@ -9,7 +9,7 @@ public abstract class AbstractVerifySupportBean
     private static final long serialVersionUID = 1L;
 
     protected IVerifyService getVerifyService() {
-        return ctx.bean.getBean(IVerifyService.class);
+        return BEAN(IVerifyService.class);
     }
 
 }

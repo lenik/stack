@@ -54,13 +54,13 @@ public class ChanceBean
     }
 
     public void addStageRestricion() {
-        ChanceStage chanceStage = ctx.data.access(ChanceStage.class).lazyLoad(searchStage.getId());
+        ChanceStage chanceStage = DATA(ChanceStage.class).lazyLoad(searchStage.getId());
         setSearchFragment("stage", "阶段为 " + chanceStage.getLabel(),//
                 ChanceCriteria.stageOf(searchStage.getId()));
     }
 
     public void addSourceRestricion() {
-        ChanceSourceType cst = ctx.data.access(ChanceSourceType.class).lazyLoad(searchSource.getId());
+        ChanceSourceType cst = DATA(ChanceSourceType.class).lazyLoad(searchSource.getId());
         setSearchFragment("source", "来源为 " + cst.getLabel(),//
                 ChanceCriteria.sourceTypeOf(searchSource.getId()));
     }

@@ -7,10 +7,11 @@ import java.util.List;
 import com.bee32.icsf.access.AccessControlException;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.faces.utils.FacesPartialContext;
 import com.bee32.plover.faces.view.GenericViewBean;
-import com.bee32.plover.faces.view.ViewBean;
 import com.bee32.plover.faces.view.ViewMetadata;
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.sem.misc.IBeanIntro;
 
 public abstract class DataViewBean
@@ -20,14 +21,20 @@ public abstract class DataViewBean
     private static final long serialVersionUID = 1L;
 
     protected static class ctx
-            extends ViewBean.ctx {
-        public static final WiredDataPartialContext data = new WiredDataPartialContext(bean);
+            extends MixinnedDataAssembledContext {
+        public static final FacesPartialContext view = FacesPartialContext.INSTANCE;
+    }
+
+    @SuppressWarnings("deprecation")
+    protected static <E extends Entity<? extends K>, K extends Serializable> //
+    IEntityAccessService<E, K> DATA(Class<? extends E> entityType) {
+        return ctx.data.access(entityType);
     }
 
     @Override
     public Object getIntro() {
         String _name = getClass().getCanonicalName();
-        ViewMetadata metadata = ctx.bean.getBean(ViewMetadata.class);
+        ViewMetadata metadata = BEAN(ViewMetadata.class);
         metadata.setAttribute(EntityPeripheralBean.CONTEXT_BEAN, this);
         return _name;
     }
@@ -37,7 +44,7 @@ public abstract class DataViewBean
         Class<? extends E> entityType = (Class<? extends E>) entity.getClass();
         K id = entity.getId();
 
-        E reloaded = ctx.data.access(entityType).getOrFail(id);
+        E reloaded = DATA(entityType).getOrFail(id);
 
         return reloaded;
     }
@@ -55,7 +62,7 @@ public abstract class DataViewBean
     protected <E extends Entity<?>, D extends EntityDto<E, ?>> //
     List<D> mrefList(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
         try {
-            List<E> entities = ctx.data.access(entityClass).list(criteriaElements);
+            List<E> entities = DATA(entityClass).list(criteriaElements);
             List<D> list = DTOs.mrefList(dtoClass, entities);
             return list;
         } catch (AccessControlException e) {

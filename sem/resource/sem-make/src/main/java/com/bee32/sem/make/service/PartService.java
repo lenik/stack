@@ -29,13 +29,13 @@ public class PartService
         // 保存前查找partItem为原材料的物料和当前part的target是否相同，
         // 如果相同，则把这些partItem中的material设为null,part设为当前part
         // 进行这项操作是为解决不能正向设置bom的问题
-        List<PartItem> items = ctx.data.access(PartItem.class).list(new Equals("material.id", material.getId()));
+        List<PartItem> items = DATA(PartItem.class).list(new Equals("material.id", material.getId()));
 
         if (items != null && items.size() > 0) {
             for (PartItem item : items) {
                 item.setMaterial(null);
                 item.setPart(part);
-                ctx.data.access(PartItem.class).saveOrUpdate(item);
+                DATA(PartItem.class).saveOrUpdate(item);
             }
         }
     }

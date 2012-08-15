@@ -21,7 +21,6 @@ import org.hibernate.annotations.CascadeType;
 import com.bee32.plover.arch.bean.BeanPropertyAccessor;
 import com.bee32.plover.arch.bean.IPropertyAccessor;
 import com.bee32.plover.orm.entity.EntityAccessor;
-import com.bee32.plover.orm.util.DefaultDataAssembledContext;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.inventory.entity.Material;

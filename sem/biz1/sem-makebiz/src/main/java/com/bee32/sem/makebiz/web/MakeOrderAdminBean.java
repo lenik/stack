@@ -43,14 +43,14 @@ public class MakeOrderAdminBean
     public void setChanceToApply(ChanceDto chance) {
         MakeOrderDto makeOrder = getOpenedObject();
 
-        MakeOrder _checkSameChanceOrder = ctx.data.access(MakeOrder.class).getFirst(
+        MakeOrder _checkSameChanceOrder = DATA(MakeOrder.class).getFirst(
                 new Equals("chance.id", chance.getId()));
         if (_checkSameChanceOrder != null && !_checkSameChanceOrder.getId().equals(makeOrder.getId())) {
             uiLogger.error("此机会已经对应的订单!");
             return;
         }
 
-        ctx.bean.getBean(MakebizService.class).chanceApplyToMakeOrder(chance, makeOrder);
+        BEAN(MakebizService.class).chanceApplyToMakeOrder(chance, makeOrder);
     }
 
     public void exportToPdf() {

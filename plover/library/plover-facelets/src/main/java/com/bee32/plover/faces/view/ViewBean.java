@@ -12,6 +12,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 
 import com.bee32.plover.arch.operation.Operation;
@@ -33,6 +34,21 @@ public abstract class ViewBean
 
     protected static class ctx
             extends FacesAssembledContext {
+    }
+
+    protected static Object BEAN(String name)
+            throws BeansException {
+        return ctx.bean.getBean(name);
+    }
+
+    protected static <T> T BEAN(String name, Class<T> requiredType)
+            throws BeansException {
+        return ctx.bean.getBean(name, requiredType);
+    }
+
+    protected static <T> T BEAN(Class<T> requiredType)
+            throws BeansException {
+        return ctx.bean.getBean(requiredType);
     }
 
     public ViewBean() {

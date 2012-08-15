@@ -99,7 +99,7 @@ public class PartAdminBean
     public void setPartMaterial() {
         PartDto part = getOpenedObject();
         // 检查此物料(成品)是否已经有bom存在
-        List<Part> partList = ctx.data.access(Part.class).list(new Limit(0, 3),//
+        List<Part> partList = DATA(Part.class).list(new Limit(0, 3),//
                 new Equals("target.id", part.getTarget().getId()), new Equals("valid", true));
         if (!partList.isEmpty()) {
             uiLogger.error("此物料已经存在BOM信息 (" + partList.get(0).getId() + "...)");
@@ -112,7 +112,7 @@ public class PartAdminBean
     public void setPartItemMaterial(MaterialDto material) {
         PartItemDto item = childrenMBean.getOpenedObject();
 
-        Part itemPart = ctx.data.access(Part.class).getUnique(new Equals("target.id", material.getId()));
+        Part itemPart = DATA(Part.class).getUnique(new Equals("target.id", material.getId()));
         if (itemPart != null) {
             // 选中的物料是半成品
             item.setPart(DTOs.marshal(PartDto.class, itemPart));
@@ -204,7 +204,7 @@ public class PartAdminBean
 
         PartDto part = getOpenedObject();
 
-        setOpenedObject(ctx.bean.getBean(PartService.class).copyBom(part));
+        setOpenedObject(BEAN(PartService.class).copyBom(part));
         showView(StandardViews.CREATE_FORM);
     }
 
@@ -212,7 +212,7 @@ public class PartAdminBean
      * 编辑Part时，
      */
     public void setCategory() {
-        ChooseMaterialDialogBean bean = ctx.bean.getBean(ChooseMaterialDialogBean.class);
+        ChooseMaterialDialogBean bean = BEAN(ChooseMaterialDialogBean.class);
         if (this.categoryTree.getSelectedId() != null && this.categoryTree.getSelectedId() != -1) {
             bean.setCategoryRestriction(this.categoryTree.getSelectedId());
         }
@@ -223,7 +223,7 @@ public class PartAdminBean
      */
     public void setRawCategory() {
         PartItemDto partItem = childrenMBean.getOpenedObject();
-        ChooseMaterialDialogBean bean = ctx.bean.getBean(ChooseMaterialDialogBean.class);
+        ChooseMaterialDialogBean bean = BEAN(ChooseMaterialDialogBean.class);
         bean.clearSearchFragments();
 
         if (!DTOs.isNull(partItem.getMaterial())) {
@@ -245,10 +245,10 @@ public class PartAdminBean
                 for (PartItemDto item : part.getXrefs()) {
                     // 引用本Part的PartItem,清空时，把partItem的part清空，并设置相应material
                     item.setMaterial(part.getTarget());
-                    ctx.data.access(PartItem.class).saveOrUpdate(item.unmarshal());
+                    DATA(PartItem.class).saveOrUpdate(item.unmarshal());
                 }
 
-                ctx.data.access(Part.class).deleteById(part.getId());
+                DATA(Part.class).deleteById(part.getId());
                 onDeletePart(part);
             }
             uiLogger.info("清空并删除成功.");
@@ -319,7 +319,7 @@ public class PartAdminBean
     protected void postUpdate(UnmarshalMap uMap)
             throws Exception {
         for (Part _part : uMap.<Part> entitySet()) {
-            ctx.bean.getBean(PartService.class).changePartItemFromMaterialToPart(_part);
+            BEAN(PartService.class).changePartItemFromMaterialToPart(_part);
             PartDto partDto = uMap.getSourceDto(_part);
             if (partDto.isNewCreated())
                 onCreatePart(partDto);
@@ -353,7 +353,7 @@ public class PartAdminBean
 // for (MakeStepModel step : _part.getSteps()) {
 // QCSpec _qcSpec = step.getQcSpec();
 // if (_qcSpec != null) {
-// ctx.data.access(QCSpec.class).delete(_qcSpec);
+// DATA(QCSpec.class).delete(_qcSpec);
 // }
 // }
         }

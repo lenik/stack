@@ -75,7 +75,7 @@ public class VerifyPolicyPrefController
                 String typeId = ABBR.abbr(verifiableType);
                 // prefDao.get(typeId);
 
-                VerifyPolicyPref pref = ctx.data.access(VerifyPolicyPref.class).get(typeId);
+                VerifyPolicyPref pref = DATA(VerifyPolicyPref.class).get(typeId);
                 if (pref == null) {
                     pref = new VerifyPolicyPref();
                     pref.setType(verifiableType);
@@ -115,7 +115,7 @@ public class VerifyPolicyPrefController
             @SuppressWarnings("unchecked")
             Class<? extends VerifyPolicy> persistedType = (Class<? extends VerifyPolicy>) candidatePolicyType;
 
-            List<? extends VerifyPolicy> candidatePolicies = ctx.data.access(persistedType).list();
+            List<? extends VerifyPolicy> candidatePolicies = DATA(persistedType).list();
 
             for (VerifyPolicyDto candidate : DTOs.marshalList(VerifyPolicyDto.class, candidatePolicies))
                 candidates.add(candidate);
@@ -159,7 +159,7 @@ public class VerifyPolicyPrefController
 
         String typeName = ClassUtil.getTypeName(userEntityType);
 
-        for (Entity<?> userEntity : ctx.data.access(userEntityType).list()) {
+        for (Entity<?> userEntity : DATA(userEntityType).list()) {
             if (logger.isDebugEnabled())
                 logger.debug("Refresh/verify " + typeName + " [" + userEntity.getId() + "]");
 

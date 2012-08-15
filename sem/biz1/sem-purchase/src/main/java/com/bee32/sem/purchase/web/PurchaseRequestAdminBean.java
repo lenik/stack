@@ -54,7 +54,7 @@ public class PurchaseRequestAdminBean
         if (plan == null)
             return;
 
-        List<PurchaseRequest> boundRequests = ctx.data.access(PurchaseRequest.class).list(
+        List<PurchaseRequest> boundRequests = DATA(PurchaseRequest.class).list(
                 PurchaseCriteria.boundRequest(plan.getId()));
         if (!boundRequests.isEmpty()) {
             uiLogger.error("选中的物料计划已经有对应的采购请求");
@@ -82,7 +82,7 @@ public class PurchaseRequestAdminBean
     public void calcMaterialRequirement() {
         PurchaseRequestDto parent = getOpenedObject();
 
-        PurchaseService purchaseService = ctx.bean.getBean(PurchaseService.class);
+        PurchaseService purchaseService = BEAN(PurchaseService.class);
 
         List<PurchaseRequestItemDto> items = purchaseService.calcMaterialRequirement(parent.getPlans());
 
@@ -101,7 +101,7 @@ public class PurchaseRequestAdminBean
     }
 
     public void setDestWarehouseId_RZ(int warehouseId) {
-        StockDictsBean stockDicts = ctx.bean.getBean(StockDictsBean.class);
+        StockDictsBean stockDicts = BEAN(StockDictsBean.class);
         PurchaseRequestItemDto item = itemsMBean.getOpenedObject();
         item.setDestWarehouse(stockDicts.getWarehouse(warehouseId));
     }
@@ -142,7 +142,7 @@ public class PurchaseRequestAdminBean
             return;
         }
 
-        PurchaseService purchaseService = ctx.bean.getBean(PurchaseService.class);
+        PurchaseService purchaseService = BEAN(PurchaseService.class);
         try {
             purchaseService.generateTakeInStockOrders(purchaseRequest);
             uiLogger.info("生成成功");
@@ -164,7 +164,7 @@ public class PurchaseRequestAdminBean
         try {
             for(PurchaseTakeInDto takeIn : takeIns) {
                 PurchaseTakeIn _takeIn = takeIn.unmarshal();
-                ctx.data.access(PurchaseTakeIn.class).saveOrUpdate(_takeIn);
+                DATA(PurchaseTakeIn.class).saveOrUpdate(_takeIn);
             }
 
             uiLogger.info("采购入库单保存成功.");

@@ -60,7 +60,7 @@ public class ModifyPasswordBean
         }
 
         User u = SessionUser.getInstance().getInternalUser();
-        List<UserPassword> plist = ctx.data.access(UserPassword.class).list(LoginCriteria.forUser(u));
+        List<UserPassword> plist = DATA(UserPassword.class).list(LoginCriteria.forUser(u));
         if (plist.isEmpty()) {
             uiLogger.warn("密码不存在");
             return;
@@ -73,7 +73,7 @@ public class ModifyPasswordBean
             userPassword.setPasswd(newPass);
 
             try {
-                ctx.data.access(UserPassword.class).saveOrUpdate(userPassword);
+                DATA(UserPassword.class).saveOrUpdate(userPassword);
             } catch (Exception e) {
                 uiLogger.error(e, "保存密码失败");
                 return;

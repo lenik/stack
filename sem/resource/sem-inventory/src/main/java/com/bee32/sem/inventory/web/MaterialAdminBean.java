@@ -93,8 +93,8 @@ public class MaterialAdminBean
         try {
             materialPrice.setMaterial(material);
             MaterialPrice _price = materialPrice.unmarshal();
-            ctx.data.access(MaterialPrice.class).saveOrUpdate(_price);
-            ctx.data.access(Material.class).evict(material.unmarshal());
+            DATA(MaterialPrice.class).saveOrUpdate(_price);
+            DATA(Material.class).evict(material.unmarshal());
             uiLogger.info("保存物料价格成功.");
         } catch (Exception e) {
             uiLogger.error("保存物料价格出错!", e);
@@ -146,14 +146,14 @@ public class MaterialAdminBean
             _unitConv.setUnit(_m.getUnit());
             _unitConv.setLabel(_m.getLabel());
             _unitConv.setScale(scaleItem.getUnit().unmarshal(), scaleItem.getScale());
-            ctx.data.access(UnitConv.class).saveOrUpdate(_unitConv);
+            DATA(UnitConv.class).saveOrUpdate(_unitConv);
 
             if (!alreadyHaveUnitConv) {
                 _m.setUnitConv(_unitConv);
-                ctx.data.access(Material.class).saveOrUpdate(_m);
-                ctx.data.access(Material.class).evict(_m);
+                DATA(Material.class).saveOrUpdate(_m);
+                DATA(Material.class).evict(_m);
             }
-            ctx.data.access(UnitConv.class).evict(_unitConv);
+            DATA(UnitConv.class).evict(_unitConv);
             uiLogger.info("添加换算关系成功.");
         } catch (Exception e) {
             uiLogger.error("添加换算关系出错!", e);
@@ -169,9 +169,9 @@ public class MaterialAdminBean
             UnitConv _unitConv = unitConv.unmarshal();
             _unitConv.getScaleMap().remove(unit);
 
-            ctx.data.access(UnitConv.class).saveOrUpdate(_unitConv);
+            DATA(UnitConv.class).saveOrUpdate(_unitConv);
 
-            ctx.data.access(UnitConv.class).evict(_unitConv);
+            DATA(UnitConv.class).evict(_unitConv);
             uiLogger.info("删除换算关系成功.");
         } catch (Exception e) {
             uiLogger.error("删除换算关系出错!", e);
@@ -204,8 +204,8 @@ public class MaterialAdminBean
         try {
             preferredLocation.setMaterial(material);
             MaterialPreferredLocation _preferredLocation = preferredLocation.unmarshal();
-            ctx.data.access(MaterialPreferredLocation.class).saveOrUpdate(_preferredLocation);
-            ctx.data.access(Material.class).evict(_preferredLocation.getMaterial());
+            DATA(MaterialPreferredLocation.class).saveOrUpdate(_preferredLocation);
+            DATA(Material.class).evict(_preferredLocation.getMaterial());
             uiLogger.info("保存物料推荐库位成功.");
         } catch (Exception e) {
             uiLogger.error("保存物料推荐库位出错!", e);
@@ -217,8 +217,8 @@ public class MaterialAdminBean
             MaterialPreferredLocation _preferredLocation = preferredLocation.unmarshal();
             _preferredLocation.getMaterial().getPreferredLocations().remove(_preferredLocation);
 
-            ctx.data.access(MaterialPreferredLocation.class).delete(_preferredLocation);
-            ctx.data.access(Material.class).evict(_preferredLocation.getMaterial());
+            DATA(MaterialPreferredLocation.class).delete(_preferredLocation);
+            DATA(Material.class).evict(_preferredLocation.getMaterial());
             uiLogger.info("删除物料推荐库位成功.");
         } catch (Exception e) {
             uiLogger.error("删除物料推荐库位出错!", e);
@@ -251,8 +251,8 @@ public class MaterialAdminBean
         try {
             warehouseOption.setMaterial(material);
             MaterialWarehouseOption _warehouseOption = warehouseOption.unmarshal();
-            ctx.data.access(MaterialWarehouseOption.class).saveOrUpdate(_warehouseOption);
-            ctx.data.access(Material.class).evict(_warehouseOption.getMaterial());
+            DATA(MaterialWarehouseOption.class).saveOrUpdate(_warehouseOption);
+            DATA(Material.class).evict(_warehouseOption.getMaterial());
             uiLogger.info("保存物料${tr.inventory.warehouse}选项成功.");
         } catch (Exception e) {
             uiLogger.error("保存物料${tr.inventory.warehouse}选项出错!", e);
@@ -264,8 +264,8 @@ public class MaterialAdminBean
             MaterialWarehouseOption _warehouseOption = warehouseOption.unmarshal();
             _warehouseOption.getMaterial().getOptions().remove(_warehouseOption);
 
-            ctx.data.access(MaterialWarehouseOption.class).delete(_warehouseOption);
-            ctx.data.access(Material.class).evict(_warehouseOption.getMaterial());
+            DATA(MaterialWarehouseOption.class).delete(_warehouseOption);
+            DATA(Material.class).evict(_warehouseOption.getMaterial());
             uiLogger.info("删除物料${tr.inventory.warehouse}选项成功.");
         } catch (Exception e) {
             uiLogger.error("删除物料${tr.inventory.warehouse}选项出错!", e);
@@ -296,18 +296,18 @@ public class MaterialAdminBean
                     throws IOException {
                 String fileName = incomingFile.getFileName();
                 try {
-                    ctx.data.access(FileBlob.class).saveOrUpdate(fileBlob);
+                    DATA(FileBlob.class).saveOrUpdate(fileBlob);
 
                     UserFile userFile = new UserFile();
                     userFile.setPath(fileName);
                     userFile.setFileBlob(fileBlob);
                     userFile.setLabel("未命名物料附件");
-                    ctx.data.access(UserFile.class).save(userFile);
+                    DATA(UserFile.class).save(userFile);
 
                     MaterialDto material = getOpenedObject();
                     Material _m = material.unmarshal();
                     _m.getAttachments().add(userFile);
-                    ctx.data.access(Material.class).saveOrUpdate(_m);
+                    DATA(Material.class).saveOrUpdate(_m);
 
                     uiLogger.info("物料附件上传成功." + fileName);
                 } catch (Exception e) {
@@ -330,7 +330,7 @@ public class MaterialAdminBean
     public void updateUserFile() {
         UserFile file = userFile.unmarshal();
         try {
-            ctx.data.access(UserFile.class).saveOrUpdate(file);
+            DATA(UserFile.class).saveOrUpdate(file);
             uiLogger.info("编辑附件" + userFile.getName() + "成功.");
         } catch (Exception e) {
             uiLogger.error("编辑附件失败!", e);
@@ -344,8 +344,8 @@ public class MaterialAdminBean
             UserFile _f = userFile.unmarshal();
             Material _m = material.unmarshal();
             _m.getAttachments().remove(_f);
-            ctx.data.access(UserFile.class).deleteById(userFile.getId());
-            ctx.data.access(Material.class).saveOrUpdate(_m);
+            DATA(UserFile.class).deleteById(userFile.getId());
+            DATA(Material.class).saveOrUpdate(_m);
             uiLogger.info("删除物料附件:" + userFile.getName() + "成功.");
         } catch (Exception e) {
             uiLogger.error("删除物料附件失败!", e);

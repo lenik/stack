@@ -12,7 +12,7 @@ public class PeopleService
 
     @Override
     public Org getSelfOrg() {
-        List<Org> selfOrgs = ctx.data.access(Org.class).list(new Equals("employee", true));
+        List<Org> selfOrgs = DATA(Org.class).list(new Equals("employee", true));
         if(selfOrgs != null && selfOrgs.size() > 0) {
             return selfOrgs.get(0);
         }

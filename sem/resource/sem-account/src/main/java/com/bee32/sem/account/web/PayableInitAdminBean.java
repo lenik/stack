@@ -23,7 +23,7 @@ public class PayableInitAdminBean
      * @return
      */
     public Integer getSelfOrgId() {
-        return ctx.bean.getBean(PeopleService.class).getSelfOrg().getId();
+        return BEAN(PeopleService.class).getSelfOrg().getId();
     }
 
     @Override
@@ -36,7 +36,7 @@ public class PayableInitAdminBean
                 continue; // 说明dto的id不为空，当前处于修改状态，不用检测是否唯一
 
             // 说明dto的id为空，当前处于新增状态
-            if (ctx.bean.getBean(AccountService.class).isPayableInitExisted(init.getParty())) {
+            if (BEAN(AccountService.class).isPayableInitExisted(init.getParty())) {
                 uiLogger.error("此客户已经存在应付初始化记录，不能新增!");
                 return false;
             }

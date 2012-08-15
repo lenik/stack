@@ -53,13 +53,13 @@ public class LoginBean
     }
 
     public void login(ActionEvent even) {
-        User user = ctx.data.access(User.class).getByName(username);
+        User user = DATA(User.class).getByName(username);
         if (user == null) {
             uiLogger.error("用户不存在");
             return;
         }
 
-        List<UserPassword> plist = ctx.data.access(UserPassword.class).list(LoginCriteria.forUser(user));
+        List<UserPassword> plist = DATA(UserPassword.class).list(LoginCriteria.forUser(user));
         if (plist.isEmpty()) {
             uiLogger.error("登录错误:密码不存在");
             return;

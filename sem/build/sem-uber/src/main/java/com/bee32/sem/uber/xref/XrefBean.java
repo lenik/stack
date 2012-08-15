@@ -99,9 +99,9 @@ public class XrefBean
         }
 
         Serializable id = requestWindow.iterator().next();
-        Entity<?> entity = ctx.data.access(entityType).get(id);
+        Entity<?> entity = DATA(entityType).get(id);
 
-        EntityGraphTool tool = ctx.bean.getBean(EntityGraphTool.class);
+        EntityGraphTool tool = BEAN(EntityGraphTool.class);
         EntityXrefMap refMap = tool.getReferences(entity);
 
         int index = 0;

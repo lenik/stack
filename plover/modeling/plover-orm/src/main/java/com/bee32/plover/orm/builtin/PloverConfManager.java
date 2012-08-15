@@ -19,14 +19,14 @@ public class PloverConfManager
 
     @Override
     public PloverConfDto getConf(String section, String key) {
-        PloverConf conf = ctx.data.access(PloverConf.class).getUnique(selector(section, key));
+        PloverConf conf = DATA(PloverConf.class).getUnique(selector(section, key));
         PloverConfDto dto = DTOs.marshal(PloverConfDto.class, conf);
         return dto;
     }
 
     @Override
     public String get(String section, String key) {
-        PloverConf conf = ctx.data.access(PloverConf.class).getUnique(selector(section, key));
+        PloverConf conf = DATA(PloverConf.class).getUnique(selector(section, key));
         if (conf == null)
             return null;
         else
@@ -42,7 +42,7 @@ public class PloverConfManager
     @Transactional
     @Override
     public void set(String section, String key, String value, String description) {
-        PloverConf entry = ctx.data.access(PloverConf.class).getUnique(selector(section, key));
+        PloverConf entry = DATA(PloverConf.class).getUnique(selector(section, key));
         if (entry == null) {
             entry = new PloverConf(section, key, value, description);
         } else {
@@ -50,20 +50,20 @@ public class PloverConfManager
             if (description != null)
                 entry.setDescription(description);
         }
-        ctx.data.access(PloverConf.class).saveOrUpdate(entry);
+        DATA(PloverConf.class).saveOrUpdate(entry);
     }
 
     @Transactional
     @Override
     public void remove(String section, String key) {
-        ctx.data.access(PloverConf.class).findAndDelete(selector(section, key));
+        DATA(PloverConf.class).findAndDelete(selector(section, key));
     }
 
     @Override
     public Map<String, PloverConfDto> getSection(String section) {
         if (section == null)
             throw new NullPointerException("section");
-        List<PloverConf> list = ctx.data.access(PloverConf.class).list(new Equals("section", section));
+        List<PloverConf> list = DATA(PloverConf.class).list(new Equals("section", section));
         List<PloverConfDto> dtos = DTOs.marshalList(PloverConfDto.class, list);
         Map<String, PloverConfDto> map = new TreeMap<String, PloverConfDto>();
         for (PloverConfDto dto : dtos)
@@ -76,7 +76,7 @@ public class PloverConfManager
     public void removeSection(String section) {
         if (section == null)
             throw new NullPointerException("section");
-        ctx.data.access(PloverConf.class).findAndDelete(selector(section));
+        DATA(PloverConf.class).findAndDelete(selector(section));
     }
 
 }

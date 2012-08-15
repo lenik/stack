@@ -50,7 +50,7 @@ public class StockQuery
 
         options.fillBatchProjections(projection);
 
-        List<Object[]> list = ctx.data.access(StockOrderItem.class).listMisc(projection, selection);
+        List<Object[]> list = DATA(StockOrderItem.class).listMisc(projection, selection);
 
         StockOrderSubject subject = StockOrderSubject.PACK_M;
         if (options.getBatchArray() != null) {

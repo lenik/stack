@@ -26,7 +26,7 @@ public class UserFileViewHandler
             throw new IllegalArgumentException("User file id isn't specified.");
 
         long id = Long.parseLong(_id);
-        UserFile userFile = ctx.data.access(UserFile.class).getOrFail(id);
+        UserFile userFile = DATA(UserFile.class).getOrFail(id);
         if (userFile == null)
             throw new ServletException("User file with id=" + id + " isn't existed.");
 

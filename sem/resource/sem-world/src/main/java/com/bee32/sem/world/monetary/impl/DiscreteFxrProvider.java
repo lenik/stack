@@ -79,7 +79,7 @@ public class DiscreteFxrProvider
         if (limit < MIN_LIMIT)
             limit = MIN_LIMIT;
 
-        List<FxrRecord> records = ctx.data.access(FxrRecord.class).list(//
+        List<FxrRecord> records = DATA(FxrRecord.class).list(//
                 Order.desc("date"), //
                 new Limit(0, limit), //
                 FxrCriteria.beforeThan(queryDate, limit));
@@ -143,7 +143,7 @@ public class DiscreteFxrProvider
         }
 
         if (lastUpdatedDate == null) {
-            FxrRecord mostRecentRecord = ctx.data.access(FxrRecord.class).getFirst(Order.desc("date"));
+            FxrRecord mostRecentRecord = DATA(FxrRecord.class).getFirst(Order.desc("date"));
             if (mostRecentRecord == null)
                 lastUpdatedDate = new Date(0); // 1970-1-1
             else
@@ -162,7 +162,7 @@ public class DiscreteFxrProvider
             }
         }
 
-        ctx.data.access(FxrRecord.class).saveAll(newRecords);
+        DATA(FxrRecord.class).saveAll(newRecords);
 
         // Plot on the fly.
         for (FxrUsage _usage : FxrUsage.values()) {

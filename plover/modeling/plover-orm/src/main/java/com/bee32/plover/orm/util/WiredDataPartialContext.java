@@ -14,6 +14,7 @@ public class WiredDataPartialContext
         this.bean = bean;
     }
 
+    @Override
     public CommonDataManager getDataManager() {
         return bean.getBean(CommonDataManager.class);
     }

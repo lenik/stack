@@ -89,7 +89,7 @@ public class UserAdminBean
             throws Exception {
         if (StandardViews.CREATE_FORM.equals(getCurrentView()))
             for (UserDto user : uMap.<UserDto> dtos()) {
-                Principal existing = ctx.data.access(Principal.class).getByName(user.getName());
+                Principal existing = DATA(Principal.class).getByName(user.getName());
                 if (existing != null) {
                     uiLogger.error("用户已存在: " + user.getName());
                     return false;
@@ -104,9 +104,9 @@ public class UserAdminBean
         for (User user : uMap.<User> entitySet())
             if (password != null) {
                 try {
-                    ctx.data.access(UserPassword.class).findAndDelete(new Equals("user.id", user.getId()));
+                    DATA(UserPassword.class).findAndDelete(new Equals("user.id", user.getId()));
                     UserPassword pass = new UserPassword(user, password);
-                    ctx.data.access(UserPassword.class).save(pass);
+                    DATA(UserPassword.class).save(pass);
                     password = "";
                     passwordConfirm = "";
                     uiLogger.info("更新密码成功。");
@@ -130,7 +130,7 @@ public class UserAdminBean
     protected boolean preDelete(UnmarshalMap uMap)
             throws Exception {
         for (User user : uMap.<User> entitySet())
-            ctx.data.access(UserPassword.class).findAndDelete(new Equals("user.id", user.getId()));
+            DATA(UserPassword.class).findAndDelete(new Equals("user.id", user.getId()));
         return true;
     }
 
@@ -185,11 +185,11 @@ public class UserAdminBean
     public void savePersonLogin() {
         UserDto user = getOpenedObject();
         if (user != null && user.getId() != null) {
-            ctx.data.access(PersonLogin.class).findAndDelete(new Equals("user.id", user.getId()));
+            DATA(PersonLogin.class).findAndDelete(new Equals("user.id", user.getId()));
             PersonLogin personLogin = new PersonLogin();
             personLogin.setUser((User) user.unmarshal());
             personLogin.setPerson((Person) selectedPerson.unmarshal());
-            ctx.data.access(PersonLogin.class).save(personLogin);
+            DATA(PersonLogin.class).save(personLogin);
         }
     }
 
@@ -198,7 +198,7 @@ public class UserAdminBean
         if (user == null || user.getId() == null)
             return null;
 
-        PersonLogin personLogin = ctx.data.access(PersonLogin.class).getUnique(//
+        PersonLogin personLogin = DATA(PersonLogin.class).getUnique(//
                 new Equals("user.id", user.getId()));
 
         PersonDto person;
@@ -213,7 +213,7 @@ public class UserAdminBean
         UserDto user = getOpenedObject();
         List<ContactDto> contacts = new ArrayList<ContactDto>();
         if (user != null && user.getId() != null) {
-            PersonLogin personLogin = ctx.data.access(PersonLogin.class).getUnique(//
+            PersonLogin personLogin = DATA(PersonLogin.class).getUnique(//
                     new Equals("user.id", user.getId()));
             if (personLogin != null) {
                 PersonDto person = DTOs.marshal(PersonDto.class, personLogin.getPerson());

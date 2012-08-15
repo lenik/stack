@@ -102,7 +102,7 @@ public class SecurityOptionsDialogBean
         if (aclId == null)
             return null;
 
-        ACL _acl = ctx.data.access(ACL.class).get(aclId);
+        ACL _acl = DATA(ACL.class).get(aclId);
         if (_acl == null)
             return null;
 
@@ -133,7 +133,7 @@ public class SecurityOptionsDialogBean
         }
 
         try {
-            ctx.data.access(ACL.class).update(_acl);
+            DATA(ACL.class).update(_acl);
         } catch (Exception e) {
             uiLogger.error("保存 ACL 失败", e);
             return;
@@ -167,7 +167,7 @@ public class SecurityOptionsDialogBean
             CEntityAccessor.setAclId(_entity, aclId);
 
             try {
-                ctx.data.access(_entity.getClass()).update(_entity);
+                DATA(_entity.getClass()).update(_entity);
             } catch (Exception e) {
                 uiLogger.error("更新对象属性失败", e);
                 return;

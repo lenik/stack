@@ -52,7 +52,7 @@ public class DeliveryNoteAdminBean
     }
 
     public void setSourceWarehouseId_RZ(int warehouseId) {
-        StockDictsBean stockDicts = ctx.bean.getBean(StockDictsBean.class);
+        StockDictsBean stockDicts = BEAN(StockDictsBean.class);
         DeliveryNoteItemDto item = itemsMBean.getOpenedObject();
         item.setSourceWarehouse(stockDicts.getWarehouse(warehouseId));
     }
@@ -98,7 +98,7 @@ public class DeliveryNoteAdminBean
             return;
         }
 
-        MakebizService service = ctx.bean.getBean(MakebizService.class);
+        MakebizService service = BEAN(MakebizService.class);
         try {
             service.generateTakeOutStockOrders(deliveryNote);
             uiLogger.info("生成成功");

@@ -52,7 +52,7 @@ public class StockJobStepping
         if (!initiatorOrder.isNewCreated()) {
             long orderId = initiatorOrder.getId();
             try {
-                StockJob _job = ctx.data.access(jobClass).getFirst(new Equals(bindingProperty + ".id", orderId));
+                StockJob _job = DATA(jobClass).getFirst(new Equals(bindingProperty + ".id", orderId));
                 if (_job != null)
                     job = DTOs.marshal(jobDtoClass, _job);
             } catch (Exception e) {
@@ -95,9 +95,9 @@ public class StockJobStepping
                 setJobBinding(_job, _order);
             EntityAccessor.updateTimestamp(_job);
             if (_job.getId() != null) { // ???
-                ctx.data.access(jobClass).update(_job);
+                DATA(jobClass).update(_job);
             } else {
-                ctx.data.access(jobClass).save(_job);
+                DATA(jobClass).save(_job);
             }
         } catch (Exception e) {
             uiLogger.error("无法保存作业对象", e);
@@ -111,12 +111,12 @@ public class StockJobStepping
             return;
         try {
             if (isInitiator()) {
-                ctx.data.access(jobClass).findAndDelete(new Equals(bindingProperty + ".id", initiatorOrder.getId()));
+                DATA(jobClass).findAndDelete(new Equals(bindingProperty + ".id", initiatorOrder.getId()));
             } else {
-                for (StockJob _job : ctx.data.access(jobClass).list(
+                for (StockJob _job : DATA(jobClass).list(
                         new Equals(bindingProperty + ".id", initiatorOrder.getId()))) {
                     setJobBinding(_job, null);
-                    ctx.data.access(jobClass).update(_job);
+                    DATA(jobClass).update(_job);
                 }
             }
         } catch (Exception e) {

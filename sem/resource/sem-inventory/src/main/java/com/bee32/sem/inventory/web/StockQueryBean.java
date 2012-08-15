@@ -102,7 +102,7 @@ public class StockQueryBean
         opts.setPrice(selectedItem.getPrice(), true);
         opts.setLocation(selectedItem.getLocation().getId(), true);
 
-        List<StockOrderItem> details = ctx.data.access(StockOrderItem.class).list( //
+        List<StockOrderItem> details = DATA(StockOrderItem.class).list( //
                 StockCriteria.inOutDetail( //
                         queryDate, //
                         selectedItem.getMaterial().getId(), //
@@ -150,7 +150,7 @@ public class StockQueryBean
             c.add(Calendar.DAY_OF_MONTH, -1);
             Date limitDateTo = c.getTime();
 
-            List<StockOrder> orders = ctx.data.access(StockOrder.class).list( //
+            List<StockOrder> orders = DATA(StockOrder.class).list( //
                     CommonCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
                     StockCriteria.subjectOf(subject), //
                     new Equals("warehouse.id", detailItem.getParent().getWarehouse().getId()), //

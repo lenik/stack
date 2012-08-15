@@ -26,17 +26,17 @@ public class AssetQuery
 
     @Override
     public SumTree getSummary(AssetQueryOptions options) {
-        List<AccountSubject> subjects = ctx.data.access(AccountSubject.class).list(Order.asc("id"));
+        List<AccountSubject> subjects = DATA(AccountSubject.class).list(Order.asc("id"));
         SumTree tree = new SumTree();
         tree.learn(subjects);
 
-        AccountSnapshot latestSnapshot = ctx.data.access(AccountSnapshot.class).getFirst(//
+        AccountSnapshot latestSnapshot = DATA(AccountSnapshot.class).getFirst(//
                 AssetCriteria.latestSnapshotBefore(options.getTimestamp()));
 
         Date snapshotDate = null;
         if (latestSnapshot != null) {
             snapshotDate = latestSnapshot.getEndTime();
-            for (AccountSnapshotItem item : ctx.data.access(AccountSnapshotItem.class).list(//
+            for (AccountSnapshotItem item : DATA(AccountSnapshotItem.class).list(//
                     new Equals("snapshot", latestSnapshot))) {
 
                 AccountTicketItem converted = new AccountTicketItem();
@@ -56,7 +56,7 @@ public class AssetQuery
                 options.getPartyProjection() //
         );
 
-        List<Object[]> list = ctx.data.access(AccountTicketItem.class).listMisc(projection, selection);
+        List<Object[]> list = DATA(AccountTicketItem.class).listMisc(projection, selection);
 
         for (Object[] line : list) {
             int _column = 0;

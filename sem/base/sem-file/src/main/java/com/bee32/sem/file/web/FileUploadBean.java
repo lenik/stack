@@ -44,8 +44,8 @@ public class FileUploadBean
 
             userFile.setFileBlob(fileBlob);
 
-            ctx.data.access(FileBlob.class).saveOrUpdate(fileBlob);
-            ctx.data.access(UserFile.class).save(userFile);
+            DATA(FileBlob.class).saveOrUpdate(fileBlob);
+            DATA(UserFile.class).save(userFile);
 
         } catch (Exception e) {
             uiLogger.error("存储文件 " + fileName + " 失败", e);

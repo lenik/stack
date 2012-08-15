@@ -51,7 +51,7 @@ public class VerifyHandler<E extends Entity<K> & IVerifiable<C>, //
                     return "您尚未登陆。";
 
                 K id = eh.parseRequiredId(_id);
-                E entity = ctx.data.access(eh.getEntityType()).get(id);
+                E entity = DATA(eh.getEntityType()).get(id);
                 if (entity == null)
                     return "审核的目标对象不存在，这可能是因为有人在您审核的同时删除了该对象。";
 

@@ -83,7 +83,7 @@ public class AttendanceDAdmin
         }
 
         try {
-            ctx.data.access(AttendanceMR.class).saveOrUpdateAll(mrList);
+            DATA(AttendanceMR.class).saveOrUpdateAll(mrList);
             uiLogger.info("添加考勤记录成功");
         } catch (Exception e) {
             e.printStackTrace();

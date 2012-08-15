@@ -21,6 +21,6 @@ public class ReceivableAdminBean
      * @return
      */
     public Integer getSelfOrgId() {
-        return ctx.bean.getBean(PeopleService.class).getSelfOrg().getId();
+        return BEAN(PeopleService.class).getSelfOrg().getId();
     }
 }

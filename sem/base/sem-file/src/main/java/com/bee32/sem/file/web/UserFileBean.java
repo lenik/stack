@@ -46,12 +46,12 @@ public class UserFileBean
 
     public void createUserFile(FileBlob fileBlob, IncomingFile incomingFile) {
         try {
-            ctx.data.access(FileBlob.class).saveOrUpdate(fileBlob);
+            DATA(FileBlob.class).saveOrUpdate(fileBlob);
 
             UserFile userFile = new UserFile();
             userFile.setName(incomingFile.getFileName());
             userFile.setFileBlob(fileBlob);
-            ctx.data.access(UserFile.class).saveOrUpdate(userFile);
+            DATA(UserFile.class).saveOrUpdate(userFile);
         } catch (Exception e) {
             uiLogger.error("无法保存文件基本信息", e);
             return;
@@ -62,7 +62,7 @@ public class UserFileBean
     @Override
     protected void postUpdate(UnmarshalMap uMap)
             throws Exception {
-        IUserFileTagStatService tagStats = ctx.bean.getBean(IUserFileTagStatService.class);
+        IUserFileTagStatService tagStats = BEAN(IUserFileTagStatService.class);
         for (UserFile userFile : uMap.<UserFile> entitySet()) {
             // boolean newAdded = uMap.get(userFile).getId() == null;
             tagStats.addUsage(userFile.getTags());
@@ -72,7 +72,7 @@ public class UserFileBean
     @Override
     protected void postDelete(UnmarshalMap uMap)
             throws Exception {
-        IUserFileTagStatService tagStats = ctx.bean.getBean(IUserFileTagStatService.class);
+        IUserFileTagStatService tagStats = BEAN(IUserFileTagStatService.class);
         for (UserFile userFile : uMap.<UserFile> entitySet()) {
             // boolean newAdded = uMap.get(userFile).getId() == null;
             tagStats.removeUsage(userFile.getTags());
@@ -81,7 +81,7 @@ public class UserFileBean
 
     public TagCloudModel getTagCloudModel() {
         TagCloudModel model = new DefaultTagCloudModel();
-        IUserFileTagStatService tagStats = ctx.bean.getBean(IUserFileTagStatService.class);
+        IUserFileTagStatService tagStats = BEAN(IUserFileTagStatService.class);
         for (Entry<UserFileTagname, Long> entry : tagStats.getStats().entrySet()) {
             UserFileTagname tag = entry.getKey();
             String tagName = tag.getName();
@@ -141,7 +141,7 @@ public class UserFileBean
             return;
 
         int tagId = Integer.parseInt(tagIdStr);
-        // UserFileTagname tag = ctx.data.access(UserFileTagname.class).get(tagId);
+        // UserFileTagname tag = DATA(UserFileTagname.class).get(tagId);
 
         TagsSearchFragment tsf = null;
         for (SearchFragment sf : getSearchFragments("tag")) {

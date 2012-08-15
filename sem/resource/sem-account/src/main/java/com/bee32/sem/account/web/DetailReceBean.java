@@ -53,9 +53,7 @@ public class DetailReceBean
         this.summary = summary;
     }
 
-    @SuppressWarnings("unchecked")
-    @Transactional
-    // (readOnly = true)
+    @Transactional(readOnly = Config.readOnlyTxEnabled)
     public void query() {
         StringBuilder sb = new StringBuilder();
 

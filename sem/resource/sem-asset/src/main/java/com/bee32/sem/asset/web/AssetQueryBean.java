@@ -106,7 +106,7 @@ public class AssetQueryBean
         }
         options.setParties(null, true);
 
-        SumTree tree = ctx.bean.getBean(IAssetQuery.class).getSummary(options);
+        SumTree tree = BEAN(IAssetQuery.class).getSummary(options);
 
         SumNode rootNode = tree.getRoot();
         root = new DefaultTreeNode(rootNode.getKey(), null);

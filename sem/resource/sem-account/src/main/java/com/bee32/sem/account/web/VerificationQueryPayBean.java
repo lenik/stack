@@ -42,9 +42,7 @@ public class VerificationQueryPayBean
         this.result = result;
     }
 
-    @SuppressWarnings("unchecked")
-    @Transactional
-    // (readOnly = true)
+    @Transactional(readOnly = Config.readOnlyTxEnabled)
     public void query() {
         result = new ArrayList<Object[]>();
 

@@ -54,7 +54,7 @@ public class StockLocationAdminBean
     @Override
     protected void postUpdate(UnmarshalMap uMap)
             throws Exception {
-        ctx.bean.getBean(ChooseStockLocationDialogBean.class).refreshTree();
+        BEAN(ChooseStockLocationDialogBean.class).refreshTree();
     }
 
     public int getSelectedWarehouseId() {

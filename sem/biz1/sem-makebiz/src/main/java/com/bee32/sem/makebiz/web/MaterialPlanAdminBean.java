@@ -48,7 +48,7 @@ public class MaterialPlanAdminBean
         }
         MaterialPlanDto materialPlan = getOpenedObject();
 
-        MakebizService service = ctx.bean.getBean(MakebizService.class);
+        MakebizService service = BEAN(MakebizService.class);
         try {
             service.calcMaterialPlanFromBom(materialPlan, task);
             uiLogger.info("计算完成。");
@@ -86,7 +86,7 @@ public class MaterialPlanAdminBean
         opts.setBatchArray(null, true);
         opts.setLocation(null, true);
         opts.setWarehouse(null, true);
-        StockQueryResult queryResult = ctx.bean.getBean(IStockQuery.class).getAvailableStock(materialIds, opts);
+        StockQueryResult queryResult = BEAN(IStockQuery.class).getAvailableStock(materialIds, opts);
         StockOrderDto sumOrder = DTOs.marshal(StockOrderDto.class, StockOrderDto.ITEMS, queryResult);
 
         // 把items变成map,便于根据物料查询数量

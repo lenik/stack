@@ -123,7 +123,7 @@ public class StockQueryDialogBean
         else
             materialIds = IdUtils.<Long> getDtoIdList(materials);
 
-        IStockQuery query = ctx.bean.getBean(IStockQuery.class);
+        IStockQuery query = BEAN(IStockQuery.class);
         StockQueryResult result = query.getAvailableStock(materialIds, queryOptions);
         return result;
     }

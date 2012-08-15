@@ -63,7 +63,7 @@ public class PurchaseService
 
         // 抵消后的数量为采购需求数量，再考虑安全库存：
         ConsumptionMap safetyMap = new ConsumptionMap();
-        List<MaterialWarehouseOption> _mwopts = ctx.data.access(MaterialWarehouseOption.class).list(
+        List<MaterialWarehouseOption> _mwopts = DATA(MaterialWarehouseOption.class).list(
                 new InCollection("material.id", materialIds));
         for (MaterialWarehouseOption _mwopt : _mwopts)
             safetyMap.consume(_mwopt.getMaterial(), _mwopt.getSafetyStock());
@@ -127,7 +127,7 @@ public class PurchaseService
         for (List<PurchaseRequestItemDto> itemList : splitMap.values()) {
             OrgDto preferredSupplier = itemList.get(0).getAcceptedInquiry().getSupplier();
 
-            StockWarehouse warehouse = ctx.data.access(StockWarehouse.class).lazyLoad(
+            StockWarehouse warehouse = DATA(StockWarehouse.class).lazyLoad(
                     itemWarehouseMap.get(itemList.get(0).getId()));
 
             StockOrderDto takeInOrder = new StockOrderDto().create();

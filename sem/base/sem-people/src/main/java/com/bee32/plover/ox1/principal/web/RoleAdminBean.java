@@ -28,7 +28,7 @@ public class RoleAdminBean
             throws Exception {
         for (Role _role : uMap.<Role> entitySet()) {
             if (StandardViews.CREATE_FORM.equals(getCurrentView())) {
-                Role existing = ctx.data.access(Role.class).getByName(_role.getName());
+                Role existing = DATA(Role.class).getByName(_role.getName());
                 if (existing != null) {
                     uiLogger.error("角色已存在: " + _role.getName());
                     return false;

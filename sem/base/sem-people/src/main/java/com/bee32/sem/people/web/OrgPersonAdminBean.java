@@ -67,7 +67,7 @@ public class OrgPersonAdminBean
     }
 
     void refreshOrgCount() {
-        int count = ctx.data.access(Org.class).count();
+        int count = DATA(Org.class).count();
         orgs.setRowCount(count);
     }
 
@@ -294,18 +294,18 @@ public class OrgPersonAdminBean
 
         try {
             Person _person = (Person) person.unmarshal();
-            ctx.data.access(Person.class).saveOrUpdate(_person);
+            DATA(Person.class).saveOrUpdate(_person);
 
             Org _org = (Org) org.unmarshal();
-            ctx.data.access(Org.class).saveOrUpdate(_org);
+            DATA(Org.class).saveOrUpdate(_org);
 
             PersonRole _role = new PersonRole();
             _role.setOrg(_org);
             _role.setPerson(_person);
             _role.setRole(personRole);
 
-            ctx.data.access(PersonRole.class).saveOrUpdate(_role);
-            ctx.data.access(Org.class).evict(_org);
+            DATA(PersonRole.class).saveOrUpdate(_role);
+            DATA(Org.class).evict(_org);
 
             refreshOrgCount();
 

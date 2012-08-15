@@ -24,7 +24,7 @@ public class ACLPrefBean
     @Override
     protected void postUpdate(UnmarshalMap uMap)
             throws Exception {
-        ACLPrefCache cache = ctx.bean.getBean(ACLPrefCache.class);
+        ACLPrefCache cache = BEAN(ACLPrefCache.class);
         for (ACLPref pref : uMap.<ACLPref> entitySet()) {
             Class<?> entityType = pref.getType();
             ACL preferredACL = pref.getPreferredACL();
@@ -35,7 +35,7 @@ public class ACLPrefBean
     @Override
     protected void postDelete(UnmarshalMap uMap)
             throws Exception {
-        ACLPrefCache cache = ctx.bean.getBean(ACLPrefCache.class);
+        ACLPrefCache cache = BEAN(ACLPrefCache.class);
         for (ACLPref pref : uMap.<ACLPref> entitySet()) {
             Class<?> entityType = pref.getType();
             cache.setPreferredAclId(entityType, null);

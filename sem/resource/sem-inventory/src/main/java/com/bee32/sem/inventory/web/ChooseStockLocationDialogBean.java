@@ -78,7 +78,7 @@ public class ChooseStockLocationDialogBean
         if (preferredLocations == null) {
             List<StockLocationDto> list = new ArrayList<StockLocationDto>();
             if (material != null && !material.isNull()) {
-                for (MaterialPreferredLocation mpl : ctx.data.access(MaterialPreferredLocation.class).list(
+                for (MaterialPreferredLocation mpl : DATA(MaterialPreferredLocation.class).list(
                         new Equals("material.id", material.getId()))) {
                     StockLocation _location = mpl.getLocation();
                     StockLocationDto location = DTOs.mref(StockLocationDto.class, _location);

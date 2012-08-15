@@ -633,11 +633,11 @@ public abstract class SimpleEntityViewBean
         try {
             if ((saveFlags & SAVE_MUSTEXIST) != 0)
                 for (Entity<?> entity : entities)
-                    ctx.data.access(entityType).update(entity);
+                    DATA(entityType).update(entity);
             else if ((saveFlags & SAVE_NOEXIST) != 0)
-                ctx.data.access(entityType).saveAll(entities);
+                DATA(entityType).saveAll(entities);
             else
-                ctx.data.access(entityType).saveOrUpdateAll(entities);
+                DATA(entityType).saveOrUpdateAll(entities);
         } catch (Exception e) {
             uiLogger.error(hint + "失败", e);
             return false;
@@ -655,7 +655,7 @@ public abstract class SimpleEntityViewBean
             Set<Entity<?>> subEntities = subMap.keySet();
             EntityAccessor.updateTimestamp(subEntities);
             try {
-                ctx.data.access((Class) subEntityClass).saveOrUpdateAll(subEntities);
+                DATA((Class) subEntityClass).saveOrUpdateAll(subEntities);
             } catch (Exception e) {
                 uiLogger.error(hint + subMap.getLabel() + "失败。", e);
                 return false;
@@ -735,7 +735,7 @@ public abstract class SimpleEntityViewBean
             }
 
             if (needUpdateBeforeDelete) {
-                ctx.data.access(getEntityType()).update(entity);
+                DATA(getEntityType()).update(entity);
             }
 
             boolean locked = EntityAccessor.isAnyLocked(entity);
@@ -780,7 +780,7 @@ public abstract class SimpleEntityViewBean
         Set<Entity<?>> entities = uMap.keySet();
         int count;
         try {
-            count = ctx.data.access(getEntityType()).deleteAll(entities);
+            count = DATA(getEntityType()).deleteAll(entities);
         } catch (Exception e) {
             uiLogger.error("删除失败", e);
             return;

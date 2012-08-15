@@ -17,11 +17,9 @@ import com.bee32.sem.hr.dto.EmployeeInfoDto;
 import com.bee32.sem.hr.entity.EmployeeInfo;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.wage.dto.BaseBonusDto;
-import com.bee32.sem.wage.dto.SalaryDto;
-import com.bee32.sem.wage.dto.WageSalaryItemDto;
+import com.bee32.sem.wage.dto.BaseSalaryDto;
 import com.bee32.sem.wage.entity.BaseBonus;
-import com.bee32.sem.wage.entity.Salary;
-import com.bee32.sem.wage.util.WageDateUtil;
+import com.bee32.sem.wage.entity.BaseSalary;
 
 public class AttendanceMAdmin
         extends SimpleEntityViewBean {
@@ -31,18 +29,18 @@ public class AttendanceMAdmin
     List<AttendanceMRDto> attendanceMRList;
     List<EmployeeInfoDto> allEmployees;
     Date openDate = new Date();
-    Date restrictionDate = new Date();
     Map<String, BaseBonusDto> bonusMap;
 
     public AttendanceMAdmin() {
-        // current month -> AttendanceCriteria.getMonthList(new Date())
-        super(AttendanceMR.class, AttendanceMRDto.class, 0);
+
+        super(AttendanceMR.class, AttendanceMRDto.class, 0, AttendanceCriteria.getMonthList(new Date()));
 
         attendanceMRList = new ArrayList<AttendanceMRDto>();
         allEmployees = mrefList(EmployeeInfo.class, EmployeeInfoDto.class, 0);
         for (EmployeeInfoDto employee : allEmployees) {
             AttendanceMRDto monthRecord = new AttendanceMRDto();
             monthRecord.setEmployee(employee);
+            monthRecord.setDate(new Date());
             attendanceMRList.add(monthRecord);
         }
     }
@@ -54,6 +52,7 @@ public class AttendanceMAdmin
         for (EmployeeInfoDto employee : allEmployees) {
             AttendanceMRDto monthRecord = new AttendanceMRDto();
             monthRecord.setEmployee(employee);
+            monthRecord.setDate(new Date());
             monthRecord.setShould_attendance(0.0);
             monthRecord.setReal_attendance(0.0);
             monthRecord.setTrip(0.0);
@@ -63,12 +62,8 @@ public class AttendanceMAdmin
         }
     }
 
-    public void addMonthRestriction() {
-        setSearchFragment("date", "限定" + WageDateUtil.getMonNum(restrictionDate) + "月出勤记录", //
-                AttendanceCriteria.getMonthList(restrictionDate));
-    }
-
     public void saveList() {
+        // 判断记录是否已经存在
         /**
          * 本月已经存在考勤记录的月，将不再添加进去
          */
@@ -76,18 +71,12 @@ public class AttendanceMAdmin
                 AttendanceCriteria.getMonthList(openDate));
         Set<Long> idSet = new HashSet<Long>();
         for (AttendanceMR amr : existingList) {
-            Long employeeId = amr.getEmployee().getId();
-            idSet.add(employeeId);
+            idSet.add(amr.getEmployee().getId());
         }
 
         List<AttendanceMR> entities = new ArrayList<AttendanceMR>();
         for (AttendanceMRDto dto : attendanceMRList) {
-            Long employeeId = dto.getEmployee().getId();
-            if (idSet.contains(employeeId))
-                uiLogger.info(dto.getEmployee().getPerson().getName() + "  " + WageDateUtil.getMonNum(openDate)
-                        + "月  考勤记录已经存在");
-            else {
-                dto.setDate(openDate);
+            if (!idSet.contains(dto.getId())) {
                 AttendanceMR mr = dto.unmarshal();
                 entities.add(mr);
             }
@@ -102,122 +91,102 @@ public class AttendanceMAdmin
         }
     }
 
+// public void vvvv() {
+// List<EmployeeInfoDto> employees = mrefList(EmployeeInfo.class, EmployeeInfoDto.class, 0);
+// for (EmployeeInfoDto employee : employees) {
+// AttendanceMRDto attendance = new AttendanceMRDto();
+// attendance.setEmployee(employee);
+// attendance.setDate(new Date());
+// attendanceMRList.add(attendance);
+// }
+// }
     public void doCal(Object selection) {
-
         setSingleSelection(selection);
         openSelection();
         AttendanceMRDto mrDto = (AttendanceMRDto) getOpenedObject();
-        SalaryDto salary = new SalaryDto().create();
-        double total = 0.0;
+        BaseSalaryDto salary = new BaseSalaryDto().create();
         salary.setAttendance(mrDto);
-
         Map<String, BaseBonusDto> bonusMap = getBonusMap();
-        List<WageSalaryItemDto> items = new ArrayList<WageSalaryItemDto>();
+        double dayBase = bonusMap.get("base").getBonus().doubleValue();
+        double A = dayBase * (mrDto.getReal_attendance() + mrDto.getReal_overtime());
+        double lunch = bonusMap.get("lunch").getBonus().doubleValue() * mrDto.getReal_attendance();
+        double supper = bonusMap.get("supper").getBonus().doubleValue() * mrDto.getReal_overtime();
+        double trip = bonusMap.get("trip").getBonus().doubleValue() * mrDto.getTrip();
 
-        // 基本工资
-        WageSalaryItemDto base = new WageSalaryItemDto().create();
-        base.setBonus(bonusMap.get("base").getBonus());
-        base.setRate(mrDto.getReal_attendance() + mrDto.getReal_overtime() + mrDto.getTrip());
-        base.setLabel("基本工资");
-
-        salary.setBaseSalary(base);
-        total += base.getRate() * base.getBonus().doubleValue();
-
-        // TODO 小数点情况 || 全勤奖 perfect attendance award --> paa
-
-        // 中餐补贴
-        WageSalaryItemDto lunch = new WageSalaryItemDto();
-        lunch.setBonus(bonusMap.get("lunch").getBonus());
-        lunch.setAlternate(bonusMap.get("lunch").getName());
-        lunch.setRate(mrDto.getReal_attendance());
-        lunch.setLabel("午餐补贴");
-        items.add(lunch);
-        total += lunch.getRate() * lunch.getBonus().doubleValue();
-
-        // 晚餐补贴
-        WageSalaryItemDto supper = new WageSalaryItemDto();
-        supper.setBonus(bonusMap.get("supper").getBonus());
-        supper.setAlternate(bonusMap.get("supper").getName());
-        supper.setRate(mrDto.getReal_overtime());
-        supper.setLabel("晚餐补贴");
-        items.add(supper);
-        total += supper.getBonus().doubleValue() * supper.getRate();
-
-        // 出差补贴
-        WageSalaryItemDto trip = new WageSalaryItemDto();
-        trip.setBonus(bonusMap.get("trip").getBonus());
-        trip.setAlternate(bonusMap.get("trip").getName());
-        trip.setRate(mrDto.getTrip());
-        trip.setLabel("出差补贴");
-        items.add(trip);
-        total += trip.getBonus().doubleValue() * trip.getRate();
-
-        // 职位补贴 ~~ 岗位
-        WageSalaryItemDto jobPost = new WageSalaryItemDto();
-        jobPost.setBonus(mrDto.getEmployee().getRole().getBonus());
-        jobPost.setAlternate(mrDto.getEmployee().getRole().getName());
-        jobPost.setRate(1);
-        jobPost.setLabel("职位补贴");
-        items.add(jobPost);
-        total += jobPost.getBonus().doubleValue() * jobPost.getRate();
-
-        // 学历补贴
-        WageSalaryItemDto education = new WageSalaryItemDto();
-        education.setBonus(mrDto.getEmployee().getEducation().getBonus());
-        education.setAlternate(mrDto.getEmployee().getEducation().getName());
-        education.setRate(1);
-        education.setLabel("学历补贴");
-        items.add(education);
-        total += education.getBonus().doubleValue() * education.getRate();
-
-        // 安全补贴
-        if (mrDto.isSafety()) {
-            WageSalaryItemDto safety = new WageSalaryItemDto();
-            safety.setBonus(bonusMap.get("safety").getBonus());
-            safety.setAlternate(bonusMap.get("safety").getName());
-            safety.setRate(1);
-            safety.setLabel("安全奖");
-            items.add(safety);
-            total += safety.getBonus().doubleValue() * safety.getRate();
+        int rate = (int) (mrDto.getShould_attendance() + mrDto.getShould_overtime() - mrDto.getReal_attendance() - mrDto
+                .getReal_overtime());
+        int perfectAttendance;
+        switch (rate) {
+        case 0:
+            perfectAttendance = 300;
+            break;
+        case 1:
+            perfectAttendance = 230;
+            break;
+        case 2:
+            perfectAttendance = 160;
+            break;
+        case 3:
+            perfectAttendance = 100;
+            break;
+        default:
+            perfectAttendance = 0;
         }
 
-        int perfectAttendance;
-        double rate = mrDto.getShould_attendance() + mrDto.getShould_overtime() - mrDto.getReal_attendance()
-                - mrDto.getReal_overtime();
-        if (rate <= 0)
-            perfectAttendance = 300;
-        else if (rate <= 1)
-            perfectAttendance = 230;
-        else if (rate <= 2)
-            perfectAttendance = 160;
-        else
-            perfectAttendance = 0;
-
-        WageSalaryItemDto paa = new WageSalaryItemDto();
-        paa.setBonus(new BigDecimal(perfectAttendance));
-        paa.setRate(1);
-        paa.setLabel("全勤奖");
-        items.add(paa);
-        total += paa.getBonus().doubleValue() * paa.getRate();
-
-        salary.setItems(items);
-        salary.setDate(openDate);
+        double total = A + perfectAttendance + lunch + supper + trip;
         salary.setTotal(new BigDecimal(total));
-
-        IEntityAccessService<Salary, Long> access = ctx.data.access(Salary.class);
-        List<Salary> slist = access.list(AttendanceCriteria.getMonthRecordByEmployee(mrDto.getDate(), //
+        IEntityAccessService<BaseSalary, Long> access = DATA(BaseSalary.class);
+        List<BaseSalary> slist = access.list(AttendanceCriteria.getMonthRecordByEmployee(mrDto.getDate(), //
                 mrDto.getEmployee().getId()));
         if (slist.size() == 0 || slist.isEmpty()) {
             try {
                 access.saveOrUpdate(salary.unmarshal());
                 mrDto.setCal(true);
                 ctx.data.access(AttendanceMR.class).update(mrDto.unmarshal());
-                uiLogger.info("生成工资条成功");
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else
             uiLogger.warn("该月工资条已经存在");
+
+        System.out.println("*******************");
+        System.out.println(total);
+    }
+
+    public void calSalary(Object selection) {
+        setSingleSelection(selection);
+        openSelection();
+
+        Map<String, BaseBonusDto> map = new HashMap<String, BaseBonusDto>();
+        List<BaseBonusDto> allBonuses = mrefList(BaseBonus.class, BaseBonusDto.class, 0);
+        for (BaseBonusDto bonus : allBonuses) {
+            map.put(bonus.getName(), bonus);
+        }
+
+        List<BaseBonusDto> bonuses = new ArrayList<BaseBonusDto>();
+        AttendanceMRDto attendanceMRDto = (AttendanceMRDto) getOpenedObject();
+        BaseSalaryDto salary = new BaseSalaryDto();
+        salary.setAttendance(attendanceMRDto);
+        salary.setEmployee(attendanceMRDto.getEmployee());
+        if (attendanceMRDto.getEmployee().isMotorist()) {
+            bonuses.add(map.get("fuel"));
+        }
+        salary.setSubsidies(bonuses);
+        salary.setDate(new Date());
+        // BaseSalary entity = salary.unmarshal();
+        try {
+            IEntityAccessService<BaseSalary, Long> access = DATA(BaseSalary.class);
+            List<BaseSalary> list = access.list(AttendanceCriteria.getMonthRecordByEmployee(new Date(),
+                    attendanceMRDto.getId()));
+            if (list.size() >= 0) {
+                uiLogger.info("已经有该月工资条");
+            } else {
+                access.save(salary.unmarshal());
+                uiLogger.info("生成工资条成功");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     Map<String, BaseBonusDto> getBonusMap() {
@@ -245,13 +214,5 @@ public class AttendanceMAdmin
 
     public void setOpenDate(Date openDate) {
         this.openDate = openDate;
-    }
-
-    public Date getRestrictionDate() {
-        return restrictionDate;
-    }
-
-    public void setRestrictionDate(Date restrictionDate) {
-        this.restrictionDate = restrictionDate;
     }
 }

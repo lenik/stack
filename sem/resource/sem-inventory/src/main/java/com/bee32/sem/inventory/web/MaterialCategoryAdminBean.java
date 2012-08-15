@@ -32,7 +32,7 @@ public class MaterialCategoryAdminBean
     protected void postUpdate(UnmarshalMap uMap)
             throws Exception {
         super.postUpdate(uMap);
-        ctx.bean.getBean(ChooseMaterialCategoryDialogBean.class).refreshTree();
+        BEAN(ChooseMaterialCategoryDialogBean.class).refreshTree();
     }
 
     public void addCfinishedRestriction() {

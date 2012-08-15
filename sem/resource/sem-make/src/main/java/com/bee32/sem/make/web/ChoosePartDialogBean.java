@@ -52,7 +52,7 @@ public class ChoosePartDialogBean
 
     public void setCategoryRestriction(Integer categoryId) {
         if (categoryId != null && categoryId != -1) {
-            MaterialCategory category = ctx.data.access(MaterialCategory.class).get(categoryId);
+            MaterialCategory category = DATA(MaterialCategory.class).get(categoryId);
             setSearchFragment("category", "分类为" + category.getLabel(), //
                     BomCriteria.targetCategory(categoryId));
         }

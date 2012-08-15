@@ -41,8 +41,8 @@ public class UserFileUploadDialogBean
             userFile.setFileBlob(fileBlob);
             userFile.setLabel("无标题");
 
-            ctx.data.access(FileBlob.class).saveOrUpdate(fileBlob);
-            ctx.data.access(UserFile.class).save(userFile);
+            DATA(FileBlob.class).saveOrUpdate(fileBlob);
+            DATA(UserFile.class).save(userFile);
 
             uiLogger.info("上传成功:" + fileName);
         } catch (Exception e) {

@@ -23,7 +23,7 @@ public class PartialACLCacheIndex
         if (aclCache == null) {
             aclCache = new PartialACLCache();
 
-            List<ACL> acls = ctx.data.access(ACLEntry.class).listMisc(//
+            List<ACL> acls = DATA(ACLEntry.class).listMisc(//
                     ACLCriteria.acls(principal));
             Set<ACL> distincts = new HashSet<ACL>(acls);
 

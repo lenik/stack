@@ -50,7 +50,7 @@ public class ChanceActionBean
             Chance _chance = _action.getChance();
             if (_chance != null) {
                 _chance.addAction(_action);
-                ctx.data.access(Chance.class).saveOrUpdate(_chance);
+                DATA(Chance.class).saveOrUpdate(_chance);
             }
         }
     }

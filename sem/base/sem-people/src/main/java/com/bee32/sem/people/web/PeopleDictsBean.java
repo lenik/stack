@@ -59,7 +59,7 @@ public class PeopleDictsBean
     }
 
     public List<SelectItem> getSidTypes() {
-        List<PartySidType> sidTypes = ctx.data.access(PartySidType.class).list();
+        List<PartySidType> sidTypes = DATA(PartySidType.class).list();
         List<PartySidTypeDto> sidTypeDtos = DTOs.marshalList(PartySidTypeDto.class, sidTypes);
         return UIHelper.selectItemsFromDict(sidTypeDtos);
     }

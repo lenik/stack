@@ -80,7 +80,7 @@ public class VerifyPolicyPrefBean
             @SuppressWarnings("unchecked")
             Class<? extends VerifyPolicy> persistedType = (Class<? extends VerifyPolicy>) candidatePolicyType;
 
-            List<? extends VerifyPolicy> candidatePolicies = ctx.data.access(persistedType).list();
+            List<? extends VerifyPolicy> candidatePolicies = DATA(persistedType).list();
 
             for (VerifyPolicyDto candidate : DTOs.mrefList(VerifyPolicyDto.class, candidatePolicies))
                 candidates.add(candidate);
@@ -139,11 +139,11 @@ public class VerifyPolicyPrefBean
 
         String typeName = ClassUtil.getTypeName(userEntityType);
 
-        for (Entity<?> userEntity : ctx.data.access(userEntityType).list()) {
+        for (Entity<?> userEntity : DATA(userEntityType).list()) {
             if (logger.isDebugEnabled())
                 logger.debug("Refresh/verify " + typeName + " [" + userEntity.getId() + "]");
 
-            IVerifyService verifyService = ctx.bean.getBean(IVerifyService.class);
+            IVerifyService verifyService = BEAN(IVerifyService.class);
             verifyService.verifyEntity(userEntity);
             // should save userEntity?
         }

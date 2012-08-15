@@ -84,7 +84,7 @@ public class MakeTaskAdminBean
 
 	    MakeTaskItemDto item = itemsMBean.getSelection();
 
-		MakebizService service = ctx.bean.getBean(MakebizService.class);
+		MakebizService service = BEAN(MakebizService.class);
 		try {
 		    if (item.getProcesses() != null && item.getProcesses().size() > 0) {
 		        uiLogger.info("此生产任务已经有工艺流转单.");

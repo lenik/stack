@@ -83,7 +83,7 @@ public class MakebizService
         for (List<DeliveryNoteItemDto> itemList : splitMap.values()) {
             PartyDto customer = itemList.get(0).getParent().getCustomer();
 
-            StockWarehouse warehouse = ctx.data.access(StockWarehouse.class).lazyLoad(
+            StockWarehouse warehouse = DATA(StockWarehouse.class).lazyLoad(
                     itemWarehouseMap.get(itemList.get(0).getId()));
 
             StockOrderDto takeOutOrder = new StockOrderDto().create();
@@ -211,7 +211,7 @@ public class MakebizService
 
             claimTree(process, part, _taskItem.getQuantity());
 
-            ctx.data.access(MakeProcess.class).save(process);
+            DATA(MakeProcess.class).save(process);
         }
     }
 

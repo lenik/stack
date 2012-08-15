@@ -13,7 +13,7 @@ public class AccountService
     @Override
     public boolean isReceivableInitExisted(PartyDto party) {
 
-        ReceivableInit receivableInit = ctx.data.access(ReceivableInit.class).getFirst(
+        ReceivableInit receivableInit = DATA(ReceivableInit.class).getFirst(
                 new Equals("party.id", party.getId()));
         if (receivableInit == null)
             return false;
@@ -24,7 +24,7 @@ public class AccountService
     @Override
     public boolean isPayableInitExisted(PartyDto party) {
 
-        PayableInit payableInit = ctx.data.access(PayableInit.class).getFirst(new Equals("party.id", party.getId()));
+        PayableInit payableInit = DATA(PayableInit.class).getFirst(new Equals("party.id", party.getId()));
         if (payableInit == null)
             return false;
 

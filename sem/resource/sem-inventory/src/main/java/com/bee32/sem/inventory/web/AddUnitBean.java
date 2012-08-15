@@ -22,7 +22,7 @@ public class AddUnitBean
     UnitDto unit = new UnitDto().create();
 
     public List<SelectItem> getStandardUnits() {
-        List<Unit> unitList = ctx.data.access(Unit.class).list(UnitCriteria.standardUnits);
+        List<Unit> unitList = DATA(Unit.class).list(UnitCriteria.standardUnits);
         List<UnitDto> unitDtoList = DTOs.marshalList(UnitDto.class, unitList);
         return UIHelper.selectItemsFromDict(unitDtoList);
     }
@@ -42,11 +42,11 @@ public class AddUnitBean
     public void addUnit() {
         try {
             Unit _unit = unit.unmarshal();
-            ctx.data.access(Unit.class).saveOrUpdate(_unit);
+            DATA(Unit.class).saveOrUpdate(_unit);
             uiLogger.info("保存成功!");
 
             // Refresh units.
-            ctx.bean.getBean(ThingDictsBean.class).invalidateUnits();
+            BEAN(ThingDictsBean.class).invalidateUnits();
         } catch (Exception e) {
             uiLogger.error("添加单位失败", e);
         }

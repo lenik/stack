@@ -188,7 +188,7 @@ public class MakeProcessAdminBean extends DataViewBean {
     }
 
     public int getCount() {
-        count = ctx.data.access(MakeProcess.class).count();
+        count = DATA(MakeProcess.class).count();
         return count;
     }
 
@@ -207,7 +207,7 @@ public class MakeProcessAdminBean extends DataViewBean {
         }
 
         process = new MakeProcessDto().create();
-        MakeProcess _process = ctx.data.access(MakeProcess.class).getFirst(new Offset(goNumber - 1));
+        MakeProcess _process = DATA(MakeProcess.class).getFirst(new Offset(goNumber - 1));
         if (_process != null)
             process = DTOs.marshal(MakeProcessDto.class, _process);
 
@@ -250,7 +250,7 @@ public class MakeProcessAdminBean extends DataViewBean {
     }
 
     public void fillStep(long stepId) {
-        MakeStep _step = ctx.data.access(MakeStep.class).get(stepId);
+        MakeStep _step = DATA(MakeStep.class).get(stepId);
 
         currStep = DTOs.marshal(MakeStepDto.class, _step);
     }
@@ -258,7 +258,7 @@ public class MakeProcessAdminBean extends DataViewBean {
     public void save() {
         try {
             MakeStep _step = currStep.unmarshal();
-            ctx.data.access(MakeStep.class).saveOrUpdate(_step);
+            DATA(MakeStep.class).saveOrUpdate(_step);
             uiLogger.info("保存成功");
         } catch (Exception e) {
             uiLogger.error("保存出错!", e);

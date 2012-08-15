@@ -9,6 +9,7 @@ import org.springframework.web.servlet.View;
 
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.util.DefaultDataAssembledContext;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.servlet.mvc.ActionRequest;
@@ -25,6 +26,11 @@ public abstract class EntityController<E extends Entity<K>, K extends Serializab
 
     protected static class ctx
             extends DefaultDataAssembledContext {
+    }
+
+    protected static <E extends Entity<? extends K>, K extends Serializable> //
+    IEntityAccessService<E, K> DATA(Class<? extends E> entityType) {
+        return ctx.data.access(entityType);
     }
 
     @Override

@@ -41,7 +41,7 @@ public class NoteReceivableAdminBean
      * @return
      */
     public Integer getSelfOrgId() {
-        return ctx.bean.getBean(PeopleService.class).getSelfOrg().getId();
+        return BEAN(PeopleService.class).getSelfOrg().getId();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class NoteReceivableAdminBean
         for (Object dto : dtos) {
             NoteReceivableDto note = (NoteReceivableDto) dto;
 
-            if (note.getBillType().getId().equals(ctx.bean.getBean(BillTypes.class).BANK.getId())) {
+            if (note.getBillType().getId().equals(BEAN(BillTypes.class).BANK.getId())) {
                 // 如果为银行承兑汇票
                 if (StringUtils.isEmpty(note.getAcceptBank())) {
                     uiLogger.error("本票据为银行承兑汇票，承兑银行不能为空!");
@@ -140,16 +140,16 @@ public class NoteReceivableAdminBean
                     NoteBalancing _noteBalancing = noteBalancing.unmarshal();
                     _noteBalancing.getNote().setNoteBalancing(null);
 
-                    ctx.data.access(NoteBalancing.class).deleteById(_noteBalancing.getId());
+                    DATA(NoteBalancing.class).deleteById(_noteBalancing.getId());
                 }
 
             }
             billDiscount.setNote(note);
 
             BillDiscount _billDiscount = (BillDiscount) billDiscount.unmarshal();
-            ctx.data.access(Note.class).evict(_billDiscount.getNote());
-            ctx.data.access(BillDiscount.class).saveOrUpdate(_billDiscount);
-            ctx.data.access(Note.class).evict(_billDiscount.getNote());
+            DATA(Note.class).evict(_billDiscount.getNote());
+            DATA(BillDiscount.class).saveOrUpdate(_billDiscount);
+            DATA(Note.class).evict(_billDiscount.getNote());
             uiLogger.info("贴现成功.");
         } catch (Exception e) {
             uiLogger.error("贴现出错!", e);
@@ -169,16 +169,16 @@ public class NoteReceivableAdminBean
                     NoteBalancing _noteBalancing = noteBalancing.unmarshal();
                     _noteBalancing.getNote().setNoteBalancing(null);
 
-                    ctx.data.access(NoteBalancing.class).deleteById(_noteBalancing.getId());
+                    DATA(NoteBalancing.class).deleteById(_noteBalancing.getId());
                 }
 
             }
             endorsement.setNote(note);
 
             Endorsement _endorsement = (Endorsement) endorsement.unmarshal();
-            ctx.data.access(Note.class).evict(_endorsement.getNote());
-            ctx.data.access(Endorsement.class).saveOrUpdate(_endorsement);
-            ctx.data.access(Note.class).evict(_endorsement.getNote());
+            DATA(Note.class).evict(_endorsement.getNote());
+            DATA(Endorsement.class).saveOrUpdate(_endorsement);
+            DATA(Note.class).evict(_endorsement.getNote());
             uiLogger.info("背书成功.");
         } catch (Exception e) {
             uiLogger.error("背书出错!", e);
@@ -198,16 +198,16 @@ public class NoteReceivableAdminBean
                     NoteBalancing _noteBalancing = noteBalancing.unmarshal();
                     _noteBalancing.getNote().setNoteBalancing(null);
 
-                    ctx.data.access(NoteBalancing.class).deleteById(_noteBalancing.getId());
+                    DATA(NoteBalancing.class).deleteById(_noteBalancing.getId());
                 }
 
             }
             balancing.setNote(note);
 
             Balancing _balancing = (Balancing) balancing.unmarshal();
-            ctx.data.access(Note.class).evict(_balancing.getNote());
-            ctx.data.access(Balancing.class).saveOrUpdate(_balancing);
-            ctx.data.access(Note.class).evict(_balancing.getNote());
+            DATA(Note.class).evict(_balancing.getNote());
+            DATA(Balancing.class).saveOrUpdate(_balancing);
+            DATA(Note.class).evict(_balancing.getNote());
             uiLogger.info("结算成功.");
         } catch (Exception e) {
             uiLogger.error("结算出错!", e);

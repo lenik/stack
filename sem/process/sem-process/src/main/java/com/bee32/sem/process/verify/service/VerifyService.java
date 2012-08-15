@@ -242,7 +242,7 @@ public class VerifyService
         }
 
         handler.preUpdate();
-        ctx.data.access(entityType).update(entity);
+        DATA(entityType).update(entity);
         handler.postUpdate();
 
         return result;

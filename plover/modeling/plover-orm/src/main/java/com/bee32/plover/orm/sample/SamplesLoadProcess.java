@@ -110,7 +110,7 @@ public class SamplesLoadProcess
 
         PloverConfDto packConfig = section.get(samplePackage.getName());
         boolean addMissings = packConfig == null || samplePackage.getLevel() <= SamplePackage.LEVEL_STANDARD;
-        IEntityAccessService<Entity<?>, ?> database = ctx.data.access(Entity.class);
+        IEntityAccessService<Entity<?>, ?> database = DATA(Entity.class);
 
         /** 考虑到无法分析 entity 的依赖关系 （需要完整实现prereqs），这里简单的重载所有样本。 */
         addMissings = true;
@@ -137,7 +137,7 @@ public class SamplesLoadProcess
                     continue S;
                 }
 
-                List<Entity<?>> selection = ctx.data.access(entityType).list(selector);
+                List<Entity<?>> selection = DATA(entityType).list(selector);
                 if (selection.isEmpty()) {
                     if (!addMissings)
                         continue;

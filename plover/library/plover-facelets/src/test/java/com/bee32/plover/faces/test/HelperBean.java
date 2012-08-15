@@ -8,7 +8,7 @@ public class HelperBean
     private static final long serialVersionUID = 1L;
 
     protected AutoUpdateBean getAnother() {
-        return ctx.bean.getBean(AutoUpdateBean.class);
+        return BEAN(AutoUpdateBean.class);
     }
 
     public String getAnotherMessage() {

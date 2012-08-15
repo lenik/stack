@@ -100,9 +100,9 @@ public abstract class EntityViewBean
 
         Entity<?> entity;
         if (mustExist)
-            entity = ctx.data.access(entityType).getOrFail(id);
+            entity = DATA(entityType).getOrFail(id);
         else
-            entity = ctx.data.access(entityType).get(id);
+            entity = DATA(entityType).get(id);
         return entity;
     }
 

@@ -49,7 +49,7 @@ public class SingleVerifierRankedPolicyController
 
     @Override
     protected void fillFormExtra(ActionRequest req, ActionResult result) {
-        List<VerifyPolicy> _policies = ctx.data.access(VerifyPolicy.class).list();
+        List<VerifyPolicy> _policies = DATA(VerifyPolicy.class).list();
         List<VerifyPolicyDto> policies = DTOs.marshalList(VerifyPolicyDto.class, _policies);
         result.put("policies", policies);
     }

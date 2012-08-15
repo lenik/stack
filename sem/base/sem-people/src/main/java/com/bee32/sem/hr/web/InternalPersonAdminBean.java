@@ -29,7 +29,7 @@ public class InternalPersonAdminBean
     public InternalPersonAdminBean() {
         super(EmployeeInfo.class, EmployeeInfoDto.class, 0, Order.desc("id"), PeopleCriteria.listEmployeeInfo());
         internalPersons = DTOs.marshalList(PersonDto.class,
-                ctx.data.access(Person.class).list(PeopleCriteria.internal()));
+                DATA(Person.class).list(PeopleCriteria.internal()));
     }
 
     public void doSelectSkill() {

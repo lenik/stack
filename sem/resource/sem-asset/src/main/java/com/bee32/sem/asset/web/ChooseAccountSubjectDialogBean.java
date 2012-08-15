@@ -59,7 +59,7 @@ public class ChooseAccountSubjectDialogBean extends ChooseEntityDialogBean {
     // // TODO 检测是否末级科目
     // String name = selectedAccountSubject.getName();
     // int subAccountSubjectCount =
-    // ctx.data.access(AccountSubject.class).count(//
+    // DATA(AccountSubject.class).count(//
     // new Like("id", "%" + name + "%"), //
     // if (subAccountSubjectCount !=1) {
     // uiLogger.error("所选择科目不是末级科目!");

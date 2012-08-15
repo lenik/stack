@@ -43,7 +43,7 @@ public class ChooseResourceDialogBean
     protected synchronized TreeNode loadTree() {
         DefaultTreeNode rootNode = new DefaultTreeNode();
 
-        ScannedResourceRegistry srr = ctx.bean.getBean(ScannedResourceRegistry.class);
+        ScannedResourceRegistry srr = BEAN(ScannedResourceRegistry.class);
         for (IResourceNamespace namespace : srr.getNamespaces()) {
             ResourceNodeData nsData = new ResourceNodeData();
             nsData.setTypeName(ClassUtil.getTypeName(namespace.getResourceType()));

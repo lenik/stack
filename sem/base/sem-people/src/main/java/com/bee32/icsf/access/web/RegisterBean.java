@@ -59,7 +59,7 @@ public class RegisterBean
             return;
         }
 
-        User user = ctx.data.access(User.class).getByName(username);
+        User user = DATA(User.class).getByName(username);
         if (user != null) {
             msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "注册错误", "此用户名已经存在");
             FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -67,10 +67,10 @@ public class RegisterBean
         }
 
         User newUser = new User(username, fullname);
-        ctx.data.access(User.class).save(newUser);
+        DATA(User.class).save(newUser);
 
         UserPassword pass = new UserPassword(newUser, password);
-        ctx.data.access(UserPassword.class).save(pass);
+        DATA(UserPassword.class).save(pass);
 
         username = "";
         fullname = "";
