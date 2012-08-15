@@ -34,6 +34,7 @@ public class MakeOrderItem
 
     public static final int EXT_PROD_NAME_LENGTH = 100;
     public static final int EXT_SPEC_LENGTH = 200;
+    public static final int EXT_UNIT_LENGTH = 20;
 
     MakeOrder parent;
     Material material;
@@ -41,6 +42,7 @@ public class MakeOrderItem
 
     String externalProductName;
     String externalModelSpec;
+    String externalUnit;
 
     boolean nameplate = true;
 
@@ -59,6 +61,7 @@ public class MakeOrderItem
         deadline = o.deadline;
         externalProductName = o.externalProductName;
         externalModelSpec = o.externalModelSpec;
+        externalUnit = o.externalUnit;
         nameplate = o.nameplate;
     }
 
@@ -131,6 +134,15 @@ public class MakeOrderItem
 
     public void setExternalModelSpec(String externalModelSpec) {
         this.externalModelSpec = externalModelSpec;
+    }
+
+    @Column(length = EXT_UNIT_LENGTH)
+    public String getExternalUnit() {
+        return externalUnit;
+    }
+
+    public void setExternalUnit(String externalUnit) {
+        this.externalUnit = externalUnit;
     }
 
     /**

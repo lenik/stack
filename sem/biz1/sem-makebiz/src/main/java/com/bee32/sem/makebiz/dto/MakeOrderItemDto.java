@@ -29,6 +29,7 @@ public class MakeOrderItemDto
 
     String externalProductName;
     String externalModelSpec;
+    String externalUnit;
 
     boolean nameplate;
 
@@ -45,6 +46,7 @@ public class MakeOrderItemDto
         deadline = source.getDeadline();
         externalProductName = source.getExternalProductName();
         externalModelSpec = source.getExternalModelSpec();
+        externalUnit = source.getExternalUnit();
         nameplate = source.isNameplate();
     }
 
@@ -55,6 +57,7 @@ public class MakeOrderItemDto
         target.setDeadline(deadline);
         target.setExternalProductName(externalProductName);
         target.setExternalModelSpec(externalModelSpec);
+        target.setExternalUnit(externalUnit);
         target.setNameplate(nameplate);
     }
 
@@ -122,6 +125,15 @@ public class MakeOrderItemDto
 
     public void setExternalModelSpec(String externalModelSpec) {
         this.externalModelSpec = TextUtil.normalizeSpace(externalModelSpec);
+    }
+
+    @NLength(max = MakeOrderItem.EXT_UNIT_LENGTH)
+    public String getExternalUnit() {
+        return externalUnit;
+    }
+
+    public void setExternalUnit(String externalUnit) {
+        this.externalUnit = externalUnit;
     }
 
     public boolean isNameplate() {

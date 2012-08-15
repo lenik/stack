@@ -126,6 +126,10 @@
                     <h:outputText value="#{entry.externalModelSpec}" />
                 </p:column>
 
+                <p:column headerText="外部单位" styleClass="f-wrappable">
+                    <h:outputText value="#{entry.externalUnit}" />
+                </p:column>
+
                 <p:column headerText="铭牌">
                     <h:outputText value="#{entry.nameplate ? '内部' : '外部'}" />
                 </p:column>
@@ -154,10 +158,15 @@
             <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
 
                 <h:outputLabel value="物料" />
-                <t:panelGroup colspan="3">
+                <t:panelGroup>
                     <p:inputText id="material" value="#{item.material.label}" readonly="true" label="物料" />
                     <p:commandButton value="..." onclick="chooseMaterialDialog.show();" />
                 </t:panelGroup>
+                <h:outputLabel value="铭牌" />
+                <p:selectOneRadio value="#{item.nameplate}" label="铭牌">
+                    <f:selectItem itemLabel="外部" itemValue="false" />
+                    <f:selectItem itemLabel="内部" itemValue="true" />
+                </p:selectOneRadio>
 
                 <h:outputLabel value="单价" />
                 <p:inputText value="#{item.price.value}" label="单价" />
@@ -169,11 +178,8 @@
 
                 <h:outputLabel value="数量" />
                 <p:inputText value="#{item.quantity}" label="数量" />
-                <h:outputLabel value="铭牌" />
-                <p:selectOneRadio value="#{item.nameplate}" label="铭牌">
-                    <f:selectItem itemLabel="外部" itemValue="false" />
-                    <f:selectItem itemLabel="内部" itemValue="true" />
-                </p:selectOneRadio>
+                <h:outputLabel value="外部单位"/>
+                <p:inputText value="#{item.externalUnit}" label="外部单位" />
 
                 <h:outputLabel value="外部名称" />
                 <p:inputTextarea style="height: 6em;" value="#{item.externalProductName}" label="外部名称" />
