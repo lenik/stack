@@ -6,12 +6,14 @@ import javax.persistence.Entity;
 
 /**
  * 票据背书
+ *
  * @author jack
  *
  */
 @Entity
 @DiscriminatorValue("ENDO")
-public class Endorsement extends NoteBalancing {
+public class Endorsement
+        extends NoteBalancing {
 
     private static final long serialVersionUID = 1L;
 
@@ -21,6 +23,7 @@ public class Endorsement extends NoteBalancing {
 
     /**
      * 被背书人
+     *
      * @return
      */
     @Column(length = BE_ENDOR_UNIT_LENGTH)

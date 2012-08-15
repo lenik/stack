@@ -5,12 +5,14 @@ import javax.persistence.Entity;
 
 /**
  * 应收核销类
+ *
  * @author jack
  *
  */
 @Entity
 @DiscriminatorValue("RECE")
-public class VerificationRece extends Verification {
+public class VerificationRece
+        extends Verification {
 
     private static final long serialVersionUID = 1L;
 

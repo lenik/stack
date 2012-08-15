@@ -44,28 +44,25 @@
         <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
             <h:outputLabel for="label" value="摘要" />
             <t:panelGroup colspan="3">
-                <p:inputText id="label" value="#{obj.label}" label="摘要" style="width:30em;"/>
+                <p:inputText id="label" value="#{obj.label}" label="摘要" style="width:30em;" />
             </t:panelGroup>
 
             <h:outputLabel for="beginTime" value="日期" />
-            <p:calendar id="beginTime" navigator="true"
-                locale="zh_CN" pattern="yyyy-MM-dd"
-                value="#{obj.beginTime}" showOn="button" label="日期" />
+            <p:calendar id="beginTime" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{obj.beginTime}"
+                showOn="button" label="日期" />
             <h:outputLabel for="expectedDate" value="预计收款日期" />
-            <p:calendar id="expectedDate" navigator="true"
-                locale="zh_CN" pattern="yyyy-MM-dd"
-                value="#{obj.expectedDate}" showOn="button" label="预计收款日期" />
+            <p:calendar id="expectedDate" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{obj.expectedDate}"
+                showOn="button" label="预计收款日期" />
 
             <h:outputText value="客户" />
             <t:panelGroup colspan="3">
-                <p:inputText id="party" label="客户" value="#{obj.party.displayName}" readonly="true" style="width:30em;"/>
-                <p:commandButton value="..." onclick="waitbox.show()" oncomplete="waitbox.hide();choosePartyDialog.show()"/>
+                <p:inputText id="party" label="客户" value="#{obj.party.displayName}" readonly="true" style="width:30em;" />
+                <p:commandButton value="..." onclick="waitbox.show()" oncomplete="waitbox.hide();choosePartyDialog.show()" />
             </t:panelGroup>
-
 
             <h:outputLabel for="value" value="金额" />
             <t:panelGroup colspan="3">
-                <p:inputText id="value" value="#{obj.amount.value}" label="金额"/>
+                <p:inputText id="value" value="#{obj.amount.value}" label="金额" />
             </t:panelGroup>
 
             <h:outputText value="部门" />
@@ -79,8 +76,10 @@
             <h:outputLabel for="person" value="业务员" />
             <h:panelGroup>
                 <p:inputText id="person" readonly="true" value="#{obj.person.displayName}" label="业务员" />
-                <p:commandButton value="..." update=":choosePersonDialog:form" onclick="waitbox.show()" oncomplete="waitbox.hide();choosePersonDialog.show()">
-                    <f:setPropertyActionListener target="#{choosePersonDialogBean.employee}" value="true" />
+                <p:commandButton value="..." update=":choosePersonDialog:form" onclick="waitbox.show()"
+                    oncomplete="waitbox.hide();choosePersonDialog.show()">
+                    <f:setPropertyActionListener target="#{choosePersonDialogBean.employee}"
+                        value="true" />
                 </p:commandButton>
             </h:panelGroup>
 
@@ -93,10 +92,10 @@
 
     </ui:define>
 
-
     <ui:define name="dialogs">
         <sem:choosePartyDialog id="c_customer" header="选择客户" target="#{obj.party}" update=":editDialog:form:party" />
         <sem:chooseOrgUnitDialog id="c_orgunit" target="#{obj.orgUnit}" update=":editDialog:form" />
-        <sem:choosePersonDialog id="choosePersonDialog" var="choosePersonDialog" target="#{obj.person}" update=":editDialog:form:person" />
+        <sem:choosePersonDialog id="choosePersonDialog" var="choosePersonDialog" target="#{obj.person}"
+            update=":editDialog:form:person" />
     </ui:define>
 </ui:composition>

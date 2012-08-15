@@ -4,7 +4,8 @@ import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.sem.account.entity.BillDiscount;
 import com.bee32.sem.account.entity.NoteBalancing;
 
-public class BillDiscountDto extends NoteBalancingDto {
+public class BillDiscountDto
+        extends NoteBalancingDto {
 
     private static final long serialVersionUID = 1L;
 
@@ -15,7 +16,7 @@ public class BillDiscountDto extends NoteBalancingDto {
     protected void _marshal(NoteBalancing source) {
         super._marshal(source);
 
-        BillDiscount o = (BillDiscount)source;
+        BillDiscount o = (BillDiscount) source;
 
         bank = o.getBank();
         rate = o.getRate();
@@ -25,7 +26,7 @@ public class BillDiscountDto extends NoteBalancingDto {
     protected void _unmarshalTo(NoteBalancing target) {
         super._unmarshalTo(target);
 
-        BillDiscount o = (BillDiscount)target;
+        BillDiscount o = (BillDiscount) target;
 
         o.setBank(bank);
         o.setRate(rate);

@@ -52,37 +52,35 @@
         <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
             <h:outputLabel for="label" value="摘要" />
             <t:panelGroup colspan="3">
-                <p:inputText id="label" value="#{obj.label}" label="摘要" style="width:30em;"/>
+                <p:inputText id="label" value="#{obj.label}" label="摘要" style="width:30em;" />
             </t:panelGroup>
 
             <h:outputLabel for="beginTime" value="日期" />
             <t:panelGroup colspan="3">
-                <p:calendar id="beginTime" navigator="true"
-                    locale="zh_CN" pattern="yyyy-MM-dd"
-                    value="#{obj.beginTime}" showOn="button" label="日期" />
+                <p:calendar id="beginTime" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{obj.beginTime}"
+                    showOn="button" label="日期" />
             </t:panelGroup>
 
             <h:outputLabel for="value" value="核销金额" />
             <t:panelGroup colspan="3">
-                <p:inputText id="value" value="#{obj.amount.value}" label="核销金额"/>
+                <p:inputText id="value" value="#{obj.amount.value}" label="核销金额" />
             </t:panelGroup>
-
 
             <h:outputText value="应付单" />
             <t:panelGroup colspan="3">
-                <p:inputText id="payable" label="应付单" value="#{obj.accountAble.label}(#{obj.accountAble.amount})" readonly="true" style="width:25em;"/>
-                <p:commandButton value="应付单" onclick="waitbox.show()" oncomplete="waitbox.hide();choosePayableDialog.show()"/>
-                <p:commandButton value="应付初始" onclick="waitbox.show()" oncomplete="waitbox.hide();choosePayableInitDialog.show()"/>
+                <p:inputText id="payable" label="应付单" value="#{obj.accountAble.label}(#{obj.accountAble.amount})"
+                    readonly="true" style="width:25em;" />
+                <p:commandButton value="应付单" onclick="waitbox.show()" oncomplete="waitbox.hide();choosePayableDialog.show()" />
+                <p:commandButton value="应付初始" onclick="waitbox.show()" oncomplete="waitbox.hide();choosePayableInitDialog.show()" />
             </t:panelGroup>
-
 
             <h:outputText value="付款单" />
             <t:panelGroup colspan="3">
-                <p:inputText id="paid" label="付款单" value="#{obj.accountEd.label}(#{obj.accountEd.amount})" readonly="true" style="width:25em;"/>
-                <p:commandButton value="付款单" onclick="waitbox.show()" oncomplete="waitbox.hide();choosePaidDialog.show()"/>
-                <p:commandButton value="应付票据" onclick="waitbox.show()" oncomplete="waitbox.hide();chooseNotePayableDialog.show()"/>
+                <p:inputText id="paid" label="付款单" value="#{obj.accountEd.label}(#{obj.accountEd.amount})"
+                    readonly="true" style="width:25em;" />
+                <p:commandButton value="付款单" onclick="waitbox.show()" oncomplete="waitbox.hide();choosePaidDialog.show()" />
+                <p:commandButton value="应付票据" onclick="waitbox.show()" oncomplete="waitbox.hide();chooseNotePayableDialog.show()" />
             </t:panelGroup>
-
 
             <h:outputLabel for="description" value="备注" />
             <t:panelGroup colspan="3">
@@ -93,12 +91,13 @@
 
     </ui:define>
 
-
     <ui:define name="dialogs">
-        <sem:choosePayableDialog id="c_payable" header="选择应付单" target="#{obj.accountAble}" update=":editDialog:form:payable" />
-        <sem:choosePayableInitDialog id="c_payable_init" header="选择应付初始" target="#{obj.accountAble}" update=":editDialog:form:payable" />
-
+        <sem:choosePayableDialog id="c_payable" header="选择应付单" target="#{obj.accountAble}"
+            update=":editDialog:form:payable" />
+        <sem:choosePayableInitDialog id="c_payable_init" header="选择应付初始" target="#{obj.accountAble}"
+            update=":editDialog:form:payable" />
         <sem:choosePaidDialog id="c_paid" header="选择付款单" target="#{obj.accountEd}" update=":editDialog:form:paid" />
-        <sem:chooseNotePayableDialog id="c_note_payable" header="选择应付票据" target="#{obj.accountEd}" update=":editDialog:form:paid" />
+        <sem:chooseNotePayableDialog id="c_note_payable" header="选择应付票据" target="#{obj.accountEd}"
+            update=":editDialog:form:paid" />
     </ui:define>
 </ui:composition>

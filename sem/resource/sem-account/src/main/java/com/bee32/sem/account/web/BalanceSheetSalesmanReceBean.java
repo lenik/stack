@@ -50,9 +50,7 @@ public class BalanceSheetSalesmanReceBean
         this.summary = summary;
     }
 
-    @SuppressWarnings("unchecked")
-    @Transactional
-    // (readOnly = true)
+    @Transactional(readOnly = Config.readOnlyTxEnabled)
     public void query() {
         StringBuilder sb = new StringBuilder();
 
@@ -68,14 +66,14 @@ public class BalanceSheetSalesmanReceBean
         sb.append("        select person,party,amount as init,0 as rable,0 as red  ");
         sb.append("        from current_account        ");
         sb.append("        where stereo='RINIT'       ");
-        if(verified) {
+        if (verified) {
             sb.append("     and verify_eval_state=33554434 ");
         }
         sb.append("        union all       ");
         sb.append("        select person,party,0 as init, sum(amount) as rable, 0 as red  ");
         sb.append("        from current_account        ");
         sb.append("        where stereo='RABLE'        ");
-        if(verified) {
+        if (verified) {
             sb.append("     and verify_eval_state=33554434 ");
         }
         sb.append("        group by person,party       ");
@@ -83,7 +81,7 @@ public class BalanceSheetSalesmanReceBean
         sb.append("        select person,party,0 as init, 0 as rable, -sum(amount) as red  ");
         sb.append("        from current_account        ");
         sb.append("        where stereo='RED'        ");
-        if(verified) {
+        if (verified) {
             sb.append("     and verify_eval_state=33554434 ");
         }
         sb.append("        group by person,party   ");
@@ -99,25 +97,24 @@ public class BalanceSheetSalesmanReceBean
         SQLQuery sqlQuery = session.createSQLQuery(sb.toString());
         result = sqlQuery.list();
 
-
-        sb.delete(0, sb.length());  //清空string builder
+        sb.delete(0, sb.length()); // 清空string builder
         sb.append("select  ");
         sb.append(" sum(init) as init,sum(rable) as rable,sum(red) as red, sum(init)+sum(rable)-sum(red) as balance from ( ");
         sb.append(" select amount as init,0 as rable,0 as red from current_account  ");
         sb.append(" where stereo='RINIT' ");
-        if(verified) {
+        if (verified) {
             sb.append("     and verify_eval_state=33554434 ");
         }
         sb.append(" union all ");
         sb.append(" select 0 as init, sum(amount) as rable, 0 as red from current_account  ");
         sb.append(" where stereo='RABLE'  ");
-        if(verified) {
+        if (verified) {
             sb.append("     and verify_eval_state=33554434 ");
         }
         sb.append(" union all ");
         sb.append(" select 0 as init, 0 as rable, -sum(amount) as red from current_account  ");
         sb.append(" where stereo='RED' ");
-        if(verified) {
+        if (verified) {
             sb.append("     and verify_eval_state=33554434 ");
         }
         sb.append(") a1  ");

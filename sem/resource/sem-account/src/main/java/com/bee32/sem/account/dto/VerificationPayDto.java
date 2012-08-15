@@ -1,6 +1,5 @@
 package com.bee32.sem.account.dto;
 
-
 public class VerificationPayDto
         extends VerificationDto {
 

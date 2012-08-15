@@ -13,5 +13,4 @@ public class PayableInitDto
         super(mask);
     }
 
-
 }

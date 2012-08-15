@@ -42,7 +42,6 @@ public class VerificationQueryReceBean
         this.result = result;
     }
 
-
     @SuppressWarnings("unchecked")
     @Transactional
     // (readOnly = true)
@@ -56,7 +55,7 @@ public class VerificationQueryReceBean
         sb.append("left join party b ");
         sb.append("    on a.party=b.id ");
         sb.append("where (a.stereo='RINIT' or a.stereo='RABLE') ");
-        if(verified) {
+        if (verified) {
             sb.append("     and a.verify_eval_state=33554434 ");
         }
         sb.append("order by a.party,a.begin_time ");
@@ -67,7 +66,7 @@ public class VerificationQueryReceBean
 
         Integer index = 0;
 
-        while(index < ableList.size()) {
+        while (index < ableList.size()) {
             sb.delete(0, sb.length());
 
             sb.append("select a.begin_time,a.amount,b.begin_time,b.amount from verification a ");
@@ -80,9 +79,8 @@ public class VerificationQueryReceBean
             sqlQuery.setParameter("account_able", ableList.get(index)[5]);
             List<Object[]> verificationList = sqlQuery.list();
 
-
             BigDecimal havenotVerification = (BigDecimal) ableList.get(index)[4];
-            for(Object[] verificationRow : verificationList) {
+            for (Object[] verificationRow : verificationList) {
                 Object[] row = new Object[10];
 
                 row[0] = ableList.get(index)[0];
@@ -98,7 +96,6 @@ public class VerificationQueryReceBean
 
                 BigDecimal verificationAmount = (BigDecimal) verificationRow[1];
 
-
                 havenotVerification = havenotVerification.subtract(verificationAmount);
                 if (havenotVerification.compareTo(new BigDecimal(0)) <= 0) {
                     havenotVerification = new BigDecimal(0);
@@ -107,7 +104,6 @@ public class VerificationQueryReceBean
 
                 result.add(row);
             }
-
 
             index++;
         }

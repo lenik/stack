@@ -15,13 +15,11 @@ public class AccountEdDto
         super(mask);
     }
 
-
-
     @Override
     protected void _marshal(CurrentAccount source) {
         super._marshal(source);
 
-        //收款或付款数字取反，以减少应收或应付金额
+        // 收款或付款数字取反，以减少应收或应付金额
         amount = source.getAmount().negate().toMutable();
     }
 
@@ -29,7 +27,7 @@ public class AccountEdDto
     protected void _unmarshalTo(CurrentAccount target) {
         super._unmarshalTo(target);
 
-        //收款或付款数字取反，以减少应收或应付金额
+        // 收款或付款数字取反，以减少应收或应付金额
         target.setAmount(target.getAmount().negate());
     }
 }

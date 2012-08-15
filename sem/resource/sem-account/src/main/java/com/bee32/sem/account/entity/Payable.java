@@ -5,12 +5,14 @@ import javax.persistence.Entity;
 
 /**
  * 应付单
+ *
  * @author jack
  *
  */
 @Entity
 @DiscriminatorValue("PABLE")
-public class Payable extends AccountAble {
+public class Payable
+        extends AccountAble {
 
     private static final long serialVersionUID = 1L;
 

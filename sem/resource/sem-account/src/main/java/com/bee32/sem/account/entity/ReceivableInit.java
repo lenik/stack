@@ -5,12 +5,14 @@ import javax.persistence.Entity;
 
 /**
  * 应收初始化
+ *
  * @author jack
  *
  */
 @Entity
 @DiscriminatorValue("RINIT")
-public class ReceivableInit extends Receivable {
+public class ReceivableInit
+        extends Receivable {
 
     private static final long serialVersionUID = 1L;
 

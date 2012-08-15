@@ -24,7 +24,7 @@ public class AccountAbleDto
     protected void _marshal(CurrentAccount source) {
         super._marshal(source);
 
-        AccountAble o = (AccountAble)source;
+        AccountAble o = (AccountAble) source;
 
         expectedDate = o.getExpectedDate();
     }
@@ -33,7 +33,7 @@ public class AccountAbleDto
     protected void _unmarshalTo(CurrentAccount target) {
         super._unmarshalTo(target);
 
-        AccountAble o = (AccountAble)target;
+        AccountAble o = (AccountAble) target;
 
         o.setExpectedDate(expectedDate);
     }

@@ -22,7 +22,8 @@ import com.bee32.sem.account.entity.NoteReceivable;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.service.PeopleService;
 
-public class NoteReceivableAdminBean extends SimpleEntityViewBean {
+public class NoteReceivableAdminBean
+        extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,6 +37,7 @@ public class NoteReceivableAdminBean extends SimpleEntityViewBean {
 
     /**
      * 在页面上使用，使用户选择部门时只出现本公司的部门
+     *
      * @return
      */
     public Integer getSelfOrgId() {
@@ -43,21 +45,20 @@ public class NoteReceivableAdminBean extends SimpleEntityViewBean {
     }
 
     @Override
-    protected boolean postValidate(List<?> dtos) throws Exception {
+    protected boolean postValidate(List<?> dtos)
+            throws Exception {
         for (Object dto : dtos) {
             NoteReceivableDto note = (NoteReceivableDto) dto;
 
-
-
             if (note.getBillType().getId().equals(ctx.bean.getBean(BillTypes.class).BANK.getId())) {
-                //如果为银行承兑汇票
-                if(StringUtils.isEmpty(note.getAcceptBank())) {
+                // 如果为银行承兑汇票
+                if (StringUtils.isEmpty(note.getAcceptBank())) {
                     uiLogger.error("本票据为银行承兑汇票，承兑银行不能为空!");
                     return false;
                 }
             } else {
-                //如果为商业承兑汇票
-                if(DTOs.isNull(note.getAcceptOrg())) {
+                // 如果为商业承兑汇票
+                if (DTOs.isNull(note.getAcceptOrg())) {
                     uiLogger.error("本票据为商业承兑汇票，承兑公司不能为空!");
                     return false;
                 }
@@ -96,9 +97,9 @@ public class NoteReceivableAdminBean extends SimpleEntityViewBean {
 
         NoteBalancingDto noteBalancing = note.getNoteBalancing();
         if (noteBalancing != null && noteBalancing.getClass().equals(BillDiscountDto.class)) {
-            billDiscount = (BillDiscountDto)noteBalancing;
+            billDiscount = (BillDiscountDto) noteBalancing;
         } else {
-            billDiscount =  new BillDiscountDto().create();
+            billDiscount = new BillDiscountDto().create();
         }
     }
 
@@ -108,9 +109,9 @@ public class NoteReceivableAdminBean extends SimpleEntityViewBean {
 
         NoteBalancingDto noteBalancing = note.getNoteBalancing();
         if (noteBalancing != null && noteBalancing.getClass().equals(EndorsementDto.class)) {
-            endorsement = (EndorsementDto)noteBalancing;
+            endorsement = (EndorsementDto) noteBalancing;
         } else {
-            endorsement =  new EndorsementDto().create();
+            endorsement = new EndorsementDto().create();
         }
     }
 
@@ -120,9 +121,9 @@ public class NoteReceivableAdminBean extends SimpleEntityViewBean {
 
         NoteBalancingDto noteBalancing = note.getNoteBalancing();
         if (noteBalancing != null && noteBalancing.getClass().equals(BalancingDto.class)) {
-            balancing = (BalancingDto)noteBalancing;
+            balancing = (BalancingDto) noteBalancing;
         } else {
-            balancing =  new BalancingDto().create();
+            balancing = new BalancingDto().create();
         }
     }
 
@@ -133,8 +134,9 @@ public class NoteReceivableAdminBean extends SimpleEntityViewBean {
         try {
             NoteBalancingDto noteBalancing = note.getNoteBalancing();
             if (!DTOs.isNull(noteBalancing)) {
-                if (noteBalancing.getClass().equals(EndorsementDto.class) || noteBalancing.getClass().equals(BalancingDto.class)) {
-                    //如果票据已经背书或已经结算，必须先删除，再保存贴现数据
+                if (noteBalancing.getClass().equals(EndorsementDto.class)
+                        || noteBalancing.getClass().equals(BalancingDto.class)) {
+                    // 如果票据已经背书或已经结算，必须先删除，再保存贴现数据
                     NoteBalancing _noteBalancing = noteBalancing.unmarshal();
                     _noteBalancing.getNote().setNoteBalancing(null);
 
@@ -161,8 +163,9 @@ public class NoteReceivableAdminBean extends SimpleEntityViewBean {
         try {
             NoteBalancingDto noteBalancing = note.getNoteBalancing();
             if (!DTOs.isNull(noteBalancing)) {
-                if (noteBalancing.getClass().equals(BillDiscountDto.class) || noteBalancing.getClass().equals(BalancingDto.class)) {
-                    //如果票据已经贴现或已经结算，必须先删除，再保存背书数据
+                if (noteBalancing.getClass().equals(BillDiscountDto.class)
+                        || noteBalancing.getClass().equals(BalancingDto.class)) {
+                    // 如果票据已经贴现或已经结算，必须先删除，再保存背书数据
                     NoteBalancing _noteBalancing = noteBalancing.unmarshal();
                     _noteBalancing.getNote().setNoteBalancing(null);
 
@@ -189,8 +192,9 @@ public class NoteReceivableAdminBean extends SimpleEntityViewBean {
         try {
             NoteBalancingDto noteBalancing = note.getNoteBalancing();
             if (!DTOs.isNull(noteBalancing)) {
-                if (noteBalancing.getClass().equals(BillDiscountDto.class) || noteBalancing.getClass().equals(EndorsementDto.class)) {
-                    //如果票据已经贴现或已经背书，必须先删除，再保存结算数据
+                if (noteBalancing.getClass().equals(BillDiscountDto.class)
+                        || noteBalancing.getClass().equals(EndorsementDto.class)) {
+                    // 如果票据已经贴现或已经背书，必须先删除，再保存结算数据
                     NoteBalancing _noteBalancing = noteBalancing.unmarshal();
                     _noteBalancing.getNote().setNoteBalancing(null);
 

@@ -9,12 +9,14 @@ import javax.persistence.TemporalType;
 
 /**
  * 应收单应付单基类
+ *
  * @author jack
  *
  */
 @Entity
 @DiscriminatorValue("ABLE")
-public class AccountAble extends CurrentAccount {
+public class AccountAble
+        extends CurrentAccount {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,6 +24,7 @@ public class AccountAble extends CurrentAccount {
 
     /**
      * 预计收款或付款时间,用于账龄分析
+     *
      * @return
      */
     @Temporal(TemporalType.TIMESTAMP)
@@ -32,6 +35,5 @@ public class AccountAble extends CurrentAccount {
     public void setExpectedDate(Date expectedDate) {
         this.expectedDate = expectedDate;
     }
-
 
 }

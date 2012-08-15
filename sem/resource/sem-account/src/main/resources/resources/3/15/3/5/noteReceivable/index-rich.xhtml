@@ -56,24 +56,18 @@
         </p:column>
 
         <p:column headerText="操作">
-            <p:commandLink styleClass="icon-button" title="贴现" update=":billDiscountForm"
-                onclick="waitbox.show();"
-                oncomplete="waitbox.hide();billDiscountDialog.show()"
-                action="#{bean.loadBillDiscount}">
+            <p:commandLink styleClass="icon-button" title="贴现" update=":billDiscountForm" onclick="waitbox.show();"
+                oncomplete="waitbox.hide();billDiscountDialog.show()" action="#{bean.loadBillDiscount}">
                 <f:setPropertyActionListener value="#{entry}" target="#{bean.openedObject}" />
                 <p:graphicImage value="#{location.ICON}/obj16/cheatsheet_item_obj.gif" />
             </p:commandLink>
-            <p:commandLink styleClass="icon-button" title="背书" update=":endorsementForm"
-                onclick="waitbox.show();"
-                oncomplete="waitbox.hide();endorsementDialog.show()"
-                action="#{bean.loadEndorsement}">
+            <p:commandLink styleClass="icon-button" title="背书" update=":endorsementForm" onclick="waitbox.show();"
+                oncomplete="waitbox.hide();endorsementDialog.show()" action="#{bean.loadEndorsement}">
                 <f:setPropertyActionListener value="#{entry}" target="#{bean.openedObject}" />
                 <p:graphicImage value="#{location.ICON}/obj16/bookmarks_view.gif" />
             </p:commandLink>
-            <p:commandLink styleClass="icon-button" title="结算" update=":balancingForm"
-                onclick="waitbox.show();"
-                oncomplete="waitbox.hide();balancingDialog.show()"
-                action="#{bean.loadBalancing}">
+            <p:commandLink styleClass="icon-button" title="结算" update=":balancingForm" onclick="waitbox.show();"
+                oncomplete="waitbox.hide();balancingDialog.show()" action="#{bean.loadBalancing}">
                 <f:setPropertyActionListener value="#{entry}" target="#{bean.openedObject}" />
                 <p:graphicImage value="#{location.ICON}/obj16/cheatsheet_subitem_obj.gif" />
             </p:commandLink>
@@ -85,43 +79,40 @@
         <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
             <h:outputLabel for="label" value="摘要" />
             <t:panelGroup colspan="3">
-                <p:inputText id="label" value="#{obj.label}" label="摘要" style="width:30em;"/>
+                <p:inputText id="label" value="#{obj.label}" label="摘要" style="width:30em;" />
             </t:panelGroup>
 
             <h:outputLabel for="beginTime" value="日期" />
-            <p:calendar id="beginTime" navigator="true"
-                locale="zh_CN" pattern="yyyy-MM-dd"
-                value="#{obj.beginTime}" showOn="button" label="日期" />
+            <p:calendar id="beginTime" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{obj.beginTime}"
+                showOn="button" label="日期" />
             <h:outputLabel for="endTime" value="到期日" />
-            <p:calendar id="endTime" navigator="true"
-                locale="zh_CN" pattern="yyyy-MM-dd"
-                value="#{obj.endTime}" showOn="button" label="到期日" />
+            <p:calendar id="endTime" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{obj.endTime}"
+                showOn="button" label="到期日" />
 
             <h:outputText value="客户" />
             <t:panelGroup colspan="3">
-                <p:inputText id="party" label="客户" value="#{obj.party.displayName}" readonly="true" style="width:30em;"/>
-                <p:commandButton value="..." onclick="waitbox.show()" oncomplete="waitbox.hide();choosePartyDialog.show()"/>
+                <p:inputText id="party" label="客户" value="#{obj.party.displayName}" readonly="true" style="width:30em;" />
+                <p:commandButton value="..." onclick="waitbox.show()" oncomplete="waitbox.hide();choosePartyDialog.show()" />
             </t:panelGroup>
-
 
             <h:outputLabel for="value" value="金额" />
             <t:panelGroup colspan="3">
-                <p:inputText id="value" value="#{obj.amount.value}" label="金额"/>
+                <p:inputText id="value" value="#{obj.amount.value}" label="金额" />
             </t:panelGroup>
 
             <h:outputLabel for="billNo" value="票据号码" />
-            <p:inputText id="billNo" value="#{obj.billNo}" label="票据号码"/>
+            <p:inputText id="billNo" value="#{obj.billNo}" label="票据号码" />
             <h:outputLabel for="billType" value="票据类型" />
             <p:selectOneMenu id="billType" label="票据类型" value="${obj.billType.id}" style="width: 10em;">
                 <f:selectItems value="${dicts.billTypes}" var="it" itemLabel="${it.label}" itemValue="${it.id}" />
             </p:selectOneMenu>
 
             <h:outputLabel for="acceptBank" value="承兑银行" />
-            <p:inputText id="acceptBank" value="#{obj.acceptBank}" label="承兑银行"/>
+            <p:inputText id="acceptBank" value="#{obj.acceptBank}" label="承兑银行" />
             <h:outputText value="承兑公司" />
             <t:panelGroup colspan="3">
-                <p:inputText id="acceptOrg" label="承兑公司" value="#{obj.acceptOrg.displayName}" readonly="true"/>
-                <p:commandButton value="..." onclick="waitbox.show()" oncomplete="waitbox.hide();chooseOrgDialog.show()"/>
+                <p:inputText id="acceptOrg" label="承兑公司" value="#{obj.acceptOrg.displayName}" readonly="true" />
+                <p:commandButton value="..." onclick="waitbox.show()" oncomplete="waitbox.hide();chooseOrgDialog.show()" />
             </t:panelGroup>
 
             <h:outputText value="部门" />
@@ -135,8 +126,10 @@
             <h:outputLabel for="person" value="业务员" />
             <h:panelGroup>
                 <p:inputText id="person" readonly="true" value="#{obj.person.displayName}" label="业务员" />
-                <p:commandButton value="..." update=":choosePersonDialog:form" onclick="waitbox.show()" oncomplete="waitbox.hide();choosePersonDialog.show()">
-                    <f:setPropertyActionListener target="#{choosePersonDialogBean.employee}" value="true" />
+                <p:commandButton value="..." update=":choosePersonDialog:form" onclick="waitbox.show()"
+                    oncomplete="waitbox.hide();choosePersonDialog.show()">
+                    <f:setPropertyActionListener target="#{choosePersonDialogBean.employee}"
+                        value="true" />
                 </p:commandButton>
             </h:panelGroup>
 
@@ -152,31 +145,32 @@
         <sem:choosePartyDialog id="c_customer" header="选择客户" target="#{obj.party}" update=":editDialog:form:party" />
         <sem:chooseOrgDialog id="c_org" header="选择承兑公司" target="#{obj.acceptOrg}" update=":editDialog:form:acceptOrg" />
         <sem:chooseOrgUnitDialog id="c_orgunit" target="#{obj.orgUnit}" update=":editDialog:form:orgUnit" />
-        <sem:choosePersonDialog id="choosePersonDialog" var="choosePersonDialog" target="#{obj.person}" update=":editDialog:form:person" />
+        <sem:choosePersonDialog id="choosePersonDialog" var="choosePersonDialog" target="#{obj.person}"
+            update=":editDialog:form:person" />
 
         <p:dialog header="贴现" widgetVar="billDiscountDialog" modal="true">
             <h:form id="billDiscountForm">
                 <t:panelGrid columns="4">
-                    <h:outputText value="贴现金额"/>
-                    <p:inputText value="#{bean.billDiscount.amount.value}" label="贴现金额"/>
+                    <h:outputText value="贴现金额" />
+                    <p:inputText value="#{bean.billDiscount.amount.value}" label="贴现金额" />
 
-                    <h:outputText value="利息"/>
-                    <p:inputText value="#{bean.billDiscount.interest.value}" label="利息"/>
+                    <h:outputText value="利息" />
+                    <p:inputText value="#{bean.billDiscount.interest.value}" label="利息" />
 
-                    <h:outputText value="费用"/>
-                    <p:inputText value="#{bean.billDiscount.cost.value}" label="费用"/>
+                    <h:outputText value="费用" />
+                    <p:inputText value="#{bean.billDiscount.cost.value}" label="费用" />
 
-                    <h:outputText value="贴现银行"/>
-                    <p:inputText value="#{bean.billDiscount.bank}" label="贴现银行"/>
+                    <h:outputText value="贴现银行" />
+                    <p:inputText value="#{bean.billDiscount.bank}" label="贴现银行" />
 
-                    <h:outputText value="贴现率 "/>
-                    <p:inputText value="#{bean.billDiscount.rate}" label="贴现率"/>
-                    <t:panelGroup/>
-                    <t:panelGroup/>
+                    <h:outputText value="贴现率 " />
+                    <p:inputText value="#{bean.billDiscount.rate}" label="贴现率" />
+                    <t:panelGroup />
+                    <t:panelGroup />
 
                     <t:panelGroup colspan="4">
-                        <p:commandButton actionListener="#{bean.saveBillDiscount}" value="保存" onclick="waitbox.show();"
-                            oncomplete="waitbox.hide();billDiscountDialog.hide()" />
+                        <p:commandButton actionListener="#{bean.saveBillDiscount}" value="保存"
+                            onclick="waitbox.show();" oncomplete="waitbox.hide();billDiscountDialog.hide()" />
                         <p:commandButton value="关闭" onclick="billDiscountDialog.hide()" />
                     </t:panelGroup>
                 </t:panelGrid>
@@ -186,21 +180,21 @@
         <p:dialog header="背书" widgetVar="endorsementDialog" modal="true">
             <h:form id="endorsementForm">
                 <t:panelGrid columns="4">
-                    <h:outputText value="背书金额"/>
-                    <p:inputText value="#{bean.endorsement.amount.value}" label="背书金额"/>
+                    <h:outputText value="背书金额" />
+                    <p:inputText value="#{bean.endorsement.amount.value}" label="背书金额" />
 
-                    <h:outputText value="利息"/>
-                    <p:inputText value="#{bean.endorsement.interest.value}" label="利息"/>
+                    <h:outputText value="利息" />
+                    <p:inputText value="#{bean.endorsement.interest.value}" label="利息" />
 
-                    <h:outputText value="费用"/>
-                    <p:inputText value="#{bean.endorsement.cost.value}" label="费用"/>
+                    <h:outputText value="费用" />
+                    <p:inputText value="#{bean.endorsement.cost.value}" label="费用" />
 
-                    <h:outputText value="被被书人"/>
-                    <p:inputText value="#{bean.endorsement.beEndorsementUnit}" label="被被书人"/>
+                    <h:outputText value="被被书人" />
+                    <p:inputText value="#{bean.endorsement.beEndorsementUnit}" label="被被书人" />
 
                     <t:panelGroup colspan="4">
-                        <p:commandButton actionListener="#{bean.saveEndorsement}" value="保存" onclick="waitbox.show();"
-                            oncomplete="waitbox.hide();endorsementDialog.hide()" />
+                        <p:commandButton actionListener="#{bean.saveEndorsement}" value="保存"
+                            onclick="waitbox.show();" oncomplete="waitbox.hide();endorsementDialog.hide()" />
                         <p:commandButton value="关闭" onclick="endorsementDialog.hide()" />
                     </t:panelGroup>
                 </t:panelGrid>
@@ -210,17 +204,17 @@
         <p:dialog header="结算" widgetVar="balancingDialog" modal="true">
             <h:form id="balancingForm">
                 <t:panelGrid columns="4">
-                    <h:outputText value="结算金额"/>
-                    <p:inputText value="#{bean.balancing.amount.value}" label="结算金额"/>
+                    <h:outputText value="结算金额" />
+                    <p:inputText value="#{bean.balancing.amount.value}" label="结算金额" />
 
-                    <h:outputText value="利息"/>
-                    <p:inputText value="#{bean.balancing.interest.value}" label="利息"/>
+                    <h:outputText value="利息" />
+                    <p:inputText value="#{bean.balancing.interest.value}" label="利息" />
 
-                    <h:outputText value="费用"/>
-                    <p:inputText value="#{bean.balancing.cost.value}" label="费用"/>
+                    <h:outputText value="费用" />
+                    <p:inputText value="#{bean.balancing.cost.value}" label="费用" />
 
-                    <h:outputText value="托收银行"/>
-                    <p:inputText value="#{bean.balancing.collectionBank}" label="托收银行"/>
+                    <h:outputText value="托收银行" />
+                    <p:inputText value="#{bean.balancing.collectionBank}" label="托收银行" />
 
                     <t:panelGroup colspan="4">
                         <p:commandButton actionListener="#{bean.saveBalancing}" value="保存" onclick="waitbox.show();"

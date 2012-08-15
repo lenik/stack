@@ -12,18 +12,12 @@
                     <p:selectBooleanCheckbox value="#{bean.verified}" />
                     <h:outputText value="审核" />
                     <p:separator />
-                    <p:commandButton
-                        id="query"
-                        value="查询"
-                        update="result"
-                        onclick="waitbox.show();"
-                        oncomplete="waitbox.hide();"
-                        actionListener="#{bean.query}"/>
+                    <p:commandButton id="query" value="查询" update="result" onclick="waitbox.show();"
+                        oncomplete="waitbox.hide();" actionListener="#{bean.query}" />
                 </p:toolbarGroup>
             </p:toolbar>
 
-            <p:dataTable id="result" value="#{bean.result}" var="entry" resizableColumns="true"
-                sortBy="0"
+            <p:dataTable id="result" value="#{bean.result}" var="entry" resizableColumns="true" sortBy="0"
                 rowIndexVar="rowIndex">
 
                 <p:column headerText="序号" style="text-align:right">
@@ -31,7 +25,7 @@
                 </p:column>
 
                 <p:column headerText="应付日期">
-                    <h:outputText value="#{entry[2]}" >
+                    <h:outputText value="#{entry[2]}">
                         <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                     </h:outputText>
                 </p:column>
@@ -41,44 +35,44 @@
                 </p:column>
 
                 <p:column headerText="预计付款日期">
-                    <h:outputText value="#{entry[3]}" >
+                    <h:outputText value="#{entry[3]}">
                         <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                     </h:outputText>
                 </p:column>
 
                 <p:column headerText="应付金额" style="text-align:right">
                     <h:outputText value="#{entry[4]}">
-                        <f:convertNumber pattern="#0.00"/>
+                        <f:convertNumber pattern="#0.00" />
                     </h:outputText>
                 </p:column>
 
                 <p:column headerText="核销日期">
-                    <h:outputText value="#{entry[5]}" >
+                    <h:outputText value="#{entry[5]}">
                         <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                     </h:outputText>
                 </p:column>
 
                 <p:column headerText="核销金额" style="text-align:right">
                     <h:outputText value="#{entry[6]}">
-                        <f:convertNumber pattern="#0.00"/>
+                        <f:convertNumber pattern="#0.00" />
                     </h:outputText>
                 </p:column>
 
                 <p:column headerText="付款日期">
-                    <h:outputText value="#{entry[7]}" >
+                    <h:outputText value="#{entry[7]}">
                         <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                     </h:outputText>
                 </p:column>
 
                 <p:column headerText="已付金额" style="text-align:right">
                     <h:outputText value="#{entry[8]}">
-                        <f:convertNumber pattern="#0.00"/>
+                        <f:convertNumber pattern="#0.00" />
                     </h:outputText>
                 </p:column>
 
                 <p:column headerText="核销后余额" style="text-align:right">
                     <h:outputText value="#{entry[9]}">
-                        <f:convertNumber pattern="#0.00"/>
+                        <f:convertNumber pattern="#0.00" />
                     </h:outputText>
                 </p:column>
 

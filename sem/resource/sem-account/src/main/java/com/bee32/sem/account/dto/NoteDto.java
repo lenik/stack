@@ -13,7 +13,6 @@ import com.bee32.sem.account.entity.Note;
 import com.bee32.sem.account.entity.NoteBalancing;
 import com.bee32.sem.people.dto.OrgDto;
 
-
 public class NoteDto
         extends AccountEdDto {
 
@@ -38,7 +37,7 @@ public class NoteDto
     protected void _marshal(CurrentAccount source) {
         super._marshal(source);
 
-        Note note = (Note)source;
+        Note note = (Note) source;
 
         NoteBalancing nb = note.getNoteBalancing();
         if (nb instanceof BillDiscount) {
@@ -59,7 +58,7 @@ public class NoteDto
     protected void _unmarshalTo(CurrentAccount target) {
         super._unmarshalTo(target);
 
-        Note note = (Note)target;
+        Note note = (Note) target;
 
         merge(note, "noteBalancing", noteBalancing);
         note.setAcceptBank(acceptBank);
@@ -69,7 +68,8 @@ public class NoteDto
     }
 
     @Override
-    protected void _parse(TextMap map) throws ParseException {
+    protected void _parse(TextMap map)
+            throws ParseException {
         throw new NotImplementedException();
     }
 
@@ -80,7 +80,6 @@ public class NoteDto
     public void setNoteBalancing(NoteBalancingDto noteBalancing) {
         this.noteBalancing = noteBalancing;
     }
-
 
     @NLength(min = 2, max = Note.ACCEPT_BANK_LENGTH)
     public String getAcceptBank() {

@@ -17,7 +17,8 @@ import com.bee32.sem.account.entity.NotePayable;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.service.PeopleService;
 
-public class NotePayableAdminBean extends SimpleEntityViewBean {
+public class NotePayableAdminBean
+        extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,6 +30,7 @@ public class NotePayableAdminBean extends SimpleEntityViewBean {
 
     /**
      * 在页面上使用，使用户选择部门时只出现本公司的部门
+     *
      * @return
      */
     public Integer getSelfOrgId() {
@@ -36,21 +38,20 @@ public class NotePayableAdminBean extends SimpleEntityViewBean {
     }
 
     @Override
-    protected boolean postValidate(List<?> dtos) throws Exception {
+    protected boolean postValidate(List<?> dtos)
+            throws Exception {
         for (Object dto : dtos) {
             NotePayableDto note = (NotePayableDto) dto;
 
-
-
             if (note.getBillType().getId().equals(ctx.bean.getBean(BillTypes.class).BANK.getId())) {
-                //如果为银行承兑汇票
-                if(StringUtils.isEmpty(note.getAcceptBank())) {
+                // 如果为银行承兑汇票
+                if (StringUtils.isEmpty(note.getAcceptBank())) {
                     uiLogger.error("本票据为银行承兑汇票，承兑银行不能为空!");
                     return false;
                 }
             } else {
-                //如果为商业承兑汇票
-                if(DTOs.isNull(note.getAcceptOrg())) {
+                // 如果为商业承兑汇票
+                if (DTOs.isNull(note.getAcceptOrg())) {
                     uiLogger.error("本票据为商业承兑汇票，承兑公司不能为空!");
                     return false;
                 }
@@ -73,12 +74,11 @@ public class NotePayableAdminBean extends SimpleEntityViewBean {
 
         NoteBalancingDto noteBalancing = note.getNoteBalancing();
         if (noteBalancing != null && noteBalancing.getClass().equals(BalancingDto.class)) {
-            balancing = (BalancingDto)noteBalancing;
+            balancing = (BalancingDto) noteBalancing;
         } else {
-            balancing =  new BalancingDto().create();
+            balancing = new BalancingDto().create();
         }
     }
-
 
     public void saveBalancing() {
         NoteDto note = getOpenedObject();

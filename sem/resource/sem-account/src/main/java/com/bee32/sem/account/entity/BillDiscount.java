@@ -6,12 +6,14 @@ import javax.persistence.Entity;
 
 /**
  * 票据贴现
+ *
  * @author jack
  *
  */
 @Entity
 @DiscriminatorValue("DISC")
-public class BillDiscount extends NoteBalancing {
+public class BillDiscount
+        extends NoteBalancing {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,6 +24,7 @@ public class BillDiscount extends NoteBalancing {
 
     /**
      * 贴现银行
+     *
      * @return
      */
     @Column(length = BANK_LENGTH)
@@ -35,6 +38,7 @@ public class BillDiscount extends NoteBalancing {
 
     /**
      * 贴现率
+     *
      * @return
      */
     public float getRate() {

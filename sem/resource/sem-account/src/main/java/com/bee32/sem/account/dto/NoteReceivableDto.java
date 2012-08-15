@@ -13,5 +13,4 @@ public class NoteReceivableDto
         super(mask);
     }
 
-
 }

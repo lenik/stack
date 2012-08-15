@@ -6,12 +6,14 @@ import javax.persistence.Entity;
 
 /**
  * 票据结算
+ *
  * @author jack
  *
  */
 @Entity
 @DiscriminatorValue("BALA")
-public class Balancing extends NoteBalancing {
+public class Balancing
+        extends NoteBalancing {
 
     private static final long serialVersionUID = 1L;
 
@@ -21,6 +23,7 @@ public class Balancing extends NoteBalancing {
 
     /**
      * 托收单位(银行)
+     *
      * @return
      */
     @Column(length = COLLECTION_BANK_LENGTH)

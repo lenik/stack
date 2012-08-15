@@ -50,9 +50,7 @@ public class BalanceSheetSalesmanPayBean
         this.summary = summary;
     }
 
-    @SuppressWarnings("unchecked")
-    @Transactional
-    // (readOnly = true)
+    @Transactional(readOnly = Config.readOnlyTxEnabled)
     public void query() {
         StringBuilder sb = new StringBuilder();
 
@@ -68,14 +66,14 @@ public class BalanceSheetSalesmanPayBean
         sb.append("        select person,party,amount as init,0 as pable,0 as ped  ");
         sb.append("        from current_account        ");
         sb.append("        where stereo='PINIT'       ");
-        if(verified) {
+        if (verified) {
             sb.append("     and verify_eval_state=33554434 ");
         }
         sb.append("        union all       ");
         sb.append("        select person,party,0 as init, sum(amount) as pable, 0 as ped  ");
         sb.append("        from current_account        ");
         sb.append("        where stereo='PABLE'        ");
-        if(verified) {
+        if (verified) {
             sb.append("     and verify_eval_state=33554434 ");
         }
         sb.append("        group by person,party       ");
@@ -83,7 +81,7 @@ public class BalanceSheetSalesmanPayBean
         sb.append("        select person,party,0 as init, 0 as pable, -sum(amount) as ped  ");
         sb.append("        from current_account        ");
         sb.append("        where stereo='PED'        ");
-        if(verified) {
+        if (verified) {
             sb.append("     and verify_eval_state=33554434 ");
         }
         sb.append("        group by person,party   ");
@@ -99,25 +97,24 @@ public class BalanceSheetSalesmanPayBean
         SQLQuery sqlQuery = session.createSQLQuery(sb.toString());
         result = sqlQuery.list();
 
-
-        sb.delete(0, sb.length());  //清空string builder
+        sb.delete(0, sb.length()); // 清空string builder
         sb.append("select  ");
         sb.append(" sum(init) as init,sum(pable) as pable,sum(ped) as ped, sum(init)+sum(pable)-sum(ped) as balance from ( ");
         sb.append(" select amount as init,0 as pable,0 as ped from current_account  ");
         sb.append(" where stereo='PINIT' ");
-        if(verified) {
+        if (verified) {
             sb.append("     and verify_eval_state=33554434 ");
         }
         sb.append(" union all ");
         sb.append(" select 0 as init, sum(amount) as pable, 0 as ped from current_account  ");
         sb.append(" where stereo='PABLE'  ");
-        if(verified) {
+        if (verified) {
             sb.append("     and verify_eval_state=33554434 ");
         }
         sb.append(" union all ");
         sb.append(" select 0 as init, 0 as pable, -sum(amount) as ped from current_account  ");
         sb.append(" where stereo='PED' ");
-        if(verified) {
+        if (verified) {
             sb.append("     and verify_eval_state=33554434 ");
         }
         sb.append(") a1  ");

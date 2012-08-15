@@ -13,5 +13,4 @@ public class NotePayableDto
         super(mask);
     }
 
-
 }

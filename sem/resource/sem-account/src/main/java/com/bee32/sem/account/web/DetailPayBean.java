@@ -63,21 +63,21 @@ public class DetailPayBean
         sb.append("    select to_date('2000-01-01','yyyy-MM-dd') as begin_time,party,label,'期初' as t,bill_no,0 as pable,0 as ped,amount as balance  ");
         sb.append("    from current_account  ");
         sb.append("    where stereo='PINIT' ");
-        if(verified) {
+        if (verified) {
             sb.append("     and verify_eval_state=33554434 ");
         }
         sb.append("    union all ");
         sb.append("    select begin_time,party,label,'应收单' as t,bill_no,amount as pable,0 as ped,0 as balance  ");
         sb.append("    from current_account  ");
         sb.append("    where stereo='PABLE' ");
-        if(verified) {
+        if (verified) {
             sb.append("     and verify_eval_state=33554434 ");
         }
         sb.append("    union all ");
         sb.append("    select begin_time,party,label,'收款单' as t,bill_no,0 as pable,-amount as ped,0 as balance  ");
         sb.append("    from current_account  ");
         sb.append("    where stereo='PED' ");
-        if(verified) {
+        if (verified) {
             sb.append("     and verify_eval_state=33554434 ");
         }
         sb.append(") a1  ");
@@ -93,16 +93,14 @@ public class DetailPayBean
         BigDecimal sumPable = new BigDecimal(0);
         BigDecimal sumPed = new BigDecimal(0);
 
-        while(index < result.size()) {
+        while (index < result.size()) {
             Calendar beginTime = Calendar.getInstance();
             beginTime.setTime((Date) result.get(index)[1]);
-            if (beginTime.get(Calendar.YEAR) == 2000
-                    && beginTime.get(Calendar.MONTH) == 0
+            if (beginTime.get(Calendar.YEAR) == 2000 && beginTime.get(Calendar.MONTH) == 0
                     && beginTime.get(Calendar.DAY_OF_MONTH) == 1) {
-                //判断是否为2000-01-01,如果是，则界面上显示为空
+                // 判断是否为2000-01-01,如果是，则界面上显示为空
                 result.get(index)[1] = "";
             }
-
 
             String lastParty = index > 0 ? (String) result.get(index - 1)[2] : "";
             String currParty = (String) result.get(index)[2];
@@ -115,11 +113,11 @@ public class DetailPayBean
             sumPed = sumPed.add(ped);
 
             if (!lastParty.equals(currParty)) {
-                //当前行是第一行或换一个公司
+                // 当前行是第一行或换一个公司
                 lastBalance = (BigDecimal) result.get(index)[8];
 
-                if(index > 0) {
-                    //加上合计行
+                if (index > 0) {
+                    // 加上合计行
                     Object[] row = new Object[9];
                     row[1] = "========";
                     row[2] = "合计";
@@ -135,13 +133,13 @@ public class DetailPayBean
                 }
             }
 
-            result.get(index)[8] =  lastBalance.add(pable).subtract(ped);
+            result.get(index)[8] = lastBalance.add(pable).subtract(ped);
 
             index++;
         }
 
-        //********************************
-        //最后补一行合计行
+        // ********************************
+        // 最后补一行合计行
         Object[] row = new Object[9];
         row[1] = "========";
         row[2] = "合计";
@@ -150,6 +148,6 @@ public class DetailPayBean
         row[7] = sumPed;
         row[8] = (BigDecimal) result.get(index - 1)[8];
         result.add(index, row);
-        //********************************
+        // ********************************
     }
 }

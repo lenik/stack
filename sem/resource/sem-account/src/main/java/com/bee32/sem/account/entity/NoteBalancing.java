@@ -18,9 +18,10 @@ import com.bee32.sem.world.monetary.MCValue;
 
 /**
  * 票据三总结算方式的基类:贴现，背书，结算
+ *
  * @author jack
  *
- * 票据结算日期：beginTime
+ *         票据结算日期：beginTime
  *
  */
 @Entity
@@ -28,7 +29,8 @@ import com.bee32.sem.world.monetary.MCValue;
 @DiscriminatorColumn(name = "stereo", length = 4)
 @DiscriminatorValue("-")
 @SequenceGenerator(name = "idgen", sequenceName = "note_balancing_seq", allocationSize = 1)
-public class NoteBalancing extends ProcessEntity {
+public class NoteBalancing
+        extends ProcessEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,6 +42,7 @@ public class NoteBalancing extends ProcessEntity {
 
     /**
      * 本票据结算对应的票据
+     *
      * @return
      */
     @OneToOne(optional = false)
@@ -54,11 +57,12 @@ public class NoteBalancing extends ProcessEntity {
 
     /**
      * 票据结算金额(贴现净额，背书金额，结算金额)
+     *
      * @return
      */
     @Embedded
     @AttributeOverrides({ //
-            @AttributeOverride(name = "currencyCode", column = @Column(name = "amount_cc")), //
+    @AttributeOverride(name = "currencyCode", column = @Column(name = "amount_cc")), //
             @AttributeOverride(name = "value", column = @Column(name = "amount")) })
     public MCValue getAmount() {
         return amount;
@@ -70,11 +74,12 @@ public class NoteBalancing extends ProcessEntity {
 
     /**
      * 利息
+     *
      * @return
      */
     @Embedded
     @AttributeOverrides({ //
-            @AttributeOverride(name = "currencyCode", column = @Column(name = "interest_cc")), //
+    @AttributeOverride(name = "currencyCode", column = @Column(name = "interest_cc")), //
             @AttributeOverride(name = "value", column = @Column(name = "interest")) })
     public MCValue getInterest() {
         return interest;
@@ -86,11 +91,12 @@ public class NoteBalancing extends ProcessEntity {
 
     /**
      * 费用
+     *
      * @return
      */
     @Embedded
     @AttributeOverrides({ //
-            @AttributeOverride(name = "currencyCode", column = @Column(name = "cost_cc")), //
+    @AttributeOverride(name = "currencyCode", column = @Column(name = "cost_cc")), //
             @AttributeOverride(name = "value", column = @Column(name = "cost")) })
     public MCValue getCost() {
         return cost;

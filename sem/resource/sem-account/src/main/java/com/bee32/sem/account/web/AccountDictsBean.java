@@ -14,7 +14,6 @@ public class AccountDictsBean
 
     List<BillTypeDto> billTypes;
 
-
     public SelectableList<BillTypeDto> getBillTypes() {
         if (billTypes == null) {
             synchronized (this) {
@@ -25,6 +24,5 @@ public class AccountDictsBean
         }
         return SelectableList.decorate(billTypes);
     }
-
 
 }

@@ -12,18 +12,12 @@
                     <p:selectBooleanCheckbox value="#{bean.verified}" />
                     <h:outputText value="审核" />
                     <p:separator />
-                    <p:commandButton
-                        id="query"
-                        value="查询"
-                        update="result"
-                        onclick="waitbox.show();"
-                        oncomplete="waitbox.hide();"
-                        actionListener="#{bean.query}"/>
+                    <p:commandButton id="query" value="查询" update="result" onclick="waitbox.show();"
+                        oncomplete="waitbox.hide();" actionListener="#{bean.query}" />
                 </p:toolbarGroup>
             </p:toolbar>
 
-            <p:dataTable id="result" value="#{bean.result}" var="entry" resizableColumns="true"
-                sortBy="0"
+            <p:dataTable id="result" value="#{bean.result}" var="entry" resizableColumns="true" sortBy="0"
                 rowIndexVar="rowIndex">
 
                 <p:column headerText="序号" style="text-align:right">
@@ -39,26 +33,26 @@
                 </p:column>
 
                 <p:column headerText="期初" style="text-align:right">
-                    <h:outputText value="#{entry[4]}" >
-                        <f:convertNumber pattern="#0.00"/>
+                    <h:outputText value="#{entry[4]}">
+                        <f:convertNumber pattern="#0.00" />
                     </h:outputText>
                 </p:column>
 
                 <p:column headerText="应付" style="text-align:right">
                     <h:outputText value="#{entry[5]}">
-                        <f:convertNumber pattern="#0.00"/>
+                        <f:convertNumber pattern="#0.00" />
                     </h:outputText>
                 </p:column>
 
                 <p:column headerText="己付" style="text-align:right">
                     <h:outputText value="#{entry[6]}">
-                        <f:convertNumber pattern="#0.00"/>
+                        <f:convertNumber pattern="#0.00" />
                     </h:outputText>
                 </p:column>
 
                 <p:column headerText="余额" style="text-align:right">
                     <h:outputText value="#{entry[7]}">
-                        <f:convertNumber pattern="#0.00"/>
+                        <f:convertNumber pattern="#0.00" />
                     </h:outputText>
                 </p:column>
 

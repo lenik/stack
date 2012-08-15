@@ -8,7 +8,8 @@ import com.bee32.sem.account.entity.NoteBalancing;
 import com.bee32.sem.process.base.ProcessEntityDto;
 import com.bee32.sem.world.monetary.MutableMCValue;
 
-public class NoteBalancingDto extends ProcessEntityDto<NoteBalancing> {
+public class NoteBalancingDto
+        extends ProcessEntityDto<NoteBalancing> {
 
     private static final long serialVersionUID = 1L;
 
@@ -45,7 +46,8 @@ public class NoteBalancingDto extends ProcessEntityDto<NoteBalancing> {
     }
 
     @Override
-    protected void _parse(TextMap map) throws ParseException {
+    protected void _parse(TextMap map)
+            throws ParseException {
         throw new NotImplementedException();
 
     }

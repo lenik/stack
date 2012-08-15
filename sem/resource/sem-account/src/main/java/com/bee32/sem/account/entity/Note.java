@@ -11,17 +11,16 @@ import org.hibernate.annotations.CascadeType;
 
 import com.bee32.sem.people.entity.Org;
 
-
 /**
  * 票据基类
- * @author jack
- * 票据日期:beginTime
- * 票据到期日:endTime
+ *
+ * @author jack 票据日期:beginTime 票据到期日:endTime
  *
  */
 @Entity
 @DiscriminatorValue("NOTE")
-public class Note extends AccountEd {
+public class Note
+        extends AccountEd {
 
     private static final long serialVersionUID = 1L;
 
@@ -37,6 +36,7 @@ public class Note extends AccountEd {
 
     /**
      * 对应的票据结算
+     *
      * @return
      */
     @OneToOne(mappedBy = "note")
@@ -49,9 +49,9 @@ public class Note extends AccountEd {
         this.noteBalancing = noteBalancing;
     }
 
-
     /**
      * 承兑银行
+     *
      * @return
      */
     @Column(length = ACCEPT_BANK_LENGTH)
@@ -65,6 +65,7 @@ public class Note extends AccountEd {
 
     /**
      * 承兑商业机构
+     *
      * @return
      */
     @ManyToOne

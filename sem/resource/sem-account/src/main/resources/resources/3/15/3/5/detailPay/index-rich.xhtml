@@ -12,18 +12,12 @@
                     <p:selectBooleanCheckbox value="#{bean.verified}" />
                     <h:outputText value="审核" />
                     <p:separator />
-                    <p:commandButton
-                        id="query"
-                        value="查询"
-                        update="result"
-                        onclick="waitbox.show();"
-                        oncomplete="waitbox.hide();"
-                        actionListener="#{bean.query}"/>
+                    <p:commandButton id="query" value="查询" update="result" onclick="waitbox.show();"
+                        oncomplete="waitbox.hide();" actionListener="#{bean.query}" />
                 </p:toolbarGroup>
             </p:toolbar>
 
-            <p:dataTable id="result" value="#{bean.result}" var="entry" resizableColumns="true"
-                sortBy="0"
+            <p:dataTable id="result" value="#{bean.result}" var="entry" resizableColumns="true" sortBy="0"
                 rowIndexVar="rowIndex">
 
                 <p:column headerText="序号" style="text-align:right">
@@ -31,7 +25,7 @@
                 </p:column>
 
                 <p:column headerText="日期">
-                    <h:outputText value="#{entry[1]}" >
+                    <h:outputText value="#{entry[1]}">
                         <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                     </h:outputText>
                 </p:column>
@@ -54,19 +48,19 @@
 
                 <p:column headerText="应付收" style="text-align:right">
                     <h:outputText value="#{entry[6]==0? '' : entry[6]}">
-                        <f:convertNumber pattern="#0.00"/>
+                        <f:convertNumber pattern="#0.00" />
                     </h:outputText>
                 </p:column>
 
                 <p:column headerText="已付" style="text-align:right">
                     <h:outputText value="#{entry[7]==0? '' : entry[7]}">
-                        <f:convertNumber pattern="#0.00"/>
+                        <f:convertNumber pattern="#0.00" />
                     </h:outputText>
                 </p:column>
 
                 <p:column headerText="余额" style="text-align:right">
                     <h:outputText value="#{entry[8]==0? '' : entry[8]}">
-                        <f:convertNumber pattern="#0.00"/>
+                        <f:convertNumber pattern="#0.00" />
                     </h:outputText>
                 </p:column>
             </p:dataTable>

@@ -52,37 +52,35 @@
         <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
             <h:outputLabel for="label" value="摘要" />
             <t:panelGroup colspan="3">
-                <p:inputText id="label" value="#{obj.label}" label="摘要" style="width:30em;"/>
+                <p:inputText id="label" value="#{obj.label}" label="摘要" style="width:30em;" />
             </t:panelGroup>
 
             <h:outputLabel for="beginTime" value="日期" />
             <t:panelGroup colspan="3">
-                <p:calendar id="beginTime" navigator="true"
-                    locale="zh_CN" pattern="yyyy-MM-dd"
-                    value="#{obj.beginTime}" showOn="button" label="日期" />
+                <p:calendar id="beginTime" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{obj.beginTime}"
+                    showOn="button" label="日期" />
             </t:panelGroup>
 
             <h:outputLabel for="value" value="核销金额" />
             <t:panelGroup colspan="3">
-                <p:inputText id="value" value="#{obj.amount.value}" label="核销金额"/>
+                <p:inputText id="value" value="#{obj.amount.value}" label="核销金额" />
             </t:panelGroup>
-
 
             <h:outputText value="应收单" />
             <t:panelGroup colspan="3">
-                <p:inputText id="receivable" label="应收单" value="#{obj.accountAble.label}(#{obj.accountAble.amount})" readonly="true" style="width:25em;"/>
-                <p:commandButton value="应收单" onclick="waitbox.show()" oncomplete="waitbox.hide();chooseReceivableDialog.show()"/>
-                <p:commandButton value="应收初始" onclick="waitbox.show()" oncomplete="waitbox.hide();chooseReceivableInitDialog.show()"/>
+                <p:inputText id="receivable" label="应收单" value="#{obj.accountAble.label}(#{obj.accountAble.amount})"
+                    readonly="true" style="width:25em;" />
+                <p:commandButton value="应收单" onclick="waitbox.show()" oncomplete="waitbox.hide();chooseReceivableDialog.show()" />
+                <p:commandButton value="应收初始" onclick="waitbox.show()" oncomplete="waitbox.hide();chooseReceivableInitDialog.show()" />
             </t:panelGroup>
-
 
             <h:outputText value="收款单" />
             <t:panelGroup colspan="3">
-                <p:inputText id="received" label="收款单" value="#{obj.accountEd.label}(#{obj.accountEd.amount})" readonly="true" style="width:25em;"/>
-                <p:commandButton value="收款单" onclick="waitbox.show()" oncomplete="waitbox.hide();chooseReceivedDialog.show()"/>
-                <p:commandButton value="应收票据" onclick="waitbox.show()" oncomplete="waitbox.hide();chooseNoteReceivableDialog.show()"/>
+                <p:inputText id="received" label="收款单" value="#{obj.accountEd.label}(#{obj.accountEd.amount})"
+                    readonly="true" style="width:25em;" />
+                <p:commandButton value="收款单" onclick="waitbox.show()" oncomplete="waitbox.hide();chooseReceivedDialog.show()" />
+                <p:commandButton value="应收票据" onclick="waitbox.show()" oncomplete="waitbox.hide();chooseNoteReceivableDialog.show()" />
             </t:panelGroup>
-
 
             <h:outputLabel for="description" value="备注" />
             <t:panelGroup colspan="3">
@@ -93,12 +91,14 @@
 
     </ui:define>
 
-
     <ui:define name="dialogs">
-        <sem:chooseReceivableDialog id="c_receivable" header="选择应收单" target="#{obj.accountAble}" update=":editDialog:form:receivable" />
-        <sem:chooseReceivableInitDialog id="c_receivable_init" header="选择应收初始" target="#{obj.accountAble}" update=":editDialog:form:receivable" />
-
-        <sem:chooseReceivedDialog id="c_received" header="选择收款单" target="#{obj.accountEd}" update=":editDialog:form:received" />
-        <sem:chooseNoteReceivableDialog id="c_note_receivable" header="选择应收票据" target="#{obj.accountEd}" update=":editDialog:form:received" />
+        <sem:chooseReceivableDialog id="c_receivable" header="选择应收单" target="#{obj.accountAble}"
+            update=":editDialog:form:receivable" />
+        <sem:chooseReceivableInitDialog id="c_receivable_init" header="选择应收初始"
+            target="#{obj.accountAble}" update=":editDialog:form:receivable" />
+        <sem:chooseReceivedDialog id="c_received" header="选择收款单" target="#{obj.accountEd}"
+            update=":editDialog:form:received" />
+        <sem:chooseNoteReceivableDialog id="c_note_receivable" header="选择应收票据" target="#{obj.accountEd}"
+            update=":editDialog:form:received" />
     </ui:define>
 </ui:composition>

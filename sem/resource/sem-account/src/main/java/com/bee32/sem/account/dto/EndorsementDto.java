@@ -4,7 +4,8 @@ import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.sem.account.entity.Endorsement;
 import com.bee32.sem.account.entity.NoteBalancing;
 
-public class EndorsementDto extends NoteBalancingDto {
+public class EndorsementDto
+        extends NoteBalancingDto {
 
     private static final long serialVersionUID = 1L;
 
@@ -14,7 +15,7 @@ public class EndorsementDto extends NoteBalancingDto {
     protected void _marshal(NoteBalancing source) {
         super._marshal(source);
 
-        Endorsement o = (Endorsement)source;
+        Endorsement o = (Endorsement) source;
 
         beEndorsementUnit = o.getBeEndorsementUnit();
     }
@@ -23,12 +24,12 @@ public class EndorsementDto extends NoteBalancingDto {
     protected void _unmarshalTo(NoteBalancing target) {
         super._unmarshalTo(target);
 
-        Endorsement o = (Endorsement)target;
+        Endorsement o = (Endorsement) target;
 
         o.setBeEndorsementUnit(beEndorsementUnit);
     }
 
-    @NLength(min = 2,  max = Endorsement.BE_ENDOR_UNIT_LENGTH)
+    @NLength(min = 2, max = Endorsement.BE_ENDOR_UNIT_LENGTH)
     public String getBeEndorsementUnit() {
         return beEndorsementUnit;
     }

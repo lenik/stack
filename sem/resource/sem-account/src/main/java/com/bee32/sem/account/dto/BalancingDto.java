@@ -4,7 +4,8 @@ import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.sem.account.entity.Balancing;
 import com.bee32.sem.account.entity.NoteBalancing;
 
-public class BalancingDto extends NoteBalancingDto {
+public class BalancingDto
+        extends NoteBalancingDto {
 
     private static final long serialVersionUID = 1L;
 
@@ -14,7 +15,7 @@ public class BalancingDto extends NoteBalancingDto {
     protected void _marshal(NoteBalancing source) {
         super._marshal(source);
 
-        Balancing o = (Balancing)source;
+        Balancing o = (Balancing) source;
 
         collectionBank = o.getCollectionBank();
     }
@@ -23,7 +24,7 @@ public class BalancingDto extends NoteBalancingDto {
     protected void _unmarshalTo(NoteBalancing target) {
         super._unmarshalTo(target);
 
-        Balancing o = (Balancing)target;
+        Balancing o = (Balancing) target;
 
         o.setCollectionBank(collectionBank);
     }
@@ -36,6 +37,5 @@ public class BalancingDto extends NoteBalancingDto {
     public void setCollectionBank(String collectionBank) {
         this.collectionBank = collectionBank;
     }
-
 
 }
