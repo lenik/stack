@@ -9,7 +9,7 @@ import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.ox1.dict.NameDict;
 import com.bee32.sem.api.ISalaryProvider;
 import com.bee32.sem.api.SalaryCalcContext;
-import com.bee32.sem.api.SalaryItem;
+import com.bee32.sem.api.SalaryElement;
 
 /**
  * 职称字典类
@@ -46,12 +46,12 @@ public class JobTitle
     }
 
     @Override
-    public SalaryItem[] getSalaryItems(SalaryCalcContext ctx) {
-        SalaryItem item = new SalaryItem();
+    public SalaryElement[] getSalaryItems(SalaryCalcContext ctx) {
+        SalaryElement item = new SalaryElement();
         item.setPath("base.title");
         item.setLabel("职称补贴");
         item.setValue(bonus);
-        return new SalaryItem[] { item };
+        return new SalaryElement[] { item };
     }
 
 }

@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 /**
  * value-object.
  */
-public class SalaryItem
+public class SalaryElement
         implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -15,7 +15,7 @@ public class SalaryItem
     String label;
     BigDecimal value;
 
-    public SalaryItem() {
+    public SalaryElement() {
     }
 
     public String getPath() {
