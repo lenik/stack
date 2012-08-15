@@ -118,6 +118,12 @@
                     </h:outputText>
                 </p:column>
 
+                <p:column headerText="送货数量" styleClass="f-right">
+                    <h:outputText value="#{entry.deliveriedQuantity}" style="color:#{entry.quantity gt entry.deliveriedQuantity ? 'red' : 'black'}" >
+                        <f:convertNumber pattern="#0.00"/>
+                    </h:outputText>
+                </p:column>
+
                 <p:column headerText="外部名称" styleClass="f-wrappable">
                     <h:outputText value="#{entry.externalProductName}" />
                 </p:column>

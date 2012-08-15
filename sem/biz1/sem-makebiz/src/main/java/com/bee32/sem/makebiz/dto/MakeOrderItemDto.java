@@ -1,7 +1,9 @@
 package com.bee32.sem.makebiz.dto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import javax.free.ParseException;
 import javax.validation.constraints.NotNull;
@@ -27,11 +29,13 @@ public class MakeOrderItemDto
     MaterialDto material;
     Date deadline;
 
+    boolean nameplate;
+
     String externalProductName;
     String externalModelSpec;
     String externalUnit;
 
-    boolean nameplate;
+    List<DeliveryNoteItemDto> deliveryNoteItems;
 
     @Override
     protected void _marshal(MakeOrderItem source) {
@@ -44,10 +48,11 @@ public class MakeOrderItemDto
                 source.getMaterial());
 
         deadline = source.getDeadline();
+        nameplate = source.isNameplate();
         externalProductName = source.getExternalProductName();
         externalModelSpec = source.getExternalModelSpec();
         externalUnit = source.getExternalUnit();
-        nameplate = source.isNameplate();
+        deliveryNoteItems = mrefList(DeliveryNoteItemDto.class, source.getDeliveryNoteItems());
     }
 
     @Override
@@ -59,6 +64,7 @@ public class MakeOrderItemDto
         target.setExternalModelSpec(externalModelSpec);
         target.setExternalUnit(externalUnit);
         target.setNameplate(nameplate);
+        mergeList(target, "deliveryNoteItems", deliveryNoteItems);
     }
 
     @Override
@@ -142,6 +148,23 @@ public class MakeOrderItemDto
 
     public void setNameplate(boolean nameplate) {
         this.nameplate = nameplate;
+    }
+
+    public List<DeliveryNoteItemDto> getDeliveryNoteItems() {
+        return deliveryNoteItems;
+    }
+
+    public void setDeliveryNoteItems(List<DeliveryNoteItemDto> deliveryNoteItems) {
+        this.deliveryNoteItems = deliveryNoteItems;
+    }
+
+    public BigDecimal getDeliveriedQuantity() {
+        BigDecimal num = new BigDecimal(0);
+        for(DeliveryNoteItemDto deliveryNoteItem : deliveryNoteItems) {
+            num = num.add(deliveryNoteItem.getQuantity());
+        }
+
+        return num;
     }
 
     @Override

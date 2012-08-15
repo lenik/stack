@@ -2,10 +2,12 @@ package com.bee32.sem.makebiz.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -40,11 +42,13 @@ public class MakeOrderItem
     Material material;
     Date deadline;
 
+    boolean nameplate = true;
+
     String externalProductName;
     String externalModelSpec;
     String externalUnit;
 
-    boolean nameplate = true;
+    List<DeliveryNoteItem> deliveryNoteItems;
 
     @Override
     public void populate(Object source) {
@@ -59,10 +63,12 @@ public class MakeOrderItem
         parent = o.parent;
         material = o.material;
         deadline = o.deadline;
+        nameplate = o.nameplate;
         externalProductName = o.externalProductName;
         externalModelSpec = o.externalModelSpec;
         externalUnit = o.externalUnit;
-        nameplate = o.nameplate;
+        deliveryNoteItems = o.deliveryNoteItems;
+
     }
 
     @NaturalId
@@ -176,6 +182,15 @@ public class MakeOrderItem
         return selectors(//
                 selector(prefix + "parent", parent), //
                 selector(prefix + "material", material));
+    }
+
+    @OneToMany(mappedBy = "orderItem")
+    public List<DeliveryNoteItem> getDeliveryNoteItems() {
+        return deliveryNoteItems;
+    }
+
+    public void setDeliveryNoteItems(List<DeliveryNoteItem> deliveryNoteItems) {
+        this.deliveryNoteItems = deliveryNoteItems;
     }
 
     @Override
