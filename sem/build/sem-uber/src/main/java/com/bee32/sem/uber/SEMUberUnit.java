@@ -6,12 +6,12 @@ import com.bee32.sem.account.SEMAccountUnit;
 import com.bee32.sem.asset.SEMAssetUnit;
 import com.bee32.sem.chance.SEMChanceUnit;
 import com.bee32.sem.purchase.SEMPurchaseUnit;
-import com.bee32.sem.wage.SEMWageUnit;
+import com.bee32.sem.salary.SEMSalaryUnit;
 
 /**
  * Import units of biz1, biz2, etc..
  */
-@ImportUnit({ SEMChanceUnit.class, SEMPurchaseUnit.class, SEMAssetUnit.class, SEMAccountUnit.class, SEMWageUnit.class })
+@ImportUnit({ SEMChanceUnit.class, SEMPurchaseUnit.class, SEMAssetUnit.class, SEMAccountUnit.class, SEMSalaryUnit.class })
 public class SEMUberUnit
         extends PersistenceUnit {
 
