@@ -1,8 +1,22 @@
 package com.bee32.sem.inventory.web.business;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
+
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
@@ -36,6 +50,8 @@ public abstract class AbstractStockOrderBean
     int selectedWarehouseId = -1;
     OrgDto selectedOrg;
     OrgUnitDto selectedOrgUnit;
+
+    StreamedContent pdfFile;
 
     @Inject
     protected StockDictsBean dicts;
@@ -143,6 +159,39 @@ public abstract class AbstractStockOrderBean
         orderItem.setExpirationDate(stockQueryItem.getExpirationDate());
         orderItem.setLocation(stockQueryItem.getLocation());
         // itemsMBean.apply();
+    }
+
+    public void exportToPdf() {
+        StockOrderDto order = this.getOpenedObject();
+        JRBeanCollectionDataSource beanCollectionDataSource=new JRBeanCollectionDataSource(order.getItems());
+
+        ClassLoader ccl = getClass().getClassLoader(); //Thread.currentThread().getContextClassLoader();
+        InputStream reportStream = ccl.getResourceAsStream("resources/3/15/3/2/stock/report1.jrxml");
+
+        try {
+            JasperReport report = JasperCompileManager.compileReport(reportStream);
+            Map<String, Object> reportParams = new HashMap<String, Object>();
+            reportParams.put("title", subject.getDisplayName());
+            reportParams.put("createDate", order.getCreatedDate());
+            reportParams.put("label", order.getLabel());
+            reportParams.put("party", order.getOrg().getDisplayName());
+            reportParams.put("orgUnit", order.getOrgUnit().getLabel());
+            reportParams.put("description", order.getDescription());
+            reportParams.put("owner", order.getOwnerDisplayName());
+
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(report, reportParams, beanCollectionDataSource);
+            byte[] pdfByteArray = JasperExportManager.exportReportToPdf(jasperPrint);
+
+            InputStream stream = new ByteArrayInputStream(pdfByteArray);
+            pdfFile = new DefaultStreamedContent(stream, "application/pdf", "order.pdf");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public StreamedContent getPdfFile() {
+        return pdfFile;
     }
 
     /*************************************************************************

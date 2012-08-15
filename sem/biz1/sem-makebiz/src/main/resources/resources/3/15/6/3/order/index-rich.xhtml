@@ -94,6 +94,10 @@
                     <h:outputText value="#{entry.material.modelSpec}" />
                 </p:column>
 
+                <p:column headerText="单位">
+                    <h:outputText value="#{entry.material.unit.label}" />
+                </p:column>
+
                 <p:column headerText="附加属性">
                     <h:panelGroup rendered="#{entry.material.id != null}">
                         <p:dataList var="attr" value="#{entry.material.attributes}" effectSpeed="fast">
