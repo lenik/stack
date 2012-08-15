@@ -2,17 +2,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.bee32.sem</groupId>
-        <artifactId>resource</artifactId>
+        <artifactId>biz1</artifactId>
         <version>0.3.2-SNAPSHOT</version>
     </parent>
     <artifactId>sem-shop</artifactId>
     <version>0.3.2-SNAPSHOT</version>
-    <dependencies>
-        <dependency>
-            <groupId>com.bee32.sem</groupId>
-            <artifactId>sem-inventory</artifactId>
-            <version>0.3.2-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
-    <name>SEM :: Resource :: Shop</name>
+    <dependencies/>
+    <name>SEM :: Biz1 :: Shop</name>
 </project>
