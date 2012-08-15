@@ -31,6 +31,7 @@ biz1/                日常业务
     sem-chain
     sem-makebiz
     sem-salary
+    sem-shop
     sem-purchase
 
 demo/               示例

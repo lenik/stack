@@ -12,6 +12,7 @@
     <version>0.3.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
+        <module>sem-attendance</module>
         <module>sem-bank</module>
         <module>sem-calendar</module>
         <module>sem-company</module>

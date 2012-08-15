@@ -19,7 +19,7 @@
         <module>sem-pricing</module>
         <module>sem-purchase</module>
         <module>sem-salary</module>
-        <module>sem-wage</module>
+        <module>sem-shop</module>
     </modules>
     <name>SEM :: Biz1</name>
 </project>

@@ -20,5 +20,5 @@
             <version>0.3.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
-    <name>SEM :: Base :: Wage</name>
+    <name>SEM :: Base :: Attendance</name>
 </project>
