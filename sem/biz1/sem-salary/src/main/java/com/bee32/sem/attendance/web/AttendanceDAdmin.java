@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.bee32.sem.attendance.dto.AttendanceDRDto;
+import com.bee32.sem.attendance.dto.AttendanceDto;
 import com.bee32.sem.attendance.dto.AttendanceMRDto;
 import com.bee32.sem.attendance.entity.AttendanceMR;
 import com.bee32.sem.attendance.util.AttendanceCriteria;
@@ -18,7 +18,7 @@ import com.bee32.sem.salary.util.SalaryDateUtil;
 public class AttendanceDAdmin
         extends SimpleEntityViewBean {
 
-    List<AttendanceDRDto> attendanceDRList = new ArrayList<AttendanceDRDto>();
+    List<AttendanceDto> attendanceDRList = new ArrayList<AttendanceDto>();
     Map<Long, AttendanceMRDto> amr = new HashMap<Long, AttendanceMRDto>();
 
     Date openedDate = new Date();
@@ -34,7 +34,7 @@ public class AttendanceDAdmin
             for (EmployeeInfoDto employee : allEmployees) {
                 AttendanceMRDto attendanceMR = new AttendanceMRDto();
                 attendanceMR.setEmployee(employee);
-                attendanceMR.setAttendances(new ArrayList<AttendanceDRDto>());
+                attendanceMR.setAttendances(new ArrayList<AttendanceDto>());
                 attendanceMR.setDate(new Date());
                 amr.put(employee.getId(), attendanceMR);
             }
@@ -44,7 +44,7 @@ public class AttendanceDAdmin
             }
 
         for (EmployeeInfoDto employee : allEmployees) {
-            AttendanceDRDto attendanced = new AttendanceDRDto().create();
+            AttendanceDto attendanced = new AttendanceDto().create();
             attendanced.setDate(new Date());
             attendanced.setDayNum(SalaryDateUtil.getDayNum(new Date()));
             attendanced.setEmployee(employee);
@@ -56,7 +56,7 @@ public class AttendanceDAdmin
 
     public void addAttendanceRecord() {
 
-        for (AttendanceDRDto attendance : attendanceDRList) {
+        for (AttendanceDto attendance : attendanceDRList) {
             // TODO
             AttendanceMRDto attendanceMRDto = amr.get(attendance.getEmployee().getId());
             boolean exist = attendanceMRDto.isExist(attendance);
@@ -68,7 +68,7 @@ public class AttendanceDAdmin
     @Override
     protected boolean save(int saveFlags, String hint) {
         List<AttendanceMR> mrList = new ArrayList<AttendanceMR>();
-        for (AttendanceDRDto day : attendanceDRList) {
+        for (AttendanceDto day : attendanceDRList) {
             AttendanceMRDto month = amr.get(day.getEmployee().getId());
 
             /**
@@ -99,11 +99,11 @@ public class AttendanceDAdmin
         this.openedDate = openedDate;
     }
 
-    public List<AttendanceDRDto> getAttendanceDRList() {
+    public List<AttendanceDto> getAttendanceDRList() {
         return attendanceDRList;
     }
 
-    public void setAttendanceDRList(List<AttendanceDRDto> attendanceDRList) {
+    public void setAttendanceDRList(List<AttendanceDto> attendanceDRList) {
         this.attendanceDRList = attendanceDRList;
     }
 }

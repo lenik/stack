@@ -1,97 +1,78 @@
 package com.bee32.sem.salary.dto;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
+import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
-import com.bee32.sem.attendance.dto.AttendanceMRDto;
 import com.bee32.sem.hr.dto.EmployeeInfoDto;
 import com.bee32.sem.salary.entity.Salary;
-import com.bee32.sem.salary.util.SalaryDateUtil;
 
 public class SalaryDto
         extends UIEntityDto<Salary, Long> {
 
     private static final long serialVersionUID = 1L;
 
-    Date date;
-    AttendanceMRDto attendance;
+    public static final int ELEMENTS = 1;
+
+    int year;
+    int month;
     EmployeeInfoDto employee;
-    SalaryItemDto baseSalary;
-    List<SalaryItemDto> items;
-    Map<String, SalaryItemDto> subsidies = new HashMap<String, SalaryItemDto>();
+    List<SalaryElementDto> elements;
     BigDecimal total;
 
     @Override
     protected void _marshal(Salary source) {
-        date = source.getDate();
-        attendance = mref(AttendanceMRDto.class, source.getAttendance());
+        year = source.getYear();
+        month = source.getMonth();
         employee = mref(EmployeeInfoDto.class, source.getEmployee());
-        baseSalary = mref(SalaryItemDto.class, source.getBaseSalary());
-        items = mrefList(SalaryItemDto.class, source.getItems());
         total = source.getTotal();
+
+        if (selection.contains(ELEMENTS))
+            elements = mrefList(SalaryElementDto.class, source.getElements());
+        else
+            elements = Collections.emptyList();
     }
 
     @Override
     protected void _unmarshalTo(Salary target) {
-        target.setDate(date);
-        merge(target, "attendance", attendance);
+        target.setYear(year);
+        target.setMonth(month);
         merge(target, "employee", employee);
-        merge(target, "baseSalary", baseSalary);
-        mergeList(target, "items", items);
         target.setTotal(total);
+
+        if (selection.contains(ELEMENTS))
+            mergeList(target, "elements", elements);
     }
 
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
+        throw new NotImplementedException();
     }
 
     public String getDateString() {
-        if (date == null)
-            date = new Date();
-        return SalaryDateUtil.getDateString(date);
+        return year + "年" + month + "月";
     }
 
-    public String getSubsidyString() {
-        StringBuffer sb = new StringBuffer("");
-        for (SalaryItemDto item : items) {
-            if (item.getBonus().doubleValue() != 0 && item.getRate() != 0) {
-                if (sb.length() == 0)
-                    sb.append(item.getLabel());
-                else
-                    sb.append("," + item.getLabel());
-                sb.append(":");
-                sb.append(item.getBonus().doubleValue() * item.getRate());
-            }
-        }
-        return sb.toString();
+    public int getYear() {
+        return year;
     }
 
-    public SalaryItemDto getItem(String alternate) {
-        return subsidies.get(alternate);
+    public void setYear(int year) {
+        this.year = year;
     }
 
-    public Date getDate() {
-        return date;
+    public int getMonth() {
+        return month;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public AttendanceMRDto getAttendance() {
-        return attendance;
-    }
-
-    public void setAttendance(AttendanceMRDto attendance) {
-        this.attendance = attendance;
+    public void setMonth(int month) {
+        this.month = month;
     }
 
     public EmployeeInfoDto getEmployee() {
@@ -102,28 +83,12 @@ public class SalaryDto
         this.employee = employee;
     }
 
-    public SalaryItemDto getBaseSalary() {
-        return baseSalary;
+    public List<SalaryElementDto> getElements() {
+        return elements;
     }
 
-    public List<SalaryItemDto> getItems() {
-        return items;
-    }
-
-    public void setBaseSalary(SalaryItemDto baseSalary) {
-        this.baseSalary = baseSalary;
-    }
-
-    public void setItems(List<SalaryItemDto> items) {
-        this.items = items;
-    }
-
-    public Map<String, SalaryItemDto> getSubsidies() {
-        return subsidies;
-    }
-
-    public void setSubsidies(Map<String, SalaryItemDto> subsidies) {
-        this.subsidies = subsidies;
+    public void setElements(List<SalaryElementDto> elements) {
+        this.elements = elements;
     }
 
     public BigDecimal getTotal() {

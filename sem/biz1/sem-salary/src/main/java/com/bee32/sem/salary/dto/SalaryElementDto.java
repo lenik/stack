@@ -6,10 +6,10 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
-import com.bee32.sem.salary.entity.SalaryItem;
+import com.bee32.sem.salary.entity.SalaryElement;
 
-public class SalaryItemDto
-        extends UIEntityDto<SalaryItem, Long> {
+public class SalaryElementDto
+        extends UIEntityDto<SalaryElement, Long> {
 
     private static final long serialVersionUID = 1L;
 
@@ -19,13 +19,13 @@ public class SalaryItemDto
     BigDecimal bonus;
 
     @Override
-    protected void _marshal(SalaryItem source) {
+    protected void _marshal(SalaryElement source) {
         label = source.getLabel();
         bonus = source.getBonus();
     }
 
     @Override
-    protected void _unmarshalTo(SalaryItem target) {
+    protected void _unmarshalTo(SalaryElement target) {
         target.setLabel(label);
         target.setBonus(bonus);
     }

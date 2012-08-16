@@ -18,7 +18,7 @@ import com.bee32.sem.hr.entity.EmployeeInfo;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.salary.dto.BaseBonusDto;
 import com.bee32.sem.salary.dto.SalaryDto;
-import com.bee32.sem.salary.dto.SalaryItemDto;
+import com.bee32.sem.salary.dto.SalaryElementDto;
 import com.bee32.sem.salary.entity.BaseBonus;
 import com.bee32.sem.salary.entity.Salary;
 import com.bee32.sem.salary.util.SalaryDateUtil;
@@ -110,10 +110,10 @@ public class AttendanceMAdmin
         salary.setAttendance(mrDto);
 
         Map<String, BaseBonusDto> bonusMap = getBonusMap();
-        List<SalaryItemDto> items = new ArrayList<SalaryItemDto>();
+        List<SalaryElementDto> items = new ArrayList<SalaryElementDto>();
 
         // 基本工资
-        SalaryItemDto base = new SalaryItemDto().create();
+        SalaryElementDto base = new SalaryElementDto().create();
         base.setBonus(bonusMap.get("base").getBonus());
         base.setRate(mrDto.getReal_attendance() + mrDto.getReal_overtime() + mrDto.getTrip());
         base.setLabel("基本工资");
@@ -124,7 +124,7 @@ public class AttendanceMAdmin
         // TODO 小数点情况 || 全勤奖 perfect attendance award --> paa
 
         // 中餐补贴
-        SalaryItemDto lunch = new SalaryItemDto();
+        SalaryElementDto lunch = new SalaryElementDto();
         lunch.setBonus(bonusMap.get("lunch").getBonus());
         lunch.setAlternate(bonusMap.get("lunch").getLabel());
         lunch.setRate(mrDto.getReal_attendance());
@@ -133,7 +133,7 @@ public class AttendanceMAdmin
         total += lunch.getRate() * lunch.getBonus().doubleValue();
 
         // 晚餐补贴
-        SalaryItemDto supper = new SalaryItemDto();
+        SalaryElementDto supper = new SalaryElementDto();
         supper.setBonus(bonusMap.get("supper").getBonus());
         supper.setAlternate(bonusMap.get("supper").getLabel());
         supper.setRate(mrDto.getReal_overtime());
@@ -142,7 +142,7 @@ public class AttendanceMAdmin
         total += supper.getBonus().doubleValue() * supper.getRate();
 
         // 出差补贴
-        SalaryItemDto trip = new SalaryItemDto();
+        SalaryElementDto trip = new SalaryElementDto();
         trip.setBonus(bonusMap.get("trip").getBonus());
         trip.setAlternate(bonusMap.get("trip").getLabel());
         trip.setRate(mrDto.getTrip());
@@ -151,7 +151,7 @@ public class AttendanceMAdmin
         total += trip.getBonus().doubleValue() * trip.getRate();
 
         // 职位补贴 ~~ 岗位
-        SalaryItemDto jobPost = new SalaryItemDto();
+        SalaryElementDto jobPost = new SalaryElementDto();
         jobPost.setBonus(mrDto.getEmployee().getRole().getBonus());
         jobPost.setAlternate(mrDto.getEmployee().getRole().getName());
         jobPost.setRate(1);
@@ -160,7 +160,7 @@ public class AttendanceMAdmin
         total += jobPost.getBonus().doubleValue() * jobPost.getRate();
 
         // 学历补贴
-        SalaryItemDto education = new SalaryItemDto();
+        SalaryElementDto education = new SalaryElementDto();
         education.setBonus(mrDto.getEmployee().getEducation().getBonus());
         education.setAlternate(mrDto.getEmployee().getEducation().getName());
         education.setRate(1);
@@ -170,7 +170,7 @@ public class AttendanceMAdmin
 
         // 安全补贴
         if (mrDto.isSafety()) {
-            SalaryItemDto safety = new SalaryItemDto();
+            SalaryElementDto safety = new SalaryElementDto();
             safety.setBonus(bonusMap.get("safety").getBonus());
             safety.setAlternate(bonusMap.get("safety").getLabel());
             safety.setRate(1);
@@ -191,7 +191,7 @@ public class AttendanceMAdmin
         else
             perfectAttendance = 0;
 
-        SalaryItemDto paa = new SalaryItemDto();
+        SalaryElementDto paa = new SalaryElementDto();
         paa.setBonus(new BigDecimal(perfectAttendance));
         paa.setRate(1);
         paa.setLabel("全勤奖");

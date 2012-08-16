@@ -4,20 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bee32.plover.orm.sample.NormalSamples;
-import com.bee32.sem.attendance.entity.AttendanceDR;
+import com.bee32.sem.attendance.entity.Attendance;
 import com.bee32.sem.people.SEMPeopleSamples;
 import com.bee32.sem.salary.entity.BaseBonus;
 import com.bee32.sem.salary.entity.BaseBonuses;
-import com.bee32.sem.salary.entity.OvertimeTypes;
 
 public class SEMSalarySamples
         extends NormalSamples {
 
-    OvertimeTypes overtimeTypes = predefined(OvertimeTypes.class);
-    BaseBonuses bonuses = predefined(BaseBonuses.class);
-
     SEMPeopleSamples people = predefined(SEMPeopleSamples.class);
-//    AttendanceMR attendanceMR = new AttendanceMR();
+    BaseBonuses bonuses = predefined(BaseBonuses.class);
 
     @Override
     protected void wireUp() {
@@ -25,15 +21,10 @@ public class SEMSalarySamples
         subsidies.add(bonuses.PP);
         subsidies.add(bonuses.FUEL);
 
-        AttendanceDR dayRecord = new AttendanceDR();
+        Attendance dayRecord = new Attendance();
         dayRecord.setEmployee(people.employee);
-        dayRecord.setOvertime(2.0);
-        dayRecord.setAbstime(0.0);
-
-//        attendanceMR.setEmployee(people.employee);
-//        attendanceMR.setDate(WageDateUtil.getTestDate());
-//        attendanceMR.setAttendances(Arrays.asList(dayRecord));
-
+        dayRecord.setOverworkTime(2 * 60);
+        dayRecord.setAbsentTime(0);
     }
 
 }

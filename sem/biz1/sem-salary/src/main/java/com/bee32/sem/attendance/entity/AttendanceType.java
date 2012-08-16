@@ -79,16 +79,12 @@ public class AttendanceType
         site.saveConfig();
     }
 
+    public static final AttendanceType notAvailable = new AttendanceType("-", "notAvailable", false);
     public static final AttendanceType normal = new AttendanceType("N", "normal", true);
     public static final AttendanceType leave = new AttendanceType("L", "leave", false);
     public static final AttendanceType sickLeave = new AttendanceType("S", "sick-leave", false);
     public static final AttendanceType eveningOvertime = new AttendanceType("O", "evening-overtime", true);
     public static final AttendanceType holidayOvertime = new AttendanceType("H", "holiday-overtime", true);
     public static final AttendanceType restOvertime = new AttendanceType("R", "rest-overtime", true);
-// public final AttendanceType leave = new AttendanceType("leave", "请假", false);
-// public final AttendanceType absent = new AttendanceType("absent", "旷工", false);
-// public final AttendanceType rest = new AttendanceType("rest", "休息", false);
-// public final AttendanceType overtime = new AttendanceType("overtime", "加班", true);
-// public final AttendanceType hot = new AttendanceType("holiday", "假日加班", true);
 
 }

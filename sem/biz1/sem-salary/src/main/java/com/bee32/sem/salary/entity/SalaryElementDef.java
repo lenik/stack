@@ -10,7 +10,7 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "salary_element_type_seq", allocationSize = 1)
-public class SalaryElementType
+public class SalaryElementDef
         extends UIEntityAuto<Integer> {
 
     private static final long serialVersionUID = 1L;

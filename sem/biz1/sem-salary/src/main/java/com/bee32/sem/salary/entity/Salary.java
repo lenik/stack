@@ -1,20 +1,22 @@
 package com.bee32.sem.salary.entity;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.plover.ox1.color.UIEntityAuto;
-import com.bee32.sem.attendance.entity.AttendanceMR;
+import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.hr.entity.EmployeeInfo;
 
 /**
@@ -23,46 +25,59 @@ import com.bee32.sem.hr.entity.EmployeeInfo;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "salary_seq", allocationSize = 1)
 public class Salary
-        extends UIEntityAuto<Long> {
+        extends UIEntityAuto<Long>
+        implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
-    Date date;
-
-    /** 月出勤记录 */
-    AttendanceMR attendance;
-    /** 工资计算类型 */
-    // AttendanceType type;
-
+    int year;
+    int month;
     EmployeeInfo employee;
 
-    SalaryItem baseSalary;
+    List<SalaryElement> elements = new ArrayList<SalaryElement>();
+    BigDecimal total = null; // BigDecimal.ZERO;
 
-    List<SalaryItem> items;
-
-    /**
-     * 冗余
-     */
-    BigDecimal total;
-
-    @ManyToOne
-    public AttendanceMR getAttendance() {
-        return attendance;
+    public Salary() {
+        Calendar calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
     }
 
-    public void setAttendance(AttendanceMR attendance) {
-        this.attendance = attendance;
+    /**
+     * 年月的组合，如 201208。
+     */
+    @Column(nullable = false)
+    public int getYearMonth() {
+        return year * 100 + month;
+    }
+
+    public void setYearMonth(int yearMonth) {
+        year = yearMonth / 100;
+        month = yearMonth % 100;
+    }
+
+    /**
+     * 工资条对应年
+     */
+    @Transient
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 
     /**
      * 工资条对应月份
      */
-    public Date getDate() {
-        return date;
+    @Transient
+    public int getMonth() {
+        return month;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setMonth(int month) {
+        this.month = month;
     }
 
     @ManyToOne
@@ -76,30 +91,40 @@ public class Salary
 
     @OneToMany(mappedBy = "parent")
     @Cascade({ CascadeType.ALL })
-    public List<SalaryItem> getItems() {
-        return items;
+    public List<SalaryElement> getElements() {
+        return elements;
     }
 
-    public void setItems(List<SalaryItem> items) {
-        this.items = items;
+    public void setElements(List<SalaryElement> elements) {
+        if (elements == null)
+            throw new NullPointerException("elements");
+        this.elements = elements;
+        this.total = null;
     }
 
-    @OneToOne
-    @Cascade({ CascadeType.ALL })
-    public SalaryItem getBaseSalary() {
-        return baseSalary;
-    }
-
-    public void setBaseSalary(SalaryItem baseSalary) {
-        this.baseSalary = baseSalary;
-    }
-
+    @Column(nullable = false, scale = MONEY_TOTAL_SCALE, precision = MONEY_TOTAL_PRECISION)
     public BigDecimal getTotal() {
+        if (total == null) {
+            synchronized (this) {
+                if (total == null) {
+                    total = sum();
+                }
+            }
+        }
         return total;
     }
 
     public void setTotal(BigDecimal total) {
         this.total = total;
+    }
+
+    BigDecimal sum() {
+        BigDecimal sum = BigDecimal.ZERO;
+        for (SalaryElement element : elements) {
+            BigDecimal bonus = element.getBonus();
+            sum = sum.add(bonus);
+        }
+        return sum;
     }
 
 }

@@ -3,30 +3,22 @@ package com.bee32.sem.attendance.entity;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.ox1.color.Green;
-import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.sem.hr.entity.EmployeeInfo;
 
 /**
  * 考勤记录，按月
  */
-@Entity
-@Green
-@SequenceGenerator(name = "idgen", sequenceName = "attendance_m_seq", allocationSize = 1)
-public class AttendanceMR
-        extends UIEntityAuto<Long> {
+public class AttendanceMR {
 
     private static final long serialVersionUID = 1L;
 
-    List<AttendanceDR> attendances;
+    List<Attendance> attendances;
     Date date;
     EmployeeInfo employee;
 
@@ -51,11 +43,11 @@ public class AttendanceMR
 
     @OneToMany
     @Cascade({ CascadeType.ALL })
-    public List<AttendanceDR> getAttendances() {
+    public List<Attendance> getAttendances() {
         return attendances;
     }
 
-    public void setAttendances(List<AttendanceDR> attendances) {
+    public void setAttendances(List<Attendance> attendances) {
         this.attendances = attendances;
     }
 
