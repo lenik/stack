@@ -24,13 +24,13 @@ public class SEMPeopleMenu
     SEMFrameMenu _frame_ = require(SEMFrameMenu.class);
     static Location prefix = WEB_APP.join(SEMPeopleModule.PREFIX_);
 
-    public transient MenuNode PEOPLE = _frame_.BIZ1;
+    public transient MenuNode PARENT = _frame_.BIZ1;
 
-    MenuNode personAdmin = entry(PEOPLE, 10, "personAdmin", prefix.join("person/"));
-    MenuNode orgAdmin = entry(PEOPLE, 11, "orgAdmin", prefix.join("org/"));
-    MenuNode orgPersonAdmin = entry(PEOPLE, 20, "orgPersonAdmin", prefix.join("orgPerson/"));
+    MenuNode personAdmin = entry(PARENT, 10, "personAdmin", prefix.join("person/"));
+    MenuNode orgAdmin = entry(PARENT, 11, "orgAdmin", prefix.join("org/"));
+    MenuNode orgPersonAdmin = entry(PARENT, 20, "orgPersonAdmin", prefix.join("orgPerson/"));
 
-    public MenuNode SETTINGS = menu(PEOPLE, 12, "SETTINGS");
+    public MenuNode SETTINGS = menu(PARENT, 12, "SETTINGS");
     /**/MenuNode partyTag = entry(SETTINGS, 1, "partyTag", getDictIndex(PartyTagname.class));
     /**/MenuNode personSidType = entry(SETTINGS, 2, "personSidType", getDictIndex(PartySidType.class));
     /**/MenuNode orgType = entry(SETTINGS, 3, "orgType", getDictIndex(OrgType.class));
@@ -38,7 +38,7 @@ public class SEMPeopleMenu
     /**/MenuNode partyRecordCategory = mode(X_RECORDS) ? entry(SETTINGS, 5, "partyRecordCategory",
             getDictIndex(PartyRecordCategory.class)) : null;
 
-    public MenuNode EMPLOYEE = menu(PEOPLE, 25, "EMPLOYEE");
+    public MenuNode EMPLOYEE = menu(PARENT, 25, "EMPLOYEE");
     /**/MenuNode employeeAdmin = entry(EMPLOYEE, 1, "employeeAdmin", prefix.join("employee/"));
     /**/MenuNode EMPLOYEE_DICTS = menu(EMPLOYEE, 2, "EMPLOYEE_DICTS");
     /*    */MenuNode jobTitle = entry(EMPLOYEE_DICTS, 1, "jobTitle", getDictIndex(JobTitle.class));
