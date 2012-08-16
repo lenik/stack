@@ -10,6 +10,20 @@
     <ui:param name="itemObj" value="#{bean.itemsMBean.openedObject}" />
     <ui:param name="stock" value="#{stockDictsBean}" />
 
+    <ui:define name="toolbar.left">
+        <p:separator />
+        <p:commandButton id="exportToPdf" value="PDF" actionListener="${bean.exportToPdf}"
+            disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" ajax="false">
+            <p:fileDownload value="#{bean.pdfFile}" />
+        </p:commandButton>
+        <p:separator />
+        <p:commandButton id="exportToPdfNoPrice" value="PDF无价格" actionListener="${bean.exportToPdfNoPrice}"
+            disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" ajax="false">
+            <p:fileDownload value="#{bean.pdfFile}" />
+        </p:commandButton>
+        <p:separator />
+    </ui:define>
+
     <ui:define name="dataColumns">
         <p:column headerText="标识" sortBy="#{entry.id}">
             <h:outputText value="#{entry.id}" />
@@ -85,12 +99,20 @@
                             <h:outputText value="#{entry.material.modelSpec}" />
                         </p:column>
 
+                        <p:column headerText="单位">
+                            <h:outputText value="#{entry.material.unit.label}" />
+                        </p:column>
+
                         <p:column headerText="外部名称" styleClass="f-wrappable">
                             <h:outputText value="#{entry.orderItem.externalProductName}" />
                         </p:column>
 
                         <p:column headerText="外部规格" styleClass="f-wrappable">
                             <h:outputText value="#{entry.orderItem.externalModelSpec}" />
+                        </p:column>
+
+                        <p:column headerText="外部单位" styleClass="f-wrappable">
+                            <h:outputText value="#{entry.orderItem.externalUnit}" />
                         </p:column>
 
                         <p:column headerText="单价" styleClass="f-right">

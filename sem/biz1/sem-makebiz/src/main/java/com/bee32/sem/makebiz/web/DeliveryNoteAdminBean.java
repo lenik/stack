@@ -1,11 +1,23 @@
 package com.bee32.sem.makebiz.web;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
 import org.apache.commons.lang.StringUtils;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
@@ -27,6 +39,8 @@ public class DeliveryNoteAdminBean
         extends ScrollEntityViewBean {
 
     private static final long serialVersionUID = 1L;
+
+    StreamedContent pdfFile;
 
     int tabIndex;
 
@@ -93,6 +107,68 @@ public class DeliveryNoteAdminBean
             return;
         }
     }
+
+
+    public void exportToPdf() {
+        DeliveryNoteDto note = this.getOpenedObject();
+        JRBeanCollectionDataSource beanCollectionDataSource=new JRBeanCollectionDataSource(note.getItems());
+
+        ClassLoader ccl = getClass().getClassLoader(); //Thread.currentThread().getContextClassLoader();
+        InputStream reportStream = ccl.getResourceAsStream("resources/3/15/6/3/delivery/report1.jrxml");
+
+        try {
+            JasperReport report = JasperCompileManager.compileReport(reportStream);
+            Map<String, Object> reportParams = new HashMap<String, Object>();
+            reportParams.put("id", note.getId());
+            reportParams.put("createDate", note.getCreatedDate());
+            reportParams.put("arrivalDate", note.getArrivalDate());
+            reportParams.put("owner", note.getOwnerDisplayName());
+            reportParams.put("label", note.getLabel());
+            reportParams.put("customer", note.getCustomer().getDisplayName());
+            reportParams.put("description", note.getDescription());
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(report, reportParams, beanCollectionDataSource);
+            byte[] pdfByteArray = JasperExportManager.exportReportToPdf(jasperPrint);
+
+            InputStream stream = new ByteArrayInputStream(pdfByteArray);
+            pdfFile = new DefaultStreamedContent(stream, "application/pdf", "deliveryNote.pdf");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void exportToPdfNoPrice() {
+        DeliveryNoteDto note = this.getOpenedObject();
+        JRBeanCollectionDataSource beanCollectionDataSource=new JRBeanCollectionDataSource(note.getItems());
+
+        ClassLoader ccl = getClass().getClassLoader(); //Thread.currentThread().getContextClassLoader();
+        InputStream reportStream = ccl.getResourceAsStream("resources/3/15/6/3/delivery/report1_no_price.jrxml");
+
+        try {
+            JasperReport report = JasperCompileManager.compileReport(reportStream);
+            Map<String, Object> reportParams = new HashMap<String, Object>();
+            reportParams.put("id", note.getId());
+            reportParams.put("createDate", note.getCreatedDate());
+            reportParams.put("arrivalDate", note.getArrivalDate());
+            reportParams.put("owner", note.getOwnerDisplayName());
+            reportParams.put("label", note.getLabel());
+            reportParams.put("customer", note.getCustomer().getDisplayName());
+            reportParams.put("description", note.getDescription());
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(report, reportParams, beanCollectionDataSource);
+            byte[] pdfByteArray = JasperExportManager.exportReportToPdf(jasperPrint);
+
+            InputStream stream = new ByteArrayInputStream(pdfByteArray);
+            pdfFile = new DefaultStreamedContent(stream, "application/pdf", "deliveryNote.pdf");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public StreamedContent getPdfFile() {
+        return pdfFile;
+    }
+
 
     /*************************************************************************
      * Section: MBeans

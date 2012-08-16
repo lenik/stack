@@ -184,7 +184,7 @@ public abstract class AbstractStockOrderBean
             byte[] pdfByteArray = JasperExportManager.exportReportToPdf(jasperPrint);
 
             InputStream stream = new ByteArrayInputStream(pdfByteArray);
-            pdfFile = new DefaultStreamedContent(stream, "application/pdf", "order.pdf");
+            pdfFile = new DefaultStreamedContent(stream, "application/pdf", "stock.pdf");
         } catch (Exception e) {
             e.printStackTrace();
         }
