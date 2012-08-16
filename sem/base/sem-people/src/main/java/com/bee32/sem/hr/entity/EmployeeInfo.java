@@ -16,6 +16,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.DefaultValue;
 
 import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.color.UIEntityAuto;
@@ -87,6 +88,7 @@ public class EmployeeInfo
         this.baseSalary = baseSalary;
     }
 
+    @DefaultValue("false")
     public boolean isMotorist() {
         return motorist;
     }
