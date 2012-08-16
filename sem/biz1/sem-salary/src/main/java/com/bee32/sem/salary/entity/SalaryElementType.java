@@ -1,6 +1,7 @@
 package com.bee32.sem.salary.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.SequenceGenerator;
 
 import com.bee32.plover.ox1.color.UIEntityAuto;
 
@@ -8,6 +9,7 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
  * 工资条上的元素（表达式）定义
  */
 @Entity
+@SequenceGenerator(name = "idgen", sequenceName = "salary_element_type_seq", allocationSize = 1)
 public class SalaryElementType
         extends UIEntityAuto<Integer> {
 

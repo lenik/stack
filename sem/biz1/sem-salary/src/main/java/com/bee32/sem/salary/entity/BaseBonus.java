@@ -7,6 +7,7 @@ import java.util.Date;
 import javax.free.Dates;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.SequenceGenerator;
 
 import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.plover.ox1.config.DecimalConfig;
@@ -15,6 +16,7 @@ import com.bee32.plover.ox1.config.DecimalConfig;
  * （公共）奖金/补贴设置
  */
 @Entity
+@SequenceGenerator(name = "idgen", sequenceName = "base_bonus_seq", allocationSize = 1)
 public class BaseBonus
         extends MomentInterval
         implements DecimalConfig {

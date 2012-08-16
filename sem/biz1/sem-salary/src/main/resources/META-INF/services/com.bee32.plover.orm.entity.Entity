@@ -1,8 +1,8 @@
 com.bee32.sem.attendance.entity.AttendanceDR
 com.bee32.sem.attendance.entity.AttendanceMR
 com.bee32.sem.salary.entity.BaseBonus
-com.bee32.sem.salary.entity.CommonSubsidy
 com.bee32.sem.salary.entity.OvertimeType
 com.bee32.sem.salary.entity.Salary
+com.bee32.sem.salary.entity.SalaryElementType
 com.bee32.sem.salary.entity.SalaryItem
 com.bee32.sem.salary.entity.WorkOvertime
