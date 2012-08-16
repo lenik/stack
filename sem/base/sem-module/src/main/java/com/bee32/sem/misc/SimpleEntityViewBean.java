@@ -562,6 +562,13 @@ public abstract class SimpleEntityViewBean
                     checkDuplicates(dto, duplicates);
                 }
                 if (!duplicates.isEmpty()) {
+                    StringBuilder mesg = new StringBuilder("存在重复的记录：<ul>");
+                    for (Entity<?> dup : duplicates) {
+                        String dupLabel = dup.getEntryLabel();
+                        mesg.append("<li>" + dupLabel + "</li>");
+                    }
+                    mesg.append("</ul>");
+                    uiHtmlLogger.error(mesg);
                     return false;
                 }
             }
@@ -843,11 +850,13 @@ public abstract class SimpleEntityViewBean
     }
 
     public void setCheckDuplicatesBeforeCreate(boolean checkDuplicatesBeforeCreate) {
-        if (checkDuplicatesBeforeCreate)
-            uiLogger.info("检查关键字重复功能开启。");
-        else
-            uiLogger.info("检查关键字重复功能关闭。");
-        this.checkDuplicatesBeforeCreate = checkDuplicatesBeforeCreate;
+        if (this.checkDuplicatedLabel != checkDuplicatesBeforeCreate) {
+            if (checkDuplicatesBeforeCreate)
+                uiLogger.info("检查关键字重复功能开启。");
+            else
+                uiLogger.info("检查关键字重复功能关闭。");
+            this.checkDuplicatesBeforeCreate = checkDuplicatesBeforeCreate;
+        }
     }
 
     protected void checkDuplicates(EntityDto<?, ?> creating, List<Entity<?>> duplicates) {
