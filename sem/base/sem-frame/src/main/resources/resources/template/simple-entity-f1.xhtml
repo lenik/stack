@@ -1,8 +1,12 @@
-<ui:composition template="/template/primefaces.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+<ui:composition template="/template/_primefaces.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
     xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:icsf="http://java.sun.com/jsf/composite/3/7">
 
     <ui:param name="_toolbar" value="${toolbar != null ? toolbar : viewConfig.toolbarPlacement}" />
+
+    <ui:define name="login">
+        <icsf:loginPanel xpc="true" style="none" />
+    </ui:define>
 
     <ui:define name="title">${title}管理</ui:define>
     <ui:define name="styles">
