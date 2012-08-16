@@ -23,8 +23,10 @@ public class AttendanceDR
     Date date;
     EmployeeInfo employee;
 
-    AttendanceType attType = AttendanceType.normal;
-    AttendanceType absType = AttendanceType.normal;
+    AttendanceType morning = AttendanceType.normal;
+    AttendanceType afternoon = AttendanceType.normal;
+    AttendanceType evening = AttendanceType.normal;
+
     double overtime;
     double abstime;
 
@@ -51,32 +53,23 @@ public class AttendanceDR
     }
 
     @Column(length = 10, nullable = false)
-    public String get_attType() {
-        return attType.getValue();
+    public String get_morning() {
+        return morning.getValue();
     }
 
-    public void set_attType(String _attType) {
-        this.attType = AttendanceType.forValue(_attType);
+    public void set_morning(String _morning) {
+        this.morning = AttendanceType.forName(_morning);
     }
 
     @Transient
-    public AttendanceType getAttType() {
-        return attType;
+    public AttendanceType getMorning() {
+        return morning;
     }
 
-    public void setAttType(AttendanceType attType) {
-        if (attType == null)
-            throw new NullPointerException("attType");
-        this.attType = attType;
-    }
-
-    @ManyToOne
-    public AttendanceType getAbsType() {
-        return absType;
-    }
-
-    public void setAbsType(AttendanceType absType) {
-        this.absType = absType;
+    public void setMorning(AttendanceType morning) {
+        if (morning == null)
+            throw new NullPointerException("morning");
+        this.morning = morning;
     }
 
     public double getOvertime() {

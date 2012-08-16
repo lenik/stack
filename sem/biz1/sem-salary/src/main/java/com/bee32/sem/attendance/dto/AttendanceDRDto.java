@@ -38,8 +38,6 @@ public class AttendanceDRDto
         dayNum = SalaryDateUtil.getDayNum(date);
         date = source.getDate();
         employee = mref(EmployeeInfoDto.class, source.getEmployee());
-        attType = source.getAttType();
-        absType = source.getAbsType();
         overtime = source.getOvertime();
         abstime = source.getAbstime();
     }
@@ -48,8 +46,6 @@ public class AttendanceDRDto
     protected void _unmarshalTo(AttendanceDR target) {
         target.setDate(date);
         merge(target, "employee", employee);
-        target.setAttType(attType);
-        target.setAbsType(absType);
         target.setOvertime(overtime);
         target.setAbstime(abstime);
     }

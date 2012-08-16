@@ -5,11 +5,11 @@ import java.math.BigDecimal;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.ox1.dict.NameDictDto;
+import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.salary.entity.BaseBonus;
 
 public class BaseBonusDto
-        extends NameDictDto<BaseBonus> {
+        extends UIEntityDto<BaseBonus, Long> {
 
     private static final long serialVersionUID = 1L;
 
@@ -19,14 +19,12 @@ public class BaseBonusDto
     @Override
     protected void _marshal(BaseBonus source) {
         super.marshal(source);
-        reward = source.isReward();
         bonus = source.getBonus();
     }
 
     @Override
     protected void _unmarshalTo(BaseBonus target) {
         super.unmarshalTo(target);
-        target.setReward(reward);
         target.setBonus(bonus);
     }
 

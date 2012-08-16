@@ -126,7 +126,7 @@ public class AttendanceMAdmin
         // 中餐补贴
         SalaryItemDto lunch = new SalaryItemDto();
         lunch.setBonus(bonusMap.get("lunch").getBonus());
-        lunch.setAlternate(bonusMap.get("lunch").getName());
+        lunch.setAlternate(bonusMap.get("lunch").getLabel());
         lunch.setRate(mrDto.getReal_attendance());
         lunch.setLabel("午餐补贴");
         items.add(lunch);
@@ -135,7 +135,7 @@ public class AttendanceMAdmin
         // 晚餐补贴
         SalaryItemDto supper = new SalaryItemDto();
         supper.setBonus(bonusMap.get("supper").getBonus());
-        supper.setAlternate(bonusMap.get("supper").getName());
+        supper.setAlternate(bonusMap.get("supper").getLabel());
         supper.setRate(mrDto.getReal_overtime());
         supper.setLabel("晚餐补贴");
         items.add(supper);
@@ -144,7 +144,7 @@ public class AttendanceMAdmin
         // 出差补贴
         SalaryItemDto trip = new SalaryItemDto();
         trip.setBonus(bonusMap.get("trip").getBonus());
-        trip.setAlternate(bonusMap.get("trip").getName());
+        trip.setAlternate(bonusMap.get("trip").getLabel());
         trip.setRate(mrDto.getTrip());
         trip.setLabel("出差补贴");
         items.add(trip);
@@ -172,7 +172,7 @@ public class AttendanceMAdmin
         if (mrDto.isSafety()) {
             SalaryItemDto safety = new SalaryItemDto();
             safety.setBonus(bonusMap.get("safety").getBonus());
-            safety.setAlternate(bonusMap.get("safety").getName());
+            safety.setAlternate(bonusMap.get("safety").getLabel());
             safety.setRate(1);
             safety.setLabel("安全奖");
             items.add(safety);
@@ -223,7 +223,7 @@ public class AttendanceMAdmin
             bonusMap = new HashMap<String, BaseBonusDto>();
             List<BaseBonusDto> all = mrefList(BaseBonus.class, BaseBonusDto.class, 0);
             for (BaseBonusDto dto : all) {
-                bonusMap.put(dto.getId(), dto);
+//                bonusMap.put(dto.getId(), dto);
             }
         }
         return bonusMap;

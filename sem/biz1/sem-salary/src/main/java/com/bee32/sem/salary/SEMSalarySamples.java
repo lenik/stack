@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.bee32.plover.orm.sample.NormalSamples;
 import com.bee32.sem.attendance.entity.AttendanceDR;
-import com.bee32.sem.attendance.entity.AttendanceType;
 import com.bee32.sem.people.SEMPeopleSamples;
 import com.bee32.sem.salary.entity.BaseBonus;
 import com.bee32.sem.salary.entity.BaseBonuses;
@@ -23,12 +22,11 @@ public class SEMSalarySamples
     @Override
     protected void wireUp() {
         List<BaseBonus> subsidies = new ArrayList<BaseBonus>();
-        subsidies.add(bonuses.ATTA);
+        subsidies.add(bonuses.PP);
         subsidies.add(bonuses.FUEL);
 
         AttendanceDR dayRecord = new AttendanceDR();
         dayRecord.setEmployee(people.employee);
-        dayRecord.setAttType(AttendanceType.normal);
         dayRecord.setOvertime(2.0);
         dayRecord.setAbstime(0.0);
 
