@@ -239,6 +239,10 @@
                                 disabled="${not bean.editing}" update="${_contentUpdate} ${_indexUpdate} ${mirrorTargets}"
                                 rendered="${not plainEditForm}" onclick="waitbox.show()" oncomplete="waitbox.hide(); editdlg.shakeOnFail(args)" />
                         </h:panelGroup>
+                        <h:panelGroup rendered="${bean.creating}">
+                            <p:selectBooleanCheckbox value="${bean.checkDuplicatesBeforeCreate}" />
+                            避免重复
+                        </h:panelGroup>
                     </td>
                     <td align="right">
                         <h:panelGroup rendered="${bean.editing or not plainEditForm}">

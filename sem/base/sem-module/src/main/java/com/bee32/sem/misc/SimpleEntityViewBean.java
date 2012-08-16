@@ -56,6 +56,7 @@ import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.orm.web.EntityHelper;
 import com.bee32.plover.ox1.c.CEntity;
+import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.plover.ox1.util.CommonCriteria;
 import com.bee32.plover.restful.resource.StandardViews;
 import com.bee32.sem.frame.search.ISearchFragmentsHolder;
@@ -127,6 +128,9 @@ public abstract class SimpleEntityViewBean
     Map<String, List<SearchFragment>> searchFragmentMap = new LinkedHashMap<>();
     EntityDataModelOptions<?, ?> dataModelOptions;
     LazyDataModel<?> dataModel;
+
+    boolean checkDuplicatesBeforeCreate = true;
+    protected boolean checkDuplicatedLabel = true;
 
     public <E extends Entity<K>, D extends EntityDto<? super E, K>, K extends Serializable> //
     /*    */SimpleEntityViewBean(Class<E> entityClass, Class<D> dtoClass, int fmask, ICriteriaElement... criteriaElements) {
@@ -552,9 +556,21 @@ public abstract class SimpleEntityViewBean
 
         List<EntityDto<?, ?>> dtos = getOpenedObjects();
         try {
+            if (checkDuplicatesBeforeCreate && creating) {
+                List<Entity<?>> duplicates = new ArrayList<Entity<?>>();
+                for (EntityDto<?, ?> dto : dtos) {
+                    checkDuplicates(dto, duplicates);
+                }
+                if (!duplicates.isEmpty()) {
+                    return false;
+                }
+            }
+
             for (SevbFriend friend : sortedFriends)
                 if (!friend.postValidate(dtos))
                     return false;
+            if (!__postValidate(dtos))
+                return false;
             if (!postValidate(dtos))
                 return false;
         } catch (Exception e) {
@@ -820,6 +836,38 @@ public abstract class SimpleEntityViewBean
             return false;
         } else
             return true;
+    }
+
+    public boolean isCheckDuplicatesBeforeCreate() {
+        return checkDuplicatesBeforeCreate;
+    }
+
+    public void setCheckDuplicatesBeforeCreate(boolean checkDuplicatesBeforeCreate) {
+        if (checkDuplicatesBeforeCreate)
+            uiLogger.info("检查关键字重复功能开启。");
+        else
+            uiLogger.info("检查关键字重复功能关闭。");
+        this.checkDuplicatesBeforeCreate = checkDuplicatesBeforeCreate;
+    }
+
+    protected void checkDuplicates(EntityDto<?, ?> creating, List<Entity<?>> duplicates) {
+        // Check UI-Entity.
+        if (creating instanceof UIEntityDto<?, ?>) {
+            UIEntityDto<?, ?> o = (UIEntityDto<?, ?>) creating;
+
+            // Check for duplicated labels.
+            if (checkDuplicatedLabel) {
+                String label = o.getLabel();
+                Entity<?> first = DATA(getEntityType()).getFirst(new Equals("label", label));
+                if (first != null)
+                    duplicates.add(first);
+            }
+        }
+    }
+
+    protected boolean __postValidate(List<?> dtos)
+            throws Exception {
+        return true;
     }
 
     protected boolean postValidate(List<?> dtos)
