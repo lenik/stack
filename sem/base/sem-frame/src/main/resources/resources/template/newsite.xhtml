@@ -2,8 +2,7 @@
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:p="http://primefaces.org/ui"
-    xmlns:icsf="http://java.sun.com/jsf/composite/3/7" >
+    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:p="http://primefaces.org/ui">
 <h:head id="head" volatile="__tips, __status">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="Author" content="智恒软件 SECCA 云计算应用开发组" />
@@ -53,9 +52,7 @@
 
     <ui:insert name="initializers">
         <h:panelGroup id="loginPanel">
-            <ui:insert name="login">
-                <icsf:loginPanel xpc="true" style="none" />
-            </ui:insert>
+            <ui:insert name="login" />
         </h:panelGroup>
         <h:panelGroup id="intro" style="display: none" rendered="${bean != null}">
             ${bean.intro}
@@ -91,6 +88,7 @@
             <div class="site-page-footer">
                 <div style=" padding: 0.5em;" title="Effective-Implication: #{sessionUser.imIdSet} :: #{sessionUser.imNameSet}">
                     ■ 当前用户：
+                    <span title="${site.name} - ${site.description}">${site.label}</span> ⛚
                     <ui:repeat var="node" value="#{sessionPerson.chain}">
                         <span>#{node}</span>
                     </ui:repeat>
