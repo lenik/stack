@@ -1,41 +1,48 @@
 package com.bee32.sem.salary.entity;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.util.Date;
 
+import javax.free.Dates;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
+import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.plover.ox1.config.DecimalConfig;
-import com.bee32.plover.ox1.dict.NameDict;
-import com.bee32.sem.api.ISalaryProvider;
-import com.bee32.sem.api.SalaryCalcContext;
-import com.bee32.sem.api.SalaryElement;
 
+/**
+ * （公共）奖金/补贴设置
+ */
 @Entity
 public class BaseBonus
-        extends NameDict
-        implements ISalaryProvider, DecimalConfig {
+        extends MomentInterval
+        implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
-    boolean reward;
+    static final Date defaultDate;
+    static {
+        try {
+            defaultDate = Dates.YYYY_MM_DD.parse("2000-1-1");
+        } catch (ParseException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
     BigDecimal bonus;
 
     public BaseBonus() {
     }
 
-    public BaseBonus(String name, String label, boolean reward, BigDecimal bonus) {
-        super(name, label);
-        this.reward = reward;
-        this.bonus = bonus;
+    public BaseBonus(String label, BigDecimal bonus) {
+        this(label, defaultDate, bonus);
     }
 
-    public boolean isReward() {
-        return reward;
-    }
-
-    public void setReward(boolean reward) {
-        this.reward = reward;
+    public BaseBonus(String label, Date date, BigDecimal bonus) {
+        setLabel(label);
+        setBeginTime(date);
+        setBonus(bonus);
     }
 
     @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE)
@@ -45,15 +52,6 @@ public class BaseBonus
 
     public void setBonus(BigDecimal bonus) {
         this.bonus = bonus;
-    }
-
-    @Override
-    public SalaryElement[] getSalaryItems(SalaryCalcContext ctx) {
-        SalaryElement item = new SalaryElement();
-        item.setPath("base." + name);
-        item.setLabel(label);
-        item.setValue(bonus);
-        return new SalaryElement[] { item };
     }
 
 }

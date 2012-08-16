@@ -7,9 +7,6 @@ import javax.persistence.Entity;
 
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.ox1.dict.NameDict;
-import com.bee32.sem.api.ISalaryProvider;
-import com.bee32.sem.api.SalaryCalcContext;
-import com.bee32.sem.api.SalaryElement;
 
 /**
  * 职务/职位字典类
@@ -17,7 +14,7 @@ import com.bee32.sem.api.SalaryElement;
 @Entity
 public class JobPost
         extends NameDict
-        implements DecimalConfig, ISalaryProvider {
+        implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
@@ -57,12 +54,4 @@ public class JobPost
         this.bonus = bonus;
     }
 
-    @Override
-    public SalaryElement[] getSalaryItems(SalaryCalcContext ctx) {
-        SalaryElement item = new SalaryElement();
-        item.setPath("base.post");
-        item.setLabel("职位补贴");
-        item.setValue(bonus);
-        return new SalaryElement[] { item };
-    }
 }

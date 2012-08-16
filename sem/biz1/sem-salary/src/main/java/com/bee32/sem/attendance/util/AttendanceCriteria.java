@@ -1,7 +1,8 @@
 package com.bee32.sem.attendance.util;
 
 import java.util.Date;
-import java.util.Map;
+
+import javax.free.Pair;
 
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
@@ -12,22 +13,26 @@ import com.bee32.sem.salary.util.SalaryDateUtil;
 public class AttendanceCriteria
         extends CriteriaSpec {
     public static ICriteriaElement getDayList(Date date) {
-        Map<Integer, Date> map = SalaryDateUtil.toDayRange(date);
+        Pair<Date, Date> map = SalaryDateUtil.toDayRange(date);
         return toRangeList(map);
     }
 
     public static ICriteriaElement getMonthList(Date date) {
-        Map<Integer, Date> map = SalaryDateUtil.toMonthRange(date);
+        Pair<Date, Date> map = SalaryDateUtil.toMonthRange(date);
         return toRangeList(map);
     }
 
-    static ICriteriaElement toRangeList(Map<Integer, Date> map) {
-        return compose(and(greaterThan("date", map.get(0)), lessThan("date", map.get(1))));
+    static ICriteriaElement toRangeList(Pair<Date, Date> map) {
+        return conj(//
+                greaterOrEquals("date", map.get(0)), //
+                lessThan("date", map.get(1)));
     }
 
     public static ICriteriaElement getMonthRecordByEmployee(Date date, Long employeeId) {
-        Map<Integer, Date> map = SalaryDateUtil.toMonthRange(date);
-        return compose(and(greaterThan("date", map.get(0)), lessThan("date", map.get(1))),
+        Pair<Date, Date> map = SalaryDateUtil.toMonthRange(date);
+        return conj(//
+                greaterOrEquals("date", map.get(0)), //
+                lessThan("date", map.get(1)), //
                 equals("employee.id", employeeId));
     }
 
@@ -35,7 +40,7 @@ public class AttendanceCriteria
         return equals("attendance", attendance);
     }
 
-    public static ICriteriaElement getSum(Date date){
+    public static ICriteriaElement getSum(Date date) {
         return new SqlRestriction("");
     }
 

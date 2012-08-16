@@ -1,0 +1,67 @@
+package com.bee32.sem.salary.entity;
+
+import javax.persistence.Entity;
+
+import com.bee32.plover.ox1.color.UIEntityAuto;
+
+/**
+ * 工资条上的元素（表达式）定义
+ */
+@Entity
+public class SalaryElementType
+        extends UIEntityAuto<Integer> {
+
+    private static final long serialVersionUID = 1L;
+
+    String category;
+    int order;
+    String expr;
+    boolean tax;
+
+    /**
+     * 分类名称，大分类/小分类之间用 `/` 分隔。
+     *
+     * 如 `补贴/岗位补贴`。
+     */
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    /**
+     * 显示和计算次序
+     */
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    /**
+     * 表达式
+     */
+    public String getExpr() {
+        return expr;
+    }
+
+    public void setExpr(String expr) {
+        this.expr = expr;
+    }
+
+    /**
+     * 是否税前工资
+     */
+    public boolean isTax() {
+        return tax;
+    }
+
+    public void setTax(boolean tax) {
+        this.tax = tax;
+    }
+
+}

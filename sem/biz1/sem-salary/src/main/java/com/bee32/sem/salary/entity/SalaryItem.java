@@ -18,9 +18,18 @@ public class SalaryItem
     private static final long serialVersionUID = 1L;
 
     Salary parent;
+    SalaryElementType elementType;
     BigDecimal bonus;
 
     public SalaryItem() {
+    }
+
+    public SalaryElementType getElementType() {
+        return elementType;
+    }
+
+    public void setElementType(SalaryElementType elementType) {
+        this.elementType = elementType;
     }
 
     public BigDecimal getBonus() {

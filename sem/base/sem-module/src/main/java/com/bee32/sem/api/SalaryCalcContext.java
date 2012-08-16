@@ -1,11 +1,8 @@
 package com.bee32.sem.api;
 
-import com.bee32.plover.arch.util.AssembledContext;
-import com.bee32.plover.orm.util.DataPartialContext;
+import com.bee32.plover.orm.util.DefaultDataAssembledContext;
 
 public class SalaryCalcContext
-        extends AssembledContext {
-
-    DataPartialContext data;
+        extends DefaultDataAssembledContext {
 
 }

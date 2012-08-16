@@ -4,8 +4,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
+
+import javax.free.Pair;
 
 public class SalaryDateUtil {
 
@@ -15,57 +16,35 @@ public class SalaryDateUtil {
         return cal.getTime();
     }
 
-    public static Map<Integer, Date> toDayRange(Date date) {
-        Map<Integer, Date> map = new HashMap<Integer, Date>();
-
+    public static Pair<Date, Date> toDayRange(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 1);
-        map.put(0, cal.getTime());
+        Date begin = cal.getTime();
 
-        cal.set(Calendar.HOUR_OF_DAY, 23);
-        cal.set(Calendar.MINUTE, 59);
-        cal.set(Calendar.SECOND, 59);
-        cal.set(Calendar.MILLISECOND, 999);
-        map.put(1, cal.getTime());
-        return map;
+        cal.add(Calendar.DAY_OF_YEAR, 1);
+        Date end = cal.getTime();
+
+        return new Pair<Date, Date>(begin, end);
     }
 
-    public static Map<Integer, Date> toMonthRange(Date date) {
-        Map<Integer, Date> map = new HashMap<Integer, Date>();
-
+    public static Pair<Date, Date> toMonthRange(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.set(Calendar.DAY_OF_MONTH, 1);
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 1);
-        map.put(0, cal.getTime());
+        cal.set(Calendar.MILLISECOND, 0);
+        Date begin = cal.getTime();
 
-        cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) + 1);
-        cal.set(Calendar.DAY_OF_MONTH, 0);
-        cal.set(Calendar.HOUR_OF_DAY, 23);
-        cal.set(Calendar.MINUTE, 59);
-        cal.set(Calendar.SECOND, 59);
-        cal.set(Calendar.MILLISECOND, 999);
-        map.put(1, cal.getTime());
-        return map;
-    }
+        cal.add(Calendar.DAY_OF_YEAR, 1);
+        Date end = cal.getTime();
 
-    public static double getRefferDays(Date date) {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, 2000);
-        cal.set(Calendar.MONTH, 4);
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        Date base = cal.getTime();
-
-        return (date.getTime() - base.getTime()) / 86400000;
+        return new Pair<Date, Date>(begin, end);
     }
 
     public static int getDayNum(Date date) {

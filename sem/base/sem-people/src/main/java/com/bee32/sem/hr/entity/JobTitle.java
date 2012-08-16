@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.ox1.dict.NameDict;
-import com.bee32.sem.api.ISalaryProvider;
+import com.bee32.sem.api.ISalaryVariableProvider;
 import com.bee32.sem.api.SalaryCalcContext;
 import com.bee32.sem.api.SalaryElement;
 
@@ -17,7 +17,7 @@ import com.bee32.sem.api.SalaryElement;
 @Entity
 public class JobTitle
         extends NameDict
-        implements DecimalConfig, ISalaryProvider {
+        implements DecimalConfig, ISalaryVariableProvider {
 
     private static final long serialVersionUID = 1L;
 
