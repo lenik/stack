@@ -1,4 +1,4 @@
-package com.bee32.sem.uber.xref;
+package com.bee32.sem.data.xref;
 
 import java.io.Serializable;
 
