@@ -9,10 +9,8 @@ import org.apache.commons.lang.StringUtils;
 
 import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.orm.validation.RequiredId;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
-import com.bee32.sem.inventory.web.business.StockDictsBean;
 import com.bee32.sem.makebiz.dto.DeliveryNoteDto;
 import com.bee32.sem.makebiz.dto.DeliveryNoteItemDto;
 import com.bee32.sem.makebiz.dto.DeliveryNoteTakeOutDto;
@@ -44,18 +42,6 @@ public class DeliveryNoteAdminBean
         this.tabIndex = tabIndex;
     }
 
-    @RequiredId(zeroForNull = true)
-    public int getSourceWarehouseId_RZ() {
-        DeliveryNoteItemDto item = itemsMBean.getOpenedObject();
-        Integer id = item.getSourceWarehouse().getId();
-        return id == null ? 0 : id;
-    }
-
-    public void setSourceWarehouseId_RZ(int warehouseId) {
-        StockDictsBean stockDicts = BEAN(StockDictsBean.class);
-        DeliveryNoteItemDto item = itemsMBean.getOpenedObject();
-        item.setSourceWarehouse(stockDicts.getWarehouse(warehouseId));
-    }
 
     public void setApplyMakeOrder(MakeOrderDto makeOrderRef) {
         DeliveryNoteDto deliveryNote = getOpenedObject();
