@@ -14,10 +14,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bee32.plover.orm.util.EntityViewBean;
-
 public class DetailReceBean
-        extends EntityViewBean {
+        extends AbstractAccountEVB {
 
     private static final long serialVersionUID = 1L;
 
@@ -53,38 +51,13 @@ public class DetailReceBean
         this.summary = summary;
     }
 
-    @Transactional(readOnly = Config.readOnlyTxEnabled)
+    @Transactional(readOnly = readOnlyTxEnabled)
     public void query() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("select a1.party as partyId,a1.begin_time,b.label as partyName,a1.label,a1.t,a1.bill_no,a1.rable,a1.red,a1.balance from ( ");
-        sb.append("    select to_date('2000-01-01','yyyy-MM-dd') as begin_time,party,label,'期初' as t,bill_no,0 as rable,0 as red,amount as balance  ");
-        sb.append("    from current_account  ");
-        sb.append("    where stereo='RINIT' ");
-        if (verified) {
-            sb.append("     and verify_eval_state=33554434 ");
-        }
-        sb.append("    union all ");
-        sb.append("    select begin_time,party,label,'应收单' as t,bill_no,amount as rable,0 as red,0 as balance  ");
-        sb.append("    from current_account  ");
-        sb.append("    where stereo='RABLE' ");
-        if (verified) {
-            sb.append("     and verify_eval_state=33554434 ");
-        }
-        sb.append("    union all ");
-        sb.append("    select begin_time,party,label,'收款单' as t,bill_no,0 as rable,-amount as red,0 as balance  ");
-        sb.append("    from current_account  ");
-        sb.append("    where stereo='RED' ");
-        if (verified) {
-            sb.append("     and verify_eval_state=33554434 ");
-        }
-        sb.append(") a1  ");
-        sb.append("left join party b ");
-        sb.append("    on a1.party=b.id ");
-        sb.append("order by a1.party,a1.begin_time ");
+        String sql1 = getBundledSQL("1", //
+                "AND_VERIFIED", verified ? "and verify_eval_state=33554434" : null);
 
         Session session = SessionFactoryUtils.getSession(sessionFactory, false);
-        SQLQuery sqlQuery = session.createSQLQuery(sb.toString());
+        SQLQuery sqlQuery = session.createSQLQuery(sql1);
         result = sqlQuery.list();
 
         Integer index = 0;

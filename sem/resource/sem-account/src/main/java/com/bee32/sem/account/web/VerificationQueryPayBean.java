@@ -12,10 +12,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bee32.plover.orm.util.EntityViewBean;
-
 public class VerificationQueryPayBean
-        extends EntityViewBean {
+        extends AbstractAccountEVB {
 
     private static final long serialVersionUID = 1L;
 
@@ -42,7 +40,7 @@ public class VerificationQueryPayBean
         this.result = result;
     }
 
-    @Transactional(readOnly = Config.readOnlyTxEnabled)
+    @Transactional(readOnly = readOnlyTxEnabled)
     public void query() {
         result = new ArrayList<Object[]>();
 
