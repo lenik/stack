@@ -7,9 +7,6 @@ import javax.persistence.Entity;
 
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.ox1.dict.NameDict;
-import com.bee32.sem.api.ISalaryVariableProvider;
-import com.bee32.sem.api.SalaryCalcContext;
-import com.bee32.sem.api.SalaryElement;
 
 /**
  * 学历字典类
@@ -18,7 +15,7 @@ import com.bee32.sem.api.SalaryElement;
 @Entity
 public class PersonEducationType
         extends NameDict
-        implements DecimalConfig, ISalaryVariableProvider {
+        implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
@@ -44,14 +41,5 @@ public class PersonEducationType
 
     public void setBonus(BigDecimal bonus) {
         this.bonus = bonus;
-    }
-
-    @Override
-    public SalaryElement[] getSalaryItems(SalaryCalcContext ctx) {
-        SalaryElement item = new SalaryElement();
-        item.setPath("base.education");
-        item.setLabel("学历补贴");
-        item.setValue(bonus);
-        return new SalaryElement[] { item };
     }
 }

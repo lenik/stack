@@ -7,9 +7,6 @@ import javax.persistence.Entity;
 
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.ox1.dict.NameDict;
-import com.bee32.sem.api.ISalaryVariableProvider;
-import com.bee32.sem.api.SalaryCalcContext;
-import com.bee32.sem.api.SalaryElement;
 
 /**
  * 职称字典类
@@ -17,7 +14,7 @@ import com.bee32.sem.api.SalaryElement;
 @Entity
 public class JobTitle
         extends NameDict
-        implements DecimalConfig, ISalaryVariableProvider {
+        implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
@@ -43,15 +40,6 @@ public class JobTitle
 
     public void setBonus(BigDecimal bonus) {
         this.bonus = bonus;
-    }
-
-    @Override
-    public SalaryElement[] getSalaryItems(SalaryCalcContext ctx) {
-        SalaryElement item = new SalaryElement();
-        item.setPath("base.title");
-        item.setLabel("职称补贴");
-        item.setValue(bonus);
-        return new SalaryElement[] { item };
     }
 
 }
