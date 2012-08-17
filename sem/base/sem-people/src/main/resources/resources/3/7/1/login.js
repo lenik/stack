@@ -11,6 +11,6 @@ function handleLoginRequest(xhr, status, args) {
     if (args.validationFailed || !args.loggedIn) {
 
     } else {
-        window.location.href = "#{location.WEB_APP}/";
+        window.location.href = document.WEB_APP;
     }
 }

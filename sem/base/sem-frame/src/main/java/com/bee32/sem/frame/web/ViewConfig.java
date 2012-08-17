@@ -15,7 +15,7 @@ public class ViewConfig
 
     private static final long serialVersionUID = 1L;
 
-    static LocationVmap homeLocation = WEB_APP.join(SEMFrameModule.PREFIX + "/empty.jsf");
+    static LocationVmap homeLocation = WEB_APP.join(SEMFrameModule.PREFIX + "/");
 
     int pageSize = 20;
     int dialogPageSize = 10;
