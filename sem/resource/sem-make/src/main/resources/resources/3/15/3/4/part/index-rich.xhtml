@@ -225,21 +225,21 @@
                     var="entry"
                     scrollable="true"
                     scrollHeight="500">
-                    <p:column headerText="物料" sortBy="#{entry.material.label}" style="width:10em;">
+                    <p:column headerText="物料" sortBy="#{entry.material.label}" width="100">
                         <h:outputText value="#{entry.material.label}" />
                     </p:column>
-                    <p:column headerText="规格型号" sortBy="#{entry.material.modelSpec}" style="width:10em;">
+                    <p:column headerText="规格型号" sortBy="#{entry.material.modelSpec}" width="100">
                         <h:outputText value="#{entry.material.modelSpec}" />
                     </p:column>
-                    <p:column headerText="单位" style="width:4em;">
+                    <p:column headerText="单位" width="40">
                         <h:outputText value="#{entry.material.unit.label}" />
                     </p:column>
-                    <p:column headerText="数量" style="width:5em;">
+                    <p:column headerText="数量" width="50">
                         <h:outputText value="#{entry.quantity}" >
                             <f:convertNumber pattern="#0.00" />
                         </h:outputText>
                     </p:column>
-                    <p:column headerText="设置工艺" style="width:5em;">
+                    <p:column headerText="设置工艺" width="50">
                         <p:commandButton value="设置" rendered="#{entry.makeStep}" oncomplete="stepListDialog.show();">
                             <f:setPropertyActionListener target="#{bean.makeStepTarget}"
                                 value="#{entry}" />
