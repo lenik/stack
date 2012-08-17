@@ -1,117 +1,86 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:c="http://java.sun.com/jsp/jstl/core"
-      xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-      xmlns:pc="http://bee32.com/plover/core"
-      xmlns:sem="http://bee32.com/sem/functions"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:t="http://myfaces.apache.org/tomahawk"
-      >
-<h:head id="head" volatile="__tips, __status">
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>登录</title>
+<ui:composition template="/template/_primefaces.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:icsf="http://java.sun.com/jsf/composite/3/7">
 
-	<link rel="stylesheet" type="text/css" href="${location.WEB_APP}/site/frame.css" />
+    <ui:define name="title">登录</ui:define>
 
-	<script language="javascript">
-        function calcDigest() {
-            var p = $.sha1($("#loginForm\\:passPlain").val());
+    <ui:define name="scripts.user">
+        <script language="javascript" src="${location.LIB_JS}/jquery.sha1.js"></script>
+        <script src="login.js"></script>
+    </ui:define>
 
-            var c = $("#loginForm\\:challenge").val();
-            var p2 = $.sha1(c + p + c);
+    <ui:define name="menu" />
 
-            $("#loginForm\\:password").val(p2);
-        }
-
-        function handleLoginRequest(xhr, status, args) {
-            if (args.validationFailed || !args.loggedIn) {
-
-            } else {
-                window.location.href = "#{location.WEB_APP}/";
-            }
-        }
-    </script>
-
-</h:head>
-
-<h:body>
-    <div style="margin: 0; width: 100%;">
-        <img src="${location.STYLE}/banner.gif" />
-    </div>
-
-    <h:form id="__tips">
-        <p:growl id="growl" showDetail="true" />
-    </h:form>
-
-    <h:form id="__status">
-    </h:form>
-
-    <div style="margin-top:50px;margin-bottom:50px;">
-
-		<h:form id="loginForm">
-	        <h:inputHidden id="challenge" value="#{loginBean.challenge}"/>
-			<t:panelGrid columns="2">
-                <t:panelGroup colspan="2">
-                    <t:panelGrid columns="1">
-                        <h:outputText value="使用本系统前，需确保使用正确的浏览器，并导入本公司的证书!" style="font-weight:bold;"/>
-                        <h:outputText value="关于浏览器下载和证书导入的相关说明请参考如下地址:" style="font-weight:bold;"/>
-                        <a target="_blank" href="http://ca.bee32.com/readme.html">http://ca.bee32.com/readme.html</a>
-                    </t:panelGrid>
-                </t:panelGroup>
-
-                <t:panelGroup colspan="2" style="width:100%">
-                    <hr style="width:100%"/>
-                </t:panelGroup>
-
-                <t:panelGroup style="text-align:right;">
-				    <h:outputLabel for="username" value="用户名:"/>
-                </t:panelGroup>
-				<p:inputText id="username" value="#{loginBean.username}" label="用户名"/>
-
-                <t:panelGroup style="text-align:right;">
-				    <h:outputLabel for="password" value="密码:"/>
-                </t:panelGroup>
-				<t:panelGroup>
-					<p:inputText id="passPlain" type="password" onchange="calcDigest();" label="密码"/>
-
-					<h:inputHidden id="password" value="#{loginBean.password}" label="密码"/>
-				</t:panelGroup>
-
-				<t:panelGroup/>
-			    <p:commandButton value="登录" actionListener="#{loginBean.login}" oncomplete="handleLoginRequest(xhr, status, args)"/>
-			</t:panelGrid>
-		</h:form>
-
-	</div>
-
-    <h:form id="dummy" style="display: none;">
-        A Dummy Form.
-        <p:dataTable />
-        <p:column />
-        <p:commandLink />
-        <p:commandButton />
-        <p:dialog />
-        <p:fileUpload />
-        <p:tabView rendered="false">
-            <p:tab title="" />
-        </p:tabView>
-        <p:message for="dummy" />
-        <f:ajax event="click" />
-    </h:form>
-
-    <script language="javascript" src="${location.LIB_JS}/jquery.sha1.js"></script>
-
-    <div style="clear: both;" />
-    <div style="height: 5px; background-image: url(${location.STYLE}/split.gif); background-repeat: repeat-y"></div>
-    <div style="margin-top: 10px;">
-        <div style="display: inline">版权所有©2010-2012 海宁市智恒软件有限公司</div>
-        <div style="display: inline; margin-left: 50px;">
-            <a href="${location.WEB_APP}/3/15/1/1/contact.jsf">联系我们</a>
+    <ui:define name="content">
+        <div style="margin: 0; width: 100%;">
+            <img src="${location.STYLE}/banner.gif" />
         </div>
-    </div>
-</h:body>
 
-</html>
+        <div style="margin-top:50px;margin-bottom:50px;">
+
+            <p:fieldset styleClass="annotation">
+                <h:panelGrid styleClass="f-medium f-red" columns="2"
+                    columnClasses="f-top f-sep-right  f-pad100, f-top f-pad100">
+                    <h:panelGroup>
+                        <img src="lock.gif" width="80" />
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        为了通信安全，您在使用本系统前需要安装安全证书。证书的下载和安装说明请参见：
+                        <ul>
+                            <li>
+                                <a target="_blank" href="http://ca.bee32.com/readme.html">http://ca.bee32.com/readme.html</a>
+                            </li>
+                            <li>
+                                <a target="_blank" href="http://ca.bee32.com:800/readme.html">http://ca.bee32.com:800/readme.html</a>
+                            </li>
+                        </ul>
+
+                        <h:form id="loginForm" styleClass="f-center" style=" color: black; margin: 1em;  padding: 1em; ">
+                            <h:inputHidden id="challenge" value="#{loginBean.challenge}" />
+
+                            <h:panelGrid columns="2" styleClass="f-center">
+                                <t:panelGroup style="text-align:right;">
+                                    <h:outputLabel for="username" value="用户名:" styleClass="f-medium" />
+                                </t:panelGroup>
+                                <p:inputText id="username" value="#{loginBean.username}" label="用户名" />
+
+                                <t:panelGroup style="text-align:right;">
+                                    <h:outputLabel for="password" value="密码:" styleClass="f-medium" />
+                                </t:panelGroup>
+                                <t:panelGroup>
+                                    <p:inputText id="passPlain" type="password" onchange="calcDigest();"
+                                        label="密码" />
+                                    <h:inputHidden id="password" value="#{loginBean.password}" label="密码" />
+                                </t:panelGroup>
+                            </h:panelGrid>
+
+                            <div align="center" style="margin-top: 1em">
+                                <p:commandButton id="login" image="ui-icon-circle-check" value="登录"
+                                    styleClass="f-medium" actionListener="#{loginBean.login}" oncomplete="handleLoginRequest(xhr, status, args)" />
+                            </div>
+                        </h:form>
+
+                        <div style="color: gray; font-size: small">
+                            小知识：
+                            <ul>
+                                <li>
+                                    怎么知道我的通信是安全的？
+                                </li>
+                                请检查浏览器上的地址栏是否以 https:// 开头，如果不是，您的通信有可能被他人侦听。
+                                <li>证书可以被伪造吗？</li>
+                                相同名称的证书是可以伪造的，但伪造的证书不可能具有相同的数字指纹。
+                                智恒软件有限责任公司的安全根证书的 SHA-1 指纹应为
+                                <b> 252DBD3F 9148D3A8 9BCE30A2 7E2B1191</b>
+                                。
+                                <li>忘记密码怎么办？</li>
+                                请联系系统管理员，以重设您的登录密码。
+                            </ul>
+                        </div>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </p:fieldset>
+
+        </div>
+    </ui:define>
+</ui:composition>

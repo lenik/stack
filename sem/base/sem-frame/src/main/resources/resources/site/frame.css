@@ -167,7 +167,7 @@ label {
     display: none;
 }
 
-.locker-active .icon-button:not(.ui-state-disabled) {
+.locker-active .icon-button:not (.ui-state-disabled ) {
     display: none;
 }
 
@@ -177,4 +177,66 @@ label {
 
 .f-right {
     text-align: right;
+}
+
+.f-top {
+    vertical-align: top;
+}
+
+.f-bottom {
+    vertical-align: bottom;
+}
+
+.f-center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.f-vcenter {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.f-medium {
+    font-size: medium;
+}
+
+.f-large {
+    font-size: large;
+}
+
+.f-medium .ui-button-text {
+    font-size: medium;
+}
+
+.f-large .ui-button-text {
+    font-size: large;
+}
+
+.f-red {
+    color: red;
+}
+
+.f-sep-right {
+    border-right: solid 1px lightblue;
+}
+
+.f-pad30 {
+    padding: 0.3em;
+}
+
+.f-pad50 {
+    padding: 0.5em;
+}
+
+.f-pad100 {
+    padding: 1em;
+}
+
+.annotation {
+    margin-left: 4em;
+    margin-right: 4em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    background: #ffe;
 }
