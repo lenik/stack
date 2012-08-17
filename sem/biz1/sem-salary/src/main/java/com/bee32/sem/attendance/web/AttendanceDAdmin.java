@@ -2,53 +2,34 @@ package com.bee32.sem.attendance.web;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.attendance.dto.AttendanceDto;
-import com.bee32.sem.attendance.dto.AttendanceMRDto;
-import com.bee32.sem.attendance.entity.AttendanceMR;
 import com.bee32.sem.attendance.util.AttendanceCriteria;
 import com.bee32.sem.hr.dto.EmployeeInfoDto;
 import com.bee32.sem.hr.entity.EmployeeInfo;
-import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.salary.util.SalaryDateUtil;
 
 public class AttendanceDAdmin
-        extends SimpleEntityViewBean {
+        extends EntityViewBean {
 
-    List<AttendanceDto> attendanceDRList = new ArrayList<AttendanceDto>();
-    Map<Long, AttendanceMRDto> amr = new HashMap<Long, AttendanceMRDto>();
+    List<AttendanceDto> attendances = new ArrayList<AttendanceDto>();
 
     Date openedDate = new Date();
     List<EmployeeInfoDto> allEmployees;
 
     public AttendanceDAdmin() {
-        super(EmployeeInfo.class, EmployeeInfoDto.class, 0);
+
         allEmployees = mrefList(EmployeeInfo.class, EmployeeInfoDto.class, 0);
 
-        List<AttendanceMRDto> attendanceMRList = mrefList(AttendanceMR.class, AttendanceMRDto.class, 0,
-                AttendanceCriteria.getMonthList(new Date()));
-        if (attendanceMRList.size() == 0 || attendanceMRList.isEmpty())
-            for (EmployeeInfoDto employee : allEmployees) {
-                AttendanceMRDto attendanceMR = new AttendanceMRDto();
-                attendanceMR.setEmployee(employee);
-                attendanceMR.setAttendances(new ArrayList<AttendanceDto>());
-                attendanceMR.setDate(new Date());
-                amr.put(employee.getId(), attendanceMR);
-            }
-        else
-            for (AttendanceMRDto attendancem : attendanceMRList) {
-                amr.put(attendancem.getEmployee().getId(), attendancem);
-            }
-
+        AttendanceCriteria.getMonthList(new Date());
         for (EmployeeInfoDto employee : allEmployees) {
-            AttendanceDto attendanced = new AttendanceDto().create();
-            attendanced.setDate(new Date());
-            attendanced.setDayNum(SalaryDateUtil.getDayNum(new Date()));
-            attendanced.setEmployee(employee);
-            attendanceDRList.add(attendanced);
+            AttendanceDto attendance = new AttendanceDto().create();
+            attendance.setEmployee(employee);
+            attendance.setDayNum(SalaryDateUtil.getDayNum(openedDate));
+            attendance.setDate(openedDate);
+            attendances.add(attendance);
         }
     }
 
@@ -56,38 +37,19 @@ public class AttendanceDAdmin
 
     public void addAttendanceRecord() {
 
-        for (AttendanceDto attendance : attendanceDRList) {
+        for (AttendanceDto attendance : attendances) {
             // TODO
-            AttendanceMRDto attendanceMRDto = amr.get(attendance.getEmployee().getId());
-            boolean exist = attendanceMRDto.isExist(attendance);
-            if (!exist)
-                attendanceMRDto.addDAttendance(attendance);
         }
     }
 
-    @Override
     protected boolean save(int saveFlags, String hint) {
-        List<AttendanceMR> mrList = new ArrayList<AttendanceMR>();
-        for (AttendanceDto day : attendanceDRList) {
-            AttendanceMRDto month = amr.get(day.getEmployee().getId());
+        for (AttendanceDto day : attendances) {
 
             /**
              * 如果该天的出勤记录已经存在，不去管
              */
-            boolean exist = month.isExist(day);
-            if (!exist) {
-                day.setDate(openedDate);
-                month.addDAttendance(day);
-                mrList.add(month.unmarshal());
-            }
         }
 
-        try {
-            DATA(AttendanceMR.class).saveOrUpdateAll(mrList);
-            uiLogger.info("添加考勤记录成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return true;
     }
 
@@ -100,10 +62,10 @@ public class AttendanceDAdmin
     }
 
     public List<AttendanceDto> getAttendanceDRList() {
-        return attendanceDRList;
+        return attendances;
     }
 
     public void setAttendanceDRList(List<AttendanceDto> attendanceDRList) {
-        this.attendanceDRList = attendanceDRList;
+        this.attendances = attendanceDRList;
     }
 }

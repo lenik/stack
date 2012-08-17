@@ -32,4 +32,6 @@ public class SalaryAdmin
         this.targetDate = targetDate;
     }
 
+
+
 }

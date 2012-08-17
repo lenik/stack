@@ -6,36 +6,20 @@
     <ui:param name="title" value="每日出勤记录" />
     <ui:param name="bean" value="${attendanceDAdmin}" />
     <ui:param name="obj" value="${bean.openedObject}" />
-    <ui:param name="dicts" value="${wageDictsBean}" />
 
-    <ui:define name="editDialogContent">
-        <h:outputText value="日期 :" />
-        <p:calendar id="beginTime" pattern="yyyy-MM-dd" navigator="${true}" value="${bean.openedDate}"
-            showOn="button" label="开始时间" />
-        <p:dataTable value="${bean.attendanceDRList}" var="attendance">
-            <p:column headerText="员工">
-                <h:outputText value="${attendance.employee.person.name}" />
-            </p:column>
-            <p:column headerText="出勤">
-                <p:selectOneMenu value="${attendance.attType.id}">
-                    <f:selectItems value="${dicts.attendanceTypes}" var="it" itemLabel="${it.label}"
-                        itemValue="${it.id}" />
-                </p:selectOneMenu>
-            </p:column>
-            <p:column headerText="加班时">
-                <p:inputText value="${attendance.overtime}" style="width:30px;" />
-            </p:column>
-            <p:column headerText="缺勤">
-                <p:selectOneMenu value="${attendance.absType.id}">
-                    <f:selectItem itemValue="" itemLabel="未缺勤" />
-                    <f:selectItems value="${dicts.absentTypes}" var="it" itemLabel="${it.label}"
-                        itemValue="${it.id}" />
-                </p:selectOneMenu>
-            </p:column>
-            <p:column headerText="缺勤时">
-                <p:inputText value="${attendance.abstime}" style="width:30px;" />
-            </p:column>
-        </p:dataTable>
+    <ui:define name="includes">
+        <p:panel header="日出勤记录整理">
+            <p:dataTable var="item" value="${bean.attendances}">
+                <p:column headerText="雇员">
+                    <h:outputText value="${item.employee.person.name}" />
+                </p:column>
+                <p:column headerText="日期">
+                    <h:outputText value="" />
+                </p:column>
+
+            </p:dataTable>
+        </p:panel>
+
     </ui:define>
 
 </ui:composition>

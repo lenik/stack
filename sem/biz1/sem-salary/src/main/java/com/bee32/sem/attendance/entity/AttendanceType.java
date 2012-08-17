@@ -80,11 +80,14 @@ public class AttendanceType
     }
 
     public static final AttendanceType notAvailable = new AttendanceType("-", "notAvailable", false);
-    public static final AttendanceType normal = new AttendanceType("N", "normal", true);
-    public static final AttendanceType leave = new AttendanceType("L", "leave", false);
-    public static final AttendanceType sickLeave = new AttendanceType("S", "sick-leave", false);
-    public static final AttendanceType eveningOvertime = new AttendanceType("O", "evening-overtime", true);
-    public static final AttendanceType holidayOvertime = new AttendanceType("H", "holiday-overtime", true);
-    public static final AttendanceType restOvertime = new AttendanceType("R", "rest-overtime", true);
+    public static final AttendanceType normal = new AttendanceType("NM", "normal", true);
+    public static final AttendanceType late = new AttendanceType("LA", "late", false);
+    public static final AttendanceType leave = new AttendanceType("LE", "leave", false);
+    public static final AttendanceType sickLeave = new AttendanceType("SL", "sick-leave", false);
+    public static final AttendanceType eveningOvertime = new AttendanceType("EO", "evening-overtime", true);
+    public static final AttendanceType holidayOvertime = new AttendanceType("HO", "holiday-overtime", true);
+    public static final AttendanceType restOvertime = new AttendanceType("RO", "rest-overtime", true);
+    public static final AttendanceType trip = new AttendanceType("TR", "trip", true);
+    public static final AttendanceType rest = new AttendanceType("RE", "rest", false);
 
 }
