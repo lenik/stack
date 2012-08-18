@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 
 import com.bee32.plover.rtx.location.ILocationConstants;
 import com.bee32.plover.rtx.location.Location;
+import com.bee32.plover.servlet.rtx.LocationVmap;
+import com.bee32.plover.servlet.rtx.YesMap;
 
 /**
  * e.g., #{location.WEB_APP}

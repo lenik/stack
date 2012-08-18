@@ -1,5 +1,7 @@
 package com.bee32.plover.faces.utils;
 
+import com.bee32.plover.servlet.rtx.LocationVmap;
+
 public interface ILocationConstants {
 
     LocationsBean locations = new LocationsBean();

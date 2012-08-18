@@ -4,7 +4,7 @@ import javax.el.ValueExpression;
 import javax.faces.el.CompositeComponentExpressionHolder;
 import javax.free.ReadOnlyException;
 
-import com.bee32.plover.faces.utils.YesMap;
+import com.bee32.plover.servlet.rtx.YesMap;
 
 public class CompositeComponentExpressionHolderExistence
         extends YesMap<Boolean> {

@@ -3,6 +3,8 @@ package com.bee32.plover.faces.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bee32.plover.servlet.rtx.VerbMap;
+
 /**
  * Callable-map constructs two kind of verb usage: push and invoke.
  *

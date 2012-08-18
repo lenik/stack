@@ -1,5 +1,6 @@
-package com.bee32.plover.faces.utils;
+package com.bee32.plover.servlet.rtx;
 
+import java.io.Serializable;
 import java.net.MalformedURLException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +21,10 @@ import com.bee32.plover.servlet.util.ThreadServletContext;
  * </pre>
  */
 public class LocationVmap
-        extends VerbMap {
+        extends VerbMap
+        implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final ILocationContext location;
 

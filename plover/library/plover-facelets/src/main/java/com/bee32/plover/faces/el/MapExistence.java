@@ -5,7 +5,7 @@ import java.util.Set;
 
 import javax.free.ReadOnlyException;
 
-import com.bee32.plover.faces.utils.YesMap;
+import com.bee32.plover.servlet.rtx.YesMap;
 
 public class MapExistence
         extends YesMap<Boolean> {

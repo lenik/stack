@@ -1,4 +1,4 @@
-package com.bee32.plover.faces.utils;
+package com.bee32.plover.servlet.rtx;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public abstract class VerbMap
         extends YesMap<Object> {
 
     private final List<Object> parameterStack;
-    private Object verb;
+    private transient Object verb;
     private transient int wants;
 
     public VerbMap() {
@@ -48,8 +48,11 @@ public abstract class VerbMap
 
         verb = key;
         wants = getRequiredArguments(verb);
-        if (wants == 0)
-            return execute(verb);
+        if (wants == 0) {
+            Object result = execute(verb);
+            verb = null;
+            return result;
+        }
 
         return this;
     }
