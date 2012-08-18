@@ -74,11 +74,11 @@
                         </h:form>
                     </td>
 
-                    <!--  <td valign="center" class="layout-side-toggler ui-state-default" style="width: 9px" /> -->
-                    <td valign="top" id="sideBarE" style="width: 20em;">
-                        <!-- p:panel id="sidePanelE" style="height: 100%" -->
-                        <h:panelGroup id="sidePanelE" style="height: 100%">
-                            <ui:insert name="sideBarE">
+                    <!-- <td valign="center" class="layout-side-toggler ui-state-default" style="width: 9px" /> -->
+                    <ui:insert name="sideDivE">
+                        <td valign="top" id="sideBarE" style="width: 20em;">
+                            <!-- p:panel id="sidePanelE" style="height: 100%" -->
+                            <h:panelGroup id="sidePanelE" style="height: 100%">
                                 <ui:insert name="sideBarE.0">
                                     <h:form id="searchForm">
                                         <ui:insert name="searchPanels">
@@ -89,10 +89,10 @@
                                     </h:form>
                                 </ui:insert>
                                 <ui:insert name="sideBarE.1" />
-                            </ui:insert>
-                            <ui:insert name="sideBarESupport" />
-                        </h:panelGroup>
-                    </td>
+                                <ui:insert name="sideBarESupport" />
+                            </h:panelGroup>
+                        </td>
+                    </ui:insert>
                 </tr>
             </table>
         </div>
