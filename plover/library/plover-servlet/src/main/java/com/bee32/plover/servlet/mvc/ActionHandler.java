@@ -1,6 +1,5 @@
 package com.bee32.plover.servlet.mvc;
 
-
 public abstract class ActionHandler
         implements IActionHandler {
 
