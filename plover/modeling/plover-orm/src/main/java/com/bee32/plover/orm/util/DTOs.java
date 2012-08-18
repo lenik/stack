@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.free.IllegalUsageException;
 import javax.free.ParseException;
 import javax.free.UnexpectedException;
 
@@ -26,108 +27,117 @@ public abstract class DTOs {
         return dto.getEntityType();
     }
 
+    public static <D extends BaseDto<?>> D createDto(Class<D> dtoClass) {
+        try {
+            D dto = dtoClass.newInstance();
+            return dto;
+        } catch (ReflectiveOperationException e) {
+            throw new IllegalUsageException("Can't create a DTO of " + dtoClass, e);
+        }
+    }
+
     public static <_S, _D extends BaseDto<? super _S>> _D _marshal(Class<_D> dtoClass, int fmask, _S source,
             Boolean refButFilled) {
-        return new DummyEntityDto().marshal(dtoClass, fmask, source, refButFilled);
+        return new _NotUsed_Dto().marshal(dtoClass, fmask, source, refButFilled);
     }
 
     public static <_S, _D extends BaseDto<? super _S>> _D marshal(Class<_D> dtoClass, int fmask, _S source) {
-        return new DummyEntityDto().marshal(dtoClass, fmask, source);
+        return new _NotUsed_Dto().marshal(dtoClass, fmask, source);
     }
 
     public static <_S, _D extends BaseDto<? super _S>> _D marshal(Class<_D> dtoClass, _S source) {
-        return new DummyEntityDto().marshal(dtoClass, source);
+        return new _NotUsed_Dto().marshal(dtoClass, source);
     }
 
     public static <_S, _D extends BaseDto<? super _S>> _D marshal(Class<_D> dtoClass, _S source, Boolean refButFilled) {
-        return new DummyEntityDto().marshal(dtoClass, source, refButFilled);
+        return new _NotUsed_Dto().marshal(dtoClass, source, refButFilled);
     }
 
     // @Deprecated
     public static <_S, _D extends BaseDto<? super _S>> _D mref(Class<_D> dtoClass, int fmask, _S source) {
-        return new DummyEntityDto().mref(dtoClass, fmask, source);
+        return new _NotUsed_Dto().mref(dtoClass, fmask, source);
     }
 
     public static <_S, _D extends BaseDto<? super _S>> _D mref(Class<_D> dtoClass, _S source) {
-        return new DummyEntityDto().mref(dtoClass, source);
+        return new _NotUsed_Dto().mref(dtoClass, source);
     }
 
     public static <_S, _D extends BaseDto<_S>> List<_D> _marshalList(Class<_D> dtoClass, int fmask,
             Iterable<? extends _S> sources, Boolean refButFilled) {
-        return new DummyEntityDto()._marshalList(dtoClass, fmask, sources, refButFilled);
+        return new _NotUsed_Dto()._marshalList(dtoClass, fmask, sources, refButFilled);
     }
 
     public static <_S, _D extends BaseDto<? super _S>> List<_D> marshalList(Class<_D> dtoClass, int fmask,
             Iterable<? extends _S> sources) {
-        return new DummyEntityDto().marshalList(dtoClass, fmask, sources);
+        return new _NotUsed_Dto().marshalList(dtoClass, fmask, sources);
     }
 
     public static <_S, _D extends BaseDto<? super _S>> List<_D> marshalList(Class<_D> dtoClass,
             Iterable<? extends _S> sources) {
-        return new DummyEntityDto().marshalList(dtoClass, sources);
+        return new _NotUsed_Dto().marshalList(dtoClass, sources);
     }
 
     public static <_S, _D extends BaseDto<? super _S>> List<_D> mrefList(Class<_D> dtoClass, int fmask,
             Iterable<? extends _S> sources) {
-        return new DummyEntityDto().mrefList(dtoClass, fmask, sources);
+        return new _NotUsed_Dto().mrefList(dtoClass, fmask, sources);
     }
 
     public static <_S, _D extends BaseDto<? super _S>> List<_D> mrefList(Class<_D> dtoClass,
             Iterable<? extends _S> sources) {
-        return new DummyEntityDto().mrefList(dtoClass, sources);
+        return new _NotUsed_Dto().mrefList(dtoClass, sources);
     }
 
     public static <_S, _D extends BaseDto<? super _S>> Set<_D> marshalSet(Class<_D> dtoClass, int fmask,
             Iterable<? extends _S> sources, Boolean refButFilled) {
-        return new DummyEntityDto().marshalSet(dtoClass, fmask, sources, refButFilled);
+        return new _NotUsed_Dto().marshalSet(dtoClass, fmask, sources, refButFilled);
     }
 
     public static <_S, _D extends BaseDto<? super _S>> Set<_D> marshalSet(Class<_D> dtoClass, int fmask,
             Iterable<? extends _S> sources) {
-        return new DummyEntityDto().marshalSet(dtoClass, fmask, sources);
+        return new _NotUsed_Dto().marshalSet(dtoClass, fmask, sources);
     }
 
     public static <_S, _D extends BaseDto<? super _S>> Set<_D> marshalSet(Class<_D> dtoClass,
             Iterable<? extends _S> sources) {
-        return new DummyEntityDto().marshalSet(dtoClass, sources);
+        return new _NotUsed_Dto().marshalSet(dtoClass, sources);
     }
 
     public static <_S, _D extends BaseDto<? super _S>> Set<_D> marshalSet(Class<_D> dtoClass, int fmask,
             Iterable<? extends _S> sources, boolean refButFilled) {
-        return new DummyEntityDto().marshalSet(dtoClass, fmask, sources, refButFilled);
+        return new _NotUsed_Dto().marshalSet(dtoClass, fmask, sources, refButFilled);
     }
 
     public static <_S, _D extends BaseDto<_S>> Set<_D> marshalSet(Class<_D> dtoClass, Iterable<? extends _S> sources,
             boolean refButFilled) {
-        return new DummyEntityDto().marshalSet(dtoClass, sources, refButFilled);
+        return new _NotUsed_Dto().marshalSet(dtoClass, sources, refButFilled);
     }
 
     public static <_S, __s> void merge(_S target, IPropertyAccessor<__s> property, BaseDto<__s> propertyDto) {
-        new DummyEntityDto().merge(target, property, propertyDto);
+        new _NotUsed_Dto().merge(target, property, propertyDto);
     }
 
     public static <_S, __s> void merge(_S target, String propertyName, BaseDto<__s> propertyDto) {
-        new DummyEntityDto().merge(target, propertyName, propertyDto);
+        new _NotUsed_Dto().merge(target, propertyName, propertyDto);
     }
 
     public static <_E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> void mergeList(
             _E target, IPropertyAccessor<List<_e>> property, Iterable<? extends _d> dtoList) {
-        new DummyEntityDto().mergeList(target, property, dtoList);
+        new _NotUsed_Dto().mergeList(target, property, dtoList);
     }
 
     public static <_E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> void mergeList(
             _E target, String propertyName, Iterable<? extends _d> dtoList) {
-        new DummyEntityDto().mergeList(target, propertyName, dtoList);
+        new _NotUsed_Dto().mergeList(target, propertyName, dtoList);
     }
 
     public static <_E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> void mergeSet(
             _E target, IPropertyAccessor<Set<_e>> property, Iterable<? extends _d> dtoList) {
-        new DummyEntityDto().mergeSet(target, property, dtoList);
+        new _NotUsed_Dto().mergeSet(target, property, dtoList);
     }
 
     public static <_E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> void mergeSet(
             _E target, String propertyName, Iterable<? extends _d> dtoList) {
-        new DummyEntityDto().mergeSet(target, propertyName, dtoList);
+        new _NotUsed_Dto().mergeSet(target, propertyName, dtoList);
     }
 
     public static boolean equals(EntityDto<?, ?> a, EntityDto<?, ?> b) {
@@ -162,7 +172,7 @@ public abstract class DTOs {
 
 }
 
-class DummyEntity
+class _NotUsed_
         extends EntitySpec<Serializable> {
 
     private static final long serialVersionUID = 1L;
@@ -178,22 +188,22 @@ class DummyEntity
 
 }
 
-class DummyEntityDto
-        extends EntityDto<DummyEntity, Serializable> {
+class _NotUsed_Dto
+        extends EntityDto<_NotUsed_, Serializable> {
 
     private static final long serialVersionUID = 1L;
 
-    public DummyEntityDto() {
+    public _NotUsed_Dto() {
         enter(getDefaultSession());
     }
 
     @Override
-    protected void _marshal(DummyEntity source) {
+    protected void _marshal(_NotUsed_ source) {
         throw new UnexpectedException();
     }
 
     @Override
-    protected void _unmarshalTo(DummyEntity target) {
+    protected void _unmarshalTo(_NotUsed_ target) {
         throw new UnexpectedException();
     }
 
