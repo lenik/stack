@@ -4,6 +4,9 @@ import javax.persistence.Entity;
 
 import com.bee32.plover.ox1.dict.ShortNameDict;
 
+/**
+ * 采购原则
+ */
 @Entity
 public class PurchaseRegulation
         extends ShortNameDict {
