@@ -3,8 +3,6 @@ package com.bee32.sem.inventory.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.free.ReadOnlyException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -111,7 +109,7 @@ public class ChooseStockLocationDialogBean
 
     @Override
     public void setSelection(List<?> selection) {
-        throw new ReadOnlyException();
+        logger.warn("Read-Only: " + getClass().getSimpleName() + ".selection");
     }
 
 }
