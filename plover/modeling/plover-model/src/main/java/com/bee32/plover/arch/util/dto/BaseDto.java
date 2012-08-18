@@ -81,6 +81,10 @@ public abstract class BaseDto<S>
     protected void _copy() {
     }
 
+    public Class<? extends S> getSourceType() {
+        return sourceType;
+    }
+
     /**
      * When it's a generic DTO, then the source type is not specialized yet. So there should be a
      * chance to change it.
@@ -282,9 +286,9 @@ public abstract class BaseDto<S>
         else {
             Serializable naturalId = o.getNaturalId();
             if (naturalId == null)
-		return new Identity(this);
+                return new Identity(this);
             else
-		return naturalId;
+                return naturalId;
         }
     }
 
