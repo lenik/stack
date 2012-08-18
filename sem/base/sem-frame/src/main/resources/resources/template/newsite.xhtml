@@ -42,6 +42,15 @@
 
 <h:body>
 
+    <ui:insert name="initializers">
+        <h:panelGroup id="loginPanel">
+            <ui:insert name="login" />
+        </h:panelGroup>
+        <h:panelGroup id="intro" style="display: none" rendered="${bean != null}">
+            ${bean.intro}
+        </h:panelGroup>
+    </ui:insert>
+
     <img alt="Desktop Image" class="background" src="${location.WEB_APP}/site/background/Waves.png" />
 
     <div class="logo-container">
@@ -51,15 +60,6 @@
             </a>
         </div>
     </div>
-
-    <ui:insert name="initializers">
-        <h:panelGroup id="loginPanel">
-            <ui:insert name="login" />
-        </h:panelGroup>
-        <h:panelGroup id="intro" style="display: none" rendered="${bean != null}">
-            ${bean.intro}
-        </h:panelGroup>
-    </ui:insert>
 
     <div id="menu">
         <ui:insert name="menu">
@@ -190,5 +190,9 @@
         </ui:insert>
     </div>
 
+    <div id="postLoads">
+        <ui:insert name="postLoad.0" />
+        <ui:insert name="postLoad.1" />
+    </div>
 </h:body>
 </html>
