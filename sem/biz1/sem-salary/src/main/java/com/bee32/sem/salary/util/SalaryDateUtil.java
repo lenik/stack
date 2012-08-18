@@ -78,4 +78,8 @@ public class SalaryDateUtil {
         return ZH_DATE.format(date);
     }
 
+    public static String getDayString(Date date) {
+        return new SimpleDateFormat("yyyy年MM月dd日").format(date);
+    }
+
 }

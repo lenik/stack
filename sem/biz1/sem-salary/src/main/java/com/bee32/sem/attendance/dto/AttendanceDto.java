@@ -125,4 +125,8 @@ public class AttendanceDto
         this.absentTime = absentTime;
     }
 
+    public String getDateString() {
+        return SalaryDateUtil.getDayString(date);
+    }
+
 }
