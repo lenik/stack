@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:cc="http://java.sun.com/jsf/composite"
-    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-    xmlns:p="http://primefaces.org/ui" xmlns:pc="http://bee32.com/plover/core" xmlns:sem="http://java.sun.com/jsf/composite/3/15">
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pc="http://bee32.com/plover/core"
+    xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
     <cc:interface>
         <!-- basic -->
@@ -25,8 +25,8 @@
     </cc:interface>
 
     <cc:implementation>
-        <sem:chooseMaterialDialog id="_cmd" var="${fn:replace(cc.parent.clientId, ':', '_')}_cmd" target="${cc.parent.attrs.dialogBean.materialToAdd}"
-            update=":${cc.parent.clientId}:form:tv:materials" />
+        <sem:chooseMaterialDialog id="_cmd" var="${fn:replace(cc.parent.clientId, ':', '_')}_cmd"
+            target="${cc.parent.attrs.dialogBean.materialToAdd}" update=":${cc.parent.clientId}:form:tv:materials" />
 
         <ui:decorate template="/template/simple-entity-dialog.xhtml">
             <ui:param name="var" value="${cc.attrs.var}" />
@@ -39,34 +39,81 @@
             <ui:param name="formStyleClass" value="${cc.attrs.formStyleClass}" />
             <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
             <ui:param name="mainTabTitle" value="查询结果" />
-            <ui:param name="paginator"  value="${true}" />
+            <ui:param name="paginator" value="${true}" />
+
+            <ui:define name="sideDivE" />
 
             <ui:define name="tabs.0">
                 <p:tab title="物料列表">
                     <table width="100%">
                         <tr>
-                            <td align="left">
-                                <p:selectOneListbox id="materials" value="${dialogBean.selectedMaterialId}">
+                            <td align="left" rowspan="2">
+                                <p:selectOneListbox id="materials" value="${dialogBean.selectedMaterialId}"
+                                    style="min-width: 20em; min-height: 10em; ">
                                     <f:selectItems value="${dialogBean.materialSelectItems}" />
                                 </p:selectOneListbox>
                             </td>
-                            <td align="right">
-                                <p:commandButton id="query" value="查询" actionListener="${dialogBean.query}"
-                                    update=":@form" />
+                            <td align="right" valign="top">
+                                <p:commandButton id="add" value="添加"
+                                    onclick="${fn:replace(cc.clientId, ':', '_')}_cmd.show()" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="bottom">
+                                <p:commandButton id="remove" value="移除"
+                                    actionListener="${dialogBean.removeSelectedMaterial}" update="materials" />
                             </td>
                         </tr>
                         <tr>
                             <td align="left">
-                                <p:commandButton id="add" value="添加" onclick="${fn:replace(cc.clientId, ':', '_')}_cmd.show()"  />
-                                <p:commandButton id="remove" value="移除"
-                                    actionListener="${dialogBean.removeSelectedMaterial}" update="materials" />
-                            </td>
-                            <td align="right">
                                 <p:selectBooleanCheckbox id="all" value="${dialogBean.queryAllMaterials}" />
                                 <h:outputText value="所有物料" />
                             </td>
+                            <td align="right">
+                                -
+                            </td>
                         </tr>
                     </table>
+
+                    <hr />
+
+                    分组选项：
+                    <h:panelGrid columns="6">
+                        <h:panelGroup>
+                            <p:selectBooleanCheckbox value="${dialogBean.queryOptions.batch0Visible}" />
+                            ${batchMetadata.labels[0]}
+                        </h:panelGroup>
+
+                        <h:panelGroup rendered="${batchMetadata.arraySize > 1}">
+                            <p:selectBooleanCheckbox value="${dialogBean.queryOptions.batch1Visible}" />
+                            ${batchMetadata.labels[1]}
+                        </h:panelGroup>
+
+                        <h:panelGroup rendered="${batchMetadata.arraySize > 2}">
+                            <p:selectBooleanCheckbox value="${dialogBean.queryOptions.batch2Visible}" />
+                            ${batchMetadata.labels[2]}
+                        </h:panelGroup>
+
+                        <h:panelGroup rendered="${batchMetadata.arraySize > 3}">
+                            <p:selectBooleanCheckbox value="${dialogBean.queryOptions.batch3Visible}" />
+                            ${batchMetadata.labels[3]}
+                        </h:panelGroup>
+
+                        <h:panelGroup rendered="${batchMetadata.arraySize > 4}">
+                            <p:selectBooleanCheckbox value="${dialogBean.queryOptions.batch4Visible}" />
+                            ${batchMetadata.labels[4]}
+                        </h:panelGroup>
+
+                        <h:panelGroup rendered="${batchMetadata.arraySize >= 5}">
+                            <p:selectBooleanCheckbox value="${dialogBean.queryOptions.batch5Visible}" />
+                            ${batchMetadata.labels[5]}
+                        </h:panelGroup>
+                    </h:panelGrid>
+
+                    <div align="right">
+                        <p:commandButton id="query" value="查询" actionListener="${dialogBean.query}"
+                            update=":@form" />
+                    </div>
                 </p:tab>
             </ui:define>
 

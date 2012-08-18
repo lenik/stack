@@ -136,8 +136,10 @@ public class BatchArray
     @Transient
     public BatchArrayEntry[] getEntries() {
         BatchMetadata metadata = BatchMetadata.getInstance();
-        BatchArrayEntry[] entries = new BatchArrayEntry[array.length];
-        for (int i = 0; i < array.length; i++) {
+        int arraySize = metadata.getArraySize();
+
+        BatchArrayEntry[] entries = new BatchArrayEntry[arraySize];
+        for (int i = 0; i < arraySize; i++) {
             BatchArrayEntry entry = new BatchArrayEntry(metadata, this, i);
             entries[i] = entry;
         }

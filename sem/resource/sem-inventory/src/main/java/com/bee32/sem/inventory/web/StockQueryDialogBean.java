@@ -57,7 +57,7 @@ public class StockQueryDialogBean
         queryOptions = new StockQueryOptions(new Date(), true);
         queryOptions.setShowAll(true);
         queryOptions.setWarehouse(null, true);
-        queryOptions.setBatchArray(null, true);
+        queryOptions.setAllBatchVisible(true);
         queryOptions.setLocation(null, true);
     }
 

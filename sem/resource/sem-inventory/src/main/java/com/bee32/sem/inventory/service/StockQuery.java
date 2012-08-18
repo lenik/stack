@@ -75,7 +75,7 @@ public class StockQuery
             StockWarehouse _warehouse = null;
             StockWarehouse _parentWarehouse = null;
 
-            if (options.isBatchArrayVisible()) {
+            if (options.isAnyBatchVisible()) {
                 _price = (MCValue) line[_column++];
                 _expire = (Date) line[_column++];
             }
@@ -96,11 +96,12 @@ public class StockQuery
             }
 
             // Extensible batch columns.
-            if (options.isBatchArrayVisible()) {
+            if (options.isAnyBatchVisible()) {
                 BatchMetadata metadata = BatchMetadata.getInstance();
                 _batchArray = new BatchArray();
                 for (int i = 0; i < metadata.getArraySize(); i++)
-                    _batchArray.setBatch(i, (String) line[_column++]);
+                    if (options.isBatchVisible(i))
+                        _batchArray.setBatch(i, (String) line[_column++]);
             }
 
             StockOrderItem item = new StockOrderItem(all);
@@ -109,7 +110,7 @@ public class StockQuery
             EntityAccessor.setVersion(item, -1); // A negative version will be skipped in DTO.
             item.setMaterial(_material);
             item.setQuantity(_quantity);
-            if (options.isBatchArrayVisible()) {
+            if (options.isAnyBatchVisible()) {
                 item.setBatchArray(_batchArray);
                 item.setPrice(_price);
                 item.setExpirationDate(_expire);
@@ -121,11 +122,12 @@ public class StockQuery
             }
 
             boolean itemNeedAdd = true;
-            if(item.getQuantity().compareTo(BigDecimal.ZERO) == 0 && !options.isShowAll()) {
+            if (item.getQuantity().compareTo(BigDecimal.ZERO) == 0 && !options.isShowAll()) {
                 itemNeedAdd = false;
             }
 
-            if(itemNeedAdd) all.addItem(item);
+            if (itemNeedAdd)
+                all.addItem(item);
         }
         return all;
     }

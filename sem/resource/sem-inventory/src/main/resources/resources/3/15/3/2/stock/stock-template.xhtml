@@ -4,17 +4,18 @@
     xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
     <ui:param name="verifiable" value="true" />
-    <ui:param name="stock" value="#{stockDictsBean}" />
-    <ui:param name="monetary" value="#{monetaryDictsBean}" />
-    <ui:param name="obj" value="#{bean.openedObject}" />
-    <ui:param name="itemObj" value="#{bean.itemsMBean.openedObject}" />
+    <ui:param name="stock" value="${stockDictsBean}" />
+    <ui:param name="monetary" value="${monetaryDictsBean}" />
+    <ui:param name="obj" value="${bean.openedObject}" />
+    <ui:param name="itemObj" value="${bean.itemsMBean.openedObject}" />
 
     <ui:define name="toolbarContexts">
         <h:panelGrid columns="3">
             <h:outputLabel for="warehouse" value="${tr.inventory.warehouse}:" />
-            <p:selectOneMenu id="warehouse" label="${tr.inventory.warehouse}" value="#{bean.selectedWarehouseId}" disabled="#{bean.editing}">
+            <p:selectOneMenu id="warehouse" label="${tr.inventory.warehouse}" value="${bean.selectedWarehouseId}"
+                disabled="${bean.editing}">
                 <f:selectItem itemValue="-1" itemLabel="--选择${tr.inventory.warehouse}--" />
-                <f:selectItems value="#{stock.warehouseSelectItems}" />
+                <f:selectItems value="${stock.warehouseSelectItems}" />
                 <p:ajax event="change" update=":mainForm, :editDialog:form" />
             </p:selectOneMenu>
             <p:separator />
@@ -25,89 +26,91 @@
         <p:separator />
         <p:commandButton id="exportToPdf" value="PDF" actionListener="${bean.exportToPdf}"
             disabled="${bean.editing or not bean.selected or not bean.selectionEditable}" ajax="false">
-            <p:fileDownload value="#{bean.pdfFile}" />
+            <p:fileDownload value="${bean.pdfFile}" />
         </p:commandButton>
         <p:separator />
     </ui:define>
 
     <ui:define name="dataColumns">
-        <p:column headerText="时间" sortBy="#{entry.createDate}">
-            <h:outputText value="#{entry.createDate}" >
+        <p:column headerText="时间" sortBy="${entry.createDate}">
+            <h:outputText value="${entry.createDate}">
                 <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
             </h:outputText>
         </p:column>
         <p:column headerText="简要">
-            <h:outputText value="#{entry.label}" />
+            <h:outputText value="${entry.label}" />
         </p:column>
         <p:column headerText="对应企业组织/人员">
-            <h:outputText value="#{entry.org.displayName}" />
+            <h:outputText value="${entry.org.displayName}" />
         </p:column>
-                <p:column headerText="对应部门">
-            <h:outputText value="#{entry.orgUnit.path}" />
+        <p:column headerText="对应部门">
+            <h:outputText value="${entry.orgUnit.path}" />
         </p:column>
         <p:column headerText="制单人">
-            <h:outputText value="#{entry.owner.displayName}" />
+            <h:outputText value="${entry.owner.displayName}" />
         </p:column>
         <p:column headerText="状态">
-            <h:outputText value="#{obj.verifyContext.verifyEvalState} #{obj.verifyContext.rejectedReason1}" />
+            <h:outputText value="${obj.verifyContext.verifyEvalState} ${obj.verifyContext.rejectedReason1}" />
         </p:column>
     </ui:define>
 
     <ui:define name="editDialogContent">
         <ui:insert name="edit-pre" />
         <ui:insert name="edit-main">
-            <t:panelGrid id="orderInfo" columns="4">
-                <h:outputText value="时间" />
-                <h:outputText value="#{obj.createdDate}">
+            <t:panelGrid id="orderInfo" columns="4" columnClasses="f-right, f-left, f-right, f-left">
+                <h:outputText value="时间：" />
+                <h:outputText value="${obj.createdDate}">
                     <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                 </h:outputText>
-                <h:outputText value="简要" />
-                <p:inputText label="简要" value="#{obj.label}" />
+                <h:outputText value="简要：" />
+                <p:inputText label="简要" value="${obj.label}" />
 
                 <ui:insert name="edit-pre-fields" />
 
-                <h:outputText value="描述" />
+                <h:outputText value="描述：" />
                 <t:panelGroup colspan="3">
-                    <p:inputText label="描述" value="#{obj.description}" />
+                    <p:inputText label="描述" value="${obj.description}" />
                 </t:panelGroup>
 
-                <h:outputText value="对应企业组织/人员" />
+                <h:outputText value="对应公司或人员*：" onclick="${obj.org.clickAction}" />
                 <t:panelGroup>
-                    <p:inputText id="party" label="对应企业组织/人员" value="#{obj.org.displayName}" readonly="true" />
+                    Page: ${obj.org.clickAction}
+                    <p:inputText id="party" label="对应公司或人员" value="${obj.org.displayName}" readonly="true" />
                     <p:commandButton value="..." oncomplete="choosePartyDialog.show()" />
                 </t:panelGroup>
-                <h:outputText value="对应部门" />
+                <h:outputText value="对应部门：" />
                 <t:panelGroup>
-                    <p:inputText id="orgUnit" label="对应部门" value="#{obj.orgUnit.path}" readonly="true" />
+                    <p:inputText id="orgUnit" label="对应部门" value="${obj.orgUnit.path}" readonly="true" />
                     <p:commandButton value="..." oncomplete="chooseOrgUnitDialog.show()" update=":c_orgunit:form">
-                        <f:setPropertyActionListener target="#{chooseOrgUnitDialogBean.orgId}"
-                            value="#{obj.org.id}" />
+                        <f:setPropertyActionListener target="${chooseOrgUnitDialogBean.orgId}"
+                            value="${obj.org.id}" />
                     </p:commandButton>
                 </t:panelGroup>
 
-                <h:outputText value="制单人" />
-                <p:inputText value="#{obj.owner.displayName}" disabled="true" label="制单人" />
-                <h:outputText value="单据状态" />
-                <p:inputText value="#{obj.verifyContext.verifyEvalState} #{obj.verifyContext.rejectedReason1}"
+                <h:outputText value="制单人：" />
+                <p:inputText value="${obj.owner.displayName}" disabled="true" label="制单人" />
+                <h:outputText value="单据状态：" />
+                <p:inputText value="${obj.verifyContext.verifyEvalState} ${obj.verifyContext.rejectedReason1}"
                     disabled="true" label="单据状态" />
             </t:panelGrid>
         </ui:insert>
         <ui:insert name="edit-more" />
 
         <fr:listView id="itemsIndexView" header="${title}项目" style="indexPanel" editView=":itemsEditView"
-            mbean="#{bean.itemsMBean}" nested="true" paginator="${paginator != null ? paginator : false}" creatable="${itemCreatable != null ? itemCreatable : true}"
-            editable="${itemEditable != null ? itemEditable : true}" removable="${itemRemovable != null ? itemRemovable : true}" readonly="#{not bean.editing}">
+            mbean="${bean.itemsMBean}" nested="true" paginator="${paginator != null ? paginator : false}" creatable="${itemCreatable != null ? itemCreatable : true}"
+            editable="${itemEditable != null ? itemEditable : true}" removable="${itemRemovable != null ? itemRemovable : true}"
+            readonly="${not bean.editing}">
             <f:facet name="columns">
-                <p:column headerText="物料" sortBy="#{entry.material.label}" styleClass="f-wrappable">
-                    <h:outputText value="#{entry.material.label}" />
+                <p:column headerText="物料" sortBy="${entry.material.label}" styleClass="f-wrappable">
+                    <h:outputText value="${entry.material.label}" />
                 </p:column>
 
                 <p:column headerText="规格型号" styleClass="f-wrappable">
-                    <h:outputText value="#{entry.material.modelSpec}" />
+                    <h:outputText value="${entry.material.modelSpec}" />
                 </p:column>
 
                 <p:column headerText="单位">
-                    <h:outputText value="#{entry.material.unit.label}" />
+                    <h:outputText value="${entry.material.unit.label}" />
                 </p:column>
 
                 <p:column headerText="${batchMetadata.labels[0]}">
@@ -127,29 +130,29 @@
                 </p:column>
 
                 <p:column headerText="有效期">
-                    <h:outputText value="#{entry.expirationDate}" />
+                    <h:outputText value="${entry.expirationDate}" />
                 </p:column>
 
                 <p:column headerText="库位" styleClass="f-wrappable">
-                    <h:outputText value="#{entry.location.label}" />
+                    <h:outputText value="${entry.location.label}" />
                 </p:column>
 
                 <p:column headerText="单价" styleClass="f-right">
-                    <h:outputText value="#{entry.price}" />
+                    <h:outputText value="${entry.price}" />
                 </p:column>
 
                 <ui:insert name="entry-quantity">
                     <p:column headerText="数量" styleClass="f-right">
-                        <h:outputText value="#{entry.quantity}" />
+                        <h:outputText value="${entry.quantity}" />
                     </p:column>
                 </ui:insert>
 
                 <p:column headerText="状态">
-                    <h:outputText value="#{entry.stateText}" />
+                    <h:outputText value="${entry.stateText}" />
                 </p:column>
 
                 <p:column headerText="备注" styleClass="f-wrappable">
-                    <h:outputText value="#{entry.description}" />
+                    <h:outputText value="${entry.description}" />
                 </p:column>
             </f:facet>
         </fr:listView>
@@ -157,40 +160,38 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:choosePartyDialog id="c_party" target="#{obj.org}" update=":editDialog:form" />
-        <sem:chooseOrgUnitDialog id="c_orgunit" target="#{obj.orgUnit}" update=":editDialog:form" />
-        <sem:chooseStockLocationDialog id="c_location" target="#{itemObj.location}"
+        <sem:choosePartyDialog id="c_party" target="${obj.org}" update=":editDialog:form" />
+        <sem:chooseOrgUnitDialog id="c_orgunit" target="${obj.orgUnit}" update=":editDialog:form" />
+        <sem:chooseStockLocationDialog id="c_location" target="${itemObj.location}"
             update=":itemsEditView:editForm:body" />
-        <sem:chooseMaterialDialog id="c_material" target="#{itemObj.material}"
-            update=":itemsEditView:editForm:body" />
-        <sem:inputQuantityDialog id="i_quantity" target="#{itemObj.quantity}" update=":itemsEditView:editForm:body" />
+        <sem:chooseMaterialDialog id="c_material" target="${itemObj.material}" update=":itemsEditView:editForm:body" />
+        <sem:inputQuantityDialog id="i_quantity" target="${itemObj.quantity}" update=":itemsEditView:editForm:body" />
         <c:if test="${not disableStockQuery}">
-            <sem:stockQueryDialog id="q_stock" target="#{bean.stockQueryItemToApply}"
-                update=":itemsEditView:editForm:body" />
+            <sem:stockQueryDialog id="q_stock" target="${bean.stockQueryItemToApply}" update=":itemsEditView:editForm:body" />
         </c:if>
 
-        <fr:listView id="itemsEditView" header="#{title}项目" style="editDialog" indexView=":editDialog:form:itemsIndexView"
-            mbean="#{bean.itemsMBean}" readonly="#{not bean.editing}">
+        <fr:listView id="itemsEditView" header="${title}项目" style="editDialog" indexView=":editDialog:form:itemsIndexView"
+            mbean="${bean.itemsMBean}" readonly="${not bean.editing}">
             <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
                 <h:outputLabel for="material" value="物料：" />
                 <t:panelGroup colspan="3">
                     <table width="100%">
                         <tr>
                             <td>
-                                <p:inputText id="material" label="物料" value="#{item.material.label}"
-                                    readonly="true" style="width: 20em" />
+                                <h:inputHidden id="material" label="物料" value="${item.material.id_RZL}" />
+                                <p:inputText label="物料" value="${item.material.label}" readonly="true"
+                                    style="width: 20em" />
                                 <p:commandButton value="..." onclick="chooseMaterialDialog.show();" />
                             </td>
                             <td align="right">
                                 <c:if test="${not disableStockQuery}">
-                                    <p:commandButton value="查询库存" update=":q_stock:dialog"
-                                        oncomplete="stockQueryDialog.show()">
-                                        <f:setPropertyActionListener target="#{stockQueryDialogBean.autoQuery}"
-                                            value="#{item.material != null}" />
-                                        <f:setPropertyActionListener target="#{stockQueryDialogBean.queryOptions}"
-                                            value="#{bean.stockQueryOptions}" />
-                                        <f:setPropertyActionListener target="#{stockQueryDialogBean.singleMaterial}"
-                                            value="#{item.material}" />
+                                    <p:commandButton value="查询库存" update=":q_stock:dialog" oncomplete="stockQueryDialog.show()">
+                                        <f:setPropertyActionListener target="${stockQueryDialogBean.autoQuery}"
+                                            value="${item.material != null}" />
+                                        <f:setPropertyActionListener target="${stockQueryDialogBean.queryOptions}"
+                                            value="${bean.stockQueryOptions}" />
+                                        <f:setPropertyActionListener target="${stockQueryDialogBean.singleMaterial}"
+                                            value="${item.material}" />
                                     </p:commandButton>
                                 </c:if>
                             </td>
@@ -199,7 +200,7 @@
                 </t:panelGroup>
 
                 <h:outputLabel for="batch0" value="批号：" />
-                <p:inputText id="batch0" label="批号" value="#{item.batchArray.batch0}" />
+                <p:inputText id="batch0" label="批号" value="${item.batchArray.batch0}" />
                 <t:panelGroup colspan="2" rowspan="2">
                     <table>
                         <ui:repeat id="batches" var="i" value="${batchMetadata.indexes_1}">
@@ -216,52 +217,52 @@
                 </t:panelGroup>
 
                 <h:outputLabel for="expiration" value="有效期：" />
-                <p:calendar id="expiration" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{item.expirationDate}"
+                <p:calendar id="expiration" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="${item.expirationDate}"
                     showOn="button" label="有效期" />
 
                 <h:outputLabel for="location" value="库位：" />
                 <t:panelGroup colspan="3">
-                    <p:inputText id="location" label="库位" value="#{item.location.label}" disabled="true" />
+                    <p:inputText id="location" label="库位" value="${item.location.label}" disabled="true" />
                     <p:commandButton value="..." oncomplete="chooseStockLocationDialog.show();">
-                        <f:setPropertyActionListener target="#{chooseStockLocationDialogBean.warehouse}"
-                            value="#{bean.selectedWarehouse}" />
-                        <f:setPropertyActionListener target="#{chooseStockLocationDialogBean.material}"
-                            value="#{item.material}" />
+                        <f:setPropertyActionListener target="${chooseStockLocationDialogBean.warehouse}"
+                            value="${bean.selectedWarehouse}" />
+                        <f:setPropertyActionListener target="${chooseStockLocationDialogBean.material}"
+                            value="${item.material}" />
                     </p:commandButton>
                 </t:panelGroup>
 
                 <ui:insert name="item-quantity">
                     <h:outputLabel for="quantity" value="数量：" />
                     <t:panelGroup colspan="3">
-                        <p:inputText id="quantity" label="数量" value="#{item.quantity}" />
-                        <h:outputText value="#{item.material.unit.label}" />
+                        <p:inputText id="quantity" label="数量" value="${item.quantity}" />
+                        <h:outputText value="${item.material.unit.label}" />
                         <p:commandButton id="inputQuantity" value="..." oncomplete="inputQuantityDialog.show()">
-                            <f:setPropertyActionListener target="#{inputQuantityDialogBean.unitUnit}"
-                                value="#{item.material.unit}" />
-                            <f:setPropertyActionListener target="#{inputQuantityDialogBean.unitQuantity}"
-                                value="#{item.quantity}" />
-                            <f:setPropertyActionListener target="#{inputQuantityDialogBean.unitConv}"
-                                value="#{item.material.unitConv}" />
+                            <f:setPropertyActionListener target="${inputQuantityDialogBean.unitUnit}"
+                                value="${item.material.unit}" />
+                            <f:setPropertyActionListener target="${inputQuantityDialogBean.unitQuantity}"
+                                value="${item.quantity}" />
+                            <f:setPropertyActionListener target="${inputQuantityDialogBean.unitConv}"
+                                value="${item.material.unitConv}" />
                         </p:commandButton>
                     </t:panelGroup>
                 </ui:insert>
 
                 <h:outputLabel for="price" value="单价：" />
-                <p:inputText id="price" label="单价" value="#{item.price.value}" />
+                <p:inputText id="price" label="单价" value="${item.price.value}" />
                 <h:outputLabel for="currency" value="币种:" />
-                <p:selectOneMenu id="currency" label="币种" value="#{item.price.currencyCode}" style="width: 15em;">
+                <p:selectOneMenu id="currency" label="币种" value="${item.price.currencyCode}" style="width: 15em;">
                     <f:selectItem itemValue="" itemLabel="--选择币种--" />
-                    <f:selectItems value="#{monetary.currencySelectItems}" />
+                    <f:selectItems value="${monetary.currencySelectItems}" />
                 </p:selectOneMenu>
 
                 <h:outputLabel for="state" value="状态:" />
-                <p:selectOneMenu id="state" value="#{item.stateChar}" style="width:10em;" label="状态">
-                    <f:selectItems value="#{stock.stockItemStates}" />
+                <p:selectOneMenu id="state" value="${item.stateChar}" style="width:10em;" label="状态">
+                    <f:selectItems value="${stock.stockItemStates}" />
                 </p:selectOneMenu>
 
                 <h:outputLabel for="description" value="备注：" />
                 <t:panelGroup id="description" label="备注" colspan="3">
-                    <p:inputText value="#{item.description}" style="width: 90%" />
+                    <p:inputText value="${item.description}" style="width: 90%" />
                 </t:panelGroup>
             </t:panelGrid>
         </fr:listView>

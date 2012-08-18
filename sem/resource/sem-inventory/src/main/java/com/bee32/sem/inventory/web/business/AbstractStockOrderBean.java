@@ -163,9 +163,9 @@ public abstract class AbstractStockOrderBean
 
     public void exportToPdf() {
         StockOrderDto order = this.getOpenedObject();
-        JRBeanCollectionDataSource beanCollectionDataSource=new JRBeanCollectionDataSource(order.getItems());
+        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(order.getItems());
 
-        ClassLoader ccl = getClass().getClassLoader(); //Thread.currentThread().getContextClassLoader();
+        ClassLoader ccl = getClass().getClassLoader(); // Thread.currentThread().getContextClassLoader();
         InputStream reportStream = ccl.getResourceAsStream("resources/3/15/3/2/stock/report1.jrxml");
 
         try {
@@ -178,7 +178,6 @@ public abstract class AbstractStockOrderBean
             reportParams.put("orgUnit", order.getOrgUnit().getLabel());
             reportParams.put("description", order.getDescription());
             reportParams.put("owner", order.getOwnerDisplayName());
-
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, reportParams, beanCollectionDataSource);
             byte[] pdfByteArray = JasperExportManager.exportReportToPdf(jasperPrint);

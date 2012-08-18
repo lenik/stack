@@ -1,6 +1,7 @@
 package com.bee32.sem.inventory.service;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -19,27 +20,27 @@ public final class StockQueryOptions
     boolean endOfToday;
     boolean verifiedOnly = false;
 
-    BatchArray batchArray;
-    MCValue price;
-    Integer locationId;
-    Integer warehouseId;
+    final BatchArray batchArray = new BatchArray();
+    final boolean batchVisible[] = new boolean[BatchArray.MAX_ARRAYSIZE];
 
+    MCValue price;
     boolean priceVisible;
-    boolean batchArrayVisible;
+
+    Integer locationId;
     boolean locationVisible;
+
+    Integer warehouseId;
     boolean warehouseVisible;
 
     boolean showAll = false;
 
     public StockQueryOptions(Date timestamp, boolean endOfDay) {
-        this(timestamp, null, null, null, null);
+        this(timestamp, null, null, null);
         this.endOfToday = endOfDay;
     }
 
-    public StockQueryOptions(Date timestamp, BatchArray batchArray, MCValue price, Integer locationId,
-            Integer warehouseId) {
+    public StockQueryOptions(Date timestamp, MCValue price, Integer locationId, Integer warehouseId) {
         setTimestamp(timestamp);
-        setBatchArray(batchArray);
         setPrice(price);
         setLocation(locationId);
         setWarehouse(warehouseId);
@@ -49,12 +50,14 @@ public final class StockQueryOptions
         timestamp = o.timestamp;
         endOfToday = o.endOfToday;
         verifiedOnly = o.verifiedOnly;
-        batchArray = o.batchArray;
+
         price = o.price;
+        priceVisible = o.priceVisible;
+
         locationId = o.locationId;
-        warehouseId = o.warehouseId;
-        batchArrayVisible = o.batchArrayVisible;
         locationVisible = o.locationVisible;
+
+        warehouseId = o.warehouseId;
         warehouseVisible = o.warehouseVisible;
     }
 
@@ -102,17 +105,86 @@ public final class StockQueryOptions
         return batchArray;
     }
 
-    public void setBatchArray(BatchArray batchArray) {
-        setBatchArray(batchArray, batchArray != null);
-    }
-
     public void setBatchArray(BatchArray batchArray, boolean visible) {
-        this.batchArray = batchArray;
-        this.batchArrayVisible = batchArray != null || visible;
+        if (batchArray == null) {
+            for (int i = 0; i < BatchArray.MAX_ARRAYSIZE; i++)
+                this.batchArray.setBatch(i, null);
+            setAllBatchVisible(false);
+        } else {
+            this.batchArray.populate(batchArray);
+            String[] array = batchArray.getArray();
+            for (int i = 0; i < array.length; i++)
+                batchVisible[i] = array[i] != null || visible;
+        }
     }
 
-    public boolean isBatchArrayVisible() {
-        return batchArrayVisible;
+    public void setBatch(int index, String batch, boolean visible) {
+        batchArray.setBatch(index, batch);
+        batchVisible[index] = batch != null || visible;
+    }
+
+    public boolean isBatchVisible(int index) {
+        return batchVisible[index];
+    }
+
+    public boolean isBatch0Visible() {
+        return batchVisible[0];
+    }
+
+    public void setBatch0Visible(boolean visible) {
+        batchVisible[0] = visible;
+    }
+
+    public boolean isBatch1Visible() {
+        return batchVisible[1];
+    }
+
+    public void setBatch1Visible(boolean visible) {
+        batchVisible[1] = visible;
+    }
+
+    public boolean isBatch2Visible() {
+        return batchVisible[2];
+    }
+
+    public void setBatch2Visible(boolean visible) {
+        batchVisible[2] = visible;
+    }
+
+    public boolean isBatch3Visible() {
+        return batchVisible[3];
+    }
+
+    public void setBatch3Visible(boolean visible) {
+        batchVisible[3] = visible;
+    }
+
+    public boolean isBatch4Visible() {
+        return batchVisible[4];
+    }
+
+    public void setBatch4Visible(boolean visible) {
+        batchVisible[4] = visible;
+    }
+
+    public boolean isBatch5Visible() {
+        return batchVisible[5];
+    }
+
+    public void setBatch5Visible(boolean visible) {
+        batchVisible[5] = visible;
+    }
+
+    public boolean isAnyBatchVisible() {
+        int max = BatchMetadata.getInstance().getArraySize();
+        for (int i = 0; i <= max; i++)
+            if (batchVisible[i])
+                return true;
+        return false;
+    }
+
+    public void setAllBatchVisible(boolean visible) {
+        Arrays.fill(batchVisible, visible);
     }
 
     public MCValue getPrice() {
@@ -167,11 +239,12 @@ public final class StockQueryOptions
     }
 
     public void fillBatchProjections(ProjectionList projectionList) {
-        if (batchArrayVisible) {
+        if (isAnyBatchVisible()) {
             BatchMetadata metadata = BatchMetadata.getInstance();
             int n = metadata.getArraySize();
             for (int i = 0; i < n; i++) {
-                projectionList.add(new GroupPropertyProjection("batchArray.batch" + i));
+                if (isBatchVisible(i))
+                    projectionList.add(new GroupPropertyProjection("batchArray.batch" + i));
             }
         }
     }
@@ -198,14 +271,14 @@ public final class StockQueryOptions
     }
 
     public GroupPropertyProjection getExpirationProjection() {
-        if (batchArrayVisible)
+        if (isAnyBatchVisible())
             return new GroupPropertyProjection("expirationDate");
         else
             return null;
     }
 
     public GroupPropertyProjection getPriceProjection() {
-        if (batchArrayVisible)
+        if (isAnyBatchVisible())
             return new GroupPropertyProjection("price");
         else
             return null;

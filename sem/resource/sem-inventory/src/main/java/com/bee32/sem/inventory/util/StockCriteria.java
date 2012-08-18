@@ -83,15 +83,25 @@ public class StockCriteria
         if (materialIds != null && materialIds.isEmpty())
             materialIds = emptyIds;
 
-        return compose(//
-                alias("parent", "parent"), //
+        CriteriaComposite comp = compose(alias("parent", "parent"), //
                 lessOrEquals("parent.beginTime", options.getTimestampOpt()), //
                 options.isVerifiedOnly() ? VerifyCriteria.verified("parent") : null, //
                 in("parent._subject", subjects), //
                 materialIds == null ? null : in("material.id", materialIds), // _in
-                _equals("BatchArray", options.getBatchArray()), //
                 _equals("location.id", options.getLocation()), //
                 _equals("warehouse.id", options.getWarehouse()));
+
+        BatchArray batchArray = options.getBatchArray();
+        if (batchArray != null) {
+            BatchMetadata metadata = BatchMetadata.getInstance();
+            for (int i = 0; i < metadata.getArraySize(); i++) {
+                String batch = batchArray.getBatch(i);
+                if (batch != null)
+                    comp.add(_equals("batchArray.batch" + i, batch));
+            }
+        }
+
+        return comp;
     }
 
     public static ICriteriaElement sumOfCommons(List<Long> materialIds, StockQueryOptions options) {
@@ -113,8 +123,8 @@ public class StockCriteria
     public static ICriteriaElement inOutDetail(Date beginDate, Long materialId, StockQueryOptions options) {
         CriteriaComposite comp = compose(alias("parent", "parent"), //
                 _equals("material.id", materialId), //
-                options.isVerifiedOnly() ? VerifyCriteria.verified("parent") : null, //
                 lessOrEquals("parent.beginTime", options.getTimestampOpt()), //
+                options.isVerifiedOnly() ? VerifyCriteria.verified("parent") : null, //
                 MonetaryCriteria.equals("price", options.getPrice()), //
                 _equals("location.id", options.getLocation()), //
                 _equals("warehouse.id", options.getWarehouse()));
@@ -132,11 +142,9 @@ public class StockCriteria
     }
 
     @LeftHand(StockOrder.class)
-    public static ICriteriaElement test (String pattern){
-        //return sqlRestriction("select * from sotck_order");
-        return compose(alias("items", "item"),
-                alias("item.material", "mat"),
-                likeIgnoreCase("mat.label", pattern, MatchMode.ANYWHERE)
-                );
+    public static ICriteriaElement test(String pattern) {
+        // return sqlRestriction("select * from sotck_order");
+        return compose(alias("items", "item"), alias("item.material", "mat"),
+                likeIgnoreCase("mat.label", pattern, MatchMode.ANYWHERE));
     }
 }
