@@ -233,8 +233,11 @@ public class SiteManagerServlet
                 else {
                     li().text("断开站点……").end();
                     manager.removeSite(site);
+                    li().text("停止站点……").end();
+                    site.stop();
                 }
 
+                li().text("配置站点……").end();
                 site.setLabel(label);
                 site.setDescription(description);
                 site.setLogo(_logo);
@@ -257,9 +260,9 @@ public class SiteManagerServlet
                 site.saveConfig();
 
                 if (createSite)
-                    li().text("配置站点……").end();
+                    li().text("创建站点……").end();
                 else
-                    li().text("重新配置站点……").end();
+                    li().text("重新连接站点……").end();
                 manager.addSite(site);
 
                 li().text("配置成功。[" + System.identityHashCode(this) + "]").end();

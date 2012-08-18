@@ -550,6 +550,8 @@ public class SiteInstance
             state = SiteState.STOPPING;
             SiteLifecycleDispatcher.stopSite(this);
 
+            attributes.clear();
+
             if (statsFile != null && stats != null) {
                 try {
                     SiteStats child = stats.getLastChild();
