@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,6 +16,8 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 import javax.validation.constraints.NotNull;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.orm.hibernate3.HibernateSystemException;
 
 import com.bee32.plover.arch.util.ClassUtil;
@@ -29,6 +33,11 @@ import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.entity.IIdentity;
 import com.bee32.plover.orm.sample.StandardSamples;
 import com.bee32.plover.orm.validation.RequiredId;
+import com.bee32.plover.restful.resource.IObjectPageDirectory;
+import com.bee32.plover.restful.resource.PageDirectory;
+import com.bee32.plover.restful.resource.StandardViews;
+import com.bee32.plover.rtx.location.Location;
+import com.bee32.plover.servlet.rtx.LocationVmap;
 import com.bee32.plover.servlet.util.HttpAssembledContext;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
@@ -39,7 +48,10 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
     private static final long serialVersionUID = 1L;
 
+    static Logger logger = LoggerFactory.getLogger(EntityDto.class);
+
     transient Object _source; // Only used to get parameterized type name.
+    LocationVmap defaultPage;
 
     int _index;
     Boolean _checked;
@@ -180,6 +192,8 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         createdDate = source.getCreatedDate();
         lastModified = source.getLastModified();
         setEntityFlags(EntityAccessor.getFlags(source).bits);
+
+        _track(source);
     }
 
     /**
@@ -334,6 +348,8 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             this.setNull(false);
         }
 
+        _track(entity);
+
         @SuppressWarnings("unchecked")
         self_t self = (self_t) this;
         return self;
@@ -348,9 +364,35 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         setId(dto.getId());
         setVersion(dto.getVersion());
 
+        defaultPage = dto.defaultPage;
+
         @SuppressWarnings("unchecked")
         self_t self = (self_t) this;
         return self;
+    }
+
+    void _track(E source) {
+        if (source == null) {
+            defaultPage = null;
+            return;
+        }
+
+        IObjectPageDirectory pageDir = PageDirectory.getPageDirectory(source);
+        if (pageDir == null) {
+            logger.warn("No page for entity type: " + sourceType);
+            return;
+        }
+
+        Map<String, Object> viewParams = new HashMap<String, Object>();
+        viewParams.put("id", source.getId());
+
+        List<Location> locations = pageDir.getPagesForView(StandardViews.CONTENT, viewParams);
+        if (locations.isEmpty())
+            logger.warn("No content view for entity type: " + sourceType);
+        else {
+            Location location = locations.get(0);
+            defaultPage = new LocationVmap(location);
+        }
     }
 
     @Override
@@ -470,6 +512,20 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     // Properties
+
+    public LocationVmap getDefaultPage() {
+        return defaultPage;
+    }
+
+    public String getClickAction() {
+        if (defaultPage == null)
+            return null;
+        else {
+            String href = defaultPage.toString();
+            String js = "return _open('" + href + "');";
+            return js;
+        }
+    }
 
     public int get_index() {
         return _index;
