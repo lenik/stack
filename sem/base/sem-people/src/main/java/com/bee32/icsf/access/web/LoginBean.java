@@ -59,13 +59,13 @@ public class LoginBean
             return;
         }
 
-        List<UserPassword> plist = DATA(UserPassword.class).list(LoginCriteria.forUser(user));
-        if (plist.isEmpty()) {
+        List<UserPassword> userPasswords = DATA(UserPassword.class).list(LoginCriteria.forUser(user));
+        if (userPasswords.isEmpty()) {
             uiLogger.error("登录错误:密码不存在");
             return;
         }
 
-        String p1 = plist.get(0).getPasswd();
+        String p1 = userPasswords.get(0).getPasswd();
         String _p2 = challenge + p1 + challenge;
         String p2 = DigestUtils.shaHex(_p2);
 
