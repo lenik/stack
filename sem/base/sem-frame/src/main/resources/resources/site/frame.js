@@ -154,3 +154,9 @@ function removeElements(outer, q) {
         e.parentElement.removeChild(e);
     }
 }
+
+function _open(href) {
+     var newWindow = window.open(href, '_blank');
+     newWindow.focus();
+     return false;
+}
