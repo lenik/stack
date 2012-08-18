@@ -1,5 +1,6 @@
 package com.bee32.sem.hr.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.bee32.plover.ox1.color.UIEntityAuto;
+import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.hr.util.ScoreLevelMap;
 
 /**
@@ -27,7 +29,8 @@ import com.bee32.sem.hr.util.ScoreLevelMap;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "person_skill_seq", allocationSize = 1)
 public class PersonSkill
-        extends UIEntityAuto<Long> {
+        extends UIEntityAuto<Long>
+        implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,6 +39,7 @@ public class PersonSkill
     PersonSkillCategory category;
     int score;
     Date date;
+    BigDecimal bonus = BigDecimal.ZERO;
 
     @Override
     public void populate(Object source) {
@@ -51,6 +55,7 @@ public class PersonSkill
         category = o.category;
         score = o.score;
         date = o.date;
+        bonus = o.bonus;
     }
 
     @ManyToOne
@@ -112,6 +117,18 @@ public class PersonSkill
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    /**
+     * 技能补贴
+     */
+    @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE)
+    public BigDecimal getBonus() {
+        return bonus;
+    }
+
+    public void setBonus(BigDecimal bonus) {
+        this.bonus = bonus;
     }
 
 }

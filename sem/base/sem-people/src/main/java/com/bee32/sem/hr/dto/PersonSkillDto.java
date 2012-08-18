@@ -1,5 +1,6 @@
 package com.bee32.sem.hr.dto;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.free.ParseException;
@@ -17,6 +18,7 @@ public class PersonSkillDto
     PersonSkillCategoryDto category;
     int score;
     Date date;
+    BigDecimal bonus;
 
     @Override
     protected void _marshal(PersonSkill source) {
@@ -24,6 +26,7 @@ public class PersonSkillDto
         category = mref(PersonSkillCategoryDto.class, source.getCategory());
         score = source.getScore();
         date = source.getDate();
+        bonus = source.getBonus();
     }
 
     @Override
@@ -32,6 +35,7 @@ public class PersonSkillDto
         merge(target, "category", category);
         target.setScore(score);
         target.setDate(date);
+        target.setBonus(bonus);
     }
 
     @Override
@@ -71,7 +75,15 @@ public class PersonSkillDto
         this.date = date;
     }
 
-    public String getLevelLabel(int score){
+    public BigDecimal getBonus() {
+        return bonus;
+    }
+
+    public void setBonus(BigDecimal bonus) {
+        this.bonus = bonus;
+    }
+
+    public String getLevelLabel(int score) {
         return category.getLevel(score).getLabel();
     }
 }

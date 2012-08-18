@@ -16,6 +16,9 @@
         <p:column headerText="技能等级">
             <h:outputText value="${entry.levelData}" />
         </p:column>
+        <p:column headerText="技能补贴">
+            <h:outputText value="${entry.bonus}" />
+        </p:column>
     </ui:define>
 
     <ui:define name="editDialogContent">
@@ -35,6 +38,9 @@
                     <p:column headerText="描述">
                         <h:outputText value="${entry.label}" />
                     </p:column>
+                    <p:column headerText="技能补贴">
+                        <h:outputText value="${entry.bonus}" />
+                    </p:column>
                 </f:facet>
 
                 <t:panelGrid columns="2">
@@ -43,6 +49,9 @@
 
                     <h:outputText value="描述:" />
                     <p:inputText value="${item.label}" />
+
+                    <h:outputText value="技能补贴" />
+                    <p:inputText value="${item.bonus}" />
                 </t:panelGrid>
             </fr:listView>
         </t:panelGrid>

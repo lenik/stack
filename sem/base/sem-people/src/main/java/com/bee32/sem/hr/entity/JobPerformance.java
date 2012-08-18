@@ -1,7 +1,11 @@
 package com.bee32.sem.hr.entity;
 
+import java.math.BigDecimal;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
+import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.ox1.dict.NameDict;
 
 /**
@@ -9,9 +13,12 @@ import com.bee32.plover.ox1.dict.NameDict;
  */
 @Entity
 public class JobPerformance
-        extends NameDict {
+        extends NameDict
+        implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
+
+    BigDecimal bonus = BigDecimal.ZERO;
 
     public JobPerformance() {
         super();
@@ -37,4 +44,12 @@ public class JobPerformance
         super._populate(o);
     }
 
+    @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE)
+    public BigDecimal getBonus() {
+        return bonus;
+    }
+
+    public void setBonus(BigDecimal bonus) {
+        this.bonus = bonus;
+    }
 }
