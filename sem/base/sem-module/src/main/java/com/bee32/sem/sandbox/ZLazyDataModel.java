@@ -84,9 +84,14 @@ public class ZLazyDataModel<E extends Entity<?>, D extends EntityDto<? super E, 
         for (D dto : dtos)
             dto.set_index(index++);
 
+        postLoad(dtos);
+
         // if (dtos.size() < pageSize)
         // countCache = dtos.size();
         return pageCache = dtos;
+    }
+
+    protected void postLoad(List<D> data) {
     }
 
     @Override

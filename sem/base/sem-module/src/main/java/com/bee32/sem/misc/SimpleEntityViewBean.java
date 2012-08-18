@@ -218,6 +218,18 @@ public abstract class SimpleEntityViewBean
             return super.countImpl();
         }
 
+        /**
+         * Select the first on initial.
+         */
+        @Override
+        protected void postLoad(List<D> data) {
+            D selection = (D) SimpleEntityViewBean.this.getSingleSelection();
+            if (selection == null && !data.isEmpty()) {
+                D first = data.get(0);
+                SimpleEntityViewBean.this.setSingleSelection(first);
+            }
+        }
+
     }
 
     public String getExportFileName()
@@ -867,9 +879,11 @@ public abstract class SimpleEntityViewBean
             // Check for duplicated labels.
             if (checkDuplicatedLabel) {
                 String label = o.getLabel();
-                Entity<?> first = DATA(getEntityType()).getFirst(new Equals("label", label));
-                if (first != null)
-                    duplicates.add(first);
+                if (label != null && !label.trim().isEmpty()) { // Only check non-empty labels.
+                    Entity<?> first = DATA(getEntityType()).getFirst(new Equals("label", label));
+                    if (first != null)
+                        duplicates.add(first);
+                }
             }
         }
     }
