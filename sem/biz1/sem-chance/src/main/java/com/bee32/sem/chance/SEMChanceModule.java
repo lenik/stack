@@ -4,6 +4,12 @@ import com.bee32.plover.pub.oid.Oid;
 import com.bee32.sem.SEMOids;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
+import com.bee32.sem.chance.entity.ChanceActionStyle;
+import com.bee32.sem.chance.entity.ChanceCategory;
+import com.bee32.sem.chance.entity.ChanceSourceType;
+import com.bee32.sem.chance.entity.ChanceStage;
+import com.bee32.sem.chance.entity.ProcurementMethod;
+import com.bee32.sem.chance.entity.PurchaseRegulation;
 import com.bee32.sem.module.EnterpriseModule;
 
 @Oid({ 3, 15, SEMOids.Biz1, SEMOids.biz1.Chance })
@@ -16,6 +22,13 @@ public class SEMChanceModule
     @Override
     protected void preamble() {
         declareEntityPages(Chance.class, "chance");
-        declareEntityPages(ChanceAction.class, "chanceAction");
+        declareEntityPages(ChanceAction.class, "action");
+        declareEntityPages(ChanceCategory.class, "category");
+        declareEntityPages(ChanceActionStyle.class, "actionStyle");
+        declareEntityPages(ChanceSourceType.class, "sourceType");
+        declareEntityPages(ChanceStage.class, "stage");
+        declareEntityPages(ProcurementMethod.class, "procurement");
+        declareEntityPages(PurchaseRegulation.class, "purchase");
+
     }
 }
