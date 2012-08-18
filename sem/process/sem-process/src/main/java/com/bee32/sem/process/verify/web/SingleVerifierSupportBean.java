@@ -22,7 +22,7 @@ public class SingleVerifierSupportBean<D extends EntityDto<E, K> & IVerifiableDt
 
     private static final long serialVersionUID = 1L;
 
-    PrincipalDto verifier1Template = new PrincipalDto().ref(SessionUser.getInstance().getUser().getId());
+    PrincipalDto verifier1Template = new PrincipalDto().ref(SessionUser.getInstance().getUser());
     boolean accepted1Template;
     String rejectedReason1Template;
 
