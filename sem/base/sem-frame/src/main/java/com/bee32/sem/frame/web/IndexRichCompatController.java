@@ -111,6 +111,7 @@ class CompatRedirectHandler
                 buf.append(paramName);
                 buf.append("=");
                 buf.append(encodeURI(paramValue));
+                n++;
             }
         }
 
