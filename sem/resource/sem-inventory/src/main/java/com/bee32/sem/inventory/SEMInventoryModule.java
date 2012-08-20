@@ -6,6 +6,7 @@ import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockOrder;
+import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.module.EnterpriseModule;
 
 @Oid({ 3, 15, SEMOids.Resource, SEMOids.resource.Inventory })
@@ -21,7 +22,7 @@ public class SEMInventoryModule
         declareEntityPages(Material.class, "material");
         declareEntityPages(MaterialCategory.class, "category");
         declareEntityPages(StockLocation.class, "location");
-
+        declareEntityPages(StockWarehouse.class, "warehouse");
     }
 
 }
