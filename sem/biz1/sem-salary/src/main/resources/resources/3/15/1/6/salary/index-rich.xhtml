@@ -18,24 +18,14 @@
         </t:panelGrid>
     </ui:define>
 
-    <ui:define name="includes">
-        <div style="width:200px;height100px;"></div>
-    </ui:define>
-
     <ui:define name="dataColumns">
         <p:column headerText="时间">
-            <h:outputText value="${entry.dateString}"/>
+            <h:outputText value="${entry.dateString}" />
         </p:column>
-        <p:column headerText="出勤">
-            <h:outputText value="${entry.attendance.real_attendance}" />
+        <p:column headerText="员工">
+            <h:outputText value="${entry.employee.person.name}" />
         </p:column>
-        <p:column headerText="基础工资">
-            <h:outputText value="${entry.baseSalary.bonus * entry.baseSalary.rate}" />
-        </p:column>
-        <p:column headerText="补贴">
-            <h:outputText value="${entry.subsidyString}" />
-        </p:column>
-        <p:column headerText="总计">
+        <p:column headerText="工资（合计）">
             <h:outputText value="${entry.total}" />
         </p:column>
     </ui:define>
@@ -43,29 +33,43 @@
     <ui:define name="editDialogContent">
         <p:panel header="工资明细">
             <table>
-                <tr>
-                    <td>
-                        ${obj.baseSalary.label}
-                    </td>
-                    <td>
-                        (${obj.attendance.real_attendance} + ${obj.attendance.real_overtime}) *
-                        ${obj.baseSalary.bonus}
-                        =
-                        ${obj.baseSalary.bonus * obj.baseSalary.rate}
-                    </td>
-                </tr>
-                <ui:repeat var="item" value="${obj.items}" varStatus="status">
+                <ui:repeat var="element" value="${obj.elements}" varStatus="status">
                     <tr>
-                        <td>${item.label}</td>
-                        <td>${item.bonus} * ${item.rate}= ${item.bonus * item.rate} </td>
+                        <td>
+                            <h:outputText value="${element.def.category}" />
+                        </td>
+                        <td>
+                            <p:inputText value="${element.bonus}" />
+                        </td>
+                        <td>
+                            <p:commandButton value="修改" oncomplete="edialog.show()" update=":elementDialog">
+                                <f:setPropertyActionListener value="${element}" target="${bean.selectedElement}" />
+                            </p:commandButton>
+                        </td>
                     </tr>
                 </ui:repeat>
+
                 <tr>
-                    <td>总计</td>
-                    <td>${obj.total}</td>
+                    <td>
+                        <h:outputText value="总计" />
+                    </td>
+                    <td>
+                        <h:outputText value="${obj.total}" />
+                    </td>
                 </tr>
             </table>
 
         </p:panel>
+    </ui:define>
+
+    <ui:define name="dialogs">
+        <p:dialog id="elementDialog" header="${bean.selectedElement.def.category}" widgetVar="edialog">
+            <t:panelGrid columns="2">
+                <h:outputText value="${bean.selectedElement.def.category}" />
+                <p:inputText value="${bean.selectedElement.bonus}" />
+                <p:commandButton value="确定" />
+                <p:commandButton value="取消" />
+            </t:panelGrid>
+        </p:dialog>
     </ui:define>
 </ui:composition>

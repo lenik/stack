@@ -7,20 +7,21 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.salary.entity.SalaryElement;
+import com.bee32.sem.salary.entity.SalaryElementDef;
 
 public class SalaryElementDto
         extends UIEntityDto<SalaryElement, Long> {
 
     private static final long serialVersionUID = 1L;
 
-    String label;
-    String alternate;
-    double rate;
-    BigDecimal bonus;
+    SalaryDto parent;
+    SalaryElementDef def;
+    BigDecimal bonus = BigDecimal.ZERO;
 
     @Override
     protected void _marshal(SalaryElement source) {
-        label = source.getLabel();
+        parent = mref(SalaryDto.class, source.getParent());
+        def = source.getDef();
         bonus = source.getBonus();
     }
 
@@ -35,29 +36,21 @@ public class SalaryElementDto
             throws ParseException {
     }
 
-    public String getLabel() {
-        return label;
+    public SalaryDto getParent() {
+        return parent;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
+    public void setParent(SalaryDto parent) {
+        this.parent = parent;
     }
 
-    public String getAlternate() {
-        return alternate;
+    public SalaryElementDef getDef() {
+        return def;
     }
 
-    public void setAlternate(String alternate) {
-        this.alternate = alternate;
-    }
-
-    public double getRate() {
-        return rate;
-    }
-
-    public void setRate(double rate) {
-        this.rate = rate;
-    }
+    public void setDef(SalaryElementDef def){
+       this.def = def;
+   }
 
     public BigDecimal getBonus() {
         return bonus;

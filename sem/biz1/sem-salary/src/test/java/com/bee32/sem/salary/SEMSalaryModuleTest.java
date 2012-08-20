@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.Locale;
 
 import com.bee32.plover.orm.unit.Using;
-import com.bee32.sem.salary.SEMSalaryModule;
-import com.bee32.sem.salary.SEMSalaryUnit;
 import com.bee32.sem.test.SEMTestCase;
 
 @Using(SEMSalaryUnit.class)
@@ -29,7 +27,7 @@ public class SEMSalaryModuleTest
 
     public static void main(String[] args)
             throws IOException {
-        new SEMSalaryModuleTest().browseAndWait(SEMSalaryModule.PREFIX + "/attendancem/");
+        new SEMSalaryModuleTest().browseAndWait(SEMSalaryModule.PREFIX + "/salary/");
     }
 
     static {

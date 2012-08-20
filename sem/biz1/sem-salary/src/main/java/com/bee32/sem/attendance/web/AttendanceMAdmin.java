@@ -68,53 +68,40 @@ public class AttendanceMAdmin
         base.setBonus(bonusMap.get("base").getBonus());
         base.setLabel("基本工资");
 
-        total += base.getRate() * base.getBonus().doubleValue();
 
         // TODO 小数点情况 || 全勤奖 perfect attendance award --> paa
 
         // 中餐补贴
         SalaryElementDto lunch = new SalaryElementDto();
         lunch.setBonus(bonusMap.get("lunch").getBonus());
-        lunch.setAlternate(bonusMap.get("lunch").getLabel());
         lunch.setLabel("午餐补贴");
         items.add(lunch);
-        total += lunch.getRate() * lunch.getBonus().doubleValue();
 
         // 晚餐补贴
         SalaryElementDto supper = new SalaryElementDto();
         supper.setBonus(bonusMap.get("supper").getBonus());
-        supper.setAlternate(bonusMap.get("supper").getLabel());
         supper.setLabel("晚餐补贴");
         items.add(supper);
-        total += supper.getBonus().doubleValue() * supper.getRate();
 
         // 出差补贴
         SalaryElementDto trip = new SalaryElementDto();
         trip.setBonus(bonusMap.get("trip").getBonus());
-        trip.setAlternate(bonusMap.get("trip").getLabel());
         trip.setLabel("出差补贴");
         items.add(trip);
-        total += trip.getBonus().doubleValue() * trip.getRate();
 
         // 职位补贴 ~~ 岗位
         SalaryElementDto jobPost = new SalaryElementDto();
-        jobPost.setRate(1);
         jobPost.setLabel("职位补贴");
         items.add(jobPost);
-        total += jobPost.getBonus().doubleValue() * jobPost.getRate();
 
         // 学历补贴
         SalaryElementDto education = new SalaryElementDto();
-        education.setRate(1);
         education.setLabel("学历补贴");
         items.add(education);
-        total += education.getBonus().doubleValue() * education.getRate();
 
         SalaryElementDto paa = new SalaryElementDto();
-        paa.setRate(1);
         paa.setLabel("全勤奖");
         items.add(paa);
-        total += paa.getBonus().doubleValue() * paa.getRate();
 
         salary.setTotal(new BigDecimal(total));
 
