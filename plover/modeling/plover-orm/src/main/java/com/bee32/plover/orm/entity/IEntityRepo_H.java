@@ -8,6 +8,7 @@ import org.hibernate.ReplicationMode;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.dao.DataAccessException;
+import org.springframework.orm.ObjectRetrievalFailureException;
 
 import com.bee32.plover.orm.dao.HibernateTemplate;
 
@@ -26,7 +27,8 @@ public interface IEntityRepo_H<E extends IEntity<? extends K>, K extends Seriali
      * @see Session#save(Object)
      */
     @Override
-    K save(E entity);
+    K save(E entity)
+            throws DataAccessException;
 
     /**
      * Return the persistent instance of the given entity class with the given identifier, throwing
@@ -41,17 +43,18 @@ public interface IEntityRepo_H<E extends IEntity<? extends K>, K extends Seriali
      * which is lazy-initialized.
      *
      * @param entityClass
-     *            a persistent class
+     *            Apersistent class.
      * @param id
-     *            the identifier of the persistent instance
+     *            The identifier of the persistent instance.
      * @return the persistent instance
-     * @throws org.springframework.orm.ObjectRetrievalFailureException
-     *             if not found
-     * @throws org.springframework.dao.DataAccessException
-     *             in case of Hibernate errors
+     * @throws ObjectRetrievalFailureException
+     *             If record with specified id is not found.
+     * @throws DataAccessException
+     *             Other data access exceptions.
      */
     @Override
-    E getOrFail(K id);
+    E getOrFail(K id)
+            throws DataAccessException;
 
     /**
      * @see HibernateTemplate#load(Class, Serializable).
@@ -125,6 +128,7 @@ public interface IEntityRepo_H<E extends IEntity<? extends K>, K extends Seriali
      * @see Session#flush()
      */
     @Deprecated
-    void flush();
+    void flush()
+            throws DataAccessException;
 
 }

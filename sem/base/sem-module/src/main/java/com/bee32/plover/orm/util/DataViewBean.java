@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
+import javax.free.IllegalUsageException;
+
 import com.bee32.icsf.access.AccessControlException;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
@@ -25,6 +27,13 @@ public abstract class DataViewBean
         public static final FacesPartialContext view = FacesPartialContext.INSTANCE;
     }
 
+    /**
+     * Get the Data Access Object for specific entity type.
+     *
+     * @return Non-<code>null</code> data access object.
+     * @throws IllegalUsageException
+     *             If the given type is not subclass of entity type.
+     */
     @SuppressWarnings("deprecation")
     protected static <E extends Entity<? extends K>, K extends Serializable> //
     IEntityAccessService<E, K> DATA(Class<? extends E> entityType) {

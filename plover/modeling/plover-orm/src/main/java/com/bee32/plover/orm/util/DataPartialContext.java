@@ -2,6 +2,8 @@ package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
 
+import javax.free.IllegalUsageException;
+
 import com.bee32.plover.arch.util.IPartialContext;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
@@ -12,6 +14,13 @@ public abstract class DataPartialContext
 
     public abstract CommonDataManager getDataManager();
 
+    /**
+     * Get the Data Access Object for specific entity type.
+     *
+     * @return Non-<code>null</code> data access object.
+     * @throws IllegalUsageException
+     *             If the given type is not subclass of entity type.
+     */
     public <E extends Entity<? extends K>, K extends Serializable> //
     IEntityAccessService<E, K> access(Class<? extends E> entityType) {
         return getDataManager().asFor(entityType);

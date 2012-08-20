@@ -114,7 +114,8 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
 
     /** {@inheritDoc} */
     @Override
-    public List<E> list() {
+    public List<E> list()
+            throws DataAccessException {
         List<E> list = (List<E>) getHibernateTemplate().loadAll(entityType);
         return postLoadDecorated(list);
     }
@@ -139,7 +140,8 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public E get(K key) {
+    public E get(K key)
+            throws DataAccessException {
         E entity = getHibernateTemplate().get(entityType, key);
 
         if (entity == null)
@@ -167,7 +169,8 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public E getOrFail(K id) {
+    public E getOrFail(K id)
+            throws DataAccessException {
         E entity = get(id);
         if (entity == null)
             throw new ObjectRetrievalFailureException(entityType, id);
@@ -180,7 +183,8 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
      *             in case of Hibernate errors.
      */
     @Override
-    public K save(E entity) {
+    public K save(E entity)
+            throws DataAccessException {
         preSave(entity);
 
         HibernateTemplate template = getHibernateTemplate();
@@ -189,7 +193,8 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public void saveAll(Collection<? extends E> entities) {
+    public void saveAll(Collection<? extends E> entities)
+            throws DataAccessException {
         if (entities == null)
             throw new NullPointerException("objects");
 
@@ -207,7 +212,8 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public void saveOrUpdateAll(Collection<? extends E> entities) {
+    public void saveOrUpdateAll(Collection<? extends E> entities)
+            throws DataAccessException {
         if (entities == null)
             throw new NullPointerException("entities");
 
@@ -223,7 +229,8 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
      *             If entity with the same natural id was existed, or other hibernate errors.
      */
     @Override
-    public void saveByNaturalId(E entity) {
+    public void saveByNaturalId(E entity)
+            throws DataAccessException {
         ICriteriaElement selector = entity.getSelector();
         E first = getFirst(selector);
         if (first != null)
@@ -232,7 +239,8 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public void saveOrUpdateByNaturalId(E entity) {
+    public void saveOrUpdateByNaturalId(E entity)
+            throws DataAccessException {
         ICriteriaElement selector = entity.getSelector();
         E first = getFirst(selector);
         if (first != null) {
@@ -245,17 +253,20 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public void update(E entity) {
+    public void update(E entity)
+            throws DataAccessException {
         preSave(entity);
         getHibernateTemplate().update(entity);
     }
 
     @Override
-    public void refresh(E entity) {
+    public void refresh(E entity)
+            throws DataAccessException {
         getHibernateTemplate().refresh(entity);
     }
 
-    public void saveOrUpdate(E entity) {
+    public void saveOrUpdate(E entity)
+            throws DataAccessException {
         preSave(entity);
         getHibernateTemplate().saveOrUpdate(entity);
     }
@@ -272,12 +283,14 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public final boolean deleteByKey(K key) {
+    public final boolean deleteByKey(K key)
+            throws DataAccessException {
         return deleteById(key);
     }
 
     @Override
-    public void deleteAll() {
+    public void deleteAll()
+            throws DataAccessException {
         HibernateTemplate template = getHibernateTemplate();
         // String hql = "delete from " + entityType.getSimpleName();
         // template.bulkUpdate(hql);
@@ -289,7 +302,8 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public int deleteAll(Collection<?> entities) {
+    public int deleteAll(Collection<?> entities)
+            throws DataAccessException {
         HibernateTemplate template = getHibernateTemplate();
         // String hql = "delete from " + entityType.getSimpleName();
         // template.bulkUpdate(hql);
@@ -304,7 +318,8 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public int count() {
+    public int count()
+            throws DataAccessException {
         return count((ICriteriaElement[]) null);
     }
 
@@ -431,7 +446,8 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public E getFirst(ICriteriaElement... criteriaE) {
+    public E getFirst(ICriteriaElement... criteriaE)
+            throws DataAccessException {
         Criteria criteria = createCriteria(0, criteriaE);
         criteria.setMaxResults(1);
         List<E> list = criteria.list();
@@ -445,28 +461,32 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public final E getByName(String name) {
+    public final E getByName(String name)
+            throws DataAccessException {
         if (name == null)
             throw new NullPointerException("name");
         return getFirst(new Equals("name", name));
     }
 
     @Override
-    public List<E> list(ICriteriaElement... criteriaElements) {
+    public List<E> list(ICriteriaElement... criteriaElements)
+            throws DataAccessException {
         Criteria criteria = createCriteria(0, criteriaElements);
         List<E> list = criteria.list();
         return postLoadDecorated(list);
     }
 
     @Override
-    public <T> List<T> listMisc(ICriteriaElement... criteriaElements) {
+    public <T> List<T> listMisc(ICriteriaElement... criteriaElements)
+            throws DataAccessException {
         Criteria criteria = createCriteria(0, criteriaElements);
         List<T> list = criteria.list();
         return list;
     }
 
     @Override
-    public <T> T getMisc(ICriteriaElement... criteriaElements) {
+    public <T> T getMisc(ICriteriaElement... criteriaElements)
+            throws DataAccessException {
         Criteria criteria = createCriteria(0, criteriaElements);
         List<T> list = criteria.list();
         if (list.isEmpty())
@@ -475,7 +495,8 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
             return list.get(0);
     }
 
-    <T> T getMisc(ProjectionElement projectionElement, ICriteriaElement... criteriaElements) {
+    <T> T getMisc(ProjectionElement projectionElement, ICriteriaElement... criteriaElements)
+            throws DataAccessException {
         ICriteriaElement[] cat = new ICriteriaElement[criteriaElements.length + 1];
         cat[0] = projectionElement;
         System.arraycopy(criteriaElements, 0, cat, 1, criteriaElements.length);
@@ -483,27 +504,32 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public <T extends Number> T sum(String propertyName, ICriteriaElement... criteriaElements) {
+    public <T extends Number> T sum(String propertyName, ICriteriaElement... criteriaElements)
+            throws DataAccessException {
         return getMisc(new SumProjection(propertyName), criteriaElements);
     }
 
     @Override
-    public <T extends Number> T average(String propertyName, ICriteriaElement... criteriaElements) {
+    public <T extends Number> T average(String propertyName, ICriteriaElement... criteriaElements)
+            throws DataAccessException {
         return getMisc(new AvgProjection(propertyName), criteriaElements);
     }
 
     @Override
-    public <T extends Number> T min(String propertyName, ICriteriaElement... criteriaElements) {
+    public <T extends Number> T min(String propertyName, ICriteriaElement... criteriaElements)
+            throws DataAccessException {
         return getMisc(new MinProjection(propertyName), criteriaElements);
     }
 
     @Override
-    public <T extends Number> T max(String propertyName, ICriteriaElement... criteriaElements) {
+    public <T extends Number> T max(String propertyName, ICriteriaElement... criteriaElements)
+            throws DataAccessException {
         return getMisc(new MaxProjection(propertyName), criteriaElements);
     }
 
     @Override
-    public int count(ICriteriaElement... criteriaElements) {
+    public int count(ICriteriaElement... criteriaElements)
+            throws DataAccessException {
         Criteria criteria = createCriteria(//
                 ICriteriaElement.OPTIM_COUNT /* | ICriteriaElement.NO_PROJECTION */, //
                 criteriaElements);
@@ -518,7 +544,8 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public boolean deleteById(K id) {
+    public boolean deleteById(K id)
+            throws DataAccessException {
         HibernateTemplate template = getHibernateTemplate();
         E entity = template.get(getEntityType(), id);
         if (entity == null) {
@@ -533,7 +560,8 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public int findAndDelete(ICriteriaElement... criteriaElements) {
+    public int findAndDelete(ICriteriaElement... criteriaElements)
+            throws DataAccessException {
         HibernateTemplate template = getHibernateTemplate();
 
         Criteria criteria = createCriteria(ICriteriaElement.NO_ORDER, criteriaElements);
