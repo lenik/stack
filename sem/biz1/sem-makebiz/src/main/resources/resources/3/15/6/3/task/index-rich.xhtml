@@ -134,21 +134,21 @@
                     resizableColumns="true" id="holderTable"
                     rowIndexVar="index">
 
-                    <p:column headerText="序号" style="width:2">
+                    <p:column headerText="序号" width="10">
                         <h:outputText value="#{index+1}" />
                     </p:column>
 
-                    <p:column headerText="批号" style="width:8em;">
+                    <p:column headerText="批号" width="80">
                         <h:outputText value="#{holder.batchNumber}" />
                     </p:column>
 
-                    <p:column headerText="数量" style="width:8em;">
+                    <p:column headerText="数量" width="80">
                         <h:outputText value="#{holder.quantity}" >
                             <f:convertNumber pattern="#0.00" />
                         </h:outputText>
                     </p:column>
 
-                    <p:column headerText="动作" style="width:8em;">
+                    <p:column headerText="动作" width="80">
                         <p:commandButton
                             value="删除"
                             onclick="waitbox.show();"

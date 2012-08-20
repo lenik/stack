@@ -86,11 +86,6 @@ public class MakeTaskAdminBean
 
 		MakebizService service = BEAN(MakebizService.class);
 		try {
-		    if (item.getProcesses() != null && item.getProcesses().size() > 0) {
-		        uiLogger.info("此生产任务已经有工艺流转单.");
-		        return;
-		    }
-
 			service.generateProcess(item, splitToProcessHolders);
 			item = reload(item);
 			uiLogger.info("生成成功，进入\"工世流转单\"功能进行下一步操作.");

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.free.IllegalUsageException;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -189,15 +191,22 @@ public class MakebizService
 	if(taskItem == null || DTOs.isNull(taskItem))
 		throw new NullPointerException("生产任务明细为空");
 
+	taskItem = ctx.data.reload(taskItem, MakeTaskItemDto.PROCESSES);
+
+        MakeTaskItem _taskItem = DATA(MakeTaskItem.class).getOrFail(taskItem.getId());
+
+        if (_taskItem.getProcesses() != null && _taskItem.getProcesses().size() > 0) {
+            throw new IllegalUsageException("此生产任务已经有工艺流转单.");
+        }
+
 	BigDecimal count = new BigDecimal(0);
 	for(SplitToProcessHolder holder : holders) {
 	    count = count.add(holder.getQuantity());
 	}
-	if(count.compareTo(taskItem.getQuantity()) != 0) {
+	if(count.compareTo(_taskItem.getQuantity()) != 0) {
 	    throw new RuntimeException("工艺单数量合计和生产任务的数量不相等!");
 	}
 
-	MakeTaskItem _taskItem = taskItem.unmarshal();
 
 	for(SplitToProcessHolder holder : holders) {
             MakeProcess process = new MakeProcess();
@@ -209,7 +218,7 @@ public class MakebizService
             //根据bom表和工艺，生成所有的MakeStep
             Part part = _taskItem.getPart();
 
-            claimTree(process, part, _taskItem.getQuantity());
+            claimTree(process, part, process.getQuantity());
 
             DATA(MakeProcess.class).save(process);
         }
@@ -219,7 +228,7 @@ public class MakebizService
 	for (PartItem partItem : part.getChildren()) {
 		if (partItem.getPart() != null) {
 			//说明子部件是半成品
-			claimTree(process, partItem.getPart(), partItem.getQuantity());
+			claimTree(process, partItem.getPart(), partItem.getQuantity().multiply(process.getQuantity() ));
 		}
 	}
 
