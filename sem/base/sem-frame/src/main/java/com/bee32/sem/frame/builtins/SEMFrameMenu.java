@@ -39,6 +39,8 @@ public class SEMFrameMenu
           * JAVASCRIPT.join("alert('under development')"));
           */
 
+    public MenuNode HR = menu(MAIN, 330, "HR");
+
     public MenuNode PROCESS = menu(MAIN, 600, "PROCESS");
 
     public MenuNode HELP = menu(MAIN, 10000, "HELP");
