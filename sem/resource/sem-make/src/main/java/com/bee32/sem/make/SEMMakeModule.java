@@ -2,6 +2,8 @@ package com.bee32.sem.make;
 
 import com.bee32.plover.pub.oid.Oid;
 import com.bee32.sem.SEMOids;
+import com.bee32.sem.make.entity.MakeStepName;
+import com.bee32.sem.make.entity.Part;
 import com.bee32.sem.module.EnterpriseModule;
 
 @Oid({ 3, 15, SEMOids.Resource, SEMOids.resource.Bom })
@@ -13,6 +15,8 @@ public class SEMMakeModule
 
     @Override
     protected void preamble() {
+        declareEntityPages(Part.class, "part");
+        declareEntityPages(MakeStepName.class, "makeStepName");
     }
 
 }
