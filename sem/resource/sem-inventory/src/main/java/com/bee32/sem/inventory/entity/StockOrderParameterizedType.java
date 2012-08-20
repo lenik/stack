@@ -11,19 +11,19 @@ public class StockOrderParameterizedType
         extends ParameterizedEntityType {
 
     public StockOrderParameterizedType() {
-        super(SEMInventoryModule.class, StockOrder.class);
+        super(SEMInventoryModule.class, AbstractStockOrder.class);
     }
 
     @Override
     public String getDisplayTypeName(Object instance) {
-        StockOrder o = (StockOrder) instance;
+        AbstractStockOrder<?> o = (AbstractStockOrder<?>) instance;
         String subjectName = o.getSubject().getDisplayName();
         return subjectName + "单"; // TODO - NLS '单'、'order'
     }
 
     @Override
     protected void populateParameterMap(Object instance, Map<String, Object> parameterMap) {
-        StockOrder o = (StockOrder) instance;
+        AbstractStockOrder<?> o = (AbstractStockOrder<?>) instance;
         StockOrderSubject subject = o.getSubject();
         parameterMap.put("subject", subject);
     }
@@ -44,7 +44,7 @@ public class StockOrderParameterizedType
 
     @Override
     public Object getURLFragment(Object instance, ObjectURLFragmentType fragmentType) {
-        StockOrder o = (StockOrder) instance;
+        AbstractStockOrder<?> o = (AbstractStockOrder<?>) instance;
         StockOrderSubject subject = o.getSubject();
         switch (fragmentType) {
         case baseHrefToModule:
