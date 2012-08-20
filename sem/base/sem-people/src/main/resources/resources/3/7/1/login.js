@@ -9,8 +9,11 @@ function calcDigest() {
 
 function handleLoginRequest(xhr, status, args) {
     if (args.validationFailed || !args.loggedIn) {
-
+        // Do nothing.
     } else {
-        window.location.href = document.WEB_APP;
+        var welcome = document.WEB_APP;
+        if (welcome == '')
+            welcome = '/';
+        window.location.href = welcome;
     }
 }
