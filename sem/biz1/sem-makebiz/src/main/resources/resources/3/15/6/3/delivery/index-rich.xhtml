@@ -79,6 +79,12 @@
                 <p:inputText id="customer" value="#{obj.customer.displayName}" readonly="true" label="客户" style="width:30em;"/>
             </t:panelGroup>
 
+            <h:outputText value="备注:" />
+            <t:panelGroup colspan="3">
+                <p:inputTextarea style="width: 30em; height: 4em;" value="#{obj.description}" readonly="#{not bean.editing}"
+                    label="备注" />
+            </t:panelGroup>
+
             <h:outputText value="要求送达日期:" />
             <t:panelGroup colspan="3">
                 <p:calendar id="arrivalDate" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{obj.arrivalDate}"

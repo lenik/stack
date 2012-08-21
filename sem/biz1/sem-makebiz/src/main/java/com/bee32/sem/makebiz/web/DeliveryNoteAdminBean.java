@@ -78,6 +78,8 @@ public class DeliveryNoteAdminBean
         deliveryNote.setItems(deliveryNoteItems);
         if (StringUtils.isEmpty(deliveryNote.getLabel()))
             deliveryNote.setLabel(makeOrder.getLabel());
+        if (StringUtils.isEmpty(deliveryNote.getDescription()))
+            deliveryNote.setDescription(makeOrder.getDescription());
     }
 
     /**
