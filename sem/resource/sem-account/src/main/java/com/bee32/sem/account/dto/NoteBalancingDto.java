@@ -84,4 +84,12 @@ public class NoteBalancingDto
         this.cost = cost;
     }
 
+    public String getBalancingType() {
+        if (this instanceof BillDiscountDto) return "贴现";
+        if (this instanceof EndorsementDto) return "背书";
+        if (this instanceof BalancingDto) return "结算";
+
+        return "";
+    }
+
 }

@@ -72,6 +72,17 @@
                 <p:graphicImage value="#{location.ICON}/obj16/cheatsheet_subitem_obj.gif" />
             </p:commandLink>
         </p:column>
+
+        <p:column headerText="结算日期">
+            <h:outputText value="#{entry.noteBalancing.createdDate}">
+                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+            </h:outputText>
+        </p:column>
+        <p:column headerText="结算方式">
+            <h:outputText value="#{entry.noteBalancing.balancingType}">
+                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+            </h:outputText>
+        </p:column>
     </ui:define>
 
     <ui:define name="editDialogContent">
@@ -170,7 +181,8 @@
 
                     <t:panelGroup colspan="4">
                         <p:commandButton actionListener="#{bean.saveBillDiscount}" value="保存"
-                            onclick="waitbox.show();" oncomplete="waitbox.hide();billDiscountDialog.hide()" />
+                            onclick="waitbox.show();" oncomplete="waitbox.hide();billDiscountDialog.hide()"
+                            update=":mainForm:dataTable" />
                         <p:commandButton value="关闭" onclick="billDiscountDialog.hide()" />
                     </t:panelGroup>
                 </t:panelGrid>
@@ -194,7 +206,8 @@
 
                     <t:panelGroup colspan="4">
                         <p:commandButton actionListener="#{bean.saveEndorsement}" value="保存"
-                            onclick="waitbox.show();" oncomplete="waitbox.hide();endorsementDialog.hide()" />
+                            onclick="waitbox.show();" oncomplete="waitbox.hide();endorsementDialog.hide()"
+                            update=":mainForm:dataTable" />
                         <p:commandButton value="关闭" onclick="endorsementDialog.hide()" />
                     </t:panelGroup>
                 </t:panelGrid>
@@ -218,7 +231,8 @@
 
                     <t:panelGroup colspan="4">
                         <p:commandButton actionListener="#{bean.saveBalancing}" value="保存" onclick="waitbox.show();"
-                            oncomplete="waitbox.hide();balancingDialog.hide()" />
+                            oncomplete="waitbox.hide();balancingDialog.hide()"
+                            update=":mainForm:dataTable" />
                         <p:commandButton value="关闭" onclick="balancingDialog.hide()" />
                     </t:panelGroup>
                 </t:panelGrid>

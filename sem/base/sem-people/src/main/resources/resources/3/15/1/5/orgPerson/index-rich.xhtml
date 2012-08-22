@@ -20,6 +20,10 @@
 
     <ui:define name="title">公司/人员管理</ui:define>
 
+    <ui:define name="scripts.0.simple-entity">
+        <h:outputScript library="frame" name="ajax-validation.js" target="head" />
+    </ui:define>
+
     <ui:define name="content">
 
         <h:form id="mainForm">
@@ -30,7 +34,8 @@
                         update=":editForm:editPanel"
                         actionListener="#{orgPersonAdminBean.add}"
                         value="新增"
-                        onclick="editDialog.show()"/>
+                        onclick="waitbox.show();"
+                        oncomplete="waitbox.hide();editDialog.show();"/>
                 </p:toolbarGroup>
             </p:toolbar>
 
@@ -165,8 +170,17 @@
                         update=":mainForm:orgs"
                         value="保存"
                         actionListener="#{orgPersonAdminBean.save}"
-                        oncomplete="editDialog.hide()"/>
+                        onclick="waitbox.show();"
+                        oncomplete="waitbox.hide();editDialog.hideValidated(args);"/>
                     <p:commandButton value="取消" onclick="editDialog.hide()"/>
+                    <t:panelGroup/>
+                    <t:panelGroup/>
+
+                    <t:panelGrid columns="2">
+                        <p:selectBooleanCheckbox value="#{orgPersonAdminBean.checkDuplicatedLabel}" />
+                        <h:outputText value="避免重复" />
+                    </t:panelGrid>
+                    <t:panelGroup/>
                     <t:panelGroup/>
                     <t:panelGroup/>
                 </t:panelGrid>

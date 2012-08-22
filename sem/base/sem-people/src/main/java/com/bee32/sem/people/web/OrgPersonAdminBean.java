@@ -8,9 +8,11 @@ import javax.faces.model.SelectItem;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.annotation.ForEntities;
 import com.bee32.plover.orm.annotation.ForEntity;
+import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.people.Gender;
 import com.bee32.sem.people.dto.ContactDto;
@@ -52,6 +54,8 @@ public class OrgPersonAdminBean
     boolean competitor;
 
     List<ContactHolder> contactHolders = new ArrayList<ContactHolder>();
+
+    boolean checkDuplicatedLabel = true;
 
     public OrgPersonAdminBean() {
         EntityDataModelOptions<Org, OrgDto> options = new EntityDataModelOptions<Org, OrgDto>(//
@@ -171,6 +175,17 @@ public class OrgPersonAdminBean
         this.contactHolders = contactHolders;
     }
 
+    /**
+     * 保存前是否检查label重复标志
+     * @return
+     */
+    public boolean isCheckDuplicatedLabel() {
+        return checkDuplicatedLabel;
+    }
+
+    public void setCheckDuplicatedLabel(boolean checkDuplicatedLabel) {
+        this.checkDuplicatedLabel = checkDuplicatedLabel;
+    }
 
     public List<SelectItem> getGenders() {
         List<SelectItem> genders = new ArrayList<SelectItem>();
@@ -228,6 +243,34 @@ public class OrgPersonAdminBean
         if (!haveContact) {
             uiLogger.error("联系方式没有输入!");
             return;
+        }
+
+        if (checkDuplicatedLabel) {
+            List<Entity<?>> duplicates = new ArrayList<Entity<?>>();
+
+            if (orgName != null && !orgName.trim().isEmpty()) {
+                Org first = DATA(Org.class).getFirst(new Equals("label", orgName));
+                if (first != null)
+                    duplicates.add(first);
+            }
+
+            if (personName != null && !personName.trim().isEmpty()) {
+                Person first = DATA(Person.class).getFirst(new Equals("label", personName));
+                if (first != null)
+                    duplicates.add(first);
+            }
+
+
+            if (!duplicates.isEmpty()) {
+                StringBuilder mesg = new StringBuilder("存在重复的记录：<ul>");
+                for (Entity<?> dup : duplicates) {
+                    String dupLabel = dup.getEntryLabel();
+                    mesg.append("<li>" + dupLabel + "</li>");
+                }
+                mesg.append("</ul>");
+                uiHtmlLogger.error(mesg);
+                return;
+            }
         }
 
         OrgDto org = new OrgDto().create();

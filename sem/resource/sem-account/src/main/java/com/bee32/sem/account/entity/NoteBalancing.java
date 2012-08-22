@@ -105,5 +105,4 @@ public class NoteBalancing
     public void setCost(MCValue cost) {
         this.cost = cost;
     }
-
 }
