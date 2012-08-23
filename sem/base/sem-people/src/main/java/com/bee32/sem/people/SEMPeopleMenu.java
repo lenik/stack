@@ -5,10 +5,6 @@ import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.frame.builtins.SEMFrameMenu;
 import com.bee32.sem.frame.menu.MenuComposite;
 import com.bee32.sem.frame.menu.MenuNode;
-import com.bee32.sem.hr.entity.JobPerformance;
-import com.bee32.sem.hr.entity.JobPost;
-import com.bee32.sem.hr.entity.JobTitle;
-import com.bee32.sem.hr.entity.PersonEducationType;
 import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.OrgType;
 import com.bee32.sem.people.entity.PartyRecordCategory;
@@ -41,9 +37,9 @@ public class SEMPeopleMenu
     public MenuNode EMPLOYEE = menu(_frame_.HR, 25, "EMPLOYEE");
     /**/MenuNode employeeAdmin = entry(EMPLOYEE, 1, "employeeAdmin", prefix.join("employee/"));
     /**/MenuNode EMPLOYEE_DICTS = menu(EMPLOYEE, 2, "EMPLOYEE_DICTS");
-    /*    */MenuNode jobTitle = entry(EMPLOYEE_DICTS, 1, "jobTitle", getDictIndex(JobTitle.class));
-    /*    */MenuNode jobPost = entry(EMPLOYEE_DICTS, 2, "jobPost", getDictIndex(JobPost.class));
-    /*    */MenuNode educationType = entry(EMPLOYEE_DICTS, 3, "educationType", getDictIndex(PersonEducationType.class));
-    /*    */MenuNode jobPerformance = entry(EMPLOYEE_DICTS, 4, "jobPerformance", getDictIndex(JobPerformance.class));
+    /*    */MenuNode jobTitle = entry(EMPLOYEE_DICTS, 1, "jobTitle", prefix.join("jobTitle/"));
+    /*    */MenuNode jobPost = entry(EMPLOYEE_DICTS, 2, "jobPost", prefix.join("jobPost/"));
+    /*    */MenuNode educationType = entry(EMPLOYEE_DICTS, 3, "educationType", prefix.join("education/"));
+    /*    */MenuNode jobPerformance = entry(EMPLOYEE_DICTS, 4, "jobPerformance", prefix.join("performance/"));
     /*    */MenuNode skillCategory = entry(EMPLOYEE_DICTS, 5, "skillCategory", prefix.join("skill/"));
 }

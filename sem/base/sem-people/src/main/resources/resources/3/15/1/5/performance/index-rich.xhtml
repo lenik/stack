@@ -3,15 +3,15 @@
     xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:icsf="http://java.sun.com/jsf/composite/3/7"
     xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
-    <ui:param name="title" value="职位" />
-    <ui:param name="bean" value="${jobPostAdminBean}" />
+    <ui:param name="title" value="职称" />
+    <ui:param name="bean" value="${performanceAdminBean}" />
     <ui:param name="obj" value="${bean.openedObject}" />
 
     <ui:define name="dataColumns">
         <p:column headerText="代码">
             <h:outputText value="${entry.name}" />
         </p:column>
-        <p:column headerText="描述" >
+        <p:column headerText="描述">
             <h:outputText value="${entry.label}" />
         </p:column>
         <p:column headerText="补贴">

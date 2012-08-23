@@ -1,5 +1,7 @@
 package com.bee32.sem.hr.dto;
 
+import java.math.BigDecimal;
+
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.IEnclosedObject;
@@ -15,12 +17,14 @@ public class PersonSkillCategoryLevelDto
     PersonSkillCategoryDto category;
     int score;
     String label;
+    BigDecimal bonus;
 
     public PersonSkillDto toPersonSkillCategory(EmployeeInfoDto info) {
         PersonSkillDto personSkill = new PersonSkillDto();
         personSkill.setEmployeeInfo(info);
         personSkill.setCategory(category);
         personSkill.setScore(score);
+        personSkill.setBonus(bonus);
         personSkill.setDate(getCreatedDate());
         return personSkill;
     }
@@ -30,6 +34,7 @@ public class PersonSkillCategoryLevelDto
         category = mref(PersonSkillCategoryDto.class, source.getCategory());
         score = source.getScore();
         label = source.getLabel();
+        bonus = source.getBonus();
     }
 
     @Override
@@ -37,6 +42,7 @@ public class PersonSkillCategoryLevelDto
         merge(target, "category", category);
         target.setScore(score);
         target.setLabel(label);
+        target.setBonus(bonus);
     }
 
     @Override
@@ -82,6 +88,14 @@ public class PersonSkillCategoryLevelDto
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public BigDecimal getBonus() {
+        return bonus;
+    }
+
+    public void setBonus(BigDecimal bonus) {
+        this.bonus = bonus;
     }
 
 }
