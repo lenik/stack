@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.free.IllegalUsageException;
 import javax.inject.Inject;
 
 import org.hibernate.SessionFactory;
@@ -83,6 +84,8 @@ public class EntityGraphTool {
             @SuppressWarnings("unchecked")
             Class<? extends Entity<?>> entityType = (Class<? extends Entity<?>>) clazz;
             ClassMetadata metadata = sessionFactory.getClassMetadata(entityType);
+            if (metadata == null)
+                throw new IllegalUsageException("No metadata for entity type " + entityType.getSimpleName());
             String entityName = metadata.getEntityName();
 
             String[] columns = metadata.getPropertyNames();
