@@ -21,9 +21,9 @@ public class SalaryElementDef
     boolean tax;
 
     /**
-     * 分类名称，大分类/小分类之间用 `/` 分隔。
+     * 分类名称，大分类/小分类之间用 `/` 分隔。不包含本元素的名称
      *
-     * 如 `补贴/岗位补贴`。
+     * 如 `补贴`。
      */
     public String getCategory() {
         return category;

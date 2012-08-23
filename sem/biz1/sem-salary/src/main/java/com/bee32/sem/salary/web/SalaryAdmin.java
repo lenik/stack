@@ -3,6 +3,8 @@ package com.bee32.sem.salary.web;
 import java.util.Date;
 
 import com.bee32.sem.attendance.util.AttendanceCriteria;
+import com.bee32.sem.frame.ui.ELListMBean;
+import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.salary.dto.SalaryDto;
 import com.bee32.sem.salary.dto.SalaryElementDto;
@@ -40,6 +42,13 @@ public class SalaryAdmin
 
     public void setSelectedElement(SalaryElementDto selectedElement) {
         this.selectedElement = selectedElement;
+    }
+
+    final ListMBean<SalaryElementDto> salaryElementMBean = ELListMBean.fromEL(this,//
+            "openedObject.elements", SalaryElementDto.class);
+
+    public ListMBean<SalaryElementDto> getSalaryElementMBean() {
+        return salaryElementMBean;
     }
 
 }

@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.bee32.plover.orm.sample.NormalSamples;
-import com.bee32.plover.orm.sample.SampleList;
 import com.bee32.sem.attendance.entity.Attendance;
 import com.bee32.sem.people.SEMPeopleSamples;
 import com.bee32.sem.salary.entity.BaseBonus;
@@ -19,31 +18,35 @@ public class SEMSalarySamples
         extends NormalSamples {
 
     public final Salary test = new Salary();
+    public final SalaryElementDef def1 = new SalaryElementDef();
+    public final SalaryElementDef def2 = new SalaryElementDef();
+    public final SalaryElement se1 = new SalaryElement();
+    public final SalaryElement se2 = new SalaryElement();
     SEMPeopleSamples people = predefined(SEMPeopleSamples.class);
     BaseBonuses bonuses = predefined(BaseBonuses.class);
 
     @Override
     protected void wireUp() {
 
-        SalaryElementDef sed1 = new SalaryElementDef();
-        sed1.setCategory("基础工资");
-        sed1.setExpr("基本日工资X出勤");
-        sed1.setOrder(0);
-        SalaryElement se1 = new SalaryElement();
+        def1.setCategory("基础工资");
+        def1.setExpr("基本日工资X出勤");
+        def1.setOrder(0);
+        se1.setLabel("");
         se1.setParent(test);
-        se1.setDef(sed1);
+        se1.setDef(def1);
         se1.setBonus(new BigDecimal(2000));
 
-        SalaryElementDef sed2 = new SalaryElementDef();
-        sed2.setCategory("全勤奖");
-        sed2.setExpr("~~");
-        sed2.setOrder(1);
-        SalaryElement se2 = new SalaryElement();
-        se2.setDef(sed2);
+        def2.setCategory("补贴");
+        def2.setLabel("全勤奖");
+        def2.setExpr("~~");
+        def2.setOrder(1);
+        se2.setLabel("全勤奖");
+        se2.setDef(def2);
         se2.setParent(test);
         se2.setBonus(new BigDecimal(200));
 
         test.setElements(Arrays.asList(se1, se2));
+        test.setEmployee(people.employee);
 
         List<BaseBonus> subsidies = new ArrayList<BaseBonus>();
         subsidies.add(bonuses.PP);
@@ -55,8 +58,4 @@ public class SEMSalarySamples
         dayRecord.setAbsentTime(0);
     }
 
-    @SuppressWarnings("deprecation")
-    public void getSamples(SampleList samples){
-        samples.add(test);
-    }
 }

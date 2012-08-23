@@ -14,10 +14,11 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.DefaultValue;
 
-import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.hr.entity.EmployeeInfo;
+import com.bee32.sem.process.base.ProcessEntity;
 
 /**
  * 基础工资
@@ -25,7 +26,7 @@ import com.bee32.sem.hr.entity.EmployeeInfo;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "salary_seq", allocationSize = 1)
 public class Salary
-        extends UIEntityAuto<Long>
+        extends ProcessEntity
         implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
@@ -36,6 +37,8 @@ public class Salary
 
     List<SalaryElement> elements = new ArrayList<SalaryElement>();
     BigDecimal total = null; // BigDecimal.ZERO;
+
+    boolean paid;
 
     public Salary() {
         Calendar calendar = Calendar.getInstance();
@@ -89,7 +92,7 @@ public class Salary
         this.employee = employee;
     }
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", orphanRemoval = true)
     @Cascade({ CascadeType.ALL })
     public List<SalaryElement> getElements() {
         return elements;
@@ -116,6 +119,15 @@ public class Salary
 
     public void setTotal(BigDecimal total) {
         this.total = total;
+    }
+
+    @DefaultValue("false")
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
     }
 
     BigDecimal sum() {

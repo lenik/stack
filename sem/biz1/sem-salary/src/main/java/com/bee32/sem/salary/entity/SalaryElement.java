@@ -7,9 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
 
@@ -46,7 +43,6 @@ public class SalaryElement
      * 如果这个元素无定义（没有对应的表达式， 则为 <code>null</code>。）
      */
     @ManyToOne
-    @Cascade( {CascadeType.ALL})
     public SalaryElementDef getDef() {
         return def;
     }

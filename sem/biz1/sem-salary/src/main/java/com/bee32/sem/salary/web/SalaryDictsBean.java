@@ -8,7 +8,9 @@ import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.site.SiteInstance;
 import com.bee32.sem.attendance.entity.AttendanceType;
 import com.bee32.sem.salary.dto.BaseBonusDto;
+import com.bee32.sem.salary.dto.SalaryElementDefDto;
 import com.bee32.sem.salary.entity.BaseBonus;
+import com.bee32.sem.salary.entity.SalaryElementDef;
 
 public class SalaryDictsBean
         extends DataViewBean {
@@ -17,6 +19,8 @@ public class SalaryDictsBean
 
     List<BaseBonusDto> bonuses;
     List<AttendanceType> attendanceTypes;
+
+    List<SalaryElementDefDto> defs;
 
     public SelectableList<BaseBonusDto> getBonuses() {
         if (bonuses == null) {
@@ -40,4 +44,22 @@ public class SalaryDictsBean
         return SelectableList.decorate(attendanceTypes);
     }
 
+    public SelectableList<SalaryElementDefDto> getDefs() {
+        if (defs == null) {
+            synchronized (this) {
+                if (defs == null) {
+                    defs = mrefList(SalaryElementDef.class, SalaryElementDefDto.class, 0);
+                }
+            }
+        }
+        return SelectableList.decorate(defs);
+    }
+
+    public SalaryElementDefDto getDef(int id) {
+        for(SalaryElementDefDto  def : getDefs()){
+            if(def.getId() == id)
+                return def;
+        }
+        return null;
+    }
 }

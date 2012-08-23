@@ -1,6 +1,5 @@
 package com.bee32.sem.attendance.web;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -102,8 +101,6 @@ public class AttendanceMAdmin
         SalaryElementDto paa = new SalaryElementDto();
         paa.setLabel("全勤奖");
         items.add(paa);
-
-        salary.setTotal(new BigDecimal(total));
 
         IEntityAccessService<Salary, Long> access = DATA(Salary.class);
     }

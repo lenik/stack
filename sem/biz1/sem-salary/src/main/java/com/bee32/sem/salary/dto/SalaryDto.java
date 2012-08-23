@@ -8,12 +8,12 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.hr.dto.EmployeeInfoDto;
+import com.bee32.sem.process.base.ProcessEntityDto;
 import com.bee32.sem.salary.entity.Salary;
 
 public class SalaryDto
-        extends UIEntityDto<Salary, Long> {
+        extends ProcessEntityDto<Salary> {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,14 +23,12 @@ public class SalaryDto
     int month;
     EmployeeInfoDto employee;
     List<SalaryElementDto> elements;
-    BigDecimal total;
 
     @Override
     protected void _marshal(Salary source) {
         year = source.getYear();
         month = source.getMonth();
         employee = mref(EmployeeInfoDto.class, source.getEmployee());
-        total = source.getTotal();
 
         if (selection.contains(ELEMENTS))
             elements = mrefList(SalaryElementDto.class, source.getElements());
@@ -43,7 +41,7 @@ public class SalaryDto
         target.setYear(year);
         target.setMonth(month);
         merge(target, "employee", employee);
-        target.setTotal(total);
+        target.setTotal(getTotal());
 
         if (selection.contains(ELEMENTS))
             mergeList(target, "elements", elements);
@@ -92,11 +90,11 @@ public class SalaryDto
     }
 
     public BigDecimal getTotal() {
-        return total;
+        BigDecimal sum = BigDecimal.ZERO;
+        for (SalaryElementDto e : elements) {
+            BigDecimal bonus = e.getBonus();
+            sum = sum.add(bonus);
+        }
+        return sum;
     }
-
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
-
 }
