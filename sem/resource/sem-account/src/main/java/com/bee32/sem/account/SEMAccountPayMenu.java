@@ -27,5 +27,7 @@ public class SEMAccountPayMenu
             __.join("balanceSheetOrgUnitPay/"));
     /**/MenuNode detailPay = entry(queryPay, 30, "detailPay", __.join("detailPay/"));
     /**/MenuNode verificationQueryPay = entry(queryPay, 40, "verificationQueryPay", __.join("verificationQueryPay/"));
+    /**/MenuNode unbalancedNotePay = entry(queryPay, 50, "unbalancedNotePay",
+            __.join("unbalancedNotePay/"));
 
 }

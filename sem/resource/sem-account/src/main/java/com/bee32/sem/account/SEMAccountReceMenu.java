@@ -32,7 +32,7 @@ public class SEMAccountReceMenu
 //    /**/MenuNode receivedAccountAge = entry(queryRece, 40, "receivedAccountAge", __.join("receivedAccountAge/"));
 //    /**/MenuNode arrearageAnalysis = entry(queryRece, 50, "arrearageAnalysis", __.join("arrearageAnalysis/"));
 //    /**/MenuNode gatheringPredict = entry(queryRece, 60, "gatheringPredict", __.join("gatheringPredict/"));
-    MenuNode unbalancedNoteRece = entry(queryRece, 50, "unbalancedNoteRece",
+    /**/MenuNode unbalancedNoteRece = entry(queryRece, 50, "unbalancedNoteRece",
             __.join("unbalancedNoteRece/"));
 
 
