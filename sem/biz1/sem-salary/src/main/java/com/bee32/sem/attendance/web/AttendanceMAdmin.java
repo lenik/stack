@@ -78,9 +78,9 @@ public class AttendanceMAdmin
         trip.setLabel("出差补贴");
         items.add(trip);
 
-        // 职位补贴 ~~ 岗位
+        // 岗位补贴 ~~ 岗位
         SalaryElementDto jobPost = new SalaryElementDto();
-        jobPost.setLabel("职位补贴");
+        jobPost.setLabel("岗位补贴");
         items.add(jobPost);
 
         // 学历补贴

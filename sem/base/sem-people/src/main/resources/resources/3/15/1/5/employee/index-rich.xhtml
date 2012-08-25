@@ -76,8 +76,8 @@
                 <f:selectItems value="#{dicts.jobTitles}" var="it" itemLabel="#{it.label}" itemValue="${it.id}" />
             </p:selectOneMenu>
 
-            <h:outputText value="职位" />
-            <p:selectOneMenu id="jobPost" label="职位" value="#{obj.role.displayId}">
+            <h:outputText value="岗位" />
+            <p:selectOneMenu id="jobPost" label="岗位" value="#{obj.role.displayId}">
                 <f:selectItems value="#{dicts.jobPosts}" var="it" itemLabel="#{it.label}" itemValue="${it.id}" />
             </p:selectOneMenu>
 

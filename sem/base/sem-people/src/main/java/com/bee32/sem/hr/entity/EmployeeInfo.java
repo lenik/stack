@@ -98,7 +98,7 @@ public class EmployeeInfo
     }
 
     /**
-     * 职位
+     * 岗位
      *
      * @return
      */

@@ -12,7 +12,7 @@ public class JobPostVariableProvider
 
     @Override
     public BigDecimal evaluate(TextMap args, String variableName) {
-        if (variableName.equals("岗位津贴")) {
+        if (variableName.equals("岗位补贴")) {
             EmployeeInfo employee = (EmployeeInfo) args.get(ARG_EMPLOYEE);
             JobPost role = employee.getRole();
             if (role == null)

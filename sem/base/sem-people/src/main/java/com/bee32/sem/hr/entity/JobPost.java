@@ -9,7 +9,7 @@ import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.ox1.dict.NameDict;
 
 /**
- * 职务/职位字典类
+ * 职务/岗位字典类
  */
 @Entity
 public class JobPost
