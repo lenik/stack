@@ -39,7 +39,10 @@
                 </t:panelGroup>
                 <t:panelGroup>
                     <h:outputText value="时间:" />
-                    <h:outputText value="${obj.dateString}" />
+                    <p:inputText value="${obj.year}" style="width:35px;" />
+                    <h:outputText value="年" />
+                    <p:inputText value="${obj.month}" style="width:35px;" />
+                    <h:outputText value="月" />
                 </t:panelGroup>
                 <t:panelGroup>
                     <h:outputText value="总计:" />
@@ -64,8 +67,8 @@
     </ui:define>
 
     <ui:define name="dialogs">
-        <sem:chooseEmployeeDialog var="chooseEmployeeDialog" header="选择雇员" target="${bean.openedObject.employee}"
-            update=":editDialog:form:elementsIndexView:indexPanel" dialogBean="${chooseEmployeeBean}" />
+        <sem:chooseEmployeeDialog var="chooseEmployeeDialog" header="选择雇员"
+            target="${bean.openedObject.employee}" update=":editDialog:form:elementsIndexView:indexPanel" dialogBean="${chooseEmployeeBean}" />
 
         <fr:listView id="elementEditView" header="工资元素" mbean="${bean.salaryElementMBean}" style="editDialog"
             indexView=":editDialog:form:elementsIndexView" readonly="#{not bean.editing}">
