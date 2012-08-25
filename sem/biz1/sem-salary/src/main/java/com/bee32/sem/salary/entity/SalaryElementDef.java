@@ -3,7 +3,7 @@ package com.bee32.sem.salary.entity;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 
-import com.bee32.plover.ox1.color.UIEntityAuto;
+import com.bee32.plover.ox1.color.MomentInterval;
 
 /**
  * 工资条上的元素（表达式）定义
@@ -11,7 +11,7 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "salary_element_type_seq", allocationSize = 1)
 public class SalaryElementDef
-        extends UIEntityAuto<Integer> {
+        extends MomentInterval {
 
     private static final long serialVersionUID = 1L;
 

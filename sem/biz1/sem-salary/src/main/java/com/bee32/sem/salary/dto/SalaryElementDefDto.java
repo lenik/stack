@@ -5,11 +5,11 @@ import javax.free.ParseException;
 import org.bouncycastle.util.Strings;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.ox1.color.UIEntityDto;
+import com.bee32.plover.ox1.color.MomentIntervalDto;
 import com.bee32.sem.salary.entity.SalaryElementDef;
 
 public class SalaryElementDefDto
-        extends UIEntityDto<SalaryElementDef, Integer> {
+        extends MomentIntervalDto<SalaryElementDef> {
 
     private static final long serialVersionUID = 1L;
 
