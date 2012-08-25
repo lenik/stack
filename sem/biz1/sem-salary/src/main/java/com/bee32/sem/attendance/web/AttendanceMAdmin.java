@@ -2,19 +2,15 @@ package com.bee32.sem.attendance.web;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.sem.attendance.util.AttendanceCriteria;
 import com.bee32.sem.hr.dto.EmployeeInfoDto;
 import com.bee32.sem.hr.entity.EmployeeInfo;
 import com.bee32.sem.misc.SimpleEntityViewBean;
-import com.bee32.sem.salary.dto.BaseBonusDto;
 import com.bee32.sem.salary.dto.SalaryDto;
 import com.bee32.sem.salary.dto.SalaryElementDto;
-import com.bee32.sem.salary.entity.BaseBonus;
 import com.bee32.sem.salary.entity.Salary;
 import com.bee32.sem.salary.util.SalaryDateUtil;
 
@@ -26,7 +22,6 @@ public class AttendanceMAdmin
     List<EmployeeInfoDto> allEmployees;
     Date openDate = new Date();
     Date restrictionDate = new Date();
-    Map<String, BaseBonusDto> bonusMap;
 
     public AttendanceMAdmin() {
         // current month -> AttendanceCriteria.getMonthList(new Date())
@@ -59,12 +54,10 @@ public class AttendanceMAdmin
         openSelection();
         SalaryDto salary = new SalaryDto().create();
         double total = 0.0;
-        Map<String, BaseBonusDto> bonusMap = getBonusMap();
         List<SalaryElementDto> items = new ArrayList<SalaryElementDto>();
 
         // 基本工资
         SalaryElementDto base = new SalaryElementDto().create();
-        base.setBonus(bonusMap.get("base").getBonus());
         base.setLabel("基本工资");
 
 
@@ -72,19 +65,16 @@ public class AttendanceMAdmin
 
         // 中餐补贴
         SalaryElementDto lunch = new SalaryElementDto();
-        lunch.setBonus(bonusMap.get("lunch").getBonus());
         lunch.setLabel("午餐补贴");
         items.add(lunch);
 
         // 晚餐补贴
         SalaryElementDto supper = new SalaryElementDto();
-        supper.setBonus(bonusMap.get("supper").getBonus());
         supper.setLabel("晚餐补贴");
         items.add(supper);
 
         // 出差补贴
         SalaryElementDto trip = new SalaryElementDto();
-        trip.setBonus(bonusMap.get("trip").getBonus());
         trip.setLabel("出差补贴");
         items.add(trip);
 
@@ -105,16 +95,6 @@ public class AttendanceMAdmin
         IEntityAccessService<Salary, Long> access = DATA(Salary.class);
     }
 
-    Map<String, BaseBonusDto> getBonusMap() {
-        if (bonusMap == null) {
-            bonusMap = new HashMap<String, BaseBonusDto>();
-            List<BaseBonusDto> all = mrefList(BaseBonus.class, BaseBonusDto.class, 0);
-            for (BaseBonusDto dto : all) {
-// bonusMap.put(dto.getId(), dto);
-            }
-        }
-        return bonusMap;
-    }
 
     public Date getOpenDate() {
         return openDate;
