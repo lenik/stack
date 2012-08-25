@@ -3,7 +3,7 @@ package com.bee32.sem.salary;
 import com.bee32.plover.pub.oid.Oid;
 import com.bee32.sem.SEMOids;
 import com.bee32.sem.module.EnterpriseModule;
-import com.bee32.sem.salary.entity.BaseBonus;
+import com.bee32.sem.salary.entity.EventBonus;
 import com.bee32.sem.salary.entity.Salary;
 import com.bee32.sem.salary.entity.SalaryElement;
 import com.bee32.sem.salary.entity.SalaryElementDef;
@@ -17,9 +17,9 @@ public class SEMSalaryModule
     @Override
     protected void preamble() {
         declareEntityPages(Salary.class, "salary");
-        declareEntityPages(BaseBonus.class, "bonus");
         declareEntityPages(SalaryElement.class, "null");
         declareEntityPages(SalaryElementDef.class, "null");
+        declareEntityPages(EventBonus.class, "eventBonus");
     }
 
 }

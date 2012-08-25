@@ -97,4 +97,24 @@ public class SalaryDto
         }
         return sum;
     }
+
+    public String getElementString() {
+        StringBuffer sb = new StringBuffer();
+        for (SalaryElementDto element : elements) {
+            if (sb.length() != 0)
+                sb.append(";");
+            if (element.getDef().getCategory() != null) {
+                sb.append(element.getDef().getCategory());
+            }
+            if (element.getDef().getLabel() != null) {
+                sb.append("/");
+                sb.append(element.getDef().getLabel());
+            }
+            if (element.getDef().getCategory() != null || element.getDef().getLabel() != null) {
+                sb.append(":");
+                sb.append(element.getBonus());
+            }
+        }
+        return sb.toString();
+    }
 }

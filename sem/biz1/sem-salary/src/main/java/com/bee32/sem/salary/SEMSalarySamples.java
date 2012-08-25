@@ -1,15 +1,11 @@
 package com.bee32.sem.salary;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import com.bee32.plover.orm.sample.NormalSamples;
 import com.bee32.sem.attendance.entity.Attendance;
 import com.bee32.sem.people.SEMPeopleSamples;
-import com.bee32.sem.salary.entity.BaseBonus;
-import com.bee32.sem.salary.entity.BaseBonuses;
 import com.bee32.sem.salary.entity.Salary;
 import com.bee32.sem.salary.entity.SalaryElement;
 import com.bee32.sem.salary.entity.SalaryElementDef;
@@ -23,7 +19,6 @@ public class SEMSalarySamples
     public final SalaryElement se1 = new SalaryElement();
     public final SalaryElement se2 = new SalaryElement();
     SEMPeopleSamples people = predefined(SEMPeopleSamples.class);
-    BaseBonuses bonuses = predefined(BaseBonuses.class);
 
     @Override
     protected void wireUp() {
@@ -48,9 +43,6 @@ public class SEMSalarySamples
         test.setElements(Arrays.asList(se1, se2));
         test.setEmployee(people.employee);
 
-        List<BaseBonus> subsidies = new ArrayList<BaseBonus>();
-        subsidies.add(bonuses.PP);
-        subsidies.add(bonuses.FUEL);
 
         Attendance dayRecord = new Attendance();
         dayRecord.setEmployee(people.employee);

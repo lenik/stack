@@ -5,7 +5,7 @@ import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.sem.attendance.entity.Attendance;
 import com.bee32.sem.people.SEMPeopleUnit;
 import com.bee32.sem.process.SEMProcessUnit;
-import com.bee32.sem.salary.entity.BaseBonus;
+import com.bee32.sem.salary.entity.EventBonus;
 import com.bee32.sem.salary.entity.Salary;
 import com.bee32.sem.salary.entity.SalaryElement;
 import com.bee32.sem.salary.entity.SalaryElementDef;
@@ -19,9 +19,9 @@ public class SEMSalaryUnit
         add(Attendance.class);
 
         add(SalaryElementDef.class);
-        add(BaseBonus.class);
         add(Salary.class);
         add(SalaryElement.class);
+        add(EventBonus.class);
     }
 
 }

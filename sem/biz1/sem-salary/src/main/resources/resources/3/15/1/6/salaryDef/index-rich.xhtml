@@ -8,6 +8,12 @@
     <ui:param name="obj" value="${bean.openedObject}" />
 
     <ui:define name="dataColumns">
+        <p:column headerText="启用时间">
+            <h:outputText value="${entry.beginTime}" />
+        </p:column>
+        <p:column headerText="失效时间">
+            <h:outputText value="${entry.endTime}" />
+        </p:column>
         <p:column headerText="分类">
             <h:outputText value="${entry.category}" />
         </p:column>
@@ -21,6 +27,15 @@
 
     <ui:define name="editDialogContent">
         <t:panelGrid columns="2">
+
+            <h:outputText value="启用时间" />
+            <p:calendar value="#{obj.beginTime}" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
+                showOn="button" />
+
+            <h:outputText value="失效时间" />
+            <p:calendar value="#{obj.endTime}" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
+                showOn="button" />
+
             <h:outputText value="分类" />
             <p:inputText value="${obj.category}" />
 
