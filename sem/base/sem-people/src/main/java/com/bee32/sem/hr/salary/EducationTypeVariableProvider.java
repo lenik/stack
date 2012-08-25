@@ -12,13 +12,16 @@ public class EducationTypeVariableProvider
         extends AbstractSalaryVariableProvider {
 
     @Override
-    public BigDecimal evaluate(TextMap args, String variableName) {
+    public BigDecimal evaluate(TextMap args, String educationLabel) {
 
-        PersonEducationType first = DATA(PersonEducationType.class).getFirst(new Equals("label", variableName),
+        PersonEducationType first = DATA(PersonEducationType.class).getFirst(//
+                new Equals("label", educationLabel), //
                 Order.desc("beginTime"));
+
         if (first != null)
             return first.getBonus();
-        return null;
+        else
+            return null;
     }
 
 }

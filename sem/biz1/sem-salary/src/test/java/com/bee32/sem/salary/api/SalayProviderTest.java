@@ -1,14 +1,13 @@
 package com.bee32.sem.salary.api;
 
-import java.util.ServiceLoader;
-
 import com.bee32.sem.api.ISalaryVariableProvider;
+import com.bee32.sem.api.SalaryVariableProviders;
 
 public class SalayProviderTest {
 
     public static void main(String[] args) {
-        ServiceLoader<ISalaryVariableProvider> providers = ServiceLoader.load(ISalaryVariableProvider.class);
-        for (ISalaryVariableProvider prov : providers)
+        for (ISalaryVariableProvider prov : SalaryVariableProviders.getProviders())
             System.out.println(prov);
     }
+
 }
