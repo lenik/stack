@@ -2,7 +2,6 @@ package com.bee32.sem.salary.web;
 
 import java.util.Date;
 
-import com.bee32.plover.restful.resource.StandardViews;
 import com.bee32.sem.attendance.util.AttendanceCriteria;
 import com.bee32.sem.frame.ui.ELListMBean;
 import com.bee32.sem.frame.ui.ListMBean;
@@ -27,16 +26,6 @@ public class SalaryAdmin
     public void addDateRestriction() {
         setSearchFragment("date", "限定工资为" + SalaryDateUtil.getMonNum(targetDate) + "月份",
                 AttendanceCriteria.getMonthList(targetDate));
-    }
-
-    @Override
-    public void showCreateForm() {
-        SalaryDto newInstance = new SalaryDto().create();
-// Object newInstance = create();
-        if (newInstance == null)
-            return;
-        setOpenedObject(newInstance);
-        showView(StandardViews.CREATE_FORM);
     }
 
     public Date getTargetDate() {

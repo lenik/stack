@@ -105,6 +105,13 @@ public class EmployeeInfoDto
         this.person = person;
     }
 
+    public String getPersonName() {
+        if (person == null)
+            return "";
+        else
+            return person.getName();
+    }
+
     public BigDecimal getBaseSalary() {
         return baseSalary;
     }
