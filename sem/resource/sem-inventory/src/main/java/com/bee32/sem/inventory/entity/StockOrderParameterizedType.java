@@ -11,7 +11,7 @@ public class StockOrderParameterizedType
         extends ParameterizedEntityType {
 
     public StockOrderParameterizedType() {
-        super(SEMInventoryModule.class, AbstractStockOrder.class);
+        super(SEMInventoryModule.class, (Class) AbstractStockOrder.class);
     }
 
     @Override
