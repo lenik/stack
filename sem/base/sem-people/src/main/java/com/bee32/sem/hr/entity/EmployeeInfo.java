@@ -35,7 +35,6 @@ public class EmployeeInfo
     boolean motorist;
     JobPost role; // =predefined(JobPosts.class);
     JobTitle title;
-    JobPerformance jobPerformance;
     PersonEducationType education;
     int duty;
     int workAbility;
@@ -61,7 +60,7 @@ public class EmployeeInfo
         motorist = o.motorist;
         role = o.role;
         title = o.title;
-        jobPerformance = o.jobPerformance;
+//        jobPerformance = o.jobPerformance;
         education = o.education;
         duty = o.duty;
         workAbility = o.workAbility;
@@ -130,14 +129,14 @@ public class EmployeeInfo
      *
      * @return
      */
-    @ManyToOne
-    public JobPerformance getJobPerformance() {
-        return jobPerformance;
-    }
-
-    public void setJobPerformance(JobPerformance jobPerformance) {
-        this.jobPerformance = jobPerformance;
-    }
+//    @ManyToOne
+//    public JobPerformance getJobPerformance() {
+//        return jobPerformance;
+//    }
+//
+//    public void setJobPerformance(JobPerformance jobPerformance) {
+//        this.jobPerformance = jobPerformance;
+//    }
 
     /**
      * 学历
