@@ -8,9 +8,6 @@
     <ui:param name="obj" value="${bean.openedObject}" />
 
     <ui:define name="dataColumns">
-        <p:column headerText="代码">
-            <h:outputText value="${entry.name}" />
-        </p:column>
         <p:column headerText="描述">
             <h:outputText value="${entry.label}" />
         </p:column>
@@ -22,13 +19,14 @@
     <ui:define name="editDialogContent">
         <t:panelGrid columns="2">
             <h:outputText value="代码" />
-            <p:inputText value="${obj.name}" />
-
-            <h:outputText value="描述" />
             <p:inputText value="${obj.label}" />
 
             <h:outputText value="职称补贴" />
             <p:inputText value="${obj.bonus}" />
+
+            <h:outputText value="描述" />
+            <p:inputText value="${obj.descprition}" />
+
         </t:panelGrid>
     </ui:define>
 

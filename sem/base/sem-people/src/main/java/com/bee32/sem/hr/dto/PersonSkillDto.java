@@ -10,7 +10,7 @@ import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.hr.entity.PersonSkill;
 
 public class PersonSkillDto
-        extends UIEntityDto<PersonSkill, Long> {
+        extends UIEntityDto<PersonSkill, Integer> {
 
     private static final long serialVersionUID = 1L;
 

@@ -5,13 +5,15 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.free.DecodeException;
+import javax.free.ParseException;
 
-import com.bee32.plover.ox1.dict.SimpleNameDictDto;
+import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.hr.entity.PersonSkillCategory;
 import com.bee32.sem.hr.util.ScoreLevelMap;
 
 public class PersonSkillCategoryDto
-        extends SimpleNameDictDto<PersonSkillCategory> {
+        extends UIEntityDto<PersonSkillCategory, Integer> {
     private static final long serialVersionUID = 1L;
 
     String levelData;
@@ -19,14 +21,12 @@ public class PersonSkillCategoryDto
 
     @Override
     protected void _marshal(PersonSkillCategory source) {
-        super._marshal(source);
         this.levelData = source.getLevelsData();
         this.levelList = convertMapToList(source.getLevelMap());
     }
 
     @Override
     protected void _unmarshalTo(PersonSkillCategory target) {
-        super._unmarshalTo(target);
         try {
             String levelData = convertListToMap(getLevelList()).encode();
             target.setLevelsData(levelData);
@@ -77,12 +77,17 @@ public class PersonSkillCategoryDto
         this.levelList = levelList;
     }
 
-    public PersonSkillCategoryLevelDto getLevel(int score){
-        for(PersonSkillCategoryLevelDto level : levelList){
-            if(level.getScore() == score)
+    public PersonSkillCategoryLevelDto getLevel(int score) {
+        for (PersonSkillCategoryLevelDto level : levelList) {
+            if (level.getScore() == score)
                 return level;
         }
         return null;
+    }
+
+    @Override
+    protected void _parse(TextMap map)
+            throws ParseException {
     }
 
 }

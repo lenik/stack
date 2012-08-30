@@ -3,17 +3,19 @@ package com.bee32.sem.hr.entity;
 import javax.free.DecodeException;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
-import com.bee32.plover.ox1.dict.NameDict;
+import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.sem.hr.util.ScoreLevelMap;
 
 /**
  * 员工技能字典类
  */
 @Entity
+@SequenceGenerator(name = "idgen", sequenceName = "person_skill_category_seq", allocationSize = 1)
 public class PersonSkillCategory
-        extends NameDict {
+        extends UIEntityAuto<Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,12 +31,13 @@ public class PersonSkillCategory
         super();
     }
 
-    public PersonSkillCategory(String name, String label) {
-        super(name, label);
+    public PersonSkillCategory(String label) {
+        this.label = label;
     }
 
-    public PersonSkillCategory(String name, String label, String description) {
-        super(name, label, description);
+    public PersonSkillCategory(String label, String description) {
+        this.label = label;
+        this.description = description;
     }
 
     @Override

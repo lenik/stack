@@ -2,11 +2,14 @@ package com.bee32.sem.hr.dto;
 
 import java.math.BigDecimal;
 
-import com.bee32.plover.ox1.dict.SimpleNameDictDto;
+import javax.free.ParseException;
+
+import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.hr.entity.JobPerformance;
 
 public class JobPerformanceDto
-        extends SimpleNameDictDto<JobPerformance> {
+        extends UIEntityDto<JobPerformance, Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,14 +25,21 @@ public class JobPerformanceDto
 
     @Override
     protected void _marshal(JobPerformance source) {
-        super._marshal(source);
-        this.bonus = source.getBonus();
+        label = source.getLabel();
+        description = source.getDescription();
+        bonus = source.getBonus();
     }
 
     @Override
     protected void _unmarshalTo(JobPerformance target) {
-        super._unmarshalTo(target);
+        target.setLabel(label);
+        target.setDescription(description);
         target.setBonus(bonus);
+    }
+
+    @Override
+    protected void _parse(TextMap map)
+            throws ParseException {
     }
 
 }

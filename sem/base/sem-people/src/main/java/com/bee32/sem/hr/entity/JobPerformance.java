@@ -4,16 +4,18 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.SequenceGenerator;
 
+import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
-import com.bee32.plover.ox1.dict.NameDict;
 
 /**
  * 工作表现字典类
  */
 @Entity
+@SequenceGenerator(name = "idgen", sequenceName = "job_performance_seq", allocationSize = 1)
 public class JobPerformance
-        extends NameDict
+        extends UIEntityAuto<Integer>
         implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
@@ -24,12 +26,10 @@ public class JobPerformance
         super();
     }
 
-    public JobPerformance(String name, String label) {
-        super(name, label);
-    }
-
-    public JobPerformance(String name, String label, String description) {
-        super(name, label, description);
+    public JobPerformance(String label, BigDecimal bonus) {
+        super();
+        this.label = label;
+        this.bonus = bonus;
     }
 
     @Override

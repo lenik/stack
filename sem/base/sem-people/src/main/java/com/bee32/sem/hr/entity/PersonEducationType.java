@@ -4,17 +4,19 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.SequenceGenerator;
 
+import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
-import com.bee32.plover.ox1.dict.NameDict;
 
 /**
  * 学历字典类
  *
  */
 @Entity
+@SequenceGenerator(name = "idgen", sequenceName = "person_education_seq", allocationSize = 1)
 public class PersonEducationType
-        extends NameDict
+        extends UIEntityAuto<Integer>
         implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
@@ -25,13 +27,10 @@ public class PersonEducationType
         super();
     }
 
-    public PersonEducationType(String name, String label, BigDecimal bonus) {
-        super(name, label);
+    public PersonEducationType(String label, BigDecimal bonus) {
+        super();
+        this.label = label;
         this.bonus = bonus;
-    }
-
-    public PersonEducationType(String name, String label, String desc) {
-        super(name, label, desc);
     }
 
     @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE)

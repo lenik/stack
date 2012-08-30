@@ -22,10 +22,11 @@
     <ui:define name="editDialogContent">
         <t:panelGrid clumns="4">
 
-            <h:outputText value="代码 :" />
-            <p:inputText value="${obj.displayId}" />
             <h:outputText value="显示名称 :" />
             <p:inputText value="${obj.label}" />
+
+            <h:outputText value="描述" />
+            <p:inputText value="${obj.description}" />
 
             <fr:listView id="levelsView" header="分类级别" style="panel" mbean="#{bean.levelsMBean}" nested="true"
                 paginator="false" readonly="#{not bean.editing}">

@@ -2,15 +2,15 @@ package com.bee32.sem.hr.entity;
 
 import javax.free.DecodeException;
 
-import com.bee32.plover.orm.sample.StandardSamples;
+import com.bee32.plover.orm.sample.NormalSamples;
 import com.bee32.sem.hr.util.ScoreLevelMap;
 
 public class PersonSkillCategories
-        extends StandardSamples {
+        extends NormalSamples {
 
-    public final PersonSkillCategory english = new PersonSkillCategory("english", "英语");
-    public final PersonSkillCategory japanese = new PersonSkillCategory("japanese", "日语");
-    public final PersonSkillCategory financial = new PersonSkillCategory("financial", "财务");
+    public final PersonSkillCategory english = new PersonSkillCategory("英语");
+    public final PersonSkillCategory japanese = new PersonSkillCategory("日语");
+    public final PersonSkillCategory financial = new PersonSkillCategory("财务");
 
     public PersonSkillCategories()
             throws DecodeException {
@@ -26,7 +26,7 @@ public class PersonSkillCategories
         japaneseLevels.put(3, "日语三级");
 
         ScoreLevelMap financialLevels = new ScoreLevelMap();
-        financialLevels.put(1, "从业资格");
+        financialLevels.put(1, "会计从业资格");
         financialLevels.put(2, "初级会计师");
         financialLevels.put(3, "中级会计师");
         financialLevels.put(4, "高级会计师");

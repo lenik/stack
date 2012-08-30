@@ -29,7 +29,7 @@ import com.bee32.sem.hr.util.ScoreLevelMap;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "person_skill_seq", allocationSize = 1)
 public class PersonSkill
-        extends UIEntityAuto<Long>
+        extends UIEntityAuto<Integer>
         implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;

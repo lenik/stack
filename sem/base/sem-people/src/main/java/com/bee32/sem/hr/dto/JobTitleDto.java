@@ -5,11 +5,11 @@ import java.math.BigDecimal;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.ox1.dict.SimpleNameDictDto;
+import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.hr.entity.JobTitle;
 
 public class JobTitleDto
-        extends SimpleNameDictDto<JobTitle> {
+        extends UIEntityDto<JobTitle, Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -25,20 +25,21 @@ public class JobTitleDto
 
     @Override
     protected void _marshal(JobTitle source) {
-        super._marshal(source);
+        label = source.getLabel();
+        description = source.getDescription();
         bonus = source.getBonus();
     }
 
     @Override
     protected void _unmarshalTo(JobTitle target) {
-        super._unmarshalTo(target);
+        target.setLabel(label);
+        target.setDescription(description);
         target.setBonus(bonus);
     }
 
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
-        super._parse(map);
     }
 
 }

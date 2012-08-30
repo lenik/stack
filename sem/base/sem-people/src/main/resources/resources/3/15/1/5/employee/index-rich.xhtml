@@ -82,15 +82,13 @@
             </p:selectOneMenu>
 
             <h:outputText value="工作能力指数" />
-            <p:inputText value="#{obj.workAbility}" />
-            <h:outputText value="月度工作表现" />
-            <p:selectOneMenu id="jobPerformance" label="月度工作表现" value="#{obj.jobPerformance.displayId}" disabled="">
-                <f:selectItems value="#{dicts.jobPerformances}" var="it" itemLabel="${it.label}"
-                    itemValue="${it.id}" />
-            </p:selectOneMenu>
+            <t:panelGroup colspan="3">
+                <p:inputText value="#{obj.workAbility}" />
+            </t:panelGroup>
+
 
             <h:outputText value="员工技能" />
-            <t:panelGroup columns="2" id="skillData">
+            <t:panelGroup colspan="2" id="skillData">
                 <h:outputText value="${obj.skillData}" />
             </t:panelGroup>
             <p:commandButton value="设置技能" onclick="skillDialog.show();" />
