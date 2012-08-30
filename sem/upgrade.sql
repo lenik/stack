@@ -25,3 +25,18 @@ alter table acl drop column name;
 -- 4
 update chance_competitor set label=name;
 alter table chance_competitor drop column name;
+
+-- 5
+
+ALTER TABLE employee_info DROP COLUMN title;
+ALTER TABLE employee_info DROP COLUMN role;
+ALTER TABLE employee_info DROP COLUMN education;
+ALTER TABLE employee_info DROP COLUMN job_performance;
+
+drop table job_title;
+drop table job_post;
+drop table job_performance;
+drop table person_education_type;
+
+drop table person_skill;
+drop table person_skill_category;
