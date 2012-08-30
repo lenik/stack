@@ -20,4 +20,13 @@ public class BaseBonusVariableProvider
 // return first.getBonus();
     }
 
+    @Override
+    public String[] getVariableNames() {
+        return null;
+    }
+
+    @Override
+    public String getEntityType() {
+        return this.getClass().getName();
+    }
 }

@@ -204,7 +204,7 @@ public class SEMPeopleSamples
         employee.setTitle(jobTitles.deputyDirector);
         employee.setEmployedDate(Calendar.getInstance().getTime());
         employee.setEducation(educationTypes.college);
-        employee.setJobPerformance(jobPerformances.idle);
+//        employee.setJobPerformance(jobPerformances.idle);
         employee.setDuty(1);
         employee.setWorkAbility(1);
 

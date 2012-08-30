@@ -44,4 +44,7 @@ public class AttendanceCriteria
         return new SqlRestriction("");
     }
 
+    public static ICriteriaElement listEfficious(Date date) {
+        return conj(greaterOrEquals("begin_time", date));
+    }
 }

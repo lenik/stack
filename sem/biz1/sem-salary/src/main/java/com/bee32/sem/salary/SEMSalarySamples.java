@@ -24,7 +24,7 @@ public class SEMSalarySamples
     protected void wireUp() {
 
         def1.setCategory("基础工资");
-        def1.setExpr("基本日工资X出勤");
+        def1.setExpr("@基础工资");
         def1.setOrder(0);
         se1.setLabel("");
         se1.setParent(test);
@@ -33,7 +33,7 @@ public class SEMSalarySamples
 
         def2.setCategory("补贴");
         def2.setLabel("全勤奖");
-        def2.setExpr("~~");
+        def2.setExpr("@基础工资");
         def2.setOrder(1);
         se2.setLabel("全勤奖");
         se2.setDef(def2);

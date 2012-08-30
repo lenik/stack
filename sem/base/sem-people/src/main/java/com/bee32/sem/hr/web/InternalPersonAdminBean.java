@@ -28,8 +28,7 @@ public class InternalPersonAdminBean
 
     public InternalPersonAdminBean() {
         super(EmployeeInfo.class, EmployeeInfoDto.class, 0, Order.desc("id"), PeopleCriteria.listEmployeeInfo());
-        internalPersons = DTOs.marshalList(PersonDto.class,
-                DATA(Person.class).list(PeopleCriteria.internal()));
+        internalPersons = DTOs.marshalList(PersonDto.class, DATA(Person.class).list(PeopleCriteria.internal()));
     }
 
     public void doSelectSkill() {
@@ -39,7 +38,7 @@ public class InternalPersonAdminBean
             return;
         }
         List<PersonSkillDto> selected = new ArrayList<PersonSkillDto>();
-        Map<String, PersonSkillCategoryLevelDto> map = new HashMap<String, PersonSkillCategoryLevelDto>();
+        Map<Integer, PersonSkillCategoryLevelDto> map = new HashMap<Integer, PersonSkillCategoryLevelDto>();
         for (int levelId : selectedLevels) {
             for (PersonSkillCategoryLevelDto level : EmployeeDictsBean.skillLevels) {
                 if (level.getId() == levelId) {
