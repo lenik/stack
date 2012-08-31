@@ -44,10 +44,10 @@
                 </p:toolbarGroup>
             </p:toolbar>
 
-            <p:dataTable id="result" value="#{bean.resultList.items}" var="entry" resizableColumns="true"
+            <p:dataTable id="result" value="#{bean.resultList.items}" var="entry" resizableColumns="true" sortBy="0"
                 rowIndexVar="rowIndex">
 
-                <p:column headerText="序号">
+                <p:column headerText="序号" style="text-align:right">
                     <h:outputText value="#{rowIndex + 1}" />
                 </p:column>
 
@@ -83,12 +83,14 @@
                     <h:outputText value="#{entry.location.label}" />
                 </p:column>
 
-                <p:column headerText="单价">
+                <p:column headerText="单价" style="text-align:right">
                     <h:outputText value="#{entry.price}" />
                 </p:column>
 
-                <p:column headerText="数量">
-                    <h:outputText value="#{entry.quantity}" />
+                <p:column headerText="数量" style="text-align:right">
+                    <h:outputText value="#{entry.quantity}" >
+                        <f:convertNumber pattern="#0"/>
+                    </h:outputText>
                 </p:column>
 
                 <p:column headerText="操作">
@@ -96,6 +98,20 @@
                         <f:setPropertyActionListener value="#{entry}" target="#{bean.selectedItem}" />
                     </p:commandLink>
                 </p:column>
+
+                <p:summaryRow>
+                    <p:column colspan="${batchMetadata.arraySize + 6}" style="text-align:right">
+                        <h:outputText value="合计:" />
+                    </p:column>
+                    <p:column style="text-align:right">
+                        <h:outputText value="#{bean.totalQuantity}" >
+                            <f:convertNumber pattern="#0"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="" />
+                    </p:column>
+                </p:summaryRow>
             </p:dataTable>
         </h:form>
 
@@ -105,7 +121,7 @@
                 <p:dataTable id="details" var="entry" value="#{bean.details}" resizableColumns="true"
                     rowIndexVar="rowIndex" scrollable="true" scrollWidth="750" scrollHeight="500">
 
-                    <p:column headerText="序号" width="20">
+                    <p:column headerText="序号" width="20" style="text-align:right">
                         <h:outputText value="#{rowIndex + 1}" />
                     </p:column>
 
@@ -149,11 +165,11 @@
                         <h:outputText value="#{entry.location.label}" />
                     </p:column>
 
-                    <p:column headerText="单价" width="120">
+                    <p:column headerText="单价" width="120" style="text-align:right">
                         <h:outputText value="#{entry.price}" />
                     </p:column>
 
-                    <p:column headerText="数量" width="100">
+                    <p:column headerText="数量" width="100" style="text-align:right">
                         <h:outputText value="#{entry.quantity}" />
                     </p:column>
 
@@ -163,7 +179,6 @@
                             <f:setPropertyActionListener value="#{entry}" target="#{bean.detailItem}" />
                         </p:commandLink>
                     </p:column>
-
                 </p:dataTable>
             </h:form>
         </p:dialog>

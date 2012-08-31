@@ -1,5 +1,6 @@
 package com.bee32.sem.inventory.web;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -85,6 +86,18 @@ public class StockQueryBean
 
     public StockOrderItemDto getSelectedItem() {
         return selectedItem;
+    }
+
+    public BigDecimal getTotalQuantity() {
+        BigDecimal totalQuantity = new BigDecimal(0);
+        if(resultList != null) {
+            List<StockOrderItemDto> resultItems = resultList.getItems();
+            for(StockOrderItemDto item : resultItems) {
+                totalQuantity = totalQuantity.add(item.getQuantity());
+            }
+        }
+
+        return totalQuantity;
     }
 
     public void setSelectedItem(StockOrderItemDto selectedItem) {

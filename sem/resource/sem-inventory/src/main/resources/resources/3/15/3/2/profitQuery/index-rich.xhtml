@@ -44,7 +44,7 @@
             <p:dataTable id="result" value="#{bean.result}" var="entry" resizableColumns="true"
                 rowIndexVar="rowIndex">
 
-                <p:column headerText="序号">
+                <p:column headerText="序号" style="text-align:right">
                     <h:outputText value="#{rowIndex + 1}" />
                 </p:column>
 
@@ -78,25 +78,25 @@
                     <h:outputText value="#{entry[7]}" />
                 </p:column>
 
-                <p:column headerText="成本价">
+                <p:column headerText="成本价" style="text-align:right">
                     <h:outputText value="#{entry[8]}" >
                         <f:convertNumber pattern="#0.00"/>
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="销售价">
+                <p:column headerText="销售价" style="text-align:right">
                     <h:outputText value="#{entry[9]}" >
                         <f:convertNumber pattern="#0.00"/>
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="数量">
+                <p:column headerText="数量" style="text-align:right">
                     <h:outputText value="#{entry[10]}" >
                         <f:convertNumber pattern="#0"/>
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="利润">
+                <p:column headerText="利润" style="text-align:right">
                     <h:outputText value="#{entry[11]}" >
                         <f:convertNumber pattern="#0.00"/>
                     </h:outputText>
