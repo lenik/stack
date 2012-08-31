@@ -204,6 +204,10 @@ public final class StockQueryOptions
         return priceVisible;
     }
 
+    public void setPriceVisible(boolean priceVisible) {
+        this.priceVisible = priceVisible;
+    }
+
     public Integer getLocation() {
         return locationId;
     }
@@ -278,7 +282,7 @@ public final class StockQueryOptions
     }
 
     public GroupPropertyProjection getPriceProjection() {
-        if (isAnyBatchVisible())
+        if (isPriceVisible())
             return new GroupPropertyProjection("price");
         else
             return null;

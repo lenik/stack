@@ -78,7 +78,7 @@
                     <hr />
 
                     分组选项：
-                    <h:panelGrid columns="6">
+                    <h:panelGrid columns="10">
                         <h:panelGroup>
                             <p:selectBooleanCheckbox value="${dialogBean.queryOptions.batch0Visible}" />
                             ${batchMetadata.labels[0]}
@@ -107,6 +107,11 @@
                         <h:panelGroup rendered="${batchMetadata.arraySize >= 5}">
                             <p:selectBooleanCheckbox value="${dialogBean.queryOptions.batch5Visible}" />
                             ${batchMetadata.labels[5]}
+                        </h:panelGroup>
+
+                        <h:panelGroup>
+                            <p:selectBooleanCheckbox value="${dialogBean.queryOptions.priceVisible}" />
+                            价格
                         </h:panelGroup>
                     </h:panelGrid>
 

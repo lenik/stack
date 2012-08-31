@@ -75,8 +75,10 @@ public class StockQuery
             StockWarehouse _warehouse = null;
             StockWarehouse _parentWarehouse = null;
 
-            if (options.isAnyBatchVisible()) {
+            if (options.isPriceVisible()) {
                 _price = (MCValue) line[_column++];
+            }
+            if (options.isAnyBatchVisible()) {
                 _expire = (Date) line[_column++];
             }
             if (options.isLocationVisible()) {
@@ -110,9 +112,10 @@ public class StockQuery
             EntityAccessor.setVersion(item, -1); // A negative version will be skipped in DTO.
             item.setMaterial(_material);
             item.setQuantity(_quantity);
+            if (options.isPriceVisible())
+                item.setPrice(_price);
             if (options.isAnyBatchVisible()) {
                 item.setBatchArray(_batchArray);
-                item.setPrice(_price);
                 item.setExpirationDate(_expire);
             }
             if (options.isWarehouseVisible())

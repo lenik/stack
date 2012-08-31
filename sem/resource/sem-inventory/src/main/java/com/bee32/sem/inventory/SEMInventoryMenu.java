@@ -39,6 +39,7 @@ public class SEMInventoryMenu
     /*    */MenuNode __1 = _separator_(INVENTORY, 100);
     /*    */MenuNode stockQuery = entry(INVENTORY, 110, "stockQuery", __.join("query/"));
     /*    */MenuNode unqualifiedQuery = entry(INVENTORY, 120, "unqualifiedQuery", __.join("unqualifiedQuery/"));
+    /*    */MenuNode profitQuery = entry(INVENTORY, 130, "profitQuery", __.join("profitQuery/"));
     /*    */MenuNode __2 = _separator_(INVENTORY, 999);
 
     public MenuNode SETTINGS = menu(INVENTORY, 1000, "SETTINGS");
