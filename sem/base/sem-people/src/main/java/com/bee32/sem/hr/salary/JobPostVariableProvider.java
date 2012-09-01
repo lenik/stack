@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.api.AbstractSalaryVariableProvider;
-import com.bee32.sem.hr.dto.EmployeeInfoDto;
-import com.bee32.sem.hr.dto.JobPostDto;
+import com.bee32.sem.hr.entity.EmployeeInfo;
+import com.bee32.sem.hr.entity.JobPost;
 
 public class JobPostVariableProvider
         extends AbstractSalaryVariableProvider {
@@ -15,8 +15,8 @@ public class JobPostVariableProvider
     @Override
     public BigDecimal evaluate(TextMap args, String variableName) {
         if (variableName.equals("岗位补贴")) {
-            EmployeeInfoDto employee = (EmployeeInfoDto) args.get(ARG_EMPLOYEE);
-            JobPostDto role = employee.getRole();
+            EmployeeInfo employee = (EmployeeInfo) args.get(ARG_EMPLOYEE);
+            JobPost role = employee.getRole();
             if (role == null)
                 return BigDecimal.ZERO;
             else

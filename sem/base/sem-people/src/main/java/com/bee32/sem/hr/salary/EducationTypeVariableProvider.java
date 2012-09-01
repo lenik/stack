@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.api.AbstractSalaryVariableProvider;
-import com.bee32.sem.hr.dto.EmployeeInfoDto;
-import com.bee32.sem.hr.dto.PersonEducationTypeDto;
+import com.bee32.sem.hr.entity.EmployeeInfo;
+import com.bee32.sem.hr.entity.PersonEducationType;
 
 public class EducationTypeVariableProvider
         extends AbstractSalaryVariableProvider {
@@ -24,8 +24,8 @@ public class EducationTypeVariableProvider
 // return null;
 
         if (variableName.equals("学历补贴")) {
-            EmployeeInfoDto employee = (EmployeeInfoDto) args.get(ARG_EMPLOYEE);
-            PersonEducationTypeDto education = employee.getEducation();
+            EmployeeInfo employee = (EmployeeInfo) args.get(ARG_EMPLOYEE);
+            PersonEducationType education = employee.getEducation();
             if (education == null)
                 return BigDecimal.ZERO;
             else
