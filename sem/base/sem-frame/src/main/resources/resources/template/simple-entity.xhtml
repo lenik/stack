@@ -243,6 +243,8 @@
                             <p:selectBooleanCheckbox value="${bean.checkDuplicatesBeforeCreate}" />
                             避免重复
                         </h:panelGroup>
+                        <ui:insert name="editDialogButtons.left">
+                        </ui:insert>
                     </td>
                     <td align="right">
                         <h:panelGroup rendered="${bean.editing or not plainEditForm}">

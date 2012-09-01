@@ -23,6 +23,7 @@ public class SEMSalarySamples
     @Override
     protected void wireUp() {
 
+        def1.setOrder(1);
         def1.setCategory("基础工资");
         def1.setExpr("@基础工资");
         def1.setOrder(0);
@@ -31,6 +32,7 @@ public class SEMSalarySamples
         se1.setDef(def1);
         se1.setBonus(new BigDecimal(2000));
 
+        def2.setOrder(2);
         def2.setCategory("补贴");
         def2.setLabel("全勤奖");
         def2.setExpr("@基础工资");

@@ -25,7 +25,7 @@ public class EmployeeInfoDto
     boolean motorist;
     JobPostDto role;
     JobTitleDto title;
-//    JobPerformanceDto jobPerformance;
+// JobPerformanceDto jobPerformance;
     PersonEducationTypeDto education;
     int duty;
     int workAbility;
@@ -55,7 +55,7 @@ public class EmployeeInfoDto
         motorist = source.isMotorist();
         role = mref(JobPostDto.class, source.getRole());
         title = mref(JobTitleDto.class, source.getTitle());
-//        jobPerformance = mref(JobPerformanceDto.class, source.getJobPerformance());
+// jobPerformance = mref(JobPerformanceDto.class, source.getJobPerformance());
         education = mref(PersonEducationTypeDto.class, source.getEducation());
         duty = source.getDuty();
         workAbility = source.getWorkAbility();
@@ -83,8 +83,10 @@ public class EmployeeInfoDto
         target.setBaseSalary(baseSalary);
         target.setMotorist(motorist);
         merge(target, "role", role);
-        merge(target, "title", title);
-//        merge(target, "jobPerformance", jobPerformance);
+        if (title.getId() != -1)
+            merge(target, "title", title);
+        if (education.getId() != -1)
+            merge(target, "education", education);
         target.setDuty(duty);
         target.setWorkAbility(workAbility);
         target.setEmployedDate(employedDate);
@@ -144,13 +146,13 @@ public class EmployeeInfoDto
         this.title = title;
     }
 
-//    public JobPerformanceDto getJobPerformance() {
-//        return jobPerformance;
-//    }
+// public JobPerformanceDto getJobPerformance() {
+// return jobPerformance;
+// }
 //
-//    public void setJobPerformance(JobPerformanceDto jobPerformance) {
-//        this.jobPerformance = jobPerformance;
-//    }
+// public void setJobPerformance(JobPerformanceDto jobPerformance) {
+// this.jobPerformance = jobPerformance;
+// }
 
     public PersonEducationTypeDto getEducation() {
         return education;

@@ -11,7 +11,8 @@ import com.bee32.plover.ox1.color.MomentInterval;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "salary_element_type_seq", allocationSize = 1)
 public class SalaryElementDef
-        extends MomentInterval {
+        extends MomentInterval
+        implements Comparable<SalaryElementDef> {
 
     private static final long serialVersionUID = 1L;
 
@@ -64,6 +65,18 @@ public class SalaryElementDef
 
     public void setTax(boolean tax) {
         this.tax = tax;
+    }
+
+    @Override
+    public int compareTo(SalaryElementDef o) {
+        if (o == null)
+            return -1;
+        int cmp = this.order - o.order;
+        if (cmp != 0)
+            return cmp;
+        int id1 = System.identityHashCode(this);
+        int id2 = System.identityHashCode(o);
+        return id1 - id2;
     }
 
 }

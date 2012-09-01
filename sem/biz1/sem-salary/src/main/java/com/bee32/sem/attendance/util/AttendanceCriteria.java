@@ -45,6 +45,6 @@ public class AttendanceCriteria
     }
 
     public static ICriteriaElement listEfficious(Date date) {
-        return conj(greaterOrEquals("begin_time", date));
+        return conj(greaterOrEquals("beginTime", date));
     }
 }

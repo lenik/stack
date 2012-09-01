@@ -60,7 +60,7 @@ public class EmployeeInfo
         motorist = o.motorist;
         role = o.role;
         title = o.title;
-//        jobPerformance = o.jobPerformance;
+// jobPerformance = o.jobPerformance;
         education = o.education;
         duty = o.duty;
         workAbility = o.workAbility;
@@ -129,14 +129,14 @@ public class EmployeeInfo
      *
      * @return
      */
-//    @ManyToOne
-//    public JobPerformance getJobPerformance() {
-//        return jobPerformance;
-//    }
+// @ManyToOne
+// public JobPerformance getJobPerformance() {
+// return jobPerformance;
+// }
 //
-//    public void setJobPerformance(JobPerformance jobPerformance) {
-//        this.jobPerformance = jobPerformance;
-//    }
+// public void setJobPerformance(JobPerformance jobPerformance) {
+// this.jobPerformance = jobPerformance;
+// }
 
     /**
      * 学历

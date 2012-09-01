@@ -10,12 +10,6 @@ import javax.free.Pair;
 
 public class SalaryDateUtil {
 
-    public static Date getTestDate() {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.MONTH, 6);
-        return cal.getTime();
-    }
-
     public static Pair<Date, Date> toDayRange(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
@@ -80,6 +74,13 @@ public class SalaryDateUtil {
 
     public static String getDayString(Date date) {
         return new SimpleDateFormat("yyyy年MM月dd日").format(date);
+    }
+
+    public static Pair<Integer, Integer> getYearAndMonth(Date date) {
+        String tmp = getDateString(date);
+        int year = Integer.parseInt(tmp.substring(0, 4));
+        int month = Integer.parseInt(tmp.substring(5, 7));
+        return new Pair<Integer, Integer>(year, month);
     }
 
 }

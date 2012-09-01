@@ -2,33 +2,33 @@ package com.bee32.sem.salary.salary;
 
 import java.io.Serializable;
 
-import com.bee32.sem.hr.dto.EmployeeInfoDto;
-
 public class SalaryDefPreview
         implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    EmployeeInfoDto employee;
-    Object previewValue;
 
-    public SalaryDefPreview(EmployeeInfoDto employee, Object previewValue) {
+    String employee;
+    Number previewValue;
+
+    public SalaryDefPreview(String employee, Number previewValue) {
         this.employee = employee;
         this.previewValue = previewValue;
     }
 
-    public EmployeeInfoDto getEmployee() {
+    public String getEmployee() {
         return employee;
     }
 
-    public void setEmployee(EmployeeInfoDto employee) {
+    public void setEmployee(String employee) {
         this.employee = employee;
     }
 
-    public Object getPreviewValue() {
+    public Number getPreviewValue() {
         return previewValue;
     }
 
-    public void setPreviewValue(Object previewValue) {
+    public void setPreviewValue(Number previewValue) {
         this.previewValue = previewValue;
     }
+
 }

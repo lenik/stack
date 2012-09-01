@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.api.AbstractSalaryVariableProvider;
 import com.bee32.sem.api.ISalaryVariableProvider;
-import com.bee32.sem.hr.dto.EmployeeInfoDto;
+import com.bee32.sem.hr.entity.EmployeeInfo;
 
 public class BaseSalaryProvider
         extends AbstractSalaryVariableProvider {
@@ -15,7 +15,7 @@ public class BaseSalaryProvider
     @Override
     public BigDecimal evaluate(TextMap args, String variableName) {
         if (variableName.equals("基础工资")) {
-            EmployeeInfoDto employee = (EmployeeInfoDto) args.get(ISalaryVariableProvider.ARG_EMPLOYEE);
+            EmployeeInfo employee = (EmployeeInfo) args.get(ISalaryVariableProvider.ARG_EMPLOYEE);
             return employee.getBaseSalary();
         }
         return null;

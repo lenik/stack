@@ -18,7 +18,6 @@ public class SEMSalaryMenu
     public MenuNode SALARY = menu(HR, 70, "WAGEADMIN");
     /**/MenuNode salary = entry(SALARY, 1, "salary", prefix.join("salary/"));
     /**/MenuNode eventBonus = entry(SALARY, 2, "eventBonus", prefix.join("eventBonus/"));
-    /**/MenuNode expression = entry(SALARY, 4, "expression", prefix.join("expr/"));
     /**/MenuNode salaryDef = entry(SALARY, 3, "salaryDef", prefix.join("salaryDef"));
 
     public MenuNode ATTENDANCE = menu(HR, 71, "ATTENDANCE");

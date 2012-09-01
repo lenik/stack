@@ -4,16 +4,19 @@
     xmlns:sem="http://java.sun.com/jsf/composite/3/15" xmlns:fr="http://java.sun.com/jsf/composite/frame">
 
     <ui:param name="title" value="工资条目" />
-    <ui:param name="bean" value="${salaryAdmin}" />
+    <ui:param name="bean" value="${salaryAdminBean}" />
     <ui:param name="obj" value="${bean.openedObject}" />
 
     <ui:define name="toolbarContexts">
-        <t:panelGrid>
-            <p:calendar value="#{bean.targetDate}" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
-                showOn="button">
-                <p:ajax event="dateSelect" listener="#{bean.addDateRestriction}" update=":searchForm:searchFragments, ${_searchUpdates}" />
-            </p:calendar>
-        </t:panelGrid>
+        <p:calendar value="#{bean.targetDate}" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" showOn="button">
+            <p:ajax event="dateSelect" listener="#{bean.addDateRestriction}"
+                update=":searchForm:searchFragments, ${_searchUpdates}, :mainForm:gbutton, :mainForm:dbutton" />
+        </p:calendar>
+        <p:commandButton id="gbutton" value="生成${bean.targetYear}年${bean.targetMonth}工资" actionListener="${bean.generateSalary}"
+            update=":searchForm:searchFragments, ${_searchUpdates}, :mainForm:gbutton, :mainForm:dbutton" />
+        <p:commandButton id="dbutton" value="删除${bean.targetYear}年${bean.targetMonth}工资" actionListener="${bean.deleteSalary}"
+            update=":searchForm:searchFragments, ${_searchUpdates}, :mainForm:gbutton, :mainForm:dbutton" />
+        <p:separator />
     </ui:define>
 
     <ui:define name="dataColumns">
@@ -23,9 +26,12 @@
         <p:column headerText="员工">
             <h:outputText value="${entry.employee.person.name}" />
         </p:column>
-        <p:column headerText="工资（合计）">
-            <h:outputText value="${entry.elementString}" />
-        </p:column>
+        <p:columns value="${bean.columns}" var="column" columnIndexVar="colIndex">
+            <f:facet name="header">
+                <h:outputText value="${column.header}" />
+            </f:facet>
+            <h:outputText value="${entry.map[column.order]}" />
+        </p:columns>
     </ui:define>
 
     <ui:define name="editDialogContent">

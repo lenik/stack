@@ -2,40 +2,37 @@ package com.bee32.sem.salary.web;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
+import java.util.Map;
 
 import org.springframework.expression.AccessException;
 import org.springframework.expression.BeanResolver;
 import org.springframework.expression.EvaluationContext;
+import org.springframework.expression.EvaluationException;
 import org.springframework.expression.Expression;
+import org.springframework.expression.ParseException;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.faces.utils.SelectableList;
 import com.bee32.sem.api.ISalaryVariableProvider;
 import com.bee32.sem.api.SalaryVariableProviders;
-import com.bee32.sem.attendance.util.AttendanceCriteria;
-import com.bee32.sem.hr.dto.EmployeeInfoDto;
 import com.bee32.sem.hr.entity.EmployeeInfo;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.salary.dto.SalaryElementDefDto;
 import com.bee32.sem.salary.entity.SalaryElementDef;
 import com.bee32.sem.salary.expr.ChineseCodec;
 import com.bee32.sem.salary.salary.SalaryDefPreview;
-import com.bee32.sem.salary.util.ColumnModel;
 
 public class SalaryDefAdminBean
         extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
-    List<EmployeeInfoDto> allEmp;
-    private List<ColumnModel> columns = new ArrayList<ColumnModel>();
     List<SalaryDefPreview> previewData;
     Date generateDate;
 
@@ -43,75 +40,70 @@ public class SalaryDefAdminBean
         super(SalaryElementDef.class, SalaryElementDefDto.class, 0);
     }
 
-    public void updateColumns() {
-        UIComponent table = FacesContext.getCurrentInstance().getViewRoot().findComponent("expr");
-        table.setValueExpression("stortBy", null);
-        createDynamicColumns();
+    public List<SalaryDefPreview> getPreviewData() {
+        List<SalaryDefPreview> list = previewData;
+        if (list == null)
+            list = Collections.emptyList();
+        return SelectableList.decorate(list);
     }
 
-    public void createDynamicColumns() {
-        String[] columnKeys = { "" };
-        columns.clear();
-        for (String key : columnKeys) {
-            String columnKey = key.trim();
-            columns.add(new ColumnModel(columnKey, key));
-        }
-
-    }
-
-    public Object getPreviewData() {
+    public boolean updatePreviewDate() {
+        SalaryElementDefDto def = (SalaryElementDefDto) getOpenedObject();
 
         previewData = new ArrayList<SalaryDefPreview>();
-        allEmp = mrefList(EmployeeInfo.class, EmployeeInfoDto.class, 0);
+        List<EmployeeInfo> employeeList = DATA(EmployeeInfo.class).list();
 
-        SalaryElementDefDto def = (SalaryElementDefDto) getOpenedObject();
-        if (def != null) {
-            String expression = def.getExpr();
-            String encode = ChineseCodec.encode(expression);
+        String expression = def.getExpr();
+        String encode = ChineseCodec.encode(expression);
 
-            HashMap<String, Object> map = new HashMap<String, Object>();
+        for (EmployeeInfo employee : employeeList) {
 
-            for (EmployeeInfoDto employee : allEmp) {
-                map.put(ISalaryVariableProvider.ARG_EMPLOYEE, employee);
-                final TextMap args = new TextMap(map);
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put(ISalaryVariableProvider.ARG_EMPLOYEE, employee);
+            final TextMap args = new TextMap(map);
 
-                StandardEvaluationContext context = new StandardEvaluationContext();
-                BeanResolver resolver = new BeanResolver() {
+            StandardEvaluationContext context = new StandardEvaluationContext();
+            BeanResolver resolver = new BeanResolver() {
 
-                    @Override
-                    public Object resolve(EvaluationContext context, String beanName)
-                            throws AccessException {
+                @Override
+                public Object resolve(EvaluationContext context, String beanName)
+                        throws AccessException {
 
-                        beanName = ChineseCodec.decode(beanName);
-                        for (ISalaryVariableProvider provider : SalaryVariableProviders.getProviders()) {
-                            BigDecimal bonus = provider.evaluate(args, beanName);
-// System.out.printf("%s: %s -> %s\n", beanName, provider, bonus);
-                            if (bonus != null)
-                                return bonus.doubleValue();
-                        }
-                        return 0.0;
+                    beanName = ChineseCodec.decode(beanName);
+                    for (ISalaryVariableProvider provider : SalaryVariableProviders.getProviders()) {
+                        BigDecimal bonus = provider.evaluate(args, beanName);
+                        // System.out.printf("%s: %s -> %s\n", beanName, provider, bonus);
+                        if (bonus != null)
+                            return bonus.doubleValue();
                     }
-                };
-                context.setBeanResolver(resolver);
+                    return 0.0;
+                }
+            };
+            context.setBeanResolver(resolver);
 
-                SpelExpressionParser parser = new SpelExpressionParser();
-                Expression expr = parser.parseExpression(encode);
-                Object result = expr.getValue(context);
+            SpelExpressionParser parser = new SpelExpressionParser();
+            Expression expr = null;
+            Number result = null;
 
-                previewData.add(new SalaryDefPreview(employee, result));
+            try {
+                expr = parser.parseExpression(encode);
+            } catch (ParseException e) {
+                uiLogger.error("表达式非法", e);
+                return false;
             }
-        }
-        return previewData;
-    }
 
-    public void generateSalary() {
-        allEmp = mrefList(EmployeeInfo.class, EmployeeInfoDto.class, 0);
-        List<SalaryElementDefDto> efficacious = mrefList(SalaryElementDef.class, SalaryElementDefDto.class, 0,
-                AttendanceCriteria.listEfficious(generateDate));
-        for (SalaryElementDefDto def : efficacious) {
-            // TODO
+            try {
+                result = (Number) expr.getValue(context);
+            } catch (EvaluationException e) {
+                uiLogger.error("无法对表达式求值", e);
+                return false;
+            }
+
+            String label = employee.getPerson().getLabel();
+            previewData.add(new SalaryDefPreview(label, result));
         }
 
+        return true;
     }
 
     public List<ISalaryVariableProvider> getProviders() {

@@ -60,6 +60,7 @@ public class SalaryElementDefDto
     }
 
     public void setExpr(String expr) {
+        System.err.println("EXPR="+expr);
         this.expr = expr;
     }
 
