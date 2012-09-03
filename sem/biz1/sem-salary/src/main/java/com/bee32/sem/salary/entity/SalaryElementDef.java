@@ -74,6 +74,17 @@ public class SalaryElementDef
         int cmp = this.order - o.order;
         if (cmp != 0)
             return cmp;
+
+        if (label != o.label) {
+            if (label == null)
+                return -1;
+            if (o.label == null)
+                return 1;
+            cmp = label.compareTo(o.label);
+            if (cmp != 0)
+                return cmp;
+        }
+
         int id1 = System.identityHashCode(this);
         int id2 = System.identityHashCode(o);
         return id1 - id2;

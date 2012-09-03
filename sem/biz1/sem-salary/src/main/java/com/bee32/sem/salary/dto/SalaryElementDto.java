@@ -81,8 +81,21 @@ public class SalaryElementDto
         int cmp = this.def.order - o.def.order;
         if (cmp != 0)
             return cmp;
-        int id1 = System.identityHashCode(this);
-        int id2 = System.identityHashCode(o);
+
+        String label1 = def.getLabel();
+        String label2 = o.def.getLabel();
+        if (label1 != label2) {
+            if (label1 == null)
+                return -1;
+            if (label2 == null)
+                return 1;
+            cmp = label1.compareTo(label2);
+            if (cmp != 0)
+                return cmp;
+        }
+
+        int id1 = System.identityHashCode(this.def);
+        int id2 = System.identityHashCode(o.def);
         return id1 - id2;
     }
 
