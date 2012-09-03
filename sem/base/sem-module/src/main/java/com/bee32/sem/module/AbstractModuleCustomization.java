@@ -35,6 +35,18 @@ public abstract class AbstractModuleCustomization
         this.moduleTitle = module.getAppearance().getDisplayName();
     }
 
+    protected static String qualify(String module, String section, String name) {
+        return module + "." + section + "." + name;
+    }
+
+    protected String qualify(String section, String name) {
+        return moduleName + "." + section + "." + name;
+    }
+
+    protected String qualifyTerm(TermMetadata term) {
+        return qualify("term", term.getName());
+    }
+
     @Override
     public void configForm(SiteInstance site, SimpleForm form) {
         form.section(moduleName, moduleTitle);
@@ -42,7 +54,7 @@ public abstract class AbstractModuleCustomization
         ITermProvider termProvider = getTermProvider();
         Map<String, TermMetadata> termMap = termProvider.getTermMap();
         for (TermMetadata term : termMap.values()) {
-            String inputName = moduleName + ".term." + term.getName();
+            String inputName = qualifyTerm(term);
             String labelTip = "术语 " + term.getLabel() + " 重写为:" + term.getDescription();
             String termLabel = termProvider.getTermLabel(site, term.getName());
             form.addEntry(inputName, labelTip, termLabel);
@@ -54,7 +66,7 @@ public abstract class AbstractModuleCustomization
         ITermProvider termProvider = getTermProvider();
         Map<String, TermMetadata> termMap = termProvider.getTermMap();
         for (TermMetadata metadata : termMap.values()) {
-            String inputName = moduleName + ".term." + metadata.getName();
+            String inputName = qualifyTerm(metadata);
 
             String termLabel = args.getString(inputName);
             if (termLabel != null) {

@@ -3,12 +3,16 @@ package com.bee32.sem.inventory.dto;
 import java.util.Date;
 import java.util.List;
 
+import javax.free.Dates;
 import javax.free.IllegalUsageException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.entity.EntityUtil;
+import com.bee32.plover.servlet.util.ThreadHttpContext;
+import com.bee32.plover.site.SiteInstance;
+import com.bee32.sem.inventory.SEMInventoryCustomization;
 import com.bee32.sem.inventory.entity.AbstractStockOrder;
 import com.bee32.sem.inventory.entity.StockItemState;
 import com.bee32.sem.inventory.entity.StockOrderItem;
@@ -104,8 +108,24 @@ public class StockOrderItemDto
     }
 
     @Override
-    public void setEnclosingObject(StockOrderDto enclosingObject) {
-        setParent(enclosingObject);
+    public void setEnclosingObject(StockOrderDto order) {
+        setParent(order);
+
+        boolean inputNew = false;
+        StockOrderSubject subject = order.getSubject();
+        if (subject.equals(StockOrderSubject.TAKE_IN))
+            inputNew = true;
+        if (subject.equals(StockOrderSubject.FACTORY_IN))
+            inputNew = true;
+
+        if (inputNew) {
+            SiteInstance site = ThreadHttpContext.getSiteInstance();
+            Boolean autoBatch = site.getBooleanProperty(SEMInventoryCustomization.AUTO_BATCH_KEY);
+            if (autoBatch == Boolean.TRUE) {
+                String date = Dates.YYYY_MM_DD.format(new Date());
+                batchArray.setBatch0(date);
+            }
+        }
     }
 
     public StockOrderDto getParent() {
@@ -183,15 +203,15 @@ public class StockOrderItemDto
     }
 
     public char getStateChar() {
-	return state.getValue();
+        return state.getValue();
     }
 
-	public void setStateChar(char stateChar) {
-	this.stateChar = stateChar;
-	state = StockItemState.forValue(stateChar);
+    public void setStateChar(char stateChar) {
+        this.stateChar = stateChar;
+        state = StockItemState.forValue(stateChar);
     }
 
-	public String getStateText() {
+    public String getStateText() {
         return state.getDisplayName();
     }
 

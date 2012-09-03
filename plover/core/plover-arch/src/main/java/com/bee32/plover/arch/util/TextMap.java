@@ -82,6 +82,17 @@ public class TextMap
     }
 
     @Override
+    public boolean getBoolean(String key) {
+        Object val = get(key);
+        if (val == null)
+            return false;
+        if ("1".equals(val) || "true".equals(val))
+            return true;
+        else
+            return false;
+    }
+
+    @Override
     public Date getDate(String key, Date defaultValue) {
         String s = getString(key);
         if (s == null)

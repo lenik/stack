@@ -99,8 +99,8 @@ public class FormEntry
         } else if (value instanceof Boolean) {
             input = out.input().name(inputName).type("checkbox").value("1");
             Boolean bval = (Boolean) value;
-            if (bval)
-                input.selected("selected");
+            if (bval == Boolean.TRUE)
+                input.checked("true");
 
         } else if (value instanceof Enum<?>) { // select<option> name() -> label.
             Class<? extends Enum<?>> enumClass = (Class<? extends Enum<?>>) value.getClass();

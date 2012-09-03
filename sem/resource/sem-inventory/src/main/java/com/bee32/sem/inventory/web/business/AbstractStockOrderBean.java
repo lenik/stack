@@ -81,6 +81,9 @@ public abstract class AbstractStockOrderBean
 
     }
 
+    /**
+     * @return Whether stepping is used (ie. add the job to the friend list).
+     */
     protected abstract boolean configJobStepping(StockJobStepping stepping);
 
     public StockJobStepping getJob() {

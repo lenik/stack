@@ -31,7 +31,7 @@ public final class StockOrderSubject
     static final Set<String> virtualOnlySet = new HashSet<String>();
     static final Set<String> commonSet = new HashSet<String>();
 
-    StockOrderSubject(String value, String name, int flags) {
+    private StockOrderSubject(String value, String name, int flags) {
         super(value, name);
         this.negative = (flags & NEGATIVE) != 0;
         this.virtual = (flags & VIRTUAL) != 0;

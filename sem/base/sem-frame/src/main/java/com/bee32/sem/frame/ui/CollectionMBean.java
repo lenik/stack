@@ -59,10 +59,12 @@ public abstract class CollectionMBean<T>
             throw new CreateException(e.getMessage(), e);
         }
 
-        if (obj instanceof BaseDto<?>) {
-            BaseDto<?> dto = (BaseDto<?>) obj;
+        BaseDto<?> dto = null;
+        if (obj instanceof BaseDto<?>)
+            dto = (BaseDto<?>) obj;
+
+        if (dto != null)
             dto.create();
-        }
 
         if (context != null && obj instanceof IEnclosedObject) {
             @SuppressWarnings("unchecked")
@@ -76,6 +78,7 @@ public abstract class CollectionMBean<T>
                 logger.warn("Failed to cast enclosing object.");
             }
         }
+
         return obj;
     }
 
