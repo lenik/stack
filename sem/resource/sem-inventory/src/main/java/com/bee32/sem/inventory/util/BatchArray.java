@@ -24,8 +24,9 @@ public class BatchArray
     public static final int BATCH2_LENGTH = 20;
     public static final int BATCH3_LENGTH = 20;
     public static final int BATCH4_LENGTH = 20;
+    public static final int BATCH5_LENGTH = 20;
 
-    public static final int MAX_ARRAYSIZE = 5;
+    public static final int MAX_ARRAYSIZE = 6;
     final String[] array;
 
     public BatchArray() {
@@ -116,6 +117,17 @@ public class BatchArray
 
     public void setBatch4(String batch4) {
         setBatch(4, batch4);
+    }
+
+    @Column(length = BATCH5_LENGTH)
+    @Index(name = "##_batch5")
+    @NLength(max = BATCH5_LENGTH)
+    public String getBatch5() {
+        return getBatch(5);
+    }
+
+    public void setBatch5(String batch5) {
+        setBatch(5, batch5);
     }
 
     @Transient
