@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.free.Pair;
+import javax.free.TypeMatrix_BigDecimal;
 
 import org.springframework.expression.AccessException;
 import org.springframework.expression.BeanResolver;
@@ -109,7 +110,7 @@ public class SalaryAdminBean
                 BeanResolver resolver = new BeanResolver() {
 
                     @Override
-                    public Object resolve(EvaluationContext context, String beanName)
+                    public Double resolve(EvaluationContext context, String beanName)
                             throws AccessException {
 
                         beanName = ChineseCodec.decode(beanName);
@@ -125,12 +126,13 @@ public class SalaryAdminBean
 
                 SpelExpressionParser parser = new SpelExpressionParser();
                 Expression expr = parser.parseExpression(ChineseCodec.encode(expression));
-                double result = (Double) expr.getValue(context);
+                Object result = expr.getValue(context);
+                BigDecimal value = TypeMatrix_BigDecimal.fromObject(result);
 
                 SalaryElement element = new SalaryElement();
                 element.setParent(salary);
                 element.setDef(def);
-                element.setBonus(new BigDecimal(result));
+                element.setBonus(value);
                 elements.add(element);
                 salary.setElements(elements);
 
@@ -164,12 +166,14 @@ public class SalaryAdminBean
     }
 
     void changeTargetDate() {
+
         Pair<Integer, Integer> yearAndMonth = SalaryDateUtil.getYearAndMonth(targetDate);
         targetYear = yearAndMonth.getFirst();
         targetMonth = yearAndMonth.getSecond();
     }
 
     void genericColumns() {
+
         List<SalaryElementDef> effectiveDefs = DATA(SalaryElementDef.class).list();
         Collections.sort(effectiveDefs);
         for (SalaryElementDef def : effectiveDefs) {
