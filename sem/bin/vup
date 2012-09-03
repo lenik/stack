@@ -1,0 +1,14 @@
+#!/bin/bash
+
+f=src/main/resources/META-INF/version
+
+vcscmd update
+
+cd /home/semop/tasks/521-sem/base/sem-frame
+
+echo 1.1 >$f
+
+read LINES WORDS CHARS < <(vcscmd log-graph | wc)
+echo $LINES >>$f
+
+cat $f

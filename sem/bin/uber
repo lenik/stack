@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+
+if [ "$1" = "-a" ]; then
+    rm -frv .lib/plover/plover-arch
+    rm -frv .lib/plover/plover-servlet
+    rm -frv .lib/plover/plover-facelets
+    rm -frv .lib/plover/plover-orm
+    rm -frv .lib/plover/plover-ox1
+    rm -frv .lib/icsf/icsf-acl
+    rm -frv .lib/sem
+
+    git pull --rebase
+
+    cd /mnt/istore/projects/stack/plover/parent
+    coolmvn install
+
+    cd /mnt/istore/projects/stack/sem
+    coolmvn clean
+    coolmvn install -fn -Dmaven.test.skip=true
+fi
+
+cd /mnt/istore/projects/stack/sem
+exec screen -h 10000 run-server uber

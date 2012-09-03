@@ -1,0 +1,9 @@
+#!/bin/bash
+
+sed -i \
+    -e 's/SQL/sql/' \
+    -e 's/MEDIUM/medium/' \
+    -e 's/PostgreSQL/postgresql/' \
+    -e 's/Update/update/' \
+    -e 's/STANDARD/standard/' \
+    "$1"

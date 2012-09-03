@@ -74,7 +74,6 @@
 
                 <h:outputText value="对应公司或人员*：" onclick="${obj.org.clickAction}" />
                 <t:panelGroup>
-                    Page: ${obj.org.clickAction}
                     <p:inputText id="party" label="对应公司或人员" value="${obj.org.displayName}" readonly="true" />
                     <p:commandButton value="..." oncomplete="choosePartyDialog.show()" />
                 </t:panelGroup>
