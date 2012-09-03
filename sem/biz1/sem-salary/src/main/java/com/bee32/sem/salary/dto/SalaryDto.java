@@ -2,7 +2,6 @@ package com.bee32.sem.salary.dto;
 
 import java.math.BigDecimal;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.free.NotImplementedException;
@@ -24,7 +23,6 @@ public class SalaryDto
     int month;
     EmployeeInfoDto employee;
     List<SalaryElementDto> elements;
-    HashMap<Integer, BigDecimal> map;
 
     @Override
     protected void _marshal(Salary source) {
@@ -32,16 +30,11 @@ public class SalaryDto
         month = source.getMonth();
         employee = mref(EmployeeInfoDto.class, source.getEmployee());
 
-        if (selection.contains(ELEMENTS))
-            elements = mrefList(SalaryElementDto.class, source.getElements());
-        else
-            elements = Collections.emptyList();
-
         if (selection.contains(ELEMENTS)) {
-            map = new HashMap<Integer, BigDecimal>();
-            for (SalaryElementDto element : elements)
-                map.put(element.getDef().getOrder(), element.getBonus());
-        }
+            elements = mrefList(SalaryElementDto.class, source.getElements());
+            Collections.sort(elements);
+        } else
+            elements = Collections.emptyList();
     }
 
     @Override
@@ -95,13 +88,6 @@ public class SalaryDto
 
     public void setElements(List<SalaryElementDto> elements) {
         this.elements = elements;
-    }
-
-    public HashMap<Integer, BigDecimal> getMap() {
-        if (map == null)
-            return new HashMap<Integer, BigDecimal>();
-        else
-            return map;
     }
 
     public BigDecimal getTotal() {

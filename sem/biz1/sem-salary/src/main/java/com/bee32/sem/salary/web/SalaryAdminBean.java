@@ -14,7 +14,9 @@ import javax.free.TypeMatrix_BigDecimal;
 import org.springframework.expression.AccessException;
 import org.springframework.expression.BeanResolver;
 import org.springframework.expression.EvaluationContext;
+import org.springframework.expression.EvaluationException;
 import org.springframework.expression.Expression;
+import org.springframework.expression.ParseException;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
@@ -55,8 +57,8 @@ public class SalaryAdminBean
     }
 
     public void addDateRestriction() {
-//        setSearchFragment("yearmonth", "限定工资为" + targetYear + "年" + targetMonth + "月",
-//                SalaryCriteria.listSalaryByYearAndMonth(targetYear, targetMonth));
+// setSearchFragment("yearmonth", "限定工资为" + targetYear + "年" + targetMonth + "月",
+// SalaryCriteria.listSalaryByYearAndMonth(targetYear, targetMonth));
         changeTargetDate();
     }
 
@@ -125,8 +127,20 @@ public class SalaryAdminBean
                 context.setBeanResolver(resolver);
 
                 SpelExpressionParser parser = new SpelExpressionParser();
-                Expression expr = parser.parseExpression(ChineseCodec.encode(expression));
-                Object result = expr.getValue(context);
+                Expression expr;
+                try {
+                    expr = parser.parseExpression(ChineseCodec.encode(expression));
+                } catch (ParseException e) {
+                    uiLogger.error("表达式非法", e);
+                    return false;
+                }
+                Object result;
+                try {
+                    result = (Number) expr.getValue(context);
+                } catch (EvaluationException e) {
+                    uiLogger.error("无法对表达式求值", e);
+                    return false;
+                }
                 BigDecimal value = TypeMatrix_BigDecimal.fromObject(result);
 
                 SalaryElement element = new SalaryElement();
@@ -177,7 +191,8 @@ public class SalaryAdminBean
         List<SalaryElementDef> effectiveDefs = DATA(SalaryElementDef.class).list();
         Collections.sort(effectiveDefs);
         for (SalaryElementDef def : effectiveDefs) {
-            columns.add(new ColumnModel(def.getLabel() == null ? def.getCategory() : def.getLabel(), def.getOrder()));
+            int index = columns.size();
+            columns.add(new ColumnModel(def.getLabel() == null ? def.getCategory() : def.getLabel(), index));
         }
     }
 

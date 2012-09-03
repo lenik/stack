@@ -11,7 +11,7 @@ import com.bee32.sem.salary.entity.SalaryElement;
 
 public class SalaryElementDto
         extends UIEntityDto<SalaryElement, Long>
-        implements IEnclosedObject<SalaryDto> {
+        implements IEnclosedObject<SalaryDto>, Comparable<SalaryElementDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -72,6 +72,18 @@ public class SalaryElementDto
 
     public void setBonus(BigDecimal bonus) {
         this.bonus = bonus;
+    }
+
+    @Override
+    public int compareTo(SalaryElementDto o) {
+        if (o == null)
+            return -1;
+        int cmp = this.def.order - o.def.order;
+        if (cmp != 0)
+            return cmp;
+        int id1 = System.identityHashCode(this);
+        int id2 = System.identityHashCode(o);
+        return id1 - id2;
     }
 
 }

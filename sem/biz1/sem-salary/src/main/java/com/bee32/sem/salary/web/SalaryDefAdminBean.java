@@ -110,14 +110,22 @@ public class SalaryDefAdminBean
         return SalaryVariableProviders.getProviders();
     }
 
-    // all expression paramas for dynamic columns
-    List<String> getAllParams() {
-        List<String> keys = new ArrayList<String>();
-        for (ISalaryVariableProvider provider : getProviders()) {
-            for (String string : provider.getVariableNames())
-                keys.add(string);
+    @Override
+    protected boolean save(int saveFlags, String hint) {
+
+        SalaryElementDefDto def = (SalaryElementDefDto) getOpenedObject();
+        String expression = def.getExpr();
+        String encode = ChineseCodec.encode(expression);
+        SpelExpressionParser parser = new SpelExpressionParser();
+        Expression expr = null;
+        try {
+            expr = parser.parseExpression(encode);
+        } catch (ParseException e) {
+            uiLogger.error("表达式非法", e);
+            return false;
         }
-        return keys;
+
+        return super.save(saveFlags, hint);
     }
 
     public Date getGenerateDate() {
