@@ -60,12 +60,14 @@
     <ui:define name="dialogs">
         <p:dialog header="表达式关键词" widgetVar="dlg1">
             <ui:repeat var="provider" value="${bean.providers}">
-                <h:outputText value="${provider.entityType}" />
-                <br />
-                <ui:repeat var="key" value="${provider.variableNames}">
-                    <h:outputText value="${key}" style="color:red" />
-                    <br />
-                </ui:repeat>
+                <p>
+                    <h:outputText value="${provider.entityType}" />
+                    <ui:repeat var="key" value="${provider.variableNames}">
+                        <br />
+                        <p:spacer width="20" />
+                        <h:outputText value="${key}" style="color:red" />
+                    </ui:repeat>
+                </p>
             </ui:repeat>
             <p:commandButton value="关闭" onclick="dlg1.hide();" style="float:right" />
         </p:dialog>
