@@ -23,6 +23,7 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.api.ISalaryVariableProvider;
 import com.bee32.sem.api.SalaryVariableProviders;
+import com.bee32.sem.attendance.util.DefCriteria;
 import com.bee32.sem.attendance.util.SalaryCriteria;
 import com.bee32.sem.frame.ui.ELListMBean;
 import com.bee32.sem.frame.ui.ListMBean;
@@ -49,17 +50,17 @@ public class SalaryAdminBean
     List<ColumnModel> columns = new ArrayList<ColumnModel>();
 
     public SalaryAdminBean() {
-        super(Salary.class, SalaryDto.class, SalaryDto.ELEMENTS);
+        super(Salary.class, SalaryDto.class, SalaryDto.ELEMENTS, SalaryCriteria.listByDate(new Date()));
 
         changeTargetDate();
-
         genericColumns();
     }
 
     public void addDateRestriction() {
-// setSearchFragment("yearmonth", "限定工资为" + targetYear + "年" + targetMonth + "月",
-// SalaryCriteria.listSalaryByYearAndMonth(targetYear, targetMonth));
         changeTargetDate();
+
+        setSearchFragment("yearmonth", "限定工资为" + targetYear + "年" + targetMonth + "月",
+                SalaryCriteria.listSalaryByYearAndMonth(targetYear, targetMonth));
     }
 
     List<Salary> listSalary(int year, int month) {
@@ -84,7 +85,8 @@ public class SalaryAdminBean
         }
 
         List<EmployeeInfo> employeeList = DATA(EmployeeInfo.class).list();
-        List<SalaryElementDef> efficaciousDef = DATA(SalaryElementDef.class).list();
+        List<SalaryElementDef> efficaciousDef = DATA(SalaryElementDef.class).list(
+                DefCriteria.listEffectiveDef(targetDate));
 
         HashMap<String, Object> map = new HashMap<String, Object>();
         List<Salary> salarys = new ArrayList<Salary>();
@@ -188,7 +190,8 @@ public class SalaryAdminBean
 
     void genericColumns() {
 
-        List<SalaryElementDef> effectiveDefs = DATA(SalaryElementDef.class).list();
+        List<SalaryElementDef> effectiveDefs = DATA(SalaryElementDef.class).list(
+                DefCriteria.listEffectiveDef(targetDate));
         Collections.sort(effectiveDefs);
         for (SalaryElementDef def : effectiveDefs) {
             int index = columns.size();

@@ -7,7 +7,6 @@ import javax.free.Pair;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.criteria.hibernate.SqlRestriction;
 import com.bee32.sem.salary.util.SalaryDateUtil;
 
 public class AttendanceCriteria
@@ -40,11 +39,4 @@ public class AttendanceCriteria
         return equals("attendance", attendance);
     }
 
-    public static ICriteriaElement getSum(Date date) {
-        return new SqlRestriction("");
-    }
-
-    public static ICriteriaElement listEfficious(Date date) {
-        return conj(greaterOrEquals("beginTime", date));
-    }
 }
