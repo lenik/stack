@@ -30,7 +30,7 @@ import com.bee32.sem.salary.dto.SalaryElementDto;
 import com.bee32.sem.salary.entity.Salary;
 import com.bee32.sem.salary.entity.SalaryElement;
 import com.bee32.sem.salary.entity.SalaryElementDef;
-import com.bee32.sem.salary.expr.ChineseCodec;
+import com.bee32.sem.salary.util.ChineseCodec;
 import com.bee32.sem.salary.util.SalaryDateUtil;
 
 public class SalaryAdminBean
@@ -54,8 +54,8 @@ public class SalaryAdminBean
     }
 
     public void addDateRestriction() {
-        // setSearchFragment("date", "限定工资为" + SalaryDateUtil.getMonNum(targetDate) + "月份",
-        // AttendanceCriteria.getMonthList(targetDate));
+//        setSearchFragment("yearmonth", "限定工资为" + targetYear + "年" + targetMonth + "月",
+//                SalaryCriteria.listSalaryByYearAndMonth(targetYear, targetMonth));
         changeTargetDate();
     }
 

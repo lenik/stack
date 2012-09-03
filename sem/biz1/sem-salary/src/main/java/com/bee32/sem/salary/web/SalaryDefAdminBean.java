@@ -25,8 +25,8 @@ import com.bee32.sem.hr.entity.EmployeeInfo;
 import com.bee32.sem.misc.SimpleEntityViewBean;
 import com.bee32.sem.salary.dto.SalaryElementDefDto;
 import com.bee32.sem.salary.entity.SalaryElementDef;
-import com.bee32.sem.salary.expr.ChineseCodec;
 import com.bee32.sem.salary.salary.SalaryDefPreview;
+import com.bee32.sem.salary.util.ChineseCodec;
 
 public class SalaryDefAdminBean
         extends SimpleEntityViewBean {

@@ -24,6 +24,7 @@ import com.bee32.sem.hr.entity.JobPost;
 import com.bee32.sem.hr.entity.JobTitle;
 import com.bee32.sem.hr.entity.PersonEducationType;
 import com.bee32.sem.salary.SEMSalaryUnit;
+import com.bee32.sem.salary.util.ChineseCodec;
 
 @Using(SEMSalaryUnit.class)
 public class SimpleTest

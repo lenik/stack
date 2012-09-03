@@ -3,6 +3,8 @@ package com.bee32.sem.salary.expr;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.bee32.sem.salary.util.ChineseCodec;
+
 public class ChineseCoderTest
         extends Assert {
 
