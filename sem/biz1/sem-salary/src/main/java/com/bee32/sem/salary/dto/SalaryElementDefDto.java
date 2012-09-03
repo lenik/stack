@@ -5,7 +5,9 @@ import javax.free.ParseException;
 import org.bouncycastle.util.Strings;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.MomentIntervalDto;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.salary.entity.SalaryElementDef;
 
 public class SalaryElementDefDto
@@ -16,7 +18,6 @@ public class SalaryElementDefDto
     String category;
     int order;
     String expr;
-    boolean tax;
 
     @Override
     protected void _parse(TextMap map)
@@ -28,7 +29,6 @@ public class SalaryElementDefDto
         category = source.getCategory();
         order = source.getOrder();
         expr = source.getExpr();
-        tax = source.isTax();
     }
 
     @Override
@@ -36,7 +36,6 @@ public class SalaryElementDefDto
         target.setCategory(category);
         target.setOrder(order);
         target.setExpr(expr);
-        target.setTax(tax);
     }
 
     public String getCategory() {
@@ -55,21 +54,13 @@ public class SalaryElementDefDto
         this.order = order;
     }
 
+    @NLength(min = 1)
     public String getExpr() {
         return expr;
     }
 
     public void setExpr(String expr) {
-        System.err.println("EXPR="+expr);
-        this.expr = expr;
-    }
-
-    public boolean isTax() {
-        return tax;
-    }
-
-    public void setTax(boolean tax) {
-        this.tax = tax;
+        this.expr = TextUtil.normalizeSpace(expr);
     }
 
     public String getTitle() {
@@ -79,7 +70,7 @@ public class SalaryElementDefDto
             return category + "/" + getLabel();
     }
 
-    public void setTitle(String title){
+    public void setTitle(String title) {
         String[] split = Strings.split(title, '/');
         this.category = split[0];
         this.label = split[1];

@@ -1,5 +1,6 @@
 package com.bee32.sem.salary.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 
@@ -15,6 +16,8 @@ public class SalaryElementDef
         implements Comparable<SalaryElementDef> {
 
     private static final long serialVersionUID = 1L;
+
+    public static final int EXPRESSION_LENGTH = 200;
 
     String category;
     int order;
@@ -48,23 +51,13 @@ public class SalaryElementDef
     /**
      * 表达式
      */
+    @Column(nullable = false, length = EXPRESSION_LENGTH)
     public String getExpr() {
         return expr;
     }
 
     public void setExpr(String expr) {
         this.expr = expr;
-    }
-
-    /**
-     * 是否税前工资
-     */
-    public boolean isTax() {
-        return tax;
-    }
-
-    public void setTax(boolean tax) {
-        this.tax = tax;
     }
 
     @Override
