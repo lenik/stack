@@ -84,4 +84,15 @@ public class SalaryDateUtil {
         return new Pair<Integer, Integer>(year, month);
     }
 
+    public static int getFixedNumberOfYears(Date begin) {
+        Calendar c_begin = Calendar.getInstance();
+        Calendar c_now = Calendar.getInstance();
+        c_begin.setTime(begin);
+        int year_begin = c_begin.get(Calendar.YEAR);
+        int month_begin = c_begin.get(Calendar.MONTH);
+        int year_now = c_now.get(Calendar.YEAR);
+        int month_now = c_now.get(Calendar.MONTH);
+        return (year_now - year_begin) * 12 + month_now - month_begin;
+    }
+
 }

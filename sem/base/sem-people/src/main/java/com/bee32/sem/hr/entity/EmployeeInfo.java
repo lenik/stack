@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -20,24 +21,27 @@ import org.hibernate.annotations.DefaultValue;
 
 import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.color.UIEntityAuto;
+import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.people.entity.Person;
 
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "employee_info_seq", allocationSize = 1)
 public class EmployeeInfo
-        extends UIEntityAuto<Long> {
+        extends UIEntityAuto<Long>
+        implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
     Person person;
 
-    BigDecimal baseSalary = new BigDecimal(0);
+    BigDecimal baseSalary = BigDecimal.ZERO;
     boolean motorist;
     JobPost role; // =predefined(JobPosts.class);
     JobTitle title;
     PersonEducationType education;
     int duty;
     int workAbility;
+    BigDecimal pension = BigDecimal.ZERO;
 
     Date employedDate;
     Date resignedDate;
@@ -60,7 +64,6 @@ public class EmployeeInfo
         motorist = o.motorist;
         role = o.role;
         title = o.title;
-// jobPerformance = o.jobPerformance;
         education = o.education;
         duty = o.duty;
         workAbility = o.workAbility;
@@ -125,20 +128,6 @@ public class EmployeeInfo
     }
 
     /**
-     * 月度工作表现
-     *
-     * @return
-     */
-// @ManyToOne
-// public JobPerformance getJobPerformance() {
-// return jobPerformance;
-// }
-//
-// public void setJobPerformance(JobPerformance jobPerformance) {
-// this.jobPerformance = jobPerformance;
-// }
-
-    /**
      * 学历
      *
      * @return
@@ -176,6 +165,19 @@ public class EmployeeInfo
 
     public void setWorkAbility(int workAbility) {
         this.workAbility = workAbility;
+    }
+
+    /**
+     * 养老金persion
+     */
+    @DefaultValue("0")
+    @Column(nullable = false, scale = MONEY_ITEM_SCALE, precision = MONEY_ITEM_PRECISION)
+    public BigDecimal getPension() {
+        return pension;
+    }
+
+    public void setPension(BigDecimal pension) {
+        this.pension = pension;
     }
 
     /**

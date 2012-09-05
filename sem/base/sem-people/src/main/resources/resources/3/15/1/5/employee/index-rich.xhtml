@@ -39,14 +39,6 @@
             </h:outputText>
         </p:column>
 
-        <p:column headerText="证件类型">
-            <h:outputText value="#{entry.person.sidType.label}" />
-        </p:column>
-
-        <p:column headerText="证件号码">
-            <h:outputText value="#{entry.person.sid}" />
-        </p:column>
-
         <p:column headerText="户籍">
             <h:outputText value="#{entry.person.censusRegister}" />
         </p:column>
@@ -90,10 +82,10 @@
                 <f:selectItems value="#{dicts.jobPosts}" var="it" itemLabel="#{it.label}" itemValue="${it.id}" />
             </p:selectOneMenu>
 
+            <h:outputText value="养老金" />
+            <p:inputText value="${obj.pension}" />
             <h:outputText value="工作能力指数" />
-            <t:panelGroup colspan="3">
-                <p:inputText value="#{obj.workAbility}" />
-            </t:panelGroup>
+            <p:inputText value="#{obj.workAbility}" />
 
 
             <h:outputText value="员工技能" />
