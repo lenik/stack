@@ -9,6 +9,16 @@
     <version>0.3.2-SNAPSHOT</version>
     <dependencies>
         <dependency>
+            <groupId>com.bee32.sem</groupId>
+            <artifactId>sem-frame</artifactId>
+            <version>0.3.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bee32.icsf</groupId>
+            <artifactId>icsf-acl</artifactId>
+            <version>0.3.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-model</artifactId>
             <version>0.3.2-SNAPSHOT</version>
@@ -21,16 +31,6 @@
         <dependency>
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-restful</artifactId>
-            <version>0.3.2-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.bee32.icsf</groupId>
-            <artifactId>icsf-acl</artifactId>
-            <version>0.3.2-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.bee32.sem</groupId>
-            <artifactId>sem-frame</artifactId>
             <version>0.3.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
