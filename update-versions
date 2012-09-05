@@ -1,0 +1,10 @@
+#!/bin/bash
+
+me=$(readlink -f "$0")
+root="${me%/*}"
+
+cd "$root/plover"
+git-m2ver library/plover-servlet
+
+cd "$root/sem"
+git-m2ver base/sem-frame
