@@ -18,6 +18,7 @@ public class SalaryElementDef
 
     private static final long serialVersionUID = 1L;
 
+    public static final int CATEGORY_LENGTH = 100;
     public static final int EXPRESSION_LENGTH = 200;
 
     String category;
@@ -30,6 +31,7 @@ public class SalaryElementDef
      *
      * 如 `补贴`。
      */
+    @Column(length = CATEGORY_LENGTH)
     public String getCategory() {
         return category;
     }

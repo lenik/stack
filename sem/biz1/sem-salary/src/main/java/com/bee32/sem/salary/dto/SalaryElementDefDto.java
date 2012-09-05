@@ -38,12 +38,13 @@ public class SalaryElementDefDto
         target.setExpr(expr);
     }
 
+    @NLength(max = SalaryElementDef.CATEGORY_LENGTH)
     public String getCategory() {
         return category;
     }
 
     public void setCategory(String category) {
-        this.category = category;
+        this.category = TextUtil.normalizeSpace(category);
     }
 
     public int getOrder() {
@@ -54,7 +55,7 @@ public class SalaryElementDefDto
         this.order = order;
     }
 
-    @NLength(min = 1)
+    @NLength(min = 1, max = SalaryElementDef.EXPRESSION_LENGTH)
     public String getExpr() {
         return expr;
     }
