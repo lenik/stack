@@ -1,0 +1,46 @@
+<ui:composition template="/template/custom-rich.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+    xmlns:pc="http://bee32.com/plover/core">
+
+    <ui:define name="title">修订历史</ui:define>
+
+    <ui:define name="styles">
+        <link rel="stylesheet" type="text/css" href="changelog.css" />
+    </ui:define>
+
+    <ui:define name="content">
+
+        <h1>修订历史 (Rev. ${semVersion.release})</h1>
+
+        <ui:repeat var="ver" value="${semVersion.versionLog100}">
+            <p:fieldset styleClass="version">
+                <h2>
+                    SEM-${ver.version}
+                    <cite>
+                        [
+                        <ui:repeat var="a" value="${ver.authors}">
+                            ${a}
+                        </ui:repeat>
+                        ${ver.date}]
+                    </cite>
+                </h2>
+                <ul class="commits">
+                    <ui:repeat var="c" value="${ver.commits}">
+                        <li>${c}</li>
+                    </ui:repeat>
+                </ul>
+            </p:fieldset>
+        </ui:repeat>
+
+        <p:fieldset styleClass="version">
+            <h2>
+                更早的版本...
+            </h2>
+            <ul class="commits">
+                <li>请参考开发者日志。</li>
+            </ul>
+        </p:fieldset>
+
+    </ui:define>
+
+</ui:composition>

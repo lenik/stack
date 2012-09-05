@@ -1,0 +1,26 @@
+h1 {
+    color: green;
+    font-size: 1.5em;
+}
+
+.version {
+    margin: 1em 0;
+    background: none;
+    background-image: url('white-20.png');
+}
+
+.version  h2 {
+    color: green;
+    font-size: medium;
+}
+
+.version h2 cite {
+    color: gray;
+    font-size: small;
+    font-weight: normal;
+}
+
+.version .commits {
+    color: #440;
+    font-size: 1.2em;
+}
