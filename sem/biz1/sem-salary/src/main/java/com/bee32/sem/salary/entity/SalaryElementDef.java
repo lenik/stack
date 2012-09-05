@@ -3,6 +3,7 @@ package com.bee32.sem.salary.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import com.bee32.plover.ox1.color.MomentInterval;
 
@@ -35,6 +36,14 @@ public class SalaryElementDef
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    @Transient
+    public String getPath() {
+        if (category == null || category.isEmpty())
+            return getLabel();
+        else
+            return category + "/" + getLabel();
     }
 
     /**

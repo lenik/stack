@@ -1,31 +1,40 @@
 package com.bee32.sem.salary.util;
 
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class SalaryTreeNode
-        implements Serializable {
+public class SalaryTreeNode {
 
-    private static final long serialVersionUID = 1L;
+    SalaryTreeNode parent;
     String label;
+    List<SalaryTreeNode> children = new ArrayList<SalaryTreeNode>();
     int order;
-    List<SalaryTreeNode> children;
 
     public SalaryTreeNode getChild(String label) {
-        // TODO
+        for (SalaryTreeNode node : children) {
+            if (node.getLabel().equals(label))
+                return node;
+        }
         return null;
     }
 
     public SalaryTreeNode getParent() {
-        // TODO
-        return null;
+        return parent;
     }
 
-    public void addChild(SalaryTreeNode child) {
-        int child_order = child.getOrder();
-        if (child_order < this.order)
-            this.order = child_order;
+    public void setParent(SalaryTreeNode parent) {
+        this.parent = parent;
+    }
+
+    public boolean addChild(SalaryTreeNode child) {
+
+        for (SalaryTreeNode node : children)
+            if (node.getLabel().equals(child.getLabel()))
+                return false;
         children.add(child);
+        child.setParent(this);
+        return true;
     }
 
     public String getLabel() {
@@ -44,6 +53,19 @@ public class SalaryTreeNode
         this.order = order;
     }
 
+    public void updateOrder() {
+        int min = 0;
+        if (!children.isEmpty()) {
+            for (SalaryTreeNode child : children) {
+                child.updateOrder();
+                int order = child.getOrder();
+                if (min > order)
+                    min = order;
+            }
+            this.order = min;
+        }
+    }
+
     public List<SalaryTreeNode> getChildren() {
         return children;
     }
@@ -52,23 +74,56 @@ public class SalaryTreeNode
         this.children = children;
     }
 
-    @Override
-    public int hashCode() {
-        return super.hashCode();
+    public SalaryTreeNode resolve(String path) {
+        if (path.isEmpty())
+            return this;
+
+        String element = null;
+        String remaining = null;
+        int index = path.indexOf("/");
+        if (index >= 0) {
+            element = path.substring(0, index);
+            remaining = path.substring(index + 1);
+        } else {
+            element = path;
+            remaining = null;
+        }
+
+        SalaryTreeNode node = this.getChild(element);
+        if (node == null) {
+            node = new SalaryTreeNode();
+            node.setLabel(element);
+            this.addChild(node);
+        }
+
+        if (remaining != null)
+            return node.resolve(remaining);
+        else
+            return node;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        SalaryTreeNode o = (SalaryTreeNode) obj;
-        if (label == null && o.getLabel() == null)
-            return true;
-        if (label == null && o.getLabel() != null)
-            return false;
-        if (label != null && o.getLabel() == null)
-            return false;
-        if (label.equals(o.getLabel()))
-            return true;
-        return false;
+    public int[] getOrderArray() {
+        List<Integer> tmp = new ArrayList<Integer>();
+        SalaryTreeNode node = this;
+        while (node != null) {
+            tmp.add(node.getOrder());
+            node = node.getParent();
+        }
+        int[] array = new int[tmp.size()];
+        for (int i = 0; i < array.length; i++)
+            array[i] = tmp.get(array.length - i - 1);
+        return array;
+    }
+
+    public String[] getLabelArray() {
+        List<String> tmp = new ArrayList<String>();
+        SalaryTreeNode node = this;
+        while (node != null) {
+            tmp.add(node.getLabel());
+            node = node.getParent();
+        }
+        Collections.reverse(tmp);
+        return tmp.toArray(new String[0]);
     }
 
 }

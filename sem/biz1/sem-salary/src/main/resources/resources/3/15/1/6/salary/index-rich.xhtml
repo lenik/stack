@@ -30,16 +30,16 @@
             <f:facet name="header">
                 <h:outputText value="${column.header}" />
             </f:facet>
-            <h:outputText value="${entry.elements[column.order].bonus}" />
+            <h:outputText value="${bean.sortElements(entry)[column.order].bonus}" />
         </p:columns>
         <p:column headerText="应发工资">
             <h:outputText value="${entry.total}" />
         </p:column>
         <p:column headerText="所得税">
-            <h:outputText value="dev" />
+            <h:outputText value="${entry.tax}" />
         </p:column>
         <p:column headerText="实发工资">
-            <h:outputText value="dev" />
+            <h:outputText value="${entry.total - entry.tax}" />
         </p:column>
     </ui:define>
 

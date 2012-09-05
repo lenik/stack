@@ -37,6 +37,7 @@ import com.bee32.sem.salary.entity.SalaryElementDef;
 import com.bee32.sem.salary.util.ChineseCodec;
 import com.bee32.sem.salary.util.SalaryDateUtil;
 import com.bee32.sem.salary.util.SalaryTreeNode;
+import com.bee32.sem.salary.util.TreeSalaryElementDefComparator;
 
 public class SalaryAdminBean
         extends SimpleEntityViewBean {
@@ -54,7 +55,7 @@ public class SalaryAdminBean
         super(Salary.class, SalaryDto.class, SalaryDto.ELEMENTS, SalaryCriteria.listByDate(new Date()));
 
         changeTargetDate();
-        genericColumns();
+        generateColumns();
     }
 
     public void addDateRestriction() {
@@ -183,41 +184,53 @@ public class SalaryAdminBean
         targetMonth = yearAndMonth.getSecond();
     }
 
-    void genericColumns() {
+    void generateColumns() {
 
         List<SalaryElementDef> effectiveDefs = DATA(SalaryElementDef.class).list(
                 DefCriteria.listEffectiveDef(targetDate));
-        Collections.sort(effectiveDefs);
+
+        SalaryTreeNode root = createSalaryNodeTree();
+        TreeSalaryElementDefComparator comparator = new TreeSalaryElementDefComparator(root);
+        Collections.sort(effectiveDefs, comparator);
+
         for (SalaryElementDef def : effectiveDefs) {
             int index = columns.size();
-            columns.add(new ColumnModel(def.getLabel() == null ? def.getCategory() : def.getLabel(), index));
+            columns.add(new ColumnModel(def.getLabel() == null ? def.getCategory() : def.getLabel(), index, def.getId()));
         }
     }
 
-    void createSalaryNodeTree() {
+    SalaryTreeNode createSalaryNodeTree() {
         SalaryTreeNode root = new SalaryTreeNode();
         root.setLabel("root");
 
         List<SalaryElementDef> defs = DATA(SalaryElementDef.class).list();
         for (SalaryElementDef def : defs) {
-            String categoryString = def.getCategory();
-            int order = def.getOrder();
-            buildBranch(root, categoryString, order);
+            String path = def.getPath();
+            SalaryTreeNode node = root.resolve(path);
+            node.setOrder(def.getOrder());
         }
+
+        root.updateOrder();
+        return root;
     }
 
-    void buildBranch(SalaryTreeNode parent, String categoryString, int order) {
-        int index = categoryString.indexOf("/");
-        String category = categoryString.substring(0, index);
-        SalaryTreeNode node = new SalaryTreeNode();
-        node.setLabel(category);
-        node.setOrder(order);
-
-        parent.addChild(node);
-
-        String touse = categoryString.substring(1);
-        if (touse.length() > 0)
-            buildBranch(node, touse, order);
+    public List<SalaryElementDto> sortElements(SalaryDto salary ) {
+        List<SalaryElementDto> elements = salary.getElements();
+        List<SalaryElementDto> sorted = new ArrayList<SalaryElementDto>(columns.size());
+        for (ColumnModel column : columns) {
+            long defId = column.getDefId();
+            SalaryElementDto found = null;
+            for (SalaryElementDto element : elements) {
+                if (element.getDef().getId() == defId) {
+                    found = element;
+                    break;
+                }
+            }
+            if (found == null)
+                found = new SalaryElementDto();
+            sorted.add(found);
+        }
+        return sorted;
     }
 
     public Date getTargetDate() {
@@ -270,10 +283,12 @@ public class SalaryAdminBean
 
         String header;
         int order;
+        long defId;
 
-        public ColumnModel(String header, int order) {
+        public ColumnModel(String header, int order, long defId) {
             this.header = header;
             this.order = order;
+            this.defId = defId;
         }
 
         public String getHeader() {
@@ -284,5 +299,8 @@ public class SalaryAdminBean
             return order;
         }
 
+        public long getDefId() {
+            return defId;
+        }
     }
 }
