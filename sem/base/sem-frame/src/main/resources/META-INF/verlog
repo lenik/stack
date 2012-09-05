@@ -1,4 +1,17 @@
+SEM-1.9.2 (谢继雷, 朱挺峰, 2012-09-05)
+	* SEM历史与Plover历史重叠，将sem-frame移动至前。
+	* 制作修订历史查阅页面。
+	* Removed unused sems-sem-refactor-task, sem/ChangeLog.
+	* Update plover versions as well.
+	* Updated version log.
+	* 个税，工资字段树 临时提交
+	* rename BaseBonusProvider to EmployeeVriableProvider
+
 SEM-1.9.1 (谢继雷, 朱挺峰, 2012-09-03)
+	* Salary : add Date restriction
+	* salary def add constraint
+	* Salary : add indentation for Variables
+	* 修改 SalaryElement, SalaryElementDef 排序
 	* Salary 修改字段显示顺序
 	* Added sif-up, uber, vup utils
 	* Salary add BigDecimal convert

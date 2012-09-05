@@ -1,13 +1,9 @@
 package com.bee32.sem.inventory.web;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -21,7 +17,6 @@ import com.bee32.plover.orm.annotation.ForEntity;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.StockInventory;
-import com.bee32.sem.inventory.entity.StockItemState;
 import com.bee32.sem.inventory.web.business.StockDictsBean;
 
 @ForEntity(StockInventory.class)

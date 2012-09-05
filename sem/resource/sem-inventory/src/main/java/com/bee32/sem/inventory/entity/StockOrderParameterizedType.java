@@ -10,6 +10,7 @@ import com.bee32.sem.inventory.SEMInventoryModule;
 public class StockOrderParameterizedType
         extends ParameterizedEntityType {
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public StockOrderParameterizedType() {
         super(SEMInventoryModule.class, (Class) AbstractStockOrder.class);
     }
