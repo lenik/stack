@@ -26,20 +26,28 @@
         <p:column headerText="员工">
             <h:outputText value="${entry.employee.person.name}" />
         </p:column>
-        <p:columns value="${bean.columns}" var="column" columnIndexVar="colIndex">
+        <p:columns value="${bean.columns}" var="column" columnIndexVar="colIndex" styleClass="f-right">
             <f:facet name="header">
                 <h:outputText value="${column.header}" />
             </f:facet>
-            <h:outputText value="${bean.sortElements(entry)[column.order].bonus}" />
+            <h:outputText value="${bean.sortElements(entry)[column.order].bonus}">
+                <f:convertNumber maxFractionDigits="2" />
+            </h:outputText>
         </p:columns>
-        <p:column headerText="应发工资">
-            <h:outputText value="${entry.total}" />
+        <p:column headerText="应发工资" styleClass="f-right">
+            <h:outputText value="${entry.total}">
+                <f:convertNumber maxFractionDigits="2" />
+            </h:outputText>
         </p:column>
-        <p:column headerText="所得税">
-            <h:outputText value="${entry.tax}" />
+        <p:column headerText="所得税" styleClass="f-right">
+            <h:outputText value="${entry.tax}">
+                <f:convertNumber maxFractionDigits="2" />
+            </h:outputText>
         </p:column>
-        <p:column headerText="实发工资">
-            <h:outputText value="${entry.total - entry.tax}" />
+        <p:column headerText="实发工资" styleClass="f-right">
+            <h:outputText value="${entry.total - entry.tax}">
+                <f:convertNumber maxFractionDigits="2" />
+            </h:outputText>
         </p:column>
     </ui:define>
 
