@@ -1,0 +1,4204 @@
+SEM-1.9.1 (谢继雷, 朱挺峰, 2012-09-03)
+	* Salary 修改字段显示顺序
+	* Added sif-up, uber, vup utils
+	* Salary add BigDecimal convert
+	* Auto batching with date, and customization support.
+	* Added BatchArray.batch5
+	* move ChineseCodec from test to main
+
+SEM-1.9.0 (朱挺峰, 2012-09-01)
+	* salary dev
+	* Salary : modify providers
+
+SEM-1.8.19 (金卫林, 2012-08-31)
+	* 1.库存查询数量去掉小数点 2.库存查询数量加合计数
+	* 库存加入门店利润查询功能
+
+SEM-1.8.18 (朱挺峰, 2012-08-30)
+	* update sql
+	* SEM-Salary dev
+	* hr: refactor JobPost,JobTitle,JobPerformance,PersonEducationType,PersonSkill,PersonSkillCategory
+	* remove jobperformance from employeeInfo
+
+SEM-1.8.17 (SEM Operator, 朱挺峰, 2012-08-27)
+	* salary fix null pointer exception
+	* Fixed StockOrderParameterizedType: couldn't compiled by javac.
+
+SEM-1.8.16 (谢继雷, 朱挺峰, 2012-08-25)
+	* Salary Menu add SalaryElementDef entry
+	* Salary expression test case.
+	* `职位` 改成 `岗位`。
+	* Added ChineseCodec to support chinese var names in expr.
+	* Collected salary variable providers.
+	* Salary dev
+	* SalaryElementDef : change parent class to MomentInterval
+	* rename BaseBonus -> EventBonus
+
+SEM-1.8.15 (金卫林, 2012-08-24)
+	* 未结算应付票据查询功能完成
+	* 未结算应收票据查询功能完成
+
+SEM-1.8.14 (朱挺峰, 2012-08-23)
+	* Salary dev
+	* Salary add dependance SEM-Event
+	* People>hr: dicts页面重做
+	* add declareEntityPages:User, EmployeeInfo, PersonSkill
+	* Remove attendanceType from SalaryUnit
+	* Skill level add DecimalConfig
+
+SEM-1.8.13 (金卫林, 2012-08-22)
+	* 人员组织（简单视图）加入重复输入检查
+
+SEM-1.8.12 (金卫林, 2012-08-21)
+	* 1.送货单打印加收货人签名等
+
+SEM-1.8.11 (金卫林, 谢继雷, 朱挺峰, 2012-08-20)
+	* Runtime version names support.
+	* Fixed stock query error: ParameterizedType/AbstractStockOrder.
+	* Menu:rename 人士->人事管理
+	* 1.解决工艺流转单重复生成的问题 2.工艺流转单计划数量好像不对
+	* Fixed 159: login won't redirected.
+	* Refactor all DAO methods throws DataAccessException.
+	* Salary dev
+	* remove wrong space in frame.css
+	* add declareEntityPages
+	* add declareEntityPages
+	* Menu : move Employee, Salary, Attendance to HR node
+
+SEM-1.8.10 (谢继雷, 朱挺峰, 2012-08-18)
+	* Prepare auto open function for entity refs.
+	* frame.js: _open() open href in new window like target=_blank.
+	* ChooseStockLocationDialog: error log for read only selection. Instead of exception.
+	* LoginBean review: 登录密码错误 的可能原因是 UserPassword 表中同一个用户有多个记录。
+	* SEVB: Select the first record on initial.
+	* 库存查询：按自定义批号分组查询。
+	* EntityDto.ref(id) should only be used in Dto*.parse().
+	* simple-entity-dialog: Allow removal of sideDivE.
+	* Fixed IndexRichCompatController: format the url.
+	* Fixed newsite.xhtml: icsf:login must be at the very first, to avoid cache overflow to page flush.
+	* Moved LocationVmap, VerbMap, YesMap to plover-servlet.
+	* salary dev
+	* add  introduce
+	* refactor Dict bean pages
+	* add declareEntityPages & add some index page (not completed)
+
+SEM-1.8.9 (金卫林, 谢继雷, 朱挺峰, 2012-08-17)
+	* Redesigned welcome page.
+	* treetable的每列宽度只能用width指定
+	* Rewrite the login page.
+	* 改正应付明细查询界面打错字的问题
+	* Fixed getBundledSQL(): Replace null arg with empty string, and return normalized sql.
+	* 送货单加入打印功能
+	* Salary 临时提交
+
+SEM-1.8.8 (金卫林, 谢继雷, 朱挺峰, 2012-08-16)
+	* Moved login-check from newsite.xhtml to simple-entity/custom-rich templates.
+	* Show verbose message for duplicated entities.
+	* Refactor primefaces.xhtml to custom-rich.xhtml.
+	* Added checking for duplicates support.
+	* Fixed service listing files.
+	* sem-salary code review.
+	* Added missing sequence generators.
+	* Expr refactor.
+	* remove commonBonus
+	* people add salary provider
+	* EmployeeInfo add default value
+	* Moved xref-support to sem-module, intg. with sem-base-profile.
+	* Salary expr refactor.
+	* polishing
+	* sem-account: Moved complex sql scripts to resource files.
+	* 送货单改进
+
+SEM-1.8.7 (金卫林, 谢继雷, 朱挺峰, 2012-08-15)
+	* NLS updates.
+	* Poms polishing.
+	* Renamed -api SalaryItem to SalaryElement.
+	* Refactor sem-wage to sem-salary.
+	* Moved sem-shop to biz1/.
+	* Refactor: ctx.bean.getBean(...) -> BEAN(...); ctx.data.access(...) -> DATA(...)
+	* sem-account: Code format.
+	* 订单上加入送货数量
+	* sem-wage dev
+	* add WageSalaryItem
+	* 公共补贴
+	* 增加缺勤属性
+	* wage add menu
+	* add wage to uber
+	* rename BaseSalary -> Salary
+	* MakeOrderItem 加入外部单位
+	* 仓库单据加入导出到pdf功能(打印)
+
+SEM-1.8.6 (金卫林, 2012-08-11)
+	* 库存单据报表
+	* 应收应付部门余额表
+
+SEM-1.8.5 (金卫林, 2012-08-10)
+	* 应付采购员余额表
+
+SEM-1.8.4 (金卫林, 2012-08-09)
+	* 定单不需设置物料也可生成送货单，完成
+	* fix process message
+	* 定单不输入物料，也可以生成送货单
+
+SEM-1.8.3 (金卫林, 2012-08-08)
+	* 加入业务员应收余额表
+
+SEM-1.8.2 (谢继雷, 朱挺峰, 2012-08-07)
+	* Added batchSize to inventory terms, and utilized in stock order pages.
+	* Fixed primefaces.xhtml: p:growl now supports escape html option.
+	* updated entity names
+	* Sem-wage dev.
+	* Prepared to separate sem-attendance from sem-wage.
+	* Moved sem-wage from base to biz1.
+	* Added salary service provider support.
+	* SEM people dev.
+	* SEM people menu: zh nls fix.
+	* Fixed 158: p:dataTable need explicit lazy="true".
+	* Upgraded ajaxrequest usage in sem-file tag restriction.
+	* Collected NlsMessageProcessors.
+	* Process NLS messages with INlsMessageProcessors.
+	* TermMessageInterpolator test passed.
+	* Fixed regex escaping in TermMessageInterpolator.
+	* Added TermExprFet to translate faces error messages.
+	* Refactor ResourceBundle to NlsBundle, to add message processor in future.
+	* Translate texts with term expressions.
+	* Renamed inventoryTerms to tr.inventory
+	* 替换消息提示中的”仓库“字样。
+	* 替换 NLS 中的”仓库“字样。
+	* 替换页面中的”仓库“字样。
+	* Moved Term* to module.term.
+	* ITermProvider collected.
+	* Polishing
+	* Collect module-local services in Module+.
+	* Entity updated.
+	* Use IAppProfile as the service, instead of AppProfile.
+	* Refactor module terms to java service.
+	* Clean up redundant NLS files.
+	* Added Term customization for SEM Inventory.
+	* Added AbstractModuleCustomization to generate config page from TermProvider.
+	* Added TermMetadata and constructor from reflection.
+	* NLS updates.
+	* Prepare term customization support.
+
+SEM-1.8.1 (金卫林, 2012-08-04)
+	* 核销查询初步
+
+SEM-1.8.0 (金卫林, 2012-08-01)
+	* add SEMAccountUnit to SEMUberUnit
+	* 应付余额表，明细账
+	* 应收明细帐功能
+
+SEM-1.7.17 (金卫林, 2012-07-31)
+	* add @SuppressWarnings("unchecked")
+	* 应收余额表加入合计行
+	* 余额表
+
+SEM-1.7.16 (金卫林, 2012-07-30)
+	* 更新模型 查询统计功能加入菜单
+	* 加入应收应付初始化选择对话框
+
+SEM-1.7.15 (金卫林, 2012-07-28)
+	* 1.应收核销 2.应付核销
+	* 1.paied to paid 2.NoteBalancingDto.java marshal 中对 note的mashal改成mref.  因为Note对NoteBalancing是cascade,所以marshal必须放在Note这边，NoteBalancing这边需要用mref
+
+SEM-1.7.14 (金卫林, 2012-07-27)
+	* 加入应收核销功能，未完成 加入应收单，收款单，应付单，付款单选择对话框
+	* 应付票据结算完成
+	* 应收票据贴现，结算，背书
+
+SEM-1.7.13 (金卫林, 2012-07-25)
+	* 库存查询数量为0也显示。（上次没有改好）
+
+SEM-1.7.12 (金卫林, 朱挺峰, 2012-07-24)
+	* 应收票据加入贴现，背书、结算窗口，bean对应功能还没有加入
+	* set chance textarea extensible
+	* Wage Module Samples : BaseSalary，EducationSubsidy, EducationSubsidySamples
+
+SEM-1.7.11 (金卫林, 2012-07-23)
+	* sem-account票据（承兑汇票）输入功能
+	* 库存查询调整窗口大小
+	* 库存查询，数量为0也显示
+
+SEM-1.7.10 (金卫林, 2012-07-20)
+	* 应收单和应付单加入预计收款或付款时间
+	* 修正marshal的错误用法
+
+SEM-1.7.9 (金卫林, 2012-07-19)
+	* MakeOrderItem,DeliveryNoteItem中的part改为material
+	* sem-account说明文件加入账龄分析的功能需求说明
+
+SEM-1.7.8 (金卫林, 2012-07-17)
+	* sem-account add noteReceivableAdmin
+	* sem-account加菜单 OneToOne mappyedBy改正
+	* 票据结算entity,dto
+	* 加入sem-shop模块,在readme中列出功能需求 改正sem-account中dto的错误 sem-account中加入票据结算类
+
+SEM-1.7.7 (金卫林, 2012-07-13)
+	* 仓库入库出库单选择org改为选择party 改正组织机构对话框内容不正确的问题
+
+SEM-1.7.6 (金卫林, 2012-07-11)
+	* 1.应付初始化 2.应收单录入 3.收款单录入 4.应付单录入 5.付款单录入
+
+SEM-1.7.5 (金卫林, 2012-07-10)
+	* 应收管理->应收初始化改正部份，还没调试完成
+	* 应收管理的应收单初始化初步完成还没调试
+	* fixed ordPersonAdmin have no competitor
+
+SEM-1.7.4 (金卫林, 朱挺峰, 2012-07-09)
+	* 应收应付entity,dto
+	* Chance content : remove replace
+	* ChanceCompetitor: set Party optional
+	* Party : remove default value of competitor
+	* Chance/Action length validation.
+	* Added competitor type in Party.
+
+SEM-1.7.3 (金卫林, 朱挺峰, 2012-07-07)
+	* 应收应付合并到一起，完成运行模块所需的基本代码
+	* 销售机会，增加竞争对手
+	* 修改对话框高度
+	* 保存按钮，保持在对话框底部
+
+SEM-1.7.2 (金卫林, 谢继雷, 朱挺峰, 2012-07-06)
+	* Code review, sem-ap + sem-ar => sem-account.
+	* account receivable add entity,dto
+	* MakeOrder item列表中的属性字段：item 的 part 可能没有指定，仅在指定part时显示。
+	* MaterialDto: Create empty list for unselected lists.
+	* 修改采购原则和采购方式的顺序
+	* 修改编辑对话框高度
+
+SEM-1.7.1 (金卫林, 谢继雷, 朱挺峰, 2012-07-05)
+	* part admin treetable column width fix (because upgrade to primefaces 3.3.1)
+	* fix stack overflow:MailPriority
+	* 销售机会增加预期订货日期，采购原则，采购方式
+	* 工资模块初始化
+	* Fixed bad client id: p:ajax process=":@this".
+
+SEM-1.7.0 (金卫林, 2012-07-02)
+	* 应收款实体初步
+
+SEM-1.6.15 (金卫林, 2012-06-30)
+	* 模块裁剪名称改动
+
+SEM-1.6.14 (金卫林, 谢继雷, 2012-06-29)
+	* 应收初步
+	* Refactor entityType/dtoType as private, and parse id to the actual key type.
+	* 凭证输入改进,可直接按科目代码输入，摘要自动复制
+
+SEM-1.6.13 (谢继雷, 2012-06-28)
+	* Password review.
+
+SEM-1.6.12 (谢继雷, 2012-06-27)
+	* Add scroll-enabled switcher in ScrollEVB.
+
+SEM-1.6.11 (金卫林, 2012-06-26)
+	* 文件管理中在每行上加入直接点击打开和下载的链接
+
+SEM-1.6.10 (金卫林, 2012-06-22)
+	* in datatable,must call action not actionListener
+
+SEM-1.6.9 (金卫林, 谢继雷, 朱挺峰, 2012-06-20)
+	* 凭证输入加入直接按科目编号和名称查找输入的功能
+	* 内部员工管理完成
+	* 人员技能设置界面
+	* add datacolumns to inventory
+	* change purchase model name
+	* asset 借贷方向输入形式由combo改成radiobutton
+	* add datacolumns to makebiz,purchase
+	* Added supplier profile.
+	* NLS Updates.
+
+SEM-1.6.8 (谢继雷, 2012-06-19)
+	* Fixed: fn:* => jstl functions
+
+SEM-1.6.7 (金卫林, 谢继雷, 2012-06-18)
+	* Search by ID in simple entity dialogs.
+	* SuperfishMenuBuilder: explicit resolve location absolutely.
+	* 修改密码页面按钮移往左边
+
+SEM-1.6.6 (金卫林, 2012-06-13)
+	* BOM删除引用时，同时删除本BOM
+
+SEM-1.6.5 (金卫林, 2012-06-11)
+	* 文件管理，编辑对话框中，加宽各个编辑框
+
+SEM-1.6.4 (金卫林, 谢继雷, 朱挺峰, 2012-06-09)
+	* bom管理中加入清空引用的功能，方便删一个bom
+	* Fixed: BOm管理中，保存时，出现错误 “对应物料：对象不能为空”
+	* 选择物料时，加入waitbox的显示
+	* part中，加入直接输入物料名称或代码的部份或全部直接查找物料的功能
+	* Fixed: Resolve menu location relative to context.
+	* Fixed PrimefacesMenuBuilder: menu maybe reduced to null.
+	* Review NLS strings.
+	* Refactor sem-people internalPerson => employee.
+	* Restore mess-merged PartAdminBean.
+	* Services updated.
+	* NLS updates.
+	* MenuComposite: don't attach if not enabled by any profile.
+	* Added SEMBaseProfile, SEMProcessProfile.
+	* Code review, cleanup TODOs.
+	* Refactor AppProfileAssembly=>AppProfileMerger.
+	* Populate s-keywords with label/desc/[modelspec?]
+	* Get the main menu node by require from context menu assembly.
+	* Refactor menu/section ids: uppercase for menus and :... for sections.
+	* Refactor static EnumAlts.name/valueMap: dead cyclic initializors.
+	* polishing
+	* Skip usage warnings of altOrgUnit in non-user codes.
+	* Clean up warnings.
+	* Config app profile in simple form using Relabel string wrapper.
+	* NLS Update.
+	* SEVB: search by id.
+	* Collected app profiles.
+	* NLS for *profiles.
+	* NLS Updates.
+	* Initial of sem-profiles.
+	* Refactor IAppProfile.getParameter(feature, key).
+	* Prepare menu assembler in menu builders.
+	* NLS update.
+	* polishing
+	* Refactor: valueOf => forValue
+	* Prepare sem-chance profile.
+	* Prepare/collect app profiles.
+	* Party admin: customer/supplier/employee 至少选一个。
+	* *MenuBuilder: do init before buildImpl.
+	* PrimefacesMenuBuilder: removed duplicated resolve().
+	* Integrated menu assembler & app-profile parameters in the menu composite.
+	* Added SEMFrameMenu.getMainMenu() to get site-local menu.
+	* Collected MenuComposites.
+	* sem-process menu test.
+	* Refactor frame menus: prepare for runtime profiles.
+	* Renamed MenuContribution to MenuComposite.
+	* Utilized selection.translate.
+	* polishing
+	* 内部人员管理：临时提交
+	* 在bom中，加入直接输入物料名称或代码的全部或部份，直接查找物料的功能，未完成 _+ 1
+
+SEM-1.6.3 (金卫林, 2012-06-06)
+	* 在bom中，加入直接输入物料名称或代码的全部或部份，直接查找物料的功能，未完成
+
+SEM-1.6.2 (金卫林, 2012-06-05)
+	* bom明细中把选择半成品和选择原材料合并到一起
+	* 让对话框中的搜索边条始终出现
+	* fix clearSearchFragments
+
+SEM-1.6.1 (金卫林, 2012-06-02)
+	* 文件管理加入按档案日期和按客户排序功能
+
+SEM-1.6.0 (金卫林, 谢继雷, 2012-06-01)
+	* listView，为每一行明细加入按钮，方便操作
+	* 把时间查询条件由这个月改为今年
+	* add missing MakebizCriteria.java
+	* 按客户名称模糊搜索定单
+	* MakeTaskItem对应多个MakeProcess界面初步完成
+	* Fixed UserFileBean name/label search: add.. -> set.
+	* MakeTaskItem对应多个MakeProcess，继续中
+	* 模型中，一个生产任务对应一个工艺单改成对应多个工艺单
+	* 1.把一个生产任务对应一个工艺单改成对应多个工艺单，初步
+
+SEM-1.5.21 (朱挺峰, 2012-05-31)
+	* internalPerson: 页面修改
+	* internalPerson: add samples and dtos
+
+SEM-1.5.20 (朱挺峰, 2012-05-30)
+	* internalPerson : add menu entry
+	* add samples
+	* internalperson:add properties
+	* add samples:jobTitle, jobPost, jobPerformance, personEducationType
+
+SEM-1.5.19 (金卫林, 2012-05-26)
+	* fixed: 文件修改时，update更新整个editDialog:form
+	* Fixed search fragment not update
+
+SEM-1.5.18 (金卫林, 2012-05-25)
+	* 定单，生产任物，物料计划界面调整一下
+	* 加入企业组织简单视图，方便快速增加企业组织和人员
+
+SEM-1.5.17 (金卫林, 2012-05-24)
+	* 1.chooseMaterialDialog中加入按规格型号排序的功能
+
+SEM-1.5.16 (金卫林, 谢继雷, 朱挺峰, 2012-05-23)
+	* bom加入分类选择过滤功能
+	* bom管理，加入分类限制功能
+	* 重构bean中的搜索方法
+	* remove unnecessary personalized searchFragment
+	* Refactor search fragments.
+	* remove duplicated param: var
+	* add paginator,  the default paginator is unavaliable
+	* remove the unnecessary tags inherited from template
+
+SEM-1.5.15 (金卫林, 朱挺峰, 2012-05-22)
+	* 1.修改，查看等按钮移到左边
+	* 库存管理: 修改搜索物料不能正确分页
+	* 资产管理：添加按代码搜索会计科目
+
+SEM-1.5.14 (金卫林, 2012-05-21)
+	* organize imports
+
+SEM-1.5.13 (金卫林, 2012-05-17)
+	* Fixed: bom复制，PartItem的description没有复制
+
+SEM-1.5.12 (金卫林, 谢继雷, 2012-05-16)
+	* 隐去销售入账单和采购入账单
+	* Added im/invNameSet in sesison user info.
+
+SEM-1.5.11 (金卫林, 谢继雷, 2012-05-15)
+	* 加入Part被引用查看功能
+	* BOM复制功能完成（包括工艺复制）
+	* null-acl: 1. aclWithIn(includeNull?), 2. added AclETW.NULL_PERM.
+
+SEM-1.5.10 (金卫林, 朱挺峰, 2012-05-14)
+	* bom设置左边的树加入滚动条支持
+	* BOM树加滚动条
+	* 完善搜索功能
+
+SEM-1.5.9 (金卫林, 2012-05-12)
+	* 不合格查询，库存查询加入审核，未审核选择
+
+SEM-1.5.8 (金卫林, 2012-05-11)
+	* 不合格查询页面数字输出格式化
+
+SEM-1.5.7 (金卫林, 2012-05-10)
+	* 物料管理中，加入waitbox
+
+SEM-1.5.6 (金卫林, 谢继雷, 2012-05-09)
+	* 为定单pdf打印功能指定输出的类型为pdf
+	* Disable exportMenu for tree-entity view.
+
+SEM-1.5.5 (金卫林, 谢继雷, 2012-05-08)
+	* Added: 加入工艺步骤完成标志输入
+	* Prepare SAVE_DUP option in save function.
+	* “另存为副本”改为“创建副本”
+	* Fixed save-dup in entity-index.
+	* Pop up export menu at mouse position.
+	* Added Part.releaseVersion
+	* JasperReportInitializaer: Fix JRProperties in post-load.
+	* code format.
+	* Jasperreports user: get resource using class-class loader instead of ccl.
+	* Init jasperreports compiler classpath in JasperReportsInitializer.
+
+SEM-1.5.4 (金卫林, 2012-05-07)
+	* 工艺流转单输入基本完成
+
+SEM-1.5.3 (金卫林, 2012-05-05)
+	* 工艺流转单继续中
+	* Fiexd: 新增单位不显示
+
+SEM-1.5.2 (金卫林, 谢继雷, 2012-05-04)
+	* Fixed: 物料管理中，当还没有选择中物料的时候，出现的空指针错误
+	* Fixed jrxml resource path.
+	* add SEMMakebizServer for test
+	* Get resource stream by CCL.
+
+SEM-1.5.1 (金卫林, 2012-05-03)
+	* 订单管理加入jasperReport支持，并生成pdf的功能
+
+SEM-1.5.0 (金卫林, 2012-05-02)
+	* Removed: 合同菜单
+
+SEM-1.4.15 (金卫林, 2012-04-26)
+	* make p:dialog's id and widgetVar different
+
+SEM-1.4.14 (金卫林, 2012-04-25)
+	* 工艺流转单进行中
+	* Fixed: 用户管理中指派组和角色时会同时更新用户的密码 Modified: 用户管理中的密码输入框也改成primefaces组件
+
+SEM-1.4.13 (金卫林, 2012-04-24)
+	* 工艺流转单界面表格已经生成
+
+SEM-1.4.12 (金卫林, 2012-04-23)
+	* 工世流转单构思
+	* Fixed tag cloud search javascript for IE.
+	* MakeStep加入合格数量
+
+SEM-1.4.11 (金卫林, 谢继雷, 2012-04-21)
+	* Add: 采购入库中，把采购入库功能拆开到一个单独的对话框中，并单独保存
+	* Modify: 库存查询，数量为0不显示
+	* Fixed: 采购请求数量为0的也出现
+	* Removed dataColumns in VerifyPolicyPref html.
+	* Removed dataColumns in VerifyPolicyPref html.
+
+SEM-1.4.10 (金卫林, 2012-04-20)
+	* Fixed: 物料计划锁定StockPlanOrder,在仓库的计划出库中不能看到
+	* Fixed: 物料管理中，不能为物料添加单位换算和仓库选项
+	* Add: 文件标签管理
+	* Fixed: 文件标签类注释用字错误
+
+SEM-1.4.9 (金卫林, 2012-04-19)
+	* Fixed: 设置工艺时,不能添加消耗材料，不能添加质量标准
+	* 资产初始化，库存初始化，默认去掉“发生于这个月”的条件限制
+	* Fixed CommonCriteria.beginEndDateBetween(): it should be endTime.
+	* Fixed: ScrollEVB reset opened objects after refreshRowCount().
+
+SEM-1.4.8 (金卫林, 谢继雷, 2012-04-18)
+	* load full bom tree
+	* 外部产品名称和外部规格加长字段长度
+	* 把物料分类dto中的选取MATERIALS标志位设成大一点，使fmask默认不包括物料
+	* Keep empty dirs.
+	* Search material/part by model-spec.
+
+SEM-1.4.7 (金卫林, 谢继雷, 2012-04-17)
+	* UnitDto加入hint，并在界面上加入相应的输入项目
+	* add unit use unit.id not unit.label
+	* 物料管理页面标题去掉管理两个字
+	* Part admin choose the default category
+	* part admin page: select target material in current category.
+	* ChooseMaterialDialog: added category filter.
+	* Adjust SEMModuleServer.refresh to 1 min to allow hot maintaince.
+	* Clarified: 所有者 => 属主
+	* UserFile: added operator user, and stakeholder party, and search functions.
+	* Workaround: Run file tests in war test.
+	* Polishing
+	* Added file_blob_used/notused views.
+	* sem-track initial.
+
+SEM-1.4.6 (金卫林, 谢继雷, 2012-04-16)
+	* 出入库状态选择输入框改变宽度
+	* 联系方式加入addressWithPostCode属 性，以便于在人员和企业组织业面中进行显示
+	* 物料分类管理加上“分类性质”列的显示
+	* Fixed: editDialog var='editdlg'.
+	* 修改登录页面上的版权信息
+
+SEM-1.4.5 (金卫林, 2012-04-11)
+	* 不合格率查询基本完成
+
+SEM-1.4.4 (金卫林, 2012-04-10)
+	* 不合格率查询初步
+	* StockItemState加入合格，不合格，让步这几个状态
+	* 仓库加计划出库菜单－遗漏提交
+	* 仓库加计划出库菜单
+
+SEM-1.4.3 (金卫林, 2012-04-07)
+	* 从生产任务明细生成工艺流转单完成，未调试
+
+SEM-1.4.2 (金卫林, 2012-04-06)
+	* 根据bom树生成工艺流转单初步
+	* MakeStep移除Part的引用
+	* 按排生产任务单时，把订单上的备注同时取到生产任务单中
+	* 机会加入查看客户的功能，未完成，只加了个客户的备注
+	* 在从机会的选型产品生成定单时，把选型产品的属性转成订单明细条目的描述
+	* 在订单中加入显示物料附加属性的列
+	* add _copy override for ChanceDto
+
+SEM-1.4.1 (金卫林, 2012-04-05)
+	* change open browser order
+
+SEM-1.4.0 (金卫林, 2012-04-02)
+	* material管理中默认去掉物料分类的restriction
+	* order description disabled to readonly
+
+SEM-1.3.24 (金卫林, 2012-03-31)
+	* 工艺流转单进行中
+	* change copyright end time from 2011 to 2012
+
+SEM-1.3.23 (金卫林, 谢继雷, 2012-03-30)
+	* 使编辑视图在浏览状态下不能点击“确定”
+	* add-missing style "f-right"
+	* 统一加入:使 金额/数量 列右对齐，listView 在浏览模式中只读
+	* 工艺流转单开始制作
+	* ELListMBean: fallback to readonly empty list if the expr resolves to null.
+
+SEM-1.3.22 (金卫林, 2012-03-29)
+	* MakeStepName ui done
+	* QCSpec->QCSpecParameter ui done
+
+SEM-1.3.21 (朱挺峰, 2012-03-28)
+	* add mappedBy on MakeStepModel
+
+SEM-1.3.20 (金卫林, 2012-03-27)
+	* MakeStepInput ui almost done
+	* MakeStepModel basic ui interface
+	* Clear DTO.id only in dup().
+	* add ChooseMakeStepNameDialog
+
+SEM-1.3.19 (金卫林, 2012-03-26)
+	* 工艺继续制作中...
+	* ELListMBean should throw exception if list resolved to null.
+
+SEM-1.3.18 (金卫林, 2012-03-24)
+	* add MakeStepNames.java
+
+SEM-1.3.17 (金卫林, 谢继雷, 2012-03-23)
+	* 加入工艺标准备名称字典类
+	* 工艺继续中
+	* 生产订单：使 金额/数量 列右对齐，listView 在浏览模式中只读。
+	* Initial of data export support.
+	* Show correct currency symbol in MCValue format.
+	* Utilized pf:locker with locker-active styling.
+
+SEM-1.3.16 (金卫林, 2012-03-22)
+	* 工艺界面制作中
+
+SEM-1.3.15 (金卫林, 谢继雷, 2012-03-21)
+	* 生产订单：按客户搜索。
+	* Code style: group by sections.
+	* Changed `相关人` to `用户` for principals search.
+	* Frame-Print: Remove deactives optionally.
+	* Set content overflow-y: auto.
+	* Goto the first row if new record created.
+	* Polishing simple printing style.
+	* Added Printing for plainEditForm.
+	* Check customer.id_RZ in make order page.
+	* Fixed overlapped prices: utilized ICopyable in CollectionMBean.
+	* sem-frame depends on: Apache POI, lowagie/iText.
+	* Removed @Future on deadline properties, otherwise modify is impossible.
+	* Clean up modifyPassword.xhtml
+	* Added and utilized sem:contactEditor.
+	* Added print support in simple-entity, scroll-entity, -dialog.
+	* Reflect PrimeFaces upstream updates.
+	* Renamed id of dummy controls to dm_*.
+	* Generate simple printable view otf.
+	* Added listView print support.
+	* Added data-table exporter support.
+	* Person admin page: adjust contact index' columns.
+	* Added print button in listView's toolbox.
+	* Fixed index event_category on Event.category: conflicts with table event_category.
+	* Import into WarUnit: PeopleUnit.
+	* Only update lastModified in SEVB save/update.
+	* Added print support to edit-dialog.
+	* Pre-Refactor PF-3.2: id/widgetVar should not equal.
+	* Show waiting box for listView.ok/cancel.
+	* Refactor rabbit server for upstream upgrade: jetty-6 => jetty-8.
+	* Moved DataViewBean.getACLs() to SessionUser.
+	* polishing
+	* 工艺 ui start
+
+SEM-1.3.14 (金卫林, 谢继雷, 2012-03-20)
+	* makestep setprocess to setparent
+	* prepare for run sem-make again
+	* 解决MakeOrderItem nameplate显示时，datatable和selectoneradio中不一致的问题
+	* write sem-makebiz dtos
+	* write sem-make dtos
+	* QCSpecParameter add value
+	* Renamed MakeProcess.sns -> serials.
+	* Code review: Separate Q/C from Make-Process.
+
+SEM-1.3.13 (金卫林, 2012-03-19)
+	* 工艺模型 entity 代码完善中
+	* 生产任务和送货单中加入对订单未设置物料的检测
+	* remove html tag in modifyPassword.xhtml
+	* 默认的记录安全策略 => 默认记录安全
+	* 工艺模型变更
+	* 工艺模型变更
+
+SEM-1.3.12 (金卫林, 谢继雷, 2012-03-16)
+	* Fixed Part.category := target.category by default.
+	* Show waiting box in scroll-view and cancel-button.
+	* Polishing
+	* Renamed MakeStepConsumption to MakeStepInput.
+	* Renamed MakeInstance to MakeProcessInstance
+	* Renamed MakeInstance(-Step).def -> .model.
+	* Renamed MakeProcess->MakeStep, moved SerialNum/QualityCheck to -makebiz.
+	* Refactor: Technic->MakeProcess, TechnicFlow->MakeInstance
+	* ACLPrefBean: setEntityType conflicts with DataViewBean.entityType, renamed to setDescriptorToApply.
+	* Utilized template.copy() in create/populate.
+	* org admin page: contact view optim.
+	* Show waiting box for more operations in template.
+	* Changed ViewConfig'scope to per session.
+	* Overrided _copy for cascaded children: MaterialDto, StockOrderItemDto, etc.
+	* Removed populate* in DTOs.
+	* Moved IEnclos* to plover-arch.
+	* Refactor CloneUtils to CopyUtils, +ICopyable along with ICloneable.
+	* Removed sem-techproc.
+	* 工艺进行中
+
+SEM-1.3.11 (金卫林, 2012-03-15)
+	* 工艺模块class部份
+	* beautify login.xhtml
+
+SEM-1.3.10 (金卫林, 2012-03-14)
+	* fix contact.xhtml problem
+	* 工艺和工艺流转单模型分析
+	* 外购产品由定单直接到物料计划完成
+	* fix  MakeOrder.getNotArrangedItems NullPointerException
+	* add astah model for makebiz (just link to sem-purchase)
+
+SEM-1.3.9 (金卫林, 谢继雷, 2012-03-13)
+	* 定单到物料计划制作中
+	* Map<Part,...> to Map<Material,...> in MakeOrder
+	* fix modelSpec can't see in choosePartDialog
+	* Renamed SEMBom* to SEMMake*.
+	* polishing
+	* Save-duplicate: shake on validation fail.
+	* Hide logo border. (fix for IE)
+	* Added wait animation in waitbox.
+	* polishing
+	* Prepared prime-push system notification bar.
+	* listView: copy-mode enabled by default in for popup styles. Copy-mode is useful in save-dup.
+	* STL console: q=QUI_SAFE and qq=QUIT, added quit-listeners.
+	* rename MakeService to MakebizService
+	* change selectOneButton to selectOneRadio in chance/index-rich.xhtml
+	* fix selectOneButton can't work in ie, change selectOneButton to selectOneRadio
+
+SEM-1.3.8 (金卫林, 谢继雷, 2012-03-12)
+	* polishing
+	* ListMBean.dup: clear id/version/flags for duplications.
+	* Renamed NLS of SEMBom* to SEMMake*.
+	* Added sem-make unit deps.
+	* Made R_ACE, MakeOrderItem natural id mutable.
+	* Added save-duplicate to help create similar records.
+	* Added waiting box for save operations.
+	* Service collected.
+	* Renamed sem-bom to sem-make. [2]
+	* Renamed sem-bom to sem-make.
+	* Show im-set as tooltip in login statusbar.
+	* Renamed sem-make to sem-makebiz. [2]
+	* Renamed sem-make to sem-makebiz.
+	* Code review for merge.
+	* [cherry-pick] chane-org   =>  chance-party
+	* polishing
+	* listView: removed css ui-dialog-data for style index-panel.
+	* Added join table purchase_request_plan for relation PurchaseRequest -> MaterialPlan.
+	* Reused inherited seq: StockJob+.
+	* RegisterBean: code format.
+	* Renamed entity flag WEAK_DATA to OVERRIDED.
+	* Added full-names for more users.
+	* Moved make-* to sem-order module, and renamed sem-order to sem-make.
+	* 外购物品从订单直接到物料计划功能制作中
+
+SEM-1.3.7 (金卫林, 2012-03-10)
+	* 外购物品（定单到物料计划）制作中
+
+SEM-1.3.6 (金卫林, 谢继雷, 2012-03-09)
+	* Polishing
+	* 再次调试采购请求
+	* add mappedBy on DeliveryNote that make just only DeliveryNoteTakeOut reference to DeliveryNote
+	* Polishing
+	* Reused AbstractItem.index.
+	* check stockorderitem parent
+	* MakeOrderItem price to DeliveryNoteItem
+
+SEM-1.3.5 (金卫林, 谢继雷, 2012-03-08)
+	* 送货单调试结束
+	* XrefBean: typeargs in entity-helper isn't supported by javac. Using rawtype instead.
+	* Fixed NPE: StockJobDto.getStockOrder.
+	* Polishing
+	* Code Review: Don't use Java exceptions for application's flow control.
+	* Moved .stockOrder wrapper to AbstractStockJob*.
+	* Updated upgrade.sql
+	* Group/Role/User: don't set peer in samples, to avoid dup keys.
+	* Added various samples loader feat.
+	* Refactor id-composite (2)
+	* Moved util.Sample* to sample package.
+	* Implemented IPopulatable for all entities.
+	* Population refactor marker.
+	* Service collected.
+	* Service collector: show source java pathnames.
+	* Open session: changed back to open session for entire loading process.
+	* Implemented retarget() for a number of entities.
+	* Re-added final modifier to samples: cascaded items are diversed if write-back to the sample fields.
+	* XrefBean: typeAbbr doesn't encoded correct, fix it.
+	* Polishing
+	* Refactor various (cascaded) samples as non-final, to avoid duplicated creation of cascaded children.
+	* Fixed user index: typo.
+	* XrefBean: always re-query, so as to bypass view cache.
+	* Show xref by change location, a util form won't work with JSF.
+	* polishing
+	* Added entity-id, entity-type-abbr in the template.
+	* Moved SEVB.entity/dtoClass to EVB.
+	* Auto load security-dialog.js by securityOptionDialogs.
+	* Refactor XrefBean: Not an SEVB.
+	* Polishing
+	* Prepare xrefs view.
+
+SEM-1.3.4 (金卫林, 2012-03-07)
+	* 送货单完成，待调试
+	* 送货单 界面
+	* 送货单dto
+	* 送货单entity
+
+SEM-1.3.3 (金卫林, 2012-03-06)
+	* 采购请求生成采购入库单调试完成
+	* Keep the reference of the cascaded stock order list unchanged.
+
+SEM-1.3.2 (金卫林, 2012-03-05)
+	* 生成采购入库单调试中
+	* purchase 调试到确定询价
+
+SEM-1.3.1 (金卫林, 谢继雷, 2012-03-02)
+	* 物料计划调试完成
+	* Polishing
+	* Fixed broken seq-id: MaterialPlanItem, PersonSkill, PartItem.
+	* MCValue: Allow set null currency as native default.
+	* Moved xref graph to unit.xgraph.
+
+SEM-1.3.0 (金卫林, 谢继雷, 2012-03-01)
+	* Updated upgrade sql.
+	* Polishing
+	* Fixed createTransients NPE: createTransients is called at super ctor.
+	* Rebased BuildMission > ProcessEntity.
+	* Refactor MaterialCategory, ACL, PaletteEntry's name to label.
+	* Polishing
+	* Fixed fr:listView: rows were truncated to the top page when pagination is disabled.
+	* Removed MaterialCategory.name, use label instead.
+	* Removed Party.xid. Should use the composite natural id instead.
+	* Utilized alt-id, removed the unnecessary serial properties.
+	* Replaced TxEntity with MomentInterval. Removed TxProcessEntity.
+	* Utilized sample-from-reflection.
+	* Added EntityAccessor.putFlags to add extra flags.
+	* Added Entity.altId behavior as the fallback natural-id.
+	* Prepended sample labels with `【测试】`.
+	* Fixed verifyContext NPE: should rebind in createTransients.
+
+SEM-1.2.25 (金卫林, 谢继雷, 2012-02-29)
+	* 订单与采购调试到物料计划
+	* Polishing
+	* Separated choose-person/org dialogs from choose-party dialog.
+	* fr:listView disable copy-mode for edit-popup mode: object.clone will break identity-equality for dto composite.
+	* move and remove properties from entity in sem-people
+	* Renamed MaterialExAdminBean to MaterialAdminBean.
+	* Added css field-label-long.
+	* WantedProduct: quotation.discount%, fk-unit, attrs panel embedded.
+	* Refactor WantedProduct > Thing.
+	* Refactor WantedProduct > Thing.
+	* Renamed HintProduct* to WantedProduct*.
+	* Renamed builtin super pacakges as Standards/Normals/Boundaries.
+	* Refactor postSave with a data partial context.
+	* Uber samples dumper: scan/register at first.
+	* Merged Roles into Users.
+	* Renamed AbstractDataPartialContext -> DataPartialContext -> WiredDataPartialContext.
+	* 改 @Inject 依赖样本为 predefined(...), 约去 @ImportSamples (2)
+	* Refactor samples wiring.
+	* Refactor SampleContribution.preamble to assemble(), and separated listSamples() from preamble.
+	* Removed Menu*.preamble()
+	* Prepare to refactor std samples arch.
+	* Removed MailManagerVdx*.
+	* Refactor std samples into separate classes. And add predefined(...) to get std samples in Entity/Dto. [2]
+	* Refactor std samples into separate classes. And add predefined(...) to get std samples in Entity/Dto.
+	* Refactor sample contributions for site-scoping.
+	* Fade out logo container when mouseover.
+	* fix people add remove tag bug
+
+SEM-1.2.24 (金卫林, 2012-02-28)
+	* 机会数据调入订单完成
+
+SEM-1.2.23 (金卫林, 2012-02-27)
+	* delete ChanceQuotation and ChanceQuotationItem
+	* 选型报价完成
+
+SEM-1.2.22 (金卫林, 谢继雷, 2012-02-25)
+	* 更新 选型报价 模型
+	* add HintProduct list to ChanceDto.java
+	* 选型报价dto
+	* Remove orphan HintProductAttributes.
+	* Chance review. (lectotype* => hint-product)
+	* 选型实体小改动
+	* 选型报价实体类
+
+SEM-1.2.21 (金卫林, 谢继雷, 2012-02-24)
+	* 报价改进中
+	* 订单明细加上备注,方便输入一些附加的参数
+	* Review: Entity display names.
+	* NLSInitiator: removed duplicates and sort main&test.
+	* NLS resync.
+	* Uber unit dump: with nls paths.
+	* Reused ChooseDialogBean.header.
+	* Released plover-criteria 0.2.114
+	* sem chance menu labels.
+	* Polishing
+	* Initial release of  acl-pref.
+	* Show catalog name in choose entity type dialog.
+	* Fixed: ChooseEntityTypeDialog: should get all-depenencies.
+	* Made various base EVBs to abstract.
+	* editACEDialog: Don't set a local var "entry", which conflicted with outer page.
+	* Added ui:param dataModel, so you can override it with a listModel.
+	* SEVB.dataModel: The return type must be LazyDataModel to work with p:dataTable.
+	* Added write-back ACLPref cache.
+	* Initial of acl-pref pages.
+	* Added choose entity type dialog.
+	* Removed RPEntry stuff.
+	* Refactor various static services > ServiceTemplateRC.
+	* Added <editACEDialog> @readonly attribute.
+	* Renamed R_ACEViewBean to R_ACEBean.
+	* Refactor Choose*Dialog > ChooseEntityDialogBean.
+	* Added ACLPref* to configure default entity acls.
+
+SEM-1.2.20 (金卫林, 谢继雷, 2012-02-23)
+	* Polishing
+	* SecurityOptionsDialog: selection mustbe reloaded to get non-lazyLoad entity.
+	* Fixed SecurityOptionDialog: apply not persisted.
+	* editACLDialog: ${entry} variable conflicted, so using remove button instead.
+	* Fixed: selectedEntry type cast.
+	* Refactor @DefaultPermission => owningEntity() for "item" entities.
+	* Security options, and verifier support dialog: should access the actual entity type for ACL to work.
+	* add @DefaultPermission(Permission.R_X) on xxxItem
+	* SEVB: utilized acl/etw.defaults in base criteria.
+	* polishing
+	* Show local/total count in material/part category tree.
+	* SEVB should Or(owner, acl) instead of And.
+	* Moved misc menus under start/control.
+	* Added sem-uber menu dump util.
+	* Added menu separator support.
+	* Released com.bee32.plover:plover-criteria-0.2.113
+	* Clarified name/label in principal* pages.
+	* Join overlapped permissions.
+	* Utilized imset in R_ACE.
+	* DictEntity, Party, PersonLogin by default R_X.
+	* Catch common AccessControlException in SEVB.
+	* Renamed ErrorMessageTranslator to FacesExceptionTranslator.
+	* Scroll data-container with ui-dialog-data.
+	* Refactor R-ACL.
+	* Normalized all <choose...Dialog> id to "c_...".
+	* Polishing
+	* Workaround: editACL -> editACE -> choosePrincipal needs cc.parent.parent, so pass in another @_value !!!
+	* Auto named dialogvar won't work with names like "acl-d".
+	* simple-tree-entity-dialog: id column should be switchable.
+	* Refactor R_ACL [2]
+	* Skip hidden menus.
+	* Separated editACEDialog from editACLDialog.
+	* Added request entry completion extensions and collector.
+	* Renamed the legacy R_ACL to ResourceACL.
+	* Refactor entity-resources into 2-layer: catalog/entity.
+	* Added PUnit* NLS.
+
+SEM-1.2.19 (金卫林, 谢继雷, 2012-02-22)
+	* 把限制当前月的条件移到上层，所有listview中都加入
+	* Built the main menu same as submenu
+	* 菜单调整中
+	* 菜单调整
+	* 以stock-order为主对象时，StockTransfer/Outsouring 不需cascade/orphanRemoval 后续orders.
+	* upgrade.sql: Renamed batch to batch0.
+	* Refactor sem-purchase [11]
+	* Separated purchase-inquiry view from purchase-request.
+	* Added index-header, picker-init facets to listView.
+	* Polishing admin pages
+	* Updated upgrade.sql
+	* Stock dicts: return null-dto when necessary.
+	* Renamed subMap to deltaMap.
+	* Nullable embeddable: embedded property maybe set to null if all properties are null.
+	* AbstractOrderItem was renamed to AbstractItem.
+
+SEM-1.2.18 (金卫林, 谢继雷, 2012-02-21)
+	* Forgot cc.parent in nested fr:listView in cc!!!
+	* 重构Datatable呈现方式：字段不可换行，为长字段指定 f-wrappable 样式。
+	* Fixed typo: 定单 => 订单
+	* Changed detail_col_title, detail_col_value => field-label, field-content.
+	* 拨入拨出调试基本完成
+	* Reduced batch lengths.
+	* Batch-Array refactor done.
+	* Refactor cBatch to embeddable vector.
+	* 设置拨出单据的sourceWarehouse
+	* 库存管理拨出拨入调试中
+	* Added initStockJob support in AbstractStockOrderBean.
+	* Show make-order label in chooseMakeTaskDialog.
+	* Scroll-EVB: Refresh select row if canceled.
+	* polishing
+	* TransformedSet doesn't work either.
+	* Renamed addSelected..() to set...ToAdd().
+	* Utilized picker listView.
+	* Renamed detachedOnly to pending in various choose dialogs.
+	* SEVB.unmarshalDtos with fmask overriding support.
+	* Fixed: material-plan id_RZL.
+	* Set no padding in tools column.
+	* Utilized picked listView in chance view.
+	* Added picker mode in listView.
+	* TransformedMap in commons-collection doesn't transform keyset/entries.
+
+SEM-1.2.17 (金卫林, 谢继雷, 2012-02-20)
+	* 库存调试中
+	* SEVB should delete friends at first. Also don't clear selection before postDelete.
+	* polishing
+	* inventory debugging
+	* asset debug done
+	* Added sub-maps support to SEVB.uMap.
+	* Chance/action re-connected.
+	* Fixed ResourceScanner: jar entry excluded in opposited way.
+	* Fixed StockLocationAdminBean: refreshTree on warehouse change.
+	* Always reindexNodes when refreshTree.
+	* Set growl always on the top.
+	* Removed unused sem-chance pages.
+
+SEM-1.2.16 (谢继雷, 2012-02-19)
+	* Code review. 20 cleanups.
+	* List this month by default in stock-template*.
+	* Read only hint besides edit buttons.
+	* Simple-entity: pf:locker integrated.
+	* Changed p:commandButton @image => @icon.
+	* Fixed: Chance/Action.date should be beginTime.
+	* Fallback to show content if record is locked or builtin-data.
+	* Added verify support in simple-entity.
+	* User file toolbar spec: utilized creatable option.
+	* Added SEVB.show*Form(selection).
+	* Chance sortings.
+	* Added more chance action styles.
+	* Fixed: SecurityOptionsDialogBean.refreshContextSelection.
+	* Added view/edit toolbutton in columns, and polishing updates.
+
+SEM-1.2.15 (金卫林, 谢继雷, 2012-02-18)
+	* Sort by column lastModified by default.
+	* asset debugging continue
+	* Re-added checking balance of debit/credit
+	* Added sortable columns support.
+	* Complete exception log entry in services.
+	* asset debugging
+	* bom fix bug done
+	* Create pre-verified samples.
+	* Code review. 13 cleanups.
+	* Collect ELTs (log targeter)
+	* Specify material category criteria in createCategoryTree().
+
+SEM-1.2.14 (金卫林, 谢继雷, 2012-02-17)
+	* bom refactor. 还剩:BOM数不对
+	* Re-Added missed LoginControlFeh.
+	* Collect services.
+	* Search Chance.subject as label.
+	* Refactor FEH to general EH, and change/filter-out LoginException>Control from back trace.
+	* bom继续调试中
+	* bom调试中
+	* Preferred to use the thread context class loader overall.
+	* Fixed: material.idRequired was changed to id_RZL.
+	* Moved DTO check and completion from preUpdate() to postValidate().
+	* Fixed mappedBy: parent.
+
+SEM-1.2.13 (金卫林, 谢继雷, 2012-02-16)
+	* Inject current user to ChanceAction.actor.
+	* NameDict.displayId => id_OE.
+	* Refactor sem-purchase [10]
+	* Utilized id_OE in location-admin/capacityUnit.
+	* Normalized id validations by id_R/O/E/Z/L.
+	* login.xhtml add ca readme link
+
+SEM-1.2.12 (金卫林, 谢继雷, 2012-02-15)
+	* stockLocation bug fix.   部份
+	* bugfix for materialCategory,material viewBean
+	* Missed to check the locked list in SEVB.save().
+	* fix type error
+
+SEM-1.2.11 (金卫林, 谢继雷, 2012-02-14)
+	* remove duplicated label
+	* Disable the SEMEventSamples.class temporarily: classworlds problem.
+	* Checking: typeabbr.expand may returns null for unknown class-id.
+	* 为jsf输入元素加上label属性
+	* Ignore bee32/. It may symlink to .m2/repository/com/bee32
+	* Changed StockTrade to abstract.
+	* Fixed: AccountInitItem.init will break AccountTicketItem.
+	* Verify support button intg.
+	* Polishing Party pages: contacts string, party types.
+	* Principal reuses UIEntity.
+	* Fixed: EVB.selectionEditable broken.
+	* sem-purchase polishing.
+	* Renamed session user imSet/invSet to im/invIdSet, and save the im/invSet objs.
+	* Added selectionEditable in various files.
+	* Refactor verify buttons, etc.
+	* Refactor most of verifiables > ProcessEntity.
+
+SEM-1.2.10 (谢继雷, 2012-02-13)
+	* XXX: 库存汇总中 价格字段需要特殊考虑。
+	* Fixed StockWarehouse.name nullable.
+	* Moved tabIndex to MultiTabEVB.
+	* Set EntityDto.skipId if version == -1.
+	* Made choose dialog selection-validatable.
+	* simple-entity-dialog-f1 imports ajax-validation.js
+	* Fixed: getBean overflow: eas-wrapper by id only.
+	* Fixed StockOrderDto: javac compat fixes.
+	* Fixed upgrade.sql.
+	* Refactor sem-purchase [9]
+	* Moved ConsumptionMap to sem-inventory, added consumer/supplier api.
+	* Refactor stock query: added StockQueryResult;  getActualSummary->getAvailableStock.
+	* Updated upgrade.sql.
+	* polishing
+	* Fixed: As Thing doesn't cascade unitConv, so add it to sample manually.
+	* Fixed StockQuery: never setId on entity...
+	* Refactor sem-purchase [8]
+	* Refactor StockJob inherits in JOIN mode.
+	* Added @Future on deadline.
+	* StockWarehouse.name => label, StockLocation.address => label.
+	* Renamed listView index-buttons.*, edit-buttons.
+	* Removed unused DummyDto.
+	* Renamed BaseDto.selection to fmask.
+	* Tree builder: find the most adjecent ancestor node.
+	* Thing.unitHint defaults by Unit.hint.
+	* Added some helper ctors for samples composition.
+
+SEM-1.2.9 (谢继雷, 2012-02-12)
+	* 新建了”宇航员杯具“系列样本。
+	* Refactor ItemDto.discardable => _checked.
+	* Removed uiLogger usage in PartService.
+	* Utilized partial context compositions.
+
+SEM-1.2.8 (金卫林, 谢继雷, 2012-02-11)
+	* Released com.bee32.plover:plover-criteria-0.2.112
+	* polishing
+	* Fixed LazyDTOMap: need to cast the return type to make rawtypes work.
+	* Stocktaking: made actual quantity optional.
+	* Refactor PurchaseTakeIn > StockJob.
+	* Choose dialogs form:ok -> form:ok-validated.
+	* Polishing sem-inventory
+	* Refactor obtainAllMaterials -> ConsumptionMap
+	* Refactor sem-purchase [7]
+	* Renamed SelectItemHolder to LockItemConfig.
+	* Refactor StockJob > orders*.
+	* Show entry.id instead of row index.
+	* Refactor DTO selection: F_MORE/F_EXT.
+	* update upgrade.sql add "remove from party_tagname sql"
+	* remove 简单视图 in sem-people menu
+	* set the type of the category from bom
+	* Renamed AccountInitItem.parent to .init.
+	* Refactor sem-purchase [6]
+	* polishing
+	* Refactor sem-bom [4] done.
+	* Added VerifyPolicy.name as natural id.
+	* Moved unit admin page to sem-world.
+	* Refactor Classification -> MaterialType. Re-new MaterialCategory page.
+	* NLS resync.
+	* PriceStrategy.getPrice() returns null instead of MaterialPriceNotFound exception.
+	* Refactor UnmarshalMap > IdentityMap.
+	* Added BaseDto.nil == isNull, null is reserved.
+
+SEM-1.2.7 (谢继雷, 2012-02-10)
+	* Refactor sem-purchase [5]
+	* Refactor MakeOrder > AbstractItemList.
+	* polishing.
+	* BomCriteria  various name changes.
+	* Choose part dialog: name/label match the target material.
+	* Fixed Part: string literal in default value isn't quoted.
+	* Choose party dialog should "or" the customer/supplier types.
+	* Added AbstractItemList*.attach().
+	* Refactor sem-purchase [4]
+	* Updated upgrade sql.
+	* Added EntityDto.setId(*, skipped) to support local list keying.
+	* Polishing. various fixes
+	* Updated sem-purchase UML.
+	* Added VerifyUtils.
+	* Refactor sem-purchase [3]
+	* Refactor sem-asset [3]
+	* Prepare form self-validation support.
+	* Refactor sem-asset [2]
+	* Fixed ChanceDto: marshal non-ref ChanceParties.
+	* Fixed listView: editable typo.
+	* Renamed IMarshalContext.loadEntity to getOrFail, and added .getRef() to sped up mref-unmarshal.
+
+SEM-1.2.6 (金卫林, 谢继雷, 2012-02-09)
+	* Refactor stock order page dirs.
+	* Fixed singleVerifierSupportDialog: seems p:selectOneMenu bug: value is not converted.
+	* Refactor sem-inventory. [6] completed.
+	* SevbFriend reload the opened object.
+	* Added listView creatable/editable/removable options.
+	* Added @AnyOwner. (deprecated)
+	* permission refactor
+	* SEVB call friends.save after main dto's id are written back.
+	* Utilized job stepping in outsourcingOut.
+	* Stock job stepping initial. [2]
+	* Stock job stepping initial.
+	* SevbFriend integration.
+
+SEM-1.2.5 (金卫林, 谢继雷, 2012-02-08)
+	* Refactor ViewBean > SelectionHolder with events suppport.
+	* Refactor ViewBean.ctx > FacesContextUtils.
+	* Added listView @paginator.
+	* Prepare SevbFriend.
+	* Moved selection/opened-objects to ViewBean.
+	* polishing
+	* Introduced stock job stepping in stock* admin beans.
+	* stocktaking refactor temp commit 3
+	* stocktaking refactor temp commit 2
+	* stocktaking refactor temp commit
+	* AbstractStockOrder as an entity can't be abstract.
+	* Renamed the entity name of StockOrder to PlainStockOrder.
+	* Stock order typing corrects.
+	* Fixed StockPeriod: must be the exact target type for mappedBy.
+	* Prepare related stock job scaffold.
+	* polishing
+	* Refactor ChanceQuotation > AbstractItemList.
+	* Refactor StockOrder hierarchy and StocktakingOrderItem > StockOrderItem.
+	* Refactor AbstractItemList.
+	* Refactor stock query button for single material, and cache sped up.
+	* Refactor Sevb-custom data model, add pagination support in custom loading.
+	* stocktaking refactor
+	* h:panelGroup to t:panelGroup
+	* Templating stock job in AbstractStockOrderBean.
+	* Renamed baseCriteriaElements to baseRestrictions.
+	* stock-template: auto query only for single-material.
+	* Set paginator default to true if ${paginator} isn't given.
+	* NLS resync.
+	* Added missing label @for(s) in stock-template.
+	* Stock (auto) cached query.
+	* simple-entity-dialog won't set target property if ${notarget}.
+
+SEM-1.2.4 (金卫林, 谢继雷, 2012-02-07)
+	* Find dangling outsourcing order by user criteria.
+	* Added user criteria element in Sevb.
+	* StockOrderDialog show details.
+	* Stock query dialog auto-query mode.
+	* Stock query dialog  UI enhancement.
+	* stockQueryDialog for dual view completed.
+	* person (party tags change to boolean property)
+	* polishing
+	* Clarified part material dialogs.
+	* Added sideBarW support to simple-entity-dialog.
+	* Added property ZLazyDataModel.all for listing.
+	* inputQuantity check scale map available.
+	* stock-template: Org/OrgUnit cascading.
+	* Fixed StockQuery: set the id field to support hash/equals.
+	* Refactor stockQueryDialog for both choosing and listing.
+	* Pass *.id instead of entities in stock query.
+	* party tag change to property
+	* Refactor sem-bom. [3]
+	* Refactor sem-bom. [2]
+	* fr:listView should not render ebuttons if none opened.
+	* Choose material category dialog.
+	* Utilized material attributes list view.
+	* Added ChooseMaterialDialogBean.productLike.
+	* TreeEntity/Dto.addChild no duplicated if unique-children.
+
+SEM-1.2.3 (金卫林, 谢继雷, 2012-02-06)
+	* Added stocktaking javadoc and item.important.
+	* Refactor PlanOrderDto > StockOrderDto.
+	* Try to load samples one-by-one in CreateDrop autoddl mode.
+	* StockTaking polishing.
+	* StockTaking joined order support.
+	* Fixed ui-dialog-form: max-height=40em.
+	* Added MaterialCategorySupportBean.
+	* Repair stockTaking itemDialog: see item-quantity.
+	* Refactor sem-people completed.
+	* LazyDataModel may occasionlly not loaded.
+	* It should be update=@none, but not "".
+	* Renamed copy to openedObject and prepare separation of treeView.
+	* dto NLength TextUtil.normalizeSpace check
+	* after ui refactor merge commit
+	* Added upgrade.sql
+	* Refactor sem-purchase, -asset, -bom.
+	* polishing
+	* InputQuantityDialog dev.
+	* Refactor sem-inventory. [5]
+	* Removed cascades from stock jobs.
+	* Fixed chooseOrgUnitDialog default var.
+	* Refactor of Party tags.
+	* scroll-entity integrations.
+	* Fixed listView: it's style not formStyleClass.
+	* Fixed ELListMBean: no list cache. re-serialization not always happened.
+	* Fixed: CEntity.keywords should skip null words.
+
+SEM-1.2.2 (谢继雷, 2012-02-05)
+	* Refactor openSelection.
+	* Refactor the DTO selection int to fmask completed.
+	* Refactor the DTO selection int to fmask
+	* Refactor activeObject to openedObject
+	* Hide edit dialog buttons for plain form mode.
+	* Refactor sem-inventory. [4]
+	* Degrade ZLazyDataModel to LazyDataModel.
+	* ScrollEVB: nav functions, and renamed loadRow to selectRow
+	* Refactor Party: simple employee/customer/supplier booleans.
+	* Added more dict items.
+	* Added Sevb.create method so one can block from creation.
+	* Added list/countImpl support for list builders.
+	* ajax-validation should warn developer for missing args.
+
+SEM-1.2.1 (谢继雷, 2012-02-04)
+	* Added LazyDtoMap.
+	* fr:select abandoned.
+	* Local EL context impl.
+
+SEM-1.2.0 (谢继雷, 2012-02-03)
+	* Re-init pl:select in composite component.
+	* polishing
+	* Renamed editDialogWrapper to editDialogs.
+	* scroll-entity template: by means of plainEditForm=true.
+	* Refactor sem-inventory [4]: Pending for pl:select.
+	* Refactor sem-world/inputQuantityDialog.
+	* Added DataViewBean.mrefList.
+	* Unified form style as .ui-dialog-form.
+	* Reused cc.attrs.dialogBean in cc:interface.
+	* polishing
+	* SingleVerifierSupportDialog: add some validates.
+	* Expand max-height to 40 for various dialogs.
+	* fr:listView: apply-button tooltip for smooth mode.
+	* Refactor sem-chance [6]: polishing.
+	* [cherry-pick] add width style to column in datatable & treetable [附注]
+	* [cherry-pick] p:dataTable  remove lazy="true" [附注]
+	* [cherry-pick] check string column length
+	* polishing
+	* Refactor sem-chance [5]: enclosing object initialization.
+	* Renamed ChanceQuotation.recommend to deliverInfo.
+	* td-orientation: separator between index/edit panels.
+	* fr:listView: ebuttons expanded to full width.
+	* Refactor FileAttribute for UserFile instead of FileBlob.
+	* Refactor enclosing/enclosed concern separation.
+	* Polishing mixed-style of fr:listView.
+	* Refactor sem-chance [4]: Utilized fr:listView in sem-chance.
+	* ListMBean: create-factory and call dto.create if it's a DTO.
+	* fr:listView: Added @nested attribute, it's necessary when the outer form is unavoidable.
+	* Refactor sem-chance [3]: Utilized fr:listView in sem-chance.
+	* Prepended one more __ to  _pre/post*, to ensure they won't be overrided by user.
+	* Test with listView nestings.
+	* fr:listView: Added fieldset/legend to panels.
+	* Add support of property chaining in ELListMBean.
+	* Should move nesting listView to facet "more". Cuz html form is not nestable.
+	* Added UnitConvDto.getScale(unit).
+	* Refactor Chance to aggregate quotations cascaded.
+	* Refactor MCValue in dtos: utilized MutableMCValue.
+	* More space normaliz.
+	* Moved BaseDto* to plover-model, and PropertyAccessor* to plover.bean package.
+	* fr:listView polishing.
+	* fr:listView initial release.
+	* fr:listView under development.
+	* Updated services.
+	* Refactor package plover.faces.
+	* Removed duplicated search* in simple-entity-dialog.
+	* polishing
+	* Initial of listView. (Pending cuz cc:renderFacet problem)
+	* Renamed caption to header.
+	* Refactor sem-bom [1]
+	* Refactor sem-inventory. [3]
+	* Refactor sem-people [2]
+	* Refactor pre-update validation: by uiLogger.error.
+	* Refactor search panels: side-bar search in dialogs.
+	* User file: refresh data when tag-list changes.
+	* Refactor sem-asset [1]
+	* Refactor sem-purchase [1]
+	* Fixed: chooseOrgUnit/orgId, chooseParty/tags not refreshed.
+	* Fixed Stevb: getRootNode() to trigger init.
+	* Using <h:panelGroup layout=block> to make virtual components.
+	* Refactor sem-chance. [2]
+	* Added chooseChance/Action dialogs.
+	* Refactor sem-inventory. [2]
+	* Moved ChooseTestBean to sem.test.
+	* Fixed: SelectableList should not be serilized. Decorate it otf.
+	* Clean up material/*, and utilized chooseStockLocationDialog.
+	* Refactor: selectionHolder/target.
+	* Moved multi-tab support to Sevb: Renamed activeTab to tabIndex.
+	* polishing
+	* Security options dialog: changed layout of buttons.
+	* Added sideBarN/S.
+	* Initial of simple-tree-entity-dialog.
+	* Prepare chooseOrgUnitDialog.
+	* AccountSubject: Utilizing simple-tree-entity template. [1]
+	* Refactor sem-inventory. [1]
+	* Refactor sem-chance. [1]
+	* Moved MaterialViewBean/Vdx to legacy package.
+	* StockOrder*: scroll view refactor. [1]
+	* Sevb: added request-window.
+	* Fixed: search fragment should ignore-case.
+	* UIHelper.buildTree* returns new created toplevel TreeNodes.
+	* Reused OrgUnit.label.
+	* Separate icsf menus from sem-people-menu.
+	* Refactor editDialogContent.
+	* Added ZLazyDataModel.loadRow to load a single row.
+	* Added CodeTreeEntityViewBean.
+	* Separate TreeNodeIndexer from SimpleTreeEntityViewBean.
+	* Removed *DialogListener.
+	* Refactor choose*Dialog: Changed @selection to @target.
+	* uploadFileDialog: override *label(s) for i18n.
+	* Refactor EntityPeripheralBean.context <- DataViewBean.getIntro.
+	* EntityHelper.parseId should throws ParseException.
+	* Separate small font css to small-font.css, and +switch option.
+	* Moved to DTOs.index(): Map<K,D>.
+	* Refactor And/Or/Not.of(...) in 2 manners.
+	* [cherry-pick] 凭证中查询资金流业务单时，把条件改为Or
+
+SEM-1.1.16 (谢继雷, 2012-01-21)
+	* Workaround: the security options dialog should be eagerly loaded.
+	* Fixed GroupAdminBean: typo.
+	* Polishing.
+	* Added choosePartyDialog.
+	* Auto rearrange Tree nodes after update/delete.
+	* Refactor principal* admin pages. [2]
+
+SEM-1.1.15 (谢继雷, 2012-01-20)
+	* Added stereo in choosePrincipalDialog.
+	* The initial of simple-tree-entity templates.
+	* simple-entity: Update mirror targets after deletion.
+	* Embedded dataTable in dataContainer, and add dataTree.
+	* Refactor principal* admin pages. [1] code cleaning.
+	* Renamed getMajorType to getMajorTypeOfContextPage.
+	* Renamed AbstractPrincipalDto -> PrincipalDto.
+	* Fixed: it should be listener.handleFileUpload.
+	* polishing
+	* Fixed sem-event menu locations.
+	* Added IncomingFileBlobAdapter to convert IncomingFile to FileBlob.
+	* Fixed editACLDialog: library name.
+	* Utilized sem:uploadFileDialog.
+	* Utilized sem:materialFragmentDialog.
+	* Refactor dialogs to be dynamic (lazy-loaded).
+	* Move logo etc. stuff styles to frame.css.
+	* Made SimpleEntityViewBean.refreshRowCount public, to apply criteria changes.
+	* Lazy rebuild the tree from TreeEntityDto nodes.
+
+SEM-1.1.14 (金卫林, 谢继雷, 2012-01-19)
+	* Fixed: library name spec must not lead by slash!
+	* Investigating: library scripts can't be loaded.
+	* Display none if no category is selected.
+	* SingleVerifierSupportBean: moved the pseudo type args on method to the class.
+	* Re-order sem frame menu.
+	* Polishing sem frame menu.
+	* Menu NLS update.
+	* NLS updated
+	* System.gc to avoid "too many opened files".
+	* Rearranged sem frame menu.
+	* Polishing
+	* Fixed EventDto: state enum may incorrect.
+	* remove nickname
+	* Renamed materialEx -> material.
+	* Applied simple-entity template to MaterialEx*.
+	* SimpleEntityViewBean: overridable composeBaseCriteriaElement.
+	* polishing
+	* Added sideBarW* along with sideBarE*.
+	* Cancel save/delete if preSave/Delete returns false.
+	* Added UnmarshalMap castable helper.
+	* Polishing. Set default page size to 20.
+	* Utilized simple-entity for Person/Org admin pages.
+	* Fixed/workaround: primefaces 3.0.1 dataTable doesn't render before TabView.show()
+
+SEM-1.1.13 (金卫林, 谢继雷, 2012-01-18)
+	* Released com.bee32.plover:plover-criteria-0.2.111
+	* Polishing
+	* Fixed various clientIds
+	* Added varargs in conj/disj/proj(...)
+	* Initial completed ACL cache & query.
+	* Added SEMUberModuleTest.
+	* Added some meta tags in template.
+	* 更新资源文件
+	* Fixed toggleDetailPanel: should use event.target.
+	* Initial of security options dialog.
+	* Normalized selection naming: get/setSelected*/confirm*
+	* Fixed EDMO.ctor: selection isn't utilized.
+
+SEM-1.1.12 (谢继雷, 2012-01-17)
+	* _SOD Workaround: cc.parent seems not work if nested too much.
+	* Security options dialog dev.
+	* Initial of security options dialog.
+	* Fixed: StockQueryOptions.verifiedOnly default true.
+	* NLS refreshed.
+	* Re-order the main menu and added edit/attributes/security entry.
+	* Filter verified() in various query.
+	* ACL pages: initial tested.
+	* Fixed: reload should skip non-ref dtos.
+	* Added IlluegalUsage message feh.
+	* Fixed ZLazyDataModel: a workaround to skip of rowIndex when pageSize 0.
+	* Brought back actionListener, never change the deep property on the fly.
+	* User file criteria: utilized MatchMode.
+	* Reuse label as Party.name, and check non-empty for UIEntityDto.label.
+	* Polishing: render non-null, addDescriptionRestriction
+	* Predefined the template scripts in sibling scripts.0.*
+	* Added common CEntity properties in template dataColumnsC.
+	* Fixed clientIds.
+	* Fixed/workaround: primefaces 3.0.1 dataTable doesn't render before dialog.show()
+	* Polishing: added more ids.
+	* Expanded to absolute client-id, @form seems not work in cc.
+	* Added last-modified and owner columns to the template.
+	* Review, adapted for primefaces-3.0.1.
+	* Upgraded to primefaces-3.0.1
+	* Removed default dummy action listener for choose dialogs.
+	* Initial of acl permission board.
+
+SEM-1.1.11 (金卫林, 谢继雷, 2012-01-16)
+	* chance add verify support done
+	* ACL dev.
+	* Validate the various inputs, and shake the dialog instead of hide on error.
+	* Changed VerifyEvalState ctor to private.
+	* purchase add verify support done
+	* Made various util methods in EntityViewBean final.
+	* Fixed: editForm -> editDialog:form.
+	* Separate editDialog[Wrapper]/editForm from other dialogs.
+	* Generate dom var {dialog}_cpd in cc's local scope.
+	* Added more component ids for debugging.
+	* Optim: auto refresh row count.
+	* inventory verify refactor
+	* chance add verify support
+	* Released com.bee32.plover:plover-criteria-0.2.110
+	* Binding directly like: selectedTargetPolicy -> entry.targetPolicy.
+	* acl dev.
+	* Optimized refreshing of row count.
+	* Added options to ICriteriaEelement for optim.
+	* Refactor dialogs to composite components. [5]: user file pages, and tag-cloud.
+	* SimpleEntityViewBean: add extension for pre/postDelete.
+	* Added entry.css/switcher.js to switch detail panel.
+	* Added owner-restriction in template.
+	* Preferred to override nameOrLabelRestriction only.
+	* Added permission bit helper SinglePermissionBit/Tristate.
+	* Set selection with singleVerifierSupportButton.
+	* Renamed StockOrderBaseBean to AbstractStockOrderBean.
+	* Refactor dialogs to composite components. [4]: simple-entity-dialog, date-search, css-layout.
+	* Made virtual div structures to newsite, to ease debug.
+	* Final layout resolution: fixed table-layout rather than float divs.
+	* Using fixed position for logoDiv, no scroll() event.
+	* Refactor icsf:loginPanel, added xpc option.
+	* Plover facelets exception handlers may scan thru the stack, and added priority.
+	* Refactor dialogs to composite components. [3]: verifiable support dialog/button.
+	* Refactor dialogs to composite components. [2]: cc.parent for nesting components
+	* Refactor dialogs to composite components. [1]
+	* c:set in child pages could inherits default vars.
+	* Collect abstract services for prototype collection.
+	* Removed _bean aliases from *Dialog.xhtml.
+	* Separated EditDialog from v1/index.
+
+SEM-1.1.10 (金卫林, 谢继雷, 2012-01-14)
+	* 审核完善中
+	* purchase add verify support
+	* polishing
+	* Initial ACL pages.
+	* Moved legacy ACL* to acl.legacy package.
+	* Added BuildMission pages.
+
+SEM-1.1.9 (金卫林, 谢继雷, 2012-01-13)
+	* Moved verify-context related code to the bottom.
+	* Added verify process handler.
+	* MakeOrder,PurchaseRequest add verify support
+	* asset add verify done
+	* Added parent verify-context support.
+	* Implemented AbstractVerifyContext+.populate().
+	* asset add verify ing
+	* Verify policy preference: update all dependencies.
+	* Polishing
+	* Fixed: uiLogger for locked-list made page frozen.
+	* Added uiHtmlLogger along with uiLogger, which won't escape.
+	* Added toolbar placement option.
+	* Moved login/register stuff to /3/7/1/, and home page gateway.
+	* SingleVerifierSupportBean: using pseudo type-arg for EntityDto & IVerifiable.
+	* Polishing
+	* 审核策略配置 onchange listener
+	* verify test
+	* Seperate SingleVerifierSupportButton.xhtml from dialog.
+	* Added VerifyContextFormatter.
+	* Moved logo-box to the bottom.
+	* polishing
+	* Released com.bee32.plover:plover-criteria-0.2.109
+	* Fixed: UserFileDto.prefix/extension was removed.
+	* Verify policy support works.
+	* Utilized simple-entity template.
+	* Refactor verifier1 to be principal.
+	* Renamed add*Restriction.
+	* Principal criteria: null for everyone: when there's left-join, the id maybe null.
+	* Refactor selection* listener: selected() and *Adapter.
+	* Refactor locking with reflections.
+
+SEM-1.1.8 (金卫林, 谢继雷, 2012-01-12)
+	* Utilized search fragments. [1]
+	* Rebased sem-file on simple-entity template.
+	* Initial of simple-entity template.
+	* Initial of composite search support.
+	* Replaced ILabel, EntityBase.entryText with ILabelledEntry.
+	* polishing
+	* Renamed the concrete <fqcn>DialogListener to <method-name>Adapter.
+	* EntityViewBean implements ISelection.
+	* Added ViewConfig.maxFileSize.
+	* Refactor & rewritten sem-file pages.
+	* LocalStorage changed naming from aaa/bbb/* to aa/*.
+	* Refactor *SelectionAdapter, and select(...) to process(...).
+	* Refactor sem-file > sem-people.
+	* polishing
+	* User file pages optim & rewrite.
+	* Added JettyCacheSwitcherBean.
+	* Add support of dynamic generated criteria elements.
+	* Moved LocalDataUtil to plover-commons.
+	* Utilized Varargs.
+	* Refactor entity-criteria.
+	* Refactor primefaces themes into enum, and add site config.
+	* polishing
+	* Made VLockPred serializable.
+	* Rebased EntityPeripheralBean > DataViewBean.
+	* Refactor VerifyPolicyPref pages using dialogs.
+	* Moved ChooseVerifyPolicyDialog.xhtml.
+	* initial single verifier support dialog.
+	* Rewrite attack mission pages using sevb.
+	* 库存审核策略管理完成
+
+SEM-1.1.7 (金卫林, 谢继雷, 2012-01-11)
+	* 分级策略管理完成
+	* ChoosePrincipalDialog: add fullName column
+	* Singnle verifier page refactor: utilized ChoosePrincipalDialog.
+	* Fixed: EntityViewBean.setSelection() the parameter is skipped.
+	* Added default ViewConfig.dialogPageSize.
+	* EDMO have to be serializable.
+	* SimpleEntityViewBean: add save/delete flags.
+	* Renamed people.web.hr => people.hr.web
+	* Added common criteria.
+	* ZLazyDataModel: made dto-selection and criteria transient.
+	* Initial of dialog callback support.
+	* Prepare choose principal dialog.
+	* Introduce intermediated DataViewBean
+
+SEM-1.1.6 (金卫林, 谢继雷, 2012-01-10)
+	* Refactor MultiTabEntityVdx > SimpleEntityViewBean
+	* add pincipal typeName
+	* Don't store metadata in VerifyPolicy.
+	* Don't re-verify already verified contexts.
+	* Cat feat tests with locker entity processor.
+	* Added some missed test services.
+	* NLS initiated for test classes
+	* NLS resync
+	* NLSInitiator: added test-resources support
+	* Cat feat play with ELA tracing.
+	* Create missing test class loader using m2 conventions.
+	* 单一审核策略管理完成
+
+SEM-1.1.5 (金卫林, 谢继雷, 2012-01-09)
+	* p:dataTable: rowKey=".." SHOULD NOT be use.
+	* Primefaces bug workaround: LazyDataModel.rowKey need to be escaped.
+	* polishing
+	* Verify policy preferences with primefaces.
+	* War test: added BuildMission*.
+	* EntityViewBean do type cast for activeobject.
+	* ZLazyDataModel/EDMO: degrade CEntity to Entity.
+	* simple verify policy edit
+	* internal person admin,a little bit of progress
+	* polishing
+	* single-verifier page: can't commit child form with parent toolbar.
+	* EntityViewBean: add singleSelection, activeObject[s].
+	* Promote selection over active-entry. And add selectionArray wrapper array for p:dataTable.
+	* SimpleEVB: Added isSelected := not selection.isEmpty.
+	* polishing.
+	* Single verify policy pages.
+	* Verify policy discrim-val: V1, V1X, P2N, STO.
+	* Added generic SimpleEntityViewBean.
+	* Refactor deleteAll(criteria) -> findAndDelete(...).
+	* Added stock verify pref/policy samples.
+	* VerifyPolicyPrefController: override __list in another DataHandler+.
+	* Utilized verify support beans in stock order [take] page.
+	* Moved single-verifier stuff to AbstractStockOrder.
+	* Verify support view beans dev.
+	* EntityPeripheralBean: don't infer context beans from page directory.
+	* Added VerifyEvalState.meet*, to get the mixed state.
+	* Prepare verify support (peripheral) view beans.
+	* VerifyService: event template dev.
+	* Fixed: SingleVerifierRankedPolicyTest don't have to be wired.
+	* polishing
+	* VerifyContextDto: should not merge verifyEvent.
+	* Added several EntityViewBean+.getSelection()
+	* Changed the default-value of verifyEvalState to 0x2000001.
+	* Changed VerifyEvalState.INVALID's type to END.
+	* Added EntityBase.entryText: a descriptive short text.
+	* Added policy-vctx/stage, and refactor declared-responsibles to responsibles-for-stage.
+	* Renamed VerifyState to VerifyEvalState.
+	* Add/refactor: VerifySupportBean > EntityPeriphralBean.
+	* Added EntityViewBean.getSelection().
+	* Refactor verify policy to support responsibles for different stages.
+	* Added EntityViewBeanRegistry for reverse searching.
+	* EntityViewBean: add implicit type parameter for EntityHelper, otherwise won't compile.
+	* Removed inefficient UserConverter.
+	* Annotated @ForEntity for entity view beans.
+	* PageDir* return list of location.
+	* Exclude test dependencies by default. (to build faster)
+	* polishing
+	* Renamed ...sems.bom* -> sem.bom
+	* Enum inheritance test passed.
+	* polishing
+	* Using char PriceStrategy.value.
+	* Refactor enum-alt types, inherits forName/valueOf*, so loading consts will work.
+	* Collected enum types.
+	* Collect services using scanner and sort them by name.
+	* ServiceCollector: utilized subclass closure.
+	* polishing
+	* Added EnumAltTestCase, it will ease searching for enum tests.
+	* Preferred to use VerifyState to EventState in verify-related stuff.
+	* Refactor EnumAlt so name/value-map are managed.
+	* Scan all enum types and register its values in loader manner.
+	* Make Event.message verbatim in the jsf.
+	* VerifyService: id parameter is missing in the href.
+	* Fixed: AttackMission should embed the vctx.
+	* polishing
+	* sem-uber includes test-classes for test.
+	* Refactor IVerifyService op against entity rather then verify-context.
+	* template/ventity*: renamed param names.
+	* Refactor AttackMission* as a full-feature module user.war.
+	* Initital of event html template.
+	* Prepare EventHtmlTemplate.
+	* Added ParameterizedEntityType > ParameterizedType.
+	* Clean up warnings
+	* Stock order url fragments dev.
+	* Collect modules.
+	* Preferred to use parameterized type name.
+	* Renamed ClassUtil.getDisplayName to getTypeName.
+	* Parameterized StockOrder.
+	* VerifyState: refactor boolean finalized to stage enum.
+	* CompatController: get the mode option value from Std* consts.
+
+SEM-1.1.4 (金卫林, 2012-01-07)
+	* 物料管理中的物料列表加入创建日期，并加入按他建日期排序功能
+	* asset,销售入帐单，采购入帐单中的org改成party
+	* asset,资产查询，查询某个科目时，相应的子科目也查询出来
+	* 物料管理菜单链接更换成新的
+	* 物料附件完成
+	* Encoded attachment filename as RFC 5987.
+	* 物料单位转换表完成
+
+SEM-1.1.3 (金卫林, 2012-01-06)
+	* 物料仓库选项完成
+	* 物料仓库选项管理未调试
+	* 物料的自定义属性和推荐库位管理完成
+
+SEM-1.1.2 (金卫林, 2012-01-04)
+	* 单位换算表制作中
+
+SEM-1.1.1 (金卫林, 2012-01-03)
+	* 物料基本信息，物料基础价格管理完成
+
+SEM-1.1.0 (金卫林, 2012-01-02)
+	* 物料管理继续制作中 +
+
+SEM-1.0.23 (金卫林, 2011-12-31)
+	* 物料管理继续制作中
+
+SEM-1.0.22 (金卫林, 2011-12-30)
+	* 物料管理重新制作中
+
+SEM-1.0.21 (金卫林, 谢继雷, 2011-12-29)
+	* load category with materials
+	* Event.type should be char.
+	* Denorm type abbr columns.
+	* Added type abbr refactor utilities.
+	* Normalized type-abbr properties and columns.
+	* polishing
+
+SEM-1.0.20 (金卫林, 谢继雷, 2011-12-28)
+	* Query event observer with im-set feature tests.
+	* EventDto: Make source(-abbr) for source-class transient.
+	* Added EventCriteria.observedBy(...), and UserCriteria.
+	* Reduced AbstractEventController.
+	* Changed ctor: Event(source, type).
+	* Deprecated @TransferBy.
+	* The join table EventObserver changed to (event, observer).
+	* Recollect.
+	* Renamed ScCollector to UniversalCollector.
+	* Moved principal* back to icsf.principal package. (sem-*)
+	* hibernate formula research
+	* 物料管理重构开始
+
+SEM-1.0.19 (金卫林, 谢继雷, 2011-12-26)
+	* 完善hr实体类
+	* sem-people/hr/EmployeeInfo 工龄计算
+	* Refactor Event.stereo to EventType, to allow change of type.
+	* hr continue ++
+
+SEM-1.0.18 (金卫林, 谢继雷, 2011-12-24)
+	* hr continue +
+	* hr continue
+	* hr start
+	* Added reverse-map tests for pagedir.
+	* Added the base VerifySupportBean.
+	* sem-people: moved icsf/principal beans to its own packages.
+	* Added IndexRichCompatController for bridging norm paths to the mixed index-rich.
+	* Get the requested entity in EntityViewBean.
+
+SEM-1.0.17 (金卫林, 谢继雷, 2011-12-23)
+	* Declare entity pages for -process modoule.
+	* Removed @Alias annotations from verify policy entities.
+	* Prepare to declare entity pages in er-modules.
+	* sem-inventory TakeAdmin 加入已经审核的单据不能删除，不能修改
+	* Fixed: verifyTask -> verifyEvent.
+
+SEM-1.0.16 (金卫林, 谢继雷, 2011-12-22)
+	* add stockOrderVerifySupport.bind(this) to setVerifyContext for StockOrder
+	* Changed SingleVerifierLevel.multiLevel -> .policy.
+	* Compact stock verify policy packages.
+	* Changed VerifyContext.task => .event.
+	* Refactor support.bind(): the base embeddable classes have to be mapped-superclass.
+	* Renamed VerifyState.closed to .finalized.
+	* Compact stock-verify-policy packages.
+	* Fixed sem-process menu locs.
+	* Rebased Event > MomentInterval.
+	* sem-inventory  审核初试
+
+SEM-1.0.15 (金卫林, 谢继雷, 2011-12-21)
+	* StockOrder add verifyContext
+	* hr reverse to uml again
+	* PartyTagnameDto: Added missing dto ctor(int).
+	* Separate JudgeNumberInProperty into its own source file.
+	* Added stock order specific verify policy.
+	* PersonResume.records => .person.records.
+	* Party.records -> PartyRecord*.
+	* Peer review.
+
+SEM-1.0.14 (金卫林, 谢继雷, 2011-12-20)
+	* hr重构后反向取uml图
+	* sem-inventory的takeAdmin加入接收对像id，并进行相应跳转的代码，为加入审核做准备
+	* Fixed: add PersonEducationType default ctor.
+	* Added IVerifyService for iface proxy.
+	* Moved list/ to v1/, level/ to v1x/.
+	* Renamed: AllowList->SingleVerifier, MultiLevel->SingleVerifierRanked.
+
+SEM-1.0.13 (金卫林, 谢继雷, 2011-12-19)
+	* Review & moved ..personnel to sem.hr.
+	* Prepare formula support.
+	* 人事(部份)模型代码建立
+	* Implemented ScoreLevelMap codecs.
+	* Renamed PersonRecordCategory.RESUME -> .INTRO.
+	* Changed Employee to PersonResume.
+	* Renamed SkillCategory to PersonSkillCategory.
+	* Added PersonSkill javadocs.
+	* Moved Contract to sem.misc temporarily.
+	* Added ScoreLevelMap > range-from map.
+	* Renamed tagname to category, reused PersonRecord for resume. and moved to sem.hr.
+	* Released com.bee32.plover:plover-criteria-0.2.108
+	* Fixed jsf pages: label/displayName stuff.
+	* Utilized responsibleTr in allow-list pages.
+	* ventity/* templates: now vctx in embedded style.
+	* Fixed: Event controller mapping to /* (not **).
+	* Refactor verify policy: refactor packages & dev [4]
+	* Verify policy collector: re-target to IVerifyPolicy.
+	* Clean up unit tests.
+	* Added VerifyPolicyMetadata.
+	* Declare the required vc using @ForVerifyContext.
+	* Refactor verify policy. [3]
+	* Added IVerifiableDto at the other side.
+	* Utilized BOC.transform: "responsibleTr.ids".
+	* Single..withNumber: bind the number with specific property.
+	* polishing
+	* Refactor verify-context impl. in embedded-style. [2]
+	* Refactor verify-context impl. in embedded-style. [1]
+	* Polishing
+	* Re-collected verify policies.
+	* Renamed concrete verify policies as *-Policy.
+	* Normalized -verify dto fqcn names.
+
+SEM-1.0.12 (金卫林, 2011-12-17)
+	* 人事(部份)模型加代码中
+	* sem-purchase remove unused code: warehouseIds
+	* 人事(部份)模型更新
+
+SEM-1.0.11 (金卫林, 2011-12-16)
+	* 人事(部份)模型考虑
+	* 公司人员管理（简单视图）基本完成
+
+SEM-1.0.10 (金卫林, 2011-12-15)
+	* 公司人员管理（简单视图）制作中
+
+SEM-1.0.9 (金卫林, 2011-12-14)
+	* 加入org,person管理简化视图
+
+SEM-1.0.8 (金卫林, 2011-12-13)
+	* 日志，机会显示加所有人;
+	* 资产查询初步完成
+
+SEM-1.0.7 (金卫林, 2011-12-12)
+	* 资产查询制作中
+
+SEM-1.0.6 (金卫林, 2011-12-10)
+	* sem-asset 科目初始化功能初步完成
+
+SEM-1.0.5 (金卫林, 2011-12-09)
+	* account init start
+	* sem-asset 科目管理改进完成
+	* add accountInit menu
+
+SEM-1.0.4 (金卫林, 谢继雷, 2011-12-08)
+	* Negated *Merged to *Visible.
+	* AssetQuery returns the tree instead of root-node.
+	* SumNode: addFTN for native total.
+	* Test with snapshot base.
+	* SumNode format details.
+	* Populate() results in AccountTicketItem.transient for snapshot-item-ref.
+	* Fixed: sumnode.parent. Node-with-children should be non-virtual.
+	* Changed *Merged to *Visible. Subject should always be visible.
+	* Fixed: embedded property name.
+	* Added more and renamed feature player support to *fps.
+	* Added more ctors for MCValue.
+	* Asset query feature test. (under dev.)
+	* Removed AccountSubjectService.
+	* Asset query dev.
+	* Add snapshot/item to asset-unit.
+	* Summary tree dev.
+	* Group account snapshot items.
+	* MavenPath fixes.
+	* Utilized MatchMode in PeopleCriteria.
+	* AccountSubject refactor.
+	* Refactor PoNode<T>.
+	* Build with po tree in AccountSubjectAdminBean.
+	* Define consts with AccountSubject._(...)
+	* Po-tree built. also intg. with AccountSubject.
+	* Add AccountSubjectTest.
+	* Asset query options accept list of subject/party.
+	* Refactor AccountSubject > NameDict.
+	* Add AccountSnapshot.
+	* Asset query initial.
+	* 采购请求生成采购入库单初步完成
+	* 生成采购入库调试中
+
+SEM-1.0.3 (金卫林, 2011-12-06)
+	* 采购请求生成采购入库已经完成，还未调试
+
+SEM-1.0.2 (金卫林, 2011-12-05)
+	* 采购请求生成采购入库制作中
+	* 采购生成采购入库单制作 中
+
+SEM-1.0.1 (金卫林, 2011-12-02)
+	* sem-purchase   改正生产任务单和物料计划中的错误
+	* inventory->take->add button "从采购计划取数"
+
+SEM-1.0.0 (金卫林, 2011-12-01)
+	* 询价管理基本完成
+
+SEM-0.9.25 (金卫林, 2011-11-30)
+	* 询价continue
+	* 修正更改全局css后,userfile中datatable位置显示异常的问题
+
+SEM-0.9.24 (金卫林, 2011-11-29)
+	* 询价continue
+
+SEM-0.9.23 (金卫林, 2011-11-28)
+	* 采购询价制作中
+	* AccountSubject样本变动
+
+SEM-0.9.22 (金卫林, 2011-11-26)
+	* 1.采购请求原数量视为请求数量，新加入计划数量
+
+SEM-0.9.21 (金卫林, 2011-11-25)
+	* add <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" /> (时间输出时区转换) for xhtml in sem-purchase
+
+SEM-0.9.20 (金卫林, 谢继雷, 2011-11-24)
+	* asset科目管理改进
+	* fix bugs in sem-people
+	* Moved sem:login before the menu, to delay the commit.
+
+SEM-0.9.19 (金卫林, 谢继雷, 2011-11-23)
+	* LoginManager fixes.
+	* 对asset查询bean命名错误进行改正
+	* sem-purchase的部份小改进(参见问题101)
+	* SessionPerson factory-bean seems not work in JSF, delegate anyway.
+	* Renamed LoginInfo/LoginPersonInfo to SessionUser/Person.
+	* assetQuery初步
+
+SEM-0.9.18 (金卫林, 谢继雷, 2011-11-22)
+	* add SEMAssetUnit to SEMUberUnit
+	*  升级m4检查完成
+	* 修正升级到primefaces m4后的一些问题
+	* primfaces 3.0.M4+: Replaced `primefaces.prime.com.tr` by `primefaces.org`.
+
+SEM-0.9.17 (金卫林, 谢继雷, 2011-11-21)
+	* 从StockTrade.items的变动来更新StockTrade中的金额的业务逻辑暂时放在bean中
+	* asset, 初步完成
+	* Collect HSL.
+	* Collect servlet request listeners.
+	* Utilized the servlet-api http session listener.
+	* 临时提交
+	* 定单（makeOrder）：交货日期从MakeOrder移到MakeOrderItem
+	* Fixed generics: Return base-EAS for entity subclasses is allowed.
+
+SEM-0.9.16 (金卫林, 谢继雷, 2011-11-19)
+	* Activate samples loader eagerly.
+	* 销售入账单和采购入账单初步完成，还未调试
+	* asset 物料进出单制作中
+	* 销售，采购入账单制作中
+
+SEM-0.9.15 (谢继雷, 2011-11-18)
+	* Clean unnecessary .keep.
+	* Added logoHref, cuz location-vmap is yet not supported until -facelets.
+	* Added xref graph demo case.
+	* polishing
+	* Entity xref dev.
+	* Made abstract PUnitPostProcessor service as to be collected.
+	* Collect entity types.
+	* Make use of site logo in the newsite template.
+	* PersonAdminBean ctor fixes.
+	* Dump bean definitions in a separate initializing service bean.
+	* Add dump as csv support.
+	* Show application beans only, hide infrastructures away.
+	* Bean definition improvements.
+	* Dump bean definitions.
+	* Split bean definition dump from SEMTestcase.
+	* Temporary disable fxr-commit qjc
+	* scope under dev.
+	* Collected IDatabaseConfigurer.
+	* General Dao but not abstract.
+	* Fix for safe: logIn null user?
+	* Git: normalized texts.
+	* [1] site integration test.
+	* Config data source per site.
+	* Collect site lifecycle listeners.
+	* Added reload(*) in DataService.
+	* Added SEM minimal test.
+	* Site-scoping/lazy refactor.
+	* Code clean up.
+	* FEH collected.
+	* Enumerate FEH using JRE services.
+
+SEM-0.9.14 (金卫林, 2011-11-17)
+	* asset 凭证管理基本完成
+
+SEM-0.9.13 (金卫林, 2011-11-16)
+	* asset:凭证管理制作中
+	* "机会行动"更名为"日志",和销售机会减少字面重叠
+	* 解决102号问题:销售机会管理，明细中的机会行动历史记录中点详细，里面的内容描述没有
+	* asset: correct the wrong path of xhtml files
+	* change ChanceSourceDto to ChanceSourceTypeDto
+
+SEM-0.9.12 (金卫林, 2011-11-15)
+	* asset无错提交，便于编译
+	* 凭证管理制作中
+	* 资金流业务管理
+
+SEM-0.9.11 (金卫林, 2011-11-14)
+	* asset 业务单据制作中
+	* asset会计科目管理功能完成
+	* 科目管理初步完成未测试
+
+SEM-0.9.10 (金卫林, 2011-11-13)
+	* asset制作中
+
+SEM-0.9.9 (金卫林, 谢继雷, 2011-11-12)
+	* asset temp commit
+	* Refactor: PartyDto < Person/OrgDto.
+	* Fixed: various dto type param changes.
+	* Removed AccountSide enum. Use boolean instead.
+	* Code review: Account -> AccountTicket.
+	* asset dto almost complete
+
+SEM-0.9.8 (金卫林, 2011-11-11)
+	* asset completing dto
+	* code review continue
+	* code review
+	* asset模型初步确定
+	* asset continue
+
+SEM-0.9.7 (金卫林, 2011-11-10)
+	* 资产管理制作中
+
+SEM-0.9.6 (金卫林, 2011-11-08)
+	* 资产管理模型草图更新
+
+SEM-0.9.5 (金卫林, 2011-11-07)
+	* 资产模型草图
+
+SEM-0.9.4 (金卫林, 2011-11-05)
+	* 自然人和企业/组织中加入一个按名称搜索的功能
+
+SEM-0.9.3 (金卫林, 2011-11-04)
+	* 修改查询库存物料明细因时间没有取一天的最后而没有查到全部明细的问题
+	* 仓库单据明细加入按物料名称排序的功能
+	* 库存中增加中文语言
+
+SEM-0.9.2 (金卫林, 2011-11-03)
+	* 语言包加部份中文
+	* 更新采购菜单的语言
+	* NLSInitiator: Force to use unix eol-style.
+	* NLSInitiator: convert dos path to unix.
+
+SEM-0.9.1 (谢继雷, 2011-11-02)
+	* Sem asset uml polishing.
+	* Asset model updates.
+
+SEM-0.9.0 (金卫林, 2011-11-01)
+	* purchase基本完成
+
+SEM-0.8.24 (金卫林, 2011-10-31)
+	* 物料计划初步完成
+	* 物料计划继续中;bom半成品查询中加入规格型号
+
+SEM-0.8.23 (金卫林, 谢继雷, 2011-10-29)
+	* 物料计划管理中，改变锁定库存按钮的禁止状态
+	* Show warehouse column in the query result.
+	* Missing PurchaseRequestItem in the purchase unit.
+	* MaterialPlan.purchaseRequest n:1 -> PurchaseRequest.
+	* polishing
+	* StockQuery: using parent.warehouse.
+	* add fogot class: PurchaseRequestItem.java
+	* stockQuery developer 互动调试中
+	* 解决bom中PartDto的改动造成不能从makeTask生成materialPlan的问题
+	* 物料计划continuing
+
+SEM-0.8.22 (金卫林, 谢继雷, 2011-10-28)
+	* 物料计划中的stockOrder部份制作中
+	* Annotate inheritable @Prototype on FeaturePlayer+.
+
+SEM-0.8.21 (金卫林, 谢继雷, 2011-10-27)
+	* bom加入正向制作功能，即从产品顶端向下制作
+	* 物料计划制作临时提交
+	* Added more site manager pages.
+
+SEM-0.8.20 (金卫林, 谢继雷, 2011-10-26)
+	* AbstractWac renamed.
+	* 物料计划继续制作中。  org管理改进
+
+SEM-0.8.19 (金卫林, 2011-10-25)
+	* materialPlan物料计划制作中
+
+SEM-0.8.18 (金卫林, 2011-10-24)
+	* 物料计划制作中
+	* 物料管理中加入按物料名称排序功能
+	* makeTaskAdmin初步完成
+
+SEM-0.8.17 (金卫林, 2011-10-23)
+	* 物料计划考虑中
+
+SEM-0.8.16 (谢继雷, 2011-10-22)
+	* [89] Blank dialog tests.
+	* User admin validation review.
+	* [Fixed 90] Replaced @Scope("view") by @PerView which is inheritable.
+	* Superfish menu builder: skip menu items without location.
+	* Obsoleted @view.Inject
+
+SEM-0.8.15 (金卫林, 谢继雷, 2011-10-21)
+	* makeTask初步完成，还差保存时数量的检查功能
+	* makeTask制作中
+	* logo box: gray border.
+	* polishing.
+	* controller-template separation doesn't work: parent context invisible? back to @Controller.
+	* Separate controllers into @ControllerTemplate.
+
+SEM-0.8.14 (金卫林, 谢继雷, 2011-10-20)
+	* Clarified resolve() by resolveAbsoulte/resolveContextRelative.
+	* NLS update -INIT
+	* Added view/theme menus in sem frame.
+	* Primefaces menu builder: non-ajax action listener support.
+	* Added blank-rich test page.
+	* Added SEMUberFTC test case to test menus, this starts up fast.
+	* Changes to site-template. (3 more)
+	* Added IAction.actionListener for JSF actions.
+	* Added menu builder for Primefaces.
+	* Clarified empty/barren.
+	* Generalized menu builder.
+	* Added primefaces theme switcher.
+	* polishing
+	* makeTask制作中
+
+SEM-0.8.13 (金卫林, 2011-10-19)
+	* 生产任务单制作中
+
+SEM-0.8.12 (金卫林, 谢继雷, 2011-10-18)
+	* 解决机会管理中的按机会标题搜索功能不能用的问题
+	* MakeOrder制作调试基本完成
+	* MakeOrder管理调试中 -- 1
+	* MakeOrder管理调试中
+	* Added MakeOrderItem.detach.
+	* Added add/remove items and native conversion in MakeOrder.
+
+SEM-0.8.11 (金卫林, 2011-10-17)
+	* purchase制作中.makeOrder管理制作完成，未调试
+
+SEM-0.8.10 (金卫林, 2011-10-15)
+	* 修改BOM明细处查找不到物料的问题
+
+SEM-0.8.9 (金卫林, 2011-10-14)
+	* 1.输入bom时，“BOM信息”中的查找物料限制为只查找产成品
+
+SEM-0.8.8 (金卫林, 谢继雷, 2011-10-13)
+	* polishing
+	* Example: validate MaterialCategory.name.
+	* Replaced process="@this" by action-spec naming convention.
+	* Added scripts.head insertion in newsite template.
+	* Collect IValidationSwitcher.
+	* Renamed (plover-)Size to NLength.
+	* Cancel the form: process="@this" instead of immediate="true"
+	* Refactor PersonAdminBean for validated detail/cancel.
+	* Plover string-size validator for normalization.
+	* Add bean validation annotations.
+	* PartyDto.owner is already defined in CEntityDto.
+	* Annotate with bean valdiations.
+	* Refactor simple-redirection to complex ExceptionHandleResult.
+	* bom中物料选择的改进
+	* 物料分类加入classification(成品，半成品，原材料)
+
+SEM-0.8.7 (金卫林, 2011-10-12)
+	* BOM重复检查
+	* 改正日志中不能同时选择多个客户的问题
+	* BOM列表按分类显示
+
+SEM-0.8.6 (金卫林, 2011-10-11)
+	* bom分类显示功能临时第二次提交
+	* bom分类显示功能临时提交
+	* 1.物业管理加附件统计列;2.出入库明细加时间列;3.bom加按分类列表(未完成)
+
+SEM-0.8.5 (金卫林, 2011-10-10)
+	* 仓库所有单据加入按换算单位输入数量功能
+	* 出入库中加入单位换算功能
+
+SEM-0.8.4 (金卫林, 2011-10-09)
+	* 仓库单据按不同单位输入数量功能制作中
+
+SEM-0.8.3 (金卫林, 2011-10-08)
+	* 解决物料分类名称为空也能保存的问题
+	* 解决仓库单据删除多条明细不能保存的问题
+
+SEM-0.8.2 (金卫林, 2011-10-07)
+	* 解决仓库单据，修改明细条目，不能保存的问题
+	* 解决bom物料查找,unknow rowKey的问题
+	* delay 10 seconds to avoid spin locks at bootstrap.
+
+SEM-0.8.1 (金卫林, 2011-10-06)
+	* 库存查询中明细查询中加入查询某个条目在哪张单据的哪个位置的功能
+	* 仓库单据从倒序改为顺序
+	* 单位换算改动完成,让每一个物料有一个对应的换算表
+
+SEM-0.8.0 (金卫林, 2011-10-05)
+	* 库存查询结果中加入明细查询功能，完成
+	* 库存查询结果加入明细查询
+
+SEM-0.7.21 (谢继雷, 2011-09-27)
+	* Rebased UnitConv onto UIEntityAuto.
+	* Added abbr dumper util for entity classes in -uber.
+
+SEM-0.7.20 (金卫林, 2011-09-24)
+	* 库存盘点功能制作中
+	* 解决出库单输入后界面上显示变负数的问题
+
+SEM-0.7.19 (金卫林, 谢继雷, 2011-09-23)
+	* StockTaking initial tested.
+	* Compare DTO equality using DTOs.equals, instead of Nullables.equals.
+	* Stock taking join/extract dev&test.
+	* IStockQuery returns StockOrder instead of ItemList.
+	* 选择物料对话框的datatable加入滚动条
+	* Built default keywords with populateKeywords().
+	* Refactor marshalList(..., true) to mrefList(...).
+	* 库存单据的删除和保存功能加入：如果失败时，页面给出提示
+
+SEM-0.7.18 (金卫林, 2011-09-22)
+	* 还算=>换算;MaterialCategory取的时候选定型改为引用型;
+
+SEM-0.7.17 (金卫林, 2011-09-21)
+	* 物料分类管理，物料管理改进中
+
+SEM-0.7.16 (金卫林, 谢继雷, 2011-09-20)
+	* 1.StockOrderItem one column transiant to column; 2.adapte StockOrderItem replace id with index
+	* Fixed: price_cc should override attribute currencyCode insteadof currency.
+	* StockTaking extraction dev.
+	* Refactor copy ctor to EntityDto.populate(*) also.
+
+SEM-0.7.15 (谢继雷, 2011-09-19)
+	* StockTakngDto dev.
+	* Reduced stock-taking subjects to single STKD.
+	* 1. StockJob.ORDERS/ITEMS selections, 2. Join/extract for stock-taking job.
+	* [Fixed 27] Added StockItem.index for ordering.
+	* Moved dto.tx.* to tx.dto.*.
+	* Implemented populate() for some base entity types.
+
+SEM-0.7.14 (金卫林, 谢继雷, 2011-09-17)
+	* fix 仓库单据输入时，挑选库存后，单价不能更新的问题
+	* [Updated 25] Fixed: warehouse maybe null for stock query, updated samples.
+	* 委外出库，调拨出库也加入库存查询功能
+	* Add price projection in stock query.
+	* Set attribute overrides for embedded (mcvalue) prices.
+	* 库存单据输入时加入库存查询功能 continue
+	* 库存查询 continue
+	* Fixed: test cases for [REF 25]
+	* [Updated 25] Set List<Material> = null to query all materials.
+
+SEM-0.7.13 (金卫林, 谢继雷, 2011-09-16)
+	* 1.库存查询continue 2.takeAdmin加入库存查询 continue
+	* 1.库存查询功能进行中  2.在仓库单据中加入库存查询功能中，还没完成
+	* StockQuery returns StockItemList foo single-material query, too.
+	* Added StockItemList.subList(material).
+	* [Fixed 25] Added StockQueryOptions for more complex query.
+	* Query support on warehouse.
+
+SEM-0.7.12 (金卫林, 2011-09-15)
+	* 库存查询制作中
+	* 库存中的单据明细加入规格型号
+	* 文件管理中标签align top;dialog都设置为modal;图片不指定大小
+	* 库存单据中选择物料时，加入规格型号的显示;  加入库存查询初始页面，开始制作
+
+SEM-0.7.11 (金卫林, 谢继雷, 2011-09-14)
+	* Added TextUtil.
+	* 文件管理中增加标签显示排序功能
+
+SEM-0.7.10 (金卫林, 2011-09-13)
+	* 1.文件上传增加倒序和lazyMode;2.库位管理commandLink改用ContextMenu，基本通用。还有无库位时也显示ContextMenu的问题
+
+SEM-0.7.9 (金卫林, 2011-09-10)
+	* 修改GroupAdmin和RoleAdmin中的错误, 把treeTable中的commandLink改成contextMenu
+
+SEM-0.7.8 (金卫林, 谢继雷, 2011-09-09)
+	* fix file upload ViewExpiredException done
+	* permission fix done. remove rowkey
+	* UserFile.name 50->100;  改正物料更改类别时如果是顶级分类，则出错的问题
+	* UML updates.
+
+SEM-0.7.7 (金卫林, 朱挺峰, 2011-09-08)
+	* permission fix done
+	* StockLocation检查中.TreeTable有重复执行action的问题
+	* add mailService
+	* 销售机会修改完成
+	* set material modal
+	* fixed chance 'rowKey = null'
+
+SEM-0.7.6 (谢继雷, 朱挺峰, 2011-09-07)
+	* 附件管理页面修改:增加过滤功能
+	* 销售机会改进
+	* userfile 增加过滤功能
+	* Added page size =1000 option.
+	* UserFile tag refactor.
+	* Generalized ViewConfig.paginatorTemplate.
+	* (JPA 2.0) @MapKeyJoinColumn the default key column name is `property_name_key`.
+
+SEM-0.7.5 (谢继雷, 朱挺峰, 2011-09-06)
+	* [Fixed #3] Added session beans, to avoid error-prone fly weights.
+	* Login review.
+	* ModifyPassword: utilized LoginInfo.chain.
+	* Partial selection: ROLES_CHAIN -> ORG_UNIT_FULL.
+	* Changed to using UserDto in LoginInfo.user. Also PersonDto.
+	* Utilized JPA 2.0 @ElementCollection.
+	* [FIX #3] Display the login info chain.
+	* LoginInfo/LoginPersonInfo are also session-scoped beans.
+	* 修改部分报价单错误
+	* 改正机会中 机会行动 相关的错误
+	* now chance party is editable
+	* Review: Cascade/orphanRemoval = true.
+	* Moved sem.misc.i18n to plover-commons.
+	* fixed bug : id to load is null,拆分附件管理
+	* set materialDto.id as NaturalId
+
+SEM-0.7.4 (金卫林, 谢继雷, 朱挺峰, 2011-09-05)
+	* Prepare sem:dataTable for ui/cc.
+	* Refactor CascadeType.DELETE_ORPHAN => orphanRemoval.
+	* Released plover-criteria .107: for hibernate-core-3.6.7-bee32-1.
+	* 去掉页面中none
+	* 增加xls
+	* 修改上传文件正则表达式
+	* EntityCriteria: owner instead of ownerId.
+	* upgrade primefaces from m2 to m3, fix bom done
+
+SEM-0.7.3 (谢继雷, 2011-09-04)
+	* mainTabview -> mainTab.
+	* Added log4j fragments in specific modules.
+	* Collect ALC/SCLs.
+
+SEM-0.7.2 (金卫林, 谢继雷, 朱挺峰, 2011-09-03)
+	*  modify state : button
+	* 合并提交
+	* hide error message
+	* fixed query : not have the property 'name'
+	* modify FileUpload allowTypes
+	* add query : is or not a attachment
+	* primefaces from 3.0m2->m3,  StockWarehouseAdmin,StockLocationAdmin done
+	* primefaces from 3.0m2->m3, people fix done
+	* Tri-state permission refactor.
+	* chance: MomentIntervalCriteria.timeBetween
+	* Added MomentIntervalCriteria with optional dates.
+	* Collect EMTs.
+	* uiLogger messages clean up.
+	* polishing
+	* Fixed action/chance component paths.
+	* primefaces from 3.0m2->m3,continue...
+	* primefaces from 3.0m2->m3,so modify personAdmin,orgAdmin
+	* polishing
+	* Refactor partiesHint. addParty/Partner one by one.
+	* Normalized Party.sid.
+	* Resolved update/id/rendered framework.
+	* Get derived vars from ChanceDto/ChanceActionDto otf.
+	* sem-chance selectable/holder refactor.
+	* ZLazyDataModel get CDM using FacesContextSupport.getBean.
+	* SelectableListWrapper => ListHolder.
+	* polishing
+	* Add Selectable.isSelected/deselect shortcuts.
+	* sem-chance: Refactor activeXXX to xxxCopy.
+	* Add selectable list, and refactor chance page.
+	* Wrapped frame.js within (param-) local scope.
+	* Fixed: tabView is a NamingContainer now. (1)
+	* material.xhtml: Marshal lists as ref.
+	* Load frame.js after jQuery stuff.
+	* Initialized LoginInfo+.session.
+	* Made (file-upload) allowType configurable.
+	* modify update component
+	* add rowKey
+	* test constractor components from server side
+	* fixed component not found
+	* add criteria : refType
+	* Added Dto.key for general purpose.
+
+SEM-0.7.1 (金卫林, 谢继雷, 2011-09-02)
+	* primefaces upgrade from 3.0m2 to 3.0m3, so datatable need add rowKey property
+	* Renamed editItem to applyItem.
+	* Should set rowKey in xhtml instead of getRowKey/RowData in LDM.
+	* chance/action states clean up. (1)
+	* login add dummy form
+	* Removed @Override to support both M2 & M3.
+	* Switched back to primefaces 3.0-M2
+	* Login crypt debugging.
+	* Added login __tips.
+	* Fixed: head id='head'.
+	* polishing
+	* Enhanced: selector() returns null for transient instances.
+
+SEM-0.7.0 (金卫林, 谢继雷, 朱挺峰, 2011-09-01)
+	* UserFileAdmin: marshal-list by ref.
+	* Refactor material.name -> label.
+	* [XXX] Comment out DataTable.clearSelectedRowIndexes()
+	* FileBlob: returns error message if open error.
+	* Created UMLs for sem-asset.
+	* UserFileDto: get prefix otf.
+	* Prepare sem-asset.
+	* Renamed PaletteColor to PalatteEntry.
+	* Java 7 clean ups, (Eclipse-3.8) warnings removal.
+	* Fixed: Quit error in IE8.
+	* 页面及viewbean修改
+	* fixed nullPointerException:priority
+	* add dependence : people
+	* MaterialSettingsBean perfecting
+	* move material.name to material.label
+	* Fixed: declare h:head with id='head'.
+	* StockLocationDto getNodeText if null,set nodeText to "New"
+	* userfile viewBean update
+	* userFile :  locked file extension name can't edit
+	* 物料material.name => material.label
+	* purchase模型小变更
+	* Fixed: samples isn't loaded.
+
+SEM-0.6.27 (金卫林, 谢继雷, 朱挺峰, 2011-08-31)
+	* Config page size in ViewConfig.
+	* add converter
+	* sem-mail:perfecting
+	* Released com.bee32.plover:plover-criteria-0.2.106
+	* Fixed VP-Pref: call abbr directly to get type id.
+	* Ref with material in user file attachments.
+	* StockQuery dev.
+	* Added virtual-only set along with virtuals.
+	* Added order dump utils.
+	* Added displayName to Material/Order.
+	* Added UserFile.refType/refId.
+	* IStockQuery.get*Summary construct StockItemList than Map.
+	* Refactor WiredDaoFeat > FeaturePlayer.
+	* Auto load normal samples, by set SamplesLoaderActivator.nomal=true by default.
+	* 订单采购模型更改
+
+SEM-0.6.26 (谢继雷, 朱挺峰, 2011-08-30)
+	* Renamed to danglingOutsourcing.
+	* Added StockCriteria.sum*
+	* Initial of stock query.
+	* Added test dates.
+	* Added stock order samples.
+	* 修改getIndex方法
+	* 页面及viewbean修改
+	* MailDto : add recipients
+	* modify test url
+
+SEM-0.6.25 (朱挺峰, 2011-08-29)
+	* viewbean and page perfecting
+	* remove unused dialog
+	* add method getWritebox,getWriteboxIndex
+	* MailDeliveryDto polishing
+
+SEM-0.6.24 (谢继雷, 2011-08-28)
+	* Added material.alarmAhead.
+	* Eagerly fetch Party.tags, moved age/birthdayRemains to the dto.
+	* Added Thing.serial as natural id.
+	* Optimized MailDeliveryDto.tee, +CC/BCC.
+	* Refactor MailManageBean > MailManageVdx.
+	* Made column length constants public.
+	* DiaryVisibility: Transient wrappers at the first.
+
+SEM-0.6.23 (谢继雷, 朱挺峰, 2011-08-27)
+	* Extract out column lengths.
+	* Refactor plover-or_ext to -ox1.
+	* Collect login adapters.
+	* Rebase *Attribute > EntityAuto instead of CEntity.
+	* Added detailed login adapter.
+	* StockOrder/TransferInAdminBean clean up.
+	* Refactor: or_ext/principal => ox1
+	* Reorganized imports.
+	* CEntity.owner aggregation.
+	* LoginInfo refactor.
+	* Moved CEntityDto to ext.c.
+	* Removed Part.creator, use .owner instead.
+	* Refactor: CEntityAuto/Spec > CEntity, and EntityAuto/Spec > Entity.
+	* Refactor User* > CEntity > Entity, UserDto* > CEntityDto > EntityDto
+	* 提取entity length
+	* sem-mail 临时提交
+
+SEM-0.6.22 (谢继雷, 2011-08-26)
+	* StockCriteria utilized static methods, +actualsNoCache.
+	* Refactor StockLedgerService to StockQuery.
+	* StockItemDto: negate quantity for negative subjects.
+	* Refactor stock subject for: class(flags), groups, etc.
+
+SEM-0.6.21 (金卫林, 谢继雷, 朱挺峰, 2011-08-25)
+	* Fixed tranient _columns
+	* set Locale to zh-CN
+	* add mailManage page
+	* add mailManageBean
+	* add MailCriteria
+	* samples 修改
+	* mail entity 修改
+	* delivery add cascade and update dto
+	* 为StockOrder加入对应公司和对应部门
+	* Added FvfCollector.
+	* Update __tips/__status by PageLocalFvf.
+
+SEM-0.6.20 (谢继雷, 2011-08-24)
+	* sem-mail refactor.
+	* sem-mail UML updates.
+	* Refactor MailFolder/Filter > UIEntity.
+	* Removed @Lob from Mail.body.
+
+SEM-0.6.19 (金卫林, 谢继雷, 朱挺峰, 2011-08-23)
+	* remove unused import
+	* 委外入库基本完成
+	* userFile add description
+	* remove test-column
+	* userfile add download and view functions
+	* userFile entity and dto perfecting
+	* UserFile refactor: -origPath, subject->label.
+
+SEM-0.6.18 (金卫林, 谢继雷, 朱挺峰, 2011-08-22)
+	* 委外入库制作中
+	* page perfecting
+	* Add primefaces auto-update test pages.
+	* Removed growl from individual pages.
+	* Prepare for user preference.
+	* Moved FacesUILogger to -facelets (ViewBean).
+
+SEM-0.6.17 (金卫林, 谢继雷, 朱挺峰, 2011-08-20)
+	* purchase开始制作
+	* 改正 nativeTotal 不能正确显示
+	* chance 在页面增加报价总金额.chancebean分离简化.
+	* 用户文件管理基本完成
+	* Refactor: MaterialViewBean > MaterialVdx.
+	* MCValue set native-currency for null.
+	* Moved <p:growl> to primefaces-template, in `__status`.
+	* ChanceCompetitor -> Party(ENY), and MCValue for price.
+	* Fixed: No empty serial.
+	* Refactor FxrMap --o IFxrMap, and return IFxrMap.IDENT for the same currencies.
+
+SEM-0.6.16 (金卫林, 谢继雷, 2011-08-19)
+	* Add SEMUberServer.
+	* Added sem-bom/purchase NLS.
+	* SEM Menu: data/file, material | inventory.
+	* NLS Updates
+	* NLS merged.
+	* bom修改制作完成
+	* bom修改中
+	* Renamed xhtml dir component/ to part/.
+	* NLS merged.
+	* Add sem-purchase punit.
+	* MakeOrder.items/tasks default empty list.
+	* dos2unix.
+	* Add sem-purchase DTO classes.
+	* astah model sync.
+	* Renamed sem-purchase/model/ to doc/.
+	* Update sem-stock uml: StockJob < MomentInterval.
+	* Moved sem-bom/model/*.astah to doc/.
+	* Refactor StockOrderSubject code to FOURCC.
+	* sem-purchase review & refactor.
+	* Make TxEntity.selector as final
+
+SEM-0.6.15 (金卫林, 谢继雷, 2011-08-18)
+	* 委外出库制作中
+	* Lazy-datamodel should marshal-asref by default.
+	* BOM Refactor.
+	* Add self-descriptive DummyDto
+	* SEMBomUnit updates.
+	* PartDto.target is missed.
+	* Set Part.valid default to true.
+	* Prepare separation of VDX classes.
+	* Removed UnitConv.natural.
+	* BOM refactor: Part <>---> PartItem(part or material).
+	* 采购管理 copy from old
+	* bom制作基本完成
+	* BOM under dev.
+
+SEM-0.6.14 (谢继雷, 朱挺峰, 2011-08-17)
+	* userFile 零时提交
+	* material perfecting
+	* NaturalColor.name is transient.
+	* Added missing idseqs.
+	* Added ColorUnit.
+	* Add PersistenceUnit.getInstance to avoid of duplicates.
+	* NaturalColor.trueColor determine palette or trueColor OTF.
+	* Removed ColorSystem.
+	* Embedded natural-color in material.
+	* Refactor color: natural-color > palette-color > true-color.
+	* Fixed: uiLogger.error(..., e).
+	* FacesUILogger should escape \n, <>& stuff. Also highlight error message.
+
+SEM-0.6.13 (金卫林, 谢继雷, 朱挺峰, 2011-08-16)
+	* 文件管理继续完善
+	* 在selecetItem里面显示单位代码
+	* 物料修改
+	* Removed xbuyRate from FxrRecord.ctor.
+	* inventory > monetary samples.
+	* Shrunk SEMWorldSubXxx
+	* bom制作中
+
+SEM-0.6.12 (谢继雷, 朱挺峰, 2011-08-15)
+	* 用户文件管理修改
+	* Collect activators.
+	* FxrProviderFactory get static appctx from GlobalAppCtx.
+	* subject_ was changed to _subject.
+	* FxrMap missed to lazyload.
+	* Refactor internal column by _xxx instead of Xxx_.
+	* SEMTestCase trigger samples by -Activator.
+	* 物料在增加单位的时候可以增加主单位
+	* 物料修改
+	* NLS update for enumalt+/menus.
+	* Add name/valueMap also in EnumAlt indirect subclasses.
+	* Special NLS for EnumAlt+.
+	* NLS Updates (news)
+	* NLS updates.
+	* Add t/lb/oz/ct units, and common piece units.
+	* Removed the trailing space in NLS.
+	* Add more fxr-relates tests.
+	* Re-enabled the (native-) total column
+	* OrderItemDto: MCValue as value obj.
+	* MCValue.toNative was omitted the date param.
+	* FxrProviderFactory construct the test provider OTF.
+	* Renamed StockTaking orders as expected/actual/adjustment.
+	* Share the join column as s1/s2.
+	* Removed unnecesary @Components.
+	* Refactor getDate -> getFxrDate.
+
+SEM-0.6.11 (金卫林, 谢继雷, 朱挺峰, 2011-08-13)
+	* 拨入功能中调拨人员不用修改，只显示
+	* Readd Component.creator.
+	* BOM index page was moved.
+	* Utilized TrueColor in Material.
+	* userFile page perfecting
+	* 改正bean名字引用错误
+	* 调入功能基本完成
+	* 物料增加属性及修改错误
+	* Add common material attributes.
+	* Removed materialPriceStrategy.xhtml.
+	* BOM page testing.
+	* Moved bom pages to 3/15/3/4.
+	* dos2unix.
+	* PriceStrategy polishing.
+	* BomAdminBean/xhtml review.
+	* Use LATEST as the default price-strategy.
+	* BOM astah model updates.
+	* Removed fxrProvider from MCValue.
+	* Added MaterialPrice.nativePrice.
+	* Component <>--> PriceStrategy.
+	* EMC isn't necessary in Material/price*.
+	* BOM Refactor.
+	* Renamed orderItem+._date to fxrDate.
+	* Get fxrprovider from factory.
+	* copy from old bom
+
+SEM-0.6.10 (谢继雷, 朱挺峰, 2011-08-12)
+	* MCValue.toNative requires a date.
+	* MomentInterval.beginTime init to now.
+	* zipfile_closed 测试bean及页面
+	* userFile继续完善.
+	* fix error:zip file closed
+	* TxEntity.serial as natural id.
+	* Renamed Mime.name to contentType.
+
+SEM-0.6.9 (金卫林, 谢继雷, 朱挺峰, 2011-08-11)
+	* FxrCommitJob test passed.
+	* Fixed: wrong @Inject used for fxrProvider.
+	* FxrCommitJob should be prototype scoped.
+	* 调拨->拨入功能完成，待调试
+	* 晚上用户文件管理
+	* FxrCommitJob SOURCE/INTERVAL_KEY.
+	* OnlineFxrSource switched to PRODUCT mode. Cuz samples-source, don't need to debug boc anymore.
+	* Force set native currency to CNY.
+	* Moved boc-* samples to main/resources.
+	* FXR-related debug logging details.
+	* Renamed jsf test "login.xhtml" to login2.xhtml
+	* Collect ServiceCollector in ScCollector.
+	* Upgrade to parent 7: Use <testResources> instead of <targetPath>.
+	* Upgrade to plover-parent 6.
+	* Add FxrCommitJobTest.
+	* Utilized ServiceTemplate on Abstract* services, and self reflection.
+	* Configure spring stuff in SpringWac.
+	* 库存调拨->拨入80%完成度
+
+SEM-0.6.8 (金卫林, 谢继雷, 朱挺峰, 2011-08-10)
+	* 修改附件不是图片不能正确显示问题
+	* userfile修改
+	* 页面及viewBean修改.
+	* add userFileSamples
+	* Implemented FxrCommitJob.
+	* Add IFxrSource.finite?, used by the commit job.
+	* Refactor FxrSource+ > AbstractFxrSource.
+	* Collect FxrSource implementations.
+	* Separate FxrTable.dump() from toString.
+	* Refactor DataService.
+	* Renamed *QuartzConfigurer to *Qjc.
+	* Collect Quartz-Configurer services.
+	* 调拨->拨入继续制作中
+	* jsf bean继承树里的类都要加上Scope("view")
+	* 调拨->拨入制作中
+
+SEM-0.6.7 (谢继雷, 朱挺峰, 2011-08-09)
+	* Add SEMWorldTest.
+	* Controller request mapping fixes. (PREFIX/PREFIX_)
+	* Add empty faces-config.xml in -inventory. (But not sure if this is the point)
+	* Scan/generate WebAppConfigurer by WacCollector.
+	* Maven path analysis.
+	* 机会优化
+	* chanceAction修改描述长度
+	* add userFileAdmin page
+	* add userFileAdminBean
+	* add userFileCriteria
+	* userFileDto:增加是否图片的判断
+	* add ModelTest: userFileAdmin
+	* WAC refactor.
+
+SEM-0.6.6 (金卫林, 谢继雷, 朱挺峰, 2011-08-08)
+	* 库存调拨->拨入制作中
+	* Prepare to fix resource-meta broken for overlapped-context
+	* test composite component
+	* 抽出file upload
+	* add file upload function
+	* add method: addAttachment
+	* Make temproray file as transient.
+	* Moved file index-rich.xhtml to /file/.
+	* Review: file view/download handler.
+	* add scope("view") to FileUploadBean
+	* TransferInAdmin start
+
+SEM-0.6.5 (谢继雷, 2011-08-06)
+	* Readd the view scope.
+	* EDMO reduce criteria elements.
+
+SEM-0.6.4 (金卫林, 谢继雷, 朱挺峰, 2011-08-05)
+	* TakeAdmin, TransferOutAdmin增加倒序
+	* remove baseprice:page and menu
+	* 去掉baseprice
+	* chance polishing
+	* PeopleCriteria.namedLike skip if empty.
+	* AbstractPartyDto using merged xid for natural id.
+	* ChanceAdminBean optim.
+	* People xhtml: Removed duplicated owner column.
+	* sem-people uilogger.error fixes.
+	* Add Chance.serial as natural id.
+	* add StockJobDto.java,StockTransferDto.java
+	* Fixed: owner criteria was moved to EntityCriteria.
+	* Fixed: person.owner.displayName
+	* Moved owner-related criteria to EntityCriteria.
+	* Moved ContJob -> -scheduler/SeqJob.
+	* Make StockOrder.serial as natural id.
+	* MCValue use of fxr: could be NaN if not applicable.
+	* Prepare of FXR scheduler.
+	* FxrProvider intially test.
+	* FxrMap eval of interpolation value.
+
+SEM-0.6.3 (金卫林, 谢继雷, 朱挺峰, 2011-08-04)
+	* 库存调拨->调出基本完成，调度还有错（比如删除功能）
+	* 删除不用的entity
+	* 加入初始折扣
+	* 机会重构.加入报价折扣设置
+	* 在物料设置中加入基础价格设置
+	* Added MonetaryCriteria.
+	* Prepare FxrProvider/FxrMap.
+	* InterpolatedMapTest: epsilon const var.
+	* dateInt -> dayIndex, monthIndex.
+	* Fixed: FxrSamplesSource class resource.
+	* personAdmin,orgAdmin增加owner的显示
+	* Using theOfTheDay instead: betweenEx(expansion) should be exclusive.
+
+SEM-0.6.2 (金卫林, 谢继雷, 朱挺峰, 2011-08-03)
+	* DiscreteFXP testing.
+	* StockOrderBaseBean code review.
+	* Fixed: DiscreteFxrProvider series var was overwritten by cache.
+	* Added FxrTable.getFirstDate().
+	* Fixed: FxrCriteria.beforeThan should include equals.
+	* Reflect the changes of Currency/TimeZone/Locale.
+	* Moved CurrencyConfig/Locale/TimeZone stuff to sem.misc.i18n.
+	* Moved boc-xxx fxr samples to main/resources.
+	* Refactor ICurrencyAware.NATIVE_CURRENCY --> CurrencyConfig.getNative().
+	* TimeZone customizations.
+	* 盘点加了页面和bean,缺少库存查询功能，还不能制作
+	* 在物料设置里面加入价格设置.
+	* 库存初始化初步完成
+	* 增加stockOrder.owner.id==null的检测
+	* 解决maven问题临时提交
+	* 入库出库基本完成
+	* Released com.bee32.plover:plover-criteria-0.2.105
+	* Refactor IFxrUpdater -> IFxrSource, add more tests.
+	* StockOrderAdminBean code review.
+	* EntityCriteria.betweenEx for local-date filter.
+
+SEM-0.6.1 (谢继雷, 朱挺峰, 2011-08-02)
+	* Added StockTaking stock job.
+	* Workaround: ChanceQuotationItem.material mutable.
+	* Make owner/acl reference nullable.
+	* Added MaterialCategory.ctor(parent, name), and reuse parent name.
+	* Added Material natural id.
+	* Refactor PersonSidType => PartySidType.
+	* samples review.
+	* 改正错误:getTotal为空
+	* polishing
+	* refactor chanceAction
+	* add selection:Material.PARTIES
+	* Renamed back naturalSelector* to selector*.
+	* Renamed selector(*) to naturalSelector().
+	* Natural-id/selector implementation.
+
+SEM-0.6.0 (金卫林, 谢继雷, 朱挺峰, 2011-08-01)
+	* PeopleCriteria: owner.id => owner.
+	* Refactored natural-id: naturalId() should never return null, and content-id is only explicit used.
+	* Refactor OrgUnit.id to int32.
+	* Track back creator class in EDMO/LazyDataModel.
+	* ** 在 doModify/doDetail 时 reload(..., -1) 重新装入全部内容。
+	* stockOrderAdmin基本完成
+	* 增加一个属性.用来编辑和显示价格
+	* 机会里面的报价基本完成
+	* fix exception : upsupported operation removeAll(items)
+	* fix type mismatch problem
+	* Natural Id refactor.
+	* Fixed SEMPeopleSamples: merge() isn't used, use saveOrUpdate() instead.
+	* 物料设置对话框排版调整一下
+	* orderItemAdmin add modify item
+	* A samples dump test.
+	* Fixed: Mistyped sequence name: stock_warehouse_option_seq
+	* Chaned *_xp_seq to *xp_seq.
+	* Refactored sequence generators for each table.
+	* Refactor: EnumAlt.forName(name)
+	* New QuickDataTestCase for speed up data unit tests.
+	* chanceBean,page refactor
+	* storeOrderAdmin完成大部份
+	* StockOrderAdmin 制作临时提交
+	* StockOrderAdmin 制作中
+
+SEM-0.5.27 (谢继雷, 朱挺峰, 2011-07-29)
+	* PersonDto.sex as non-null char.
+	* Reduced dependencies from Principal*. However it won't merged into -orm.
+	* Refactor get/require => get/get*Opt.
+	* chance 调试, 减少bean状态
+	* SessionLoginInfo.getCurrentUser returns null if not logged in.
+
+SEM-0.5.26 (谢继雷, 朱挺峰, 2011-07-28)
+	* 重命名order为parent 修改anotation form @Column to @Transient
+	* 修改一些错误
+	* 在测试数据中加入价格
+	* rename attribute:order-->parent
+	* 注释price修改的错误
+	* 注释一些price引起的错误
+	* remove owner filter
+	* modify SEMChanceSamples
+	* rename attribute order==> parent
+	* polishing
+	* viewBean 及页面修改
+	* switch back to util.Date
+	* add method: getCurrentPrice
+
+SEM-0.5.25 (金卫林, 谢继雷, 朱挺峰, 2011-07-27)
+	* polishing
+	* stockOrderAdmin部份，页面排版确定
+	* override toString
+	* change date type
+	* add localDateUtil
+	* polishing dtos
+	* page perfecting
+	* add cascade
+	* Added StockOrder.warehouse.
+	* Added currency list in specific order and formatter.
+	* Added ILocaleAware.NATIVE_LOCALE.
+	* MCValue should be immutable, added currency()/value() for COW.
+
+SEM-0.5.24 (金卫林, 谢继雷, 朱挺峰, 2011-07-26)
+	* page perfecting
+	* 修改:unit unitConvDto
+	* 物料,缺少价格
+	* 物料设置基本完成
+	* add @Transient for Material.latestPrice
+	* Polishing.
+	* Refactor BasePrice->MaterialPrice clean ups.
+	* Made SMS_* serializable.
+	* Material <>---> PriceList, +getLatestPrice().
+	* Refactor ChanceQuotation < AbstractOrder.
+	* Refactor *Order < AbstractOrder.
+
+SEM-0.5.23 (金卫林, 谢继雷, 朱挺峰, 2011-07-25)
+	* Re-calc native prices in the abstract Item/ListDto.
+	* 开始制作库存日常业务功能
+	* page perfecting
+	* modify materialViewBean
+	* add materialSettingsBean
+	* add dto
+	* 库位设置基本完成
+	* Don't create StockWarehouseDto on demand, give it an initial value.
+	* Stock location polishing.
+	* Fixed: StockWarehouse.name is required.
+	* MaterialViewBean: marshal rootLocations as ref.
+	* Renamed Competitor to ChanceCompetitor.
+	* polishing
+	* StockOrderDto < StockItemListDto < TxEntityDto.
+	* StockOrderItem.equality should consider c-batch.
+	* Added StockPeriodDto.
+	* MCValue.value, not "amount".
+	* Renamed GeneralOrderItem to AbstractOrderItem.
+	* Refactor StockOrderItem < AbstractOrderItem
+	* Removed BasePrice.
+	* Renamed Quotation* to ChanceQuo*.
+	* Samples: Set owner in more() section.
+	* SEMChanceSamples clean up.
+	* Renamed VerifyPolicy+ to xxxPolicy, and then Level to MultiLevel.
+	* Refactor CDM < IEntityMarhalContext
+
+SEM-0.5.22 (金卫林, 谢继雷, 2011-07-24)
+	* Add dependency: sem-chance < sem-inventory.
+	* Add dependency: sem-inventory < sem-process.
+	* Add VerifyPolicy.ctor(Class<context>).
+	* Moved userfile-index to userfile/.
+	* Moved base-rich, qutotaion-rich to price/, quote/.
+	* owner refactor.
+	* LoginBean review.
+	* Added Dao.getByName, and refactor of Principal.id.
+	* Added Entity.ownerId.
+	* uiLogger clean ups.
+	* Refactor load() to getOrFail().
+	* Changed type of MaterialCategory.id to int.
+	* UIHelper: Generate SelectItem from EnumAlt.*
+	* Separate IcsfIdentityMenu from SEMPeopleMenu.
+	* Removed the interm dir settings/.
+	* Added missed PREFIX_s.
+	* stockLocationAdmin初步完成，还没全部调试
+
+SEM-0.5.21 (谢继雷, 朱挺峰, 2011-07-23)
+	* Renamed samples boc*.html to boc-DATE.
+	* AbstractFxrProvider do interpolation from history FxrTable series.
+	* Added FxrCriteria.
+	* Added FxrRecord.getRate by FxrUsage.
+	* Added IFxrProvider.getFxr for history.
+	* Separate getHtml() from BocUpdater, so as to support mocked test.
+	* Refactored BocFxrProvider to DiscreteFxrProvider.
+	* Add sample pages from BOC.
+	* add Method: getDisplay
+	* new page
+	* modify page javascript is dead?
+	* modify materialViewBean
+	* remove attribute:selectedCategory
+	* add criteria class
+	* add materialCategory menu entry
+	* add cascade for attributes
+	* modify dto
+	* add empty constructor
+
+SEM-0.5.20 (金卫林, 谢继雷, 朱挺峰, 2011-07-22)
+	* polishing
+	* BocFxrUpdater test passed.
+	* Fixed: index oobe.
+	* OnlinxFxrUpdater commit only if it's newer than the latest.
+	* SYNC_START \b => \\b.
+	* Renamed UnitConv.ratioMap to scaleMap.
+	* Moved Currency*Comparator to separated files.
+	* Add common seen currency names (zh-CN) which are not canonicalized.
+	* Add all Currency constants to ICurrencyAware.codes.*
+	* FxrTable.quoteCurrency should be the unitCurrency.
+	* 加createdDate到界面上;stockLocationAdmin初步
+	* adapter to PeopleCriteria.hasTag change
+	* page perfection
+	* remove unused attributes,fix bugs
+	* add categories for testing
+	* modify equals method
+	* override equals
+	* modify marshal method
+	* Fixed: basedOn, snapshot/period.
+	* Select M/MBLC period only.
+	* Added SOSubject._MBL/_MBLC.
+	* Renamed snapshot to period.
+	* Removed enum-alt classes from SEMInventoryUnit.
+
+SEM-0.5.19 (金卫林, 谢继雷, 朱挺峰, 2011-07-21)
+	* Batch opt.
+	* Renamed *Packing to SMS_*.
+	* 相应页面修改
+	* 提取viewbean里面的树
+	* set stockWarehose:name, label
+	* 增加树节点名字和equals方法
+	* modify constructor
+	* 仓库设置功能完成
+	* It doesn't need to use @PostConstructor.
+	* Separated stock location tree dialog bean.
+	* Utilized TreeCriteria.
+	* Released com.bee32.plover:plover-criteria-0.2.104
+	* Built simple criteria element OTF.
+	* EDMO clean up.
+	* Refactor hasTag() -> internal().
+	* Renamed ChanceCriteria.beginWithin to BeganWithin.
+	* Added EventCriteria.
+	* Added StockTransfer.source/destWarehouse.
+	* Refactor CriteriaSpec+. (Lot of changes).
+
+SEM-0.5.18 (金卫林, 谢继雷, 朱挺峰, 2011-07-20)
+	* sample 页面和viewbean修改
+	* dto 修改
+	* 增加equals方法
+	* 1.orgAdmin和personAdmin的标签重新改为显示全部 2.userAdmin中建立user和person对应关系的功能已经完成
+	* Released com.bee32.plover:plover-criteria-0.2.103
+	* Fixed MaterialPreferredLocation: import @Column.
+	* Consider: "snapshot, commit, base".
+	* Rebase StockWarehouseDto < UIEntityDto.
+	* Set the default mref selection to 0.
+	* Refactor CriteriaTemplate to CriteriaSpec, and delegates Restrictions.*.
+	* Renamed DEFAULT_CURRENCY to NATIVE_CURRENCY.
+
+SEM-0.5.17 (金卫林, 谢继雷, 朱挺峰, 2011-07-19)
+	* 为user和person建立对应关系加入功能支持
+	* Added IFxrProvider.getUnitCurrency().
+	* MCValue.currency should be required. A native default must be set as NATIVE.
+	* Removed VirtualMCV.setCurrency/Value. Cuz MCValue is considerred to be immutable.
+	* Renamed CurrencyConfig.DEFAULT to NATIVE.
+	* Refactor: StockSnapshot <>---> Multiple packing orders. (in dev)
+	* 页面和viewbean修改
+	* polishing samples
+	* add attribute:name
+	* 合并提交
+	* 增加 增加preferredlocation和option方法
+
+SEM-0.5.16 (金卫林, 谢继雷, 朱挺峰, 2011-07-18)
+	* Initial implement of StockManager.commit().
+	* StockSnapshot <>---> starting.
+	* Map-support: StockOrderItem.key: StockItemKey.
+	* Add StockOrder.ctor(base, subject).
+	* Prepare StockItemList.toMap.
+	* Refactor *Criteria < CriteriaTemplate.
+	* Added ContactCategeory.OTHER.
+	* Contact.category is required.
+	* Add StockLocation.capacityUnitHint, .rank
+	* Removed MaterialPreferredLocation.batch*. +permanent.
+	* orgAdmin基本完成
+	* 和并stash 提交
+	* modify viewBean
+	* add constructor
+	* 页面修改
+	* polishing unitConv
+	* rename setUnitName method
+	* remove batch and commtents attributes
+	* 增加一个增加属性的方法
+	* Released com.bee32.plover:plover-criteria-0.2.102
+	* Moved plover-criteria, -indexing to modeling/.
+	* Prepare StockCriteria.
+	* Add std sample StockInventory.MAIN.
+	* Refactor IStockHistoryManager to StockManager.
+	* Added EntityViewBiean.reload(dto, selection) to change the selection.
+	* Separate getHistoryState from IStockLedgerService.getLatestState.
+	* Renamed StockSnapshot.previous/descendants to parent/branches.
+	* StockJob couldn't be inherited as JOINED, cuz StockJob+ may have multiple StockOrder refs.
+	* Removed ProxyStockOrder (Rebased on StockItemList).
+	* StockOrder/Item: Multi currency refactor.
+	* Refactor StockOrder < StockItemList. Removed StockLedger.
+	* Added MCValue.add/sub/mul/div, and toLocal(fxr).
+	* MCValue designed as immutable. It's setter only for entity usage.
+	* polishing
+	* BOC FXR updates rewrite.
+	* Refactor UnitName.from/to units to unit/conv units.
+	* FxrRecord now supports several kinds of difference fxr prices.
+	* Added CurrenciesNames.revMap to support parse html pages.
+	* Made FacesUILogger.getFacesContext() as method, for mocked testing.
+	* Added ILocaleAware (it should be moved to plover)
+	* Renamed MCArray to MCVector.
+	* Added SpamHelper for bypass anti-spammers.
+
+SEM-0.5.15 (金卫林, 2011-07-17)
+	* orgAdmin中orgUnit进行一点改进
+	* orgAdminBean界面更改，加入orgunit中
+	* orgAdmin改动临时提交
+
+SEM-0.5.14 (金卫林, 谢继雷, 朱挺峰, 2011-07-16)
+	* Prepare tags switcher.
+	* Unit 及 UnitDto 修改
+	* 合并提交,及<inventory>修改
+	* Fixed faces context broken.
+	* Never cache FacesContext, always get it OTF.
+	* orgAdmin界面改进中，加上OrgUnit的支持
+	* Renamed Thing.unitName to unitHint.
+	* Added OrgUnit.name
+	* ChanceActionBean code review: state cleanup.
+	* LocalStorage  serialization.
+	* FileUploadBean: tabsize=4
+	* Add FileUploadFilter to FTC.
+	* Code review: inner marshal should never use static functions in DTOs.
+	* stack overflow test
+	* add an sample,material category tree view
+	* Utilized uiLogger.info/error for FacesMessages.
+	* Separate DTO creation (value from Entity class) to the create() method.
+	* Complemented the PersonRoleDto.orgUnit
+	* Added OrgUnitDto.
+	* Renamed Org.group to Org.forWhichGroup
+	* polishing
+	* MaterialCategory.cgVal/cgParam for extension.
+	* Fixed: PartyTagname.OTHER.id := OTH.
+	* Fixed: PrincipalDto.id may be null for null-ref.
+	* Moved dict instances into the dict class.
+	* Fixed MaterialAttribute equality mistake.
+	* Code review: should name sample var properly.
+	* Clean SEMWorldSample the std instances are auto discoverred.
+	* Add more javadoc
+	* Added UnitCriteria.
+	* Moved SampleDumper to -orm.
+	* Refactor addSample() to add().
+	* Sample dumper test.
+	* Add batch size stuff in BatchConfig
+	* Refactor ESC.addNormalSample to SC.addSample.
+	* Inventory astah model updates.
+	* Added some natural UnitConv. Though it's superceded by stdunit/scales.
+	* Added Unit.stdUnit/scale for simplify conversion.
+	* Added Thing.unitName
+	* Renamed SamplesPackage/Contrib to Sample*.
+	* polishing
+	* Applied ESC ->SamplesContribution.
+
+SEM-0.5.13 (金卫林, 朱挺峰, 2011-07-15)
+	* 1.改正修改用户时，密码出现两个的情况 2.更改orgAdmin的布局，准备加入对OrgUnit的支持
+	* orgUnit to altOrgUnit
+	* modify model test
+	* <inventory> add material main page
+	* <inventory> add material bean
+	* add getter
+	* <people> add to person to database
+	* add npe judgement
+	* <inventory> add Material  related samples
+	* <inventory> add material related Dtos
+	* <world> add Base Weight Convert sample
+	* fix duplicated id
+	* user admin 初步完成
+
+SEM-0.5.12 (金卫林, 2011-07-14)
+	* group admin 初步完成
+	* role admin 初步完成
+
+SEM-0.5.11 (金卫林, 谢继雷, 朱挺峰, 2011-07-13)
+	* roleadmin调试中
+	* role调试临时提交
+	* Code review: the tree nodes should be ref-dto.
+	* role admin调试，临时提交
+	* Refactor BOCStringHandler -> BocFxrHtmlUtil
+	* Refactor BOCExchangeRateTable -> BocFxrProvider.
+	* Refactor JobGetExchange -> BocFxrUpdater.
+	* Refactor ExchangeRate -> FxrRecord.
+	* Moved InterpolatedMap to ..world.math
+	* MCArray < Iterable, +add/subtract(MCArray).
+	* Prefer to use accessors in MCValue, to allow of subclassing.
+	* Added CurrencyConfig and add more currency constants.
+	* Updated sem-inventory astah-models.
+	* sem-world < commons-httpclient, < -scheduler.
+	* Add SEMWorldMonetaryUnit.
+	* old exchange code
+	* polishing. Ignore *.lock
+	* Prepare stock services.
+	* Added StockOrder.total redundant.
+	* MCValue -> ..monetary.
+	* Rename inventory.workingCopy to workingBase
+	* Added MCArray and moved to sem.world.monetary.
+	* reset geters and seters
+
+SEM-0.5.10 (金卫林, 谢继雷, 朱挺峰, 2011-07-12)
+	* role以的id和name相当，所以下一步考虑去掉修改功能
+	* 机会 报价 基本完成
+	* switch chance to primefaces3.0.M3
+	* role保存功能调试中
+	* role保存功能调试中
+	* Code review. Tab size=4 spaces.
+	* Add FacesUILogger message helper.
+	* Added IEntityMarshalContext.asFor(*).
+	* Add SEMInventoryUnitTest.
+	* sem-inventory lot of changes.
+	* Renamed Unit constants names.
+	* UnitConv.ratioMap should be annotated with @MapKeyManyToMany.
+	* Moved Thing.serial/barCode to Material.
+	* Refine UserFile.tags the implicit relation table.
+	* Added PartyTagname.internal property.
+	* Org/OrgUnit/Group refactor.
+	* Inventory related astah models updates.
+	* Add SEMWorldModule.
+	* Stock inventory dev.
+	* keep empty dirs
+	* User.email was renamed to preferredEmail.
+	* Principal < tree refactor.
+	* Polishing
+	* Removed Employee in the process of refactor.
+	* Add UserEmail.order and by default User.preferredEmail.
+	* role保存功能测试
+
+SEM-0.5.9 (金卫林, 2011-07-11)
+	* 角色管理初步
+
+SEM-0.5.8 (金卫林, 谢继雷, 朱挺峰, 2011-07-09)
+	* 角色，组，用户管理界面初步决定，开始制作
+	* Removed StockSnapshotType.WORKCOPY.
+	* Astah model updates.
+	* Refactor Quotation* < EntityAuto.
+	* Refactor Competitor < UIEntityAuto.
+	* Fix: BasePrice < EntityAuto.
+	* PartyDto.displayName check empty string.
+	* Removed PartyRecord.date
+	* 机会报价基本完成
+	* Refactor chanceActionDto
+	* switch Primefaces back to M2
+	* add confirm dialog when deleting.
+	* add messages
+	* fix a bug
+	* StockJob  as mapped superclass.
+	* Refactor ChanceAction < MomentInterval. Split content field into description and moreInfo.
+
+SEM-0.5.7 (谢继雷, 2011-07-08)
+	* polishing
+	* Refactor MomentInterval < UIEntity.
+	* stock refactor.
+
+SEM-0.5.6 (金卫林, 谢继雷, 朱挺峰, 2011-07-07)
+	* Make sem/doc/schemaspy-models which reflects the rdbms structure.
+	* Model updates.
+	* Renamed Person.toUser to createUserLikeThis.
+	* stock reinit.
+	* Refactor thing.* to world.thing.
+	* Should not display empty string.
+	* 1.自然人、企业／组织的tag只需显示客户和供应商 2.自然人加入tag输入功能
+	* modify page style
+	* FileUploadBean中加入已经上传的UserFile列表，供继承的子类使用
+	* Made sem-bom < sem-inventory only.
+	* Merged sem-inventory with -material, -store.
+	* Moved Thing* to sem-world.
+	* Gender enum: move constants to the bottom.
+	* Add Department for org/group impersonation.
+	* Hide the <sem:login> div.
+
+SEM-0.5.5 (金卫林, 谢继雷, 朱挺峰, 2011-07-06)
+	* comment the PersonLogin in SEMPeopleUnit
+	* 文件上传功能初步完成
+	* polishing
+	* add menu order
+	* 页面修改
+	* is able to search when editing or view details
+	* <people> modify PeopleCriteria
+	* add order
+	* add order
+	* 改正logout的错误
+	* Added astah-models about principals.
+	* Added PersonLogin.
+	* AbstractPartyDto.displayName OTF.
+	* Added more NLS resources.
+	* Move <login> to "login" section.
+	* <price> polishing
+	* fixed a bug when deleting chance
+	* <chance> 一系列修改
+	* <price>  modify viewBean and pages
+	* <price> add samples
+	* add <price> menu
+	* <price> modify entities and referenced dtos
+	* add calendar navigator
+	* Principal refactor postfix.
+	* Redirect to login page when not logged in.
+	* Check login using sem:login.
+
+SEM-0.5.4 (金卫林, 谢继雷, 2011-07-05)
+	* Refactor SEMPeopleUnit < SEMBaseUnit.
+	* Login exception dev.
+	* SEM module self test.
+	* 文件上传功能制作完成，但还没测试
+	* Added missing NLS resources.
+	* Moved NLSInitiator to uber.
+
+SEM-0.5.3 (金卫林, 谢继雷, 2011-07-04)
+	* 1.改正login跳转地址错误 2.改正修改密码功能中的错误
+	* 增加修改密码功能
+	* 权限全选，反选，不选功能增加完成
+	* 权限加入全选，反选功能。目前只加了管理和读取
+	* 1.sem-file add faces xhtml file 2.权限加入选择功能(部份)
+	* Add sem-uber.
+
+SEM-0.5.2 (谢继雷, 2011-07-03)
+	* Fixed: ClassFiles.forNames(..., skipLocals).
+	* Renamed one.xhtml to index.xhtml.
+	* SEMTestCase: Add welcome index-rich.jsf.
+
+SEM-0.5.1 (金卫林, 谢继雷, 2011-07-02)
+	* Fixed: label should before description.
+	* Compare using specific order if both keys are simple.
+	* Fixed order mistake as a result of PKC.
+	* N2A Converted.
+	* Fixed PropertyKeyComparator varname typo, and orderred maven pom keys.
+	* N2A FIX: Overwrite the existing entries. [2]
+	* N2A FIX: Overwrite the existing entries.
+	* Prepare NLS for both en, zh-cn.
+	* NLSInitiator set default name width to 40.
+	* Skip bean properties by default. However, get declared getters programatically.
+	* Simple key should go the first, then foo.bar.keys.
+	* Don't insert empty lines in property entries.
+	* Skip local/inner classes.
+	* Sort property in special order, the suffix order is declared special.
+	* Only check out local declared members.
+	* Keep existing keys by full property name. I.e., not only .label/.descriptions.
+	* Keep existing properties, append only.
+	* LoginBean: logout first.
+	* Delete with foreign refs: refs.clear() & save(master) & delete(master).
+	* Filter declared members in NLSInitiator.
+	* Added NLSInitiator.
+	* Dependency management.
+	* sem-inventory re-initializing.
+	* Store should be mapped-superclass?
+	* Removed DELETE_ORPHAN from Party.contacts.
+	* Keep empty dirs.
+	* 1.add SEMFileModuleTest 2.解决删除person,org时有对应contacts时不能删除的问题
+
+SEM-0.5.0 (谢继雷, 2011-07-01)
+	* FileBlobTest passed.
+	* Removed IFileContainer.
+	* Add FileBlob.new* methods.
+	* Polishing
+	* Renamed LocalFileContainer to LocalStorage.
+	* Utilize @Redundant on Chance.stage.
+	* OneToMany needs mappedBy to avoid another relation table.
+	* Refactor AutoCodingStyle -> CodeGenerator
+	* Implmented MaterialAttribute natural equality.
+	* Material <>---> UserFile, instead of FileBlob.
+	* Renamed PartyTag - > PartyTagname.
+	* sem-file polishing.
+	* Add UserFileController < UserFileViewHandler.
+	* FileBlobViewHandler/UserFileViewHandler <>---> HttpBlobTransporter.
+	* Add FileBlobDumper which do HTTP streaming stuff.
+	* Add UserFile corresponding to user uploads.
+	* Add FileAttribute as a result of data mining.
+	* Refactor FileBlob.
+	* Removed FileStore entity. The store should be pre-defined, to ease dev. Using LocalFileContainer instead.
+	* Re-initialized sem-material.
+	* Add sem-inventory.
+	* Merged sem-thing into sem-store.
+	* Moved Principal+ samples into the corresponding Principal types.
+
+SEM-0.4.20 (金卫林, 谢继雷, 朱挺峰, 2011-06-30)
+	* add permission demo model
+	* 增加用户注册功能
+	* polishing quotation
+	* <chance> add chinese support on menu
+	* polish quotation entity and dtos
+	* SessionLoginInfo was moved to icsf-acl.
+	* Move sem..user.login* to icsf-acl.login.
+	* 登录功能初步完成
+	* 修改一个操作上的错误
+	* redirect url
+	* <chance> add entity and dtos
+
+SEM-0.4.19 (金卫林, 谢继雷, 朱挺峰, 2011-06-29)
+	* Change challenge string starts with letter, to avoid of numeric plus.
+	* Change default module-server port  to 10001.
+	* Set module server's context path="".
+	* SEMTestCase check if @Using declared.
+	* SEMModuleServer+ must declare @Using.
+	* SEMCalendarTestServer -> SEMCalendarModuleTest.
+	* <chance> polishing and add quotation entity
+	* merge push
+	* set current user in Session if password correct
+	* add login page
+	* 如果是admin,则所有联系人，客户/供应商可见
+	* 权限设置编写初步完成
+	* detect checkbox status in datatable successful
+	* detect checkbox status in p:datatable
+	* SEMUnitServer => SEMModuleServer
+	* Add unit servers.
+
+SEM-0.4.18 (谢继雷, 2011-06-28)
+	* [sem-people] abcOrg sample polish.
+	* ViewBean, UIHelper < FacesContextSupport.
+	* Added party.displayName
+	* Fix spelling: pattern, activeTab.
+	* Set EDMO.selection = -1 to select all properties.
+
+SEM-0.4.17 (金卫林, 谢继雷, 朱挺峰, 2011-06-27)
+	* Polishing
+	* SEMPeopleMenu polishing.
+	* SEMFrameMenu currently the static menu model couldn't be added twice.
+	* SuperfishMenuBuilder take care of barren-menu and (flatten) menu sections.
+	* Fix spelling: Partten => Pattern.
+	* Hide away empty menus
+	* [sem-chance] Refactor *ViewBean: EDMO+PeopleCriteria.
+	* [sem-people] Refactor *ViewBean: EDMO+PeopleCriteria.
+	* MenuLoader < contribution.dump to force NLSs.
+	* Added PersonDao for DaoManager.
+	* Readded EDMO generics ctor. Pass all EDMO options to final local vars.
+	* Infer entity/dto types from generics in EDMO.
+	* [sem-chance] Code review.
+	* 改正<chanceAction>相关错误;
+	* add Override method:hashCode
+	* add pushStage method
+	* add the initial value
+	* polishing Dtos
+	* add permission admin menu
+	* Fixed SEMPeopleSamples: user hasn't been exported yet.
+	* MainMenu now only exposes as a bean. Get SEMFrameMenu.MAIN instead.
+	* SessionLoginInfo utilized ThreadServletContext.
+	* Utilized  UIHelper.buildLazyDataModel.
+	* Utilized new EAS, removed limitList* from PeopleService.
+	* Refactor ER generics: Entity<? extends K>.
+	* MenuContribution get all declared fields of MenuNode type.
+	* Menu review:
+	* Renamed SEMMainMenu -> SEMFrameMenu.
+	* Menu refactor: direct manipulate the MenuNodes.
+	* Polishing
+	* Recreated the missing RPEntry.
+	* Add old samples from ebi-org to SEMPeopleSamples.
+	* CDM/Dso refactor.
+	* Add asFor/serviceFor helper in base classes.
+	* Refactor Principal < EntitySpec<String>.
+	* Removed PartyTag javadoc NLS.
+	* Add Person.toUser(loginName) for convenient.
+	* Add ctors for Contact/Person/Org/Party
+
+SEM-0.4.16 (金卫林, 谢继雷, 朱挺峰, 2011-06-25)
+	* 权限管理制作中
+	* 权限管理制作中
+	* ContextMenu refactor.
+	* ChanceBean/ChanceAcionBean < MultiTabEVB.
+	* Removed MenuEntry.
+	* Refactor MultiTabEVB.activeTab.
+	* [sem-frame] Add Contribution.parent/section.
+	* Removed MenuSection, should use flatten sub-menu instead.
+	* Chance <>---> ChanceParty.
+	* [sem-chance] DTO equality review.
+	* DTO-reference review.
+	* Spelling.
+	* ChanceParty equality using object instead of id.
+	* No override: ChangeStageDto.setId
+	* [-people] PartyDto/contacts, records as ref.
+	* Utilized empty-ctor in Chance*Dto
+	* PartyRecordCategory review.
+	* {User=>UserDto} PartyDto.owner.
+	* Person/OrgAdminBean < AbstractPartyAdminBean.
+	* main.xhtml => index-rich.xhtml.
+	* sem-people pages moved to 3/15/1/5/*/index-rich.xhtml.
+	* Default vals for sem-chance*
+	* Oids polishing.
+	* Add EntityViewBean.reload(DTO).
+	* Default vals for people*.
+	* Add PersonSidType.STUDENT.
+	* polishing
+
+SEM-0.4.15 (金卫林, 谢继雷, 2011-06-24)
+	* Add ACLTest.
+	* permissionAdmin go on
+	* 联系人,客户\供应商联系方式改正新增和修改的错误
+	* permission admin 制作中
+
+SEM-0.4.14 (金卫林, 谢继雷, 2011-06-23)
+	* 权限管理功能制作中
+	* polishing.
+	* Person/Org admin beans should set ID_REF on new contact dto.
+	* Utilized mref on PersonDto.
+	* Removed equality on Contact*.
+	* Using primefaces template.
+	* polishing
+	* Moved chance-pages to 3/15/6/1.
+	* EntityDto.naturalEquals(EntityDto...).
+	* Released com.bee32.plover:plover-expr-0.2.101
+	* Refactor OrgType instances.
+	* Defined the equality on Contact/ContactDto.
+	* post-merge.
+
+SEM-0.4.13 (金卫林, 谢继雷, 朱挺峰, 2011-06-22)
+	* service 修改
+	* modify dtos
+	* add many to many mapping
+	* dao 修改
+	* remove facade layer
+	* modify ViewBean
+	* scholium not use method
+	* add url mapping
+	* modify chanceActionAdmin page
+	* chance menu polishing
+	* remove unnecessary image
+	* add Chance page
+	* 修改ChanceAction bug
+	* add permission view and bean
+	* organize import
+	* Party加入memo备注字段
+	* 联系人界面里加入相关客户/供应商
+	* 客户/供应商对应联系人设置基本完成，等xjl把保存时Stack overflow错误解决再进行调试
+	* Add ROLES selection.
+	* PersonRole stackoverlow error
+	* change sem/pom.xml 's plover-parent version from 4 to 5
+	* 客户/供应商加入联系人编制中
+	* Org加入Set<PersonRole> roles
+	* 为客户/供应商设置相关人员功能编制中
+	* modify selectRow,unselectRow to rowSelect,rowUnselect to adapter the name change of primefaces
+	* Fixed serialization: the superclass of the first non-serializable must have default ctor.
+	* Make Contact no more stereos.
+	* Never call the static marshal/merge* in DTO itself.
+	* VerifyPolicyManager load prototypes for VerifyPolicy, rather then IVerifyPolicy.
+	* Removed generic <C> from IVerifyPolicy.
+
+SEM-0.4.12 (谢继雷, 2011-06-21)
+	* Utilized mref.
+	* Refactor *Dto -ctor(..., src). [2]
+
+SEM-0.4.11 (谢继雷, 2011-06-18)
+	* Move BaseDto* to package arch.util.dto.
+
+SEM-0.4.10 (谢继雷, 2011-06-17)
+	* [-store] Color refactor.
+	* Chance code review.
+	* Uml color refactor.
+
+SEM-0.4.9 (金卫林, 谢继雷, 2011-06-16)
+	* Dos2unix: menu NLS files.
+	* sem-frame < plover-or_ext.
+	* polish
+	* Utilized MenuContribution.getDictIndex.
+	* Fixed DiaryVisibility icons.
+	* templates/primefaces < newsite.
+	* 1,add css that effect primefaces 2.modify the xhtml to adapte the new facelet template
+	* CommonDataManager改为GetDataManager
+	* 1.客户/供应商管理操作界面完成部份
+	* polish
+	* Shorten PartyTag names.
+	* Rename viewBean.method*_ to doMethod*.
+
+SEM-0.4.8 (金卫林, 谢继雷, 朱挺峰, 2011-06-15)
+	* Move test/Gender NLS to main/.
+	* NLS displayName => label.
+	* Removed duplicated ViewScope*.
+	* sem-chance code review.
+	* Rename (spring-mvc) `.htm` to `.do`
+	* sem-people code review.
+	* Add EntityViewBean for convienience.
+	* Add UIHelper to convert dict to select-items.
+	* Removed -people < primefaces.
+	* 页面修改
+	* add default constructor
+	* modify url
+	* add facade, it will be delete later
+	* add urlMapping
+	* page polishing
+	* add ChanceActionBean
+	* modify url
+	* add attribute : String contentShort
+	* Dao polishing
+	* add prime repositories
+	* Move chance entity NLS to entity/.
+	* temp commit
+	* temp commit
+	* 1.people模型调整 2.联系人联系方式管理完成大部份，还差调试
+	* 开始编写为联系人添加联系方式部份
+	* add missing dto
+	* fix some dto ref problem
+	* 1.改正联系人不能保存的问题
+	* 1.联系人管理用primefaces编写，完成一半
+	* 1.客户、供应商、联系人管理开始用primefaces编写
+	* add ViewScope ViewScopeConfigurer
+	* add primefaces repository to sem/pom.xml
+	* 1.remove PartyController.java 2.add siteJsf.xhtml
+	* polish
+	* 修改menu
+	* 完善samples
+	* 增加空构造
+	* 增加说明
+	* chance 页面
+	* 增加实体类对应的properties
+	* 增加dto属性 方便页面显示
+	* chance add NameDictDao
+	* 增加实体类对应的properties
+	* 增加PartyController
+	* 增加people菜单
+	* add to method
+	* 添加备注
+	* Prefix refactor: PREFIX without trailings, but CLocation did.
+	* Temporarily bypass VerifiablePolicyPrefController
+	* Separate IVerifyHandlerHook.
+	* Refactor DiaryVisibility < EnumAlt.
+	* Moved [-or_ext] .ext.basic.* to [-orm] .orm.web
+	* Applied for location refactor.
+
+SEM-0.4.7 (谢继雷, 2011-06-14)
+	* polish
+	* BEC.fillFormExtra(+request)
+	* BEC refacotr: [do]load/saveForm.
+	* [-process] Set preferred dto selection in corresponding DTO classes.
+	* Add frame.css, which defines the site-level styles.
+	* Test for mixed using of jQuery.
+	* Eagerly requires Primefaces's bundled jQuery.
+	* EventStatus._state <>---> EventState
+	* Removed EntityActionRequest/Result.
+
+SEM-0.4.6 (谢继雷, 2011-06-13)
+	* Refactor EnumEx => EnumAlt. One should always use EnumAlt, instead of a java enum + IAliases.
+	* Refactor .displayName => .label.
+	* Appearance.displayName => .label.
+	* types -> separate class nls.
+	* Refactor .htm => .do
+
+SEM-0.4.5 (谢继雷, 2011-06-11)
+	* polish
+	* MailFilterController apply fillFormExtra.
+	* Refactor PartyLog -> PartyRecord.
+
+SEM-0.4.4 (谢继雷, 2011-06-10)
+	* polish
+	* Separete VerifyHandler from VerifiableEntityController.
+
+SEM-0.4.3 (谢继雷, 朱挺峰, 2011-06-08)
+	* Prepare VerifyPolicyPref NLS.
+	* Removed Verifiable2Entity and related ones.
+	* polishing chance
+	* polish PeopleSamples
+	* add constructor and two PersonSidType
+	* add to static contactCategory
+	* chance dto 基本完成
+	* chance: add some dtos, daos and service. haven't completed
+	* polish Chancce entities:Chance, ChanceAction
+	* Chance 实体类修改基本完成
+	* polish ChanceSample
+
+SEM-0.4.2 (谢继雷, 2011-06-03)
+	* WorkDiary was refactorred to ChanceAction.
+	* Fixed: Comparator.INSTANCE
+
+SEM-0.4.1 (朱挺峰, 2011-06-02)
+	* polish
+	* modify set Field name
+	* pulisn Chance entities
+	* add samples
+	* polish entity in sem-calendar
+
+SEM-0.4.0 (谢继雷, 朱挺峰, 2011-06-01)
+	* polish Chance again
+	* Add SEMPeopleUnit.
+	* Add some Chance redundants.
+	* entity polish
+	* 整理机会对象。
+	* 实体类
+	* Refactor: -company < -people.
+	* Rename sem-scm to sem-chain.
+	* Add sem-scm.
+	* biz => biz1, add -order, -pricing, -salary.
+	* Merge customer/supplier/staff/partner to -people.
+	* Move -chance, -contract to biz1/.
+	* Move [-calendar] WorkDiary  to -chance/ChanceAction.
+	* Refactor -opportunity => -chance.
+	* Refactor sem-user -> sem-company, merged ebi-org.
+	* Refactor: biz/sem-sales => resource/-opportunity
+	* [-calendar] Add WorkDiary.
+	* Refactor social/* => resource/. Add biz/sem-sales.
+
+SEM-0.3.11 (谢继雷, 2011-05-31)
+	* XXX Get id from collections? ${it.responsibles.id}
+	* Add PartyTag ctors.
+	* Refactor sem-people: separate Org from Person < Party.
+	* Add sem-calendar test server.
+
+SEM-0.3.10 (谢继雷, 2011-05-19)
+	* Added dto.parseRef(): Reduce the dependency to keytype.
+
+SEM-0.3.9 (谢继雷, 2011-05-17)
+	* STC.onServerStarted -> onServerStartup
+
+SEM-0.3.8 (谢继雷, 2011-05-16)
+	* Initial the new -calendar.
+	* Reuse sem-calendar in support/.
+	* add calendar arch doc.
+	* New sem-calendar.
+
+SEM-0.3.7 (谢继雷, 2011-05-13)
+	* Fixed -mail/Types NLS: MailBox -> MailFolder.
+
+SEM-0.3.6 (谢继雷, 2011-05-12)
+	* Make name of TestDataSource configurable.
+	* Change the released version 0.2.3, 0.2.4 to 0.2.100.
+	* Prepare 0.3.2-SNAPSHOT
+
+SEM-0.3.5 (谢继雷, 2011-05-11)
+	* VerifyPolicy.{name => label}, AbstractVerifyPolicy < * [2]
+
+SEM-0.3.4 (谢继雷, 2011-05-10)
+	* Refactor AbstractVerifyPolicyDto < *Dto.
+	* SEMModuleTest: loggedInUser must be in lower case.
+	* VerifyService require the current user, throw exception if not logged in.
+	* Polish. Reuse description defined in GreenEntity.
+	* [sem-process] Entity/uml color refactor and natural-equality.
+	* Entity/uml color refactor.
+	* Refactor sem-mail to using uml colors, and renames:
+
+SEM-0.3.3 (谢继雷, 2011-05-09)
+	* VerifiableEntity.locked is transient.
+	* Add Person.tags -> PersonTag.
+	* Add @TransferBy for EventCategory.
+	* Fix typo in menu nls: mailAdmin
+
+SEM-0.3.2 (谢继雷, 2011-05-08)
+	* Moved AccessCheckAdvice to icsf-acl.
+	* Refactor the Dto(s) as a result.
+	* Prepare sem-store.
+	* Add TxEntity for biz-transaction purpose entities.
+	* Separete PersonContact from Contact.
+	* Renamed VerifiableEntityBean -> VerifiableEntity.
+	* Prepare -file: FileStore/FileBlob.
+
+SEM-0.3.1 (谢继雷, 2011-05-06)
+	* Rename Email to UserEmail. Add get/setEmailAddress() helpers.
+	* [-people] Initials.
+	* Add <X> type param to EntityExt*.
+	* Prepare the new Person/Contact model.
+	* Refactor package typepref -> typePref.
+	* [-thing] Prepare sem-thing. Imported Unit/UnitConv from -material.
+	* [-file] Prepare FileBlob entity.
+	* Add SimpleNameDictDto who has the default _marshal*().
+	* polish
+	* polish
+	* Add EntityBase.validate/isLocked/checkModify/checkDelete.
+	* Refactor Dict.alias => Dict.label
+
+SEM-0.3.0 (谢继雷, 2011-05-05)
+	* Refactor dict: EventStatus/Priority keyed by statusId, EventCategory keyed by name.
+
+SEM-0.2.23 (谢继雷, 2011-04-30)
+	* Add @Alias on VerifyPolicyPref.
+	* Add unit-server support.
+	* Fixed: userDso.get(0, ...)
+	* Set to plover-parent 4
+	* DTO refactor, removed WithContext type vars and utilized reflective property marshal.
+
+SEM-0.2.22 (谢继雷, 2011-04-29)
+	* Add VerifiableEntityDto.isVerified()
+	* Add module properties.
+	* polish
+
+SEM-0.2.21 (谢继雷, 2011-04-28)
+	* Swap DTO.ctor(source, selection) -> ctor(selection, source).
+	* Polish. Integrated with 'warehousing'.
+	* Resize ventity/verifyDialog
+	* [-mail] Fixed Types.properties, some mistaken copy/pastes.
+	* Add jquery.ui.all.css to newsite template.
+	* Fixed ventity/index the verify dialogbox.
+	* VEC.verify reload the current user, and pass down to pre/postVerify.
+	* SEMEventModuleTest auto login as Eva.
+	* Fix EventController the index columns changes.
+	* Add session monitor and auto-login support.
+	* Add Event.seeAlsos, and refactor attack-mission to refer to the edit-form in the verify task.
+	* polish
+	* Add SuccessOrFailMessage, which returns error message instead of throw one.
+	* BEC.__list(req) was added the req param.
+	* Rebase AttackMissionDto/Controller on Verifiable*.
+	* Add Verifiable*Dto, *Controller.
+	* Refactor attack-mission pages to based on ventity template.
+	* Fixed sem-user package names.
+	* Moved -ublock/SessionLogin* to -module.
+	* Add template/ventity based on ../entity.
+	* Moved template/entity/* to -or_ext.
+	* Add many rain/time samples.
+	* Implemented EventController search feature.
+	* Fixed event menu entries.
+	* [-process] Move Dto* to .dto package.
+	* [-mail] Move Dto* to .dto package.
+	* BEC.index echo the request parameter map, and datatable push them back.
+	* IVariantLookupMap => TextMap.
+	* Event.sourceClass is not necessary recoverable.
+	* VerifyPrefController do refresh() after save.
+	* polish
+	* Add event category samples
+	* EntityAction <>---> EntityActionType.
+	* Both event-category/source-class are included.
+	* Removed fillTemplates(). One should init child-entity with `new *Dto()`.
+	* Separate (ReqVarMap) => ParameterMap out from DataTransferObject.
+	* EventStatus.state default to UNKNOWN.
+	* Rebase EventState on EnumEx.
+	* Add EventCategory*.
+	* [-event] Moved *Dto to .dto package.
+
+SEM-0.2.20 (谢继雷, 2011-04-27)
+	* polish
+	* VerifyResult show principal.displayName in message.
+	* Hide Event.getRefType(), only use refClass as api.
+	* Initial done with VerifyService.
+	* equalsKey, EventState.valueOf, reject[ed]Reason.
+	* BEC.doAction(...) instead of a lot of misc methods all arounds.
+	* Filled the attack-verify sample pages.
+	* Set FTC default refresh period to 300.
+	* EventState: add equals/hash, and get() -> valueOf() never returns undefined one.
+	* Add GenericState nls files
+	* VerifyPolicy returns VERIFIED instead of null for success verification.
+	* Refactor VerifyPolicyService -> VerifyService. Return explicit set in getDeclaredResponsibles() -> Set<Principal>.
+	* Refactor VerifyState -> EventState, and public specific state classes by ServicePrototypeLoader.
+	* Refactor Location/Context. Add ILocationProvider so one can parse a location string.
+	* Polish
+	* Add Event.setRef(entity) helper.
+	* EventFlags.NO_LEVEL, FATAL.
+	* Add int EventPriority.XXX consts.
+	* VerifyPolicyService do update entity.verifyState and create task events.
+	* add IVerifyPolicy.assertVerified(), verify() => Result.
+	* Using VerifyResult instead of ErrorResult
+	* Refactor ErrorResult => VerifyResult<VerifyState, mesg>
+	* Entity equals/hashCode should compute against natural key.
+	* DTO refactor: unmarshal collections take care of filled/id state.
+	* polish
+	* [-process] fillEntity() by Dto.unmarshal.
+	* Moved `DTOs` to orm.util.
+	* Refactor *Dto, parse->_parse, and getter/setter go last.
+
+SEM-0.2.19 (谢继雷, 2011-04-26)
+	* AllowList returns PENDING if user isn't set.
+	* VerifyPolicyService as a IVerifyPolicy.
+	* Refactor BEC to do marshal/unmarshal by doMarshal/doUnmarshal's, so one can extend the marshal functionality to across dao boundaries.
+	* Simplified IVerifyPolicy interface.
+	* Add attack mission samples.
+	* AttackMission missed @Entity annotation.
+	* Moved attack-mission pages to resources/.
+	* polish
+	* Moved PassStep.responsibleProperty to PassStepDto.
+	* Marshal more stuff within AllowedBySupportDto
+	* Fixed typo: EventStaus
+	* Implemented VerifyPolicyPref and related services.
+	* Add VerifyPolicyDao.getPreferredVerifyPolicy(), which utilized PrefDao.
+	* Separate self-held verify state into IVerifiable2*.
+	* The context is nullable in getDeclaredResponsibles(context).
+	* Make small class groups by ClassCatalog.add(C...)
+	* Make it a protected field BEC._dtoSelection
+	* Add AttackMission sample.
+	* Removed DTO.xxxId, using xxx.id instead.
+	* Refactor [-event, -process] dtos to utilize DTO.filled usage.
+	* Rename ProcessDefaultsPP to VerifiableIntroPP. And prepare VerifyPolicyPref pages.
+
+SEM-0.2.18 (谢继雷, 2011-04-25)
+	* Rebased VerifyPolicyPref onto TypePrefEntity.
+	* polish
+	* Removed type-ublock from sem-process
+	* PassStepDto unmarshal  the responsible property.
+	* Add PassStep.responsibleProperty
+	* Comment out rain.observers temporarily.
+	* Event tooling methods
+	* Event content/form page.
+	* Add observers to AbstractEventDto.
+	* Add event samples: rain, kill-angel.
+	* Refactor EventController -> AbstractEventController.
+	* Event.stereo = EVT. Empty will fallback to use the class name.
+	* Renamed EventStateDao to EventStatusDao.
+	* Event page initial.
+	* polish
+	* AbstractEventDto: add getStatusText and getActorName.
+	* Translate EventStatus -> StateIndex.
+	* Add EventFlags, though not used yet
+	* Refactor Event.state/status, and add observers.
+	* Refactor EventStatus/EventState.
+
+SEM-0.2.17 (谢继雷, 2011-04-24)
+	* Add unmarshal-context to DTO(s).
+	* polish
+	* Remove away user tests from *ModuleTest. To avoid duplicated startups.
+	* Fix SEMEventMenu.priority to point to EventPriorityController.
+	* Add normal event-state samples.
+	* Initial event-priority pages
+	* EventState/Priority.ctor with displayName.
+	* Rebase on BasicEntityController.
+	* EntityController with Dto typearg. However, raw Dao doesn't have a tx-context.
+	* polish
+	* Module.PREFIX should have the leading slash.
+	* FQCN is always ok in TypeAbbr.
+	* Removed skel-default.
+	* Applied newsite tempalte.
+	* Add contact page.
+	* Prepare newsite template.
+	* EntityController: refactor createOrUpdate -> createOrEdit.
+
+SEM-0.2.16 (谢继雷, 2011-04-23)
+	* Utilized entity templates.
+	* Prepare entity-specialized pages.
+	* Utilize meta.name and V.WORD.
+	* Make intermediate location ends with '/'.
+	* EntityController refactor: Utilize ViewData (Mavex).
+	* Initial *Types properties for entity classes.
+	* MailFilterDto missing ctors.
+
+SEM-0.2.15 (谢继雷, 2011-04-22)
+	* polish
+	* Make Module.PREFIX ends with /.
+	* Point SEMEventMenu.states, .priority -> DictController.
+	* Rename TypeAbbr.compress() to .abbr, and make it public.
+	* Move DataTableDxo to orm.ext.util.
+	* Add SEMProcessMenuTest.
+	* Add SEMEventMenu.states
+	* MenuNode.format() show displayName for debug purpose.
+	* [-event] initial.
+	* Add EntityController.it(obj) -> Map.
+	* [-event] Rename EnterpriseEvent to Event, removed the orig Event.
+
+SEM-0.2.14 (谢继雷, 2011-04-21)
+	* template switched to use jquery-1.5.1.
+	* DataTableDxo: populate the data by push/next.
+	* Separate mail delivery (or mail copy) from Mail to MailCopy.
+	* Move -process/DataTableDxo to -or_ext.
+	* [-frame] Merged -ublock/template.xhtml
+	* [-module] Merged type-ublock/SEMTestCase.
+	* [-mail] initially done.
+
+SEM-0.2.13 (谢继雷, 2011-04-20)
+	* Upgrade to Gson-1.7.1
+	* process-unit depends on event-unit.
+	* Move TaskPriority samples to the *Samples class.
+	* sem-process depends on -event.
+	* [-event] Module prepare & cleanups.
+	* Fixed VerifyPolicyPrefController url mapping.
+	* Prepare sem-mail.
+	* [-event] Move entities to entity/.
+	* Add plugin versions, to clear annoyed warnings.
+	* Add K typevar to EntityController<E,K>
+	* Prepare VerifyPolicyPref web.
+	* Move VerifyPolicyPref* to typedef/.
+
+SEM-0.2.12 (谢继雷, 2011-04-19)
+	* polish
+	* Add VerifyPolicy.PENDING const result.
+	* Add AllowedBySupport support base.
+	* Change AllowByContext .user -> .verifier, .message -> .rejectReason.
+	* Add IVerifiable.verify() and .isVerified() to ease dev., also make VerifiableEntityBean base class.
+	* Prepare ProcessDefaultsPostProprocesser.
+	* Add IVerifiable javadocs
+	* Prepare VerifyPolicyManager.forEntityType.
+	* Refactor ManagedVerifyPolicy -> VerifyPolicyPref to config type defaults.
+	* Move builtin.VerifyEvent to parent package.
+	* Utilized DTOs to marshal lists.
+	* Refactor VerifyPolicyManager.getAvail* to .list, .forContext, etc.
+	* Rename DTOUtil to DTOs, and make DTOs.marshal* work.
+	* Add required-context property in verify policy.
+	* Clean up MultiLevel.getDeclResps(). Add VerifyPolicy.isUsefulFor().
+	* [-process] Removed @ContextClass. Use infer1 instead.
+	* Infer type args by traverse the generic tree.
+
+SEM-0.2.11 (谢继雷, 2011-04-18)
+	* Add ManagedVerifyPolicy. (though what to do...?)
+	* multi-level doc: orthogonal.
+	* Verify policy context refactor. (still under dev)
+	* Merged verify-context with verify-state.
+	* Refactor ContextLimit to ValueHolder.
+	* Refactor  AllowState to VerifyEvent.
+	* Refactor PassLog&ICurrentStep to PassEvents.
+	* Add MultiLevelTest, however WDTC failed. (transactional?)
+	* MultiLevelController initially done.
+	* Make VerifyPolicy single-table.
+	* polish
+	* VerifyPolicyDto extends EntityDto. Add getter/setters.
+	* Renamed MultiLevelRange to Level.
+
+SEM-0.2.10 (谢继雷, 2011-04-17)
+	* [-process] module test -> multi-level.
+	* DataTableDxo use primitives for input params.
+	* [-process] datatable refactor
+	* Add all data-table service parameters to DataTableDxo.
+	* Put user js libs in each relavent module, with prefix=/lib/js.
+
+SEM-0.2.9 (谢继雷, 2011-04-16)
+	* Chainable location refactor.
+	* polish
+	* Unified IContextLocation to ILocationContext, and make it chainable.
+	* Renamed MenuBar to MenuModel.
+	* Initial pass-to-next pages.
+	* [-process] Removed *Controller.delete() cuz it's already there in EntityController.
+	* Rename PassToNext.sequence(s).
+	* polish.
+	* Initial multi-level pages.
+	* Add MultiLevelRange default ctor.
+	* Add VerifyPolicy base Dao, and other related daos.
+	* [-process] Move *Dto and controllers to .web package.
+	* sem-event depends on sem-user.
+	* Move EntityController to or_ext, and or_ext -> -javascript.
+	* Extract GenericController from AllowListController.
+	* AllowListController done.
+	* Refactor AllowListDto.
+	* Renamed SEMProcessSamples to SEMVerifyPolicySamples. Add also sample name/descriptions.
+	* Add VerifyPolicy.description.
+
+SEM-0.2.8 (谢继雷, 2011-04-15)
+	* Add initial CRUD pages.
+	* Move allowListIndex.htm to OID/lst/index.htm.
+	* sem-process dev.
+	* Add support to use @Alias to determine location.
+	* AllowListController initially.
+	* Add AllowListDto.
+	* Move (sem-frame) gson -> (-ajax) gson.
+
+SEM-0.2.7 (谢继雷, 2011-04-14)
+	* Add DataTableDxo encapsulates the jquery-datatable ajax conversation.
+	* Prepare AllowList web using facelets.
+	* polish
+	* ProcessSecurityException -> exception rather then throwable.
+	* sem-process entity fixes.
+	* Fixed: AllowList.responsibles setter should not traverse.
+	* Add DummyContext javadocs.
+	* Create the rangemap on the fly, rather then use hibernate map mapping.
+	* Refactor MultiLevelRange.verifyPolicy to .targetPolicy.
+	* Rename MultiLevelRanges to MultiLevelRangeMap.
+	* VerifyPolicy.dv = LS, ML, NXT for each.
+	* Prepare AllowListController.
+	* Remove the unused ER ctor args.
+
+SEM-0.2.6 (谢继雷, 2011-04-13)
+	* sem-process depends on type-ublock temporily.
+	* Prepare new AllowListController.
+	* Add MenuEntry(order, ...) constructor.
+	* Prepare SEMProcessSamples.
+	* polish
+	* SEMProcessUnit depends on icsf-identity unit.
+	* SuperfishMenuBuilder should resolve the context location with request.
+	* Make SuperfishMenuController lazy.
+
+SEM-0.2.5 (金卫林, 谢继雷, 2011-04-12)
+	* Prepare sem-functions.taglib
+	* SuperfishMenuBuilderTest extends from FTC.
+	* 改正SuperfishMenuBuilder生成菜单错误的问题
+	* Renamed Restful* to RESTful*.
+
+SEM-0.2.4 (谢继雷, 2011-04-11)
+	* polish
+	* Add MainMenu.superfishHtml property.
+
+SEM-0.2.3 (谢继雷, 2011-04-10)
+	* Rename AbstractDao to EntityDao.
+
+SEM-0.2.2 (谢继雷, 2011-04-08)
+	* EntityFormat -> FormatStyle, IFormatString -> IMultiFormat.
+
+SEM-0.2.1 (谢继雷, 2011-04-04)
+	* The impl.AllowState has been refactorred to builtin.*.
+	* Merged E*Content & E*New to E*. (common template)
+	* MenuNode re-define fixed.
+	* Add callback support to ZkMenuBuilder.
+
+SEM-0.2.0 (谢继雷, 2011-04-01)
+	* Ignore not used FrameTest.
+	* Export main-menu.zul frorm sem-frame.
+	* Fixed MenuContributionTest. cuz MyMenu has been changed.
+	* Fixed dependency to icsf-princpal 0.2.1-SNAPSHOT.
+	* PUnit refactor.
+
+SEM-0.1.21 (谢继雷, 2011-03-31)
+	* MenuBar add backtrace message for duplicates.
+	* verify: html tidy.
+	* Add UnitTestCase, and refactor wire() to UTC.unit().
+	* sem-module depends on icsf-acl.
+	* polish
+	* Removed unavoidable "unchecked" suppressors.
+
+SEM-0.1.20 (金卫林, 谢继雷, 2011-03-30)
+	* Utilizing ${location.LIB_3RDPARTY}
+	* Refactor SuperfishMenuBuilder for pretty format.
+	* Renamed MenuEntry -> MenuNode, and MenuItem -> MenuEntry. [2]
+	* Renamed MenuEntry -> MenuNode, and MenuItem -> MenuEntry.
+	*  fix SuperFishMenuBuilder buildMenubar
+	* SuperFish menu done
+	* polish
+	* Add SuperfishMenuControllerTest.
+	* Rename MenuController to SuperfishMenuController.
+	* add SuperFishMenuBuilder and MenuController spring mvc controller
+	* Add MenuItem.ctor(..., ContextLoc)
+
+SEM-0.1.19 (金卫林, 谢继雷, 2011-03-29)
+	* polish
+	* Add MainMenuTest.dump().
+	* Add mymenu/file contrib for testing.
+	* 生成zk菜单功能完成
+	* Using spring DelegatingVariableResolver togother with Zk (zul)
+	* Add a simple builtin menu for testing.
+	* Removed redundant ..web/menu1.zul
+	* Prepare the menu test.
+	* polish
+	* Add MenuControllerTest based on ZTC.
+	* Add ZkMenuBuilder.buildItem.
+	* MenuBar throws if merge() is ignored due to duplication.
+	* MainMenu do collection @ApplicationContextAware.
+
+SEM-0.1.18 (谢继雷, 2011-03-28)
+	* Supplimented the mymenu test case.
+	* Add setters to IMenuItem.
+	* MenuItem setAppearance thru ComponentBuilder.
+
+SEM-0.1.17 (谢继雷, 2011-03-25)
+	* Polish.
+	* Add JAVASCRIPT, STYLE, LIB_3RDPARTY loc-contexts.
+	* polish
+	* Hide resource/social/support away for dev.
+	* sem-frame needs -commons.
+	* Rename IAction.getActionTarget to getTarget.
+	* Make class FrameSite final.
+	* Moved menu/zk to sem-frame.
+	* MenuContrib doesn't support Locale-local yet.
+	* Renamed ISiteFrame to IFrameOverlay.
+	* Dependency management.
+
+SEM-0.1.16 (谢继雷, 2011-03-24)
+	* Reset to 0.2.1-SNAPSHOT
+	* Fixed dependency versions.
+	* Set version to 0.2.1-SNAPSHOT
+	* Released sem* 0.2.0.
+	* Clear FrameTest.
+	* Implemented MenuContribution arch.
+	* Move merge function from MainMenu to MenuBar.
+	* Refactor ContextMenu -> ContextMenus in structs.
+	* The name is optional in Action::ctor().
+	* Clarified design of Menu/Entry.
+	* Refactor Sem Oids to structs.
+
+SEM-0.1.15 (谢继雷, 2011-03-23)
+	* polish
+	* @Contribution as a composite-element.
+	* Make Action.ctor public
+	* Rename MenuGroup to MenuSection.
+	* Refactoring menu /contribution in sem-frame.
+
+SEM-0.1.14 (谢继雷, 2011-03-22)
+	* Initial design of sem-frame, which will replace the old skel-*.
+	* sem-frame based on plover-ajax/zk.
+	* Prepare Menu/Command in sem-frame.
+	* Moved ExceptionResolver to sem-frame.
+
+SEM-0.1.13 (谢继雷, 2011-03-21)
+	* Rebase sem-frame on plover-facelets. Prepare Menu.
+	* Access stl by `stl` instead of `rtl`.
+
+SEM-0.1.12 (谢继雷, 2011-03-19)
+	* SemProcessModuleTest rebased on RTC.
+
+SEM-0.1.11 (谢继雷, 2011-03-17)
+	* MultiLevel by @MapKey.
+	* Remove name property from EntityBean.
+
+SEM-0.1.10 (谢继雷, 2011-03-16)
+	* AllowState don't have to cascade to User.
+	* Separate the verify-process into null-test/validate/check phases.
+	* Change the way of MultiLevel/Ranges mapping to be Map-based.
+	* Refactor the string error message to ErrorResult value objects.
+	* Add plover-or_ext module to hold custom entity type extensions.
+	* Using uppercase value for discriminator values.
+	* Add IContextLimit.getName().
+
+SEM-0.1.9 (谢继雷, 2011-03-15)
+	* Reorganize context resources as Composite pattern.
+
+SEM-0.1.8 (谢继雷, 2011-03-14)
+	* Using @ContextClass annotation to declare required context class.
+	* Add VerifyPolicyManager to search available verify policy types.
+	* Add context parameter to all policy methods.
+	* Rename ILevelContext to IContextLimit. Using Long instead of Double.
+	* Refactor verify-policy as a result of icsf-principal refactor.
+
+SEM-0.1.7 (谢继雷, 2011-03-13)
+	* EnterpriseEvent/Bean refactor.
+
+SEM-0.1.6 (谢继雷, 2011-03-12)
+	* Renamed Entity to EntityBean.
+
+SEM-0.1.5 (谢继雷, 2011-03-11)
+	* Entity re-base.
+	* Component equals/hashCode refactor.
+
+SEM-0.1.4 (谢继雷, 2011-03-09)
+	* Move verify.impl.* to verify.builtins.*.
+
+SEM-0.1.3 (谢继雷, 2011-03-08)
+	* Refactor plover modules for autowiring.
+	* Move ER*() from to ERModule.
+
+SEM-0.1.2 (谢继雷, 2011-03-07)
+	* Refactor the unit test, using the new assembled framework.
+	* Use default VTL extension ".v".
+
+SEM-0.1.1 (谢继雷, 2011-03-05)
+	* Sem depends on plover-test instead of junit.
+	* Redesign the verify model.
+
+SEM-0.1.0 (谢继雷, 2011-03-01)
+	* The new entity-type may extends instance-type.
+	* Dependencies management.
+	* Move the built-in verify polices from ebi-org to sem-process.
+	* Transferred & refactorred ebc-samples to sem-samples.
+
+SEM-0.0.6 (谢继雷, 2011-02-28)
+	* Will access icsf-principal only.
+	* The factory methods were moved into PersistenceUnits.
+	* Temporarily set sem-process depends on ebi-org.
+
+SEM-0.0.5 (谢继雷, 2011-02-25)
+	* Add preamble() section to EnterpriseModule, and also support to export entity.
+	* Make EnterpriseEvent as entity.
+	* Enterprise module with service contribution support.
+
+SEM-0.0.4 (谢继雷, 2011-02-24)
+	* SemProcessModule as an enterprise-module.
+
+SEM-0.0.3 (谢继雷, 2011-02-23)
+	* Transfer ebc-verifycontrol to sem-process.
+	* Rewrite SEMOids.
+	* sem dependency management.
+	* Add sem-process.
+	* Add sem-frame and sem-desktop to replace plover-portal.
+	* Add refactor notes for sems->sem.
+
+SEM-0.0.2 (谢继雷, 2011-02-22)
+	* (misc) persistence-unit contribution work.
+	* Add sem-module, which replaces the old archetype-ublock.
+
+SEM-0.0.1 (谢继雷, 2011-02-21)
+	* Fix package names.
+	* (Re)Initial sem-event. Move sem-calendar to support group.
+	* Fix sem-event package name.
+	* Fix groupId.
+	* Rename "SME Model" to "SEM"
+	* Rename core group to base, to void conflict with plover. Add sem-event.
+	* Rename asset group to resource. Add process group & modules.
+
+SEM-0.0.0 (谢继雷, 2011-02-19)
+	* Not executable.

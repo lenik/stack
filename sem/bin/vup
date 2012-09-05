@@ -1,14 +1,30 @@
 #!/bin/bash
 
-f=src/main/resources/META-INF/version
+PROJECT=/mnt/istore/projects/stack/sem
+MODULE=base/sem-frame
+RESDIR=$MODULE/src/main/resources/META-INF
+VERSION_FILE=$RESDIR/version
+CHANGELOG=$RESDIR/changelog
+VERLOG=$RESDIR/verlog
 
+cd $PROJECT
 vcscmd update
 
-cd /home/semop/tasks/521-sem/base/sem-frame
+gitcl . >$CHANGELOG
+gitcl2 \
+    -t "SEM" -r \
+    -u Lenik=谢继雷 \
+    -u   ztf=朱挺峰 \
+    -u  jack=金卫林 \
+    -m 10 -n 1 -r <$CHANGELOG >$VERLOG
 
-echo 1.1 >$f
+read nver _ <$VERLOG
+    name="${nver%-*}"
+    ver="${nver##*-}"
+    echo Name: $name
+    echo Version: $ver
+    echo $ver >$VERSION_FILE
 
-read LINES WORDS CHARS < <(vcscmd log-graph | wc)
-echo $LINES >>$f
+    read LINES WORDS CHARS < <(vcscmd log-graph | wc)
+    echo $LINES >>$VERSION_FILE
 
-cat $f
