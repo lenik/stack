@@ -11,6 +11,7 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.hr.dto.EmployeeInfoDto;
 import com.bee32.sem.process.base.ProcessEntityDto;
 import com.bee32.sem.salary.entity.Salary;
+import com.bee32.sem.salary.util.IncomeTaxCalc;
 
 public class SalaryDto
         extends ProcessEntityDto<Salary> {
@@ -32,7 +33,6 @@ public class SalaryDto
 
         if (selection.contains(ELEMENTS)) {
             elements = mrefList(SalaryElementDto.class, source.getElements());
-            Collections.sort(elements);
         } else
             elements = Collections.emptyList();
     }
@@ -117,5 +117,9 @@ public class SalaryDto
             }
         }
         return sb.toString();
+    }
+
+    public BigDecimal getTax() {
+        return IncomeTaxCalc.calcIncomeTax(getTotal());
     }
 }

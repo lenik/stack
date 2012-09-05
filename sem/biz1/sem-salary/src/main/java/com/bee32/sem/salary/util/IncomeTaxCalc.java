@@ -7,20 +7,28 @@ import javax.free.Pair;
 public class IncomeTaxCalc {
 
     static BigDecimal start = new BigDecimal(3500);
-    static Pair<BigDecimal, BigDecimal> level1 = new Pair<BigDecimal, BigDecimal>(new BigDecimal(1500), new BigDecimal(0.03));
-    static Pair<BigDecimal, BigDecimal> level2 = new Pair<BigDecimal, BigDecimal>(new BigDecimal(3000), new BigDecimal(0.1));
-    static Pair<BigDecimal, BigDecimal> level3 = new Pair<BigDecimal, BigDecimal>(new BigDecimal(4500), new BigDecimal(0.2));
-    static Pair<BigDecimal, BigDecimal> level4 = new Pair<BigDecimal, BigDecimal>(new BigDecimal(26000),new BigDecimal(0.25));
-    static Pair<BigDecimal, BigDecimal> level5 = new Pair<BigDecimal, BigDecimal>(new BigDecimal(20000),new BigDecimal(0.3));
-    static Pair<BigDecimal, BigDecimal> level6 = new Pair<BigDecimal, BigDecimal>(new BigDecimal(25000),new BigDecimal(0.35));
+    static Pair<BigDecimal, BigDecimal> level1 = new Pair<BigDecimal, BigDecimal>(new BigDecimal(1500), new BigDecimal(
+            0.03));
+    static Pair<BigDecimal, BigDecimal> level2 = new Pair<BigDecimal, BigDecimal>(new BigDecimal(3000), new BigDecimal(
+            0.1));
+    static Pair<BigDecimal, BigDecimal> level3 = new Pair<BigDecimal, BigDecimal>(new BigDecimal(4500), new BigDecimal(
+            0.2));
+    static Pair<BigDecimal, BigDecimal> level4 = new Pair<BigDecimal, BigDecimal>(new BigDecimal(26000),
+            new BigDecimal(0.25));
+    static Pair<BigDecimal, BigDecimal> level5 = new Pair<BigDecimal, BigDecimal>(new BigDecimal(20000),
+            new BigDecimal(0.3));
+    static Pair<BigDecimal, BigDecimal> level6 = new Pair<BigDecimal, BigDecimal>(new BigDecimal(25000),
+            new BigDecimal(0.35));
     static Pair<BigDecimal, BigDecimal> level7 = new Pair<BigDecimal, BigDecimal>(BigDecimal.ZERO, new BigDecimal(0.45));
 
     /**
      * return Pair<tax, afterTax>
      */
-    public static Pair<BigDecimal, BigDecimal> calcIncomeTax(BigDecimal total) {
-        BigDecimal tax = getTax(total);
-        return new Pair<BigDecimal, BigDecimal>(tax, total);
+    public static BigDecimal calcIncomeTax(BigDecimal total) {
+        BigDecimal tax = BigDecimal.ZERO;
+        if (total.compareTo(start) > 0)
+            tax = getTax(total);
+        return tax;
     }
 
 // tax = tax.add(tax1);
