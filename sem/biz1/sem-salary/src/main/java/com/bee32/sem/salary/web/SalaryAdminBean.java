@@ -36,6 +36,7 @@ import com.bee32.sem.salary.entity.SalaryElement;
 import com.bee32.sem.salary.entity.SalaryElementDef;
 import com.bee32.sem.salary.util.ChineseCodec;
 import com.bee32.sem.salary.util.SalaryDateUtil;
+import com.bee32.sem.salary.util.SalaryTreeNode;
 
 public class SalaryAdminBean
         extends SimpleEntityViewBean {
@@ -106,13 +107,9 @@ public class SalaryAdminBean
             final TextMap args = new TextMap(map);
 
             for (SalaryElementDef def : efficaciousDef) {
-                // TODO
                 String expression = def.getExpr();
-
                 StandardEvaluationContext context = new StandardEvaluationContext();
-
                 BeanResolver resolver = new BeanResolver() {
-
                     @Override
                     public Double resolve(EvaluationContext context, String beanName)
                             throws AccessException {
@@ -151,11 +148,9 @@ public class SalaryAdminBean
                 element.setBonus(value);
                 elements.add(element);
                 salary.setElements(elements);
-
             }
 
             salarys.add(salary);
-
         }
         DATA(Salary.class).saveAll(salarys);
         uiLogger.info("创建工资记录成功");
@@ -197,6 +192,32 @@ public class SalaryAdminBean
             int index = columns.size();
             columns.add(new ColumnModel(def.getLabel() == null ? def.getCategory() : def.getLabel(), index));
         }
+    }
+
+    void createSalaryNodeTree() {
+        SalaryTreeNode root = new SalaryTreeNode();
+        root.setLabel("root");
+
+        List<SalaryElementDef> defs = DATA(SalaryElementDef.class).list();
+        for (SalaryElementDef def : defs) {
+            String categoryString = def.getCategory();
+            int order = def.getOrder();
+            buildBranch(root, categoryString, order);
+        }
+    }
+
+    void buildBranch(SalaryTreeNode parent, String categoryString, int order) {
+        int index = categoryString.indexOf("/");
+        String category = categoryString.substring(0, index);
+        SalaryTreeNode node = new SalaryTreeNode();
+        node.setLabel(category);
+        node.setOrder(order);
+
+        parent.addChild(node);
+
+        String touse = categoryString.substring(1);
+        if (touse.length() > 0)
+            buildBranch(node, touse, order);
     }
 
     public Date getTargetDate() {

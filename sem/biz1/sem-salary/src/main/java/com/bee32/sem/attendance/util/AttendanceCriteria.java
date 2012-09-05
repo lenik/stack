@@ -11,6 +11,7 @@ import com.bee32.sem.salary.util.SalaryDateUtil;
 
 public class AttendanceCriteria
         extends CriteriaSpec {
+
     public static ICriteriaElement getDayList(Date date) {
         Pair<Date, Date> map = SalaryDateUtil.toDayRange(date);
         return toRangeList(map);
@@ -28,10 +29,10 @@ public class AttendanceCriteria
     }
 
     public static ICriteriaElement getMonthRecordByEmployee(Date date, Long employeeId) {
-        Pair<Date, Date> map = SalaryDateUtil.toMonthRange(date);
+        Pair<Date, Date> pair = SalaryDateUtil.toMonthRange(date);
         return conj(//
-                greaterOrEquals("date", map.get(0)), //
-                lessThan("date", map.get(1)), //
+                greaterOrEquals("date", pair.get(0)), //
+                lessThan("date", pair.get(1)), //
                 equals("employee.id", employeeId));
     }
 
