@@ -29,6 +29,7 @@ public class EmployeeInfoDto
     PersonEducationTypeDto education;
     int duty;
     int workAbility;
+    BigDecimal pension;
 
     Date employedDate;
     Date resignedDate;
@@ -59,6 +60,7 @@ public class EmployeeInfoDto
         education = mref(PersonEducationTypeDto.class, source.getEducation());
         duty = source.getDuty();
         workAbility = source.getWorkAbility();
+        pension = source.getPension();
         employedDate = source.getEmployedDate();
         resignedDate = source.getResignedDate();
         skills = mrefList(PersonSkillDto.class, source.getSkills());
@@ -89,6 +91,7 @@ public class EmployeeInfoDto
             merge(target, "education", education);
         target.setDuty(duty);
         target.setWorkAbility(workAbility);
+        target.setPension(pension);
         target.setEmployedDate(employedDate);
         target.setResignedDate(resignedDate);
         mergeList(target, "skills", skills);
@@ -176,6 +179,14 @@ public class EmployeeInfoDto
 
     public void setWorkAbility(int workAbility) {
         this.workAbility = workAbility;
+    }
+
+    public BigDecimal getPension() {
+        return pension;
+    }
+
+    public void setPension(BigDecimal pension) {
+        this.pension = pension;
     }
 
     public Date getEmployedDate() {
