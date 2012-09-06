@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.TreeNode;
 import org.springframework.expression.AccessException;
 import org.springframework.expression.BeanResolver;
 import org.springframework.expression.EvaluationContext;
@@ -35,6 +37,7 @@ public class SalaryDefAdminBean
 
     List<SalaryDefPreview> previewData;
     Date generateDate;
+    TreeNode variableTree;
 
     public SalaryDefAdminBean() {
         super(SalaryElementDef.class, SalaryElementDefDto.class, 0);
@@ -126,6 +129,18 @@ public class SalaryDefAdminBean
         }
 
         return super.save(saveFlags, hint);
+    }
+
+    public TreeNode getVariableTree() {
+        if (variableTree == null) {
+            variableTree = new DefaultTreeNode("root", null);
+            for (ISalaryVariableProvider provider : SalaryVariableProviders.getProviders()) {
+                TreeNode node = new DefaultTreeNode(provider.getClass().getName(), variableTree);
+                for (String variable : provider.getVariableNames())
+                    new DefaultTreeNode(variable, node);
+            }
+        }
+        return variableTree;
     }
 
     public Date getGenerateDate() {

@@ -59,16 +59,13 @@
 
     <ui:define name="dialogs">
         <p:dialog header="变量表" widgetVar="dlg1">
-            <ui:repeat var="provider" value="${bean.providers}">
-                <p>
-                    <h:outputText value="${provider.entityType}" />
-                    <ui:repeat var="key" value="${provider.variableNames}">
-                        <br />
-                        <p:spacer width="20" />
-                        <h:outputText value="${key}" style="color:red" />
-                    </ui:repeat>
-                </p>
-            </ui:repeat>
+            <p:tree value="#{bean.variableTree}" var="node" dynamic="true" cache="false">
+                <p:treeNode>
+                    <h:outputText value="#{node}" />
+                </p:treeNode>
+            </p:tree>
+
+
             <p:commandButton value="关闭" onclick="dlg1.hide();" style="float:right" />
         </p:dialog>
 
