@@ -3,20 +3,20 @@
     xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:icsf="http://java.sun.com/jsf/composite/3/7"
     xmlns:sem="http://java.sun.com/jsf/composite/3/15">
 
-    <ui:param name="title" value="事件补贴" />
+    <ui:param name="title" value="奖惩事件" />
     <ui:param name="bean" value="${eventBonusAdminBean}" />
     <ui:param name="obj" value="${bean.openedObject}" />
     <ui:define name="dataColumns">
-        <p:column headerText="补贴时间">
+        <p:column headerText="奖惩时间">
             <h:outputText value="${entry.beginTime}" />
         </p:column>
-        <p:column headerText="补贴人员">
+        <p:column headerText="奖惩人员">
             <h:outputText value="${entry.employee.person.name}" />
         </p:column>
-        <p:column headerText="补贴金额">
+        <p:column headerText="奖惩金额">
             <h:outputText value="${entry.bonus}" />
         </p:column>
-        <p:column headerText="补贴描述">
+        <p:column headerText="奖惩描述">
             <h:outputText value="${entry.description}" />
         </p:column>
     </ui:define>

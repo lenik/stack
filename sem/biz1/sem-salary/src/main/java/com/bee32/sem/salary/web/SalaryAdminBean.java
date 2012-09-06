@@ -93,6 +93,8 @@ public class SalaryAdminBean
         HashMap<String, Object> map = new HashMap<String, Object>();
         List<Salary> salarys = new ArrayList<Salary>();
 
+        Pair<Date, Date> rangePair = SalaryDateUtil.toMonthRange(targetDate);
+
         for (EmployeeInfo employee : employeeList) {
             List<SalaryElement> elements = new ArrayList<SalaryElement>();
             Salary salary = new Salary();
@@ -103,6 +105,8 @@ public class SalaryAdminBean
 
             map.clear();
             map.put(ISalaryVariableProvider.ARG_EMPLOYEE, employee);
+            map.put(ISalaryVariableProvider.ARG_BEGIN_DATE, rangePair.getFirst());
+            map.put(ISalaryVariableProvider.ARG_END_DATE, rangePair.getSecond());
             // TODO add other args
 
             final TextMap args = new TextMap(map);
@@ -214,7 +218,7 @@ public class SalaryAdminBean
         return root;
     }
 
-    public List<SalaryElementDto> sortElements(SalaryDto salary ) {
+    public List<SalaryElementDto> sortElements(SalaryDto salary) {
         List<SalaryElementDto> elements = salary.getElements();
         List<SalaryElementDto> sorted = new ArrayList<SalaryElementDto>(columns.size());
         for (ColumnModel column : columns) {
