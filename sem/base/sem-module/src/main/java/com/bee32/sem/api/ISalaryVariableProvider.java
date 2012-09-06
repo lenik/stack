@@ -20,6 +20,4 @@ public interface ISalaryVariableProvider {
 
     String[] getVariableNames();
 
-    String getEntityType();
-
 }

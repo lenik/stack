@@ -18,11 +18,6 @@ public class AttendanceProvider
 
     @Override
     public String[] getVariableNames() {
-        return null;
-    }
-
-    @Override
-    public String getEntityType() {
-        return this.getClass().getName();
+        return new String[0];
     }
 }

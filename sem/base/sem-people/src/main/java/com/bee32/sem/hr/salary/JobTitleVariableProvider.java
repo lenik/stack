@@ -35,9 +35,4 @@ public class JobTitleVariableProvider
         return variables;
     }
 
-    @Override
-    public String getEntityType() {
-        return this.getClass().getName();
-    }
-
 }

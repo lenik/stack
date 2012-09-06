@@ -16,11 +16,7 @@ public class WorkOvertimeVariableProvider
 
     @Override
     public String[] getVariableNames() {
-        return null;
+        return new String[0];
     }
 
-    @Override
-    public String getEntityType() {
-        return this.getClass().getName();
-    }
 }
