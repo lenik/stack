@@ -24,7 +24,7 @@
     <ui:define name="editDialogContent">
         <t:panelGrid columns="2">
             <h:outputText value="补贴时间" />
-            <p:inputText value="${obj.beginTime}" />
+             <p:calendar value="#{obj.beginTime}" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" showOn="button" />
 
             <h:outputText value="补贴人员" />
             <t:panelGroup>

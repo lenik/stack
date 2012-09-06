@@ -1,5 +1,6 @@
 package com.bee32.sem.attendance.util;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
@@ -16,8 +17,8 @@ public class EventBonusCriteria
         CriteriaElement employee_criteria = equals("employee.id", employeeId);
 
         if (award)
-            return conj(goe, loe, employee_criteria, greaterOrEquals("bonus", 0));
+            return conj(goe, loe, employee_criteria, greaterOrEquals("bonus", BigDecimal.ZERO));
         else
-            return conj(goe, loe, employee_criteria, lessOrEquals("bonus", 0));
+            return conj(goe, loe, employee_criteria, lessOrEquals("bonus", BigDecimal.ZERO));
     }
 }

@@ -1,4 +1,4 @@
 com.bee32.sem.salary.salary.BaseBonusVariableProvider
 com.bee32.sem.salary.salary.WorkOvertimeVariableProvider
 com.bee32.sem.salary.salary.EmployeeVariableProvider
-com.bee32.sem.salary.salary.EmployeeVariableProvider
+com.bee32.sem.salary.salary.EventVariableProvider

@@ -24,10 +24,10 @@ public class EventVariableProvider
         Date end = (Date) args.get(ISalaryVariableProvider.ARG_END_DATE);
 
         BigDecimal tmp = BigDecimal.ZERO;
+        List<EventBonus> events;
 
         if (variableName.equals("罚金")) {
-            List<EventBonus> events = DATA(EventBonus.class).list(
-                    EventBonusCriteria.listEvents(employee.getId(), begin, end, false));
+            events = DATA(EventBonus.class).list(EventBonusCriteria.listEvents(employee.getId(), begin, end, false));
             for (EventBonus event : events) {
                 tmp = tmp.add(event.getBonus());
             }
@@ -35,8 +35,7 @@ public class EventVariableProvider
         }
 
         if (variableName.equals("奖金")) {
-            List<EventBonus> events = DATA(EventBonus.class).list(
-                    EventBonusCriteria.listEvents(employee.getId(), begin, end, true));
+            events = DATA(EventBonus.class).list(EventBonusCriteria.listEvents(employee.getId(), begin, end, true));
             for (EventBonus event : events) {
                 tmp = tmp.add(event.getBonus());
             }
