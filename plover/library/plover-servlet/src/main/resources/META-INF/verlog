@@ -1,39 +1,46 @@
-SEM-2.1.1 (谢继雷, 2012-09-05)
+Plover-3.3.2 (谢继雷, 2012-09-06)
+	* Using author-date instead of commit date.
+
+Plover-3.3.1 (谢继雷, 2012-09-05)
+	* Polishing
 	* Update plover versions as well.
 
-SEM-2.1.0 (谢继雷, 2012-09-03)
+Plover-3.3.0 (谢继雷, 2012-09-03)
 	* Auto batching with date, and customization support.
 
-SEM-2.0.5 (朱挺峰, 2012-08-23)
+Plover-3.2.7 (朱挺峰, 2012-08-23)
 	* Remove attendanceType from SalaryUnit
 
-SEM-2.0.4 (谢继雷, 2012-08-20)
+Plover-3.2.6 (谢继雷, 2012-08-20)
 	* Refactor all DAO methods throws DataAccessException.
 
-SEM-2.0.3 (lenik, 2012-08-18)
+Plover-3.2.5 (谢继雷, 2012-08-18)
 	* Polishing
 	* SiteManager: stop/clear the site attributes to reload all.
 	* BaseDto: Changed getSourceType() to public.
 	* Clarified: Renamed DummyEntity/Dto to _NotUsed_*.
 	* Track entity page in the EntityDto.
 	* Moved LocationVmap, VerbMap, YesMap to plover-servlet.
-	* OverlappedBase: cache negative (null) resolutions.
 
-SEM-2.0.2 (谢继雷, 2012-08-16)
+Plover-3.2.4 (谢继雷, 2012-08-16)
 	* sem-account: Moved complex sql scripts to resource files.
 
-SEM-2.0.1 (谢继雷, 2012-08-15)
+Plover-3.2.3 (谢继雷, 2012-08-15)
 	* NLS updates.
 	* Refactor: ctx.bean.getBean(...) -> BEAN(...); ctx.data.access(...) -> DATA(...)
 
-SEM-2.0.0 (谢继雷, 2012-08-07)
+Plover-3.2.2 (谢继雷, 2012-08-07)
 	* FacesUILogger: NLS process on the entire text.
+
+Plover-3.2.1 (谢继雷, 2012-08-02)
 	* Optimized PriorityComparator to utilize the uniqueness of identityHashCode.
 	* Process NLS messages with INlsMessageProcessors.
 	* Refactor ResourceBundle to NlsBundle, to add message processor in future.
 	* Fixed MavenPath: skip classes in jar in getClassFile().
 	* Added local-services filter support in ServiceCollector.
 	* Use IAppProfile as the service, instead of AppProfile.
+
+Plover-3.2.0 (谢继雷, 2012-08-01)
 	* Collected ISiteConfigBlocks.
 	* Site template css: .tcf h3, .tcf table.
 	* Fixed VerboseLevel NLS for root locale.
@@ -45,38 +52,44 @@ SEM-2.0.0 (谢继雷, 2012-08-07)
 	* Added SiteConfigBlock services: configForm/saveForm.
 	* Refactor SimpleForm as FormSection<child*>.
 	* Fixed TextMap: getStringArray should returns empty array by default.
+
+Plover-3.1.3 (谢继雷, 2012-07-31)
 	* Refactor SimpleForm to aggregate form entries.
+
+Plover-3.1.2 (谢继雷, 2012-07-27)
 	* NLS updates.
 	* Renamed SimpleForm.put to .create(...).
 	* Prepare term customization support.
 
-SEM-1.9.1 (朱挺峰, 2012-07-09)
+Plover-3.1.1 (朱挺峰, 2012-07-09)
 	* Chance/Action length validation.
 
-SEM-1.9.0 (谢继雷, 2012-07-05)
+Plover-3.1.0 (谢继雷, 2012-07-02)
 	* Upgraded to Primefaces-3.3.1
 
-SEM-1.8.3 (谢继雷, 2012-06-27)
+Plover-3.0.5 (谢继雷, 朱挺峰, 2012-06-20)
 	* Reviewed: Preserve changes by set ef/override.
-
-SEM-1.8.2 (谢继雷, 朱挺峰, 2012-06-20)
 	* 合并冲突提交
 	* NLS Updates.
 
-SEM-1.8.1 (谢继雷, 2012-06-18)
+Plover-3.0.4 (谢继雷, 2012-06-18)
 	* polishing
 	* Reduced variable-dep in the sample loader process.
 	* SampleList: altId=null for no-change.
 	* Entity: renamed newOrig to `remote`.
 	* Skip non-installed profiles from the merged profiles.
 
-SEM-1.8.0 (谢继雷, 2012-06-09)
+Plover-3.0.3 (谢继雷, 2012-06-09)
 	* Review NLS strings.
+
+Plover-3.0.2 (谢继雷, 2012-06-08)
 	* NLS updates.
 	* KeywordBuilder: skip empty/duplicated keywords.
 	* Changed CEntity.KEYWORD_LENGTH 40 to 200.
 	* Refactor AppProfileAssembly=>AppProfileMerger.
 	* Populate s-keywords with label/desc/[modelspec?]
+
+Plover-3.0.1 (谢继雷, 2012-06-07)
 	* Fixed site cfg enums labels.
 	* Site config servlet: added profile selection support.
 	* Fixed C_FaceletsWAC: theme.id -> theme.name.
@@ -84,11 +97,17 @@ SEM-1.8.0 (谢继雷, 2012-06-09)
 	* ServicePrototypeLoader: catch class init errors.
 	* Multi selection model: values/indexes => selection/selectedIndexes.
 	* Refactor static EnumAlts.name/valueMap: dead cyclic initializors.
+
+Plover-3.0.0 (谢继雷, 2012-06-02)
 	* Add anonymous samples in the group, with explicit null-altid.
 	* Get jetty.Logger instance, don't call static logs in jetty-8.
 	* polishing
 	* Clean up warnings.
+
+Plover-2.9.10 (谢继雷, 2012-05-31)
 	* Config app profile in simple form using Relabel string wrapper.
+
+Plover-2.9.9 (谢继雷, 2012-05-30)
 	* NLS Update.
 	* NLS for *profiles.
 	* NLS Updates.
@@ -99,75 +118,85 @@ SEM-1.8.0 (谢继雷, 2012-06-09)
 	* EnumAltRegistry: degraded EnumAlt<> typearg restrictions.
 	* Organized imports.
 	* App profile services loader and assembly.
+
+Plover-2.9.8 (谢继雷, 2012-05-29)
 	* Prepare menu assembler in menu builders.
 	* Refactor site config enums: added NLS.
 	* NLS update.
 	* Implemented Comparable on OptimizationLevel & VerboseLevel.
 	* Refactor site config enums > EnumAlt.
 	* Refactor: valueOf => forValue
+
+Plover-2.9.7 (谢继雷, 2012-05-28)
 	* Prepare/collect app profiles.
+
+Plover-2.9.6 (谢继雷, 2012-05-25)
 	* Refactor frame menus: prepare for runtime profiles.
 
-SEM-1.7.5 (金卫林, 2012-05-24)
+Plover-2.9.5 (金卫林, 2012-05-24)
 	* 用户代码长度由3改成2
 	* 1.chooseMaterialDialog中加入按规格型号排序的功能
 
-SEM-1.7.4 (谢继雷, 2012-05-23)
+Plover-2.9.4 (谢继雷, 2012-05-23)
 	* Refactor search fragments.
 
-SEM-1.7.3 (朱挺峰, 2012-05-22)
+Plover-2.9.3 (朱挺峰, 2012-05-22)
 	* 库存管理: 修改搜索物料不能正确分页
 
-SEM-1.7.2 (谢继雷, 2012-05-21)
+Plover-2.9.2 (谢继雷, 2012-05-21)
 	* Sort PoNode by key, by default.
 
-SEM-1.7.1 (谢继雷, 2012-05-16)
+Plover-2.9.1 (谢继雷, 2012-05-16)
 	* Fixed Permission: deny by default. If neither allow/deny bit set.
 
-SEM-1.7.0 (谢继雷, 2012-05-08)
+Plover-2.9.0 (谢继雷, 2012-05-07)
 	* polishing getId_OZ
 	* Added WacToolsServlet whichs dumps servlet registrations.
 
-SEM-1.6.5 (金卫林, 2012-04-20)
+Plover-2.8.5 (金卫林, 2012-04-20)
 	* null/null-ref should be treated different.
 
-SEM-1.6.4 (金卫林, 2012-04-19)
+Plover-2.8.4 (金卫林, 2012-04-19)
 	* Fixed CommonCriteria.beginEndDateBetween(): it should be endTime.
 
-SEM-1.6.3 (金卫林, 2012-04-18)
+Plover-2.8.3 (金卫林, 2012-04-18)
 	* 外部产品名称和外部规格加长字段长度
 
-SEM-1.6.2 (谢继雷, 2012-04-17)
+Plover-2.8.2 (谢继雷, 2012-04-09)
 	* Polishing
 
-SEM-1.6.1 (谢继雷, 2012-04-06)
+Plover-2.8.1 (谢继雷, 2012-04-06)
 	* Entity.naturalId(*) should wrap new-entity in Identity.
 
-SEM-1.6.0 (金卫林, 2012-04-05)
+Plover-2.8.0 (金卫林, 2012-04-05)
 	* change open browser order
 
-SEM-1.5.12 (谢继雷, 2012-03-30)
+Plover-2.7.18 (谢继雷, 2012-03-30)
 	* BaseDto: mandatory natural-id should not return null.
 
-SEM-1.5.11 (谢继雷, 2012-03-29)
+Plover-2.7.17 (谢继雷, 2012-03-29)
 	* Re-enabled debugMode in FTC.
 
-SEM-1.5.10 (谢继雷, 2012-03-28)
+Plover-2.7.16 (谢继雷, 2012-03-28)
 	* Launch browser manually instead of by AWT.Desktop.
 
-SEM-1.5.9 (金卫林, 2012-03-27)
+Plover-2.7.15 (金卫林, 2012-03-27)
 	* Clear DTO.id only in dup().
 
-SEM-1.5.8 (谢继雷, 2012-03-23)
+Plover-2.7.14 (谢继雷, 2012-03-23)
 	* Utilized pf:locker with locker-active styling.
 
-SEM-1.5.7 (谢继雷, 2012-03-21)
+Plover-2.7.13 (谢继雷, 2012-03-21)
 	* NLS Workaround: Copy orm-validation messages to plover-model.
+
+Plover-2.7.12 (谢继雷, 2012-03-19)
 	* Only update lastModified in SEVB save/update.
 	* Plover push customized to allow dynamic server url.
 	* Enabled prime-push though not works yet.
 	* MapStruct: type var fix.
 	* Upgraded jetty-websocket to 8.1.0.RC2.
+
+Plover-2.7.11 (谢继雷, 2012-03-17)
 	* Refactor rabbit server for upstream upgrade: servlet-2.5 => servlet-3.0
 	* Refactor rabbit server for upstream upgrade: jetty-6 => jetty-8.
 	* Pre-config prime-push.
@@ -176,7 +205,7 @@ SEM-1.5.7 (谢继雷, 2012-03-21)
 	* Review entity-otf
 	* Fixed BaseDto.hashCode NPE: naturalId maybe null.
 
-SEM-1.5.6 (谢继雷, 2012-03-16)
+Plover-2.7.10 (谢继雷, 2012-03-14)
 	* Fixed EntityDto.naturalId: return null by default.
 	* Removed populate* in DTOs.
 	* Refactor copy/clone support.
@@ -184,18 +213,18 @@ SEM-1.5.6 (谢继雷, 2012-03-16)
 	* Refactor CloneUtils to CopyUtils, +ICopyable along with ICloneable.
 	* BaseDto_MKey: Test source object equlity by system identity.
 
-SEM-1.5.5 (谢继雷, 2012-03-13)
+Plover-2.7.9 (谢继雷, 2012-03-13)
 	* Samples not loaded: Fixed NPE in IdComposite.equals.
 	* STL console: q=QUI_SAFE and qq=QUIT, added quit-listeners.
 	* Fixed IdComposite: corrected null-equality.
 	* Fixed edit-form not updated in scroll-view: Compare selection/opened-object list by items' id-equality.
 
-SEM-1.5.4 (谢继雷, 2012-03-12)
+Plover-2.7.8 (谢继雷, 2012-03-12)
 	* Decorated all built-in users as overrided.
 	* Renamed entity flag WEAK_DATA to OVERRIDED.
 	* Added full-names for more users.
 
-SEM-1.5.3 (谢继雷, 2012-03-09)
+Plover-2.7.7 (谢继雷, 2012-03-09)
 	* Always retarget samples, but skip weak data.
 	* Polishing
 	* Refactor getSiteInstance/Opt: throws NoSuchSiteException > SiteException.
@@ -204,10 +233,12 @@ SEM-1.5.3 (谢继雷, 2012-03-09)
 	* Polishing
 	* Fixed BaseDto_skel: merge as null for: null-ref and _null.
 
-SEM-1.5.2 (谢继雷, 2012-03-08)
+Plover-2.7.6 (谢继雷, 2012-03-08)
 	* Added default value for Entity: version, ef, createdDate/lastModified.
 	* Group/Role/User: don't set peer in samples, to avoid dup keys.
 	* Entity: reset entity flags unless it contains WEAK_DATA.
+
+Plover-2.7.5 (谢继雷, 2012-03-07)
 	* Added various samples loader feat.
 	* Group/Role: don't retarget the non-cascaded children.
 	* Pass session parameter to the callback in TransactionHelper.
@@ -218,11 +249,17 @@ SEM-1.5.2 (谢继雷, 2012-03-08)
 	* IdComposite: null equals by default. Using Identity() wrapper for not-equals.
 	* Refactor id-composite (2)
 	* Moved util.Sample* to sample package.
+
+Plover-2.7.4 (谢继雷, 2012-03-06)
 	* Implemented IPopulatable for all entities.
 	* Population refactor marker.
 	* Entity.clone by create and populate.
 	* Service collector: show source java pathnames.
+
+Plover-2.7.3 (谢继雷, 2012-03-05)
 	* Open session: changed back to open session for entire loading process.
+
+Plover-2.7.2 (谢继雷, 2012-03-03)
 	* Open session for each re-target: session was diversed hence closed.
 	* TODO: 1) clear separate ctor/wireUp. 2) open session for each package.
 	* Enable DAO.flush(): flush is useful in samples loading.
@@ -236,9 +273,9 @@ SEM-1.5.2 (谢继雷, 2012-03-08)
 	* Refactor various (cascaded) samples as non-final, to avoid duplicated creation of cascaded children.
 	* polishing
 	* Refactor XrefBean: Not an SEVB.
-	* Prepare xrefs view.
 
-SEM-1.5.1 (谢继雷, 2012-03-02)
+Plover-2.7.1 (谢继雷, 2012-03-02)
+	* Prepare xrefs view.
 	* Added site STARTING/STOPPING states.
 	* Fixed NPE in Entity.createdDate/lastModified: fallback to now.
 	* Fixed PloverConfDto: marshal name->key.
@@ -247,7 +284,7 @@ SEM-1.5.1 (谢继雷, 2012-03-02)
 	* WiredDaoFeat: added site name overriding support.
 	* Moved xref graph to unit.xgraph.
 
-SEM-1.5.0 (谢继雷, 2012-03-01)
+Plover-2.7.0 (谢继雷, 2012-03-01)
 	* Refactor MaterialCategory, ACL, PaletteEntry's name to label.
 	* Polishing
 	* Utilized alt-id, removed the unnecessary serial properties.
@@ -263,15 +300,17 @@ SEM-1.5.0 (谢继雷, 2012-03-01)
 	* Prepended sample labels with `【测试】`.
 	* Renamed BaseDto.key to BaseDto.primaryKey.
 	* Refactor PloverConf: group by sections.
+
+Plover-2.6.27 (谢继雷, 2012-02-29)
 	* Refactor samples loader for natural samples only.
 	* Entity accessor: dont check key type in setId(), for generic loading.
-
-SEM-1.4.21 (谢继雷, 2012-02-29)
 	* Polishing
 	* Added ObjectIndex helper.
 	* MarshalSession: removed marshal-type/fmask from the key of marshalled-cache.
 	* Bean.parse: Show warning for write-only properties, but continue.
 	* Added EntityDto.createdDate, lastModified comparators.
+
+Plover-2.6.26 (谢继雷, 2012-02-28)
 	* Load sample package in 3 orders: level/priority/seq.
 	* Renamed DiamondPackage to SuperSamplePackage, and get it delayed.
 	* Renamd SamplesSelection.WORSE to .BOUNDARIES.
@@ -282,16 +321,20 @@ SEM-1.4.21 (谢继雷, 2012-02-29)
 	* Renamed AbstractDataPartialContext -> DataPartialContext -> WiredDataPartialContext.
 	* Added STATIC samples allocation, and utilized in QuickDataTest.
 	* 改 @Inject 依赖样本为 predefined(...), 约去 @ImportSamples (2)
+
+Plover-2.6.25 (谢继雷, 2012-02-27)
 	* Refactor samples wiring.
 	* Refactor SampleContribution.preamble to assemble(), and separated listSamples() from preamble.
+
+Plover-2.6.24 (谢继雷, 2012-02-25)
 	* Refactor SamplePackage > Assembled.
 	* Added Entity.prereqs for sample-ordering.
 	* Refactor Composite>Assembled, and added another Component(name, auto?) ctor.
+
+Plover-2.6.23 (谢继雷, 2012-02-24)
 	* Prepare to refactor std samples arch.
 	* Refactor std samples into separate classes. And add predefined(...) to get std samples in Entity/Dto.
 	* Refactor sample contributions for site-scoping.
-
-SEM-1.4.20 (谢继雷, 2012-02-24)
 	* Review: Entity display names.
 	* NLS resync.
 	* XXX _adminRole temporary fix.
@@ -302,7 +345,7 @@ SEM-1.4.20 (谢继雷, 2012-02-24)
 	* Refactor various static services > ServiceTemplateRC.
 	* Added ACLPref* to configure default entity acls.
 
-SEM-1.4.19 (谢继雷, 2012-02-23)
+Plover-2.6.22 (谢继雷, 2012-02-23)
 	* Fixed SecurityOptionDialog: apply not persisted.
 	* Added CEntity.owningEntity for owner/acl inheritance for enclosed entities.
 	* Added EntityFlags.WEAK_DATA, for mutable but no-delete samples.
@@ -315,23 +358,25 @@ SEM-1.4.19 (谢继雷, 2012-02-23)
 	* DictEntity, Party, PersonLogin by default R_X.
 	* Renamed ErrorMessageTranslator to FacesExceptionTranslator.
 	* Moved Permission to -ox1, and added @DefaultPermission.
+
+Plover-2.6.21 (谢继雷, 2012-02-22)
 	* Refactor R-ACL.
 	* Added request entry completion extensions and collector.
 	* Refactor entity-resources into 2-layer: catalog/entity.
 	* Added PUnit* NLS.
 
-SEM-1.4.18 (谢继雷, 2012-02-21)
+Plover-2.6.20 (谢继雷, 2012-02-21)
 	* Added Identities.compare for ref-diff.
 	* Refactor Entity/EntityDto > IIdentity<K>.
 
-SEM-1.4.17 (谢继雷, 2012-02-20)
+Plover-2.6.19 (谢继雷, 2012-02-20)
 	* Using client state saving method to solve ViewExpired is too slow.
 	* Prepared view-state dump servlet.
 	* Prepared ViewExpired FEH.
 	* Fixed ResourceScanner: jar entry excluded in opposited way.
 	* Do SQL format when click on the sql log entry.
 
-SEM-1.4.16 (谢继雷, 2012-02-19)
+Plover-2.6.18 (谢继雷, 2012-02-19)
 	* Code review. 20 cleanups.
 	* FTC polishing
 	* Implemented pf:locker. But conjExpr still doesn't work.
@@ -341,7 +386,7 @@ SEM-1.4.16 (谢继雷, 2012-02-19)
 	* Fixed SiteStats group merging.
 	* Fixed PrincipalCriteria fullName => label.
 
-SEM-1.4.15 (谢继雷, 2012-02-18)
+Plover-2.6.17 (谢继雷, 2012-02-18)
 	* SiteWac.startStopStatsSrl is duplicated by multiplexer.
 	* Colorized monitor table.
 	* Renamed StartStopListener to StartAndStatsListener.
@@ -352,7 +397,7 @@ SEM-1.4.15 (谢继雷, 2012-02-18)
 	* List resources in specific class loader.
 	* Code review. 13 cleanups.
 
-SEM-1.4.14 (谢继雷, 2012-02-17)
+Plover-2.6.16 (谢继雷, 2012-02-17)
 	* Changed st1.cdn port to 444.
 	* Added SiteLifecycleScl.
 	* Clarified SiteInstance.createSite.
@@ -366,13 +411,13 @@ SEM-1.4.14 (谢继雷, 2012-02-17)
 	* Record uiLogger exceptions as well.
 	* Added DTOs.isNull() to check null dto.
 
-SEM-1.4.13 (谢继雷, 2012-02-16)
+Plover-2.6.15 (谢继雷, 2012-02-16)
 	* Fixed EntityDto.setId_XXX
 	* Removed hibernate dependency from plover-arch, commons.
 	* Utilized id_OE in location-admin/capacityUnit.
 	* Normalized id validations by id_R/O/E/Z/L.
 
-SEM-1.4.12 (金卫林, 谢继雷, 2012-02-15)
+Plover-2.6.14 (谢继雷, 金卫林, 2012-02-15)
 	* Prepare stats css.
 	* Moved stats counters to SiteStats.
 	* stockLocation bug fix.   部份
@@ -381,7 +426,7 @@ SEM-1.4.12 (金卫林, 谢继雷, 2012-02-15)
 	* Added ExceptionLog and BackTrack appender.
 	* Changed to use ssl connection to cdn.
 
-SEM-1.4.11 (谢继雷, 2012-02-14)
+Plover-2.6.13 (谢继雷, 2012-02-14)
 	* Checking getter in BeanPropertyAccessor.
 	* Fixed OrmToolsWac
 	* Added type-abbr dump servlet.
@@ -398,23 +443,23 @@ SEM-1.4.11 (谢继雷, 2012-02-14)
 	* Principal reuses UIEntity.
 	* Renamed session user imSet/invSet to im/invIdSet, and save the im/invSet objs.
 
-SEM-1.4.10 (谢继雷, 2012-02-13)
+Plover-2.6.12 (谢继雷, 2012-02-13)
 	* Fixed PrincipalDto: fmask conflicted. shift depth-mask to F0000.
 	* Set EntityDto.skipId if version == -1.
 	* Made choose dialog selection-validatable.
 	* Patched JSF-API UIComponentBase to support in-action validation break.
 	* Annotated local overlayed patch with @PloverOverlayPatch.
+
+Plover-2.6.11 (谢继雷, 2012-02-12)
 	* polishing
 	* Added EntityDto.checked0/checked1 for general purpose.
 	* Renamed BaseDto.selection to fmask.
 	* Tree builder: find the most adjecent ancestor node.
-
-SEM-1.4.9 (谢继雷, 2012-02-12)
 	* Refactor ItemDto.discardable => _checked.
 	* Store and utilized im-set/inv-set in SessionUser.
 	* Utilized partial context compositions.
 
-SEM-1.4.8 (金卫林, 谢继雷, 2012-02-11)
+Plover-2.6.10 (谢继雷, 金卫林, 2012-02-11)
 	* PrincipalCriteria: Added im/inv set fallback.
 	* Renamed typevar $ to self_t.
 	* Released com.bee32.plover:plover-criteria-0.2.112
@@ -424,13 +469,13 @@ SEM-1.4.8 (金卫林, 谢继雷, 2012-02-11)
 	* TreeEntity.checkNode allow child extends self-node-type.
 	* Added BaseDto.nil == isNull, null is reserved.
 
-SEM-1.4.7 (谢继雷, 2012-02-10)
+Plover-2.6.9 (谢继雷, 2012-02-10)
 	* Added EntityDto.setId(*, skipped) to support local list keying.
 	* Polishing. various fixes
+
+Plover-2.6.8 (谢继雷, 2012-02-09)
 	* Prepare form self-validation support.
 	* Renamed IMarshalContext.loadEntity to getOrFail, and added .getRef() to sped up mref-unmarshal.
-
-SEM-1.4.6 (谢继雷, 2012-02-09)
 	* Fixed hibernate DefaultFlushEntityEventListener: natural id snapshot maybe null.
 	* polishing
 	* Added @RequiredId on DTO.id.
@@ -438,7 +483,7 @@ SEM-1.4.6 (谢继雷, 2012-02-09)
 	* Stock job stepping initial. [2]
 	* SevbFriend integration.
 
-SEM-1.4.5 (谢继雷, 2012-02-08)
+Plover-2.6.7 (谢继雷, 2012-02-08)
 	* Refactor ViewBean > SelectionHolder with events suppport.
 	* Refactor ViewBean.ctx > FacesContextUtils.
 	* Moved selection/opened-objects to ViewBean.
@@ -452,7 +497,7 @@ SEM-1.4.5 (谢继雷, 2012-02-08)
 	* Refactor SiteManagerServlet > SimpleServlet.
 	* Added pc:exists, pc:exprExists for cc default attributes.
 
-SEM-1.4.4 (谢继雷, 2012-02-07)
+Plover-2.6.6 (谢继雷, 2012-02-07)
 	* Added user criteria element in Sevb.
 	* Pass *.id instead of entities in stock query.
 	* Upgraded to PF-3.1
@@ -460,7 +505,7 @@ SEM-1.4.4 (谢继雷, 2012-02-07)
 	* Handle CEntityDto.owner carefully: it may out of session.
 	* TreeEntity/Dto.addChild no duplicated if unique-children.
 
-SEM-1.4.3 (谢继雷, 2012-02-06)
+Plover-2.6.5 (谢继雷, 2012-02-06)
 	* Try to load samples one-by-one in CreateDrop autoddl mode.
 	* Set BUILTIN_DATA flag for std samples.
 	* EntityDto don't infer key type from Entity, but Dto self.
@@ -471,21 +516,23 @@ SEM-1.4.3 (谢继雷, 2012-02-06)
 	* Fixed: SelectableList may occasionally got bad index.
 	* Prepare DisableTag.
 
-SEM-1.4.2 (谢继雷, 2012-02-05)
+Plover-2.6.4 (谢继雷, 2012-02-05)
 	* Refactor the DTO selection int to fmask completed.
 	* Refactor the DTO selection int to fmask
 	* Upgraded to primefaces-3.1.RC1
 	* Fixed Limit: should set max-results instead of fetch-size.
 	* Renamed ViewBean.create() to createTransient.
 
-SEM-1.4.1 (谢继雷, 2012-02-04)
+Plover-2.6.3 (谢继雷, 2012-02-04)
 	* fr:select abandoned.
 
-SEM-1.4.0 (谢继雷, 2012-02-03)
+Plover-2.6.2 (谢继雷, 2012-02-03)
 	* Re-init pl:select in composite component.
 	* Prepare pl:select.
 	* Moved importFunction* to _TagLibrary.
 	* Prepare ploverfaces library, and moved old plover.faces.controls to plover.component.
+
+Plover-2.6.1 (谢继雷, 2012-02-02)
 	* Made EntityDto._source transient.
 	* SelectableList as a List.
 	* Refactor EntityDto.create() into BaseDto.
@@ -496,6 +543,8 @@ SEM-1.4.0 (谢继雷, 2012-02-03)
 	* fr:listView initial release.
 	* Made BaseDto+/Entity cloneable.
 	* Renamed ZhUtil.getPinyinAbbreviation to pinyinAbbr().
+
+Plover-2.6.0 (谢继雷, 2012-02-01)
 	* Refactor plover-core EL library to CoreLibrary.
 	* Implemented cc:insertRawFacet.
 	* Updated faces-config.
@@ -503,7 +552,11 @@ SEM-1.4.0 (谢继雷, 2012-02-03)
 	* Refactor package plover.faces.
 	* Fixed/patch primefaces facet/form not found.
 	* Export apache commons string utils.
+
+Plover-2.5.20 (谢继雷, 2012-01-31)
 	* Refactor pre-update validation: by uiLogger.error.
+
+Plover-2.5.19 (谢继雷, 2012-01-30)
 	* polishing
 	* Clarified EntityDto.isNull: means marshal/mref(null).
 	* Added NameDictDto.meet/join*.
@@ -516,13 +569,13 @@ SEM-1.4.0 (谢继雷, 2012-02-03)
 	* Refactor And/Or/Not.of(...) in 2 manners.
 	* Test shows ui:define-override not work for ui:decorate, but for ui:composition.
 
-SEM-1.3.11 (谢继雷, 2012-01-21)
+Plover-2.5.18 (谢继雷, 2012-01-21)
 	* Fixed AlphabetValidator: index out.
 	* Test actions order (see javadocs).
 	* Repeat @JoinTable at Group.assignedRoles and User.assignedGroups/Roles.
 	* Principal*Dto: reused TreeEntityDto.parent/children.
 
-SEM-1.3.10 (谢继雷, 2012-01-20)
+Plover-2.5.17 (谢继雷, 2012-01-20)
 	* The initial of simple-tree-entity templates.
 	* Renamed getMajorType to getMajorTypeOfContextPage.
 	* Renamed AbstractPrincipalDto -> PrincipalDto.
@@ -531,7 +584,7 @@ SEM-1.3.10 (谢继雷, 2012-01-20)
 	* Moved ClientIdHelper to plover package.
 	* Lazy rebuild the tree from TreeEntityDto nodes.
 
-SEM-1.3.9 (谢继雷, 2012-01-19)
+Plover-2.5.16 (谢继雷, 2012-01-19)
 	* Investigating: library scripts can't be loaded.
 	* STL show print the port number if socket bind in used.
 	* EnumAlt*: Removed recursive-declared generic args.
@@ -540,13 +593,13 @@ SEM-1.3.9 (谢继雷, 2012-01-19)
 	* Polishing. Set default page size to 20.
 	* Display app-level stack frame in plover-p6spy.
 
-SEM-1.3.8 (谢继雷, 2012-01-18)
+Plover-2.5.15 (谢继雷, 2012-01-18)
 	* Released com.bee32.plover:plover-criteria-0.2.111
 	* Added client-id helper output.
 	* Added varargs in conj/disj/proj(...)
 	* Mark nc(*) for nesting cc(s), so as to remind user correct num of cc.parent*s.
 
-SEM-1.3.7 (谢继雷, 2012-01-17)
+Plover-2.5.14 (谢继雷, 2012-01-17)
 	* NLS refreshed.
 	* Released com.bee32.plover:plover-collections-0.2.103
 	* Fixed: uiLogger handled null error message.
@@ -557,26 +610,28 @@ SEM-1.3.7 (谢继雷, 2012-01-17)
 	* Fixed: criteria.uniqueResult may occasionaly return empty set.
 	* Upgraded to primefaces-3.0.1
 
-SEM-1.3.6 (谢继雷, 2012-01-16)
+Plover-2.5.13 (谢继雷, 2012-01-16)
 	* Added SelectableList DataModel wrapper.
 	* Added not-null-id validator.
 	* mrefList set selection = 0 by default.
 	* Released com.bee32.plover:plover-criteria-0.2.110
 	* Added options to ICriteriaEelement for optim.
+
+Plover-2.5.12 (谢继雷, 2012-01-15)
 	* Auto indexed UIEntity.label.
 	* Refactor dialogs to composite components. [4]: simple-entity-dialog, date-search, css-layout.
 	* Action sequences: @actionListener, f:actionListener*, action.
+
+Plover-2.5.11 (谢继雷, 2012-01-14)
 	* Plover facelets exception handlers may scan thru the stack, and added priority.
 	* Upgraded to el-impl 2.2. This solved type conversions in f:setPropertyActionListener.
 	* Color cc example pages.
 	* c:set in child pages could inherits default vars.
 	* Collect abstract services for prototype collection.
-
-SEM-1.3.5 (谢继雷, 2012-01-14)
 	* Prepared Entity/Dto.createTransients().
 	* Replaced type arg '$' by self_t.
 
-SEM-1.3.4 (谢继雷, 2012-01-13)
+Plover-2.5.10 (谢继雷, 2012-01-13)
 	* Added EntityBase._property_ for bean property accessors.
 	* Added uiHtmlLogger along with uiLogger, which won't escape.
 	* Moved login/register stuff to /3/7/1/, and home page gateway.
@@ -591,7 +646,7 @@ SEM-1.3.4 (谢继雷, 2012-01-13)
 	* Refactor selection* listener: selected() and *Adapter.
 	* Refactor locking with reflections.
 
-SEM-1.3.3 (谢继雷, 2012-01-12)
+Plover-2.5.9 (谢继雷, 2012-01-12)
 	* Utilized search fragments. [1]
 	* SearchFramgent.detach from holder.
 	* c-set scope: child page could never change the parent var.
@@ -602,6 +657,8 @@ SEM-1.3.3 (谢继雷, 2012-01-12)
 	* polishing
 	* Fixed: LockingEntityProcessor.preUpdate may get null oldState[].
 	* Refactor *SelectionAdapter, and select(...) to process(...).
+
+Plover-2.5.8 (谢继雷, 2012-01-11)
 	* polishing
 	* Added JettyCacheSwitcherBean.
 	* Add support of dynamic generated criteria elements.
@@ -612,8 +669,6 @@ SEM-1.3.3 (谢继雷, 2012-01-12)
 	* Refactor entity-criteria.
 	* Dynamic re-configure site.
 	* Refactor primefaces themes into enum, and add site config.
-
-SEM-1.3.2 (谢继雷, 2012-01-11)
 	* Set default theme to redmond.
 	* ClassUtil: javaassist proxy classes should be skipped.
 	* Added common criteria.
@@ -622,7 +677,7 @@ SEM-1.3.2 (谢继雷, 2012-01-11)
 	* Test with c:set file scope.
 	* Initial of dialog callback support.
 
-SEM-1.3.1 (谢继雷, 2012-01-10)
+Plover-2.5.7 (谢继雷, 2012-01-10)
 	* Fixed EntityDto.typeName.
 	* UNLOCK_REQ tested.
 	* Cache LOCKED from Entity.lockedByOther.
@@ -643,7 +698,7 @@ SEM-1.3.1 (谢继雷, 2012-01-10)
 	* Utilized JPA pre/post persist annotations.
 	* Create missing test class loader using m2 conventions.
 
-SEM-1.3.0 (谢继雷, 2012-01-09)
+Plover-2.5.6 (谢继雷, 2012-01-09)
 	* Added EntityDto._index for general purpose.
 	* polishing
 	* Added TypeInfo helper object for type-pref usage.
@@ -657,6 +712,8 @@ SEM-1.3.0 (谢继雷, 2012-01-09)
 	* BEC._handleRequest should return null immed, cuz ajax may send redirect result.
 	* ViewScope: throws illegal state exception if no available view root.
 	* ViewBean have to configure metadata in the ctor() only. (not tested yet.)
+
+Plover-2.5.5 (谢继雷, 2012-01-08)
 	* Test passed: get another view bean.
 	* AbstractScope implemented destructive callbacks.
 	* Added view-metadata view bean to store shared view info.
@@ -664,12 +721,16 @@ SEM-1.3.0 (谢继雷, 2012-01-09)
 	* Added EntityHelper.getHint(entity, format)
 	* CreateOrEditHandler should call createForm() for creation.
 	* Replaced icsf.util.InvalidateListener/Event with PrincipalChange*.
+
+Plover-2.5.4 (谢继雷, 2012-01-07)
 	* Permute ForEntity/parameters to list of EntityTypePattern.
 	* Fixed: BaseDto.mergeDeref returns Object, to avoid generic compiling problems.
 	* Refactor FacesContextSupport > Component, so as to get base nls for ViewBeans.
 	* Annotated @ForEntity for entity view beans.
 	* PageDir* return list of location.
 	* Scan annotation-usage.
+
+Plover-2.5.3 (谢继雷, 2012-01-06)
 	* Delayed the loading: ModuleManager, PloverSclMultiplexer.
 	* SiteDatabaseConfigurer (orig. SiteDc) should get the site OTF.
 	* polishing
@@ -691,6 +752,8 @@ SEM-1.3.0 (谢继雷, 2012-01-09)
 	* Moved scanType[name]s to ResourceScanner.
 	* Refactor EnumAlt so name/value-map are managed.
 	* Scan all enum types and register its values in loader manner.
+
+Plover-2.5.2 (谢继雷, 2012-01-05)
 	* @Import(inherits=false) to exclude configs from base classes.
 	* Refactor ModuleManager for static activation. (3)
 	* polishing
@@ -698,10 +761,14 @@ SEM-1.3.0 (谢继雷, 2012-01-09)
 	* Added IModule.init(stage).
 	* Opt: Entity.lockPredicates initial size=1.
 	* Fixed: CreateOrEditHandler need to create() the new dto.
+
+Plover-2.5.1 (谢继雷, 2012-01-04)
 	* Added IServletContextListener.isIncluded(event), to switching spring root.
 	* Refactor SimpleForm/Row > HtmlSugar.
 	* Refactor InstantiatePageGenerator for HtmlTemplate.
 	* The template should be instantiated only after call to instantiate().
+
+Plover-2.5.0 (谢继雷, 2012-01-03)
 	* Refactor site config stuff to site.cfg
 	* Refactor html page stuff into plover.html
 	* Refactor SiteTemplate > HtmlTemplate, and re-modeling the page layout.
@@ -710,6 +777,8 @@ SEM-1.3.0 (谢继雷, 2012-01-09)
 	* Implemented PageDirCompletion for object url fragments.
 	* Preferred to use TextMap.convert
 	* Clean up warnings
+
+Plover-2.4.20 (谢继雷, 2011-12-30)
 	* Stock order url fragments dev.
 	* Renamed ServiceModuleLoader to ModuleLoader.
 	* Collect modules.
@@ -722,7 +791,7 @@ SEM-1.3.0 (谢继雷, 2012-01-09)
 	* Added object URL fragments feature.
 	* Initial of parameterized-type support.
 
-SEM-1.2.10 (谢继雷, 2011-12-29)
+Plover-2.4.19 (谢继雷, 2011-12-29)
 	* Principal*Dto: init lists to empty.
 	* Denorm type abbr columns.
 	* Normalized type-abbr properties and columns.
@@ -730,7 +799,7 @@ SEM-1.2.10 (谢继雷, 2011-12-29)
 	* Added entity usage collector.
 	* Added resource scanner.
 
-SEM-1.2.9 (谢继雷, 2011-12-28)
+Plover-2.4.18 (谢继雷, 2011-12-28)
 	* Using varargs in InArray(...).
 	* Deprecated @TransferBy.
 	* Work-arounds: PrincipalCriteria.inIm/InvSet: must in-collection(id, id-set).
@@ -740,31 +809,31 @@ SEM-1.2.9 (谢继雷, 2011-12-28)
 	* Moved principal* back to icsf.principal package. (resources)
 	* Moved principal* back to icsf.principal package.
 
-SEM-1.2.8 (谢继雷, 2011-12-27)
+Plover-2.4.17 (谢继雷, 2011-12-27)
 	* Refactor principal criteria to reflect the im-set/inv-set.
 	* Removed PrincipalResponsible, calculate the im-set/inv-set OTF.
 	* Removed read-only @Transactional from WiredDaoFeat by default.
 	* Renamed PrincipalClosure to PrincipalResponsible.
 
-SEM-1.2.7 (谢继雷, 2011-12-26)
+Plover-2.4.16 (谢继雷, 2011-12-26)
 	* Principal closures in dev.
 	* Show request params in current-site for debug.
 
-SEM-1.2.6 (谢继雷, 2011-12-24)
+Plover-2.4.15 (谢继雷, 2011-12-24)
 	* Allow ERModule declare pages for other modules.
 	* Override view/operation OTF in ModuleEntityPageDir.
 	* Added GenericViewBean.
 	* StandardViews: it should be content & createForm.
 	* Added reverse-search support in PageDirectory.
 
-SEM-1.2.5 (谢继雷, 2011-12-23)
+Plover-2.4.14 (谢继雷, 2011-12-23)
 	* Added getPageFor...() without params in the iface.
 	* polishing
 	* Prepare to declare entity pages in er-modules.
 	* Utilized entity page directory in ERModule.
 	* Added object page-directory for simplified restful.
 
-SEM-1.2.4 (谢继雷, 2011-12-22)
+Plover-2.4.13 (谢继雷, 2011-12-22)
 	* Refactor support.bind(): the base embeddable classes have to be mapped-superclass.
 	* Added default BaseDto.mergeDeref() impl, and create new instance for null src.
 	* DataHandler: should search the search-type redefiniable in SearchModel.
@@ -772,66 +841,90 @@ SEM-1.2.4 (谢继雷, 2011-12-22)
 	* Changed MomentInterval.beginTime to be nullable.
 	* Added string-format for the criteria elements.
 
-SEM-1.2.3 (谢继雷, 2011-12-21)
+Plover-2.4.12 (谢继雷, 2011-12-21)
 	* Upgraded to hibernate-core-3.6.7-bee32-2.
 	* PloverNamingStrategy polishing
 	* Added @DefaultValue for the new NameDict.rank property.
 	* Added NameDict.rank.
 
-SEM-1.2.2 (谢继雷, 2011-12-20)
+Plover-2.4.11 (谢继雷, 2011-12-20)
 	* Added WDTC.asFor() for convienient.
 
-SEM-1.2.1 (谢继雷, 2011-12-19)
+Plover-2.4.10 (谢继雷, 2011-12-19)
 	* Prepare formula support.
 	* Released com.bee32.plover:plover-criteria-0.2.108
 	* Code clean up.
 	* ServiceCollector should skip those types without @ServiceTemplate.
+
+Plover-2.4.9 (谢继雷, 2011-12-17)
 	* Added BeanOfCollection to transform list/bean/prop to bean/list/prop
 	* Removed generic param source-type from property accessor.
+
+Plover-2.4.8 (谢继雷, 2011-12-16)
 	* Refactor: PartialDto > BaseDto_EMC
+
+Plover-2.4.7 (谢继雷, 2011-12-15)
 	* Set the default site name in SiteNaming.defaultSiteName.
 	* Added GenericFormatter, which is usable in embeddable type.
 	* Try embeddable-inheritance CaveAddr>AbstractAddress.
 	* Moved Feat+.asFor to WiredDaoFeat.
 	* Added Entity.lockPredicates for embedded locking support.
+
+Plover-2.4.6 (谢继雷, 2011-12-14)
 	* Polishing
 	* Fixed: Dto<? super E> in EntityController+.
 	* Fixed MavenPath for win32.
 	* Renamed Dummy (entity) /DummyDto for norm.
 	* Allow dto naming as foo.*, foo.dto.*.
+
+Plover-2.4.5 (谢继雷, 2011-12-10)
 	* Javascript location format.
 
-SEM-1.2.0 (谢继雷, 2011-12-08)
+Plover-2.4.4 (谢继雷, 2011-12-08)
 	* Re-removed scoped-proxy from dataservier/cdm.
 	* Fixed: sumnode.parent. Node-with-children should be non-virtual.
+
+Plover-2.4.3 (谢继雷, 2011-12-07)
 	* Add support of save/update with natural ids.
 	* ThreadHttpContext should return the static appctx when necessary.
 	* Added comments around fps.
 	* Order FPS, so site start/stop fps could be delayed.
 	* Added more and renamed feature player support to *fps.
+
+Plover-2.4.2 (谢继雷, 2011-12-06)
 	* DataService and CDM should be proxied? (to be checked)
 	* Separate node formatter from po-tree-builder.
+
+Plover-2.4.1 (谢继雷, 2011-12-05)
 	* Add user data/attributes in ponode.
 	* Add limit() in crit-spec base.
+
+Plover-2.4.0 (谢继雷, 2011-12-01)
 	* MavenPath fixes.
 	* AccountSubject refactor.
 	* Refactor PoNode<T>.
+
+Plover-2.3.17 (谢继雷, 2011-11-29)
 	* Added DtoCodeMapper/TreeBuilder.
 	* Renamed collect() to learn()
 	* Po-tree built. also intg. with AccountSubject.
+
+Plover-2.3.16 (谢继雷, 2011-11-28)
 	* ponode build.
+
+Plover-2.3.15 (谢继雷, 2011-11-26)
 	* Prepare to convert dict-entity list to tree by preorders.
 	* NameDict.selector should return ICriteriaElement.
 	* DictUtil: Get dict predefined instances.
 
-SEM-1.1.5 (谢继雷, 2011-11-23)
+Plover-2.3.14 (谢继雷, 2011-11-23)
 	* PEH: check for resp.committed?
 	* DaoEmt: null safe.
 
-SEM-1.1.4 (谢继雷, 2011-11-22)
+Plover-2.3.13 (谢继雷, 2011-11-22)
 	* primfaces 3.0.M4+: Replaced `primefaces.prime.com.tr` by `primefaces.org`.
 
-SEM-1.1.3 (谢继雷, 2011-11-21)
+Plover-2.3.12 (谢继雷, 2011-11-21)
 	* Infer STC from session using STC.getInstanceFromContext.
 	* Upgraded to primefaces-3.0.M4
 	* Refactor C_SessionListener > AbstractHsl.
@@ -847,36 +940,55 @@ SEM-1.1.3 (谢继雷, 2011-11-21)
 	* polishing
 	* DefaultMC should return site-scoped instance.
 
-SEM-1.1.2 (谢继雷, 2011-11-19)
+Plover-2.3.11 (谢继雷, 2011-11-19)
 	* Activate samples loader eagerly.
 	* Added site instance logging prefix.
 
-SEM-1.1.1 (谢继雷, 2011-11-18)
+Plover-2.3.10 (谢继雷, 2011-11-18)
 	* Added logoHref, cuz location-vmap is yet not supported until -facelets.
 	* polishing
 	* ClassUtil get class label should not fail if bundle missing.
 	* Try export SessionFactoryImplementor, however not worked.
 	* Moved Principal stuff NLS to -ox1.
 	* Xref analyze implemented.
+
+Plover-2.3.9 (谢继雷, 2011-11-17)
 	* Entity xref dev.
 	* Changed ThreadHttpContext.allowNullRequest to be public.
 	* Made abstract PUnitPostProcessor service as to be collected.
 	* Collect entity types.
+
+Plover-2.3.8 (谢继雷, 2011-11-16)
 	* Refactor Location: [4]
 	* Removed unused PredefinedContextLocation.merge().
 	* Add site logo and also configs.
 	* Refactor site bean (SiteHint) using FactoryBean.
 	* polishing
+
+Plover-2.3.7 (谢继雷, 2011-11-15)
 	* Fixed view scope: should override the bean map.
 	* Dump bean definitions in a separate initializing service bean.
 	* Clarified: ActivatorBean -> InitializingService
+
+Plover-2.3.6 (谢继雷, 2011-11-12)
+	* Infer entity-type from dto-type by name, rather then by java reflects.
+	* Fixed: various dto type param changes.
+	* Allow basedto<? super entity-type>.
+
+Plover-2.3.5 (谢继雷, 2011-11-11)
 	* StateScope performance test.
 	* StateHintBean for the bean and StateHint null safe.
 	* ViewScope should fail to null(?) if not in jsf request.
+
+Plover-2.3.4 (谢继雷, 2011-11-05)
 	* Custom SFB by interface proxy.
 	* Set initial state in state manager.
 	* Principal+ dtos should create empty list if not in selection.
+
+Plover-2.3.3 (谢继雷, 2011-11-04)
 	* scope under dev.
+
+Plover-2.3.2 (谢继雷, 2011-11-03)
 	* Temporary disabled reverse-lookup-registry.
 	* Removed IDataServiceFacade.
 	* Skip proxy classes in variant scenarios.
@@ -885,6 +997,8 @@ SEM-1.1.1 (谢继雷, 2011-11-18)
 	* General Dao but not abstract.
 	* dev: Scoped-target doesn't fit well.
 	* Test of injection of the same scopes.
+
+Plover-2.3.1 (谢继雷, 2011-11-02)
 	* [1] site integration test.
 	* Fixed: OPTIMIZATION_KEY spell.
 	* SFB: Removed named-ctor The (data profile-) name is replaced by site name.
@@ -899,6 +1013,8 @@ SEM-1.1.1 (谢继雷, 2011-11-18)
 	* Config verbose/optimization level per site.
 	* It's preferred to annotate scope proxy on bean level, and forbid by default.
 	* Changed db host/port into dialect, autoddl etc.
+
+Plover-2.3.0 (谢继雷, 2011-11-01)
 	* Clarified annotated sfb
 	* Refactor: addSite -> loadSite -> loadSiteConfig
 	* Added support for site lifecycle extension.
@@ -913,6 +1029,8 @@ SEM-1.1.1 (谢继雷, 2011-11-18)
 	* Resolve scope proxies on both bean class and annotations.
 	* Added thread/thread-group scopes.
 	* Add PerRequest/PerSession annotation alternatives.
+
+Plover-2.2.14 (谢继雷, 2011-10-31)
 	* Fixed: PerSite isn't inherited.
 	* Site-scoping/lazy refactor.
 	* Code review: shorten var names and polish zh texts.
@@ -928,17 +1046,12 @@ SEM-1.1.1 (谢继雷, 2011-11-18)
 	* Renamed AnnotatedFaceletExceptionHandler to AnnotatedFeh.
 	* Upgraded to jatl-0.2.0. (newline option)
 
-SEM-1.1.0 (谢继雷, 2011-11-12)
-	* Infer entity-type from dto-type by name, rather then by java reflects.
-	* Fixed: various dto type param changes.
-	* Allow basedto<? super entity-type>.
-
-SEM-1.0.10 (谢继雷, 2011-10-29)
+Plover-2.2.13 (谢继雷, 2011-10-29)
 	* Site manager UI dev.
 	* Site instance: set default properties instead of null/conv.
 	* State scope dev.
 
-SEM-1.0.9 (谢继雷, 2011-10-28)
+Plover-2.2.12 (谢继雷, 2011-10-28)
 	* Prepare state scoping for test purpose.
 	* Test default scoping passed.
 	* Annotate inheritable @Prototype on FeaturePlayer+.
@@ -947,38 +1060,40 @@ SEM-1.0.9 (谢继雷, 2011-10-28)
 	* TextMap.getNString for empty/null conversion.
 	* Add hidden field support in simple form.
 
-SEM-1.0.8 (谢继雷, 2011-10-27)
+Plover-2.2.11 (谢继雷, 2011-10-27)
 	* Implemented: Create/modify site instance.
 	* Added more site manager pages.
 
-SEM-1.0.7 (谢继雷, 2011-10-26)
+Plover-2.2.10 (谢继雷, 2011-10-26)
 	* [Fixed 94] WEB_APP join with root path.
 	* Site manager servlet dev.
 	* AbstractWac renamed.
+
+Plover-2.2.9 (谢继雷, 2011-10-25)
 	* Refactor SiteManagerServlet in OO style.
 	* Wrapped SiteTemplate in MetaPage.
 	* Site template dev, and two columns by css layout.
 
-SEM-1.0.6 (谢继雷, 2011-10-24)
+Plover-2.2.8 (谢继雷, 2011-10-24)
 	* HtmlBuilder design comments.
 	* Clarified: saveConfig().
 	* Renamed SiteScoped to PerSite.
 
-SEM-1.0.5 (谢继雷, 2011-10-22)
+Plover-2.2.7 (谢继雷, 2011-10-22)
 	* User admin validation review.
 	* Added alphabet validator.
 	* [Fixed 90] Replaced @Scope("view") by @PerView which is inheritable.
 	* Specify the name for scope annotations by @ScopeName.
 	* Obsoleted @view.Inject
 
-SEM-1.0.4 (谢继雷, 2011-10-21)
+Plover-2.2.6 (谢继雷, 2011-10-21)
 	* [Fixed 88] Root context invisibile for handlers, set handlerMapping.detectHandlersInAncestorContexts = true
 	* polishing.
 	* controller-template separation doesn't work: parent context invisible? back to @Controller.
 	* Separate controllers into @ControllerTemplate.
 	* [Fixed 87] Don't re-scan components in dispatcher servlet's context.
 
-SEM-1.0.3 (谢继雷, 2011-10-20)
+Plover-2.2.5 (谢继雷, 2011-10-20)
 	* ContextLocation.getContext returns null if n/a.
 	* LocationVmap by default resolve to absolute.
 	* WSTC: clarify the context loading process.
@@ -990,12 +1105,14 @@ SEM-1.0.3 (谢继雷, 2011-10-20)
 	* Separate theme defs to ThemeData. Added switchToXxx bean methods for switching.
 	* Added Location.SYMBOLS.
 	* Added ImportUtil.getImportClasses to determine whether specific config is used.
-	* Added primefaces theme switcher.
 
-SEM-1.0.2 (谢继雷, 2011-10-18)
+Plover-2.2.4 (谢继雷, 2011-10-18)
 	* Fixed selection conflicts: using special owner mask.
 
-SEM-1.0.1 (谢继雷, 2011-10-13)
+Plover-2.2.3 (谢继雷, 2011-10-15)
+	* Added primefaces theme switcher.
+
+Plover-2.2.2 (谢继雷, 2011-10-13)
 	* Released hibernate-validator 4.2.0.Final-bee32-2.
 	* polishing
 	* (Obsoleted) Vs-wrapper validation provider hacks.
@@ -1007,6 +1124,8 @@ SEM-1.0.1 (谢继雷, 2011-10-13)
 	* Added action-spec validation switcher: the name xxx-validated and xxx-immediate force to enable/disable the validation.
 	* The default bean validator could be disabled by context init param. (we are not going to do it)
 	* Fixed: xpc/ajax should transtive pass down the `this` reference. See the impl.
+
+Plover-2.2.1 (谢继雷, 2011-10-09)
 	* ValidationMessages must be placed in root package.
 	* Validation message in zh-cn.
 	* Plover string-size validator for normalization.
@@ -1018,34 +1137,34 @@ SEM-1.0.1 (谢继雷, 2011-10-13)
 	* Try handle EL exception, by dispatch its nested causal exceptions.
 	* JSR 303 integrated.
 
-SEM-1.0.0 (谢继雷, 2011-10-06)
+Plover-2.2.0 (谢继雷, 2011-10-06)
 	* Replaced graph models by graphviz-api.
 	* Import graphviz-api.
 	* EdgeDirection.symbol for dot rewrite.
 	* Add node functions.
 	* Prepare graphviz models.
 
-SEM-0.9.17 (谢继雷, 2011-09-30)
+Plover-2.1.17 (谢继雷, 2011-09-30)
 	* Separate site template from servlet.
 
-SEM-0.9.16 (谢继雷, 2011-09-28)
+Plover-2.1.16 (谢继雷, 2011-09-28)
 	* Prepare template for site manager.
 	* Add HtmlBuilder for html buffered compositing.
 
-SEM-0.9.15 (谢继雷, 2011-09-27)
+Plover-2.1.15 (谢继雷, 2011-09-27)
 	* Make the base UIEntity public.
 
-SEM-0.9.14 (谢继雷, 2011-09-26)
+Plover-2.1.14 (谢继雷, 2011-09-26)
 	* plover-servlet depends on jatl.
 	* Prepare the site management servlet.
 	* Added wild-host support, and save dirty properties to config files.
 	* Merged site instance & site config.
 
-SEM-0.9.13 (谢继雷, 2011-09-24)
+Plover-2.1.13 (谢继雷, 2011-09-24)
 	* Separate UTF8Control from RBUTF8.
 	* Sites manager dev.
 
-SEM-0.9.12 (谢继雷, 2011-09-23)
+Plover-2.1.12 (谢继雷, 2011-09-23)
 	* Prepare site scoping.
 	* Compare DTO equality using DTOs.equals, instead of Nullables.equals.
 	* Don't change stereotype after its set, but never throws.
@@ -1055,31 +1174,31 @@ SEM-0.9.12 (谢继雷, 2011-09-23)
 	* Built default keywords with populateKeywords().
 	* Refactor marshalList(..., true) to mrefList(...).
 
-SEM-0.9.11 (谢继雷, 2011-09-20)
+Plover-2.1.11 (谢继雷, 2011-09-20)
 	* Refactor copy ctor to EntityDto.populate(*) also.
 
-SEM-0.9.10 (谢继雷, 2011-09-19)
+Plover-2.1.10 (谢继雷, 2011-09-19)
 	* Added Flags32.translate(...)
 	* Implemented populate() for some base entity types.
 
-SEM-0.9.9 (谢继雷, 2011-09-17)
+Plover-2.1.9 (谢继雷, 2011-09-17)
 	* CriteriaSpec: Added optional _in().
 
-SEM-0.9.8 (谢继雷, 2011-09-10)
+Plover-2.1.8 (谢继雷, 2011-09-10)
 	* TreeEntity check the depth early on save.
 
-SEM-0.9.7 (谢继雷, 2011-09-09)
+Plover-2.1.7 (谢继雷, 2011-09-09)
 	* EntityColumnDto use CandidateMap only, forget it: Backed*.
 	* Added threads stack trace diag page.
 	* Entity column clean up.
 	* UML updates.
 
-SEM-0.9.6 (谢继雷, 2011-09-07)
+Plover-2.1.6 (谢继雷, 2011-09-07)
 	* EntityColumn review.
 	* Changed test entities Food/Friend > Entity insteadof CEntity.
 	* Changed static.secca-project.com to st1.cdn.bee32.com.
 
-SEM-0.9.5 (谢继雷, 2011-09-06)
+Plover-2.1.5 (谢继雷, 2011-09-06)
 	* Changed to using UserDto in LoginInfo.user. Also PersonDto.
 	* Utilized JPA 2.0 @ElementCollection.
 	* Added getChain() for user and tree entities.
@@ -1090,7 +1209,7 @@ SEM-0.9.5 (谢继雷, 2011-09-06)
 	* Added PloverP6spySl4fjLogger to replace the ugly original sql format.
 	* Turned off hibernate stats logging.
 
-SEM-0.9.4 (谢继雷, 2011-09-05)
+Plover-2.1.4 (谢继雷, 2011-09-05)
 	* Added auto indexes ##_* for mapped superclasses.
 	* Added hibernate-validator dependency.
 	* plover-test: Audo depends.
@@ -1104,7 +1223,7 @@ SEM-0.9.4 (谢继雷, 2011-09-05)
 	* Explicit init myfacesScl, seems Jetty-6.x is rather old like.
 	* Added class-loader diagnostic pages.
 
-SEM-0.9.3 (谢继雷, 2011-09-04)
+Plover-2.1.3 (谢继雷, 2011-09-04)
 	* polishing
 	* scl-muliplexer loggings.
 	* OpenFaces tristate test.
@@ -1119,7 +1238,7 @@ SEM-0.9.3 (谢继雷, 2011-09-04)
 	* JUL/SLF4J bridging, start by app lifecycle.
 	* Added general purpose Application lifecycle.
 
-SEM-0.9.2 (谢继雷, 2011-09-03)
+Plover-2.1.2 (谢继雷, 2011-09-03)
 	* Added MomentIntervalCriteria with optional dates.
 	* Added EMT support, to convert sophiz message to user readable text.
 	* Resolved update/id/rendered framework.
@@ -1131,7 +1250,7 @@ SEM-0.9.2 (谢继雷, 2011-09-03)
 	* Added Dto.key for general purpose.
 	* Logging overrides test. (failed)
 
-SEM-0.9.1 (谢继雷, 2011-09-02)
+Plover-2.1.1 (谢继雷, 2011-09-02)
 	* EL /enums tests.
 	* polishing
 	* Added support to detect (dependant-) transient samples in SamplesLoader.
@@ -1140,7 +1259,7 @@ SEM-0.9.1 (谢继雷, 2011-09-02)
 	* Explicit using scala-plugin 2.9.1
 	* Added scala support.
 
-SEM-0.9.0 (谢继雷, 2011-09-01)
+Plover-2.1.0 (谢继雷, 2011-09-01)
 	* Made SuccessOrFailure non-serializable.
 	* Added AbbrRefactor helper util for refactor entity packages.
 	* DigestEntity: avoid re-calc digest when reloaded.
@@ -1149,7 +1268,7 @@ SEM-0.9.0 (谢继雷, 2011-09-01)
 	* Java 7 clean ups, (Eclipse-3.8) warnings removal.
 	* Get content-type by extension should be case-insensitive.
 
-SEM-0.8.25 (谢继雷, 2011-08-31)
+Plover-2.0.25 (谢继雷, 2011-08-31)
 	* Added EntityDao.sum/avg stuff shortcuts.
 	* Released com.bee32.plover:plover-criteria-0.2.106
 	* Auto clear label/description if empty.
@@ -1163,17 +1282,17 @@ SEM-0.8.25 (谢继雷, 2011-08-31)
 	* Add support of ProjectionList optional columns.
 	* FeaturePlayer (aj/tx) -> ICoordinator -> feat-methods.
 
-SEM-0.8.24 (谢继雷, 2011-08-30)
+Plover-2.0.24 (谢继雷, 2011-08-30)
 	* Added GRAY, BLINK, FATAL entity flags. Removed extra user locks.
 	* Added P-unit/sample-package priorities.
 	* Prepare the loading queue for later re-ordering, in samples loader.
 	* Added group() = GroupPropertyProjection.
 	* Calc effective permission.
 
-SEM-0.8.23 (谢继雷, 2011-08-28)
+Plover-2.0.23 (谢继雷, 2011-08-28)
 	* Overrides ID_LENGTH in DictEntity+.
 
-SEM-0.8.22 (谢继雷, 2011-08-27)
+Plover-2.0.22 (谢继雷, 2011-08-27)
 	* Extract out column lengths.
 	* Refactor plover-or_ext to -ox1.
 	* Refactor: Principal.*_LENGTH
@@ -1189,47 +1308,47 @@ SEM-0.8.22 (谢继雷, 2011-08-27)
 	* Refactor User* > CEntity > Entity, UserDto* > CEntityDto > EntityDto
 	* Moved principal* to or-ext.
 
-SEM-0.8.21 (谢继雷, 2011-08-26)
+Plover-2.0.21 (谢继雷, 2011-08-26)
 	* Added Eas.listMisc for non-entity listing.
 
-SEM-0.8.20 (谢继雷, 2011-08-25)
+Plover-2.0.20 (谢继雷, 2011-08-25)
 	* Prepare 303 validation in AutoUpdateBean.
 	* plover-model > jsr-303 validation
 	* Utilized PageLocalFvf in AutoUpdate test.
 	* Update __tips/__status by PageLocalFvf.
 	* Refactor: auto-update --> PageLocalFvf > FVF fragments.
 
-SEM-0.8.19 (谢继雷, 2011-08-24)
+Plover-2.0.19 (谢继雷, 2011-08-24)
 	* Added EnumAltComparator.
 
-SEM-0.8.18 (谢继雷, 2011-08-23)
+Plover-2.0.18 (谢继雷, 2011-08-23)
 	* Changed UIEntity.label length to 40.
 
-SEM-0.8.17 (谢继雷, 朱挺峰, 2011-08-22)
+Plover-2.0.17 (谢继雷, 朱挺峰, 2011-08-22)
 	* PartialViewContext is overrided by Primefaces, get through it.
 	* Added auto-update phase listener.
 	* Moved FacesUILogger to -facelets (ViewBean).
 
-SEM-0.8.16 (谢继雷, 2011-08-19)
+Plover-2.0.16 (谢继雷, 2011-08-19)
 	* NLS Updates
 	* NLS merged.
 
-SEM-0.8.15 (谢继雷, 2011-08-18)
+Plover-2.0.15 (谢继雷, 2011-08-18)
 	* Bom uml updates.
 	* SampleContribution should register instance otf.
 
-SEM-0.8.14 (谢继雷, 2011-08-17)
+Plover-2.0.14 (谢继雷, 2011-08-17)
 	* Error test. (this is for myfaces-core port test)
 	* Updated to myfaces-core-2.1.1-bee32-1.
 	* Add PersistenceUnit.getInstance to avoid of duplicates.
 
-SEM-0.8.13 (谢继雷, 2011-08-16)
+Plover-2.0.13 (谢继雷, 2011-08-16)
 	* Samples loading index.
 	* ETW auto flush.
 	* Refactor EntityDao for preSave/postLoad stuff.
 	* Added TreeEntity.depth. As rebase-parent won't happen, there's no need "cascade" update.
 
-SEM-0.8.12 (谢继雷, 2011-08-15)
+Plover-2.0.12 (谢继雷, 2011-08-15)
 	* Global activator for thread-shared appctx.
 	* Special NLS for EnumAlt+.
 	* NLS Updates (news)
@@ -1237,11 +1356,11 @@ SEM-0.8.12 (谢继雷, 2011-08-15)
 	* Embeddable test.
 	* Add TestSupport, initially +dates/epsilon.
 
-SEM-0.8.11 (谢继雷, 2011-08-13)
+Plover-2.0.11 (谢继雷, 2011-08-13)
 	* Dependency management: slf4j, hibernate.
 	* Renamed orderItem+._date to fxrDate.
 
-SEM-0.8.10 (谢继雷, 2011-08-12)
+Plover-2.0.10 (谢继雷, 2011-08-12)
 	* MomentInterval.beginTime init to now.
 	* Test: @Transient and duplicates.
 	* includeExtensions goes first (temporarily)
@@ -1250,7 +1369,7 @@ SEM-0.8.10 (谢继雷, 2011-08-12)
 	* Mime.contentType refactor.
 	* Renamed Mime.name to contentType.
 
-SEM-0.8.9 (谢继雷, 2011-08-11)
+Plover-2.0.9 (谢继雷, 2011-08-11)
 	* Make OSIVFilter include-extensions low priority.
 	* Changed Triggers.timeout default retry-interval to 1 minute.
 	* InjectedJobFactory polishing.
@@ -1268,7 +1387,7 @@ SEM-0.8.9 (谢继雷, 2011-08-11)
 	* Configure spring stuff in SpringWac.
 	* OuterWac.outerType -> outerDeclType.
 
-SEM-0.8.8 (谢继雷, 2011-08-10)
+Plover-2.0.8 (谢继雷, 2011-08-10)
 	* Re-add web.xml in -servlet. (To be checked)
 	* New module: plover-chart.
 	* Added javadoc to asFor().
@@ -1286,7 +1405,7 @@ SEM-0.8.8 (谢继雷, 2011-08-10)
 	* Collect Quartz-Configurer services.
 	* Added common QuartzConfig.getScheduler(request)
 
-SEM-0.8.7 (谢继雷, 2011-08-09)
+Plover-2.0.7 (谢继雷, 2011-08-09)
 	* OSIVFilter only for biznis .do/.jsf.
 	* WAC loggings.
 	* Missed to add QuartzWac. Should be in src/main
@@ -1306,7 +1425,7 @@ SEM-0.8.7 (谢继雷, 2011-08-09)
 	* WAC refactor.
 	* RabbitServletContext.addServlet without mapping, but start on load.
 
-SEM-0.8.6 (谢继雷, 2011-08-08)
+Plover-2.0.6 (谢继雷, 2011-08-08)
 	* Prepare to fix resource-meta broken for overlapped-context
 	* Restore inner to loginPanel.
 	* PloverEPR service loader test.
@@ -1316,26 +1435,26 @@ SEM-0.8.6 (谢继雷, 2011-08-08)
 	* Fixed CompositeController: pathWithoutActionName maybe empty.
 	* seq job test.
 
-SEM-0.8.5 (谢继雷, 2011-08-06)
+Plover-2.0.5 (谢继雷, 2011-08-06)
 	* Entity.setOwnerId should clean the _owner ref.
 	* WAC api changes.
 	* Update to slf4j-1.6.1
 	* Prepare distrib WAC configurer support.
 	* Before WAC configurer, temporarily -scheduler > -servlet > quartz.
 
-SEM-0.8.4 (谢继雷, 2011-08-05)
+Plover-2.0.4 (谢继雷, 2011-08-05)
 	* Moved owner-related criteria to EntityCriteria.
 	* Bee32 exception highlights for facelets error page.
 	* Moved ContJob -> -scheduler/SeqJob.
 	* Updated to quartz-2.0.2
 
-SEM-0.8.3 (谢继雷, 2011-08-04)
+Plover-2.0.3 (谢继雷, 2011-08-04)
 	* EntityDao.deleteAll by criteria could not be executed with fetching, which requires cascade analyzing.
 	* ETW flush afterwards.
 	* deleteAll returns an approx count.
 	* DATE/TIMESTAMP research.
 
-SEM-0.8.2 (谢继雷, 2011-08-03)
+Plover-2.0.2 (谢继雷, 2011-08-03)
 	* Fixed: Equals/LessThan/.. lhs = var.
 	* Fixed SimpleIdGenerator: only TABLE strategy is not supported.
 	* Released com.bee32.plover:plover-criteria-0.2.105
@@ -1345,7 +1464,7 @@ SEM-0.8.2 (谢继雷, 2011-08-03)
 	* CriteriaSpec changed helper methods visibility to protected.
 	* Tree entity graph repr.
 
-SEM-0.8.1 (谢继雷, 2011-08-02)
+Plover-2.0.1 (谢继雷, 2011-08-02)
 	* SamplesLoader: always reload spec, and auto fix missing naturals.
 	* Added XPool idgen sequence generator ref.
 	* Make owner/acl reference nullable.
@@ -1362,7 +1481,7 @@ SEM-0.8.1 (谢继雷, 2011-08-02)
 	* Natural-id/selector implementation.
 	* Added Entity.selector() to echo the natural id criterion.
 
-SEM-0.8.0 (谢继雷, 2011-08-01)
+Plover-2.0.0 (谢继雷, 2011-08-01)
 	* Clean up main-ds bean names.
 	* Logging for p6spy activation.
 	* Refactored natural-id: naturalId() should never return null, and content-id is only explicit used.
@@ -1373,7 +1492,11 @@ SEM-0.8.0 (谢继雷, 2011-08-01)
 	* A samples dump test.
 	* Refactored sequence generators for each table.
 	* Researchment of sequence generator.
+
+Plover-1.9.27 (谢继雷, 2011-07-31)
 	* Refactor: EnumAlt.forName(name)
+
+Plover-1.9.26 (谢继雷, 2011-07-30)
 	* New QuickDataTestCase for speed up data unit tests.
 	* SamplesLoader will escape the http session away.
 	* Added SimpleIdGenerator.reset to reset the sequence.
@@ -1387,24 +1510,24 @@ SEM-0.8.0 (谢继雷, 2011-08-01)
 	* Added ThreadServlceContext.escape() runtime.
 	* Fixed: Repository didn't invoke introspect() when objectType is specifed.
 
-SEM-0.7.23 (谢继雷, 2011-07-29)
+Plover-1.9.25 (谢继雷, 2011-07-29)
 	* Add more javadocs
 	* Refactor get/require => get/get*Opt.
 	* Initialize owner thru IEntityLifecycleAddon services.
 
-SEM-0.7.22 (谢继雷, 2011-07-28)
+Plover-1.9.24 (谢继雷, 2011-07-28)
 	* polishing
 	* Merged & implemented LikeIgnoreCase into Like.
 	* CriteriaElemnt.filter(obj, context?).
 	* plover-expr > junit.
 	* Xpool reuse.
 
-SEM-0.7.21 (谢继雷, 2011-07-27)
+Plover-1.9.23 (谢继雷, 2011-07-27)
 	* polishing
 	* Implemented filter* for criteria elements.
 	* Set plover-criteria > spring-expression.
 
-SEM-0.7.20 (谢继雷, 2011-07-26)
+Plover-1.9.22 (谢继雷, 2011-07-26)
 	* Renamed MemoryDao to Memdb.
 	* MemoryDao implementation. (except criteria).
 	* getUnique() throws NonUniqueException instead of HibernateException.
@@ -1415,30 +1538,32 @@ SEM-0.7.20 (谢继雷, 2011-07-26)
 	* Initial of memory data manager. (the criteria won't work in this version).
 	* Refactor delete* return boolean for fast-exit in mem-dao.
 
-SEM-0.7.19 (谢继雷, 2011-07-25)
+Plover-1.9.21 (谢继雷, 2011-07-25)
 	* Prepare MemoryDataManager for test purpose.
 	* Let ctor(key/entity-type) be ? extends *.
 	* Samples: Set owner in more() section.
 	* Refactor CDM < IEntityMarhalContext
 
-SEM-0.7.18 (谢继雷, 2011-07-24)
+Plover-1.9.20 (谢继雷, 2011-07-24)
 	* owner refactor.
 	* Added Dao.getByName, and refactor of Principal.id.
 	* Added Entity.ownerId.
 	* Refactor load() to getOrFail().
 	* Added EntityDto.idCollapse(s).
 
-SEM-0.7.17 (谢继雷, 2011-07-23)
+Plover-1.9.19 (谢继雷, 2011-07-23)
 	* Fixed: CriteriaSpec.compose arg type should be ICriteriaElement.
 
-SEM-0.7.16 (谢继雷, 2011-07-22)
+Plover-1.9.18 (谢继雷, 2011-07-22)
 	* Fixed EntityDao.get() should not entityType.getClass().
 	* Add more ProjectElement+.
 
-SEM-0.7.15 (谢继雷, 2011-07-21)
+Plover-1.9.17 (谢继雷, 2011-07-21)
 	* Prepare projection elements.
 	* Missed to update version in dep: plover-orm < -criteria
 	* Released com.bee32.plover:plover-criteria-0.2.104
+
+Plover-1.9.16 (谢继雷, 2011-07-20)
 	* Make CriteriaElement+ public, and serializable.
 	* Rebase SearchModel < CriteriaComposite.
 	* CriteriaSpec.in(name, object...) varargs.
@@ -1454,18 +1579,16 @@ SEM-0.7.15 (谢继雷, 2011-07-21)
 	* Rebase plover-orm < plover-criteria.
 	* Implemented criteria-element+.
 	* Add convertPrototypeToMethods helper script.
-
-SEM-0.7.14 (谢继雷, 2011-07-20)
 	* Released com.bee32.plover:plover-criteria-0.2.103
 	* Set the default mref selection to 0.
 	* Added IEas.*(detachedCriteria)
 	* Refactor CriteriaTemplate to CriteriaSpec, and delegates Restrictions.*.
 
-SEM-0.7.13 (谢继雷, 2011-07-19)
+Plover-1.9.15 (谢继雷, 2011-07-19)
 	* Adjust ShortNameDict ctor order.
 	* Added _CriterionWrapped for extra params.
 
-SEM-0.7.12 (谢继雷, 2011-07-18)
+Plover-1.9.14 (谢继雷, 2011-07-18)
 	* Add CriteriaTemplate naming policy javadoc.
 	* polishing
 	* Released com.bee32.plover:plover-criteria-0.2.102
@@ -1474,7 +1597,7 @@ SEM-0.7.12 (谢继雷, 2011-07-18)
 	* Moved CriteriaTemplate to plover-criteria.
 	* Add DecimalConfig.*_TOTAL_* constants.
 
-SEM-0.7.11 (谢继雷, 2011-07-16)
+Plover-1.9.13 (谢继雷, 2011-07-16)
 	* Add FileUploadFilter to FTC.
 	* Added ViewBean.findComponent/findComponentEx.
 	* Added ComponentHelper unify access to UI components.
@@ -1482,6 +1605,8 @@ SEM-0.7.11 (谢继雷, 2011-07-16)
 	* Separate initialization to EntityDto.create().
 	* polishing
 	* StandardSamples do conversion in ctor, rather then in preamble.
+
+Plover-1.9.12 (谢继雷, 2011-07-15)
 	* Moved dict instances into the dict class.
 	* Sample contribute to diamond package, make all contribution instance depend on :start.
 	* Renamed VirtualSamplePackage to DiamondPackage.
@@ -1500,23 +1625,12 @@ SEM-0.7.11 (谢继雷, 2011-07-16)
 	* Added Sample.addTargetPackage(outer).
 	* Add batch size stuff in BatchConfig
 	* Refactor ESC.addNormalSample to SC.addSample.
-	* Changed sample dependency analyze process.
-	* Scan import samples within SamplesContribution.
-	* Add SampleContributionManager
-	* Renamed SamplesPackage/Contrib to Sample*.
-	* polishing
-	* Applied ESC ->SamplesContribution.
-	* SamplePackage.addInstance/addDependency.
-	* Export VirtualPackage.NORMAL etc. the actual instances.
-	* Renamed ESC to SamplesContribution.
-	* Virtual samples package refactor. (1)
-	* Add Entity.auto-id attribute.
 
-SEM-0.7.10 (谢继雷, 2011-07-14)
+Plover-1.9.11 (谢继雷, 2011-07-14)
 	* It should be precision.scale
 	* Depend on primefaces-3.0.M2
 
-SEM-0.7.9 (谢继雷, 2011-07-13)
+Plover-1.9.10 (谢继雷, 2011-07-13)
 	* ThreadHttpContext.get*Context along with require*.
 	* DefaultMarshalContext maybe without appcontext though it could not function right.
 	* Applied: require*Context.
@@ -1527,46 +1641,47 @@ SEM-0.7.9 (谢继雷, 2011-07-13)
 	* Add new module plover-scheduler.
 	* Added MCArray and moved to sem.world.monetary.
 
-SEM-0.7.8 (谢继雷, 2011-07-12)
+Plover-1.9.9 (谢继雷, 2011-07-12)
 	* Refactor ReflectPackage -> StdUnitPackage.
 	* EntityDto.mergeDeref for entity-spec, a new entity may have non-null id.
 	* Added IEntityMarshalContext.asFor(*).
 	* Prepare for standard samples support.
 	* Analyze dependencies in class catalog.
+
+Plover-1.9.8 (谢继雷, 2011-07-11)
 	* Add DecimalConfig, to set the common scale/precision options.
 	* Removed TreeEntity.java.orig which is committed by mistaken.
 	* MCValue.DEFAULT_CURRENTY should be determined by Locale.default
 	* Refactor EntityExt < UIEntity.
-	* Principal < tree refactor.
 
-SEM-0.7.7 (谢继雷, 2011-07-09)
+Plover-1.9.7 (谢继雷, 2011-07-09)
 	* Astah model updates.
 	* Refactor ChanceAction < MomentInterval. Split content field into description and moreInfo.
 	* Set default currency to CNY.
 
-SEM-0.7.6 (谢继雷, 2011-07-08)
+Plover-1.9.6 (谢继雷, 2011-07-08)
 	* Add plover naming-strategy debug info.
 	* Removed UIEntity natural equality.
 	* Refactor MomentInterval < UIEntity.
 	* Added MCValue for multi-currency support.
 
-SEM-0.7.5 (谢继雷, 2011-07-07)
+Plover-1.9.5 (谢继雷, 2011-07-07)
 	* Should not display empty string.
 	* Add EnumAlt code template.
 
-SEM-0.7.4 (谢继雷, 2011-07-06)
+Plover-1.9.4 (谢继雷, 2011-07-06)
 	* Updated to primfaces 3.0.M3-SNAPSHOT.
 	* Added more NLS resources.
 	* Redirect to login page when not logged in.
 	* Redirect to login.jsf using x-ctx.redirect instead of navigationhandler.
 	* Add plover-facelets logo tag.
 
-SEM-0.7.3 (谢继雷, 2011-07-05)
+Plover-1.9.3 (谢继雷, 2011-07-05)
 	* ClassUtil.getDisplayName use RBUTF8 instead of ClassNLS temporarily.
 	* Custom facelets exception handler support.
 	* Added missing NLS resources.
 
-SEM-0.7.2 (谢继雷, 2011-07-03)
+Plover-1.9.2 (谢继雷, 2011-07-03)
 	* Removed the root index.html from plover-servlet.
 	* STL exports welcomeFiles as public static.
 	* FTCTest: browse(relative) not absolute.
@@ -1575,7 +1690,7 @@ SEM-0.7.2 (谢继雷, 2011-07-03)
 	* Refactor ORS < DefaultServlet. [4]
 	* NLS edits.
 
-SEM-0.7.1 (谢继雷, 2011-07-02)
+Plover-1.9.1 (谢继雷, 2011-07-02)
 	* Fixed: label should before description.
 	* Existing NLS edits.
 	* Fixed order mistake as a result of PKC.
@@ -1585,9 +1700,9 @@ SEM-0.7.1 (谢继雷, 2011-07-02)
 	* Export ObjectFormatter.getStopClasses.
 	* Rename delete(K) to deleteById(K), to avoid compile confusions of fn overload.
 	* Using checkLoopFast for tree circular check.
-	* Add TreeEntity. Not tested, though.
 
-SEM-0.7.0 (谢继雷, 2011-07-01)
+Plover-1.9.0 (谢继雷, 2011-07-01)
+	* Add TreeEntity. Not tested, though.
 	* DigestEntity.id getter should trigger the digest calculation.
 	* Fixed DigestEntity: (byt >>> 4) & 0xf.
 	* Add @Redundant for caching analysis.
@@ -1596,7 +1711,7 @@ SEM-0.7.0 (谢继雷, 2011-07-01)
 	* Add getFirst() also.
 	* Renamed _load => lazyLoad().
 
-SEM-0.6.23 (谢继雷, 2011-06-30)
+Plover-1.8.23 (谢继雷, 2011-06-30)
 	* Comment out ETW/class-id debugs.
 	* Implemented AclETW.
 	* <E> EntityRepo.getEntityType.
@@ -1605,17 +1720,17 @@ SEM-0.6.23 (谢继雷, 2011-06-30)
 	* Add more DataConfig verbose logs.
 	* Separate STL.quit() from wait loop.
 
-SEM-0.6.22 (谢继雷, 2011-06-29)
+Plover-1.8.22 (谢继雷, 2011-06-29)
 	* Upgrade to myfaces-x-bee32-9.
 	* Entity.acl => Entity.aclId, using int.
 	* Add missed ctors in LongNameDict
-	* Add Entity.acl
 
-SEM-0.6.21 (谢继雷, 2011-06-28)
+Plover-1.8.21 (谢继雷, 2011-06-28)
+	* Add Entity.acl
 	* Refactor delete(Criterion...) -> deleteAll
 	* ViewBean, UIHelper < FacesContextSupport.
 
-SEM-0.6.20 (谢继雷, 2011-06-27)
+Plover-1.8.20 (谢继雷, 2011-06-27)
 	* EntityDao.*(Criterion...): skip null criterion.
 	* Refined SamplesLoader to remove generic warnings.
 	* Added GenericEntityDao for variant dao support.
@@ -1640,7 +1755,7 @@ SEM-0.6.20 (谢继雷, 2011-06-27)
 	* Re-added Repository.getKey/ObjectType.
 	* Removed EntityDso, UserDso.
 
-SEM-0.6.19 (谢继雷, 2011-06-25)
+Plover-1.8.19 (谢继雷, 2011-06-25)
 	* BaseDto should init selection before set source-type.
 	* Oids polishing.
 	* EntityDto initialized with empty-entity marshalled.
@@ -1649,13 +1764,13 @@ SEM-0.6.19 (谢继雷, 2011-06-25)
 	* Add BaseDto.ref(void) for convenience.
 	* Use Appearance in the interface, IAppearance used for doc only.
 
-SEM-0.6.18 (谢继雷, 2011-06-24)
+Plover-1.8.18 (谢继雷, 2011-06-24)
 	* Add marshalTreeSet*.
 	* Add PloverConf NLS.
 	* Add Appearance.defaultLabel, so NLS maybe missing.
 	* Init&fix the marshal state, to make sure marshal-type be correctly cached.
 
-SEM-0.6.17 (谢继雷, 2011-06-23)
+Plover-1.8.17 (谢继雷, 2011-06-23)
 	* Should not cache DTO if the marshal-type isn't determined. [1]
 	* BaseDto_AS1: Fixed to deal with the tri-state in marshal(..., refButFilled).
 	* STL.quit try to kill non-main threads. (however, not worked)
@@ -1669,14 +1784,14 @@ SEM-0.6.17 (谢继雷, 2011-06-23)
 	* Make EntityDto id-equality final.
 	* Add DTO equality.
 
-SEM-0.6.16 (谢继雷, 2011-06-22)
+Plover-1.8.16 (谢继雷, 2011-06-22)
 	* Utilized IMarshalSession.*map, removed dead loops
 	* Never call the static marshal/merge* in DTO itself.
 	* UIEntityAuto < UIEntity.
 	* DTOs delegate all methods to static instance, to enable the initial session alloc.
 	* Dto+.marshal*/merge* not static any more, thus pass on the shared sessions.
 
-SEM-0.6.15 (谢继雷, 2011-06-21)
+Plover-1.8.15 (谢继雷, 2011-06-21)
 	* Utilized mref.
 	* Shortcut mref := marshal(..., true)
 	* Refactor *Dto -ctor(..., src). [2]
@@ -1685,20 +1800,20 @@ SEM-0.6.15 (谢继雷, 2011-06-21)
 	* DTO refactor: Removed ctor(.., src) to support let-rec.
 	* DTO refactor [3] EntityDto vtu behind skel.
 
-SEM-0.6.14 (谢继雷, 2011-06-20)
+Plover-1.8.14 (谢继雷, 2011-06-20)
 	* Added doc PU-usage.
 	* DTO refactor [2]
 
-SEM-0.6.13 (谢继雷, 2011-06-18)
+Plover-1.8.13 (谢继雷, 2011-06-18)
 	* Move BaseDto* to package arch.util.dto.
 
-SEM-0.6.12 (谢继雷, 2011-06-17)
+Plover-1.8.12 (谢继雷, 2011-06-17)
 	* Prepare to refactor DTO arch.
 	* Uml color refactor.
 	* Dict by default would be blue.
 	* Refactor uml colors using annotations.
 
-SEM-0.6.11 (谢继雷, 2011-06-16)
+Plover-1.8.11 (谢继雷, 2011-06-16)
 	* polish
 	* EntityHandler.typeabbr = pathParam.stripLeading(/).
 	* ActionResult overrides MAV.get/setViewName.
@@ -1711,11 +1826,7 @@ SEM-0.6.11 (谢继雷, 2011-06-16)
 	* -facelets < primefaces 3.0.M2-SNAPSHOT, required by `p:ajax`.
 	* EnumAlt.displayName < .label.
 
-SEM-0.6.10 (金卫林, 谢继雷, 2011-06-15)
-	* Add ViewBean.getBean(*) stuff.
-	* Notice: IEntityMarshalContext.loadEntity generally impl. by fetch().
-	* Refactor ActionRequest.normalizeView => ActionHandler.joinView().
-	* 1.remove PartyController.java 2.add siteJsf.xhtml
+Plover-1.8.10 (谢继雷, 2011-06-15)
 	* CC action names =~ `(s/)*s`.
 	* DTO.session review.
 	* Prefix refactor: PREFIX without trailings, but CLocation did.
@@ -1734,7 +1845,7 @@ SEM-0.6.10 (金卫林, 谢继雷, 2011-06-15)
 	* Applied for location refactor.
 	* Moved [-servlet] Location* to -arch (.rtx.location)
 
-SEM-0.6.9 (谢继雷, 2011-06-14)
+Plover-1.8.9 (谢继雷, 2011-06-14)
 	* Disable nonce by default.
 	* Add class local EntityHelper's.
 	* ActionRequest <>---> ActionHandler.
@@ -1745,7 +1856,7 @@ SEM-0.6.9 (谢继雷, 2011-06-14)
 	* Mostly what GEC.invokeHandler() did should be done in EntityHandler.
 	* Removed EntityActionRequest/Result.
 
-SEM-0.6.8 (谢继雷, 2011-06-13)
+Plover-1.8.8 (谢继雷, 2011-06-13)
 	* plover-facelets < primefaces.
 	* polish
 	* EntityExt < EntityAuto.
@@ -1761,7 +1872,7 @@ SEM-0.6.8 (谢继雷, 2011-06-13)
 	* Add Facelets view scope.
 	* Refactor .htm => .do
 
-SEM-0.6.7 (谢继雷, 2011-06-11)
+Plover-1.8.7 (谢继雷, 2011-06-11)
 	* polish
 	* Refactor GEC < BEC
 	* MyCC: Refactor to ActionReq*
@@ -1775,7 +1886,7 @@ SEM-0.6.7 (谢继雷, 2011-06-11)
 	* Add ActionRequest.normalizeView and .pathParam etc.
 	* Removed ActionHandler.prefix.
 
-SEM-0.6.6 (谢继雷, 2011-06-10)
+Plover-1.8.6 (谢继雷, 2011-06-10)
 	* polish
 	* ActionResult.wireUp(): wire V (vocab).
 	* Add SOF support within EntityHandler.
@@ -1784,7 +1895,7 @@ SEM-0.6.6 (谢继雷, 2011-06-10)
 	* BEC by handlers and add EntityDto/<Dto> autocasts.
 	* Separate IEntity*, IPostUpdating from virtual methods.
 
-SEM-0.6.5 (谢继雷, 2011-06-09)
+Plover-1.8.5 (谢继雷, 2011-06-09)
 	* Removed postInitialize() from EntityDao.
 	* Added EntityDso.before/after*. Though Dso is still under design.
 	* Prepare EntitySynth, which will replace `SimpleDao` like stuff .
@@ -1796,7 +1907,7 @@ SEM-0.6.5 (谢继雷, 2011-06-09)
 	* Refactor ResultView => ActionResult, and add wrapped ServletRequest in  ActionRequest.
 	* [-javascript] Always get HttpRequest from thread-local context.
 
-SEM-0.6.4 (谢继雷, 2011-06-08)
+Plover-1.8.4 (谢继雷, 2011-06-08)
 	* IRepository.count() returns int.
 	* SpringMVCConfigPlay -> MVCConfigPlay.
 	* ScriptElement.dump(resp) only, always require thread-local request.
@@ -1804,36 +1915,36 @@ SEM-0.6.4 (谢继雷, 2011-06-08)
 	* Refactor: EntityDso < EntityDto < IEntityRepo_H.
 	* Refactor ModelAndViewEx -> ResultView.
 
-SEM-0.6.3 (谢继雷, 2011-06-07)
+Plover-1.8.3 (谢继雷, 2011-06-07)
 	* Prepare ViewAction.
 	* Add ActionHandler.prefix.
 	* CC: Set necessary request attribs.
 	* STL: Make random context path.
 	* ServletDiag.dump: wrong indentation cookies/headers.
 
-SEM-0.6.2 (谢继雷, 2011-06-04)
+Plover-1.8.2 (谢继雷, 2011-06-04)
 	* Initial of action-handler.
 	* SpringMVCConfig.suffix => .SUFFIX.
 	* Refactor RequestHandler to ActionHandler.
 
-SEM-0.6.1 (谢继雷, 2011-06-03)
+Plover-1.8.1 (谢继雷, 2011-06-03)
 	* Add comment on ServletDiag.dump()
 	* CompositeController internal test.
 	* Should put spring-dispatcher-servlet.xml under -servlet.
 	* fj5 updates.
 
-SEM-0.6.0 (谢继雷, 2011-06-02)
+Plover-1.8.0 (谢继雷, 2011-06-02)
 	* Upgrade to parent:5
 	* Dependency management.
 	* plover-arch < servlet-2.5.
 	* mirror.bee32 => env.NO_BEE32
 
-SEM-0.5.13 (谢继雷, 2011-05-31)
+Plover-1.7.13 (谢继雷, 2011-05-31)
 	* Add EntitySelection to manipulate entity flags.
 	* polish
 	* Removed plover-vcs.
 
-SEM-0.5.12 (谢继雷, 2011-05-23)
+Plover-1.7.12 (谢继雷, 2011-05-23)
 	* polish
 	* Add HttpProcess encapsulation.
 	* Prepare LongView test case.
@@ -1841,30 +1952,30 @@ SEM-0.5.12 (谢继雷, 2011-05-23)
 	* Jsr330 scope could be named as *Local
 	* Added common scopes
 
-SEM-0.5.11 (谢继雷, 2011-05-20)
+Plover-1.7.11 (谢继雷, 2011-05-20)
 	* Polish.
 	* _EntityController will based on CompositeController.
 	* Move spring-mvc support to -servlet.
 	* Prepare composite-controller.
 	* Added IPriority at last, anyway.
 
-SEM-0.5.10 (谢继雷, 2011-05-19)
+Plover-1.7.10 (谢继雷, 2011-05-19)
 	* ECreator polish.
 	* Move DTOs.getDtoType to EntityUtil.
 	* Added dto.parseRef(): Reduce the dependency to keytype.
 
-SEM-0.5.9 (谢继雷, 2011-05-17)
+Plover-1.7.9 (谢继雷, 2011-05-17)
 	* polish
 	* STC.onServerStarted -> onServerStartup
 
-SEM-0.5.8 (谢继雷, 2011-05-16)
+Plover-1.7.8 (谢继雷, 2011-05-16)
 	* polish
 	* Add CEnum for Enum/charmap.
 
-SEM-0.5.7 (谢继雷, 2011-05-13)
+Plover-1.7.7 (谢继雷, 2011-05-13)
 	* Preferred to use non-dropped unit test init.
 
-SEM-0.5.6 (谢继雷, 2011-05-12)
+Plover-1.7.6 (谢继雷, 2011-05-12)
 	* Make name of TestDataSource configurable.
 	* Add getters for .part, .index.
 	* EntityDtoFormat skip null version.
@@ -1873,7 +1984,7 @@ SEM-0.5.6 (谢继雷, 2011-05-12)
 	* Prepare 0.3.2-SNAPSHOT
 	* Refactor DayInterval -> DayPartition.
 
-SEM-0.5.5 (谢继雷, 2011-05-11)
+Plover-1.7.5 (谢继雷, 2011-05-11)
 	* Prepare a facelets combobox.
 	* Subst template using USVP.
 	* Add DayPartInterval.
@@ -1882,7 +1993,7 @@ SEM-0.5.5 (谢继雷, 2011-05-11)
 	* BEC.parse(context, request).
 	* Rename DefaultEntityMC -> DefaultMC.
 
-SEM-0.5.4 (谢继雷, 2011-05-10)
+Plover-1.7.4 (谢继雷, 2011-05-10)
 	* Make UserFriendlyEntity.label/description package-local.
 	* Add Entity.idEquals/idHashCode() for re-use.
 	* Fixed DTO.merge property with null session.
@@ -1901,7 +2012,7 @@ SEM-0.5.4 (谢继雷, 2011-05-10)
 	* Render dict entities as Blue.
 	* New entity archetype according to UML colors.
 
-SEM-0.5.3 (谢继雷, 2011-05-09)
+Plover-1.7.3 (谢继雷, 2011-05-09)
 	* NameDict.displayName was renamed to .label.
 	* EntityDto.ref(e/dto) marshal as ID-REF.
 	* Rename EntityDto.unmarshalColl* to merge*.
@@ -1914,7 +2025,7 @@ SEM-0.5.3 (谢继雷, 2011-05-09)
 	* Move (-ublock) ThreadHttpContext to -servlet.
 	* DTO: Lazy trigger marshal context, so DatatableDxo won't touch it.
 
-SEM-0.5.2 (谢继雷, 2011-05-08)
+Plover-1.7.2 (谢继雷, 2011-05-08)
 	* Add TextMap.shift().
 	* Refactor the Dto(s) as a result.
 	* Renamed IUnmarshalContext -> IEntityMarshalContext.
@@ -1925,7 +2036,7 @@ SEM-0.5.2 (谢继雷, 2011-05-08)
 	* Prepare _EntityInterceptor, this will be used to set last-modified date on entity save.
 	* Make Entity.getEntityFlags protected.
 
-SEM-0.5.1 (谢继雷, 2011-05-06)
+Plover-1.7.1 (谢继雷, 2011-05-06)
 	* [-people] Initials.
 	* Add UserCategoryTypeEnum, and UserCategoryItem.get/setValue().
 	* Add UserCategory/Item (with simple type support)
@@ -1949,11 +2060,11 @@ SEM-0.5.1 (谢继雷, 2011-05-06)
 	* Refactor Dict.alias => Dict.label
 	* Prepare the jsTree builder.
 
-SEM-0.5.0 (谢继雷, 2011-05-05)
+Plover-1.7.0 (谢继雷, 2011-05-05)
 	* Remove reused entity from remove-list.
 	* Dict refactor, so as to support both number/name keyed dict entities.
 
-SEM-0.4.25 (谢继雷, 2011-04-30)
+Plover-1.6.25 (谢继雷, 2011-04-30)
 	* TypeAbbr always do abbrev., and using base64 instead of hex.
 	* [-meta] Add controller prefixes.
 	* Add unit-server support.
@@ -1964,7 +2075,7 @@ SEM-0.4.25 (谢继雷, 2011-04-30)
 	* Add reflective-based property marshal support.
 	* Initial of [-or_ext] meta/entity-info.
 
-SEM-0.4.24 (谢继雷, 2011-04-29)
+Plover-1.6.24 (谢继雷, 2011-04-29)
 	* Polish DtoFormatter, show 'null-ref' for null ref.
 	* Fixed EntityFormatTest
 	* Prettify code format: FormatStyle.
@@ -1977,7 +2088,7 @@ SEM-0.4.24 (谢继雷, 2011-04-29)
 	* Add EntityDso
 	* Refactor entity formatter.
 
-SEM-0.4.23 (谢继雷, 2011-04-28)
+Plover-1.6.23 (谢继雷, 2011-04-28)
 	* Swap DTO.ctor(source, selection) -> ctor(selection, source).
 	* polish
 	* Fixed ex/datatable.js: scope-localize by anonymous function wrapper, so tool.callback would work.
@@ -2000,7 +2111,7 @@ SEM-0.4.23 (谢继雷, 2011-04-28)
 	* Separate (ReqVarMap) => ParameterMap out from DataTransferObject.
 	* Rebase EventState on EnumEx.
 
-SEM-0.4.22 (谢继雷, 2011-04-27)
+Plover-1.6.22 (谢继雷, 2011-04-27)
 	* Fixed EntityDto.ref(null) do what's expected.
 	* BEC.doAction(...) instead of a lot of misc methods all arounds.
 	* Set FTC default refresh period to 300.
@@ -2017,7 +2128,7 @@ SEM-0.4.22 (谢继雷, 2011-04-27)
 	* Refactor *Dto, parse->_parse, and getter/setter go last.
 	* Add static DTO.unmarshal(context, dto). Make parse=__parse+_parse, and set filled state.
 
-SEM-0.4.21 (谢继雷, 2011-04-26)
+Plover-1.6.21 (谢继雷, 2011-04-26)
 	* Add EnterpriseServiceFacade which is transaction unawared.
 	* EnterpriseService as unmarhsal-context.
 	* Add very detailed unmarshal-property javadoc.
@@ -2039,7 +2150,7 @@ SEM-0.4.21 (谢继雷, 2011-04-26)
 	* Add BasicEC.__list() as a temporary resolustion for TypePref-entities.
 	* Add _EntityController.notApplicable()
 
-SEM-0.4.20 (谢继雷, 2011-04-25)
+Plover-1.6.20 (谢继雷, 2011-04-25)
 	* Add javadoc to ImportUtil
 	* Add TypePrefEntity superclass.
 	* Renamed service-provider to PloverORMFeaturePlayerSupport.
@@ -2059,10 +2170,10 @@ SEM-0.4.20 (谢继雷, 2011-04-25)
 	* Add EntityDto.WithContext.
 	* polish
 	* Translate null to DTO.defaultContext().
+
+Plover-1.6.19 (谢继雷, 2011-04-24)
 	* Add property-unmarshal support in EntityDto.
 	* _EntityController provides IUnmarshalContext.
-
-SEM-0.4.19 (谢继雷, 2011-04-24)
 	* Simplified IUnmarshalContext, so only loadEntity is used.
 	* Add simple PropertyAccessor.
 	* Add unmarshal-context to DTO(s).
@@ -2093,7 +2204,7 @@ SEM-0.4.19 (谢继雷, 2011-04-24)
 	* Test shows ui:define coudn't be overrided.
 	* EntityController: refactor createOrUpdate -> createOrEdit.
 
-SEM-0.4.18 (谢继雷, 2011-04-23)
+Plover-1.6.18 (谢继雷, 2011-04-23)
 	* ModelAndViewEx doesn't initialize controller: removed final modifier and add init() method.
 	* ModelAndViewEx get hint class from (outer) controller instance.
 	* Prepare MapDiagVerbMap. (bad dep... )
@@ -2110,7 +2221,7 @@ SEM-0.4.18 (谢继雷, 2011-04-23)
 	* JsonUtil.dump(*) return null.
 	* Renamed RBInheritable to ResourceBundleEx.
 
-SEM-0.4.17 (谢继雷, 2011-04-22)
+Plover-1.6.17 (谢继雷, 2011-04-22)
 	* Add ServletDiag for diag dump.
 	* Request mapping not work: should not extends MultiActionController.
 	* polish
@@ -2130,7 +2241,7 @@ SEM-0.4.17 (谢继雷, 2011-04-22)
 	* Add command shortcuts in STL.
 	* ER/Dao refactor: clarify.
 
-SEM-0.4.16 (谢继雷, 2011-04-21)
+Plover-1.6.16 (谢继雷, 2011-04-21)
 	* Added HER.saveOrUpdateAll.
 	* -or_ext depends on -ajax.
 	* Add SuccessOrFailure util to support simple json service.
@@ -2139,7 +2250,7 @@ SEM-0.4.16 (谢继雷, 2011-04-21)
 	* Refactor Flags32.set => init, add new Flags32.set(mask, bool), .clear(mask), .toggle(mask).
 	* Move -process/DataTableDxo to -or_ext.
 
-SEM-0.4.15 (谢继雷, 2011-04-20)
+Plover-1.6.15 (谢继雷, 2011-04-20)
 	* Upgrade to Gson-1.7.1
 	* Add AliasUtil to get class by alias.
 	* JsonUtilTest: Gson superclass type parameters was resolved in 1.7.1.
@@ -2150,7 +2261,7 @@ SEM-0.4.15 (谢继雷, 2011-04-20)
 	* Add EntityUtil.parseId(Class<E>, str)
 	* ex/datatable skip tools whose name starts with _*.
 
-SEM-0.4.14 (谢继雷, 2011-04-19)
+Plover-1.6.14 (谢继雷, 2011-04-19)
 	* Add post-processor hook when trigger PersistenceUnit.getClasses().
 	* Rename UsingUtil.getUsedUnit to getUsingUnit.
 	* Always do __marshal() before _marshal() in DTO implementations.
@@ -2162,13 +2273,13 @@ SEM-0.4.14 (谢继雷, 2011-04-19)
 	* Add checkCyclicReferences option to marshal().
 	* Infer type args by traverse the generic tree.
 
-SEM-0.4.13 (谢继雷, 2011-04-18)
+Plover-1.6.13 (谢继雷, 2011-04-18)
 	* EntityDto parse id/version. Though, keytype is unknown yet.
 	* Extract tabletest.js from tabletest.xhtml, for debugging.
 	* Prepare jquery.text.js, initially for OL formating.
 	* Bind datatable model with the dom element.
 
-SEM-0.4.12 (谢继雷, 2011-04-17)
+Plover-1.6.12 (谢继雷, 2011-04-17)
 	* LocationContext: foo? + null  => foo. This is better served ${foo/}/bar => foo/bar.
 	* [-facelets] Add locations.jsf test.
 	* Add LocationContext.directory?, so as to support both a[b]  and a + /b.
@@ -2186,7 +2297,7 @@ SEM-0.4.12 (谢继雷, 2011-04-17)
 	* location.getContextURL carfully delete one slash from ../ + /...
 	* Add Location.resolveAbsolute() := join(getContext(), base).
 
-SEM-0.4.11 (谢继雷, 2011-04-16)
+Plover-1.6.11 (谢继雷, 2011-04-16)
 	* Chainable location refactor.
 	* Refactor LocationContextCM to chainable.
 	* Add CallableMap javadocs.
@@ -2206,7 +2317,7 @@ SEM-0.4.11 (谢继雷, 2011-04-16)
 	* EntityDto.__marshal() acts as internalMarshal. Thus for support cyclic in marshal().
 	* Add cyclic support in DataTransferObject.marshal.
 
-SEM-0.4.10 (谢继雷, 2011-04-15)
+Plover-1.6.10 (谢继雷, 2011-04-15)
 	* LCC.WEB_APP handles / carefully.
 	* Ignore plover-webtest temporarily.
 	* Add Dto related tests.
@@ -2225,7 +2336,7 @@ SEM-0.4.10 (谢继雷, 2011-04-15)
 	* Add IDataTransferObject for generic typing.
 	* Add ClassUtil.getImmediatePV. (However not used).
 
-SEM-0.4.9 (谢继雷, 2011-04-14)
+Plover-1.6.9 (谢继雷, 2011-04-14)
 	* plover-arch depends on fj-variant.
 	* Refactor EntityDto._marshal/_unmarshal
 	* Add HER.count(restrictions...)
@@ -2251,7 +2362,7 @@ SEM-0.4.9 (谢继雷, 2011-04-14)
 	* Remove the unused ER ctor args.
 	* Refactor ER/Dao, so as to remove the ctor args.
 
-SEM-0.4.8 (谢继雷, 2011-04-13)
+Plover-1.6.8 (谢继雷, 2011-04-13)
 	* STL use ThreadServletContextFilter instead of *Listener, to get the response.
 	* Make skipProxies(class) a function.
 	* LCC.ICONS missing trailing /.
@@ -2263,7 +2374,7 @@ SEM-0.4.8 (谢继雷, 2011-04-13)
 	* polish
 	* Add DataTransferObject support class.
 
-SEM-0.4.7 (谢继雷, 2011-04-12)
+Plover-1.6.7 (谢继雷, 2011-04-12)
 	* plover-facelets depends on -internet.
 	* Removed CoreConsts.getJAVASCRIPT().
 	* OSIVFilter process all requests currently.
@@ -2284,14 +2395,14 @@ SEM-0.4.7 (谢继雷, 2011-04-12)
 	* Renamed Restful* to RESTful*.
 	* Split to DispatchFilter & DispatchServlet.
 
-SEM-0.4.6 (谢继雷, 2011-04-11)
+Plover-1.6.6 (谢继雷, 2011-04-11)
 	* Add OSIV filter.
 	* polish xmlns.
 	* plover-test depends on -velocity/compile
 	* polish
 	* Utilize  @Import in FTC, WSTC and ZTC.
 
-SEM-0.4.5 (谢继雷, 2011-04-10)
+Plover-1.6.5 (谢继雷, 2011-04-10)
 	* Initialize bean using factory.initializeBean.
 	* EntityBean.format enclode error in '()' to avoid html escapes.
 	* Add WiredTestCase.prewire, cuz wire in ctor conflicts with PostConstructor.
@@ -2301,7 +2412,7 @@ SEM-0.4.5 (谢继雷, 2011-04-10)
 	* Rename AbstractDao to EntityDao.
 	* EntityBean ctor() set name to null.
 
-SEM-0.4.4 (谢继雷, 2011-04-08)
+Plover-1.6.4 (谢继雷, 2011-04-08)
 	* MMController pretty format.
 	* ModuleLoader as a component.
 	* polish
@@ -2326,7 +2437,7 @@ SEM-0.4.4 (谢继雷, 2011-04-08)
 	* ren
 	* Rename FeaturePlayer to Play*.
 
-SEM-0.4.3 (谢继雷, 2011-04-07)
+Plover-1.6.3 (谢继雷, 2011-04-07)
 	* Add plover-velocity to -restful recommends.
 	* RestfulRequest set the legacy HttpRequest.attribute, so dependency on -restful isn't required.
 	* Add STC.browse(Module-Class)
@@ -2374,7 +2485,7 @@ SEM-0.4.3 (谢继雷, 2011-04-07)
 	* RTCTest: Here, VelocityView isn't available in plover-restful.
 	* Bean injection: always inject to non-null fields.
 
-SEM-0.4.2 (谢继雷, 2011-04-06)
+Plover-1.6.2 (谢继雷, 2011-04-06)
 	* BookModuleTest start url = book-module.
 	* RestfulRequestBuilder set default index view for */.
 	* DispatchFilter skips to the view if no method specified.
@@ -2415,7 +2526,7 @@ SEM-0.4.2 (谢继雷, 2011-04-06)
 	* Move RestfulRequestUtil from test to main.
 	* Rename BookStoreWeb to BookStoreController.
 
-SEM-0.4.1 (谢继雷, 2011-04-04)
+Plover-1.6.1 (谢继雷, 2011-04-04)
 	* Prepare Velocity view.
 	* Change READ method name to null, it's more intruisive.
 	* Using MethodInjector/MethodLazyInjector to handle non-controller method dispatching.
@@ -2450,7 +2561,7 @@ SEM-0.4.1 (谢继雷, 2011-04-04)
 	* Refactor Velocity, and clarified the engine's lifecycle.
 	* Refactor DispatchContext to Arrival.
 
-SEM-0.4.0 (谢继雷, 2011-04-01)
+Plover-1.6.0 (谢继雷, 2011-04-01)
 	* Renamed velocity.Person to SimplePerson.
 	* Ignore non-existed samples dependencies. (no correspond bean)
 	* Fixed OverlappedContext, to chop the leading / in OverlappedBase only.
@@ -2469,7 +2580,7 @@ SEM-0.4.0 (谢继雷, 2011-04-01)
 	* PUnit refactor.
 	* Renamed PUnit to PersistenceUnit.
 
-SEM-0.3.28 (谢继雷, 2011-03-31)
+Plover-1.5.28 (谢继雷, 2011-03-31)
 	* FeatureSFB is going to be removed.
 	* PUnit (@ImportUnit) refactor.
 	* Add ClassCatalog to support new PUnit.
@@ -2487,7 +2598,7 @@ SEM-0.3.28 (谢继雷, 2011-03-31)
 	* EnterpriseService no @Transactional by default
 	* Removed unavoidable "unchecked" suppressors.
 
-SEM-0.3.27 (谢继雷, 2011-03-30)
+Plover-1.5.27 (谢继雷, 2011-03-30)
 	* PrettyPrintStream implements Appendable iface.
 	* FTL test starts from version.jsf.
 	* Setup STL with ThreadServletContextListener.
@@ -2509,7 +2620,7 @@ SEM-0.3.27 (谢继雷, 2011-03-30)
 	* Re-enabled TestDataSource. (The context config are going to be refactored using spring class-appctx.)
 	* Move restful..Book to orm.test.
 
-SEM-0.3.26 (谢继雷, 2011-03-29)
+Plover-1.5.26 (谢继雷, 2011-03-29)
 	* Add utility run/dump() for wire/main usage.
 	* Add MyText for testing with the spring cdi.
 	* Move ZTC resources to resources/ dir.
@@ -2524,7 +2635,7 @@ SEM-0.3.26 (谢继雷, 2011-03-29)
 	* polish
 	* Add InjectedAppearance.addKeyPrefix for shortcut.
 
-SEM-0.3.25 (谢继雷, 2011-03-28)
+Plover-1.5.25 (谢继雷, 2011-03-28)
 	* MRE polish.
 	* Updated test case cuz MRE no more thrown.
 	* Make Composite.assemble() public.
@@ -2545,7 +2656,7 @@ SEM-0.3.25 (谢继雷, 2011-03-28)
 	* Replace spring scopes with new jsr330 meta-scope resolver.
 	* Simplified property dispatcher.
 
-SEM-0.3.24 (谢继雷, 2011-03-25)
+Plover-1.5.24 (谢继雷, 2011-03-25)
 	* BookModuleTest using junit wrapper.
 	* OidTree.getChild() returns null for non-numeric vector.
 	* Dispatch re-order, so Oid take precedence before then NamedNode.
@@ -2574,7 +2685,7 @@ SEM-0.3.24 (谢继雷, 2011-03-25)
 	* Add URL & JAVASCRIPT location contexts.
 	* Dependency management.
 
-SEM-0.3.23 (谢继雷, 2011-03-24)
+Plover-1.5.23 (谢继雷, 2011-03-24)
 	* Released com.bee32.plover:plover-sysutils-0.2.2
 	* xml2 normalize.
 	* Reset to 0.2.1-SNAPSHOT.
@@ -2589,14 +2700,14 @@ SEM-0.3.23 (谢继雷, 2011-03-24)
 	* Add isFallbackEnabled() to allow fallback.
 	* Refactor Oids in structs.
 
-SEM-0.3.22 (谢继雷, 2011-03-23)
+Plover-1.5.22 (谢继雷, 2011-03-23)
 	* polish
 	* plover-arch depends on fj-context.
 	* Appearance refactor, so as to support Composite.
 	* Add LocationContext.resolve(path) to create ContextLocation.
 	* Refactoring appearance to support composite. [under dev]
 
-SEM-0.3.21 (谢继雷, 2011-03-22)
+Plover-1.5.21 (谢继雷, 2011-03-22)
 	* Add JUAA support.
 	* Add JUnitHelper to support JUnit as application (JUAA for short)
 	* Add ProvidedContextRef to support JUnit/application runner.
@@ -2608,7 +2719,7 @@ SEM-0.3.21 (谢继雷, 2011-03-22)
 	* plover-javascript based on -servlet.
 	* Move jquery.*.js from type-ublock to plover-javascript.
 
-SEM-0.3.20 (谢继雷, 2011-03-21)
+Plover-1.5.20 (谢继雷, 2011-03-21)
 	* WDTC providers ds thru test-ds.xml.
 	* Preferred to use WDTC instead.
 	* EntityBeanFormatTest use LinkedHashSet to persist the order.
@@ -2636,7 +2747,7 @@ SEM-0.3.20 (谢继雷, 2011-03-21)
 	* Reorganize how to resolve resources. Now support multi-roots, and using BiResourceResolve to get reversed path.
 	* Upgrade jetty-servlet-tester to 6.1.26.
 
-SEM-0.3.19 (谢继雷, 2011-03-20)
+Plover-1.5.19 (谢继雷, 2011-03-20)
 	* Adjusting the configurations for facelets.
 	* polish
 	* Have moved request-uri & favicon to system servlets.
@@ -2644,14 +2755,14 @@ SEM-0.3.19 (谢继雷, 2011-03-20)
 	* Overlap the color components for different Color systems, in Color test case.
 	* Move testing configs  to orm.config.test.
 
-SEM-0.3.18 (谢继雷, 2011-03-19)
+Plover-1.5.18 (谢继雷, 2011-03-19)
 	* Add @Override to DelegatedSessionFactory.
 	* Add new plover-webtest. orig. for testing the standalone  facelets app.
 	* Rename plover-webwidgets to plover-facelets.
 	* Click on the logo to back to index.
 	* Move test support cases to ..faces.test package.
 
-SEM-0.3.17 (谢继雷, 2011-03-18)
+Plover-1.5.17 (谢继雷, 2011-03-18)
 	* Dependency management. To get the source codes.
 	* Prepare facelets test case, though still not work.
 	* RTL now based on STL, and RTC based on STC.
@@ -2671,7 +2782,7 @@ SEM-0.3.17 (谢继雷, 2011-03-18)
 	* Remove the @Transactional from WiredDaoTestCase
 	* Separate the Cat usage test to feaCat package from .entity.
 
-SEM-0.3.16 (谢继雷, 2011-03-17)
+Plover-1.5.16 (谢继雷, 2011-03-17)
 	* Allow TestPurposeSFB to give its P-unit directlry, by change the protected field.
 	* Change private -> protected for application/beanFactory fields in Wired..TestCase.
 	* Auto format for Banana sample.
@@ -2692,7 +2803,7 @@ SEM-0.3.16 (谢继雷, 2011-03-17)
 	* Add the hibernate properties keys constants.
 	* Play around Map-mapping.
 
-SEM-0.3.15 (谢继雷, 2011-03-16)
+Plover-1.5.15 (谢继雷, 2011-03-16)
 	* Add @classes attribute to ContextConfiguration. Though not supported yet.
 	* Rename feature test main classes to Feature*.
 	* Refactor session factory bean to easy be extended in test cases.
@@ -2704,7 +2815,7 @@ SEM-0.3.15 (谢继雷, 2011-03-16)
 	* Add plover-or_ext module to hold custom entity type extensions.
 	* Add Range<To/From/Near> maps.
 
-SEM-0.3.14 (谢继雷, 2011-03-15)
+Plover-1.5.14 (谢继雷, 2011-03-15)
 	* restful depends on orm, for wired-dao-test.
 	* Lazy load h2.web.servlet.
 	* Merged some of test dependencies.
@@ -2736,7 +2847,7 @@ SEM-0.3.14 (谢继雷, 2011-03-15)
 	* Refactor ConfigResourceObject -> ContextRef
 	* Reorganize context resources as Composite pattern.
 
-SEM-0.3.13 (谢继雷, 2011-03-14)
+Plover-1.5.13 (谢继雷, 2011-03-14)
 	* Depends on fj-io
 	* Add service prototype loader to support class type discover.
 	* Remove the debug output from ER.
@@ -2783,7 +2894,7 @@ SEM-0.3.13 (谢继雷, 2011-03-14)
 	* Add AbstractModuleLoader, so as to support post-processors.
 	* Depends on Aspectjweaver directly in -arch.
 
-SEM-0.3.12 (谢继雷, 2011-03-13)
+Plover-1.5.12 (谢继雷, 2011-03-13)
 	* Removed duplicated javax.inject dependency.
 	* Component.equals return true if the two are the same.
 	* Fixed AccessMode class file error, by using different jar.
@@ -2797,13 +2908,13 @@ SEM-0.3.12 (谢继雷, 2011-03-13)
 	* Add plover-context and legacy-context for api usage.
 	* Add hash/equals-Entity COR.
 
-SEM-0.3.11 (谢继雷, 2011-03-12)
+Plover-1.5.11 (谢继雷, 2011-03-12)
 	* SessionFactory init/lazy (still planning...)
 	* Spring lazy-init proxy.
 	* Renamed Entity to EntityBean.
 	* Checking: SessionFactory init before ModuleLoader.
 
-SEM-0.3.10 (谢继雷, 2011-03-11)
+Plover-1.5.10 (谢继雷, 2011-03-11)
 	* plover-orm use PrettyPS from -commons.
 	* JpaTestCase extends Assert.
 	* Add PrettyPrintStream used by IFormatString.
@@ -2813,7 +2924,7 @@ SEM-0.3.10 (谢继雷, 2011-03-11)
 	* Add more ctors for *Repository.
 	* Component equals/hashCode refactor.
 
-SEM-0.3.9 (谢继雷, 2011-03-10)
+Plover-1.5.9 (谢继雷, 2011-03-10)
 	* The IoC refactor is initially done. Congrats!
 	* Add support for Context-local PU-selection.
 	* Test context & PUSelection refactor.
@@ -2825,7 +2936,7 @@ SEM-0.3.9 (谢继雷, 2011-03-10)
 	* Fixed: ObjectLocator were refactored to naming.*.
 	* Remove the default hashcode/equals from Component.
 
-SEM-0.3.8 (谢继雷, 2011-03-09)
+Plover-1.5.8 (谢继雷, 2011-03-09)
 	* Removed HibernatePref.
 	* Add WiredDaoTestCase helper class.
 	* Move some hibernate util to `thirdparties` package.
@@ -2860,7 +2971,7 @@ SEM-0.3.8 (谢继雷, 2011-03-09)
 	* Add qualifiers: RunConfig and Variant.
 	* Rename Wireable/NonWireable to ComponentTemplate/NotAComponent.
 
-SEM-0.3.7 (谢继雷, 2011-03-08)
+Plover-1.5.7 (谢继雷, 2011-03-08)
 	* Add test-purpose dispatcher-servlet.xml.
 	* Now plover-arch fully depends on jsr-330 inject.
 	* Refactor plover modules for autowiring.
@@ -2892,7 +3003,7 @@ SEM-0.3.7 (谢继雷, 2011-03-08)
 	* Add @Before/After on HibernateLibrary.
 	* Move plover-zk to web-ui.
 
-SEM-0.3.6 (谢继雷, 2011-03-07)
+Plover-1.5.6 (谢继雷, 2011-03-07)
 	* Spring ioc context test.
 	* Add getChildren() in ER.
 	* Dependency management.
@@ -2943,7 +3054,7 @@ SEM-0.3.6 (谢继雷, 2011-03-07)
 	* Merge plover-inject core into -arch.
 	* Separate getOperation* to IOperational.
 
-SEM-0.3.5 (谢继雷, 2011-03-06)
+Plover-1.5.5 (谢继雷, 2011-03-06)
 	* plover-orm optionally depends junit.
 	* Add HibernateSessionTestCase helper base.
 	* Add default C/U/D operations to EntityRepository.
@@ -2956,7 +3067,7 @@ SEM-0.3.5 (谢继雷, 2011-03-06)
 	* Refactor Operations, and make it applicable node-only.
 	* Refactor ObjectLocator to NamedNode.
 
-SEM-0.3.4 (谢继雷, 2011-03-05)
+Plover-1.5.4 (谢继雷, 2011-03-05)
 	* Add dependency to jetty-servlet-tester.
 	* Test with bookstore module.
 	* The initial add new feature.
@@ -2974,7 +3085,7 @@ SEM-0.3.4 (谢继雷, 2011-03-05)
 	* Add view for Module, export location entries.
 	* Add plover-velocity module.
 
-SEM-0.3.3 (谢继雷, 2011-03-04)
+Plover-1.5.3 (谢继雷, 2011-03-04)
 	* Pre-translate the verb into dispatch-path.
 	* Temporarily skip the HttpRenderer
 	* Prepare to impl Verb dispatching.
@@ -2999,7 +3110,7 @@ SEM-0.3.3 (谢继雷, 2011-03-04)
 	* Add decorated/modifiable servlet request support.
 	* Operation extension by provider pattern.
 
-SEM-0.3.2 (谢继雷, 2011-03-03)
+Plover-1.5.2 (谢继雷, 2011-03-03)
 	* Add comment to getPreferredExtension().
 	* Rename ResourceRequest to RestfulRequest.
 	* Dependency management.
@@ -3009,13 +3120,13 @@ SEM-0.3.2 (谢继雷, 2011-03-03)
 	* Refactor standard profiles.
 	* Get Mime by content-type/extension.
 
-SEM-0.3.1 (谢继雷, 2011-03-02)
+Plover-1.5.1 (谢继雷, 2011-03-02)
 	* As a result of dispatcher refactor.
 	* New HttpRenderer for servlet-display adapter.
 	* Rename CommonVerbs to Verbs, and make Verb literals unique.
 	* Refactor dispatcher to using dispatch-context.
 
-SEM-0.3.0 (谢继雷, 2011-03-01)
+Plover-1.5.0 (谢继雷, 2011-03-01)
 	* Clarify some layer names.
 	* Add spring-test dependency to plover-test.
 	* Add servlet print out adapter.
@@ -3030,7 +3141,7 @@ SEM-0.3.0 (谢继雷, 2011-03-01)
 	* Refactor repr-* to x2*. And make the repr as a virtual group.
 	* Rename plover-view to plover-form.
 
-SEM-0.2.16 (谢继雷, 2011-02-28)
+Plover-1.4.16 (谢继雷, 2011-02-28)
 	* Add spring-mock dependency to plover-test.
 	* Transfer xpc from ebc-dev.
 	* Ignore format() test.
@@ -3045,10 +3156,10 @@ SEM-0.2.16 (谢继雷, 2011-02-28)
 	* Refactor the test resources dirs for injected appearances.
 	* Prepare the view dispatcher.
 
-SEM-0.2.15 (谢继雷, 2011-02-27)
+Plover-1.4.15 (谢继雷, 2011-02-27)
 	* Rename RequestModel to ResourceRequest.
 
-SEM-0.2.14 (谢继雷, 2011-02-26)
+Plover-1.4.14 (谢继雷, 2011-02-26)
 	* Separate modules load into ModuleLoader.
 	* Force to use JavaSE 1.7 for plover streams.
 	* Disable some error tests.
@@ -3058,7 +3169,7 @@ SEM-0.2.14 (谢继雷, 2011-02-26)
 	* Hibernate configuration for test support.
 	* Update the -criteria packages.
 
-SEM-0.2.13 (谢继雷, 2011-02-25)
+Plover-1.4.13 (谢继雷, 2011-02-25)
 	* Add the temporary CT for Class-derived persist test.
 	* Relax contribute(<?>) for ServiceRepository.
 	* Make HibernateEntityRepository concrete, so as to support automatic repository.
@@ -3073,7 +3184,7 @@ SEM-0.2.13 (谢继雷, 2011-02-25)
 	* Implemented Qualifier-order.
 	* The intiial shares: Twitter, AddThis
 
-SEM-0.2.12 (谢继雷, 2011-02-24)
+Plover-1.4.12 (谢继雷, 2011-02-24)
 	* Pom format.
 	* IModel is qualified.
 	* Make ISharedSite as qualified component. Prepare SharedSites.
@@ -3085,7 +3196,7 @@ SEM-0.2.12 (谢继雷, 2011-02-24)
 	* Add overlapped oid dispatch support.
 	* Plover oids refactor.
 
-SEM-0.2.11 (谢继雷, 2011-02-23)
+Plover-1.4.11 (谢继雷, 2011-02-23)
 	* Add plover-vcs for version abstraction.
 	* plover layer refactor.
 	* Add module descriptions.
@@ -3097,7 +3208,7 @@ SEM-0.2.11 (谢继雷, 2011-02-23)
 	* The global pu by default namescope.
 	* Prepare extension-point for pu-contribution.
 
-SEM-0.2.10 (谢继雷, 2011-02-22)
+Plover-1.4.10 (谢继雷, 2011-02-22)
 	* (misc) persistence-unit contribution work.
 	* Add new plover-internet for links share & mail/fax stuff.
 	* Allow null credit.
@@ -3109,7 +3220,7 @@ SEM-0.2.10 (谢继雷, 2011-02-22)
 	* Implement Jpa/Hibernate repositories.
 	* Move dependency of slf4j to -arch.
 
-SEM-0.2.9 (谢继雷, 2011-02-21)
+Plover-1.4.9 (谢继雷, 2011-02-21)
 	* Think about Indexing...
 	* plover-expr-criterion based on Hibernate (not optional)
 	* Whatever ideas.
@@ -3117,7 +3228,7 @@ SEM-0.2.9 (谢继雷, 2011-02-21)
 	* Maven dependency management.
 	* Add plover-route for event-cascading.
 
-SEM-0.2.8 (谢继雷, 2011-02-20)
+Plover-1.4.8 (谢继雷, 2011-02-20)
 	* Maven dependency management.
 	* Refactor IModule as a object locator.
 	* Add ModuleManager.getReveserdPath()
@@ -3131,18 +3242,18 @@ SEM-0.2.8 (谢继雷, 2011-02-20)
 	* Add simple entity/repository types, and link with IObjectLocation.
 	* Add reverse-location support.
 
-SEM-0.2.7 (谢继雷, 2011-02-18)
+Plover-1.4.7 (谢继雷, 2011-02-18)
 	* Add comments to ISchema.
 	* A slight deprecate of Profile
 	* Prepare renderers.
 	* Rename View to Profile.
 	* Add extension-dissolver for RequestModel.
 
-SEM-0.2.6 (谢继雷, 2011-02-16)
+Plover-1.4.6 (谢继雷, 2011-02-16)
 	* Distribute servlet tests to plover-servlet and plover-restful.
 	* Untabify.
 
-SEM-0.2.5 (谢继雷, 2011-02-15)
+Plover-1.4.5 (谢继雷, 2011-02-15)
 	* Disp-testcase review.
 	* Refactor verb object.
 	* Clarify comments
@@ -3153,7 +3264,7 @@ SEM-0.2.5 (谢继雷, 2011-02-15)
 	* [mm] Prepare test case for restful service.
 	* [http] Test for empty parameter.
 
-SEM-0.2.4 (谢继雷, 2011-02-14)
+Plover-1.4.4 (谢继雷, 2011-02-14)
 	* DependencyContainer isn't used any more.
 	* Bind to http port, for browser testing.
 	* Untabify.
@@ -3161,34 +3272,34 @@ SEM-0.2.4 (谢继雷, 2011-02-14)
 	* Add new plover-javascript to encapsulate javascript by pieces.
 	* Refactor -conf to be context-based.
 
-SEM-0.2.3 (谢继雷, 2011-02-13)
+Plover-1.4.3 (谢继雷, 2011-02-13)
 	* Cascade style. Maybe replaced by the new -conf arch.
 	* Untabify.
 	* conf initial. Still under design.
 	* Add plover-conf for config/style/preferences.
 
-SEM-0.2.2 (谢继雷, 2011-02-11)
+Plover-1.4.2 (谢继雷, 2011-02-11)
 	* Restful resource review.
 	* Add indirect dispatcher.
 	* Oid changes.
 	* Merge Jpa/Hibernate* into one ..orm.dao package.
 
-SEM-0.2.1 (谢继雷, 2011-02-09)
+Plover-1.4.1 (谢继雷, 2011-02-09)
 	* Review servletcontainer
 	* Add missing imports
 	* plover-view skeleton works
 	* Add the version number for compiler-plugin.
 	* Prepare to insert plover-view between model and repr.
 
-SEM-0.2.0 (谢继雷, 2011-02-08)
+Plover-1.4.0 (谢继雷, 2011-02-08)
 	* Using assertNull instead of assertEquals.
 	* Clean up comments.
 	* Fixed peek without shift out.
 
-SEM-0.1.9 (谢继雷, 2011-01-31)
+Plover-1.3.9 (谢继雷, 2011-01-31)
 	* Add sources/test jars.
 
-SEM-0.1.8 (谢继雷, 2011-01-30)
+Plover-1.3.8 (谢继雷, 2011-01-30)
 	* Split JpaModule from JpaModule_H2, Restore plover-parent.
 	* Pom fixes.
 	* Add JpaTestCase for JPA Unit test.
@@ -3207,7 +3318,7 @@ SEM-0.1.8 (谢继雷, 2011-01-30)
 	* Moved plover-restful/oid to plover-commons, in the lower layer.
 	* Rewrite the Dispatcher.
 
-SEM-0.1.7 (谢继雷, 2011-01-29)
+Plover-1.3.7 (谢继雷, 2011-01-29)
 	* Rename plover-locator to plover-disp.
 	* Moved plover-restful to repr layer.
 	* Move plover-restful to repr. Which will later be based on plover-locator.
@@ -3218,7 +3329,7 @@ SEM-0.1.7 (谢继雷, 2011-01-29)
 	* Add new plover-test, move servlet-unit out from -servlet.
 	* Working on stage objects, and prepare new stage builder.
 
-SEM-0.1.6 (谢继雷, 2011-01-28)
+Plover-1.3.6 (谢继雷, 2011-01-28)
 	* ModelStage with container support.
 	* At last, using the protected name field.
 	* Rename Model.load() to reload().
@@ -3231,7 +3342,7 @@ SEM-0.1.6 (谢继雷, 2011-01-28)
 	* Prepare Appearance on demand, so as to make Component very lightweighted.
 	* Utilize plover-model in -stateflow.
 
-SEM-0.1.5 (谢继雷, 2011-01-27)
+Plover-1.3.5 (谢继雷, 2011-01-27)
 	* Don't delegate context manager.
 	* Refactor IContainer to be a component, too.
 	* Removed the demo/policy which was a mistake commit.
@@ -3243,7 +3354,7 @@ SEM-0.1.5 (谢继雷, 2011-01-27)
 	* Initial of restful design servlets.
 	* The initial plover DI.
 
-SEM-0.1.4 (谢继雷, 2011-01-26)
+Plover-1.3.4 (谢继雷, 2011-01-26)
 	* Add new plover-inject for DI abstraction, and lightweight loader.
 	* Remove prefix "Plover" in submodules' name.
 	* mess up.
@@ -3252,7 +3363,7 @@ SEM-0.1.4 (谢继雷, 2011-01-26)
 	* Refactor cache-pull to cache-auto.
 	* Cache/pull dev.
 
-SEM-0.1.3 (谢继雷, 2011-01-25)
+Plover-1.3.3 (谢继雷, 2011-01-25)
 	* keep empty dirs.
 	* Upgrade to plover-parentn 2.
 	* Initial cache-pull model.
@@ -3261,7 +3372,7 @@ SEM-0.1.3 (谢继雷, 2011-01-25)
 	* Add new lifecycle/plover-cache.
 	* Initial working on plover-repr.
 
-SEM-0.1.2 (谢继雷, 2011-01-24)
+Plover-1.3.2 (谢继雷, 2011-01-24)
 	* Untabify poms.
 	* Move web-ui/-servlet to core, web-ui/-restful to lifecycle.
 	* Add dependencies to spring-mock, stapler.
@@ -3271,7 +3382,7 @@ SEM-0.1.2 (谢继雷, 2011-01-24)
 	* Create new plover-indexing module.
 	* Create new plover-expr*. modules.
 
-SEM-0.1.1 (谢继雷, 2011-01-23)
+Plover-1.3.1 (谢继雷, 2011-01-23)
 	* Add library/plover-commons.
 	* Add lifecycle/plover-stateflow.
 	* Move plover-collections to core package.
@@ -3280,8 +3391,43 @@ SEM-0.1.1 (谢继雷, 2011-01-23)
 	* Keep empty dirs.
 	* Refactor plover layout.
 
-SEM-0.1.0 (谢继雷, 2011-01-22)
+Plover-1.3.0 (谢继雷, 2011-01-22)
 	* Refactor to com.bee32.
 
-SEM-0.0.0 (谢继雷, 2010-12-18)
+Plover-1.2.0 (谢继雷, 2010-12-18)
 	* Add changelogs
+
+Plover-1.0.0 (谢继雷, 2010-10-18)
+	* initial, not impl yet.
+
+Plover-0.4.0 (谢继雷, 2010-04-08)
+	*
+
+Plover-0.1.0 (谢继雷, 2010-01-08)
+	* canonical dirname.
+	*
+
+Plover-0.0.3 (谢继雷, 2009-12-25)
+	*
+	* rename IconMap to ImageMap.
+	* new module
+
+Plover-0.0.2 (谢继雷, 2009-12-24)
+	*
+	* nls properties initial released.
+	* rename HelpIndex -> Refdocs, add UniquePrefixDispatcher impl. for fast properties process.
+
+Plover-0.0.1 (谢继雷, 2009-12-23)
+	* [maven-release-plugin] prepare for next development iteration
+	* [maven-release-plugin] prepare release plover-0.0.3
+
+Plover-0.0.0 (谢继雷, 2009-12-22)
+	* [maven-release-plugin] prepare for next development iteration
+	* [maven-release-plugin] prepare release plover-0.0.2
+	* parent in release always
+	* [maven-release-plugin] prepare for next development iteration
+	* new helpdoc/UI-info.
+	* [vm-r1]
+	* plover ui base
+	* version management.
+	* svn urls in property
