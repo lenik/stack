@@ -19,6 +19,7 @@ import org.springframework.expression.ParseException;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
+import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.faces.utils.SelectableList;
 import com.bee32.sem.api.ISalaryVariableProvider;
@@ -135,9 +136,12 @@ public class SalaryDefAdminBean
         if (variableTree == null) {
             variableTree = new DefaultTreeNode("root", null);
             for (ISalaryVariableProvider provider : SalaryVariableProviders.getProviders()) {
-                TreeNode node = new DefaultTreeNode(provider.getClass().getName(), variableTree);
-                for (String variable : provider.getVariableNames())
-                    new DefaultTreeNode(variable, node);
+                String typeName = ClassUtil.getTypeName(provider.getClass());
+                TreeNode node = new DefaultTreeNode(typeName, variableTree);
+                for (String variable : provider.getVariableNames()) {
+                    if (!variable.isEmpty() && variable != null)
+                        new DefaultTreeNode(variable, node);
+                }
             }
         }
         return variableTree;
