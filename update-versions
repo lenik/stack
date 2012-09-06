@@ -4,7 +4,7 @@ me=$(readlink -f "$0")
 root="${me%/*}"
 
 cd "$root/plover"
-git-m2ver library/plover-servlet
+git-m2ver -t "Plover" library/plover-servlet
 
 cd "$root/sem"
-git-m2ver base/sem-frame
+git-m2ver -t "SEM" base/sem-frame
