@@ -136,14 +136,20 @@ public class ModuleObjectPageDirectory
             return null;
         if (parameters == null)
             return path;
+
         StringBuilder buf = new StringBuilder(path.length() + parameters.size() * 32);
         buf.append(path);
-        int i = 0;
+
+        boolean firstParam = path.lastIndexOf('?') == -1;
+
         for (Entry<String, ?> parameter : parameters.entrySet()) {
-            if (i++ == 0)
+            if (firstParam) {
                 buf.append("?");
-            else
+                firstParam = false;
+            } else {
                 buf.append("&");
+            }
+
             String paramName = parameter.getKey();
             Object paramValue = parameter.getValue();
             if (paramValue == null)

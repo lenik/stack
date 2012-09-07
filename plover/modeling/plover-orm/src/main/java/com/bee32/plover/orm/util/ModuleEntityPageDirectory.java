@@ -16,16 +16,29 @@ import com.bee32.plover.restful.resource.StandardViews;
 public class ModuleEntityPageDirectory
         extends ModuleObjectPageDirectory {
 
+    static final boolean indexRichCompatMode = false;
+
     static Map<String, String> predefinedViews = new HashMap<String, String>();
     static Map<String, String> predefinedOperations = new HashMap<String, String>();
+
     static {
-        predefinedViews.put(StandardViews.LIST, "index.do");
-        predefinedViews.put(StandardViews.CONTENT, "content.do");
-        predefinedViews.put(StandardViews.CREATE_FORM, "createForm.do");
-        predefinedViews.put(StandardViews.EDIT_FORM, "editForm.do");
-        predefinedOperations.put(StandardOperations.CREATE, "create.do");
-        predefinedOperations.put(StandardOperations.UPDATE, "edit.do");
-        predefinedOperations.put(StandardOperations.DELETE, "delete.do");
+        if (indexRichCompatMode) {
+            predefinedViews.put(StandardViews.LIST, "index.do");
+            predefinedViews.put(StandardViews.CONTENT, "content.do");
+            predefinedViews.put(StandardViews.CREATE_FORM, "createForm.do");
+            predefinedViews.put(StandardViews.EDIT_FORM, "editForm.do");
+            predefinedOperations.put(StandardOperations.CREATE, "create.do");
+            predefinedOperations.put(StandardOperations.UPDATE, "edit.do");
+            predefinedOperations.put(StandardOperations.DELETE, "delete.do");
+        } else {
+            predefinedViews.put(StandardViews.LIST, "index-rich.jsf?MODE=index");
+            predefinedViews.put(StandardViews.CONTENT, "index-rich.jsf?MODE=content");
+            predefinedViews.put(StandardViews.CREATE_FORM, "index-rich.jsf?MODE=createForm");
+            predefinedViews.put(StandardViews.EDIT_FORM, "index-rich.jsf?MODE=editForm");
+            predefinedOperations.put(StandardOperations.CREATE, "index-rich.jsf?MODE=create");
+            predefinedOperations.put(StandardOperations.UPDATE, "index-rich.jsf?MODE=edit");
+            predefinedOperations.put(StandardOperations.DELETE, "index-rich.jsf?MODE=delete");
+        }
     }
 
     String baseHref;
