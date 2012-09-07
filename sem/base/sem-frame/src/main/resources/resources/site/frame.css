@@ -258,3 +258,8 @@ label {
     margin-bottom: 1em;
     background: #ffe;
 }
+
+.e-link {
+    color: #44f;
+    cursor: pointer;
+}
