@@ -61,7 +61,7 @@
                 <p:inputText id="label" label="简要" value="#{obj.label}" style="width:30em;"/>
             </t:panelGroup>
 
-            <h:outputText value="客户:" />
+            <h:outputText value="客户:" styleClass="e-link" onclick="#{obj.customer.clickAction}"/>
             <t:panelGroup colspan="3">
                 <p:inputText id="customer" label="客户" value="#{obj.customer.displayName}" readonly="true" style="width:30em;"/>
                 <p:commandButton value="..." oncomplete="choosePartyDialog.show()" disabled="#{not bean.editing}">
@@ -70,7 +70,7 @@
                 </p:commandButton>
             </t:panelGroup>
 
-            <h:outputText value="对应机会:" />
+            <h:outputText value="对应机会:" styleClass="e-link" onclick="#{obj.chance.clickAction}"/>
             <t:panelGroup colspan="3">
                 <p:inputText id="chance" value="#{obj.chance.subject}" readonly="true" label="对应机会" style="width:30em;"/>
                 <p:commandButton value="..." onclick="chooseChanceDialog.show()" disabled="#{not bean.editing}" />
@@ -164,7 +164,7 @@
             mbean="#{bean.itemsMBean}" readonly="#{not bean.editing}">
             <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
 
-                <h:outputLabel value="物料" />
+                <h:outputLabel value="物料" styleClass="e-link" onclick="#{item.material.clickAction}"/>
                 <t:panelGroup>
                     <p:inputText id="material" value="#{item.material.label}" readonly="true" label="物料" />
                     <p:commandButton value="..." onclick="chooseMaterialDialog.show();" />

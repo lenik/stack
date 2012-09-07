@@ -42,13 +42,13 @@
         <fr:listView id="itemsEditView" header="凭证项目" style="editDialog" indexView=":editDialog:form:itemsIndexView"
             mbean="#{bean.itemsMBean}" readonly="#{not bean.editing}">
             <h:panelGrid columns="2">
-                <h:outputLabel value="会计科目" />
+                <h:outputLabel value="会计科目" styleClass="e-link" onclick="${item.subject.cilckAction}"/>
                 <h:panelGroup>
                     <p:inputText id="accountSubject" value="#{item.subject.label}" readonly="true" label="会计科目"/>
                     <p:commandButton value="..." onclick="chooseAccountSubjectDialog.show();" />
                 </h:panelGroup>
 
-                <h:outputLabel value="二级科目" />
+                <h:outputLabel value="二级科目" styleClass="e-link" onclick="${item.party.cilckAction}" />
                 <h:panelGroup>
                     <p:inputText id="party" value="#{item.party.displayName}" readonly="true" label="二级科目"/>
                     <p:commandButton value="..." onclick="choosePartyDialog.show()" />

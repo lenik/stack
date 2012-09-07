@@ -43,7 +43,7 @@
             <h:outputText value="制单人:" />
             <p:inputText value="#{obj.owner.displayName}" readonly="true" />
 
-            <h:outputText value="生产订单:" />
+            <h:outputText value="生产订单:" styleClass="e-link" onclick="#{obj.order.clickAction}" />
             <t:panelGroup colspan="3">
                 <p:inputText id="order" value="#{obj.order.label}" readonly="true" label="生产订单" style="width:30em;"/>
                 <p:commandButton value="..." onclick="chooseMakeOrderDialog.show()" disabled="#{not bean.editing}" />

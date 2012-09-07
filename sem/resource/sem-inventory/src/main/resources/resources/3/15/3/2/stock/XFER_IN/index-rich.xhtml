@@ -30,13 +30,14 @@
                 <p:inputText id="jobDescription" label="作业描述" value="#{job.description}" />
 
                 <h:outputLabel for="destWarehouse" value="目标${tr.inventory.warehouse}" />
-                <p:selectOneMenu id="destWarehouse" label="目标${tr.inventory.warehouse}" style="width: 20em;" value="#{job.destWarehouse.id_RZ}"
-                    disabled="true">
+                <p:selectOneMenu id="destWarehouse" label="目标${tr.inventory.warehouse}" style="width: 20em;"
+                    value="#{job.destWarehouse.id_RZ}" disabled="true">
                     <f:selectItem itemValue="0" itemLabel="--选择${tr.inventory.warehouse}--" />
                     <f:selectItems value="#{stock.warehouseSelectItems}" />
                 </p:selectOneMenu>
 
-                <h:outputLabel for="transferredBy" value="调拨人员" />
+                <h:outputLabel for="transferredBy" value="调拨人员" styleClass="e-link"
+                    onclick="#{obj.transferredBy.clickAction}" />
                 <h:panelGroup>
                     <p:inputText id="transferredby" readonly="true" value="#{job.transferredBy.displayName}"
                         style="width: 20em;" label="调拨人员" />
@@ -109,7 +110,7 @@
                     <h:outputText value="拨入数量:" />
                     <p:inputText value="#{bean.destItem.quantity}" label="拨入数量" />
 
-                    <h:outputText value="库位:" />
+                    <h:outputText value="库位:" styleClass="e-link" onclick="#{bean.destItem.location.clickAction}" />
                     <t:panelGroup>
                         <p:inputText id="location" value="#{bean.destItem.location.label}" readonly="true"
                             label="库位" />

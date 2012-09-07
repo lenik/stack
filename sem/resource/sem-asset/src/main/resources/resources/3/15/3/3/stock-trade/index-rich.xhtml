@@ -25,7 +25,7 @@
                     <p:inputText value="#{obj.description}" disabled="#{not bean.editing}" label="摘要"/>
                 </t:panelGroup>
 
-                <h:outputLabel value="会计科目" />
+                <h:outputLabel value="会计科目" styleClass="e-link" onclick="${obj.subject.cilckAction}" />
                 <t:panelGroup colspan="3">
                     <t:panelGrid columns="2">
                         <p:inputText id="subject" value="#{obj.subject.label}" readonly="true" label="会计科目"/>
@@ -39,7 +39,7 @@
                     </t:panelGrid>
                 </t:panelGroup>
 
-                <h:outputLabel value="公司" />
+                <h:outputLabel value="公司" styleClass="e-link" onclick="${obj.party.cilckAction}" />
                 <t:panelGroup colspan="3">
                     <p:inputText id="party" value="#{obj.party.displayName}" readonly="true" label="公司"/>
                     <p:commandButton value="..." onclick="choosePartyDialog.show();" disabled="#{not bean.editing}" />
@@ -107,7 +107,7 @@
             mbean="#{bean.itemsMBean}" readonly="#{not bean.editing}">
             <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
 
-                <h:outputLabel value="物料" />
+                <h:outputLabel value="物料" styleClass="e-link" onclick="${item.material.cilckAction}" />
                 <t:panelGroup colspan="3">
                     <p:inputText value="#{item.material.label}" readonly="true" label="物料"/>
                     <p:commandButton value="..." onclick="chooseMaterialDialog.show();" />

@@ -72,12 +72,12 @@
                     <p:inputText label="描述" value="${obj.description}" />
                 </t:panelGroup>
 
-                <h:outputText value="对应公司或人员*：" onclick="${obj.org.clickAction}" />
+                <h:outputText value="对应公司或人员：" styleClass="e-link" onclick="${obj.org.clickAction}" />
                 <t:panelGroup>
                     <p:inputText id="party" label="对应公司或人员" value="${obj.org.displayName}" readonly="true" />
                     <p:commandButton value="..." oncomplete="choosePartyDialog.show()" />
                 </t:panelGroup>
-                <h:outputText value="对应部门：" />
+                <h:outputText value="对应部门：" styleClass="e-link" onclick="${obj.orgUnit.clickAction}" />
                 <t:panelGroup>
                     <p:inputText id="orgUnit" label="对应部门" value="${obj.orgUnit.path}" readonly="true" />
                     <p:commandButton value="..." oncomplete="chooseOrgUnitDialog.show()" update=":c_orgunit:form">
@@ -172,7 +172,7 @@
         <fr:listView id="itemsEditView" header="${title}项目" style="editDialog" indexView=":editDialog:form:itemsIndexView"
             mbean="${bean.itemsMBean}" readonly="${not bean.editing}">
             <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
-                <h:outputLabel for="material" value="物料：" />
+                <h:outputLabel for="material" value="物料：" styleClass="e-link" onclick="${item.material.clickAction}" />
                 <t:panelGroup colspan="3">
                     <table width="100%">
                         <tr>
@@ -219,7 +219,7 @@
                 <p:calendar id="expiration" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="${item.expirationDate}"
                     showOn="button" label="有效期" />
 
-                <h:outputLabel for="location" value="库位：" />
+                <h:outputLabel for="location" value="库位：" styleClass="e-link" onclick="${item.location.clickAction}" />
                 <t:panelGroup colspan="3">
                     <p:inputText id="location" label="库位" value="${item.location.label}" disabled="true" />
                     <p:commandButton value="..." oncomplete="chooseStockLocationDialog.show();">
@@ -231,7 +231,7 @@
                 </t:panelGroup>
 
                 <ui:insert name="item-quantity">
-                    <h:outputLabel for="quantity" value="数量：" />
+                    <h:outputLabel for="quantity" value="数量：" styleClass="e-link" onclick="${item.quantity.clickAction}" />
                     <t:panelGroup colspan="3">
                         <p:inputText id="quantity" label="数量" value="${item.quantity}" />
                         <h:outputText value="${item.material.unit.label}" />

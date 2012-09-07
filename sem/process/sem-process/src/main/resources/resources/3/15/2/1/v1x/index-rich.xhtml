@@ -67,7 +67,7 @@
                     <h:outputText value="#{numberHint}" />
                     <p:spinner value="#{bean.level.limit}" />
 
-                    <h:outputText value="对应策略" />
+                    <h:outputText value="对应策略" styleClass="e-link" onclick="${bean.level.targetPolicy.cilckAction}" />
                     <t:panelGrid columns="2">
                         <p:inputText id="targetPolicy" readonly="#{true}" value="#{bean.level.targetPolicy.label}" />
                         <p:commandButton value="..." onclick="chooseVerifyPolicyDialog.show()" />

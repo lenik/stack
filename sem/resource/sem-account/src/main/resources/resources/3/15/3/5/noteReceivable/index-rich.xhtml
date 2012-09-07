@@ -100,7 +100,7 @@
             <p:calendar id="endTime" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{obj.endTime}"
                 showOn="button" label="到期日" />
 
-            <h:outputText value="客户" />
+            <h:outputText value="客户" styleClass="e-link" onclick="#{obj.party.clickAction}" />
             <t:panelGroup colspan="3">
                 <p:inputText id="party" label="客户" value="#{obj.party.displayName}" readonly="true" style="width:30em;" />
                 <p:commandButton value="..." onclick="waitbox.show()" oncomplete="waitbox.hide();choosePartyDialog.show()" />
@@ -120,13 +120,13 @@
 
             <h:outputLabel for="acceptBank" value="承兑银行" />
             <p:inputText id="acceptBank" value="#{obj.acceptBank}" label="承兑银行" />
-            <h:outputText value="承兑公司" />
+            <h:outputText value="承兑公司" styleClass="e-link" onclick="#{obj.acceptOrg.clickAction}" />
             <t:panelGroup colspan="3">
                 <p:inputText id="acceptOrg" label="承兑公司" value="#{obj.acceptOrg.displayName}" readonly="true" />
                 <p:commandButton value="..." onclick="waitbox.show()" oncomplete="waitbox.hide();chooseOrgDialog.show()" />
             </t:panelGroup>
 
-            <h:outputText value="部门" />
+            <h:outputText value="部门" styleClass="e-link" onclick="#{obj.orgUnit.clickAction}" />
             <t:panelGroup>
                 <p:inputText id="orgUnit" label="部门" value="#{obj.orgUnit.path}" readonly="true" />
                 <p:commandButton value="..." onclick="waitbox.show()" oncomplete="waitbox.hide();chooseOrgUnitDialog.show()">
@@ -134,7 +134,7 @@
                         value="#{bean.selfOrgId}" />
                 </p:commandButton>
             </t:panelGroup>
-            <h:outputLabel for="person" value="业务员" />
+            <h:outputLabel for="person" value="业务员" styleClass="e-link" onclick="#{obj.person.clickAction}" />
             <h:panelGroup>
                 <p:inputText id="person" readonly="true" value="#{obj.person.displayName}" label="业务员" />
                 <p:commandButton value="..." update=":choosePersonDialog:form" onclick="waitbox.show()"

@@ -21,7 +21,7 @@
 
     <ui:define name="editDialogContent">
         <h:panelGrid columns="2">
-            <h:outputLabel value="上级科目" />
+            <h:outputLabel value="上级科目" styleClass="e-link" onclick="${bean.parentSubject.clickAction}"/>
             <h:panelGroup>
                 <h:outputText id="parentSubjectCode" value="#{bean.parentSubject.name}" />
                 <p:inputText id="parentSubject" value="#{bean.parentSubject.label}" disabled="true" label="上级科目"/>

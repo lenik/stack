@@ -56,7 +56,7 @@
             editView=":elementEditView" nested="true" paginator="false" readonly="#{not bean.editing}">
             <f:facet name="index-header">
                 <t:panelGroup>
-                    <h:outputText value="雇员:" />
+                    <h:outputText value="雇员:" styleClass="e-link" onclick="${obj.employee.clickAction}" />
                     <p:inputText value="${obj.employee.personName}" readonly="true" />
                     <p:commandButton value="..." onclick='chooseEmployeeDialog.show()' />
                 </t:panelGroup>

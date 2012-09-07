@@ -64,7 +64,7 @@
                                 locale="zh_CN" showOn="button" label="实际完成时间" />
 
 
-                            <h:outputText value="部门:" />
+                            <h:outputText value="部门:" styleClass="e-link" onclick="#{item.orgUnit.clickAction}"/>
                             <t:panelGroup>
                                 <p:inputText id="orgUnit" label="对应部门" value="#{item.orgUnit.path}" readonly="true" />
                                 <p:commandButton value="..." oncomplete="chooseOrgUnitDialog.show()" />

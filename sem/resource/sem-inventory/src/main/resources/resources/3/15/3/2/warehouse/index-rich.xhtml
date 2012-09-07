@@ -35,7 +35,7 @@
             <h:outputText value="电话:" />
             <p:inputText value="#{obj.phone}" label="电话" />
 
-            <h:outputText value="负责人:" />
+            <h:outputText value="负责人:" styleClass="e-link" onclick="#{obj.manager.clickAction}" />
             <h:panelGroup>
                 <p:inputText value="#{obj.manager.displayName}" label="负责人" disabled="true" />
                 <p:commandButton value="..." oncomplete="chooseManagerDialog.show();">

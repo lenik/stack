@@ -139,7 +139,7 @@
         <fr:listView id="itemsEditView" header="采购项" style="editDialog" indexView=":editDialog:form:tv:itemsIndexView"
             mbean="#{bean.itemsMBean}" readonly="#{not bean.editing}">
             <h:panelGrid columns="2" columnClasses="field-label, field-content">
-                <h:outputText value="物料：" />
+                <h:outputText value="物料：" styleClass="e-link" onclick="#{item.material.clickAction}"/>
                 <t:panelGrid columns="2">
                     <p:inputText id="material" value="#{item.material.label}" readonly="true"/>
                     <p:commandButton id="chooseMaterial" value="..." onclick="chooseMaterialDialog.show()" />
@@ -151,7 +151,7 @@
                 <h:outputLabel for="quantity" value="采购数量：" />
                 <p:inputText id="quantity" value="#{item.quantity}" />
 
-                <h:outputLabel value="优选供应商：" />
+                <h:outputLabel value="优选供应商：" styleClass="e-link" onclick="#{item.preferredSupplier.clickAction}"/>
                 <h:panelGroup>
                     <p:inputText id="supplier" value="#{item.preferredSupplier.displayName}" disabled="true" />
                     <p:commandButton value="..." oncomplete="choosePreferredSupplierDialog.show()">
@@ -169,7 +169,7 @@
                     <f:selectItems value="#{stock.warehouseSelectItems}" />
                 </p:selectOneMenu>
 
-                <h:outputLabel for="acceptedInquiry" value="采购建议:" />
+                <h:outputLabel for="acceptedInquiry" value="采购建议:" styleClass="e-link" onclick="#{item.acceptedInquiry.clickAction}" />
                 <h:panelGroup>
                     <p:inputText id="acceptedInquiry" value="#{item.acceptedInquiry.supplier.label}(#{item.acceptedInquiry.price})" disabled="true" />
                     <p:commandButton value="..." oncomplete="choosePurchaseInquiryDialog.show()">

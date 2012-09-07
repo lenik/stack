@@ -79,7 +79,7 @@
                         </p:selectOneMenu>
                     </t:panelGrid>
 
-                    <h:outputLabel for="policy" value="白名单策略" />
+                    <h:outputLabel for="policy" value="白名单策略" styleClass="e-link" onclick="#{bean.entry.policy.clickAction}" />
                     <t:panelGrid columns="2">
                         <p:inputText id="policy" readonly="#{true}" value="#{bean.entry.policy.label}" label="白名单策略"/>
                         <p:commandButton id="choosePolicy" value="..." update=":chooseVerifyPolicyDialog:form"

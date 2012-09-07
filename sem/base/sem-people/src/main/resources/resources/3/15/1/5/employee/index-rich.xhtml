@@ -47,7 +47,7 @@
 
     <ui:define name="editDialogContent">
         <t:panelGrid columns="4">
-            <h:outputText value="选择人员:" />
+            <h:outputText value="选择人员:" styleClass="e-link" onclick="{obj.person.clickAction}" />
             <t:panelGroup id="internalPerson">
                 <h:inputHidden label="人员" value="#{obj.person.id_RZ}" />
                 <p:inputText value="#{obj.person.displayName}" readonly="#{true}" />

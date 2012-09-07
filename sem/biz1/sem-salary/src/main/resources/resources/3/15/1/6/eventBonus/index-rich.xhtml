@@ -24,9 +24,9 @@
     <ui:define name="editDialogContent">
         <t:panelGrid columns="2">
             <h:outputText value="补贴时间" />
-             <p:calendar value="#{obj.beginTime}" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" showOn="button" />
+            <p:calendar value="#{obj.beginTime}" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" showOn="button" />
 
-            <h:outputText value="补贴人员" />
+            <h:outputText value="补贴人员" styleClass="e-link" onclick="#{obj.employee.clickAction}" />
             <t:panelGroup>
                 <p:inputText value="${obj.employee.person.name}" />
                 <p:commandButton value="..." onclick='chooseEmployeeDialog.show()' />

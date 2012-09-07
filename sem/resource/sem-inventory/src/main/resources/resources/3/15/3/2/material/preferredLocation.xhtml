@@ -36,7 +36,7 @@
     <p:dialog header="新增推荐库位" widgetVar="addPreferredLocationDialog" modal="true">
         <h:form id="addPreferredLocationForm">
             <h:panelGrid id="addPreferredLocationPanel" columns="2">
-                <h:outputText value="库位" />
+                <h:outputText value="库位" styleClass="e-link" onclick="#{bean.preferredLocation.location.clickAction}"/>
                 <h:panelGroup colspan="2">
                     <p:inputText value="#{bean.preferredLocation.location.label}" readonly="true" label="库位"/>
                     <p:commandButton value="..." onclick="waitbox.show();" oncomplete="waitbox.hide();choosePreferredLocationDialog.show()" />

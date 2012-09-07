@@ -61,7 +61,7 @@
                 <h:panelGrid columns="2">
                     <p:dataList id="partiesList" var="it" value="${obj.parties}" effectSpeed="fast">
                         <p:column>
-                            <h:outputText value="${it.displayName}" />
+                            <h:outputText value="${it.displayName}" styleClass="e-link" onclick="#{it.clickAction}"/>
                             <p:commandLink title="删除客户" update="partiesList">
                                 <p:collector value="${it}" removeFrom="${obj.parties}" />
                                 <p:graphicImage value="${location.ICON}/etool16/delete_edit.gif" />
@@ -77,7 +77,7 @@
                 <h:panelGrid columns="2">
                     <p:dataList id="partnersList" var="it" value="${obj.partners}" effectSpeed="fast">
                         <p:column>
-                            <h:outputText value="${it.displayName}" />
+                            <h:outputText value="${it.displayName}" styleClass="e-link" onclick="#{it.clickAction}"/>
                             <p:commandLink title="删除伙伴" update="partnersList">
                                 <p:graphicImage value="${location.ICON}/etool16/delete_edit.gif" />
                                 <p:collector value="${it}" removeFrom="${obj.partners}" />
@@ -103,7 +103,7 @@
                     label="花费详细" />
             </t:panelGroup>
 
-            <h:outputLabel for="chanceSubject" value="相关机会:" />
+            <h:outputLabel for="chanceSubject" value="相关机会:" styleClass="e-link" onclick="#{obj.chance.clickAction}" />
             <t:panelGroup id="correChance" colspan="3">
                 <p:inputText id="chanceSubject" readonly="true" value="${obj.chance.subject}" style="width: 30em"
                     label="相关机会" />
