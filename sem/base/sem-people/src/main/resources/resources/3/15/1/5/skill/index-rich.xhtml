@@ -14,7 +14,7 @@
             <h:outputText value="${entry.description}" />
         </p:column>
         <p:column headerText="技能等级">
-            <h:outputText value="${entry.levelData}" />
+            <h:outputText value="${entry.outlineData}" />
         </p:column>
 
     </ui:define>
@@ -28,8 +28,8 @@
             <h:outputText value="描述" />
             <p:inputText value="${obj.description}" />
 
-            <fr:listView id="levelsView" header="分类级别" style="panel" mbean="#{bean.levelsMBean}" nested="true"
-                paginator="false" readonly="#{not bean.editing}">
+            <fr:listView id="levelsIndexView" header="分类级别" style="indexPanel" editView=":levelsEditView" nested="true"
+                mbean="#{bean.levelsMBean}" paginator="false" readonly="#{not bean.editing}">
                 <f:facet name="columns">
                     <p:column headerText="级别">
                         <h:outputText value="${entry.score}" />
@@ -57,5 +57,18 @@
     </ui:define>
 
     <ui:define name="dialogs">
+        <fr:listView id="levelsEditView" header="客户" style="editDialog" indexView=":editDialog:form:levelsIndexView"
+            mbean="${bean.levelsMBean}" readonly="#{not bean.editing}">
+            <h:panelGrid columns="2">
+                <h:outputText value="级别:" />
+                <p:spinner id="spinnerStep" value="${item.score}" stepFactor="1" />
+
+                <h:outputText value="描述:" />
+                <p:inputText value="${item.label}" />
+
+                <h:outputText value="技能补贴" />
+                <p:inputText value="${item.bonus}" />
+            </h:panelGrid>
+        </fr:listView>
     </ui:define>
 </ui:composition>

@@ -84,6 +84,8 @@ public class PersonSkillDto
     }
 
     public String getLevelLabel(int score) {
+        if (category.getLevel(score) == null)
+            return "";
         return category.getLevel(score).getLabel();
     }
 }

@@ -73,7 +73,7 @@
 
             <h:outputText value="职称" />
             <p:selectOneMenu id="jobTitle" label="职称" value="#{obj.title.id}">
-                <f:selectItem itemLabel="无" />
+                <f:selectItem itemLabel="无" itemValue="-1" />
                 <f:selectItems value="#{dicts.jobTitles}" var="it" itemLabel="#{it.label}" itemValue="${it.id}" />
             </p:selectOneMenu>
 

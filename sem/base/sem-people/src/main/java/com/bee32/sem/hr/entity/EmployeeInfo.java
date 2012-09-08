@@ -273,4 +273,10 @@ public class EmployeeInfo
         return months / 12;
     }
 
+    @Override
+    protected void formatEntryText(StringBuilder buf) {
+        if (person != null)
+            buf.append(person.getDisplayName());
+    }
+
 }

@@ -101,7 +101,7 @@ public class PersonSkill
     @Transient
     public String getLevel() {
         ScoreLevelMap levelMap = category.getLevelMap();
-        String levelName = levelMap.getTarget(score);
+        String levelName = levelMap.getTarget(score).getLabel();
         return levelName;
     }
 

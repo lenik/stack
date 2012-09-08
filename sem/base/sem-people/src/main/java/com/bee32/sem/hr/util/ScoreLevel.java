@@ -1,15 +1,14 @@
 package com.bee32.sem.hr.util;
 
-import javax.persistence.Column;
+import java.math.BigDecimal;
 
 public final class ScoreLevel {
 
     public static final int LABEL_LENGTH = 30;
 
     String label;
-    int score;
+    BigDecimal bonus;
 
-    @Column(length = LABEL_LENGTH, nullable = false)
     public String getLabel() {
         return label;
     }
@@ -18,13 +17,12 @@ public final class ScoreLevel {
         this.label = label;
     }
 
-    @Column(nullable = false)
-    public int getScore() {
-        return score;
+    public BigDecimal getBonus() {
+        return bonus;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void setBonus(BigDecimal bonus) {
+        this.bonus = bonus;
     }
 
 }

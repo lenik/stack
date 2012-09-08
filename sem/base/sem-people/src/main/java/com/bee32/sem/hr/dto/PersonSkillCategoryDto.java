@@ -10,6 +10,7 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.hr.entity.PersonSkillCategory;
+import com.bee32.sem.hr.util.ScoreLevel;
 import com.bee32.sem.hr.util.ScoreLevelMap;
 
 public class PersonSkillCategoryDto
@@ -41,7 +42,8 @@ public class PersonSkillCategoryDto
             PersonSkillCategoryLevelDto level = new PersonSkillCategoryLevelDto();
             level.setCategory(this);
             level.setScore(score);
-            level.setLabel(map.get(score));
+            level.setLabel(map.get(score).getLabel());
+            level.setBonus(map.get(score).getBonus());
             levelList.add(level);
         }
         return levelList;
@@ -50,7 +52,10 @@ public class PersonSkillCategoryDto
     ScoreLevelMap convertListToMap(List<PersonSkillCategoryLevelDto> levelList) {
         ScoreLevelMap slm = new ScoreLevelMap();
         for (PersonSkillCategoryLevelDto level : levelList) {
-            slm.put(level.getScore(), level.getLabel());
+            ScoreLevel scoreLevel = new ScoreLevel();
+            scoreLevel.setLabel(level.getLabel());
+            scoreLevel.setBonus(level.getBonus());
+            slm.put(level.getScore(), scoreLevel);
         }
         return slm;
     }
@@ -83,6 +88,18 @@ public class PersonSkillCategoryDto
                 return level;
         }
         return null;
+    }
+
+    public String getOutlineData() {
+        StringBuffer tmp = new StringBuffer();
+        for (PersonSkillCategoryLevelDto level : levelList) {
+            if (tmp.length() == 0)
+                tmp.append(",");
+            tmp.append(level.getScore());
+            tmp.append(":");
+            tmp.append(level.getLabel());
+        }
+        return tmp.toString();
     }
 
     @Override
