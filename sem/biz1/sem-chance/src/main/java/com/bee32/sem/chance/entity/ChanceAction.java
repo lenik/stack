@@ -15,10 +15,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.DefaultValue;
+
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.ox1.color.Pink;
 import com.bee32.sem.calendar.ICalendarEvent;
 import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.process.base.ProcessEntity;
 
 @Entity
@@ -32,6 +35,7 @@ public class ChanceAction
 
     public static final int MORE_INFO_LENGTH = 10000;
     public static final int SPENDING_LENGTH = 1000;
+    public static final int SUGGESTION_LENGTH = 200;
 
     boolean plan = false;
     List<Party> parties = new ArrayList<Party>();
@@ -44,6 +48,10 @@ public class ChanceAction
     String spending = "";
     Chance chance;
     ChanceStage stage;
+
+    String suggestion;
+    Person suggester;
+    boolean read;
 
     public ChanceAction() {
         Calendar cal = Calendar.getInstance();
@@ -196,6 +204,34 @@ public class ChanceAction
             throw new NullPointerException("stage");
         if (stage.getOrder() >= getStage().getOrder())
             this.stage = stage;
+    }
+
+    @Column(length = SUGGESTION_LENGTH)
+    public String getSuggestion() {
+        return suggestion;
+    }
+
+    public void setSuggestion(String suggestion) {
+        this.suggestion = suggestion;
+    }
+
+    @ManyToOne
+    public Person getSuggester() {
+        return suggester;
+    }
+
+    public void setSuggester(Person suggester) {
+        this.suggester = suggester;
+    }
+
+    @Column(nullable = false)
+    @DefaultValue("false")
+    public boolean isRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
     }
 
     /**

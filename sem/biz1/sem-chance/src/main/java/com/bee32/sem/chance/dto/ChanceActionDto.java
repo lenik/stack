@@ -12,9 +12,13 @@ import org.hibernate.validator.constraints.Length;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.model.validation.core.NLength;
+import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.util.DateToRange;
 import com.bee32.sem.people.dto.PartyDto;
+import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.process.base.ProcessEntityDto;
 
 public class ChanceActionDto
@@ -38,6 +42,10 @@ public class ChanceActionDto
     ChanceDto chance;
     ChanceStageDto stage;
     ChanceStageDto stage0;
+
+    String suggestion;
+    PersonDto suggester = new PersonDto();
+    boolean read;
 
     public ChanceActionDto() {
         super();
@@ -66,6 +74,10 @@ public class ChanceActionDto
         this.chance = mref(ChanceDto.class, source.getChance());
         this.stage = mref(ChanceStageDto.class, source.getStage());
         this.stage0 = stage;
+
+        this.suggestion = source.getSuggestion();
+        this.suggester = mref(PersonDto.class, source.getSuggester());
+        this.read = source.isRead();
     }
 
     @Override
@@ -80,6 +92,8 @@ public class ChanceActionDto
 
         merge(target, "chance", chance);
         merge(target, "stage", stage.joinByOrder(stage0));
+        target.setSuggestion(suggestion);
+        merge(target, "suggester", suggester);
     }
 
     @Override
@@ -276,6 +290,38 @@ public class ChanceActionDto
             if (stageDto.getOrder() > stage.getOrder())
                 this.stage = stageDto;
         }
+    }
+
+    @NLength(max = ChanceAction.SUGGESTION_LENGTH)
+    public String getSuggestion() {
+        return suggestion;
+    }
+
+    public void setSuggestion(String suggestion) {
+        this.suggestion = TextUtil.normalizeSpace(suggestion);
+    }
+
+    public PersonDto getSuggester() {
+        return suggester;
+    }
+
+    public void setSuggester(PersonDto suggester) {
+        this.suggester = suggester;
+    }
+
+    public boolean isRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
+    }
+
+    public String getStyleClass() {
+        if (!DTOs.isNull(suggester) && !read)
+            return "f-red f-bold";
+        else
+            return "";
     }
 
 }

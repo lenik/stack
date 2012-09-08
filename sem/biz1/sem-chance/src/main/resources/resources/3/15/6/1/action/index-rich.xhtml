@@ -10,115 +10,151 @@
     <ui:param name="dicts" value="${chanceDictsBean}" />
 
     <ui:define name="dataColumns">
-        <p:column headerText="日期" sortBy="${entry.beginTime}">
+        <p:column headerText="日期" sortBy="${entry.beginTime}" styleClass="${entry.styleClass}">
             <h:outputText value="${entry.date}" />
         </p:column>
-        <p:column headerText="时间段" styleClass="f-wrappable">
+        <p:column headerText="时间段" styleClass="f-wrappable ${entry.styleClass}">
             <h:outputText value="${entry.timeRange}" />
         </p:column>
-        <p:column headerText="执行" sortBy="${entry.actor}">
+        <p:column headerText="执行" sortBy="${entry.actor}" styleClass="${entry.styleClass}">
             <h:outputText value="${entry.actor.displayName}" />
         </p:column>
-        <p:column headerText="类型" sortBy="${entry.plan}">
+        <p:column headerText="类型" sortBy="${entry.plan}" styleClass="${entry.styleClass}">
             <h:outputText value="${entry.plan ? '计划' : '日志'}" />
         </p:column>
-        <p:column headerText="洽谈类型" sortBy="${entry.style}">
+        <p:column headerText="洽谈类型" sortBy="${entry.style}" styleClass="${entry.styleClass}">
             <h:outputText value="${entry.style.label}" />
         </p:column>
-        <p:column headerText="行动简略" sortBy="${entry.description}" styleClass="f-wrappable">
+        <p:column headerText="行动简略" sortBy="${entry.description}" styleClass="f-wrappable ${entry.styleClass}">
             <h:outputText value="${entry.subject}" />
         </p:column>
-        <p:column headerText="对应机会" sortBy="${entry.chance}" styleClass="f-wrappable">
+        <p:column headerText="对应机会" sortBy="${entry.chance}" styleClass="f-wrappable ${entry.styleClass}">
             <h:outputText value="${entry.chance.subject}" />
         </p:column>
-        <p:column headerText="阶段" sortBy="${entry.stage}">
+        <p:column headerText="阶段" sortBy="${entry.stage}" styleClass="${entry.styleClass}">
             <h:outputText value="${entry.stage.label}" />
         </p:column>
     </ui:define>
 
     <ui:define name="editDialogContent">
-        <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
-            <h:outputLabel for="beginTime" value="开始时间:" />
-            <p:calendar id="beginTime" pattern="yyyy-MM-dd HH:mm" navigator="${true}" value="${obj.beginTime}"
-                showOn="button" label="开始时间" />
-            <h:outputLabel for="endTime" value="结束时间:" />
-            <p:calendar id="endTime" pattern="yyyy-MM-dd HH:mm" navigator="${true}" value="${obj.endTime}"
-                showOn="button" label="结束时间" />
+        <p:tabView id="tabView">
+            <p:tab title="日志信息" id="baseInfo">
+                <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
+                    <h:outputLabel for="beginTime" value="开始时间:" />
+                    <p:calendar id="beginTime" pattern="yyyy-MM-dd HH:mm" navigator="${true}" value="${obj.beginTime}"
+                        showOn="button" label="开始时间" />
+                    <h:outputLabel for="endTime" value="结束时间:" />
+                    <p:calendar id="endTime" pattern="yyyy-MM-dd HH:mm" navigator="${true}" value="${obj.endTime}"
+                        showOn="button" label="结束时间" />
 
-            <h:outputLabel for="actionStyle" value="日志类型:" />
-            <p:selectOneRadio id="actionStyle" value="${obj.plan}" label="日志类型">
-                <f:selectItem itemLabel="计划" itemValue="true" />
-                <f:selectItem itemLabel="日志" itemValue="false" />
-            </p:selectOneRadio>
+                    <h:outputLabel for="actionStyle" value="日志类型:" />
+                    <p:selectOneRadio id="actionStyle" value="${obj.plan}" label="日志类型">
+                        <f:selectItem itemLabel="计划" itemValue="true" />
+                        <f:selectItem itemLabel="日志" itemValue="false" />
+                    </p:selectOneRadio>
 
-            <h:outputLabel for="style" value="洽谈方式:" />
-            <p:selectOneMenu id="style" value="${obj.style.id_OE}" label="洽谈方式">
-                <f:selectItems value="${dicts.actionStyles}" var="it" itemLabel="${it.label}" itemValue="${it.id}" />
-            </p:selectOneMenu>
+                    <h:outputLabel for="style" value="洽谈方式:" />
+                    <p:selectOneMenu id="style" value="${obj.style.id_OE}" label="洽谈方式">
+                        <f:selectItems value="${dicts.actionStyles}" var="it" itemLabel="${it.label}"
+                            itemValue="${it.id}" />
+                    </p:selectOneMenu>
 
-            <h:outputLabel for="pgroup" value="拜访客户:" />
-            <t:panelGroup colspan="3" id="pgroup">
-                <h:panelGrid columns="2">
-                    <p:dataList id="partiesList" var="it" value="${obj.parties}" effectSpeed="fast">
-                        <p:column>
-                            <h:outputText value="${it.displayName}" styleClass="e-link" onclick="#{it.clickAction}"/>
-                            <p:commandLink title="删除客户" update="partiesList">
-                                <p:collector value="${it}" removeFrom="${obj.parties}" />
-                                <p:graphicImage value="${location.ICON}/etool16/delete_edit.gif" />
-                            </p:commandLink>
-                        </p:column>
-                    </p:dataList>
-                    <p:commandButton title="挑选拜访客户" value="..." onclick="choosePartyDialog.show();" />
-                </h:panelGrid>
-            </t:panelGroup>
+                    <h:outputLabel for="pgroup" value="拜访客户:" />
+                    <t:panelGroup colspan="3" id="pgroup">
+                        <h:panelGrid columns="2">
+                            <p:dataList id="partiesList" var="it" value="${obj.parties}" effectSpeed="fast">
+                                <p:column>
+                                    <h:outputText value="${it.displayName}" styleClass="e-link" onclick="#{it.clickAction}" />
+                                    <p:commandLink title="删除客户" update="partiesList">
+                                        <p:collector value="${it}" removeFrom="${obj.parties}" />
+                                        <p:graphicImage value="${location.ICON}/etool16/delete_edit.gif" />
+                                    </p:commandLink>
+                                </p:column>
+                            </p:dataList>
+                            <p:commandButton title="挑选拜访客户" value="..." onclick="choosePartyDialog.show();" />
+                        </h:panelGrid>
+                    </t:panelGroup>
 
-            <h:outputLabel for="partnerGroup" value="工作伙伴" />
-            <t:panelGroup colspan="3" id="partnerGroup">
-                <h:panelGrid columns="2">
-                    <p:dataList id="partnersList" var="it" value="${obj.partners}" effectSpeed="fast">
-                        <p:column>
-                            <h:outputText value="${it.displayName}" styleClass="e-link" onclick="#{it.clickAction}"/>
-                            <p:commandLink title="删除伙伴" update="partnersList">
-                                <p:graphicImage value="${location.ICON}/etool16/delete_edit.gif" />
-                                <p:collector value="${it}" removeFrom="${obj.partners}" />
-                            </p:commandLink>
-                        </p:column>
-                    </p:dataList>
-                    <p:commandButton title="挑选工作伙伴" value="..." oncomplete="choosePartnerDialog.show();">
-                        <f:setPropertyActionListener target="${choosePrincipalDialogBean.stereo}"
-                            value="U" />
-                    </p:commandButton>
-                </h:panelGrid>
-            </t:panelGroup>
+                    <h:outputLabel for="partnerGroup" value="工作伙伴" />
+                    <t:panelGroup colspan="3" id="partnerGroup">
+                        <h:panelGrid columns="2">
+                            <p:dataList id="partnersList" var="it" value="${obj.partners}" effectSpeed="fast">
+                                <p:column>
+                                    <h:outputText value="${it.displayName}" styleClass="e-link" onclick="#{it.clickAction}" />
+                                    <p:commandLink title="删除伙伴" update="partnersList">
+                                        <p:graphicImage value="${location.ICON}/etool16/delete_edit.gif" />
+                                        <p:collector value="${it}" removeFrom="${obj.partners}" />
+                                    </p:commandLink>
+                                </p:column>
+                            </p:dataList>
+                            <p:commandButton title="挑选工作伙伴" value="..." oncomplete="choosePartnerDialog.show();">
+                                <f:setPropertyActionListener target="${choosePrincipalDialogBean.stereo}"
+                                    value="U" />
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </t:panelGroup>
 
-            <h:outputLabel for="moreInfo" value="内容描述:" />
-            <t:panelGroup colspan="3">
-                <p:inputTextarea id="moreInfo" value="${obj.moreInfo}" style="width: 90%;"
-                    label="内容描述" />
-            </t:panelGroup>
 
-            <h:outputLabel for="spending" value="花费详细:" />
-            <t:panelGroup colspan="3">
-                <p:inputTextarea id="spending" value="${obj.spending}" style="width: 90%; height: 2em;"
-                    label="花费详细" />
-            </t:panelGroup>
 
-            <h:outputLabel for="chanceSubject" value="相关机会:" styleClass="e-link" onclick="#{obj.chance.clickAction}" />
-            <t:panelGroup id="correChance" colspan="3">
-                <p:inputText id="chanceSubject" readonly="true" value="${obj.chance.subject}" style="width: 30em"
-                    label="相关机会" />
-                <p:commandButton title="挑选机会" value="..." onclick="chooseChanceDialog.show();" />
-            </t:panelGroup>
+                    <h:outputText for="chanceSubject" value="相关机会:" styleClass="e-link" onclick="#{obj.chance.clickAction}" />
+                    <t:panelGroup id="correChance" colspan="3">
+                        <p:inputText id="chanceSubject" readonly="true" value="${obj.chance.subject}" style="width: 30em"
+                            label="相关机会" />
+                        <p:commandButton title="挑选机会" value="..." onclick="chooseChanceDialog.show();" />
+                    </t:panelGroup>
 
-            <h:outputLabel for="stage" value="机会阶段:" />
-            <t:panelGroup colspan="3">
-                <p:selectOneMenu id="stage" value="${obj.stage.id_OE}" label="机会阶段">
-                    <f:selectItem itemLabel="--请选择机会阶段--" itemValue="" />
-                    <f:selectItems value="${dicts.stages}" var="it" itemLabel="${it.label}" itemValue="${it.id}" />
-                </p:selectOneMenu>
-            </t:panelGroup>
+                    <h:outputLabel for="stage" value="机会阶段:" />
+                    <t:panelGroup colspan="3">
+                        <p:selectOneMenu id="stage" value="${obj.stage.id_OE}" label="机会阶段">
+                            <f:selectItem itemLabel="--请选择机会阶段--" itemValue="" />
+                            <f:selectItems value="${dicts.stages}" var="it" itemLabel="${it.label}"
+                                itemValue="${it.id}" />
+                        </p:selectOneMenu>
+                    </t:panelGroup>
+                </t:panelGrid>
+            </p:tab>
+            <p:tab title="详细" id="contentInfo">
+                <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
+                    <h:outputLabel for="moreInfo" value="内容描述:" />
+                    <t:panelGroup colspan="3">
+                        <p:inputTextarea id="moreInfo" value="${obj.moreInfo}" style="width: 300px; height:5em;"
+                            label="内容描述" />
+                    </t:panelGroup>
 
-        </t:panelGrid>
+                    <h:outputLabel for="spending" value="花费详细:" />
+                    <t:panelGroup colspan="3">
+                        <p:inputTextarea id="spending" value="${obj.spending}" style="width: 300px;height:5em;"
+                            label="花费详细" />
+                    </t:panelGroup>
+                </t:panelGrid>
+            </p:tab>
+
+            <p:tab title="针对性方案" id="suggestionInfo">
+                <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
+                    <t:panelGroup colspan="4">
+                        <p:inputTextarea value="${obj.suggestion}" style="width:100%; height:5em" label="针对性方案" />
+                    </t:panelGroup>
+
+                    <t:panelGroup colspan="2">
+                        <h:outputText value="批阅人" style="float:right" />
+                    </t:panelGroup>
+                    <p:inputText value="${obj.suggester.displayName}" readonly="true" />
+                    <p:commandButton value="..." onclick="choosePersonDialog.show();" />
+
+                    <t:panelGroup colspan="4">
+                        <p:separator id="separator" />
+                    </t:panelGroup>
+
+                    <t:panelGroup colspan="4">
+                        <p:selectBooleanCheckbox value="#{obj.read}" style="float:left" />
+                        <h:outputText value="我已阅读批阅" style="float:left" />
+                    </t:panelGroup>
+
+
+                </t:panelGrid>
+
+            </p:tab>
+        </p:tabView>
     </ui:define>
 
     <ui:define name="dialogs">
@@ -127,6 +163,8 @@
             actionListener="${bean.addParty}" update=":editDialog:form" />
         <icsf:choosePrincipalDialog id="choosePartnerDialog" var="choosePartnerDialog"
             header="选择工作伙伴" stereo="U" target="${bean.selectedPartner}" actionListener="${bean.addPartner}" update=":editDialog:form" />
+        <sem:choosePersonDialog id="choosePersonDialog" var="choosePersonDialog" header="选择批阅人员"
+            dialogBean="${chooseSuggesterDialogBean}" target="${obj.suggester}" update=":editDialog:form:tabView:suggestionInfo" />
     </ui:define>
 
     <ui:define name="searchPanel.keyword">

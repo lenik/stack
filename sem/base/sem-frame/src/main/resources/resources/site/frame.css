@@ -227,6 +227,10 @@ label {
     color: red;
 }
 
+.f-bold {
+    font-weight: bold;
+}
+
 .f-warning-bg {
     background: #fee;
 }

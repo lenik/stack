@@ -2,6 +2,8 @@ package com.bee32.sem.chance.web;
 
 import java.util.List;
 
+import org.springframework.util.StringUtils;
+
 import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.orm.annotation.ForEntity;
@@ -53,6 +55,24 @@ public class ChanceActionBean
                 DATA(Chance.class).saveOrUpdate(_chance);
             }
         }
+    }
+
+    @Override
+    protected boolean preUpdate(UnmarshalMap uMap)
+            throws Exception {
+        for (ChanceAction action : uMap.<ChanceAction> entitySet()) {
+            ChanceActionDto dto = uMap.getSourceDto(action);
+
+            boolean newSuggest = false;
+            if (!StringUtils.hasLength(action.getSuggestion()) && StringUtils.hasLength(dto.getSuggestion()))
+                newSuggest = true;
+            if (action.getSuggester() == null && dto.getSuggester() != null)
+                newSuggest = true;
+
+            if (newSuggest)
+                action.setRead(false);
+        }
+        return true;
     }
 
     public void addSubjectRestricion() {
