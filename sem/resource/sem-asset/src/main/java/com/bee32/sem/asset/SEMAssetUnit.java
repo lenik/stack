@@ -10,10 +10,6 @@ import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.asset.entity.AccountTicket;
 import com.bee32.sem.asset.entity.AccountTicketItem;
 import com.bee32.sem.asset.entity.BudgetRequest;
-import com.bee32.sem.asset.entity.StockPurchase;
-import com.bee32.sem.asset.entity.StockSale;
-import com.bee32.sem.asset.entity.StockTrade;
-import com.bee32.sem.asset.entity.StockTradeItem;
 import com.bee32.sem.inventory.SEMInventoryUnit;
 import com.bee32.sem.people.SEMPeopleUnit;
 import com.bee32.sem.world.SEMWorldUnit;
@@ -32,9 +28,5 @@ public class SEMAssetUnit
         add(AccountSnapshot.class);
         add(AccountSnapshotItem.class);
         add(BudgetRequest.class);
-        add(StockPurchase.class);
-        add(StockSale.class);
-        add(StockTrade.class);
-        add(StockTradeItem.class);
     }
 }

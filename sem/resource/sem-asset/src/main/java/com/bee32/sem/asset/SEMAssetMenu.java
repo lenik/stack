@@ -19,9 +19,6 @@ public class SEMAssetMenu
     MenuNode budgetRequestAdmin = entry(ASSET, 3, "budgetRequestAdmin", __.join("request/"));
     MenuNode accountTicketAdmin = entry(ASSET, 4, "accountTicketAdmin", __.join("ticket/"));
 
-//    MenuNode stockSaleAdmin = entry(ASSET, 5, "stockSaleAdmin", __.join("stock-trade/?type=SALE"));
-//    MenuNode stockPurchaseAdmin = entry(ASSET, 6, "stockPurchaseAdmin", __.join("stock-trade/?type=PURCHASE"));
-
     MenuNode assetQuery = entry(ASSET, 7, "assetQuery", __.join("query/"));
 
 }
