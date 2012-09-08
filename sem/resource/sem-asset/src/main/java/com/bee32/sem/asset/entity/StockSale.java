@@ -11,7 +11,7 @@ public class StockSale
     private static final long serialVersionUID = 1L;
 
     public StockSale() {
-        this.subject = predefined(AccountSubjects.class).s1131; // 销售入账单默认科目为应收账款
+        this.subject = predefined(AccountSubjects.class).s1122; // 销售入账单默认科目为应收账款
         this.debitSide = true;
     }
 

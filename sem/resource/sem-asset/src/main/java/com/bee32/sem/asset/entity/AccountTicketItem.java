@@ -19,7 +19,9 @@ import javax.persistence.Transient;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.config.DecimalConfig;
+import com.bee32.sem.people.entity.OrgUnit;
 import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.process.base.ProcessEntity;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
@@ -45,6 +47,8 @@ public class AccountTicketItem
     int index;
     AccountSubject subject;
     Party party;
+    Person person;
+    OrgUnit orgUnit;
     boolean debitSide;
     MCValue value = new MCValue();
     BigDecimal nativeValue;
@@ -135,7 +139,7 @@ public class AccountTicketItem
     }
 
     /**
-     * 借方或贷方对应的二级科目为客户或供应商或个人
+     * 借方或贷方对应的客户或供应商或个人
      */
     @ManyToOne
     public Party getParty() {
@@ -144,6 +148,30 @@ public class AccountTicketItem
 
     public void setParty(Party party) {
         this.party = party;
+    }
+
+    /**
+     * 企业内部经办人(业务员，采购员等)
+     * @return
+     */
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    /**
+     * 企业内部部门
+     * @return
+     */
+    public OrgUnit getOrgUnit() {
+        return orgUnit;
+    }
+
+    public void setOrgUnit(OrgUnit orgUnit) {
+        this.orgUnit = orgUnit;
     }
 
     /**

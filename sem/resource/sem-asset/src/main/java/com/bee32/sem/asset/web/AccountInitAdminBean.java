@@ -7,6 +7,7 @@ import com.bee32.sem.asset.dto.AccountSubjectDto;
 import com.bee32.sem.asset.entity.AccountInit;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.misc.ScrollEntityViewBean;
+import com.bee32.sem.service.PeopleService;
 
 @ForEntity(AccountInit.class)
 public class AccountInitAdminBean
@@ -16,6 +17,15 @@ public class AccountInitAdminBean
 
     public AccountInitAdminBean() {
         super(AccountInit.class, AccountInitDto.class, 0);
+    }
+
+    /**
+     * 在页面上使用，使用户选择部门时只出现本公司的部门
+     *
+     * @return
+     */
+    public Integer getSelfOrgId() {
+        return BEAN(PeopleService.class).getSelfOrg().getId();
     }
 
     //此方法内容为空，使去掉“发生于这个月”的条件限制，资产初始化不用这个限制

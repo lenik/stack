@@ -10,7 +10,10 @@ import com.bee32.plover.arch.util.IEnclosedObject;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.asset.entity.AccountTicketItem;
+import com.bee32.sem.people.dto.OrgDto;
+import com.bee32.sem.people.dto.OrgUnitDto;
 import com.bee32.sem.people.dto.PartyDto;
+import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.process.base.ProcessEntityDto;
 import com.bee32.sem.process.verify.dto.IVerifiableDto;
 import com.bee32.sem.world.monetary.MutableMCValue;
@@ -26,6 +29,8 @@ public class AccountTicketItemDto
 
     AccountSubjectDto subject;
     PartyDto party;
+    PersonDto person;
+    OrgUnitDto orgUnit;
 
     boolean debitSide;
     MutableMCValue value;
@@ -53,6 +58,8 @@ public class AccountTicketItemDto
 
         setSubject(mref(AccountSubjectDto.class, source.getSubject()));
         party = mref(PartyDto.class, source.getParty());
+        person = mref(PersonDto.class, source.getPerson());
+        orgUnit = mref(OrgUnitDto.class, source.getOrgUnit());
 
         debitSide = source.isDebitSide();
         if (isNegative())
@@ -68,6 +75,8 @@ public class AccountTicketItemDto
 
         merge(target, "subject", subject);
         merge(target, "party", party);
+        merge(target, "person", person);
+        merge(target, "orgUnit", orgUnit);
 
         target.setDebitSide(debitSide);
         if (isNegative())
@@ -155,6 +164,22 @@ public class AccountTicketItemDto
 
     public void setParty(PartyDto party) {
         this.party = party;
+    }
+
+    public PersonDto getPerson() {
+        return person;
+    }
+
+    public void setPerson(PersonDto person) {
+        this.person = person;
+    }
+
+    public OrgUnitDto getOrgUnit() {
+        return orgUnit;
+    }
+
+    public void setOrgUnit(OrgUnitDto orgUnit) {
+        this.orgUnit = orgUnit;
     }
 
     public MutableMCValue getValue() {

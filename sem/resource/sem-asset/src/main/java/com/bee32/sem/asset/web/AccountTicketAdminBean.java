@@ -8,6 +8,7 @@ import com.bee32.sem.asset.dto.AccountTicketItemDto;
 import com.bee32.sem.asset.entity.AccountTicket;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.misc.ScrollEntityViewBean;
+import com.bee32.sem.service.PeopleService;
 import com.bee32.sem.world.monetary.FxrQueryException;
 
 @ForEntity(AccountTicket.class)
@@ -18,6 +19,15 @@ public class AccountTicketAdminBean
 
     public AccountTicketAdminBean() {
         super(AccountTicket.class, AccountTicketDto.class, 0);
+    }
+
+    /**
+     * 在页面上使用，使用户选择部门时只出现本公司的部门
+     *
+     * @return
+     */
+    public Integer getSelfOrgId() {
+        return BEAN(PeopleService.class).getSelfOrg().getId();
     }
 
     public void findBudgetRequest() {

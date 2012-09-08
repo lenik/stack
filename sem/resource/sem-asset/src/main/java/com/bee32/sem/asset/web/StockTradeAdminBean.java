@@ -33,13 +33,13 @@ public class StockTradeAdminBean
                 typeName = "销售入账单";
                 setEntityType(StockSale.class);
                 setEntityDtoType(StockSaleDto.class);
-                subjectPrefix = BEAN(AccountSubjects.class).s1131.getId();
+                subjectPrefix = BEAN(AccountSubjects.class).s1122.getId();
                 break;
             case "PURCHASE":
                 typeName = "采购入账单";
                 setEntityType(StockPurchase.class);
                 setEntityDtoType(StockPurchaseDto.class);
-                subjectPrefix = BEAN(AccountSubjects.class).s2121.getId();
+                subjectPrefix = BEAN(AccountSubjects.class).s2202.getId();
                 break;
             default:
                 throw new IllegalUsageException("非正常方式进入入账单管理功能");

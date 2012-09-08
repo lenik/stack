@@ -47,14 +47,17 @@
                 <p:column headerText="会计科目">
                     <h:outputText value="#{entry.subject.label}" />
                 </p:column>
-                <p:column headerText="二级科目">
+                <p:column headerText="往来单位">
                     <h:outputText value="#{entry.party.displayName}" />
                 </p:column>
+                <p:column headerText="部门">
+                    <h:outputText value="#{entry.orgUnit.path}" />
+                </p:column>
+                <p:column headerText="经办人">
+                    <h:outputText value="#{entry.person.displayName}" />
+                </p:column>
                 <p:column headerText="借贷方向">
-                    <p:selectOneMenu value="#{entry.debitSide}" disabled="true" style="width:200px;" label="借贷方向">
-                        <f:selectItem itemValue="true" itemLabel="借方" />
-                        <f:selectItem itemValue="false" itemLabel="贷方" />
-                    </p:selectOneMenu>
+                    <h:outputText value="#{entry.debitSide ? '借方' : '贷方'}"/>
                 </p:column>
                 <p:column headerText="金额" styleClass="f-right">
                     <h:outputText value="#{entry.value}" />
@@ -77,7 +80,7 @@
                 </t:panelGroup>
 
                 <h:outputLabel value="会计科目" />
-                <t:panelGroup colspan="3">
+                <t:panelGroup>
                     <p:inputText id="accountSubject" value="#{item.pattern}" label="会计科目"/>
                     <p:commandButton
                         value="..."
@@ -87,20 +90,35 @@
                         <f:setPropertyActionListener target="#{chooseAccountSubjectDialogBean.pattern}" value="#{item.pattern}" />
                     </p:commandButton>
                 </t:panelGroup>
+                <h:outputLabel value="借贷方向" />
+                <p:selectOneRadio value="#{item.debitSide}" style="width:200px;" label="借贷方向">
+                    <f:selectItem itemValue="true" itemLabel="借方" />
+                    <f:selectItem itemValue="false" itemLabel="贷方" />
+                </p:selectOneRadio>
 
-                <h:outputLabel value="二级科目" />
+                <h:outputLabel value="往来单位" />
                 <t:panelGroup colspan="3">
-                    <p:inputText id="party" value="#{item.party.name}" readonly="true" label="二级科目"/>
+                    <p:inputText id="party" value="#{item.party.name}" readonly="true" label="往来单位"/>
                     <p:commandButton value="..." onclick="choosePartyDialog.show();" />
                 </t:panelGroup>
 
-                <h:outputLabel value="借贷方向" />
-                <t:panelGroup colspan="3">
-                    <p:selectOneRadio value="#{item.debitSide}" style="width:200px;" label="借贷方向">
-                        <f:selectItem itemValue="true" itemLabel="借方" />
-                        <f:selectItem itemValue="false" itemLabel="贷方" />
-                    </p:selectOneRadio>
+                <h:outputText value="部门" />
+                <t:panelGroup>
+                    <p:inputText id="orgUnit" label="部门" value="#{item.orgUnit.path}" readonly="true" />
+                    <p:commandButton value="..." onclick="waitbox.show()" oncomplete="waitbox.hide();chooseOrgUnitDialog.show()">
+                        <f:setPropertyActionListener target="#{chooseOrgUnitDialogBean.orgId}"
+                            value="#{bean.selfOrgId}" />
+                    </p:commandButton>
                 </t:panelGroup>
+                <h:outputLabel for="person" value="经办人" />
+                <h:panelGroup>
+                    <p:inputText id="person" readonly="true" value="#{item.person.displayName}" label="业务员" />
+                    <p:commandButton value="..." update=":choosePersonDialog:form" onclick="waitbox.show()"
+                        oncomplete="waitbox.hide();choosePersonDialog.show()">
+                        <f:setPropertyActionListener target="#{choosePersonDialogBean.employee}"
+                            value="true" />
+                    </p:commandButton>
+                </h:panelGroup>
 
                 <h:outputLabel for="value" value="金额" />
                 <p:inputText id="value" value="#{item.value.value}" label="金额"/>
@@ -115,8 +133,11 @@
         <sem:chooseBudgetRequestDialog id="c_request" target="#{obj.request}" update=":editDialog:form:budgetRequest" />
         <sem:chooseAccountSubjectDialog id="c_subject" target="#{itemObj.subject}"
             update=":itemsEditView:editForm:accountSubject" />
-        <sem:choosePartyDialog id="c_customer" header="选择客户作为二级科目" target="#{itemObj.party}"
+        <sem:choosePartyDialog id="c_customer" header="往来单位" target="#{itemObj.party}"
             update=":itemsEditView:editForm:party" />
+        <sem:chooseOrgUnitDialog id="c_orgunit" target="#{itemObj.orgUnit}" update=":itemsEditView:editForm:orgUnit" />
+        <sem:choosePersonDialog id="choosePersonDialog" var="choosePersonDialog" target="#{itemObj.person}"
+            update=":itemsEditView:editForm:person" />
     </ui:define>
 
 </ui:composition>

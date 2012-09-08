@@ -62,7 +62,7 @@ public abstract class CodeTreeEntityViewBean
             synchronized (this) {
                 if (nodeIndex == null) {
                     nodeIndex = new TreeNodeIndexer();
-                    nodeIndex.learn(rootNode);
+                    nodeIndex.learn(getRootNode());
                 }
             }
         }

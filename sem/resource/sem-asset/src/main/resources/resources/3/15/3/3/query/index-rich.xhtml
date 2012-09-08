@@ -10,7 +10,7 @@
     <ui:define name="content">
         <h:form id="mainForm">
             <t:panelGrid columns="4">
-                <h:outputText value="一级科目" styleClass="e-link" onclick="${bean.subject.cilckAction}" />
+                <h:outputText value="一级科目" styleClass="e-link" onclick="${bean.subject.cilckAction}"/>
                 <t:panelGrid columns="4">
                     <t:panelGrid columns="2">
                         <p:selectBooleanCheckbox value="#{bean.all}" label="选择全部"/>
@@ -20,9 +20,9 @@
                     <p:inputText id="accountSubject" value="#{bean.subject.label}" readonly="true" label="指定科目"/>
                     <p:commandButton value="..." onclick="chooseAccountSubjectDialog.show();" />
                 </t:panelGrid>
-                <h:outputText value="二级科目(客户/供应商/个人)" styleClass="e-link" onclick="${bean.party.cilckAction}"/>
+                <h:outputText value="往来单位" styleClass="e-link" onclick="${bean.party.cilckAction}"/>
                 <t:panelGrid columns="2">
-                    <p:inputText id="party" value="#{bean.party.name}" readonly="true" label="二级科目(客户/供应商/个人)"/>
+                    <p:inputText id="party" value="#{bean.party.name}" readonly="true" label="往来单位"/>
                     <p:commandButton value="..." onclick="choosePartyDialog.show();" />
                 </t:panelGrid>
 
@@ -42,7 +42,7 @@
                     <h:outputText value="#{item.subject.label}" />
                 </p:column>
 
-                <p:column headerText="二级科目">
+                <p:column headerText="往来单位">
                     <h:outputText value="#{item.party.displayName}" />
                 </p:column>
 
