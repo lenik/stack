@@ -9,12 +9,6 @@ public class ScoreLevelMapTest
         extends Assert {
 
     ScoreLevelMap ageMap;
-    {
-        ageMap = new ScoreLevelMap();
-        ageMap.put(10, "Teens");
-        ageMap.put(20, "More");
-        ageMap.put(100, "Hundreds");
-    }
 
     @Test
     public void testEncode() {

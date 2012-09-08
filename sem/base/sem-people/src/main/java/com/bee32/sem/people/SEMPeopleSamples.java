@@ -18,7 +18,6 @@ import com.bee32.sem.hr.entity.JobPosts;
 import com.bee32.sem.hr.entity.JobTitles;
 import com.bee32.sem.hr.entity.PersonEducationTypes;
 import com.bee32.sem.hr.entity.PersonSkill;
-import com.bee32.sem.hr.entity.PersonSkillCategories;
 import com.bee32.sem.people.entity.Contact;
 import com.bee32.sem.people.entity.ContactCategories;
 import com.bee32.sem.people.entity.Org;
@@ -148,7 +147,6 @@ public class SEMPeopleSamples
     JobTitles jobTitles = predefined(JobTitles.class);
     PersonEducationTypes educationTypes = predefined(PersonEducationTypes.class);
     JobPerformances jobPerformances = predefined(JobPerformances.class);
-    PersonSkillCategories personSkillCategories = predefined(PersonSkillCategories.class);
 
     @Override
     protected void wireUp() {
@@ -209,12 +207,10 @@ public class SEMPeopleSamples
         employee.setWorkAbility(1);
 
         englishSkill.setEmployeeInfo(employee);
-        englishSkill.setCategory(personSkillCategories.english);
         englishSkill.setScore(4);
         englishSkill.setDate(Calendar.getInstance().getTime());
 
         japaneseSkill.setEmployeeInfo(employee);
-        japaneseSkill.setCategory(personSkillCategories.japanese);
         japaneseSkill.setScore(2);
         japaneseSkill.setDate(Calendar.getInstance().getTime());
     }
