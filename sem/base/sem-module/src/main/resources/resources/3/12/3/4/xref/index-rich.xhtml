@@ -32,6 +32,11 @@
                 <p:column headerText="引用方简要" styleClass="f-wrappable">
                     <h:outputText value="#{entry.clientLabel}" />
                 </p:column>
+                <p:column headerText="参考" styleClass="f-wrappable">
+                    <h:panelGroup rendered="#{entry.clientClickAction != null}">
+                        <img onclick="#{entry.clientClickAction}" src="#{location.ICON}/obj16/welcome_item.gif" />
+                    </h:panelGroup>
+                </p:column>
             </p:dataTable>
         </h:form>
     </ui:define>
