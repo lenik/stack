@@ -262,4 +262,8 @@ label {
 .e-link {
     color: #44f;
     cursor: pointer;
+    padding-left: 16px;
+    background-image: url('http://st1.cdn.bee32.com/style/default/icons/obj16/inst_ptr.gif');
+    background-repeat: no-repeat;
+    background-position-y: 1px;
 }
