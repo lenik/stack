@@ -1,4 +1,37 @@
-SEM-1.9.3 (谢继雷, 2012-09-06)
+SEM-1.9.7 (谢继雷, 2012-09-11)
+	* 发布 SEM 1.9.7。
+	* 小狗GIF：通过参数 disposal method = replace 消除透明背景的摇尾时闪烁。
+	* Fixed #161: Using https url in frame.css.
+
+SEM-1.9.6 (朱挺峰, 2012-09-10)
+	* ChanceAction : add overflow
+
+SEM-1.9.5 (朱挺峰, 谢继雷, 金卫林, 2012-09-08)
+	* 销售机会：日志增加批注功能。
+	* Salary : remove bad PersonSkillCategory samples and Tests.
+	* 修正员工技能补贴不能保存问题。
+	* Moved salary pages to 3/15/6/4.
+	* Added navigation support in xref page.
+	* cilck => click
+	* 凭证条目中加入内部部门，业务员/采购圆，全球统计
+	* Added bullet arrow to e-link items.
+
+SEM-1.9.4 (朱挺峰, 谢继雷, 2012-09-07)
+	* Added e-link style class.
+	* 在所有页面上增加实体的详细信息链接。
+
+SEM-1.9.3 (朱挺峰, 谢继雷, 2012-09-06)
+	* NLS SalaryVariableProvides.
+	* Removed param VARIABLE_NAMES.
+	* NLS updated.
+	* Collected SalaryVariableProviders.
+	* 以树的形式显示工资变量。
+	* Salary : removed getEntityType() from SalaryVariableProviders .
+	* 修正事件补贴中参数类型错误
+	* 事件补贴->奖惩事件 EmployeeVariableProvider: add variable     @奖金     @罚金
+	* 改正养老金不能正确显示的错误
+	* 改正页面中补贴字段
+	* 雇员模块：修正编辑对话框和列表中的元素对应关系。
 	* Using author-date instead of commit date.
 
 SEM-1.9.2 (朱挺峰, 谢继雷, 2012-09-05)

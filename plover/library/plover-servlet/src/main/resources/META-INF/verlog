@@ -1,4 +1,11 @@
-Plover-3.3.2 (谢继雷, 2012-09-06)
+Plover-3.3.4 (谢继雷, 2012-09-11)
+	* 发布 SEM 1.9.7。
+
+Plover-3.3.3 (谢继雷, 2012-09-07)
+	* Enabled index-rich controller by default.
+
+Plover-3.3.2 (朱挺峰, 谢继雷, 2012-09-06)
+	* NLS updated.
 	* Using author-date instead of commit date.
 
 Plover-3.3.1 (谢继雷, 2012-09-05)
