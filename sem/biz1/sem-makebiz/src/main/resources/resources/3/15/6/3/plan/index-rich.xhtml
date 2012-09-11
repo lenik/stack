@@ -148,7 +148,7 @@
                     <f:convertNumber pattern="#0.00"/>
                 </h:outputText>
 
-                <h:outputLabel value="优选供应商" styleClass="e-link" onclick="#{item.preferredSupplier.clickAction}" />
+                <h:outputText value="优选供应商" styleClass="e-link" onclick="#{item.preferredSupplier.clickAction}" />
                 <t:panelGroup>
                     <p:inputText id="preferredSupplier" value="#{item.preferredSupplier.displayName}"
                         readonly="true" label="优选供应商"/>

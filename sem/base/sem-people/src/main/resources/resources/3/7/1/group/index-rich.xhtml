@@ -31,7 +31,7 @@
 
     <ui:define name="editDialogContent">
         <h:panelGrid columns="2" columnClasses="field-label, field-content">
-            <h:outputLabel for="inheritedGroup" value="继承的组" styleClass="e-link" onclick="${obj.inheritedGroup.clickAction}"/>
+            <h:outputText for="inheritedGroup" value="继承的组" styleClass="e-link" onclick="${obj.inheritedGroup.clickAction}"/>
             <h:panelGrid columns="3">
                 <p:inputText value="#{obj.inheritedGroup.name}" disabled="true" label="继承的组" />
                 <p:commandButton value="..." oncomplete="chooseInheritedGroupDialog.show();">

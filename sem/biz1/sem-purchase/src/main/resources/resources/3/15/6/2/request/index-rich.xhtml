@@ -151,7 +151,7 @@
                 <h:outputLabel for="quantity" value="采购数量：" />
                 <p:inputText id="quantity" value="#{item.quantity}" />
 
-                <h:outputLabel value="优选供应商：" styleClass="e-link" onclick="#{item.preferredSupplier.clickAction}"/>
+                <h:outputText value="优选供应商：" styleClass="e-link" onclick="#{item.preferredSupplier.clickAction}"/>
                 <h:panelGroup>
                     <p:inputText id="supplier" value="#{item.preferredSupplier.displayName}" disabled="true" />
                     <p:commandButton value="..." oncomplete="choosePreferredSupplierDialog.show()">
@@ -169,7 +169,7 @@
                     <f:selectItems value="#{stock.warehouseSelectItems}" />
                 </p:selectOneMenu>
 
-                <h:outputLabel for="acceptedInquiry" value="采购建议:" styleClass="e-link" onclick="#{item.acceptedInquiry.clickAction}" />
+                <h:outputText for="acceptedInquiry" value="采购建议:" styleClass="e-link" onclick="#{item.acceptedInquiry.clickAction}" />
                 <h:panelGroup>
                     <p:inputText id="acceptedInquiry" value="#{item.acceptedInquiry.supplier.label}(#{item.acceptedInquiry.price})" disabled="true" />
                     <p:commandButton value="..." oncomplete="choosePurchaseInquiryDialog.show()">

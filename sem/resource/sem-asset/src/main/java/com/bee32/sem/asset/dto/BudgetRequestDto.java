@@ -6,12 +6,12 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.util.TextUtil;
-import com.bee32.sem.asset.entity.BudgetRequest;
+import com.bee32.sem.asset.entity.FundFlow;
 import com.bee32.sem.process.base.ProcessEntityDto;
 import com.bee32.sem.world.monetary.MutableMCValue;
 
 public class BudgetRequestDto
-        extends ProcessEntityDto<BudgetRequest> {
+        extends ProcessEntityDto<FundFlow> {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,14 +20,14 @@ public class BudgetRequestDto
     AccountTicketDto ticket;
 
     @Override
-    protected void _marshal(BudgetRequest source) {
+    protected void _marshal(FundFlow source) {
         text = source.getText();
         value = source.getValue().toMutable();
         ticket = mref(AccountTicketDto.class, source.getTicket());
     }
 
     @Override
-    protected void _unmarshalTo(BudgetRequest target) {
+    protected void _unmarshalTo(FundFlow target) {
         target.setText(text);
         target.setValue(value);
         merge(target, "ticket", ticket);
@@ -39,7 +39,7 @@ public class BudgetRequestDto
         throw new NotImplementedException();
     }
 
-    @NLength(min = 10, max = BudgetRequest.TEXT_LENGTH)
+    @NLength(min = 10, max = FundFlow.TEXT_LENGTH)
     public String getText() {
         return text;
     }

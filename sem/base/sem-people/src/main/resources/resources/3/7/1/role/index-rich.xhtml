@@ -31,7 +31,7 @@
 
     <ui:define name="editDialogContent">
         <h:panelGrid columns="2" columnClasses="field-label, field-content">
-            <h:outputLabel for="inheritedRole" value="继承的角色" styleClass="e-link" onclick="${obj.inheritedRole.clickAction}" />
+            <h:outputText for="inheritedRole" value="继承的角色" styleClass="e-link" onclick="${obj.inheritedRole.clickAction}" />
             <h:panelGrid columns="3">
                 <p:inputText value="#{obj.inheritedRole.name}" disabled="true" label="继承的角色" />
                 <p:commandButton value="..." oncomplete="chooseInheritedRoleDialog.show();">

@@ -225,7 +225,7 @@
             <p:tabView id="tv">
                 <p:tab title="基本信息">
                     <h:panelGrid columns="2">
-                        <h:outputLabel for="parentOrgUnit" value="上级部门" styleClass="e-link"
+                        <h:outputText for="parentOrgUnit" value="上级部门" styleClass="e-link"
                             onclick="${item.parent.clickAction}" />
                         <h:panelGroup>
                             <p:inputText id="parentOrgUnit" value="#{item.parent.label}" disabled="true"
@@ -251,7 +251,7 @@
                 <h:outputLabel for="orgName" value="对应公司" />
                 <h:outputText id="orgName" value="#{item.org.displayName}" />
 
-                <h:outputLabel for="orgUnitName" value="对应部门" styleClass="e-link" onclick="${item.orgUnit.clickAction}" />
+                <h:outputText for="orgUnitName" value="对应部门" styleClass="e-link" onclick="${item.orgUnit.clickAction}" />
                 <h:panelGrid columns="2">
                     <p:inputText id="orgUnitName" value="#{item.orgUnit.label}" disabled="true" label="对应部门" />
                     <p:commandButton value="..." oncomplete="chooseRoleOrgUnitDialog.show();">
@@ -260,7 +260,7 @@
                     </p:commandButton>
                 </h:panelGrid>
 
-                <h:outputLabel for="person" value="对应人员" styleClass="e-link" onclick="${item.person.clickAction}" />
+                <h:outputText for="person" value="对应人员" styleClass="e-link" onclick="${item.person.clickAction}" />
                 <h:panelGrid columns="3">
                     <h:inputHidden label="对应人员" value="#{item.person.id_RZ}" />
                     <h:outputText value="#{item.person.displayName}" />

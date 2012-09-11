@@ -21,7 +21,7 @@
                     <f:selectItems value="#{stock.warehouseSelectItems}" />
                 </p:selectOneMenu>
 
-                <h:outputLabel for="transferredBy" value="调拨人员" styleClass="e-link" onclick="#{obj.transferrdBy.clickAction}" />
+                <h:outputText for="transferredBy" value="调拨人员" styleClass="e-link" onclick="#{obj.transferrdBy.clickAction}" />
                 <h:panelGroup>
                     <p:inputText id="transferredby" readonly="true" value="#{job.transferredBy.displayName}"
                         style="width: 20em;" label="调拨人员" />

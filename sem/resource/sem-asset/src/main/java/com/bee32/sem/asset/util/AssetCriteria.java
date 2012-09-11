@@ -15,7 +15,7 @@ import com.bee32.plover.criteria.hibernate.LeftHand;
 import com.bee32.sem.asset.entity.AccountSnapshot;
 import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.asset.entity.AccountTicketItem;
-import com.bee32.sem.asset.entity.BudgetRequest;
+import com.bee32.sem.asset.entity.FundFlow;
 import com.bee32.sem.asset.service.AssetQueryOptions;
 import com.bee32.sem.process.verify.util.VerifyCriteria;
 
@@ -30,7 +30,7 @@ public class AssetCriteria
                 descOrder("endTime"));
     }
 
-    @LeftHand(BudgetRequest.class)
+    @LeftHand(FundFlow.class)
     public static ICriteriaElement haveNoCorrespondingTicket() {
         return compose(alias("ticket", "ticket", CriteriaSpecification.LEFT_JOIN), //
                 new IsNull("ticket.id"));

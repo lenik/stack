@@ -9,7 +9,7 @@ import com.bee32.sem.asset.entity.AccountSnapshotItem;
 import com.bee32.sem.asset.entity.AccountSubject;
 import com.bee32.sem.asset.entity.AccountTicket;
 import com.bee32.sem.asset.entity.AccountTicketItem;
-import com.bee32.sem.asset.entity.BudgetRequest;
+import com.bee32.sem.asset.entity.FundFlow;
 import com.bee32.sem.inventory.SEMInventoryUnit;
 import com.bee32.sem.people.SEMPeopleUnit;
 import com.bee32.sem.world.SEMWorldUnit;
@@ -27,6 +27,6 @@ public class SEMAssetUnit
         add(AccountTicketItem.class);
         add(AccountSnapshot.class);
         add(AccountSnapshotItem.class);
-        add(BudgetRequest.class);
+        add(FundFlow.class);
     }
 }

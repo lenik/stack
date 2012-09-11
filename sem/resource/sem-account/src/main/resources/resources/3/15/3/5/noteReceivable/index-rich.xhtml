@@ -134,7 +134,7 @@
                         value="#{bean.selfOrgId}" />
                 </p:commandButton>
             </t:panelGroup>
-            <h:outputLabel for="person" value="业务员" styleClass="e-link" onclick="#{obj.person.clickAction}" />
+            <h:outputText for="person" value="业务员" styleClass="e-link" onclick="#{obj.person.clickAction}" />
             <h:panelGroup>
                 <p:inputText id="person" readonly="true" value="#{obj.person.displayName}" label="业务员" />
                 <p:commandButton value="..." update=":choosePersonDialog:form" onclick="waitbox.show()"

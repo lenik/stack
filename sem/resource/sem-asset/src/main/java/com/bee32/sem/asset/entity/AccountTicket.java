@@ -45,7 +45,7 @@ public class AccountTicket
     transient MCVector total; // Redundant
     BigDecimal nativeTotal; // Redundant.
 
-    BudgetRequest request;
+    FundFlow request;
     SingleVerifierWithNumberSupport verifyContext;
 
     public AccountTicket() {
@@ -130,12 +130,12 @@ public class AccountTicket
             items.get(index).setIndex(index);
     }
 
-    @OneToOne
-    public BudgetRequest getRequest() {
+    @OneToOne(mappedBy = "ticket")
+    public FundFlow getRequest() {
         return request;
     }
 
-    public void setRequest(BudgetRequest request) {
+    public void setRequest(FundFlow request) {
         this.request = request;
     }
 

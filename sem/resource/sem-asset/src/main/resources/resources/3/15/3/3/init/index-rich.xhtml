@@ -41,7 +41,7 @@
         <fr:listView id="itemsEditView" header="凭证项目" style="editDialog" indexView=":editDialog:form:itemsIndexView"
             mbean="#{bean.itemsMBean}" readonly="#{not bean.editing}">
             <t:panelGrid columns="4">
-                <h:outputLabel value="会计科目" styleClass="e-link" onclick="${item.subject.clickAction}"/>
+                <h:outputText value="会计科目" styleClass="e-link" onclick="${item.subject.clickAction}"/>
                 <t:panelGroup>
                     <p:inputText id="accountSubject" value="#{item.pattern}" label="会计科目"/>
                     <p:commandButton
@@ -58,7 +58,7 @@
                     <f:selectItem itemValue="false" itemLabel="贷方" />
                 </p:selectOneRadio>
 
-                <h:outputLabel value="往来单位" styleClass="e-link" onclick="${item.party.clickAction}"/>
+                <h:outputText value="往来单位" styleClass="e-link" onclick="${item.party.clickAction}"/>
                 <t:panelGroup colspan="3">
                     <p:inputText id="party" value="#{item.party.name}" readonly="true" label="往来单位"/>
                     <p:commandButton value="..." onclick="choosePartyDialog.show();" />
@@ -72,7 +72,7 @@
                             value="#{bean.selfOrgId}" />
                     </p:commandButton>
                 </t:panelGroup>
-                <h:outputLabel for="person" value="经办人" styleClass="e-link" onclick="${item.person.clickAction}"/>
+                <h:outputText for="person" value="经办人" styleClass="e-link" onclick="${item.person.clickAction}"/>
                 <h:panelGroup>
                     <p:inputText id="person" readonly="true" value="#{item.person.displayName}" label="业务员" />
                     <p:commandButton value="..." update=":choosePersonDialog:form" onclick="waitbox.show()"

@@ -53,7 +53,7 @@
                     <h:outputLabel for="quantity" value="采购数量：" />
                     <p:inputText id="quantity" value="#{obj.quantity}" />
 
-                    <h:outputLabel value="优选供应商：" styleClass="e-link" onclick="#{obj.preferredSupplier.clickAction}" />
+                    <h:outputText value="优选供应商：" styleClass="e-link" onclick="#{obj.preferredSupplier.clickAction}" />
                     <t:panelGroup>
                         <p:inputText id="supplier" value="#{obj.preferredSupplier.displayName}" readonly="true" />
                         <p:commandButton value="..." oncomplete="choosePreferredSupplierDialog.show()">
@@ -107,7 +107,7 @@
         <fr:listView id="inquiriesEditView" header="询价信息" style="editDialog" indexView=":editDialog:form:tv:inquiriesIndexView"
             mbean="#{bean.inquiriesMBean}" readonly="#{not bean.editing}">
             <t:panelGrid columns="2" columnClasses="field-label, field-content">
-                <h:outputLabel for="supplier" value="供应商：" styleClass="e-link" onclick="#{item.supplier.clickAction}"/>
+                <h:outputText for="supplier" value="供应商：" styleClass="e-link" onclick="#{item.supplier.clickAction}"/>
                 <t:panelGroup>
                     <p:inputText id="supplier" value="#{item.supplier.displayName}" disabled="true" style="width: 20em" />
                     <p:commandButton value="..." oncomplete="chooseSupplierDialog.show()" >

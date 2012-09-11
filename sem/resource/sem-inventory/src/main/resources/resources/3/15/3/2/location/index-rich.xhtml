@@ -31,7 +31,7 @@
 
     <ui:define name="editDialogContent">
         <t:panelGrid columns="2">
-            <h:outputLabel value="所属库位" styleClass="e-link" onclick="#{obj.parent.clickAction}" />
+            <h:outputText value="所属库位" styleClass="e-link" onclick="#{obj.parent.clickAction}" />
             <h:panelGrid columns="2">
                 <p:inputText value="#{obj.parent.label}" disabled="true" label="所属库位" />
                 <p:commandButton value="..." onclick="chooseStockLocationDialog.show();" />
