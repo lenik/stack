@@ -11,7 +11,7 @@ import com.bee32.sem.salary.entity.SalaryElementDef;
 @Oid({ 3, 15, SEMOids.Biz1, SEMOids.biz1.Wage })
 public class SEMSalaryModule
         extends EnterpriseModule {
-    public static final String PREFIX = "/3/15/1/6";
+    public static final String PREFIX = "/3/15/6/4";
     public static final String PREFIX_ = PREFIX + "/";
 
     @Override
