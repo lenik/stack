@@ -1,7 +1,7 @@
 package com.bee32.sem.asset.web;
 
 import com.bee32.plover.orm.annotation.ForEntity;
-import com.bee32.sem.asset.dto.BudgetRequestDto;
+import com.bee32.sem.asset.dto.FundFlowDto;
 import com.bee32.sem.asset.entity.FundFlow;
 import com.bee32.sem.misc.ScrollEntityViewBean;
 
@@ -12,7 +12,7 @@ public class BudgetRequestAdminBean
     private static final long serialVersionUID = 1L;
 
     public BudgetRequestAdminBean() {
-        super(FundFlow.class, BudgetRequestDto.class, 0);
+        super(FundFlow.class, FundFlowDto.class, 0);
     }
 
 }

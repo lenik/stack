@@ -21,7 +21,7 @@ public class AccountTicketDto
     public static final int ITEMS = 0x10000;
 
     List<AccountTicketItemDto> items;
-    BudgetRequestDto request;
+    FundFlowDto request;
 
 
     @Override
@@ -36,7 +36,7 @@ public class AccountTicketDto
         else
             items = Collections.emptyList();
 
-        request = mref(BudgetRequestDto.class, source.getRequest());
+        request = mref(FundFlowDto.class, source.getRequest());
     }
 
     @Override
@@ -94,11 +94,11 @@ public class AccountTicketDto
             items.get(index).setIndex(index);
     }
 
-    public BudgetRequestDto getRequest() {
+    public FundFlowDto getRequest() {
         return request;
     }
 
-    public void setRequest(BudgetRequestDto request) {
+    public void setRequest(FundFlowDto request) {
         this.request = request;
     }
 

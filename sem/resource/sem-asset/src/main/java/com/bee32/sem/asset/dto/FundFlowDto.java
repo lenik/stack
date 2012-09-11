@@ -1,5 +1,7 @@
 package com.bee32.sem.asset.dto;
 
+import java.math.BigDecimal;
+
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
@@ -7,20 +9,26 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.asset.entity.FundFlow;
+import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.process.base.ProcessEntityDto;
+import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MutableMCValue;
 
-public class BudgetRequestDto
+public class FundFlowDto
         extends ProcessEntityDto<FundFlow> {
 
     private static final long serialVersionUID = 1L;
 
+    PersonDto operator;
     String text;
     MutableMCValue value;
     AccountTicketDto ticket;
 
+    BigDecimal nativeValue;
+
     @Override
     protected void _marshal(FundFlow source) {
+        operator = mref(PersonDto.class, source.getOperator());
         text = source.getText();
         value = source.getValue().toMutable();
         ticket = mref(AccountTicketDto.class, source.getTicket());
@@ -28,6 +36,7 @@ public class BudgetRequestDto
 
     @Override
     protected void _unmarshalTo(FundFlow target) {
+        merge(target, "operator", operator);
         target.setText(text);
         target.setValue(value);
         merge(target, "ticket", ticket);
@@ -37,6 +46,14 @@ public class BudgetRequestDto
     protected void _parse(TextMap map)
             throws ParseException {
         throw new NotImplementedException();
+    }
+
+    public PersonDto getOperator() {
+        return operator;
+    }
+
+    public void setOperator(PersonDto operator) {
+        this.operator = operator;
     }
 
     @NLength(min = 10, max = FundFlow.TEXT_LENGTH)
@@ -56,6 +73,7 @@ public class BudgetRequestDto
         if (value == null)
             throw new NullPointerException("value");
         this.value = value;
+        nativeValue = null;
     }
 
     public AccountTicketDto getTicket() {
@@ -68,6 +86,14 @@ public class BudgetRequestDto
 
     public String getCreator() {
         return this.getOwnerDisplayName();
+    }
+
+    public BigDecimal getNativeValue()
+            throws FxrQueryException {
+        if (nativeValue == null) {
+            nativeValue = value.getNativeValue(getCreatedDate());
+        }
+        return nativeValue;
     }
 
 }
