@@ -93,6 +93,8 @@ public class VerifyEvalState
     }
 
     public static VerifyEvalState meet(List<? extends IVerifiableDto> verifiables) {
+        if (verifiables == null)
+            throw new NullPointerException("verifiables");
         VerifyEvalState[] statev = new VerifyEvalState[verifiables.size()];
         int index = 0;
         for (IVerifiableDto verifiable : verifiables)

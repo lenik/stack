@@ -8,34 +8,35 @@
     <ui:param name="bean" value="#{assetQueryBean}" />
 
     <ui:define name="content">
+
+
+
         <h:form id="mainForm">
-            <t:panelGrid columns="4">
-                <h:outputText value="一级科目" styleClass="e-link" onclick="${bean.subject.clickAction}"/>
+            <p:panel>
                 <t:panelGrid columns="4">
-                    <t:panelGrid columns="2">
-                        <p:selectBooleanCheckbox value="#{bean.all}" label="选择全部"/>
-                        <h:outputText value="全部" />
+                    <h:outputText value="一级科目" styleClass="e-link" onclick="${bean.subject.clickAction}"/>
+                    <t:panelGrid columns="4">
+                        <t:panelGrid columns="2">
+                            <p:selectBooleanCheckbox value="#{bean.all}" label="选择全部"/>
+                            <h:outputText value="全部" />
+                        </t:panelGrid>
+                        <h:outputText value="/" />
+                        <p:inputText id="accountSubject" value="#{bean.subject.label}" readonly="true" label="指定科目"/>
+                        <p:commandButton value="..." onclick="chooseAccountSubjectDialog.show();" />
                     </t:panelGrid>
-                    <h:outputText value="/" />
-                    <p:inputText id="accountSubject" value="#{bean.subject.label}" readonly="true" label="指定科目"/>
-                    <p:commandButton value="..." onclick="chooseAccountSubjectDialog.show();" />
-                </t:panelGrid>
-                <h:outputText value="往来单位" styleClass="e-link" onclick="${bean.party.clickAction}"/>
-                <t:panelGrid columns="2">
-                    <p:inputText id="party" value="#{bean.party.name}" readonly="true" label="往来单位"/>
-                    <p:commandButton value="..." onclick="choosePartyDialog.show();" />
-                </t:panelGrid>
+                    <h:outputText value="往来单位" styleClass="e-link" onclick="${bean.party.clickAction}"/>
+                    <t:panelGrid columns="2">
+                        <p:inputText id="party" value="#{bean.party.name}" readonly="true" label="往来单位"/>
+                        <p:commandButton value="..." onclick="choosePartyDialog.show();" />
+                    </t:panelGrid>
 
-                <h:outputText value="截止时间" />
-                <p:calendar navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{bean.toDate}"
-                    showOn="button" label="截止时间"/>
-                <t:panelGroup />
-                <t:panelGroup />
-
-                <t:panelGroup colspan="4">
+                    <h:outputText value="截止时间" />
+                    <p:calendar navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{bean.toDate}"
+                        showOn="button" label="截止时间"/>
                     <p:commandButton update="mainForm:result" value="查询" actionListener="#{bean.query}" />
-                </t:panelGroup>
-            </t:panelGrid>
+                    <t:panelGroup />
+                </t:panelGrid>
+            </p:panel>
 
             <p:treeTable id="result" value="#{bean.root}" var="item">
                 <p:column headerText="会计科目">
@@ -56,6 +57,7 @@
 
             </p:treeTable>
         </h:form>
+
 
         <sem:chooseAccountSubjectDialog id="c_subject" target="#{bean.subject}" update=":mainForm" />
         <sem:choosePartyDialog id="c_party" target="#{bean.party}" update=":mainForm" />

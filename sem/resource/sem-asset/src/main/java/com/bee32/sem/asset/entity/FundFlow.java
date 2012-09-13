@@ -14,12 +14,14 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import com.bee32.plover.orm.cache.Redundant;
+import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.util.i18n.CurrencyConfig;
 import com.bee32.sem.people.entity.Person;
-import com.bee32.sem.process.base.ProcessEntity;
+import com.bee32.sem.process.verify.builtin.IJudgeNumber;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 
@@ -35,8 +37,8 @@ import com.bee32.sem.world.monetary.MCValue;
 @DiscriminatorValue("-")
 @SequenceGenerator(name = "idgen", sequenceName = "fund_flow_seq", allocationSize = 1)
 public class FundFlow
-        extends ProcessEntity
-        implements DecimalConfig {
+        extends MomentInterval
+        implements DecimalConfig, IJudgeNumber {
 
     private static final long serialVersionUID = 1L;
 
@@ -134,6 +136,22 @@ public class FundFlow
 
     public void setTicket(AccountTicket ticket) {
         this.ticket = ticket;
+    }
+
+    @Transient
+    @Override
+    public String getNumberDescription() {
+        return "金额";
+    }
+
+    @Transient
+    @Override
+    public Number getJudgeNumber() {
+        try {
+            return getNativeValue();
+        } catch (FxrQueryException e) {
+            return 0;
+        }
     }
 
 }

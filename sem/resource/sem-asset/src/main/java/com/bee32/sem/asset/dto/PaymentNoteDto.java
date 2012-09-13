@@ -6,12 +6,18 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.asset.entity.FundFlow;
 import com.bee32.sem.asset.entity.PaymentNote;
 import com.bee32.sem.people.dto.PersonDto;
+import com.bee32.sem.process.verify.builtin.dto.SingleVerifierWithNumberSupportDto;
+import com.bee32.sem.process.verify.dto.IVerifiableDto;
 
-public class PaymentNoteDto extends FundFlowDto {
+public class PaymentNoteDto
+    extends FundFlowDto
+    implements IVerifiableDto {
 
     private static final long serialVersionUID = 1L;
 
     PersonDto whoPay;
+
+    SingleVerifierWithNumberSupportDto singleVerifierWithNumberSupport;
 
     public PaymentNoteDto() {
         super();
@@ -24,6 +30,8 @@ public class PaymentNoteDto extends FundFlowDto {
         PaymentNote source = (PaymentNote)_source;
 
         whoPay = mref(PersonDto.class, source.getWhoPay());
+
+        singleVerifierWithNumberSupport = marshal(SingleVerifierWithNumberSupportDto.class, source.getVerifyContext());
     }
 
     @Override
@@ -47,5 +55,13 @@ public class PaymentNoteDto extends FundFlowDto {
         this.whoPay = whoPay;
     }
 
+    @Override
+    public SingleVerifierWithNumberSupportDto getVerifyContext() {
+        return singleVerifierWithNumberSupport;
+    }
+
+    public void setVerifyContext(SingleVerifierWithNumberSupportDto singleVerifierWithNumberSupport) {
+        this.singleVerifierWithNumberSupport = singleVerifierWithNumberSupport;
+    }
 
 }

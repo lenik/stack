@@ -4,7 +4,8 @@ import com.bee32.plover.pub.oid.Oid;
 import com.bee32.sem.SEMOids;
 import com.bee32.sem.asset.entity.AccountInit;
 import com.bee32.sem.asset.entity.AccountTicket;
-import com.bee32.sem.asset.entity.FundFlow;
+import com.bee32.sem.asset.entity.CreditNote;
+import com.bee32.sem.asset.entity.PaymentNote;
 import com.bee32.sem.module.EnterpriseModule;
 
 @Oid({ 3, 15, SEMOids.Resource, SEMOids.resource.Asset })
@@ -18,7 +19,8 @@ public class SEMAssetModule
     protected void preamble() {
         declareEntityPages(AccountInit.class, "init");
         declareEntityPages(AccountTicket.class, "ticket");
-        declareEntityPages(FundFlow.class, "request");
+        declareEntityPages(CreditNote.class, "creditNote");
+        declareEntityPages(PaymentNote.class, "paymentNote");
     }
 
 }

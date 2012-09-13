@@ -7,15 +7,15 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
+import com.bee32.plover.ox1.color.MomentIntervalDto;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.asset.entity.FundFlow;
 import com.bee32.sem.people.dto.PersonDto;
-import com.bee32.sem.process.base.ProcessEntityDto;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MutableMCValue;
 
 public class FundFlowDto
-        extends ProcessEntityDto<FundFlow> {
+        extends MomentIntervalDto<FundFlow> {
 
     private static final long serialVersionUID = 1L;
 
@@ -56,7 +56,7 @@ public class FundFlowDto
         this.operator = operator;
     }
 
-    @NLength(min = 10, max = FundFlow.TEXT_LENGTH)
+    @NLength(min = 1, max = FundFlow.TEXT_LENGTH)
     public String getText() {
         return text;
     }
