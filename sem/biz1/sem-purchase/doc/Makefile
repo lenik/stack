@@ -1,4 +1,4 @@
-include ../manualdoc-1.mk
+include ../../../../inc/manualdoc-1.mk
 
 TITLE    = SEM-Purchase
 SUBTITLE = 公司采购管理

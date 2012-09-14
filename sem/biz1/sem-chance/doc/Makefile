@@ -1,4 +1,4 @@
-include ../manualdoc-1.mk
+include ../../../../inc/manualdoc-1.mk
 
 TITLE    = SEM-Chance
 SUBTITLE = 销售机会管理

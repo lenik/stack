@@ -1,4 +1,4 @@
-include ../manualdoc-1.mk
+include ../../../../inc/manualdoc-1.mk
 
 TITLE    = SEM-File
 SUBTITLE = 文件管理
