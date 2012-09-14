@@ -85,6 +85,7 @@
         （略）
     }{
         \begin{enumerate}
+            \addtolength{\leftskip}{8mm}
             #2
         \end{enumerate}
     }
@@ -115,7 +116,7 @@
                 string replace={MomentInterval}{记录},
                 string replace={Ext}{高级},
                 },
-        columns/3/.style={ column name={设计规模}, column type=r, min exponent for 1000 sep=2 },
+        columns/3/.style={ column name={设计规模}, column type=r, std=0:6 },
         columns/4/.style={ column name={预置数据}, string type,
             preproc cell content/.code={
                 \pgfkeyssetvalue{/pgfplots/table/@cell content}{
