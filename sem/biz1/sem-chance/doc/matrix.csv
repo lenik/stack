@@ -1,0 +1,13 @@
+Chance,销售机会,Process,100000,10,V
+ChanceAction,行动日志, Process,500000,10,V
+ChanceActionStyle,洽谈类型,Dict,100,10,C
+ChanceCategory,机会类型,Dict,100,10,C
+ChanceCompetitor,竞争对手,UI,10000,5,
+ChanceParty,机会客户,C,100000,5,
+ChanceSourceType,机会来源,Dict,100,10,C
+ChanceStage,机会阶段,Dict,100,10,C
+ProcureMethod,供货方式,Dict,50,5,C
+PurchaseRegulation,采购原则,Dtic,50,5,C
+WantedProduct,选型明细,Ext,10000,5,
+WantedProductAttribute,选型属性,E,50000,10,
+WantedProductQuotation,报价,MomentInterval,10000,10,

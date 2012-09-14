@@ -1,0 +1,4 @@
+FileAttribute, 文件属性,E,100000,20,
+FileBlob,文件数据,UI,10000,5,
+UserFile,用户文件,UI,10000,10,
+UserFileTagname,用户文件标签,UI,1000,10,

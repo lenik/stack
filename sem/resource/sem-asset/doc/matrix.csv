@@ -1,0 +1,10 @@
+AccountInit,账户初始化,Process,1000,10,V
+AccountInitItem,账户初始化项目,Process,5000,10,V
+AccountSnapshot,账户快照,MomentInterval,1000,5,
+AccountSnapshotItem,账户快照项目,MomentInterval,5000,10,
+AccountSubject,科目,Dict,500,40,C
+AccountTicket,会计凭证,Process,100000,30,V
+AccountTicketItem,会计凭证项目,Process,500000,10,V
+CreditNote,收款单,Process,500000,10,V
+FundFlow,资金流,Process,500000,10,V
+PaymentNote,付款单,Process,500000,10,V

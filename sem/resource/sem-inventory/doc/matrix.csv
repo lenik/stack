@@ -1,0 +1,17 @@
+Material,物料,Ext,100000,10,
+MaterialAttribute,物料属性,E,50000,5,
+MaterialCategory,物料分类,Tree,500,10,
+MaterialPreferredLocation,物料推荐库位,UI,1000,10,
+MaterialPrice,物料的基准价格,UI,100000,10,
+MaterialWarehouseOption,物料仓库选项,C,5000,10,
+StockInventory,库存,Ext,10000,10,
+StockLocation,库位,Tree,10000,10,
+StockOrder,订单,MomentInterval,100000,10,V
+StockOrderItem,订单项目,MomentInterval,500000,10,
+StockPeriod,库存期结,UI,10000,10,
+StocktakingOrder,库存盘点单,MomentInterval,10000,10,
+StocktakingOrderItem,盘点单项目,MomentInterval,500000,10,
+StockWarehouse,仓库,UI,1000,5,
+StockJob,库存作业,Process,50000,5,V
+StockOutsourcing,外协加工作业,Process,50000,5,V
+StockTransfer,库存调拨,Process,50000,5,V
