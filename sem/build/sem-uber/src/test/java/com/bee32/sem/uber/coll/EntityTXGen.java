@@ -12,19 +12,15 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
 import javax.free.BCharOut;
 import javax.free.Boxing;
 import javax.free.IPrintOut;
 import javax.free.JavaioFile;
 import javax.free.UnexpectedException;
-import javax.free.Utf8ResourceBundle;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Temporal;
@@ -36,8 +32,16 @@ import com.bee32.plover.arch.service.ServicePrototypeLoader;
 import com.bee32.plover.model.ModelTemplate;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.xutil.m2.MavenPath;
+import com.thoughtworks.qdox.JavaDocBuilder;
+import com.thoughtworks.qdox.model.ClassLibrary;
+import com.thoughtworks.qdox.model.JavaClass;
+import com.thoughtworks.qdox.model.JavaMethod;
 
 public class EntityTXGen {
+
+    ClassLoader scl = ClassLoader.getSystemClassLoader();
+    ClassLibrary syslib = new ClassLibrary(scl);
+    JavaDocBuilder javaDocBuilder = new JavaDocBuilder(syslib);
 
     List<Class<?>> classes = new ArrayList<Class<?>>();
 
@@ -80,8 +84,34 @@ public class EntityTXGen {
         new JavaioFile(txFile).forWrite().write(script);
     }
 
+    String parseLabel(String doc) {
+        if (doc == null)
+            return null;
+        doc = doc.trim();
+        String label;
+        int sep = doc.indexOf("\n\n");
+        if (sep == -1)
+            label = doc;
+        else
+            label = doc.substring(0, sep).trim();
+        return label;
+    }
+
+    String parseDescription(String doc) {
+        if (doc == null)
+            return null;
+        doc = doc.trim();
+        String description;
+        int sep = doc.indexOf("\n\n");
+        if (sep == -1)
+            description = "";
+        else
+            description = doc.substring(sep + 1).trim();
+        return description;
+    }
+
     void dump(IPrintOut out, Class<?> clazz)
-            throws IntrospectionException {
+            throws IntrospectionException, IOException {
         Class<?> superclass = clazz.getSuperclass();
         if (superclass != null && Entity.class.isAssignableFrom(superclass))
             dump(out, superclass);
@@ -91,28 +121,19 @@ public class EntityTXGen {
         BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
         String _label;
         String _description;
-        Map<String, String> labels = new HashMap<String, String>();
-        Map<String, String> descriptions = new HashMap<String, String>();
+        // Map<String, String> labels = new HashMap<String, String>();
+        // Map<String, String> descriptions = new HashMap<String, String>();
 
-        try {
-            ResourceBundle bundle = Utf8ResourceBundle.getBundle(clazz.getName().replace('.', '/'));
-            Enumeration<String> keys = bundle.getKeys();
-            while (keys.hasMoreElements()) {
-                String key = keys.nextElement();
-                String property = bundle.getString(key).trim();
-                if (property.isEmpty())
-                    continue;
-                if ("label".equals(key))
-                    _label = property;
-                else if ("description".equals(key))
-                    _description = property;
-                else if (key.endsWith(".label"))
-                    labels.put(key.substring(0, key.length() - 6), property);
-                else if (key.endsWith(".description"))
-                    descriptions.put(key.substring(0, key.length() - 12), property);
-            }
-        } catch (MissingResourceException e) {
+        File sourceFile = MavenPath.getSourceFile(clazz);
+        javaDocBuilder.addSource(sourceFile);
+        JavaClass jclass = javaDocBuilder.getClassByName(clazz.getName());
+        Map<String, JavaMethod> jmethodMap = new HashMap<>();
+        for (JavaMethod jmethod : jclass.getMethods()) {
+            jmethodMap.put(jmethod.getName(), jmethod);
         }
+
+        _label = parseLabel(jclass.getComment());
+        _description = parseDescription(jclass.getComment());
 
         for (PropertyDescriptor property : beanInfo.getPropertyDescriptors()) {
             Method getter = property.getReadMethod();
@@ -120,7 +141,6 @@ public class EntityTXGen {
                 continue;
             if (!getter.getDeclaringClass().equals(clazz))
                 continue;
-
             if (getter.isAnnotationPresent(Transient.class))
                 continue;
 
@@ -207,8 +227,14 @@ public class EntityTXGen {
 
             String name = property.getName();
             // String colname = name;
-            String label = labels.get(name);
-            String description = descriptions.get(name);
+            // String label = labels.get(name);
+            // String description = descriptions.get(name);
+
+            String methodName = getter.getName();
+            JavaMethod jmethod = jmethodMap.get(methodName);
+            String label = parseLabel(jmethod.getComment());
+            String description = parseDescription(jmethod.getComment());
+
             if (label == null)
                 label = "";
             if (description == null)

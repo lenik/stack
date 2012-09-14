@@ -10,13 +10,13 @@ id|Not||0|0|
 beginTime|DTot||8|0|
 endTime|DTot||8|0|
 actualDeadline|DTo||8|0|
-actualQuantity|N||21|4|
+actualQuantity|N|实际数量|21|4|
 done|B||255|0|
 model|Ro||0|0|
 operators|No||0|0|
 orgUnit|Ro||0|0|
 parent|Ro||0|0|
 planDeadline|DTo||8|0|
-planQuantity|N||21|4|
+planQuantity|N|计划数量|21|4|
 qcResult|Ro||0|0|
-verifiedQuantity|N||21|4|
+verifiedQuantity|N|实际数量|21|4|

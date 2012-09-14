@@ -9,10 +9,10 @@ label|Sot||100|0|
 id|Not||0|0|
 dir|S||100|0|
 expiredDate|Do||8|0|
-fileBlob|Ro|File Blob|0|0|
+fileBlob|Ro|文件数据。|0|0|
 fileDate|Do||8|0|
-name|So||100|0|
-operator|Ro||0|0|
-party|Ro||0|0|
-refId|So||30|0|
-tags|No|Tags|0|0|
+name|So|用户对上传的文件重命名。|100|0|
+operator|Ro|经办人|0|0|
+party|Ro|客户|0|0|
+refId|So|关联的对象 ID|30|0|
+tags|No|用户为文件添加的标签。|0|0|

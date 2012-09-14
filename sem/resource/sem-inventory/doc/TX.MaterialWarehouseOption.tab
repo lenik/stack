@@ -5,7 +5,7 @@ version|Nt||255|0|
 aclId|Not||255|0|
 owner|Rot||0|0|
 id|No||0|0|
-material|Ro|material|0|0|
-safetyStock|N|safetyStock|21|4|
-stkPeriod|N|stkPeriod|255|0|
-warehouse|Ro|warehouse|0|0|
+material|Ro|物料|0|0|
+safetyStock|N|该仓库中的安全库存数量。默认为1。|21|4|
+stkPeriod|N|循环盘点周期 （天数）|255|0|默认为1年。
+warehouse|Ro|仓库|0|0|

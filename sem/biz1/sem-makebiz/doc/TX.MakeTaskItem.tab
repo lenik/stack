@@ -10,7 +10,7 @@ id|Not||0|0|
 beginTime|DTot||8|0|
 endTime|DTot||8|0|
 deadline|DTo||8|0|
-index|N||255|0|
+index|N|单据内部的序号|255|0|
 part|Ro||0|0|
 processes|No||0|0|
 quantity|No||21|4|

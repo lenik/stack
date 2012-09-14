@@ -9,14 +9,27 @@ label|Sot||100|0|
 id|Not||0|0|
 beginTime|DTot||8|0|
 endTime|DTot||8|0|
-index|N||255|0|
-nativePrice|No||21|4|
-nativeTotal|No||25|4|
-price|No||0|0|
-quantity|N||21|4|
-batchArray|No|batchArray|0|0|
-expirationDate|DTo|expirationDate|8|0|
-location|Ro|location|0|0|
-material|Ro|material|0|0|
-parent|Ro|parent|0|0|
-warehouse|Ro|warehouse|0|0|
+index|N|单据内部的序号|255|0|
+nativePrice|No|【冗余】本地货币表示的价格。|21|4|
+nativeTotal|No|【冗余】本地货币表示的金额。|25|4|
+price|No|价格 （入库为原始价格，其余科目的价格用途未知）。
+<p>
+对于合并项，如果有外币冲突，将转换为本地货币再进行汇总。|0|0|
+quantity|N|数量|21|4|<p>
+精度限制：小数点后4位数字。如果需要超出该精度，应考虑为对应物品采用不同的单位。
+<p>
+<fieldset> <legend> 关于数量的单词 Amount/Quantity/Number: </legend>
+<ul>
+<li>Number of ...: 可数的/整数的
+<li>Amount of ...: 不可测量的
+<li>Quantity of ...: 可测量的
+<ul>
+</fieldset>
+batchArray|No|批号|0|0|
+expirationDate|DTo||8|0|
+location|Ro|库位
+<p>
+对于合并项，可能会丢失冲突的库位信息。|0|0|
+material|Ro|物料|0|0|
+parent|Ro|所属订单|0|0|
+warehouse|Ro|仓库|0|0|

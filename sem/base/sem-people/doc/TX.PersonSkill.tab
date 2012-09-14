@@ -7,8 +7,8 @@ owner|Rot||0|0|
 description|Sot||200|0|
 label|Sot||100|0|
 id|Not||0|0|
-bonus|No||21|4|
-category|Ro||0|0|
-date|DTo||8|0|
+bonus|No|技能补贴|21|4|
+category|Ro|技能种类|0|0|
+date|DTo|技术获得日期|8|0|
 employeeInfo|Ro||0|0|
-score|N||255|0|
+score|N|量化的技能评分|255|0|

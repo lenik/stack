@@ -7,9 +7,9 @@ owner|Rot||0|0|
 description|Sot||200|0|
 label|Sot||100|0|
 id|Not||0|0|
-barCode|Sot||30|0|
-color|Not||0|0|
-modelSpec|Sot||200|0|
-serial|Sot||32|0|
-unit|Rot||0|0|
-unitConv|Rot||0|0|
+barCode|Sot|条形码|30|0|
+color|Not|颜色|0|0|
+modelSpec|Sot|规格型号|200|0|
+serial|Sot|物品编码、物品序列号|32|0|
+unit|Rot|物品单位（必填）|0|0|
+unitConv|Rot|物品采用的单位换算表（可选）|0|0|

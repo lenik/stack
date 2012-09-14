@@ -10,7 +10,7 @@ id|Not||0|0|
 beginTime|DTot||8|0|
 endTime|DTot||8|0|
 nativeValue|No||21|4|
-operator|Ro||0|0|
-text|So||3000|0|
+operator|Ro|经办人|0|0|
+text|So|详细说明|3000|0|
 ticket|Ro||0|0|
-value|No||0|0|
+value|No|金额|0|0|

@@ -8,4 +8,4 @@ description|Sot||200|0|
 label|Sot||100|0|
 id|Not||0|0|
 scaleMap|N||255|0|
-unit|Ro||0|0|
+unit|Ro|单元单位，数量为1的一方。 如：1m -> 1.5kg，换算率=1.5，单元单位为m，换算单位为kg。|0|0|

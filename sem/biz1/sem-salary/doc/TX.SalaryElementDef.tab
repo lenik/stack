@@ -9,6 +9,6 @@ label|Sot||100|0|
 id|Not||0|0|
 beginTime|DTot||8|0|
 endTime|DTot||8|0|
-category|So||100|0|
-expr|S||200|0|
-order|No||8|0|
+category|So|分类名称，大分类/小分类之间用 `/` 分隔。不包含本元素的名称|100|0|如 `补贴`。
+expr|S|表达式|200|0|
+order|No|显示和计算次序|8|0|

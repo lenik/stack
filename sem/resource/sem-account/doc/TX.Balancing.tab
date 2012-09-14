@@ -10,8 +10,8 @@ id|Not||0|0|
 beginTime|DTot||8|0|
 endTime|DTot||8|0|
 verifyContext|Not||0|0|
-amount|No||0|0|
-cost|No||0|0|
-interest|No||0|0|
-note|Ro||0|0|
-collectionBank|So||100|0|
+amount|No|票据结算金额(贴现净额，背书金额，结算金额)|0|0|
+cost|No|费用|0|0|
+interest|No|利息|0|0|
+note|Ro|本票据结算对应的票据|0|0|
+collectionBank|So|托收单位(银行)|100|0|

@@ -7,6 +7,6 @@ owner|Rot||0|0|
 description|Sot||200|0|
 label|Sot||100|0|
 id|Not||0|0|
-location|Ro|location|0|0|
-material|Ro|material|0|0|
-permanent|B|permanent|255|0|
+location|Ro|建议库位。|0|0|
+material|Ro|物料|0|0|
+permanent|B|是否永久库存。|255|0|

@@ -5,10 +5,10 @@ version|Nt||255|0|
 aclId|Not||255|0|
 owner|Rot||0|0|
 description|Sot||200|0|
-label|Sot||30|0|
+label|Sot|别名：一般用本地语言表示，不能用于搜索。（如果要用显示名称搜索，建议通过全文索引）|30|0|
 id|Sot||20|0|
 order|Nt||255|0|
 rank|Nt||255|0|
 hint|S||20|0|
 scale|N||15|0|
-stdUnit|Ro||0|0|
+stdUnit|Ro|Get the standard unit.|0|0|

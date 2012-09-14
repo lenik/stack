@@ -11,16 +11,16 @@ beginTime|DTot||8|0|
 endTime|DTot||8|0|
 verifyContext|Not||0|0|
 actions|No||0|0|
-address|So||255|0|
+address|So|机会地址: 项目型机会一般这个地址和客户公司地址是不同的|255|0|
 anticipationBegin|No||8|0|
 anticipationEnd|No||8|0|
-category|Ro||0|0|
+category|Ro|类型|0|0|
 competitories|No||0|0|
-content|S||500|0|
+content|S|机会内容|500|0|
 parties|No||0|0|
 procurementMethod|Ro||0|0|
 products|No||0|0|
 purchaseRegulation|Ro||0|0|
-source|Ro||0|0|
-stage|Ro||0|0|
-subject|S||100|0|
+source|Ro|来源|0|0|
+stage|Ro|获取机会阶段/进度（冗余）。|0|0|
+subject|S|机会主题|100|0|

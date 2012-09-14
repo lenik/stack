@@ -12,4 +12,4 @@ endTime|DTot||8|0|
 verifyContext|Not||0|0|
 accountAble|Ro||0|0|
 accountEd|Ro||0|0|
-amount|No||0|0|
+amount|No|应收和已收的核销金额|0|0|

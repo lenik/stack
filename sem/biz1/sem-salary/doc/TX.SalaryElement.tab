@@ -8,5 +8,5 @@ description|Sot||200|0|
 label|Sot||100|0|
 id|Not||0|0|
 bonus|N||21|4|
-def|Ro||0|0|
+def|Ro|工资元素的定义|0|0|如果这个元素无定义（没有对应的表达式， 则为 <code>null</code>。）
 parent|Ro||0|0|

@@ -7,8 +7,8 @@ owner|Rot||0|0|
 description|Sot||200|0|
 label|Sot||100|0|
 id|So||40|0|
-contentType|So|Content Type|40|0|
-encoding|So|File Encoding|16|0|
-header|N||4000|0|
-length|N|File Length|255|0|
-refCount|N|Reference Count|255|0|
+contentType|So|原始内容类型。|40|0|
+encoding|So||16|0|
+header|N|文件头。|4000|0|这里存放的文件头不会超过 {@link #HEADER_SIZE}。 当文件比较小时，可以直接从文件头获取整个文件内容。
+length|N|文件长度 （字节）。|255|0|
+refCount|N||255|0|

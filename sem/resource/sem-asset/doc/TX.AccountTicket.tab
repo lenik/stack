@@ -10,6 +10,6 @@ id|Not||0|0|
 beginTime|DTot||8|0|
 endTime|DTot||8|0|
 verifyContext|Not||0|0|
-items|No||0|0|
-nativeTotal|No||25|4|
+items|No|会计凭证上的条目列表|0|0|
+nativeTotal|No|【冗余】获取用本地货币表示的总金额。|25|4|
 request|Ro||0|0|

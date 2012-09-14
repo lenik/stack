@@ -5,15 +5,15 @@ version|Nt||255|0|
 aclId|Not||255|0|
 owner|Rot||0|0|
 id|No||0|0|
-bcc|So||200|0|
-body|S||100000|0|
-cc|So||200|0|
-deliveries|No||0|0|
-from|So||40|0|
-fromUser|Ro||0|0|
-recipient|So||150|0|
-recipientUsers|No||0|0|
-referrer|Ro||0|0|
-replyTo|So||150|0|
-replyToUser|Ro||0|0|
-subject|So||200|0|
+bcc|So|秘密抄送列表。|200|0|
+body|S|正文。|100000|0|
+cc|So|抄送列表。|200|0|
+deliveries|No|邮件递送副本列表。|0|0|
+from|So|发送方。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。|40|0|
+fromUser|Ro|发送方用户。|0|0|
+recipient|So|接收方。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。|150|0|
+recipientUsers|No|接收方用户。|0|0|
+referrer|Ro|引用的邮件（如回复、转发的邮件）。|0|0|
+replyTo|So|回复到方（可能不同于发送方）。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。|150|0|
+replyToUser|Ro|回复到方用户。|0|0|
+subject|So|主题。|200|0|

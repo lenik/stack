@@ -9,12 +9,12 @@ label|Sot||100|0|
 id|Not||0|0|
 beginTime|DTot||8|0|
 endTime|DTot||8|0|
-afterService|So||60|0|
-comment|So||200|0|
-deliveryDate|So||30|0|
-other|So||1000|0|
-parent|Ro||0|0|
-paymentTerm|So||60|0|
-price|No||0|0|
-quality|So||120|0|
-supplier|Ro||0|0|
+afterService|So|售后服务|60|0|
+comment|So|询价建议的理由|200|0|
+deliveryDate|So|交货时间，类型为String, 举例： 50天，2周 etc.|30|0|
+other|So|其他|1000|0|
+parent|Ro|需要询价的采购项目|0|0|
+paymentTerm|So|付款方式|60|0|
+price|No|价格|0|0|
+quality|So|质量|120|0|
+supplier|Ro|供应商|0|0|

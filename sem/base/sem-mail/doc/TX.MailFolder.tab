@@ -7,7 +7,7 @@ owner|Rot||0|0|
 description|Sot||200|0|
 label|Sot||100|0|
 id|Not||0|0|
-color|No|Color|8|0|
-mails|No|Mais|0|0|
-order|N|Order|255|0|
-priority|N|Priority|255|0|
+color|No||8|0|
+mails|No||0|0|
+order|N||255|0|
+priority|N||255|0|

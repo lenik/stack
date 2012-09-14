@@ -9,5 +9,5 @@ label|Sot||100|0|
 id|Not||0|0|
 beginTime|DTot||8|0|
 endTime|DTot||8|0|
-memo|So||1000|0|
-parameters|No||0|0|
+memo|So|质检备注|1000|0|
+parameters|No|质检得到的实际参数|0|0|

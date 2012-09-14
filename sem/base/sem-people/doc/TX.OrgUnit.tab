@@ -6,11 +6,11 @@ aclId|Not||255|0|
 owner|Rot||0|0|
 description|Sot||200|0|
 label|Sot||100|0|
-children|Not||0|0|
+children|Not|WARNING: Cascaded by all, but never DELETE_ORPHAN.|0|0|
 depth|Nt||255|0|
 parent|Rot||0|0|
 id|No||0|0|
-contact|Ro||0|0|
-forWhichGroup|Ro||0|0|
-org|Ro||0|0|
+contact|Ro|部门的联系方式（可选）|0|0|注：为简化，这里 contact 为必选。
+forWhichGroup|Ro|对应的用户组，一个用户组最多只能对应一个 OrgUnit。|0|0|
+org|Ro|属主组织。|0|0|
 roles|No||0|0|

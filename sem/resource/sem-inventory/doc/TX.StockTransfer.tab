@@ -11,8 +11,8 @@ beginTime|DTot||8|0|
 endTime|DTot||8|0|
 verifyContext|Not||0|0|
 stockOrders|No||0|0|
-dest|Ro|Destination|0|0|
-destWarehouse|Ro|Dest Warehouse|0|0|
-source|Ro|Source|0|0|
-sourceWarehouse|Ro|Source Warehouse|0|0|
-transferredBy|Ro|Transferred-By|0|0|
+dest|Ro|拨入单，科目必须为 XFER_IN.|0|0|
+destWarehouse|Ro||0|0|
+source|Ro|调出单，科目必须为 XFER_OUT.|0|0|
+sourceWarehouse|Ro||0|0|
+transferredBy|Ro|调拨人|0|0|

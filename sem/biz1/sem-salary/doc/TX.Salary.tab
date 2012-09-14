@@ -14,4 +14,4 @@ elements|No||0|0|
 employee|Ro||0|0|
 paid|Bo||1|0|
 total|N||25|4|
-yearMonth|N||255|0|
+yearMonth|N|年月的组合，如 201208。|255|0|

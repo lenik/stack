@@ -5,5 +5,5 @@ version|Nt||255|0|
 aclId|Not||255|0|
 owner|Rot||0|0|
 description|Sot||200|0|
-label|Sot||30|0|
+label|Sot|别名：一般用本地语言表示，不能用于搜索。（如果要用显示名称搜索，建议通过全文索引）|30|0|
 number|Nt||255|0|

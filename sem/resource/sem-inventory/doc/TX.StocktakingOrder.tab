@@ -9,12 +9,24 @@ label|Sot||100|0|
 id|Not||0|0|
 beginTime|DTot||8|0|
 endTime|DTot||8|0|
-items|No||0|0|
-nativeTotal|No||25|4|
-base|Ro||0|0|
-job|Ro||0|0|
-org|Ro||0|0|
-orgUnit|Ro||0|0|
-spec|Ro||0|0|
+items|No|单据明细，只读。|0|0|
+nativeTotal|No|【冗余】获取用本地货币表示的总金额。|25|4|
+base|Ro|基准库存期结。|0|0|
+job|Ro|参考库存作业（可选）
+<p>
+注意： 库存作业有多种类型，各自 id 独立，因此这里的参考库存作业具体对应为哪中作业类型要根据科目而定。
+<p>
+比如：
+<ul>
+<li> {@link StockOrderSubject#XFER_IN 调拨入库} 和 {@link StockOrderSubject#XFER_OUT 调拨出库} 对应为
+{@link StockTransfer 库存调拨作业}。
+<li> {@link StockOrderSubject#OSP_OUT 委外出库} 和 {@link StockOrderSubject#OSP_IN 委外入库} 对应为
+{@link StockOutsourcing 委外加工作业}。
+</ul>|0|0|
+org|Ro|出库单对应的客户或入库单对应的供应商|0|0|
+orgUnit|Ro|对应的部门|0|0|
+spec|Ro|本单仅作为某期结的余单。（冗余）
+<p>
+（取值为 <code>null</code> 或与 {@link #getBase()} 相等）。|0|0|
 verifyContext|No||0|0|
-warehouse|Ro||0|0|
+warehouse|Ro|订单（首选）仓库。|0|0|通常所有订单项目应该和本仓库一致。

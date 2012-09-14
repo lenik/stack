@@ -7,18 +7,18 @@ owner|Rot||0|0|
 description|Sot||200|0|
 label|Sot||100|0|
 id|Not||0|0|
-category|Ro||0|0|
-children|No||0|0|
-electricityFee|N||21|4|
-equipmentCost|N||21|4|
-obsolete|Ro||0|0|
-otherFee|N||21|4|
+category|Ro|【冗余】 物料分类，便于统计某个物料分类下的BOM数量|0|0|相当于 target.category.
+children|No|子部件（半成品或原材料）|0|0|
+electricityFee|N|电费|21|4|
+equipmentCost|N|设备费|21|4|
+obsolete|Ro|上一个版本。|0|0|
+otherFee|N|其它费用|21|4|
 releaseVersion|So||20|0|
-steps|No||0|0|
-target|Ro||0|0|
-valid|Bo||1|0|
-validDateFrom|DTo||8|0|
-validDateTo|DTo||8|0|
-wage|N||21|4|
+steps|No|工艺|0|0|
+target|Ro|目标物料|0|0|
+valid|Bo|是否有效|1|0|
+validDateFrom|DTo|起用日期|8|0|
+validDateTo|DTo|无效日期|8|0|
+wage|N|工资|21|4|
 xrefCount|N||255|0|
-xrefs|No||0|0|
+xrefs|No|引用本部件的 PartItem。|0|0|

@@ -5,10 +5,10 @@ version|Nt||255|0|
 aclId|Not||255|0|
 owner|Rot||0|0|
 id|No||0|0|
-altOrgUnit|So||100|0|
+altOrgUnit|So|（过渡）（临时使用的）所在部门名称|100|0|
 description|So||200|0|
 org|Ro||0|0|
-orgUnit|Ro||0|0|
+orgUnit|Ro|所在部门|0|0|
 person|Ro||0|0|
-role|So||30|0|
-roleDetail|So||50|0|
+role|So|职务|30|0|
+roleDetail|So|负责业务|50|0|

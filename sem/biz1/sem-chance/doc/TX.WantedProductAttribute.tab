@@ -3,6 +3,6 @@ createdDate|DTt||255|0|
 lastModified|DTt||255|0|
 version|Nt||255|0|
 id|Not||0|0|
-name|S||50|0|
+name|S|属性名称|50|0|
 product|Ro||0|0|
-value|So||100|0|
+value|So|属性值|100|0|

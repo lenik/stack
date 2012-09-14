@@ -10,7 +10,7 @@ id|Not||0|0|
 beginTime|DTot||8|0|
 endTime|DTot||8|0|
 verifyContext|Not||0|0|
-deadline|DTo||8|0|
+deadline|DTo|完工时间(暂时不用)|8|0|
 items|No||0|0|
 order|Ro||0|0|
 plans|No||0|0|

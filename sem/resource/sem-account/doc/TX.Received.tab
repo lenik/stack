@@ -10,7 +10,7 @@ id|Not||0|0|
 beginTime|DTot||8|0|
 endTime|DTot||8|0|
 verifyContext|Not||0|0|
-amount|No||0|0|
-orgUnit|Ro||0|0|
-party|Ro||0|0|
-person|Ro||0|0|
+amount|No|金额|0|0|
+orgUnit|Ro|公司内部部门|0|0|
+party|Ro|对应客户或供应商|0|0|
+person|Ro|公司内部业务员|0|0|

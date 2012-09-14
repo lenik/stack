@@ -3,6 +3,6 @@ createdDate|DTt||255|0|
 lastModified|DTt||255|0|
 version|Nt||255|0|
 id|Not||0|0|
-material|Ro|material|0|0|
-name|S|attributeName|30|0|
-value|So|attributeValue|100|0|
+material|Ro||0|0|
+name|S||30|0|
+value|So|额外的属性必须不能是大段文字。大段文字应该存放到附件。|100|0|

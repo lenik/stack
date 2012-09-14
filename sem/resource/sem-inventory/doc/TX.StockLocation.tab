@@ -6,15 +6,15 @@ aclId|Not||255|0|
 owner|Rot||0|0|
 description|Sot||200|0|
 label|Sot||100|0|
-children|Not||0|0|
+children|Not|WARNING: Cascaded by all, but never DELETE_ORPHAN.|0|0|
 depth|Nt||255|0|
 parent|Rot||0|0|
 id|No||0|0|
-capacity|No|Capacity|21|4|
-capacityUnit|Ro|Capacity Unit|0|0|
-capacityUnitHint|So|Capacity Unit Hint|30|0|
-rank|N|Rank|255|0|
-warehouse|Ro|Warehouse|0|0|
-x|N||255|0|
-y|N||255|0|
-z|N||255|0|
+capacity|No|容量|21|4|
+capacityUnit|Ro|容量单位|0|0|
+capacityUnitHint|So|容量单位提示（如“长度”、“容积”等）|30|0|
+rank|N|库位等级|255|0|
+warehouse|Ro|所属仓库|0|0|
+x|N|库位 X 位置信息|255|0|
+y|N|库位 Y 位置信息|255|0|
+z|N|库位 Z 位置信息|255|0|

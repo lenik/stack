@@ -7,7 +7,7 @@ owner|Rot||0|0|
 description|Sot||200|0|
 label|Sot||100|0|
 id|Not||0|0|
-checkedOut|Bo|checkedOut|1|0|
-inventory|Ro|inventory|0|0|
-orders|No|orders|0|0|
-packOrders|No|packOrders|0|0|
+checkedOut|Bo|是否已检出为工作版本|1|0|
+inventory|Ro||0|0|
+orders|No||0|0|
+packOrders|No|期结余单|0|0|

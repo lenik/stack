@@ -7,10 +7,10 @@ owner|Rot||0|0|
 description|Sot||200|0|
 label|Sot||100|0|
 id|Not||0|0|
-material|Ro||0|0|
-parent|Ro||0|0|
-part|Ro||0|0|
-quantity|N||21|4|
-valid|B||255|0|
-validDateFrom|DTo||8|0|
-validDateTo|DTo||8|0|
+material|Ro|作为原材料的子部件。|0|0|当子部件为半成品时，忽略此属性。
+parent|Ro|所属的部件|0|0|
+part|Ro|作为半成品的子部件。在这种情况下，忽略作为原材料的属性。|0|0|
+quantity|N|数量|21|4|
+valid|B|是否有效|255|0|
+validDateFrom|DTo|起用日期|8|0|
+validDateTo|DTo|无效日期|8|0|

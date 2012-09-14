@@ -9,9 +9,18 @@ label|Sot||100|0|
 id|Not||0|0|
 beginTime|DTot||8|0|
 endTime|DTot||8|0|
-additionalRequirement|So||200|0|
-index|N||255|0|
+additionalRequirement|So|如客户指定产品需要哪种原材料|200|0|
+index|N|单据内部的序号|255|0|
 material|Ro||0|0|
 materialPlan|Ro||0|0|
 preferredSupplier|Ro||0|0|
-quantity|N||21|4|
+quantity|N|数量|21|4|<p>
+精度限制：小数点后4位数字。如果需要超出该精度，应考虑为对应物品采用不同的单位。
+<p>
+<fieldset> <legend> 关于数量的单词 Amount/Quantity/Number: </legend>
+<ul>
+<li>Number of ...: 可数的/整数的
+<li>Amount of ...: 不可测量的
+<li>Quantity of ...: 可测量的
+<ul>
+</fieldset>

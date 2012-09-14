@@ -6,11 +6,11 @@ aclId|Not||255|0|
 owner|Rot||0|0|
 description|Sot||200|0|
 label|Sot||100|0|
-children|Not||0|0|
+children|Not|WARNING: Cascaded by all, but never DELETE_ORPHAN.|0|0|
 depth|Nt||255|0|
 parent|Rot||0|0|
 id|No||0|0|
 materialCount|No||8|0|
-materials|No|Materials|0|0|
+materials|No|该类别的物料列表。|0|0|
 partCount|No||8|0|
-topPartCount|No||8|0|
+topPartCount|No|顶层bom数|8|0|

@@ -7,6 +7,6 @@ owner|Rot||0|0|
 description|Sot||200|0|
 label|Sot||100|0|
 id|Not||0|0|
-date|DT|Date|255|0|
-material|Ro|Material|0|0|
-price|No|Price|0|0|
+date|DT|价格有效起始时间。|255|0|
+material|Ro|物料|0|0|
+price|No|价格|0|0|

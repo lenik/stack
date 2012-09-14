@@ -5,7 +5,7 @@ version|Nt||255|0|
 aclId|Not||255|0|
 owner|Rot||0|0|
 id|No||0|0|
-optional|Bo||1|0|
-order|No||8|0|
+optional|Bo|步骤可选|1|0|
+order|No|步骤顺序|8|0|
 policy|Ro||0|0|
-responsible|Ro||0|0|
+responsible|Ro|责任人|0|0|

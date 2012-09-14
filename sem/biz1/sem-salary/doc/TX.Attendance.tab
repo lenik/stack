@@ -7,7 +7,7 @@ owner|Rot||0|0|
 description|Sot||200|0|
 label|Sot||100|0|
 id|Not||0|0|
-absentTime|N||255|0|
+absentTime|N|当日累计缺勤时间（分钟）|255|0|
 date|D||255|0|
-employee|Ro||0|0|
-overworkTime|N||255|0|
+employee|Ro|雇员|0|0|
+overworkTime|N|当日累计加班时间（分钟）|255|0|
