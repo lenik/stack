@@ -1,0 +1,192 @@
+\documentclass[hyperref, oneside]{book}
+
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage[cm-default]{fontspec}
+\usepackage{xunicode,xltxtra}
+\usepackage[slantfont,boldfont]{xeCJK}
+\usepackage[pdfborder={0 0 0}]{hyperref}
+\usepackage{multicol}
+% \usepackage{float}
+\usepackage{framed}
+\usepackage{fancybox}
+\usepackage{fancyhdr}
+\usepackage[vario]{fancyref}
+\usepackage{url}
+\usepackage{graphicx}   % includegraphics
+\usepackage{keystroke}  % keystroke
+\usepackage{manfnt}     % dbend
+\usepackage{tikz}
+\usepackage{pgfplotstable}
+\usepackage{booktabs}   % toprule, bottomrule
+\usepackage{xstring}    % StrSubstritute, IfSubStr
+\usepackage{enumitem}   % itemize
+\usepackage[geometry]{ifsym}
+
+\setCJKmainfont{WenQuanYi Micro Hei}
+
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt
+\linespread{1.2}
+\setlength{\columnsep}{.5in}
+
+\newcommand*\ajax{AJAX}
+
+\newcommand{\example}[1]{
+    \vskip .2cm
+    \doublebox{
+        \begin{minipage}{.9\linewidth}
+        \textbf{例：} #1
+        \end{minipage}
+    }
+    \vskip .5cm
+}
+
+\newcommand{\syntax}[1]{
+    \vskip .2cm
+    \doublebox{
+        \begin{minipage}{.9\linewidth}
+        #1
+        \end{minipage}
+    }
+    \vskip .5cm
+}
+
+\newcommand\screenshot[1]{
+    \vskip .1cm
+    \shadowbox{
+        \includegraphics[scale=0.35]{#1}
+    }
+    \vskip .5cm
+}
+
+\newcommand\button[1]{ \keystroke{#1} }
+\newcommand\textbox[1]{ \ovalbox{#1} }
+
+\newcommand\ol[1]{\begin{enumerate}{#1}\end{enumerate}}
+\newcommand\ul[1]{\begin{itemize}{#1}\end{itemize}}
+
+\newcounter{operation}
+\renewcommand\theoperation{\Roman{operation}}
+
+\newcommand\opset[2]{
+    \large{与 #1 相关的工作流有：}\normalsize
+    \setcounter{operation}{1}
+    \begin{itemize}[label=\DiamondShadowC]
+        \addtolength{\leftskip}{5mm}
+        #2
+    \end{itemize}
+}
+
+\newcommand\ops[2]{
+    \large{工作流\theoperation：按照下面所列的步骤进行#1。}\normalsize
+    \addtocounter{operation}{1}
+    \noexpandarg\IfStrEq{#2}{}{
+        （略）
+    }{
+        \begin{enumerate}
+            #2
+        \end{enumerate}
+    }
+}
+
+\newcommand\Fyes{$\bigcirc$}
+\newcommand\Fno{$\times$}
+
+\newcommand\makefeaturetable{
+    \begin{table} \caption{数据特性} \centering
+    \pgfplotstabletypeset[
+        % name, label, type, scale, samples, attrs
+        alias/访问控制/.initial=2,
+        alias/缓存/.initial=5,
+        alias/审核支持/.initial=5,
+        alias/会计对象/.initial=5,
+        alias/工资采集/.initial=5,
+        columns={ 0, 1, 2, 3, 访问控制, 缓存, 4, 审核支持, 会计对象, 工资采集 },
+        columns/0/.style={ column name={}, column type=r|, string type },
+        columns/1/.style={ column name={对象}, string type },
+        columns/2/.style={ column name={类型}, string type,
+                string replace={E}{系统},
+                string replace={C}{系统},
+                string replace={Dict}{注册表},
+                string replace={UI}{实体},
+                string replace={Tree}{结点},
+                string replace={Process}{过程},
+                string replace={MomentInterval}{事件},
+                string replace={Ext}{扩展池},
+                },
+        columns/3/.style={ column name={设计规模}, column type=r },
+        columns/4/.style={ column name={预置数据}, string type,
+            preproc cell content/.code={
+                \pgfkeyssetvalue{/pgfplots/table/@cell content}{
+                    ###1
+                }}},
+        columns/访问控制/.style={ string type,
+            preproc cell content/.code={
+                \pgfkeyssetvalue{/pgfplots/table/@cell content}{
+                    \IfStrEqCase{###1}{
+                        {E}{\Fno}
+                        {Ext}{\Fno}}[\Fyes]
+                }}},
+        columns/缓存/.style={ string type,
+            preproc cell content/.code={
+                \pgfkeyssetvalue{/pgfplots/table/@cell content}{
+                    \IfSubStr{###1}{C}{\Fyes}{\Fno}
+                }}},
+        columns/审核支持/.style={ string type,
+            preproc cell content/.code={
+                \pgfkeyssetvalue{/pgfplots/table/@cell content}{
+                    \IfSubStr{###1}{V}{\Fyes}{\Fno}
+                }}},
+        columns/会计对象/.style={ string type,
+            preproc cell content/.code={
+                \pgfkeyssetvalue{/pgfplots/table/@cell content}{
+                    \IfSubStr{###1}{A}{\Fyes}{\Fno}
+                }}},
+        columns/工资采集/.style={ string type,
+            preproc cell content/.code={
+                \pgfkeyssetvalue{/pgfplots/table/@cell content}{
+                    \IfSubStr{###1}{S}{\Fyes}{\Fno}
+                }}},
+        every head row/.style={ before row=\toprule, after row=\midrule },
+        every last row/.style={ after row=\bottomrule },
+        col sep=comma, header=false
+        ]{matrix.csv}
+    \end{table}
+}
+
+\title {\modtitle \\ \modsubtitle}
+\author{SECCA项目组 \\ $\infty$ \small{海宁市智恒软件有限公司}}
+
+\begin{document}
+
+\renewcommand*\sectionmark[1]{\markright{\thesection. #1}}
+%\renewcommand*\subsectionmark[1]{\markright{\thesubsection. #1}}
+\renewcommand*\thesection{\arabic{section}}
+
+\maketitle
+
+\renewcommand\contentsname{目录/Contents}
+\tableofcontents
+\clearpage
+
+\input{manual}
+
+\section{附录}
+
+    \subsection{设计参数}
+    \makefeaturetable
+
+    \subsection{数据依赖}
+    （略）
+
+    \subsection{数据交换格式}
+
+    \subsection{版本历史}
+    \input{changes}
+
+\section{索引}
+
+    \listoftables
+    \listoffigures
+
+\end{document}

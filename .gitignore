@@ -5,10 +5,23 @@
 *.log.[0-9]*
 *.bak
 *.orig
+*.out
 *.lock
 *~
 *.out.xml
 nohup.out
+
+# TeX
+*.aux
+*.cb
+*.dvi
+*.glo
+*.idx
+*.ilg
+*.ind
+*.lot
+*.xdv
+*.pdf
 
 # Maven
 target
