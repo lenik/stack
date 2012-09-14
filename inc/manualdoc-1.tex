@@ -16,12 +16,16 @@
 \usepackage{keystroke}  % keystroke
 \usepackage{manfnt}     % dbend
 \usepackage{tikz}
+% \usepackage[table]{xcolor}
 \usepackage{pgfplotstable}
 \usepackage{booktabs}   % toprule, bottomrule
 \usepackage{xstring}    % StrSubstritute, IfSubStr
 \usepackage{enumitem}   % itemize
 \usepackage[geometry]{ifsym}
 \usepackage{pdflscape}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{multirow}
 
 \setCJKmainfont{WenQuanYi Micro Hei}
 
@@ -97,6 +101,8 @@
 \newcommand\makefeaturetable{
     \begin{table} \caption{数据特性} \centering
     \pgfplotstabletypeset[
+        begin table=\begin{longtable},
+        end table=\end{longtable},
         % name, label, type, scale, samples, attrs
         alias/访问控制/.initial=2,
         alias/缓存/.initial=5,
@@ -186,7 +192,11 @@
     \subsection{数据交换格式}
 
     \subsection{版本历史}
-    %\input{changes}
+        % \begin{center}
+        % \rowcolors{1}{white}{lightgray}
+        % \caption{版本历史} \centering
+        \input{history}
+        % \end{center}
 
 \section{索引}
 

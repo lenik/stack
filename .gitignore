@@ -13,6 +13,8 @@ nohup.out
 
 # TeX
 *.aux
+*.bbl
+*.blg
 *.cb
 *.dvi
 *.glo
@@ -23,6 +25,7 @@ nohup.out
 *.lot
 *.xdv
 *.pdf
+history.tex
 
 # Maven
 target

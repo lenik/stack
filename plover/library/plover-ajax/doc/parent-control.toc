@@ -1,0 +1,9 @@
+\contentsline {section}{\numberline {1}协议头}{1}{section.1}
+\contentsline {section}{\numberline {2}父页面重定向}{2}{section.2}
+\contentsline {section}{\numberline {3}父页面脚本调用}{2}{section.3}
+\contentsline {section}{\numberline {4}验证算法}{2}{section.4}
+\contentsline {section}{\numberline {5}使用}{2}{section.5}
+\contentsline {subsection}{\numberline {5.1}父页面}{2}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}AJAX请求}{3}{subsection.5.2}
+\contentsline {section}{\numberline {A}实现参考}{3}{appendix.A}
+\contentsline {section}{\numberline {B}索引}{3}{appendix.B}
