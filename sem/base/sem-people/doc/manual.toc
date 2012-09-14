@@ -5,7 +5,7 @@
 \contentsline {subsection}{\numberline {4.1}内部人员管理}{6}{subsection.0.4.1}
 \contentsline {subsection}{\numberline {4.2}岗位设置}{7}{subsection.0.4.2}
 \contentsline {subsection}{\numberline {4.3}职称设置}{8}{subsection.0.4.3}
-\contentsline {subsection}{\numberline {4.4}员工教育程度设置}{9}{subsection.0.4.4}
+\contentsline {subsection}{\numberline {4.4}员工教育程度设置}{10}{subsection.0.4.4}
 \contentsline {subsection}{\numberline {4.5}员工工作表现设置}{11}{subsection.0.4.5}
 \contentsline {subsection}{\numberline {4.6}职位设置}{12}{subsection.0.4.6}
 \contentsline {section}{\numberline {5}设置}{13}{section.0.5}
@@ -14,4 +14,9 @@
 \contentsline {subsection}{\numberline {5.3}企业类型}{16}{subsection.0.5.3}
 \contentsline {subsection}{\numberline {5.4}联系信息分类}{17}{subsection.0.5.4}
 \contentsline {subsection}{\numberline {5.5}涉众记录分类}{19}{subsection.0.5.5}
-\contentsline {section}{\numberline {6}参考信息}{20}{section.0.6}
+\contentsline {section}{\numberline {6}附录}{20}{section.0.6}
+\contentsline {subsection}{\numberline {6.1}设计参数}{20}{subsection.0.6.1}
+\contentsline {subsection}{\numberline {6.2}数据依赖}{22}{subsection.0.6.2}
+\contentsline {subsection}{\numberline {6.3}数据交换格式}{22}{subsection.0.6.3}
+\contentsline {subsection}{\numberline {6.4}版本历史}{22}{subsection.0.6.4}
+\contentsline {section}{\numberline {7}索引}{22}{section.0.7}

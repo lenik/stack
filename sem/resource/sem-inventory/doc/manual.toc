@@ -11,3 +11,9 @@
 \contentsline {subsection}{\numberline {4.4}库存盘点}{18}{subsection.0.4.4}
 \contentsline {section}{\numberline {5}查询}{20}{section.0.5}
 \contentsline {subsection}{\numberline {5.1}库存查询(含明细)}{20}{subsection.0.5.1}
+\contentsline {section}{\numberline {6}附录}{22}{section.0.6}
+\contentsline {subsection}{\numberline {6.1}设计参数}{22}{subsection.0.6.1}
+\contentsline {subsection}{\numberline {6.2}数据依赖}{24}{subsection.0.6.2}
+\contentsline {subsection}{\numberline {6.3}数据交换格式}{24}{subsection.0.6.3}
+\contentsline {subsection}{\numberline {6.4}版本历史}{24}{subsection.0.6.4}
+\contentsline {section}{\numberline {7}索引}{24}{section.0.7}

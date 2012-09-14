@@ -1,5 +1,5 @@
-PurchaseInquiry,采购询价,MomentInterval,10000,5,
-PurchasePlanning,采购需求,E,10000,5,
-PurchaseRequest,采购计划,Process,10000,5,V
-PurchaseRequestItem,采购请求明细,Process,50000,10,V
-PurchaseTakeIn,采购入库单,Process,10000,5,V
+PurchaseInquiry,采购询价,MomentInterval,300000,5,
+PurchasePlanning,采购计划,E,100000,5,
+PurchaseRequest,采购请求,Process,100000,5,V
+PurchaseRequestItem,采购请求明细,Process,1000000,10,V
+PurchaseTakeIn,采购入库单,Process,100000,5,V

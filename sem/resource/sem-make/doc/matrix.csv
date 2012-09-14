@@ -1,0 +1,9 @@
+MakeStepName,标准工艺名称,Dict,1000,10,C
+MakeStepModel,工艺,Dict,1000,10,
+MakeStepInput,工艺消耗材料,UI,10000,20,
+Part,部件,UI,30000,50,
+PartItem,部件项目,E,100000,50,
+QCResult,质检结果,MomentInterval,100000,10,
+QCResultParameter,质检参数,UI,1000000,20,
+QCSpec,质量规范,Dict,1000,10,
+QCSpecParameter,质量规范参数,Dict,10000,10,

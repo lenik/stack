@@ -3,3 +3,9 @@
 \contentsline {section}{\numberline {3}资金流业务管理}{4}{section.0.3}
 \contentsline {section}{\numberline {4}凭证管理}{5}{section.0.4}
 \contentsline {section}{\numberline {5}资产查询}{6}{section.0.5}
+\contentsline {section}{\numberline {6}附录}{6}{section.0.6}
+\contentsline {subsection}{\numberline {6.1}设计参数}{6}{subsection.0.6.1}
+\contentsline {subsection}{\numberline {6.2}数据依赖}{8}{subsection.0.6.2}
+\contentsline {subsection}{\numberline {6.3}数据交换格式}{8}{subsection.0.6.3}
+\contentsline {subsection}{\numberline {6.4}版本历史}{8}{subsection.0.6.4}
+\contentsline {section}{\numberline {7}索引}{8}{section.0.7}

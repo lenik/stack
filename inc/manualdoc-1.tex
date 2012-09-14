@@ -21,6 +21,7 @@
 \usepackage{xstring}    % StrSubstritute, IfSubStr
 \usepackage{enumitem}   % itemize
 \usepackage[geometry]{ifsym}
+\usepackage{pdflscape}
 
 \setCJKmainfont{WenQuanYi Micro Hei}
 
@@ -105,16 +106,16 @@
         columns/0/.style={ column name={}, column type=r|, string type },
         columns/1/.style={ column name={对象}, string type },
         columns/2/.style={ column name={类型}, string type,
-                string replace={E}{系统},
+                string replace={E}{关系},
                 string replace={C}{系统},
-                string replace={Dict}{注册表},
+                string replace={Dict}{目录},
                 string replace={UI}{实体},
                 string replace={Tree}{结点},
                 string replace={Process}{过程},
-                string replace={MomentInterval}{事件},
-                string replace={Ext}{扩展池},
+                string replace={MomentInterval}{记录},
+                string replace={Ext}{高级},
                 },
-        columns/3/.style={ column name={设计规模}, column type=r },
+        columns/3/.style={ column name={设计规模}, column type=r, min exponent for 1000 sep=2 },
         columns/4/.style={ column name={预置数据}, string type,
             preproc cell content/.code={
                 \pgfkeyssetvalue{/pgfplots/table/@cell content}{
@@ -125,7 +126,7 @@
                 \pgfkeyssetvalue{/pgfplots/table/@cell content}{
                     \IfStrEqCase{###1}{
                         {E}{\Fno}
-                        {Ext}{\Fno}}[\Fyes]
+                        {Pool}{\Fno}}[\Fyes]
                 }}},
         columns/缓存/.style={ string type,
             preproc cell content/.code={
@@ -174,7 +175,9 @@
 \section{附录}
 
     \subsection{设计参数}
-    \makefeaturetable
+        \begin{landscape}
+            \makefeaturetable
+        \end{landscape}
 
     \subsection{数据依赖}
     （略）

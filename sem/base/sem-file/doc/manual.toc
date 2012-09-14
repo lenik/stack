@@ -1,3 +1,9 @@
 \contentsline {section}{\numberline {1}用户文件}{2}{section.0.1}
 \contentsline {subsection}{\numberline {1.1}用户文件管理}{2}{subsection.0.1.1}
 \contentsline {subsection}{\numberline {1.2}文件标签设置}{5}{subsection.0.1.2}
+\contentsline {section}{\numberline {2}附录}{6}{section.0.2}
+\contentsline {subsection}{\numberline {2.1}设计参数}{6}{subsection.0.2.1}
+\contentsline {subsection}{\numberline {2.2}数据依赖}{8}{subsection.0.2.2}
+\contentsline {subsection}{\numberline {2.3}数据交换格式}{8}{subsection.0.2.3}
+\contentsline {subsection}{\numberline {2.4}版本历史}{8}{subsection.0.2.4}
+\contentsline {section}{\numberline {3}索引}{8}{section.0.3}
