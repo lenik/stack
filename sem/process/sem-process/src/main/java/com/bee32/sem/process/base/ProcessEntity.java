@@ -4,12 +4,14 @@ import javax.persistence.Embedded;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import com.bee32.plover.model.ModelTemplate;
 import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.builtin.IJudgeNumber;
 import com.bee32.sem.process.verify.builtin.ISingleVerifierWithNumber;
 import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
 
+@ModelTemplate
 @MappedSuperclass
 public abstract class ProcessEntity
         extends MomentInterval

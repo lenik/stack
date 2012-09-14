@@ -11,7 +11,6 @@ import com.bee32.plover.ox1.config.DecimalConfig;
 
 /**
  * 学历字典类
- *
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "person_education_seq", allocationSize = 1)

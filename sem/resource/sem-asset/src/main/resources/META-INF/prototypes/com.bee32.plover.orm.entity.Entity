@@ -5,6 +5,6 @@ com.bee32.sem.asset.entity.AccountSnapshotItem
 com.bee32.sem.asset.entity.AccountSubject
 com.bee32.sem.asset.entity.AccountTicket
 com.bee32.sem.asset.entity.AccountTicketItem
-com.bee32.sem.asset.entity.FundFlow
 com.bee32.sem.asset.entity.CreditNote
+com.bee32.sem.asset.entity.FundFlow
 com.bee32.sem.asset.entity.PaymentNote

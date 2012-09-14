@@ -7,12 +7,14 @@ com.bee32.sem.hr.entity.PersonEducationType
 com.bee32.sem.hr.entity.PersonSkill
 com.bee32.sem.hr.entity.PersonSkillCategory
 com.bee32.sem.hr.entity.PersonSkillCategoryLevel
+com.bee32.sem.misc.Contract
 com.bee32.sem.people.entity.Contact
 com.bee32.sem.people.entity.ContactCategory
 com.bee32.sem.people.entity.ContactXP
 com.bee32.sem.people.entity.Org
 com.bee32.sem.people.entity.OrgType
 com.bee32.sem.people.entity.OrgUnit
+com.bee32.sem.people.entity.Party
 com.bee32.sem.people.entity.PartyRecord
 com.bee32.sem.people.entity.PartyRecordCategory
 com.bee32.sem.people.entity.PartySidType

@@ -2,5 +2,8 @@ com.bee32.sem.world.color.Palette
 com.bee32.sem.world.color.PaletteEntry
 com.bee32.sem.world.com.Bank
 com.bee32.sem.world.monetary.FxrRecord
+com.bee32.sem.world.thing.AbstractItem
+com.bee32.sem.world.thing.AbstractItemList
+com.bee32.sem.world.thing.Thing
 com.bee32.sem.world.thing.Unit
 com.bee32.sem.world.thing.UnitConv

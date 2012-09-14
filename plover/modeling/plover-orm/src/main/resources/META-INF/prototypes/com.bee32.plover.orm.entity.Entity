@@ -1,0 +1,4 @@
+com.bee32.plover.orm.builtin.PloverConf
+com.bee32.plover.orm.entity.Entity
+com.bee32.plover.orm.entity.EntityAuto
+com.bee32.plover.orm.entity.EntitySpec

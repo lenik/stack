@@ -12,11 +12,13 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Index;
 import org.hibernate.annotations.NaturalId;
 
+import com.bee32.plover.model.ModelTemplate;
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.xp.EntityExt;
 import com.bee32.plover.ox1.xp.XPool;
 import com.bee32.sem.world.color.NaturalColor;
 
+@ModelTemplate // High-Level model template.
 @MappedSuperclass
 @Green
 public abstract class Thing<X extends XPool<?>>

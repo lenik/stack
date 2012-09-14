@@ -1,4 +1,8 @@
+com.bee32.sem.process.base.ProcessEntity
 com.bee32.sem.process.verify.VerifyPolicy
+com.bee32.sem.process.verify.builtin.PassStep
 com.bee32.sem.process.verify.builtin.PassToNextPolicy
+com.bee32.sem.process.verify.builtin.SingleVerifierLevel
 com.bee32.sem.process.verify.builtin.SingleVerifierPolicy
 com.bee32.sem.process.verify.builtin.SingleVerifierRankedPolicy
+com.bee32.sem.process.verify.preference.VerifyPolicyPref
