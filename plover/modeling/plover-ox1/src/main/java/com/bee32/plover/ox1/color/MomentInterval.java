@@ -8,6 +8,9 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Index;
 
+import com.bee32.plover.model.ModelTemplate;
+
+@ModelTemplate
 @MappedSuperclass
 @Pink
 public abstract class MomentInterval

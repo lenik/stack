@@ -5,6 +5,9 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
+import com.bee32.plover.model.ModelTemplate;
+
+@ModelTemplate
 @MappedSuperclass
 @AttributeOverrides({//
 /*    */@AttributeOverride(name = "id", column = @Column(length = LongNameDict.ID_LENGTH)),

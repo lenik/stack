@@ -7,8 +7,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import com.bee32.plover.model.ModelTemplate;
 import com.bee32.plover.orm.entity._AutoId;
 
+@ModelTemplate
 @MappedSuperclass
 @_AutoId
 public abstract class UIEntityAuto<K extends Serializable>

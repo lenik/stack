@@ -9,9 +9,11 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.plover.model.ModelTemplate;
 import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 
+@ModelTemplate
 public abstract class EntityExt<K extends Serializable, X extends XPool<?>>
         extends UIEntityAuto<K>
         implements IXPoolable<X> {

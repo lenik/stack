@@ -13,11 +13,13 @@ import org.hibernate.annotations.Index;
 import com.bee32.plover.arch.util.Identity;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.model.ModelTemplate;
 import com.bee32.plover.ox1.color.Blue;
 
 /**
  * The id property of the {@link NameDict} equals to the <code>name</code> property.
  */
+@ModelTemplate
 @MappedSuperclass
 @Blue
 public abstract class NameDict

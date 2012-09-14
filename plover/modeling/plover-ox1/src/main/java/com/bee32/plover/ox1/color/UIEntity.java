@@ -9,8 +9,10 @@ import javax.persistence.MappedSuperclass;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Index;
 
+import com.bee32.plover.model.ModelTemplate;
 import com.bee32.plover.ox1.c.CEntity;
 
+@ModelTemplate
 @MappedSuperclass
 @Green
 public abstract class UIEntity<K extends Serializable>

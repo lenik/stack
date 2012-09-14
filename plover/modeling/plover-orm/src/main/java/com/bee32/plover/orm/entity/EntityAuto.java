@@ -7,6 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import com.bee32.plover.model.ModelTemplate;
+
+@ModelTemplate
 @MappedSuperclass
 @_AutoId
 // @SequenceGenerator(initialValue = 1, name = "idgen", sequenceName = "xxx_seq")

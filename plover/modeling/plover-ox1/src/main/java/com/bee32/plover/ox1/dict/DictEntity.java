@@ -7,8 +7,10 @@ import javax.persistence.MappedSuperclass;
 
 import com.bee32.icsf.access.DefaultPermission;
 import com.bee32.icsf.access.Permission;
+import com.bee32.plover.model.ModelTemplate;
 import com.bee32.plover.ox1.c.CEntitySpec;
 
+@ModelTemplate
 @DefaultPermission(Permission.R_X)
 @MappedSuperclass
 public abstract class DictEntity<K extends Serializable>

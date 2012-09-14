@@ -5,6 +5,9 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import com.bee32.plover.model.ModelTemplate;
+
+@ModelTemplate
 @MappedSuperclass
 public abstract class LongNumberDict
         extends DictEntity<Long> {

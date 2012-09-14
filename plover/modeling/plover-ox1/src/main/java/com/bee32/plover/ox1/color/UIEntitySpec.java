@@ -7,6 +7,9 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
+import com.bee32.plover.model.ModelTemplate;
+
+@ModelTemplate
 @MappedSuperclass
 @AttributeOverrides({//
 /*    */@AttributeOverride(name = "label", column = @Column(length = 50)) })

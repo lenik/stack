@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import javax.persistence.MappedSuperclass;
 
+import com.bee32.plover.model.ModelTemplate;
+
+@ModelTemplate
 @MappedSuperclass
 public abstract class EntitySpec<K extends Serializable>
         extends Entity<K> {

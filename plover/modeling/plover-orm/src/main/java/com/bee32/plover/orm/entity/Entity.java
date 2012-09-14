@@ -31,6 +31,7 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.IsNull;
 import com.bee32.plover.inject.ServiceTemplate;
+import com.bee32.plover.model.ModelTemplate;
 import com.bee32.plover.orm.sample.StandardSamples;
 import com.bee32.plover.orm.util.EntityFormatter;
 import com.bee32.plover.servlet.util.HttpAssembledContext;
@@ -38,7 +39,8 @@ import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.IMultiFormat;
 import com.bee32.plover.util.PrettyPrintStream;
 
-@ServiceTemplate
+@ModelTemplate
+@ServiceTemplate(prototype = true)
 @MappedSuperclass
 public abstract class Entity<K extends Serializable>
         extends EntityBase<K>

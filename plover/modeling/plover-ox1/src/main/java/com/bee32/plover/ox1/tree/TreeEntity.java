@@ -18,6 +18,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.plover.model.ModelTemplate;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.ox1.color.UIEntitySpec;
 
@@ -30,6 +31,7 @@ import com.bee32.plover.ox1.color.UIEntitySpec;
  *            The same type as declared.
  *
  */
+@ModelTemplate
 @MappedSuperclass
 public abstract class TreeEntity<K extends Serializable, self_t extends TreeEntity<K, self_t>>
         extends UIEntitySpec<K> {
