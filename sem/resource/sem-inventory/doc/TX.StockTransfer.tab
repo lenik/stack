@@ -1,0 +1,18 @@
+altId|Sot||20|0|
+createdDate|DTt||255|0|
+lastModified|DTt||255|0|
+version|Nt||255|0|
+aclId|Not||255|0|
+owner|Rot||0|0|
+description|Sot||200|0|
+label|Sot||100|0|
+id|Not||0|0|
+beginTime|DTot||8|0|
+endTime|DTot||8|0|
+verifyContext|Not||0|0|
+stockOrders|No||0|0|
+dest|Ro|Destination|0|0|
+destWarehouse|Ro|Dest Warehouse|0|0|
+source|Ro|Source|0|0|
+sourceWarehouse|Ro|Source Warehouse|0|0|
+transferredBy|Ro|Transferred-By|0|0|
