@@ -6,6 +6,10 @@ import javax.persistence.MappedSuperclass;
 import com.bee32.plover.orm.entity.Entity;
 
 /**
+ * 属性池-X40
+ *
+ * X40 属性池比 X30 属性池多出 10 个文本字段。
+ *
  * XPool40 contains 10 more text columns then XPool30.
  *
  * @see XPool30
@@ -52,6 +56,11 @@ public class XPool40<Es extends Entity<?>>
         aaaa3 = o.aaaa3;
     }
 
+    /**
+     * 属性A6
+     *
+     * 长度为 32 的扩展字符串属性。
+     */
     @Column(length = LEN_A)
     public String getA6() {
         return a6;
@@ -61,6 +70,11 @@ public class XPool40<Es extends Entity<?>>
         this.a6 = a6;
     }
 
+    /**
+     * 属性A7
+     *
+     * 长度为 32 的扩展字符串属性。
+     */
     @Column(length = LEN_A)
     public String getA7() {
         return a7;
@@ -70,6 +84,11 @@ public class XPool40<Es extends Entity<?>>
         this.a7 = a7;
     }
 
+    /**
+     * 属性A8
+     *
+     * 长度为 32 的扩展字符串属性。
+     */
     @Column(length = LEN_A)
     public String getA8() {
         return a8;
@@ -79,6 +98,11 @@ public class XPool40<Es extends Entity<?>>
         this.a8 = a8;
     }
 
+    /**
+     * 属性A9
+     *
+     * 长度为 32 的扩展字符串属性。
+     */
     @Column(length = LEN_A)
     public String getA9() {
         return a9;
@@ -88,6 +112,11 @@ public class XPool40<Es extends Entity<?>>
         this.a9 = a9;
     }
 
+    /**
+     * 属性A10
+     *
+     * 长度为 32 的扩展字符串属性。
+     */
     @Column(length = LEN_A)
     public String getA10() {
         return a10;
@@ -97,6 +126,11 @@ public class XPool40<Es extends Entity<?>>
         this.a10 = a10;
     }
 
+    /**
+     * 属性AA3
+     *
+     * 长度为 64 的扩展字符串属性。
+     */
     @Column(length = LEN_AA)
     public String getAa3() {
         return aa3;
@@ -106,6 +140,11 @@ public class XPool40<Es extends Entity<?>>
         this.aa3 = aa3;
     }
 
+    /**
+     * 属性AA4
+     *
+     * 长度为 64 的扩展字符串属性。
+     */
     @Column(length = LEN_AA)
     public String getAa4() {
         return aa4;
@@ -115,6 +154,11 @@ public class XPool40<Es extends Entity<?>>
         this.aa4 = aa4;
     }
 
+    /**
+     * 属性AA5
+     *
+     * 长度为 64 的扩展字符串属性。
+     */
     @Column(length = LEN_AA)
     public String getAa5() {
         return aa5;
@@ -124,6 +168,11 @@ public class XPool40<Es extends Entity<?>>
         this.aa5 = aa5;
     }
 
+    /**
+     * 属性AAA2
+     *
+     * 长度为 250 的扩展字符串属性。
+     */
     @Column(length = LEN_AAAA)
     public String getAaaa2() {
         return aaaa2;
@@ -133,6 +182,11 @@ public class XPool40<Es extends Entity<?>>
         this.aaaa2 = aaaa2;
     }
 
+    /**
+     * 属性AAA3
+     *
+     * 长度为 250 的扩展字符串属性。
+     */
     @Column(length = LEN_AAAA)
     public String getAaaa3() {
         return aaaa3;

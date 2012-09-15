@@ -44,6 +44,11 @@ public abstract class EntityExt<K extends Serializable, X extends XPool<?>>
         xPool = CopyUtils.copyList(o.xPool);
     }
 
+    /**
+     * 属性池
+     *
+     * 可扩展的动态属性池
+     */
     @OneToMany
     @Cascade(CascadeType.ALL)
     final List<X> getXPool() {

@@ -42,6 +42,11 @@ public abstract class XPool<Es extends Entity<?>>
         model = o.model;
     }
 
+    /**
+     * 标识符
+     *
+     * 属性的主键。
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idgen")
     @Override
@@ -54,6 +59,11 @@ public abstract class XPool<Es extends Entity<?>>
         this.id = id;
     }
 
+    /**
+     * 源数据
+     *
+     * 属性所在的对象。
+     */
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     public Es getSource() {

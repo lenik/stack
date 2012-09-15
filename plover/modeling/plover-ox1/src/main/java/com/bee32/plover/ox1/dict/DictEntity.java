@@ -52,7 +52,11 @@ public abstract class DictEntity<K extends Serializable>
     }
 
     /**
-     * 别名：一般用本地语言表示，不能用于搜索。（如果要用显示名称搜索，建议通过全文索引）
+     * 标签/显示名称
+     *
+     * 记录的标识标签，简短的概要、或通常是唯一的显示名称。 一般用本地语言表示。
+     *
+     * （如果要用显示名称搜索，建议通过全文索引）
      */
     @Column(length = LABEL_LENGTH)
     public String getLabel() {
@@ -63,6 +67,11 @@ public abstract class DictEntity<K extends Serializable>
         this.label = label;
     }
 
+    /**
+     * 条目描述
+     *
+     * 条目的内容描述。
+     */
     @Column(length = DESCRIPTION_LENGTH)
     public String getDescription() {
         return description;

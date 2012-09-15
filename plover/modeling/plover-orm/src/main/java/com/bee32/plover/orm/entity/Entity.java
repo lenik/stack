@@ -195,6 +195,11 @@ public abstract class Entity<K extends Serializable>
 
     protected abstract void setId(K id);
 
+    /**
+     * 版本
+     *
+     * 数据的版本，原有的数据只能被更新版的数据取代。
+     */
     // @Version
     @DefaultValue("0")
     @Column(nullable = false)
@@ -206,6 +211,11 @@ public abstract class Entity<K extends Serializable>
         this.version = version;
     }
 
+    /**
+     * 次标识符
+     *
+     * 用于标识特定的样本数据。
+     */
     @Column(length = ALT_ID_LENGTH)
     public String getAltId() {
         return altId;
@@ -215,6 +225,11 @@ public abstract class Entity<K extends Serializable>
         this.altId = altId;
     }
 
+    /**
+     * 创建日期
+     *
+     * 数据的创建日期，一旦创建无法更改。
+     */
     @DefaultValue("now()")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
@@ -230,6 +245,11 @@ public abstract class Entity<K extends Serializable>
         this.createdDate = createdDate;
     }
 
+    /**
+     * 更新日期
+     *
+     * 数据最后一次修改的日期。（每次保存时自动更新）
+     */
     @DefaultValue("now()")
     @Index(name = "##_lastModified")
     @Temporal(TemporalType.TIMESTAMP)
@@ -246,6 +266,11 @@ public abstract class Entity<K extends Serializable>
         this.lastModified = lastModified;
     }
 
+    /**
+     * 数据标志
+     *
+     * 若干个特殊用途的标志位。
+     */
     @DefaultValue("0")
     @Column(nullable = false)
     int getEf() {

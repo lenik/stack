@@ -3,7 +3,6 @@ package com.bee32.sem.world.monetary;
 import static com.bee32.plover.ox1.config.DecimalConfig.MONEY_ITEM_PRECISION;
 import static com.bee32.plover.ox1.config.DecimalConfig.MONEY_ITEM_SCALE;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Date;
@@ -13,6 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 
+import com.bee32.plover.orm.entity.EmbeddablePiece;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.util.i18n.CurrencyConfig;
 
@@ -24,7 +24,7 @@ import com.bee32.plover.util.i18n.CurrencyConfig;
  */
 @Embeddable
 public class MCValue
-        implements Serializable {
+        extends EmbeddablePiece {
 
     private static final long serialVersionUID = 1L;
 

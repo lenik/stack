@@ -41,6 +41,9 @@ public abstract class ProcessEntity
         verifyContext.bind(this);
     }
 
+    /**
+     * 审核上下文
+     */
     @Embedded
     @Override
     public SingleVerifierWithNumberSupport getVerifyContext() {

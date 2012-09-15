@@ -2,7 +2,6 @@ package com.bee32.sem.process.verify;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
@@ -20,6 +19,7 @@ import org.hibernate.annotations.DefaultValue;
 import overlay.Overlay;
 
 import com.bee32.plover.arch.util.ILockable;
+import com.bee32.plover.orm.entity.EmbeddablePiece;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IPopulatable;
 import com.bee32.plover.util.FormatStyle;
@@ -29,7 +29,8 @@ import com.bee32.sem.event.entity.Event;
 
 @MappedSuperclass
 public abstract class AbstractVerifyContext
-        implements Serializable, IVerifyContext, IMultiFormat, ILockable, IPopulatable, Cloneable {
+        extends EmbeddablePiece
+        implements IVerifyContext, IMultiFormat, ILockable, IPopulatable, Cloneable {
 
     private static final long serialVersionUID = 1L;
 
@@ -76,6 +77,11 @@ public abstract class AbstractVerifyContext
         verifyEvent = null;
     }
 
+    /**
+     * 审核状态
+     *
+     * 记录审核运算求值返回的审核结果。
+     */
     @Column(name = "verifyEvalState", nullable = false)
     @DefaultValue("" + 0x02000001 /* 33554433, VerifyEvalState.UNKNOWN */)
     int get_verifyEvalState() {
@@ -101,6 +107,11 @@ public abstract class AbstractVerifyContext
         this.verifyEvalState = verifyEvalState;
     }
 
+    /**
+     * 审核求值时间
+     *
+     * 记录系统中审核运算的求值时间。
+     */
     @Temporal(TIMESTAMP)
     public Date getVerifyEvalDate() {
         return verifyEvalDate;
@@ -110,6 +121,9 @@ public abstract class AbstractVerifyContext
         this.verifyEvalDate = verifyEvalDate;
     }
 
+    /**
+     * 已通过审核
+     */
     @Transient
     @Column(nullable = false)
     @DefaultValue("false")
@@ -117,6 +131,11 @@ public abstract class AbstractVerifyContext
         return VerifyEvalState.VERIFIED.equals(verifyEvalState);
     }
 
+    /**
+     * 审核错误消息
+     *
+     * 记录审核运算求值返回的错误消息（或空表示求值成功）。
+     */
     @Column(length = 100)
     public String getVerifyError() {
         return verifyError;
@@ -126,6 +145,11 @@ public abstract class AbstractVerifyContext
         this.verifyError = error;
     }
 
+    /**
+     * 审核事件
+     *
+     * 事件系统中的事件消息对象，用于消息分发。
+     */
     @OneToOne(orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public Event getVerifyEvent() {

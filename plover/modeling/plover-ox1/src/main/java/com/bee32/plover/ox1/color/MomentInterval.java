@@ -43,6 +43,11 @@ public abstract class MomentInterval
         endTime = o.endTime;
     }
 
+    /**
+     * 起始时间
+     *
+     * 反应记录对应事件的发生时刻。
+     */
     @Index(name = "##_beginTime")
     @Temporal(TemporalType.TIMESTAMP)
     public Date getBeginTime() {
@@ -53,6 +58,11 @@ public abstract class MomentInterval
         this.beginTime = beginTime;
     }
 
+    /**
+     * 终止时间
+     *
+     * 反应记录对应事件的结束时刻。
+     */
     @Index(name = "##_endTime")
     @Temporal(TemporalType.TIMESTAMP)
     public Date getEndTime() {

@@ -1,7 +1,5 @@
 package com.bee32.sem.world.color;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
@@ -9,10 +7,12 @@ import javax.persistence.Transient;
 
 import com.bee32.plover.arch.util.ICloneable;
 import com.bee32.plover.orm.entity.CopyUtils;
+import com.bee32.plover.orm.entity.EmbeddablePiece;
 
 @Embeddable
 public class NaturalColor
-        implements Serializable, ICloneable {
+        extends EmbeddablePiece
+        implements ICloneable {
 
     private static final long serialVersionUID = 1L;
 
@@ -30,7 +30,9 @@ public class NaturalColor
     }
 
     /**
-     * 调色板。
+     * 调色板
+     *
+     * 色彩对应的调色板。
      *
      * 当使用调色板时，trueColor 为色样的冗余，应该和 palette.getEntry(entryName).trueColor 相同。
      *
@@ -45,6 +47,11 @@ public class NaturalColor
         this.palette = palette;
     }
 
+    /**
+     * 色彩名称
+     *
+     * 在色彩对应的调色板中定义的，本色彩条目的标准名称。
+     */
     @Column(length = PaletteEntry.NAME_LENGTH)
     public String getEntryName() {
         return entryName;
@@ -66,6 +73,11 @@ public class NaturalColor
         return _color.getTrueColor();
     }
 
+    /**
+     * 色彩值
+     *
+     * 色彩的 RGB 组合数值。
+     */
     @Column(name = "trueColor", nullable = false)
     long get_trueColor() {
         return trueColor.getLong();

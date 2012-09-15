@@ -59,6 +59,11 @@ public abstract class UIEntity<K extends Serializable>
         keywords.add(description);
     }
 
+    /**
+     * 标签
+     *
+     * 记录的标识标签，简短的概要、或通常是唯一的显示名称。
+     */
     @Index(name = "##_label")
     @Column(length = LABEL_LENGTH)
     @Override
@@ -76,6 +81,11 @@ public abstract class UIEntity<K extends Serializable>
         this.label = label;
     }
 
+    /**
+     * 描述
+     *
+     * 对数据的简略的描述。（通常不同于备注）
+     */
     // @Index(name = "##_description")
     @Column(length = DESCRIPTION_LENGTH)
     @Override

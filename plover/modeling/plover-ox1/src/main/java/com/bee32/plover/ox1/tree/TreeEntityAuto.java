@@ -27,6 +27,11 @@ public abstract class TreeEntityAuto<K extends Serializable, self_t extends Tree
         autoId = true;
     }
 
+    /**
+     * 标识符
+     *
+     * 记录的标识符、主键。
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idgen")
     @Override

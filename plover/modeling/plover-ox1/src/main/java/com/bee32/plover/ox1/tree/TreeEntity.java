@@ -82,6 +82,11 @@ public abstract class TreeEntity<K extends Serializable, self_t extends TreeEnti
         // _retargetMerge(getChildren(), o.getChildren());
     }
 
+    /**
+     * 父对象
+     *
+     * 上一级对象，如订单项的父对象是订单。
+     */
     @ManyToOne
     public self_t getParent() {
         return parent;
@@ -94,6 +99,10 @@ public abstract class TreeEntity<K extends Serializable, self_t extends TreeEnti
     }
 
     /**
+     * 子对象集
+     *
+     * 下一级对象的集合。
+     *
      * WARNING: Cascaded by all, but never DELETE_ORPHAN.
      */
     @OneToMany(mappedBy = "parent")
@@ -162,6 +171,11 @@ public abstract class TreeEntity<K extends Serializable, self_t extends TreeEnti
         return children.size();
     }
 
+    /**
+     * 深度
+     *
+     * 【冗余】树结点的深度。（根结点的深度为0）
+     */
     @Redundant
     @Column(nullable = false)
     public int getDepth() {

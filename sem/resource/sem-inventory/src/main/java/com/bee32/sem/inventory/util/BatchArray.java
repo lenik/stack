@@ -1,6 +1,5 @@
 package com.bee32.sem.inventory.util;
 
-import java.io.Serializable;
 import java.util.Arrays;
 
 import javax.persistence.Column;
@@ -10,12 +9,14 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Index;
 
 import com.bee32.plover.model.validation.core.NLength;
+import com.bee32.plover.orm.entity.EmbeddablePiece;
 import com.bee32.plover.orm.entity.IPopulatable;
 import com.bee32.plover.util.TextUtil;
 
 @Embeddable
 public class BatchArray
-        implements Serializable, Cloneable, IPopulatable {
+        extends EmbeddablePiece
+        implements Cloneable, IPopulatable {
 
     private static final long serialVersionUID = 1L;
 

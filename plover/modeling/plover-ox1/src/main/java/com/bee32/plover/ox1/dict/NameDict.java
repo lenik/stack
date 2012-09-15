@@ -68,6 +68,11 @@ public abstract class NameDict
         rank = o.rank;
     }
 
+    /**
+     * 条目标识符
+     *
+     * 词典条目的标识符、主键。
+     */
     @Id
     @Column(length = ID_LENGTH, unique = true)
     @Override
@@ -82,6 +87,11 @@ public abstract class NameDict
         this.id = id;
     }
 
+    /**
+     * 次序
+     *
+     * 用于对条目排序。
+     */
     @Column(nullable = false)
     @Index(name = "##_order")
     public int getOrder() {
@@ -92,6 +102,11 @@ public abstract class NameDict
         this.order = order;
     }
 
+    /**
+     * 权重
+     *
+     * 条目相关的权重（可选）。
+     */
     @Column(nullable = false)
     @DefaultValue("0")
     // @Index(name = "##_rank")

@@ -4,6 +4,11 @@ import javax.persistence.Entity;
 
 import com.bee32.plover.ox1.dict.NameDict;
 
+/**
+ * 属性池模型
+ *
+ * 定义属性池的结构和用途。
+ */
 @Entity
 public class XPoolModel
         extends NameDict {

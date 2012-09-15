@@ -6,6 +6,10 @@ import javax.persistence.MappedSuperclass;
 import com.bee32.plover.orm.entity.Entity;
 
 /**
+ * 属性池-X30
+ *
+ * 该属性池比 X20 属性池多出 10 个混合字段。
+ *
  * XPool30 - General-purpose XPool.
  *
  * This pool contains:
@@ -67,6 +71,11 @@ public abstract class XPool30<Es extends Entity<?>>
         aaaa1 = o.aaaa1;
     }
 
+    /**
+     * 属性 INT5
+     *
+     * 长度为 4B 的扩展整数属性。
+     */
     @Column
     public Integer getInt5() {
         return int5;
@@ -76,6 +85,11 @@ public abstract class XPool30<Es extends Entity<?>>
         this.int5 = int5;
     }
 
+    /**
+     * 属性 INT6
+     *
+     * 长度为 4B 的扩展整数属性。
+     */
     @Column
     public Integer getInt6() {
         return int6;
@@ -85,6 +99,11 @@ public abstract class XPool30<Es extends Entity<?>>
         this.int6 = int6;
     }
 
+    /**
+     * 属性 INT7
+     *
+     * 长度为 4B 的扩展整数属性。
+     */
     @Column
     public Integer getInt7() {
         return int7;
@@ -94,6 +113,11 @@ public abstract class XPool30<Es extends Entity<?>>
         this.int7 = int7;
     }
 
+    /**
+     * 属性 INT8
+     *
+     * 长度为 4B 的扩展整数属性。
+     */
     @Column
     public Integer getInt8() {
         return int8;
@@ -103,6 +127,11 @@ public abstract class XPool30<Es extends Entity<?>>
         this.int8 = int8;
     }
 
+    /**
+     * 属性 LONG3
+     *
+     * 长度为 8B 的扩展长整数属性。
+     */
     @Column
     public Long getLong3() {
         return long3;
@@ -112,6 +141,11 @@ public abstract class XPool30<Es extends Entity<?>>
         this.long3 = long3;
     }
 
+    /**
+     * 属性 LONG4
+     *
+     * 长度为 8B 的扩展长整数属性。
+     */
     @Column
     public Long getLong4() {
         return long4;
@@ -121,6 +155,11 @@ public abstract class XPool30<Es extends Entity<?>>
         this.long4 = long4;
     }
 
+    /**
+     * 属性 FLOAT3
+     *
+     * 长度为 4B 的扩展浮点数属性。
+     */
     @Column
     public Float getFloat3() {
         return float3;
@@ -130,6 +169,11 @@ public abstract class XPool30<Es extends Entity<?>>
         this.float3 = float3;
     }
 
+    /**
+     * 属性 FLOAT4
+     *
+     * 长度为 4B 的扩展浮点数属性。
+     */
     @Column
     public Float getFloat4() {
         return float4;
@@ -139,6 +183,11 @@ public abstract class XPool30<Es extends Entity<?>>
         this.float4 = float4;
     }
 
+    /**
+     * 属性 DOUBLE3
+     *
+     * 长度为 8B 的扩展双精度浮点数属性。
+     */
     @Column
     public Double getDouble3() {
         return double3;
@@ -148,6 +197,11 @@ public abstract class XPool30<Es extends Entity<?>>
         this.double3 = double3;
     }
 
+    /**
+     * 属性 DOUBLE4
+     *
+     * 长度为 8B 的扩展双精度浮点数属性。
+     */
     @Column
     public Double getDouble4() {
         return double4;
@@ -157,6 +211,11 @@ public abstract class XPool30<Es extends Entity<?>>
         this.double4 = double4;
     }
 
+    /**
+     * 属性 AAAA1
+     *
+     * 长度为 250 的扩展字符串属性。
+     */
     @Column(length = LEN_AAAA)
     public String getAaaa1() {
         return aaaa1;

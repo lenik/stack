@@ -57,6 +57,11 @@ public abstract class CEntity<K extends Serializable>
         aclId = o.aclId;
     }
 
+    /**
+     * 关键字
+     *
+     * 用于索引查找的关键字，如代码和拼音缩写等。由系统自动生成。
+     */
     @Column(length = KEYWORD_MAXLEN)
     @Index(name = "##_keyword")
     protected String getKeyword() {
@@ -104,6 +109,11 @@ public abstract class CEntity<K extends Serializable>
     protected void populateKeywords(Collection<String> keywords) {
     }
 
+    /**
+     * 属主
+     *
+     * 记录的拥有者。属主用户对记录拥有所有权限，除非记录被系统锁定。
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     public User getOwner() {
         CEntity<?> owning = owningEntity();
@@ -117,6 +127,11 @@ public abstract class CEntity<K extends Serializable>
         this.owner = owner;
     }
 
+    /**
+     * 安全策略
+     *
+     * 该记录上启用的安全策略的ID。
+     */
     @Column(name = "acl")
     @Index(name = "##_acl")
     public Integer getAclId() {

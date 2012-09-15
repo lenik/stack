@@ -32,6 +32,11 @@ public abstract class UIEntityAuto<K extends Serializable>
         autoId = true;
     }
 
+    /**
+     * 标识符
+     *
+     * 记录的标识符、主键。
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idgen")
     @Override

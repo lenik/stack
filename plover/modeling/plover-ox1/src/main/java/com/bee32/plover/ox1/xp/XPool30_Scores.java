@@ -10,7 +10,9 @@ import javax.persistence.TemporalType;
 import com.bee32.plover.orm.entity.Entity;
 
 /**
- * Score Pool.
+ * 计分用属性池-X30s
+ *
+ * 该属性池主要用于计分。
  *
  * This pool contains:
  * <ul>
@@ -23,44 +25,29 @@ import com.bee32.plover.orm.entity.Entity;
  */
 @MappedSuperclass
 public abstract class XPool30_Scores<Es extends Entity<?>>
-        extends XPool<Es> {
+        extends XPool15_Scores<Es> {
 
     private static final long serialVersionUID = 1L;
 
-    Integer int1;
-    Integer int2;
-    Integer int3;
-    Integer int4;
+    private Integer int3;
+    private Integer int4;
 
-    Long long1;
-    Long long2;
-    Long long3;
-    Long long4;
+    private Long long3;
+    private Long long4;
 
-    Float float1;
-    Float float2;
-    Float float3;
-    Float float4;
-    Float float5;
-    Float float6;
-    Float float7;
-    Float float8;
-    Float float9;
-    Float float10;
-    Float float11;
-    Float float12;
-    Float float13;
-    Float float14;
-    Float float15;
-    Float float16;
+    private Float float9;
+    private Float float10;
+    private Float float11;
+    private Float float12;
+    private Float float13;
+    private Float float14;
+    private Float float15;
+    private Float float16;
 
-    Double double1;
-    Double double2;
-    Double double3;
-    Double double4;
+    private Double double3;
+    private Double double4;
 
-    Date date1;
-    Date date2;
+    private Date date2;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -73,22 +60,10 @@ public abstract class XPool30_Scores<Es extends Entity<?>>
 
     protected void _populate(XPool30_Scores<? extends Entity<?>> o) {
         super._populate(o);
-        int1 = o.int1;
-        int2 = o.int2;
         int3 = o.int3;
         int4 = o.int4;
-        long1 = o.long1;
-        long2 = o.long2;
         long3 = o.long3;
         long4 = o.long4;
-        float1 = o.float1;
-        float2 = o.float2;
-        float3 = o.float3;
-        float4 = o.float4;
-        float5 = o.float5;
-        float6 = o.float6;
-        float7 = o.float7;
-        float8 = o.float8;
         float9 = o.float9;
         float10 = o.float10;
         float11 = o.float11;
@@ -97,32 +72,16 @@ public abstract class XPool30_Scores<Es extends Entity<?>>
         float14 = o.float14;
         float15 = o.float15;
         float16 = o.float16;
-        double1 = o.double1;
-        double2 = o.double2;
         double3 = o.double3;
         double4 = o.double4;
-        date1 = o.date1;
         date2 = o.date2;
     }
 
-    @Column
-    public Integer getInt1() {
-        return int1;
-    }
-
-    public void setInt1(Integer int1) {
-        this.int1 = int1;
-    }
-
-    @Column
-    public Integer getInt2() {
-        return int2;
-    }
-
-    public void setInt2(Integer int2) {
-        this.int2 = int2;
-    }
-
+    /**
+     * 属性 INT3
+     *
+     * 长度为 4B 的扩展整数属性。
+     */
     @Column
     public Integer getInt3() {
         return int3;
@@ -132,6 +91,11 @@ public abstract class XPool30_Scores<Es extends Entity<?>>
         this.int3 = int3;
     }
 
+    /**
+     * 属性 INT4
+     *
+     * 长度为 4B 的扩展整数属性。
+     */
     @Column
     public Integer getInt4() {
         return int4;
@@ -141,24 +105,11 @@ public abstract class XPool30_Scores<Es extends Entity<?>>
         this.int4 = int4;
     }
 
-    @Column
-    public Long getLong1() {
-        return long1;
-    }
-
-    public void setLong1(Long long1) {
-        this.long1 = long1;
-    }
-
-    @Column
-    public Long getLong2() {
-        return long2;
-    }
-
-    public void setLong2(Long long2) {
-        this.long2 = long2;
-    }
-
+    /**
+     * 属性 LONG3
+     *
+     * 长度为 8B 的扩展长整数属性。
+     */
     @Column
     public Long getLong3() {
         return long3;
@@ -168,6 +119,11 @@ public abstract class XPool30_Scores<Es extends Entity<?>>
         this.long3 = long3;
     }
 
+    /**
+     * 属性 LONG4
+     *
+     * 长度为 8B 的扩展长整数属性。
+     */
     @Column
     public Long getLong4() {
         return long4;
@@ -177,78 +133,11 @@ public abstract class XPool30_Scores<Es extends Entity<?>>
         this.long4 = long4;
     }
 
-    @Column
-    public Float getFloat1() {
-        return float1;
-    }
-
-    public void setFloat1(Float float1) {
-        this.float1 = float1;
-    }
-
-    @Column
-    public Float getFloat2() {
-        return float2;
-    }
-
-    public void setFloat2(Float float2) {
-        this.float2 = float2;
-    }
-
-    @Column
-    public Float getFloat3() {
-        return float3;
-    }
-
-    public void setFloat3(Float float3) {
-        this.float3 = float3;
-    }
-
-    @Column
-    public Float getFloat4() {
-        return float4;
-    }
-
-    public void setFloat4(Float float4) {
-        this.float4 = float4;
-    }
-
-    @Column
-    public Float getFloat5() {
-        return float5;
-    }
-
-    public void setFloat5(Float float5) {
-        this.float5 = float5;
-    }
-
-    @Column
-    public Float getFloat6() {
-        return float6;
-    }
-
-    public void setFloat6(Float float6) {
-        this.float6 = float6;
-    }
-
-    @Column
-    public Float getFloat7() {
-        return float7;
-    }
-
-    public void setFloat7(Float float7) {
-        this.float7 = float7;
-    }
-
-    @Column
-    public Float getFloat8() {
-        return float8;
-    }
-
-    public void setFloat8(Float float8) {
-        this.float8 = float8;
-    }
-
+    /**
+     * 属性 FLOAT9
+     *
+     * 长度为 4B 的扩展浮点数属性。
+     */
     @Column
     public Float getFloat9() {
         return float9;
@@ -258,6 +147,11 @@ public abstract class XPool30_Scores<Es extends Entity<?>>
         this.float9 = float9;
     }
 
+    /**
+     * 属性 FLOAT10
+     *
+     * 长度为 4B 的扩展浮点数属性。
+     */
     @Column
     public Float getFloat10() {
         return float10;
@@ -267,6 +161,11 @@ public abstract class XPool30_Scores<Es extends Entity<?>>
         this.float10 = float10;
     }
 
+    /**
+     * 属性 FLOAT11
+     *
+     * 长度为 4B 的扩展浮点数属性。
+     */
     @Column
     public Float getFloat11() {
         return float11;
@@ -276,6 +175,11 @@ public abstract class XPool30_Scores<Es extends Entity<?>>
         this.float11 = float11;
     }
 
+    /**
+     * 属性 FLOAT12
+     *
+     * 长度为 4B 的扩展浮点数属性。
+     */
     @Column
     public Float getFloat12() {
         return float12;
@@ -285,6 +189,11 @@ public abstract class XPool30_Scores<Es extends Entity<?>>
         this.float12 = float12;
     }
 
+    /**
+     * 属性 FLOAT13
+     *
+     * 长度为 4B 的扩展浮点数属性。
+     */
     @Column
     public Float getFloat13() {
         return float13;
@@ -294,6 +203,11 @@ public abstract class XPool30_Scores<Es extends Entity<?>>
         this.float13 = float13;
     }
 
+    /**
+     * 属性 FLOAT14
+     *
+     * 长度为 4B 的扩展浮点数属性。
+     */
     @Column
     public Float getFloat14() {
         return float14;
@@ -303,6 +217,11 @@ public abstract class XPool30_Scores<Es extends Entity<?>>
         this.float14 = float14;
     }
 
+    /**
+     * 属性 FLOAT15
+     *
+     * 长度为 4B 的扩展浮点数属性。
+     */
     @Column
     public Float getFloat15() {
         return float15;
@@ -312,6 +231,11 @@ public abstract class XPool30_Scores<Es extends Entity<?>>
         this.float15 = float15;
     }
 
+    /**
+     * 属性 FLOAT16
+     *
+     * 长度为 4B 的扩展浮点数属性。
+     */
     @Column
     public Float getFloat16() {
         return float16;
@@ -321,24 +245,11 @@ public abstract class XPool30_Scores<Es extends Entity<?>>
         this.float16 = float16;
     }
 
-    @Column
-    public Double getDouble1() {
-        return double1;
-    }
-
-    public void setDouble1(Double double1) {
-        this.double1 = double1;
-    }
-
-    @Column
-    public Double getDouble2() {
-        return double2;
-    }
-
-    public void setDouble2(Double double2) {
-        this.double2 = double2;
-    }
-
+    /**
+     * 属性 DOUBLE3
+     *
+     * 长度为 8B 的扩展双精度浮点数属性。
+     */
     @Column
     public Double getDouble3() {
         return double3;
@@ -348,6 +259,11 @@ public abstract class XPool30_Scores<Es extends Entity<?>>
         this.double3 = double3;
     }
 
+    /**
+     * 属性 DOUBLE4
+     *
+     * 长度为 8B 的扩展双精度浮点数属性。
+     */
     @Column
     public Double getDouble4() {
         return double4;
@@ -357,16 +273,11 @@ public abstract class XPool30_Scores<Es extends Entity<?>>
         this.double4 = double4;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column
-    public Date getDate1() {
-        return date1;
-    }
-
-    public void setDate1(Date date1) {
-        this.date1 = date1;
-    }
-
+    /**
+     * 属性 DATE2
+     *
+     * 长度为 8B 的扩展时间戳属性。
+     */
     @Temporal(TemporalType.TIMESTAMP)
     @Column
     public Date getDate2() {

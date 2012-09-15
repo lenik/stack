@@ -68,6 +68,11 @@ public abstract class Principal
         return true;
     }
 
+    /**
+     * 主体名称
+     *
+     * 系统中唯一的主体名称（用户名、组名等）
+     */
     @NaturalId(mutable = true)
     @Column(length = NAME_LENGTH, nullable = false)
     @Override

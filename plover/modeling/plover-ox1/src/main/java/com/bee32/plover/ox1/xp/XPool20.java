@@ -10,7 +10,11 @@ import javax.persistence.TemporalType;
 import com.bee32.plover.orm.entity.Entity;
 
 /**
- * XPool30 - General-purpose XPool.
+ * 属性池-X20
+ *
+ * 用于扩展20个混合属性的属性池。
+ *
+ * XPool20 - General-purpose XPool.
  *
  * This pool contains:
  * <ul>
@@ -91,6 +95,11 @@ public abstract class XPool20<Es extends Entity<?>>
         aa2 = o.aa2;
     }
 
+    /**
+     * 属性-BITS
+     *
+     * 长度为 32 个位的扩展位组属性。
+     */
     @Column(nullable = false)
     public int getBits() {
         return bits;
@@ -100,6 +109,11 @@ public abstract class XPool20<Es extends Entity<?>>
         this.bits = bits;
     }
 
+    /**
+     * 属性 INT1
+     *
+     * 长度为 4B 的扩展整数属性。
+     */
     @Column
     public Integer getInt1() {
         return int1;
@@ -109,6 +123,11 @@ public abstract class XPool20<Es extends Entity<?>>
         this.int1 = int1;
     }
 
+    /**
+     * 属性 INT2
+     *
+     * 长度为 4B 的扩展整数属性。
+     */
     @Column
     public Integer getInt2() {
         return int2;
@@ -118,6 +137,11 @@ public abstract class XPool20<Es extends Entity<?>>
         this.int2 = int2;
     }
 
+    /**
+     * 属性 INT3
+     *
+     * 长度为 4B 的扩展整数属性。
+     */
     @Column
     public Integer getInt3() {
         return int3;
@@ -127,6 +151,11 @@ public abstract class XPool20<Es extends Entity<?>>
         this.int3 = int3;
     }
 
+    /**
+     * 属性 INT4
+     *
+     * 长度为 4B 的扩展整数属性。
+     */
     @Column
     public Integer getInt4() {
         return int4;
@@ -136,6 +165,11 @@ public abstract class XPool20<Es extends Entity<?>>
         this.int4 = int4;
     }
 
+    /**
+     * 属性 LONG1
+     *
+     * 长度为 8B 的扩展长整数属性。
+     */
     @Column
     public Long getLong1() {
         return long1;
@@ -145,6 +179,11 @@ public abstract class XPool20<Es extends Entity<?>>
         this.long1 = long1;
     }
 
+    /**
+     * 属性 LONG2
+     *
+     * 长度为 8B 的扩展长整数属性。
+     */
     @Column
     public Long getLong2() {
         return long2;
@@ -154,6 +193,11 @@ public abstract class XPool20<Es extends Entity<?>>
         this.long2 = long2;
     }
 
+    /**
+     * 属性 FLOAT1
+     *
+     * 长度为 4B 的扩展浮点数属性。
+     */
     @Column
     public Float getFloat1() {
         return float1;
@@ -163,6 +207,11 @@ public abstract class XPool20<Es extends Entity<?>>
         this.float1 = float1;
     }
 
+    /**
+     * 属性 FLOAT2
+     *
+     * 长度为 4B 的扩展浮点数属性。
+     */
     @Column
     public Float getFloat2() {
         return float2;
@@ -172,6 +221,11 @@ public abstract class XPool20<Es extends Entity<?>>
         this.float2 = float2;
     }
 
+    /**
+     * 属性 DOUBLE1
+     *
+     * 长度为 8B 的扩展双精度浮点数属性。
+     */
     @Column
     public Double getDouble1() {
         return double1;
@@ -181,6 +235,11 @@ public abstract class XPool20<Es extends Entity<?>>
         this.double1 = double1;
     }
 
+    /**
+     * 属性 DOUBLE2
+     *
+     * 长度为 8B 的扩展双精度浮点数属性。
+     */
     @Column
     public Double getDouble2() {
         return double2;
@@ -190,6 +249,11 @@ public abstract class XPool20<Es extends Entity<?>>
         this.double2 = double2;
     }
 
+    /**
+     * 属性 DATE1
+     *
+     * 长度为 8B 的扩展时间戳属性。
+     */
     @Temporal(TemporalType.TIMESTAMP)
     @Column
     public Date getDate1() {
@@ -200,6 +264,11 @@ public abstract class XPool20<Es extends Entity<?>>
         this.date1 = date1;
     }
 
+    /**
+     * 属性 DATE2
+     *
+     * 长度为 8B 的扩展时间戳属性。
+     */
     @Temporal(TemporalType.TIMESTAMP)
     @Column
     public Date getDate2() {
@@ -210,6 +279,11 @@ public abstract class XPool20<Es extends Entity<?>>
         this.date2 = date2;
     }
 
+    /**
+     * 属性A1
+     *
+     * 长度为 32 的扩展字符串属性。
+     */
     @Column(length = LEN_A)
     public String getA1() {
         return a1;
@@ -219,6 +293,11 @@ public abstract class XPool20<Es extends Entity<?>>
         this.a1 = a1;
     }
 
+    /**
+     * 属性A2
+     *
+     * 长度为 32 的扩展字符串属性。
+     */
     @Column(length = LEN_A)
     public String getA2() {
         return a2;
@@ -228,6 +307,11 @@ public abstract class XPool20<Es extends Entity<?>>
         this.a2 = a2;
     }
 
+    /**
+     * 属性A3
+     *
+     * 长度为 32 的扩展字符串属性。
+     */
     @Column(length = LEN_A)
     public String getA3() {
         return a3;
@@ -237,6 +321,11 @@ public abstract class XPool20<Es extends Entity<?>>
         this.a3 = a3;
     }
 
+    /**
+     * 属性A4
+     *
+     * 长度为 32 的扩展字符串属性。
+     */
     @Column(length = LEN_A)
     public String getA4() {
         return a4;
@@ -246,6 +335,11 @@ public abstract class XPool20<Es extends Entity<?>>
         this.a4 = a4;
     }
 
+    /**
+     * 属性A5
+     *
+     * 长度为 32 的扩展字符串属性。
+     */
     @Column(length = LEN_A)
     public String getA5() {
         return a5;
@@ -255,6 +349,11 @@ public abstract class XPool20<Es extends Entity<?>>
         this.a5 = a5;
     }
 
+    /**
+     * 属性AA1
+     *
+     * 长度为 64 的扩展字符串属性。
+     */
     @Column(length = LEN_AA)
     public String getAa1() {
         return aa1;
@@ -264,6 +363,11 @@ public abstract class XPool20<Es extends Entity<?>>
         this.aa1 = aa1;
     }
 
+    /**
+     * 属性AA2
+     *
+     * 长度为 64 的扩展字符串属性。
+     */
     @Column(length = LEN_AA)
     public String getAa2() {
         return aa2;

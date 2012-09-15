@@ -41,6 +41,11 @@ public abstract class DigestEntity
         digestValidated = o.digestValidated;
     }
 
+    /**
+     * 标识摘要
+     *
+     * 数据的摘要，亦作为记录的标识符。
+     */
     @Id
     @Column(length = ID_LENGTH)
     @Override

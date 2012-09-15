@@ -56,6 +56,11 @@ public class SingleVerifierSupport
         this.rejectedReason1 = o.rejectedReason1;
     }
 
+    /**
+     * 审核人
+     *
+     * 审核操作的执行人。
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @Override
     public Principal getVerifier1() {
@@ -66,6 +71,11 @@ public class SingleVerifierSupport
         this.verifier1 = verifier;
     }
 
+    /**
+     * 审核日期
+     *
+     * 审核操作的日期。
+     */
     @Temporal(TemporalType.TIMESTAMP)
     // @Column(name = "tv")
     @Override
@@ -77,6 +87,11 @@ public class SingleVerifierSupport
         this.verifiedDate1 = verifiedDate1;
     }
 
+    /**
+     * 审核通过
+     *
+     * 审核的决策值，如 未审核/允许/拒绝。
+     */
     @Column(nullable = false)
     @DefaultValue("false")
     @Override
@@ -88,6 +103,11 @@ public class SingleVerifierSupport
         this.accepted1 = accepted1;
     }
 
+    /**
+     * 拒绝原因
+     *
+     * 审核责任人填写的附加消息。
+     */
     @Column(length = REJECTED_REASON_LENGTH)
     @Override
     public String getRejectedReason1() {
