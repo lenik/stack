@@ -61,8 +61,6 @@ public class FileAttribute
      * 用户文件
      *
      * 本属性所对应的用户文件
-     *
-     * @return
      */
     @NaturalId
     @ManyToOne
@@ -78,7 +76,6 @@ public class FileAttribute
      * 属性名称
      *
      * 本属性的名称
-     *
      */
     @NaturalId
     @Column(length = NAME_LENGTH, nullable = false)
@@ -96,8 +93,6 @@ public class FileAttribute
      * 整数属性
      *
      * 文件上的整数属性
-     *
-     * @return
      */
     @Column(nullable = false)
     public int getIntVal() {
@@ -112,8 +107,6 @@ public class FileAttribute
      * 小数属性
      *
      * 文件上的小数属性
-     *
-     * @return
      */
     @Column(nullable = false)
     public double getFloatVal() {
@@ -128,8 +121,6 @@ public class FileAttribute
      * 字符串属性
      *
      * 文件上的字符串属性
-     *
-     * @return
      */
     @Column(length = STR_VAL_LENGTH)
     public String getStrVal() {

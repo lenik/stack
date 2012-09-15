@@ -49,7 +49,9 @@ public class UserFileTagname
     }
 
     /**
-     * 标签名字
+     * 标签名
+     *
+     * 文件标签的显示名称。
      */
     @NaturalId
     @Column(length = NAME_LENGTH, nullable = false)
@@ -63,6 +65,11 @@ public class UserFileTagname
         this.name = name;
     }
 
+    /**
+     * 引用计数
+     *
+     * 文件标签被使用的次数。
+     */
     @Formula("(select count(*) from user_file_tags x where x.tag=id)")
     public int getRefCount() {
         return refCount;

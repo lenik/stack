@@ -3,8 +3,8 @@ Entity:4:altId:次标识符:alt_id:Sot:20:0:用于标识特定的样本数据。
 ::lastModified:更新日期:last_modified:DTt:0:0:数据最后一次修改的日期。（每次保存时自动更新）
 ::version:版本:version:Nt:8:0:数据的版本，原有的数据只能被更新版的数据取代。
 EntityAuto:1:id:标识符:id:Not:0:0:记录的标识符、主键。
-FileAttribute:5:file:（无名称）:file:Ro:0:0:（略）
-::floatVal:（无名称）:float_val:N:15:0:（略）
-::intVal:（无名称）:int_val:N:8:0:（略）
-::name:（无名称）:name:S:30:0:（略）
-::strVal:（无名称）:str_val:So:120:0:（略）
+FileAttribute:5:file:用户文件:file:Ro:0:0:本属性所对应的用户文件
+::floatVal:小数属性:float_val:N:15:0:文件上的小数属性
+::intVal:整数属性:int_val:N:8:0:文件上的整数属性
+::name:属性名称:name:S:30:0:本属性的名称
+::strVal:字符串属性:str_val:So:120:0:文件上的字符串属性

@@ -81,7 +81,6 @@ public class MakeOrder
      * 客户
      *
      * 订单对应的客户
-     * @return
      */
     @ManyToOne(optional = false)
     public Party getCustomer() {
@@ -154,7 +153,7 @@ public class MakeOrder
     @Transient
     Map<Material, BigDecimal> getArrangedPartSum() {
         Map<Material, BigDecimal> sumMap = new HashMap<Material, BigDecimal>();
-        //计算已经在task中按排的量
+        // 计算已经在task中按排的量
         for (MakeTask task : tasks) {
             for (MakeTaskItem taskItem : task.getItems()) {
                 BigDecimal sum = sumMap.get(taskItem.part.getTarget());
@@ -167,7 +166,7 @@ public class MakeOrder
             }
         }
 
-        //计算已经在plan中按排的量
+        // 计算已经在plan中按排的量
         for (MaterialPlan plan : plans) {
             for (MaterialPlanItem planItem : plan.getItems()) {
                 BigDecimal sum = sumMap.get(planItem.getMaterial());
@@ -182,7 +181,6 @@ public class MakeOrder
 
         return sumMap;
     }
-
 
     /**
      * Sum of part quantity in each delivery note item(on orderItem).
@@ -218,7 +216,8 @@ public class MakeOrder
         Map<Material, BigDecimal> sumMap = getArrangedPartSum();
 
         for (MakeOrderItem orderItem : items) {
-            if (orderItem.getMaterial() == null) continue;  //用户只输入了外部名称和规格
+            if (orderItem.getMaterial() == null)
+                continue; // 用户只输入了外部名称和规格
             BigDecimal sum = sumMap.get(orderItem.getMaterial());
             // 尚没有对应的生产任务，生产全部
             if (sum == null) {
@@ -263,8 +262,8 @@ public class MakeOrder
             BigDecimal remaining = orderItem.getQuantity().subtract(sum);
             if (remaining.longValue() > 0) {
                 // 送货单的数量小于订单的数量
-//                MakeOrderItem remainingItem =
-//                        DefaultDataAssembledContext.data.access(MakeOrderItem.class).lazyLoad(orderItem.getId());
+// MakeOrderItem remainingItem =
+// DefaultDataAssembledContext.data.access(MakeOrderItem.class).lazyLoad(orderItem.getId());
                 MakeOrderItem remainingItem = new MakeOrderItem();
                 EntityAccessor.setId(remainingItem, orderItem.getId());
                 remainingItem.setParent(this);
@@ -280,7 +279,6 @@ public class MakeOrder
         return result;
     }
 
-
     /**
      * 检查所有对应生产任务单的数量总合是否超过订单的数量
      *
@@ -291,7 +289,8 @@ public class MakeOrder
         Map<Material, BigDecimal> overloadParts = new HashMap<Material, BigDecimal>();
         Map<Material, BigDecimal> sumMap = getArrangedPartSum();
         for (MakeOrderItem orderItem : items) {
-            if (orderItem.getMaterial() == null) continue;  //用户只输入了外部名称和规格
+            if (orderItem.getMaterial() == null)
+                continue; // 用户只输入了外部名称和规格
             BigDecimal sum = sumMap.get(orderItem.getMaterial());
             if (sum != null) {
                 if (sum.compareTo(orderItem.getQuantity()) > 0) {

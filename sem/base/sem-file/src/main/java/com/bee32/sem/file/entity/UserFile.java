@@ -23,7 +23,9 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.sem.people.entity.Party;
 
 /**
- * 用户文件。
+ * 用户文件
+ *
+ * 用户管理的文件。
  *
  * label = 用户填写的文件标题（用于显示）。
  */
@@ -74,7 +76,9 @@ public class UserFile
     }
 
     /**
-     * 文件数据。
+     * 文件数据
+     *
+     * 大块的文件数据。
      */
     @ManyToOne(optional = false)
     public FileBlob getFileBlob() {
@@ -85,6 +89,11 @@ public class UserFile
         this.fileBlob = fileBlob;
     }
 
+    /**
+     * 目录
+     *
+     * 文件所在目录的路径名称。
+     */
     @Column(length = DIR_LENGTH, nullable = false)
     public String getDir() {
         return dir;
@@ -97,7 +106,9 @@ public class UserFile
     }
 
     /**
-     * 用户对上传的文件重命名。
+     * 文化名
+     *
+     * 用户对上传文件的命名。
      */
     @Column(length = NAME_LENGTH)
     public String getName() {
@@ -130,6 +141,11 @@ public class UserFile
         }
     }
 
+    /**
+     * 文件日期
+     *
+     * 用于说明文件相关事件的日期（业务日期）。
+     */
     @Temporal(TemporalType.DATE)
     public Date getFileDate() {
         return fileDate;
@@ -139,6 +155,11 @@ public class UserFile
         this.fileDate = fileDate;
     }
 
+    /**
+     * 过期时间
+     *
+     * 用于说明文件相关事件的有效期。
+     */
     @Temporal(TemporalType.DATE)
     public Date getExpiredDate() {
         return expiredDate;
@@ -149,6 +170,8 @@ public class UserFile
     }
 
     /**
+     * 标签集
+     *
      * 用户为文件添加的标签。
      */
     @ManyToMany(fetch = FetchType.EAGER)
@@ -167,6 +190,8 @@ public class UserFile
 
     /**
      * 经办人
+     *
+     * 文件相关事件的经办人。
      */
     @ManyToOne
     public User getOperator() {
@@ -179,6 +204,8 @@ public class UserFile
 
     /**
      * 客户
+     *
+     * 文件相关事件的客户人员或公司。
      */
     @ManyToOne
     public Party getParty() {
@@ -204,6 +231,11 @@ public class UserFile
         getEntityFlags().setHidden(refType == null);
     }
 
+    /**
+     * 关联的对象类型
+     *
+     * 引用本文件的源对象的类型。
+     */
     @Column(name = "refType", length = ABBR_LEN)
     String getRefTypeId() {
         return ABBR.abbr(refType);
@@ -225,6 +257,8 @@ public class UserFile
 
     /**
      * 关联的对象 ID
+     *
+     * 引用本文件的源对象的标识符。
      */
     @Column(length = REF_ID_LENGTH)
     public String getRefId() {

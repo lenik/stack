@@ -19,7 +19,7 @@ SingleVerifierSupport:4:accepted1:审核通过:accepted1:B:1:0:审核的决策�
 ::verifiedDate1:审核日期:verified_date1:DTo:0:0:审核操作的日期。
 ::verifier1:审核人:verifier1:Ro:0:0:审核操作的执行人。
 MakeOrder:7:chance:（无名称）:chance:Ro:0:0:（略）
-::customer:（无名称）:customer:Ro:0:0:（略）
+::customer:客户:customer:Ro:0:0:订单对应的客户
 ::deliveryNotes:（无名称）:delivery_notes:No:0:0:（略）
 ::plans:（无名称）:plans:No:0:0:（略）
 ::status:（无名称）:status:So:30:0:（略）

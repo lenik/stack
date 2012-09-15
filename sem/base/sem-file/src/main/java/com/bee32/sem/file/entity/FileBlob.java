@@ -79,6 +79,8 @@ public class FileBlob
     }
 
     /**
+     * 文件长度
+     *
      * 文件长度 （字节）。
      */
     @Column(nullable = false)
@@ -91,7 +93,9 @@ public class FileBlob
     }
 
     /**
-     * 文件头。
+     * 文件头
+     *
+     * 文件的头部数据，可用作预览。
      *
      * 这里存放的文件头不会超过 {@link #HEADER_SIZE}。 当文件比较小时，可以直接从文件头获取整个文件内容。
      *
@@ -203,7 +207,9 @@ public class FileBlob
     }
 
     /**
-     * 文本编码。
+     * 文本编码
+     *
+     * 用于为文本文件指定字符编码。
      */
     @Column(length = ENCODING_LENGTH)
     public String getEncoding() {
@@ -222,7 +228,9 @@ public class FileBlob
     }
 
     /**
-     * 原始内容类型。
+     * 原始内容类型
+     *
+     * 文件上传时声明的内容类型。
      */
     @Column(length = CONTENT_TYPE_LENGTH)
     public String getContentType() {
@@ -233,6 +241,11 @@ public class FileBlob
         this.contentType = contentType;
     }
 
+    /**
+     * 引用计数
+     *
+     * 文件被引用的次数。当引用计数为0时，文件占用的存储空间可被清除。
+     */
     @Redundant
     @Column(nullable = false)
     public int getRefCount() {

@@ -7,7 +7,8 @@ CEntity:2:aclId:安全策略:acl_id:Not:8:0:该记录上启用的安全策略的
 UIEntity:2:description:描述:description:Sot:200:0:对数据的简略的描述。（通常不同于备注）
 ::label:标签:label:Sot:100:0:记录的标识标签，简短的概要、或通常是唯一的显示名称。
 UIEntityAuto:1:id:标识符:id:Not:0:0:记录的标识符、主键。
-Attendance:4:absentTime:当日累计缺勤时间（分钟）:absent_time:N:8:0:（略）
+Attendance:5:absentTime:当日累计缺勤时间（分钟）:absent_time:N:8:0:（略）
 ::date:（无名称）:date:D:0:0:（略）
 ::employee:雇员:employee:Ro:0:0:（略）
 ::overworkTime:当日累计加班时间（分钟）:overwork_time:N:8:0:（略）
+::yearMonthDay:（无名称）:year_month_day:N:8:0:（略）
