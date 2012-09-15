@@ -16,6 +16,10 @@ import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.ox1.color.Blue;
 
 /**
+ * 文件属性
+ *
+ * 对上传共享的文件的描述
+ *
  * Updated when * fileBlob.mtime > fileattr[*].mtime.
  */
 @Entity
@@ -53,6 +57,13 @@ public class FileAttribute
         strVal = o.strVal;
     }
 
+    /**
+     * 用户文件
+     *
+     * 本属性所对应的用户文件
+     *
+     * @return
+     */
     @NaturalId
     @ManyToOne
     public UserFile getFile() {
@@ -63,6 +74,12 @@ public class FileAttribute
         this.file = file;
     }
 
+    /**
+     * 属性名称
+     *
+     * 本属性的名称
+     *
+     */
     @NaturalId
     @Column(length = NAME_LENGTH, nullable = false)
     public String getName() {
@@ -75,6 +92,13 @@ public class FileAttribute
         this.name = name;
     }
 
+    /**
+     * 整数属性
+     *
+     * 文件上的整数属性
+     *
+     * @return
+     */
     @Column(nullable = false)
     public int getIntVal() {
         return intVal;
@@ -84,6 +108,13 @@ public class FileAttribute
         this.intVal = intVal;
     }
 
+    /**
+     * 小数属性
+     *
+     * 文件上的小数属性
+     *
+     * @return
+     */
     @Column(nullable = false)
     public double getFloatVal() {
         return floatVal;
@@ -93,6 +124,13 @@ public class FileAttribute
         this.floatVal = floatVal;
     }
 
+    /**
+     * 字符串属性
+     *
+     * 文件上的字符串属性
+     *
+     * @return
+     */
     @Column(length = STR_VAL_LENGTH)
     public String getStrVal() {
         return strVal;

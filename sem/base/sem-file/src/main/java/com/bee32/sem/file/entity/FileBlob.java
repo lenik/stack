@@ -30,9 +30,6 @@ import com.bee32.plover.ox1.digest.MD5Entity;
 import com.bee32.sem.file.io.LocalStorage;
 import com.bee32.sem.file.util.ImageBlob;
 
-/**
- * 文件数据
- */
 @Entity
 @AttributeOverrides({//
 /*    */@AttributeOverride(name = "label", column = @Column(length = 100)) })
