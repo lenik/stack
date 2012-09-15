@@ -229,10 +229,14 @@ public class EntityTXGen {
             Column _column = getter.getAnnotation(Column.class);
             if (_column != null) {
                 nullable = _column.nullable();
-                precision = _column.precision();
+
+                if (_column.length() != 255)
+                    length = _column.length();
+
                 scale = _column.scale();
-                length = _column.length();
-                if (precision != 0) {
+
+                if (_column.precision() != 0) {
+                    precision = _column.precision();
                     length = precision;
                     if (scale != 0)
                         length += 1 + scale;
