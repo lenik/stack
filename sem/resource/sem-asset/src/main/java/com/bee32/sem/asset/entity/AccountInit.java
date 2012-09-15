@@ -13,6 +13,14 @@ import org.hibernate.annotations.CascadeType;
 import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.sem.process.base.ProcessEntity;
 
+/**
+ * 账务初始化
+ *
+ * 账务系统初始化
+ *
+ * @author jack
+ *
+ */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "account_init_seq", allocationSize = 1)
 public class AccountInit
@@ -41,6 +49,13 @@ public class AccountInit
         return items;
     }
 
+    /**
+     * 初始化明细列表
+     *
+     * 账务初始化时对应的科目明细列表
+     *
+     * @param items
+     */
     public void setItems(List<AccountInitItem> items) {
         if (items == null)
             throw new NullPointerException("items");

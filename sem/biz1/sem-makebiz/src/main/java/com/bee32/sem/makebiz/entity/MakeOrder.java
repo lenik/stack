@@ -77,6 +77,12 @@ public class MakeOrder
             verifyContext.bind(this, nativeTotalProperty, "金额");
     }
 
+    /**
+     * 客户
+     *
+     * 订单对应的客户
+     * @return
+     */
     @ManyToOne(optional = false)
     public Party getCustomer() {
         return customer;

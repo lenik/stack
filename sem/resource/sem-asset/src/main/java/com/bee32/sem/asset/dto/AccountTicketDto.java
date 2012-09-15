@@ -21,7 +21,6 @@ public class AccountTicketDto
     public static final int ITEMS = 0x10000;
 
     List<AccountTicketItemDto> items;
-    FundFlowDto request;
 
 
     @Override
@@ -35,16 +34,12 @@ public class AccountTicketDto
             items = marshalList(AccountTicketItemDto.class, source.getItems());
         else
             items = Collections.emptyList();
-
-        request = mref(FundFlowDto.class, source.getRequest());
     }
 
     @Override
     protected void _unmarshalTo(AccountTicket target) {
         if (selection.contains(ITEMS))
             mergeList(target, "items", items);
-
-        merge(target, "request", request);
     }
 
     @Override
@@ -94,15 +89,9 @@ public class AccountTicketDto
             items.get(index).setIndex(index);
     }
 
-    public FundFlowDto getRequest() {
-        return request;
-    }
-
-    public void setRequest(FundFlowDto request) {
-        this.request = request;
-    }
-
     /**
+     * 凭证是否借贷平衡
+     *
      * 判断借贷是否相等
      */
     public boolean isDebitCreditEqual()

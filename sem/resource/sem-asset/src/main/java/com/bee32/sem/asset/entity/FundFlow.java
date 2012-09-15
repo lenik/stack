@@ -27,6 +27,9 @@ import com.bee32.sem.world.monetary.MCValue;
 
 /**
  * 资金流
+ *
+ * 收款单和付款单的基类
+ *
  * @author jack
  *  description: 摘要
  *
@@ -71,6 +74,9 @@ public class FundFlow
 
     /**
      * 经办人
+     *
+     * 资金进出经办人
+     *
      * @return
      */
     @ManyToOne
@@ -83,7 +89,9 @@ public class FundFlow
     }
 
     /**
-     * 详细说明
+     * 资金进出说明
+     *
+     * 资金进出的详细说明
      */
     @Column(length = TEXT_LENGTH)
     public String getText() {
@@ -96,6 +104,8 @@ public class FundFlow
 
     /**
      * 金额
+     *
+     * 资金进出金额
      */
     @Embedded
     @AttributeOverrides({ @AttributeOverride(name = "currencyCode", column = @Column(name = "value_cc")), //
@@ -114,6 +124,14 @@ public class FundFlow
         setValue(new MCValue(CurrencyConfig.getNative(), value));
     }
 
+    /**
+     * 本币金额
+     *
+     * 资金进出的以本地货币表达的金额
+     *
+     * @return
+     * @throws FxrQueryException
+     */
     @Redundant
     @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE)
     public synchronized BigDecimal getNativeValue()
@@ -129,6 +147,13 @@ public class FundFlow
     }
 
 
+    /**
+     * 资金进出对应的凭证
+     *
+     * 对应的凭证，说明本笔资金是否已经填写相应的凭证
+     *
+     * @return
+     */
     @OneToOne
     public AccountTicket getTicket() {
         return ticket;
@@ -138,12 +163,24 @@ public class FundFlow
         this.ticket = ticket;
     }
 
+    /**
+     * 数字代表的意义
+     *
+     * 说明凭证上的数字的的含义
+     *
+     */
     @Transient
     @Override
     public String getNumberDescription() {
         return "金额";
     }
 
+    /**
+     * 审核金额
+     *
+     * 返回需要审核的金额数
+     *
+     */
     @Transient
     @Override
     public Number getJudgeNumber() {

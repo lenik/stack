@@ -108,7 +108,7 @@ public class ACL
     }
 
     /**
-     * @return The permission reference, you can modify it directly.
+     * The permission reference, you can modify it directly.
      */
     @Override
     public Permission getDeclaredPermission(Principal principal) {

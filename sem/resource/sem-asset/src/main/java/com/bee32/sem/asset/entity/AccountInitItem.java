@@ -4,6 +4,15 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
+
+/**
+ * 账务初始化明细
+ *
+ * 初始化时对应的科目明细，金额
+ *
+ * @author jack
+ *
+ */
 @Entity
 @DiscriminatorValue("INIT")
 public class AccountInitItem
@@ -26,6 +35,13 @@ public class AccountInitItem
         init = o.init;
     }
 
+    /**
+     * 账务初始化主控类
+     *
+     * 账务初始化主控类
+     *
+     * @return
+     */
     @ManyToOne(/* optional = false: =true will break the general AccountTickItem. */)
     public AccountInit getInit() {
         return init;

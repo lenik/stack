@@ -5,6 +5,14 @@ import static com.bee32.sem.asset.entity.AccountSubject.DEBIT;
 
 import com.bee32.plover.orm.sample.StandardSamples;
 
+/**
+ * 预置会计科目
+ *
+ * 预置会计科目,对应2013年小企业会计准则
+ *
+ * @author jack
+ *
+ */
 public class AccountSubjects
         extends StandardSamples {
 

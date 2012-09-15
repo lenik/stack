@@ -27,7 +27,9 @@ import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 
 /**
- * 会计凭证条目
+ * 会计凭证明细
+ *
+ * 会计凭证上的明细科目，和会计科目对应
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -88,6 +90,13 @@ public class AccountTicketItem
         snapshotItemRef = o;
     }
 
+    /**
+     * 凭证明细建立时间
+     *
+     * 凭证明细建立时间
+     *
+     * @return
+     */
     @Transient
     public Date getDate() {
         return getBeginTime();
@@ -99,6 +108,8 @@ public class AccountTicketItem
     }
 
     /**
+     * 凭证主控类
+     *
      * 注： 所属单据这里命名为 ticket 而不是 parent，以便派生类可以有自己的 parent.
      *
      * @see AccountInitItem
@@ -113,7 +124,9 @@ public class AccountTicketItem
     }
 
     /**
-     * 单据内部的序号
+     * 显示顺序
+     *
+     * 明细在列表中的顺序
      */
     @Column(nullable = false)
     public int getIndex() {
@@ -125,7 +138,9 @@ public class AccountTicketItem
     }
 
     /**
-     * 借方或贷方的一级科目
+     * 科目
+     *
+     * 借方或贷方的科目
      */
     @ManyToOne(optional = false)
     public AccountSubject getSubject() {
@@ -139,7 +154,7 @@ public class AccountTicketItem
     }
 
     /**
-     * 借方或贷方对应的客户或供应商或个人
+     * 科目发生额对应的客户或供应商或个人
      */
     @ManyToOne
     public Party getParty() {
@@ -151,7 +166,10 @@ public class AccountTicketItem
     }
 
     /**
+     * 经办人
+     *
      * 企业内部经办人(业务员，采购员等)
+     *
      * @return
      */
     public Person getPerson() {
@@ -163,7 +181,8 @@ public class AccountTicketItem
     }
 
     /**
-     * 企业内部部门
+     * 科目发生额对应的内部部门
+     *
      * @return
      */
     public OrgUnit getOrgUnit() {
@@ -175,6 +194,8 @@ public class AccountTicketItem
     }
 
     /**
+     * 凭证明细方向
+     *
      * 说明本条目属于凭证上的借方还是贷方。
      *
      * @return <code>true</code> 表示借方，<code>false</code> 表示贷方。
@@ -189,7 +210,9 @@ public class AccountTicketItem
     }
 
     /**
-     * 金额
+     * 科目发生金额
+     *
+     * 凭证上科目发生的金额
      */
     @Embedded
     @AttributeOverrides({
@@ -208,6 +231,8 @@ public class AccountTicketItem
     }
 
     /**
+     * 本币金额
+     *
      * 【冗余】本地货币表示的价格。
      *
      * @return 本地货币表示的价格，非 <code>null</code>。
@@ -233,6 +258,12 @@ public class AccountTicketItem
         return snapshotItemRef != null;
     }
 
+    /**
+     * 数字代表的意义
+     *
+     * 说明凭证上的数字的的含义
+     *
+     */
     @Transient
     @Override
     public String getNumberDescription() {

@@ -8,7 +8,6 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
@@ -29,6 +28,8 @@ import com.bee32.sem.world.monetary.MCVector;
 
 /**
  * 会计凭证
+ *
+ * 对应做账时的凭证
  *
  * @author jack
  * @author lenik
@@ -70,6 +71,13 @@ public class AccountTicket
         verifyContext = (SingleVerifierWithNumberSupport) o.verifyContext.clone();
     }
 
+    /**
+     * 凭证发生时间
+     *
+     * 对应的凭证应该属于哪个月份
+     *
+     * @return
+     */
     @Transient
     public Date getDate() {
         return getBeginTime();
@@ -81,7 +89,9 @@ public class AccountTicket
     }
 
     /**
-     * 会计凭证上的条目列表
+     * 凭证明细列表
+     *
+     * 会计凭证上的明细列表，和科目相对应
      */
     @OneToMany(mappedBy = "ticket", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
@@ -130,17 +140,10 @@ public class AccountTicket
             items.get(index).setIndex(index);
     }
 
-    @OneToOne(mappedBy = "ticket")
-    public FundFlow getRequest() {
-        return request;
-    }
-
-    public void setRequest(FundFlow request) {
-        this.request = request;
-    }
-
     /**
-     * 多币种表示的金额。
+     * 多币种金额
+     *
+     * 多币种表示的金额
      */
     @Transient
     public synchronized MCVector getTotal() {
@@ -155,6 +158,8 @@ public class AccountTicket
     }
 
     /**
+     * 本币金额
+     *
      * 【冗余】获取用本地货币表示的总金额。
      *
      * @throws FxrQueryException
@@ -194,6 +199,12 @@ public class AccountTicket
         nativeTotal = null;
     }
 
+    /**
+     * 数字代表的意义
+     *
+     * 说明凭证上的数字的的含义
+     *
+     */
     @Transient
     @Override
     public String getNumberDescription() {
@@ -206,6 +217,11 @@ public class AccountTicket
         return getNativeTotal();
     }
 
+    /**
+     * 审核辅助
+     *
+     * 审核辅助类
+     */
     @Transient
     @Override
     public IVerifyProcessHandler getVerifyProcessHandler() {
