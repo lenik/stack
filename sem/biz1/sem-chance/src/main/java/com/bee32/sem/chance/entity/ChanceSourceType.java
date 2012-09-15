@@ -6,6 +6,9 @@ import com.bee32.plover.ox1.dict.ShortNameDict;
 
 /**
  * 机会来源
+ *
+ * 别人介绍，互联网，电话扫
+ *
  */
 @Entity
 public class ChanceSourceType

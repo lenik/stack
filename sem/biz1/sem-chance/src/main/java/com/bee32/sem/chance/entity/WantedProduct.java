@@ -19,6 +19,8 @@ import com.bee32.sem.world.thing.Thing;
 /**
  * 选型明细
  *
+ * 产品选型，一般包含产品的外部名称，外部规格等，主要给客户说明用
+ *
  * 注：label, modelSpec 分别对应选型产品的外部名称 、和外部规格。
  */
 @Entity

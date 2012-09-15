@@ -17,7 +17,9 @@ import com.bee32.plover.ox1.color.Yellow;
 import com.bee32.sem.people.entity.Party;
 
 /**
- * 机会客户关联
+ * 机会客户关联类
+ *
+ * 一个销售机会对应很多客户，以本类建立起关联
  */
 @Entity
 @Yellow
@@ -48,6 +50,14 @@ public class ChanceParty
         role = o.role;
     }
 
+
+    /**
+     * 机会
+     *
+     * 本关联对应的机会
+     *
+     * @return
+     */
     @NaturalId
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
@@ -61,6 +71,13 @@ public class ChanceParty
         this.chance = chance;
     }
 
+    /**
+     * 客户
+     *
+     * 本关联对应的公司或个人
+     *
+     * @return
+     */
     @NaturalId(mutable = true)
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
@@ -74,6 +91,13 @@ public class ChanceParty
         this.party = party;
     }
 
+    /**
+     * 角色
+     *
+     * 对应的公司或个人在本机会中的角色
+     *
+     * @return
+     */
     @Column(length = ROLE_LENGTH, nullable = false)
     public String getRole() {
         return role;

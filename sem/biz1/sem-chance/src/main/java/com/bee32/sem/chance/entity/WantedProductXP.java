@@ -5,6 +5,12 @@ import javax.persistence.SequenceGenerator;
 
 import com.bee32.plover.ox1.xp.XPool30;
 
+/**
+ * 选型产品基类
+ *
+ * @author jack
+ *
+ */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "wanted_productxp_seq", allocationSize = 1)
 public class WantedProductXP

@@ -21,6 +21,9 @@ import com.bee32.sem.world.monetary.MCValue;
 
 /**
  * 竞争对手
+ *
+ * 在向一个客户销售产品时，会碰到很多对手
+ *
  */
 @Entity
 @Green
@@ -74,6 +77,8 @@ public class ChanceCompetitor
 
     /**
      * 对应销售机会
+     *
+     * 竞争对手相关的销售机会
      */
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
@@ -87,6 +92,13 @@ public class ChanceCompetitor
         this.chance = chance;
     }
 
+    /**
+     * 公司或个人
+     *
+     * 竞争对手具体是哪个公司或个人
+     *
+     * @return
+     */
     @ManyToOne(optional = true)
     public Party getParty() {
         return party;
@@ -100,6 +112,9 @@ public class ChanceCompetitor
 
     /**
      * 竞争对手报价
+     *
+     * 竞争对手在相应销售机会中的报价，以便于和本公司的报价进行参考
+     *
      */
     @Embedded
     @AttributeOverrides({
@@ -116,6 +131,14 @@ public class ChanceCompetitor
         this.price = price;
     }
 
+    /**
+     * 本币价格
+     *
+     * 以本地货币为单位表示的竞争对生的报价
+     *
+     * @return
+     * @throws FxrQueryException
+     */
     @Redundant
     @Column(precision = DecimalConfig.MONEY_ITEM_PRECISION, scale = DecimalConfig.MONEY_ITEM_SCALE)
     public BigDecimal getNativePrice()
@@ -127,7 +150,9 @@ public class ChanceCompetitor
     }
 
     /**
-     * 对手的竞争能力
+     * 竞争能力
+     *
+     * 描述竞争对手的各项能力
      */
     @Column(length = CAPABILITY_LENGTH, nullable = false)
     public String getCapability() {
@@ -142,6 +167,9 @@ public class ChanceCompetitor
 
     /**
      * 对手的解决方案
+     *
+     * 对于本竞争对手，本公司采取的对应方案，措施
+     *
      */
     @Column(length = SOLUTION_LENGTH, nullable = false)
     public String getSolution() {
@@ -155,7 +183,10 @@ public class ChanceCompetitor
     }
 
     /**
-     * 对手的优势
+     * 优势
+     *
+     * 描述竞争对手相对于我们的优势
+     *
      */
     @Column(length = ADVANTAGE_LENGTH, nullable = false)
     public String getAdvantage() {
@@ -169,7 +200,10 @@ public class ChanceCompetitor
     }
 
     /**
-     * 对手的劣势
+     * 劣势
+     *
+     * 描述竞争对手相对于我们的劣势
+     *
      */
     @Column(length = DISVANTAGE_LENGTH, nullable = false)
     public String getDisvantage() {
@@ -184,6 +218,8 @@ public class ChanceCompetitor
 
     /**
      * 我们的应对策略
+     *
+     * 对于本竞争对手，本公司的应对策略
      */
     @Column(length = TACTIC_LENGTH, nullable = false)
     public String getTactic() {
@@ -198,6 +234,8 @@ public class ChanceCompetitor
 
     /**
      * 备注
+     *
+     * 对竞争对手的附加描述
      */
     @Column(length = COMMENT_LENGTH, nullable = false)
     public String getComment() {

@@ -24,6 +24,14 @@ import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.process.base.ProcessEntity;
 
+/**
+ * 行动记录,日志
+ *
+ * 销售员每天记录的日志，计划
+ *
+ * @author jack
+ *
+ */
 @Entity
 @Pink
 @SequenceGenerator(name = "idgen", sequenceName = "chance_action_seq", allocationSize = 1)
@@ -85,6 +93,9 @@ public class ChanceAction
 
     /**
      * 工作日志类型
+     *
+     * 是日志还是计划
+     *
      */
     @Column(nullable = false)
     public boolean isPlan() {
@@ -97,6 +108,9 @@ public class ChanceAction
 
     /**
      * 对应客户
+     *
+     * 日志所对应的客户列表
+     *
      */
     @ManyToMany
     public List<Party> getParties() {
@@ -111,6 +125,9 @@ public class ChanceAction
 
     /**
      * 工作伙伴
+     *
+     * 在发生日志中所描述内容时一起参与的其他公司内部人员
+     *
      */
     @ManyToMany
     public List<User> getPartners() {
@@ -123,6 +140,9 @@ public class ChanceAction
 
     /**
      * 行动人
+     *
+     * 日志的具体行动人
+     *
      */
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
@@ -138,6 +158,9 @@ public class ChanceAction
 
     /**
      * 洽谈方式
+     *
+     * 机会发生内容时，和客户交流的所采取的方式
+     *
      */
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
@@ -151,6 +174,13 @@ public class ChanceAction
         this.style = style;
     }
 
+    /**
+     * 详细描述
+     *
+     * 日志的详细描述
+     *
+     * @return
+     */
     @Column(length = MORE_INFO_LENGTH)
     public String getMoreInfo() {
         return moreInfo;
@@ -161,7 +191,10 @@ public class ChanceAction
     }
 
     /**
-     * 产生费用明细
+     * 费用明细
+     *
+     * 在发生日志中所描述内容时所产用的费用和描述
+     *
      */
     @Column(length = SPENDING_LENGTH, nullable = false)
     public String getSpending() {
@@ -175,7 +208,9 @@ public class ChanceAction
     }
 
     /**
-     * 对应机会
+     * 机会
+     *
+     * 日志对应的销售机会
      */
     @ManyToOne
     public Chance getChance() {
@@ -187,7 +222,10 @@ public class ChanceAction
     }
 
     /**
-     * 阶段推进
+     * 对应机会的阶段
+     *
+     * 每一条日志，都可能便对应销售机会的阶段改变。即机会的阶段为时间最晚的日志的队段
+     *
      */
     @ManyToOne
     public ChanceStage getStage() {
@@ -206,6 +244,13 @@ public class ChanceAction
             this.stage = stage;
     }
 
+    /**
+     * 建议
+     *
+     * 批阅人所给出的建议
+     *
+     * @return
+     */
     @Column(length = SUGGESTION_LENGTH)
     public String getSuggestion() {
         return suggestion;
@@ -215,6 +260,13 @@ public class ChanceAction
         this.suggestion = suggestion;
     }
 
+    /**
+     * 批阅人
+     *
+     * 日志的批阅人
+     *
+     * @return
+     */
     @ManyToOne
     public Person getSuggester() {
         return suggester;
@@ -224,6 +276,13 @@ public class ChanceAction
         this.suggester = suggester;
     }
 
+    /**
+     * 批阅标志
+     *
+     * 批阅人是否已经批阅
+     *
+     * @return
+     */
     @Column(nullable = false)
     @DefaultValue("false")
     public boolean isRead() {
@@ -235,6 +294,10 @@ public class ChanceAction
     }
 
     /**
+     * 行动简略
+     *
+     * 从日志详细内容中自动取出一部份
+     *
      * 【工作日志】AAA...
      */
     @Transient
@@ -243,6 +306,11 @@ public class ChanceAction
         return Strings.ellipse(getDescription(), 25);
     }
 
+    /**
+     * 内容
+     *
+     * 日志的具体内容
+     */
     @Transient
     @Override
     public String getContent() {

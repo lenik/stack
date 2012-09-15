@@ -14,6 +14,8 @@ import com.bee32.sem.world.thing.AbstractItem;
 /**
  * 报价
  *
+ * 选型产品的报价
+ *
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "wanted_product_quotation_seq", allocationSize = 1)

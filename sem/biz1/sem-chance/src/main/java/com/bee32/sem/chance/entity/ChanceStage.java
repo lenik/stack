@@ -10,7 +10,10 @@ import com.bee32.plover.ox1.color.Blue;
 import com.bee32.plover.ox1.dict.ShortNameDict;
 
 /**
- * 机会阶段推进
+ * 机会阶段
+ *
+ * 描述机会当前的阶段，如：初始化，交涉中，合同签订
+ *
  */
 @Entity
 @Blue

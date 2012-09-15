@@ -23,6 +23,9 @@ import com.bee32.sem.process.base.ProcessEntity;
 
 /**
  * 销售机会
+ *
+ * 销售员在跑销售时发掘的潜在的销售可能
+ *
  */
 @Entity
 @Green
@@ -82,6 +85,8 @@ public class Chance
 
     /**
      * 类型
+     *
+     * 机会类型
      */
     @ManyToOne
     public ChanceCategory getCategory() {
@@ -94,6 +99,9 @@ public class Chance
 
     /**
      * 机会主题
+     *
+     * 机会内容的概括
+     *
      */
     @Column(length = SUBJECT_LENGTH, nullable = false)
     public String getSubject() {
@@ -107,7 +115,10 @@ public class Chance
     }
 
     /**
-     * 来源
+     * 机会来源
+     *
+     * 例如，机会来源于客户介绍，互联网搜索等
+     *
      */
     @ManyToOne
     public ChanceSourceType getSource() {
@@ -122,6 +133,9 @@ public class Chance
 
     /**
      * 机会内容
+     *
+     * 机会的详细描述
+     *
      */
     @Column(length = CONTENT_LENGTH, nullable = false)
     public String getContent() {
@@ -134,6 +148,13 @@ public class Chance
         this.content = content;
     }
 
+    /**
+     * 预期定货时间起
+     *
+     * 达成销售，签定合同的可能开始时间
+     *
+     * @return
+     */
     public Date getAnticipationBegin() {
         return anticipationBegin;
     }
@@ -142,6 +163,13 @@ public class Chance
         this.anticipationBegin = anticipationBegin;
     }
 
+    /**
+     * 预期定货时间止
+     *
+     * 达成销售，签定合同的可能结束时间
+     *
+     * @return
+     */
     public Date getAnticipationEnd() {
         return anticipationEnd;
     }
@@ -150,6 +178,14 @@ public class Chance
         this.anticipationEnd = anticipationEnd;
     }
 
+
+    /**
+     * 对应客户
+     *
+     * 销售机会对应的所有客户
+     *
+     * @return
+     */
     @OneToMany(mappedBy = "chance", orphanRemoval = true)
     @Cascade({ CascadeType.ALL })
     public List<ChanceParty> getParties() {
@@ -162,6 +198,13 @@ public class Chance
         this.parties = parties;
     }
 
+    /**
+     * 竞争对手
+     *
+     * 机会存在的竞争对手列表
+     *
+     * @return
+     */
     @OneToMany(mappedBy = "chance", orphanRemoval = true)
     @Cascade({ CascadeType.ALL })
     public List<ChanceCompetitor> getCompetitories() {
@@ -174,6 +217,13 @@ public class Chance
         this.competitories = competitories;
     }
 
+    /**
+     * 选型产品
+     *
+     * 为客户选型产品列表
+     *
+     * @return
+     */
     @OneToMany(mappedBy = "chance", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<WantedProduct> getProducts() {
@@ -186,6 +236,13 @@ public class Chance
         this.products = products;
     }
 
+    /**
+     * 日志
+     *
+     * 销售机会对应的销售员日志
+     *
+     * @return
+     */
     @OneToMany(mappedBy = "chance")
     @OrderBy("beginTime")
     public List<ChanceAction> getActions() {
@@ -199,7 +256,11 @@ public class Chance
     }
 
     /**
-     * @return 最近一次行动，如果还没有任何行动返回 <code>null</code>.
+     * 最后一次行动
+     *
+     * 机会对应的最后一次销售员的活动日志
+     *
+     * @return
      */
     @Transient
     public ChanceAction getLatestAction() {
@@ -242,9 +303,11 @@ public class Chance
     }
 
     /**
-     * 获取机会阶段/进度（冗余）。
+     * 机会阶段
      *
-     * @return 机会最后一次更新的进度，如果尚无更新，应返回一个非空的初始进度。
+     * 获取机会阶段/进度（冗余）。机会最后一次更新的进度，如果尚无更新，应返回一个非空的初始进度。
+     *
+     * @return
      */
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -260,6 +323,13 @@ public class Chance
         this.stage = stage;
     }
 
+    /**
+     * 供货方式
+     *
+     * 产品供货方式
+     *
+     * @return
+     */
     @ManyToOne
     public ProcurementMethod getProcurementMethod() {
         if (procurementMethod == null)
@@ -271,6 +341,13 @@ public class Chance
         this.procurementMethod = procurementMethod;
     }
 
+    /**
+     * 采购原则
+     *
+     * 客户采购产品的原则
+     *
+     * @return
+     */
     @ManyToOne
     public PurchaseRegulation getPurchaseRegulation() {
         if (purchaseRegulation == null)
@@ -283,7 +360,9 @@ public class Chance
     }
 
     /**
-     * 机会地址: 项目型机会一般这个地址和客户公司地址是不同的
+     * 机会地址
+     *
+     * 项目型机会一般这个地址和客户公司地址是不同的
      */
     public String getAddress() {
         return address;
