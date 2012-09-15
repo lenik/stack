@@ -279,7 +279,7 @@ public class EntityTXGen {
             if (template != null)
                 flags += "t";
 
-            String line = String.format("%s|%s|%s|%s|%s|%s|%d|%d|%s", //
+            String line = String.format("%s:%s:%s:%s:%s:%s:%d:%d:%s", //
                     propertyIndex == 0 ? clazz.getSimpleName() : "", // declared class name
                     propertyIndex == 0 ? entityProperties.size() : "", // group size
                     name, label, sqlname, //

@@ -1,9 +1,9 @@
-Entity|4|altId|次标识符|alt_id|Sot|20|0|用于标识特定的样本数据。
-||createdDate|创建日期|created_date|DTt|0|0|数据的创建日期，一旦创建无法更改。
-||lastModified|更新日期|last_modified|DTt|0|0|数据最后一次修改的日期。（每次保存时自动更新）
-||version|版本|version|Nt|8|0|数据的版本，原有的数据只能被更新版的数据取代。
-CEntity|2|aclId|安全策略|acl_id|Not|8|0|该记录上启用的安全策略的ID。
-||owner|属主|owner|Rot|0|0|记录的拥有者。属主用户对记录拥有所有权限，除非记录被系统锁定。
-DictEntity|2|description|条目描述|description|Sot|200|0|条目的内容描述。
-||label|标签/显示名称|label|Sot|30|0|记录的标识标签，简短的概要、或通常是唯一的显示名称。 一般用本地语言表示。
-NumberDict|1|number|（无名称）|number|N|8|0|（略）
+Entity:4:altId:次标识符:alt_id:Sot:20:0:用于标识特定的样本数据。
+::createdDate:创建日期:created_date:DTt:0:0:数据的创建日期，一旦创建无法更改。
+::lastModified:更新日期:last_modified:DTt:0:0:数据最后一次修改的日期。（每次保存时自动更新）
+::version:版本:version:Nt:8:0:数据的版本，原有的数据只能被更新版的数据取代。
+CEntity:2:aclId:安全策略:acl_id:Not:8:0:该记录上启用的安全策略的ID。
+::owner:属主:owner:Rot:0:0:记录的拥有者。属主用户对记录拥有所有权限，除非记录被系统锁定。
+DictEntity:2:description:条目描述:description:Sot:200:0:条目的内容描述。
+::label:标签/显示名称:label:Sot:30:0:记录的标识标签，简短的概要、或通常是唯一的显示名称。 一般用本地语言表示。
+NumberDict:1:number:（无名称）:number:N:8:0:（略）

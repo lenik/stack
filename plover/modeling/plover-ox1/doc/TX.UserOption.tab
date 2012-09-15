@@ -1,8 +1,8 @@
-Entity|4|altId|次标识符|alt_id|Sot|20|0|用于标识特定的样本数据。
-||createdDate|创建日期|created_date|DTt|0|0|数据的创建日期，一旦创建无法更改。
-||lastModified|更新日期|last_modified|DTt|0|0|数据最后一次修改的日期。（每次保存时自动更新）
-||version|版本|version|Nt|8|0|数据的版本，原有的数据只能被更新版的数据取代。
-EntityAuto|1|id|标识符|id|Not|0|0|记录的标识符、主键。
-UserOption|3|key|（无名称）|key|S|30|0|（略）
-||user|（无名称）|user|Ro|0|0|（略）
-||value|（无名称）|value|So|100|0|（略）
+Entity:4:altId:次标识符:alt_id:Sot:20:0:用于标识特定的样本数据。
+::createdDate:创建日期:created_date:DTt:0:0:数据的创建日期，一旦创建无法更改。
+::lastModified:更新日期:last_modified:DTt:0:0:数据最后一次修改的日期。（每次保存时自动更新）
+::version:版本:version:Nt:8:0:数据的版本，原有的数据只能被更新版的数据取代。
+EntityAuto:1:id:标识符:id:Not:0:0:记录的标识符、主键。
+UserOption:3:key:（无名称）:key:S:30:0:（略）
+::user:（无名称）:user:Ro:0:0:（略）
+::value:（无名称）:value:So:100:0:（略）
