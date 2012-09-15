@@ -1,4 +1,4 @@
-altId|Sot||20|0|
-createdDate|DTt||255|0|
-lastModified|DTt||255|0|
-version|Nt||255|0|
+Entity|4|altId|次标识符|alt_id|Sot|20|0|用于标识特定的样本数据。
+||createdDate|创建日期|created_date|DTt|0|0|数据的创建日期，一旦创建无法更改。
+||lastModified|更新日期|last_modified|DTt|0|0|数据最后一次修改的日期。（每次保存时自动更新）
+||version|版本|version|Nt|8|0|数据的版本，原有的数据只能被更新版的数据取代。

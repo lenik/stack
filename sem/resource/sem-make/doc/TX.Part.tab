@@ -1,24 +1,24 @@
-altId|Sot||20|0|
-createdDate|DTt||255|0|
-lastModified|DTt||255|0|
-version|Nt||255|0|
-aclId|Not||255|0|
-owner|Rot||0|0|
-description|Sot||200|0|
-label|Sot||100|0|
-id|Not||0|0|
-category|Ro|【冗余】 物料分类，便于统计某个物料分类下的BOM数量|0|0|相当于 target.category.
-children|No|子部件（半成品或原材料）|0|0|
-electricityFee|N|电费|21|4|
-equipmentCost|N|设备费|21|4|
-obsolete|Ro|上一个版本。|0|0|
-otherFee|N|其它费用|21|4|
-releaseVersion|So||20|0|
-steps|No|工艺|0|0|
-target|Ro|目标物料|0|0|
-valid|Bo|是否有效|1|0|
-validDateFrom|DTo|起用日期|8|0|
-validDateTo|DTo|无效日期|8|0|
-wage|N|工资|21|4|
-xrefCount|N||255|0|
-xrefs|No|引用本部件的 PartItem。|0|0|
+Entity|4|altId|次标识符|alt_id|Sot|20|0|用于标识特定的样本数据。
+||createdDate|创建日期|created_date|DTt|0|0|数据的创建日期，一旦创建无法更改。
+||lastModified|更新日期|last_modified|DTt|0|0|数据最后一次修改的日期。（每次保存时自动更新）
+||version|版本|version|Nt|8|0|数据的版本，原有的数据只能被更新版的数据取代。
+CEntity|2|aclId|安全策略|acl_id|Not|8|0|该记录上启用的安全策略的ID。
+||owner|属主|owner|Rot|0|0|记录的拥有者。属主用户对记录拥有所有权限，除非记录被系统锁定。
+UIEntity|2|description|描述|description|Sot|200|0|对数据的简略的描述。（通常不同于备注）
+||label|标签|label|Sot|100|0|记录的标识标签，简短的概要、或通常是唯一的显示名称。
+UIEntityAuto|1|id|标识符|id|Not|0|0|记录的标识符、主键。
+Part|15|category|【冗余】 物料分类，便于统计某个物料分类下的BOM数量|category|Ro|0|0|相当于 target.category.
+||children|子部件（半成品或原材料）|children|No|0|0|（略）
+||electricityFee|电费|electricity_fee|N|21|4|（略）
+||equipmentCost|设备费|equipment_cost|N|21|4|（略）
+||obsolete|上一个版本。|obsolete|Ro|0|0|（略）
+||otherFee|其它费用|other_fee|N|21|4|（略）
+||releaseVersion|（无名称）|release_version|So|20|0|（略）
+||steps|工艺|steps|No|0|0|（略）
+||target|目标物料|target|Ro|0|0|（略）
+||valid|是否有效|valid|Bo|1|0|（略）
+||validDateFrom|起用日期|valid_date_from|DTo|0|0|（略）
+||validDateTo|无效日期|valid_date_to|DTo|0|0|（略）
+||wage|工资|wage|N|21|4|（略）
+||xrefCount||xref_count|N|8|0|（略）
+||xrefs|引用本部件的 PartItem。|xrefs|No|0|0|（略）

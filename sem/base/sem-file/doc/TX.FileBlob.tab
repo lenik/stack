@@ -1,14 +1,14 @@
-altId|Sot||20|0|
-createdDate|DTt||255|0|
-lastModified|DTt||255|0|
-version|Nt||255|0|
-aclId|Not||255|0|
-owner|Rot||0|0|
-description|Sot||200|0|
-label|Sot||100|0|
-id|So||40|0|
-contentType|So|原始内容类型。|40|0|
-encoding|So||16|0|
-header|N|文件头。|4000|0|这里存放的文件头不会超过 {@link #HEADER_SIZE}。 当文件比较小时，可以直接从文件头获取整个文件内容。
-length|N|文件长度 （字节）。|255|0|
-refCount|N||255|0|
+Entity|4|altId|次标识符|alt_id|Sot|20|0|用于标识特定的样本数据。
+||createdDate|创建日期|created_date|DTt|0|0|数据的创建日期，一旦创建无法更改。
+||lastModified|更新日期|last_modified|DTt|0|0|数据最后一次修改的日期。（每次保存时自动更新）
+||version|版本|version|Nt|8|0|数据的版本，原有的数据只能被更新版的数据取代。
+CEntity|2|aclId|安全策略|acl_id|Not|8|0|该记录上启用的安全策略的ID。
+||owner|属主|owner|Rot|0|0|记录的拥有者。属主用户对记录拥有所有权限，除非记录被系统锁定。
+UIEntity|2|description|描述|description|Sot|200|0|对数据的简略的描述。（通常不同于备注）
+||label|标签|label|Sot|100|0|记录的标识标签，简短的概要、或通常是唯一的显示名称。
+DigestEntity|1|id|标识摘要|id|So|40|0|数据的摘要，亦作为记录的标识符。
+FileBlob|5|contentType|原始内容类型。|content_type|So|40|0|（略）
+||encoding|（无名称）|encoding|So|16|0|（略）
+||header|文件头。|header|N|4000|0|这里存放的文件头不会超过 {@link #HEADER_SIZE}。 当文件比较小时，可以直接从文件头获取整个文件内容。
+||length|文件长度 （字节）。|length|N|18|0|（略）
+||refCount|（无名称）|ref_count|N|8|0|（略）

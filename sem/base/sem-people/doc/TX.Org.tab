@@ -1,29 +1,29 @@
-altId|Sot||20|0|
-createdDate|DTt||255|0|
-lastModified|DTt||255|0|
-version|Nt||255|0|
-aclId|Not||255|0|
-owner|Rot||0|0|
-description|Sot||200|0|
-label|Sot||100|0|
-id|Not||0|0|
-bank|So|银行名称|100|0|
-bankAccount|So|银行帐号|50|0|
-birthday|Do|出生日期|8|0|
-competitor|B||255|0|
-contacts|No||0|0|
-customer|B||255|0|
-employee|B||255|0|
-fullName|So|全名|50|0|
-interests|So|Person:兴趣爱好 Org:主营业务|200|0|
-memo|So||1000|0|
-records|No||0|0|
-sid|So|证件号码 (SID = Social ID)|30|0|
-sidType|Ro|证件类型 (SID = Social ID)|0|0|
-supplier|B||255|0|
-tags|No||0|0|
-forWhichGroup|Ro||0|0|
-orgUnits|No|所有部门（这里是平面结构，不按树排列）|0|0|
-roles|No||0|0|
-size|No|企业规模：员工人数|8|0|
-type|Ro||0|0|
+Entity|4|altId|次标识符|alt_id|Sot|20|0|用于标识特定的样本数据。
+||createdDate|创建日期|created_date|DTt|0|0|数据的创建日期，一旦创建无法更改。
+||lastModified|更新日期|last_modified|DTt|0|0|数据最后一次修改的日期。（每次保存时自动更新）
+||version|版本|version|Nt|8|0|数据的版本，原有的数据只能被更新版的数据取代。
+CEntity|2|aclId|安全策略|acl_id|Not|8|0|该记录上启用的安全策略的ID。
+||owner|属主|owner|Rot|0|0|记录的拥有者。属主用户对记录拥有所有权限，除非记录被系统锁定。
+UIEntity|2|description|描述|description|Sot|200|0|对数据的简略的描述。（通常不同于备注）
+||label|标签|label|Sot|100|0|记录的标识标签，简短的概要、或通常是唯一的显示名称。
+UIEntityAuto|1|id|标识符|id|Not|0|0|记录的标识符、主键。
+Party|15|bank|银行名称|bank|So|100|0|（略）
+||bankAccount|银行帐号|bank_account|So|50|0|（略）
+||birthday|出生日期|birthday|Do|0|0|（略）
+||competitor|（无名称）|competitor|B|1|0|（略）
+||contacts|（无名称）|contacts|No|0|0|（略）
+||customer|（无名称）|customer|B|1|0|（略）
+||employee|（无名称）|employee|B|1|0|（略）
+||fullName|全名|full_name|So|50|0|（略）
+||interests|Person:兴趣爱好 Org:主营业务|interests|So|200|0|（略）
+||memo|（无名称）|memo|So|1000|0|（略）
+||records|（无名称）|records|No|0|0|（略）
+||sid|证件号码 (SID = Social ID)|sid|So|30|0|（略）
+||sidType|证件类型 (SID = Social ID)|sid_type|Ro|0|0|（略）
+||supplier|（无名称）|supplier|B|1|0|（略）
+||tags|（无名称）|tags|No|0|0|（略）
+Org|5|forWhichGroup|（无名称）|for_which_group|Ro|0|0|（略）
+||orgUnits|所有部门（这里是平面结构，不按树排列）|org_units|No|0|0|（略）
+||roles|（无名称）|roles|No|0|0|（略）
+||size|企业规模：员工人数|size|No|8|0|（略）
+||type|（无名称）|type|Ro|0|0|（略）

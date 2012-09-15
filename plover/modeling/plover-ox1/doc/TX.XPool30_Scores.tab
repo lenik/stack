@@ -1,38 +1,38 @@
-altId|Sot||20|0|
-createdDate|DTt||255|0|
-lastModified|DTt||255|0|
-version|Nt||255|0|
-aclId|Not||255|0|
-owner|Rot||0|0|
-id|N||18|0|
-source|Ro||0|0|
-date1|DTo||255|0|
-date2|DTo||255|0|
-double1|No||255|0|
-double2|No||255|0|
-double3|No||255|0|
-double4|No||255|0|
-float1|No||255|0|
-float10|No||255|0|
-float11|No||255|0|
-float12|No||255|0|
-float13|No||255|0|
-float14|No||255|0|
-float15|No||255|0|
-float16|No||255|0|
-float2|No||255|0|
-float3|No||255|0|
-float4|No||255|0|
-float5|No||255|0|
-float6|No||255|0|
-float7|No||255|0|
-float8|No||255|0|
-float9|No||255|0|
-int1|No||255|0|
-int2|No||255|0|
-int3|No||255|0|
-int4|No||255|0|
-long1|No||255|0|
-long2|No||255|0|
-long3|No||255|0|
-long4|No||255|0|
+Entity|4|altId|次标识符|alt_id|Sot|20|0|用于标识特定的样本数据。
+||createdDate|创建日期|created_date|DTt|0|0|数据的创建日期，一旦创建无法更改。
+||lastModified|更新日期|last_modified|DTt|0|0|数据最后一次修改的日期。（每次保存时自动更新）
+||version|版本|version|Nt|8|0|数据的版本，原有的数据只能被更新版的数据取代。
+CEntity|2|aclId|安全策略|acl_id|Not|8|0|该记录上启用的安全策略的ID。
+||owner|属主|owner|Rot|0|0|记录的拥有者。属主用户对记录拥有所有权限，除非记录被系统锁定。
+XPool|2|id|标识符|id|N|18|0|属性的主键。
+||source|源数据|source|Ro|0|0|属性所在的对象。
+XPool15_Scores|15|date1|属性 DATE1|date1|DTo|0|0|长度为 8B 的扩展时间戳属性。
+||double1|属性 DOUBLE1|double1|No|15|0|长度为 8B 的扩展双精度浮点数属性。
+||double2|属性 DOUBLE2|double2|No|15|0|长度为 8B 的扩展双精度浮点数属性。
+||float1|属性 FLOAT1|float1|No|6|0|长度为 4B 的扩展浮点数属性。
+||float2|属性 FLOAT2|float2|No|6|0|长度为 4B 的扩展浮点数属性。
+||float3|属性 FLOAT3|float3|No|6|0|长度为 4B 的扩展浮点数属性。
+||float4|属性 FLOAT4|float4|No|6|0|长度为 4B 的扩展浮点数属性。
+||float5|属性 FLOAT5|float5|No|6|0|长度为 4B 的扩展浮点数属性。
+||float6|属性 FLOAT6|float6|No|6|0|长度为 4B 的扩展浮点数属性。
+||float7|属性 FLOAT7|float7|No|6|0|长度为 4B 的扩展浮点数属性。
+||float8|属性 FLOAT8|float8|No|6|0|长度为 4B 的扩展浮点数属性。
+||int1|属性 INT1|int1|No|8|0|长度为 4B 的扩展整数属性。
+||int2|属性 INT2|int2|No|8|0|长度为 4B 的扩展整数属性。
+||long1|属性 LONG1|long1|No|18|0|长度为 8B 的扩展长整数属性。
+||long2|属性 LONG2|long2|No|18|0|长度为 8B 的扩展长整数属性。
+XPool30_Scores|15|date2|属性 DATE2|date2|DTo|0|0|长度为 8B 的扩展时间戳属性。
+||double3|属性 DOUBLE3|double3|No|15|0|长度为 8B 的扩展双精度浮点数属性。
+||double4|属性 DOUBLE4|double4|No|15|0|长度为 8B 的扩展双精度浮点数属性。
+||float10|属性 FLOAT10|float10|No|6|0|长度为 4B 的扩展浮点数属性。
+||float11|属性 FLOAT11|float11|No|6|0|长度为 4B 的扩展浮点数属性。
+||float12|属性 FLOAT12|float12|No|6|0|长度为 4B 的扩展浮点数属性。
+||float13|属性 FLOAT13|float13|No|6|0|长度为 4B 的扩展浮点数属性。
+||float14|属性 FLOAT14|float14|No|6|0|长度为 4B 的扩展浮点数属性。
+||float15|属性 FLOAT15|float15|No|6|0|长度为 4B 的扩展浮点数属性。
+||float16|属性 FLOAT16|float16|No|6|0|长度为 4B 的扩展浮点数属性。
+||float9|属性 FLOAT9|float9|No|6|0|长度为 4B 的扩展浮点数属性。
+||int3|属性 INT3|int3|No|8|0|长度为 4B 的扩展整数属性。
+||int4|属性 INT4|int4|No|8|0|长度为 4B 的扩展整数属性。
+||long3|属性 LONG3|long3|No|18|0|长度为 8B 的扩展长整数属性。
+||long4|属性 LONG4|long4|No|18|0|长度为 8B 的扩展长整数属性。

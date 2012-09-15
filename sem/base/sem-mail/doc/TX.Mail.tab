@@ -1,19 +1,19 @@
-altId|Sot||20|0|
-createdDate|DTt||255|0|
-lastModified|DTt||255|0|
-version|Nt||255|0|
-aclId|Not||255|0|
-owner|Rot||0|0|
-id|No||0|0|
-bcc|So|秘密抄送列表。|200|0|
-body|S|正文。|100000|0|
-cc|So|抄送列表。|200|0|
-deliveries|No|邮件递送副本列表。|0|0|
-from|So|发送方。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。|40|0|
-fromUser|Ro|发送方用户。|0|0|
-recipient|So|接收方。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。|150|0|
-recipientUsers|No|接收方用户。|0|0|
-referrer|Ro|引用的邮件（如回复、转发的邮件）。|0|0|
-replyTo|So|回复到方（可能不同于发送方）。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。|150|0|
-replyToUser|Ro|回复到方用户。|0|0|
-subject|So|主题。|200|0|
+Entity|4|altId|次标识符|alt_id|Sot|20|0|用于标识特定的样本数据。
+||createdDate|创建日期|created_date|DTt|0|0|数据的创建日期，一旦创建无法更改。
+||lastModified|更新日期|last_modified|DTt|0|0|数据最后一次修改的日期。（每次保存时自动更新）
+||version|版本|version|Nt|8|0|数据的版本，原有的数据只能被更新版的数据取代。
+CEntity|2|aclId|安全策略|acl_id|Not|8|0|该记录上启用的安全策略的ID。
+||owner|属主|owner|Rot|0|0|记录的拥有者。属主用户对记录拥有所有权限，除非记录被系统锁定。
+CEntityAuto|1|id|（无名称）|id|No|0|0|（略）
+Mail|12|bcc|秘密抄送列表。|bcc|So|200|0|（略）
+||body|正文。|body|S|100000|0|（略）
+||cc|抄送列表。|cc|So|200|0|（略）
+||deliveries|邮件递送副本列表。|deliveries|No|0|0|（略）
+||from|发送方。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。|from|So|40|0|（略）
+||fromUser|发送方用户。|from_user|Ro|0|0|（略）
+||recipient|接收方。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。|recipient|So|150|0|（略）
+||recipientUsers|接收方用户。|recipient_users|No|0|0|（略）
+||referrer|引用的邮件（如回复、转发的邮件）。|referrer|Ro|0|0|（略）
+||replyTo|回复到方（可能不同于发送方）。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。|reply_to|So|150|0|（略）
+||replyToUser|回复到方用户。|reply_to_user|Ro|0|0|（略）
+||subject|主题。|subject|So|200|0|（略）
