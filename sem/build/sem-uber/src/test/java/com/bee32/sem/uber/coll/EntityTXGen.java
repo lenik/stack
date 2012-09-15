@@ -24,6 +24,7 @@ import javax.free.JavaioFile;
 import javax.free.UnexpectedException;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 
@@ -32,6 +33,7 @@ import org.hibernate.mapping.Collection;
 import com.bee32.plover.arch.service.ServicePrototypeLoader;
 import com.bee32.plover.model.ModelTemplate;
 import com.bee32.plover.orm.PloverNamingStrategy;
+import com.bee32.plover.orm.entity.EmbeddablePiece;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.xutil.m2.MavenPath;
 import com.thoughtworks.qdox.JavaDocBuilder;
@@ -41,7 +43,7 @@ import com.thoughtworks.qdox.model.JavaMethod;
 
 public class EntityTXGen {
 
-    PloverNamingStrategy namingStrategy = PloverNamingStrategy.getDefaultInstance();
+    PloverNamingStrategy namingStrategy = new PloverNamingStrategy();
 
     ClassLoader scl = ClassLoader.getSystemClassLoader();
     ClassLibrary syslib = new ClassLibrary(scl);
@@ -53,6 +55,8 @@ public class EntityTXGen {
 
     public EntityTXGen()
             throws ClassNotFoundException, IOException {
+        namingStrategy.setAlwaysEscape(false);
+
         for (Class<?> clazz : ServicePrototypeLoader.load(Entity.class, true)) {
             classes.add(clazz);
         }
@@ -131,8 +135,12 @@ public class EntityTXGen {
     void dump(IPrintOut out, Class<?> clazz)
             throws IntrospectionException, IOException {
         Class<?> superclass = clazz.getSuperclass();
-        if (superclass != null && Entity.class.isAssignableFrom(superclass))
-            dump(out, superclass);
+        if (superclass != null) {
+            if (Entity.class.isAssignableFrom(superclass))
+                dump(out, superclass);
+            else if (EmbeddablePiece.class.isAssignableFrom(superclass))
+                dump(out, superclass);
+        }
 
         ModelTemplate template = clazz.getAnnotation(ModelTemplate.class);
 
@@ -147,8 +155,8 @@ public class EntityTXGen {
         }
 
         Sections typedoc = Sections.parse(jclass.getComment());
-        entityLabels.put(clazz, typedoc.get(0, ""));
-        entityDescriptions.put(clazz, typedoc.get(1, ""));
+        entityLabels.put(clazz, typedoc.get(0, "（无标题）"));
+        entityDescriptions.put(clazz, typedoc.get(1, "（无描述）"));
 
         // Prepare the interesting property list.
         List<PropertyDescriptor> entityProperties = new ArrayList<PropertyDescriptor>();
@@ -160,6 +168,8 @@ public class EntityTXGen {
                 continue;
             if (getter.isAnnotationPresent(Transient.class))
                 continue;
+            if (getter.isAnnotationPresent(Embedded.class))
+                dump(out, property.getPropertyType());
             entityProperties.add(property);
         }
 
@@ -207,21 +217,6 @@ public class EntityTXGen {
                 precision = 4;
                 scale = 0;
                 flags = "Z"; // stream
-            } else if (Date.class.isAssignableFrom(unboxed)) {
-                precision = 8;
-                Temporal _temporal = getter.getAnnotation(Temporal.class);
-                if (_temporal != null)
-                    switch (_temporal.value()) {
-                    case DATE:
-                        flags = "D";
-                        break;
-                    case TIME:
-                        flags = "T";
-                        break;
-                    case TIMESTAMP:
-                        flags = "DT";
-                        break;
-                    }
             } else if (Collection.class.isAssignableFrom(unboxed)) {
                 flags = "R*"; // reference
             } else if (Entity.class.isAssignableFrom(unboxed)) {
@@ -244,6 +239,23 @@ public class EntityTXGen {
                 }
             }
 
+            if (Date.class.isAssignableFrom(unboxed)) {
+                precision = 8;
+                Temporal _temporal = getter.getAnnotation(Temporal.class);
+                if (_temporal != null)
+                    switch (_temporal.value()) {
+                    case DATE:
+                        flags = "D";
+                        break;
+                    case TIME:
+                        flags = "T";
+                        break;
+                    case TIMESTAMP:
+                        flags = "DT";
+                        break;
+                    }
+            }
+
             Basic _basic = getter.getAnnotation(Basic.class);
             if (_basic != null)
                 nullable = _basic.optional();
@@ -255,8 +267,8 @@ public class EntityTXGen {
             JavaMethod jmethod = jmethodMap.get(methodName);
             Sections methoddoc = Sections.parse(jmethod.getComment());
 
-            String label = methoddoc.get(0, "");
-            String description = methoddoc.get(1, "");
+            String label = methoddoc.get(0, "（无名称）");
+            String description = methoddoc.get(1, "（略）");
 
             if (nullable)
                 flags += "o";
