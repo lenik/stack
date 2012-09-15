@@ -25,6 +25,9 @@ public class Attendance
 
     Date date = new Date();
     EmployeeInfo employee;
+    int year;
+    int month;
+    int day;
 
     AttendanceType morning = AttendanceType.normal;
     AttendanceType afternoon = AttendanceType.normal;
@@ -58,6 +61,46 @@ public class Attendance
 
     public void setEmployee(EmployeeInfo employee) {
         this.employee = employee;
+    }
+
+    @Transient
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    @Transient
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    @Transient
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    @Column(nullable = false)
+    public int getYearMonthDay() {
+        return year * 10000 + month * 100 + day;
+    }
+
+    public void setYearMonthDay(int yearMonthDay) {
+        this.year = yearMonthDay / 10000;
+        yearMonthDay %= 10000;
+        this.month = yearMonthDay / 100;
+        yearMonthDay %= 100;
+        this.day = yearMonthDay;
     }
 
     /**

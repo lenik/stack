@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.bee32.plover.faces.utils.SelectableList;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.attendance.dto.AttendanceDto;
-import com.bee32.sem.attendance.util.AttendanceCriteria;
+import com.bee32.sem.attendance.entity.AttendanceType;
 import com.bee32.sem.hr.dto.EmployeeInfoDto;
 import com.bee32.sem.hr.entity.EmployeeInfo;
+import com.bee32.sem.salary.util.ColumnModel;
 import com.bee32.sem.salary.util.SalaryDateUtil;
 
 public class AttendanceDAdmin
@@ -16,49 +18,67 @@ public class AttendanceDAdmin
 
     List<AttendanceDto> attendances = new ArrayList<AttendanceDto>();
 
-    Date openedDate = new Date();
+    Date targetDate = new Date();
+    int targetYear;
+    int targetMonth;
     List<EmployeeInfoDto> allEmployees;
+    List<ColumnModel> columns;
 
     public AttendanceDAdmin() {
 
         allEmployees = mrefList(EmployeeInfo.class, EmployeeInfoDto.class, 0);
 
-        AttendanceCriteria.getMonthList(new Date());
-        for (EmployeeInfoDto employee : allEmployees) {
-            AttendanceDto attendance = new AttendanceDto().create();
-            attendance.setEmployee(employee);
-            attendance.setDayNum(SalaryDateUtil.getDayNum(openedDate));
-            attendance.setDate(openedDate);
-            attendances.add(attendance);
-        }
+// AttendanceCriteria.getMonthList(new Date());
+// for (EmployeeInfoDto employee : allEmployees) {
+// AttendanceDto attendance = new AttendanceDto().create();
+// attendance.setEmployee(employee);
+// attendance.setDate(targetDate);
+// attendances.add(attendance);
+// }
     }
 
     private static final long serialVersionUID = 1L;
 
-    public void addAttendanceRecord() {
+    List<List<AttendanceDto>> generatorAttendanceMRecord() {
+        List<List<AttendanceDto>> month_record = new ArrayList<List<AttendanceDto>>();
 
-        for (AttendanceDto attendance : attendances) {
-            // TODO
+        int days = SalaryDateUtil.getDayNumberOfMonth(targetDate);
+
+        for (EmployeeInfoDto employee : allEmployees) {
+            List<AttendanceDto> mlist = new ArrayList<AttendanceDto>();
+
+            for (int i = 1; i <= days; i++) {
+                AttendanceDto day_attendance = new AttendanceDto();
+                day_attendance.setDate(SalaryDateUtil.convertToDate(targetYear, targetMonth, i));
+                day_attendance.setEmployee(employee);
+                day_attendance.setMorning(AttendanceType.normal);
+                day_attendance.setAfternoon(AttendanceType.normal);
+                day_attendance.setEvening(AttendanceType.notAvailable);
+                mlist.add(day_attendance);
+            }
+            month_record.add(mlist);
+        }
+
+        return month_record;
+    }
+
+    void generateColumns(){
+        int columnNumber = SalaryDateUtil.getDayNumberOfMonth(targetDate);
+        for(int i = 1; i <= columnNumber; i ++){
+
         }
     }
 
-    protected boolean save(int saveFlags, String hint) {
-        for (AttendanceDto day : attendances) {
-
-            /**
-             * 如果该天的出勤记录已经存在，不去管
-             */
-        }
-
-        return true;
+    public SelectableList<List<AttendanceDto>> getTest() {
+        return SelectableList.decorate(generatorAttendanceMRecord());
     }
 
-    public Date getOpenedDate() {
-        return openedDate;
+    public Date getTargetDate() {
+        return targetDate;
     }
 
-    public void setOpenedDate(Date openedDate) {
-        this.openedDate = openedDate;
+    public void setTargetDate(Date targetDate) {
+        this.targetDate = targetDate;
     }
 
     public List<AttendanceDto> getAttendanceDRList() {

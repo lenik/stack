@@ -17,9 +17,11 @@ public class AttendanceDto
 
     private static final long serialVersionUID = 1L;
 
-    int dayNum;
     Date date = new Date();
     EmployeeInfoDto employee;
+    int year;
+    int month;
+    int day;
 
     AttendanceType morning;
     AttendanceType afternoon;
@@ -30,9 +32,11 @@ public class AttendanceDto
 
     @Override
     protected void _marshal(Attendance source) {
-        dayNum = SalaryDateUtil.getDayNum(date);
         date = source.getDate();
         employee = mref(EmployeeInfoDto.class, source.getEmployee());
+        year = source.getYear();
+        month = source.getMonth();
+        day = source.getDay();
 
         morning = source.getMorning();
         afternoon = source.getAfternoon();
@@ -61,14 +65,6 @@ public class AttendanceDto
         throw new NotImplementedException();
     }
 
-    public int getDayNum() {
-        return dayNum;
-    }
-
-    public void setDayNum(int dayNum) {
-        this.dayNum = dayNum;
-    }
-
     public Date getDate() {
         return date;
     }
@@ -83,6 +79,30 @@ public class AttendanceDto
 
     public void setEmployee(EmployeeInfoDto employee) {
         this.employee = employee;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
     }
 
     public AttendanceType getMorning() {

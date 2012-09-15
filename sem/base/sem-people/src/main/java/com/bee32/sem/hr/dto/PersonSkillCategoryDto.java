@@ -18,7 +18,7 @@ public class PersonSkillCategoryDto
     private static final long serialVersionUID = 1L;
 
     String levelData;
-    List<PersonSkillCategoryLevelDto> levelList;
+    List<PersonSkillCategoryLevelDto> levelList = new ArrayList<PersonSkillCategoryLevelDto>();
 
     @Override
     protected void _marshal(PersonSkillCategory source) {

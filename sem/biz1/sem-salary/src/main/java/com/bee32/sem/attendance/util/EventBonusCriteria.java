@@ -21,4 +21,11 @@ public class EventBonusCriteria
         else
             return conj(goe, loe, employee_criteria, lessOrEquals("bonus", BigDecimal.ZERO));
     }
+
+    public static ICriteriaElement listEvents(Long employeeId, Date begin, Date end) {
+        CriteriaElement goe = greaterOrEquals("beginTime", begin);
+        CriteriaElement loe = lessOrEquals("beginTime", end);
+        CriteriaElement employee_criteria = equals("employee.id", employeeId);
+        return conj(goe, loe, employee_criteria);
+    }
 }
