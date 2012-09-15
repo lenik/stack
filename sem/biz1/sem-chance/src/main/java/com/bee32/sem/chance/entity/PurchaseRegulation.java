@@ -7,7 +7,7 @@ import com.bee32.plover.ox1.dict.ShortNameDict;
 /**
  * 采购原则
  *
- * 产品采购原则字典类
+ * 产品采购原则字典类。
  *
  */
 @Entity

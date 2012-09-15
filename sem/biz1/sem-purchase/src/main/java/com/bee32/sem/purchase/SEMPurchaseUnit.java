@@ -21,5 +21,4 @@ public class SEMPurchaseUnit
         add(PurchaseInquiry.class);
         add(PurchaseTakeIn.class);
     }
-
 }

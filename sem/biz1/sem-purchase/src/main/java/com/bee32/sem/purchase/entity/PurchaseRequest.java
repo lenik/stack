@@ -19,7 +19,9 @@ import com.bee32.sem.makebiz.entity.MaterialPlan;
 import com.bee32.sem.process.base.ProcessEntity;
 
 /**
- * 采购请求/采购申请/采购计划
+ * 采购请求
+ *
+ * 采购申请,采购计划。对应物料计划。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "purchase_request_seq", allocationSize = 1)
@@ -47,6 +49,13 @@ public class PurchaseRequest
         takeIns = CopyUtils.copyList(o.takeIns);
     }
 
+    /**
+     * 物料计划列表
+     *
+     * 本采购请求对应的物料计划列表。
+     *
+     * @return
+     */
     @OneToMany
     @JoinTable(name = "PurchaseRequestPlan",//
     /*            */joinColumns = @JoinColumn(name = "request"), //
@@ -61,6 +70,13 @@ public class PurchaseRequest
         this.plans = plans;
     }
 
+    /**
+     * 采购计划明细
+     *
+     * 采购计划明细列表。
+     *
+     * @return
+     */
     @OneToMany(mappedBy = "parent", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<PurchaseRequestItem> getItems() {
@@ -104,6 +120,11 @@ public class PurchaseRequest
             items.get(index).setIndex(index);
     }
 
+    /**
+     * 采购总数量
+     *
+     * 本采购请求对应的总数量。
+     */
     @Transient
     public BigDecimal getTotal() {
         BigDecimal total = new BigDecimal(0);
@@ -113,6 +134,11 @@ public class PurchaseRequest
         return total;
     }
 
+    /**
+     * 采购入库单
+     *
+     * 采购请求在询价完成后，直接可以进入仓库，此处为对应的入库单列表。
+     */
     @OneToMany(mappedBy = "purchaseRequest", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<PurchaseTakeIn> getTakeIns() {
@@ -125,6 +151,11 @@ public class PurchaseRequest
         this.takeIns = takeIns;
     }
 
+    /**
+     * 数量含义
+     *
+     * 数量对应的文字含义。
+     */
     @Transient
     @Override
     public String getNumberDescription() {

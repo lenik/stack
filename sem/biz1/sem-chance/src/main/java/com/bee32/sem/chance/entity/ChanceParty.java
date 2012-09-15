@@ -19,7 +19,7 @@ import com.bee32.sem.people.entity.Party;
 /**
  * 机会客户关联类
  *
- * 一个销售机会对应很多客户，以本类建立起关联
+ * 一个销售机会对应很多客户，以本类建立起关联。
  */
 @Entity
 @Yellow
@@ -54,7 +54,7 @@ public class ChanceParty
     /**
      * 机会
      *
-     * 本关联对应的机会
+     * 本关联对应的机会。
      *
      * @return
      */
@@ -74,7 +74,7 @@ public class ChanceParty
     /**
      * 客户
      *
-     * 本关联对应的公司或个人
+     * 本关联对应的公司或个人。
      *
      * @return
      */
@@ -94,7 +94,7 @@ public class ChanceParty
     /**
      * 角色
      *
-     * 对应的公司或个人在本机会中的角色
+     * 对应的公司或个人在本机会中的角色。
      *
      * @return
      */

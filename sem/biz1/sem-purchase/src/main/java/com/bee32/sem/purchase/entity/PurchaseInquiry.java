@@ -14,6 +14,8 @@ import com.bee32.sem.world.monetary.MCValue;
 
 /**
  * 采购询价
+ *
+ * 采购项目对应的供应商询价内容
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "purchase_inquiry_seq", allocationSize = 1)
@@ -62,7 +64,9 @@ public class PurchaseInquiry
     }
 
     /**
-     * 需要询价的采购项目
+     * 采购项目
+     *
+     * 需要询价的采购项目。
      */
     @ManyToOne(optional = false)
     @NaturalId
@@ -78,6 +82,8 @@ public class PurchaseInquiry
 
     /**
      * 供应商
+     *
+     * 本报价对应的供商。
      */
     @ManyToOne
     @NaturalId
@@ -91,6 +97,8 @@ public class PurchaseInquiry
 
     /**
      * 价格
+     *
+     * 供应商的报价。
      */
     public MCValue getPrice() {
         return price;
@@ -101,7 +109,9 @@ public class PurchaseInquiry
     }
 
     /**
-     * 交货时间，类型为String, 举例： 50天，2周 etc.
+     * 交货时间
+     *
+     * 交货时间的文字描述,类型为String, 举例： 50天，2周 etc.。
      */
     @Column(length = DELIVERY_DATE_LENGTH)
     public String getDeliveryDate() {
@@ -114,6 +124,8 @@ public class PurchaseInquiry
 
     /**
      * 质量
+     *
+     * 供应商对本报价的质量标准描述。
      */
     @Column(length = QUALITY_LENGTH)
     public String getQuality() {
@@ -126,6 +138,8 @@ public class PurchaseInquiry
 
     /**
      * 付款方式
+     *
+     * 供应商要求的付款方式。
      */
     @Column(length = PAYMENT_TERM_LENGTH)
     public String getPaymentTerm() {
@@ -138,6 +152,8 @@ public class PurchaseInquiry
 
     /**
      * 售后服务
+     *
+     * 供应商提供的售后服务描述。
      */
     @Column(length = AFTER_SERVICE_LENGTH)
     public String getAfterService() {
@@ -150,6 +166,8 @@ public class PurchaseInquiry
 
     /**
      * 其他
+     *
+     * 对询价的补充描述。
      */
     @Column(length = OTHER_LENGTH)
     public String getOther() {
@@ -162,6 +180,8 @@ public class PurchaseInquiry
 
     /**
      * 询价建议的理由
+     *
+     * 审核人对某个供应商报价采用理由描述。
      */
     @Column(length = COMMENT_LENGTH)
     public String getComment() {

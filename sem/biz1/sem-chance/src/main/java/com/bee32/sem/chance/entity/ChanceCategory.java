@@ -7,7 +7,7 @@ import com.bee32.plover.ox1.dict.ShortNameDict;
 /**
  * 机会分类
  *
- * 普通，重要，次要，其他
+ * 普通，重要，次要，其他。
  *
  */
 @Entity

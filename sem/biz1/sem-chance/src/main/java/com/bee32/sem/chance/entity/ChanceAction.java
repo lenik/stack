@@ -27,7 +27,7 @@ import com.bee32.sem.process.base.ProcessEntity;
 /**
  * 行动记录,日志
  *
- * 销售员每天记录的日志，计划
+ * 销售员每天记录的日志，计划。
  *
  * @author jack
  *
@@ -109,7 +109,7 @@ public class ChanceAction
     /**
      * 对应客户
      *
-     * 日志所对应的客户列表
+     * 日志所对应的客户列表。
      *
      */
     @ManyToMany
@@ -126,7 +126,7 @@ public class ChanceAction
     /**
      * 工作伙伴
      *
-     * 在发生日志中所描述内容时一起参与的其他公司内部人员
+     * 在发生日志中所描述内容时一起参与的其他公司内部人员。
      *
      */
     @ManyToMany
@@ -141,7 +141,7 @@ public class ChanceAction
     /**
      * 行动人
      *
-     * 日志的具体行动人
+     * 日志的具体行动人。
      *
      */
     @ManyToOne(optional = false)
@@ -159,7 +159,7 @@ public class ChanceAction
     /**
      * 洽谈方式
      *
-     * 机会发生内容时，和客户交流的所采取的方式
+     * 机会发生内容时，和客户交流的所采取的方式。
      *
      */
     @ManyToOne(optional = false)
@@ -177,7 +177,7 @@ public class ChanceAction
     /**
      * 详细描述
      *
-     * 日志的详细描述
+     * 日志的详细描述。
      *
      * @return
      */
@@ -193,7 +193,7 @@ public class ChanceAction
     /**
      * 费用明细
      *
-     * 在发生日志中所描述内容时所产用的费用和描述
+     * 在发生日志中所描述内容时所产用的费用和描述。
      *
      */
     @Column(length = SPENDING_LENGTH, nullable = false)
@@ -210,7 +210,7 @@ public class ChanceAction
     /**
      * 机会
      *
-     * 日志对应的销售机会
+     * 日志对应的销售机会。
      */
     @ManyToOne
     public Chance getChance() {
@@ -224,7 +224,7 @@ public class ChanceAction
     /**
      * 对应机会的阶段
      *
-     * 每一条日志，都可能便对应销售机会的阶段改变。即机会的阶段为时间最晚的日志的队段
+     * 每一条日志，都可能便对应销售机会的阶段改变。即机会的阶段为时间最晚的日志的队段。
      *
      */
     @ManyToOne
@@ -247,7 +247,7 @@ public class ChanceAction
     /**
      * 建议
      *
-     * 批阅人所给出的建议
+     * 批阅人所给出的建议。
      *
      * @return
      */
@@ -263,7 +263,7 @@ public class ChanceAction
     /**
      * 批阅人
      *
-     * 日志的批阅人
+     * 日志的批阅人。
      *
      * @return
      */
@@ -296,7 +296,7 @@ public class ChanceAction
     /**
      * 行动简略
      *
-     * 从日志详细内容中自动取出一部份
+     * 从日志详细内容中自动取出一部份。
      *
      * 【工作日志】AAA...
      */
@@ -309,7 +309,7 @@ public class ChanceAction
     /**
      * 内容
      *
-     * 日志的具体内容
+     * 日志的具体内容。
      */
     @Transient
     @Override

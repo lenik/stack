@@ -1,5 +1,4 @@
 com.bee32.sem.purchase.entity.PurchaseInquiry
-com.bee32.sem.purchase.entity.PurchasePlanning
 com.bee32.sem.purchase.entity.PurchaseRequest
 com.bee32.sem.purchase.entity.PurchaseRequestItem
 com.bee32.sem.purchase.entity.PurchaseTakeIn

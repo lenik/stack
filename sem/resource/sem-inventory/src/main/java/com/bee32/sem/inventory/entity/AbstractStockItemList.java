@@ -16,7 +16,7 @@ import com.bee32.sem.world.thing.AbstractItemList;
 
 /**
  * List of stock items.
- * <p>
+ *
  * This class need not be an entity, however, it's subclassing from {@link TxEntity} to avoid of
  * multiple inheriting which is not supported by Java language.
  */

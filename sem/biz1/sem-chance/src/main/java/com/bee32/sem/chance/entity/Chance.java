@@ -24,7 +24,7 @@ import com.bee32.sem.process.base.ProcessEntity;
 /**
  * 销售机会
  *
- * 销售员在跑销售时发掘的潜在的销售可能
+ * 销售员在跑销售时发掘的潜在的销售可能。
  *
  */
 @Entity
@@ -86,7 +86,7 @@ public class Chance
     /**
      * 类型
      *
-     * 机会类型
+     * 机会类型。
      */
     @ManyToOne
     public ChanceCategory getCategory() {
@@ -100,7 +100,7 @@ public class Chance
     /**
      * 机会主题
      *
-     * 机会内容的概括
+     * 机会内容的概括。
      *
      */
     @Column(length = SUBJECT_LENGTH, nullable = false)
@@ -117,7 +117,7 @@ public class Chance
     /**
      * 机会来源
      *
-     * 例如，机会来源于客户介绍，互联网搜索等
+     * 例如，机会来源于客户介绍，互联网搜索等。
      *
      */
     @ManyToOne
@@ -134,7 +134,7 @@ public class Chance
     /**
      * 机会内容
      *
-     * 机会的详细描述
+     * 机会的详细描述。
      *
      */
     @Column(length = CONTENT_LENGTH, nullable = false)
@@ -151,7 +151,7 @@ public class Chance
     /**
      * 预期定货时间起
      *
-     * 达成销售，签定合同的可能开始时间
+     * 达成销售，签定合同的可能开始时间。
      *
      * @return
      */
@@ -166,7 +166,7 @@ public class Chance
     /**
      * 预期定货时间止
      *
-     * 达成销售，签定合同的可能结束时间
+     * 达成销售，签定合同的可能结束时间。
      *
      * @return
      */
@@ -182,7 +182,7 @@ public class Chance
     /**
      * 对应客户
      *
-     * 销售机会对应的所有客户
+     * 销售机会对应的所有客户。
      *
      * @return
      */
@@ -201,7 +201,7 @@ public class Chance
     /**
      * 竞争对手
      *
-     * 机会存在的竞争对手列表
+     * 机会存在的竞争对手列表。
      *
      * @return
      */
@@ -220,7 +220,7 @@ public class Chance
     /**
      * 选型产品
      *
-     * 为客户选型产品列表
+     * 为客户选型产品列表。
      *
      * @return
      */
@@ -239,7 +239,7 @@ public class Chance
     /**
      * 日志
      *
-     * 销售机会对应的销售员日志
+     * 销售机会对应的销售员日志。
      *
      * @return
      */
@@ -258,7 +258,7 @@ public class Chance
     /**
      * 最后一次行动
      *
-     * 机会对应的最后一次销售员的活动日志
+     * 机会对应的最后一次销售员的活动日志。
      *
      * @return
      */
@@ -326,7 +326,7 @@ public class Chance
     /**
      * 供货方式
      *
-     * 产品供货方式
+     * 产品供货方式。
      *
      * @return
      */
@@ -344,7 +344,7 @@ public class Chance
     /**
      * 采购原则
      *
-     * 客户采购产品的原则
+     * 客户采购产品的原则。
      *
      * @return
      */
@@ -362,7 +362,7 @@ public class Chance
     /**
      * 机会地址
      *
-     * 项目型机会一般这个地址和客户公司地址是不同的
+     * 项目型机会一般这个地址和客户公司地址是不同的。
      */
     public String getAddress() {
         return address;

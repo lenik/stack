@@ -8,7 +8,7 @@ import com.bee32.plover.ox1.dict.ShortNameDict;
 /**
  * 洽谈类型
  *
- * 行动日志发生时，和客户所产用的交流方式
+ * 行动日志发生时，和客户所产用的交流方式。
  *
  */
 @Entity

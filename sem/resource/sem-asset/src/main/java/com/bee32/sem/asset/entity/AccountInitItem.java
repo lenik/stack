@@ -8,7 +8,7 @@ import javax.persistence.ManyToOne;
 /**
  * 账务初始化明细
  *
- * 初始化时对应的科目明细，金额
+ * 初始化时对应的科目明细，金额。
  *
  * @author jack
  *
@@ -38,7 +38,7 @@ public class AccountInitItem
     /**
      * 账务初始化主控类
      *
-     * 账务初始化主控类
+     * 账务初始化主控类。
      *
      * @return
      */

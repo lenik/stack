@@ -10,7 +10,7 @@ import com.bee32.plover.orm.entity.EntityAuto;
 /**
  * 选型产品的附加属性
  *
- * 除了规格型号外，其他的附加属性
+ * 除了规格型号外，其他的附加属性。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "wanted_product_attribute_seq", allocationSize = 1)
@@ -42,6 +42,13 @@ public class WantedProductAttribute
         value = o.value;
     }
 
+    /**
+     * 选型产品
+     *
+     * 附加属性对应的产品。
+     *
+     * @return
+     */
     @ManyToOne(optional = false)
     public WantedProduct getProduct() {
         return product;
@@ -55,6 +62,8 @@ public class WantedProductAttribute
 
     /**
      * 属性名称
+     *
+     * 选型产品的附加属性名称。
      */
     @Column(length = NAME_LENGTH, nullable = false)
     public String getName() {
@@ -69,6 +78,8 @@ public class WantedProductAttribute
 
     /**
      * 属性值
+     *
+     * 选型产品的附加属性值。
      *
      * @return
      */

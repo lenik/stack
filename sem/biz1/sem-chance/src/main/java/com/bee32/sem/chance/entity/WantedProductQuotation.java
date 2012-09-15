@@ -14,7 +14,7 @@ import com.bee32.sem.world.thing.AbstractItem;
 /**
  * 报价
  *
- * 选型产品的报价
+ * 选型产品的报价。
  *
  */
 @Entity
@@ -44,6 +44,13 @@ public class WantedProductQuotation
         discount = o.discount;
     }
 
+    /**
+     * 选型产品
+     *
+     * 报价对应的选型产品。
+     *
+     * @return
+     */
     @ManyToOne
     public WantedProduct getProduct() {
         return product;
@@ -56,7 +63,9 @@ public class WantedProductQuotation
     }
 
     /**
-     * 折扣率，按中国人的折扣率习惯填写
+     * 折扣率
+     *
+     * 按中国人的折扣率习惯填写。
      *
      * @return
      */
@@ -69,12 +78,24 @@ public class WantedProductQuotation
         this.discount = discount;
     }
 
+    /**
+     * 实际折扣率
+     *
+     * 以小数表示的折扣率。
+     *
+     * @return
+     */
     @Transient
     public BigDecimal getDiscountReal() {
         BigDecimal discountReal = new BigDecimal(discount).divide(DISCOUNT_SCALE_REAL);
         return discountReal;
     }
 
+    /**
+     * 汇率日期
+     *
+     * 汇率每天都变动，所以有一个日期。
+     */
     @Override
     @Transient
     protected Date getFxrDate() {

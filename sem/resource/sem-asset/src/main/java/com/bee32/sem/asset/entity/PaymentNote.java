@@ -13,7 +13,7 @@ import com.bee32.sem.process.verify.builtin.SingleVerifierWithNumberSupport;
 /**
  * 付款单
  *
- * 企业支付款项时填制的单据
+ * 企业支付款项时填制的单据。
  *
  * @author jack
  *
@@ -37,7 +37,7 @@ public class PaymentNote
     /**
      * 付款人
      *
-     * 一般指企业里的出纳
+     * 一般指企业里的出纳。
      *
      * @return
      */
@@ -55,7 +55,7 @@ public class PaymentNote
     /**
      * 审核上下文
      *
-     * 付款单需要审核，返回支持审核的上下文
+     * 付款单需要审核，返回支持审核的上下文。
      */
     @Embedded
     @Override

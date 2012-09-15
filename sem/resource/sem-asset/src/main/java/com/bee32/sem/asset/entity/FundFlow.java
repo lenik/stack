@@ -29,7 +29,7 @@ import com.bee32.sem.world.monetary.MCValue;
 /**
  * 资金流
  *
- * 收款单和付款单的基类
+ * 收款单和付款单的基类。
  *
  * @author jack
  *  description: 摘要
@@ -76,7 +76,7 @@ public class FundFlow
     /**
      * 经办人
      *
-     * 资金进出经办人
+     * 资金进出经办人。
      *
      * @return
      */
@@ -92,7 +92,7 @@ public class FundFlow
     /**
      * 资金进出说明
      *
-     * 资金进出的详细说明
+     * 资金进出的详细说明。
      */
     @Column(length = TEXT_LENGTH)
     public String getText() {
@@ -106,7 +106,7 @@ public class FundFlow
     /**
      * 金额
      *
-     * 资金进出金额
+     * 资金进出金额。
      */
     @Embedded
     @AttributeOverrides({ @AttributeOverride(name = "currencyCode", column = @Column(name = "value_cc")), //
@@ -151,7 +151,7 @@ public class FundFlow
     /**
      * 资金进出对应的凭证
      *
-     * 对应的凭证，说明本笔资金是否已经填写相应的凭证
+     * 对应的凭证，说明本笔资金是否已经填写相应的凭证。
      *
      * @return
      */
@@ -180,7 +180,7 @@ public class FundFlow
     /**
      * 审核金额
      *
-     * 返回需要审核的金额数
+     * 返回需要审核的金额数。
      *
      */
     @Transient

@@ -11,7 +11,7 @@ import com.bee32.plover.ox1.dict.NameDict;
 /**
  * 科目
  *
- * 会计科目
+ * 会计科目。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "account_subject_seq", allocationSize = 1)
@@ -69,7 +69,7 @@ public class AccountSubject
     /**
      * 借方符号
      *
-     * 科目在借方时金额的符号
+     * 科目在借方时金额的符号。
      */
     @Column(nullable = false)
     public boolean isDebitSign() {
@@ -83,7 +83,7 @@ public class AccountSubject
     /**
      * 贷方符号
      *
-     * 科目在贷方时金额的符号
+     * 科目在贷方时金额的符号。
      */
     @Column(nullable = false)
     public boolean isCreditSign() {

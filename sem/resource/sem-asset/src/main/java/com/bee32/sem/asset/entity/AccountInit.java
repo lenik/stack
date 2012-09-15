@@ -16,7 +16,7 @@ import com.bee32.sem.process.base.ProcessEntity;
 /**
  * 账务初始化
  *
- * 账务系统初始化
+ * 账务系统初始化。
  *
  * @author jack
  *
@@ -43,19 +43,17 @@ public class AccountInit
         items = CopyUtils.copyList(o.items);
     }
 
+    /**
+     * 初始化明细列表
+     *
+     * 账务初始化时对应的科目明细列表。
+     */
     @OneToMany(mappedBy = "init", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<AccountInitItem> getItems() {
         return items;
     }
 
-    /**
-     * 初始化明细列表
-     *
-     * 账务初始化时对应的科目明细列表
-     *
-     * @param items
-     */
     public void setItems(List<AccountInitItem> items) {
         if (items == null)
             throw new NullPointerException("items");

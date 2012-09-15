@@ -19,7 +19,7 @@ import com.bee32.sem.world.thing.Thing;
 /**
  * 选型明细
  *
- * 产品选型，一般包含产品的外部名称，外部规格等，主要给客户说明用
+ * 产品选型，一般包含产品的外部名称，外部规格等，主要给客户说明用。
  *
  * 注：label, modelSpec 分别对应选型产品的外部名称 、和外部规格。
  */
@@ -52,6 +52,13 @@ public class WantedProduct
         decidedMaterial = o.decidedMaterial;
     }
 
+    /**
+     * 机会
+     *
+     * 附加属性对应的机会。
+     *
+     * @return
+     */
     @ManyToOne(optional = false)
     public Chance getChance() {
         return chance;
@@ -64,7 +71,9 @@ public class WantedProduct
     }
 
     /**
-     * 选型产品的附加属性
+     * 附加属性
+     *
+     * 选型产品的附加属性。
      */
     @OneToMany(mappedBy = "product", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
@@ -79,7 +88,9 @@ public class WantedProduct
     }
 
     /**
-     * 选型产品对应的报价记录
+     * 报价
+     *
+     * 选型产品对应的报价记录。
      */
     @OneToMany(mappedBy = "product", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
@@ -94,7 +105,9 @@ public class WantedProduct
     }
 
     /**
-     * 选型产品对应的内部物料，选型时，由技术员进行确定
+     * 物料
+     *
+     * 选型产品对应的内部物料，选型时，由技术员进行确定。
      */
     @ManyToOne
     public Material getDecidedMaterial() {

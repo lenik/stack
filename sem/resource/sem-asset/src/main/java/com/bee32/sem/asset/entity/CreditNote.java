@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 /**
  * 收款单
  *
- * 企业收到款项时填制的单据
+ * 企业收到款项时填制的单据。
  *
  * @author jack
  *

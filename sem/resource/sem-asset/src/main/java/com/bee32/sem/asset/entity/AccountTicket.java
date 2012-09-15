@@ -29,7 +29,7 @@ import com.bee32.sem.world.monetary.MCVector;
 /**
  * 会计凭证
  *
- * 对应做账时的凭证
+ * 对应做账时的凭证。
  *
  * @author jack
  * @author lenik
@@ -74,7 +74,7 @@ public class AccountTicket
     /**
      * 凭证发生时间
      *
-     * 对应的凭证应该属于哪个月份
+     * 对应的凭证应该属于哪个月份。
      *
      * @return
      */
@@ -91,7 +91,7 @@ public class AccountTicket
     /**
      * 凭证明细列表
      *
-     * 会计凭证上的明细列表，和科目相对应
+     * 会计凭证上的明细列表，和科目相对应。
      */
     @OneToMany(mappedBy = "ticket", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
@@ -143,7 +143,7 @@ public class AccountTicket
     /**
      * 多币种金额
      *
-     * 多币种表示的金额
+     * 多币种表示的金额。
      */
     @Transient
     public synchronized MCVector getTotal() {
@@ -202,7 +202,7 @@ public class AccountTicket
     /**
      * 数字代表的意义
      *
-     * 说明凭证上的数字的的含义
+     * 说明凭证上的数字的的含义。
      *
      */
     @Transient
@@ -220,7 +220,7 @@ public class AccountTicket
     /**
      * 审核辅助
      *
-     * 审核辅助类
+     * 审核辅助类。
      */
     @Transient
     @Override
