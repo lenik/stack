@@ -26,7 +26,7 @@
 \usepackage{tabularx}   % {X}
 \usepackage{longtable}  % Alt. to tabular, but not tabularx
 \usepackage{multirow}   % Used by: history.tex, TX tables.
-\usepackage{MnSymbol}   % nequiv
+% \usepackage{MnSymbol}   % nequiv
 
 \setCJKmainfont{WenQuanYi Micro Hei}
 
@@ -161,6 +161,56 @@
         col sep=comma, header=false
         ]{#1}
     \end{table}
+}
+
+\newcommand\maketxtable[3]{
+    \pgfplotstabletypeset[
+        begin table=\begin{longtable},
+        end table=\end{longtable},
+        caption={#1 （#2） 的数据交换规范},
+        % 0      1    2     3      4        5      6    7      8
+        % group, num, name, label, sqlname, flags, len, scale, description
+        alias/类型/.initial=5,
+        alias/系统/.initial=5,
+        alias/可选/.initial=5,
+        columns={ 0, 1, 2, 3, 4, 系统, 类型, 6, 7, 可选, 8 },
+        columns/0/.style={ column name={}, column type=r, string type },
+        columns/1/.style={ column name={}, column type=c|, string type,
+            preproc cell content/.code={
+                \pgfkeyssetvalue{/pgfplots/table/@cell content}{
+                }}},
+        columns/2/.style={ column name={XML 标识符}, column type=r, string type },
+        columns/3/.style={ column name={名称}, column type=c, string type },
+        columns/4/.style={ column name={SQL 字段}, column type=c|, string type },
+        columns/系统/.style={ column type=c|, string type,
+            preproc cell content/.code={
+                \pgfkeyssetvalue{/pgfplots/table/@cell content}{
+                    \IfSubStr{####1}{t}{\Fyes}{\Fno}
+                }}},
+        columns/类型/.style={ column type=c|, string type,
+            preproc cell content/.code={
+                \pgfkeyssetvalue{/pgfplots/table/@cell content}{
+                    \IfStrEqCase{####1}{
+                        {DT}{日期/时间}
+                        {D}{日期}
+                        {T}{时间}
+                        {N}{数值}
+                        {S}{字符串}
+                        {R}{引用}
+                        {Z}{数据流}}[\Fyes]
+                }}},
+        columns/可选/.style={ column type=c, string type,
+            preproc cell content/.code={
+                \pgfkeyssetvalue{/pgfplots/table/@cell content}{
+                    \IfSubStr{####1}{o}{\Fyes}{\Fno}
+                }}},
+        columns/6/.style={ column name={长度}, column type=c },
+        columns/7/.style={ column name={小数位数}, column type=c| },
+        columns/8/.style={ column name={描述}, column type=l, string type },
+        every head row/.style={ before row=\toprule, after row=\midrule },
+        every last row/.style={ after row=\bottomrule },
+        col sep=colon, header=false
+    ]{#3}
 }
 
 \title {\modtitle \\ \modsubtitle}
