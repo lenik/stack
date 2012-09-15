@@ -9,6 +9,9 @@ import javax.free.Pair;
 
 public class SalaryDateUtil {
 
+    /**
+     * 返回一个（天）时间段Pair<Date,Date>(begin, end)
+     */
     public static Pair<Date, Date> toDayRange(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
@@ -24,6 +27,9 @@ public class SalaryDateUtil {
         return new Pair<Date, Date>(begin, end);
     }
 
+    /**
+     * 返回一个（月）时间段Pair<Date,Date>(begin, end)
+     */
     public static Pair<Date, Date> toMonthRange(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
@@ -40,18 +46,27 @@ public class SalaryDateUtil {
         return new Pair<Date, Date>(begin, end);
     }
 
+    /**
+     * return Calendar.DAY_OF_MONTH
+     */
     public static int getDayNum(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal.get(Calendar.DAY_OF_MONTH);
     }
 
+    /**
+     * return Calender.MONTH +1
+     */
     public static int getMonNum(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal.get(Calendar.MONTH) + 1;
     }
 
+    /**
+     * 取得最近一个月的时间段
+     */
     public static Pair<Date, Date> getRecentlyRange(Pair<Date, Date> range) {
         Calendar cal = Calendar.getInstance();
         Date _from = range.get(0);
@@ -77,6 +92,9 @@ public class SalaryDateUtil {
         return new SimpleDateFormat("yyyy年MM月dd日").format(date);
     }
 
+    /**
+     * return Pair<Integer, Integer>(year, month)
+     */
     public static Pair<Integer, Integer> getYearAndMonth(Date date) {
         String tmp = getDateString(date);
         int year = Integer.parseInt(tmp.substring(0, 4));
@@ -84,6 +102,9 @@ public class SalaryDateUtil {
         return new Pair<Integer, Integer>(year, month);
     }
 
+    /**
+     * 取得 雇员受雇到现在的月份
+     */
     public static int getFixedNumberOfYears(Date begin) {
         Calendar c_begin = Calendar.getInstance();
         Calendar c_now = Calendar.getInstance();
@@ -95,4 +116,23 @@ public class SalaryDateUtil {
         return (year_now - year_begin) * 12 + month_now - month_begin;
     }
 
+    /**
+     * 去的一个月的天数
+     */
+    public static int getDayNumberOfMonth(Date date) {
+        Pair<Date, Date> range = toMonthRange(date);
+        long x = range.getSecond().getTime() - range.getFirst().getTime();
+        return (int) (x / 86400000);
+    }
+
+    /**
+     * 根据年月日返回日期
+     */
+    public static Date convertToDate(int year, int month, int day) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month - 1);
+        cal.set(Calendar.DAY_OF_MONTH, day);
+        return cal.getTime();
+    }
 }

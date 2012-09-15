@@ -1,16 +1,27 @@
 package com.bee32.sem.salary.web;
 
-import java.io.Serializable;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.free.Pair;
 import javax.free.TypeMatrix_BigDecimal;
 
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.springframework.expression.AccessException;
 import org.springframework.expression.BeanResolver;
 import org.springframework.expression.EvaluationContext;
@@ -24,17 +35,22 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.api.ISalaryVariableProvider;
 import com.bee32.sem.api.SalaryVariableProviders;
 import com.bee32.sem.attendance.util.DefCriteria;
+import com.bee32.sem.attendance.util.EventBonusCriteria;
 import com.bee32.sem.attendance.util.SalaryCriteria;
 import com.bee32.sem.frame.ui.ELListMBean;
 import com.bee32.sem.frame.ui.ListMBean;
 import com.bee32.sem.hr.entity.EmployeeInfo;
 import com.bee32.sem.misc.SimpleEntityViewBean;
+import com.bee32.sem.salary.dto.EventBonusDto;
 import com.bee32.sem.salary.dto.SalaryDto;
 import com.bee32.sem.salary.dto.SalaryElementDto;
+import com.bee32.sem.salary.entity.EventBonus;
 import com.bee32.sem.salary.entity.Salary;
 import com.bee32.sem.salary.entity.SalaryElement;
 import com.bee32.sem.salary.entity.SalaryElementDef;
 import com.bee32.sem.salary.util.ChineseCodec;
+import com.bee32.sem.salary.util.ColumnModel;
+import com.bee32.sem.salary.util.IReportRowModel;
 import com.bee32.sem.salary.util.SalaryDateUtil;
 import com.bee32.sem.salary.util.SalaryTreeNode;
 import com.bee32.sem.salary.util.TreeSalaryElementDefComparator;
@@ -50,6 +66,8 @@ public class SalaryAdminBean
     SalaryElementDto selectedElement = new SalaryElementDto().create();
 
     List<ColumnModel> columns = new ArrayList<ColumnModel>();
+
+    StreamedContent pdfFile;
 
     public SalaryAdminBean() {
         super(Salary.class, SalaryDto.class, SalaryDto.ELEMENTS, SalaryCriteria.listByDate(new Date()));
@@ -237,6 +255,49 @@ public class SalaryAdminBean
         return sorted;
     }
 
+    public void exportToPdf() {
+
+        showContent();
+        SalaryDto salary = this.getOpenedObject();
+        if (salary == null) {
+            System.out.println("openedObject is null");
+            return;
+        }
+
+        Pair<Date, Date> datePair = SalaryDateUtil.toMonthRange(targetDate);
+        List<EventBonusDto> events = mrefList(EventBonus.class, EventBonusDto.class, 0,
+                EventBonusCriteria.listEvents(salary.getId(), datePair.getFirst(), datePair.getSecond()));
+
+        IReportRowModel model = new IReportRowModel(salary.getElements(), events);
+
+        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(salary.getElements());
+
+        ClassLoader ccl = getClass().getClassLoader(); // Thread.currentThread().getContextClassLoader();
+        InputStream reportStream = ccl.getResourceAsStream("resources/3/15/6/4/salary/report1.jrxml");
+
+        try {
+            BigDecimal tax = salary.getTax().setScale(4, BigDecimal.ROUND_HALF_UP);
+            BigDecimal realsalary = salary.getTax().subtract(salary.getTax());
+            JasperReport report = JasperCompileManager.compileReport(reportStream);
+            Map<String, Object> reportParams = new HashMap<String, Object>();
+            reportParams.put("title", "工资单");
+            reportParams.put("employeeName", salary.getEmployee().getPersonName());
+            reportParams.put("year", salary.getYear());
+            reportParams.put("month", salary.getMonth());
+            reportParams.put("total", salary.getTotal());
+            reportParams.put("tax", tax);
+            reportParams.put("salary", realsalary);
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(report, reportParams, beanCollectionDataSource);
+            byte[] pdfByteArray = JasperExportManager.exportReportToPdf(jasperPrint);
+
+            InputStream stream = new ByteArrayInputStream(pdfByteArray);
+            pdfFile = new DefaultStreamedContent(stream, "application/pdf", salary.getEmployee().getPersonName() + ".pdf");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public Date getTargetDate() {
         return targetDate;
     }
@@ -269,6 +330,10 @@ public class SalaryAdminBean
         this.selectedElement = selectedElement;
     }
 
+    public StreamedContent getPdfFile() {
+        return pdfFile;
+    }
+
     final ListMBean<SalaryElementDto> salaryElementMBean = ELListMBean.fromEL(this,//
             "openedObject.elements", SalaryElementDto.class);
 
@@ -280,31 +345,4 @@ public class SalaryAdminBean
         return columns;
     }
 
-    public static class ColumnModel
-            implements Serializable {
-
-        private static final long serialVersionUID = 1L;
-
-        String header;
-        int order;
-        long defId;
-
-        public ColumnModel(String header, int order, long defId) {
-            this.header = header;
-            this.order = order;
-            this.defId = defId;
-        }
-
-        public String getHeader() {
-            return header;
-        }
-
-        public int getOrder() {
-            return order;
-        }
-
-        public long getDefId() {
-            return defId;
-        }
-    }
 }
