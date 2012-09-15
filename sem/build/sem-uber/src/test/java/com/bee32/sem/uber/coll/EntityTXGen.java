@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.free.BCharOut;
 import javax.free.Boxing;
@@ -30,6 +31,7 @@ import org.hibernate.mapping.Collection;
 
 import com.bee32.plover.arch.service.ServicePrototypeLoader;
 import com.bee32.plover.model.ModelTemplate;
+import com.bee32.plover.orm.PloverNamingStrategy;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.xutil.m2.MavenPath;
 import com.thoughtworks.qdox.JavaDocBuilder;
@@ -39,11 +41,15 @@ import com.thoughtworks.qdox.model.JavaMethod;
 
 public class EntityTXGen {
 
+    PloverNamingStrategy namingStrategy = PloverNamingStrategy.getDefaultInstance();
+
     ClassLoader scl = ClassLoader.getSystemClassLoader();
     ClassLibrary syslib = new ClassLibrary(scl);
     JavaDocBuilder javaDocBuilder = new JavaDocBuilder(syslib);
 
     List<Class<?>> classes = new ArrayList<Class<?>>();
+    Map<Class<?>, String> entityLabels = new HashMap<>();
+    Map<Class<?>, String> entityDescriptions = new HashMap<>();
 
     public EntityTXGen()
             throws ClassNotFoundException, IOException {
@@ -54,14 +60,50 @@ public class EntityTXGen {
 
     public void run()
             throws Exception {
-        for (Class<?> clazz : classes)
-            generateTXFile(clazz);
+        Map<File, List<Class<?>>> projects = new HashMap<>();
+        for (Class<?> clazz : classes) {
+            File pomDir = generateTXFile(clazz);
+            List<Class<?>> list = projects.get(pomDir);
+            if (list == null) {
+                list = new ArrayList<Class<?>>();
+                projects.put(pomDir, list);
+            }
+            list.add(clazz);
+        }
+
+        // generate index for each project
+        for (Entry<File, List<Class<?>>> project : projects.entrySet()) {
+            File pomDir = project.getKey();
+            File indexFile = new File(pomDir, "doc/TX-index.tex");
+            List<Class<?>> list = project.getValue();
+            generateIndex(indexFile, list);
+        }
     }
 
-    public void generateTXFile(Class<?> clazz)
+    public void generateIndex(File indexFile, List<Class<?>> list)
+            throws IOException {
+        BCharOut out = new BCharOut();
+
+        for (Class<?> entity : list) {
+            String label = entityLabels.get(entity);
+            String description = entityDescriptions.get(entity);
+            String sqlname = namingStrategy.classToTableName(entity.getName());
+
+            out.println("\\subsubsection{ \\nequiv " + label + " } {");
+            out.println("    \\addtolength{\\leftskip}{5mm}");
+            out.println("    " + description + "\n\n");
+            out.println("    \\maketxtable{" + label + "}{" + sqlname + "}{TX." + entity.getSimpleName() + ".tab}");
+            out.println("}");
+        }
+
+        String index = out.toString();
+        new JavaioFile(indexFile).forWrite().write(index);
+    }
+
+    public File generateTXFile(Class<?> entity)
             throws IOException, IntrospectionException {
         // project/src/main/java/ com/...java
-        File sourceFile = MavenPath.getSourceFile(clazz);
+        File sourceFile = MavenPath.getSourceFile(entity);
         File pomDir = sourceFile.getParentFile();
         while (pomDir != null) {
             if (new File(pomDir, "pom.xml").exists())
@@ -74,40 +116,16 @@ public class EntityTXGen {
         File manualDir = new File(pomDir, "doc");
         manualDir.mkdirs();
 
-        File txFile = new File(manualDir, "TX." + clazz.getSimpleName() + ".tab");
+        File txFile = new File(manualDir, "TX." + entity.getSimpleName() + ".tab");
 
         IPrintOut buf = new BCharOut();
-        dump(buf, clazz);
+        dump(buf, entity);
         String script = buf.toString();
 
         System.out.println("Write " + txFile);
         new JavaioFile(txFile).forWrite().write(script);
-    }
 
-    String parseLabel(String doc) {
-        if (doc == null)
-            return null;
-        doc = doc.trim();
-        String label;
-        int sep = doc.indexOf("\n\n");
-        if (sep == -1)
-            label = doc;
-        else
-            label = doc.substring(0, sep).trim();
-        return label;
-    }
-
-    String parseDescription(String doc) {
-        if (doc == null)
-            return null;
-        doc = doc.trim();
-        String description;
-        int sep = doc.indexOf("\n\n");
-        if (sep == -1)
-            description = "";
-        else
-            description = doc.substring(sep + 1).trim();
-        return description;
+        return pomDir;
     }
 
     void dump(IPrintOut out, Class<?> clazz)
@@ -119,10 +137,6 @@ public class EntityTXGen {
         ModelTemplate template = clazz.getAnnotation(ModelTemplate.class);
 
         BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
-        String _label;
-        String _description;
-        // Map<String, String> labels = new HashMap<String, String>();
-        // Map<String, String> descriptions = new HashMap<String, String>();
 
         File sourceFile = MavenPath.getSourceFile(clazz);
         javaDocBuilder.addSource(sourceFile);
@@ -132,9 +146,12 @@ public class EntityTXGen {
             jmethodMap.put(jmethod.getName(), jmethod);
         }
 
-        _label = parseLabel(jclass.getComment());
-        _description = parseDescription(jclass.getComment());
+        Sections typedoc = Sections.parse(jclass.getComment());
+        entityLabels.put(clazz, typedoc.get(0, ""));
+        entityDescriptions.put(clazz, typedoc.get(1, ""));
 
+        // Prepare the interesting property list.
+        List<PropertyDescriptor> entityProperties = new ArrayList<PropertyDescriptor>();
         for (PropertyDescriptor property : beanInfo.getPropertyDescriptors()) {
             Method getter = property.getReadMethod();
             if (getter == null)
@@ -143,6 +160,12 @@ public class EntityTXGen {
                 continue;
             if (getter.isAnnotationPresent(Transient.class))
                 continue;
+            entityProperties.add(property);
+        }
+
+        for (int propertyIndex = 0; propertyIndex < entityProperties.size(); propertyIndex++) {
+            PropertyDescriptor property = entityProperties.get(propertyIndex);
+            Method getter = property.getReadMethod();
 
             Class<?> propertyType = property.getPropertyType();
             String flags = "N";
@@ -226,28 +249,25 @@ public class EntityTXGen {
                 nullable = _basic.optional();
 
             String name = property.getName();
-            // String colname = name;
-            // String label = labels.get(name);
-            // String description = descriptions.get(name);
+            String sqlname = namingStrategy.columnName(name);
 
             String methodName = getter.getName();
             JavaMethod jmethod = jmethodMap.get(methodName);
-            String label = parseLabel(jmethod.getComment());
-            String description = parseDescription(jmethod.getComment());
+            Sections methoddoc = Sections.parse(jmethod.getComment());
 
-            if (label == null)
-                label = "";
-            if (description == null)
-                description = "";
+            String label = methoddoc.get(0, "");
+            String description = methoddoc.get(1, "");
 
             if (nullable)
                 flags += "o";
             if (template != null)
                 flags += "t";
 
-            String line = String.format("%s|%s|%s|%d|%d|%s", //
-                    name, flags, label, //
-                    length, scale, //
+            String line = String.format("%s|%s|%s|%s|%s|%s|%d|%d|%s", //
+                    propertyIndex == 0 ? clazz.getSimpleName() : "", // declared class name
+                    propertyIndex == 0 ? entityProperties.size() : "", // group size
+                    name, label, sqlname, //
+                    flags, length, scale, //
                     description);
 
             out.println(line);
@@ -257,6 +277,42 @@ public class EntityTXGen {
     public static void main(String[] args)
             throws Exception {
         new EntityTXGen().run();
+    }
+
+}
+
+class Sections {
+
+    List<String> sections = new ArrayList<>();
+
+    public void add(String section) {
+        sections.add(section);
+    }
+
+    public String get(int index, String defaultValue) {
+        if (index >= sections.size())
+            return defaultValue;
+        else
+            return sections.get(index);
+    }
+
+    public static Sections parse(String text) {
+        Sections sections = new Sections();
+        if (text != null) {
+            text = text.trim();
+            while (true) {
+                int pos = text.indexOf("\n\n");
+                if (pos == -1) {
+                    sections.add(text);
+                    break;
+                } else {
+                    String first = text.substring(0, pos);
+                    sections.add(first);
+                    text = text.substring(pos + 1).trim();
+                }
+            }
+        }
+        return sections;
     }
 
 }
