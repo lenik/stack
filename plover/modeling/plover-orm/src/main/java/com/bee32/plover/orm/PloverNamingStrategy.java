@@ -11,8 +11,17 @@ public class PloverNamingStrategy
     private static final long serialVersionUID = 1L;
 
     static Logger logger = LoggerFactory.getLogger(PloverNamingStrategy.class);
-
     static boolean byCallerMethod = true;
+
+    boolean alwaysEscape = true;
+
+    public boolean isAlwaysEscape() {
+        return alwaysEscape;
+    }
+
+    public void setAlwaysEscape(boolean alwaysEscape) {
+        this.alwaysEscape = alwaysEscape;
+    }
 
     public String escapeName(String name) {
         String method = null;
@@ -22,7 +31,9 @@ public class PloverNamingStrategy
             logger.debug(method + ": " + name);
         }
         name = name.replace("`", "");
-        return "`" + name + "`";
+        if (alwaysEscape)
+            name = "`" + name + "`";
+        return name;
     }
 
     @Override
