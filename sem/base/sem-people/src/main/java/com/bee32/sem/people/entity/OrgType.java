@@ -4,6 +4,11 @@ import javax.persistence.Entity;
 
 import com.bee32.plover.ox1.dict.ShortNameDict;
 
+/**
+ * 组织机构类型
+ *
+ * 用于组织机构分类。
+ */
 @Entity
 public class OrgType
         extends ShortNameDict {

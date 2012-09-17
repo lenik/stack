@@ -5,6 +5,11 @@ import javax.persistence.SequenceGenerator;
 
 import com.bee32.plover.ox1.xp.XPool30;
 
+/**
+ * 联系信息扩展属性池
+ *
+ * 用于扩展联系信息。
+ */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "contactxp_seq", allocationSize = 1)
 public class ContactXP

@@ -5,6 +5,11 @@ import javax.persistence.SequenceGenerator;
 
 import com.bee32.plover.ox1.xp.XPool40;
 
+/**
+ * 涉众的扩展属性池
+ *
+ * 用于扩展涉众的信息。
+ */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "partyxp_seq", allocationSize = 1)
 public class PartyXP

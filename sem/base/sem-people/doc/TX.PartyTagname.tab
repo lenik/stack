@@ -9,5 +9,5 @@ DictEntity:2:description:条目描述:description:Sot:200:条目的内容描述�
 NameDict:3:id:条目标识符:id:Sot:20:词典条目的标识符、主键。
 ::order:次序:order:Nt:8:用于对条目排序。
 ::rank:权重:rank:Nt:6:条目相关的权重（可选）。
-PartyTagname:2:instances::instances:No:0:（略）
-::internal:（无名称）:internal:Bo:1:（略）
+PartyTagname:2:instances:实例集:instances:No:0:设置了本标签的涉众实例集合。
+::internal:内部标签:internal:Bo:1:表明仅在公司内部使用的标签。

@@ -38,7 +38,9 @@ import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.xp.EntityExt;
 
 /**
- * 自然人或法人。
+ * 涉众/参与方
+ *
+ * 自然人或公司的关键信息。
  */
 @Entity
 @Green
@@ -129,6 +131,8 @@ public abstract class Party
 
     /**
      * 名称
+     *
+     * 个人称呼或企业名称。
      */
     @Deprecated
     @Transient
@@ -145,6 +149,8 @@ public abstract class Party
 
     /**
      * 全名
+     *
+     * 个人姓名全名或企业的全程。
      */
     @Column(length = FULLNAME_LENGTH)
     public String getFullName() {
@@ -166,7 +172,11 @@ public abstract class Party
     }
 
     /**
-     * 证件类型 (SID = Social ID)
+     * 证件类型
+     *
+     * 个人证件类型或企业证件类型。
+     *
+     * (SID = Social ID)
      */
     @NaturalId(mutable = true)
     @ManyToOne
@@ -179,7 +189,11 @@ public abstract class Party
     }
 
     /**
-     * 证件号码 (SID = Social ID)
+     * 证件号码
+     *
+     * 个人证件的号码或企业注册证件号码。
+     *
+     * (SID = Social ID)
      */
     @NaturalId(mutable = true)
     @Column(length = SID_LENGTH)
@@ -196,6 +210,11 @@ public abstract class Party
         this.sid = sid;
     }
 
+    /**
+     * 雇员标志
+     *
+     * （仅用于个人）表示是否为雇员。
+     */
     @DefaultValue("false")
     @Column(nullable = false)
     public boolean isEmployee() {
@@ -206,6 +225,11 @@ public abstract class Party
         this.employee = employee;
     }
 
+    /**
+     * 客户标志
+     *
+     * 表示是否为自然人客户或公司客户。
+     */
     @DefaultValue("false")
     @Column(nullable = false)
     public boolean isCustomer() {
@@ -216,6 +240,11 @@ public abstract class Party
         this.customer = customer;
     }
 
+    /**
+     * 供应商标志
+     *
+     * 表示是否为自然人供应商或公司供应商。
+     */
     @DefaultValue("false")
     @Column(nullable = false)
     public boolean isSupplier() {
@@ -226,6 +255,11 @@ public abstract class Party
         this.supplier = supplier;
     }
 
+    /**
+     * 竞争对手标志
+     *
+     * 表示是否为竞争对手。
+     */
     @DefaultValue("false")
     @Column(nullable = false)
     public boolean isCompetitor() {
@@ -238,6 +272,8 @@ public abstract class Party
 
     /**
      * 出生日期
+     *
+     * 个人的出生日期或组织机构的注册日期。
      */
     @Temporal(TemporalType.DATE)
     public Date getBirthday() {
@@ -249,6 +285,10 @@ public abstract class Party
     }
 
     /**
+     * 兴趣方向
+     *
+     * 个人的兴趣爱好或公司的主营业务。
+     *
      * Person:兴趣爱好 Org:主营业务
      */
     @Column(length = INTERESTS_LENGTH)
@@ -262,6 +302,8 @@ public abstract class Party
 
     /**
      * 银行名称
+     *
+     * 个人或公司的开户行名称。
      */
     @Column(length = BANK_LENGTH)
     public String getBank() {
@@ -274,6 +316,8 @@ public abstract class Party
 
     /**
      * 银行帐号
+     *
+     * 个人或公司的开户行帐号。
      */
     @Column(length = BANK_ACCOUNT_LENGTH)
     public String getBankAccount() {
@@ -284,6 +328,11 @@ public abstract class Party
         this.bankAccount = bankAccount;
     }
 
+    /**
+     * 备注
+     *
+     * 更多的备注信息。
+     */
     @Column(length = MEMO_LENGTH)
     public String getMemo() {
         return memo;
@@ -293,6 +342,11 @@ public abstract class Party
         this.memo = memo;
     }
 
+    /**
+     * 标签集
+     *
+     * 用于分类的标签集合。
+     */
     @ManyToMany
     // (fetch = FetchType.EAGER)
     @JoinTable(name = "PartyTags", //
@@ -308,6 +362,11 @@ public abstract class Party
         this.tags = tags;
     }
 
+    /**
+     * 联系方式
+     *
+     * 相关的联系方式列表。
+     */
     @OneToMany(mappedBy = "party", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<Contact> getContacts() {
@@ -320,6 +379,11 @@ public abstract class Party
         this.contacts = contacts;
     }
 
+    /**
+     * 档案记录
+     *
+     * 在本公司内部维护的人员或组织的重要信息档案记录。
+     */
     @OneToMany(mappedBy = "party", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<PartyRecord> getRecords() {

@@ -8,6 +8,11 @@ import javax.persistence.ManyToMany;
 
 import com.bee32.plover.ox1.dict.NameDict;
 
+/**
+ * 涉众分类标签
+ *
+ * 用于对自然人或组织机构进行分类。
+ */
 @Entity
 public class PartyTagname
         extends NameDict {
@@ -44,6 +49,11 @@ public class PartyTagname
         instances = new HashSet<Party>(o.instances);
     }
 
+    /**
+     * 内部标签
+     *
+     * 表明仅在公司内部使用的标签。
+     */
     public boolean isInternal() {
         return internal;
     }
@@ -53,6 +63,10 @@ public class PartyTagname
     }
 
     /**
+     * 实例集
+     *
+     * 设置了本标签的涉众实例集合。
+     *
      * @see Party#getTags()
      */
     @ManyToMany(mappedBy = "tags")

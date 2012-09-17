@@ -19,6 +19,11 @@ import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.sem.people.Gender;
 
+/**
+ * 自然人
+ *
+ * 一般自然人的关键信息。
+ */
 @Entity
 @DiscriminatorValue("PER")
 public class Person
@@ -75,6 +80,11 @@ public class Person
         _retargetMerge(roles, o.roles);
     }
 
+    /**
+     * 性别
+     *
+     * m=男，f=女，x=未知。
+     */
     @Column(name = "sex")
     char get_sex() {
         return sex.getValue();
@@ -95,6 +105,8 @@ public class Person
 
     /**
      * 户籍
+     *
+     * 人员的身份籍贯。
      */
     @Column(length = CENSUS_REGISTER_LENGTH)
     public String getCensusRegister() {
@@ -105,6 +117,11 @@ public class Person
         this.censusRegister = censusRegister;
     }
 
+    /**
+     * 相关职务
+     *
+     * 相关部门中担任的职务列表。
+     */
     @OneToMany(mappedBy = "person", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public Set<PersonRole> getRoles() {

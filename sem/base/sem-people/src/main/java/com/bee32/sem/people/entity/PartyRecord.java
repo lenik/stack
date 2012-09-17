@@ -16,7 +16,9 @@ import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.color.MomentInterval;
 
 /**
- * 人或组织的社会档案记录.
+ * 社会档案记录
+ *
+ * 在公司内部记录的自然人或组织机构发生的重要事件。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "party_record_seq", allocationSize = 1)
@@ -46,6 +48,11 @@ public class PartyRecord
         text = o.text;
     }
 
+    /**
+     * 分类
+     *
+     * 社会档案记录的分类。
+     */
     @ManyToOne(optional = false)
     public PartyRecordCategory getCategory() {
         return category;
@@ -57,6 +64,11 @@ public class PartyRecord
         this.category = category;
     }
 
+    /**
+     * 人或组织
+     *
+     * 社会档案记录的相关人或组织。
+     */
     @ManyToOne(optional = false)
     public Party getParty() {
         return party;
@@ -68,6 +80,11 @@ public class PartyRecord
         this.party = party;
     }
 
+    /**
+     * 正文
+     *
+     * 社会档案记录的主要内容。
+     */
     @Basic(optional = false)
     @Column(length = TEXT_LENGTH, nullable = false)
     public String getText() {

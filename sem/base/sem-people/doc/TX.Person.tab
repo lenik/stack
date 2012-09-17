@@ -7,20 +7,20 @@ CEntity:2:aclId:安全策略:acl_id:Not:8:该记录上启用的安全策略的ID
 UIEntity:2:description:描述:description:Sot:200:对数据的简略的描述。（通常不同于备注）
 ::label:标签:label:Sot:100:记录的标识标签，简短的概要、或通常是唯一的显示名称。
 UIEntityAuto:1:id:标识符:id:Not:0:记录的标识符、主键。
-Party:15:bank:银行名称:bank:So:100:（略）
-::bankAccount:银行帐号:bank_account:So:50:（略）
-::birthday:出生日期:birthday:Do:0:（略）
-::competitor:（无名称）:competitor:B:1:（略）
-::contacts:（无名称）:contacts:No:0:（略）
-::customer:（无名称）:customer:B:1:（略）
-::employee:（无名称）:employee:B:1:（略）
-::fullName:全名:full_name:So:50:（略）
-::interests:Person:兴趣爱好 Org:主营业务:interests:So:200:（略）
-::memo:（无名称）:memo:So:1000:（略）
-::records:（无名称）:records:No:0:（略）
-::sid:证件号码 (SID = Social ID):sid:So:30:（略）
-::sidType:证件类型 (SID = Social ID):sid_type:Ro:0:（略）
-::supplier:（无名称）:supplier:B:1:（略）
-::tags:（无名称）:tags:No:0:（略）
-Person:2:censusRegister:户籍:census_register:So:15:（略）
-::roles:（无名称）:roles:No:0:（略）
+Party:15:bank:银行名称:bank:So:100:个人或公司的开户行名称。
+::bankAccount:银行帐号:bank_account:So:50:个人或公司的开户行帐号。
+::birthday:出生日期:birthday:Do:0:个人的出生日期或组织机构的注册日期。
+::competitor:竞争对手标志:competitor:B:1:表示是否为竞争对手。
+::contacts:联系方式:contacts:No:0:相关的联系方式列表。
+::customer:客户标志:customer:B:1:表示是否为自然人客户或公司客户。
+::employee:雇员标志:employee:B:1:（仅用于个人）表示是否为雇员。
+::fullName:全名:full_name:So:50:个人姓名全名或企业的全程。
+::interests:兴趣方向:interests:So:200:个人的兴趣爱好或公司的主营业务。
+::memo:备注:memo:So:1000:更多的备注信息。
+::records:档案记录:records:No:0:在本公司内部维护的人员或组织的重要信息档案记录。
+::sid:证件号码:sid:So:30:个人证件的号码或企业注册证件号码。
+::sidType:证件类型:sid_type:Ro:0:个人证件类型或企业证件类型。
+::supplier:供应商标志:supplier:B:1:表示是否为自然人供应商或公司供应商。
+::tags:标签集:tags:No:0:用于分类的标签集合。
+Person:2:censusRegister:户籍:census_register:So:15:人员的身份籍贯。
+::roles:相关职务:roles:No:0:相关部门中担任的职务列表。

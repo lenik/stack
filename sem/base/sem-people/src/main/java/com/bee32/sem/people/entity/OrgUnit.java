@@ -14,6 +14,11 @@ import com.bee32.icsf.principal.Group;
 import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.tree.TreeEntityAuto;
 
+/**
+ * 组织部门
+ *
+ * 企业组织中的单位部门。
+ */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "org_unit_seq", allocationSize = 1)
 public class OrgUnit
@@ -53,7 +58,9 @@ public class OrgUnit
     }
 
     /**
-     * 属主组织。
+     * 组织/公司
+     *
+     * 部门所在的顶层组织或公司。
      */
     // @NaturalId
     @ManyToOne(optional = false)
@@ -68,7 +75,9 @@ public class OrgUnit
     }
 
     /**
-     * 部门的联系方式（可选）
+     * 联系方式
+     *
+     * 部门的联系方式（可选）。
      *
      * 注：为简化，这里 contact 为必选。
      */
@@ -84,7 +93,9 @@ public class OrgUnit
     }
 
     /**
-     * 对应的用户组，一个用户组最多只能对应一个 OrgUnit。
+     * 用户组
+     *
+     * 组织部门对应的登录用户组。一个用户组最多只能对应一个组织部门。
      */
     @OneToOne(optional = true)
     public Group getForWhichGroup() {
@@ -99,6 +110,11 @@ public class OrgUnit
         this.forWhichGroup = forWhichGroup;
     }
 
+    /**
+     * 相关人员
+     *
+     * 部门中的相关人员和对应的职务列表。
+     */
     @OneToMany(mappedBy = "orgUnit", cascade = CascadeType.ALL)
     public List<PersonRole> getRoles() {
         return roles;

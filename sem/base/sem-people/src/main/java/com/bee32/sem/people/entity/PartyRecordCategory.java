@@ -4,6 +4,11 @@ import javax.persistence.Entity;
 
 import com.bee32.plover.ox1.dict.NameDict;
 
+/**
+ * 社会档案记录分类
+ *
+ * 用于对社会档案记录的分类。
+ */
 @Entity
 public class PartyRecordCategory
         extends NameDict {

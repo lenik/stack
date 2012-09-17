@@ -11,7 +11,9 @@ import com.bee32.plover.ox1.c.CEntityAuto;
 import com.bee32.plover.ox1.color.Yellow;
 
 /**
- * 某人在某个公司中的具体职务
+ * 职务关联
+ *
+ * 某人在某个公司中的具体职务。
  */
 @Entity
 @Yellow
@@ -53,6 +55,11 @@ public class PersonRole
         description = o.description;
     }
 
+    /**
+     * 人员
+     *
+     * 相关的人员。
+     */
     @ManyToOne(optional = false)
     public Person getPerson() {
         return person;
@@ -64,6 +71,11 @@ public class PersonRole
         this.person = person;
     }
 
+    /**
+     * 组织
+     *
+     * 相关的组织。
+     */
     @ManyToOne(optional = false)
     public Org getOrg() {
         return org;
@@ -77,21 +89,22 @@ public class PersonRole
 
     /**
      * 所在部门
+     *
+     * 关联组织中的相关部门。
      */
     @ManyToOne
     public OrgUnit getOrgUnit() {
         return orgUnit;
     }
 
-    /**
-     * 所在部门
-     */
     public void setOrgUnit(OrgUnit orgUnit) {
         this.orgUnit = orgUnit;
     }
 
     /**
-     * （过渡）（临时使用的）所在部门名称
+     * 所在部门名称
+     *
+     * （过渡）（临时使用的）关联组织中的部门名称。
      */
     @Deprecated
     @Column(length = ALT_ORG_UNIT_LENGTH)
@@ -106,21 +119,22 @@ public class PersonRole
 
     /**
      * 职务
+     *
+     * 相关人员在组织部门中担任的职务。
      */
     @Column(length = ROLE_LENGTH)
     public String getRole() {
         return role;
     }
 
-    /**
-     * 职务
-     */
     public void setRole(String role) {
         this.role = role;
     }
 
     /**
-     * 负责业务
+     * 业务说明
+     *
+     * 相关人员在组织部门中负责的具体业务说明。
      */
     // @Basic(optional = false)
     @Column(length = ROLE_DETAIL_LENGTH)
@@ -128,13 +142,15 @@ public class PersonRole
         return roleDetail;
     }
 
-    /**
-     * 负责业务
-     */
     public void setRoleDetail(String roleDetail) {
         this.roleDetail = roleDetail;
     }
 
+    /**
+     * 备注
+     *
+     * 附加的备注信息。
+     */
     @Column(length = DESCRIPTION_LENGTH)
     public String getDescription() {
         return description;

@@ -17,6 +17,11 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.c.CEntityAuto;
 import com.bee32.plover.ox1.color.Yellow;
 
+/**
+ * 人员登录属性
+ *
+ * 关联某个人与登录对应的帐号。
+ */
 @Entity
 @Yellow
 @DefaultPermission(Permission.R_X)
@@ -43,6 +48,11 @@ public class PersonLogin
         user = o.user;
     }
 
+    /**
+     * 登录帐号
+     *
+     * 人员对应的登录帐号。
+     */
     @NaturalId
     @OneToOne(optional = false)
     public User getUser() {
@@ -53,6 +63,11 @@ public class PersonLogin
         this.user = user;
     }
 
+    /**
+     * 人员
+     *
+     * 登录对应的人员。
+     */
     @ManyToOne(optional = false)
     public Person getPerson() {
         return person;

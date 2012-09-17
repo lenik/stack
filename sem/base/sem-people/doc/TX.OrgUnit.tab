@@ -10,7 +10,7 @@ TreeEntity:3:children:子对象集:children:Not:0:下一级对象的集合。
 ::depth:深度:depth:Nt:8:【冗余】树结点的深度。（根结点的深度为0）
 ::parent:父对象:parent:Rot:0:上一级对象，如订单项的父对象是订单。
 TreeEntityAuto:1:id:标识符:id:No:0:记录的标识符、主键。
-OrgUnit:4:contact:部门的联系方式（可选）:contact:Ro:0:注：为简化，这里 contact 为必选。
-::forWhichGroup:对应的用户组，一个用户组最多只能对应一个 OrgUnit。:for_which_group:Ro:0:（略）
-::org:属主组织。:org:Ro:0:（略）
-::roles:（无名称）:roles:No:0:（略）
+OrgUnit:4:contact:联系方式:contact:Ro:0:部门的联系方式（可选）。
+::forWhichGroup:用户组:for_which_group:Ro:0:组织部门对应的登录用户组。一个用户组最多只能对应一个组织部门。
+::org:组织/公司:org:Ro:0:部门所在的顶层组织或公司。
+::roles:相关人员:roles:No:0:部门中的相关人员和对应的职务列表。

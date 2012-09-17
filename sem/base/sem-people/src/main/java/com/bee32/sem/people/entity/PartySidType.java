@@ -5,6 +5,11 @@ import javax.persistence.Entity;
 
 import com.bee32.plover.ox1.dict.ShortNameDict;
 
+/**
+ * 涉众身份类型
+ *
+ * 用于对身份证件信息的分类。
+ */
 @Entity
 public class PartySidType
         extends ShortNameDict {
@@ -38,6 +43,11 @@ public class PartySidType
         category = o.category;
     }
 
+    /**
+     * 类别
+     *
+     * 区分个人身份证件(P)和组织机构识别证件(O)。
+     */
     @Column(nullable = false)
     public char getCategory() {
         return category;

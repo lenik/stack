@@ -5,10 +5,10 @@ Entity:4:altId:次标识符:alt_id:Sot:20:用于标识特定的样本数据。
 CEntity:2:aclId:安全策略:acl_id:Not:8:该记录上启用的安全策略的ID。
 ::owner:属主:owner:Rot:0:记录的拥有者。属主用户对记录拥有所有权限，除非记录被系统锁定。
 CEntityAuto:1:id:（无名称）:id:No:0:（略）
-PersonRole:7:altOrgUnit:（过渡）（临时使用的）所在部门名称:alt_org_unit:So:100:（略）
-::description:（无名称）:description:So:200:（略）
-::org:（无名称）:org:Ro:0:（略）
-::orgUnit:所在部门:org_unit:Ro:0:（略）
-::person:（无名称）:person:Ro:0:（略）
-::role:职务:role:So:30:（略）
-::roleDetail:负责业务:role_detail:So:50:（略）
+PersonRole:7:altOrgUnit:所在部门名称:alt_org_unit:So:100:（过渡）（临时使用的）关联组织中的部门名称。
+::description:备注:description:So:200:附加的备注信息。
+::org:组织:org:Ro:0:相关的组织。
+::orgUnit:所在部门:org_unit:Ro:0:关联组织中的相关部门。
+::person:人员:person:Ro:0:相关的人员。
+::role:职务:role:So:30:相关人员在组织部门中担任的职务。
+::roleDetail:业务说明:role_detail:So:50:相关人员在组织部门中负责的具体业务说明。

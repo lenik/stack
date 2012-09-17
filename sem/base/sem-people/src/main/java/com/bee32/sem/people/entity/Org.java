@@ -17,6 +17,9 @@ import org.hibernate.annotations.CascadeType;
 import com.bee32.icsf.principal.Group;
 import com.bee32.plover.orm.entity.CopyUtils;
 
+/**
+ * 组织机构
+ */
 @Entity
 @DiscriminatorValue("ORG")
 public class Org
@@ -69,6 +72,11 @@ public class Org
         _retargetMerge(roles, o.roles);
     }
 
+    /**
+     * 组织类型
+     *
+     * 如有限公司、政府机构等。
+     */
     @ManyToOne
     public OrgType getType() {
         return type;
@@ -81,7 +89,9 @@ public class Org
     }
 
     /**
-     * 企业规模：员工人数
+     * 企业规模
+     *
+     * 企业中的员工人数。
      */
     public int getSize() {
         return size;
@@ -92,7 +102,11 @@ public class Org
     }
 
     /**
-     * 所有部门（这里是平面结构，不按树排列）
+     * 部门列表
+     *
+     * 企业中的所有部门。
+     *
+     * （这里是平面结构，不按树排列）
      */
     @OneToMany(mappedBy = "org", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
@@ -106,6 +120,11 @@ public class Org
         this.orgUnits = orgUnits;
     }
 
+    /**
+     * 任职人员
+     *
+     * 企业中担任具体职位的人员列表。
+     */
     @OneToMany(mappedBy = "org", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public Set<PersonRole> getRoles() {
@@ -118,6 +137,11 @@ public class Org
         this.roles = roles;
     }
 
+    /**
+     * 登录组
+     *
+     * 本企业对应的登录用户组（用于安全管理）。
+     */
     @OneToOne
     public Group getForWhichGroup() {
         return forWhichGroup;
