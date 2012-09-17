@@ -5,6 +5,6 @@ Entity:4:altId:次标识符:alt_id:Sot:20:用于标识特定的样本数据。
 CEntity:2:aclId:安全策略:acl_id:Not:8:该记录上启用的安全策略的ID。
 ::owner:属主:owner:Rot:0:记录的拥有者。属主用户对记录拥有所有权限，除非记录被系统锁定。
 CEntityAuto:1:id:（无名称）:id:No:0:（略）
-ChanceParty:3:chance:机会:chance:Ro:0:本关联对应的机会
-::party:客户:party:Ro:0:本关联对应的公司或个人
-::role:角色:role:S:20:对应的公司或个人在本机会中的角色
+ChanceParty:3:chance:机会:chance:Ro:0:本关联对应的机会。
+::party:客户:party:Ro:0:本关联对应的公司或个人。
+::role:角色:role:S:20:对应的公司或个人在本机会中的角色。

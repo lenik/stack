@@ -17,5 +17,5 @@ SingleVerifierSupport:4:accepted1:审核通过:accepted1:B:1:审核的决策值�
 ::verifiedDate1:审核日期:verified_date1:DTo:0:审核操作的日期。
 ::verifier1:审核人:verifier1:Ro:0:审核操作的执行人。
 ProcessEntity:1:verifyContext:审核上下文:verify_context:Not:0:（略）
-AccountTicket:2:items:凭证明细列表:items:No:0:会计凭证上的明细列表，和科目相对应
+AccountTicket:2:items:凭证明细列表:items:No:0:会计凭证上的明细列表，和科目相对应。
 ::nativeTotal:本币金额:native_total:No:25.4:【冗余】获取用本地货币表示的总金额。

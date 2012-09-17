@@ -12,7 +12,7 @@ MomentInterval:2:beginTime:起始时间:begin_time:DTot:0:反应记录对应事�
 MCValue:2:currencyCode:（无名称）:currency_code:So:3:（略）
 ::value:Performance consideration::value:N:21.4:1, Max digits hold by a long: 9,223,372,036,854,775,808 = 19 digits.
 FundFlow:5:nativeValue:本币金额:native_value:No:21.4:资金进出的以本地货币表达的金额
-::operator:经办人:operator:Ro:0:资金进出经办人
-::text:资金进出说明:text:So:3000:资金进出的详细说明
-::ticket:资金进出对应的凭证:ticket:Ro:0:对应的凭证，说明本笔资金是否已经填写相应的凭证
-::value:金额:value:No:0:资金进出金额
+::operator:经办人:operator:Ro:0:资金进出经办人。
+::text:资金进出说明:text:So:3000:资金进出的详细说明。
+::ticket:资金进出对应的凭证:ticket:Ro:0:对应的凭证，说明本笔资金是否已经填写相应的凭证。
+::value:金额:value:No:0:资金进出金额。

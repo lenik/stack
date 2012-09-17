@@ -27,5 +27,5 @@ AbstractItem:5:index:单据内部的序号:index:N:8:（略）
 <li>Quantity of ...: 可测量的
 <ul>
 </fieldset>
-WantedProductQuotation:2:discount:折扣率，按中国人的折扣率习惯填写:discount:N:8:（略）
-::product:（无名称）:product:Ro:0:（略）
+WantedProductQuotation:2:discount:折扣率:discount:N:8:按中国人的折扣率习惯填写。
+::product:选型产品:product:Ro:0:报价对应的选型产品。

@@ -9,12 +9,12 @@ UIEntity:2:description:描述:description:Sot:200:对数据的简略的描述。
 UIEntityAuto:1:id:标识符:id:Not:0:记录的标识符、主键。
 MomentInterval:2:beginTime:起始时间:begin_time:DTot:0:反应记录对应事件的发生时刻。
 ::endTime:终止时间:end_time:DTot:0:反应记录对应事件的结束时刻。
-PurchaseInquiry:9:afterService:售后服务:after_service:So:60:（略）
-::comment:询价建议的理由:comment:So:200:（略）
-::deliveryDate:交货时间，类型为String, 举例： 50天，2周 etc.:delivery_date:So:30:（略）
-::other:其他:other:So:1000:（略）
-::parent:需要询价的采购项目:parent:Ro:0:（略）
-::paymentTerm:付款方式:payment_term:So:60:（略）
-::price:价格:price:No:0:（略）
-::quality:质量:quality:So:120:（略）
-::supplier:供应商:supplier:Ro:0:（略）
+PurchaseInquiry:9:afterService:售后服务:after_service:So:60:供应商提供的售后服务描述。
+::comment:询价建议的理由:comment:So:200:审核人对某个供应商报价采用理由描述。
+::deliveryDate:交货时间:delivery_date:So:30:交货时间的文字描述,类型为String, 举例： 50天，2周 etc.。
+::other:其他:other:So:1000:对询价的补充描述。
+::parent:采购项目:parent:Ro:0:需要询价的采购项目。
+::paymentTerm:付款方式:payment_term:So:60:供应商要求的付款方式。
+::price:价格:price:No:0:供应商的报价。
+::quality:质量:quality:So:120:供应商对本报价的质量标准描述。
+::supplier:供应商:supplier:Ro:0:本报价对应的供商。

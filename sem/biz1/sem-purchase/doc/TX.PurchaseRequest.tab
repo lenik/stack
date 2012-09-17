@@ -17,6 +17,6 @@ SingleVerifierSupport:4:accepted1:审核通过:accepted1:B:1:审核的决策值�
 ::verifiedDate1:审核日期:verified_date1:DTo:0:审核操作的日期。
 ::verifier1:审核人:verifier1:Ro:0:审核操作的执行人。
 ProcessEntity:1:verifyContext:审核上下文:verify_context:Not:0:（略）
-PurchaseRequest:3:items:（无名称）:items:No:0:（略）
-::plans:（无名称）:plans:No:0:（略）
-::takeIns:（无名称）:take_ins:No:0:（略）
+PurchaseRequest:3:items:采购计划明细:items:No:0:采购计划明细列表。
+::plans:物料计划列表:plans:No:0:本采购请求对应的物料计划列表。
+::takeIns:采购入库单:take_ins:No:0:采购请求在询价完成后，直接可以进入仓库，此处为对应的入库单列表。

@@ -20,12 +20,12 @@ ProcessEntity:1:verifyContext:审核上下文:verify_context:Not:0:（略）
 MCValue:2:currencyCode:（无名称）:currency_code:So:3:（略）
 ::value:Performance consideration::value:N:21.4:1, Max digits hold by a long: 9,223,372,036,854,775,808 = 19 digits.
 AccountTicketItem:9:debitSide:凭证明细方向:debit_side:B:1:说明本条目属于凭证上的借方还是贷方。
-::index:显示顺序:index:N:8:明细在列表中的顺序
+::index:显示顺序:index:N:8:明细在列表中的顺序。
 ::nativeValue:本币金额:native_value:No:21.4:【冗余】本地货币表示的价格。
-::orgUnit:科目发生额对应的内部部门:org_unit:Ro:0:（略）
-::party:科目发生额对应的客户或供应商或个人:party:Ro:0:（略）
-::person:经办人:person:Ro:0:企业内部经办人(业务员，采购员等)
-::subject:科目:subject:Ro:0:借方或贷方的科目
-::ticket:凭证主控类:ticket:Ro:0:注： 所属单据这里命名为 ticket 而不是 parent，以便派生类可以有自己的 parent.
-::value:科目发生金额:value:No:0:凭证上科目发生的金额
-AccountInitItem:1:init:账务初始化主控类:init:Ro:0:账务初始化主控类
+::orgUnit:部门:org_unit:Ro:0:科目发生额对应的内部部门。
+::party:客户，供应商，个人:party:Ro:0:科目发生额对应的客户或供应商或个人。
+::person:经办人:person:Ro:0:企业内部经办人(业务员，采购员等)。
+::subject:科目:subject:Ro:0:借方或贷方的科目。
+::ticket:凭证主控类:ticket:Ro:0:注： 所属单据这里命名为 ticket 而不是 parent，以便派生类可以有自己的 parent。
+::value:科目发生金额:value:No:0:凭证上科目发生的金额。
+AccountInitItem:1:init:账务初始化主控类:init:Ro:0:账务初始化主控类。

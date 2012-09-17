@@ -12,10 +12,10 @@ MomentInterval:2:beginTime:起始时间:begin_time:DTot:0:反应记录对应事�
 MCValue:2:currencyCode:（无名称）:currency_code:So:3:（略）
 ::value:Performance consideration::value:N:21.4:1, Max digits hold by a long: 9,223,372,036,854,775,808 = 19 digits.
 FundFlow:5:nativeValue:本币金额:native_value:No:21.4:资金进出的以本地货币表达的金额
-::operator:经办人:operator:Ro:0:资金进出经办人
-::text:资金进出说明:text:So:3000:资金进出的详细说明
-::ticket:资金进出对应的凭证:ticket:Ro:0:对应的凭证，说明本笔资金是否已经填写相应的凭证
-::value:金额:value:No:0:资金进出金额
+::operator:经办人:operator:Ro:0:资金进出经办人。
+::text:资金进出说明:text:So:3000:资金进出的详细说明。
+::ticket:资金进出对应的凭证:ticket:Ro:0:对应的凭证，说明本笔资金是否已经填写相应的凭证。
+::value:金额:value:No:0:资金进出金额。
 AbstractVerifyContext:3:verifyError:审核错误消息:verify_error:So:100:记录审核运算求值返回的错误消息（或空表示求值成功）。
 ::verifyEvalDate:审核求值时间:verify_eval_date:DTo:0:记录系统中审核运算的求值时间。
 ::verifyEvent:审核事件:verify_event:Ro:0:事件系统中的事件消息对象，用于消息分发。
@@ -23,5 +23,5 @@ SingleVerifierSupport:4:accepted1:审核通过:accepted1:B:1:审核的决策值�
 ::rejectedReason1:拒绝原因:rejected_reason1:So:80:审核责任人填写的附加消息。
 ::verifiedDate1:审核日期:verified_date1:DTo:0:审核操作的日期。
 ::verifier1:审核人:verifier1:Ro:0:审核操作的执行人。
-PaymentNote:2:verifyContext:审核上下文:verify_context:No:0:付款单需要审核，返回支持审核的上下文
-::whoPay:付款人:who_pay:Ro:0:一般指企业里的出纳
+PaymentNote:2:verifyContext:审核上下文:verify_context:No:0:付款单需要审核，返回支持审核的上下文。
+::whoPay:付款人:who_pay:Ro:0:一般指企业里的出纳。

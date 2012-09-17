@@ -17,4 +17,4 @@ SingleVerifierSupport:4:accepted1:审核通过:accepted1:B:1:审核的决策值�
 ::verifiedDate1:审核日期:verified_date1:DTo:0:审核操作的日期。
 ::verifier1:审核人:verifier1:Ro:0:审核操作的执行人。
 ProcessEntity:1:verifyContext:审核上下文:verify_context:Not:0:（略）
-AccountInit:1:items:（无名称）:items:No:0:（略）
+AccountInit:1:items:初始化明细列表:items:No:0:账务初始化时对应的科目明细列表。

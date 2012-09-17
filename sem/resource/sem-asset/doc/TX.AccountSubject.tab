@@ -9,5 +9,5 @@ DictEntity:2:description:条目描述:description:Sot:200:条目的内容描述�
 NameDict:3:id:条目标识符:id:Sot:20:词典条目的标识符、主键。
 ::order:次序:order:Nt:8:用于对条目排序。
 ::rank:权重:rank:Nt:6:条目相关的权重（可选）。
-AccountSubject:2:creditSign:贷方符号:credit_sign:B:1:科目在贷方时金额的符号
-::debitSign:借方符号:debit_sign:B:1:科目在借方时金额的符号
+AccountSubject:2:creditSign:贷方符号:credit_sign:B:1:科目在贷方时金额的符号。
+::debitSign:借方符号:debit_sign:B:1:科目在借方时金额的符号。

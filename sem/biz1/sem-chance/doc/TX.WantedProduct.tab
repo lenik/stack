@@ -15,7 +15,7 @@ Thing:6:barCode:条形码:bar_code:Sot:30:（略）
 ::serial:物品编码、物品序列号:serial:Sot:32:（略）
 ::unit:物品单位（必填）:unit:Rot:0:（略）
 ::unitConv:物品采用的单位换算表（可选）:unit_conv:Rot:0:（略）
-WantedProduct:4:attributes:选型产品的附加属性:attributes:No:0:（略）
-::chance:（无名称）:chance:Ro:0:（略）
-::decidedMaterial:选型产品对应的内部物料，选型时，由技术员进行确定:decided_material:Ro:0:（略）
-::quotations:选型产品对应的报价记录:quotations:No:0:（略）
+WantedProduct:4:attributes:附加属性:attributes:No:0:选型产品的附加属性。
+::chance:机会:chance:Ro:0:附加属性对应的机会。
+::decidedMaterial:物料:decided_material:Ro:0:选型产品对应的内部物料，选型时，由技术员进行确定。
+::quotations:报价:quotations:No:0:选型产品对应的报价记录。
