@@ -96,7 +96,8 @@ public class EntityTXGen {
             out.println("\\subsubsection{ $\\nequiv$ " + label + " } {");
             out.println("    \\addtolength{\\leftskip}{5mm}");
             out.println("    " + description + "\n\n");
-            out.println("    \\maketxtable{" + label + "}{" + sqlname + "}{TX." + entity.getSimpleName() + ".tab}");
+            out.println("    \\maketxtable{" + escape(label) + "}{" + escape(sqlname) + "}{TX."
+                    + entity.getSimpleName() + ".tab}");
             out.println("}");
         }
 
@@ -289,6 +290,11 @@ public class EntityTXGen {
 
             out.println(line);
         }
+    }
+
+    static String escape(String s) {
+        s = s.replace("_", "\\_");
+        return s;
     }
 
     public static void main(String[] args)
