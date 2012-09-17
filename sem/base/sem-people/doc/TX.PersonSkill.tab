@@ -7,8 +7,8 @@ CEntity:2:aclId:安全策略:acl_id:Not:8:该记录上启用的安全策略的ID
 UIEntity:2:description:描述:description:Sot:200:对数据的简略的描述。（通常不同于备注）
 ::label:标签:label:Sot:100:记录的标识标签，简短的概要、或通常是唯一的显示名称。
 UIEntityAuto:1:id:标识符:id:Not:0:记录的标识符、主键。
-PersonSkill:5:bonus:技能补贴:bonus:No:21.4:（略）
-::category:技能种类:category:Ro:0:（略）
-::date:技术获得日期:date:DTo:0:（略）
-::employeeInfo:（无名称）:employee_info:Ro:0:（略）
-::score:量化的技能评分:score:N:8:（略）
+PersonSkill:5:bonus:技能系数:bonus:No:21.4:用于计算工资的技能系数。
+::category:技能种类:category:Ro:0:雇员掌握的技能分类。
+::date:技术获得日期:date:DTo:0:如技能证书的颁发日期。
+::employeeInfo:雇员:employee_info:Ro:0:相关的雇员。
+::score:评分:score:N:8:量化的技能评分。

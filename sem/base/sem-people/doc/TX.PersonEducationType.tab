@@ -7,4 +7,4 @@ CEntity:2:aclId:安全策略:acl_id:Not:8:该记录上启用的安全策略的ID
 UIEntity:2:description:描述:description:Sot:200:对数据的简略的描述。（通常不同于备注）
 ::label:标签:label:Sot:100:记录的标识标签，简短的概要、或通常是唯一的显示名称。
 UIEntityAuto:1:id:标识符:id:Not:0:记录的标识符、主键。
-PersonEducationType:1:bonus:（无名称）:bonus:No:21.4:（略）
+PersonEducationType:1:bonus:学历系数:bonus:No:21.4:用于计算工资的系数。

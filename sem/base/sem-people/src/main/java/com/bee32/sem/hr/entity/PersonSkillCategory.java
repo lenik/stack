@@ -10,7 +10,9 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.sem.hr.util.ScoreLevelMap;
 
 /**
- * 员工技能字典类
+ * 雇员技能字典类
+ *
+ * 定义员工技能和相关的等级。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "person_skill_category_seq", allocationSize = 1)
@@ -58,6 +60,11 @@ public class PersonSkillCategory
         return levelMap;
     }
 
+    /**
+     * 等级描述
+     *
+     * 一段描述各技能等级的脚本。
+     */
     @Column(length = LEVELS_DATA_LENGTH)
     public String getLevelsData() {
         return levelMap.encode();

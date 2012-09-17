@@ -11,6 +11,8 @@ import com.bee32.plover.ox1.config.DecimalConfig;
 
 /**
  * 工作表现字典类
+ *
+ * 定义工作表现相关的词汇。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "job_performance_seq", allocationSize = 1)
@@ -44,6 +46,11 @@ public class JobPerformance
         super._populate(o);
     }
 
+    /**
+     * 工作表现系数
+     *
+     * 用于计算工资的系数。
+     */
     @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE)
     public BigDecimal getBonus() {
         return bonus;

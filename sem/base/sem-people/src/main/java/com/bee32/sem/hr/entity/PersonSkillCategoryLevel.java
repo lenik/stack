@@ -7,6 +7,9 @@ import javax.persistence.Column;
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
 
+/**
+ * 雇员技能等级
+ */
 public class PersonSkillCategoryLevel
         extends EntityAuto<Integer>
         implements DecimalConfig {
@@ -42,6 +45,11 @@ public class PersonSkillCategoryLevel
         this.label = label;
     }
 
+    /**
+     * 技能等级系数
+     *
+     * 用于计算工资的技能等级系数。
+     */
     @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE)
     public BigDecimal getBonus() {
         return bonus;

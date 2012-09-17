@@ -11,6 +11,8 @@ import com.bee32.plover.ox1.config.DecimalConfig;
 
 /**
  * 学历字典类
+ *
+ * 定义学历相关的词汇。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "person_education_seq", allocationSize = 1)
@@ -32,6 +34,11 @@ public class PersonEducationType
         this.bonus = bonus;
     }
 
+    /**
+     * 学历系数
+     *
+     * 用于计算工资的系数。
+     */
     @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE)
     public BigDecimal getBonus() {
         return bonus;

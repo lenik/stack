@@ -10,7 +10,9 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
 
 /**
- * 职务/岗位字典类
+ * 岗位字典类
+ *
+ * 定义了公司中存在的各种工作岗位。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "job_post_seq", allocationSize = 1)
@@ -44,6 +46,11 @@ public class JobPost
         super._populate(o);
     }
 
+    /**
+     * 岗位系数
+     *
+     * 用于计算工资的岗位系数。
+     */
     @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE)
     public BigDecimal getBonus() {
         return bonus;

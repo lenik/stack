@@ -16,7 +16,9 @@ import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.hr.util.ScoreLevelMap;
 
 /**
- * 员工所具有的技能
+ * 雇员技能
+ *
+ * 列出员工所具有的技能。
  *
  * 这里：
  * <ul>
@@ -58,6 +60,11 @@ public class PersonSkill
         bonus = o.bonus;
     }
 
+    /**
+     * 雇员
+     *
+     * 相关的雇员。
+     */
     @ManyToOne
     public EmployeeInfo getEmployeeInfo() {
         return employeeInfo;
@@ -70,7 +77,7 @@ public class PersonSkill
     /**
      * 技能种类
      *
-     * @return
+     * 雇员掌握的技能分类。
      */
     @ManyToOne
     public PersonSkillCategory getCategory() {
@@ -82,7 +89,9 @@ public class PersonSkill
     }
 
     /**
-     * 量化的技能评分
+     * 评分
+     *
+     * 量化的技能评分。
      *
      * @see PersonSkillCategory#getLevelMap()
      */
@@ -108,7 +117,7 @@ public class PersonSkill
     /**
      * 技术获得日期
      *
-     * @return
+     * 如技能证书的颁发日期。
      */
     @Temporal(TemporalType.TIMESTAMP)
     public Date getDate() {
@@ -120,7 +129,9 @@ public class PersonSkill
     }
 
     /**
-     * 技能补贴
+     * 技能系数
+     *
+     * 用于计算工资的技能系数。
      */
     @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE)
     public BigDecimal getBonus() {

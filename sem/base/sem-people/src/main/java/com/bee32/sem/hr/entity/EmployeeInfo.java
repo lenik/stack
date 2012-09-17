@@ -24,6 +24,11 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.people.entity.Person;
 
+/**
+ * 雇员信息
+ *
+ * 公司雇员的关键信息。
+ */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "employee_info_seq", allocationSize = 1)
 public class EmployeeInfo
@@ -73,6 +78,11 @@ public class EmployeeInfo
         skills = CopyUtils.copyList(o.skills);
     }
 
+    /**
+     * 自然人
+     *
+     * 雇员对应的一般自然人信息。
+     */
     @ManyToOne
     public Person getPerson() {
         return person;
@@ -82,6 +92,11 @@ public class EmployeeInfo
         this.person = person;
     }
 
+    /**
+     * 基本工资
+     *
+     * 雇员的基本工资。
+     */
     public BigDecimal getBaseSalary() {
         return baseSalary;
     }
@@ -90,6 +105,11 @@ public class EmployeeInfo
         this.baseSalary = baseSalary;
     }
 
+    /**
+     * 驾驶员
+     *
+     * 表示雇员是否为汽车驾驶员。
+     */
     @DefaultValue("false")
     public boolean isMotorist() {
         return motorist;
@@ -102,7 +122,7 @@ public class EmployeeInfo
     /**
      * 岗位
      *
-     * @return
+     * 雇员在公司中承担的岗位。
      */
     @ManyToOne
     public JobPost getRole() {
@@ -116,7 +136,7 @@ public class EmployeeInfo
     /**
      * 职称
      *
-     * @return
+     * 雇员在公司中的职称。
      */
     @ManyToOne
     public JobTitle getTitle() {
@@ -130,7 +150,7 @@ public class EmployeeInfo
     /**
      * 学历
      *
-     * @return
+     * 雇员的学历。
      */
     @ManyToOne
     public PersonEducationType getEducation() {
@@ -144,7 +164,7 @@ public class EmployeeInfo
     /**
      * 考勤
      *
-     * @return
+     * 雇员当月的出勤日数。
      */
     public int getDuty() {
         return duty;
@@ -157,7 +177,7 @@ public class EmployeeInfo
     /**
      * 工作能力指数
      *
-     * @return
+     * 用于计算工资的工作能力指数。
      */
     public int getWorkAbility() {
         return workAbility;
@@ -168,7 +188,9 @@ public class EmployeeInfo
     }
 
     /**
-     * 养老金persion
+     * 养老金
+     *
+     * 雇员应缴纳的养老金。
      */
     @DefaultValue("0")
     @Column(nullable = false, scale = MONEY_ITEM_SCALE, precision = MONEY_ITEM_PRECISION)
@@ -181,9 +203,9 @@ public class EmployeeInfo
     }
 
     /**
-     * 入职日期
+     * 雇佣日期
      *
-     * @return
+     * 雇员进入公司的日期。
      */
     @Temporal(TemporalType.TIMESTAMP)
     public Date getEmployedDate() {
@@ -195,9 +217,9 @@ public class EmployeeInfo
     }
 
     /**
-     * 离职日期
+     * 解雇日期
      *
-     * @return
+     * 雇员离开公司的日期。
      */
     @Temporal(TemporalType.TIMESTAMP)
     public Date getResignedDate() {
@@ -209,9 +231,9 @@ public class EmployeeInfo
     }
 
     /**
-     * 劳动合同(多个)
+     * 劳动合同
      *
-     * @return
+     * 雇员和公司签订的一个或多个劳动合同。
      */
     @OneToMany(mappedBy = "employeeInfo", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
@@ -224,9 +246,9 @@ public class EmployeeInfo
     }
 
     /**
-     * 专业技能(多个)
+     * 专业技能
      *
-     * @return
+     * 雇员掌握的一个或多个专业技能。
      */
     @OneToMany(mappedBy = "employeeInfo", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
@@ -241,7 +263,7 @@ public class EmployeeInfo
     /**
      * 工龄
      *
-     * @return
+     * 雇员的工作年限。
      */
     @Transient
     public int getWorkYears() {

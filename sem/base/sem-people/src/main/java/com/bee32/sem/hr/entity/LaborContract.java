@@ -9,7 +9,7 @@ import com.bee32.sem.misc.Contract;
 /**
  * 劳动合同
  *
- * @author jack
+ * 雇员和公司签订的劳动合同。
  */
 @Entity
 @DiscriminatorValue("LAB")
@@ -33,6 +33,11 @@ public class LaborContract
         this.employeeInfo = o.employeeInfo;
     }
 
+    /**
+     * 雇员
+     *
+     * 相关雇员。
+     */
     @ManyToOne
     public EmployeeInfo getEmployeeInfo() {
         return employeeInfo;
