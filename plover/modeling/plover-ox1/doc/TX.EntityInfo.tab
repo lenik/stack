@@ -1,8 +1,8 @@
-Entity:4:altId:次标识符:alt_id:Sot:20:0:用于标识特定的样本数据。
-::createdDate:创建日期:created_date:DTt:0:0:数据的创建日期，一旦创建无法更改。
-::lastModified:更新日期:last_modified:DTt:0:0:数据最后一次修改的日期。（每次保存时自动更新）
-::version:版本:version:Nt:8:0:数据的版本，原有的数据只能被更新版的数据取代。
-EntityInfo:4:columns:（无名称）:columns:No:0:0:（略）
-::description:（无名称）:description:So:200:0:（略）
-::label:（无名称）:label:So:50:0:（略）
-::nameOtf:（无名称）:name_otf:So:20:0:（略）
+Entity:4:altId:次标识符:alt_id:Sot:20:用于标识特定的样本数据。
+::createdDate:创建日期:created_date:DTt:0:数据的创建日期，一旦创建无法更改。
+::lastModified:更新日期:last_modified:DTt:0:数据最后一次修改的日期。（每次保存时自动更新）
+::version:版本:version:Nt:8:数据的版本，原有的数据只能被更新版的数据取代。
+EntityInfo:4:columns:（无名称）:columns:No:0:（略）
+::description:（无名称）:description:So:200:（略）
+::label:（无名称）:label:So:50:（略）
+::nameOtf:（无名称）:name_otf:So:20:（略）

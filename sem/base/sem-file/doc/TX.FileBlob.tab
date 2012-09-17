@@ -1,14 +1,14 @@
-Entity:4:altId:次标识符:alt_id:Sot:20:0:用于标识特定的样本数据。
-::createdDate:创建日期:created_date:DTt:0:0:数据的创建日期，一旦创建无法更改。
-::lastModified:更新日期:last_modified:DTt:0:0:数据最后一次修改的日期。（每次保存时自动更新）
-::version:版本:version:Nt:8:0:数据的版本，原有的数据只能被更新版的数据取代。
-CEntity:2:aclId:安全策略:acl_id:Not:8:0:该记录上启用的安全策略的ID。
-::owner:属主:owner:Rot:0:0:记录的拥有者。属主用户对记录拥有所有权限，除非记录被系统锁定。
-UIEntity:2:description:描述:description:Sot:200:0:对数据的简略的描述。（通常不同于备注）
-::label:标签:label:Sot:100:0:记录的标识标签，简短的概要、或通常是唯一的显示名称。
-DigestEntity:1:id:标识摘要:id:So:40:0:数据的摘要，亦作为记录的标识符。
-FileBlob:5:contentType:原始内容类型:content_type:So:40:0:文件上传时声明的内容类型。
-::encoding:（无名称）:encoding:So:16:0:（略）
-::header:文件头:header:N:4000:0:文件的头部数据，可用作预览。
-::length:文件长度:length:N:18:0:文件长度 （字节）。
-::refCount:引用计数:ref_count:N:8:0:文件被引用的次数。当引用计数为0时，文件占用的存储空间可被清除。
+Entity:4:altId:次标识符:alt_id:Sot:20:用于标识特定的样本数据。
+::createdDate:创建日期:created_date:DTt:0:数据的创建日期，一旦创建无法更改。
+::lastModified:更新日期:last_modified:DTt:0:数据最后一次修改的日期。（每次保存时自动更新）
+::version:版本:version:Nt:8:数据的版本，原有的数据只能被更新版的数据取代。
+CEntity:2:aclId:安全策略:acl_id:Not:8:该记录上启用的安全策略的ID。
+::owner:属主:owner:Rot:0:记录的拥有者。属主用户对记录拥有所有权限，除非记录被系统锁定。
+UIEntity:2:description:描述:description:Sot:200:对数据的简略的描述。（通常不同于备注）
+::label:标签:label:Sot:100:记录的标识标签，简短的概要、或通常是唯一的显示名称。
+DigestEntity:1:id:标识摘要:id:So:40:数据的摘要，亦作为记录的标识符。
+FileBlob:5:contentType:原始内容类型:content_type:So:40:文件上传时声明的内容类型。
+::encoding:（无名称）:encoding:So:16:（略）
+::header:文件头:header:N:4000:文件的头部数据，可用作预览。
+::length:文件长度:length:N:18:文件长度 （字节）。
+::refCount:引用计数:ref_count:N:8:文件被引用的次数。当引用计数为0时，文件占用的存储空间可被清除。

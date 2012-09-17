@@ -1,23 +1,23 @@
-Entity:4:altId:次标识符:alt_id:Sot:20:0:用于标识特定的样本数据。
-::createdDate:创建日期:created_date:DTt:0:0:数据的创建日期，一旦创建无法更改。
-::lastModified:更新日期:last_modified:DTt:0:0:数据最后一次修改的日期。（每次保存时自动更新）
-::version:版本:version:Nt:8:0:数据的版本，原有的数据只能被更新版的数据取代。
-CEntity:2:aclId:安全策略:acl_id:Not:8:0:该记录上启用的安全策略的ID。
-::owner:属主:owner:Rot:0:0:记录的拥有者。属主用户对记录拥有所有权限，除非记录被系统锁定。
-XPool:2:id:标识符:id:N:18:0:属性的主键。
-::source:源数据:source:Ro:0:0:属性所在的对象。
-XPool15_Scores:15:date1:属性 DATE1:date1:DTo:0:0:长度为 8B 的扩展时间戳属性。
-::double1:属性 DOUBLE1:double1:No:15:0:长度为 8B 的扩展双精度浮点数属性。
-::double2:属性 DOUBLE2:double2:No:15:0:长度为 8B 的扩展双精度浮点数属性。
-::float1:属性 FLOAT1:float1:No:6:0:长度为 4B 的扩展浮点数属性。
-::float2:属性 FLOAT2:float2:No:6:0:长度为 4B 的扩展浮点数属性。
-::float3:属性 FLOAT3:float3:No:6:0:长度为 4B 的扩展浮点数属性。
-::float4:属性 FLOAT4:float4:No:6:0:长度为 4B 的扩展浮点数属性。
-::float5:属性 FLOAT5:float5:No:6:0:长度为 4B 的扩展浮点数属性。
-::float6:属性 FLOAT6:float6:No:6:0:长度为 4B 的扩展浮点数属性。
-::float7:属性 FLOAT7:float7:No:6:0:长度为 4B 的扩展浮点数属性。
-::float8:属性 FLOAT8:float8:No:6:0:长度为 4B 的扩展浮点数属性。
-::int1:属性 INT1:int1:No:8:0:长度为 4B 的扩展整数属性。
-::int2:属性 INT2:int2:No:8:0:长度为 4B 的扩展整数属性。
-::long1:属性 LONG1:long1:No:18:0:长度为 8B 的扩展长整数属性。
-::long2:属性 LONG2:long2:No:18:0:长度为 8B 的扩展长整数属性。
+Entity:4:altId:次标识符:alt_id:Sot:20:用于标识特定的样本数据。
+::createdDate:创建日期:created_date:DTt:0:数据的创建日期，一旦创建无法更改。
+::lastModified:更新日期:last_modified:DTt:0:数据最后一次修改的日期。（每次保存时自动更新）
+::version:版本:version:Nt:8:数据的版本，原有的数据只能被更新版的数据取代。
+CEntity:2:aclId:安全策略:acl_id:Not:8:该记录上启用的安全策略的ID。
+::owner:属主:owner:Rot:0:记录的拥有者。属主用户对记录拥有所有权限，除非记录被系统锁定。
+XPool:2:id:标识符:id:N:18:属性的主键。
+::source:源数据:source:Ro:0:属性所在的对象。
+XPool15_Scores:15:date1:属性 DATE1:date1:DTo:0:长度为 8B 的扩展时间戳属性。
+::double1:属性 DOUBLE1:double1:No:15:长度为 8B 的扩展双精度浮点数属性。
+::double2:属性 DOUBLE2:double2:No:15:长度为 8B 的扩展双精度浮点数属性。
+::float1:属性 FLOAT1:float1:No:6:长度为 4B 的扩展浮点数属性。
+::float2:属性 FLOAT2:float2:No:6:长度为 4B 的扩展浮点数属性。
+::float3:属性 FLOAT3:float3:No:6:长度为 4B 的扩展浮点数属性。
+::float4:属性 FLOAT4:float4:No:6:长度为 4B 的扩展浮点数属性。
+::float5:属性 FLOAT5:float5:No:6:长度为 4B 的扩展浮点数属性。
+::float6:属性 FLOAT6:float6:No:6:长度为 4B 的扩展浮点数属性。
+::float7:属性 FLOAT7:float7:No:6:长度为 4B 的扩展浮点数属性。
+::float8:属性 FLOAT8:float8:No:6:长度为 4B 的扩展浮点数属性。
+::int1:属性 INT1:int1:No:8:长度为 4B 的扩展整数属性。
+::int2:属性 INT2:int2:No:8:长度为 4B 的扩展整数属性。
+::long1:属性 LONG1:long1:No:18:长度为 8B 的扩展长整数属性。
+::long2:属性 LONG2:long2:No:18:长度为 8B 的扩展长整数属性。
