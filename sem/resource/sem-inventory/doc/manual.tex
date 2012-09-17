@@ -1,49 +1,37 @@
 \section{物料分类管理}
-    \begin{DBKadmonition}{}{Note}
-    物料分类设置和物料单位设置使用同一菜单进入
-    \end{DBKadmonition}
 物料分类的模型图：
 \screenshot{category.png}
 某个物料分类可以0到多个子分类，子分类可以还有自己的子分类。
 
 \subsection{物料分类设置}
-\href{category/category.html}{操作视频}
 在其中新增分类时，有一个“分类性质”，这个属性是在BOM模块中起作用的。只有在分类性质为成品或半成品下面的物料才能设置BOM
-    \ul {
-    \item \opset {新建物料分类} {
-        \ops {
+\opset{物料分类设置}{
+    \item \ops{新建物料分类}{
         \item  点击工具单上的\button{新建}按钮，进入新建物料分类界面
-        \screenshot{9.png}
+            \screenshot{9.png}
         \item  选择上级分类
         \item  输入\textbox{分类名称}
         \item  选择分类性质
         \item  输入\textbox{分类描述}
         \item  点击\button{保存}按钮，保存新建的物料分类
-        }
     }
-    \item \opset {查看物料分类} {
-    \screenshot{11.png}
-        \ops {
+    \item \ops{查看物料分类}{
         \item  选择需要查看的物料分类
+            \screenshot{11.png}
         \item  点击工具栏上的\button{查看}按钮，查看分类的详细信息
-        }
     }
-    \item \opset {修改物料分类} {
-        \ops {
+    \item \ops{修改物料分类}{
         \item  选择需要修改的物料分类
         \item  点击工具栏上的\button{修改}按钮，进入编辑物料分类界面
         \item  修改相应的信息
         \item  点击\button{保存}按钮，保存更改后的物料分类
-        }
     }
-    \item \opset {删除物料分类} {
-        \ops {
+    \item \ops{删除物料分类}{
         \item  选择需要删除的物料分类
         \item  点击工具栏上的\button{删除}按钮，在弹出的对话框中点击确定，删除物料分类
-        \screenshot{10.png}
-        }
+            \screenshot{10.png}
     }
-    }
+}
 
 
 \section{物料管理}
@@ -56,195 +44,159 @@
     \item  自定义属性可以给物料添加更多的属性值
     \item  推荐库位可以指定物料的常用的存放在仓库中的库位
     \item  物料附件可以上传任何类型的文件，为物料提供技术图纸，详细文档说明等
-    }
-    \ul {
-    \item \opset {新建物料} {
-        \ops {
-        \item  点击工具条上的\button{新建}按钮，进入新建物料界面
-        \screenshot{12.png}
-        \item  选择\button{物料分类}
-        \item  输入\textbox{物料名称}
-        \item  选择\button{物料单位}，输入\textbox{单位提示}
-        \item  输入\textbox{条形码}
-        \item  输入\textbox{规格型号}
-        \item  输入\textbox{备注}
-        \item  如果物料有其他属性需要输入，点击\button{自定义属性}标签
-        \screenshot{13.png}
-            \ul {
-            \item  点击\button{添加}按钮，弹出自定义属性界面
-            \item  输入\textbox{属性名称}
-            \item 输入\textbox{属性值}
-            \item  点击\button{确定}按钮，添加自定义属性
-            }
-        \item  点击\button{保存}按钮，保存新建的物料
+    \item \opset{物料管理}{
+        \item \ops{新建物料}{
+            \item  点击工具条上的\button{新建}按钮，进入新建物料界面
+                \screenshot{12.png}
+            \item  选择\button{物料分类}
+            \item  输入\textbox{物料名称}
+            \item  选择\button{物料单位}，输入\textbox{单位提示}
+            \item  输入\textbox{条形码}
+            \item  输入\textbox{规格型号}
+            \item  输入\textbox{备注}
+            \item  如果物料有其他属性需要输入，点击\button{自定义属性}标签
+                \screenshot{13.png}
+                \ul {
+                \item  点击\button{添加}按钮，弹出自定义属性界面
+                \item  输入\textbox{属性名称}
+                \item 输入\textbox{属性值}
+                \item  点击\button{确定}按钮，添加自定义属性
+                }
+            \item  点击\button{保存}按钮，保存新建的物料
         }
-    }
-    \item \opset {查看物料信息} {
-    \screenshot{20.png}
-        \ops {
+    \item \ops{查看物料信息}{
         \item  选择需要查看的物料
+            \screenshot{20.png}
         \item  点击工具栏上的\button{查看}按钮，或者点击工具里面的\button{查看图标}
-        }
     }
-    \item \opset {修改物料信息} {
-        \ops {
+    \item \ops{修改物料信息}{
         \item  选择需要修改的物料
         \item  点击工具栏上的\button{修改}按钮，进入修改物料信息界面
         \item  修改物料相关信息
         \item  点击\button{保存}按钮，保存更改后的物料信息
-        }
     }
-    \item \opset {设置物料价格} {
-        \ops {
+    \item \ops{设置物料价格}{
         \item  点击\button{价格设置}图标,弹出物料价格设置对话框，增加物料最新报价
-        \screenshot{14.png}
-        }
+            \screenshot{14.png}
     }
-    \item \opset {单位换算设置} {
-        \ops {
+    \item \ops{单位换算设置}{
         \item  点击\button{单位换算表设置}图标，弹出单位换算表设置对话框
-        \screenshot{15.png}
+            \screenshot{15.png}
         \item  点击\button{增加换算关系}按钮，弹出新增单位换算对话框
         \item  选择\button{目标单位}
         \item  输入\textbox{换算率}
         \item  点击\button{保存}完成新的换算关系添加
-        }
     }
-    \item \opset {推荐库位设置} {
-        \ops {
+    \item \ops{推荐库位设置}{
         \item  点击\button{推荐库位设置}图标，弹出推荐库位设置对话框
-        \screenshot{16.png}
+            \screenshot{16.png}
         \item  点击\button{增加推荐库位}按钮，弹出库位选择对话框,选择库位
         \item  点击\button{保存}，完成新的推荐库位添加
-        }
     }
-    \item \opset {设置仓库选项} {
-        \ops {
+    \item \ops{设置仓库选项}{
         \item  点击\button{仓库选项设置}图标，弹出仓库设置对话框
-        \screenshot{17.png}
+            \screenshot{17.png}
         \item  选择\button{仓库}，设置\button{安全库存}及\button{循环盘点周期}
         \item  点击\button{保存}，完成仓库设置
-        }
     }
-    \item \opset {设置物料附件} {
-        \ops {
+    \item \ops{设置物料附件}{
         \item  点击\button{物料附件设置}图标，弹出附件设置对话框
-        \screenshot{18.png}
+            \screenshot{18.png}
         \item  点击\button{选择文件}按钮，选择需要上传的物料附件
         \item  点击\button{上传}按钮，上传附件
-        }
     }
-    \item \opset {删除物料} {
-        \ops {
+    \item \ops{删除物料}{
         \item  选择需要删除的物料
         \item  点击工具栏上的\button{删除}按钮，在弹出的对话框中点击\button{确定}按钮，删除相应的物料
-        \screenshot{19.png}
-        }
+            \screenshot{19.png}
     }
-    \item \ops {检索物料} {
-        \ops {
+    \item \ops{检索物料}{
         \item  在左侧物料分类栏中直接选择物料分类，会显示该分类下的物料
         \item  点击右侧搜索边条，根据实际需要检索
-        }
     }
     }
+}
 
 
 \section{设置}
 
 \subsection{仓库设置}
-    \ul {
-    \item \ops {新建仓库} {
-        \ops {
+\opset{仓库设置}{
+    \item \ops{新建仓库}{
         \item  点击工具栏上\button{新建}按钮，弹出新建仓库对话框
-        \screenshot{1.png}
+            \screenshot{1.png}
         \item  输入\textbox{名称}
         \item  输入\textbox{地址}
         \item  输入\textbox{电话}
         \item  选择仓库\button{负责人}
         \item  点击\button{保存}按钮，保存新建仓库
-        }
     }
-    \item \opset {查看仓库} {
-        \ops {
+    \item \ops{查看仓库}{
         \item  选择需要查看的仓库
         \item  点击工具栏上的\button{查看按钮}或者列表中的\button{查看工具}，查看选择的仓库信息
-        }
     }
-    \item \opset {修改仓库} {
-        \ops {
+    \item \ops{修改仓库}{
         \item  选择需要修改的仓库
         \item  点击工具栏上的\button{修改}按钮，进入到修改仓库信息对话框
         \item  修改相应的信息
         \item  点击\button{保存}按钮，保存更改后的仓库信息
-        }
     }
-    \item \opset {删除仓库} {
-        \ops {
+    \item \ops{删除仓库}{
         \item  选择需要删除的仓库
         \item  点击工具栏上的\button{删除}按钮，在弹出的对话框中点击\button{确定}，删除相应的仓库信息
-        \screenshot{2.png}
-        }
+            \screenshot{2.png}
     }
-    }
+}
 
 \subsection{库位设置}
-    \ul {
-    \item \opset {新建库位} {
-    \screenshot{7.png}
-        \ops {
+\opset{库位设置}{
+    \item \ops{新建库位}{
         \item  选择仓库
-        \item  点击工具栏上的新建按钮，弹出新建库位对话框
+            \screenshot{7.png}
+        \item  点击工具栏上的\button{新建}按钮，弹出新建库位对话框
             \ul {
-            \item  在对话框中选择上级库位
+            \item  在对话框中选择\textbox{上级库位}
             \item  输入\textbox{库位名称}
             \item  选择\button{库位容量单位}
             \item  输入\textbox{库位容量}
             \item  输入\textbox{容量单位提示}
             \item  输入\textbox{等级}
             }
-        \item  点击保存按钮，保存新建的库位
-        }
+        \item  点击\button{保存}按钮，保存新建的库位
     }
-    \item \opset {查看库位} {
-    \screenshot{6.png}
-        \ops {
+    \item \ops{查看库位}{
         \item  选择需要查看的库位
+            \screenshot{6.png}
         \item  点击工具栏上的\button{查看}按钮，查看库位的详细信息
-        }
     }
-    \item \opset {修改库位} {
-        \ops {
+    \item \ops{修改库位}{
         \item  选择需要修改的库位
         \item  点击工具栏上的\button{修改}按钮，进入库位修改对话框
         \item  修改相应内容
         \item  点击\button{保存}按钮，保存修改后的库位信息
-        }
     }
-    \item \opset {删除库位} {
-        \ops {
+    \item \ops{删除库位} {
         \item  选择需要删除的库位
-        \item  点击工具栏上的\button{删除}按钮，在弹出的确认对话框中点击\button{确定}，删除相应的库位
-        \screenshot{8.png}
-        }
+        \item  点击工具栏上的\button{删除}按钮
+        \item  在弹出的确认对话框中点击\button{确定}，删除相应的库位
+            \screenshot{8.png}
     }
-    }
+}
 
 
 \section{日常业务}
 
 \subsection{库存初始化}
-    \ul {
-    \item \opset {新建库存初始化条目} {
-        \ops {
+\opset{库存初始化}{
+    \item \ops{新建库存初始化条目}{
         \item  选择要初始化库存的仓库
         \item  点击工具栏上的\button{新建}按钮，进入库存初始化界面
-        \screenshot{5.png}
+            \screenshot{5.png}
         \item  输入\textbox{摘要}
         \item  输入\textbox{描述}
         \item  选择\button{对应公司}及\button{对应部门}
         \item  点击\button{添加}按钮，弹出库存初始化条目对话框
-        \screenshot{3.png}
+            \screenshot{3.png}
             \ul {
             \item  选择\button{对应物料}
             \item  输入\textbox{批号}
@@ -258,173 +210,155 @@
             \item  点击\button{确定}按钮，添加一条库存初始化条目
             }
         \item  点击\button{保存}按钮，保存新建的库存初始化单据
-        }
     }
-    \item \opset {修改库存初始化条目} {
-        \ops {
+    \item \ops{修改库存初始化条目}{
         \item  选择需要修改的库存初始化条目
         \item  点击工具栏上的\button{修改}按钮，进入库存初始化单据修改界面
         \item  修改相应的内容
         \item  点击\button{保存}按钮，保存更改后的库存初始化单据
-        }
     }
-    \item \opset {删除库存初始化条目} {
-        \ops {
+    \item \ops{删除库存初始化条目}{
         \item  选择需要删除的库存初始化单据
-        \item  点击工具栏上的\button{删除}按钮，在弹出的确认对话框中点击\button{确定}，删除对应的库存初始化单据
-        \screenshot{4.png}
-        }
+        \item  点击工具栏上的\button{删除}按钮
+        \item  在弹出的确认对话框中点击\button{确定}，删除对应的库存初始化单据
+            \screenshot{4.png}
     }
-    }
+}
 
 \subsection{物料出入库}
 本系统对不同类型的入库，直接从菜单上进行区分。例如：采购入库，生产入库，委外入库，销售出库，生产出库，计划出库，委外出库等
 点击相应的菜单，进入到不同类型的入库单管理界面
-    \ul {
-    \item \opset {新建出入库单} {
-        \screenshot{27.png}
-        \ops {
-            \item 选择需要出入库的仓库，选择仓库后，会显示最新的出入库单据。
+\opset{物料出入库}{
+    \item \ops{新建出入库单}{
+        \item 选择需要出入库的仓库，选择仓库后，会显示最新的出入库单据
+            \screenshot{27.png}
             \screenshot{28.png}
-            \item 点击工具栏上的\button{新建}按钮，进入新建出入库单界面
-            \item 输入入库单\textbox{简要}
-            \item 输入\textbox{描述信息}
-            \item 点击按钮，弹出选择对应公司（供应商/客户）对话框
+        \item 点击工具栏上的\button{新建}按钮，进入新建出入库单界面
+        \item 输入入库单\textbox{简要}
+        \item 输入\textbox{描述信息}
+        \item 点击按钮，弹出选择对应公司（供应商/客户）对话框
             \screenshot{29.png}
-            \item 选择相应的公司，点击\button{确定}按钮完成选择。
-            \item 点击按钮，弹出选择对应公司下对应部门的对话框。
+        \item 选择相应的公司，点击\button{确定}按钮完成选择
+        \item 点击按钮，弹出选择对应公司下对应部门的对话框
             \screenshot{30.png}
-            \item 如果已经在对应公司下设置了部门，选择部门，点击\button{确定}按钮完成选择。
-            \item 击\button{添加}按钮，弹出添加出入库项目对话框。
+        \item 如果已经在对应公司下设置了部门，选择部门，点击\button{确定}按钮完成选择
+        \item 击\button{添加}按钮，弹出添加出入库项目对话框
             \screenshot{31.png}
-            \item 点击按钮，弹出选择物料对话框
+        \item 点击按钮，弹出选择物料对话框
             \screenshot{32.png}
-            \item 选择一个物料，点击\button{确定}按钮，完成物料选择
-            \item 输入\textbox{批号}
-            \item 输入\textbox{编组}
-            \item 选择\button{有效期}
-            \item 选择\button{库位}（如果仓库下已经建立了库位），点击按钮，弹出选择库位对话框
+        \item 选择一个物料，点击\button{确定}按钮，完成物料选择
+        \item 输入\textbox{批号}
+        \item 输入\textbox{编组}
+        \item 选择\button{有效期}
+        \item 选择\button{库位}（如果仓库下已经建立了库位），点击按钮，弹出选择库位对话框
             \screenshot{33.png}
-            \item 如果仓库下已经建立了库位，会列出所有库位供选择。点击\button{确定}按钮完成选择
-            \item 输入\textbox{数量}
-            \item 输入\textbox{单价}
-            \item 选择\button{币种}
-            \item 选择物料\button{状态}
-            \item 填写\button{备注}信息
-            \item 点击\button{确定}按钮，完成入库项目添加
-            \item 点击\button{修改}按钮，弹出修改入库项目对话框
-            \item 点击\button{移除}按钮，移除入库项目
-            \item 点击\button{保存}按钮，完成入库单添加。
-        }
+        \item 如果仓库下已经建立了库位，会列出所有库位供选择。点击\button{确定}按钮完成选择
+        \item 输入\textbox{数量}
+        \item 输入\textbox{单价}
+        \item 选择\button{币种}
+        \item 选择物料\button{状态}
+        \item 填写\button{备注}信息
+        \item 点击\button{确定}按钮，完成入库项目添加
+        \item 点击\button{修改}按钮，弹出修改入库项目对话框
+        \item 点击\button{移除}按钮，移除入库项目
+        \item 点击\button{保存}按钮，完成入库单添加
     }
-    \item \opset {修改出入库单} {
-        \ops {
-        \item  选择需要修改的出入库单，点击工具栏上的\button{修改}按钮，进入修改出入库单界面。
-        过程类似于新建出入库单
-        }
+    \item \ops{修改出入库单}{
+        \item  选择需要修改的出入库单
+        \item  点击工具栏上的\button{修改}按钮，进入修改出入库单界面
+        \item  过程类似于新建出入库单
     }
-    \item \opset {查看出入库单} {}
-    \item \opset {删除出入库单} {
-    \screenshot{34.png}
-        \ops {
-            \item 选择要删除的出入库单，点击工具栏上的\button{删除}按钮，弹出确认删除对话框
-            \item 点击确定按钮，完成删除。
-        }
+    \item \ops{查看出入库单} {}
+    \item \ops{删除出入库单} {
+        \item  选择要删除的出入库单
+           \screenshot{34.png}
+        \item  点击工具栏上的\button{删除}按钮，弹出确认删除对话框
+        \item  点击\button{确定}按钮，完成删除。
     }
-    }
+}
 
 \subsection{库存调拨}
-    \ul {
-    \item \opset {新建库存调拨单} {
-        \screenshot{27.png}
-        \ops {
-            \item 选择需要调拨的仓库，选择仓库后，会显示最新的调拨单据。
+\opset{库存调拨}{
+    \item \ops{新建库存调拨单}{
+        \item  选择需要调拨的仓库，选择仓库后，会显示最新的调拨单据。
+            \screenshot{27.png}
             \screenshot{35.png}
-            \item 点击工具栏上的\button{新建}按钮，进入新建调拨单界面.
-            \item 输入\textbox{作业简要}
-            \item 输入\textbox{作业描述}
-            \item 选择\button{目标仓库}
-            \item 点击按钮，选择调拨\button{操作人员}
+        \item  点击工具栏上的\button{新建}按钮，进入新建调拨单界面.
+        \item  输入\textbox{作业简要}
+        \item  输入\textbox{作业描述}
+        \item  选择\button{目标仓库}
+        \item  点击按钮，选择调拨\button{操作人员}
             \screenshot{36.png}
-            \item 选择调拨人员，点击\button{确定}按钮，完成选择
-            \item 点击\button{添加}按钮，弹出添加调拨项目对话框
+        \item  选择调拨人员，点击\button{确定}按钮，完成选择
+        \item  点击\button{添加}按钮，弹出添加调拨项目对话框
             \screenshot{37.png}
-            \item 点击按钮，弹出选择物料对话框
+        \item  点击按钮，弹出选择物料对话框
             \screenshot{38.png}
-            \item 选择需要调拨的物料，点击\button{确定}按钮，完成选择
-            \item 输入\textbox{批号}
-            \item 输入\textbox{编组}
-            \item 选择\button{有效期}
-            \item 点击按钮，弹出库位选择对话框
+        \item  选择需要调拨的物料，点击\button{确定}按钮，完成选择
+        \item  输入\textbox{批号}
+        \item  输入\textbox{编组}
+        \item  选择\button{有效期}
+        \item  点击按钮，弹出库位选择对话框
             \screenshot{39.png}
-            \item 点击\button{确定}按钮，完成库位选择
-            \item 输入\textbox{数量}
-            \item 输入\textbox{单价}
-            \item 选择\button{币种}
-            \item 选择\button{状态}
-            \item 输入\textbox{备注}
-            \item 点击\button{确定}，完成调拨项目添加
-            \item 点击\button{修改}，修改调拨项目
-            \item 点击\button{移除}，移除调拨项目
-            \item 点击\button{保存}按钮，完成碉堡单输入
-        }
+        \item  点击\button{确定}按钮，完成库位选择
+        \item  输入\textbox{数量}
+        \item  输入\textbox{单价}
+        \item  选择\button{币种}
+        \item  选择\button{状态}
+        \item  输入\textbox{备注}
+        \item  点击\button{确定}，完成调拨项目添加
+        \item  点击\button{修改}，修改调拨项目
+        \item  点击\button{移除}，移除调拨项目
+        \item  点击\button{保存}按钮，完成碉堡单输入
     }
-    \item \opset {修改库存调拨单} {
-        \ops {
-            \item 选择需要修改的库存调拨单
-            \item 点击工具栏上的\button{修改}按钮，进入调拨单修改界面
-            \item 修改过程类似新建库存调拨单
-        }
+    \item \ops{修改库存调拨单}{
+        \item  选择需要修改的库存调拨单
+        \item  点击工具栏上的\button{修改}按钮，进入调拨单修改界面
+        \item  修改过程类似新建库存调拨单
     }
-    \item \opset {查看库存调拨单} {}
-    \item \opset {删除库存调拨单} {
-        \ops {
-            \item 选择需要删除的\textbf{库存调拨单}
+    \item \ops{查看库存调拨单}{}
+    \item \ops{删除库存调拨单}{
+        \item  选择需要删除的\textbf{库存调拨单}
             \screenshot{43.png}
-            \item 点击工具栏上的\button{删除}按钮，弹出确认删除对话框
-            \item 点击\button{确定}按钮，完成删除
-        }
+        \item  点击工具栏上的\button{删除}按钮，弹出确认删除对话框
+        \item  点击\button{确定}按钮，完成删除
     }
-    }
+}
 
 \subsection{库存盘点}
-    \ul {
-    \item \opset {新建库存盘点表} {
-        \ops {
-            \item 选择需要盘点的仓库
+\opset{库存盘点}{
+    \item \ops{新建库存盘点表}{
+        \item  选择需要盘点的仓库
             \screenshot{40.png}
-            \item 点击\button{新建}按钮，新建库存盘点表
+        \item  点击\button{新建}按钮，新建库存盘点表
             \screenshot{41.png}
-            \item 点击\button{查询}按钮，弹出物料查询对话框
+        \item  点击\button{查询}按钮，弹出物料查询对话框
             \screenshot{42.png}
-            \item 点击\button{添加}按钮，弹出物料选择对话框
+        \item  点击\button{添加}按钮，弹出物料选择对话框
             \screenshot{23.png}
-            \item 选择物料，点击\button{确定}按钮，完成选择
-            \item 点击\button{移除}，移除不需要盘点的物料
-            \item 如果要盘点所有物料，勾选\textbf{所有物料}选项
-            \item 点击\{确定}按钮，把选择的物料添加到盘点表中
-            \item 点击\button{查询}按钮，查询选择物料在仓库中的状态
-            \item 盘点实际库存，和盘点表中的数据对比
-            \item 选择物料，点击修改按钮，修改盘点项，录入盘点数据
-            \item 选择物料，点击移除按钮，移除盘点项目
-            \item 点击保存按钮，保存物料盘点表
-        }
+        \item  选择物料，点击\button{确定}按钮，完成选择
+        \item  点击\button{移除}，移除不需要盘点的物料
+        \item  如果要盘点所有物料，勾选\textbf{所有物料}选项
+        \item  点击\button{确定}按钮，把选择的物料添加到盘点表中
+        \item  点击\button{查询}按钮，查询选择物料在仓库中的状态
+        \item  盘点实际库存，和盘点表中的数据对比
+        \item  选择物料，点击\button{修改}按钮，修改盘点项，录入盘点数据
+        \item  选择物料，点击\button{移除}按钮，移除盘点项目
+        \item  点击\button{保存}按钮，保存物料盘点表
     }
-    \item \opset {修改库存盘点表} {
-        \ops {
-            \item 选择相应的库存盘点表，点击工具栏上的\button{修改}按钮，进入修改盘点表界面
-            \item 修改相应的内容，过程类似于新建库存盘点表
-        }
+    \item \ops{修改库存盘点表}{
+        \item  选择相应的库存盘点表
+        \item  点击工具栏上的\button{修改}按钮，进入修改盘点表界面
+        \item  修改相应的内容，过程类似于新建库存盘点表
     }
-    \item \opset {查看库存盘点表} {}
-    \item \opset {删除库存盘点表} {
-        \screenshot{43.png}
-        \ops {
-            \item 点击工具栏上的删除按钮，弹出确认删除对话框
-            \item 点击确定按钮，完成删除
-        }
+    \item \ops{查看库存盘点表}{}
+    \item \ops{删除库存盘点表}{
+        \item  选择需要删除的库存盘点表
+        \item  点击工具栏上的\button{删除}按钮，弹出确认删除对话框
+            \screenshot{43.png}
+        \item  点击\button{确定}按钮，完成删除
     }
-    }
+}
 
 
 \section{查询}
@@ -432,21 +366,21 @@
 \subsection{库存查询(含明细)}
 库存查询，可以查询仓库的全部物料，也可以选择目标物料进行独立的查询。
 \screenshot{21.png}
-\ol {
-    \item 选择需要查询的仓库
-    \item 选择时间
-    \item 点击查询按钮，弹出查询对话框，如下图
-    \screenshot{22.png}
-    \item 点击\button{添加}按钮，弹出选择物料对话框
-    \item 点击\button{确定}按钮，选择需要查询的物料
-    \item 点击\button{移除}按钮，移除不需要查询的物料
-    \item 勾选\button{所有物料}，本次查询即为查询仓库下所有物料
-    \item 点击\button{查询}按钮，在查询结果表单中列出物料列表
-    \screenshot{23.png}
-    \screenshot{24.png}
-    \item 点击\button{确定}按钮，完成物料查询，列出查询的物料
-    \screenshot{25.png}
-    \item 在操作列中点击\button{明细}，弹出该物料的出入库详细信息
-    \screenshot{26.png}
-    \item 在出入库明细列表中，点击\button{所在}，显示出入库所在单据以及所在仓库等详细信息
-    }
+\ul {
+    \item  选择需要查询的仓库
+    \item  选择时间
+    \item  点击查询按钮，弹出查询对话框，如下图
+        \screenshot{22.png}
+    \item  点击\button{添加}按钮，弹出选择物料对话框
+    \item  点击\button{确定}按钮，选择需要查询的物料
+    \item  点击\button{移除}按钮，移除不需要查询的物料
+    \item  勾选\button{所有物料}，本次查询即为查询仓库下所有物料
+    \item  点击\button{查询}按钮，在查询结果表单中列出物料列表
+        \screenshot{23.png}
+        \screenshot{24.png}
+    \item  点击\button{确定}按钮，完成物料查询，列出查询的物料
+        \screenshot{25.png}
+    \item  在操作列中点击\button{明细}，弹出该物料的出入库详细信息
+        \screenshot{26.png}
+    \item  在出入库明细列表中，点击\button{所在}，显示出入库所在单据以及所在仓库等详细信息
+}

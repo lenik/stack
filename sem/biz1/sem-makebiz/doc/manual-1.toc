@@ -1,0 +1,9 @@
+\contentsline {section}{\numberline {1}定单管理}{2}{section.0.1}
+\contentsline {section}{\numberline {2}生产任务管理}{4}{section.0.2}
+\contentsline {section}{\numberline {3}物料计划管理}{5}{section.0.3}
+\contentsline {section}{\numberline {4}附录}{7}{section.0.4}
+\contentsline {subsection}{\numberline {4.1}设计参数}{7}{subsection.0.4.1}
+\contentsline {subsection}{\numberline {4.2}数据依赖}{9}{subsection.0.4.2}
+\contentsline {subsection}{\numberline {4.3}数据交换格式}{9}{subsection.0.4.3}
+\contentsline {subsection}{\numberline {4.4}版本历史}{9}{subsection.0.4.4}
+\contentsline {section}{\numberline {5}索引}{12}{section.0.5}
