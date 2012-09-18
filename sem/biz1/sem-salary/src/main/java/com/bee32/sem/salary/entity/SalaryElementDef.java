@@ -8,7 +8,9 @@ import javax.persistence.Transient;
 import com.bee32.plover.ox1.color.MomentInterval;
 
 /**
- * 工资条上的元素（表达式）定义
+ * 工资元素
+ *
+ * 工资条上的元素（表达式）定义。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "salary_element_type_seq", allocationSize = 1)
@@ -27,7 +29,9 @@ public class SalaryElementDef
     boolean tax;
 
     /**
-     * 分类名称，大分类/小分类之间用 `/` 分隔。不包含本元素的名称
+     * 工资字段分类
+     *
+     * 分类名称，大分类/小分类之间用 `/` 分隔。不包含本元素的名称。
      *
      * 如 `补贴`。
      */
@@ -49,7 +53,9 @@ public class SalaryElementDef
     }
 
     /**
-     * 显示和计算次序
+     * 显示顺序
+     *
+     * 工资字段显示和计算次序。
      */
     public int getOrder() {
         return order;
@@ -61,6 +67,8 @@ public class SalaryElementDef
 
     /**
      * 表达式
+     *
+     * 工资字段的计算表达式。
      */
     @Column(nullable = false, length = EXPRESSION_LENGTH)
     public String getExpr() {

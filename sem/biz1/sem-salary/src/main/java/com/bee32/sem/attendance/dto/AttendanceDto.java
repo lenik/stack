@@ -65,6 +65,14 @@ public class AttendanceDto
         throw new NotImplementedException();
     }
 
+    public int getRefer() {
+        int x = 0;
+        x += morning.getRefer();
+        x += afternoon.getRefer();
+        x += evening.getRefer();
+        return x;
+    }
+
     public Date getDate() {
         return date;
     }

@@ -11,7 +11,9 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
 
 /**
- * 工资条目
+ * 员工工资条目
+ *
+ * 若干个工资条目组成员工工资。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "salary_element_seq", allocationSize = 1)
@@ -28,6 +30,11 @@ public class SalaryElement
     public SalaryElement() {
     }
 
+    /**
+     * 父元素
+     *
+     * 工资条目对应的工资元素。
+     */
     @ManyToOne(optional = false)
     public Salary getParent() {
         return parent;
@@ -38,7 +45,9 @@ public class SalaryElement
     }
 
     /**
-     * 工资元素的定义
+     * 元素定义
+     *
+     * 工资元素的标准定义。
      *
      * 如果这个元素无定义（没有对应的表达式， 则为 <code>null</code>。）
      */
@@ -51,6 +60,11 @@ public class SalaryElement
         this.def = def;
     }
 
+    /**
+     * 元素工资
+     *
+     * 元素对应某个员工的工资。
+     */
     @Column(nullable = false, scale = MONEY_ITEM_SCALE, precision = MONEY_ITEM_PRECISION)
     public BigDecimal getBonus() {
         return bonus;

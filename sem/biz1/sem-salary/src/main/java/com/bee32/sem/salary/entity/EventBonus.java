@@ -10,7 +10,10 @@ import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.sem.hr.entity.EmployeeInfo;
 
 /**
- * 事件补贴 eg:工伤等<br/>
+ * 事件补贴
+ *
+ * 特殊事件的工资增加或减少，eg:工伤等。
+ *
  * beginTime
  */
 @Entity
@@ -26,6 +29,11 @@ public class EventBonus
     public EventBonus() {
     }
 
+    /**
+     * 员工
+     *
+     * 特殊事件对应的员工。
+     */
     @ManyToOne
     public EmployeeInfo getEmployee() {
         return employee;
@@ -35,6 +43,11 @@ public class EventBonus
         this.employee = employee;
     }
 
+    /**
+     * 事件金额
+     *
+     * 特殊事件补贴的金额，可奖可惩。
+     */
     public BigDecimal getBonus() {
         return bonus;
     }

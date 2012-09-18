@@ -21,7 +21,9 @@ import com.bee32.sem.hr.entity.EmployeeInfo;
 import com.bee32.sem.process.base.ProcessEntity;
 
 /**
- * 基础工资
+ * 员工工资
+ *
+ * 员工工资由若干个工资元素组成。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "salary_seq", allocationSize = 1)
@@ -47,6 +49,8 @@ public class Salary
     }
 
     /**
+     * 年月
+     *
      * 年月的组合，如 201208。
      */
     @Column(nullable = false)
@@ -83,6 +87,11 @@ public class Salary
         this.month = month;
     }
 
+    /**
+     * 员工
+     *
+     * 工资对应的员工。
+     */
     @ManyToOne
     public EmployeeInfo getEmployee() {
         return employee;
@@ -92,6 +101,11 @@ public class Salary
         this.employee = employee;
     }
 
+    /**
+     * 工资条目
+     *
+     * 工资由若干个工资条目组成。
+     */
     @OneToMany(mappedBy = "parent", orphanRemoval = true)
     @Cascade({ CascadeType.ALL })
     public List<SalaryElement> getElements() {
@@ -105,6 +119,11 @@ public class Salary
         this.total = null;
     }
 
+    /**
+     * 应发工资
+     *
+     * 员工当月的应发工资。
+     */
     @Column(nullable = false, scale = MONEY_TOTAL_SCALE, precision = MONEY_TOTAL_PRECISION)
     public BigDecimal getTotal() {
         if (total == null) {
@@ -121,6 +140,11 @@ public class Salary
         this.total = total;
     }
 
+    /**
+     * 已发工资项
+     *
+     * 是否已经发工资
+     */
     @DefaultValue("false")
     public boolean isPaid() {
         return paid;
