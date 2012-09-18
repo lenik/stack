@@ -1,74 +1,12 @@
-\subsubsection{ $\nequiv$ 账务初始化 } {
-    \addtolength{\leftskip}{5mm}
-    账务系统初始化。
-
-
-    \maketxtable{账务初始化}{account\_init}{TX.AccountInit.tab}
-}
-\subsubsection{ $\nequiv$ 账务初始化明细 } {
-    \addtolength{\leftskip}{5mm}
-    初始化时对应的科目明细，金额。
-
-
-    \maketxtable{账务初始化明细}{account\_init\_item}{TX.AccountInitItem.tab}
-}
-\subsubsection{ $\nequiv$ {@link #getEndTime() end-time} is used as the snapshot time. } {
-    \addtolength{\leftskip}{5mm}
-    （无描述）
-
-
-    \maketxtable{{@link #getEndTime() end-time} is used as the snapshot time.}{account\_snapshot}{TX.AccountSnapshot.tab}
-}
-\subsubsection{ $\nequiv$ Accounting summary snapshot.
+\maketxtable{账务初始化}{account\_init}{TX.AccountInit.tab}{账务系统初始化。}
+\maketxtable{账务初始化明细}{account\_init\_item}{TX.AccountInitItem.tab}{初始化时对应的科目明细，金额。}
+\maketxtable{{@link #getEndTime() end-time} is used as the snapshot time.}{account\_snapshot}{TX.AccountSnapshot.tab}{（无描述）}
+\maketxtable{Accounting summary snapshot.
 <p>
-beginTime is unused, endTime is for timestamp. } {
-    \addtolength{\leftskip}{5mm}
-    （无描述）
-
-
-    \maketxtable{Accounting summary snapshot.
-<p>
-beginTime is unused, endTime is for timestamp.}{account\_snapshot\_item}{TX.AccountSnapshotItem.tab}
-}
-\subsubsection{ $\nequiv$ 科目 } {
-    \addtolength{\leftskip}{5mm}
-    会计科目。
-
-
-    \maketxtable{科目}{account\_subject}{TX.AccountSubject.tab}
-}
-\subsubsection{ $\nequiv$ 会计凭证 } {
-    \addtolength{\leftskip}{5mm}
-    对应做账时的凭证。
-
-
-    \maketxtable{会计凭证}{account\_ticket}{TX.AccountTicket.tab}
-}
-\subsubsection{ $\nequiv$ 会计凭证明细 } {
-    \addtolength{\leftskip}{5mm}
-    会计凭证上的明细科目，和会计科目对应 。
-
-
-    \maketxtable{会计凭证明细}{account\_ticket\_item}{TX.AccountTicketItem.tab}
-}
-\subsubsection{ $\nequiv$ 收款单 } {
-    \addtolength{\leftskip}{5mm}
-    企业收到款项时填制的单据。
-
-
-    \maketxtable{收款单}{credit\_note}{TX.CreditNote.tab}
-}
-\subsubsection{ $\nequiv$ 资金流 } {
-    \addtolength{\leftskip}{5mm}
-    收款单和付款单的基类。
-
-
-    \maketxtable{资金流}{fund\_flow}{TX.FundFlow.tab}
-}
-\subsubsection{ $\nequiv$ 付款单 } {
-    \addtolength{\leftskip}{5mm}
-    企业支付款项时填制的单据。
-
-
-    \maketxtable{付款单}{payment\_note}{TX.PaymentNote.tab}
-}
+beginTime is unused, endTime is for timestamp.}{account\_snapshot\_item}{TX.AccountSnapshotItem.tab}{（无描述）}
+\maketxtable{科目}{account\_subject}{TX.AccountSubject.tab}{会计科目。}
+\maketxtable{会计凭证}{account\_ticket}{TX.AccountTicket.tab}{对应做账时的凭证。}
+\maketxtable{会计凭证明细}{account\_ticket\_item}{TX.AccountTicketItem.tab}{会计凭证上的明细科目，和会计科目对应 。}
+\maketxtable{收款单}{credit\_note}{TX.CreditNote.tab}{企业收到款项时填制的单据。}
+\maketxtable{资金流}{fund\_flow}{TX.FundFlow.tab}{收款单和付款单的基类。}
+\maketxtable{付款单}{payment\_note}{TX.PaymentNote.tab}{企业支付款项时填制的单据。}

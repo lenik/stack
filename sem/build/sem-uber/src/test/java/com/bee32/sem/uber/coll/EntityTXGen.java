@@ -93,12 +93,11 @@ public class EntityTXGen {
             String description = entityDescriptions.get(entity);
             String sqlname = namingStrategy.classToTableName(entity.getName());
 
-            out.println("\\subsubsection{ $\\nequiv$ " + label + " } {");
-            out.println("    \\addtolength{\\leftskip}{5mm}");
-            out.println("    " + description + "\n\n");
-            out.println("    \\maketxtable{" + escape(label) + "}{" + escape(sqlname) + "}{TX."
-                    + entity.getSimpleName() + ".tab}");
-            out.println("}");
+            out.printf("\\maketxtable{%s}{%s}{%s}{%s}\n", //
+                    escape(label), //
+                    escape(sqlname), //
+                    "TX." + entity.getSimpleName() + ".tab", //
+                    description);
         }
 
         String index = out.toString();
