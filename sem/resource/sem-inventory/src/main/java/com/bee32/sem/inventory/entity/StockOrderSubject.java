@@ -9,6 +9,14 @@ import java.util.Set;
 
 import com.bee32.plover.arch.util.EnumAlt;
 
+/**
+ * 单据类型
+ *
+ * 表明某个StockOrder（仓库单据）的类型
+ *
+ * @author jack
+ *
+ */
 public final class StockOrderSubject
         extends EnumAlt<String, StockOrderSubject> {
 

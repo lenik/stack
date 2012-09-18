@@ -5,6 +5,8 @@ import java.util.Collection;
 import com.bee32.plover.arch.util.EnumAlt;
 
 /**
+ * 根据物料名称生成物料代码
+ *
  * 代码生成器（策略）
  */
 public class CodeGenerator

@@ -12,7 +12,7 @@ import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.people.entity.Person;
 
 /**
- * 库存调拨
+ * 库存调拨作业
  */
 @Entity
 public class StockTransfer
@@ -43,6 +43,12 @@ public class StockTransfer
         transferredBy = o.transferredBy;
     }
 
+    /**
+     * 源仓库
+     *
+     * 调拨出库对应的源仓库。
+     * @return
+     */
     @ManyToOne
     public StockWarehouse getSourceWarehouse() {
         return sourceWarehouse;
@@ -52,6 +58,12 @@ public class StockTransfer
         this.sourceWarehouse = sourceWarehouse;
     }
 
+    /**
+     * 目标仓库
+     *
+     * 调拨入库对应的目标仓库。
+     * @return
+     */
     @ManyToOne
     public StockWarehouse getDestWarehouse() {
         return destWarehouse;
@@ -62,7 +74,9 @@ public class StockTransfer
     }
 
     /**
-     * 调出单，科目必须为 XFER_OUT.
+     * 调拨出库单
+     *
+     * 科目必须为 XFER_OUT.
      *
      * @see StockOrderSubject#XFER_OUT
      */
@@ -78,7 +92,9 @@ public class StockTransfer
     }
 
     /**
-     * 拨入单，科目必须为 XFER_IN.
+     * 调拨入库单
+     *
+     * 科目必须为 XFER_IN.
      *
      * @see StockOrderSubject#XFER_IN
      */
@@ -95,6 +111,8 @@ public class StockTransfer
 
     /**
      * 调拨人
+     *
+     * 执行调拨操作的具体人员。
      */
     @ManyToOne
     public Person getTransferredBy() {

@@ -220,6 +220,14 @@ public class Material
         this.attributes = attributes;
     }
 
+    /**
+     * 附加属性
+     *
+     * 根据属性名称取得属性值。
+     *
+     * @param name
+     * @return
+     */
     public String getAttribute(String name) {
         if (name == null)
             throw new NullPointerException("name");
@@ -277,6 +285,14 @@ public class Material
         this.options = options;
     }
 
+    /**
+     * 物料参数
+     *
+     * 指定仓库的物料参数。
+     *
+     * @param warehouse
+     * @return
+     */
     public MaterialWarehouseOption getOption(StockWarehouse warehouse) {
         if (warehouse == null)
             throw new NullPointerException("warehouse");

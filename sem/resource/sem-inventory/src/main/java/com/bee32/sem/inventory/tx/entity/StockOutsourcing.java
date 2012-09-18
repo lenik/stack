@@ -11,7 +11,9 @@ import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.people.entity.Org;
 
 /**
- * 外协加工作业。
+ * 外协加工作业
+ *
+ * 委外加工作业。
  *
  * @see StockOrderSubject#F_CHECKOUT
  * @see StockOrderSubject#F_CHECKIN
@@ -43,6 +45,8 @@ public class StockOutsourcing
 
     /**
      * 委外出库单
+     *
+     * 委外时，原材料或半成品的出库单。
      */
     @OneToOne(optional = false/* , orphanRemoval = true */)
     @JoinColumn(name = "s1")
@@ -57,6 +61,8 @@ public class StockOutsourcing
 
     /**
      * 委外入库单
+     *
+     * 委外单位完成加工后，产品入库时的单据。
      */
     @OneToOne(/* orphanRemoval = true */)
     @JoinColumn(name = "s2")
@@ -71,6 +77,8 @@ public class StockOutsourcing
 
     /**
      * 加工单位
+     *
+     * 委托加工的公司。
      */
     @ManyToOne
     public Org getProcessedBy() {

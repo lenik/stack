@@ -4,6 +4,14 @@ import java.util.Collection;
 
 import com.bee32.plover.arch.util.EnumAlt;
 
+/**
+ * 物料类型
+ *
+ * 成品、半成品、原材料、其它
+ *
+ * @author jack
+ *
+ */
 public class MaterialType
         extends EnumAlt<Character, MaterialType> {
 
