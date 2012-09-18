@@ -13,6 +13,11 @@ import org.hibernate.annotations.CascadeType;
 import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.dict.ShortNameDict;
 
+/**
+ * 调色板
+ *
+ * 用于色彩信息交换的标准调色板。
+ */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "palette_seq", allocationSize = 1)
 public class Palette
@@ -55,6 +60,11 @@ public class Palette
         entries = CopyUtils.copyList(o.entries);
     }
 
+    /**
+     * 条目列表
+     *
+     * 调色板中定义的所以色彩条目.
+     */
     @OneToMany(mappedBy = "palette", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<PaletteEntry> getEntries() {

@@ -9,6 +9,11 @@ import com.bee32.plover.arch.util.ICloneable;
 import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.orm.entity.EmbeddablePiece;
 
+/**
+ * 自然色
+ *
+ * 调色色彩或一般RGB色彩。
+ */
 @Embeddable
 public class NaturalColor
         extends EmbeddablePiece

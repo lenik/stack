@@ -17,6 +17,8 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
 
 /**
  * 单位换算表
+ *
+ * 衡量单位的换算关系表。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "unit_conv_seq", allocationSize = 1)
@@ -55,7 +57,9 @@ public class UnitConv
     }
 
     /**
-     * 单元单位，数量为1的一方。 如：1m -> 1.5kg，换算率=1.5，单元单位为m，换算单位为kg。
+     * 单元单位
+     *
+     * 数量为1的一方。 如：1m -> 1.5kg，换算率=1.5，单元单位为m，换算单位为kg。
      */
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -67,6 +71,11 @@ public class UnitConv
         this.unit = unit;
     }
 
+    /**
+     * 换算表
+     *
+     * 定义“换算单位->倍率”的换算表。
+     */
     @ElementCollection
     @JoinTable(name = "UnitConvEntry")
     @MapKeyJoinColumn(name = "stdUnit")

@@ -18,6 +18,11 @@ import com.bee32.plover.util.i18n.CurrencyConfig;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 
+/**
+ * 单据条目
+ *
+ * 单据明细中的一条项目。
+ */
 @MappedSuperclass
 @Green
 public abstract class AbstractItem
@@ -63,6 +68,8 @@ public abstract class AbstractItem
     protected abstract Date getFxrDate();
 
     /**
+     * 序号
+     *
      * 单据内部的序号
      */
     @Column(nullable = false)
@@ -76,6 +83,8 @@ public abstract class AbstractItem
 
     /**
      * 数量
+     *
+     * 单个项目的数量。
      *
      * <p>
      * 精度限制：小数点后4位数字。如果需要超出该精度，应考虑为对应物品采用不同的单位。
@@ -111,9 +120,12 @@ public abstract class AbstractItem
     }
 
     /**
-     * 价格 （入库为原始价格，其余科目的价格用途未知）。
+     * 价格
+     *
+     * 单个项目的价格。 对应于入库则为原始价格，出库则为卖出价格。 其余科目的价格用途未定义。
+     *
      * <p>
-     * 对于合并项，如果有外币冲突，将转换为本地货币再进行汇总。
+     * 注：对于合并项，如果有外币冲突，将转换为本地货币再进行汇总。
      */
     @Embedded
     @AttributeOverrides({
@@ -148,7 +160,9 @@ public abstract class AbstractItem
     }
 
     /**
-     * 【冗余】本地货币表示的价格。
+     * 本地价格
+     *
+     * 【冗余】本地货币表示的单个项目的价格。
      *
      * @return 本地货币表示的价格，非 <code>null</code>。
      * @throws FxrQueryException
@@ -170,7 +184,9 @@ public abstract class AbstractItem
     }
 
     /**
-     * 【冗余】本地货币表示的金额。
+     * 本地金额
+     *
+     * 【冗余】本地货币表示的项目的金额。
      */
     @Redundant
     @Column(precision = MONEY_TOTAL_PRECISION, scale = MONEY_TOTAL_SCALE)

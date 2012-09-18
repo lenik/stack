@@ -14,6 +14,11 @@ import org.hibernate.annotations.CascadeType;
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 
+/**
+ * 文件夹
+ *
+ * 用于邮件分类的文件夹。
+ */
 @Entity
 @Green
 @SequenceGenerator(name = "idgen", sequenceName = "mail_folder_seq", allocationSize = 1)
@@ -60,6 +65,11 @@ public class MailFolder
         mails = new ArrayList<MailDelivery>(o.mails);
     }
 
+    /**
+     * 优先级
+     *
+     * 说明此文件夹下所有邮件的优先级。
+     */
     @Column(nullable = false)
     public byte getPriority() {
         return priority;
@@ -69,6 +79,11 @@ public class MailFolder
         this.priority = priority;
     }
 
+    /**
+     * 次序
+     *
+     * 用于对文件夹排序。
+     */
     @Column(nullable = false)
     public int getOrder() {
         return order;
@@ -78,6 +93,11 @@ public class MailFolder
         this.order = order;
     }
 
+    /**
+     * 颜色
+     *
+     * 文件夹的RGB颜色。
+     */
     public int getColor() {
         return color;
     }
@@ -86,6 +106,11 @@ public class MailFolder
         this.color = color;
     }
 
+    /**
+     * 邮件集
+     *
+     * 文件夹下的邮件列表。
+     */
     @OneToMany(mappedBy = "folder", orphanRemoval = true)
     @Cascade({ CascadeType.ALL })
     public List<MailDelivery> getMails() {

@@ -9,7 +9,7 @@ UIEntity:2:description:描述:description:Sot:200:对数据的简略的描述。
 UIEntityAuto:1:id:标识符:id:Not:0:记录的标识符、主键。
 MomentInterval:2:beginTime:起始时间:begin_time:DTot:0:反应记录对应事件的发生时刻。
 ::endTime:终止时间:end_time:DTot:0:反应记录对应事件的结束时刻。
-MailDelivery:4:flags:（无名称）:flags:N:8:（略）
-::folder:（无名称）:folder:Ro:0:（略）
-::mail:（无名称）:mail:Ro:0:（略）
-::sendError:（无名称）:send_error:So:200:（略）
+MailDelivery:4:flags:分发标志:flags:N:8:描述分发特征的标志位组。
+::folder:邮件夹:folder:Ro:0:目标文件夹。
+::mail:邮件:mail:Ro:0:引用要分发的邮件。
+::sendError:发送错误:send_error:So:200:记录发送相关的错误消息。

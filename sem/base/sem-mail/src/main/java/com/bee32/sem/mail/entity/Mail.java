@@ -28,6 +28,11 @@ import com.bee32.sem.mail.MailPriority;
 import com.bee32.sem.mail.MailType;
 import com.bee32.sem.mail.util.EmailUtil;
 
+/**
+ * 邮件
+ *
+ * 可用于用户、系统、E-mail间转发的消息。
+ */
 @Entity
 @Green
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -100,7 +105,9 @@ public class Mail
     }
 
     /**
-     * 邮件类型，如：公文、帖子、系统广播、E-Mail等。
+     * 邮件类型
+     *
+     * 如：公文、帖子、系统广播、E-Mail等。
      */
     @Transient
     public MailType getType() {
@@ -122,7 +129,9 @@ public class Mail
     }
 
     /**
-     * 优先级。一般用于排序。 E-mail中会形成相应的 Priority 域。
+     * 优先级
+     *
+     * 一般用于排序。 E-mail中会形成相应的 Priority 域。
      */
     @Transient
     public MailPriority getPriority() {
@@ -145,7 +154,9 @@ public class Mail
     }
 
     /**
-     * 发送方。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。
+     * 发送方
+     *
+     * 可能是 E-mail，用户名等，具体指涉对象由系统内部转换。
      */
     @Column(length = FROM_LENGTH)
     public String getFrom() {
@@ -157,7 +168,9 @@ public class Mail
     }
 
     /**
-     * 接收方。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。
+     * 接收方
+     *
+     * 可能是 E-mail，用户名等，具体指涉对象由系统内部转换。
      */
     @Column(length = RECIPIENT_LENGTH)
     public String getRecipient() {
@@ -169,7 +182,9 @@ public class Mail
     }
 
     /**
-     * 回复到方（可能不同于发送方）。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。
+     * 回复到方
+     *
+     * 如 E-mail，用户名等，具体指涉对象由系统内部转换。（可以不同于发送方）。
      */
     @Column(length = REPLY_TO_LENGTH)
     public String getReplyTo() {
@@ -181,7 +196,9 @@ public class Mail
     }
 
     /**
-     * 发送方用户。
+     * 发送方用户
+     *
+     * 当发送方为本系统中的登录用户。
      */
     @ManyToOne
     public User getFromUser() {
@@ -194,7 +211,9 @@ public class Mail
     }
 
     /**
-     * 接收方用户。
+     * 接收方用户
+     *
+     * 当接受方为本系统中的登录用户。
      */
     @ManyToMany
     @JoinTable(name = "MailRecipient", //
@@ -228,7 +247,9 @@ public class Mail
     }
 
     /**
-     * 回复到方用户。
+     * 回复到方用户
+     *
+     * 当回复到方为本系统中的登录用户。
      */
     @ManyToOne
     public User getReplyToUser() {
@@ -241,7 +262,9 @@ public class Mail
     }
 
     /**
-     * 抄送列表。
+     * 抄送列表
+     *
+     * 要抄送的用户地址列表。
      */
     @Column(length = CC_LENGTH)
     public String getCc() {
@@ -265,7 +288,9 @@ public class Mail
     }
 
     /**
-     * 主题。
+     * 主题
+     *
+     * 邮件的标题。
      */
     @Column(length = SUBJECT_LENGTH)
     public String getSubject() {
@@ -277,7 +302,9 @@ public class Mail
     }
 
     /**
-     * 正文。
+     * 正文
+     *
+     * 邮件的主要内容。
      */
     @Column(length = BODY_LENGTH, nullable = false)
     public String getBody() {
@@ -289,6 +316,8 @@ public class Mail
     }
 
     /**
+     * 引用
+     *
      * 引用的邮件（如回复、转发的邮件）。
      */
     @ManyToOne
@@ -301,6 +330,8 @@ public class Mail
     }
 
     /**
+     * 递送列表
+     *
      * 邮件递送副本列表。
      */
     @OneToMany(mappedBy = "mail", orphanRemoval = true)

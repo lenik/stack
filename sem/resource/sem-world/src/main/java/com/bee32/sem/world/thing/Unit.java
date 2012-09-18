@@ -7,7 +7,9 @@ import javax.persistence.ManyToOne;
 import com.bee32.plover.ox1.dict.NameDict;
 
 /**
- * [字典] 单位
+ * 单位
+ *
+ * 衡量单位的标准定义。
  */
 @Entity
 public class Unit
@@ -59,6 +61,11 @@ public class Unit
         hint = o.hint;
     }
 
+    /**
+     * 单位提示
+     *
+     * 说明单位的应用场合。如“容量”、“体积“。
+     */
     @Column(length = HINT_LENGTH, nullable = false)
     public String getHint() {
         return hint;
@@ -69,6 +76,10 @@ public class Unit
     }
 
     /**
+     * 标准单位
+     *
+     * 衍生单位相关的标准单位。
+     *
      * Get the standard unit.
      *
      * @return <code>null</code> if this unit itself is a standard unit.
@@ -82,6 +93,11 @@ public class Unit
         this.stdUnit = stdUnit;
     }
 
+    /**
+     * 倍率
+     *
+     * 相对于标准单位的倍率。如千克（衍生单位）相对于克（标准单位）的倍率为1000。
+     */
     public Double getScale() {
         return scale;
     }

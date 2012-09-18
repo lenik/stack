@@ -6,14 +6,14 @@ CEntity:2:aclId:安全策略:acl_id:Not:8:该记录上启用的安全策略的ID
 ::owner:属主:owner:Rot:0:记录的拥有者。属主用户对记录拥有所有权限，除非记录被系统锁定。
 CEntityAuto:1:id:（无名称）:id:No:0:（略）
 Mail:12:bcc:秘密抄送列表。:bcc:So:200:（略）
-::body:正文。:body:S:100000:（略）
-::cc:抄送列表。:cc:So:200:（略）
-::deliveries:邮件递送副本列表。:deliveries:No:0:（略）
-::from:发送方。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。:from:So:40:（略）
-::fromUser:发送方用户。:from_user:Ro:0:（略）
-::recipient:接收方。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。:recipient:So:150:（略）
-::recipientUsers:接收方用户。:recipient_users:No:0:（略）
-::referrer:引用的邮件（如回复、转发的邮件）。:referrer:Ro:0:（略）
-::replyTo:回复到方（可能不同于发送方）。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。:reply_to:So:150:（略）
-::replyToUser:回复到方用户。:reply_to_user:Ro:0:（略）
-::subject:主题。:subject:So:200:（略）
+::body:正文:body:S:100000:邮件的主要内容。
+::cc:抄送列表:cc:So:200:要抄送的用户地址列表。
+::deliveries:递送列表:deliveries:No:0:邮件递送副本列表。
+::from:发送方:from:So:40:可能是 E-mail，用户名等，具体指涉对象由系统内部转换。
+::fromUser:发送方用户:from_user:Ro:0:当发送方为本系统中的登录用户。
+::recipient:接收方:recipient:So:150:可能是 E-mail，用户名等，具体指涉对象由系统内部转换。
+::recipientUsers:接收方用户:recipient_users:No:0:当接受方为本系统中的登录用户。
+::referrer:引用:referrer:Ro:0:引用的邮件（如回复、转发的邮件）。
+::replyTo:回复到方:reply_to:So:150:如 E-mail，用户名等，具体指涉对象由系统内部转换。（可以不同于发送方）。
+::replyToUser:回复到方用户:reply_to_user:Ro:0:当回复到方为本系统中的登录用户。
+::subject:主题:subject:So:200:邮件的标题。

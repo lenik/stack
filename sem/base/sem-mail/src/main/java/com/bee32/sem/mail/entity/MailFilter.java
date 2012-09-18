@@ -8,6 +8,11 @@ import javax.persistence.SequenceGenerator;
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 
+/**
+ * 邮件过滤器
+ *
+ * 用于对接收到的邮件进行自动分拣和处理。
+ */
 @Entity
 @Green
 @SequenceGenerator(name = "idgen", sequenceName = "mail_filter_seq", allocationSize = 1)
@@ -51,6 +56,11 @@ public class MailFilter
         chBits = o.chBits;
     }
 
+    /**
+     * 启用标志
+     *
+     * 表示过滤器是否被启用。
+     */
     @Column(nullable = false)
     public boolean isEnabled() {
         return enabled;
@@ -60,6 +70,11 @@ public class MailFilter
         this.enabled = enabled;
     }
 
+    /**
+     * 次序
+     *
+     * 多个过滤器的求值次序。
+     */
     public int getOrder() {
         return order;
     }
@@ -68,6 +83,11 @@ public class MailFilter
         this.order = order;
     }
 
+    /**
+     * 表达式
+     *
+     * 一个逻辑表达式用于指定被选择的邮件。
+     */
     @Column(length = EXPR_LENGTH, nullable = false)
     public String getExpr() {
         return expr;
@@ -77,6 +97,11 @@ public class MailFilter
         this.expr = expr;
     }
 
+    /**
+     * 源文件夹
+     *
+     * 作为邮件来源的文件夹。
+     */
     @ManyToOne
     public MailFolder getSource() {
         return source;
@@ -86,6 +111,11 @@ public class MailFilter
         this.source = source;
     }
 
+    /**
+     * 目标文件夹
+     *
+     * 作为处理结果的文件夹。
+     */
     @ManyToOne
     public MailFolder getTarget() {
         return target;
@@ -95,6 +125,11 @@ public class MailFilter
         this.target = target;
     }
 
+    /**
+     * 传输目标
+     *
+     * 传输到指定的目标。
+     */
     @Column(length = TRANSFER_TO_LENGTH)
     public String getTransferTo() {
         return transferTo;
@@ -104,6 +139,11 @@ public class MailFilter
         this.transferTo = transferTo;
     }
 
+    /**
+     * 变更掩码
+     *
+     * 说明变更的位组掩码。
+     */
     @Column(nullable = false)
     public int getChMask() {
         return chMask;
@@ -113,6 +153,11 @@ public class MailFilter
         this.chMask = chMask;
     }
 
+    /**
+     * 变更位组
+     *
+     * 说明变更的位组。
+     */
     @Column(nullable = false)
     public int getChBits() {
         return chBits;

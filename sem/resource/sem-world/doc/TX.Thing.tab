@@ -9,9 +9,9 @@ UIEntity:2:description:描述:description:Sot:200:对数据的简略的描述。
 UIEntityAuto:1:id:标识符:id:Not:0:记录的标识符、主键。
 NaturalColor:2:entryName:色彩名称:entry_name:So:30:在色彩对应的调色板中定义的，本色彩条目的标准名称。
 ::palette:调色板:palette:Ro:0:色彩对应的调色板。
-Thing:6:barCode:条形码:bar_code:Sot:30:（略）
-::color:颜色:color:Not:0:（略）
-::modelSpec:规格型号:model_spec:Sot:200:（略）
-::serial:物品编码、物品序列号:serial:Sot:32:（略）
-::unit:物品单位（必填）:unit:Rot:0:（略）
-::unitConv:物品采用的单位换算表（可选）:unit_conv:Rot:0:（略）
+Thing:6:barCode:条形码:bar_code:Sot:30:打印在小张白纸上的图形条码的数字。
+::color:颜色:color:Not:0:物品的外观色彩。
+::modelSpec:规格型号:model_spec:Sot:200:提示物品主要特性的关键规格型号。
+::serial:编码:serial:Sot:32:物品编码、物品序列号等。
+::unit:物品单位:unit:Rot:0:物品的衡量单位。
+::unitConv:单位换算表:unit_conv:Rot:0:物品采用的单位换算表。

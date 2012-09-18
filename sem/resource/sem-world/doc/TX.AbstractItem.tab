@@ -9,21 +9,10 @@ UIEntity:2:description:描述:description:Sot:200:对数据的简略的描述。
 UIEntityAuto:1:id:标识符:id:Not:0:记录的标识符、主键。
 MomentInterval:2:beginTime:起始时间:begin_time:DTot:0:反应记录对应事件的发生时刻。
 ::endTime:终止时间:end_time:DTot:0:反应记录对应事件的结束时刻。
-MCValue:2:currencyCode:（无名称）:currency_code:So:3:（略）
-::value:Performance consideration::value:N:21.4:1, Max digits hold by a long: 9,223,372,036,854,775,808 = 19 digits.
-AbstractItem:5:index:单据内部的序号:index:N:8:（略）
-::nativePrice:【冗余】本地货币表示的价格。:native_price:No:21.4:（略）
-::nativeTotal:【冗余】本地货币表示的金额。:native_total:No:25.4:（略）
-::price:价格 （入库为原始价格，其余科目的价格用途未知）。
-<p>
-对于合并项，如果有外币冲突，将转换为本地货币再进行汇总。:price:No:0:（略）
-::quantity:数量:quantity:N:21.4:<p>
-精度限制：小数点后4位数字。如果需要超出该精度，应考虑为对应物品采用不同的单位。
-<p>
-<fieldset> <legend> 关于数量的单词 Amount/Quantity/Number: </legend>
-<ul>
-<li>Number of ...: 可数的/整数的
-<li>Amount of ...: 不可测量的
-<li>Quantity of ...: 可测量的
-<ul>
-</fieldset>
+MCValue:2:currencyCode:货币代码:currency_code:So:3:ISO-4217 定义的货币代码。
+::value:金额数值:value:N:21.4:对应币种下的金额数值。
+AbstractItem:5:index:序号:index:N:8:单据内部的序号
+::nativePrice:本地价格:native_price:No:21.4:【冗余】本地货币表示的单个项目的价格。
+::nativeTotal:本地金额:native_total:No:25.4:【冗余】本地货币表示的项目的金额。
+::price:价格:price:No:0:单个项目的价格。 对应于入库则为原始价格，出库则为卖出价格。 其余科目的价格用途未定义。
+::quantity:数量:quantity:N:21.4:单个项目的数量。

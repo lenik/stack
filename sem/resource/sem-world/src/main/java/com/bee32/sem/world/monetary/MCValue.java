@@ -17,6 +17,8 @@ import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.util.i18n.CurrencyConfig;
 
 /**
+ * 多币种金额
+ *
  * Multi-currency value, or multi-currency amount.
  *
  * @see
@@ -120,6 +122,11 @@ public class MCValue
         this.currency = currency;
     }
 
+    /**
+     * 货币代码
+     *
+     * ISO-4217 定义的货币代码。
+     */
     @Column(name = "currency", length = 3/* , nullable = false */)
     public String getCurrencyCode() {
         // if (currency == null)
@@ -180,6 +187,10 @@ public class MCValue
     }
 
     /**
+     * 金额数值
+     *
+     * 对应币种下的金额数值。
+     *
      * Performance consideration:
      *
      * 1, Max digits hold by a long: 9,223,372,036,854,775,808 = 19 digits.

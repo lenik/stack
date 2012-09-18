@@ -7,7 +7,7 @@ CEntity:2:aclId:安全策略:acl_id:Not:8:该记录上启用的安全策略的ID
 UIEntity:2:description:描述:description:Sot:200:对数据的简略的描述。（通常不同于备注）
 ::label:标签:label:Sot:100:记录的标识标签，简短的概要、或通常是唯一的显示名称。
 UIEntityAuto:1:id:标识符:id:Not:0:记录的标识符、主键。
-MailFolder:4:color:（无名称）:color:No:8:（略）
-::mails:（无名称）:mails:No:0:（略）
-::order:（无名称）:order:N:8:（略）
-::priority:（无名称）:priority:N:2:（略）
+MailFolder:4:color:颜色:color:No:8:文件夹的RGB颜色。
+::mails:邮件集:mails:No:0:文件夹下的邮件列表。
+::order:次序:order:N:8:用于对文件夹排序。
+::priority:优先级:priority:N:2:说明此文件夹下所有邮件的优先级。

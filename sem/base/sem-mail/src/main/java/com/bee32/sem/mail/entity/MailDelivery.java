@@ -15,6 +15,11 @@ import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.plover.ox1.color.Pink;
 import com.bee32.sem.mail.MailFlags;
 
+/**
+ * 邮件分发
+ *
+ * 分发邮件副本到相关用户。
+ */
 @Entity
 @Pink
 @SequenceGenerator(name = "idgen", sequenceName = "mail_delivery_seq", allocationSize = 1)
@@ -56,6 +61,11 @@ public class MailDelivery
         flags.bits = o.flags.bits;
     }
 
+    /**
+     * 邮件
+     *
+     * 引用要分发的邮件。
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     public Mail getMail() {
         return mail;
@@ -65,6 +75,11 @@ public class MailDelivery
         this.mail = mail;
     }
 
+    /**
+     * 方向
+     *
+     * 邮件的分发方向。
+     */
     @Transient
     public MailOrientation getOrientation() {
         return orientation;
@@ -86,6 +101,11 @@ public class MailDelivery
         orientation = MailOrientation.forValue(_orientation);
     }
 
+    /**
+     * 邮件夹
+     *
+     * 目标文件夹。
+     */
     @ManyToOne
     @Cascade(CascadeType.SAVE_UPDATE)
     public MailFolder getFolder() {
@@ -96,6 +116,11 @@ public class MailDelivery
         this.folder = folder;
     }
 
+    /**
+     * 分发标志
+     *
+     * 描述分发特征的标志位组。
+     */
     @Column(name = "flags", nullable = false)
     public int getFlags() {
         return flags.bits;
@@ -105,6 +130,11 @@ public class MailDelivery
         this.flags.bits = flags;
     }
 
+    /**
+     * 发送错误
+     *
+     * 记录发送相关的错误消息。
+     */
     @Column(length = SENDERROR_LENGTH)
     public String getSendError() {
         return sendError;

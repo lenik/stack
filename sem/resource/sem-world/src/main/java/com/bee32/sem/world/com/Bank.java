@@ -7,6 +7,8 @@ import com.bee32.sem.world.color.TrueColor;
 
 /**
  * 银行
+ *
+ * 银行资料。
  */
 @Entity
 public class Bank
@@ -33,7 +35,9 @@ public class Bank
     }
 
     /**
-     * 显示颜色（未使用）
+     * 显示颜色
+     *
+     * 银行的颜色。（未使用）
      */
     public TrueColor getColor() {
         return color;

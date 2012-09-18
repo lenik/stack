@@ -9,6 +9,6 @@ DictEntity:2:description:条目描述:description:Sot:200:条目的内容描述�
 NameDict:3:id:条目标识符:id:Sot:20:词典条目的标识符、主键。
 ::order:次序:order:Nt:8:用于对条目排序。
 ::rank:权重:rank:Nt:6:条目相关的权重（可选）。
-Unit:3:hint:（无名称）:hint:S:20:（略）
-::scale:（无名称）:scale:N:15:（略）
-::stdUnit:Get the standard unit.:std_unit:Ro:0:（略）
+Unit:3:hint:单位提示:hint:S:20:说明单位的应用场合。如“容量”、“体积“。
+::scale:倍率:scale:N:15:相对于标准单位的倍率。如千克（衍生单位）相对于克（标准单位）的倍率为1000。
+::stdUnit:标准单位:std_unit:Ro:0:衍生单位相关的标准单位。

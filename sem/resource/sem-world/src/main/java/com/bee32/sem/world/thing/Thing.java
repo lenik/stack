@@ -18,7 +18,13 @@ import com.bee32.plover.ox1.xp.EntityExt;
 import com.bee32.plover.ox1.xp.XPool;
 import com.bee32.sem.world.color.NaturalColor;
 
-@ModelTemplate // High-Level model template.
+/**
+ * 物品
+ *
+ * 一般物品。
+ */
+@ModelTemplate
+// High-Level model template.
 @MappedSuperclass
 @Green
 public abstract class Thing<X extends XPool<?>>
@@ -82,7 +88,9 @@ public abstract class Thing<X extends XPool<?>>
     }
 
     /**
-     * 物品编码、物品序列号
+     * 编码
+     *
+     * 物品编码、物品序列号等。
      */
     @NaturalId(mutable = true)
     @Column(length = SERIAL_LENGTH)
@@ -96,6 +104,8 @@ public abstract class Thing<X extends XPool<?>>
 
     /**
      * 条形码
+     *
+     * 打印在小张白纸上的图形条码的数字。
      */
     @Column(length = BARCODE_LENGTH)
     @Index(name = "##_bar_code")
@@ -108,7 +118,9 @@ public abstract class Thing<X extends XPool<?>>
     }
 
     /**
-     * 物品单位（必填）
+     * 物品单位
+     *
+     * 物品的衡量单位。
      */
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -117,12 +129,19 @@ public abstract class Thing<X extends XPool<?>>
     }
 
     /**
-     * 物品单位（必填）
+     * 物品单位
+     *
+     * 物品的衡量单位。
      */
     public void setUnit(Unit unit) {
         this.unit = unit;
     }
 
+    /**
+     * 单位提示
+     *
+     * 说明单位的应用场合。如“容量”、“体积“。
+     */
     @Column(name = "unitHint", length = UNIT_HINT_LENGTH)
     String get_unitHint() { // default -> null.
         if (unitHint != null)
@@ -150,16 +169,15 @@ public abstract class Thing<X extends XPool<?>>
     }
 
     /**
-     * 物品采用的单位换算表（可选）
+     * 单位换算表
+     *
+     * 物品采用的单位换算表。
      */
     @ManyToOne
     public UnitConv getUnitConv() {
         return unitConv;
     }
 
-    /**
-     * 物品采用的单位换算表（可选）
-     */
     public void setUnitConv(UnitConv unitConv) {
         this.unitConv = unitConv;
     }
@@ -180,6 +198,8 @@ public abstract class Thing<X extends XPool<?>>
 
     /**
      * 规格型号
+     *
+     * 提示物品主要特性的关键规格型号。
      */
     @Column(length = MODELSPEC_LENGTH)
     @Index(name = "##_model_spec")
@@ -193,6 +213,8 @@ public abstract class Thing<X extends XPool<?>>
 
     /**
      * 颜色
+     *
+     * 物品的外观色彩。
      */
     @Embedded
     public NaturalColor getColor() {

@@ -9,8 +9,8 @@ UIEntity:2:description:描述:description:Sot:200:对数据的简略的描述。
 UIEntityAuto:1:id:标识符:id:Not:0:记录的标识符、主键。
 MomentInterval:2:beginTime:起始时间:begin_time:DTot:0:反应记录对应事件的发生时刻。
 ::endTime:终止时间:end_time:DTot:0:反应记录对应事件的结束时刻。
-MCValue:2:currencyCode:（无名称）:currency_code:So:3:（略）
-::value:Performance consideration::value:N:21.4:1, Max digits hold by a long: 9,223,372,036,854,775,808 = 19 digits.
+MCValue:2:currencyCode:货币代码:currency_code:So:3:ISO-4217 定义的货币代码。
+::value:金额数值:value:N:21.4:对应币种下的金额数值。
 FundFlow:5:nativeValue:本币金额:native_value:No:21.4:资金进出的以本地货币表达的金额
 ::operator:经办人:operator:Ro:0:资金进出经办人。
 ::text:资金进出说明:text:So:3000:资金进出的详细说明。

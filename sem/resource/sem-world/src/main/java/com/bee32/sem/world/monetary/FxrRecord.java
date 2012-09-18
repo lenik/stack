@@ -20,6 +20,10 @@ import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.ox1.color.Blue;
 
 /**
+ * 汇率记录
+ *
+ * 从发行的汇率信息中抓取的汇率记录。
+ *
  * 外汇的相关术语。
  * <ul>
  * <li>卖出价是银行将外币卖给客户的牌价，也就是客户到银行购汇时的牌价；
@@ -84,6 +88,11 @@ public class FxrRecord
         xbuyingRate = o.xbuyingRate;
     }
 
+    /**
+     * 发布日期
+     *
+     * 相关汇率信息的发布日期。
+     */
     @NaturalId
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
@@ -102,9 +111,6 @@ public class FxrRecord
         return (int) (date.getTime() / 86400000);
     }
 
-    /**
-     * 单位货币 (系数为1）
-     */
     @Transient
     public Currency getUnitCurrency() {
         return unitCurrency;
@@ -116,6 +122,11 @@ public class FxrRecord
         this.unitCurrency = unitCurrency;
     }
 
+    /**
+     * 单位货币
+     *
+     * 即系数为1的货币名称。
+     */
     @NaturalId
     @Column(name = "unit", length = 3, nullable = false)
     String get_unit() {
@@ -129,7 +140,9 @@ public class FxrRecord
     }
 
     /**
-     * （现钞）买入价
+     * 现钞买入价
+     *
+     * 银行买入外币现钞时的牌价。
      */
     @Column(nullable = false)
     public float getBuyingRate() {
@@ -142,6 +155,8 @@ public class FxrRecord
 
     /**
      * 卖出价
+     *
+     * 银行将外币卖给客户的牌价，也就是客户到银行购汇时的牌价。
      */
     @Column(nullable = false)
     public float getSellingRate() {
@@ -152,6 +167,9 @@ public class FxrRecord
         this.sellingRate = sellingRate;
     }
 
+    /**
+     * 中间价= 现汇买入价+现汇卖出价）/2，中间价是市场所形成的。
+     */
     @Transient
     public float getMiddleRate() {
         float middleRate = (buyingRate + sellingRate) / 2;
@@ -159,7 +177,9 @@ public class FxrRecord
     }
 
     /**
-     * 基准价（可选）
+     * 基准价
+     *
+     * 人民银行公布的一种中间价，其他商业银行可在基准价基础上， 按照人行规定的浮动范围制定自己的买入、卖出价。
      */
     public Float getBaseRate() {
         return baseRate;
@@ -170,7 +190,9 @@ public class FxrRecord
     }
 
     /**
-     * 现汇买入价（可选）
+     * 现汇买入价
+     *
+     * 现汇买入价是银行买入现汇时的牌价。
      */
     public Float getXbuyingRate() {
         return xbuyingRate;

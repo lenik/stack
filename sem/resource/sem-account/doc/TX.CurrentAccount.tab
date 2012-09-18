@@ -17,8 +17,8 @@ SingleVerifierSupport:4:accepted1:审核通过:accepted1:B:1:审核的决策值�
 ::verifiedDate1:审核日期:verified_date1:DTo:0:审核操作的日期。
 ::verifier1:审核人:verifier1:Ro:0:审核操作的执行人。
 ProcessEntity:1:verifyContext:审核上下文:verify_context:Not:0:（略）
-MCValue:2:currencyCode:（无名称）:currency_code:So:3:（略）
-::value:Performance consideration::value:N:21.4:1, Max digits hold by a long: 9,223,372,036,854,775,808 = 19 digits.
+MCValue:2:currencyCode:货币代码:currency_code:So:3:ISO-4217 定义的货币代码。
+::value:金额数值:value:N:21.4:对应币种下的金额数值。
 CurrentAccount:4:amount:金额:amount:No:0:（略）
 ::orgUnit:公司内部部门:org_unit:Ro:0:（略）
 ::party:对应客户或供应商:party:Ro:0:（略）

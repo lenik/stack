@@ -9,4 +9,4 @@ DictEntity:2:description:条目描述:description:Sot:200:条目的内容描述�
 NameDict:3:id:条目标识符:id:Sot:20:词典条目的标识符、主键。
 ::order:次序:order:Nt:8:用于对条目排序。
 ::rank:权重:rank:Nt:6:条目相关的权重（可选）。
-Palette:1:entries:（无名称）:entries:No:0:（略）
+Palette:1:entries:条目列表:entries:No:0:调色板中定义的所以色彩条目.

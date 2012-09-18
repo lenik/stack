@@ -12,6 +12,8 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
 
 /**
  * 调色板条目
+ *
+ * 调色板中的颜色条目的定义。
  */
 @Entity
 @Blue
@@ -58,6 +60,8 @@ public class PaletteEntry
 
     /**
      * 调色板
+     *
+     * 条目所属的调色板。
      */
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)

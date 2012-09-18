@@ -24,6 +24,11 @@ import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.monetary.MCVector;
 
+/**
+ * 一般单据
+ *
+ * 涉及到价格的一般项目列表。
+ */
 @MappedSuperclass
 public abstract class AbstractItemList<Item extends AbstractItem>
         extends MomentInterval
@@ -57,7 +62,9 @@ public abstract class AbstractItemList<Item extends AbstractItem>
     }
 
     /**
-     * 单据明细，只读。
+     * 单据明细
+     *
+     * 单据中的条目列表。
      *
      * @see #addItem(Item)
      * @see #removeItem(Item)
@@ -133,6 +140,8 @@ public abstract class AbstractItemList<Item extends AbstractItem>
     }
 
     /**
+     * 总金额
+     *
      * 【冗余】获取用本地货币表示的总金额。
      *
      * @throws FxrQueryException
