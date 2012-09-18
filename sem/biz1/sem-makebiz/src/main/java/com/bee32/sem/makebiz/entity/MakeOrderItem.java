@@ -24,7 +24,9 @@ import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.world.thing.AbstractItem;
 
 /**
- * 订单明细项目
+ * 定单明细
+ *
+ * 定单上的明细项目。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "make_order_item_seq", allocationSize = 1)

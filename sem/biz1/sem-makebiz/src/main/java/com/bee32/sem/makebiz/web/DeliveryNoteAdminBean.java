@@ -70,7 +70,7 @@ public class DeliveryNoteAdminBean
 
         List<DeliveryNoteItemDto> deliveryNoteItems = makeOrder.arrangeDeliveryNote();
         if (deliveryNoteItems.isEmpty()) {
-            uiLogger.error("此订单已经全部安排送货.");
+            uiLogger.error("此定单已经全部安排送货.");
             return;
         }
         deliveryNote.setOrder(makeOrderRef);
@@ -218,7 +218,7 @@ public class DeliveryNoteAdminBean
                     message.append(entry.getValue());
                     message.append("; ");
                 }
-                uiLogger.error("送货数量超过订单中的数量: " + message);
+                uiLogger.error("送货数量超过定单中的数量: " + message);
                 return false;
             }
         }

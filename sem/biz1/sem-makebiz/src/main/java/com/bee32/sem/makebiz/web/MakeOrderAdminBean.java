@@ -46,7 +46,7 @@ public class MakeOrderAdminBean
         MakeOrder _checkSameChanceOrder = DATA(MakeOrder.class).getFirst(
                 new Equals("chance.id", chance.getId()));
         if (_checkSameChanceOrder != null && !_checkSameChanceOrder.getId().equals(makeOrder.getId())) {
-            uiLogger.error("此机会已经对应的订单!");
+            uiLogger.error("此机会已经对应的定单!");
             return;
         }
 

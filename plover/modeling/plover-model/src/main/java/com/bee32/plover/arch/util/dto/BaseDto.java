@@ -156,7 +156,7 @@ public abstract class BaseDto<S>
      * <b>自然等价</b>
      * <p>
      * 大多数情况下实体应该在其上定义自然键，并实现自然等价关系（通过实现方法 {@link #naturalEquals(EntityBase)} 和
-     * {@link #naturalHashCode()}）。 自然键最好不是自动生成的 id 属性，但必须是唯一的。例如：用户的自然键应该是登录名，订单项的自然键应该是{所属的订单id,
+     * {@link #naturalHashCode()}）。 自然键最好不是自动生成的 id 属性，但必须是唯一的。例如：用户的自然键应该是登录名，定单项的自然键应该是{所属的定单id,
      * 商品的id} 等等。
      *
      * <p>
@@ -231,7 +231,7 @@ public abstract class BaseDto<S>
      * <b>自然等价</b>
      * <p>
      * 大多数情况下实体应该在其上定义自然键，并实现自然等价关系（通过实现方法 {@link #naturalEquals(EntityBase)} 和
-     * {@link #naturalHashCode()}）。 自然键最好不是自动生成的 id 属性，但必须是唯一的。例如：用户的自然键应该是登录名，订单项的自然键应该是{所属的订单id,
+     * {@link #naturalHashCode()}）。 自然键最好不是自动生成的 id 属性，但必须是唯一的。例如：用户的自然键应该是登录名，定单项的自然键应该是{所属的定单id,
      * 商品的id} 等等。
      *
      * <p>

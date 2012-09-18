@@ -33,7 +33,7 @@ import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.world.thing.AbstractItemList;
 
 /**
- * 库存通用订单
+ * 库存通用定单
  */
 @Entity(name = "StockOrder")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -238,9 +238,9 @@ public class AbstractStockOrder<Item extends StockOrderItem>
     }
 
     /**
-     * 订单（首选）仓库。
+     * 定单（首选）仓库。
      *
-     * 通常所有订单项目应该和本仓库一致。
+     * 通常所有定单项目应该和本仓库一致。
      */
     @ManyToOne(optional = false)
     public StockWarehouse getWarehouse() {

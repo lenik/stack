@@ -26,7 +26,7 @@
     </cc:interface>
 
     <cc:implementation>
-        <sem:choosePartyDialog id="c_customer" header="选择订单的客户..." var="chooseMakeOrderCustomerDialog"
+        <sem:choosePartyDialog id="c_customer" header="选择定单的客户..." var="chooseMakeOrderCustomerDialog"
             target="${cc.parent.attrs.dialogBean.customer}" update=":${cc.parent.clientId}:form" />
 
         <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
@@ -43,8 +43,8 @@
             <ui:define name="paneN">
                 <p:toolbar id="toolbar">
                     <p:toolbarGroup align="left">
-                        <h:outputLabel for="customer" value="订单客户: " />
-                        <p:inputText id="customer" label="订单客户" value="${dialogBean.customer.displayName}"
+                        <h:outputLabel for="customer" value="定单客户: " />
+                        <p:inputText id="customer" label="定单客户" value="${dialogBean.customer.displayName}"
                             readonly="true" />
                         <p:commandButton id="chooseCustomer" value="..."
                             oncomplete="chooseMakeOrderCustomerDialog.show()">
@@ -81,7 +81,7 @@
             </ui:define>
         </ui:decorate>
 
-        <fr:listView id="itemsView" header="订单明细" indexDialogVar="chooseMakeOrder_itemsDialog" style="dialog"
+        <fr:listView id="itemsView" header="定单明细" indexDialogVar="chooseMakeOrder_itemsDialog" style="dialog"
             mbean="${cc.parent.attrs.dialogBean.itemsMBean}" addable="false" editable="false" removable="false">
             <f:facet name="columns">
                 <p:column headerText="物料" styleClass="f-wrappable">

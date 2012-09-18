@@ -1,8 +1,8 @@
 DeliveryNote,送货单,Process,100000,10,V
 DeliveryNoteItem,送货单明细项目,MomentInterval,1000000,20,
 DeliveryNoteTakeOut,销售出库单,Process,100000,10,V
-MakeOrder,生产订单,MomentInterval,100000,5,
-MakeOrderItem,生产订单项目,MomentInterval,1000000,10,
+MakeOrder,生产定单,MomentInterval,100000,5,
+MakeOrderItem,生产定单项目,MomentInterval,1000000,10,
 MakeProcess,工艺流转单,MomentInterval,1000000,10,VS
 MakeStep,工艺流转单明细,MomentInterval,10000000,50,S
 MakeTask,生产任务,Process,300000,5,V
@@ -10,4 +10,4 @@ MakeTaskItem,生产任务明细,MomentInterval,1000000,25,V
 MaterialPlan,物料需求,Process,50000,10,V
 MaterialPlanItem,物料需求项目,MomentInterval,500000,20,
 SerialNumber,序列号,UI,1000000,50,
-StockPlanOrder,物料需求订单,MomentInterval,100000,10,V
+StockPlanOrder,物料需求定单,MomentInterval,100000,10,V

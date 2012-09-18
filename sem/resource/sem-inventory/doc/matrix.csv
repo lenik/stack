@@ -6,8 +6,8 @@ MaterialPrice,物料的基准价格,UI,1000000,10,
 MaterialWarehouseOption,物料仓库选项,C,100000,10,
 StockInventory,库存总帐,Ext,10,10,A
 StockLocation,库位,Tree,10000,10,
-StockOrder,订单,MomentInterval,1000000,10,VA
-StockOrderItem,订单项目,MomentInterval,10000000,10,VA
+StockOrder,定单,MomentInterval,1000000,10,VA
+StockOrderItem,定单项目,MomentInterval,10000000,10,VA
 StockPeriod,库存期结,UI,1000,10,VA
 StocktakingOrder,库存盘点单,MomentInterval,10000,10,V
 StocktakingOrderItem,盘点单项目,MomentInterval,1000000,10,V

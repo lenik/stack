@@ -29,7 +29,7 @@
 				<textElement>
 					<font fontName="宋体" size="18" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[订单]]></text>
+				<text><![CDATA[定单]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="419" y="47" width="321" height="20"/>

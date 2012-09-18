@@ -70,7 +70,7 @@ public class StockOrderItem
     }
 
     /**
-     * 所属订单
+     * 所属定单
      */
     @ManyToOne(optional = false)
     public AbstractStockOrder<?> getParent() {

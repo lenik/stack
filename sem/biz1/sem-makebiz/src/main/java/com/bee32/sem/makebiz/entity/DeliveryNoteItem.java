@@ -19,7 +19,9 @@ import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.world.thing.AbstractItem;
 
 /**
- * 送货单明细项目
+ * 送货明细
+ *
+ * 送货单明细项目。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "delivery_note_item_seq", allocationSize = 1)
@@ -36,6 +38,13 @@ public class DeliveryNoteItem
 
     StockWarehouse sourceWarehouse;
 
+    /**
+     * 送货单
+     *
+     * 送货单主控类。
+     *
+     * @return
+     */
     @NaturalId
     @ManyToOne(optional = false)
     public DeliveryNote getParent() {
@@ -48,6 +57,13 @@ public class DeliveryNoteItem
         this.parent = parent;
     }
 
+    /**
+     * 物料(产品)
+     *
+     * 送货明细对应的物料，一般是成品。
+     *
+     * @return
+     */
     @NaturalId(mutable = true)
     @ManyToOne
     public Material getMaterial() {
@@ -58,6 +74,14 @@ public class DeliveryNoteItem
         this.material = material;
     }
 
+
+    /**
+     * 定单明细
+     *
+     * 为了在定单上可以看到送货情况，送货明细和定单明细一一对应，这里反应出这个关系。
+     *
+     * @return
+     */
     @ManyToOne
     public MakeOrderItem getOrderItem() {
         return orderItem;
@@ -67,6 +91,13 @@ public class DeliveryNoteItem
         this.orderItem = orderItem;
     }
 
+    /**
+     * 仓库
+     *
+     * 送货时，出库产品对应的出库仓库。
+     *
+     * @return
+     */
     @ManyToOne
     public StockWarehouse getSourceWarehouse() {
         return sourceWarehouse;
@@ -76,6 +107,11 @@ public class DeliveryNoteItem
         this.sourceWarehouse = sourceWarehouse;
     }
 
+    /**
+     * 汇率时间
+     *
+     * 汇率每天都有变化，则本时间来指定取数的时间点。
+     */
     @Transient
     @Override
     protected Date getFxrDate() {

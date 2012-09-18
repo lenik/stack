@@ -6,7 +6,9 @@ import javax.persistence.OneToOne;
 import com.bee32.sem.inventory.tx.entity.StockJob;
 
 /**
- * 送货单对应的销售出库单
+ * 出库单
+ *
+ * 送货时，对应产品出库，这里即为对应的销售出库单
  */
 @Entity
 public class DeliveryNoteTakeOut
@@ -16,6 +18,13 @@ public class DeliveryNoteTakeOut
 
     DeliveryNote deliveryNote;
 
+    /**
+     * 送货单
+     *
+     * 本销售出库单对应的送货单。
+     *
+     * @return
+     */
     @OneToOne(optional = false)
     public DeliveryNote getDeliveryNote() {
         return deliveryNote;

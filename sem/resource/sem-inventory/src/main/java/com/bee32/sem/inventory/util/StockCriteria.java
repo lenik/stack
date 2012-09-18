@@ -36,9 +36,9 @@ public class StockCriteria
     }
 
     /**
-     * 非冗余的库存订单。
+     * 非冗余的库存定单。
      * <p>
-     * 在线性统计库存变更集中，需要排除冗余的库存订单。
+     * 在线性统计库存变更集中，需要排除冗余的库存定单。
      */
     @LeftHand(StockOrder.class)
     public static CriteriaElement unpacked() {

@@ -61,9 +61,9 @@
             <h:outputText value="制单人:" />
             <p:inputText value="#{obj.owner.displayName}" disabled="true" />
 
-            <h:outputText value="生产订单:" styleClass="e-link" onclick="#{obj.order.clickAction}"/>
+            <h:outputText value="生产定单:" styleClass="e-link" onclick="#{obj.order.clickAction}"/>
             <t:panelGroup>
-                <p:inputText id="order" value="#{obj.order.label}" readonly="true" label="生产订单" style="width:25em;"/>
+                <p:inputText id="order" value="#{obj.order.label}" readonly="true" label="生产定单" style="width:25em;"/>
                 <p:commandButton value="..." onclick="chooseMakeOrderDialog.show()" disabled="#{not bean.editing}" />
             </t:panelGroup>
             <t:panelGroup />
@@ -172,7 +172,7 @@
     <ui:define name="dialogs">
         <sem:chooseMakeOrderDialog id="c_makeOrder" target="#{bean.applyMakeOrder}" update=":editDialog:form" />
 
-        <fr:listView id="itemsEditView" header="订单项目" style="editDialog" indexView=":editDialog:form:tv:itemsIndexView"
+        <fr:listView id="itemsEditView" header="定单项目" style="editDialog" indexView=":editDialog:form:tv:itemsIndexView"
             mbean="#{bean.itemsMBean}" readonly="#{not bean.editing}">
             <t:panelGrid columns="4" columnClasses="field-label, field-content, field-label, field-content">
 
