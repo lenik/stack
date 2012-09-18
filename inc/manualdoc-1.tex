@@ -260,8 +260,9 @@
                         }%
                     \IfSubStr{####1}{N}{数值}{}%
                     \IfSubStr{####1}{S}{字符串}{}%
-                    \IfSubStr{####1}{R}{引用}{}%
+                    \IfSubStr{####1}{B}{标志位}{}%
                     \IfSubStr{####1}{Z}{数据流}{}%
+                    \IfSubStr{####1}{R}{引用}{}%
                 }}},
         columns/要求/.style={ column type=c, string type,
             preproc cell content/.code={
