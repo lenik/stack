@@ -30,6 +30,25 @@
 
 % \usepackage[table]{xcolor}
 \usepackage{pgfplotstable}
+    \pgfkeysifdefined{/pgfplots/table/output empty row/.@cmd}{
+        % upcoming releases offer this more convenient option:
+        \pgfplotstableset{
+            empty header/.style={
+              every head row/.style={output empty row},
+            }
+        }
+    }{
+        % versions up to and including 1.5.1 need this:
+        \pgfplotstableset{
+            empty header/.style={
+                typeset cell/.append code={%
+                    \ifnum\pgfplotstablerow=-1 %
+                        \pgfkeyssetvalue{/pgfplots/table/@cell content}{}%
+                    \fi
+                }
+            }
+        }
+    }
 \usepackage{booktabs}           % toprule, bottomrule
 %\usepackage{tabularx}           % {X}
 \usepackage{longtable}          % Alt. to tabular, but not tabularx
@@ -116,6 +135,7 @@
     \pgfplotstabletypeset[
         begin table=\begin{longtable},
         end table=\end{longtable},
+        empty header,
         every first row/.append style={
             before row={
                 \caption{数据特性} \\ \toprule
@@ -198,7 +218,7 @@
     \pgfplotstabletypeset[
         begin table=\begin{longtable},
         end table=\end{longtable},
-        %empty header,
+        empty header,
         every first row/.append style={
             before row={
                 \caption{#1 (#2) 的数据交换规范}  \\ \cline{3-11}
