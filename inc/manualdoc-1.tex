@@ -199,10 +199,10 @@
         every first row/.append style={
             before row={
                 \caption{#1 (#2) 的数据交换规范}  \\ \cline{3-11}
-                & & & 名称 & SQL 字段 & 要求 & 类型 & 长度 & 系统 & 说明 \\ \cline{3-11}
+                & & & 名称 & SQL 字段 & 要求 & 类型 & \multicolumn{2}{c}{长度} & 系统 & 说明 \\ \cline{3-11}
               \endfirsthead
                          \multicolumn{11}{l}{（……续前）} \\ \hdashline
-                & & & 名称 & SQL 字段 & 要求 & 类型 & 长度 & 系统 & 说明 \\ \cline{3-11}
+                & & & 名称 & SQL 字段 & 要求 & 类型 & \multicolumn{2}{c}{长度} & 系统 & 说明 \\ \cline{3-11}
               \endhead
                 \cline{3-11} \multicolumn{11}{r}{（参考后面继续……）} \\ \hdashline
               \endfoot
