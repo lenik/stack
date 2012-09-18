@@ -19,6 +19,8 @@ import com.bee32.sem.process.base.ProcessEntity;
 
 /**
  * 生产任务
+ *
+ * 生产任务主控类。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "make_task_seq", allocationSize = 1)
@@ -48,6 +50,13 @@ public class MakeTask
         plans = new ArrayList<MaterialPlan>(o.plans);
     }
 
+    /**
+     * 定单
+     *
+     * 本生产任务对应的定单。一个定单对应一个或多个生产任务。
+     *
+     * @return
+     */
     @ManyToOne(optional = false)
     public MakeOrder getOrder() {
         return order;
@@ -60,7 +69,9 @@ public class MakeTask
     }
 
     /**
-     * 完工时间(暂时不用)
+     * 完工时间
+     *
+     * 暂时不用
      */
     @Temporal(TemporalType.TIMESTAMP)
     public Date getDeadline() {
@@ -71,6 +82,13 @@ public class MakeTask
         this.deadline = deadline;
     }
 
+    /**
+     * 明细
+     *
+     * 生产任务明细列表。
+     *
+     * @return
+     */
     @OneToMany(mappedBy = "task", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<MakeTaskItem> getItems() {
@@ -115,6 +133,13 @@ public class MakeTask
             items.get(index).setIndex(index);
     }
 
+    /**
+     * 物料需求计划
+     *
+     * 本生产任务对应的物料计划列表。
+     *
+     * @return
+     */
     @OneToMany(mappedBy = "task")
     @Cascade(CascadeType.ALL)
     public List<MaterialPlan> getPlans() {

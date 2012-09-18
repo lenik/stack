@@ -15,7 +15,7 @@ import com.bee32.sem.world.monetary.MCValue;
 /**
  * 采购询价
  *
- * 采购项目对应的供应商询价内容
+ * 采购项目对应的供应商询价内容。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "purchase_inquiry_seq", allocationSize = 1)

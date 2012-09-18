@@ -23,6 +23,8 @@ import com.bee32.sem.make.entity.Part;
 
 /**
  * 工艺流转单
+ *
+ * 根据产品的BOM和预设的工艺参数，由生产任务形成工艺流转单。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "make_process_seq", allocationSize = 1)
@@ -43,6 +45,13 @@ public class MakeProcess
     List<MakeStep> steps = new ArrayList<MakeStep>();
     List<SerialNumber> serials = new ArrayList<SerialNumber>();
 
+    /**
+     * 生产任务明细
+     *
+     * 一个工艺流转单对应一个生产任务单上的明细项目。
+     *
+     * @return
+     */
     @ManyToOne(optional = false)
     public MakeTaskItem getTaskItem() {
 	return taskItem;
@@ -59,6 +68,13 @@ public class MakeProcess
 		this.deadline = taskItem.deadline;
 	}
 
+	/**
+	 * 产品
+	 *
+	 * 工艺流转单对应的产品。
+	 *
+	 * @return
+	 */
 	@ManyToOne(optional = false)
     public Part getPart() {
         return part;
@@ -68,6 +84,13 @@ public class MakeProcess
         this.part = part;
     }
 
+    /**
+     * 数量
+     *
+     * 产口生产数量。
+     *
+     * @return
+     */
     @Column(scale = QTY_ITEM_SCALE, precision = QTY_ITEM_PRECISION, nullable = false)
     public BigDecimal getQuantity() {
         return quantity;
@@ -85,6 +108,13 @@ public class MakeProcess
         setQuantity(new BigDecimal(quantity));
     }
 
+    /**
+     * 批号
+     *
+     * 产品的生产批号。
+     *
+     * @return
+     */
     @Column(length = BATCH_NUMBER_LENGTH)
     public String getBatchNumber() {
         return batchNumber;
@@ -94,6 +124,13 @@ public class MakeProcess
         this.batchNumber = batchNumber;
     }
 
+    /**
+     * 生产期限
+     *
+     * 产品需要此日期前生产完成。
+     *
+     * @return
+     */
     @Temporal(TemporalType.TIMESTAMP)
     public Date getDeadline() {
         return deadline;
@@ -103,6 +140,13 @@ public class MakeProcess
         this.deadline = deadline;
     }
 
+    /**
+     * 工艺步骤
+     *
+     * 工艺流转单对应的所有生产步骤列表。
+     *
+     * @return
+     */
     @OneToMany(mappedBy = "parent", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     @OrderBy("id ASC")
@@ -134,6 +178,13 @@ public class MakeProcess
         step.detach();
     }
 
+    /**
+     * 序列号
+     *
+     * 如果管理细致，则每个产品都可以赋予一个编号，即为序列号。
+     *
+     * @return
+     */
     @OneToMany(mappedBy = "process")
     public List<SerialNumber> getSerials() {
         return serials;

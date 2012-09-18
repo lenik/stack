@@ -49,6 +49,13 @@ public class MaterialPlan
         items = CopyUtils.copyList(o.items);
     }
 
+    /**
+     * 生产任务
+     *
+     * 物料计划对应的生产任务。
+     *
+     * @return
+     */
     @ManyToOne
     public MakeTask getTask() {
         return task;
@@ -58,6 +65,13 @@ public class MaterialPlan
         this.task = task;
     }
 
+    /**
+     * 定单
+     *
+     * 外购产品，直接由定单生成。这里即为对应的定单。
+     *
+     * @return
+     */
     @ManyToOne
     public MakeOrder getOrder() {
         return order;
@@ -67,6 +81,13 @@ public class MaterialPlan
         this.order = order;
     }
 
+    /**
+     * 明细
+     *
+     * 物料计划明细列表。
+     *
+     * @return
+     */
     @OneToMany(mappedBy = "materialPlan", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<MaterialPlanItem> getItems() {

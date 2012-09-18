@@ -27,6 +27,8 @@ import com.bee32.sem.make.entity.Part;
 
 /**
  * 生产任务明细
+ *
+ * 生产任务明细项目。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "make_task_item_seq", allocationSize = 1)
@@ -66,6 +68,13 @@ public class MakeTaskItem
         status = o.status;
     }
 
+    /**
+     * 生产任务
+     *
+     * 生产任务主控类。
+     *
+     * @return
+     */
     @NaturalId
     @ManyToOne(optional = false)
     public MakeTask getTask() {
@@ -77,7 +86,9 @@ public class MakeTaskItem
     }
 
     /**
-     * 单据内部的序号
+     * 序号
+     *
+     * 单据内部的序号，在办面上显示的进修发挥作用。
      */
     @Column(nullable = false)
     public int getIndex() {
@@ -88,6 +99,13 @@ public class MakeTaskItem
         this.index = index;
     }
 
+    /**
+     * 产品
+     *
+     * 生产任务对应的产品。
+     *
+     * @return
+     */
     @NaturalId
     @ManyToOne(optional = false)
     public Part getPart() {
@@ -98,6 +116,13 @@ public class MakeTaskItem
         this.part = part;
     }
 
+    /**
+     * 生产数量
+     *
+     * 本生产任务需要生产的产品数量。
+     *
+     * @return
+     */
     @Column(precision = QTY_ITEM_PRECISION, scale = QTY_ITEM_SCALE)
     public BigDecimal getQuantity() {
         return quantity;
@@ -118,6 +143,13 @@ public class MakeTaskItem
         this.status = status;
     }
 
+    /**
+     * 交货期限
+     *
+     * 生产任务上的交货期限。比定单上的交货期限一般要提前一些。
+     *
+     * @return
+     */
     @Temporal(TemporalType.TIMESTAMP)
     public Date getDeadline() {
         return deadline;
@@ -127,6 +159,13 @@ public class MakeTaskItem
         this.deadline = deadline;
     }
 
+    /**
+     * 工艺流转单
+     *
+     * 本条生产任务对应的工艺流转单列表。
+     *
+     * @return
+     */
     @OneToMany(mappedBy="taskItem", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     @OrderBy("id ASC")

@@ -73,6 +73,13 @@ public class MakeOrderItem
 
     }
 
+    /**
+     * 定单
+     *
+     * 定单明细对应的主控类。
+     *
+     * @return
+     */
     @NaturalId
     @ManyToOne(optional = false)
     public MakeOrder getParent() {
@@ -85,6 +92,13 @@ public class MakeOrderItem
         this.parent = parent;
     }
 
+    /**
+     * 物料
+     *
+     * 定单明细对应的物料（产品）。
+     *
+     * @return
+     */
     @NaturalId(mutable = true)
     @ManyToOne
     public Material getMaterial() {
@@ -95,6 +109,13 @@ public class MakeOrderItem
         this.material = material;
     }
 
+    /**
+     * 交货时间
+     *
+     * 交货期限。
+     *
+     * @return
+     */
     @Temporal(TemporalType.TIMESTAMP)
     public Date getDeadline() {
         return deadline;
@@ -106,12 +127,8 @@ public class MakeOrderItem
 
     /**
      * 产品外部名称
-     * <p>
-     * 和某个客户对应，具体对应客户在MakeOrder中
-     * </p>
-     * <p>
-     * 某个产品对于不同客户的不同叫法，对内为同一种产品(同一个物料)
-     * </p>
+     *
+     * 和某个客户对应，具体对应客户在MakeOrder中。某个产品对于不同客户的不同叫法，对内为同一种产品(同一个物料)。
      *
      * @return
      */
@@ -126,12 +143,8 @@ public class MakeOrderItem
 
     /**
      * 产品的外部技术参数要求
-     * <p>
-     * 和某个客户对应，具体对应客户在MakeOrder中
-     * </p>
-     * <p>
-     * 不同的客户对某个产品有不同的技术要求，但对内为同一个产品，所以技术要求相同
-     * </p>
+     *
+     * 和某个客户对应，具体对应客户在MakeOrder中。不同的客户对某个产品有不同的技术要求，但对内为同一个产品，所以技术要求相同。
      *
      * @return
      */
@@ -144,6 +157,13 @@ public class MakeOrderItem
         this.externalModelSpec = externalModelSpec;
     }
 
+    /**
+     * 外部单位
+     *
+     * 产品在外部名称时对应的单位。
+     *
+     * @return
+     */
     @Column(length = EXT_UNIT_LENGTH)
     public String getExternalUnit() {
         return externalUnit;
@@ -154,7 +174,9 @@ public class MakeOrderItem
     }
 
     /**
-     * @return true-使用物料名称，规格，参数; false-使用外部物料名称，规格，参数
+     * 铭牌是否使用内部名称
+     *
+     * 产品在出厂时，如果需要贴上铭牌的，标记铭牌上是使用物料名称还是外部名称。true-使用物料名称，规格，参数; false-使用外部物料名称，规格，参数。
      */
     @DefaultValue("true")
     @Column(nullable = false)
@@ -166,6 +188,11 @@ public class MakeOrderItem
         this.nameplate = nameplate;
     }
 
+    /**
+     * 汇率日期
+     *
+     * 汇率每天变动，这里指定汇率的取数时间点。
+     */
     @Transient
     @Override
     protected Date getFxrDate() {
@@ -186,6 +213,13 @@ public class MakeOrderItem
                 selector(prefix + "material", material));
     }
 
+    /**
+     * 送货明细项目
+     *
+     * 一个定单明细对应多个送货明细项目，这样就可以看到送货情况了。
+     *
+     * @return
+     */
     @OneToMany(mappedBy = "orderItem")
     public List<DeliveryNoteItem> getDeliveryNoteItems() {
         return deliveryNoteItems;

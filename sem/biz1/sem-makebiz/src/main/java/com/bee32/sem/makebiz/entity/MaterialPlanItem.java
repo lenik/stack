@@ -19,7 +19,9 @@ import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.people.entity.Party;
 
 /**
- * 物料计划明细项目
+ * 明细
+ *
+ * 物料计划明细项目。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "material_plan_item_seq", allocationSize = 1)
@@ -57,6 +59,13 @@ public class MaterialPlanItem
         additionalRequirement = o.additionalRequirement;
     }
 
+    /**
+     * 物料计划
+     *
+     * 物料计划主控类。
+     *
+     * @return
+     */
     @NaturalId
     @ManyToOne(optional = false)
     public MaterialPlan getMaterialPlan() {
@@ -68,7 +77,9 @@ public class MaterialPlanItem
     }
 
     /**
-     * 单据内部的序号
+     * 序号
+     *
+     * 单据内部的序号，界面显示时发生作用。
      */
     @Column(nullable = false)
     public int getIndex() {
@@ -79,6 +90,11 @@ public class MaterialPlanItem
         this.index = index;
     }
 
+    /**
+     * 物料
+     *
+     * 物料计划明细对应的需要采购的物料。
+     */
     @NaturalId(mutable = true)
     @ManyToOne(optional = false)
     public Material getMaterial() {
@@ -91,6 +107,8 @@ public class MaterialPlanItem
 
     /**
      * 数量
+     *
+     * 相应生产任务需要使用的物料数量。
      *
      * <p>
      * 精度限制：小数点后4位数字。如果需要超出该精度，应考虑为对应物品采用不同的单位。
@@ -116,6 +134,13 @@ public class MaterialPlanItem
         this.quantity = quantity;
     }
 
+    /**
+     * 优选供应商
+     *
+     * 采购时优先选择的供应商。
+     *
+     * @return
+     */
     @ManyToOne
     public Party getPreferredSupplier() {
         return preferredSupplier;
@@ -126,7 +151,9 @@ public class MaterialPlanItem
     }
 
     /**
-     * 如客户指定产品需要哪种原材料
+     * 采购时的附加要求
+     *
+     * 如客户指定产品需要哪种原材料。
      */
     @Column(length = ADDITIONAL_REQUIREMENT_LENGTH)
     public String getAdditionalRequirement() {

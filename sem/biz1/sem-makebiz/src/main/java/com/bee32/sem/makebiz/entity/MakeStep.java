@@ -30,6 +30,9 @@ import com.bee32.sem.people.entity.Person;
 
 /**
  * 工艺流转单明细
+ *
+ * 产品的每一个生产步骤所对应的信息都记录在本类中。
+ *
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "make_step_instance_seq", allocationSize = 1)
@@ -57,6 +60,13 @@ public class MakeStep
 
     boolean done;
 
+    /**
+     * 工艺流转单
+     *
+     * 工艺流转单主控类。
+     *
+     * @return
+     */
     @NaturalId
     @ManyToOne(optional = false)
     public MakeProcess getParent() {
@@ -67,6 +77,13 @@ public class MakeStep
         this.parent = parent;
     }
 
+    /**
+     * 工艺步骤
+     *
+     * 对应的标准工艺步骤。
+     *
+     * @return
+     */
     @NaturalId
     @ManyToOne(optional = false)
     public MakeStepModel getModel() {
@@ -80,6 +97,9 @@ public class MakeStep
 
     /**
      * 计划数量
+     *
+     * 当前生产步骤的产品计划生产数量。
+     *
      * @return
      */
     @Column(scale = QTY_ITEM_SCALE, precision = QTY_ITEM_PRECISION, nullable = false)
@@ -101,6 +121,9 @@ public class MakeStep
 
     /**
      * 实际数量
+     *
+     * 当前生产步骤的产品实际生产数量。
+     *
      * @return
      */
     @Column(scale = QTY_ITEM_SCALE, precision = QTY_ITEM_PRECISION, nullable = false)
@@ -121,7 +144,10 @@ public class MakeStep
     }
 
     /**
-     * 实际数量
+     * 合格数量
+     *
+     * 经过质检后，后格的数量。
+     *
      * @return
      */
     @Column(scale = QTY_ITEM_SCALE, precision = QTY_ITEM_PRECISION, nullable = false)
@@ -142,7 +168,9 @@ public class MakeStep
     }
 
     /**
-     * 不合格数量=实际数量减合格数量
+     * 不合格数量
+     *
+     * 实际数量减合格数量
      * @return
      */
     @Transient
@@ -150,6 +178,13 @@ public class MakeStep
         return actualQuantity.subtract(verifiedQuantity);
     }
 
+    /**
+     * 计划完成时间
+     *
+     * 产品的计划完成时间。
+     *
+     * @return
+     */
     @Temporal(TemporalType.TIMESTAMP)
     public Date getPlanDeadline() {
         return planDeadline;
@@ -159,6 +194,13 @@ public class MakeStep
         this.planDeadline = planDeadline;
     }
 
+    /**
+     * 实际完成时间
+     *
+     * 产品的实际完成时间。
+     *
+     * @return
+     */
     @Temporal(TemporalType.TIMESTAMP)
     public Date getActualDeadline() {
         return actualDeadline;
@@ -168,6 +210,13 @@ public class MakeStep
         this.actualDeadline = actualDeadline;
     }
 
+    /**
+     * 部门
+     *
+     * 本工艺步骤所对应的内部部门。
+     *
+     * @return
+     */
     @ManyToOne
     public OrgUnit getOrgUnit() {
         return orgUnit;
@@ -177,6 +226,13 @@ public class MakeStep
         this.orgUnit = orgUnit;
     }
 
+    /**
+     * 生产工人
+     *
+     * 在本工艺步骤中所生的产品具体的生产工人列表。
+     *
+     * @return
+     */
     @ManyToMany
     @JoinTable(name = "MakeStepOperator",
     /*            */joinColumns = @JoinColumn(name = "makeStep"), //
@@ -191,6 +247,13 @@ public class MakeStep
         this.operators = operators;
     }
 
+    /**
+     * 质检
+     *
+     * 本工艺步骤上的实际质检数据。
+     *
+     * @return
+     */
     @OneToOne(orphanRemoval=true)
     @Cascade(CascadeType.SAVE_UPDATE )
     public QCResult getQcResult() {
@@ -201,6 +264,13 @@ public class MakeStep
         this.qcResult = qcResult;
     }
 
+    /**
+     * 是否完成
+     *
+     * 本步骤是否完成。
+     *
+     * @return
+     */
     @Column(nullable = false)
     public boolean isDone() {
         return done;
