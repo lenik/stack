@@ -28,6 +28,6 @@ StockOrderItem:6:batchArray:批号:batch_array:No:0:（略）
 <p>
 对于合并项，可能会丢失冲突的库位信息。:location:Ro:0:（略）
 ::material:物料:material:Ro:0:（略）
-::parent:所属订单:parent:Ro:0:（略）
+::parent:所属定单:parent:Ro:0:（略）
 ::warehouse:仓库:warehouse:Ro:0:（略）
 StocktakingOrderItem:1:expectedQuantity:（无名称）:expected_quantity:No:21.4:（略）

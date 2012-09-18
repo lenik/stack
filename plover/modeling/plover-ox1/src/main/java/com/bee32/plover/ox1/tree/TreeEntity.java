@@ -85,7 +85,7 @@ public abstract class TreeEntity<K extends Serializable, self_t extends TreeEnti
     /**
      * 父对象
      *
-     * 上一级对象，如定单项的父对象是定单。
+     * 上一级对象，如订单项的父对象是订单。
      */
     @ManyToOne
     public self_t getParent() {

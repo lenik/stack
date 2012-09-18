@@ -9,18 +9,9 @@ UIEntity:2:description:描述:description:Sot:200:对数据的简略的描述。
 UIEntityAuto:1:id:标识符:id:Not:0:记录的标识符、主键。
 MomentInterval:2:beginTime:起始时间:begin_time:DTot:0:反应记录对应事件的发生时刻。
 ::endTime:终止时间:end_time:DTot:0:反应记录对应事件的结束时刻。
-MaterialPlanItem:6:additionalRequirement:如客户指定产品需要哪种原材料:additional_requirement:So:200:（略）
-::index:单据内部的序号:index:N:8:（略）
-::material:（无名称）:material:Ro:0:（略）
-::materialPlan:（无名称）:material_plan:Ro:0:（略）
-::preferredSupplier:（无名称）:preferred_supplier:Ro:0:（略）
-::quantity:数量:quantity:N:21.4:<p>
-精度限制：小数点后4位数字。如果需要超出该精度，应考虑为对应物品采用不同的单位。
-<p>
-<fieldset> <legend> 关于数量的单词 Amount/Quantity/Number: </legend>
-<ul>
-<li>Number of ...: 可数的/整数的
-<li>Amount of ...: 不可测量的
-<li>Quantity of ...: 可测量的
-<ul>
-</fieldset>
+MaterialPlanItem:6:additionalRequirement:采购时的附加要求:additional_requirement:So:200:如客户指定产品需要哪种原材料。
+::index:序号:index:N:8:单据内部的序号，界面显示时发生作用。
+::material:物料:material:Ro:0:物料计划明细对应的需要采购的物料。
+::materialPlan:物料计划:material_plan:Ro:0:物料计划主控类。
+::preferredSupplier:优选供应商:preferred_supplier:Ro:0:采购时优先选择的供应商。
+::quantity:数量:quantity:N:21.4:相应生产任务需要使用的物料数量。

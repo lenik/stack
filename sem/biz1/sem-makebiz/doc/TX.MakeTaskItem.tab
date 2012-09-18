@@ -9,10 +9,10 @@ UIEntity:2:description:描述:description:Sot:200:对数据的简略的描述。
 UIEntityAuto:1:id:标识符:id:Not:0:记录的标识符、主键。
 MomentInterval:2:beginTime:起始时间:begin_time:DTot:0:反应记录对应事件的发生时刻。
 ::endTime:终止时间:end_time:DTot:0:反应记录对应事件的结束时刻。
-MakeTaskItem:7:deadline:（无名称）:deadline:DTo:0:（略）
-::index:单据内部的序号:index:N:8:（略）
-::part:（无名称）:part:Ro:0:（略）
-::processes:（无名称）:processes:No:0:（略）
-::quantity:（无名称）:quantity:No:21.4:（略）
+MakeTaskItem:7:deadline:交货期限:deadline:DTo:0:生产任务上的交货期限。比定单上的交货期限一般要提前一些。
+::index:序号:index:N:8:单据内部的序号，在办面上显示的进修发挥作用。
+::part:产品:part:Ro:0:生产任务对应的产品。
+::processes:工艺流转单:processes:No:0:本条生产任务对应的工艺流转单列表。
+::quantity:生产数量:quantity:No:21.4:本生产任务需要生产的产品数量。
 ::status:（无名称）:status:So:40:（略）
-::task:（无名称）:task:Ro:0:（略）
+::task:生产任务:task:Ro:0:生产任务主控类。

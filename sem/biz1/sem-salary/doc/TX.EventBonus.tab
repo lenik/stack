@@ -9,5 +9,5 @@ UIEntity:2:description:描述:description:Sot:200:对数据的简略的描述。
 UIEntityAuto:1:id:标识符:id:Not:0:记录的标识符、主键。
 MomentInterval:2:beginTime:起始时间:begin_time:DTot:0:反应记录对应事件的发生时刻。
 ::endTime:终止时间:end_time:DTot:0:反应记录对应事件的结束时刻。
-EventBonus:2:bonus:（无名称）:bonus:No:38.8:（略）
-::employee:（无名称）:employee:Ro:0:（略）
+EventBonus:2:bonus:事件金额:bonus:No:38.8:特殊事件补贴的金额，可奖可惩。
+::employee:员工:employee:Ro:0:特殊事件对应的员工。

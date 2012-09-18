@@ -7,18 +7,20 @@ CEntity:2:aclId:安全策略:acl_id:Not:8:该记录上启用的安全策略的ID
 UIEntity:2:description:描述:description:Sot:200:对数据的简略的描述。（通常不同于备注）
 ::label:标签:label:Sot:100:记录的标识标签，简短的概要、或通常是唯一的显示名称。
 UIEntityAuto:1:id:标识符:id:Not:0:记录的标识符、主键。
-Part:15:category:【冗余】 物料分类，便于统计某个物料分类下的BOM数量:category:Ro:0:相当于 target.category.
-::children:子部件（半成品或原材料）:children:No:0:（略）
-::electricityFee:电费:electricity_fee:N:21.4:（略）
-::equipmentCost:设备费:equipment_cost:N:21.4:（略）
-::obsolete:上一个版本。:obsolete:Ro:0:（略）
-::otherFee:其它费用:other_fee:N:21.4:（略）
-::releaseVersion:（无名称）:release_version:So:20:（略）
-::steps:工艺:steps:No:0:（略）
-::target:目标物料:target:Ro:0:（略）
+Part:15:category:物料分类
+
+ 【冗余】便于统计某个物料分类下的BOM数量。:category:Ro:0:相当于 target.category.
+::children:子部件:children:No:0:组成半成品的原材料或半成品。
+::electricityFee:电费:electricity_fee:N:21.4:生产单位个本成品或半成品需要花费的电费。
+::equipmentCost:设备费:equipment_cost:N:21.4:生产单位个本成品或半成品需要使用设备的花费。
+::obsolete:历史BOM版本:obsolete:Ro:0:某个产品的上一个BOM版本。
+::otherFee:其它费用:other_fee:N:21.4:生产单位个本成品或半成品需要花费的其它费用。
+::releaseVersion:版本:release_version:So:20:BOM的发行版本。
+::steps:工艺:steps:No:0:本成品或半成品上的工艺列表。
+::target:物料:target:Ro:0:本部件对应的具体物料。
 ::valid:是否有效:valid:Bo:1:（略）
-::validDateFrom:起用日期:valid_date_from:DTo:0:（略）
-::validDateTo:无效日期:valid_date_to:DTo:0:（略）
-::wage:工资:wage:N:21.4:（略）
+::validDateFrom:起用日期:valid_date_from:DTo:0:BOM起用日期。
+::validDateTo:无效日期:valid_date_to:DTo:0:BOM失效日期。
+::wage:工资:wage:N:21.4:生产单位个本成品或半成品需要支付的工资。
 ::xrefCount::xref_count:N:8:（略）
 ::xrefs:引用本部件的 PartItem。:xrefs:No:0:（略）

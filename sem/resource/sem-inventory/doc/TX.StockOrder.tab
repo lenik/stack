@@ -36,4 +36,4 @@ AbstractStockOrder:7:base:基准库存期结。:base:Ro:0:（略）
 <p>
 （取值为 <code>null</code> 或与 {@link #getBase()} 相等）。:spec:Ro:0:（略）
 ::verifyContext:（无名称）:verify_context:No:0:（略）
-::warehouse:订单（首选）仓库。:warehouse:Ro:0:通常所有订单项目应该和本仓库一致。
+::warehouse:定单（首选）仓库。:warehouse:Ro:0:通常所有定单项目应该和本仓库一致。

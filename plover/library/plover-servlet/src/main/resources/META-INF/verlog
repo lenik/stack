@@ -1,5 +1,31 @@
+Plover-3.3.8 (谢继雷, 金卫林, 2012-09-18)
+	* Updated TX tables.
+	* Added missing docs in CEntity+.
+	* Changed TX-index to a simple list of maketxtables.
+	* sem-makebiz entity add comment a little
+
+Plover-3.3.7 (谢继雷, 2012-09-17)
+	* Escaped underscore in sql names.
+	* Enclosed equiv with math mode.
+	* Changed length format to `length.scale` in TX tabs.
+
+Plover-3.3.6 (谢继雷, 2012-09-15)
+	* Changed TX col sep to colon.
+	* Updated TX tables with core docs.
+	* Added docs to core entity types and embeddable types.
+	* Added alwaysEscape option to PloverNamingStrategy.
+	* Generated history.tex from changelogs.
+
+Plover-3.3.5 (谢继雷, 2012-09-14)
+	* Extract label/descriptions from sources.
+	* Generated TX files.
+	* Changed Entity services for discover to prototype mode.
+	* Made the included resources be depended automatically.
+	* Import moduledocs from sandbox/PUBL/Manual/.
+	* Distinguished model templates from user entity models.
+
 Plover-3.3.4 (谢继雷, 2012-09-11)
-	* 发布 SEM 1.9.7。
+	* 小狗GIF：通过参数 disposal method = replace 消除透明背景的摇尾时闪烁。
 
 Plover-3.3.3 (谢继雷, 2012-09-07)
 	* Enabled index-rich controller by default.

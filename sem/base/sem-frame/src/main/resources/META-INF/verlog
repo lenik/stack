@@ -1,5 +1,56 @@
-SEM-1.9.7 (谢继雷, 2012-09-11)
-	* 发布 SEM 1.9.7。
+SEM-1.9.13 (谢继雷, 金卫林, 朱挺峰, 2012-09-18)
+	* Updated TX tables.
+	* 工资模块增加实体类注释。
+	* Added missing docs in CEntity+.
+	* Changed TX-index to a simple list of maketxtables.
+	* Added TX info for sem-mail, sem-makebiz.
+	* sem-make entity entity add comment
+	* sem-makebiz entity add comment
+	* sem-makebiz entity add comment a little
+	* sem-purchase entity add comment
+
+SEM-1.9.12 (谢继雷, 朱挺峰, 2012-09-17)
+	* Escaped underscore in sql names.
+	* Enclosed equiv with math mode.
+	* Added tx info for HR.
+	* Updated TX tabs for sem-asset, sem-chance.
+	* Added tx info for sem-people.
+	* Changed length format to `length.scale` in TX tabs.
+	* 取消离职时间为将来时间的限制
+	* 操作说明各模块结构调整。
+
+SEM-1.9.11 (谢继雷, 朱挺峰, 2012-09-15)
+	* 操作手册临时提交。
+	* 考勤模块开发。
+	* Prepared PDF output for sem-salary.
+	* EntityTXGen: Fixed default length/precision from Column annotation.
+	* Updated TX tables with core docs.
+	* Generate embeddable TX tables, and fixed Date-precision.
+	* Added docs to core entity types and embeddable types.
+	* EntityTXGen: Generate the index page.
+	* 操作手册，修改ul到opset
+	* Renamed manual.toc to manual-1.toc.
+
+SEM-1.9.10 (谢继雷, 2012-09-14)
+	* Extract label/descriptions from sources.
+	* Generated TX files.
+	* Added EntityTXGen to generate TX.* files.
+	* Changed Entity services for discover to prototype mode.
+	* Reviewed feature matrix csv.
+	* Made the included resources be depended automatically.
+	* Prepare to refactor ul(s) to opset/ops.
+	* Import moduledocs from sandbox/PUBL/Manual/.
+	* Prepare manualdoc framework.
+
+SEM-1.9.9 (金卫林, 2012-09-13)
+	* 收款单付款单功能完善中
+
+SEM-1.9.8 (朱挺峰, 金卫林, 2012-09-12)
+	* SEM-Inventory: remove bad click action.
+	* 加入收款单付款单dto
+
+SEM-1.9.7 (谢继雷, 朱挺峰, 2012-09-11)
+	* Salary edited  path
 	* 小狗GIF：通过参数 disposal method = replace 消除透明背景的摇尾时闪烁。
 	* Fixed #161: Using https url in frame.css.
 
@@ -1658,7 +1709,7 @@ SEM-0.9.19 (谢继雷, 金卫林, 2011-11-23)
 
 SEM-0.9.18 (金卫林, 谢继雷, 2011-11-22)
 	* add SEMAssetUnit to SEMUberUnit
-	*  升级m4检查完成
+	* 升级m4检查完成
 	* 修正升级到primefaces m4后的一些问题
 	* primfaces 3.0.M4+: Replaced `primefaces.prime.com.tr` by `primefaces.org`.
 
@@ -1995,7 +2046,7 @@ SEM-0.7.3 (谢继雷, 金卫林, 2011-09-04)
 	* Collect ALC/SCLs.
 
 SEM-0.7.2 (谢继雷, 朱挺峰, 金卫林, 2011-09-03)
-	*  modify state : button
+	* modify state : button
 	* 合并提交
 	* hide error message
 	* fixed query : not have the property 'name'
@@ -3429,7 +3480,7 @@ SEM-0.1.20 (谢继雷, 金卫林, 2011-03-30)
 	* Refactor SuperfishMenuBuilder for pretty format.
 	* Renamed MenuEntry -> MenuNode, and MenuItem -> MenuEntry. [2]
 	* Renamed MenuEntry -> MenuNode, and MenuItem -> MenuEntry.
-	*  fix SuperFishMenuBuilder buildMenubar
+	* fix SuperFishMenuBuilder buildMenubar
 	* SuperFish menu done
 	* polish
 	* Add SuperfishMenuControllerTest.

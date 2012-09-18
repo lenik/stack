@@ -9,5 +9,5 @@ UIEntity:2:description:描述:description:Sot:200:对数据的简略的描述。
 UIEntityAuto:1:id:标识符:id:Not:0:记录的标识符、主键。
 MomentInterval:2:beginTime:起始时间:begin_time:DTot:0:反应记录对应事件的发生时刻。
 ::endTime:终止时间:end_time:DTot:0:反应记录对应事件的结束时刻。
-QCResult:2:memo:质检备注:memo:So:1000:（略）
-::parameters:质检得到的实际参数:parameters:No:0:（略）
+QCResult:2:memo:质检备注:memo:So:1000:质检的备注、描述。
+::parameters:质检实际值列表:parameters:No:0:生产过程中某个工艺对应的实际质检值列表。

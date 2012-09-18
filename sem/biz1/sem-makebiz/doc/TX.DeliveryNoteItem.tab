@@ -16,7 +16,7 @@ AbstractItem:5:index:序号:index:N:8:单据内部的序号
 ::nativeTotal:本地金额:native_total:No:25.4:【冗余】本地货币表示的项目的金额。
 ::price:价格:price:No:0:单个项目的价格。 对应于入库则为原始价格，出库则为卖出价格。 其余科目的价格用途未定义。
 ::quantity:数量:quantity:N:21.4:单个项目的数量。
-DeliveryNoteItem:4:material:（无名称）:material:Ro:0:（略）
-::orderItem:（无名称）:order_item:Ro:0:（略）
-::parent:（无名称）:parent:Ro:0:（略）
-::sourceWarehouse:（无名称）:source_warehouse:Ro:0:（略）
+DeliveryNoteItem:4:material:物料(产品):material:Ro:0:送货明细对应的物料，一般是成品。
+::orderItem:定单明细:order_item:Ro:0:为了在定单上可以看到送货情况，送货明细和定单明细一一对应，这里反应出这个关系。
+::parent:送货单:parent:Ro:0:送货单主控类。
+::sourceWarehouse:仓库:source_warehouse:Ro:0:送货时，出库产品对应的出库仓库。

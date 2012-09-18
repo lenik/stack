@@ -1,13 +1,13 @@
-\maketxtable{送货单}{delivery\_note}{TX.DeliveryNote.tab}{（无描述）}
-\maketxtable{送货单明细项目}{delivery\_note\_item}{TX.DeliveryNoteItem.tab}{（无描述）}
-\maketxtable{送货单对应的销售出库单}{delivery\_note\_take\_out}{TX.DeliveryNoteTakeOut.tab}{（无描述）}
-\maketxtable{生产订单}{make\_order}{TX.MakeOrder.tab}{（无描述）}
-\maketxtable{订单明细项目}{make\_order\_item}{TX.MakeOrderItem.tab}{（无描述）}
-\maketxtable{工艺流转单}{make\_process}{TX.MakeProcess.tab}{（无描述）}
-\maketxtable{工艺流转单明细}{make\_step}{TX.MakeStep.tab}{（无描述）}
-\maketxtable{生产任务}{make\_task}{TX.MakeTask.tab}{（无描述）}
-\maketxtable{生产任务明细}{make\_task\_item}{TX.MakeTaskItem.tab}{（无描述）}
+\maketxtable{送货单}{delivery\_note}{TX.DeliveryNote.tab}{送货单主控类。}
+\maketxtable{送货明细}{delivery\_note\_item}{TX.DeliveryNoteItem.tab}{送货单明细项目。}
+\maketxtable{出库单}{delivery\_note\_take\_out}{TX.DeliveryNoteTakeOut.tab}{送货时，对应产品出库，这里即为对应的销售出库单}
+\maketxtable{定单}{make\_order}{TX.MakeOrder.tab}{和客户签定销售合同后，客户所购产品的单据。本质是合同的一部份。}
+\maketxtable{定单明细}{make\_order\_item}{TX.MakeOrderItem.tab}{定单上的明细项目。}
+\maketxtable{工艺流转单}{make\_process}{TX.MakeProcess.tab}{根据产品的BOM和预设的工艺参数，由生产任务形成工艺流转单。}
+\maketxtable{工艺流转单明细}{make\_step}{TX.MakeStep.tab}{产品的每一个生产步骤所对应的信息都记录在本类中。}
+\maketxtable{生产任务}{make\_task}{TX.MakeTask.tab}{生产任务主控类。}
+\maketxtable{生产任务明细}{make\_task\_item}{TX.MakeTaskItem.tab}{生产任务明细项目。}
 \maketxtable{物料需求}{material\_plan}{TX.MaterialPlan.tab}{作为库存作业的一种， stockOrders 对应为库存锁定。}
-\maketxtable{物料计划明细项目}{material\_plan\_item}{TX.MaterialPlanItem.tab}{（无描述）}
-\maketxtable{序列号}{serial\_number}{TX.SerialNumber.tab}{（无描述）}
-\maketxtable{（无标题）}{stock\_plan\_order}{TX.StockPlanOrder.tab}{（无描述）}
+\maketxtable{明细}{material\_plan\_item}{TX.MaterialPlanItem.tab}{物料计划明细项目。}
+\maketxtable{序列号}{serial\_number}{TX.SerialNumber.tab}{对每个生产的产品进行编号，赋予一个唯一的号码。}
+\maketxtable{物料锁定出库单}{stock\_plan\_order}{TX.StockPlanOrder.tab}{物料计划中，在考虑仓库物料的当前库存量和安全库存量的前提下，对可用的物料进行出库。这里即为对应的计划出库单。}

@@ -17,8 +17,8 @@ SingleVerifierSupport:4:accepted1:审核通过:accepted1:B:1:审核的决策值�
 ::verifiedDate1:审核日期:verified_date1:DTo:0:审核操作的日期。
 ::verifier1:审核人:verifier1:Ro:0:审核操作的执行人。
 ProcessEntity:1:verifyContext:审核上下文:verify_context:Not:0:（略）
-Salary:5:elements:（无名称）:elements:No:0:（略）
-::employee:（无名称）:employee:Ro:0:（略）
-::paid:（无名称）:paid:Bo:1:（略）
-::total:（无名称）:total:N:25.4:（略）
-::yearMonth:年月的组合，如 201208。:year_month:N:8:（略）
+Salary:5:elements:工资条目:elements:No:0:工资由若干个工资条目组成。
+::employee:员工:employee:Ro:0:工资对应的员工。
+::paid:已发工资项:paid:Bo:1:是否已经发工资
+::total:应发工资:total:N:25.4:员工当月的应发工资。
+::yearMonth:年月:year_month:N:8:年月的组合，如 201208。

@@ -17,14 +17,14 @@ SingleVerifierSupport:4:accepted1:审核通过:accepted1:B:1:审核的决策值�
 ::verifiedDate1:审核日期:verified_date1:DTo:0:审核操作的日期。
 ::verifier1:审核人:verifier1:Ro:0:审核操作的执行人。
 ProcessEntity:1:verifyContext:审核上下文:verify_context:Not:0:（略）
-PurchaseRequestItem:11:acceptedInquiry:询价建议:accepted_inquiry:Ro:0:（略）
-::additionalRequirement:如客户指定产品需要哪种原材料:additional_requirement:So:200:（略）
-::destWarehouse:（无名称）:dest_warehouse:Ro:0:（略）
-::index:单据内部的序号:index:N:8:（略）
-::inquiries:采购项目对应的询价:inquiries:No:0:（略）
-::inquiryCount:（无名称）:inquiry_count:No:8:（略）
-::material:（无名称）:material:Ro:0:（略）
-::parent:（无名称）:parent:Ro:0:（略）
-::preferredSupplier:（无名称）:preferred_supplier:Ro:0:（略）
-::quantity:实际计划采购的数量(计划数量):quantity:N:21.4:（略）
-::requiredQuantity:从物料需求计算复制过来的数量(请求数量):required_quantity:N:21.4:（略）
+PurchaseRequestItem:11:acceptedInquiry:询价建议:accepted_inquiry:Ro:0:采购审核人在对比过所有的供应商报价后，给出选择哪个供应商的建议。
+::additionalRequirement:采购项目的附加要求:additional_requirement:So:200:如客户指定产品需要哪种原材料。
+::destWarehouse:目标仓库:dest_warehouse:Ro:0:采购入库时对应的入库仓库。
+::index:序号:index:N:8:单据内部的序号,显示的时候起作用。
+::inquiries:采购项目对应的询价:inquiries:No:0:一个采购项目，对应很多询价建议。
+::inquiryCount:报价总数:inquiry_count:No:8:统计有几个供应商报价。
+::material:物料:material:Ro:0:需要采购的物料。
+::parent:采购请求:parent:Ro:0:采购请求明细对应的主控类。
+::preferredSupplier:优选供应商:preferred_supplier:Ro:0:一般一个企业往往和某些供应商和长期的合作关系，这里的优选供应商就是指这个意思。
+::quantity:实际数量:quantity:N:21.4:实际需要采购的数量。
+::requiredQuantity:请求数量:required_quantity:N:21.4:从物料需求计算复制过来的数量。

@@ -17,7 +17,7 @@ SingleVerifierSupport:4:accepted1:审核通过:accepted1:B:1:审核的决策值�
 ::verifiedDate1:审核日期:verified_date1:DTo:0:审核操作的日期。
 ::verifier1:审核人:verifier1:Ro:0:审核操作的执行人。
 ProcessEntity:1:verifyContext:审核上下文:verify_context:Not:0:（略）
-MakeTask:4:deadline:完工时间(暂时不用):deadline:DTo:0:（略）
-::items:（无名称）:items:No:0:（略）
-::order:（无名称）:order:Ro:0:（略）
-::plans:（无名称）:plans:No:0:（略）
+MakeTask:4:deadline:完工时间:deadline:DTo:0:暂时不用
+::items:明细:items:No:0:生产任务明细列表。
+::order:定单:order:Ro:0:本生产任务对应的定单。一个定单对应一个或多个生产任务。
+::plans:物料需求计划:plans:No:0:本生产任务对应的物料计划列表。

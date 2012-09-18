@@ -9,6 +9,6 @@ UIEntity:2:description:描述:description:Sot:200:对数据的简略的描述。
 UIEntityAuto:1:id:标识符:id:Not:0:记录的标识符、主键。
 MomentInterval:2:beginTime:起始时间:begin_time:DTot:0:反应记录对应事件的发生时刻。
 ::endTime:终止时间:end_time:DTot:0:反应记录对应事件的结束时刻。
-SalaryElementDef:3:category:分类名称，大分类/小分类之间用 `/` 分隔。不包含本元素的名称:category:So:100:如 `补贴`。
-::expr:表达式:expr:S:200:（略）
-::order:显示和计算次序:order:No:8:（略）
+SalaryElementDef:3:category:工资字段分类:category:So:100:分类名称，大分类/小分类之间用 `/` 分隔。不包含本元素的名称。
+::expr:表达式:expr:S:200:工资字段的计算表达式。
+::order:显示顺序:order:No:8:工资字段显示和计算次序。

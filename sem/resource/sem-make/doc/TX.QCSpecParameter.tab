@@ -7,6 +7,6 @@ CEntity:2:aclId:安全策略:acl_id:Not:8:该记录上启用的安全策略的ID
 UIEntity:2:description:描述:description:Sot:200:对数据的简略的描述。（通常不同于备注）
 ::label:标签:label:Sot:100:记录的标识标签，简短的概要、或通常是唯一的显示名称。
 UIEntityAuto:1:id:标识符:id:Not:0:记录的标识符、主键。
-QCSpecParameter:3:parent:（无名称）:parent:Ro:0:（略）
-::required:（无名称）:required:B:1:（略）
-::value:质检标准值:value:So:200:（略）
+QCSpecParameter:3:parent:质检标准:parent:Ro:0:质检标准主控类。
+::required:专检否:required:B:1:本质检项目是否必须进行检测。
+::value:质检标准值:value:So:200:预先定义的质检标准值。

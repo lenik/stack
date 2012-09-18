@@ -18,4 +18,4 @@ SingleVerifierSupport:4:accepted1:审核通过:accepted1:B:1:审核的决策值�
 ::verifier1:审核人:verifier1:Ro:0:审核操作的执行人。
 ProcessEntity:1:verifyContext:审核上下文:verify_context:Not:0:（略）
 StockJob:1:stockOrders:（无名称）:stock_orders:No:0:（略）
-DeliveryNoteTakeOut:1:deliveryNote:（无名称）:delivery_note:Ro:0:（略）
+DeliveryNoteTakeOut:1:deliveryNote:送货单:delivery_note:Ro:0:本销售出库单对应的送货单。
