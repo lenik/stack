@@ -24,6 +24,12 @@ import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialType;
 
+/**
+ * 子部件
+ *
+ * 组成部件的明细项目。
+ *
+ */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "part_item_seq", allocationSize = 1)
 public class PartItem
@@ -70,7 +76,9 @@ public class PartItem
     }
 
     /**
-     * 所属的部件
+     * 部件
+     *
+     * 所属的部件。
      */
     @NaturalId
     @ManyToOne(optional = false)
@@ -85,6 +93,13 @@ public class PartItem
         this.parent = parent;
     }
 
+    /**
+     * 类型
+     *
+     * 半成品还是原材料。
+     *
+     * @return
+     */
     @Transient
     public MaterialType getType() {
         if (part != null)
@@ -94,6 +109,8 @@ public class PartItem
     }
 
     /**
+     * 子部件
+     *
      * 作为半成品的子部件。在这种情况下，忽略作为原材料的属性。
      */
     @NaturalId(mutable = true)
@@ -107,7 +124,7 @@ public class PartItem
     }
 
     /**
-     * 作为原材料的子部件。
+     * 作为原材料的子部件
      *
      * 当子部件为半成品时，忽略此属性。
      */
@@ -125,6 +142,8 @@ public class PartItem
 
     /**
      * 数量
+     *
+     * 在父部件组成中本子部件的数量。
      */
     @Column(precision = QTY_ITEM_PRECISION, scale = QTY_ITEM_SCALE, nullable = false)
     public BigDecimal getQuantity() {
@@ -147,6 +166,8 @@ public class PartItem
 
     /**
      * 是否有效
+     *
+     * 本子部件是否有效。
      */
     @Column(nullable = false)
     public boolean isValid() {
@@ -159,6 +180,8 @@ public class PartItem
 
     /**
      * 起用日期
+     *
+     * 本子部件的起用日期。
      */
     @Temporal(TemporalType.TIMESTAMP)
     public Date getValidDateFrom() {
@@ -171,6 +194,8 @@ public class PartItem
 
     /**
      * 无效日期
+     *
+     * 本子部件的无效日期。
      */
     @Temporal(TemporalType.TIMESTAMP)
     public Date getValidDateTo() {

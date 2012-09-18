@@ -34,7 +34,9 @@ import com.bee32.sem.make.service.PriceStrategy;
 import com.bee32.sem.world.monetary.FxrQueryException;
 
 /**
- * 部件（包括成品和半成品）
+ * 部件
+ *
+ * 包括成品和半成品，组成BOM的基础元素。
  */
 @Entity
 @Green
@@ -107,7 +109,11 @@ public class Part
     }
 
     /**
-     * 上一个版本。
+     * 历史BOM版本
+     *
+     * 某个产品的上一个BOM版本。
+     *
+     * 目前未使用。
      */
     @ManyToOne(fetch = FetchType.LAZY)
     public Part getObsolete() {
@@ -118,6 +124,13 @@ public class Part
         this.obsolete = obsolete;
     }
 
+    /**
+     * 版本
+     *
+     * BOM的发行版本。
+     *
+     * @return
+     */
     @Column(length = RELEASE_VERSION_LENGTH)
     public String getReleaseVersion() {
         return releaseVersion;
@@ -128,7 +141,9 @@ public class Part
     }
 
     /**
-     * 目标物料
+     * 物料
+     *
+     * 本部件对应的具体物料。
      */
     @ManyToOne
     @NaturalId
@@ -143,7 +158,9 @@ public class Part
     }
 
     /**
-     * 【冗余】 物料分类，便于统计某个物料分类下的BOM数量
+     *  物料分类
+     *
+     *  【冗余】便于统计某个物料分类下的BOM数量。
      *
      * 相当于 target.category.
      */
@@ -159,7 +176,9 @@ public class Part
     }
 
     /**
-     * 子部件（半成品或原材料）
+     * 子部件
+     *
+     * 组成半成品的原材料或半成品。
      */
     @OneToMany(mappedBy = "parent", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
@@ -254,6 +273,10 @@ public class Part
 
     /**
      * 起用日期
+     *
+     * BOM起用日期。
+     *
+     * 目前未使用。
      */
     @Temporal(TemporalType.TIMESTAMP)
     public Date getValidDateFrom() {
@@ -266,6 +289,10 @@ public class Part
 
     /**
      * 无效日期
+     *
+     * BOM失效日期。
+     *
+     * 目前未使用。
      */
     @Temporal(TemporalType.TIMESTAMP)
     public Date getValidDateTo() {
@@ -277,7 +304,9 @@ public class Part
     }
 
     /**
-     * 价格策略。（默认使用 最新价格策略）
+     * 价格策略
+     *
+     * 默认使用最新价格策略。
      */
     @Transient
     public PriceStrategy getPriceStrategy() {
@@ -290,6 +319,13 @@ public class Part
         this.priceStrategy = priceStrategy;
     }
 
+    /**
+     * 价格策略
+     *
+     * 根据BOM计划产品成本价的策略。
+     *
+     * @return
+     */
     @Column(name = "priceStrategy", nullable = false)
     @DefaultValue("'z'")
     char get_priceStrategy() {
@@ -302,6 +338,8 @@ public class Part
 
     /**
      * 工资
+     *
+     * 生产单位个本成品或半成品需要支付的工资。
      */
     @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE, nullable = false)
     public BigDecimal getWage() {
@@ -316,6 +354,8 @@ public class Part
 
     /**
      * 其它费用
+     *
+     * 生产单位个本成品或半成品需要花费的其它费用。
      */
     @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE, nullable = false)
     public BigDecimal getOtherFee() {
@@ -330,6 +370,8 @@ public class Part
 
     /**
      * 电费
+     *
+     * 生产单位个本成品或半成品需要花费的电费。
      */
     @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE, nullable = false)
     public BigDecimal getElectricityFee() {
@@ -344,6 +386,8 @@ public class Part
 
     /**
      * 设备费
+     *
+     * 生产单位个本成品或半成品需要使用设备的花费。
      */
     @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE, nullable = false)
     public BigDecimal getEquipmentCost() {
@@ -357,7 +401,9 @@ public class Part
     }
 
     /**
-     * 工资、设备等额外费用。
+     * 额外费用
+     *
+     * 生产单位个本成品或半成品所需要的工资、设备等额外费用。
      */
     @Transient
     public BigDecimal getExtraCost() {
@@ -377,6 +423,8 @@ public class Part
 
     /**
      * 工艺
+     *
+     * 本成品或半成品上的工艺列表。
      */
     @OneToMany(mappedBy = "output", orphanRemoval = true)
     @Cascade(CascadeType.ALL)

@@ -18,6 +18,14 @@ import org.hibernate.annotations.CascadeType;
 
 import com.bee32.plover.ox1.color.MomentInterval;
 
+/**
+ * 质检结果
+ *
+ * 具体生产过程中的质检结果主控类。
+ *
+ * @author jack
+ *
+ */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 1)
@@ -34,7 +42,9 @@ public class QCResult
     String memo;
 
     /**
-     * 质检得到的实际参数
+     * 质检实际值列表
+     *
+     * 生产过程中某个工艺对应的实际质检值列表。
      */
     @OneToMany(mappedBy = "parent", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
@@ -59,6 +69,11 @@ public class QCResult
         return null;
     }
 
+    /**
+     * 质检值
+     *
+     * 根据质检项目取得质检值（带默认值）。
+     */
     public String getParameter(QCSpecParameter key, String defaultValue) {
         QCResultParameter found = findParameter(key);
         if (found == null)
@@ -67,6 +82,11 @@ public class QCResult
             return found.getValue();
     }
 
+    /**
+     * 质检值
+     *
+     * 根据质检项目取得质检值。
+     */
     public String getParameter(QCSpecParameter key) {
         return getParameter(key, null);
     }
@@ -80,6 +100,8 @@ public class QCResult
 
     /**
      * 质检备注
+     *
+     * 质检的备注、描述。
      */
     @Column(length = MEMO_LENGTH)
     public String getMemo() {

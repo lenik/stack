@@ -20,6 +20,8 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
 /**
  * 质量规范
  *
+ * 质检标准。
+ *
  * <ul>
  * <li>label = 规范名称
  * <li>description = 规范描述
@@ -41,7 +43,9 @@ public class QCSpec
     List<QCSpecParameter> parameters = new ArrayList<QCSpecParameter>();
 
     /**
-     * 质量规范正文/备注
+     * 质检具体描述
+     *
+     * 质量规范正文/备注。
      */
     @Column(length = TEXT_LENGTH)
     public String getText() {
@@ -52,6 +56,13 @@ public class QCSpec
         this.text = text;
     }
 
+    /**
+     * 质检标准明细
+     *
+     * 具体的质检标准明细列表。
+     *
+     * @return
+     */
     @OneToMany(mappedBy = "parent", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<QCSpecParameter> getParameters() {

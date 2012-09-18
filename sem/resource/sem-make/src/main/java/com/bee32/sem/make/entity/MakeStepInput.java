@@ -13,7 +13,9 @@ import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.inventory.entity.Material;
 
 /**
- * 工艺中的消耗材料
+ * 消耗材料
+ *
+ * 工艺中的消耗材料。
  */
 @Entity
 @Green
@@ -29,6 +31,13 @@ public class MakeStepInput
     Material material;
     BigDecimal quantity = new BigDecimal(0);
 
+    /**
+     * 工艺
+     *
+     * 消耗材料对应的工艺步骤。
+     *
+     * @return
+     */
     @ManyToOne(optional = false)
     public MakeStepModel getStepModel() {
         return stepModel;
@@ -41,7 +50,9 @@ public class MakeStepInput
     }
 
     /**
-     * 消耗材料对应的物料
+     * 物料
+     *
+     * 消耗材料对应的物料。
      */
     @ManyToOne(optional = false)
     public Material getMaterial() {
@@ -56,6 +67,8 @@ public class MakeStepInput
 
     /**
      * 数量
+     *
+     * 相应工艺中需要消耗材料的数量。
      *
      * @return
      */

@@ -8,6 +8,14 @@ import javax.persistence.SequenceGenerator;
 import com.bee32.plover.ox1.color.Blue;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 
+/**
+ * 质检项目和结果
+ *
+ * 包括质检的具本项目和具体质检值。
+ *
+ * @author jack
+ *
+ */
 @Entity
 @Blue
 @SequenceGenerator(name = "idgen", sequenceName = "qc_result_parameter_seq", allocationSize = 1)
@@ -22,6 +30,13 @@ public class QCResultParameter
     QCSpecParameter key;
     String value;
 
+    /**
+     * 质检结果
+     *
+     * 质检结果主控类。
+     *
+     * @return
+     */
     @ManyToOne(optional = false)
     public QCResult getParent() {
         return parent;
@@ -33,6 +48,13 @@ public class QCResultParameter
         this.parent = parent;
     }
 
+    /**
+     * 质检标准
+     *
+     * 本质检结果对应的质检标准。
+     *
+     * @return
+     */
     @ManyToOne(optional = false)
     public QCSpecParameter getKey() {
         return key;
@@ -44,6 +66,13 @@ public class QCResultParameter
         this.key = key;
     }
 
+    /**
+     * 质检值
+     *
+     * 具体的质检值。
+     *
+     * @return
+     */
     @Column(length = VALUE_LENGTH)
     public String getValue() {
         return value;

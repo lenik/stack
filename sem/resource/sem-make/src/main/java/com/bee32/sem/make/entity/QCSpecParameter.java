@@ -9,7 +9,9 @@ import com.bee32.plover.ox1.color.Blue;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 
 /**
- * 质量规范参数定义
+ * 质检标准名细
+ *
+ * 质量规范参数定义。
  *
  * <ul>
  * <li>label = 参数名称
@@ -30,6 +32,13 @@ public class QCSpecParameter
     String value;
     boolean required;
 
+    /**
+     * 质检标准
+     *
+     * 质检标准主控类。
+     *
+     * @return
+     */
     @ManyToOne(optional = false)
     public QCSpec getParent() {
         return parent;
@@ -41,6 +50,13 @@ public class QCSpecParameter
         this.parent = parent;
     }
 
+    /**
+     * 专检否
+     *
+     * 本质检项目是否必须进行检测。
+     *
+     * @return
+     */
     @Column(nullable = false)
     public boolean isRequired() {
         return required;
@@ -52,6 +68,9 @@ public class QCSpecParameter
 
     /**
      * 质检标准值
+     *
+     * 预先定义的质检标准值。
+     *
      * @return
      */
     @Column(length = VALUE_LENGTH)
