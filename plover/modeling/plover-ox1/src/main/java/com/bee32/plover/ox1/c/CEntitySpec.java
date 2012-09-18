@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.MappedSuperclass;
 
-
 @MappedSuperclass
 public abstract class CEntitySpec<K extends Serializable>
         extends CEntity<K> {
