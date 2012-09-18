@@ -7,6 +7,8 @@ import com.bee32.sem.inventory.tx.entity.StockJob;
 
 /**
  * 采购请求对应的采购入库单
+ *
+ * 在采购完成后，可根据采购请求的明细列表，自动生成入库单。
  */
 @Entity
 public class PurchaseTakeIn
@@ -29,6 +31,13 @@ public class PurchaseTakeIn
         purchaseRequest = o.purchaseRequest;
     }
 
+    /**
+     * 采购请示
+     *
+     * 本采购入库对应的采购请求。
+     *
+     * @return
+     */
     @ManyToOne(optional = false)
     public PurchaseRequest getPurchaseRequest() {
         return purchaseRequest;

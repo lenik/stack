@@ -30,6 +30,8 @@ import com.bee32.sem.process.base.ProcessEntity;
 /**
  * 采购请求明细项目
  *
+ * 某个采购请求中所需要采购物料的明细列表。
+ *
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "purchase_request_item_seq", allocationSize = 1)
@@ -79,6 +81,13 @@ public class PurchaseRequestItem
         destWarehouse = o.destWarehouse;
     }
 
+    /**
+     * 采购请求
+     *
+     * 采购请求明细对应的主控类。
+     *
+     * @return
+     */
     @NaturalId
     @ManyToOne(optional = false)
     public PurchaseRequest getParent() {
@@ -90,7 +99,9 @@ public class PurchaseRequestItem
     }
 
     /**
-     * 单据内部的序号
+     * 序号
+     *
+     * 单据内部的序号,显示的时候起作用。
      */
     @Column(nullable = false)
     public int getIndex() {
@@ -101,6 +112,13 @@ public class PurchaseRequestItem
         this.index = index;
     }
 
+    /**
+     * 物料
+     *
+     * 需要采购的物料。
+     *
+     * @return
+     */
     @NaturalId(mutable = true)
     @ManyToOne(optional = false)
     public Material getMaterial() {
@@ -112,7 +130,9 @@ public class PurchaseRequestItem
     }
 
     /**
-     * 从物料需求计算复制过来的数量(请求数量)
+     * 请求数量
+     *
+     * 从物料需求计算复制过来的数量。
      */
     @Column(scale = QTY_ITEM_SCALE, precision = QTY_ITEM_PRECISION, nullable = false)
     public BigDecimal getRequiredQuantity() {
@@ -126,7 +146,9 @@ public class PurchaseRequestItem
     }
 
     /**
-     * 实际计划采购的数量(计划数量)
+     * 实际数量
+     *
+     * 实际需要采购的数量。
      */
     @Column(scale = QTY_ITEM_SCALE, precision = QTY_ITEM_PRECISION, nullable = false)
     public BigDecimal getQuantity() {
@@ -139,6 +161,13 @@ public class PurchaseRequestItem
         this.quantity = planQuantity;
     }
 
+    /**
+     * 优选供应商
+     *
+     * 一般一个企业往往和某些供应商和长期的合作关系，这里的优选供应商就是指这个意思。
+     *
+     * @return
+     */
     @ManyToOne
     public Party getPreferredSupplier() {
         return preferredSupplier;
@@ -149,7 +178,9 @@ public class PurchaseRequestItem
     }
 
     /**
-     * 如客户指定产品需要哪种原材料
+     * 采购项目的附加要求
+     *
+     * 如客户指定产品需要哪种原材料。
      */
     @Column(length = ADDITIONAL_REQUIREMENT_LENGTH)
     public String getAdditionalRequirement() {
@@ -162,6 +193,8 @@ public class PurchaseRequestItem
 
     /**
      * 采购项目对应的询价
+     *
+     * 一个采购项目，对应很多询价建议。
      */
     @OneToMany(mappedBy = "parent", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
@@ -193,6 +226,8 @@ public class PurchaseRequestItem
 
     /**
      * 询价建议
+     *
+     * 采购审核人在对比过所有的供应商报价后，给出选择哪个供应商的建议。
      */
     @OneToOne
     public PurchaseInquiry getAcceptedInquiry() {
@@ -203,6 +238,13 @@ public class PurchaseRequestItem
         this.acceptedInquiry = acceptedInquiry;
     }
 
+    /**
+     * 目标仓库
+     *
+     * 采购入库时对应的入库仓库。
+     *
+     * @return
+     */
     @ManyToOne
     public StockWarehouse getDestWarehouse() {
         return destWarehouse;
@@ -212,6 +254,13 @@ public class PurchaseRequestItem
         this.destWarehouse = destWarehouse;
     }
 
+    /**
+     * 报价总数
+     *
+     * 统计有几个供应商报价。
+     *
+     * @return
+     */
     @Formula("(select count(*) from purchase_inquiry i where i.parent=id)")
     public int getInquiryCount() {
         return inquiryCount;
