@@ -1,32 +1,40 @@
 \documentclass[hyperref, oneside]{book}
 
-\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
-\usepackage[cm-default]{fontspec}
 \usepackage{xunicode,xltxtra}
+
 \usepackage[slantfont,boldfont]{xeCJK}
+\usepackage[geometry, misc]{ifsym} % DiamondShadowC, Cube
+\usepackage{manfnt}             % dbend
+\usepackage{mathabx}            % boxplus
+\usepackage{mathrsfs}           % mathscr
+\usepackage{keystroke}          % keystroke
+% \usepackage{MnSymbol}           % nequiv
+\usepackage[cm-default]{fontspec}
+
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
 \usepackage[pdfborder={0 0 0}]{hyperref}
-% \usepackage{multicol}   % Multi column article
-% \usepackage{float}
-\usepackage{framed}
-\usepackage{fancybox}
+\usepackage{pdflscape}          % landscape
+% \usepackage{multicol}           % Multi column article
+
 \usepackage{fancyhdr}
+\usepackage{fancybox}
 \usepackage[vario]{fancyref}
 \usepackage{url}
-\usepackage{graphicx}   % includegraphics
-\usepackage{keystroke}  % keystroke
-\usepackage{manfnt}     % dbend
+\usepackage{xstring}            % StrSubstritute, IfSubStr
+\usepackage{enumitem}           % itemize
+% \usepackage{float}
+\usepackage{framed}
+
+\usepackage{graphicx}           % includegraphics
 \usepackage{tikz}
+
 % \usepackage[table]{xcolor}
 \usepackage{pgfplotstable}
-\usepackage{booktabs}   % toprule, bottomrule
-\usepackage{xstring}    % StrSubstritute, IfSubStr
-\usepackage{enumitem}   % itemize
-\usepackage[geometry]{ifsym} % DiamondShadowC
-\usepackage{pdflscape}  % landscape
-\usepackage{tabularx}   % {X}
-\usepackage{longtable}  % Alt. to tabular, but not tabularx
-\usepackage{multirow}   % Used by: history.tex, TX tables.
-% \usepackage{MnSymbol}   % nequiv
+\usepackage{booktabs}           % toprule, bottomrule
+%\usepackage{tabularx}           % {X}
+\usepackage{longtable}          % Alt. to tabular, but not tabularx
+\usepackage{multirow}           % Used by: history.tex, TX tables.
+\usepackage{arydshln}           % hdashline
 
 \setCJKmainfont{WenQuanYi Micro Hei}
 
@@ -100,10 +108,24 @@
 \newcommand\Fno{$\times$}
 
 \newcommand\makefeaturetable[1]{
-    \begin{table} \caption{数据特性} \centering
+    \centering
+    %\begin{table}
     \pgfplotstabletypeset[
         begin table=\begin{longtable},
         end table=\end{longtable},
+        every first row/.append style={
+            before row={
+                \caption{数据特性} \\ \toprule
+                & 对象 & 类型 & 设计规模 & 访问控制 & 缓存 & 预置数据 & 审核支持 & 会计对象 & 工资采集 \\ \midrule
+              \endfirsthead
+                         \multicolumn{10}{l}{（……续前）} \\ \midrule
+                & 对象 & 类型 & 设计规模 & 访问控制 & 缓存 & 预置数据 & 审核支持 & 会计对象 & 工资采集 \\ \midrule
+              \endhead
+                \midrule \multicolumn{10}{r}{（参考后面继续……）} \\ \bottomrule
+              \endfoot
+                \midrule \multicolumn{10}{r}{（完）} \\ \bottomrule
+              \endlastfoot
+            }},
         % name, label, type, scale, samples, attrs
         alias/访问控制/.initial=2,
         alias/缓存/.initial=5,
@@ -156,49 +178,69 @@
                 \pgfkeyssetvalue{/pgfplots/table/@cell content}{
                     \IfSubStr{####1}{S}{\Fyes}{\Fno}
                 }}},
-        every head row/.style={ before row=\toprule, after row=\midrule },
-        every last row/.style={ after row=\bottomrule },
+        %every head row/.style={ before row=\toprule, after row=\midrule },
+        %every last row/.style={ after row=\bottomrule },
         col sep=comma, header=false
         ]{#1}
-    \end{table}
+    %\end{table}
 }
 
-\newcommand\maketxtable[3]{
-    \begin{landscape}
-    \begin{table}\caption{#1（#2）的数据交换规范} \centering
+\newcommand\maketxtable[4]{
+    $\boxplus$ {\textbf{#1}}
+    \vskip 3mm
+    { \addtolength{\leftskip}{5mm} #4 }
+    \vskip 1mm
+    {
+    %\centering
     \pgfplotstabletypeset[
         begin table=\begin{longtable},
         end table=\end{longtable},
+        %empty header,
+        every first row/.append style={
+            before row={
+                \caption{#1 (#2) 的数据交换规范}  \\ \cline{3-11}
+                & & & 名称 & SQL 字段 & 要求 & 类型 & 长度 & 系统 & 说明 \\ \cline{3-11}
+              \endfirsthead
+                         \multicolumn{11}{l}{（……续前）} \\ \hdashline
+                & & & 名称 & SQL 字段 & 要求 & 类型 & 长度 & 系统 & 说明 \\ \cline{3-11}
+              \endhead
+                \cline{3-11} \multicolumn{11}{r}{（参考后面继续……）} \\ \hdashline
+              \endfoot
+                \cline{3-11}
+              \endlastfoot
+            }},
         % 0      1    2     3      4        5      6    7
         % group, num, name, label, sqlname, flags, len, description
         alias/类型/.initial=5,
         alias/系统/.initial=5,
-        alias/可选/.initial=5,
-        columns={ 0, 1, 2, 3, 4, 系统, 类型, 6, 可选, 7 },
+        alias/要求/.initial=5,
+        columns={ 0, 1, 2, 3, 4, 要求, 类型, 6, 系统, 7 },
         columns/0/.style={ column name={}, column type=r@{}, string type,
             preproc cell content/.code={
                 \pgfkeyssetvalue{/pgfplots/table/@cell content}{
                     \IfStrEqCase{####1}{
                         {}{}
-                        {Entity}{I}
-                        {EntityAuto}{I+}
-                        {EntitySpec}{I+}
-                        {CEntity}{C}
-                        {UIEntity}{UI}
-                        {UIEntityAuto}{UI+}
-                        {UIEntitySpec}{UI+}
-                        {TreeEntity}{T}
-                        {TreeEntityAuto}{T+}
-                        {TreeEntitySpec}{T+}
+                        {Entity}{$\mathscr{I}$}
+                        {EntityAuto}{$\mathscr{I}$+}
+                        {EntitySpec}{$\mathscr{I}$+}
+                        {CEntity}{$\mathscr{C}$}
+                        {CEntityAuto}{$\mathscr{C}$+}
+                        {CEntitySpec}{$\mathscr{C}$+}
+                        {UIEntity}{$\mathscr{U}$}
+                        {UIEntityAuto}{$\mathscr{U}$+}
+                        {UIEntitySpec}{$\mathscr{U}$+}
+                        {TreeEntity}{$\mathscr{T}$}
+                        {TreeEntityAuto}{$\mathscr{T}$+}
+                        {TreeEntitySpec}{$\mathscr{T}$+}
                         {DictEntity}{典}
                         {NameDict}{典+}
-                        {ProcessEntity}{过程}}[USR]
+                        {ProcessEntity}{过程}}[--]
                 }}},
-        columns/1/.style={ column name={}, column type=c@{ }|, string type,
+        columns/1/.style={ column name={}, column type=c@{ }, string type,
             preproc cell content/.code={
                 \pgfkeyssetvalue{/pgfplots/table/@cell content}{
                 }}},
-        columns/2/.style={ column name={XML 标识符}, column type=c, verb string type },
+        columns/2/.style={ column name={}, column type=r|, verb string type },
         columns/3/.style={ column name={名称}, column type=c, string type },
         columns/4/.style={ column name={SQL 字段}, column type=c, verb string type },
         columns/系统/.style={ column type=c, string type,
@@ -208,29 +250,29 @@
                 }}},
         columns/类型/.style={ column type=c, string type,
             preproc cell content/.code={
-                \pgfkeyssetvalue{/pgfplots/table/@cell content}{
-                    \IfStrEqCase{####1}{
-                        {DT}{日期/时间}
-                        {D}{日期}
-                        {T}{时间}
-                        {N}{数值}
-                        {S}{字符串}
-                        {R}{引用}
-                        {Z}{数据流}}[\Fyes]
+                \pgfkeyssetvalue{/pgfplots/table/@cell content}{%
+                    \IfSubStr{####1}{DT}{日期/时间}{%
+                        \IfSubStr{####1}{D}{日期}{}%
+                        \IfSubStr{####1}{T}{时间}{}%
+                        }%
+                    \IfSubStr{####1}{N}{数值}{}%
+                    \IfSubStr{####1}{S}{字符串}{}%
+                    \IfSubStr{####1}{R}{引用}{}%
+                    \IfSubStr{####1}{Z}{数据流}{}%
                 }}},
-        columns/可选/.style={ column type=c, string type,
+        columns/要求/.style={ column type=c, string type,
             preproc cell content/.code={
                 \pgfkeyssetvalue{/pgfplots/table/@cell content}{
-                    \IfSubStr{####1}{o}{\Fyes}{\Fno}
+                    \IfSubStr{####1}{o}{\Fno}{\Fyes}
                 }}},
         columns/6/.style={ column name={长度}, dec sep align },
-        columns/7/.style={ column name={描述}, column type=m{8cm}|, verb string type },
-        every head row/.style={ before row=\cline{3-11}, after row=\cline{3-11} },
-        every last row/.style={ after row=\cline{3-11} },
+        columns/7/.style={ column name={描述}, column type=m{8cm}, verb string type },
+        %every head row/.style={ before row=\cline{3-11}, after row=\cline{3-11} },
+        %every last row/.style={ after row=\cline{3-11} },
         col sep=colon, header=false
     ]{#3}
-    \end{table}
-    \end{landscape}
+    }
+    \vskip 8mm
 }
 
 \title {\modtitle \\ \modsubtitle}
@@ -260,18 +302,18 @@
     \subsection{数据依赖}
         （略）
 
-
-    %\begin{landscape}
     \subsection{数据交换格式}
-        \input{TX-index}
-    %\end{landscape}
+        \begin{landscape}
+            \input{TX-index}
+        \end{landscape}
 
+    \clearpage
     \subsection{版本历史}
-        % \begin{center}
+        \begin{center}
         % \rowcolors{1}{white}{lightgray}
-        % \caption{版本历史} \centering
-        % \input{history}
-        % \end{center}
+        \caption{版本历史} \centering
+        \input{history}
+        \end{center}
 
 \section{索引}
 

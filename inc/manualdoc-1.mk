@@ -13,8 +13,7 @@ history.tex: manual.tex
 		--Tv=版本 \
 		--Td=日期 \
 		--Tl=变更项目 \
-		--Tw=10cm \
-		--Ts='c|c|>{\sl}p{10cm}' \
+		--Ts='c|c|>{\sl}p{11.5cm}' \
 		--Th='\caption{版本历史} \\ ' \
 		--Tb='$$\circ$$' \
 		>"$$CWD/history.tex"
