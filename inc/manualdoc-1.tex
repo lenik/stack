@@ -8,6 +8,7 @@
 \usepackage{mathabx}            % boxplus
 \usepackage{mathrsfs}           % mathscr
 \usepackage{keystroke}          % keystroke
+\usepackage{textcomp}           % textcurrency
 % \usepackage{MnSymbol}           % nequiv
 \usepackage[cm-default]{fontspec}
 
@@ -244,20 +245,26 @@
                     \IfStrEqCase{####1}{
                         {}{}
                         {Entity}{$\mathscr{I}$}
-                        {EntityAuto}{$\mathscr{I}$+}
-                        {EntitySpec}{$\mathscr{I}$+}
+                        {EntityAuto}{$\mathscr{I}^+$}
+                        {EntitySpec}{$\mathscr{I}^+$}
                         {CEntity}{$\mathscr{C}$}
-                        {CEntityAuto}{$\mathscr{C}$+}
-                        {CEntitySpec}{$\mathscr{C}$+}
+                        {CEntityAuto}{$\mathscr{C}^+$}
+                        {CEntitySpec}{$\mathscr{C}^+$}
                         {UIEntity}{$\mathscr{U}$}
-                        {UIEntityAuto}{$\mathscr{U}$+}
-                        {UIEntitySpec}{$\mathscr{U}$+}
+                        {UIEntityAuto}{$\mathscr{U}^+$}
+                        {UIEntitySpec}{$\mathscr{U}^+$}
                         {TreeEntity}{$\mathscr{T}$}
-                        {TreeEntityAuto}{$\mathscr{T}$+}
-                        {TreeEntitySpec}{$\mathscr{T}$+}
-                        {DictEntity}{典}
-                        {NameDict}{典+}
-                        {ProcessEntity}{过程}}[--]
+                        {TreeEntityAuto}{$\mathscr{T}^+$}
+                        {TreeEntitySpec}{$\mathscr{T}^+$}
+                        {DictEntity}{$\mathscr{D}$}
+                        {NameDict}{$\mathscr{D}$+}
+                        {MomentInterval}{$\mathscr{M}$}
+                        {MCValue}{\textcurrency}
+                        {AbstractItem}{$1$}
+                        {BatchArray}{$b^5$}
+                        {AbstractVerifyContext}{$\mathscr{V}$}
+                        {SingleVerifierSupport}{$\mathscr{V}_1$}
+                        {ProcessEntity}{$\mathscr{P}$}}[--]
                 }}},
         columns/1/.style={ column name={}, column type=c@{ }, string type,
             preproc cell content/.code={
