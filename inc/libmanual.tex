@@ -1,0 +1,238 @@
+
+\newcommand{\example}[1]{
+    \vskip .2cm
+    \doublebox{
+        \begin{minipage}{.9\linewidth}
+        \textbf{例：} #1
+        \end{minipage}
+    }
+    \vskip .5cm
+}
+
+\newcommand{\syntax}[1]{
+    \vskip .2cm
+    \doublebox{
+        \begin{minipage}{.9\linewidth}
+        #1
+        \end{minipage}
+    }
+    \vskip .5cm
+}
+
+\newcommand\screenshot[1]{
+    \vskip .1cm
+    \shadowbox{
+        \includegraphics[scale=0.35]{#1}
+    }
+    \vskip .5cm
+}
+
+\newcommand\button[1]{ \keystroke{#1} }
+\newcommand\textbox[1]{ \ovalbox{#1} }
+
+\newcommand\ol[1]{\begin{enumerate}{#1}\end{enumerate}}
+\newcommand\ul[1]{\begin{itemize}{#1}\end{itemize}}
+
+\newcounter{operation}
+\renewcommand\theoperation{\Roman{operation}}
+
+\newcommand\opset[2]{
+    \large{与 #1 相关的工作流有：}\normalsize
+    \setcounter{operation}{1}
+    \begin{itemize}[label=\DiamondShadowC]
+        \addtolength{\leftskip}{5mm}
+        #2
+    \end{itemize}
+}
+
+\newcommand\ops[2]{
+    \large{工作流\theoperation：按照下面所列的步骤进行#1。}\normalsize
+    \addtocounter{operation}{1}
+    \noexpandarg\IfStrEq{#2}{}{
+        （略）
+    }{
+        \begin{enumerate}
+            \addtolength{\leftskip}{8mm}
+            #2
+        \end{enumerate}
+    }
+}
+
+\newcommand\Fyes{$\bigcirc$}
+\newcommand\Fno{$\times$}
+
+\newcommand\makefeaturetable[1]{
+    \centering
+    %\begin{table}
+    \pgfplotstabletypeset[
+        begin table=\begin{longtable},
+        end table=\end{longtable},
+        empty header,
+        every first row/.append style={
+            before row={
+                \caption{数据特性} \\ \toprule
+                & 对象 & 类型 & 设计规模 & 访问控制 & 缓存 & 预置数据 & 审核支持 & 会计对象 & 工资采集 \\ \midrule
+              \endfirsthead
+                         \multicolumn{10}{l}{（……续前）} \\ \midrule
+                & 对象 & 类型 & 设计规模 & 访问控制 & 缓存 & 预置数据 & 审核支持 & 会计对象 & 工资采集 \\ \midrule
+              \endhead
+                \midrule \multicolumn{10}{r}{（参考后面继续……）} \\ \bottomrule
+              \endfoot
+                \midrule \multicolumn{10}{r}{（完）} \\ \bottomrule
+              \endlastfoot
+            }},
+        % name, label, type, scale, samples, attrs
+        alias/访问控制/.initial=2,
+        alias/缓存/.initial=5,
+        alias/审核支持/.initial=5,
+        alias/会计对象/.initial=5,
+        alias/工资采集/.initial=5,
+        columns={ 0, 1, 2, 3, 访问控制, 缓存, 4, 审核支持, 会计对象, 工资采集 },
+        columns/0/.style={ column name={}, column type=r|, string type },
+        columns/1/.style={ column name={对象}, string type },
+        columns/2/.style={ column name={类型}, string type,
+                string replace={E}{关系},
+                string replace={C}{系统},
+                string replace={Dict}{目录},
+                string replace={UI}{实体},
+                string replace={Tree}{结点},
+                string replace={Process}{过程},
+                string replace={MomentInterval}{记录},
+                string replace={Ext}{高级},
+                },
+        columns/3/.style={ column name={设计规模}, column type=r, std=0:6 },
+        columns/4/.style={ column name={预置数据}, string type,
+            preproc cell content/.code={
+                \pgfkeyssetvalue{/pgfplots/table/@cell content}{
+                    ####1
+                }}},
+        columns/访问控制/.style={ string type,
+            preproc cell content/.code={
+                \pgfkeyssetvalue{/pgfplots/table/@cell content}{
+                    \IfStrEqCase{####1}{
+                        {E}{\Fno}
+                        {Pool}{\Fno}}[\Fyes]
+                }}},
+        columns/缓存/.style={ string type,
+            preproc cell content/.code={
+                \pgfkeyssetvalue{/pgfplots/table/@cell content}{
+                    \IfSubStr{####1}{C}{\Fyes}{\Fno}
+                }}},
+        columns/审核支持/.style={ string type,
+            preproc cell content/.code={
+                \pgfkeyssetvalue{/pgfplots/table/@cell content}{
+                    \IfSubStr{####1}{V}{\Fyes}{\Fno}
+                }}},
+        columns/会计对象/.style={ string type,
+            preproc cell content/.code={
+                \pgfkeyssetvalue{/pgfplots/table/@cell content}{
+                    \IfSubStr{####1}{A}{\Fyes}{\Fno}
+                }}},
+        columns/工资采集/.style={ string type,
+            preproc cell content/.code={
+                \pgfkeyssetvalue{/pgfplots/table/@cell content}{
+                    \IfSubStr{####1}{S}{\Fyes}{\Fno}
+                }}},
+        %every head row/.style={ before row=\toprule, after row=\midrule },
+        %every last row/.style={ after row=\bottomrule },
+        col sep=comma, header=false
+        ]{\DIRNAME/#1}
+    %\end{table}
+}
+
+\newcommand\maketxtable[4]{
+    $\boxplus$ {\textbf{#1}}
+    \vskip 3mm
+    { \addtolength{\leftskip}{5mm} #4 }
+    \vskip 1mm
+    {
+    %\centering
+    \pgfplotstabletypeset[
+        begin table=\begin{longtable},
+        end table=\end{longtable},
+        empty header,
+        every first row/.append style={
+            before row={
+                \caption{#1 (#2) 的数据交换规范}  \\ \cline{3-11}
+                & & & 名称 & SQL 字段 & 要求 & 类型 & \multicolumn{2}{c}{长度} & 系统 & 说明 \\ \cline{3-11}
+              \endfirsthead
+                         \multicolumn{11}{l}{（……续前）} \\ \hdashline
+                & & & 名称 & SQL 字段 & 要求 & 类型 & \multicolumn{2}{c}{长度} & 系统 & 说明 \\ \cline{3-11}
+              \endhead
+                \cline{3-11} \multicolumn{11}{r}{（参考后面继续……）} \\ \hdashline
+              \endfoot
+                \cline{3-11}
+              \endlastfoot
+            }},
+        % 0      1    2     3      4        5      6    7
+        % group, num, name, label, sqlname, flags, len, description
+        alias/类型/.initial=5,
+        alias/系统/.initial=5,
+        alias/要求/.initial=5,
+        columns={ 0, 1, 2, 3, 4, 要求, 类型, 6, 系统, 7 },
+        columns/0/.style={ column name={}, column type=r@{}, string type,
+            preproc cell content/.code={
+                \pgfkeyssetvalue{/pgfplots/table/@cell content}{
+                    \IfStrEqCase{####1}{
+                        {}{}
+                        {Entity}{$\mathscr{I}$}
+                        {EntityAuto}{$\mathscr{I}^+$}
+                        {EntitySpec}{$\mathscr{I}^+$}
+                        {CEntity}{$\mathscr{C}$}
+                        {CEntityAuto}{$\mathscr{C}^+$}
+                        {CEntitySpec}{$\mathscr{C}^+$}
+                        {UIEntity}{$\mathscr{U}$}
+                        {UIEntityAuto}{$\mathscr{U}^+$}
+                        {UIEntitySpec}{$\mathscr{U}^+$}
+                        {TreeEntity}{$\mathscr{T}$}
+                        {TreeEntityAuto}{$\mathscr{T}^+$}
+                        {TreeEntitySpec}{$\mathscr{T}^+$}
+                        {DictEntity}{$\mathscr{D}$}
+                        {NameDict}{$\mathscr{D}$+}
+                        {MomentInterval}{$\mathscr{M}$}
+                        {MCValue}{\textcurrency}
+                        {AbstractItem}{$1$}
+                        {BatchArray}{$b^5$}
+                        {AbstractVerifyContext}{$\mathscr{V}$}
+                        {SingleVerifierSupport}{$\mathscr{V}_1$}
+                        {ProcessEntity}{$\mathscr{P}$}}[--]
+                }}},
+        columns/1/.style={ column name={}, column type=c@{ }, string type,
+            preproc cell content/.code={
+                \pgfkeyssetvalue{/pgfplots/table/@cell content}{
+                }}},
+        columns/2/.style={ column name={}, column type=r|, verb string type },
+        columns/3/.style={ column name={名称}, column type=c, string type },
+        columns/4/.style={ column name={SQL 字段}, column type=c, verb string type },
+        columns/系统/.style={ column type=c, string type,
+            preproc cell content/.code={
+                \pgfkeyssetvalue{/pgfplots/table/@cell content}{
+                    \IfSubStr{####1}{t}{\Fyes}{\Fno}
+                }}},
+        columns/类型/.style={ column type=c, string type,
+            preproc cell content/.code={
+                \pgfkeyssetvalue{/pgfplots/table/@cell content}{%
+                    \IfSubStr{####1}{DT}{日期/时间}{%
+                        \IfSubStr{####1}{D}{日期}{}%
+                        \IfSubStr{####1}{T}{时间}{}%
+                        }%
+                    \IfSubStr{####1}{N}{数值}{}%
+                    \IfSubStr{####1}{S}{字符串}{}%
+                    \IfSubStr{####1}{B}{标志位}{}%
+                    \IfSubStr{####1}{Z}{数据流}{}%
+                    \IfSubStr{####1}{R}{引用}{}%
+                }}},
+        columns/要求/.style={ column type=c, string type,
+            preproc cell content/.code={
+                \pgfkeyssetvalue{/pgfplots/table/@cell content}{
+                    \IfSubStr{####1}{o}{\Fno}{\Fyes}
+                }}},
+        columns/6/.style={ column name={长度}, dec sep align },
+        columns/7/.style={ column name={描述}, column type=m{8cm}, verb string type },
+        %every head row/.style={ before row=\cline{3-11}, after row=\cline{3-11} },
+        %every last row/.style={ after row=\cline{3-11} },
+        col sep=colon, header=false
+    ]{\DIRNAME/#3}
+    }
+    \vskip 8mm
+}

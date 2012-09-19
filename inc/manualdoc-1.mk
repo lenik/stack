@@ -1,11 +1,12 @@
 # vim: set filetype=make :
 
-g_incdir := $(dir $(lastword $(MAKEFILE_LIST)))
+g_incdir := $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
 
 tex_template := $(g_incdir)/manualdoc-1.tex
+tex_libmanual := $(g_incdir)/libmanual.tex
 
-manual-1.pdf: manual.tex history.tex $(tex_template)
-	xelatex -jobname=manual-1 '\nonstopmode \def\modtitle{$(TITLE)} \def\modsubtitle{$(SUBTITLE)} \input $(tex_template)'
+manual-1.pdf: manual.tex history.tex $(tex_template) $(tex_libmanual)
+	xelatex -jobname=manual-1 '\nonstopmode \def\DIRNAME{$(g_incdir)} \def\modtitle{$(TITLE)} \def\modsubtitle{$(SUBTITLE)} \input $(tex_template)'
 
 history.tex: manual.tex
 	CWD="$$PWD"; cd ..; \

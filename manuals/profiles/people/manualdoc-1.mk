@@ -1,0 +1,1 @@
+../../../inc/manualdoc-1.mk
