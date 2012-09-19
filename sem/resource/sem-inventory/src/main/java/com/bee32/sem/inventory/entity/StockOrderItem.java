@@ -22,6 +22,11 @@ import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.sem.inventory.util.BatchArray;
 import com.bee32.sem.world.thing.AbstractItem;
 
+/**
+ * 库存单据项目
+ *
+ * 库存单据的明细条目。
+ */
 @BatchSize(size = 100)
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -71,6 +76,8 @@ public class StockOrderItem
 
     /**
      * 所属定单
+     *
+     * 列出本条目的上级定单对象。
      */
     @ManyToOne(optional = false)
     public AbstractStockOrder<?> getParent() {
@@ -98,6 +105,8 @@ public class StockOrderItem
 
     /**
      * 物料
+     *
+     * 项目出示的物料。
      */
     @ManyToOne(optional = false)
     public Material getMaterial() {
@@ -115,6 +124,8 @@ public class StockOrderItem
 
     /**
      * 批号
+     *
+     * 提示出入库的产品批次。
      */
     @Embedded
     public BatchArray getBatchArray() {
@@ -125,8 +136,10 @@ public class StockOrderItem
         this.batchArray = batchArray;
     }
 
-    /*
+    /**
      * 有效期
+     *
+     * 物料的有效期，应该在该日期之前使用。
      */
     @Temporal(TemporalType.TIMESTAMP)
     public Date getExpirationDate() {
@@ -139,6 +152,9 @@ public class StockOrderItem
 
     /**
      * 库位
+     *
+     * 物料所在的库位。
+     *
      * <p>
      * 对于合并项，可能会丢失冲突的库位信息。
      *
@@ -155,6 +171,8 @@ public class StockOrderItem
 
     /**
      * 仓库
+     *
+     * 物料所在的仓库（应该和库位所在的仓库一致）。
      */
     @Redundant
     @ManyToOne
@@ -171,6 +189,8 @@ public class StockOrderItem
 
     /**
      * 项目状态
+     *
+     * 在条目上标志的附加状态。
      */
     @Transient
     public StockItemState getState() {
@@ -181,12 +201,17 @@ public class StockOrderItem
         this.state = state;
     }
 
+    /**
+     * 项目状态
+     *
+     * 在条目上标志的附加状态。
+     */
     @Column(name = "state", nullable = false)
-    char get_State() {
+    public char get_state() {
         return state.getValue();
     }
 
-    void set_State(char _state) {
+    public void set_state(char _state) {
         this.state = StockItemState.forValue(_state);
     }
 

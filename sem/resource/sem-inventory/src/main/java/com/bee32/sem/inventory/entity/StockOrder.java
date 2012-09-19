@@ -3,6 +3,11 @@ package com.bee32.sem.inventory.entity;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+/**
+ * 库存单据
+ *
+ * 普通库存单据，用于简单的库存作业。
+ */
 @Entity(name = "PlainStockOrder")
 @DiscriminatorValue("-")
 public class StockOrder

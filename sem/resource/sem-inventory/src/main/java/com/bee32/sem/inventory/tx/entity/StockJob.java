@@ -18,7 +18,12 @@ import com.bee32.sem.inventory.entity.AbstractStockOrder;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.process.base.ProcessEntity;
 
-//@MappedSuperclass
+/**
+ * 库存作业
+ *
+ * 库存相关的作业。
+ */
+// @MappedSuperclass
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 // @DiscriminatorColumn(name = "stereo", length = 3)
@@ -44,6 +49,11 @@ public class StockJob
         stockOrders = CopyUtils.copyList(o.stockOrders);
     }
 
+    /**
+     * 库存单据
+     *
+     * 和该作业相关的库存单据列表。
+     */
     @OneToMany(mappedBy = "job", targetEntity = AbstractStockOrder.class, orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<AbstractStockOrder<?>> getStockOrders() {

@@ -22,8 +22,6 @@ public class DeliveryNoteTakeOut
      * 送货单
      *
      * 本销售出库单对应的送货单。
-     *
-     * @return
      */
     @OneToOne(optional = false)
     public DeliveryNote getDeliveryNote() {

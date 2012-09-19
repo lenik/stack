@@ -20,7 +20,9 @@ import com.bee32.plover.ox1.c.CEntityAuto;
 import com.bee32.plover.ox1.color.Blue;
 
 /**
- * 物料的仓库选项
+ * 物料仓库选项
+ *
+ * 物料对应各个仓库的选项。
  */
 @Entity
 @Blue
@@ -53,6 +55,8 @@ public class MaterialWarehouseOption
 
     /**
      * 物料
+     *
+     * 相关的物料。
      */
     @NaturalId
     @ManyToOne(optional = false)
@@ -68,6 +72,8 @@ public class MaterialWarehouseOption
 
     /**
      * 仓库
+     *
+     * 选项针对的具体仓库。
      */
     @NaturalId
     @ManyToOne(optional = false)
@@ -82,6 +88,8 @@ public class MaterialWarehouseOption
     }
 
     /**
+     * 安全库存
+     *
      * 该仓库中的安全库存数量。默认为1。
      */
     @Column(scale = QTY_ITEM_SCALE, precision = QTY_ITEM_PRECISION, nullable = false)
@@ -94,9 +102,9 @@ public class MaterialWarehouseOption
     }
 
     /**
-     * 循环盘点周期 （天数）
+     * 循环盘点周期
      *
-     * 默认为1年。
+     * 单位为天数， 默认为1年。
      */
     @Column(nullable = false)
     public int getStkPeriod() {

@@ -10,7 +10,8 @@ TreeEntity:3:children:子对象集:children:Not:0:下一级对象的集合。
 ::depth:深度:depth:Nt:8:【冗余】树结点的深度。（根结点的深度为0）
 ::parent:父对象:parent:Rot:0:上一级对象，如订单项的父对象是订单。
 TreeEntityAuto:1:id:标识符:id:No:0:记录的标识符、主键。
-MaterialCategory:4:materialCount:（无名称）:material_count:No:8:（略）
-::materials:该类别的物料列表。:materials:No:0:（略）
-::partCount:（无名称）:part_count:No:8:（略）
+MaterialCategory:5:_materialType:形式类型:_material_type:S:1:物料的形式，如原材料(r)、成品(p)或半成品(s)。
+::materialCount:物料计数:material_count:No:8:该类别物料的数目。
+::materials:物料集:materials:No:0:该类别的物料列表。
+::partCount:组件计数:part_count:No:8:该类别组件的数目。
 ::topPartCount:顶层bom数:top_part_count:No:8:（略）

@@ -117,7 +117,9 @@ public class AbstractStockOrder<Item extends StockOrderItem>
     }
 
     /**
-     * 基准库存期结。
+     * 基准期结
+     *
+     * 基准的库存期结。
      */
     @ManyToOne(optional = true)
     public StockPeriod getBase() {
@@ -131,7 +133,10 @@ public class AbstractStockOrder<Item extends StockOrderItem>
     }
 
     /**
+     * 参考期结
+     *
      * 本单仅作为某期结的余单。（冗余）
+     *
      * <p>
      * （取值为 <code>null</code> 或与 {@link #getBase()} 相等）。
      *
@@ -147,7 +152,9 @@ public class AbstractStockOrder<Item extends StockOrderItem>
     }
 
     /**
-     * 科目，定义本单的用途。
+     * 科目
+     *
+     * 定义本单的用途。
      */
     @Transient
     public StockOrderSubject getSubject() {
@@ -160,6 +167,11 @@ public class AbstractStockOrder<Item extends StockOrderItem>
         this.subject = subject;
     }
 
+    /**
+     * 科目
+     *
+     * 定义本单的用途。
+     */
     @Column(name = "subject", length = 4, nullable = false)
     @Index(name = "##_subject")
     String get_subject() {
@@ -173,9 +185,10 @@ public class AbstractStockOrder<Item extends StockOrderItem>
     }
 
     /**
-     * 参考库存作业（可选）
-     * <p>
-     * 注意： 库存作业有多种类型，各自 id 独立，因此这里的参考库存作业具体对应为哪中作业类型要根据科目而定。
+     * 参考库存作业
+     *
+     * 库存作业有多种类型，各自 id 独立，因此这里的参考库存作业具体对应为哪中作业类型要根据科目而定。（可选）
+     *
      * <p>
      * 比如：
      * <ul>
@@ -194,9 +207,10 @@ public class AbstractStockOrder<Item extends StockOrderItem>
     }
 
     /**
-     * 参考库存作业（可选）
-     * <p>
-     * 注意： 库存作业有多种类型，各自 id 独立，因此这里的参考库存作业具体对应为哪中作业类型要根据科目而定。
+     * 参考库存作业
+     *
+     * 库存作业有多种类型，各自 id 独立，因此这里的参考库存作业具体对应为哪中作业类型要根据科目而定。（可选）
+     *
      * <p>
      * 比如：
      * <ul>
@@ -214,7 +228,9 @@ public class AbstractStockOrder<Item extends StockOrderItem>
     }
 
     /**
-     * 出库单对应的客户或入库单对应的供应商
+     * 相关组织
+     *
+     * 出库单对应的客户或入库单对应的供应商。
      */
     @ManyToOne
     public Party getOrg() {
@@ -226,7 +242,9 @@ public class AbstractStockOrder<Item extends StockOrderItem>
     }
 
     /**
-     * 对应的部门
+     * 相关部门
+     *
+     * 相关组织下的具体部门。
      */
     @ManyToOne
     public OrgUnit getOrgUnit() {
@@ -238,9 +256,9 @@ public class AbstractStockOrder<Item extends StockOrderItem>
     }
 
     /**
-     * 定单（首选）仓库。
+     * 主仓库。
      *
-     * 通常所有定单项目应该和本仓库一致。
+     * 出入库的仓库。通常所有定单项目应该和本仓库一致。
      */
     @ManyToOne(optional = false)
     public StockWarehouse getWarehouse() {
@@ -332,6 +350,9 @@ public class AbstractStockOrder<Item extends StockOrderItem>
 
     StockOrderVerifySupport verifyContext;
 
+    /**
+     * 审核上下文
+     */
     @Embedded
     @Override
     public StockOrderVerifySupport getVerifyContext() {

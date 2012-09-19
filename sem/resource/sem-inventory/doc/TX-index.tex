@@ -1,31 +1,22 @@
-\maketxtable{List of stock items.}{abstract\_stock\_item\_list}{TX.AbstractStockItemList.tab}{This class need not be an entity, however, it's subclassing from {@link TxEntity} to avoid of
-multiple inheriting which is not supported by Java language.}
 \maketxtable{库存通用定单}{abstract\_stock\_order}{TX.AbstractStockOrder.tab}{（无描述）}
-\maketxtable{物料}{material}{TX.Material.tab}{（无描述）}
-\maketxtable{用户定义的物料属性。
-<p>
-这些属性仅供查看用，即不能用做搜索的关键字，也不能用于任何计算。 如果需要搜索和计算，应该在 MaterialXP 上做扩展。}{material\_attribute}{TX.MaterialAttribute.tab}{（无描述）}
-\maketxtable{（无标题）}{material\_category}{TX.MaterialCategory.tab}{（无描述）}
-\maketxtable{（无标题）}{material\_preferred\_location}{TX.MaterialPreferredLocation.tab}{（无描述）}
-\maketxtable{物料的基准价格（随时间变化）。}{material\_price}{TX.MaterialPrice.tab}{（无描述）}
-\maketxtable{物料的仓库选项}{material\_warehouse\_option}{TX.MaterialWarehouseOption.tab}{（无描述）}
-\maketxtable{（无标题）}{materialxp}{TX.MaterialXP.tab}{（无描述）}
-\maketxtable{库存。通常一个企业只有一个库存（但有多个仓库）。}{stock\_inventory}{TX.StockInventory.tab}{（无描述）}
-\maketxtable{（无标题）}{stock\_inventoryxp}{TX.StockInventoryXP.tab}{（无描述）}
+\maketxtable{物料}{material}{TX.Material.tab}{物品材料。}
+\maketxtable{物料属性}{material\_attribute}{TX.MaterialAttribute.tab}{用户定义的物料属性。 这些属性仅供查看用，即不用做搜索的关键字，也不能用于任何计算。 如果需要搜索和计算，需要在 MaterialXP 上做扩展。}
+\maketxtable{物料分类}{material\_category}{TX.MaterialCategory.tab}{物料的类别。}
+\maketxtable{物料预设库位}{material\_preferred\_location}{TX.MaterialPreferredLocation.tab}{物料入库时的推荐的库存位置。}
+\maketxtable{物料价格}{material\_price}{TX.MaterialPrice.tab}{物料的基准价格（我方提供的基准报价）。}
+\maketxtable{物料仓库选项}{material\_warehouse\_option}{TX.MaterialWarehouseOption.tab}{物料对应各个仓库的选项。}
+\maketxtable{物料属性池}{materialxp}{TX.MaterialXP.tab}{用于提供附加的物料属性。}
+\maketxtable{逻辑库存}{stock\_inventory}{TX.StockInventory.tab}{相当于财务帐套的概念。通常一个企业只有一个库存（但有多个仓库）。}
+\maketxtable{逻辑库存属性池}{stock\_inventoryxp}{TX.StockInventoryXP.tab}{用于提供附加的库存属性。}
 \maketxtable{（无标题）}{stock\_item\_list}{TX.StockItemList.tab}{（无描述）}
-\maketxtable{库位。
-<p>
-Usage:
-<ul>
-<li>Unrelated regions could be disconnected.
-</ul>}{stock\_location}{TX.StockLocation.tab}{（无描述）}
-\maketxtable{（无标题）}{stock\_order}{TX.StockOrder.tab}{（无描述）}
-\maketxtable{（无标题）}{stock\_order\_item}{TX.StockOrderItem.tab}{（无描述）}
-\maketxtable{库存期结}{stock\_period}{TX.StockPeriod.tab}{（无描述）}
-\maketxtable{仓库}{stock\_warehouse}{TX.StockWarehouse.tab}{（无描述）}
-\maketxtable{（无标题）}{stocktaking\_order}{TX.StocktakingOrder.tab}{（无描述）}
-\maketxtable{（无标题）}{stocktaking\_order\_item}{TX.StocktakingOrderItem.tab}{（无描述）}
+\maketxtable{库位}{stock\_location}{TX.StockLocation.tab}{在某空间划分下，仓库中的具体位置。}
+\maketxtable{库存单据}{stock\_order}{TX.StockOrder.tab}{普通库存单据，用于简单的库存作业。}
+\maketxtable{库存单据项目}{stock\_order\_item}{TX.StockOrderItem.tab}{库存单据的明细条目。}
+\maketxtable{库存期结}{stock\_period}{TX.StockPeriod.tab}{库存运行一段时期的统计小结，用于提高系统的查询效率。}
+\maketxtable{仓库}{stock\_warehouse}{TX.StockWarehouse.tab}{用于存放物料的容器。}
+\maketxtable{盘点单}{stocktaking\_order}{TX.StocktakingOrder.tab}{仓库的盘点单据。}
+\maketxtable{盘单明细}{stocktaking\_order\_item}{TX.StocktakingOrderItem.tab}{仓库盘点的明细条目。}
 \maketxtable{库存单据审核策略}{stock\_order\_verify\_policy}{TX.StockOrderVerifyPolicy.tab}{（无描述）}
-\maketxtable{（无标题）}{stock\_job}{TX.StockJob.tab}{（无描述）}
+\maketxtable{库存作业}{stock\_job}{TX.StockJob.tab}{库存相关的作业。}
 \maketxtable{外协加工作业。}{stock\_outsourcing}{TX.StockOutsourcing.tab}{（无描述）}
 \maketxtable{库存调拨}{stock\_transfer}{TX.StockTransfer.tab}{（无描述）}

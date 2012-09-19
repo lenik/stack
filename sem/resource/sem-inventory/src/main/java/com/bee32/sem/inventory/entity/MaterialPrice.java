@@ -24,7 +24,9 @@ import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 
 /**
- * 物料的基准价格（随时间变化）。
+ * 物料价格
+ *
+ * 物料的基准价格（我方提供的基准报价）。
  */
 @Entity
 @Blue
@@ -56,6 +58,8 @@ public class MaterialPrice
 
     /**
      * 物料
+     *
+     * 报价的物料。
      */
     @NaturalId
     @ManyToOne(optional = false)
@@ -68,6 +72,8 @@ public class MaterialPrice
     }
 
     /**
+     * 起始时间
+     *
      * 价格有效起始时间。
      */
     @NaturalId

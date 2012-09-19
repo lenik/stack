@@ -3,6 +3,11 @@ package com.bee32.sem.inventory.entity;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+/**
+ * 盘点单
+ *
+ * 仓库的盘点单据。
+ */
 @Entity
 @DiscriminatorValue("STK")
 public class StocktakingOrder

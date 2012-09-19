@@ -17,7 +17,7 @@ SingleVerifierSupport:4:accepted1:审核通过:accepted1:B:1:审核的决策值�
 ::verifiedDate1:审核日期:verified_date1:DTo:0:审核操作的日期。
 ::verifier1:审核人:verifier1:Ro:0:审核操作的执行人。
 ProcessEntity:1:verifyContext:审核上下文:verify_context:Not:0:（略）
-StockJob:1:stockOrders:（无名称）:stock_orders:No:0:（略）
+StockJob:1:stockOrders:库存单据:stock_orders:No:0:和该作业相关的库存单据列表。
 StockOutsourcing:3:input:委外入库单:input:Ro:0:（略）
 ::output:委外出库单:output:Ro:0:（略）
 ::processedBy:加工单位:processed_by:Ro:0:（略）

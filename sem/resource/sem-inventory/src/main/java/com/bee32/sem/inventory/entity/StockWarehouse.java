@@ -17,6 +17,8 @@ import com.bee32.sem.people.entity.Person;
 
 /**
  * 仓库
+ *
+ * 用于存放物料的容器。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "stock_warehouse_seq", allocationSize = 1)
@@ -52,6 +54,8 @@ public class StockWarehouse
 
     /**
      * 仓库名称
+     *
+     * 系统中唯一的名字。
      */
     @NaturalId
     @Column(length = NAME_LENGTH)
@@ -64,7 +68,9 @@ public class StockWarehouse
     }
 
     /**
-     * 仓库地址。亦用作库位的地址前缀。
+     * 仓库地址
+     *
+     * 亦用作库位的地址前缀。
      */
     @Column(length = ADDRESS_LENGTH)
     public String getAddress() {
@@ -76,6 +82,8 @@ public class StockWarehouse
     }
 
     /**
+     * 电话号码
+     *
      * 仓库的联系电话。
      */
     @Column(length = PHONE_LENGTH)
@@ -89,6 +97,8 @@ public class StockWarehouse
 
     /**
      * 仓库负责人。
+     *
+     * 当仓库出现异常时的责任人。
      *
      * @see http://english.stackexchange.com/questions/32364/
      */

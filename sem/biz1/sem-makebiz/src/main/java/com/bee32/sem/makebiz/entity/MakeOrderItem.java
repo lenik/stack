@@ -77,8 +77,6 @@ public class MakeOrderItem
      * 定单
      *
      * 定单明细对应的主控类。
-     *
-     * @return
      */
     @NaturalId
     @ManyToOne(optional = false)
@@ -96,8 +94,6 @@ public class MakeOrderItem
      * 物料
      *
      * 定单明细对应的物料（产品）。
-     *
-     * @return
      */
     @NaturalId(mutable = true)
     @ManyToOne
@@ -113,8 +109,6 @@ public class MakeOrderItem
      * 交货时间
      *
      * 交货期限。
-     *
-     * @return
      */
     @Temporal(TemporalType.TIMESTAMP)
     public Date getDeadline() {
@@ -129,8 +123,6 @@ public class MakeOrderItem
      * 产品外部名称
      *
      * 和某个客户对应，具体对应客户在MakeOrder中。某个产品对于不同客户的不同叫法，对内为同一种产品(同一个物料)。
-     *
-     * @return
      */
     @Column(length = EXT_PROD_NAME_LENGTH)
     public String getExternalProductName() {
@@ -145,8 +137,6 @@ public class MakeOrderItem
      * 产品的外部技术参数要求
      *
      * 和某个客户对应，具体对应客户在MakeOrder中。不同的客户对某个产品有不同的技术要求，但对内为同一个产品，所以技术要求相同。
-     *
-     * @return
      */
     @Column(length = EXT_SPEC_LENGTH)
     public String getExternalModelSpec() {
@@ -161,8 +151,6 @@ public class MakeOrderItem
      * 外部单位
      *
      * 产品在外部名称时对应的单位。
-     *
-     * @return
      */
     @Column(length = EXT_UNIT_LENGTH)
     public String getExternalUnit() {
@@ -217,8 +205,6 @@ public class MakeOrderItem
      * 送货明细项目
      *
      * 一个定单明细对应多个送货明细项目，这样就可以看到送货情况了。
-     *
-     * @return
      */
     @OneToMany(mappedBy = "orderItem")
     public List<DeliveryNoteItem> getDeliveryNoteItems() {

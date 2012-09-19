@@ -17,9 +17,9 @@ import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.ox1.color.Blue;
 
 /**
- * 用户定义的物料属性。
- * <p>
- * 这些属性仅供查看用，即不能用做搜索的关键字，也不能用于任何计算。 如果需要搜索和计算，应该在 MaterialXP 上做扩展。
+ * 物料属性
+ *
+ * 用户定义的物料属性。 这些属性仅供查看用，即不用做搜索的关键字，也不能用于任何计算。 如果需要搜索和计算，需要在 MaterialXP 上做扩展。
  */
 @Entity
 @Blue
@@ -64,6 +64,11 @@ public class MaterialAttribute
         value = o.value;
     }
 
+    /**
+     * 物料
+     *
+     * 声明的物料。
+     */
     @NaturalId
     @ManyToOne
     public Material getMaterial() {
@@ -74,6 +79,11 @@ public class MaterialAttribute
         this.material = material;
     }
 
+    /**
+     * 名称
+     *
+     * 属性的名称（不可重复）。
+     */
     @NaturalId
     @Column(length = NAME_LENGTH, nullable = false)
     public String getName() {
@@ -85,7 +95,9 @@ public class MaterialAttribute
     }
 
     /**
-     * 额外的属性必须不能是大段文字。大段文字应该存放到附件。
+     * 内容
+     *
+     * 属性的内容。 额外的属性必须不能是大段文字。大段文字应该存放到附件。
      */
     @Column(length = VALUE_LENGTH)
     @Index(name = "MaterialAttributeValue")

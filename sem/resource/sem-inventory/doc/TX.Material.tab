@@ -15,15 +15,15 @@ Thing:6:barCode:条形码:bar_code:Sot:30:打印在小张白纸上的图形条�
 ::serial:编码:serial:Sot:32:物品编码、物品序列号等。
 ::unit:物品单位:unit:Rot:0:物品的衡量单位。
 ::unitConv:单位换算表:unit_conv:Rot:0:物品采用的单位换算表。
-Material:12:alarmAhead:提前报警天数:alarm_ahead:N:8:（略）
-::attachments:附件文件。:attachments:No:0:（略）
-::attributes:物料附加的属性。:attributes:No:0:（此属性不可索引）
-::category:物料类别:category:Ro:0:（略）
-::netWeight:净重（单位：克）:net_weight:No:8:（略）
-::options:（无名称）:options:No:0:（略）
-::packageHeight:装箱高度（单位：厘米）:package_height:No:8:（略）
-::packageLength:装箱长度（单位：厘米）:package_length:No:8:（略）
-::packageWeight:毛重（单位：克）:package_weight:No:8:（略）
-::packageWidth:装箱宽度（单位：厘米）:package_width:No:8:（略）
-::preferredLocations:（无名称）:preferred_locations:No:0:（略）
-::prices:Get the prices list, the latest price the first.:prices:No:0:（略）
+Material:12:alarmAhead:预警:alarm_ahead:N:8:当库存中的物料不够充足时提前报警的天数。
+::attachments:附件:attachments:No:0:附加的相关文件列表。
+::attributes:属性:attributes:No:0:物料附加的属性列表。
+::category:分类:category:Ro:0:物料的类别。
+::netWeight:净重:net_weight:No:8:不包括装箱的重量（单位：克）。
+::options:仓库选项:options:No:0:物料对应各个仓库的选项。
+::packageHeight:高度:package_height:No:8:装箱的高度（单位：厘米）。
+::packageLength:长度:package_length:No:8:装箱的长度（单位：厘米）。
+::packageWeight:毛重:package_weight:No:8:包括装箱的重量（单位：克）。
+::packageWidth:宽度:package_width:No:8:装箱的宽度（单位：厘米）。
+::preferredLocations:预设库位:preferred_locations:No:0:物料入库时的推荐库位。
+::prices:物料价格:prices:No:0:物料的我方报价。

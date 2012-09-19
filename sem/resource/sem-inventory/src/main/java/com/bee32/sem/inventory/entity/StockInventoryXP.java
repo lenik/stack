@@ -5,6 +5,11 @@ import javax.persistence.SequenceGenerator;
 
 import com.bee32.plover.ox1.xp.XPool30;
 
+/**
+ * 逻辑库存属性池
+ *
+ * 用于提供附加的库存属性。
+ */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "stock_inventoryxp_seq", allocationSize = 1)
 public class StockInventoryXP

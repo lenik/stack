@@ -18,22 +18,10 @@ SingleVerifierSupport:4:accepted1:审核通过:accepted1:B:1:审核的决策值�
 ::rejectedReason1:拒绝原因:rejected_reason1:So:80:审核责任人填写的附加消息。
 ::verifiedDate1:审核日期:verified_date1:DTo:0:审核操作的日期。
 ::verifier1:审核人:verifier1:Ro:0:审核操作的执行人。
-AbstractStockOrder:7:base:基准库存期结。:base:Ro:0:（略）
-::job:参考库存作业（可选）
-<p>
-注意： 库存作业有多种类型，各自 id 独立，因此这里的参考库存作业具体对应为哪中作业类型要根据科目而定。
-<p>
-比如：
-<ul>
-<li> {@link StockOrderSubject#XFER_IN 调拨入库} 和 {@link StockOrderSubject#XFER_OUT 调拨出库} 对应为
-{@link StockTransfer 库存调拨作业}。
-<li> {@link StockOrderSubject#OSP_OUT 委外出库} 和 {@link StockOrderSubject#OSP_IN 委外入库} 对应为
-{@link StockOutsourcing 委外加工作业}。
-</ul>:job:Ro:0:（略）
-::org:出库单对应的客户或入库单对应的供应商:org:Ro:0:（略）
-::orgUnit:对应的部门:org_unit:Ro:0:（略）
-::spec:本单仅作为某期结的余单。（冗余）
-<p>
-（取值为 <code>null</code> 或与 {@link #getBase()} 相等）。:spec:Ro:0:（略）
-::verifyContext:（无名称）:verify_context:No:0:（略）
-::warehouse:定单（首选）仓库。:warehouse:Ro:0:通常所有定单项目应该和本仓库一致。
+AbstractStockOrder:7:base:基准期结:base:Ro:0:基准的库存期结。
+::job:参考库存作业:job:Ro:0:库存作业有多种类型，各自 id 独立，因此这里的参考库存作业具体对应为哪中作业类型要根据科目而定。（可选）
+::org:相关组织:org:Ro:0:出库单对应的客户或入库单对应的供应商。
+::orgUnit:相关部门:org_unit:Ro:0:相关组织下的具体部门。
+::spec:参考期结:spec:Ro:0:本单仅作为某期结的余单。（冗余）
+::verifyContext:审核上下文:verify_context:No:0:（略）
+::warehouse:主仓库。:warehouse:Ro:0:出入库的仓库。通常所有定单项目应该和本仓库一致。

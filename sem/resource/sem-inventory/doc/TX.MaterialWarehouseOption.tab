@@ -5,7 +5,7 @@ Entity:4:altId:次标识符:alt_id:Sot:20:用于标识特定的样本数据。
 CEntity:2:aclId:安全策略:acl_id:Not:8:该记录上启用的安全策略的ID。
 ::owner:属主:owner:Rot:0:记录的拥有者。属主用户对记录拥有所有权限，除非记录被系统锁定。
 CEntityAuto:1:id:标识符:id:No:0:记录的标识符、主键。
-MaterialWarehouseOption:4:material:物料:material:Ro:0:（略）
-::safetyStock:该仓库中的安全库存数量。默认为1。:safety_stock:N:21.4:（略）
-::stkPeriod:循环盘点周期 （天数）:stk_period:N:8:默认为1年。
-::warehouse:仓库:warehouse:Ro:0:（略）
+MaterialWarehouseOption:4:material:物料:material:Ro:0:相关的物料。
+::safetyStock:安全库存:safety_stock:N:21.4:该仓库中的安全库存数量。默认为1。
+::stkPeriod:循环盘点周期:stk_period:N:8:单位为天数， 默认为1年。
+::warehouse:仓库:warehouse:Ro:0:选项针对的具体仓库。

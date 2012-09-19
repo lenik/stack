@@ -17,7 +17,7 @@ SingleVerifierSupport:4:accepted1:审核通过:accepted1:B:1:审核的决策值�
 ::verifiedDate1:审核日期:verified_date1:DTo:0:审核操作的日期。
 ::verifier1:审核人:verifier1:Ro:0:审核操作的执行人。
 ProcessEntity:1:verifyContext:审核上下文:verify_context:Not:0:（略）
-StockJob:1:stockOrders:（无名称）:stock_orders:No:0:（略）
+StockJob:1:stockOrders:库存单据:stock_orders:No:0:和该作业相关的库存单据列表。
 MaterialPlan:3:items:明细:items:No:0:物料计划明细列表。
 ::order:定单:order:Ro:0:外购产品，直接由定单生成。这里即为对应的定单。
 ::task:生产任务:task:Ro:0:物料计划对应的生产任务。

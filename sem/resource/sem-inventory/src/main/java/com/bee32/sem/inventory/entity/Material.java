@@ -26,6 +26,8 @@ import com.bee32.sem.world.thing.Thing;
 
 /**
  * 物料
+ *
+ * 物品材料。
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "material_seq", allocationSize = 1)
@@ -105,7 +107,9 @@ public class Material
     }
 
     /**
-     * 物料类别
+     * 分类
+     *
+     * 物料的类别。
      */
     @ManyToOne(optional = false)
     public MaterialCategory getCategory() {
@@ -119,7 +123,9 @@ public class Material
     }
 
     /**
-     * 提前报警天数
+     * 预警
+     *
+     * 当库存中的物料不够充足时提前报警的天数。
      */
     @Column(nullable = false)
     public int getAlarmAhead() {
@@ -131,7 +137,9 @@ public class Material
     }
 
     /**
-     * 装箱宽度（单位：厘米）
+     * 宽度
+     *
+     * 装箱的宽度（单位：厘米）。
      */
     public int getPackageWidth() {
         return packageWidth;
@@ -142,7 +150,9 @@ public class Material
     }
 
     /**
-     * 装箱高度（单位：厘米）
+     * 高度
+     *
+     * 装箱的高度（单位：厘米）。
      */
     public int getPackageHeight() {
         return packageHeight;
@@ -153,7 +163,9 @@ public class Material
     }
 
     /**
-     * 装箱长度（单位：厘米）
+     * 长度
+     *
+     * 装箱的长度（单位：厘米）。
      */
     public int getPackageLength() {
         return packageLength;
@@ -164,7 +176,9 @@ public class Material
     }
 
     /**
-     * 毛重（单位：克）
+     * 毛重
+     *
+     * 包括装箱的重量（单位：克）。
      */
     public int getPackageWeight() {
         return packageWeight;
@@ -175,7 +189,9 @@ public class Material
     }
 
     /**
-     * 净重（单位：克）
+     * 净重
+     *
+     * 不包括装箱的重量（单位：克）。
      */
     public int getNetWeight() {
         return netWeight;
@@ -186,7 +202,9 @@ public class Material
     }
 
     /**
-     * 物料附加的属性。
+     * 属性
+     *
+     * 物料附加的属性列表。
      *
      * （此属性不可索引）
      */
@@ -227,7 +245,9 @@ public class Material
     }
 
     /**
-     * 附件文件。
+     * 附件
+     *
+     * 附加的相关文件列表。
      */
     @ElementCollection
     @JoinTable(name = "MaterialAttachment", //
@@ -242,6 +262,11 @@ public class Material
         this.attachments = attachments;
     }
 
+    /**
+     * 仓库选项
+     *
+     * 物料对应各个仓库的选项。
+     */
     @OneToMany(mappedBy = "material", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<MaterialWarehouseOption> getOptions() {
@@ -266,6 +291,11 @@ public class Material
         return option;
     }
 
+    /**
+     * 预设库位
+     *
+     * 物料入库时的推荐库位。
+     */
     @OneToMany(mappedBy = "material", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<MaterialPreferredLocation> getPreferredLocations() {
@@ -281,6 +311,10 @@ public class Material
     }
 
     /**
+     * 物料价格
+     *
+     * 物料的我方报价。
+     *
      * Get the prices list, the latest price the first.
      *
      * @return Non-<code>null</code> price list.
@@ -313,6 +347,10 @@ public class Material
     }
 
     /**
+     * 最新价格
+     *
+     * 物料最近一次我方的报价。
+     *
      * Get the latest material price.
      *
      * @return The latest material. <code>null</code> if there isn't any material price defined.

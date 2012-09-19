@@ -14,7 +14,10 @@ import com.bee32.plover.ox1.tree.TreeEntityAuto;
 import com.bee32.sem.world.thing.Unit;
 
 /**
- * 库位。
+ * 库位
+ *
+ * 在某空间划分下，仓库中的具体位置。
+ *
  * <p>
  * Usage:
  * <ul>
@@ -76,15 +79,14 @@ public class StockLocation
 
     /**
      * 所属仓库
+     *
+     * 库位所在的仓库。
      */
     @ManyToOne(optional = false)
     public StockWarehouse getWarehouse() {
         return warehouse;
     }
 
-    /**
-     * 所属仓库
-     */
     public void setWarehouse(StockWarehouse warehouse) {
         if (warehouse == null)
             throw new NullPointerException("warehouse");
@@ -92,48 +94,42 @@ public class StockLocation
     }
 
     /**
-     * 库位 X 位置信息
+     * X坐标
+     *
+     * 库位 X 位置信息。
      */
     @Column(nullable = false)
     public double getX() {
         return x;
     }
 
-    /**
-     * 库位 X 位置信息
-     */
-
     public void setX(double x) {
         this.x = x;
     }
 
     /**
-     * 库位 Y 位置信息
+     * Y坐标
+     *
+     * 库位 Y 位置信息。
      */
     @Column(nullable = false)
     public double getY() {
         return y;
     }
 
-    /**
-     * 库位 Y 位置信息
-     */
-
     public void setY(double y) {
         this.y = y;
     }
 
     /**
-     * 库位 Z 位置信息
+     * Z坐标
+     *
+     * 库位 Z 位置信息。
      */
     @Column(nullable = false)
     public double getZ() {
         return z;
     }
-
-    /**
-     * 库位 Z 位置信息
-     */
 
     public void setZ(double z) {
         this.z = z;
@@ -141,6 +137,8 @@ public class StockLocation
 
     /**
      * 容量
+     *
+     * 库位的容量，根据所存放的物料种类，容量单位可能不同。
      */
     @Column(scale = QTY_ITEM_SCALE, precision = QTY_ITEM_PRECISION)
     public BigDecimal getCapacity() {
@@ -153,6 +151,8 @@ public class StockLocation
 
     /**
      * 容量单位
+     *
+     * 库位容量的单位，根据所存放的物料种类，容量单位可能不同。
      */
     @ManyToOne
     public Unit getCapacityUnit() {
@@ -164,7 +164,9 @@ public class StockLocation
     }
 
     /**
-     * 容量单位提示（如“长度”、“容积”等）
+     * 单位提示
+     *
+     * 容量的单位提示（如“长度”、“容积”等）。
      */
     @Column(length = CAPACITY_UNIT_HINT_LENGTH)
     public String getCapacityUnitHint() {
@@ -176,7 +178,9 @@ public class StockLocation
     }
 
     /**
-     * 库位等级
+     * 等级
+     *
+     * 库位等级。
      */
     @Column(nullable = false)
     public int getRank() {

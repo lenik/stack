@@ -17,7 +17,9 @@ import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.xp.EntityExt;
 
 /**
- * 库存。通常一个企业只有一个库存（但有多个仓库）。
+ * 逻辑库存
+ *
+ * 相当于财务帐套的概念。通常一个企业只有一个库存（但有多个仓库）。
  */
 @Entity
 @Green
@@ -54,7 +56,9 @@ public class StockInventory
     }
 
     /**
-     * 逻辑库存名称
+     * 名称
+     *
+     * 逻辑库存的名称。
      */
     @Column(length = NAME_LENGTH)
     public String getName() {
@@ -66,7 +70,9 @@ public class StockInventory
     }
 
     /**
-     * 库存快照列表
+     * 快照集
+     *
+     * 库存的期结快照列表。
      */
     @OneToMany(mappedBy = "inventory", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
@@ -80,6 +86,8 @@ public class StockInventory
 
     /**
      * 当前工作拷贝
+     *
+     * 当前已检出的库存期结。
      */
     @OneToOne(orphanRemoval = true)
     @Cascade({ CascadeType.ALL })

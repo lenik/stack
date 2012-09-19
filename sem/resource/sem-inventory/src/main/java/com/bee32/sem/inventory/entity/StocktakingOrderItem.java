@@ -7,6 +7,11 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
+/**
+ * 盘单明细
+ *
+ * 仓库盘点的明细条目。
+ */
 @Entity
 @DiscriminatorValue("STK")
 public class StocktakingOrderItem
@@ -29,6 +34,11 @@ public class StocktakingOrderItem
         expectedQuantity = o.expectedQuantity;
     }
 
+    /**
+     * 期望数量
+     *
+     * 盘点的期望数量。
+     */
     @Column(name = "quantity1", precision = QTY_ITEM_PRECISION, scale = QTY_ITEM_SCALE)
     public BigDecimal getExpectedQuantity() {
         return expectedQuantity;

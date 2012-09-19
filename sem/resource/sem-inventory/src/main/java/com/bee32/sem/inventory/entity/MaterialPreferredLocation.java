@@ -15,6 +15,11 @@ import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.color.Blue;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 
+/**
+ * 物料预设库位
+ *
+ * 物料入库时的推荐的库存位置。
+ */
 @Entity
 @Blue
 @SequenceGenerator(name = "idgen", sequenceName = "material_preferred_location_seq", allocationSize = 1)
@@ -51,6 +56,8 @@ public class MaterialPreferredLocation
 
     /**
      * 物料
+     *
+     * 相关的物料。
      */
     @NaturalId
     @ManyToOne
@@ -63,7 +70,9 @@ public class MaterialPreferredLocation
     }
 
     /**
-     * 建议库位。
+     * 库位
+     *
+     * 建议存放的库位。
      */
     @NaturalId
     @ManyToOne
@@ -78,7 +87,9 @@ public class MaterialPreferredLocation
     }
 
     /**
-     * 是否永久库存。
+     * 永久标志
+     *
+     * 是否为永久库存。
      */
     @Column(nullable = false)
     public boolean isPermanent() {

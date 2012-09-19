@@ -20,6 +20,8 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
 
 /**
  * 库存期结
+ *
+ * 库存运行一段时期的统计小结，用于提高系统的查询效率。
  */
 @Entity
 @Green
@@ -69,7 +71,9 @@ public class StockPeriod
     }
 
     /**
-     * 期结类型（仅用于分类，没有实际功能）。
+     * 期结类型
+     *
+     * （仅用于分类，没有实际功能）。
      */
     @Transient
     public StockPeriodType getType() {
@@ -82,17 +86,24 @@ public class StockPeriod
         this.type = type;
     }
 
+    /**
+     * 期结类型
+     *
+     * （仅用于分类，没有实际功能）。
+     */
     @Column(name = "type", nullable = false)
-    char get_Type() {
+    public char get_type() {
         return type.getValue();
     }
 
-    void set_Type(char _type) {
+    public void set_type(char _type) {
         this.type = StockPeriodType.forValue(_type);
     }
 
     /**
-     * 是否已检出为工作版本
+     * 检出标志
+     *
+     * 是否已检出为工作版本。
      */
     public boolean isCheckedOut() {
         return checkedOut;
@@ -104,6 +115,8 @@ public class StockPeriod
 
     /**
      * 期结余单
+     *
+     * 期结相关的余单集合。
      */
     @Redundant
     @OneToMany(mappedBy = "spec", orphanRemoval = true)
@@ -132,6 +145,11 @@ public class StockPeriod
         return null;
     }
 
+    /**
+     * 实例单据
+     *
+     * 基于本期结的库存单据列表。
+     */
     @OneToMany(mappedBy = "base")
     @OrderBy("createdDate DESC")
     public List<AbstractStockOrder<?>> getOrders() {

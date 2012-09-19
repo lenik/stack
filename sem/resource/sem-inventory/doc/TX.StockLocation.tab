@@ -10,11 +10,11 @@ TreeEntity:3:children:子对象集:children:Not:0:下一级对象的集合。
 ::depth:深度:depth:Nt:8:【冗余】树结点的深度。（根结点的深度为0）
 ::parent:父对象:parent:Rot:0:上一级对象，如订单项的父对象是订单。
 TreeEntityAuto:1:id:标识符:id:No:0:记录的标识符、主键。
-StockLocation:8:capacity:容量:capacity:No:21.4:（略）
-::capacityUnit:容量单位:capacity_unit:Ro:0:（略）
-::capacityUnitHint:容量单位提示（如“长度”、“容积”等）:capacity_unit_hint:So:30:（略）
-::rank:库位等级:rank:N:8:（略）
-::warehouse:所属仓库:warehouse:Ro:0:（略）
-::x:库位 X 位置信息:x:N:15:（略）
-::y:库位 Y 位置信息:y:N:15:（略）
-::z:库位 Z 位置信息:z:N:15:（略）
+StockLocation:8:capacity:容量:capacity:No:21.4:库位的容量，根据所存放的物料种类，容量单位可能不同。
+::capacityUnit:容量单位:capacity_unit:Ro:0:库位容量的单位，根据所存放的物料种类，容量单位可能不同。
+::capacityUnitHint:单位提示:capacity_unit_hint:So:30:容量的单位提示（如“长度”、“容积”等）。
+::rank:等级:rank:N:8:库位等级。
+::warehouse:所属仓库:warehouse:Ro:0:库位所在的仓库。
+::x:X坐标:x:N:15:库位 X 位置信息。
+::y:Y坐标:y:N:15:库位 Y 位置信息。
+::z:Z坐标:z:N:15:库位 Z 位置信息。

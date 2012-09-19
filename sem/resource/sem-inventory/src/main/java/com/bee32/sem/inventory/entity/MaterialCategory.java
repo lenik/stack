@@ -15,6 +15,11 @@ import org.hibernate.annotations.Formula;
 import com.bee32.plover.ox1.config.BatchConfig;
 import com.bee32.plover.ox1.tree.TreeEntityAuto;
 
+/**
+ * 物料分类
+ *
+ * 物料的类别。
+ */
 @Entity
 @BatchSize(size = BatchConfig.TREE)
 @SequenceGenerator(name = "idgen", sequenceName = "material_category_seq", allocationSize = 1)
@@ -70,7 +75,9 @@ public class MaterialCategory
     }
 
     /**
-     * 该类别采用的代码生成器
+     * 生成器
+     *
+     * 该类别采用的代码生成器。
      */
     @Transient
     public CodeGenerator getCodeGenerator() {
@@ -84,6 +91,10 @@ public class MaterialCategory
     }
 
     /**
+     * 生成器
+     *
+     * 该类别采用的代码生成器。
+     *
      * 代码生成器的枚举值，以后可能会加入（表达式）构造参数，故不用 char 而用 string。
      */
     @Column(name = "codeGenerator", nullable = false)
@@ -104,6 +115,8 @@ public class MaterialCategory
     }
 
     /**
+     * 物料集
+     *
      * 该类别的物料列表。
      */
     @OneToMany(mappedBy = "category")
@@ -111,41 +124,10 @@ public class MaterialCategory
         return materials;
     }
 
-    @Formula("(select count(*) from material m where m.category=id)")
-    public int getMaterialCount() {
-        return materialCount;
-    }
-
-    public void setMaterialCount(int materialCount) {
-        this.materialCount = materialCount;
-    }
-
-    @Formula("(select count(*) from part p where p.category=id)")
-    public int getPartCount() {
-        return partCount;
-    }
-
-    public void setPartCount(int partCount) {
-        this.partCount = partCount;
-    }
-
     public void setMaterials(List<Material> materials) {
         if (materials == null)
             throw new NullPointerException("materials");
         this.materials = materials;
-    }
-
-    /**
-     * 顶层bom数
-     * @return
-     */
-    @Formula("(select count(*) from part p where p.category=id and p.id not in (select distinct pi.part from part_item pi where pi.part is not null))")
-    public int getTopPartCount() {
-        return topPartCount;
-    }
-
-    public void setTopPartCount(int topPartCount) {
-        this.topPartCount = topPartCount;
     }
 
     public void addMaterial(Material material) {
@@ -160,26 +142,70 @@ public class MaterialCategory
         }
     }
 
+    /**
+     * 物料计数
+     *
+     * 该类别物料的数目。
+     */
+    @Formula("(select count(*) from material m where m.category=id)")
+    public int getMaterialCount() {
+        return materialCount;
+    }
+
+    public void setMaterialCount(int materialCount) {
+        this.materialCount = materialCount;
+    }
+
+    /**
+     * 组件计数
+     *
+     * 该类别组件的数目。
+     */
+    @Formula("(select count(*) from part p where p.category=id)")
+    public int getPartCount() {
+        return partCount;
+    }
+
+    public void setPartCount(int partCount) {
+        this.partCount = partCount;
+    }
+
+    /**
+     * 顶层bom数
+     */
+    @Formula("(select count(*) from part p where p.category=id and p.id not in (select distinct pi.part from part_item pi where pi.part is not null))")
+    public int getTopPartCount() {
+        return topPartCount;
+    }
+
+    public void setTopPartCount(int topPartCount) {
+        this.topPartCount = topPartCount;
+    }
+
+    /**
+     * 形式类型
+     *
+     * 物料的形式，如原材料(r)、成品(p)或半成品(s)。
+     */
     @Column(name = "material_type", nullable = false)
-    char get_materialType() {
+    public char get_materialType() {
         return materialType.getValue();
     }
 
-    void set_materialType(char _materialType) {
+    public void set_materialType(char _materialType) {
         materialType = MaterialType.forValue(_materialType);
     }
 
     /**
-     * 类型
+     * 形式类型
+     *
+     * 物料的形式，如原材料(r)、成品(p)或半成品(s)。
      */
     @Transient
     public MaterialType getMaterialType() {
         return materialType;
     }
 
-    /**
-     * 类型
-     */
     public void setMaterialType(MaterialType materialType) {
         if (materialType == null)
             throw new NullPointerException("materialType");

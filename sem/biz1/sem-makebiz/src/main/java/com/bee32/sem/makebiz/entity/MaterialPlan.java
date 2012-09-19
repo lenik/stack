@@ -53,8 +53,6 @@ public class MaterialPlan
      * 生产任务
      *
      * 物料计划对应的生产任务。
-     *
-     * @return
      */
     @ManyToOne
     public MakeTask getTask() {
@@ -69,8 +67,6 @@ public class MaterialPlan
      * 定单
      *
      * 外购产品，直接由定单生成。这里即为对应的定单。
-     *
-     * @return
      */
     @ManyToOne
     public MakeOrder getOrder() {
@@ -85,8 +81,6 @@ public class MaterialPlan
      * 明细
      *
      * 物料计划明细列表。
-     *
-     * @return
      */
     @OneToMany(mappedBy = "materialPlan", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
@@ -130,4 +124,5 @@ public class MaterialPlan
         for (int index = items.size() - 1; index >= 0; index--)
             items.get(index).setIndex(index);
     }
+
 }

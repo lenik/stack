@@ -7,7 +7,8 @@ CEntity:2:aclId:安全策略:acl_id:Not:8:该记录上启用的安全策略的ID
 UIEntity:2:description:描述:description:Sot:200:对数据的简略的描述。（通常不同于备注）
 ::label:标签:label:Sot:100:记录的标识标签，简短的概要、或通常是唯一的显示名称。
 UIEntityAuto:1:id:标识符:id:Not:0:记录的标识符、主键。
-StockPeriod:4:checkedOut:是否已检出为工作版本:checked_out:Bo:1:（略）
+StockPeriod:5:_type:期结类型:_type:S:1:（仅用于分类，没有实际功能）。
+::checkedOut:检出标志:checked_out:Bo:1:是否已检出为工作版本。
 ::inventory:（无名称）:inventory:Ro:0:（略）
-::orders:（无名称）:orders:No:0:（略）
-::packOrders:期结余单:pack_orders:No:0:（略）
+::orders:实例单据:orders:No:0:基于本期结的库存单据列表。
+::packOrders:期结余单:pack_orders:No:0:期结相关的余单集合。

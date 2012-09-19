@@ -5,7 +5,7 @@ import java.util.Collection;
 import com.bee32.plover.arch.util.EnumAlt;
 
 /**
- * 库存项状态。
+ * 库存项状态
  */
 public class StockItemState
         extends EnumAlt<Character, StockItemState> {
