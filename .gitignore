@@ -23,6 +23,7 @@ nohup.out
 *.ind
 *.lof
 *.lot
+*.toc
 *.xdv
 *.pdf
 history.tex

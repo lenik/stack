@@ -1,8 +1,0 @@
-\contentsline {section}{\numberline {1}采购请求管理}{2}{section.0.1}
-\contentsline {section}{\numberline {2}询价和挑选供应商}{4}{section.0.2}
-\contentsline {section}{\numberline {3}附录}{6}{section.0.3}
-\contentsline {subsection}{\numberline {3.1}设计参数}{6}{subsection.0.3.1}
-\contentsline {subsection}{\numberline {3.2}数据依赖}{8}{subsection.0.3.2}
-\contentsline {subsection}{\numberline {3.3}数据交换格式}{8}{subsection.0.3.3}
-\contentsline {subsection}{\numberline {3.4}版本历史}{8}{subsection.0.3.4}
-\contentsline {section}{\numberline {4}索引}{14}{section.0.4}
