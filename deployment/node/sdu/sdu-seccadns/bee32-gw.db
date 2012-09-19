@@ -6,6 +6,8 @@ $TTL 24H
 
 $TTL 1H
 
+bee32.com.              A       60.190.203.72           ; GFW 主IP
+
 shaoxing-1.gateway      A       60.190.203.72           ; 绍兴IDC机房 服务器-1
 zjhf.gateway            CNAME   bee32.8866.org.         ; 三元风机 厂房私服
 center-1.gateway        CNAME   bee32.8866.org.         ; 软件部服务器

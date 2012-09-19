@@ -50,6 +50,7 @@ blog                    CNAME   s-dev           ; 开发者日志
 
 cdn                     CNAME   1               ; 内容分发网络
 *.cdn                   CNAME   cdn             ; 静态资源
+ca                      CNAME   cdn
 
 ci                      CNAME   aut-dev         ; 连续集成系统
 forum                   CNAME   s-dev           ; 工程论坛
