@@ -71,6 +71,27 @@
 
 \input{\DIRNAME/libmanual.tex}
 
+\newcommand\modulechapter[2]{
+    \chapter{#1}
+    \def\DIRNAME{../../../#2/doc}
+    \subimport{\DIRNAME/}{manual.tex}
+
+    \section{扩展应用参考}
+
+    \subsection{设计参数}
+        \begin{landscape}
+        \makefeaturetable{matrix.csv}
+        \end{landscape}
+
+    \subsection{数据依赖}
+        （略）
+
+    \subsection{数据交换格式}
+        \begin{landscape}
+        \input{\DIRNAME/TX-index}
+        \end{landscape}
+}
+
 \title {\modtitle \\ \modsubtitle \\ 使用说明书}
 \author{SECCA项目组 \\ $\infty$ \small{海宁市智恒软件有限公司}}
 
@@ -85,30 +106,17 @@
 \def\DIRNAME{.}
 \import{\DIRNAME/}{profile}
 
-\section{附录}
-
-    \subsection{设计参数}
-        \begin{landscape}
-%        \makefeaturetable{matrix.csv}
-        \end{landscape}
-
-    \subsection{数据依赖}
-        （略）
-
-    \subsection{数据交换格式}
-        \begin{landscape}
-%        \input{TX-index}
-        \end{landscape}
+\chapter{附录}
 
     \clearpage
     \subsection{版本历史}
         \begin{center}
         % \rowcolors{1}{white}{lightgray}
-        \caption{版本历史} \centering
+        \centering
         %\input{history}
         \end{center}
 
-\section{索引}
+\chapter{索引}
 
     \listoftables
     \listoffigures
