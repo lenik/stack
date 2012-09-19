@@ -1,0 +1,7 @@
+PassStep,按步步骤,UI,1000,0,
+PassToNextPolicy,按步审核策略,UI,1000,0,
+SingleVerifierLevel,单一审核人分级级别,E,1000,10,
+SingleVerifierPolicy,单一审核人审核策略,UI,1000,0,
+SingleVerifierRankedPolicy,分级审核策略,UI,1000,0,
+VerifyPolicyPref,审核策略配置项,E,1000,10,V
+VerifyPolicy,审核策略,UI,1000,1,

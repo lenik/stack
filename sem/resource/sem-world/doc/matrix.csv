@@ -1,0 +1,6 @@
+Bank,银行,UI,300,0,
+FxrRecord,汇率记录,E,365000,100,
+PaletteEntry,色彩条目,E,10000,0,
+Palette,调色板,UI,100,0,
+UnitConv,单位换算表,E,100000,0,
+Unit,度量衡单位,Dict,1000,100,
