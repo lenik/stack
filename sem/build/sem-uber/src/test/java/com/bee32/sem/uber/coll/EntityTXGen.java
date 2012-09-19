@@ -57,7 +57,7 @@ public class EntityTXGen {
             throws ClassNotFoundException, IOException {
         namingStrategy.setAlwaysEscape(false);
 
-        for (Class<?> clazz : ServicePrototypeLoader.load(Entity.class, true)) {
+        for (Class<?> clazz : ServicePrototypeLoader.load(Entity.class, false)) {
             classes.add(clazz);
         }
     }
