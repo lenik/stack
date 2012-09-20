@@ -3,6 +3,6 @@ Entity:4:altId:次标识符:alt_id:Sot:20:用于标识特定的样本数据。
 ::lastModified:更新日期:last_modified:DTt:0:数据最后一次修改的日期。（每次保存时自动更新）
 ::version:版本:version:Nt:8:数据的版本，原有的数据只能被更新版的数据取代。
 EntityAuto:1:id:标识符:id:Not:0:记录的标识符、主键。
-UserPreference:3:key:（无名称）:key:S:30:（略）
-::user:（无名称）:user:Ro:0:（略）
-::value:（无名称）:value:So:100:（略）
+UserPreference:3:key:配置项:key:S:30:指定配置项的键值。
+::user:用户:user:Ro:0:配置项对应的用户。
+::value:配置值:value:So:100:设置配置项的内容。

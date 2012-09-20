@@ -5,8 +5,8 @@ Entity:4:altId:次标识符:alt_id:Sot:20:用于标识特定的样本数据。
 CEntity:2:aclId:安全策略:acl_id:Not:8:该记录上启用的安全策略的ID。
 ::owner:属主:owner:Rot:0:记录的拥有者。属主用户对记录拥有所有权限，除非记录被系统锁定。
 CEntityAuto:1:id:标识符:id:No:0:记录的标识符、主键。
-UserCategoryItem:5:category:（无名称）:category:Ro:0:（略）
-::description:（无名称）:description:So:60:（略）
-::floatVal:（无名称）:float_val:N:15:（略）
-::intVal:（无名称）:int_val:N:18:（略）
-::textVal:（无名称）:text_val:So:100:（略）
+UserCategoryItem:5:category:类别:category:Ro:0:自定义的类别。
+::description:描述:description:So:60:项目的描述信息。
+::floatVal:浮点数数值:float_val:N:15:项目用双精度浮点数表示的内容。
+::intVal:整数数值:int_val:N:18:项目用整数表示的内容。
+::textVal:文本值:text_val:So:100:项目用文本表示的内容。

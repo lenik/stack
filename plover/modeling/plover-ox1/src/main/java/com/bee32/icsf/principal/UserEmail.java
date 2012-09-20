@@ -18,6 +18,11 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.ox1.color.Blue;
 
+/**
+ * 用户邮箱
+ *
+ * 管理用户的邮箱地址。
+ */
 @Entity
 @Blue
 @SequenceGenerator(name = "idgen", sequenceName = "user_email_seq", allocationSize = 1)
@@ -59,6 +64,11 @@ public class UserEmail
         status = o.status;
     }
 
+    /**
+     * 用户
+     *
+     * 邮箱对应的用户。
+     */
     @NaturalId
     @ManyToOne(optional = false)
     public User getUser() {
@@ -71,6 +81,11 @@ public class UserEmail
         this.user = user;
     }
 
+    /**
+     * 级别
+     *
+     * 邮箱的级别，越小的数表示越高的级别。
+     */
     @Column(nullable = false)
     public int getRank() {
         return rank;
@@ -80,6 +95,11 @@ public class UserEmail
         this.rank = rank;
     }
 
+    /**
+     * 邮箱地址
+     *
+     * 格式为 `a@b.c` 的邮箱地址。
+     */
     @NaturalId
     @Column(length = 40, nullable = false)
     public String getAddress() {
@@ -92,6 +112,11 @@ public class UserEmail
         this.address = address;
     }
 
+    /**
+     * 邮箱状态
+     *
+     * 提示邮箱地址的状态（如无效、未验证、已验证等）。
+     */
     @Basic(optional = false)
     @Column(nullable = false)
     public char getEmailStatus() {

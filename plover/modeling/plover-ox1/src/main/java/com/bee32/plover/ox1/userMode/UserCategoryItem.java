@@ -12,6 +12,11 @@ import javax.persistence.Transient;
 import com.bee32.plover.ox1.c.CEntityAuto;
 import com.bee32.plover.ox1.color.Blue;
 
+/**
+ * 自定义分类项目
+ *
+ * 自定义类别中的具体项目。
+ */
 @Entity
 @Blue
 @SequenceGenerator(name = "idgen", sequenceName = "user_category_item_seq", allocationSize = 1)
@@ -45,6 +50,11 @@ public class UserCategoryItem
         description = o.description;
     }
 
+    /**
+     * 类别
+     *
+     * 自定义的类别。
+     */
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     public UserCategory getCategory() {
@@ -55,6 +65,11 @@ public class UserCategoryItem
         this.category = category;
     }
 
+    /**
+     * 整数数值
+     *
+     * 项目用整数表示的内容。
+     */
     public Long getIntVal() {
         return intVal;
     }
@@ -63,6 +78,11 @@ public class UserCategoryItem
         this.intVal = intVal;
     }
 
+    /**
+     * 浮点数数值
+     *
+     * 项目用双精度浮点数表示的内容。
+     */
     public Double getFloatVal() {
         return doubleVal;
     }
@@ -71,6 +91,11 @@ public class UserCategoryItem
         this.doubleVal = doubleVal;
     }
 
+    /**
+     * 文本值
+     *
+     * 项目用文本表示的内容。
+     */
     @Column(length = 100)
     public String getTextVal() {
         return textVal;
@@ -132,6 +157,11 @@ public class UserCategoryItem
         textVal = value;
     }
 
+    /**
+     * 描述
+     *
+     * 项目的描述信息。
+     */
     @Column(length = 60)
     public String getDescription() {
         return description;

@@ -9,6 +9,7 @@ DictEntity:2:description:条目描述:description:Sot:200:条目的内容描述�
 NameDict:3:id:条目标识符:id:Sot:20:词典条目的标识符、主键。
 ::order:次序:order:Nt:8:用于对条目排序。
 ::rank:权重:rank:Nt:6:条目相关的权重（可选）。
-UserCategory:3:items:（无名称）:items:No:0:（略）
-::precision:（无名称）:precision:N:8:（略）
-::scale:（无名称）:scale:N:8:（略）
+UserCategory:4:_type:数据类型:_type:S:1:分类项目的数据类型。
+::items:项目列表:items:No:0:该分类下的具体项目的列表。
+::precision:精度:precision:N:8:文本型分类项目的最大长度，或者数值型分类项目的数值精度。
+::scale:小数位数:scale:N:8:数值型分类项目的小数位数。

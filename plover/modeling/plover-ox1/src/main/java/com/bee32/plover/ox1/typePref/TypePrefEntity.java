@@ -9,8 +9,11 @@ import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.entity.EntitySpec;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 
+/**
+ * 按类型设置的配置项
+ */
 @MappedSuperclass
-public class TypePrefEntity
+public abstract class TypePrefEntity
         extends EntitySpec<String>
         implements ITypeAbbrAware {
 
@@ -73,13 +76,18 @@ public class TypePrefEntity
         this.typeId = ABBR.abbr(type);
     }
 
+    /**
+     * 类标识
+     *
+     * 类型的摘要标识（固定的10个字符长）。
+     */
     @Id
     @Column(length = ABBR_LEN, nullable = false)
-    protected String getTypeId() {
+    public String getTypeId() {
         return typeId;
     }
 
-    protected void setTypeId(String typeId) {
+    public void setTypeId(String typeId) {
         this.typeId = typeId;
 
         if (earlyResolve)

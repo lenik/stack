@@ -13,6 +13,11 @@ import org.hibernate.annotations.CascadeType;
 import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.typePref.TypePrefEntity;
 
+/**
+ * 实体信息
+ *
+ * 运行时自定义的实体信息，或对原有实体信息的重写。
+ */
 @Entity
 public class EntityInfo
         extends TypePrefEntity {
@@ -44,6 +49,11 @@ public class EntityInfo
         columns = CopyUtils.copyList(o.columns);
     }
 
+    /**
+     * 动态名称
+     *
+     * 自定义实体的名称。
+     */
     @Column(length = 20)
     public String getNameOtf() {
         return nameOtf;
@@ -53,6 +63,11 @@ public class EntityInfo
         this.nameOtf = nameOtf;
     }
 
+    /**
+     * 显示名称
+     *
+     * 实体的显示名称。
+     */
     @Column(length = 50)
     public String getLabel() {
         return label;
@@ -62,6 +77,11 @@ public class EntityInfo
         this.label = label;
     }
 
+    /**
+     * 描述
+     *
+     * 描述实体的用途。
+     */
     @Column(length = 200)
     public String getDescription() {
         return description;
@@ -71,6 +91,11 @@ public class EntityInfo
         this.description = description;
     }
 
+    /**
+     * 字段表
+     *
+     * 实体下的字段列表。
+     */
     @OneToMany(mappedBy = "entity", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<EntityColumn> getColumns() {

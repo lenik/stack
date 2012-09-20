@@ -12,6 +12,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+/**
+ * 角色
+ *
+ * 共用角色的用户对资源具有相同的访问权限。
+ */
 @Entity
 @DiscriminatorValue("R")
 public class Role
@@ -88,6 +93,11 @@ public class Role
         setChildren(children);
     }
 
+    /**
+     * 主控用户
+     *
+     * 以本角色为主角色的用户集合。
+     */
     @OneToMany(mappedBy = "primaryRole")
     @Override
     public List<User> getControlUsers() {
@@ -126,6 +136,11 @@ public class Role
         return true;
     }
 
+    /**
+     * 主控组
+     *
+     * 以本角色为主角色的组集合。
+     */
     @OneToMany(mappedBy = "primaryRole")
     @Override
     public List<Group> getControlGroups() {
@@ -164,6 +179,11 @@ public class Role
         return true;
     }
 
+    /**
+     * 责任用户
+     *
+     * 被赋予本角色的用户集。
+     */
     @ManyToMany
     // @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "RoleUser", //
@@ -216,6 +236,11 @@ public class Role
         return true;
     }
 
+    /**
+     * 责任组
+     *
+     * 被赋予本角色的组集。
+     */
     @ManyToMany
     // @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "RoleGroup", //

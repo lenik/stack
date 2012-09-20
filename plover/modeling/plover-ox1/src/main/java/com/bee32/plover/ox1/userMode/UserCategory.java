@@ -15,7 +15,9 @@ import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.plover.ox1.dict.NameDict;
 
 /**
- * General purpose category.
+ * 自定义分类
+ *
+ * 对于文本内容，自定义分类可以提供一个下拉型选择，以方便用户输入。
  */
 @Entity
 public class UserCategory
@@ -68,15 +70,25 @@ public class UserCategory
         this.type = type;
     }
 
+    /**
+     * 数据类型
+     *
+     * 分类项目的数据类型。
+     */
     @Column(nullable = false)
-    char get_type() {
+    public char get_type() {
         return type.getValue();
     }
 
-    void set_type(char _type) {
+    public void set_type(char _type) {
         this.type = UserDataType.forValue(_type);
     }
 
+    /**
+     * 精度
+     *
+     * 文本型分类项目的最大长度，或者数值型分类项目的数值精度。
+     */
     @Column(nullable = false)
     public int getPrecision() {
         return precision;
@@ -86,6 +98,11 @@ public class UserCategory
         this.precision = precision;
     }
 
+    /**
+     * 小数位数
+     *
+     * 数值型分类项目的小数位数。
+     */
     @Column(nullable = false)
     public int getScale() {
         return scale;
@@ -104,6 +121,11 @@ public class UserCategory
         this.precision = length;
     }
 
+    /**
+     * 项目列表
+     *
+     * 该分类下的具体项目的列表。
+     */
     @OneToMany
     @Cascade(CascadeType.ALL)
     public List<UserCategoryItem> getItems() {

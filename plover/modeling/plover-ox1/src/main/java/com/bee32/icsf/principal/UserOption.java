@@ -15,6 +15,11 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.entity.EntityAuto;
 
+/**
+ * 用户选项
+ *
+ * 用户设置的选项。
+ */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "user_option_seq", allocationSize = 1)
 public class UserOption
@@ -44,6 +49,11 @@ public class UserOption
         value = o.value;
     }
 
+    /**
+     * 用户
+     *
+     * 选项对应的用户。
+     */
     @NaturalId
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
@@ -57,6 +67,11 @@ public class UserOption
         this.user = user;
     }
 
+    /**
+     * 选项
+     *
+     * 指定选项的键，
+     */
     @NaturalId
     @Column(length = KEY_LENGTH, nullable = false)
     public String getKey() {
@@ -69,6 +84,11 @@ public class UserOption
         this.key = key;
     }
 
+    /**
+     * 选项值
+     *
+     * 设置选项的内容。
+     */
     @Column(length = VALUE_LENGTH)
     public String getValue() {
         return value;

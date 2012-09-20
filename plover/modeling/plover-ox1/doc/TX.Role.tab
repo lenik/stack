@@ -11,7 +11,7 @@ TreeEntity:3:children:子对象集:children:Not:0:下一级对象的集合。
 ::parent:父对象:parent:Rot:0:上一级对象，如订单项的父对象是订单。
 TreeEntityAuto:1:id:标识符:id:No:0:记录的标识符、主键。
 Principal:1:name:主体名称:name:S:16:系统中唯一的主体名称（用户名、组名等）
-Role:4:controlGroups:（无名称）:control_groups:No:0:（略）
-::controlUsers:（无名称）:control_users:No:0:（略）
-::responsibleGroups:（无名称）:responsible_groups:No:0:（略）
-::responsibleUsers:（无名称）:responsible_users:No:0:（略）
+Role:4:controlGroups:主控组:control_groups:No:0:以本角色为主角色的组集合。
+::controlUsers:主控用户:control_users:No:0:以本角色为主角色的用户集合。
+::responsibleGroups:责任组:responsible_groups:No:0:被赋予本角色的组集。
+::responsibleUsers:责任用户:responsible_users:No:0:被赋予本角色的用户集。

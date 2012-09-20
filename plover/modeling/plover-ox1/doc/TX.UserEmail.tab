@@ -3,7 +3,7 @@ Entity:4:altId:次标识符:alt_id:Sot:20:用于标识特定的样本数据。
 ::lastModified:更新日期:last_modified:DTt:0:数据最后一次修改的日期。（每次保存时自动更新）
 ::version:版本:version:Nt:8:数据的版本，原有的数据只能被更新版的数据取代。
 EntityAuto:1:id:标识符:id:Not:0:记录的标识符、主键。
-UserEmail:4:address:（无名称）:address:S:40:（略）
-::emailStatus:（无名称）:email_status:S:1:（略）
-::rank:（无名称）:rank:N:8:（略）
-::user:（无名称）:user:Ro:0:（略）
+UserEmail:4:address:邮箱地址:address:S:40:格式为 `a@b.c` 的邮箱地址。
+::emailStatus:邮箱状态:email_status:S:1:提示邮箱地址的状态（如无效、未验证、已验证等）。
+::rank:级别:rank:N:8:邮箱的级别，越小的数表示越高的级别。
+::user:用户:user:Ro:0:邮箱对应的用户。

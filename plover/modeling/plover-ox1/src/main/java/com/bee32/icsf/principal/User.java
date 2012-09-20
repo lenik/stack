@@ -18,6 +18,11 @@ import org.hibernate.annotations.CascadeType;
 
 import com.bee32.plover.orm.entity.CopyUtils;
 
+/**
+ * 用户
+ *
+ * 可登录到系统的用户帐户。
+ */
 @Entity
 @DiscriminatorValue("U")
 public class User
@@ -79,6 +84,11 @@ public class User
         _retargetMerge(emails, o.emails);
     }
 
+    /**
+     * 主组
+     *
+     * 用户所属的主组。 当用户创建内容时，内容的属组将被设置为登录用户的主组。
+     */
     @ManyToOne(targetEntity = Group.class)
     @JoinColumn(name = "group1")
     @Override
@@ -100,6 +110,11 @@ public class User
         this.primaryGroup = newPrimaryGroup;
     }
 
+    /**
+     * 主角色
+     *
+     * 用户所属的主角色。 当用户创建内容时，内容的属角色将被设置为登录用户的主角色。
+     */
     @ManyToOne(targetEntity = Role.class)
     @JoinColumn(name = "role1")
     @Override
@@ -121,6 +136,11 @@ public class User
         this.primaryRole = newPrimaryRole;
     }
 
+    /**
+     * 赋予组
+     *
+     * 用户被赋予的组集合。
+     */
     @ManyToMany(/* mappedBy = "memberUsers" */)
     // @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "GroupMember", //
@@ -168,6 +188,11 @@ public class User
         return true;
     }
 
+    /**
+     * 赋予角色
+     *
+     * 用户被赋予的角色集合。
+     */
     @ManyToMany(/* mappedBy = "responsibleUsers" */)
     // @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "RoleUser", //
@@ -233,6 +258,11 @@ public class User
         return firstAssignedRole;
     }
 
+    /**
+     * 邮箱地址
+     *
+     * 用户对应的邮箱地址列表。
+     */
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     @Cascade({ CascadeType.ALL })
     public List<UserEmail> getEmails() {

@@ -7,9 +7,10 @@ CEntity:2:aclId:安全策略:acl_id:Not:8:该记录上启用的安全策略的ID
 UIEntity:2:description:描述:description:Sot:200:对数据的简略的描述。（通常不同于备注）
 ::label:标签:label:Sot:100:记录的标识标签，简短的概要、或通常是唯一的显示名称。
 UIEntityAuto:1:id:标识符:id:Not:0:记录的标识符、主键。
-EntityColumn:6:entity:Must override Entity-Info before add EntityColumn.:entity:Ro:0:（略）
-::indexed:（无名称）:indexed:B:1:（略）
-::name:（无名称）:name:S:20:（略）
-::precision:（无名称）:precision:N:8:（略）
-::scale:（无名称）:scale:N:8:（略）
-::type:（无名称）:type:S:10:（略）
+EntityColumn:7:candidateDef:候选项目:candidate_def:So:255:可供候选输入的项目集。
+::entity:实体:entity:Ro:0:该字段所属的自定义实体。
+::indexed:索引标识:indexed:B:1:字段是否已索引。
+::name:名称:name:S:20:实体内唯一的字段名。
+::precision:精度:precision:N:8:数值型字段的精度，或者文本型字段的最大长度。
+::scale:小数位数:scale:N:8:数值型字段的小数位数。
+::type:类型:type:S:10:字段的数据类型。

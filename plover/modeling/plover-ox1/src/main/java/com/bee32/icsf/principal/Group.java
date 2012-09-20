@@ -13,6 +13,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+/**
+ * 用户组
+ *
+ * 可被用户共享访问资源的用户组。
+ */
 @Entity
 @DiscriminatorValue("G")
 public class Group
@@ -96,6 +101,12 @@ public class Group
         setChildren(children);
     }
 
+    /**
+     * 主角色
+     *
+     *
+     * 组所属的主角色。 当以组创建内容时，内容的属角色将被设置为该组的主角色。
+     */
     @ManyToOne
     @JoinColumn(name = "role1")
     @Override
@@ -118,6 +129,11 @@ public class Group
         this.primaryRole = newPrimaryRole;
     }
 
+    /**
+     * 主控用户
+     *
+     * 主组为本组的用户集合。
+     */
     @OneToMany(mappedBy = "primaryGroup")
     @Override
     public List<User> getControlUsers() {
@@ -157,6 +173,11 @@ public class Group
         return true;
     }
 
+    /**
+     * 成员用户
+     *
+     * 被赋予本组的用户集合。
+     */
     @ManyToMany
     // @Cascade(CascadeType.SAVE_UPDATE)
     // @Cascade(CascadeType.ALL)
@@ -213,6 +234,11 @@ public class Group
         return true;
     }
 
+    /**
+     * 赋予角色
+     *
+     * 组被赋予的角色集合。
+     */
     @ManyToMany(/* mappedBy = "responsibleGroups" */)
     @JoinTable(name = "RoleGroup", //
     /*            */joinColumns = @JoinColumn(name = "group"), //

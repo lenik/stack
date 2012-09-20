@@ -22,6 +22,11 @@ import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.ox1.tree.TreeEntityAuto;
 
+/**
+ * 安全主体
+ *
+ * 用于访问安全控制的主体对象。
+ */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 3)
