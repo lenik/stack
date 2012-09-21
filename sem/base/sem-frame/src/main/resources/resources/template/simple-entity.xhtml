@@ -66,6 +66,11 @@
         </ui:insert>
 
         <ui:insert name="dataColumnsC">
+            <p:column headerText="创建日期" sortBy="${entry.createdDate}" styleClass="${entry.styleClass}" rendered="${showCreatedDate == true}">
+                <h:outputLabel value="${entry.createdDate}">
+                    <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                </h:outputLabel>
+            </p:column>
             <p:column headerText="更新日期" sortBy="${entry.lastModified}">
                 <h:outputText value="${entry.lastModified}">
                     <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />

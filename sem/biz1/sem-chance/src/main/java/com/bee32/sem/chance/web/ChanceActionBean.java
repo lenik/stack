@@ -7,6 +7,7 @@ import org.springframework.util.StringUtils;
 import com.bee32.icsf.login.SessionUser;
 import com.bee32.icsf.principal.UserDto;
 import com.bee32.plover.orm.annotation.ForEntity;
+import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.dto.ChanceStageDto;
 import com.bee32.sem.chance.entity.Chance;
@@ -40,7 +41,8 @@ public class ChanceActionBean
                 uiLogger.error("错误提示", "必须先选择机会,才能设置机会阶段");
                 return false;
             }
-            action.setActor(me);
+            if (DTOs.isNull(action.getActor()))
+                action.setActor(me);
         }
         return true;
     }
