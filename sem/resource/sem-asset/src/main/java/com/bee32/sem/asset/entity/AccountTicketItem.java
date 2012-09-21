@@ -174,6 +174,7 @@ public class AccountTicketItem
      *
      * @return
      */
+    @ManyToOne
     public Person getPerson() {
         return person;
     }
@@ -189,6 +190,7 @@ public class AccountTicketItem
      *
      * @return
      */
+    @ManyToOne
     public OrgUnit getOrgUnit() {
         return orgUnit;
     }

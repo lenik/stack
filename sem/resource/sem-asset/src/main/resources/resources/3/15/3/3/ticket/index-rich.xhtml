@@ -23,19 +23,6 @@
             </h:outputText>
             <h:outputText value="制单人:" />
             <p:inputText value="#{obj.owner.displayName}" disabled="true" label="制单人"/>
-
-            <t:panelGroup colspan="2">
-                <h:outputText value="资金流业务单:" styleClass="e-link" onclick="#{obj.request.clickAction}" />
-            </t:panelGroup>
-            <t:panelGroup colspan="2">
-                <p:inputText
-                    id="budgetRequest"
-                    value="#{obj.request.label}(#{obj.request.owner.displayName},#{obj.request.value})"
-                    readonly="true"
-                    label="资金流业务单"
-                    style="width:300px;"/>
-                <p:commandButton value="..." onclick="chooseBudgetRequestDialog.show();" disabled="#{not bean.editing}" update=":c_request:form" />
-            </t:panelGroup>
         </t:panelGrid>
 
         <fr:listView id="itemsIndexView" header="凭证项目" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
@@ -130,7 +117,6 @@
             </t:panelGrid>
         </fr:listView>
 
-        <sem:chooseBudgetRequestDialog id="c_request" target="#{obj.request}" update=":editDialog:form:budgetRequest" />
         <sem:chooseAccountSubjectDialog id="c_subject" target="#{itemObj.subject}"
             update=":itemsEditView:editForm:accountSubject" />
         <sem:choosePartyDialog id="c_customer" header="往来单位" target="#{itemObj.party}"

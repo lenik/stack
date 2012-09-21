@@ -46,7 +46,6 @@ public class AccountTicket
     transient MCVector total; // Redundant
     BigDecimal nativeTotal; // Redundant.
 
-    FundFlow request;
     SingleVerifierWithNumberSupport verifyContext;
 
     public AccountTicket() {
@@ -67,7 +66,6 @@ public class AccountTicket
         items = CopyUtils.copyList(o.items);
         total = o.total;
         nativeTotal = o.nativeTotal;
-        request = o.request;
         verifyContext = (SingleVerifierWithNumberSupport) o.verifyContext.clone();
     }
 
