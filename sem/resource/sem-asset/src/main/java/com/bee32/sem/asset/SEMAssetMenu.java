@@ -25,15 +25,15 @@ public class SEMAssetMenu
 
     public MenuNode CA = menu(ASSET, 100, "CA");   /*往来账 current account*/
     /**/public MenuNode balanceCategory = menu(CA, 1, "balanceCategory");
-    /*    */MenuNode subjectBalance = entry(balanceCategory, 1, "subjectBalance", __.join("subjectBalance/"));
-    /*    */MenuNode balance = entry(balanceCategory, 2, "balance", __.join("balance/"));
-    /*    */MenuNode salesmanBalance = entry(balanceCategory, 3, "salesmanBalance", __.join("salesmanBalance/"));
-    /*    */MenuNode orgUnitBalance = entry(balanceCategory, 4, "orgUnitBalance", __.join("orgUnitBalance/"));
+    /*    */MenuNode subjectBalance = entry(balanceCategory, 1, "subjectBalance", __.join("CA/subjectBalance/"));
+    /*    */MenuNode balance = entry(balanceCategory, 2, "balance", __.join("CA/balance/"));
+    /*    */MenuNode salesmanBalance = entry(balanceCategory, 3, "salesmanBalance", __.join("CA/salesmanBalance/"));
+    /*    */MenuNode orgUnitBalance = entry(balanceCategory, 4, "orgUnitBalance", __.join("CA/orgUnitBalance/"));
     /**/public MenuNode detailCategory = menu(CA, 10, "detailCategory");
-    /*    */MenuNode subjectDetail = entry(detailCategory, 1, "subjectDetail", __.join("subjectDetail/"));
-    /*    */MenuNode detail = entry(detailCategory, 2, "detail", __.join("detail/"));
-    /*    */MenuNode salesmanDetail = entry(detailCategory, 3, "salesmanDetail", __.join("salesmanDetail/"));
-    /*    */MenuNode orgUnitDetail = entry(detailCategory, 4, "orgUnitDetail", __.join("orgUnitDetail/"));
+    /*    */MenuNode subjectDetail = entry(detailCategory, 1, "subjectDetail", __.join("CA/subjectDetail/"));
+    /*    */MenuNode detail = entry(detailCategory, 2, "detail", __.join("CA/detail/"));
+    /*    */MenuNode salesmanDetail = entry(detailCategory, 3, "salesmanDetail", __.join("CA/salesmanDetail/"));
+    /*    */MenuNode orgUnitDetail = entry(detailCategory, 4, "orgUnitDetail", __.join("CA/orgUnitDetail/"));
 
 
 
