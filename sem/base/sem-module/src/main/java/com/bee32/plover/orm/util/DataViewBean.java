@@ -8,12 +8,14 @@ import javax.free.IllegalUsageException;
 
 import com.bee32.icsf.access.AccessControlException;
 import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.arch.util.FriendData;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.faces.utils.FacesPartialContext;
 import com.bee32.plover.faces.view.GenericViewBean;
 import com.bee32.plover.faces.view.ViewMetadata;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IEntityAccessService;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.misc.IBeanIntro;
 
 public abstract class DataViewBean
@@ -21,6 +23,8 @@ public abstract class DataViewBean
         implements IBeanIntro {
 
     private static final long serialVersionUID = 1L;
+
+    static final boolean normalizeSQL = true;
 
     protected static class ctx
             extends MixinnedDataAssembledContext {
@@ -84,6 +88,21 @@ public abstract class DataViewBean
         String entityName = ClassUtil.getTypeName(entityClass);
         uiLogger.error("您没有" + hint + entityName + "的权限。", e);
         return false;
+    }
+
+    protected String getBundledSQL(String name, Object... args) {
+        String script = FriendData.script(getClass(), name + ".sql");
+        for (int i = 0; i < args.length - 1; i += 2) {
+            String key = String.valueOf(args[i]);
+            Object value = args[i + 1];
+            if (value == null)
+                value = "";
+            String replacement = String.valueOf(value);
+            script = script.replace(key, replacement);
+        }
+        if (normalizeSQL)
+            script = TextUtil.normalizeSpace(script);
+        return script;
     }
 
 }
