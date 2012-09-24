@@ -1,20 +1,15 @@
 SELECT
-    a.subject,
-    b.label AS subject_name,
     c.label AS ca,
     a.money
 FROM (
     SELECT
-        subject,
         party,
         sum(native_value) as money
     FROM account_ticket_item
     WHERE
         NOT (party IS null) AND_VERIFIED
-    GROUP BY subject,party
+    GROUP BY party
 ) a
-LEFT JOIN account_subject b
-    ON a.subject=b.id
 LEFT JOIN party c
     ON a.party=c.id
-ORDER BY a.subject;
+ORDER BY c.label;

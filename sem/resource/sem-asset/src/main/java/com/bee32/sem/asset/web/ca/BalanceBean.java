@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.orm.util.EntityViewBean;
 
-public class SubjectBalanceBean
+public class BalanceBean
         extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
