@@ -27,12 +27,12 @@ public class SEMAssetMenu
     /**/public MenuNode balanceCategory = menu(CA, 1, "balanceCategory");
     /*    */MenuNode subjectBalance = entry(balanceCategory, 1, "subjectBalance", __.join("CA/subjectBalance/"));
     /*    */MenuNode balance = entry(balanceCategory, 2, "balance", __.join("CA/balance/"));
-    /*    */MenuNode salesmanBalance = entry(balanceCategory, 3, "salesmanBalance", __.join("CA/salesmanBalance/"));
+    /*    */MenuNode personBalance = entry(balanceCategory, 3, "personBalance", __.join("CA/personBalance/"));
     /*    */MenuNode orgUnitBalance = entry(balanceCategory, 4, "orgUnitBalance", __.join("CA/orgUnitBalance/"));
     /**/public MenuNode detailCategory = menu(CA, 10, "detailCategory");
     /*    */MenuNode subjectDetail = entry(detailCategory, 1, "subjectDetail", __.join("CA/subjectDetail/"));
     /*    */MenuNode detail = entry(detailCategory, 2, "detail", __.join("CA/detail/"));
-    /*    */MenuNode salesmanDetail = entry(detailCategory, 3, "salesmanDetail", __.join("CA/salesmanDetail/"));
+    /*    */MenuNode personDetail = entry(detailCategory, 3, "personDetail", __.join("CA/personDetail/"));
     /*    */MenuNode orgUnitDetail = entry(detailCategory, 4, "orgUnitDetail", __.join("CA/orgUnitDetail/"));
 
 
