@@ -38,6 +38,11 @@
         <ui:insert name="main.extra" />
     </ui:define>
 
+    <ui:define name="buttons.left.0">
+        <p:commandButton id="refresh" value="刷新" actionListener="${dialogBean.refreshRowCount}"
+            onclick="waitbox.show()" oncomplete="waitbox.hide()" update="${update}" />
+    </ui:define>
+
     <ui:define name="buttons.right.0">
         <p:commandButton id="ok-validated" value="确定" actionListener="${dialogBean.validateDialog}"
             onclick="waitbox.show()" oncomplete="waitbox.hide(); ${var}.hideValidated(args)" update="${update}">
