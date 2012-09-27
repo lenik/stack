@@ -243,10 +243,24 @@ public abstract class SimpleEntityViewBean
         return dataModel;
     }
 
+    public boolean refreshData() {
+        if (dataModel instanceof ZLazyDataModel<?, ?>)
+            try {
+                ZLazyDataModel<?, ?> model = (ZLazyDataModel<?, ?>) dataModel;
+                model.setRowIndex(0);
+                model.refreshRowCount();
+            } catch (Exception e) {
+                uiLogger.warn("刷新记录时出现异常。", e);
+                return false;
+            }
+        return true;
+    }
+
     public boolean refreshRowCount() {
         if (dataModel instanceof ZLazyDataModel<?, ?>)
             try {
-                ((ZLazyDataModel<?, ?>) dataModel).refreshRowCount();
+                ZLazyDataModel<?, ?> model = (ZLazyDataModel<?, ?>) dataModel;
+                model.refreshRowCount();
             } catch (Exception e) {
                 uiLogger.warn("刷新记录时出现异常。", e);
                 return false;

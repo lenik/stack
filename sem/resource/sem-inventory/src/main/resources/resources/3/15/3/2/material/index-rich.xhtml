@@ -12,6 +12,13 @@
     <ui:param name="thing" value="#{thingDictsBean}" />
     <ui:param name="monetary" value="#{monetaryDictsBean}" />
 
+    <ui:define name="toolbar.left.1">
+        <p:commandButton id="copyButton" value="复制" rendered="${editable != null ? editable : true}"
+            actionListener="${bean.copyMaterial}" onclick="waitbox.show()"
+            disabled="${not bean.selected or not bean.selectionEditable}"
+            oncomplete="waitbox.hide(); ${plainEditForm ? '' : 'editdlg.show()'}" update=":editDialog:form" />
+    </ui:define>
+
     <ui:define name="sideBarW">
         <h:form id="navigatorForm">
             <p:treeTable id="categoryTree" value="#{bean.categoryTree.rootNode}" var="category"

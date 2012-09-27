@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.restful.resource.StandardViews;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.file.entity.FileBlob;
 import com.bee32.sem.file.entity.UserFile;
@@ -22,6 +23,7 @@ import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialPreferredLocation;
 import com.bee32.sem.inventory.entity.MaterialPrice;
 import com.bee32.sem.inventory.entity.MaterialWarehouseOption;
+import com.bee32.sem.inventory.service.InvService;
 import com.bee32.sem.inventory.util.MaterialCriteria;
 import com.bee32.sem.misc.UnmarshalMap;
 import com.bee32.sem.world.thing.ScaleItem;
@@ -350,6 +352,20 @@ public class MaterialAdminBean
         } catch (Exception e) {
             uiLogger.error("删除物料附件失败!", e);
         }
+    }
+
+
+    public void copyMaterial() {
+        if (getSelection().isEmpty()) {
+            uiLogger.error("没有选定对象!");
+            return;
+        }
+        openSelection();
+
+        MaterialDto material = getOpenedObject();
+
+        setOpenedObject(BEAN(InvService.class).copyMaterial(material));
+        showView(StandardViews.CREATE_FORM);
     }
 
     /*************************************************************************

@@ -39,8 +39,8 @@
     </ui:define>
 
     <ui:define name="buttons.left.0">
-        <p:commandButton id="refresh" value="刷新" actionListener="${dialogBean.refreshRowCount}"
-            onclick="waitbox.show()" oncomplete="waitbox.hide()" update="${update}" />
+        <p:commandButton id="refresh" value="刷新" actionListener="${dialogBean.refreshData}"
+            onclick="waitbox.show()" oncomplete="waitbox.hide()" update=":@form" />
     </ui:define>
 
     <ui:define name="buttons.right.0">

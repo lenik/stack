@@ -19,8 +19,12 @@
                     <h:outputText value="#{warehouseOption.warehouse.label}" />
                 </p:column>
 
-                <p:column headerText="循环盘点周期" style="width:50px;">
+                <p:column headerText="安全库存" style="width:50px;">
                     <h:outputText value="#{warehouseOption.safetyStock}" />
+                </p:column>
+
+                <p:column headerText="循环盘点周期" style="width:50px;">
+                    <h:outputText value="#{warehouseOption.stkPeriod}" />
                 </p:column>
 
                 <p:column headerText="操作" style="width:100px;">
