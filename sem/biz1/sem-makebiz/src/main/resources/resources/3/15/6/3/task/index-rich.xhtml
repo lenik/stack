@@ -65,13 +65,13 @@
             nested="true" paginator="false" creatable="false" readonly="#{not bean.editing}">
             <f:facet name="columns">
                 <p:column headerText="物料" styleClass="f-wrappable">
-                    <h:outputText value="#{entry.part.target.label}" />
+                    <h:outputText value="#{entry.material.label}" />
                 </p:column>
                 <p:column headerText="规格型号" styleClass="f-wrappable">
-                    <h:outputText value="#{entry.part.target.modelSpec}" />
+                    <h:outputText value="#{entry.material.modelSpec}" />
                 </p:column>
                 <p:column headerText="附加属性">
-                    <p:dataList var="attr" value="#{entry.part.target.attributes}" effectSpeed="fast">
+                    <p:dataList var="attr" value="#{entry.material.attributes}" effectSpeed="fast">
                         <p:column>
                             <h:outputText value="${attr.name}:${attr.value};" />
                         </p:column>
@@ -112,7 +112,7 @@
             <t:panelGrid columns="2" columnClasses="field-label, field-content">
 
                 <h:outputLabel value="物料" />
-                <h:outputText value="#{item.part.target.label}" />
+                <h:outputText value="#{item.material.label}" />
 
                 <h:outputLabel value="数量" />
                 <p:inputText value="#{item.quantity}" label="数量"/>

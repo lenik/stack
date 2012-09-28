@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.arch.DataService;
 import com.bee32.plover.arch.util.IdComposite;
+import com.bee32.plover.faces.utils.FacesUILogger;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.chance.dto.WantedProductAttributeDto;
@@ -32,6 +33,7 @@ import com.bee32.sem.make.entity.PartItem;
 import com.bee32.sem.make.entity.QCResult;
 import com.bee32.sem.make.entity.QCResultParameter;
 import com.bee32.sem.make.entity.QCSpecParameter;
+import com.bee32.sem.make.util.BomCriteria;
 import com.bee32.sem.makebiz.dto.DeliveryNoteDto;
 import com.bee32.sem.makebiz.dto.DeliveryNoteItemDto;
 import com.bee32.sem.makebiz.dto.DeliveryNoteTakeOutDto;
@@ -165,18 +167,29 @@ public class MakebizService
         plan.getItems().clear();
 
         for (MakeTaskItemDto taskItem : makeTask.getItems()) {
-            PartDto part = reload(taskItem.getPart(), PartDto.MATERIAL_CONSUMPTION);
-            BigDecimal quantity = taskItem.getQuantity();
-
-            Map<MaterialDto, BigDecimal> allMaterial = part.getMaterialConsumption().dtoMap();
-            long index = 0;
-            for (Entry<MaterialDto, BigDecimal> ent : allMaterial.entrySet()) {
+            Part _part = DATA(Part.class).getFirst(
+                    BomCriteria.findPartByMaterial(taskItem.getMaterial().getId()));
+            if (_part == null) {
                 MaterialPlanItemDto planItem = new MaterialPlanItemDto().create();
-                planItem.setId(-(index++) - 1L, true);
+
+                planItem.setId(-plan.getItems().size() - 1L, true);
                 planItem.setMaterialPlan(plan);
-                planItem.setMaterial(ent.getKey());
-                planItem.setQuantity(quantity.multiply(ent.getValue())); // 产品数量乘以原物料数量
+                planItem.setMaterial(taskItem.getMaterial());
+                planItem.setQuantity(taskItem.getQuantity()); // 产品数量乘以原物料数量
                 plan.addItem(planItem);
+            } else {
+                PartDto part = DTOs.marshal(PartDto.class, PartDto.MATERIAL_CONSUMPTION , _part);
+                BigDecimal quantity = taskItem.getQuantity();
+
+                Map<MaterialDto, BigDecimal> allMaterial = part.getMaterialConsumption().dtoMap();
+                for (Entry<MaterialDto, BigDecimal> ent : allMaterial.entrySet()) {
+                    MaterialPlanItemDto planItem = new MaterialPlanItemDto().create();
+                    planItem.setId(-plan.getItems().size() - 1L, true);
+                    planItem.setMaterialPlan(plan);
+                    planItem.setMaterial(ent.getKey());
+                    planItem.setQuantity(quantity.multiply(ent.getValue())); // 产品数量乘以原物料数量
+                    plan.addItem(planItem);
+                }
             }
         }
         // 清空物料锁定。
@@ -199,28 +212,34 @@ public class MakebizService
             throw new IllegalUsageException("此生产任务已经有工艺流转单.");
         }
 
-	BigDecimal count = new BigDecimal(0);
-	for(SplitToProcessHolder holder : holders) {
-	    count = count.add(holder.getQuantity());
-	}
-	if(count.compareTo(_taskItem.getQuantity()) != 0) {
-	    throw new RuntimeException("工艺单数量合计和生产任务的数量不相等!");
-	}
+        Part _part = DATA(Part.class).getFirst(
+                BomCriteria.findPartByMaterial(_taskItem.getMaterial().getId()));
+        if (_part == null) {
+            new FacesUILogger(false).error(
+                    "物料" + _taskItem.getMaterial().getDisplayName() + "没有BOM,不能生产!",
+                    _taskItem.getMaterial());
+        } else {
+		BigDecimal count = new BigDecimal(0);
+		for(SplitToProcessHolder holder : holders) {
+		    count = count.add(holder.getQuantity());
+		}
+		if(count.compareTo(_taskItem.getQuantity()) != 0) {
+		    throw new RuntimeException("工艺单数量合计和生产任务的数量不相等!");
+		}
 
 
-	for(SplitToProcessHolder holder : holders) {
-            MakeProcess process = new MakeProcess();
-            process.setTaskItemEven(_taskItem);
+		for(SplitToProcessHolder holder : holders) {
+                MakeProcess process = new MakeProcess();
+                process.setTaskItemEven(_taskItem);
+                process.setPart(_part);
+                process.setBatchNumber(holder.getBatchNumber());
+                process.setQuantity(holder.getQuantity());
 
-            process.setBatchNumber(holder.getBatchNumber());
-            process.setQuantity(holder.getQuantity());
+                //根据bom表和工艺，生成所有的MakeStep
+                claimTree(process, _part, process.getQuantity());
+                DATA(MakeProcess.class).save(process);
 
-            //根据bom表和工艺，生成所有的MakeStep
-            Part part = _taskItem.getPart();
-
-            claimTree(process, part, process.getQuantity());
-
-            DATA(MakeProcess.class).save(process);
+            }
         }
     }
 

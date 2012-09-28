@@ -23,7 +23,7 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.plover.ox1.config.DecimalConfig;
-import com.bee32.sem.make.entity.Part;
+import com.bee32.sem.inventory.entity.Material;
 
 /**
  * 生产任务明细
@@ -42,7 +42,7 @@ public class MakeTaskItem
 
     MakeTask task;
     int index;
-    Part part;
+    Material material;
     BigDecimal quantity = new BigDecimal(0);
 
     Date deadline;
@@ -62,7 +62,7 @@ public class MakeTaskItem
         super._populate(o);
         task = o.task;
         index = o.index;
-        part = o.part;
+        material = o.material;
         quantity = o.quantity;
         deadline = o.deadline;
         status = o.status;
@@ -100,20 +100,19 @@ public class MakeTaskItem
     }
 
     /**
-     * 产品
+     * 物料
      *
-     * 生产任务对应的产品。
+     * 生产任务对应的需要生产的物料。
      *
      * @return
      */
-    @NaturalId
-    @ManyToOne(optional = false)
-    public Part getPart() {
-        return part;
+    @ManyToOne
+    public Material getMaterial() {
+        return material;
     }
 
-    public void setPart(Part part) {
-        this.part = part;
+    public void setMaterial(Material material) {
+        this.material = material;
     }
 
     /**
@@ -181,18 +180,18 @@ public class MakeTaskItem
     protected Serializable naturalId() {
         return new IdComposite(//
                 naturalId(task), //
-                naturalId(part));
+                naturalId(material));
     }
 
     @Override
     protected ICriteriaElement selector(String prefix) {
         if (task == null)
             throw new NullPointerException("task");
-        if (part == null)
-            throw new NullPointerException("part");
+        if (material == null)
+            throw new NullPointerException("material");
         return selectors(//
                 selector(prefix + "task", task), //
-                selector(prefix + "part", part));
+                selector(prefix + "part", material));
     }
 
     @Override
@@ -206,5 +205,4 @@ public class MakeTaskItem
     protected CEntity<?> owningEntity() {
         return getTask();
     }
-
 }

@@ -15,9 +15,6 @@ import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.chance.dto.ChanceDto;
-import com.bee32.sem.make.dto.PartDto;
-import com.bee32.sem.make.entity.Part;
-import com.bee32.sem.make.util.BomCriteria;
 import com.bee32.sem.makebiz.entity.MakeOrder;
 import com.bee32.sem.makebiz.entity.MakeOrderItem;
 import com.bee32.sem.people.dto.PartyDto;
@@ -202,18 +199,13 @@ public class MakeOrderDto
 
         for (MakeOrderItemDto orderItem : notArrangedItems) {
             MakeTaskItemDto taskItem = new MakeTaskItemDto().create();
-
-            Part _part = ctx.data.access(Part.class).getFirst(
-                    BomCriteria.findPartByMaterial(orderItem.getMaterial().getId()));
-
-            if (_part != null) {
-                taskItem.setPart(DTOs.marshal(PartDto.class, _part));
+                taskItem.setMaterial(orderItem.getMaterial());
                 taskItem.setQuantity(orderItem.getQuantity());
                 taskItem.setDeadline(orderItem.getDeadline());
                 taskItem.setDescription(orderItem.getDescription());
 
                 taskItems.add(taskItem);
-            }
+
         }
         return taskItems;
     }

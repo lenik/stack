@@ -192,17 +192,17 @@ public class MakeOrder
      * @aka taskItemListToMap
      */
     @Transient
-    Map<Material, BigDecimal> getArrangedPartSum() {
+    Map<Material, BigDecimal> getArrangedMaterialSum() {
         Map<Material, BigDecimal> sumMap = new HashMap<Material, BigDecimal>();
         // 计算已经在task中按排的量
         for (MakeTask task : tasks) {
             for (MakeTaskItem taskItem : task.getItems()) {
-                BigDecimal sum = sumMap.get(taskItem.part.getTarget());
+                BigDecimal sum = sumMap.get(taskItem.getMaterial());
                 if (sum == null) {
-                    sumMap.put(taskItem.part.getTarget(), taskItem.getQuantity());
+                    sumMap.put(taskItem.getMaterial(), taskItem.getQuantity());
                 } else {
                     sum = sum.add(taskItem.getQuantity());
-                    sumMap.put(taskItem.part.getTarget(), sum);
+                    sumMap.put(taskItem.getMaterial(), sum);
                 }
             }
         }
@@ -260,7 +260,7 @@ public class MakeOrder
     @Transient
     public List<MakeOrderItem> getNotArrangedItems() {
         List<MakeOrderItem> result = new ArrayList<MakeOrderItem>();
-        Map<Material, BigDecimal> sumMap = getArrangedPartSum();
+        Map<Material, BigDecimal> sumMap = getArrangedMaterialSum();
 
         for (MakeOrderItem orderItem : items) {
             if (orderItem.getMaterial() == null)
@@ -338,7 +338,7 @@ public class MakeOrder
     @Transient
     public Map<Material, BigDecimal> getOverloadParts() {
         Map<Material, BigDecimal> overloadParts = new HashMap<Material, BigDecimal>();
-        Map<Material, BigDecimal> sumMap = getArrangedPartSum();
+        Map<Material, BigDecimal> sumMap = getArrangedMaterialSum();
         for (MakeOrderItem orderItem : items) {
             if (orderItem.getMaterial() == null)
                 continue; // 用户只输入了外部名称和规格

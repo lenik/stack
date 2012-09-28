@@ -15,7 +15,7 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.MomentIntervalDto;
 import com.bee32.plover.util.TextUtil;
-import com.bee32.sem.make.dto.PartDto;
+import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.makebiz.entity.MakeTaskItem;
 
 public class MakeTaskItemDto
@@ -29,7 +29,7 @@ public class MakeTaskItemDto
 
     MakeTaskDto task;
     int index;
-    PartDto part;
+    MaterialDto material;
     BigDecimal quantity;
 
     Date deadline;
@@ -42,9 +42,7 @@ public class MakeTaskItemDto
         task = mref(MakeTaskDto.class, source.getTask());
         index = source.getIndex();
 
-        int partSelection = 0;
-        if (selection.contains(PART_ATTRIBUTES)) partSelection |= PartDto.TARGET_ATTRIBUTES;
-        part = mref(PartDto.class, partSelection, source.getPart());
+        material = mref(MaterialDto.class, MaterialDto.ATTRBUTES, source.getMaterial());
 
         quantity = source.getQuantity();
 
@@ -59,7 +57,7 @@ public class MakeTaskItemDto
     protected void _unmarshalTo(MakeTaskItem target) {
         merge(target, "task", task);
         target.setIndex(index);
-        merge(target, "part", part);
+        merge(target, "material", material);
         target.setQuantity(quantity);
         target.setDeadline(deadline);
         target.setStatus(status);
@@ -101,14 +99,14 @@ public class MakeTaskItemDto
         this.index = index;
     }
 
-    public PartDto getPart() {
-        return part;
+    public MaterialDto getMaterial() {
+        return material;
     }
 
-    public void setPart(PartDto part) {
-        if (part == null)
-            throw new NullPointerException("part");
-        this.part = part;
+    public void setMaterial(MaterialDto material) {
+        if (material == null)
+            throw new NullPointerException("material");
+        this.material = material;
     }
 
     public BigDecimal getQuantity() {
@@ -153,7 +151,7 @@ public class MakeTaskItemDto
     protected Serializable naturalId() {
         return new IdComposite(//
                 naturalId(task), //
-                naturalId(part));
+                naturalId(material));
     }
 
 }

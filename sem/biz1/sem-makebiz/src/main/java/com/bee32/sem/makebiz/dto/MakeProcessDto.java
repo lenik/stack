@@ -76,13 +76,6 @@ public class MakeProcessDto
 	this.taskItem = taskItem;
     }
 
-	public void setTaskItemEven(MakeTaskItemDto taskItem) {
-		this.taskItem = taskItem;
-		this.part = taskItem.getPart();
-		this.quantity = taskItem.getQuantity();
-		this.deadline = taskItem.deadline;
-	}
-
 	public PartDto getPart() {
         return part;
     }
