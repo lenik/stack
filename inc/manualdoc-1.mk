@@ -6,7 +6,7 @@ tex_template := $(g_incdir)/manualdoc-1.tex
 tex_libmanual := $(g_incdir)/libmanual.tex
 
 manual-1.pdf: manual.tex history.tex $(tex_template) $(tex_libmanual)
-	xelatex -jobname=manual-1 '\nonstopmode \def\DIRNAME{$(g_incdir)} \def\modtitle{$(TITLE)} \def\modsubtitle{$(SUBTITLE)} \input $(tex_template)'
+	cooltex -abvPjmanual-1 -DDIRNAME="$(g_incdir)" -Dmodtitle="$(TITLE)" -Dmodsubtitle="$(SUBTITLE)" "$(tex_template)"
 
 history.tex: manual.tex
 	CWD="$$PWD"; cd ..; \
