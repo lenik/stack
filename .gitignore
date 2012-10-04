@@ -26,6 +26,8 @@ nohup.out
 *.toc
 *.xdv
 *.pdf
+*.nav
+*.snm
 history.tex
 
 # Maven
