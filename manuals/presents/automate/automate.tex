@@ -1,0 +1,99 @@
+\documentclass[CJK]{z-beamer}
+\usepackage{ifthen}
+\usepackage{multicol}
+\usepackage{booktabs}           % toprule, bottomrule
+\usepackage{tabularx}
+\usepackage{tikz}
+    \usetikzlibrary{arrows, chains, patterns}
+
+\usetheme{Warsaw}
+\usecolortheme{spruce}
+
+\title{软件构建自动化}
+\subtitle{从单元测试到连续集成}
+\author{谢继雷}
+\authorEmail{xjl@bee32.com}
+
+\AtBeginSection{
+    \begin{frame}<beamer>{纲要：\insertsectionhead}
+        \small
+        \ifthenelse{\equal{\thepart}{1}}{ %
+            \begin{multicols}{2} %
+                \tableofcontents[currentsection]
+            \end{multicols}
+        }{
+            \tableofcontents[currentsection]
+        }
+    \end{frame}
+}
+
+\begin{document}
+
+    \begin{frame}
+        \begin{center}
+            \titlepage
+        \end{center}
+    \end{frame}
+
+\part {软件构建技术}
+
+    \section {构建工具}
+        \itemssframe<+->{构建工具: 集成开发环境}{
+            \item 构建目标 (Build Target)
+            \item 构建配置 (Build Configuration)
+            \item Auto Build
+            \item Custom Build
+        }
+        \itemssframe<+->{构建工具: Makefile}{
+            \item ...
+        }
+        \itemssframe<+->{构建工具: Ant}{
+            \item ...
+        }
+        \itemssframe<+->{构建工具: Maven}{
+            \item ...
+        }
+
+    \section {大型项目的构建}
+        \itemssframe<+->{管理依赖项}{
+            \item ...
+        }
+        \itemssframe<+->{制品}{
+            \item ...
+        }
+
+\part {软件测试技术}
+    \section {单元测试}
+    \section {集成测试}
+    \section {性能测试}
+    \section {测试分析}
+    \section {测试自动化}
+
+\part {软件集成技术}
+
+    \section {软件产品支持}
+        \itemssframe<+->{软件的版本管理}{
+            \item ...
+        }
+        \itemssframe<+->{软件的开发文档}{
+            \item 软件的编程接口
+        }
+        \subsection{软件的规格参数}
+            \begin{frame}
+                \frametitle{软件的规格参数: 特性矩阵}
+            \end{frame}
+
+            \begin{frame}
+                \frametitle{软件的规格参数: 依赖图谱}
+            \end{frame}
+
+        \itemssframe<+->{软件的用户手册}{
+            \item ...
+        }
+
+    \section {连续集成系统}
+        \itemssframe<+->{热部署}{
+            \item Tomcat
+        }
+
+\end{document}
