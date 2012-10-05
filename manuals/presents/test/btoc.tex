@@ -1,0 +1,80 @@
+\documentclass{beamer}
+
+    \RequirePackage[slantfont,boldfont]{xeCJK}
+    \setCJKmainfont{WenQuanYi Micro Hei}
+    \XeTeXlinebreaklocale "zh"
+    \XeTeXlinebreakskip = 0pt plus 1pt
+    \linespread{1.2}
+    \setlength{\columnsep}{.5in}
+
+    \newcommand<>{\itemframe}[2]{
+        \begin{frame}
+            \frametitle{#1}
+            \begin{itemize}[#3]
+                #2
+            \end{itemize}
+        \end{frame}
+    }
+
+    \newcommand<>{\itemssframe}[3][]{
+        \subsection{#2}
+        \itemframe#4{#2}{#3}
+    }
+
+\usetheme{Warsaw}
+\usecolortheme{spruce}
+
+\title { Example \\ A small example \\ Third line }
+\subtitle { Sub Title }
+\author { Lenik \\ Ray J. Stomach }
+
+\AtBeginSection{
+    \begin{frame}
+        \tableofcontents[currentsection]
+    \end{frame}
+}
+
+\begin{document}
+
+\frame{\maketitle}
+
+\section[s1]{Example Document1}
+
+    \subsection
+   \itemssframe<+->{Sub1}{
+        \item A
+        \item B
+    }
+   \itemssframe<+->{Sub2}{
+        \item A
+        \item B
+    }
+   \itemssframe<+->{Sub3}{
+        \item A
+        \item B
+    }
+   \itemssframe<+->{Sub4}{
+        \item A
+        \item B
+    }
+
+\section[s2]{Example Document2}
+
+   \itemssframe<+->{Sub1}{
+        \item A
+        \item B
+    }
+   \itemssframe<+->{Sub2}{
+        \item A
+        \item B
+    }
+   \itemssframe<+->{Sub3}{
+        \item A
+        \item B
+    }
+   \itemssframe<+->{Sub4}{
+        \item A
+        \item B
+    }
+
+\end{document}
