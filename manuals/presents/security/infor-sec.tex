@@ -20,25 +20,23 @@
     {信息安全讲解与实施对策}
 \subtitle{智恒企业信息管理系统信息安全解决方案}
 \author{谢继雷}
-
-\AtBeginPart{
-    \frame{\partpage}
-}
+\authorEmail{xjl@bee32.com}
 
 \AtBeginSection{
     \begin{frame}<beamer>{纲要：\insertsectionhead}
         \small
         \ifthenelse{\equal{\thepart}{1}}{ %
             \begin{multicols}{2} %
-                \tableofcontents[currentsection]
+                \tableofcontents[currentsection,subsectionstyle=show/show/shaded]
             \end{multicols}
         }{
-            \tableofcontents[currentsection]
+            \tableofcontents[currentsection,subsectionstyle=show/show/shaded]
         }
     \end{frame}
 }
 
 \begin{document}
+
     \begin{frame}
         \begin{center}
             \titlepage
@@ -46,8 +44,8 @@
     \end{frame}
 
 \part {信息安全讲解}
-    \section {系统安全}
 
+    \section {系统安全}
         \itemssframe<+->{操作系统安全}{
             \item 病毒、木马程序
             \item 溢出漏洞、Shell Code
@@ -269,7 +267,6 @@
             \item 密码策略，黑客词典
             \item 与系统安全集成
         }
-
         \itemssframe<+->{密钥安全}{
             \item 密码的缺陷
             \item 公共密钥基础设施（PKI）
@@ -312,15 +309,5 @@
             \item 登录安全：需要用户定期修改密码，或更新密钥等
             \item 通信安全：需要占用更多的计算资源
         }
-
-    %\appendix
-    \frame{
-        \frametitle{结束}
-        \begin{center}\Large
-            谢谢观看！\\
-            如果您有任何疑问或建议，请发送信息至：\\
-            E-mail: xjl@bee32.com
-        \end{center}
-    }
 
 \end{document}
