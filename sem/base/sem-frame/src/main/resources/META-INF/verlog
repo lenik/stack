@@ -1,3 +1,38 @@
+SEM-2.0.0 (谢继雷, 金卫林, 2012-10-06)
+	* 发布 SEM-2.0.0.
+	* makeorder字体变大，表格加上线
+
+SEM-1.9.21 (金卫林, 2012-09-28)
+	* 定单上的产品没有bom，也可以按排生产任务
+
+SEM-1.9.20 (金卫林, 2012-09-27)
+	* 1.增加物料复制功能
+
+SEM-1.9.19 (金卫林, 2012-09-26)
+	* 对话框加"刷新"按钮
+	* sem-asset 加入明细查询
+
+SEM-1.9.18 (金卫林, 2012-09-24)
+	* sem-asset加入经办人余额，部门余额查询功能
+	* 往来余额查询
+
+SEM-1.9.17 (金卫林, 2012-09-22)
+	* sem-asset加入往来科目余额查询功能
+	* move getBundleSQL to DataViewBean
+
+SEM-1.9.16 (朱挺峰, 2012-09-21)
+	* ChanceAction added createdDate column
+
+SEM-1.9.15 (谢继雷, 2012-09-20)
+	* Added missing docs for plover-ox1.
+
+SEM-1.9.14 (谢继雷, 朱挺峰, 2012-09-19)
+	* Added manualdoc-1 for sem-process, sem-world.
+	* 考勤临时提交。
+	* Removd .toc files.
+	* Removed abstract entities from TX index.
+	* Added missing docs in sem-inventory.
+
 SEM-1.9.13 (谢继雷, 金卫林, 朱挺峰, 2012-09-18)
 	* Updated TX tables.
 	* 工资模块增加实体类注释。
