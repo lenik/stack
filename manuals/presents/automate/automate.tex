@@ -14,19 +14,6 @@
 \author{谢继雷}
 \authorEmail{xjl@bee32.com}
 
-\AtBeginSection{
-    \begin{frame}<beamer>{纲要：\insertsectionhead}
-        \small
-        \ifthenelse{\equal{\thepart}{1}}{ %
-            \begin{multicols}{2} %
-                \tableofcontents[currentsection]
-            \end{multicols}
-        }{
-            \tableofcontents[currentsection]
-        }
-    \end{frame}
-}
-
 \begin{document}
 
     \begin{frame}

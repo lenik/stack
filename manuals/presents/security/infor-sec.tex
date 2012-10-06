@@ -22,17 +22,15 @@
 \author{谢继雷}
 \authorEmail{xjl@bee32.com}
 
-\AtBeginSection{
-    \begin{frame}<beamer>{纲要：\insertsectionhead}
+\renewcommand\sectiontoc{
+    \ifthenelse{\equal{\thepart}{1}}{ %
         \small
-        \ifthenelse{\equal{\thepart}{1}}{ %
-            \begin{multicols}{2} %
-                \tableofcontents[currentsection,subsectionstyle=show/show/shaded]
-            \end{multicols}
-        }{
+        \begin{multicols}{2} %
             \tableofcontents[currentsection,subsectionstyle=show/show/shaded]
-        }
-    \end{frame}
+        \end{multicols}
+    }{
+        \tableofcontents[currentsection,subsectionstyle=show/show/shaded]
+    }
 }
 
 \begin{document}
