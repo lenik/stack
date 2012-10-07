@@ -19,13 +19,13 @@ public class AttendanceType
     static final Map<String, AttendanceType> nameMap = new HashMap<String, AttendanceType>();
     static final Map<String, AttendanceType> valueMap = new HashMap<String, AttendanceType>();
 
-    boolean present;
+    String icon;
+    double hour;
 
-    // double bonus;
-
-    public AttendanceType(String value, String name, boolean present) {
+    public AttendanceType(String value, String name, String icon, double hour) {
         super(value, name);
-        this.present = present;
+        this.icon = icon;
+        this.hour = hour;
     }
 
     public static Collection<AttendanceType> values() {
@@ -51,12 +51,8 @@ public class AttendanceType
         return typeName;
     }
 
-    public boolean isPresent() {
-        return present;
-    }
-
-    public void setPresent(boolean present) {
-        this.present = present;
+    public double getHour() {
+        return hour;
     }
 
     public double getBonus() {
@@ -79,15 +75,16 @@ public class AttendanceType
         site.saveConfig();
     }
 
-    public static final AttendanceType notAvailable = new AttendanceType("-", "notAvailable", false);
-    public static final AttendanceType normal = new AttendanceType("NM", "normal", true);
-    public static final AttendanceType late = new AttendanceType("LA", "late", false);
-    public static final AttendanceType leave = new AttendanceType("LE", "leave", false);
-    public static final AttendanceType sickLeave = new AttendanceType("SL", "sick-leave", false);
-    public static final AttendanceType eveningOvertime = new AttendanceType("EO", "evening-overtime", true);
-    public static final AttendanceType holidayOvertime = new AttendanceType("HO", "holiday-overtime", true);
-    public static final AttendanceType restOvertime = new AttendanceType("RO", "rest-overtime", true);
-    public static final AttendanceType trip = new AttendanceType("TR", "trip", true);
-    public static final AttendanceType rest = new AttendanceType("RE", "rest", false);
+    public static final AttendanceType notAvailable = new AttendanceType("-", "notAvailable", "", 0);
+    public static final AttendanceType normal = new AttendanceType("NM", "normal", "", 4);
+    public static final AttendanceType late = new AttendanceType("LA", "late", "", 3);
+    public static final AttendanceType leave = new AttendanceType("LE", "leave", "", 3);
+    public static final AttendanceType sickLeave = new AttendanceType("SL", "sick-leave", "", 3);
+    public static final AttendanceType eveningOvertime = new AttendanceType("EO", "evening-overtime", "", 8);
+    public static final AttendanceType holidayOvertime = new AttendanceType("HO", "holiday-overtime", "", 12);
+    public static final AttendanceType restOvertime = new AttendanceType("RO", "rest-overtime", "", 8);
+    public static final AttendanceType trip = new AttendanceType("TR", "trip", "", 4);
+    public static final AttendanceType rest = new AttendanceType("RE", "rest", "", 0);
+    public static final AttendanceType absent = new AttendanceType("AB", "absent", "", 0);
 
 }

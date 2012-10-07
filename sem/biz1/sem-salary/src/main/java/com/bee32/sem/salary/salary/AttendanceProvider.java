@@ -9,6 +9,8 @@ import com.bee32.sem.api.AbstractSalaryVariableProvider;
 public class AttendanceProvider
         extends AbstractSalaryVariableProvider {
 
+    String[] PARAMS = { "内勤天数", "外勤天数", "应出勤天数", "加班天数", "应加班天数" };
+
     @Override
     public BigDecimal evaluate(TextMap args, String variableName) {
         Date beginDate = (Date) args.get(ARG_BEGIN_DATE);
@@ -18,6 +20,12 @@ public class AttendanceProvider
 
     @Override
     public String[] getVariableNames() {
-        return new String[0];
+        String[] variables = new String[PARAMS.length];
+        int length = PARAMS.length;
+        for (int i = 0; i < length; i++) {
+            variables[i] = "@" + PARAMS[i];
+        }
+        return variables;
     }
+
 }

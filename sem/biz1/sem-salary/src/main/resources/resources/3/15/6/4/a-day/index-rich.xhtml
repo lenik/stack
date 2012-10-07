@@ -1,36 +1,123 @@
 <ui:composition template="/template/custom-rich.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
     xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:icsf="http://java.sun.com/jsf/composite/3/7"
-    xmlns:sem="http://java.sun.com/jsf/composite/3/15">
+    xmlns:sem="http://java.sun.com/jsf/composite/3/15" xmlns:pf="http://bee32.com/plover/faces">
 
+    <ui:param name="_entryUpdate" value=":mainForm:toolbar ${verifiable ? ':verifyInfoForm' : ''}" />
     <ui:param name="title" value="每日出勤记录" />
     <ui:param name="bean" value="${attendanceDAdmin}" />
     <ui:param name="obj" value="${bean.openedObject}" />
 
-    <ui:define name="toolbarContexts">
-        <p:calendar value="#{bean.targetDate}" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" showOn="button">
-        </p:calendar>
-    </ui:define>
+    <ui:define name="content">
+        <h:form id="mainForm">
+            <p:toolbar id="toolbar">
+                <p:toolbarGroup align="left">
+                    <p:calendar value="#{bean.targetDate}" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
+                        showOn="button">
+                    </p:calendar>
+                </p:toolbarGroup>
+                <ui:insert name="toolbar.left">
+                    <p:toolbarGroup align="left">
+                        <p:commandButton id="createButton" value="新建"
+                            rendered="${creatable != null ? creatable : true}" actionListener="${bean.showCreateForm}"
+                            onclick="waitbox.show()" oncomplete="waitbox.hide(); ${plainEditForm ? '' : 'editdlg.show()'}"
+                            update="${_contentUpdate}" />
+                        <!-- TODO toggle button in PF-3.1: searchPanel toggler -->
+                        <ui:insert name="toolbar.left.1" />
+                    </p:toolbarGroup>
+                </ui:insert>
+                <ui:insert name="toolbar.right">
+                    <p:toolbarGroup align="left">
+                        <ui:insert name="toolbar.right.1" />
+                        <p:commandButton id="viewButton" value="查看" rendered="${readable != null ? readable : true}"
+                            disabled="${not bean.selected}" actionListener="${bean.showContent}" update="${_contentUpdate}"
+                            onclick="waitbox.show()" oncomplete="waitbox.hide(); ${plainEditForm ? '' : 'editdlg.show()'}" />
+                        <p:commandButton id="editButton" value="修改" rendered="${editable != null ? editable : true}"
+                            disabled="${not bean.selected or not bean.selectionEditable}" actionListener="${bean.showEditForm}"
+                            update="${_contentUpdate}" onclick="waitbox.show()"
+                            oncomplete="waitbox.hide(); ${plainEditForm ? '' : 'editdlg.show()'}" />
+                        <p:separator />
+                        <p:commandButton id="deleteButton" value="删除"
+                            rendered="${deletable != null ? deletable : true}" onclick="deleteConfirmDialog.show()"
+                            disabled="${not bean.selected or not bean.selectionEditable}" />
+                        <p:separator />
+                        <c:if test="${verifiable}">
+                            <sem:singleVerifierSupportButton id="verifyButton"
+                                selection="${bean.selection}" disabled="${bean.editing or not bean.selected}" />
+                        </c:if>
+                        <p:commandButton id="print" icon="ui-icon-print" title="打印"
+                            onclick="print('#mainForm:dataContainer')" />
+                    </p:toolbarGroup>
+                </ui:insert>
+            </p:toolbar>
 
+            <p:separator />
 
-    <ui:define name="includes">
-        <p:panel header="日出勤记录整理">
-            <p:dataTable var="item" value="${bean.attendances}">
+            <p:dataTable value="${bean.test}" var="month" selection="${bean.singleSelection}" selectionMode="single">
+                <p:ajax event="rowSelect" process=":@this" update="${_entryUpdate}" />
                 <p:column headerText="雇员">
-                    <h:outputText value="${item.employee.person.name}" />
+                    <h:outputText value="${month.employee.personName}" />
                 </p:column>
-                <p:column headerText="日期">
-                    <h:outputText value="${item.dayString}" />
-                </p:column>
-                <p:column headerText="上午">
-                    <h:outputText value="" />
-                </p:column>
-                <p:column headerText="下午">
-                    <h:outputText value="" />
-                </p:column>
+                <p:columns value="${bean.columns}" var="column" columnIndexVar="colIndex">
+                    <f:facet name="header">
+                        <h:outputText value="${column.header}" />
+                    </f:facet>
+                    <h:outputText value="${month.attendances[column.order].refer}" />
+                </p:columns>
 
             </p:dataTable>
-        </p:panel>
+        </h:form>
+
+
+        <div id="dialogs">
+            <p:dialog id="editDialog" header="编辑${title}" widgetVar="editdlg" modal="true"
+                dynamic="${viewConfig.dynamicDialog}">
+                <h:form id="form" styleClass="${(plainEditForm and bean.editing) ? 'form-editing' : ''}">
+                    <h:panelGroup rendered="${bean.openedObject == null}">
+                        （请选择要操作的对象。）
+                    </h:panelGroup>
+                    <h:panelGroup rendered="${bean.openedObject != null}">
+                        <h:panelGroup id="content" layout="block"
+                            styleClass="${formStyleClass != null ? formStyleClass : 'ui-dialog-form'}">
+                            <pf:locker id="locker" test="${not bean.editing}" layout="block"
+                                styleClass="${bean.editing ? '' : 'locker-active'}">
+                                <ui:insert name="editDialogContent">The edit dialog's content is undefined.</ui:insert>
+                            </pf:locker>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                    <!-- Hide edit buttons in plain-edit-form/show-content mode. -->
+                    <table border="0" width="100%">
+                        <tr>
+                            <td align="left">
+                                <h:panelGroup rendered="${bean.openedObject != null and not bean.editing}">
+                                    <h:panelGroup title="如果要编辑请点击工具栏上的修改按钮。" style="font-size: 120%; color: green">
+                                        （您正在浏览数据中…）
+                                    </h:panelGroup>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="${copyable and (bean.editing or not plainEditForm)}">
+                                    <p:commandButton id="dup-validated" value="创建副本" actionListener="${bean.saveDup}"
+                                        disabled="${not bean.editing}" update="${_contentUpdate} ${_indexUpdate} ${mirrorTargets}"
+                                        rendered="${not plainEditForm}" onclick="waitbox.show()"
+                                        oncomplete="waitbox.hide(); editdlg.shakeOnFail(args)" />
+                                </h:panelGroup>
+                                <ui:insert name="editDialogButtons.left">
+                                </ui:insert>
+                            </td>
+                            <td align="right">
+                                <h:panelGroup rendered="${bean.editing or not plainEditForm}">
+                                    <p:commandButton id="save-validated" value="保存" actionListener="${bean.save}"
+                                        disabled="${not bean.editing}" update="${_contentUpdate} ${_indexUpdate} ${mirrorTargets}"
+                                        onclick="waitbox.show()" oncomplete="waitbox.hide(); ${plainEditForm ? '' : 'editdlg.hideValidated(args)'}" />
+                                    <p:commandButton id="cancel" value="${bean.editing  ? '取消' : '关闭'}"
+                                        onclick="waitbox.show(); ${plainEditForm ? '' : 'editdlg.hide()'}" oncomplete="waitbox.hide()"
+                                        actionListener="${bean.showIndex}" update="${plainEditForm ? _contentUpdate : '@none'}" />
+                                </h:panelGroup>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+            </p:dialog>
+        </div>
 
     </ui:define>
 
