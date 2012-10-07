@@ -1,3 +1,15 @@
+Plover-3.4.0 (谢继雷, 2012-10-07)
+	* Released plover-3.3.10.
+
+Plover-3.3.10 (谢继雷, 2012-09-20)
+	* Added missing docs for plover-ox1.
+
+Plover-3.3.9 (谢继雷, 朱挺峰, 2012-09-19)
+	* Plover-ox1 操作手册修改。
+	* Removd .toc files.
+	* Fixed manual.tex in icsf-principal.
+	* Removed abstract entities from TX index.
+
 Plover-3.3.8 (谢继雷, 金卫林, 2012-09-18)
 	* Updated TX tables.
 	* Added missing docs in CEntity+.
