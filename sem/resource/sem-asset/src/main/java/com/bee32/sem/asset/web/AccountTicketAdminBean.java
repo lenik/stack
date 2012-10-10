@@ -42,7 +42,7 @@ public class AccountTicketAdminBean
 
         //把取到的凭证源上的金额生成凭证的一条明细
         AccountTicketItemDto item = new AccountTicketItemDto().create();
-        item.setLabel(_source.getTicketSrcLabel());
+        item.setDescription(_source.getTicketSrcLabel());
         item.setTicket(accountTicket);
         try {
             item.setValue(new MutableMCValue(_source.getTicketSrcValue()));
@@ -79,12 +79,18 @@ public class AccountTicketAdminBean
         return true;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void postUpdate(UnmarshalMap uMap) throws Exception {
-        for (AccountTicketDto ticket : uMap.<AccountTicketDto> dtos()) {
-            IAccountTicketSource ticketSource = ticket.getTicketSource();
-            ticketSource.setTicket(ticket.unmarshal());
-            DATA(Entity.class).saveOrUpdate(ticketSource);
+        for (AccountTicket me : uMap.<AccountTicket> entitySet()) {
+            AccountTicketDto dto = uMap.getSourceDto(me);
+            IAccountTicketSource ticketSource = dto.getTicketSource();
+            ticketSource.setTicket(me);
+            try {
+                DATA(Entity.class).saveOrUpdate(ticketSource);
+            } catch (Exception e) {
+                uiLogger.error("无法关联凭证", e);
+            }
         }
     }
 

@@ -28,8 +28,8 @@
         <p:column headerText="标识" sortBy="#{entry.id}">
             <h:outputText value="#{entry.id}" />
         </p:column>
-        <p:column headerText="时间" sortBy="#{entry.createDate}">
-            <h:outputText value="#{entry.createDate}" >
+        <p:column headerText="时间" sortBy="#{entry.createdDate}">
+            <h:outputText value="#{entry.createdDate}" >
                 <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
             </h:outputText>
         </p:column>
