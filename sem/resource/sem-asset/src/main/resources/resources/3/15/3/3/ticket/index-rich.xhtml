@@ -54,6 +54,56 @@
                 </p:column>
             </f:facet>
         </fr:listView>
+
+        <p:fieldset id="ticketSource" legend="凭证源">
+            <t:panelGrid columns="1">
+                <t:panelGrid columns="2">
+                    <p:commandButton value="选择收款单"
+                        onclick="chooseCreditNoteDialog.show()"
+                        disabled="#{not bean.editing}">
+                        <f:setPropertyActionListener
+                            target="${chooseCreditNoteDialogBean.haveNoCorrespondingTicket}"
+                            value="true" />
+                    </p:commandButton>
+                    <p:commandButton value="选择付款单"
+                        onclick="choosePaymentNoteDialog.show()"
+                        disabled="#{not bean.editing}">
+                        <f:setPropertyActionListener
+                            target="${choosePaymentNoteDialogBean.haveNoCorrespondingTicket}"
+                            value="true" />
+                    </p:commandButton>
+                </t:panelGrid>
+                <p:panelGrid id="source">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column>类型</p:column>
+                            <p:column>标识</p:column>
+                            <p:column>摘要</p:column>
+                            <p:column>金额</p:column>
+                        </p:row>
+                    </f:facet>
+
+                    <p:row>
+                        <p:column>
+                            <h:outputText value="#{obj.ticketSource.ticketSrcType}" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{obj.ticketSource.ticketSrcId}" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{obj.ticketSource.ticketSrcLabel}" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{obj.ticketSource.ticketSrcValue}" />
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </t:panelGrid>
+
+
+
+        </p:fieldset>
+
     </ui:define>
 
     <ui:define name="dialogs">
@@ -124,6 +174,13 @@
         <sem:chooseOrgUnitDialog id="c_orgunit" target="#{itemObj.orgUnit}" update=":itemsEditView:editForm:orgUnit" />
         <sem:choosePersonDialog id="choosePersonDialog" var="choosePersonDialog" target="#{itemObj.person}"
             update=":itemsEditView:editForm:person" />
+
+
+
+        <sem:chooseCreditNoteDialog id="c_credit_note" target="#{bean.sourceToApply}"
+            update=":editDialog:form:basic :editDialog:form:itemsIndexView:indexForm:body :editDialog:form:ticketSource" />
+        <sem:choosePaymentNoteDialog id="c_payment_note" target="#{bean.sourceToApply}"
+            update=":editDialog:form:basic :editDialog:form:itemsIndexView:indexForm:body :editDialog:form:ticketSource" />
     </ui:define>
 
 </ui:composition>

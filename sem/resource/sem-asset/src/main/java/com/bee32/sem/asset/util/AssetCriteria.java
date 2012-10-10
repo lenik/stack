@@ -9,6 +9,7 @@ import org.hibernate.criterion.MatchMode;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.Disjunction;
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.IsNull;
 import com.bee32.plover.criteria.hibernate.LeftHand;
@@ -34,6 +35,12 @@ public class AssetCriteria
     public static ICriteriaElement haveNoCorrespondingTicket() {
         return compose(alias("ticket", "ticket", CriteriaSpecification.LEFT_JOIN), //
                 new IsNull("ticket.id"));
+    }
+
+    @LeftHand(FundFlow.class)
+    public static ICriteriaElement correspondingTicket(Long ticketId) {
+        return compose(alias("ticket", "ticket", CriteriaSpecification.LEFT_JOIN), //
+                new Equals("ticket.id", ticketId));
     }
 
     @LeftHand(AccountTicketItem.class)

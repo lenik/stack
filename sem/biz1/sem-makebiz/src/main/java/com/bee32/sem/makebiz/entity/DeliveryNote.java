@@ -1,9 +1,11 @@
 package com.bee32.sem.makebiz.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -14,8 +16,15 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.plover.orm.cache.Redundant;
+import com.bee32.plover.ox1.config.DecimalConfig;
+import com.bee32.sem.asset.entity.AccountTicket;
+import com.bee32.sem.asset.entity.IAccountTicketSource;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.process.base.ProcessEntity;
+import com.bee32.sem.world.monetary.FxrQueryException;
+import com.bee32.sem.world.monetary.MCValue;
+import com.bee32.sem.world.monetary.MCVector;
 
 /**
  * 送货单
@@ -25,7 +34,8 @@ import com.bee32.sem.process.base.ProcessEntity;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "delivery_note_seq", allocationSize = 1)
 public class DeliveryNote
-        extends ProcessEntity {
+        extends ProcessEntity
+        implements IAccountTicketSource, DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,6 +44,11 @@ public class DeliveryNote
     Date arrivalDate;
     List<DeliveryNoteItem> items = new ArrayList<DeliveryNoteItem>();
     DeliveryNoteTakeOut takeOut;
+
+    AccountTicket ticket;
+
+    transient MCVector total; // Redundant
+    BigDecimal nativeTotal; // Redundant.
 
     /**
      * 定单
@@ -133,6 +148,67 @@ public class DeliveryNote
             items.get(index).setIndex(index);
     }
 
+
+    /**
+     * 多币种金额
+     *
+     * 多币种表示的金额。
+     */
+    @Transient
+    public synchronized MCVector getTotal() {
+        if (total == null) {
+            total = new MCVector();
+            for (DeliveryNoteItem item : items) {
+                MCValue itemTotal = item.getTotal();
+                total.add(itemTotal);
+            }
+        }
+        return total;
+    }
+
+    /**
+     * 本币金额
+     *
+     * 【冗余】获取用本地货币表示的总金额。
+     *
+     * @throws FxrQueryException
+     *             外汇查询异常。
+     */
+    @Redundant
+    @Column(precision = MONEY_TOTAL_PRECISION, scale = MONEY_TOTAL_SCALE)
+    public synchronized BigDecimal getNativeTotal()
+            throws FxrQueryException {
+        if (nativeTotal == null) {
+            synchronized (this) {
+                if (nativeTotal == null) {
+                    BigDecimal sum = new BigDecimal(0L, MONEY_TOTAL_CONTEXT);
+                    for (DeliveryNoteItem item : items) {
+                        BigDecimal itemNativeTotal = item.getNativeTotal();
+                        sum = sum.add(itemNativeTotal);
+                    }
+                    nativeTotal = sum;
+                }
+            }
+        }
+        return nativeTotal;
+    }
+
+    public void setNativeTotal(BigDecimal nativeTotal) {
+        this.nativeTotal = nativeTotal;
+    }
+
+    @Override
+    protected void invalidate() {
+        super.invalidate();
+        invalidateTotal();
+    }
+
+    protected void invalidateTotal() {
+        total = null;
+        nativeTotal = null;
+    }
+
+
     /**
      * 出库单
      *
@@ -150,4 +226,57 @@ public class DeliveryNote
         this.takeOut = takeOut;
     }
 
+    /**
+     * 凭证
+     *
+     * 送货单对应的财务凭证。
+     *
+     * @return
+     */
+    @Override
+    @ManyToOne
+    public AccountTicket getTicket() {
+        return ticket;
+    }
+
+    @Override
+    public void setTicket(AccountTicket ticket) {
+        this.ticket = ticket;
+    }
+
+    /**
+     * 凭证源Id
+     */
+    @Transient
+    @Override
+    public String getTicketSrcId() {
+        return this.getId().toString();
+    }
+
+    /**
+     * 凭证源类型
+     */
+    @Transient
+    @Override
+    public String getTicketSrcType() {
+        return "送货单";
+    }
+
+    /**
+     * 凭证源摘要
+     */
+    @Transient
+    @Override
+    public String getTicketSrcLabel() {
+        return this.getLabel();
+    }
+
+    /**
+     * 凭证源金额
+     */
+    @Transient
+    @Override
+    public BigDecimal getTicketSrcValue() throws FxrQueryException {
+        return this.getNativeTotal();
+    }
 }

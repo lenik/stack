@@ -42,7 +42,10 @@ import com.bee32.sem.world.monetary.MCValue;
 @SequenceGenerator(name = "idgen", sequenceName = "fund_flow_seq", allocationSize = 1)
 public class FundFlow
         extends MomentInterval
-        implements DecimalConfig, IJudgeNumber {
+        implements
+            DecimalConfig,
+            IJudgeNumber,
+            IAccountTicketSource {
 
     private static final long serialVersionUID = 1L;
 
@@ -155,12 +158,14 @@ public class FundFlow
      *
      * @return
      */
+    @Override
     @OneToOne
     @JoinColumn
     public AccountTicket getTicket() {
         return ticket;
     }
 
+    @Override
     public void setTicket(AccountTicket ticket) {
         this.ticket = ticket;
     }
@@ -191,6 +196,49 @@ public class FundFlow
         } catch (FxrQueryException e) {
             return 0;
         }
+    }
+
+    /**
+     * 凭证源Id
+     */
+    @Transient
+    @Override
+    public String getTicketSrcId() {
+        return this.getId().toString();
+    }
+
+    /**
+     * 凭证源类型
+     */
+    @Transient
+    @Override
+    public String getTicketSrcType() {
+        String type = "";
+        if (this.getClass().getName().equals("com.bee32.sem.asset.entity.CreditNote")) {
+            type = "收款单";
+        } else if (this.getClass().getName().equals("com.bee32.sem.asset.entity.PaymentNote")) {
+            type = "付款单";
+        }
+
+        return type;
+    }
+
+    /**
+     * 凭证源摘要
+     */
+    @Transient
+    @Override
+    public String getTicketSrcLabel() {
+        return this.getLabel();
+    }
+
+    /**
+     * 凭证源金额
+     */
+    @Transient
+    @Override
+    public BigDecimal getTicketSrcValue() throws FxrQueryException {
+        return this.getNativeValue();
     }
 
 }

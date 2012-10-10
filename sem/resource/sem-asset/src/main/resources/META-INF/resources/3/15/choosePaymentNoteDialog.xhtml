@@ -4,7 +4,7 @@
 
     <cc:interface>
         <!-- basic -->
-        <cc:attribute name="var" default="chooseBudgetRequestDialog" />
+        <cc:attribute name="var" default="choosePaymentNoteDialog" />
         <cc:attribute name="stereo" shortDescription="NOT IMPLMENETED" />
         <cc:attribute name="target" type="java.lang.Object" required="true" />
         <cc:attribute name="multiple" type="java.lang.Boolean" default="false" />
@@ -17,7 +17,7 @@
         <cc:attribute name="mode" default="table" shortDescription="table, list, tree" />
 
         <!-- internals -->
-        <cc:attribute name="dialogBean" type="java.lang.Object" default="${chooseBudgetRequestDialogBean}" />
+        <cc:attribute name="dialogBean" type="java.lang.Object" default="${choosePaymentNoteDialogBean}" />
         <cc:attribute name="selectionHolder" type="java.lang.Object" />
 
         <!-- facets -->
@@ -39,13 +39,16 @@
 
             <ui:define name="columns">
                 <p:column headerText="经办人">
-                    <h:outputText value="#{entry.creator}" />
+                    <h:outputText value="#{entry.operator.displayName}" />
                 </p:column>
                 <p:column headerText="摘要">
                     <h:outputText value="#{entry.label}" />
                 </p:column>
                 <p:column headerText="金额">
                     <h:outputText value="#{entry.value}" />
+                </p:column>
+                <p:column headerText="付款人">
+                    <h:outputText value="#{entry.whoPay.displayName}" />
                 </p:column>
                 <cc:renderFacet name="columns" />
             </ui:define>

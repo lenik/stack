@@ -1,5 +1,6 @@
 package com.bee32.sem.makebiz.dto;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -11,12 +12,18 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.ox1.config.DecimalConfig;
+import com.bee32.sem.asset.dto.AccountTicketDto;
 import com.bee32.sem.makebiz.entity.DeliveryNote;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.process.base.ProcessEntityDto;
+import com.bee32.sem.world.monetary.FxrQueryException;
+import com.bee32.sem.world.monetary.MCValue;
+import com.bee32.sem.world.monetary.MCVector;
 
 public class DeliveryNoteDto
-        extends ProcessEntityDto<DeliveryNote> {
+        extends ProcessEntityDto<DeliveryNote>
+        implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,6 +35,11 @@ public class DeliveryNoteDto
     Date arrivalDate;
     List<DeliveryNoteItemDto> items;
     DeliveryNoteTakeOutDto takeOut;
+
+    AccountTicketDto ticket;
+
+    MCVector total;
+    BigDecimal nativeTotal;
 
     @Override
     protected void _marshal(DeliveryNote source) {
@@ -43,6 +55,8 @@ public class DeliveryNoteDto
 
         takeOut = marshal(DeliveryNoteTakeOutDto.class,
                 selection.translate(TAKEOUT_ITEMS, DeliveryNoteTakeOutDto.ORDER_ITEMS), source.getTakeOut());
+
+        ticket = mref(AccountTicketDto.class, source.getTicket());
     }
 
     @Override
@@ -56,6 +70,7 @@ public class DeliveryNoteDto
             mergeList(target, "items", items);
 
         merge(target, "takeOut", takeOut);
+        merge(target, "ticket", ticket);
     }
 
     @Override
@@ -128,6 +143,57 @@ public class DeliveryNoteDto
             items.get(index).setIndex(index);
     }
 
+
+    public MCVector getTotal() {
+        if (total == null) {
+            total = new MCVector();
+            for (DeliveryNoteItemDto item : items) {
+                MCValue itemTotal = item.getTotal();
+                total.add(itemTotal);
+            }
+        }
+        return total;
+    }
+
+    public void setTotal(MCVector total) {
+        if (total == null)
+            throw new NullPointerException("total");
+        this.total = total;
+    }
+
+    public BigDecimal getNativeTotal()
+            throws FxrQueryException {
+        if (nativeTotal == null) {
+            synchronized (this) {
+                if (nativeTotal == null) {
+                    BigDecimal sum = new BigDecimal(0L, MONEY_TOTAL_CONTEXT);
+                    for (DeliveryNoteItemDto item : items) {
+
+                        BigDecimal itemNativeTotal = item.getNativePrice();
+                        double d = itemNativeTotal.doubleValue();
+                        double q = item.getQuantity().doubleValue();
+                        double itemTotal = d * q;
+                        BigDecimal bit = new BigDecimal(itemTotal, MONEY_TOTAL_CONTEXT);
+                        sum = sum.add(bit);
+                        // sum = sum.add(itemNativeTotal);
+                    }
+                    nativeTotal = sum;
+                }
+            }
+        }
+        return nativeTotal;
+    }
+
+    public void setNativeTotal(BigDecimal nativeTotal) {
+        this.nativeTotal = nativeTotal;
+    }
+
+    public void invalidateTotal() {
+        total = null;
+        nativeTotal = null;
+    }
+
+
     public PartyDto getCustomer() {
         return customer;
     }
@@ -149,4 +215,13 @@ public class DeliveryNoteDto
             return new ArrayList<DeliveryNoteTakeOutDto>();
         return Arrays.asList(takeOut);
     }
+
+    public AccountTicketDto getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(AccountTicketDto ticket) {
+        this.ticket = ticket;
+    }
+
 }

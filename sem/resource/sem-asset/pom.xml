@@ -20,7 +20,7 @@
         </dependency>
         <dependency>
             <groupId>com.bee32.sem</groupId>
-            <artifactId>sem-inventory</artifactId>
+            <artifactId>sem-process</artifactId>
             <version>0.3.2-SNAPSHOT</version>
         </dependency>
     </dependencies>

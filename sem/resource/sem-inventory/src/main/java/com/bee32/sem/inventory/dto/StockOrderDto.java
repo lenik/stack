@@ -4,6 +4,7 @@ import javax.free.Nullables;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.sem.asset.dto.AccountTicketDto;
 import com.bee32.sem.inventory.entity.AbstractStockItemList;
 import com.bee32.sem.inventory.entity.AbstractStockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
@@ -28,6 +29,8 @@ public class StockOrderDto
     PartyDto org;
     OrgUnitDto orgUnit;
     StockWarehouseDto warehouse;
+
+    AccountTicketDto ticket;
 
     StockOrderVerifySupportDto verifyContext;
 
@@ -66,6 +69,7 @@ public class StockOrderDto
         org = mref(PartyDto.class, source.getOrg());
         orgUnit = mref(OrgUnitDto.class, source.getOrgUnit());
         warehouse = mref(StockWarehouseDto.class, source.getWarehouse());
+        ticket = mref(AccountTicketDto.class, source.getTicket());
         verifyContext = marshal(StockOrderVerifySupportDto.class, source.getVerifyContext());
     }
 
@@ -80,6 +84,7 @@ public class StockOrderDto
         merge(target, "org", org);
         merge(target, "orgUnit", orgUnit);
         merge(target, "warehouse", warehouse);
+        merge(target, "ticket", ticket);
         merge(target, "verifyContext", verifyContext);
     }
 
@@ -157,6 +162,14 @@ public class StockOrderDto
         if (warehouse == null)
             throw new NullPointerException("warehouse");
         this.warehouse = warehouse;
+    }
+
+    public AccountTicketDto getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(AccountTicketDto ticket) {
+        this.ticket = ticket;
     }
 
     @Override

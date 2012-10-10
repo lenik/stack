@@ -3,6 +3,7 @@ package com.bee32.sem.asset.dto;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
+import java.util.ServiceLoader;
 
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
@@ -10,11 +11,16 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.entity.CopyUtils;
 import com.bee32.sem.asset.entity.AccountTicket;
+import com.bee32.sem.asset.entity.IAccountTicketSource;
+import com.bee32.sem.asset.service.IAccountTicketSourceProvider;
 import com.bee32.sem.process.base.ProcessEntityDto;
+import com.bee32.sem.process.verify.builtin.dto.SingleVerifierWithNumberSupportDto;
+import com.bee32.sem.process.verify.dto.IVerifiableDto;
 import com.bee32.sem.world.monetary.FxrQueryException;
 
 public class AccountTicketDto
-        extends ProcessEntityDto<AccountTicket> {
+        extends ProcessEntityDto<AccountTicket>
+        implements IVerifiableDto {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,6 +28,9 @@ public class AccountTicketDto
 
     List<AccountTicketItemDto> items;
 
+    SingleVerifierWithNumberSupportDto verifyContext;
+
+    IAccountTicketSource ticketSource;
 
     @Override
     protected void _copy() {
@@ -34,12 +43,14 @@ public class AccountTicketDto
             items = marshalList(AccountTicketItemDto.class, source.getItems());
         else
             items = Collections.emptyList();
+        verifyContext = marshal(SingleVerifierWithNumberSupportDto.class, source.getVerifyContext());
     }
 
     @Override
     protected void _unmarshalTo(AccountTicket target) {
         if (selection.contains(ITEMS))
             mergeList(target, "items", items);
+        merge(target, "verifyContext", verifyContext);
     }
 
     @Override
@@ -105,6 +116,33 @@ public class AccountTicketDto
             else
                 creditTotal = creditTotal.add(itemNativeValue.abs());
         }
-        return debitTotal.equals(creditTotal);
+        return debitTotal.compareTo(creditTotal)==0;
+    }
+
+    @Override
+    public SingleVerifierWithNumberSupportDto getVerifyContext() {
+        return verifyContext;
+    }
+
+    public void setVerifyContext(SingleVerifierWithNumberSupportDto verifySupport) {
+        this.verifyContext = verifySupport;
+    }
+
+    public IAccountTicketSource getTicketSource() {
+        if (ticketSource == null) {
+            ServiceLoader<IAccountTicketSourceProvider> providers = ServiceLoader.load(IAccountTicketSourceProvider.class);
+            for(IAccountTicketSourceProvider provider : providers) {
+                IAccountTicketSource source = provider.getSource(this.getId());
+                if (source != null) {
+                     return ticketSource = source;
+                }
+            }
+        }
+
+        return ticketSource;
+    }
+
+    public void setTicketSource(IAccountTicketSource ticketSource) {
+        this.ticketSource = ticketSource;
     }
 }

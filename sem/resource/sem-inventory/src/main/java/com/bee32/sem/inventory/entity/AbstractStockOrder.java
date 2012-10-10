@@ -21,6 +21,8 @@ import com.bee32.plover.arch.bean.IPropertyAccessor;
 import com.bee32.plover.arch.generic.IParameterized;
 import com.bee32.plover.arch.generic.IParameterizedType;
 import com.bee32.plover.arch.util.IEnclosedObject;
+import com.bee32.sem.asset.entity.AccountTicket;
+import com.bee32.sem.asset.entity.IAccountTicketSource;
 import com.bee32.sem.inventory.process.IStockOrderVerifyContext;
 import com.bee32.sem.inventory.process.StockOrderVerifySupport;
 import com.bee32.sem.inventory.tx.entity.StockJob;
@@ -30,6 +32,7 @@ import com.bee32.sem.inventory.util.BatchArray;
 import com.bee32.sem.people.entity.OrgUnit;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.process.verify.IVerifiable;
+import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.thing.AbstractItemList;
 
 /**
@@ -42,7 +45,11 @@ import com.bee32.sem.world.thing.AbstractItemList;
 @SequenceGenerator(name = "idgen", sequenceName = "stock_order_seq", allocationSize = 1)
 public class AbstractStockOrder<Item extends StockOrderItem>
         extends AbstractStockItemList<Item>
-        implements IParameterized, IVerifiable<IStockOrderVerifyContext>, IEnclosedObject<StockJob> {
+        implements
+            IParameterized,
+            IVerifiable<IStockOrderVerifyContext>,
+            IEnclosedObject<StockJob>,
+            IAccountTicketSource {
 
     private static final long serialVersionUID = 1L;
 
@@ -54,6 +61,8 @@ public class AbstractStockOrder<Item extends StockOrderItem>
     Party org;
     OrgUnit orgUnit;
     StockWarehouse warehouse; // Redundant.
+
+    AccountTicket ticket;
 
     public AbstractStockOrder() {
         this(null, StockOrderSubject.INIT, null);
@@ -114,6 +123,7 @@ public class AbstractStockOrder<Item extends StockOrderItem>
         org = o.org;
         orgUnit = o.orgUnit;
         warehouse = o.warehouse;
+        ticket = o.ticket;
     }
 
     /**
@@ -275,6 +285,24 @@ public class AbstractStockOrder<Item extends StockOrderItem>
         this.warehouse = warehouse;
     }
 
+    /**
+     * 凭证
+     *
+     * 仓库单据对应的财务凭证。
+     *
+     * @return
+     */
+    @Override
+    @ManyToOne
+    public AccountTicket getTicket() {
+        return ticket;
+    }
+
+    @Override
+    public void setTicket(AccountTicket ticket) {
+        this.ticket = ticket;
+    }
+
     @Transient
     @Override
     public String getDisplayName() {
@@ -364,4 +392,40 @@ public class AbstractStockOrder<Item extends StockOrderItem>
         verifyContext.bind(this);
     }
 
+
+    /**
+     * 凭证源Id
+     */
+    @Transient
+    @Override
+    public String getTicketSrcId() {
+        return this.getId().toString();
+    }
+
+    /**
+     * 凭证源类型
+     */
+    @Transient
+    @Override
+    public String getTicketSrcType() {
+        return this.getSubject().getDisplayName();
+    }
+
+    /**
+     * 凭证源摘要
+     */
+    @Transient
+    @Override
+    public String getTicketSrcLabel() {
+        return this.getLabel();
+    }
+
+    /**
+     * 凭证源金额
+     */
+    @Transient
+    @Override
+    public BigDecimal getTicketSrcValue() throws FxrQueryException {
+        return this.getNativeTotal();
+    }
 }
