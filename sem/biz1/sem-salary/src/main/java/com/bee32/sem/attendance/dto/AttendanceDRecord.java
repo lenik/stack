@@ -1,8 +1,13 @@
 package com.bee32.sem.attendance.dto;
 
+import java.io.Serializable;
+
 import com.bee32.sem.attendance.entity.AttendanceType;
 
-public class AttendanceDRecord {
+public class AttendanceDRecord
+        implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     int day;
 

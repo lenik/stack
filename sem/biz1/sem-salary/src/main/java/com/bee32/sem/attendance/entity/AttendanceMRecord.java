@@ -55,11 +55,13 @@ public class AttendanceMRecord
         for (String dayString : attendanceData.split(";")) {
             String stringday = dayString.substring(0, 1);
             int day = Integer.parseInt(stringday);
+
             String types = dayString.substring(2);
-            String[] nameTypes = types.split(",");
-            AttendanceType morning = AttendanceType.forName(nameTypes[0]);
-            AttendanceType afternoon = AttendanceType.forName(nameTypes[1]);
-            AttendanceType evening = AttendanceType.forName(nameTypes[2]);
+            char [] characterValue = types.toCharArray();
+
+            AttendanceType morning = AttendanceType.forValue(characterValue[0]);
+            AttendanceType afternoon = AttendanceType.forValue(characterValue[1]);
+            AttendanceType evening = AttendanceType.forValue(characterValue[2]);
             AttendanceDRecord dayRecord = new AttendanceDRecord();
             dayRecord.setDay(day);
             dayRecord.setMorning(morning);

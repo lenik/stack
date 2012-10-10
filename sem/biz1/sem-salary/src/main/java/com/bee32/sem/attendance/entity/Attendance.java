@@ -107,7 +107,7 @@ public class Attendance
      * 上午出勤状态
      */
     @Column(length = 10, nullable = false)
-    String get_morning() {
+    Character get_morning() {
         return morning.getValue();
     }
 
@@ -130,7 +130,7 @@ public class Attendance
      * 下午出勤状态
      */
     @Column(length = 10, nullable = false)
-    String get_afternoon() {
+    Character get_afternoon() {
         return afternoon.getValue();
     }
 
@@ -153,7 +153,7 @@ public class Attendance
      * 晚上出勤状态
      */
     @Column(length = 10, nullable = false)
-    String get_evening() {
+    Character get_evening() {
         return evening.getValue();
     }
 
