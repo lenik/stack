@@ -25,6 +25,7 @@
     </cc:interface>
 
     <cc:implementation>
+        <ui:param name="dicts" value="${stockDictsBean}" />
         <ui:decorate template="/template/simple-entity-dialog.xhtml">
             <ui:param name="var" value="${cc.attrs.var}" />
             <ui:param name="target" value="${cc.attrs.target}" />
@@ -36,6 +37,9 @@
             <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />
 
             <ui:define name="columns">
+                <p:column headerText="类型">
+                    <h:outputText value="${entry.subject.displayName}" />
+                </p:column>
                 <p:column headerText="时间">
                     <h:outputText value="${entry.createdDate}" />
                 </p:column>
@@ -53,6 +57,24 @@
                 <p:commandButton id="showDetail" value="明细" actionListener="${dialogBean.showContent}"
                     update=":${cc.clientId}:detailForm" oncomplete="_stockOrder_detailDialog.show()" />
             </ui:define>
+
+            <ui:define name="searchPanel.keyword.1">
+                <p:panel header="单据类型">
+                    <div align="center">
+                        <p>
+                            <p:selectOneMenu id="searchType" value="${dialogBean._searchSubject}" label="单据类型">
+                                <f:selectItem itemLabel="请选择单据类型" itemValue="" />
+                                <f:selectItems value="${dicts.subjects}" var="it" itemLabel="${it.label}"
+                                    itemValue="${it.value}" />
+                            </p:selectOneMenu>
+                        </p>
+                        <p:commandButton id="typeFilter" value="限定单据类型" actionListener="${dialogBean.addSearchSubjectRestricion}"
+                            update="searchForm, :${dialogForm}" />
+                    </div>
+                </p:panel>
+                <ui:insert name="searchPanel.keyword.2" />
+            </ui:define>
+
         </ui:decorate>
 
         <ui:param name="dialogBean" value="${cc.attrs.dialogBean}" />

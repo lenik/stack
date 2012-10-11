@@ -7,7 +7,7 @@ import com.bee32.sem.makebiz.entity.DeliveryNote;
 import com.bee32.sem.makebiz.util.MakebizCriteria;
 
 /**
- * 资金流原始单据提供者
+ * 送货单原始单据提供者
  *
  * @author jack
  *

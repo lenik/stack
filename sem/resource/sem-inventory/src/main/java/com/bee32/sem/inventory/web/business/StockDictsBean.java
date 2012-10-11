@@ -14,6 +14,7 @@ import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.entity.StockItemState;
 import com.bee32.sem.inventory.entity.StockLocation;
+import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.misc.LazyDTOMap;
 
@@ -25,6 +26,24 @@ public class StockDictsBean
     List<StockWarehouseDto> warehouses;
     List<MaterialCategoryDto> categories;
     List<StockLocationDto> locations;
+    List<StockOrderSubject> subjects;
+
+    public SelectableList<StockOrderSubject> getSubjects() {
+        if (subjects == null) {
+            synchronized (this) {
+                if (subjects == null) {
+                    subjects = new ArrayList<StockOrderSubject>(StockOrderSubject.values());
+                    for(StockOrderSubject subject : subjects) {
+                        if (subject.getLabel().equals("")) {
+                            //去除资源文件中没有对应项目，即显示为空的subject
+                            subjects.remove(subject);
+                        }
+                    }
+                }
+            }
+        }
+        return SelectableList.decorate(subjects);
+    }
 
     public SelectableList<StockWarehouseDto> getWarehouses() {
         if (warehouses == null) {

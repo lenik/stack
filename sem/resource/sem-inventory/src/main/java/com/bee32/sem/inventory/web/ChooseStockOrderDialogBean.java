@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.criteria.hibernate.IsNull;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
@@ -21,6 +22,10 @@ public class ChooseStockOrderDialogBean
 
     StockOrderSubject subject;
 
+    StockOrderSubject searchSubject;
+
+    Boolean haveNoCorrespondingTicket = false;
+
     public ChooseStockOrderDialogBean() {
         super(StockOrder.class, StockOrderDto.class, 0);
     }
@@ -30,6 +35,9 @@ public class ChooseStockOrderDialogBean
         super.composeBaseRestrictions(elements);
         if (subject != null)
             elements.add(StockCriteria.subjectOf(subject));
+        if (haveNoCorrespondingTicket) {
+            elements.add(new IsNull("ticket"));
+        }
     }
 
     @Override
@@ -51,6 +59,14 @@ public class ChooseStockOrderDialogBean
         }
     }
 
+    public StockOrderSubject getSearchSubject() {
+        return searchSubject;
+    }
+
+    public void setSearchSubject(StockOrderSubject searchSubject) {
+        this.searchSubject = searchSubject;
+    }
+
     public String get_subject() {
         if (subject == null)
             return null;
@@ -63,6 +79,36 @@ public class ChooseStockOrderDialogBean
             setSubject(null);
         else
             setSubject(StockOrderSubject.forValue(_subject));
+    }
+
+    public String get_searchSubject() {
+        if (searchSubject == null)
+            return null;
+        else
+            return searchSubject.getValue();
+    }
+
+    public void set_searchSubject(String _searchSubject) {
+        if (_searchSubject == null)
+            setSearchSubject(null);
+        else
+            setSearchSubject(StockOrderSubject.forValue(_searchSubject));
+    }
+
+    public Boolean getHaveNoCorrespondingTicket() {
+        return haveNoCorrespondingTicket;
+    }
+
+    public void setHaveNoCorrespondingTicket(Boolean haveNoCorrespondingTicket) {
+        this.haveNoCorrespondingTicket = haveNoCorrespondingTicket;
+    }
+
+    /*************************************************************************
+     * Section: Search
+     *************************************************************************/
+    public void addSearchSubjectRestricion() {
+        setSearchFragment("searchSubject", "单据类型为 " + searchSubject.getDisplayName(),//
+                StockCriteria.subjectOf(searchSubject));
     }
 
 }

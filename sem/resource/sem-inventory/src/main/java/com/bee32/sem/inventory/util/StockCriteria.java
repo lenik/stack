@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
 
@@ -146,5 +147,11 @@ public class StockCriteria
         // return sqlRestriction("select * from sotck_order");
         return compose(alias("items", "item"), alias("item.material", "mat"),
                 likeIgnoreCase("mat.label", pattern, MatchMode.ANYWHERE));
+    }
+
+    @LeftHand(StockOrder.class)
+    public static ICriteriaElement correspondingTicket(Long ticketId) {
+        return compose(alias("ticket", "ticket", CriteriaSpecification.LEFT_JOIN), //
+                new Equals("ticket.id", ticketId));
     }
 }

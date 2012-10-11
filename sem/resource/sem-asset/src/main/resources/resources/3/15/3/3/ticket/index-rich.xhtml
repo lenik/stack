@@ -57,7 +57,7 @@
 
         <p:fieldset id="ticketSource" legend="凭证源">
             <t:panelGrid columns="1">
-                <t:panelGrid columns="3">
+                <t:panelGrid columns="4">
                     <p:commandButton value="选择收款单"
                         onclick="chooseCreditNoteDialog.show()"
                         disabled="#{not bean.editing}">
@@ -77,6 +77,13 @@
                         disabled="#{not bean.editing}">
                         <f:setPropertyActionListener
                             target="${chooseDeliveryNoteDialogBean.haveNoCorrespondingTicket}"
+                            value="true" />
+                    </p:commandButton>
+                    <p:commandButton value="选择仓库单据"
+                        onclick="chooseStockOrderDialog.show()"
+                        disabled="#{not bean.editing}">
+                        <f:setPropertyActionListener
+                            target="${chooseStockOrderDialogBean.haveNoCorrespondingTicket}"
                             value="true" />
                     </p:commandButton>
                 </t:panelGrid>
@@ -190,7 +197,8 @@
             update=":editDialog:form:basic :editDialog:form:itemsIndexView:indexForm:body :editDialog:form:ticketSource" />
         <sem:chooseDeliveryNoteDialog id="c_delivery_note" target="#{bean.sourceToApply}"
             update=":editDialog:form:basic :editDialog:form:itemsIndexView:indexForm:body :editDialog:form:ticketSource" />
-
+        <sem:chooseStockOrderDialog id="c_stock_order" target="#{bean.sourceToApply}"
+            update=":editDialog:form:basic :editDialog:form:itemsIndexView:indexForm:body :editDialog:form:ticketSource" />
     </ui:define>
 
 </ui:composition>
