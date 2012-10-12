@@ -80,6 +80,33 @@ public class MakeOrderAdminBean
         }
     }
 
+    public void exportToPdfOuter() {
+        MakeOrderDto makeOrder = this.getOpenedObject();
+        JRBeanCollectionDataSource beanCollectionDataSource=new JRBeanCollectionDataSource(makeOrder.getItems());
+
+        ClassLoader ccl = getClass().getClassLoader(); //Thread.currentThread().getContextClassLoader();
+        InputStream reportStream = ccl.getResourceAsStream("resources/3/15/6/3/order/report2.jrxml");
+
+        try {
+            JasperReport report = JasperCompileManager.compileReport(reportStream);
+            Map<String, Object> reportParams = new HashMap<String, Object>();
+            reportParams.put("id", makeOrder.getId());
+            reportParams.put("createDate", makeOrder.getCreatedDate());
+            reportParams.put("owner", makeOrder.getOwnerDisplayName());
+            reportParams.put("label", makeOrder.getLabel());
+            reportParams.put("customer", makeOrder.getCustomer().getDisplayName());
+            reportParams.put("description", makeOrder.getDescription());
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(report, reportParams, beanCollectionDataSource);
+            byte[] pdfByteArray = JasperExportManager.exportReportToPdf(jasperPrint);
+
+            InputStream stream = new ByteArrayInputStream(pdfByteArray);
+            pdfFile = new DefaultStreamedContent(stream, "application/pdf", "order.pdf");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public StreamedContent getPdfFile() {
         return pdfFile;
     }
