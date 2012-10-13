@@ -32,7 +32,7 @@ public class ViewConfig
 
     String allowTypes = "/(\\.|\\/)(gif|jpe?g|png|docx?|xlsx?|pptx?|pdf|zip|rar)$/";
     String denyTypes = "/(\\.|\\/)(exe|dll|ocx|msi)$/";
-    long maxFileSize = 10_000_000;
+    long maxFileSize = 30_000_000;
 
     boolean dynamicDialog = true;
     String defaultUpdateTarget = ":mainForm";

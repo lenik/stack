@@ -1,3 +1,9 @@
+Plover-3.4.2 (谢继雷, 2012-10-13)
+	* Set default max upload file size to 30M.
+
+Plover-3.4.1 (谢继雷, 2012-10-10)
+	* (Hibernate) Check if loadedState null in EntityEntry.
+
 Plover-3.4.0 (谢继雷, 2012-10-07)
 	* Released plover-3.3.10.
 
