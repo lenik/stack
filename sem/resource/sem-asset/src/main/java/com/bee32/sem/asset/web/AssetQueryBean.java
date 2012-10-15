@@ -94,6 +94,7 @@ public class AssetQueryBean
 
         AssetQueryOptions options = new AssetQueryOptions(cal.getTime());
         options.setRecursive(true);
+        options.setParties(null, true);
         if (!all) {
             if (subject == null) {
                 uiLogger.warn("没有选择科目.");
@@ -104,7 +105,6 @@ public class AssetQueryBean
         if (party != null && party.getId() != null) {
             options.addParty(party.unmarshal());
         }
-        options.setParties(null, true);
 
         SumTree tree = BEAN(IAssetQuery.class).getSummary(options);
 
