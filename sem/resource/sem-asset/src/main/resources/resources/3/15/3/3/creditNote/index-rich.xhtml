@@ -11,7 +11,7 @@
     <ui:define name="editDialogContent">
         <p:panel header="收款单管理">
             <t:panelGrid id="info" columns="4">
-                <h:outputText value="时间:" />
+                <h:outputText value="创建时间:" />
                 <h:outputText value="#{obj.createdDate}">
                     <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
                 </h:outputText>
@@ -25,6 +25,12 @@
                         oncomplete="waitbox.hide();choosePersonDialog.show()">
                         <f:setPropertyActionListener target="#{choosePersonDialogBean.employee}" value="true" />
                     </p:commandButton>
+                </t:panelGroup>
+
+                <h:outputText value="时间:" />
+                <t:panelGroup colspan="3">
+                    <p:calendar id="beginTime" label="时间" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
+                        value="#{obj.beginTime}" showOn="button" />
                 </t:panelGroup>
 
                 <h:outputLabel value="金额:" />
