@@ -10,6 +10,7 @@ import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.MomentIntervalDto;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.asset.entity.FundFlow;
+import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MutableMCValue;
@@ -19,6 +20,7 @@ public class FundFlowDto
 
     private static final long serialVersionUID = 1L;
 
+    PartyDto party;
     PersonDto operator;
     String text;
     MutableMCValue value;
@@ -28,6 +30,7 @@ public class FundFlowDto
 
     @Override
     protected void _marshal(FundFlow source) {
+        party = mref(PartyDto.class, source.getParty());
         operator = mref(PersonDto.class, source.getOperator());
         text = source.getText();
         value = source.getValue().toMutable();
@@ -36,6 +39,7 @@ public class FundFlowDto
 
     @Override
     protected void _unmarshalTo(FundFlow target) {
+        merge(target, "party", party);
         merge(target, "operator", operator);
         target.setText(text);
         target.setValue(value);
@@ -46,6 +50,14 @@ public class FundFlowDto
     protected void _parse(TextMap map)
             throws ParseException {
         throw new NotImplementedException();
+    }
+
+    public PartyDto getParty() {
+        return party;
+    }
+
+    public void setParty(PartyDto party) {
+        this.party = party;
     }
 
     public PersonDto getOperator() {

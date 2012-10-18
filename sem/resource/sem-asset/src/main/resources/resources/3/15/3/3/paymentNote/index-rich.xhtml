@@ -44,6 +44,12 @@
                         value="#{obj.beginTime}" showOn="button" />
                 </t:panelGroup>
 
+                <h:outputText value="业务对象:" styleClass="e-link" onclick="#{obj.party.clickAction}"/>
+                <t:panelGroup colspan="3">
+                    <p:inputText id="party" label="业务对象" value="#{obj.party.displayName}" readonly="true" style="width:30em;"/>
+                    <p:commandButton value="..." oncomplete="choosePartyDialog.show()" disabled="#{not bean.editing}"/>
+                </t:panelGroup>
+
                 <h:outputLabel value="金额:" />
                 <p:inputText value="#{obj.value.value}" readonly="#{not bean.editing}" style="width: 15em;" label="金额"/>
                 <h:outputLabel value="币种" />
@@ -71,6 +77,7 @@
     </ui:define>
 
     <ui:define name="dialogs">
+        <sem:choosePartyDialog id="c_party" header="选择业务对象" target="#{obj.party}" update=":editDialog:form:party" />
         <sem:choosePersonDialog
             id="choosePersonDialog" var="choosePersonDialog"
             target="#{obj.operator}" update=":editDialog:form:operator" />

@@ -21,6 +21,7 @@ import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.plover.util.i18n.CurrencyConfig;
+import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.process.verify.builtin.IJudgeNumber;
 import com.bee32.sem.world.monetary.FxrQueryException;
@@ -51,6 +52,7 @@ public class FundFlow
 
     public static final int TEXT_LENGTH = 3000;
 
+    Party party;
     Person operator;
     String text;
     MCValue value = new MCValue();
@@ -68,12 +70,29 @@ public class FundFlow
 
     protected void _populate(FundFlow o) {
         super._populate(o);
+        party = o.party;
         operator = o.operator;
         text = o.text;
         value = o.value;
         ticket = o.ticket;
 
         nativeValue = o.nativeValue;
+    }
+
+    /**
+     * 业务对象
+     *
+     * 本笔业务对应的公司或个人
+     *
+     * @return
+     */
+    @ManyToOne
+    public Party getParty() {
+        return party;
+    }
+
+    public void setParty(Party party) {
+        this.party = party;
     }
 
     /**
