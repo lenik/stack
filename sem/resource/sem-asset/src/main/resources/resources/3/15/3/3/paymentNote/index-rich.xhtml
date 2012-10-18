@@ -13,6 +13,7 @@
         <p:separator />
         <p:commandButton id="pay" value="付款"
             update=":payForm:whoPay"
+            actionListener="#{bean.showPayDialog}"
             onclick="waitbox.show();" oncomplete="waitbox.hide();payDialog.show();"
             disabled="${bean.editing or not bean.selected or not bean.selectionEditable}"/>
         <p:separator />
@@ -83,13 +84,13 @@
             target="#{obj.operator}" update=":editDialog:form:operator" />
         <sem:choosePersonDialog
             id="chooseWhoPayDialog" var="chooseWhoPayDialog"
-            target="#{obj.whoPay}" update=":payForm:whoPay" />
+            target="#{bean.whoPay}" update=":payForm:whoPay" />
 
-        <p:dialog id="payDialog" header="付款对话框" widgetVar="payDialog" modal="true">
+        <p:dialog id="d_payDialog" header="付款对话框" widgetVar="payDialog" modal="true">
             <h:form id="payForm">
                 <t:panelGrid columns="3">
-                    <h:outputText value="付款人" styleClass="e-link" onclick="#{obj.whoPay.clickAction}" />
-                    <p:inputText id="whoPay" readonly="true" value="#{obj.whoPay.displayName}" label="付款人" />
+                    <h:outputText value="付款人" styleClass="e-link" onclick="#{bean.whoPay.clickAction}" />
+                    <p:inputText id="whoPay" readonly="true" value="#{bean.whoPay.displayName}" label="付款人" />
                     <p:commandButton value="..." update=":chooseWhoPayDialog:form" onclick="waitbox.show()"
                         oncomplete="waitbox.hide();chooseWhoPayDialog.show()">
                         <f:setPropertyActionListener target="#{choosePersonDialogBean.employee}" value="true" />
