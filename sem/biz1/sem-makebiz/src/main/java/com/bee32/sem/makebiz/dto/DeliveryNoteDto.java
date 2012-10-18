@@ -89,7 +89,6 @@ public class DeliveryNoteDto
         this.order = order;
     }
 
-    @Future
     @NotNull
     public Date getArrivalDate() {
         return arrivalDate;

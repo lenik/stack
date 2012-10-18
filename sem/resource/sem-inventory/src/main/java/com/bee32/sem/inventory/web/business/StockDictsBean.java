@@ -1,6 +1,7 @@
 package com.bee32.sem.inventory.web.business;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -33,10 +34,12 @@ public class StockDictsBean
             synchronized (this) {
                 if (subjects == null) {
                     subjects = new ArrayList<StockOrderSubject>(StockOrderSubject.values());
-                    for(StockOrderSubject subject : subjects) {
+                    Iterator<StockOrderSubject> it = subjects.iterator();
+                    while(it.hasNext()) {
+                        StockOrderSubject subject = (StockOrderSubject) it.next();
                         if (subject.getLabel().equals("")) {
                             //去除资源文件中没有对应项目，即显示为空的subject
-                            subjects.remove(subject);
+                            it.remove();
                         }
                     }
                 }

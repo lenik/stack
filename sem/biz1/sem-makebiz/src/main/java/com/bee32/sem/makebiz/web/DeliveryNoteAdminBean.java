@@ -128,6 +128,7 @@ public class DeliveryNoteAdminBean
             reportParams.put("label", note.getLabel());
             reportParams.put("customer", note.getCustomer().getDisplayName());
             reportParams.put("description", note.getDescription());
+            reportParams.put("nativeTotal", note.getNativeTotal());
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, reportParams, beanCollectionDataSource);
             byte[] pdfByteArray = JasperExportManager.exportReportToPdf(jasperPrint);
@@ -156,6 +157,7 @@ public class DeliveryNoteAdminBean
             reportParams.put("label", note.getLabel());
             reportParams.put("customer", note.getCustomer().getDisplayName());
             reportParams.put("description", note.getDescription());
+            reportParams.put("nativeTotal", note.getNativeTotal());
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, reportParams, beanCollectionDataSource);
             byte[] pdfByteArray = JasperExportManager.exportReportToPdf(jasperPrint);

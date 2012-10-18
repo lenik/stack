@@ -105,7 +105,6 @@ public class MakeOrderItemDto
         this.material = material;
     }
 
-    // @Future
     @NotNull
     public Date getDeadline() {
         return deadline;

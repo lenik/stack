@@ -9,6 +9,7 @@
     <ui:param name="obj" value="#{bean.openedObject}" />
     <ui:param name="itemObj" value="#{bean.itemsMBean.openedObject}" />
     <ui:param name="stock" value="#{stockDictsBean}" />
+    <ui:param name="monetary" value="#{monetaryDictsBean}" />
 
     <ui:define name="toolbar.left">
         <p:separator />
@@ -88,7 +89,7 @@
             <h:outputText value="要求送达日期:" />
             <t:panelGroup colspan="3">
                 <p:calendar id="arrivalDate" navigator="true" locale="zh_CN" pattern="yyyy-MM-dd" value="#{obj.arrivalDate}"
-                    showOn="button" label="送达日期" />
+                    showOn="button" label="要求送达日期:" />
             </t:panelGroup>
         </t:panelGrid>
 
@@ -182,9 +183,12 @@
                 </t:panelGroup>
 
                 <h:outputLabel value="单价" />
-                <t:panelGroup colspan="3">
-                    <h:outputText value="#{item.price}"/>
-                </t:panelGroup>
+                <p:inputText value="#{item.price.value}" label="单价" />
+                <h:outputLabel value="币种" />
+                <p:selectOneMenu value="#{item.price.currencyCode}" style="width:20em;" label="币种">
+                    <f:selectItem itemValue="" itemLabel="--选择币种--" />
+                    <f:selectItems value="#{monetary.currencySelectItems}" />
+                </p:selectOneMenu>
 
                 <h:outputLabel value="数量" />
                 <t:panelGroup colspan="3">

@@ -119,7 +119,6 @@ public class MakeTaskItemDto
         this.quantity = quantity;
     }
 
-    // @Future
     @NotNull
     public Date getDeadline() {
         return deadline;
