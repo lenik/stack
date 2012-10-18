@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.HtmlUtils;
 
+import com.bee32.icsf.access.AccessControlException;
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.alt.R_Authority;
 import com.bee32.icsf.access.resource.Resource;
@@ -83,22 +84,26 @@ public class AccessCheckAdvice
             }
         }
 
-        if (currentUser == null && errMessage != null) {
+        if (errMessage != null) {
             // XXX 能否通过抛出异常的方法，而不是控制 response?
 
             // HttpServletRequest request = ThreadServletContext.requireRequest();
             HttpServletResponse response = ThreadServletContext.getResponse();
 
-            response.setCharacterEncoding("utf-8");
+            if (currentUser == null) {
+                response.setCharacterEncoding("utf-8");
 
-            JavascriptChunk alertChunk = new JavascriptChunk();
-            alertChunk.println("alert('" + HtmlUtils.htmlEscape(errMessage) + "'); ");
+                JavascriptChunk alertChunk = new JavascriptChunk();
+                alertChunk.println("alert('" + HtmlUtils.htmlEscape(errMessage) + "'); ");
 
-            alertChunk.print("location='");
-            alertChunk.print(WEB_APP.join("login.do"));
-            alertChunk.println("'; ");
+                alertChunk.print("location='");
+                alertChunk.print(WEB_APP.join("login.do"));
+                alertChunk.println("'; ");
 
-            alertChunk.dump(response);
+                alertChunk.dump(response);
+            } else {
+                throw new AccessControlException(errMessage);
+            }
         }
 
     }
