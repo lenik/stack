@@ -83,7 +83,7 @@ public class AccessCheckAdvice
             }
         }
 
-        if (errMessage != null) {
+        if (currentUser == null && errMessage != null) {
             // XXX 能否通过抛出异常的方法，而不是控制 response?
 
             // HttpServletRequest request = ThreadServletContext.requireRequest();
