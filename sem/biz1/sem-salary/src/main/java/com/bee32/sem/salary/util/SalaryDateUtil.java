@@ -47,7 +47,7 @@ public class SalaryDateUtil {
     }
 
     /**
-     * return Calendar.DAY_OF_MONTH
+     * 是一个月的第几天 return Calendar.DAY_OF_MONTH
      */
     public static int getDayNum(Date date) {
         Calendar cal = Calendar.getInstance();
@@ -117,7 +117,7 @@ public class SalaryDateUtil {
     }
 
     /**
-     * 去的一个月的天数
+     * 取的一个月的天数
      */
     public static int getDayNumberOfMonth(Date date) {
         Pair<Date, Date> range = toMonthRange(date);
@@ -134,5 +134,42 @@ public class SalaryDateUtil {
         cal.set(Calendar.MONTH, month - 1);
         cal.set(Calendar.DAY_OF_MONTH, day);
         return cal.getTime();
+    }
+
+    public static int convertToYearMonth(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH) + 1;
+        return year * 100 + month;
+    }
+
+    /**
+     * 返回以2011年5月1号的参照天数，和这个月的周数
+     */
+    public static Pair<Integer, Integer> getReffer(int yearMonth) {
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, yearMonth / 100);
+        cal.set(Calendar.MONTH, yearMonth % 100 - 1);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        Date start = cal.getTime();
+
+        Calendar refered = Calendar.getInstance();
+        refered.set(2011, 4, 1); // Sunday
+        refered.set(Calendar.HOUR_OF_DAY, 0);
+        refered.set(Calendar.MINUTE, 0);
+        refered.set(Calendar.MILLISECOND, 0);
+        Date referDate = refered.getTime();
+
+        long x = start.getTime() - referDate.getTime();
+
+        int actualMaximum = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        cal.set(Calendar.DAY_OF_MONTH, actualMaximum);
+        int week = cal.get(Calendar.WEEK_OF_MONTH);
+
+        int refer = (int) (x / 86400000 % 7);
+
+        return new Pair<Integer, Integer>(refer, week);
     }
 }

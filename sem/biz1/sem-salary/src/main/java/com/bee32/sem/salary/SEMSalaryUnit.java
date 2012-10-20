@@ -2,7 +2,7 @@ package com.bee32.sem.salary;
 
 import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
-import com.bee32.sem.attendance.entity.Attendance;
+import com.bee32.sem.attendance.entity.AttendanceMRecord;
 import com.bee32.sem.people.SEMPeopleUnit;
 import com.bee32.sem.process.SEMProcessUnit;
 import com.bee32.sem.salary.entity.EventBonus;
@@ -16,12 +16,12 @@ public class SEMSalaryUnit
 
     @Override
     protected void preamble() {
-        add(Attendance.class);
 
         add(SalaryElementDef.class);
         add(Salary.class);
         add(SalaryElement.class);
         add(EventBonus.class);
+        add(AttendanceMRecord.class);
     }
 
 }

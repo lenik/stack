@@ -1,0 +1,28 @@
+.attendance-calenda-table-header {
+    border: 1px solid red;
+    padding: 0px;
+    margin: 0px;
+    width: 20px;
+}
+
+a.attendance-calendar-day:hover,a.attendance-calendar-day:active {
+    color: red;
+    cursor: pointer;
+}
+
+.calendarView-notavailable {
+    background-color: grey;
+}
+
+.calendarView-available {
+    cursor: pointer;
+    background-color: green;
+}
+
+.a-m-types-c,.a-a-types-c,.a-e-types-c {
+    cursor: pointer;
+}
+
+.editingAttendanceData {
+    display:none;
+}

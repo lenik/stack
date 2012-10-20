@@ -40,4 +40,8 @@ public class AttendanceCriteria
         return equals("attendance", attendance);
     }
 
+    public static CriteriaElement listByYearMonth(int yearMonth) {
+        return equals("yearMonth", yearMonth);
+    }
+
 }

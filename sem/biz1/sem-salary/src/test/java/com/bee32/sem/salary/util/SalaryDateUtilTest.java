@@ -18,11 +18,8 @@ public class SalaryDateUtilTest {
     }
 
     public static void main(String args[]) {
-        Date date = new Date();
-        System.out.println(date);
-        int x1 = SalaryDateUtil.getDayNumberOfMonth(date);
-        System.out.println(x1);
-
+        int yearMonth = 201210;
+        SalaryDateUtil.getReffer(yearMonth);
     }
 
 }

@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 
 import com.bee32.plover.orm.sample.NormalSamples;
-import com.bee32.sem.attendance.entity.Attendance;
 import com.bee32.sem.people.SEMPeopleSamples;
 import com.bee32.sem.salary.entity.Salary;
 import com.bee32.sem.salary.entity.SalaryElement;
@@ -45,11 +44,6 @@ public class SEMSalarySamples
         test.setElements(Arrays.asList(se1, se2));
         test.setEmployee(people.employee);
 
-
-        Attendance dayRecord = new Attendance();
-        dayRecord.setEmployee(people.employee);
-        dayRecord.setOverworkTime(2 * 60);
-        dayRecord.setAbsentTime(0);
     }
 
 }

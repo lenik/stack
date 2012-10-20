@@ -4,43 +4,70 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.bee32.plover.orm.entity.IEntityAccessService;
+import com.bee32.plover.faces.utils.SelectableList;
+import com.bee32.sem.attendance.dto.AttendanceMRecordDto;
+import com.bee32.sem.attendance.entity.AttendanceMRecord;
+import com.bee32.sem.attendance.entity.AttendanceType;
 import com.bee32.sem.attendance.util.AttendanceCriteria;
+import com.bee32.sem.attendance.util.AttendanceDRecord;
 import com.bee32.sem.hr.dto.EmployeeInfoDto;
 import com.bee32.sem.hr.entity.EmployeeInfo;
 import com.bee32.sem.misc.SimpleEntityViewBean;
-import com.bee32.sem.salary.dto.SalaryDto;
-import com.bee32.sem.salary.dto.SalaryElementDto;
-import com.bee32.sem.salary.entity.Salary;
+import com.bee32.sem.salary.util.ColumnModel;
 import com.bee32.sem.salary.util.SalaryDateUtil;
 
 public class AttendanceMAdmin
         extends SimpleEntityViewBean {
 
     private static final long serialVersionUID = 1L;
+    public static final String[] calendarViewStyleClass = { "calendarView-notavailable", "calendarView-available" };
 
     List<EmployeeInfoDto> allEmployees;
     Date openDate = new Date();
     Date restrictionDate = new Date();
+    List<AttendanceMRecordDto> attendances;
+    AttendanceMRecordDto editingAttendance;
+    List<ColumnModel> columns;
 
     public AttendanceMAdmin() {
-        // current month -> AttendanceCriteria.getMonthList(new Date())
-        super(null, null, 0);
+        super(AttendanceMRecord.class, AttendanceMRecordDto.class, 0, AttendanceCriteria.listByYearMonth( //
+                SalaryDateUtil.convertToYearMonth(new Date())));
 
-        allEmployees = mrefList(EmployeeInfo.class, EmployeeInfoDto.class, 0);
-        for (EmployeeInfoDto employee : allEmployees) {
-        }
+        inintAttendanceMR();
     }
 
     public void inintAttendanceMR() {
+        attendances = new ArrayList<AttendanceMRecordDto>();
         allEmployees = mrefList(EmployeeInfo.class, EmployeeInfoDto.class, 0);
-        for (EmployeeInfoDto employee : allEmployees) {
+        int yearMonth = SalaryDateUtil.convertToYearMonth(openDate);
+
+        for (int i = 0; i < allEmployees.size(); i++) {
+
+            AttendanceMRecordDto attendance = new AttendanceMRecordDto();
+            attendance.setTmpId(i);
+            attendance.setYear(2011);
+            attendance.setMonth(10);
+            attendance.setEmployee(allEmployees.get(i));
+            attendance.setSafe(true);
+            attendance.setRecords(AttendanceMRecordDto.DEFAULTATTENDANCEDATA);
+            attendance.setAttendanceData(AttendanceMRecordDto.DEFAULTATTENDANCEDATA);
+            attendance.setYear(yearMonth / 100);
+            attendance.setMonth(yearMonth % 100);
+
+            attendances.add(attendance);
         }
     }
 
-    public void addMonthRestriction() {
-        setSearchFragment("date", "限定" + SalaryDateUtil.getMonNum(restrictionDate) + "月出勤记录", //
-                AttendanceCriteria.getMonthList(restrictionDate));
+    void generateColumns() {
+        if (columns == null)
+            columns = new ArrayList<ColumnModel>();
+        else
+            columns.clear();
+
+        int columnNumber = SalaryDateUtil.getDayNumberOfMonth(openDate);
+        for (int i = 1; i <= columnNumber; i++) {
+            columns.add(new ColumnModel(Integer.toString(i), i - 1, 0));
+        }
     }
 
     public void saveList() {
@@ -49,52 +76,49 @@ public class AttendanceMAdmin
          */
     }
 
-    public void doCal(Object selection) {
-        setSingleSelection(selection);
-        openSelection();
-        SalaryDto salary = new SalaryDto().create();
-        double total = 0.0;
-        List<SalaryElementDto> items = new ArrayList<SalaryElementDto>();
-
-        // 基本工资
-        SalaryElementDto base = new SalaryElementDto().create();
-        base.setLabel("基本工资");
-
-
-        // TODO 小数点情况 || 全勤奖 perfect attendance award --> paa
-
-        // 中餐补贴
-        SalaryElementDto lunch = new SalaryElementDto();
-        lunch.setLabel("午餐补贴");
-        items.add(lunch);
-
-        // 晚餐补贴
-        SalaryElementDto supper = new SalaryElementDto();
-        supper.setLabel("晚餐补贴");
-        items.add(supper);
-
-        // 出差补贴
-        SalaryElementDto trip = new SalaryElementDto();
-        trip.setLabel("出差补贴");
-        items.add(trip);
-
-        // 岗位补贴 ~~ 岗位
-        SalaryElementDto jobPost = new SalaryElementDto();
-        jobPost.setLabel("岗位补贴");
-        items.add(jobPost);
-
-        // 学历补贴
-        SalaryElementDto education = new SalaryElementDto();
-        education.setLabel("学历补贴");
-        items.add(education);
-
-        SalaryElementDto paa = new SalaryElementDto();
-        paa.setLabel("全勤奖");
-        items.add(paa);
-
-        IEntityAccessService<Salary, Long> access = DATA(Salary.class);
+    AttendanceDRecord warpTmpAttendance() {
+        AttendanceMRecordDto oo = (AttendanceMRecordDto) getOpenedObject();
+        AttendanceDRecord attendance = new AttendanceDRecord();
+        attendance.setWeekday_zhcn("");
+        attendance.setDay(1);
+        attendance.setMorning(AttendanceType.notAvailable);
+        attendance.setAfternoon(AttendanceType.notAvailable);
+        attendance.setEvening(AttendanceType.notAvailable);
+        return attendance;
     }
 
+    public void showEditingAttendance(AttendanceMRecordDto editingAttendance) {
+        this.editingAttendance = editingAttendance;
+    }
+
+    public void test() {
+        attendances.set(editingAttendance.getTmpId(), editingAttendance);
+    }
+
+    public void saveBatchAttendance() {
+
+        List<AttendanceMRecord> entities = new ArrayList<AttendanceMRecord>();
+
+        for (AttendanceMRecordDto dto : attendances) {
+            try {
+                AttendanceMRecord entity = dto.unmarshal();
+                entities.add(entity);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (entities.size() > 0) {
+            DATA(AttendanceMRecord.class).saveAll(entities);
+        } else {
+            uiLogger.warn("没有需要添加的出勤记录");
+        }
+
+    }
+
+    public AttendanceDRecord getTmpAttendance() {
+        return warpTmpAttendance();
+    }
 
     public Date getOpenDate() {
         return openDate;
@@ -104,12 +128,27 @@ public class AttendanceMAdmin
         this.openDate = openDate;
     }
 
-    public Date getRestrictionDate() {
-        return restrictionDate;
+    public SelectableList<AttendanceMRecordDto> getAttendances() {
+        return SelectableList.decorate(attendances);
     }
 
-    public void setRestrictionDate(Date restrictionDate) {
-        this.restrictionDate = restrictionDate;
+    public void setAttendances(List<AttendanceMRecordDto> attendances) {
+        this.attendances = attendances;
     }
 
+    public AttendanceMRecordDto getEditingAttendance() {
+        return editingAttendance;
+    }
+
+    public void setEditingAttendance(AttendanceMRecordDto editingAttendance) {
+        this.editingAttendance = editingAttendance;
+    }
+
+    public List<ColumnModel> getColumns() {
+        return columns;
+    }
+
+    public List<AttendanceType> getAttendanceTypes() {
+        return new ArrayList<AttendanceType>(AttendanceType.values());
+    }
 }

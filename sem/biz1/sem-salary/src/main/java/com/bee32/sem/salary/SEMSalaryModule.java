@@ -2,6 +2,7 @@ package com.bee32.sem.salary;
 
 import com.bee32.plover.pub.oid.Oid;
 import com.bee32.sem.SEMOids;
+import com.bee32.sem.attendance.entity.AttendanceMRecord;
 import com.bee32.sem.module.EnterpriseModule;
 import com.bee32.sem.salary.entity.EventBonus;
 import com.bee32.sem.salary.entity.Salary;
@@ -20,6 +21,7 @@ public class SEMSalaryModule
         declareEntityPages(SalaryElement.class, "null");
         declareEntityPages(SalaryElementDef.class, "null");
         declareEntityPages(EventBonus.class, "eventBonus");
+        declareEntityPages(AttendanceMRecord.class,"attendance");
     }
 
 }
