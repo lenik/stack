@@ -55,50 +55,52 @@
     </ui:define>
 
     <ui:define name="editDialogContent">
-        <ui:insert name="edit-pre" />
-        <ui:insert name="edit-main">
-            <t:panelGrid id="orderInfo" columns="4" columnClasses="f-right, f-left, f-right, f-left">
-                <h:outputText value="时间：" />
-                <h:outputText value="${obj.createdDate}">
-                    <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-                </h:outputText>
-                <h:outputText value="简要：" />
-                <p:inputText label="简要" value="${obj.label}" />
+        <p:fieldset legend="基本信息" toggleable="true" toggleSpeed="100">
+            <ui:insert name="edit-pre" />
+            <ui:insert name="edit-main">
+                <t:panelGrid id="orderInfo" columns="4" columnClasses="f-right, f-left, f-right, f-left">
+                    <h:outputText value="时间：" />
+                    <h:outputText value="${obj.createdDate}">
+                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                    </h:outputText>
+                    <h:outputText value="简要：" />
+                    <p:inputText label="简要" value="${obj.label}" />
 
-                <ui:insert name="edit-pre-fields" />
+                    <ui:insert name="edit-pre-fields" />
 
-                <h:outputText value="描述：" />
-                <t:panelGroup colspan="3">
-                    <p:inputText label="描述" value="${obj.description}" />
-                </t:panelGroup>
+                    <h:outputText value="描述：" />
+                    <t:panelGroup colspan="3">
+                        <p:inputText label="描述" value="${obj.description}" />
+                    </t:panelGroup>
 
-                <h:outputText value="对应公司或人员：" styleClass="e-link" onclick="${obj.org.clickAction}" />
-                <t:panelGroup>
-                    <p:inputText id="party" label="对应公司或人员" value="${obj.org.displayName}" readonly="true" />
-                    <p:commandButton value="..." oncomplete="choosePartyDialog.show()" />
-                </t:panelGroup>
-                <h:outputText value="对应部门：" styleClass="e-link" onclick="${obj.orgUnit.clickAction}" />
-                <t:panelGroup>
-                    <p:inputText id="orgUnit" label="对应部门" value="${obj.orgUnit.path}" readonly="true" />
-                    <p:commandButton value="..." oncomplete="chooseOrgUnitDialog.show()" update=":c_orgunit:form">
-                        <f:setPropertyActionListener target="${chooseOrgUnitDialogBean.orgId}"
-                            value="${obj.org.id}" />
-                    </p:commandButton>
-                </t:panelGroup>
+                    <h:outputText value="对应公司或人员：" styleClass="e-link" onclick="${obj.org.clickAction}" />
+                    <t:panelGroup>
+                        <p:inputText id="party" label="对应公司或人员" value="${obj.org.displayName}" readonly="true" />
+                        <p:commandButton value="..." oncomplete="choosePartyDialog.show()" />
+                    </t:panelGroup>
+                    <h:outputText value="对应部门：" styleClass="e-link" onclick="${obj.orgUnit.clickAction}" />
+                    <t:panelGroup>
+                        <p:inputText id="orgUnit" label="对应部门" value="${obj.orgUnit.path}" readonly="true" />
+                        <p:commandButton value="..." oncomplete="chooseOrgUnitDialog.show()" update=":c_orgunit:form">
+                            <f:setPropertyActionListener target="${chooseOrgUnitDialogBean.orgId}"
+                                value="${obj.org.id}" />
+                        </p:commandButton>
+                    </t:panelGroup>
 
-                <h:outputText value="制单人：" />
-                <p:inputText value="${obj.owner.displayName}" disabled="true" label="制单人" />
-                <h:outputText value="单据状态：" />
-                <p:inputText value="${obj.verifyContext.verifyEvalState} ${obj.verifyContext.rejectedReason1}"
-                    disabled="true" label="单据状态" />
-            </t:panelGrid>
-        </ui:insert>
-        <ui:insert name="edit-more" />
+                    <h:outputText value="制单人：" />
+                    <p:inputText value="${obj.owner.displayName}" disabled="true" label="制单人" />
+                    <h:outputText value="单据状态：" />
+                    <p:inputText value="${obj.verifyContext.verifyEvalState} ${obj.verifyContext.rejectedReason1}"
+                        disabled="true" label="单据状态" />
+                </t:panelGrid>
+            </ui:insert>
+            <ui:insert name="edit-more" />
+        </p:fieldset>
 
         <fr:listView id="itemsIndexView" header="${title}项目" style="indexPanel" editView=":itemsEditView"
             mbean="${bean.itemsMBean}" nested="true" paginator="${paginator != null ? paginator : false}" creatable="${itemCreatable != null ? itemCreatable : true}"
             editable="${itemEditable != null ? itemEditable : true}" removable="${itemRemovable != null ? itemRemovable : true}"
-            readonly="${not bean.editing}">
+            readonly="${not bean.editing}" inlineEdit="true">
             <f:facet name="columns">
                 <p:column headerText="物料" sortBy="${entry.material.label}" styleClass="f-wrappable">
                     <h:outputText value="${entry.material.label}" />

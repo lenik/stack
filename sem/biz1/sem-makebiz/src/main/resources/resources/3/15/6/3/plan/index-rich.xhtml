@@ -35,58 +35,61 @@
     </ui:define>
 
     <ui:define name="editDialogContent">
-        <t:panelGrid id="basic" columns="4" columnClasses="field-label, field-content, field-label, field-content">
-            <h:outputText value="标识：" />
-            <t:panelGroup colspan="3">
-                <h:outputText value="#{obj.id}" style="font-weight:bold;font-size:large" />
-            </t:panelGroup>
+        <p:fieldset legend="基本信息" toggleable="true" toggleSpeed="100">
+            <t:panelGrid id="basic" columns="4" columnClasses="field-label, field-content, field-label, field-content">
+                <h:outputText value="标识：" />
+                <t:panelGroup colspan="3">
+                    <h:outputText value="#{obj.id}" style="font-weight:bold;font-size:large" />
+                </t:panelGroup>
 
-            <h:outputText value="时间：" />
-            <h:outputText value="#{obj.createdDate}">
-                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-            </h:outputText>
-            <h:outputText value="制单人：" />
-            <p:inputText value="#{obj.owner.displayName}" readonly="true" />
+                <h:outputText value="时间：" />
+                <h:outputText value="#{obj.createdDate}">
+                    <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                </h:outputText>
+                <h:outputText value="制单人：" />
+                <p:inputText value="#{obj.owner.displayName}" readonly="true" />
 
-            <t:panelGroup colspan="4">
-                <p:tabView id="tabSource">
-                    <p:tab id="tab1" title="由生产任务单生成">
-                        <t:panelGrid columns="2">
-                            <t:panelGroup>
-                                <h:inputHidden label="生产任务单" value="#{obj.task.id_OZL}" />
-                                <p:inputText id="sourceTask" value="#{obj.task.label}" disabled="true" label="生产任务单" style="width:25em;"/>
-                            </t:panelGroup>
-                            <p:commandButton value="..." onclick="chooseMakeTaskDialog.show()" disabled="#{not bean.editing}" />
-                        </t:panelGrid>
-                    </p:tab>
-                    <p:tab id="tab2" title="/或由定单生成(外购)">
-                        <t:panelGrid columns="2">
-                            <t:panelGroup>
-                                <h:inputHidden label="定单" value="#{obj.order.id_OZL}" />
-                                <p:inputText id="sourceOrder" value="#{obj.order.label}" disabled="true" label="定单" style="width:25em;"/>
-                            </t:panelGroup>
-                            <p:commandButton value="..." onclick="chooseMakeOrderDialog.show()" disabled="#{not bean.editing}" />
-                         </t:panelGrid>
-                    </p:tab>
-                </p:tabView>
-            </t:panelGroup>
+                <t:panelGroup colspan="4">
+                    <p:tabView id="tabSource">
+                        <p:tab id="tab1" title="由生产任务单生成">
+                            <t:panelGrid columns="2">
+                                <t:panelGroup>
+                                    <h:inputHidden label="生产任务单" value="#{obj.task.id_OZL}" />
+                                    <p:inputText id="sourceTask" value="#{obj.task.label}" disabled="true" label="生产任务单" style="width:25em;"/>
+                                </t:panelGroup>
+                                <p:commandButton value="..." onclick="chooseMakeTaskDialog.show()" disabled="#{not bean.editing}" />
+                            </t:panelGrid>
+                        </p:tab>
+                        <p:tab id="tab2" title="/或由定单生成(外购)">
+                            <t:panelGrid columns="2">
+                                <t:panelGroup>
+                                    <h:inputHidden label="定单" value="#{obj.order.id_OZL}" />
+                                    <p:inputText id="sourceOrder" value="#{obj.order.label}" disabled="true" label="定单" style="width:25em;"/>
+                                </t:panelGroup>
+                                <p:commandButton value="..." onclick="chooseMakeOrderDialog.show()" disabled="#{not bean.editing}" />
+                             </t:panelGrid>
+                        </p:tab>
+                    </p:tabView>
+                </t:panelGroup>
 
-            <h:outputText value="简要：" />
-            <t:panelGroup colspan="3">
-                <p:inputText value="#{obj.label}" label="简要" style="width:30em;"/>
-            </t:panelGroup>
+                <h:outputText value="简要：" />
+                <t:panelGroup colspan="3">
+                    <p:inputText value="#{obj.label}" label="简要" style="width:30em;"/>
+                </t:panelGroup>
 
-            <h:outputText value="备注：" />
-            <t:panelGroup colspan="3">
-                <p:inputTextarea style="width: 30em; height: 4em;" value="#{obj.description}" readonly="#{not bean.editing}"
-                    label="备注" />
-            </t:panelGroup>
-        </t:panelGrid>
+                <h:outputText value="备注：" />
+                <t:panelGroup colspan="3">
+                    <p:inputTextarea style="width: 30em; height: 4em;" value="#{obj.description}" readonly="#{not bean.editing}"
+                        label="备注" />
+                </t:panelGroup>
+            </t:panelGrid>
+        </p:fieldset>
 
         <p:tabView id="tv">
             <p:tab title="物料计划明细">
                 <fr:listView id="itemsIndexView" header="物料计划项" style="indexPanel" editView=":itemsEditView"
-                    mbean="#{bean.itemsMBean}" nested="true" paginator="false" creatable="false" readonly="#{not bean.editing}">
+                    mbean="#{bean.itemsMBean}" nested="true" paginator="false" creatable="false"
+                    readonly="#{not bean.editing}" inlineEdit="true">
                     <f:facet name="columns">
                         <p:column headerText="物料" styleClass="f-wrappable">
                             <h:outputText value="#{entry.material.label}" />
@@ -110,7 +113,8 @@
             </p:tab>
             <p:tab title="库存锁定">
                 <fr:listView id="planOrdersIndexView" header="库存锁定" style="indexPanel" editView=":planOrdersEditView"
-                    mbean="#{bean.planOrdersMBean}" nested="true" paginator="false" creatable="false" readonly="#{not bean.editing}">
+                    mbean="#{bean.planOrdersMBean}" nested="true" paginator="false" creatable="false"
+                    readonly="#{not bean.editing}" inlineEdit="true">
                     <f:facet name="columns">
                         <p:column headerText="时间">
                             <h:outputText value="${entry.createdDate}" />

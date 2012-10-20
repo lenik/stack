@@ -30,39 +30,41 @@
     </ui:define>
 
     <ui:define name="editDialogContent">
-        <t:panelGrid id="basic" columns="4">
-            <h:outputText value="标识:" />
-            <t:panelGroup colspan="3">
-                <h:outputText value="#{obj.id}" style="font-weight:bold;font-size:large" />
-            </t:panelGroup>
+        <p:fieldset legend="基本信息" toggleable="true" toggleSpeed="100">
+            <t:panelGrid id="basic" columns="4">
+                <h:outputText value="标识:" />
+                <t:panelGroup colspan="3">
+                    <h:outputText value="#{obj.id}" style="font-weight:bold;font-size:large" />
+                </t:panelGroup>
 
-            <h:outputText value="时间:" />
-            <h:outputText value="#{obj.createdDate}">
-                <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
-            </h:outputText>
-            <h:outputText value="制单人:" />
-            <p:inputText value="#{obj.owner.displayName}" readonly="true" />
+                <h:outputText value="时间:" />
+                <h:outputText value="#{obj.createdDate}">
+                    <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai" />
+                </h:outputText>
+                <h:outputText value="制单人:" />
+                <p:inputText value="#{obj.owner.displayName}" readonly="true" />
 
-            <h:outputText value="生产定单:" styleClass="e-link" onclick="#{obj.order.clickAction}" />
-            <t:panelGroup colspan="3">
-                <p:inputText id="order" value="#{obj.order.label}" readonly="true" label="生产定单" style="width:30em;"/>
-                <p:commandButton value="..." onclick="chooseMakeOrderDialog.show()" disabled="#{not bean.editing}" />
-            </t:panelGroup>
+                <h:outputText value="生产定单:" styleClass="e-link" onclick="#{obj.order.clickAction}" />
+                <t:panelGroup colspan="3">
+                    <p:inputText id="order" value="#{obj.order.label}" readonly="true" label="生产定单" style="width:30em;"/>
+                    <p:commandButton value="..." onclick="chooseMakeOrderDialog.show()" disabled="#{not bean.editing}" />
+                </t:panelGroup>
 
-            <h:outputText value="简要:" />
-            <t:panelGroup colspan="3">
-                <p:inputText label="简要" value="#{obj.label}" style="width:30em;"/>
-            </t:panelGroup>
+                <h:outputText value="简要:" />
+                <t:panelGroup colspan="3">
+                    <p:inputText label="简要" value="#{obj.label}" style="width:30em;"/>
+                </t:panelGroup>
 
-            <h:outputText value="备注:" />
-            <t:panelGroup colspan="3">
-                <p:inputTextarea style="width: 30em; height: 4em;" value="#{obj.description}" readonly="#{not bean.editing}"
-                    label="备注" />
-            </t:panelGroup>
-        </t:panelGrid>
+                <h:outputText value="备注:" />
+                <t:panelGroup colspan="3">
+                    <p:inputTextarea style="width: 30em; height: 4em;" value="#{obj.description}" readonly="#{not bean.editing}"
+                        label="备注" />
+                </t:panelGroup>
+            </t:panelGrid>
+        </p:fieldset>
 
         <fr:listView id="itemsIndexView" header="生产项目" style="indexPanel" editView=":itemsEditView" mbean="#{bean.itemsMBean}"
-            nested="true" paginator="false" creatable="false" readonly="#{not bean.editing}">
+            nested="true" paginator="false" creatable="false" readonly="#{not bean.editing}" inlineEdit="true">
             <f:facet name="columns">
                 <p:column headerText="物料" styleClass="f-wrappable">
                     <h:outputText value="#{entry.material.label}" />
