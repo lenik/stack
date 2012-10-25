@@ -1,4 +1,6 @@
 
+\newcommand{\semsys}{智恒企业管理信息系统}
+
 \newcommand{\example}[1]{
     \vskip .2cm
     \doublebox{
@@ -36,6 +38,11 @@
 \newcounter{operation}
 \renewcommand\theoperation{\Roman{operation}}
 
+\newcommand\practices{
+    \clearpage
+    \section{操作指南}
+}
+
 \newcommand\opset[2]{
     \large{与 #1 相关的工作流有：}\normalsize
     \setcounter{operation}{1}
@@ -61,7 +68,7 @@
 \newcommand\Fyes{$\bigcirc$}
 \newcommand\Fno{$\times$}
 
-\newcommand\makefeaturetable[1]{
+\newcommand\makefeaturetable[1]{{
     \centering
     %\begin{table}
     \pgfplotstabletypeset[
@@ -138,9 +145,9 @@
         col sep=comma, header=false
         ]{\DIRNAME/#1}
     %\end{table}
-}
+}}
 
-\newcommand\maketxtable[4]{
+\newcommand\maketxtable[4]{{
     $\boxplus$ {\textbf{#1}}
     \vskip 3mm
     { \addtolength{\leftskip}{5mm} #4 }
@@ -235,4 +242,4 @@
     ]{\DIRNAME/#3}
     }
     \vskip 8mm
-}
+}}
