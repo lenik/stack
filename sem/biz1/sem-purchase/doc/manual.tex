@@ -1,75 +1,95 @@
-\section{采购请求管理}
-\opset{采购请求管理}{
-    \item \ops{新建采购请求}{
-        \item  点击工具栏上的\button{新建}按钮，进入新建采购请求界面
-        \screenshot{1.png}
-        \item  输入采购请求单的\textbox{摘要}及\textbox{描述}
-        \screenshot{2.png}
-        \item  在物料计划标签下，点击\button{连接到...}按钮连接相应的物料计划单
-        \screenshot{3.png}
-        \item  点击采购项目标签，点击\button{计算需求量}按钮，系统自动计算物料的最少需求量
-        \screenshot{4.png}
-        \item  选择采购项目，点击\button{修改}按钮，弹出编辑采购项对话框
-        \screenshot{5.png}
-            \ul {
-            \item  输入采购\textbox{数量}。\textbox{附加要求}
-            \item  选择\button{优选供应商}
-            \item  选择\button{入库仓库}
-            \item  选择\button{采购建议}
-            \item  点击\button{确定}按钮完成采购项目的修改
-            }
-        \item  如需手动添加采购项目，点击\button{添加}按钮，弹出新建采购想对话框
-        \screenshot{5.png}
-            \ul {
-            \item  选择\button{需要采购的物料}
-            \item  输入\textbox{需要采购的数量}
-            \item  选择\button{优选供应商}
-            \item  输入\textbox{附加要求}
-            \item  选择\button{入库仓库}
-            \item  选择\button{采购建议}
-            \item  点击\button{确定}按钮，添加采购项目
-            }
-        \item  点击\button{修改}按钮或者\button{删除}按钮，修改或者删除相应采购项目
-        \item  点击\button{保存}按钮，保存新建的采购单
-    }
-    \item \ops{编辑采购请求}{
-        \item  选择需要求改的采购请求
-        \item  点击工具栏上的\button{修改}按钮，进入到修改采购请求界面
-        \item  修改相应需要修改的内容
-        \item  点击\button{保存}按钮，保存更改后的采购请求
-    }
-    \item \ops{删除采购请求}{
-        \item  选择需要删除的采购请求
-        \item  点击工具栏上的\button{删除}按钮，在弹出的确认对话框中点击\button{确定}，删除对应的采购请求
-            \screenshot{6.png}
-    }
-    \item \ops{采购入库}{
-        \item  选择需要入库的采购请求
-        \item  点击工具栏上的采购入库按钮，弹出采购入库项目列表
-    }
-}
 
+% 采购管理概述
+\input{pu-overview.tex}
+    % 采购的工作岗位及主要职责
+    \input{pu-role.tex}
 
-\section{询价和挑选供应商}
-\opset{询价和挑选供应商}{
-    \item  询价单由采购申请单自动生成
-    \item  采购申请单的每个条目对应一个询价单
-    \item  选择询价单，点击工具栏上的\button{修改}按钮，进入编辑采购询价界面
-        \screenshot{9.png}
-        \ul {
-        \item  在采购项目标签下，设置物料的优选供应商，及本次采购的附加要求
-        \screenshot{10.png}
-        \item  在询价于建议标签下，点击\button{添加}按钮，弹出询价信息对话框
-        \screenshot{7.png}
-            \ul {
-            \item  选择供应商
-            \item  输入\textbox{供应商报价}
-            \item  输入\textbox{交货时间}
-            \item  输入\textbox{质量状况}
-            \item  输入其他\textbox{相关}项目信息
-            \item  点击\button{确定}按钮，添加询价条目
-            \screenshot{8.png}
-            }
-        \item  点击保存按钮，保存采购项询价单
+\section{采购技巧}
+    % 采购谈判的技巧
+    \input{pu-skills.tex}
+
+\section{采购合同}
+    % 公司采购合同的管理
+    \input{pu-ct2.tex}
+    % 签订采购合同的要点
+    \input{pu-skill2.tex}
+    % 签订采购合同时的注意事项
+    \input{pu-ct1.tex}
+
+\practices
+
+\subsection{采购请求管理}
+    \opset{采购请求管理}{
+        \item \ops{新建采购请求}{
+            \item  点击工具栏上的\button{新建}按钮，进入新建采购请求界面
+            \screenshot{1.png}
+            \item  输入采购请求单的\textbox{摘要}及\textbox{描述}
+            \screenshot{2.png}
+            \item  在物料计划标签下，点击\button{连接到...}按钮连接相应的物料计划单
+            \screenshot{3.png}
+            \item  点击采购项目标签，点击\button{计算需求量}按钮，系统自动计算物料的最少需求量
+            \screenshot{4.png}
+            \item  选择采购项目，点击\button{修改}按钮，弹出编辑采购项对话框
+            \screenshot{5.png}
+                \ul {
+                \item  输入采购\textbox{数量}。\textbox{附加要求}
+                \item  选择\button{优选供应商}
+                \item  选择\button{入库仓库}
+                \item  选择\button{采购建议}
+                \item  点击\button{确定}按钮完成采购项目的修改
+                }
+            \item  如需手动添加采购项目，点击\button{添加}按钮，弹出新建采购想对话框
+            \screenshot{5.png}
+                \ul {
+                \item  选择\button{需要采购的物料}
+                \item  输入\textbox{需要采购的数量}
+                \item  选择\button{优选供应商}
+                \item  输入\textbox{附加要求}
+                \item  选择\button{入库仓库}
+                \item  选择\button{采购建议}
+                \item  点击\button{确定}按钮，添加采购项目
+                }
+            \item  点击\button{修改}按钮或者\button{删除}按钮，修改或者删除相应采购项目
+            \item  点击\button{保存}按钮，保存新建的采购单
+        }
+        \item \ops{编辑采购请求}{
+            \item  选择需要求改的采购请求
+            \item  点击工具栏上的\button{修改}按钮，进入到修改采购请求界面
+            \item  修改相应需要修改的内容
+            \item  点击\button{保存}按钮，保存更改后的采购请求
+        }
+        \item \ops{删除采购请求}{
+            \item  选择需要删除的采购请求
+            \item  点击工具栏上的\button{删除}按钮，在弹出的确认对话框中点击\button{确定}，删除对应的采购请求
+                \screenshot{6.png}
+        }
+        \item \ops{采购入库}{
+            \item  选择需要入库的采购请求
+            \item  点击工具栏上的采购入库按钮，弹出采购入库项目列表
         }
     }
+
+\clearpage
+\subsection{询价和挑选供应商}
+    \opset{询价和挑选供应商}{
+        \item  询价单由采购申请单自动生成
+        \item  采购申请单的每个条目对应一个询价单
+        \item  选择询价单，点击工具栏上的\button{修改}按钮，进入编辑采购询价界面
+            \screenshot{9.png}
+            \ul {
+            \item  在采购项目标签下，设置物料的优选供应商，及本次采购的附加要求
+            \screenshot{10.png}
+            \item  在询价于建议标签下，点击\button{添加}按钮，弹出询价信息对话框
+            \screenshot{7.png}
+                \ul {
+                \item  选择供应商
+                \item  输入\textbox{供应商报价}
+                \item  输入\textbox{交货时间}
+                \item  输入\textbox{质量状况}
+                \item  输入其他\textbox{相关}项目信息
+                \item  点击\button{确定}按钮，添加询价条目
+                \screenshot{8.png}
+                }
+            \item  点击保存按钮，保存采购项询价单
+            }
+        }
