@@ -1,9 +1,7 @@
-\documentclass[hyperref, oneside]{book}
+\documentclass[CJK, hyperref, oneside]{z-book}
 
-\usepackage{xunicode,xltxtra}
 \usepackage{import}
 
-\usepackage[slantfont,boldfont]{xeCJK}
 \usepackage[geometry, misc]{ifsym} % DiamondShadowC, Cube
 \usepackage{manfnt}             % dbend
 \usepackage{mathabx}            % boxplus
@@ -11,10 +9,8 @@
 \usepackage{keystroke}          % keystroke
 \usepackage{textcomp}           % textcurrency
 % \usepackage{MnSymbol}           % nequiv
-\usepackage[cm-default]{fontspec}
 
 \usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
-\usepackage[pdfborder={0 0 0}]{hyperref}
 \usepackage{pdflscape}          % landscape
 % \usepackage{multicol}           % Multi column article
 
@@ -24,11 +20,10 @@
 \usepackage{url}
 \usepackage{xstring}            % StrSubstritute, IfSubStr
 \usepackage{enumitem}           % itemize
-% \usepackage{float}
 \usepackage{framed}
 
 \usepackage{graphicx}           % includegraphics
-\usepackage{tikz}
+\usepackage{z-quickz}
 
 % \usepackage[table]{xcolor}
 \usepackage{pgfplotstable}
@@ -60,13 +55,6 @@
 % Kill the unavailable in EU1 warnings.
 \renewcommand\nobreakspace{}
 
-\setCJKmainfont{WenQuanYi Micro Hei}
-
-\XeTeXlinebreaklocale "zh"
-\XeTeXlinebreakskip = 0pt plus 1pt
-\linespread{1.2}
-\setlength{\columnsep}{.5in}
-
 \newcommand*\ajax{AJAX}
 
 \input{\DIRNAME/libmanual.tex}
@@ -76,20 +64,19 @@
     \def\DIRNAME{../../../#2/doc}
     \subimport{\DIRNAME/}{manual.tex}
 
-    \section{扩展应用参考}
-
+    \clearpage
+                                        \begin{landscape}
+    \section{应用扩展参考}
     \subsection{设计参数}
-        \begin{landscape}
         \makefeaturetable{matrix.csv}
-        \end{landscape}
 
     \subsection{数据依赖}
-        （略）
+        （限于印刷篇幅，此处省略数据依赖关系图。）
 
+    \clearpage
     \subsection{数据交换格式}
-        \begin{landscape}
         \input{\DIRNAME/TX-index}
-        \end{landscape}
+                                        \end{landscape}
 }
 
 \title {\modtitle \\ \modsubtitle \\ 使用说明书}
@@ -101,24 +88,23 @@
 
 \renewcommand\contentsname{目录/Contents}
 \tableofcontents
+{
+    \let\clearpage\relax
+    \listoftables
+    \listoffigures
+}
 \clearpage
 
 \def\DIRNAME{.}
 \import{\DIRNAME/}{profile}
 
-\chapter{附录}
+\appendix
 
-    \clearpage
-    \subsection{版本历史}
-        \begin{center}
-        % \rowcolors{1}{white}{lightgray}
-        \centering
-        %\input{history}
-        \end{center}
-
-\chapter{索引}
-
-    \listoftables
-    \listoffigures
+\chapter{版本历史}
+{
+    \centering
+    % \rowcolors{1}{white}{lightgray}
+    \input{history}
+}
 
 \end{document}
