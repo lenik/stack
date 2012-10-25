@@ -1,3 +1,31 @@
+SEM-2.0.10 (谢继雷, 朱挺峰, 2012-10-25)
+	* Released sem-2.0.10.
+	* Fixed OCR typos.
+	* Integrated sem-purchase manual.
+	* Integrated sem-people manual.
+	* Distrib/moved manual text pieces to corresponding sem modules.
+	* 考勤基本完成
+	* 考勤零时提交。
+	* 考勤图标。
+
+SEM-2.0.9 (金卫林, 朱挺峰, 2012-10-20)
+	* 考勤零时提交。
+	* sem-make-biz,sem-purchase,sem-inventory界面加入收缩功能
+	* 定单管理加入输出到csv文件的功能
+
+SEM-2.0.8 (金卫林, 2012-10-18)
+	* 送货单加上inlineEdit
+	* 解决付款单付款功能错误，解决相关权限问题
+	* 付款单，收款单加业务对象
+	* 1.送货单可以改价格
+
+SEM-2.0.7 (金卫林, 2012-10-17)
+	* 付款单界面上的字打错了
+
+SEM-2.0.6 (金卫林, 2012-10-15)
+	* 收款单和付款单加入时间
+	* 解决资产查询中，选择party不起作用的问题
+
 SEM-2.0.5 (谢继雷, 2012-10-13)
 	* Set default max upload file size to 30M.
 
