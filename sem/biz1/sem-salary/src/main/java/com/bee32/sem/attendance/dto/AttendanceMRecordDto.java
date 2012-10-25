@@ -22,7 +22,6 @@ public class AttendanceMRecordDto
         extends UIEntityDto<AttendanceMRecord, Long> {
 
     private static final long serialVersionUID = 1L;
-    public static final String DEFAULTATTENDANCEDATA = "1:A,A,A;2:A,A,A;3:A,A,A;4:A,A,A;5:A,A,A;6:A,A,A;7:A,A,A;8:A,A,A;9:A,A,A;10:A,A,A;11:A,A,A;12:A,A,A;13:A,A,A;14:A,A,A;15:A,A,A;16:A,A,A;17:A,A,A;18:A,A,A;19:A,A,A;20:A,A,A;21:A,A,A;22:A,A,A;23:A,A,A;24:A,A,A;25:A,A,A;26:A,A,A;27:A,A,A;28:A,A,A;29:A,A,A;30:A,A,A;31:A,A,A";
     public static final String[] weekday = { "星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
 
     int tmpId;
@@ -48,7 +47,7 @@ public class AttendanceMRecordDto
         year = source.getYearMonth() / 100;
         month = source.getYearMonth() % 100;
         employee = mref(EmployeeInfoDto.class, source.getEmployee());
-        records = warpToAttendanceMap(source.getAttendanceData() == null ? DEFAULTATTENDANCEDATA : //
+        records = warpToAttendanceMap(source.getAttendanceData() == null ? generatorDefaultAttendanceData(year, month) : //
                 source.getAttendanceData());
         attendances = new ArrayList<AttendanceDRecord>(records.values());
         providerArgs = ExtractProviderArgs(records);
@@ -65,6 +64,18 @@ public class AttendanceMRecordDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
+    }
+
+    public static String generatorDefaultAttendanceData(int year, int month) {
+        int max = SalaryDateUtil.getDayNumberOfMonth(year, month);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 1; i <= max; i++) {
+            sb.append(i);
+            sb.append(":");
+            sb.append("-,-,-;");
+        }
+        String attendanceData = sb.toString();
+        return attendanceData.substring(0, attendanceData.length() - 1);
     }
 
     public static List<List<AttendanceDRecord>> calendarView(int yearMonth, Map<Integer, AttendanceDRecord> map) {
@@ -104,7 +115,8 @@ public class AttendanceMRecordDto
             weekview.add(record);
         }
 
-        monthView.add(weekview);
+        if (weekview.size() > 0)
+            monthView.add(weekview);
         return monthView;
     }
 
@@ -277,4 +289,7 @@ public class AttendanceMRecordDto
         this.attendanceData = attendanceData;
     }
 
+    public String getYearMonthString() {
+        return year + "年" + month + "月";
+    }
 }

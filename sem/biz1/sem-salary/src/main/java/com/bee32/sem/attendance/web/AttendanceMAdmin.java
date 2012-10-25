@@ -45,12 +45,12 @@ public class AttendanceMAdmin
 
             AttendanceMRecordDto attendance = new AttendanceMRecordDto();
             attendance.setTmpId(i);
-            attendance.setYear(2011);
-            attendance.setMonth(10);
             attendance.setEmployee(allEmployees.get(i));
             attendance.setSafe(true);
-            attendance.setRecords(AttendanceMRecordDto.DEFAULTATTENDANCEDATA);
-            attendance.setAttendanceData(AttendanceMRecordDto.DEFAULTATTENDANCEDATA);
+            attendance.setRecords(//
+                    AttendanceMRecordDto.generatorDefaultAttendanceData(yearMonth / 100, yearMonth % 100));
+            attendance.setAttendanceData(//
+                    AttendanceMRecordDto.generatorDefaultAttendanceData(yearMonth / 100, yearMonth % 100));
             attendance.setYear(yearMonth / 100);
             attendance.setMonth(yearMonth % 100);
 

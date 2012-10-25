@@ -125,6 +125,14 @@ public class SalaryDateUtil {
         return (int) (x / 86400000);
     }
 
+    public static int getDayNumberOfMonth(int year, int month) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month - 1);
+        Date date = cal.getTime();
+        return getDayNumberOfMonth(date);
+    }
+
     /**
      * 根据年月日返回日期
      */
